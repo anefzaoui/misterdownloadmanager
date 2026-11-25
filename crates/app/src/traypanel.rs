@@ -89,6 +89,8 @@ pub struct Row {
     pub live: Option<LiveState>,
     /// A live stream: its button may read "Stop and save" (`progress::pause_labels`).
     pub live_stream: bool,
+    /// An endless stream (#1780): its button reads "Stop and keep" (`Item::endless`).
+    pub endless: bool,
 }
 
 impl Panel {
@@ -223,11 +225,17 @@ pub fn place(at: Option<Pos2>, size: Vec2, area: Option<Rect>, screen: Option<Ve
             crate::scale::keep_inside(pos2(at.x - size.x / 2.0, at.y - size.y - GAP), size, a)
         }
         (Some(at), None) => {
-            let wanted = pos2(at.x - size.x / 2.0, at.y - size.y - GAP);
-            pos2(
-                wanted.x.max(0.0),
-                if wanted.y < 0.0 { at.y + GAP } else { wanted.y },
-            )
+            let mut wanted = pos2(at.x - size.x / 2.0, at.y - size.y - GAP);
+            // A click on a screen left of the first is negative and stays there. On the first
+            // screen - the only one whose size is known here - the panel is kept off its right
+            // edge: a tray at the bottom right would otherwise open it half off the screen.
+            if at.x >= 0.0 {
+                wanted.x = wanted.x.max(0.0);
+                if let Some(s) = screen.filter(|s| s.x > size.x && at.x <= s.x && at.y <= s.y) {
+                    wanted.x = wanted.x.min(s.x - size.x - GAP).max(0.0);
+                }
+            }
+            pos2(wanted.x, if wanted.y < 0.0 { at.y + GAP } else { wanted.y })
         }
         (None, Some(a)) => pos2(end(a.min.x, a.max.x), a.max.y - size.y - GAP),
         (None, None) => {
@@ -267,6 +275,7 @@ fn row(item: &Item) -> Row {
         live,
         live_stream: live.is_some()
             || matches!(item.video_helper(), Some(mdm_tools::streams::Helper::Live)),
+        endless: item.endless(),
     }
 }
 
@@ -297,7 +306,8 @@ fn draw(ui: &mut egui::Ui, p: &egui::Painter, o: Pos2, rows: &[Row], events: &mu
     // Pause and Cancel as wide as their labels in this language: Pause laid out for the widest
     // of the labels it can show, so it keeps its size as its label changes.
     let live_stream = rows.iter().any(|r| r.live_stream);
-    let pause_for = winui::widest_label(p, crate::progress::pause_labels(live_stream));
+    let endless = rows.iter().any(|r| r.endless);
+    let pause_for = winui::widest_label(p, crate::progress::pause_labels(live_stream, endless));
     let buttons = winui::button_row(
         p,
         &[
@@ -349,7 +359,7 @@ fn draw(ui: &mut egui::Ui, p: &egui::Painter, o: Pos2, rows: &[Row], events: &mu
 }
 
 /// One download's row, from `y` down: its name, its bar with the progress window's Pause (or
-/// Resume, Stop and save) and Cancel beside it at `buttons` (English x, width), and how far it is
+/// Resume, Stop and save, Stop and keep) and Cancel beside it at `buttons` (English x, width), and how far it is
 /// under them; read to screen readers as one line.
 fn draw_row(
     ui: &mut egui::Ui,
@@ -375,7 +385,7 @@ fn draw_row(
     );
     let bar = r(o, 12.0, y + 24.0, pause_x - 12.0 - 10.0, 14.0);
     winui::meter(p, bar, row.fraction.unwrap_or(0.0) as f32);
-    let (label, kind) = crate::progress::pause_button(row.status, row.live);
+    let (label, kind) = crate::progress::pause_button(row.status, row.live, row.endless);
     let event = if row.status == Status::Downloading {
         Event::Pause(row.id)
     } else {
@@ -450,6 +460,18 @@ mod tests {
             pos2(1310.0, 20.0)
         );
         assert_eq!(place(at(100.0, 900.0), size, None, None), pos2(0.0, 692.0));
+        // With the screen known (Linux, macOS), a tray at the bottom right no longer opens the
+        // panel half off it.
+        assert_eq!(
+            place(at(1800.0, 1060.0), size, None, Some(vec2(1920.0, 1080.0))),
+            pos2(1920.0 - 380.0 - GAP, 1060.0 - 200.0 - GAP)
+        );
+        // A screen left of the first (negative coordinates) keeps its own place instead of
+        // being moved to the first one's left edge.
+        assert_eq!(
+            place(at(-1500.0, 900.0), size, None, Some(vec2(1920.0, 1080.0))),
+            pos2(-1500.0 - 190.0, 692.0)
+        );
     }
 
     /// No place for the click (a tray that sent 0, 0): never the screen's top-left corner, but
@@ -503,12 +525,12 @@ mod tests {
         assert_eq!(known.fraction, Some(0.25));
         assert_eq!(known.line, "1.000 MB of 4.000 MB");
         assert_eq!(known.status, Status::Stopped);
-        assert!(known.live.is_none() && !known.live_stream);
+        assert!(known.live.is_none() && !known.live_stream && !known.endless);
         let unknown = row(&item(2, None, 3 * 1024, Status::Stopped));
         assert_eq!(unknown.fraction, None);
         assert_eq!(unknown.line, "3.000 KB");
         assert_eq!(
-            crate::progress::pause_button(known.status, known.live).0,
+            crate::progress::pause_button(known.status, known.live, known.endless).0,
             "Resume"
         );
     }

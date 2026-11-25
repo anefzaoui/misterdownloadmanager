@@ -110,10 +110,10 @@
 #, machine
 @plural	{n} downloading|{n} downloading	{n} đang tải xuống
 #. count in extracting archives (a download's log, the Archive password window)
-#. in a download's log, after extracting: entries of the archive not written (links, names that would leave the folder)
+#. in a download's log, after extracting: entries of the archive not written (links, names that would leave the folder, entries under a file of the archive where a folder should be)
 #. {n} = a number (keep the braces as they are)
 #, machine
-@plural	{n} entry was left out (a link, or a name leading outside the folder)|{n} entries were left out (links, or names leading outside the folder)	{n} mục đã bị bỏ qua (một liên kết hoặc một tên dẫn ra ngoài thư mục)
+@plural	{n} entry was left out (a link, a name leading outside the folder, or a file in its way)|{n} entries were left out (links, names leading outside the folder, or files in their way)	{n} mục đã bị bỏ qua (một liên kết, tên nằm ngoài thư mục hoặc tệp cản trở việc ghi)
 #. count in a dialog box
 #. the summary of downloads added together; after "12 downloads finished": {n} of them failed
 #. {n} = a number (keep the braces as they are)
@@ -171,6 +171,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} tracker added|{n} trackers added	Đã thêm {n} trình theo dõi
+#. count in the main window
+#. event log entry: trackers from the public tracker list (Torrent settings) were added to a torrent
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} tracker added from the public list|{n} trackers added from the public list	{n} trình theo dõi đã được thêm từ danh sách công khai
 #. count in the Add torrent window
 #. where a magnet's peers came from: {n} = trackers asked; {peers} = "3 peers"
 #. {n} = a number (keep the braces as they are)
@@ -327,6 +332,9 @@
 #. why Part is greyed in Download video: the page is a playlist, whose videos are downloaded whole
 #, machine
 	A playlist's videos are downloaded whole	Video trong danh sách phát được tải xuống toàn bộ
+#. message or event log entry in the main window
+#, machine
+	A private torrent: the public tracker list isn't added	Torrent riêng tư: danh sách trình theo dõi công khai không được thêm
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites: the tooltip of the profile box
 #, machine
@@ -467,6 +475,10 @@
 #. text in extension.rs
 #, machine
 	Add the free extension: files you download in your browser come here, and videos get a Download button.	Thêm tiện ích mở rộng miễn phí: các tệp bạn tải xuống trong trình duyệt sẽ đến đây và video sẽ có nút Tải xuống.
+#. text in the Add torrent window
+#. Torrent settings: add the trackers of a public tracker list (its address in the box below) to torrents that aren't private, so they find more peers
+#, machine
+	Add the trackers of this public list to public torrents:	Thêm tracker trong danh sách công khai này vào torrent công khai:
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: add the torrents to the list without starting them
 #, machine
@@ -1121,12 +1133,21 @@
 #. remote control page (on a phone): what the ".torrent file" button does (screen readers)
 #, machine
 	Choose a .torrent file	Chọn tệp .torrent
+#. message or event log entry in the main window
+#. title of the file dialog of View → Font → Choose a font file
+#. title of the message when the font picked in View → Font can't be used
+#, machine
+	Choose a font file	Chọn một tập tin phông chữ
 #. text in helpers.rs
 #, machine
 	Choose a JavaScript runtime (Node.js, Deno, QuickJS or Bun)	Chọn một môi trường chạy JavaScript (Node.js, Deno, QuickJS hoặc Bun)
 #. text in langpick.rs
 #, machine
 	Choose a language	Chọn ngôn ngữ
+#. text in a dialog box
+#. the Columns dialog: what it is for, above its list of the download list's columns
+#, machine
+	Choose columns to show	Chọn cột để hiển thị
 #. text in langpick.rs
 #, machine
 	Choose the language Mister Download Manager shows its windows in:	Chọn ngôn ngữ Mister Download Manager hiển thị cửa sổ:
@@ -1200,6 +1221,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Colombia	Colombia
+#. window title in a dialog box; text in a dialog box
+#. what a screen reader calls the Columns dialog's list of the download list's columns
+#, machine
+	Columns	Cột
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2003,6 +2028,10 @@
 #. Torrent settings, at the bottom
 #, machine
 	Fetched again every 7 days. Changes apply when no torrent is running.	Được tìm nạp lại sau mỗi 7 ngày. Các thay đổi sẽ được áp dụng khi không có torrent nào đang chạy.
+#. text in the Add torrent window
+#. Torrent settings, under the public tracker list's address
+#, machine
+	Fetched once a day. Never added to private torrents.	Được tìm nạp mỗi ngày một lần. Không bao giờ thêm vào các torrent riêng tư.
 #. text in helpers.rs
 #. helper name and what it does (ffmpeg is a program's name)
 #, machine
@@ -2135,6 +2164,14 @@
 #. text in categories.rs
 #, machine
 	Folder:	Thư mục:
+#. text in the Options window
+#. Options → Archives → Link grabber, one line with two boxes: an FTP folder or a web server's folder listing ("Index of") given to Link grabber is read with its subfolders: {depth} is a number box (how many levels of subfolders, 3 at first; 0 is the folder's own files only), {types} a text box (file types such as ISO ZIP; empty for every type)
+#, machine
+	Folders: {depth} levels deep, types: {types}	Thư mục: sâu {depth} cấp, loại: {types}
+#. message or event log entry in the main window
+#. the kind of file View → Font → Choose a font file lists: TrueType and OpenType font files
+#, machine
+	Font files	Tệp phông chữ
 #. text in finish.rs
 #. Snooze menu of the Download complete window: show no Download complete window for this long
 #, machine
@@ -3778,6 +3815,10 @@
 #. Link grabber, a link's status: the server has the file
 #, machine
 	Online	Trực tuyến
+#. text in the Options window
+#. Options → Archives → Link grabber: the hover tip of the types box in "Folders: {depth} levels deep, types: {types}": only a folder's files of these types go into Link grabber; written as the File types page writes them
+#, machine
+	Only a folder's files of these types, written as on the File types page (ISO ZIP R0*). Empty: every type.	Chỉ các tệp trong thư mục thuộc các loại này, được viết như trên trang Loại tệp (ISO ZIP R0*). Để trống: mọi loại.
 #. text in a download's Properties window
 #. tooltip of the greyed Move button in File Properties
 #, machine
@@ -4277,6 +4318,10 @@
 #. group box title: what the * in the address is replaced with (numbers or letters)
 #, machine
 	Replace asterisk to	Thay thế dấu hoa thị bằng
+#. button in a dialog box
+#. button in the Columns dialog: put the columns back as they first were (order, widths, all shown)
+#, machine
+	Reset	Đặt lại
 #. text in crashui.rs
 #. crash report window button: start MDM again
 #, machine
@@ -4864,6 +4909,10 @@
 #. tooltip on the disabled Rename box when the file is one part of a split archive (.part1.rar, .7z.001…)
 #, machine
 	Split archive volumes keep their names for extraction	Các phần của tệp nén chia nhỏ giữ nguyên tên để giải nén
+#. text in the Download video window
+#. checkbox in Download video: split the video into one file per chapter (the whole video is kept too)
+#, machine
+	Split into chapters	Tách thành các chương
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -4952,6 +5001,10 @@
 #. remote control page (on a phone): button: stop a queue
 #, machine
 	Stop	Dừng
+#. text in a download's progress window
+#. button in the progress window of a download that never ends by itself (an internet radio, a camera feed: no size, can't be resumed): stop it and keep what has arrived as the finished file
+#, machine
+	Stop and keep	Dừng và giữ lại
 #. text in a download's progress window
 #. button in a live stream's progress window: stop recording it and keep what was recorded as a video file
 #, machine
@@ -5683,6 +5736,10 @@
 #, machine
 	This device's name	Tên thiết bị này
 #. message or event log entry in the main window
+#. the message when a file picked in View → Font isn't a TrueType or OpenType font MDM can read
+#, machine
+	This file can't be used as a font.	Không thể sử dụng tập tin này làm phông chữ.
+#. message or event log entry in the main window
 #. {error} is why, in English (a file that isn't a theme or a colour scheme, a colour missing)
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -5995,6 +6052,10 @@
 #. why Options → Remote → Pair a device... is greyed
 #, machine
 	Turn on the remote control first.	Trước tiên, hãy bật điều khiển từ xa.
+#. text in the Add torrent window
+#. Torrent settings, under the public tracker list's address: turning the switch off doesn't take away the trackers it added to torrents
+#, machine
+	Turned off, the trackers already added stay.	Khi tắt, các trình theo dõi đã thêm vẫn còn.
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -6703,6 +6764,11 @@
 #. said after Delete with files when some files stayed on the disk; {file} is the download's name; the files' paths follow it
 #, machine
 	{file}: these files stayed on the disk, because MDM didn't create them or another download uses them:	{file}: các tệp này vẫn còn trên đĩa vì MDM không tạo ra chúng hoặc một lượt tải xuống khác đang sử dụng chúng:
+#. message or event log entry in the main window
+#. Link grabber's Source line, after where the links came from: a folder (an FTP folder, a web server's "Index of" page) held more files or subfolders than Link grabber lists; {folder} is its name, {n} how many of its files are listed (10,000)
+#. {n} = a number (keep the braces as they are)
+#, machine
+	{folder}: only its first {n} files	{folder}: chỉ {n} tệp đầu tiên
 #. text in a download's progress window
 #. {have} and {total} = numbers of pieces; {size} = one piece's size
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
@@ -7023,6 +7089,10 @@ column	Q	Hàng đợi
 #, machine
 column	Queue	Hàng đợi
 #. column title in the download list in the download list
+#. column title: the folder the download is saved in
+#, machine
+column	Save To	Lưu vào
+#. column title in the download list in the download list
 #. column title: what a torrent has sent to peers against what it took
 #, machine
 column	Share ratio	Tỷ lệ chia sẻ
@@ -7296,6 +7366,14 @@ extension	File deleted or moved	Tệp đã bị xóa hoặc di chuyển
 #, machine
 extension	File type	Loại tệp
 #. text in the browser extension
+#. button in the This page tab of the toolbar button's popup: look for the pictures of the current web page (only when clicked); short
+#, machine
+extension	Find images	Tìm hình ảnh
+#. text in the browser extension
+#. in the This page tab of the toolbar button's popup, before the Find images button; Link grabber is the name of the app's window that lists links to tick before downloading them
+#, machine
+extension	Find this page's pictures at the largest size it lists, then send the ones you want to Link grabber.	Tìm các hình ảnh trên trang này với kích thước lớn nhất được liệt kê, sau đó gửi những hình bạn muốn đến Trình lấy liên kết.
+#. text in the browser extension
 #. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) after Clear finished
 #, machine
 extension	Finished downloads cleared	Đã xóa các mục tải xuống đã hoàn tất
@@ -7331,6 +7409,14 @@ extension	Hold Alt while clicking a link to let the browser download it.	Giữ p
 #. link under a connection problem in the toolbar button's popup, to the help page's section for it
 #, machine
 extension	How to fix it	Cách khắc phục
+#. text in the browser extension
+#. what a screen reader says for the row of buttons that keep or leave out each type of picture (JPEG, PNG, WEBP...), in the This page tab of the toolbar button's popup
+#, machine
+extension	Image types	Loại hình ảnh
+#. text in the browser extension
+#. heading in the This page tab of the toolbar button's popup, over the part that finds the pictures of the current web page and sends them to the app
+#, machine
+extension	Images on this page	Hình ảnh trên trang này
 #. text in the browser extension
 #. pairing failed for another reason
 #, machine
@@ -7493,6 +7579,10 @@ extension	No download's name or address has “{words}”.	Không có tên hoặ
 #, machine
 extension	No downloads yet	Chưa có mục tải xuống nào
 #. text in the browser extension
+#. shown in the This page tab of the toolbar button's popup when Find images found no picture on the current web page
+#, machine
+extension	No images found on this page.	Không tìm thấy hình ảnh nào trên trang này.
+#. text in the browser extension
 #. shown in the toolbar button's popup when the current web page hasn't loaded any video, sound or stream yet
 #, machine
 extension	No video or sound found on this page yet. Play it, then open this again.	Chưa tìm thấy video hoặc âm thanh nào trên trang này. Hãy phát rồi mở lại.
@@ -7561,6 +7651,10 @@ extension	Options...	Tùy chọn...
 #. in the list under the download button over a video, after a sound-only line's bitrate: the sound as the site sends it, not converted (e.g. '128 kbps · original'); lower case; one word
 #, machine
 extension	original	gốc
+#. text in the browser extension
+#. button among the picture types (JPEG, PNG, WEBP...) in the This page tab of the toolbar button's popup: the pictures of any other or unknown type; short
+#, machine
+extension	Other	Khác
 #. text in the browser extension
 #. button: pair this browser with the other MDM using the code
 #, machine
@@ -7647,6 +7741,10 @@ extension	Send downloads through this browser's proxy or VPN extension	Gửi cá
 #, machine
 extension	Send downloads to	Gửi tải xuống đến
 #. text in the browser extension
+#. button in the This page tab of the toolbar button's popup: send the selected pictures to the app's Link grabber window, where the user ticks which to download
+#, machine
+extension	Send to Link grabber	Gửi đến Trình lấy liên kết
+#. text in the browser extension
 #. on the download button over a video right after it was clicked, while the download goes to the app; MDM is Mister Download Manager's short name, keep it as it is; short
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -7655,6 +7753,10 @@ extension	Sending to MDM...	Đang gửi đến MDM...
 #. under the extension's name in the toolbar button's popup: downloads go to another Mister Download Manager, a server, at this address; short
 #, machine
 extension	Sending to {server}	Đang gửi đến {server}
+#. text in the browser extension
+#. shown in the This page tab of the toolbar button's popup after the pictures were sent to the app's Link grabber window
+#, machine
+extension	Sent to Link grabber: tick the ones to download there.	Đã gửi đến Trình lấy liên kết: đánh dấu những hình ảnh cần tải xuống ở đó.
 #. text in the browser extension
 #. shown briefly on the download button after it was clicked; keep the name Mister Download Manager as it is
 #, machine
@@ -7686,6 +7788,23 @@ extension	Show in folder	Hiển thị trong thư mục
 #. screen readers' name of a download's Show in folder button in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads)
 #, machine
 extension	Show {file} in folder	Hiển thị {file} trong thư mục
+#. text in the browser extension
+#. in the This page tab of the toolbar button's popup, while a smallest width or height is set: how many of the selected pictures the page gives no size for (they are kept, not left out)
+#. {n} = a number (keep the braces as they are)
+#, machine
+extension	Size not given, kept: {n}	Không có kích thước, đã giữ: {n}
+#. text in the browser extension
+#. what a screen reader says for the box of the smallest height of the pictures to keep, in the This page tab of the toolbar button's popup
+#, machine
+extension	Smallest height, in pixels	Chiều cao nhỏ nhất, tính bằng pixel
+#. text in the browser extension
+#. in the This page tab of the toolbar button's popup, before two boxes for the smallest width and height of the pictures to keep: 'Smallest size, in pixels [ ] × [ ]'; pictures smaller than that are left out; short
+#, machine
+extension	Smallest size, in pixels	Kích thước nhỏ nhất, theo pixel
+#. text in the browser extension
+#. what a screen reader says for the box of the smallest width of the pictures to keep, in the This page tab of the toolbar button's popup
+#, machine
+extension	Smallest width, in pixels	Chiều rộng nhỏ nhất, tính bằng pixel
 #. text in the browser extension
 #. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app isn't running
 #, machine
@@ -7719,6 +7838,10 @@ extension	That didn't work. Try again.	Thao tác đó không thành công. Hãy 
 #. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when a button's download was removed meanwhile
 #, machine
 extension	That download is no longer in the list.	Bản tải xuống đó không còn trong danh sách.
+#. text in the browser extension
+#. shown in the This page tab of the toolbar button's popup when Find images can't look into the current page (a page of the browser's own, an add-on store)
+#, machine
+extension	The browser doesn't let add-ons read this page.	Trình duyệt không cho phép tiện ích đọc trang này.
 #. text in the browser extension
 #. in the toolbar button's popup, on a site where the Chrome Web Store's copy of the extension shows no download button; Help is the link at the bottom of the popup
 #, machine
@@ -7855,6 +7978,10 @@ extension	{file} removed from the list	Đã xóa {file} khỏi danh sách
 #. question in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) before a download's file is deleted
 #, machine
 extension	{file} will be deleted from your computer, and the download taken off the list. This can't be undone.	{file} sẽ bị xóa khỏi máy tính của bạn và bản tải xuống sẽ bị xóa khỏi danh sách. Thao tác này không thể hoàn tác.
+#. text in the browser extension
+#. in the This page tab of the toolbar button's popup: how many of the pictures found pass the size and type filters, and will be sent
+#, machine
+extension	{shown} of {total} selected	{shown} trong số {total} đã chọn
 #. text in the browser extension
 #. a running download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): the time left, as a clock (minutes:seconds)
 #. {time} = a time of day (keep the braces as they are)
@@ -7998,6 +8125,12 @@ menu	&Automatic	Tự &động
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Classic	Cổ &điển
+#. menu command in the main window
+#. header menu: opens the dialog that chooses the list's columns
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	&Columns...	&Cột...
 #. menu command in standard windows
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -8018,6 +8151,11 @@ menu	&Download Now	&Tải xuống ngay
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Exit	&Thoát
+#. menu command in the main window
+#. View menu: submenu choosing the interface's own font and text size
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Font	&Phông chữ
 #. menu command in the main window
 #. verb: load downloads from a file
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
@@ -8097,6 +8235,11 @@ menu	&Stop All	&Dừng tất cả
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Stop Download	&Dừng tải xuống
+#. menu command in the main window
+#. View → Font: the computer's own font, the default (Segoe UI on Windows)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&System font	Ph&ông chữ hệ thống
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -8243,6 +8386,12 @@ menu	C&ustomize URL List...	Tùy chỉnh &Danh sách URL...
 #, machine
 menu	Check for &updates...	Kiểm tra &cập nhật...
 #. menu command in the main window
+#. View → Font: a TrueType or OpenType font file on disk to draw the interface's text in
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Choose a font &file...	Ch&ọn một tập tin phông chữ...
+#. menu command in the main window
 #. View → Theme: MDM's own look, the default (IDM's layout, Windows 11's controls)
 #, machine
 menu	Classic	Cổ điển
@@ -8331,10 +8480,6 @@ menu	Find Next (F3)	Tìm tiếp theo (F3)
 #. right-click → Torrent, a choice with a check mark (with Download in order): each file's first and last pieces first, which a video player needs to start
 #, machine
 menu	First and last pieces first	Ưu tiên tải các phần đầu và cuối
-#. menu command in the main window
-#. noun: the list's font (submenu)
-#, machine
-menu	Font	Phông chữ
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it

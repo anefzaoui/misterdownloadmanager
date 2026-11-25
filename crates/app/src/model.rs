@@ -634,6 +634,14 @@ pub struct Item {
     /// (`relocate::settle`). Meanwhile it doesn't start, and the row says "Moving...".
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub move_from: Option<PathBuf>,
+    /// The downloaded bytes the list shows, and the tick of the progress clock
+    /// ([`SHOWN_PROGRESS_EVERY`]) it was read on: the list's % and downloaded bytes change
+    /// on that steady clock, not on every frame, so a mouse move can't make them race.
+    /// Memory only.
+    #[serde(skip)]
+    list_bytes: u64,
+    #[serde(skip)]
+    list_tick: Option<u64>,
 }
 
 /// Adds `more` to a download's `written_files`, each path once, in order. A gallery lists up to
@@ -878,11 +886,21 @@ impl Job {
     }
 
     /// Stop and save: a live stream yt-dlp records is stopped and what it recorded kept
-    /// as a video, the download then done; anything else is cancelled as [`Job::cancel`] does.
-    pub fn save(&self) {
+    /// as a video, the download then done; an endless stream (an internet radio, a camera feed:
+    /// no length, no resume, #1780) is stopped and kept, what arrived its finished file
+    /// (`Download::keep`); anything else is cancelled as [`Job::cancel`] does. Whether an endless
+    /// stream was kept.
+    pub fn save(&self) -> bool {
         match self {
-            Job::Video { job, .. } => job.save(),
-            _ => self.cancel(),
+            Job::Video { job, .. } => {
+                job.save();
+                false
+            }
+            Job::File(d) => d.keep(),
+            _ => {
+                self.cancel();
+                false
+            }
         }
     }
 
@@ -976,6 +994,10 @@ pub struct VideoSpec {
     /// title) is shortened instead.
     #[serde(default, skip_serializing_if = "std::ops::Not::not")]
     pub named: bool,
+    /// The chapter files yt-dlp wrote when this download was split (paths as yt-dlp saved them).
+    /// Used to delete exactly the files this split produced, never unrelated files in the folder.
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub chapter_files: Vec<PathBuf>,
     /// The video's length (whole seconds) as its look-up said: the same video picked again on
     /// its page is known by it when its stream's address is signed in its path for each load
     /// (`same_video`). None in a list saved before it, for a live stream or a length not said.
@@ -1016,6 +1038,12 @@ pub const SPLIT_TAU: f64 = 2.0;
 /// How often the speed shown changes (seconds), with its time left: every download's on the
 /// same clock, so the list's rows and the total beside them change together (#1176).
 pub const SHOWN_EVERY: f64 = 0.5;
+/// How often the downloaded bytes and % shown in the list change (seconds): every 250 ms,
+/// like the list's redraw, whatever the mouse does. A frame for every mouse movement would
+/// otherwise make them race at 15-60 updates a second, then fall back to 4 when the pointer
+/// stops, and that contrast makes the steady 4 a second look stuck (#1441). The speed stays
+/// on its twice-a-second clock ([`SHOWN_EVERY`]).
+pub const SHOWN_PROGRESS_EVERY: f64 = 0.25;
 /// No byte for this long (seconds): the speed is 0, not what is left of the average.
 const STILL: f64 = 5.0;
 
@@ -1046,6 +1074,20 @@ fn shown_tick(now: Instant) -> u64 {
 pub fn until_shown(now: Instant) -> std::time::Duration {
     let t = now.saturating_duration_since(shown_epoch()).as_secs_f64();
     let next = ((t / SHOWN_EVERY).floor() + 1.0) * SHOWN_EVERY;
+    std::time::Duration::from_secs_f64(next - t + 0.005)
+}
+
+/// The tick of the shown progress clock ([`SHOWN_PROGRESS_EVERY`]) that `now` is in.
+fn progress_tick(now: Instant) -> u64 {
+    (now.saturating_duration_since(shown_epoch()).as_secs_f64() / SHOWN_PROGRESS_EVERY) as u64
+}
+
+/// How long from `now` to the next tick of the shown progress clock, a few milliseconds
+/// past it so the frame lands in the new tick: the list redraws on that clock, so a figure
+/// read on one tick never waits a whole tick after the one it missed (#1441).
+pub fn until_progress_tick(now: Instant) -> std::time::Duration {
+    let t = now.saturating_duration_since(shown_epoch()).as_secs_f64();
+    let next = ((t / SHOWN_PROGRESS_EVERY).floor() + 1.0) * SHOWN_PROGRESS_EVERY;
     std::time::Duration::from_secs_f64(next - t + 0.005)
 }
 
@@ -1192,6 +1234,13 @@ impl PrivateMark {
 }
 
 impl Item {
+    /// The folder the download is saved in, as the list's **Save To** column and the preview
+    /// pane's **Save To:** show it: the folder that holds its file (or a torrent's or a
+    /// gallery's own folder).
+    pub fn save_folder(&self) -> &Path {
+        self.dest.parent().unwrap_or(Path::new(""))
+    }
+
     /// Made from a private window's download, in this session or one before it.
     pub fn is_private_window(&self) -> bool {
         self.private_window || self.context.private
@@ -1265,6 +1314,8 @@ impl Item {
         c.file_name.clone_from(&self.file_name);
         c.status = self.status;
         c.downloaded = self.downloaded;
+        c.list_bytes = self.list_downloaded();
+        c.list_tick = self.list_tick;
         c.video.clone_from(&self.video);
         c.torrent.clone_from(&self.torrent);
         c.gallery.clone_from(&self.gallery);
@@ -1336,6 +1387,8 @@ impl Item {
             damaged: false,
             refetched: false,
             move_from: None,
+            list_bytes: 0,
+            list_tick: None,
         }
     }
 
@@ -1439,6 +1492,13 @@ impl Item {
             self.file_url = Some(s.url.clone());
         }
         self.downloaded = shown_downloaded(live_now, s.downloaded, self.downloaded);
+        // The list's % and downloaded bytes change on the steady progress clock, not on
+        // every frame: a frame for every mouse movement must not make them race.
+        let tick = progress_tick(Instant::now());
+        if self.list_tick != Some(tick) {
+            self.list_tick = Some(tick);
+            self.list_bytes = self.downloaded;
+        }
         self.size = size_after(s.state, s.size, s.downloaded, self.size);
         self.resumable = s.resumable.or(self.resumable);
         if let Some(f) = &s.file {
@@ -1560,6 +1620,10 @@ impl Item {
                     // Replaced (or kept, when it couldn't be): the file there now is its own.
                     self.replace_file = None;
                 }
+                // The run is over: the list shows its bytes as they are at once (100 % when
+                // complete), and a later start, a new destination or Recheck never shows the
+                // old % again from the tick of the run just ended (#1441).
+                self.list_tick = None;
                 // A video and its subtitles (#68), already marked as downloaded from the web by
                 // its job, before it said it was done (#1103).
                 let mut notices = Vec::new();
@@ -1581,6 +1645,11 @@ impl Item {
                             .collect();
                     }
                     self.side_files = done.side_files;
+                    if let Some(v) = self.video.as_mut()
+                        && !done.chapter_files.is_empty()
+                    {
+                        v.chapter_files = done.chapter_files;
+                    }
                 }
                 // A gallery's files (#58), already marked by its job as the video's are.
                 if status == Status::Complete
@@ -1704,6 +1773,22 @@ impl Item {
         self.live.as_ref().and_then(|l| l.dl.live_state())
     }
 
+    /// Running, an answer with no length that can't be resumed (an internet radio, a camera
+    /// feed, #1780): the user's stop keeps what arrived as its finished file (`Job::save`), and
+    /// its Pause button says so ("Stop and keep"). As its last snapshot says.
+    pub fn endless(&self) -> bool {
+        matches!(
+            self.live,
+            Some(Live {
+                dl: Job::File(_),
+                ..
+            })
+        ) && self
+            .snap
+            .as_ref()
+            .is_some_and(mdm_engine::Snapshot::endless)
+    }
+
     /// Resume / Download Now may start it: not running, and not finished (a gallery finished
     /// may start again: it fetches the files not there yet, #58).
     pub fn can_start(&self) -> bool {
@@ -1734,13 +1819,38 @@ impl Item {
     /// most 99.9 % until the file is finished: another stream or the merge may still follow
     /// (#344), and the sizes beside it stay the real ones.
     pub fn fraction(&self) -> Option<f64> {
+        self.fraction_of(self.downloaded)
+    }
+
+    /// [`Item::fraction`] for `downloaded` bytes.
+    fn fraction_of(&self, downloaded: u64) -> Option<f64> {
         let total = self.size.filter(|t| *t > 0)?;
-        let f = (self.downloaded as f64 / total as f64).clamp(0.0, 1.0);
+        let f = (downloaded as f64 / total as f64).clamp(0.0, 1.0);
         Some(if self.video.is_some() && self.status != Status::Complete {
             f.min(mdm_tools::video::MAX_WHILE_RUNNING)
         } else {
             f
         })
+    }
+
+    /// The downloaded bytes the list shows: while it runs, the bytes read on the last tick
+    /// of the steady progress clock ([`SHOWN_PROGRESS_EVERY`]), not the bytes as they are
+    /// on this frame — a frame for every mouse movement would otherwise make them race.
+    /// Before the first tick, or once it is not running, the bytes as they are: a tick left
+    /// over from a run must not keep showing an old % after the download stops, a new
+    /// destination is chosen, Recheck runs, or it is downloaded again (#1441).
+    pub fn list_downloaded(&self) -> u64 {
+        if self.status == Status::Downloading && self.list_tick.is_some() {
+            self.list_bytes
+        } else {
+            self.downloaded
+        }
+    }
+
+    /// The list's %: [`Item::fraction`] of the bytes the list shows ([`Item::list_downloaded`]),
+    /// so it changes on the same steady clock, whatever the mouse does.
+    pub fn list_fraction(&self) -> Option<f64> {
+        self.fraction_of(self.list_downloaded())
     }
 
     /// The Status column: `13.38%`, `Complete`, `Error`, or blank.
@@ -1910,13 +2020,15 @@ impl Item {
             // says what the download is doing.
             // i18n: a download's status (state it is in, not a command): waiting in a queue for its turn
             Status::Queued if self.downloaded == 0 => crate::i18n::t("Waiting").into(),
-            _ => match (self.fraction(), self.status) {
+            _ => match (self.list_fraction(), self.status) {
                 (Some(f), _) => percent(f),
                 // i18n: a download's status (state it is in, not a command): stopped by the user
                 (_, Status::Stopped) => crate::i18n::t("Stopped").into(),
                 (_, Status::Queued) => crate::i18n::t("Waiting").into(),
                 // No size to take a share of: how much has come (it looked idle).
-                (_, Status::Downloading) if self.downloaded > 0 => size_list(self.downloaded),
+                (_, Status::Downloading) if self.list_downloaded() > 0 => {
+                    size_list(self.list_downloaded())
+                }
                 _ => String::new(),
             },
         }
@@ -2048,30 +2160,63 @@ fn unit(n: f64, decimals: usize, template: &str) -> String {
     crate::i18n::i18n().measure(crate::i18n::lang(), n, decimals, template)
 }
 
+/// A size's or speed's unit: the largest whose number stays under 1024 as it is shown.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+enum Measure {
+    Bytes,
+    Kb,
+    Mb,
+    Gb,
+}
+
+/// `v` in `step`s, rounded as `decimals` digits show it: a value that would print as 1024 of a
+/// unit belongs in the next one (1048575 bytes is "1.00 MB", not "1024.00 KB").
+fn shown(v: f64, step: f64, decimals: usize) -> f64 {
+    let scale = 10f64.powi(decimals as i32);
+    (v / step * scale).round() / scale
+}
+
+/// The unit `size` and `size3` show `v` in, at `decimals` digits.
+fn measure(v: f64, decimals: usize) -> Measure {
+    let k = 1024.0;
+    if shown(v, k * k * k, decimals) >= 1024.0 || shown(v, k * k, decimals) >= 1024.0 {
+        Measure::Gb
+    } else if shown(v, k, decimals) >= 1024.0 {
+        Measure::Mb
+    } else if v >= k {
+        Measure::Kb
+    } else {
+        Measure::Bytes
+    }
+}
+
 /// `7.05 MB`, `412.20 KB`, `1.97 GB` — IDM shows two decimals.
 pub fn size(b: u64) -> String {
+    let k = 1024.0;
     if !english() {
         let v = b as f64;
-        let k = 1024.0;
-        return if v >= k * k * k {
-            unit(v / (k * k * k), 2, "{n} GB")
-        } else if v >= k * k {
-            unit(v / (k * k), 2, "{n} MB")
-        } else if v >= k {
-            unit(v / k, 2, "{n} KB")
-        } else {
-            crate::i18n::tn(b, "{n} byte", "{n} bytes")
+        return match measure(v, 2) {
+            Measure::Gb => unit(v / (k * k * k), 2, "{n} GB"),
+            Measure::Mb => unit(v / (k * k), 2, "{n} MB"),
+            Measure::Kb => unit(v / k, 2, "{n} KB"),
+            Measure::Bytes => crate::i18n::tn(b, "{n} byte", "{n} bytes"),
         };
     }
     let b = b as f64;
-    if b >= 1024.0 * 1024.0 * 1024.0 {
-        format!("{:.2} GB", b / (1024.0 * 1024.0 * 1024.0)) // not translated: English path
-    } else if b >= 1024.0 * 1024.0 {
-        format!("{:.2} MB", b / (1024.0 * 1024.0)) // not translated: English path
-    } else if b >= 1024.0 {
-        format!("{:.2} KB", b / 1024.0) // not translated: English path
+    match measure(b, 2) {
+        Measure::Gb => format!("{:.2} GB", b / (k * k * k)), // not translated: English path
+        Measure::Mb => format!("{:.2} MB", b / (k * k)),     // not translated: English path
+        Measure::Kb => format!("{:.2} KB", b / k),           // not translated: English path
+        Measure::Bytes => bytes_text(b),                     // not translated: English path
+    }
+}
+
+/// `1 Byte`, `2 Bytes`, `0 Bytes` - the English path's words below a kilobyte.
+fn bytes_text(n: f64) -> String {
+    if n == 1.0 {
+        "1 Byte".to_owned()
     } else {
-        format!("{b} Bytes") // not translated: English path
+        format!("{n} Bytes")
     }
 }
 
@@ -2079,34 +2224,32 @@ pub fn size(b: u64) -> String {
 pub fn size3(b: u64) -> String {
     let v = b as f64;
     let k = 1024.0;
+    let measure = measure(v, 3);
     if !english() {
-        return if v >= k * k * k {
-            unit(v / (k * k * k), 3, "{n} GB")
-        } else if v >= k * k {
-            unit(v / (k * k), 3, "{n} MB")
-        } else {
-            unit(v / k, 3, "{n} KB")
+        return match measure {
+            Measure::Gb => unit(v / (k * k * k), 3, "{n} GB"),
+            Measure::Mb => unit(v / (k * k), 3, "{n} MB"),
+            Measure::Kb | Measure::Bytes => unit(v / k, 3, "{n} KB"),
         };
     }
-    if v >= k * k * k {
-        format!("{:.3} GB", v / (k * k * k)) // not translated: English path
-    } else if v >= k * k {
-        format!("{:.3} MB", v / (k * k)) // not translated: English path
-    } else {
-        format!("{:.3} KB", v / k) // not translated: English path
+    match measure {
+        Measure::Gb => format!("{:.3} GB", v / (k * k * k)), // not translated: English path
+        Measure::Mb => format!("{:.3} MB", v / (k * k)),     // not translated: English path
+        Measure::Kb | Measure::Bytes => format!("{:.3} KB", v / k), // not translated: English path
     }
 }
 
 /// `11.623 MB/sec`, `512.000 KB/sec` (IDM's progress dialog uses three decimals).
 pub fn rate(bps: f64) -> String {
+    let mb = shown(bps, 1024.0, 3) >= 1024.0;
     if !english() {
-        return if bps >= 1024.0 * 1024.0 {
+        return if mb {
             unit(bps / (1024.0 * 1024.0), 3, "{n} MB/sec")
         } else {
             unit(bps / 1024.0, 3, "{n} KB/sec")
         };
     }
-    if bps >= 1024.0 * 1024.0 {
+    if mb {
         format!("{:.3} MB/sec", bps / (1024.0 * 1024.0)) // not translated: English path
     } else {
         format!("{:.3} KB/sec", bps / 1024.0) // not translated: English path
@@ -2290,6 +2433,7 @@ mod file_address_tests {
             subs: Default::default(),
             parts: Vec::new(),
             named: false,
+            chapter_files: Vec::new(),
             duration: None,
             part: None,
         });
@@ -2312,6 +2456,7 @@ mod file_address_tests {
             helper: None,
             merging: None,
             merge_failed: None,
+            chapter_files: Vec::new(),
             recorded: 0,
             recording: false,
         };
@@ -2428,6 +2573,29 @@ mod size_tests {
 
 #[cfg(test)]
 mod tests {
+    #[test]
+    fn a_single_byte_is_written_in_the_singular() {
+        assert_eq!(super::bytes_text(0.0), "0 Bytes");
+        assert_eq!(super::bytes_text(1.0), "1 Byte");
+        assert_eq!(super::bytes_text(2.0), "2 Bytes");
+        assert_eq!(super::bytes_text(1023.0), "1023 Bytes");
+    }
+
+    #[test]
+    fn a_size_that_rounds_to_1024_moves_up_a_unit() {
+        use super::{Measure, measure, shown};
+        assert_eq!(measure(1023.0, 2), Measure::Bytes);
+        assert_eq!(measure(1024.0, 2), Measure::Kb);
+        // 1 MiB - 1 byte, at two decimals: 1023.999... KB would print as 1024.00 KB.
+        assert_eq!(measure(1024.0 * 1024.0 - 1.0, 2), Measure::Mb);
+        assert_eq!(measure(1024.0 * 1024.0 * 1024.0 - 1.0, 2), Measure::Gb);
+        // Three decimals: the same MiB boundary still prints 1023.999 KB...
+        assert_eq!(measure(1024.0 * 1024.0 - 1.0, 3), Measure::Kb);
+        // ...but 1 GiB - 1 would print 1024.000 MB, so it is GB.
+        assert_eq!(measure(1024.0 * 1024.0 * 1024.0 - 1.0, 3), Measure::Gb);
+        assert_eq!(shown(1024.0 * 1024.0 - 1.0, 1024.0, 2), 1024.0);
+    }
+
     /// A debrid torrent's ticked files are kept with the list; a list saved before them (no
     /// `files`) means all of them.
     #[test]
@@ -2531,6 +2699,7 @@ mod tests {
             subs: Default::default(),
             parts: Vec::new(),
             named: false,
+            chapter_files: Vec::new(),
             duration: None,
             part: None,
         });
@@ -2636,6 +2805,45 @@ mod tests {
         assert_eq!(file.fraction(), Some(1.0));
     }
 
+    /// The list's % is the shown bytes, not the bytes as they are on this frame: a frame
+    /// for every mouse movement must not make it race (#1441). Before the first tick, it
+    /// is the bytes as they are.
+    #[test]
+    fn the_list_shows_the_shown_bytes_not_the_live_ones() {
+        let mut it = video_item(Some(100), 80, Status::Downloading);
+        it.video = None;
+        assert_eq!(it.fraction(), Some(0.8));
+        assert_eq!(it.list_fraction(), Some(0.8));
+        assert_eq!(it.status_text(), percent(0.8));
+        it.list_bytes = 25;
+        it.list_tick = Some(0);
+        assert_eq!(it.fraction(), Some(0.8));
+        assert_eq!(it.list_fraction(), Some(0.25));
+        assert_eq!(it.status_text(), percent(0.25));
+        // No size: the list's downloaded bytes are the shown ones too.
+        it.size = None;
+        assert_eq!(it.status_text(), size_list(25));
+    }
+
+    /// A stopped item shows its bytes as they are, not the last tick's: after a run ends,
+    /// a new destination, Recheck, or Download again must not leave the old % on the row
+    /// (#1441).
+    #[test]
+    fn a_stopped_item_shows_its_bytes_not_the_last_tick() {
+        let mut it = video_item(Some(100), 80, Status::Downloading);
+        it.video = None;
+        it.list_bytes = 45;
+        it.list_tick = Some(0);
+        assert_eq!(it.list_fraction(), Some(0.45));
+        // The run ends and the bytes change after it (a new destination, Recheck,
+        // Download again).
+        it.status = Status::Stopped;
+        it.downloaded = 10;
+        assert_eq!(it.list_downloaded(), 10);
+        assert_eq!(it.list_fraction(), Some(0.1));
+        assert_eq!(it.status_text(), percent(0.1));
+    }
+
     #[test]
     fn a_folder_saved_as_shown_is_under_home() {
         let home = dirs::home_dir().unwrap();
@@ -2706,9 +2914,20 @@ mod stamp_tests {
 }
 
 /// An address as typed: `www.example.com/a.zip` (no scheme, as browsers take it) is read as
-/// https; anything else as written.
+/// https; a `thunder://`, `flashget://` or `qqdl://` link as the address wrapped in it (#1782);
+/// anything else as written. A wrapped link without an address MDM downloads inside stays as
+/// written, with its own scheme, so every caller refuses it as it does any other address MDM
+/// doesn't download.
 pub fn parse_address(typed: &str) -> Result<url::Url, url::ParseError> {
     let typed = typed.trim();
+    let inner;
+    let typed = match crate::transfer::unwrapped(typed) {
+        crate::transfer::Wrapped::Address(address) => {
+            inner = address;
+            inner.as_str()
+        }
+        _ => typed,
+    };
     match url::Url::parse(typed) {
         Err(url::ParseError::RelativeUrlWithoutBase)
             if !typed.contains(char::is_whitespace)
@@ -2731,6 +2950,61 @@ mod address_tests {
         assert_eq!(u.as_str(), "https://www.example.com/a.zip");
         assert_eq!(super::parse_address("ftp://h/f").unwrap().scheme(), "ftp");
         assert!(super::parse_address("not an address").is_err());
+    }
+
+    /// #1782: a wrapped link typed in Add URL is the address inside it; one with nothing MDM
+    /// downloads inside stays an address MDM doesn't download, which the windows refuse.
+    #[test]
+    fn a_wrapped_link_is_the_address_inside_it() {
+        use base64::Engine as _;
+        let b64 = |bytes: &[u8]| base64::engine::general_purpose::STANDARD.encode(bytes);
+        let wrappers = |address: &str| {
+            [
+                format!("thunder://{}", b64(format!("AA{address}ZZ").as_bytes())),
+                format!(
+                    "flashget://{}",
+                    b64(format!("[FLASHGET]{address}[FLASHGET]").as_bytes())
+                ),
+                format!("qqdl://{}", b64(address.as_bytes())),
+            ]
+        };
+        let magnet = "magnet:?xt=urn:btih:0123456789abcdef0123456789abcdef01234567&dn=Show";
+        for address in [
+            "http://dl.example.org/pack/a.zip",
+            "https://dl.example.org/pack/b.rar?id=7&key=x",
+            "ftp://ftp.example.org/pub/c.iso",
+            magnet,
+        ] {
+            for wrapped in wrappers(address) {
+                let u = super::parse_address(&wrapped).expect(&wrapped);
+                assert_eq!(u.as_str(), address, "{wrapped}");
+            }
+        }
+        let [thunder, flashget, _] = wrappers("https://dl.example.org/pack/a.zip");
+        for wrapped in [
+            format!(" {} ", thunder.replacen("thunder", "Thunder", 1)),
+            format!("{flashget}&abc"),
+            format!("{}/", thunder.trim_end_matches('=')),
+            "qqdl://aHR0cHM6Ly9kbC5leGFtcGxlLm9yZy9wYWNrL2Euemlw".to_owned(),
+        ] {
+            let u = super::parse_address(&wrapped).expect(&wrapped);
+            assert_eq!(u.as_str(), "https://dl.example.org/pack/a.zip", "{wrapped}");
+        }
+        let mut not: Vec<String> = Vec::new();
+        not.extend(wrappers("ed2k://|file|a.iso|733468672|0123456789ABCDEF|/"));
+        not.extend(wrappers("file:///C:/Windows/win.ini"));
+        not.extend([
+            "thunder://not*base64".to_owned(),
+            format!("thunder://{}", b64(b"https://dl.example.org/pack/a.zip")),
+            format!("flashget://{}", b64(b"AAhttps://dl.example.org/a.zipZZ")),
+            format!("qqdl://{}", b64(b"http://dl.example.org/\xd6\xd0.zip")),
+        ]);
+        for wrapped in not {
+            // What Add URL and Download File Info ask before they take an address.
+            let taken = super::parse_address(&wrapped)
+                .is_ok_and(|u| mdm_engine::supported(&u) || u.scheme() == "magnet");
+            assert!(!taken, "{wrapped}");
+        }
     }
 }
 
@@ -2781,6 +3055,7 @@ mod helper_connection_tests {
             helper: None,
             merging: None,
             merge_failed: None,
+            chapter_files: Vec::new(),
             recorded: 0,
             recording: false,
         }
@@ -2907,7 +3182,10 @@ mod helper_connection_tests {
 /// The speed's average and the figure shown (#1176).
 #[cfg(test)]
 mod speed_tests {
-    use super::{SHOWN_EVERY, STILL, Speed, shown_epoch, shown_tick, until_shown};
+    use super::{
+        SHOWN_EVERY, SHOWN_PROGRESS_EVERY, STILL, Speed, progress_tick, shown_epoch, shown_tick,
+        until_progress_tick, until_shown,
+    };
     use std::time::{Duration, Instant};
 
     const MB: f64 = 1_048_576.0;
@@ -3045,6 +3323,28 @@ mod speed_tests {
         assert_eq!(
             shown_tick(at(2.3) + until_shown(at(2.3))),
             shown_tick(at(2.6))
+        );
+    }
+
+    /// The list's progress clock ticks every 250 ms, four times a second, however often
+    /// it is read (#1441).
+    #[test]
+    fn the_list_progress_changes_four_times_a_second() {
+        assert_eq!(SHOWN_PROGRESS_EVERY, 0.25);
+        assert_eq!(progress_tick(at(0.1)), progress_tick(at(0.2)));
+        assert_ne!(progress_tick(at(0.2)), progress_tick(at(0.3)));
+        assert_eq!(progress_tick(at(1.0)), 4);
+    }
+
+    /// The next frame is asked for as the progress clock ticks, so a figure read on one
+    /// tick never waits a whole tick after the one it missed (#1441).
+    #[test]
+    fn the_next_frame_is_asked_for_as_the_progress_clock_ticks() {
+        let wait = until_progress_tick(at(2.3)).as_secs_f64();
+        assert!((0.2..0.21).contains(&wait), "{wait}");
+        assert_eq!(
+            progress_tick(at(2.3) + until_progress_tick(at(2.3))),
+            progress_tick(at(2.5))
         );
     }
 

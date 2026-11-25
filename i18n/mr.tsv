@@ -110,10 +110,10 @@
 #, machine
 @plural	{n} downloading|{n} downloading	{n} डाउनलोड होत आहे|{n} डाउनलोड होत आहे
 #. count in extracting archives (a download's log, the Archive password window)
-#. in a download's log, after extracting: entries of the archive not written (links, names that would leave the folder)
+#. in a download's log, after extracting: entries of the archive not written (links, names that would leave the folder, entries under a file of the archive where a folder should be)
 #. {n} = a number (keep the braces as they are)
 #, machine
-@plural	{n} entry was left out (a link, or a name leading outside the folder)|{n} entries were left out (links, or names leading outside the folder)	{n} एंट्री वगळली गेली (एक लिंक किंवा फोल्डरच्या बाहेर जाणारे नाव)|{n} एंट्री वगळल्या गेल्या (लिंक्स किंवा फोल्डरच्या बाहेर जाणारी नावे)
+@plural	{n} entry was left out (a link, a name leading outside the folder, or a file in its way)|{n} entries were left out (links, names leading outside the folder, or files in their way)	{n} नोंद वगळली गेली (एक दुवा, फोल्डरच्या बाहेर जाणारे नाव किंवा त्याच्या मार्गातील फाइल)|{n} नोंदी वगळल्या गेल्या (दुवे, फोल्डरच्या बाहेर जाणारी नावे किंवा त्यांच्या मार्गातील फाइल्स)
 #. count in a dialog box
 #. the summary of downloads added together; after "12 downloads finished": {n} of them failed
 #. {n} = a number (keep the braces as they are)
@@ -171,6 +171,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} tracker added|{n} trackers added	{n} ट्रॅकर जोडला|{n} ट्रॅकर्स जोडले
+#. count in the main window
+#. event log entry: trackers from the public tracker list (Torrent settings) were added to a torrent
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} tracker added from the public list|{n} trackers added from the public list	सार्वजनिक सूचीमधून {n} ट्रॅकर जोडला|सार्वजनिक सूचीमधून {n} ट्रॅकर्स जोडले
 #. count in the Add torrent window
 #. where a magnet's peers came from: {n} = trackers asked; {peers} = "3 peers"
 #. {n} = a number (keep the braces as they are)
@@ -327,6 +332,9 @@
 #. why Part is greyed in Download video: the page is a playlist, whose videos are downloaded whole
 #, machine
 	A playlist's videos are downloaded whole	प्लेलिस्टमधील व्हिडिओ पूर्णपणे डाउनलोड केले जातात
+#. message or event log entry in the main window
+#, machine
+	A private torrent: the public tracker list isn't added	एक खाजगी टोरेंट: सार्वजनिक ट्रॅकर सूची जोडली नाही
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites: the tooltip of the profile box
 #, machine
@@ -467,6 +475,10 @@
 #. text in extension.rs
 #, machine
 	Add the free extension: files you download in your browser come here, and videos get a Download button.	विनामूल्य विस्तार जोडा: तुमच्या ब्राउझरमध्ये डाउनलोड केलेल्या फाइल्स येथे येतात आणि व्हिडिओंना डाउनलोड बटण मिळते.
+#. text in the Add torrent window
+#. Torrent settings: add the trackers of a public tracker list (its address in the box below) to torrents that aren't private, so they find more peers
+#, machine
+	Add the trackers of this public list to public torrents:	या सार्वजनिक सूचीमधील ट्रॅकर्स सार्वजनिक टोरेंटमध्ये जोडा:
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: add the torrents to the list without starting them
 #, machine
@@ -1121,12 +1133,21 @@
 #. remote control page (on a phone): what the ".torrent file" button does (screen readers)
 #, machine
 	Choose a .torrent file	.torrent फाइल निवडा
+#. message or event log entry in the main window
+#. title of the file dialog of View → Font → Choose a font file
+#. title of the message when the font picked in View → Font can't be used
+#, machine
+	Choose a font file	फॉन्ट फाइल निवडा
 #. text in helpers.rs
 #, machine
 	Choose a JavaScript runtime (Node.js, Deno, QuickJS or Bun)	JavaScript रनटाइम निवडा (Node.js, Deno, QuickJS किंवा Bun)
 #. text in langpick.rs
 #, machine
 	Choose a language	भाषा निवडा
+#. text in a dialog box
+#. the Columns dialog: what it is for, above its list of the download list's columns
+#, machine
+	Choose columns to show	दाखवण्यासाठी स्तंभ निवडा
 #. text in langpick.rs
 #, machine
 	Choose the language Mister Download Manager shows its windows in:	Mister Download Manager ज्या भाषेत त्याच्या विंडो दाखवतो ती भाषा निवडा:
@@ -1200,6 +1221,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Colombia	कोलंबिया
+#. window title in a dialog box; text in a dialog box
+#. what a screen reader calls the Columns dialog's list of the download list's columns
+#, machine
+	Columns	स्तंभ
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2003,6 +2028,10 @@
 #. Torrent settings, at the bottom
 #, machine
 	Fetched again every 7 days. Changes apply when no torrent is running.	प्रत्येक 7 दिवसांनी पुन्हा मिळवले. कोणताही टोरेंट चालू नसताना बदल लागू होतात.
+#. text in the Add torrent window
+#. Torrent settings, under the public tracker list's address
+#, machine
+	Fetched once a day. Never added to private torrents.	दिवसातून एकदा मिळवली जाते. खाजगी टोरेंटमध्ये कधीही जोडली जात नाही.
 #. text in helpers.rs
 #. helper name and what it does (ffmpeg is a program's name)
 #, machine
@@ -2135,6 +2164,14 @@
 #. text in categories.rs
 #, machine
 	Folder:	फोल्डर:
+#. text in the Options window
+#. Options → Archives → Link grabber, one line with two boxes: an FTP folder or a web server's folder listing ("Index of") given to Link grabber is read with its subfolders: {depth} is a number box (how many levels of subfolders, 3 at first; 0 is the folder's own files only), {types} a text box (file types such as ISO ZIP; empty for every type)
+#, machine
+	Folders: {depth} levels deep, types: {types}	फोल्डर: {depth} स्तर खोल, प्रकार: {types}
+#. message or event log entry in the main window
+#. the kind of file View → Font → Choose a font file lists: TrueType and OpenType font files
+#, machine
+	Font files	फॉन्ट फाइल्स
 #. text in finish.rs
 #. Snooze menu of the Download complete window: show no Download complete window for this long
 #, machine
@@ -3778,6 +3815,10 @@
 #. Link grabber, a link's status: the server has the file
 #, machine
 	Online	ऑनलाइन
+#. text in the Options window
+#. Options → Archives → Link grabber: the hover tip of the types box in "Folders: {depth} levels deep, types: {types}": only a folder's files of these types go into Link grabber; written as the File types page writes them
+#, machine
+	Only a folder's files of these types, written as on the File types page (ISO ZIP R0*). Empty: every type.	फाइल प्रकार पृष्ठावर (ISO ZIP R0*) दिल्याप्रमाणे, फक्त त्या प्रकारच्या फोल्डरमधील फाइल्स. रिकामे: सर्व प्रकार.
 #. text in a download's Properties window
 #. tooltip of the greyed Move button in File Properties
 #, machine
@@ -4277,6 +4318,10 @@
 #. group box title: what the * in the address is replaced with (numbers or letters)
 #, machine
 	Replace asterisk to	तारखेनुसार तारा बदला
+#. button in a dialog box
+#. button in the Columns dialog: put the columns back as they first were (order, widths, all shown)
+#, machine
+	Reset	रीसेट करा
 #. text in crashui.rs
 #. crash report window button: start MDM again
 #, machine
@@ -4864,6 +4909,10 @@
 #. tooltip on the disabled Rename box when the file is one part of a split archive (.part1.rar, .7z.001…)
 #, machine
 	Split archive volumes keep their names for extraction	विभाजित संग्रहाचे भाग एक्सट्रॅक्शनसाठी स्वतःची नावे कायम ठेवतात
+#. text in the Download video window
+#. checkbox in Download video: split the video into one file per chapter (the whole video is kept too)
+#, machine
+	Split into chapters	प्रकरणांमध्ये विभाजित करा
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -4952,6 +5001,10 @@
 #. remote control page (on a phone): button: stop a queue
 #, machine
 	Stop	थांबवा
+#. text in a download's progress window
+#. button in the progress window of a download that never ends by itself (an internet radio, a camera feed: no size, can't be resumed): stop it and keep what has arrived as the finished file
+#, machine
+	Stop and keep	थांबवा आणि ठेवा
 #. text in a download's progress window
 #. button in a live stream's progress window: stop recording it and keep what was recorded as a video file
 #, machine
@@ -5683,6 +5736,10 @@
 #, machine
 	This device's name	या उपकरणाचे नाव
 #. message or event log entry in the main window
+#. the message when a file picked in View → Font isn't a TrueType or OpenType font MDM can read
+#, machine
+	This file can't be used as a font.	ही फाईल फॉन्ट म्हणून वापरली जाऊ शकत नाही.
+#. message or event log entry in the main window
 #. {error} is why, in English (a file that isn't a theme or a colour scheme, a colour missing)
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -5995,6 +6052,10 @@
 #. why Options → Remote → Pair a device... is greyed
 #, machine
 	Turn on the remote control first.	प्रथम रिमोट कंट्रोल चालू करा.
+#. text in the Add torrent window
+#. Torrent settings, under the public tracker list's address: turning the switch off doesn't take away the trackers it added to torrents
+#, machine
+	Turned off, the trackers already added stay.	बंद केल्यास, आधीच जोडलेले ट्रॅकर्स तसेच राहतील.
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -6703,6 +6764,11 @@
 #. said after Delete with files when some files stayed on the disk; {file} is the download's name; the files' paths follow it
 #, machine
 	{file}: these files stayed on the disk, because MDM didn't create them or another download uses them:	{file}: MDM ने या फाइल्स तयार केल्या नसल्यामुळे किंवा दुसरा डाउनलोड त्यांचा वापर करत असल्यामुळे त्या डिस्कवरच राहिल्या:
+#. message or event log entry in the main window
+#. Link grabber's Source line, after where the links came from: a folder (an FTP folder, a web server's "Index of" page) held more files or subfolders than Link grabber lists; {folder} is its name, {n} how many of its files are listed (10,000)
+#. {n} = a number (keep the braces as they are)
+#, machine
+	{folder}: only its first {n} files	{folder}: फक्त त्याच्या पहिल्या {n} फाइल्स
 #. text in a download's progress window
 #. {have} and {total} = numbers of pieces; {size} = one piece's size
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
@@ -7023,6 +7089,10 @@ column	Q	रांग
 #, machine
 column	Queue	रांग
 #. column title in the download list in the download list
+#. column title: the folder the download is saved in
+#, machine
+column	Save To	येथे जतन करा
+#. column title in the download list in the download list
 #. column title: what a torrent has sent to peers against what it took
 #, machine
 column	Share ratio	शेअर गुणोत्तर
@@ -7296,6 +7366,14 @@ extension	File deleted or moved	फाइल हटवली किंवा ह
 #, machine
 extension	File type	फाइल प्रकार
 #. text in the browser extension
+#. button in the This page tab of the toolbar button's popup: look for the pictures of the current web page (only when clicked); short
+#, machine
+extension	Find images	इमेज शोधा
+#. text in the browser extension
+#. in the This page tab of the toolbar button's popup, before the Find images button; Link grabber is the name of the app's window that lists links to tick before downloading them
+#, machine
+extension	Find this page's pictures at the largest size it lists, then send the ones you want to Link grabber.	या पृष्ठावरील चित्रे सर्वात मोठ्या आकारात शोधा, त्यानंतर तुम्हाला हवी असलेली चित्रे लिंक ग्रॅबरला पाठवा.
+#. text in the browser extension
 #. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) after Clear finished
 #, machine
 extension	Finished downloads cleared	पूर्ण झालेले डाउनलोड साफ केले
@@ -7331,6 +7409,14 @@ extension	Hold Alt while clicking a link to let the browser download it.	ब्�
 #. link under a connection problem in the toolbar button's popup, to the help page's section for it
 #, machine
 extension	How to fix it	ते कसे दुरुस्त करावे
+#. text in the browser extension
+#. what a screen reader says for the row of buttons that keep or leave out each type of picture (JPEG, PNG, WEBP...), in the This page tab of the toolbar button's popup
+#, machine
+extension	Image types	इमेज प्रकार
+#. text in the browser extension
+#. heading in the This page tab of the toolbar button's popup, over the part that finds the pictures of the current web page and sends them to the app
+#, machine
+extension	Images on this page	या पृष्ठावरील इमेजेस
 #. text in the browser extension
 #. pairing failed for another reason
 #, machine
@@ -7493,6 +7579,10 @@ extension	No download's name or address has “{words}”.	कोणत्या
 #, machine
 extension	No downloads yet	अद्याप डाउनलोड नाहीत
 #. text in the browser extension
+#. shown in the This page tab of the toolbar button's popup when Find images found no picture on the current web page
+#, machine
+extension	No images found on this page.	या पृष्ठावर कोणतीही इमेज सापडली नाही.
+#. text in the browser extension
 #. shown in the toolbar button's popup when the current web page hasn't loaded any video, sound or stream yet
 #, machine
 extension	No video or sound found on this page yet. Play it, then open this again.	या पृष्ठावर अद्याप कोणताही व्हिडिओ किंवा आवाज सापडला नाही. तो प्ले करा, नंतर हे पुन्हा उघडा.
@@ -7561,6 +7651,10 @@ extension	Options...	पर्याय...
 #. in the list under the download button over a video, after a sound-only line's bitrate: the sound as the site sends it, not converted (e.g. '128 kbps · original'); lower case; one word
 #, machine
 extension	original	मूळ
+#. text in the browser extension
+#. button among the picture types (JPEG, PNG, WEBP...) in the This page tab of the toolbar button's popup: the pictures of any other or unknown type; short
+#, machine
+extension	Other	इतर
 #. text in the browser extension
 #. button: pair this browser with the other MDM using the code
 #, machine
@@ -7647,6 +7741,10 @@ extension	Send downloads through this browser's proxy or VPN extension	या �
 #, machine
 extension	Send downloads to	डाउनलोड्स येथे पाठवा
 #. text in the browser extension
+#. button in the This page tab of the toolbar button's popup: send the selected pictures to the app's Link grabber window, where the user ticks which to download
+#, machine
+extension	Send to Link grabber	लिंक ग्रॅबरला पाठवा
+#. text in the browser extension
 #. on the download button over a video right after it was clicked, while the download goes to the app; MDM is Mister Download Manager's short name, keep it as it is; short
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -7655,6 +7753,10 @@ extension	Sending to MDM...	MDM ला पाठवत आहे...
 #. under the extension's name in the toolbar button's popup: downloads go to another Mister Download Manager, a server, at this address; short
 #, machine
 extension	Sending to {server}	{server} वर पाठवत आहे
+#. text in the browser extension
+#. shown in the This page tab of the toolbar button's popup after the pictures were sent to the app's Link grabber window
+#, machine
+extension	Sent to Link grabber: tick the ones to download there.	लिंक ग्रॅबरला पाठवले: डाउनलोड करण्यासाठी तेथे टिक करा.
 #. text in the browser extension
 #. shown briefly on the download button after it was clicked; keep the name Mister Download Manager as it is
 #, machine
@@ -7686,6 +7788,23 @@ extension	Show in folder	फोल्डरमध्ये दाखवा
 #. screen readers' name of a download's Show in folder button in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads)
 #, machine
 extension	Show {file} in folder	{file} फोल्डरमध्ये दाखवा
+#. text in the browser extension
+#. in the This page tab of the toolbar button's popup, while a smallest width or height is set: how many of the selected pictures the page gives no size for (they are kept, not left out)
+#. {n} = a number (keep the braces as they are)
+#, machine
+extension	Size not given, kept: {n}	आकार दिलेला नाही, ठेवली: {n}
+#. text in the browser extension
+#. what a screen reader says for the box of the smallest height of the pictures to keep, in the This page tab of the toolbar button's popup
+#, machine
+extension	Smallest height, in pixels	सर्वात कमी उंची, पिक्सेलमध्ये
+#. text in the browser extension
+#. in the This page tab of the toolbar button's popup, before two boxes for the smallest width and height of the pictures to keep: 'Smallest size, in pixels [ ] × [ ]'; pictures smaller than that are left out; short
+#, machine
+extension	Smallest size, in pixels	पिक्सेलमध्ये सर्वात लहान आकार
+#. text in the browser extension
+#. what a screen reader says for the box of the smallest width of the pictures to keep, in the This page tab of the toolbar button's popup
+#, machine
+extension	Smallest width, in pixels	सर्वात कमी रुंदी, पिक्सेलमध्ये
 #. text in the browser extension
 #. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app isn't running
 #, machine
@@ -7719,6 +7838,10 @@ extension	That didn't work. Try again.	कृती अयशस्वी झा
 #. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when a button's download was removed meanwhile
 #, machine
 extension	That download is no longer in the list.	तो डाउनलोड आता सूचीमध्ये नाही.
+#. text in the browser extension
+#. shown in the This page tab of the toolbar button's popup when Find images can't look into the current page (a page of the browser's own, an add-on store)
+#, machine
+extension	The browser doesn't let add-ons read this page.	ब्राउझर ॲड-ऑन्सना हे पृष्ठ वाचू देत नाही.
 #. text in the browser extension
 #. in the toolbar button's popup, on a site where the Chrome Web Store's copy of the extension shows no download button; Help is the link at the bottom of the popup
 #, machine
@@ -7855,6 +7978,10 @@ extension	{file} removed from the list	{file} सूचीतून काढल
 #. question in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) before a download's file is deleted
 #, machine
 extension	{file} will be deleted from your computer, and the download taken off the list. This can't be undone.	{file} तुमच्या संगणकावरून हटवली जाईल आणि डाउनलोड सूचीतून काढले जाईल. ही कृती पूर्ववत करता येणार नाही.
+#. text in the browser extension
+#. in the This page tab of the toolbar button's popup: how many of the pictures found pass the size and type filters, and will be sent
+#, machine
+extension	{shown} of {total} selected	{total} पैकी {shown} निवडले
 #. text in the browser extension
 #. a running download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): the time left, as a clock (minutes:seconds)
 #. {time} = a time of day (keep the braces as they are)
@@ -7998,6 +8125,12 @@ menu	&Automatic	ऑटोमॅटिक(&A)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Classic	&क्लासिक
+#. menu command in the main window
+#. header menu: opens the dialog that chooses the list's columns
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	&Columns...	&स्तंभ...
 #. menu command in standard windows
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -8018,6 +8151,11 @@ menu	&Download Now	आता डाउनलोड करा(&D)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Exit	बाहेर पडा(&E)
+#. menu command in the main window
+#. View menu: submenu choosing the interface's own font and text size
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Font	फॉ&न्ट
 #. menu command in the main window
 #. verb: load downloads from a file
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
@@ -8097,6 +8235,11 @@ menu	&Stop All	सर्व थांबवा(&S)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Stop Download	डाउनलोड थांबवा(&S)
+#. menu command in the main window
+#. View → Font: the computer's own font, the default (Segoe UI on Windows)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&System font	&सिस्टम फॉन्ट
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -8238,6 +8381,12 @@ menu	C&ustomize URL List...	URL सूची सानुकूलित &कर
 #, machine
 menu	Check for &updates...	&अपडेट्स तपासा...
 #. menu command in the main window
+#. View → Font: a TrueType or OpenType font file on disk to draw the interface's text in
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Choose a font &file...	फॉन्ट फा&इल निवडा...
+#. menu command in the main window
 #. View → Theme: MDM's own look, the default (IDM's layout, Windows 11's controls)
 #, machine
 menu	Classic	क्लासिक
@@ -8326,10 +8475,6 @@ menu	Find Next (F3)	पुढील शोधा (F3)
 #. right-click → Torrent, a choice with a check mark (with Download in order): each file's first and last pieces first, which a video player needs to start
 #, machine
 menu	First and last pieces first	पहिले आणि शेवटचे भाग प्रथम
-#. menu command in the main window
-#. noun: the list's font (submenu)
-#, machine
-menu	Font	फॉन्ट
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it

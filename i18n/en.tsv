@@ -88,9 +88,9 @@
 #. {n} = a number (keep the braces as they are)
 @plural	{n} downloading|{n} downloading	{n} downloading|{n} downloading
 #. count in extracting archives (a download's log, the Archive password window)
-#. in a download's log, after extracting: entries of the archive not written (links, names that would leave the folder)
+#. in a download's log, after extracting: entries of the archive not written (links, names that would leave the folder, entries under a file of the archive where a folder should be)
 #. {n} = a number (keep the braces as they are)
-@plural	{n} entry was left out (a link, or a name leading outside the folder)|{n} entries were left out (links, or names leading outside the folder)	{n} entry was left out (a link, or a name leading outside the folder)|{n} entries were left out (links, or names leading outside the folder)
+@plural	{n} entry was left out (a link, a name leading outside the folder, or a file in its way)|{n} entries were left out (links, names leading outside the folder, or files in their way)	{n} entry was left out (a link, a name leading outside the folder, or a file in its way)|{n} entries were left out (links, names leading outside the folder, or files in their way)
 #. count in a dialog box
 #. the summary of downloads added together; after "12 downloads finished": {n} of them failed
 #. {n} = a number (keep the braces as they are)
@@ -136,6 +136,10 @@
 #. event log entry: trackers were added to the torrent
 #. {n} = a number (keep the braces as they are)
 @plural	{n} tracker added|{n} trackers added	{n} tracker added|{n} trackers added
+#. count in the main window
+#. event log entry: trackers from the public tracker list (Torrent settings) were added to a torrent
+#. {n} = a number (keep the braces as they are)
+@plural	{n} tracker added from the public list|{n} trackers added from the public list	{n} tracker added from the public list|{n} trackers added from the public list
 #. count in the Add torrent window
 #. where a magnet's peers came from: {n} = trackers asked; {peers} = "3 peers"
 #. {n} = a number (keep the braces as they are)
@@ -255,6 +259,8 @@
 #. text in the Download video window
 #. why Part is greyed in Download video: the page is a playlist, whose videos are downloaded whole
 	A playlist's videos are downloaded whole	A playlist's videos are downloaded whole
+#. message or event log entry in the main window
+	A private torrent: the public tracker list isn't added	A private torrent: the public tracker list isn't added
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites: the tooltip of the profile box
 	A profile's name or its folder. Empty: the profile used last. For a browser built on Chromium that isn't listed (Helium, Thorium...), choose Chromium and its profile's folder.	A profile's name or its folder. Empty: the profile used last. For a browser built on Chromium that isn't listed (Helium, Thorium...), choose Chromium and its profile's folder.
@@ -359,6 +365,9 @@
 	Add the extension to Safari	Add the extension to Safari
 #. text in extension.rs
 	Add the free extension: files you download in your browser come here, and videos get a Download button.	Add the free extension: files you download in your browser come here, and videos get a Download button.
+#. text in the Add torrent window
+#. Torrent settings: add the trackers of a public tracker list (its address in the box below) to torrents that aren't private, so they find more peers
+	Add the trackers of this public list to public torrents:	Add the trackers of this public list to public torrents:
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: add the torrents to the list without starting them
 	Add them without starting them	Add them without starting them
@@ -490,6 +499,9 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Andorra	Andorra
+#. text in a dialog box
+#. why the phone could not be turned off after the queue (fills {error}, Android)
+	Android doesn't let apps turn the phone off	Android doesn't let apps turn the phone off
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Angola	Angola
@@ -847,16 +859,25 @@
 #. text in remote.rs
 #. remote control page (on a phone): what the ".torrent file" button does (screen readers)
 	Choose a .torrent file	Choose a .torrent file
+#. message or event log entry in the main window
+#. title of the file dialog of View → Font → Choose a font file
+#. title of the message when the font picked in View → Font can't be used
+	Choose a font file	Choose a font file
 #. text in helpers.rs
+#. file picker title: choose a JavaScript runtime's program (node.exe, deno.exe, qjs.exe, bun.exe)
 	Choose a JavaScript runtime (Node.js, Deno, QuickJS or Bun)	Choose a JavaScript runtime (Node.js, Deno, QuickJS or Bun)
 #. text in langpick.rs
 	Choose a language	Choose a language
+#. text in a dialog box
+#. the Columns dialog: what it is for, above its list of the download list's columns
+	Choose columns to show	Choose columns to show
 #. text in langpick.rs
 	Choose the language Mister Download Manager shows its windows in:	Choose the language Mister Download Manager shows its windows in:
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites: the title of the window, and the tooltip of the button, that pick a browser profile's folder
 	Choose the profile's folder	Choose the profile's folder
 #. text in helpers.rs; text in the Options window
+#. file picker title; {name} = yt-dlp or ffmpeg
 #. file picker title; {name} = the program to choose (yt-dlp, ffmpeg, 7-Zip)
 #. {name} = a file name (keep the braces as they are)
 	Choose {name}	Choose {name}
@@ -907,6 +928,9 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Colombia	Colombia
+#. window title in a dialog box; text in a dialog box
+#. what a screen reader calls the Columns dialog's list of the download list's columns
+	Columns	Columns
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Comoros	Comoros
@@ -1357,7 +1381,7 @@
 	El Salvador	El Salvador
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 	Email	Email
-#. text in the Download video window
+#. checkbox in the Download video window; text in the Download video window
 #. checkbox in Download video: the chapters a video's page lists (YouTube's, for one) go into the video file, where players show them and skip between them
 	Embed chapters	Embed chapters
 #. text in gallerydlg.rs
@@ -1497,8 +1521,11 @@
 #. RSS feeds window, Download rules: the feeds the rule watches
 	Feeds:	Feeds:
 #. text in the Add torrent window
-#. Torrent settings, at the bottom
+#. Torrent settings, under the blocklist's address
 	Fetched again every 7 days. Changes apply when no torrent is running.	Fetched again every 7 days. Changes apply when no torrent is running.
+#. text in the Add torrent window
+#. Torrent settings, under the public tracker list's address
+	Fetched once a day. Never added to private torrents.	Fetched once a day. Never added to private torrents.
 #. text in helpers.rs
 #. helper name and what it does (ffmpeg is a program's name)
 	ffmpeg: joins picture and sound	ffmpeg: joins picture and sound
@@ -1595,6 +1622,12 @@
 	FLAC keeps the sound exactly, but it can't add quality the site's sound doesn't have: the file is only bigger.	FLAC keeps the sound exactly, but it can't add quality the site's sound doesn't have: the file is only bigger.
 #. text in categories.rs
 	Folder:	Folder:
+#. text in the Options window
+#. Options → Archives → Link grabber, one line with two boxes: an FTP folder or a web server's folder listing ("Index of") given to Link grabber is read with its subfolders: {depth} is a number box (how many levels of subfolders, 3 at first; 0 is the folder's own files only), {types} a text box (file types such as ISO ZIP; empty for every type)
+	Folders: {depth} levels deep, types: {types}	Folders: {depth} levels deep, types: {types}
+#. message or event log entry in the main window
+#. the kind of file View → Font → Choose a font file lists: TrueType and OpenType font files
+	Font files	Font files
 #. text in finish.rs
 #. Snooze menu of the Download complete window: show no Download complete window for this long
 	For 1 hour	For 1 hour
@@ -1739,6 +1772,10 @@
 #. Helpers: button: use the previous version of a helper again (if the new one misbehaves); {version} = that version
 #. {version} = a version number (keep the braces as they are)
 	Go back to {version}	Go back to {version}
+#. text in helpers.rs
+#. Helpers: the "Go back" button's name for a screen reader; {version} = the earlier version, {name} = the helper (yt-dlp, ffmpeg, gallery-dl, Node.js)
+#. {version} = a version number; {name} = a file name (keep the braces as they are)
+	Go back to {version} of {name}	Go back to {version} of {name}
 #. text in a download's progress window
 #. a torrent's sharing, when Torrent settings keep it on
 	Goes on after the download finishes	Goes on after the download finishes
@@ -2455,7 +2492,8 @@
 	Move a page up / down	Move a page up / down
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 	Move between the toolbar, the categories and the download list	Move between the toolbar, the categories and the download list
-#. text in the Scheduler window
+#. text in a dialog box; text in the Scheduler window
+#. button in the Columns dialog: move the selected column one place towards the end of the list
 	Move down	Move down
 #. text in a dialog box
 #. choice in Delete category: what happens to the category's downloads
@@ -2466,7 +2504,8 @@
 	Move to folder	Move to folder
 #. message or event log entry in the main window
 	Move to queue	Move to queue
-#. text in the Scheduler window
+#. text in a dialog box; text in the Scheduler window
+#. button in the Columns dialog: move the selected column one place towards the start of the list
 #. tooltip of an icon button in the Scheduler's list of files
 	Move up	Move up
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
@@ -2817,6 +2856,9 @@
 #. text in the Link grabber window
 #. Link grabber, a link's status: the server has the file
 	Online	Online
+#. text in the Options window
+#. Options → Archives → Link grabber: the hover tip of the types box in "Folders: {depth} levels deep, types: {types}": only a folder's files of these types go into Link grabber; written as the File types page writes them
+	Only a folder's files of these types, written as on the File types page (ISO ZIP R0*). Empty: every type.	Only a folder's files of these types, written as on the File types page (ISO ZIP R0*). Empty: every type.
 #. text in the Download video window
 #. checkbox in Download video: download only a part of the video or sound; the From and To boxes follow it
 	Only a part	Only a part
@@ -3188,6 +3230,9 @@
 #. text in the Batch download window
 #. group box title: what the * in the address is replaced with (numbers or letters)
 	Replace asterisk to	Replace asterisk to
+#. text in a dialog box
+#. button in the Columns dialog: put the columns back as they first were (order, widths, all shown)
+	Reset	Reset
 #. text in crashui.rs
 #. crash report window button: start MDM again
 	Restart MDM	Restart MDM
@@ -3483,6 +3528,9 @@
 #. button: sign in to the debrid service in the browser, by typing a code there
 	Sign in in the browser	Sign in in the browser
 #. text in the Options window
+#. Options → Accounts (Android): where the debrid accounts' sign-ins and the other passwords are kept (encrypted with a key held by Android's keystore)
+	Sign-ins and passwords are kept encrypted with a key in Android's keystore.	Sign-ins and passwords are kept encrypted with a key in Android's keystore.
+#. text in the Options window
 #. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (the macOS login keychain)
 	Sign-ins and passwords are kept in the macOS keychain.	Sign-ins and passwords are kept in the macOS keychain.
 #. text in the Options window
@@ -3626,6 +3674,9 @@
 #. message or event log entry in the main window
 #. tooltip on the disabled Rename box when the file is one part of a split archive (.part1.rar, .7z.001…)
 	Split archive volumes keep their names for extraction	Split archive volumes keep their names for extraction
+#. text in the Download video window
+#. checkbox in Download video: split the video into one file per chapter (the whole video is kept too)
+	Split into chapters	Split into chapters
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Sri Lanka	Sri Lanka
@@ -3693,6 +3744,9 @@
 #. text in remote.rs; text in the Add torrent window
 #. remote control page (on a phone): button: stop a queue
 	Stop	Stop
+#. text in a download's progress window
+#. button in the progress window of a download that never ends by itself (an internet radio, a camera feed: no size, can't be resumed): stop it and keep what has arrived as the finished file
+	Stop and keep	Stop and keep
 #. text in a download's progress window
 #. button in a live stream's progress window: stop recording it and keep what was recorded as a video file
 	Stop and save	Stop and save
@@ -3791,9 +3845,6 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Tanzania	Tanzania
-#. text in the Options window
-#. \\n starts a new line: break lines where they fit the translation
-	Tasks → Link grabber, or the browser's "Download all links": a split\narchive's volumes are one package, the other links of a page another.	Tasks → Link grabber, or the browser's "Download all links": a split\narchive's volumes are one package, the other links of a page another.
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 	Tell a friend	Tell a friend
 #. group box title in the Options window
@@ -4233,6 +4284,9 @@
 #. remote control page (on a phone): label of the box naming this phone (shown in MDM's list of paired devices)
 	This device's name	This device's name
 #. message or event log entry in the main window
+#. the message when a file picked in View → Font isn't a TrueType or OpenType font MDM can read
+	This file can't be used as a font.	This file can't be used as a font.
+#. message or event log entry in the main window
 #. {error} is why, in English (a file that isn't a theme or a colour scheme, a colour missing)
 #. {error} = an error message (keep the braces as they are)
 	This file can't be used as a theme: {error}	This file can't be used as a theme: {error}
@@ -4272,6 +4326,7 @@
 	This name is reserved by Windows	This name is reserved by Windows
 #. tooltip (why a control is greyed) in the Download video window
 #. why "Embed chapters" is greyed: ffmpeg (a helper program) is not installed
+#. why "Split into chapters" is greyed: ffmpeg (a helper program) is not installed
 #. why Part is greyed in Download video: ffmpeg (a helper program) is not installed
 #. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
 	This needs ffmpeg	This needs ffmpeg
@@ -4465,6 +4520,9 @@
 #. tooltip (why a control is greyed) in the Options window
 #. why Options → Remote → Pair a device... is greyed
 	Turn on the remote control first.	Turn on the remote control first.
+#. text in the Add torrent window
+#. Torrent settings, under the public tracker list's address: turning the switch off doesn't take away the trackers it added to torrents
+	Turned off, the trackers already added stay.	Turned off, the trackers already added stay.
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Tuvalu	Tuvalu
@@ -4564,6 +4622,10 @@
 #. button: download and install the new version, then restart
 	Update now	Update now
 #. text in helpers.rs
+#. Helpers: the Update button's name for a screen reader; {name} = the helper (yt-dlp, ffmpeg, gallery-dl, Node.js)
+#. {name} = a file name (keep the braces as they are)
+	Update {name}	Update {name}
+#. text in helpers.rs
 #. Helpers: a program the person chose, or the system's copy: MDM doesn't update it, the person (or their package manager) does
 	Updated by you	Updated by you
 #. text in helpers.rs
@@ -4580,6 +4642,15 @@
 	Uruguay	Uruguay
 #. text in the Options window
 	Use advanced browser integration	Use advanced browser integration
+#. text in helpers.rs
+#. Helpers: the "Use another program..." button's name for a screen reader, on the JavaScript runtime's row (Node.js, Deno, QuickJS or Bun)
+#. the trailing ... means it is still going on: keep it
+	Use another program as the JavaScript runtime...	Use another program as the JavaScript runtime...
+#. text in helpers.rs
+#. Helpers: the "Use another program..." button's name for a screen reader; {name} = the helper (yt-dlp, ffmpeg, gallery-dl)
+#. {name} = a file name (keep the braces as they are)
+#. the trailing ... means it is still going on: keep it
+	Use another program for {name}...	Use another program for {name}...
 #. text in errors.rs; button in helpers.rs; text in the Options window
 #. Video helpers: button: pick a program (yt-dlp or ffmpeg) already on the computer
 #. Options → Archives: button: pick the 7-Zip command line program to extract 7z and RAR archives with (PeaZip's own 7z.exe, a portable copy), instead of the one MDM finds
@@ -4596,6 +4667,11 @@
 #. text in helpers.rs
 #. Video helpers: button: go back to the copy MDM downloads and checks itself
 	Use MDM's own copy	Use MDM's own copy
+#. text in helpers.rs
+#. Helpers: the "Use MDM's own copy" button's name for a screen reader; {name} = the helper (yt-dlp, ffmpeg, gallery-dl)
+#. Helpers: the "Use MDM's own copy" button's name for a screen reader; {name} = the helper (Node.js)
+#. {name} = a file name (keep the braces as they are)
+	Use MDM's own copy of {name}	Use MDM's own copy of {name}
 #. checkbox in the Options window
 #. Options → Sites Logins: checkbox under Cookies for video sites: yt-dlp also reads the person's own yt-dlp config file
 	Use my yt-dlp config file	Use my yt-dlp config file
@@ -4994,6 +5070,10 @@
 #. text in torrent downloads
 #. said after Delete with files when some files stayed on the disk; {file} is the download's name; the files' paths follow it
 	{file}: these files stayed on the disk, because MDM didn't create them or another download uses them:	{file}: these files stayed on the disk, because MDM didn't create them or another download uses them:
+#. message or event log entry in the main window
+#. Link grabber's Source line, after where the links came from: a folder (an FTP folder, a web server's "Index of" page) held more files or subfolders than Link grabber lists; {folder} is its name, {n} how many of its files are listed (10,000)
+#. {n} = a number (keep the braces as they are)
+	{folder}: only its first {n} files	{folder}: only its first {n} files
 #. text in a download's progress window
 #. {have} and {total} = numbers of pieces; {size} = one piece's size
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
@@ -5236,9 +5316,12 @@ column	Peers	Peers
 #. column title in the download list in the download list
 #. column title: one letter for Queue (the column is narrow)
 column	Q	Q
-#. column title in the main window; column title in the download list
+#. column title in the main window; column title in a dialog box; column title in the download list
 #. tooltip of the narrow "Q" column's title
 column	Queue	Queue
+#. column title in the download list in the download list
+#. column title: the folder the download is saved in
+column	Save To	Save To
 #. column title in the download list in the download list
 #. column title: what a torrent has sent to peers against what it took
 column	Share ratio	Share ratio
@@ -5444,6 +5527,12 @@ extension	File deleted or moved	File deleted or moved
 #. label before the row of chips (All, MP4, WEBM, M4A...) that filters the list of qualities by file type in the menu of the download button over a video; short
 extension	File type	File type
 #. text in the browser extension
+#. button in the This page tab of the toolbar button's popup: look for the pictures of the current web page (only when clicked); short
+extension	Find images	Find images
+#. text in the browser extension
+#. in the This page tab of the toolbar button's popup, before the Find images button; Link grabber is the name of the app's window that lists links to tick before downloading them
+extension	Find this page's pictures at the largest size it lists, then send the ones you want to Link grabber.	Find this page's pictures at the largest size it lists, then send the ones you want to Link grabber.
+#. text in the browser extension
 #. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) after Clear finished
 extension	Finished downloads cleared	Finished downloads cleared
 #. text in the browser extension
@@ -5470,6 +5559,12 @@ extension	Hold Alt while clicking a link to let the browser download it.	Hold Al
 #. text in the browser extension
 #. link under a connection problem in the toolbar button's popup, to the help page's section for it
 extension	How to fix it	How to fix it
+#. text in the browser extension
+#. what a screen reader says for the row of buttons that keep or leave out each type of picture (JPEG, PNG, WEBP...), in the This page tab of the toolbar button's popup
+extension	Image types	Image types
+#. text in the browser extension
+#. heading in the This page tab of the toolbar button's popup, over the part that finds the pictures of the current web page and sends them to the app
+extension	Images on this page	Images on this page
 #. text in the browser extension
 #. pairing failed for another reason
 extension	It didn't work. Try again.	It didn't work. Try again.
@@ -5593,6 +5688,9 @@ extension	No download's name or address has “{words}”.	No download's name or
 #. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app has no downloads
 extension	No downloads yet	No downloads yet
 #. text in the browser extension
+#. shown in the This page tab of the toolbar button's popup when Find images found no picture on the current web page
+extension	No images found on this page.	No images found on this page.
+#. text in the browser extension
 #. shown in the toolbar button's popup when the current web page hasn't loaded any video, sound or stream yet
 extension	No video or sound found on this page yet. Play it, then open this again.	No video or sound found on this page yet. Play it, then open this again.
 #. text in the browser extension
@@ -5644,6 +5742,9 @@ extension	Options...	Options...
 #. text in the browser extension
 #. in the list under the download button over a video, after a sound-only line's bitrate: the sound as the site sends it, not converted (e.g. '128 kbps · original'); lower case; one word
 extension	original	original
+#. text in the browser extension
+#. button among the picture types (JPEG, PNG, WEBP...) in the This page tab of the toolbar button's popup: the pictures of any other or unknown type; short
+extension	Other	Other
 #. text in the browser extension
 #. button: pair this browser with the other MDM using the code
 extension	Pair	Pair
@@ -5709,12 +5810,18 @@ extension	Send downloads through this browser's proxy or VPN extension	Send down
 #. heading in the toolbar button's popup, above the choice of where downloads go
 extension	Send downloads to	Send downloads to
 #. text in the browser extension
+#. button in the This page tab of the toolbar button's popup: send the selected pictures to the app's Link grabber window, where the user ticks which to download
+extension	Send to Link grabber	Send to Link grabber
+#. text in the browser extension
 #. on the download button over a video right after it was clicked, while the download goes to the app; MDM is Mister Download Manager's short name, keep it as it is; short
 #. the trailing ... means it is still going on: keep it
 extension	Sending to MDM...	Sending to MDM...
 #. text in the browser extension
 #. under the extension's name in the toolbar button's popup: downloads go to another Mister Download Manager, a server, at this address; short
 extension	Sending to {server}	Sending to {server}
+#. text in the browser extension
+#. shown in the This page tab of the toolbar button's popup after the pictures were sent to the app's Link grabber window
+extension	Sent to Link grabber: tick the ones to download there.	Sent to Link grabber: tick the ones to download there.
 #. text in the browser extension
 #. shown briefly on the download button after it was clicked; keep the name Mister Download Manager as it is
 extension	Sent to Mister Download Manager	Sent to Mister Download Manager
@@ -5740,6 +5847,19 @@ extension	Show in folder	Show in folder
 #. screen readers' name of a download's Show in folder button in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads)
 extension	Show {file} in folder	Show {file} in folder
 #. text in the browser extension
+#. in the This page tab of the toolbar button's popup, while a smallest width or height is set: how many of the selected pictures the page gives no size for (they are kept, not left out)
+#. {n} = a number (keep the braces as they are)
+extension	Size not given, kept: {n}	Size not given, kept: {n}
+#. text in the browser extension
+#. what a screen reader says for the box of the smallest height of the pictures to keep, in the This page tab of the toolbar button's popup
+extension	Smallest height, in pixels	Smallest height, in pixels
+#. text in the browser extension
+#. in the This page tab of the toolbar button's popup, before two boxes for the smallest width and height of the pictures to keep: 'Smallest size, in pixels [ ] × [ ]'; pictures smaller than that are left out; short
+extension	Smallest size, in pixels	Smallest size, in pixels
+#. text in the browser extension
+#. what a screen reader says for the box of the smallest width of the pictures to keep, in the This page tab of the toolbar button's popup
+extension	Smallest width, in pixels	Smallest width, in pixels
+#. text in the browser extension
 #. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app isn't running
 extension	Start it to see your downloads here.	Start it to see your downloads here.
 #. text in the browser extension
@@ -5764,6 +5884,9 @@ extension	That didn't work. Try again.	That didn't work. Try again.
 #. text in the browser extension
 #. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when a button's download was removed meanwhile
 extension	That download is no longer in the list.	That download is no longer in the list.
+#. text in the browser extension
+#. shown in the This page tab of the toolbar button's popup when Find images can't look into the current page (a page of the browser's own, an add-on store)
+extension	The browser doesn't let add-ons read this page.	The browser doesn't let add-ons read this page.
 #. text in the browser extension
 #. in the toolbar button's popup, on a site where the Chrome Web Store's copy of the extension shows no download button; Help is the link at the bottom of the popup
 extension	The Chrome Web Store's rules keep this copy of the add-on away from this site's videos. Help says what you can do.	The Chrome Web Store's rules keep this copy of the add-on away from this site's videos. Help says what you can do.
@@ -5867,6 +5990,9 @@ extension	{file} removed from the list	{file} removed from the list
 #. text in the browser extension
 #. question in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) before a download's file is deleted
 extension	{file} will be deleted from your computer, and the download taken off the list. This can't be undone.	{file} will be deleted from your computer, and the download taken off the list. This can't be undone.
+#. text in the browser extension
+#. in the This page tab of the toolbar button's popup: how many of the pictures found pass the size and type filters, and will be sent
+extension	{shown} of {total} selected	{shown} of {total} selected
 #. text in the browser extension
 #. a running download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): the time left, as a clock (minutes:seconds)
 #. {time} = a time of day (keep the braces as they are)
@@ -5975,6 +6101,11 @@ menu	&Automatic	&Automatic
 #. View → Text: letters drawn the classic way, hinted to whole pixels (crisp, coarse on a dense screen)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 menu	&Classic	&Classic
+#. menu command in the main window
+#. header menu: opens the dialog that chooses the list's columns
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+menu	&Columns...	&Columns...
 #. menu command in standard windows
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 menu	&Copy	&Copy
@@ -5990,6 +6121,10 @@ menu	&Download Now	&Download Now
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 menu	&Exit	&Exit
+#. menu command in the main window
+#. View menu: submenu choosing the interface's own font and text size
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+menu	&Font	&Font
 #. menu command in the main window
 #. verb: load downloads from a file
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
@@ -6052,6 +6187,10 @@ menu	&Stop All	&Stop All
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 menu	&Stop Download	&Stop Download
+#. menu command in the main window
+#. View → Font: the computer's own font, the default (Segoe UI on Windows)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+menu	&System font	&System font
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 menu	&Tray icon	&Tray icon
@@ -6163,6 +6302,11 @@ menu	C&ustomize URL List...	C&ustomize URL List...
 #. the trailing ... means it opens a window: keep it
 menu	Check for &updates...	Check for &updates...
 #. menu command in the main window
+#. View → Font: a TrueType or OpenType font file on disk to draw the interface's text in
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+menu	Choose a font &file...	Choose a font &file...
+#. menu command in the main window
 #. View → Theme: MDM's own look, the default (IDM's layout, Windows 11's controls)
 menu	Classic	Classic
 #. menu command in the main window
@@ -6228,9 +6372,6 @@ menu	Find Next (F3)	Find Next (F3)
 #. menu command in the main window
 #. right-click → Torrent, a choice with a check mark (with Download in order): each file's first and last pieces first, which a video player needs to start
 menu	First and last pieces first	First and last pieces first
-#. menu command in the main window
-#. noun: the list's font (submenu)
-menu	Font	Font
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it

@@ -55,6 +55,8 @@ function fakeApi({
   lookup,
   // The page's links, as the right-click menu's script collects them (pageLinks).
   pageLinks = ["https://x/1.zip", "https://x/2.zip"],
+  // What pageImages found in each frame (#1781), frame 0 first; none: the page can't be read.
+  pageImages,
   // tabs.query's answer for the active tab of the window last used (#607).
   activeTab,
   // runtime.connectNative (#1496): a port to the host, answered as sendNativeMessage answers.
@@ -207,6 +209,10 @@ function fakeApi({
         if (func && func.name === "playingAt") {
           if (playing === undefined) throw new Error("Cannot access contents of the page");
           return [{ result: playing }];
+        }
+        if (func && func.name === "pageImages") {
+          if (!pageImages) throw new Error("Cannot access contents of the page");
+          return pageImages.map((result, frameId) => ({ frameId, result }));
         }
         if (func && func.name === "mediaElements") {
           if (!frames) throw new Error("Cannot access contents of the page");
@@ -2009,6 +2015,39 @@ const videoPageOn = (() => {
   return (location, document) => new Function("location", "document", body)(location, document);
 })();
 
+// "Hide on this video" (video.js): a player reused for the next video in a feed shows the button
+// for it again; one hidden before it had an address stays hidden once it gets one (#1879).
+{
+  const source = readText("../../extension/video.js");
+  const start = source.indexOf('  // ---- "Hide on this video": from here');
+  const end = source.indexOf('  // ---- "Hide on this video": end.');
+  assert.ok(start > 0 && end > start, "video.js has Hide on this video and its end mark");
+  const fresh = () => new Function(`${source.slice(start, end)}; return { dismiss, isDismissed };`)();
+  {
+    const { dismiss, isDismissed } = fresh();
+    const v = { currentSrc: "https://feed.test/1.mp4" };
+    dismiss(v);
+    assert.ok(isDismissed(v), "hidden");
+    v.currentSrc = "";
+    assert.ok(isDismissed(v), "between two videos");
+    v.currentSrc = "https://feed.test/2.mp4";
+    assert.ok(!isDismissed(v), "the next post's video");
+    assert.ok(isDismissed({ currentSrc: "https://feed.test/1.mp4" }), "the hidden video, in another element");
+  }
+  {
+    const { dismiss, isDismissed } = fresh();
+    const v = { currentSrc: "" };
+    dismiss(v);
+    assert.ok(isDismissed(v), "hidden before it had an address");
+    v.currentSrc = "https://feed.test/3.mp4";
+    assert.ok(isDismissed(v), "still hidden once it has one");
+    v.currentSrc = "https://feed.test/4.mp4";
+    assert.ok(!isDismissed(v), "the next post's video");
+    assert.ok(!isDismissed({ currentSrc: "" }), "another element");
+  }
+  ok("#1879: Hide on this video follows the video in a reused player");
+}
+
 // The address the button hands the app (video.js's videoPage): the video's own page, not the page
 // that plays it. YouTube's home, a search, a channel or a playlist is a list to yt-dlp, and a watch
 // page opened from a mix carries the list in its address: the button sent either, and the app
@@ -2375,6 +2414,56 @@ function samplePage(html) {
   const sites = source.indexOf("const SITES = [");
   assert.ok(sites > 0 && !/kwai/i.test(source.slice(sites, source.indexOf("\n  ];", sites))), "no Kwai reader");
   ok("#1458: Kwai's player: its page named, its own MP4 the click's download");
+}
+
+// A video that hasn't played has no stream yet: the button takes the one its page wrote for the
+// player (video.js bestPageStream), the best quality its address names, escaped "\/" undone. Only
+// what the page names: no address is guessed.
+{
+  const source = readText("../../extension/video.js");
+  const cut = (name) => {
+    const at = source.indexOf(`  function ${name}(`);
+    return source.slice(at, source.indexOf("\n  }\n", at) + 4);
+  };
+  assert.ok(!/1080"\s*\+|higherStream/.test(source), "no guessed address (a 1080p beside a 720p)");
+  const bestPageStream = new Function(`${cut("bestPageStream")}${cut("streamHeight")}\nreturn bestPageStream;`)();
+  // The quality named beside the link, not in it; a master list (every quality) over them all.
+  assert.equal(
+    bestPageStream(`sources:[{label:"720p",file:"https://cdn.example.com/a/v1.m3u8"},{label:"1080p",file:"https://cdn.example.com/a/v2.m3u8"},{label:"480p",file:"https://cdn.example.com/a/v3.m3u8"}]`),
+    "https://cdn.example.com/a/v2.m3u8",
+    "the entry labelled 1080p",
+  );
+  assert.equal(bestPageStream(`{"720":"https://c.example.com/x/7.m3u8","1080":"https://c.example.com/x/9.m3u8"}`), "https://c.example.com/x/9.m3u8", "keyed by height");
+  assert.equal(
+    bestPageStream(`{"hd":"https://c.example.com/v_720p.m3u8","hls":"https://c.example.com/v/master.m3u8"}`),
+    "https://c.example.com/v/master.m3u8",
+    "a master list lists them all",
+  );
+  const html = `<script>var cfg={"hls":{"360":"https:\\/\\/cdn.example.com\\/v\\/abc_360p.m3u8?t=1\\u0026e=2",
+    "1080":"https:\\/\\/cdn.example.com\\/v\\/abc_1080p.m3u8?t=1\\u0026e=2","720":"https://cdn.example.com/v/abc_720p.m3u8"}}</script>`;
+  assert.equal(bestPageStream(html), "https://cdn.example.com/v/abc_1080p.m3u8?t=1&e=2", "the 1080p one, unescaped");
+  assert.equal(
+    bestPageStream(`<video data-src="https://cdn.example.com/master.m3u8?a=1&amp;b=2"></video>`),
+    "https://cdn.example.com/master.m3u8?a=1&b=2",
+    "no quality named: the first, &amp; undone",
+  );
+  // Each escape undone once: a script's "&amp;" is the text "&amp;", not "&".
+  assert.equal(
+    bestPageStream(`{"hls":"https:\\/\\/c.example.com\\/v\\/master.m3u8?a=1\\u0026amp;b=2"}`),
+    "https://c.example.com/v/master.m3u8?a=1&amp;b=2",
+    "\\u0026amp; undone once",
+  );
+  assert.equal(bestPageStream("<p>no video here, just video.mp4</p>"), "", "none");
+  // The page is read as a look-up starts, never as the button follows the pointer (describe).
+  const body = (name) => {
+    const at = source.indexOf(`  function ${name}(`);
+    return source.slice(at, source.indexOf("\n  }\n", at));
+  };
+  assert.ok(!body("describe").includes("pageStream("), "describe doesn't read the page");
+  assert.ok(body("startLook").includes("pageStream()"), "startLook does");
+  // One minute for the whole look-up, the page's stream included: it always ends.
+  assert.ok(body("startLook").includes("pageLook(lookUp, l.at + LOOKUP_MS)"), "the page's stream within the look-up's minute");
+  ok("a stream the page wrote is found before the video plays");
 }
 
 // What the resolvers build is a form yt-dlp's extractors read (their _VALID_URL, yt-dlp
@@ -3128,6 +3217,24 @@ function videoButton({ stored = {}, location, iframes, videos, subframe = false 
   assert.equal(pointerTarget(next, null, false), next);
   assert.equal(pointerTarget(null, mine, false), null);
   assert.ok(fn("look").includes("pointerTarget(videoAt(pointer.x, pointer.y), video, menuOpen)"), "look: kept on its video while its menu is open");
+  // The open menu inside the window (menuFit): below the button when it fits, above when only
+  // there, else its list shortened on the side with more room, never past the window's top.
+  const menuFit = make(["menuFit"], "menuFit");
+  assert.deepEqual(menuFit(100, 400, 300, 300, 900), { top: 36, list: null }, "room below");
+  assert.deepEqual(menuFit(700, 400, 300, 300, 900), { top: -406, list: null }, "room above only");
+  // The played case's window (805 px high, the button at 230 over a feed's second video): 575 px
+  // fit neither side; below, its list 44 px shorter.
+  assert.deepEqual(menuFit(230, 575, 300, 300, 805), { top: 36, list: 256 }, "more room below");
+  const up = menuFit(560, 575, 300, 300, 805);
+  assert.deepEqual(up, { top: -552, list: 271 }, "more room above");
+  assert.ok(560 + up.top >= 8, "above: inside the window");
+  // A list shortened before, the window grown since: whole again.
+  assert.deepEqual(menuFit(230, 531, 256, 300, 1000), { top: 36, list: null }, "whole again");
+  // A tiny window: three lines at least; above, its top kept in the window.
+  const tiny = menuFit(150, 575, 300, 300, 300);
+  assert.equal(tiny.list, 84);
+  assert.ok(150 + tiny.top >= 8, "tiny: never past the window's top");
+  assert.ok(fn("placeMenu").includes("menuFit("), "placeMenu places the menu with menuFit");
   // #1582: where the page is asked what lies under a spot the button would take (onControl).
   // Bilibili's player keeps a feedback button (54 x 24) at its top right, 12 px from its edge, in
   // view while the pointer moves over the player: on a 1550 px wide player the button's default
@@ -4365,6 +4472,12 @@ const ask = (listeners) => (m, sender) => new Promise((r) => listeners.message(m
     await send({ type: "bypass", url: "https://site.test/get?id=7" }, page);
     assert.ok(!(await kept({ id: 61, url: "https://site.test/b.zip", referrer: "https://site.test/files", filename: "b.zip" })), "a later plain download from the page");
     assert.equal(natives(calls).length, 1);
+    // A new Alt+click on the same link, seconds later, is a click of its own: the download that
+    // follows it under another address is the browser's too (the link's own address always was).
+    clock.t += 3000;
+    await send({ type: "bypass", url: "https://site.test/get?id=7" }, page);
+    assert.ok(await kept({ id: 73, url: "https://site.test/c.zip", referrer: "https://site.test/files", filename: "c.zip" }), "a new press on the same link");
+    assert.equal(natives(calls).length, 1);
     // A link the page's script took (the click's own download prevented): the download it
     // started instead, under another address, sent from the page (the referrer cut to the site
     // too, the default across sites); once.
@@ -5197,6 +5310,49 @@ const MP4 = (() => {
   // A known length beats an unknown one.
   assert.equal(choose([...loaded, file("https://v.test/c.mp4", 30)], { duration: 30, alone: true }), "https://v.test/c.mp4");
   ok("#1092: what the tab played is offered for the video of its length, never the next one, a track alone or a guess");
+
+  // A stream its player asked for again long after, signed anew for that load (in one part of its
+  // path or in its query, from another of the site's servers): one video, its newest load (the
+  // older one's signature may have run out), never "several".
+  const HOUR = 3600 * 1000;
+  const signed = (sig, at, host = "hls-cdn1", id = "ab") => stream(`https://${host}.cdn.test/${sig}-1700000000/videos/${id}/hls.m3u8`, 600, { at });
+  assert.equal(
+    choose([signed("q1w2", 1000), signed("z9x8", 3 * HOUR, "hls-cdn7")], { duration: 600 }),
+    "https://hls-cdn7.cdn.test/z9x8-1700000000/videos/ab/hls.m3u8",
+    "signed in its path, hours later, from another server",
+  );
+  const query = (h, at) => stream(`https://cdn.v.test/hls/123/master.m3u8?hash=${h}&expires=${at}`, 600, { at });
+  assert.equal(choose([query("b", 2 * HOUR), query("a", 1000)], { duration: 600 }), `https://cdn.v.test/hls/123/master.m3u8?hash=b&expires=${2 * HOUR}`, "signed in its query");
+  // Two videos, never one: loaded seconds apart (a feed's next one), or after the page's next
+  // player began to load; the video named in the path besides the signature; the query naming
+  // each; another file; another picture height; a few hundredths apart in length.
+  assert.equal(choose([signed("q1w2", 1000), signed("z9x8", 4000)], { duration: 600 }), "several 2", "seconds apart");
+  assert.equal(choose([signed("q1w2", 1000), signed("z9x8", 3 * HOUR)], { duration: 600, began: 900, nextBegan: 5000 }), "several 2", "after the next player began");
+  assert.equal(choose([signed("q1w2", 1000), signed("z9x8", 3 * HOUR, "hls-cdn1", "cd")], { duration: 600 }), "several 2", "another video's part");
+  // The same path on another site: two videos.
+  assert.equal(choose([signed("q1w2", 1000), stream("https://hls.other.test/z9x8-1700000000/videos/ab/hls.m3u8", 600, { at: 3 * HOUR })], { duration: 600 }), "several 2", "another site");
+  // Signed in its query the way S3 and Google Cloud Storage sign (X-Amz-…, X-Goog-…): one video.
+  const s3 = (sig, at) => stream(`https://b.s3.test/v/ab/hls.m3u8?X-Amz-Date=${at}&X-Amz-Signature=${sig}`, 600, { at });
+  assert.equal(choose([s3("a", 1000), s3("b", 3 * HOUR)], { duration: 600 }), `https://b.s3.test/v/ab/hls.m3u8?X-Amz-Date=${3 * HOUR}&X-Amz-Signature=b`, "S3-signed");
+  const byId = (id, at) => stream(`https://cdn.v.test/master.m3u8?id=${id}&hash=x`, 600, { at });
+  assert.equal(choose([byId(1, 1000), byId(2, 3 * HOUR)], { duration: 600 }), "several 2");
+  const index = stream("https://hls-cdn1.cdn.test/z9-1/videos/ab/index.m3u8", 600, { at: 3 * HOUR });
+  assert.equal(choose([signed("q1w2", 1000), index], { duration: 600 }), "several 2");
+  assert.equal(choose([signed("q1w2", 1000), signed("z9x8", 3 * HOUR, "hls-cdn7")].map((c, i) => ({ ...c, height: i ? 1080 : 720 })), { duration: 600, height: 480 }), "several 2");
+  assert.equal(choose([signed("q1w2", 1000), { ...signed("z9x8", 3 * HOUR), duration: 600.4 }], { duration: 600 }), "several 2");
+  // A file: its size too.
+  const mp4 = (sig, at, size) => file(`https://f.cdn.test/${sig}/v/clip.mp4`, 600, { at, size });
+  assert.equal(choose([mp4("a1", 1000, 5e7), mp4("b2", 3 * HOUR, 5e7)], { duration: 600 }), "https://f.cdn.test/b2/v/clip.mp4");
+  assert.equal(choose([mp4("a1", 1000, 5e7), mp4("b2", 3 * HOUR, 4e7)], { duration: 600 }), "several 2", "another size");
+  // A newer load that isn't a video (protected): the older one stays.
+  assert.equal(choose([signed("q1w2", 1000), { ...signed("z9x8", 3 * HOUR), drm: true }], { duration: 600 }), "https://hls-cdn1.cdn.test/q1w2-1700000000/videos/ab/hls.m3u8");
+  // The signature's parameters are the app's (app.rs SIGNATURE_PARAMS), the same list.
+  const listed = (text, start) => [...text.slice(text.indexOf(start)).split(/[\]\)];/)[0].matchAll(/"([^"]+)"/g)].map((m) => m[1]).sort();
+  const js = listed(readText("../../extension/background.js"), "const SIGNATURE_PARAMS = new Set([");
+  const rust = listed(readText("../../crates/app/src/app.rs"), "const SIGNATURE_PARAMS: [&str;");
+  assert.ok(js.length > 10);
+  assert.deepEqual(js, rust, "the extension's and the app's signature parameters");
+  ok("#1092: a video its player loaded again, signed anew, is one video: its newest load");
 }
 
 // #1092, from the button's question to the app: a feed's player fetched files in ranges (kept
@@ -5651,6 +5807,162 @@ const until = async (what, ms, check) => {
   const pack = readText("./pack.ps1");
   for (const f of ["popup-ui.js", "popup-downloads.js"]) assert.ok(pack.includes(`"${f}"`), `pack.ps1 copies ${f}`);
   ok("#1496 no new permissions; the popup's new scripts are packed");
+}
+
+// The e2e's tabs (tools/extension/e2e.mjs): a session's `tab` hands out an extension's page only
+// once it loaded. Chrome's Target.createTarget answers while the popup is still being read, its
+// Reset button there for hundreds of milliseconds before popup.js gives it its listener: calm's
+// click on it then did nothing, and "the button's places forgotten" timed out in Chrome only.
+{
+  const e2e = readText("./e2e.mjs");
+  const loaded = /export const PAGE_LOADED = '([^']+)';/.exec(e2e);
+  assert.ok(loaded, "e2e.mjs says what a loaded page is (PAGE_LOADED)");
+  const isLoaded = (readyState, protocol) => new Function("document", "location", `return ${loaded[1]};`)({ readyState }, { protocol });
+  assert.equal(isLoaded("loading", "chrome-extension:"), false, "a popup still being read (its scripts not run) isn't loaded");
+  assert.equal(isLoaded("interactive", "moz-extension:"), false, "nor one waiting for its pictures");
+  assert.equal(isLoaded("complete", "about:"), false, "nor the blank page a new tab starts on");
+  assert.equal(isLoaded("complete", "chrome-extension:"), true, "a popup whose scripts ran is");
+  // Each browser's `tab` (Chromium's, Firefox's) waits for it before it returns the tab.
+  const tabs = [...e2e.matchAll(/\n {4}const tab = async \(url\) => \{\n([\s\S]*?)\n {4}\};/g)].map((m) => m[1]);
+  assert.equal(tabs.length, 2, "e2e.mjs has Chromium's and Firefox's tab");
+  for (const body of tabs) {
+    const wait = body.search(/await until\([^\n]*\bev\(PAGE_LOADED\)/);
+    assert.ok(wait > 0 && wait < body.lastIndexOf("return { evaluate: ev"), "the tab is handed out once its page loaded");
+  }
+  ok("the e2e's tabs are handed out once their page loaded (calm's Reset in Chrome)");
+}
+// #1781: the popup's Find images. pageImages, in a page (a fake DOM here; e2e.mjs `images` runs it
+// in real browsers): each picture at the largest size its srcset and <picture> list, a lazy
+// loader's apart, links straight to pictures; each address once, absolute, no data:; the sizes
+// the page tells. Then the tab's frames together, typed; the kept ones to Link grabber as the
+// menu's "Download all links" sends a page's links.
+{
+  const ctx = load(fakeApi({ firefox: false }).api, false);
+  const base = "https://pics.test/g/";
+  const abs = (u) => new URL(u, base).href;
+  const PIXEL = "data:image/gif;base64,R0lGODlhAQABAAAAACw=";
+  const el = (tagName, attrs = {}, more = {}) => ({ tagName, getAttribute: (n) => (n in attrs ? attrs[n] : null), ...more });
+  // An <img>: its attributes, the size it shows at, the address it shows, its parent.
+  const img = (attrs, [naturalWidth, naturalHeight] = [0, 0], current = attrs.src || "", parentElement = null) =>
+    el("IMG", attrs, { naturalWidth, naturalHeight, currentSrc: current ? abs(current) : "", parentElement });
+  const picture = el("PICTURE");
+  picture.children = [el("SOURCE", { type: "image/webp", srcset: "p2-600.webp 600w, p2.webp 1200w" })];
+  const imgs = [
+    img({ src: "icon.png" }, [48, 48]),
+    img({ src: "p1-small.jpg", srcset: "p1-small.jpg 400w,p1.jpg   1600w" }, [400, 300]),
+    img({ src: "p2.jpg" }, [300, 200], "p2-600.webp", picture),
+    img({ src: "p1.jpg" }, [1600, 1200]),
+    img({ src: "p3-thumb.png" }, [200, 150]),
+    // Shown at 2x: naturalWidth is the file's 600 px over 2.
+    img({ src: "p4.gif", srcset: "p4@2x.gif 2x" }, [300, 200], "p4@2x.gif"),
+    // Not loaded yet: its placeholder says nothing of the picture.
+    img({ src: PIXEL, "data-src": "p5.avif" }, [1, 1]),
+    img({ src: PIXEL }, [1, 1]),
+    // An image service's addresses, commas in them.
+    img({ srcset: "https://cdn.test/w_300,h_200/a.jpg 300w, https://cdn.test/w_900,h_600/a.jpg 900w" }, [300, 200], "https://cdn.test/w_300,h_200/a.jpg"),
+    img({ src: "https://cdn.test/img?id=7&fm=webp" }, [640, 480]),
+    // A lazy loader's own srcset, beside the small picture it shows now.
+    img({ src: "p6-tiny.jpg", "data-srcset": "p6-800.jpg 800w, p6-2000.jpg 2000w" }, [40, 30]),
+    img({ src: "blob:https://pics.test/1234" }, [500, 500]),
+  ];
+  picture.children.push(imgs[2]);
+  const anchors = ["p1.jpg", "p3.png", "p3.png#zoom", "notes.pdf", "view.php?img=1.jpg", "ftp://pics.test/raw.tif", "javascript:void 0"].map((h) => el("A", {}, { href: abs(h) }));
+  ctx.document = { baseURI: base, querySelectorAll: (q) => (q === "img" ? imgs : q === "a[href]" ? anchors : []) };
+  const found = JSON.parse(JSON.stringify(ctx.pageImages()));
+  assert.deepEqual(found, [
+    { url: abs("icon.png"), w: 48, h: 48, type: "" },
+    { url: abs("p1.jpg"), w: 1600, h: 1200, type: "" },
+    { url: abs("p2.webp"), w: 1200, h: 800, type: "image/webp" },
+    { url: abs("p3-thumb.png"), w: 200, h: 150, type: "" },
+    { url: abs("p4@2x.gif"), w: 600, h: 400, type: "" },
+    { url: abs("p5.avif"), w: 0, h: 0, type: "" },
+    { url: "https://cdn.test/w_900,h_600/a.jpg", w: 900, h: 600, type: "" },
+    { url: "https://cdn.test/img?id=7&fm=webp", w: 640, h: 480, type: "" },
+    { url: abs("p6-tiny.jpg"), w: 40, h: 30, type: "" },
+    { url: abs("p6-2000.jpg"), w: 2000, h: 0, type: "" },
+    { url: abs("p3.png"), w: 0, h: 0, type: "" },
+  ]);
+  // Typed by extension, else the query's format, else its <source>'s type.
+  const typed = [
+    ["https://x.test/a.JPG", "", "JPEG"],
+    ["https://x.test/a.jpeg?v=2", "", "JPEG"],
+    ["https://x.test/a.png", "image/webp", "PNG"],
+    ["https://x.test/img?id=7&fm=webp", "", "WEBP"],
+    ["https://x.test/img?format=avif", "", "AVIF"],
+    ["https://x.test/pic", "image/svg+xml", "SVG"],
+    ["https://x.test/pic", "image/jxl", "JXL"],
+    ["https://x.test/a.tif", "", "TIFF"],
+    ["https://x.test/pic", "", "other"],
+    ["https://x.test/a.raw", "", "other"],
+  ];
+  for (const [u, mime, want] of typed) assert.equal(ctx.imageType(u, mime), want, u);
+  ok("#1781 Find images: the largest size listed, lazy ones apart, links to pictures, each once, no data:");
+}
+{
+  const page = "https://pics.test/g/";
+  const frames = [
+    [{ url: `${page}p1.jpg`, w: 1600, h: 1200, type: "" }, { url: `${page}icon.png`, w: 48, h: 48, type: "" }, { url: `${page}p2`, w: 1200, h: 800, type: "image/webp" }],
+    // A frame's: one the page has (its size kept), an ad, nothing that isn't http(s).
+    [{ url: `${page}p1.jpg`, w: 0, h: 0, type: "" }, { url: "https://ads.test/banner.gif", w: 728, h: 90, type: "" }, { url: "data:image/png;base64,AAAA", w: 1, h: 1 }, null],
+    "not a list",
+  ];
+  const run = (opts) => {
+    const f = fakeApi({ firefox: false, tabs: { 9: { id: 9, url: page, incognito: false, status: "complete" } }, ...opts });
+    load(f.api, false);
+    return f;
+  };
+  let f = run({ pageImages: frames });
+  await settle();
+  const r = await popupAsk(f.listeners, { type: "images", tab: 9 });
+  assert.equal(r.readable, true);
+  assert.deepEqual(r.images, [
+    { url: `${page}p1.jpg`, w: 1600, h: 1200, type: "JPEG" },
+    { url: `${page}icon.png`, w: 48, h: 48, type: "PNG" },
+    { url: `${page}p2`, w: 1200, h: 800, type: "WEBP" },
+    { url: "https://ads.test/banner.gif", w: 728, h: 90, type: "GIF" },
+  ]);
+  assert.equal(natives(f.calls).filter((m) => m.links).length, 0, "finding them sends nothing");
+  // A page no extension may read: said so.
+  f = run({});
+  await settle();
+  assert.deepEqual(await popupAsk(f.listeners, { type: "images", tab: 9 }), { readable: false, images: [] });
+  // Sent: the http(s) ones, once each, with the tab's address as their referrer, as the menu's.
+  f = run({ pageImages: frames });
+  await settle();
+  const links = [`${page}p1.jpg`, `${page}p2`, `${page}p1.jpg`, "javascript:alert(1)", "data:image/png;base64,AAAA", 7, "https://ads.test/banner.gif"];
+  assert.deepEqual(await popupAsk(f.listeners, { type: "images-send", tab: 9, links }), { ok: true });
+  const sent = natives(f.calls).filter((m) => m.links);
+  assert.equal(sent.length, 1);
+  assert.deepEqual(sent[0].links, [`${page}p1.jpg`, `${page}p2`, "https://ads.test/banner.gif"]);
+  assert.deepEqual([sent[0].referrer, sent[0].private, typeof sent[0].cookies], [page, false, "string"]);
+  assert.deepEqual(f.calls.filter((c) => c[0] === "openTab"), []);
+  assert.deepEqual(await popupAsk(f.listeners, { type: "images-send", tab: 9, links: ["data:x"] }), { ok: false, why: "none" });
+  // MDM not running: the answer says why, and the help page's section opens, as for the menu.
+  f = run({ pageImages: frames, reply: { ok: false, why: "not-running" } });
+  await settle();
+  const failed = await popupAsk(f.listeners, { type: "images-send", tab: 9, links: [`${page}p1.jpg`] });
+  assert.deepEqual([failed.ok, failed.why], [false, "not-running"]);
+  assert.ok(f.calls.some((c) => c[0] === "openTab" && c[1].endsWith("#not-running")));
+
+  // The popup's filters (popup.js imagesKept): as wide and high as typed where the size is
+  // known, a size the page doesn't give kept; the types switched off left out.
+  const popup = readText("../../extension/popup.js");
+  const at = popup.indexOf("function imagesKept(");
+  const imagesKept = new Function(`${popup.slice(at, popup.indexOf("\n}\n", at) + 2)}\nreturn imagesKept;`)();
+  const all = [
+    { url: "a", w: 48, h: 48, type: "PNG" },
+    { url: "b", w: 1600, h: 1200, type: "JPEG" },
+    { url: "c", w: 0, h: 0, type: "AVIF" },
+    { url: "d", w: 2000, h: 0, type: "JPEG" },
+    { url: "e", w: 600, h: 200, type: "GIF" },
+  ];
+  const kept = (off, w, h) => imagesKept(all, new Set(off), w, h).map((i) => i.url).join("");
+  assert.equal(kept([], 0, 0), "abcde");
+  assert.equal(kept([], 300, 300), "bcd");
+  assert.equal(kept([], 500, 0), "bcde");
+  assert.equal(kept(["JPEG", "AVIF"], 0, 0), "ae");
+  assert.equal(kept(["PNG", "JPEG", "AVIF", "GIF"], 0, 0), "");
+  ok("#1781 Find images: the tab's frames together and typed; the kept ones to Link grabber with the page's context");
 }
 assert.deepEqual(complaints, [], "nothing written to the console as an error or warning");
 

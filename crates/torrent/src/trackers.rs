@@ -313,6 +313,24 @@ pub fn add(bytes: &[u8], more: &[String]) -> Option<Vec<u8>> {
     Some(done)
 }
 
+/// Whether a .torrent is private (BEP 27: `private` is 1 in its info dictionary): its peers come
+/// from its own trackers only, so MDM never adds one to it (#1776). One whose info dictionary
+/// can't be read, or whose `private` is anything but a plain 0, counts as private; so does one
+/// that gives `info` twice and either says so.
+pub fn private(bytes: &[u8]) -> bool {
+    let Some(entries) = top_level(bytes) else {
+        return true;
+    };
+    let mut infos = entries.iter().filter(|(k, _)| *k == b"info").peekable();
+    if infos.peek().is_none() {
+        return true;
+    }
+    infos.any(|(_, info)| match top_level(info) {
+        None => true,
+        Some(fields) => fields.iter().any(|(k, v)| *k == b"private" && *v != b"i0e"),
+    })
+}
+
 fn push_string(out: &mut Vec<u8>, s: &[u8]) {
     out.extend_from_slice(s.len().to_string().as_bytes());
     out.push(b':');

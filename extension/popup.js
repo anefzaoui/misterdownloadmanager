@@ -1,7 +1,7 @@
 // The toolbar button's popup: whether the browser reaches Mister Download Manager (and, when it
 // doesn't, a link to the help page's section for why), then three tabs (#1496): Downloads (MDM's
 // newest downloads, popup-downloads.js), This page (the media the tab loaded, #38, each to
-// download; leaving its site to the browser, #404) and Settings (pausing capture, the browser's
+// download; its images to Link grabber, #1781; leaving its site to the browser, #404) and Settings (pausing capture, the browser's
 // proxy, the video button in full screen, where downloads go, #157; MDM's Options). background.js
 // does the work; popup-ui.js has the shared pieces.
 const ext = globalThis.browser ?? globalThis.chrome;
@@ -150,6 +150,7 @@ async function show() {
   $("page-none").hidden = Boolean(site);
   await showExcluded(site, s.connected);
   if (site) await showMedia(tab, s.connected);
+  showImages(site ? tab : null, s.connected);
 }
 
 // ---- This page --------------------------------------------------------------------------------
@@ -322,6 +323,122 @@ ext.storage.local.get({ mediaTitleName: false })
 // The list's names follow it at once.
 mediaTitleName.addEventListener("change", () =>
   ext.storage.local.set({ mediaTitleName: mediaTitleName.checked }).then(show, () => {}));
+
+// ---- the page's images (#1781) ------------------------------------------------------------------
+
+// Looked for only when "Find images" is clicked (background.js pageImages): the page's pictures at
+// the largest size it lists. The filters keep those at least as wide and as high as typed (one
+// whose size the page doesn't give is kept, and counted apart) and of the types left on; "Send to
+// Link grabber" hands the kept ones to the app, where the user ticks which to download.
+const IMAGE_ORDER = ["JPEG", "PNG", "WEBP", "GIF", "AVIF", "SVG", "BMP", "TIFF", "ICO", "HEIC", "JXL", "other"];
+const images = { tab: null, connected: false, found: null, off: new Set() };
+
+function imagesSaid(text, bad) {
+  const p = $("images-said");
+  p.hidden = !text;
+  p.textContent = text || "";
+  p.classList.toggle("bad", Boolean(bad));
+}
+
+// The smallest width or height typed: whole pixels, else 0 (none).
+function minOf(id) {
+  const n = Math.floor(Number($(id).value));
+  return Number.isFinite(n) && n > 0 ? n : 0;
+}
+
+// The pictures found that the filters keep: not of a type switched off, and as big as asked
+// where their size is known.
+function imagesKept(found, off, w, h) {
+  return found.filter((i) => !off.has(i.type) && (!i.w || i.w >= w) && (!i.h || i.h >= h));
+}
+
+// A button per type found (JPEG, PNG, ...; Other last), pressed while its pictures are kept.
+function imageChips() {
+  const box = $("images-types");
+  box.replaceChildren();
+  const counts = new Map();
+  for (const i of images.found || []) counts.set(i.type, (counts.get(i.type) || 0) + 1);
+  for (const type of IMAGE_ORDER.filter((x) => counts.has(x))) {
+    const chip = document.createElement("button");
+    chip.type = "button";
+    chip.className = "chip";
+    chip.dataset.type = type;
+    const name = document.createElement("span");
+    name.textContent = type === "other" ? t("popup_images_other") : type;
+    const n = document.createElement("span");
+    n.className = "n";
+    n.textContent = String(counts.get(type));
+    chip.append(name, n);
+    chip.addEventListener("click", () => {
+      if (images.off.has(type)) images.off.delete(type);
+      else images.off.add(type);
+      renderImages();
+    });
+    box.append(chip);
+  }
+}
+
+function renderImages() {
+  const found = images.found || [];
+  $("images-filters").hidden = $("images-send").hidden = !found.length;
+  if (!found.length) return;
+  const w = minOf("images-w");
+  const h = minOf("images-h");
+  const kept = imagesKept(found, images.off, w, h);
+  for (const chip of $("images-types").children) chip.setAttribute("aria-pressed", String(!images.off.has(chip.dataset.type)));
+  $("images-count").textContent = t("popup_images_count", String(kept.length), String(found.length));
+  const unsized = w || h ? kept.filter((i) => (w && !i.w) || (h && !i.h)).length : 0;
+  $("images-unsized").hidden = !unsized;
+  $("images-unsized").textContent = unsized ? t("popup_images_unsized", String(unsized)) : "";
+  $("images-send").disabled = !kept.length || !images.connected;
+}
+
+// The tab the popup is about (none: not a web page). Its pictures found on another page are
+// forgotten: found again when asked.
+function showImages(tab, connected) {
+  $("images").hidden = !tab;
+  images.connected = Boolean(connected);
+  if (!tab) return;
+  if (images.tab && (images.tab.id !== tab.id || images.tab.url !== tab.url)) {
+    images.found = null;
+    imagesSaid("");
+  }
+  images.tab = tab;
+  renderImages();
+}
+
+$("images-find").addEventListener("click", async () => {
+  const tab = images.tab;
+  if (!tab) return;
+  const find = $("images-find");
+  find.disabled = true;
+  imagesSaid("");
+  const r = await ask({ type: "images", tab: tab.id });
+  find.disabled = false;
+  images.found = r && Array.isArray(r.images) ? r.images : [];
+  images.off.clear();
+  imageChips();
+  renderImages();
+  if (!r || !r.readable) imagesSaid(t("popup_images_unreadable"), true);
+  else if (!images.found.length) imagesSaid(t("popup_images_none"));
+});
+for (const id of ["images-w", "images-h"]) $(id).addEventListener("input", renderImages);
+$("images-send").addEventListener("click", async () => {
+  const send = $("images-send");
+  const kept = imagesKept(images.found || [], images.off, minOf("images-w"), minOf("images-h"));
+  if (!kept.length || !images.tab) return;
+  send.disabled = true;
+  const r = await ask({ type: "images-send", tab: images.tab.id, links: kept.map((i) => i.url) });
+  renderImages();
+  if (r.ok) {
+    imagesSaid(t("popup_images_sent"));
+    return;
+  }
+  // Why, as the header says it (the help page's section opened beside, as the menu's does).
+  const key = `status_${String(r.why || "host_failed").replace(/-/g, "_")}`;
+  const why = t(key);
+  imagesSaid(why === key ? t("status_host_failed") : why, true);
+});
 
 // ---- Settings ---------------------------------------------------------------------------------
 

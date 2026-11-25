@@ -110,10 +110,10 @@
 #, machine
 @plural	{n} downloading|{n} downloading	{n} பதிவிறக்கம் செய்யப்படுகிறது|{n} பதிவிறக்கங்கள் செய்யப்படுகின்றன
 #. count in extracting archives (a download's log, the Archive password window)
-#. in a download's log, after extracting: entries of the archive not written (links, names that would leave the folder)
+#. in a download's log, after extracting: entries of the archive not written (links, names that would leave the folder, entries under a file of the archive where a folder should be)
 #. {n} = a number (keep the braces as they are)
 #, machine
-@plural	{n} entry was left out (a link, or a name leading outside the folder)|{n} entries were left out (links, or names leading outside the folder)	{n} உள்ளீடு விடுபட்டது (இணைப்பு அல்லது கோப்புறைக்கு வெளியே செல்லும் பெயர்)|{n} உள்ளீடுகள் விடுபட்டன (இணைப்புகள் அல்லது கோப்புறைக்கு வெளியே செல்லும் பெயர்கள்)
+@plural	{n} entry was left out (a link, a name leading outside the folder, or a file in its way)|{n} entries were left out (links, names leading outside the folder, or files in their way)	{n} உள்ளீடு விடப்பட்டது (ஒரு இணைப்பு, கோப்புறைக்கு வெளியே செல்லும் பெயர் அல்லது அதன் வழியில் உள்ள கோப்பு)|{n} உள்ளீடுகள் விடப்பட்டன (இணைப்புகள், கோப்புறைக்கு வெளியே செல்லும் பெயர்கள் அல்லது அவற்றின் வழியில் உள்ள கோப்புகள்)
 #. count in a dialog box
 #. the summary of downloads added together; after "12 downloads finished": {n} of them failed
 #. {n} = a number (keep the braces as they are)
@@ -171,6 +171,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} tracker added|{n} trackers added	{n} டிராக்கர் சேர்க்கப்பட்டது|{n} டிராக்கர்கள் சேர்க்கப்பட்டன
+#. count in the main window
+#. event log entry: trackers from the public tracker list (Torrent settings) were added to a torrent
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} tracker added from the public list|{n} trackers added from the public list	பொதுப் பட்டியலிலிருந்து {n} டிராக்கர் சேர்க்கப்பட்டது|பொதுப் பட்டியலிலிருந்து {n} டிராக்கர்கள் சேர்க்கப்பட்டன
 #. count in the Add torrent window
 #. where a magnet's peers came from: {n} = trackers asked; {peers} = "3 peers"
 #. {n} = a number (keep the braces as they are)
@@ -327,6 +332,9 @@
 #. why Part is greyed in Download video: the page is a playlist, whose videos are downloaded whole
 #, machine
 	A playlist's videos are downloaded whole	பிளேலிஸ்ட்டின் வீடியோக்கள் முழுமையாகப் பதிவிறக்கப்படுகின்றன
+#. message or event log entry in the main window
+#, machine
+	A private torrent: the public tracker list isn't added	ஒரு தனிப்பட்ட டோரண்ட்: பொது டிராக்கர் பட்டியல் சேர்க்கப்படவில்லை
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites: the tooltip of the profile box
 #, machine
@@ -467,6 +475,10 @@
 #. text in extension.rs
 #, machine
 	Add the free extension: files you download in your browser come here, and videos get a Download button.	இலவச நீட்டிப்பைச் சேர்க்கவும்: உங்கள் உலாவியில் பதிவிறக்கும் கோப்புகள் இங்கே வரும், மேலும் வீடியோக்களுக்கு பதிவிறக்கப் பொத்தான் கிடைக்கும்.
+#. text in the Add torrent window
+#. Torrent settings: add the trackers of a public tracker list (its address in the box below) to torrents that aren't private, so they find more peers
+#, machine
+	Add the trackers of this public list to public torrents:	இந்த பொதுப் பட்டியலின் டிராக்கர்களை பொது டோரண்டுகளில் சேர்க்கவும்:
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: add the torrents to the list without starting them
 #, machine
@@ -1121,12 +1133,21 @@
 #. remote control page (on a phone): what the ".torrent file" button does (screen readers)
 #, machine
 	Choose a .torrent file	.torrent கோப்பைத் தேர்வுசெய்யவும்
+#. message or event log entry in the main window
+#. title of the file dialog of View → Font → Choose a font file
+#. title of the message when the font picked in View → Font can't be used
+#, machine
+	Choose a font file	எழுத்துரு கோப்பைத் தேர்ந்தெடுக்கவும்
 #. text in helpers.rs
 #, machine
 	Choose a JavaScript runtime (Node.js, Deno, QuickJS or Bun)	JavaScript இயக்க நேரத்தைத் தேர்ந்தெடுக்கவும் (Node.js, Deno, QuickJS அல்லது Bun)
 #. text in langpick.rs
 #, machine
 	Choose a language	ஒரு மொழியைத் தேர்வுசெய்யவும்
+#. text in a dialog box
+#. the Columns dialog: what it is for, above its list of the download list's columns
+#, machine
+	Choose columns to show	காட்ட வேண்டிய நெடுவரிசைகளைத் தேர்வுசெய்யவும்
 #. text in langpick.rs
 #, machine
 	Choose the language Mister Download Manager shows its windows in:	Mister Download Manager சாளரங்களைக் காட்டும் மொழியைத் தேர்ந்தெடுக்கவும்:
@@ -1200,6 +1221,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Colombia	கொலம்பியா
+#. window title in a dialog box; text in a dialog box
+#. what a screen reader calls the Columns dialog's list of the download list's columns
+#, machine
+	Columns	நெடுவரிசைகள்
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2003,6 +2028,10 @@
 #. Torrent settings, at the bottom
 #, machine
 	Fetched again every 7 days. Changes apply when no torrent is running.	ஒவ்வொரு 7 நாட்களுக்கும் மீண்டும் பெறப்படும். எந்த டோரண்டும் இயங்காதபோது மாற்றங்கள் பொருந்தும்.
+#. text in the Add torrent window
+#. Torrent settings, under the public tracker list's address
+#, machine
+	Fetched once a day. Never added to private torrents.	ஒரு நாளைக்கு ஒருமுறை பெறப்படும். தனிப்பட்ட டோரண்டுகளில் ஒருபோதும் சேர்க்கப்படாது.
 #. text in helpers.rs
 #. helper name and what it does (ffmpeg is a program's name)
 #, machine
@@ -2135,6 +2164,14 @@
 #. text in categories.rs
 #, machine
 	Folder:	கோப்புறை:
+#. text in the Options window
+#. Options → Archives → Link grabber, one line with two boxes: an FTP folder or a web server's folder listing ("Index of") given to Link grabber is read with its subfolders: {depth} is a number box (how many levels of subfolders, 3 at first; 0 is the folder's own files only), {types} a text box (file types such as ISO ZIP; empty for every type)
+#, machine
+	Folders: {depth} levels deep, types: {types}	கோப்புறைகள்: {depth} நிலைகள் ஆழம், வகைகள்: {types}
+#. message or event log entry in the main window
+#. the kind of file View → Font → Choose a font file lists: TrueType and OpenType font files
+#, machine
+	Font files	எழுத்துரு கோப்புகள்
 #. text in finish.rs
 #. Snooze menu of the Download complete window: show no Download complete window for this long
 #, machine
@@ -3778,6 +3815,10 @@
 #. Link grabber, a link's status: the server has the file
 #, machine
 	Online	ஆன்லைனில்
+#. text in the Options window
+#. Options → Archives → Link grabber: the hover tip of the types box in "Folders: {depth} levels deep, types: {types}": only a folder's files of these types go into Link grabber; written as the File types page writes them
+#, machine
+	Only a folder's files of these types, written as on the File types page (ISO ZIP R0*). Empty: every type.	கோப்பு வகைகள் பக்கத்தில் எழுதப்பட்ட இந்த வகைகளின் கோப்புறையின் கோப்புகள் மட்டுமே (ISO ZIP R0*). காலியாக இருந்தால்: ஒவ்வொரு வகையும்.
 #. text in a download's Properties window
 #. tooltip of the greyed Move button in File Properties
 #, machine
@@ -4277,6 +4318,10 @@
 #. group box title: what the * in the address is replaced with (numbers or letters)
 #, machine
 	Replace asterisk to	நட்சத்திரத்தை இதற்கு மாற்றவும்
+#. button in a dialog box
+#. button in the Columns dialog: put the columns back as they first were (order, widths, all shown)
+#, machine
+	Reset	மீட்டமை
 #. text in crashui.rs
 #. crash report window button: start MDM again
 #, machine
@@ -4864,6 +4909,10 @@
 #. tooltip on the disabled Rename box when the file is one part of a split archive (.part1.rar, .7z.001…)
 #, machine
 	Split archive volumes keep their names for extraction	பிரிக்கப்பட்ட காப்பகத் தொகுதிகள் பிரித்தெடுப்பதற்காக தங்களின் பெயர்களைத் தக்கவைத்துக் கொள்கின்றன
+#. text in the Download video window
+#. checkbox in Download video: split the video into one file per chapter (the whole video is kept too)
+#, machine
+	Split into chapters	அத்தியாயங்களாகப் பிரிக்கவும்
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -4952,6 +5001,10 @@
 #. remote control page (on a phone): button: stop a queue
 #, machine
 	Stop	நிறுத்து
+#. text in a download's progress window
+#. button in the progress window of a download that never ends by itself (an internet radio, a camera feed: no size, can't be resumed): stop it and keep what has arrived as the finished file
+#, machine
+	Stop and keep	நிறுத்தி வைத்துக்கொள்ளவும்
 #. text in a download's progress window
 #. button in a live stream's progress window: stop recording it and keep what was recorded as a video file
 #, machine
@@ -5683,6 +5736,10 @@
 #, machine
 	This device's name	இந்தச் சாதனத்தின் பெயர்
 #. message or event log entry in the main window
+#. the message when a file picked in View → Font isn't a TrueType or OpenType font MDM can read
+#, machine
+	This file can't be used as a font.	இந்தக் கோப்பை எழுத்துருவாகப் பயன்படுத்த முடியாது.
+#. message or event log entry in the main window
 #. {error} is why, in English (a file that isn't a theme or a colour scheme, a colour missing)
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -5995,6 +6052,10 @@
 #. why Options → Remote → Pair a device... is greyed
 #, machine
 	Turn on the remote control first.	முதலில் ரிமோட் கட்டுப்பாட்டை இயக்கவும்.
+#. text in the Add torrent window
+#. Torrent settings, under the public tracker list's address: turning the switch off doesn't take away the trackers it added to torrents
+#, machine
+	Turned off, the trackers already added stay.	முடக்கப்பட்டால், ஏற்கனவே சேர்க்கப்பட்ட டிராக்கர்கள் அப்படியே இருக்கும்.
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -6703,6 +6764,11 @@
 #. said after Delete with files when some files stayed on the disk; {file} is the download's name; the files' paths follow it
 #, machine
 	{file}: these files stayed on the disk, because MDM didn't create them or another download uses them:	{file}: MDM இந்தக் கோப்புகளை உருவாக்காததால் அல்லது மற்றொரு பதிவிறக்கம் அவற்றைப் பயன்படுத்துவதால், இவை வட்டில் வைக்கப்பட்டன:
+#. message or event log entry in the main window
+#. Link grabber's Source line, after where the links came from: a folder (an FTP folder, a web server's "Index of" page) held more files or subfolders than Link grabber lists; {folder} is its name, {n} how many of its files are listed (10,000)
+#. {n} = a number (keep the braces as they are)
+#, machine
+	{folder}: only its first {n} files	{folder}: அதன் முதல் {n} கோப்புகள் மட்டுமே
 #. text in a download's progress window
 #. {have} and {total} = numbers of pieces; {size} = one piece's size
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
@@ -7023,6 +7089,10 @@ column	Q	Q
 #, machine
 column	Queue	வரிசை
 #. column title in the download list in the download list
+#. column title: the folder the download is saved in
+#, machine
+column	Save To	சேமிக்கும் இடம்
+#. column title in the download list in the download list
 #. column title: what a torrent has sent to peers against what it took
 #, machine
 column	Share ratio	பகிர்வு விகிதம்
@@ -7296,6 +7366,14 @@ extension	File deleted or moved	கோப்பு நீக்கப்பட�
 #, machine
 extension	File type	கோப்பு வகை
 #. text in the browser extension
+#. button in the This page tab of the toolbar button's popup: look for the pictures of the current web page (only when clicked); short
+#, machine
+extension	Find images	படங்களைக் கண்டறி
+#. text in the browser extension
+#. in the This page tab of the toolbar button's popup, before the Find images button; Link grabber is the name of the app's window that lists links to tick before downloading them
+#, machine
+extension	Find this page's pictures at the largest size it lists, then send the ones you want to Link grabber.	இந்தப் பக்கத்தின் படங்களை அது பட்டியலிடும் மிகப்பெரிய அளவில் கண்டறிந்து, நீங்கள் விரும்பியவற்றை இணைப்பு கிராப்பருக்கு அனுப்பவும்.
+#. text in the browser extension
 #. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) after Clear finished
 #, machine
 extension	Finished downloads cleared	முடிந்த பதிவிறக்கங்கள் அழிக்கப்பட்டன
@@ -7331,6 +7409,14 @@ extension	Hold Alt while clicking a link to let the browser download it.	ஒர�
 #. link under a connection problem in the toolbar button's popup, to the help page's section for it
 #, machine
 extension	How to fix it	எப்படிச் சரிசெய்வது
+#. text in the browser extension
+#. what a screen reader says for the row of buttons that keep or leave out each type of picture (JPEG, PNG, WEBP...), in the This page tab of the toolbar button's popup
+#, machine
+extension	Image types	பட வகைகள்
+#. text in the browser extension
+#. heading in the This page tab of the toolbar button's popup, over the part that finds the pictures of the current web page and sends them to the app
+#, machine
+extension	Images on this page	இந்தப் பக்கத்தில் உள்ள படங்கள்
 #. text in the browser extension
 #. pairing failed for another reason
 #, machine
@@ -7493,6 +7579,10 @@ extension	No download's name or address has “{words}”.	எந்தப் �
 #, machine
 extension	No downloads yet	இதுவரை பதிவிறக்கங்கள் இல்லை
 #. text in the browser extension
+#. shown in the This page tab of the toolbar button's popup when Find images found no picture on the current web page
+#, machine
+extension	No images found on this page.	இந்தப் பக்கத்தில் படங்கள் எதுவும் கண்டறியப்படவில்லை.
+#. text in the browser extension
 #. shown in the toolbar button's popup when the current web page hasn't loaded any video, sound or stream yet
 #, machine
 extension	No video or sound found on this page yet. Play it, then open this again.	இந்தப் பக்கத்தில் இன்னும் வீடியோ அல்லது ஒலி எதுவும் கிடைக்கவில்லை. அதை இயக்கிவிட்டு, இதை மீண்டும் திறக்கவும்.
@@ -7561,6 +7651,10 @@ extension	Options...	விருப்பங்கள்...
 #. in the list under the download button over a video, after a sound-only line's bitrate: the sound as the site sends it, not converted (e.g. '128 kbps · original'); lower case; one word
 #, machine
 extension	original	அசல்
+#. text in the browser extension
+#. button among the picture types (JPEG, PNG, WEBP...) in the This page tab of the toolbar button's popup: the pictures of any other or unknown type; short
+#, machine
+extension	Other	மற்றவை
 #. text in the browser extension
 #. button: pair this browser with the other MDM using the code
 #, machine
@@ -7647,6 +7741,10 @@ extension	Send downloads through this browser's proxy or VPN extension	இந்
 #, machine
 extension	Send downloads to	பதிவிறக்கங்களை இதற்கு அனுப்பவும்
 #. text in the browser extension
+#. button in the This page tab of the toolbar button's popup: send the selected pictures to the app's Link grabber window, where the user ticks which to download
+#, machine
+extension	Send to Link grabber	இணைப்பு கிராப்பருக்கு அனுப்பவும்
+#. text in the browser extension
 #. on the download button over a video right after it was clicked, while the download goes to the app; MDM is Mister Download Manager's short name, keep it as it is; short
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -7655,6 +7753,10 @@ extension	Sending to MDM...	MDM-க்கு அனுப்புகிறத�
 #. under the extension's name in the toolbar button's popup: downloads go to another Mister Download Manager, a server, at this address; short
 #, machine
 extension	Sending to {server}	{server}க்கு அனுப்புகிறது
+#. text in the browser extension
+#. shown in the This page tab of the toolbar button's popup after the pictures were sent to the app's Link grabber window
+#, machine
+extension	Sent to Link grabber: tick the ones to download there.	இணைப்பு கிராப்பருக்கு அனுப்பப்பட்டது: பதிவிறக்க வேண்டியவற்றை அங்கே டிக் செய்யவும்.
 #. text in the browser extension
 #. shown briefly on the download button after it was clicked; keep the name Mister Download Manager as it is
 #, machine
@@ -7686,6 +7788,23 @@ extension	Show in folder	கோப்புறையில் காட்டு
 #. screen readers' name of a download's Show in folder button in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads)
 #, machine
 extension	Show {file} in folder	{file}ஐ கோப்புறையில் காட்டு
+#. text in the browser extension
+#. in the This page tab of the toolbar button's popup, while a smallest width or height is set: how many of the selected pictures the page gives no size for (they are kept, not left out)
+#. {n} = a number (keep the braces as they are)
+#, machine
+extension	Size not given, kept: {n}	அளவு கொடுக்கப்படவில்லை, வைக்கப்பட்டது: {n}
+#. text in the browser extension
+#. what a screen reader says for the box of the smallest height of the pictures to keep, in the This page tab of the toolbar button's popup
+#, machine
+extension	Smallest height, in pixels	பிக்சல்களில் மிகச்சிறிய உயரம்
+#. text in the browser extension
+#. in the This page tab of the toolbar button's popup, before two boxes for the smallest width and height of the pictures to keep: 'Smallest size, in pixels [ ] × [ ]'; pictures smaller than that are left out; short
+#, machine
+extension	Smallest size, in pixels	பிக்சல்களில் மிகச்சிறிய அளவு
+#. text in the browser extension
+#. what a screen reader says for the box of the smallest width of the pictures to keep, in the This page tab of the toolbar button's popup
+#, machine
+extension	Smallest width, in pixels	பிக்சல்களில் மிகச்சிறிய அகலம்
 #. text in the browser extension
 #. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app isn't running
 #, machine
@@ -7719,6 +7838,10 @@ extension	That didn't work. Try again.	அது வேலை செய்யவ
 #. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when a button's download was removed meanwhile
 #, machine
 extension	That download is no longer in the list.	அந்தப் பதிவிறக்கம் இப்போது பட்டியலில் இல்லை.
+#. text in the browser extension
+#. shown in the This page tab of the toolbar button's popup when Find images can't look into the current page (a page of the browser's own, an add-on store)
+#, machine
+extension	The browser doesn't let add-ons read this page.	இந்த பக்கத்தை துணை நிரல்கள் படிக்க உலாவி அனுமதிப்பதில்லை.
 #. text in the browser extension
 #. in the toolbar button's popup, on a site where the Chrome Web Store's copy of the extension shows no download button; Help is the link at the bottom of the popup
 #, machine
@@ -7855,6 +7978,10 @@ extension	{file} removed from the list	{file} பட்டியலிலிர�
 #. question in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) before a download's file is deleted
 #, machine
 extension	{file} will be deleted from your computer, and the download taken off the list. This can't be undone.	{file} உங்கள் கணினியிலிருந்து நீக்கப்படும், மேலும் பதிவிறக்கம் பட்டியலிலிருந்து அகற்றப்படும். இதைச் செயல்தவிர்க்க முடியாது.
+#. text in the browser extension
+#. in the This page tab of the toolbar button's popup: how many of the pictures found pass the size and type filters, and will be sent
+#, machine
+extension	{shown} of {total} selected	{total} இல் {shown} தேர்ந்தெடுக்கப்பட்டன
 #. text in the browser extension
 #. a running download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): the time left, as a clock (minutes:seconds)
 #. {time} = a time of day (keep the braces as they are)
@@ -7998,6 +8125,12 @@ menu	&Automatic	தானி&யங்கு
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Classic	கிளாசிக்(&C)
+#. menu command in the main window
+#. header menu: opens the dialog that chooses the list's columns
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	&Columns...	நெடு&வரிசைகள்...
 #. menu command in standard windows
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -8018,6 +8151,11 @@ menu	&Download Now	இப்போது பதிவிறக்கு(&D)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Exit	வெளியேறு(&E)
+#. menu command in the main window
+#. View menu: submenu choosing the interface's own font and text size
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Font	&எழுத்துரு
 #. menu command in the main window
 #. verb: load downloads from a file
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
@@ -8097,6 +8235,11 @@ menu	&Stop All	அனைத்தையும் நிறுத்து(&S)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Stop Download	பதிவிறக்கத்தை நிறுத்து(&S)
+#. menu command in the main window
+#. View → Font: the computer's own font, the default (Segoe UI on Windows)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&System font	க&ணினி எழுத்துரு
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -8243,6 +8386,12 @@ menu	C&ustomize URL List...	URL பட்டியலைத் &தனிப்�
 #, machine
 menu	Check for &updates...	&புதுப்பிப்புகளைச் சரிபார்க்கவும்...
 #. menu command in the main window
+#. View → Font: a TrueType or OpenType font file on disk to draw the interface's text in
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Choose a font &file...	எ&ழுத்துரு கோப்பைத் தேர்ந்தெடுக்கவும்...
+#. menu command in the main window
 #. View → Theme: MDM's own look, the default (IDM's layout, Windows 11's controls)
 #, machine
 menu	Classic	கிளாசிக்
@@ -8331,10 +8480,6 @@ menu	Find Next (F3)	அடுத்ததைக் கண்டறியவு�
 #. right-click → Torrent, a choice with a check mark (with Download in order): each file's first and last pieces first, which a video player needs to start
 #, machine
 menu	First and last pieces first	முதல் மற்றும் கடைசிப் பகுதிகள் முதலில்
-#. menu command in the main window
-#. noun: the list's font (submenu)
-#, machine
-menu	Font	எழுத்துரு
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it

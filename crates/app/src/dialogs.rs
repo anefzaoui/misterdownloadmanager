@@ -964,6 +964,16 @@ impl AddUrl {
         if !self.address.is_empty() {
             return;
         }
+        // A wrapped link (#1782) is shown as the address inside it, the one that will be
+        // downloaded.
+        let inner;
+        let clip = match crate::transfer::unwrapped(clip) {
+            crate::transfer::Wrapped::Address(address) => {
+                inner = address;
+                inner.as_str()
+            }
+            _ => clip,
+        };
         if let Ok(u) = Url::parse(clip)
             && (mdm_engine::supported(&u) || u.scheme() == "magnet")
         {
@@ -3291,6 +3301,7 @@ impl TurnOffCountdown {
 
     /// Shut down, sleep or hibernate now.
     pub fn execute(&self) {
+        #[cfg(not(target_os = "android"))]
         use crate::queue::TurnOff;
         #[cfg(windows)]
         {
@@ -3345,6 +3356,15 @@ impl TurnOffCountdown {
             cmd.args(["-e", script]);
             run_or_tell(cmd);
             let _ = self.force;
+        }
+        // Android: no app may shut the phone down or put it to sleep.
+        #[cfg(target_os = "android")]
+        {
+            let _ = (self.mode, self.force);
+            tell_turn_off_failed(
+                // i18n: why the phone could not be turned off after the queue (fills {error}, Android)
+                crate::i18n::t("Android doesn't let apps turn the phone off").to_owned(),
+            );
         }
     }
 }
@@ -3506,6 +3526,273 @@ it from Mister Download Manager list of downloads?",
     }
 }
 
+// ---- Columns ------------------------------------------------------------------------------------
+
+/// The Columns dialog's rows: as tall as any list's, every column in view (no scroll bar).
+const COLUMNS_ROW: f32 = 17.0;
+/// Its list's box: every row, its frame and a pixel each side.
+const COLUMNS_LIST_H: f32 = COLUMNS_ROW * crate::list::COLS as f32 + 4.0;
+/// Where the list starts, under the line that says what to do.
+const COLUMNS_LIST_Y: f32 = 30.0;
+/// OK and Cancel, under the list.
+const COLUMNS_BUTTONS_Y: f32 = COLUMNS_LIST_Y + COLUMNS_LIST_H + 12.0;
+
+/// What the Columns dialog hands back on OK: the order, which columns show, and whether Reset
+/// was pressed (the caller then puts the widths back too).
+pub type ColumnsChoice = (Vec<usize>, [bool; crate::list::COLS], bool);
+
+/// "Columns" (the header's right-click → Columns..., View → Customize URL List...): which columns
+/// the download list shows, and in what order. Its list is the shared row list: Up, Down, Home,
+/// End and typing pick a column, Space or its box shows or hides it, Alt+Up and Alt+Down (or
+/// Move up, Move down) move it. File Name always shows. Works on a copy until OK.
+pub struct Columns {
+    order: Vec<usize>,
+    visible: [bool; crate::list::COLS],
+    rows: winui::RowList,
+    /// The list had the keys last pass: Alt+Up and Alt+Down are its, not the window's.
+    list_focused: bool,
+    reset: bool,
+    focus_requested: bool,
+    /// The buttons' column, as wide as its longest label in this language (95 at least): the
+    /// window grows by what it takes beyond that, the list keeps its width. Measured as the
+    /// window is drawn (a new window is hidden until its second frame, so it opens at its size).
+    side_w: f32,
+}
+
+impl Columns {
+    pub fn new(list: &crate::list::ListState) -> Self {
+        let mut rows = winui::RowList::default();
+        rows.selected = Some(0);
+        Columns {
+            order: list.order.clone(),
+            visible: list.visible,
+            rows,
+            list_focused: false,
+            reset: false,
+            focus_requested: false,
+            side_w: 95.0,
+        }
+    }
+
+    /// A column's name as the header says it (the narrow Q by its whole name).
+    pub fn name(slot: usize) -> String {
+        let t = crate::list::TITLES[slot];
+        if t == "Q" {
+            crate::i18n::tc("column", "Queue").to_owned()
+        } else {
+            crate::i18n::tc("column", t).to_owned()
+        }
+    }
+
+    /// The selected column one place up (`-1`) or down (`1`), when it can go.
+    fn shift(&mut self, by: isize) {
+        let Some(i) = self.rows.selected else { return };
+        let to = i as isize + by;
+        if to < 0 || to as usize >= self.order.len() {
+            return;
+        }
+        self.order.swap(i, to as usize);
+        self.rows.selected = Some(to as usize);
+    }
+
+    pub fn show(&mut self, ctx: &egui::Context) -> Outcome<ColumnsChoice> {
+        let out = window(
+            ctx,
+            "columns",
+            "Columns",
+            [265.0 + self.side_w, COLUMNS_BUTTONS_Y + 32.0],
+            false,
+            winui::BG(),
+            |ui, o| {
+                let p = ui.painter().clone();
+                // i18n: button in the Columns dialog: move the selected column one place towards the start of the list
+                const UP: &str = crate::i18n::mark("Move up");
+                // i18n: button in the Columns dialog: move the selected column one place towards the end of the list
+                const DOWN: &str = crate::i18n::mark("Move down");
+                // i18n: button in the Columns dialog: put the columns back as they first were (order, widths, all shown)
+                const RESET: &str = crate::i18n::mark("Reset");
+                let side_w = [UP, DOWN, RESET]
+                    .iter()
+                    .map(|l| winui::button_width(&p, l, 95.0))
+                    .fold(95.0, f32::max);
+                if side_w != self.side_w {
+                    self.side_w = side_w;
+                    ui.ctx().request_repaint();
+                }
+                let right = 265.0 + self.side_w;
+                winui::text(
+                    &p,
+                    o.x + 11.0,
+                    o.y + 20.0,
+                    // i18n: the Columns dialog: what it is for, above its list of the download list's columns
+                    crate::i18n::t("Choose columns to show"),
+                    winui::TEXT(),
+                );
+                let n = self.order.len();
+                // Taken before the list sees them: plain Up and Down are its own.
+                let (lift, lower) = if self.list_focused {
+                    ui.input_mut(|i| {
+                        (
+                            i.consume_key(egui::Modifiers::ALT, egui::Key::ArrowUp),
+                            i.consume_key(egui::Modifiers::ALT, egui::Key::ArrowDown),
+                        )
+                    })
+                } else {
+                    (false, false)
+                };
+                if lift {
+                    self.shift(-1);
+                }
+                if lower {
+                    self.shift(1);
+                }
+                // i18n: what a screen reader calls the Columns dialog's list of the download list's columns
+                self.rows.name = crate::i18n::t("Columns");
+                let (order, visible) = (&self.order, &mut self.visible);
+                let mut toggle = None;
+                let ev = winui::row_list(
+                    ui,
+                    "columns-rows",
+                    r(o, 11.0, COLUMNS_LIST_Y, 232.0, COLUMNS_LIST_H),
+                    n,
+                    COLUMNS_ROW,
+                    &mut self.rows,
+                    |ui, clip, i, row, look| {
+                        let slot = order[i];
+                        let name = Self::name(slot);
+                        let glyph = egui::pos2(row.left() + 5.0, row.top() + 2.0);
+                        if slot == 0 {
+                            // File Name always shows: its box ticked and greyed.
+                            winui::check_box_glyph(
+                                clip,
+                                winui::rect(egui::Rect::from_min_size(glyph, vec2(13.0, 13.0))),
+                                true,
+                                winui::State::Disabled,
+                            );
+                        } else {
+                            let mut on = visible[slot];
+                            if winui::row_check(
+                                ui,
+                                clip,
+                                glyph,
+                                &mut on,
+                                &name,
+                                ("columns-row", slot),
+                            ) {
+                                toggle = Some(i);
+                            }
+                        }
+                        look.name = name.clone();
+                        winui::fit(
+                            ui,
+                            clip,
+                            glyph.x + 19.0,
+                            row.top() + 12.0,
+                            &name,
+                            look.ink,
+                            row.right() - 4.0,
+                            ("columns-name", slot),
+                        );
+                    },
+                );
+                self.list_focused = ev.focused;
+                if ev.focused {
+                    self.rows
+                        .type_to(ui, "columns-rows", n, |i| Self::name(self.order[i]));
+                }
+                if let Some(i) = toggle.or(ev.space).or(ev.double_clicked) {
+                    let slot = self.order[i];
+                    if slot != 0 {
+                        self.visible[slot] = !self.visible[slot];
+                    }
+                }
+                let at = self.rows.selected;
+                let can_up = at.is_some_and(|i| i > 0);
+                let can_down = at.is_some_and(|i| i + 1 < n);
+                let state = |on: bool| {
+                    if on {
+                        ButtonKind::Normal
+                    } else {
+                        ButtonKind::Disabled
+                    }
+                };
+                if winui::button(
+                    ui,
+                    r(o, 254.0, COLUMNS_LIST_Y, self.side_w, 21.0),
+                    UP,
+                    state(can_up),
+                    false,
+                    None,
+                )
+                .clicked()
+                {
+                    self.shift(-1);
+                }
+                if winui::button(
+                    ui,
+                    r(o, 254.0, COLUMNS_LIST_Y + 27.0, self.side_w, 21.0),
+                    DOWN,
+                    state(can_down),
+                    false,
+                    None,
+                )
+                .clicked()
+                {
+                    self.shift(1);
+                }
+                if winui::button(
+                    ui,
+                    r(o, 254.0, COLUMNS_LIST_Y + 62.0, self.side_w, 21.0),
+                    RESET,
+                    ButtonKind::Normal,
+                    false,
+                    None,
+                )
+                .clicked()
+                {
+                    let fresh = crate::list::ListState::default();
+                    self.order = fresh.order;
+                    self.visible = fresh.visible;
+                    self.reset = true;
+                    self.rows.selected = Some(0);
+                }
+                self.visible[0] = true;
+                let ok = winui::button(
+                    ui,
+                    r(o, right - 172.0, COLUMNS_BUTTONS_Y, 73.0, 21.0),
+                    "OK",
+                    ButtonKind::Default,
+                    false,
+                    None,
+                )
+                .clicked();
+                let cancel = winui::button(
+                    ui,
+                    r(o, right - 88.0, COLUMNS_BUTTONS_Y, 73.0, 21.0),
+                    "Cancel",
+                    ButtonKind::Normal,
+                    false,
+                    None,
+                )
+                .clicked();
+                if cancel || winui::escape_pressed(ui) {
+                    Outcome::Closed
+                } else if ok || winui::enter_pressed(ui) {
+                    Outcome::Done((self.order.clone(), self.visible, self.reset))
+                } else {
+                    Outcome::Open
+                }
+            },
+        );
+        if matches!(out, Outcome::Open) && !self.focus_requested && focus_when_shown(ctx, "columns")
+        {
+            focus(ctx, dialog_viewport("columns"));
+            self.focus_requested = true;
+        }
+        out
+    }
+}
+
 /// Minimize a window as its title bar's Minimize asks (`hwnd`: the window, once known). On
 /// Windows by the system's own command, as the system's title bar sends it, so a window whose
 /// title bar is ours animates down to the taskbar like any other (#874).
@@ -3525,7 +3812,7 @@ pub fn minimize(ctx: &egui::Context, hwnd: Option<isize>) {
 /// to nothing while it sat behind the main window.
 pub fn raise(ctx: &egui::Context, viewport: ViewportId) {
     ctx.send_viewport_cmd_to(viewport, egui::ViewportCommand::Minimized(false));
-    // Off-screen test runs never take the focus (main.rs `offscreen`), as the other paths here.
+    // Off-screen test runs never take the focus (lib.rs `offscreen`), as the other paths here.
     if !crate::offscreen() {
         #[cfg(target_os = "macos")]
         crate::unix::macos_activate_app();
@@ -3543,7 +3830,7 @@ pub fn raise(ctx: &egui::Context, viewport: ViewportId) {
 /// to the input of the window in front; a refusal even then flashes its taskbar button, as
 /// Windows means a program in the background to ask. Linux and macOS: winit's focus, which sends
 /// no input (X11 `_NET_ACTIVE_WINDOW`, macOS `activateIgnoringOtherApps`, nothing on Wayland).
-/// Off-screen test runs never take the focus (main.rs `offscreen`).
+/// Off-screen test runs never take the focus (lib.rs `offscreen`).
 pub fn focus(ctx: &egui::Context, viewport: ViewportId) {
     if crate::offscreen() {
         return;
@@ -3633,6 +3920,7 @@ pub fn dialog_viewport(id: &str) -> ViewportId {
 
 /// Run a shut down / sleep command and say when it fails (hibernation off, a program
 /// holding it up): it did nothing, silently.
+#[cfg(not(target_os = "android"))]
 fn run_or_tell(mut cmd: std::process::Command) {
     std::thread::spawn(move || match cmd.output() {
         Ok(out) if out.status.success() => {}
@@ -4347,15 +4635,18 @@ impl DeleteCategory {
                     // i18n: choice in Delete category: its downloads leave the list (not their files; running ones move to General)
                     "Remove its downloads from the list (running ones move to General)",
                 );
-                if winui::radio_light(ui, o + vec2(14.0, 52.0), !self.remove, to_general, true)
-                    .clicked()
-                {
+                let keep =
+                    winui::radio_light(ui, o + vec2(14.0, 52.0), !self.remove, to_general, true);
+                if keep.clicked() {
                     self.remove = false;
                 }
-                if winui::radio_light(ui, o + vec2(14.0, 75.0), self.remove, off_list, true)
-                    .clicked()
-                {
+                let remove =
+                    winui::radio_light(ui, o + vec2(14.0, 75.0), self.remove, off_list, true);
+                if remove.clicked() {
                     self.remove = true;
+                }
+                if let Some(i) = winui::radio_keys(ui, &[keep, remove]) {
+                    self.remove = i == 1;
                 }
                 // As wide as their labels in this language (#192).
                 let [delete_at, cancel_at] = winui::buttons_to_right(
@@ -5272,6 +5563,21 @@ mod tests {
         assert_eq!(fill("magnet:?xt=urn:btih:ab"), "magnet:?xt=urn:btih:ab");
         assert_eq!(fill("some words"), "");
         assert_eq!(fill("mailto:a@b.example"), "");
+        // #1782: a wrapped link is shown as the address inside it; one with nothing MDM
+        // downloads inside is not taken.
+        assert_eq!(
+            fill("thunder://QUFodHRwOi8vZGwuZXhhbXBsZS5jb20vZmlsZXMvc2V0dXAuZXhlWlo="),
+            "http://dl.example.com/files/setup.exe"
+        );
+        assert_eq!(
+            fill("QQDL://ZnRwOi8vZnRwLmV4YW1wbGUuY29tL3B1Yi9kaXNrMS5pc28="),
+            "ftp://ftp.example.com/pub/disk1.iso"
+        );
+        assert_eq!(
+            fill("thunder://ZnRwOi8vZnRwLmV4YW1wbGUuY29tL3B1Yi9kaXNrMS5pc28="),
+            ""
+        );
+        assert_eq!(fill("flashget://not*base64"), "");
     }
 
     /// #511: an address with an Options → Sites Logins entry shows that login in "Use

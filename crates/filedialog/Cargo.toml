@@ -1,0 +1,15 @@
+[package]
+name = "mdm-filedialog"
+description = "The system file and folder dialogs: rfd on desktops, a stand-in that never opens on Android"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+authors.workspace = true
+publish.workspace = true
+
+[target.'cfg(not(target_os = "android"))'.dependencies]
+rfd = "0.18.0"
+
+[lints]
+workspace = true

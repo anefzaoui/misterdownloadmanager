@@ -113,7 +113,7 @@ A page with a PDF viewer of its own (its own page numbers, zoom and buttons, whi
 The extension's button shows whether the browser reaches MDM. A red **!** means it doesn't; click the button to see why, and **How to fix it** opens the matching section of [The browser and MDM aren't connected](browser-help.md). While MDM downloads, the button shows how many downloads are running, in blue; **II** means taking downloads is paused. Its popup says under MDM's name whether it is connected, and to which version; the gear opens MDM's **Options**. It has three tabs:
 
 - **Downloads**: MDM's newest downloads (see [Recent downloads](#recent-downloads), below).
-- **This page**: **Media on this page**, what the page has loaded that MDM can download (see below), and **Never take downloads from** the current site, a switch: on, the site goes on MDM's excluded sites and the popup says **Downloads from** the site **stay with the browser**, whenever you open it there; off takes it off the list again. A site that a pattern of your own in Options excludes (`*.example.com`) shows the switch on, and greyed: Options holds it.
+- **This page**: **Media on this page**, what the page has loaded that MDM can download (see below), **Images on this page** ([below](#images-on-this-page)), and **Never take downloads from** the current site, a switch: on, the site goes on MDM's excluded sites and the popup says **Downloads from** the site **stay with the browser**, whenever you open it there; off takes it off the list again. A site that a pattern of your own in Options excludes (`*.example.com`) shows the switch on, and greyed: Options holds it.
 - **Settings**: **Take downloads from this browser** (off pauses: every download stays with the browser until you turn it on again), the browser's proxy (see below), **Hide the download button in full screen**, **Send downloads to** (this computer or another MDM, see [Remote control](remote-control.md)), **Options...** and **Open Mister Download Manager**.
 
 ### Recent downloads
@@ -195,6 +195,35 @@ This needs nothing more from you: the extension already sees what the browser do
 to hand downloads over. What it notes stays in the browser's memory and is forgotten when the
 browser closes.
 
+## Images on this page
+
+To download a gallery, or every picture of a page, open the toolbar button's **This page** tab and
+click **Find images**. Nothing is looked for until you click it. The extension finds:
+
+- each picture the page shows, at the largest size the page lists for it: a picture offered in
+  several sizes (a `srcset`, a `<picture>` with its sources, `1x` and `2x`) is found once, at its
+  largest, not at the size the page happens to show;
+- the picture a page loads only when you scroll to it (its `data-src` or `data-srcset`), beside
+  the placeholder it shows until then;
+- links that go straight to a picture, such as a thumbnail linking to its full size.
+
+Each address is found once, in the page and in its frames, as a full address. Pictures written
+into the page itself (`data:` addresses) and those a script made (`blob:`) aren't files a server
+has, so they're left out. Background pictures set by a page's styles aren't looked for.
+
+Then choose which to send:
+
+- **At least** a width and a height, in pixels, to leave out icons and thumbnails. A picture whose
+  size the page doesn't give (one not loaded yet, one only linked to) is kept, and the line under
+  the filters says how many there are.
+- A button for each type found (**JPEG**, **PNG**, **WEBP**, **GIF**, **AVIF**, **SVG**, ...,
+  **Other**), with how many of each: click one to leave that type out, again to take it back. The
+  type is what the address says (its file extension, or the format an image service names in it).
+
+**Send to Link grabber** hands the kept ones to MDM's **[Link grabber](link-grabber.md)**, the way
+**Download all links** does, with the page as their referrer and your cookies for it. Link grabber
+looks each one up for its real name and size, and you tick there the ones to download.
+
 ## Right-click: Download with Mister Download Manager
 
 Right-click a link, a video, a sound or a picture and choose **Download with Mister Download Manager**. MDM downloads it whatever its type: you asked for it, so the file types list and the excluded sites don't apply here (they only decide which downloads MDM takes over by itself). A video that plays as a stream goes to the **Download video** window with the stream its player loaded (HLS or DASH), as the [button over videos](#the-download-button-over-videos) sends it, with your cookies for the stream's server and what the browser sent with the stream (its referrer and origin, else the page as the referrer).
@@ -210,7 +239,7 @@ If MDM can't be reached when you choose one of these, the help page opens at the
 
 Point at a video on a web page and a small tab appears at its top corner: MDM's logo and a green **Download video** part, an arrow for its list and **✕** to hide it on this video. It follows Windows' light or dark mode. As it appears, MDM looks the video up (when MDM is running), and the button then names the best quality it found (**1080p**, **4K**). Click it and that quality downloads at once, with only its progress window; MDM's main window stays where it is (with **Do not start downloading, only add files to the queue** on in Options, it goes in the queue instead). Clicking while MDM is still looking works too: it takes the best quality as soon as it is known. A video that plays a plain file (not a stream) needs no look-up: the button shows its picture size and downloads the file itself. When nothing could be looked up (MDM wasn't running, yt-dlp isn't installed, the page is a playlist, or you send downloads to another MDM), a click opens the **Download video from a page** window, which says why and offers what to do.
 
-It takes the video you clicked: its own file when it plays one, or the stream the player loaded (HLS or DASH), else the page. In a feed it takes the post the video sits in. When MDM finds nothing there (a feed that names no post, a post or a site yt-dlp can't read, such as Douyin's recommended videos), the button offers what the tab played for that video instead: the file or the stream whose length is the video's, never the next video the feed loaded meanwhile. When more than one could be it, it says **Can't tell which video this is** rather than guess; the toolbar button's [Media on this page](#media-on-this-page) lists what the page loaded. Embedded players work too, and your sign-in for the site, the page that embeds the player and your browser's User-Agent go with it, so videos for members, or that play only on the site that embeds them, can be downloaded. A stream goes with what the browser sent when the player asked for it, its referrer, its origin and its cookies (a player embedded from another site may have cookies the browser keeps for that page only), and MDM sends them again with each of its playlists and pieces: a site's video server that serves its own pages' players only lets MDM through as well. A video the site names (YouTube, Vimeo and the others yt-dlp reads) keeps its own title; a stream known by no title of its own (its address is only `playlist.m3u8`) is named after the page you're on, without the site's name at its end: on a page titled `A film | Example`, it's `A film.mp4`, even when the player is embedded from another site. Sound players get the button too.
+It takes the video you clicked: its own file when it plays one, or the stream the player loaded (HLS or DASH), else the page. A video that hasn't started yet, on a site yt-dlp doesn't read, has loaded no stream: the button then takes the stream address the page wrote for its player (an HLS or DASH playlist in its scripts or the player's attributes; the master playlist, else the best quality it names), on a page with one video, so you don't need to play it first. It only asks for addresses the page names. In a feed it takes the post the video sits in. When MDM finds nothing there (a feed that names no post, a post or a site yt-dlp can't read, such as Douyin's recommended videos), the button offers what the tab played for that video instead: the file or the stream whose length is the video's, never the next video the feed loaded meanwhile. When more than one could be it, it says **Can't tell which video this is** rather than guess; the toolbar button's [Media on this page](#media-on-this-page) lists what the page loaded. Embedded players work too, and your sign-in for the site, the page that embeds the player and your browser's User-Agent go with it, so videos for members, or that play only on the site that embeds them, can be downloaded. A stream goes with what the browser sent when the player asked for it, its referrer, its origin and its cookies (a player embedded from another site may have cookies the browser keeps for that page only), and MDM sends them again with each of its playlists and pieces: a site's video server that serves its own pages' players only lets MDM through as well. A video the site names (YouTube, Vimeo and the others yt-dlp reads) keeps its own title; a stream known by no title of its own (its address is only `playlist.m3u8`) is named after the page you're on, without the site's name at its end: on a page titled `A film | Example`, it's `A film.mp4`, even when the player is embedded from another site. Sound players get the button too.
 
 After a click it says what happened, in its own colour:
 

@@ -48,6 +48,12 @@ Download
 When every segment is done, the part file is checked against the expected size and renamed into
 place; the file's date can follow the server's.
 
+An answer with no size and no ranges goes on one connection, written in order (`single_stream`),
+and may never end (an internet radio, a camera feed: `Snapshot::endless`). `Download::keep` ends
+it where it is, and what arrived is finished as if the server had ended it there (#1780); the
+app's stops by hand call it (`Job::save`), as they save a live recording, and Cancel still
+cancels.
+
 A finished file whose archive test found damage it could place (a ZIP's entries, #1661: the app's
 `archtest.rs`) is made a part file again (`repair.rs`): its last resume state, handed back by a
 download asked to keep it (`Options::keep_state`, `Snapshot::kept`), is written back with only the
@@ -67,14 +73,25 @@ an address it then refused; Rapidgator's page is the browser's tab the download 
 `Options::page`), with pure functions tested without a network. A page whose file comes only once
 its form is sent back (LuluStream's quality page) says so with `PageSays::Form`: `get` posts that
 form's fields (`application/x-www-form-urlencoded`) with its next request only and reads the
-answer as a page; a site that answers with its form again is posted again, up to
-`MAX_FORM_POSTS`, and then refuses in the site's name (`sites::form_refused`). The lab server
+answer as a page; a site that answers with its form again is posted again after a short, growing
+pause (`FORM_REPOST_PAUSE`), up to `MAX_FORM_POSTS`, and then refuses in the site's name
+(`sites::form_refused`). The lab server
 plays such a site on its real host names for the end-to-end tests (`labserver/src/drive.rs`,
 `labserver/src/mediafire.rs`, `labserver/src/rapidgator.rs`, `labserver/src/lulustream.rs`).
 
 FTP and FTPS (`ftp.rs`) go through the same planner, workers and state: a segment is `REST` +
 `RETR` on a control session instead of a ranged `GET`, `SIZE` and `MDTM` stand in for the
 headers, and sessions are pooled per download and reused between segments.
+
+A folder given to Link grabber (#1774, `folder.rs`) is read with its subfolders, breadth first:
+an FTP folder by `MLSD`, else `LIST` (`ftp::Lister`, one session for every folder), a web
+server's listing page ("Index of", recognized by its title) as `page_links` reads a page. An
+entry is a name in the folder, matched by name: a link elsewhere (another host, the folder above,
+a query, a deeper path) or a name that isn't plain is no entry, and FTP's symbolic links aren't
+followed. The depth asked (at most `MAX_DEPTH`), `MAX_FOLDERS`, `MAX_FILES` and each listing's
+size bound it. The app makes each folder's files a package whose folder is the tree's under the
+download folder (`grabber.rs`); the lab server serves made-up trees, a hostile one and a huge one
+(`labserver/src/tree.rs`) over HTTP and FTP for the end-to-end tests.
 
 ## App
 
@@ -150,6 +167,16 @@ The fork's eframe tells MDM through its viewport hooks (`gl_paint_failed`, #1448
 View → Interface size (`scale.rs`, #262) is egui's zoom factor over the display's own scale:
 every window is laid out in points, so it opens that much larger; one larger than the screen
 scrolls.
+
+View → Font (`theme.rs`, #1489) is separate: the font file the interface's text is drawn in
+(`interface_font` in `settings.json`; Segoe UI, the system's own, unless chosen) and
+`interface_text_size`,
+the percent of the theme's sizes the text is drawn at. `theme::font_size` is the one place the
+sizes come from, for egui's text styles and for the custom-drawn Win32 controls alike
+(`winui::tahoma`); the layout's own measurements don't change, so text can overflow where a
+window is tight, but nothing moves. On Windows the DirectWrite rasterizer
+(`win32::classic_text`) draws the chosen file too, and the glyph atlas is rebuilt when the font
+changes.
 
 ### Data
 

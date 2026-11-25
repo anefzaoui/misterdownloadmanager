@@ -110,10 +110,10 @@
 #, machine
 @plural	{n} downloading|{n} downloading	正在下載 {n} 個檔案
 #. count in extracting archives (a download's log, the Archive password window)
-#. in a download's log, after extracting: entries of the archive not written (links, names that would leave the folder)
+#. in a download's log, after extracting: entries of the archive not written (links, names that would leave the folder, entries under a file of the archive where a folder should be)
 #. {n} = a number (keep the braces as they are)
 #, machine
-@plural	{n} entry was left out (a link, or a name leading outside the folder)|{n} entries were left out (links, or names leading outside the folder)	已略過 {n} 個項目（連結，或會導致路徑超出資料夾範圍的名稱）
+@plural	{n} entry was left out (a link, a name leading outside the folder, or a file in its way)|{n} entries were left out (links, names leading outside the folder, or files in their way)	已省略 {n} 個項目 (連結、導向資料夾外部的名稱，或其路徑中的檔案)
 #. count in a dialog box
 #. the summary of downloads added together; after "12 downloads finished": {n} of them failed
 #. {n} = a number (keep the braces as they are)
@@ -171,6 +171,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} tracker added|{n} trackers added	已新增 {n} 個追蹤器
+#. count in the main window
+#. event log entry: trackers from the public tracker list (Torrent settings) were added to a torrent
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} tracker added from the public list|{n} trackers added from the public list	已從公開清單新增 {n} 個追蹤器
 #. count in the Add torrent window
 #. where a magnet's peers came from: {n} = trackers asked; {peers} = "3 peers"
 #. {n} = a number (keep the braces as they are)
@@ -327,6 +332,9 @@
 #. why Part is greyed in Download video: the page is a playlist, whose videos are downloaded whole
 #, machine
 	A playlist's videos are downloaded whole	播放清單中的影片會完整下載
+#. message or event log entry in the main window
+#, machine
+	A private torrent: the public tracker list isn't added	私人 torrent：未新增公開追蹤器清單
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites: the tooltip of the profile box
 #, machine
@@ -467,6 +475,10 @@
 #. text in extension.rs
 #, machine
 	Add the free extension: files you download in your browser come here, and videos get a Download button.	新增免費擴充功能：在瀏覽器中下載的檔案會傳送到這裡，影片也會顯示「下載」按鈕。
+#. text in the Add torrent window
+#. Torrent settings: add the trackers of a public tracker list (its address in the box below) to torrents that aren't private, so they find more peers
+#, machine
+	Add the trackers of this public list to public torrents:	將此公開清單的追蹤器新增至公開 torrent：
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: add the torrents to the list without starting them
 #, machine
@@ -1121,12 +1133,21 @@
 #. remote control page (on a phone): what the ".torrent file" button does (screen readers)
 #, machine
 	Choose a .torrent file	選擇 .torrent 檔案
+#. message or event log entry in the main window
+#. title of the file dialog of View → Font → Choose a font file
+#. title of the message when the font picked in View → Font can't be used
+#, machine
+	Choose a font file	選擇字型文件
 #. text in helpers.rs
 #, machine
 	Choose a JavaScript runtime (Node.js, Deno, QuickJS or Bun)	選擇 JavaScript 執行階段 (Node.js、Deno、QuickJS 或 Bun)
 #. text in langpick.rs
 #, machine
 	Choose a language	選擇語言
+#. text in a dialog box
+#. the Columns dialog: what it is for, above its list of the download list's columns
+#, machine
+	Choose columns to show	選擇要顯示的欄位
 #. text in langpick.rs
 #, machine
 	Choose the language Mister Download Manager shows its windows in:	選擇 Mister Download Manager 顯示視窗的語言：
@@ -1195,6 +1216,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Colombia	哥倫比亞
+#. window title in a dialog box; text in a dialog box
+#. what a screen reader calls the Columns dialog's list of the download list's columns
+#, machine
+	Columns	欄位
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -1994,6 +2019,10 @@
 #. Torrent settings, at the bottom
 #, machine
 	Fetched again every 7 days. Changes apply when no torrent is running.	每 7 天重新擷取一次。變更會在沒有 torrent 執行時套用。
+#. text in the Add torrent window
+#. Torrent settings, under the public tracker list's address
+#, machine
+	Fetched once a day. Never added to private torrents.	每天擷取一次。絕不新增至私人 torrent。
 #. text in helpers.rs
 #. helper name and what it does (ffmpeg is a program's name)
 #, machine
@@ -2126,6 +2155,14 @@
 #. text in categories.rs
 #, machine
 	Folder:	資料夾:
+#. text in the Options window
+#. Options → Archives → Link grabber, one line with two boxes: an FTP folder or a web server's folder listing ("Index of") given to Link grabber is read with its subfolders: {depth} is a number box (how many levels of subfolders, 3 at first; 0 is the folder's own files only), {types} a text box (file types such as ISO ZIP; empty for every type)
+#, machine
+	Folders: {depth} levels deep, types: {types}	資料夾：子資料夾深度 {depth} 層，類型：{types}
+#. message or event log entry in the main window
+#. the kind of file View → Font → Choose a font file lists: TrueType and OpenType font files
+#, machine
+	Font files	字型文件
 #. text in finish.rs
 #. Snooze menu of the Download complete window: show no Download complete window for this long
 #, machine
@@ -3768,6 +3805,10 @@
 #. Link grabber, a link's status: the server has the file
 #, machine
 	Online	線上
+#. text in the Options window
+#. Options → Archives → Link grabber: the hover tip of the types box in "Folders: {depth} levels deep, types: {types}": only a folder's files of these types go into Link grabber; written as the File types page writes them
+#, machine
+	Only a folder's files of these types, written as on the File types page (ISO ZIP R0*). Empty: every type.	僅限資料夾中這些類型的檔案，如「檔案類型」頁面所寫 (ISO ZIP R0*)。空白：所有類型。
 #. text in a download's Properties window
 #. tooltip of the greyed Move button in File Properties
 #, machine
@@ -4267,6 +4308,10 @@
 #. group box title: what the * in the address is replaced with (numbers or letters)
 #, machine
 	Replace asterisk to	將星號取代為
+#. button in a dialog box
+#. button in the Columns dialog: put the columns back as they first were (order, widths, all shown)
+#, machine
+	Reset	重設
 #. text in crashui.rs
 #. crash report window button: start MDM again
 #, machine
@@ -4854,6 +4899,10 @@
 #. tooltip on the disabled Rename box when the file is one part of a split archive (.part1.rar, .7z.001…)
 #, machine
 	Split archive volumes keep their names for extraction	分割壓縮檔需保留原檔名以便解壓縮
+#. text in the Download video window
+#. checkbox in Download video: split the video into one file per chapter (the whole video is kept too)
+#, machine
+	Split into chapters	依章節分割
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -4942,6 +4991,10 @@
 #. remote control page (on a phone): button: stop a queue
 #, machine
 	Stop	停止
+#. text in a download's progress window
+#. button in the progress window of a download that never ends by itself (an internet radio, a camera feed: no size, can't be resumed): stop it and keep what has arrived as the finished file
+#, machine
+	Stop and keep	停止並保留
 #. text in a download's progress window
 #. button in a live stream's progress window: stop recording it and keep what was recorded as a video file
 #, machine
@@ -5668,6 +5721,10 @@
 #, machine
 	This device's name	此裝置的名稱
 #. message or event log entry in the main window
+#. the message when a file picked in View → Font isn't a TrueType or OpenType font MDM can read
+#, machine
+	This file can't be used as a font.	該文件不能用作字體。
+#. message or event log entry in the main window
 #. {error} is why, in English (a file that isn't a theme or a colour scheme, a colour missing)
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -5980,6 +6037,10 @@
 #. why Options → Remote → Pair a device... is greyed
 #, machine
 	Turn on the remote control first.	請先開啟遠端控制。
+#. text in the Add torrent window
+#. Torrent settings, under the public tracker list's address: turning the switch off doesn't take away the trackers it added to torrents
+#, machine
+	Turned off, the trackers already added stay.	關閉後，已新增的追蹤器會保留。
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -6688,6 +6749,11 @@
 #. said after Delete with files when some files stayed on the disk; {file} is the download's name; the files' paths follow it
 #, machine
 	{file}: these files stayed on the disk, because MDM didn't create them or another download uses them:	{file}：這些檔案保留在磁碟上，因為 MDM 未建立它們或另一個下載項目正在使用它們：
+#. message or event log entry in the main window
+#. Link grabber's Source line, after where the links came from: a folder (an FTP folder, a web server's "Index of" page) held more files or subfolders than Link grabber lists; {folder} is its name, {n} how many of its files are listed (10,000)
+#. {n} = a number (keep the braces as they are)
+#, machine
+	{folder}: only its first {n} files	{folder}：僅其前 {n} 個檔案
 #. text in a download's progress window
 #. {have} and {total} = numbers of pieces; {size} = one piece's size
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
@@ -7008,6 +7074,10 @@ column	Q	佇列
 #, machine
 column	Queue	佇列
 #. column title in the download list in the download list
+#. column title: the folder the download is saved in
+#, machine
+column	Save To	儲存至
+#. column title in the download list in the download list
 #. column title: what a torrent has sent to peers against what it took
 #, machine
 column	Share ratio	分享比例
@@ -7281,6 +7351,14 @@ extension	File deleted or moved	檔案已刪除或移動
 #, machine
 extension	File type	檔案類型
 #. text in the browser extension
+#. button in the This page tab of the toolbar button's popup: look for the pictures of the current web page (only when clicked); short
+#, machine
+extension	Find images	尋找影像
+#. text in the browser extension
+#. in the This page tab of the toolbar button's popup, before the Find images button; Link grabber is the name of the app's window that lists links to tick before downloading them
+#, machine
+extension	Find this page's pictures at the largest size it lists, then send the ones you want to Link grabber.	尋找此頁面上最大尺寸的圖片，然後將您想要的圖片傳送至連結擷取器。
+#. text in the browser extension
 #. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) after Clear finished
 #, machine
 extension	Finished downloads cleared	已清除已完成的下載項目
@@ -7316,6 +7394,14 @@ extension	Hold Alt while clicking a link to let the browser download it.	按住 
 #. link under a connection problem in the toolbar button's popup, to the help page's section for it
 #, machine
 extension	How to fix it	如何修正
+#. text in the browser extension
+#. what a screen reader says for the row of buttons that keep or leave out each type of picture (JPEG, PNG, WEBP...), in the This page tab of the toolbar button's popup
+#, machine
+extension	Image types	影像類型
+#. text in the browser extension
+#. heading in the This page tab of the toolbar button's popup, over the part that finds the pictures of the current web page and sends them to the app
+#, machine
+extension	Images on this page	此頁面上的影像
 #. text in the browser extension
 #. pairing failed for another reason
 #, machine
@@ -7478,6 +7564,10 @@ extension	No download's name or address has “{words}”.	沒有下載項目的
 #, machine
 extension	No downloads yet	尚無下載項目
 #. text in the browser extension
+#. shown in the This page tab of the toolbar button's popup when Find images found no picture on the current web page
+#, machine
+extension	No images found on this page.	此頁面上找不到影像。
+#. text in the browser extension
 #. shown in the toolbar button's popup when the current web page hasn't loaded any video, sound or stream yet
 #, machine
 extension	No video or sound found on this page yet. Play it, then open this again.	此頁面尚未找到任何影片或音訊。請播放後再重新開啟。
@@ -7546,6 +7636,10 @@ extension	Options...	選項...
 #. in the list under the download button over a video, after a sound-only line's bitrate: the sound as the site sends it, not converted (e.g. '128 kbps · original'); lower case; one word
 #, machine
 extension	original	原始
+#. text in the browser extension
+#. button among the picture types (JPEG, PNG, WEBP...) in the This page tab of the toolbar button's popup: the pictures of any other or unknown type; short
+#, machine
+extension	Other	其他
 #. text in the browser extension
 #. button: pair this browser with the other MDM using the code
 #, machine
@@ -7632,6 +7726,10 @@ extension	Send downloads through this browser's proxy or VPN extension	透過此
 #, machine
 extension	Send downloads to	傳送下載項目至
 #. text in the browser extension
+#. button in the This page tab of the toolbar button's popup: send the selected pictures to the app's Link grabber window, where the user ticks which to download
+#, machine
+extension	Send to Link grabber	傳送至連結擷取器
+#. text in the browser extension
 #. on the download button over a video right after it was clicked, while the download goes to the app; MDM is Mister Download Manager's short name, keep it as it is; short
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -7640,6 +7738,10 @@ extension	Sending to MDM...	正在傳送至 MDM...
 #. under the extension's name in the toolbar button's popup: downloads go to another Mister Download Manager, a server, at this address; short
 #, machine
 extension	Sending to {server}	傳送至 {server}
+#. text in the browser extension
+#. shown in the This page tab of the toolbar button's popup after the pictures were sent to the app's Link grabber window
+#, machine
+extension	Sent to Link grabber: tick the ones to download there.	已傳送至連結擷取器：請勾選要下載的項目。
 #. text in the browser extension
 #. shown briefly on the download button after it was clicked; keep the name Mister Download Manager as it is
 #, machine
@@ -7671,6 +7773,23 @@ extension	Show in folder	在資料夾中顯示
 #. screen readers' name of a download's Show in folder button in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads)
 #, machine
 extension	Show {file} in folder	在資料夾中顯示 {file}
+#. text in the browser extension
+#. in the This page tab of the toolbar button's popup, while a smallest width or height is set: how many of the selected pictures the page gives no size for (they are kept, not left out)
+#. {n} = a number (keep the braces as they are)
+#, machine
+extension	Size not given, kept: {n}	未提供大小，已保留：{n}
+#. text in the browser extension
+#. what a screen reader says for the box of the smallest height of the pictures to keep, in the This page tab of the toolbar button's popup
+#, machine
+extension	Smallest height, in pixels	最小高度 (像素)
+#. text in the browser extension
+#. in the This page tab of the toolbar button's popup, before two boxes for the smallest width and height of the pictures to keep: 'Smallest size, in pixels [ ] × [ ]'; pictures smaller than that are left out; short
+#, machine
+extension	Smallest size, in pixels	最小尺寸 (像素)
+#. text in the browser extension
+#. what a screen reader says for the box of the smallest width of the pictures to keep, in the This page tab of the toolbar button's popup
+#, machine
+extension	Smallest width, in pixels	最小寬度 (像素)
 #. text in the browser extension
 #. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app isn't running
 #, machine
@@ -7704,6 +7823,10 @@ extension	That didn't work. Try again.	失敗。請再試一次。
 #. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when a button's download was removed meanwhile
 #, machine
 extension	That download is no longer in the list.	該下載項目已不在清單中。
+#. text in the browser extension
+#. shown in the This page tab of the toolbar button's popup when Find images can't look into the current page (a page of the browser's own, an add-on store)
+#, machine
+extension	The browser doesn't let add-ons read this page.	瀏覽器不允許附加元件讀取此頁面。
 #. text in the browser extension
 #. in the toolbar button's popup, on a site where the Chrome Web Store's copy of the extension shows no download button; Help is the link at the bottom of the popup
 #, machine
@@ -7840,6 +7963,10 @@ extension	{file} removed from the list	已從清單中移除 {file}
 #. question in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) before a download's file is deleted
 #, machine
 extension	{file} will be deleted from your computer, and the download taken off the list. This can't be undone.	{file} 將從您的電腦中刪除，並從清單中移除下載項目。此動作無法復原。
+#. text in the browser extension
+#. in the This page tab of the toolbar button's popup: how many of the pictures found pass the size and type filters, and will be sent
+#, machine
+extension	{shown} of {total} selected	已選取 {total} 個中的 {shown} 個
 #. text in the browser extension
 #. a running download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): the time left, as a clock (minutes:seconds)
 #. {time} = a time of day (keep the braces as they are)
@@ -7983,6 +8110,12 @@ menu	&Automatic	自動(&A)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Classic	傳統(&C)
+#. menu command in the main window
+#. header menu: opens the dialog that chooses the list's columns
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	&Columns...	欄位(&C)...
 #. menu command in standard windows
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -8003,6 +8136,11 @@ menu	&Download Now	立即下載(&D)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Exit	結束(&X)
+#. menu command in the main window
+#. View menu: submenu choosing the interface's own font and text size
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Font	字體(&F)
 #. menu command in the main window
 #. verb: load downloads from a file
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
@@ -8082,6 +8220,11 @@ menu	&Stop All	全部停止(&T)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Stop Download	停止下載(&S)
+#. menu command in the main window
+#. View → Font: the computer's own font, the default (Segoe UI on Windows)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&System font	系統字體(&S)
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -8218,6 +8361,12 @@ menu	C&ustomize URL List...	自訂 URL 清單(&U)...
 #, machine
 menu	Check for &updates...	檢查更新(&U)...
 #. menu command in the main window
+#. View → Font: a TrueType or OpenType font file on disk to draw the interface's text in
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Choose a font &file...	選擇字型文件...(&F)
+#. menu command in the main window
 #. View → Theme: MDM's own look, the default (IDM's layout, Windows 11's controls)
 #, machine
 menu	Classic	傳統
@@ -8306,10 +8455,6 @@ menu	Find Next (F3)	尋找下一個 (F3)
 #. right-click → Torrent, a choice with a check mark (with Download in order): each file's first and last pieces first, which a video player needs to start
 #, machine
 menu	First and last pieces first	優先下載首尾區塊
-#. menu command in the main window
-#. noun: the list's font (submenu)
-#, machine
-menu	Font	字型
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it

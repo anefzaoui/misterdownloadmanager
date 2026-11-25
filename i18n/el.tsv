@@ -110,10 +110,10 @@
 #, machine
 @plural	{n} downloading|{n} downloading	{n} σε λήψη|{n} σε λήψη
 #. count in extracting archives (a download's log, the Archive password window)
-#. in a download's log, after extracting: entries of the archive not written (links, names that would leave the folder)
+#. in a download's log, after extracting: entries of the archive not written (links, names that would leave the folder, entries under a file of the archive where a folder should be)
 #. {n} = a number (keep the braces as they are)
 #, machine
-@plural	{n} entry was left out (a link, or a name leading outside the folder)|{n} entries were left out (links, or names leading outside the folder)	{n} καταχώριση παραλείφθηκε (σύνδεσμος ή όνομα που οδηγεί εκτός φακέλου)|{n} καταχωρίσεις παραλείφθηκαν (σύνδεσμοι ή ονόματα που οδηγούν εκτός φακέλου)
+@plural	{n} entry was left out (a link, a name leading outside the folder, or a file in its way)|{n} entries were left out (links, names leading outside the folder, or files in their way)	Παραλείφθηκε {n} καταχώριση (σύνδεσμος, όνομα που οδηγεί εκτός φακέλου ή αρχείο που εμποδίζει τη δημιουργία της)|Παραλείφθηκαν {n} καταχωρίσεις (σύνδεσμοι, ονόματα που οδηγούν εκτός φακέλου ή αρχεία που εμποδίζουν τη δημιουργία τους)
 #. count in a dialog box
 #. the summary of downloads added together; after "12 downloads finished": {n} of them failed
 #. {n} = a number (keep the braces as they are)
@@ -171,6 +171,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} tracker added|{n} trackers added	{n} ιχνηλάτης προστέθηκε|{n} ιχνηλάτες προστέθηκαν
+#. count in the main window
+#. event log entry: trackers from the public tracker list (Torrent settings) were added to a torrent
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} tracker added from the public list|{n} trackers added from the public list	Προστέθηκε {n} tracker από τη δημόσια λίστα|Προστέθηκαν {n} trackers από τη δημόσια λίστα
 #. count in the Add torrent window
 #. where a magnet's peers came from: {n} = trackers asked; {peers} = "3 peers"
 #. {n} = a number (keep the braces as they are)
@@ -327,6 +332,9 @@
 #. why Part is greyed in Download video: the page is a playlist, whose videos are downloaded whole
 #, machine
 	A playlist's videos are downloaded whole	Τα βίντεο μιας λίστας αναπαραγωγής λαμβάνονται ολόκληρα
+#. message or event log entry in the main window
+#, machine
+	A private torrent: the public tracker list isn't added	Ιδιωτικό torrent: η δημόσια λίστα trackers δεν προστέθηκε
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites: the tooltip of the profile box
 #, machine
@@ -467,6 +475,10 @@
 #. text in extension.rs
 #, machine
 	Add the free extension: files you download in your browser come here, and videos get a Download button.	Προσθέστε τη δωρεάν επέκταση: τα αρχεία που κάνετε λήψη στο πρόγραμμα περιήγησής σας έρχονται εδώ και τα βίντεο αποκτούν ένα κουμπί Λήψης.
+#. text in the Add torrent window
+#. Torrent settings: add the trackers of a public tracker list (its address in the box below) to torrents that aren't private, so they find more peers
+#, machine
+	Add the trackers of this public list to public torrents:	Προσθήκη των trackers αυτής της δημόσιας λίστας σε δημόσια torrents:
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: add the torrents to the list without starting them
 #, machine
@@ -1121,12 +1133,21 @@
 #. remote control page (on a phone): what the ".torrent file" button does (screen readers)
 #, machine
 	Choose a .torrent file	Επιλέξτε ένα αρχείο .torrent
+#. message or event log entry in the main window
+#. title of the file dialog of View → Font → Choose a font file
+#. title of the message when the font picked in View → Font can't be used
+#, machine
+	Choose a font file	Επιλέξτε ένα αρχείο γραμματοσειράς
 #. text in helpers.rs
 #, machine
 	Choose a JavaScript runtime (Node.js, Deno, QuickJS or Bun)	Επιλέξτε ένα περιβάλλον εκτέλεσης JavaScript (Node.js, Deno, QuickJS ή Bun)
 #. text in langpick.rs
 #, machine
 	Choose a language	Επιλέξτε γλώσσα
+#. text in a dialog box
+#. the Columns dialog: what it is for, above its list of the download list's columns
+#, machine
+	Choose columns to show	Επιλέξτε στήλες για εμφάνιση
 #. text in langpick.rs
 #, machine
 	Choose the language Mister Download Manager shows its windows in:	Επιλέξτε τη γλώσσα στην οποία θα εμφανίζονται τα παράθυρα του Mister Download Manager:
@@ -1195,6 +1216,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Colombia	Κολομβία
+#. window title in a dialog box; text in a dialog box
+#. what a screen reader calls the Columns dialog's list of the download list's columns
+#, machine
+	Columns	Στήλες
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -1998,6 +2023,10 @@
 #. Torrent settings, at the bottom
 #, machine
 	Fetched again every 7 days. Changes apply when no torrent is running.	Ανάκτηση κάθε 7 ημέρες. Οι αλλαγές εφαρμόζονται όταν δεν εκτελείται κανένα torrent.
+#. text in the Add torrent window
+#. Torrent settings, under the public tracker list's address
+#, machine
+	Fetched once a day. Never added to private torrents.	Ανάκτηση μία φορά την ημέρα. Δεν προστίθεται ποτέ σε ιδιωτικά torrents.
 #. text in helpers.rs
 #. helper name and what it does (ffmpeg is a program's name)
 #, machine
@@ -2130,6 +2159,14 @@
 #. text in categories.rs
 #, machine
 	Folder:	Φάκελος:
+#. text in the Options window
+#. Options → Archives → Link grabber, one line with two boxes: an FTP folder or a web server's folder listing ("Index of") given to Link grabber is read with its subfolders: {depth} is a number box (how many levels of subfolders, 3 at first; 0 is the folder's own files only), {types} a text box (file types such as ISO ZIP; empty for every type)
+#, machine
+	Folders: {depth} levels deep, types: {types}	Φάκελοι: {depth} επίπεδα βάθους, τύποι: {types}
+#. message or event log entry in the main window
+#. the kind of file View → Font → Choose a font file lists: TrueType and OpenType font files
+#, machine
+	Font files	Αρχεία γραμματοσειρών
 #. text in finish.rs
 #. Snooze menu of the Download complete window: show no Download complete window for this long
 #, machine
@@ -3777,6 +3814,10 @@
 #. Link grabber, a link's status: the server has the file
 #, machine
 	Online	Σε σύνδεση
+#. text in the Options window
+#. Options → Archives → Link grabber: the hover tip of the types box in "Folders: {depth} levels deep, types: {types}": only a folder's files of these types go into Link grabber; written as the File types page writes them
+#, machine
+	Only a folder's files of these types, written as on the File types page (ISO ZIP R0*). Empty: every type.	Μόνο τα αρχεία ενός φακέλου με αυτούς τους τύπους, όπως στη σελίδα «Τύποι αρχείων» (ISO ZIP R0*). Κενό: όλοι οι τύποι.
 #. text in a download's Properties window
 #. tooltip of the greyed Move button in File Properties
 #, machine
@@ -4276,6 +4317,10 @@
 #. group box title: what the * in the address is replaced with (numbers or letters)
 #, machine
 	Replace asterisk to	Αντικατάσταση αστερίσκου με
+#. button in a dialog box
+#. button in the Columns dialog: put the columns back as they first were (order, widths, all shown)
+#, machine
+	Reset	Επαναφορά
 #. text in crashui.rs
 #. crash report window button: start MDM again
 #, machine
@@ -4863,6 +4908,10 @@
 #. tooltip on the disabled Rename box when the file is one part of a split archive (.part1.rar, .7z.001…)
 #, machine
 	Split archive volumes keep their names for extraction	Οι τόμοι διαιρεμένου αρχείου διατηρούν τα ονόματά τους για την εξαγωγή
+#. text in the Download video window
+#. checkbox in Download video: split the video into one file per chapter (the whole video is kept too)
+#, machine
+	Split into chapters	Διαχωρισμός σε κεφάλαια
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -4951,6 +5000,10 @@
 #. remote control page (on a phone): button: stop a queue
 #, machine
 	Stop	Διακοπή
+#. text in a download's progress window
+#. button in the progress window of a download that never ends by itself (an internet radio, a camera feed: no size, can't be resumed): stop it and keep what has arrived as the finished file
+#, machine
+	Stop and keep	Διακοπή και διατήρηση
 #. text in a download's progress window
 #. button in a live stream's progress window: stop recording it and keep what was recorded as a video file
 #, machine
@@ -5682,6 +5735,10 @@
 #, machine
 	This device's name	Όνομα αυτής της συσκευής
 #. message or event log entry in the main window
+#. the message when a file picked in View → Font isn't a TrueType or OpenType font MDM can read
+#, machine
+	This file can't be used as a font.	Αυτό το αρχείο δεν μπορεί να χρησιμοποιηθεί ως γραμματοσειρά.
+#. message or event log entry in the main window
 #. {error} is why, in English (a file that isn't a theme or a colour scheme, a colour missing)
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -5994,6 +6051,10 @@
 #. why Options → Remote → Pair a device... is greyed
 #, machine
 	Turn on the remote control first.	Ενεργοποιήστε πρώτα τον απομακρυσμένο έλεγχο.
+#. text in the Add torrent window
+#. Torrent settings, under the public tracker list's address: turning the switch off doesn't take away the trackers it added to torrents
+#, machine
+	Turned off, the trackers already added stay.	Όταν είναι απενεργοποιημένο, οι ήδη προστιθέμενοι ιχνηλάτες παραμένουν.
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -6702,6 +6763,11 @@
 #. said after Delete with files when some files stayed on the disk; {file} is the download's name; the files' paths follow it
 #, machine
 	{file}: these files stayed on the disk, because MDM didn't create them or another download uses them:	{file}: αυτά τα αρχεία παρέμειναν στον δίσκο, επειδή το MDM δεν τα δημιούργησε ή τα χρησιμοποιεί μια άλλη λήψη:
+#. message or event log entry in the main window
+#. Link grabber's Source line, after where the links came from: a folder (an FTP folder, a web server's "Index of" page) held more files or subfolders than Link grabber lists; {folder} is its name, {n} how many of its files are listed (10,000)
+#. {n} = a number (keep the braces as they are)
+#, machine
+	{folder}: only its first {n} files	{folder}: μόνο τα πρώτα {n} αρχεία του
 #. text in a download's progress window
 #. {have} and {total} = numbers of pieces; {size} = one piece's size
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
@@ -7022,6 +7088,10 @@ column	Q	Ο
 #, machine
 column	Queue	Ουρά
 #. column title in the download list in the download list
+#. column title: the folder the download is saved in
+#, machine
+column	Save To	Αποθήκευση σε
+#. column title in the download list in the download list
 #. column title: what a torrent has sent to peers against what it took
 #, machine
 column	Share ratio	Αναλογία κοινοχρησίας
@@ -7295,6 +7365,14 @@ extension	File deleted or moved	Το αρχείο διαγράφηκε ή μετ
 #, machine
 extension	File type	Τύπος αρχείου
 #. text in the browser extension
+#. button in the This page tab of the toolbar button's popup: look for the pictures of the current web page (only when clicked); short
+#, machine
+extension	Find images	Εύρεση εικόνων
+#. text in the browser extension
+#. in the This page tab of the toolbar button's popup, before the Find images button; Link grabber is the name of the app's window that lists links to tick before downloading them
+#, machine
+extension	Find this page's pictures at the largest size it lists, then send the ones you want to Link grabber.	Βρείτε τις εικόνες αυτής της σελίδας στο μεγαλύτερο μέγεθος που αναφέρεται, και μετά στείλτε όσες θέλετε στον «Ανιχνευτή συνδέσμων».
+#. text in the browser extension
 #. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) after Clear finished
 #, machine
 extension	Finished downloads cleared	Οι ολοκληρωμένες λήψεις εκκαθαρίστηκαν
@@ -7330,6 +7408,14 @@ extension	Hold Alt while clicking a link to let the browser download it.	Κρα�
 #. link under a connection problem in the toolbar button's popup, to the help page's section for it
 #, machine
 extension	How to fix it	Πώς να το διορθώσετε
+#. text in the browser extension
+#. what a screen reader says for the row of buttons that keep or leave out each type of picture (JPEG, PNG, WEBP...), in the This page tab of the toolbar button's popup
+#, machine
+extension	Image types	Τύποι εικόνων
+#. text in the browser extension
+#. heading in the This page tab of the toolbar button's popup, over the part that finds the pictures of the current web page and sends them to the app
+#, machine
+extension	Images on this page	Εικόνες σε αυτήν τη σελίδα
 #. text in the browser extension
 #. pairing failed for another reason
 #, machine
@@ -7492,6 +7578,10 @@ extension	No download's name or address has “{words}”.	Κανένα όνομ
 #, machine
 extension	No downloads yet	Δεν υπάρχουν λήψεις ακόμα
 #. text in the browser extension
+#. shown in the This page tab of the toolbar button's popup when Find images found no picture on the current web page
+#, machine
+extension	No images found on this page.	Δεν βρέθηκαν εικόνες σε αυτήν τη σελίδα.
+#. text in the browser extension
 #. shown in the toolbar button's popup when the current web page hasn't loaded any video, sound or stream yet
 #, machine
 extension	No video or sound found on this page yet. Play it, then open this again.	Δεν βρέθηκε ακόμα βίντεο ή ήχος σε αυτήν τη σελίδα. Αναπαραγάγετε το και, στη συνέχεια, ανοίξτε ξανά αυτό.
@@ -7560,6 +7650,10 @@ extension	Options...	Επιλογές...
 #. in the list under the download button over a video, after a sound-only line's bitrate: the sound as the site sends it, not converted (e.g. '128 kbps · original'); lower case; one word
 #, machine
 extension	original	πρωτότυπο
+#. text in the browser extension
+#. button among the picture types (JPEG, PNG, WEBP...) in the This page tab of the toolbar button's popup: the pictures of any other or unknown type; short
+#, machine
+extension	Other	Άλλοι
 #. text in the browser extension
 #. button: pair this browser with the other MDM using the code
 #, machine
@@ -7646,6 +7740,10 @@ extension	Send downloads through this browser's proxy or VPN extension	Αποσ�
 #, machine
 extension	Send downloads to	Αποστολή λήψεων σε
 #. text in the browser extension
+#. button in the This page tab of the toolbar button's popup: send the selected pictures to the app's Link grabber window, where the user ticks which to download
+#, machine
+extension	Send to Link grabber	Αποστολή στον «Ανιχνευτή συνδέσμων»
+#. text in the browser extension
 #. on the download button over a video right after it was clicked, while the download goes to the app; MDM is Mister Download Manager's short name, keep it as it is; short
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -7654,6 +7752,10 @@ extension	Sending to MDM...	Αποστολή στο MDM...
 #. under the extension's name in the toolbar button's popup: downloads go to another Mister Download Manager, a server, at this address; short
 #, machine
 extension	Sending to {server}	Αποστολή σε {server}
+#. text in the browser extension
+#. shown in the This page tab of the toolbar button's popup after the pictures were sent to the app's Link grabber window
+#, machine
+extension	Sent to Link grabber: tick the ones to download there.	Στάλθηκαν στον «Ανιχνευτή συνδέσμων»: επιλέξτε εκεί ποιες θα κατεβάσετε.
 #. text in the browser extension
 #. shown briefly on the download button after it was clicked; keep the name Mister Download Manager as it is
 #, machine
@@ -7685,6 +7787,23 @@ extension	Show in folder	Εμφάνιση στον φάκελο
 #. screen readers' name of a download's Show in folder button in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads)
 #, machine
 extension	Show {file} in folder	Εμφάνιση του {file} στον φάκελο
+#. text in the browser extension
+#. in the This page tab of the toolbar button's popup, while a smallest width or height is set: how many of the selected pictures the page gives no size for (they are kept, not left out)
+#. {n} = a number (keep the braces as they are)
+#, machine
+extension	Size not given, kept: {n}	Το μέγεθος δεν δόθηκε, διατηρήθηκαν: {n}
+#. text in the browser extension
+#. what a screen reader says for the box of the smallest height of the pictures to keep, in the This page tab of the toolbar button's popup
+#, machine
+extension	Smallest height, in pixels	Μικρότερο ύψος, σε pixel
+#. text in the browser extension
+#. in the This page tab of the toolbar button's popup, before two boxes for the smallest width and height of the pictures to keep: 'Smallest size, in pixels [ ] × [ ]'; pictures smaller than that are left out; short
+#, machine
+extension	Smallest size, in pixels	Ελάχιστο μέγεθος, σε pixel
+#. text in the browser extension
+#. what a screen reader says for the box of the smallest width of the pictures to keep, in the This page tab of the toolbar button's popup
+#, machine
+extension	Smallest width, in pixels	Μικρότερο πλάτος, σε pixel
 #. text in the browser extension
 #. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app isn't running
 #, machine
@@ -7718,6 +7837,10 @@ extension	That didn't work. Try again.	Αυτό δεν λειτούργησε. �
 #. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when a button's download was removed meanwhile
 #, machine
 extension	That download is no longer in the list.	Αυτή η λήψη δεν βρίσκεται πλέον στη λίστα.
+#. text in the browser extension
+#. shown in the This page tab of the toolbar button's popup when Find images can't look into the current page (a page of the browser's own, an add-on store)
+#, machine
+extension	The browser doesn't let add-ons read this page.	Το πρόγραμμα περιήγησης δεν επιτρέπει στα πρόσθετα να διαβάζουν αυτήν τη σελίδα.
 #. text in the browser extension
 #. in the toolbar button's popup, on a site where the Chrome Web Store's copy of the extension shows no download button; Help is the link at the bottom of the popup
 #, machine
@@ -7854,6 +7977,10 @@ extension	{file} removed from the list	Το {file} καταργήθηκε από
 #. question in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) before a download's file is deleted
 #, machine
 extension	{file} will be deleted from your computer, and the download taken off the list. This can't be undone.	Το {file} θα διαγραφεί από τον υπολογιστή σας και η λήψη θα αφαιρεθεί από τη λίστα. Αυτό δεν μπορεί να αναιρεθεί.
+#. text in the browser extension
+#. in the This page tab of the toolbar button's popup: how many of the pictures found pass the size and type filters, and will be sent
+#, machine
+extension	{shown} of {total} selected	{shown} από {total} επιλεγμένα
 #. text in the browser extension
 #. a running download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): the time left, as a clock (minutes:seconds)
 #. {time} = a time of day (keep the braces as they are)
@@ -7997,6 +8124,12 @@ menu	&Automatic	Αυ&τόματο
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Classic	Κλα&σικό
+#. menu command in the main window
+#. header menu: opens the dialog that chooses the list's columns
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	&Columns...	Στή&λες...
 #. menu command in standard windows
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -8017,6 +8150,11 @@ menu	&Download Now	&Λήψη τώρα
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Exit	&Έξοδος
+#. menu command in the main window
+#. View menu: submenu choosing the interface's own font and text size
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Font	Γραμματοσειρ&ά
 #. menu command in the main window
 #. verb: load downloads from a file
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
@@ -8096,6 +8234,11 @@ menu	&Stop All	&Διακοπή όλων
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Stop Download	&Διακοπή λήψης
+#. menu command in the main window
+#. View → Font: the computer's own font, the default (Segoe UI on Windows)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&System font	Γραμματοσειρά συστ&ήματος
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -8232,6 +8375,12 @@ menu	C&ustomize URL List...	&Προσαρμογή λίστας URL...
 #, machine
 menu	Check for &updates...	Έλεγχος για &ενημερώσεις...
 #. menu command in the main window
+#. View → Font: a TrueType or OpenType font file on disk to draw the interface's text in
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Choose a font &file...	Επιλέ&ξτε ένα αρχείο γραμματοσειράς...
+#. menu command in the main window
 #. View → Theme: MDM's own look, the default (IDM's layout, Windows 11's controls)
 #, machine
 menu	Classic	Κλασικό
@@ -8320,10 +8469,6 @@ menu	Find Next (F3)	Εύρεση επόμενου (F3)
 #. right-click → Torrent, a choice with a check mark (with Download in order): each file's first and last pieces first, which a video player needs to start
 #, machine
 menu	First and last pieces first	Πρώτα τα πρώτα και τα τελευταία κομμάτια
-#. menu command in the main window
-#. noun: the list's font (submenu)
-#, machine
-menu	Font	Γραμματοσειρά
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it

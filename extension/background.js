@@ -434,7 +434,9 @@ async function recentList(ask) {
   // the question), busy, or not reached (`why`).
   const old = reply.why === "refused";
   if (reply.why && !old) await noteStatus(reply.why);
-  await noteRunning(0);
+  // Busy is this question's timeout, not the app having no downloads: the count the badge
+  // shows and the watch that keeps it fresh stay as they were.
+  if (reply.appState !== "busy") await noteRunning(0);
   return { ok: false, remote: null, appState: reply.appState || (old ? "old" : null), why: old ? null : reply.why || null };
 }
 
@@ -936,6 +938,9 @@ const bypass = new Map(); // address -> {at, tab, page, used}
 // download its page starts, stay the browser's that long; anything else only BYPASS_MS.
 const BYPASS_CHECK_MS = 60000;
 const BYPASS_MS = 10000;
+// The press and the click that follow it: page.js says the same Alt+click twice this close
+// together, and only the first lets the browser's download through.
+const BYPASS_PRESS_MS = 2000;
 
 // `clicked`: the download is a link the user just clicked without Alt (Safari's `link`), never
 // one that follows an Alt+click.
@@ -1124,7 +1129,9 @@ function noteMedia(d, found, sent) {
       firsts.add(it.frameId);
       return false;
     });
-    tab.items.splice(Math.max(i, 0), 1);
+    // Nothing may go without taking a frame's first stream: the cap gives way.
+    if (i < 0) break;
+    tab.items.splice(i, 1);
   }
   // The tab seen last goes last; the least recent ones go past MEDIA_TABS.
   media.delete(d.tabId);
@@ -1751,13 +1758,80 @@ function playedCandidates(tab, frameId) {
   return out;
 }
 
+// The query parameters a video server signs an address with for one load of its page (until when,
+// from where, its signature), lowercase; `x-amz-` and `x-goog-` ones too. As the app's
+// (app.rs SIGNATURE_PARAMS): a short name (`t`, `e`, `s`) may well name the video, so never.
+const SIGNATURE_PARAMS = new Set(["hash", "expires", "expire", "exp", "ip", "token", "sig", "signature", "st", "md5", "auth", "policy", "key-pair-id", "hdnts", "hdnea", "__token__", "validfrom", "validto", "ttl", "secure", "wmsauthsign", "nva"]);
+
+// A player asks for its stream again only long after (its signature runs out: an hour or more);
+// a feed's player loads its next video within seconds. Two loads closer than this are two videos.
+const LOADED_AGAIN_AFTER_MS = 10 * 60 * 1000;
+
+// Whether `older` and `newer` (playedCandidates) are one video's media loaded again, for the video
+// `v` the button is over: a player asks for its stream once more long after, signed anew for that
+// load, in one part of its path (`/<signature>/…/hls.m3u8`) or in its query
+// (`?hash=…&expires=…`), often from another of the site's servers. All of: the same kind, the very
+// same length (a playlist read again gives it to the hundredth), the same picture height and, a
+// file, the same size; loaded LOADED_AGAIN_AFTER_MS apart or more, the newer before any other
+// player of the page began to load (`v.nextBegan`: a feed's next video); an address of the same
+// shape: the same site (its host but for its first label), as many path parts ending in the same
+// file with one other part changed at most (`/<sig-a>/<id>/` and `/<sig-b>/<id>/` are one video,
+// `/<sig-a>/<id-a>/` and `/<sig-b>/<id-b>/` two), and the same query but for the signature
+// (`master.m3u8?id=1` and `?id=2` are two videos). A length or a size not known tells nothing.
+function loadedAgain(older, newer, v) {
+  if (older.stream !== newer.stream || older.kind !== newer.kind || older.live || newer.live) return false;
+  if (!(older.duration > 0) || Math.abs(older.duration - newer.duration) > 0.05 || older.height !== newer.height) return false;
+  if (!older.stream && !(older.size > 0 && older.size === newer.size)) return false;
+  if (!(newer.at - older.at >= LOADED_AGAIN_AFTER_MS) || (v.nextBegan > 0 && newer.at >= v.nextBegan)) return false;
+  let ua, ub;
+  try {
+    ua = new URL(older.url);
+    ub = new URL(newer.url);
+  } catch {
+    return false;
+  }
+  // The host but for its first label: `hls-cdn1.cdn.test` and `hls-cdn7.cdn.test` are one site. It
+  // knows no public suffixes, so `a.co.uk` and `b.co.uk` are one "site" (`co.uk`) too: the same
+  // file at the end, the same path but one part, the query and the length still have to match, so
+  // two videos from there are never taken for one.
+  const site = (u) => {
+    const labels = u.hostname.split(".");
+    return /^[\d.]+$|:/.test(u.hostname) || labels.length < 3 ? u.hostname : labels.slice(1).join(".");
+  };
+  const parts = (u) => u.pathname.split("/").filter(Boolean);
+  const unsigned = (u) =>
+    [...u.searchParams]
+      .filter(([k]) => !SIGNATURE_PARAMS.has(k.toLowerCase()) && !/^x-(amz|goog)-/i.test(k))
+      .map(([k, val]) => `${k}=${val}`)
+      .sort()
+      .join("&");
+  const [pa, pb] = [parts(ua), parts(ub)];
+  return (
+    ua.protocol === ub.protocol &&
+    ua.port === ub.port &&
+    site(ua) === site(ub) &&
+    pa.length === pb.length &&
+    pa.length > 0 &&
+    pa[pa.length - 1] === pb[pb.length - 1] &&
+    pa.slice(0, -1).filter((part, i) => part !== pb[i]).length <= 1 &&
+    unsigned(ua) === unsigned(ub)
+  );
+}
+
+// `cands` with each video's media loaded again (loadedAgain) once, its newest load: the older
+// one's signature may have run out, and two loads of one video are not two videos to choose from.
+function newestLoads(cands, v) {
+  return cands.filter((c) => !cands.some((o) => o !== c && o.at > c.at && loadedAgain(c, o, v)));
+}
+
 // Which of `cands` (playedCandidates) is the video `v` the button is over ({duration, live,
 // height, audio (a sound player), began, nextBegan, alone}): {pick} for one, {several: n} when more
 // than one fits and none is clearly it (said, never guessed), {} for none. Never a protected
 // stream, a picture or a sound alone (one of a video's tracks), nor anything whose length isn't
 // the video's. One whose length isn't known fits only where the frame plays nothing else, or when
 // it came while this video loaded, before the next one began to (a feed's player loads the next
-// video while this one plays).
+// video while this one plays). A video its player loaded again (signed anew) counts once, its
+// newest load (newestLoads).
 function playedChoice(cands, v) {
   const kindFits = (c) => {
     if (c.drm) return false;
@@ -1779,7 +1853,7 @@ function playedChoice(cands, v) {
     const tall = pool.filter((c) => c.height && c.height === v.height);
     return tall.length === 1 ? tall[0] : null;
   };
-  const ok = cands.filter(kindFits);
+  const ok = newestLoads(cands.filter(kindFits), v);
   const sure = ok.filter((c) => lengthFits(c) === "yes");
   if (sure.length) {
     const c = one(sure);
@@ -2011,7 +2085,10 @@ async function mediaDownload(tabId, url) {
   if (!shown) return { ok: false, why: "gone" };
   if (shown.drm) return { ok: false, why: "drm" };
   const kept = media.get(tabId);
-  const it = kept.items.find((x) => x.url === url);
+  const it = kept && (kept.items || []).find((x) => x.url === url);
+  // The list was rebuilt while its answer was on its way back: the page changed, or the tab
+  // closed. That is "gone", not a failure with no reason.
+  if (!it) return { ok: false, why: "gone" };
   let tab;
   try {
     tab = await ext.tabs.get(tabId);
@@ -3029,6 +3106,170 @@ function pageLinks(selectedOnly) {
   return links;
 }
 
+// ---- a page's images (#1781) ---------------------------------------------------------------
+
+// The pictures in the page, collected in it when the popup's "Find images" is clicked (never
+// otherwise): each <img>'s largest size its srcset and its <picture>'s sources list, else the
+// one it shows, and apart the largest a lazy loader's data-srcset / data-src names; then the
+// links that go straight to a picture. Each address once, absolute, http(s) only (no data: or
+// blob:), in the page's order, with its width and height in pixels as far as the page tells them
+// (0: it doesn't) and the type its <source> gives. Self-contained: it runs in the page.
+function pageImages() {
+  const web = (u) => /^https?:/i.test(u);
+  const abs = (u) => {
+    try {
+      const a = new URL(u, document.baseURI);
+      a.hash = "";
+      return a.href;
+    } catch {
+      return "";
+    }
+  };
+  // A srcset's candidates, as the HTML standard reads them: the address is the text up to a
+  // space (an address may hold commas), then its descriptor up to the next comma; none is 1x.
+  const candidates = (set, type = "") => {
+    const out = [];
+    const s = String(set || "");
+    let i = 0;
+    while (i < s.length) {
+      while (i < s.length && /[\s,]/.test(s[i])) i++;
+      let j = i;
+      while (j < s.length && !/\s/.test(s[j])) j++;
+      let url = s.slice(i, j);
+      let desc = "";
+      if (/,$/.test(url)) {
+        url = url.replace(/,+$/, "");
+        i = j;
+      } else {
+        let k = s.indexOf(",", j);
+        if (k < 0) k = s.length;
+        desc = s.slice(j, k).trim();
+        i = k + 1;
+      }
+      const w = /^(\d+)w$/.exec(desc);
+      const x = /^(\d*\.?\d+)x$/.exec(desc);
+      if (url) out.push({ url, w: w ? Number(w[1]) : 0, x: w ? 0 : x ? Number(x[1]) : 1, type });
+    }
+    return out;
+  };
+  const one = (url) => (url && url.trim() ? [{ url: url.trim(), w: 0, x: 1, type: "" }] : []);
+  const found = new Map();
+  const add = (url, w, h, type) => {
+    const u = abs(url);
+    if (!u || !web(u)) return;
+    const was = found.get(u);
+    if (!was) found.set(u, { url: u, w, h, type });
+    else if (!was.w && w) Object.assign(was, { w, h });
+  };
+  for (const img of document.querySelectorAll("img")) {
+    const sources = img.parentElement && img.parentElement.tagName === "PICTURE" ? [...img.parentElement.children].filter((s) => s.tagName === "SOURCE") : [];
+    const attr = (el, name) => el.getAttribute(name);
+    // What it shows, and how big: naturalWidth is the file's width over the density it was
+    // picked at (a 2x file shows at half its pixels). Nothing known while it shows a data:
+    // placeholder or nothing yet.
+    const cur = abs(img.currentSrc || "");
+    const shows = web(cur) && img.naturalWidth > 0;
+    const nw = shows ? img.naturalWidth : 0;
+    const ratio = shows && img.naturalHeight > 0 ? img.naturalHeight / nw : 0;
+    // The sizes the page lists for it, and apart, those a lazy loader will put there.
+    const shown = [...sources.flatMap((s) => candidates(attr(s, "srcset"), attr(s, "type") || "")), ...candidates(attr(img, "srcset")), ...one(attr(img, "src"))];
+    const lazy = [...sources.flatMap((s) => candidates(attr(s, "data-srcset"), attr(s, "type") || "")), ...candidates(attr(img, "data-srcset")), ...one(attr(img, "data-src"))];
+    for (const [pool, own] of [[shown, true], [lazy, false]]) {
+      const real = pool.filter((c) => web(abs(c.url)));
+      if (!real.length) continue;
+      // A width when known: given (800w), else what it shows times the density (2x).
+      const width = (c) => (c.w ? c.w : nw && (own || abs(c.url) === cur) ? Math.round(nw * c.x) : 0);
+      let best = real[0];
+      for (const c of real) {
+        const [a, b] = [width(c), width(best)];
+        if (a > b || (!a && !b && c.x > best.x)) best = c;
+      }
+      const w = width(best);
+      add(best.url, w, w && ratio && (own || abs(best.url) === cur) ? Math.round(w * ratio) : 0, best.type);
+    }
+  }
+  // Links straight to a picture (a gallery's thumbnail linking to its full size): by the
+  // address's file extension, their size unknown.
+  const IMAGE = /\.(jpe?g|jfif|pjpeg|png|apng|gif|webp|avif|bmp|svg|tiff?|ico|heic|heif|jxl)$/i;
+  for (const a of document.querySelectorAll("a[href]")) {
+    let path = "";
+    try {
+      path = new URL(a.href).pathname;
+    } catch {
+      continue;
+    }
+    if (IMAGE.test(path)) add(a.href, 0, 0, "");
+  }
+  return [...found.values()];
+}
+
+// A picture's type as the popup's filters name it (#1781): by its address's file extension, else a
+// format its query names (an image service's `format=webp`, `fm=png`), else the type its
+// <source> gave, else "other".
+const IMAGE_TYPES = {
+  jpg: "JPEG", jpeg: "JPEG", jfif: "JPEG", pjpeg: "JPEG", png: "PNG", apng: "PNG", gif: "GIF",
+  webp: "WEBP", avif: "AVIF", bmp: "BMP", svg: "SVG", tif: "TIFF", tiff: "TIFF", ico: "ICO",
+  heic: "HEIC", heif: "HEIC", jxl: "JXL",
+};
+function imageType(url, mime) {
+  let u;
+  try {
+    u = new URL(url);
+  } catch {
+    return "other";
+  }
+  const ext = (/\.([a-z0-9]{2,5})$/i.exec(u.pathname) || [])[1];
+  const format = ["format", "fm", "ext"].map((k) => u.searchParams.get(k)).find(Boolean);
+  const sub = (/^image\/([a-z0-9.+-]+)$/i.exec(mime || "") || [])[1];
+  for (const k of [ext, format, sub && sub.replace(/^svg\+xml$/i, "svg")]) {
+    const type = k && IMAGE_TYPES[k.toLowerCase()];
+    if (type) return type;
+  }
+  return "other";
+}
+
+// The images of the tab's page and its frames (pageImages in each), each address once, typed.
+// `readable: false`: the browser lets no extension read the page (its own pages, a store).
+async function tabImages(tabId) {
+  let frames;
+  try {
+    frames = await ext.scripting.executeScript({ target: { tabId, allFrames: true }, func: pageImages });
+  } catch {
+    return { readable: false, images: [] };
+  }
+  const seen = new Map();
+  for (const f of frames || []) {
+    for (const i of (f && Array.isArray(f.result) && f.result) || []) {
+      if (!i || typeof i.url !== "string" || !/^https?:\/\//i.test(i.url)) continue;
+      const w = Number(i.w) > 0 ? Math.round(i.w) : 0;
+      const h = w && Number(i.h) > 0 ? Math.round(i.h) : 0;
+      const was = seen.get(i.url);
+      if (!was) seen.set(i.url, { url: i.url, w, h, type: imageType(i.url, i.type) });
+      else if (!was.w && w) Object.assign(was, { w, h });
+    }
+  }
+  return { readable: true, images: [...seen.values()] };
+}
+
+// The images the popup kept (#1781) to Link grabber, as the right-click menu's "Download all
+// links" sends a page's links: the tab's address their referrer, with its cookies, private or
+// not; in parts when long. A failure opens the help page's section, as the menu's does.
+async function sendImages(tabId, links) {
+  const urls = [...new Set(links.filter((u) => typeof u === "string" && /^https?:\/\//i.test(u)))];
+  if (!urls.length) return { ok: false, why: "none" };
+  let tab;
+  try {
+    tab = await ext.tabs.get(tabId);
+  } catch {
+    return { ok: false, why: "gone" };
+  }
+  const incognito = Boolean(tab.incognito);
+  const page = tab.url || "";
+  const reply = await sendLinks({ links: urls, referrer: page, cookies: await cookieHeader(page, { incognito, storeId: tab.cookieStoreId }), private: incognito });
+  if (!reply.ok || reply.left) explain(reply.ok ? "too-large" : reply.why);
+  return { ok: Boolean(reply.ok), why: reply.why };
+}
+
 // ---- a page's links, in parts ------------------------------------------------------------
 
 // The most the host takes in one message, as the browser writes it (crates/ipc MAX_MESSAGE). A
@@ -3544,8 +3785,11 @@ async function pageMessage(m, sender) {
   }
   // Alt held on a link: as the button went down, and at the click (page.js).
   if (m.type === "bypass" && typeof m.url === "string") {
+    // The same press says itself twice (button down, then click); a later Alt+click on the
+    // same link is a new one, and lets its own download through.
     const was = bypass.get(m.url);
-    bypass.set(m.url, { at: Date.now(), tab: tab.id, page: page || "", used: Boolean(was && was.used) });
+    const samePress = was && Date.now() - was.at < BYPASS_PRESS_MS;
+    bypass.set(m.url, { at: Date.now(), tab: tab.id, page: page || "", used: Boolean(samePress && was.used) });
     return { ok: true };
   }
   if (m.type === "video" && page) {
@@ -3670,6 +3914,10 @@ async function popupMessage(m) {
     const reply = await mediaDownload(m.tab, m.url);
     return { ok: Boolean(reply.ok), why: reply.why };
   }
+  // The popup's "Find images" (#1781): the tab's pictures; then those its filters kept, to Link
+  // grabber.
+  if (m.type === "images" && Number.isInteger(m.tab)) return tabImages(m.tab);
+  if (m.type === "images-send" && Number.isInteger(m.tab) && Array.isArray(m.links)) return sendImages(m.tab, m.links);
   return { ok: false };
 }
 

@@ -44,6 +44,8 @@ If the site replaced the file with a new version, the parts MDM has don't fit an
 
 Look at **Resume capability** in the progress window. **No** means the server can't send a file in parts. MDM then uses one connection, and a download that stops has to start over. For such servers, avoid stopping the download, and avoid a very low speed limit, which can make the server drop the connection.
 
+When such a server also sends no size (an internet radio, a camera feed), stopping keeps what arrived instead: the progress window's button reads **Stop and keep**, and the file is finished there. See [Downloads that never end](connections-and-speed.md#downloads-that-never-end).
+
 ## Next steps
 
 - [Connections and resuming in detail →](connections-and-speed.md#resuming)

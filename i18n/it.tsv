@@ -97,9 +97,10 @@
 #. {n} = a number (keep the braces as they are)
 @plural	{n} downloading|{n} downloading	{n} in corso|{n} in corso
 #. count in extracting archives (a download's log, the Archive password window)
-#. in a download's log, after extracting: entries of the archive not written (links, names that would leave the folder)
+#. in a download's log, after extracting: entries of the archive not written (links, names that would leave the folder, entries under a file of the archive where a folder should be)
 #. {n} = a number (keep the braces as they are)
-@plural	{n} entry was left out (a link, or a name leading outside the folder)|{n} entries were left out (links, or names leading outside the folder)	{n} voce è stata esclusa (un collegamento o un nome che porta fuori dalla cartella)|{n} voci sono state escluse (collegamenti o nomi che portano fuori dalla cartella)
+#, machine
+@plural	{n} entry was left out (a link, a name leading outside the folder, or a file in its way)|{n} entries were left out (links, names leading outside the folder, or files in their way)	{n} voce è stata esclusa (un collegamento, un nome che porta fuori dalla cartella o un file che la ostacola)|{n} voci sono state escluse (collegamenti, nomi che portano fuori dalla cartella o file che le ostacolano)
 #. count in a dialog box
 #. the summary of downloads added together; after "12 downloads finished": {n} of them failed
 #. {n} = a number (keep the braces as they are)
@@ -151,6 +152,11 @@
 #. event log entry: trackers were added to the torrent
 #. {n} = a number (keep the braces as they are)
 @plural	{n} tracker added|{n} trackers added	{n} tracker aggiunto|{n} tracker aggiunti
+#. count in the main window
+#. event log entry: trackers from the public tracker list (Torrent settings) were added to a torrent
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} tracker added from the public list|{n} trackers added from the public list	Aggiunto {n} tracker dall'elenco pubblico|Aggiunti {n} tracker dall'elenco pubblico
 #. count in the Add torrent window
 #. where a magnet's peers came from: {n} = trackers asked; {peers} = "3 peers"
 #. {n} = a number (keep the braces as they are)
@@ -284,6 +290,9 @@
 #. why Part is greyed in Download video: the page is a playlist, whose videos are downloaded whole
 #, machine
 	A playlist's videos are downloaded whole	I video di una playlist vengono scaricati per intero
+#. message or event log entry in the main window
+#, machine
+	A private torrent: the public tracker list isn't added	Un torrent privato: l'elenco pubblico dei tracker non viene aggiunto
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites: the tooltip of the profile box
 	A profile's name or its folder. Empty: the profile used last. For a browser built on Chromium that isn't listed (Helium, Thorium...), choose Chromium and its profile's folder.	Il nome di un profilo o la sua cartella. Vuoto: l'ultimo profilo usato. Per un browser basato su Chromium non elencato (Helium, Thorium...), scegli Chromium e la cartella del suo profilo.
@@ -397,6 +406,10 @@
 	Add the extension to Safari	Aggiungi l'estensione a Safari
 #. text in extension.rs
 	Add the free extension: files you download in your browser come here, and videos get a Download button.	Aggiungi l'estensione gratuita: i file che scarichi nel browser arriveranno qui e sui video comparirà un pulsante di download.
+#. text in the Add torrent window
+#. Torrent settings: add the trackers of a public tracker list (its address in the box below) to torrents that aren't private, so they find more peers
+#, machine
+	Add the trackers of this public list to public torrents:	Aggiungi i tracker di questo elenco pubblico ai torrent pubblici:
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: add the torrents to the list without starting them
 	Add them without starting them	Aggiungili senza avviarli
@@ -906,11 +919,20 @@
 #. text in remote.rs
 #. remote control page (on a phone): what the ".torrent file" button does (screen readers)
 	Choose a .torrent file	Scegli un file .torrent
+#. message or event log entry in the main window
+#. title of the file dialog of View → Font → Choose a font file
+#. title of the message when the font picked in View → Font can't be used
+#, machine
+	Choose a font file	Scegli un file di caratteri
 #. text in helpers.rs
 #, machine
 	Choose a JavaScript runtime (Node.js, Deno, QuickJS or Bun)	Scegli un runtime JavaScript (Node.js, Deno, QuickJS o Bun)
 #. text in langpick.rs
 	Choose a language	Scegli una lingua
+#. text in a dialog box
+#. the Columns dialog: what it is for, above its list of the download list's columns
+#, machine
+	Choose columns to show	Scegli le colonne da mostrare
 #. text in langpick.rs
 	Choose the language Mister Download Manager shows its windows in:	Scegli la lingua delle finestre di Mister Download Manager:
 #. text in the Options window
@@ -971,6 +993,10 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Colombia	Colombia
+#. window title in a dialog box; text in a dialog box
+#. what a screen reader calls the Columns dialog's list of the download list's columns
+#, machine
+	Columns	Colonne
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Comoros	Comore
@@ -1602,6 +1628,10 @@
 #. text in the Add torrent window
 #. Torrent settings, at the bottom
 	Fetched again every 7 days. Changes apply when no torrent is running.	Viene scaricato di nuovo ogni 7 giorni. Le modifiche si applicano quando nessun torrent è in esecuzione.
+#. text in the Add torrent window
+#. Torrent settings, under the public tracker list's address
+#, machine
+	Fetched once a day. Never added to private torrents.	Recuperato una volta al giorno. Mai aggiunto ai torrent privati.
 #. text in helpers.rs
 #. helper name and what it does (ffmpeg is a program's name)
 	ffmpeg: joins picture and sound	ffmpeg: unisce video e audio
@@ -1705,6 +1735,14 @@
 	FLAC keeps the sound exactly, but it can't add quality the site's sound doesn't have: the file is only bigger.	Il FLAC conserva l'audio senza perdite, ma non può aggiungere qualità che l'audio del sito non ha: il file risulta solo più grande.
 #. text in categories.rs
 	Folder:	Cartella:
+#. text in the Options window
+#. Options → Archives → Link grabber, one line with two boxes: an FTP folder or a web server's folder listing ("Index of") given to Link grabber is read with its subfolders: {depth} is a number box (how many levels of subfolders, 3 at first; 0 is the folder's own files only), {types} a text box (file types such as ISO ZIP; empty for every type)
+#, machine
+	Folders: {depth} levels deep, types: {types}	Cartelle: {depth} livelli di profondità, tipi: {types}
+#. message or event log entry in the main window
+#. the kind of file View → Font → Choose a font file lists: TrueType and OpenType font files
+#, machine
+	Font files	File di caratteri
 #. text in finish.rs
 #. Snooze menu of the Download complete window: show no Download complete window for this long
 #, machine
@@ -2993,6 +3031,10 @@
 #. text in the Link grabber window
 #. Link grabber, a link's status: the server has the file
 	Online	Online
+#. text in the Options window
+#. Options → Archives → Link grabber: the hover tip of the types box in "Folders: {depth} levels deep, types: {types}": only a folder's files of these types go into Link grabber; written as the File types page writes them
+#, machine
+	Only a folder's files of these types, written as on the File types page (ISO ZIP R0*). Empty: every type.	Solo i file di una cartella di questi tipi, scritti come nella pagina Tipi di file (ISO ZIP R0*). Vuoto: ogni tipo.
 #. text in a download's Properties window
 #. tooltip of the greyed Move button in File Properties
 	Only a finished download, or one not started yet, can be moved	Si può spostare solo un download completato o non ancora avviato
@@ -3385,6 +3427,10 @@
 #. text in the Batch download window
 #. group box title: what the * in the address is replaced with (numbers or letters)
 	Replace asterisk to	Sostituisci l'asterisco con
+#. button in a dialog box
+#. button in the Columns dialog: put the columns back as they first were (order, widths, all shown)
+#, machine
+	Reset	Reimposta
 #. text in crashui.rs
 #. crash report window button: start MDM again
 	Restart MDM	Riavvia MDM
@@ -3847,6 +3893,10 @@
 #. tooltip on the disabled Rename box when the file is one part of a split archive (.part1.rar, .7z.001…)
 #, machine
 	Split archive volumes keep their names for extraction	I volumi degli archivi suddivisi mantengono i propri nomi per l'estrazione
+#. text in the Download video window
+#. checkbox in Download video: split the video into one file per chapter (the whole video is kept too)
+#, machine
+	Split into chapters	Dividi in capitoli
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Sri Lanka	Sri Lanka
@@ -3914,6 +3964,10 @@
 #. text in remote.rs; text in the Add torrent window
 #. remote control page (on a phone): button: stop a queue
 	Stop	Interrompi
+#. text in a download's progress window
+#. button in the progress window of a download that never ends by itself (an internet radio, a camera feed: no size, can't be resumed): stop it and keep what has arrived as the finished file
+#, machine
+	Stop and keep	Interrompi e mantieni
 #. text in a download's progress window
 #. button in a live stream's progress window: stop recording it and keep what was recorded as a video file
 #, machine
@@ -4511,6 +4565,10 @@
 #. remote control page (on a phone): label of the box naming this phone (shown in MDM's list of paired devices)
 	This device's name	Nome di questo dispositivo
 #. message or event log entry in the main window
+#. the message when a file picked in View → Font isn't a TrueType or OpenType font MDM can read
+#, machine
+	This file can't be used as a font.	Questo file non può essere utilizzato come carattere.
+#. message or event log entry in the main window
 #. {error} is why, in English (a file that isn't a theme or a colour scheme, a colour missing)
 #. {error} = an error message (keep the braces as they are)
 	This file can't be used as a theme: {error}	Impossibile usare questo file come tema: {error}
@@ -4764,6 +4822,10 @@
 #. tooltip (why a control is greyed) in the Options window
 #. why Options → Remote → Pair a device... is greyed
 	Turn on the remote control first.	Attiva prima il controllo remoto.
+#. text in the Add torrent window
+#. Torrent settings, under the public tracker list's address: turning the switch off doesn't take away the trackers it added to torrents
+#, machine
+	Turned off, the trackers already added stay.	Quando è disattivata, i tracker già aggiunti restano.
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Tuvalu	Tuvalu
@@ -5331,6 +5393,11 @@
 #. said after Delete with files when some files stayed on the disk; {file} is the download's name; the files' paths follow it
 #, machine
 	{file}: these files stayed on the disk, because MDM didn't create them or another download uses them:	{file}: questi file sono rimasti sul disco, perché MDM non li ha creati o un altro download li usa:
+#. message or event log entry in the main window
+#. Link grabber's Source line, after where the links came from: a folder (an FTP folder, a web server's "Index of" page) held more files or subfolders than Link grabber lists; {folder} is its name, {n} how many of its files are listed (10,000)
+#. {n} = a number (keep the braces as they are)
+#, machine
+	{folder}: only its first {n} files	{folder}: solo i suoi primi {n} file
 #. text in a download's progress window
 #. {have} and {total} = numbers of pieces; {size} = one piece's size
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
@@ -5601,6 +5668,10 @@ column	Q	C
 #. tooltip of the narrow "Q" column's title
 column	Queue	Coda
 #. column title in the download list in the download list
+#. column title: the folder the download is saved in
+#, machine
+column	Save To	Salva in
+#. column title in the download list in the download list
 #. column title: what a torrent has sent to peers against what it took
 #, machine
 column	Share ratio	Rapporto di condivisione
@@ -5855,6 +5926,14 @@ extension	File deleted or moved	File eliminato o spostato
 #, machine
 extension	File type	Tipo di file
 #. text in the browser extension
+#. button in the This page tab of the toolbar button's popup: look for the pictures of the current web page (only when clicked); short
+#, machine
+extension	Find images	Trova immagini
+#. text in the browser extension
+#. in the This page tab of the toolbar button's popup, before the Find images button; Link grabber is the name of the app's window that lists links to tick before downloading them
+#, machine
+extension	Find this page's pictures at the largest size it lists, then send the ones you want to Link grabber.	Trova le immagini di questa pagina nella dimensione più grande elencata, poi invia quelle che vuoi a Link grabber.
+#. text in the browser extension
 #. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) after Clear finished
 #, machine
 extension	Finished downloads cleared	Download completati rimossi
@@ -5885,6 +5964,14 @@ extension	Hold Alt while clicking a link to let the browser download it.	Tieni p
 #. text in the browser extension
 #. link under a connection problem in the toolbar button's popup, to the help page's section for it
 extension	How to fix it	Come risolvere
+#. text in the browser extension
+#. what a screen reader says for the row of buttons that keep or leave out each type of picture (JPEG, PNG, WEBP...), in the This page tab of the toolbar button's popup
+#, machine
+extension	Image types	Tipi di immagine
+#. text in the browser extension
+#. heading in the This page tab of the toolbar button's popup, over the part that finds the pictures of the current web page and sends them to the app
+#, machine
+extension	Images on this page	Immagini in questa pagina
 #. text in the browser extension
 #. pairing failed for another reason
 extension	It didn't work. Try again.	Non ha funzionato. Riprova.
@@ -6028,6 +6115,10 @@ extension	No download's name or address has “{words}”.	Nessun download ha "{
 #, machine
 extension	No downloads yet	Ancora nessun download
 #. text in the browser extension
+#. shown in the This page tab of the toolbar button's popup when Find images found no picture on the current web page
+#, machine
+extension	No images found on this page.	Nessuna immagine trovata in questa pagina.
+#. text in the browser extension
 #. shown in the toolbar button's popup when the current web page hasn't loaded any video, sound or stream yet
 extension	No video or sound found on this page yet. Play it, then open this again.	Nessun video o audio trovato ancora in questa pagina. Avvialo, poi riapri questo menu.
 #. text in the browser extension
@@ -6090,6 +6181,10 @@ extension	Options...	Opzioni...
 #. in the list under the download button over a video, after a sound-only line's bitrate: the sound as the site sends it, not converted (e.g. '128 kbps · original'); lower case; one word
 #, machine
 extension	original	originale
+#. text in the browser extension
+#. button among the picture types (JPEG, PNG, WEBP...) in the This page tab of the toolbar button's popup: the pictures of any other or unknown type; short
+#, machine
+extension	Other	Altro
 #. text in the browser extension
 #. button: pair this browser with the other MDM using the code
 extension	Pair	Associa
@@ -6170,6 +6265,10 @@ extension	Send downloads through this browser's proxy or VPN extension	Invia i d
 #. heading in the toolbar button's popup, above the choice of where downloads go
 extension	Send downloads to	Invia i download a
 #. text in the browser extension
+#. button in the This page tab of the toolbar button's popup: send the selected pictures to the app's Link grabber window, where the user ticks which to download
+#, machine
+extension	Send to Link grabber	Invia a Link grabber
+#. text in the browser extension
 #. on the download button over a video right after it was clicked, while the download goes to the app; MDM is Mister Download Manager's short name, keep it as it is; short
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -6178,6 +6277,10 @@ extension	Sending to MDM...	Invio a MDM...
 #. under the extension's name in the toolbar button's popup: downloads go to another Mister Download Manager, a server, at this address; short
 #, machine
 extension	Sending to {server}	Invio a {server}
+#. text in the browser extension
+#. shown in the This page tab of the toolbar button's popup after the pictures were sent to the app's Link grabber window
+#, machine
+extension	Sent to Link grabber: tick the ones to download there.	Inviate a Link grabber: seleziona lì quelle da scaricare.
 #. text in the browser extension
 #. shown briefly on the download button after it was clicked; keep the name Mister Download Manager as it is
 extension	Sent to Mister Download Manager	Inviato a Mister Download Manager
@@ -6209,6 +6312,23 @@ extension	Show in folder	Mostra nella cartella
 #, machine
 extension	Show {file} in folder	Mostra {file} nella cartella
 #. text in the browser extension
+#. in the This page tab of the toolbar button's popup, while a smallest width or height is set: how many of the selected pictures the page gives no size for (they are kept, not left out)
+#. {n} = a number (keep the braces as they are)
+#, machine
+extension	Size not given, kept: {n}	Dimensioni non indicate, immagini mantenute: {n}
+#. text in the browser extension
+#. what a screen reader says for the box of the smallest height of the pictures to keep, in the This page tab of the toolbar button's popup
+#, machine
+extension	Smallest height, in pixels	Altezza minima, in pixel
+#. text in the browser extension
+#. in the This page tab of the toolbar button's popup, before two boxes for the smallest width and height of the pictures to keep: 'Smallest size, in pixels [ ] × [ ]'; pictures smaller than that are left out; short
+#, machine
+extension	Smallest size, in pixels	Dimensioni minime, in pixel
+#. text in the browser extension
+#. what a screen reader says for the box of the smallest width of the pictures to keep, in the This page tab of the toolbar button's popup
+#, machine
+extension	Smallest width, in pixels	Larghezza minima, in pixel
+#. text in the browser extension
 #. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app isn't running
 #, machine
 extension	Start it to see your downloads here.	Avvialo per vedere qui i tuoi download.
@@ -6239,6 +6359,10 @@ extension	That didn't work. Try again.	L'operazione non è riuscita. Riprova.
 #. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when a button's download was removed meanwhile
 #, machine
 extension	That download is no longer in the list.	Il download non è più nell'elenco.
+#. text in the browser extension
+#. shown in the This page tab of the toolbar button's popup when Find images can't look into the current page (a page of the browser's own, an add-on store)
+#, machine
+extension	The browser doesn't let add-ons read this page.	Il browser non consente agli add-on di leggere questa pagina.
 #. text in the browser extension
 #. in the toolbar button's popup, on a site where the Chrome Web Store's copy of the extension shows no download button; Help is the link at the bottom of the popup
 extension	The Chrome Web Store's rules keep this copy of the add-on away from this site's videos. Help says what you can do.	Le regole del Chrome Web Store non consentono a questa copia dell'estensione di scaricare i video di questo sito. La Guida spiega cosa puoi fare.
@@ -6364,6 +6488,10 @@ extension	{file} removed from the list	{file} rimosso dall'elenco
 #, machine
 extension	{file} will be deleted from your computer, and the download taken off the list. This can't be undone.	{file} verrà eliminato dal computer e il download rimosso dall'elenco. Questa operazione non può essere annullata.
 #. text in the browser extension
+#. in the This page tab of the toolbar button's popup: how many of the pictures found pass the size and type filters, and will be sent
+#, machine
+extension	{shown} of {total} selected	{shown} di {total} selezionate
+#. text in the browser extension
 #. a running download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): the time left, as a clock (minutes:seconds)
 #. {time} = a time of day (keep the braces as they are)
 #, machine
@@ -6480,6 +6608,12 @@ menu	&Automatic	&Automatico
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Classic	&Classico
+#. menu command in the main window
+#. header menu: opens the dialog that chooses the list's columns
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	&Columns...	&Colonne...
 #. menu command in standard windows
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 menu	&Copy	&Copia
@@ -6495,6 +6629,11 @@ menu	&Download Now	&Scarica ora
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 menu	&Exit	&Esci
+#. menu command in the main window
+#. View menu: submenu choosing the interface's own font and text size
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Font	&Font
 #. menu command in the main window
 #. verb: load downloads from a file
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
@@ -6559,6 +6698,11 @@ menu	&Stop All	&Interrompi tutto
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 menu	&Stop Download	&Interrompi download
+#. menu command in the main window
+#. View → Font: the computer's own font, the default (Segoe UI on Windows)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&System font	&Carattere di sistema
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 menu	&Tray icon	Icona nell'area di &notifica
@@ -6673,6 +6817,12 @@ menu	C&ustomize URL List...	Personalizza elenco &URL...
 #. the trailing ... means it opens a window: keep it
 menu	Check for &updates...	Verifica &aggiornamenti...
 #. menu command in the main window
+#. View → Font: a TrueType or OpenType font file on disk to draw the interface's text in
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Choose a font &file...	&Scegli un file di caratteri...
+#. menu command in the main window
 #. View → Theme: MDM's own look, the default (IDM's layout, Windows 11's controls)
 menu	Classic	Classico
 #. menu command in the main window
@@ -6742,9 +6892,6 @@ menu	Find Next (F3)	Trova successivo (F3)
 #. menu command in the main window
 #. right-click → Torrent, a choice with a check mark (with Download in order): each file's first and last pieces first, which a video player needs to start
 menu	First and last pieces first	Prima le parti iniziali e finali
-#. menu command in the main window
-#. noun: the list's font (submenu)
-menu	Font	Carattere
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it

@@ -36,13 +36,13 @@
 
 <p align="center">
   Windows 10 and 11 (x64, ARM64, 32-bit) · Linux (Ubuntu, Debian, Mint, Fedora, openSUSE, Arch and more; x86-64 and ARM64) · macOS (Apple Silicon and Intel, experimental)<br>
-  86 languages · no ads, no trial, no sign-up
+  87 languages · no ads, no trial, no sign-up
 </p>
 
 <table align="center">
   <tr>
     <td align="center" width="210"><img src="docs/images/icons/faster.png" width="76" alt=""><h1>5×</h1><b>Faster</b><br><sub>a 1 GB file: 1 s instead of 5.5 s, on a local test server</sub></td>
-    <td align="center" width="210"><img src="docs/images/icons/languages.png" width="76" alt=""><h1>+46</h1><b>More languages</b><br><sub>86 instead of IDM's 40</sub></td>
+    <td align="center" width="210"><img src="docs/images/icons/languages.png" width="76" alt=""><h1>+47</h1><b>More languages</b><br><sub>87 instead of IDM's 40</sub></td>
     <td align="center" width="210"><img src="docs/images/icons/free.png" width="76" alt=""><h1>100%</h1><b>Cheaper (free!)</b><br><sub>no licence, no trial, ever</sub></td>
     <td align="center" width="210"><img src="docs/images/icons/torrent.png" width="76" alt=""><h1>Torrent</h1><b>Supported fully</b><br><sub>magnet links, .torrent files, seeding</sub></td>
   </tr>
@@ -133,6 +133,21 @@ winget install AhmedNefzaoui.MisterDownloadManager
 winget upgrade AhmedNefzaoui.MisterDownloadManager
 ```
 
+Or from [SourceForge](https://sourceforge.net/projects/mister-download-manager.mirror/), an
+automatic, exact copy of the GitHub releases (SourceForge shows ads around its downloads), where
+MDM has SourceForge's *Users Love Us* award:
+
+<p align="center">
+  <a href="https://sourceforge.net/projects/mister-download-manager.mirror/files/latest/download"><img align="middle" src="https://a.fsdn.com/con/app/sf-download-button" srcset="https://a.fsdn.com/con/app/sf-download-button?button_size=2x 2x" alt="Download Mister Download Manager from SourceForge" width="276" height="48"></a>
+  &nbsp;&nbsp;
+  <a href="https://sourceforge.net/projects/mister-download-manager.mirror/"><picture>
+    <source media="(prefers-color-scheme: dark)" srcset="website/assets/badges/sourceforge-users-love-us-dark.svg">
+    <img align="middle" src="website/assets/badges/sourceforge-users-love-us.svg" alt="SourceForge's Users Love Us award for Mister Download Manager" width="96" height="96">
+  </picture></a>
+  <br>
+  <a href="https://sourceforge.net/projects/mister-download-manager.mirror/files/"><img src="https://img.shields.io/sourceforge/dt/mister-download-manager?logo=sourceforge&label=downloads%20from%20SourceForge" alt="Downloads from SourceForge"></a>
+</p>
+
 ### Code signing policy
 
 Free code signing provided by [SignPath.io](https://about.signpath.io), certificate by [SignPath Foundation](https://signpath.org).
@@ -145,6 +160,8 @@ MDM runs on Linux too, tested on Ubuntu 24.04, Debian 12 and Fedora with GNOME, 
 and Cinnamon, on X11 and in Wayland sessions: the tray, dark mode, browser integration (Ubuntu's
 Snap Firefox included) and the packages' installs. Not there yet: screen readers (Orca) don't
 read its windows, and Flatpak browsers can't reach it ([more](docs/getting-started.md#on-linux)).
+Running downloads show their progress on MDM's icon in the dock (Ubuntu Dock, KDE Plasma and
+other docks that can show it), as they do on the Windows taskbar and in the macOS Dock.
 Up to version 0.2.4, the files' names end in `-experimental`.
 
 | File | For |
@@ -176,7 +193,7 @@ help make them as solid as the Windows and Linux versions.
 
 ## 🌍 In your language
 
-Every language Windows 11 offers, **86 in all**. MDM asks on its first start, and you can change
+Every language Windows 11 offers, **87 in all**. MDM asks on its first start, and you can change
 it any time in **View → Language**. Arabic, Hebrew, Persian, Urdu and Uyghur get a fully mirrored,
 right-to-left window.
 
@@ -251,6 +268,7 @@ right-to-left window.
 <img src="crates/app/assets/flags/gb-sct.svg" width="28" height="21" alt="Gàidhlig (Scottish Gaelic)" title="Gàidhlig (Scottish Gaelic)">
 <img src="crates/app/assets/flags/rs.svg" width="28" height="21" alt="Српски (ћирилица) (Serbian (Cyrillic))" title="Српски (ћирилица) (Serbian (Cyrillic))">
 <img src="crates/app/assets/flags/rs.svg" width="28" height="21" alt="Srpski (latinica) (Serbian (Latin))" title="Srpski (latinica) (Serbian (Latin))">
+<img src="crates/app/assets/flags/lk.svg" width="28" height="21" alt="සිංහල (Sinhala)" title="සිංහල (Sinhala)">
 <img src="crates/app/assets/flags/sk.svg" width="28" height="21" alt="Slovenčina (Slovak)" title="Slovenčina (Slovak)">
 <img src="crates/app/assets/flags/si.svg" width="28" height="21" alt="Slovenščina (Slovenian)" title="Slovenščina (Slovenian)">
 <img src="crates/app/assets/flags/mx.svg" width="28" height="21" alt="Español (México) (Spanish (Mexico))" title="Español (México) (Spanish (Mexico))">
@@ -291,7 +309,7 @@ right-to-left window.
     <td><img src="docs/images/progress-video.webp" alt="A video's progress window"><br><sub><b>A video's progress</b>: speed and time left while yt-dlp brings it in.</sub></td>
   </tr>
   <tr>
-    <td><img src="docs/images/language-picker.webp" alt="Language picker"><br><sub><b>86 languages</b>, chosen by flag on the first start.</sub></td>
+    <td><img src="docs/images/language-picker.webp" alt="Language picker"><br><sub><b>87 languages</b>, chosen by flag on the first start.</sub></td>
     <td><img src="docs/images/arabic-main.webp" alt="Arabic interface"><br><sub><b>Right to left</b> for Arabic, Hebrew, Persian, Urdu and Uyghur.</sub></td>
   </tr>
   <tr>
@@ -307,13 +325,20 @@ right-to-left window.
 - **Resumes** after a crash, a restart or a dropped connection, without starting over.
 - **Catches downloads from Firefox, Chrome, Edge, Brave, Opera, Vivaldi and Helium** (the
   extension is on Firefox Add-ons and the Chrome Web Store), and gives them back to the browser
-  when MDM isn't running.
-- **Downloads videos** from web pages (a button appears over the video; playlists, subtitles,
-  the sound alone), **image galleries** with gallery-dl, and **torrents and magnet links**
-  (sequential order, RSS feeds, sharing limits).
+  when MDM isn't running. Its toolbar button finds **all the images on a page**, at the largest
+  size the page lists, filtered by size and type, and sends them to the Link grabber.
+- **Downloads videos** from web pages (a button appears over the video, on many pages before it plays; playlists,
+  subtitles, the sound alone), **image galleries** with gallery-dl, and **torrents and magnet links**
+  (sequential order, RSS feeds, sharing limits, an optional public tracker list for more peers).
 - **Many links at once**: the Link grabber sorts them into packages and extracts the archives
-  (zip, 7z, rar) when they're in. It takes Click'n'Load from link sites, asking once per site. Debrid accounts (Real-Debrid, AllDebrid, Premiumize, TorBox, Mega-Debrid; experimental) download
+  (zip, 7z, rar) when they're in. Give it an **FTP folder or a web server's "Index of" page** and it
+  lists every file in it and its subfolders, keeping the folder tree when they download. It takes
+  Click'n'Load from link sites, asking once per site, and
+  unwraps `thunder://`, `flashget://` and `qqdl://` links to the address inside them. Debrid accounts (Real-Debrid, AllDebrid, Premiumize, TorBox, Mega-Debrid; experimental) download
   file-host links through your own account.
+- **A list laid out your way**: show, move, resize and sort its columns, **Save To** (the folder
+  each download is in) among them, choose them and their order in the **Columns** window (from
+  the keyboard too), and filter any column ([how](docs/download-list.md)).
 - **Downloads overnight** with queues and a scheduler that can wake the computer, then shuts it
   down if you like.
 - **Through your VPN only**, if you want: hold every download to one network adapter, with a kill
@@ -328,7 +353,7 @@ right-to-left window.
   ([how](docs/options.md#downloads)).
 - **Day and dark mode, and themes**: Classic, Native, High contrast, Metro, Adwaita, Breeze,
   Luna, Aero and Aqua, or your own in a text file ([how](docs/themes.md)). Everything larger, up
-  to 200 %, with **View → Interface size**. 86 languages, and a portable version for USB sticks.
+  to 200 %, with **View → Interface size**. 87 languages, and a portable version for USB sticks.
 - **Works from the keyboard and with screen readers** (Narrator, NVDA): every window, dialog and
   menu ([the keys](docs/keyboard-shortcuts.md)).
 - **No ads, no trial, no account**. Free and open source.

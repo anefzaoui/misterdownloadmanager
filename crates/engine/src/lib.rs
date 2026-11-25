@@ -6,6 +6,7 @@ pub mod disk;
 pub mod dns;
 pub mod download;
 pub mod fault;
+pub mod folder;
 pub mod ftp;
 pub mod hosts;
 // Public for the fuzz targets (fuzz/): `links` and `declared_videos` without a network.

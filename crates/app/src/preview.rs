@@ -1042,10 +1042,7 @@ fn one(ui: &mut Ui, x0: f32, x1: f32, y0: f32, item: &Item) -> f32 {
         // i18n: label in the preview pane: whether the downloaded file is still where it was saved
         y = field(ui, c, y, crate::i18n::t("File:"), text, how, "presence");
     }
-    let folder = item
-        .dest
-        .parent()
-        .map_or_else(String::new, |d| d.display().to_string());
+    let folder = item.save_folder().display().to_string();
     y = field(
         ui,
         c,

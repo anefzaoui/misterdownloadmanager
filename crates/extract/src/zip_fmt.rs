@@ -63,10 +63,16 @@ fn run<R: Read + Seek>(reader: R, w: &mut Writer, password: Option<&str>) -> Res
         let size = entry.size();
         let mode = entry.unix_mode();
         let encrypted = entry.encrypted();
+        // An AES entry checks the password itself (`ZipError::InvalidPassword`): a damaged one
+        // that passes that check is damaged data, not a wrong password. Its `compression()` is
+        // the method inside AES (Deflate), so the AES extra field tells them apart.
+        let aes = entry
+            .extra_data_fields()
+            .any(|f| matches!(f, zip::ExtraField::AeXEncryption(_)));
         match w.file(&name, Some(size), &mut entry, mode) {
             // A wrong ZipCrypto password passes its one-byte check now and then, and fails as
             // bad data (its CRC) when read.
-            Err(Error::Damaged(_)) if encrypted => return Err(Error::WrongPassword),
+            Err(Error::Damaged(_)) if encrypted && !aes => return Err(Error::WrongPassword),
             r => r?,
         }
     }

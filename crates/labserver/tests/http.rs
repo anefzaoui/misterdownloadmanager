@@ -523,6 +523,58 @@ async fn links_timed_from_their_first_request() {
     assert_eq!(status("/gen/1K/a?seed=1&lasts_ms=x").await, 400);
 }
 
+/// #1781: `image=WxH` makes a generated file a picture of that size (a BMP's header over its
+/// bytes, image/bmp unless `type` says); `/page?images=1` is a gallery of them, every picture it
+/// shows or links whole in its file.
+#[tokio::test]
+async fn pictures_and_their_gallery() {
+    let s = server("").await;
+    let r = reqwest::get(s.url("/gen/256K/photo1.jpg?image=1600x1200"))
+        .await
+        .unwrap();
+    assert_eq!(r.headers()["content-type"], "image/bmp");
+    let b = r.bytes().await.unwrap();
+    assert_eq!(b.len(), 256 << 10);
+    assert_eq!(&b[..2], b"BM");
+    let u32_at = |i: usize| u32::from_le_bytes(b[i..i + 4].try_into().unwrap());
+    assert_eq!((u32_at(18), u32_at(22)), (1600, 1200));
+    let typed = reqwest::get(s.url("/gen/1K/a.webp?image=8x8&type=image%2Fwebp"))
+        .await
+        .unwrap();
+    assert_eq!(typed.headers()["content-type"], "image/webp");
+    for bad in ["8", "0x8", "8x", "99999x2"] {
+        let r = reqwest::get(s.url(&format!("/gen/1K/a.png?image={bad}")))
+            .await
+            .unwrap();
+        assert_eq!(r.status(), 400, "image={bad}");
+    }
+
+    let (_, page) = text(&s, "/page?images=1").await;
+    assert!(!page.contains("<video"), "the gallery alone");
+    assert!(page.contains("<picture><source type=image/webp"));
+    let mut seen = 0;
+    for part in page.split("/gen/").skip(1) {
+        let address = part.split(['"', ' ']).next().unwrap();
+        let (size, rest) = address.split_once('/').unwrap();
+        let Some((_, wh)) = rest.split_once("?image=") else {
+            assert!(rest.ends_with(".pdf"), "{address}");
+            continue;
+        };
+        let (w, h) = wh.split_once('x').unwrap();
+        let size = content::parse_size(size).unwrap();
+        let need = content::bmp_len(w.parse().unwrap(), h.parse().unwrap());
+        assert!(
+            size >= need,
+            "{address}: {size} bytes, the picture takes {need}"
+        );
+        seen += 1;
+    }
+    assert_eq!(seen, 14, "every picture's address checked");
+    let (_, seeded) = text(&s, "/page?images=1&seed=7").await;
+    assert_eq!(seeded.matches("?seed=7&image=").count(), 14);
+    assert_eq!(seeded.replace("?seed=7&image=", "?image="), page);
+}
+
 async fn text(s: &LabServer, path: &str) -> (reqwest::header::HeaderMap, String) {
     let r = reqwest::get(s.url(path)).await.unwrap();
     assert_eq!(r.status(), 200, "{path}");

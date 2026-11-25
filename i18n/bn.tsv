@@ -103,9 +103,10 @@
 #, machine
 @plural	{n} downloading|{n} downloading	{n} ডাউনলোড হচ্ছে|{n} ডাউনলোড হচ্ছে
 #. count in extracting archives (a download's log, the Archive password window)
-#. in a download's log, after extracting: entries of the archive not written (links, names that would leave the folder)
+#. in a download's log, after extracting: entries of the archive not written (links, names that would leave the folder, entries under a file of the archive where a folder should be)
 #. {n} = a number (keep the braces as they are)
-@plural	{n} entry was left out (a link, or a name leading outside the folder)|{n} entries were left out (links, or names leading outside the folder)	{n}টি এন্ট্রি বাদ দেওয়া হয়েছে (একটি লিংক, অথবা ফোল্ডারের বাইরে নিয়ে যাওয়া একটি নাম)|{n}টি এন্ট্রি বাদ দেওয়া হয়েছে (লিংক, অথবা ফোল্ডারের বাইরে নিয়ে যাওয়া নাম)
+#, machine
+@plural	{n} entry was left out (a link, a name leading outside the folder, or a file in its way)|{n} entries were left out (links, names leading outside the folder, or files in their way)	{n}টি এন্ট্রি বাদ দেওয়া হয়েছে (একটি লিংক, ফোল্ডারের বাইরে নিয়ে যাওয়া একটি নাম, অথবা এর পথে থাকা একটি ফাইল)|{n}টি এন্ট্রি বাদ দেওয়া হয়েছে (লিংক, ফোল্ডারের বাইরে নিয়ে যাওয়া নাম, অথবা এর পথে থাকা ফাইল)
 #. count in a dialog box
 #. the summary of downloads added together; after "12 downloads finished": {n} of them failed
 #. {n} = a number (keep the braces as they are)
@@ -162,6 +163,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} tracker added|{n} trackers added	{n}টি ট্র্যাকার যোগ করা হয়েছে|{n}টি ট্র্যাকার যোগ করা হয়েছে
+#. count in the main window
+#. event log entry: trackers from the public tracker list (Torrent settings) were added to a torrent
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} tracker added from the public list|{n} trackers added from the public list	পাবলিক তালিকা থেকে {n}টি ট্র্যাকার যোগ করা হয়েছে|পাবলিক তালিকা থেকে {n}টি ট্র্যাকার যোগ করা হয়েছে
 #. count in the Add torrent window
 #. where a magnet's peers came from: {n} = trackers asked; {peers} = "3 peers"
 #. {n} = a number (keep the braces as they are)
@@ -306,6 +312,9 @@
 #. why Part is greyed in Download video: the page is a playlist, whose videos are downloaded whole
 #, machine
 	A playlist's videos are downloaded whole	একটি প্লেলিস্টের ভিডিওগুলো সম্পূর্ণ ডাউনলোড করা হয়
+#. message or event log entry in the main window
+#, machine
+	A private torrent: the public tracker list isn't added	একটি ব্যক্তিগত টরেন্ট: পাবলিক ট্র্যাকার তালিকা যোগ করা হয়নি
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites: the tooltip of the profile box
 #, machine
@@ -442,6 +451,10 @@
 	Add the extension to Safari	Safari-তে এক্সটেনশনটি যোগ করুন
 #. text in extension.rs
 	Add the free extension: files you download in your browser come here, and videos get a Download button.	বিনামূল্যে এক্সটেনশন যোগ করুন: আপনার ব্রাউজারে ডাউনলোড করা ফাইলগুলো এখানে আসে এবং ভিডিওগুলোতে একটি ডাউনলোড বোতাম পাওয়া যায়।
+#. text in the Add torrent window
+#. Torrent settings: add the trackers of a public tracker list (its address in the box below) to torrents that aren't private, so they find more peers
+#, machine
+	Add the trackers of this public list to public torrents:	পাবলিক টরেন্টগুলোতে এই পাবলিক তালিকার ট্র্যাকারগুলো যোগ করুন:
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: add the torrents to the list without starting them
 	Add them without starting them	শুরু না করেই সেগুলোকে যোগ করুন
@@ -1062,11 +1075,20 @@
 #. remote control page (on a phone): what the ".torrent file" button does (screen readers)
 #, machine
 	Choose a .torrent file	একটি .torrent ফাইল বেছে নিন
+#. message or event log entry in the main window
+#. title of the file dialog of View → Font → Choose a font file
+#. title of the message when the font picked in View → Font can't be used
+#, machine
+	Choose a font file	একটি ফন্ট ফাইল নির্বাচন করুন
 #. text in helpers.rs
 #, machine
 	Choose a JavaScript runtime (Node.js, Deno, QuickJS or Bun)	একটি জাভাস্ক্রিপ্ট রানটাইম বেছে নিন (Node.js, Deno, QuickJS অথবা Bun)
 #. text in langpick.rs
 	Choose a language	ভাষা বেছে নিন
+#. text in a dialog box
+#. the Columns dialog: what it is for, above its list of the download list's columns
+#, machine
+	Choose columns to show	দেখানোর জন্য কলাম বেছে নিন
 #. text in langpick.rs
 	Choose the language Mister Download Manager shows its windows in:	Mister Download Manager-এর উইন্ডোগুলো কোন ভাষায় দেখাবে, তা বেছে নিন:
 #. text in the Options window
@@ -1133,6 +1155,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Colombia	কলম্বিয়া
+#. window title in a dialog box; text in a dialog box
+#. what a screen reader calls the Columns dialog's list of the download list's columns
+#, machine
+	Columns	কলাম
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -1877,6 +1903,10 @@
 #. text in the Add torrent window
 #. Torrent settings, at the bottom
 	Fetched again every 7 days. Changes apply when no torrent is running.	প্রতি 7 দিনে আবার আনা হয়। কোনো টরেন্ট না চললে পরিবর্তনগুলো প্রযোজ্য হবে।
+#. text in the Add torrent window
+#. Torrent settings, under the public tracker list's address
+#, machine
+	Fetched once a day. Never added to private torrents.	দিনে একবার আনা হয়। ব্যক্তিগত টরেন্টগুলোতে কখনো যোগ করা হয় না।
 #. text in helpers.rs
 #. helper name and what it does (ffmpeg is a program's name)
 	ffmpeg: joins picture and sound	ffmpeg: ছবি এবং শব্দকে একত্র করে
@@ -2002,6 +2032,14 @@
 	FLAC keeps the sound exactly, but it can't add quality the site's sound doesn't have: the file is only bigger.	FLAC শব্দকে হুবহু রাখে, কিন্তু সাইটের শব্দের যে গুণমান নেই তা যোগ করতে পারে না: ফাইলটি কেবল বড় হয়।
 #. text in categories.rs
 	Folder:	ফোল্ডার:
+#. text in the Options window
+#. Options → Archives → Link grabber, one line with two boxes: an FTP folder or a web server's folder listing ("Index of") given to Link grabber is read with its subfolders: {depth} is a number box (how many levels of subfolders, 3 at first; 0 is the folder's own files only), {types} a text box (file types such as ISO ZIP; empty for every type)
+#, machine
+	Folders: {depth} levels deep, types: {types}	ফোল্ডার: {depth} স্তর পর্যন্ত, ফাইলের ধরন: {types}
+#. message or event log entry in the main window
+#. the kind of file View → Font → Choose a font file lists: TrueType and OpenType font files
+#, machine
+	Font files	ফন্ট ফাইল
 #. text in finish.rs
 #. Snooze menu of the Download complete window: show no Download complete window for this long
 #, machine
@@ -3571,6 +3609,10 @@
 #. Link grabber, a link's status: the server has the file
 #, machine
 	Online	অনলাইন
+#. text in the Options window
+#. Options → Archives → Link grabber: the hover tip of the types box in "Folders: {depth} levels deep, types: {types}": only a folder's files of these types go into Link grabber; written as the File types page writes them
+#, machine
+	Only a folder's files of these types, written as on the File types page (ISO ZIP R0*). Empty: every type.	শুধুমাত্র এই ধরনের ফোল্ডারের ফাইলগুলো, ফাইল টাইপস পেজে যেমন লেখা আছে (ISO ZIP R0*)। খালি: সব ধরন।
 #. text in a download's Properties window
 #. tooltip of the greyed Move button in File Properties
 #, machine
@@ -4038,6 +4080,10 @@
 #. group box title: what the * in the address is replaced with (numbers or letters)
 #, machine
 	Replace asterisk to	তারকাচিহ্ন প্রতিস্থাপন করুন
+#. button in a dialog box
+#. button in the Columns dialog: put the columns back as they first were (order, widths, all shown)
+#, machine
+	Reset	রিসেট করুন
 #. text in crashui.rs
 #. crash report window button: start MDM again
 #, machine
@@ -4583,6 +4629,10 @@
 #. tooltip on the disabled Rename box when the file is one part of a split archive (.part1.rar, .7z.001…)
 #, machine
 	Split archive volumes keep their names for extraction	বিভক্ত আর্কাইভ ভলিউমগুলো এক্সট্র্যাকশনের জন্য নিজেদের নাম অপরিবর্তিত রাখে
+#. text in the Download video window
+#. checkbox in Download video: split the video into one file per chapter (the whole video is kept too)
+#, machine
+	Split into chapters	অধ্যায়ে ভাগ করুন
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -4664,6 +4714,10 @@
 #. text in remote.rs; text in the Add torrent window
 #. remote control page (on a phone): button: stop a queue
 	Stop	থামান
+#. text in a download's progress window
+#. button in the progress window of a download that never ends by itself (an internet radio, a camera feed: no size, can't be resumed): stop it and keep what has arrived as the finished file
+#, machine
+	Stop and keep	থামান এবং রাখুন
 #. text in a download's progress window
 #. button in a live stream's progress window: stop recording it and keep what was recorded as a video file
 #, machine
@@ -5339,6 +5393,10 @@
 #, machine
 	This device's name	এই ডিভাইসের নাম
 #. message or event log entry in the main window
+#. the message when a file picked in View → Font isn't a TrueType or OpenType font MDM can read
+#, machine
+	This file can't be used as a font.	এই ফাইলটি একটি ফন্ট হিসাবে ব্যবহার করা যাবে না.
+#. message or event log entry in the main window
 #. {error} is why, in English (a file that isn't a theme or a colour scheme, a colour missing)
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -5633,6 +5691,10 @@
 #. why Options → Remote → Pair a device... is greyed
 #, machine
 	Turn on the remote control first.	প্রথমে রিমোট কন্ট্রোল চালু করুন।
+#. text in the Add torrent window
+#. Torrent settings, under the public tracker list's address: turning the switch off doesn't take away the trackers it added to torrents
+#, machine
+	Turned off, the trackers already added stay.	বন্ধ করা হলেও, ইতোমধ্যে যোগ করা ট্র্যাকারগুলো থেকে যায়।
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -6309,6 +6371,11 @@
 #. said after Delete with files when some files stayed on the disk; {file} is the download's name; the files' paths follow it
 #, machine
 	{file}: these files stayed on the disk, because MDM didn't create them or another download uses them:	{file}: এই ফাইলগুলো ডিস্কে রয়ে গেছে, কারণ MDM সেগুলো তৈরি করেনি বা অন্য কোনো ডাউনলোড সেগুলো ব্যবহার করে:
+#. message or event log entry in the main window
+#. Link grabber's Source line, after where the links came from: a folder (an FTP folder, a web server's "Index of" page) held more files or subfolders than Link grabber lists; {folder} is its name, {n} how many of its files are listed (10,000)
+#. {n} = a number (keep the braces as they are)
+#, machine
+	{folder}: only its first {n} files	{folder}: শুধুমাত্র এর প্রথম {n}টি ফাইল
 #. text in a download's progress window
 #. {have} and {total} = numbers of pieces; {size} = one piece's size
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
@@ -6611,6 +6678,10 @@ column	Q	সারি
 #, machine
 column	Queue	সারি
 #. column title in the download list in the download list
+#. column title: the folder the download is saved in
+#, machine
+column	Save To	সংরক্ষণের ফোল্ডার
+#. column title in the download list in the download list
 #. column title: what a torrent has sent to peers against what it took
 column	Share ratio	শেয়ার অনুপাত
 #. column title in the download list in the download list
@@ -6872,6 +6943,14 @@ extension	File deleted or moved	ফাইলটি মুছে ফেলা হ
 #, machine
 extension	File type	ফাইলের ধরন
 #. text in the browser extension
+#. button in the This page tab of the toolbar button's popup: look for the pictures of the current web page (only when clicked); short
+#, machine
+extension	Find images	ছবি খুঁজুন
+#. text in the browser extension
+#. in the This page tab of the toolbar button's popup, before the Find images button; Link grabber is the name of the app's window that lists links to tick before downloading them
+#, machine
+extension	Find this page's pictures at the largest size it lists, then send the ones you want to Link grabber.	এই পেজের ছবিগুলো সবচেয়ে বড় আকারে খুঁজুন, তারপর আপনি যেগুলো চান সেগুলো লিংক গ্র্যাবাবে পাঠান।
+#. text in the browser extension
 #. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) after Clear finished
 #, machine
 extension	Finished downloads cleared	সম্পন্ন ডাউনলোডগুলো তালিকা থেকে বাদ দেওয়া হয়েছে
@@ -6906,6 +6985,14 @@ extension	Hold Alt while clicking a link to let the browser download it.	ব্�
 #. link under a connection problem in the toolbar button's popup, to the help page's section for it
 #, machine
 extension	How to fix it	কীভাবে ঠিক করবেন
+#. text in the browser extension
+#. what a screen reader says for the row of buttons that keep or leave out each type of picture (JPEG, PNG, WEBP...), in the This page tab of the toolbar button's popup
+#, machine
+extension	Image types	ছবির প্রকার
+#. text in the browser extension
+#. heading in the This page tab of the toolbar button's popup, over the part that finds the pictures of the current web page and sends them to the app
+#, machine
+extension	Images on this page	এই পেজের ছবি
 #. text in the browser extension
 #. pairing failed for another reason
 #, machine
@@ -7062,6 +7149,10 @@ extension	No download's name or address has “{words}”.	কোনো ডা�
 #, machine
 extension	No downloads yet	এখনো কোনো ডাউনলোড নেই
 #. text in the browser extension
+#. shown in the This page tab of the toolbar button's popup when Find images found no picture on the current web page
+#, machine
+extension	No images found on this page.	এই পেজে কোনো ছবি পাওয়া যায়নি।
+#. text in the browser extension
 #. shown in the toolbar button's popup when the current web page hasn't loaded any video, sound or stream yet
 extension	No video or sound found on this page yet. Play it, then open this again.	এই পেজে এখনো কোনো ভিডিও বা অডিও পাওয়া যায়নি। এটি চালান, তারপর এটি আবার খুলুন।
 #. text in the browser extension
@@ -7127,6 +7218,10 @@ extension	Options...	বিকল্প...
 #. in the list under the download button over a video, after a sound-only line's bitrate: the sound as the site sends it, not converted (e.g. '128 kbps · original'); lower case; one word
 #, machine
 extension	original	আসল
+#. text in the browser extension
+#. button among the picture types (JPEG, PNG, WEBP...) in the This page tab of the toolbar button's popup: the pictures of any other or unknown type; short
+#, machine
+extension	Other	অন্যান্য
 #. text in the browser extension
 #. button: pair this browser with the other MDM using the code
 #, machine
@@ -7210,6 +7305,10 @@ extension	Send downloads through this browser's proxy or VPN extension	এই �
 #. heading in the toolbar button's popup, above the choice of where downloads go
 extension	Send downloads to	ডাউনলোডগুলো এখানে পাঠান
 #. text in the browser extension
+#. button in the This page tab of the toolbar button's popup: send the selected pictures to the app's Link grabber window, where the user ticks which to download
+#, machine
+extension	Send to Link grabber	লিংক গ্র্যাবাবে পাঠান
+#. text in the browser extension
 #. on the download button over a video right after it was clicked, while the download goes to the app; MDM is Mister Download Manager's short name, keep it as it is; short
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -7218,6 +7317,10 @@ extension	Sending to MDM...	MDM-এ পাঠানো হচ্ছে...
 #. under the extension's name in the toolbar button's popup: downloads go to another Mister Download Manager, a server, at this address; short
 #, machine
 extension	Sending to {server}	{server}-এ পাঠানো হচ্ছে
+#. text in the browser extension
+#. shown in the This page tab of the toolbar button's popup after the pictures were sent to the app's Link grabber window
+#, machine
+extension	Sent to Link grabber: tick the ones to download there.	লিংক গ্র্যাবাবে পাঠানো হয়েছে: সেখানে ডাউনলোড করার জন্য টিক দিন।
 #. text in the browser extension
 #. shown briefly on the download button after it was clicked; keep the name Mister Download Manager as it is
 #, machine
@@ -7248,6 +7351,23 @@ extension	Show in folder	ফোল্ডারে দেখান
 #. screen readers' name of a download's Show in folder button in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads)
 #, machine
 extension	Show {file} in folder	ফোল্ডারে {file} দেখান
+#. text in the browser extension
+#. in the This page tab of the toolbar button's popup, while a smallest width or height is set: how many of the selected pictures the page gives no size for (they are kept, not left out)
+#. {n} = a number (keep the braces as they are)
+#, machine
+extension	Size not given, kept: {n}	আকার দেওয়া হয়নি, রাখা হয়েছে: {n}টি
+#. text in the browser extension
+#. what a screen reader says for the box of the smallest height of the pictures to keep, in the This page tab of the toolbar button's popup
+#, machine
+extension	Smallest height, in pixels	সবচেয়ে কম উচ্চতা, পিক্সেল-এ
+#. text in the browser extension
+#. in the This page tab of the toolbar button's popup, before two boxes for the smallest width and height of the pictures to keep: 'Smallest size, in pixels [ ] × [ ]'; pictures smaller than that are left out; short
+#, machine
+extension	Smallest size, in pixels	পিক্সেল-এ ক্ষুদ্রতম আকার
+#. text in the browser extension
+#. what a screen reader says for the box of the smallest width of the pictures to keep, in the This page tab of the toolbar button's popup
+#, machine
+extension	Smallest width, in pixels	সবচেয়ে কম প্রস্থ, পিক্সেল-এ
 #. text in the browser extension
 #. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app isn't running
 #, machine
@@ -7281,6 +7401,10 @@ extension	That didn't work. Try again.	এটি কাজ করেনি। �
 #. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when a button's download was removed meanwhile
 #, machine
 extension	That download is no longer in the list.	সেই ডাউনলোডটি আর তালিকায় নেই।
+#. text in the browser extension
+#. shown in the This page tab of the toolbar button's popup when Find images can't look into the current page (a page of the browser's own, an add-on store)
+#, machine
+extension	The browser doesn't let add-ons read this page.	ব্রাউজার অ্যাড-অনগুলোকে এই পেজ পড়তে দেয় না।
 #. text in the browser extension
 #. in the toolbar button's popup, on a site where the Chrome Web Store's copy of the extension shows no download button; Help is the link at the bottom of the popup
 #, machine
@@ -7414,6 +7538,10 @@ extension	{file} removed from the list	{file} তালিকা থেকে �
 #. question in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) before a download's file is deleted
 #, machine
 extension	{file} will be deleted from your computer, and the download taken off the list. This can't be undone.	{file} আপনার কম্পিউটার থেকে মুছে ফেলা হবে এবং ডাউনলোডটি তালিকা থেকে বাদ দেওয়া হবে। এটি পূর্বাবস্থায় ফেরানো যাবে না।
+#. text in the browser extension
+#. in the This page tab of the toolbar button's popup: how many of the pictures found pass the size and type filters, and will be sent
+#, machine
+extension	{shown} of {total} selected	নির্বাচিত {total}টির মধ্যে {shown}টি
 #. text in the browser extension
 #. a running download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): the time left, as a clock (minutes:seconds)
 #. {time} = a time of day (keep the braces as they are)
@@ -7554,6 +7682,12 @@ menu	&Automatic	স্বয়ংক্রিয়(&A)
 #. View → Text: letters drawn the classic way, hinted to whole pixels (crisp, coarse on a dense screen)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 menu	&Classic	ক্লাসিক(&C)
+#. menu command in the main window
+#. header menu: opens the dialog that chooses the list's columns
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	&Columns...	কলাম(&C)...
 #. menu command in standard windows
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 menu	&Copy	কপি করুন(&C)
@@ -7569,6 +7703,11 @@ menu	&Download Now	এখনই ডাউনলোড করুন(&D)
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 menu	&Exit	প্রস্থান করুন(&E)
+#. menu command in the main window
+#. View menu: submenu choosing the interface's own font and text size
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Font	&হরফ
 #. menu command in the main window
 #. verb: load downloads from a file
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
@@ -7631,6 +7770,11 @@ menu	&Stop All	সব ডাউনলোড থামান(&S)
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 menu	&Stop Download	ডাউনলোড থামান(&S)
+#. menu command in the main window
+#. View → Font: the computer's own font, the default (Segoe UI on Windows)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&System font	&সিস্টেম ফন্ট
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 menu	&Tray icon	ট্রে আইকন(&T)
@@ -7740,6 +7884,12 @@ menu	C&ustomize URL List...	URL তালিকা কাস্টমাইজ �
 #. the trailing ... means it opens a window: keep it
 menu	Check for &updates...	আপডেট খুঁজুন(&U)...
 #. menu command in the main window
+#. View → Font: a TrueType or OpenType font file on disk to draw the interface's text in
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Choose a font &file...	&একটি ফন্ট ফাইল নির্বাচন করুন...
+#. menu command in the main window
 #. View → Theme: MDM's own look, the default (IDM's layout, Windows 11's controls)
 menu	Classic	ক্লাসিক
 #. menu command in the main window
@@ -7805,9 +7955,6 @@ menu	Find Next (F3)	পরবর্তী খুঁজুন (F3)
 #. menu command in the main window
 #. right-click → Torrent, a choice with a check mark (with Download in order): each file's first and last pieces first, which a video player needs to start
 menu	First and last pieces first	প্রথম ও শেষ খণ্ড আগে
-#. menu command in the main window
-#. noun: the list's font (submenu)
-menu	Font	ফন্ট
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it

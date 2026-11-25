@@ -113,6 +113,18 @@ const PAGE_ORDER: &[usize] = &[
 ];
 /// Test browser integration: from a check's line to the path under it (#818).
 const DETAIL_H: f32 = 18.0;
+/// What the Sites Logins list shows in place of a password: the same for every one; nothing
+/// for a login without one.
+const PASSWORD_MASK: &str = "********";
+
+/// The Sites Logins list's Password column for `pass`.
+fn password_shown(pass: &str) -> String {
+    if pass.is_empty() {
+        String::new()
+    } else {
+        PASSWORD_MASK.to_owned()
+    }
+}
 
 /// Connection → DNS's sub-dialog: a copy of the DNS fields, kept on OK.
 struct DnsEdit {
@@ -137,6 +149,12 @@ const TEST_SENTENCE: &str =
 
 /// The largest limit for the archive test that can be typed, in GB.
 const TEST_GB_MAX: u32 = 1024;
+
+/// Archives → Link grabber (#1774): how deep a folder given to Link grabber is read, and its
+/// files of which types, one line.
+const FOLDER_SENTENCE: &str =
+    // i18n: Options → Archives → Link grabber, one line with two boxes: an FTP folder or a web server's folder listing ("Index of") given to Link grabber is read with its subfolders: {depth} is a number box (how many levels of subfolders, 3 at first; 0 is the folder's own files only), {types} a text box (file types such as ISO ZIP; empty for every type)
+    crate::i18n::mark("Folders: {depth} levels deep, types: {types}");
 
 /// Archives → Use another program... (#1525): the program picked, and whether it answered as
 /// 7-Zip's command line, once it has.
@@ -297,6 +315,8 @@ pub struct OptionsDialog {
     port: String,
     /// Archives → Test archives ... up to {gb} GB (#1661): the number as typed.
     test_gb: String,
+    /// Archives → Link grabber → Folders: {depth} levels deep (#1774): the number as typed.
+    folder_depth: String,
     device_rows: winui::RowList,
     /// Sites Logins → Cookies for video sites (#229): the browser in the list (an index into
     /// `mdm_tools::proc::cookie_browsers`), kept while Off is chosen.
@@ -418,6 +438,7 @@ impl OptionsDialog {
             remote: None,
             port: settings.remote_port.to_string(),
             test_gb: settings.test_archives_gb.to_string(),
+            folder_depth: settings.grabber_depth.to_string(),
             device_rows: Default::default(),
             cookie_browser: cookie_browser_at(settings),
             recording_hotkey: false,
@@ -538,9 +559,9 @@ impl OptionsDialog {
                     .parse()
                     .unwrap_or(8)
                     .clamp(1, s.connection_limit());
-                s.limits_mb = self.mb.parse().unwrap_or(200).max(1);
+                s.limits_mb = self.mb.parse().unwrap_or(s.limits_mb).max(1);
                 s.capture_min_kb = self.min_kb.parse().unwrap_or(0);
-                s.limits_hours = self.hours.parse().unwrap_or(5).max(1);
+                s.limits_hours = self.hours.parse().unwrap_or(s.limits_hours).max(1);
                 s.remote_port = self.remote_port();
                 s.test_archives_gb = self
                     .test_gb
@@ -548,6 +569,13 @@ impl OptionsDialog {
                     .parse()
                     .unwrap_or(s.test_archives_gb)
                     .clamp(1, TEST_GB_MAX);
+                s.grabber_depth = self
+                    .folder_depth
+                    .trim()
+                    .parse()
+                    .unwrap_or(s.grabber_depth)
+                    .min(mdm_engine::folder::MAX_DEPTH);
+                s.grabber_types = s.grabber_types.trim().to_owned();
                 Outcome::Done(s)
             }
             Outcome::Closed => Outcome::Closed,
@@ -2467,9 +2495,7 @@ impl OptionsDialog {
             .s
             .site_logins
             .iter()
-            .map(|(site, user, pass)| {
-                vec![site.clone(), user.clone(), "*".repeat(pass.chars().count())]
-            })
+            .map(|(site, user, pass)| vec![site.clone(), user.clone(), password_shown(pass)])
             .collect();
         // The list leaves the page's foot to Cookies for video sites (#229).
         // Named for screen readers by the page's title (#1407).
@@ -2933,17 +2959,65 @@ impl OptionsDialog {
             "Accept Click'n'Load from web pages (port 9666)",
             true,
         );
-        winui::paragraph(
-            &p,
-            o.x + 30.0,
-            o.y + 435.0,
-            crate::i18n::t(
-                "Tasks → Link grabber, or the browser's \"Download all links\": a split\narchive's volumes are one package, the other links of a page another.",
-            ),
-            LIGHT_DISABLED(),
-            o.x + 400.0,
-            13.0,
+        self.folder_row(ui, o, 434.0);
+    }
+
+    /// Archives → Link grabber → "Folders: {depth} levels deep, types: {types}" (#1774): the
+    /// number box and the types box in the translation's order, the types box as wide as the
+    /// line leaves room for; the boxes' tops at `y`.
+    fn folder_row(&mut self, ui: &mut Ui, o: Pos2, y: f32) {
+        let p = ui.painter().clone();
+        let sentence = crate::i18n::t(FOLDER_SENTENCE);
+        let line = winui::SentenceLine {
+            lead: winui::Lead::Left(o.x + 30.0),
+            lead_baseline: o.y + y + 14.0,
+            boxes: o + vec2(30.0, y),
+            gap: 6.0,
+            baseline: o.y + y + 14.0,
+        };
+        // The line laid out with an empty types box first: the box takes the room left before
+        // the group's edge, at least enough for a few types.
+        let width = |s: &str| winui::text_width(&p, s);
+        let (texts, rects) = winui::sentence_layout(
+            sentence,
+            &[line],
+            &[("depth", vec2(54.0, 21.0)), ("types", vec2(0.0, 21.0))],
+            width,
+            o.x + 6.0,
         );
+        let end = texts
+            .iter()
+            .map(|(x, _, s)| x + width(s))
+            .chain(rects.iter().map(|r| r.right()))
+            .fold(o.x + 30.0, f32::max);
+        let types_w = (o.x + 394.0 - end).clamp(70.0, 220.0);
+        let boxes = winui::sentence(
+            ui,
+            &p,
+            sentence,
+            &[line],
+            &[("depth", vec2(54.0, 21.0)), ("types", vec2(types_w, 21.0))],
+            |p, x, baseline, s| {
+                winui::label(p, x, baseline, s, true);
+            },
+        );
+        let names = winui::sentence_names(sentence, &["depth", "types"]);
+        let depth = winui::spin_box(
+            ui,
+            boxes[0],
+            &mut self.folder_depth,
+            0,
+            u64::from(mdm_engine::folder::MAX_DEPTH),
+            true,
+            "opt-folder-depth",
+        );
+        winui::name(&depth, &names[0]);
+        let types = winui::edit_light(ui, boxes[1], &mut self.s.grabber_types, true, false)
+            .on_hover_text(crate::i18n::t(
+                // i18n: Options → Archives → Link grabber: the hover tip of the types box in "Folders: {depth} levels deep, types: {types}": only a folder's files of these types go into Link grabber; written as the File types page writes them
+                "Only a folder's files of these types, written as on the File types page (ISO ZIP R0*). Empty: every type.",
+            ));
+        winui::name(&types, &names[1]);
     }
 
     /// Archives → "Test archives when their download completes, up to {gb} GB" (#1661): the check
@@ -5786,6 +5860,11 @@ fn kept_text(kept: crate::secrets::Kept) -> Option<&'static str> {
             // i18n: Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (the macOS login keychain)
             crate::i18n::mark("Sign-ins and passwords are kept in the macOS keychain.")
         }
+        #[cfg(target_os = "android")]
+        // i18n: Options → Accounts (Android): where the debrid accounts' sign-ins and the other passwords are kept (encrypted with a key held by Android's keystore)
+        Kept::Keychain => crate::i18n::mark(
+            "Sign-ins and passwords are kept encrypted with a key in Android's keystore.",
+        ),
         #[cfg(target_os = "linux")]
         // i18n: Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Linux: GNOME Keyring, KeePassXC... through the Secret Service)
         Kept::Keychain => crate::i18n::mark(
@@ -5862,6 +5941,15 @@ fn snooze_line(ui: &mut Ui, p: &egui::Painter, o: Pos2, until: crate::finish::Un
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    /// Sites Logins' Password column: the same mask for every saved password, nothing without
+    /// one.
+    #[test]
+    fn the_logins_list_shows_one_mask_for_every_password() {
+        assert_eq!(password_shown("a"), PASSWORD_MASK);
+        assert_eq!(password_shown("a longer one"), PASSWORD_MASK);
+        assert_eq!(password_shown(""), "");
+    }
 
     /// #1448: Manual proxy/socks configuration with no protocol ticked gets http and https
     /// ticked, when Options opens on it as when it is chosen; a choice of one is kept, and the
