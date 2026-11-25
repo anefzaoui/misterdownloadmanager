@@ -13,9 +13,9 @@
 //! subfolders: each folder's files are a package whose folder keeps the tree under the download
 //! folder. A Hugging Face model or dataset (or a folder of one) and a GitHub release or tag
 //! (#1772) are listed through their sites' APIs: one package, its folder the address's path
-//! under the download folder (as IDM's grabber keeps a site's subfolders from its root), each
-//! file in its own folders inside it, unticked (as IDM's grabber lists what it finds), with the
-//! size and the digest the site gives.
+//! under the download folder (a site's subfolders kept from its root), each file in its own
+//! folders inside it, unticked (ticked only as wanted), with the size and the digest the site
+//! gives.
 
 use std::path::PathBuf;
 use std::sync::{Arc, Mutex};
