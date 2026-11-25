@@ -245,6 +245,9 @@ enum Cmd {
         /// Put the subtitles into the video file instead of beside it (needs ffmpeg; MP4/MKV).
         #[arg(long)]
         embed_subs: bool,
+        /// Split the video into multiple files based on its chapters (needs ffmpeg).
+        #[arg(long)]
+        split_chapters: bool,
         /// Connections per stream (1 to 128), as `get`'s: MDM's engine downloads the streams
         /// yt-dlp finds (#769), one in pieces (HLS, DASH) this many pieces at once.
         #[arg(short, long, default_value_t = Options::default().max_connections,
@@ -297,6 +300,9 @@ enum Cmd {
         #[arg(short, long, default_value_t = Options::default().max_connections,
               value_parser = clap::value_parser!(u32).range(1..=MAX_CONNECTIONS_UNLOCKED as i64))]
         connections: u32,
+        /// Split each video into multiple files based on its chapters (needs ffmpeg).
+        #[arg(long)]
+        split_chapters: bool,
         /// The first entry (from 1).
         #[arg(long, default_value_t = 1)]
         from: u64,
@@ -1468,8 +1474,10 @@ async fn run(cmd: Cmd, json: bool, accounts: Option<&dyn Accounts>) -> anyhow::R
             connections,
             from,
             count,
+            split_chapters,
             ..
         } => {
+            mdm_tools::video::set_split_chapters(split_chapters);
             let dir = mdm_tools::tools_dir().ok_or_else(|| anyhow::anyhow!("no data folder"))?;
             let tool = mdm_tools::installed(&dir)
                 .ok_or_else(|| anyhow::anyhow!("yt-dlp is not installed (install-ytdlp)"))?;
@@ -1686,9 +1694,11 @@ async fn run(cmd: Cmd, json: bool, accounts: Option<&dyn Accounts>) -> anyhow::R
             subs,
             auto_subs,
             embed_subs,
+            split_chapters,
             connections,
             ..
         } => {
+            mdm_tools::video::set_split_chapters(split_chapters);
             let subs = subs_arg(&subs, auto_subs, embed_subs);
             let dir = mdm_tools::tools_dir().ok_or_else(|| anyhow::anyhow!("no data folder"))?;
             let tool = mdm_tools::installed(&dir)

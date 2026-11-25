@@ -569,6 +569,11 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ README and website: SourceForge's badges (its download button, the downloads count and its
+  *Users Love Us* award); the website serves the award's picture itself, so showing it asks
+  SourceForge for nothing
+- ✅ Sinhala, the 87th language: the app, its setup and uninstaller, Sri Lanka's flag,
+  Windows' Nirmala UI for its script (machine translated, open to a native speaker's review)
 - ✅ A drive too full for a download says the space needed and the space free right
 - ✅ FTP: the 32-bit build never resumes a file over 4 GB at the wrong place
 - ✅ A file from a server without ranges is no longer failed as cut short when it starts over on one connection
@@ -630,6 +635,10 @@ These ship in the next version.
 - ✅ CI and the release take NASM from nasm.us, checked against its pinned SHA256, and use
   Chocolatey's feed only when that download fails (its outage had stopped every Windows build)
 - ✅ Torrents: trackers are checked more carefully.
+- ✅ Download video: **Split into chapters** saves a video with chapters as one file per chapter
+  too (numbered, titled, without encoding again), the whole video kept; `--split-chapters` on the
+  command line; Delete with files removes exactly those files
+  ([#1830](https://github.com/anefzaoui/misterdownloadmanager/issues/1830))
 - ✅ A **Columns** window for the download list (the header's **Columns...**, **View → Customize
   URL List...**): which columns show and their order, from the keyboard too
   ([#1566](https://github.com/anefzaoui/misterdownloadmanager/issues/1566))

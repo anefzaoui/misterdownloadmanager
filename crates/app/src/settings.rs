@@ -551,6 +551,9 @@ pub struct Settings {
     /// Download video from a page → Embed chapters (#827): a video's chapters go into its file
     /// (with ffmpeg). On; a settings file from before has none: on.
     pub video_chapters: bool,
+    /// Download video from a page → Split into chapters: split video into multiple files based on
+    /// chapters (with ffmpeg). Off; a settings file from before has none: off.
+    pub video_split_chapters: bool,
     /// Options → Sites Logins → Cookies for video sites (#229): the browser whose cookies
     /// yt-dlp reads on this computer when the extension passed none (yt-dlp's name: `firefox`,
     /// `chrome`...; empty: off, the default), and its profile (a name or a folder; empty: the
@@ -763,6 +766,7 @@ impl Default for Settings {
             drop_target_pos: None,
             video_subs: Default::default(),
             video_chapters: true,
+            video_split_chapters: false,
             video_cookies: String::new(),
             video_cookies_profile: String::new(),
             ytdlp_config: false,
@@ -1440,6 +1444,7 @@ pub fn share_video_settings(s: &Settings) {
     mdm_tools::proc::set_browser_cookies(s.video_cookies());
     mdm_tools::proc::set_user_config(s.ytdlp_config);
     mdm_tools::video::set_chapters(s.video_chapters);
+    mdm_tools::video::set_split_chapters(s.video_split_chapters);
 }
 
 /// The network adapter MDM's connections go through now (#35).

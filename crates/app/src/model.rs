@@ -984,6 +984,10 @@ pub struct VideoSpec {
     /// title) is shortened instead.
     #[serde(default, skip_serializing_if = "std::ops::Not::not")]
     pub named: bool,
+    /// The chapter files yt-dlp wrote when this download was split (paths as yt-dlp saved them).
+    /// Used to delete exactly the files this split produced, never unrelated files in the folder.
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub chapter_files: Vec<PathBuf>,
     /// The video's length (whole seconds) as its look-up said: the same video picked again on
     /// its page is known by it when its stream's address is signed in its path for each load
     /// (`same_video`). None in a list saved before it, for a live stream or a length not said.
@@ -1631,6 +1635,11 @@ impl Item {
                             .collect();
                     }
                     self.side_files = done.side_files;
+                    if let Some(v) = self.video.as_mut()
+                        && !done.chapter_files.is_empty()
+                    {
+                        v.chapter_files = done.chapter_files;
+                    }
                 }
                 // A gallery's files (#58), already marked by its job as the video's are.
                 if status == Status::Complete
@@ -2398,6 +2407,7 @@ mod file_address_tests {
             subs: Default::default(),
             parts: Vec::new(),
             named: false,
+            chapter_files: Vec::new(),
             duration: None,
             part: None,
         });
@@ -2420,6 +2430,7 @@ mod file_address_tests {
             helper: None,
             merging: None,
             merge_failed: None,
+            chapter_files: Vec::new(),
             recorded: 0,
             recording: false,
         };
@@ -2662,6 +2673,7 @@ mod tests {
             subs: Default::default(),
             parts: Vec::new(),
             named: false,
+            chapter_files: Vec::new(),
             duration: None,
             part: None,
         });
@@ -3017,6 +3029,7 @@ mod helper_connection_tests {
             helper: None,
             merging: None,
             merge_failed: None,
+            chapter_files: Vec::new(),
             recorded: 0,
             recording: false,
         }

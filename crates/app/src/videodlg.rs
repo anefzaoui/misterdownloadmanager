@@ -135,6 +135,11 @@ pub struct VideoDialog {
     embed: bool,
     /// Embed chapters (#827; settings.video_chapters).
     chapters: bool,
+    /// Split into chapters (settings.video_split_chapters).
+    split_chapters: bool,
+    /// Split into chapters has a row of its own under Embed chapters (its caption doesn't fit
+    /// beside it in this language): measured as the row is drawn.
+    split_wraps: bool,
     /// The last video's choice (settings.video_subs), applied to each video looked up.
     pref: Subs,
     /// The clipboard's page address, read off the window's thread (#661).
@@ -157,8 +162,13 @@ pub struct VideoDialog {
 const PART_ROWS: f32 = 52.0;
 
 /// The top of the window's bottom row of buttons (Helpers..., Download Now, Later, Cancel),
-/// under Embed chapters.
+/// under Embed chapters (and Split into chapters, when it has a row of its own:
+/// [`VideoDialog::split_row`]).
 const BUTTONS_Y: f32 = 389.0 + PART_ROWS;
+
+/// The row Split into chapters takes under Embed chapters when the two captions don't fit
+/// side by side in the interface's language: the window grows by it.
+const SPLIT_ROW: f32 = 19.0;
 
 /// What is installed in the tools folder: (folder, yt-dlp, ffmpeg).
 type Tools = (
@@ -228,6 +238,8 @@ impl VideoDialog {
             sub_pick: 0,
             embed: false,
             chapters: true,
+            split_chapters: false,
+            split_wraps: false,
             pref: Subs::default(),
             clip: Default::default(),
             part_on: false,
@@ -242,6 +254,12 @@ impl VideoDialog {
     /// Embed chapters ticked or not (settings.video_chapters, #827).
     pub fn with_chapters(mut self, on: bool) -> Self {
         self.chapters = on;
+        self
+    }
+
+    /// Split into chapters ticked or not (settings.video_split_chapters).
+    pub fn with_split_chapters(mut self, on: bool) -> Self {
+        self.split_chapters = on;
         self
     }
 
@@ -497,11 +515,12 @@ impl VideoDialog {
             self.confirmed = Some(now);
             ctx.request_repaint();
         }
+        let height = 422.0 + PART_ROWS + self.split_row();
         let out = window(
             ctx,
             "video-page",
             "Download video from a page",
-            [500.0, 422.0 + PART_ROWS],
+            [500.0, height],
             false,
             winui::BG(),
             |ui, o| self.body(ui, o, rt),
@@ -1149,6 +1168,8 @@ impl VideoDialog {
                     && !self.name.trim().is_empty()
             }
         };
+        // Under Embed chapters, and under Split into chapters when it has a row of its own.
+        let buttons_y = BUTTONS_Y + self.split_row();
         // A part whose times can't be (#1662): said on Download Now.
         let part_problem = self.part().err();
         let ready = chosen && !busy && !stale && part_problem.is_none();
@@ -1178,7 +1199,7 @@ impl VideoDialog {
         // Where yt-dlp and ffmpeg come from: MDM's own copies or the person's (#51).
         if winui::button(
             ui,
-            r(o, helpers_at.0, BUTTONS_Y, helpers_at.1, 21.0),
+            r(o, helpers_at.0, buttons_y, helpers_at.1, 21.0),
             // i18n: button in Download video: where MDM takes yt-dlp and ffmpeg from
             "Helpers...",
             ButtonKind::Normal,
@@ -1191,7 +1212,7 @@ impl VideoDialog {
         }
         let now = winui::button(
             ui,
-            r(o, now_at.0, BUTTONS_Y, now_at.1, 21.0),
+            r(o, now_at.0, buttons_y, now_at.1, 21.0),
             "Download Now",
             kind(true),
             false,
@@ -1210,7 +1231,7 @@ impl VideoDialog {
         let now = now.clicked() || (ready && winui::enter_pressed(ui));
         let later = winui::button(
             ui,
-            r(o, later_at.0, BUTTONS_Y, later_at.1, 21.0),
+            r(o, later_at.0, buttons_y, later_at.1, 21.0),
             // i18n: button: add it now, start downloading later
             "Later",
             kind(false),
@@ -1220,7 +1241,7 @@ impl VideoDialog {
         .clicked();
         let cancel = winui::button(
             ui,
-            r(o, cancel_at.0, BUTTONS_Y, cancel_at.1, 21.0),
+            r(o, cancel_at.0, buttons_y, cancel_at.1, 21.0),
             "Cancel",
             ButtonKind::Normal,
             false,
@@ -1298,6 +1319,47 @@ impl VideoDialog {
         if can {
             self.chapters = on;
         }
+
+        // Split into chapters: after Embed chapters on its row, or on a row of its own under it
+        // when the two don't fit side by side in this language (the window grows by that row).
+        // Greyed without ffmpeg and for a part, which has no chapters.
+        let can_split = ffmpeg && !part;
+        let mut split_on = self.split_chapters && can_split;
+        // i18n: checkbox in Download video: split the video into one file per chapter (the whole video is kept too)
+        const SPLIT: &str = crate::i18n::mark("Split into chapters");
+        let p = ui.painter().clone();
+        let beside = winui::checkbox_caption_end(&p, o.x + bx, "Embed chapters") + 16.0;
+        let needs = 16.0 + winui::text_width(&p, crate::i18n::t(SPLIT)) + 5.0;
+        self.split_wraps = beside + needs > o.x + 489.0;
+        let at = if self.split_wraps {
+            pos2(o.x + bx, o.y + 350.0 + PART_ROWS + SPLIT_ROW)
+        } else {
+            pos2(beside, o.y + 350.0 + PART_ROWS)
+        };
+        let split_resp =
+            winui::checkbox_until(ui, at, &mut split_on, SPLIT, can_split, Some(o.x + 489.0));
+        let split_resp = winui::why_disabled(
+            split_resp,
+            !ffmpeg,
+            // i18n: why "Split into chapters" is greyed: ffmpeg (a helper program) is not installed
+            "This needs ffmpeg",
+        );
+        winui::why_disabled(
+            split_resp,
+            ffmpeg && part,
+            // i18n: why "Embed chapters" (and the subtitles) are greyed in Download video: only a part of the video is downloaded, and its chapters and subtitles would be the whole video's
+            "A part is saved without the video's chapters and subtitles",
+        );
+        if can_split {
+            self.split_chapters = split_on;
+        }
+    }
+
+    /// How much lower the window's buttons are, and how much taller the window, for the Split
+    /// into chapters row: [`SPLIT_ROW`] when it has a row of its own ([`VideoDialog::split_wraps`]
+    /// as last drawn; a new window is hidden until its second frame, so it opens at its size).
+    fn split_row(&self) -> f32 {
+        if self.split_wraps { SPLIT_ROW } else { 0.0 }
     }
 
     /// Part (#1662), under Subtitles: only from one time to another of the video or the sound.
@@ -1481,6 +1543,11 @@ impl VideoDialog {
     /// Embed chapters' tick, for the settings (`video_chapters`).
     pub fn chapters(&self) -> bool {
         self.chapters
+    }
+
+    /// Split into chapters' tick, for the settings (`video_split_chapters`).
+    pub fn split_chapters(&self) -> bool {
+        self.split_chapters
     }
 
     /// Subtitles (#68): a language the video has, from the uploader or the site's automatic
@@ -2061,6 +2128,7 @@ mod tests {
                 subs: Default::default(),
                 parts: vec![],
                 named: false,
+                chapter_files: vec![],
                 duration: None,
                 part: None,
             });
