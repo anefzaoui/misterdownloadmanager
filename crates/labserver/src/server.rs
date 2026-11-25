@@ -890,7 +890,8 @@ GET /page?<any of>
     images=1       a gallery for the add-on's Find images (#1781), pictures made by image=WxH:
                    #icon 48x48; #photo1 (srcset 400w, 1600w); a <picture> with a WebP source
                    (600w, 1200w); photo1 again and linked; #thumb3 linking to photo3.png; #photo4
-                   (1x, 2x); #photo5's data-src under a data: placeholder; a data: picture, a PDF link
+                   (1x, 2x); #photo5's data-src under a data: placeholder; a data: picture, a PDF link;
+                   with seed=N, every picture's address has seed=N (the same pictures at new addresses)
     video=PATH|1   <video id=video controls> 640x360 (1: /gen/1M/clip.mp4?inline=1, also shown
                    when nothing else is asked for, or with muted_loop, iframe or shadow)
     w=PX h=PX      the videos' size

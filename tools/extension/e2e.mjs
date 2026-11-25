@@ -4192,7 +4192,11 @@ thumb.addEventListener("mouseleave", () => { preview.classList.add("off"); docum
     const shots = process.env.E2E_SHOTS ? path.resolve(process.env.E2E_SHOTS) : "";
     const tag = `${process.env.E2E_LANG || "en"}-${process.env.E2E_COLOR_SCHEME || "system"}`;
     await clearLog();
-    await t.session.navigate(`${LAB}/page?images=1&title=Gallery`);
+    // Addresses of this run and browser's own: Link grabber, still open with an earlier
+    // browser's list where its window isn't closed (Linux), adds an address it has only once,
+    // and looks nothing new up (Firefox's run found no look-ups after Chrome's).
+    const seed = Date.now() % 1e9;
+    await t.session.navigate(`${LAB}/page?images=1&seed=${seed}&title=Gallery`);
     // Its pictures shown, so the page knows their sizes, as a user's would be.
     const shown = await until("the gallery's pictures", 20000, () =>
       t.session.evaluate(`(() => { const i = [...document.images]; return i.every((x) => x.complete) && ["photo1", "photo2", "photo4", "thumb3"].every((id) => document.getElementById(id).naturalWidth > 0) && i.length; })()`),
@@ -4255,7 +4259,7 @@ thumb.addEventListener("mouseleave", () => { preview.classList.add("off"); docum
     }
     // MDM's look-ups in Link grabber (its requests, not the browser's own for the pictures it
     // showed: those say Sec-Fetch-Mode no-cors).
-    const mdmFor = async (p) => (await requests(p)).filter((e) => e.sec_fetch_mode !== "no-cors");
+    const mdmFor = async (p) => (await requests(p)).filter((e) => e.sec_fetch_mode !== "no-cors" && new URLSearchParams(e.query || "").get("seed") === String(seed));
     const sent = ["/gen/256K/photo1.jpg", "/gen/128K/photo2.webp", "/gen/512K/photo3.png", "/gen/64K/photo5.avif"];
     await until("MDM's look-ups of the four in Link grabber", 60000, async () => {
       for (const p of sent) if (!(await mdmFor(p)).length) return false;

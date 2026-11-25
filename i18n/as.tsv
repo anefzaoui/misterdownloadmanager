@@ -7344,6 +7344,14 @@ extension	File deleted or moved	ফাইল মচি পেলোৱা হ’
 #, machine
 extension	File type	ফাইলৰ প্ৰকাৰ
 #. text in the browser extension
+#. button in the This page tab of the toolbar button's popup: look for the pictures of the current web page (only when clicked); short
+#, machine
+extension	Find images	ছবিসমূহ বিচাৰক
+#. text in the browser extension
+#. in the This page tab of the toolbar button's popup, before the Find images button; Link grabber is the name of the app's window that lists links to tick before downloading them
+#, machine
+extension	Find this page's pictures at the largest size it lists, then send the ones you want to Link grabber.	এই পৃষ্ঠাৰ ছবিসমূহ ই তালিকাভুক্ত কৰা আটাইতকৈ ডাঙৰ আকাৰত বিচাৰক, তাৰ পিছত আপুনি বিচৰা ছবিসমূহ Link grabber-লৈ পঠিয়াওক।
+#. text in the browser extension
 #. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) after Clear finished
 #, machine
 extension	Finished downloads cleared	সম্পূৰ্ণ হোৱা ডাউনলোডসমূহ পৰিষ্কাৰ কৰা হ’ল
@@ -7379,6 +7387,14 @@ extension	Hold Alt while clicking a link to let the browser download it.	ব্�
 #. link under a connection problem in the toolbar button's popup, to the help page's section for it
 #, machine
 extension	How to fix it	ইয়াক কেনেকৈ ঠিক কৰিব
+#. text in the browser extension
+#. what a screen reader says for the row of buttons that keep or leave out each type of picture (JPEG, PNG, WEBP...), in the This page tab of the toolbar button's popup
+#, machine
+extension	Image types	ছবিৰ প্ৰকাৰ
+#. text in the browser extension
+#. heading in the This page tab of the toolbar button's popup, over the part that finds the pictures of the current web page and sends them to the app
+#, machine
+extension	Images on this page	এই পৃষ্ঠাত থকা ছবিসমূহ
 #. text in the browser extension
 #. pairing failed for another reason
 #, machine
@@ -7541,6 +7557,10 @@ extension	No download's name or address has “{words}”.	কোনো ডা�
 #, machine
 extension	No downloads yet	এতিয়ালৈকে কোনো ডাউনলোড নাই
 #. text in the browser extension
+#. shown in the This page tab of the toolbar button's popup when Find images found no picture on the current web page
+#, machine
+extension	No images found on this page.	এই পৃষ্ঠাত কোনো ছবি পোৱা নগ'ল।
+#. text in the browser extension
 #. shown in the toolbar button's popup when the current web page hasn't loaded any video, sound or stream yet
 #, machine
 extension	No video or sound found on this page yet. Play it, then open this again.	এই পৃষ্ঠাত এতিয়ালৈকে কোনো ভিডিঅ’ বা অডিঅ’ পোৱা হোৱা নাই। ইয়াক চলাওক, তাৰ পিছত এইটো পুনৰ খোলক।
@@ -7609,6 +7629,10 @@ extension	Options...	বিকল্পসমূহ...
 #. in the list under the download button over a video, after a sound-only line's bitrate: the sound as the site sends it, not converted (e.g. '128 kbps · original'); lower case; one word
 #, machine
 extension	original	মূল
+#. text in the browser extension
+#. button among the picture types (JPEG, PNG, WEBP...) in the This page tab of the toolbar button's popup: the pictures of any other or unknown type; short
+#, machine
+extension	Other	অন্যান্য
 #. text in the browser extension
 #. button: pair this browser with the other MDM using the code
 #, machine
@@ -7695,6 +7719,10 @@ extension	Send downloads through this browser's proxy or VPN extension	এই �
 #, machine
 extension	Send downloads to	ডাউনলোডসমূহ ইয়ালৈ প্ৰেৰণ কৰক
 #. text in the browser extension
+#. button in the This page tab of the toolbar button's popup: send the selected pictures to the app's Link grabber window, where the user ticks which to download
+#, machine
+extension	Send to Link grabber	Link grabber-লৈ পঠিয়াওক
+#. text in the browser extension
 #. on the download button over a video right after it was clicked, while the download goes to the app; MDM is Mister Download Manager's short name, keep it as it is; short
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -7703,6 +7731,10 @@ extension	Sending to MDM...	MDM-লৈ প্ৰেৰণ কৰি আছে...
 #. under the extension's name in the toolbar button's popup: downloads go to another Mister Download Manager, a server, at this address; short
 #, machine
 extension	Sending to {server}	{server}-লৈ প্ৰেৰণ কৰি আছে
+#. text in the browser extension
+#. shown in the This page tab of the toolbar button's popup after the pictures were sent to the app's Link grabber window
+#, machine
+extension	Sent to Link grabber: tick the ones to download there.	Link grabber-লৈ পঠিওৱা হ'ল: তাত ডাউনলোড কৰিবলগীয়া ফাইলসমূহ টিক কৰক।
 #. text in the browser extension
 #. shown briefly on the download button after it was clicked; keep the name Mister Download Manager as it is
 #, machine
@@ -7734,6 +7766,23 @@ extension	Show in folder	ফোল্ডাৰত দেখুৱাওক
 #. screen readers' name of a download's Show in folder button in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads)
 #, machine
 extension	Show {file} in folder	{file} ফোল্ডাৰত দেখুৱাওক
+#. text in the browser extension
+#. in the This page tab of the toolbar button's popup, while a smallest width or height is set: how many of the selected pictures the page gives no size for (they are kept, not left out)
+#. {n} = a number (keep the braces as they are)
+#, machine
+extension	Size not given, kept: {n}	আকাৰ দিয়া নাই, ৰখা হ'ল: {n}
+#. text in the browser extension
+#. what a screen reader says for the box of the smallest height of the pictures to keep, in the This page tab of the toolbar button's popup
+#, machine
+extension	Smallest height, in pixels	পিক্সেলত আটাইতকৈ সৰু উচ্চতা
+#. text in the browser extension
+#. in the This page tab of the toolbar button's popup, before two boxes for the smallest width and height of the pictures to keep: 'Smallest size, in pixels [ ] × [ ]'; pictures smaller than that are left out; short
+#, machine
+extension	Smallest size, in pixels	পিক্সেলত আটাইতকৈ সৰু আকাৰ
+#. text in the browser extension
+#. what a screen reader says for the box of the smallest width of the pictures to keep, in the This page tab of the toolbar button's popup
+#, machine
+extension	Smallest width, in pixels	পিক্সেলত আটাইতকৈ সৰু প্ৰস্থ
 #. text in the browser extension
 #. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app isn't running
 #, machine
@@ -7767,6 +7816,10 @@ extension	That didn't work. Try again.	সেয়া কাম নকৰিল
 #. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when a button's download was removed meanwhile
 #, machine
 extension	That download is no longer in the list.	সেই ডাউনলোডটো এতিয়া তালিকাত নাই।
+#. text in the browser extension
+#. shown in the This page tab of the toolbar button's popup when Find images can't look into the current page (a page of the browser's own, an add-on store)
+#, machine
+extension	The browser doesn't let add-ons read this page.	ব্ৰাউজাৰে এড-অনসমূহক এই পৃষ্ঠা পঢ়িবলৈ নিদিয়ে।
 #. text in the browser extension
 #. in the toolbar button's popup, on a site where the Chrome Web Store's copy of the extension shows no download button; Help is the link at the bottom of the popup
 #, machine
@@ -7903,6 +7956,10 @@ extension	{file} removed from the list	{file} তালিকাৰ পৰা �
 #. question in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) before a download's file is deleted
 #, machine
 extension	{file} will be deleted from your computer, and the download taken off the list. This can't be undone.	{file} আপোনাৰ কম্পিউটাৰৰ পৰা মচি পেলোৱা হ’ব, আৰু ডাউনলোডটো তালিকাৰ পৰা আঁতৰোৱা হ’ব। এইটো পূৰ্বাবস্থালৈ ঘূৰাই আনিব নোৱাৰি।
+#. text in the browser extension
+#. in the This page tab of the toolbar button's popup: how many of the pictures found pass the size and type filters, and will be sent
+#, machine
+extension	{shown} of {total} selected	বাছনি কৰা {total}টাৰ ভিতৰত {shown}টা
 #. text in the browser extension
 #. a running download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): the time left, as a clock (minutes:seconds)
 #. {time} = a time of day (keep the braces as they are)

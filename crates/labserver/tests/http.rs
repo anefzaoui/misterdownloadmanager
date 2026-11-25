@@ -570,6 +570,9 @@ async fn pictures_and_their_gallery() {
         seen += 1;
     }
     assert_eq!(seen, 14, "every picture's address checked");
+    let (_, seeded) = text(&s, "/page?images=1&seed=7").await;
+    assert_eq!(seeded.matches("?seed=7&image=").count(), 14);
+    assert_eq!(seeded.replace("?seed=7&image=", "?image="), page);
 }
 
 async fn text(s: &LabServer, path: &str) -> (reqwest::header::HeaderMap, String) {

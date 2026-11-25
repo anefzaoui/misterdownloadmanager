@@ -102,7 +102,7 @@ fn file_links(n: u32, pathlen: usize) -> String {
 /// size (1600w); a `<picture>` whose WebP source lists two sizes; the larger photo shown again
 /// and linked (one address, found once); a thumbnail linking to its full size; a 1x/2x pair; a
 /// lazy loader's `data-src` under a `data:` placeholder; and neither to send: a `data:` picture
-/// and a link to a PDF.
+/// and a link to a PDF. With `seed=N`, every picture's address carries it.
 // The data: picture: a GIF of one pixel.
 const GALLERY: &str = concat!(
     "<p id=blank>images</p>",
@@ -218,7 +218,12 @@ pub(crate) async fn page(RawQuery(q): RawQuery, headers: HeaderMap) -> Response 
         body += &file_links(files, num("pathlen", 0).min(MAX_PATH) as usize);
     }
     if images {
-        body += GALLERY;
+        // `seed=N`: the same gallery at other addresses (each picture's own seed), for a list
+        // that already has the first ones (Link grabber adds an address once).
+        match m.get("seed").and_then(|v| v.parse::<u64>().ok()) {
+            Some(seed) => body += &GALLERY.replace("?image=", &format!("?seed={seed}&image=")),
+            None => body += GALLERY,
+        }
     }
     if let Some(src) = video {
         if iframe {

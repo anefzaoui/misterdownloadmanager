@@ -7353,6 +7353,14 @@ extension	File deleted or moved	Ffeil wedi'i dileu neu ei symud
 #, machine
 extension	File type	Math o ffeil
 #. text in the browser extension
+#. button in the This page tab of the toolbar button's popup: look for the pictures of the current web page (only when clicked); short
+#, machine
+extension	Find images	Dod o hyd i ddelweddau
+#. text in the browser extension
+#. in the This page tab of the toolbar button's popup, before the Find images button; Link grabber is the name of the app's window that lists links to tick before downloading them
+#, machine
+extension	Find this page's pictures at the largest size it lists, then send the ones you want to Link grabber.	Dewch o hyd i luniau'r dudalen hon ar y maint mwyaf y mae'n ei restru, yna anfonwch y rhai rydych chi eu heisiau i'r grabber cyswllt.
+#. text in the browser extension
 #. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) after Clear finished
 #, machine
 extension	Finished downloads cleared	Lawrlwythiadau gorffenedig wedi'u clirio
@@ -7388,6 +7396,14 @@ extension	Hold Alt while clicking a link to let the browser download it.	Daliwch
 #. link under a connection problem in the toolbar button's popup, to the help page's section for it
 #, machine
 extension	How to fix it	Sut i'w drwsio
+#. text in the browser extension
+#. what a screen reader says for the row of buttons that keep or leave out each type of picture (JPEG, PNG, WEBP...), in the This page tab of the toolbar button's popup
+#, machine
+extension	Image types	Mathau o ddelweddau
+#. text in the browser extension
+#. heading in the This page tab of the toolbar button's popup, over the part that finds the pictures of the current web page and sends them to the app
+#, machine
+extension	Images on this page	Delweddau ar y dudalen hon
 #. text in the browser extension
 #. pairing failed for another reason
 #, machine
@@ -7550,6 +7566,10 @@ extension	No download's name or address has “{words}”.	Nid oes enw na chyfei
 #, machine
 extension	No downloads yet	Dim lawrlwythiadau eto
 #. text in the browser extension
+#. shown in the This page tab of the toolbar button's popup when Find images found no picture on the current web page
+#, machine
+extension	No images found on this page.	Dim delweddau wedi'u canfod ar y dudalen hon.
+#. text in the browser extension
 #. shown in the toolbar button's popup when the current web page hasn't loaded any video, sound or stream yet
 #, machine
 extension	No video or sound found on this page yet. Play it, then open this again.	Heb ddod o hyd i fideo na sain ar y dudalen hon eto. Chwaraewch ef, yna agorwch hwn eto.
@@ -7618,6 +7638,10 @@ extension	Options...	Dewisiadau...
 #. in the list under the download button over a video, after a sound-only line's bitrate: the sound as the site sends it, not converted (e.g. '128 kbps · original'); lower case; one word
 #, machine
 extension	original	gwreiddiol
+#. text in the browser extension
+#. button among the picture types (JPEG, PNG, WEBP...) in the This page tab of the toolbar button's popup: the pictures of any other or unknown type; short
+#, machine
+extension	Other	Arall
 #. text in the browser extension
 #. button: pair this browser with the other MDM using the code
 #, machine
@@ -7704,6 +7728,10 @@ extension	Send downloads through this browser's proxy or VPN extension	Anfon law
 #, machine
 extension	Send downloads to	Anfon lawrlwythiadau i
 #. text in the browser extension
+#. button in the This page tab of the toolbar button's popup: send the selected pictures to the app's Link grabber window, where the user ticks which to download
+#, machine
+extension	Send to Link grabber	Anfon i'r grabber cyswllt
+#. text in the browser extension
 #. on the download button over a video right after it was clicked, while the download goes to the app; MDM is Mister Download Manager's short name, keep it as it is; short
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -7712,6 +7740,10 @@ extension	Sending to MDM...	Yn anfon i MDM...
 #. under the extension's name in the toolbar button's popup: downloads go to another Mister Download Manager, a server, at this address; short
 #, machine
 extension	Sending to {server}	Yn anfon i {server}
+#. text in the browser extension
+#. shown in the This page tab of the toolbar button's popup after the pictures were sent to the app's Link grabber window
+#, machine
+extension	Sent to Link grabber: tick the ones to download there.	Wedi'i anfon i'r grabber cyswllt: ticiwch y rhai i'w lawrlwytho yno.
 #. text in the browser extension
 #. shown briefly on the download button after it was clicked; keep the name Mister Download Manager as it is
 #, machine
@@ -7743,6 +7775,23 @@ extension	Show in folder	Dangos yn y ffolder
 #. screen readers' name of a download's Show in folder button in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads)
 #, machine
 extension	Show {file} in folder	Dangos {file} yn y ffolder
+#. text in the browser extension
+#. in the This page tab of the toolbar button's popup, while a smallest width or height is set: how many of the selected pictures the page gives no size for (they are kept, not left out)
+#. {n} = a number (keep the braces as they are)
+#, machine
+extension	Size not given, kept: {n}	Maint heb ei roi, wedi'i gadw: {n}
+#. text in the browser extension
+#. what a screen reader says for the box of the smallest height of the pictures to keep, in the This page tab of the toolbar button's popup
+#, machine
+extension	Smallest height, in pixels	Uchder lleiaf, mewn picseli
+#. text in the browser extension
+#. in the This page tab of the toolbar button's popup, before two boxes for the smallest width and height of the pictures to keep: 'Smallest size, in pixels [ ] × [ ]'; pictures smaller than that are left out; short
+#, machine
+extension	Smallest size, in pixels	Maint lleiaf, mewn picseli
+#. text in the browser extension
+#. what a screen reader says for the box of the smallest width of the pictures to keep, in the This page tab of the toolbar button's popup
+#, machine
+extension	Smallest width, in pixels	Lled lleiaf, mewn picseli
 #. text in the browser extension
 #. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app isn't running
 #, machine
@@ -7776,6 +7825,10 @@ extension	That didn't work. Try again.	Ni weithiodd hynny. Rhowch gynnig arall a
 #. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when a button's download was removed meanwhile
 #, machine
 extension	That download is no longer in the list.	Nid yw'r lawrlwythiad hwnnw ar y rhestr bellach.
+#. text in the browser extension
+#. shown in the This page tab of the toolbar button's popup when Find images can't look into the current page (a page of the browser's own, an add-on store)
+#, machine
+extension	The browser doesn't let add-ons read this page.	Nid yw'r porwr yn gadael i ychwanegion ddarllen y dudalen hon.
 #. text in the browser extension
 #. in the toolbar button's popup, on a site where the Chrome Web Store's copy of the extension shows no download button; Help is the link at the bottom of the popup
 #, machine
@@ -7912,6 +7965,10 @@ extension	{file} removed from the list	Wedi tynnu {file} oddi ar y rhestr
 #. question in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) before a download's file is deleted
 #, machine
 extension	{file} will be deleted from your computer, and the download taken off the list. This can't be undone.	Bydd {file} yn cael ei ddileu o'ch cyfrifiadur, a bydd y lawrlwythiad yn cael ei dynnu oddi ar y rhestr. Ni ellir dadwneud hyn.
+#. text in the browser extension
+#. in the This page tab of the toolbar button's popup: how many of the pictures found pass the size and type filters, and will be sent
+#, machine
+extension	{shown} of {total} selected	{shown} o {total} wedi'u dewis
 #. text in the browser extension
 #. a running download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): the time left, as a clock (minutes:seconds)
 #. {time} = a time of day (keep the braces as they are)
