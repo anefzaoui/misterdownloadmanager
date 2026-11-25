@@ -6275,7 +6275,10 @@ mod tests {
         set_rule_rows(&mut s, &rows);
         assert_eq!(
             s.conn_exceptions,
-            vec![("*.EXAMPLE.test".to_owned(), 4), ("slow.example.org".to_owned(), 1)]
+            vec![
+                ("*.EXAMPLE.test".to_owned(), 4),
+                ("slow.example.org".to_owned(), 1)
+            ]
         );
         assert_eq!(s.site_rules.len(), 1);
         // The rule's User-Agent emptied, its number kept: an exception alone.
