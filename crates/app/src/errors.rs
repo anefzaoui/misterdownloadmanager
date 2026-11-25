@@ -383,7 +383,10 @@ pub fn adapter(e: &mdm_engine::NetError) -> String {
 /// errors in English, for the command line). File and build names stay as they are.
 pub fn tools(e: &mdm_tools::Error) -> String {
     use mdm_tools::Error as E;
-    if let Some((host, fault)) = e.network() {
+    // ffmpeg's list says it is the list that couldn't be fetched, then the server and why.
+    if !matches!(e, E::FfmpegList(_))
+        && let Some((host, fault)) = e.network()
+    {
         return reach(&host, fault, cause_of(e).as_deref());
     }
     match e {

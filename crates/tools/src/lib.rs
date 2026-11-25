@@ -114,6 +114,8 @@ impl Error {
             Error::Download { host, error } => {
                 Some((host.clone(), mdm_engine::fault::of_engine(error)?))
             }
+            // ffmpeg's list of checked builds, which couldn't be fetched: that server, and why.
+            Error::FfmpegList(ffmpeg::ListError::Unavailable(e)) => e.network(),
             _ => None,
         }
     }
