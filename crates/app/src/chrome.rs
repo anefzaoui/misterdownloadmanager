@@ -2992,7 +2992,38 @@ mod tests {
         FOCUS_GRACE, FocusVerdict, MenuBarEvent, MenuEntry, MenuFocus, MenuKind, heading_into,
         item_at, menu_viewport, menubar_next,
     };
+    #[cfg(target_os = "linux")]
+    use egui::vec2;
     use egui::{Rect, pos2};
+
+    /// Regression: Linux used to return no work area, leaving a menu below the screen.
+    #[cfg(target_os = "linux")]
+    #[test]
+    fn linux_menu_at_the_bottom_right_stays_on_the_monitor() {
+        if std::env::var_os("DISPLAY").is_none() || crate::unix::on_wayland() {
+            return;
+        }
+        let ctx = egui::Context::default();
+        let area =
+            crate::scale::work_area(&ctx, pos2(100.0, 100.0)).expect("X11 monitor work area");
+        let size = vec2(250.0, 400.0).min(area.size() * 0.5);
+        let at = area.max - vec2(5.0, 5.0);
+        let placed = super::place_menu(&ctx, at, size, None);
+        assert!(area.contains_rect(Rect::from_min_size(placed, size)));
+        assert!(placed.y < at.y, "opens above the click");
+        let parent = Rect::from_min_size(at - vec2(100.0, 50.0), vec2(100.0, 50.0));
+        let placed = super::place_menu(&ctx, at, size, Some(parent));
+        assert!(area.contains_rect(Rect::from_min_size(placed, size)));
+        // Interface scale: physical monitor coordinates must be converted into egui points.
+        ctx.set_pixels_per_point(2.0);
+        let _ = ctx.run_ui(egui::RawInput::default(), |_| {});
+        let scaled = crate::scale::work_area(&ctx, pos2(50.0, 50.0)).unwrap();
+        assert_eq!(scaled, Rect::from_min_max(area.min / 2.0, area.max / 2.0));
+        let at = scaled.max - vec2(5.0, 5.0);
+        let size = size / 2.0;
+        let placed = super::place_menu(&ctx, at, size, None);
+        assert!(scaled.contains_rect(Rect::from_min_size(placed, size)));
+    }
 
     /// #277: on X11 the menu bar's menus share one window per level, so going from title to
     /// title moves it (a compositor has no new window to fade in); elsewhere, and for every

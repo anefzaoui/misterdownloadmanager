@@ -106,6 +106,8 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 ### Fixed
 
 - Helpers: ffmpeg's download is checked more carefully.
+- **Linux context menus stay on screen:** right-clicking near a monitor’s bottom or right edge opens the menu above or to the left as needed, including submenus and scaled displays on X11 and XWayland (Omarchy).
+
 - Torrents: the engine checks what it's sent more carefully.
 - Extracting: 7z and RAR archives are checked more carefully.
 - Archive test: archives are checked more carefully.

@@ -14,6 +14,8 @@ Everything below ships together, in version 0.5.0.
 
 ### Done
 
+- ✅ Linux X11/XWayland context menus use the monitor’s work area and stay on screen near its bottom and right edges, including submenus and scaled displays.
+
 - ✅ Menus on compositors that animate windows (Hyprland): no border and no slide-in, and going from
   title to title moves one window, so nothing fades; the reporter confirmed it
   ([#277](https://github.com/anefzaoui/misterdownloadmanager/issues/277))
