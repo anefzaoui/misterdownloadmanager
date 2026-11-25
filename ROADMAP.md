@@ -569,6 +569,9 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ Only some files from inside a ZIP on a server: Download File Info's Preview lists the files in
+  a `.zip` (from its end, with range requests) to tick those to download, each fetched alone and
+  checked against its CRC-32 ([#1775](https://github.com/anefzaoui/misterdownloadmanager/issues/1775))
 - ✅ Folder downloads: an FTP folder or a web server's "Index of" page given to Link grabber lists
   every file in it and its subfolders (a depth and file types you choose), and the folder tree is
   kept under the download folder; never above the folder or onto another site

@@ -95,7 +95,7 @@
 #. the summary of downloads added together; after "12 downloads finished": {n} of them failed
 #. {n} = a number (keep the braces as they are)
 @plural	{n} failed|{n} failed	{n} failed|{n} failed
-#. count in the Batch download window; count in the Link grabber window; count in the Add torrent window; count in torrentfiles.rs
+#. count in the main window; count in the Batch download window; count in a dialog box; count in the Link grabber window; count in the Add torrent window; count in torrentfiles.rs; count in zippreview.rs
 #. how many files the pattern gives in all
 #. Link grabber: a package's row: {n} is its number of links
 #. {n} = a number (keep the braces as they are)
@@ -734,7 +734,7 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Canada	Canada
-#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in extracting archives (a download's log, the Archive password window); button in the Find window; button in gallerydlg.rs; text in the Link grabber window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; text in remote.rs; button in the Scheduler window; button in the Add torrent window; button in traypanel.rs; button in the Download video window
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in extracting archives (a download's log, the Archive password window); button in the Find window; button in gallerydlg.rs; text in the Link grabber window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; text in remote.rs; button in the Scheduler window; button in the Add torrent window; button in traypanel.rs; button in the Download video window; text in zippreview.rs
 #. button: stop downloading the update
 	Cancel	Cancel
 #. text in errors.rs
@@ -1541,7 +1541,8 @@
 #. text in the Options window
 #. tooltip of "Mark downloaded files as coming from the internet" on Linux
 	File managers show where the files marked this way came from. Unticked, no download is marked.	File managers show where the files marked this way came from. Unticked, no download is marked.
-#. text in the Scheduler window
+#. text in a download's progress window; text in the Scheduler window
+#. Zip preview's column: the file's name (its path inside the ZIP)
 	File Name	File Name
 #. text in the Download video window
 	File name	File name
@@ -1572,6 +1573,9 @@
 	Files go to: {folder}	Files go to: {folder}
 #. text in the Scheduler window; tab in the Scheduler window
 	Files in the queue	Files in the queue
+#. text in the download list (sizes, speeds, status)
+#. why files being taken out of a ZIP on its server (#1775) can't be moved or renamed yet: those already out are in its folder, the others still to come there
+	Files taken out of a ZIP can be moved once they're all out	Files taken out of a ZIP can be moved once they're all out
 #. button in a download's Properties window
 #. File Properties button that opens the selected torrent's file list
 #. the trailing ... means it opens a window: keep it
@@ -2185,6 +2189,9 @@
 #. in Import, where the addresses came from: a page in the browser
 #. in Link grabber, where the addresses came from: a page in the browser
 	Links from the browser	Links from the browser
+#. text in a dialog box
+#. tooltip of Download File Info's Preview button for a ZIP (#1775): it lists the files inside, to download only some of them
+	List the files inside the ZIP and pick those to download	List the files inside the ZIP and pick those to download
 #. text in playlistdlg.rs
 #. button in Download video: go on listing a playlist from where it stopped
 	List the rest	List the rest
@@ -2244,6 +2251,10 @@
 #. text in the Options window
 #. the trailing ... means it is still going on: keep it
 	Looking for your default browser...	Looking for your default browser...
+#. text in a dialog box
+#. tooltip of Download File Info's greyed Preview button while MDM asks the server whether it can look inside the ZIP (#1775)
+#. the trailing ... means it is still going on: keep it
+	Looking inside the ZIP...	Looking inside the ZIP...
 #. text in the Download video window
 #. the trailing ... means it is still going on: keep it
 	Looking the page up...	Looking the page up...
@@ -2449,6 +2460,9 @@
 #. text in the Scheduler window
 #. Monday, as short as a calendar's column head (two letters in English)
 	Mo	Mo
+#. text in a download's progress window
+#. Zip preview's column: when the file was last changed, as the ZIP says
+	Modified	Modified
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Moldova	Moldova
@@ -2813,7 +2827,7 @@
 #. text in the Link grabber window
 #. Link grabber, a link's status: the server hasn't the file; {status} is the HTTP code (404)
 	Offline ({status})	Offline ({status})
-#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; text in extracting archives (a download's log, the Archive password window); text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's Properties window; button in the Scheduler window; button in the Add torrent window
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; text in extracting archives (a download's log, the Archive password window); text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's Properties window; button in the Scheduler window; button in the Add torrent window; text in zippreview.rs
 	OK	OK
 #. text in countries.rs
 #. a country's name (where a download's server is)
@@ -2876,6 +2890,9 @@
 	Only the {files} file(s) ticked in Add torrent	Only the {files} file(s) ticked in Add torrent
 #. checkbox in a dialog box
 	Only while I'm using the computer	Only while I'm using the computer
+#. message or event log entry in the main window
+#. event log entry: the download is files picked inside a ZIP in Zip preview (#1775); {files} how many ("3 files")
+	Only {files} picked inside the ZIP	Only {files} picked inside the ZIP
 #. button in a dialog box; text in a dialog box; button in a download's Properties window; button in torrentfiles.rs
 #. verb: opens the downloaded file
 #. title of the message when a downloaded file can't be opened
@@ -2936,6 +2953,9 @@
 #. text in the Link grabber window
 #. Link grabber: the box that edits the selected package
 	Package	Package
+#. text in a download's progress window
+#. Zip preview's column: the file's size as packed (compressed) inside the ZIP
+	Packed	Packed
 #. text in gallerydlg.rs; text in the Download video window
 	Page address	Page address
 #. text in remote.rs
@@ -3062,8 +3082,8 @@
 #. Options → General: shown inside the shortcut recorder box while waiting for the user to press a 2-key or 3-key shortcut (#558)
 #. the trailing ... means it is still going on: keep it
 	Press keys...	Press keys...
-#. button in a dialog box
-#. verb: open the part already downloaded
+#. button in a dialog box; text in a dialog box
+#. verb: Download File Info's button; for a ZIP, it lists the files inside it to pick those to download (#1775)
 	Preview	Preview
 #. text in a dialog box
 #. tooltip of the greyed Preview button in Download File Info
@@ -3139,6 +3159,10 @@
 #. text in the Add torrent window
 #. the trailing ... means it is still going on: keep it
 	Reading the torrent...	Reading the torrent...
+#. text in zippreview.rs
+#. Zip preview, while the ZIP's list of files is being read from its server
+#. the trailing ... means it is still going on: keep it
+	Reading the ZIP's list of files...	Reading the ZIP's list of files...
 #. message or event log entry in the main window
 #. the status strip while Tasks → Import reads a file; {file} is its name
 #. the trailing ... means it is still going on: keep it
@@ -3352,7 +3376,7 @@
 #. text in preview.rs
 #. the preview pane when no download is selected, under its title
 	Select a download to see its picture and details here.	Select a download to see its picture and details here.
-#. button in playlistdlg.rs; button in the Add torrent window; text in torrentfiles.rs
+#. button in playlistdlg.rs; button in the Add torrent window; text in torrentfiles.rs; text in zippreview.rs
 #. button in Download video for a playlist: tick every video
 	Select all	Select all
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
@@ -3682,6 +3706,10 @@
 	Start download on Mister Download Manager startup	Start download on Mister Download Manager startup
 #. checkbox in the Options window
 	Start downloading immediately while displaying "Download File Info" dialog	Start downloading immediately while displaying "Download File Info" dialog
+#. text in a dialog box
+#. Download File Info, on hover over the number of files picked in Zip preview (#1775): {files} how many ("3 files"), {size} their size together, {folder} the folder they go into (named after the archive)
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+	Start downloads only the {files} picked in the ZIP ({size}), into {folder}	Start downloads only the {files} picked in the ZIP ({size}), into {folder}
 #. text in the tray icon's menu
 	Start main download queue	Start main download queue
 #. text in remote.rs
@@ -4015,6 +4043,9 @@
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 	The file does NOT match ({algorithm})	The file does NOT match ({algorithm})
+#. text in errors.rs
+#. why a file taken out of a ZIP on its server failed (#1775): its bytes aren't what the ZIP's list of files says (its size or its CRC-32 checksum)
+	the file in the ZIP doesn't match the ZIP's list of files (its size or checksum): download the whole archive	the file in the ZIP doesn't match the ZIP's list of files (its size or checksum): download the whole archive
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 	The file matches ({algorithm})	The file matches ({algorithm})
@@ -4110,6 +4141,9 @@
 	the server answered {status}	the server answered {status}
 #. text in errors.rs
 	the server can't send parts of the file, so it can't be resumed	the server can't send parts of the file, so it can't be resumed
+#. text in errors.rs
+#. Zip preview (#1775): the server doesn't send parts of a file (HTTP ranges), so MDM can't fetch only some files from inside a ZIP; the whole archive still downloads
+	the server can't send parts of the ZIP, so its files can't be downloaded one by one: download the whole archive	the server can't send parts of the ZIP, so its files can't be downloaded one by one: download the whole archive
 #. text in errors.rs
 	the server did not answer in time	the server did not answer in time
 #. text in errors.rs
@@ -4214,6 +4248,9 @@
 	The update is open in your system's package installer.	The update is open in your system's package installer.
 #. text in a download's Properties window
 	The web page from which this file was obtained:	The web page from which this file was obtained:
+#. text in errors.rs
+#. why a file can't be taken out of a ZIP on its server (#1775): the ZIP was replaced on the server after its files were listed; Zip preview is the window that lists them
+	the ZIP changed on the server since its files were listed: open its Zip preview again	the ZIP changed on the server since its files were listed: open its Zip preview again
 #. message or event log entry in the main window
 #. the kind of file View → Theme → Add a theme file lists: MDM's themes (TOML, JSON), Base16 schemes (YAML) and pywal's colors.json
 	Themes and colour schemes	Themes and colour schemes
@@ -4278,6 +4315,15 @@
 #. {error} is why, in English (a file that isn't a theme or a colour scheme, a colour missing)
 #. {error} = an error message (keep the braces as they are)
 	This file can't be used as a theme: {error}	This file can't be used as a theme: {error}
+#. text in errors.rs
+#. why a file can't be taken out of a ZIP on its server (#1775): it is encrypted (password-protected) in the ZIP
+	this file is encrypted in the ZIP: download the whole archive and open it with its password	this file is encrypted in the ZIP: download the whole archive and open it with its password
+#. text in errors.rs
+#. why a file can't be taken out of a ZIP on its server (#1775): the ZIP no longer holds it
+	this file is no longer in the ZIP on the server	this file is no longer in the ZIP on the server
+#. text in errors.rs
+#. why a file can't be taken out of a ZIP on its server (#1775): it is compressed with a method MDM doesn't unpack there; {method} is the method's name (BZIP2, LZMA, Deflate64…)
+	this file is packed in a way MDM can't unpack from the server ({method}): download the whole archive	this file is packed in a way MDM can't unpack from the server ({method}): download the whole archive
 #. text in remote.rs
 #. remote control page (on a phone): the file chosen is too large for a .torrent file
 	This file is too large to be a torrent.	This file is too large to be a torrent.
@@ -4303,6 +4349,9 @@
 #. text in extension.rs
 #. a check of Test browser integration: a portable copy can't be connected
 	This is the installed copy, not a portable one	This is the installed copy, not a portable one
+#. text in errors.rs
+#. Zip preview (#1775): the address isn't a ZIP archive whose list of files MDM can read on the server
+	this isn't a ZIP archive MDM can look inside on the server: download the whole file	this isn't a ZIP archive MDM can look inside on the server: download the whole file
 #. text in playlistdlg.rs
 #. in Download video, a playlist or channel that lists no video
 	This list has no videos	This list has no videos
@@ -4362,6 +4411,15 @@
 #. the Download video window: the video needs the user to be signed in
 	This video needs you to be signed in. Use the Download video button over it in your browser, which passes your sign-in on, or choose your browser in Options → Sites Logins → Cookies for video sites.	This video needs you to be signed in. Use the Download video button over it in your browser, which passes your sign-in on, or choose your browser in Options → Sites Logins → Cookies for video sites.
 #. text in errors.rs
+#. Zip preview (#1775): a ZIP split over several files (volumes): its files can't be fetched one by one
+	this ZIP is split over several files, so its files can't be downloaded one by one: download every part	this ZIP is split over several files, so its files can't be downloaded one by one: download every part
+#. text in errors.rs
+#. Zip preview (#1775): the ZIP's list of files (its table of contents) doesn't add up
+	this ZIP's list of files is damaged: download the whole archive	this ZIP's list of files is damaged: download the whole archive
+#. text in errors.rs
+#. Zip preview (#1775): the ZIP's list of files (its table of contents) is larger than MDM reads from a server
+	this ZIP's list of files is too large to read from the server: download the whole archive	this ZIP's list of files is too large to read from the server: download the whole archive
+#. text in errors.rs
 #. a download's error: the address is a site's web page that needs a browser, not the file; {site} = the site's name (gofile)
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
 	this {site} link is a web page, not the file: open it in your browser and download from there	this {site} link is a web page, not the file: open it in your browser and download from there
@@ -4384,6 +4442,10 @@
 #. text in the Scheduler window
 #. tooltip on the Scheduler's "Wake the computer to run this queue" while "Start download at" is off
 	Tick "Start download at" first: the computer is woken for the start time	Tick "Start download at" first: the computer is woken for the start time
+#. text in zippreview.rs
+#. Zip preview, under the list: {files} how many files are ticked ("3 files"), {size} their size together ("12.4 MB")
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+	Ticked: {files}, {size}	Ticked: {files}, {size}
 #. text in a download's progress window; text in the Scheduler window
 	Time left	Time left
 #. text in countries.rs
@@ -4973,6 +5035,9 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Zimbabwe	Zimbabwe
+#. text in zippreview.rs
+#. title of the window that lists the files inside a ZIP on its server, to tick those to download (#1775)
+	Zip preview	Zip preview
 #. text in the Options window
 #. \\n starts a new line: break lines where they fit the translation
 	ZIP, 7Z, RAR, TAR, GZ and XZ; a split archive (.part1.rar, .7z.001) once\nevery volume is in. A file there already is kept: the new one is numbered.	ZIP, 7Z, RAR, TAR, GZ and XZ; a split archive (.part1.rar, .7z.001) once\nevery volume is in. A file there already is kept: the new one is numbered.
@@ -5163,6 +5228,10 @@
 #. a number of connections the app learned by itself for a server
 #. {n} = a number (keep the braces as they are)
 	{n} (auto)	{n} (auto)
+#. text in zippreview.rs
+#. Zip preview, under the list: {n} files of the ZIP aren't listed because MDM can't take them out on their own: encrypted ones, ones packed in a way MDM can't unpack from the server, links, or names that would leave their folder; the whole archive still downloads
+#. {n} = a number (keep the braces as they are)
+	{n} more can't be taken out on their own (encrypted, packed another way, or a link): download the whole archive for them	{n} more can't be taken out on their own (encrypted, packed another way, or a link): download the whole archive for them
 #. text in playlistdlg.rs
 #. in Download video for a playlist: how many videos are ticked, of how many
 #. {n} = a number (keep the braces as they are)

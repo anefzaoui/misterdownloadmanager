@@ -1415,6 +1415,9 @@ pub struct App {
     /// Addresses (and their browser context) waiting for a Download File Info window: more came
     /// than may be open at once. Each opens, in order, as a window closes.
     file_info_waiting: std::collections::VecDeque<(dialogs::NewUrl, ipc::Command)>,
+    /// `/show zip-preview[:N]` (#1775's shots and checks): Zip preview to open from the newest
+    /// Download File Info once its ZIP's look has answered, its first N files ticked.
+    zip_preview_asked: Option<usize>,
     /// Download File Info's open answers, for the download each was given to (by id) to start
     /// from (#28: a one-time link refuses a second request).
     kept_answers: std::collections::HashMap<u64, mdm_engine::KeptAnswer>,
@@ -2318,6 +2321,7 @@ impl App {
             update_checked_this_run: None,
             file_infos: Vec::new(),
             file_info_waiting: Default::default(),
+            zip_preview_asked: None,
             kept_answers: Default::default(),
             progress: Vec::new(),
             complete: Vec::new(),
@@ -2895,8 +2899,57 @@ impl App {
         self.dirty = true;
     }
 
-    /// Options → Downloads → "Start downloading immediately while displaying Download File
-    /// Info": once the address answered (name and size known) and its folder exists, the
+    /// Download File Info's Start or Later with files picked in Zip preview (#1775): one
+    /// download of those files, into a folder named after the archive in Save As's folder
+    /// (`FileInfo::zip_folder`), each file keeping its path there.
+    fn add_zip_pick(&mut self, fi: &FileInfo, start: Start) {
+        let Some(chosen) = fi.zip_pick.clone() else {
+            return;
+        };
+        if let Some((cat, dir)) = fi.remembered() {
+            self.settings
+                .keep_category_dir(cat, std::path::Path::new(&dir), &self.downloads);
+        }
+        let id = self.push_item(
+            fi.url.clone(),
+            fi.zip_folder(),
+            fi.category,
+            fi.description.clone(),
+            Some(chosen.size),
+            fi.login.clone(),
+            fi.context.clone(),
+            if fi.context.referer.is_some() || fi.context.cookies.is_some() {
+                crate::i18n::mark("from the browser")
+            } else {
+                crate::i18n::mark("with Add URL")
+            },
+        );
+        self.set_direct(id, fi.direct);
+        if let Some(item) = self.item(id) {
+            item.note(crate::i18n::fmt(
+                // i18n: event log entry: the download is files picked inside a ZIP in Zip preview (#1775); {files} how many ("3 files")
+                crate::i18n::t("Only {files} picked inside the ZIP"),
+                &[(
+                    "files",
+                    &crate::i18n::tn(chosen.files.len() as u64, "{n} file", "{n} files"),
+                )],
+            ));
+            item.zip = Some(model::ZipPick {
+                files: chosen.files,
+                done: Vec::new(),
+                archive_size: Some(chosen.archive_size),
+            });
+        }
+        self.selection.set(id);
+        if matches!(start, Start::Now) {
+            self.start(id, true);
+        } else {
+            self.queue_later(vec![id], self.settings.queue_panel_later);
+        }
+        self.dirty = true;
+    }
+
+    /// Options → Downloads → "Start downloading immediately while displaying Download File    /// Info": once the address answered (name and size known) and its folder exists, the
     /// download starts behind the dialog; the dialog's answer then keeps, moves or drops it.
     fn start_early(&mut self, fi: &mut FileInfo) {
         // The download this dialog started has its own place: Save As must not count its own
@@ -3488,6 +3541,8 @@ impl App {
         let (window, tab) = name.split_once(':').unwrap_or((name, ""));
         match window {
             "addurl" => self.run(Cmd::AddUrl, None, ctx),
+            // Zip preview (#1775) from the newest Download File Info, as its Preview opens it.
+            "zip-preview" => self.zip_preview_asked = Some(tab.parse().unwrap_or(0)),
             // MDM_CRASH_TEST=1 only (crash.rs): the crash reports' own check.
             "crash-test" => crate::crash::test(tab),
             "batch" => self.run(Cmd::Batch, None, ctx),
@@ -4274,6 +4329,7 @@ impl App {
                     && i.gallery.is_none()
                     && i.torrent.is_none()
                     && i.remote.is_none()
+                    && i.zip.is_none()
             })
             .map(|i| {
                 i.state_here = Some((i.dest.clone(), true));
@@ -4449,6 +4505,11 @@ impl App {
         // A torrent through a debrid account (#44).
         if self.item(id).is_some_and(|i| i.remote.is_some()) {
             self.start_remote(id, show);
+            return;
+        }
+        // Files picked out of a ZIP on its server (#1775).
+        if self.item(id).is_some_and(|i| i.zip.is_some()) {
+            self.start_zip(id, show);
             return;
         }
         // A new download from Download File Info has nothing of its own on the disk yet: nothing
@@ -4830,6 +4891,7 @@ impl App {
             || i.torrent.is_some()
             || i.video.is_some()
             || i.gallery.is_some()
+            || i.zip.is_some()
         {
             return;
         }
@@ -4882,8 +4944,10 @@ impl App {
             );
         } else if files
             && let Some(i) = self.items.iter().find(|i| i.id == id)
-            // A gallery's folder stays (it may hold other files; #58).
+            // A gallery's folder stays (it may hold other files; #58), and so does the folder of
+            // files picked out of a ZIP (#1775) with what is in it.
             && i.gallery.is_none()
+            && i.zip.is_none()
         {
             // Its state and part file; a video's streams and their parts, kept for Resume (an
             // unfinished run, a failed merge), looked for in its turn; its finished file, which
@@ -4923,7 +4987,7 @@ impl App {
             // A finished file goes with a ticked box: the window says how many (#1563).
             let finished = gone
                 .iter()
-                .filter(|i| i.status == Status::Complete && i.gallery.is_none())
+                .filter(|i| i.status == Status::Complete && i.gallery.is_none() && i.zip.is_none())
                 .count() as u64;
             self.confirm_delete = Some(dialogs::ConfirmDelete::new(
                 gone.iter().map(|i| i.id).collect(),
@@ -6089,6 +6153,7 @@ impl App {
             i.file_name.hash(&mut h);
             (i.status == Status::Complete).hash(&mut h);
             i.gallery.is_some().hash(&mut h);
+            i.zip.is_some().hash(&mut h);
             i.preexisting_folder.hash(&mut h);
             if let Some(t) = &i.torrent {
                 t.folder.hash(&mut h);
@@ -7132,6 +7197,61 @@ impl App {
         }
     }
 
+    /// Files picked out of a ZIP on its server (#1775, Zip preview): the archive's table read
+    /// again, then each file not out yet fetched alone, unpacked, checked against its CRC-32 and
+    /// written under the download's folder, keeping its path there, by the extraction's own
+    /// writer (`mdm_extract::put_file`). The download's own request (its referer, cookies,
+    /// login), speed limit and Options' network.
+    fn start_zip(&mut self, id: u64, show: bool) {
+        let limit = self.settings.speed_limit();
+        let Some((url, login, context, own, direct, spec, folder)) = self.item(id).and_then(|i| {
+            Some((
+                i.url.clone(),
+                i.login.clone(),
+                i.context.clone(),
+                i.own_limit,
+                i.direct,
+                i.zip.clone()?,
+                i.dest.clone(),
+            ))
+        }) else {
+            return;
+        };
+        let RequestParts { headers, mut opts } =
+            self.request_parts(&url, login.as_ref(), &context, direct);
+        opts.speed_limit = own.or(limit);
+        let into = folder.clone();
+        let sink: mdm_engine::remotezip::Sink = Box::new(move |e, data| {
+            mdm_extract::put_file(&into, &e.name, e.size, data).map_err(|e| match e {
+                mdm_extract::Error::Io(e) => e,
+                other => std::io::Error::other(other.to_string()),
+            })
+        });
+        let pick = mdm_engine::remotezip::Pick {
+            files: spec.files,
+            done: spec.done,
+            size: spec.archive_size,
+            folder,
+        };
+        let rt = self.rt.clone();
+        let _guard = rt.enter();
+        let job = mdm_engine::remotezip::Fetch::start(url, headers, opts, pick, sink);
+        let Some(item) = self.item(id) else { return };
+        item.note(if item.downloaded > 0 {
+            crate::i18n::t("Resumed")
+        } else {
+            crate::i18n::t("Started")
+        });
+        item.live = Some(Live::new(model::Job::Zip(job), item.downloaded));
+        item.status = Status::Downloading;
+        item.error = None;
+        item.last_try = Some(model::now_stamp());
+        self.dirty = true;
+        if show && !self.progress.iter().any(|p| p.id == id) {
+            self.progress
+                .push(Progress::new(id, self.settings.show_complete));
+        }
+    }
     /// Add torrent → Download Now / Later. Through the debrid account when torrents go there
     /// (#44): the .torrent's magnet link (its hash, name and trackers) and the files ticked. The
     /// download added, if one was (not when the debrid account takes it).
@@ -14121,6 +14241,11 @@ impl App {
             // The downloads waiting for a window (a browser selection's arrive one by one, more
             // than may be open at once): Cancel asks whether they are cancelled too (#394).
             fi.waiting = self.file_info_waiting.len();
+            if let Some(n) = self.zip_preview_asked
+                && fi.open_zip_preview_when_ready(n, ctx)
+            {
+                self.zip_preview_asked = None;
+            }
             let out = fi.show(ctx, &mut self.icons);
             if std::mem::take(&mut fi.new_category) {
                 self.category_for_file_info = Some(fi.nth);
@@ -14161,6 +14286,15 @@ impl App {
                         self.stop(id);
                         self.after_stop.push((id, None));
                     }
+                }
+                // Files picked in Zip preview (#1775): they are the download, not the archive; one
+                // started behind the dialog (the whole archive) goes.
+                Outcome::Done(start) if fi.zip_pick.is_some() => {
+                    if let Some(id) = fi.early {
+                        self.stop(id);
+                        self.after_stop.push((id, None));
+                    }
+                    self.add_zip_pick(&fi, start);
                 }
                 Outcome::Done(start) => match fi.early {
                     Some(id) => self.adopt_early(&fi, id, start),

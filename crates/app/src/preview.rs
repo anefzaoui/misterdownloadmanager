@@ -896,6 +896,7 @@ fn one(ui: &mut Ui, x0: f32, x1: f32, y0: f32, item: &Item) -> f32 {
     let boxed = picture_box(x1 - x0, pic.as_ref().is_some_and(|s| !s.icon)).translate(vec2(x0, y0));
     let dir = matches!(presence, Presence::Found { dir: true, .. })
         || item.gallery.is_some()
+        || item.zip.is_some()
         || item.torrent.is_some() && Path::new(&item.file_name).extension().is_none();
     match pic {
         Some(s) if !s.icon => {

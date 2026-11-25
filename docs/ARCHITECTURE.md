@@ -93,6 +93,22 @@ size bound it. The app makes each folder's files a package whose folder is the t
 download folder (`grabber.rs`); the lab server serves made-up trees, a hostile one and a huge one
 (`labserver/src/tree.rs`) over HTTP and FTP for the end-to-end tests.
 
+Files inside a ZIP on a server (#1775, `remotezip.rs`) are read from its table of contents, at
+its end: Download File Info's one look (`look`: the last `TAIL` bytes, which tell whether the
+server sends parts, and hold the table of most archives) enables Preview, and Zip preview
+(`zippreview.rs`) lists the table (`list`: the ZIP64 record and the table asked for where they
+aren't in the end). The parsers are pure functions over bytes, fuzzed
+(`fuzz/fuzz_targets/zip_directory.rs`): the table at most `MAX_DIRECTORY` bytes and
+`MAX_ENTRIES` entries, each name at most `MAX_NAME`, ZIP64's fields read within their extra
+field, every entry's data before the table and apart from every other's (overlapping entries
+refuse the archive), names that aren't plain relative paths left out. The files picked are one
+download (`Item::zip`, `Job::Zip`): `Fetch` asks for the table again, then each file's local
+header and data in one range request (`If-Range` with the archive's validator), unpacks stored
+and Deflate data, counts it and checks its CRC-32 against the table's, and hands the bytes to the
+extraction's writer (`mdm_extract::put_file`: the same path checks and staging folder as every
+extracted entry). The lab server serves made-up ZIPs (`labserver/src/zip.rs`): ZIP64, a hostile
+one, overlapping entries, a table too large, and any of them without ranges.
+
 ## App
 
 One egui window painted to fixed pixel coordinates, plus one immediate viewport per dialog.

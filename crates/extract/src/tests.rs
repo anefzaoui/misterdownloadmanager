@@ -1049,3 +1049,47 @@ fn an_entry_under_a_file_is_skipped_not_fatal() {
     left.sort_unstable();
     assert_eq!(left, ["a/", "a/b", "a/b/c"], "{:?}", report.skipped);
 }
+
+/// #1775: one file put in place through the extraction's writer: numbered beside a file of its
+/// name, its path kept, a path that leaves the folder or goes through a file refused, and a
+/// reader's failure leaves nothing behind.
+#[test]
+fn one_file_is_put_in_place_safely() {
+    let tmp = tempfile::tempdir().unwrap();
+    let dest = tmp.path().join("out");
+    let first = put_file(&dest, "a.txt", 5, &mut &b"hello"[..]).unwrap();
+    assert_eq!(first, dest.join("a.txt"));
+    let second = put_file(&dest, "a.txt", 5, &mut &b"world"[..]).unwrap();
+    assert_eq!(second, dest.join("a (1).txt"));
+    assert_eq!(std::fs::read(&first).unwrap(), b"hello");
+    // Its path kept under the folder, the folders made as needed.
+    let deep = put_file(&dest, "docs\\sub/c.txt", 1, &mut &b"c"[..]).unwrap();
+    assert_eq!(deep, dest.join("docs").join("sub").join("c.txt"));
+    for bad in ["../up.txt", "a/../../b.txt", "C:x.txt", "/abs.txt", "a.txt/x.txt"] {
+        assert!(put_file(&dest, bad, 1, &mut &b"x"[..]).is_err(), "{bad}");
+    }
+    struct Fails(u8);
+    impl std::io::Read for Fails {
+        fn read(&mut self, buf: &mut [u8]) -> std::io::Result<usize> {
+            if self.0 == 0 {
+                return Err(std::io::Error::new(
+                    std::io::ErrorKind::InvalidData,
+                    "its CRC-32 isn't the table's",
+                ));
+            }
+            self.0 -= 1;
+            buf[0] = b'x';
+            Ok(1)
+        }
+    }
+    assert!(matches!(
+        put_file(&dest, "b.txt", 10, &mut Fails(3)),
+        Err(Error::Damaged(_))
+    ));
+    let mut left: Vec<_> = std::fs::read_dir(&dest)
+        .unwrap()
+        .map(|e| e.unwrap().file_name().to_string_lossy().into_owned())
+        .collect();
+    left.sort();
+    assert_eq!(left, ["a (1).txt", "a.txt", "docs"], "nothing else, no staging folder");
+}

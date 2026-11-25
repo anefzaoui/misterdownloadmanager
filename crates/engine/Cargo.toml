@@ -37,6 +37,8 @@ sha2.workspace = true
 md-5.workspace = true
 sha1.workspace = true
 crc32fast.workspace = true
+# Files taken out of a ZIP on its server (src/remotezip.rs, #1775): Deflate (already in the tree).
+flate2.workspace = true
 base64.workspace = true
 hex.workspace = true
 # Proxy auto-config scripts (src/pac.rs): QuickJS, built from C (no bindgen: its bindings come

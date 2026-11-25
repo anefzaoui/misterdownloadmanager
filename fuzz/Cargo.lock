@@ -2135,6 +2135,7 @@ dependencies = [
  "core-foundation-sys",
  "craft-atomic",
  "crc32fast",
+ "flate2",
  "futures",
  "hex",
  "hickory-resolver",
@@ -2158,11 +2159,14 @@ dependencies = [
  "thiserror 2.0.21",
  "tokio",
  "tokio-rustls",
+ "tokio-socks",
  "tokio-util",
  "tower-layer",
  "tower-service",
  "unicode-segmentation",
  "url",
+ "webpki-root-certs",
+ "webpki-roots",
  "windows-sys 0.61.2",
 ]
 
@@ -2170,6 +2174,7 @@ dependencies = [
 name = "mdm-extract"
 version = "0.5.2"
 dependencies = [
+ "crc32fast",
  "flate2",
  "lzma-rust2",
  "mdm-engine",
@@ -2213,6 +2218,7 @@ dependencies = [
  "base64",
  "bytes",
  "craft-atomic",
+ "flate2",
  "futures",
  "hex",
  "mdm-engine",
@@ -2223,6 +2229,8 @@ dependencies = [
  "serde",
  "serde_json",
  "sha2",
+ "socket2",
+ "tar",
  "thiserror 2.0.21",
  "tokio",
  "tokio-util",
@@ -4053,6 +4061,15 @@ name = "webpki-root-certs"
 version = "1.0.11"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "e49d0e65abc00c142e8f9428da991da9f1a250c39be97459901eb12b9b49f62a"
+dependencies = [
+ "rustls-pki-types",
+]
+
+[[package]]
+name = "webpki-roots"
+version = "1.0.12"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "7265c9301c16a8711c992c2d8da90ee77ef54b1ed51482d6dfeb00dc756b1297"
 dependencies = [
  "rustls-pki-types",
 ]
