@@ -127,6 +127,9 @@ As the window opens, MDM asks the server for the archive's last bytes, where a Z
 
 **Preview** opens **Zip preview**: every file in the archive with its **File Name** (its path inside the ZIP), **Packed** (its size inside the ZIP), **Size** and **Modified**. Tick the ones you want (**Select all** ticks every one) and click **OK**. The number of files picked shows under **Preview**; hover over it to see where they go. Then **Start Download** or **Download Later** adds them as one download, in place of the archive:
 
+![Zip preview listing the files inside a ZIP on its server, with their file name, packed size, size and date, the first three ticked, and OK and Cancel buttons](images/help/zip-preview.webp)
+*1 tick every file at once, 2 download the files ticked.*
+
 - They go into a folder named after the archive, in the folder **Save As** shows (`Downloads\Compressed\photos\` for `photos.zip`), each keeping its path from inside the ZIP (`photos\2025\beach.jpg`). A file of the same name already there is kept, and the new one numbered.
 - MDM fetches only each file's own bytes, unpacks it, and checks it against the checksum (CRC-32) and size the archive gives for it. A file that doesn't match is not kept, and the download says so.
 - A stopped download goes on with the files not fetched yet; one stopped part-way is fetched again.
