@@ -83,7 +83,7 @@ pub fn rel_path(name: &str, depth: usize) -> Result<PathBuf, &'static str> {
 
 /// Whether a folder on the way from `root` to `path` (or `path` itself) is a link: nothing is
 /// written through one (a junction or symlink made by an archive, or by anyone).
-fn through_link(root: &Path, path: &Path) -> bool {
+pub(crate) fn through_link(root: &Path, path: &Path) -> bool {
     let Ok(rel) = path.strip_prefix(root) else {
         return true;
     };
@@ -102,7 +102,7 @@ fn through_link(root: &Path, path: &Path) -> bool {
 /// A file where `path` or a folder on the way to it should be, under `root`: an earlier entry of
 /// the archive (`a`, for `a/b/c`), not a damaged disk. Nothing under it can be written, and the
 /// rest of the archive still can. Read only: the link checks come first, as for every entry.
-fn file_in_the_way(root: &Path, path: &Path) -> bool {
+pub(crate) fn file_in_the_way(root: &Path, path: &Path) -> bool {
     let Ok(rel) = path.strip_prefix(root) else {
         return true;
     };

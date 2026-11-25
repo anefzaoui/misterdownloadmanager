@@ -1415,6 +1415,9 @@ pub struct App {
     /// Addresses (and their browser context) waiting for a Download File Info window: more came
     /// than may be open at once. Each opens, in order, as a window closes.
     file_info_waiting: std::collections::VecDeque<(dialogs::NewUrl, ipc::Command)>,
+    /// `/show zip-preview[:N]` (#1775's shots and checks): Zip preview to open from the newest
+    /// Download File Info once its ZIP's look has answered, its first N files ticked.
+    zip_preview_asked: Option<usize>,
     /// Download File Info's open answers, for the download each was given to (by id) to start
     /// from (#28: a one-time link refuses a second request).
     kept_answers: std::collections::HashMap<u64, mdm_engine::KeptAnswer>,
@@ -1854,17 +1857,16 @@ fn page_data_for(link: &str, page: Option<&str>, data: Option<&str>) -> Option<S
 
 /// Marks each file the engine starts writing as downloaded from the web (Mark-of-the-Web, macOS'
 /// quarantine: `webmark::mark`, as the option and Windows' policy say), as browsers mark theirs.
-/// Only http(s) addresses (an FTP address may carry its login). Also what a video's and a
-/// gallery's jobs show their saved files to, on their own threads before they say they are done
-/// (#1103): never on the window's thread, where a disk slow to take the mark froze the window
-/// (#510), and always before the file can be opened or renamed (a rename keeps the mark).
+/// Every download, whatever its address (web, FTP, a magnet link sent to a debrid account), and
+/// what is extracted from it; the mark names the address without its login (`webmark::source`).
+/// Also what a video's and a gallery's jobs show their saved files to, on their own threads
+/// before they say they are done (#1103): never on the window's thread, where a disk slow to take
+/// the mark froze the window (#510), and always before the file can be opened or renamed (a
+/// rename keeps the mark).
 pub(crate) fn mark_hook(url: &url::Url, referrer: Option<&str>) -> mdm_engine::FileHook {
-    let web = matches!(url.scheme(), "http" | "https");
     let (url, referrer) = (url.to_string(), referrer.map(str::to_owned));
     mdm_engine::FileHook::new(move |path: &std::path::Path| {
-        if web {
-            crate::webmark::mark(path, &url, referrer.as_deref());
-        }
+        crate::webmark::mark(path, &url, referrer.as_deref());
     })
 }
 
@@ -2318,6 +2320,7 @@ impl App {
             update_checked_this_run: None,
             file_infos: Vec::new(),
             file_info_waiting: Default::default(),
+            zip_preview_asked: None,
             kept_answers: Default::default(),
             progress: Vec::new(),
             complete: Vec::new(),
@@ -2895,8 +2898,57 @@ impl App {
         self.dirty = true;
     }
 
-    /// Options → Downloads → "Start downloading immediately while displaying Download File
-    /// Info": once the address answered (name and size known) and its folder exists, the
+    /// Download File Info's Start or Later with files picked in Zip preview (#1775): one
+    /// download of those files, into a folder named after the archive in Save As's folder
+    /// (`FileInfo::zip_folder`), each file keeping its path there.
+    fn add_zip_pick(&mut self, fi: &FileInfo, start: Start) {
+        let Some(chosen) = fi.zip_pick.clone() else {
+            return;
+        };
+        if let Some((cat, dir)) = fi.remembered() {
+            self.settings
+                .keep_category_dir(cat, std::path::Path::new(&dir), &self.downloads);
+        }
+        let id = self.push_item(
+            fi.url.clone(),
+            fi.zip_folder(),
+            fi.category,
+            fi.description.clone(),
+            Some(chosen.size),
+            fi.login.clone(),
+            fi.context.clone(),
+            if fi.context.referer.is_some() || fi.context.cookies.is_some() {
+                crate::i18n::mark("from the browser")
+            } else {
+                crate::i18n::mark("with Add URL")
+            },
+        );
+        self.set_direct(id, fi.direct);
+        if let Some(item) = self.item(id) {
+            item.note(crate::i18n::fmt(
+                // i18n: event log entry: the download is files picked inside a ZIP in Zip preview (#1775); {files} how many ("3 files")
+                crate::i18n::t("Only {files} picked inside the ZIP"),
+                &[(
+                    "files",
+                    &crate::i18n::tn(chosen.files.len() as u64, "{n} file", "{n} files"),
+                )],
+            ));
+            item.zip = Some(model::ZipPick {
+                files: chosen.files,
+                done: Vec::new(),
+                archive_size: Some(chosen.archive_size),
+            });
+        }
+        self.selection.set(id);
+        if matches!(start, Start::Now) {
+            self.start(id, true);
+        } else {
+            self.queue_later(vec![id], self.settings.queue_panel_later);
+        }
+        self.dirty = true;
+    }
+
+    /// Options → Downloads → "Start downloading immediately while displaying Download File    /// Info": once the address answered (name and size known) and its folder exists, the
     /// download starts behind the dialog; the dialog's answer then keeps, moves or drops it.
     fn start_early(&mut self, fi: &mut FileInfo) {
         // The download this dialog started has its own place: Save As must not count its own
@@ -3488,6 +3540,8 @@ impl App {
         let (window, tab) = name.split_once(':').unwrap_or((name, ""));
         match window {
             "addurl" => self.run(Cmd::AddUrl, None, ctx),
+            // Zip preview (#1775) from the newest Download File Info, as its Preview opens it.
+            "zip-preview" => self.zip_preview_asked = Some(tab.parse().unwrap_or(0)),
             // MDM_CRASH_TEST=1 only (crash.rs): the crash reports' own check.
             "crash-test" => crate::crash::test(tab),
             "batch" => self.run(Cmd::Batch, None, ctx),
@@ -3986,9 +4040,12 @@ impl App {
         } else {
             cmd
         };
-        // The browser's right-click menu: a page's (or a selection's) links, to tick in Import.
+        // The browser's right-click menu: a page's (or a selection's) links, to tick in Import;
+        // with "Download all links", the pictures located on the page too (#1781, marked).
         if !cmd.links.is_empty() {
             self.show_for_dialog(ctx);
+            let images: std::collections::HashSet<&str> =
+                cmd.page_images.iter().map(String::as_str).collect();
             let found = cmd
                 .links
                 .iter()
@@ -3998,9 +4055,17 @@ impl App {
                     cookies: page_data_for(url, cmd.referer.as_deref(), cmd.cookies.as_deref()),
                     user_agent: cmd.user_agent.clone(),
                     private: cmd.private,
+                    page_image: images.contains(url.as_str()),
                     ..Default::default()
                 })
-                .collect();
+                .collect::<Vec<_>>();
+            if !images.is_empty() {
+                tracing::info!(
+                    "browser integration: a page's {} links, {} of them pictures located on it",
+                    found.len(),
+                    found.iter().filter(|f| f.page_image).count()
+                );
+            }
             // i18n: in Import, where the addresses came from: a page in the browser
             let source = crate::i18n::t("Links from the browser").to_owned();
             self.show_import(found, source);
@@ -4276,6 +4341,7 @@ impl App {
                     && i.gallery.is_none()
                     && i.torrent.is_none()
                     && i.remote.is_none()
+                    && i.zip.is_none()
             })
             .map(|i| {
                 i.state_here = Some((i.dest.clone(), true));
@@ -4451,6 +4517,11 @@ impl App {
         // A torrent through a debrid account (#44).
         if self.item(id).is_some_and(|i| i.remote.is_some()) {
             self.start_remote(id, show);
+            return;
+        }
+        // Files picked out of a ZIP on its server (#1775).
+        if self.item(id).is_some_and(|i| i.zip.is_some()) {
+            self.start_zip(id, show);
             return;
         }
         // A new download from Download File Info has nothing of its own on the disk yet: nothing
@@ -4725,18 +4796,28 @@ impl App {
 
     /// The user's Stop (or Pause): it stays stopped, even in a queue that is running (#341).
     fn stop_by_hand(&mut self, id: u64) {
-        self.halt(id);
+        self.halt(id, false);
+        self.stopped_by_hand.insert(id);
+    }
+
+    /// The progress window's Stop and keep (#1780): an endless stream (no length, no resume: an
+    /// internet radio, a camera feed) ends where it is and what arrived is its finished file
+    /// (`Job::keep`). The only stop that keeps one: Stop, Stop All, a queue's stop, the tray
+    /// panel's and the automation API's pause stop it as `stop_by_hand` does, keeping nothing, as
+    /// for any download its server can't resume. A download that isn't endless (any more) is
+    /// stopped as Pause stops it.
+    fn keep_by_hand(&mut self, id: u64) {
+        self.halt(id, true);
         self.stopped_by_hand.insert(id);
     }
 
     /// Stop, and not start again by itself for a network adapter, a speed limit or the
     /// download limit (#1164): the user's Stop, Stop All and a queue's stop. A live stream being
     /// recorded is stopped and saved (`Job::save`): what it recorded is kept as a video, the
-    /// download then done, as one that ended by itself. An endless stream (no length, no resume:
-    /// an internet radio, a camera feed, #1780) is stopped and kept the same way: what arrived
-    /// is its finished file. Cancel (`stop`) and MDM's own stops kill them as before (a later
-    /// start sets a recording aside, never over it; an endless stream starts over).
-    fn halt(&mut self, id: u64) {
+    /// download then done, as one that ended by itself. Cancel (`stop`) and MDM's own stops
+    /// kill it as before (a later start sets its recording aside, never over it). With `keep`
+    /// (`keep_by_hand`), an endless stream is kept instead (`Job::keep`).
+    fn halt(&mut self, id: u64, keep: bool) {
         // A video waiting for its place doesn't start.
         self.video_places.unwait(id);
         self.stop_healing(id);
@@ -4745,7 +4826,12 @@ impl App {
             let before = l.dl.live_state();
             // A kept stream whose file then can't be named is held as a recording is: a retry
             // would start it over in place of what arrived.
-            let kept = l.dl.save();
+            let kept = if keep {
+                l.dl.keep()
+            } else {
+                l.dl.save();
+                false
+            };
             if kept || halt_saved(before, l.dl.live_state()) {
                 self.saved_by_hand.insert(id);
             }
@@ -4832,6 +4918,7 @@ impl App {
             || i.torrent.is_some()
             || i.video.is_some()
             || i.gallery.is_some()
+            || i.zip.is_some()
         {
             return;
         }
@@ -4884,8 +4971,10 @@ impl App {
             );
         } else if files
             && let Some(i) = self.items.iter().find(|i| i.id == id)
-            // A gallery's folder stays (it may hold other files; #58).
+            // A gallery's folder stays (it may hold other files; #58), and so does the folder of
+            // files picked out of a ZIP (#1775) with what is in it.
             && i.gallery.is_none()
+            && i.zip.is_none()
         {
             // Its state and part file; a video's streams and their parts, kept for Resume (an
             // unfinished run, a failed merge), looked for in its turn; its finished file, which
@@ -4925,7 +5014,7 @@ impl App {
             // A finished file goes with a ticked box: the window says how many (#1563).
             let finished = gone
                 .iter()
-                .filter(|i| i.status == Status::Complete && i.gallery.is_none())
+                .filter(|i| i.status == Status::Complete && i.gallery.is_none() && i.zip.is_none())
                 .count() as u64;
             self.confirm_delete = Some(dialogs::ConfirmDelete::new(
                 gone.iter().map(|i| i.id).collect(),
@@ -6165,6 +6254,7 @@ impl App {
             i.file_name.hash(&mut h);
             (i.status == Status::Complete).hash(&mut h);
             i.gallery.is_some().hash(&mut h);
+            i.zip.is_some().hash(&mut h);
             i.preexisting_folder.hash(&mut h);
             if let Some(t) = &i.torrent {
                 t.folder.hash(&mut h);
@@ -7208,6 +7298,61 @@ impl App {
         }
     }
 
+    /// Files picked out of a ZIP on its server (#1775, Zip preview): the archive's table read
+    /// again, then each file not out yet fetched alone, unpacked, checked against its CRC-32 and
+    /// written under the download's folder, keeping its path there, by the extraction's own
+    /// writer (`mdm_extract::put_file`). The download's own request (its referer, cookies,
+    /// login), speed limit and Options' network.
+    fn start_zip(&mut self, id: u64, show: bool) {
+        let limit = self.settings.speed_limit();
+        let Some((url, login, context, own, direct, spec, folder)) = self.item(id).and_then(|i| {
+            Some((
+                i.url.clone(),
+                i.login.clone(),
+                i.context.clone(),
+                i.own_limit,
+                i.direct,
+                i.zip.clone()?,
+                i.dest.clone(),
+            ))
+        }) else {
+            return;
+        };
+        let RequestParts { headers, mut opts } =
+            self.request_parts(&url, login.as_ref(), &context, direct);
+        opts.speed_limit = own.or(limit);
+        let into = folder.clone();
+        let sink: mdm_engine::remotezip::Sink = Box::new(move |e, data| {
+            mdm_extract::put_file(&into, &e.name, e.size, data).map_err(|e| match e {
+                mdm_extract::Error::Io(e) => e,
+                other => std::io::Error::other(other.to_string()),
+            })
+        });
+        let pick = mdm_engine::remotezip::Pick {
+            files: spec.files,
+            done: spec.done,
+            size: spec.archive_size,
+            folder,
+        };
+        let rt = self.rt.clone();
+        let _guard = rt.enter();
+        let job = mdm_engine::remotezip::Fetch::start(url, headers, opts, pick, sink);
+        let Some(item) = self.item(id) else { return };
+        item.note(if item.downloaded > 0 {
+            crate::i18n::t("Resumed")
+        } else {
+            crate::i18n::t("Started")
+        });
+        item.live = Some(Live::new(model::Job::Zip(job), item.downloaded));
+        item.status = Status::Downloading;
+        item.error = None;
+        item.last_try = Some(model::now_stamp());
+        self.dirty = true;
+        if show && !self.progress.iter().any(|p| p.id == id) {
+            self.progress
+                .push(Progress::new(id, self.settings.show_complete));
+        }
+    }
     /// Add torrent → Download Now / Later. Through the debrid account when torrents go there
     /// (#44): the .torrent's magnet link (its hash, name and trackers) and the files ticked. The
     /// download added, if one was (not when the debrid account takes it).
@@ -8667,7 +8812,7 @@ impl App {
     fn stop_queue(&mut self, q: usize) {
         self.queues[q].running = false;
         for id in self.queues[q].items.clone() {
-            self.halt(id);
+            self.halt(id, false);
         }
     }
 
@@ -14209,6 +14354,11 @@ impl App {
             // The downloads waiting for a window (a browser selection's arrive one by one, more
             // than may be open at once): Cancel asks whether they are cancelled too (#394).
             fi.waiting = self.file_info_waiting.len();
+            if let Some(n) = self.zip_preview_asked
+                && fi.open_zip_preview_when_ready(n, ctx)
+            {
+                self.zip_preview_asked = None;
+            }
             let out = fi.show(ctx, &mut self.icons);
             if std::mem::take(&mut fi.new_category) {
                 self.category_for_file_info = Some(fi.nth);
@@ -14249,6 +14399,15 @@ impl App {
                         self.stop(id);
                         self.after_stop.push((id, None));
                     }
+                }
+                // Files picked in Zip preview (#1775): they are the download, not the archive; one
+                // started behind the dialog (the whole archive) goes.
+                Outcome::Done(start) if fi.zip_pick.is_some() => {
+                    if let Some(id) = fi.early {
+                        self.stop(id);
+                        self.after_stop.push((id, None));
+                    }
+                    self.add_zip_pick(&fi, start);
                 }
                 Outcome::Done(start) => match fi.early {
                     Some(id) => self.adopt_early(&fi, id, start),
@@ -14341,6 +14500,7 @@ impl App {
             match a {
                 progress::Action::None => {}
                 progress::Action::Pause => self.stop_by_hand(id),
+                progress::Action::Keep => self.keep_by_hand(id),
                 progress::Action::Resume => self.start(id, true),
                 progress::Action::Cancel => self.cancel_download(id),
                 progress::Action::Rename(name) => {
@@ -16529,31 +16689,104 @@ mod page_data_tests {
 
 #[cfg(test)]
 mod mark_hook_tests {
+    use super::*;
+    use crate::webmark::{INTERNET, assert_marked};
+
+    const MAGNET: &str =
+        "magnet:?xt=urn:btih:0123456789abcdef0123456789abcdef01234567&dn=setup.exe";
+
     /// #510, #1103: what a video's or a gallery's job shows its saved files to marks them as
-    /// downloaded from the web (an http(s) address only); a file gone from its path meanwhile
-    /// isn't created again by the mark (the jobs show only files that are there).
+    /// downloaded from the internet, whatever the address: a web one, an FTP one, a magnet link
+    /// (a torrent sent to a debrid account), each named without its login, a magnet link as the
+    /// internet.
     #[test]
-    fn a_saved_file_is_marked_from_a_web_address_only() {
+    fn every_saved_file_is_marked_and_no_login_written() {
         let dir = tempfile::tempdir().unwrap();
-        let here = dir.path().join("video.mp4");
-        let ftp = dir.path().join("listing.txt");
-        std::fs::write(&here, b"x").unwrap();
-        std::fs::write(&ftp, b"x").unwrap();
-        let web = super::mark_hook(&"https://videos.test/v".parse().unwrap(), None);
-        (web.0)(&here);
-        let other = super::mark_hook(&"ftp://files.test/listing.txt".parse().unwrap(), None);
-        (other.0)(&ftp);
-        #[cfg(windows)]
+        for (k, (url, referrer, named, page)) in [
+            (
+                "https://videos.test/v",
+                Some("https://pages.test/p"),
+                "https://videos.test/v",
+                Some("https://pages.test/p"),
+            ),
+            (
+                "https://user:pw@videos.test/v",
+                None,
+                "https://videos.test/v",
+                None,
+            ),
+            (
+                "ftp://user:pw@files.test/listing.txt",
+                None,
+                "ftp://files.test/listing.txt",
+                None,
+            ),
+            (MAGNET, None, INTERNET, None),
+        ]
+        .into_iter()
+        .enumerate()
         {
-            let zone = |p: &std::path::Path| {
-                let mut stream = p.as_os_str().to_owned();
-                stream.push(":Zone.Identifier");
-                std::fs::read_to_string(stream).ok()
-            };
-            let marked = zone(&here).unwrap();
-            assert!(marked.contains("ZoneId=3"), "{marked}");
-            assert!(marked.contains("HostUrl=https://videos.test/v"), "{marked}");
-            assert_eq!(zone(&ftp), None, "an FTP address may carry its login");
+            let path = dir.path().join(format!("saved{k}.bin"));
+            std::fs::write(&path, b"x").unwrap();
+            (mark_hook(&url.parse().unwrap(), referrer).0)(&path);
+            assert_marked(&path, named, page);
+        }
+    }
+
+    fn app() -> std::mem::ManuallyDrop<App> {
+        let rt = Box::leak(Box::new(
+            tokio::runtime::Builder::new_current_thread()
+                .enable_all()
+                .build()
+                .unwrap(),
+        ));
+        let loaded = store::Loaded {
+            next_id: 1,
+            items: Vec::new(),
+            columns: None,
+            settings: Settings::default(),
+            queues: Vec::new(),
+        };
+        let (_, commands) = std::sync::mpsc::channel();
+        std::mem::ManuallyDrop::new(App::assemble(
+            &egui::Context::default(),
+            rt.handle().clone(),
+            commands,
+            loaded,
+            crate::Start::Shown,
+        ))
+    }
+
+    /// The engine's files are marked through the options every download's requests go with
+    /// (`request_parts`): an FTP file (one of a folder Link grabber lists, #1774) with its
+    /// address's login left out, and a torrent's files delivered through a debrid account
+    /// (`start_remote`, whose address is the magnet link) as the internet.
+    #[test]
+    fn the_engines_files_are_marked_whatever_the_address() {
+        let app = app();
+        let dir = tempfile::tempdir().unwrap();
+        for (k, (url, named)) in [
+            (
+                "ftp://user:pw@files.test/pub/tools/setup.exe",
+                "ftp://files.test/pub/tools/setup.exe",
+            ),
+            (MAGNET, INTERNET),
+            (
+                "https://files.test/setup.exe",
+                "https://files.test/setup.exe",
+            ),
+        ]
+        .into_iter()
+        .enumerate()
+        {
+            let url: url::Url = url.parse().unwrap();
+            let opts = app
+                .request_parts(&url, None, &Default::default(), true)
+                .opts;
+            let path = dir.path().join(format!("engine{k}.bin"));
+            std::fs::write(&path, b"x").unwrap();
+            (opts.on_file_created.expect("marked").0)(&path);
+            assert_marked(&path, named, None);
         }
     }
 }
@@ -19406,5 +19639,144 @@ mod move_unfinished_tests {
                 .iter()
                 .any(|(_, l)| l.contains("cut short"))
         );
+    }
+}
+
+/// Stop and keep (#1780), end to end against the lab server: an endless stream (no length, no
+/// ranges) is kept as a finished file only by its progress window's button (`keep_by_hand`).
+/// Stop, Stop All and a queue's stop keep nothing, as for any download a server can't resume
+/// (as IDM's do).
+#[cfg(test)]
+mod stop_and_keep_tests {
+    use super::*;
+    use mdm_labserver::{Config, LabServer};
+
+    fn runtime() -> &'static tokio::runtime::Runtime {
+        Box::leak(Box::new(
+            tokio::runtime::Builder::new_multi_thread()
+                .worker_threads(2)
+                .enable_all()
+                .build()
+                .unwrap(),
+        ))
+    }
+
+    fn app_with(
+        rt: &tokio::runtime::Runtime,
+        items: Vec<Item>,
+        queues: Vec<Queue>,
+    ) -> std::mem::ManuallyDrop<App> {
+        let loaded = store::Loaded {
+            next_id: 100,
+            items,
+            columns: None,
+            settings: Settings {
+                // No windows: the test looks at the rows.
+                show_progress: false,
+                show_complete: false,
+                ..Settings::default()
+            },
+            queues,
+        };
+        let (_, commands) = std::sync::mpsc::channel();
+        // Never dropped: an App saves its list as it goes.
+        std::mem::ManuallyDrop::new(App::assemble(
+            &egui::Context::default(),
+            rt.handle().clone(),
+            commands,
+            loaded,
+            crate::Start::Shown,
+        ))
+    }
+
+    fn get(app: &App, id: u64) -> &Item {
+        app.items.iter().find(|i| i.id == id).unwrap()
+    }
+
+    /// The window's frames until `done` (at most 30 s).
+    fn until(app: &mut App, done: impl Fn(&Item) -> bool) {
+        let ctx = egui::Context::default();
+        let end = Instant::now() + Duration::from_secs(30);
+        while !done(get(app, 1)) {
+            let i = get(app, 1);
+            assert!(
+                Instant::now() < end,
+                "never came: {:?} {:?} {}",
+                i.status,
+                i.error,
+                i.downloaded
+            );
+            app.poll(&ctx);
+            std::thread::sleep(Duration::from_millis(20));
+        }
+    }
+
+    /// The lab's endless stream (a radio's MP3, paced) at `dir/radio.mp3`, not started yet.
+    fn stream(s: &LabServer, dir: &std::path::Path) -> Item {
+        let port = s.addr().port();
+        let url = format!("http://127.0.0.1:{port}/gen/1M/radio.mp3?endless=1&seed=41&rate=256K");
+        let mut item = Item::new(
+            1,
+            url.parse().unwrap(),
+            dir.join("radio.mp3"),
+            Category::General,
+        );
+        item.status = Status::Stopped;
+        item
+    }
+
+    /// `stop` on a running endless stream: it ends stopped, its file never finished.
+    fn stopped_keeps_nothing(how: &str, stop: impl FnOnce(&mut App)) {
+        let rt = runtime();
+        let s = rt.block_on(LabServer::start(Config::default())).unwrap();
+        let dir = tempfile::tempdir().unwrap();
+        let mut app = app_with(rt, vec![stream(&s, dir.path())], Vec::new());
+        // In the main queue (the app's first), as a download added to it.
+        app.queues[0].items = vec![1];
+        app.start(1, false);
+        until(&mut app, Item::endless);
+        stop(&mut app);
+        until(&mut app, |i| i.live.is_none());
+        let row = get(&app, 1);
+        assert_eq!(row.status, Status::Stopped, "{how}");
+        assert!(
+            !dir.path().join("radio.mp3").exists(),
+            "{how}: nothing kept"
+        );
+    }
+
+    #[test]
+    fn stop_keeps_nothing_of_an_endless_stream() {
+        stopped_keeps_nothing("Stop", |app| app.stop_by_hand(1));
+    }
+
+    #[test]
+    fn stop_all_keeps_nothing_of_an_endless_stream() {
+        stopped_keeps_nothing("Stop All", |app| app.stop_all());
+    }
+
+    #[test]
+    fn a_queues_stop_keeps_nothing_of_an_endless_stream() {
+        stopped_keeps_nothing("the queue's stop", |app| app.stop_queue(0));
+    }
+
+    /// The progress window's Stop and keep: the stream is Complete, what arrived its file.
+    #[test]
+    fn the_button_keeps_an_endless_stream() {
+        let rt = runtime();
+        let s = rt.block_on(LabServer::start(Config::default())).unwrap();
+        let dir = tempfile::tempdir().unwrap();
+        let mut app = app_with(rt, vec![stream(&s, dir.path())], Vec::new());
+        app.start(1, false);
+        until(&mut app, Item::endless);
+        app.keep_by_hand(1);
+        until(&mut app, |i| i.live.is_none());
+        let row = get(&app, 1);
+        assert_eq!(row.status, Status::Complete);
+        let kept = std::fs::metadata(dir.path().join("radio.mp3"))
+            .unwrap()
+            .len();
+        assert!(kept > 0);
+        assert_eq!(row.size, Some(kept));
     }
 }

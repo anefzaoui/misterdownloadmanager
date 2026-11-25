@@ -1648,6 +1648,10 @@
 	Files go to: {folder}	File disimpan di: {folder}
 #. text in the Scheduler window; tab in the Scheduler window
 	Files in the queue	File dalam antrean
+#. text in the download list (sizes, speeds, status)
+#. why files being taken out of a ZIP on its server (#1775) can't be moved or renamed yet: those already out are in its folder, the others still to come there
+#, machine
+	Files taken out of a ZIP can be moved once they're all out	File yang diekstrak dari ZIP dapat dipindahkan setelah semuanya selesai diekstrak
 #. button in a download's Properties window
 #. File Properties button that opens the selected torrent's file list
 #. the trailing ... means it opens a window: keep it
@@ -1930,6 +1934,10 @@
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 	Hide &preview pane	Sembunyikan panel &pratinjau
+#. text in the Link grabber window
+#. Link grabber check box, ticked when it opens: the pictures shown on the browser's page (its images, not links to pictures), which "Download all links" sends with the links, are not shown
+#, machine
+	Hide images located on this web page	Sembunyikan gambar yang ada di halaman web ini
 #. button in a download's progress window
 	Hide tab	Sembunyikan tab
 #. text in a download's progress window; text in standard windows
@@ -2279,6 +2287,10 @@
 #. in Import, where the addresses came from: a page in the browser
 #. in Link grabber, where the addresses came from: a page in the browser
 	Links from the browser	Tautan dari browser
+#. text in a dialog box
+#. tooltip of Download File Info's Preview button for a ZIP (#1775): it lists the files inside, to download only some of them
+#, machine
+	List the files inside the ZIP and pick those to download	Tampilkan daftar file di dalam ZIP dan pilih yang akan diunduh
 #. text in playlistdlg.rs
 #. button in Download video: go on listing a playlist from where it stopped
 	List the rest	Daftar sisanya
@@ -2340,6 +2352,11 @@
 #. text in the Options window
 #. the trailing ... means it is still going on: keep it
 	Looking for your default browser...	Mencari browser default Anda...
+#. text in a dialog box
+#. tooltip of Download File Info's greyed Preview button while MDM asks the server whether it can look inside the ZIP (#1775)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Looking inside the ZIP...	Melihat isi ZIP...
 #. text in the Download video window
 #. the trailing ... means it is still going on: keep it
 	Looking the page up...	Mencari halaman...
@@ -2553,6 +2570,10 @@
 #. text in the Scheduler window
 #. Monday, as short as a calendar's column head (two letters in English)
 	Mo	Sen
+#. text in a download's progress window
+#. Zip preview's column: when the file was last changed, as the ZIP says
+#, machine
+	Modified	Dimodifikasi
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Moldova	Moldova
@@ -3005,6 +3026,10 @@
 	Only the {files} file(s) ticked in Add torrent	Hanya {files} file yang dicentang di Tambah torrent
 #. checkbox in a dialog box
 	Only while I'm using the computer	Hanya saat saya menggunakan komputer
+#. message or event log entry in the main window
+#. event log entry: the download is files picked inside a ZIP in Zip preview (#1775); {files} how many ("3 files")
+#, machine
+	Only {files} picked inside the ZIP	Hanya {files} yang dipilih di dalam ZIP
 #. button in a dialog box; text in a dialog box; button in a download's Properties window; button in torrentfiles.rs
 #. verb: opens the downloaded file
 #. title of the message when a downloaded file can't be opened
@@ -3066,6 +3091,10 @@
 #. text in the Link grabber window
 #. Link grabber: the box that edits the selected package
 	Package	Paket
+#. text in a download's progress window
+#. Zip preview's column: the file's size as packed (compressed) inside the ZIP
+#, machine
+	Packed	Terkompresi
 #. text in gallerydlg.rs; text in the Download video window
 	Page address	Alamat halaman
 #. text in remote.rs
@@ -3274,6 +3303,11 @@
 #. text in the Add torrent window
 #. the trailing ... means it is still going on: keep it
 	Reading the torrent...	Membaca torrent...
+#. text in zippreview.rs
+#. Zip preview, while the ZIP's list of files is being read from its server
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Reading the ZIP's list of files...	Membaca daftar file ZIP...
 #. message or event log entry in the main window
 #. the status strip while Tasks → Import reads a file; {file} is its name
 #. the trailing ... means it is still going on: keep it
@@ -3842,6 +3876,11 @@
 	Start download on Mister Download Manager startup	Mulai unduhan saat Mister Download Manager dimulai
 #. checkbox in the Options window
 	Start downloading immediately while displaying "Download File Info" dialog	Mulai mengunduh segera saat menampilkan dialog "Info File Unduhan"
+#. text in a dialog box
+#. Download File Info, on hover over the number of files picked in Zip preview (#1775): {files} how many ("3 files"), {size} their size together, {folder} the folder they go into (named after the archive)
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	Start downloads only the {files} picked in the ZIP ({size}), into {folder}	Mulai unduhan hanya {files} yang dipilih di ZIP ({size}), ke {folder}
 #. text in the tray icon's menu
 	Start main download queue	Mulai antrean unduhan utama
 #. text in remote.rs
@@ -3897,7 +3936,7 @@
 #. text in a download's progress window
 #. button in the progress window of a download that never ends by itself (an internet radio, a camera feed: no size, can't be resumed): stop it and keep what has arrived as the finished file
 #, machine
-	Stop and keep	Hentikan dan simpan
+	Stop and keep	Hentikan dan pertahankan
 #. text in a download's progress window
 #. button in a live stream's progress window: stop recording it and keep what was recorded as a video file
 #, machine
@@ -4197,6 +4236,10 @@
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 	The file does NOT match ({algorithm})	File TIDAK cocok ({algorithm})
+#. text in errors.rs
+#. why a file taken out of a ZIP on its server failed (#1775): its bytes aren't what the ZIP's list of files says (its size or its CRC-32 checksum)
+#, machine
+	the file in the ZIP doesn't match the ZIP's list of files (its size or checksum): download the whole archive	file di ZIP tidak cocok dengan daftar file ZIP (ukuran atau checksum-nya): unduh seluruh arsip
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 	The file matches ({algorithm})	File cocok ({algorithm})
@@ -4299,6 +4342,10 @@
 	the server answered {status}	server menjawab {status}
 #. text in errors.rs
 	the server can't send parts of the file, so it can't be resumed	server tidak dapat mengirim bagian file, jadi unduhan tidak dapat dilanjutkan
+#. text in errors.rs
+#. Zip preview (#1775): the server doesn't send parts of a file (HTTP ranges), so MDM can't fetch only some files from inside a ZIP; the whole archive still downloads
+#, machine
+	the server can't send parts of the ZIP, so its files can't be downloaded one by one: download the whole archive	server tidak dapat mengirim bagian dari ZIP, sehingga file di dalamnya tidak dapat diunduh satu per satu: unduh seluruh arsip
 #. text in errors.rs
 	the server did not answer in time	server tidak menjawab tepat waktu
 #. text in errors.rs
@@ -4419,6 +4466,10 @@
 	The update is open in your system's package installer.	Pembaruan terbuka di penginstal paket sistem Anda.
 #. text in a download's Properties window
 	The web page from which this file was obtained:	Halaman web tempat file ini diperoleh:
+#. text in errors.rs
+#. why a file can't be taken out of a ZIP on its server (#1775): the ZIP was replaced on the server after its files were listed; Zip preview is the window that lists them
+#, machine
+	the ZIP changed on the server since its files were listed: open its Zip preview again	ZIP berubah di server sejak daftar file-nya dibuat: buka pratinjau ZIP-nya lagi
 #. message or event log entry in the main window
 #. the kind of file View → Theme → Add a theme file lists: MDM's themes (TOML, JSON), Base16 schemes (YAML) and pywal's colors.json
 	Themes and colour schemes	Tema dan skema warna
@@ -4445,6 +4496,10 @@
 	These settings are unavailable when "Show download complete dialog" is turned on	Pengaturan ini tidak tersedia saat "Tampilkan dialog unduhan selesai" diaktifkan
 #. text in helpers.rs
 	They keep downloading if you close this window.	Unduhan akan terus berlangsung jika Anda menutup jendela ini.
+#. text in errors.rs
+#. error when opening a .torrent file whose piece size or list of pieces doesn't fit its files (damaged, or made wrong); it isn't added
+#, machine
+	this .torrent file is damaged: its pieces don't match its files	file .torrent ini rusak: bagian-bagiannya tidak cocok dengan file-filenya
 #. text in a dialog box
 	This address is already in the list of downloads:	Alamat ini sudah ada dalam daftar unduhan:
 #. message or event log entry in the main window
@@ -4487,6 +4542,18 @@
 #. {error} is why, in English (a file that isn't a theme or a colour scheme, a colour missing)
 #. {error} = an error message (keep the braces as they are)
 	This file can't be used as a theme: {error}	File ini tidak dapat digunakan sebagai tema: {error}
+#. text in errors.rs
+#. why a file can't be taken out of a ZIP on its server (#1775): it is encrypted (password-protected) in the ZIP
+#, machine
+	this file is encrypted in the ZIP: download the whole archive and open it with its password	file ini dienkripsi di ZIP: unduh seluruh arsip dan buka dengan kata sandinya
+#. text in errors.rs
+#. why a file can't be taken out of a ZIP on its server (#1775): the ZIP no longer holds it
+#, machine
+	this file is no longer in the ZIP on the server	file ini tidak lagi ada di ZIP di server
+#. text in errors.rs
+#. why a file can't be taken out of a ZIP on its server (#1775): it is compressed with a method MDM doesn't unpack there; {method} is the method's name (BZIP2, LZMA, Deflate64…)
+#, machine
+	this file is packed in a way MDM can't unpack from the server ({method}): download the whole archive	file ini dikompresi dengan metode yang tidak dapat diekstrak MDM dari server ({method}): unduh seluruh arsip
 #. text in remote.rs
 #. remote control page (on a phone): the file chosen is too large for a .torrent file
 	This file is too large to be a torrent.	File ini terlalu besar untuk menjadi torrent.
@@ -4512,6 +4579,10 @@
 #. text in extension.rs
 #. a check of Test browser integration: a portable copy can't be connected
 	This is the installed copy, not a portable one	Ini adalah salinan yang terinstal, bukan portabel
+#. text in errors.rs
+#. Zip preview (#1775): the address isn't a ZIP archive whose list of files MDM can read on the server
+#, machine
+	this isn't a ZIP archive MDM can look inside on the server: download the whole file	ini bukan arsip ZIP yang isinya dapat dibaca MDM di server: unduh seluruh file
 #. text in playlistdlg.rs
 #. in Download video, a playlist or channel that lists no video
 	This list has no videos	Daftar ini tidak memiliki video
@@ -4575,6 +4646,18 @@
 #. the Download video window: the video needs the user to be signed in
 	This video needs you to be signed in. Use the Download video button over it in your browser, which passes your sign-in on, or choose your browser in Options → Sites Logins → Cookies for video sites.	Video ini mengharuskan Anda untuk masuk. Gunakan tombol Unduh video di atasnya di browser Anda, yang meneruskan informasi masuk Anda, atau pilih browser Anda di Opsi → Login Situs → Cookie untuk situs video.
 #. text in errors.rs
+#. Zip preview (#1775): a ZIP split over several files (volumes): its files can't be fetched one by one
+#, machine
+	this ZIP is split over several files, so its files can't be downloaded one by one: download every part	ZIP ini terbagi menjadi beberapa file, sehingga file di dalamnya tidak dapat diunduh satu per satu: unduh setiap bagian
+#. text in errors.rs
+#. Zip preview (#1775): the ZIP's list of files (its table of contents) doesn't add up
+#, machine
+	this ZIP's list of files is damaged: download the whole archive	daftar file ZIP ini rusak: unduh seluruh arsip
+#. text in errors.rs
+#. Zip preview (#1775): the ZIP's list of files (its table of contents) is larger than MDM reads from a server
+#, machine
+	this ZIP's list of files is too large to read from the server: download the whole archive	daftar file ZIP ini terlalu besar untuk dibaca dari server: unduh seluruh arsip
+#. text in errors.rs
 #. a download's error: the address is a site's web page that needs a browser, not the file; {site} = the site's name (gofile)
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
 	this {site} link is a web page, not the file: open it in your browser and download from there	tautan {site} ini adalah halaman web, bukan file: buka di browser Anda dan unduh dari sana
@@ -4598,6 +4681,11 @@
 #. text in the Scheduler window
 #. tooltip on the Scheduler's "Wake the computer to run this queue" while "Start download at" is off
 	Tick "Start download at" first: the computer is woken for the start time	Centang "Mulai unduhan pada" terlebih dahulu: komputer dibangunkan untuk waktu mulai
+#. text in zippreview.rs
+#. Zip preview, under the list: {files} how many files are ticked ("3 files"), {size} their size together ("12.4 MB")
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	Ticked: {files}, {size}	Dipilih: {files}, {size}
 #. text in a download's progress window; text in the Scheduler window
 	Time left	Sisa waktu
 #. text in countries.rs
@@ -5194,6 +5282,10 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Zimbabwe	Zimbabwe
+#. text in zippreview.rs
+#. title of the window that lists the files inside a ZIP on its server, to tick those to download (#1775)
+#, machine
+	Zip preview	Pratinjau ZIP
 #. text in the Options window
 #. \\n starts a new line: break lines where they fit the translation
 	ZIP, 7Z, RAR, TAR, GZ and XZ; a split archive (.part1.rar, .7z.001) once\nevery volume is in. A file there already is kept: the new one is numbered.	ZIP, 7Z, RAR, TAR, GZ, dan XZ; arsip terpisah (.part1.rar, .7z.001) setelah\nsemua volume tersedia. File yang sudah ada akan dipertahankan: file baru akan diberi nomor.
@@ -5395,6 +5487,11 @@
 #. a number of connections the app learned by itself for a server
 #. {n} = a number (keep the braces as they are)
 	{n} (auto)	{n} (otomatis)
+#. text in zippreview.rs
+#. Zip preview, under the list: {n} files of the ZIP aren't listed because MDM can't take them out on their own: encrypted ones, ones packed in a way MDM can't unpack from the server, links, or names that would leave their folder; the whole archive still downloads
+#. {n} = a number (keep the braces as they are)
+#, machine
+	{n} more can't be taken out on their own (encrypted, packed another way, or links)	{n} lainnya tidak dapat dikeluarkan sendiri (terenkripsi, dikemas dengan cara lain, atau tautan)
 #. text in playlistdlg.rs
 #. in Download video for a playlist: how many videos are ticked, of how many
 #. {n} = a number (keep the braces as they are)

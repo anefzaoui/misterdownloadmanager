@@ -85,11 +85,30 @@ fn refuse_overlaps<R: Read + Seek>(
     zip: &mut zip::ZipArchive<R>,
     password: Option<&str>,
 ) -> Result<(), Error> {
+    if overlapping(zip).map_err(|e| zip_error(e, password))? {
+        return Err(Error::Damaged(OVERLAP.into()));
+    }
+    Ok(())
+}
+
+/// What a ZIP whose entries overlap is said to be (for the log).
+pub(crate) const OVERLAP: &str = "entries overlap";
+
+/// Whether two entries of `zip` overlap, each from its local header to the end of its compressed
+/// data: every entry of such a zip would read the same bytes again (thousands of entries over one
+/// compressed block make terabytes of a few megabytes), so neither extraction nor the archive
+/// test (`check`) reads one. Only its directory and local headers are read. `Err`: an entry's
+/// local header doesn't read (and no two of the others overlap).
+pub(crate) fn overlapping<R: Read + Seek>(zip: &mut zip::ZipArchive<R>) -> Result<bool, ZipError> {
     let mut ranges = Vec::with_capacity(zip.len());
+    let mut unread = None;
     for i in 0..zip.len() {
         let e = match zip.by_index_raw(i) {
             Ok(e) => e,
-            Err(e) => return Err(zip_error(e, password)),
+            Err(e) => {
+                unread.get_or_insert(e);
+                continue;
+            }
         };
         let start = e.header_start();
         let end = e
@@ -100,7 +119,7 @@ fn refuse_overlaps<R: Read + Seek>(
     }
     ranges.sort_unstable();
     if ranges.windows(2).any(|w| w[1].0 < w[0].1) {
-        return Err(Error::Damaged("entries overlap".into()));
+        return Ok(true);
     }
-    Ok(())
+    unread.map_or(Ok(false), Err)
 }

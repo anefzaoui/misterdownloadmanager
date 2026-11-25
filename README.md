@@ -326,13 +326,15 @@ right-to-left window.
 - **Catches downloads from Firefox, Chrome, Edge, Brave, Opera, Vivaldi and Helium** (the
   extension is on Firefox Add-ons and the Chrome Web Store), and gives them back to the browser
   when MDM isn't running. Its toolbar button finds **all the images on a page**, at the largest
-  size the page lists, filtered by size and type, and sends them to the Link grabber.
+  size the page lists, filtered by size and type, and sends them to the Link grabber; the
+  right-click menu's **Download all links** brings the page's pictures too, hidden until you ask.
 - **Downloads videos** from web pages (a button appears over the video, on many pages before it plays; playlists,
   subtitles, the sound alone), **image galleries** with gallery-dl, and **torrents and magnet links**
   (sequential order, RSS feeds, sharing limits, an optional public tracker list for more peers).
 - **Many links at once**: the Link grabber sorts them into packages and extracts the archives
   (zip, 7z, rar) when they're in. Give it an **FTP folder or a web server's "Index of" page** and it
-  lists every file in it and its subfolders, keeping the folder tree when they download. It takes
+  lists every file in it and its subfolders, keeping the folder tree when they download. For a big
+  `.zip` on a server, **Preview** lists the files inside and downloads only the ones you tick. It takes
   Click'n'Load from link sites, asking once per site, and
   unwraps `thunder://`, `flashget://` and `qqdl://` links to the address inside them. Debrid accounts (Real-Debrid, AllDebrid, Premiumize, TorBox, Mega-Debrid; experimental) download
   file-host links through your own account.

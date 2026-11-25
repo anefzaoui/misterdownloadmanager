@@ -257,8 +257,18 @@ try {
     # "theme:metro+@main": /show theme:metro first (no window of its own), then the shot.
     $parts = @($what -split "\+")
     $what = $parts[-1]
+    # "@download:zip/files.zip+zip-preview:3": a window opened first and shot over (its
+    # Download File Info, for Zip preview, #1775), closed with the shot.
+    $first = @()
     foreach ($p in $parts[0..($parts.Count - 2)]) {
       if ($parts.Count -lt 2) { break }
+      if ($p -like "@download:*") {
+        $was = @(Titles $app.Id)
+        & $Exe /d "$base/$($p.Substring(10))"
+        try { $first += New-Window $app.Id $was } catch { Write-Warning "${name}: no window for $p" }
+        Start-Sleep -Milliseconds 2500
+        continue
+      }
       & $Exe /show $p
       Start-Sleep -Milliseconds 1500
     }
@@ -305,7 +315,7 @@ try {
     }
     try { $t = New-Window $app.Id $before } catch { Write-Warning "${name}: no window"; continue }
     # Options → Download panels opens a dialog over Options: that dialog is the shot.
-    $also = @()
+    $also = @($first)
     if ($what -eq "options:panels") {
       for ($i = 0; $i -lt 50; $i++) {
         $new = @(Titles $app.Id | Where-Object { $before -notcontains $_ })

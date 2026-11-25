@@ -574,24 +574,33 @@ These ship in the next version.
   stays visible by default and can be hidden when closing the main window while completion dialogs can still appear. Optional
   launch at login starts in the menu bar with the main window hidden
   ([#1732](https://github.com/anefzaoui/misterdownloadmanager/issues/1732)).
-
+- ✅ Only some files from inside a ZIP on a server: Download File Info's Preview lists the files in
+  a `.zip` (from its end, with range requests) to tick those to download, each fetched alone and
+  checked against its CRC-32 ([#1775](https://github.com/anefzaoui/misterdownloadmanager/issues/1775))
+- ✅ The browser add-on's scrollbars in its own look: the video button's list of qualities and
+  the popup's lists scroll with a thin bar in their own colours, light and dark, not the browser's
+  stock grey one
 - ✅ Folder downloads: an FTP folder or a web server's "Index of" page given to Link grabber lists
   every file in it and its subfolders (a depth and file types you choose), and the folder tree is
   kept under the download folder; never above the folder or onto another site
   ([#1774](https://github.com/anefzaoui/misterdownloadmanager/issues/1774))
 - ✅ **Stop and keep** for a download that never ends (an internet radio, a camera feed: no size,
-  no resume): the progress window's pause button, Stop, Stop All, a queue's stop and the phone
-  page's pause end it and keep what arrived as the finished file; Cancel keeps nothing, and every
-  other download pauses as before
+  no resume): the progress window's pause button ends it and keeps what arrived as the finished
+  file; Stop, Stop All, a queue's stop, the tray panel, the phone page's pause and Cancel keep
+  nothing (the button is the only way), and every other download pauses as before
   ([#1780](https://github.com/anefzaoui/misterdownloadmanager/issues/1780))
 - ✅ The browser add-on finds all the images on a page when asked (**This page → Find images**),
-  at the largest size listed, filtered by size and type, and sends them to Link grabber
+  at the largest size listed, filtered by size and type, and sends them to Link grabber;
+  **Download all links** and **Download selected links** send the page's pictures too, which
+  Link grabber hides under **Hide images located on this web page** until you untick it
   ([#1781](https://github.com/anefzaoui/misterdownloadmanager/issues/1781))
 - ✅ The browser add-on's video button before the video plays: on a site yt-dlp doesn't read, it
   looks up the stream address the page wrote for its player (master playlist first, else the best
   quality named), only addresses the page names, on a page with one video
   ([#1826](https://github.com/anefzaoui/misterdownloadmanager/issues/1826))
 - ✅ Galleries: file paths are checked more carefully
+- ✅ Archive test: archives are checked more carefully
+- ✅ Downloaded files are marked as coming from the internet more carefully
 - ✅ Command line: a playlist range from 0 or of 0 entries is refused
 - ✅ Command line: a resumed download's speed starts right
 - ✅ Command line: `video-info` sizes in the same unit as the rest
@@ -2117,6 +2126,7 @@ These ship in the next version.
   reach; where neither side has room for it whole, its list of qualities is shorter and scrolls.
   Tests: the feed case of the add-on's real-browser tests checks that the menu is inside the
   window, and waits for the button over the video it points at, not the last one's, still fading
+- ✅ Torrents: magnet links, torrent files and trackers are checked more carefully.
 
 ## Being worked on
 

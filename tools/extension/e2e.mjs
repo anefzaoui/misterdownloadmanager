@@ -43,8 +43,10 @@
 // .m3u8 or .mpd, served as text/plain or octet-stream, #171), sniffed (#171 without yt-dlp: such
 // streams found only when asked, by the button and the media list, a text decoy never), media (the
 // toolbar button's list of the media a tab loaded: streams, files, a protected stream; #38),
-// images (its Find images on a gallery: the largest sizes listed, each once, filtered by size and
-// type, the kept ones only to Link grabber, #1781),
+// images (its Find images on a gallery: the largest sizes listed, each once, never a CSS
+// background, filtered by size and type, the kept ones only to Link grabber, #1781), imageslinks
+// (the right-click menu's Download all links and Download selected links on that gallery: the
+// links, and the <img> pictures marked as located on the page, #1781),
 // scripted (a video a server's program sends, named after its page with its real type: the list,
 // the button, the Download video window; #695, #800), guarded (a stream another site's server
 // serves to its page's player only: looked up and downloaded with the Origin and Referer the
@@ -2407,6 +2409,44 @@ async function proxyInChromium(t) {
   return done.join("; ");
 }
 
+// #1781: the lab's gallery shown (its <img> pictures and #bg1's background loaded, so the page
+// knows their sizes, as a user's would): what it shows.
+const GALLERY_SHOWN = `(() => {
+  const i = [...document.images];
+  const bg = performance.getEntriesByType("resource").some((e) => e.name.includes("/bg1.jpg"));
+  return i.every((x) => x.complete) && ["photo1", "photo2", "photo4", "thumb3"].every((id) => document.getElementById(id).naturalWidth > 0) && bg && i.length + " pictures and 6 CSS backgrounds on the page";
+})()`;
+
+// #1781: the gallery's CSS background pictures, never sent: not pictures located on the page.
+const GALLERY_BACKGROUNDS = ["/gen/192K/bg1.jpg", "/gen/16K/bg2.png", "/gen/64K/bg2@2x.png", "/gen/64K/bg6.webp"];
+
+// #1781: MDM's look-ups in Link grabber of the gallery's run `seed` (its requests, not the
+// browser's own for the pictures it showed: those say Sec-Fetch-Mode no-cors): each of `sent`,
+// and none of `left`. On Windows, Link grabber's window is seen and closed: its windows.
+async function galleryLookups(seed, sent, left) {
+  const mdmFor = async (p) => (await requests(p)).filter((e) => e.sec_fetch_mode !== "no-cors" && new URLSearchParams(e.query || "").get("seed") === String(seed));
+  await until(`MDM's look-ups of the ${sent.length} in Link grabber`, 60000, async () => {
+    for (const p of sent) if (!(await mdmFor(p)).length) return false;
+    return true;
+  }).catch(async (e) => {
+    const missing = [];
+    for (const p of sent) if (!(await mdmFor(p)).length) missing.push(p);
+    e.message += ` (none for ${missing.join(", ")})`;
+    throw e;
+  });
+  // A moment more for a look-up that shouldn't come.
+  await sleep(3000);
+  for (const p of left) {
+    const asked = await mdmFor(p);
+    if (asked.length) throw new Error(`MDM asked for ${p}, left out: ${asked.map(brief).join("; ")}`);
+  }
+  if (!WIN) return "";
+  const pid = ourApps()[0];
+  const open = await until("Link grabber", 20000, () => appWindows(pid).includes("Link grabber") && appWindows(pid));
+  appWindows(pid, "Link grabber");
+  return `; windows: ${open.join(", ")}`;
+}
+
 const CASES = {
   // #578: a download another extension starts in a folder of its own, of a type MDM doesn't
   // take, lands in that folder. Chromium only (Firefox has no onDeterminingFilename): MDM's
@@ -4184,10 +4224,10 @@ thumb.addEventListener("mouseleave", () => { preview.classList.add("off"); docum
   // #1781: the toolbar button's Find images on the lab's gallery (/page?images=1). It finds each
   // picture at the largest size the page lists (a srcset's 1600w, a <picture>'s WebP 1200w, a 2x),
   // a lazy loader's data-src, a link to a full size; each address once (the large photo is also
-  // shown and linked), no data: picture, no PDF. At least 300 x 300 with GIF off keeps four, and
-  // those four only reach Link grabber: MDM looks each up there and nothing else. E2E_SHOTS:
-  // <lang>-<scheme>-images-page.png (the tab as it opens), -images-found.png (the filters set) and
-  // -images-sent.png.
+  // shown and linked), no data: picture, no PDF, no CSS background. At least 300 x 300 with GIF
+  // off keeps four, and those four only reach Link grabber: MDM looks each up there and nothing
+  // else. E2E_SHOTS: <lang>-<scheme>-images-page.png (the tab as it opens), -images-found.png (the
+  // filters set) and -images-sent.png.
   async images(t) {
     const shots = process.env.E2E_SHOTS ? path.resolve(process.env.E2E_SHOTS) : "";
     const tag = `${process.env.E2E_LANG || "en"}-${process.env.E2E_COLOR_SCHEME || "system"}`;
@@ -4198,9 +4238,7 @@ thumb.addEventListener("mouseleave", () => { preview.classList.add("off"); docum
     const seed = Date.now() % 1e9;
     await t.session.navigate(`${LAB}/page?images=1&seed=${seed}&title=Gallery`);
     // Its pictures shown, so the page knows their sizes, as a user's would be.
-    const shown = await until("the gallery's pictures", 20000, () =>
-      t.session.evaluate(`(() => { const i = [...document.images]; return i.every((x) => x.complete) && ["photo1", "photo2", "photo4", "thumb3"].every((id) => document.getElementById(id).naturalWidth > 0) && i.length; })()`),
-    );
+    const shown = await until("the gallery's pictures", 20000, () => t.session.evaluate(GALLERY_SHOWN));
     const page = await t.session.evaluate("location.href");
     const popup = await t.session.tab(`${t.session.base}popup.html?page=${encodeURIComponent(page)}`);
     const state = () =>
@@ -4259,27 +4297,67 @@ thumb.addEventListener("mouseleave", () => { preview.classList.add("off"); docum
     }
     // MDM's look-ups in Link grabber (its requests, not the browser's own for the pictures it
     // showed: those say Sec-Fetch-Mode no-cors).
-    const mdmFor = async (p) => (await requests(p)).filter((e) => e.sec_fetch_mode !== "no-cors" && new URLSearchParams(e.query || "").get("seed") === String(seed));
     const sent = ["/gen/256K/photo1.jpg", "/gen/128K/photo2.webp", "/gen/512K/photo3.png", "/gen/64K/photo5.avif"];
-    await until("MDM's look-ups of the four in Link grabber", 60000, async () => {
-      for (const p of sent) if (!(await mdmFor(p)).length) return false;
-      return true;
-    });
-    const left = ["/gen/1K/icon.png", "/gen/8K/photo3-thumb.png", "/gen/32K/photo4@2x.gif", "/gen/8K/photo4.gif", "/gen/16K/photo1-small.jpg", "/gen/32K/photo2-600.webp", "/gen/32K/photo2.jpg", "/gen/1K/notes.pdf"];
-    // A moment more for a look-up that shouldn't come.
-    await sleep(3000);
-    for (const p of left) {
-      const asked = await mdmFor(p);
-      if (asked.length) throw new Error(`MDM asked for ${p}, left out: ${asked.map(brief).join("; ")}`);
-    }
-    let windows = "";
-    if (WIN) {
-      const pid = ourApps()[0];
-      const open = await until("Link grabber", 20000, () => appWindows(pid).includes("Link grabber") && appWindows(pid));
-      windows = `; windows: ${open.join(", ")}`;
-      appWindows(pid, "Link grabber");
-    }
-    return `${shown} pictures on the page; found ${found.chips.map(([type, n]) => `${type} ${n}`).join(", ")}; 300 x 300 without GIF: ${kept.count}; MDM looked up ${sent.map((p) => p.split("/").pop()).join(", ")} only${windows}`;
+    const left = ["/gen/1K/icon.png", "/gen/8K/photo3-thumb.png", "/gen/32K/photo4@2x.gif", "/gen/8K/photo4.gif", "/gen/16K/photo1-small.jpg", "/gen/32K/photo2-600.webp", "/gen/32K/photo2.jpg", "/gen/1K/notes.pdf", ...GALLERY_BACKGROUNDS];
+    const windows = await galleryLookups(seed, sent, left);
+    return `${shown}; found ${found.chips.map(([type, n]) => `${type} ${n}`).join(", ")}; 300 x 300 without GIF: ${kept.count}; MDM looked up ${sent.map((p) => p.split("/").pop()).join(", ")} only${windows}`;
+  },
+
+  // #1781: the right-click menu's "Download all links" on the lab's gallery: its links (the large
+  // photo, photo3.png, the PDF) and, after them, its <img> pictures, found as Find images finds
+  // them (none left out by size or type; never a CSS background), marked as located on the page:
+  // MDM's log says how many of the page's links are such pictures (Link grabber hides those while
+  // "Hide images located on this web page" is ticked), and it looks every one up, and nothing
+  // else (the smaller sizes, the 1x of a 2x, the backgrounds). The large photo, shown and linked,
+  // is a link, not marked. Then "Download selected links" on a selection of the gallery's first
+  // part: its one link and the two pictures in it, marked. Firefox's right-click menu is opened
+  // and its item chosen; Chromium's can't be opened headless, so its handler is called as the
+  // menu calls it.
+  async imageslinks(t) {
+    const log = path.join(data, "logs", "mdm.log");
+    const round = async (selected) => {
+      await clearLog();
+      // Addresses of this round's own (see images).
+      const seed = Date.now() % 1e9;
+      const page = `${LAB}/page?images=1&seed=${seed}&title=Gallery`;
+      await t.session.navigate(page);
+      const shown = await until("the gallery's pictures", 20000, () => t.session.evaluate(GALLERY_SHOWN));
+      // The selection: from the gallery's first line to the large photo's link (the icon, photo1,
+      // the <picture>, photo1 again and its link).
+      if (selected) await t.session.evaluate(`(() => { const r = document.createRange(); r.setStartBefore(document.getElementById("blank")); r.setEndAfter(document.getElementById("full1")); const s = getSelection(); s.removeAllRanges(); s.addRange(r); return s.toString().length; })()`);
+      const from = fs.existsSync(log) ? fs.statSync(log).size : 0;
+      const item = selected ? "mdm-selected" : "mdm-all";
+      let clicked;
+      if (t.kind === "chromium") {
+        clicked = await t.session.inExtension(`(async () => {
+          const tab = (await chrome.tabs.query({})).find((x) => x.url === ${JSON.stringify(page)});
+          if (!tab) return "no tab";
+          await menuClicked({ menuItemId: ${JSON.stringify(item)}, pageUrl: tab.url, frameId: 0 }, tab);
+          const { status } = await chrome.storage.local.get("status");
+          return "called; status " + JSON.stringify(status && status.why);
+        })()`);
+      } else {
+        const at = await t.session.evaluate(`(() => { const b = document.getElementById("blank").getBoundingClientRect(); return [b.left + 4, b.top + b.height / 2]; })()`);
+        clicked = await t.session.menu(at[0], at[1], selected ? "Download selected links with Mister Download Manager" : "Download all links with Mister Download Manager");
+        if (!String(clicked).startsWith("chosen")) throw new Error(`the menu: ${clicked}`);
+      }
+      const links = selected ? ["/gen/256K/photo1.jpg"] : ["/gen/256K/photo1.jpg", "/gen/512K/photo3.png", "/gen/1K/notes.pdf"];
+      const pictures = selected ? ["/gen/1K/icon.png", "/gen/128K/photo2.webp"] : ["/gen/1K/icon.png", "/gen/128K/photo2.webp", "/gen/8K/photo3-thumb.png", "/gen/32K/photo4@2x.gif", "/gen/64K/photo5.avif"];
+      const said = () => (fs.existsSync(log) ? fs.readFileSync(log, "utf8").slice(from) : "");
+      const marked = await until("MDM's line on the page's pictures", 30000, () => /a page's (\d+) links, (\d+) of them pictures located on it/.exec(said())).catch((e) => {
+        e.message += ` (${clicked})`;
+        throw e;
+      });
+      if (`${marked[1]} ${marked[2]}` !== `${links.length + pictures.length} ${pictures.length}`) throw new Error(`MDM: ${marked[0]}, not ${links.length + pictures.length} links, ${pictures.length} pictures`);
+      // The look-ups, by the round's seed: the PDF's address has none (one address in every
+      // round), so it is counted in MDM's line above but not looked for here.
+      const seeded = (list) => list.filter((x) => !x.endsWith(".pdf"));
+      const others = ["/gen/1K/icon.png", "/gen/128K/photo2.webp", "/gen/8K/photo3-thumb.png", "/gen/32K/photo4@2x.gif", "/gen/64K/photo5.avif", "/gen/512K/photo3.png"].filter((x) => !pictures.includes(x) && !links.includes(x));
+      const left = ["/gen/8K/photo4.gif", "/gen/16K/photo1-small.jpg", "/gen/32K/photo2-600.webp", "/gen/32K/photo2.jpg", ...GALLERY_BACKGROUNDS, ...others];
+      const windows = await galleryLookups(seed, seeded([...links, ...pictures]), left);
+      return `${selected ? "selected" : "all"}: ${String(clicked).split(" {")[0]}; MDM: ${marked[0]}; looked up ${links.length} links and ${pictures.length} pictures, none of the ${left.length} others${windows} (${shown})`;
+    };
+    return `${await round(false)}; ${await round(true)}`;
   },
 
   // #695, #800: a video a server's program sends (/remote_control.php, /stream.php as video/mp4,

@@ -55,6 +55,7 @@ pub fn testable(item: &Item) -> bool {
         && item.video.is_none()
         && item.gallery.is_none()
         && item.remote.is_none()
+        && item.zip.is_none()
         && tested_name(&item.file_name)
 }
 

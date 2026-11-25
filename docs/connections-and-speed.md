@@ -98,17 +98,17 @@ reads **Stop and keep**.
 - **Stop and keep** ends the download where it is and keeps everything that arrived as the
   finished file: named, in its folder, **Complete** in the list, with the **Download complete**
   window as for any other file.
-- **Stop** on the toolbar, **Stop All**, a queue's stop (by hand or at its stop time), the tray
-  panel's button and the phone page's pause do the same, as they save a live video stream
-  that is being recorded.
-- **Cancel** stops it without keeping anything: a later **Resume** starts it over, as before.
+- **Stop and keep** is the only way to keep it. **Stop** on the toolbar, **Stop All**, a
+  queue's stop (by hand or at its stop time), the tray panel's **Pause**, the phone page's pause
+  and **Cancel** all stop it without keeping anything, as for any download whose server can't
+  resume: a later **Resume** starts it over.
 - A checksum you gave for the download isn't checked against a file kept this way: it can only
   be for a whole file.
 - Closing MDM while such a download runs, and the command line, don't keep it.
 
 The same goes for any download whose server sends no size and takes no ranges, a file a site
-makes as you ask for it among them: stopping it keeps what arrived so far as its file. To get
-such a file whole, let it finish.
+makes as you ask for it among them: **Stop and keep** keeps what arrived so far as its file, not
+the whole file. To get such a file whole, let it finish.
 
 ## Through your VPN only: the network adapter and its kill switch
 

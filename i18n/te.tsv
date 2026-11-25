@@ -2096,6 +2096,10 @@
 #. text in the Scheduler window; tab in the Scheduler window
 #, machine
 	Files in the queue	క్యూలోని ఫైల్‌లు
+#. text in the download list (sizes, speeds, status)
+#. why files being taken out of a ZIP on its server (#1775) can't be moved or renamed yet: those already out are in its folder, the others still to come there
+#, machine
+	Files taken out of a ZIP can be moved once they're all out	ZIP నుండి తీసిన ఫైల్‌లను అన్నీ బయటకు వచ్చిన తర్వాత తరలించవచ్చు
 #. button in a download's Properties window
 #. File Properties button that opens the selected torrent's file list
 #. the trailing ... means it opens a window: keep it
@@ -2460,6 +2464,10 @@
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 	Hide &preview pane	ప్రివ్యూ పేన్‌ను దాచండి(&P)
+#. text in the Link grabber window
+#. Link grabber check box, ticked when it opens: the pictures shown on the browser's page (its images, not links to pictures), which "Download all links" sends with the links, are not shown
+#, machine
+	Hide images located on this web page	ఈ వెబ్ పేజీలో ఉన్న చిత్రాలను దాచు
 #. button in a download's progress window
 #, machine
 	Hide tab	ట్యాబ్‌ను దాచండి
@@ -2914,6 +2922,10 @@
 #. in Link grabber, where the addresses came from: a page in the browser
 #, machine
 	Links from the browser	బ్రౌజర్ నుండి లింక్‌లు
+#. text in a dialog box
+#. tooltip of Download File Info's Preview button for a ZIP (#1775): it lists the files inside, to download only some of them
+#, machine
+	List the files inside the ZIP and pick those to download	ZIP లోపల ఉన్న ఫైల్‌లను జాబితా చేయండి మరియు డౌన్‌లోడ్ చేయడానికి వాటిని ఎంచుకోండి
 #. text in playlistdlg.rs
 #. button in Download video: go on listing a playlist from where it stopped
 #, machine
@@ -2991,6 +3003,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Looking for your default browser...	మీ డిఫాల్ట్ బ్రౌజర్ కోసం వెతుకుతోంది...
+#. text in a dialog box
+#. tooltip of Download File Info's greyed Preview button while MDM asks the server whether it can look inside the ZIP (#1775)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Looking inside the ZIP...	ZIP లోపల చూస్తోంది...
 #. text in the Download video window
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -3267,6 +3284,10 @@
 #. Monday, as short as a calendar's column head (two letters in English)
 #, machine
 	Mo	సో
+#. text in a download's progress window
+#. Zip preview's column: when the file was last changed, as the ZIP says
+#, machine
+	Modified	సవరించబడింది
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3854,6 +3875,10 @@
 #. checkbox in a dialog box
 #, machine
 	Only while I'm using the computer	నేను కంప్యూటర్‌ను ఉపయోగిస్తున్నప్పుడు మాత్రమే
+#. message or event log entry in the main window
+#. event log entry: the download is files picked inside a ZIP in Zip preview (#1775); {files} how many ("3 files")
+#, machine
+	Only {files} picked inside the ZIP	ZIP లోపల {files} మాత్రమే ఎంచుకోబడ్డాయి
 #. button in a dialog box; text in a dialog box; button in a download's Properties window; button in torrentfiles.rs
 #. verb: opens the downloaded file
 #. title of the message when a downloaded file can't be opened
@@ -3934,6 +3959,10 @@
 #. Link grabber: the box that edits the selected package
 #, machine
 	Package	ప్యాకేజీ
+#. text in a download's progress window
+#. Zip preview's column: the file's size as packed (compressed) inside the ZIP
+#, machine
+	Packed	ప్యాక్ చేయబడింది
 #. text in gallerydlg.rs; text in the Download video window
 #, machine
 	Page address	పేజీ చిరునామా
@@ -4206,6 +4235,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Reading the torrent...	టొరెంట్‌ను చదువుతోంది...
+#. text in zippreview.rs
+#. Zip preview, while the ZIP's list of files is being read from its server
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Reading the ZIP's list of files...	ZIP ఫైల్‌ల జాబితాను చదువుతోంది...
 #. message or event log entry in the main window
 #. the status strip while Tasks → Import reads a file; {file} is its name
 #. the trailing ... means it is still going on: keep it
@@ -4934,6 +4968,11 @@
 #. checkbox in the Options window
 #, machine
 	Start downloading immediately while displaying "Download File Info" dialog	"డౌన్‌లోడ్ ఫైల్ సమాచారం" డైలాగ్‌ను ప్రదర్శిస్తున్నప్పుడు వెంటనే డౌన్‌లోడ్ చేయడం ప్రారంభించు
+#. text in a dialog box
+#. Download File Info, on hover over the number of files picked in Zip preview (#1775): {files} how many ("3 files"), {size} their size together, {folder} the folder they go into (named after the archive)
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	Start downloads only the {files} picked in the ZIP ({size}), into {folder}	ZIP లో ఎంచుకున్న {files} ({size})ని {folder} లోకి డౌన్‌లోడ్‌లను ప్రారంభించండి
 #. text in the tray icon's menu
 #, machine
 	Start main download queue	ప్రధాన డౌన్‌లోడ్ క్యూను ప్రారంభించు
@@ -5388,6 +5427,10 @@
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
 	The file does NOT match ({algorithm})	ఫైల్ సరిపోలడం లేదు ({algorithm})
+#. text in errors.rs
+#. why a file taken out of a ZIP on its server failed (#1775): its bytes aren't what the ZIP's list of files says (its size or its CRC-32 checksum)
+#, machine
+	the file in the ZIP doesn't match the ZIP's list of files (its size or checksum): download the whole archive	ZIP లోని ఫైల్ ZIP ఫైల్‌ల జాబితాతో సరిపోలడం లేదు (దాని పరిమాణం లేదా చెక్‌సమ్): మొత్తం ఆర్కైవ్‌ను డౌన్‌లోడ్ చేయండి
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
@@ -5517,6 +5560,10 @@
 #. text in errors.rs
 #, machine
 	the server can't send parts of the file, so it can't be resumed	సర్వర్ ఫైల్ భాగాలను పంపలేకపోతోంది, కాబట్టి డౌన్‌లోడ్‌ను కొనసాగించలేరు
+#. text in errors.rs
+#. Zip preview (#1775): the server doesn't send parts of a file (HTTP ranges), so MDM can't fetch only some files from inside a ZIP; the whole archive still downloads
+#, machine
+	the server can't send parts of the ZIP, so its files can't be downloaded one by one: download the whole archive	సర్వర్ ZIP యొక్క భాగాలను పంపలేదు, కాబట్టి దాని ఫైల్‌లను ఒక్కొక్కటిగా డౌన్‌లోడ్ చేయలేము: మొత్తం ఆర్కైవ్‌ను డౌన్‌లోడ్ చేయండి
 #. text in errors.rs
 #, machine
 	the server did not answer in time	సర్వర్ సమయానికి సమాధానం ఇవ్వలేదు
@@ -5657,6 +5704,10 @@
 #. text in a download's Properties window
 #, machine
 	The web page from which this file was obtained:	ఈ ఫైల్ పొందిన వెబ్ పేజీ:
+#. text in errors.rs
+#. why a file can't be taken out of a ZIP on its server (#1775): the ZIP was replaced on the server after its files were listed; Zip preview is the window that lists them
+#, machine
+	the ZIP changed on the server since its files were listed: open its Zip preview again	దాని ఫైల్‌లు జాబితా చేయబడినప్పటి నుండి ZIP సర్వర్‌లో మార్చబడింది: దాని Zip ప్రివ్యూను మళ్ళీ తెరవండి
 #. message or event log entry in the main window
 #. the kind of file View → Theme → Add a theme file lists: MDM's themes (TOML, JSON), Base16 schemes (YAML) and pywal's colors.json
 #, machine
@@ -5690,6 +5741,10 @@
 #. text in helpers.rs
 #, machine
 	They keep downloading if you close this window.	మీరు ఈ విండోను మూసివేసినా అవి డౌన్‌లోడ్ అవుతూనే ఉంటాయి.
+#. text in errors.rs
+#. error when opening a .torrent file whose piece size or list of pieces doesn't fit its files (damaged, or made wrong); it isn't added
+#, machine
+	this .torrent file is damaged: its pieces don't match its files	ఈ .torrent ఫైల్ పాడైపోయింది: దాని భాగాలు దాని ఫైల్‌లతో సరిపోలడం లేదు
 #. text in a dialog box
 #, machine
 	This address is already in the list of downloads:	ఈ చిరునామా ఇప్పటికే డౌన్‌లోడ్‌ల జాబితాలో ఉంది:
@@ -5744,6 +5799,18 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	This file can't be used as a theme: {error}	ఈ ఫైల్‌ను థీమ్‌గా ఉపయోగించలేము: {error}
+#. text in errors.rs
+#. why a file can't be taken out of a ZIP on its server (#1775): it is encrypted (password-protected) in the ZIP
+#, machine
+	this file is encrypted in the ZIP: download the whole archive and open it with its password	ఈ ఫైల్ ZIP లో ఎన్‌క్రిప్ట్ చేయబడింది: మొత్తం ఆర్కైవ్‌ను డౌన్‌లోడ్ చేయండి మరియు దాని పాస్‌వర్డ్‌తో తెరవండి
+#. text in errors.rs
+#. why a file can't be taken out of a ZIP on its server (#1775): the ZIP no longer holds it
+#, machine
+	this file is no longer in the ZIP on the server	ఈ ఫైల్ సర్వర్‌లోని ZIP లో లేదు
+#. text in errors.rs
+#. why a file can't be taken out of a ZIP on its server (#1775): it is compressed with a method MDM doesn't unpack there; {method} is the method's name (BZIP2, LZMA, Deflate64…)
+#, machine
+	this file is packed in a way MDM can't unpack from the server ({method}): download the whole archive	ఈ ఫైల్ MDM సర్వర్ నుండి అన్‌ప్యాక్ చేయలేని విధంగా ప్యాక్ చేయబడింది ({method}): మొత్తం ఆర్కైవ్‌ను డౌన్‌లోడ్ చేయండి
 #. text in remote.rs
 #. remote control page (on a phone): the file chosen is too large for a .torrent file
 #, machine
@@ -5778,6 +5845,10 @@
 #. a check of Test browser integration: a portable copy can't be connected
 #, machine
 	This is the installed copy, not a portable one	ఇది ఇన్‌స్టాల్ చేయబడిన కాపీ, పోర్టబుల్ కాపీ కాదు
+#. text in errors.rs
+#. Zip preview (#1775): the address isn't a ZIP archive whose list of files MDM can read on the server
+#, machine
+	this isn't a ZIP archive MDM can look inside on the server: download the whole file	ఇది MDM సర్వర్‌లో చూడగలిగే ZIP ఆర్కైవ్ కాదు: మొత్తం ఫైల్‌ను డౌన్‌లోడ్ చేయండి
 #. text in playlistdlg.rs
 #. in Download video, a playlist or channel that lists no video
 #, machine
@@ -5855,6 +5926,18 @@
 #, machine
 	This video needs you to be signed in. Use the Download video button over it in your browser, which passes your sign-in on, or choose your browser in Options → Sites Logins → Cookies for video sites.	ఈ వీడియోను చూడటానికి మీరు సైన్ ఇన్ చేసి ఉండాలి. మీ బ్రౌజర్‌లో వీడియోపై ఉన్న డౌన్‌లోడ్ వీడియో బటన్‌ను ఉపయోగించండి. అది మీ సైన్-ఇన్ సమాచారాన్ని పంపుతుంది. లేదా ఎంపికలు → సైట్‌ల లాగిన్‌లు → వీడియో సైట్‌ల కోసం కుకీలలో మీ బ్రౌజర్‌ను ఎంచుకోండి.
 #. text in errors.rs
+#. Zip preview (#1775): a ZIP split over several files (volumes): its files can't be fetched one by one
+#, machine
+	this ZIP is split over several files, so its files can't be downloaded one by one: download every part	ఈ ZIP అనేక ఫైల్‌లలో విభజించబడింది, కాబట్టి దాని ఫైల్‌లను ఒక్కొక్కటిగా డౌన్‌లోడ్ చేయలేము: ప్రతి భాగాన్ని డౌన్‌లోడ్ చేయండి
+#. text in errors.rs
+#. Zip preview (#1775): the ZIP's list of files (its table of contents) doesn't add up
+#, machine
+	this ZIP's list of files is damaged: download the whole archive	ఈ ZIP ఫైల్‌ల జాబితా పాడైపోయింది: మొత్తం ఆర్కైవ్‌ను డౌన్‌లోడ్ చేయండి
+#. text in errors.rs
+#. Zip preview (#1775): the ZIP's list of files (its table of contents) is larger than MDM reads from a server
+#, machine
+	this ZIP's list of files is too large to read from the server: download the whole archive	ఈ ZIP ఫైల్‌ల జాబితా సర్వర్ నుండి చదవడానికి చాలా పెద్దది: మొత్తం ఆర్కైవ్‌ను డౌన్‌లోడ్ చేయండి
+#. text in errors.rs
 #. a download's error: the address is a site's web page that needs a browser, not the file; {site} = the site's name (gofile)
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
 #, machine
@@ -5885,6 +5968,11 @@
 #. tooltip on the Scheduler's "Wake the computer to run this queue" while "Start download at" is off
 #, machine
 	Tick "Start download at" first: the computer is woken for the start time	ముందుగా "డౌన్‌లోడ్‌ను ప్రారంభించు"ను టిక్ చేయండి: ప్రారంభ సమయం కోసం కంప్యూటర్ మేల్కొలపబడుతుంది
+#. text in zippreview.rs
+#. Zip preview, under the list: {files} how many files are ticked ("3 files"), {size} their size together ("12.4 MB")
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	Ticked: {files}, {size}	టిక్ చేయబడింది: {files}, {size}
 #. text in a download's progress window; text in the Scheduler window
 #, machine
 	Time left	మిగిలిన సమయం
@@ -6652,6 +6740,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Zimbabwe	జింబాబ్వే
+#. text in zippreview.rs
+#. title of the window that lists the files inside a ZIP on its server, to tick those to download (#1775)
+#, machine
+	Zip preview	జిప్ ప్రివ్యూ
 #. text in the Options window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
@@ -6897,6 +6989,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 	{n} (auto)	{n} (స్వయంచాలకంగా)
+#. text in zippreview.rs
+#. Zip preview, under the list: {n} files of the ZIP aren't listed because MDM can't take them out on their own: encrypted ones, ones packed in a way MDM can't unpack from the server, links, or names that would leave their folder; the whole archive still downloads
+#. {n} = a number (keep the braces as they are)
+#, machine
+	{n} more can't be taken out on their own (encrypted, packed another way, or links)	{n} మరిన్ని ఫైళ్లను విడిగా తీయడం సాధ్యం కాదు (ఎన్‌క్రిప్ట్ చేయబడినవి, మరొక విధంగా ప్యాక్ చేయబడినవి లేదా లింక్‌లు)
 #. text in playlistdlg.rs
 #. in Download video for a playlist: how many videos are ticked, of how many
 #. {n} = a number (keep the braces as they are)
