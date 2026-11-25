@@ -1407,7 +1407,11 @@ async fn zipped(
     let mut entry = entry;
     entry.body_start = start;
     entry.body_len = end - start;
-    entry.bytes_sent = if method == Method::HEAD { 0 } else { end - start };
+    entry.bytes_sent = if method == Method::HEAD {
+        0
+    } else {
+        end - start
+    };
     shared.record(entry, status.as_u16(), "zip");
     if method == Method::HEAD {
         return builder.body(Body::empty()).unwrap();

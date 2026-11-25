@@ -197,7 +197,7 @@ impl ZipPreview {
                             let note = crate::i18n::fmt(
                                 // i18n: Zip preview, under the list: {n} files of the ZIP aren't listed because MDM can't take them out on their own: encrypted ones, ones packed in a way MDM can't unpack from the server, links, or names that would leave their folder; the whole archive still downloads
                                 crate::i18n::t(
-                                    "{n} more can't be taken out on their own (encrypted, packed another way, or a link): download the whole archive for them",
+                                    "{n} more can't be taken out on their own (encrypted, packed another way, or links)",
                                 ),
                                 &[(
                                     "n",

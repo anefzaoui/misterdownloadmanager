@@ -379,7 +379,9 @@ pub fn put_file(
         return Err(refused(why));
     }
     let mut placed = None;
-    staging.place(&name, Subfolder::Never, &mut |p| placed = Some(p.to_path_buf()))?;
+    staging.place(&name, Subfolder::Never, &mut |p| {
+        placed = Some(p.to_path_buf())
+    })?;
     placed.ok_or_else(|| Error::Damaged(format!("{path} wasn't written")))
 }
 

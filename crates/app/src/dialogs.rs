@@ -1441,7 +1441,8 @@ pub struct FileInfo {
 }
 
 /// [`FileInfo::zip_look`]'s answer, once it came.
-type ZipLook = Arc<Mutex<Option<Result<Option<mdm_engine::remotezip::Listing>, mdm_engine::Error>>>>;
+type ZipLook =
+    Arc<Mutex<Option<Result<Option<mdm_engine::remotezip::Listing>, mdm_engine::Error>>>>;
 
 pub enum Start {
     Now,
@@ -1753,13 +1754,23 @@ impl FileInfo {
         let listing = self
             .zip_look
             .as_ref()
-            .and_then(|(_, l)| l.lock().unwrap().as_ref().and_then(|r| r.as_ref().ok()).cloned())
+            .and_then(|(_, l)| {
+                l.lock()
+                    .unwrap()
+                    .as_ref()
+                    .and_then(|r| r.as_ref().ok())
+                    .cloned()
+            })
             .flatten();
         let archive = Path::new(&self.save_as)
             .file_name()
             .map(|n| n.to_string_lossy().into_owned())
             .unwrap_or_default();
-        let ticked = self.zip_pick.as_ref().map(|c| c.files.clone()).unwrap_or_default();
+        let ticked = self
+            .zip_pick
+            .as_ref()
+            .map(|c| c.files.clone())
+            .unwrap_or_default();
         self.zip_preview = Some(crate::zippreview::ZipPreview::new(
             self.nth.id("zip-preview"),
             archive,
@@ -1791,8 +1802,13 @@ impl FileInfo {
     pub fn zip_folder(&self) -> PathBuf {
         let dest = self.dest();
         let name = mdm_engine::naming::sanitize(&mdm_extract::base_name(&dest));
-        let name = if name.is_empty() { "zip".to_owned() } else { name };
-        dest.parent().map_or_else(|| PathBuf::from(&name), |d| d.join(&name))
+        let name = if name.is_empty() {
+            "zip".to_owned()
+        } else {
+            name
+        };
+        dest.parent()
+            .map_or_else(|| PathBuf::from(&name), |d| d.join(&name))
     }
 
     pub fn size(&self) -> Option<u64> {
@@ -2378,7 +2394,10 @@ impl FileInfo {
                         &[
                             ("files", &n),
                             ("size", &crate::model::size(c.size)),
-                            ("folder", &crate::i18n::isolate(&display_path(&self.zip_folder()))),
+                            (
+                                "folder",
+                                &crate::i18n::isolate(&display_path(&self.zip_folder())),
+                            ),
                         ],
                     );
                     winui::copyable(ui, at, own("file-info-zip-pick"), &whole, true);

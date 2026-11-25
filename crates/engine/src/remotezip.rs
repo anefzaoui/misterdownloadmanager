@@ -180,8 +180,16 @@ impl Entry {
     pub fn modified(&self) -> Option<(u16, u8, u8, u8, u8, u8)> {
         let (date, time) = self.dos_time;
         let (month, day) = (((date >> 5) & 0x0F) as u8, (date & 0x1F) as u8);
-        let (hour, minute, second) = ((time >> 11) as u8, ((time >> 5) & 0x3F) as u8, ((time & 0x1F) * 2) as u8);
-        ((1..=12).contains(&month) && (1..=31).contains(&day) && hour < 24 && minute < 60 && second < 60)
+        let (hour, minute, second) = (
+            (time >> 11) as u8,
+            ((time >> 5) & 0x3F) as u8,
+            ((time & 0x1F) * 2) as u8,
+        );
+        ((1..=12).contains(&month)
+            && (1..=31).contains(&day)
+            && hour < 24
+            && minute < 60
+            && second < 60)
             .then_some((1980 + (date >> 9), month, day, hour, minute, second))
     }
 
@@ -210,7 +218,10 @@ pub enum Tail {
     End(End),
     /// A ZIP64 archive: its ZIP64 end record is at this offset ([`zip64_end`] reads it); the
     /// classic record ends at the second value (what the ZIP64 record must come before).
-    Zip64 { at: u64, before: u64 },
+    Zip64 {
+        at: u64,
+        before: u64,
+    },
 }
 
 fn u16_at(b: &[u8], at: usize) -> Option<u16> {
@@ -238,7 +249,8 @@ pub fn tail(tail: &[u8], tail_at: u64, size: u64) -> Result<Tail, Problem> {
         .rev()
         .find(|&p| {
             &tail[p..p + 4] == END
-                && u16_at(tail, p + 20).is_some_and(|c| p + END_FIXED + usize::from(c) == tail.len())
+                && u16_at(tail, p + 20)
+                    .is_some_and(|c| p + END_FIXED + usize::from(c) == tail.len())
         })
         .ok_or(Problem::NotZip)?;
     let rec = &tail[pos..];
@@ -254,8 +266,13 @@ pub fn tail(tail: &[u8], tail_at: u64, size: u64) -> Result<Tail, Problem> {
             return Err(Problem::Spanned);
         }
         let before = end_at - LOCATOR_FIXED as u64;
-        if at.checked_add(END64_FIXED as u64).is_none_or(|e| e > before) {
-            return Err(Problem::Damaged("the ZIP64 record isn't before its locator"));
+        if at
+            .checked_add(END64_FIXED as u64)
+            .is_none_or(|e| e > before)
+        {
+            return Err(Problem::Damaged(
+                "the ZIP64 record isn't before its locator",
+            ));
         }
         return Ok(Tail::Zip64 { at, before });
     }
@@ -304,8 +321,13 @@ pub fn zip64_end(rec: &[u8], before: u64, at: u64) -> Result<End, Problem> {
     if disk != 0 || dir_disk != 0 || here != entries {
         return Err(Problem::Spanned);
     }
-    if at.checked_add(END64_FIXED as u64).is_none_or(|e| e > before) {
-        return Err(Problem::Damaged("the ZIP64 record isn't before its locator"));
+    if at
+        .checked_add(END64_FIXED as u64)
+        .is_none_or(|e| e > before)
+    {
+        return Err(Problem::Damaged(
+            "the ZIP64 record isn't before its locator",
+        ));
     }
     check_end(
         End {
@@ -352,7 +374,9 @@ fn plain_path(name: &str) -> bool {
 /// each one's data must lie before the table and apart from every other's.
 pub fn directory(dir: &[u8], end: &End) -> Result<(Vec<Entry>, usize), Problem> {
     if dir.len() as u64 != end.directory_size {
-        return Err(Problem::Damaged("the table isn't as long as the archive says"));
+        return Err(Problem::Damaged(
+            "the table isn't as long as the archive says",
+        ));
     }
     if end.entries > MAX_ENTRIES || end.directory_size > MAX_DIRECTORY {
         return Err(Problem::TooBig);
@@ -1113,7 +1137,7 @@ impl Read for Body {
 
 /// An entry's data unpacked: its header read and checked first.
 enum Unpack {
-    Stored(io::Take<Body>),
+    Stored(Box<io::Take<Body>>),
     Deflate(Box<flate2::read::DeflateDecoder<io::Take<Body>>>),
 }
 
@@ -1137,7 +1161,7 @@ impl Unpack {
         io::copy(&mut (&mut body).take(extra_len as u64), &mut io::sink()).map_err(taken)?;
         let data = body.take(e.compressed);
         Ok(match e.method {
-            0 => Unpack::Stored(data),
+            0 => Unpack::Stored(Box::new(data)),
             8 => Unpack::Deflate(Box::new(flate2::read::DeflateDecoder::new(data))),
             m => return Err(Problem::Method(m).into()),
         })
@@ -1363,7 +1387,10 @@ mod tests {
             "ok.txt",
             "sub\\inner.txt",
         ];
-        let files: Vec<_> = names.iter().map(|n| (*n, 0u16, &b"x"[..], crc(b"x"), 1u64)).collect();
+        let files: Vec<_> = names
+            .iter()
+            .map(|n| (*n, 0u16, &b"x"[..], crc(b"x"), 1u64))
+            .collect();
         let (entries, left_out) = read_all(&zip_of(&files, false)).unwrap();
         let kept: Vec<_> = entries.iter().map(|e| e.name.as_str()).collect();
         assert_eq!(kept, ["ok.txt", "sub/inner.txt"]);
@@ -1413,7 +1440,10 @@ mod tests {
         spanned[end + 4..end + 6].copy_from_slice(&1u16.to_le_bytes());
         assert_eq!(read_all(&spanned), Err(Problem::Spanned));
         // Not a ZIP at all, and one with bytes after its end.
-        assert_eq!(read_all(b"just some bytes, no zip here"), Err(Problem::NotZip));
+        assert_eq!(
+            read_all(b"just some bytes, no zip here"),
+            Err(Problem::NotZip)
+        );
         let mut after = zip.clone();
         after.extend_from_slice(b"junk");
         assert_eq!(read_all(&after), Err(Problem::NotZip));
@@ -1451,7 +1481,10 @@ mod tests {
         assert!(local_header(&other, e).is_err());
         let mut long = zip.clone();
         long[28..30].copy_from_slice(&0xFFFFu16.to_le_bytes());
-        assert!(local_header(&long, e).is_err(), "its data would run past its room");
+        assert!(
+            local_header(&long, e).is_err(),
+            "its data would run past its room"
+        );
         assert!(local_header(b"PK\x01\x02", e).is_err());
     }
 
@@ -1460,10 +1493,22 @@ mod tests {
     #[test]
     fn another_archivers_zips_list_alike() {
         for (name, zip) in [
-            ("classic", &include_bytes!("../../../fuzz/seeds/zip_directory/classic")[..]),
-            ("comment", &include_bytes!("../../../fuzz/seeds/zip_directory/comment")[..]),
-            ("zip64", &include_bytes!("../../../fuzz/seeds/zip_directory/zip64")[..]),
-            ("descriptor", &include_bytes!("../../../fuzz/seeds/zip_directory/descriptor")[..]),
+            (
+                "classic",
+                &include_bytes!("../../../fuzz/seeds/zip_directory/classic")[..],
+            ),
+            (
+                "comment",
+                &include_bytes!("../../../fuzz/seeds/zip_directory/comment")[..],
+            ),
+            (
+                "zip64",
+                &include_bytes!("../../../fuzz/seeds/zip_directory/zip64")[..],
+            ),
+            (
+                "descriptor",
+                &include_bytes!("../../../fuzz/seeds/zip_directory/descriptor")[..],
+            ),
         ] {
             let (entries, left_out) = read_all(zip).expect(name);
             let names: Vec<_> = entries.iter().map(|e| e.name.as_str()).collect();

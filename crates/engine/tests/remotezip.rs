@@ -25,7 +25,13 @@ async fn lab() -> LabServer {
 }
 
 async fn list(s: &LabServer, path: &str) -> Result<Listing, Error> {
-    remotezip::list(&s.url(path).parse().unwrap(), &Default::default(), &opts(), None).await
+    remotezip::list(
+        &s.url(path).parse().unwrap(),
+        &Default::default(),
+        &opts(),
+        None,
+    )
+    .await
 }
 
 /// A sink that writes each file it reads, whole, into `dir` under its own name.
@@ -124,7 +130,12 @@ async fn several_files_in_one_go_and_a_resume_skips_those_done() {
     assert_eq!(done[0].0, "my files/photo 1.txt");
     assert_eq!(s.log().len(), 2);
     // The size known: its end asked for with a plain range, not a suffix.
-    assert!(s.log()[0].range.as_deref().is_some_and(|r| !r.contains("=-")));
+    assert!(
+        s.log()[0]
+            .range
+            .as_deref()
+            .is_some_and(|r| !r.contains("=-"))
+    );
 
     // The dialog's look: one request; the table with it when it is in the end.
     s.clear_log();
@@ -177,7 +188,12 @@ async fn a_zip_on_its_server_lists_its_files_classic_and_zip64() {
         assert_eq!(l.entries[0].modified(), Some((2025, 9, 1, 0, 0, 0)));
         // One small request from the end: the table is in it. The archive is over 1 MiB.
         let log = s.log();
-        assert_eq!(log.len(), 1, "{name}: {:?}", log.iter().map(|e| &e.range).collect::<Vec<_>>());
+        assert_eq!(
+            log.len(),
+            1,
+            "{name}: {:?}",
+            log.iter().map(|e| &e.range).collect::<Vec<_>>()
+        );
         assert!(sent(&s) <= TAIL, "{name}: {} bytes", sent(&s));
     }
 }
@@ -188,16 +204,22 @@ async fn picked_files_come_out_whole_and_checked() {
     let tmp = tempfile::tempdir().unwrap();
     let files = zip::files();
     for archive in ["files.zip", "zip64.zip"] {
-        for f in files.iter().filter(|f| {
-            !f.name.ends_with('/') && f.flags & 1 == 0 && matches!(f.method, 0 | 8)
-        }) {
+        for f in files
+            .iter()
+            .filter(|f| !f.name.ends_with('/') && f.flags & 1 == 0 && matches!(f.method, 0 | 8))
+        {
             let dir = tmp.path().join(archive).join(f.name.replace('/', "_"));
             std::fs::create_dir_all(&dir).unwrap();
             s.clear_log();
             let path = fetch(&s, &format!("/zip/{archive}"), &f.name, &dir)
                 .await
                 .unwrap_or_else(|e| panic!("{archive} {}: {e}", f.name));
-            assert_eq!(std::fs::read(&path).unwrap(), f.data, "{archive} {}", f.name);
+            assert_eq!(
+                std::fs::read(&path).unwrap(),
+                f.data,
+                "{archive} {}",
+                f.name
+            );
             // The table, then the file's own bytes: never the whole archive.
             let log = s.log();
             assert_eq!(log.len(), 2, "{archive} {}", f.name);
@@ -213,7 +235,9 @@ async fn picked_files_come_out_whole_and_checked() {
     }
     // 1 MiB out of a ZIP of a bit more, and a small file out of it in a few KiB.
     s.clear_log();
-    fetch(&s, "/zip/files.zip", "readme.txt", tmp.path()).await.unwrap();
+    fetch(&s, "/zip/files.zip", "readme.txt", tmp.path())
+        .await
+        .unwrap();
     assert!(sent(&s) < TAIL + 0x2_0000, "{}", sent(&s));
 }
 
@@ -243,18 +267,24 @@ async fn refusals_say_why_and_write_nothing() {
         zip_err(fetch(&s, "/zip/files.zip", "docs/", dir).await),
         Problem::Missing
     );
-    // No ranges: said at the first answer.
+    // No ranges: said at once. Its size not known, the whole answer to the suffix range may be a
+    // ZIP smaller than it: one more request, for its first byte, tells (the dialog's look, whose
+    // size is known, asks once: tested above).
     s.clear_log();
     match list(&s, "/zip/files.zip?no_range=1").await {
         Err(Error::Zip(Problem::NoRanges)) => {}
         other => panic!("{other:?}"),
     }
-    assert_eq!(s.log().len(), 1);
+    assert_eq!(s.log().len(), 2);
     assert_eq!(
         zip_err(fetch(&s, "/zip/files.zip?no_range=1", "readme.txt", dir).await),
         Problem::NoRanges
     );
-    assert_eq!(std::fs::read_dir(dir).unwrap().count(), 0, "nothing written");
+    assert_eq!(
+        std::fs::read_dir(dir).unwrap().count(),
+        0,
+        "nothing written"
+    );
 }
 
 #[tokio::test(flavor = "multi_thread", worker_threads = 2)]
@@ -279,7 +309,9 @@ async fn a_hostile_zip_offers_only_plain_names_and_its_lies_are_caught() {
     let dir = tmp.path();
     let ok = fetch(&s, "/zip/hostile.zip", "ok.txt", dir).await.unwrap();
     assert_eq!(std::fs::read(ok).unwrap(), b"the one safe file\n");
-    let inner = fetch(&s, "/zip/hostile.zip", "sub/inner.txt", dir).await.unwrap();
+    let inner = fetch(&s, "/zip/hostile.zip", "sub/inner.txt", dir)
+        .await
+        .unwrap();
     assert_eq!(std::fs::read(inner).unwrap(), b"and its neighbour\n");
     for (entry, want) in [
         ("bad-crc.txt", "its CRC-32 isn't the table's"),

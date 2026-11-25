@@ -1065,7 +1065,13 @@ fn one_file_is_put_in_place_safely() {
     // Its path kept under the folder, the folders made as needed.
     let deep = put_file(&dest, "docs\\sub/c.txt", 1, &mut &b"c"[..]).unwrap();
     assert_eq!(deep, dest.join("docs").join("sub").join("c.txt"));
-    for bad in ["../up.txt", "a/../../b.txt", "C:x.txt", "/abs.txt", "a.txt/x.txt"] {
+    for bad in [
+        "../up.txt",
+        "a/../../b.txt",
+        "C:x.txt",
+        "/abs.txt",
+        "a.txt/x.txt",
+    ] {
         assert!(put_file(&dest, bad, 1, &mut &b"x"[..]).is_err(), "{bad}");
     }
     struct Fails(u8);
@@ -1091,5 +1097,9 @@ fn one_file_is_put_in_place_safely() {
         .map(|e| e.unwrap().file_name().to_string_lossy().into_owned())
         .collect();
     left.sort();
-    assert_eq!(left, ["a (1).txt", "a.txt", "docs"], "nothing else, no staging folder");
+    assert_eq!(
+        left,
+        ["a (1).txt", "a.txt", "docs"],
+        "nothing else, no staging folder"
+    );
 }

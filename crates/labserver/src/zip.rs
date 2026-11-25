@@ -190,21 +190,31 @@ pub fn files() -> Vec<File> {
     let mut big = vec![0u8; 1 << 20];
     crate::content::fill(1775, 0, &mut big);
     let text: Vec<u8> = (0..4000)
-        .flat_map(|i| format!("line {i}: the quick brown fox jumps over the lazy dog\n").into_bytes())
+        .flat_map(|i| {
+            format!("line {i}: the quick brown fox jumps over the lazy dog\n").into_bytes()
+        })
         .collect();
     let mut stream = File::new("docs/stream.txt", text.clone(), 8);
     stream.flags = 0x08;
     let mut secret = File::new("secret.txt", b"not really encrypted".to_vec(), 0);
     secret.flags = 0x01;
     vec![
-        File::new("readme.txt", b"Files picked out of a ZIP on its server.\n".to_vec(), 0),
+        File::new(
+            "readme.txt",
+            b"Files picked out of a ZIP on its server.\n".to_vec(),
+            0,
+        ),
         File::new("docs/", Vec::new(), 0),
         File::new("docs/guide.txt", text, 8),
         stream,
         File::new("data/random.bin", big, 0),
         File::new("data/empty.txt", Vec::new(), 0),
         File::new("my files/photo 1.txt", b"a photo, in words\n".to_vec(), 8),
-        File::new("ünïcode/café.txt", "café, crème brûlée\n".as_bytes().to_vec(), 8),
+        File::new(
+            "ünïcode/café.txt",
+            "café, crème brûlée\n".as_bytes().to_vec(),
+            8,
+        ),
         secret,
         File::new("old.bz2", b"BZh9 pretend".to_vec(), 12),
     ]

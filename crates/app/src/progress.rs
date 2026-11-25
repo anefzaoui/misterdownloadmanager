@@ -2165,12 +2165,12 @@ pub(crate) fn zip_table(
             // i18n: Zip preview's column: the file's name (its path inside the ZIP)
             (25.0, crate::i18n::mark("File Name")),
             // i18n: Zip preview's column: the file's size as packed (compressed) inside the ZIP
-            (260.0, crate::i18n::mark("Packed")),
-            (335.0, crate::i18n::mark("Size")),
+            (225.0, crate::i18n::mark("Packed")),
+            (295.0, crate::i18n::mark("Size")),
             // i18n: Zip preview's column: when the file was last changed, as the ZIP says
-            (410.0, crate::i18n::mark("Modified")),
+            (365.0, crate::i18n::mark("Modified")),
         ],
-        &[255.0, 330.0, 405.0],
+        &[220.0, 290.0, 360.0],
         rows,
         true,
         Some(checks),
