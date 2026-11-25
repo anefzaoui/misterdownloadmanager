@@ -5802,6 +5802,29 @@ const until = async (what, ms, check) => {
   for (const f of ["popup-ui.js", "popup-downloads.js"]) assert.ok(pack.includes(`"${f}"`), `pack.ps1 copies ${f}`);
   ok("#1496 no new permissions; the popup's new scripts are packed");
 }
+
+// The e2e's tabs (tools/extension/e2e.mjs): a session's `tab` hands out an extension's page only
+// once it loaded. Chrome's Target.createTarget answers while the popup is still being read, its
+// Reset button there for hundreds of milliseconds before popup.js gives it its listener: calm's
+// click on it then did nothing, and "the button's places forgotten" timed out in Chrome only.
+{
+  const e2e = readText("./e2e.mjs");
+  const loaded = /export const PAGE_LOADED = '([^']+)';/.exec(e2e);
+  assert.ok(loaded, "e2e.mjs says what a loaded page is (PAGE_LOADED)");
+  const isLoaded = (readyState, protocol) => new Function("document", "location", `return ${loaded[1]};`)({ readyState }, { protocol });
+  assert.equal(isLoaded("loading", "chrome-extension:"), false, "a popup still being read (its scripts not run) isn't loaded");
+  assert.equal(isLoaded("interactive", "moz-extension:"), false, "nor one waiting for its pictures");
+  assert.equal(isLoaded("complete", "about:"), false, "nor the blank page a new tab starts on");
+  assert.equal(isLoaded("complete", "chrome-extension:"), true, "a popup whose scripts ran is");
+  // Each browser's `tab` (Chromium's, Firefox's) waits for it before it returns the tab.
+  const tabs = [...e2e.matchAll(/\n {4}const tab = async \(url\) => \{\n([\s\S]*?)\n {4}\};/g)].map((m) => m[1]);
+  assert.equal(tabs.length, 2, "e2e.mjs has Chromium's and Firefox's tab");
+  for (const body of tabs) {
+    const wait = body.search(/await until\([^\n]*\bev\(PAGE_LOADED\)/);
+    assert.ok(wait > 0 && wait < body.lastIndexOf("return { evaluate: ev"), "the tab is handed out once its page loaded");
+  }
+  ok("the e2e's tabs are handed out once their page loaded (calm's Reset in Chrome)");
+}
 assert.deepEqual(complaints, [], "nothing written to the console as an error or warning");
 
 console.log(`extension: ${passed} checks passed`);

@@ -178,6 +178,11 @@ export async function until(what, ms, test) {
     await sleep(250);
   }
 }
+// A tab's page loaded (its own scripts run): what each session's `tab` waits for before handing
+// it out. Its HTML is there before its scripts at the end of it run: the popup's Reset button
+// exists for hundreds of milliseconds before popup.js gives it its listener, and a click then
+// does nothing.
+export const PAGE_LOADED = 'document.readyState === "complete" && location.protocol !== "about:"';
 // A process and its children, stopped.
 export function killPid(pid) {
   if (WIN) return spawnSync("taskkill", ["/T", "/F", "/PID", String(pid)]);
@@ -597,6 +602,9 @@ async function chromium(bin, profile, dl, page, ready, name = "Chromium") {
         if (r.exceptionDetails) throw new Error(`evaluate: ${r.exceptionDetails.text} ${expression}`);
         return r.result.value;
       };
+      // Target.createTarget answers while the tab is still on about:blank or reading its page:
+      // handed out once that page has loaded (PAGE_LOADED), as Firefox's navigate waits.
+      await until(`${url}, loaded`, 15000, () => ev(PAGE_LOADED).catch(() => false));
       // A picture of its page, cut to the body (the popup's 300 px), for a PR's body; in
       // E2E_COLOR_SCHEME's colours (light or dark) when set, else the system's.
       const shot = async (file) => {
@@ -860,6 +868,9 @@ async function firefox(bin, profile, dl, page, ready, name = "Firefox") {
         if (r.type === "exception") throw new Error(`evaluate: ${r.exceptionDetails.text} ${expression}`);
         return r.result.value === undefined ? undefined : JSON.parse(r.result.value);
       };
+      // An extension's page is found by its address in the tree, which it has before it loaded:
+      // handed out once it has (PAGE_LOADED; a web page's navigate above already waited).
+      if (url.startsWith("moz-extension:")) await until(`${url}, loaded`, 15000, () => ev(PAGE_LOADED).catch(() => false));
       // A click at the centre of `selector`, as a user's (the tab brought to the front first):
       // what a browser lets an extension's page ask a permission from.
       const click = async (selector) => {
