@@ -131,9 +131,8 @@ const BLOCK: u64 = 16 << 10;
 
 /// Whether a torrent's pieces are ones librqbit can work with: a piece length it can divide by
 /// ([`MAX_PIECE_LENGTH`] at most), files whose sizes add up, as many pieces and blocks as its
-/// counts hold (`u32`), and a hash for each piece (20 bytes each), so the file's own size bounds
-/// how many pieces it can claim. One hash more is let through: librqbit's own `create_torrent`
-/// adds one when the files end on a piece's end. Read before librqbit reads them (`validate`).
+/// counts hold (`u32`), and exactly one hash for each piece (20 bytes each), so the file's own
+/// size bounds how many pieces it can claim. Read before librqbit reads them (`validate`).
 fn check_pieces<B: AsRef<[u8]>>(info: &librqbit::TorrentMetaV1Info<B>) -> Result<(), TorrentError> {
     let piece = u64::from(info.piece_length);
     if piece == 0 || piece > MAX_PIECE_LENGTH {
@@ -151,7 +150,7 @@ fn check_pieces<B: AsRef<[u8]>>(info: &librqbit::TorrentMetaV1Info<B>) -> Result
     let pieces = total.div_ceil(piece);
     let blocks = pieces.saturating_mul(piece.div_ceil(BLOCK));
     let hashes = info.pieces.as_ref().len() as u64;
-    if pieces > u64::from(u32::MAX) || blocks > u64::from(u32::MAX) || hashes < pieces * 20 {
+    if pieces > u64::from(u32::MAX) || blocks > u64::from(u32::MAX) || hashes != pieces * 20 {
         return Err(TorrentError::BadPieces);
     }
     Ok(())
@@ -597,6 +596,9 @@ pub struct Config {
     /// The DHT's first nodes (`host:port`); None: librqbit's own (public routers). Tests and test
     /// tools name nodes on loopback.
     pub dht_bootstrap: Option<Vec<String>>,
+    /// Tests: UDP trackers on this computer or the local network are sent to as well. Off (always,
+    /// outside tests): only those on the internet (`udp_tracker_filter`).
+    pub local_udp_trackers: bool,
     /// Options → Proxy / Socks → Network adapter (#35, #143): what holds every socket of the
     /// session to the adapter. UPnP and local peer discovery are off then: they speak to the
     /// local network, not through the adapter.
@@ -644,6 +646,7 @@ impl Config {
             blocklist: None,
             offline: false,
             dht_bootstrap: None,
+            local_udp_trackers: false,
             bind: None,
         }
     }
@@ -917,6 +920,16 @@ fn listener(cfg: &Config, port: u16) -> Option<ListenerOptions> {
     })
 }
 
+/// Which UDP tracker addresses the session may send to: those on the internet
+/// (`trackers::public`), as for the trackers a torrent names. None (every address) for a test's
+/// session: offline (no trackers asked at all) or with its trackers on loopback.
+fn udp_tracker_filter(any: bool) -> Option<librqbit::UdpTrackerAddrFilter> {
+    (!any).then(|| {
+        Arc::new(|tracker: SocketAddr| trackers::public(tracker.ip()))
+            as librqbit::UdpTrackerAddrFilter
+    })
+}
+
 /// How many ports [`port_for_both`] asks the system for before leaving the choice to librqbit.
 const PORT_TRIES: usize = 20;
 
@@ -1054,6 +1067,14 @@ impl Torrents {
                 let guard = guard.clone();
                 Arc::new(move |b| guard.configure(b))
             }),
+            // UPnP's own: the router is on the local network, which the trackers' client keeps
+            // away from. librqbit asks only the device that answered its search, at its own
+            // address; this client looks up no name and follows no redirect off it.
+            configure_upnp_http_client: Some(Arc::new(tracker_http::configure_upnp)),
+            // A UDP tracker's addresses, as its name resolves, held to the rule of the trackers
+            // a torrent names: a name that leads to this computer or the local network isn't
+            // sent anything (HTTP trackers: `tracker_http`).
+            udp_tracker_filter: udp_tracker_filter(cfg.offline || cfg.local_udp_trackers),
             // The peers others name (trackers, the DHT, other peers), only at addresses on the
             // internet: one on this computer or the local network would let a torrent make MDM
             // connect into the network it sits in, as a tracker there would (`trackers`). The
@@ -1954,8 +1975,6 @@ mod tests {
             Recorder { addr, from }
         }
 
-        // Its tests bind 127.0.0.2, which macOS hasn't.
-        #[cfg(not(target_os = "macos"))]
         async fn tcp(reply: &'static [u8]) -> Recorder {
             let l = tokio::net::TcpListener::bind((Ipv4Addr::LOCALHOST, 0))
                 .await
@@ -2025,6 +2044,8 @@ mod tests {
             dht_bootstrap: Some(vec![dht.addr.to_string()]),
             bind: Some(Bind::Address(bound)),
             require_authorization: false,
+            // Its UDP tracker is on loopback.
+            local_udp_trackers: true,
             ..Config::new(tmp.path().join("s2"))
         })
         .await
@@ -2147,6 +2168,65 @@ mod tests {
         let seen = proxy.seen();
         assert!(seen.iter().all(|f| f.ip() == bound), "{seen:?}");
         eprintln!("#143: the proxy reached from {seen:?}");
+        t.stop().await;
+    }
+
+    /// A UDP tracker whose address, or whose name once looked up (`localhost`), is on this
+    /// computer is sent nothing, while the same session's HTTP tracker is asked (it is given to
+    /// the session straight, as an address: MDM's own `add` drops trackers on loopback, #40).
+    #[tokio::test(flavor = "multi_thread", worker_threads = 2)]
+    async fn a_udp_tracker_on_this_computer_is_sent_nothing() {
+        let tmp = tempfile::tempdir().unwrap();
+        let src = tmp.path().join("seed").join("set");
+        std::fs::create_dir_all(&src).unwrap();
+        std::fs::write(src.join("a.bin"), vec![5u8; 50_000]).unwrap();
+        let torrent = make_torrent(&src).await;
+        let by_address = Recorder::udp().await;
+        let by_name = Recorder::udp().await;
+        let http_tracker = Recorder::tcp(
+            b"HTTP/1.1 200 OK\r\nContent-Length: 27\r\n\r\nd8:intervali1800e5:peers0:e",
+        )
+        .await;
+        let t = Torrents::start(Config {
+            upnp: false,
+            lsd: false,
+            dht: false,
+            listen_ip: Some(Ipv4Addr::LOCALHOST.into()),
+            require_authorization: false,
+            ..Config::new(tmp.path().join("s"))
+        })
+        .await
+        .unwrap();
+        let out = tmp.path().join("got");
+        t.session
+            .add_torrent(
+                AddTorrent::from_bytes(torrent),
+                Some(AddTorrentOptions {
+                    output_folder: Some(out.to_string_lossy().into_owned()),
+                    overwrite: true,
+                    trackers: Some(vec![
+                        format!("udp://{}/announce", by_address.addr),
+                        format!("udp://localhost:{}/announce", by_name.addr.port()),
+                        format!("http://{}/announce", http_tracker.addr),
+                    ]),
+                    ..Default::default()
+                }),
+            )
+            .await
+            .unwrap();
+        let deadline = std::time::Instant::now() + Duration::from_secs(30);
+        while http_tracker.seen().is_empty() {
+            assert!(
+                std::time::Instant::now() < deadline,
+                "the HTTP tracker wasn't asked"
+            );
+            tokio::time::sleep(Duration::from_millis(50)).await;
+        }
+        // The trackers are asked together, so a UDP announce would be on its way by now; the
+        // wait can only let one more arrive, never fail the test.
+        tokio::time::sleep(Duration::from_millis(500)).await;
+        assert!(by_address.seen().is_empty(), "{:?}", by_address.seen());
+        assert!(by_name.seen().is_empty(), "{:?}", by_name.seen());
         t.stop().await;
     }
 
@@ -2786,9 +2866,9 @@ mod tests {
         t
     }
 
-    /// A piece length of 0 or too large, more pieces or blocks than librqbit counts, or fewer
-    /// hashes than pieces: refused before librqbit reads the torrent, by every call that takes
-    /// one, with the same error.
+    /// A piece length of 0 or too large, more pieces or blocks than librqbit counts, or not one
+    /// hash per piece: refused before librqbit reads the torrent, by every call that takes one,
+    /// with the same error.
     #[tokio::test(flavor = "multi_thread", worker_threads = 2)]
     async fn torrents_whose_pieces_dont_add_up_are_refused() {
         let tmp = tempfile::tempdir().unwrap();
@@ -2820,6 +2900,10 @@ mod tests {
             torrent_with_pieces(5, 16384, 0),
             torrent_with_pieces(5, 16384, 19),
             torrent_with_pieces(16385, 16384, 20),
+            // More hashes than pieces: one more (whole or in part), or many.
+            torrent_with_pieces(16384, 16384, 40),
+            torrent_with_pieces(5, 16384, 21),
+            torrent_with_pieces(5, 1, 120),
             // Sizes that add past what a u64 holds.
             multi(16384, &[u64::MAX, 2]),
         ];
@@ -2850,14 +2934,13 @@ mod tests {
         );
         assert!(!out.exists(), "nothing was written");
         // Their neighbours that add up still list: the smallest and largest pieces, one piece
-        // or many, a last piece shorter or whole, and one hash more than pieces (as librqbit's
-        // `create_torrent` writes them when the files end on a piece's end).
+        // or many, a last piece shorter or whole.
         for good in [
             torrent_with_pieces(5, 1, 100),
             torrent_with_pieces(5, 16384, 20),
             torrent_with_pieces(16384, 16384, 20),
             torrent_with_pieces(16385, 16384, 40),
-            torrent_with_pieces(16384, 16384, 40),
+            torrent_with_pieces(32768, 16384, 40),
             torrent_with_pieces(5, 512 << 20, 20),
             multi(16384, &[3, 2]),
         ] {
@@ -5082,6 +5165,29 @@ mod tests {
 
         resumed.stop().await;
         seeder.stop().await;
+    }
+
+    /// A UDP tracker's name may lead anywhere once looked up: only its addresses on the
+    /// internet are sent to, as the trackers a torrent names are checked.
+    #[test]
+    fn udp_trackers_are_sent_to_only_on_the_internet() {
+        let filter = udp_tracker_filter(false).expect("a filter");
+        for local in [
+            "127.0.0.1:6969",
+            "[::1]:6969",
+            "192.168.1.1:6969",
+            "10.0.0.1:1337",
+            "169.254.169.254:80",
+            "[fd00::1]:6969",
+            "[::ffff:127.0.0.1]:6969",
+            "0.0.0.0:6969",
+        ] {
+            assert!(!filter(local.parse().unwrap()), "{local}");
+        }
+        for public in ["8.8.8.8:6969", "[2001:4860:4860::8888]:6969"] {
+            assert!(filter(public.parse().unwrap()), "{public}");
+        }
+        assert!(udp_tracker_filter(true).is_none());
     }
 
     /// #1384: what the session listens on, as Torrent settings say: TCP and uTP by default, on

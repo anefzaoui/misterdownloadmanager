@@ -106,6 +106,7 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 ### Fixed
 
 - Helpers: ffmpeg's download is checked more carefully.
+- Torrents: the engine checks what it's sent more carefully.
 - Extracting: 7z and RAR archives are checked more carefully.
 - Archive test: archives are checked more carefully.
 - Downloaded files are marked as coming from the internet more carefully.

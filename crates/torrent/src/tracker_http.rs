@@ -1,11 +1,13 @@
-//! The torrent session's HTTP client (HTTP trackers, and UPnP to the router): MDM's TLS setup
-//! (`mdm_engine::tls`), and the rule of `trackers` kept for every address it connects to, not
-//! only the one a torrent names. A tracker's redirect is followed only to a tracker MDM may
-//! contact; a name is looked up and only its addresses on the internet are used; and no request
-//! says where it came from (`Referer`).
+//! The torrent session's HTTP clients: MDM's TLS setup (`mdm_engine::tls`) for both, and for
+//! the trackers' the rule of `trackers` kept for every address it connects to, not only the one
+//! a torrent names. A tracker's redirect is followed only to a tracker MDM may contact; a name is
+//! looked up and only its addresses on the internet are used; and no request says where it came
+//! from (`Referer`). A proxy's own name (Torrent settings', or the system's) is looked up as it is.
 //!
-//! The router's address (UPnP) is never a name, so it isn't looked up here; a redirect from it
-//! stays on it. A proxy's own name (Torrent settings', or the system's) is looked up as it is.
+//! UPnP has a client of its own ([`configure_upnp`]): the router is on the local network.
+//! librqbit asks only the device that answered its search, at that device's own address (never
+//! a name); that client looks up no name, goes through no proxy and follows a redirect only on
+//! the router itself.
 
 use std::collections::HashMap;
 use std::net::{IpAddr, SocketAddr};
@@ -87,6 +89,51 @@ impl Guard {
     }
 }
 
+/// `builder` as UPnP's client is built (the router's description and its port mappings): MDM's
+/// TLS, no `Referer`, no proxy (the router is on the local network), no name looked up (a
+/// router's address is never one) and a redirect followed only on the router itself.
+pub(crate) fn configure_upnp(builder: reqwest::ClientBuilder) -> reqwest::ClientBuilder {
+    mdm_engine::tls::configure(builder)
+        .referer(false)
+        .no_proxy()
+        .redirect(reqwest::redirect::Policy::custom(|attempt| {
+            if attempt.previous().len() > MAX_REDIRECTS {
+                return attempt.error("too many redirects");
+            }
+            let first = attempt.previous().first();
+            if first.is_some_and(|first| same_place(first, attempt.url())) {
+                attempt.follow()
+            } else {
+                let to = attempt.url().to_string();
+                attempt.error(format!(
+                    "a redirect off the router, to {to}, wasn't followed"
+                ))
+            }
+        }))
+        .dns_resolver(Arc::new(NoNames))
+}
+
+/// Whether `next` is on the same host and port as `first`, over HTTP(S).
+fn same_place(first: &url::Url, next: &url::Url) -> bool {
+    matches!(next.scheme(), "http" | "https")
+        && next.host() == first.host()
+        && next.port_or_known_default() == first.port_or_known_default()
+}
+
+/// A resolver that looks up nothing: UPnP's router is reached at its address.
+struct NoNames;
+
+impl Resolve for NoNames {
+    fn resolve(&self, name: Name) -> Resolving {
+        let name = name.as_str().to_owned();
+        Box::pin(async move {
+            Err::<Addrs, Box<dyn std::error::Error + Send + Sync>>(
+                format!("{name} is a name; the router is asked at its address only").into(),
+            )
+        })
+    }
+}
+
 /// Whether a request that began at `first` may follow a redirect to `next`: to a tracker MDM may
 /// contact (`trackers::allowed`), as a torrent naming it would be. A request MDM began at an
 /// address it would refuse a torrent (UPnP's, to the router) stays on that one.
@@ -94,9 +141,7 @@ fn may_follow(first: &url::Url, next: &url::Url, proxied: bool) -> bool {
     if trackers::allowed(first.as_str(), proxied) {
         return trackers::allowed(next.as_str(), proxied);
     }
-    matches!(next.scheme(), "http" | "https")
-        && next.host() == first.host()
-        && next.port_or_known_default() == first.port_or_known_default()
+    same_place(first, next)
 }
 
 impl Resolve for Guard {
@@ -355,6 +400,56 @@ mod tests {
         assert!(r.status().is_success());
         assert_eq!(r.text().await.unwrap(), "d8:intervali60e5:peers0:e");
         assert_eq!(tracker.got().len(), 1);
+    }
+
+    /// UPnP's client: the router at its address is asked, and a redirect on it followed; a name
+    /// is never looked up, and a redirect off the router (another port, another address, a
+    /// name) isn't followed.
+    #[tokio::test]
+    async fn the_upnp_client_stays_on_the_router() {
+        let elsewhere = Stub::start(|_| announced()).await;
+        let to_elsewhere = format!("http://127.0.0.1:{}/admin", elsewhere.port);
+        let router = Stub::start(move |path: &str| {
+            if path == "/moved.xml" {
+                redirect("/rootDesc.xml")
+            } else if path == "/away.xml" {
+                redirect(&to_elsewhere)
+            } else {
+                announced()
+            }
+        })
+        .await;
+        let c = configure_upnp(reqwest::Client::builder()).build().unwrap();
+        let at = |p: &str| format!("http://127.0.0.1:{}{p}", router.port);
+        assert!(
+            c.get(at("/rootDesc.xml"))
+                .send()
+                .await
+                .unwrap()
+                .status()
+                .is_success()
+        );
+        assert!(
+            c.get(at("/moved.xml"))
+                .send()
+                .await
+                .unwrap()
+                .status()
+                .is_success()
+        );
+        let err = c.get(at("/away.xml")).send().await.unwrap_err();
+        assert!(err.is_redirect(), "{err:?}");
+        assert!(elsewhere.got().is_empty(), "{:?}", elsewhere.got());
+        let by_name = format!("http://localhost:{}/rootDesc.xml", router.port);
+        let err = c.get(by_name).send().await.unwrap_err();
+        assert!(format!("{err:?}").contains("address only"), "{err:?}");
+        assert_eq!(router.got().len(), 4, "{:?}", router.got());
+        assert!(
+            router
+                .got()
+                .iter()
+                .all(|r| !r.to_ascii_lowercase().contains("referer"))
+        );
     }
 
     /// Which redirects are followed, by address: a tracker MDM may contact, and from the
