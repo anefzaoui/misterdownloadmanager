@@ -3188,6 +3188,27 @@
 #. remote control page (on a phone): no pairing code is shown in MDM; "Pair a device" is MDM's button
 #, machine
 	MDM shows no code now. Click Pair a device there first.	MDM에 코드가 표시되지 않습니다. 먼저 '장치 페어링'을 클릭하세요.
+#. text in errors.rs
+#. error installing ffmpeg: the list of builds MDM accepts couldn't be read; {detail} = the technical detail, in English
+#, machine
+	MDM's list of checked ffmpeg builds can't be read ({detail})	MDM의 확인된 ffmpeg 빌드 목록을 읽을 수 없습니다({detail})
+#. text in errors.rs
+#. error installing ffmpeg: MDM installs only builds named in a list it publishes, signed with its key, and that list couldn't be downloaded; {error} = why
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	MDM's list of checked ffmpeg builds could not be downloaded: {error}	MDM의 확인된 ffmpeg 빌드 목록을 다운로드할 수 없습니다: {error}
+#. text in errors.rs
+#. error installing ffmpeg: the list of builds MDM accepts has none for this computer's system and processor
+#, machine
+	MDM's list of checked ffmpeg builds has none for this computer	MDM의 확인된 ffmpeg 빌드 목록에 이 컴퓨터에 맞는 빌드가 없습니다.
+#. text in errors.rs
+#. error installing ffmpeg: the list of builds MDM accepts is older than one this copy of MDM already used (it never goes back to an older list)
+#, machine
+	MDM's list of checked ffmpeg builds is older than one already used, so ffmpeg wasn't installed	MDM의 확인된 ffmpeg 빌드 목록이 이미 사용된 목록보다 오래되어 ffmpeg를 설치하지 않았습니다.
+#. text in errors.rs
+#. error installing ffmpeg: the list of builds MDM accepts doesn't carry MDM's own signature
+#, machine
+	MDM's list of checked ffmpeg builds isn't signed by MDM's key, so ffmpeg wasn't installed	MDM의 확인된 ffmpeg 빌드 목록이 MDM 키로 서명되지 않아 ffmpeg를 설치하지 않았습니다.
 #. text in whereis.rs
 #. how far a download's server is, by its round trip (60 to 150 ms)
 #, machine
@@ -5396,6 +5417,10 @@
 #. text in a dialog box
 #, machine
 	The download queue is done.	다운로드 큐가 완료되었습니다.
+#. text in errors.rs
+#. error installing ffmpeg: the file downloaded isn't the build named in the list of builds MDM accepts (its checksum differs), so it was thrown away
+#, machine
+	the downloaded ffmpeg isn't the build MDM's list of checked builds names, so it wasn't installed	다운로드한 ffmpeg가 MDM의 확인된 빌드 목록에 있는 빌드가 아니어서 설치하지 않았습니다.
 #. text in errors.rs
 #, machine
 	the downloaded program doesn't match its signed checksum	다운로드한 프로그램이 서명된 체크섬과 일치하지 않습니다.

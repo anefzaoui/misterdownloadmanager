@@ -3184,6 +3184,27 @@
 #. remote control page (on a phone): no pairing code is shown in MDM; "Pair a device" is MDM's button
 #, machine
 	MDM shows no code now. Click Pair a device there first.	MDM şu anda kod göstermiyor. Önce oradaki Bir cihazı eşleştir'e tıklayın.
+#. text in errors.rs
+#. error installing ffmpeg: the list of builds MDM accepts couldn't be read; {detail} = the technical detail, in English
+#, machine
+	MDM's list of checked ffmpeg builds can't be read ({detail})	MDM'nin denetlediği ffmpeg derlemelerinin listesi okunamıyor ({detail})
+#. text in errors.rs
+#. error installing ffmpeg: MDM installs only builds named in a list it publishes, signed with its key, and that list couldn't be downloaded; {error} = why
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	MDM's list of checked ffmpeg builds could not be downloaded: {error}	MDM'nin denetlediği ffmpeg derlemelerinin listesi indirilemedi: {error}
+#. text in errors.rs
+#. error installing ffmpeg: the list of builds MDM accepts has none for this computer's system and processor
+#, machine
+	MDM's list of checked ffmpeg builds has none for this computer	MDM'nin denetlediği ffmpeg derlemelerinin listesinde bu bilgisayar için uygun derleme yok
+#. text in errors.rs
+#. error installing ffmpeg: the list of builds MDM accepts is older than one this copy of MDM already used (it never goes back to an older list)
+#, machine
+	MDM's list of checked ffmpeg builds is older than one already used, so ffmpeg wasn't installed	MDM'nin denetlediği ffmpeg derlemelerinin listesi daha önce kullanılan listeden daha eski olduğu için ffmpeg yüklenmedi
+#. text in errors.rs
+#. error installing ffmpeg: the list of builds MDM accepts doesn't carry MDM's own signature
+#, machine
+	MDM's list of checked ffmpeg builds isn't signed by MDM's key, so ffmpeg wasn't installed	MDM'nin denetlediği ffmpeg derlemelerinin listesi MDM'nin anahtarıyla imzalanmadığı için ffmpeg yüklenmedi
 #. text in whereis.rs
 #. how far a download's server is, by its round trip (60 to 150 ms)
 #, machine
@@ -5392,6 +5413,10 @@
 #. text in a dialog box
 #, machine
 	The download queue is done.	İndirme kuyruğu tamamlandı.
+#. text in errors.rs
+#. error installing ffmpeg: the file downloaded isn't the build named in the list of builds MDM accepts (its checksum differs), so it was thrown away
+#, machine
+	the downloaded ffmpeg isn't the build MDM's list of checked builds names, so it wasn't installed	İndirilen ffmpeg, MDM'nin denetlediği derlemeler listesinde belirtilen derleme değil, bu yüzden yüklenmedi
 #. text in errors.rs
 #, machine
 	the downloaded program doesn't match its signed checksum	indirilen program imzalı sağlama toplamıyla eşleşmiyor

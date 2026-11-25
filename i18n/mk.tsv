@@ -3179,6 +3179,27 @@
 #. remote control page (on a phone): no pairing code is shown in MDM; "Pair a device" is MDM's button
 #, machine
 	MDM shows no code now. Click Pair a device there first.	MDM не прикажува код сега. Прво кликнете Спари уред таму.
+#. text in errors.rs
+#. error installing ffmpeg: the list of builds MDM accepts couldn't be read; {detail} = the technical detail, in English
+#, machine
+	MDM's list of checked ffmpeg builds can't be read ({detail})	Не може да се прочита списокот на MDM со проверени ffmpeg верзии ({detail})
+#. text in errors.rs
+#. error installing ffmpeg: MDM installs only builds named in a list it publishes, signed with its key, and that list couldn't be downloaded; {error} = why
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	MDM's list of checked ffmpeg builds could not be downloaded: {error}	Не може да се преземе списокот на MDM со проверени ffmpeg верзии: {error}
+#. text in errors.rs
+#. error installing ffmpeg: the list of builds MDM accepts has none for this computer's system and processor
+#, machine
+	MDM's list of checked ffmpeg builds has none for this computer	Во списокот на проверени ffmpeg изданија на MDM нема издание за овој компјутер
+#. text in errors.rs
+#. error installing ffmpeg: the list of builds MDM accepts is older than one this copy of MDM already used (it never goes back to an older list)
+#, machine
+	MDM's list of checked ffmpeg builds is older than one already used, so ffmpeg wasn't installed	Списокот на MDM со проверени ffmpeg верзии е постар од веќе користен, па ffmpeg не беше инсталиран
+#. text in errors.rs
+#. error installing ffmpeg: the list of builds MDM accepts doesn't carry MDM's own signature
+#, machine
+	MDM's list of checked ffmpeg builds isn't signed by MDM's key, so ffmpeg wasn't installed	Списокот на MDM со проверени ffmpeg верзии не е потпишан со клучот на MDM, па ffmpeg не беше инсталиран
 #. text in whereis.rs
 #. how far a download's server is, by its round trip (60 to 150 ms)
 #, machine
@@ -5387,6 +5408,10 @@
 #. text in a dialog box
 #, machine
 	The download queue is done.	Редицата за преземање е завршена.
+#. text in errors.rs
+#. error installing ffmpeg: the file downloaded isn't the build named in the list of builds MDM accepts (its checksum differs), so it was thrown away
+#, machine
+	the downloaded ffmpeg isn't the build MDM's list of checked builds names, so it wasn't installed	Преземениот ffmpeg не е верзијата именувана во списокот на MDM со проверени верзии, па не беше инсталиран
 #. text in errors.rs
 #, machine
 	the downloaded program doesn't match its signed checksum	преземената програма не се совпаѓа со нејзината потпишана контролна сума

@@ -3179,6 +3179,27 @@
 #. remote control page (on a phone): no pairing code is shown in MDM; "Pair a device" is MDM's button
 #, machine
 	MDM shows no code now. Click Pair a device there first.	MDM-এ এতিয়া কোনো ক’ড দেখুওৱা নাই। প্ৰথমে তাত এটা ডিভাইচ যোৰ কৰক ক্লিক কৰক।
+#. text in errors.rs
+#. error installing ffmpeg: the list of builds MDM accepts couldn't be read; {detail} = the technical detail, in English
+#, machine
+	MDM's list of checked ffmpeg builds can't be read ({detail})	MDM-ৰ পৰীক্ষা কৰা ffmpeg বিল্ডৰ তালিকা পঢ়িব নোৱাৰি ({detail})
+#. text in errors.rs
+#. error installing ffmpeg: MDM installs only builds named in a list it publishes, signed with its key, and that list couldn't be downloaded; {error} = why
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	MDM's list of checked ffmpeg builds could not be downloaded: {error}	MDM-ৰ পৰীক্ষা কৰা ffmpeg বিল্ডৰ তালিকা ডাউনলোড কৰিব পৰা নগ'ল: {error}
+#. text in errors.rs
+#. error installing ffmpeg: the list of builds MDM accepts has none for this computer's system and processor
+#, machine
+	MDM's list of checked ffmpeg builds has none for this computer	MDM-ৰ পৰীক্ষা কৰা ffmpeg বিল্ডৰ তালিকাত এই কম্পিউটাৰৰ চিষ্টেম আৰু প্ৰচেছৰৰ বাবে কোনো বিল্ড নাই
+#. text in errors.rs
+#. error installing ffmpeg: the list of builds MDM accepts is older than one this copy of MDM already used (it never goes back to an older list)
+#, machine
+	MDM's list of checked ffmpeg builds is older than one already used, so ffmpeg wasn't installed	MDM-ৰ পৰীক্ষা কৰা ffmpeg বিল্ডৰ তালিকা ইতিমধ্যে ব্যৱহৃত তালিকাতকৈ পুৰণি, সেয়েহে ffmpeg ইনষ্টল কৰা নহ'ল
+#. text in errors.rs
+#. error installing ffmpeg: the list of builds MDM accepts doesn't carry MDM's own signature
+#, machine
+	MDM's list of checked ffmpeg builds isn't signed by MDM's key, so ffmpeg wasn't installed	MDM-ৰ পৰীক্ষা কৰা ffmpeg বিল্ডৰ তালিকাত MDM-ৰ নিজা স্বাক্ষৰ নাই, সেয়েহে ffmpeg ইনষ্টল কৰা নহ'ল
 #. text in whereis.rs
 #. how far a download's server is, by its round trip (60 to 150 ms)
 #, machine
@@ -5387,6 +5408,10 @@
 #. text in a dialog box
 #, machine
 	The download queue is done.	ডাউনলোড কিউ শেষ হৈছে।
+#. text in errors.rs
+#. error installing ffmpeg: the file downloaded isn't the build named in the list of builds MDM accepts (its checksum differs), so it was thrown away
+#, machine
+	the downloaded ffmpeg isn't the build MDM's list of checked builds names, so it wasn't installed	ডাউনলোড কৰা ffmpeg MDM-ৰ পৰীক্ষা কৰা বিল্ডৰ তালিকাত থকা বিল্ড নহয়, সেয়েহে ইয়াক ইনষ্টল কৰা নহ'ল
 #. text in errors.rs
 #, machine
 	the downloaded program doesn't match its signed checksum	ডাউনলোড কৰা প্ৰ'গ্ৰামটো ইয়াৰ স্বাক্ষৰিত চেকছামৰ সৈতে মিল খোৱা নাই

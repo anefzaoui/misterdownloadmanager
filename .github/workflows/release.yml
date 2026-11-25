@@ -457,8 +457,18 @@ jobs:
             if ($LASTEXITCODE) { throw "signing SHA256SUMS.txt failed" }
             gpg --batch --verify dist/SHA256SUMS.txt.sig dist/SHA256SUMS.txt
             if ($LASTEXITCODE) { throw "the signature of SHA256SUMS.txt doesn't verify" }
+            # The ffmpeg builds MDM installs (tools/release/ffmpeg-builds.txt, made by
+            # tools/release/ffmpeg_list.py), signed with the same key: MDM fetches this list from
+            # its latest release and installs only a build it names (crates/tools/src/ffmpeg.rs).
+            # Beside SHA256SUMS.txt, not in it: a newer list signed between releases replaces it.
+            Copy-Item tools/release/ffmpeg-builds.txt dist/ffmpeg-builds.txt
+            gpg --batch --yes --detach-sign --local-user 5826D399249DE856EA087D802E293C28E8A69D74 `
+              --output dist/ffmpeg-builds.txt.sig dist/ffmpeg-builds.txt
+            if ($LASTEXITCODE) { throw "signing ffmpeg-builds.txt failed" }
+            gpg --batch --verify dist/ffmpeg-builds.txt.sig dist/ffmpeg-builds.txt
+            if ($LASTEXITCODE) { throw "the signature of ffmpeg-builds.txt doesn't verify" }
           } else {
-            Write-Warning "MDM_RELEASE_KEY isn't set: this release is unsigned, and MDM won't update to it by itself."
+            Write-Warning "MDM_RELEASE_KEY isn't set: this release is unsigned, MDM won't update to it by itself, and MDM can't install ffmpeg until a signed ffmpeg-builds.txt is added to it (tools/release/ffmpeg_list.py)."
           }
           # Notes: the version's section of CHANGELOG.md ("## [X.Y.Z]" up to the next "## "),
           # else GitHub's list of changes since the last tag. First, the browser add-on's stores
