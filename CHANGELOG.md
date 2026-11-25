@@ -103,6 +103,8 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Fixed
 
+- Archive test: archives are checked more carefully.
+- Downloaded files are marked as coming from the internet more carefully.
 - Galleries: file paths are checked more carefully.
 - Command line: `playlist-info` and `playlist-get` refuse `--from 0` and `--count 0` instead of listing or downloading the wrong entries (thanks to [@riyazalsodie](https://github.com/riyazalsodie)).
 - Command line: a resumed download's first speed no longer counts the bytes it already had as just downloaded (a resume showed several GB/s for its first seconds) (thanks to [@riyazalsodie](https://github.com/riyazalsodie)).

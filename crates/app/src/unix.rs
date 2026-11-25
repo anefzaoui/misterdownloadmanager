@@ -4099,6 +4099,48 @@ fn set_xattr(path: &Path, name: &str, value: &str) {
     };
 }
 
+/// Tests: one extended attribute of `path` (`webmark::assert_marked`): None when it has none of
+/// that name; `Err` when its file system takes none at all (ENOTSUP) or it can't be read.
+#[cfg(test)]
+#[allow(unsafe_code)]
+pub fn xattr(path: &Path, name: &str) -> std::io::Result<Option<String>> {
+    use std::ffi::CString;
+    use std::os::unix::ffi::OsStrExt;
+    let invalid = |_| std::io::Error::from(std::io::ErrorKind::InvalidInput);
+    let p = CString::new(path.as_os_str().as_bytes()).map_err(invalid)?;
+    let n = CString::new(name).map_err(invalid)?;
+    let mut buf = vec![0u8; 4096];
+    // SAFETY: both strings are NUL-terminated and live through the call, which writes at most
+    // `buf.len()` bytes into `buf`.
+    #[cfg(target_os = "macos")]
+    let got = unsafe {
+        libc::getxattr(
+            p.as_ptr(),
+            n.as_ptr(),
+            buf.as_mut_ptr().cast(),
+            buf.len(),
+            0,
+            0,
+        )
+    };
+    #[cfg(not(target_os = "macos"))]
+    let got = unsafe { libc::getxattr(p.as_ptr(), n.as_ptr(), buf.as_mut_ptr().cast(), buf.len()) };
+    let Ok(len) = usize::try_from(got) else {
+        let e = std::io::Error::last_os_error();
+        #[cfg(target_os = "macos")]
+        let missing = libc::ENOATTR;
+        #[cfg(not(target_os = "macos"))]
+        let missing = libc::ENODATA;
+        return if e.raw_os_error() == Some(missing) {
+            Ok(None)
+        } else {
+            Err(e)
+        };
+    };
+    buf.truncate(len);
+    Ok(Some(String::from_utf8_lossy(&buf).into_owned()))
+}
+
 /// macOS: `NSApp` (`NSApplication.sharedApplication`), or `None` off the main thread. AppKit is
 /// used from the main thread only, and the first `sharedApplication` makes the application: made
 /// on another thread it traps (SIGTRAP) and the whole program ends. The windows' thread is the

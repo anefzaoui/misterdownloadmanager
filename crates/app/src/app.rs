@@ -1854,17 +1854,16 @@ fn page_data_for(link: &str, page: Option<&str>, data: Option<&str>) -> Option<S
 
 /// Marks each file the engine starts writing as downloaded from the web (Mark-of-the-Web, macOS'
 /// quarantine: `webmark::mark`, as the option and Windows' policy say), as browsers mark theirs.
-/// Only http(s) addresses (an FTP address may carry its login). Also what a video's and a
-/// gallery's jobs show their saved files to, on their own threads before they say they are done
-/// (#1103): never on the window's thread, where a disk slow to take the mark froze the window
-/// (#510), and always before the file can be opened or renamed (a rename keeps the mark).
+/// Every download, whatever its address (web, FTP, a magnet link sent to a debrid account), and
+/// what is extracted from it; the mark names the address without its login (`webmark::source`).
+/// Also what a video's and a gallery's jobs show their saved files to, on their own threads
+/// before they say they are done (#1103): never on the window's thread, where a disk slow to take
+/// the mark froze the window (#510), and always before the file can be opened or renamed (a
+/// rename keeps the mark).
 pub(crate) fn mark_hook(url: &url::Url, referrer: Option<&str>) -> mdm_engine::FileHook {
-    let web = matches!(url.scheme(), "http" | "https");
     let (url, referrer) = (url.to_string(), referrer.map(str::to_owned));
     mdm_engine::FileHook::new(move |path: &std::path::Path| {
-        if web {
-            crate::webmark::mark(path, &url, referrer.as_deref());
-        }
+        crate::webmark::mark(path, &url, referrer.as_deref());
     })
 }
 
@@ -16441,31 +16440,104 @@ mod page_data_tests {
 
 #[cfg(test)]
 mod mark_hook_tests {
+    use super::*;
+    use crate::webmark::{INTERNET, assert_marked};
+
+    const MAGNET: &str =
+        "magnet:?xt=urn:btih:0123456789abcdef0123456789abcdef01234567&dn=setup.exe";
+
     /// #510, #1103: what a video's or a gallery's job shows its saved files to marks them as
-    /// downloaded from the web (an http(s) address only); a file gone from its path meanwhile
-    /// isn't created again by the mark (the jobs show only files that are there).
+    /// downloaded from the internet, whatever the address: a web one, an FTP one, a magnet link
+    /// (a torrent sent to a debrid account), each named without its login, a magnet link as the
+    /// internet.
     #[test]
-    fn a_saved_file_is_marked_from_a_web_address_only() {
+    fn every_saved_file_is_marked_and_no_login_written() {
         let dir = tempfile::tempdir().unwrap();
-        let here = dir.path().join("video.mp4");
-        let ftp = dir.path().join("listing.txt");
-        std::fs::write(&here, b"x").unwrap();
-        std::fs::write(&ftp, b"x").unwrap();
-        let web = super::mark_hook(&"https://videos.test/v".parse().unwrap(), None);
-        (web.0)(&here);
-        let other = super::mark_hook(&"ftp://files.test/listing.txt".parse().unwrap(), None);
-        (other.0)(&ftp);
-        #[cfg(windows)]
+        for (k, (url, referrer, named, page)) in [
+            (
+                "https://videos.test/v",
+                Some("https://pages.test/p"),
+                "https://videos.test/v",
+                Some("https://pages.test/p"),
+            ),
+            (
+                "https://user:pw@videos.test/v",
+                None,
+                "https://videos.test/v",
+                None,
+            ),
+            (
+                "ftp://user:pw@files.test/listing.txt",
+                None,
+                "ftp://files.test/listing.txt",
+                None,
+            ),
+            (MAGNET, None, INTERNET, None),
+        ]
+        .into_iter()
+        .enumerate()
         {
-            let zone = |p: &std::path::Path| {
-                let mut stream = p.as_os_str().to_owned();
-                stream.push(":Zone.Identifier");
-                std::fs::read_to_string(stream).ok()
-            };
-            let marked = zone(&here).unwrap();
-            assert!(marked.contains("ZoneId=3"), "{marked}");
-            assert!(marked.contains("HostUrl=https://videos.test/v"), "{marked}");
-            assert_eq!(zone(&ftp), None, "an FTP address may carry its login");
+            let path = dir.path().join(format!("saved{k}.bin"));
+            std::fs::write(&path, b"x").unwrap();
+            (mark_hook(&url.parse().unwrap(), referrer).0)(&path);
+            assert_marked(&path, named, page);
+        }
+    }
+
+    fn app() -> std::mem::ManuallyDrop<App> {
+        let rt = Box::leak(Box::new(
+            tokio::runtime::Builder::new_current_thread()
+                .enable_all()
+                .build()
+                .unwrap(),
+        ));
+        let loaded = store::Loaded {
+            next_id: 1,
+            items: Vec::new(),
+            columns: None,
+            settings: Settings::default(),
+            queues: Vec::new(),
+        };
+        let (_, commands) = std::sync::mpsc::channel();
+        std::mem::ManuallyDrop::new(App::assemble(
+            &egui::Context::default(),
+            rt.handle().clone(),
+            commands,
+            loaded,
+            crate::Start::Shown,
+        ))
+    }
+
+    /// The engine's files are marked through the options every download's requests go with
+    /// (`request_parts`): an FTP file (one of a folder Link grabber lists, #1774) with its
+    /// address's login left out, and a torrent's files delivered through a debrid account
+    /// (`start_remote`, whose address is the magnet link) as the internet.
+    #[test]
+    fn the_engines_files_are_marked_whatever_the_address() {
+        let app = app();
+        let dir = tempfile::tempdir().unwrap();
+        for (k, (url, named)) in [
+            (
+                "ftp://user:pw@files.test/pub/tools/setup.exe",
+                "ftp://files.test/pub/tools/setup.exe",
+            ),
+            (MAGNET, INTERNET),
+            (
+                "https://files.test/setup.exe",
+                "https://files.test/setup.exe",
+            ),
+        ]
+        .into_iter()
+        .enumerate()
+        {
+            let url: url::Url = url.parse().unwrap();
+            let opts = app
+                .request_parts(&url, None, &Default::default(), true)
+                .opts;
+            let path = dir.path().join(format!("engine{k}.bin"));
+            std::fs::write(&path, b"x").unwrap();
+            (opts.on_file_created.expect("marked").0)(&path);
+            assert_marked(&path, named, None);
         }
     }
 }

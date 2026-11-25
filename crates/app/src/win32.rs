@@ -8327,7 +8327,8 @@ mod zone_policy_tests {
 /// as it is created (the engine renames it, the stream going along). Through `webmark::mark`,
 /// which asks the option and Windows' policy first.
 pub fn mark_downloaded(path: &std::path::Path, url: &str, referrer: Option<&str>) {
-    // Only addresses from the web: never a login's password (the engine has none in `url`).
+    // Both addresses come without their login (`webmark::source`, `webmark::page`); one line
+    // each.
     let clean = |u: &str| u.split(['\r', '\n']).next().unwrap_or("").to_owned();
     let mut text = String::from("[ZoneTransfer]\r\nZoneId=3\r\n");
     if let Some(r) = referrer.filter(|r| r.starts_with("http")) {

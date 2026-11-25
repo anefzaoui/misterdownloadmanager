@@ -42,6 +42,53 @@ fn zip_of(path: &Path, entries: &[(&str, &[u8])], aes: Option<&str>) {
     z.finish().unwrap();
 }
 
+/// A ZIP of `n` entries (named 0000, 0001…) whose directory records all point at one local
+/// header and its data, `size` zeros: every entry reads the same bytes again, `n` times `size`
+/// in all from a file of about `size / 1000` bytes.
+pub(crate) fn overlapping_zip(path: &Path, n: u16, size: usize) {
+    let mut z = zip::ZipWriter::new(std::io::Cursor::new(Vec::new()));
+    z.start_file("0000", zip::write::SimpleFileOptions::default())
+        .unwrap();
+    z.write_all(&vec![0u8; size]).unwrap();
+    let one = z.finish().unwrap().into_inner();
+    let dir = zip::ZipArchive::new(std::io::Cursor::new(&one))
+        .unwrap()
+        .central_directory_start() as usize;
+    // The one entry's directory record (its name at 46..50), and the end record (no comment).
+    let (record, end) = one[dir..].split_at(one.len() - dir - 22);
+    assert_eq!(&end[..4], b"PK\x05\x06");
+    let mut out = one[..dir].to_vec();
+    for i in 0..n {
+        let mut r = record.to_vec();
+        r[46..50].copy_from_slice(format!("{i:04}").as_bytes());
+        out.extend_from_slice(&r);
+    }
+    let mut end = end.to_vec();
+    end[8..10].copy_from_slice(&n.to_le_bytes());
+    end[10..12].copy_from_slice(&n.to_le_bytes());
+    let records = u32::try_from(record.len() * usize::from(n)).unwrap();
+    end[12..16].copy_from_slice(&records.to_le_bytes());
+    out.extend_from_slice(&end);
+    std::fs::write(path, out).unwrap();
+}
+
+/// Entries over the same bytes are refused before anything is read or written.
+#[test]
+fn a_zip_whose_entries_overlap_is_refused() {
+    let t = tempfile::tempdir().unwrap();
+    let a = t.path().join("over.zip");
+    overlapping_zip(&a, 3, 1 << 20);
+    let dest = t.path().join("out");
+    std::fs::create_dir(&dest).unwrap();
+    let (r, seen) = run(&a, &dest, None, Subfolder::Never);
+    assert!(
+        matches!(&r, Err(Error::Damaged(s)) if s == crate::zip_fmt::OVERLAP),
+        "{r:?}"
+    );
+    assert!(seen.is_empty());
+    assert_eq!(std::fs::read_dir(&dest).unwrap().count(), 0);
+}
+
 /// No leftover staging folder beside the destination.
 fn no_staging(dest: &Path) {
     let left: Vec<_> = std::fs::read_dir(dest)
