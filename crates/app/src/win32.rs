@@ -746,6 +746,55 @@ pub fn window_hidden(title: &str) -> bool {
     find_own_window(title).is_some_and(|h| unsafe { IsWindowVisible(h) == 0 && IsIconic(h) == 0 })
 }
 
+/// Whether our dialog titled `title` is owned by the main window: one opened from it (its Help
+/// menu, a toolbar button), as IDM's dialogs are. Ask while the dialog still exists (its closing
+/// pass, #1852).
+pub fn owned_by_main_window(title: &str) -> bool {
+    use windows_sys::Win32::UI::WindowsAndMessaging::{GW_OWNER, GetWindow};
+    let (Some(dialog), Some(main)) = (find_own_window(title), find_own_window(crate::MAIN_TITLE))
+    else {
+        return false;
+    };
+    // SAFETY: plain queries about our own windows.
+    unsafe { GetWindow(dialog, GW_OWNER) == main }
+}
+
+/// Whether the main window should come back to the front now (#1852): it is on the screen
+/// (neither hidden nor minimized) and the window in front is one of ours (a dialog closing) or
+/// the shell (the taskbar or the desktop). Windows leaves the focus on the taskbar when a dialog
+/// activated from its button closes, and the main window behind it never takes it back. False
+/// while another program is in front: its window stays the person's.
+pub fn main_should_come_back() -> bool {
+    use windows_sys::Win32::UI::WindowsAndMessaging::{
+        GetClassNameW, GetForegroundWindow, IsIconic, IsWindowVisible,
+    };
+    let Some(main) = find_own_window(crate::MAIN_TITLE) else {
+        return false;
+    };
+    // SAFETY: plain queries about any window; the class name is a local.
+    unsafe {
+        if IsWindowVisible(main) == 0 || IsIconic(main) != 0 {
+            return false;
+        }
+        let front = GetForegroundWindow();
+        if front.is_null() || front == main {
+            return false;
+        }
+        let mut pid = 0u32;
+        GetWindowThreadProcessId(front, &mut pid);
+        if pid == GetCurrentProcessId() {
+            return true;
+        }
+        let mut class = [0u16; 32];
+        let n = GetClassNameW(front, class.as_mut_ptr(), class.len() as i32);
+        let class = String::from_utf16_lossy(&class[..n.max(0) as usize]);
+        matches!(
+            class.as_str(),
+            "Shell_TrayWnd" | "Shell_SecondaryTrayWnd" | "Progman" | "WorkerW"
+        )
+    }
+}
+
 /// Our window titled `title` shown (it was hidden behind winit's back), not activated, and above
 /// the other programs' windows ([`come_forward`]) unless off-screen.
 pub fn show_hidden(title: &str) {

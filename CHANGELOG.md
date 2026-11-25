@@ -100,6 +100,7 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Fixed
 
+- Windows: a dialog opened from the main window (**About**, for one), brought back with MDM's taskbar button and closed with **OK**, left the keyboard on the taskbar: Windows doesn't hand it to the owner there, and the main window behind stayed without it, looking as if it had been put away. The main window now comes back to the front when such a dialog closes, and never over another program ([#1852](https://github.com/anefzaoui/misterdownloadmanager/issues/1852)).
 - Galleries: file paths are checked more carefully.
 - Command line: `playlist-info` and `playlist-get` refuse `--from 0` and `--count 0` instead of listing or downloading the wrong entries (thanks to [@riyazalsodie](https://github.com/riyazalsodie)).
 - Command line: a resumed download's first speed no longer counts the bytes it already had as just downloaded (a resume showed several GB/s for its first seconds) (thanks to [@riyazalsodie](https://github.com/riyazalsodie)).
