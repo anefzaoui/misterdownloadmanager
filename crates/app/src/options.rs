@@ -1736,7 +1736,8 @@ impl OptionsDialog {
             .s
             .conn_exceptions
             .iter()
-            .map(|(server, n)| vec![server.clone(), n.to_string()])
+            // A server's name reads left to right in every language (`*.example.com`).
+            .map(|(server, n)| vec![crate::i18n::ltr(server), n.to_string()])
             .chain(
                 self.learned
                     .iter()
@@ -1751,7 +1752,7 @@ impl OptionsDialog {
                         // i18n: a number of connections the app learned by itself for a server
                         let auto = crate::i18n::t("{n} (auto)");
                         vec![
-                            h.clone(),
+                            crate::i18n::ltr(h),
                             crate::i18n::fmt(auto, &[("n", &crate::i18n::integer(u64::from(*n)))]),
                         ]
                     }),
@@ -3988,12 +3989,17 @@ impl OptionsDialog {
                     .rows
                     .iter()
                     .map(|r| {
+                        // A site and a User-Agent read left to right in every language.
                         vec![
-                            r.rule.site.clone(),
+                            crate::i18n::ltr(&r.rule.site),
                             r.connections
                                 .map(|n| crate::i18n::integer(u64::from(n)))
                                 .unwrap_or_default(),
-                            r.rule.user_agent.clone(),
+                            if r.rule.user_agent.is_empty() {
+                                String::new()
+                            } else {
+                                crate::i18n::ltr(&r.rule.user_agent)
+                            },
                             if r.rule.headers.is_empty() {
                                 String::new()
                             } else {
