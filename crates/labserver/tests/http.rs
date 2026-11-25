@@ -525,7 +525,7 @@ async fn links_timed_from_their_first_request() {
 
 /// #1781: `image=WxH` makes a generated file a picture of that size (a BMP's header over its
 /// bytes, image/bmp unless `type` says); `/page?images=1` is a gallery of them, every picture it
-/// shows or links whole in its file.
+/// shows, links or sets as a CSS background whole in its file.
 #[tokio::test]
 async fn pictures_and_their_gallery() {
     let s = server("").await;
@@ -552,9 +552,10 @@ async fn pictures_and_their_gallery() {
     let (_, page) = text(&s, "/page?images=1").await;
     assert!(!page.contains("<video"), "the gallery alone");
     assert!(page.contains("<picture><source type=image/webp"));
+    assert!(page.contains("image-set(url('/gen/16K/bg2.png?image=400x300') 1x,"));
     let mut seen = 0;
     for part in page.split("/gen/").skip(1) {
-        let address = part.split(['"', ' ']).next().unwrap();
+        let address = part.split(['"', '\'', ' ', ')']).next().unwrap();
         let (size, rest) = address.split_once('/').unwrap();
         let Some((_, wh)) = rest.split_once("?image=") else {
             assert!(rest.ends_with(".pdf"), "{address}");
@@ -569,9 +570,9 @@ async fn pictures_and_their_gallery() {
         );
         seen += 1;
     }
-    assert_eq!(seen, 14, "every picture's address checked");
+    assert_eq!(seen, 19, "every picture's address checked");
     let (_, seeded) = text(&s, "/page?images=1&seed=7").await;
-    assert_eq!(seeded.matches("?seed=7&image=").count(), 14);
+    assert_eq!(seeded.matches("?seed=7&image=").count(), 19);
     assert_eq!(seeded.replace("?seed=7&image=", "?image="), page);
 }
 

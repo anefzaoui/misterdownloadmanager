@@ -102,7 +102,11 @@ fn file_links(n: u32, pathlen: usize) -> String {
 /// size (1600w); a `<picture>` whose WebP source lists two sizes; the larger photo shown again
 /// and linked (one address, found once); a thumbnail linking to its full size; a 1x/2x pair; a
 /// lazy loader's `data-src` under a `data:` placeholder; and neither to send: a `data:` picture
-/// and a link to a PDF. With `seed=N`, every picture's address carries it.
+/// and a link to a PDF. Then CSS background pictures, which aren't pictures located on the page
+/// and are never sent (Find images and Download all links take `<img>` only): `#bg1` by the
+/// `background` shorthand over a gradient, `#bg2` an `image-set()` (1x, 2x), `#bg3` a gradient,
+/// `#bg4` the large photo again, `#bg5` a `data:` picture, `#bg6` under `display: none`. With
+/// `seed=N`, every picture's address carries it.
 // The data: picture: a GIF of one pixel.
 const GALLERY: &str = concat!(
     "<p id=blank>images</p>",
@@ -128,6 +132,20 @@ const GALLERY: &str = concat!(
     "data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACwAAAAAAQABAAACAkQBADs=",
     "\" alt=\"\">",
     "<p><a id=notes href=\"/gen/1K/notes.pdf\">notes.pdf</a></p>",
+    "<div id=bg1 style=\"width:240px;height:160px;background:",
+    "url('/gen/192K/bg1.jpg?image=1200x900') center/cover no-repeat,",
+    "linear-gradient(#36c,#9cf)\"></div>",
+    "<div id=bg2 style=\"width:400px;height:300px;background-image:",
+    "image-set(url('/gen/16K/bg2.png?image=400x300') 1x,",
+    "url('/gen/64K/bg2@2x.png?image=800x600') 2x)\"></div>",
+    "<div id=bg3 style=\"width:300px;height:300px;background:linear-gradient(#f80,#fc0)\"></div>",
+    "<div id=bg4 style=\"width:160px;height:120px;background-image:",
+    "url('/gen/256K/photo1.jpg?image=1600x1200');background-size:cover\"></div>",
+    "<div id=bg5 style=\"width:20px;height:20px;background-image:url('",
+    "data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACwAAAAAAQABAAACAkQBADs=",
+    "')\"></div>",
+    "<div id=bg6 style=\"display:none;width:300px;height:300px;background-image:",
+    "url('/gen/64K/bg6.webp?image=600x600')\"></div>",
 );
 
 /// `/page?title=TEXT&link=PATH&files=N&pathlen=L&images=1&video=PATH|1&w=&h=&muted_loop=1&iframe=1&shadow=1&several=N&audio=PATH|1&

@@ -284,6 +284,15 @@ button, input { font: inherit; color: inherit; }
 .note-bar.by-hand .ico { flex: none; margin-top: 1px; }
 
 .dl-scroll { flex: 1; min-height: 0; overflow-y: auto; padding: 2px 6px 6px; scrollbar-gutter: stable; }
+/* Every list that scrolls, one scrollbar in the popup's own ink (as the video button's menu):
+   thin, no track, a muted thumb that firms up while the pointer is on the list. Chrome 116 to 120
+   (the oldest this add-on takes) have no scrollbar-color: the same from its own parts. */
+.panel .scroll, .dl-scroll { --thumb: color-mix(in srgb, var(--text-2) 55%, transparent); scrollbar-width: thin; scrollbar-color: var(--thumb) transparent; }
+.panel .scroll:hover, .dl-scroll:hover { --thumb: color-mix(in srgb, var(--text-2) 85%, transparent); }
+@supports not (scrollbar-color: auto) {
+  .panel .scroll::-webkit-scrollbar, .dl-scroll::-webkit-scrollbar { width: 8px; background: transparent; }
+  .panel .scroll::-webkit-scrollbar-thumb, .dl-scroll::-webkit-scrollbar-thumb { border: 2px solid transparent; border-radius: 4px; background: var(--thumb) padding-box; }
+}
 .dl-list { list-style: none; margin: 0; padding: 0; }
 .dl {
   position: relative; display: flex; align-items: center; gap: 10px;

@@ -572,6 +572,9 @@ These ship in the next version.
 - ✅ Only some files from inside a ZIP on a server: Download File Info's Preview lists the files in
   a `.zip` (from its end, with range requests) to tick those to download, each fetched alone and
   checked against its CRC-32 ([#1775](https://github.com/anefzaoui/misterdownloadmanager/issues/1775))
+- ✅ The browser add-on's scrollbars in its own look: the video button's list of qualities and
+  the popup's lists scroll with a thin bar in their own colours, light and dark, not the browser's
+  stock grey one
 - ✅ Folder downloads: an FTP folder or a web server's "Index of" page given to Link grabber lists
   every file in it and its subfolders (a depth and file types you choose), and the folder tree is
   kept under the download folder; never above the folder or onto another site
@@ -582,7 +585,9 @@ These ship in the next version.
   other download pauses as before
   ([#1780](https://github.com/anefzaoui/misterdownloadmanager/issues/1780))
 - ✅ The browser add-on finds all the images on a page when asked (**This page → Find images**),
-  at the largest size listed, filtered by size and type, and sends them to Link grabber
+  at the largest size listed, filtered by size and type, and sends them to Link grabber;
+  **Download all links** and **Download selected links** send the page's pictures too, which
+  Link grabber hides under **Hide images located on this web page** until you untick it
   ([#1781](https://github.com/anefzaoui/misterdownloadmanager/issues/1781))
 - ✅ The browser add-on's video button before the video plays: on a site yt-dlp doesn't read, it
   looks up the stream address the page wrote for its player (master playlist first, else the best

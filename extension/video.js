@@ -1353,7 +1353,16 @@ button:focus-visible { outline: none; }
 .note .why { display: block; margin-top: 3px; font-size: 11px; overflow-wrap: anywhere; }
 .note.warn { color: var(--warn); }
 .note a { display: inline-block; margin-top: 3px; color: var(--accent); text-decoration: underline; }
-.rows { max-height: min(300px, 45vh); overflow: auto; overscroll-behavior: contain; }
+/* Its scrollbar in the menu's own ink (the browser's grey one read as a foreign part on the navy
+   board): thin, no track, a muted thumb that firms up while the pointer is on the list. Chrome 116
+   to 120 (the oldest this add-on takes) have no scrollbar-color: the same from its own parts. */
+.rows { max-height: min(300px, 45vh); overflow: auto; overscroll-behavior: contain;
+  --thumb: color-mix(in srgb, var(--tx2) 55%, transparent); scrollbar-width: thin; scrollbar-color: var(--thumb) transparent; }
+.rows:hover { --thumb: color-mix(in srgb, var(--tx2) 85%, transparent); }
+@supports not (scrollbar-color: auto) {
+  .rows::-webkit-scrollbar { width: 8px; background: transparent; }
+  .rows::-webkit-scrollbar-thumb { border: 2px solid transparent; border-radius: 4px; background: var(--thumb) padding-box; }
+}
 .menu button { position: relative; display: flex; width: 100%; height: 28px; gap: 8px; padding-inline: 8px; border-radius: 4px; cursor: default; }
 .menu button:hover { background: var(--hov); }
 .menu button[hidden] { display: none; }

@@ -141,6 +141,10 @@ pub struct Imported {
     pub folder: Vec<String>,
     /// Its size as the folder's list says it (FTP's): not looked up again.
     pub size: Option<u64>,
+    /// A picture located on the browser's page (#1781: shown in it, not a link to it), sent by
+    /// its "Download all links": Link grabber hides it while "Hide images located on this web
+    /// page" is ticked.
+    pub page_image: bool,
 }
 
 /// One address per line.

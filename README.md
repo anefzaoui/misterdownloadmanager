@@ -326,7 +326,8 @@ right-to-left window.
 - **Catches downloads from Firefox, Chrome, Edge, Brave, Opera, Vivaldi and Helium** (the
   extension is on Firefox Add-ons and the Chrome Web Store), and gives them back to the browser
   when MDM isn't running. Its toolbar button finds **all the images on a page**, at the largest
-  size the page lists, filtered by size and type, and sends them to the Link grabber.
+  size the page lists, filtered by size and type, and sends them to the Link grabber; the
+  right-click menu's **Download all links** brings the page's pictures too, hidden until you ask.
 - **Downloads videos** from web pages (a button appears over the video, on many pages before it plays; playlists,
   subtitles, the sound alone), **image galleries** with gallery-dl, and **torrents and magnet links**
   (sequential order, RSS feeds, sharing limits, an optional public tracker list for more peers).
