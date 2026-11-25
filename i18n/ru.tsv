@@ -5,1188 +5,898 @@
 #. count in a dialog box
 #. never shown for a single file
 #. {n} = a number (keep the braces as they are)
-#, machine
 @plural	Also delete the {n} file from disk|Also delete the {n} files from disk	Также удалить {n} файл с диска|Также удалить {n} файла с диска|Также удалить {n} файлов с диска
 #. count in cnl.rs
 #. Click'n'Load window: a page whose web site the browser doesn't name, so MDM can't tell which site it is
 #. {n} = a number (keep the braces as they are)
-#, machine
-@plural	An unknown site wants to send {n} link to Link grabber.|An unknown site wants to send {n} links to Link grabber.	Неизвестный сайт хочет отправить {n} ссылку в Link grabber.|Неизвестный сайт хочет отправить {n} ссылки в Link grabber.|Неизвестный сайт хочет отправить {n} ссылок в Link grabber.
+@plural	An unknown site wants to send {n} link to Link grabber.|An unknown site wants to send {n} links to Link grabber.	Неизвестный сайт хочет отправить {n} ссылку в Перехват ссылок.|Неизвестный сайт хочет отправить {n} ссылки в Перехват ссылок.|Неизвестный сайт хочет отправить {n} ссылок в Перехват ссылок.
 #. count in traypanel.rs
 #. the notification-area icon's panel (#1365), under the downloads it lists: how many others are running; {n} a number
 #. {n} = a number (keep the braces as they are)
-#, machine
 @plural	And {n} more|And {n} more	И ещё {n}|И ещё {n}|И ещё {n}
 #. count in torrent downloads
 #. number of additional files in a list of files
 #. {n} = a number (keep the braces as they are)
-#, machine
 @plural	And {n} other file.|And {n} other files.	И ещё {n} файл.|И ещё {n} файла.|И ещё {n} файлов.
 #. count in a dialog box
 #. never shown for a single download
 #. {n} = a number (keep the braces as they are)
-#, machine
 @plural	Are you sure you want to delete {n} download from Mister Download Manager list of downloads?|Are you sure you want to delete these {n} downloads from Mister Download Manager list of downloads?	Вы действительно хотите удалить {n} загрузку из списка загрузок Mister Download Manager?|Вы действительно хотите удалить эти {n} загрузки из списка загрузок Mister Download Manager?|Вы действительно хотите удалить эти {n} загрузок из списка загрузок Mister Download Manager?
 #. count in the Add torrent window
 #. while a magnet link's file list is fetched; {n} = peers that answered
 #. {n} = a number (keep the braces as they are)
 #. the trailing ... means it is still going on: keep it
-#, machine
 @plural	Connected to {n} peer, getting the file list...|Connected to {n} peers, getting the file list...	Подключено к {n} пиру, получение списка файлов...|Подключено к {n} пирам, получение списка файлов...|Подключено к {n} пирам, получение списка файлов...
 #. count in the Add torrent window
 #. where a magnet's peers came from: the DHT; {n} = the computers it knows now; {peers} = "3 peers"
 #. {n} = a number (keep the braces as they are)
-#, machine
 @plural	DHT, {n} node: {peers}|DHT, {n} nodes: {peers}	DHT, {n} узел: {peers}|DHT, {n} узла: {peers}|DHT, {n} узлов: {peers}
 #. count in extracting archives (a download's log, the Archive password window)
 #. in a download's log: {n} is a number of files, {folder} where they went
 #. {n} = a number (keep the braces as they are)
-#, machine
-@plural	Extracted {n} file to {folder}|Extracted {n} files to {folder}	Извлечен {n} файл в {folder}|Извлечено {n} файла в {folder}|Извлечено {n} файлов в {folder}
+@plural	Extracted {n} file to {folder}|Extracted {n} files to {folder}	Извлечён {n} файл в {folder}|Извлечено {n} файла в {folder}|Извлечено {n} файлов в {folder}
 #. count in the Add torrent window
 #. while a magnet link's file list is fetched; {n} = peers found so far (none answered yet)
 #. {n} = a number (keep the braces as they are)
 #. the trailing ... means it is still going on: keep it
-#, machine
 @plural	Found {n} peer, connecting...|Found {n} peers, connecting...	Найден {n} пир, подключение...|Найдено {n} пира, подключение...|Найдено {n} пиров, подключение...
 #. count in rssdlg.rs
 #. RSS feeds window, Download rules: how many articles the feeds hold now that the rule matches (it adds only new ones)
 #. {n} = a number (keep the braces as they are)
-#, machine
-@plural	Matches {n} article now (it adds new ones only):|Matches {n} articles now (it adds new ones only):	Совпадает с {n} статьей сейчас (добавляются только новые):|Совпадает с {n} статьями сейчас (добавляются только новые):|Совпадает с {n} статьями сейчас (добавляются только новые):
+@plural	Matches {n} article now (it adds new ones only):|Matches {n} articles now (it adds new ones only):	Сейчас найдена {n} статья (добавляются только новые):|Сейчас найдены {n} статьи (добавляются только новые):|Сейчас найдено {n} статей (добавляются только новые):
 #. count in archtest.rs
 #. in a download's log: the archive test found files in it that don't read back whole; {n} how many, {files} their names
 #. {n} = a number (keep the braces as they are)
-#, machine
 @plural	The archive test found {n} damaged file: {files}|The archive test found {n} damaged files: {files}	Тест архива обнаружил {n} повреждённый файл: {files}|Тест архива обнаружил {n} повреждённых файла: {files}|Тест архива обнаружил {n} повреждённых файлов: {files}
 #. count in a dialog box
 #. Cancel in Download File Info with downloads waiting behind it
 #. {n} = a number (keep the braces as they are)
-#, machine
-@plural	There is {n} more download waiting. Cancel it too?|There are {n} more downloads waiting. Cancel them too?	Ожидает еще {n} загрузка. Отменить и ее?|Ожидают еще {n} загрузки. Отменить и их?|Ожидают еще {n} загрузок. Отменить и их?
+@plural	There is {n} more download waiting. Cancel it too?|There are {n} more downloads waiting. Cancel them too?	Ожидает ещё {n} загрузка. Отменить и её?|Ожидают ещё {n} загрузки. Отменить и их?|Ожидают ещё {n} загрузок. Отменить и их?
 #. count in a dialog box
 #. under "Also delete the files from disk", while it is ticked: how many of the downloads being deleted are finished, whose complete files are deleted from the disk too
 #. {n} = a number (keep the braces as they are)
-#, machine
-@plural	This also deletes {n} finished file.|This also deletes {n} finished files.	При этом также удаляется {n} завершенный файл.|При этом также удаляются {n} завершенных файла.|При этом также удаляются {n} завершенных файлов.
+@plural	This also deletes {n} finished file.|This also deletes {n} finished files.	При этом также удаляется {n} завершённый файл.|При этом также удаляются {n} завершённых файла.|При этом также удаляются {n} завершённых файлов.
 #. count in a dialog box
 #. under the first failed downloads in the summary of a group of downloads: {n} more failed (Show in list shows them all)
 #. {n} = a number (keep the braces as they are)
-#, machine
 @plural	and {n} more|and {n} more	и ещё {n}|и ещё {n}|и ещё {n}
 #. count in a dialog box
 #. "files already there" question, under the first path: {n} = how many more
 #. {n} = a number (keep the braces as they are)
-#, machine
-@plural	and {n} other file|and {n} other files	и еще {n} файл|и еще {n} файла|и еще {n} файлов
+@plural	and {n} other file|and {n} other files	и ещё {n} файл|и ещё {n} файла|и ещё {n} файлов
 #. count in a download's progress window
 #. a connection closed because the server allows only that many
 #. {host} = a server name such as "example.com"; {n} = a number (keep the braces as they are)
-#, machine
 @plural	{host} allows {n} connection|{host} allows {n} connections	{host} разрешает {n} соединение|{host} разрешает {n} соединения|{host} разрешает {n} соединений
 #. count in rssdlg.rs
 #. {n} = a number (keep the braces as they are)
-#, machine
 @plural	{n} article|{n} articles	{n} статья|{n} статьи|{n} статей
 #. count in the download list (sizes, speeds, status)
 #. {n} = a number (keep the braces as they are)
-#, machine
-@plural	{n} byte|{n} bytes	{n} байт|{n} байта|{n} байтов
+@plural	{n} byte|{n} bytes	{n} байт|{n} байта|{n} байт
 #. count in the main window
 #. {n} = a number (keep the braces as they are)
-#, machine
 @plural	{n} download|{n} downloads	{n} загрузка|{n} загрузки|{n} загрузок
 #. count in a dialog box
 #. the summary of downloads added together (the Downloads complete window; the tip of the tray icon): {n} of them finished
 #. {n} = a number (keep the braces as they are)
-#, machine
-@plural	{n} download finished|{n} downloads finished	Завершена {n} загрузка|Завершено {n} загрузки|Завершено {n} загрузок
+@plural	{n} download finished|{n} downloads finished	Завершена {n} загрузка|Завершены {n} загрузки|Завершено {n} загрузок
 #. count in preview.rs
 #. {n} = a number (keep the braces as they are)
-#, machine
 @plural	{n} download selected|{n} downloads selected	Выбрана {n} загрузка|Выбраны {n} загрузки|Выбрано {n} загрузок
 #. count in the main window
 #. {n} = a number (keep the braces as they are)
-#, machine
-@plural	{n} downloading|{n} downloading	{n} загружается|{n} загружается|{n} загружается
+@plural	{n} downloading|{n} downloading	{n} загрузка загружается|{n} загрузки загружаются|{n} загрузок загружается
 #. count in extracting archives (a download's log, the Archive password window)
 #. in a download's log, after extracting: entries of the archive not written (links, names that would leave the folder, entries under a file of the archive where a folder should be)
 #. {n} = a number (keep the braces as they are)
-#, machine
 @plural	{n} entry was left out (a link, a name leading outside the folder, or a file in its way)|{n} entries were left out (links, names leading outside the folder, or files in their way)	{n} запись пропущена (ссылка, имя, ведущее за пределы папки, или файл на пути)|{n} записи пропущены (ссылки, имена, ведущие за пределы папки, или файлы на пути)|{n} записей пропущено (ссылки, имена, ведущие за пределы папки, или файлы на пути)
 #. count in a dialog box
 #. the summary of downloads added together; after "12 downloads finished": {n} of them failed
 #. {n} = a number (keep the braces as they are)
-#, machine
-@plural	{n} failed|{n} failed	Не удалось {n}|Не удалось {n}|Не удалось {n}
+@plural	{n} failed|{n} failed	С ошибкой: {n}|С ошибкой: {n}|С ошибкой: {n}
 #. count in the Batch download window; count in the Link grabber window; count in the Add torrent window; count in torrentfiles.rs
 #. how many files the pattern gives in all
 #. Link grabber: a package's row: {n} is its number of links
 #. {n} = a number (keep the braces as they are)
-#, machine
 @plural	{n} file|{n} files	{n} файл|{n} файла|{n} файлов
 #. count in the main window
 #. event log entry: the files ticked in a torrent's Files tab changed; {n} of them are ticked now
 #. {n} = a number (keep the braces as they are)
-#, machine
 @plural	{n} file chosen to download|{n} files chosen to download	Выбран {n} файл для загрузки|Выбрано {n} файла для загрузки|Выбрано {n} файлов для загрузки
 #. count in extracting archives (a download's log, the Archive password window)
 #. in a download's log, after extracting
 #. {n} = a number (keep the braces as they are)
-#, machine
-@plural	{n} file had the name of a file there already and was numbered|{n} files had the name of a file there already and were numbered	Имя {n} файла уже существовало и было пронумеровано|Имена {n} файлов уже существовали и были пронумерованы|Имена {n} файлов уже существовали и были пронумерованы
+@plural	{n} file had the name of a file there already and was numbered|{n} files had the name of a file there already and were numbered	{n} файл уже имел это имя и был пронумерован|{n} файла уже имели это имя и были пронумерованы|{n} файлов уже имели это имя и были пронумерованы
 #. count in preview.rs
 #. {n} = a number (keep the braces as they are)
-#, machine
 @plural	{n} finished|{n} finished	Завершено: {n}|Завершено: {n}|Завершено: {n}
 #. count in the main window's messages (deleting downloads' files)
 #. the message's next line: how many more deleted files stayed on the disk
 #. {n} = a number (keep the braces as they are)
-#, machine
 @plural	{n} more file could not be deleted either.|{n} more files could not be deleted either.	Не удалось удалить ещё {n} файл.|Не удалось удалить ещё {n} файла.|Не удалось удалить ещё {n} файлов.
 #. count in the Add torrent window
 #. a number of peers (computers sharing a torrent), after where they came from
 #. {n} = a number (keep the braces as they are)
-#, machine
 @plural	{n} peer|{n} peers	{n} пир|{n} пира|{n} пиров
 #. count in the Options window
 #. Options → Archives: beside the Archive passwords button: how many are saved
 #. {n} = a number (keep the braces as they are)
-#, machine
 @plural	{n} saved|{n} saved	Сохранено: {n}|Сохранено: {n}|Сохранено: {n}
 #. count in the main window
 #. {n} = a number (keep the braces as they are)
-#, machine
-@plural	{n} selected|{n} selected	Выбрана {n}|Выбрано {n}|Выбрано {n}
+@plural	{n} selected|{n} selected	Выбрано: {n}|Выбрано: {n}|Выбрано: {n}
 #. count in the Options window
 #. {n} = a number (keep the braces as they are)
-#, machine
 @plural	{n} site added from the file.|{n} sites added from the file.	Добавлен {n} сайт из файла.|Добавлено {n} сайта из файла.|Добавлено {n} сайтов из файла.
 #. count in the Options window
 #. {n} = a number (keep the braces as they are)
-#, machine
-@plural	{n} site saved to the file.|{n} sites saved to the file.	Сохранен {n} сайт в файл.|Сохранено {n} сайта в файл.|Сохранено {n} сайтов в файл.
+@plural	{n} site saved to the file.|{n} sites saved to the file.	Сохранён {n} сайт в файл.|Сохранено {n} сайта в файл.|Сохранено {n} сайтов в файл.
 #. count in the main window
 #. event log entry: trackers were added to the torrent
 #. {n} = a number (keep the braces as they are)
-#, machine
 @plural	{n} tracker added|{n} trackers added	Добавлен {n} трекер|Добавлено {n} трекера|Добавлено {n} трекеров
 #. count in the main window
 #. event log entry: trackers from the public tracker list (Torrent settings) were added to a torrent
 #. {n} = a number (keep the braces as they are)
-#, machine
-@plural	{n} tracker added from the public list|{n} trackers added from the public list	Добавлен {n} трекер из общедоступного списка|Добавлено {n} трекера из общедоступного списка|Добавлено {n} трекеров из общедоступного списка
+@plural	{n} tracker added from the public list|{n} trackers added from the public list	Добавлен {n} трекер из публичного списка|Добавлено {n} трекера из публичного списка|Добавлено {n} трекеров из публичного списка
 #. count in the Add torrent window
 #. where a magnet's peers came from: {n} = trackers asked; {peers} = "3 peers"
 #. {n} = a number (keep the braces as they are)
-#, machine
 @plural	{n} tracker: {peers}|{n} trackers: {peers}	{n} трекер: {peers}|{n} трекера: {peers}|{n} трекеров: {peers}
 #. count in the main window
 #. the tip of MDM's notification area (tray) icon: {n} windows of MDM (Download complete...) wait while a full-screen game, app or presentation is on, and show when the user is back
 #. {n} = a number (keep the braces as they are)
-#, machine
-@plural	{n} window waits until you're back|{n} windows wait until you're back	Ожидает {n} окно|Ожидают {n} окна|Ожидают {n} окон
+@plural	{n} window waits until you're back|{n} windows wait until you're back	Ожидает {n} окно|Ожидают {n} окна|Ожидает {n} окон
 #. count in cnl.rs
 #. Click'n'Load window: {site} is a web site's name such as "example.com"
 #. {site} = a web site's name such as "example.com"; {n} = a number (keep the braces as they are)
-#, machine
-@plural	{site} wants to send {n} link to Link grabber.|{site} wants to send {n} links to Link grabber.	{site} хочет отправить {n} ссылку в Link grabber.|{site} хочет отправить {n} ссылки в Link grabber.|{site} хочет отправить {n} ссылок в Link grabber.
+@plural	{site} wants to send {n} link to Link grabber.|{site} wants to send {n} links to Link grabber.	{site} запрашивает отправку {n} ссылки в Перехват ссылок.|{site} запрашивает отправку {n} ссылок в Перехват ссылок.|{site} запрашивает отправку {n} ссылок в Перехват ссылок.
 #. count in preview.rs
 #. the preview pane, several downloads selected: their total size, then how many of them have no known size yet; {size} e.g. "4.20 GB"
 #. {size} = a file size such as "4.2 MB"; {n} = a number (keep the braces as they are)
-#, machine
 @plural	{size} and {n} of unknown size|{size} and {n} of unknown size	{size} и {n} неизвестного размера|{size} и {n} неизвестного размера|{size} и {n} неизвестного размера
 #. count in playlistdlg.rs
 #. in Download video: a playlist title then how many videos it has ({count})
 #. {count} = a number (keep the braces as they are)
-#, machine
 @plural	{title}: {count} video|{title}: {count} videos	{title}: {count} видео|{title}: {count} видео|{title}: {count} видео
 #. count in playlistdlg.rs
 #. in Download video: a playlist title, then how many of its videos are listed so far ({listed}) of how many ({total})
-#, machine
 @plural	{title}: {listed} of {total} video listed|{title}: {listed} of {total} videos listed	{title}: {listed} из {total} видео в списке|{title}: {listed} из {total} видео в списке|{title}: {listed} из {total} видео в списке
 #. text in the Options window
 #. tooltip of "Don't show pop-ups while a full-screen app or presentation is running"
-#, machine
-	"Download complete" and the other windows MDM opens by itself wait while a full-screen game, app or video, a presentation or the locked screen is on, and show when you're back. The windows you open yourself, and links from your browser, always show	Окна «Загрузка завершена» и другие окна, открываемые MDM автоматически, ожидают завершения полноэкранной игры, приложения или видео, презентации или заблокированного экрана, а затем отображаются. Окна, открываемые вами, и ссылки из браузера всегда отображаются.
+	"Download complete" and the other windows MDM opens by itself wait while a full-screen game, app or video, a presentation or the locked screen is on, and show when you're back. The windows you open yourself, and links from your browser, always show	Окна, открытые MDM (например, «Загрузка завершена»), не всплывают во время полноэкранной игры, видео, презентации или блокировки экрана, а появляются после выхода из них. Окна, открытые вами, и ссылки из браузера показываются всегда.
 #. text in the settings
 #. Options → DNS: a server address typed isn't an IP address; {what} is what was typed
-#, machine
 	"{what}" isn't an IP address.	"{what}" не является IP-адресом.
 #. text in the Scheduler window
 #. verb: save the changes
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
-#, machine
-	&Apply	П&рименить
+	&Apply	&Применить
 #. text in the Scheduler window; button in standard windows
 #. verb: close the window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
-#, machine
 	&Close	&Закрыть
 #. button in the Scheduler window
 #. verb: delete the queue
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
-#, machine
 	&Delete	&Удалить
 #. text in the Scheduler window
 #. noun: button that opens the help
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
-#, machine
 	&Help	&Справка
 #. button in the Scheduler window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
-#, machine
 	&New queue	&Новая очередь
 #. text in the Scheduler window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
-#, machine
 	&Start now	&Начать сейчас
 #. text in the Options window
 #. under Download panels site exclusions list
-#, machine
-	(separate by spaces; * matches anything)	(разделяйте пробелами; * соответствует любому значению)
+	(separate by spaces; * matches anything)	(разделяйте пробелами; * — любое значение)
 #. text in the Options window
-#, machine
 	(separate names by spaces)	(разделяйте имена пробелами)
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: shown in the empty Save to box
-#, machine
 	(the Torrents category's folder)	(папка категории «Торренты»)
 #. text in remote.rs
 #. remote control page (on a phone): button that picks a .torrent file on the phone
-#, machine
 	.torrent file	.torrent-файл
 #. text in the Options window
 #. a 12-hour clock, with an example
-#, machine
-	12-hour (9:41 PM)	12-часовой (9:41 PM)
+	12-hour (9:41 PM)	12-часовой формат (9:41 PM)
 #. text in the Options window
 #. a 24-hour clock, with an example
-#, machine
-	24-hour (21:41)	24-часовой (21:41)
+	24-hour (21:41)	24-часовой формат (21:41)
 #. text in archtest.rs
 #. why an archive wasn't tested (after "Couldn't test {name}: "); 7-Zip is a program's name, {error} its words, in English
 #. {error} = an error message (keep the braces as they are)
-#, machine
-	7-Zip couldn't test it ({error})	7-Zip не удалось протестировать архив ({error})
+	7-Zip couldn't test it ({error})	7-Zip не удалось проверить архив ({error})
 #. window title in extracting archives (a download's log, the Archive password window)
 #. window title: 7-Zip (a program's name) must be installed
-#, machine
 	7-Zip needed	Требуется 7-Zip
 #. tab in the main window
-#, machine
 	720p	720p
 #. text in the Options window
 #. Options → Archives: {path} is where 7-Zip's program is
-#, machine
 	7z and RAR archives are extracted by 7-Zip ({path}).	Архивы 7z и RAR извлекаются с помощью 7-Zip ({path}).
 #. text in the Options window
 #. Options → Archives, when Extract in place with HatchZip (a program's name) is on: {path} is where its program is
-#, machine
 	7z and RAR archives are extracted by HatchZip ({path}).	Архивы 7z и RAR извлекаются с помощью HatchZip ({path}).
 #. text in the Options window
 #. Options → Archives, when 7-Zip isn't installed
-#, machine
 	7z and RAR archives need 7-Zip (7-zip.org), which isn't installed.	Для архивов 7z и RAR требуется 7-Zip (7-zip.org), который не установлен.
 #. text in extracting archives (a download's log, the Archive password window)
-#, machine
 	7z and RAR archives need 7-Zip, which isn't installed	Для архивов 7z и RAR требуется 7-Zip, который не установлен
 #. text in a download's progress window
-#, machine
 	<< Hide details	<< Скрыть подробности
 #. text in the Options window
 #. Options → Accounts: what these accounts are, and the services' rule against sharing
-#, machine
-	A debrid service downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	Служба дебрида загружает ссылку файлового хостинга с вашей платной учетной записи и предоставляет MDM прямую ссылку. Используйте только свою учетную запись: совместное использование учетной записи или ее ссылок нарушает условия обслуживания и может привести к ее блокировке. Загрузки, уже начатые браузером, остаются без изменений.
+
+	A debrid service downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	Debrid-сервис загружает ссылку с файлообменника через вашу платную учётную запись и предоставляет MDM прямую ссылку. Используйте только собственную учётную запись: совместное использование учётной записи или её ссылок нарушает условия обслуживания и может привести к её блокировке. Загрузки, уже начатые браузером, остаются без изменений.
 #. text in a download's progress window
 #. reason shown on the Rename box when the entered name ends with a period
-#, machine
 	A file name cannot end with a dot	Имя файла не может заканчиваться точкой
 #. text in errors.rs
 #. a torrent through a debrid service: one of its files has a name that would be written outside its folder; nothing was written. {name} the file's name as the service gave it
 #. {name} = a file name (keep the braces as they are)
-#, machine
-	A file of this torrent can't be saved safely: {name}	Не удалось безопасно сохранить файл этого торрента: {name}
+	A file of this torrent can't be saved safely: {name}	Невозможно безопасно сохранить файл этого торрента: {name}
 #. text in a dialog box
 #. the question about a name typed in Save As, above the file's path; the choices are the duplicate question's (numbered name, overwrite)
-#, machine
 	A file with this name is already there:	Файл с таким именем уже существует:
 #. message or event log entry in the main window
 #. Link grabber added a magnet link whose torrent could not be found; {error} says why
 #. {error} = an error message (keep the braces as they are)
-#, machine
-	A magnet link's files could not be looked up: {error}	Не удалось найти файлы по magnet-ссылке: {error}
+	A magnet link's files could not be looked up: {error}	Не удалось получить список файлов по magnet-ссылке: {error}
 #. message or event log entry in the main window
 #. event log, at start: MDM was closed while this download was being moved to another folder; {folder} is where its file is now
-#, machine
 	A move was cut short when MDM closed: the download is in {folder}	Перемещение было прервано при закрытии MDM: загрузка находится в папке {folder}
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
-#, machine
 	A NextDNS configuration ID is six letters and digits (0-9, a-f).	Идентификатор конфигурации NextDNS состоит из шести букв и цифр (0–9, a–f).
 #. text in the Download video window
 #. why "Embed chapters" (and the subtitles) are greyed in Download video: only a part of the video is downloaded, and its chapters and subtitles would be the whole video's
-#, machine
 	A part is saved without the video's chapters and subtitles	Часть сохраняется без глав и субтитров видео
 #. text in the Download video window
 #. why Part is greyed in Download video: the page is a playlist, whose videos are downloaded whole
-#, machine
 	A playlist's videos are downloaded whole	Видео из плейлиста загружаются целиком
 #. message or event log entry in the main window
-#, machine
-	A private torrent: the public tracker list isn't added	Приватный торрент: общедоступный список трекеров не добавлен
+	A private torrent: the public tracker list isn't added	Приватный торрент: публичный список трекеров не добавлен
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites: the tooltip of the profile box
-#, machine
 	A profile's name or its folder. Empty: the profile used last. For a browser built on Chromium that isn't listed (Helium, Thorium...), choose Chromium and its profile's folder.	Имя профиля или его папка. Пусто: последний использованный профиль. Для браузера на основе Chromium, которого нет в списке (Helium, Thorium...), выберите Chromium и папку его профиля.
 #. text in whereis.rs
 #. the tooltip of where a download's server is, when a proxy carries the download
-#, machine
-	A proxy carries this download: the place and the time are the proxy's, not the server's.	Этот файл загружается через прокси-сервер: местоположение и время относятся к прокси-серверу, а не к серверу.
+	A proxy carries this download: the place and the time are the proxy's, not the server's.	Загрузка выполняется через прокси-сервер: местоположение и время относятся к прокси-серверу, а не к серверу.
 #. text in crashui.rs
 #. crash report window: what the report is and what Send does
-#, machine
-	A report was saved. Sending it to the developers on GitHub helps them fix this; you can read everything it holds below first. Nothing is sent by itself: Send opens the report form in your browser, filled in, for you to check and submit.	Отчет сохранен. Отправка его разработчикам на GitHub поможет им исправить эту проблему; вы можете прочитать все, что он содержит, ниже. Ничего не отправляется само по себе: кнопка «Отправить» открывает форму отчета в вашем браузере, заполненную, для проверки и отправки.
+	A report was saved. Sending it to the developers on GitHub helps them fix this; you can read everything it holds below first. Nothing is sent by itself: Send opens the report form in your browser, filled in, for you to check and submit.	Отчёт сохранён. Отправка его разработчикам на GitHub поможет исправить эту ошибку; ниже можно ознакомиться со всем содержимым отчёта. Автоматически ничего не отправляется: кнопка «Отправить» откроет в браузере заполненную форму отчёта для проверки и отправки.
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: shown when there are no rules yet
-#, machine
-	A rule adds the new articles whose titles it matches, as they come.	Правило добавляет новые статьи по мере их поступления, если их заголовки ему соответствуют.
+	A rule adds the new articles whose titles it matches, as they come.	Правило добавляет новые статьи по мере поступления, если их заголовки соответствуют условию.
 #. text in errors.rs
 #. an error: a server on this computer redirected the download to the internet, which would not go through the chosen network adapter; {adapter} its name
-#, machine
-	a server on this computer sent the download elsewhere, which would not go through {adapter}	сервер на этом компьютере перенаправил загрузку в другое место, которое не прошло бы через {adapter}
+	a server on this computer sent the download elsewhere, which would not go through {adapter}	сервер на этом компьютере перенаправил загрузку на другой адрес, который не проходит через {adapter}
 #. message or event log entry in the main window
 #. tooltip on the disabled Rename box for a single-file torrent
-#, machine
 	A single-file torrent keeps its name	Однофайловый торрент сохраняет своё имя
 #. text in the download list (sizes, speeds, status)
 #. why a torrent that isn't finished can't be moved or renamed: the torrent engine writes its pieces into the files where they are
-#, machine
-	A torrent can be moved once it's finished: until then the torrent engine writes its pieces where they are	Торрент можно переместить после завершения: до этого момента торрент-движок записывает свои части туда, где они находятся
+	A torrent can be moved once it's finished: until then the torrent engine writes its pieces where they are	Торрент можно переместить после завершения: до этого момента торрент-движок записывает его части в текущую папку
 #. text in torrent_ownership.rs
 #. a torrent's folder is a link or junction leading outside its destination
-#, machine
-	A torrent file's folder points outside its destination	Папка торрент-файла ведёт за пределы папки назначения
+	A torrent file's folder points outside its destination	Папка файла торрента ведёт за пределы папки назначения
 #. text in the Add torrent window
 #. Add trackers: MDM never contacts a tracker on this computer or the local network
-#, machine
-	A tracker on this computer or the local network is never contacted: {line}	Трекер на этом компьютере или в локальной сети никогда не связывается: {line}
+	A tracker on this computer or the local network is never contacted: {line}	Подключение к трекеру на этом компьютере или в локальной сети не выполняется: {line}
 #. text in the download list (sizes, speeds, status)
 #. why a video or an image gallery that isn't finished can't be moved or renamed: yt-dlp, ffmpeg or gallery-dl keep their unfinished files in its folder
-#, machine
-	A video or a gallery can be moved once it's finished: until then its helper programs keep their unfinished files in its folder	Видео или галерею можно переместить после завершения: до этого момента вспомогательные программы хранят свои незавершенные файлы в этой папке
+	A video or a gallery can be moved once it's finished: until then its helper programs keep their unfinished files in its folder	Видео или галерею можно переместить после завершения: до этого момента вспомогательные программы хранят незавершённые файлы в этой папке
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
-#, machine
 	a volume of it is missing	отсутствует один из томов
 #. text in archtest.rs
 #. why a split archive (in several files, its volumes) isn't tested yet, in "{name} isn't complete ({why})": one of its files isn't downloaded yet
-#, machine
 	a volume of it isn't there yet	один из его томов ещё не загружен
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
-#, machine
 	About Mister Download Manager	О программе Mister Download Manager
 #. text in whereis.rs
 #. a download's server's round trip: {ms} a number of milliseconds, {reach} near, medium or far
-#, machine
 	about {ms} ms ({reach})	около {ms} мс ({reach})
 #. text in the Download video window
 #. in Download video beside the part's From and To: the part's size, estimated from the whole video's; {size} is "12.3 MB"
 #. a file size that is only an estimate, as a screen reader says it in the Download video window's list of qualities; {size} is "532 MB"
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
-#, machine
 	about {size}	около {size}
 #. text in the Options window
 #. Options → Archives → Link grabber check box: Click'n'Load, a link site's button that sends its links to a program on this computer (port 9666, as JDownloader)
-#, machine
 	Accept Click'n'Load from web pages (port 9666)	Принимать Click'n'Load с веб-страниц (порт 9666)
 #. checkbox in the Add torrent window
 #. Torrent settings: other peers may connect to this computer
-#, machine
 	Accept incoming connections	Принимать входящие соединения
 #. text in the Options window
 #. column title: the account's name at the service
-#, machine
-	Account	Учетная запись
+	Account	Учётная запись
 #. text in the Options window
 #. tab title: the user's debrid service accounts (Real-Debrid…)
-#, machine
-	Accounts	Учетные записи
+	Accounts	Учётные записи
 #. text in remote.rs
 #. remote control page (on a phone): button: add the download
-#, machine
 	Add	Добавить
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
-#, machine
 	Add a download (Add URL)	Добавить загрузку (Добавить URL)
 #. message or event log entry in the main window
 #. title of the file dialog of View → Theme → Add a theme file
 #. title of the message when View → Theme → Add a theme file fails
-#, machine
 	Add a theme file	Добавить файл темы
 #. window title in the Options window
 #. window title: adding a debrid service account (Real-Debrid…)
-#, machine
-	Add an account	Добавить учетную запись
+	Add an account	Добавить учётную запись
 #. text in the tray icon's menu
-#, machine
 	Add batch download	Добавить пакетную загрузку
 #. message or event log entry in the main window; text in the tray icon's menu
 #. title of the note when Tasks → Add batch download from clipboard finds nothing to download
-#, machine
 	Add batch download from clipboard	Добавить пакетную загрузку из буфера обмена
 #. text in the Options window
 #. the trailing ... means it is still going on: keep it
-#, machine
 	Add browser...	Добавить браузер...
 #. text in categories.rs; text in a dialog box
-#, machine
 	Add category	Добавить категорию
 #. button in rssdlg.rs
 #. RSS feeds window: button that subscribes to the feed whose address is typed
-#, machine
 	Add feed	Добавить ленту
 #. text in playlistdlg.rs
 #. title of the question asked before a playlist adds many downloads
-#, machine
 	Add many downloads	Добавить много загрузок
 #. window title in extension.rs
 #. title of the window that offers the browser extension
-#, machine
 	Add Mister Download Manager to your browser	Добавить Mister Download Manager в браузер
 #. message or event log entry in the main window; text in the tray icon's menu
 #. link in the empty download list: opens Add URL
-#, machine
 	Add new download	Добавить новую загрузку
 #. text in the Options window
-#, machine
 	Add the duplicate and overwrite the existing file	Добавить дубликат и перезаписать существующий файл
 #. text in the Options window
-#, machine
 	Add the duplicate with a numbered file name	Добавить дубликат с пронумерованным именем файла
 #. text in extension.rs
 #. button in the browser extension's window: open the extension's page in that browser
-#, machine
 	Add the extension	Добавить расширение
 #. window title in extension.rs
 #. title of the window that shows how to turn on the Safari extension
-#, machine
 	Add the extension to Safari	Добавление расширения в Safari
 #. text in extension.rs
-#, machine
-	Add the free extension: files you download in your browser come here, and videos get a Download button.	Добавьте бесплатное расширение: файлы, загруженные в браузере, будут перехвачены, а для видео появится кнопка «Скачать».
+	Add the free extension: files you download in your browser come here, and videos get a Download button.	Установите бесплатное расширение: загружаемые в браузере файлы будут передаваться сюда, а для видео появится кнопка «Скачать».
 #. text in the Add torrent window
 #. Torrent settings: add the trackers of a public tracker list (its address in the box below) to torrents that aren't private, so they find more peers
-#, machine
-	Add the trackers of this public list to public torrents:	Добавить трекеры из этого общедоступного списка к публичным торрентам:
+	Add the trackers of this public list to public torrents:	Добавлять трекеры из этого публичного списка в публичные торренты:
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: add the torrents to the list without starting them
-#, machine
 	Add them without starting them	Добавить без запуска
 #. message or event log entry in the main window; text in the Link grabber window
 #. Link grabber button: add the ticked links to the download queue without starting them (IDM's OK)
-#, machine
 	Add to queue	Добавить в очередь
 #. text in a dialog box
-#, machine
 	Add to queue:	Добавить в очередь:
 #. message or event log entry in the main window; window title in the Add torrent window
-#, machine
 	Add torrent	Добавить торрент
 #. window title in the Add torrent window
-#, machine
 	Add trackers	Добавить трекеры
 #. text in playlistdlg.rs
 #. asked before a playlist adds many downloads at once; {n} is how many
 #. {n} = a number (keep the braces as they are)
-#, machine
 	Add {n} downloads to the list? Each video gets its own row.	Добавить {n} загрузок в список? Каждое видео получит отдельную строку.
 #. button in the Options window
 #. button: add a debrid service account (opens the sign-in)
 #. the trailing ... means it opens a window: keep it
-#, machine
 	Add...	Добавить...
 #. message or event log entry in the main window
 #. event log entry: an RSS download rule added this torrent; {rule} is the rule's name, {feed} the feed's
-#, machine
 	Added by the RSS rule {rule} from {feed}	Добавлен правилом RSS {rule} из ленты {feed}
 #. message or event log entry in the main window
 #. {source} = how the download was added, e.g. "from the browser" (keep the braces as they are)
-#, machine
 	Added {source}	Добавлено {source}
 #. text in remote.rs
 #. remote control page (on a phone): a download was added
-#, machine
 	Added.	Добавлено.
 #. text in remote.rs
 #. remote control page (on a phone): a magnet link or .torrent file was added; MDM reads the torrent's files first
-#, machine
-	Added. MDM is reading the torrent: it joins the list in a moment.	Добавлено. MDM читает торрент: он скоро появится в списке.
+	Added. MDM is reading the torrent: it joins the list in a moment.	Добавлено. MDM обрабатывает торрент: он скоро появится в списке.
 #. text in preview.rs
 #. label in the preview pane: when the download was added to the list
-#, machine
 	Added:	Добавлено:
 #. text in the Batch download window; text in a dialog box; label in the Options window; text in a download's progress window
 #. noun: the web address (URL)
 #. column title: the web address (URL)
-#, machine
 	Address	Адрес
 #. message or event log entry in the main window
 #. {host} = a server name such as "example.com" (keep the braces as they are)
-#, machine
-	Address changed to {host}	Адрес изменен на {host}
+	Address changed to {host}	Адрес изменён на {host}
 #. text in remote.rs
 #. remote control page (on a phone): label of the box where a download's address or a magnet link is typed
-#, machine
 	Address or magnet link	Адрес или magnet-ссылка
 #. text in the Options window; text in a download's Properties window
 #. Options → DNS over HTTPS: label before the server's https:// address
-#, machine
 	Address:	Адрес:
 #. text in whereis.rs
 #. the tooltip of where a download's server is: its IP address
-#, machine
 	Address: {address}	Адрес: {address}
 #. window title in the Options window
 #. window title: the addresses whose downloads stay with the browser
-#, machine
-	Addresses left to the browser	Адреса, оставленные браузеру
+	Addresses left to the browser	Адреса, загружаемые браузером
 #. text in extension.rs
 #. a check of Test browser integration (Options → General)
-#, machine
 	Advanced browser integration is on	Расширенная интеграция с браузером включена
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Afghanistan	Афганистан
 #. text in the Options window
 #. Options → Add an account: a note under the user name and password fields (Mega-Debrid bans the address for some minutes after a few wrong passwords)
-#, machine
-	After a few wrong passwords the service blocks this connection for some minutes.	После нескольких неверных паролей служба блокирует это подключение на несколько минут.
+	After a few wrong passwords the service blocks this connection for some minutes.	После нескольких неверных паролей сервис блокирует это подключение на несколько минут.
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Aland Islands	Аландские острова
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Albania	Албания
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Algeria	Алжир
 #. text in remote.rs
 #. remote control page (on a phone): tab: every download
-#, machine
 	All	Все
 #. item in the Categories tree in the main window
-#, machine
 	All Downloads	Все загрузки
 #. message or event log entry in the main window; text in standard windows
-#, machine
 	All files	Все файлы
 #. text in helpers.rs
-#, machine
 	All set: on a page with a video, use Tasks → Download video from a page.	Всё готово: на странице с видео выберите Задачи → Загрузить видео со страницы.
 #. text in the Download video window
 #. in the Subtitles list of Download video: every language the video's uploader gave
-#, machine
-	All the uploader's	Все от загрузившего
+	All the uploader's	Все добавленные автором
 #. text in helpers.rs
-#, machine
-	All three are open source. MDM gets them from their official releases with its own downloader and checks each file's signature before it runs. About 140 MB, once.	Все три программы имеют открытый исходный код. MDM загружает их из официальных выпусков с помощью собственного загрузчика и проверяет подпись каждого файла перед запуском. Около 140 МБ, однократно.
+	All three are open source. MDM gets them from their official releases with its own downloader and checks each file's signature before it runs. About 140 MB, once.	Все три программы имеют открытый исходный код. MDM загружает их из официальных релизов собственным загрузчиком и проверяет подпись каждого файла перед запуском. Около 140 МБ, однократно.
 #. text in cnl.rs
 #. button in the Click'n'Load window: let this site send links (remembered)
-#, machine
 	Allow	Разрешить
 #. text in the Options window
 #. checkbox under the number of connections per download; {n} is 32
 #. {n} = a number (keep the braces as they are)
-#, machine
 	Allow more than {n} connections	Разрешить более {n} подключений
 #. text in cnl.rs
 #. Click'n'Load window, under the question: nothing happens to the links before the user adds them in Link grabber
-#, machine
-	Allow only sites you use. Nothing is looked up or downloaded before you add it in Link grabber.	Разрешайте только те сайты, которые вы используете. Ничего не ищется и не загружается, пока вы не добавите это в Link grabber.
+	Allow only sites you use. Nothing is looked up or downloaded before you add it in Link grabber.	Разрешайте только используемые сайты. Поиск и загрузка не начинаются до добавления элементов в Перехват ссылок.
 #. text in errors.rs
-#, machine
 	already being downloaded: {path}	уже загружается: {path}
 #. text in the Link grabber window
 #. Link grabber: the package of links the download list has already
-#, machine
 	Already in the list	Уже в списке
 #. text in crashui.rs
 #. crash report window: the same problem has an issue on GitHub already; {number} and {title} are the issue's
-#, machine
-	Already reported as issue #{number}: {title}	Уже сообщено как проблема №{number}: {title}
+	Already reported as issue #{number}: {title}	Ошибка уже зарегистрирована под номером #{number}: {title}
 #. checkbox in crashui.rs
 #. crash report window: checkbox; the .dmp file holds what MDM had in memory
-#, machine
 	Also attach the crash data (.dmp): it may hold addresses, cookies and passwords	Также прикрепить данные сбоя (.dmp): они могут содержать адреса, файлы cookie и пароли
 #. text in a dialog box
-#, machine
 	Also delete the file from disk	Также удалить файл с диска
 #. checkbox in the Options window
-#, machine
-	Also take files the browser would open (PDF, music, video)	Также загружать файлы, которые браузер открыл бы (PDF, музыка, видео)
+	Also take files the browser would open (PDF, music, video)	Также перехватывать файлы, которые браузер открывает сам (PDF, музыка, видео)
 #. text in the Link grabber window
 #. Link grabber, a link's status: the remedy from the failure's sentence, for a site whose bot check lets only browsers through. The sentence, with the same advice, is the cell's hover tip
-#, machine
-	Alt+click the link	Нажмите ссылку, удерживая Alt
+	Alt+click the link	Щёлкните по ссылке с зажатой клавишей Alt
 #. message or event log entry in the main window
 #. View menu: a check item; dark mode on, whatever the system's setting
-#, machine
-	Always dark	Всегда темная
+	Always dark	Всегда тёмная тема
 #. text in the Options window
 #. Options → Archives: where extracted files go
-#, machine
 	Always into a folder named after it	Всегда в папку с именем архива
 #. checkbox in a dialog box
-#, machine
 	Always turn on Speed Limiter on Mister Download Manager startup	Всегда включать ограничитель скорости при запуске Mister Download Manager
 #. text in regional.rs; text in the Scheduler window
 #. before noon, after a time of day (12-hour clock). Its pair is "PM": write both the same way (this language's own short marks, or both kept as AM and PM)
-#, machine
 	AM	AM
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	American Samoa	Американское Самоа
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Andorra	Андорра
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Angola	Ангола
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Anguilla	Ангилья
 #. text in the Options window
 #. Options → Connection → DNS: a DNS server the user types in
 #. the trailing ... means it is still going on: keep it
-#, machine
 	Another DNS...	Другой DNS...
 #. text in torrent downloads
 #. starting a torrent whose destination another listed download claims
-#, machine
-	Another download already claims this torrent's destination	Другая загрузка уже использует это назначение торрента
+	Another download already claims this torrent's destination	Другая загрузка уже использует эту папку назначения торрента
 #. message or event log entry in the main window; text in the Add torrent window
 #. said when a torrent would write a file another download in the list already uses; {file} is its path
-#, machine
 	Another download already claims {file}. Choose a different destination.	Другая загрузка уже использует файл {file}. Выберите другую папку назначения.
 #. text in unix.rs
 #. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer's one wake alarm is already set by something else
-#, machine
-	Another program has set the computer's wake alarm	Другая программа установила будильник пробуждения компьютера
+	Another program has set the computer's wake alarm	Другая программа уже задала таймер пробуждения компьютера
 #. text in the Options window
 #. Options → Proxy / Socks: Test's answer; {ms} milliseconds; {ip} the internet address the site saw (the proxy's, or this computer's without one)
-#, machine
-	Answered in {ms} ms. The internet sees {ip}.	Ответ получен за {ms} мс. Интернет видит {ip}.
+	Answered in {ms} ms. The internet sees {ip}.	Ответ получен за {ms} мс. Внешний IP-адрес: {ip}.
 #. text in the Options window
 #. Options → DNS settings: the test's answer; {ms} milliseconds, {ip} the address found
-#, machine
 	Answered in {ms} ms: {ip}	Ответ получен за {ms} мс: {ip}
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Antarctica	Антарктида
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Antigua and Barbuda	Антигуа и Барбуда
 #. text in the Options window
 #. Options → Network adapter: the first choice: no adapter is chosen, the system picks one for each connection
-#, machine
-	Any (the system chooses)	Любой (система выбирает)
+	Any (the system chooses)	Любой (выбирается системой)
 #. text in the Scheduler window
-#, machine
 	April	Апрель
 #. window title in extracting archives (a download's log, the Archive password window); text in extracting archives (a download's log, the Archive password window); text in the Link grabber window
 #. what a screen reader calls the Archive password window's box
 #. what a screen reader calls Link grabber's password box
-#, machine
 	Archive password	Пароль архива
 #. window title in the Options window
 #. window title: the passwords tried on encrypted archives
-#, machine
 	Archive passwords	Пароли архивов
 #. text in the settings
 #. the list of archive passwords in the system's keychain (Credential Manager, the keyring): its name there
-#, machine
 	archive passwords	пароли архивов
 #. button in the Options window
 #. Options → Archives: button: edit the list of passwords tried on encrypted archives
 #. the trailing ... means it opens a window: keep it
-#, machine
 	Archive passwords...	Пароли архивов...
 #. group box title in the Options window; text in the Options window
 #. Options → Archives: group box title
 #. tab title: extracting downloaded archives, and Link grabber
-#, machine
 	Archives	Архивы
 #. text in the Options window
 #. Options page title: extracting downloaded archives, and Link grabber
-#, machine
-	Archives and Link grabber	Архивы и перехватчик ссылок
+	Archives and Link grabber	Архивы и Перехват ссылок
 #. text in a dialog box
 #. {name} = a file name (keep the braces as they are)
-#, machine
 	Are you sure you want to delete "{name}" from Mister Download Manager list of downloads?	Вы действительно хотите удалить «{name}» из списка загрузок Mister Download Manager?
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Argentina	Аргентина
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Armenia	Армения
 #. text in rssdlg.rs
-#, machine
 	Articles	Статьи
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Aruba	Аруба
 #. option (radio button) in the Options window
-#, machine
 	As the system's region writes them	Как указано в региональных настройках системы
 #. text in the Options window
-#, machine
 	Ask it with:	Запросить с помощью:
 #. message or event log entry in the main window
 #. event log entry: the torrent's trackers were asked for peers again (Reannounce)
-#, machine
-	Asked the trackers for peers again	Запрошены пиры у трекеров повторно
+	Asked the trackers for peers again	Повторно запрошены пиры у трекеров
 #. text in the Options window
 #. Options → Add an account: the sign-in is starting or being checked
 #. the trailing ... means it is still going on: keep it
-#, machine
-	Asking the service...	Запрос к службе...
+	Asking the service...	Запрос к сервису...
 #. text in the Options window
 #. Options → Proxy / Socks: Test is running
 #. Options → DNS settings: the test is running
 #. the trailing ... means it is still going on: keep it
-#, machine
 	Asking...	Запрос...
 #. text in the Download video window
 #. a choice in the Download video window: only the sound; {type} is MP3, M4A…
-#, machine
 	Audio only {type}	Только аудио {type}
 #. text in playlistdlg.rs
 #. a quality in Download video for a whole playlist: only the sound, as the site has it (not converted)
-#, machine
 	Audio only, original	Только аудио, оригинал
 #. text in the Download video window
 #. a choice in the Download video window: only the sound, the site's own file as it is (not converted); {type} is WEBM, M4A…
-#, machine
 	Audio only, original {type}	Только аудио, исходный {type}
 #. text in the Scheduler window
-#, machine
 	August	Август
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Australia	Австралия
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Austria	Австрия
 #. checkbox in the Options window; text in the Options window
 #. Options → Download panels → Button size: the round button in a feed and over a small video, the button with its words over a big one (the default)
 #. checkbox: the User-Agent is the default browser's, which MDM finds itself
-#, machine
 	Automatic	Автоматически
 #. text in remote.rs
 #. remote control page (on a phone): category choice: the category follows the file's type
-#, machine
 	Automatic (by file type)	Автоматически (по типу файла)
 #. text in the Options window
 #. {category} = a category name such as "Music" (keep the braces as they are)
-#, machine
 	Automatically put in "{category}" category the following file types:	Автоматически помещать в категорию «{category}» следующие типы файлов:
 #. text in the Options window
-#, machine
 	Automatically start downloading the following file types:	Автоматически начинать загрузку следующих типов файлов:
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Azerbaijan	Азербайджан
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Bahamas	Багамские Острова
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Bahrain	Бахрейн
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Bangladesh	Бангладеш
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Barbados	Барбадос
 #. window title in the Batch download window
-#, machine
 	Batch download	Пакетная загрузка
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Belarus	Беларусь
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Belgium	Бельгия
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Belize	Белиз
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Benin	Бенин
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Bermuda	Бермудские Острова
 #. text in playlistdlg.rs
 #. a quality in Download video for a whole playlist: each video's best
-#, machine
 	Best quality	Лучшее качество
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Bhutan	Бутан
 #. text in cnl.rs
 #. button in the Click'n'Load window: refuse this site's links (remembered)
-#, machine
 	Block	Блокировать
 #. text in the Add torrent window
 #. Torrent settings: the address of an IP blocklist (empty: none)
-#, machine
 	Block the addresses in this list (P2P or eMule format):	Блокировать адреса из этого списка (формат P2P или eMule):
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Bolivia	Боливия
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Bonaire, Sint Eustatius and Saba	Бонэйр, Синт-Эстатиус и Саба
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Bosnia and Herzegovina	Босния и Герцеговина
 #. text in helpers.rs
-#, machine
-	Both are open source. MDM gets them from their official releases with its own downloader and checks each file's signature before it runs. About 100 MB, once.	Оба являются открытым исходным кодом. MDM получает их из официальных выпусков с помощью собственного загрузчика и проверяет подпись каждого файла перед запуском. Около 100 МБ, однократно.
+	Both are open source. MDM gets them from their official releases with its own downloader and checks each file's signature before it runs. About 100 MB, once.	Обе программы имеют открытый исходный код. MDM загружает их из официальных релизов собственным загрузчиком и проверяет подпись каждого файла перед запуском. Около 100 МБ, однократно.
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Botswana	Ботсвана
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Bouvet Island	Остров Буве
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Brazil	Бразилия
 #. text in the Options window
-#, machine
-	Bring back {names} as they were shipped: their names, file types and folders? Your own categories, General and Torrents stay as they are. Downloads already moved to General stay there.	Вернуть {names} в исходное состояние: их имена, типы файлов и папки? Ваши собственные категории, «Общие» и «Торренты» останутся без изменений. Загрузки, уже перемещенные в «Общие», останутся там.
+	Bring back {names} as they were shipped: their names, file types and folders? Your own categories, General and Torrents stay as they are. Downloads already moved to General stay there.	Восстановить исходные настройки категорий {names} (имена, типы файлов и папки)? Пользовательские категории, а также «Общие» и «Торренты» останутся без изменений. Загрузки, уже перемещённые в «Общие», останутся там.
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	British Indian Ocean Territory	Британская территория в Индийском океане
 #. text in a dialog box; text in the Link grabber window; button in the Link grabber window; button in the Options window
 #. verb: choose a folder
-#, machine
 	Browse	Обзор
 #. button in categories.rs; button in the Options window
 #. the trailing ... means it opens a window: keep it
-#, machine
 	Browse...	Обзор...
 #. text in extension.rs
-#, machine
-	Browser integration isn't set up on this computer, so no browser can reach Mister Download Manager yet.	Интеграция с браузером не настроена на этом компьютере, поэтому ни один браузер пока не может связаться с Mister Download Manager.
+	Browser integration isn't set up on this computer, so no browser can reach Mister Download Manager yet.	Интеграция с браузерами на этом компьютере не настроена, поэтому браузеры пока не могут взаимодействовать с Mister Download Manager.
 #. page title in the Options window
-#, machine
 	Browser/System Integration	Интеграция с браузером/системой
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Brunei	Бруней
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Bulgaria	Болгария
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Burkina Faso	Буркина-Фасо
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Burundi	Бурунди
 #. text in the Link grabber window
 #. Link grabber, a link's status: the server asked to try later (429, 503)
-#, machine
-	Busy, try later	Занято, попробуйте позже
+	Busy, try later	Сервер занят, повторите позже
 #. text in the Options window
 #. Options → Download panels: the size of the download button over videos, chosen under it (Automatic / Full / Compact)
-#, machine
 	Button size:	Размер кнопки:
 #. message or event log entry in the main window
-#, machine
 	by batch download	пакетной загрузкой
 #. message or event log entry in the main window
-#, machine
-	by Link grabber	с помощью Link grabber
+	by Link grabber	с помощью Перехвата ссылок
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Cabo Verde	Кабо-Верде
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Cambodia	Камбоджа
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Cameroon	Камерун
 #. text in the Link grabber window
 #. Link grabber, a link's status: a server that can't send parts of a file, so the download can't resume; there is nothing to do here. The sentence is the cell's hover tip
-#, machine
-	Can't resume	Невозможно возобновить
+	Can't resume	Возобновление невозможно
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Canada	Канада
 #. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in extracting archives (a download's log, the Archive password window); button in the Find window; button in gallerydlg.rs; text in the Link grabber window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; text in remote.rs; button in the Scheduler window; button in the Add torrent window; button in traypanel.rs; button in the Download video window
 #. button: stop downloading the update
-#, machine
 	Cancel	Отмена
 #. text in errors.rs
-#, machine
 	cancelled	отменено
 #. text in errors.rs
-#, machine
-	cannot connect to the server	не удается подключиться к серверу
+	cannot connect to the server	не удаётся подключиться к серверу
 #. message or event log entry in the main window
 #. {text} = text the user searched for (keep the braces as they are)
-#, machine
 	Cannot find "{text}"	Не удается найти «{text}»
 #. text in the Checksum window
 #. {error} = an error message (keep the braces as they are)
-#, machine
-	Cannot read the file: {error}	Не удается прочитать файл: {error}
+	Cannot read the file: {error}	Не удаётся прочитать файл: {error}
 #. text in errors.rs
-#, machine
-	cannot resume: {detail}	не удается возобновить: {detail}
+	cannot resume: {detail}	не удаётся возобновить: {detail}
 #. group box title in the Options window; text in the Options window
-#, machine
 	Capture downloads from the following browsers:	Перехватывать загрузки из следующих браузеров:
 #. text in extension.rs
 #. the headline of the window that offers the browser extension
-#, machine
-	Catch downloads from your browser	Перехватывайте загрузки из браузера
+	Catch downloads from your browser	Перехват загрузок из браузера
 #. text in the main window (menus, toolbar, Categories pane)
 #. title of the side pane that lists the categories
-#, machine
 	Categories	Категории
 #. page title in the Options window
-#, machine
 	Categories, file types, folders	Категории, типы файлов, папки
 #. text in a dialog box; text in the Options window; text in remote.rs
 #. remote control page (on a phone): label of the category choice for a new download
-#, machine
 	Category	Категория
 #. text in categories.rs; text in a dialog box
 #. title of the folder picker of the category dialog
-#, machine
 	Category folder	Папка категории
 #. text in categories.rs
-#, machine
 	Category properties	Свойства категории
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Cayman Islands	Каймановы острова
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Central African Republic	Центральноафриканская Республика
 #. text in the Options window
 #. Options → Remote → Status: the certificate's fingerprint, which the phone's browser shows when it warns about it; {fingerprint} = hex digits
-#, machine
 	Certificate (SHA-256): {fingerprint}	Сертификат (SHA-256): {fingerprint}
 #. text in the Options window
 #. Options → DNS over TLS: label before the name the server's certificate shows
-#, machine
 	Certificate name:	Имя сертификата:
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Chad	Чад
 #. text in the Scheduler window
 #. link after "Windows' power options don't allow wake timers": opens Power Options' advanced settings, where it can be changed
-#, machine
 	Change	Изменить
 #. text in the Options window
 #. {category} = a category name such as "Music" (keep the braces as they are)
-#, machine
-	Change folder for "{category}" category on last selected	Изменить папку для категории «{category}» по последнему выбранному
+	Change folder for "{category}" category on last selected	Изменять папку для категории «{category}» на последнюю выбранную
 #. text in the Link grabber window
 #. Link grabber button (IDM's): tick every link
-#, machine
 	Check all	Выбрать все
 #. text in rssdlg.rs
 #. RSS feeds window, at the bottom: "Check feeds every [30] minutes"
-#, machine
 	Check feeds every	Проверять ленты каждые
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend); text in helpers.rs
 #. Helpers: button: look for newer versions of MDM's own helpers now, and install them
-#, machine
 	Check for updates	Проверить обновления
 #. checkbox in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. check box in the update window: look for a new version every time MDM starts
-#, machine
 	Check for updates at every start	Проверять обновления при каждом запуске
 #. text in errors.rs
 #. what to do when the proxy set in Options didn't let a helper's download connect; {proxy} = the Options tab Proxy / Socks; {name} = yt-dlp, ffmpeg or gallery-dl; {helpers} and {other} = the buttons Helpers and Use another program
 #. {name} = a file name (keep the braces as they are)
-#, machine
-	Check the proxy in Options → {proxy}, or download {name} yourself and choose it in {helpers} → {other}.	Проверьте прокси в разделе «Параметры» → «{proxy}» или скачайте {name} самостоятельно и выберите его в разделе «{helpers}» → «{other}».
+	Check the proxy in Options → {proxy}, or download {name} yourself and choose it in {helpers} → {other}.	Проверьте настройки прокси в разделе «Параметры» → «{proxy}» или загрузите {name} самостоятельно и укажите файл в «{helpers}» → «{other}».
 #. text in helpers.rs
-#, machine
-	Check your connection, then try again, or get them later from the video window.	Проверьте подключение, затем повторите попытку или получите их позже из окна видео.
+	Check your connection, then try again, or get them later from the video window.	Проверьте подключение к сети и повторите попытку или загрузите компоненты позже из окна видео
 #. text in the Options window
 #. tooltip of "Show downloads when the notification area icon is clicked": what the click on MDM's tray icon does when it is ticked and when not
-#, machine
-	Checked, a click on MDM's icon shows what is downloading, with Pause and Cancel, and a double click opens the window; unchecked, a click shows or hides the window	Если флажок установлен, щелчок по значку MDM показывает текущие загрузки с кнопками «Приостановить» и «Отменить», а двойной щелчок открывает окно. Если флажок снят, щелчок показывает или скрывает окно.
+	Checked, a click on MDM's icon shows what is downloading, with Pause and Cancel, and a double click opens the window; unchecked, a click shows or hides the window	Если чекбокс установлен, щелчок по значку MDM отображает активные загрузки с кнопками «Приостановить» и «Отменить», а двойной щелчок открывает окно программы. Если чекбокс снят, щелчок показывает или скрывает окно.
 #. text in the Options window
 #. tooltip of the close-setting: checked keeps MDM running when the window closes, in the notification area when available or else the taskbar; downloads continue; unchecked closing quits
-#, machine
-	Checked, closing the window keeps MDM running: it hides in the notification area when available, or minimizes to the taskbar otherwise, and downloads continue; unchecked, closing quits MDM	Если этот параметр включен, MDM продолжит работу при закрытии окна: он будет скрыт в области уведомлений, если она доступна, или свернется на панель задач, а загрузки продолжатся; если параметр отключен, MDM завершит работу при закрытии окна.
+	Checked, closing the window keeps MDM running: it hides in the notification area when available, or minimizes to the taskbar otherwise, and downloads continue; unchecked, closing quits MDM	Если чекбокс установлен, при закрытии окна MDM продолжит работу в области уведомлений (или свернётся на панель задач), а загрузки не прервутся; если чекбокс снят, закрытие окна завершит работу MDM.
 #. text in the Options window
 #. tooltip of "Keep private-window downloads in the list": checked, downloads from a browser's private (incognito) window are saved in the list and survive MDM closing or restarting; unchecked, they are kept in memory only and are gone when MDM closes. Their cookies are never saved.
-#, machine
-	Checked, downloads from a browser's private window are saved in the list and are still there when MDM restarts; unchecked, they are kept in memory only and are gone when MDM closes. Their cookies are never saved	Если этот флажок установлен, загрузки из приватного окна браузера сохраняются в списке и остаются там после перезапуска MDM; если флажок снят, они хранятся только в памяти и исчезают после закрытия MDM. Их файлы cookie никогда не сохраняются.
+	Checked, downloads from a browser's private window are saved in the list and are still there when MDM restarts; unchecked, they are kept in memory only and are gone when MDM closes. Their cookies are never saved	Если чекбокс установлен, загрузки из приватного окна браузера сохраняются в списке после перезапуска MDM; если чекбокс снят, они хранятся только в памяти и удаляются при закрытии MDM. Файлы cookie таких загрузок не сохраняются никогда.
 #. message or event log entry in the main window
 #. event log entry after Recheck: {have} and {total} are sizes ("1.2 GB of 4 GB there")
-#, machine
-	Checked: {have} of {total} there	Проверено: {have} из {total} имеется
+	Checked: {have} of {total} there	Проверено: {have} из {total} всего
 #. message or event log entry in the main window
 #. event log entry: a torrent's files are being read and checked again (Recheck)
-#, machine
-	Checking every piece again	Повторная проверка каждого фрагмента
+	Checking every piece again	Повторная проверка всех фрагментов
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend); text in helpers.rs
 #. Helpers: MDM is asking whether a newer version of a helper exists
 #. the trailing ... means it is still going on: keep it
-#, machine
 	Checking for updates...	Проверка обновлений...
 #. text in gallerydlg.rs
 #. in Download a gallery, while gallery-dl checks the address (offline)
 #. the trailing ... means it is still going on: keep it
-#, machine
 	Checking the address with gallery-dl...	Проверка адреса с помощью gallery-dl...
 #. text in the Checksum window
 #. why Verify is greyed: the file is being checked
 #. the trailing ... means it is still going on: keep it
-#, machine
 	Checking the file...	Проверка файла...
 #. text in helpers.rs
 #. Video helpers: a program just chosen is being checked
 #. the trailing ... means it is still going on: keep it
-#, machine
 	Checking the program...	Проверка программы...
 #. text in helpers.rs
 #. a downloaded helper's signature and checksum are being checked; {name} = yt-dlp or ffmpeg
 #. {name} = a file name; {n} = a number (keep the braces as they are)
 #. the trailing ... means it is still going on: keep it
-#, machine
 	Checking {name} ({n} of {total})...	Проверка {name} ({n} из {total})...
 #. text in the download list (sizes, speeds, status)
 #. the list's Status column while a torrent's files or a finished file are checked (against the torrent's hashes or a checksum); {percent} how much is checked, e.g. "42%". One short word: the column is narrow
-#, machine
 	Checking {percent}	Проверка {percent}
 #. text in the Checksum window; text in extension.rs; text in the Link grabber window; text in the Options window
 #. in the browser extension's window, while it reads whether the browsers can reach MDM (a moment, usually)
 #. Test browser integration, while it reads where browser integration stands (a moment, usually)
 #. the trailing ... means it is still going on: keep it
-#, machine
 	Checking...	Проверка...
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Chile	Чили
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	China	Китай
 #. text in remote.rs
 #. remote control page (on a phone): what the ".torrent file" button does (screen readers)
-#, machine
 	Choose a .torrent file	Выбрать .torrent-файл
 #. message or event log entry in the main window
 #. title of the file dialog of View → Font → Choose a font file
 #. title of the message when the font picked in View → Font can't be used
-#, machine
 	Choose a font file	Выберите файл шрифта
 #. text in helpers.rs
-#, machine
 	Choose a JavaScript runtime (Node.js, Deno, QuickJS or Bun)	Выберите среду выполнения JavaScript (Node.js, Deno, QuickJS или Bun)
 #. text in langpick.rs
-#, machine
 	Choose a language	Выберите язык
 #. text in a dialog box
 #. the Columns dialog: what it is for, above its list of the download list's columns
-#, machine
 	Choose columns to show	Выберите столбцы для отображения
 #. text in langpick.rs
-#, machine
-	Choose the language Mister Download Manager shows its windows in:	Выберите язык, на котором Mister Download Manager будет отображать свои окна:
+	Choose the language Mister Download Manager shows its windows in:	Выберите язык интерфейса Mister Download Manager:
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites: the title of the window, and the tooltip of the button, that pick a browser profile's folder
-#, machine
 	Choose the profile's folder	Выбор папки профиля
 #. text in helpers.rs; text in the Options window
 #. file picker title; {name} = the program to choose (yt-dlp, ffmpeg, 7-Zip)
 #. {name} = a file name (keep the braces as they are)
-#, machine
 	Choose {name}	Выбрать {name}
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Christmas Island	Остров Рождества
 #. button in the download list; button in the Options window
 #. verb: clears this filter
-#, machine
 	Clear	Очистить
 #. text in cnl.rs
 #. notice: Click'n'Load couldn't start; {port} is 9666; JDownloader is another download manager that uses the same port
-#, machine
-	Click'n'Load can't start: another program (JDownloader?) is using port {port}. Close it, then turn Click'n'Load off and on again in Options.	Click'n'Load не может запуститься: другая программа (JDownloader?) использует порт {port}. Закройте её, затем выключите и снова включите Click'n'Load в параметрах.
+	Click'n'Load can't start: another program (JDownloader?) is using port {port}. Close it, then turn Click'n'Load off and on again in Options.	Не удалось запустить Click'n'Load: порт {port} занят другой программой (возможно, JDownloader). Закройте её, затем выключите и снова включите Click'n'Load в параметрах
 #. text in cnl.rs
 #. notice: Click'n'Load couldn't start; {error} the system's reason
 #. {error} = an error message (keep the braces as they are)
-#, machine
-	Click'n'Load can't start: {error}	Click'n'Load не может запуститься: {error}
+	Click'n'Load can't start: {error}	Не удалось запустить Click'n'Load: {error}
 #. text in a download's progress window
 #. column title: the peer's torrent program
-#, machine
 	Client	Клиент
 #. message or event log entry in the main window
 #. Link grabber: where the links came from: the clipboard (Tasks → Add batch download from clipboard)
-#, machine
 	Clipboard	Буфер обмена
 #. text in the Options window
-#, machine
 	Clock:	Часы:
 #. text in archtest.rs; text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in a dialog box; button in extension.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list; button in the Options window; button in rssdlg.rs; button in torrentfiles.rs; text in traypanel.rs; text in standard windows
 #. both verbs: Verify = check the file now; Close = close the window
@@ -1195,240 +905,178 @@
 #. verb: closes the filter box
 #. button that closes the torrent file list window
 #. a window's title-bar button: closes the window
-#, machine
 	Close	Закрыть
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
-#, machine
 	Close a menu or dialog	Закрыть меню или диалоговое окно
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Cocos (Keeling) Islands	Кокосовые (Килинг) острова
 #. text in remote.rs
 #. remote control page (on a phone): label of the pairing code's box (8 digits)
-#, machine
 	Code	Код
 #. text in the Options window
 #. Options → Remote → Pair a device: label before the 8-digit code
-#, machine
 	Code:	Код:
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Colombia	Колумбия
 #. window title in a dialog box; text in a dialog box
 #. what a screen reader calls the Columns dialog's list of the download list's columns
-#, machine
 	Columns	Столбцы
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Comoros	Коморы
 #. text in the Options window
 #. Options → Download panels → Button size: only the round button (the logo, the arrow, the close mark) over every video
-#, machine
 	Compact	Компактный
 #. item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window; text in remote.rs
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): finished
-#, machine
 	Complete	Завершено
 #. text in the download list (sizes, speeds, status)
 #. category name: compressed archives (zip, rar, 7z)
-#, machine
-	Compressed	Сжатые
+	Compressed	Архивы
 #. text in the Options window
 #. Options → DNS settings: NextDNS's own configuration ID (optional)
-#, machine
 	Configuration ID:	Идентификатор конфигурации:
 #. text in a download's progress window
 #. verb: button that saves the deferred rename in the progress window
-#, machine
 	Confirm	Подтвердить
 #. text in the Options window
-#, machine
 	Confirm before deleting downloads	Подтверждать удаление загрузок
 #. window title in a dialog box
-#, machine
 	Confirm deletion of downloads	Подтверждение удаления загрузок
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Congo	Конго
 #. text in the Add torrent window
 #. Torrent settings: uTP, BitTorrent over UDP, which many peers use (more peers, often faster)
-#, machine
 	Connect over uTP too (UDP)	Подключаться также через uTP (UDP)
 #. text in extension.rs
 #. in the browser extension's window, beside a browser whose extension reached MDM
-#, machine
 	Connected	Подключено
 #. text in extension.rs
-#, machine
-	Connected: downloads from your browser now come here.	Подключено: загрузки из браузера теперь перехватываются.
+	Connected: downloads from your browser now come here.	Подключено: загрузки из браузера теперь передаются в MDM.
 #. text in a download's progress window
 #. the trailing ... means it is still going on: keep it
-#, machine
 	Connecting...	Подключение...
 #. text in the Options window
 #. tab title: connection settings
-#, machine
 	Connection	Подключение
 #. page title in the Options window
-#, machine
 	Connections and Limits	Подключения и ограничения
 #. text in the Options window
-#, machine
 	Connections:	Подключения:
 #. link (opens a web page) in the Help menu's windows (About, updates, shortcuts, Tell a friend)
-#, machine
 	Contributors	Участники
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Cook Islands	Острова Кука
 #. group box title in the Options window
 #. Options → Sites Logins: group box title: yt-dlp signs in to video sites with a browser's cookies
-#, machine
 	Cookies for video sites	Файлы cookie для видеосайтов
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
-#, machine
 	Copied to the clipboard.	Скопировано в буфер обмена.
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
-#, machine
 	Copy	Копировать
 #. button in the Options window
 #. button: copy the sign-in code
-#, machine
 	Copy code	Копировать код
 #. button in crashui.rs
 #. crash report window button: copy the report's text
-#, machine
-	Copy report	Копировать отчет
+	Copy report	Копировать отчёт
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Costa Rica	Коста-Рика
 #. text in rssdlg.rs
 #. RSS feeds window: the selected feed's last fetch failed, with why
 #. {error} = an error message (keep the braces as they are)
-#, machine
-	Could not be read: {error}	Не удалось прочитать: {error}
+	Could not be read: {error}	Не удалось обработать: {error}
 #. text in errors.rs
 #. a helper (yt-dlp, ffmpeg) couldn't be downloaded: the proxy set in Options ({proxy}, its address) didn't let MDM connect
-#, machine
 	could not connect through the proxy {proxy}	не удалось подключиться через прокси-сервер {proxy}
 #. text in errors.rs
 #. a helper (yt-dlp, ffmpeg) couldn't be downloaded: its server ({host}) couldn't be reached
 #. {host} = a server name such as "example.com" (keep the braces as they are)
-#, machine
 	could not reach {host}	не удалось подключиться к {host}
 #. text in errors.rs
 #. a helper (yt-dlp, ffmpeg) couldn't be downloaded: its server ({host}) couldn't be reached, for the system's reason {cause}
 #. {host} = a server name such as "example.com" (keep the braces as they are)
-#, machine
 	could not reach {host} ({cause})	не удалось подключиться к {host} ({cause})
 #. text in helpers.rs
 #. Helpers: the last update check failed (no network...); MDM checks again later by itself
-#, machine
-	Couldn't check for updates: MDM tries again later	Не удалось проверить наличие обновлений: MDM повторит попытку позже
+	Couldn't check for updates: MDM tries again later	Не удалось проверить обновления: MDM повторит попытку позже
 #. text in extracting archives (a download's log, the Archive password window)
 #. in a download's log: {name} is the archive's file name, {why} the reason
 #. {name} = a file name (keep the braces as they are)
-#, machine
 	Couldn't extract {name}: {why}	Не удалось извлечь {name}: {why}
 #. message or event log entry in the main window
 #. a video's or gallery's log: MDM couldn't look for a newer yt-dlp (or gallery-dl); {name} = its name, {error} = why
 #. {name} = a file name; {error} = an error message (keep the braces as they are)
-#, machine
-	Couldn't look for a newer {name}: {error}	Не удалось найти более новую версию {name}: {error}
+	Couldn't look for a newer {name}: {error}	Не удалось проверить наличие новой версии {name}: {error}
 #. text in archtest.rs
 #. in a download's log: {name} is the archive's file name, {why} the reason it wasn't tested (as after "Couldn't extract {name}: ")
 #. {name} = a file name (keep the braces as they are)
-#, machine
-	Couldn't test {name}: {why}	Не удалось протестировать {name}: {why}
+	Couldn't test {name}: {why}	Не удалось проверить {name}: {why}
 #. checkbox in the Add torrent window
 #. Add torrent: keep a multi-file torrent inside its own outer folder; untick to use Save to directly
-#, machine
 	Create a folder for this torrent	Создать папку для этого торрента
 #. window title in a dialog box
-#, machine
 	Create folder	Создать папку
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Croatia	Хорватия
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Cuba	Куба
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Curaçao	Кюрасао
 #. text in the Options window
-#, machine
 	Customize "Download progress" dialog	Настроить диалоговое окно «Ход загрузки»
 #. text in the Options window
-#, machine
-	Customize keys to prevent or force downloading with MDM	Настроить клавиши для предотвращения или принудительной загрузки с MDM
+	Customize keys to prevent or force downloading with MDM	Настроить клавиши для запрета или принудительного перехвата загрузки в MDM
 #. text in the Options window
-#, machine
 	Customize MDM Download panels in browsers	Настроить панели загрузки MDM в браузерах
 #. text in the Options window
-#, machine
 	Customize MDM menu items in context menu of browsers	Настроить пункты меню MDM в контекстном меню браузеров
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Cyprus	Кипр
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Czech Republic	Чехия
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Côte d'Ivoire	Кот-д’Ивуар
 #. text in the Scheduler window; option (radio button) in the Scheduler window
 #. adverb: every day (the other choice is once, on a date)
-#, machine
 	Daily	Ежедневно
 #. text in the download list (sizes, speeds, status)
 #. a download's status: its archive's test (Options → Archives) found it damaged. One short word: the list's Status column is narrow
-#, machine
 	Damaged	Повреждён
 #. window title in archtest.rs
 #. window title: an archive (zip, 7z, rar) that was downloaded is damaged
-#, machine
 	Damaged archive	Повреждённый архив
 #. text in the download list (sizes, speeds, status)
 #. a download's status, whole (the Status cell's tip): its archive's test found it damaged; "Redownload" is the right-click command
-#, machine
-	Damaged: its archive test found errors. Right-click → Redownload downloads it again	Повреждён: тест архива обнаружил ошибки. Щелкните правой кнопкой мыши → Перезагрузить, чтобы загрузить его снова
+	Damaged: its archive test found errors. Right-click → Redownload downloads it again	Повреждён: при проверке архива обнаружены ошибки. Для повторной загрузки нажмите правой кнопкой мыши → Загрузить заново
 #. text in the Options window
-#, machine
-	Date order:	Порядок даты:
+	Date order:	Формат даты:
 #. page title in the Options window
-#, machine
-	Dates and times	Даты и время
+	Dates and times	Дата и время
 #. text in the Options window
 #. a date's order: day first (30/10/2026)
-#, machine
 	Day, month, year	День, месяц, год
 #. page title in the Options window; text in the Options window
-#, machine
-	Debrid service accounts	Учетные записи службы дебрида
+	Debrid service accounts	Учётные записи Debrid-сервисов
 #. text in the Scheduler window
-#, machine
 	December	Декабрь
 #. text in standard windows
 #. a spin box's arrow, for screen readers: one less
-#, machine
 	Decrease	Уменьшить
 #. button in the Options window
 #. button: put back the default list
-#, machine
 	Default	По умолчанию
 #. text in the Options window
 #. {category} = a category name such as "Music" (keep the braces as they are)
@@ -4396,8 +4044,7 @@
 	RSS feeds	Ленты RSS
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
-	Russia	Россия
+	Russia	Российская Федерация
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -5174,7 +4821,7 @@
 #. text in the Options window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
-	Tasks → Link grabber, or the browser's "Download all links": a split\narchive's volumes are one package, the other links of a page another.	Задачи → Перехват ссылок или «Загрузить все ссылки» браузера: тома\nразделенного архива — это один пакет, остальные ссылки страницы — другой.
+	Tasks → Link grabber, or the browser's "Download all links": a split\narchive's volumes are one package, the other links of a page another.	Задачи → Перехват ссылок или «Загрузить все ссылки» в браузере: части многотомного архива\nобъединяются в один пакет, а остальные ссылки страницы — в другой.
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Tell a friend	Рассказать другу
@@ -7460,7 +7107,7 @@ extension	Find images	Найти изображения
 #. text in the browser extension
 #. in the This page tab of the toolbar button's popup, before the Find images button; Link grabber is the name of the app's window that lists links to tick before downloading them
 #, machine
-extension	Find this page's pictures at the largest size it lists, then send the ones you want to Link grabber.	Найти изображения этой страницы в максимально возможном размере, затем отправить нужные в Link grabber.
+extension	Find this page's pictures at the largest size it lists, then send the ones you want to Link grabber.	Найти на странице изображения в максимальном размере и отправить нужные в Перехват ссылок.
 #. text in the browser extension
 #. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) after Clear finished
 #, machine
@@ -7831,7 +7478,7 @@ extension	Send downloads to	Отправлять загрузки в
 #. text in the browser extension
 #. button in the This page tab of the toolbar button's popup: send the selected pictures to the app's Link grabber window, where the user ticks which to download
 #, machine
-extension	Send to Link grabber	Отправить в Link grabber
+extension	Send to Link grabber	Отправить в Перехват ссылок
 #. text in the browser extension
 #. on the download button over a video right after it was clicked, while the download goes to the app; MDM is Mister Download Manager's short name, keep it as it is; short
 #. the trailing ... means it is still going on: keep it
@@ -7844,7 +7491,7 @@ extension	Sending to {server}	Отправка на {server}
 #. text in the browser extension
 #. shown in the This page tab of the toolbar button's popup after the pictures were sent to the app's Link grabber window
 #, machine
-extension	Sent to Link grabber: tick the ones to download there.	Отправлено в Link grabber: отметьте те, которые нужно загрузить.
+extension	Sent to Link grabber: tick the ones to download there.	Отправлено в Перехват ссылок: отметьте нужные для загрузки.
 #. text in the browser extension
 #. shown briefly on the download button after it was clicked; keep the name Mister Download Manager as it is
 #, machine
@@ -8268,7 +7915,7 @@ menu	&Language...	&Язык...
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it
 #, machine
-menu	&Link grabber...	Пе&рехват ссылок...
+menu	&Link grabber...	&Перехват ссылок...
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
