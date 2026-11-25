@@ -569,6 +569,9 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ The browser add-on's scrollbars in its own look: the video button's list of qualities and
+  the popup's lists scroll with a thin bar in their own colours, light and dark, not the browser's
+  stock grey one
 - ✅ Folder downloads: an FTP folder or a web server's "Index of" page given to Link grabber lists
   every file in it and its subfolders (a depth and file types you choose), and the folder tree is
   kept under the download folder; never above the folder or onto another site
