@@ -341,11 +341,11 @@ impl Extracts {
         if !report.skipped.is_empty() {
             note(
                 items,
-                // i18n: in a download's log, after extracting: entries of the archive not written (links, names that would leave the folder)
+                // i18n: in a download's log, after extracting: entries of the archive not written (links, names that would leave the folder, entries under a file of the archive where a folder should be)
                 crate::i18n::tn(
                     report.skipped.len() as u64,
-                    "{n} entry was left out (a link, or a name leading outside the folder)",
-                    "{n} entries were left out (links, or names leading outside the folder)",
+                    "{n} entry was left out (a link, a name leading outside the folder, or a file in its way)",
+                    "{n} entries were left out (links, names leading outside the folder, or files in their way)",
                 ),
             );
             for (entry, why) in &report.skipped {

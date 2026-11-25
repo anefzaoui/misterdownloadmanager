@@ -556,9 +556,11 @@ pub fn endpoint_path() -> Option<PathBuf> {
     data_dir().map(|d| d.join("ipc.json"))
 }
 
-/// Ask the running app something (automation API) and return its one-line answer.
+/// Ask the running app something (automation API) and return its one-line answer. A busy app
+/// is heard saying `timeout` rather than taken for a closed line: the read outlasts the
+/// channel's own wait.
 pub fn request(cmd: &Command) -> Result<String, String> {
-    exchange(cmd, None, ANSWER_WAIT).map_err(|e| e.to_string())
+    exchange(cmd, None, REPLY_WAIT + Duration::from_secs(1)).map_err(|e| e.to_string())
 }
 
 /// Ask the running app something and return its one-line answer, whatever it is (an older app

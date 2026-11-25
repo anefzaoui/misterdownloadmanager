@@ -573,6 +573,16 @@ These ship in the next version.
   looks up the stream address the page wrote for its player (master playlist first, else the best
   quality named), only addresses the page names, on a page with one video
   ([#1826](https://github.com/anefzaoui/misterdownloadmanager/issues/1826))
+- ✅ Galleries: file paths are checked more carefully
+- ✅ Command line: a playlist range from 0 or of 0 entries is refused
+- ✅ Command line: a resumed download's speed starts right
+- ✅ Command line: `video-info` sizes in the same unit as the rest
+- ✅ Automation: a busy MDM is no longer taken for one that isn't running
+- ✅ MCP: a busy or too large request is an error, not a success
+- ✅ Logs: writing resumes after the disk refused the log file
+- ✅ Crash reports: `mdm-symbolicate` takes a `.ZIP` and refuses a wrong path
+- ✅ Extracting: a damaged AES zip says it is damaged, not that the password is wrong
+- ✅ Extracting: one entry in the way no longer stops a whole archive
 - ✅ Video pieces: a server's announced size is handled more carefully
 - ✅ Download video: a piece that can't be saved fails with the reason
 - ✅ Video playlists: enormous entry numbers no longer break the listing

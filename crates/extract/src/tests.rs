@@ -986,3 +986,66 @@ fn only_hatchzips_own_refusal_with_nothing_changed_falls_back() {
     assert_eq!(seen, 0);
     assert!(!t.path().join("two.txt").exists());
 }
+
+/// A WinZip AES entry whose ciphertext was changed fails its HMAC: that is damage, not a wrong
+/// password (the AES reader checks the password itself before reading).
+#[test]
+fn a_damaged_aes_entry_is_reported_as_damaged_not_as_a_wrong_password() {
+    use std::io::{Read, Seek, SeekFrom, Write};
+    let t = tempfile::tempdir().unwrap();
+    let zip = t.path().join("aes.zip");
+    zip_of(&zip, &[("a.txt", b"hello, aes world")], Some("pw"));
+    let at = {
+        let mut a = zip::ZipArchive::new(std::fs::File::open(&zip).unwrap()).unwrap();
+        let e = a.by_index_raw(0).unwrap();
+        // Past the salt and the two password-verifier bytes, inside the ciphertext.
+        e.data_start().unwrap() + 32
+    };
+    let mut f = std::fs::OpenOptions::new()
+        .read(true)
+        .write(true)
+        .open(&zip)
+        .unwrap();
+    let mut byte = [0u8; 1];
+    f.seek(SeekFrom::Start(at)).unwrap();
+    f.read_exact(&mut byte).unwrap();
+    byte[0] ^= 0x80;
+    f.seek(SeekFrom::Start(at)).unwrap();
+    f.write_all(&byte).unwrap();
+    drop(f);
+    let dest = t.path().join("out");
+    std::fs::create_dir(&dest).unwrap();
+    let (r, _) = run(&zip, &dest, Some("pw"), Subfolder::Never);
+    assert!(matches!(r, Err(Error::Damaged(_))), "{r:?}");
+    no_staging(&dest);
+}
+
+/// An entry that cannot be written because a file of the archive is in the way is skipped, not
+/// fatal: the rest of the archive still extracts. Deeper under the file too (`a/b/c`, where
+/// neither `a/b` nor `a` is a folder), and a folder entry of the file's name.
+#[test]
+fn an_entry_under_a_file_is_skipped_not_fatal() {
+    let t = tempfile::tempdir().unwrap();
+    let zip = t.path().join("a.zip");
+    {
+        let opts = zip::write::SimpleFileOptions::default;
+        let mut z = zip::ZipWriter::new(std::fs::File::create(&zip).unwrap());
+        for (name, data) in [("a", b"1"), ("a/b", b"2"), ("a/b/c", b"4"), ("c.txt", b"3")] {
+            z.start_file(name, opts()).unwrap();
+            z.write_all(data).unwrap();
+        }
+        // A folder entry where the file is.
+        z.add_directory("a/", opts()).unwrap();
+        z.finish().unwrap();
+    }
+    let dest = t.path().join("out");
+    std::fs::create_dir(&dest).unwrap();
+    let (r, _) = run(&zip, &dest, None, Subfolder::Never);
+    let report = r.expect("the rest extracts");
+    assert_eq!(std::fs::read(dest.join("a")).unwrap(), b"1");
+    assert!(!dest.join("a/b").exists());
+    assert_eq!(std::fs::read(dest.join("c.txt")).unwrap(), b"3");
+    let mut left: Vec<_> = report.skipped.iter().map(|(n, _)| n.as_str()).collect();
+    left.sort_unstable();
+    assert_eq!(left, ["a/", "a/b", "a/b/c"], "{:?}", report.skipped);
+}

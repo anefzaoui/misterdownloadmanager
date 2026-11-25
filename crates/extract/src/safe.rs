@@ -99,6 +99,25 @@ fn through_link(root: &Path, path: &Path) -> bool {
     false
 }
 
+/// A file where `path` or a folder on the way to it should be, under `root`: an earlier entry of
+/// the archive (`a`, for `a/b/c`), not a damaged disk. Nothing under it can be written, and the
+/// rest of the archive still can. Read only: the link checks come first, as for every entry.
+fn file_in_the_way(root: &Path, path: &Path) -> bool {
+    let Ok(rel) = path.strip_prefix(root) else {
+        return true;
+    };
+    let mut at = root.to_path_buf();
+    for c in rel.components() {
+        at.push(c);
+        match fs::symlink_metadata(&at) {
+            Ok(m) if !m.is_dir() => return true,
+            Ok(_) => {}
+            Err(_) => break,
+        }
+    }
+    false
+}
+
 /// Writes entries into the staging folder, counting what it reads against the limits (an entry
 /// left out is decompressed all the same).
 pub struct Writer<'a> {
@@ -210,6 +229,10 @@ impl<'a> Writer<'a> {
             self.skip(name, "through a link");
             return Ok(());
         }
+        if file_in_the_way(&self.root, &path) {
+            self.skip(name, "a file is in the way");
+            return Ok(());
+        }
         fs::create_dir_all(&path)?;
         Ok(())
     }
@@ -236,6 +259,10 @@ impl<'a> Writer<'a> {
         if let Some(parent) = path.parent() {
             if through_link(&self.root, parent) {
                 self.skip(name, "through a link");
+                return self.drain(name, size, data);
+            }
+            if file_in_the_way(&self.root, parent) {
+                self.skip(name, "a file is in the way");
                 return self.drain(name, size, data);
             }
             fs::create_dir_all(parent)?;

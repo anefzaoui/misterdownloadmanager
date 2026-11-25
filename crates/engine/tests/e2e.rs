@@ -1221,6 +1221,24 @@ async fn the_view_names_the_file_when_a_resume_finds_its_place_taken() {
     assert_eq!(std::fs::read(&dest).unwrap(), b"someone else's");
 }
 
+/// #1872: a resumed download's first snapshot shows the bytes already on disk, before the run
+/// has read its state again: a watcher's speed (the command line's) doesn't count them as new.
+#[tokio::test]
+async fn a_resume_shows_the_bytes_on_disk_from_its_first_snapshot() {
+    let s = server("rate=1M").await;
+    let (_dir, state) = paused(&s, "/gen/8M/shown.bin?seed=73").await;
+    let before = mdm_engine::state::ResumeState::load(&state)
+        .unwrap()
+        .downloaded();
+    assert!(before > 0, "partial progress saved");
+    s.set_faults(Faults::default());
+    // The test's runtime runs one task at a time: the download's own task hasn't started yet.
+    let dl = Download::resume(state, Default::default(), fast_opts()).unwrap();
+    assert_eq!(dl.snapshot().downloaded, before);
+    let out = dl.wait().await.expect("the resume goes on");
+    assert_eq!(out.size, 8 << 20);
+}
+
 #[tokio::test]
 async fn pause_and_resume_continues_where_it_stopped() {
     let s = server("rate=1M").await;
