@@ -77,6 +77,16 @@ FTP and FTPS (`ftp.rs`) go through the same planner, workers and state: a segmen
 `RETR` on a control session instead of a ranged `GET`, `SIZE` and `MDTM` stand in for the
 headers, and sessions are pooled per download and reused between segments.
 
+A folder given to Link grabber (#1774, `folder.rs`) is read with its subfolders, breadth first:
+an FTP folder by `MLSD`, else `LIST` (`ftp::Lister`, one session for every folder), a web
+server's listing page ("Index of", recognized by its title) as `page_links` reads a page. An
+entry is a name in the folder, matched by name: a link elsewhere (another host, the folder above,
+a query, a deeper path) or a name that isn't plain is no entry, and FTP's symbolic links aren't
+followed. The depth asked (at most `MAX_DEPTH`), `MAX_FOLDERS`, `MAX_FILES` and each listing's
+size bound it. The app makes each folder's files a package whose folder is the tree's under the
+download folder (`grabber.rs`); the lab server serves made-up trees, a hostile one and a huge one
+(`labserver/src/tree.rs`) over HTTP and FTP for the end-to-end tests.
+
 ## App
 
 One egui window painted to fixed pixel coordinates, plus one immediate viewport per dialog.

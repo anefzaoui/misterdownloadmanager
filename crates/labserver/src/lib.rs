@@ -18,6 +18,7 @@ pub mod rapidgator;
 mod server;
 pub mod socks;
 mod streams;
+pub mod tree;
 
 pub use faults::Faults;
 pub use server::{Cert, Config, HELP, Held, LabServer, LogEntry, LogSink, SlotHold};

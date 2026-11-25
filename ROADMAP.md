@@ -569,6 +569,10 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ Folder downloads: an FTP folder or a web server's "Index of" page given to Link grabber lists
+  every file in it and its subfolders (a depth and file types you choose), and the folder tree is
+  kept under the download folder; never above the folder or onto another site
+  ([#1774](https://github.com/anefzaoui/misterdownloadmanager/issues/1774))
 - ✅ The browser add-on finds all the images on a page when asked (**This page → Find images**),
   at the largest size listed, filtered by size and type, and sends them to Link grabber
   ([#1781](https://github.com/anefzaoui/misterdownloadmanager/issues/1781))

@@ -4301,14 +4301,14 @@ async fn read_up_to(
 }
 
 /// The most of a web page [`page_links`] reads.
-const PAGE_LINKS_MAX: usize = 8 << 20;
+pub(crate) const PAGE_LINKS_MAX: usize = 8 << 20;
 /// The most of a web page [`page_videos`] reads: what it declares is in its head, or near it.
 const PAGE_VIDEOS_MAX: usize = 2 << 20;
 
 /// The web page at `url`, asked as a download's look asks (`get`: the user's proxy and agent,
 /// the redirects and waiting pages it follows), read up to `max` bytes, with the address it came
 /// from. None for an answer that isn't a web page (its body isn't read).
-async fn web_page(
+pub(crate) async fn web_page(
     url: Url,
     headers: HeaderMap,
     opts: &Options,

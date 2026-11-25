@@ -591,6 +591,13 @@ pub struct Settings {
     pub grabber_check: bool,
     /// Link grabber: web pages hidden (IDM's "Hide HTML files"). On.
     pub grabber_hide_pages: bool,
+    /// Link grabber (#1774): how many levels of subfolders an FTP folder or a web server's
+    /// listing ("Index of") given to it is read into, 0 for the folder's own files only (at most
+    /// `mdm_engine::folder::MAX_DEPTH`). 3.
+    pub grabber_depth: u8,
+    /// ... only its files of these types, written as Options → File types writes them (`ISO ZIP
+    /// R0*`); every type when empty. Empty.
+    pub grabber_types: String,
     /// Click'n'Load (#37): a page's button posts its links to 127.0.0.1:9666, shown in Link
     /// grabber. Off by default: any page may post there.
     pub cnl_on: bool,
@@ -779,6 +786,8 @@ impl Default for Settings {
             test_archives_gb: 4,
             grabber_check: true,
             grabber_hide_pages: true,
+            grabber_depth: 3,
+            grabber_types: String::new(),
             cnl_on: false,
             cnl_sites: Vec::new(),
         }

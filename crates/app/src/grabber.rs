@@ -6,7 +6,10 @@
 //! looked up for its name and size, Check all / Uncheck all, "Hide web pages", OK adds the
 //! ticked ones to the queue); the packages come from JDownloader's link grabber: a split
 //! archive's volumes are one package, the other links of one page another, the rest "Various
-//! files". A package has its folder, an archive password and "Extract when done".
+//! files". A package has its folder, an archive password and "Extract when done". A folder
+//! given on its own (an `ftp://` folder, a web server's "Index of" page, #1774) is read with its
+//! subfolders: each folder's files are a package whose folder keeps the tree under the download
+//! folder.
 
 use std::path::PathBuf;
 use std::sync::{Arc, Mutex};
@@ -69,6 +72,12 @@ pub enum Origin {
     Known,
     /// Packed by its site (Click'n'Load): the site's package name.
     Site(String),
+    /// A folder's files (#1774): the folder's page (as `Page`) and where they go under the
+    /// download folder (`Imported::folder`).
+    Folder {
+        page: String,
+        folder: Vec<String>,
+    },
 }
 
 impl Origin {
@@ -102,7 +111,7 @@ impl Origin {
     fn name(&self) -> String {
         match self {
             Origin::Volumes { base, .. } => base.clone(),
-            Origin::Page(p) => p.clone(),
+            Origin::Page(p) | Origin::Folder { page: p, .. } => p.clone(),
             // i18n: Link grabber: the package of links that belong to no other
             Origin::Various => crate::i18n::t("Various files").to_owned(),
             // i18n: Link grabber: the package of links the download list has already
@@ -201,9 +210,10 @@ fn magnet_name(url: &Url) -> String {
 }
 
 type Check = Arc<Mutex<Option<Result<mdm_engine::ProbeInfo, LinkState>>>>;
-/// A page's links as they were read (`None` until then; empty when it had none or couldn't be
-/// read).
-type Read = Arc<Mutex<Option<Vec<Imported>>>>;
+/// A page's links (a folder's files) as they were read (`None` until then; empty when it had
+/// none or couldn't be read), and what to add to the window's Source line (a folder listed only
+/// in part), else nothing.
+pub type Read = Arc<Mutex<Option<(Vec<Imported>, String)>>>;
 
 /// A package's ticked links, as the window hands them over.
 pub struct Picked {
@@ -310,6 +320,19 @@ impl Grabber {
                 Origin::Known
             } else if let Some(site) = d.package.as_deref().filter(|p| !p.trim().is_empty()) {
                 Origin::Site(site.trim().to_owned())
+            } else if !d.folder.is_empty() {
+                // Its folder's page, named as a page's package is, its folders' names as
+                // they read (`my files`, not `my%20files`).
+                let page = match Origin::of(&url, "", d.referer.as_deref()) {
+                    Origin::Page(page) => percent_encoding::percent_decode_str(&page)
+                        .decode_utf8_lossy()
+                        .into_owned(),
+                    _ => url.host_str().unwrap_or_default().to_owned(),
+                };
+                Origin::Folder {
+                    page,
+                    folder: d.folder.clone(),
+                }
             } else {
                 Origin::of(&url, &name, d.referer.as_deref())
             };
@@ -320,19 +343,28 @@ impl Grabber {
             {
                 self.packages[pkg].password = pw.to_owned();
             }
+            // A folder's list said its size (FTP's): not looked up again. An FTP folder is read
+            // for its files as a web page is (#1774), never downloaded itself.
+            let folder = mdm_engine::folder::is_ftp_folder(&url);
+            let listed = d.size.is_some() || folder;
             self.links.push(Link {
+                size: d.size,
                 found: d,
                 url,
                 pkg,
                 category: category_of(magnet, &name),
                 name,
-                size: None,
-                state: LinkState::Unchecked,
-                on: !known,
+                state: if listed {
+                    LinkState::Online
+                } else {
+                    LinkState::Unchecked
+                },
+                // An FTP folder can't be downloaded itself: its files are what's wanted.
+                on: !known && !folder,
                 known,
                 magnet,
                 check: None,
-                page: false,
+                page: folder,
                 read: None,
             });
             settle.insert(pkg);
@@ -392,11 +424,24 @@ impl Grabber {
         if let Some(&k) = self.origins.get(&key) {
             return k;
         }
+        // A folder's files keep its tree under the download folder (Options → Save to's,
+        // General's), whatever their types: set, as one typed is (#1774). Each name a plain one
+        // again, as a file's is: the engine took only plain names from the listing.
+        let tree = match &origin {
+            Origin::Folder { folder, .. } => {
+                let base = crate::model::default_downloads(&self.downloads, &self.dirs);
+                let dir = folder.iter().fold(base.into_owned(), |dir, name| {
+                    dir.join(mdm_engine::naming::sanitize(name))
+                });
+                Some(dir.display().to_string())
+            }
+            _ => None,
+        };
         self.origins.insert(key, self.packages.len());
         self.packages.push(Package {
             name: origin.name(),
-            folder: String::new(),
-            folder_set: false,
+            folder_set: tree.is_some(),
+            folder: tree.unwrap_or_default(),
             password: String::new(),
             extract: false,
             extract_set: false,
@@ -602,17 +647,20 @@ impl Grabber {
         }
     }
 
-    /// The links of the pages read since the last call, each page's as one list. A page that
-    /// had links is unticked: its links were what was wanted, not the page.
-    pub fn pages_read(&mut self) -> Vec<Vec<Imported>> {
+    /// The links of the pages read since the last call, each page's as one list with its
+    /// note for the Source line. A page that had links is unticked: its links were what was
+    /// wanted, not the page; an FTP folder always is (it can't be downloaded itself).
+    pub fn pages_read(&mut self) -> Vec<(Vec<Imported>, String)> {
         let mut out = Vec::new();
         for l in &mut self.links {
-            let Some(found) = l.read.as_ref().and_then(|r| r.lock().unwrap().take()) else {
+            let Some((found, note)) = l.read.as_ref().and_then(|r| r.lock().unwrap().take()) else {
                 continue;
             };
-            if !found.is_empty() {
+            if !found.is_empty() || mdm_engine::folder::is_ftp_folder(&l.url) {
                 l.on = false;
-                out.push(found);
+            }
+            if !found.is_empty() {
+                out.push((found, note));
             }
         }
         out
@@ -1638,15 +1686,20 @@ mod tests {
             referer: Some(page.into()),
             ..Default::default()
         };
-        *slot.lock().unwrap() = Some(vec![
-            on_page("https://dl.example.org/epanet2.2_setup.exe"),
-            on_page("https://dl.example.org/epanet2.2.zip"),
-        ]);
+        *slot.lock().unwrap() = Some((
+            vec![
+                on_page("https://dl.example.org/epanet2.2_setup.exe"),
+                on_page("https://dl.example.org/epanet2.2.zip"),
+            ],
+            String::new(),
+        ));
         let read = g.pages_read();
         assert_eq!(read.len(), 1);
-        g.add(read.into_iter().flatten().collect(), String::new(), |_| {
-            false
-        });
+        g.add(
+            read.into_iter().flat_map(|(links, _)| links).collect(),
+            String::new(),
+            |_| false,
+        );
         assert!(g.pages_read().is_empty() && g.to_read().is_empty());
         // The page's links, as one package named after the page; the page itself unticked.
         let shown: Vec<&str> = g
@@ -1666,6 +1719,100 @@ mod tests {
             .pkg;
         assert!(g.links.iter().filter(|l| l.pkg == pkg).count() == 2);
         assert!(g.source.contains("Pasted"));
+    }
+
+    /// #1774: an FTP folder given on its own is read without a look-up (it's no file), and a
+    /// folder's files come as one package per folder, each keeping the tree under the download
+    /// folder whatever its files' types; sizes the list gave aren't looked up again.
+    #[test]
+    fn a_folders_files_keep_its_tree() {
+        let mut g = grabber();
+        let folder = "ftp://ftp.example.org/pub/";
+        g.add(vec![link(folder, None)], "Pasted".into(), |_| false);
+        assert!(g.to_check().is_empty(), "a folder isn't looked up");
+        let reads = g.to_read();
+        assert_eq!(reads.len(), 1);
+        assert!(!g.shows(&g.links[0]), "hidden as a page is");
+        let slot: Read = Default::default();
+        g.reading(reads[0].0, slot.clone());
+        let file = |url: &str, page: &str, folder: &[&str], size: Option<u64>| Imported {
+            url: url.into(),
+            referer: Some(page.into()),
+            folder: folder.iter().map(|f| (*f).to_owned()).collect(),
+            size,
+            ..Default::default()
+        };
+        let sub = "ftp://ftp.example.org/pub/iso/";
+        *slot.lock().unwrap() = Some((
+            vec![
+                file(
+                    "ftp://ftp.example.org/pub/readme.txt",
+                    folder,
+                    &["pub"],
+                    Some(10),
+                ),
+                file(
+                    "ftp://ftp.example.org/pub/song.mp3",
+                    folder,
+                    &["pub"],
+                    Some(20),
+                ),
+                file(
+                    "ftp://ftp.example.org/pub/iso/disc.iso",
+                    sub,
+                    &["pub", "iso"],
+                    None,
+                ),
+                // A name the engine let through is still made a plain one here.
+                file(
+                    "ftp://ftp.example.org/pub/x/a.bin",
+                    sub,
+                    &["pub", "CON", "x:y"],
+                    None,
+                ),
+            ],
+            "the first 4 files".into(),
+        ));
+        let read = g.pages_read();
+        assert!(!g.links[0].on, "the folder itself is unticked");
+        for (links, note) in read {
+            g.add(links, note, |_| false);
+        }
+        assert!(g.source.contains("the first 4 files"));
+        let pkg = |name: &str| &g.packages[g.links.iter().find(|l| l.name == name).unwrap().pkg];
+        let dl = PathBuf::from("D:\\dl");
+        assert_eq!(
+            pkg("readme.txt").folder,
+            dl.join("pub").display().to_string()
+        );
+        assert_eq!(pkg("readme.txt").name, "ftp.example.org/pub");
+        assert_eq!(
+            pkg("disc.iso").folder,
+            dl.join("pub").join("iso").display().to_string()
+        );
+        assert_eq!(
+            pkg("a.bin").folder,
+            dl.join("pub")
+                .join("_CON")
+                .join("x_y")
+                .display()
+                .to_string()
+        );
+        // One package for a folder's files of every type: not the Music folder for the song.
+        assert!(std::ptr::eq(pkg("readme.txt"), pkg("song.mp3")));
+        let readme = g.links.iter().find(|l| l.name == "readme.txt").unwrap();
+        assert_eq!((readme.size, &readme.state), (Some(10), &LinkState::Online));
+        let to_check: Vec<String> = g.to_check().iter().map(|c| c.1.to_string()).collect();
+        assert_eq!(
+            to_check,
+            [
+                "ftp://ftp.example.org/pub/iso/disc.iso",
+                "ftp://ftp.example.org/pub/x/a.bin"
+            ]
+        );
+        let picked = g.picked();
+        let iso = picked.iter().find(|p| p.links[0].1 == "disc.iso").unwrap();
+        assert_eq!(iso.folder, dl.join("pub").join("iso"));
     }
 
     #[test]

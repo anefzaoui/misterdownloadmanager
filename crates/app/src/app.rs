@@ -12898,9 +12898,9 @@ impl App {
             .as_mut()
             .map(|g| g.pages_read())
             .unwrap_or_default();
-        for found in read {
+        for (found, note) in read {
             // The same rule as every link added: one in the download list comes unticked.
-            self.show_import(found, String::new());
+            self.show_import(found, note);
         }
         if !self.settings.grabber_check {
             return;
@@ -12933,9 +12933,14 @@ impl App {
     /// Link grabber's web pages to read for their links (#705), each with its own request, on
     /// the runtime: the page's links come back with the page as their referer (the package is
     /// named after it), the agent and private mark the page had. Not the page's cookies, which
-    /// are its own site's.
+    /// are its own site's. A folder (an FTP folder, a web server's listing, #1774) comes back as
+    /// its files and its subfolders' (Options → Archives: how deep, which types), each with the
+    /// folders it goes in and its own folder's page as its referer; one listed only in part
+    /// says so on the window's Source line.
     fn grabber_reads(&mut self, ctx: &egui::Context) {
         let Some(g) = &self.grabber else { return };
+        let depth = self.settings.grabber_depth;
+        let types = self.settings.grabber_types.trim().to_owned();
         for (i, url, d) in g.to_read() {
             let context = ipc::Command {
                 referer: d.referer.clone(),
@@ -12944,13 +12949,16 @@ impl App {
                 ..Default::default()
             };
             let parts = self.request_parts(&url, None, &context, false);
-            let slot: std::sync::Arc<std::sync::Mutex<Option<_>>> = Default::default();
-            let (out, ctx) = (slot.clone(), ctx.clone());
+            let slot: crate::grabber::Read = Default::default();
+            let (out, ctx, types) = (slot.clone(), ctx.clone(), types.clone());
             self.rt.spawn(async move {
-                let found = match mdm_engine::page_links(url, parts.headers, &parts.opts).await {
-                    Ok((at, links)) => {
+                let keep =
+                    |name: &str| types.is_empty() || mdm_ipc::capture::type_listed(&types, name);
+                let read = mdm_engine::folder::read(url, parts.headers, &parts.opts, depth, keep);
+                let found = match read.await {
+                    Ok(mdm_engine::folder::Read::Page(at, links)) => {
                         tracing::info!("link grabber: {} links on a page", links.len());
-                        links
+                        let links = links
                             .into_iter()
                             .map(|u| crate::transfer::Imported {
                                 url: u.into(),
@@ -12959,11 +12967,46 @@ impl App {
                                 private: d.private,
                                 ..Default::default()
                             })
-                            .collect()
+                            .collect();
+                        (links, String::new())
+                    }
+                    Ok(mdm_engine::folder::Read::Folder(f)) => {
+                        tracing::info!(
+                            "link grabber: {} files in a folder{}",
+                            f.files.len(),
+                            if f.capped { ", listed in part" } else { "" }
+                        );
+                        let note = if f.capped {
+                            crate::i18n::fmt(
+                                // i18n: Link grabber's Source line, after where the links came from: a folder (an FTP folder, a web server's "Index of" page) held more files or subfolders than Link grabber lists; {folder} is its name, {n} how many of its files are listed (10,000)
+                                crate::i18n::t("{folder}: only its first {n} files"),
+                                &[
+                                    ("folder", &f.name),
+                                    ("n", &crate::i18n::integer(f.files.len() as u64)),
+                                ],
+                            )
+                        } else {
+                            String::new()
+                        };
+                        let name = f.name;
+                        let files = f
+                            .files
+                            .into_iter()
+                            .map(|file| crate::transfer::Imported {
+                                url: file.url.into(),
+                                referer: Some(file.listing.to_string()),
+                                user_agent: d.user_agent.clone(),
+                                private: d.private,
+                                folder: std::iter::once(name.clone()).chain(file.folders).collect(),
+                                size: file.size,
+                                ..Default::default()
+                            })
+                            .collect();
+                        (files, note)
                     }
                     Err(e) => {
                         tracing::info!("link grabber: a page couldn't be read: {e}");
-                        Vec::new()
+                        (Vec::new(), String::new())
                     }
                 };
                 *out.lock().unwrap() = Some(found);

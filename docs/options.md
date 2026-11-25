@@ -181,6 +181,7 @@ Archives (zip, 7z, rar, tar, gz, xz), and [Link grabber](link-grabber.md).
 - **Look links up when they arrive (name, size, online)** — Link grabber asks each server about its file (on by default).
 - **Hide web pages** — Link grabber's default for the same box (on).
 - **Accept Click'n'Load from web pages (port 9666)** (off by default) — a link site's Click'n'Load button sends its links to MDM's Link grabber. See [Click'n'Load](link-grabber.md#clicknload).
+- **Folders: 3 levels deep, types:** — how many levels of subfolders Link grabber reads when you give it an FTP folder or a web server's folder listing (0 to 10; 0 is the folder's own files), and which file types it keeps from them (as on the File types page, `ISO ZIP R0*`; empty keeps every type). See [Folders](link-grabber.md#folders).
 
 ## Remote
 

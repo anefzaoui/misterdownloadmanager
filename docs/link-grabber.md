@@ -15,6 +15,7 @@
 - **The clipboard.** **Tasks → Add batch download from clipboard** (**Ctrl+B**, also in the tray icon's menu) reads the copied text when you choose it and lists every download link in it: `http`, `https`, `ftp` and magnet links, in a list, a forum post, Markdown or HTML, each once. A `thunder://`, `flashget://` or `qqdl://` link is listed as the address wrapped in it, so the same file linked wrapped and plain is one row; this holds for pasted text and imported lists too.
 - **Pasting.** Choose **Tasks → Link grabber...** and press **Ctrl+V**: every download link in the copied text is added.
 - **A web page's address.** Paste or copy the address of a page (`https://example.com/downloads`) and MDM reads the page and lists the links on it, as the browser's **Download all links** does, in a package named after the page. The page itself is left unticked. This works for addresses that came on their own (pasted, copied, typed, in a list), not for the links found on a page, so MDM never wanders off through a site. MDM reads only what the page itself holds: links a page's scripts add after it loads come only through the browser.
+- **A folder.** Paste or copy the address of an `ftp://` folder (`ftp://ftp.example.org/pub/`) or of the page a web server makes of a folder ("Index of /pub/"), and MDM lists every file in it and in its subfolders, each folder's files in a package of their own. See [Folders](#folders).
 - **Click'n'Load** buttons on link sites, once you turn it on. See [Click'n'Load](#clicknload).
 
 A magnet link shows as **Magnet link** and isn't looked up: once you click **Start** or **Add to queue**, MDM finds the torrent's files and adds it with all of them, in the package's folder (or the **Torrents** folder when the package has none).
@@ -29,6 +30,25 @@ Each package is a row you can open and close (click its arrow, double-click it, 
 - **The other links of one page** form a package named after the page.
 - **Everything else** goes into **Various files**.
 - **Links a site packed** (Click'n'Load) keep the site's packages and names, with their archive password when the site gave one.
+- **A folder's files** form a package for each folder, named after it, whose **Save to** keeps the folder's tree (see [Folders](#folders)).
+
+## Folders
+
+Give Link grabber a folder's address, the way you give it a page's: paste it with **Ctrl+V**, copy it for **Tasks → Add batch download from clipboard**, put it in a list for **Tasks → Import**, or drop it on the download list.
+
+- **An FTP folder**: an `ftp://`, `ftpes://` or `ftps://` address that ends in `/` (`ftp://ftp.example.org/pub/`). MDM logs in as it does for a download from that address (its user name and password, else your Sites Logins, else as anonymous) and asks the server for the folder's list. Each file comes with the size the server lists, so it isn't looked up again.
+- **A web server's folder listing**: the page Apache, nginx, IIS and other servers make of a folder without its own page, titled **Index of /pub/** (or **Directory listing for /pub/**). MDM recognizes it, so it reads the folder instead of listing the page's links.
+
+Link grabber then lists every file in the folder and in its subfolders. Each folder's files are a package named after the folder, and its **Save to** is that folder under your download folder (**Options → Save to**), so the tree is kept: `ftp://ftp.example.org/pub/iso/disc.iso` goes to `Downloads\pub\iso\disc.iso`. Tick what you want; **Hide web pages** and the package boxes work as for any links.
+
+**Options → Archives and Link grabber → Folders: 3 levels deep, types: ...** sets how far MDM goes and what it keeps:
+
+- **Levels deep**: how many levels of subfolders are read, 3 by default, at most 10. 0 lists the folder's own files only.
+- **Types**: only the files of these types, written as on the **File types** page (`ISO ZIP R0*`). Empty (the default) keeps every type.
+
+MDM stays inside the folder you gave. It never goes up to the folder above (`../`), never onto another site, never through a link the listing makes to somewhere else, and an FTP folder's links to other folders (symbolic links) aren't followed. A name that isn't a plain file or folder name (one with `/` or `\` in it, `..`) is left out. One folder lists at most 10,000 files, and MDM reads at most 500 folders for it; past that, the window's **Source** line says the folder was listed only in part (**pub: only its first 10000 files**).
+
+Folders are read only with **Look links up when they arrive** on (the default), as web pages are. An FTP address without its final `/` is taken for a file.
 
 ## Click'n'Load
 

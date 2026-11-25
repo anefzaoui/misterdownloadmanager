@@ -135,6 +135,12 @@ pub struct Imported {
     /// Sent by a web page (Click'n'Load): Link grabber doesn't look it up; nothing is fetched
     /// for it before the user adds it to the queue.
     pub from_page: bool,
+    /// A file of a folder given to Link grabber (#1774): the folders it goes in under the
+    /// download folder, each a plain name (the folder's own, then its subfolders'); empty for
+    /// any other link.
+    pub folder: Vec<String>,
+    /// Its size as the folder's list says it (FTP's): not looked up again.
+    pub size: Option<u64>,
 }
 
 /// One address per line.
