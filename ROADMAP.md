@@ -639,6 +639,10 @@ These ship in the next version.
 - ✅ CI and the release take NASM from nasm.us, checked against its pinned SHA256, and use
   Chocolatey's feed only when that download fails (its outage had stopped every Windows build)
 - ✅ Torrents: trackers are checked more carefully.
+- ✅ Download video: **Split into chapters** saves a video with chapters as one file per chapter
+  too (numbered, titled, without encoding again), the whole video kept; `--split-chapters` on the
+  command line; Delete with files removes exactly those files
+  ([#1830](https://github.com/anefzaoui/misterdownloadmanager/issues/1830))
 - ✅ A **Columns** window for the download list (the header's **Columns...**, **View → Customize
   URL List...**): which columns show and their order, from the keyboard too
   ([#1566](https://github.com/anefzaoui/misterdownloadmanager/issues/1566))
