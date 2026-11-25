@@ -2096,6 +2096,10 @@
 #. text in the Scheduler window; tab in the Scheduler window
 #, machine
 	Files in the queue	Ngā kōnae i roto i te rārangi
+#. text in the download list (sizes, speeds, status)
+#. why files being taken out of a ZIP on its server (#1775) can't be moved or renamed yet: those already out are in its folder, the others still to come there
+#, machine
+	Files taken out of a ZIP can be moved once they're all out	Ka taea te nuku i ngā kōnae kua wetewetehia mai i te ZIP ina oti katoa te wetewete
 #. button in a download's Properties window
 #. File Properties button that opens the selected torrent's file list
 #. the trailing ... means it opens a window: keep it
@@ -2922,6 +2926,10 @@
 #. in Link grabber, where the addresses came from: a page in the browser
 #, machine
 	Links from the browser	Ngā hononga mai i te pūtirotiro
+#. text in a dialog box
+#. tooltip of Download File Info's Preview button for a ZIP (#1775): it lists the files inside, to download only some of them
+#, machine
+	List the files inside the ZIP and pick those to download	Rārangi kōnae kei roto i te ZIP ka kōwhiri i ngā mea hei tikiake
 #. text in playlistdlg.rs
 #. button in Download video: go on listing a playlist from where it stopped
 #, machine
@@ -2999,6 +3007,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Looking for your default browser...	Kei te rapu i tō pūtirotiro taunoa...
+#. text in a dialog box
+#. tooltip of Download File Info's greyed Preview button while MDM asks the server whether it can look inside the ZIP (#1775)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Looking inside the ZIP...	Kei te tirotiro i roto i te ZIP...
 #. text in the Download video window
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -3275,6 +3288,10 @@
 #. Monday, as short as a calendar's column head (two letters in English)
 #, machine
 	Mo	Mane
+#. text in a download's progress window
+#. Zip preview's column: when the file was last changed, as the ZIP says
+#, machine
+	Modified	Kua whakatikahia
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3862,6 +3879,10 @@
 #. checkbox in a dialog box
 #, machine
 	Only while I'm using the computer	I a au e whakamahi ana i te rorohiko anake
+#. message or event log entry in the main window
+#. event log entry: the download is files picked inside a ZIP in Zip preview (#1775); {files} how many ("3 files")
+#, machine
+	Only {files} picked inside the ZIP	Ko {files} anake i kōwhiria i roto i te ZIP
 #. button in a dialog box; text in a dialog box; button in a download's Properties window; button in torrentfiles.rs
 #. verb: opens the downloaded file
 #. title of the message when a downloaded file can't be opened
@@ -3942,6 +3963,10 @@
 #. Link grabber: the box that edits the selected package
 #, machine
 	Package	Pūhera
+#. text in a download's progress window
+#. Zip preview's column: the file's size as packed (compressed) inside the ZIP
+#, machine
+	Packed	Kua kōpā
 #. text in gallerydlg.rs; text in the Download video window
 #, machine
 	Page address	Wāhitau whārangi
@@ -4214,6 +4239,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Reading the torrent...	E pānui ana i te torrent...
+#. text in zippreview.rs
+#. Zip preview, while the ZIP's list of files is being read from its server
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Reading the ZIP's list of files...	Kei te pānui i te rārangi kōnae o te ZIP...
 #. message or event log entry in the main window
 #. the status strip while Tasks → Import reads a file; {file} is its name
 #. the trailing ... means it is still going on: keep it
@@ -4942,6 +4972,11 @@
 #. checkbox in the Options window
 #, machine
 	Start downloading immediately while displaying "Download File Info" dialog	Tīmata te tikiake tonu i te wā e whakaatu ana i te kōrero "Mōhiohio Kōnae Tikiake"
+#. text in a dialog box
+#. Download File Info, on hover over the number of files picked in Zip preview (#1775): {files} how many ("3 files"), {size} their size together, {folder} the folder they go into (named after the archive)
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	Start downloads only the {files} picked in the ZIP ({size}), into {folder}	Tīmatahia ngā tikiake o ngā {files} anake i kōwhiria i roto i te ZIP ({size}), ki roto i te {folder}
 #. text in the tray icon's menu
 #, machine
 	Start main download queue	Tīmata i te rārangi tikiake matua
@@ -5396,6 +5431,10 @@
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
 	The file does NOT match ({algorithm})	Kāore te kōnae e ōrite ana ({algorithm})
+#. text in errors.rs
+#. why a file taken out of a ZIP on its server failed (#1775): its bytes aren't what the ZIP's list of files says (its size or its CRC-32 checksum)
+#, machine
+	the file in the ZIP doesn't match the ZIP's list of files (its size or checksum): download the whole archive	Kāore te kōnae i roto i te ZIP e ōrite ki te rārangi kōnae o te ZIP (tōna rahi, tōna hāteketake rānei): tikiake i te pūrangi katoa
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
@@ -5525,6 +5564,10 @@
 #. text in errors.rs
 #, machine
 	the server can't send parts of the file, so it can't be resumed	kāore e taea e te tūmau te tuku wāhanga o te kōnae, nō reira kāore e taea te tīmata anō
+#. text in errors.rs
+#. Zip preview (#1775): the server doesn't send parts of a file (HTTP ranges), so MDM can't fetch only some files from inside a ZIP; the whole archive still downloads
+#, machine
+	the server can't send parts of the ZIP, so its files can't be downloaded one by one: download the whole archive	Kāore e taea e te tūmau te tuku wāhanga o te ZIP, nō reira kāore e taea te tikiake takitahi i ōna kōnae: tikiake i te pūrangi katoa
 #. text in errors.rs
 #, machine
 	the server did not answer in time	kāore te tūmau i whakautu i te wā tika
@@ -5665,6 +5708,10 @@
 #. text in a download's Properties window
 #, machine
 	The web page from which this file was obtained:	Te whārangi tukutuku i riro mai ai tēnei kōnae:
+#. text in errors.rs
+#. why a file can't be taken out of a ZIP on its server (#1775): the ZIP was replaced on the server after its files were listed; Zip preview is the window that lists them
+#, machine
+	the ZIP changed on the server since its files were listed: open its Zip preview again	Kua panoni te ZIP i runga i te tūmau mai i te rārangi o ōna kōnae: whakatuwheratia anō tōna arokite ZIP
 #. message or event log entry in the main window
 #. the kind of file View → Theme → Add a theme file lists: MDM's themes (TOML, JSON), Base16 schemes (YAML) and pywal's colors.json
 #, machine
@@ -5756,6 +5803,18 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	This file can't be used as a theme: {error}	Kāore e taea te whakamahi i tēnei kōnae hei kaupapa: {error}
+#. text in errors.rs
+#. why a file can't be taken out of a ZIP on its server (#1775): it is encrypted (password-protected) in the ZIP
+#, machine
+	this file is encrypted in the ZIP: download the whole archive and open it with its password	Kua whakamunatia tēnei kōnae i roto i te ZIP: tikiake i te pūrangi katoa ka whakatuwhera mā tōna kupuhipa
+#. text in errors.rs
+#. why a file can't be taken out of a ZIP on its server (#1775): the ZIP no longer holds it
+#, machine
+	this file is no longer in the ZIP on the server	Kua kore tēnei kōnae i roto i te ZIP i runga i te tūmau
+#. text in errors.rs
+#. why a file can't be taken out of a ZIP on its server (#1775): it is compressed with a method MDM doesn't unpack there; {method} is the method's name (BZIP2, LZMA, Deflate64…)
+#, machine
+	this file is packed in a way MDM can't unpack from the server ({method}): download the whole archive	Kua kōpā tēnei kōnae i tētahi ara kāore e taea e MDM te wetewete mai i te tūmau ({method}): tikiake i te pūrangi katoa
 #. text in remote.rs
 #. remote control page (on a phone): the file chosen is too large for a .torrent file
 #, machine
@@ -5790,6 +5849,10 @@
 #. a check of Test browser integration: a portable copy can't be connected
 #, machine
 	This is the installed copy, not a portable one	Ko tēnei te tārua kua whakaurua, ehara i te tārua kawe
+#. text in errors.rs
+#. Zip preview (#1775): the address isn't a ZIP archive whose list of files MDM can read on the server
+#, machine
+	this isn't a ZIP archive MDM can look inside on the server: download the whole file	Ehara tēnei i te pūrangi ZIP e taea e MDM te tirotiro i runga i te tūmau: tikiake i te kōnae katoa
 #. text in playlistdlg.rs
 #. in Download video, a playlist or channel that lists no video
 #, machine
@@ -5867,6 +5930,18 @@
 #, machine
 	This video needs you to be signed in. Use the Download video button over it in your browser, which passes your sign-in on, or choose your browser in Options → Sites Logins → Cookies for video sites.	Me takiuru koe kia tirohia tēnei ataata. Whakamahia te pātene Tikiake ataata i runga ake i te ataata i tō pūtirotiro, e tuku ana i tō takiuru, ka kōwhiri rānei i tō pūtirotiro i Ngā Kōwhiringa → Takiuru Pae → Ngā pihikete mō ngā pae ataata.
 #. text in errors.rs
+#. Zip preview (#1775): a ZIP split over several files (volumes): its files can't be fetched one by one
+#, machine
+	this ZIP is split over several files, so its files can't be downloaded one by one: download every part	Kua wehea tēnei ZIP ki runga i ngā kōnae maha, nō reira kāore e taea te tikiake takitahi i ōna kōnae: tikiake i ngā wāhanga katoa
+#. text in errors.rs
+#. Zip preview (#1775): the ZIP's list of files (its table of contents) doesn't add up
+#, machine
+	this ZIP's list of files is damaged: download the whole archive	Kua pakaru te rārangi kōnae o tēnei ZIP: tikiake i te pūrangi katoa
+#. text in errors.rs
+#. Zip preview (#1775): the ZIP's list of files (its table of contents) is larger than MDM reads from a server
+#, machine
+	this ZIP's list of files is too large to read from the server: download the whole archive	He nui rawa te rārangi kōnae o tēnei ZIP hei pānui mai i te tūmau: tikiake i te pūrangi katoa
+#. text in errors.rs
 #. a download's error: the address is a site's web page that needs a browser, not the file; {site} = the site's name (gofile)
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
 #, machine
@@ -5897,6 +5972,11 @@
 #. tooltip on the Scheduler's "Wake the computer to run this queue" while "Start download at" is off
 #, machine
 	Tick "Start download at" first: the computer is woken for the start time	Tīkina "Tīmata te tikiake i" tuatahi: ka whakaohohia te rorohiko mō te wā tīmatanga
+#. text in zippreview.rs
+#. Zip preview, under the list: {files} how many files are ticked ("3 files"), {size} their size together ("12.4 MB")
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	Ticked: {files}, {size}	Kua tohua: {files}, {size}
 #. text in a download's progress window; text in the Scheduler window
 #, machine
 	Time left	Wā e toe ana
@@ -6664,6 +6744,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Zimbabwe	Zimbabwe
+#. text in zippreview.rs
+#. title of the window that lists the files inside a ZIP on its server, to tick those to download (#1775)
+#, machine
+	Zip preview	Arokite ZIP
 #. text in the Options window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
@@ -6909,6 +6993,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 	{n} (auto)	{n} (aunoa)
+#. text in zippreview.rs
+#. Zip preview, under the list: {n} files of the ZIP aren't listed because MDM can't take them out on their own: encrypted ones, ones packed in a way MDM can't unpack from the server, links, or names that would leave their folder; the whole archive still downloads
+#. {n} = a number (keep the braces as they are)
+#, machine
+	{n} more can't be taken out on their own (encrypted, packed another way, or links)	Kāore e taea te tango takitahi i ētahi atu {n} (kua whakamunatia, kua kōpāhia i tētahi atu ara, he hononga rānei)
 #. text in playlistdlg.rs
 #. in Download video for a playlist: how many videos are ticked, of how many
 #. {n} = a number (keep the braces as they are)

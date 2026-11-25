@@ -2087,6 +2087,10 @@
 #. text in the Scheduler window; tab in the Scheduler window
 #, machine
 	Files in the queue	佇列中的檔案
+#. text in the download list (sizes, speeds, status)
+#. why files being taken out of a ZIP on its server (#1775) can't be moved or renamed yet: those already out are in its folder, the others still to come there
+#, machine
+	Files taken out of a ZIP can be moved once they're all out	從 ZIP 取出的檔案全部取出後才能移動
 #. button in a download's Properties window
 #. File Properties button that opens the selected torrent's file list
 #. the trailing ... means it opens a window: keep it
@@ -2913,6 +2917,10 @@
 #. in Link grabber, where the addresses came from: a page in the browser
 #, machine
 	Links from the browser	來自瀏覽器的連結
+#. text in a dialog box
+#. tooltip of Download File Info's Preview button for a ZIP (#1775): it lists the files inside, to download only some of them
+#, machine
+	List the files inside the ZIP and pick those to download	列出 ZIP 內的檔案並選取要下載的檔案
 #. text in playlistdlg.rs
 #. button in Download video: go on listing a playlist from where it stopped
 #, machine
@@ -3261,6 +3269,10 @@
 #. Monday, as short as a calendar's column head (two letters in English)
 #, machine
 	Mo	週一
+#. text in a download's progress window
+#. Zip preview's column: when the file was last changed, as the ZIP says
+#, machine
+	Modified	修改日期
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3848,6 +3860,10 @@
 #. checkbox in a dialog box
 #, machine
 	Only while I'm using the computer	僅在我使用電腦時
+#. message or event log entry in the main window
+#. event log entry: the download is files picked inside a ZIP in Zip preview (#1775); {files} how many ("3 files")
+#, machine
+	Only {files} picked inside the ZIP	只選取了 ZIP 內的 {files} 個檔案
 #. button in a dialog box; text in a dialog box; button in a download's Properties window; button in torrentfiles.rs
 #. verb: opens the downloaded file
 #. title of the message when a downloaded file can't be opened
@@ -3928,6 +3944,10 @@
 #. Link grabber: the box that edits the selected package
 #, machine
 	Package	套件
+#. text in a download's progress window
+#. Zip preview's column: the file's size as packed (compressed) inside the ZIP
+#, machine
+	Packed	壓縮大小
 #. text in gallerydlg.rs; text in the Download video window
 #, machine
 	Page address	頁面位址
@@ -4928,6 +4948,11 @@
 #. checkbox in the Options window
 #, machine
 	Start downloading immediately while displaying "Download File Info" dialog	顯示「下載檔案資訊」對話方塊時立即開始下載
+#. text in a dialog box
+#. Download File Info, on hover over the number of files picked in Zip preview (#1775): {files} how many ("3 files"), {size} their size together, {folder} the folder they go into (named after the archive)
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	Start downloads only the {files} picked in the ZIP ({size}), into {folder}	只下載 ZIP 中選取的 {files} 個檔案 ({size})，儲存至 {folder}
 #. text in the tray icon's menu
 #, machine
 	Start main download queue	開始主要下載佇列
@@ -5377,6 +5402,10 @@
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
 	The file does NOT match ({algorithm})	檔案不符 ({algorithm})
+#. text in errors.rs
+#. why a file taken out of a ZIP on its server failed (#1775): its bytes aren't what the ZIP's list of files says (its size or its CRC-32 checksum)
+#, machine
+	the file in the ZIP doesn't match the ZIP's list of files (its size or checksum): download the whole archive	ZIP 中的檔案與 ZIP 的檔案清單不符 (大小或檢查碼)：請下載整個封存檔
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
@@ -5506,6 +5535,10 @@
 #. text in errors.rs
 #, machine
 	the server can't send parts of the file, so it can't be resumed	伺服器無法傳送檔案的部分內容，因此無法繼續下載
+#. text in errors.rs
+#. Zip preview (#1775): the server doesn't send parts of a file (HTTP ranges), so MDM can't fetch only some files from inside a ZIP; the whole archive still downloads
+#, machine
+	the server can't send parts of the ZIP, so its files can't be downloaded one by one: download the whole archive	伺服器無法傳送 ZIP 的部分檔案，因此無法逐一下載其檔案：請下載整個封存檔
 #. text in errors.rs
 #, machine
 	the server did not answer in time	伺服器未及時回應
@@ -5646,6 +5679,10 @@
 #. text in a download's Properties window
 #, machine
 	The web page from which this file was obtained:	取得此檔案的網頁：
+#. text in errors.rs
+#. why a file can't be taken out of a ZIP on its server (#1775): the ZIP was replaced on the server after its files were listed; Zip preview is the window that lists them
+#, machine
+	the ZIP changed on the server since its files were listed: open its Zip preview again	自從列出檔案後，ZIP 已在伺服器上變更：請重新開啟其 ZIP 預覽
 #. message or event log entry in the main window
 #. the kind of file View → Theme → Add a theme file lists: MDM's themes (TOML, JSON), Base16 schemes (YAML) and pywal's colors.json
 #, machine
@@ -5737,6 +5774,18 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	This file can't be used as a theme: {error}	此檔案無法作為佈景主題使用：{error}
+#. text in errors.rs
+#. why a file can't be taken out of a ZIP on its server (#1775): it is encrypted (password-protected) in the ZIP
+#, machine
+	this file is encrypted in the ZIP: download the whole archive and open it with its password	此檔案在 ZIP 中已加密：請下載整個封存檔並使用密碼開啟
+#. text in errors.rs
+#. why a file can't be taken out of a ZIP on its server (#1775): the ZIP no longer holds it
+#, machine
+	this file is no longer in the ZIP on the server	此檔案已不在伺服器上的 ZIP 中
+#. text in errors.rs
+#. why a file can't be taken out of a ZIP on its server (#1775): it is compressed with a method MDM doesn't unpack there; {method} is the method's name (BZIP2, LZMA, Deflate64…)
+#, machine
+	this file is packed in a way MDM can't unpack from the server ({method}): download the whole archive	此檔案以 MDM 無法從伺服器解壓縮的方式封裝 ({method})：請下載整個封存檔
 #. text in remote.rs
 #. remote control page (on a phone): the file chosen is too large for a .torrent file
 #, machine
@@ -5771,6 +5820,10 @@
 #. a check of Test browser integration: a portable copy can't be connected
 #, machine
 	This is the installed copy, not a portable one	這是已安裝的版本，不是可攜式版本
+#. text in errors.rs
+#. Zip preview (#1775): the address isn't a ZIP archive whose list of files MDM can read on the server
+#, machine
+	this isn't a ZIP archive MDM can look inside on the server: download the whole file	這不是 MDM 可以在伺服器上查看內部的 ZIP 封存檔：請下載整個檔案
 #. text in playlistdlg.rs
 #. in Download video, a playlist or channel that lists no video
 #, machine
@@ -5848,6 +5901,18 @@
 #, machine
 	This video needs you to be signed in. Use the Download video button over it in your browser, which passes your sign-in on, or choose your browser in Options → Sites Logins → Cookies for video sites.	此視訊需要您登入。請使用瀏覽器中視訊上方的「下載視訊」按鈕，該按鈕會傳遞您的登入資訊，或在「選項」→「網站登入」→「視訊網站的 Cookie」中選擇您的瀏覽器。
 #. text in errors.rs
+#. Zip preview (#1775): a ZIP split over several files (volumes): its files can't be fetched one by one
+#, machine
+	this ZIP is split over several files, so its files can't be downloaded one by one: download every part	此 ZIP 分割成數個檔案，因此無法逐一下載其檔案：請下載所有部分
+#. text in errors.rs
+#. Zip preview (#1775): the ZIP's list of files (its table of contents) doesn't add up
+#, machine
+	this ZIP's list of files is damaged: download the whole archive	此 ZIP 的檔案清單已損壞：請下載整個封存檔
+#. text in errors.rs
+#. Zip preview (#1775): the ZIP's list of files (its table of contents) is larger than MDM reads from a server
+#, machine
+	this ZIP's list of files is too large to read from the server: download the whole archive	此 ZIP 的檔案清單太大，無法從伺服器讀取：請下載整個封存檔
+#. text in errors.rs
 #. a download's error: the address is a site's web page that needs a browser, not the file; {site} = the site's name (gofile)
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
 #, machine
@@ -5878,6 +5943,11 @@
 #. tooltip on the Scheduler's "Wake the computer to run this queue" while "Start download at" is off
 #, machine
 	Tick "Start download at" first: the computer is woken for the start time	請先勾選「在下列時間開始下載」：電腦會在開始時間喚醒
+#. text in zippreview.rs
+#. Zip preview, under the list: {files} how many files are ticked ("3 files"), {size} their size together ("12.4 MB")
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	Ticked: {files}, {size}	已勾選：{files}，{size}
 #. text in a download's progress window; text in the Scheduler window
 #, machine
 	Time left	剩餘時間
@@ -6645,6 +6715,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Zimbabwe	辛巴威
+#. text in zippreview.rs
+#. title of the window that lists the files inside a ZIP on its server, to tick those to download (#1775)
+#, machine
+	Zip preview	ZIP 預覽
 #. text in the Options window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
@@ -6890,6 +6964,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 	{n} (auto)	{n}（自動）
+#. text in zippreview.rs
+#. Zip preview, under the list: {n} files of the ZIP aren't listed because MDM can't take them out on their own: encrypted ones, ones packed in a way MDM can't unpack from the server, links, or names that would leave their folder; the whole archive still downloads
+#. {n} = a number (keep the braces as they are)
+#, machine
+	{n} more can't be taken out on their own (encrypted, packed another way, or links)	還有 {n} 個無法單獨取出 (已加密、以其他方式封裝或連結)
 #. text in playlistdlg.rs
 #. in Download video for a playlist: how many videos are ticked, of how many
 #. {n} = a number (keep the braces as they are)

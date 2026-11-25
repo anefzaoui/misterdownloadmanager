@@ -1431,7 +1431,18 @@ pub struct FileInfo {
     /// Its number among the Download File Info windows open at once (#1741): its window's id,
     /// title and place in the cascade, and those of the questions it asks. The app gives it.
     pub nth: Nth,
+    /// A `.zip` address's one look at its end (#1775), once it was looked up: the address it
+    /// was for and its answer, which Preview follows (its table when that came with it).
+    zip_look: Option<(Url, ZipLook)>,
+    /// Zip preview, open over this window.
+    zip_preview: Option<crate::zippreview::ZipPreview>,
+    /// The files ticked in Zip preview: Start (or Later) adds only them, as one download.
+    pub zip_pick: Option<crate::zippreview::Chosen>,
 }
+
+/// [`FileInfo::zip_look`]'s answer, once it came.
+type ZipLook =
+    Arc<Mutex<Option<Result<Option<mdm_engine::remotezip::Listing>, mdm_engine::Error>>>>;
 
 pub enum Start {
     Now,
@@ -1524,6 +1535,9 @@ impl FileInfo {
             replace: None,
             picked_replaces: Default::default(),
             nth: Nth::FIRST,
+            zip_look: None,
+            zip_preview: None,
+            zip_pick: None,
         }
     }
 
@@ -1678,6 +1692,125 @@ impl FileInfo {
         !self.edited && !self.probed()
     }
 
+    /// A `.zip` (by Save As's name) on a web server: Preview looks inside it (#1775).
+    fn is_zip(&self) -> bool {
+        Path::new(&self.save_as)
+            .extension()
+            .is_some_and(|e| e.eq_ignore_ascii_case("zip"))
+            && matches!(self.url.scheme(), "http" | "https")
+    }
+
+    /// Once a `.zip` address is looked up, one look at its end (one request): whether its
+    /// server sends parts, so its files can be picked (Preview), and its table when it came
+    /// with it. Again for another address; nothing for another type.
+    fn follow_zip(&mut self) {
+        if !self.is_zip() {
+            self.zip_look = None;
+            self.zip_pick = None;
+            return;
+        }
+        if !self.probed() || self.zip_look.as_ref().is_some_and(|(u, _)| *u == self.url) {
+            return;
+        }
+        self.zip_pick = None;
+        let look: ZipLook = Default::default();
+        let (out, url) = (look.clone(), self.url.clone());
+        let (headers, opts, size) = (
+            self.request.headers.clone(),
+            self.request.opts.clone(),
+            self.size(),
+        );
+        self.rt.spawn(async move {
+            let got = mdm_engine::remotezip::look(&url, &headers, &opts, size).await;
+            if let Err(e) = &got {
+                tracing::info!("zip preview: no look inside: {e}");
+            }
+            *out.lock().unwrap() = Some(got);
+        });
+        self.zip_look = Some((self.url.clone(), look));
+    }
+
+    /// Preview's state for a `.zip`: enabled once its look found a server that sends parts;
+    /// else greyed, with why (still looking, the server's refusal). None for another type.
+    fn zip_preview_state(&self) -> Option<Result<(), String>> {
+        if !self.is_zip() {
+            return None;
+        }
+        let answer = self.zip_look.as_ref().map(|(_, l)| {
+            l.lock()
+                .unwrap()
+                .as_ref()
+                .map(|r| r.as_ref().map(|_| ()).map_err(crate::errors::describe))
+        });
+        Some(match answer.flatten() {
+            Some(r) => r,
+            // i18n: tooltip of Download File Info's greyed Preview button while MDM asks the server whether it can look inside the ZIP (#1775)
+            None => Err(crate::i18n::t("Looking inside the ZIP...").to_owned()),
+        })
+    }
+
+    /// Open Zip preview: with the look's table when it brought it, else it reads the table.
+    fn open_zip_preview(&mut self, ctx: &egui::Context) {
+        let listing = self
+            .zip_look
+            .as_ref()
+            .and_then(|(_, l)| {
+                l.lock()
+                    .unwrap()
+                    .as_ref()
+                    .and_then(|r| r.as_ref().ok())
+                    .cloned()
+            })
+            .flatten();
+        let archive = Path::new(&self.save_as)
+            .file_name()
+            .map(|n| n.to_string_lossy().into_owned())
+            .unwrap_or_default();
+        let ticked = self
+            .zip_pick
+            .as_ref()
+            .map(|c| c.files.clone())
+            .unwrap_or_default();
+        self.zip_preview = Some(crate::zippreview::ZipPreview::new(
+            self.nth.id("zip-preview"),
+            archive,
+            self.url.clone(),
+            &self.request,
+            self.size(),
+            listing,
+            ticked,
+            &self.rt,
+            ctx,
+        ));
+    }
+
+    /// `/show zip-preview:N` (#1775's shots and checks): Zip preview opened as Preview opens
+    /// it, its first `n` files ticked, once the look has answered. Whether it opened.
+    pub fn open_zip_preview_when_ready(&mut self, n: usize, ctx: &egui::Context) -> bool {
+        if self.zip_preview.is_some() || !matches!(self.zip_preview_state(), Some(Ok(()))) {
+            return false;
+        }
+        self.open_zip_preview(ctx);
+        if let Some(z) = &mut self.zip_preview {
+            z.tick_first(n);
+        }
+        true
+    }
+
+    /// Where the files picked in Zip preview go: a folder named after the archive in Save As's
+    /// folder (each file keeps its path in the archive there).
+    pub fn zip_folder(&self) -> PathBuf {
+        let dest = self.dest();
+        let name = mdm_engine::naming::sanitize(&mdm_extract::base_name(&dest));
+        let name = if name.is_empty() {
+            "zip".to_owned()
+        } else {
+            name
+        };
+        dest.parent()
+            .map_or_else(|| PathBuf::from(&name), |d| d.join(&name))
+    }
+
     pub fn size(&self) -> Option<u64> {
         self.info
             .as_ref()
@@ -1809,6 +1942,19 @@ impl FileInfo {
         // The name numbered in its folder, once the disk has answered (#743).
         self.place.follow(&mut self.save_as);
         self.follow_route(ctx);
+        self.follow_zip();
+        if let Some(z) = &mut self.zip_preview {
+            match z.show(ctx) {
+                Outcome::Open => {}
+                Outcome::Closed => self.zip_preview = None,
+                Outcome::Done(chosen) => {
+                    self.zip_pick = (!chosen.files.is_empty()).then_some(chosen);
+                    self.zip_preview = None;
+                }
+            }
+        }
+        let zip_state = self.zip_preview_state();
+        let mut open_zip = false;
         // The "Download through" line (#44) takes a row of its own while an account takes the
         // address: the window grows by it.
         let dy = if self.through.is_some() { 26.0 } else { 0.0 };
@@ -1827,7 +1973,7 @@ impl FileInfo {
         // open at once (#1741), each with its own.
         let nth = self.nth;
         let own = |base: &str| nth.id(base);
-        window_nth(
+        let out = window_nth(
             ctx,
             FILE_INFO,
             "Download File Info",
@@ -2198,19 +2344,64 @@ impl FileInfo {
                 // 8 px after the group box (it ends at 462) to the window's edge.
                 let (px, pw) =
                     winui::button_around(&p, "Preview", 480.0 + cx, 73.0, 470.0, 562.0 + wide);
-                winui::button(
+                // A ZIP on a server that sends parts: its files to pick (#1775, Zip preview).
+                // Greyed, with why, while that is being asked and where it can't be; greyed for
+                // every other type.
+                let kind = match &zip_state {
+                    Some(Ok(())) => ButtonKind::Normal,
+                    _ => ButtonKind::Disabled,
+                };
+                let preview = winui::button(
                     ui,
                     r(o, px, 128.0, pw, 21.0),
-                    // i18n: verb: open the part already downloaded
+                    // i18n: verb: Download File Info's button; for a ZIP, it lists the files inside it to pick those to download (#1775)
                     "Preview",
-                    ButtonKind::Disabled,
+                    kind,
                     false,
                     None,
-                )
-                .on_hover_text(crate::i18n::t(
+                );
+                let tip = match &zip_state {
+                    Some(Ok(())) => crate::i18n::t(
+                        // i18n: tooltip of Download File Info's Preview button for a ZIP (#1775): it lists the files inside, to download only some of them
+                        "List the files inside the ZIP and pick those to download",
+                    )
+                    .to_owned(),
+                    Some(Err(why)) => why.clone(),
                     // i18n: tooltip of the greyed Preview button in Download File Info
-                    "Preview isn't available yet",
-                ));
+                    None => crate::i18n::t("Preview isn't available yet").to_owned(),
+                };
+                if preview.on_hover_text(tip).clicked() && kind == ButtonKind::Normal {
+                    open_zip = true;
+                }
+                // The files picked in Zip preview: their number under Preview, where they go on
+                // hover.
+                if let Some(c) = &self.zip_pick {
+                    let n = crate::i18n::tn(c.files.len() as u64, "{n} file", "{n} files");
+                    let w = winui::text_width(&p, &n).min(92.0 + wide);
+                    let (at, _) = winui::text_fit(
+                        &p,
+                        o.x + 515.0 + cx - w / 2.0,
+                        o.y + 168.0,
+                        &n,
+                        winui::TEXT(),
+                        o.x + 562.0 + wide,
+                    );
+                    let whole = crate::i18n::fmt(
+                        // i18n: Download File Info, on hover over the number of files picked in Zip preview (#1775): {files} how many ("3 files"), {size} their size together, {folder} the folder they go into (named after the archive)
+                        crate::i18n::t(
+                            "Start downloads only the {files} picked in the ZIP ({size}), into {folder}",
+                        ),
+                        &[
+                            ("files", &n),
+                            ("size", &crate::model::size(c.size)),
+                            (
+                                "folder",
+                                &crate::i18n::isolate(&display_path(&self.zip_folder())),
+                            ),
+                        ],
+                    );
+                    winui::copyable(ui, at, own("file-info-zip-pick"), &whole, true);
+                }
 
                 // The categories in a list window of their own (the shared drop list: keys,
                 // Escape, never cut off by this short window).
@@ -2245,7 +2436,11 @@ impl FileInfo {
                     Outcome::Open
                 }
             },
-        )
+        );
+        if open_zip {
+            self.open_zip_preview(ctx);
+        }
+        out
     }
 }
 

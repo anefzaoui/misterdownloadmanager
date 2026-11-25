@@ -2096,6 +2096,10 @@
 #. text in the Scheduler window; tab in the Scheduler window
 #, machine
 	Files in the queue	큐의 파일
+#. text in the download list (sizes, speeds, status)
+#. why files being taken out of a ZIP on its server (#1775) can't be moved or renamed yet: those already out are in its folder, the others still to come there
+#, machine
+	Files taken out of a ZIP can be moved once they're all out	ZIP에서 추출한 파일은 모두 추출된 후에 이동할 수 있습니다.
 #. button in a download's Properties window
 #. File Properties button that opens the selected torrent's file list
 #. the trailing ... means it opens a window: keep it
@@ -2922,6 +2926,10 @@
 #. in Link grabber, where the addresses came from: a page in the browser
 #, machine
 	Links from the browser	브라우저에서 가져온 링크
+#. text in a dialog box
+#. tooltip of Download File Info's Preview button for a ZIP (#1775): it lists the files inside, to download only some of them
+#, machine
+	List the files inside the ZIP and pick those to download	ZIP 내부의 파일을 나열하고 다운로드할 파일을 선택합니다.
 #. text in playlistdlg.rs
 #. button in Download video: go on listing a playlist from where it stopped
 #, machine
@@ -2999,6 +3007,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Looking for your default browser...	기본 브라우저 찾는 중...
+#. text in a dialog box
+#. tooltip of Download File Info's greyed Preview button while MDM asks the server whether it can look inside the ZIP (#1775)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Looking inside the ZIP...	ZIP 내부를 확인하는 중...
 #. text in the Download video window
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -3275,6 +3288,10 @@
 #. Monday, as short as a calendar's column head (two letters in English)
 #, machine
 	Mo	월
+#. text in a download's progress window
+#. Zip preview's column: when the file was last changed, as the ZIP says
+#, machine
+	Modified	수정한 날짜
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3862,6 +3879,10 @@
 #. checkbox in a dialog box
 #, machine
 	Only while I'm using the computer	컴퓨터를 사용하는 동안에만
+#. message or event log entry in the main window
+#. event log entry: the download is files picked inside a ZIP in Zip preview (#1775); {files} how many ("3 files")
+#, machine
+	Only {files} picked inside the ZIP	ZIP 내부에서 {files}만 선택됨
 #. button in a dialog box; text in a dialog box; button in a download's Properties window; button in torrentfiles.rs
 #. verb: opens the downloaded file
 #. title of the message when a downloaded file can't be opened
@@ -3942,6 +3963,10 @@
 #. Link grabber: the box that edits the selected package
 #, machine
 	Package	패키지
+#. text in a download's progress window
+#. Zip preview's column: the file's size as packed (compressed) inside the ZIP
+#, machine
+	Packed	압축됨
 #. text in gallerydlg.rs; text in the Download video window
 #, machine
 	Page address	페이지 주소
@@ -4214,6 +4239,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Reading the torrent...	토렌트 읽는 중...
+#. text in zippreview.rs
+#. Zip preview, while the ZIP's list of files is being read from its server
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Reading the ZIP's list of files...	ZIP 파일 목록을 읽는 중...
 #. message or event log entry in the main window
 #. the status strip while Tasks → Import reads a file; {file} is its name
 #. the trailing ... means it is still going on: keep it
@@ -4942,6 +4972,11 @@
 #. checkbox in the Options window
 #, machine
 	Start downloading immediately while displaying "Download File Info" dialog	"파일 정보 다운로드" 대화 상자를 표시하는 동안 즉시 다운로드 시작
+#. text in a dialog box
+#. Download File Info, on hover over the number of files picked in Zip preview (#1775): {files} how many ("3 files"), {size} their size together, {folder} the folder they go into (named after the archive)
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	Start downloads only the {files} picked in the ZIP ({size}), into {folder}	ZIP에서 선택한 {files}({size})만 {folder}에 다운로드 시작
 #. text in the tray icon's menu
 #, machine
 	Start main download queue	기본 다운로드 대기열 시작
@@ -5396,6 +5431,10 @@
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
 	The file does NOT match ({algorithm})	파일이 일치하지 않습니다({algorithm}).
+#. text in errors.rs
+#. why a file taken out of a ZIP on its server failed (#1775): its bytes aren't what the ZIP's list of files says (its size or its CRC-32 checksum)
+#, machine
+	the file in the ZIP doesn't match the ZIP's list of files (its size or checksum): download the whole archive	ZIP의 파일이 ZIP 파일 목록(크기 또는 체크섬)과 일치하지 않습니다. 전체 아카이브를 다운로드하세요.
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
@@ -5525,6 +5564,10 @@
 #. text in errors.rs
 #, machine
 	the server can't send parts of the file, so it can't be resumed	서버가 파일의 일부를 보낼 수 없으므로 다시 시작할 수 없습니다.
+#. text in errors.rs
+#. Zip preview (#1775): the server doesn't send parts of a file (HTTP ranges), so MDM can't fetch only some files from inside a ZIP; the whole archive still downloads
+#, machine
+	the server can't send parts of the ZIP, so its files can't be downloaded one by one: download the whole archive	서버에서 ZIP의 일부를 보낼 수 없으므로 파일을 하나씩 다운로드할 수 없습니다. 전체 아카이브를 다운로드하세요.
 #. text in errors.rs
 #, machine
 	the server did not answer in time	서버가 제때 응답하지 않았습니다.
@@ -5665,6 +5708,10 @@
 #. text in a download's Properties window
 #, machine
 	The web page from which this file was obtained:	이 파일을 얻은 웹 페이지:
+#. text in errors.rs
+#. why a file can't be taken out of a ZIP on its server (#1775): the ZIP was replaced on the server after its files were listed; Zip preview is the window that lists them
+#, machine
+	the ZIP changed on the server since its files were listed: open its Zip preview again	파일이 나열된 이후 서버에서 ZIP이 변경되었습니다. ZIP 미리 보기를 다시 여세요.
 #. message or event log entry in the main window
 #. the kind of file View → Theme → Add a theme file lists: MDM's themes (TOML, JSON), Base16 schemes (YAML) and pywal's colors.json
 #, machine
@@ -5756,6 +5803,18 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	This file can't be used as a theme: {error}	이 파일은 테마로 사용할 수 없습니다: {error}
+#. text in errors.rs
+#. why a file can't be taken out of a ZIP on its server (#1775): it is encrypted (password-protected) in the ZIP
+#, machine
+	this file is encrypted in the ZIP: download the whole archive and open it with its password	이 파일은 ZIP에서 암호화되어 있습니다. 전체 아카이브를 다운로드하고 암호를 입력해 여세요.
+#. text in errors.rs
+#. why a file can't be taken out of a ZIP on its server (#1775): the ZIP no longer holds it
+#, machine
+	this file is no longer in the ZIP on the server	이 파일은 더 이상 서버의 ZIP에 없습니다.
+#. text in errors.rs
+#. why a file can't be taken out of a ZIP on its server (#1775): it is compressed with a method MDM doesn't unpack there; {method} is the method's name (BZIP2, LZMA, Deflate64…)
+#, machine
+	this file is packed in a way MDM can't unpack from the server ({method}): download the whole archive	이 파일은 MDM이 서버에서 압축을 풀 수 없는 방식으로 압축되어 있습니다({method}). 전체 아카이브를 다운로드하세요.
 #. text in remote.rs
 #. remote control page (on a phone): the file chosen is too large for a .torrent file
 #, machine
@@ -5790,6 +5849,10 @@
 #. a check of Test browser integration: a portable copy can't be connected
 #, machine
 	This is the installed copy, not a portable one	이것은 설치된 복사본이며 휴대용 복사본이 아닙니다.
+#. text in errors.rs
+#. Zip preview (#1775): the address isn't a ZIP archive whose list of files MDM can read on the server
+#, machine
+	this isn't a ZIP archive MDM can look inside on the server: download the whole file	서버에서 MDM이 내부를 확인할 수 있는 ZIP 아카이브가 아닙니다. 전체 파일을 다운로드하세요.
 #. text in playlistdlg.rs
 #. in Download video, a playlist or channel that lists no video
 #, machine
@@ -5867,6 +5930,18 @@
 #, machine
 	This video needs you to be signed in. Use the Download video button over it in your browser, which passes your sign-in on, or choose your browser in Options → Sites Logins → Cookies for video sites.	이 동영상을 보려면 로그인해야 합니다. 브라우저에서 동영상 위에 있는 동영상 다운로드 단추를 사용하면 로그인 정보가 전달됩니다. 또는 옵션 → 사이트 로그인 → 동영상 사이트용 쿠키에서 브라우저를 선택하세요.
 #. text in errors.rs
+#. Zip preview (#1775): a ZIP split over several files (volumes): its files can't be fetched one by one
+#, machine
+	this ZIP is split over several files, so its files can't be downloaded one by one: download every part	이 ZIP은 여러 파일로 분할되어 있으므로 파일을 하나씩 다운로드할 수 없습니다. 모든 부분을 다운로드하세요.
+#. text in errors.rs
+#. Zip preview (#1775): the ZIP's list of files (its table of contents) doesn't add up
+#, machine
+	this ZIP's list of files is damaged: download the whole archive	이 ZIP의 파일 목록이 손상되었습니다. 전체 아카이브를 다운로드하세요.
+#. text in errors.rs
+#. Zip preview (#1775): the ZIP's list of files (its table of contents) is larger than MDM reads from a server
+#, machine
+	this ZIP's list of files is too large to read from the server: download the whole archive	이 ZIP의 파일 목록이 너무 커서 서버에서 읽을 수 없습니다. 전체 아카이브를 다운로드하세요.
+#. text in errors.rs
 #. a download's error: the address is a site's web page that needs a browser, not the file; {site} = the site's name (gofile)
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
 #, machine
@@ -5897,6 +5972,11 @@
 #. tooltip on the Scheduler's "Wake the computer to run this queue" while "Start download at" is off
 #, machine
 	Tick "Start download at" first: the computer is woken for the start time	먼저 "다운로드 시작 시간"을 선택하세요. 컴퓨터는 시작 시간을 위해 절전 모드에서 해제됩니다.
+#. text in zippreview.rs
+#. Zip preview, under the list: {files} how many files are ticked ("3 files"), {size} their size together ("12.4 MB")
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	Ticked: {files}, {size}	선택됨: {files}, {size}
 #. text in a download's progress window; text in the Scheduler window
 #, machine
 	Time left	남은 시간
@@ -6664,6 +6744,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Zimbabwe	짐바브웨
+#. text in zippreview.rs
+#. title of the window that lists the files inside a ZIP on its server, to tick those to download (#1775)
+#, machine
+	Zip preview	ZIP 미리 보기
 #. text in the Options window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
@@ -6909,6 +6993,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 	{n} (auto)	{n} (자동)
+#. text in zippreview.rs
+#. Zip preview, under the list: {n} files of the ZIP aren't listed because MDM can't take them out on their own: encrypted ones, ones packed in a way MDM can't unpack from the server, links, or names that would leave their folder; the whole archive still downloads
+#. {n} = a number (keep the braces as they are)
+#, machine
+	{n} more can't be taken out on their own (encrypted, packed another way, or links)	{n}개는 자체적으로 추출할 수 없습니다(암호화되었거나 다른 방식으로 압축되었거나 링크).
 #. text in playlistdlg.rs
 #. in Download video for a playlist: how many videos are ticked, of how many
 #. {n} = a number (keep the braces as they are)

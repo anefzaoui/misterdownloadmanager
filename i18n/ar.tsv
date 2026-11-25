@@ -1689,6 +1689,10 @@
 	Files go to: {folder}	وجهة الملفات: {folder}
 #. text in the Scheduler window; tab in the Scheduler window
 	Files in the queue	الملفات في قائمة الانتظار
+#. text in the download list (sizes, speeds, status)
+#. why files being taken out of a ZIP on its server (#1775) can't be moved or renamed yet: those already out are in its folder, the others still to come there
+#, machine
+	Files taken out of a ZIP can be moved once they're all out	يمكن نقل الملفات المستخرجة من ZIP بمجرد استخراجها كلها
 #. button in a download's Properties window
 #. File Properties button that opens the selected torrent's file list
 #. the trailing ... means it opens a window: keep it
@@ -2347,6 +2351,10 @@
 #. in Import, where the addresses came from: a page in the browser
 #. in Link grabber, where the addresses came from: a page in the browser
 	Links from the browser	روابط من المستعرض
+#. text in a dialog box
+#. tooltip of Download File Info's Preview button for a ZIP (#1775): it lists the files inside, to download only some of them
+#, machine
+	List the files inside the ZIP and pick those to download	عرض الملفات داخل ZIP واختيار ما سيتم تنزيله
 #. text in playlistdlg.rs
 #. button in Download video: go on listing a playlist from where it stopped
 	List the rest	عرض البقية
@@ -2410,6 +2418,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Looking for your default browser...	قيد البحث عن مستعرضك الافتراضي...
+#. text in a dialog box
+#. tooltip of Download File Info's greyed Preview button while MDM asks the server whether it can look inside the ZIP (#1775)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Looking inside the ZIP...	قيد البحث داخل ZIP...
 #. text in the Download video window
 #. the trailing ... means it is still going on: keep it
 	Looking the page up...	قيد البحث عن الصفحة...
@@ -2639,6 +2652,10 @@
 #. text in the Scheduler window
 #. Monday, as short as a calendar's column head (two letters in English)
 	Mo	الاثنين
+#. text in a download's progress window
+#. Zip preview's column: when the file was last changed, as the ZIP says
+#, machine
+	Modified	تاريخ التعديل
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Moldova	مولدوفا
@@ -3103,6 +3120,10 @@
 	Only the {files} file(s) ticked in Add torrent	فقط {files} ملفا تم تحديده في «إضافة تورنت»
 #. checkbox in a dialog box
 	Only while I'm using the computer	فقط أثناء استخدامي للكمبيوتر
+#. message or event log entry in the main window
+#. event log entry: the download is files picked inside a ZIP in Zip preview (#1775); {files} how many ("3 files")
+#, machine
+	Only {files} picked inside the ZIP	تم اختيار {files} فقط داخل ZIP
 #. button in a dialog box; text in a dialog box; button in a download's Properties window; button in torrentfiles.rs
 #. verb: opens the downloaded file
 #. title of the message when a downloaded file can't be opened
@@ -3167,6 +3188,10 @@
 #. text in the Link grabber window
 #. Link grabber: the box that edits the selected package
 	Package	الحزمة
+#. text in a download's progress window
+#. Zip preview's column: the file's size as packed (compressed) inside the ZIP
+#, machine
+	Packed	مضغوط
 #. text in gallerydlg.rs; text in the Download video window
 	Page address	عنوان الصفحة
 #. text in remote.rs
@@ -3382,6 +3407,11 @@
 #. text in the Add torrent window
 #. the trailing ... means it is still going on: keep it
 	Reading the torrent...	قيد قراءة التورنت...
+#. text in zippreview.rs
+#. Zip preview, while the ZIP's list of files is being read from its server
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Reading the ZIP's list of files...	قيد قراءة قائمة ملفات ZIP...
 #. message or event log entry in the main window
 #. the status strip while Tasks → Import reads a file; {file} is its name
 #. the trailing ... means it is still going on: keep it
@@ -3962,6 +3992,11 @@
 	Start download on Mister Download Manager startup	بدء التنزيل عند بدء تشغيل Mister Download Manager
 #. checkbox in the Options window
 	Start downloading immediately while displaying "Download File Info" dialog	بدء التنزيل فورا أثناء عرض مربع حوار "معلومات ملف التنزيل"
+#. text in a dialog box
+#. Download File Info, on hover over the number of files picked in Zip preview (#1775): {files} how many ("3 files"), {size} their size together, {folder} the folder they go into (named after the archive)
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	Start downloads only the {files} picked in the ZIP ({size}), into {folder}	بدء تنزيل {files} فقط التي تم اختيارها في ZIP ({size})، إلى {folder}
 #. text in the tray icon's menu
 	Start main download queue	بدء قائمة انتظار التنزيل الرئيسية
 #. text in remote.rs
@@ -4327,6 +4362,10 @@
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 	The file does NOT match ({algorithm})	الملف غير مطابق ({algorithm})
+#. text in errors.rs
+#. why a file taken out of a ZIP on its server failed (#1775): its bytes aren't what the ZIP's list of files says (its size or its CRC-32 checksum)
+#, machine
+	the file in the ZIP doesn't match the ZIP's list of files (its size or checksum): download the whole archive	الملف في ZIP لا يتطابق مع قائمة ملفات ZIP (حجمه أو بصمة ملفه): نزل الأرشيف بأكمله
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 	The file matches ({algorithm})	الملف مطابق ({algorithm})
@@ -4433,6 +4472,10 @@
 	the server answered {status}	أجاب الخادم {status}
 #. text in errors.rs
 	the server can't send parts of the file, so it can't be resumed	لا يمكن للخادم إرسال أجزاء من الملف، لذلك لا يمكن متابعته
+#. text in errors.rs
+#. Zip preview (#1775): the server doesn't send parts of a file (HTTP ranges), so MDM can't fetch only some files from inside a ZIP; the whole archive still downloads
+#, machine
+	the server can't send parts of the ZIP, so its files can't be downloaded one by one: download the whole archive	لا يمكن للخادم إرسال أجزاء من ZIP، لذلك لا يمكن تنزيل ملفاته واحدا تلو الآخر: نزل الأرشيف بأكمله
 #. text in errors.rs
 	the server did not answer in time	لم يستجب الخادم في الوقت المحدد
 #. text in errors.rs
@@ -4557,6 +4600,10 @@
 	The update is open in your system's package installer.	التحديث مفتوح في مثبت حزم النظام.
 #. text in a download's Properties window
 	The web page from which this file was obtained:	صفحة الويب التي جاء منها هذا الملف:
+#. text in errors.rs
+#. why a file can't be taken out of a ZIP on its server (#1775): the ZIP was replaced on the server after its files were listed; Zip preview is the window that lists them
+#, machine
+	the ZIP changed on the server since its files were listed: open its Zip preview again	تغير ZIP على الخادم منذ إدراج ملفاته: افتح معاينة ZIP مرة أخرى
 #. message or event log entry in the main window
 #. the kind of file View → Theme → Add a theme file lists: MDM's themes (TOML, JSON), Base16 schemes (YAML) and pywal's colors.json
 #, machine
@@ -4637,6 +4684,18 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	This file can't be used as a theme: {error}	لا يمكن استخدام هذا الملف كسمة: {error}
+#. text in errors.rs
+#. why a file can't be taken out of a ZIP on its server (#1775): it is encrypted (password-protected) in the ZIP
+#, machine
+	this file is encrypted in the ZIP: download the whole archive and open it with its password	هذا الملف مشفر في ZIP: نزل الأرشيف بأكمله وافتحه بكلمة المرور الخاصة به
+#. text in errors.rs
+#. why a file can't be taken out of a ZIP on its server (#1775): the ZIP no longer holds it
+#, machine
+	this file is no longer in the ZIP on the server	هذا الملف لم يعد موجودا في ZIP على الخادم
+#. text in errors.rs
+#. why a file can't be taken out of a ZIP on its server (#1775): it is compressed with a method MDM doesn't unpack there; {method} is the method's name (BZIP2, LZMA, Deflate64…)
+#, machine
+	this file is packed in a way MDM can't unpack from the server ({method}): download the whole archive	هذا الملف مضغوط بطريقة لا يستطيع MDM فك ضغطها من الخادم ({method}): نزل الأرشيف بأكمله
 #. text in remote.rs
 #. remote control page (on a phone): the file chosen is too large for a .torrent file
 #, machine
@@ -4666,6 +4725,10 @@
 #. text in extension.rs
 #. a check of Test browser integration: a portable copy can't be connected
 	This is the installed copy, not a portable one	هذه هي النسخة المثبتة، وليست نسخة محمولة
+#. text in errors.rs
+#. Zip preview (#1775): the address isn't a ZIP archive whose list of files MDM can read on the server
+#, machine
+	this isn't a ZIP archive MDM can look inside on the server: download the whole file	هذا ليس أرشيف ZIP يمكن لـ MDM البحث بداخله على الخادم: نزل الملف بأكمله
 #. text in playlistdlg.rs
 #. in Download video, a playlist or channel that lists no video
 	This list has no videos	هذه القائمة لا تحتوي على مقاطع فيديو
@@ -4730,6 +4793,18 @@
 #. the Download video window: the video needs the user to be signed in
 	This video needs you to be signed in. Use the Download video button over it in your browser, which passes your sign-in on, or choose your browser in Options → Sites Logins → Cookies for video sites.	يتطلب هذا الفيديو تسجيل دخولك. استخدم زر تنزيل الفيديو الموجود فوقه في مستعرضك، والذي ينقل تسجيل دخولك، أو اختر مستعرضك في الخيارات ← تسجيلات دخول المواقع ← ملفات تعريف الارتباط لمواقع الفيديو.
 #. text in errors.rs
+#. Zip preview (#1775): a ZIP split over several files (volumes): its files can't be fetched one by one
+#, machine
+	this ZIP is split over several files, so its files can't be downloaded one by one: download every part	هذا ZIP مقسم على عدة ملفات، لذلك لا يمكن تنزيل ملفاته واحدا تلو الآخر: نزل كل جزء
+#. text in errors.rs
+#. Zip preview (#1775): the ZIP's list of files (its table of contents) doesn't add up
+#, machine
+	this ZIP's list of files is damaged: download the whole archive	قائمة ملفات ZIP هذه تالفة: نزل الأرشيف بأكمله
+#. text in errors.rs
+#. Zip preview (#1775): the ZIP's list of files (its table of contents) is larger than MDM reads from a server
+#, machine
+	this ZIP's list of files is too large to read from the server: download the whole archive	قائمة ملفات ZIP هذه كبيرة جدا بحيث لا يمكن قراءتها من الخادم: نزل الأرشيف بأكمله
+#. text in errors.rs
 #. a download's error: the address is a site's web page that needs a browser, not the file; {site} = the site's name (gofile)
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
 #, machine
@@ -4754,6 +4829,11 @@
 #. text in the Scheduler window
 #. tooltip on the Scheduler's "Wake the computer to run this queue" while "Start download at" is off
 	Tick "Start download at" first: the computer is woken for the start time	حدد "بدء التنزيل في" أولا: يتم إيقاظ الكمبيوتر لوقت البدء
+#. text in zippreview.rs
+#. Zip preview, under the list: {files} how many files are ticked ("3 files"), {size} their size together ("12.4 MB")
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	Ticked: {files}, {size}	تم تحديد: {files}، {size}
 #. text in a download's progress window; text in the Scheduler window
 	Time left	الوقت المتبقي
 #. text in countries.rs
@@ -5376,6 +5456,10 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Zimbabwe	زيمبابوي
+#. text in zippreview.rs
+#. title of the window that lists the files inside a ZIP on its server, to tick those to download (#1775)
+#, machine
+	Zip preview	معاينة ZIP
 #. text in the Options window
 #. \\n starts a new line: break lines where they fit the translation
 	ZIP, 7Z, RAR, TAR, GZ and XZ; a split archive (.part1.rar, .7z.001) once\nevery volume is in. A file there already is kept: the new one is numbered.	ZIP و7Z وRAR وTAR وGZ وXZ؛ الأرشيف المقسم (.part1.rar، .7z.001) بعد اكتمال\nكل مجلد. يبقى الملف الموجود بالفعل، ويعطى الجديد رقما.
@@ -5589,6 +5673,11 @@
 #. a number of connections the app learned by itself for a server
 #. {n} = a number (keep the braces as they are)
 	{n} (auto)	{n} (تلقائي)
+#. text in zippreview.rs
+#. Zip preview, under the list: {n} files of the ZIP aren't listed because MDM can't take them out on their own: encrypted ones, ones packed in a way MDM can't unpack from the server, links, or names that would leave their folder; the whole archive still downloads
+#. {n} = a number (keep the braces as they are)
+#, machine
+	{n} more can't be taken out on their own (encrypted, packed another way, or links)	{n} ملف آخر لا يمكن استخراجه بمفرده (مشفر، أو مضغوط بطريقة أخرى، أو رابط)
 #. text in playlistdlg.rs
 #. in Download video for a playlist: how many videos are ticked, of how many
 #. {n} = a number (keep the braces as they are)

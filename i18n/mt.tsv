@@ -2091,6 +2091,10 @@
 #. text in the Scheduler window; tab in the Scheduler window
 #, machine
 	Files in the queue	Fajls fil-kju
+#. text in the download list (sizes, speeds, status)
+#. why files being taken out of a ZIP on its server (#1775) can't be moved or renamed yet: those already out are in its folder, the others still to come there
+#, machine
+	Files taken out of a ZIP can be moved once they're all out	Il-fajls meħuda minn ZIP jistgħu jitċaqalqu ladarba jkunu kollha barra
 #. button in a download's Properties window
 #. File Properties button that opens the selected torrent's file list
 #. the trailing ... means it opens a window: keep it
@@ -2913,6 +2917,10 @@
 #. in Link grabber, where the addresses came from: a page in the browser
 #, machine
 	Links from the browser	Links mill-brawżer
+#. text in a dialog box
+#. tooltip of Download File Info's Preview button for a ZIP (#1775): it lists the files inside, to download only some of them
+#, machine
+	List the files inside the ZIP and pick those to download	Elenka l-fajls ġewwa ż-ZIP u agħżel dawk li trid tniżżel
 #. text in playlistdlg.rs
 #. button in Download video: go on listing a playlist from where it stopped
 #, machine
@@ -2990,6 +2998,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Looking for your default browser...	Qed ifittex il-browser default tiegħek...
+#. text in a dialog box
+#. tooltip of Download File Info's greyed Preview button while MDM asks the server whether it can look inside the ZIP (#1775)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Looking inside the ZIP...	Qed inħares ġewwa ż-ZIP...
 #. text in the Download video window
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -3266,6 +3279,10 @@
 #. Monday, as short as a calendar's column head (two letters in English)
 #, machine
 	Mo	Tne
+#. text in a download's progress window
+#. Zip preview's column: when the file was last changed, as the ZIP says
+#, machine
+	Modified	Modifikat
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3853,6 +3870,10 @@
 #. checkbox in a dialog box
 #, machine
 	Only while I'm using the computer	Biss waqt li nkun qed nuża l-kompjuter
+#. message or event log entry in the main window
+#. event log entry: the download is files picked inside a ZIP in Zip preview (#1775); {files} how many ("3 files")
+#, machine
+	Only {files} picked inside the ZIP	Tniżżlu biss {files} magħżula ġewwa ż-ZIP
 #. button in a dialog box; text in a dialog box; button in a download's Properties window; button in torrentfiles.rs
 #. verb: opens the downloaded file
 #. title of the message when a downloaded file can't be opened
@@ -3933,6 +3954,10 @@
 #. Link grabber: the box that edits the selected package
 #, machine
 	Package	Pakkett
+#. text in a download's progress window
+#. Zip preview's column: the file's size as packed (compressed) inside the ZIP
+#, machine
+	Packed	Ippakkjat
 #. text in gallerydlg.rs; text in the Download video window
 #, machine
 	Page address	Indirizz tal-paġna
@@ -4205,6 +4230,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Reading the torrent...	Qed jinqara t-torrent...
+#. text in zippreview.rs
+#. Zip preview, while the ZIP's list of files is being read from its server
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Reading the ZIP's list of files...	Qed naqra l-lista tal-fajls taż-ZIP...
 #. message or event log entry in the main window
 #. the status strip while Tasks → Import reads a file; {file} is its name
 #. the trailing ... means it is still going on: keep it
@@ -4933,6 +4963,11 @@
 #. checkbox in the Options window
 #, machine
 	Start downloading immediately while displaying "Download File Info" dialog	Ibda tniżżil immedjatament waqt li jintwera d-djalogu "Informazzjoni tal-Fajl tat-Tniżżil"
+#. text in a dialog box
+#. Download File Info, on hover over the number of files picked in Zip preview (#1775): {files} how many ("3 files"), {size} their size together, {folder} the folder they go into (named after the archive)
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	Start downloads only the {files} picked in the ZIP ({size}), into {folder}	Ibda t-tniżżil biss tal-{files} magħżula fiż-ZIP ({size}), f'{folder}'
 #. text in the tray icon's menu
 #, machine
 	Start main download queue	Ibda l-kju prinċipali tat-tniżżil
@@ -5387,6 +5422,10 @@
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
 	The file does NOT match ({algorithm})	Il-fajl MHUX jaqbel ({algorithm})
+#. text in errors.rs
+#. why a file taken out of a ZIP on its server failed (#1775): its bytes aren't what the ZIP's list of files says (its size or its CRC-32 checksum)
+#, machine
+	the file in the ZIP doesn't match the ZIP's list of files (its size or checksum): download the whole archive	il-fajl fiż-ZIP ma jaqbilx mal-lista tal-fajls taż-ZIP (id-daqs jew iċ-checksum tiegħu): niżżel l-arkivju kollu
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
@@ -5516,6 +5555,10 @@
 #. text in errors.rs
 #, machine
 	the server can't send parts of the file, so it can't be resumed	is-server ma jistax jibgħat partijiet tal-fajl, għalhekk ma jistax jerġa' jinbeda
+#. text in errors.rs
+#. Zip preview (#1775): the server doesn't send parts of a file (HTTP ranges), so MDM can't fetch only some files from inside a ZIP; the whole archive still downloads
+#, machine
+	the server can't send parts of the ZIP, so its files can't be downloaded one by one: download the whole archive	is-server ma jistax jibgħat partijiet taż-ZIP, għalhekk il-fajls tiegħu ma jistgħux jitniżżlu wieħed wieħed: niżżel l-arkivju kollu
 #. text in errors.rs
 #, machine
 	the server did not answer in time	is-server ma weġibx fil-ħin
@@ -5656,6 +5699,10 @@
 #. text in a download's Properties window
 #, machine
 	The web page from which this file was obtained:	Il-paġna web li minnha nkiseb dan il-fajl:
+#. text in errors.rs
+#. why a file can't be taken out of a ZIP on its server (#1775): the ZIP was replaced on the server after its files were listed; Zip preview is the window that lists them
+#, machine
+	the ZIP changed on the server since its files were listed: open its Zip preview again	iż-ZIP inbidel fuq is-server minn meta ġew elenkati l-fajls tiegħu: erġa' iftaħ il-preview taż-ZIP tiegħu
 #. message or event log entry in the main window
 #. the kind of file View → Theme → Add a theme file lists: MDM's themes (TOML, JSON), Base16 schemes (YAML) and pywal's colors.json
 #, machine
@@ -5747,6 +5794,18 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	This file can't be used as a theme: {error}	Dan il-fajl ma jistax jintuża bħala tema: {error}
+#. text in errors.rs
+#. why a file can't be taken out of a ZIP on its server (#1775): it is encrypted (password-protected) in the ZIP
+#, machine
+	this file is encrypted in the ZIP: download the whole archive and open it with its password	dan il-fajl huwa kriptat fiż-ZIP: niżżel l-arkivju kollu u iftħu bil-password tiegħu
+#. text in errors.rs
+#. why a file can't be taken out of a ZIP on its server (#1775): the ZIP no longer holds it
+#, machine
+	this file is no longer in the ZIP on the server	dan il-fajl m'għadux fiż-ZIP fuq is-server
+#. text in errors.rs
+#. why a file can't be taken out of a ZIP on its server (#1775): it is compressed with a method MDM doesn't unpack there; {method} is the method's name (BZIP2, LZMA, Deflate64…)
+#, machine
+	this file is packed in a way MDM can't unpack from the server ({method}): download the whole archive	dan il-fajl huwa ppakkjat b'mod li MDM ma jistax jippakkja mis-server ({method}): niżżel l-arkivju kollu
 #. text in remote.rs
 #. remote control page (on a phone): the file chosen is too large for a .torrent file
 #, machine
@@ -5781,6 +5840,10 @@
 #. a check of Test browser integration: a portable copy can't be connected
 #, machine
 	This is the installed copy, not a portable one	Din hija l-kopja installata, mhux waħda portabbli
+#. text in errors.rs
+#. Zip preview (#1775): the address isn't a ZIP archive whose list of files MDM can read on the server
+#, machine
+	this isn't a ZIP archive MDM can look inside on the server: download the whole file	dan mhuwiex arkivju ZIP li MDM jista' jħares ġewwa fih fuq is-server: niżżel il-fajl kollu
 #. text in playlistdlg.rs
 #. in Download video, a playlist or channel that lists no video
 #, machine
@@ -5858,6 +5921,18 @@
 #, machine
 	This video needs you to be signed in. Use the Download video button over it in your browser, which passes your sign-in on, or choose your browser in Options → Sites Logins → Cookies for video sites.	Dan il-vidjo jeħtieġ li tkun illoggjat. Uża l-buttuna Niżżel il-vidjo fuqu fil-browser tiegħek, li tgħaddi l-login tiegħek, jew agħżel il-browser tiegħek f'Għażliet → Logins tas-Siti → Cookies għal siti tal-vidjo.
 #. text in errors.rs
+#. Zip preview (#1775): a ZIP split over several files (volumes): its files can't be fetched one by one
+#, machine
+	this ZIP is split over several files, so its files can't be downloaded one by one: download every part	dan iż-ZIP huwa maqsum fuq diversi fajls, għalhekk il-fajls tiegħu ma jistgħux jitniżżlu wieħed wieħed: niżżel kull parti
+#. text in errors.rs
+#. Zip preview (#1775): the ZIP's list of files (its table of contents) doesn't add up
+#, machine
+	this ZIP's list of files is damaged: download the whole archive	il-lista tal-fajls taż-ZIP hija bil-ħsara: niżżel l-arkivju kollu
+#. text in errors.rs
+#. Zip preview (#1775): the ZIP's list of files (its table of contents) is larger than MDM reads from a server
+#, machine
+	this ZIP's list of files is too large to read from the server: download the whole archive	il-lista tal-fajls taż-ZIP hija kbira wisq biex tinqara mis-server: niżżel l-arkivju kollu
+#. text in errors.rs
 #. a download's error: the address is a site's web page that needs a browser, not the file; {site} = the site's name (gofile)
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
 #, machine
@@ -5888,6 +5963,11 @@
 #. tooltip on the Scheduler's "Wake the computer to run this queue" while "Start download at" is off
 #, machine
 	Tick "Start download at" first: the computer is woken for the start time	Immarka "Ibda t-tniżżil fi" l-ewwel: il-kompjuter jitqajjem għall-ħin tal-bidu
+#. text in zippreview.rs
+#. Zip preview, under the list: {files} how many files are ticked ("3 files"), {size} their size together ("12.4 MB")
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	Ticked: {files}, {size}	Immarkati: {files}, {size}
 #. text in a download's progress window; text in the Scheduler window
 #, machine
 	Time left	Ħin li fadal
@@ -6655,6 +6735,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Zimbabwe	Żimbabwe
+#. text in zippreview.rs
+#. title of the window that lists the files inside a ZIP on its server, to tick those to download (#1775)
+#, machine
+	Zip preview	Preview taż-ZIP
 #. text in the Options window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
@@ -6900,6 +6984,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 	{n} (auto)	{n} (awtomatiku)
+#. text in zippreview.rs
+#. Zip preview, under the list: {n} files of the ZIP aren't listed because MDM can't take them out on their own: encrypted ones, ones packed in a way MDM can't unpack from the server, links, or names that would leave their folder; the whole archive still downloads
+#. {n} = a number (keep the braces as they are)
+#, machine
+	{n} more can't be taken out on their own (encrypted, packed another way, or links)	{n} oħra ma jistgħux jitneħħew waħedhom (kriptati, ippakkjati b'mod ieħor, jew ħoloq)
 #. text in playlistdlg.rs
 #. in Download video for a playlist: how many videos are ticked, of how many
 #. {n} = a number (keep the braces as they are)

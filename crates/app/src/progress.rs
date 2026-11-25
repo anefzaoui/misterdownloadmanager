@@ -2144,6 +2144,40 @@ pub(crate) fn files_table(
     )
 }
 
+/// Zip preview's table of a ZIP's files (#1775, zippreview.rs), ticked or not: each one's name
+/// (its path in the archive), its packed size, its size and when it was last changed. The row
+/// whose box was clicked.
+pub(crate) fn zip_table(
+    ui: &mut Ui,
+    p: &egui::Painter,
+    o: Pos2,
+    id: &str,
+    rows: &[Vec<String>],
+    checks: &[bool],
+    shown: usize,
+) -> Option<usize> {
+    table_sized(
+        ui,
+        p,
+        o,
+        id,
+        &[
+            // i18n: Zip preview's column: the file's name (its path inside the ZIP)
+            (25.0, crate::i18n::mark("File Name")),
+            // i18n: Zip preview's column: the file's size as packed (compressed) inside the ZIP
+            (225.0, crate::i18n::mark("Packed")),
+            (295.0, crate::i18n::mark("Size")),
+            // i18n: Zip preview's column: when the file was last changed, as the ZIP says
+            (365.0, crate::i18n::mark("Modified")),
+        ],
+        &[220.0, 290.0, 360.0],
+        rows,
+        true,
+        Some(checks),
+        shown,
+    )
+}
+
 /// The height of a [`table_sized`] of `shown` rows' body (the progress window's 6: 100 px).
 pub(crate) fn table_body_height(shown: usize) -> f32 {
     17.0 * shown as f32 - 2.0

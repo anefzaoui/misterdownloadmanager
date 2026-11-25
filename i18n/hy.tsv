@@ -2091,6 +2091,10 @@
 #. text in the Scheduler window; tab in the Scheduler window
 #, machine
 	Files in the queue	Հերթում գտնվող ֆայլեր
+#. text in the download list (sizes, speeds, status)
+#. why files being taken out of a ZIP on its server (#1775) can't be moved or renamed yet: those already out are in its folder, the others still to come there
+#, machine
+	Files taken out of a ZIP can be moved once they're all out	ZIP-ից հանված ֆայլերը հնարավոր կլինի տեղափոխել, երբ բոլորը հանված լինեն
 #. button in a download's Properties window
 #. File Properties button that opens the selected torrent's file list
 #. the trailing ... means it opens a window: keep it
@@ -2917,6 +2921,10 @@
 #. in Link grabber, where the addresses came from: a page in the browser
 #, machine
 	Links from the browser	Հղումներ զննարկիչից
+#. text in a dialog box
+#. tooltip of Download File Info's Preview button for a ZIP (#1775): it lists the files inside, to download only some of them
+#, machine
+	List the files inside the ZIP and pick those to download	Ցուցակագրել ZIP-ի ներսի ֆայլերը և ընտրել ներբեռնման ենթակա ֆայլերը
 #. text in playlistdlg.rs
 #. button in Download video: go on listing a playlist from where it stopped
 #, machine
@@ -2994,6 +3002,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Looking for your default browser...	Փնտրվում է ձեր լռելյայն դիտարկիչը...
+#. text in a dialog box
+#. tooltip of Download File Info's greyed Preview button while MDM asks the server whether it can look inside the ZIP (#1775)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Looking inside the ZIP...	Դիտարկվում է ZIP-ի ներսը...
 #. text in the Download video window
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -3270,6 +3283,10 @@
 #. Monday, as short as a calendar's column head (two letters in English)
 #, machine
 	Mo	Երկ
+#. text in a download's progress window
+#. Zip preview's column: when the file was last changed, as the ZIP says
+#, machine
+	Modified	Փոփոխված է
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3857,6 +3874,10 @@
 #. checkbox in a dialog box
 #, machine
 	Only while I'm using the computer	Միայն այն ժամանակ, երբ ես օգտագործում եմ համակարգիչը
+#. message or event log entry in the main window
+#. event log entry: the download is files picked inside a ZIP in Zip preview (#1775); {files} how many ("3 files")
+#, machine
+	Only {files} picked inside the ZIP	Ընտրվել է միայն {files} ZIP-ի ներսում
 #. button in a dialog box; text in a dialog box; button in a download's Properties window; button in torrentfiles.rs
 #. verb: opens the downloaded file
 #. title of the message when a downloaded file can't be opened
@@ -3937,6 +3958,10 @@
 #. Link grabber: the box that edits the selected package
 #, machine
 	Package	Փաթեթ
+#. text in a download's progress window
+#. Zip preview's column: the file's size as packed (compressed) inside the ZIP
+#, machine
+	Packed	Փաթեթավորված
 #. text in gallerydlg.rs; text in the Download video window
 #, machine
 	Page address	Էջի հասցե
@@ -4209,6 +4234,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Reading the torrent...	Կարդում է torrent-ը...
+#. text in zippreview.rs
+#. Zip preview, while the ZIP's list of files is being read from its server
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Reading the ZIP's list of files...	Կարդացվում է ZIP-ի ֆայլերի ցուցակը...
 #. message or event log entry in the main window
 #. the status strip while Tasks → Import reads a file; {file} is its name
 #. the trailing ... means it is still going on: keep it
@@ -4937,6 +4967,11 @@
 #. checkbox in the Options window
 #, machine
 	Start downloading immediately while displaying "Download File Info" dialog	Անմիջապես սկսել ներբեռնումը՝ միաժամանակ ցուցադրելով «Ներբեռնել ֆայլի տեղեկությունները» երկխոսության պատուհանը
+#. text in a dialog box
+#. Download File Info, on hover over the number of files picked in Zip preview (#1775): {files} how many ("3 files"), {size} their size together, {folder} the folder they go into (named after the archive)
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	Start downloads only the {files} picked in the ZIP ({size}), into {folder}	Ներբեռնել միայն ZIP-ում ընտրված {files}-ը ({size})՝ {folder} պանակում
 #. text in the tray icon's menu
 #, machine
 	Start main download queue	Սկսել հիմնական ներբեռնման հերթը
@@ -5391,6 +5426,10 @@
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
 	The file does NOT match ({algorithm})	Ֆայլը ՉԻ համընկնում ({algorithm})
+#. text in errors.rs
+#. why a file taken out of a ZIP on its server failed (#1775): its bytes aren't what the ZIP's list of files says (its size or its CRC-32 checksum)
+#, machine
+	the file in the ZIP doesn't match the ZIP's list of files (its size or checksum): download the whole archive	ZIP-ի ֆայլը չի համապատասխանում ZIP-ի ֆայլերի ցուցակին (դրա չափը կամ ստուգիչ գումարը). ներբեռնեք ամբողջ արխիվը
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
@@ -5520,6 +5559,10 @@
 #. text in errors.rs
 #, machine
 	the server can't send parts of the file, so it can't be resumed	սերվերը չի կարող ուղարկել ֆայլի մասերը, ուստի այն չի կարող վերսկսվել
+#. text in errors.rs
+#. Zip preview (#1775): the server doesn't send parts of a file (HTTP ranges), so MDM can't fetch only some files from inside a ZIP; the whole archive still downloads
+#, machine
+	the server can't send parts of the ZIP, so its files can't be downloaded one by one: download the whole archive	Սերվերը չի կարող ուղարկել ZIP-ի մասերը, ուստի դրա ֆայլերը չեն կարող մեկ առ մեկ ներբեռնվել. ներբեռնեք ամբողջ արխիվը
 #. text in errors.rs
 #, machine
 	the server did not answer in time	սերվերը ժամանակին չպատասխանեց
@@ -5660,6 +5703,10 @@
 #. text in a download's Properties window
 #, machine
 	The web page from which this file was obtained:	Վեբ էջը, որտեղից ստացվել է այս ֆայլը:
+#. text in errors.rs
+#. why a file can't be taken out of a ZIP on its server (#1775): the ZIP was replaced on the server after its files were listed; Zip preview is the window that lists them
+#, machine
+	the ZIP changed on the server since its files were listed: open its Zip preview again	ZIP-ը փոխվել է սերվերի վրա այն բանից հետո, երբ դրա ֆայլերը ցուցակագրվել են. նորից բացեք դրա Zip նախադիտումը
 #. message or event log entry in the main window
 #. the kind of file View → Theme → Add a theme file lists: MDM's themes (TOML, JSON), Base16 schemes (YAML) and pywal's colors.json
 #, machine
@@ -5751,6 +5798,18 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	This file can't be used as a theme: {error}	Այս ֆայլը չի կարող օգտագործվել որպես թեմա՝ {error}
+#. text in errors.rs
+#. why a file can't be taken out of a ZIP on its server (#1775): it is encrypted (password-protected) in the ZIP
+#, machine
+	this file is encrypted in the ZIP: download the whole archive and open it with its password	Այս ֆայլը գաղտնագրված է ZIP-ում. ներբեռնեք ամբողջ արխիվը և բացեք այն իր գաղտնաբառով
+#. text in errors.rs
+#. why a file can't be taken out of a ZIP on its server (#1775): the ZIP no longer holds it
+#, machine
+	this file is no longer in the ZIP on the server	Այս ֆայլն այլևս չկա սերվերի ZIP-ում
+#. text in errors.rs
+#. why a file can't be taken out of a ZIP on its server (#1775): it is compressed with a method MDM doesn't unpack there; {method} is the method's name (BZIP2, LZMA, Deflate64…)
+#, machine
+	this file is packed in a way MDM can't unpack from the server ({method}): download the whole archive	Այս ֆայլը փաթեթավորված է այնպես, որ MDM-ը չի կարող բացել սերվերից ({method}). ներբեռնեք ամբողջ արխիվը
 #. text in remote.rs
 #. remote control page (on a phone): the file chosen is too large for a .torrent file
 #, machine
@@ -5785,6 +5844,10 @@
 #. a check of Test browser integration: a portable copy can't be connected
 #, machine
 	This is the installed copy, not a portable one	Սա տեղադրված տարբերակն է, ոչ թե շարժականը
+#. text in errors.rs
+#. Zip preview (#1775): the address isn't a ZIP archive whose list of files MDM can read on the server
+#, machine
+	this isn't a ZIP archive MDM can look inside on the server: download the whole file	Սա ZIP արխիվ չէ, որի ներսը MDM-ը կարող է դիտել սերվերի վրա. ներբեռնեք ամբողջ ֆայլը
 #. text in playlistdlg.rs
 #. in Download video, a playlist or channel that lists no video
 #, machine
@@ -5862,6 +5925,18 @@
 #, machine
 	This video needs you to be signed in. Use the Download video button over it in your browser, which passes your sign-in on, or choose your browser in Options → Sites Logins → Cookies for video sites.	Այս տեսանյութը դիտելու համար պետք է մուտք գործած լինեք։ Օգտագործեք ձեր բրաուզերում տեսանյութի վրա գտնվող «Ներբեռնել տեսանյութը» կոճակը, որը փոխանցում է ձեր մուտքի տվյալները, կամ Ընտրանքներ → Կայքերի մուտքեր → Թխուկներ տեսանյութերի կայքերի համար բաժնում ընտրեք ձեր բրաուզերը։
 #. text in errors.rs
+#. Zip preview (#1775): a ZIP split over several files (volumes): its files can't be fetched one by one
+#, machine
+	this ZIP is split over several files, so its files can't be downloaded one by one: download every part	Այս ZIP-ը բաժանված է մի քանի ֆայլերի, ուստի դրա ֆայլերը չեն կարող մեկ առ մեկ ներբեռնվել. ներբեռնեք յուրաքանչյուր մասը
+#. text in errors.rs
+#. Zip preview (#1775): the ZIP's list of files (its table of contents) doesn't add up
+#, machine
+	this ZIP's list of files is damaged: download the whole archive	Այս ZIP-ի ֆայլերի ցուցակը վնասված է. ներբեռնեք ամբողջ արխիվը
+#. text in errors.rs
+#. Zip preview (#1775): the ZIP's list of files (its table of contents) is larger than MDM reads from a server
+#, machine
+	this ZIP's list of files is too large to read from the server: download the whole archive	Այս ZIP-ի ֆայլերի ցուցակը չափազանց մեծ է սերվերից կարդալու համար. ներբեռնեք ամբողջ արխիվը
+#. text in errors.rs
 #. a download's error: the address is a site's web page that needs a browser, not the file; {site} = the site's name (gofile)
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
 #, machine
@@ -5892,6 +5967,11 @@
 #. tooltip on the Scheduler's "Wake the computer to run this queue" while "Start download at" is off
 #, machine
 	Tick "Start download at" first: the computer is woken for the start time	Նախ նշեք «Սկսել ներբեռնումը»․ համակարգիչը կարթնանա նշված ժամին
+#. text in zippreview.rs
+#. Zip preview, under the list: {files} how many files are ticked ("3 files"), {size} their size together ("12.4 MB")
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	Ticked: {files}, {size}	Նշված է՝ {files}, {size}
 #. text in a download's progress window; text in the Scheduler window
 #, machine
 	Time left	Մնացած ժամանակը
@@ -6659,6 +6739,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Zimbabwe	Զիմբաբվե
+#. text in zippreview.rs
+#. title of the window that lists the files inside a ZIP on its server, to tick those to download (#1775)
+#, machine
+	Zip preview	Zip նախադիտում
 #. text in the Options window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
@@ -6904,6 +6988,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 	{n} (auto)	{n} (ավտոմատ)
+#. text in zippreview.rs
+#. Zip preview, under the list: {n} files of the ZIP aren't listed because MDM can't take them out on their own: encrypted ones, ones packed in a way MDM can't unpack from the server, links, or names that would leave their folder; the whole archive still downloads
+#. {n} = a number (keep the braces as they are)
+#, machine
+	{n} more can't be taken out on their own (encrypted, packed another way, or links)	Եվս {n} ֆայլ չի կարելի առանձին հանել (գաղտնագրված, այլ կերպ փաթեթավորված կամ հղումներ)
 #. text in playlistdlg.rs
 #. in Download video for a playlist: how many videos are ticked, of how many
 #. {n} = a number (keep the braces as they are)

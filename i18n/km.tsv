@@ -2091,6 +2091,10 @@
 #. text in the Scheduler window; tab in the Scheduler window
 #, machine
 	Files in the queue	ឯកសារនៅក្នុងជួរ
+#. text in the download list (sizes, speeds, status)
+#. why files being taken out of a ZIP on its server (#1775) can't be moved or renamed yet: those already out are in its folder, the others still to come there
+#, machine
+	Files taken out of a ZIP can be moved once they're all out	ឯកសារដែលបានស្រង់ចេញពី ZIP អាចផ្លាស់ទីបាននៅពេលដែលវាចេញទាំងអស់
 #. button in a download's Properties window
 #. File Properties button that opens the selected torrent's file list
 #. the trailing ... means it opens a window: keep it
@@ -2913,6 +2917,10 @@
 #. in Link grabber, where the addresses came from: a page in the browser
 #, machine
 	Links from the browser	តំណភ្ជាប់ពីកម្មវិធីរុករក
+#. text in a dialog box
+#. tooltip of Download File Info's Preview button for a ZIP (#1775): it lists the files inside, to download only some of them
+#, machine
+	List the files inside the ZIP and pick those to download	រាយបញ្ជីឯកសារនៅក្នុង ZIP ហើយជ្រើសរើសឯកសារដែលត្រូវទាញយក
 #. text in playlistdlg.rs
 #. button in Download video: go on listing a playlist from where it stopped
 #, machine
@@ -2990,6 +2998,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Looking for your default browser...	កំពុងស្វែងរកកម្មវិធីរុករកលំនាំដើមរបស់អ្នក...
+#. text in a dialog box
+#. tooltip of Download File Info's greyed Preview button while MDM asks the server whether it can look inside the ZIP (#1775)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Looking inside the ZIP...	កំពុងមើលក្នុង ZIP...
 #. text in the Download video window
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -3266,6 +3279,10 @@
 #. Monday, as short as a calendar's column head (two letters in English)
 #, machine
 	Mo	ច.
+#. text in a download's progress window
+#. Zip preview's column: when the file was last changed, as the ZIP says
+#, machine
+	Modified	បានកែប្រែ
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3853,6 +3870,10 @@
 #. checkbox in a dialog box
 #, machine
 	Only while I'm using the computer	តែនៅពេលខ្ញុំកំពុងប្រើកុំព្យូទ័រ
+#. message or event log entry in the main window
+#. event log entry: the download is files picked inside a ZIP in Zip preview (#1775); {files} how many ("3 files")
+#, machine
+	Only {files} picked inside the ZIP	មានតែ {files} ដែលបានជ្រើសរើសនៅក្នុង ZIP ប៉ុណ្ណោះ
 #. button in a dialog box; text in a dialog box; button in a download's Properties window; button in torrentfiles.rs
 #. verb: opens the downloaded file
 #. title of the message when a downloaded file can't be opened
@@ -3933,6 +3954,10 @@
 #. Link grabber: the box that edits the selected package
 #, machine
 	Package	កញ្ចប់
+#. text in a download's progress window
+#. Zip preview's column: the file's size as packed (compressed) inside the ZIP
+#, machine
+	Packed	បានបង្ហាប់
 #. text in gallerydlg.rs; text in the Download video window
 #, machine
 	Page address	អាសយដ្ឋានទំព័រ
@@ -4205,6 +4230,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Reading the torrent...	កំពុងអាន torrent...
+#. text in zippreview.rs
+#. Zip preview, while the ZIP's list of files is being read from its server
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Reading the ZIP's list of files...	កំពុងអានបញ្ជីឯកសាររបស់ ZIP...
 #. message or event log entry in the main window
 #. the status strip while Tasks → Import reads a file; {file} is its name
 #. the trailing ... means it is still going on: keep it
@@ -4933,6 +4963,11 @@
 #. checkbox in the Options window
 #, machine
 	Start downloading immediately while displaying "Download File Info" dialog	ចាប់ផ្ដើមទាញយកភ្លាមៗនៅពេលបង្ហាញប្រអប់ "ព័ត៌មានឯកសារទាញយក"
+#. text in a dialog box
+#. Download File Info, on hover over the number of files picked in Zip preview (#1775): {files} how many ("3 files"), {size} their size together, {folder} the folder they go into (named after the archive)
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	Start downloads only the {files} picked in the ZIP ({size}), into {folder}	ចាប់ផ្តើមទាញយកតែ {files} ដែលបានជ្រើសរើសនៅក្នុង ZIP ({size}) ទៅក្នុង {folder}
 #. text in the tray icon's menu
 #, machine
 	Start main download queue	ចាប់ផ្ដើមជួរទាញយកមេ
@@ -5387,6 +5422,10 @@
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
 	The file does NOT match ({algorithm})	ឯកសារមិនត្រូវគ្នាទេ ({algorithm})
+#. text in errors.rs
+#. why a file taken out of a ZIP on its server failed (#1775): its bytes aren't what the ZIP's list of files says (its size or its CRC-32 checksum)
+#, machine
+	the file in the ZIP doesn't match the ZIP's list of files (its size or checksum): download the whole archive	ឯកសារនៅក្នុង ZIP មិនត្រូវគ្នានឹងបញ្ជីឯកសាររបស់ ZIP ទេ (ទំហំ ឬ checksum របស់វា)៖ ទាញយកបណ្ណសារទាំងមូល
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
@@ -5516,6 +5555,10 @@
 #. text in errors.rs
 #, machine
 	the server can't send parts of the file, so it can't be resumed	ម៉ាស៊ីនមេមិនអាចផ្ញើផ្នែកនៃឯកសារបានទេ ដូច្នេះវាមិនអាចបន្តបានទេ
+#. text in errors.rs
+#. Zip preview (#1775): the server doesn't send parts of a file (HTTP ranges), so MDM can't fetch only some files from inside a ZIP; the whole archive still downloads
+#, machine
+	the server can't send parts of the ZIP, so its files can't be downloaded one by one: download the whole archive	ម៉ាស៊ីនមេមិនអាចផ្ញើផ្នែកនៃ ZIP បានទេ ដូច្នេះឯកសាររបស់វាមិនអាចទាញយកម្តងមួយៗបានទេ៖ ទាញយកបណ្ណសារទាំងមូល
 #. text in errors.rs
 #, machine
 	the server did not answer in time	ម៉ាស៊ីនមេមិនបានឆ្លើយតបទាន់ពេលទេ
@@ -5656,6 +5699,10 @@
 #. text in a download's Properties window
 #, machine
 	The web page from which this file was obtained:	ទំព័រគេហទំព័រដែលឯកសារនេះត្រូវបានទទួល៖
+#. text in errors.rs
+#. why a file can't be taken out of a ZIP on its server (#1775): the ZIP was replaced on the server after its files were listed; Zip preview is the window that lists them
+#, machine
+	the ZIP changed on the server since its files were listed: open its Zip preview again	ZIP បានផ្លាស់ប្តូរនៅលើម៉ាស៊ីនមេចាប់តាំងពីឯកសាររបស់វាត្រូវបានរាយបញ្ជី៖ បើក Zip preview របស់វាឡើងវិញ
 #. message or event log entry in the main window
 #. the kind of file View → Theme → Add a theme file lists: MDM's themes (TOML, JSON), Base16 schemes (YAML) and pywal's colors.json
 #, machine
@@ -5747,6 +5794,18 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	This file can't be used as a theme: {error}	ឯកសារនេះមិនអាចប្រើជាស្បែកបានទេ៖ {error}
+#. text in errors.rs
+#. why a file can't be taken out of a ZIP on its server (#1775): it is encrypted (password-protected) in the ZIP
+#, machine
+	this file is encrypted in the ZIP: download the whole archive and open it with its password	ឯកសារនេះត្រូវបានអ៊ិនគ្រីបនៅក្នុង ZIP៖ ទាញយកបណ្ណសារទាំងមូល ហើយបើកវាដោយប្រើពាក្យសម្ងាត់របស់វា
+#. text in errors.rs
+#. why a file can't be taken out of a ZIP on its server (#1775): the ZIP no longer holds it
+#, machine
+	this file is no longer in the ZIP on the server	ឯកសារនេះលែងមាននៅក្នុង ZIP នៅលើម៉ាស៊ីនមេទៀតហើយ
+#. text in errors.rs
+#. why a file can't be taken out of a ZIP on its server (#1775): it is compressed with a method MDM doesn't unpack there; {method} is the method's name (BZIP2, LZMA, Deflate64…)
+#, machine
+	this file is packed in a way MDM can't unpack from the server ({method}): download the whole archive	ឯកសារនេះត្រូវបានបង្ហាប់តាមវិធីដែល MDM មិនអាចពន្លាចេញពីម៉ាស៊ីនមេបានទេ ({method})៖ ទាញយកបណ្ណសារទាំងមូល
 #. text in remote.rs
 #. remote control page (on a phone): the file chosen is too large for a .torrent file
 #, machine
@@ -5781,6 +5840,10 @@
 #. a check of Test browser integration: a portable copy can't be connected
 #, machine
 	This is the installed copy, not a portable one	នេះគឺជាច្បាប់ចម្លងដែលបានដំឡើង មិនមែនជាច្បាប់ចម្លងចល័តទេ
+#. text in errors.rs
+#. Zip preview (#1775): the address isn't a ZIP archive whose list of files MDM can read on the server
+#, machine
+	this isn't a ZIP archive MDM can look inside on the server: download the whole file	នេះមិនមែនជាបណ្ណសារ ZIP ដែល MDM អាចមើលខាងក្នុងនៅលើម៉ាស៊ីនមេបានទេ៖ ទាញយកឯកសារទាំងមូល
 #. text in playlistdlg.rs
 #. in Download video, a playlist or channel that lists no video
 #, machine
@@ -5858,6 +5921,18 @@
 #, machine
 	This video needs you to be signed in. Use the Download video button over it in your browser, which passes your sign-in on, or choose your browser in Options → Sites Logins → Cookies for video sites.	វីដេអូនេះតម្រូវឱ្យអ្នកចូល។ ប្រើប៊ូតុងទាញយកវីដេអូនៅពីលើវានៅក្នុងកម្មវិធីរុករករបស់អ្នក ដែលបញ្ជូនការចូលរបស់អ្នក ឬជ្រើសរើសកម្មវិធីរុករករបស់អ្នកនៅក្នុងជម្រើស → ការចូលគេហទំព័រ → ខូគីសម្រាប់គេហទំព័រវីដេអូ។
 #. text in errors.rs
+#. Zip preview (#1775): a ZIP split over several files (volumes): its files can't be fetched one by one
+#, machine
+	this ZIP is split over several files, so its files can't be downloaded one by one: download every part	ZIP នេះត្រូវបានបំបែកជាច្រើនឯកសារ ដូច្នេះឯកសាររបស់វាមិនអាចទាញយកម្តងមួយៗបានទេ៖ ទាញយកគ្រប់ផ្នែកទាំងអស់
+#. text in errors.rs
+#. Zip preview (#1775): the ZIP's list of files (its table of contents) doesn't add up
+#, machine
+	this ZIP's list of files is damaged: download the whole archive	បញ្ជីឯកសាររបស់ ZIP នេះខូច៖ ទាញយកបណ្ណសារទាំងមូល
+#. text in errors.rs
+#. Zip preview (#1775): the ZIP's list of files (its table of contents) is larger than MDM reads from a server
+#, machine
+	this ZIP's list of files is too large to read from the server: download the whole archive	បញ្ជីឯកសាររបស់ ZIP នេះធំពេកមិនអាចអានពីម៉ាស៊ីនមេបានទេ៖ ទាញយកបណ្ណសារទាំងមូល
+#. text in errors.rs
 #. a download's error: the address is a site's web page that needs a browser, not the file; {site} = the site's name (gofile)
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
 #, machine
@@ -5888,6 +5963,11 @@
 #. tooltip on the Scheduler's "Wake the computer to run this queue" while "Start download at" is off
 #, machine
 	Tick "Start download at" first: the computer is woken for the start time	ធីក «ចាប់ផ្តើមទាញយកនៅ» ជាមុនសិន៖ កុំព្យូទ័រនឹងត្រូវបានដាស់នៅពេលចាប់ផ្តើម
+#. text in zippreview.rs
+#. Zip preview, under the list: {files} how many files are ticked ("3 files"), {size} their size together ("12.4 MB")
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	Ticked: {files}, {size}	បានធីក៖ {files}, {size}
 #. text in a download's progress window; text in the Scheduler window
 #, machine
 	Time left	ពេលវេលាដែលនៅសល់
@@ -6655,6 +6735,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Zimbabwe	ហ្ស៊ីមបាវ៉េ
+#. text in zippreview.rs
+#. title of the window that lists the files inside a ZIP on its server, to tick those to download (#1775)
+#, machine
+	Zip preview	មើលមាតិកា ZIP ជាមុន
 #. text in the Options window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
@@ -6900,6 +6984,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 	{n} (auto)	{n} (ស្វ័យប្រវត្តិ)
+#. text in zippreview.rs
+#. Zip preview, under the list: {n} files of the ZIP aren't listed because MDM can't take them out on their own: encrypted ones, ones packed in a way MDM can't unpack from the server, links, or names that would leave their folder; the whole archive still downloads
+#. {n} = a number (keep the braces as they are)
+#, machine
+	{n} more can't be taken out on their own (encrypted, packed another way, or links)	មិនអាចដក {n} ទៀតដោយខ្លួនឯងបានទេ (បានអ៊ិនគ្រីប បានខ្ចប់តាមវិធីផ្សេង ឬតំណភ្ជាប់)
 #. text in playlistdlg.rs
 #. in Download video for a playlist: how many videos are ticked, of how many
 #. {n} = a number (keep the braces as they are)

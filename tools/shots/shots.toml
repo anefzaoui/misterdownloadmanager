@@ -134,6 +134,16 @@ alt = "Download File Info for a ZIP file: its address, the Compressed category, 
 caption = "1 the category, 2 where the file goes, 3 start now, 4 or put it in a queue."
 
 [[shot]]
+id = "zip-preview"
+page = "adding-downloads.md"
+under = "Only some files from inside a ZIP"
+# Download File Info for a ZIP on the lab server, then its Preview (#1775), three files ticked.
+take = "@download:zip/files.zip+zip-preview:3"
+marks = [{ at = "Select all", side = "corner" }, { at = "OK", side = "corner" }]
+alt = "Zip preview listing the files inside a ZIP on its server, with their file name, packed size, size and date, the first three ticked, and OK and Cancel buttons"
+caption = "1 tick every file at once, 2 download the files ticked."
+
+[[shot]]
 id = "batch"
 page = "adding-downloads.md"
 under = "Batch download: many numbered files"

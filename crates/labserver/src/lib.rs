@@ -19,6 +19,7 @@ mod server;
 pub mod socks;
 mod streams;
 pub mod tree;
+pub mod zip;
 
 pub use faults::Faults;
 pub use server::{Cert, Config, HELP, Held, LabServer, LogEntry, LogSink, SlotHold};

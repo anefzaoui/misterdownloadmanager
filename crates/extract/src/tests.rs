@@ -42,6 +42,53 @@ fn zip_of(path: &Path, entries: &[(&str, &[u8])], aes: Option<&str>) {
     z.finish().unwrap();
 }
 
+/// A ZIP of `n` entries (named 0000, 0001…) whose directory records all point at one local
+/// header and its data, `size` zeros: every entry reads the same bytes again, `n` times `size`
+/// in all from a file of about `size / 1000` bytes.
+pub(crate) fn overlapping_zip(path: &Path, n: u16, size: usize) {
+    let mut z = zip::ZipWriter::new(std::io::Cursor::new(Vec::new()));
+    z.start_file("0000", zip::write::SimpleFileOptions::default())
+        .unwrap();
+    z.write_all(&vec![0u8; size]).unwrap();
+    let one = z.finish().unwrap().into_inner();
+    let dir = zip::ZipArchive::new(std::io::Cursor::new(&one))
+        .unwrap()
+        .central_directory_start() as usize;
+    // The one entry's directory record (its name at 46..50), and the end record (no comment).
+    let (record, end) = one[dir..].split_at(one.len() - dir - 22);
+    assert_eq!(&end[..4], b"PK\x05\x06");
+    let mut out = one[..dir].to_vec();
+    for i in 0..n {
+        let mut r = record.to_vec();
+        r[46..50].copy_from_slice(format!("{i:04}").as_bytes());
+        out.extend_from_slice(&r);
+    }
+    let mut end = end.to_vec();
+    end[8..10].copy_from_slice(&n.to_le_bytes());
+    end[10..12].copy_from_slice(&n.to_le_bytes());
+    let records = u32::try_from(record.len() * usize::from(n)).unwrap();
+    end[12..16].copy_from_slice(&records.to_le_bytes());
+    out.extend_from_slice(&end);
+    std::fs::write(path, out).unwrap();
+}
+
+/// Entries over the same bytes are refused before anything is read or written.
+#[test]
+fn a_zip_whose_entries_overlap_is_refused() {
+    let t = tempfile::tempdir().unwrap();
+    let a = t.path().join("over.zip");
+    overlapping_zip(&a, 3, 1 << 20);
+    let dest = t.path().join("out");
+    std::fs::create_dir(&dest).unwrap();
+    let (r, seen) = run(&a, &dest, None, Subfolder::Never);
+    assert!(
+        matches!(&r, Err(Error::Damaged(s)) if s == crate::zip_fmt::OVERLAP),
+        "{r:?}"
+    );
+    assert!(seen.is_empty());
+    assert_eq!(std::fs::read_dir(&dest).unwrap().count(), 0);
+}
+
 /// No leftover staging folder beside the destination.
 fn no_staging(dest: &Path) {
     let left: Vec<_> = std::fs::read_dir(dest)
@@ -1048,4 +1095,58 @@ fn an_entry_under_a_file_is_skipped_not_fatal() {
     let mut left: Vec<_> = report.skipped.iter().map(|(n, _)| n.as_str()).collect();
     left.sort_unstable();
     assert_eq!(left, ["a/", "a/b", "a/b/c"], "{:?}", report.skipped);
+}
+
+/// #1775: one file put in place through the extraction's writer: numbered beside a file of its
+/// name, its path kept, a path that leaves the folder or goes through a file refused, and a
+/// reader's failure leaves nothing behind.
+#[test]
+fn one_file_is_put_in_place_safely() {
+    let tmp = tempfile::tempdir().unwrap();
+    let dest = tmp.path().join("out");
+    let first = put_file(&dest, "a.txt", 5, &mut &b"hello"[..]).unwrap();
+    assert_eq!(first, dest.join("a.txt"));
+    let second = put_file(&dest, "a.txt", 5, &mut &b"world"[..]).unwrap();
+    assert_eq!(second, dest.join("a (1).txt"));
+    assert_eq!(std::fs::read(&first).unwrap(), b"hello");
+    // Its path kept under the folder, the folders made as needed.
+    let deep = put_file(&dest, "docs\\sub/c.txt", 1, &mut &b"c"[..]).unwrap();
+    assert_eq!(deep, dest.join("docs").join("sub").join("c.txt"));
+    for bad in [
+        "../up.txt",
+        "a/../../b.txt",
+        "C:x.txt",
+        "/abs.txt",
+        "a.txt/x.txt",
+    ] {
+        assert!(put_file(&dest, bad, 1, &mut &b"x"[..]).is_err(), "{bad}");
+    }
+    struct Fails(u8);
+    impl std::io::Read for Fails {
+        fn read(&mut self, buf: &mut [u8]) -> std::io::Result<usize> {
+            if self.0 == 0 {
+                return Err(std::io::Error::new(
+                    std::io::ErrorKind::InvalidData,
+                    "its CRC-32 isn't the table's",
+                ));
+            }
+            self.0 -= 1;
+            buf[0] = b'x';
+            Ok(1)
+        }
+    }
+    assert!(matches!(
+        put_file(&dest, "b.txt", 10, &mut Fails(3)),
+        Err(Error::Damaged(_))
+    ));
+    let mut left: Vec<_> = std::fs::read_dir(&dest)
+        .unwrap()
+        .map(|e| e.unwrap().file_name().to_string_lossy().into_owned())
+        .collect();
+    left.sort();
+    assert_eq!(
+        left,
+        ["a (1).txt", "a.txt", "docs"],
+        "nothing else, no staging folder"
+    );
 }

@@ -94,6 +94,7 @@ pub fn describe(e: &Error) -> String {
             &[("code", &ltr(&code.to_string())), ("reply", &ltr(text))],
         ),
         Error::Refused(r) => refusal(r),
+        Error::Zip(p) => zip_problem(p),
         Error::NoCertificates => {
             // i18n: a download's error on a computer (a minimal Linux) without the certificates that secure connections check servers with; "ca-certificates" is the package's name, left as is
             t("this computer has no certificates to check the server with: install the ca-certificates package, then try again").to_owned()
@@ -120,6 +121,36 @@ pub fn describe(e: &Error) -> String {
     }
 }
 
+/// Why a file can't be taken out of a ZIP on its server (#1775), or the ZIP's files can't be
+/// listed there, with what to do instead: the whole archive downloads as any file does.
+pub fn zip_problem(p: &mdm_engine::remotezip::Problem) -> String {
+    use mdm_engine::remotezip::Problem as P;
+    match p {
+        // i18n: Zip preview (#1775): the server doesn't send parts of a file (HTTP ranges), so MDM can't fetch only some files from inside a ZIP; the whole archive still downloads
+        P::NoRanges => t("the server can't send parts of the ZIP, so its files can't be downloaded one by one: download the whole archive").to_owned(),
+        // i18n: Zip preview (#1775): the address isn't a ZIP archive whose list of files MDM can read on the server
+        P::NotZip => t("this isn't a ZIP archive MDM can look inside on the server: download the whole file").to_owned(),
+        // i18n: Zip preview (#1775): a ZIP split over several files (volumes): its files can't be fetched one by one
+        P::Spanned => t("this ZIP is split over several files, so its files can't be downloaded one by one: download every part").to_owned(),
+        // i18n: Zip preview (#1775): the ZIP's list of files (its table of contents) is larger than MDM reads from a server
+        P::TooBig => t("this ZIP's list of files is too large to read from the server: download the whole archive").to_owned(),
+        // i18n: Zip preview (#1775): the ZIP's list of files (its table of contents) doesn't add up
+        P::Damaged(_) => t("this ZIP's list of files is damaged: download the whole archive").to_owned(),
+        // i18n: why a file taken out of a ZIP on its server failed (#1775): its bytes aren't what the ZIP's list of files says (its size or its CRC-32 checksum)
+        P::Mismatch(_) => t("the file in the ZIP doesn't match the ZIP's list of files (its size or checksum): download the whole archive").to_owned(),
+        // i18n: why a file can't be taken out of a ZIP on its server (#1775): it is encrypted (password-protected) in the ZIP
+        P::Encrypted => t("this file is encrypted in the ZIP: download the whole archive and open it with its password").to_owned(),
+        P::Method(m) => fmt(
+            // i18n: why a file can't be taken out of a ZIP on its server (#1775): it is compressed with a method MDM doesn't unpack there; {method} is the method's name (BZIP2, LZMA, Deflate64…)
+            t("this file is packed in a way MDM can't unpack from the server ({method}): download the whole archive"),
+            &[("method", &ltr(&mdm_engine::remotezip::method_name(*m)))],
+        ),
+        // i18n: why a file can't be taken out of a ZIP on its server (#1775): the ZIP no longer holds it
+        P::Missing => t("this file is no longer in the ZIP on the server").to_owned(),
+        // i18n: why a file can't be taken out of a ZIP on its server (#1775): the ZIP was replaced on the server after its files were listed; Zip preview is the window that lists them
+        P::Changed => t("the ZIP changed on the server since its files were listed: open its Zip preview again").to_owned(),
+    }
+}
 /// Why a download's path is too long (#1102), with the limit that is passed here: Windows'
 /// 259 characters a path while its long paths are off, else a name's 255 (characters on Windows,
 /// bytes on Linux and macOS). The files saved beside it while it downloads count: a part file, a

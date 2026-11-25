@@ -333,7 +333,8 @@ right-to-left window.
   (sequential order, RSS feeds, sharing limits, an optional public tracker list for more peers).
 - **Many links at once**: the Link grabber sorts them into packages and extracts the archives
   (zip, 7z, rar) when they're in. Give it an **FTP folder or a web server's "Index of" page** and it
-  lists every file in it and its subfolders, keeping the folder tree when they download. It takes
+  lists every file in it and its subfolders, keeping the folder tree when they download. For a big
+  `.zip` on a server, **Preview** lists the files inside and downloads only the ones you tick. It takes
   Click'n'Load from link sites, asking once per site, and
   unwraps `thunder://`, `flashget://` and `qqdl://` links to the address inside them. Debrid accounts (Real-Debrid, AllDebrid, Premiumize, TorBox, Mega-Debrid; experimental) download
   file-host links through your own account.

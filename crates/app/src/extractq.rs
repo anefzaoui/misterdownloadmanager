@@ -1061,6 +1061,76 @@ mod tests {
         assert!(q.take_vault().is_empty());
     }
 
+    /// What is extracted from a download is marked as it is (its address without its login), a
+    /// torrent's delivered through a debrid account (its address is the magnet link) as the
+    /// internet.
+    #[test]
+    fn extracted_files_are_marked_as_their_archive() {
+        // A ZIP holding one empty file, setup.exe, stored (an empty file's CRC is 0).
+        let name = b"setup.exe";
+        let le16 = |v: usize| (v as u16).to_le_bytes();
+        let le32 = |v: usize| (v as u32).to_le_bytes();
+        // Version 2.0, no flags, stored, 00:00 on 1980-01-01, CRC and both sizes 0.
+        let common = [&le16(20)[..], &[0; 4], &[0, 0, 0x21, 0], &[0; 12]].concat();
+        let local = [
+            &b"PK\x03\x04"[..],
+            &common,
+            &le16(name.len()),
+            &le16(0),
+            name,
+        ]
+        .concat();
+        let central = [
+            &b"PK\x01\x02"[..],
+            &le16(20),
+            &common,
+            &le16(name.len()),
+            &[0; 12],
+            &le32(0),
+            name,
+        ]
+        .concat();
+        let end = [
+            &b"PK\x05\x06"[..],
+            &[0; 4],
+            &le16(1),
+            &le16(1),
+            &le32(central.len()),
+            &le32(local.len()),
+            &le16(0),
+        ]
+        .concat();
+        let zip = [local, central, end].concat();
+        let t = tempfile::tempdir().unwrap();
+        for (k, (url, named)) in [
+            (
+                "magnet:?xt=urn:btih:0123456789abcdef0123456789abcdef01234567&dn=tools",
+                crate::webmark::INTERNET,
+            ),
+            (
+                "ftp://user:pw@files.test/tools.zip",
+                "ftp://files.test/tools.zip",
+            ),
+        ]
+        .into_iter()
+        .enumerate()
+        {
+            let dir = t.path().join(k.to_string());
+            std::fs::create_dir(&dir).unwrap();
+            let archive = dir.join("tools.zip");
+            std::fs::write(&archive, &zip).unwrap();
+            let mut i = item(1, "tools.zip", Status::Complete, None);
+            i.url = url.parse().unwrap();
+            i.dest = archive.clone();
+            let mut q = Extracts::default();
+            q.offer(&i, std::slice::from_ref(&i), &Settings::default(), true);
+            let job = q.queue.pop_front().expect("queued");
+            let report = run(&job, &AtomicBool::new(false)).unwrap();
+            assert_eq!(report.files, 1, "{url}");
+            crate::webmark::assert_marked(&report.folder.join("setup.exe"), named, None);
+        }
+    }
+
     #[test]
     fn a_package_password_is_never_saved_by_itself() {
         // Sent with the links by a page, or typed in Link grabber: used, not kept, unless it is

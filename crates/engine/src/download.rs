@@ -329,7 +329,7 @@ impl Options {
 
     /// A site's own User-Agent may replace this download's (`request_agent`): the agent is the
     /// automatic one, or MDM's former one (#372's fallback, D-007), as before #668.
-    fn site_agent(&self) -> bool {
+    pub(crate) fn site_agent(&self) -> bool {
         self.automatic_agent || self.user_agent == crate::agent::IE11_USER_AGENT
     }
 
@@ -471,6 +471,9 @@ pub enum Error {
     Refused(Refusal),
     /// A secure connection (HTTPS, FTPS) on a system without trusted certificates to check
     /// the server with (a minimal Linux without `ca-certificates`, #264).
+    /// Files can't be taken out of a ZIP on its server (#1775, `remotezip`): why.
+    #[error("{0}")]
+    Zip(crate::remotezip::Problem),
     #[error("{}", crate::tls::NO_ROOTS)]
     NoCertificates,
     /// The server's certificate was refused (expired, not trusted, for another name): what a
@@ -769,7 +772,7 @@ fn post_for(opts: &Options, as_get: bool, headers: &mut HeaderMap) -> Option<Byt
 /// A request for `url` with `headers`: a POST with `post` as its body, else a GET. The client
 /// sends the download's User-Agent (`Options::user_agent`); a site that wants a browser's gets
 /// it instead when `site_agent` (`Options::site_agent`: the agent is MDM's automatic one).
-fn build(
+pub(crate) fn build(
     client: &Client,
     url: Url,
     post: Option<&Bytes>,
@@ -6586,7 +6589,7 @@ fn write_all_at(file: &File, mut at: u64, mut data: &[u8]) -> io::Result<()> {
 }
 
 /// `Content-Range: bytes a-b/total` → `(a, b, total)`; `total` is `None` for `*`.
-fn parse_content_range(h: &HeaderMap) -> Result<(u64, u64, Option<u64>), Error> {
+pub(crate) fn parse_content_range(h: &HeaderMap) -> Result<(u64, u64, Option<u64>), Error> {
     let raw = h
         .get(header::CONTENT_RANGE)
         .and_then(|v| v.to_str().ok())
