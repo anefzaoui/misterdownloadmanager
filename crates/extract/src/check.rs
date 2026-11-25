@@ -16,9 +16,8 @@
 
 use std::io::{Read, Seek};
 use std::path::Path;
-use std::process::{Command, Stdio};
+use std::process::Command;
 use std::sync::atomic::{AtomicBool, AtomicU32, Ordering};
-use std::time::Duration;
 
 use zip::result::ZipError;
 
@@ -170,72 +169,27 @@ fn run_7zip(
     cmd.args(["t", "-y", "-bso0", "-bse2", "-bsp1", "-p", "--"])
         .arg(&archive)
         // Its own folder: never the one MDM was started in (its install folder, #834).
-        .current_dir(&dir)
-        .stdin(Stdio::null())
-        .stdout(Stdio::piped())
-        .stderr(Stdio::piped());
-    #[cfg(windows)]
-    {
-        use std::os::windows::process::CommandExt;
-        const CREATE_NO_WINDOW: u32 = 0x0800_0000;
-        cmd.creation_flags(CREATE_NO_WINDOW);
-    }
+        .current_dir(&dir);
     tracing::info!("archive test: {} t {}", tool.display(), archive.display());
-    let mut child = cmd.spawn()?;
-    let mut out = child.stdout.take().expect("piped");
-    let mut err = child.stderr.take().expect("piped");
-    let errors = std::thread::spawn(move || {
-        let mut s = Vec::new();
-        let _ = err.read_to_end(&mut s);
-        String::from_utf8_lossy(&s).into_owned()
-    });
     // Its progress: "  42% 3 - name", rewritten in place with backspaces and carriage returns.
-    let reader = std::thread::scope(|scope| {
-        let read = scope.spawn(|| {
-            let mut buf = [0u8; 4096];
-            let mut tail = String::new();
-            while let Ok(n) = out.read(&mut buf) {
-                if n == 0 {
-                    break;
-                }
-                tail.push_str(&String::from_utf8_lossy(&buf[..n]));
-                if let (Some(p), Some(pc)) = (progress, last_percent(&tail)) {
-                    p.store(pc * 10, Ordering::Relaxed);
-                }
-                // Only its end matters: the last figure written.
-                if tail.len() > 256 {
-                    let cut = tail.len() - 64;
-                    let cut = (cut..tail.len())
-                        .find(|i| tail.is_char_boundary(*i))
-                        .unwrap_or(0);
-                    tail.drain(..cut);
-                }
-            }
-        });
-        let status = loop {
-            if cancel.is_some_and(|c| c.load(Ordering::Relaxed)) {
-                let _ = child.kill();
-                let _ = child.wait();
-                break None;
-            }
-            match child.try_wait() {
-                Ok(Some(status)) => break Some(Ok(status)),
-                Ok(None) => std::thread::sleep(Duration::from_millis(100)),
-                Err(e) => {
-                    let _ = child.kill();
-                    break Some(Err(e));
-                }
-            }
-        };
-        let _ = read.join();
-        status
-    });
-    let errors = errors.join().unwrap_or_default();
-    let status = match reader {
-        None => return Err(Error::Cancelled),
-        Some(s) => s?,
+    let mut tail = String::new();
+    let mut on_output = |bytes: &[u8]| {
+        tail.push_str(&String::from_utf8_lossy(bytes));
+        if let (Some(p), Some(pc)) = (progress, last_percent(&tail)) {
+            p.store(pc * 10, Ordering::Relaxed);
+        }
+        // Only its end matters: the last figure written.
+        if tail.len() > 256 {
+            let cut = tail.len() - 64;
+            let cut = (cut..tail.len())
+                .find(|i| tail.is_char_boundary(*i))
+                .unwrap_or(0);
+            tail.drain(..cut);
+        }
     };
-    Ok(read_said(status.code(), &errors))
+    // It writes nothing: there is nothing to look at while it runs.
+    let ended = crate::supervise::run(cmd, None, Some(&mut on_output), cancel, &mut || Ok(()))?;
+    Ok(read_said(ended.status.code(), &ended.errors))
 }
 
 /// The last figure in 7-Zip's progress output: each update ("  42% 3 - name", "  5% T name") is
@@ -573,6 +527,7 @@ fn read_zip<R: Read + Seek>(
 #[cfg(test)]
 mod tests {
     use super::*;
+    use std::time::Duration;
 
     #[test]
     fn sevens_words_read_as_verdicts() {

@@ -19,6 +19,7 @@ mod external;
 pub mod hatchzip;
 pub mod safe;
 mod single;
+mod supervise;
 mod tar_fmt;
 pub mod volumes;
 mod zip_fmt;
@@ -412,12 +413,27 @@ fn in_place(
             out
         }
     };
+    // In place, the archive's own bytes are freed as its files come out: they are room too, on
+    // top of the limits an extraction beside it has.
+    let size: u64 = match volumes::on_disk(archive) {
+        Ok(OnDisk::Complete { files, .. }) => files
+            .iter()
+            .filter_map(|f| std::fs::metadata(f).ok())
+            .map(|m| m.len())
+            .sum(),
+        _ => std::fs::metadata(archive).map(|m| m.len()).unwrap_or(0),
+    };
+    let limits = Limits {
+        total: policy.limits.total.saturating_add(size),
+        ..policy.limits
+    };
     let run = hatchzip::extract(
         tool,
         archive,
         &out,
         policy.password.as_deref(),
         policy.cancel,
+        limits,
     );
     runs.end(archive);
     if let Err(e) = run {

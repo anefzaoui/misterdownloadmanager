@@ -594,6 +594,7 @@ These ship in the next version.
   quality named), only addresses the page names, on a page with one video
   ([#1826](https://github.com/anefzaoui/misterdownloadmanager/issues/1826))
 - ✅ Galleries: file paths are checked more carefully
+- ✅ Extracting: 7z and RAR archives are checked more carefully
 - ✅ Archive test: archives are checked more carefully
 - ✅ Downloaded files are marked as coming from the internet more carefully
 - ✅ Command line: a playlist range from 0 or of 0 entries is refused

@@ -226,10 +226,15 @@ impl Extracts {
             .retain(|j| !j.ids.iter().any(|i| ids.contains(i)));
     }
 
-    /// Closing: the archive being extracted stops (its staging folder goes).
+    /// Closing: the archive being extracted stops (its staging folder goes). A moment is given
+    /// for that: 7-Zip or HatchZip, ended by the extraction's thread, doesn't end with MDM.
     pub fn stop(&mut self) {
         if let Some(r) = &self.running {
             r.cancel.store(true, Ordering::Relaxed);
+            let until = std::time::Instant::now() + std::time::Duration::from_secs(3);
+            while r.result.lock().unwrap().is_none() && std::time::Instant::now() < until {
+                std::thread::sleep(std::time::Duration::from_millis(20));
+            }
         }
         self.queue.clear();
     }

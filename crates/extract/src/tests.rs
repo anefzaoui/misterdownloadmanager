@@ -360,6 +360,8 @@ fn sevenz_plain_encrypted_and_split_through_7zip() {
     let r = run(&plain, &dest, None, Subfolder::Smart).0.unwrap();
     assert_eq!(std::fs::read(r.folder.join("a.txt")).unwrap(), b"alpha");
     assert_eq!(std::fs::read(r.folder.join("inner/b.bin")).unwrap(), noise);
+    // What 7-Zip wrote is counted: the report's bytes are the files' own.
+    assert_eq!((r.files, r.bytes), (2, 5 + 300_000));
     no_staging(&dest);
 
     let enc = t.path().join("enc.7z");
@@ -411,6 +413,252 @@ fn sevenz_plain_encrypted_and_split_through_7zip() {
         Err(Error::MissingVolume(2))
     ));
     no_staging(&dest);
+}
+
+/// Like [`run`], with `limits`, `cancel` and 7-Zip's program as given, into `dest` (nothing
+/// placed is told).
+fn run_7z(
+    archive: &Path,
+    dest: &Path,
+    limits: Limits,
+    tool: Option<PathBuf>,
+    cancel: Option<&std::sync::atomic::AtomicBool>,
+) -> Result<Report, Error> {
+    let mut on_file = |_: &Path| {};
+    let mut policy = Policy {
+        dest: dest.to_path_buf(),
+        subfolder: Subfolder::Smart,
+        password: None,
+        limits,
+        tool,
+        hatchzip: None,
+        in_place: false,
+        runs: None,
+        on_file: &mut on_file,
+        cancel,
+    };
+    extract(archive, &mut policy)
+}
+
+/// Nothing at all in `dest` (no file placed, no staging folder left).
+fn empty(dest: &Path) {
+    let left: Vec<_> = std::fs::read_dir(dest)
+        .map(|d| d.filter_map(|e| e.ok()).map(|e| e.file_name()).collect())
+        .unwrap_or_default();
+    assert!(left.is_empty(), "left in {}: {left:?}", dest.display());
+}
+
+/// 7-Zip is held to the same limits as MDM's own extraction: more bytes or more entries than
+/// allowed, and nothing is placed.
+#[test]
+fn sevenz_past_the_limits_places_nothing() {
+    let Some(tool) = find_7zip() else {
+        eprintln!("7-Zip not found: skipped");
+        return;
+    };
+    let t = tempfile::tempdir().unwrap();
+    let src = t.path().join("src");
+    std::fs::create_dir_all(&src).unwrap();
+    std::fs::write(src.join("a.bin"), [1u8; 4096]).unwrap();
+    std::fs::write(src.join("b.bin"), [2u8; 4096]).unwrap();
+    let a = t.path().join("two.7z");
+    seven_of(&tool, &src, &a, &[]);
+    let limits = |total, entries| Limits {
+        total,
+        entries,
+        depth: 8,
+    };
+    let dest = t.path().join("o1");
+    let r = run_7z(&a, &dest, limits(1, 100), Some(tool.clone()), None);
+    assert!(matches!(r, Err(Error::TooBig { limit: 1, .. })), "{r:?}");
+    empty(&dest);
+    let dest = t.path().join("o2");
+    let r = run_7z(&a, &dest, limits(1 << 20, 1), Some(tool.clone()), None);
+    assert!(matches!(r, Err(Error::TooMany)), "{r:?}");
+    empty(&dest);
+    // At the limits exactly: extracted, every byte counted.
+    let dest = t.path().join("o3");
+    let r = run_7z(&a, &dest, limits(8192, 2), Some(tool), None).unwrap();
+    assert_eq!((r.files, r.bytes), (2, 8192));
+}
+
+/// A 7z of `gib` GiB of zeros in one entry, `zeros.bin` (about 230 KB each), made from 7-Zip's
+/// input: no file that size is ever written to make it.
+fn zeros_7z(tool: &Path, archive: &Path, gib: usize) {
+    let mut p = std::process::Command::new(tool)
+        .args(["a", "-bso0", "-bsp0", "-mx1", "-sizeros.bin"])
+        .arg(archive)
+        .stdin(std::process::Stdio::piped())
+        .spawn()
+        .unwrap();
+    let mut input = p.stdin.take().unwrap();
+    let chunk = vec![0u8; 1 << 20];
+    for _ in 0..gib << 10 {
+        input.write_all(&chunk).unwrap();
+    }
+    drop(input);
+    assert!(p.wait().unwrap().success(), "{}", archive.display());
+}
+
+/// A large output past the limit: 7-Zip is stopped and nothing is placed.
+#[test]
+fn sevenz_expanding_past_the_limit_is_stopped() {
+    let Some(tool) = find_7zip() else {
+        eprintln!("7-Zip not found: skipped");
+        return;
+    };
+    let t = tempfile::tempdir().unwrap();
+    let a = t.path().join("zeros.7z");
+    zeros_7z(&tool, &a, 1);
+    let dest = t.path().join("out");
+    let limits = Limits {
+        total: 16 << 20,
+        entries: 100,
+        depth: 8,
+    };
+    let r = run_7z(&a, &dest, limits, Some(tool), None);
+    let Err(Error::TooBig { would, limit }) = r else {
+        panic!("{r:?}")
+    };
+    assert_eq!(limit, 16 << 20);
+    assert!(would > limit && would <= 1 << 30, "{would}");
+    empty(&dest);
+}
+
+/// A cancel while 7-Zip extracts ends it at once: Cancelled, nothing placed.
+#[test]
+fn a_cancel_while_7zip_runs_stops_it() {
+    use std::sync::atomic::{AtomicBool, Ordering};
+    use std::time::{Duration, Instant};
+    let Some(tool) = find_7zip() else {
+        eprintln!("7-Zip not found: skipped");
+        return;
+    };
+    let t = tempfile::tempdir().unwrap();
+    let a = t.path().join("zeros.7z");
+    zeros_7z(&tool, &a, 1);
+    let dest = t.path().join("out");
+    std::fs::create_dir_all(&dest).unwrap();
+    let (stop, done) = (AtomicBool::new(false), AtomicBool::new(false));
+    let mut at = None;
+    let r = std::thread::scope(|s| {
+        // The cancel comes once 7-Zip has begun writing into the staging folder.
+        let watcher = s.spawn(|| {
+            while !done.load(Ordering::Relaxed) {
+                let writing = std::fs::read_dir(&dest)
+                    .unwrap()
+                    .flatten()
+                    .any(|e| std::fs::read_dir(e.path()).is_ok_and(|mut d| d.next().is_some()));
+                if writing {
+                    stop.store(true, Ordering::Relaxed);
+                    return Some(Instant::now());
+                }
+                std::thread::sleep(Duration::from_millis(2));
+            }
+            None
+        });
+        let r = run_7z(&a, &dest, Limits::default(), Some(tool), Some(&stop));
+        let ended = Instant::now();
+        done.store(true, Ordering::Relaxed);
+        at = watcher.join().unwrap().map(|c| ended.duration_since(c));
+        r
+    });
+    assert!(matches!(r, Err(Error::Cancelled)), "{r:?}");
+    // Its end came soon after the cancel (the whole run takes about as long on a fast disk; the
+    // test of the loop itself, supervise.rs, shows a long run ended).
+    let took = at.expect("the cancel came while 7-Zip ran");
+    assert!(took < Duration::from_secs(10), "{took:?}");
+    empty(&dest);
+}
+
+/// A cancel already set: no program is started at all (one that isn't there would fail to).
+#[test]
+fn a_cancel_before_starts_no_program() {
+    use std::sync::atomic::AtomicBool;
+    let t = tempfile::tempdir().unwrap();
+    let a = t.path().join("x.7z");
+    std::fs::write(&a, [b'7', b'z', 0xBC, 0xAF, 0x27, 0x1C, 0, 4]).unwrap();
+    let nowhere = t.path().join("no-such-program");
+    let stop = AtomicBool::new(true);
+    let dest = t.path().join("out");
+    let r = run_7z(
+        &a,
+        &dest,
+        Limits::default(),
+        Some(nowhere.clone()),
+        Some(&stop),
+    );
+    assert!(matches!(r, Err(Error::Cancelled)), "{r:?}");
+    empty(&dest);
+    // The archive test, and HatchZip in place, the same.
+    let how = check::Test {
+        tool: Some(&nowhere),
+        cancel: Some(&stop),
+        progress: None,
+    };
+    assert!(matches!(check::test(&a, &how), Err(Error::Cancelled)));
+    let runs = t.path().join("runs");
+    let mut on_file = |_: &Path| {};
+    let mut policy = Policy {
+        dest: dest.clone(),
+        subfolder: Subfolder::Smart,
+        password: None,
+        limits: Limits::default(),
+        tool: None,
+        hatchzip: Some(nowhere),
+        in_place: true,
+        runs: Some(runs),
+        on_file: &mut on_file,
+        cancel: Some(&stop),
+    };
+    let r = extract(&a, &mut policy);
+    assert!(matches!(r, Err(Error::Cancelled)), "{r:?}");
+    empty(&dest);
+}
+
+/// A tar's links and devices are left out, and still counted: their entries against the entry
+/// limit, any data they carry against the byte limit.
+#[test]
+fn tar_links_count_against_the_limits() {
+    let t = tempfile::tempdir().unwrap();
+    let a = t.path().join("links.tar.gz");
+    let gz = flate2::write::GzEncoder::new(
+        std::fs::File::create(&a).unwrap(),
+        flate2::Compression::fast(),
+    );
+    let mut b = tar::Builder::new(gz);
+    let mut f = tar::Header::new_gnu();
+    f.set_size(1);
+    f.set_cksum();
+    b.append_data(&mut f, "one.txt", &b"1"[..]).unwrap();
+    // A link that says it carries six megabytes.
+    let zeros = vec![0u8; 6 << 20];
+    let mut l = tar::Header::new_gnu();
+    l.set_path("heavy-link").unwrap();
+    l.set_entry_type(tar::EntryType::Symlink);
+    l.set_link_name("one.txt").unwrap();
+    l.set_size(zeros.len() as u64);
+    l.set_cksum();
+    b.append(&l, &zeros[..]).unwrap();
+    b.into_inner().unwrap().finish().unwrap();
+    let limits = |total, entries| Limits {
+        total,
+        entries,
+        depth: 8,
+    };
+    let dest = t.path().join("o1");
+    let r = run_7z(&a, &dest, limits(4 << 20, 100), None, None);
+    assert!(matches!(r, Err(Error::TooBig { .. })), "{r:?}");
+    empty(&dest);
+    let dest = t.path().join("o2");
+    let r = run_7z(&a, &dest, limits(64 << 20, 1), None, None);
+    assert!(matches!(r, Err(Error::TooMany)), "{r:?}");
+    empty(&dest);
+    // Within them: the file extracted, the link left out.
+    let dest = t.path().join("o3");
+    let r = run_7z(&a, &dest, limits(64 << 20, 2), None, None).unwrap();
+    assert_eq!(std::fs::read(dest.join("one.txt")).unwrap(), b"1");
+    assert_eq!(r.skipped, [("heavy-link".to_owned(), "link or device")]);
 }
 
 #[test]
