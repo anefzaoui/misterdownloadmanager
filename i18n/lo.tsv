@@ -2159,6 +2159,10 @@
 #. text in categories.rs
 #, machine
 	Folder:	ໂຟນເດີ:
+#. text in the Options window
+#. Options → Archives → Link grabber, one line with two boxes: an FTP folder or a web server's folder listing ("Index of") given to Link grabber is read with its subfolders: {depth} is a number box (how many levels of subfolders, 3 at first; 0 is the folder's own files only), {types} a text box (file types such as ISO ZIP; empty for every type)
+#, machine
+	Folders: {depth} levels deep, types: {types}	ໂຟນເດີ: {depth} ຊັ້ນ, ປະເພດ: {types}
 #. message or event log entry in the main window
 #. the kind of file View → Font → Choose a font file lists: TrueType and OpenType font files
 #, machine
@@ -3806,6 +3810,10 @@
 #. Link grabber, a link's status: the server has the file
 #, machine
 	Online	ອອນລາຍ
+#. text in the Options window
+#. Options → Archives → Link grabber: the hover tip of the types box in "Folders: {depth} levels deep, types: {types}": only a folder's files of these types go into Link grabber; written as the File types page writes them
+#, machine
+	Only a folder's files of these types, written as on the File types page (ISO ZIP R0*). Empty: every type.	ສະເພາະໄຟລ໌ໃນໂຟນເດີທີ່ເປັນປະເພດເຫຼົ່ານີ້, ຂຽນຕາມຮູບແບບໃນໜ້າປະເພດໄຟລ໌ (ISO ZIP R0*). ຫວ່າງເປົ່າ: ທຸກປະເພດ.
 #. text in a download's Properties window
 #. tooltip of the greyed Move button in File Properties
 #, machine
@@ -6751,6 +6759,11 @@
 #. said after Delete with files when some files stayed on the disk; {file} is the download's name; the files' paths follow it
 #, machine
 	{file}: these files stayed on the disk, because MDM didn't create them or another download uses them:	{file}: ໄຟລ໌ເຫຼົ່ານີ້ຍັງຄົງຢູ່ໃນແຜ່ນ, ເນື່ອງຈາກ MDM ບໍ່ໄດ້ສ້າງພວກມັນ ຫຼືການດາວໂຫຼດອື່ນໃຊ້ພວກມັນ:
+#. message or event log entry in the main window
+#. Link grabber's Source line, after where the links came from: a folder (an FTP folder, a web server's "Index of" page) held more files or subfolders than Link grabber lists; {folder} is its name, {n} how many of its files are listed (10,000)
+#. {n} = a number (keep the braces as they are)
+#, machine
+	{folder}: only its first {n} files	{folder}: ສະເພາະ {n} ໄຟລ໌ທຳອິດຂອງມັນ
 #. text in a download's progress window
 #. {have} and {total} = numbers of pieces; {size} = one piece's size
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
