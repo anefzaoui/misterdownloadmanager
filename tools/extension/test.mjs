@@ -2009,6 +2009,39 @@ const videoPageOn = (() => {
   return (location, document) => new Function("location", "document", body)(location, document);
 })();
 
+// "Hide on this video" (video.js): a player reused for the next video in a feed shows the button
+// for it again; one hidden before it had an address stays hidden once it gets one (#1879).
+{
+  const source = readText("../../extension/video.js");
+  const start = source.indexOf('  // ---- "Hide on this video": from here');
+  const end = source.indexOf('  // ---- "Hide on this video": end.');
+  assert.ok(start > 0 && end > start, "video.js has Hide on this video and its end mark");
+  const fresh = () => new Function(`${source.slice(start, end)}; return { dismiss, isDismissed };`)();
+  {
+    const { dismiss, isDismissed } = fresh();
+    const v = { currentSrc: "https://feed.test/1.mp4" };
+    dismiss(v);
+    assert.ok(isDismissed(v), "hidden");
+    v.currentSrc = "";
+    assert.ok(isDismissed(v), "between two videos");
+    v.currentSrc = "https://feed.test/2.mp4";
+    assert.ok(!isDismissed(v), "the next post's video");
+    assert.ok(isDismissed({ currentSrc: "https://feed.test/1.mp4" }), "the hidden video, in another element");
+  }
+  {
+    const { dismiss, isDismissed } = fresh();
+    const v = { currentSrc: "" };
+    dismiss(v);
+    assert.ok(isDismissed(v), "hidden before it had an address");
+    v.currentSrc = "https://feed.test/3.mp4";
+    assert.ok(isDismissed(v), "still hidden once it has one");
+    v.currentSrc = "https://feed.test/4.mp4";
+    assert.ok(!isDismissed(v), "the next post's video");
+    assert.ok(!isDismissed({ currentSrc: "" }), "another element");
+  }
+  ok("#1879: Hide on this video follows the video in a reused player");
+}
+
 // The address the button hands the app (video.js's videoPage): the video's own page, not the page
 // that plays it. YouTube's home, a search, a channel or a playlist is a list to yt-dlp, and a watch
 // page opened from a mix carries the list in its address: the button sent either, and the app
@@ -3178,6 +3211,24 @@ function videoButton({ stored = {}, location, iframes, videos, subframe = false 
   assert.equal(pointerTarget(next, null, false), next);
   assert.equal(pointerTarget(null, mine, false), null);
   assert.ok(fn("look").includes("pointerTarget(videoAt(pointer.x, pointer.y), video, menuOpen)"), "look: kept on its video while its menu is open");
+  // The open menu inside the window (menuFit): below the button when it fits, above when only
+  // there, else its list shortened on the side with more room, never past the window's top.
+  const menuFit = make(["menuFit"], "menuFit");
+  assert.deepEqual(menuFit(100, 400, 300, 300, 900), { top: 36, list: null }, "room below");
+  assert.deepEqual(menuFit(700, 400, 300, 300, 900), { top: -406, list: null }, "room above only");
+  // The played case's window (805 px high, the button at 230 over a feed's second video): 575 px
+  // fit neither side; below, its list 44 px shorter.
+  assert.deepEqual(menuFit(230, 575, 300, 300, 805), { top: 36, list: 256 }, "more room below");
+  const up = menuFit(560, 575, 300, 300, 805);
+  assert.deepEqual(up, { top: -552, list: 271 }, "more room above");
+  assert.ok(560 + up.top >= 8, "above: inside the window");
+  // A list shortened before, the window grown since: whole again.
+  assert.deepEqual(menuFit(230, 531, 256, 300, 1000), { top: 36, list: null }, "whole again");
+  // A tiny window: three lines at least; above, its top kept in the window.
+  const tiny = menuFit(150, 575, 300, 300, 300);
+  assert.equal(tiny.list, 84);
+  assert.ok(150 + tiny.top >= 8, "tiny: never past the window's top");
+  assert.ok(fn("placeMenu").includes("menuFit("), "placeMenu places the menu with menuFit");
   // #1582: where the page is asked what lies under a spot the button would take (onControl).
   // Bilibili's player keeps a feedback button (54 x 24) at its top right, 12 px from its edge, in
   // view while the pointer moves over the player: on a 1550 px wide player the button's default
@@ -4414,6 +4465,12 @@ const ask = (listeners) => (m, sender) => new Promise((r) => listeners.message(m
     // The click's word comes after: still the same click, nothing more is left to the browser.
     await send({ type: "bypass", url: "https://site.test/get?id=7" }, page);
     assert.ok(!(await kept({ id: 61, url: "https://site.test/b.zip", referrer: "https://site.test/files", filename: "b.zip" })), "a later plain download from the page");
+    assert.equal(natives(calls).length, 1);
+    // A new Alt+click on the same link, seconds later, is a click of its own: the download that
+    // follows it under another address is the browser's too (the link's own address always was).
+    clock.t += 3000;
+    await send({ type: "bypass", url: "https://site.test/get?id=7" }, page);
+    assert.ok(await kept({ id: 73, url: "https://site.test/c.zip", referrer: "https://site.test/files", filename: "c.zip" }), "a new press on the same link");
     assert.equal(natives(calls).length, 1);
     // A link the page's script took (the click's own download prevented): the download it
     // started instead, under another address, sent from the page (the referrer cut to the site

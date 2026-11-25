@@ -282,6 +282,15 @@ pub struct Settings {
     /// View → Interface size (#262), percent: one of `crate::scale::STEPS` (100 to 200). Every
     /// window drawn that much larger than the display's own scale makes it.
     pub interface_size: u16,
+    /// View → Font (#1489): the font file the interface's text is drawn in (a path to a
+    /// TrueType or OpenType file), or none for the computer's own font (Segoe UI on Windows).
+    /// It changes the letters only: View → Interface size still sizes every window.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub interface_font: Option<std::path::PathBuf>,
+    /// View → Font (#1489), percent: one of `crate::theme::TEXT_SIZES`. The interface's
+    /// text drawn that much larger or smaller than the theme's sizes; the layout keeps its own
+    /// (View → Interface size zooms all of it).
+    pub interface_text_size: u16,
     /// View → Text (Windows): smooth text as Windows' modern apps draw it, or the classic
     /// controls' hinted, whole-pixel look, the default (`crate::theme::set_smooth_text`): text
     /// doesn't change look on an update; a dense screen can choose Smooth.
@@ -504,6 +513,12 @@ pub struct Settings {
     pub torrent_proxy: bool,
     /// A blocklist's address (empty: none), fetched again every `BLOCKLIST_DAYS`.
     pub torrent_blocklist: String,
+    /// Torrent settings → "Add the trackers of a public list to public torrents" (#1776): off
+    /// by default. Torrents added while it is on get the list's trackers as last fetched (never
+    /// a private one, BEP 27); the list is fetched again once a day (`torrents::PublicTrackers`).
+    pub torrent_public_trackers: bool,
+    /// That list's address (empty: `mdm_torrent::public_trackers::DEFAULT_LIST`).
+    pub torrent_public_trackers_url: String,
     /// Stop the torrent engine when no torrent runs (it stops listening; new settings apply).
     pub torrent_stop_idle: bool,
     /// Torrent settings → "Limit uploading to [n] KBytes/sec" for all torrents together (#39;
@@ -536,6 +551,9 @@ pub struct Settings {
     /// Download video from a page → Embed chapters (#827): a video's chapters go into its file
     /// (with ffmpeg). On; a settings file from before has none: on.
     pub video_chapters: bool,
+    /// Download video from a page → Split into chapters: split video into multiple files based on
+    /// chapters (with ffmpeg). Off; a settings file from before has none: off.
+    pub video_split_chapters: bool,
     /// Options → Sites Logins → Cookies for video sites (#229): the browser whose cookies
     /// yt-dlp reads on this computer when the extension passed none (yt-dlp's name: `firefox`,
     /// `chrome`...; empty: off, the default), and its profile (a name or a folder; empty: the
@@ -641,6 +659,8 @@ impl Default for Settings {
             renderer: None,
             window_system: None,
             interface_size: 100,
+            interface_font: None,
+            interface_text_size: 100,
             smooth_text: false,
             limits_on: false,
             limits_mb: 200,
@@ -729,6 +749,8 @@ impl Default for Settings {
             torrent_lsd: true,
             torrent_proxy: false,
             torrent_blocklist: String::new(),
+            torrent_public_trackers: false,
+            torrent_public_trackers_url: String::new(),
             torrent_stop_idle: true,
             torrent_upload_on: false,
             torrent_upload_kb: 100,
@@ -744,6 +766,7 @@ impl Default for Settings {
             drop_target_pos: None,
             video_subs: Default::default(),
             video_chapters: true,
+            video_split_chapters: false,
             video_cookies: String::new(),
             video_cookies_profile: String::new(),
             ytdlp_config: false,
@@ -1009,6 +1032,14 @@ impl Settings {
         Some(url.as_str().trim_end_matches('/').to_owned())
     }
 
+    /// The public tracker list's address (#1776): the one given, else the default list.
+    pub fn public_trackers_list(&self) -> &str {
+        match self.torrent_public_trackers_url.trim() {
+            "" => mdm_torrent::public_trackers::DEFAULT_LIST,
+            url => url,
+        }
+    }
+
     /// The torrent engine as Torrent settings say (#40), its data in `state_dir`. None when they
     /// say to use the proxy and Proxy / Socks has no SOCKS5 one: torrents then don't start, never
     /// going around the proxy unasked.
@@ -1153,22 +1184,30 @@ impl Settings {
     }
 
     /// The Sites Logins entry for `url`: its site/path is a prefix of the address (without the
-    /// scheme); `*.` matches subdomains.
+    /// scheme), on whole path segments; `*.` matches subdomains. Of several entries that match,
+    /// the longest (the most specific) gives the login, the first of them when they are as long.
     pub fn site_login(&self, url: &url::Url) -> Option<(String, String)> {
         let host = url.host_str()?.to_ascii_lowercase();
-        let path = url.path();
+        let path = url.path().trim_start_matches('/');
         self.site_logins
             .iter()
-            .find(|(site, _, _)| {
+            .filter_map(|(site, user, pass)| {
                 let site = site.trim();
                 let site = site.split_once("://").map_or(site, |(_, rest)| rest);
                 let (site_host, site_path) = site.split_once('/').unwrap_or((site, ""));
-                host_matches(&host, site_host)
-                    && path
-                        .trim_start_matches('/')
-                        .starts_with(site_path.trim_start_matches('/'))
+                let site_path = site_path.trim_matches('/');
+                let matched = host_matches(&host, site_host)
+                    && (site_path.is_empty()
+                        || path == site_path
+                        || path
+                            .strip_prefix(site_path)
+                            .is_some_and(|rest| rest.starts_with('/')));
+                matched.then(|| (site_path.len(), (user.clone(), pass.clone())))
             })
-            .map(|(_, user, pass)| (user.clone(), pass.clone()))
+            // The first of the longest: `max_by_key` would take the last of equal ones, and the
+            // list's own order decides between them, as it did before.
+            .min_by_key(|(len, _)| std::cmp::Reverse(*len))
+            .map(|(_, login)| login)
     }
 
     /// Should a copied link named `name` be offered? Fewer types than a browser hands over
@@ -1405,6 +1444,7 @@ pub fn share_video_settings(s: &Settings) {
     mdm_tools::proc::set_browser_cookies(s.video_cookies());
     mdm_tools::proc::set_user_config(s.ytdlp_config);
     mdm_tools::video::set_chapters(s.video_chapters);
+    mdm_tools::video::set_split_chapters(s.video_split_chapters);
 }
 
 /// The network adapter MDM's connections go through now (#35).
@@ -1444,6 +1484,15 @@ impl Settings {
                 (true, Some(p)) => mdm_cli::TorrentProxy::Through(p),
                 (true, None) => mdm_cli::TorrentProxy::Missing,
             },
+            // The same switch, address and cache as the app's (#1776).
+            public_trackers: self
+                .torrent_public_trackers
+                .then(crate::torrents::state_dir)
+                .flatten()
+                .map(|dir| mdm_cli::PublicTrackers {
+                    url: self.public_trackers_list().to_owned(),
+                    dir,
+                }),
         }
     }
 }
@@ -1466,6 +1515,46 @@ pub fn own_net() -> mdm_engine::Options {
 #[cfg(test)]
 mod tests {
     use std::path::Path;
+
+    /// #1776: the public tracker list is off by default, its address the default list's; the
+    /// default list is saved as none given, another address as typed (trimmed).
+    #[test]
+    fn the_public_tracker_list_is_off_until_turned_on() {
+        use super::Settings;
+        use crate::torrentdlg::Net;
+        use mdm_torrent::public_trackers::DEFAULT_LIST;
+        let old: Settings = serde_json::from_value(serde_json::json!({})).unwrap();
+        let mut s = Settings::default();
+        for s in [&old, &s] {
+            assert!(!s.torrent_public_trackers);
+            assert_eq!(s.public_trackers_list(), DEFAULT_LIST);
+        }
+        let mut net = Net::of(&s);
+        assert!(!net.public_trackers);
+        assert_eq!(net.public_list, DEFAULT_LIST);
+        net.public_trackers = true;
+        net.apply(&mut s);
+        assert!(s.torrent_public_trackers);
+        assert_eq!(s.torrent_public_trackers_url, "");
+        let mut net = Net::of(&s);
+        net.public_list = " https://lists.example.org/trackers.txt ".into();
+        net.apply(&mut s);
+        assert_eq!(
+            s.public_trackers_list(),
+            "https://lists.example.org/trackers.txt"
+        );
+        let again: Settings = serde_json::from_value(serde_json::to_value(&s).unwrap()).unwrap();
+        assert!(again.torrent_public_trackers);
+        assert_eq!(
+            again.public_trackers_list(),
+            "https://lists.example.org/trackers.txt"
+        );
+        // Emptied: the default list again.
+        let mut net = Net::of(&s);
+        net.public_list = "  ".into();
+        net.apply(&mut s);
+        assert_eq!(s.public_trackers_list(), DEFAULT_LIST);
+    }
 
     /// #668: the User-Agent for links added by hand is the default browser's unless one is set.
     /// Saved before, MDM's former default (Internet Explorer 11's) or nothing reads as automatic;
@@ -1497,6 +1586,40 @@ mod tests {
         assert_eq!(own.own_user_agent(), Some("MyAgent/1.0"));
         let again: Settings = serde_json::from_value(serde_json::to_value(&own).unwrap()).unwrap();
         assert_eq!(again.own_user_agent(), Some("MyAgent/1.0"));
+    }
+
+    /// #1489: a settings file written before View → Font existed reads as the computer's own
+    /// font at the theme's sizes, and nothing chosen is saved as nothing.
+    #[test]
+    fn view_font_keeps_its_defaults_in_older_settings() {
+        use super::Settings;
+        let saved = serde_json::json!({ "interface_size": 125 });
+        let s: Settings = serde_json::from_value(saved).unwrap();
+        assert_eq!(s.interface_font, None);
+        assert_eq!(s.interface_text_size, 100);
+        let again = serde_json::to_value(&s).unwrap();
+        assert!(again.get("interface_font").is_none(), "nothing chosen");
+        assert_eq!(again["interface_text_size"], 100);
+    }
+
+    /// #1489: the chosen font is saved as its path, not as the text `display()` makes of it,
+    /// which names another file when the path isn't Unicode on Windows (`serde` refuses such a
+    /// path rather than save that name, so the choice stays as made in memory); the test's path
+    /// is the one a person can have, with a space.
+    #[test]
+    fn the_chosen_font_is_saved_as_its_path() {
+        use super::Settings;
+        let s = Settings {
+            interface_font: Some(std::path::PathBuf::from(r"C:\Fonts\my font.ttf")),
+            ..Default::default()
+        };
+        let saved = serde_json::to_value(&s).unwrap();
+        assert_eq!(
+            saved["interface_font"],
+            serde_json::json!(r"C:\Fonts\my font.ttf")
+        );
+        let again: Settings = serde_json::from_value(saved).unwrap();
+        assert_eq!(again.interface_font, s.interface_font);
     }
 
     /// #475: a folder chosen for a video is the Video category's next time; the category's own
@@ -1850,6 +1973,58 @@ mod tests {
         assert_eq!(
             s.site_login(&url("http://dl.corp.net/y")),
             Some(("b".into(), "2".into()))
+        );
+        // Whole path segments only.
+        assert_eq!(
+            s.site_login(&url("https://files.example.com/private-backup/x.zip")),
+            None
+        );
+        assert_eq!(
+            s.site_login(&url("https://files.example.com/privatedocs/x.zip")),
+            None
+        );
+        assert_eq!(
+            s.site_login(&url("https://files.example.com/private")),
+            Some(("a".into(), "1".into())),
+            "the path itself"
+        );
+        // The most specific entry wins, wherever it sits in the list.
+        let s = Settings {
+            site_logins: vec![
+                ("files.example.com".into(), "c".into(), "3".into()),
+                ("files.example.com/private".into(), "a".into(), "1".into()),
+            ],
+            ..Settings::default()
+        };
+        assert_eq!(
+            s.site_login(&url("https://files.example.com/private/x.zip")),
+            Some(("a".into(), "1".into())),
+            "the longest match"
+        );
+        assert_eq!(
+            s.site_login(&url("https://files.example.com/other/x.zip")),
+            Some(("c".into(), "3".into())),
+            "the host alone, for the rest"
+        );
+        // As long as each other: the first in the list, as before.
+        let s = Settings {
+            site_logins: vec![
+                ("files.example.com/private".into(), "a".into(), "1".into()),
+                ("files.example.com/private/".into(), "d".into(), "4".into()),
+                ("*.example.com".into(), "e".into(), "5".into()),
+                ("files.example.com".into(), "c".into(), "3".into()),
+            ],
+            ..Settings::default()
+        };
+        assert_eq!(
+            s.site_login(&url("https://files.example.com/private/x.zip")),
+            Some(("a".into(), "1".into())),
+            "the first of two equal paths"
+        );
+        assert_eq!(
+            s.site_login(&url("https://files.example.com/other/x.zip")),
+            Some(("e".into(), "5".into())),
+            "the first of two hosts alone"
         );
     }
 

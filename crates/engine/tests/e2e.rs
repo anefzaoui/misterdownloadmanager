@@ -739,6 +739,60 @@ async fn no_range_server_uses_one_connection() {
     assert_eq!(complete[0].range, None, "the probe is a plain GET");
 }
 
+/// #1859: a server without ranges whose probe stops partway starts over on one connection, and a
+/// kind of file that is never a web page (a .zip) has its first bytes read before it is written
+/// (#701). Those bytes count toward the size the answer announced: the whole file isn't taken
+/// for a short one.
+#[tokio::test]
+async fn a_fresh_start_on_one_connection_counts_the_bytes_read_first() {
+    // The probe holds back the byte at 1 MiB until the engine knows the server has no ranges,
+    // then goes on and is cut at 2 MiB (its own drop, set when it was asked): the download has
+    // to start over, under faults that let the new answer through whole.
+    let s = server("no_range=true&rate=8M&stall_at=1M&drop_after=2M").await;
+    let dir = tempfile::tempdir().unwrap();
+    let req = Request {
+        url: s.url("/gen/3M/pack.zip?seed=59").parse().unwrap(),
+        headers: Default::default(),
+        dest: Destination::Dir(dir.path().to_owned()),
+    };
+    let dl = Download::start(req, fast_opts());
+    let deadline = std::time::Instant::now() + std::time::Duration::from_secs(20);
+    while dl.snapshot().resumable != Some(false) {
+        assert!(
+            std::time::Instant::now() < deadline,
+            "never learned the server has no ranges"
+        );
+        tokio::time::sleep(std::time::Duration::from_millis(20)).await;
+    }
+    s.set_faults(Faults::parse("no_range=true&rate=8M").unwrap());
+    let out = dl.wait().await.expect("download succeeds");
+    assert_eq!(out.size, 3 << 20);
+    let mut want = vec![0; 3 << 20];
+    content::fill(59, 0, &mut want);
+    assert!(
+        std::fs::read(&out.path).unwrap() == want,
+        "content mismatch"
+    );
+    tokio::time::timeout(SETTLE, s.settled())
+        .await
+        .expect("every request ends");
+    let log = s.log();
+    let requests: Vec<_> = log
+        .iter()
+        .map(|e| (e.range.clone(), e.outcome.clone(), e.bytes_sent))
+        .collect();
+    // The probe and the fresh start: plain GETs, the last one sent whole.
+    assert!(
+        log.iter().filter(|e| e.range.is_none()).count() >= 2,
+        "{requests:#?}"
+    );
+    assert!(
+        log.iter()
+            .any(|e| e.range.is_none() && e.outcome == "complete"),
+        "{requests:#?}"
+    );
+}
+
 /// Part of #136: a server without ranges sends the file once, even when the range attempts are
 /// answered after the probe's plain GET has run on (a busy machine): every part is taken by the
 /// probe, none is fetched again by a fresh start on one connection.
@@ -3507,10 +3561,13 @@ async fn the_other_family_is_asked_once_without_retries() {
 /// #1660: the family is the choice of the download that met the 403, never the host's for
 /// every download. While a download whose link works over IPv6 only runs, another one of the
 /// same host switches to IPv4: the first one's new connections (it loses its own again and
-/// again here) still go over IPv6, and none of them meets a 403.
+/// again here) still go over IPv6, and none of them meets a 403. The first one's byte at 2 MiB
+/// (past the second one's end) is held back until the second one has ended: on a slow machine
+/// the first one could otherwise end first, and its new connections after the switch go
+/// untested.
 #[tokio::test]
 async fn one_downloads_family_never_changes_another_download_of_the_host() {
-    let s = on_both_families("").await;
+    let s = on_both_families("stall_at=2M").await;
     let (host, ips) = ("two-links.mdm.test", ["::1", "127.0.0.1"]);
     let dir = tempfile::tempdir().unwrap();
     let start = |path: &str| {
@@ -3535,6 +3592,7 @@ async fn one_downloads_family_never_changes_another_download_of_the_host() {
         still.downloaded < 4 << 20,
         "the first one was still running"
     );
+    s.set_faults(Faults::default());
     assert_eq!(over_v6.wait().await.expect("over IPv6").size, 4 << 20);
     tokio::time::timeout(SETTLE, s.settled())
         .await

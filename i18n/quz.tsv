@@ -171,11 +171,21 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} tracker added|{n} trackers added	{n} qatiqkuna yapasqa
+#. count in the main window
+#. event log entry: trackers from the public tracker list (Torrent settings) were added to a torrent
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} tracker added from the public list|{n} trackers added from the public list	Llapap listanmanta {n} qatiqkuna yapasqaku
 #. count in the Add torrent window
 #. where a magnet's peers came from: {n} = trackers asked; {peers} = "3 peers"
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} tracker: {peers}|{n} trackers: {peers}	{n} qatiq: {peers}
+#. count in the main window
+#. the tip of MDM's notification area (tray) icon: {n} windows of MDM (Download complete...) wait while a full-screen game, app or presentation is on, and show when the user is back
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} window waits until you're back|{n} windows wait until you're back	Kutimunaykikama {n} wintanakuna suyachkanku
 #. count in cnl.rs
 #. Click'n'Load window: {site} is a web site's name such as "example.com"
 #. {site} = a web site's name such as "example.com"; {n} = a number (keep the braces as they are)
@@ -322,6 +332,9 @@
 #. why Part is greyed in Download video: the page is a playlist, whose videos are downloaded whole
 #, machine
 	A playlist's videos are downloaded whole	Huk playlistpa videonkunaqa llapan uraykachisqa.
+#. message or event log entry in the main window
+#, machine
+	A private torrent: the public tracker list isn't added	Sapaq torrent: llapa qhawaq listata mana yapasqachu
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites: the tooltip of the profile box
 #, machine
@@ -462,6 +475,10 @@
 #. text in extension.rs
 #, machine
 	Add the free extension: files you download in your browser come here, and videos get a Download button.	Yanqalla yapay maskayniykipi: chaypi uraykachisqayki willañiqikuna kayman hamunqaku, chaymanta videokunapas Uraykachiy ñitina chaskinqaku.
+#. text in the Add torrent window
+#. Torrent settings: add the trackers of a public tracker list (its address in the box below) to torrents that aren't private, so they find more peers
+#, machine
+	Add the trackers of this public list to public torrents:	Kay llapa listapa qhawaqninkunata mana sapaq torrentkunaman yapay:
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: add the torrents to the list without starting them
 #, machine
@@ -1116,12 +1133,21 @@
 #. remote control page (on a phone): what the ".torrent file" button does (screen readers)
 #, machine
 	Choose a .torrent file	Huk .torrent willakuta akllay
+#. message or event log entry in the main window
+#. title of the file dialog of View → Font → Choose a font file
+#. title of the message when the font picked in View → Font can't be used
+#, machine
+	Choose a font file	Huk qillqa willañiqita akllay
 #. text in helpers.rs
 #, machine
 	Choose a JavaScript runtime (Node.js, Deno, QuickJS or Bun)	JavaScript purichinata akllay (Node.js, Deno, QuickJS icha Bun)
 #. text in langpick.rs
 #, machine
 	Choose a language	Rimay simita akllay
+#. text in a dialog box
+#. the Columns dialog: what it is for, above its list of the download list's columns
+#, machine
+	Choose columns to show	Rikuchinapaq columnakunata akllay
 #. text in langpick.rs
 #, machine
 	Choose the language Mister Download Manager shows its windows in:	Akllay imayna rimay simipi Mister Download Manager qhawachinqa ventanankunata:
@@ -1195,6 +1221,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Colombia	Colombia
+#. window title in a dialog box; text in a dialog box
+#. what a screen reader calls the Columns dialog's list of the download list's columns
+#, machine
+	Columns	Columnakuna
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -1998,6 +2028,10 @@
 #. Torrent settings, at the bottom
 #, machine
 	Fetched again every 7 days. Changes apply when no torrent is running.	Sapa 7 p'unchaw kutichisqa. Mana mayqin torrentpas purichkaptinmi hukchasqakuna llamk'anqa.
+#. text in the Add torrent window
+#. Torrent settings, under the public tracker list's address
+#, machine
+	Fetched once a day. Never added to private torrents.	Sapa p'unchaw huk kutilla aysasqa. Mana sapaq torrentkunaman yapasqachu.
 #. text in helpers.rs
 #. helper name and what it does (ffmpeg is a program's name)
 #, machine
@@ -2130,6 +2164,10 @@
 #. text in categories.rs
 #, machine
 	Folder:	Karpita:
+#. message or event log entry in the main window
+#. the kind of file View → Font → Choose a font file lists: TrueType and OpenType font files
+#, machine
+	Font files	Letra nisqa willañiqikuna
 #. text in finish.rs
 #. Snooze menu of the Download complete window: show no Download complete window for this long
 #, machine
@@ -4272,6 +4310,10 @@
 #. group box title: what the * in the address is replaced with (numbers or letters)
 #, machine
 	Replace asterisk to	Ch'askata hukmanta churay
+#. button in a dialog box
+#. button in the Columns dialog: put the columns back as they first were (order, widths, all shown)
+#, machine
+	Reset	Kutichiy
 #. text in crashui.rs
 #. crash report window button: start MDM again
 #, machine
@@ -4859,6 +4901,10 @@
 #. tooltip on the disabled Rename box when the file is one part of a split archive (.part1.rar, .7z.001…)
 #, machine
 	Split archive volumes keep their names for extraction	Rakinasqa waqaychasqapa phatmakunaqa hurqunapaq sutinkuta waqaychanku
+#. text in the Download video window
+#. checkbox in Download video: split the video into one file per chapter (the whole video is kept too)
+#, machine
+	Split into chapters	Kapitulukunaman t'aqay
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -5678,6 +5724,10 @@
 #, machine
 	This device's name	Kay llamkanap sutin
 #. message or event log entry in the main window
+#. the message when a file picked in View → Font isn't a TrueType or OpenType font MDM can read
+#, machine
+	This file can't be used as a font.	Kay willañiqitaqa manam qillqap rikch'aynintaqa llamk'achiyta atikunmanchu.
+#. message or event log entry in the main window
 #. {error} is why, in English (a file that isn't a theme or a colour scheme, a colour missing)
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -5990,6 +6040,10 @@
 #. why Options → Remote → Pair a device... is greyed
 #, machine
 	Turn on the remote control first.	Ñawpaqta karu kamachiyta k'anchay.
+#. text in the Add torrent window
+#. Torrent settings, under the public tracker list's address: turning the switch off doesn't take away the trackers it added to torrents
+#, machine
+	Turned off, the trackers already added stay.	Waqllichisqa kaptinpas, ñawpaqta yapasqa qatiqkunataqa manan chinkachinchu.
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -7018,6 +7072,10 @@ column	Q	Q
 #, machine
 column	Queue	Sut'uchiy
 #. column title in the download list in the download list
+#. column title: the folder the download is saved in
+#, machine
+column	Save To	Waqaychana
+#. column title in the download list in the download list
 #. column title: what a torrent has sent to peers against what it took
 #, machine
 column	Share ratio	Rakiy tupuy
@@ -7993,6 +8051,12 @@ menu	&Automatic	&Kikinmanta
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Classic	&Ñawpaq
+#. menu command in the main window
+#. header menu: opens the dialog that chooses the list's columns
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	&Columns...	&Columnakuna...
 #. menu command in standard windows
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -8013,6 +8077,11 @@ menu	&Download Now	&Kunan uraykachiy
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Exit	&Lloqsiy
+#. menu command in the main window
+#. View menu: submenu choosing the interface's own font and text size
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Font	Fue&nte
 #. menu command in the main window
 #. verb: load downloads from a file
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
@@ -8092,6 +8161,11 @@ menu	&Stop All	Tukuyta &sayachiy
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Stop Download	Uraykachiyta &sayachiy
+#. menu command in the main window
+#. View → Font: the computer's own font, the default (Segoe UI on Windows)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&System font	&Sistema nisqa qillqa
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -8238,6 +8312,12 @@ menu	C&ustomize URL List...	URL listata &sutinchay...
 #, machine
 menu	Check for &updates...	&Musuqyachiykunata maskay...
 #. menu command in the main window
+#. View → Font: a TrueType or OpenType font file on disk to draw the interface's text in
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Choose a font &file...	&Huk qillqa willañiqita akllay...
+#. menu command in the main window
 #. View → Theme: MDM's own look, the default (IDM's layout, Windows 11's controls)
 #, machine
 menu	Classic	Clásico
@@ -8326,10 +8406,6 @@ menu	Find Next (F3)	Qatiqta maskay (F3)
 #. right-click → Torrent, a choice with a check mark (with Download in order): each file's first and last pieces first, which a video player needs to start
 #, machine
 menu	First and last pieces first	Ñawpaq rakinakunata, qhipa rakinakunata ñawpaqta
-#. menu command in the main window
-#. noun: the list's font (submenu)
-#, machine
-menu	Font	Letra laya
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it

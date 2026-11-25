@@ -188,17 +188,30 @@ pub(crate) async fn install_with(
     progress: Option<&crate::update::Progress>,
     floor: Option<&str>,
 ) -> Result<crate::autoupdate::Got, Error> {
-    let Some(asset) = asset() else {
+    // Android: its wheel (pure Python, named by its version), which the APK's Python runs
+    // (android.rs); signed in the same SHA256SUMS.
+    if asset().is_none() && !cfg!(target_os = "android") {
         return Err(Error::Missing(
             "build for this system: install gallery-dl with the system's packages (Homebrew, pip) and choose it in Helpers".into(),
         ));
-    };
+    }
     let root = dir.join("gallery-dl");
     let _installing = crate::autoupdate::installing(&root, "gallery-dl")?;
     let client = crate::client(net, RELEASES)?;
     let body = crate::get_bytes(&client, RELEASES).await?;
     let release: Release =
         serde_json::from_slice(&body).map_err(|e| Error::BadRelease(e.to_string()))?;
+    let wheel = release
+        .assets
+        .iter()
+        .map(|a| a.name.clone())
+        .find(|n| n.starts_with("gallery_dl-") && n.ends_with("-py3-none-any.whl"));
+    let asset: &str = match asset() {
+        Some(a) => a,
+        None => wheel
+            .as_deref()
+            .ok_or_else(|| Error::Missing("gallery-dl's wheel in its release".into()))?,
+    };
     let version = release.tag_name.trim_start_matches('v').to_owned();
     let none = || crate::autoupdate::Got {
         latest: version.clone(),
@@ -502,6 +515,7 @@ impl Default for Progress {
             speed: 0.0,
             events: Vec::new(),
             side_files: Vec::new(),
+            chapter_files: Vec::new(),
             sub_problems: Vec::new(),
             engine: None,
             helper: None,
@@ -551,13 +565,13 @@ impl GalleryJob {
         engine: Option<crate::streams::Engine>,
         saved: Option<mdm_engine::FileHook>,
     ) -> Result<GalleryJob, ProcError> {
+        // gallery-dl runs in a folder of its own (#834) and prints absolute paths: compare and
+        // download into the same absolute folder, or nothing it lists counts as inside it.
+        let folder = crate::workdir::absolute(folder);
         let mut ours: Vec<String> = vec![
             // The files right in `folder` (the gallery's own), not in subfolders of the site's.
             "--directory".into(),
-            // A full path: gallery-dl runs in a folder of its own (#834).
-            crate::workdir::absolute(folder)
-                .to_string_lossy()
-                .into_owned(),
+            folder.to_string_lossy().into_owned(),
             // One file a second at most: gentle with the sites (Wikimedia answers 429 to
             // faster tools) and with the person's line.
             "--sleep".into(),
@@ -586,7 +600,7 @@ impl GalleryJob {
             })
             .unwrap_or_else(|| USER_AGENT.to_owned());
         ours.extend(theirs);
-        std::fs::create_dir_all(folder).map_err(|e| ProcError::Start("gallery-dl".into(), e))?;
+        std::fs::create_dir_all(&folder).map_err(|e| ProcError::Start("gallery-dl".into(), e))?;
         let engine = engine.filter(|_| Accepts::of(&tool.version).print);
         // The listing: gallery-dl's own options, no wait between files (nothing is downloaded).
         let list_args: Vec<String> = {
@@ -611,7 +625,7 @@ impl GalleryJob {
             engine.as_ref().and_then(|e| e.opts.speed_limit),
         ));
         let on_helper = Arc::new(std::sync::atomic::AtomicBool::new(engine.is_none()));
-        let (sh, ch, folder) = (shared.clone(), child.clone(), folder.to_owned());
+        let (sh, ch, folder) = (shared.clone(), child.clone(), folder);
         let (cur, helper) = (current.clone(), on_helper.clone());
         let (tool, url) = (tool.clone(), url.to_owned());
         // MDM's own gallery-dl, held for the whole download (#1544).

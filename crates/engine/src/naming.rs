@@ -1014,7 +1014,11 @@ pub fn unique_path(dir: &Path, name: &str) -> PathBuf {
 /// free numbered name, as [`unique_path`] gives it.
 pub fn replacing_path(dir: &Path, name: &str) -> PathBuf {
     let first = dir.join(name);
-    if first.is_dir() || part_path(&first).exists() || is_reserved(&first) {
+    if first.is_dir()
+        || part_path(&first).exists()
+        || crate::state::state_path(&first).exists()
+        || is_reserved(&first)
+    {
         unique_path(dir, name)
     } else {
         first
@@ -1978,6 +1982,13 @@ mod tests {
         );
         drop(held);
         assert_eq!(replacing_path(d.path(), "taken.7z"), file);
+        // Another download's resume state, with no part file left (#597).
+        std::fs::write(crate::state::state_path(&file), b"{}").unwrap();
+        assert_eq!(
+            replacing_path(d.path(), "taken.7z"),
+            d.path().join("taken (1).7z")
+        );
+        std::fs::remove_file(crate::state::state_path(&file)).unwrap();
         // A folder of that name.
         std::fs::create_dir(d.path().join("box")).unwrap();
         assert_eq!(replacing_path(d.path(), "box"), d.path().join("box (1)"));

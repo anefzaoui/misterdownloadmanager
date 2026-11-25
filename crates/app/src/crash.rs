@@ -283,7 +283,7 @@ pub enum Step {
     Clipboard,
     /// The notification area's icon.
     Tray,
-    /// The taskbar button's progress.
+    /// The taskbar button's progress (the dock icon's on Linux and macOS).
     Taskbar,
     /// The crash report's record of what is open.
     ReportState,
@@ -335,7 +335,7 @@ impl Step {
             Step::UpdateCheck => "the update check",
             Step::Clipboard => "the clipboard's watch",
             Step::Tray => "the tray icon",
-            Step::Taskbar => "the taskbar button's progress",
+            Step::Taskbar => "the taskbar button's or dock icon's progress",
             Step::ReportState => "the crash monitor's record",
             Step::Torrents => "the torrents",
             Step::Theme => "the theme",

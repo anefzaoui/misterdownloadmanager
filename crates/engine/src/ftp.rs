@@ -491,7 +491,12 @@ async fn retr(
     from: u64,
 ) -> Result<TransferStream<AsyncRustlsStream>, Error> {
     let lost = |e| failure(e, NetKind::Lost);
-    s.resume_transfer(from as usize).await.map_err(lost)?;
+    // suppaftp's REST takes a usize: on a 32-bit build a file of 4 GB or more has no offset
+    // it can ask for, and truncating one would resume at the wrong place in the file.
+    let offset = usize::try_from(from).map_err(|_| {
+        Error::BadState("the file is over 4 GB, which this 32-bit build can't resume".into())
+    })?;
+    s.resume_transfer(offset).await.map_err(lost)?;
     s.retr_as_stream(path).await.map_err(lost)
 }
 
@@ -557,19 +562,55 @@ fn connector(extra: &[Vec<u8>]) -> Result<tokio_rustls::TlsConnector, Error> {
 /// that refuses every server, saying why (#264): the DNS setting that holds it may still use
 /// plain DNS, and FTP stays plain FTP.
 pub(crate) fn client_config(extra: &[Vec<u8>]) -> Result<rustls::ClientConfig, rustls::Error> {
-    use rustls_platform_verifier::Verifier;
     if extra.is_empty() && !crate::tls::system_has_roots() {
         return Ok(crate::tls::no_roots_config());
     }
     let provider = crate::tls::provider();
-    let extra = extra.iter().map(|c| CertificateDer::from(c.clone()));
-    let verifier =
-        Verifier::new_with_extra_roots(crate::tls::mozilla_roots().chain(extra), provider.clone())?;
+    let verifier = verifier(extra, provider.clone())?;
     Ok(rustls::ClientConfig::builder_with_provider(provider)
         .with_safe_default_protocol_versions()?
         .dangerous()
-        .with_custom_certificate_verifier(Arc::new(verifier))
+        .with_custom_certificate_verifier(verifier)
         .with_no_client_auth())
+}
+
+/// The system's verifier, with Mozilla's roots and `extra` also trusted.
+#[cfg(not(target_os = "android"))]
+fn verifier(
+    extra: &[Vec<u8>],
+    provider: Arc<rustls::crypto::CryptoProvider>,
+) -> Result<Arc<dyn rustls::client::danger::ServerCertVerifier>, rustls::Error> {
+    let extra = extra.iter().map(|c| CertificateDer::from(c.clone()));
+    Ok(Arc::new(
+        rustls_platform_verifier::Verifier::new_with_extra_roots(
+            crate::tls::mozilla_roots().chain(extra),
+            provider,
+        )?,
+    ))
+}
+
+/// Android's platform verifier asks the system's trust store through Java and takes no extra
+/// roots: with `extra` (only the tests give any), Mozilla's roots and them are checked by
+/// rustls' own verifier instead.
+#[cfg(target_os = "android")]
+fn verifier(
+    extra: &[Vec<u8>],
+    provider: Arc<rustls::crypto::CryptoProvider>,
+) -> Result<Arc<dyn rustls::client::danger::ServerCertVerifier>, rustls::Error> {
+    if extra.is_empty() {
+        return Ok(Arc::new(rustls_platform_verifier::Verifier::new(provider)?));
+    }
+    let mut roots = rustls::RootCertStore::empty();
+    for c in crate::tls::mozilla_roots() {
+        let _ = roots.add(c);
+    }
+    for c in extra {
+        roots.add(CertificateDer::from(c.clone()))?;
+    }
+    rustls::client::WebPkiServerVerifier::builder_with_provider(Arc::new(roots), provider)
+        .build()
+        .map(|v| v as Arc<dyn rustls::client::danger::ServerCertVerifier>)
+        .map_err(|e| rustls::Error::General(e.to_string()))
 }
 
 /// The login an `Authorization: Basic` header carries.

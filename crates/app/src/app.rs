@@ -367,6 +367,10 @@ struct LeftoverSearch {
     /// The parts its failed merge kept, by name (yt-dlp names some, `Talk.faud-English.mp4`, as
     /// no other leftover is named), in its folder and named after its stem.
     kept: Vec<PathBuf>,
+    /// The chapter files its split made (yt-dlp's own list, `VideoSpec::chapter_files`): only
+    /// those still in its folder and named `<stem> - ...` (checked again here, a list from an
+    /// older run or edited by hand never reaches another file).
+    chapter_files: Vec<PathBuf>,
 }
 
 impl LeftoverSearch {
@@ -399,6 +403,18 @@ impl LeftoverSearch {
             })
             .cloned()
             .collect();
+        let chapter = format!("{} - ", stem.to_lowercase());
+        let chapter_files = item
+            .video
+            .iter()
+            .flat_map(|v| &v.chapter_files)
+            .filter(|p| {
+                p.parent().is_some_and(|p| low(p) == folder)
+                    && p.file_name()
+                        .is_some_and(|n| n.to_string_lossy().to_lowercase().starts_with(&chapter))
+            })
+            .cloned()
+            .collect();
         Some(LeftoverSearch {
             dir: dir.to_owned(),
             stem,
@@ -406,6 +422,7 @@ impl LeftoverSearch {
             named,
             others: others.iter().map(|o| low(&o.dest)).collect(),
             kept,
+            chapter_files,
         })
     }
 
@@ -414,6 +431,12 @@ impl LeftoverSearch {
         let low = |p: &std::path::Path| p.to_string_lossy().to_lowercase();
         let mut found = mdm_tools::video::own_files(&self.dir, &self.stem, self.outputs);
         for p in self.kept {
+            if p.is_file() && !found.iter().any(|f| low(f) == low(&p)) {
+                found.push(p);
+            }
+        }
+        // The chapter files its split made, by their recorded paths (never a pattern).
+        for p in self.chapter_files {
             if p.is_file() && !found.iter().any(|f| low(f) == low(&p)) {
                 found.push(p);
             }
@@ -521,6 +544,16 @@ enum Cmd {
     WindowSystem(Option<crate::settings::WindowSystemPick>),
     /// View → Interface size → a size in percent (#262).
     InterfaceSize(u16),
+    /// View → Font → Choose a font file (#1489): the interface's text in a TrueType or OpenType
+    /// file picked from disk.
+    InterfaceFont,
+    /// View → Font → System font (#1489): back to the computer's own font.
+    InterfaceFontSystem,
+    /// View → Font → the file in use, shown by its name (#1489): choosing it again reads that
+    /// saved file (a missing one then says so, like a fresh pick).
+    InterfaceFontFile,
+    /// View → Font → a text size in percent (#1489).
+    InterfaceTextSize(u16),
     /// View → Text → Smooth (`true`) or Classic (Windows).
     #[cfg(windows)]
     SmoothText(bool),
@@ -534,6 +567,8 @@ enum Cmd {
     Properties,
     /// Show or hide a list column (data slot).
     ToggleColumn(usize),
+    /// Header right-click → Columns..., View → Customize URL List...: the Columns dialog.
+    ColumnsDialog,
     /// Downloads → Speed Limiter.
     LimiterOn,
     LimiterOff,
@@ -1543,6 +1578,8 @@ pub struct App {
     file_speed: (f64, Instant, u64),
     /// A blocklist is being fetched (torrents::refresh_blocklist).
     blocklist_busy: std::sync::Arc<std::sync::atomic::AtomicBool>,
+    /// The public tracker list, as last fetched (#1776, torrents::PublicTrackers).
+    public_trackers: crate::torrents::PublicTrackers,
     /// Startup work for torrents done (associations refreshed, sharing resumed).
     torrents_started: bool,
     /// The torrent session, started on first use (D-014).
@@ -1653,6 +1690,8 @@ pub struct App {
     /// Add batch download from clipboard (#709): its read, until it answers.
     batch_clip: Option<crate::clipboard::Prefill>,
     confirm_delete: Option<dialogs::ConfirmDelete>,
+    /// The Columns dialog (header right-click).
+    columns_dialog: Option<dialogs::Columns>,
     /// Queue right-click → Delete, asking first: the queue and the question.
     confirm_queue_delete: Option<(usize, dialogs::Confirm)>,
     /// Redownload, asking first: the download and the question.
@@ -1729,8 +1768,9 @@ pub struct App {
     /// aside (never over it).
     saved_by_hand: std::collections::HashSet<u64>,
     /// Seconds since local midnight at the last scheduler tick (`None` until the clock's first
-    /// answer, #536).
+    /// answer, #536), and the local date then (a clock that goes back is not midnight).
     clock: Option<u32>,
+    clock_day: Option<chrono::NaiveDate>,
     /// Scheduler → "Wake the computer to run this queue": the wake set with the system (#142).
     wake: crate::wake::Waker,
     /// Commands from ipc.rs (command line, second launch, browser).
@@ -1756,6 +1796,25 @@ fn url_login(url: &url::Url) -> Option<(String, String)> {
 pub struct RequestParts {
     pub headers: HeaderMap,
     pub opts: Options,
+}
+
+/// A torrent's event log line once the public tracker list (#1776) was added to it: how many of
+/// its trackers were new (none: no line); None, a private torrent, which never gets them. The
+/// same for a torrent being added and one already in the list.
+fn public_list_note(added: Option<usize>) -> Option<String> {
+    match added {
+        Some(0) => None,
+        Some(n) => Some(crate::i18n::tn(
+            n as u64,
+            // i18n: event log entry: trackers from the public tracker list (Torrent settings) were added to a torrent
+            "{n} tracker added from the public list",
+            "{n} trackers added from the public list",
+        )),
+        // i18n: event log entry: the torrent is private (only its own trackers may be asked), so the public tracker list wasn't added
+        None => Some(
+            crate::i18n::t("A private torrent: the public tracker list isn't added").to_owned(),
+        ),
+    }
 }
 
 /// The Referer a browser would send for `url` from page `referrer` (its default policy,
@@ -1947,7 +2006,7 @@ fn file_icon(name: &str) -> IconKey {
 /// Sort key for list column col: numbers where IDM sorts numerically, else text.
 /// `queued`: the download is in a queue (the Q column's mark).
 fn sort_key(it: &Item, col: usize, queued: bool) -> (f64, String) {
-    let frac = it.fraction().unwrap_or(0.0);
+    let frac = it.list_fraction().unwrap_or(0.0);
     match col {
         0 => (0.0, it.file_name.to_lowercase()),
         // As the column shows it: in a queue or not.
@@ -1998,6 +2057,7 @@ fn sort_key(it: &Item, col: usize, queued: bool) -> (f64, String) {
             }),
             String::new(),
         ),
+        list::SAVE_TO => (0.0, it.save_folder().display().to_string().to_lowercase()),
         _ => (0.0, it.description.to_lowercase()),
     }
 }
@@ -2041,7 +2101,7 @@ impl App {
     /// The close that follows quits whatever Options' "Keep running when closing the window" says
     /// (`tray::on_close`); only closing the window itself follows that setting. As the app goes
     /// (`Drop`: `finish`) the downloads stop where they are and the list and the settings are
-    /// saved, and the crash monitor is told it's a clean exit (main.rs). A headless run stops at
+    /// saved, and the crash monitor is told it's a clean exit (lib.rs). A headless run stops at
     /// its next pass (`wants_exit`). The session's end does the same at once (`end_session`).
     fn quit(&mut self, ctx: &egui::Context) {
         tracing::info!("quitting");
@@ -2060,7 +2120,7 @@ impl App {
         // The look (#45): the chosen theme before anything is drawn.
         crate::theme::select(&crate::theme::startup_id(&loaded.settings.theme), ctx);
         crate::theme::apply(ctx);
-        // The zoom main.rs started at (View → Interface size, #262).
+        // The zoom lib.rs started at (View → Interface size, #262).
         let zoom = crate::scale::startup(loaded.settings.interface_size);
         let mut settings = loaded.settings;
         if settings.limiter_on_startup {
@@ -2330,6 +2390,7 @@ impl App {
             global_cap: None,
             file_speed: (0.0, Instant::now(), 0),
             blocklist_busy: Default::default(),
+            public_trackers: Default::default(),
             torrents_started: false,
             torrent_host: crate::torrents::Host::new(),
             remote: None,
@@ -2383,6 +2444,7 @@ impl App {
             exiting: false,
             headless: false,
             confirm_delete: None,
+            columns_dialog: None,
             confirm_queue_delete: None,
             confirm_redownload: None,
             duplicate: None,
@@ -2422,6 +2484,7 @@ impl App {
             stopped_by_hand: Default::default(),
             saved_by_hand: Default::default(),
             clock: None,
+            clock_day: None,
             wake: Default::default(),
             commands,
         }
@@ -2663,7 +2726,7 @@ impl App {
             queued: queued.contains(&it.id),
             // A progress bar only while the download is in flight: a finished file is whole, and
             // a bar at 100% on every row would only add words to it (#1190).
-            progress: it.fraction().filter(|frac| *frac < 1.0),
+            progress: it.list_fraction().filter(|frac| *frac < 1.0),
             cells: [
                 it.file_name.clone(),
                 String::new(),
@@ -2705,6 +2768,8 @@ impl App {
                 it.torrent
                     .as_ref()
                     .map_or(String::new(), |t| model::rate(t.up_speed)),
+                // A path reads left to right in any window, as Explorer's address bar shows it.
+                crate::i18n::ltr(&it.save_folder().display().to_string()),
             ],
             // A short word and a percentage in the cell while checked or joined (#736): the
             // whole words in its tip and for a screen reader.
@@ -3359,6 +3424,11 @@ impl App {
                 &self.blocklist_busy,
             );
         }
+        if self.settings.torrent_public_trackers {
+            self.public_trackers
+                .refresh(&self.rt, self.settings.public_trackers_list());
+            self.public_list_to_torrents();
+        }
         let sharing = self.settings.torrent_keep_sharing
             && self
                 .items
@@ -3425,6 +3495,7 @@ impl App {
             // clipboard is MDM_TEST_CLIPBOARD's file).
             "batch-clipboard" => self.run(Cmd::BatchClipboard, None, ctx),
             "find" => self.run(Cmd::Find, None, ctx),
+            "columns" => self.run(Cmd::ColumnsDialog, None, ctx),
             "scheduler" => self.run(Cmd::Scheduler, None, ctx),
             "about" => self.run(Cmd::About, None, ctx),
             // Update now's end-to-end tests (feature `test-update`, never in a release): Update
@@ -3717,6 +3788,9 @@ impl App {
                 let id = crate::chrome::label(tab);
                 self.run(Cmd::Theme(id), None, ctx);
             }
+            // View → Font → Choose a font file..., as its dialog answers: `font:<path>` (tests of
+            // a file that can't be used without the system's dialog, #1489).
+            "font" => self.set_interface_font(Some(std::path::PathBuf::from(tab)), false, ctx),
             // A menu of the menu bar open (menu:0 is Tasks), for screenshots; menu:3:draw opens
             // View with its Draw with submenu (#89).
             "menu" => {
@@ -3724,11 +3798,13 @@ impl App {
                 let (index, sub) = tab.split_once(':').unwrap_or((tab, ""));
                 let index = index.parse().unwrap_or(0);
                 self.open_menu = Some(index);
-                // menu:3:theme opens View → Theme (#45), menu:3:size View → Interface size (#262).
+                // menu:3:theme opens View → Theme (#45), menu:3:size View → Interface size (#262),
+                // menu:3:font View → Font (#1489).
                 let wanted = match sub {
                     "draw" => "Draw with",
                     "theme" => "Theme",
                     "size" => "&Interface size",
+                    "font" => "&Font",
                     _ => "",
                 };
                 let at = self
@@ -3833,7 +3909,7 @@ impl App {
             return;
         }
         // The startup entry's (#226) or browser host's (#1333): this start began in the tray
-        // (main.rs), or MDM already ran; either way the window stays where it is.
+        // (lib.rs), or MDM already ran; either way the window stays where it is.
         if cmd.startup || cmd.hidden {
             return;
         }
@@ -4975,9 +5051,8 @@ impl App {
     }
 
     /// Progress of all running downloads together (bytes done / bytes in all), None when
-    /// nothing runs or no size is known. For the taskbar button's progress, which only Windows
-    /// has (macOS and Linux docks have no common way to show one).
-    #[cfg_attr(not(windows), allow(dead_code))]
+    /// nothing runs or no size is known. For the system's progress on MDM's button or icon
+    /// (sysprogress.rs): the taskbar button on Windows, the dock on Linux and macOS (#1777).
     fn overall_progress(&self) -> Option<f64> {
         let (done, total) = self
             .items
@@ -6321,6 +6396,7 @@ impl App {
         }
         .with_subs(self.settings.video_subs.clone())
         .with_chapters(self.settings.video_chapters)
+        .with_split_chapters(self.settings.video_split_chapters)
         .with_music_folder(music)
     }
 
@@ -6361,6 +6437,7 @@ impl App {
                 subs: add.subs,
                 parts: Vec::new(),
                 named: add.named,
+                chapter_files: Vec::new(),
                 duration: add.duration,
                 part: add.part,
             });
@@ -6497,6 +6574,7 @@ impl App {
                     subs: Default::default(),
                     parts: Vec::new(),
                     named: false,
+                    chapter_files: Vec::new(),
                     duration: None,
                     part: None,
                 });
@@ -7123,12 +7201,26 @@ impl App {
             );
             return None;
         }
+        // The public tracker list's trackers (#1776), as last fetched (it isn't waited for), in
+        // the .torrent kept for it: never in a private torrent's (BEP 27). With no list yet, it
+        // gets the list once one comes (`public_list_to_torrents`).
+        let (kept, public, public_list) = match self
+            .settings
+            .torrent_public_trackers
+            .then(|| {
+                self.public_trackers
+                    .current(self.settings.public_trackers_list())
+            })
+            .flatten()
+        {
+            Some((stamp, list)) => match crate::torrents::with_public_list(&meta.torrent, &list) {
+                Some((with, added)) => (with, Some(added), stamp),
+                None => (meta.torrent.clone(), None, stamp),
+            },
+            None => (meta.torrent.clone(), Some(0), 0),
+        };
         if after {
-            let (hash, bytes, wake) = (
-                meta.info_hash.clone(),
-                meta.torrent.clone(),
-                self.ui_ctx.clone(),
-            );
+            let (hash, bytes, wake) = (meta.info_hash.clone(), kept, self.ui_ctx.clone());
             crate::torrents::kept_files().change(&meta.info_hash, move || {
                 if let Err(e) = crate::torrents::save_torrent(&hash, &bytes) {
                     crate::dialogs::tell(
@@ -7141,7 +7233,7 @@ impl App {
                     wake.request_repaint();
                 }
             });
-        } else if let Err(e) = crate::torrents::save_torrent(&meta.info_hash, &meta.torrent) {
+        } else if let Err(e) = crate::torrents::save_torrent(&meta.info_hash, &kept) {
             self.notice = Some((
                 crate::i18n::mark("Add torrent"),
                 crate::i18n::fmt(
@@ -7194,6 +7286,9 @@ impl App {
         );
         if let Some(item) = self.item(id) {
             item.preexisting_folder = preexisting;
+            if let Some(note) = public_list_note(public) {
+                item.note(note);
+            }
             // The shared folder is where files go, not the torrent's display name.
             if !add.create_subfolder && meta.files.iter().filter(|f| !f.padding).count() > 1 {
                 item.file_name = meta.name.clone();
@@ -7211,6 +7306,7 @@ impl App {
                 upload_limit: None,
                 in_order: add.in_order,
                 ends_first: true,
+                public_list,
             });
         }
         if let Some(item) = self.items.iter().find(|i| i.id == id)
@@ -7543,6 +7639,39 @@ impl App {
         }
     }
 
+    /// The public tracker list (#1776) added to every torrent in the list that hasn't got this
+    /// list yet (`TorrentSpec::public_list`), while Torrent settings' switch is on: once it is
+    /// turned on, at start, and when a fetch brings a list that changed (only its new trackers
+    /// are new then). Through the same code as a torrent being added
+    /// (`torrents::with_public_list`), one action per torrent; a private one is only recorded,
+    /// and one busy with another action waits for the next tick. Turning the switch off takes
+    /// nothing away.
+    fn public_list_to_torrents(&mut self) {
+        let Some((stamp, list)) = self
+            .public_trackers
+            .current(self.settings.public_trackers_list())
+        else {
+            return;
+        };
+        let due: Vec<u64> = self
+            .items
+            .iter()
+            .filter(|i| {
+                i.torrent
+                    .as_ref()
+                    .is_some_and(|t| t.public_list != stamp && !self.torrent_host.busy(&t.hash))
+            })
+            .map(|i| i.id)
+            .collect();
+        for id in due {
+            if let Some(spec) = self.item(id).and_then(|i| i.torrent.as_mut()) {
+                spec.public_list = stamp;
+            }
+            self.torrent_act(id, crate::torrents::Act::AddPublicList(list.clone()));
+            self.dirty = true;
+        }
+    }
+
     fn torrent_act(&mut self, id: u64, act: crate::torrents::Act) {
         let known = self.session_hashes();
         let Some(spec) = self
@@ -7635,6 +7764,10 @@ impl App {
                     // i18n: event log entry: trackers were added to the torrent
                     crate::i18n::tn(n as u64, "{n} tracker added", "{n} trackers added")
                 }
+                (_, Ok(Done::PublicListAdded(added))) => match public_list_note(added) {
+                    Some(note) => note,
+                    None => continue,
+                },
                 (_, Ok(Done::Chosen)) => {
                     self.torrent_resync.insert(o.hash.clone(), false);
                     continue;
@@ -7646,7 +7779,7 @@ impl App {
                         // i18n: event log entry: Reannounce failed, with the reason
                         Act::Reannounce => crate::i18n::t("Reannounce failed: {error}"),
                         // i18n: event log entry: Add trackers failed, with the reason
-                        Act::AddTrackers(_) => {
+                        Act::AddTrackers(_) | Act::AddPublicList(_) => {
                             crate::i18n::t("The trackers could not be added: {error}")
                         }
                         // i18n: event log entry: the files chosen in the Files tab could not be applied, with the reason
@@ -8501,6 +8634,17 @@ impl App {
         // window for 8 s (#536). Until its first answer, schedules wait.
         let local = crate::clock::now_known();
         let now_s = local.map(|t| t.num_seconds_from_midnight());
+        let day = local.map(|t| t.date_naive());
+        // Only a date that moved forward is midnight crossed: a clock that went back (summer
+        // time's fall-back, an NTP step, the user setting it, to the day before as well) is not
+        // a day's worth of schedule times coming due at once.
+        let moved = match (self.clock_day, day) {
+            (Some(before), Some(now)) => now.cmp(&before),
+            _ => std::cmp::Ordering::Equal,
+        };
+        if day.is_some() {
+            self.clock_day = day;
+        }
         let prev = std::mem::replace(&mut self.clock, now_s).or(now_s);
         if let (Some(local), Some(now_s), Some(prev)) = (local, now_s, prev) {
             let today = local.date_naive();
@@ -8510,12 +8654,12 @@ impl App {
                 let sch = self.queues[q].schedule.clone();
                 if let Some(t) = sch.start_at
                     && sch.starts_on(date, weekday)
-                    && queue::crossed(t, prev, now_s)
+                    && queue::crossed(t, prev, now_s, moved)
                 {
                     self.queues[q].running = true;
                 }
                 if let Some(t) = sch.stop_at
-                    && queue::crossed(t, prev, now_s)
+                    && queue::crossed(t, prev, now_s, moved)
                 {
                     self.stop_queue(q);
                 }
@@ -8883,6 +9027,32 @@ impl App {
             }
             // Every window at once (the frames after this one); saved by `follow_zoom`.
             Cmd::InterfaceSize(percent) => crate::scale::set(ctx, percent),
+            Cmd::InterfaceFont => {
+                // i18n: title of the file dialog of View → Font → Choose a font file
+                let title = crate::i18n::t("Choose a font file").to_owned();
+                // i18n: the kind of file View → Font → Choose a font file lists: TrueType and OpenType font files
+                let kinds = crate::i18n::t("Font files").to_owned();
+                let all = crate::i18n::t("All files").to_owned();
+                winui::start_pick(&self.ui_ctx, "app-interface-font", move || {
+                    crate::winui::file_dialog(&title)
+                        .add_filter(kinds, &["ttf", "otf", "ttc"])
+                        .add_filter(all, &["*"])
+                        .pick_file()
+                });
+            }
+            Cmd::InterfaceFontSystem => self.set_interface_font(None, false, ctx),
+            Cmd::InterfaceFontFile => {
+                // The checked line naming the file in use (#1489): choosing it reads that saved
+                // file again, so a file that went away says so, as a fresh pick would.
+                if let Some(path) = self.settings.interface_font.clone() {
+                    self.set_interface_font(Some(path), true, ctx);
+                }
+            }
+            Cmd::InterfaceTextSize(percent) => {
+                self.settings.interface_text_size = percent;
+                crate::theme::set_text_size(ctx, percent);
+                self.dirty = true;
+            }
             #[cfg(windows)]
             Cmd::SmoothText(on) => {
                 crate::theme::set_smooth_text(ctx, on);
@@ -8989,6 +9159,7 @@ impl App {
                 }
             }
             Cmd::ToggleColumn(i) => self.list.visible[i] = !self.list.visible[i],
+            Cmd::ColumnsDialog => self.columns_dialog = Some(dialogs::Columns::new(&self.list)),
             Cmd::LimiterOn | Cmd::LimiterOff => {
                 self.settings.speed_limit_on = cmd == Cmd::LimiterOn;
                 self.apply_speed_limit();
@@ -9348,7 +9519,10 @@ impl App {
             ctx.request_repaint_after(progress::SHOWN_WHOLE.saturating_sub(now.duration_since(at)));
         }
         if any_live {
-            ctx.request_repaint_after(Duration::from_millis(250));
+            // The list redraws as its progress clock ticks (every 250 ms), not a fixed
+            // 250 ms after this frame: a figure read on one tick is never left waiting
+            // for the next tick after the one it missed (#1441).
+            ctx.request_repaint_after(model::until_progress_tick(now));
             // The speeds shown change on their own clock (#1176): a frame as it ticks.
             ctx.request_repaint_after(model::until_shown(now));
             // The list's progress figures, every 30 s while something runs: after a crash the
@@ -9777,7 +9951,6 @@ impl App {
         let resumable = picked.iter().any(|i| i.can_start());
         let deletable = picked.iter().any(|i| i.live.is_none());
         let can_stop_all = self.can_stop_all();
-        let off = |label| I(label, Cmd::None, false, false);
         #[allow(unused_mut)]
         let mut menu = match index {
             0 => vec![
@@ -9936,7 +10109,8 @@ impl App {
                 // i18n: noun: the toolbar (submenu of View with its settings)
                 Sub("Toolbar", false, vec![]),
                 Sub("&Tray icon", false, vec![]),
-                off("C&ustomize URL List..."),
+                // The list's columns, as the header's Columns... (#1566).
+                I("C&ustomize URL List...", Cmd::ColumnsDialog, true, false),
                 I(
                     "Dark Mode support",
                     Cmd::ToggleDarkMode,
@@ -9951,8 +10125,8 @@ impl App {
                     true,
                     self.settings.always_dark,
                 ),
-                // i18n: noun: the list's font (submenu)
-                Sub("Font", false, vec![]),
+                // i18n: noun: the interface's font (View submenu: the font and its size)
+                self.font_menu(),
                 Sep,
                 // IDM's place for it; a window rather than IDM's submenu, which 86 languages
                 // would make taller than the screen (langpick.rs).
@@ -10091,6 +10265,48 @@ impl App {
             .collect();
         // i18n: View menu: submenu choosing how large MDM draws its windows and text (100 % to 200 %), as a browser's zoom
         MenuEntry::Sub("&Interface size", true, items)
+    }
+
+    /// View → Font (#1489): the file the interface's text is drawn in, and its own size, both
+    /// apart from View → Interface size (which zooms every window). Applies at once.
+    fn font_menu(&self) -> MenuEntry<Cmd> {
+        use MenuEntry::{Item as I, Radio, Sep};
+        let chosen = crate::theme::chosen_ui_font();
+        let chosen_on = chosen.is_some();
+        // i18n: View → Font: the computer's own font, the default (Segoe UI on Windows)
+        let system = Radio("&System font", Cmd::InterfaceFontSystem, true, !chosen_on);
+        // i18n: View → Font: a TrueType or OpenType font file on disk to draw the interface's text in
+        let file = I("Choose a font &file...", Cmd::InterfaceFont, true, false);
+        let now = crate::theme::text_size();
+        // The sizes sit in the Font menu itself: a submenu of a submenu can't open (Win32's
+        // menus, and this one's, go two levels deep).
+        let mut items = vec![system];
+        // The file in use, by its name, checked: until now nothing in the group said what was on
+        // (`System font` is off and the sizes say only the text size, #1489). The name is the
+        // file's own, so it isn't translated.
+        if let Some(path) = chosen.as_deref() {
+            let name = path
+                .file_name()
+                .map(|n| n.to_string_lossy().into_owned())
+                .unwrap_or_else(|| path.to_string_lossy().into_owned());
+            // An `&` in a file's name is a letter, not an access key (`&&` is its escape).
+            let shown = name.replace('&', "&&");
+            items.push(Radio(
+                crate::chrome::label(&shown),
+                Cmd::InterfaceFontFile,
+                true,
+                true,
+            ));
+        }
+        items.push(file);
+        items.push(Sep);
+        items.extend(crate::theme::TEXT_SIZES.iter().map(|p| {
+            // As the interface language writes a percentage: 125%, 125 %, %125.
+            let label = crate::chrome::label(&crate::i18n::percent(f64::from(*p) / 100.0, 0));
+            Radio(label, Cmd::InterfaceTextSize(*p), true, *p == now)
+        }));
+        // i18n: View menu: submenu choosing the interface's own font and text size
+        MenuEntry::Sub("&Font", true, items)
     }
 
     /// View → Text (Windows): how the letters are drawn. Smooth is DirectWrite's natural look
@@ -10358,7 +10574,7 @@ impl App {
                 by("By &Last Try Date", Some(6)),
                 by("By Date &Added", Some(list::ADDED)),
                 by("By &Description", Some(7)),
-                off("By Save &Path"),
+                by("By Save &Path", Some(list::SAVE_TO)),
                 off("By R&eferer"),
                 off("By Parent &Web Page"),
             ]
@@ -10386,6 +10602,13 @@ impl App {
                     })
                     .collect();
                 e.push(MenuEntry::Sep);
+                // i18n: header menu: opens the dialog that chooses the list's columns
+                e.push(MenuEntry::Item(
+                    "&Columns...",
+                    Cmd::ColumnsDialog,
+                    true,
+                    false,
+                ));
                 e.push(MenuEntry::Item(
                     "Clear all &filters",
                     Cmd::ClearFilters,
@@ -11214,13 +11437,19 @@ impl App {
             let entries = self.menu_entries(i);
             // Under the item's leading edge (the menu's top-right in RTL).
             let at = pos2(winui::mx(o.x + x), o.y + chrome::MENU_H - 1.0);
-            let event = match chrome::popup(
+            let event = match chrome::popup_with(
                 &ctx,
                 MenuKind::Bar,
                 &format!("menu-{i}"),
                 at,
                 &entries,
                 &|c: &Cmd| c.hint(),
+                &|c: &Cmd| match c {
+                    // The escape hatch stays in the computer's own font, whatever font is in
+                    // use: a damaged file must not make the way back unreadable (#1489).
+                    Cmd::InterfaceFontSystem => Some(crate::winui::system_font()),
+                    _ => None,
+                },
             ) {
                 PopupResult::Open => None,
                 PopupResult::Neighbor(d) => {
@@ -12194,7 +12423,7 @@ impl App {
             return;
         }
         // Kept at 100 % interface size (the system's logical pixels), as the window is made
-        // before the zoom applies (main.rs).
+        // before the zoom applies (lib.rs).
         let zoom = ctx.zoom_factor();
         let (outer, inner, maximized, minimized) = ctx.input(|i| {
             let v = i.viewport();
@@ -12394,6 +12623,9 @@ impl App {
         if let Some(path) = winui::picked(ctx, "app-theme-file") {
             self.add_theme_file(&path, ctx);
         }
+        if let Some(path) = winui::picked(ctx, "app-interface-font") {
+            self.set_interface_font(Some(path), true, ctx);
+        }
         if let Some(target) = winui::picked(ctx, "app-move-rename")
             && let Some(id) = self.move_rename_for.take()
         {
@@ -12427,6 +12659,36 @@ impl App {
                 ));
             }
         }
+    }
+
+    /// View → Font (#1489): draw the interface's text in the font file at `path`, or in the
+    /// computer's own when `None`. A file is read beside the window's thread (`theme::set_ui_font`)
+    /// and saved once it is in use; one egui can't read is refused with a message, and the font
+    /// in use stays (`tick` polls `theme::poll_ui_font`). `again` says whether a file that is
+    /// already the one in use is read again: a pick and the checked line in the Font menu do, so
+    /// one that has since changed or gone says so.
+    fn set_interface_font(
+        &mut self,
+        path: Option<std::path::PathBuf>,
+        again: bool,
+        ctx: &egui::Context,
+    ) {
+        let Some(path) = path else {
+            crate::theme::set_ui_font(None, false, false);
+            crate::theme::reload_fonts(ctx);
+            self.settings.interface_font = None;
+            self.dirty = true;
+            return;
+        };
+        // Already drawn with and not asked to read it again: nothing to read, the choice is
+        // saved as it is.
+        if !again && crate::theme::chosen_ui_font().as_deref() == Some(path.as_path()) {
+            self.settings.interface_font = Some(path);
+            self.dirty = true;
+            return;
+        }
+        tracing::info!("interface font: {}", path.display());
+        crate::theme::set_ui_font(Some(path), true, again);
     }
 
     /// The addresses in a list file, shown in Import to tick before adding. The file is read and
@@ -13348,6 +13610,19 @@ impl App {
                 }
             }
         }
+        if let Some(d) = &mut self.columns_dialog {
+            match d.show(ctx) {
+                Outcome::Open => {}
+                Outcome::Closed => self.columns_dialog = None,
+                Outcome::Done((order, visible, reset)) => {
+                    self.columns_dialog = None;
+                    if reset {
+                        self.list.reset_columns();
+                    }
+                    self.list.set_columns(order, visible);
+                }
+            }
+        }
         // The download limit's warning comes by itself: it waits during a full-screen app
         // (#1773). Not the Turn off countdown below: the computer turns off at its end, and its
         // Cancel must stay within reach.
@@ -13698,6 +13973,11 @@ impl App {
                     // now start with it.
                     if self.settings.video_chapters != v.chapters() {
                         self.settings.video_chapters = v.chapters();
+                        crate::settings::share_video_settings(&self.settings);
+                        self.dirty = true;
+                    }
+                    if self.settings.video_split_chapters != v.split_chapters() {
+                        self.settings.video_split_chapters = v.split_chapters();
                         crate::settings::share_video_settings(&self.settings);
                         self.dirty = true;
                     }
@@ -14201,6 +14481,25 @@ impl App {
         if handled {
             ctx.request_ui_pass(egui::ViewportId::ROOT);
         }
+        // View → Font (#1489): the chosen file read beside the window's thread. Once it is in
+        // use the choice is saved and the fonts are loaded again; a file egui can't read says
+        // why, and the font in use stays.
+        match crate::theme::poll_ui_font() {
+            Some(crate::theme::UiFontLoad::Loaded) => {
+                self.settings.interface_font = crate::theme::chosen_ui_font();
+                crate::theme::reload_fonts(ctx);
+                self.dirty = true;
+            }
+            Some(crate::theme::UiFontLoad::Failed) => {
+                self.notice = Some((
+                    // i18n: title of the message when the font picked in View → Font can't be used
+                    crate::i18n::mark("Choose a font file"),
+                    // i18n: the message when a file picked in View → Font isn't a TrueType or OpenType font MDM can read
+                    crate::i18n::t("This file can't be used as a font.").to_owned(),
+                ));
+            }
+            None => {}
+        }
         self.lookups.prune(Instant::now());
         crate::crash::step(crate::crash::Step::NetworkSettings);
         // The clock: what must go on whatever the main window's state (#174). Minimized, egui
@@ -14249,15 +14548,19 @@ impl App {
             self.watch_clipboard(ctx);
             crate::crash::step(crate::crash::Step::Tray);
             self.tray(ctx);
-            // The taskbar button's green bar: everything running, as one.
+            // The taskbar button's green bar: everything running, as one. Linux docks and the
+            // macOS Dock show the same on MDM's icon (#1777); a progress window has no icon of
+            // its own there.
+            crate::crash::step(crate::crash::Step::Taskbar);
             #[cfg(windows)]
             {
-                crate::crash::step(crate::crash::Step::Taskbar);
                 crate::win32::taskbar_progress(crate::MAIN_TITLE, self.overall_progress());
                 for window in &mut self.progress {
                     window.update_taskbar(self.items.iter().find(|item| item.id == window.id));
                 }
             }
+            #[cfg(unix)]
+            crate::unix::dock_progress(self.overall_progress());
         }
         if self
             .ticked
@@ -14301,7 +14604,7 @@ impl App {
         // A lost graphics device is noticed before this frame paints (renderer.rs).
         crate::renderer::frame_begin(ui.ctx());
         // Off-screen test runs: no window of ours may become the foreground one (win32.rs). Linux
-        // and macOS need no such pass: their off-screen windows open inactive (main.rs `quiet`)
+        // and macOS need no such pass: their off-screen windows open inactive (lib.rs `quiet`)
         // and nothing raises them then (dialogs::raise).
         #[cfg(windows)]
         if crate::offscreen() {
@@ -14494,7 +14797,7 @@ impl Drop for App {
 /// How long the session's end may take ([`App::end_session`]): Windows lists a program that
 /// takes 5 s over it as one that keeps the computer from shutting down. Linux's logind gives
 /// 90 s between its SIGTERM and its SIGKILL by default, some desktops less: the same 4 s there.
-/// (macOS: main.rs.)
+/// (macOS: lib.rs.)
 #[cfg(any(windows, target_os = "linux"))]
 const SESSION_END: Duration = Duration::from_millis(4000);
 
@@ -14510,7 +14813,7 @@ impl App {
     /// whose SIGTERM or lost display `unix::on_session_end` and `unix::on_display_lost` hear):
     /// what an Exit does at its end, now, within [`SESSION_END`], on the window's thread between
     /// two frames. Nobody is there to answer a question: nothing is asked. The process ends
-    /// right after (main.rs).
+    /// right after (lib.rs).
     #[cfg(any(windows, target_os = "linux"))]
     pub fn end_session(&mut self) {
         tracing::info!("the session is ending: stopping the downloads and saving the list");
@@ -14955,6 +15258,7 @@ mod same_name_tests {
             subs: Default::default(),
             parts: Vec::new(),
             named: false,
+            chapter_files: Vec::new(),
             duration: None,
             part: None,
         });
@@ -15295,6 +15599,7 @@ mod duplicate_tests {
             subs: Default::default(),
             parts: Vec::new(),
             named: false,
+            chapter_files: Vec::new(),
             duration: None,
             part: None,
         });
@@ -15324,6 +15629,7 @@ mod duplicate_tests {
             subs: Default::default(),
             parts: Vec::new(),
             named: false,
+            chapter_files: Vec::new(),
             duration: None,
             part: None,
         });
@@ -15442,6 +15748,7 @@ mod duplicate_tests {
             subs: Default::default(),
             parts: Vec::new(),
             named: false,
+            chapter_files: Vec::new(),
             duration: Some(754),
             part: None,
         });
@@ -15519,6 +15826,7 @@ mod duplicate_tests {
             subs: Default::default(),
             parts: Vec::new(),
             named: false,
+            chapter_files: Vec::new(),
             duration: Some(30),
             part: None,
         });
@@ -15689,6 +15997,7 @@ mod duplicate_tests {
             subs: Default::default(),
             parts: Vec::new(),
             named: false,
+            chapter_files: Vec::new(),
             duration: None,
             part: None,
         });
@@ -16262,6 +16571,7 @@ mod deferred_rename_guard_tests {
             upload_limit: None,
             in_order: false,
             ends_first: true,
+            public_list: 0,
         });
         assert!(
             !can_move(&item),
@@ -16319,6 +16629,7 @@ mod deferred_rename_guard_tests {
             upload_limit: None,
             in_order: false,
             ends_first: false,
+            public_list: 0,
         });
 
         let pack_dir = downloads.join("PackFolder");
@@ -16337,6 +16648,7 @@ mod deferred_rename_guard_tests {
             upload_limit: None,
             in_order: false,
             ends_first: false,
+            public_list: 0,
         });
 
         let items = vec![part1, standalone_rar, single_torrent, folder_torrent];
@@ -17014,6 +17326,7 @@ mod start_disk_tests {
             subs: Default::default(),
             parts: Vec::new(),
             named: false,
+            chapter_files: Vec::new(),
             duration: None,
             part: None,
         });
@@ -17129,6 +17442,7 @@ mod start_disk_tests {
             subs: Default::default(),
             parts: Vec::new(),
             named: false,
+            chapter_files: Vec::new(),
             duration: Some(754),
             part: None,
         });
@@ -18674,6 +18988,36 @@ mod delete_tests {
     }
 
     #[test]
+    fn header_menu_keeps_quick_columns_filters_reset_and_adds_dialog() {
+        let dir = tempfile::tempdir().unwrap();
+        let (items, _files) = three(dir.path());
+        let app = app_from_052(items, true);
+        let (entries, _) = app.popup_entries(Popup::Columns);
+
+        assert!(
+            entries.iter().any(|entry| matches!(
+                entry,
+                MenuEntry::Item(_, Cmd::ToggleColumn(0), false, true)
+            ))
+        );
+        assert!(
+            entries
+                .iter()
+                .any(|entry| matches!(entry, MenuEntry::Item(_, Cmd::ColumnsDialog, true, false)))
+        );
+        assert!(
+            entries
+                .iter()
+                .any(|entry| matches!(entry, MenuEntry::Item(_, Cmd::ClearFilters, _, false)))
+        );
+        assert!(
+            entries
+                .iter()
+                .any(|entry| matches!(entry, MenuEntry::Item(_, Cmd::ResetColumns, true, false)))
+        );
+    }
+
+    #[test]
     fn remove_with_files_asks_even_without_the_question() {
         let dir = tempfile::tempdir().unwrap();
         let (items, files) = three(dir.path());
@@ -18695,6 +19039,42 @@ mod delete_tests {
         assert_eq!(ids(&app), [2, 3]);
         assert!(app.deleter.finish(Duration::from_secs(10)));
         assert!(files.iter().all(|f| f.exists()));
+    }
+
+    #[test]
+    fn delete_with_files_leaves_unrelated_files_beside_split_video() {
+        let dir = tempfile::tempdir().unwrap();
+        let d = dir.path();
+        let main_video = d.join("Song.mp4");
+        let chapter_1 = d.join("Song - 01 - Intro.mp4");
+        let user_file = d.join("Song - Live.mp4");
+        std::fs::write(&main_video, b"main").unwrap();
+        std::fs::write(&chapter_1, b"ch1").unwrap();
+        std::fs::write(&user_file, b"user").unwrap();
+
+        let url = url::Url::parse("https://example.com/watch?v=song").unwrap();
+        let mut item = Item::new(1, url, main_video.clone(), Category::General);
+        item.status = Status::Complete;
+        item.video = Some(crate::model::VideoSpec {
+            selector: "best".into(),
+            subs: Default::default(),
+            parts: Vec::new(),
+            named: false,
+            chapter_files: vec![chapter_1.clone()],
+            duration: None,
+            part: None,
+        });
+
+        let mut app = app_from_052(vec![item], false);
+        let ctx = egui::Context::default();
+        app.run(Cmd::RemoveWithFiles, Some(1), &ctx);
+        let chosen = app.confirm_delete.take().unwrap().ids;
+        app.confirmed_delete(&chosen, true, false);
+        assert!(app.deleter.finish(Duration::from_secs(10)));
+
+        assert!(!main_video.exists(), "main video deleted");
+        assert!(!chapter_1.exists(), "chapter file deleted");
+        assert!(user_file.exists(), "Song - Live.mp4 must survive deletion");
     }
 }
 
@@ -18816,6 +19196,7 @@ mod move_unfinished_tests {
             subs: Default::default(),
             parts: Vec::new(),
             named: false,
+            chapter_files: Vec::new(),
             duration: None,
             part: None,
         });
@@ -18845,6 +19226,7 @@ mod move_unfinished_tests {
             upload_limit: None,
             in_order: false,
             ends_first: false,
+            public_list: 0,
         });
         assert!(torrent.move_refused().unwrap().starts_with("A torrent"));
         let file = stopped(3, &dir.path().join("f.bin"));

@@ -55,6 +55,10 @@ impl Query {
             [
                 Some(item.url.as_str()),
                 item.url.host_str(),
+                // The page the download was started from, as the checkbox says ("Parent web
+                // page"): the item's own page, and the referrers it was sent with.
+                item.web_page(),
+                item.page.as_deref(),
                 ctx.referer.as_deref(),
             ]
             .into_iter()
@@ -238,5 +242,16 @@ mod tests {
             q.next(&ids, &items, None).is_some(),
             "the host as a whole string"
         );
+        // The parent web page, which only the item has (not its URL or referrer).
+        let mut page = item(4, "clip.mp4", "");
+        page.page = Some("https://site.example/watch/42".into());
+        let items = [page];
+        let q = Query {
+            text: "watch/42".into(),
+            name: false,
+            site: true,
+            ..Query::default()
+        };
+        assert_eq!(q.next(&[4], &items, None), Some(4), "the parent web page");
     }
 }

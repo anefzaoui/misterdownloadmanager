@@ -171,6 +171,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} tracker added|{n} trackers added	{n} ਟਰੈਕਰ ਜੋੜਿਆ ਗਿਆ|{n} ਟਰੈਕਰ ਜੋੜੇ ਗਏ
+#. count in the main window
+#. event log entry: trackers from the public tracker list (Torrent settings) were added to a torrent
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} tracker added from the public list|{n} trackers added from the public list	ਸਰਵਜਨਕ ਸੂਚੀ ਤੋਂ {n} ਟਰੈਕਰ ਜੋੜਿਆ ਗਿਆ|ਸਰਵਜਨਕ ਸੂਚੀ ਤੋਂ {n} ਟਰੈਕਰ ਜੋੜੇ ਗਏ
 #. count in the Add torrent window
 #. where a magnet's peers came from: {n} = trackers asked; {peers} = "3 peers"
 #. {n} = a number (keep the braces as they are)
@@ -327,6 +332,9 @@
 #. why Part is greyed in Download video: the page is a playlist, whose videos are downloaded whole
 #, machine
 	A playlist's videos are downloaded whole	ਪਲੇਲਿਸਟ ਦੇ ਵੀਡੀਓ ਪੂਰੇ ਡਾਊਨਲੋਡ ਕੀਤੇ ਜਾਂਦੇ ਹਨ
+#. message or event log entry in the main window
+#, machine
+	A private torrent: the public tracker list isn't added	ਇੱਕ ਨਿੱਜੀ ਟੋਰੈਂਟ: ਸਰਵਜਨਕ ਟਰੈਕਰ ਸੂਚੀ ਨਹੀਂ ਜੋੜੀ ਗਈ
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites: the tooltip of the profile box
 #, machine
@@ -467,6 +475,10 @@
 #. text in extension.rs
 #, machine
 	Add the free extension: files you download in your browser come here, and videos get a Download button.	ਮੁਫ਼ਤ ਐਕਸਟੈਂਸ਼ਨ ਸ਼ਾਮਲ ਕਰੋ: ਤੁਹਾਡੇ ਬ੍ਰਾਊਜ਼ਰ ਵਿੱਚ ਡਾਊਨਲੋਡ ਕੀਤੀਆਂ ਫ਼ਾਈਲਾਂ ਇੱਥੇ ਆਉਂਦੀਆਂ ਹਨ ਅਤੇ ਵੀਡੀਓਜ਼ ਲਈ ਡਾਊਨਲੋਡ ਬਟਨ ਦਿਖਾਈ ਦਿੰਦਾ ਹੈ।
+#. text in the Add torrent window
+#. Torrent settings: add the trackers of a public tracker list (its address in the box below) to torrents that aren't private, so they find more peers
+#, machine
+	Add the trackers of this public list to public torrents:	ਇਸ ਸਰਵਜਨਕ ਸੂਚੀ ਦੇ ਟਰੈਕਰਾਂ ਨੂੰ ਸਰਵਜਨਕ ਟੋਰੈਂਟਾਂ ਵਿੱਚ ਜੋੜੋ:
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: add the torrents to the list without starting them
 #, machine
@@ -1121,12 +1133,21 @@
 #. remote control page (on a phone): what the ".torrent file" button does (screen readers)
 #, machine
 	Choose a .torrent file	.ਟੋਰੈਂਟ ਫਾਈਲ ਚੁਣੋ
+#. message or event log entry in the main window
+#. title of the file dialog of View → Font → Choose a font file
+#. title of the message when the font picked in View → Font can't be used
+#, machine
+	Choose a font file	ਇੱਕ ਫੌਂਟ ਫਾਈਲ ਚੁਣੋ
 #. text in helpers.rs
 #, machine
 	Choose a JavaScript runtime (Node.js, Deno, QuickJS or Bun)	ਇੱਕ JavaScript ਰਨਟਾਈਮ ਚੁਣੋ (Node.js, Deno, QuickJS ਜਾਂ Bun)
 #. text in langpick.rs
 #, machine
 	Choose a language	ਇੱਕ ਭਾਸ਼ਾ ਚੁਣੋ
+#. text in a dialog box
+#. the Columns dialog: what it is for, above its list of the download list's columns
+#, machine
+	Choose columns to show	ਦਿਖਾਉਣ ਲਈ ਕਾਲਮ ਚੁਣੋ
 #. text in langpick.rs
 #, machine
 	Choose the language Mister Download Manager shows its windows in:	ਉਹ ਭਾਸ਼ਾ ਚੁਣੋ ਜਿਸ ਵਿੱਚ Mister Download Manager ਆਪਣੀਆਂ ਵਿੰਡੋਜ਼ ਦਿਖਾਉਂਦਾ ਹੈ:
@@ -1200,6 +1221,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Colombia	ਕੋਲੰਬੀਆ
+#. window title in a dialog box; text in a dialog box
+#. what a screen reader calls the Columns dialog's list of the download list's columns
+#, machine
+	Columns	ਕਾਲਮ
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2003,6 +2028,10 @@
 #. Torrent settings, at the bottom
 #, machine
 	Fetched again every 7 days. Changes apply when no torrent is running.	ਹਰ 7 ਦਿਨਾਂ ਬਾਅਦ ਦੁਬਾਰਾ ਪ੍ਰਾਪਤ ਕੀਤਾ ਜਾਂਦਾ ਹੈ। ਕੋਈ ਵੀ ਟੋਰੈਂਟ ਨਾ ਚੱਲਣ 'ਤੇ ਬਦਲਾਅ ਲਾਗੂ ਹੁੰਦੇ ਹਨ।
+#. text in the Add torrent window
+#. Torrent settings, under the public tracker list's address
+#, machine
+	Fetched once a day. Never added to private torrents.	ਦਿਨ ਵਿੱਚ ਇੱਕ ਵਾਰ ਪ੍ਰਾਪਤ ਕੀਤਾ ਜਾਂਦਾ ਹੈ। ਨਿੱਜੀ ਟੋਰੈਂਟਾਂ ਵਿੱਚ ਕਦੇ ਨਹੀਂ ਜੋੜਿਆ ਜਾਂਦਾ।
 #. text in helpers.rs
 #. helper name and what it does (ffmpeg is a program's name)
 #, machine
@@ -2135,6 +2164,10 @@
 #. text in categories.rs
 #, machine
 	Folder:	ਫੋਲਡਰ:
+#. message or event log entry in the main window
+#. the kind of file View → Font → Choose a font file lists: TrueType and OpenType font files
+#, machine
+	Font files	ਫੌਂਟ ਫਾਈਲਾਂ
 #. text in finish.rs
 #. Snooze menu of the Download complete window: show no Download complete window for this long
 #, machine
@@ -4277,6 +4310,10 @@
 #. group box title: what the * in the address is replaced with (numbers or letters)
 #, machine
 	Replace asterisk to	ਤਾਰੇ ਨੂੰ ਇਸ ਨਾਲ ਬਦਲੋ
+#. button in a dialog box
+#. button in the Columns dialog: put the columns back as they first were (order, widths, all shown)
+#, machine
+	Reset	ਰੀਸੈੱਟ ਕਰੋ
 #. text in crashui.rs
 #. crash report window button: start MDM again
 #, machine
@@ -4864,6 +4901,10 @@
 #. tooltip on the disabled Rename box when the file is one part of a split archive (.part1.rar, .7z.001…)
 #, machine
 	Split archive volumes keep their names for extraction	ਵੰਡੇ ਹੋਏ ਆਰਕਾਈਵ ਭਾਗ ਕੱਢਣ ਲਈ ਆਪਣੇ ਨਾਮ ਬਰਕਰਾਰ ਰੱਖਦੇ ਹਨ
+#. text in the Download video window
+#. checkbox in Download video: split the video into one file per chapter (the whole video is kept too)
+#, machine
+	Split into chapters	ਚੈਪਟਰਾਂ ਵਿੱਚ ਵੰਡੋ
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -5683,6 +5724,10 @@
 #, machine
 	This device's name	ਇਸ ਡਿਵਾਈਸ ਦਾ ਨਾਮ
 #. message or event log entry in the main window
+#. the message when a file picked in View → Font isn't a TrueType or OpenType font MDM can read
+#, machine
+	This file can't be used as a font.	ਇਹ ਫ਼ਾਈਲ ਫੌਂਟ ਵਜੋਂ ਨਹੀਂ ਵਰਤੀ ਜਾ ਸਕਦੀ।
+#. message or event log entry in the main window
 #. {error} is why, in English (a file that isn't a theme or a colour scheme, a colour missing)
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -5995,6 +6040,10 @@
 #. why Options → Remote → Pair a device... is greyed
 #, machine
 	Turn on the remote control first.	ਪਹਿਲਾਂ ਰਿਮੋਟ ਕੰਟਰੋਲ ਚਾਲੂ ਕਰੋ।
+#. text in the Add torrent window
+#. Torrent settings, under the public tracker list's address: turning the switch off doesn't take away the trackers it added to torrents
+#, machine
+	Turned off, the trackers already added stay.	ਬੰਦ ਕਰਨ 'ਤੇ, ਪਹਿਲਾਂ ਤੋਂ ਸ਼ਾਮਲ ਕੀਤੇ ਟਰੈਕਰ ਬਰਕਰਾਰ ਰਹਿੰਦੇ ਹਨ।
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -7023,6 +7072,10 @@ column	Q	ਕਿਊ
 #, machine
 column	Queue	ਕਤਾਰ
 #. column title in the download list in the download list
+#. column title: the folder the download is saved in
+#, machine
+column	Save To	ਸੇਵ ਕਰਨ ਦਾ ਟਿਕਾਣਾ
+#. column title in the download list in the download list
 #. column title: what a torrent has sent to peers against what it took
 #, machine
 column	Share ratio	ਸ਼ੇਅਰ ਅਨੁਪਾਤ
@@ -7998,6 +8051,12 @@ menu	&Automatic	ਆ&ਟੋਮੈਟਿਕ
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Classic	ਕਲਾਸਿਕ(&C)
+#. menu command in the main window
+#. header menu: opens the dialog that chooses the list's columns
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	&Columns...	ਕਾਲਮ(&C)...
 #. menu command in standard windows
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -8018,6 +8077,11 @@ menu	&Download Now	ਹੁਣੇ ਡਾਊਨਲੋਡ ਕਰੋ(&D)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Exit	ਬਾਹਰ ਜਾਓ(&E)
+#. menu command in the main window
+#. View menu: submenu choosing the interface's own font and text size
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Font	&ਫੌਂਟ
 #. menu command in the main window
 #. verb: load downloads from a file
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
@@ -8097,6 +8161,11 @@ menu	&Stop All	ਸਾਰੇ ਰੋਕੋ(&S)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Stop Download	ਡਾਊਨਲੋਡ ਰੋਕੋ(&S)
+#. menu command in the main window
+#. View → Font: the computer's own font, the default (Segoe UI on Windows)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&System font	&ਸਿਸਟਮ ਫੌਂਟ
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -8238,6 +8307,12 @@ menu	C&ustomize URL List...	URL ਸੂਚੀ ਨੂੰ ਅਨੁਕੂਲਿਤ 
 #, machine
 menu	Check for &updates...	ਅੱਪਡੇਟਾਂ ਦੀ ਜਾਂਚ ਕਰੋ(&u)...
 #. menu command in the main window
+#. View → Font: a TrueType or OpenType font file on disk to draw the interface's text in
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Choose a font &file...	&ਇੱਕ ਫੌਂਟ ਫਾਈਲ ਚੁਣੋ...
+#. menu command in the main window
 #. View → Theme: MDM's own look, the default (IDM's layout, Windows 11's controls)
 #, machine
 menu	Classic	ਕਲਾਸਿਕ
@@ -8326,10 +8401,6 @@ menu	Find Next (F3)	ਅਗਲਾ ਲੱਭੋ (F3)
 #. right-click → Torrent, a choice with a check mark (with Download in order): each file's first and last pieces first, which a video player needs to start
 #, machine
 menu	First and last pieces first	ਪਹਿਲੇ ਅਤੇ ਆਖਰੀ ਟੁਕੜੇ ਪਹਿਲਾਂ
-#. menu command in the main window
-#. noun: the list's font (submenu)
-#, machine
-menu	Font	ਫੌਂਟ
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it

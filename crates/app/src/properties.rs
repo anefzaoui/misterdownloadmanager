@@ -569,6 +569,7 @@ mod tests {
             upload_limit: None,
             in_order: false,
             ends_first: false,
+            public_list: 0,
         });
         let props = Properties::new(&torrent, crate::debrid::Route::default());
         assert!(!props.address_editable(&torrent));
