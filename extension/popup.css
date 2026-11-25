@@ -244,6 +244,8 @@ button, input { font: inherit; color: inherit; }
 .field.num { width: 72px; min-height: 28px; padding: 2px 6px; font-variant-numeric: tabular-nums; }
 .field.num::placeholder { color: var(--text-3); }
 .img-filters .note.img-count { padding: 0; }
+/* The count, then how many of those the page gives no size for, apart. */
+#images-unsized::before { content: "· "; color: var(--text-3); }
 .chip[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
 .chip[aria-pressed="true"] .n { color: rgba(255, 255, 255, 0.85); }
 .img-actions { margin-top: 8px; }
