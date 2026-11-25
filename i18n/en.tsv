@@ -5346,6 +5346,9 @@ extension	All qualities and subtitles...	All qualities and subtitles...
 #. choice under Send downloads to: an MDM running on another computer of the network, such as a home server; keep the name Mister Download Manager as it is
 extension	Another Mister Download Manager (a server)	Another Mister Download Manager (a server)
 #. text in the browser extension
+#. in the This page tab of the toolbar button's popup, before two boxes for the smallest width and height (in pixels) of the pictures to keep: 'At least [ ] × [ ] px'; short
+extension	At least	At least
+#. text in the browser extension
 #. tab above the list of qualities in the menu under the download button over a video: the choices that are sound only (MP3, Opus and the like); short, one word
 extension	Audio	Audio
 #. text in the browser extension
@@ -5505,6 +5508,12 @@ extension	File deleted or moved	File deleted or moved
 #. label before the row of chips (All, MP4, WEBM, M4A...) that filters the list of qualities by file type in the menu of the download button over a video; short
 extension	File type	File type
 #. text in the browser extension
+#. button in the This page tab of the toolbar button's popup: look for the pictures of the current web page (only when clicked); short
+extension	Find images	Find images
+#. text in the browser extension
+#. in the This page tab of the toolbar button's popup, before the Find images button; Link grabber is the name of the app's window that lists links to tick before downloading them
+extension	Find this page's pictures at the largest size it lists, then send the ones you want to Link grabber.	Find this page's pictures at the largest size it lists, then send the ones you want to Link grabber.
+#. text in the browser extension
 #. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) after Clear finished
 extension	Finished downloads cleared	Finished downloads cleared
 #. text in the browser extension
@@ -5531,6 +5540,12 @@ extension	Hold Alt while clicking a link to let the browser download it.	Hold Al
 #. text in the browser extension
 #. link under a connection problem in the toolbar button's popup, to the help page's section for it
 extension	How to fix it	How to fix it
+#. text in the browser extension
+#. what a screen reader says for the row of buttons that keep or leave out each type of picture (JPEG, PNG, WEBP...), in the This page tab of the toolbar button's popup
+extension	Image types	Image types
+#. text in the browser extension
+#. heading in the This page tab of the toolbar button's popup, over the part that finds the pictures of the current web page and sends them to the app
+extension	Images on this page	Images on this page
 #. text in the browser extension
 #. pairing failed for another reason
 extension	It didn't work. Try again.	It didn't work. Try again.
@@ -5654,6 +5669,9 @@ extension	No download's name or address has “{words}”.	No download's name or
 #. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app has no downloads
 extension	No downloads yet	No downloads yet
 #. text in the browser extension
+#. shown in the This page tab of the toolbar button's popup when Find images found no picture on the current web page
+extension	No images found on this page.	No images found on this page.
+#. text in the browser extension
 #. shown in the toolbar button's popup when the current web page hasn't loaded any video, sound or stream yet
 extension	No video or sound found on this page yet. Play it, then open this again.	No video or sound found on this page yet. Play it, then open this again.
 #. text in the browser extension
@@ -5706,6 +5724,9 @@ extension	Options...	Options...
 #. in the list under the download button over a video, after a sound-only line's bitrate: the sound as the site sends it, not converted (e.g. '128 kbps · original'); lower case; one word
 extension	original	original
 #. text in the browser extension
+#. button among the picture types (JPEG, PNG, WEBP...) in the This page tab of the toolbar button's popup: the pictures of any other or unknown type; short
+extension	Other	Other
+#. text in the browser extension
 #. button: pair this browser with the other MDM using the code
 extension	Pair	Pair
 #. text in the browser extension
@@ -5743,6 +5764,9 @@ extension	Protected video	Protected video
 #. menu command of the download button over a video, shown after the user dragged the button elsewhere on this site: moves it back to its usual corner of the video
 extension	Put the button back in its corner	Put the button back in its corner
 #. text in the browser extension
+#. short for pixels, after the boxes of the smallest width and height of the pictures to keep, in the This page tab of the toolbar button's popup
+extension	px	px
+#. text in the browser extension
 #. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): takes the download off the list, its file stays
 extension	Remove from list	Remove from list
 #. text in the browser extension
@@ -5770,12 +5794,18 @@ extension	Send downloads through this browser's proxy or VPN extension	Send down
 #. heading in the toolbar button's popup, above the choice of where downloads go
 extension	Send downloads to	Send downloads to
 #. text in the browser extension
+#. button in the This page tab of the toolbar button's popup: send the selected pictures to the app's Link grabber window, where the user ticks which to download
+extension	Send to Link grabber	Send to Link grabber
+#. text in the browser extension
 #. on the download button over a video right after it was clicked, while the download goes to the app; MDM is Mister Download Manager's short name, keep it as it is; short
 #. the trailing ... means it is still going on: keep it
 extension	Sending to MDM...	Sending to MDM...
 #. text in the browser extension
 #. under the extension's name in the toolbar button's popup: downloads go to another Mister Download Manager, a server, at this address; short
 extension	Sending to {server}	Sending to {server}
+#. text in the browser extension
+#. shown in the This page tab of the toolbar button's popup after the pictures were sent to the app's Link grabber window
+extension	Sent to Link grabber: tick the ones to download there.	Sent to Link grabber: tick the ones to download there.
 #. text in the browser extension
 #. shown briefly on the download button after it was clicked; keep the name Mister Download Manager as it is
 extension	Sent to Mister Download Manager	Sent to Mister Download Manager
@@ -5801,6 +5831,16 @@ extension	Show in folder	Show in folder
 #. screen readers' name of a download's Show in folder button in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads)
 extension	Show {file} in folder	Show {file} in folder
 #. text in the browser extension
+#. in the This page tab of the toolbar button's popup, while a smallest width or height is set: how many of the selected pictures the page gives no size for (they are kept, not left out)
+#. {n} = a number (keep the braces as they are)
+extension	Size not given, kept: {n}	Size not given, kept: {n}
+#. text in the browser extension
+#. what a screen reader says for the box of the smallest height of the pictures to keep, in the This page tab of the toolbar button's popup
+extension	Smallest height, in pixels	Smallest height, in pixels
+#. text in the browser extension
+#. what a screen reader says for the box of the smallest width of the pictures to keep, in the This page tab of the toolbar button's popup
+extension	Smallest width, in pixels	Smallest width, in pixels
+#. text in the browser extension
 #. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app isn't running
 extension	Start it to see your downloads here.	Start it to see your downloads here.
 #. text in the browser extension
@@ -5825,6 +5865,9 @@ extension	That didn't work. Try again.	That didn't work. Try again.
 #. text in the browser extension
 #. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when a button's download was removed meanwhile
 extension	That download is no longer in the list.	That download is no longer in the list.
+#. text in the browser extension
+#. shown in the This page tab of the toolbar button's popup when Find images can't look into the current page (a page of the browser's own, an add-on store)
+extension	The browser doesn't let add-ons read this page.	The browser doesn't let add-ons read this page.
 #. text in the browser extension
 #. in the toolbar button's popup, on a site where the Chrome Web Store's copy of the extension shows no download button; Help is the link at the bottom of the popup
 extension	The Chrome Web Store's rules keep this copy of the add-on away from this site's videos. Help says what you can do.	The Chrome Web Store's rules keep this copy of the add-on away from this site's videos. Help says what you can do.
@@ -5928,6 +5971,9 @@ extension	{file} removed from the list	{file} removed from the list
 #. text in the browser extension
 #. question in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) before a download's file is deleted
 extension	{file} will be deleted from your computer, and the download taken off the list. This can't be undone.	{file} will be deleted from your computer, and the download taken off the list. This can't be undone.
+#. text in the browser extension
+#. in the This page tab of the toolbar button's popup: how many of the pictures found pass the size and type filters, and will be sent
+extension	{shown} of {total} selected	{shown} of {total} selected
 #. text in the browser extension
 #. a running download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): the time left, as a clock (minutes:seconds)
 #. {time} = a time of day (keep the braces as they are)
