@@ -4135,7 +4135,9 @@ impl OptionsDialog {
                 // i18n: window title: adding a site rule
                 crate::i18n::mark("New site rule")
             };
-            let rule_out = window(
+            // Above the list it was opened from, with the keyboard (a question's window): opened
+            // with it at once (`/show options:siterule`), the list could cover it.
+            let rule_out = crate::dialogs::question(
                 ctx,
                 "opt-site-rule",
                 title,

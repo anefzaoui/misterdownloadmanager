@@ -127,7 +127,8 @@ impl Properties {
         let running = item.live.is_some();
         if let Some((edit, limit)) = &mut self.request {
             let limit = *limit;
-            let out = window(
+            // Above File Properties, with the keyboard (a question's window), as its own window.
+            let out = crate::dialogs::question(
                 ctx,
                 &format!("properties-request-{}", self.id),
                 // i18n: window title: a download's own request settings (User-Agent, headers, connections, proxy), from File Properties → Connection...
