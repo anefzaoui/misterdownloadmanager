@@ -144,8 +144,14 @@ pub fn in_magnet(magnet: &str) -> Vec<String> {
     out
 }
 
-/// A magnet link with only the trackers MDM may contact. Each pair is read decoded, its name as
-/// well as its value (`%74r=` is a `tr=`); the pairs kept stay as they were written.
+/// The parts of a magnet link MDM reads (BEP 9): its hash (`xt`), its name (`dn`) and its
+/// trackers (`tr`). The rest isn't passed on: the files are chosen in Add torrent, not by the
+/// link (`so=`).
+const MAGNET_KEYS: [&str; 3] = ["xt", "dn", "tr"];
+
+/// A magnet link with only the parts MDM reads ([`MAGNET_KEYS`]), and of its trackers only those
+/// MDM may contact. Each pair is read decoded, its name as well as its value (`%74r=` is a
+/// `tr=`), with the names as librqbit matches them; the pairs kept stay as they were written.
 pub fn filter_magnet(magnet: &str, proxied: bool) -> String {
     let Some(url) = magnet_url(magnet) else {
         return magnet.to_owned();
@@ -156,8 +162,9 @@ pub fn filter_magnet(magnet: &str, proxied: bool) -> String {
         .split('&')
         .filter(
             |pair| match url::form_urlencoded::parse(pair.as_bytes()).next() {
-                Some((k, v)) if k.eq_ignore_ascii_case("tr") => allowed(&v, proxied),
-                _ => true,
+                Some((k, v)) if k == "tr" => allowed(&v, proxied),
+                Some((k, _)) => MAGNET_KEYS.contains(&k.as_ref()),
+                None => false,
             },
         )
         .collect();
@@ -501,6 +508,39 @@ mod tests {
             ["udp://t.example:1337", "http://127.0.0.1/a"]
         );
         assert!(in_magnet("magnet:?xt=urn:btih:abc").is_empty());
+    }
+
+    /// Only the hash, the name and the trackers go on: a file range (`so=`) and anything else
+    /// the link carries, however its name is written, never reach librqbit.
+    #[test]
+    fn magnets_keep_only_the_parts_mdm_reads() {
+        let hash = "xt=urn:btih:0123456789abcdef0123456789abcdef01234567";
+        let tr = "tr=udp%3A%2F%2Ft.example%3A1337";
+        let m = format!(
+            "magnet:?{hash}&so=0-99999999999&dn=a%20b&%73o=1-99999999999&x.pe=10.0.0.1:6881&\
+             ws=http%3A%2F%2F10.0.0.1%2Ff&xl=5&SO=2&{tr}&noequals&&kt=a"
+        );
+        let out = filter_magnet(&m, false);
+        assert_eq!(out, format!("magnet:?{hash}&dn=a%20b&{tr}"));
+        let read = librqbit::Magnet::parse(&out).unwrap();
+        assert_eq!(read.get_select_only(), None);
+        assert_eq!(read.name.as_deref(), Some("a b"));
+        assert_eq!(read.trackers, ["udp://t.example:1337"]);
+        // librqbit reads a link's range itself; once filtered there is none.
+        let small = format!("magnet:?{hash}&so=0-3,7");
+        assert_eq!(
+            librqbit::Magnet::parse(&small).unwrap().get_select_only(),
+            Some(vec![0, 1, 2, 3, 7])
+        );
+        assert_eq!(
+            librqbit::Magnet::parse(&filter_magnet(&small, false))
+                .unwrap()
+                .get_select_only(),
+            None
+        );
+        // A hybrid link's two hashes both stay.
+        let both = format!("magnet:?{hash}&xt=urn:btmh:1220{}", "ab".repeat(32));
+        assert_eq!(filter_magnet(&both, false), both);
     }
 
     /// Add trackers (#39): new ones after the ones there, each once, keys still sorted, the info

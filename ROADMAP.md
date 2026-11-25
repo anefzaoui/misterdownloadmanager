@@ -595,6 +595,7 @@ These ship in the next version.
   ([#1826](https://github.com/anefzaoui/misterdownloadmanager/issues/1826))
 - ✅ Galleries: file paths are checked more carefully
 - ✅ Helpers: ffmpeg's download is checked more carefully
+- ✅ Extracting: 7z and RAR archives are checked more carefully
 - ✅ Archive test: archives are checked more carefully
 - ✅ Downloaded files are marked as coming from the internet more carefully
 - ✅ Command line: a playlist range from 0 or of 0 entries is refused
@@ -2122,6 +2123,7 @@ These ship in the next version.
   reach; where neither side has room for it whole, its list of qualities is shorter and scrolls.
   Tests: the feed case of the add-on's real-browser tests checks that the menu is inside the
   window, and waits for the button over the video it points at, not the last one's, still fading
+- ✅ Torrents: magnet links, torrent files and trackers are checked more carefully.
 
 ## Being worked on
 

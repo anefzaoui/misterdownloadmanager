@@ -157,6 +157,22 @@ impl<'a> Writer<'a> {
         &self.root
     }
 
+    pub fn limits(&self) -> Limits {
+        self.limits
+    }
+
+    pub fn cancel(&self) -> Option<&'a AtomicBool> {
+        self.cancel
+    }
+
+    /// What another program wrote into the staging folder (7-Zip), counted as if written here:
+    /// the report's bytes, and its entries.
+    pub(crate) fn wrote(&mut self, t: crate::supervise::Tally) {
+        self.written = t.bytes;
+        self.read = t.bytes;
+        self.entries = t.entries;
+    }
+
     fn cancelled(&self) -> bool {
         self.cancel.is_some_and(|c| c.load(Ordering::Relaxed))
     }
@@ -212,6 +228,20 @@ impl<'a> Writer<'a> {
                 return Err(Error::Cancelled);
             }
         }
+    }
+
+    /// An entry that is never extracted (a link, a device), left out with why: counted as an
+    /// entry, and its data, when it has any, read past under the same limits as a file's.
+    pub fn left_out(
+        &mut self,
+        name: &str,
+        why: &'static str,
+        size: Option<u64>,
+        data: &mut dyn Read,
+    ) -> Result<(), Error> {
+        self.count()?;
+        self.skip(name, why);
+        self.drain(name, size, data)
     }
 
     /// A folder entry.

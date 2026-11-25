@@ -4297,6 +4297,9 @@
 	These settings are unavailable when "Show download complete dialog" is turned on	These settings are unavailable when "Show download complete dialog" is turned on
 #. text in helpers.rs
 	They keep downloading if you close this window.	They keep downloading if you close this window.
+#. text in errors.rs
+#. error when opening a .torrent file whose piece size or list of pieces doesn't fit its files (damaged, or made wrong); it isn't added
+	this .torrent file is damaged: its pieces don't match its files	this .torrent file is damaged: its pieces don't match its files
 #. text in a dialog box
 	This address is already in the list of downloads:	This address is already in the list of downloads:
 #. message or event log entry in the main window

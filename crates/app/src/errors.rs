@@ -333,6 +333,10 @@ pub fn torrent(e: &mdm_torrent::TorrentError) -> String {
     use mdm_torrent::TorrentError as E;
     match e {
         E::NotATorrent => t("this is not a magnet link or a .torrent file").to_owned(),
+        E::BadPieces => {
+            // i18n: error when opening a .torrent file whose piece size or list of pieces doesn't fit its files (damaged, or made wrong); it isn't added
+            t("this .torrent file is damaged: its pieces don't match its files").to_owned()
+        }
         E::MetadataTimeout => t("no peer sent the torrent's file list in time").to_owned(),
         E::Unknown => t("this torrent is not in the list").to_owned(),
         // i18n: error when adding a torrent; {name} = a file's path inside the torrent
