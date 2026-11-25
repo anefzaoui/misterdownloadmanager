@@ -761,7 +761,7 @@ mod tests {
             text.starts_with("MDM's list of checked ffmpeg builds could not be downloaded")
                 && text.contains("github.com")
                 && text.contains("404"),
-            "{text}"
+            "the list's download failure isn't worded as expected"
         );
         assert!(tools_advice(&gone, "ffmpeg").unwrap().contains("ffmpeg"));
         for (why, says) in [
@@ -778,9 +778,13 @@ mod tests {
             (L::NotListed, "the downloaded ffmpeg isn't the build"),
         ] {
             let e = list(why);
-            assert!(tools(&e).contains(says), "{}", tools(&e));
+            // Fixed words in the failure message: the error's own text never goes to a log.
+            assert!(tools(&e).contains(says), "{says:?} isn't said");
             let advice = tools_advice(&e, "ffmpeg").unwrap();
-            assert!(advice.contains("Use another program"), "{advice}");
+            assert!(
+                advice.contains("Use another program"),
+                "no advice for {says:?}"
+            );
         }
     }
 }
