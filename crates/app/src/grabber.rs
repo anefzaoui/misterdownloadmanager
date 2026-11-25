@@ -3,8 +3,10 @@
 //! pasted, gathered into packages to tick before they are added. An address that came on its own
 //! and turns out to be a web page is read for its links, which join as that page's (#705).
 //! It grew out of the Import window and keeps its ways (IDM's "Download all links": every link
-//! looked up for its name and size, Check all / Uncheck all, "Hide web pages", OK adds the
-//! ticked ones to the queue); the packages come from JDownloader's link grabber: a split
+//! looked up for its name and size, Check all / Uncheck all, "Hide web pages", "Hide images
+//! located on this web page" (the pictures the browser's page shows, which its "Download all
+//! links" sends with the links, #1781), OK adds the ticked ones to the queue); the packages come
+//! from JDownloader's link grabber: a split
 //! archive's volumes are one package, the other links of one page another, the rest "Various
 //! files". A package has its folder, an archive password and "Extract when done". A folder
 //! given on its own (an `ftp://` folder, a web server's "Index of" page, #1774) is read with its
@@ -172,6 +174,17 @@ impl Link {
         self.page || web_page(&self.name)
     }
 
+    /// A picture located on the browser's page (#1781): shown in it, not a link to it.
+    fn is_page_image(&self) -> bool {
+        self.found.page_image
+    }
+
+    /// Hidden by the window's check boxes: a web page while "Hide web pages" is ticked, a
+    /// picture located on the page while "Hide images located on this web page" is.
+    fn hidden(&self, pages: bool, images: bool) -> bool {
+        (pages && self.is_page()) || (images && self.is_page_image())
+    }
+
     /// A web page given on its own (pasted, copied, typed, in a list), not found on a page: one
     /// to read for its links (#705). A page's own links aren't read in turn, and a link a web
     /// page sent (Click'n'Load) never is: reading it is a request the user didn't ask for.
@@ -254,6 +267,8 @@ pub struct Grabber {
     source: String,
     rows: winui::RowList,
     pub hide_pages: bool,
+    /// "Hide images located on this web page" (#1781): ticked as the window opens.
+    pub hide_images: bool,
     /// The default folders (Options → Save to), as category_folder reads them.
     downloads: PathBuf,
     dirs: Vec<(String, String)>,
@@ -283,6 +298,7 @@ impl Grabber {
             source: String::new(),
             rows: Default::default(),
             hide_pages,
+            hide_images: true,
             downloads,
             dirs,
             delete_default,
@@ -519,9 +535,9 @@ impl Grabber {
         self.settle(&all);
     }
 
-    /// Shown (not a hidden web page)?
+    /// Shown (not a hidden web page, nor a hidden picture located on the page)?
     fn shows(&self, l: &Link) -> bool {
-        !(self.hide_pages && l.is_page())
+        !l.hidden(self.hide_pages, self.hide_images)
     }
 
     /// Each package's links that show, counted in one pass over the links.
@@ -712,9 +728,9 @@ impl Grabber {
     fn tick_package(&mut self, k: usize) {
         let (on, n) = self.ticks(k);
         let to = on < n;
-        let hide = self.hide_pages;
+        let (pages, images) = (self.hide_pages, self.hide_images);
         for l in self.links.iter_mut().filter(|l| l.pkg == k) {
-            if !(hide && l.is_page()) {
+            if !l.hidden(pages, images) {
                 l.on = to;
             }
         }
@@ -802,14 +818,25 @@ impl Grabber {
         );
         self.list(
             ui,
-            Rect::from_min_size(o + vec2(11.0, 30.0), vec2(618.0, 258.0)),
+            Rect::from_min_size(o + vec2(11.0, 30.0), vec2(618.0, 236.0)),
         );
 
-        // Under the list: Hide web pages, the count, Check all / Uncheck all.
+        // Under the list: Hide web pages and, under it, Hide images located on this web page;
+        // the count; Check all / Uncheck all.
         let mut hide = self.hide_pages;
         // i18n: Link grabber check box (IDM's "Hide HTML files"): links to web pages are not shown
-        winui::checkbox_light(ui, o + vec2(11.0, 299.0), &mut hide, "Hide web pages", true);
+        winui::checkbox_light(ui, o + vec2(11.0, 277.0), &mut hide, "Hide web pages", true);
         self.hide_pages = hide;
+        let mut hide = self.hide_images;
+        winui::checkbox_light(
+            ui,
+            o + vec2(11.0, 299.0),
+            &mut hide,
+            // i18n: Link grabber check box, ticked when it opens: the pictures shown on the browser's page (its images, not links to pictures), which "Download all links" sends with the links, are not shown
+            "Hide images located on this web page",
+            true,
+        );
+        self.hide_images = hide;
         let (ticked, shown) = self
             .links
             .iter()
@@ -822,9 +849,9 @@ impl Grabber {
                 ("total", &crate::i18n::integer(shown as u64)),
             ],
         );
-        // After the check box's caption, however long it is in this language.
+        // After the first check box's caption, however long it is in this language.
         let after = 11.0 + 18.0 + winui::text_width(&p, crate::i18n::t("Hide web pages")) + 24.0;
-        text(&p, o.x + after, o.y + 310.0, &count, LIGHT_TEXT());
+        text(&p, o.x + after, o.y + 288.0, &count, LIGHT_TEXT());
         let picks = winui::buttons_light_right(
             ui,
             o,
@@ -838,9 +865,9 @@ impl Grabber {
             ],
         );
         if picks[0].clicked() {
-            let hide = self.hide_pages;
+            let (pages, images) = (self.hide_pages, self.hide_images);
             for l in &mut self.links {
-                l.on = !(hide && l.is_page());
+                l.on = !l.hidden(pages, images);
             }
         }
         if picks[1].clicked() {
@@ -1831,6 +1858,51 @@ mod tests {
         g.hide_pages = false;
         assert_eq!(g.picked()[0].links.len(), 2);
         assert_eq!(g.packages[0].name, "s.org");
+    }
+
+    /// #1781: the pictures located on the browser's page come hidden (ticked "Hide images
+    /// located on this web page"): neither shown, counted nor added; unticked, they show and
+    /// are added. A link to a picture stays a link, shown as before.
+    #[test]
+    fn page_images_hide_until_asked() {
+        let mut g = grabber();
+        let image = |u: &str| Imported {
+            page_image: true,
+            ..link(u, Some("https://s.org/gallery"))
+        };
+        g.add(
+            vec![
+                link("https://s.org/a.zip", Some("https://s.org/gallery")),
+                link("https://s.org/full.jpg", Some("https://s.org/gallery")),
+                image("https://s.org/shown.jpg"),
+                image("https://s.org/bg.png"),
+            ],
+            String::new(),
+            |_| false,
+        );
+        assert!(g.hide_images, "ticked as it opens");
+        let names = |g: &Grabber| -> Vec<String> {
+            g.picked()
+                .iter()
+                .flat_map(|p| p.links.iter().map(|(_, n, _)| n.clone()))
+                .collect()
+        };
+        assert_eq!(names(&g), ["a.zip", "full.jpg"]);
+        assert_eq!(
+            g.shown().iter().map(|s| s.links).sum::<usize>(),
+            2,
+            "counted"
+        );
+        // Check all leaves the hidden ones as they are; the package's tick too.
+        g.links.iter_mut().for_each(|l| l.on = false);
+        g.tick_package(g.links[0].pkg);
+        assert_eq!(
+            g.links.iter().map(|l| l.on).collect::<Vec<_>>(),
+            [true, true, false, false]
+        );
+        g.hide_images = false;
+        g.links.iter_mut().for_each(|l| l.on = true);
+        assert_eq!(names(&g), ["a.zip", "full.jpg", "shown.jpg", "bg.png"]);
     }
 
     #[test]

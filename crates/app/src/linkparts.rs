@@ -2,7 +2,8 @@
 //! native host takes at most 1 MB a message (`mdm_ipc::MAX_MESSAGE`), so the extension sends a
 //! longer list (a page of 20,000 links) in parts, each with the page's referrer and cookies. They
 //! are kept here until the last one is in, then go to Link grabber as one list, in their order,
-//! as a short list does.
+//! as a short list does. Each part names its own links that are pictures located on the page
+//! (`page_images`, #1781); the whole list names them all.
 //!
 //! A list whose parts stop coming (the browser closed, a part refused: the extension said so)
 //! is dropped after [`WAIT`], and nothing of it is shown: Link grabber gets a page's links whole
@@ -32,8 +33,9 @@ struct List {
     /// The first part's command, its links taken out: the page's referrer, cookies, User-Agent,
     /// private window (each part carries the same).
     context: Command,
-    /// Each part's links, at its place; None while it hasn't come.
-    parts: Vec<Option<Vec<String>>>,
+    /// Each part's links and, of those, the pictures located on the page, at its place; None
+    /// while it hasn't come.
+    parts: Vec<Option<(Vec<String>, Vec<String>)>>,
     /// When its last part came.
     at: Instant,
 }
@@ -82,6 +84,7 @@ impl LinkParts {
                     batch: part.batch.clone(),
                     context: Command {
                         links: Vec::new(),
+                        page_images: Vec::new(),
                         ..cmd.clone()
                     },
                     parts: vec![None; count],
@@ -91,7 +94,10 @@ impl LinkParts {
             }
         };
         let list = &mut self.lists[at];
-        list.parts[part.index as usize] = Some(std::mem::take(&mut cmd.links));
+        list.parts[part.index as usize] = Some((
+            std::mem::take(&mut cmd.links),
+            std::mem::take(&mut cmd.page_images),
+        ));
         list.at = now;
         let got = list.got();
         if got < count {
@@ -99,7 +105,10 @@ impl LinkParts {
         }
         let list = self.lists.remove(at);
         let mut whole = list.context;
-        whole.links = list.parts.into_iter().flatten().flatten().collect();
+        for (links, images) in list.parts.into_iter().flatten() {
+            whole.links.extend(links);
+            whole.page_images.extend(images);
+        }
         tracing::info!(
             "browser integration: a page's {} links came in {count} parts",
             whole.links.len()
@@ -185,11 +194,36 @@ mod tests {
             .map(|k| format!("https://x.test/a/{k}.zip"))
             .collect();
         assert_eq!(cmd.links, want);
+        assert!(cmd.page_images.is_empty());
         assert_eq!(cmd.links_part, None, "the app sees one list");
         assert_eq!(cmd.referer.as_deref(), Some("https://x.test/"));
         assert_eq!(cmd.cookies.as_deref(), Some("page=x.test"));
         assert_eq!(cmd.user_agent.as_deref(), Some("UA"));
         assert!(parts.lists.is_empty(), "nothing kept after");
+    }
+
+    /// #1781: each part's pictures located on the page, whichever order the parts come in, are
+    /// the whole list's, in the list's order.
+    #[test]
+    fn a_pages_pictures_come_with_their_parts() {
+        let mut parts = LinkParts::default();
+        let now = Instant::now();
+        let marked = |index, n| {
+            let mut p = part("i", index, 2, "x.test", n);
+            p.page_images = p.links.iter().skip(1).cloned().collect();
+            p
+        };
+        parts.add(marked(1, 2), now);
+        let cmd = whole(parts.add(marked(0, 3), now));
+        assert_eq!(cmd.links.len(), 5);
+        assert_eq!(
+            cmd.page_images,
+            [
+                "https://x.test/i/0-1.zip",
+                "https://x.test/i/0-2.zip",
+                "https://x.test/i/1-1.zip"
+            ]
+        );
     }
 
     /// Two pages' menus clicked one after the other, their parts interleaved: two lists, each

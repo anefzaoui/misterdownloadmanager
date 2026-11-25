@@ -3108,13 +3108,17 @@ function pageLinks(selectedOnly) {
 
 // ---- a page's images (#1781) ---------------------------------------------------------------
 
-// The pictures in the page, collected in it when the popup's "Find images" is clicked (never
-// otherwise): each <img>'s largest size its srcset and its <picture>'s sources list, else the
-// one it shows, and apart the largest a lazy loader's data-srcset / data-src names; then the
-// links that go straight to a picture. Each address once, absolute, http(s) only (no data: or
-// blob:), in the page's order, with its width and height in pixels as far as the page tells them
-// (0: it doesn't) and the type its <source> gives. Self-contained: it runs in the page.
-function pageImages() {
+// The pictures in the page, collected in it when the popup's "Find images" or the right-click
+// menu's "Download all links" is clicked (never otherwise): each <img>'s largest size its srcset
+// and its <picture>'s sources list, else the one it shows, and apart the largest a lazy loader's
+// data-srcset / data-src names; then the elements' CSS background pictures; then the links that
+// go straight to a picture (`link: true` when it is only that). Each address once, absolute,
+// http(s) only (no data: or blob:), in the page's order, with its width and height in pixels as
+// far as the page tells them (0: it doesn't) and the type its <source> or image-set() gives.
+// Self-contained: it runs in the page. `measure`: the background pictures' sizes looked up (the
+// popup's filters need them; the menu, which sends every picture, doesn't); then the answer is a
+// promise, else the list itself.
+function pageImages(measure = true) {
   const web = (u) => /^https?:/i.test(u);
   const abs = (u) => {
     try {
@@ -3188,6 +3192,146 @@ function pageImages() {
       add(best.url, w, w && ratio && (own || abs(best.url) === cur) ? Math.round(w * ratio) : 0, best.type);
     }
   }
+  // CSS background pictures: what each element's computed background-image, and the background
+  // shorthand, name. A computed value's addresses are already absolute; quotes and escapes are
+  // read as CSS writes them.
+  // The index of the ")" closing the "(" at i (the end, if none).
+  const close = (s, i) => {
+    let depth = 0;
+    for (let q = ""; i < s.length; i++) {
+      const c = s[i];
+      if (q) {
+        if (c === "\\") i++;
+        else if (c === q) q = "";
+      } else if (c === '"' || c === "'") q = c;
+      else if (c === "(") depth++;
+      else if (c === ")" && --depth === 0) return i;
+    }
+    return s.length - 1;
+  };
+  // A list's items: split at the commas outside parentheses and quotes.
+  const items = (s) => {
+    const out = [];
+    let from = 0;
+    for (let i = 0, q = ""; i < s.length; i++) {
+      const c = s[i];
+      if (q) {
+        if (c === "\\") i++;
+        else if (c === q) q = "";
+      } else if (c === '"' || c === "'") q = c;
+      else if (c === "(") i = close(s, i);
+      else if (c === ",") {
+        out.push(s.slice(from, i));
+        from = i + 1;
+      }
+    }
+    out.push(s.slice(from));
+    return out.map((x) => x.trim()).filter(Boolean);
+  };
+  // The address of the url() or the string `t` starts with, and the text after it; null: neither
+  // (a gradient).
+  const lead = (t) => {
+    const fn = /^url\(\s*/i.exec(t);
+    let i = fn ? fn[0].length : 0;
+    let v = "";
+    const q = t[i];
+    if (q === '"' || q === "'") {
+      for (i++; i < t.length && t[i] !== q; i++) {
+        if (t[i] !== "\\") {
+          v += t[i];
+          continue;
+        }
+        // An escape: up to six hex digits (and one space after them) are a character's code.
+        const hex = /^[0-9a-f]{1,6}[ \t\n]?/i.exec(t.slice(i + 1));
+        if (!hex) v += t[++i] || "";
+        else {
+          const cp = parseInt(hex[0], 16);
+          v += cp > 0 && cp <= 0x10ffff && (cp < 0xd800 || cp > 0xdfff) ? String.fromCodePoint(cp) : "�";
+          i += hex[0].length;
+        }
+      }
+      if (i >= t.length) return null;
+      i++;
+      if (fn) {
+        const end = /^\s*\)/.exec(t.slice(i));
+        if (!end) return null;
+        i += end[0].length;
+      }
+    } else if (fn) {
+      const end = t.indexOf(")", i);
+      if (end < 0) return null;
+      v = t.slice(i, end).trim();
+      i = end + 1;
+    } else return null;
+    return [v, t.slice(i).trim()];
+  };
+  // The pictures a background value names, layer by layer: each url(), and of an image-set() its
+  // entry of the highest resolution (2x over 1x; dppx, dpi and dpcm read as x) with the type()
+  // it gives. A gradient, a colour or anything else is no picture.
+  const FN = /(url|(?:-webkit-)?image-set)\(/iy;
+  const cssImages = (value) => {
+    const s = String(value || "");
+    const out = [];
+    for (let i = 0; i < s.length; i++) {
+      const c = s[i];
+      if (c === '"' || c === "'") {
+        for (i++; i < s.length && s[i] !== c; i++) if (s[i] === "\\") i++;
+        continue;
+      }
+      FN.lastIndex = i;
+      const fn = (i === 0 || !/[\w-]/.test(s[i - 1])) && FN.exec(s);
+      if (fn) {
+        const end = close(s, i + fn[0].length - 1);
+        if (fn[1].toLowerCase() === "url") {
+          const u = lead(s.slice(i, end + 1));
+          if (u) out.push({ url: u[0], type: "" });
+        } else {
+          let best = null;
+          for (const option of items(s.slice(i + fn[0].length, end))) {
+            const u = lead(option);
+            if (!u) continue;
+            const type = (/type\(\s*(["'])(.*?)\1\s*\)/i.exec(u[1]) || [])[2] || "";
+            const r = /(?:^|\s)(\d*\.?\d+)(x|dppx|dpi|dpcm)(?=\s|$)/i.exec(u[1].replace(/type\([^)]*\)/gi, " "));
+            const n = r ? Number(r[1]) : 1;
+            const unit = r ? r[2].toLowerCase() : "x";
+            const x = unit === "dpi" ? n / 96 : unit === "dpcm" ? (n * 2.54) / 96 : n;
+            if (!best || x > best.x) best = { url: u[0], type, x };
+          }
+          if (best) out.push({ url: best.url, type: best.type });
+        }
+        i = end;
+      } else if (c === "(") i = close(s, i);
+    }
+    return out;
+  };
+  // Looked at: the page's first BG_MAX elements, in its order. A page with more (a feed scrolled
+  // far, a huge table) has the background pictures of the rest left out, so the click stays
+  // quick; its <img> and its links are still all found.
+  const BG_MAX = 10000;
+  // Each background picture's largest box on the page (width, height), for its size below.
+  const boxes = new Map();
+  const elements = document.querySelectorAll("*");
+  const scanned = Math.min(elements.length, BG_MAX);
+  for (let n = 0; n < scanned; n++) {
+    const el = elements[n];
+    let style;
+    try {
+      style = getComputedStyle(el);
+    } catch {
+      continue;
+    }
+    const named = [...cssImages(style.backgroundImage), ...cssImages(style.background)];
+    if (!named.length) continue;
+    const r = el.getBoundingClientRect();
+    const box = [Math.round(r.width) || 0, Math.round(r.height) || 0];
+    for (const { url, type } of named) {
+      const u = abs(url);
+      if (!u || !web(u)) continue;
+      add(u, 0, 0, type);
+      const was = boxes.get(u);
+      if (!was || box[0] * box[1] > was[0] * was[1]) boxes.set(u, box);
+    }
+  }
   // Links straight to a picture (a gallery's thumbnail linking to its full size): by the
   // address's file extension, their size unknown.
   const IMAGE = /\.(jpe?g|jfif|pjpeg|png|apng|gif|webp|avif|bmp|svg|tiff?|ico|heic|heif|jxl)$/i;
@@ -3198,9 +3342,40 @@ function pageImages() {
     } catch {
       continue;
     }
-    if (IMAGE.test(path)) add(a.href, 0, 0, "");
+    if (!IMAGE.test(path)) continue;
+    const u = abs(a.href);
+    if (u && web(u) && !found.has(u)) found.set(u, { url: u, w: 0, h: 0, type: "", link: true });
   }
-  return [...found.values()];
+  // A background picture's size: the file's own, where the page already loaded it (from the
+  // browser's cache: never a request of its own, so neither a picture the page hasn't shown,
+  // such as an image-set()'s 2x on a 1x screen, nor one under display: none, is fetched for
+  // it); else the box of the element that shows it; else unknown (0), as for a picture the page
+  // gives no size for. A size already known (an <img> of the same address) stays.
+  const sized = (u, wh) => {
+    const was = found.get(u);
+    if (was && !was.w && wh && wh[0] > 0 && wh[1] > 0) Object.assign(was, { w: wh[0], h: wh[1] });
+  };
+  const done = () => {
+    for (const [u, box] of boxes) sized(u, box);
+    return [...found.values()];
+  };
+  let loaded = new Set();
+  try {
+    loaded = new Set(performance.getEntriesByType("resource").map((e) => abs(e.name)));
+  } catch {
+    // No resource timing here: every size is the element's box.
+  }
+  // At most 200 looked up, for at most 1.5 s together.
+  const look = measure ? [...boxes.keys()].filter((u) => loaded.has(u) && !found.get(u).w).slice(0, 200) : [];
+  if (!look.length) return done();
+  const natural = (u) =>
+    new Promise((resolve) => {
+      const im = new Image();
+      im.addEventListener("load", () => resolve(im.naturalWidth > 0 ? [im.naturalWidth, im.naturalHeight] : null));
+      im.addEventListener("error", () => resolve(null));
+      im.src = u;
+    });
+  return Promise.race([Promise.all(look.map(async (u) => sized(u, await natural(u)))), new Promise((r) => setTimeout(r, 1500))]).then(done);
 }
 
 // A picture's type as the popup's filters name it (#1781): by its address's file extension, else a
@@ -3228,12 +3403,14 @@ function imageType(url, mime) {
   return "other";
 }
 
-// The images of the tab's page and its frames (pageImages in each), each address once, typed.
+// The images of the tab's page and its frames (pageImages in each), each address once, typed: the
+// one finder of the popup's Find images and the menu's Download all links (`measure`: false, the
+// background pictures' sizes not looked up). `link: true`: only a link to it, in every frame.
 // `readable: false`: the browser lets no extension read the page (its own pages, a store).
-async function tabImages(tabId) {
+async function tabImages(tabId, measure = true) {
   let frames;
   try {
-    frames = await ext.scripting.executeScript({ target: { tabId, allFrames: true }, func: pageImages });
+    frames = await ext.scripting.executeScript({ target: { tabId, allFrames: true }, func: pageImages, args: [measure] });
   } catch {
     return { readable: false, images: [] };
   }
@@ -3244,8 +3421,11 @@ async function tabImages(tabId) {
       const w = Number(i.w) > 0 ? Math.round(i.w) : 0;
       const h = w && Number(i.h) > 0 ? Math.round(i.h) : 0;
       const was = seen.get(i.url);
-      if (!was) seen.set(i.url, { url: i.url, w, h, type: imageType(i.url, i.type) });
-      else if (!was.w && w) Object.assign(was, { w, h });
+      if (!was) seen.set(i.url, { url: i.url, w, h, type: imageType(i.url, i.type), ...(i.link === true ? { link: true } : {}) });
+      else {
+        if (!was.w && w) Object.assign(was, { w, h });
+        if (i.link !== true) delete was.link;
+      }
     }
   }
   return { readable: true, images: [...seen.values()] };
@@ -3302,15 +3482,17 @@ function wireSize(value) {
 }
 
 // `links` cut into parts, in order, each of whose messages (`base` with its links) is at most
-// `limit` bytes (wireSize). `left`: the links too long to go even alone, left out.
-function linkParts(base, links, limit = MESSAGE_MAX) {
-  const empty = wireSize({ ...base, links: [] });
+// `limit` bytes (wireSize). `left`: the links too long to go even alone, left out. `marked`: the
+// links that are pictures located on the page (#1781), each written again in its part's
+// `pageImages`, so measured twice.
+function linkParts(base, links, limit = MESSAGE_MAX, marked = null) {
+  const empty = wireSize({ ...base, links: [], ...(marked && marked.size ? { pageImages: [] } : {}) });
   const parts = [];
   const left = [];
   let part = [];
   let size = empty;
   for (const link of links) {
-    const own = wireSize(link);
+    const own = wireSize(link) + (marked && marked.has(link) ? wireSize(link) + 1 : 0);
     if (empty + own > limit) {
       left.push(link);
       continue;
@@ -3332,19 +3514,25 @@ function linkParts(base, links, limit = MESSAGE_MAX) {
 // message when they fit, as before; else in parts, one after the other, each answered before the
 // next goes. An answer that isn't ok stops it (the app drops a list it didn't get whole) and is
 // the answer. `left`: how many links were too long to send at all (#too-large says so).
+// `message.pageImages` (#1781): those of the links that are pictures located on the page; each
+// part names its own.
 async function sendLinks(message) {
   const sent = await stamped(message);
   if (wireSize(sent) <= MESSAGE_MAX) return native(message);
   const batch = globalThis.crypto && crypto.randomUUID ? crypto.randomUUID() : `${Date.now()}-${Math.random().toString(36).slice(2)}`;
+  const marked = new Set(message.pageImages || []);
+  const base = { ...sent };
+  delete base.pageImages;
+  const own = (links) => (marked.size ? { pageImages: links.filter((l) => marked.has(l)) } : {});
   // Measured with the widest place a part can have.
-  const { parts, left } = linkParts({ ...sent, linksPart: { batch, index: PARTS_MAX, count: PARTS_MAX } }, message.links);
+  const { parts, left } = linkParts({ ...base, linksPart: { batch, index: PARTS_MAX, count: PARTS_MAX } }, message.links, MESSAGE_MAX, marked);
   if (!parts.length || parts.length > PARTS_MAX) {
     // The page's cookies alone fill a message, or the list is beyond any page's.
     await noteStatus("too-large");
     return { ok: false, why: "too-large", error: `${message.links.length} links in ${parts.length} parts` };
   }
   for (const [index, links] of parts.entries()) {
-    const reply = await native({ ...message, links, linksPart: { batch, index, count: parts.length } });
+    const reply = await native({ ...message, links, ...own(links), linksPart: { batch, index, count: parts.length } });
     if (!reply.ok) return reply;
   }
   return { ok: true, parts: parts.length, left: left.length };
@@ -3417,8 +3605,18 @@ async function menuClicked(info, tab) {
     } catch {
       // A page extensions may not read (the browser's own, a store).
     }
-    if (!links.length) return;
-    const reply = await sendLinks({ links, referrer: info.pageUrl, cookies: await cookieHeader(info.pageUrl, { incognito, storeId }), private: incognito });
+    // Download all links (#1781): the pictures located on the page and its frames too, found as
+    // the popup's Find images finds them (no size or type left out), after the links and marked
+    // (`pageImages`): Link grabber hides them until its "Hide images located on this web page"
+    // is unticked. A picture the page links to is a link and stays one. An older app (or host)
+    // lists them as links.
+    let images = [];
+    if (info.menuItemId === "mdm-all") {
+      const listed = new Set(links);
+      images = (await tabImages(tab.id, false)).images.filter((i) => !i.link && !listed.has(i.url)).map((i) => i.url);
+    }
+    if (!links.length && !images.length) return;
+    const reply = await sendLinks({ links: [...links, ...images], ...(images.length ? { pageImages: images } : {}), referrer: info.pageUrl, cookies: await cookieHeader(info.pageUrl, { incognito, storeId }), private: incognito });
     // Sent, but a link longer than a whole message was left out: the help page says so.
     if (!reply.ok || reply.left) explain(reply.ok ? "too-large" : reply.why);
   }

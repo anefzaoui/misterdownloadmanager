@@ -230,6 +230,8 @@ Right-click a link, a video, a sound or a picture and choose **Download with Mis
 
 Select part of a page and right-click it for **Download selected links with Mister Download Manager**, or right-click the page for **Download all links with Mister Download Manager**: the links open in **[Link grabber](link-grabber.md)**, sorted into packages, where you tick the ones you want. A page with tens of thousands of links works too: the extension sends a long list in parts, and Link grabber shows it once they are all in.
 
+**Download all links** also sends the pictures located on the page and in its frames, found as **[Find images](#images-on-this-page)** finds them, none left out by size or type. Link grabber hides them while its **Hide images located on this web page** is ticked, as it is when it opens: untick it to see the pictures and tick the ones you want. A link to a picture is a link, and shows either way. **Download selected links** sends links only.
+
 If MDM can't be reached when you choose one of these, the help page opens at the section that explains why.
 
 ## The download button over videos

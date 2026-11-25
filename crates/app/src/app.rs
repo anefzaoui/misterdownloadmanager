@@ -3984,9 +3984,12 @@ impl App {
         } else {
             cmd
         };
-        // The browser's right-click menu: a page's (or a selection's) links, to tick in Import.
+        // The browser's right-click menu: a page's (or a selection's) links, to tick in Import;
+        // with "Download all links", the pictures located on the page too (#1781, marked).
         if !cmd.links.is_empty() {
             self.show_for_dialog(ctx);
+            let images: std::collections::HashSet<&str> =
+                cmd.page_images.iter().map(String::as_str).collect();
             let found = cmd
                 .links
                 .iter()
@@ -3996,9 +3999,17 @@ impl App {
                     cookies: page_data_for(url, cmd.referer.as_deref(), cmd.cookies.as_deref()),
                     user_agent: cmd.user_agent.clone(),
                     private: cmd.private,
+                    page_image: images.contains(url.as_str()),
                     ..Default::default()
                 })
-                .collect();
+                .collect::<Vec<_>>();
+            if !images.is_empty() {
+                tracing::info!(
+                    "browser integration: a page's {} links, {} of them pictures located on it",
+                    found.len(),
+                    found.iter().filter(|f| f.page_image).count()
+                );
+            }
             // i18n: in Import, where the addresses came from: a page in the browser
             let source = crate::i18n::t("Links from the browser").to_owned();
             self.show_import(found, source);
