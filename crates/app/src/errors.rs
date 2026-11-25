@@ -763,9 +763,15 @@ mod tests {
         assert!(tools_advice(&gone, "ffmpeg").unwrap().contains("ffmpeg"));
         for (why, says) in [
             (L::Unsigned, "isn't signed by MDM's key"),
-            (L::Older { got: 4, seen: 5 }, "is older than one already used"),
+            (
+                L::Older { got: 4, seen: 5 },
+                "is older than one already used",
+            ),
             (L::Unreadable("x".into()), "can't be read (x)"),
-            (L::NoBuild("windows x86".into()), "has none for this computer"),
+            (
+                L::NoBuild("windows x86".into()),
+                "has none for this computer",
+            ),
             (L::NotListed, "the downloaded ffmpeg isn't the build"),
         ] {
             let e = list(why);
