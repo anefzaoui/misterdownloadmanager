@@ -792,6 +792,10 @@ GET|HEAD /gen/{size}[/{name}]?seed=N&<file params>&<faults>   size: 12345, 64K, 
                    length and tracks, a mdat's header over the rest), for a reader of its header
                    (#1092); with tracks=av|v|a (default av: a picture and a sound) and height=PX
                    (the picture's, default 360). Nothing a player could decode
+    endless=1      a stream that never ends (an internet radio, a camera feed, #1780): 200,
+                   chunked, no Content-Length, Accept-Ranges, ETag or Last-Modified, a Range
+                   ignored, the path's size too; it sends until the client stops reading (pace
+                   it with rate=, start it as one with magic=mp3)
   faults (also server-wide with --faults; per-URL values override):
     rate=SIZE slow_every=N slow_rate=SIZE max_conns=N drop_after=SIZE drop_every=N
     fail_every=N fail_first=N no_range=1 no_range_every=N html=1 etag_change_every=N
@@ -1506,6 +1510,9 @@ struct FileQuery {
     /// `movie=MS`, `tracks=av|v|a`, `height=PX` (#1092): it starts as an MP4 movie of that
     /// length does ([`content::movie_head`], made once the file's size is known).
     movie: Option<(u32, bool, bool, u32)>,
+    /// `endless=1` (#1780): a stream that never ends (an internet radio, a camera feed): no
+    /// Content-Length, no ranges, the path's size ignored.
+    endless: bool,
     faults: Faults,
 }
 
@@ -1805,6 +1812,7 @@ pub(crate) async fn serve(
     let mut range = None;
     // A syntactically invalid Range is ignored (RFC 9110 §14.2), as is a multi-range request.
     if f.no_range != Some(true)
+        && !q.endless
         && !every(n, f.no_range_every)
         && if_range_ok
         && let Some(r) = entry.range.as_deref()
@@ -1827,6 +1835,8 @@ pub(crate) async fn serve(
     }
     let (start, end, status) = match range {
         Some((s, e)) => (s, e, StatusCode::PARTIAL_CONTENT),
+        // An endless stream (#1780) goes on until the client stops reading.
+        None if q.endless => (0, u64::MAX, StatusCode::OK),
         None => (0, size, StatusCode::OK),
     };
     entry.body_start = start;
@@ -1843,13 +1853,18 @@ pub(crate) async fn serve(
     if let Some(t) = content_type {
         builder = builder.header(header::CONTENT_TYPE, t);
     }
-    let mut builder = builder
-        .header(header::CONTENT_LENGTH, end - start)
-        .header(header::LAST_MODIFIED, &last_modified);
-    if f.no_range != Some(true) {
+    // An endless stream (#1780) says no length, takes no ranges and has no version: chunked, as
+    // an internet radio's server sends it.
+    let mut builder = builder;
+    if !q.endless {
+        builder = builder
+            .header(header::CONTENT_LENGTH, end - start)
+            .header(header::LAST_MODIFIED, &last_modified);
+    }
+    if f.no_range != Some(true) && !q.endless {
         builder = builder.header(header::ACCEPT_RANGES, "bytes");
     }
-    if let Some(etag) = &etag {
+    if let Some(etag) = etag.as_ref().filter(|_| !q.endless) {
         builder = builder.header(header::ETAG, etag);
     }
     // The whole file's digest, whatever the range and the copy: the file's version (a stand-in
@@ -2076,6 +2091,7 @@ fn split_query(q: &str) -> Result<FileQuery, String> {
         content_type: None,
         magic: None,
         movie: None,
+        endless: false,
         faults: Faults::default(),
     };
     let name = |k: &str, v: String| {
@@ -2126,6 +2142,9 @@ fn split_query(q: &str) -> Result<FileQuery, String> {
                     }
                 }
                 out.movie = Some((ms, video, audio, height));
+            }
+            "endless" => {
+                out.endless = parse_flag(&v).ok_or_else(|| format!("invalid endless `{v}`\n"))?
             }
             "cd" => out.cd = name(&k, v)?,
             "cdstar" => out.cdstar = name(&k, v)?,
@@ -2302,6 +2321,12 @@ mod tests {
         assert!(content_disposition(&split_query("inline=bare").unwrap(), Some("a.pdf")).is_none());
         assert!(split_query("inline=maybe").is_err());
         assert!(split_query("cd=a%0Ab").is_err());
+        // #1780: an endless stream is a file param, not a fault.
+        let q = split_query("endless=1&rate=64K").unwrap();
+        assert!(q.endless);
+        assert_eq!(q.faults.rate, Some(64 << 10));
+        assert!(!split_query("").unwrap().endless);
+        assert!(split_query("endless=maybe").is_err());
         // #1427: a value as a server wrote it, sent as given.
         let raw = "attachment; filename=\"My%20Report.pdf\"";
         let q = split_query(&format!(

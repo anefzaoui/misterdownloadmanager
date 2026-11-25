@@ -569,6 +569,11 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ **Stop and keep** for a download that never ends (an internet radio, a camera feed: no size,
+  no resume): the progress window's pause button, Stop, Stop All, a queue's stop and the phone
+  page's pause end it and keep what arrived as the finished file; Cancel keeps nothing, and every
+  other download pauses as before
+  ([#1780](https://github.com/anefzaoui/misterdownloadmanager/issues/1780))
 - ✅ The browser add-on's video button before the video plays: on a site yt-dlp doesn't read, it
   looks up the stream address the page wrote for its player (master playlist first, else the best
   quality named), only addresses the page names, on a page with one video

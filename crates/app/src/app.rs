@@ -4730,8 +4730,10 @@ impl App {
     /// Stop, and not start again by itself for a network adapter, a speed limit or the
     /// download limit (#1164): the user's Stop, Stop All and a queue's stop. A live stream being
     /// recorded is stopped and saved (`Job::save`): what it recorded is kept as a video, the
-    /// download then done, as one that ended by itself. Cancel (`stop`) and MDM's own stops
-    /// kill it as before (a later start sets its recording aside, never over it).
+    /// download then done, as one that ended by itself. An endless stream (no length, no resume:
+    /// an internet radio, a camera feed, #1780) is stopped and kept the same way: what arrived
+    /// is its finished file. Cancel (`stop`) and MDM's own stops kill them as before (a later
+    /// start sets a recording aside, never over it; an endless stream starts over).
     fn halt(&mut self, id: u64) {
         // A video waiting for its place doesn't start.
         self.video_places.unwait(id);
@@ -4739,8 +4741,10 @@ impl App {
         // Every other download stops here as `stop` stops it.
         if let Some(l) = self.item(id).and_then(|i| i.live.as_ref()) {
             let before = l.dl.live_state();
-            l.dl.save();
-            if halt_saved(before, l.dl.live_state()) {
+            // A kept stream whose file then can't be named is held as a recording is: a retry
+            // would start it over in place of what arrived.
+            let kept = l.dl.save();
+            if kept || halt_saved(before, l.dl.live_state()) {
                 self.saved_by_hand.insert(id);
             }
         }

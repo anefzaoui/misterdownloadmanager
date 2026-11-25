@@ -89,6 +89,8 @@ pub struct Row {
     pub live: Option<LiveState>,
     /// A live stream: its button may read "Stop and save" (`progress::pause_labels`).
     pub live_stream: bool,
+    /// An endless stream (#1780): its button reads "Stop and keep" (`Item::endless`).
+    pub endless: bool,
 }
 
 impl Panel {
@@ -273,6 +275,7 @@ fn row(item: &Item) -> Row {
         live,
         live_stream: live.is_some()
             || matches!(item.video_helper(), Some(mdm_tools::streams::Helper::Live)),
+        endless: item.endless(),
     }
 }
 
@@ -303,7 +306,8 @@ fn draw(ui: &mut egui::Ui, p: &egui::Painter, o: Pos2, rows: &[Row], events: &mu
     // Pause and Cancel as wide as their labels in this language: Pause laid out for the widest
     // of the labels it can show, so it keeps its size as its label changes.
     let live_stream = rows.iter().any(|r| r.live_stream);
-    let pause_for = winui::widest_label(p, crate::progress::pause_labels(live_stream));
+    let endless = rows.iter().any(|r| r.endless);
+    let pause_for = winui::widest_label(p, crate::progress::pause_labels(live_stream, endless));
     let buttons = winui::button_row(
         p,
         &[
@@ -355,7 +359,7 @@ fn draw(ui: &mut egui::Ui, p: &egui::Painter, o: Pos2, rows: &[Row], events: &mu
 }
 
 /// One download's row, from `y` down: its name, its bar with the progress window's Pause (or
-/// Resume, Stop and save) and Cancel beside it at `buttons` (English x, width), and how far it is
+/// Resume, Stop and save, Stop and keep) and Cancel beside it at `buttons` (English x, width), and how far it is
 /// under them; read to screen readers as one line.
 fn draw_row(
     ui: &mut egui::Ui,
@@ -381,7 +385,7 @@ fn draw_row(
     );
     let bar = r(o, 12.0, y + 24.0, pause_x - 12.0 - 10.0, 14.0);
     winui::meter(p, bar, row.fraction.unwrap_or(0.0) as f32);
-    let (label, kind) = crate::progress::pause_button(row.status, row.live);
+    let (label, kind) = crate::progress::pause_button(row.status, row.live, row.endless);
     let event = if row.status == Status::Downloading {
         Event::Pause(row.id)
     } else {
@@ -521,12 +525,12 @@ mod tests {
         assert_eq!(known.fraction, Some(0.25));
         assert_eq!(known.line, "1.000 MB of 4.000 MB");
         assert_eq!(known.status, Status::Stopped);
-        assert!(known.live.is_none() && !known.live_stream);
+        assert!(known.live.is_none() && !known.live_stream && !known.endless);
         let unknown = row(&item(2, None, 3 * 1024, Status::Stopped));
         assert_eq!(unknown.fraction, None);
         assert_eq!(unknown.line, "3.000 KB");
         assert_eq!(
-            crate::progress::pause_button(known.status, known.live).0,
+            crate::progress::pause_button(known.status, known.live, known.endless).0,
             "Resume"
         );
     }
