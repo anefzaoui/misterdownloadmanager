@@ -906,6 +906,9 @@ GET /page?<any of>
                    #icon 48x48; #photo1 (srcset 400w, 1600w); a <picture> with a WebP source
                    (600w, 1200w); photo1 again and linked; #thumb3 linking to photo3.png; #photo4
                    (1x, 2x); #photo5's data-src under a data: placeholder; a data: picture, a PDF link;
+                   CSS backgrounds, never sent: #bg1 over a gradient, #bg2 an image-set (1x,
+                   2x), #bg3 a gradient, #bg4 photo1 again, #bg5 a data: picture, #bg6 under
+                   display: none;
                    with seed=N, every picture's address has seed=N (the same pictures at new addresses)
     video=PATH|1   <video id=video controls> 640x360 (1: /gen/1M/clip.mp4?inline=1, also shown
                    when nothing else is asked for, or with muted_loop, iframe or shadow)

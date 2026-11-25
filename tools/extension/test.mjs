@@ -205,12 +205,13 @@ function fakeApi({
       onAuthRequired: event("authRequired"),
     },
     scripting: {
-      executeScript: async ({ func }) => {
+      executeScript: async ({ func, target, args }) => {
         if (func && func.name === "playingAt") {
           if (playing === undefined) throw new Error("Cannot access contents of the page");
           return [{ result: playing }];
         }
         if (func && func.name === "pageImages") {
+          calls.push(["pageImages", target, args]);
           if (!pageImages) throw new Error("Cannot access contents of the page");
           return pageImages.map((result, frameId) => ({ frameId, result }));
         }
@@ -5880,7 +5881,7 @@ const until = async (what, ms, check) => {
     { url: "https://cdn.test/img?id=7&fm=webp", w: 640, h: 480, type: "" },
     { url: abs("p6-tiny.jpg"), w: 40, h: 30, type: "" },
     { url: abs("p6-2000.jpg"), w: 2000, h: 0, type: "" },
-    { url: abs("p3.png"), w: 0, h: 0, type: "" },
+    { url: abs("p3.png"), w: 0, h: 0, type: "", link: true },
   ]);
   // Typed by extension, else the query's format, else its <source>'s type.
   const typed = [
@@ -5896,7 +5897,13 @@ const until = async (what, ms, check) => {
     ["https://x.test/a.raw", "", "other"],
   ];
   for (const [u, mime, want] of typed) assert.equal(ctx.imageType(u, mime), want, u);
-  ok("#1781 Find images: the largest size listed, lazy ones apart, links to pictures, each once, no data:");
+  // Download selected links: the pictures and links in the selection only.
+  const inSelection = new Set([imgs[1], imgs[6], anchors[1]]);
+  ctx.getSelection = () => ({ rangeCount: 1, containsNode: (n, partly) => partly === true && inSelection.has(n) });
+  assert.deepEqual(JSON.parse(JSON.stringify(ctx.pageImages(true))).map((i) => i.url), [abs("p1.jpg"), abs("p5.avif"), abs("p3.png")]);
+  ctx.getSelection = () => ({ rangeCount: 0, containsNode: () => true });
+  assert.deepEqual(JSON.parse(JSON.stringify(ctx.pageImages(true))), [], "no selection, none");
+  ok("#1781 Find images: the largest size listed, lazy ones apart, links to pictures, each once, no data:; a selection's");
 }
 {
   const page = "https://pics.test/g/";
@@ -5943,6 +5950,67 @@ const until = async (what, ms, check) => {
   const failed = await popupAsk(f.listeners, { type: "images-send", tab: 9, links: [`${page}p1.jpg`] });
   assert.deepEqual([failed.ok, failed.why], [false, "not-running"]);
   assert.ok(f.calls.some((c) => c[0] === "openTab" && c[1].endsWith("#not-running")));
+  // The popup's look-up: in every frame, the whole page.
+  f = run({ pageImages: frames });
+  await settle();
+  await popupAsk(f.listeners, { type: "images", tab: 9 });
+  assert.deepEqual(f.calls.filter((c) => c[0] === "pageImages").map((c) => c.slice(1)), [[{ tabId: 9, allFrames: true }, [false]]]);
+
+  // The right-click menu's Download all links: the page's links, then the pictures located on
+  // the page and its frames (the same finder, none left out), marked as such (pageImages); a
+  // picture the page links to stays a link (also when the link names it with a #fragment), and
+  // isn't sent twice. Download selected links: the selection's, in the frame clicked.
+  const shown = [
+    [
+      { url: `${page}p1.jpg`, w: 1600, h: 1200, type: "" },
+      { url: `${page}full.png`, w: 0, h: 0, type: "", link: true },
+    ],
+    // A frame's: the banner shown there; its link to a picture is a link (in that frame only).
+    [{ url: "https://ads.test/banner.gif", w: 728, h: 90, type: "" }, { url: "https://ads.test/big.jpg", w: 0, h: 0, type: "", link: true }],
+  ];
+  f = run({ pageImages: shown, pageLinks: [`${page}a.zip`, `${page}full.png`, "https://ads.test/banner.gif#ad"] });
+  await settle();
+  await f.listeners.menu({ menuItemId: "mdm-all", pageUrl: page, frameId: 0 }, { id: 9, incognito: false });
+  await settle();
+  assert.deepEqual(f.calls.filter((c) => c[0] === "pageImages").map((c) => c.slice(1)), [[{ tabId: 9, allFrames: true }, [false]]]);
+  const pageSent = natives(f.calls).filter((m) => m.links);
+  assert.equal(pageSent.length, 1);
+  assert.deepEqual(pageSent[0].links, [`${page}a.zip`, `${page}full.png`, "https://ads.test/banner.gif#ad", `${page}p1.jpg`]);
+  assert.deepEqual(pageSent[0].pageImages, [`${page}p1.jpg`]);
+  assert.deepEqual([pageSent[0].referrer, pageSent[0].private, pageSent[0].cookies], [page, false, "sid=1"]);
+  f = run({ pageImages: [shown[0]], pageLinks: [`${page}a.zip`] });
+  await settle();
+  await f.listeners.menu({ menuItemId: "mdm-selected", pageUrl: page, frameId: 3 }, { id: 9, incognito: false });
+  await settle();
+  assert.deepEqual(f.calls.filter((c) => c[0] === "pageImages").map((c) => c.slice(1)), [[{ tabId: 9, frameIds: [3] }, [true]]], "the selection's, in its frame");
+  assert.deepEqual(natives(f.calls).filter((m) => m.links).map((m) => [m.links, m.pageImages]), [[[`${page}a.zip`, `${page}p1.jpg`], [`${page}p1.jpg`]]]);
+  // A page with no links but pictures: they go; a page no extension may read: its links alone,
+  // nothing marked.
+  f = run({ pageImages: shown, pageLinks: [] });
+  await settle();
+  await f.listeners.menu({ menuItemId: "mdm-all", pageUrl: page, frameId: 0 }, { id: 9, incognito: false });
+  await settle();
+  assert.deepEqual(natives(f.calls).filter((m) => m.links)[0].pageImages, [`${page}p1.jpg`, "https://ads.test/banner.gif"]);
+  f = run({ pageLinks: [`${page}a.zip`] });
+  await settle();
+  await f.listeners.menu({ menuItemId: "mdm-all", pageUrl: page, frameId: 0 }, { id: 9, incognito: false });
+  await settle();
+  assert.deepEqual(natives(f.calls).filter((m) => m.links).map((m) => [m.links, m.pageImages]), [[[`${page}a.zip`], undefined]]);
+  // Too long for one message: each part names its own pictures, measured with them.
+  const many = Array.from({ length: 30000 }, (_, k) => `${page}f/${String(k).padStart(6, "0")}-${"x".repeat(40)}.zip`);
+  const pics = Array.from({ length: 6000 }, (_, k) => ({ url: `${page}i/${String(k).padStart(6, "0")}-${"y".repeat(40)}.jpg`, w: 0, h: 0, type: "" }));
+  f = run({ pageImages: [pics], pageLinks: many });
+  await settle();
+  await f.listeners.menu({ menuItemId: "mdm-all", pageUrl: page, frameId: 0 }, { id: 9, incognito: false });
+  await settle();
+  const parts = natives(f.calls).filter((m) => m.links);
+  assert.ok(parts.length >= 2, `${parts.length} parts`);
+  assert.deepEqual(parts.flatMap((m) => m.links), [...many, ...pics.map((i) => i.url)]);
+  assert.deepEqual(parts.flatMap((m) => m.pageImages), pics.map((i) => i.url));
+  for (const m of parts) {
+    assert.ok(m.pageImages.every((u) => m.links.includes(u)), "a part's pictures are its own links");
+    assert.ok(JSON.stringify(m).length <= 1 << 20, `a part of ${JSON.stringify(m).length} bytes`);
+  }
 
   // The popup's filters (popup.js imagesKept): as wide and high as typed where the size is
   // known, a size the page doesn't give kept; the types switched off left out.
@@ -5962,7 +6030,7 @@ const until = async (what, ms, check) => {
   assert.equal(kept([], 500, 0), "bcde");
   assert.equal(kept(["JPEG", "AVIF"], 0, 0), "ae");
   assert.equal(kept(["PNG", "JPEG", "AVIF", "GIF"], 0, 0), "");
-  ok("#1781 Find images: the tab's frames together and typed; the kept ones to Link grabber with the page's context");
+  ok("#1781 Find images: the tab's frames together and typed; the kept ones to Link grabber with the page's context; Download all and selected links send the pictures too, marked");
 }
 assert.deepEqual(complaints, [], "nothing written to the console as an error or warning");
 

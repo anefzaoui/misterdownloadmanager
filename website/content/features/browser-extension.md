@@ -53,6 +53,10 @@ icons and thumbnails with a smallest width and height, and any type you don't wa
 WebP, GIF, AVIF...), then **Send to Link grabber**: MDM looks each one up for its name and size,
 and you tick there the ones to download. Nothing is looked for until you click.
 
+Right-click a page for **Download all links** (or a selection for **Download selected
+links**) and the pictures on it come along: Link grabber keeps them out of the way under **Hide
+images located on this web page**. Untick it to pick them with the page's links.
+
 ## Installed from the store, kept up to date
 
 Install MDM with its setup and keep **Set up browser integration** ticked. Then add the
