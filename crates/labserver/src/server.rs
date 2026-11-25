@@ -498,6 +498,10 @@ impl LabServer {
             )
             .route("/gh/assets/{*name}", get(crate::github::asset))
             .route("/gh/raw/{*name}", get(crate::github::raw))
+            // A fake Hugging Face and GitHub API, their repositories and releases (#1772, `hub`).
+            .route("/hub/hf/{*rest}", get(crate::hub::hf))
+            .route("/hub/ghapi/{*rest}", get(crate::hub::gh_api))
+            .route("/hub/gh/{*rest}", get(crate::hub::gh_file))
             // A file a server's program sends (#695, #800).
             .route("/stream.php", get(script))
             .route("/remote_control.php", get(script))

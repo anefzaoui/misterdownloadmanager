@@ -166,6 +166,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} window waits until you're back|{n} windows wait until you're back	{n} finestra attende il tuo ritorno|{n} finestre attendono il tuo ritorno
+#. count in the Link grabber window
+#. Link grabber's Source line: a Hugging Face repository's or GitHub release's ({package}: its name, "owner/name") files whose names would lead out of its folder (`../`, a drive, a device's name) are left out; {n} how many
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{package}: {n} file left out, its name would lead out of its folder|{package}: {n} files left out, their names would lead out of its folder	{package}: escluso {n} file il cui nome porterebbe fuori dalla cartella|{package}: esclusi {n} file i cui nomi porterebbero fuori dalla cartella
 #. count in cnl.rs
 #. Click'n'Load window: {site} is a web site's name such as "example.com"
 #. {site} = a web site's name such as "example.com"; {n} = a number (keep the braces as they are)
@@ -456,6 +461,10 @@
 #. text in remote.rs
 #. remote control page (on a phone): label of the box where a download's address or a magnet link is typed
 	Address or magnet link	Indirizzo o link magnet
+#. message or event log entry in the main window
+#. Link grabber: where the links came from: the Add URL window (an address typed or pasted there)
+#, machine
+	Address typed	Indirizzo digitato
 #. text in the Options window; text in preview.rs; text in a download's Properties window
 #. Options → DNS over HTTPS: label before the server's https:// address
 	Address:	Indirizzo:
@@ -3055,6 +3064,10 @@
 #. text in rssdlg.rs
 #. RSS feeds window: the selected feed hasn't been fetched yet
 	Not fetched yet	Non ancora recuperato
+#. text in the Link grabber window
+#. Link grabber, a link's status: a Hugging Face repository or folder, or a GitHub release or tag, that isn't there. The sentence is the cell's hover tip
+#, machine
+	Not found	Non trovato
 #. value in a column's filter list in the download list
 	Not in a queue	Non in coda
 #. text in helpers.rs
@@ -5017,6 +5030,10 @@
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	Try again in an hour, or download {name} yourself and choose it in {helpers} → {other}.	Riprova tra un'ora, oppure scarica {name} e scegli il file in {helpers} → {other}.
+#. text in the Link grabber window
+#. Link grabber, a link's status: the remedy from the failure's sentence, for a site (Hugging Face, GitHub) whose limit of requests without an account is reached. The sentence is the cell's hover tip
+#, machine
+	Try again later	Riprova più tardi
 #. text in errors.rs
 #. {name} = a file name (keep the braces as they are)
 #, machine
@@ -5688,7 +5705,7 @@
 #. said after Delete with files when some files stayed on the disk; {file} is the download's name; the files' paths follow it
 #, machine
 	{file}: these files stayed on the disk, because MDM didn't create them or another download uses them:	{file}: questi file sono rimasti sul disco, perché MDM non li ha creati o un altro download li usa:
-#. message or event log entry in the main window
+#. message or event log entry in the main window; text in the Link grabber window
 #. Link grabber's Source line, after where the links came from: a folder (an FTP folder, a web server's "Index of" page) held more files or subfolders than Link grabber lists; {folder} is its name, {n} how many of its files are listed (10,000)
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -5818,6 +5835,10 @@
 #. text in the Link grabber window
 #. {n} = a number (keep the braces as they are)
 	{n} of {total} selected	{n} di {total} selezionati
+#. text in the Link grabber window
+#. Link grabber's Source line: a gated Hugging Face repository ({package}: "owner/name"), whose files download only for an account that accepted its terms: where to give the account's access token (Options → Sites Logins, keep the names as the Options window shows them)
+#, machine
+	{package} is gated: accept its terms on Hugging Face, then add your access token in Options → Sites Logins (site huggingface.co, the token as its password)	{package} ha accesso limitato: accetta i suoi termini su Hugging Face, poi aggiungi il token di accesso in Opzioni → Accessi ai siti (sito huggingface.co, il token come password)
 #. text in the download list (sizes, speeds, status)
 #. a torrent's status while the user's debrid service downloads it, before MDM gets its files; {service} the service ("Real-Debrid"), {percent} how far it is ("45%")
 	{percent} at {service}	{percent} su {service}
@@ -5904,6 +5925,31 @@
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
 #, machine
 	{site} didn't give the file this time: try again in a moment	{site} non ha fornito il file questa volta: riprova tra un momento
+#. text in the Link grabber window
+#. Link grabber, the hover tip of a Hugging Face repository's or GitHub release's status; {site} is "Hugging Face" or "GitHub"
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+	{site} has no such repository, folder, release or tag, or it is private.	{site} non ha questo repository, cartella, release o tag, oppure è privato.
+#. text in the Link grabber window
+#. Link grabber, a Hugging Face repository's or GitHub release's status (the cell's hover tip): the site ({site}: "Hugging Face", "GitHub") lets only so many requests through from a computer without an account; {n} minutes to wait
+#. {site} = a web site's name such as "example.com"; {n} = a number (keep the braces as they are)
+#, machine
+	{site} lets only so many requests through without an account: try again in {n} minute.	{site} consente solo un certo numero di richieste senza un account: riprova tra {n} minuti.
+#. text in the Link grabber window
+#. Link grabber, a Hugging Face repository's or GitHub release's status (the cell's hover tip): the site ({site}) lets only so many requests through without an account, and didn't say for how long
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+	{site} lets only so many requests through without an account: try again later.	{site} consente solo un certo numero di richieste senza un account: riprova più tardi.
+#. text in the Link grabber window
+#. Link grabber, a Hugging Face repository's or GitHub release's status: the site ({site}) refused to list its files; {status} is the HTTP code (403)
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+	{site} refused to list its files ({status}).	{site} ha rifiutato di elencare i suoi file ({status}).
+#. text in the Link grabber window
+#. Link grabber, a Hugging Face repository's or GitHub release's status: the site's ({site}) answer wasn't what it sends (changed, cut, or not its own)
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+	{site}'s list of files couldn't be read.	Impossibile leggere l'elenco dei file di {site}.
 #. text in a download's Properties window
 #. {size} = a file size such as "4.2 MB"; {bytes} = a number of bytes (keep the braces as they are)
 	{size} ({bytes} Bytes)	{size} ({bytes} byte)

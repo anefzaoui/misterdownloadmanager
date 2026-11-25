@@ -129,7 +129,7 @@ More in [Connections and speed](connections-and-speed.md).
 ![Options on its Sites Logins page: a list of sites with their user names](images/help/options-logins.webp)
 *Sites Logins: a user name and password per site.*
 
-User names and passwords for sites that ask for them. **New** adds a row: the site (with a path if the login is only for part of it), the user name and the password. **Edit** and **Remove** change or delete the selected row. MDM uses the login for every download from that site. A login typed in **Add URL** (**Use authorization**) takes priority for that one download.
+User names and passwords for sites that ask for them. **New** adds a row: the site (with a path if the login is only for part of it), the user name and the password. **Edit** and **Remove** change or delete the selected row. MDM uses the login for every download from that site. A login typed in **Add URL** (**Use authorization**) takes priority for that one download. For `huggingface.co`, the password is your Hugging Face access token, for gated models and datasets: MDM sends it as a token, to Hugging Face only (the user name can be anything; see [Models, datasets and releases](link-grabber.md#models-datasets-and-releases)).
 
 The passwords (these, the proxy's and the debrid accounts') are kept in the system's keychain: Windows Credential Manager, the keyring on Linux (Secret Service: GNOME Keyring, KeePassXC and others) or the macOS keychain; MDM's settings keep only a reference. A locked keyring is never unlocked for MDM: without one, they stay in MDM's settings, sealed for your Windows account on Windows. **Options → Accounts** says where they are. A [portable copy](portable.md) keeps them in its own folder.
 

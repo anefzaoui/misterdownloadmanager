@@ -186,6 +186,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} window waits until you're back|{n} windows wait until you're back	ଆପଣ ଫେରିବା ପର୍ଯ୍ୟନ୍ତ {n}ଟି ୱିଣ୍ଡୋ ଅପେକ୍ଷା କରୁଛି|ଆପଣ ଫେରିବା ପର୍ଯ୍ୟନ୍ତ {n}ଟି ୱିଣ୍ଡୋ ଅପେକ୍ଷା କରୁଛି
+#. count in the Link grabber window
+#. Link grabber's Source line: a Hugging Face repository's or GitHub release's ({package}: its name, "owner/name") files whose names would lead out of its folder (`../`, a drive, a device's name) are left out; {n} how many
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{package}: {n} file left out, its name would lead out of its folder|{package}: {n} files left out, their names would lead out of its folder	{package}: {n}ଟି ଫାଇଲ୍ ବାଦ୍ ଦିଆଯାଇଛି, ଏହାର ନାମ ଫୋଲ୍ଡର୍ ବାହାରକୁ ଯିବ|{package}: {n}ଟି ଫାଇଲ୍ ବାଦ୍ ଦିଆଯାଇଛି, ଏଗୁଡ଼ିକର ନାମ ଫୋଲ୍ଡର୍ ବାହାରକୁ ଯିବ
 #. count in cnl.rs
 #. Click'n'Load window: {site} is a web site's name such as "example.com"
 #. {site} = a web site's name such as "example.com"; {n} = a number (keep the braces as they are)
@@ -539,6 +544,10 @@
 #. remote control page (on a phone): label of the box where a download's address or a magnet link is typed
 #, machine
 	Address or magnet link	ଠିକଣା କିମ୍ବା ମ୍ୟାଗ୍ନେଟ୍ ଲିଙ୍କ୍
+#. message or event log entry in the main window
+#. Link grabber: where the links came from: the Add URL window (an address typed or pasted there)
+#, machine
+	Address typed	ଠିକଣା ଟାଇପ୍ କରାଯାଇଛି
 #. text in the Options window; text in preview.rs; text in a download's Properties window
 #. Options → DNS over HTTPS: label before the server's https:// address
 #, machine
@@ -3800,6 +3809,10 @@
 #. RSS feeds window: the selected feed hasn't been fetched yet
 #, machine
 	Not fetched yet	ଏପର୍ଯ୍ୟନ୍ତ ଫେଚ୍ ହୋଇନାହିଁ
+#. text in the Link grabber window
+#. Link grabber, a link's status: a Hugging Face repository or folder, or a GitHub release or tag, that isn't there. The sentence is the cell's hover tip
+#, machine
+	Not found	ମିଳିଲା ନାହିଁ
 #. value in a column's filter list in the download list
 #, machine
 	Not in a queue	ଧାଡ଼ିରେ ନାହିଁ
@@ -6228,6 +6241,10 @@
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	Try again in an hour, or download {name} yourself and choose it in {helpers} → {other}.	ଏକ ଘଣ୍ଟା ପରେ ପୁଣି ଚେଷ୍ଟା କରନ୍ତୁ, କିମ୍ବା {name} କୁ ନିଜେ ଡାଉନଲୋଡ୍ କରନ୍ତୁ ଏବଂ {helpers} → {other} ରେ ଏହାକୁ ବାଛନ୍ତୁ।
+#. text in the Link grabber window
+#. Link grabber, a link's status: the remedy from the failure's sentence, for a site (Hugging Face, GitHub) whose limit of requests without an account is reached. The sentence is the cell's hover tip
+#, machine
+	Try again later	ପରେ ପୁଣି ଚେଷ୍ଟା କରନ୍ତୁ
 #. text in errors.rs
 #. {name} = a file name (keep the braces as they are)
 #, machine
@@ -7051,7 +7068,7 @@
 #. said after Delete with files when some files stayed on the disk; {file} is the download's name; the files' paths follow it
 #, machine
 	{file}: these files stayed on the disk, because MDM didn't create them or another download uses them:	{file}: ଏହି ଫାଇଲ୍‌ଗୁଡ଼ିକ ଡିସ୍କରେ ରହିଗଲା, କାରଣ MDM ସେଗୁଡ଼ିକୁ ସୃଷ୍ଟି କରିନାହିଁ କିମ୍ବା ଅନ୍ୟ ଏକ ଡାଉନଲୋଡ୍ ସେଗୁଡ଼ିକୁ ବ୍ୟବହାର କରେ:
-#. message or event log entry in the main window
+#. message or event log entry in the main window; text in the Link grabber window
 #. Link grabber's Source line, after where the links came from: a folder (an FTP folder, a web server's "Index of" page) held more files or subfolders than Link grabber lists; {folder} is its name, {n} how many of its files are listed (10,000)
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -7198,6 +7215,10 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 	{n} of {total} selected	{total} ରୁ {n} ଚୟନ କରାଯାଇଛି
+#. text in the Link grabber window
+#. Link grabber's Source line: a gated Hugging Face repository ({package}: "owner/name"), whose files download only for an account that accepted its terms: where to give the account's access token (Options → Sites Logins, keep the names as the Options window shows them)
+#, machine
+	{package} is gated: accept its terms on Hugging Face, then add your access token in Options → Sites Logins (site huggingface.co, the token as its password)	{package} ଗେଟେଡ୍ ଅଛି: Hugging Face ରେ ଏହାର ସର୍ତ୍ତାବଳୀ ଗ୍ରହଣ କରନ୍ତୁ, ତା’ପରେ Options → Sites Logins (ସାଇଟ୍ huggingface.co, ଏହାର ପାସୱାର୍ଡ ଭାବରେ ଟୋକେନ୍) ରେ ଆପଣଙ୍କର ଆକ୍ସେସ୍ ଟୋକେନ୍ ଯୋଡ଼ନ୍ତୁ
 #. text in the download list (sizes, speeds, status)
 #. a torrent's status while the user's debrid service downloads it, before MDM gets its files; {service} the service ("Real-Debrid"), {percent} how far it is ("45%")
 #, machine
@@ -7301,6 +7322,31 @@
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
 #, machine
 	{site} didn't give the file this time: try again in a moment	{site} ଏଥର ଫାଇଲ୍ ଦେଲା ନାହିଁ: କିଛି ସମୟ ପରେ ପୁଣି ଚେଷ୍ଟା କରନ୍ତୁ
+#. text in the Link grabber window
+#. Link grabber, the hover tip of a Hugging Face repository's or GitHub release's status; {site} is "Hugging Face" or "GitHub"
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+	{site} has no such repository, folder, release or tag, or it is private.	{site} ରେ ଏପରି କୌଣସି ରିପୋଜିଟୋରୀ, ଫୋଲ୍ଡର୍, ରିଲିଜ୍ କିମ୍ବା ଟ୍ୟାଗ୍ ନାହିଁ, କିମ୍ବା ଏହା ପ୍ରାଇଭେଟ୍ ଅଟେ।
+#. text in the Link grabber window
+#. Link grabber, a Hugging Face repository's or GitHub release's status (the cell's hover tip): the site ({site}: "Hugging Face", "GitHub") lets only so many requests through from a computer without an account; {n} minutes to wait
+#. {site} = a web site's name such as "example.com"; {n} = a number (keep the braces as they are)
+#, machine
+	{site} lets only so many requests through without an account: try again in {n} minute.	{site} ଏକ ଆକାଉଣ୍ଟ୍ ବିନା କେବଳ ଏତିକି ଅନୁରୋଧକୁ ଅନୁମତି ଦିଏ: {n} ମିନିଟ୍ ପରେ ପୁଣି ଚେଷ୍ଟା କରନ୍ତୁ।
+#. text in the Link grabber window
+#. Link grabber, a Hugging Face repository's or GitHub release's status (the cell's hover tip): the site ({site}) lets only so many requests through without an account, and didn't say for how long
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+	{site} lets only so many requests through without an account: try again later.	{site} ଏକ ଆକାଉଣ୍ଟ୍ ବିନା କେବଳ ଏତିକି ଅନୁରୋଧକୁ ଅନୁମତି ଦିଏ: ପରେ ପୁଣି ଚେଷ୍ଟା କରନ୍ତୁ।
+#. text in the Link grabber window
+#. Link grabber, a Hugging Face repository's or GitHub release's status: the site ({site}) refused to list its files; {status} is the HTTP code (403)
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+	{site} refused to list its files ({status}).	{site} ଏହାର ଫାଇଲ୍‌ଗୁଡ଼ିକୁ ତାଲିକାଭୁକ୍ତ କରିବାକୁ ମନା କଲା ({status})।
+#. text in the Link grabber window
+#. Link grabber, a Hugging Face repository's or GitHub release's status: the site's ({site}) answer wasn't what it sends (changed, cut, or not its own)
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+	{site}'s list of files couldn't be read.	{site} ର ଫାଇଲ୍ ତାଲିକା ପଢ଼ିହେଲା ନାହିଁ।
 #. text in a download's Properties window
 #. {size} = a file size such as "4.2 MB"; {bytes} = a number of bytes (keep the braces as they are)
 #, machine

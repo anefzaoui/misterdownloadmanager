@@ -93,6 +93,19 @@ size bound it. The app makes each folder's files a package whose folder is the t
 download folder (`grabber.rs`); the lab server serves made-up trees, a hostile one and a huge one
 (`labserver/src/tree.rs`) over HTTP and FTP for the end-to-end tests.
 
+A Hugging Face model or dataset (or a folder of one, at a revision) and a GitHub release or tag
+given to Link grabber (#1772, `hub.rs`) are listed through the sites' public APIs: the revision is
+first made its commit, then the tree is read page by page (`Link: rel="next"`, the same API's
+only), each entry's path taken only when it is a relative path of plain names inside the folder
+asked (`hub::relative_path`: no `..`, absolute path, drive or device name), matched by its names;
+a file's address is built from the repository, the commit and those names, never taken from the
+answer. Each file keeps its size and the SHA-256 the site publishes (an LFS file's, a release
+asset's `digest`), which becomes the download's checksum. The app makes one package whose folder
+is the address's path under the download folder, each file in its own folders inside it
+(`Imported::within`), unticked; Sites Logins' password for `huggingface.co` goes as an access
+token (`Authorization: Bearer`) to Hugging Face's own hosts only. The lab server plays both APIs
+(`labserver/src/hub.rs`): pages, a gated repository, hostile paths, a wrong digest and rate limits.
+
 Files inside a ZIP on a server (#1775, `remotezip.rs`) are read from its table of contents, at
 its end: Download File Info's one look (`look`: the last `TAIL` bytes, which tell whether the
 server sends parts, and hold the table of most archives) enables Preview, and Zip preview

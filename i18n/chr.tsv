@@ -181,6 +181,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} window waits until you're back|{n} windows wait until you're back	{n} ᏗᎦᏘᏓ ᎢᎪᎯᏛ ᎭᎷᎩ|{n} ᏗᎦᏘᏓ ᎢᎪᎯᏛ ᎭᎷᎩ
+#. count in the Link grabber window
+#. Link grabber's Source line: a Hugging Face repository's or GitHub release's ({package}: its name, "owner/name") files whose names would lead out of its folder (`../`, a drive, a device's name) are left out; {n} how many
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{package}: {n} file left out, its name would lead out of its folder|{package}: {n} files left out, their names would lead out of its folder	{package}: {n} ᏗᎪᏪᎵ ᎤᎾᏓᏅᏒᎢ, ᏚᏙᎥ ᎤᏓᏅᏒᎢ ᎤᏩᏒ ᎤᏤᎵ ᏗᎪᏪᎵ ᏗᏟᏍᏙᏗ ᎨᏒᎢ|{package}: {n} ᏗᎪᏪᎵ ᎤᎾᏓᏅᏒᎢ, ᏚᏙᎥ ᎤᎾᏓᏅᏒᎢ ᎤᏩᏒ ᎤᏤᎵ ᏗᎪᏪᎵ ᏗᏟᏍᏙᏗ ᎨᏒᎢ
 #. count in cnl.rs
 #. Click'n'Load window: {site} is a web site's name such as "example.com"
 #. {site} = a web site's name such as "example.com"; {n} = a number (keep the braces as they are)
@@ -482,6 +487,10 @@
 #. remote control page (on a phone): label of the box where a download's address or a magnet link is typed
 #, machine
 	Address or magnet link	ᎤᏃᎴᎢ ᎠᎴ ᎤᏃᎴᎢ ᎢᏗᏢ
+#. message or event log entry in the main window
+#. Link grabber: where the links came from: the Add URL window (an address typed or pasted there)
+#, machine
+	Address typed	ᏗᏓᏂᎸᎩ ᏗᎪᏪᎵ ᏗᏟᏍᏙᏗ ᎨᏒᎢ
 #. text in the Options window; text in preview.rs; text in a download's Properties window
 #. Options → DNS over HTTPS: label before the server's https:// address
 #, machine
@@ -6881,7 +6890,7 @@
 #. said after Delete with files when some files stayed on the disk; {file} is the download's name; the files' paths follow it
 #, machine
 	{file}: these files stayed on the disk, because MDM didn't create them or another download uses them:	{file}: ᎯᎠ ᏗᏓᏁᏟᏴᏍᏗ ᏕᎨᏙᎲᎩ ᏗᏟᎶᏍᏙᏗ ᎾᎿ, ᏅᏗᎦᎵᏍᏙᏗᏍᎬᎩ MDM ᎥᏝ ᏱᏚᏬᏢᏁᎢ ᎠᎴ ᏅᏩᏓᎴ ᏗᎦᏁᏟᏴᏍᏗ ᏕᎦᎸᏫᏍᏓᏁᎰ:
-#. message or event log entry in the main window
+#. message or event log entry in the main window; text in the Link grabber window
 #. Link grabber's Source line, after where the links came from: a folder (an FTP folder, a web server's "Index of" page) held more files or subfolders than Link grabber lists; {folder} is its name, {n} how many of its files are listed (10,000)
 #. {n} = a number (keep the braces as they are)
 #, machine

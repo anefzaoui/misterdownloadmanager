@@ -569,6 +569,11 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ Hugging Face models and datasets (a whole repository or a folder, at a branch, tag or commit)
+  and GitHub releases and tags pasted in Add URL or Link grabber: every file listed with its size
+  and folder, unticked, downloaded as one group with the folders kept, each checked against the
+  SHA-256 the site publishes; gated models with the Hugging Face token saved in Sites Logins
+  ([#1772](https://github.com/anefzaoui/misterdownloadmanager/issues/1772))
 - ✅ Site rules: a User-Agent, extra request headers, a number of connections and "connect the
   way a browser does" from the first request, for every download from a site pattern
   (`*.example.com`, the first rule that names a site and sets a setting giving it, as for the
