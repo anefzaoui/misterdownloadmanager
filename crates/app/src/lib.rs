@@ -640,11 +640,17 @@ fn app() -> eframe::Result {
         renderer::overridden(&args).as_deref(),
         renderer::Known::read(),
     );
+    #[cfg(target_os = "macos")]
+    let menu_bar_only = start == Start::Session
+        && loaded.settings.menu_bar.enabled
+        && loaded.settings.menu_bar.main_window;
     let options = || eframe::NativeOptions {
         viewport: viewport.clone(),
         // Linux: X11 (XWayland) over Wayland when both are there, so menus open where clicked.
         #[cfg(target_os = "linux")]
         event_loop_builder: unix::event_loop_hook(),
+        #[cfg(target_os = "macos")]
+        event_loop_builder: menu_bar_only.then(unix::login_event_loop_hook),
         ..Default::default()
     };
     let result = renderer::run(APP_ID, &plan, options, move |cc| {

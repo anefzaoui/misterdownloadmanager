@@ -10,6 +10,8 @@ use std::sync::mpsc::{Receiver, Sender, channel};
 use std::sync::{Arc, Mutex};
 
 mod beside;
+#[cfg(target_os = "macos")]
+mod macos;
 mod picture;
 mod watch;
 
@@ -145,6 +147,8 @@ pub struct Tray {
 
 /// The icon and its menu, as the system's tray library makes them.
 struct Native {
+    #[cfg(target_os = "macos")]
+    mac_menu: macos::StatusMenu,
     limiter_on: CheckMenuItem,
     limiter_off: CheckMenuItem,
     /// Start and Stop main download queue: one of them enabled, as the queue runs.
@@ -155,6 +159,7 @@ struct Native {
     #[cfg_attr(windows, allow(dead_code))]
     tray: TrayIcon,
     /// "Downloads in progress": one entry per running download, rebuilt when they change.
+    #[cfg(not(target_os = "macos"))]
     downloads: Submenu,
     download_ids: Arc<Mutex<Vec<(MenuId, u64)>>>,
     /// Every entry with its English text, to translate again when the language changes.
@@ -225,6 +230,18 @@ impl Tray {
     #[cfg(windows)]
     pub fn rescue(&self) -> bool {
         self.native.rescue()
+    }
+
+    #[cfg(target_os = "macos")]
+    pub fn configure_menu_bar(&self, settings: crate::settings::MenuBarSettings, panel: bool) {
+        let n = &self.native;
+        if n.mac_menu.configure(&n.tray, settings, panel) {
+            n.visible_checked.set(None);
+            if let Ok(mut ids) = n.download_ids.lock() {
+                ids.clear();
+                self.shown_downloads.borrow_mut().clear();
+            }
+        }
     }
 
     /// The commands since the last call.
@@ -486,6 +503,7 @@ impl Native {
         // i18n: tray menu: a submenu of the downloads now running; choosing one shows its progress window
         let downloads_label = mark("Downloads in progress");
         let downloads = Submenu::new(crate::i18n::t(downloads_label), false);
+        #[cfg(not(target_os = "macos"))]
         menu.append(&downloads).ok();
         menu.append(&PredefinedMenuItem::separator()).ok();
         let limiter_label = mark("Speed Limiter");
@@ -531,6 +549,8 @@ impl Native {
                 return None;
             }
         };
+        #[cfg(target_os = "macos")]
+        let mac_menu = macos::StatusMenu::new(menu.clone(), &items, limiter_menu.id());
         let builder = TrayIconBuilder::new()
             .with_menu(Box::new(menu))
             .with_menu_on_left_click(false)
@@ -634,6 +654,9 @@ impl Native {
             limiter_off,
             start_queue,
             stop_queue,
+            #[cfg(target_os = "macos")]
+            mac_menu,
+            #[cfg(not(target_os = "macos"))]
             downloads,
             download_ids,
             labels,
@@ -683,6 +706,7 @@ impl Native {
     }
 
     /// "Downloads in progress": the running downloads (id, name); greyed when none runs.
+    #[cfg(not(target_os = "macos"))]
     fn set_downloads(&self, running: &[(u64, String)]) {
         for _ in 0..self.downloads.items().len() {
             let _ = self.downloads.remove_at(0);
@@ -697,6 +721,13 @@ impl Native {
             *d = ids;
         }
         self.downloads.set_enabled(!running.is_empty());
+    }
+
+    #[cfg(target_os = "macos")]
+    fn set_downloads(&self, running: &[(u64, String)]) {
+        if let Ok(mut ids) = self.download_ids.lock() {
+            self.mac_menu.update_downloads(running, &mut ids);
+        }
     }
 
     /// The Speed Limiter checks.
@@ -790,7 +821,7 @@ impl watch::Port for WindowsShell {
 
 /// A download's name as the tray menu shows it: at most MENU_NAME_MAX characters, the rest "…";
 /// "&" doubled, which menus would read as a shortcut mark.
-fn short(name: &str) -> String {
+pub(super) fn short(name: &str) -> String {
     let mut s: String = name.chars().take(MENU_NAME_MAX).collect();
     if name.chars().count() > MENU_NAME_MAX {
         s.push('…');

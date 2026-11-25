@@ -699,15 +699,19 @@ pub fn set_run_at_startup(on: bool) {
     let (Some(file), Some(exe)) = (startup_file(), program()) else {
         return;
     };
+    write_startup_entry(&file, &exe, on);
+}
+
+fn write_startup_entry(file: &Path, exe: &Path, on: bool) {
     if !on {
-        let _ = std::fs::remove_file(&file);
+        let _ = std::fs::remove_file(file);
         return;
     }
-    let text = startup_entry(&exe, cfg!(target_os = "macos"));
+    let text = startup_entry(exe, cfg!(target_os = "macos"));
     if let Some(dir) = file.parent() {
         let _ = std::fs::create_dir_all(dir);
     }
-    let _ = std::fs::write(&file, text);
+    let _ = std::fs::write(file, text);
 }
 
 /// The startup entry written again for this program, at each start: one written without its
@@ -4204,6 +4208,38 @@ pub fn macos_is_active_and_visible() -> bool {
     }
 }
 
+/// A login item starts directly in the menu bar, without a Dock tile or a foreground launch.
+#[cfg(target_os = "macos")]
+pub fn login_event_loop_hook() -> eframe::EventLoopBuilderHook {
+    use egui_winit::winit::platform::macos::{ActivationPolicy, EventLoopBuilderExtMacOS};
+
+    Box::new(|builder| {
+        builder
+            .with_activation_policy(ActivationPolicy::Accessory)
+            .with_activate_ignoring_other_apps(false);
+    })
+}
+
+/// An accessory app can present windows and keep its status item while absent from the Dock.
+#[cfg(target_os = "macos")]
+pub fn macos_show_in_dock(show: bool) {
+    use objc2::MainThreadMarker;
+    use objc2_app_kit::{NSApplication, NSApplicationActivationPolicy as Policy};
+
+    let Some(mtm) = MainThreadMarker::new() else {
+        return;
+    };
+    let app = NSApplication::sharedApplication(mtm);
+    let policy = if show {
+        Policy::Regular
+    } else {
+        Policy::Accessory
+    };
+    if app.activationPolicy() != policy && !app.setActivationPolicy(policy) {
+        tracing::warn!("macOS declined the Dock visibility change (show: {show})");
+    }
+}
+
 /// macOS: unhides the application if [`macos_hide_window`] hid it, without activating it or
 /// ordering any window back to the front. While `NSApp` is hidden, macOS lets none of its windows
 /// draw, so eframe runs only the app's logic: a window a command opens (the browser's Download
@@ -5715,6 +5751,20 @@ mod startup_tests {
         assert!(plist.contains(
             "<array><string>/opt/mdm/misterdownloadmanager</string><string>/startup</string></array>"
         ));
+    }
+
+    #[cfg(target_os = "macos")]
+    #[test]
+    fn switching_login_on_and_off_installs_and_removes_the_agent() {
+        let dir = tempfile::tempdir().unwrap();
+        let file = dir.path().join("LaunchAgents/mdm.plist");
+        let exe = "/Applications/Mister Download Manager.app/Contents/MacOS/misterdownloadmanager";
+        super::write_startup_entry(&file, Path::new(exe), true);
+        let plist = std::fs::read_to_string(&file).unwrap();
+        assert_eq!(state(&plist, exe, true), StartupState::Ours);
+        assert!(plist.contains("<key>RunAtLoad</key><true/>"));
+        super::write_startup_entry(&file, Path::new(exe), false);
+        assert!(!file.exists());
     }
 
     /// An entry of a version before 0.5.0 for this program is written again; another copy's is not.

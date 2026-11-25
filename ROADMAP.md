@@ -569,6 +569,11 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ macOS: choose a running download in the menu bar to open its progress window. The menu
+  shows the file name and percentage when available, above the configurable tray commands. The Dock icon
+  stays visible by default and can be hidden when closing the main window while completion dialogs can still appear. Optional
+  launch at login starts in the menu bar with the main window hidden
+  ([#1732](https://github.com/anefzaoui/misterdownloadmanager/issues/1732)).
 - ✅ Only some files from inside a ZIP on a server: Download File Info's Preview lists the files in
   a `.zip` (from its end, with range requests) to tick those to download, each fetched alone and
   checked against its CRC-32 ([#1775](https://github.com/anefzaoui/misterdownloadmanager/issues/1775))

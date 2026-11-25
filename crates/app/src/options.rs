@@ -93,6 +93,24 @@ enum Sub {
 
 /// Options → Remote's page number (the tabs' numbers).
 const REMOTE_PAGE: usize = 11;
+#[cfg(target_os = "macos")]
+const MENU_BAR_PAGE: usize = 12;
+const PAGE_ORDER: &[usize] = &[
+    0,
+    1,
+    2,
+    3,
+    4,
+    REMOTE_PAGE,
+    #[cfg(target_os = "macos")]
+    MENU_BAR_PAGE,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+];
 /// Test browser integration: from a check's line to the path under it (#818).
 const DETAIL_H: f32 = 18.0;
 /// What the Sites Logins list shows in place of a password: the same for every one; nothing
@@ -446,9 +464,9 @@ impl OptionsDialog {
             LIGHT_BG(),
             |ui, o| {
                 // Ctrl+Tab through the pages in the tabs' order (Archives, 10, came last).
-                const ORDER: [usize; 12] = [0, 1, 2, 3, 4, 11, 5, 6, 7, 8, 9, 10];
-                let at = ORDER.iter().position(|p| *p == self.page).unwrap_or(0);
-                let by_key = winui::tab_keys(ui, ORDER.len(), at).map(|i| ORDER[i]);
+
+                let at = PAGE_ORDER.iter().position(|p| *p == self.page).unwrap_or(0);
+                let by_key = winui::tab_keys(ui, PAGE_ORDER.len(), at).map(|i| PAGE_ORDER[i]);
                 if let Some(p) = tabs(ui, o, self.page).or(by_key) {
                     self.page = p;
                 }
@@ -464,6 +482,8 @@ impl OptionsDialog {
                     9 => self.regional(ui, o),
                     10 => self.archives(ui, o),
                     REMOTE_PAGE => self.remote_page(ui, o),
+                    #[cfg(target_os = "macos")]
+                    MENU_BAR_PAGE => self.menu_bar_page(ui, o),
                     8 => self.sounds(ui, o),
                     _ => self.regional(ui, o),
                 }
@@ -582,7 +602,9 @@ impl OptionsDialog {
         if portable {
             s.launch_on_startup = false;
         }
-        let checks: [(f32, &mut bool, &str); 9] = [
+        #[cfg(target_os = "macos")]
+        let can_hide_dock = s.close_to_tray && s.menu_bar.enabled && s.menu_bar.main_window;
+        let checks = [
             (
                 94.0,
                 &mut s.launch_on_startup,
@@ -637,6 +659,13 @@ impl OptionsDialog {
             // MDM's (#1365): a click on the tray icon shows the downloads panel (traypanel.rs);
             // unticked, it shows or hides the window as before. With MDM's other tray settings:
             // the rows are 18 apart (were 19 or 20) to make room, the rest of the page 9 lower.
+            #[cfg(target_os = "macos")]
+            (
+                238.0,
+                &mut s.hide_dock_on_close,
+                crate::i18n::mark("Hide the Dock icon when closing the main window"),
+            ),
+            #[cfg(not(target_os = "macos"))]
             (
                 238.0,
                 &mut s.tray_panel,
@@ -652,6 +681,8 @@ impl OptionsDialog {
             // extensions: an IDM-era Chrome policy with no meaning for MDM's extension (MV3):
             // shown as IDM has it, greyed (D-021).
             let enabled = !(portable && i == 0) && i != 2 && (i < 6 || tray);
+            #[cfg(target_os = "macos")]
+            let enabled = enabled && (i != 8 || can_hide_dock);
             let check = winui::checkbox_light(ui, o + vec2(30.0, y), v, label, enabled);
             // Where a start with the session leaves the window (#226).
             if i == 0 && enabled && check.hovered() {
@@ -669,7 +700,7 @@ impl OptionsDialog {
                 check.on_hover_text(crate::i18n::t(
                     "Checked, downloads from a browser's private window are saved in the list and are still there when MDM restarts; unchecked, they are kept in memory only and are gone when MDM closes. Their cookies are never saved",
                 ));
-            } else if i == 8 && check.hovered() {
+            } else if !cfg!(target_os = "macos") && i == 8 && check.hovered() {
                 // i18n: tooltip of "Show downloads when the notification area icon is clicked": what the click on MDM's tray icon does when it is ticked and when not
                 check.on_hover_text(crate::i18n::t(
                     "Checked, a click on MDM's icon shows what is downloading, with Pause and Cancel, and a double click opens the window; unchecked, a click shows or hides the window",
@@ -3401,6 +3432,76 @@ impl OptionsDialog {
         self.sub = Some(Sub::Pair);
     }
 
+    #[cfg(target_os = "macos")]
+    fn menu_bar_page(&mut self, ui: &mut Ui, o: Pos2) {
+        let title = crate::i18n::mark("Menu Bar");
+        let w = winui::text_width_font(ui.painter(), winui::tahoma_bold(), title);
+        header(
+            ui,
+            o,
+            Icon::PageGeneral,
+            title,
+            true,
+            406.0 - w,
+            61.0,
+            406.0,
+        );
+        let m = &mut self.s.menu_bar;
+        winui::checkbox_light(
+            ui,
+            o + vec2(26.0, 92.0),
+            &mut m.enabled,
+            crate::i18n::mark("Show the menu bar icon"),
+            true,
+        );
+        winui::checkbox_light(
+            ui,
+            o + vec2(26.0, 116.0),
+            &mut self.s.tray_panel,
+            crate::i18n::mark("Open the downloads panel on left click"),
+            m.enabled,
+        );
+        let p = ui.painter().clone();
+        winui::group_box(&p, r(o, 19.0, 151.0, 392.0, 306.0), None);
+        text(
+            &p,
+            o.x + 32.0,
+            o.y + 172.0,
+            crate::i18n::t("Show in the menu"),
+            LIGHT_TEXT(),
+        );
+        let rows = [
+            (&mut m.downloads, crate::i18n::mark("Downloads in progress")),
+            (
+                &mut m.main_window,
+                crate::i18n::mark("Open Mister Download Manager"),
+            ),
+            (&mut m.add_url, crate::i18n::mark("Add new download")),
+            (&mut m.batch, crate::i18n::mark("Add batch download")),
+            (
+                &mut m.batch_clipboard,
+                crate::i18n::mark("Add batch download from clipboard"),
+            ),
+            (&mut m.limiter, crate::i18n::mark("Speed Limiter")),
+            (&mut m.scheduler, crate::i18n::mark("Scheduler")),
+            (
+                &mut m.queues,
+                crate::i18n::mark("Start/stop main download queue"),
+            ),
+            (&mut m.options, crate::i18n::mark("Options")),
+            (&mut m.quit, crate::i18n::mark("Exit")),
+        ];
+        for (i, (checked, label)) in rows.into_iter().enumerate() {
+            winui::checkbox_light(
+                ui,
+                o + vec2(32.0, 183.0 + i as f32 * 25.0),
+                checked,
+                label,
+                m.enabled,
+            );
+        }
+    }
+
     /// Remote (#141, ours): phones and computers on the local network add and control
     /// downloads from a page MDM serves, once paired with a code shown here.
     fn remote_page(&mut self, ui: &mut Ui, o: Pos2) {
@@ -5286,7 +5387,7 @@ fn tab_row(
 fn tabs(ui: &mut Ui, o: Pos2, page: usize) -> Option<usize> {
     // (page, label, x0, x1, label x): the rows never move sideways, only swap front and back.
     // Remote (#141, ours) joins the first row, which is sized by its labels since.
-    const G: [(usize, &str, f32, f32, f32); 6] = [
+    const G: &[(usize, &str, f32, f32, f32)] = &[
         // i18n: tab title: general settings
         (0, crate::i18n::mark("General"), 8.0, 82.0, 26.0),
         // i18n: tab title
@@ -5301,6 +5402,14 @@ fn tabs(ui: &mut Ui, o: Pos2, page: usize) -> Option<usize> {
             REMOTE_PAGE,
             // i18n: tab title: control MDM from a phone or another computer on the local network
             crate::i18n::mark("Remote"),
+            380.0,
+            419.0,
+            390.0,
+        ),
+        #[cfg(target_os = "macos")]
+        (
+            MENU_BAR_PAGE,
+            crate::i18n::mark("Menu Bar"),
             380.0,
             419.0,
             390.0,
@@ -5325,8 +5434,8 @@ fn tabs(ui: &mut Ui, o: Pos2, page: usize) -> Option<usize> {
     ];
     let p = ui.painter().clone();
     let border = winui::HEADER_LINE();
-    let (g, pr) = (tab_row(&p, &G, false), tab_row(&p, &P, false));
-    let first_row = page < 5 || page == REMOTE_PAGE;
+    let (g, pr) = (tab_row(&p, G, false), tab_row(&p, &P, false));
+    let first_row = G.iter().any(|t| t.0 == page);
     let (front, back): (&[_], &[_]) = if first_row { (&g, &pr) } else { (&pr, &g) };
     let mut clicked = None;
     let mut tab = |ui: &mut Ui,
@@ -5367,8 +5476,8 @@ fn tabs(ui: &mut Ui, o: Pos2, page: usize) -> Option<usize> {
             winui::keep_keys(ui, &resp, true, false, false);
             if resp.has_focus() {
                 // Left / Right (mirrored in RTL), Home / End through the pages in order.
-                const ORDER: [usize; 12] = [0, 1, 2, 3, 4, 11, 5, 6, 7, 8, 9, 10];
-                let at = ORDER.iter().position(|p| *p == i).unwrap_or(0) as isize;
+
+                let at = PAGE_ORDER.iter().position(|p| *p == i).unwrap_or(0) as isize;
                 let fwd = if winui::rtl() { -1 } else { 1 };
                 let to = if winui::take_key(ui, egui::Key::ArrowRight) {
                     Some(at + fwd)
@@ -5377,12 +5486,12 @@ fn tabs(ui: &mut Ui, o: Pos2, page: usize) -> Option<usize> {
                 } else if winui::take_key(ui, egui::Key::Home) {
                     Some(0)
                 } else if winui::take_key(ui, egui::Key::End) {
-                    Some(ORDER.len() as isize - 1)
+                    Some(PAGE_ORDER.len() as isize - 1)
                 } else {
                     None
                 };
                 if let Some(to) = to {
-                    let next = ORDER[to.clamp(0, ORDER.len() as isize - 1) as usize];
+                    let next = PAGE_ORDER[to.clamp(0, PAGE_ORDER.len() as isize - 1) as usize];
                     clicked = Some(next);
                     // The keys stay on the strip: the new tab takes the focus.
                     ui.memory_mut(|m| m.request_focus(egui::Id::unique(("opt-tab", next))));

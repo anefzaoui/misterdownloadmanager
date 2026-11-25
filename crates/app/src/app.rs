@@ -3918,6 +3918,8 @@ impl App {
                     "logins" => 6,
                     "accounts" => 7,
                     "archives" => 10,
+                    #[cfg(target_os = "macos")]
+                    "menubar" => 12,
                     "sounds" => 8,
                     "regional" => 9,
                     "remote" | "pair" => 11,
@@ -5172,6 +5174,17 @@ impl App {
         #[cfg(target_os = "linux")]
         crate::unix::withdraw_main_window();
         self.hidden = true;
+        #[cfg(target_os = "macos")]
+        if self.settings.hide_dock_on_close
+            && self.settings.menu_bar.enabled
+            && self.settings.menu_bar.main_window
+            && self
+                .tray
+                .as_ref()
+                .is_some_and(|t| t.icon_now() == crate::tray::Icon::There)
+        {
+            crate::unix::macos_show_in_dock(false);
+        }
         self.start_trimming();
     }
 
@@ -5188,6 +5201,10 @@ impl App {
         // Asked for (a second launch, the tray icon): no start with the session or browser to settle.
         self.tray_wait = None;
         self.trim_when_hidden = None;
+        #[cfg(target_os = "macos")]
+        if self.hidden {
+            crate::unix::macos_show_in_dock(true);
+        }
         self.hidden = false;
         // The freeze watchdog: from here a stall is seen (no longer the computer's, #1126).
         crate::crash::hidden(false);
@@ -5297,6 +5314,14 @@ impl App {
                 self.tray_wait = None;
             }
             AtLogin::Minimize => {
+                // At macOS login the Dock can reopen the app even if the menu bar is unavailable.
+                #[cfg(target_os = "macos")]
+                if !self.tray_wait_browser {
+                    crate::unix::macos_show_in_dock(true);
+                    self.tray_wait = None;
+                    tracing::info!("{why}: menu bar unavailable; window stays hidden");
+                    return;
+                }
                 tracing::info!(
                     "{why}: no notification area within {} s of the icon: minimized ({} ms on)",
                     TRAY_GRACE.as_secs(),
@@ -5304,6 +5329,8 @@ impl App {
                 );
                 self.tray_wait = None;
                 self.trim_when_hidden = None;
+                #[cfg(target_os = "macos")]
+                crate::unix::macos_show_in_dock(true);
                 self.hidden = false;
                 ctx.send_viewport_cmd(egui::ViewportCommand::Visible(true));
                 ctx.send_viewport_cmd(egui::ViewportCommand::Minimized(true));
@@ -5317,6 +5344,8 @@ impl App {
         // the session shows the icon, and no window).
         let wanted =
             !crate::offscreen() || std::env::var_os("MDM_TEST_TRAY").is_some_and(|v| v == "1");
+        #[cfg(target_os = "macos")]
+        let wanted = wanted && self.settings.menu_bar.enabled;
         if self.tray.is_none() && self.tray_limiter.is_none() && wanted {
             // Linux: made beside the window, which never waits for the session bus (#828); until
             // it is, the window behaves as with no tray host.
@@ -5388,6 +5417,8 @@ impl App {
             ctx.request_ui_pass(egui::ViewportId::ROOT);
         }
         if let Some(t) = &self.tray {
+            #[cfg(target_os = "macos")]
+            t.configure_menu_bar(self.settings.menu_bar, self.settings.tray_panel);
             let mut tip = match self.activity() {
                 Some(a) => format!("{}\n{a}", crate::MAIN_TITLE),
                 None => crate::MAIN_TITLE.to_owned(),
@@ -5416,11 +5447,27 @@ impl App {
             }
             t.set_tooltip(&tip);
             // "Downloads in progress": each running download, to show its progress window (#63).
+            #[cfg(target_os = "macos")]
+            let show_downloads = self.settings.menu_bar.enabled && self.settings.menu_bar.downloads;
+            #[cfg(not(target_os = "macos"))]
+            let show_downloads = true;
             let running: Vec<(u64, String)> = self
                 .items
                 .iter()
-                .filter(|i| i.live.is_some())
-                .map(|i| (i.id, i.file_name.clone()))
+                .filter(|i| show_downloads && i.live.is_some())
+                .map(|i| {
+                    #[cfg(target_os = "macos")]
+                    let name = {
+                        let name = crate::tray::short(&i.file_name);
+                        match i.fraction() {
+                            Some(f) => format!("{name}  {}", crate::i18n::percent(f, 0)),
+                            None => name,
+                        }
+                    };
+                    #[cfg(not(target_os = "macos"))]
+                    let name = i.file_name.clone();
+                    (i.id, name)
+                })
                 .collect();
             t.set_downloads(&running);
         }
@@ -5451,6 +5498,10 @@ impl App {
             tracing::info!("tray: {c:?}");
             let cmd = match c {
                 TrayCmd::Show => {
+                    #[cfg(target_os = "macos")]
+                    if !crate::offscreen() {
+                        crate::unix::macos_unhide_app();
+                    }
                     self.show_window(ctx);
                     continue;
                 }
@@ -5471,6 +5522,7 @@ impl App {
                     }
                     continue;
                 }
+                TrayCmd::Click(..) if cfg!(target_os = "macos") => continue, // AppKit opened the native menu.
                 TrayCmd::Click(..) => {
                     let minimized = ctx.input(|i| i.viewport().minimized == Some(true));
                     // Behind other windows it still reads as shown: only hide when
@@ -5506,10 +5558,25 @@ impl App {
                 TrayCmd::Options => Cmd::Options,
                 TrayCmd::Exit => Cmd::Exit,
                 TrayCmd::ShowDownload(id) => {
-                    self.open_item(id);
+                    if self.item(id).is_some_and(|i| i.live.is_some()) {
+                        #[cfg(target_os = "macos")]
+                        if !crate::offscreen() {
+                            crate::unix::macos_unhide_app();
+                        }
+                        self.open_item(id);
+                        ctx.request_ui_pass(egui::ViewportId::ROOT);
+                    }
                     continue;
                 }
             };
+            #[cfg(target_os = "macos")]
+            if matches!(
+                cmd,
+                Cmd::AddUrl | Cmd::Batch | Cmd::BatchClipboard | Cmd::Options | Cmd::Scheduler
+            ) {
+                crate::unix::macos_unhide_app();
+                ctx.request_ui_pass(egui::ViewportId::ROOT);
+            }
             self.run(cmd, None, ctx);
         }
         // Closing hides the window in the tray; downloads and queues go on. When the shell says it
@@ -5519,7 +5586,7 @@ impl App {
         // closing closes, as any window's does: Options' "Keep running when closing the window"
         // off, no tray at all, or Linux with no tray host (#59: a hidden window couldn't come
         // back, and one that merely minimized could never be closed). macOS (#1125): the window
-        // closes into the Dock, as Mac apps' do, and a click on MDM's icon there brings it back.
+        // stays reachable through the Dock when the menu bar cannot host the icon.
         // Asked to quit (`quit`: File → Exit, Cmd+Q, MDM → Quit, Exit when done…), the close quits
         // whatever the option.
         if ctx.input(|i| i.viewport().close_requested()) {
@@ -5539,12 +5606,10 @@ impl App {
             };
             let taskbar = cfg!(not(target_os = "linux"));
             match crate::tray::on_close(quitting, keep, tray, icon, taskbar, dock) {
-                OnClose::Hide if dock => {
-                    tracing::info!("close: hidden; MDM's icon in the Dock brings it back");
-                    ctx.send_viewport_cmd(egui::ViewportCommand::CancelClose);
-                    self.hide_to_tray(ctx);
-                }
                 OnClose::Hide => {
+                    #[cfg(target_os = "macos")]
+                    tracing::info!("close: hiding the main window");
+                    #[cfg(not(target_os = "macos"))]
                     tracing::info!("close: hidden to the notification area (tray icon: {icon:?})");
                     ctx.send_viewport_cmd(egui::ViewportCommand::CancelClose);
                     self.hide_to_tray(ctx);
@@ -5599,6 +5664,17 @@ impl App {
         // Hidden, the window gets no paint messages: keep the clock (queues, scheduler,
         // download limits) running.
         if self.hidden {
+            #[cfg(target_os = "macos")]
+            if self.tray_wait.is_none()
+                && (!self.settings.menu_bar.enabled
+                    || !self.settings.menu_bar.main_window
+                    || self
+                        .tray
+                        .as_ref()
+                        .is_some_and(|t| t.icon() == crate::tray::Icon::Gone))
+            {
+                crate::unix::macos_show_in_dock(true);
+            }
             ctx.request_repaint_after(Duration::from_secs(1));
             if self.trim_when_hidden.is_some_and(|t| Instant::now() >= t) {
                 trim_memory();
@@ -9943,6 +10019,16 @@ impl App {
         }
         if let Some(i) = self.items.iter().find(|i| i.id == id) {
             self.complete.push(Complete::of(i));
+            #[cfg(target_os = "macos")]
+            self.wake_completion_window();
+        }
+    }
+
+    #[cfg(target_os = "macos")]
+    fn wake_completion_window(&self) {
+        if self.hidden && !self.headless {
+            crate::unix::macos_unhide_app();
+            self.ui_ctx.request_ui_pass(egui::ViewportId::ROOT);
         }
     }
 
@@ -10024,6 +10110,8 @@ impl App {
                         &s.failed,
                         &self.items,
                     ));
+                    #[cfg(target_os = "macos")]
+                    self.wake_completion_window();
                 }
             }
         }

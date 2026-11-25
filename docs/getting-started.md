@@ -262,7 +262,11 @@ used, and how to make and share one.
 
 ## The tray icon
 
-Closing the main window doesn't quit MDM. It hides in the notification area, and downloads, queues and schedules carry on. To make closing quit (a portable copy's folder can then be deleted), untick **Options → General → Keep running when closing the window**. If there is no icon for MDM at all — not in the notification area, nor behind the ^ hidden icons — the window minimizes to the taskbar instead, so downloads continue and there is a way back. An icon behind ^ can be clicked to bring the window back, and starting MDM again always does. On macOS the window closes into the Dock, as Mac apps' windows do: click MDM's icon in the Dock (or in the menu bar) to bring it back, and quit with **Cmd+Q** or **Mister Download Manager → Quit**.
+Closing the main window doesn't quit MDM. It hides in the notification area, and downloads, queues and schedules carry on. To make closing quit (a portable copy's folder can then be deleted), untick **Options → General → Keep running when closing the window**. If there is no icon for MDM at all — not in the notification area, nor behind the ^ hidden icons — the window minimizes to the taskbar instead, so downloads continue and there is a way back. An icon behind ^ can be clicked to bring the window back, and starting MDM again always does. On macOS the Dock icon stays visible by default. To hide it as well, enable **Options → General → Hide the Dock icon when closing the main window** and keep **Open Mister Download Manager** in the menu bar menu. Reopening the main window restores the Dock icon. If macOS cannot place the menu bar icon, the Dock provides a way back. **Cmd+Q** quits MDM.
+
+On macOS, **Options → General → Launch Mister Download Manager on startup** starts MDM in the menu bar when you sign in, with its main window hidden. Turn the option off to skip the login launch.
+
+On macOS, right-click the menu bar icon and choose **Open Mister Download Manager** or a running download. Each download shows its file name and, when the total size is known, its percentage. Choosing a download opens its progress window and keeps the main window hidden if you closed it. Download complete can appear there too, according to your completion dialog and snooze settings.
 
 On Linux this needs a tray, which most desktops have (KDE Plasma, Xfce, Cinnamon, Ubuntu's GNOME or GNOME with the AppIndicator extension, waybar's tray). On a desktop without one (some tiling window managers), closing the window quits MDM, since there would be nowhere to bring it back from.
 
@@ -282,9 +286,9 @@ A download's progress window can go there as well, with its Minimize or with its
 
 On Windows that button is in the window's title bar, left of Minimize, and in the title bar's menu (Alt+Space). On Linux and macOS it's at the end of the tab row.
 
-To bring the window back, choose it in **Downloads in progress**, or double-click the download in the list.
+To bring the window back, double-click the download in the list, choose its name in the macOS menu bar, or choose it under **Downloads in progress** on Windows and Linux.
 
-To quit, choose **Tasks → Exit** or **Exit** in the tray menu.
+To quit, choose **Tasks → Exit**, press **Cmd+Q** on macOS, or choose **Exit** in the Windows or Linux tray menu.
 
 ## Where MDM keeps its data
 
