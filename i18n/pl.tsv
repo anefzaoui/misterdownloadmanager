@@ -2096,6 +2096,10 @@
 #. text in the Scheduler window; tab in the Scheduler window
 #, machine
 	Files in the queue	Pliki w kolejce
+#. text in the download list (sizes, speeds, status)
+#. why files being taken out of a ZIP on its server (#1775) can't be moved or renamed yet: those already out are in its folder, the others still to come there
+#, machine
+	Files taken out of a ZIP can be moved once they're all out	Pliki wyodrębnione z archiwum ZIP można przenieść, gdy wszystkie zostaną wyodrębnione
 #. button in a download's Properties window
 #. File Properties button that opens the selected torrent's file list
 #. the trailing ... means it opens a window: keep it
@@ -2918,6 +2922,10 @@
 #. in Link grabber, where the addresses came from: a page in the browser
 #, machine
 	Links from the browser	Linki z przeglądarki
+#. text in a dialog box
+#. tooltip of Download File Info's Preview button for a ZIP (#1775): it lists the files inside, to download only some of them
+#, machine
+	List the files inside the ZIP and pick those to download	Wyświetl pliki w archiwum ZIP i wybierz te do pobrania
 #. text in playlistdlg.rs
 #. button in Download video: go on listing a playlist from where it stopped
 #, machine
@@ -2995,6 +3003,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Looking for your default browser...	Wyszukiwanie domyślnej przeglądarki...
+#. text in a dialog box
+#. tooltip of Download File Info's greyed Preview button while MDM asks the server whether it can look inside the ZIP (#1775)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Looking inside the ZIP...	Sprawdzanie zawartości archiwum ZIP...
 #. text in the Download video window
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -3271,6 +3284,10 @@
 #. Monday, as short as a calendar's column head (two letters in English)
 #, machine
 	Mo	Pn
+#. text in a download's progress window
+#. Zip preview's column: when the file was last changed, as the ZIP says
+#, machine
+	Modified	Zmodyfikowano
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3858,6 +3875,10 @@
 #. checkbox in a dialog box
 #, machine
 	Only while I'm using the computer	Tylko gdy używam komputera
+#. message or event log entry in the main window
+#. event log entry: the download is files picked inside a ZIP in Zip preview (#1775); {files} how many ("3 files")
+#, machine
+	Only {files} picked inside the ZIP	Wybrano tylko {files} z archiwum ZIP
 #. button in a dialog box; text in a dialog box; button in a download's Properties window; button in torrentfiles.rs
 #. verb: opens the downloaded file
 #. title of the message when a downloaded file can't be opened
@@ -3938,6 +3959,10 @@
 #. Link grabber: the box that edits the selected package
 #, machine
 	Package	Pakiet
+#. text in a download's progress window
+#. Zip preview's column: the file's size as packed (compressed) inside the ZIP
+#, machine
+	Packed	Skompresowany
 #. text in gallerydlg.rs; text in the Download video window
 #, machine
 	Page address	Adres strony
@@ -4210,6 +4235,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Reading the torrent...	Odczytywanie torrenta...
+#. text in zippreview.rs
+#. Zip preview, while the ZIP's list of files is being read from its server
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Reading the ZIP's list of files...	Odczytywanie listy plików archiwum ZIP...
 #. message or event log entry in the main window
 #. the status strip while Tasks → Import reads a file; {file} is its name
 #. the trailing ... means it is still going on: keep it
@@ -4938,6 +4968,11 @@
 #. checkbox in the Options window
 #, machine
 	Start downloading immediately while displaying "Download File Info" dialog	Rozpocznij pobieranie natychmiast, wyświetlając okno dialogowe „Informacje o pliku do pobrania”
+#. text in a dialog box
+#. Download File Info, on hover over the number of files picked in Zip preview (#1775): {files} how many ("3 files"), {size} their size together, {folder} the folder they go into (named after the archive)
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	Start downloads only the {files} picked in the ZIP ({size}), into {folder}	Rozpocznij pobieranie tylko {files} wybranych z archiwum ZIP ({size}) do folderu {folder}
 #. text in the tray icon's menu
 #, machine
 	Start main download queue	Uruchom główną kolejkę pobierania
@@ -5392,6 +5427,10 @@
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
 	The file does NOT match ({algorithm})	Plik NIE pasuje ({algorithm})
+#. text in errors.rs
+#. why a file taken out of a ZIP on its server failed (#1775): its bytes aren't what the ZIP's list of files says (its size or its CRC-32 checksum)
+#, machine
+	the file in the ZIP doesn't match the ZIP's list of files (its size or checksum): download the whole archive	plik w archiwum ZIP nie pasuje do listy plików archiwum ZIP (jego rozmiar lub suma kontrolna): pobierz całe archiwum
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
@@ -5521,6 +5560,10 @@
 #. text in errors.rs
 #, machine
 	the server can't send parts of the file, so it can't be resumed	serwer nie może wysyłać części pliku, więc nie można go wznowić
+#. text in errors.rs
+#. Zip preview (#1775): the server doesn't send parts of a file (HTTP ranges), so MDM can't fetch only some files from inside a ZIP; the whole archive still downloads
+#, machine
+	the server can't send parts of the ZIP, so its files can't be downloaded one by one: download the whole archive	serwer nie może wysyłać części archiwum ZIP, więc jego plików nie można pobierać pojedynczo: pobierz całe archiwum
 #. text in errors.rs
 #, machine
 	the server did not answer in time	serwer nie odpowiedział na czas
@@ -5661,6 +5704,10 @@
 #. text in a download's Properties window
 #, machine
 	The web page from which this file was obtained:	Strona internetowa, z której uzyskano ten plik:
+#. text in errors.rs
+#. why a file can't be taken out of a ZIP on its server (#1775): the ZIP was replaced on the server after its files were listed; Zip preview is the window that lists them
+#, machine
+	the ZIP changed on the server since its files were listed: open its Zip preview again	archiwum ZIP zmieniło się na serwerze od czasu wyświetlenia jego plików: otwórz ponownie jego podgląd ZIP
 #. message or event log entry in the main window
 #. the kind of file View → Theme → Add a theme file lists: MDM's themes (TOML, JSON), Base16 schemes (YAML) and pywal's colors.json
 #, machine
@@ -5748,6 +5795,18 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	This file can't be used as a theme: {error}	Tego pliku nie można użyć jako motywu: {error}
+#. text in errors.rs
+#. why a file can't be taken out of a ZIP on its server (#1775): it is encrypted (password-protected) in the ZIP
+#, machine
+	this file is encrypted in the ZIP: download the whole archive and open it with its password	ten plik jest zaszyfrowany w archiwum ZIP: pobierz całe archiwum i otwórz je za pomocą hasła
+#. text in errors.rs
+#. why a file can't be taken out of a ZIP on its server (#1775): the ZIP no longer holds it
+#, machine
+	this file is no longer in the ZIP on the server	tego pliku nie ma już w archiwum ZIP na serwerze
+#. text in errors.rs
+#. why a file can't be taken out of a ZIP on its server (#1775): it is compressed with a method MDM doesn't unpack there; {method} is the method's name (BZIP2, LZMA, Deflate64…)
+#, machine
+	this file is packed in a way MDM can't unpack from the server ({method}): download the whole archive	ten plik jest spakowany w sposób, którego MDM nie może rozpakować z serwera ({method}): pobierz całe archiwum
 #. text in remote.rs
 #. remote control page (on a phone): the file chosen is too large for a .torrent file
 #, machine
@@ -5782,6 +5841,10 @@
 #. a check of Test browser integration: a portable copy can't be connected
 #, machine
 	This is the installed copy, not a portable one	To jest zainstalowana kopia, a nie przenośna
+#. text in errors.rs
+#. Zip preview (#1775): the address isn't a ZIP archive whose list of files MDM can read on the server
+#, machine
+	this isn't a ZIP archive MDM can look inside on the server: download the whole file	to nie jest archiwum ZIP, którego zawartość MDM może sprawdzić na serwerze: pobierz cały plik
 #. text in playlistdlg.rs
 #. in Download video, a playlist or channel that lists no video
 #, machine
@@ -5859,6 +5922,18 @@
 #, machine
 	This video needs you to be signed in. Use the Download video button over it in your browser, which passes your sign-in on, or choose your browser in Options → Sites Logins → Cookies for video sites.	Ten film wymaga zalogowania. Użyj przycisku Pobierz wideo nad nim w przeglądarce, który przekazuje Twoje dane logowania, lub wybierz swoją przeglądarkę w Opcje → Loginy witryn → Pliki cookie dla witryn wideo.
 #. text in errors.rs
+#. Zip preview (#1775): a ZIP split over several files (volumes): its files can't be fetched one by one
+#, machine
+	this ZIP is split over several files, so its files can't be downloaded one by one: download every part	to archiwum ZIP jest podzielone na kilka plików, więc jego plików nie można pobierać pojedynczo: pobierz każdą część
+#. text in errors.rs
+#. Zip preview (#1775): the ZIP's list of files (its table of contents) doesn't add up
+#, machine
+	this ZIP's list of files is damaged: download the whole archive	lista plików tego archiwum ZIP jest uszkodzona: pobierz całe archiwum
+#. text in errors.rs
+#. Zip preview (#1775): the ZIP's list of files (its table of contents) is larger than MDM reads from a server
+#, machine
+	this ZIP's list of files is too large to read from the server: download the whole archive	lista plików tego archiwum ZIP jest zbyt duża, aby odczytać ją z serwera: pobierz całe archiwum
+#. text in errors.rs
 #. a download's error: the address is a site's web page that needs a browser, not the file; {site} = the site's name (gofile)
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
 #, machine
@@ -5889,6 +5964,11 @@
 #. tooltip on the Scheduler's "Wake the computer to run this queue" while "Start download at" is off
 #, machine
 	Tick "Start download at" first: the computer is woken for the start time	Najpierw zaznacz „Rozpocznij pobieranie o”: komputer zostanie wybudzony o godzinie rozpoczęcia
+#. text in zippreview.rs
+#. Zip preview, under the list: {files} how many files are ticked ("3 files"), {size} their size together ("12.4 MB")
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	Ticked: {files}, {size}	Zaznaczono: {files}, {size}
 #. text in a download's progress window; text in the Scheduler window
 #, machine
 	Time left	Pozostały czas
@@ -6656,6 +6736,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Zimbabwe	Zimbabwe
+#. text in zippreview.rs
+#. title of the window that lists the files inside a ZIP on its server, to tick those to download (#1775)
+#, machine
+	Zip preview	Podgląd ZIP
 #. text in the Options window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine

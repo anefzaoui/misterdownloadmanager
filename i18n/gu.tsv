@@ -2096,6 +2096,10 @@
 #. text in the Scheduler window; tab in the Scheduler window
 #, machine
 	Files in the queue	કતારમાં ફાઇલો
+#. text in the download list (sizes, speeds, status)
+#. why files being taken out of a ZIP on its server (#1775) can't be moved or renamed yet: those already out are in its folder, the others still to come there
+#, machine
+	Files taken out of a ZIP can be moved once they're all out	ZIP માંથી કાઢેલી ફાઇલો એકવાર બધી બહાર નીકળી જાય પછી ખસેડી શકાય છે
 #. button in a download's Properties window
 #. File Properties button that opens the selected torrent's file list
 #. the trailing ... means it opens a window: keep it
@@ -2914,6 +2918,10 @@
 #. in Link grabber, where the addresses came from: a page in the browser
 #, machine
 	Links from the browser	બ્રાઉઝરની લિંક્સ
+#. text in a dialog box
+#. tooltip of Download File Info's Preview button for a ZIP (#1775): it lists the files inside, to download only some of them
+#, machine
+	List the files inside the ZIP and pick those to download	ZIP ની અંદરની ફાઇલોની સૂચિ બનાવો અને ડાઉનલોડ કરવા માટેની ફાઇલો પસંદ કરો
 #. text in playlistdlg.rs
 #. button in Download video: go on listing a playlist from where it stopped
 #, machine
@@ -2991,6 +2999,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Looking for your default browser...	તમારા ડિફોલ્ટ બ્રાઉઝરને શોધી રહ્યું છે...
+#. text in a dialog box
+#. tooltip of Download File Info's greyed Preview button while MDM asks the server whether it can look inside the ZIP (#1775)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Looking inside the ZIP...	ZIP ની અંદર જોઈ રહ્યું છે...
 #. text in the Download video window
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -3267,6 +3280,10 @@
 #. Monday, as short as a calendar's column head (two letters in English)
 #, machine
 	Mo	સો
+#. text in a download's progress window
+#. Zip preview's column: when the file was last changed, as the ZIP says
+#, machine
+	Modified	બદલાયેલ
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3854,6 +3871,10 @@
 #. checkbox in a dialog box
 #, machine
 	Only while I'm using the computer	ફક્ત હું કમ્પ્યુટરનો ઉપયોગ કરતો હોઉં ત્યારે
+#. message or event log entry in the main window
+#. event log entry: the download is files picked inside a ZIP in Zip preview (#1775); {files} how many ("3 files")
+#, machine
+	Only {files} picked inside the ZIP	ZIP માંથી ફક્ત {files} પસંદ કરી
 #. button in a dialog box; text in a dialog box; button in a download's Properties window; button in torrentfiles.rs
 #. verb: opens the downloaded file
 #. title of the message when a downloaded file can't be opened
@@ -3934,6 +3955,10 @@
 #. Link grabber: the box that edits the selected package
 #, machine
 	Package	પેકેજ
+#. text in a download's progress window
+#. Zip preview's column: the file's size as packed (compressed) inside the ZIP
+#, machine
+	Packed	પેક કરેલ
 #. text in gallerydlg.rs; text in the Download video window
 #, machine
 	Page address	પૃષ્ઠનું સરનામું
@@ -4206,6 +4231,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Reading the torrent...	ટોરેન્ટ વાંચી રહ્યું છે...
+#. text in zippreview.rs
+#. Zip preview, while the ZIP's list of files is being read from its server
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Reading the ZIP's list of files...	ZIP ની ફાઇલોની સૂચિ વાંચી રહ્યું છે...
 #. message or event log entry in the main window
 #. the status strip while Tasks → Import reads a file; {file} is its name
 #. the trailing ... means it is still going on: keep it
@@ -4934,6 +4964,11 @@
 #. checkbox in the Options window
 #, machine
 	Start downloading immediately while displaying "Download File Info" dialog	"ડાઉનલોડ ફાઇલ માહિતી" ડાયલોગ પ્રદર્શિત કરતી વખતે તરત જ ડાઉનલોડ કરવાનું શરૂ કરો
+#. text in a dialog box
+#. Download File Info, on hover over the number of files picked in Zip preview (#1775): {files} how many ("3 files"), {size} their size together, {folder} the folder they go into (named after the archive)
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	Start downloads only the {files} picked in the ZIP ({size}), into {folder}	ZIP માં પસંદ કરેલી ફક્ત {files} ({size}) ડાઉનલોડ કરવાનું શરૂ કરો અને {folder} માં મૂકો
 #. text in the tray icon's menu
 #, machine
 	Start main download queue	મુખ્ય ડાઉનલોડ કતાર શરૂ કરો
@@ -5388,6 +5423,10 @@
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
 	The file does NOT match ({algorithm})	ફાઇલ મેળ ખાતી નથી ({algorithm})
+#. text in errors.rs
+#. why a file taken out of a ZIP on its server failed (#1775): its bytes aren't what the ZIP's list of files says (its size or its CRC-32 checksum)
+#, machine
+	the file in the ZIP doesn't match the ZIP's list of files (its size or checksum): download the whole archive	ZIP માંની ફાઇલ ZIP ની ફાઇલોની સૂચિ (તેનું કદ અથવા ચેકસમ) સાથે મેળ ખાતી નથી: આખું આર્કાઇવ ડાઉનલોડ કરો
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
@@ -5517,6 +5556,10 @@
 #. text in errors.rs
 #, machine
 	the server can't send parts of the file, so it can't be resumed	સર્વર ફાઇલના ભાગો મોકલી શકતું નથી, તેથી ડાઉનલોડ ફરી શરૂ કરી શકાતો નથી
+#. text in errors.rs
+#. Zip preview (#1775): the server doesn't send parts of a file (HTTP ranges), so MDM can't fetch only some files from inside a ZIP; the whole archive still downloads
+#, machine
+	the server can't send parts of the ZIP, so its files can't be downloaded one by one: download the whole archive	સર્વર ZIP ના ભાગો મોકલી શકતું નથી, તેથી તેની ફાઇલો એક પછી એક ડાઉનલોડ કરી શકાતી નથી: આખું આર્કાઇવ ડાઉનલોડ કરો
 #. text in errors.rs
 #, machine
 	the server did not answer in time	સર્વરે સમયસર જવાબ આપ્યો નથી
@@ -5657,6 +5700,10 @@
 #. text in a download's Properties window
 #, machine
 	The web page from which this file was obtained:	આ ફાઇલ જે વેબ પૃષ્ઠ પરથી મેળવવામાં આવી હતી:
+#. text in errors.rs
+#. why a file can't be taken out of a ZIP on its server (#1775): the ZIP was replaced on the server after its files were listed; Zip preview is the window that lists them
+#, machine
+	the ZIP changed on the server since its files were listed: open its Zip preview again	ફાઇલોની સૂચિ બનાવ્યા પછી સર્વર પર ZIP બદલાઈ ગયું છે: તેનું ZIP પૂર્વાવલોકન ફરીથી ખોલો
 #. message or event log entry in the main window
 #. the kind of file View → Theme → Add a theme file lists: MDM's themes (TOML, JSON), Base16 schemes (YAML) and pywal's colors.json
 #, machine
@@ -5744,6 +5791,18 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	This file can't be used as a theme: {error}	આ ફાઇલ થીમ તરીકે વાપરી શકાતી નથી: {error}
+#. text in errors.rs
+#. why a file can't be taken out of a ZIP on its server (#1775): it is encrypted (password-protected) in the ZIP
+#, machine
+	this file is encrypted in the ZIP: download the whole archive and open it with its password	આ ફાઇલ ZIP માં એન્ક્રિપ્ટ કરેલી છે: આખું આર્કાઇવ ડાઉનલોડ કરો અને તેને તેના પાસવર્ડથી ખોલો
+#. text in errors.rs
+#. why a file can't be taken out of a ZIP on its server (#1775): the ZIP no longer holds it
+#, machine
+	this file is no longer in the ZIP on the server	આ ફાઇલ હવે સર્વર પર ZIP માં નથી
+#. text in errors.rs
+#. why a file can't be taken out of a ZIP on its server (#1775): it is compressed with a method MDM doesn't unpack there; {method} is the method's name (BZIP2, LZMA, Deflate64…)
+#, machine
+	this file is packed in a way MDM can't unpack from the server ({method}): download the whole archive	આ ફાઇલ એવી રીતે પેક કરેલી છે કે MDM તેને સર્વર પરથી અનપેક કરી શકતું નથી ({method}): આખું આર્કાઇવ ડાઉનલોડ કરો
 #. text in remote.rs
 #. remote control page (on a phone): the file chosen is too large for a .torrent file
 #, machine
@@ -5778,6 +5837,10 @@
 #. a check of Test browser integration: a portable copy can't be connected
 #, machine
 	This is the installed copy, not a portable one	આ ઇન્સ્ટોલ કરેલી કૉપિ છે, પોર્ટેબલ કૉપિ નથી
+#. text in errors.rs
+#. Zip preview (#1775): the address isn't a ZIP archive whose list of files MDM can read on the server
+#, machine
+	this isn't a ZIP archive MDM can look inside on the server: download the whole file	આ એવું ZIP આર્કાઇવ નથી જેની અંદર MDM સર્વર પર જોઈ શકે: આખી ફાઇલ ડાઉનલોડ કરો
 #. text in playlistdlg.rs
 #. in Download video, a playlist or channel that lists no video
 #, machine
@@ -5855,6 +5918,18 @@
 #, machine
 	This video needs you to be signed in. Use the Download video button over it in your browser, which passes your sign-in on, or choose your browser in Options → Sites Logins → Cookies for video sites.	આ વીડિયો માટે તમારે સાઇન ઇન કરેલું હોવું જરૂરી છે. તમારા બ્રાઉઝરમાં તેના પર દેખાતા “વિડિઓ ડાઉનલોડ કરો” બટનનો ઉપયોગ કરો, જે તમારા સાઇન-ઇનની માહિતી મોકલે છે, અથવા વિકલ્પો → સાઇટ્સના લૉગિન → વિડિઓ સાઇટ્સ માટેની કૂકીઝમાં તમારું બ્રાઉઝર પસંદ કરો.
 #. text in errors.rs
+#. Zip preview (#1775): a ZIP split over several files (volumes): its files can't be fetched one by one
+#, machine
+	this ZIP is split over several files, so its files can't be downloaded one by one: download every part	આ ZIP ઘણી ફાઇલોમાં વિભાજિત છે, તેથી તેની ફાઇલો એક પછી એક ડાઉનલોડ કરી શકાતી નથી: દરેક ભાગ ડાઉનલોડ કરો
+#. text in errors.rs
+#. Zip preview (#1775): the ZIP's list of files (its table of contents) doesn't add up
+#, machine
+	this ZIP's list of files is damaged: download the whole archive	આ ZIP ની ફાઇલોની સૂચિ ક્ષતિગ્રસ્ત છે: આખું આર્કાઇવ ડાઉનલોડ કરો
+#. text in errors.rs
+#. Zip preview (#1775): the ZIP's list of files (its table of contents) is larger than MDM reads from a server
+#, machine
+	this ZIP's list of files is too large to read from the server: download the whole archive	આ ZIP ની ફાઇલોની સૂચિ સર્વર પરથી વાંચવા માટે ખૂબ મોટી છે: આખું આર્કાઇવ ડાઉનલોડ કરો
+#. text in errors.rs
 #. a download's error: the address is a site's web page that needs a browser, not the file; {site} = the site's name (gofile)
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
 #, machine
@@ -5885,6 +5960,11 @@
 #. tooltip on the Scheduler's "Wake the computer to run this queue" while "Start download at" is off
 #, machine
 	Tick "Start download at" first: the computer is woken for the start time	પહેલાં “ડાઉનલોડ શરૂ કરો” પર ટિક કરો: શરૂ થવાના સમયે કમ્પ્યુટર ચાલુ કરવામાં આવશે
+#. text in zippreview.rs
+#. Zip preview, under the list: {files} how many files are ticked ("3 files"), {size} their size together ("12.4 MB")
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	Ticked: {files}, {size}	પસંદ કરેલી: {files}, {size}
 #. text in a download's progress window; text in the Scheduler window
 #, machine
 	Time left	બાકી સમય
@@ -6652,6 +6732,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Zimbabwe	ઝિમ્બાબ્વે
+#. text in zippreview.rs
+#. title of the window that lists the files inside a ZIP on its server, to tick those to download (#1775)
+#, machine
+	Zip preview	ઝિપ પૂર્વાવલોકન
 #. text in the Options window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
@@ -6897,6 +6981,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 	{n} (auto)	{n} (આપમેળે)
+#. text in zippreview.rs
+#. Zip preview, under the list: {n} files of the ZIP aren't listed because MDM can't take them out on their own: encrypted ones, ones packed in a way MDM can't unpack from the server, links, or names that would leave their folder; the whole archive still downloads
+#. {n} = a number (keep the braces as they are)
+#, machine
+	{n} more can't be taken out on their own (encrypted, packed another way, or links)	{n} વધુને પોતાની રીતે બહાર કાઢી શકાતા નથી (એન્ક્રિપ્ટેડ, અન્ય રીતે પેક કરેલા, અથવા લિંક્સ)
 #. text in playlistdlg.rs
 #. in Download video for a playlist: how many videos are ticked, of how many
 #. {n} = a number (keep the braces as they are)

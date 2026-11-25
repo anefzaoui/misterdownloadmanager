@@ -2096,6 +2096,10 @@
 #. text in the Scheduler window; tab in the Scheduler window
 #, machine
 	Files in the queue	Fișiere în coadă
+#. text in the download list (sizes, speeds, status)
+#. why files being taken out of a ZIP on its server (#1775) can't be moved or renamed yet: those already out are in its folder, the others still to come there
+#, machine
+	Files taken out of a ZIP can be moved once they're all out	Fișierele extrase dintr-un ZIP pot fi mutate după ce sunt toate extrase
 #. button in a download's Properties window
 #. File Properties button that opens the selected torrent's file list
 #. the trailing ... means it opens a window: keep it
@@ -2917,6 +2921,10 @@
 #. in Link grabber, where the addresses came from: a page in the browser
 #, machine
 	Links from the browser	Linkuri din browser
+#. text in a dialog box
+#. tooltip of Download File Info's Preview button for a ZIP (#1775): it lists the files inside, to download only some of them
+#, machine
+	List the files inside the ZIP and pick those to download	Listați fișierele din ZIP și alegeți-le pe cele de descărcat
 #. text in playlistdlg.rs
 #. button in Download video: go on listing a playlist from where it stopped
 #, machine
@@ -2994,6 +3002,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Looking for your default browser...	Se caută browserul dvs. implicit...
+#. text in a dialog box
+#. tooltip of Download File Info's greyed Preview button while MDM asks the server whether it can look inside the ZIP (#1775)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Looking inside the ZIP...	Se examinează conținutul ZIP-ului...
 #. text in the Download video window
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -3270,6 +3283,10 @@
 #. Monday, as short as a calendar's column head (two letters in English)
 #, machine
 	Mo	Lu
+#. text in a download's progress window
+#. Zip preview's column: when the file was last changed, as the ZIP says
+#, machine
+	Modified	Modificat
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3857,6 +3874,10 @@
 #. checkbox in a dialog box
 #, machine
 	Only while I'm using the computer	Doar în timp ce folosesc computerul
+#. message or event log entry in the main window
+#. event log entry: the download is files picked inside a ZIP in Zip preview (#1775); {files} how many ("3 files")
+#, machine
+	Only {files} picked inside the ZIP	Doar {files} selectate în ZIP
 #. button in a dialog box; text in a dialog box; button in a download's Properties window; button in torrentfiles.rs
 #. verb: opens the downloaded file
 #. title of the message when a downloaded file can't be opened
@@ -3937,6 +3958,10 @@
 #. Link grabber: the box that edits the selected package
 #, machine
 	Package	Pachet
+#. text in a download's progress window
+#. Zip preview's column: the file's size as packed (compressed) inside the ZIP
+#, machine
+	Packed	Comprimat
 #. text in gallerydlg.rs; text in the Download video window
 #, machine
 	Page address	Adresa paginii
@@ -4209,6 +4234,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Reading the torrent...	Se citește torrentul...
+#. text in zippreview.rs
+#. Zip preview, while the ZIP's list of files is being read from its server
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Reading the ZIP's list of files...	Se citește lista de fișiere a ZIP-ului...
 #. message or event log entry in the main window
 #. the status strip while Tasks → Import reads a file; {file} is its name
 #. the trailing ... means it is still going on: keep it
@@ -4937,6 +4967,11 @@
 #. checkbox in the Options window
 #, machine
 	Start downloading immediately while displaying "Download File Info" dialog	Porniți descărcarea imediat în timp ce afișați dialogul „Informații fișier descărcare”
+#. text in a dialog box
+#. Download File Info, on hover over the number of files picked in Zip preview (#1775): {files} how many ("3 files"), {size} their size together, {folder} the folder they go into (named after the archive)
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	Start downloads only the {files} picked in the ZIP ({size}), into {folder}	Porniți descărcările doar pentru {files} selectate în ZIP ({size}), în {folder}
 #. text in the tray icon's menu
 #, machine
 	Start main download queue	Porniți coada principală de descărcare
@@ -5391,6 +5426,10 @@
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
 	The file does NOT match ({algorithm})	Fișierul NU se potrivește ({algorithm})
+#. text in errors.rs
+#. why a file taken out of a ZIP on its server failed (#1775): its bytes aren't what the ZIP's list of files says (its size or its CRC-32 checksum)
+#, machine
+	the file in the ZIP doesn't match the ZIP's list of files (its size or checksum): download the whole archive	fișierul din ZIP nu corespunde listei de fișiere a ZIP-ului (dimensiunea sau suma de control): descărcați întreaga arhivă
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
@@ -5520,6 +5559,10 @@
 #. text in errors.rs
 #, machine
 	the server can't send parts of the file, so it can't be resumed	serverul nu poate trimite părți din fișier, deci fișierul nu poate fi reluat
+#. text in errors.rs
+#. Zip preview (#1775): the server doesn't send parts of a file (HTTP ranges), so MDM can't fetch only some files from inside a ZIP; the whole archive still downloads
+#, machine
+	the server can't send parts of the ZIP, so its files can't be downloaded one by one: download the whole archive	serverul nu poate trimite părți din ZIP, deci fișierele sale nu pot fi descărcate individual: descărcați întreaga arhivă
 #. text in errors.rs
 #, machine
 	the server did not answer in time	serverul nu a răspuns la timp
@@ -5660,6 +5703,10 @@
 #. text in a download's Properties window
 #, machine
 	The web page from which this file was obtained:	Pagina web de la care a fost obținut acest fișier:
+#. text in errors.rs
+#. why a file can't be taken out of a ZIP on its server (#1775): the ZIP was replaced on the server after its files were listed; Zip preview is the window that lists them
+#, machine
+	the ZIP changed on the server since its files were listed: open its Zip preview again	ZIP-ul s-a modificat pe server de când au fost listate fișierele sale: deschideți din nou previzualizarea ZIP-ului
 #. message or event log entry in the main window
 #. the kind of file View → Theme → Add a theme file lists: MDM's themes (TOML, JSON), Base16 schemes (YAML) and pywal's colors.json
 #, machine
@@ -5747,6 +5794,18 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	This file can't be used as a theme: {error}	Acest fișier nu poate fi utilizat ca temă: {error}
+#. text in errors.rs
+#. why a file can't be taken out of a ZIP on its server (#1775): it is encrypted (password-protected) in the ZIP
+#, machine
+	this file is encrypted in the ZIP: download the whole archive and open it with its password	acest fișier este criptat în ZIP: descărcați întreaga arhivă și deschideți-o cu parola sa
+#. text in errors.rs
+#. why a file can't be taken out of a ZIP on its server (#1775): the ZIP no longer holds it
+#, machine
+	this file is no longer in the ZIP on the server	acest fișier nu mai este în ZIP pe server
+#. text in errors.rs
+#. why a file can't be taken out of a ZIP on its server (#1775): it is compressed with a method MDM doesn't unpack there; {method} is the method's name (BZIP2, LZMA, Deflate64…)
+#, machine
+	this file is packed in a way MDM can't unpack from the server ({method}): download the whole archive	acest fișier este împachetat într-un mod pe care MDM nu îl poate despacheta de pe server ({method}): descărcați întreaga arhivă
 #. text in remote.rs
 #. remote control page (on a phone): the file chosen is too large for a .torrent file
 #, machine
@@ -5781,6 +5840,10 @@
 #. a check of Test browser integration: a portable copy can't be connected
 #, machine
 	This is the installed copy, not a portable one	Aceasta este copia instalată, nu una portabilă
+#. text in errors.rs
+#. Zip preview (#1775): the address isn't a ZIP archive whose list of files MDM can read on the server
+#, machine
+	this isn't a ZIP archive MDM can look inside on the server: download the whole file	aceasta nu este o arhivă ZIP pe care MDM o poate examina pe server: descărcați întregul fișier
 #. text in playlistdlg.rs
 #. in Download video, a playlist or channel that lists no video
 #, machine
@@ -5858,6 +5921,18 @@
 #, machine
 	This video needs you to be signed in. Use the Download video button over it in your browser, which passes your sign-in on, or choose your browser in Options → Sites Logins → Cookies for video sites.	Acest videoclip necesită să fiți conectat. Utilizați butonul Descărcare video de deasupra acestuia în browser, care transmite datele dvs. de conectare, sau alegeți browserul dvs. în Opțiuni → Autentificări site-uri → Cookie-uri pentru site-uri video.
 #. text in errors.rs
+#. Zip preview (#1775): a ZIP split over several files (volumes): its files can't be fetched one by one
+#, machine
+	this ZIP is split over several files, so its files can't be downloaded one by one: download every part	acest ZIP este împărțit în mai multe fișiere, deci fișierele sale nu pot fi descărcate individual: descărcați fiecare parte
+#. text in errors.rs
+#. Zip preview (#1775): the ZIP's list of files (its table of contents) doesn't add up
+#, machine
+	this ZIP's list of files is damaged: download the whole archive	lista de fișiere a acestui ZIP este deteriorată: descărcați întreaga arhivă
+#. text in errors.rs
+#. Zip preview (#1775): the ZIP's list of files (its table of contents) is larger than MDM reads from a server
+#, machine
+	this ZIP's list of files is too large to read from the server: download the whole archive	lista de fișiere a acestui ZIP este prea mare pentru a fi citită de pe server: descărcați întreaga arhivă
+#. text in errors.rs
 #. a download's error: the address is a site's web page that needs a browser, not the file; {site} = the site's name (gofile)
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
 #, machine
@@ -5888,6 +5963,11 @@
 #. tooltip on the Scheduler's "Wake the computer to run this queue" while "Start download at" is off
 #, machine
 	Tick "Start download at" first: the computer is woken for the start time	Bifați mai întâi „Pornire descărcare la”: computerul este trezit pentru ora de începere
+#. text in zippreview.rs
+#. Zip preview, under the list: {files} how many files are ticked ("3 files"), {size} their size together ("12.4 MB")
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	Ticked: {files}, {size}	Bifate: {files}, {size}
 #. text in a download's progress window; text in the Scheduler window
 #, machine
 	Time left	Timp rămas
@@ -6655,6 +6735,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Zimbabwe	Zimbabwe
+#. text in zippreview.rs
+#. title of the window that lists the files inside a ZIP on its server, to tick those to download (#1775)
+#, machine
+	Zip preview	Previzualizare ZIP
 #. text in the Options window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
@@ -6900,6 +6984,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 	{n} (auto)	{n} (automat)
+#. text in zippreview.rs
+#. Zip preview, under the list: {n} files of the ZIP aren't listed because MDM can't take them out on their own: encrypted ones, ones packed in a way MDM can't unpack from the server, links, or names that would leave their folder; the whole archive still downloads
+#. {n} = a number (keep the braces as they are)
+#, machine
+	{n} more can't be taken out on their own (encrypted, packed another way, or links)	{n} fișiere nu pot fi extrase individual (criptate, împachetate altfel sau linkuri)
 #. text in playlistdlg.rs
 #. in Download video for a playlist: how many videos are ticked, of how many
 #. {n} = a number (keep the braces as they are)
