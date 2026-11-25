@@ -43,6 +43,8 @@
 // .m3u8 or .mpd, served as text/plain or octet-stream, #171), sniffed (#171 without yt-dlp: such
 // streams found only when asked, by the button and the media list, a text decoy never), media (the
 // toolbar button's list of the media a tab loaded: streams, files, a protected stream; #38),
+// images (its Find images on a gallery: the largest sizes listed, each once, filtered by size and
+// type, the kept ones only to Link grabber, #1781),
 // scripted (a video a server's program sends, named after its page with its real type: the list,
 // the button, the Download video window; #695, #800), guarded (a stream another site's server
 // serves to its page's player only: looked up and downloaded with the Origin and Referer the
@@ -4177,6 +4179,107 @@ thumb.addEventListener("mouseleave", () => { preview.classList.add("off"); docum
       await sleep(500);
       sweep(downloads);
     }
+  },
+
+  // #1781: the toolbar button's Find images on the lab's gallery (/page?images=1). It finds each
+  // picture at the largest size the page lists (a srcset's 1600w, a <picture>'s WebP 1200w, a 2x),
+  // a lazy loader's data-src, a link to a full size; each address once (the large photo is also
+  // shown and linked), no data: picture, no PDF. At least 300 x 300 with GIF off keeps four, and
+  // those four only reach Link grabber: MDM looks each up there and nothing else. E2E_SHOTS:
+  // <lang>-<scheme>-images-page.png (the tab as it opens), -images-found.png (the filters set) and
+  // -images-sent.png.
+  async images(t) {
+    const shots = process.env.E2E_SHOTS ? path.resolve(process.env.E2E_SHOTS) : "";
+    const tag = `${process.env.E2E_LANG || "en"}-${process.env.E2E_COLOR_SCHEME || "system"}`;
+    await clearLog();
+    // Addresses of this run and browser's own: Link grabber, still open with an earlier
+    // browser's list where its window isn't closed (Linux), adds an address it has only once,
+    // and looks nothing new up (Firefox's run found no look-ups after Chrome's).
+    const seed = Date.now() % 1e9;
+    await t.session.navigate(`${LAB}/page?images=1&seed=${seed}&title=Gallery`);
+    // Its pictures shown, so the page knows their sizes, as a user's would be.
+    const shown = await until("the gallery's pictures", 20000, () =>
+      t.session.evaluate(`(() => { const i = [...document.images]; return i.every((x) => x.complete) && ["photo1", "photo2", "photo4", "thumb3"].every((id) => document.getElementById(id).naturalWidth > 0) && i.length; })()`),
+    );
+    const page = await t.session.evaluate("location.href");
+    const popup = await t.session.tab(`${t.session.base}popup.html?page=${encodeURIComponent(page)}`);
+    const state = () =>
+      popup.evaluate(`(() => ({
+        chips: [...document.querySelectorAll("#images-types .chip")].map((c) => [c.dataset.type, c.querySelector(".n").textContent, c.getAttribute("aria-pressed")]),
+        count: document.getElementById("images-count").textContent,
+        unsized: document.getElementById("images-unsized").hidden ? "" : document.getElementById("images-unsized").textContent,
+        send: !document.getElementById("images-send").hidden && !document.getElementById("images-send").disabled,
+        said: document.getElementById("images-said").hidden ? "" : document.getElementById("images-said").textContent,
+        bad: document.getElementById("images-said").classList.contains("bad"),
+      }))()`);
+    const numbers = (s) => (String(s).match(/\d+/g) || []).map(Number);
+    let found;
+    let kept;
+    try {
+      // The This page tab as it opens (its media list asked for first, as before #1781).
+      await until("the popup's This page tab", 15000, () => popup.evaluate(`!document.getElementById("media").hidden`));
+      await sleep(500);
+      if (shots && popup.shot) await popup.shot(path.join(shots, `${tag}-images-page.png`));
+      await until("the popup's Find images", 15000, () => popup.evaluate(`Boolean(document.getElementById("images")) && !document.getElementById("images").hidden`));
+      // Nothing looked for before the click.
+      const before = await state();
+      if (before.chips.length || before.send) throw new Error(`images listed before Find images: ${JSON.stringify(before)}`);
+      await popup.evaluate(`(document.getElementById("images-find").click(), true)`);
+      found = await until("the pictures found", 15000, async () => {
+        const s = await state();
+        return (s.chips.length || s.said) && s;
+      });
+      const types = found.chips.map(([type, n]) => `${type} ${n}`).join(", ");
+      if (types !== "JPEG 1, PNG 3, WEBP 1, GIF 1, AVIF 1") throw new Error(`the types found: ${types || found.said}`);
+      if (numbers(found.count).join(" ") !== "7 7") throw new Error(`found: ${found.count}`);
+      // At least 300 x 300: the icon and the thumbnail left out, the two the page gives no size
+      // for (the lazy one, the linked one) kept and said; then GIF off.
+      await popup.evaluate(`(() => { for (const id of ["images-w", "images-h"]) { const i = document.getElementById(id); i.value = "300"; i.dispatchEvent(new Event("input")); } return true; })()`);
+      const sized = await state();
+      if (numbers(sized.count).join(" ") !== "5 7" || numbers(sized.unsized).join(" ") !== "2") throw new Error(`at least 300 x 300: ${sized.count} / ${sized.unsized}`);
+      await popup.evaluate(`(document.querySelector('#images-types .chip[data-type="GIF"]').click(), true)`);
+      kept = await state();
+      if (numbers(kept.count).join(" ") !== "4 7" || !kept.send) throw new Error(`GIF off: ${kept.count}, send ${kept.send}`);
+      if (shots && popup.shot) {
+        await popup.evaluate(`(document.getElementById("images").scrollIntoView({ block: "nearest" }), true)`);
+        await popup.shot(path.join(shots, `${tag}-images-found.png`));
+      }
+      await popup.evaluate(`(document.getElementById("images-send").click(), true)`);
+      const sent = await until("the popup's answer", 30000, async () => {
+        const s = await state();
+        return s.said && s;
+      });
+      if (sent.bad) throw new Error(`sending: ${sent.said}`);
+      if (shots && popup.shot) {
+        await popup.evaluate(`(document.getElementById("images").scrollIntoView({ block: "nearest" }), true)`);
+        await popup.shot(path.join(shots, `${tag}-images-sent.png`));
+      }
+    } finally {
+      await popup.close();
+    }
+    // MDM's look-ups in Link grabber (its requests, not the browser's own for the pictures it
+    // showed: those say Sec-Fetch-Mode no-cors).
+    const mdmFor = async (p) => (await requests(p)).filter((e) => e.sec_fetch_mode !== "no-cors" && new URLSearchParams(e.query || "").get("seed") === String(seed));
+    const sent = ["/gen/256K/photo1.jpg", "/gen/128K/photo2.webp", "/gen/512K/photo3.png", "/gen/64K/photo5.avif"];
+    await until("MDM's look-ups of the four in Link grabber", 60000, async () => {
+      for (const p of sent) if (!(await mdmFor(p)).length) return false;
+      return true;
+    });
+    const left = ["/gen/1K/icon.png", "/gen/8K/photo3-thumb.png", "/gen/32K/photo4@2x.gif", "/gen/8K/photo4.gif", "/gen/16K/photo1-small.jpg", "/gen/32K/photo2-600.webp", "/gen/32K/photo2.jpg", "/gen/1K/notes.pdf"];
+    // A moment more for a look-up that shouldn't come.
+    await sleep(3000);
+    for (const p of left) {
+      const asked = await mdmFor(p);
+      if (asked.length) throw new Error(`MDM asked for ${p}, left out: ${asked.map(brief).join("; ")}`);
+    }
+    let windows = "";
+    if (WIN) {
+      const pid = ourApps()[0];
+      const open = await until("Link grabber", 20000, () => appWindows(pid).includes("Link grabber") && appWindows(pid));
+      windows = `; windows: ${open.join(", ")}`;
+      appWindows(pid, "Link grabber");
+    }
+    return `${shown} pictures on the page; found ${found.chips.map(([type, n]) => `${type} ${n}`).join(", ")}; 300 x 300 without GIF: ${kept.count}; MDM looked up ${sent.map((p) => p.split("/").pop()).join(", ")} only${windows}`;
   },
 
   // #695, #800: a video a server's program sends (/remote_control.php, /stream.php as video/mp4,

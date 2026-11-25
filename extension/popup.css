@@ -235,6 +235,25 @@ button, input { font: inherit; color: inherit; }
 .what .meta { color: var(--text-2); font-size: 11px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .drm { flex: none; color: var(--bad); font-size: 11px; font-weight: 600; }
 
+/* This page: the page's images (#1781), in a card as the media: the size boxes, a button per
+   type (pressed: kept), the count, Find and Send. */
+.images { padding-bottom: 12px; }
+.images .note { padding: 2px 0 8px; }
+.img-filters { display: flex; flex-direction: column; gap: 8px; padding-top: 8px; border-top: 1px solid var(--line); }
+.img-size { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; }
+.field.num { width: 72px; min-height: 28px; padding: 2px 6px; font-variant-numeric: tabular-nums; }
+.field.num::placeholder { color: var(--text-3); }
+.img-filters .note.img-count { padding: 0; }
+/* The count, then how many of those the page gives no size for, apart (each a unit of its own
+   in either direction). */
+#images-count, #images-unsized { unicode-bidi: isolate; }
+#images-unsized::before { content: "· "; color: var(--text-3); }
+.chip[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+.chip[aria-pressed="true"] .n { color: rgba(255, 255, 255, 0.85); }
+.img-actions { margin-top: 8px; }
+.img-actions .btn.accent { flex-grow: 2; }
+.images #images-said { padding: 8px 0 0; }
+
 /* ---- Downloads (#1496) ------------------------------------------------------------------- */
 .dl-tools { display: flex; flex-direction: column; gap: 8px; padding: 10px 12px 8px; }
 .search { position: relative; display: block; }

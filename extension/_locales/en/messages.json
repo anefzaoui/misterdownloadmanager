@@ -367,6 +367,78 @@
     "message": "Prefix media file names with the page title",
     "description": "Option in the browser extension media list: put the page title before the original file name when downloading a detected media file"
   },
+  "popup_images": {
+    "message": "Images on this page",
+    "description": "heading in the This page tab of the toolbar button's popup, over the part that finds the pictures of the current web page and sends them to the app"
+  },
+  "popup_images_text": {
+    "message": "Find this page's pictures at the largest size it lists, then send the ones you want to Link grabber.",
+    "description": "in the This page tab of the toolbar button's popup, before the Find images button; Link grabber is the name of the app's window that lists links to tick before downloading them"
+  },
+  "popup_images_find": {
+    "message": "Find images",
+    "description": "button in the This page tab of the toolbar button's popup: look for the pictures of the current web page (only when clicked); short"
+  },
+  "popup_images_min": {
+    "message": "Smallest size, in pixels",
+    "description": "in the This page tab of the toolbar button's popup, before two boxes for the smallest width and height of the pictures to keep: 'Smallest size, in pixels [ ] × [ ]'; pictures smaller than that are left out; short"
+  },
+  "popup_images_width": {
+    "message": "Smallest width, in pixels",
+    "description": "what a screen reader says for the box of the smallest width of the pictures to keep, in the This page tab of the toolbar button's popup"
+  },
+  "popup_images_height": {
+    "message": "Smallest height, in pixels",
+    "description": "what a screen reader says for the box of the smallest height of the pictures to keep, in the This page tab of the toolbar button's popup"
+  },
+  "popup_images_types": {
+    "message": "Image types",
+    "description": "what a screen reader says for the row of buttons that keep or leave out each type of picture (JPEG, PNG, WEBP...), in the This page tab of the toolbar button's popup"
+  },
+  "popup_images_other": {
+    "message": "Other",
+    "description": "button among the picture types (JPEG, PNG, WEBP...) in the This page tab of the toolbar button's popup: the pictures of any other or unknown type; short"
+  },
+  "popup_images_count": {
+    "message": "$shown$ of $total$ selected",
+    "description": "in the This page tab of the toolbar button's popup: how many of the pictures found pass the size and type filters, and will be sent",
+    "placeholders": {
+      "shown": {
+        "content": "$1",
+        "example": "12"
+      },
+      "total": {
+        "content": "$2",
+        "example": "40"
+      }
+    }
+  },
+  "popup_images_unsized": {
+    "message": "Size not given, kept: $n$",
+    "description": "in the This page tab of the toolbar button's popup, while a smallest width or height is set: how many of the selected pictures the page gives no size for (they are kept, not left out)",
+    "placeholders": {
+      "n": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "popup_images_send": {
+    "message": "Send to Link grabber",
+    "description": "button in the This page tab of the toolbar button's popup: send the selected pictures to the app's Link grabber window, where the user ticks which to download"
+  },
+  "popup_images_sent": {
+    "message": "Sent to Link grabber: tick the ones to download there.",
+    "description": "shown in the This page tab of the toolbar button's popup after the pictures were sent to the app's Link grabber window"
+  },
+  "popup_images_none": {
+    "message": "No images found on this page.",
+    "description": "shown in the This page tab of the toolbar button's popup when Find images found no picture on the current web page"
+  },
+  "popup_images_unreadable": {
+    "message": "The browser doesn't let add-ons read this page.",
+    "description": "shown in the This page tab of the toolbar button's popup when Find images can't look into the current page (a page of the browser's own, an add-on store)"
+  },
   "video_cant_save": {
     "message": "can't be saved",
     "description": "on the download button over a copy-protected video, after 'Protected video ·': it can't be downloaded; short, lower case"

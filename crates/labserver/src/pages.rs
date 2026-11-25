@@ -97,7 +97,40 @@ fn file_links(n: u32, pathlen: usize) -> String {
     out + "</ul>"
 }
 
-/// `/page?title=TEXT&link=PATH&files=N&pathlen=L&video=PATH|1&w=&h=&muted_loop=1&iframe=1&shadow=1&several=N&audio=PATH|1&
+/// `images=1` (#1781): a gallery for the add-on's Find images, each picture generated at its
+/// size (`?image=WxH`, a file big enough for it): an icon; a photo whose srcset lists a larger
+/// size (1600w); a `<picture>` whose WebP source lists two sizes; the larger photo shown again
+/// and linked (one address, found once); a thumbnail linking to its full size; a 1x/2x pair; a
+/// lazy loader's `data-src` under a `data:` placeholder; and neither to send: a `data:` picture
+/// and a link to a PDF. With `seed=N`, every picture's address carries it.
+// The data: picture: a GIF of one pixel.
+const GALLERY: &str = concat!(
+    "<p id=blank>images</p>",
+    "<img id=icon src=\"/gen/1K/icon.png?image=48x48\" width=24 height=24 alt=\"\">",
+    "<img id=photo1 src=\"/gen/16K/photo1-small.jpg?image=400x300\" ",
+    "srcset=\"/gen/16K/photo1-small.jpg?image=400x300 400w, ",
+    "/gen/256K/photo1.jpg?image=1600x1200 1600w\" sizes=400px width=400 height=300 alt=\"\">",
+    "<picture><source type=image/webp srcset=\"/gen/32K/photo2-600.webp?image=600x400 600w, ",
+    "/gen/128K/photo2.webp?image=1200x800 1200w\" sizes=300px>",
+    "<img id=photo2 src=\"/gen/32K/photo2.jpg?image=600x400\" width=300 height=200 alt=\"\">",
+    "</picture>",
+    "<img id=again src=\"/gen/256K/photo1.jpg?image=1600x1200\" width=160 height=120 alt=\"\">",
+    "<p><a id=full1 href=\"/gen/256K/photo1.jpg?image=1600x1200\">photo1</a></p>",
+    "<a id=full3 href=\"/gen/512K/photo3.png?image=2000x1500\">",
+    "<img id=thumb3 src=\"/gen/8K/photo3-thumb.png?image=200x150\" width=200 height=150 alt=\"\">",
+    "</a>",
+    "<img id=photo4 src=\"/gen/8K/photo4.gif?image=300x200\" ",
+    "srcset=\"/gen/32K/photo4@2x.gif?image=600x400 2x\" width=300 height=200 alt=\"\">",
+    "<img id=photo5 src=\"",
+    "data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACwAAAAAAQABAAACAkQBADs=",
+    "\" data-src=\"/gen/64K/photo5.avif?image=800x600\" width=200 height=150 alt=\"\">",
+    "<img id=inline src=\"",
+    "data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACwAAAAAAQABAAACAkQBADs=",
+    "\" alt=\"\">",
+    "<p><a id=notes href=\"/gen/1K/notes.pdf\">notes.pdf</a></p>",
+);
+
+/// `/page?title=TEXT&link=PATH&files=N&pathlen=L&images=1&video=PATH|1&w=&h=&muted_loop=1&iframe=1&shadow=1&several=N&audio=PATH|1&
 /// hls=1&dash=1&drm=1&hls2=1&dash2=1&hlsg=SITE&csp=strict`: a web page with what the browser
 /// extension acts on (see `HELP`).
 pub(crate) async fn page(RawQuery(q): RawQuery, headers: HeaderMap) -> Response {
@@ -110,6 +143,7 @@ pub(crate) async fn page(RawQuery(q): RawQuery, headers: HeaderMap) -> Response 
     let num = |k: &str, default: u32| m.get(k).and_then(|v| v.parse().ok()).unwrap_or(default);
     let size = (num("w", 640), num("h", 360));
     let (muted_loop, iframe, shadow) = (flag("muted_loop"), flag("iframe"), flag("shadow"));
+    let images = flag("images");
     let several = num("several", 0).min(16);
     let csp = m.get("csp") == Some(&"strict");
     // #900: the stream on another site (`hlsg=SITE`), served only to this page's Origin and
@@ -159,6 +193,7 @@ pub(crate) async fn page(RawQuery(q): RawQuery, headers: HeaderMap) -> Response 
             || shadow
             || (link.is_none()
                 && files == 0
+                && !images
                 && audio.is_none()
                 && several == 0
                 && streams.is_empty()) =>
@@ -181,6 +216,14 @@ pub(crate) async fn page(RawQuery(q): RawQuery, headers: HeaderMap) -> Response 
     }
     if files > 0 {
         body += &file_links(files, num("pathlen", 0).min(MAX_PATH) as usize);
+    }
+    if images {
+        // `seed=N`: the same gallery at other addresses (each picture's own seed), for a list
+        // that already has the first ones (Link grabber adds an address once).
+        match m.get("seed").and_then(|v| v.parse::<u64>().ok()) {
+            Some(seed) => body += &GALLERY.replace("?image=", &format!("?seed={seed}&image=")),
+            None => body += GALLERY,
+        }
     }
     if let Some(src) = video {
         if iframe {

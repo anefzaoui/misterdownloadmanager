@@ -42,6 +42,17 @@ Point at a video and a small **Download video** button appears at its edge. It o
 from the stream address the page wrote for its player. You can hide it on one video or one
 site, or turn it off in **Options**.
 
+## All the images on a page
+
+<!--@coming 0.5.3-->
+
+To save a whole gallery, open the toolbar button's **This page** tab and click **Find images**.
+The extension finds each picture the page shows at the largest size the page lists for it, the
+ones it loads only as you scroll, and links that go straight to a picture, each once. Leave out
+icons and thumbnails with a smallest width and height, and any type you don't want (JPEG, PNG,
+WebP, GIF, AVIF...), then **Send to Link grabber**: MDM looks each one up for its name and size,
+and you tick there the ones to download. Nothing is looked for until you click.
+
 ## Installed from the store, kept up to date
 
 Install MDM with its setup and keep **Set up browser integration** ticked. Then add the

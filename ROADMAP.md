@@ -574,6 +574,9 @@ These ship in the next version.
   page's pause end it and keep what arrived as the finished file; Cancel keeps nothing, and every
   other download pauses as before
   ([#1780](https://github.com/anefzaoui/misterdownloadmanager/issues/1780))
+- ✅ The browser add-on finds all the images on a page when asked (**This page → Find images**),
+  at the largest size listed, filtered by size and type, and sends them to Link grabber
+  ([#1781](https://github.com/anefzaoui/misterdownloadmanager/issues/1781))
 - ✅ The browser add-on's video button before the video plays: on a site yt-dlp doesn't read, it
   looks up the stream address the page wrote for its player (master playlist first, else the best
   quality named), only addresses the page names, on a page with one video
