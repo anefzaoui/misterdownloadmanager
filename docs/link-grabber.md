@@ -8,7 +8,7 @@
 
 ## Where links come from
 
-- **The browser.** Right-click a page for **Download all links with Mister Download Manager**, or select part of it for **Download selected links with Mister Download Manager**. The page's referrer and cookies go with each link. **Download all links** also sends the pictures located on the page, hidden at first (see **Hide images located on this web page** below).
+- **The browser.** Right-click a page for **Download all links with Mister Download Manager**, or select part of it for **Download selected links with Mister Download Manager**. The page's referrer and cookies go with each link. Both also send the pictures located on the page (or in the selection), hidden at first (see **Hide images located on this web page** below).
 - **A page's images.** The browser add-on's toolbar button, **This page → Find images**, sends the pictures of a page at the largest size it lists, those you kept by size and type ([Images on this page](browser-integration.md#images-on-this-page)).
 - **Tasks → Import → From text file** and **From IDM export file**. An `.ef2` file brings each download's referrer and cookies.
 - Several links, or a `.txt` or `.ef2` list, dropped on the download list.
@@ -79,7 +79,7 @@ Turn the look-ups off in **Options → Archives → Look links up when they arri
 
 **Hide web pages** (on by default) leaves out links to pages (`.html`, `.php` and the like, and any link whose look-up found a web page): they are neither shown nor downloaded.
 
-**Hide images located on this web page** (ticked when the window opens) leaves out the pictures the browser's **Download all links** found shown on the page (its images, at the largest size the page lists for each), so the list holds the page's links. Untick it to see the pictures and tick the ones you want; while it is ticked they are neither shown nor downloaded. A link to a picture (a thumbnail linking to its full size) is a link like any other, and always shows.
+**Hide images located on this web page** leaves out the pictures the browser found shown on the page (its images, at the largest size the page lists for each), so the list holds the page's links. It is ticked again each time a page's links come with such pictures, and not remembered: untick it to see the pictures and tick the ones you want; while it is ticked they are neither shown nor downloaded. A link to a picture (a thumbnail linking to its full size) is a link like any other and always shows, even when the same picture is also shown on the page.
 
 ## The package box
 

@@ -102,11 +102,11 @@ fn file_links(n: u32, pathlen: usize) -> String {
 /// size (1600w); a `<picture>` whose WebP source lists two sizes; the larger photo shown again
 /// and linked (one address, found once); a thumbnail linking to its full size; a 1x/2x pair; a
 /// lazy loader's `data-src` under a `data:` placeholder; and neither to send: a `data:` picture
-/// and a link to a PDF. Then CSS background pictures: `#bg1`, a 1200x900 picture shown in a
-/// smaller box, over a gradient, by the `background` shorthand; `#bg2`, an `image-set()` whose
-/// 2x (800x600) a 1x screen doesn't load, in a 400x300 box; `#bg3` a gradient alone; `#bg4` the
-/// large photo again; `#bg5` a `data:` picture; `#bg6` one under `display: none`. With `seed=N`,
-/// every picture's address carries it.
+/// and a link to a PDF. Then CSS background pictures, which aren't pictures located on the page
+/// and are never sent (Find images and Download all links take `<img>` only): `#bg1` by the
+/// `background` shorthand over a gradient, `#bg2` an `image-set()` (1x, 2x), `#bg3` a gradient,
+/// `#bg4` the large photo again, `#bg5` a `data:` picture, `#bg6` under `display: none`. With
+/// `seed=N`, every picture's address carries it.
 // The data: picture: a GIF of one pixel.
 const GALLERY: &str = concat!(
     "<p id=blank>images</p>",

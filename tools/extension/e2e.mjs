@@ -43,10 +43,10 @@
 // .m3u8 or .mpd, served as text/plain or octet-stream, #171), sniffed (#171 without yt-dlp: such
 // streams found only when asked, by the button and the media list, a text decoy never), media (the
 // toolbar button's list of the media a tab loaded: streams, files, a protected stream; #38),
-// images (its Find images on a gallery: the largest sizes listed, CSS backgrounds, each once,
-// filtered by size and type, the kept ones only to Link grabber, #1781), imageslinks (the
-// right-click menu's Download all links on that gallery: its links, and its pictures marked as
-// located on the page, #1781),
+// images (its Find images on a gallery: the largest sizes listed, each once, never a CSS
+// background, filtered by size and type, the kept ones only to Link grabber, #1781), imageslinks
+// (the right-click menu's Download all links and Download selected links on that gallery: the
+// links, and the <img> pictures marked as located on the page, #1781),
 // scripted (a video a server's program sends, named after its page with its real type: the list,
 // the button, the Download video window; #695, #800), guarded (a stream another site's server
 // serves to its page's player only: looked up and downloaded with the Origin and Referer the
@@ -2414,12 +2414,11 @@ async function proxyInChromium(t) {
 const GALLERY_SHOWN = `(() => {
   const i = [...document.images];
   const bg = performance.getEntriesByType("resource").some((e) => e.name.includes("/bg1.jpg"));
-  return i.every((x) => x.complete) && ["photo1", "photo2", "photo4", "thumb3"].every((id) => document.getElementById(id).naturalWidth > 0) && bg && i.length + " pictures and 6 backgrounds on the page";
+  return i.every((x) => x.complete) && ["photo1", "photo2", "photo4", "thumb3"].every((id) => document.getElementById(id).naturalWidth > 0) && bg && i.length + " pictures and 6 CSS backgrounds on the page";
 })()`;
 
-// #1781: the gallery's CSS background pictures found (#bg1, #bg2's 2x, #bg6; not #bg3's
-// gradient, #bg4's photo1 again or #bg5's data: picture).
-const GALLERY_BACKGROUNDS = ["/gen/192K/bg1.jpg", "/gen/64K/bg2@2x.png", "/gen/64K/bg6.webp"];
+// #1781: the gallery's CSS background pictures, never sent: not pictures located on the page.
+const GALLERY_BACKGROUNDS = ["/gen/192K/bg1.jpg", "/gen/16K/bg2.png", "/gen/64K/bg2@2x.png", "/gen/64K/bg6.webp"];
 
 // #1781: MDM's look-ups in Link grabber of the gallery's run `seed` (its requests, not the
 // browser's own for the pictures it showed: those say Sec-Fetch-Mode no-cors): each of `sent`,
@@ -4224,12 +4223,10 @@ thumb.addEventListener("mouseleave", () => { preview.classList.add("off"); docum
 
   // #1781: the toolbar button's Find images on the lab's gallery (/page?images=1). It finds each
   // picture at the largest size the page lists (a srcset's 1600w, a <picture>'s WebP 1200w, a 2x),
-  // a lazy loader's data-src, a link to a full size, and the CSS background pictures (one under a
-  // gradient, sized by its file, not its smaller box; an image-set()'s 2x, by its box; one under
-  // display: none, size unknown); each address once (the large photo is also shown, linked and a
-  // background), no gradient, no data: picture, no PDF. At least 300 x 300 with GIF off keeps
-  // seven, and those seven only reach Link grabber: MDM looks each up there and nothing else.
-  // E2E_SHOTS: <lang>-<scheme>-images-page.png (the tab as it opens), -images-found.png (the
+  // a lazy loader's data-src, a link to a full size; each address once (the large photo is also
+  // shown and linked), no data: picture, no PDF, no CSS background. At least 300 x 300 with GIF
+  // off keeps four, and those four only reach Link grabber: MDM looks each up there and nothing
+  // else. E2E_SHOTS: <lang>-<scheme>-images-page.png (the tab as it opens), -images-found.png (the
   // filters set) and -images-sent.png.
   async images(t) {
     const shots = process.env.E2E_SHOTS ? path.resolve(process.env.E2E_SHOTS) : "";
@@ -4271,18 +4268,16 @@ thumb.addEventListener("mouseleave", () => { preview.classList.add("off"); docum
         return (s.chips.length || s.said) && s;
       });
       const types = found.chips.map(([type, n]) => `${type} ${n}`).join(", ");
-      if (types !== "JPEG 2, PNG 4, WEBP 2, GIF 1, AVIF 1") throw new Error(`the types found: ${types || found.said}`);
-      if (numbers(found.count).join(" ") !== "10 10") throw new Error(`found: ${found.count}`);
-      // At least 300 x 300: the icon and the thumbnail left out; #bg1 kept by its file's size
-      // (1200 x 900, its box is 240 x 160), #bg2's 2x by its box (400 x 300); the three the page
-      // gives no size for (the lazy one, the linked one, the hidden background) kept and said;
-      // then GIF off.
+      if (types !== "JPEG 1, PNG 3, WEBP 1, GIF 1, AVIF 1") throw new Error(`the types found: ${types || found.said}`);
+      if (numbers(found.count).join(" ") !== "7 7") throw new Error(`found: ${found.count}`);
+      // At least 300 x 300: the icon and the thumbnail left out, the two the page gives no size
+      // for (the lazy one, the linked one) kept and said; then GIF off.
       await popup.evaluate(`(() => { for (const id of ["images-w", "images-h"]) { const i = document.getElementById(id); i.value = "300"; i.dispatchEvent(new Event("input")); } return true; })()`);
       const sized = await state();
-      if (numbers(sized.count).join(" ") !== "8 10" || numbers(sized.unsized).join(" ") !== "3") throw new Error(`at least 300 x 300: ${sized.count} / ${sized.unsized}`);
+      if (numbers(sized.count).join(" ") !== "5 7" || numbers(sized.unsized).join(" ") !== "2") throw new Error(`at least 300 x 300: ${sized.count} / ${sized.unsized}`);
       await popup.evaluate(`(document.querySelector('#images-types .chip[data-type="GIF"]').click(), true)`);
       kept = await state();
-      if (numbers(kept.count).join(" ") !== "7 10" || !kept.send) throw new Error(`GIF off: ${kept.count}, send ${kept.send}`);
+      if (numbers(kept.count).join(" ") !== "4 7" || !kept.send) throw new Error(`GIF off: ${kept.count}, send ${kept.send}`);
       if (shots && popup.shot) {
         await popup.evaluate(`(document.getElementById("images").scrollIntoView({ block: "nearest" }), true)`);
         await popup.shot(path.join(shots, `${tag}-images-found.png`));
@@ -4302,54 +4297,64 @@ thumb.addEventListener("mouseleave", () => { preview.classList.add("off"); docum
     }
     // MDM's look-ups in Link grabber (its requests, not the browser's own for the pictures it
     // showed: those say Sec-Fetch-Mode no-cors).
-    const sent = ["/gen/256K/photo1.jpg", "/gen/128K/photo2.webp", "/gen/512K/photo3.png", "/gen/64K/photo5.avif", "/gen/192K/bg1.jpg", "/gen/64K/bg2@2x.png", "/gen/64K/bg6.webp"];
-    const left = ["/gen/1K/icon.png", "/gen/8K/photo3-thumb.png", "/gen/32K/photo4@2x.gif", "/gen/8K/photo4.gif", "/gen/16K/photo1-small.jpg", "/gen/32K/photo2-600.webp", "/gen/32K/photo2.jpg", "/gen/1K/notes.pdf", "/gen/16K/bg2.png"];
+    const sent = ["/gen/256K/photo1.jpg", "/gen/128K/photo2.webp", "/gen/512K/photo3.png", "/gen/64K/photo5.avif"];
+    const left = ["/gen/1K/icon.png", "/gen/8K/photo3-thumb.png", "/gen/32K/photo4@2x.gif", "/gen/8K/photo4.gif", "/gen/16K/photo1-small.jpg", "/gen/32K/photo2-600.webp", "/gen/32K/photo2.jpg", "/gen/1K/notes.pdf", ...GALLERY_BACKGROUNDS];
     const windows = await galleryLookups(seed, sent, left);
     return `${shown}; found ${found.chips.map(([type, n]) => `${type} ${n}`).join(", ")}; 300 x 300 without GIF: ${kept.count}; MDM looked up ${sent.map((p) => p.split("/").pop()).join(", ")} only${windows}`;
   },
 
   // #1781: the right-click menu's "Download all links" on the lab's gallery: its links (the large
-  // photo, photo3.png, the PDF) and, after them, the pictures located on the page, found as Find
-  // images finds them (none left out by size or type), marked as such: MDM's log says how many of
-  // the page's links are pictures on it (Link grabber hides those while "Hide images located on
-  // this web page" is ticked), and it looks every one up, and nothing else (the smaller sizes, the
-  // 1x of a 2x). A picture the page links to is a link, not marked. Firefox's right-click menu is
-  // opened and its item chosen; Chromium's can't be opened headless, so its handler is called as
-  // the menu calls it.
+  // photo, photo3.png, the PDF) and, after them, its <img> pictures, found as Find images finds
+  // them (none left out by size or type; never a CSS background), marked as located on the page:
+  // MDM's log says how many of the page's links are such pictures (Link grabber hides those while
+  // "Hide images located on this web page" is ticked), and it looks every one up, and nothing
+  // else (the smaller sizes, the 1x of a 2x, the backgrounds). The large photo, shown and linked,
+  // is a link, not marked. Then "Download selected links" on a selection of the gallery's first
+  // part: its one link and the two pictures in it, marked. Firefox's right-click menu is opened
+  // and its item chosen; Chromium's can't be opened headless, so its handler is called as the
+  // menu calls it.
   async imageslinks(t) {
-    await clearLog();
-    // Addresses of this run's own (see images).
-    const seed = Date.now() % 1e9;
-    const page = `${LAB}/page?images=1&seed=${seed}&title=Gallery`;
-    await t.session.navigate(page);
-    const shown = await until("the gallery's pictures", 20000, () => t.session.evaluate(GALLERY_SHOWN));
     const log = path.join(data, "logs", "mdm.log");
-    const from = fs.existsSync(log) ? fs.statSync(log).size : 0;
-    let clicked;
-    if (t.kind === "chromium") {
-      clicked = await t.session.inExtension(`(async () => {
-        const tab = (await chrome.tabs.query({})).find((x) => x.url === ${JSON.stringify(page)});
-        if (!tab) return "no tab";
-        await menuClicked({ menuItemId: "mdm-all", pageUrl: tab.url, frameId: 0 }, tab);
-        const { status } = await chrome.storage.local.get("status");
-        return "called; status " + JSON.stringify(status && status.why);
-      })()`);
-    } else {
-      const at = await t.session.evaluate(`(() => { const b = document.getElementById("blank").getBoundingClientRect(); return [b.left + 4, b.top + b.height / 2]; })()`);
-      clicked = await t.session.menu(at[0], at[1], "Download all links with Mister Download Manager");
-      if (!String(clicked).startsWith("chosen")) throw new Error(`the menu: ${clicked}`);
-    }
-    const links = ["/gen/256K/photo1.jpg", "/gen/512K/photo3.png", "/gen/1K/notes.pdf"];
-    const pictures = ["/gen/1K/icon.png", "/gen/128K/photo2.webp", "/gen/8K/photo3-thumb.png", "/gen/32K/photo4@2x.gif", "/gen/64K/photo5.avif", ...GALLERY_BACKGROUNDS];
-    const said = () => (fs.existsSync(log) ? fs.readFileSync(log, "utf8").slice(from) : "");
-    const marked = await until("MDM's line on the page's pictures", 30000, () => /a page's (\d+) links, (\d+) of them pictures located on it/.exec(said())).catch((e) => {
-      e.message += ` (${clicked})`;
-      throw e;
-    });
-    if (`${marked[1]} ${marked[2]}` !== `${links.length + pictures.length} ${pictures.length}`) throw new Error(`MDM: ${marked[0]}, not ${links.length + pictures.length} links, ${pictures.length} pictures`);
-    const left = ["/gen/8K/photo4.gif", "/gen/16K/photo1-small.jpg", "/gen/32K/photo2-600.webp", "/gen/32K/photo2.jpg", "/gen/16K/bg2.png"];
-    const windows = await galleryLookups(seed, [...links, ...pictures], left);
-    return `${shown}; ${String(clicked).split(" {")[0]}; MDM: ${marked[0]}; looked up ${links.length} links and ${pictures.length} pictures, none of the ${left.length} others${windows}`;
+    const round = async (selected) => {
+      await clearLog();
+      // Addresses of this round's own (see images).
+      const seed = Date.now() % 1e9;
+      const page = `${LAB}/page?images=1&seed=${seed}&title=Gallery`;
+      await t.session.navigate(page);
+      const shown = await until("the gallery's pictures", 20000, () => t.session.evaluate(GALLERY_SHOWN));
+      // The selection: from the gallery's first line to the large photo's link (the icon, photo1,
+      // the <picture>, photo1 again and its link).
+      if (selected) await t.session.evaluate(`(() => { const r = document.createRange(); r.setStartBefore(document.getElementById("blank")); r.setEndAfter(document.getElementById("full1")); const s = getSelection(); s.removeAllRanges(); s.addRange(r); return s.toString().length; })()`);
+      const from = fs.existsSync(log) ? fs.statSync(log).size : 0;
+      const item = selected ? "mdm-selected" : "mdm-all";
+      let clicked;
+      if (t.kind === "chromium") {
+        clicked = await t.session.inExtension(`(async () => {
+          const tab = (await chrome.tabs.query({})).find((x) => x.url === ${JSON.stringify(page)});
+          if (!tab) return "no tab";
+          await menuClicked({ menuItemId: ${JSON.stringify(item)}, pageUrl: tab.url, frameId: 0 }, tab);
+          const { status } = await chrome.storage.local.get("status");
+          return "called; status " + JSON.stringify(status && status.why);
+        })()`);
+      } else {
+        const at = await t.session.evaluate(`(() => { const b = document.getElementById("blank").getBoundingClientRect(); return [b.left + 4, b.top + b.height / 2]; })()`);
+        clicked = await t.session.menu(at[0], at[1], selected ? "Download selected links with Mister Download Manager" : "Download all links with Mister Download Manager");
+        if (!String(clicked).startsWith("chosen")) throw new Error(`the menu: ${clicked}`);
+      }
+      const links = selected ? ["/gen/256K/photo1.jpg"] : ["/gen/256K/photo1.jpg", "/gen/512K/photo3.png", "/gen/1K/notes.pdf"];
+      const pictures = selected ? ["/gen/1K/icon.png", "/gen/128K/photo2.webp"] : ["/gen/1K/icon.png", "/gen/128K/photo2.webp", "/gen/8K/photo3-thumb.png", "/gen/32K/photo4@2x.gif", "/gen/64K/photo5.avif"];
+      const said = () => (fs.existsSync(log) ? fs.readFileSync(log, "utf8").slice(from) : "");
+      const marked = await until("MDM's line on the page's pictures", 30000, () => /a page's (\d+) links, (\d+) of them pictures located on it/.exec(said())).catch((e) => {
+        e.message += ` (${clicked})`;
+        throw e;
+      });
+      if (`${marked[1]} ${marked[2]}` !== `${links.length + pictures.length} ${pictures.length}`) throw new Error(`MDM: ${marked[0]}, not ${links.length + pictures.length} links, ${pictures.length} pictures`);
+      const others = ["/gen/1K/icon.png", "/gen/128K/photo2.webp", "/gen/8K/photo3-thumb.png", "/gen/32K/photo4@2x.gif", "/gen/64K/photo5.avif", "/gen/512K/photo3.png", "/gen/1K/notes.pdf"].filter((x) => !pictures.includes(x) && !links.includes(x));
+      const left = ["/gen/8K/photo4.gif", "/gen/16K/photo1-small.jpg", "/gen/32K/photo2-600.webp", "/gen/32K/photo2.jpg", ...GALLERY_BACKGROUNDS, ...others];
+      const windows = await galleryLookups(seed, [...links, ...pictures], left);
+      return `${selected ? "selected" : "all"}: ${String(clicked).split(" {")[0]}; MDM: ${marked[0]}; looked up ${links.length} links and ${pictures.length} pictures, none of the ${left.length} others${windows} (${shown})`;
+    };
+    return `${await round(false)}; ${await round(true)}`;
   },
 
   // #695, #800: a video a server's program sends (/remote_control.php, /stream.php as video/mp4,

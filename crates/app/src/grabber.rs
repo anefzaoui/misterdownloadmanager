@@ -267,7 +267,8 @@ pub struct Grabber {
     source: String,
     rows: winui::RowList,
     pub hide_pages: bool,
-    /// "Hide images located on this web page" (#1781): ticked as the window opens.
+    /// "Hide images located on this web page" (#1781): ticked again by each list that brings
+    /// such pictures, never remembered.
     pub hide_images: bool,
     /// The default folders (Options → Save to), as category_folder reads them.
     downloads: PathBuf,
@@ -311,8 +312,13 @@ impl Grabber {
 
     /// More links, from `source` ("Links from the browser", a file's name): each in its
     /// package; one the download list has (`known`) comes unticked under "Already in the list";
-    /// a link here already is not added again.
+    /// a link here already is not added again. A list that brings pictures located on the page
+    /// (#1781) ticks "Hide images located on this web page" again; an address that is such a
+    /// picture and a link is a link.
     pub fn add(&mut self, found: Vec<Imported>, source: String, known: impl Fn(&Url) -> bool) {
+        if found.iter().any(|d| d.page_image) {
+            self.hide_images = true;
+        }
         // The addresses already here, looked up once: a list of 10,000 compared each link with
         // every other one, and its packages' defaults were worked out again for each (#805).
         let mut here: std::collections::HashSet<Url> =
@@ -323,6 +329,17 @@ impl Grabber {
                 continue;
             };
             if !here.insert(address_key(&url)) {
+                // Here already as a picture on the page, and now a link: a link (shown).
+                if !d.page_image {
+                    let key = address_key(&url);
+                    if let Some(l) = self
+                        .links
+                        .iter_mut()
+                        .find(|l| l.found.page_image && address_key(&l.url) == key)
+                    {
+                        l.found.page_image = false;
+                    }
+                }
                 continue;
             }
             let magnet = url.scheme() == "magnet";
@@ -1875,7 +1892,7 @@ mod tests {
                 link("https://s.org/a.zip", Some("https://s.org/gallery")),
                 link("https://s.org/full.jpg", Some("https://s.org/gallery")),
                 image("https://s.org/shown.jpg"),
-                image("https://s.org/bg.png"),
+                image("https://s.org/pic.png"),
             ],
             String::new(),
             |_| false,
@@ -1902,7 +1919,28 @@ mod tests {
         );
         g.hide_images = false;
         g.links.iter_mut().for_each(|l| l.on = true);
-        assert_eq!(names(&g), ["a.zip", "full.jpg", "shown.jpg", "bg.png"]);
+        assert_eq!(names(&g), ["a.zip", "full.jpg", "shown.jpg", "pic.png"]);
+        // Unticked for that list only: the next list with pictures hides them all again. A link
+        // to a picture already here as one on the page makes it a link (shown), once.
+        g.add(
+            vec![
+                image("https://s.org/more.jpg"),
+                link("https://s.org/shown.jpg", Some("https://s.org/gallery")),
+            ],
+            String::new(),
+            |_| false,
+        );
+        assert!(g.hide_images);
+        assert_eq!(names(&g), ["a.zip", "full.jpg", "shown.jpg"]);
+        assert_eq!(g.links.len(), 5);
+        // A list of links only leaves the box as it is.
+        g.hide_images = false;
+        g.add(
+            vec![link("https://s.org/b.zip", None)],
+            String::new(),
+            |_| false,
+        );
+        assert!(!g.hide_images);
     }
 
     #[test]
