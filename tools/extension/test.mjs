@@ -3161,6 +3161,24 @@ function videoButton({ stored = {}, location, iframes, videos, subframe = false 
   assert.equal(pointerTarget(next, null, false), next);
   assert.equal(pointerTarget(null, mine, false), null);
   assert.ok(fn("look").includes("pointerTarget(videoAt(pointer.x, pointer.y), video, menuOpen)"), "look: kept on its video while its menu is open");
+  // The open menu inside the window (menuFit): below the button when it fits, above when only
+  // there, else its list shortened on the side with more room, never past the window's top.
+  const menuFit = make(["menuFit"], "menuFit");
+  assert.deepEqual(menuFit(100, 400, 300, 300, 900), { top: 36, list: null }, "room below");
+  assert.deepEqual(menuFit(700, 400, 300, 300, 900), { top: -406, list: null }, "room above only");
+  // The played case's window (805 px high, the button at 230 over a feed's second video): 575 px
+  // fit neither side; below, its list 44 px shorter.
+  assert.deepEqual(menuFit(230, 575, 300, 300, 805), { top: 36, list: 256 }, "more room below");
+  const up = menuFit(560, 575, 300, 300, 805);
+  assert.deepEqual(up, { top: -552, list: 271 }, "more room above");
+  assert.ok(560 + up.top >= 8, "above: inside the window");
+  // A list shortened before, the window grown since: whole again.
+  assert.deepEqual(menuFit(230, 531, 256, 300, 1000), { top: 36, list: null }, "whole again");
+  // A tiny window: three lines at least; above, its top kept in the window.
+  const tiny = menuFit(150, 575, 300, 300, 300);
+  assert.equal(tiny.list, 84);
+  assert.ok(150 + tiny.top >= 8, "tiny: never past the window's top");
+  assert.ok(fn("placeMenu").includes("menuFit("), "placeMenu places the menu with menuFit");
   // #1582: where the page is asked what lies under a spot the button would take (onControl).
   // Bilibili's player keeps a feedback button (54 x 24) at its top right, 12 px from its edge, in
   // view while the pointer moves over the player: on a 1550 px wide player the button's default

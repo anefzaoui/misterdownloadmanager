@@ -4500,10 +4500,12 @@ thumb.addEventListener("mouseleave", () => { preview.classList.add("off"); docum
       const shots = process.env.E2E_SHOTS && s.shot ? path.resolve(process.env.E2E_SHOTS) : "";
       const lang = process.env.E2E_LANG || "en";
       // The button over `v`, the pointer brought onto it again a few times (MDM may be slow to say
-      // the button may show while it looks a video up).
+      // the button may show while it looks a video up). Over `v` itself (buttonOver): the last
+      // video's button stays a moment, faint, after the pointer left it (#1735), and its arrow,
+      // scrolled out of the window with its video, is no button for this one.
       const over = async (v) => {
         for (let i = 0; i < 4; i++) {
-          const b = await hover(s, v);
+          const b = await buttonOver(s, v);
           if (b) return b;
           await s.mouse(2, 2);
           await sleep(1000);
@@ -4521,7 +4523,7 @@ thumb.addEventListener("mouseleave", () => { preview.classList.add("off"); docum
         // "before"), which never offers what played: its menu once its look-up ended, then no more.
         // Its menu: its arrow (the pointer resting on the button starts its look-up, #1053), then
         // what the look-up and what the tab played came to (a minute and a half at most).
-        await clickArrow(s);
+        if (!(await clickArrow(s))) throw new Error(`${sel}: the button has no arrow`);
         const filled = (q) => q && !q.busy && (q.rows.length || q.note);
         const said = new Set();
         const m = await until(`${sel}: its menu`, 90000, async () => {
@@ -4542,6 +4544,17 @@ thumb.addEventListener("mouseleave", () => { preview.classList.add("off"); docum
           return null;
         }
         if (!m.rows.length) throw new Error(`${sel}: its menu says "${m.note}"`);
+        // The whole menu inside the window, where a person can reach its lines (grown with its
+        // filters, #1735, it went past the window's top over a video in the window's middle). Its
+        // lines where they are then.
+        const view = await s.evaluate("({ w: innerWidth, h: innerHeight })");
+        const placed = await until(`${sel}: its menu inside the window`, 3000, async () => {
+          const q = await s.picks("row");
+          return q && q.box.t >= 0 && q.box.l >= 0 && q.box.b <= view.h && q.box.r <= view.w ? q : null;
+        }).catch(async () => {
+          throw new Error(`${sel}: its menu reaches out of the window: ${JSON.stringify(((await s.picks()) || {}).box)} in ${view.w}x${view.h}`);
+        });
+        Object.assign(m, placed);
         const p = await s.pill(PILL_STATE);
         if (!p || p.chip !== chip) throw new Error(`${sel}: the button's chip is "${p && p.chip}", not ${chip}`);
         if (shots && shot) {

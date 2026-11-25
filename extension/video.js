@@ -1014,6 +1014,29 @@
     return since < faintMs ? "faint" : "gone";
   }
 
+  // Where the open menu goes (a plain function, run as it is by tools/extension/test.mjs): `top`
+  // is the button's top in the window (`viewH` high), `h` the menu's height now, `listH` its list
+  // of qualities' height now and `listFull` that list's height when nothing shortens it (its
+  // CSS cap). Below the button (36 px down) when it fits there whole, else above it (6 px up)
+  // when it fits there; else on the side with more room, its list shortened to what fits (three
+  // lines at least) and, above, never past the window's top. `list`: the list's height in px,
+  // or null (as it is). Grown with its filters (#1735) and its lines since, the menu no longer
+  // fit below a feed's video in the middle of a window, and above it went past the window's
+  // top: "Download best" and the pictures' lines out of reach.
+  function menuFit(top, h, listH, listFull, viewH) {
+    const MARGIN = 8;
+    const MIN_LIST = 84;
+    const natural = h - listH + listFull;
+    const below = viewH - (top + 36) - MARGIN;
+    const above = top - 6 - MARGIN;
+    if (natural <= below) return { top: 36, list: null };
+    if (natural <= above) return { top: Math.round(-natural - 6), list: null };
+    const down = below >= above;
+    const list = Math.floor(Math.max(Math.min(MIN_LIST, listFull), listFull - (natural - Math.max(below, above))));
+    const shown = natural - listFull + list;
+    return { top: down ? 36 : Math.round(Math.max(-shown - 6, MARGIN - top)), list };
+  }
+
   // ---- the menu's filters (#1735): plain functions, run as they are by tools/extension/test.mjs.
   // A filter is { kind: "all" | "video" | "audio", type: a file type ("MP4", "" for any), codec: a
   // picture's codec ("AV1", "" for any) }, kept per site.
@@ -1950,11 +1973,15 @@ button:focus-visible { outline: none; }
     return left + w / 2 > r.left + r.width / 2;
   }
 
-  // The open menu opens below the button, or above it near the bottom of the window.
+  // The open menu opens below the button, or above it near the bottom of the window, inside the
+  // window either way: where neither side has room for it whole, its list of qualities is made
+  // shorter (it scrolls) on the side with more room (menuFit).
   function placeMenu(top, left, w) {
-    const h = menu.offsetHeight;
-    const below = top + 36 + h < innerHeight;
-    menu.style.top = below ? "36px" : `${-h - 6}px`;
+    const full = Math.min(rows.scrollHeight, 300, innerHeight * 0.45);
+    const fit = menuFit(top, menu.offsetHeight, rows.offsetHeight, full, innerHeight);
+    const list = fit.list === null ? "" : `${fit.list}px`;
+    if (rows.style.maxHeight !== list) rows.style.maxHeight = list;
+    menu.style.top = `${fit.top}px`;
     menu.style.left = towardEnd(left, w) ? `${w - menu.offsetWidth}px` : "0";
   }
 

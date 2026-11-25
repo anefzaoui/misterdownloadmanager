@@ -2061,6 +2061,12 @@ These ship in the next version.
 - ✅ Tests: the check of a live stream stopped after its recording was renamed no longer fails now
   and then on Windows: the fake yt-dlp's copy of the recording is there only once it is whole and
   closed, so the check never reads it while the copy still holds it
+- ✅ The Download video button's menu stays inside the browser's window: grown with its filters
+  and its new lines, it was taller than the room below a video in the middle of the window,
+  opened above it and went past the window's top, "Download best" and the first qualities out of
+  reach; where neither side has room for it whole, its list of qualities is shorter and scrolls.
+  Tests: the feed case of the add-on's real-browser tests checks that the menu is inside the
+  window, and waits for the button over the video it points at, not the last one's, still fading
 
 ## Being worked on
 
