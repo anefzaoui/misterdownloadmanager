@@ -2116,6 +2116,7 @@ These ship in the next version.
   reach; where neither side has room for it whole, its list of qualities is shorter and scrolls.
   Tests: the feed case of the add-on's real-browser tests checks that the menu is inside the
   window, and waits for the button over the video it points at, not the last one's, still fading
+- ✅ Torrents: magnet links, torrent files and trackers are checked more carefully.
 
 ## Being worked on
 
