@@ -1223,7 +1223,8 @@ impl OptionsDialog {
             58.0,
             398.0,
         );
-        group(ui, o, 21.0, 94.0, 380.0, 201.0, "Save To...");
+        // Taller than IDM's by the row of "Save every download in General's folder" (#1973).
+        group(ui, o, 21.0, 94.0, 380.0, 224.0, "Save To...");
         // i18n: noun: label before the list of categories
         text(
             &p,
@@ -1291,6 +1292,12 @@ impl OptionsDialog {
         let cat = cats[self.category];
         let label = cat.shown();
         let with_category = |template: &str| crate::i18n::fmt(template, &[("category", &label)]);
+        // One folder for every download (#1973): the downloads of every category go to
+        // General's folder, which only General's row changes; another category's own folder
+        // is kept for when it is off, shown greyed meanwhile as General's.
+        let general = Category::General.shown();
+        let with_general = |template: &str| crate::i18n::fmt(template, &[("category", &general)]);
+        let locked = self.s.one_folder && cat != Category::General;
         let line = with_category(crate::i18n::t(
             "Automatically put in \"{category}\" category the following file types:",
         ));
@@ -1304,23 +1311,27 @@ impl OptionsDialog {
         // Browse as wide as its label in this language (#192); the box ends 7 px before it.
         let (browse_x, browse_w) =
             winui::buttons_to_right(&p, 392.0, 0.0, &[("Browse", 73.0)], 160.0)[0];
-        winui::edit_light_on(
-            ui,
-            r(o, 31.0, 239.0, browse_x - 7.0 - 31.0, 23.0),
-            &mut self.cat_dir,
-            true,
-            false,
-            LIGHT_PAGE(),
-        );
+        let dir_rc = r(o, 31.0, 239.0, browse_x - 7.0 - 31.0, 23.0);
+        if locked {
+            let mut one = display_dir(&self.s.category_dir(Category::General, downloads));
+            winui::edit_light_on(ui, dir_rc, &mut one, false, false, LIGHT_PAGE());
+        } else {
+            winui::edit_light_on(ui, dir_rc, &mut self.cat_dir, true, false, LIGHT_PAGE());
+        }
         if winui::button_light(
             ui,
             r(o, browse_x, 240.0, browse_w, 21.0),
             // i18n: verb: choose a folder
             "Browse",
-            ButtonKind::Normal,
+            if locked {
+                ButtonKind::Disabled
+            } else {
+                ButtonKind::Normal
+            },
             false,
         )
         .clicked()
+            && !locked
         {
             let (title, from) = (dir_line.clone(), self.cat_dir.clone());
             winui::start_pick(ui.ctx(), "options-category-folder", move || {
@@ -1329,13 +1340,21 @@ impl OptionsDialog {
                     .pick_folder()
             });
         }
-        if let Some(dir) = winui::picked(ui.ctx(), "options-category-folder") {
+        if let Some(dir) = winui::picked(ui.ctx(), "options-category-folder")
+            && !locked
+        {
             self.cat_dir = display_dir(&dir);
         }
-        self.commit_cat_dir(downloads);
-        let line = with_category(crate::i18n::t(
-            "Change folder for \"{category}\" category on last selected",
-        ));
+        if !locked {
+            self.commit_cat_dir(downloads);
+        }
+        // With one folder, the folder a last selection changes is General's (#1973).
+        let template = crate::i18n::t("Change folder for \"{category}\" category on last selected");
+        let line = if self.s.one_folder {
+            with_general(template)
+        } else {
+            with_category(template)
+        };
         winui::checkbox_light(
             ui,
             o + vec2(33.0, 271.0),
@@ -1343,9 +1362,24 @@ impl OptionsDialog {
             &line,
             true,
         );
+        let one_line = with_general(crate::i18n::t(
+            // i18n: Options → Save to, a check box: new downloads of every category go to General's folder; {category} is General's name
+            "Save every download in \"{category}\" category's folder",
+        ));
         winui::checkbox_light(
             ui,
-            o + vec2(33.0, 306.0),
+            o + vec2(33.0, 294.0),
+            &mut self.s.one_folder,
+            &one_line,
+            true,
+        )
+        .on_hover_text(crate::i18n::t(
+            // i18n: tooltip of Options → Save to → "Save every download in "General" category's folder"
+            "New downloads of every category go to this one folder; their categories still sort the list. A download's folder can still be changed in the window that starts it, and the downloads already in the list stay where they are.",
+        ));
+        winui::checkbox_light(
+            ui,
+            o + vec2(33.0, 329.0),
             &mut self.s.set_creation_date,
             "Set file creation date as provided by the server",
             true,
@@ -1368,23 +1402,23 @@ impl OptionsDialog {
         );
         winui::checkbox_light(
             ui,
-            o + vec2(33.0, 329.0),
+            o + vec2(33.0, 352.0),
             &mut self.s.mark_downloads,
             "Mark downloaded files as coming from the internet",
             true,
         )
         .on_hover_text(tip);
-        // Down by the row above it; its empty bottom shortened by as much.
-        group(ui, o, 21.0, 356.0, 380.0, 96.0, "Temporary directory");
+        // Down by the rows above it; its empty bottom shortened by as much.
+        group(ui, o, 21.0, 379.0, 380.0, 90.0, "Temporary directory");
         // D-004: no temporary directory — parts are written next to the file, so there is
         // nothing to assemble at the end.
         let none = crate::i18n::t("Not used: file parts are written next to the file");
         let (browse_x, browse_w) =
             winui::buttons_to_right(&p, 390.0, 0.0, &[("Browse", 73.0)], 160.0)[0];
-        readonly(ui, r(o, 30.0, 371.0, browse_x - 6.0 - 30.0, 23.0), none);
+        readonly(ui, r(o, 30.0, 394.0, browse_x - 6.0 - 30.0, 23.0), none);
         winui::button_light(
             ui,
-            r(o, browse_x, 372.0, browse_w, 21.0),
+            r(o, browse_x, 395.0, browse_w, 21.0),
             // i18n: verb: choose a folder
             "Browse",
             ButtonKind::Disabled,
@@ -1393,7 +1427,7 @@ impl OptionsDialog {
         winui::paragraph(
             &p,
             o.x + 30.0,
-            o.y + 409.0,
+            o.y + 432.0,
             crate::i18n::t(
                 "Mister Download Manager writes every connection straight into the final\nfile (a sparse part file next to it), so no temporary directory and no\nassembling step are needed.",
             ),

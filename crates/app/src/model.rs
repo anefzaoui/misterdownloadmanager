@@ -415,6 +415,23 @@ pub fn browser_guess(url: &url::Url, context: &mdm_ipc::Command) -> String {
     )
 }
 
+/// The category whose folder a new download of `cat` takes (#1973): `cat`, or General when
+/// every download goes to one folder (Options → Save to), whatever its category; the download
+/// keeps `cat` for sorting the list.
+pub fn folder_category(cat: Category, one_folder: bool) -> Category {
+    if one_folder { Category::General } else { cat }
+}
+
+/// The folder a new download of `cat` goes to: [`category_folder`] of [`folder_category`].
+pub fn save_folder(
+    cat: Category,
+    one_folder: bool,
+    downloads: &Path,
+    dirs: &[(String, String)],
+) -> PathBuf {
+    category_folder(folder_category(cat, one_folder), downloads, dirs)
+}
+
 /// The category's folder: the one chosen in Options → Save to (or remembered from Download
 /// File Info), else the default under [`default_downloads`] (#556).
 pub fn category_folder(cat: Category, downloads: &Path, dirs: &[(String, String)]) -> PathBuf {

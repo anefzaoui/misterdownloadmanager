@@ -344,6 +344,9 @@ right-to-left window.
   Click'n'Load from link sites, asking once per site, and
   unwraps `thunder://`, `flashget://` and `qqdl://` links to the address inside them. Debrid accounts (Real-Debrid, AllDebrid, Premiumize, TorBox, Mega-Debrid; experimental) download
   file-host links through your own account.
+- **Sorts downloads into categories** by file type, each with a folder of its own, or **every
+  download in one folder** if you prefer, the categories still sorting the list
+  ([how](docs/options.md#save-to)).
 - **A list laid out your way**: show, move, resize and sort its columns, **Save To** (the folder
   each download is in) among them, choose them and their order in the **Columns** window (from
   the keyboard too), and filter any column ([how](docs/download-list.md)).

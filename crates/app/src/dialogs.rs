@@ -1380,6 +1380,9 @@ pub struct FileInfo {
     downloads: PathBuf,
     /// Options → Save to folders per category (label, folder).
     dirs: Vec<(String, String)>,
+    /// Options → Save to → one folder for every download (#1973): General's folder whatever
+    /// the category, and "Remember this path" is General's.
+    one_folder: bool,
     category_open: bool,
     /// Browser request context for the download this dialog adds.
     pub context: mdm_ipc::Command,
@@ -1517,6 +1520,7 @@ impl FileInfo {
             edited: false,
             downloads,
             dirs,
+            one_folder: false,
             category_open: false,
             context,
             asking: FolderGate::default(),
@@ -1587,8 +1591,7 @@ impl FileInfo {
                 if !self.edited {
                     let name = mdm_engine::naming::file_name(None, &url);
                     self.category = Category::of(&name);
-                    let dir =
-                        crate::model::category_folder(self.category, &self.downloads, &self.dirs);
+                    let dir = self.folder_of(self.category);
                     self.save_as = self.place.name_in(&dir, &name);
                 }
                 // Another address: the browser's name, size and form are not its own, and on
@@ -1670,7 +1673,7 @@ impl FileInfo {
                 .parent()
                 .map(|d| d.display().to_string())
                 .unwrap_or_default();
-            (self.category, dir)
+            (self.folder_category(), dir)
         })
     }
 
@@ -1835,9 +1838,31 @@ impl FileInfo {
             .file_name()
             .map(|n| n.to_string_lossy().into_owned())
             .unwrap_or_default();
-        let folder = crate::model::category_folder(c, &self.downloads, &self.dirs);
+        let folder = self.folder_of(c);
         self.save_as = self.place.name_in(&folder, &name);
         self.typed = false;
+    }
+
+    /// Options → Save to → one folder for every download (#1973): Save As starts in General's
+    /// folder, whatever the category.
+    pub fn with_one_folder(mut self, on: bool) -> Self {
+        if self.one_folder != on {
+            self.one_folder = on;
+            if !self.edited {
+                self.set_category(self.category);
+            }
+        }
+        self
+    }
+
+    /// The folder a download of `c` goes to (its category's, or General's with one folder).
+    fn folder_of(&self, c: Category) -> PathBuf {
+        crate::model::save_folder(c, self.one_folder, &self.downloads, &self.dirs)
+    }
+
+    /// The category whose folder Save As starts in and "Remember this path" changes.
+    fn folder_category(&self) -> Category {
+        crate::model::folder_category(self.category, self.one_folder)
     }
 
     /// Whether Save As's folder is there, as looked at off the window's thread for the name it
@@ -1934,7 +1959,7 @@ impl FileInfo {
             });
             if let (Ok(pi), false) = (&res, self.edited) {
                 self.category = Category::of(&pi.file_name);
-                let dir = crate::model::category_folder(self.category, &self.downloads, &self.dirs);
+                let dir = self.folder_of(self.category);
                 self.save_as = self.place.name_in(&dir, &pi.file_name);
             }
             self.info = Some(res);
@@ -2111,7 +2136,7 @@ impl FileInfo {
 
                 let caption = crate::i18n::fmt(
                     crate::i18n::t("Remember this path for \"{category}\" category"),
-                    &[("category", &self.category.shown())],
+                    &[("category", &self.folder_category().shown())],
                 );
                 let gap_end = o.x + 122.0 + winui::text_width(&p, &caption) + 5.0;
                 winui::group_box(
@@ -2128,12 +2153,7 @@ impl FileInfo {
                 );
                 let mut folder = format!(
                     "{}\\",
-                    display_path(&crate::model::category_folder(
-                        self.category,
-                        &self.downloads,
-                        &self.dirs
-                    ))
-                    .trim_end_matches('\\')
+                    display_path(&self.folder_of(self.category)).trim_end_matches('\\')
                 );
                 let folder_rc = r(o, 104.0, 112.0, 348.0, 23.0);
                 // Read-only, and not a password box: bool::default() for both flags.
@@ -6101,6 +6121,37 @@ mod tests {
             &egui::Context::default(),
         );
         (fi, rt)
+    }
+
+    /// #1973: with one folder for every download, Download File Info starts Save As in
+    /// General's folder whatever the category, keeps it there when the category is changed,
+    /// names General in "Remember this path" and remembers the folder as General's. A folder
+    /// typed for this one download stays as typed.
+    #[test]
+    fn one_folder_starts_save_as_in_generals_folder() {
+        let d = tempfile::tempdir().unwrap();
+        let (fi, _rt) = file_info(d.path(), "clip.mp4");
+        assert_eq!(fi.category, Category::Video);
+        assert_eq!(fi.dest().parent(), Some(d.path().join("Video").as_path()));
+
+        let (fi, _rt) = file_info(d.path(), "clip.mp4");
+        let mut fi = fi.with_one_folder(true);
+        assert_eq!(
+            fi.category,
+            Category::Video,
+            "its category still sorts the list"
+        );
+        assert_eq!(fi.dest(), d.path().join("clip.mp4"));
+        fi.set_category(Category::Music);
+        assert_eq!(fi.dest(), d.path().join("clip.mp4"));
+        fi.remember = true;
+        let kept = |fi: &FileInfo| fi.remembered().map(|(c, dir)| (c, resolve_path(&dir)));
+        assert_eq!(kept(&fi), Some((Category::General, d.path().to_owned())));
+        // Changed for this download only: Save As as typed.
+        let own = d.path().join("Talks").join("clip.mp4");
+        fi.save_as = own.display().to_string();
+        assert_eq!(fi.dest(), own);
+        assert_eq!(kept(&fi), Some((Category::General, d.path().join("Talks"))));
     }
 
     /// #1088: a file the Save dialog asked "Replace?" about, answered Yes, is the one the

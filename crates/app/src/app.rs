@@ -4201,7 +4201,7 @@ impl App {
                 .dir
                 .clone()
                 .map(PathBuf::from)
-                .unwrap_or_else(|| self.settings.category_dir(category, &self.downloads));
+                .unwrap_or_else(|| self.settings.save_dir(category, &self.downloads));
             // Its name as given, numbered on as it starts if it is taken then (#743): the window
             // doesn't wait for the folder, and a duplicate overwritten just before leaves its name
             // to it once its files are gone (`naming::clear`).
@@ -6559,9 +6559,9 @@ impl App {
     /// to is the Video category's folder, the Music category's while a sound-only choice is
     /// chosen (#611; not when the user deleted Music).
     fn video_dialog(&self, page: Option<(&str, mdm_ipc::Command)>) -> crate::videodlg::VideoDialog {
-        let dir = self.settings.category_dir(Category::Video, &self.downloads);
+        let dir = self.settings.save_dir(Category::Video, &self.downloads);
         let music = (!Category::Music.deleted())
-            .then(|| self.settings.category_dir(Category::Music, &self.downloads));
+            .then(|| self.settings.save_dir(Category::Music, &self.downloads));
         match page {
             Some((page, cmd)) => crate::videodlg::VideoDialog::for_page(dir, page, cmd),
             None => crate::videodlg::VideoDialog::new(dir),
@@ -6677,10 +6677,10 @@ impl App {
         let Some(pick) = &cmd.video_pick else {
             return VideoLookupAnswer::of(lookup::USE_WINDOW);
         };
-        let folder = self.settings.category_dir(Category::Video, &self.downloads);
+        let folder = self.settings.save_dir(Category::Video, &self.downloads);
         // A sound-only choice saves in Music, as in the Download video window (#611).
         let music = (!Category::Music.deleted())
-            .then(|| self.settings.category_dir(Category::Music, &self.downloads));
+            .then(|| self.settings.save_dir(Category::Music, &self.downloads));
         let start_now = !self.settings.only_add_to_queue;
         let add = self.lookups.pick(pick, cmd.private, now).and_then(|p| {
             crate::videolookup::video_add(
@@ -7137,9 +7137,7 @@ impl App {
                     mdm_torrent::Source::File(_) => None,
                 })
         {
-            let dir = self
-                .settings
-                .category_dir(Category::Torrents, &self.downloads);
+            let dir = self.settings.save_dir(Category::Torrents, &self.downloads);
             self.add_remote_torrent(magnet, dir, Category::Torrents, true, None, None, None);
             self.show_window(ctx);
             return;
@@ -7159,16 +7157,19 @@ impl App {
             }
             return;
         }
-        self.torrent_dlg = Some(crate::torrentdlg::TorrentDialog::new(
-            source,
-            remote,
-            self.torrent_host.clone(),
-            self.session_hashes(),
-            self.downloads.clone(),
-            self.settings.category_dirs.clone(),
-            &self.rt,
-            ctx,
-        ));
+        self.torrent_dlg = Some(
+            crate::torrentdlg::TorrentDialog::new(
+                source,
+                remote,
+                self.torrent_host.clone(),
+                self.session_hashes(),
+                self.downloads.clone(),
+                self.settings.category_dirs.clone(),
+                &self.rt,
+                ctx,
+            )
+            .with_one_folder(self.settings.one_folder),
+        );
     }
 
     /// The debrid account torrents go to (#44): Options → Accounts' "Torrents and magnet links
@@ -7788,8 +7789,7 @@ impl App {
             return;
         }
         let dir = if r.folder.trim().is_empty() {
-            self.settings
-                .category_dir(Category::Torrents, &self.downloads)
+            self.settings.save_dir(Category::Torrents, &self.downloads)
         } else {
             PathBuf::from(r.folder.trim())
         };
@@ -8041,7 +8041,10 @@ impl App {
                     p.address
                 );
                 if self.batch.is_none() {
-                    self.batch = Some(crate::batch::Batch::with_pattern(p));
+                    self.batch = Some(
+                        crate::batch::Batch::with_pattern(p)
+                            .with_one_folder(self.one_folder_shown()),
+                    );
                 }
                 dialogs::raise(ctx, dialogs::dialog_viewport("batch"));
                 return;
@@ -8061,6 +8064,16 @@ impl App {
         ));
     }
 
+    /// With one folder for every download (Options → Save to, #1973): General's folder as the
+    /// windows show a folder, for an empty Save to box to name.
+    fn one_folder_shown(&self) -> Option<String> {
+        self.settings.one_folder.then(|| {
+            crate::dialogs::display_path(
+                &self.settings.save_dir(Category::General, &self.downloads),
+            )
+        })
+    }
+
     /// Batch download → OK: every address goes to the main download queue (IDM's default; its
     /// queue selection panel is not built yet), into Save to's folder if one was given, else
     /// each into its category's folder.
@@ -8071,7 +8084,7 @@ impl App {
             let category = Category::of(&name);
             let dir = match &added.folder {
                 Some(folder) => folder.clone(),
-                None => self.settings.category_dir(category, &self.downloads),
+                None => self.settings.save_dir(category, &self.downloads),
             };
             // Numbered on as it starts if the name is taken then (#743): no disk here.
             let dest = mdm_engine::naming::guess(&dir, &name);
@@ -8506,7 +8519,7 @@ impl App {
         }
         let name = mdm_engine::naming::sanitize(&mdm_engine::naming::file_name(None, &url));
         let category = category.unwrap_or_else(|| Category::of(&name));
-        let dir = self.settings.category_dir(category, &self.downloads);
+        let dir = self.settings.save_dir(category, &self.downloads);
         // Numbered on as it starts if the name is taken then (#743): no disk here.
         let dest = mdm_engine::naming::guess(&dir, &name);
         cmd.remote = false;
@@ -8602,13 +8615,7 @@ impl App {
                 continue;
             }
             let category = category.unwrap_or_else(|| crate::torrentdlg::category_of(&meta));
-            let dir = dir.unwrap_or_else(|| {
-                crate::model::category_folder(
-                    category,
-                    &self.downloads,
-                    &self.settings.category_dirs,
-                )
-            });
+            let dir = dir.unwrap_or_else(|| self.settings.save_dir(category, &self.downloads));
             if !meta.existing_in(&dir).is_empty() {
                 tracing::warn!(
                     "remote control: {}: its files are already in {}",
@@ -9492,7 +9499,8 @@ impl App {
             }
             Cmd::Batch => {
                 if self.batch.is_none() {
-                    self.batch = Some(crate::batch::Batch::new());
+                    self.batch =
+                        Some(crate::batch::Batch::new().with_one_folder(self.one_folder_shown()));
                 }
             }
             // Read now, off the window's thread; what it holds opens a window when it comes
@@ -12177,7 +12185,8 @@ impl App {
             self.settings.category_dirs.clone(),
             &self.rt,
             ctx,
-        );
+        )
+        .with_one_folder(self.settings.one_folder);
         fi.remember = self.settings.change_folder_on_last;
         fi.folders = self.settings.folder_history.clone();
         fi.nth = dialogs::Nth::free(self.file_infos.iter().map(|f| f.nth));
@@ -13011,6 +13020,7 @@ impl App {
                 s.extract_delete,
             )
         });
+        grabber.set_one_folder(s.one_folder);
         grabber.add(found, source, |u| known.contains(u.as_str()));
     }
 
@@ -13061,7 +13071,7 @@ impl App {
                 };
                 let category = Category::of(&name);
                 let dir = if pk.folder.as_os_str().is_empty() {
-                    self.settings.category_dir(category, &self.downloads)
+                    self.settings.save_dir(category, &self.downloads)
                 } else {
                     pk.folder.clone()
                 };
@@ -14256,7 +14266,7 @@ impl App {
                     if self.settings.change_folder_on_last
                         && self
                             .settings
-                            .keep_category_dir(add.category, &add.dir, &self.downloads)
+                            .keep_save_dir(add.category, &add.dir, &self.downloads)
                     {
                         self.dirty = true;
                     }
@@ -14290,7 +14300,7 @@ impl App {
                     // Download File Info follows through its box (#475): Music's for a
                     // sound-only choice (#611).
                     if self.settings.change_folder_on_last
-                        && self.settings.keep_category_dir(
+                        && self.settings.keep_save_dir(
                             v.category(),
                             &v.save_folder(),
                             &self.downloads,
@@ -15098,7 +15108,7 @@ impl App {
                 .unwrap_or_else(|| crate::model::browser_guess(&url, &context));
             let name = mdm_engine::naming::sanitize(&name);
             let category = Category::of(&name);
-            let dir = self.settings.category_dir(category, &self.downloads);
+            let dir = self.settings.save_dir(category, &self.downloads);
             // Numbered on as it starts if the name is taken then (#743): no disk here.
             let dest = mdm_engine::naming::guess(&dir, &name);
             let size = context.size;
@@ -16555,6 +16565,63 @@ mod add_batch_tests {
         let dests: Vec<_> = one.items.iter().map(|i| i.dest.clone()).collect();
         assert_eq!(dests, [folder.join("img01.jpg"), folder.join("part02.zip")]);
         assert!(!folder.exists(), "nothing made on the disk by OK");
+    }
+
+    /// #1973: with one folder for every download, a batch without a folder of its own, a
+    /// command line's download and a paired device's go to General's folder, each keeping its
+    /// category for the list; the downloads already in the list stay where they were.
+    #[test]
+    fn one_folder_takes_every_new_download() {
+        let mut a = app();
+        a.add_batch(added(None));
+        let before: Vec<_> = a.items.iter().map(|i| i.dest.clone()).collect();
+        assert_ne!(before[0].parent(), before[1].parent());
+
+        a.settings.one_folder = true;
+        let general = a.settings.category_dir(Category::General, &a.downloads);
+        a.add_batch(added(None));
+        let ctx = egui::Context::default();
+        a.handle_command(
+            ipc::Command {
+                url: Some("http://127.0.0.1:9/talk.mp3".into()),
+                later: true,
+                ..Default::default()
+            },
+            &ctx,
+        );
+        let mut remote = ipc::Command {
+            url: Some("http://127.0.0.1:9/movie.mkv".into()),
+            later: true,
+            ..Default::default()
+        };
+        remote.remote = true;
+        a.remote_add(remote);
+        assert_eq!(
+            a.items.len(),
+            6,
+            "{:?}",
+            a.items.iter().map(|i| &i.dest).collect::<Vec<_>>()
+        );
+        let new = &a.items[2..];
+        for i in new {
+            assert_eq!(i.dest.parent(), Some(general.as_path()), "{:?}", i.dest);
+        }
+        let cats: Vec<_> = new.iter().map(|i| i.category).collect();
+        assert_eq!(
+            cats,
+            [
+                Category::of("img01.jpg"),
+                Category::Compressed,
+                Category::Music,
+                Category::Video
+            ],
+            "the categories still sort the list"
+        );
+        let after: Vec<_> = a.items[..2].iter().map(|i| i.dest.clone()).collect();
+        assert_eq!(
+            after, before,
+            "the downloads already in the list stay where they were"
+        );
     }
 }
 

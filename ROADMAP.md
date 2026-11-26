@@ -2137,6 +2137,11 @@ These ship in the next version.
   Tests: the feed case of the add-on's real-browser tests checks that the menu is inside the
   window, and waits for the button over the video it points at, not the last one's, still fading
 - ✅ Torrents: magnet links, torrent files and trackers are checked more carefully.
+- ✅ One folder for every download: **Options → Save to → Save every download in "General"
+  category's folder** sends every new download there, whatever its category, from every place a
+  download comes from; the categories still sort the list, and a single download can still go
+  elsewhere ([#1973](https://github.com/anefzaoui/misterdownloadmanager/issues/1973), asked in
+  [#716](https://github.com/anefzaoui/misterdownloadmanager/issues/716))
 
 ## Being worked on
 
