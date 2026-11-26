@@ -152,6 +152,7 @@ The right-click menu has everything you can do with a download: **Open**, **Open
 
 - **Move** — move a finished file to another folder, or choose another folder for a download that hasn't started.
 - **Address** — for an unfinished download, you can paste a new address here. See [Resume a broken download](guide-resume-broken-download.md).
+- **Connection...** — for a stopped download: its own User-Agent, request headers, proxy and number of connections, for when it goes on. MDM still checks it is the same file before it writes anything. See [One download's settings](connections-and-speed.md#one-downloads-settings).
 - **Open** — open the file.
 
 ![File Properties: the file's name, address, folder, size, status and description](images/help/properties.webp)

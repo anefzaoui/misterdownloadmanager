@@ -569,11 +569,55 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ Windows: a crash inside the graphics driver while OpenGL draws (Intel's and AMD's OpenGL
+  drivers, NVIDIA's Direct3D 11 thread on laptops with two graphics chips) moves MDM off OpenGL
+  from the next start, as a freeze there does: Direct3D 12, on WARP when the card can't, and
+  View → Draw with says why; tried again after a driver update or a month
+  ([#1659](https://github.com/anefzaoui/misterdownloadmanager/issues/1659))
+- ✅ Options: a longer translation's note stays inside its page, whole on hover; HatchZip's
+  check box ends inside its group box ([#1845](https://github.com/anefzaoui/misterdownloadmanager/issues/1845))
+- ✅ Hugging Face models and datasets (a whole repository or a folder, at a branch, tag or commit)
+  and GitHub releases and tags pasted in Add URL or Link grabber: every file listed with its size
+  and folder, unticked, downloaded as one group with the folders kept, each checked against the
+  SHA-256 the site publishes; gated models with the Hugging Face token saved in Sites Logins
+  ([#1772](https://github.com/anefzaoui/misterdownloadmanager/issues/1772))
+- ✅ Site rules: a User-Agent, extra request headers, a number of connections and "connect the
+  way a browser does" from the first request, for every download from a site pattern
+  (`*.example.com`, the first rule that names a site and sets a setting giving it, as for the
+  per-server exceptions); a stopped download's Properties → Connection... changes its own
+  User-Agent, headers, proxy and connections, and its resume still checks it is the same file
+  (size, ETag, date) before writing anything
+  ([#1778](https://github.com/anefzaoui/misterdownloadmanager/issues/1778))
+- ✅ Only some files from inside a ZIP on a server: Download File Info's Preview lists the files in
+  a `.zip` (from its end, with range requests) to tick those to download, each fetched alone and
+  checked against its CRC-32 ([#1775](https://github.com/anefzaoui/misterdownloadmanager/issues/1775))
+- ✅ The browser add-on's scrollbars in its own look: the video button's list of qualities and
+  the popup's lists scroll with a thin bar in their own colours, light and dark, not the browser's
+  stock grey one
+- ✅ Folder downloads: an FTP folder or a web server's "Index of" page given to Link grabber lists
+  every file in it and its subfolders (a depth and file types you choose), and the folder tree is
+  kept under the download folder; never above the folder or onto another site
+  ([#1774](https://github.com/anefzaoui/misterdownloadmanager/issues/1774))
+- ✅ **Stop and keep** for a download that never ends (an internet radio, a camera feed: no size,
+  no resume): the progress window's pause button ends it and keeps what arrived as the finished
+  file; Stop, Stop All, a queue's stop, the tray panel, the phone page's pause and Cancel keep
+  nothing (the button is the only way), and every other download pauses as before
+  ([#1780](https://github.com/anefzaoui/misterdownloadmanager/issues/1780))
+- ✅ The browser add-on finds all the images on a page when asked (**This page → Find images**),
+  at the largest size listed, filtered by size and type, and sends them to Link grabber;
+  **Download all links** and **Download selected links** send the page's pictures too, which
+  Link grabber hides under **Hide images located on this web page** until you untick it
+  ([#1781](https://github.com/anefzaoui/misterdownloadmanager/issues/1781))
 - ✅ The browser add-on's video button before the video plays: on a site yt-dlp doesn't read, it
   looks up the stream address the page wrote for its player (master playlist first, else the best
   quality named), only addresses the page names, on a page with one video
   ([#1826](https://github.com/anefzaoui/misterdownloadmanager/issues/1826))
 - ✅ Galleries: file paths are checked more carefully
+- ✅ Helpers: ffmpeg's download is checked more carefully
+- ✅ Torrents: the engine checks what it's sent more carefully
+- ✅ Extracting: 7z and RAR archives are checked more carefully
+- ✅ Archive test: archives are checked more carefully
+- ✅ Downloaded files are marked as coming from the internet more carefully
 - ✅ Command line: a playlist range from 0 or of 0 entries is refused
 - ✅ Command line: a resumed download's speed starts right
 - ✅ Command line: `video-info` sizes in the same unit as the rest
@@ -2040,6 +2084,13 @@ These ship in the next version.
   there to read
   ([#1407](https://github.com/anefzaoui/misterdownloadmanager/issues/1407); thanks to
   [@Seyamalam](https://github.com/Seyamalam))
+- ✅ Screen readers read the **Add Mister Download Manager to your browser** window: each
+  browser's name, its **Connected** mark and where the window stands were painted text a
+  reader never saw, and every browser's button said the same **Add the extension**; each
+  button now says its browser ("Add the extension to Firefox"), and the steps for Safari
+  read their numbered list
+  ([#1407](https://github.com/anefzaoui/misterdownloadmanager/issues/1407); thanks to
+  [@Seyamalam](https://github.com/Seyamalam))
 - ✅ Tests: the video checks of an address that expires while downloading (a stream's, and DASH
   pieces') no longer fail now and then on a busy computer: the test server times such a link from
   its first request, not from the look-up that gave it, so a slow start can't kill it before the
@@ -2099,6 +2150,13 @@ These ship in the next version.
   reach; where neither side has room for it whole, its list of qualities is shorter and scrolls.
   Tests: the feed case of the add-on's real-browser tests checks that the menu is inside the
   window, and waits for the button over the video it points at, not the last one's, still fading
+- ✅ Torrents: magnet links, torrent files and trackers are checked more carefully.
+- ✅ Linux: menus opened near a screen's bottom or right edge stay on the screen (X11 and
+  XWayland: the monitor's work area, read from RandR and the desktop's work area), submenus and
+  larger interface sizes too (thanks to [@madratzz](https://github.com/madratzz))
+- ✅ Torrents: a magnet link with its hash in lower-case Base32 (32 characters) opens; the
+  torrent engine took only upper-case Base32 (thanks to
+  [@jamaica1000](https://github.com/jamaica1000))
 
 ## Being worked on
 

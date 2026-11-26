@@ -323,14 +323,25 @@ right-to-left window.
 - **Speeds up every download** by fetching parts of the file at the same time, and keeps
   re-balancing until the last byte.
 - **Resumes** after a crash, a restart or a dropped connection, without starting over.
+- **Site rules**: a User-Agent, extra request headers, a number of connections and "connect the
+  way a browser does" for every download from a site (`*.example.com`). A stopped download's
+  Properties change its own headers, proxy and connections, and MDM checks it is still the same
+  file before it goes on ([how](docs/connections-and-speed.md#site-rules)).
 - **Catches downloads from Firefox, Chrome, Edge, Brave, Opera, Vivaldi and Helium** (the
   extension is on Firefox Add-ons and the Chrome Web Store), and gives them back to the browser
-  when MDM isn't running.
+  when MDM isn't running. Its toolbar button finds **all the images on a page**, at the largest
+  size the page lists, filtered by size and type, and sends them to the Link grabber; the
+  right-click menu's **Download all links** brings the page's pictures too, hidden until you ask.
 - **Downloads videos** from web pages (a button appears over the video, on many pages before it plays; playlists,
   subtitles, the sound alone), **image galleries** with gallery-dl, and **torrents and magnet links**
   (sequential order, RSS feeds, sharing limits, an optional public tracker list for more peers).
 - **Many links at once**: the Link grabber sorts them into packages and extracts the archives
-  (zip, 7z, rar) when they're in. It takes Click'n'Load from link sites, asking once per site, and
+  (zip, 7z, rar) when they're in. Give it an **FTP folder or a web server's "Index of" page** and it
+  lists every file in it and its subfolders, keeping the folder tree when they download; paste a
+  **Hugging Face model or dataset** or a **GitHub release** and it lists their files, each checked
+  against the digest the site publishes. For a big
+  `.zip` on a server, **Preview** lists the files inside and downloads only the ones you tick. It takes
+  Click'n'Load from link sites, asking once per site, and
   unwraps `thunder://`, `flashget://` and `qqdl://` links to the address inside them. Debrid accounts (Real-Debrid, AllDebrid, Premiumize, TorBox, Mega-Debrid; experimental) download
   file-host links through your own account.
 - **A list laid out your way**: show, move, resize and sort its columns, **Save To** (the folder

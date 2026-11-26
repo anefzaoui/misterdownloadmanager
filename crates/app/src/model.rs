@@ -441,6 +441,34 @@ pub enum Status {
     Error,
 }
 
+/// A download's own request settings (#1778), set in its Properties while it isn't running:
+/// each one empty is the site rules' (Options → Connection → Site rules), else Options'. A
+/// resume with them still checks it is the same file before going on (the engine's validators,
+/// sizes and overlap): changed settings never join two files.
+#[derive(Clone, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(default)]
+pub struct OwnRequest {
+    /// The User-Agent sent instead of the site rule's, the browser's or Options'.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub user_agent: Option<String>,
+    /// Headers added to its requests (name, value), above the site rules' of the same name.
+    #[serde(skip_serializing_if = "Vec::is_empty")]
+    pub headers: Vec<(String, String)>,
+    /// Its proxy: "" none (direct), else an address (`http://host:port`, `socks5://…`). None:
+    /// Options → Proxy / Socks.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub proxy: Option<String>,
+    /// Its number of connections instead of the site's exception or Options' default.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub connections: Option<u32>,
+}
+
+impl OwnRequest {
+    pub fn is_empty(&self) -> bool {
+        *self == OwnRequest::default()
+    }
+}
+
 /// One row of the download list. The persisted part is everything but `live`.
 #[derive(Serialize, Deserialize)]
 pub struct Item {
@@ -481,6 +509,10 @@ pub struct Item {
     /// the folder its files go into.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub gallery: Option<GallerySpec>,
+    /// Files picked out of a ZIP on its server (#1775, Zip preview): its `url` is the archive's,
+    /// `dest` the folder they go into (named after the archive), each keeping its path there.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub zip: Option<ZipPick>,
     /// The event log: (unix seconds, what happened), oldest first, the last `LOG` entries.
     #[serde(default)]
     pub log: Vec<(i64, String)>,
@@ -572,6 +604,11 @@ pub struct Item {
     /// its last run as yt-dlp gave it to MDM's engine (#795). The windows' "Address".
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub file_url: Option<Url>,
+    /// Its own request settings, from its Properties → Connection... while it was stopped
+    /// (#1778), above the site rules' and Options': [`OwnRequest`]. Saved with the list, so a
+    /// resume after a restart asks the same way.
+    #[serde(default, skip_serializing_if = "OwnRequest::is_empty")]
+    pub own: OwnRequest,
     #[serde(skip)]
     pub live: Option<Live>,
     /// The session's temporary view while a torrent is being checked; never saved.
@@ -687,6 +724,8 @@ pub enum Job {
     Torrent(crate::torrents::Run),
     /// A torrent through a debrid account, then its files over HTTP (#44).
     Remote(mdm_debrid::torrents::RemoteTorrent),
+    /// Files picked out of a ZIP on its server (#1775).
+    Zip(mdm_engine::remotezip::Fetch),
 }
 
 /// A torrent sent to a debrid account (#44).
@@ -706,6 +745,22 @@ pub struct RemoteSpec {
     /// service downloads only those. None (and lists saved before it): all of them.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub files: Option<Vec<String>>,
+}
+
+/// The files picked out of a ZIP on its server (#1775): fetched one by one, each unpacked,
+/// checked against its CRC-32 and written under the download's folder through the extraction's
+/// writer. A stop and a start go on with those not out yet.
+#[derive(Clone, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
+pub struct ZipPick {
+    /// Their paths in the archive, as its table gives them.
+    pub files: Vec<String>,
+    /// Those already out (an earlier run's): not fetched again.
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub done: Vec<String>,
+    /// The archive's size when its files were listed: its end is asked for plainly, and an
+    /// archive of another size is a changed one.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub archive_size: Option<u64>,
 }
 
 /// A gallery download's choice (#58).
@@ -870,6 +925,7 @@ impl Job {
             Job::File(d) => d.snapshot(),
             Job::Torrent(t) => t.snapshot(),
             Job::Remote(r) => r.snapshot(),
+            Job::Zip(z) => z.snapshot(),
             Job::Video { job, url } => tool_snapshot(job.progress(), url),
             Job::Gallery { job, url } => tool_snapshot(job.progress(), url),
         }
@@ -882,15 +938,31 @@ impl Job {
             Job::Gallery { job, .. } => job.stop(),
             Job::Torrent(t) => t.cancel(),
             Job::Remote(r) => r.cancel(),
+            Job::Zip(z) => z.cancel(),
         }
     }
 
     /// Stop and save: a live stream yt-dlp records is stopped and what it recorded kept
-    /// as a video, the download then done; anything else is cancelled as [`Job::cancel`] does.
+    /// as a video, the download then done; anything else is cancelled as [`Job::cancel`] does
+    /// (an endless stream too: only [`Job::keep`] keeps one).
     pub fn save(&self) {
         match self {
             Job::Video { job, .. } => job.save(),
             _ => self.cancel(),
+        }
+    }
+
+    /// Stop and keep (#1780), the progress window's button only: an endless stream (an internet
+    /// radio, a camera feed: no length, no resume) is stopped and what arrived kept as its
+    /// finished file (`Download::keep`); anything else is stopped as [`Job::save`] stops it.
+    /// Whether an endless stream was kept.
+    pub fn keep(&self) -> bool {
+        match self {
+            Job::File(d) => d.keep(),
+            _ => {
+                self.save();
+                false
+            }
         }
     }
 
@@ -921,6 +993,7 @@ impl Job {
             Job::File(d) => d.set_speed_limit(rate),
             Job::Torrent(t) => t.set_speed_limit(rate),
             Job::Remote(r) => r.set_speed_limit(rate),
+            Job::Zip(z) => z.set_speed_limit(rate),
             Job::Video { job, .. } => job.set_speed_limit(rate),
             Job::Gallery { job, .. } => job.set_speed_limit(rate),
         }
@@ -933,6 +1006,7 @@ impl Job {
             Job::Video { job, .. } => job.speed_limit(),
             Job::Gallery { job, .. } => job.speed_limit(),
             Job::Remote(r) => r.speed_limit(),
+            Job::Zip(z) => z.speed_limit(),
         }
     }
 }
@@ -1295,6 +1369,7 @@ impl Item {
             && self.video.is_none()
             && self.gallery.is_none()
             && self.remote.is_none()
+            && self.zip.is_none()
     }
 
     /// What tells where this row's files are (its place, its kind, the files it wrote), for a
@@ -1309,6 +1384,7 @@ impl Item {
         c.video.clone_from(&self.video);
         c.torrent.clone_from(&self.torrent);
         c.gallery.clone_from(&self.gallery);
+        c.zip.clone_from(&self.zip);
         c.remote.clone_from(&self.remote);
         c.preexisting_folder = self.preexisting_folder;
         c.written_files.clone_from(&self.written_files);
@@ -1343,6 +1419,7 @@ impl Item {
             video: None,
             torrent: None,
             gallery: None,
+            zip: None,
             log: Vec::new(),
             name_from_url: false,
             number_at_start: false,
@@ -1361,6 +1438,7 @@ impl Item {
             waits_for_address: false,
             private_window: false,
             file_url: None,
+            own: OwnRequest::default(),
             live: None,
             torrent_check: None,
             snap: None,
@@ -1390,6 +1468,7 @@ impl Item {
             && self.gallery.is_none()
             && self.torrent.is_none()
             && self.remote.is_none()
+            && self.zip.is_none()
     }
 
     /// Why Move/Rename (and File Properties → Move) can't take this download now, as a text
@@ -1417,6 +1496,12 @@ impl Item {
         }
         if self.status == Status::Complete || self.downloaded == 0 || self.engine_file() {
             return None;
+        }
+        if self.zip.is_some() {
+            // i18n: why files being taken out of a ZIP on its server (#1775) can't be moved or renamed yet: those already out are in its folder, the others still to come there
+            return Some(crate::i18n::mark(
+                "Files taken out of a ZIP can be moved once they're all out",
+            ));
         }
         Some(if self.torrent.is_some() || self.remote.is_some() {
             // i18n: why a torrent that isn't finished can't be moved or renamed: the torrent engine writes its pieces into the files where they are
@@ -1472,6 +1557,16 @@ impl Item {
             && spec.transfer.is_none()
         {
             spec.transfer = r.transfer();
+        }
+        // The files picked out of a ZIP that are out (#1775): kept, so a stop and a start go on
+        // with the others, and known as this download's.
+        if let (Job::Zip(z), Some(spec)) = (&live.dl, self.zip.as_mut()) {
+            for (name, path) in z.done() {
+                if !spec.done.contains(&name) {
+                    spec.done.push(name);
+                    add_written(self.written_files.get_or_insert_with(Vec::new), vec![path]);
+                }
+            }
         }
         if let Some(server) = &s.server {
             self.server = Some(crate::whereis::Seen::from(server));
@@ -1761,6 +1856,23 @@ impl Item {
     /// ([`Job::live_state`]); `None` when nothing runs.
     pub fn live_state(&self) -> Option<mdm_tools::video::LiveState> {
         self.live.as_ref().and_then(|l| l.dl.live_state())
+    }
+
+    /// Running, an answer with no length that can't be resumed (an internet radio, a camera
+    /// feed, #1780): its progress window's Pause button reads "Stop and keep" and keeps what
+    /// arrived as its finished file (`Job::keep`); its other stops keep nothing. As its last
+    /// snapshot says.
+    pub fn endless(&self) -> bool {
+        matches!(
+            self.live,
+            Some(Live {
+                dl: Job::File(_),
+                ..
+            })
+        ) && self
+            .snap
+            .as_ref()
+            .is_some_and(mdm_engine::Snapshot::endless)
     }
 
     /// Resume / Download Now may start it: not running, and not finished (a gallery finished

@@ -119,6 +119,24 @@ By default MDM starts downloading while this window is open, so no time is lost 
 
 If the folder doesn't exist yet, MDM asks **Do you want to create it?** before it starts.
 
+### Only some files from inside a ZIP
+
+For a `.zip` on a web server, **Preview** (under the file's size) lists what is inside, so you can download only the files you need instead of the whole archive: two files out of a 20 GB archive take two small downloads.
+
+As the window opens, MDM asks the server for the archive's last bytes, where a ZIP keeps its list of files. Only a server that sends parts of a file can give files one by one, so **Preview** works only there; elsewhere it stays grey, and its tooltip says why (**the server can't send parts of the ZIP...**). The whole archive still downloads as usual.
+
+**Preview** opens **Zip preview**: every file in the archive with its **File Name** (its path inside the ZIP), **Packed** (its size inside the ZIP), **Size** and **Modified**. Tick the ones you want (**Select all** ticks every one) and click **OK**. The number of files picked shows under **Preview**; hover over it to see where they go. Then **Start Download** or **Download Later** adds them as one download, in place of the archive:
+
+![Zip preview listing the files inside a ZIP on its server, with their file name, packed size, size and date, the first three ticked, and OK and Cancel buttons](images/help/zip-preview.webp)
+*1 tick every file at once, 2 download the files ticked.*
+
+- They go into a folder named after the archive, in the folder **Save As** shows (`Downloads\Compressed\photos\` for `photos.zip`), each keeping its path from inside the ZIP (`photos\2025\beach.jpg`). A file of the same name already there is kept, and the new one numbered.
+- MDM fetches only each file's own bytes, unpacks it, and checks it against the checksum (CRC-32) and size the archive gives for it. A file that doesn't match is not kept, and the download says so.
+- A stopped download goes on with the files not fetched yet; one stopped part-way is fetched again.
+- **Delete** with **Also delete the files from disk** leaves the folder and its files, as for an image gallery.
+
+Some files can't be taken out on their own and aren't listed (the window counts them under the list): encrypted files, files packed with a method other than the two most ZIPs use (stored and Deflate), links, and names that would put a file outside its folder (`../`, a drive letter, an absolute path). A ZIP split over several files, or one whose list of files doesn't add up (files over each other, a list larger than MDM reads from a server), can't be previewed. For any of these, download the whole archive.
+
 Each link opens a **Download File Info** of its own, so several can be open side by side, to compare their sizes before you choose. Each new one opens a little below and beside the one before and comes to the front; from the second on, its title carries its number: **Download File Info (2)**, **(3)** and so on. **Esc** closes only the window you're in. Up to six are open at once: more links handed over together (a browser passing on several downloads) wait, and open one by one as you close windows; **Cancel** asks whether to cancel the ones still waiting. The same link handed over again brings its open window to the front. If you quit MDM with some still open, their downloads go to the **Main download queue**, as with **Download Later**.
 
 ## Download Later

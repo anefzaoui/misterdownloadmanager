@@ -94,6 +94,7 @@ pub fn describe(e: &Error) -> String {
             &[("code", &ltr(&code.to_string())), ("reply", &ltr(text))],
         ),
         Error::Refused(r) => refusal(r),
+        Error::Zip(p) => zip_problem(p),
         Error::NoCertificates => {
             // i18n: a download's error on a computer (a minimal Linux) without the certificates that secure connections check servers with; "ca-certificates" is the package's name, left as is
             t("this computer has no certificates to check the server with: install the ca-certificates package, then try again").to_owned()
@@ -120,6 +121,36 @@ pub fn describe(e: &Error) -> String {
     }
 }
 
+/// Why a file can't be taken out of a ZIP on its server (#1775), or the ZIP's files can't be
+/// listed there, with what to do instead: the whole archive downloads as any file does.
+pub fn zip_problem(p: &mdm_engine::remotezip::Problem) -> String {
+    use mdm_engine::remotezip::Problem as P;
+    match p {
+        // i18n: Zip preview (#1775): the server doesn't send parts of a file (HTTP ranges), so MDM can't fetch only some files from inside a ZIP; the whole archive still downloads
+        P::NoRanges => t("the server can't send parts of the ZIP, so its files can't be downloaded one by one: download the whole archive").to_owned(),
+        // i18n: Zip preview (#1775): the address isn't a ZIP archive whose list of files MDM can read on the server
+        P::NotZip => t("this isn't a ZIP archive MDM can look inside on the server: download the whole file").to_owned(),
+        // i18n: Zip preview (#1775): a ZIP split over several files (volumes): its files can't be fetched one by one
+        P::Spanned => t("this ZIP is split over several files, so its files can't be downloaded one by one: download every part").to_owned(),
+        // i18n: Zip preview (#1775): the ZIP's list of files (its table of contents) is larger than MDM reads from a server
+        P::TooBig => t("this ZIP's list of files is too large to read from the server: download the whole archive").to_owned(),
+        // i18n: Zip preview (#1775): the ZIP's list of files (its table of contents) doesn't add up
+        P::Damaged(_) => t("this ZIP's list of files is damaged: download the whole archive").to_owned(),
+        // i18n: why a file taken out of a ZIP on its server failed (#1775): its bytes aren't what the ZIP's list of files says (its size or its CRC-32 checksum)
+        P::Mismatch(_) => t("the file in the ZIP doesn't match the ZIP's list of files (its size or checksum): download the whole archive").to_owned(),
+        // i18n: why a file can't be taken out of a ZIP on its server (#1775): it is encrypted (password-protected) in the ZIP
+        P::Encrypted => t("this file is encrypted in the ZIP: download the whole archive and open it with its password").to_owned(),
+        P::Method(m) => fmt(
+            // i18n: why a file can't be taken out of a ZIP on its server (#1775): it is compressed with a method MDM doesn't unpack there; {method} is the method's name (BZIP2, LZMA, Deflate64…)
+            t("this file is packed in a way MDM can't unpack from the server ({method}): download the whole archive"),
+            &[("method", &ltr(&mdm_engine::remotezip::method_name(*m)))],
+        ),
+        // i18n: why a file can't be taken out of a ZIP on its server (#1775): the ZIP no longer holds it
+        P::Missing => t("this file is no longer in the ZIP on the server").to_owned(),
+        // i18n: why a file can't be taken out of a ZIP on its server (#1775): the ZIP was replaced on the server after its files were listed; Zip preview is the window that lists them
+        P::Changed => t("the ZIP changed on the server since its files were listed: open its Zip preview again").to_owned(),
+    }
+}
 /// Why a download's path is too long (#1102), with the limit that is passed here: Windows'
 /// 259 characters a path while its long paths are off, else a name's 255 (characters on Windows,
 /// bytes on Linux and macOS). The files saved beside it while it downloads count: a part file, a
@@ -302,6 +333,10 @@ pub fn torrent(e: &mdm_torrent::TorrentError) -> String {
     use mdm_torrent::TorrentError as E;
     match e {
         E::NotATorrent => t("this is not a magnet link or a .torrent file").to_owned(),
+        E::BadPieces => {
+            // i18n: error when opening a .torrent file whose piece size or list of pieces doesn't fit its files (damaged, or made wrong); it isn't added
+            t("this .torrent file is damaged: its pieces don't match its files").to_owned()
+        }
         E::MetadataTimeout => t("no peer sent the torrent's file list in time").to_owned(),
         E::Unknown => t("this torrent is not in the list").to_owned(),
         // i18n: error when adding a torrent; {name} = a file's path inside the torrent
@@ -348,7 +383,10 @@ pub fn adapter(e: &mdm_engine::NetError) -> String {
 /// errors in English, for the command line). File and build names stay as they are.
 pub fn tools(e: &mdm_tools::Error) -> String {
     use mdm_tools::Error as E;
-    if let Some((host, fault)) = e.network() {
+    // ffmpeg's list says it is the list that couldn't be fetched, then the server and why.
+    if !matches!(e, E::FfmpegList(_))
+        && let Some((host, fault)) = e.network()
+    {
         return reach(&host, fault, cause_of(e).as_deref());
     }
     match e {
@@ -387,6 +425,41 @@ pub fn tools(e: &mdm_tools::Error) -> String {
             t("{name} is being downloaded already: try again in a moment"),
             &[("name", name)],
         ),
+        E::FfmpegList(why) => ffmpeg_list(why),
+    }
+}
+
+/// Why MDM's list of the ffmpeg builds it checked let none in, in the interface language.
+fn ffmpeg_list(why: &mdm_tools::ffmpeg::ListError) -> String {
+    use mdm_tools::ffmpeg::ListError as L;
+    match why {
+        L::Unavailable(e) => fmt(
+            // i18n: error installing ffmpeg: MDM installs only builds named in a list it publishes, signed with its key, and that list couldn't be downloaded; {error} = why
+            t("MDM's list of checked ffmpeg builds could not be downloaded: {error}"),
+            &[("error", &tools(e))],
+        ),
+        L::Unsigned => t(
+            // i18n: error installing ffmpeg: the list of builds MDM accepts doesn't carry MDM's own signature
+            "MDM's list of checked ffmpeg builds isn't signed by MDM's key, so ffmpeg wasn't installed",
+        )
+        .to_owned(),
+        L::Older { .. } => t(
+            // i18n: error installing ffmpeg: the list of builds MDM accepts is older than one this copy of MDM already used (it never goes back to an older list)
+            "MDM's list of checked ffmpeg builds is older than one already used, so ffmpeg wasn't installed",
+        )
+        .to_owned(),
+        L::Unreadable(detail) => fmt(
+            // i18n: error installing ffmpeg: the list of builds MDM accepts couldn't be read; {detail} = the technical detail, in English
+            t("MDM's list of checked ffmpeg builds can't be read ({detail})"),
+            &[("detail", detail)],
+        ),
+        // i18n: error installing ffmpeg: the list of builds MDM accepts has none for this computer's system and processor
+        L::NoBuild(_) => t("MDM's list of checked ffmpeg builds has none for this computer").to_owned(),
+        L::NotListed => t(
+            // i18n: error installing ffmpeg: the file downloaded isn't the build named in the list of builds MDM accepts (its checksum differs), so it was thrown away
+            "the downloaded ffmpeg isn't the build MDM's list of checked builds names, so it wasn't installed",
+        )
+        .to_owned(),
     }
 }
 
@@ -495,8 +568,12 @@ fn cause_of(e: &mdm_tools::Error) -> Option<String> {
 /// why; None when its message says it all (a disk's error, a release not as expected).
 pub fn tools_advice(e: &mdm_tools::Error, name: &str) -> Option<String> {
     use mdm_engine::fault::Fault as F;
+    use mdm_tools::ffmpeg::ListError;
     let fault = match e {
         mdm_tools::Error::BadChecksum => F::CutShort,
+        // ffmpeg's list: what the failure to fetch it calls for, else another try later.
+        mdm_tools::Error::FfmpegList(ListError::Unavailable(e)) => return tools_advice(e, name),
+        mdm_tools::Error::FfmpegList(_) => F::CutShort,
         _ => e.network()?.1,
     };
     let text = match fault {
@@ -667,5 +744,47 @@ mod tests {
         assert!(tools(&cut).contains("cut short"));
         let disk = mdm_tools::Error::Io(std::io::Error::other("full"));
         assert!(tools_advice(&disk, "yt-dlp").is_none());
+    }
+
+    /// ffmpeg's list of checked builds: each refusal says the list (or the build) is why, and
+    /// what to do; one that couldn't be fetched names the server and why, as any helper's does.
+    #[test]
+    fn ffmpeg_refused_by_its_list_says_why() {
+        use mdm_tools::ffmpeg::ListError as L;
+        let list = |why| mdm_tools::Error::FfmpegList(why);
+        let gone = list(L::Unavailable(Box::new(mdm_tools::Error::Download {
+            host: "github.com".into(),
+            error: Error::Status(reqwest::StatusCode::NOT_FOUND),
+        })));
+        let text = tools(&gone);
+        assert!(
+            text.starts_with("MDM's list of checked ffmpeg builds could not be downloaded")
+                && text.contains("github.com")
+                && text.contains("404"),
+            "the list's download failure isn't worded as expected"
+        );
+        assert!(tools_advice(&gone, "ffmpeg").unwrap().contains("ffmpeg"));
+        for (why, says) in [
+            (L::Unsigned, "isn't signed by MDM's key"),
+            (
+                L::Older { got: 4, seen: 5 },
+                "is older than one already used",
+            ),
+            (L::Unreadable("x".into()), "can't be read (x)"),
+            (
+                L::NoBuild("windows x86".into()),
+                "has none for this computer",
+            ),
+            (L::NotListed, "the downloaded ffmpeg isn't the build"),
+        ] {
+            let e = list(why);
+            // Fixed words in the failure message: the error's own text never goes to a log.
+            assert!(tools(&e).contains(says), "{says:?} isn't said");
+            let advice = tools_advice(&e, "ffmpeg").unwrap();
+            assert!(
+                advice.contains("Use another program"),
+                "no advice for {says:?}"
+            );
+        }
     }
 }

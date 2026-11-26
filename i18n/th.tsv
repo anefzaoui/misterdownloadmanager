@@ -119,7 +119,7 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} failed|{n} failed	ดาวน์โหลดไม่สำเร็จ {n} รายการ
-#. count in the Batch download window; count in the Link grabber window; count in the Add torrent window; count in torrentfiles.rs
+#. count in the main window; count in the Batch download window; count in a dialog box; count in the Link grabber window; count in the Add torrent window; count in torrentfiles.rs; count in zippreview.rs
 #. how many files the pattern gives in all
 #. Link grabber: a package's row: {n} is its number of links
 #. {n} = a number (keep the braces as they are)
@@ -186,6 +186,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} window waits until you're back|{n} windows wait until you're back	มี {n} หน้าต่างรอจนกว่าจะกลับมา
+#. count in the Link grabber window
+#. Link grabber's Source line: a Hugging Face repository's or GitHub release's ({package}: its name, "owner/name") files whose names would lead out of its folder (`../`, a drive, a device's name) are left out; {n} how many
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{package}: {n} file left out, its name would lead out of its folder|{package}: {n} files left out, their names would lead out of its folder	{package}: ละเว้น {n} ไฟล์ เนื่องจากชื่อไฟล์ชี้ไปนอกโฟลเดอร์
 #. count in cnl.rs
 #. Click'n'Load window: {site} is a web site's name such as "example.com"
 #. {site} = a web site's name such as "example.com"; {n} = a number (keep the braces as they are)
@@ -539,7 +544,11 @@
 #. remote control page (on a phone): label of the box where a download's address or a magnet link is typed
 #, machine
 	Address or magnet link	ที่อยู่หรือลิงก์แม่เหล็ก
-#. text in the Options window; text in a download's Properties window
+#. message or event log entry in the main window
+#. Link grabber: where the links came from: the Add URL window (an address typed or pasted there)
+#, machine
+	Address typed	ป้อนที่อยู่แล้ว
+#. text in the Options window; text in preview.rs; text in a download's Properties window
 #. Options → DNS over HTTPS: label before the server's https:// address
 #, machine
 	Address:	ที่อยู่:
@@ -633,6 +642,10 @@
 #. Link grabber, a link's status: the remedy from the failure's sentence, for a site whose bot check lets only browsers through. The sentence, with the same advice, is the cell's hover tip
 #, machine
 	Alt+click the link	Alt+คลิกที่ลิงก์
+#. text in requestedit.rs
+#. Site rule: check box; on, MDM connects the way a browser does from the first request to these sites, instead of only after a site turned it away ("this site lets only browsers through")
+#, machine
+	Always connect the way a browser does	เชื่อมต่อแบบเบราว์เซอร์เสมอ
 #. message or event log entry in the main window
 #. View menu: a check item; dark mode on, whatever the system's setting
 #, machine
@@ -656,6 +669,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Andorra	อันดอร์รา
+#. text in a dialog box
+#. why the phone could not be turned off after the queue (fills {error}, Android)
+#, machine
+	Android doesn't let apps turn the phone off	Android ไม่อนุญาตให้แอปปิดโทรศัพท์
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -681,6 +698,10 @@
 #. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer's one wake alarm is already set by something else
 #, machine
 	Another program has set the computer's wake alarm	โปรแกรมอื่นได้ตั้งค่าการปลุกคอมพิวเตอร์แล้ว
+#. text in the Options window
+#. Site rule: OK with a site another rule already has
+#, machine
+	Another rule is for this site already: change that one	มีกฎสำหรับไซต์นี้อยู่แล้ว: เปลี่ยนกฎนั้น
 #. text in the Options window
 #. Options → Proxy / Socks: Test's answer; {ms} milliseconds; {ip} the internet address the site saw (the proxy's, or this computer's without one)
 #, machine
@@ -750,6 +771,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Aruba	อารูบา
+#. text in requestedit.rs
+#. a download's Connection settings → Proxy: the proxy set in Options → Proxy / Socks
+#, machine
+	As in Options	ตามที่ตั้งค่าในตัวเลือก
 #. option (radio button) in the Options window
 #, machine
 	As the system's region writes them	ตามที่ภูมิภาคของระบบเขียน
@@ -911,6 +936,10 @@
 #. the trailing ... means it opens a window: keep it
 #, machine
 	Browse...	เรียกดู...
+#. text in the Options window
+#. Site rules: column title: "Yes" when the rule asks the way a browser connects from the first request
+#, machine
+	Browser	เบราว์เซอร์
 #. text in extension.rs
 #, machine
 	Browser integration isn't set up on this computer, so no browser can reach Mister Download Manager yet.	การรวมเบราว์เซอร์ไม่ได้ตั้งค่าบนคอมพิวเตอร์เครื่องนี้ ดังนั้นเบราว์เซอร์จึงยังไม่สามารถเข้าถึง Mister Download Manager ได้
@@ -967,7 +996,7 @@
 #. a country's name (where a download's server is)
 #, machine
 	Canada	แคนาดา
-#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in extracting archives (a download's log, the Archive password window); button in the Find window; button in gallerydlg.rs; text in the Link grabber window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; text in remote.rs; button in the Scheduler window; button in the Add torrent window; button in traypanel.rs; button in the Download video window
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in extracting archives (a download's log, the Archive password window); button in the Find window; button in gallerydlg.rs; text in the Link grabber window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; text in remote.rs; button in the Scheduler window; button in the Add torrent window; button in traypanel.rs; button in the Download video window; text in zippreview.rs
 #. button: stop downloading the update
 #, machine
 	Cancel	ยกเลิก
@@ -1139,6 +1168,7 @@
 #, machine
 	Choose a font file	เลือกไฟล์ฟอนต์
 #. text in helpers.rs
+#. file picker title: choose a JavaScript runtime's program (node.exe, deno.exe, qjs.exe, bun.exe)
 #, machine
 	Choose a JavaScript runtime (Node.js, Deno, QuickJS or Bun)	เลือกสภาพแวดล้อมรันไทม์ JavaScript (Node.js, Deno, QuickJS หรือ Bun)
 #. text in langpick.rs
@@ -1156,6 +1186,7 @@
 #, machine
 	Choose the profile's folder	เลือกโฟลเดอร์ของโปรไฟล์
 #. text in helpers.rs; text in the Options window
+#. file picker title; {name} = yt-dlp or ffmpeg
 #. file picker title; {name} = the program to choose (yt-dlp, ffmpeg, 7-Zip)
 #. {name} = a file name (keep the braces as they are)
 #, machine
@@ -1274,6 +1305,23 @@
 #. tab title: connection settings
 #, machine
 	Connection	การเชื่อมต่อ
+#. text in a download's Properties window
+#. window title: a download's own request settings (User-Agent, headers, connections, proxy), from File Properties → Connection...
+#, machine
+	Connection settings	การตั้งค่าการเชื่อมต่อ
+#. message or event log entry in the main window
+#. event log: File Properties → Connection settings changed the download's own User-Agent, headers, proxy or connections
+#, machine
+	Connection settings changed	เปลี่ยนการตั้งค่าการเชื่อมต่อแล้ว
+#. text in a download's Properties window
+#. File Properties button: opens the download's own request settings (User-Agent, headers, connections, proxy)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Connection...	การเชื่อมต่อ...
+#. text in the Options window
+#. Site rules: column title: the number of connections (empty: the default)
+#, machine
+	Connections	การเชื่อมต่อ
 #. page title in the Options window
 #, machine
 	Connections and Limits	การเชื่อมต่อและขีดจำกัด
@@ -1743,6 +1791,10 @@
 #. the notice shown once, the first time a download comes from a browser's private (incognito) window: it stays in MDM's list like any other, after a restart too; where to turn that off. {options} = the Options window, {general} = its General tab, {checkbox} = the checkbox "Keep private-window downloads in the list"
 #, machine
 	Downloads from a browser's private window stay in MDM's list like any other, also after MDM restarts; their cookies are never saved. To keep them in memory only, untick {options} → {general} → {checkbox}.	การดาวน์โหลดจากหน้าต่างส่วนตัวของเบราว์เซอร์จะยังอยู่ในรายการของ MDM เหมือนรายการอื่น ๆ แม้หลังจากรีสตาร์ท MDM แล้ว คุกกี้จะไม่ถูกบันทึก หากต้องการเก็บไว้ในหน่วยความจำเท่านั้น ให้ยกเลิกการเลือก {options} → {general} → {checkbox}
+#. text in the Options window
+#. Site rules window: how the rules apply; *.example.com stays as it is
+#, machine
+	Downloads from these sites get these settings. Each one comes from the first rule in the list that names the site and sets it; * stands for any text: *.example.com	การดาวน์โหลดจากไซต์เหล่านี้จะใช้การตั้งค่าเหล่านี้ แต่ละรายการมาจากกฎแรกในรายการที่ระบุไซต์และตั้งค่าไว้; * แทนข้อความใดก็ได้: *.example.com
 #. text in the tray icon's menu; text in traypanel.rs
 #. tray menu: a submenu of the downloads now running; choosing one shows its progress window
 #. the notification-area icon's panel (#1365): its title, over the downloads now running (also the tray menu's submenu)
@@ -1815,6 +1867,10 @@
 #. text in the Options window
 #, machine
 	Edit login	แก้ไขการเข้าสู่ระบบ
+#. text in the Options window
+#. window title: changing one site rule
+#, machine
+	Edit site rule	แก้ไขกฎไซต์
 #. button in the Options window
 #. verb: edit the item
 #. the trailing ... means it opens a window: keep it
@@ -1831,7 +1887,7 @@
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Email	ส่งอีเมล
-#. text in the Download video window
+#. checkbox in the Download video window; text in the Download video window
 #. checkbox in Download video: the chapters a video's page lists (YouTube's, for one) go into the video file, where players show them and skip between them
 #, machine
 	Embed chapters	ฝังบท
@@ -1839,6 +1895,10 @@
 #. in Download a gallery, after the "Files at most" box
 #, machine
 	Empty: all of them. On most sites the newest come first.	ว่างเปล่า: ทั้งหมด ในเว็บไซต์ส่วนใหญ่ รายการใหม่ล่าสุดจะมาก่อน
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: the hint under the User-Agent box
+#, machine
+	Empty: the browser's, or the one set in Options	ว่างเปล่า: ใช้ของเบราว์เซอร์ หรือที่ตั้งค่าในตัวเลือก
 #. text in crashui.rs
 #. crash report window button: end the frozen MDM and start it again
 #, machine
@@ -1916,6 +1976,10 @@
 #. choice in Download video's Part: the part is encoded again so it starts and ends exactly at From and To (slower)
 #, machine
 	Exact cut, encoded again	ตัดแบบแม่นยำ เข้ารหัสใหม่
+#. text in the Options window
+#. Site rule: the hint under the site box; the examples stay as they are
+#, machine
+	example.com, or *.example.com for its subdomains	example.com หรือ *.example.com สำหรับโดเมนย่อย
 #. text in the Options window
 #. label before an example date and time written the chosen way
 #, machine
@@ -2020,7 +2084,7 @@
 #, machine
 	Feeds:	ฟีด:
 #. text in the Add torrent window
-#. Torrent settings, at the bottom
+#. Torrent settings, under the blocklist's address
 #, machine
 	Fetched again every 7 days. Changes apply when no torrent is running.	ดึงข้อมูลอีกครั้งทุก 7 วัน การเปลี่ยนแปลงจะมีผลเมื่อไม่มีทอร์เรนต์ทำงานอยู่
 #. text in the Add torrent window
@@ -2047,7 +2111,8 @@
 #. tooltip of "Mark downloaded files as coming from the internet" on Linux
 #, machine
 	File managers show where the files marked this way came from. Unticked, no download is marked.	ตัวจัดการไฟล์จะแสดงที่มาของไฟล์ที่ทำเครื่องหมายด้วยวิธีนี้ หากไม่เลือกตัวเลือกนี้ จะไม่มีการทำเครื่องหมายไฟล์ที่ดาวน์โหลด
-#. text in the Scheduler window
+#. text in a download's progress window; text in the Scheduler window
+#. Zip preview's column: the file's name (its path inside the ZIP)
 #, machine
 	File Name	ชื่อไฟล์
 #. text in the Download video window
@@ -2091,6 +2156,10 @@
 #. text in the Scheduler window; tab in the Scheduler window
 #, machine
 	Files in the queue	ไฟล์ในคิว
+#. text in the download list (sizes, speeds, status)
+#. why files being taken out of a ZIP on its server (#1775) can't be moved or renamed yet: those already out are in its folder, the others still to come there
+#, machine
+	Files taken out of a ZIP can be moved once they're all out	ไฟล์ที่แยกออกจาก ZIP สามารถย้ายได้เมื่อแยกออกมาทั้งหมดแล้ว
 #. button in a download's Properties window
 #. File Properties button that opens the selected torrent's file list
 #. the trailing ... means it opens a window: keep it
@@ -2159,6 +2228,10 @@
 #. text in categories.rs
 #, machine
 	Folder:	โฟลเดอร์:
+#. text in the Options window
+#. Options → Archives → Link grabber, one line with two boxes: an FTP folder or a web server's folder listing ("Index of") given to Link grabber is read with its subfolders: {depth} is a number box (how many levels of subfolders, 3 at first; 0 is the folder's own files only), {types} a text box (file types such as ISO ZIP; empty for every type)
+#, machine
+	Folders: {depth} levels deep, types: {types}	โฟลเดอร์: ลึก {depth} ระดับ, ชนิดไฟล์: {types}
 #. message or event log entry in the main window
 #. the kind of file View → Font → Choose a font file lists: TrueType and OpenType font files
 #, machine
@@ -2358,6 +2431,11 @@
 #. {version} = a version number (keep the braces as they are)
 #, machine
 	Go back to {version}	กลับไปใช้ {version}
+#. text in helpers.rs
+#. Helpers: the "Go back" button's name for a screen reader; {version} = the earlier version, {name} = the helper (yt-dlp, ffmpeg, gallery-dl, Node.js)
+#. {version} = a version number; {name} = a file name (keep the braces as they are)
+#, machine
+	Go back to {version} of {name}	กลับไปที่ {name} เวอร์ชัน {version}
 #. text in a download's progress window
 #. a torrent's sharing, when Torrent settings keep it on
 #, machine
@@ -2421,6 +2499,10 @@
 #. legend: pieces downloaded
 #, machine
 	Have	มี
+#. text in the Options window
+#. Site rules: column title: how many request headers the rule adds
+#, machine
+	Headers	ส่วนหัว
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2451,6 +2533,10 @@
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 	Hide &preview pane	ซ่อนบานหน้าต่าง&แสดงตัวอย่าง
+#. text in the Link grabber window
+#. Link grabber check box, ticked when it opens: the pictures shown on the browser's page (its images, not links to pictures), which "Download all links" sends with the links, are not shown
+#, machine
+	Hide images located on this web page	ซ่อนรูปภาพที่อยู่ในหน้าเว็บนี้
 #. button in a download's progress window
 #, machine
 	Hide tab	ซ่อนแท็บ
@@ -2578,11 +2664,11 @@
 #. in the "7-Zip needed" window, under why
 #, machine
 	Install 7-Zip (free), then right-click the download and choose Extract.	ติดตั้ง 7-Zip (ฟรี) จากนั้นคลิกขวาที่การดาวน์โหลดแล้วเลือกแตกไฟล์
-#. text in the Download video window
+#. text in helpers.rs; text in the Download video window
 #. button: download and install the ffmpeg program
 #, machine
 	Install ffmpeg	ติดตั้ง ffmpeg
-#. button in gallerydlg.rs
+#. button in gallerydlg.rs; text in helpers.rs
 #. button: download and install the gallery-dl program
 #, machine
 	Install gallery-dl	ติดตั้ง gallery-dl
@@ -2590,7 +2676,7 @@
 #. link in the browser extension's window: the tutorial that adds it without the browser's store
 #, machine
 	Install it by hand	ติดตั้งด้วยตนเอง
-#. text in the Download video window
+#. text in helpers.rs; text in the Download video window
 #. button in Download video: download and install Node.js, the JavaScript runtime YouTube needs (Node.js is a program's name)
 #, machine
 	Install Node.js	ติดตั้ง Node.js
@@ -2602,7 +2688,7 @@
 #. in the "7-Zip needed" window, under why (Linux: 7-Zip comes from the distribution's packages, named 7zip or p7zip)
 #, machine
 	Install your system's 7zip (or p7zip) package, then right-click the download and choose Extract.	ติดตั้งแพ็กเกจ 7zip (หรือ p7zip) ของระบบของคุณ จากนั้นคลิกขวาที่รายการดาวน์โหลดแล้วเลือก แตกไฟล์
-#. text in the Download video window
+#. text in helpers.rs; text in the Download video window
 #. button: download and install the yt-dlp program
 #, machine
 	Install yt-dlp	ติดตั้ง yt-dlp
@@ -2892,6 +2978,23 @@
 #. Torrent settings: an upload speed limit for all torrents together, followed by a box with the speed and "KBytes/sec"
 #, machine
 	Limit uploading for all torrents to	จำกัดความเร็วการอัปโหลดของทอร์เรนต์ทั้งหมดไม่เกิน
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: a header's name has a space or another character names can't have; {line} is the line's number
+#, machine
+	Line {line}: a header's name has letters, digits and dashes only	บรรทัดที่ {line}: ชื่อส่วนหัวต้องมีเฉพาะตัวอักษร ตัวเลข และเครื่องหมายขีดกลาง
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: a header MDM sets itself for each request (Range, Host…) can't be typed; {line} is the line's number, {name} the header's name
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Line {line}: Mister Download Manager sets {name} itself	บรรทัดที่ {line}: Mister Download Manager ตั้งค่า {name} เอง
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: a header's value (or the User-Agent) holds a control character; {line} is the line's number
+#, machine
+	Line {line}: the value has a character a header can't hold	บรรทัดที่ {line}: ค่ามีอักขระที่ส่วนหัวไม่สามารถมีได้
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: a line of request headers isn't "Name: value"; {line} is its number
+#, machine
+	Line {line}: write a header as Name: value	บรรทัดที่ {line}: เขียนส่วนหัวเป็น ชื่อ: ค่า
 #. message or event log entry in the main window; window title in the Link grabber window; group box title in the Options window
 #. Options → Archives: group box title
 #, machine
@@ -2905,6 +3008,10 @@
 #. in Link grabber, where the addresses came from: a page in the browser
 #, machine
 	Links from the browser	ลิงก์จากเบราว์เซอร์
+#. text in a dialog box
+#. tooltip of Download File Info's Preview button for a ZIP (#1775): it lists the files inside, to download only some of them
+#, machine
+	List the files inside the ZIP and pick those to download	แสดงรายการไฟล์ใน ZIP และเลือกไฟล์ที่จะดาวน์โหลด
 #. text in playlistdlg.rs
 #. button in Download video: go on listing a playlist from where it stopped
 #, machine
@@ -2982,6 +3089,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Looking for your default browser...	กำลังค้นหาเบราว์เซอร์เริ่มต้นของคุณ...
+#. text in a dialog box
+#. tooltip of Download File Info's greyed Preview button while MDM asks the server whether it can look inside the ZIP (#1775)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Looking inside the ZIP...	กำลังดูภายใน ZIP...
 #. text in the Download video window
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -3158,6 +3270,27 @@
 #. remote control page (on a phone): no pairing code is shown in MDM; "Pair a device" is MDM's button
 #, machine
 	MDM shows no code now. Click Pair a device there first.	MDM ไม่แสดงรหัสในขณะนี้ คลิก จับคู่อุปกรณ์ ที่นั่นก่อน
+#. text in errors.rs
+#. error installing ffmpeg: the list of builds MDM accepts couldn't be read; {detail} = the technical detail, in English
+#, machine
+	MDM's list of checked ffmpeg builds can't be read ({detail})	ไม่สามารถอ่านรายการบิลด์ ffmpeg ที่ MDM ตรวจสอบแล้วได้ ({detail})
+#. text in errors.rs
+#. error installing ffmpeg: MDM installs only builds named in a list it publishes, signed with its key, and that list couldn't be downloaded; {error} = why
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	MDM's list of checked ffmpeg builds could not be downloaded: {error}	ไม่สามารถดาวน์โหลดรายการบิลด์ ffmpeg ที่ MDM ตรวจสอบแล้วได้: {error}
+#. text in errors.rs
+#. error installing ffmpeg: the list of builds MDM accepts has none for this computer's system and processor
+#, machine
+	MDM's list of checked ffmpeg builds has none for this computer	รายการบิลด์ ffmpeg ที่ MDM ตรวจสอบแล้วไม่มีบิลด์สำหรับคอมพิวเตอร์เครื่องนี้
+#. text in errors.rs
+#. error installing ffmpeg: the list of builds MDM accepts is older than one this copy of MDM already used (it never goes back to an older list)
+#, machine
+	MDM's list of checked ffmpeg builds is older than one already used, so ffmpeg wasn't installed	รายการบิลด์ ffmpeg ที่ MDM ตรวจสอบแล้วเก่ากว่าที่เคยใช้ไปแล้ว จึงไม่ได้ติดตั้ง ffmpeg
+#. text in errors.rs
+#. error installing ffmpeg: the list of builds MDM accepts doesn't carry MDM's own signature
+#, machine
+	MDM's list of checked ffmpeg builds isn't signed by MDM's key, so ffmpeg wasn't installed	รายการบิลด์ ffmpeg ที่ MDM ตรวจสอบแล้วไม่ได้ลงชื่อโดยคีย์ของ MDM จึงไม่ได้ติดตั้ง ffmpeg
 #. text in whereis.rs
 #. how far a download's server is, by its round trip (60 to 150 ms)
 #, machine
@@ -3258,6 +3391,10 @@
 #. Monday, as short as a calendar's column head (two letters in English)
 #, machine
 	Mo	จ.
+#. text in a download's progress window
+#. Zip preview's column: when the file was last changed, as the ZIP says
+#, machine
+	Modified	แก้ไขเมื่อ
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3311,7 +3448,8 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move between the toolbar, the categories and the download list	ย้ายระหว่างแถบเครื่องมือ หมวดหมู่ และรายการดาวน์โหลด
-#. text in the Scheduler window
+#. text in a dialog box; text in the Scheduler window
+#. button in the Columns dialog: move the selected column one place towards the end of the list
 #, machine
 	Move down	ย้ายลง
 #. text in a dialog box
@@ -3327,7 +3465,9 @@
 #. message or event log entry in the main window
 #, machine
 	Move to queue	ย้ายไปยังคิว
-#. text in the Scheduler window
+#. text in a dialog box; text in the Scheduler window
+#. button in the Columns dialog: move the selected column one place towards the start of the list
+#. tooltip of an icon button in the Scheduler's list of files
 #, machine
 	Move up	ย้ายขึ้น
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
@@ -3465,6 +3605,10 @@
 #. RSS feeds window, Download rules: make a new rule
 #, machine
 	New rule	กฎใหม่
+#. text in the Options window
+#. window title: adding a site rule
+#, machine
+	New site rule	กฎไซต์ใหม่
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3578,6 +3722,10 @@
 #. a magnet link's lookup, after 30 seconds without a peer
 #, machine
 	No peers yet. Few people may share this torrent, or a firewall, a VPN or the network may be blocking BitTorrent.	ยังไม่มีเพียร์ อาจมีคนแชร์ทอร์เรนต์นี้น้อย หรือไฟร์วอลล์, VPN หรือเครือข่ายอาจบล็อก BitTorrent
+#. text in requestedit.rs
+#. a download's Connection settings → Proxy: straight to the server, no proxy
+#, machine
+	No proxy	ไม่ใช้พร็อกซี
 #. text in the Options window
 #, machine
 	No proxy/socks	ไม่มีพร็อกซี/SOCKS
@@ -3661,6 +3809,10 @@
 #. RSS feeds window: the selected feed hasn't been fetched yet
 #, machine
 	Not fetched yet	ยังไม่ได้ดึงข้อมูล
+#. text in the Link grabber window
+#. Link grabber, a link's status: a Hugging Face repository or folder, or a GitHub release or tag, that isn't there. The sentence is the cell's hover tip
+#, machine
+	Not found	ไม่พบ
 #. value in a column's filter list in the download list
 #, machine
 	Not in a queue	ไม่ได้อยู่ในคิว
@@ -3717,6 +3869,10 @@
 #. text in the Options window
 #, machine
 	Number	หมายเลข
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: check box before the number box; unticked, the number set in Options → Connection applies
+#, machine
+	Number of connections:	จำนวนการเชื่อมต่อ:
 #. checkbox in the Scheduler window
 #, machine
 	Number of retries for each file if downloading failed :	จำนวนครั้งที่ลองใหม่สำหรับแต่ละไฟล์หากการดาวน์โหลดล้มเหลว:
@@ -3752,7 +3908,7 @@
 #. Link grabber, a link's status: the server hasn't the file; {status} is the HTTP code (404)
 #, machine
 	Offline ({status})	ออฟไลน์ ({status})
-#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; text in extracting archives (a download's log, the Archive password window); text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's Properties window; button in the Scheduler window; button in the Add torrent window
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; text in extracting archives (a download's log, the Archive password window); text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's Properties window; button in the Scheduler window; button in the Add torrent window; text in zippreview.rs
 #, machine
 	OK	ตกลง
 #. text in countries.rs
@@ -3806,13 +3962,10 @@
 #. Link grabber, a link's status: the server has the file
 #, machine
 	Online	ออนไลน์
-#. text in a download's Properties window
-#. tooltip of the greyed Move button in File Properties
+#. text in the Options window
+#. Options → Archives → Link grabber: the hover tip of the types box in "Folders: {depth} levels deep, types: {types}": only a folder's files of these types go into Link grabber; written as the File types page writes them
 #, machine
-	Only a finished download, or one not started yet, can be moved	สามารถย้ายได้เฉพาะรายการดาวน์โหลดที่เสร็จสมบูรณ์แล้ว หรือยังไม่ได้เริ่มเท่านั้น
-#. message or event log entry in the main window
-#, machine
-	Only a finished download, or one not started yet, can be moved. Stop it and finish it first.	สามารถย้ายได้เฉพาะรายการดาวน์โหลดที่เสร็จสมบูรณ์แล้ว หรือยังไม่ได้เริ่มเท่านั้น หยุดและทำให้เสร็จก่อน
+	Only a folder's files of these types, written as on the File types page (ISO ZIP R0*). Empty: every type.	เฉพาะไฟล์ในโฟลเดอร์ที่เป็นชนิดเหล่านี้ โดยเขียนรูปแบบเหมือนในหน้าชนิดไฟล์ (ISO ZIP R0*) หากเว้นว่างไว้: ทุกชนิด
 #. text in the Download video window
 #. checkbox in Download video: download only a part of the video or sound; the From and To boxes follow it
 #, machine
@@ -3841,6 +3994,10 @@
 #. checkbox in a dialog box
 #, machine
 	Only while I'm using the computer	เฉพาะเมื่อฉันกำลังใช้คอมพิวเตอร์
+#. message or event log entry in the main window
+#. event log entry: the download is files picked inside a ZIP in Zip preview (#1775); {files} how many ("3 files")
+#, machine
+	Only {files} picked inside the ZIP	เลือกเพียง {files} รายการภายใน ZIP
 #. button in a dialog box; text in a dialog box; button in a download's Properties window; button in torrentfiles.rs
 #. verb: opens the downloaded file
 #. title of the message when a downloaded file can't be opened
@@ -3921,6 +4078,10 @@
 #. Link grabber: the box that edits the selected package
 #, machine
 	Package	แพคเกจ
+#. text in a download's progress window
+#. Zip preview's column: the file's size as packed (compressed) inside the ZIP
+#, machine
+	Packed	ขนาดที่บีบอัด
 #. text in gallerydlg.rs; text in the Download video window
 #, machine
 	Page address	ที่อยู่หน้า
@@ -4009,10 +4170,14 @@
 #. remote control page (on a phone): button: pause a download
 #, machine
 	Pause	หยุดชั่วคราว
-#. text in a download's Properties window
+#. text in the download list (sizes, speeds, status)
 #. tooltip of the greyed Move button in File Properties
 #, machine
 	Pause the download first	หยุดการดาวน์โหลดชั่วคราวก่อน
+#. tooltip (why a control is greyed) in a download's Properties window
+#. tooltip of File Properties' greyed Connection... button while the download runs
+#, machine
+	Pause the download to change how it connects	หยุดดาวน์โหลดชั่วคราวเพื่อเปลี่ยนวิธีการเชื่อมต่อ
 #. text in a download's progress window
 #. a download's status (state it is in, not a command): stopped for now
 #, machine
@@ -4089,8 +4254,8 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Press keys...	กดปุ่ม...
-#. button in a dialog box
-#. verb: open the part already downloaded
+#. button in a dialog box; text in a dialog box
+#. verb: Download File Info's button; for a ZIP, it lists the files inside it to pick those to download (#1775)
 #, machine
 	Preview	แสดงตัวอย่าง
 #. text in a dialog box
@@ -4133,6 +4298,10 @@
 #. label in the Options window
 #, machine
 	Proxy server address	ที่อยู่พร็อกซีเซิร์ฟเวอร์
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: label before the proxy choice
+#, machine
+	Proxy:	พร็อกซี:
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -4193,6 +4362,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Reading the torrent...	กำลังอ่านทอร์เรนต์...
+#. text in zippreview.rs
+#. Zip preview, while the ZIP's list of files is being read from its server
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Reading the ZIP's list of files...	กำลังอ่านรายการไฟล์ของ ZIP...
 #. message or event log entry in the main window
 #. the status strip while Tasks → Import reads a file; {file} is its name
 #. the trailing ... means it is still going on: keep it
@@ -4305,7 +4479,11 @@
 #. group box title: what the * in the address is replaced with (numbers or letters)
 #, machine
 	Replace asterisk to	แทนที่เครื่องหมายดอกจันด้วย
-#. button in a dialog box
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: label above the box of request headers, one a line ("X-Token: abc")
+#, machine
+	Request headers, one a line (Name: value):	ส่วนหัวคำขอ หนึ่งบรรทัด (ชื่อ: ค่า):
+#. text in a dialog box
 #. button in the Columns dialog: put the columns back as they first were (order, widths, all shown)
 #, machine
 	Reset	รีเซ็ต
@@ -4434,7 +4612,7 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Save To...	บันทึกไปที่...
-#. text in a download's progress window; text in a download's Properties window
+#. text in preview.rs; text in a download's progress window; text in a download's Properties window
 #, machine
 	Save To:	บันทึกไปที่:
 #. text in the Batch download window; text in the Link grabber window; text in rssdlg.rs
@@ -4476,7 +4654,7 @@
 #. the preview pane when no download is selected, under its title
 #, machine
 	Select a download to see its picture and details here.	เลือกรายการดาวน์โหลดเพื่อดูรูปภาพและรายละเอียดที่นี่
-#. button in playlistdlg.rs; button in the Add torrent window; text in torrentfiles.rs
+#. button in playlistdlg.rs; button in the Add torrent window; text in torrentfiles.rs; text in zippreview.rs
 #. button in Download video for a playlist: tick every video
 #, machine
 	Select all	เลือกทั้งหมด
@@ -4703,6 +4881,10 @@
 #, machine
 	Sign in in the browser	ลงชื่อเข้าใช้ในเบราว์เซอร์
 #. text in the Options window
+#. Options → Accounts (Android): where the debrid accounts' sign-ins and the other passwords are kept (encrypted with a key held by Android's keystore)
+#, machine
+	Sign-ins and passwords are kept encrypted with a key in Android's keystore.	การลงชื่อเข้าใช้และรหัสผ่านจะถูกเก็บไว้ในรูปแบบเข้ารหัสด้วยคีย์ในคีย์สโตร์ของ Android
+#. text in the Options window
 #. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (the macOS login keychain)
 #, machine
 	Sign-ins and passwords are kept in the macOS keychain.	การลงชื่อเข้าใช้และรหัสผ่านจะถูกเก็บไว้ในพวงกุญแจ macOS
@@ -4754,9 +4936,23 @@
 #. a country's name (where a download's server is)
 #, machine
 	Sint Maarten	ซินต์มาร์เติน
+#. text in the Options window
+#. Site rules: column title: the site pattern
+#, machine
+	Site	ไซต์
 #. checkbox in the Find window
 #, machine
 	Site name/Download link/Parent web page/Referer	ชื่อไซต์/ลิงก์ดาวน์โหลด/หน้าเว็บหลัก/ตัวอ้างอิง
+#. window title in the Options window; text in the Options window
+#. window title: per-site settings (User-Agent, headers, connections, the browser-like connection) by site pattern
+#. Site rules window: the list's name for screen readers
+#, machine
+	Site rules	กฎไซต์
+#. text in the Options window
+#. Options → Connection: button: opens the per-site settings (User-Agent, headers, connections)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Site rules...	กฎไซต์...
 #. text in the Options window
 #. column title: the site (and path) a login is for
 #, machine
@@ -4764,6 +4960,10 @@
 #. text in the Options window
 #, machine
 	Site/path:	ไซต์/เส้นทาง:
+#. text in the Options window
+#. Site rule: label before the site pattern box (example.com, *.example.com)
+#, machine
+	Site:	ไซต์:
 #. text in the Options window
 #. tab title: user names and passwords for sites
 #, machine
@@ -4783,7 +4983,7 @@
 #. the video's file size is not known
 #, machine
 	size unknown	ไม่ทราบขนาด
-#. text in a download's Properties window
+#. text in preview.rs; text in a download's Properties window
 #, machine
 	Size:	ขนาด:
 #. text in a download's progress window; text in torrentfiles.rs
@@ -4921,6 +5121,11 @@
 #. checkbox in the Options window
 #, machine
 	Start downloading immediately while displaying "Download File Info" dialog	เริ่มดาวน์โหลดทันทีในขณะที่แสดงกล่องโต้ตอบ "ข้อมูลไฟล์ดาวน์โหลด"
+#. text in a dialog box
+#. Download File Info, on hover over the number of files picked in Zip preview (#1775): {files} how many ("3 files"), {size} their size together, {folder} the folder they go into (named after the archive)
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	Start downloads only the {files} picked in the ZIP ({size}), into {folder}	เริ่มดาวน์โหลดเฉพาะ {files} รายการที่เลือกใน ZIP ({size}) ไปยัง {folder}
 #. text in the tray icon's menu
 #, machine
 	Start main download queue	เริ่มคิวการดาวน์โหลดหลัก
@@ -4976,7 +5181,7 @@
 #. column title: the download's state
 #, machine
 	Status	สถานะ
-#. text in a download's Properties window
+#. text in preview.rs; text in a download's Properties window
 #. label before the download's state
 #, machine
 	Status:	สถานะ:
@@ -4988,6 +5193,10 @@
 #. remote control page (on a phone): button: stop a queue
 #, machine
 	Stop	หยุด
+#. text in a download's progress window
+#. button in the progress window of a download that never ends by itself (an internet radio, a camera feed: no size, can't be resumed): stop it and keep what has arrived as the finished file
+#, machine
+	Stop and keep	หยุดและเก็บ
 #. text in a download's progress window
 #. button in a live stream's progress window: stop recording it and keep what was recorded as a video file
 #, machine
@@ -5120,10 +5329,6 @@
 #. a country's name (where a download's server is)
 #, machine
 	Tanzania	แทนซาเนีย
-#. text in the Options window
-#. \\n starts a new line: break lines where they fit the translation
-#, machine
-	Tasks → Link grabber, or the browser's "Download all links": a split\narchive's volumes are one package, the other links of a page another.	งาน → ตัวดึงลิงก์ หรือ “ดาวน์โหลดลิงก์ทั้งหมด” ของเบราว์เซอร์: ไฟล์เก็บถาวร\nแบบแยกส่วนจะอยู่ในแพคเกจเดียวกัน ส่วนลิงก์อื่นๆ ของหน้าจะอยู่ในอีกแพคเกจหนึ่ง
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Tell a friend	บอกเพื่อน
@@ -5337,6 +5542,10 @@
 #, machine
 	The download queue is done.	คิวการดาวน์โหลดเสร็จสิ้นแล้ว
 #. text in errors.rs
+#. error installing ffmpeg: the file downloaded isn't the build named in the list of builds MDM accepts (its checksum differs), so it was thrown away
+#, machine
+	the downloaded ffmpeg isn't the build MDM's list of checked builds names, so it wasn't installed	ffmpeg ที่ดาวน์โหลดไม่ใช่บิลด์ที่ระบุในรายการบิลด์ที่ MDM ตรวจสอบแล้ว จึงไม่ได้ติดตั้ง
+#. text in errors.rs
 #, machine
 	the downloaded program doesn't match its signed checksum	โปรแกรมที่ดาวน์โหลดไม่ตรงกับผลรวมตรวจสอบที่ลงชื่อไว้
 #. message or event log entry in the main window
@@ -5371,6 +5580,10 @@
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
 	The file does NOT match ({algorithm})	ไฟล์ไม่ตรงกัน ({algorithm})
+#. text in errors.rs
+#. why a file taken out of a ZIP on its server failed (#1775): its bytes aren't what the ZIP's list of files says (its size or its CRC-32 checksum)
+#, machine
+	the file in the ZIP doesn't match the ZIP's list of files (its size or checksum): download the whole archive	ไฟล์ใน ZIP ไม่ตรงกับรายการไฟล์ของ ZIP (ขนาดหรือผลรวมตรวจสอบ): ดาวน์โหลดทั้งไฟล์เก็บถาวร
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
@@ -5439,6 +5652,10 @@
 #. an error: the network adapter chosen in Options (a VPN's, usually) is off or gone; {adapter} its name
 #, machine
 	the network adapter {adapter} is not connected	อะแดปเตอร์เครือข่าย {adapter} ไม่ได้เชื่อมต่อ
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: the number of connections typed is out of range; {max} is 32 (or 128)
+#, machine
+	The number of connections must be from 1 to {max}	จำนวนการเชื่อมต่อต้องอยู่ระหว่าง 1 ถึง {max}
 #. text in torrent_ownership.rs
 #. error when a torrent's output folder path cannot be used
 #, machine
@@ -5500,6 +5717,10 @@
 #. text in errors.rs
 #, machine
 	the server can't send parts of the file, so it can't be resumed	เซิร์ฟเวอร์ไม่สามารถส่งข้อมูลบางส่วนของไฟล์ได้ จึงไม่สามารถดาวน์โหลดต่อได้
+#. text in errors.rs
+#. Zip preview (#1775): the server doesn't send parts of a file (HTTP ranges), so MDM can't fetch only some files from inside a ZIP; the whole archive still downloads
+#, machine
+	the server can't send parts of the ZIP, so its files can't be downloaded one by one: download the whole archive	เซิร์ฟเวอร์ไม่สามารถส่งส่วนของ ZIP ได้ ดังนั้นจึงไม่สามารถดาวน์โหลดไฟล์ทีละไฟล์ได้: ดาวน์โหลดทั้งไฟล์เก็บถาวร
 #. text in errors.rs
 #, machine
 	the server did not answer in time	เซิร์ฟเวอร์ไม่ตอบกลับภายในเวลาที่กำหนด
@@ -5637,9 +5858,17 @@
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	The update is open in your system's package installer.	การอัปเดตเปิดอยู่ในตัวติดตั้งแพ็กเกจของระบบ
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: the User-Agent typed holds a control character
+#, machine
+	The User-Agent has a character a header can't hold	User-Agent มีอักขระที่ส่วนหัวไม่สามารถมีได้
 #. text in a download's Properties window
 #, machine
 	The web page from which this file was obtained:	หน้าเว็บที่ได้รับไฟล์นี้มา:
+#. text in errors.rs
+#. why a file can't be taken out of a ZIP on its server (#1775): the ZIP was replaced on the server after its files were listed; Zip preview is the window that lists them
+#, machine
+	the ZIP changed on the server since its files were listed: open its Zip preview again	ZIP เปลี่ยนแปลงบนเซิร์ฟเวอร์ตั้งแต่มีการแสดงรายการไฟล์: เปิดการแสดงตัวอย่าง ZIP อีกครั้ง
 #. message or event log entry in the main window
 #. the kind of file View → Theme → Add a theme file lists: MDM's themes (TOML, JSON), Base16 schemes (YAML) and pywal's colors.json
 #, machine
@@ -5673,6 +5902,10 @@
 #. text in helpers.rs
 #, machine
 	They keep downloading if you close this window.	การดาวน์โหลดจะดำเนินต่อไปหากปิดหน้าต่างนี้
+#. text in errors.rs
+#. error when opening a .torrent file whose piece size or list of pieces doesn't fit its files (damaged, or made wrong); it isn't added
+#, machine
+	this .torrent file is damaged: its pieces don't match its files	ไฟล์ .torrent นี้เสียหาย: ชิ้นส่วนไม่ตรงกับไฟล์
 #. text in a dialog box
 #, machine
 	This address is already in the list of downloads:	ที่อยู่นี้อยู่ในรายการดาวน์โหลดแล้ว:
@@ -5727,6 +5960,18 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	This file can't be used as a theme: {error}	ไฟล์นี้ใช้เป็นชุดรูปแบบไม่ได้: {error}
+#. text in errors.rs
+#. why a file can't be taken out of a ZIP on its server (#1775): it is encrypted (password-protected) in the ZIP
+#, machine
+	this file is encrypted in the ZIP: download the whole archive and open it with its password	ไฟล์นี้ถูกเข้ารหัสใน ZIP: ดาวน์โหลดทั้งไฟล์เก็บถาวรและเปิดด้วยรหัสผ่าน
+#. text in errors.rs
+#. why a file can't be taken out of a ZIP on its server (#1775): the ZIP no longer holds it
+#, machine
+	this file is no longer in the ZIP on the server	ไฟล์นี้ไม่อยู่ใน ZIP บนเซิร์ฟเวอร์แล้ว
+#. text in errors.rs
+#. why a file can't be taken out of a ZIP on its server (#1775): it is compressed with a method MDM doesn't unpack there; {method} is the method's name (BZIP2, LZMA, Deflate64…)
+#, machine
+	this file is packed in a way MDM can't unpack from the server ({method}): download the whole archive	ไฟล์นี้ถูกบีบอัดในลักษณะที่ MDM ไม่สามารถคลายการบีบอัดจากเซิร์ฟเวอร์ได้ ({method}): ดาวน์โหลดทั้งไฟล์เก็บถาวร
 #. text in remote.rs
 #. remote control page (on a phone): the file chosen is too large for a .torrent file
 #, machine
@@ -5761,6 +6006,10 @@
 #. a check of Test browser integration: a portable copy can't be connected
 #, machine
 	This is the installed copy, not a portable one	นี่คือสำเนาที่ติดตั้ง ไม่ใช่แบบพกพา
+#. text in errors.rs
+#. Zip preview (#1775): the address isn't a ZIP archive whose list of files MDM can read on the server
+#, machine
+	this isn't a ZIP archive MDM can look inside on the server: download the whole file	นี่ไม่ใช่ไฟล์เก็บถาวร ZIP ที่ MDM สามารถดูภายในบนเซิร์ฟเวอร์ได้: ดาวน์โหลดทั้งไฟล์
 #. text in playlistdlg.rs
 #. in Download video, a playlist or channel that lists no video
 #, machine
@@ -5775,6 +6024,7 @@
 	This name is reserved by Windows	ชื่อนี้ถูกสงวนไว้โดย Windows
 #. tooltip (why a control is greyed) in the Download video window
 #. why "Embed chapters" is greyed: ffmpeg (a helper program) is not installed
+#. why "Split into chapters" is greyed: ffmpeg (a helper program) is not installed
 #. why Part is greyed in Download video: ffmpeg (a helper program) is not installed
 #. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
 #, machine
@@ -5796,6 +6046,10 @@
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	this program isn't {name}	โปรแกรมนี้ไม่ใช่ {name}
+#. text in requestedit.rs
+#. a download's Connection settings → Proxy: the proxy typed in the box beside
+#, machine
+	This proxy:	พร็อกซีนี้:
 #. text in the Options window
 #. Options → General: shown when the chosen global shortcut is already registered by another program (#558)
 #, machine
@@ -5825,7 +6079,7 @@
 #. torrent start needs explicit write permission; {file} is the first existing file without a matching grant
 #, machine
 	This torrent needs permission to use {file} before it can start.	ทอร์เรนต์นี้ต้องได้รับอนุญาตให้ใช้ {file} ก่อนจึงจะสามารถเริ่มทำงานได้
-#. message or event log entry in the main window; text in a download's Properties window
+#. message or event log entry in the main window; text in the download list (sizes, speeds, status)
 #. shown when Move or Rename is refused: a torrent saved straight in Save to shares that folder with other files
 #, machine
 	This torrent shares its destination folder	ทอร์เรนต์นี้ใช้โฟลเดอร์ปลายทางร่วมกัน
@@ -5837,6 +6091,18 @@
 #. the Download video window: the video needs the user to be signed in
 #, machine
 	This video needs you to be signed in. Use the Download video button over it in your browser, which passes your sign-in on, or choose your browser in Options → Sites Logins → Cookies for video sites.	วิดีโอนี้ต้องลงชื่อเข้าใช้ ใช้ปุ่มดาวน์โหลดวิดีโอที่อยู่เหนือวิดีโอในเบราว์เซอร์ ซึ่งจะส่งข้อมูลการลงชื่อเข้าใช้ไปด้วย หรือเลือกเบราว์เซอร์ใน ตัวเลือก → การเข้าสู่ระบบไซต์ → คุกกี้สำหรับเว็บไซต์วิดีโอ
+#. text in errors.rs
+#. Zip preview (#1775): a ZIP split over several files (volumes): its files can't be fetched one by one
+#, machine
+	this ZIP is split over several files, so its files can't be downloaded one by one: download every part	ZIP นี้ถูกแบ่งออกเป็นหลายไฟล์ ดังนั้นจึงไม่สามารถดาวน์โหลดไฟล์ทีละไฟล์ได้: ดาวน์โหลดทุกส่วน
+#. text in errors.rs
+#. Zip preview (#1775): the ZIP's list of files (its table of contents) doesn't add up
+#, machine
+	this ZIP's list of files is damaged: download the whole archive	รายการไฟล์ของ ZIP นี้เสียหาย: ดาวน์โหลดทั้งไฟล์เก็บถาวร
+#. text in errors.rs
+#. Zip preview (#1775): the ZIP's list of files (its table of contents) is larger than MDM reads from a server
+#, machine
+	this ZIP's list of files is too large to read from the server: download the whole archive	รายการไฟล์ของ ZIP นี้มีขนาดใหญ่เกินกว่าที่ MDM จะอ่านจากเซิร์ฟเวอร์ได้: ดาวน์โหลดทั้งไฟล์เก็บถาวร
 #. text in errors.rs
 #. a download's error: the address is a site's web page that needs a browser, not the file; {site} = the site's name (gofile)
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
@@ -5868,6 +6134,11 @@
 #. tooltip on the Scheduler's "Wake the computer to run this queue" while "Start download at" is off
 #, machine
 	Tick "Start download at" first: the computer is woken for the start time	ทำเครื่องหมายที่ "เริ่มดาวน์โหลดเมื่อ" ก่อน: คอมพิวเตอร์จะถูกปลุกตามเวลาเริ่มต้น
+#. text in zippreview.rs
+#. Zip preview, under the list: {files} how many files are ticked ("3 files"), {size} their size together ("12.4 MB")
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	Ticked: {files}, {size}	เลือก: {files}, {size}
 #. text in a download's progress window; text in the Scheduler window
 #, machine
 	Time left	เวลาที่เหลือ
@@ -5970,6 +6241,10 @@
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	Try again in an hour, or download {name} yourself and choose it in {helpers} → {other}.	ลองอีกครั้งในหนึ่งชั่วโมง หรือดาวน์โหลด {name} ด้วยตนเอง แล้วเลือกใน {helpers} → {other}
+#. text in the Link grabber window
+#. Link grabber, a link's status: the remedy from the failure's sentence, for a site (Hugging Face, GitHub) whose limit of requests without an account is reached. The sentence is the cell's hover tip
+#, machine
+	Try again later	ลองอีกครั้งในภายหลัง
 #. text in errors.rs
 #. {name} = a file name (keep the braces as they are)
 #, machine
@@ -6062,6 +6337,10 @@
 #. why Batch download's OK is greyed
 #, machine
 	Type a number in From and in To	พิมพ์ตัวเลขใน จาก และใน ถึง
+#. text in the Options window
+#. Site rule: OK with no site, or one with a space in it
+#, machine
+	Type a site, such as example.com or *.example.com	พิมพ์ไซต์ เช่น example.com หรือ *.example.com
 #. text in the settings
 #. Options → DNS: no server address was typed
 #, machine
@@ -6078,6 +6357,10 @@
 #. Options → DNS over TLS: the server's name (as its certificate shows it) is missing
 #, machine
 	Type the name the server's certificate shows.	พิมพ์ชื่อที่ใบรับรองของเซิร์ฟเวอร์แสดง
+#. text in requestedit.rs
+#. a download's Connection settings: the proxy typed isn't an address MDM takes; the examples stay as they are
+#, machine
+	Type the proxy as host:port, http://host:port or socks5://host:port	พิมพ์พร็อกซีเป็น host:port, http://host:port หรือ socks5://host:port
 #. text in the Scheduler window
 #. why OK is greyed when naming a new queue
 #, machine
@@ -6170,6 +6453,11 @@
 #, machine
 	Update now	อัปเดตเดี๋ยวนี้
 #. text in helpers.rs
+#. Helpers: the Update button's name for a screen reader; {name} = the helper (yt-dlp, ffmpeg, gallery-dl, Node.js)
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Update {name}	อัปเดต {name}
+#. text in helpers.rs
 #. Helpers: a program the person chose, or the system's copy: MDM doesn't update it, the person (or their package manager) does
 #, machine
 	Updated by you	คุณเป็นผู้ดูแลการอัปเดต
@@ -6192,6 +6480,17 @@
 #. text in the Options window
 #, machine
 	Use advanced browser integration	ใช้การรวมเบราว์เซอร์ขั้นสูง
+#. text in helpers.rs
+#. Helpers: the "Use another program..." button's name for a screen reader, on the JavaScript runtime's row (Node.js, Deno, QuickJS or Bun)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Use another program as the JavaScript runtime...	ใช้โปรแกรมอื่นเป็นรันไทม์ JavaScript...
+#. text in helpers.rs
+#. Helpers: the "Use another program..." button's name for a screen reader; {name} = the helper (yt-dlp, ffmpeg, gallery-dl)
+#. {name} = a file name (keep the braces as they are)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Use another program for {name}...	ใช้โปรแกรมอื่นสำหรับ {name}...
 #. text in errors.rs; button in helpers.rs; text in the Options window
 #. Video helpers: button: pick a program (yt-dlp or ffmpeg) already on the computer
 #. Options → Archives: button: pick the 7-Zip command line program to extract 7z and RAR archives with (PeaZip's own 7z.exe, a portable copy), instead of the one MDM finds
@@ -6210,10 +6509,16 @@
 #. checkbox in the Options window
 #, machine
 	Use FTP in PASV mode	ใช้ FTP ในโหมด PASV
-#. button in helpers.rs
+#. text in helpers.rs
 #. Video helpers: button: go back to the copy MDM downloads and checks itself
 #, machine
 	Use MDM's own copy	ใช้สำเนาของ MDM เอง
+#. text in helpers.rs
+#. Helpers: the "Use MDM's own copy" button's name for a screen reader; {name} = the helper (yt-dlp, ffmpeg, gallery-dl)
+#. Helpers: the "Use MDM's own copy" button's name for a screen reader; {name} = the helper (Node.js)
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Use MDM's own copy of {name}	ใช้สำเนา {name} ของ MDM
 #. checkbox in the Options window
 #. Options → Sites Logins: checkbox under Cookies for video sites: yt-dlp also reads the person's own yt-dlp config file
 #, machine
@@ -6264,6 +6569,10 @@
 #. text in the Options window
 #, machine
 	User-Agent for manually added downloads:	User-Agent สำหรับการดาวน์โหลดที่เพิ่มด้วยตนเอง:
+#. text in the Options window
+#. Options → Connection: beside the Site rules... button: what it sets
+#, machine
+	User-Agent, headers and connections by site	User-Agent, ส่วนหัว และการเชื่อมต่อตามเว็บไซต์
 #. text in the Options window
 #, machine
 	User:	ผู้ใช้:
@@ -6515,7 +6824,7 @@
 #. a country's name (where a download's server is)
 #, machine
 	Yemen	เยเมน
-#. button in a dialog box; text in a download's progress window
+#. button in a dialog box; text in the Options window; text in a download's progress window
 #, machine
 	Yes	ใช่
 #. button in helpers.rs
@@ -6635,6 +6944,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Zimbabwe	ซิมบับเว
+#. text in zippreview.rs
+#. title of the window that lists the files inside a ZIP on its server, to tick those to download (#1775)
+#, machine
+	Zip preview	แสดงตัวอย่าง ZIP
 #. text in the Options window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
@@ -6716,14 +7029,14 @@
 #. text in the Checksum window
 #, machine
 	{file} could not be read to check it	ไม่สามารถอ่าน {file} เพื่อตรวจสอบได้
-#. text in relocate.rs
-#. why a download could not be moved (after "The file could not be moved: "): a file of that name came into the new folder meanwhile; {file} is its name
-#, machine
-	{file} is already there	{file} มีอยู่แล้ว
 #. message or event log entry in the main window
 #. a message after a download (Redownload) was to replace the file it had: {file} = that file's name, still there; {new} = the name the new copy was saved under, in the same folder
 #, machine
 	{file} could not be replaced: another program may have it open. The new download is saved beside it as {new}, and both files are kept.	ไม่สามารถแทนที่ {file} ได้: อาจมีโปรแกรมอื่นเปิดไฟล์นี้อยู่ การดาวน์โหลดใหม่จะถูกบันทึกไว้ในโฟลเดอร์เดียวกันในชื่อ {new} และเก็บไฟล์ทั้งสองไว้
+#. text in relocate.rs
+#. why a download could not be moved (after "The file could not be moved: "): a file of that name came into the new folder meanwhile; {file} is its name
+#, machine
+	{file} is already there	{file} มีอยู่แล้ว
 #. text in a dialog box
 #, machine
 	{file} is no longer where it was saved (moved or deleted). Redownload, in its right-click menu, gets it again.	{file} ไม่อยู่ในตำแหน่งที่บันทึกไว้อีกต่อไป (ถูกย้ายหรือลบ) เลือกดาวน์โหลดซ้ำในเมนูคลิกขวาเพื่อดาวน์โหลดอีกครั้ง
@@ -6747,6 +7060,11 @@
 #. said after Delete with files when some files stayed on the disk; {file} is the download's name; the files' paths follow it
 #, machine
 	{file}: these files stayed on the disk, because MDM didn't create them or another download uses them:	{file}: ไฟล์เหล่านี้ยังคงอยู่ในดิสก์ เนื่องจาก MDM ไม่ได้สร้างไฟล์เหล่านี้หรือรายการดาวน์โหลดอื่นใช้ไฟล์เหล่านี้:
+#. message or event log entry in the main window; text in the Link grabber window
+#. Link grabber's Source line, after where the links came from: a folder (an FTP folder, a web server's "Index of" page) held more files or subfolders than Link grabber lists; {folder} is its name, {n} how many of its files are listed (10,000)
+#. {n} = a number (keep the braces as they are)
+#, machine
+	{folder}: only its first {n} files	{folder}: เฉพาะ {n} ไฟล์แรก
 #. text in a download's progress window
 #. {have} and {total} = numbers of pieces; {size} = one piece's size
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
@@ -6875,6 +7193,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 	{n} (auto)	{n} (อัตโนมัติ)
+#. text in zippreview.rs
+#. Zip preview, under the list: {n} files of the ZIP aren't listed because MDM can't take them out on their own: encrypted ones, ones packed in a way MDM can't unpack from the server, links, or names that would leave their folder; the whole archive still downloads
+#. {n} = a number (keep the braces as they are)
+#, machine
+	{n} more can't be taken out on their own (encrypted, packed another way, or links)	อีก {n} รายการไม่สามารถแยกออกมาได้ (เข้ารหัส, บีบอัดด้วยวิธีอื่น หรือเป็นลิงก์)
 #. text in playlistdlg.rs
 #. in Download video for a playlist: how many videos are ticked, of how many
 #. {n} = a number (keep the braces as they are)
@@ -6884,6 +7207,10 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 	{n} of {total} selected	{n} จาก {total} ที่เลือก
+#. text in the Link grabber window
+#. Link grabber's Source line: a gated Hugging Face repository ({package}: "owner/name"), whose files download only for an account that accepted its terms: where to give the account's access token (Options → Sites Logins, keep the names as the Options window shows them)
+#, machine
+	{package} is gated: accept its terms on Hugging Face, then add your access token in Options → Sites Logins (site huggingface.co, the token as its password)	{package} ถูกจำกัดการเข้าถึง: ยอมรับข้อกำหนดบน Hugging Face จากนั้นเพิ่มโทเค็นการเข้าถึงของคุณในการตั้งค่า → การเข้าสู่ระบบเว็บไซต์ (เว็บไซต์ huggingface.co, โทเค็นเป็นรหัสผ่าน)
 #. text in the download list (sizes, speeds, status)
 #. a torrent's status while the user's debrid service downloads it, before MDM gets its files; {service} the service ("Real-Debrid"), {percent} how far it is ("45%")
 #, machine
@@ -6987,6 +7314,31 @@
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
 #, machine
 	{site} didn't give the file this time: try again in a moment	{site} ไม่ได้ส่งไฟล์มาในครั้งนี้: ลองอีกครั้งในอีกสักครู่
+#. text in the Link grabber window
+#. Link grabber, the hover tip of a Hugging Face repository's or GitHub release's status; {site} is "Hugging Face" or "GitHub"
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+	{site} has no such repository, folder, release or tag, or it is private.	{site} ไม่มีที่เก็บ โฟลเดอร์ รุ่น หรือแท็กดังกล่าว หรือเป็นแบบส่วนตัว
+#. text in the Link grabber window
+#. Link grabber, a Hugging Face repository's or GitHub release's status (the cell's hover tip): the site ({site}: "Hugging Face", "GitHub") lets only so many requests through from a computer without an account; {n} minutes to wait
+#. {site} = a web site's name such as "example.com"; {n} = a number (keep the braces as they are)
+#, machine
+	{site} lets only so many requests through without an account: try again in {n} minute.	{site} อนุญาตให้ส่งคำขอได้จำนวนจำกัดโดยไม่มีบัญชี: ลองอีกครั้งใน {n} นาที
+#. text in the Link grabber window
+#. Link grabber, a Hugging Face repository's or GitHub release's status (the cell's hover tip): the site ({site}) lets only so many requests through without an account, and didn't say for how long
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+	{site} lets only so many requests through without an account: try again later.	{site} อนุญาตให้ส่งคำขอได้จำนวนจำกัดโดยไม่มีบัญชี: ลองอีกครั้งในภายหลัง
+#. text in the Link grabber window
+#. Link grabber, a Hugging Face repository's or GitHub release's status: the site ({site}) refused to list its files; {status} is the HTTP code (403)
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+	{site} refused to list its files ({status}).	{site} ปฏิเสธที่จะแสดงรายการไฟล์ ({status})
+#. text in the Link grabber window
+#. Link grabber, a Hugging Face repository's or GitHub release's status: the site's ({site}) answer wasn't what it sends (changed, cut, or not its own)
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+	{site}'s list of files couldn't be read.	ไม่สามารถอ่านรายการไฟล์ของ {site} ได้
 #. text in a download's Properties window
 #. {size} = a file size such as "4.2 MB"; {bytes} = a number of bytes (keep the braces as they are)
 #, machine
@@ -7062,7 +7414,7 @@ column	Peers	เพียร์
 #. column title: one letter for Queue (the column is narrow)
 #, machine
 column	Q	คิว
-#. column title in the main window; column title in the download list
+#. column title in the main window; column title in a dialog box; column title in the download list
 #. tooltip of the narrow "Q" column's title
 #, machine
 column	Queue	คิว
@@ -7315,10 +7667,6 @@ extension	Downloads from {site} stay with the browser	การดาวน์�
 #, machine
 extension	Downloads go to {address}	กำลังส่งการดาวน์โหลดไปยัง {address}
 #. text in the browser extension
-#. second line of the tooltip of the download button over a video: dragging its dotted grip moves it along the video's edge
-#, machine
-extension	Drag the dots to move it along the edge	ลากจุดเพื่อย้ายไปตามขอบ
-#. text in the browser extension
 #. second line of the tooltip of the download button over a video: dragging its dotted grip moves it to another corner or edge of the video, or outside the video next to it
 #, machine
 extension	Drag the dots to move it to another corner, or outside the video	ลากจุดเพื่อย้ายปุ่มไปที่มุมอื่น หรือนอกวิดีโอ
@@ -7343,6 +7691,14 @@ extension	File deleted or moved	ไฟล์ถูกลบหรือย้า
 #. label before the row of chips (All, MP4, WEBM, M4A...) that filters the list of qualities by file type in the menu of the download button over a video; short
 #, machine
 extension	File type	ชนิดไฟล์
+#. text in the browser extension
+#. button in the This page tab of the toolbar button's popup: look for the pictures of the current web page (only when clicked); short
+#, machine
+extension	Find images	ค้นหารูปภาพ
+#. text in the browser extension
+#. in the This page tab of the toolbar button's popup, before the Find images button; Link grabber is the name of the app's window that lists links to tick before downloading them
+#, machine
+extension	Find this page's pictures at the largest size it lists, then send the ones you want to Link grabber.	ค้นหารูปภาพของหน้านี้ในขนาดที่ใหญ่ที่สุดที่ระบุไว้ จากนั้นส่งรูปภาพที่คุณต้องการไปยังตัวดึงลิงก์
 #. text in the browser extension
 #. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) after Clear finished
 #, machine
@@ -7379,6 +7735,14 @@ extension	Hold Alt while clicking a link to let the browser download it.	กด 
 #. link under a connection problem in the toolbar button's popup, to the help page's section for it
 #, machine
 extension	How to fix it	วิธีแก้ไข
+#. text in the browser extension
+#. what a screen reader says for the row of buttons that keep or leave out each type of picture (JPEG, PNG, WEBP...), in the This page tab of the toolbar button's popup
+#, machine
+extension	Image types	ชนิดรูปภาพ
+#. text in the browser extension
+#. heading in the This page tab of the toolbar button's popup, over the part that finds the pictures of the current web page and sends them to the app
+#, machine
+extension	Images on this page	รูปภาพในหน้านี้
 #. text in the browser extension
 #. pairing failed for another reason
 #, machine
@@ -7541,6 +7905,10 @@ extension	No download's name or address has “{words}”.	ไม่มีชื
 #, machine
 extension	No downloads yet	ยังไม่มีรายการดาวน์โหลด
 #. text in the browser extension
+#. shown in the This page tab of the toolbar button's popup when Find images found no picture on the current web page
+#, machine
+extension	No images found on this page.	ไม่พบรูปภาพในหน้านี้
+#. text in the browser extension
 #. shown in the toolbar button's popup when the current web page hasn't loaded any video, sound or stream yet
 #, machine
 extension	No video or sound found on this page yet. Play it, then open this again.	ยังไม่พบวิดีโอหรือเสียงในหน้านี้ โปรดเล่นแล้วเปิดอีกครั้ง
@@ -7609,6 +7977,10 @@ extension	Options...	ตัวเลือก...
 #. in the list under the download button over a video, after a sound-only line's bitrate: the sound as the site sends it, not converted (e.g. '128 kbps · original'); lower case; one word
 #, machine
 extension	original	ต้นฉบับ
+#. text in the browser extension
+#. button among the picture types (JPEG, PNG, WEBP...) in the This page tab of the toolbar button's popup: the pictures of any other or unknown type; short
+#, machine
+extension	Other	อื่น ๆ
 #. text in the browser extension
 #. button: pair this browser with the other MDM using the code
 #, machine
@@ -7695,6 +8067,10 @@ extension	Send downloads through this browser's proxy or VPN extension	ส่ง
 #, machine
 extension	Send downloads to	ส่งการดาวน์โหลดไปยัง
 #. text in the browser extension
+#. button in the This page tab of the toolbar button's popup: send the selected pictures to the app's Link grabber window, where the user ticks which to download
+#, machine
+extension	Send to Link grabber	ส่งไปยังตัวดึงลิงก์
+#. text in the browser extension
 #. on the download button over a video right after it was clicked, while the download goes to the app; MDM is Mister Download Manager's short name, keep it as it is; short
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -7703,6 +8079,10 @@ extension	Sending to MDM...	กำลังส่งไปยัง MDM...
 #. under the extension's name in the toolbar button's popup: downloads go to another Mister Download Manager, a server, at this address; short
 #, machine
 extension	Sending to {server}	กำลังส่งไปยัง {server}
+#. text in the browser extension
+#. shown in the This page tab of the toolbar button's popup after the pictures were sent to the app's Link grabber window
+#, machine
+extension	Sent to Link grabber: tick the ones to download there.	ส่งไปยังตัวดึงลิงก์แล้ว: เลือกรายการที่ต้องการดาวน์โหลดที่นั่น
 #. text in the browser extension
 #. shown briefly on the download button after it was clicked; keep the name Mister Download Manager as it is
 #, machine
@@ -7734,6 +8114,23 @@ extension	Show in folder	แสดงในโฟลเดอร์
 #. screen readers' name of a download's Show in folder button in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads)
 #, machine
 extension	Show {file} in folder	แสดง {file} ในโฟลเดอร์
+#. text in the browser extension
+#. in the This page tab of the toolbar button's popup, while a smallest width or height is set: how many of the selected pictures the page gives no size for (they are kept, not left out)
+#. {n} = a number (keep the braces as they are)
+#, machine
+extension	Size not given, kept: {n}	ไม่ได้ระบุขนาด เก็บไว้: {n}
+#. text in the browser extension
+#. what a screen reader says for the box of the smallest height of the pictures to keep, in the This page tab of the toolbar button's popup
+#, machine
+extension	Smallest height, in pixels	ความสูงน้อยที่สุด (พิกเซล)
+#. text in the browser extension
+#. in the This page tab of the toolbar button's popup, before two boxes for the smallest width and height of the pictures to keep: 'Smallest size, in pixels [ ] × [ ]'; pictures smaller than that are left out; short
+#, machine
+extension	Smallest size, in pixels	ขนาดเล็กที่สุด (พิกเซล)
+#. text in the browser extension
+#. what a screen reader says for the box of the smallest width of the pictures to keep, in the This page tab of the toolbar button's popup
+#, machine
+extension	Smallest width, in pixels	ความกว้างน้อยที่สุด (พิกเซล)
 #. text in the browser extension
 #. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app isn't running
 #, machine
@@ -7767,6 +8164,10 @@ extension	That didn't work. Try again.	ไม่สำเร็จ ลองอ�
 #. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when a button's download was removed meanwhile
 #, machine
 extension	That download is no longer in the list.	รายการดาวน์โหลดนั้นไม่อยู่ในรายการแล้ว
+#. text in the browser extension
+#. shown in the This page tab of the toolbar button's popup when Find images can't look into the current page (a page of the browser's own, an add-on store)
+#, machine
+extension	The browser doesn't let add-ons read this page.	เบราว์เซอร์ไม่อนุญาตให้ส่วนเสริมอ่านหน้านี้
 #. text in the browser extension
 #. in the toolbar button's popup, on a site where the Chrome Web Store's copy of the extension shows no download button; Help is the link at the bottom of the popup
 #, machine
@@ -7903,6 +8304,10 @@ extension	{file} removed from the list	นำ {file} ออกจากราย
 #. question in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) before a download's file is deleted
 #, machine
 extension	{file} will be deleted from your computer, and the download taken off the list. This can't be undone.	{file} จะถูกลบออกจากคอมพิวเตอร์ และรายการดาวน์โหลดจะถูกนำออกจากรายการ การดำเนินการนี้ไม่สามารถย้อนกลับได้
+#. text in the browser extension
+#. in the This page tab of the toolbar button's popup: how many of the pictures found pass the size and type filters, and will be sent
+#, machine
+extension	{shown} of {total} selected	เลือก {shown} จาก {total} รายการ
 #. text in the browser extension
 #. a running download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): the time left, as a clock (minutes:seconds)
 #. {time} = a time of day (keep the braces as they are)
@@ -8491,6 +8896,10 @@ menu	Open with...	เปิดด้วย...
 #. View → Draw with: a graphics system's name, usually kept as is
 #, machine
 menu	OpenGL	OpenGL
+#. menu command in the main window
+#. View → Draw with: a greyed note; why MDM no longer draws with OpenGL: MDM crashed inside the graphics card's driver while OpenGL drew ("its": OpenGL's)
+#, machine
+menu	OpenGL crashed inside its driver here	OpenGL ขัดข้องภายในไดรเวอร์ของตนที่นี่
 #. menu command in the main window
 #. View → Draw with: a greyed note; why MDM no longer draws with OpenGL: it couldn't start on this computer
 #, machine

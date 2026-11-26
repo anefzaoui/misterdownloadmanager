@@ -324,6 +324,15 @@ impl Made {
         }
         window_thread(self.analysis.as_ref()?, self.notes.freeze.as_ref()?)
     }
+
+    /// A crash's crashed thread, as its dump has it (the app reads where it crashed: #1659).
+    pub fn crashed_thread(&self) -> Option<&Thread> {
+        if self.kind != Kind::Crash {
+            return None;
+        }
+        let a = self.analysis.as_ref()?;
+        a.thread(a.requesting?)
+    }
 }
 
 /// Read `dump` (none for an exit nothing caught), write the report beside it in `data`'s crashes
@@ -820,6 +829,32 @@ mod tests {
         assert!(!t.contains("Someone"));
         // The watchdog's thread is listed among the others.
         assert!(t.contains("-- Thread watchdog (2) --"));
+    }
+
+    /// A crash's crashed thread is the one its dump was taken for; a freeze has none (#1659).
+    #[test]
+    fn a_crash_names_the_crashed_thread() {
+        let made = Made {
+            kind: Kind::Crash,
+            text: String::new(),
+            signature: String::new(),
+            path: std::path::PathBuf::new(),
+            dump: None,
+            analysis: Some(frozen()),
+            notes: Notes::default(),
+        };
+        assert_eq!(made.crashed_thread().map(|t| t.id), Some(2));
+        assert_eq!(made.frozen_window_thread(), None);
+        let freeze = Made {
+            kind: Kind::Freeze,
+            ..made.clone()
+        };
+        assert_eq!(freeze.crashed_thread(), None);
+        let panic = Made {
+            kind: Kind::Panic,
+            ..made
+        };
+        assert_eq!(panic.crashed_thread(), None);
     }
 
     /// What drew, and why, is in the report's head, before the stack and the log: a report cut

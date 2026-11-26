@@ -87,6 +87,26 @@
           <p id="media-none" class="note" data-i18n="popup_media_none" hidden></p>
           <p id="media-said" class="note" role="status" hidden></p>
         </section>
+        <!-- #1781: the page's pictures, found only when asked, filtered, to Link grabber. -->
+        <section id="images" class="media images" hidden>
+          <h2 data-i18n="popup_images"></h2>
+          <p id="images-text" class="note" data-i18n="popup_images_text"></p>
+          <div id="images-filters" class="img-filters" hidden>
+            <div class="img-size">
+              <span data-i18n="popup_images_min"></span>
+              <input id="images-w" class="field num" type="number" min="0" step="1" inputmode="numeric" placeholder="0" dir="ltr" data-i18n-label="popup_images_width">
+              <span aria-hidden="true">×</span>
+              <input id="images-h" class="field num" type="number" min="0" step="1" inputmode="numeric" placeholder="0" dir="ltr" data-i18n-label="popup_images_height">
+            </div>
+            <div id="images-types" class="chips" role="group" data-i18n-label="popup_images_types"></div>
+            <p class="note img-count"><span id="images-count"></span> <span id="images-unsized" hidden></span></p>
+          </div>
+          <div class="actions img-actions">
+            <button id="images-find" type="button" class="btn" data-i18n="popup_images_find"></button>
+            <button id="images-send" type="button" class="btn accent" data-i18n="popup_images_send" hidden></button>
+          </div>
+          <p id="images-said" class="note" role="status" hidden></p>
+        </section>
         <p class="note tip" data-i18n="popup_alt"></p>
       </div>
     </section>

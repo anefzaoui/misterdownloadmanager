@@ -245,6 +245,42 @@ def archives() -> None:
     seed("archive", "xz", b"\x05" + lzma.compress(b"one file\n"))
 
 
+def zip_directories() -> None:
+    """A ZIP's table as a server sends it (#1775): classic, with a comment, ZIP64, a data
+    descriptor (written to a stream that can't seek), and names that leave the folder."""
+
+    def made(force64: bool, comment: bytes, stream: bool) -> bytes:
+        buf = io.BytesIO()
+        out = buf
+        if stream:
+            class Unseekable(io.RawIOBase):
+                def writable(self):
+                    return True
+
+                def write(self, b):
+                    return buf.write(b)
+
+            out = Unseekable()
+        with zipfile.ZipFile(out, "w", zipfile.ZIP_DEFLATED) as z:
+            for name, data, method in [
+                ("readme.txt", b"hello\n", zipfile.ZIP_STORED),
+                ("docs/", b"", zipfile.ZIP_STORED),
+                ("docs/guide.txt", b"the quick brown fox\n" * 50, zipfile.ZIP_DEFLATED),
+                ("../up.txt", b"x", zipfile.ZIP_STORED),
+                ("C:/evil.txt", b"y", zipfile.ZIP_STORED),
+            ]:
+                info = zipfile.ZipInfo(name, (2025, 9, 1, 0, 0, 0))
+                info.compress_type = method
+                with z.open(info, "w", force_zip64=force64) as w:
+                    w.write(data)
+            z.comment = comment
+        return buf.getvalue()
+
+    seed("zip_directory", "classic", made(False, b"", False))
+    seed("zip_directory", "comment", made(False, b"a comment at the end", False))
+    seed("zip_directory", "zip64", made(True, b"", False))
+    seed("zip_directory", "descriptor", made(False, b"", True))
+
 if __name__ == "__main__":
     hls()
     ytdlp()
@@ -254,3 +290,4 @@ if __name__ == "__main__":
     signatures()
     cnl()
     archives()
+    zip_directories()

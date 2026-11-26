@@ -235,6 +235,25 @@ button, input { font: inherit; color: inherit; }
 .what .meta { color: var(--text-2); font-size: 11px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .drm { flex: none; color: var(--bad); font-size: 11px; font-weight: 600; }
 
+/* This page: the page's images (#1781), in a card as the media: the size boxes, a button per
+   type (pressed: kept), the count, Find and Send. */
+.images { padding-bottom: 12px; }
+.images .note { padding: 2px 0 8px; }
+.img-filters { display: flex; flex-direction: column; gap: 8px; padding-top: 8px; border-top: 1px solid var(--line); }
+.img-size { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; }
+.field.num { width: 72px; min-height: 28px; padding: 2px 6px; font-variant-numeric: tabular-nums; }
+.field.num::placeholder { color: var(--text-3); }
+.img-filters .note.img-count { padding: 0; }
+/* The count, then how many of those the page gives no size for, apart (each a unit of its own
+   in either direction). */
+#images-count, #images-unsized { unicode-bidi: isolate; }
+#images-unsized::before { content: "· "; color: var(--text-3); }
+.chip[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+.chip[aria-pressed="true"] .n { color: rgba(255, 255, 255, 0.85); }
+.img-actions { margin-top: 8px; }
+.img-actions .btn.accent { flex-grow: 2; }
+.images #images-said { padding: 8px 0 0; }
+
 /* ---- Downloads (#1496) ------------------------------------------------------------------- */
 .dl-tools { display: flex; flex-direction: column; gap: 8px; padding: 10px 12px 8px; }
 .search { position: relative; display: block; }
@@ -265,6 +284,15 @@ button, input { font: inherit; color: inherit; }
 .note-bar.by-hand .ico { flex: none; margin-top: 1px; }
 
 .dl-scroll { flex: 1; min-height: 0; overflow-y: auto; padding: 2px 6px 6px; scrollbar-gutter: stable; }
+/* Every list that scrolls, one scrollbar in the popup's own ink (as the video button's menu):
+   thin, no track, a muted thumb that firms up while the pointer is on the list. Chrome 116 to 120
+   (the oldest this add-on takes) have no scrollbar-color: the same from its own parts. */
+.panel .scroll, .dl-scroll { --thumb: color-mix(in srgb, var(--text-2) 55%, transparent); scrollbar-width: thin; scrollbar-color: var(--thumb) transparent; }
+.panel .scroll:hover, .dl-scroll:hover { --thumb: color-mix(in srgb, var(--text-2) 85%, transparent); }
+@supports not (scrollbar-color: auto) {
+  .panel .scroll::-webkit-scrollbar, .dl-scroll::-webkit-scrollbar { width: 8px; background: transparent; }
+  .panel .scroll::-webkit-scrollbar-thumb, .dl-scroll::-webkit-scrollbar-thumb { border: 2px solid transparent; border-radius: 4px; background: var(--thumb) padding-box; }
+}
 .dl-list { list-style: none; margin: 0; padding: 0; }
 .dl {
   position: relative; display: flex; align-items: center; gap: 10px;

@@ -98,6 +98,9 @@ pub enum Error {
     /// Another install of the same helper is under way (here or in another copy of MDM).
     #[error("{0} is being installed or updated already")]
     Busy(String),
+    /// MDM's list of the ffmpeg builds it checked let none in (`ffmpeg`).
+    #[error("MDM's list of checked ffmpeg builds: {0}")]
+    FfmpegList(ffmpeg::ListError),
 }
 
 impl Error {
@@ -111,6 +114,8 @@ impl Error {
             Error::Download { host, error } => {
                 Some((host.clone(), mdm_engine::fault::of_engine(error)?))
             }
+            // ffmpeg's list of checked builds, which couldn't be fetched: that server, and why.
+            Error::FfmpegList(ffmpeg::ListError::Unavailable(e)) => e.network(),
             _ => None,
         }
     }

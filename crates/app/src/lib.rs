@@ -59,6 +59,7 @@ mod regional;
 mod relocate;
 mod remote;
 mod renderer;
+mod requestedit;
 mod resumeread;
 mod rss;
 mod rssdlg;
@@ -105,6 +106,7 @@ mod win32;
 mod winui;
 #[cfg(any(target_os = "linux", test))]
 mod xdgicons;
+mod zippreview;
 
 /// The application's id: Wayland's app_id and X11's WM_CLASS of every window of ours
 /// ([`window_builder`]). The desktop matches a window to the desktop entry whose

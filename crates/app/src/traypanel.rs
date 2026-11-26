@@ -303,7 +303,9 @@ fn draw(ui: &mut egui::Ui, p: &egui::Painter, o: Pos2, rows: &[Row], events: &mu
     // Pause and Cancel as wide as their labels in this language: Pause laid out for the widest
     // of the labels it can show, so it keeps its size as its label changes.
     let live_stream = rows.iter().any(|r| r.live_stream);
-    let pause_for = winui::widest_label(p, crate::progress::pause_labels(live_stream));
+    // An endless stream's Stop and keep (#1780) is its progress window's only: here its button
+    // pauses, keeping nothing, as Stop does.
+    let pause_for = winui::widest_label(p, crate::progress::pause_labels(live_stream, false));
     let buttons = winui::button_row(
         p,
         &[
@@ -381,7 +383,7 @@ fn draw_row(
     );
     let bar = r(o, 12.0, y + 24.0, pause_x - 12.0 - 10.0, 14.0);
     winui::meter(p, bar, row.fraction.unwrap_or(0.0) as f32);
-    let (label, kind) = crate::progress::pause_button(row.status, row.live);
+    let (label, kind) = crate::progress::pause_button(row.status, row.live, false);
     let event = if row.status == Status::Downloading {
         Event::Pause(row.id)
     } else {
@@ -526,7 +528,7 @@ mod tests {
         assert_eq!(unknown.fraction, None);
         assert_eq!(unknown.line, "3.000 KB");
         assert_eq!(
-            crate::progress::pause_button(known.status, known.live).0,
+            crate::progress::pause_button(known.status, known.live, false).0,
             "Resume"
         );
     }

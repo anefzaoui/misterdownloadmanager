@@ -55,6 +55,8 @@ function fakeApi({
   lookup,
   // The page's links, as the right-click menu's script collects them (pageLinks).
   pageLinks = ["https://x/1.zip", "https://x/2.zip"],
+  // What pageImages found in each frame (#1781), frame 0 first; none: the page can't be read.
+  pageImages,
   // tabs.query's answer for the active tab of the window last used (#607).
   activeTab,
   // runtime.connectNative (#1496): a port to the host, answered as sendNativeMessage answers.
@@ -203,10 +205,15 @@ function fakeApi({
       onAuthRequired: event("authRequired"),
     },
     scripting: {
-      executeScript: async ({ func }) => {
+      executeScript: async ({ func, target, args }) => {
         if (func && func.name === "playingAt") {
           if (playing === undefined) throw new Error("Cannot access contents of the page");
           return [{ result: playing }];
+        }
+        if (func && func.name === "pageImages") {
+          calls.push(["pageImages", target, args]);
+          if (!pageImages) throw new Error("Cannot access contents of the page");
+          return pageImages.map((result, frameId) => ({ frameId, result }));
         }
         if (func && func.name === "mediaElements") {
           if (!frames) throw new Error("Cannot access contents of the page");
@@ -5824,6 +5831,206 @@ const until = async (what, ms, check) => {
     assert.ok(wait > 0 && wait < body.lastIndexOf("return { evaluate: ev"), "the tab is handed out once its page loaded");
   }
   ok("the e2e's tabs are handed out once their page loaded (calm's Reset in Chrome)");
+}
+// #1781: the popup's Find images. pageImages, in a page (a fake DOM here; e2e.mjs `images` runs it
+// in real browsers): each picture at the largest size its srcset and <picture> list, a lazy
+// loader's apart, links straight to pictures; each address once, absolute, no data:; the sizes
+// the page tells. Then the tab's frames together, typed; the kept ones to Link grabber as the
+// menu's "Download all links" sends a page's links.
+{
+  const ctx = load(fakeApi({ firefox: false }).api, false);
+  const base = "https://pics.test/g/";
+  const abs = (u) => new URL(u, base).href;
+  const PIXEL = "data:image/gif;base64,R0lGODlhAQABAAAAACw=";
+  const el = (tagName, attrs = {}, more = {}) => ({ tagName, getAttribute: (n) => (n in attrs ? attrs[n] : null), ...more });
+  // An <img>: its attributes, the size it shows at, the address it shows, its parent.
+  const img = (attrs, [naturalWidth, naturalHeight] = [0, 0], current = attrs.src || "", parentElement = null) =>
+    el("IMG", attrs, { naturalWidth, naturalHeight, currentSrc: current ? abs(current) : "", parentElement });
+  const picture = el("PICTURE");
+  picture.children = [el("SOURCE", { type: "image/webp", srcset: "p2-600.webp 600w, p2.webp 1200w" })];
+  const imgs = [
+    img({ src: "icon.png" }, [48, 48]),
+    img({ src: "p1-small.jpg", srcset: "p1-small.jpg 400w,p1.jpg   1600w" }, [400, 300]),
+    img({ src: "p2.jpg" }, [300, 200], "p2-600.webp", picture),
+    img({ src: "p1.jpg" }, [1600, 1200]),
+    img({ src: "p3-thumb.png" }, [200, 150]),
+    // Shown at 2x: naturalWidth is the file's 600 px over 2.
+    img({ src: "p4.gif", srcset: "p4@2x.gif 2x" }, [300, 200], "p4@2x.gif"),
+    // Not loaded yet: its placeholder says nothing of the picture.
+    img({ src: PIXEL, "data-src": "p5.avif" }, [1, 1]),
+    img({ src: PIXEL }, [1, 1]),
+    // An image service's addresses, commas in them.
+    img({ srcset: "https://cdn.test/w_300,h_200/a.jpg 300w, https://cdn.test/w_900,h_600/a.jpg 900w" }, [300, 200], "https://cdn.test/w_300,h_200/a.jpg"),
+    img({ src: "https://cdn.test/img?id=7&fm=webp" }, [640, 480]),
+    // A lazy loader's own srcset, beside the small picture it shows now.
+    img({ src: "p6-tiny.jpg", "data-srcset": "p6-800.jpg 800w, p6-2000.jpg 2000w" }, [40, 30]),
+    img({ src: "blob:https://pics.test/1234" }, [500, 500]),
+  ];
+  picture.children.push(imgs[2]);
+  const anchors = ["p1.jpg", "p3.png", "p3.png#zoom", "notes.pdf", "view.php?img=1.jpg", "ftp://pics.test/raw.tif", "javascript:void 0"].map((h) => el("A", {}, { href: abs(h) }));
+  ctx.document = { baseURI: base, querySelectorAll: (q) => (q === "img" ? imgs : q === "a[href]" ? anchors : []) };
+  const found = JSON.parse(JSON.stringify(ctx.pageImages()));
+  assert.deepEqual(found, [
+    { url: abs("icon.png"), w: 48, h: 48, type: "" },
+    { url: abs("p1.jpg"), w: 1600, h: 1200, type: "" },
+    { url: abs("p2.webp"), w: 1200, h: 800, type: "image/webp" },
+    { url: abs("p3-thumb.png"), w: 200, h: 150, type: "" },
+    { url: abs("p4@2x.gif"), w: 600, h: 400, type: "" },
+    { url: abs("p5.avif"), w: 0, h: 0, type: "" },
+    { url: "https://cdn.test/w_900,h_600/a.jpg", w: 900, h: 600, type: "" },
+    { url: "https://cdn.test/img?id=7&fm=webp", w: 640, h: 480, type: "" },
+    { url: abs("p6-tiny.jpg"), w: 40, h: 30, type: "" },
+    { url: abs("p6-2000.jpg"), w: 2000, h: 0, type: "" },
+    { url: abs("p3.png"), w: 0, h: 0, type: "", link: true },
+  ]);
+  // Typed by extension, else the query's format, else its <source>'s type.
+  const typed = [
+    ["https://x.test/a.JPG", "", "JPEG"],
+    ["https://x.test/a.jpeg?v=2", "", "JPEG"],
+    ["https://x.test/a.png", "image/webp", "PNG"],
+    ["https://x.test/img?id=7&fm=webp", "", "WEBP"],
+    ["https://x.test/img?format=avif", "", "AVIF"],
+    ["https://x.test/pic", "image/svg+xml", "SVG"],
+    ["https://x.test/pic", "image/jxl", "JXL"],
+    ["https://x.test/a.tif", "", "TIFF"],
+    ["https://x.test/pic", "", "other"],
+    ["https://x.test/a.raw", "", "other"],
+  ];
+  for (const [u, mime, want] of typed) assert.equal(ctx.imageType(u, mime), want, u);
+  // Download selected links: the pictures and links in the selection only.
+  const inSelection = new Set([imgs[1], imgs[6], anchors[1]]);
+  ctx.getSelection = () => ({ rangeCount: 1, containsNode: (n, partly) => partly === true && inSelection.has(n) });
+  assert.deepEqual(JSON.parse(JSON.stringify(ctx.pageImages(true))).map((i) => i.url), [abs("p1.jpg"), abs("p5.avif"), abs("p3.png")]);
+  ctx.getSelection = () => ({ rangeCount: 0, containsNode: () => true });
+  assert.deepEqual(JSON.parse(JSON.stringify(ctx.pageImages(true))), [], "no selection, none");
+  ok("#1781 Find images: the largest size listed, lazy ones apart, links to pictures, each once, no data:; a selection's");
+}
+{
+  const page = "https://pics.test/g/";
+  const frames = [
+    [{ url: `${page}p1.jpg`, w: 1600, h: 1200, type: "" }, { url: `${page}icon.png`, w: 48, h: 48, type: "" }, { url: `${page}p2`, w: 1200, h: 800, type: "image/webp" }],
+    // A frame's: one the page has (its size kept), an ad, nothing that isn't http(s).
+    [{ url: `${page}p1.jpg`, w: 0, h: 0, type: "" }, { url: "https://ads.test/banner.gif", w: 728, h: 90, type: "" }, { url: "data:image/png;base64,AAAA", w: 1, h: 1 }, null],
+    "not a list",
+  ];
+  const run = (opts) => {
+    const f = fakeApi({ firefox: false, tabs: { 9: { id: 9, url: page, incognito: false, status: "complete" } }, ...opts });
+    load(f.api, false);
+    return f;
+  };
+  let f = run({ pageImages: frames });
+  await settle();
+  const r = await popupAsk(f.listeners, { type: "images", tab: 9 });
+  assert.equal(r.readable, true);
+  assert.deepEqual(r.images, [
+    { url: `${page}p1.jpg`, w: 1600, h: 1200, type: "JPEG" },
+    { url: `${page}icon.png`, w: 48, h: 48, type: "PNG" },
+    { url: `${page}p2`, w: 1200, h: 800, type: "WEBP" },
+    { url: "https://ads.test/banner.gif", w: 728, h: 90, type: "GIF" },
+  ]);
+  assert.equal(natives(f.calls).filter((m) => m.links).length, 0, "finding them sends nothing");
+  // A page no extension may read: said so.
+  f = run({});
+  await settle();
+  assert.deepEqual(await popupAsk(f.listeners, { type: "images", tab: 9 }), { readable: false, images: [] });
+  // Sent: the http(s) ones, once each, with the tab's address as their referrer, as the menu's.
+  f = run({ pageImages: frames });
+  await settle();
+  const links = [`${page}p1.jpg`, `${page}p2`, `${page}p1.jpg`, "javascript:alert(1)", "data:image/png;base64,AAAA", 7, "https://ads.test/banner.gif"];
+  assert.deepEqual(await popupAsk(f.listeners, { type: "images-send", tab: 9, links }), { ok: true });
+  const sent = natives(f.calls).filter((m) => m.links);
+  assert.equal(sent.length, 1);
+  assert.deepEqual(sent[0].links, [`${page}p1.jpg`, `${page}p2`, "https://ads.test/banner.gif"]);
+  assert.deepEqual([sent[0].referrer, sent[0].private, typeof sent[0].cookies], [page, false, "string"]);
+  assert.deepEqual(f.calls.filter((c) => c[0] === "openTab"), []);
+  assert.deepEqual(await popupAsk(f.listeners, { type: "images-send", tab: 9, links: ["data:x"] }), { ok: false, why: "none" });
+  // MDM not running: the answer says why, and the help page's section opens, as for the menu.
+  f = run({ pageImages: frames, reply: { ok: false, why: "not-running" } });
+  await settle();
+  const failed = await popupAsk(f.listeners, { type: "images-send", tab: 9, links: [`${page}p1.jpg`] });
+  assert.deepEqual([failed.ok, failed.why], [false, "not-running"]);
+  assert.ok(f.calls.some((c) => c[0] === "openTab" && c[1].endsWith("#not-running")));
+  // The popup's look-up: in every frame, the whole page.
+  f = run({ pageImages: frames });
+  await settle();
+  await popupAsk(f.listeners, { type: "images", tab: 9 });
+  assert.deepEqual(f.calls.filter((c) => c[0] === "pageImages").map((c) => c.slice(1)), [[{ tabId: 9, allFrames: true }, [false]]]);
+
+  // The right-click menu's Download all links: the page's links, then the pictures located on
+  // the page and its frames (the same finder, none left out), marked as such (pageImages); a
+  // picture the page links to stays a link (also when the link names it with a #fragment), and
+  // isn't sent twice. Download selected links: the selection's, in the frame clicked.
+  const shown = [
+    [
+      { url: `${page}p1.jpg`, w: 1600, h: 1200, type: "" },
+      { url: `${page}full.png`, w: 0, h: 0, type: "", link: true },
+    ],
+    // A frame's: the banner shown there; its link to a picture is a link (in that frame only).
+    [{ url: "https://ads.test/banner.gif", w: 728, h: 90, type: "" }, { url: "https://ads.test/big.jpg", w: 0, h: 0, type: "", link: true }],
+  ];
+  f = run({ pageImages: shown, pageLinks: [`${page}a.zip`, `${page}full.png`, "https://ads.test/banner.gif#ad"] });
+  await settle();
+  await f.listeners.menu({ menuItemId: "mdm-all", pageUrl: page, frameId: 0 }, { id: 9, incognito: false });
+  await settle();
+  assert.deepEqual(f.calls.filter((c) => c[0] === "pageImages").map((c) => c.slice(1)), [[{ tabId: 9, allFrames: true }, [false]]]);
+  const pageSent = natives(f.calls).filter((m) => m.links);
+  assert.equal(pageSent.length, 1);
+  assert.deepEqual(pageSent[0].links, [`${page}a.zip`, `${page}full.png`, "https://ads.test/banner.gif#ad", `${page}p1.jpg`]);
+  assert.deepEqual(pageSent[0].pageImages, [`${page}p1.jpg`]);
+  assert.deepEqual([pageSent[0].referrer, pageSent[0].private, pageSent[0].cookies], [page, false, "sid=1"]);
+  f = run({ pageImages: [shown[0]], pageLinks: [`${page}a.zip`] });
+  await settle();
+  await f.listeners.menu({ menuItemId: "mdm-selected", pageUrl: page, frameId: 3 }, { id: 9, incognito: false });
+  await settle();
+  assert.deepEqual(f.calls.filter((c) => c[0] === "pageImages").map((c) => c.slice(1)), [[{ tabId: 9, frameIds: [3] }, [true]]], "the selection's, in its frame");
+  assert.deepEqual(natives(f.calls).filter((m) => m.links).map((m) => [m.links, m.pageImages]), [[[`${page}a.zip`, `${page}p1.jpg`], [`${page}p1.jpg`]]]);
+  // A page with no links but pictures: they go; a page no extension may read: its links alone,
+  // nothing marked.
+  f = run({ pageImages: shown, pageLinks: [] });
+  await settle();
+  await f.listeners.menu({ menuItemId: "mdm-all", pageUrl: page, frameId: 0 }, { id: 9, incognito: false });
+  await settle();
+  assert.deepEqual(natives(f.calls).filter((m) => m.links)[0].pageImages, [`${page}p1.jpg`, "https://ads.test/banner.gif"]);
+  f = run({ pageLinks: [`${page}a.zip`] });
+  await settle();
+  await f.listeners.menu({ menuItemId: "mdm-all", pageUrl: page, frameId: 0 }, { id: 9, incognito: false });
+  await settle();
+  assert.deepEqual(natives(f.calls).filter((m) => m.links).map((m) => [m.links, m.pageImages]), [[[`${page}a.zip`], undefined]]);
+  // Too long for one message: each part names its own pictures, measured with them.
+  const many = Array.from({ length: 30000 }, (_, k) => `${page}f/${String(k).padStart(6, "0")}-${"x".repeat(40)}.zip`);
+  const pics = Array.from({ length: 6000 }, (_, k) => ({ url: `${page}i/${String(k).padStart(6, "0")}-${"y".repeat(40)}.jpg`, w: 0, h: 0, type: "" }));
+  f = run({ pageImages: [pics], pageLinks: many });
+  await settle();
+  await f.listeners.menu({ menuItemId: "mdm-all", pageUrl: page, frameId: 0 }, { id: 9, incognito: false });
+  await settle();
+  const parts = natives(f.calls).filter((m) => m.links);
+  assert.ok(parts.length >= 2, `${parts.length} parts`);
+  assert.deepEqual(parts.flatMap((m) => m.links), [...many, ...pics.map((i) => i.url)]);
+  assert.deepEqual(parts.flatMap((m) => m.pageImages), pics.map((i) => i.url));
+  for (const m of parts) {
+    assert.ok(m.pageImages.every((u) => m.links.includes(u)), "a part's pictures are its own links");
+    assert.ok(JSON.stringify(m).length <= 1 << 20, `a part of ${JSON.stringify(m).length} bytes`);
+  }
+
+  // The popup's filters (popup.js imagesKept): as wide and high as typed where the size is
+  // known, a size the page doesn't give kept; the types switched off left out.
+  const popup = readText("../../extension/popup.js");
+  const at = popup.indexOf("function imagesKept(");
+  const imagesKept = new Function(`${popup.slice(at, popup.indexOf("\n}\n", at) + 2)}\nreturn imagesKept;`)();
+  const all = [
+    { url: "a", w: 48, h: 48, type: "PNG" },
+    { url: "b", w: 1600, h: 1200, type: "JPEG" },
+    { url: "c", w: 0, h: 0, type: "AVIF" },
+    { url: "d", w: 2000, h: 0, type: "JPEG" },
+    { url: "e", w: 600, h: 200, type: "GIF" },
+  ];
+  const kept = (off, w, h) => imagesKept(all, new Set(off), w, h).map((i) => i.url).join("");
+  assert.equal(kept([], 0, 0), "abcde");
+  assert.equal(kept([], 300, 300), "bcd");
+  assert.equal(kept([], 500, 0), "bcde");
+  assert.equal(kept(["JPEG", "AVIF"], 0, 0), "ae");
+  assert.equal(kept(["PNG", "JPEG", "AVIF", "GIF"], 0, 0), "");
+  ok("#1781 Find images: the tab's frames together and typed; the kept ones to Link grabber with the page's context; Download all and selected links send the pictures too, marked");
 }
 assert.deepEqual(complaints, [], "nothing written to the console as an error or warning");
 

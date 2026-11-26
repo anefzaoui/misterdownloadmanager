@@ -355,11 +355,18 @@ pub struct Progress {
     /// A live stream's window, once seen as one: its Pause button is laid out for "Stop and
     /// save" too, and keeps that size when the label changes back.
     live_stream: bool,
+    /// An endless stream's window (#1780), once seen as one: its Pause button is laid out for
+    /// "Stop and keep" too, as `live_stream`'s for "Stop and save".
+    endless: bool,
 }
 
 pub enum Action {
     None,
     Pause,
+    /// Stop and keep (#1780): an endless stream's button ends it and keeps what arrived as its
+    /// finished file (`App::keep_by_hand`). The only way to keep one: every other stop keeps
+    /// nothing, as for any download a server can't resume.
+    Keep,
     Resume,
     /// Stop the download and close the dialog.
     Cancel,
@@ -427,6 +434,7 @@ impl Progress {
             rename_guard_stamp: None,
             rename_guard: None,
             live_stream: false,
+            endless: false,
         }
     }
 
@@ -823,6 +831,8 @@ impl Progress {
         let live = item.live_state();
         self.live_stream |=
             live.is_some() || matches!(item.video_helper(), Some(mdm_tools::streams::Helper::Live));
+        let endless = item.endless();
+        self.endless |= endless;
         let mut row = vec![
             (
                 winui::widest_label(&p, &["<< Hide details", "Show details >>"]),
@@ -830,7 +840,7 @@ impl Progress {
                 138.0,
             ),
             (
-                winui::widest_label(&p, pause_labels(self.live_stream)),
+                winui::widest_label(&p, pause_labels(self.live_stream, self.endless)),
                 311.0,
                 82.0,
             ),
@@ -876,7 +886,7 @@ impl Progress {
             self.details = !self.details;
         }
         let running = item.status == Status::Downloading;
-        let (label, pkind) = pause_button(item.status, live);
+        let (label, pkind) = pause_button(item.status, live, endless);
         if winui::button(
             ui,
             r(lower, pause_at.0, 206.0, pause_at.1, 22.0),
@@ -887,11 +897,7 @@ impl Progress {
         )
         .clicked()
         {
-            action = if running {
-                Action::Pause
-            } else {
-                Action::Resume
-            };
+            action = pause_action(running, live, endless);
         }
         if winui::button(
             ui,
@@ -2138,6 +2144,40 @@ pub(crate) fn files_table(
     )
 }
 
+/// Zip preview's table of a ZIP's files (#1775, zippreview.rs), ticked or not: each one's name
+/// (its path in the archive), its packed size, its size and when it was last changed. The row
+/// whose box was clicked.
+pub(crate) fn zip_table(
+    ui: &mut Ui,
+    p: &egui::Painter,
+    o: Pos2,
+    id: &str,
+    rows: &[Vec<String>],
+    checks: &[bool],
+    shown: usize,
+) -> Option<usize> {
+    table_sized(
+        ui,
+        p,
+        o,
+        id,
+        &[
+            // i18n: Zip preview's column: the file's name (its path inside the ZIP)
+            (25.0, crate::i18n::mark("File Name")),
+            // i18n: Zip preview's column: the file's size as packed (compressed) inside the ZIP
+            (225.0, crate::i18n::mark("Packed")),
+            (295.0, crate::i18n::mark("Size")),
+            // i18n: Zip preview's column: when the file was last changed, as the ZIP says
+            (365.0, crate::i18n::mark("Modified")),
+        ],
+        &[220.0, 290.0, 360.0],
+        rows,
+        true,
+        Some(checks),
+        shown,
+    )
+}
+
 /// The height of a [`table_sized`] of `shown` rows' body (the progress window's 6: 100 px).
 pub(crate) fn table_body_height(shown: usize) -> f32 {
     17.0 * shown as f32 - 2.0
@@ -2373,17 +2413,37 @@ fn segment_bar(p: &egui::Painter, o: Pos2, item: &Item, segments: &[(u64, f64)])
     }
 }
 
+/// What the Pause button does (`pause_button` says it): resume a stopped download, keep an
+/// endless stream (#1780, its only way to be kept), else pause (a live recording is saved by
+/// the app's `halt`).
+fn pause_action(running: bool, live: Option<mdm_tools::video::LiveState>, endless: bool) -> Action {
+    if !running {
+        Action::Resume
+    } else if endless && live.is_none() {
+        Action::Keep
+    } else {
+        Action::Pause
+    }
+}
+
 /// The Pause button's label and kind: a live stream being recorded is stopped and saved (still
-/// `Action::Pause`, the app's `halt` saves it), and while it is saved the button waits.
+/// `Action::Pause`, the app's `halt` saves it), and while it is saved the button waits. An
+/// endless stream (`Item::endless`, #1780) is stopped and kept (`Action::Keep`): only by this
+/// button, its other stops keep nothing.
 pub(crate) fn pause_button(
     status: Status,
     live: Option<mdm_tools::video::LiveState>,
+    endless: bool,
 ) -> (&'static str, ButtonKind) {
     use mdm_tools::video::LiveState;
     match live {
         // i18n: button in a live stream's progress window: stop recording it and keep what was recorded as a video file
         Some(LiveState::Recording) => (crate::i18n::mark("Stop and save"), ButtonKind::Normal),
         Some(LiveState::Saving) => (crate::i18n::mark("Stop and save"), ButtonKind::Disabled),
+        None if endless && status == Status::Downloading => {
+            // i18n: button in the progress window of a download that never ends by itself (an internet radio, a camera feed: no size, can't be resumed): stop it and keep what has arrived as the finished file
+            (crate::i18n::mark("Stop and keep"), ButtonKind::Normal)
+        }
         None => match status {
             // i18n: verb: pause the download
             Status::Downloading => (crate::i18n::mark("Pause"), ButtonKind::Normal),
@@ -2395,12 +2455,14 @@ pub(crate) fn pause_button(
 }
 
 /// The labels the Pause button can show for one download, its width the widest's: "Stop and
-/// save" only in a live stream's window, so no other's buttons move.
-pub(crate) fn pause_labels(live_stream: bool) -> &'static [&'static str] {
-    if live_stream {
-        &["Pause", "Resume", "Stop and save"]
-    } else {
-        &["Pause", "Resume"]
+/// save" only in a live stream's window, "Stop and keep" only in an endless stream's (#1780), so
+/// no other's buttons move.
+pub(crate) fn pause_labels(live_stream: bool, endless: bool) -> &'static [&'static str] {
+    match (live_stream, endless) {
+        (true, false) => &["Pause", "Resume", "Stop and save"],
+        (false, true) => &["Pause", "Resume", "Stop and keep"],
+        (true, true) => &["Pause", "Resume", "Stop and save", "Stop and keep"],
+        (false, false) => &["Pause", "Resume"],
     }
 }
 
@@ -2626,8 +2688,8 @@ mod tests {
     #[test]
     fn a_recording_live_streams_pause_button_stops_and_saves_it() {
         use mdm_tools::video::LiveState;
-        let label = |status, live| pause_button(status, live).0;
-        let enabled = |status, live| pause_button(status, live).1 != ButtonKind::Disabled;
+        let label = |status, live| pause_button(status, live, false).0;
+        let enabled = |status, live| pause_button(status, live, false).1 != ButtonKind::Disabled;
         let recording = Some(LiveState::Recording);
         let saving = Some(LiveState::Saving);
         assert_eq!(label(Status::Downloading, recording), "Stop and save");
@@ -2651,11 +2713,57 @@ mod tests {
             Status::Queued,
         ] {
             for live in [None, recording, saving] {
-                assert!(pause_labels(true).contains(&label(status, live)));
+                assert!(pause_labels(true, false).contains(&label(status, live)));
             }
-            assert!(pause_labels(false).contains(&label(status, None)));
+            assert!(pause_labels(false, false).contains(&label(status, None)));
         }
-        assert!(!pause_labels(false).contains(&"Stop and save"));
+        assert!(!pause_labels(false, false).contains(&"Stop and save"));
+    }
+
+    /// An endless stream (#1780) running: its Pause button stops and keeps it; stopped (by
+    /// Cancel) it resumes as any other; only its window lays the button out for "Stop and keep".
+    #[test]
+    fn an_endless_streams_pause_button_stops_and_keeps_it() {
+        let label = |status| pause_button(status, None, true).0;
+        assert_eq!(label(Status::Downloading), "Stop and keep");
+        assert!(pause_button(Status::Downloading, None, true).1 == ButtonKind::Normal);
+        for status in [Status::Stopped, Status::Error] {
+            assert_eq!(label(status), "Resume");
+        }
+        for status in [Status::Queued, Status::Complete] {
+            assert_eq!(label(status), "Pause");
+            assert!(pause_button(status, None, true).1 == ButtonKind::Disabled);
+        }
+        for status in [
+            Status::Downloading,
+            Status::Stopped,
+            Status::Error,
+            Status::Queued,
+            Status::Complete,
+        ] {
+            assert!(pause_labels(false, true).contains(&label(status)));
+            assert!(pause_labels(true, true).contains(&label(status)));
+        }
+        assert!(!pause_labels(false, false).contains(&"Stop and keep"));
+        assert!(!pause_labels(true, false).contains(&"Stop and keep"));
+    }
+
+    /// The button keeps only an endless stream it shows "Stop and keep" for (the app's
+    /// `keep_by_hand`); every other running download pauses (a recording saves), a stopped one
+    /// resumes.
+    #[test]
+    fn only_an_endless_streams_button_keeps_it() {
+        use mdm_tools::video::LiveState;
+        assert!(matches!(pause_action(true, None, true), Action::Keep));
+        assert!(matches!(pause_action(true, None, false), Action::Pause));
+        let recording = Some(LiveState::Recording);
+        assert!(matches!(
+            pause_action(true, recording, false),
+            Action::Pause
+        ));
+        for endless in [false, true] {
+            assert!(matches!(pause_action(false, None, endless), Action::Resume));
+        }
     }
 
     /// A live stream's status says it is saved, else that it records, before anything else

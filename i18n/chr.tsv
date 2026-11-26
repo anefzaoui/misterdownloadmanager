@@ -119,7 +119,7 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} failed|{n} failed	{n} ᎤᏃᎴᎢ|{n} ᎤᏃᎴᎢ
-#. count in the Batch download window; count in the Link grabber window; count in the Add torrent window; count in torrentfiles.rs
+#. count in the main window; count in the Batch download window; count in a dialog box; count in the Link grabber window; count in the Add torrent window; count in torrentfiles.rs; count in zippreview.rs
 #. how many files the pattern gives in all
 #. Link grabber: a package's row: {n} is its number of links
 #. {n} = a number (keep the braces as they are)
@@ -181,6 +181,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} window waits until you're back|{n} windows wait until you're back	{n} ᏗᎦᏘᏓ ᎢᎪᎯᏛ ᎭᎷᎩ|{n} ᏗᎦᏘᏓ ᎢᎪᎯᏛ ᎭᎷᎩ
+#. count in the Link grabber window
+#. Link grabber's Source line: a Hugging Face repository's or GitHub release's ({package}: its name, "owner/name") files whose names would lead out of its folder (`../`, a drive, a device's name) are left out; {n} how many
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{package}: {n} file left out, its name would lead out of its folder|{package}: {n} files left out, their names would lead out of its folder	{package}: {n} ᏗᎪᏪᎵ ᎤᎾᏓᏅᏒᎢ, ᏚᏙᎥ ᎤᏓᏅᏒᎢ ᎤᏩᏒ ᎤᏤᎵ ᏗᎪᏪᎵ ᏗᏟᏍᏙᏗ ᎨᏒᎢ|{package}: {n} ᏗᎪᏪᎵ ᎤᎾᏓᏅᏒᎢ, ᏚᏙᎥ ᎤᎾᏓᏅᏒᎢ ᎤᏩᏒ ᎤᏤᎵ ᏗᎪᏪᎵ ᏗᏟᏍᏙᏗ ᎨᏒᎢ
 #. count in cnl.rs
 #. Click'n'Load window: {site} is a web site's name such as "example.com"
 #. {site} = a web site's name such as "example.com"; {n} = a number (keep the braces as they are)
@@ -482,6 +487,10 @@
 #. remote control page (on a phone): label of the box where a download's address or a magnet link is typed
 #, machine
 	Address or magnet link	ᎤᏃᎴᎢ ᎠᎴ ᎤᏃᎴᎢ ᎢᏗᏢ
+#. message or event log entry in the main window
+#. Link grabber: where the links came from: the Add URL window (an address typed or pasted there)
+#, machine
+	Address typed	ᏗᏓᏂᎸᎩ ᏗᎪᏪᎵ ᏗᏟᏍᏙᏗ ᎨᏒᎢ
 #. text in the Options window; text in preview.rs; text in a download's Properties window
 #. Options → DNS over HTTPS: label before the server's https:// address
 #, machine
@@ -854,7 +863,7 @@
 #. a country's name (where a download's server is)
 #, machine
 	Canada	ᎧᎾᏓ
-#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in extracting archives (a download's log, the Archive password window); button in the Find window; button in gallerydlg.rs; text in the Link grabber window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; text in remote.rs; button in the Scheduler window; button in the Add torrent window; button in traypanel.rs; button in the Download video window
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in extracting archives (a download's log, the Archive password window); button in the Find window; button in gallerydlg.rs; text in the Link grabber window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; text in remote.rs; button in the Scheduler window; button in the Add torrent window; button in traypanel.rs; button in the Download video window; text in zippreview.rs
 #. button: stop downloading the update
 #, machine
 	Cancel	ᎠᎦᏘᎴᎢ
@@ -1019,6 +1028,7 @@
 #, machine
 	Choose the profile's folder	ᎢᏯᏍᎦᏅᏅ ᎤᏙᏢᏒ ᎤᏤᎵᎦ ᏗᏟᎶᏍᏔᏅ
 #. text in helpers.rs; text in the Options window
+#. file picker title; {name} = yt-dlp or ffmpeg
 #. file picker title; {name} = the program to choose (yt-dlp, ffmpeg, 7-Zip)
 #. {name} = a file name (keep the braces as they are)
 #, machine
@@ -1031,10 +1041,23 @@
 #. verb: clears this filter
 #, machine
 	Clear	ᎠᏍᏓᏅᏗ
+#. text in cnl.rs
+#. notice: Click'n'Load couldn't start; {port} is 9666; JDownloader is another download manager that uses the same port
+#, machine
+	Click'n'Load can't start: another program (JDownloader?) is using port {port}. Close it, then turn Click'n'Load off and on again in Options.	Click'n'Load ᎥᏝ ᎢᎬᎴᏅᏗ: ᏅᏩᏓᎴ ᎢᏗᏓᏛᏁᎯ (JDownloader?) {port} ᏕᎦᎸᏫᏍᏓᏁᎭ. ᎾᏍᎩ ᎢᏴᏛ ᏂᏨᎦ, ᎿᏉ Click'n'Load ᎢᏴᏛ ᏂᏨᎦ ᎠᎴ ᏔᎵᏁ ᎢᎬᎴᏅᎦ ᎾᏍᎩ Options ᏗᎧᏃᏗᏱ.
+#. text in cnl.rs
+#. notice: Click'n'Load couldn't start; {error} the system's reason
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	Click'n'Load can't start: {error}	Click'n'Load ᎥᏝ ᎢᎬᎴᏅᏗ: {error}
 #. text in a download's progress window
 #. column title: the peer's torrent program
 #, machine
 	Client	ᏗᎦᏃᏍᏓᏅᎢ
+#. message or event log entry in the main window
+#. Link grabber: where the links came from: the clipboard (Tasks → Add batch download from clipboard)
+#, machine
+	Clipboard	ᏗᏟᎶᏍᏔᏅᎯ
 #. text in the Options window
 #, machine
 	Clock:	ᎢᏳᏟᎶᏛ:
@@ -1066,10 +1089,18 @@
 #. a country's name (where a download's server is)
 #, machine
 	Colombia	ᎪᎸᎻᏈᎠ
+#. window title in a dialog box; text in a dialog box
+#. what a screen reader calls the Columns dialog's list of the download list's columns
+#, machine
+	Columns	ᏚᏓᏟᎶᏍᏔᏅᎢ
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
 	Comoros	ᎪᎼᎶᏍ
+#. text in the Options window
+#. Options → Download panels → Button size: only the round button (the logo, the arrow, the close mark) over every video
+#, machine
+	Compact	ᎤᏍᏗ
 #. item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window; text in remote.rs
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): finished
@@ -1097,6 +1128,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Congo	ᎪᏂᎪ
+#. text in the Add torrent window
+#. Torrent settings: uTP, BitTorrent over UDP, which many peers use (more peers, often faster)
+#, machine
+	Connect over uTP too (UDP)	uTP ᎾᏍᏉ ᏗᎬᏔᏅᎯ ᏗᏙᏓᏕᏏ (UDP)
 #. text in extension.rs
 #. in the browser extension's window, beside a browser whose extension reached MDM
 #, machine
@@ -1112,12 +1147,32 @@
 #. tab title: connection settings
 #, machine
 	Connection	ᏗᏙᏯᏅᎯᏍᏗ
+#. text in a download's Properties window
+#. window title: a download's own request settings (User-Agent, headers, connections, proxy), from File Properties → Connection...
+#, machine
+	Connection settings	ᏗᏙᏓᏕᏒᎢ ᎢᏗᏢᏅᏙᏗ
+#. message or event log entry in the main window
+#. event log: File Properties → Connection settings changed the download's own User-Agent, headers, proxy or connections
+#, machine
+	Connection settings changed	ᏗᏙᏓᏕᏒᎢ ᎢᏗᏢᏅᏙᏗ ᏚᏓᏁᏟᏴᏒᎢ
+#. text in a download's Properties window
+#. File Properties button: opens the download's own request settings (User-Agent, headers, connections, proxy)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Connection...	ᏗᏙᏓᏕᏒᎢ...
+#. text in the Options window
+#. Site rules: column title: the number of connections (empty: the default)
+#, machine
+	Connections	ᏗᏙᏓᏕᏒᎢ
 #. page title in the Options window
 #, machine
 	Connections and Limits	ᏗᏙᏯᏅᎯᏍᏗ ᎠᎴ ᏗᎦᏟᎶᏍᏗ
 #. text in the Options window
 #, machine
 	Connections:	ᏗᏙᏯᏅᎯᏍᏗ:
+#. link (opens a web page) in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Contributors	ᏗᏂᏍᏕᎵᏍᎩ
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -1149,11 +1204,43 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	Could not be read: {error}	ᎥᏝ ᏰᎵ ᏱᎪᎵᏰᏗ: {error}
+#. text in errors.rs
+#. a helper (yt-dlp, ffmpeg) couldn't be downloaded: the proxy set in Options ({proxy}, its address) didn't let MDM connect
+#, machine
+	could not connect through the proxy {proxy}	ᎥᏝ ᏗᏙᏓᏕᏒᏗ ᏱᎩ proxy {proxy} ᎬᏔᏅᎯ
+#. text in errors.rs
+#. a helper (yt-dlp, ffmpeg) couldn't be downloaded: its server ({host}) couldn't be reached
+#. {host} = a server name such as "example.com" (keep the braces as they are)
+#, machine
+	could not reach {host}	ᎥᏝ {host} ᏱᎦᎷᏩᏛᎮ
+#. text in errors.rs
+#. a helper (yt-dlp, ffmpeg) couldn't be downloaded: its server ({host}) couldn't be reached, for the system's reason {cause}
+#. {host} = a server name such as "example.com" (keep the braces as they are)
+#, machine
+	could not reach {host} ({cause})	ᎥᏝ {host} ᏱᎦᎷᏩᏛᎮ ({cause})
+#. text in helpers.rs
+#. Helpers: the last update check failed (no network...); MDM checks again later by itself
+#, machine
+	Couldn't check for updates: MDM tries again later	ᎥᏝ ᎢᎬᏙᏗ ᏱᎩ ᏚᎾᏓᏁᏟᏴᏒᎢ: MDM ᏔᎵᏁ ᏓᎪᎵᏰᏏ ᎣᏂ
 #. text in extracting archives (a download's log, the Archive password window)
 #. in a download's log: {name} is the archive's file name, {why} the reason
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	Couldn't extract {name}: {why}	ᎥᏝ ᎢᏗᎦᎴᏴᏔᏅᎯ {name}: {why}
+#. message or event log entry in the main window
+#. a video's or gallery's log: MDM couldn't look for a newer yt-dlp (or gallery-dl); {name} = its name, {error} = why
+#. {name} = a file name; {error} = an error message (keep the braces as they are)
+#, machine
+	Couldn't look for a newer {name}: {error}	ᎥᏝ ᎢᎬᏙᏗ ᏱᎩ ᎢᏤ {name} ᏗᎪᎵᏰᏗ: {error}
+#. text in archtest.rs
+#. in a download's log: {name} is the archive's file name, {why} the reason it wasn't tested (as after "Couldn't extract {name}: ")
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Couldn't test {name}: {why}	ᎥᏝ {name} ᏱᎪᎵᏰᏔᏁ: {why}
+#. checkbox in the Add torrent window
+#. Add torrent: keep a multi-file torrent inside its own outer folder; untick to use Save to directly
+#, machine
+	Create a folder for this torrent	ᎾᏍᎩ torrent ᎤᏤᎵᎦ ᏗᎦᏁᏟᏴᏍᏗ ᎦᏁᏟᏴᎦ
 #. window title in a dialog box
 #, machine
 	Create folder	ᏗᏓᏍᏆᏂᎪᏗᏍᏗ ᏗᎪᏢᏍᏗ
@@ -1346,6 +1433,10 @@
 #. button in the browser extension's window: stop offering it at each start
 #, machine
 	Don't ask again	ᎢᎬᏱᏗᏢ ᎢᎦᏓᏛᏍᏗ
+#. text in the Options window
+#. checkbox, Options → Downloads: Download complete and MDM's other windows that open by themselves wait while a full-screen game, app or video, a presentation or the locked screen is on, and show when the user is back
+#, machine
+	Don't show pop-ups while a full-screen app or presentation is running	ᏞᏍᏗ ᏚᎾᏓᎴᏅᏔᏅᎯ ᏗᏂᏃᏗᏱ ᎢᎬᏂᎨᏒ ᎢᎬᏁᎸᎩ ᎢᏳᏃ ᏂᎦᏛ-ᎠᏯᏔᏍᏗ ᎢᏗᏓᏛᏁᎯ ᎠᎴ ᏗᎧᏃᏗᏱ ᎢᎬᏂᎨᏒ ᎢᎬᏁᏗ ᏕᎦᎸᏫᏍᏓᏁᎮᏍᏗ
 #. checkbox in a dialog box
 #, machine
 	Don't show this dialog again	ᎠᏗᏍᎪᏗᏱ ᏂᏓᎴᏅᎲᎾ ᎯᎠ ᏗᏓᏟᎶᏍᏔᏅᎢ ᎢᎬᏱ
@@ -1441,6 +1532,9 @@
 #. Options → Accounts: checkbox: links of the file hosts these services support are downloaded through the accounts
 #, machine
 	Download supported file-host links through these accounts	ᏗᏂᏍᏕᎵᏍᎩ ᏗᎪᏪᎶᏗ ᏗᎬᏔᏂᏓᏍᏗ ᏗᎪᏪᎶᏗ-ᏗᏂᏍᏕᎵᏍᎩ ᏗᏓᏚᎪᏗ
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Download the links in the clipboard (Add batch download from clipboard)	ᏗᏟᎶᏍᏔᏅᎯ ᏗᏙᏓᏕᏒᎢ ᏗᏙᏓᏕᏏ (Add batch download from clipboard)
 #. text in a dialog box
 #. Download File Info: a check box, ticked when the download goes through the user's debrid account; {service} the service and the account, "Real-Debrid (labuser)". Unticked: downloaded directly
 #, machine
@@ -1491,6 +1585,10 @@
 #. text in the Download video window
 #. the trailing ... means it is still going on: keep it
 #, machine
+	Downloading and verifying Node.js (40 to 60 MB)...	Node.js ᏕᎦᎸᏫᏍᏓᏁᎭ ᎠᎴ ᏕᎦᏙᎴᎰᏍᎦ (40 ᎢᏳᏟᎶᏛ 60 MB)...
+#. text in the Download video window
+#. the trailing ... means it is still going on: keep it
+#, machine
 	Downloading and verifying yt-dlp...	ᎠᎾᏛᏗ ᎠᎴ ᎠᎾᏙᎴᎰᏍᎬ yt-dlp...
 #. text in helpers.rs
 #. Video helpers: MDM's own yt-dlp is being downloaded
@@ -1511,6 +1609,10 @@
 #, machine
 	Downloading the update... {percent}	ᎠᏓᏁᏟᏴᏍᏗ ᏓᎩᎶᏔᏅ... {percent}
 #. text in helpers.rs
+#. Helpers: a newer version of a helper is being downloaded; {percent} = how far, a number
+#, machine
+	Downloading the update... {percent}%	ᏕᎦᎸᏫᏍᏓᏁᎭ ᏚᎾᏓᏁᏟᏴᏒᎢ... {percent}%
+#. text in helpers.rs
 #. {name} = yt-dlp, ffmpeg or Node.js; {n} of {total} = which helper of how many; {percent} = how far, e.g. 45%
 #. {name} = a file name; {n} = a number (keep the braces as they are)
 #, machine
@@ -1523,6 +1625,18 @@
 #. title of the window that sums up downloads added together (a playlist, a batch) once all are done
 #, machine
 	Downloads complete	ᏗᎦᎴᏴᏔᏅᎢ ᎤᏍᏆᏛᎯ
+#. text in win32.rs
+#. Windows' Settings → Default apps: what Mister Download Manager is
+#, machine
+	Downloads files, videos and torrents	ᏕᎦᎸᏫᏍᏓᏁᎭ ᏗᏙᏓᏕᏒᎢ, ᏗᏙᏓᏕᏒᎢ ᏗᎧᏃᏗᏱ ᎠᎴ torrents
+#. message or event log entry in the main window
+#. the notice shown once, the first time a download comes from a browser's private (incognito) window: it stays in MDM's list like any other, after a restart too; where to turn that off. {options} = the Options window, {general} = its General tab, {checkbox} = the checkbox "Keep private-window downloads in the list"
+#, machine
+	Downloads from a browser's private window stay in MDM's list like any other, also after MDM restarts; their cookies are never saved. To keep them in memory only, untick {options} → {general} → {checkbox}.	ᏗᏙᏓᏕᏒᎢ ᏗᎧᏃᏗᏱ ᎤᏤᎵᎦ ᏗᎧᏃᏗᏱ ᏗᏙᏓᏕᏒᎢ ᏕᎦᎸᏫᏍᏓᏁᎭ MDM ᎤᏤᎵᎦ ᏗᏙᏓᏕᏒᎢ ᏗᎧᏃᏗᏱ ᎾᏍᎩᏯ, MDM ᏔᎵᏁ ᎢᎬᎴᏅᎯ ᎾᏍᏉ; ᏗᏙᏓᏕᏒᎢ ᏗᎧᏃᏗᏱ ᎥᏝ ᎢᏳᏩᎯᏓᏍᏗ ᏱᎩ. ᎾᏍᎩ ᏗᏙᏓᏕᏒᎢ ᏗᎧᏃᏗᏱ ᎤᏩᏒ ᎢᏳᏩᎯᏓᏍᏗ ᎢᏳᎵᏍᏙᏗᏱ, ᏞᏍᏗ ᎢᎬᏂᎨᏒ ᎢᎬᏁᎸᎩ {options} → {general} → {checkbox}.
+#. text in the Options window
+#. Site rules window: how the rules apply; *.example.com stays as it is
+#, machine
+	Downloads from these sites get these settings. Each one comes from the first rule in the list that names the site and sets it; * stands for any text: *.example.com	ᏗᏙᏓᏕᏒᎢ ᎾᏍᎩ ᏗᎧᏃᏗᏱ ᏗᏙᏓᏕᏒᎢ ᏕᎦᎸᏫᏍᏓᏁᎭ ᎾᏍᎩ ᎢᏗᏢᏅᏙᏗ. ᎾᏍᎩ ᎢᏗᏢᏅᏙᏗ ᏕᎦᎸᏫᏍᏓᏁᎭ ᎢᎬᏱᏱ ᎢᏗᏢᏅᏙᏗ ᎾᏍᎩ ᏗᎧᏃᏗᏱ ᏕᎦᎸᏫᏍᏓᏁᎭ; * ᏂᎦᏛ ᏗᎧᏃᏗᏱ ᏕᎦᎸᏫᏍᏓᏁᎭ: *.example.com
 #. text in the tray icon's menu; text in traypanel.rs
 #. tray menu: a submenu of the downloads now running; choosing one shows its progress window
 #. the notification-area icon's panel (#1365): its title, over the downloads now running (also the tray menu's submenu)
@@ -1547,6 +1661,16 @@
 #. tooltip of the handle in Download complete: drag it to drop the downloaded file somewhere
 #, machine
 	Drag the file into a folder or an app	ᏙᎾᏏᏔ ᎠᏰᎵ ᎢᏗᏢ ᏗᎪᏪᎵ ᏗᏟᏴᏍᏗᏱ ᎠᎴ ᎢᏗᏢ ᎢᏓᏟᏴᏍᏗᏱ
+#. message or event log entry in the main window
+#, machine
+	Dragged out of Download complete and moved to a place MDM couldn't learn	ᏗᏙᏓᏕᏒᎢ ᏗᎧᏃᏗᏱ ᎢᏴᏛ ᏂᏨᎦ ᎠᎴ ᎢᏴᏛ ᏂᏨᎦ ᎾᏍᎩ MDM ᎥᏝ ᏱᎦᏙᎴᎰᏍᎨ
+#. message or event log entry in the main window
+#, machine
+	Dragged out of Download complete and moved to {folder}	ᏗᏙᏓᏕᏒᎢ ᏗᎧᏃᏗᏱ ᎢᏴᏛ ᏂᏨᎦ ᎠᎴ ᎢᏴᏛ ᏂᏨᎦ {folder}
+#. message or event log entry in the main window
+#. a download's note: its file was dragged out of the download list and moved somewhere MDM can't tell (a program took it, the Recycle Bin)
+#, machine
+	Dragged out of the list and moved to a place MDM couldn't learn	ᏗᏙᏓᏕᏒᎢ ᏗᎧᏃᏗᏱ ᎢᏴᏛ ᏂᏨᎦ ᎠᎴ ᎢᏴᏛ ᏂᏨᎦ ᎾᏍᎩ MDM ᎥᏝ ᏱᎦᏙᎴᎰᏍᎨ
 #. message or event log entry in the main window
 #. a download's note: its file was dragged out of the download list and moved to that folder
 #, machine
@@ -1585,6 +1709,10 @@
 #. text in the Options window
 #, machine
 	Edit login	ᎠᎪᏪᎶᏗ ᏫᎬᏗ
+#. text in the Options window
+#. window title: changing one site rule
+#, machine
+	Edit site rule	ᎢᏗᏢᏅᏙᏗ ᏕᎦᎸᏫᏍᏓᏁᎭ
 #. button in the Options window
 #. verb: edit the item
 #. the trailing ... means it opens a window: keep it
@@ -1601,7 +1729,7 @@
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Email	ᎦᎴᏴᏔᏅ
-#. text in the Download video window
+#. checkbox in the Download video window; text in the Download video window
 #. checkbox in Download video: the chapters a video's page lists (YouTube's, for one) go into the video file, where players show them and skip between them
 #, machine
 	Embed chapters	ᏗᎪᏪᎵ ᎠᏯᏙᎯ
@@ -1609,6 +1737,10 @@
 #. in Download a gallery, after the "Files at most" box
 #, machine
 	Empty: all of them. On most sites the newest come first.	ᎤᏃᏒᎯ: ᏂᎦᏛ. ᎤᏟ ᎢᏤᎢᏍᏗ ᎢᎬᏱ ᎨᏐᎢ.
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: the hint under the User-Agent box
+#, machine
+	Empty: the browser's, or the one set in Options	ᎤᏩᏒ: ᏗᎧᏃᏗᏱ ᎤᏤᎵᎦ, ᎠᎴ ᎾᏍᎩ Options ᏗᎧᏃᏗᏱ ᎢᏗᏢᏅᏙᏗ
 #. text in crashui.rs
 #. crash report window button: end the frozen MDM and start it again
 #, machine
@@ -1682,6 +1814,14 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Everything at its normal size (100%)	ᏂᎦᎥᎢ ᎤᏙᏢᏒᎢ (100%)
+#. text in the Download video window
+#. choice in Download video's Part: the part is encoded again so it starts and ends exactly at From and To (slower)
+#, machine
+	Exact cut, encoded again	ᎤᏍᏆᏂᎪᏗ ᎢᏗᏢᏅᏙᏗ, ᏔᎵᏁ ᎢᏗᏢᏅᏙᏗ
+#. text in the Options window
+#. Site rule: the hint under the site box; the examples stay as they are
+#, machine
+	example.com, or *.example.com for its subdomains	example.com, ᎠᎴ *.example.com ᎾᏍᎩ ᎤᏤᎵᎦ ᏗᎧᏃᏗᏱ
 #. text in the Options window
 #. label before an example date and time written the chosen way
 #, machine
@@ -1766,6 +1906,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Faroe Islands	ᎦᎶᏪ ᎤᎦᏚᏛᎢ
+#. text in the Download video window
+#. tooltip of "Quick cut, at keyframes" in Download video: what it does
+#, machine
+	Fast: the streams are copied as they are, so the part may start a little before From	ᎤᏔᎾ: ᏗᏙᏓᏕᏒᎢ ᏕᎦᎸᏫᏍᏓᏁᎭ ᎾᏍᎩᏯ, ᎾᏍᎩ ᎢᏗᏢᏅᏙᏗ ᎢᎬᏱᏱ ᎢᏗᏢᏅᏙᏗ
 #. text in the Scheduler window
 #, machine
 	February	ᎧᎦᎵ
@@ -1782,9 +1926,13 @@
 #, machine
 	Feeds:	ᎤᎾᎵᏍᏓᏴᏗ:
 #. text in the Add torrent window
-#. Torrent settings, at the bottom
+#. Torrent settings, under the blocklist's address
 #, machine
 	Fetched again every 7 days. Changes apply when no torrent is running.	ᏂᎦᏓ 7 ᎢᎦ ᎢᏴᏓ. ᏗᎦᏁᏟᏴᏍᏗ ᏚᏓᏂᎸᎦ ᎢᏳᏃ ᎥᏝ ᎢᎸᎯᏢ ᏱᏚᎾᏕᎷᎦ.
+#. text in the Add torrent window
+#. Torrent settings, under the public tracker list's address
+#, machine
+	Fetched once a day. Never added to private torrents.	ᎾᏍᎩ ᎢᏳᏩᎯᏓᏍᏗ ᎢᏗᏢᏅᏙᏗ. ᎥᏝ ᎢᏳᏩᎯᏓᏍᏗ ᏱᎩ ᏗᏙᏓᏕᏒᎢ ᏗᎧᏃᏗᏱ.
 #. text in helpers.rs
 #. helper name and what it does (ffmpeg is a program's name)
 #, machine
@@ -1805,7 +1953,8 @@
 #. tooltip of "Mark downloaded files as coming from the internet" on Linux
 #, machine
 	File managers show where the files marked this way came from. Unticked, no download is marked.	ᎢᏗᏟᏍᏙᏗ ᏗᏂᏃᎩᏍᏗ ᎬᏂᎨᏒᎢᏍᏗᎭ ᎭᏢᏃ ᎾᏍᎩᏯᎢ ᎢᏗᏟᏍᏙᏗ ᏗᏂᏃᎩᏍᏗ ᏧᏂᎷᏨᎢ. ᎢᏳᏃ ᏂᏓᏙᏢᎾ, ᎥᏝ ᎢᏗᏟᏍᏙᏗ ᏗᏂᏃᎩᏍᏗ ᏱᏚᎾᏙᏢ.
-#. text in the Scheduler window
+#. text in a download's progress window; text in the Scheduler window
+#. Zip preview's column: the file's name (its path inside the ZIP)
 #, machine
 	File Name	ᎢᏗᏢ ᏚᏙᎥ
 #. text in the Download video window
@@ -1827,6 +1976,10 @@
 #. text in categories.rs
 #, machine
 	File types:	ᎠᏰᎵ ᎢᏳᏍᏗ ᏗᎪᏪᎵ:
+#. text in preview.rs
+#. label in the preview pane: whether the downloaded file is still where it was saved
+#, machine
+	File:	ᏗᏙᏓᏕᏒᎢ:
 #. text in a download's progress window; text in the Add torrent window
 #. tab title: the torrent's files
 #, machine
@@ -1845,6 +1998,10 @@
 #. text in the Scheduler window; tab in the Scheduler window
 #, machine
 	Files in the queue	ᏗᎪᏪᎵ ᎤᎾᏓᏟᏌᏅᎢ
+#. text in the download list (sizes, speeds, status)
+#. why files being taken out of a ZIP on its server (#1775) can't be moved or renamed yet: those already out are in its folder, the others still to come there
+#, machine
+	Files taken out of a ZIP can be moved once they're all out	ᏗᏙᏓᏕᏒᎢ ᏗᎧᏃᏗᏱ ᏕᎦᎸᏫᏍᏓᏁᎭ ᎢᏳᏃ ᏂᎦᏛ ᏗᏙᏓᏕᏒᎢ ᏗᎧᏃᏗᏱ ᏕᎦᎸᏫᏍᏓᏁᎭ
 #. button in a download's Properties window
 #. File Properties button that opens the selected torrent's file list
 #. the trailing ... means it opens a window: keep it
@@ -1854,6 +2011,10 @@
 #. verb: button that starts the search
 #, machine
 	Find	ᎤᎾᏙᎴᎰᎯᏍᏗ
+#. text in the Options window
+#. Options → Archives: button, shown once a 7-Zip program was chosen with "Use another program...": go back to the 7-Zip MDM finds on the computer by itself
+#, machine
+	Find 7-Zip automatically	7-Zip ᎤᏩᏒ ᎢᏗᏢᏅᏙᏗ
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Find a download	ᏗᏯᏛᎢᏍᏗ ᎤᏲᎢᏍᏗ
@@ -1883,6 +2044,10 @@
 #. remote control page (on a phone): tab: downloads finished
 #, machine
 	Finished	ᎤᏍᏆᏛ
+#. text in preview.rs
+#. label in the preview pane: when the download finished
+#, machine
+	Finished:	ᎤᏍᏆᏛ:
 #. text in a download's progress window
 #. a download's status: every byte is in, the file is being written out and given its name
 #. the trailing ... means it is still going on: keep it
@@ -1905,6 +2070,10 @@
 #. text in categories.rs
 #, machine
 	Folder:	ᏗᏓᎴᏂᏍᏗ:
+#. text in the Options window
+#. Options → Archives → Link grabber, one line with two boxes: an FTP folder or a web server's folder listing ("Index of") given to Link grabber is read with its subfolders: {depth} is a number box (how many levels of subfolders, 3 at first; 0 is the folder's own files only), {types} a text box (file types such as ISO ZIP; empty for every type)
+#, machine
+	Folders: {depth} levels deep, types: {types}	ᏗᎦᏁᏟᏴᏍᏗ: {depth} ᎢᏗᏢᏅᏙᏗ, ᏗᏙᏓᏕᏒᎢ: {types}
 #. message or event log entry in the main window
 #. the kind of file View → Font → Choose a font file lists: TrueType and OpenType font files
 #, machine
@@ -1992,6 +2161,14 @@
 #. where a download came from, in its log: a playlist or channel, by yt-dlp
 #, machine
 	from a playlist (yt-dlp)	ᏗᏟᎶᏍᏔᏅᎯ ᎢᎬᎾᏗ (yt-dlp)
+#. text in the download list (sizes, speeds, status)
+#. tooltip of the mark (a mask) before a download's status in the list: it came from a browser's private (incognito) window, and it is in memory only, gone from the list when MDM closes
+#, machine
+	From a private window: in memory only, gone from the list when MDM closes	ᏗᏙᏓᏕᏒᎢ ᏗᎧᏃᏗᏱ ᎤᏩᏒ ᎢᏳᏩᎯᏓᏍᏗ, MDM ᎢᏴᏛ ᏂᏨᎦ ᎢᏳᏃ MDM ᎢᏴᏛ ᏂᏨᎦ
+#. text in the download list (sizes, speeds, status)
+#. tooltip of the mark (a mask) before a download's status in the list: it came from a browser's private (incognito) window, and MDM's list keeps it after a restart (Options → General → Keep private-window downloads in the list)
+#, machine
+	From a private window: kept in the list	Ꮕ приватный window: ᎢᎬᏱᏗᏢ ᎢᎬᏁᎸᎢ
 #. message or event log entry in the main window
 #, machine
 	from a torrent file	ᏗᏓᎴᏂᏍᏗ ᏗᏓᎴᏂᏍᏗ
@@ -2009,6 +2186,10 @@
 #. message or event log entry in the main window
 #, machine
 	from the command line	ᏗᏓᎴᏂᏍᏗ ᏗᏓᎴᏂᏍᏗ
+#. text in the Download video window
+#. in Download video after "Only a part": {from} and {to} are boxes where times are typed (1:30, 1:02:03), drawn where they stand in the translation
+#, machine
+	from {from} to {to}	{from} ᎢᏴᏓ {to} ᎢᏴᏓ
 #. text in the Batch download window
 #, machine
 	From:	ᏗᏓᎴᏂᏍᏗ:
@@ -2092,6 +2273,11 @@
 #. {version} = a version number (keep the braces as they are)
 #, machine
 	Go back to {version}	{version} ᎢᏗᏢ ᏔᎵᏁ ᏫᎶᎯ
+#. text in helpers.rs
+#. Helpers: the "Go back" button's name for a screen reader; {version} = the earlier version, {name} = the helper (yt-dlp, ffmpeg, gallery-dl, Node.js)
+#. {version} = a version number; {name} = a file name (keep the braces as they are)
+#, machine
+	Go back to {version} of {name}	ᎢᎠᎷᎦ {version} ᎾᏍᎩ {name}
 #. text in a download's progress window
 #. a torrent's sharing, when Torrent settings keep it on
 #, machine
@@ -2155,6 +2341,10 @@
 #. legend: pieces downloaded
 #, machine
 	Have	ᏗᏓᎴᏂᏍᏗ
+#. text in the Options window
+#. Site rules: column title: how many request headers the rule adds
+#, machine
+	Headers	ᎤᎵᏍᏆᎸᏗ
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2180,6 +2370,15 @@
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 	Hide &categories	ᏗᏓᎴᏂᏍᏗ &ᏗᏓᎴᏂᏍᏗ
+#. message or event log entry in the main window
+#. View menu: hides the pane beside the download list that shows the selected download's picture and details
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	Hide &preview pane	Ꭰ&ᏓᏍᏚᎦ ᎢᎬᏱᏗᏢ
+#. text in the Link grabber window
+#. Link grabber check box, ticked when it opens: the pictures shown on the browser's page (its images, not links to pictures), which "Download all links" sends with the links, are not shown
+#, machine
+	Hide images located on this web page	ᎠᏓᏍᏚᎦ ᏗᎦᏟᎶᏍᏗ ᎾᎿ ᎠᏯᎢ ᎯᎠ ᎢᏗᎦᏅᏅ ᎤᏆᏗᏍᏗ
 #. button in a download's progress window
 #, machine
 	Hide tab	ᏗᏓᎴᏂᏍᏗ ᏗᏓᎴᏂᏍᏗ
@@ -2307,11 +2506,11 @@
 #. in the "7-Zip needed" window, under why
 #, machine
 	Install 7-Zip (free), then right-click the download and choose Extract.	7-Zip (ᎠᏕᎳ ᏂᎨᏒᎾ) ᎭᏓᏁᏟᏴᏏ, ᎿᏉᏃ ᎦᏁᎦ-ᎦᎶᎯᏍᏗ ᎭᏓᏁᏟᏴᏏ ᎠᎴ ᎭᏑᏰᏍᏓ ᎦᏄᎪᏫᏍᏗ.
-#. text in the Download video window
+#. text in helpers.rs; text in the Download video window
 #. button: download and install the ffmpeg program
 #, machine
 	Install ffmpeg	ffmpeg ᎦᏴᏍᏗ
-#. button in gallerydlg.rs
+#. button in gallerydlg.rs; text in helpers.rs
 #. button: download and install the gallery-dl program
 #, machine
 	Install gallery-dl	ᏗᏣყენᏗ gallery-dl
@@ -2319,6 +2518,10 @@
 #. link in the browser extension's window: the tutorial that adds it without the browser's store
 #, machine
 	Install it by hand	ᎤᏩᏒᎢ ᏗᎧᏃᎩᏍᏗ
+#. text in helpers.rs; text in the Download video window
+#. button in Download video: download and install Node.js, the JavaScript runtime YouTube needs (Node.js is a program's name)
+#, machine
+	Install Node.js	ᎠᎵᎪᏗ Node.js
 #. text in unix.rs
 #. Linux, after a missing library's name, on a distribution MDM doesn't know
 #, machine
@@ -2327,7 +2530,7 @@
 #. in the "7-Zip needed" window, under why (Linux: 7-Zip comes from the distribution's packages, named 7zip or p7zip)
 #, machine
 	Install your system's 7zip (or p7zip) package, then right-click the download and choose Extract.	ᎢᏥᎷᏏ ᎢᏥᏃᎴᎢ 7zip (ᎠᎴ p7zip) ᎢᏗᏢ, ᎿᏉᏃ ᎢᏥᎷᏏ ᎢᏥᏃᎴᎢ ᎢᏗᏢ ᎢᏤᎳᏍᏓ.
-#. text in the Download video window
+#. text in helpers.rs; text in the Download video window
 #. button: download and install the yt-dlp program
 #, machine
 	Install yt-dlp	yt-dlp ᎦᏴᏍᏗ
@@ -2422,6 +2625,14 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	its files could not be written: {error}	ᏗᎪᏪᎵ ᎥᏝ ᏱᏗᎬᏩᏂᎪᏪᎳᏅ: {error}
+#. text in preview.rs
+#. the preview pane: neither the file nor its folder can be found now (an unplugged drive, a network folder away)
+#, machine
+	Its folder can't be reached now	ᎤᎾᏕᎳᎰᎯᏍᏗ ᎥᏝ ᏰᎵᏉ ᎢᎬᏱᏗᏢ ᎢᏴᏓ
+#. text in relocate.rs
+#. why an unfinished download could not be moved (after "The file could not be moved: "): its folder isn't there now (a drive taken out); {folder} is that folder
+#, machine
+	its folder {folder} can't be reached	ᎤᎾᏕᎳᎰᎯᏍᏗ ᎤᎾᏕᎳᎰᎯᏍᏗ {folder} ᎥᏝ ᏰᎵᏉ ᎢᎬᏱᏗᏢ ᎢᏴᏓ
 #. text in the download list (sizes, speeds, status)
 #. why a video download failed: ffmpeg couldn't join its picture and sound into one file; {error} = ffmpeg's reason, in English
 #. {error} = an error message (keep the braces as they are)
@@ -2446,6 +2657,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Japan	ᏣᏩᏂᏏ
+#. text in helpers.rs
+#. Video helpers: the row of the JavaScript runtime (Node.js, Deno...) yt-dlp needs for YouTube's videos
+#, machine
+	JavaScript runtime (for YouTube)	JavaScript ᎢᏴᏓ (ᎾᏍᎩ YouTube)
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2605,6 +2820,23 @@
 #. Torrent settings: an upload speed limit for all torrents together, followed by a box with the speed and "KBytes/sec"
 #, machine
 	Limit uploading for all torrents to	ᎦᎸᎳᏗᏗᏢ ᎦᏁᏟᏴᏍᏗ ᏂᎦᏛ ᎤᏃᎴᎢ ᎯᎠ
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: a header's name has a space or another character names can't have; {line} is the line's number
+#, machine
+	Line {line}: a header's name has letters, digits and dashes only	Line {line}: ᎤᎵᏍᏆᎸᏗ ᎤᎾᏕᎳᎰᎯᏍᏗ ᏗᎦᏟᎶᏍᏗ, ᏗᎦᏟᎶᏍᏗ ᎠᎴ ᏗᎦᏟᎶᏍᏗ ᎢᏴᏓ
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: a header MDM sets itself for each request (Range, Host…) can't be typed; {line} is the line's number, {name} the header's name
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Line {line}: Mister Download Manager sets {name} itself	Line {line}: Mister Download Manager ᎤᎾᏕᎳᎰᎯᏍᏗ {name} ᎢᏴᏓ
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: a header's value (or the User-Agent) holds a control character; {line} is the line's number
+#, machine
+	Line {line}: the value has a character a header can't hold	Line {line}: ᎤᎾᏕᎳᎰᎯᏍᏗ ᎤᎾᏕᎳᎰᎯᏍᏗ ᏗᎦᏟᎶᏍᏗ ᎥᏝ ᏰᎵᏉ ᎢᏴᏓ
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: a line of request headers isn't "Name: value"; {line} is its number
+#, machine
+	Line {line}: write a header as Name: value	Line {line}: ᎢᏴᏓ ᎤᎵᏍᏆᎸᏗ ᎾᏍᎩ Name: value
 #. message or event log entry in the main window; window title in the Link grabber window; group box title in the Options window
 #. Options → Archives: group box title
 #, machine
@@ -2618,6 +2850,10 @@
 #. in Link grabber, where the addresses came from: a page in the browser
 #, machine
 	Links from the browser	ᏗᏓᏂᏴᏗ ᏗᏕᎬᏔᏅᎢ ᏗᏓᏂᏴᏗ ᏗᏕᎬᏔᏅᎢ
+#. text in a dialog box
+#. tooltip of Download File Info's Preview button for a ZIP (#1775): it lists the files inside, to download only some of them
+#, machine
+	List the files inside the ZIP and pick those to download	ᏗᎦᏟᎶᏍᏗ ᎾᎿ ZIP ᎠᎴ ᎢᏴᏓ ᎾᏍᎩ ᏗᎦᏟᎶᏍᏗ ᎢᏴᏓ
 #. text in playlistdlg.rs
 #. button in Download video: go on listing a playlist from where it stopped
 #, machine
@@ -2677,6 +2913,11 @@
 #. why Download Now is greyed: the page address was changed after the look-up
 #, machine
 	Look up the new address first	ᎢᎬᏱᏱ ᎢᏗᎪᏩᏛᏗ ᎢᏤ ᏗᎦᏛᏗ
+#. text in helpers.rs
+#. Video helpers: MDM is asking the JavaScript runtimes on the computer (Node.js, Deno...) for their versions, to see which one yt-dlp can use
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Looking for a JavaScript runtime on this computer...	ᎠᏓᏕᎶᎰᏍᎦ JavaScript ᎢᏴᏓ ᎾᎿ ᎯᎠ ᏗᎦᏟᎶᏍᏗ...
 #. text in the Add torrent window
 #. while a magnet link's file list is fetched, before any peer is found
 #. the trailing ... means it is still going on: keep it
@@ -2690,10 +2931,20 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Looking for your default browser...	ᎢᏣᏤᎵ ᎢᎬᏱᏱ ᏗᎪᏪᎵᏍᎩ ᏓᎦᏁᏍᎪᎢ...
+#. text in a dialog box
+#. tooltip of Download File Info's greyed Preview button while MDM asks the server whether it can look inside the ZIP (#1775)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Looking inside the ZIP...	ᎠᏓᏕᎶᎰᏍᎦ ᎾᎿ ZIP...
 #. text in the Download video window
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Looking the page up...	ᎢᏗᏴᏍᏗ...
+#. text in preview.rs
+#. the preview pane: still looking whether the file is there
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Looking...	ᎠᏓᏕᎶᎰᏍᎦ...
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2853,10 +3104,35 @@
 #. Video helpers: MDM can't download this helper on this Windows (ffmpeg on 32-bit Windows); "Use another program" is the button below
 #, machine
 	MDM has no copy for this system: install it, or use another program	MDM ᎾᏍᎩ ᎢᏗᏢ ᎢᏤᎳᏍᏓ: ᎾᏍᎩ ᎢᏗᏢ ᎢᏤᎳᏍᏓ, ᎠᎴ ᎾᏍᎩ ᎢᏗᏢ ᎢᏤᎳᏍᏓ.
+#. text in helpers.rs
+#. Video helpers: MDM can't download Node.js on this system (an unusual processor); Node.js and Deno are program names; "Use another program" is the button below
+#, machine
+	MDM has no copy for this system: install Node.js or Deno, or use another program	MDM ᎥᏝ ᏰᎵᏉ ᎢᏴᏓ ᎯᎠ ᏗᎦᏟᎶᏍᏗ: ᎠᎵᎪᏗ Node.js ᎠᎴ Deno, ᎠᎴ ᎢᏴᏓ ᏅᏩᎾᏓᎴ ᏗᎦᏟᎶᏍᏗ
 #. text in remote.rs
 #. remote control page (on a phone): no pairing code is shown in MDM; "Pair a device" is MDM's button
 #, machine
 	MDM shows no code now. Click Pair a device there first.	MDM ᎥᏝ ᎢᏗᏢ ᎢᏗᏢ ᎢᏗᏢ. ᎢᏗᏢ ᎢᏗᏢ ᎢᏗᏢ ᎢᏗᏢ ᎢᏗᏢ ᎢᏗᏢ.
+#. text in errors.rs
+#. error installing ffmpeg: the list of builds MDM accepts couldn't be read; {detail} = the technical detail, in English
+#, machine
+	MDM's list of checked ffmpeg builds can't be read ({detail})	MDM ᎤᎾᏓᏟᎶᏍᏔᏅᎯ ffmpeg ᏚᏙᏢᏒ ᎥᏝ ᏰᎵ ᏱᎪᎵᏰᏗ ({detail})
+#. text in errors.rs
+#. error installing ffmpeg: MDM installs only builds named in a list it publishes, signed with its key, and that list couldn't be downloaded; {error} = why
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	MDM's list of checked ffmpeg builds could not be downloaded: {error}	MDM ᎤᎾᏓᏟᎶᏍᏔᏅᎯ ffmpeg ᏚᏙᏢᏒ ᎥᏝ ᏰᎵ ᏱᏗᎦᏃᏔᏅ: {error}
+#. text in errors.rs
+#. error installing ffmpeg: the list of builds MDM accepts has none for this computer's system and processor
+#, machine
+	MDM's list of checked ffmpeg builds has none for this computer	MDM ᎤᎾᏓᏟᎶᏍᏔᏅᎯ ffmpeg ᏚᏙᏢᏒ ᎥᏝ ᎪᏢᏗ ᏱᎩ ᎯᎠ ᎢᏯᏛᏁᏗ ᎨᏒᎢ
+#. text in errors.rs
+#. error installing ffmpeg: the list of builds MDM accepts is older than one this copy of MDM already used (it never goes back to an older list)
+#, machine
+	MDM's list of checked ffmpeg builds is older than one already used, so ffmpeg wasn't installed	MDM ᎤᎾᏓᏟᎶᏍᏔᏅᎯ ffmpeg ᏚᏙᏢᏒ ᎤᏪᏘᏳ ᎡᏍᎦᏂ ᎢᏳᏍᏗ ᎢᏯᏛᏁᏗ ᎨᏒᎢ, ᎾᏍᎩ ᎢᏳᏍᏗ ffmpeg ᎥᏝ ᏱᎪᏢᏔᏅ
+#. text in errors.rs
+#. error installing ffmpeg: the list of builds MDM accepts doesn't carry MDM's own signature
+#, machine
+	MDM's list of checked ffmpeg builds isn't signed by MDM's key, so ffmpeg wasn't installed	MDM ᎤᎾᏓᏟᎶᏍᏔᏅᎯ ffmpeg ᏚᏙᏢᏒ ᎥᏝ ᏱᏚᏙᎥ MDM ᎤᏩᏒ ᎤᏤᎵ ᏗᎪᏪᎵ, ᎾᏍᎩ ᎢᏳᏍᏗ ffmpeg ᎥᏝ ᏱᎪᏢᏔᏅ
 #. text in whereis.rs
 #. how far a download's server is, by its round trip (60 to 150 ms)
 #, machine
@@ -2957,6 +3233,10 @@
 #. Monday, as short as a calendar's column head (two letters in English)
 #, machine
 	Mo	Ꮙ
+#. text in a download's progress window
+#. Zip preview's column: when the file was last changed, as the ZIP says
+#, machine
+	Modified	ᏗᎦᏁᏟᏴᏔᏅᎯ
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3010,7 +3290,8 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move between the toolbar, the categories and the download list	ᎾᏍᎩ ᎢᏗᏢ ᎢᏤᎳᏍᏓ, ᎾᏍᎩ ᎢᏗᏢ ᎢᏤᎳᏍᏓ.
-#. text in the Scheduler window
+#. text in a dialog box; text in the Scheduler window
+#. button in the Columns dialog: move the selected column one place towards the end of the list
 #, machine
 	Move down	ᎭᏫᏂᏗᏢ ᏫᎦᎾᏄᎪᎢ
 #. text in a dialog box
@@ -3026,7 +3307,9 @@
 #. message or event log entry in the main window
 #, machine
 	Move to queue	ᎦᎴᏴᏔᏅ ᎤᎾᏓᏟᏌᏅᎢ
-#. text in the Scheduler window
+#. text in a dialog box; text in the Scheduler window
+#. button in the Columns dialog: move the selected column one place towards the start of the list
+#. tooltip of an icon button in the Scheduler's list of files
 #, machine
 	Move up	ᎦᎸᎳᏗᏢ ᏫᎦᎾᏄᎪᎢ
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
@@ -3035,10 +3318,27 @@
 #. message or event log entry in the main window
 #, machine
 	Move/Rename	ᎦᎴᏴᏔᏅ/ᎦᎴᏴᏔᏅ
+#. text in preview.rs
+#. the preview pane: a finished download's file is no longer where it was saved
+#, machine
+	Moved or deleted	ᎢᏴᏓ ᎠᎴ ᎠᏓᏍᏚᎦ
+#. message or event log entry in the main window
+#. event log: an unfinished download's part file was moved to another folder; it resumes there; {folder} is that folder
+#, machine
+	Moved to {folder}	ᎢᏴᏓ ᎾᎿ {folder}
 #. message or event log entry in the main window
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Moving the file...	ᏗᏓᏟᎶᏍᏗ ᎠᏓᏟᎶᏍᏗ...
+#. message or event log entry in the main window
+#. event log: an unfinished download's part file is being moved to another folder; {folder} is that folder
+#, machine
+	Moving to {folder}	ᎠᏓᎢᏴᏓ ᎾᎿ {folder}
+#. text in the download list (sizes, speeds, status)
+#. a download's status: its unfinished file is being moved to another folder
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Moving...	ᎠᏓᎢᏴᏓ...
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3147,6 +3447,10 @@
 #. RSS feeds window, Download rules: make a new rule
 #, machine
 	New rule	ᎢᏤ ᎢᏯᏛᏁᏗ
+#. text in the Options window
+#. window title: adding a site rule
+#, machine
+	New site rule	ᎢᏤ ᎤᎾᏕᎳᎰᎯᏍᏗ
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3200,6 +3504,14 @@
 #. message or event log entry in the main window
 #, machine
 	No download links were found in the clipboard. Copy a text with http, https, ftp or magnet links in it, and try again.	ᎾᏍᎩ ᎢᏗᏢ ᎢᏤᎳᏍᏓ. ᎾᏍᎩ ᎢᏗᏢ ᎢᏤᎳᏍᏓ http, https, ftp ᎠᎴ magnet ᎾᏍᎩ ᎢᏗᏢ ᎢᏤᎳᏍᏓ.
+#. text in preview.rs
+#. the preview pane (beside the download list) when no download is selected: its title
+#, machine
+	No download selected	ᎥᏝ ᏗᎦᏟᎶᏍᏗ ᎢᏴᏓ
+#. text in traypanel.rs
+#. the notification-area icon's panel (#1365) when no download is running
+#, machine
+	No downloads are running	ᎥᏝ ᏗᎦᏟᎶᏍᏗ ᎢᏴᏓ
 #. message or event log entry in the main window
 #. title in the empty download list (this category or queue has no downloads)
 #, machine
@@ -3252,6 +3564,10 @@
 #. a magnet link's lookup, after 30 seconds without a peer
 #, machine
 	No peers yet. Few people may share this torrent, or a firewall, a VPN or the network may be blocking BitTorrent.	ᎥᏝ ᏚᎾᏓᎬᏩᏍᏗ ᏱᎾᎿᎢ. ᎤᏍᏗᎩᏛ ᏴᏫ ᎯᎠ torrent ᎤᎾᏓᏟᏌᏅᎯ ᏱᎩ, ᎠᎴ ᎤᎦᎾᏍᏓ ᎤᏅᏔᏅᎯ, VPN ᎠᎴ ᎤᎾᏓᏟᏌᏅᎯ BitTorrent ᎤᎾᏓᏟᏌᏅᎯ ᏱᎩ.
+#. text in requestedit.rs
+#. a download's Connection settings → Proxy: straight to the server, no proxy
+#, machine
+	No proxy	ᎥᏝ proxy
 #. text in the Options window
 #, machine
 	No proxy/socks	ᎥᏝ proxy/socks
@@ -3391,6 +3707,10 @@
 #. text in the Options window
 #, machine
 	Number	ᎠᎦᏎᏍᏗ
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: check box before the number box; unticked, the number set in Options → Connection applies
+#, machine
+	Number of connections:	ᏗᎦᏟᎶᏍᏗ ᏗᎦᏟᎶᏍᏗ:
 #. checkbox in the Scheduler window
 #, machine
 	Number of retries for each file if downloading failed :	ᎢᏯᎦᏴᎵ ᎢᏗᏢᏅᎢ ᎢᏳᏃ ᏗᏗᏍᎪᎸᏔᏅᎢ ᎾᎾᏛᏁᎲᎾ ᏱᎩ:
@@ -3426,7 +3746,7 @@
 #. Link grabber, a link's status: the server hasn't the file; {status} is the HTTP code (404)
 #, machine
 	Offline ({status})	ᎥᏝ ᎢᏗᎦᎴᏴᏔᏅᎯ ({status})
-#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; text in extracting archives (a download's log, the Archive password window); text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's Properties window; button in the Scheduler window; button in the Add torrent window
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; text in extracting archives (a download's log, the Archive password window); text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's Properties window; button in the Scheduler window; button in the Add torrent window; text in zippreview.rs
 #, machine
 	OK	ᎣᏏᏃ
 #. text in countries.rs
@@ -3480,6 +3800,10 @@
 #. Link grabber, a link's status: the server has the file
 #, machine
 	Online	ᎢᏗᎦᎴᏴᏔᏅᎯ
+#. text in the Options window
+#. Options → Archives → Link grabber: the hover tip of the types box in "Folders: {depth} levels deep, types: {types}": only a folder's files of these types go into Link grabber; written as the File types page writes them
+#, machine
+	Only a folder's files of these types, written as on the File types page (ISO ZIP R0*). Empty: every type.	ᏗᎪᏪᎵ ᏗᎦᏁᏟᏴᏍᏗ ᏗᎪᏪᎵ ᎢᏗᏓᏛᏁᏗ (ISO ZIP R0*) ᎢᎬᏁᏗ. ᎢᎦᏪᏅ: ᏂᎦᎥ ᏗᎪᏪᎵ.
 #. text in the Download video window
 #. checkbox in Download video: download only a part of the video or sound; the From and To boxes follow it
 #, machine
@@ -3508,6 +3832,10 @@
 #. checkbox in a dialog box
 #, machine
 	Only while I'm using the computer	ᎠᏴᏉ ᎢᏗᏙᎯ
+#. message or event log entry in the main window
+#. event log entry: the download is files picked inside a ZIP in Zip preview (#1775); {files} how many ("3 files")
+#, machine
+	Only {files} picked inside the ZIP	ᎤᏩᏒ {files} ZIP ᎢᏯᏂᏛ ᏗᎦᎴᏅᏔᏅᎯ
 #. button in a dialog box; text in a dialog box; button in a download's Properties window; button in torrentfiles.rs
 #. verb: opens the downloaded file
 #. title of the message when a downloaded file can't be opened
@@ -3588,6 +3916,10 @@
 #. Link grabber: the box that edits the selected package
 #, machine
 	Package	ᎢᏗᎦᎴᏴᏔᏅᎯ
+#. text in a download's progress window
+#. Zip preview's column: the file's size as packed (compressed) inside the ZIP
+#, machine
+	Packed	ᏗᏟᏍᏔᏅᎯ
 #. text in gallerydlg.rs; text in the Download video window
 #, machine
 	Page address	ᎦᏃᎴᏍᏗ ᎤᏤᎵᎦ ᏗᎦᏛᏗ
@@ -3676,10 +4008,14 @@
 #. remote control page (on a phone): button: pause a download
 #, machine
 	Pause	ᎠᎴᏅᏗ
-#. text in a download's Properties window
+#. text in the download list (sizes, speeds, status)
 #. tooltip of the greyed Move button in File Properties
 #, machine
 	Pause the download first	ᎢᎬᏱᏱ ᎠᏗᏰᏍᏗ ᎤᏃᎴ
+#. tooltip (why a control is greyed) in a download's Properties window
+#. tooltip of File Properties' greyed Connection... button while the download runs
+#, machine
+	Pause the download to change how it connects	ᎠᏓᏍᏚᎦ ᏗᎦᏟᎶᏍᏗ ᎢᏴᏓ ᎢᏴᏓ
 #. text in a download's progress window
 #. a download's status (state it is in, not a command): stopped for now
 #, machine
@@ -3756,8 +4092,8 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Press keys...	ᎾᏍᎩ ᎢᏗᏢ ᎢᏤᎳᏍᏓ...
-#. button in a dialog box
-#. verb: open the part already downloaded
+#. button in a dialog box; text in a dialog box
+#. verb: Download File Info's button; for a ZIP, it lists the files inside it to pick those to download (#1775)
 #, machine
 	Preview	ᎦᏁᏟᏴᏛ
 #. text in a dialog box
@@ -3860,6 +4196,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Reading the torrent...	ᏗᏓᏁᏟᏴᏗ ᎦᏁᏟᏴᏛ...
+#. text in zippreview.rs
+#. Zip preview, while the ZIP's list of files is being read from its server
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Reading the ZIP's list of files...	ZIP ᎤᏃᏪᎸᎢ ᏓᎪᎵᏰᎭ...
 #. message or event log entry in the main window
 #. the status strip while Tasks → Import reads a file; {file} is its name
 #. the trailing ... means it is still going on: keep it
@@ -3972,7 +4313,11 @@
 #. group box title: what the * in the address is replaced with (numbers or letters)
 #, machine
 	Replace asterisk to	ᏗᏓᏁᏟᏴᏗ ᏗᏓᏁᏟᏴᏗ
-#. button in a dialog box
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: label above the box of request headers, one a line ("X-Token: abc")
+#, machine
+	Request headers, one a line (Name: value):	ᎤᎵᏍᏆᎸᏗ ᏗᎦᏟᎶᏍᏗ, ᎢᏴᏓ ᎢᏴᏓ (Name: value):
+#. text in a dialog box
 #. button in the Columns dialog: put the columns back as they first were (order, widths, all shown)
 #, machine
 	Reset	ᏗᏙᏢᏍᏗ
@@ -4143,7 +4488,7 @@
 #. the preview pane when no download is selected, under its title
 #, machine
 	Select a download to see its picture and details here.	ᎠᏑᏰᏍᏗ ᏗᏟᎶᏍᏔᏅᎯ ᏗᎦᏃᎴᏍᏗ ᎾᏍᎩ ᎢᏳᎵᏍᏙᏗᏱ ᎤᏤᎵᎦ ᏗᏟᎶᏍᏔᏅᎯ ᎠᎴ ᎢᏗᎦᏟᏌᏅ.
-#. button in playlistdlg.rs; button in the Add torrent window; text in torrentfiles.rs
+#. button in playlistdlg.rs; button in the Add torrent window; text in torrentfiles.rs; text in zippreview.rs
 #. button in Download video for a playlist: tick every video
 #, machine
 	Select all	ᏂᎦᏗᏳ ᏘᏅᎦ
@@ -4370,6 +4715,10 @@
 #, machine
 	Sign in in the browser	ᏗᏂᏍᏕᎵᏍᎩ ᏗᎪᏪᎶᏗ ᏗᎪᏪᎶᏗ
 #. text in the Options window
+#. Options → Accounts (Android): where the debrid accounts' sign-ins and the other passwords are kept (encrypted with a key held by Android's keystore)
+#, machine
+	Sign-ins and passwords are kept encrypted with a key in Android's keystore.	Sign-ins ᎠᎴ passwords ᎢᏴᏓ ᎢᏴᏓ ᎾᎿ Android's keystore.
+#. text in the Options window
 #. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (the macOS login keychain)
 #, machine
 	Sign-ins and passwords are kept in the macOS keychain.	ᏗᏙᎳᏅᏍᏗᏱ ᎠᎴ ᏗᏍᎦᎶᏗᏱ ᏚᏍᏆᏂᎪᏔᏅ macOS ᏗᏟᎶᏍᏔᏅᎢ.
@@ -4421,9 +4770,23 @@
 #. a country's name (where a download's server is)
 #, machine
 	Sint Maarten	ᏏᏂᏘ ᎹᏘᏂ
+#. text in the Options window
+#. Site rules: column title: the site pattern
+#, machine
+	Site	ᎤᎾᏕᎳᎰᎯᏍᏗ
 #. checkbox in the Find window
 #, machine
 	Site name/Download link/Parent web page/Referer	ᎦᏟᏗ ᏚᏙᎥ/ᏗᏗᏍᎪᏗ ᏗᏕᎪᏗ/ᎤᎾᏙᏢᏒ ᎤᎾᏙᏢᏒ ᎦᏟᏗ/ᏗᏓᏁᏟᏴᏍᎩ
+#. window title in the Options window; text in the Options window
+#. window title: per-site settings (User-Agent, headers, connections, the browser-like connection) by site pattern
+#. Site rules window: the list's name for screen readers
+#, machine
+	Site rules	ᎤᎾᏕᎳᎰᎯᏍᏗ ᏗᎦᏟᎶᏍᏗ
+#. text in the Options window
+#. Options → Connection: button: opens the per-site settings (User-Agent, headers, connections)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Site rules...	ᎤᎾᏕᎳᎰᎯᏍᏗ ᏗᎦᏟᎶᏍᏗ...
 #. text in the Options window
 #. column title: the site (and path) a login is for
 #, machine
@@ -4431,6 +4794,10 @@
 #. text in the Options window
 #, machine
 	Site/path:	ᎦᏟᏗ/ᎦᏅᏅᎢ:
+#. text in the Options window
+#. Site rule: label before the site pattern box (example.com, *.example.com)
+#, machine
+	Site:	ᎤᎾᏕᎳᎰᎯᏍᏗ:
 #. text in the Options window
 #. tab title: user names and passwords for sites
 #, machine
@@ -4588,6 +4955,11 @@
 #. checkbox in the Options window
 #, machine
 	Start downloading immediately while displaying "Download File Info" dialog	ᏗᏗᏍᎪᏗ ᎤᎾᎴᏅᏗ ᎢᎬᏱ ᎢᏳᏃ "ᏗᏗᏍᎪᏗ ᎦᏟᏗ ᎧᏃᎮᏍᎩ" ᎦᏟᏗ ᏱᎬᏂᎨᏒᎢ
+#. text in a dialog box
+#. Download File Info, on hover over the number of files picked in Zip preview (#1775): {files} how many ("3 files"), {size} their size together, {folder} the folder they go into (named after the archive)
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	Start downloads only the {files} picked in the ZIP ({size}), into {folder}	ᎤᏩᏒ {files} ZIP ᎢᏯᏂᏛ ᏗᎦᎴᏅᏔᏅᎯ ({size}), {folder} ᎢᏗᏢ ᏗᎦᎴᏅᏔᏅᎯ
 #. text in the tray icon's menu
 #, machine
 	Start main download queue	ᎤᎾᎴᏅᏗ ᎤᎾᏙᏢᏒ ᏗᏗᏍᎪᏗ ᎦᏟᏗ
@@ -4655,6 +5027,10 @@
 #. remote control page (on a phone): button: stop a queue
 #, machine
 	Stop	ᎤᏃᎴ
+#. text in a download's progress window
+#. button in the progress window of a download that never ends by itself (an internet radio, a camera feed: no size, can't be resumed): stop it and keep what has arrived as the finished file
+#, machine
+	Stop and keep	ᏙᎴᎰᎢ ᎠᎴ ᎥᎩᏍᏗ
 #. text in a download's progress window
 #. button in a live stream's progress window: stop recording it and keep what was recorded as a video file
 #, machine
@@ -4787,10 +5163,6 @@
 #. a country's name (where a download's server is)
 #, machine
 	Tanzania	ᏔᏂᏏᏂᎠ
-#. text in the Options window
-#. \\n starts a new line: break lines where they fit the translation
-#, machine
-	Tasks → Link grabber, or the browser's "Download all links": a split\narchive's volumes are one package, the other links of a page another.	ᏗᎦᎸᏫᏍᏓᏁᏗ → ᏗᏕᎬᏔᏅᎯ, ᎠᎴ ᎤᎾᏕᎳᎰᎯᏍᏗ ᏗᏕᎬᏔᏅᎯ "ᏂᎦᏗᏳ ᏗᏕᎬᏔᏅᎯ ᏗᎦᎸᏫᏍᏓᏁᏗ": ᎢᎸᏍᎩ ᎢᏗᎦᎴᏴᏔᏅᎯ ᏗᎦᎴᏴᏔᏅᎯ ᏌᏉ ᏗᎦᎴᏴᏔᏅᎯ, ᎠᎴ ᏅᏩᏓᎴ ᏗᏕᎬᏔᏅᎯ ᏌᏉ ᎤᎾᏕᎳᎰᎯᏍᏗ ᏗᎦᎴᏴᏔᏅᎯ.
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Tell a friend	ᎠᎵᎢ ᎯᏃᎲᏏ
@@ -5004,6 +5376,10 @@
 #, machine
 	The download queue is done.	ᎾᏍᎩ ᏗᎦᏁᏟᏴᏍᏗ ᏓᎪᏔᏅᎢ ᎤᎵᏍᏆᏗᏒ.
 #. text in errors.rs
+#. error installing ffmpeg: the file downloaded isn't the build named in the list of builds MDM accepts (its checksum differs), so it was thrown away
+#, machine
+	the downloaded ffmpeg isn't the build MDM's list of checked builds names, so it wasn't installed	ᏗᎦᏃᏔᏅᎯ ffmpeg ᎥᏝ ᏱᎩ ᎾᏍᎩ ᎢᏳᏍᏗ MDM ᎤᎾᏓᏟᎶᏍᏔᏅᎯ ᏚᏙᏢᏒ ᏚᏙᎥ, ᎾᏍᎩ ᎢᏳᏍᏗ ᎥᏝ ᏱᎪᏢᏔᏅ
+#. text in errors.rs
 #, machine
 	the downloaded program doesn't match its signed checksum	ᎦᎶᎥᏔᏅ ᏗᎪᏢᏙᏗ ᎥᏝ ᎤᏠᏱ ᏱᎩ ᎤᏤᎵ ᎪᏪᎳᏅ checksum
 #. message or event log entry in the main window
@@ -5038,6 +5414,10 @@
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
 	The file does NOT match ({algorithm})	ᎾᏍᎩ ᏗᏟᎶᏍᏔᏅᎯ ᎥᏝ ᏱᏚᏓᎾᏫᏛ ({algorithm})
+#. text in errors.rs
+#. why a file taken out of a ZIP on its server failed (#1775): its bytes aren't what the ZIP's list of files says (its size or its CRC-32 checksum)
+#, machine
+	the file in the ZIP doesn't match the ZIP's list of files (its size or checksum): download the whole archive	ZIP ᎢᏯᏂᏛ ᎤᏃᏪᎸᎢ ᎥᏝ ᏱᏚᏓᎴᏅ (ᎤᏟᏍᏔᏅᎢ ᎠᎴ ᎤᏃᏪᎸᎢ): ᏂᎦᏛ ᏗᏟᏍᏔᏅᎯ ᏗᎦᎴᏅᏔᏅᎯ.
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
@@ -5106,6 +5486,10 @@
 #. an error: the network adapter chosen in Options (a VPN's, usually) is off or gone; {adapter} its name
 #, machine
 	the network adapter {adapter} is not connected	ᎠᎦᎾᏕᎾ ᎠᏓමුᏍᏗ {adapter} ᎥᏝ ᎠᏓමුᏛ
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: the number of connections typed is out of range; {max} is 32 (or 128)
+#, machine
+	The number of connections must be from 1 to {max}	ᏗᎦᏟᎶᏍᏗ ᏗᎦᏟᎶᏍᏗ ᎢᏴᏓ ᎢᏴᏓ 1 ᎢᏴᏓ {max}
 #. text in torrent_ownership.rs
 #. error when a torrent's output folder path cannot be used
 #, machine
@@ -5167,6 +5551,10 @@
 #. text in errors.rs
 #, machine
 	the server can't send parts of the file, so it can't be resumed	ᎢᎬᎾᏕᏏᏗ ᎤᎵᏓᏍᏔᏅ ᎢᎬᎾᏕᏏᏗ ᎢᎬᎾᏕᏏᏗ ᎢᎬᎾᏕᏏᏗ
+#. text in errors.rs
+#. Zip preview (#1775): the server doesn't send parts of a file (HTTP ranges), so MDM can't fetch only some files from inside a ZIP; the whole archive still downloads
+#, machine
+	the server can't send parts of the ZIP, so its files can't be downloaded one by one: download the whole archive	ᏗᏟᏍᏔᏅᎯ ᎥᏝ ᏱᏚᏓᎴᏅ, ᎾᏍᎩ ᎢᏳᏍᏗ ᎥᏝ ᎪᏪᎸ ᏱᏚᏓᎴᏅ: ᏂᎦᏛ ᏗᏟᏍᏔᏅᎯ ᏗᎦᎴᏅᏔᏅᎯ.
 #. text in errors.rs
 #, machine
 	the server did not answer in time	ᎢᎬᎾᏕᏏᏗ ᎤᎵᏓᏍᏔᏅ ᎢᎬᎾᏕᏏᏗ ᎢᎬᎾᏕᏏᏗ ᎢᎬᎾᏕᏏᏗ
@@ -5304,9 +5692,17 @@
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	The update is open in your system's package installer.	ᎠᏓᏁᏟᏴᏍᏗ ᎤᎵᏍᏚᎢᏛ ᎢᎩᎾᎵᏍᏓᏁᏗ ᎤᎾᏗᏔᎾᏍᏗ ᏗᏟᎶᏍᏔᏅᎢ.
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: the User-Agent typed holds a control character
+#, machine
+	The User-Agent has a character a header can't hold	The User-Agent ᎤᎾᏕᎳᎰᎯᏍᏗ ᏗᎦᏟᎶᏍᏗ ᎥᏝ ᏰᎵᏉ ᎢᏴᏓ
 #. text in a download's Properties window
 #, machine
 	The web page from which this file was obtained:	ᎾᏍᎩ ᎤᎾᏙᏢᏒ ᏗᏟᎶᏍᏔᏅᎯ ᎾᏍᎩ ᎯᎠ ᏗᏟᎶᏍᏔᏅᎯ ᎤᎾᏕᎶᎥᏍᏗ:
+#. text in errors.rs
+#. why a file can't be taken out of a ZIP on its server (#1775): the ZIP was replaced on the server after its files were listed; Zip preview is the window that lists them
+#, machine
+	the ZIP changed on the server since its files were listed: open its Zip preview again	ZIP ᎢᏯᏂᏛ ᎤᏃᏪᎸᎢ ᏗᎦᏁᏟᏴᏔᏅᎯ: ᏔᎵᏁ ZIP ᎢᏯᏂᏛ ᏗᎪᏩᏛᏗ.
 #. message or event log entry in the main window
 #. the kind of file View → Theme → Add a theme file lists: MDM's themes (TOML, JSON), Base16 schemes (YAML) and pywal's colors.json
 #, machine
@@ -5340,6 +5736,10 @@
 #. text in helpers.rs
 #, machine
 	They keep downloading if you close this window.	ᏓᏓᏂᏱᏍᎬᎢ ᎢᏳᏃ ᎯᎠ ᏗᏓᏂᏱᏍᎩ ᏗᏟᎶᏍᏔᏅᎯ ᏕᎭᏔᏍᎪᎢ.
+#. text in errors.rs
+#. error when opening a .torrent file whose piece size or list of pieces doesn't fit its files (damaged, or made wrong); it isn't added
+#, machine
+	this .torrent file is damaged: its pieces don't match its files	ᎯᎠ .torrent ᏗᏟᏍᏔᏅᎯ ᎤᏲᏨᎯ: ᎤᎾᏓᎴᏔᏅᎯ ᎥᏝ ᏱᏚᎾᏙᏢᏍᎦ ᎤᏤᎵ ᏗᏟᏍᏔᏅᎯ
 #. text in a dialog box
 #, machine
 	This address is already in the list of downloads:	ᎯᎠ ᎤᎾᏙᏢᏒ ᎿᏉ ᏚᎾᏙᏢᏒ ᏗᎦᏁᏟᏴᏍᏗ ᏗᎦᏁᏟᏴᏍᏗ ᎤᎾᏙᏢᏒ:
@@ -5394,6 +5794,18 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	This file can't be used as a theme: {error}	ᎯᎠ ᏗᎪᏪᎵ ᎥᏝ ᎢᎬᏙᏗ ᏱᎩ ᎤᎾᏙᏢᏒ ᎠᏍᏓᏢᏍᎩ ᎢᏳᎵᏍᏙᏗ: {error}
+#. text in errors.rs
+#. why a file can't be taken out of a ZIP on its server (#1775): it is encrypted (password-protected) in the ZIP
+#, machine
+	this file is encrypted in the ZIP: download the whole archive and open it with its password	ᎯᎠ ᎪᏪᎸ ZIP ᎢᏯᏂᏛ ᏗᏟᏍᏔᏅᎯ: ᏂᎦᏛ ᏗᏟᏍᏔᏅᎯ ᏗᎦᎴᏅᏔᏅᎯ ᎠᎴ ᎤᏃᏪᎸᎢ ᏗᏍᏚᎢᏛ.
+#. text in errors.rs
+#. why a file can't be taken out of a ZIP on its server (#1775): the ZIP no longer holds it
+#, machine
+	this file is no longer in the ZIP on the server	ᎯᎠ ᎪᏪᎸ ZIP ᎢᏯᏂᏛ ᎥᏝ ᏱᏚᏓᎴᏅ
+#. text in errors.rs
+#. why a file can't be taken out of a ZIP on its server (#1775): it is compressed with a method MDM doesn't unpack there; {method} is the method's name (BZIP2, LZMA, Deflate64…)
+#, machine
+	this file is packed in a way MDM can't unpack from the server ({method}): download the whole archive	ᎯᎠ ᎪᏪᎸ ZIP ᎢᏯᏂᏛ ᏗᏟᏍᏔᏅᎯ MDM ᎥᏝ ᏱᏚᏓᎴᏅ ({method}): ᏂᎦᏛ ᏗᏟᏍᏔᏅᎯ ᏗᎦᎴᏅᏔᏅᎯ.
 #. text in remote.rs
 #. remote control page (on a phone): the file chosen is too large for a .torrent file
 #, machine
@@ -5428,6 +5840,10 @@
 #. a check of Test browser integration: a portable copy can't be connected
 #, machine
 	This is the installed copy, not a portable one	ᎯᎠ ᏗᏓᏂᏴᏗ ᏗᏕᎬᏔᏅᎢ ᏗᏓᏂᏴᏗ ᏗᏕᎬᏔᏅᎢ, ᎥᏝ ᏗᏓᏂᏴᏗ ᏗᏕᎬᏔᏅᎢ
+#. text in errors.rs
+#. Zip preview (#1775): the address isn't a ZIP archive whose list of files MDM can read on the server
+#, machine
+	this isn't a ZIP archive MDM can look inside on the server: download the whole file	ᎯᎠ ᎥᏝ ZIP ᎢᏯᏂᏛ ᏱᏚᏓᎴᏅ MDM ᎥᏝ ᏱᏚᏓᎴᏅ: ᏂᎦᏛ ᎪᏪᎸ ᏗᎦᎴᏅᏔᏅᎯ.
 #. text in playlistdlg.rs
 #. in Download video, a playlist or channel that lists no video
 #, machine
@@ -5442,6 +5858,7 @@
 	This name is reserved by Windows	ᎯᎠ ᏚᏙᎥ Windows ᎤᏤᎵ ᎠᏍᏆᏂᎪᏔᏅ
 #. tooltip (why a control is greyed) in the Download video window
 #. why "Embed chapters" is greyed: ffmpeg (a helper program) is not installed
+#. why "Split into chapters" is greyed: ffmpeg (a helper program) is not installed
 #. why Part is greyed in Download video: ffmpeg (a helper program) is not installed
 #. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
 #, machine
@@ -5463,6 +5880,10 @@
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	this program isn't {name}	ᎯᎠ ᎢᎬᎾᎯᏍᏗᏍᎩ ᎥᏝ {name} ᏱᎩ
+#. text in requestedit.rs
+#. a download's Connection settings → Proxy: the proxy typed in the box beside
+#, machine
+	This proxy:	ᎯᎠ proxy:
 #. text in the Options window
 #. Options → General: shown when the chosen global shortcut is already registered by another program (#558)
 #, machine
@@ -5492,7 +5913,7 @@
 #. torrent start needs explicit write permission; {file} is the first existing file without a matching grant
 #, machine
 	This torrent needs permission to use {file} before it can start.	ᎯᎠ ᏗᎦᎴᏴᏔᏅᎯ ᏗᎦᎴᏴᏔᏅᎯ ᏗᎦᎴᏴᏔᏅᎯ {file} ᏗᎦᎴᏴᏔᏅᎯ ᏗᎦᎴᏴᏔᏅᎯ ᏗᎦᎴᏴᏔᏅᎯ.
-#. message or event log entry in the main window; text in a download's Properties window
+#. message or event log entry in the main window; text in the download list (sizes, speeds, status)
 #. shown when Move or Rename is refused: a torrent saved straight in Save to shares that folder with other files
 #, machine
 	This torrent shares its destination folder	ᎯᎠ ᏗᎦᎴᏴᏔᏅᎯ ᏗᎦᎴᏴᏔᏅᎯ ᏗᎦᎴᏴᏔᏅᎯ ᏗᎦᎴᏴᏔᏅᎯ
@@ -5504,6 +5925,18 @@
 #. the Download video window: the video needs the user to be signed in
 #, machine
 	This video needs you to be signed in. Use the Download video button over it in your browser, which passes your sign-in on, or choose your browser in Options → Sites Logins → Cookies for video sites.	ᎯᎠ ᎢᏗᏴᏔᏅ ᎢᏗᏴᏔᏅ ᎢᏗᏴᏔᏅ. ᎢᏗᏴᏔᏅ ᎢᏗᏴᏔᏅ ᎢᏗᏴᏔᏅ ᎢᏗᏴᏔᏅ ᎢᏗᏴᏔᏅ ᎢᏗᏴᏔᏅ, ᎢᏗᏴᏔᏅ ᎢᏗᏴᏔᏅ ᎢᏗᏴᏔᏅ ᎢᏗᏴᏔᏅ ᎢᏗᏴᏔᏅ ᎢᏗᏴᏔᏅ ᎢᏗᏴᏔᏅ ᎢᏗᏴᏔᏅ.
+#. text in errors.rs
+#. Zip preview (#1775): a ZIP split over several files (volumes): its files can't be fetched one by one
+#, machine
+	this ZIP is split over several files, so its files can't be downloaded one by one: download every part	ᎯᎠ ZIP ᎢᏯᏂᏛ ᏗᎦᎴᏅᏔᏅᎯ, ᎾᏍᎩ ᎢᏳᏍᏗ ᎥᏝ ᎪᏪᎸ ᏱᏚᏓᎴᏅ: ᏂᎦᏛ ᏗᎦᎴᏅᏔᏅᎯ.
+#. text in errors.rs
+#. Zip preview (#1775): the ZIP's list of files (its table of contents) doesn't add up
+#, machine
+	this ZIP's list of files is damaged: download the whole archive	ᎯᎠ ZIP ᎢᏯᏂᏛ ᎤᏃᏪᎸᎢ ᏗᎦᏁᏟᏴᏔᏅᎯ: ᏂᎦᏛ ᏗᏟᏍᏔᏅᎯ ᏗᎦᎴᏅᏔᏅᎯ.
+#. text in errors.rs
+#. Zip preview (#1775): the ZIP's list of files (its table of contents) is larger than MDM reads from a server
+#, machine
+	this ZIP's list of files is too large to read from the server: download the whole archive	ᎯᎠ ZIP ᎢᏯᏂᏛ ᎤᏃᏪᎸᎢ ᎤᏟ ᎢᏯᏂᏛ: ᏂᎦᏛ ᏗᏟᏍᏔᏅᎯ ᏗᎦᎴᏅᏔᏅᎯ.
 #. text in errors.rs
 #. a download's error: the address is a site's web page that needs a browser, not the file; {site} = the site's name (gofile)
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
@@ -5535,6 +5968,11 @@
 #. tooltip on the Scheduler's "Wake the computer to run this queue" while "Start download at" is off
 #, machine
 	Tick "Start download at" first: the computer is woken for the start time	ᎢᎬᏱ ᎤᎾᎴᏅᏗᏱ ᎤᎾᏓᎾᏅᏓᏗᏍᏗ ᎢᎬᏁᏗ: ᎤᏓᎾᏅᏓᏗᏍᏗ ᎤᎾᎴᏗ ᎨᏒᎢ ᎤᎾᎴᏅᏗᏱ ᎢᏳᎵᏍᏙᏗᏱ
+#. text in zippreview.rs
+#. Zip preview, under the list: {files} how many files are ticked ("3 files"), {size} their size together ("12.4 MB")
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	Ticked: {files}, {size}	ᏗᎦᎴᏅᏔᏅᎯ: {files}, {size}
 #. text in a download's progress window; text in the Scheduler window
 #, machine
 	Time left	ᎤᎾᏓᏁᎳᏅᎯ ᎢᏯᏓᏛᏁᏗ
@@ -5729,6 +6167,10 @@
 #. why Batch download's OK is greyed
 #, machine
 	Type a number in From and in To	ᎠᎦᏎᏍᏗ ᎨᏒᎢ ᎢᎬᏱᏱ ᎠᎴ ᎣᏂᏱ
+#. text in the Options window
+#. Site rule: OK with no site, or one with a space in it
+#, machine
+	Type a site, such as example.com or *.example.com	ᎪᏪᎵᏍᎩ ᎢᏗᎬᏁᏗ, ᎾᏍᎩᏯ example.com ᎢᏳᏍᏗ ᎠᎴ *.example.com
 #. text in the settings
 #. Options → DNS: no server address was typed
 #, machine
@@ -5745,6 +6187,10 @@
 #. Options → DNS over TLS: the server's name (as its certificate shows it) is missing
 #, machine
 	Type the name the server's certificate shows.	Server ᎤᏤᎵ certificate ᏚᏙᎥ ᎯᎪᏪᎸ.
+#. text in requestedit.rs
+#. a download's Connection settings: the proxy typed isn't an address MDM takes; the examples stay as they are
+#, machine
+	Type the proxy as host:port, http://host:port or socks5://host:port	ᎪᏪᎵᏍᎩ ᎢᏗᎬᏁᏗ host:port, http://host:port ᎠᎴ socks5://host:port
 #. text in the Scheduler window
 #. why OK is greyed when naming a new queue
 #, machine
@@ -5837,6 +6283,11 @@
 #, machine
 	Update now	ᎪᎯ ᎢᎦ ᎢᏥᏁᏟᏴᏏ
 #. text in helpers.rs
+#. Helpers: the Update button's name for a screen reader; {name} = the helper (yt-dlp, ffmpeg, gallery-dl, Node.js)
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Update {name}	ᎢᎪᏢᎯ {name}
+#. text in helpers.rs
 #. Helpers: a program the person chose, or the system's copy: MDM doesn't update it, the person (or their package manager) does
 #, machine
 	Updated by you	ᏂᏓᏙᏢᏍᎬᎢ
@@ -5859,6 +6310,17 @@
 #. text in the Options window
 #, machine
 	Use advanced browser integration	ᎬᏔᏅᎢ ᎦᎸᎳᏗᏢ ᎢᏗᏴᏍᏗ ᎦᎷᎩ ᏗᏙᎳᏤᏗ
+#. text in helpers.rs
+#. Helpers: the "Use another program..." button's name for a screen reader, on the JavaScript runtime's row (Node.js, Deno, QuickJS or Bun)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Use another program as the JavaScript runtime...	ᎢᎪᏢᎯ ᏅᏩᏓᎴ ᎢᏗᎬᏁᏗ JavaScript runtime...
+#. text in helpers.rs
+#. Helpers: the "Use another program..." button's name for a screen reader; {name} = the helper (yt-dlp, ffmpeg, gallery-dl)
+#. {name} = a file name (keep the braces as they are)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Use another program for {name}...	ᎢᎪᏢᎯ ᏅᏩᏓᎴ ᎢᏗᎬᏁᏗ {name}...
 #. text in errors.rs; button in helpers.rs; text in the Options window
 #. Video helpers: button: pick a program (yt-dlp or ffmpeg) already on the computer
 #. Options → Archives: button: pick the 7-Zip command line program to extract 7z and RAR archives with (PeaZip's own 7z.exe, a portable copy), instead of the one MDM finds
@@ -5877,10 +6339,16 @@
 #. checkbox in the Options window
 #, machine
 	Use FTP in PASV mode	ᎬᏔᏅᎢ FTP PASV ᎢᏯᏓᏛᏁᏗ
-#. button in helpers.rs
+#. text in helpers.rs
 #. Video helpers: button: go back to the copy MDM downloads and checks itself
 #, machine
 	Use MDM's own copy	MDM ᎤᏤᎵᎦ ᎭᏚᎢᏍᏓ
+#. text in helpers.rs
+#. Helpers: the "Use MDM's own copy" button's name for a screen reader; {name} = the helper (yt-dlp, ffmpeg, gallery-dl)
+#. Helpers: the "Use MDM's own copy" button's name for a screen reader; {name} = the helper (Node.js)
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Use MDM's own copy of {name}	ᎢᎪᏢᎯ MDM ᎤᏩᏒ ᎤᏤᎵ {name}
 #. checkbox in the Options window
 #. Options → Sites Logins: checkbox under Cookies for video sites: yt-dlp also reads the person's own yt-dlp config file
 #, machine
@@ -5931,6 +6399,10 @@
 #. text in the Options window
 #, machine
 	User-Agent for manually added downloads:	ᎬᏔᏅᎢ-ᎠᏓᏁᎶᏗ ᏗᏙᎳᏤᏗ ᏗᎦᎷᎩ ᏗᏙᎳᏤᏗ:
+#. text in the Options window
+#. Options → Connection: beside the Site rules... button: what it sets
+#, machine
+	User-Agent, headers and connections by site	User-Agent, headers ᎠᎴ connections ᎢᏗᎬᏁᏗ
 #. text in the Options window
 #, machine
 	User:	ᎬᏔᏅᎢ:
@@ -6182,7 +6654,7 @@
 #. a country's name (where a download's server is)
 #, machine
 	Yemen	ᏰᎻᏂ
-#. button in a dialog box; text in a download's progress window
+#. button in a dialog box; text in the Options window; text in a download's progress window
 #, machine
 	Yes	ᎥᎥ
 #. button in helpers.rs
@@ -6302,6 +6774,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Zimbabwe	ᏏᎻᏆᏇ
+#. text in zippreview.rs
+#. title of the window that lists the files inside a ZIP on its server, to tick those to download (#1775)
+#, machine
+	Zip preview	ZIP ᏗᎪᏩᏛᏗ
 #. text in the Options window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
@@ -6414,6 +6890,11 @@
 #. said after Delete with files when some files stayed on the disk; {file} is the download's name; the files' paths follow it
 #, machine
 	{file}: these files stayed on the disk, because MDM didn't create them or another download uses them:	{file}: ᎯᎠ ᏗᏓᏁᏟᏴᏍᏗ ᏕᎨᏙᎲᎩ ᏗᏟᎶᏍᏙᏗ ᎾᎿ, ᏅᏗᎦᎵᏍᏙᏗᏍᎬᎩ MDM ᎥᏝ ᏱᏚᏬᏢᏁᎢ ᎠᎴ ᏅᏩᏓᎴ ᏗᎦᏁᏟᏴᏍᏗ ᏕᎦᎸᏫᏍᏓᏁᎰ:
+#. message or event log entry in the main window; text in the Link grabber window
+#. Link grabber's Source line, after where the links came from: a folder (an FTP folder, a web server's "Index of" page) held more files or subfolders than Link grabber lists; {folder} is its name, {n} how many of its files are listed (10,000)
+#. {n} = a number (keep the braces as they are)
+#, machine
+	{folder}: only its first {n} files	{folder}: ᎤᏓᎴᏅᏗ {n} ᏗᎪᏪᎵ
 #. text in a download's progress window
 #. {have} and {total} = numbers of pieces; {size} = one piece's size
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
@@ -6542,6 +7023,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 	{n} (auto)	{n} (ᎤᏩᏒ)
+#. text in zippreview.rs
+#. Zip preview, under the list: {n} files of the ZIP aren't listed because MDM can't take them out on their own: encrypted ones, ones packed in a way MDM can't unpack from the server, links, or names that would leave their folder; the whole archive still downloads
+#. {n} = a number (keep the braces as they are)
+#, machine
+	{n} more can't be taken out on their own (encrypted, packed another way, or links)	{n} ᎢᎦᎢ ᎥᏝ ᎢᎬᏩᏛᏁᏗ ᏱᎩ (ᏗᏟᎶᏍᏔᏅᎯ, ᏅᏩᏓᎴ ᎢᏯᏛᏁᏗ, ᎠᎴ ᏗᏕᎬᏔᏅᎯ)
 #. text in playlistdlg.rs
 #. in Download video for a playlist: how many videos are ticked, of how many
 #. {n} = a number (keep the braces as they are)
@@ -6729,7 +7215,7 @@ column	Peers	ᎢᏗᎾᏓᏍᏓᏴᏗ
 #. column title: one letter for Queue (the column is narrow)
 #, machine
 column	Q	Q
-#. column title in the main window; column title in the download list
+#. column title in the main window; column title in a dialog box; column title in the download list
 #. tooltip of the narrow "Q" column's title
 #, machine
 column	Queue	ᏓᎪᏪᎵ
@@ -7007,6 +7493,14 @@ extension	File deleted or moved	ᏗᎪᏪᎵ ᏗᏙᏪᎳᏅᎯ ᎠᎴ ᏗᏙᏪ
 #, machine
 extension	File type	ᎪᏪᎵ ᎢᏳᏍᏗ
 #. text in the browser extension
+#. button in the This page tab of the toolbar button's popup: look for the pictures of the current web page (only when clicked); short
+#, machine
+extension	Find images	ᏗᏟᎶᏍᏔᏅᎯ ᏗᎪᏩᏛᏗ
+#. text in the browser extension
+#. in the This page tab of the toolbar button's popup, before the Find images button; Link grabber is the name of the app's window that lists links to tick before downloading them
+#, machine
+extension	Find this page's pictures at the largest size it lists, then send the ones you want to Link grabber.	ᎪᏩᏛᏗ ᎯᎠ ᎪᏪᎵ ᏗᏟᎶᏍᏔᏅᎯ ᎤᏟ ᎢᏴᏓ ᎢᎦᎢ ᎨᏒᎢ, ᎿᏉᏃ ᏕᎯᏅᏏ ᎾᏍᎩ ᎯᏚᎵᏍᎬᎢ Link grabber ᏗᎦᏟᏴᏍᏗ ᎨᏒᎢ.
+#. text in the browser extension
 #. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) after Clear finished
 #, machine
 extension	Finished downloads cleared	ᎤᏍᏆᏛᎯ ᏗᏙᏪᎳᏅᎯ ᏗᏙᏪᎳᏅᎯ
@@ -7042,6 +7536,14 @@ extension	Hold Alt while clicking a link to let the browser download it.	Alt Ꮧ
 #. link under a connection problem in the toolbar button's popup, to the help page's section for it
 #, machine
 extension	How to fix it	ᎢᏳᏍᏗ ᎢᏯᏛᏁᏗ
+#. text in the browser extension
+#. what a screen reader says for the row of buttons that keep or leave out each type of picture (JPEG, PNG, WEBP...), in the This page tab of the toolbar button's popup
+#, machine
+extension	Image types	ᏗᏟᎶᏍᏔᏅᎯ ᏗᎦᏟᏴᏍᏗ ᏗᎦᎪᏔᏅᎯ
+#. text in the browser extension
+#. heading in the This page tab of the toolbar button's popup, over the part that finds the pictures of the current web page and sends them to the app
+#, machine
+extension	Images on this page	ᏗᏟᎶᏍᏔᏅᎯ ᎯᎠ ᎪᏪᎵ ᎦᎸᎳᏗᏢ
 #. text in the browser extension
 #. pairing failed for another reason
 #, machine
@@ -7204,6 +7706,10 @@ extension	No download's name or address has “{words}”.	ᏗᏙᏪᎳᏅᎯ �
 #, machine
 extension	No downloads yet	ᏗᏙᏪᎳᏅᎯ ᏗᏙᏪᎳᏅᎯ
 #. text in the browser extension
+#. shown in the This page tab of the toolbar button's popup when Find images found no picture on the current web page
+#, machine
+extension	No images found on this page.	ᎥᏝ ᏗᏟᎶᏍᏔᏅᎯ ᏱᏚᎾᏩᏛᎮ ᎯᎠ ᎪᏪᎵ ᎦᎸᎳᏗᏢ.
+#. text in the browser extension
 #. shown in the toolbar button's popup when the current web page hasn't loaded any video, sound or stream yet
 #, machine
 extension	No video or sound found on this page yet. Play it, then open this again.	ᎥᏝ ᏗᎧᏃᎩᏍᏗ ᎠᎴ ᏗᎧᏃᎩᏍᏗ ᎯᎠ ᎢᏗᏓᏛᏗ. ᎢᏴᏓᏛᏗ, ᎿᏉ ᎯᎠ ᏔᎵᏁ ᎤᏍᏚᎢᏓ.
@@ -7272,6 +7778,10 @@ extension	Options...	ᏗᏓᏂᏴᏗ ᏗᏕᎬᏔᏅᎢ...
 #. in the list under the download button over a video, after a sound-only line's bitrate: the sound as the site sends it, not converted (e.g. '128 kbps · original'); lower case; one word
 #, machine
 extension	original	ᎤᏙᎯᏳᎯ
+#. text in the browser extension
+#. button among the picture types (JPEG, PNG, WEBP...) in the This page tab of the toolbar button's popup: the pictures of any other or unknown type; short
+#, machine
+extension	Other	ᏅᏩᏓᎴ
 #. text in the browser extension
 #. button: pair this browser with the other MDM using the code
 #, machine
@@ -7358,6 +7868,10 @@ extension	Send downloads through this browser's proxy or VPN extension	ᏕᎦᏅ
 #, machine
 extension	Send downloads to	ᎠᎾᏗᏒᏍᎬᎢ ᏩᏂᎷᎪᎢ
 #. text in the browser extension
+#. button in the This page tab of the toolbar button's popup: send the selected pictures to the app's Link grabber window, where the user ticks which to download
+#, machine
+extension	Send to Link grabber	ᏕᎯᏅᏏ Link grabber ᏗᎦᏟᏴᏍᏗ ᎨᏒᎢ
+#. text in the browser extension
 #. on the download button over a video right after it was clicked, while the download goes to the app; MDM is Mister Download Manager's short name, keep it as it is; short
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -7366,6 +7880,10 @@ extension	Sending to MDM...	MDM ᏗᏓᎴᏔᏅᎢ...
 #. under the extension's name in the toolbar button's popup: downloads go to another Mister Download Manager, a server, at this address; short
 #, machine
 extension	Sending to {server}	{server} ᎢᏗᎦᏅᏁᏗ
+#. text in the browser extension
+#. shown in the This page tab of the toolbar button's popup after the pictures were sent to the app's Link grabber window
+#, machine
+extension	Sent to Link grabber: tick the ones to download there.	ᏕᎯᏅᏒ Link grabber ᏗᎦᏟᏴᏍᏗ ᎨᏒᎢ: ᏕᎯᏍᏓᎷᎩ ᎾᏍᎩ ᎯᏚᎵᏍᎬᎢ ᎾᎿᏂ.
 #. text in the browser extension
 #. shown briefly on the download button after it was clicked; keep the name Mister Download Manager as it is
 #, machine
@@ -7397,6 +7915,23 @@ extension	Show in folder	ᏗᎦᏟᎶᏍᏗ ᎢᏗᎦᏅᏁᏗ
 #. screen readers' name of a download's Show in folder button in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads)
 #, machine
 extension	Show {file} in folder	ᏗᎦᏟᎶᏍᏗ {file} ᎢᏗᎦᏅᏁᏗ
+#. text in the browser extension
+#. in the This page tab of the toolbar button's popup, while a smallest width or height is set: how many of the selected pictures the page gives no size for (they are kept, not left out)
+#. {n} = a number (keep the braces as they are)
+#, machine
+extension	Size not given, kept: {n}	ᎢᎦᎢ ᎥᏝ ᏱᏚᎾᏁᎴᎢ, ᏕᎯᏍᏆᏂᎪᏔᏅ: {n}
+#. text in the browser extension
+#. what a screen reader says for the box of the smallest height of the pictures to keep, in the This page tab of the toolbar button's popup
+#, machine
+extension	Smallest height, in pixels	ᎤᏍᏗᎧᏂ ᎢᎦᎢ, ᏗᏟᎶᏍᏔᏅᎯ ᏗᎦᏟᏴᏍᏗ ᎨᏒᎢ
+#. text in the browser extension
+#. in the This page tab of the toolbar button's popup, before two boxes for the smallest width and height of the pictures to keep: 'Smallest size, in pixels [ ] × [ ]'; pictures smaller than that are left out; short
+#, machine
+extension	Smallest size, in pixels	Ꭴ diminutive ᎢᏗᏢᎯ, ᎢᏯᎦᏴᎵ
+#. text in the browser extension
+#. what a screen reader says for the box of the smallest width of the pictures to keep, in the This page tab of the toolbar button's popup
+#, machine
+extension	Smallest width, in pixels	ᎤᏍᏗᎧᏂ ᎢᎬᎾᏗ, ᏗᏟᎶᏍᏔᏅᎯ ᏗᎦᏟᏴᏍᏗ ᎨᏒᎢ
 #. text in the browser extension
 #. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app isn't running
 #, machine
@@ -7430,6 +7965,10 @@ extension	That didn't work. Try again.	ᎾᏍᎩ Ꮎ ᎥᏝ ᏱᏚᎸᏫᏍᏓ�
 #. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when a button's download was removed meanwhile
 #, machine
 extension	That download is no longer in the list.	ᎾᏍᎩ Ꮎ ᏗᎦᏟᎶᏍᏗ ᎥᏝ ᎾᏍᎩ Ꮎ ᎢᏗᎦᏅᏁᏗ ᏱᎩ.
+#. text in the browser extension
+#. shown in the This page tab of the toolbar button's popup when Find images can't look into the current page (a page of the browser's own, an add-on store)
+#, machine
+extension	The browser doesn't let add-ons read this page.	The browser ᎥᏝ ᏱᏚᎵᏍᎪᎸᏓ add-ons ᎯᎠ ᎪᏪᎵ ᎤᎾᎪᎵᏰᏗ ᎨᏒᎢ.
 #. text in the browser extension
 #. in the toolbar button's popup, on a site where the Chrome Web Store's copy of the extension shows no download button; Help is the link at the bottom of the popup
 #, machine
@@ -7566,6 +8105,10 @@ extension	{file} removed from the list	{file} ᏗᎦᏁᏟᏴᏍᏗ ᎢᏴᏛ �
 #. question in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) before a download's file is deleted
 #, machine
 extension	{file} will be deleted from your computer, and the download taken off the list. This can't be undone.	{file} ᏗᎦᏁᏟᏴᏍᏗ ᎢᏴᏛ ᏩᏍᎦᎸᏓ ᎾᎿ ᎢᏗᎦᏅᏁᏗ. ᎾᏍᎩ Ꮎ ᎥᏝ ᏱᏚᎸᏫᏍᏓᏁᎴᎢ.
+#. text in the browser extension
+#. in the This page tab of the toolbar button's popup: how many of the pictures found pass the size and type filters, and will be sent
+#, machine
+extension	{shown} of {total} selected	{shown} ᎾᏍᎩ {total} ᏚᎾᏑᏰᏛ
 #. text in the browser extension
 #. a running download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): the time left, as a clock (minutes:seconds)
 #. {time} = a time of day (keep the braces as they are)
@@ -8163,6 +8706,10 @@ menu	Open with...	ᎤᏍᏚᎢᏍᏗ...
 #. View → Draw with: a graphics system's name, usually kept as is
 #, machine
 menu	OpenGL	OpenGL
+#. menu command in the main window
+#. View → Draw with: a greyed note; why MDM no longer draws with OpenGL: MDM crashed inside the graphics card's driver while OpenGL drew ("its": OpenGL's)
+#, machine
+menu	OpenGL crashed inside its driver here	OpenGL ᎤᎾᏕᏯᏔᏛᎢ ᎾᎿ ᏗᏟᎶᏍᏔᏅᎢ ᎢᏗᏢᏅᏗ ᎾᎿ
 #. menu command in the main window
 #. View → Draw with: a greyed note; why MDM no longer draws with OpenGL: it couldn't start on this computer
 #, machine

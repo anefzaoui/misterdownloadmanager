@@ -859,3 +859,68 @@ async fn the_browser_like_connection_asks_the_other_family_after_a_403() {
     let said = format!("{host} refused over IPv6, downloading over IPv4");
     assert!(events.iter().any(|e| e.text == said), "{events:?}");
 }
+
+/// #1778: a site rule's "always the browser-like connection" asks that way from the first
+/// request: a bot check that lets only browsers through never sees MDM's own connection, and the
+/// download, its look (`probe_kept`) and its resume all go through it.
+#[tokio::test]
+async fn a_site_rule_asks_the_browser_way_from_the_first_request() {
+    let s = server("browser_only=1&rate=2M").await;
+    let dir = tempfile::tempdir().unwrap();
+    let opts = Options {
+        browser_first: true,
+        ..opts()
+    };
+    let url: url::Url = s.url("/gen/3M/rule.bin?seed=1778").parse().unwrap();
+    let (info, kept) = mdm_engine::download::probe_kept(url.clone(), HeaderMap::new(), &opts)
+        .await
+        .expect("the look gets through");
+    assert_eq!(info.size, Some(3 << 20));
+    let out = Download::start_with(
+        Request {
+            url,
+            headers: HeaderMap::new(),
+            dest: Destination::Dir(dir.path().to_owned()),
+        },
+        opts,
+        kept,
+    )
+    .wait()
+    .await
+    .expect("the download gets through");
+    same_content(&out.path, 1778, 3 << 20);
+    let log = settled_log(&s).await;
+    assert!(!log.is_empty());
+    for e in &log {
+        assert!(
+            e.sec_fetch_mode.is_some(),
+            "only the browser-like connection: {e:?}"
+        );
+        assert_ne!(e.outcome, "fault:browser_only", "{e:?}");
+    }
+}
+
+/// #1778: a site that takes either connection still gets the browser-like one first when its
+/// rule says so (nothing waits for a refusal), and the file is whole.
+#[tokio::test]
+async fn a_site_rule_on_a_site_that_takes_anything_still_asks_the_browser_way() {
+    let s = server("").await;
+    let dir = tempfile::tempdir().unwrap();
+    let out = Download::start(
+        Request {
+            url: s.url("/gen/1M/any.bin?seed=1780").parse().unwrap(),
+            headers: HeaderMap::new(),
+            dest: Destination::Dir(dir.path().to_owned()),
+        },
+        Options {
+            browser_first: true,
+            ..opts()
+        },
+    )
+    .wait()
+    .await
+    .unwrap();
+    same_content(&out.path, 1780, 1 << 20);
+    let log = settled_log(&s).await;
+    assert!(log[0].sec_fetch_mode.is_some(), "{log:?}");
+}

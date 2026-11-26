@@ -606,9 +606,135 @@ fn left_pad(bytes: &[u8], len: usize) -> Option<Vec<u8>> {
     Some(padded)
 }
 
+/// A throwaway Ed25519 key made in a test, which signs as MDM's release key does (a v4 legacy
+/// EdDSA key, detached v4 signatures of binary documents over SHA-256): lists signed in a test
+/// without any key kept on disk.
+#[cfg(test)]
+pub(crate) struct TestKey {
+    pair: aws_lc_rs::signature::Ed25519KeyPair,
+    /// The public key packet's body.
+    body: Vec<u8>,
+    fingerprint: [u8; 20],
+}
+
+#[cfg(test)]
+impl TestKey {
+    /// A new key.
+    pub(crate) fn new() -> Self {
+        use aws_lc_rs::signature::KeyPair;
+        let pkcs8 = aws_lc_rs::signature::Ed25519KeyPair::generate_pkcs8(
+            &aws_lc_rs::rand::SystemRandom::new(),
+        )
+        .unwrap();
+        let pair = aws_lc_rs::signature::Ed25519KeyPair::from_pkcs8(pkcs8.as_ref()).unwrap();
+        let mut body = vec![4];
+        body.extend_from_slice(&1_700_000_000u32.to_be_bytes());
+        body.push(EDDSA_LEGACY);
+        body.push(ED25519_OID.len() as u8);
+        body.extend_from_slice(ED25519_OID);
+        let mut point = vec![0x40];
+        point.extend_from_slice(pair.public_key().as_ref());
+        body.extend_from_slice(&Self::mpi(&point));
+        let fingerprint = PublicKey::parse(&body).unwrap().fingerprint;
+        TestKey {
+            pair,
+            body,
+            fingerprint,
+        }
+    }
+
+    /// An MPI (§3.2): its length in bits, then the bytes without leading zeros.
+    fn mpi(bytes: &[u8]) -> Vec<u8> {
+        let start = bytes.iter().position(|b| *b != 0).unwrap_or(bytes.len());
+        let bytes = &bytes[start..];
+        let bits = bytes.first().map_or(0, |b| {
+            (bytes.len() - 1) * 8 + (8 - b.leading_zeros() as usize)
+        });
+        let mut out = (bits as u16).to_be_bytes().to_vec();
+        out.extend_from_slice(bytes);
+        out
+    }
+
+    /// A packet of the current format with its tag.
+    fn packet(tag: u8, body: &[u8]) -> Vec<u8> {
+        let mut out = vec![0xc0 | tag];
+        match body.len() {
+            n @ 0..192 => out.push(n as u8),
+            n => {
+                out.push(255);
+                out.extend_from_slice(&(n as u32).to_be_bytes());
+            }
+        }
+        out.extend_from_slice(body);
+        out
+    }
+
+    /// The public key, ASCII-armored, as `keys/mdm-release.asc` is.
+    pub(crate) fn public_armored(&self) -> String {
+        let packets = Self::packet(TAG_PUBLIC_KEY, &self.body);
+        let b64 = |bytes: &[u8]| base64::engine::general_purpose::STANDARD.encode(bytes);
+        let body = b64(&packets);
+        let lines: Vec<&str> = (0..body.len())
+            .step_by(64)
+            .map(|at| &body[at..(at + 64).min(body.len())])
+            .collect();
+        format!(
+            "-----BEGIN PGP PUBLIC KEY BLOCK-----\n\n{}\n={}\n-----END PGP PUBLIC KEY BLOCK-----\n",
+            lines.join("\n"),
+            b64(&crc24(&packets).to_be_bytes()[1..])
+        )
+    }
+
+    /// A detached signature of `data` (one binary signature packet), made now.
+    pub(crate) fn sign(&self, data: &[u8]) -> Vec<u8> {
+        let now = std::time::SystemTime::now()
+            .duration_since(std::time::UNIX_EPOCH)
+            .unwrap()
+            .as_secs() as u32;
+        let mut hashed_area = vec![5, SUB_CREATED];
+        hashed_area.extend_from_slice(&now.to_be_bytes());
+        hashed_area.extend_from_slice(&[22, SUB_ISSUER_FINGERPRINT, 4]);
+        hashed_area.extend_from_slice(&self.fingerprint);
+        let mut body = vec![4, 0x00, EDDSA_LEGACY, SHA256];
+        body.extend_from_slice(&(hashed_area.len() as u16).to_be_bytes());
+        body.extend_from_slice(&hashed_area);
+        let mut hash = digest::Context::new(&digest::SHA256);
+        hash.update(data);
+        hash.update(&body);
+        hash.update(&[4, 0xff]);
+        hash.update(&(body.len() as u32).to_be_bytes());
+        let digest = hash.finish();
+        let sig = self.pair.sign(digest.as_ref());
+        let (r, s) = sig.as_ref().split_at(32);
+        body.extend_from_slice(&[0, 0]);
+        body.extend_from_slice(&digest.as_ref()[..2]);
+        body.extend_from_slice(&Self::mpi(r));
+        body.extend_from_slice(&Self::mpi(s));
+        Self::packet(TAG_SIGNATURE, &body)
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    /// A key made in the test signs, its signature verifies against its armored public key, and
+    /// nothing else does: another key's, or the data changed.
+    #[test]
+    fn a_test_key_signs_as_mdms_key_does() {
+        let key = TestKey::new();
+        let other = TestKey::new();
+        let data = b"some list\n";
+        let sig = key.sign(data);
+        assert!(verify(key.public_armored().as_bytes(), data, &sig));
+        assert!(!verify(other.public_armored().as_bytes(), data, &sig));
+        assert!(!verify(
+            key.public_armored().as_bytes(),
+            b"some list.\n",
+            &sig
+        ));
+        assert!(!verify(MDM_KEY, data, &sig));
+    }
 
     const MDM_KEY: &[u8] = include_bytes!("../keys/mdm-release.asc");
     const YTDLP_KEY: &[u8] = include_bytes!("../keys/yt-dlp.asc");

@@ -144,20 +144,56 @@ pub fn in_magnet(magnet: &str) -> Vec<String> {
     out
 }
 
-/// A magnet link with only the trackers MDM may contact. Each pair is read decoded, its name as
-/// well as its value (`%74r=` is a `tr=`); the pairs kept stay as they were written.
+/// The parts of a magnet link MDM reads (BEP 9): its hash (`xt`), its name (`dn`) and its
+/// trackers (`tr`). The rest isn't passed on: the files are chosen in Add torrent, not by the
+/// link (`so=`).
+const MAGNET_KEYS: [&str; 3] = ["xt", "dn", "tr"];
+
+/// Normalizes a `xt=urn:btih:<32-char base32>` parameter to uppercase so `librqbit::Magnet::parse`
+/// accepts lowercase RFC 4648 Base32 info hashes. Other pairs are kept unchanged.
+fn normalize_magnet_xt<'a>(pair: &'a str, value: &str) -> std::borrow::Cow<'a, str> {
+    let Some(rest) = value
+        .get(..9)
+        .filter(|p| p.eq_ignore_ascii_case("urn:btih:"))
+        .map(|_| &value[9..])
+    else {
+        return std::borrow::Cow::Borrowed(pair);
+    };
+    let is_base32 = rest.len() == 32
+        && rest
+            .bytes()
+            .all(|b| b.is_ascii_alphabetic() || matches!(b, b'2'..=b'7'));
+    if is_base32
+        && (rest.bytes().any(|b| b.is_ascii_lowercase()) || !value.starts_with("urn:btih:"))
+    {
+        std::borrow::Cow::Owned(format!("xt=urn:btih:{}", rest.to_ascii_uppercase()))
+    } else {
+        std::borrow::Cow::Borrowed(pair)
+    }
+}
+
+/// A magnet link with only the parts MDM reads ([`MAGNET_KEYS`]), and of its trackers only those
+/// MDM may contact. Each pair is read decoded, its name as well as its value (`%74r=` is a
+/// `tr=`), with the names as librqbit matches them; the pairs kept stay as they were written
+/// (except lowercase Base32 `urn:btih:` hashes, which are uppercased for `librqbit`).
 pub fn filter_magnet(magnet: &str, proxied: bool) -> String {
     let Some(url) = magnet_url(magnet) else {
         return magnet.to_owned();
     };
-    let kept: Vec<&str> = url
+    let kept: Vec<std::borrow::Cow<'_, str>> = url
         .query()
         .unwrap_or_default()
         .split('&')
-        .filter(
+        .filter_map(
             |pair| match url::form_urlencoded::parse(pair.as_bytes()).next() {
-                Some((k, v)) if k.eq_ignore_ascii_case("tr") => allowed(&v, proxied),
-                _ => true,
+                Some((k, v)) if k == "tr" => {
+                    allowed(&v, proxied).then_some(std::borrow::Cow::Borrowed(pair))
+                }
+                Some((k, v)) if k == "xt" => Some(normalize_magnet_xt(pair, &v)),
+                Some((k, _)) if MAGNET_KEYS.contains(&k.as_ref()) => {
+                    Some(std::borrow::Cow::Borrowed(pair))
+                }
+                _ => None,
             },
         )
         .collect();
@@ -501,6 +537,54 @@ mod tests {
             ["udp://t.example:1337", "http://127.0.0.1/a"]
         );
         assert!(in_magnet("magnet:?xt=urn:btih:abc").is_empty());
+    }
+
+    /// Only the hash, the name and the trackers go on: a file range (`so=`) and anything else
+    /// the link carries, however its name is written, never reach librqbit.
+    #[test]
+    fn magnets_keep_only_the_parts_mdm_reads() {
+        let hash = "xt=urn:btih:0123456789abcdef0123456789abcdef01234567";
+        let tr = "tr=udp%3A%2F%2Ft.example%3A1337";
+        let m = format!(
+            "magnet:?{hash}&so=0-99999999999&dn=a%20b&%73o=1-99999999999&x.pe=10.0.0.1:6881&\
+             ws=http%3A%2F%2F10.0.0.1%2Ff&xl=5&SO=2&{tr}&noequals&&kt=a"
+        );
+        let out = filter_magnet(&m, false);
+        assert_eq!(out, format!("magnet:?{hash}&dn=a%20b&{tr}"));
+        let read = librqbit::Magnet::parse(&out).unwrap();
+        assert_eq!(read.get_select_only(), None);
+        assert_eq!(read.name.as_deref(), Some("a b"));
+        assert_eq!(read.trackers, ["udp://t.example:1337"]);
+        // librqbit reads a link's range itself; once filtered there is none.
+        let small = format!("magnet:?{hash}&so=0-3,7");
+        assert_eq!(
+            librqbit::Magnet::parse(&small).unwrap().get_select_only(),
+            Some(vec![0, 1, 2, 3, 7])
+        );
+        assert_eq!(
+            librqbit::Magnet::parse(&filter_magnet(&small, false))
+                .unwrap()
+                .get_select_only(),
+            None
+        );
+        // A hybrid link's two hashes both stay.
+        let both = format!("magnet:?{hash}&xt=urn:btmh:1220{}", "ab".repeat(32));
+        assert_eq!(filter_magnet(&both, false), both);
+    }
+
+    #[test]
+    fn lowercase_base32_magnet_is_accepted_by_librqbit() {
+        let link = "magnet:?xt=urn:btih:hf35t5nbi3bfw5deuy72cauk4m3effi2&tr=udp%3A%2F%2Ftracker.example.org%3A1337%2Fannounce&dn=Show.S01E04.mkv";
+        assert!(librqbit::Magnet::parse(link).is_err());
+        let filtered = filter_magnet(link, false);
+        assert!(filtered.contains("xt=urn:btih:HF35T5NBI3BFW5DEUY72CAUK4M3EFFI2"));
+        let parsed =
+            librqbit::Magnet::parse(&filtered).expect("lowercase base32 magnet should parse");
+        assert_eq!(
+            parsed.as_id20().expect("btih hash").as_string(),
+            "3977d9f5a146c25b7464a63fa1028ae33642951a"
+        );
+        assert_eq!(parsed.trackers, ["udp://tracker.example.org:1337/announce"]);
     }
 
     /// Add trackers (#39): new ones after the ones there, each once, keys still sorted, the info

@@ -27,6 +27,15 @@ unwrapped to the address inside it.
 
 A link that is already in your download list goes under **Already in the list**, unticked.
 
+## Models, datasets and releases
+
+Paste the address of a **Hugging Face** model or dataset, or of a folder in one, or of a **GitHub
+release**, and Link grabber lists every file in it with its size and folder, unticked. Tick what
+you need: it downloads as one group into a folder named after the address, with the repository's
+folders kept, and each file is checked against the SHA-256 the site publishes. Gated models work
+with your Hugging Face access token, saved in **Options → Sites Logins**. See
+[Models, datasets and releases](/help/link-grabber.html#models-datasets-and-releases).
+
 ## Sorted into packages
 
 The volumes of one split archive (`movie.part1.rar`, `movie.part2.rar` and so on) form one

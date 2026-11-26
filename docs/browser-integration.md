@@ -113,7 +113,7 @@ A page with a PDF viewer of its own (its own page numbers, zoom and buttons, whi
 The extension's button shows whether the browser reaches MDM. A red **!** means it doesn't; click the button to see why, and **How to fix it** opens the matching section of [The browser and MDM aren't connected](browser-help.md). While MDM downloads, the button shows how many downloads are running, in blue; **II** means taking downloads is paused. Its popup says under MDM's name whether it is connected, and to which version; the gear opens MDM's **Options**. It has three tabs:
 
 - **Downloads**: MDM's newest downloads (see [Recent downloads](#recent-downloads), below).
-- **This page**: **Media on this page**, what the page has loaded that MDM can download (see below), and **Never take downloads from** the current site, a switch: on, the site goes on MDM's excluded sites and the popup says **Downloads from** the site **stay with the browser**, whenever you open it there; off takes it off the list again. A site that a pattern of your own in Options excludes (`*.example.com`) shows the switch on, and greyed: Options holds it.
+- **This page**: **Media on this page**, what the page has loaded that MDM can download (see below), **Images on this page** ([below](#images-on-this-page)), and **Never take downloads from** the current site, a switch: on, the site goes on MDM's excluded sites and the popup says **Downloads from** the site **stay with the browser**, whenever you open it there; off takes it off the list again. A site that a pattern of your own in Options excludes (`*.example.com`) shows the switch on, and greyed: Options holds it.
 - **Settings**: **Take downloads from this browser** (off pauses: every download stays with the browser until you turn it on again), the browser's proxy (see below), **Hide the download button in full screen**, **Send downloads to** (this computer or another MDM, see [Remote control](remote-control.md)), **Options...** and **Open Mister Download Manager**.
 
 ### Recent downloads
@@ -195,11 +195,42 @@ This needs nothing more from you: the extension already sees what the browser do
 to hand downloads over. What it notes stays in the browser's memory and is forgotten when the
 browser closes.
 
+## Images on this page
+
+To download a gallery, or every picture of a page, open the toolbar button's **This page** tab and
+click **Find images**. Nothing is looked for until you click it. The extension finds:
+
+- each picture the page shows, at the largest size the page lists for it: a picture offered in
+  several sizes (a `srcset`, a `<picture>` with its sources, `1x` and `2x`) is found once, at its
+  largest, not at the size the page happens to show;
+- the picture a page loads only when you scroll to it (its `data-src` or `data-srcset`), beside
+  the placeholder it shows until then;
+- links that go straight to a picture, such as a thumbnail linking to its full size.
+
+Each address is found once, in the page and in its frames, as a full address. Pictures written
+into the page itself (`data:` addresses) and those a script made (`blob:`) aren't files a server
+has, so they're left out. Background pictures set by a page's styles aren't looked for.
+
+Then choose which to send:
+
+- **At least** a width and a height, in pixels, to leave out icons and thumbnails. A picture whose
+  size the page doesn't give (one not loaded yet, one only linked to) is kept, and the line under
+  the filters says how many there are.
+- A button for each type found (**JPEG**, **PNG**, **WEBP**, **GIF**, **AVIF**, **SVG**, ...,
+  **Other**), with how many of each: click one to leave that type out, again to take it back. The
+  type is what the address says (its file extension, or the format an image service names in it).
+
+**Send to Link grabber** hands the kept ones to MDM's **[Link grabber](link-grabber.md)**, the way
+**Download all links** does, with the page as their referrer and your cookies for it. Link grabber
+looks each one up for its real name and size, and you tick there the ones to download.
+
 ## Right-click: Download with Mister Download Manager
 
 Right-click a link, a video, a sound or a picture and choose **Download with Mister Download Manager**. MDM downloads it whatever its type: you asked for it, so the file types list and the excluded sites don't apply here (they only decide which downloads MDM takes over by itself). A video that plays as a stream goes to the **Download video** window with the stream its player loaded (HLS or DASH), as the [button over videos](#the-download-button-over-videos) sends it, with your cookies for the stream's server and what the browser sent with the stream (its referrer and origin, else the page as the referrer).
 
 Select part of a page and right-click it for **Download selected links with Mister Download Manager**, or right-click the page for **Download all links with Mister Download Manager**: the links open in **[Link grabber](link-grabber.md)**, sorted into packages, where you tick the ones you want. A page with tens of thousands of links works too: the extension sends a long list in parts, and Link grabber shows it once they are all in.
+
+**Download all links** also sends the pictures located on the page and in its frames (its images, each at the largest size the page lists for it, as **[Find images](#images-on-this-page)** finds them, none left out by size or type), and **Download selected links** those in the selection. Link grabber hides them while its **Hide images located on this web page** is ticked, as it is each time such a list comes: untick it to see the pictures and tick the ones you want. A link to a picture is a link and always shows, even when the same picture is also shown on the page. Background pictures set by the page's styles aren't sent.
 
 If MDM can't be reached when you choose one of these, the help page opens at the section that explains why.
 

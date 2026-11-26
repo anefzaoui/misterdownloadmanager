@@ -24,6 +24,8 @@
 //!   handed over as one list. A list longer than a message may be (`mdm_ipc::MAX_MESSAGE`, 1 MB)
 //!   comes in parts, each with `"linksPart": {batch, index, count}` and the page's context, each
 //!   handed over as it comes; the app puts them back together (crates/app/src/linkparts.rs).
+//!   `"pageImages": [...]` (#1781) names those of the links that are pictures located on the page,
+//!   which Link grabber hides while "Hide images located on this web page" is ticked.
 //! - The toolbar button's list of downloads (#1496): `{"recent": {filter, search, limit, have,
 //!   px}}` asks the running app for its newest downloads (`mdm_ipc::RecentAsk`), answered
 //!   `{"ok": true, "recent": {…}}` (`mdm_ipc::api::RecentAnswer`: the downloads, the counts, the
@@ -154,6 +156,10 @@ struct Message {
     /// app puts back together. An older host ignores it and hands each part over as a list of
     /// its own, which Link grabber adds to the one it shows.
     links_part: Option<mdm_ipc::LinksPart>,
+    /// With `links` (#1781): those that are pictures located on the page (Link grabber hides
+    /// them while "Hide images located on this web page" is ticked). An older host ignores it,
+    /// and they are listed as links.
+    page_images: Vec<String>,
     /// The toolbar button: leave this site (a host name) to the browser.
     exclude_site: Option<String>,
     /// The popup's Undo (#404): take this host name off the excluded sites again.
@@ -373,9 +379,19 @@ fn links_command(m: &Message) -> Result<mdm_ipc::Command, (&'static str, &'stati
     if links.is_empty() && m.links_part.is_none() {
         return Err(("refused", "no link MDM downloads"));
     }
+    // The pictures on the page among the links handed over, each once.
+    let listed: std::collections::HashSet<&str> = links.iter().map(String::as_str).collect();
+    let mut seen = std::collections::HashSet::new();
+    let page_images = m
+        .page_images
+        .iter()
+        .filter(|i| listed.contains(i.as_str()) && seen.insert(i.as_str()))
+        .cloned()
+        .collect();
     Ok(mdm_ipc::Command {
         links,
         links_part: m.links_part.clone(),
+        page_images,
         referer: m.referrer.clone().filter(|r| !r.is_empty()),
         cookies: m.cookies.clone().filter(|c| !c.is_empty()),
         user_agent: m.user_agent.clone(),
@@ -2979,10 +2995,20 @@ mod tests {
         let cmd = links_command(&whole).ok().unwrap();
         assert_eq!(cmd.links, ["https://x.test/a.zip", "ftp://x.test/b.iso"]);
         assert_eq!(cmd.links_part, None);
+        assert!(cmd.page_images.is_empty(), "an older extension's says none");
         assert_eq!(
             (cmd.referer.as_deref(), cmd.cookies.as_deref()),
             (Some("https://x.test/files/"), Some("sid=1"))
         );
+        // #1781: the pictures located on the page, marked among the links: only those that are
+        // links handed over, each once.
+        let marked: Message = serde_json::from_str(
+            r#"{"links":["https://x.test/a.zip","https://x.test/p.jpg","https://x.test/q.png"],"pageImages":["https://x.test/p.jpg","https://x.test/p.jpg","https://x.test/elsewhere.png","data:image/png;base64,AA"],"referrer":"https://x.test/files/"}"#,
+        )
+        .unwrap();
+        let images = links_command(&marked).ok().unwrap();
+        assert_eq!(images.links.len(), 3);
+        assert_eq!(images.page_images, ["https://x.test/p.jpg"]);
         let part: Message = serde_json::from_str(
             r#"{"links":["https://x.test/c.zip"],"linksPart":{"batch":"6f1c2a9e-5b7d","index":1,"count":3},"referrer":"https://x.test/files/","cookies":"sid=1","private":true}"#,
         )

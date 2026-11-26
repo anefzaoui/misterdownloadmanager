@@ -67,6 +67,7 @@ fn matches(item: &Item, offer: &Offer) -> Option<u8> {
         && item.gallery.is_none()
         && item.torrent.is_none()
         && item.remote.is_none()
+        && item.zip.is_none()
         && !item.is_private_window()
         && !offer.private
         && item.url != *offer.url;

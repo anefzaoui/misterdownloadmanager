@@ -1,15 +1,16 @@
 //! 7z and RAR through 7-Zip, run as its own program (#37): UnRAR's licence forbids using its
 //! code in a GPL program, so MDM never links it, and 7z's decoder isn't built in either (it cost
-//! about 1 MB). 7-Zip writes into the staging folder; what it wrote is
-//! then checked as our own entries are ([`safe::check_tree`]) before anything is moved into
-//! place.
+//! about 1 MB). 7-Zip writes into the staging folder, held to the same limits as our own
+//! extraction while it runs ([`supervise`]); what it wrote is then checked as our own entries
+//! are ([`safe::check_tree`]) before anything is moved into place.
 
-use std::io::Write;
 use std::path::{Path, PathBuf};
-use std::process::{Command, Stdio};
+use std::process::Command;
+use std::sync::atomic::Ordering;
 
 use crate::Error;
 use crate::safe::{self, Writer};
+use crate::supervise::{self, Tally};
 
 /// 7-Zip's program, the first there of [`candidates`].
 pub fn find_7zip() -> Option<PathBuf> {
@@ -59,6 +60,10 @@ fn candidates(var: impl Fn(&str) -> Option<std::ffi::OsString>) -> Vec<PathBuf> 
     candidates
 }
 
+/// 7-Zip extracts `archive` into the writer's staging folder, watched while it runs
+/// ([`supervise::run`]): a cancel stops it (or keeps it from starting), and so does more in the
+/// staging folder than the writer's limits allow, bytes or entries. Then what it wrote is checked
+/// as our own entries are, and the writer counts it (the report's bytes).
 pub fn extract(
     tool: &Path,
     archive: &Path,
@@ -81,31 +86,21 @@ pub fn extract(
     cmd.arg(format!("-o{}", root.display()))
         .arg("--")
         .arg(&archive)
-        .current_dir(&root)
-        .stdin(if password.is_some() {
-            Stdio::piped()
-        } else {
-            Stdio::null()
-        })
-        .stdout(Stdio::null())
-        .stderr(Stdio::piped());
-    // No console window flashing up for it.
-    #[cfg(windows)]
-    {
-        use std::os::windows::process::CommandExt;
-        const CREATE_NO_WINDOW: u32 = 0x0800_0000;
-        cmd.creation_flags(CREATE_NO_WINDOW);
-    }
+        .current_dir(&root);
     // The password is never logged.
     tracing::info!("extract: {} x {}", tool.display(), archive.display());
-    let mut child = cmd.spawn()?;
-    if let (Some(pw), Some(mut input)) = (password, child.stdin.take()) {
-        // One line, then the end (dropped): asked again, 7-Zip finds nothing and stops. Not
-        // asked (the archive isn't encrypted), it never reads it.
-        let _ = writeln!(input, "{pw}");
+    let limits = w.limits();
+    let mut look = || Tally::over(&root, limits).map(|_| ());
+    let out = supervise::run(cmd, password, None, w.cancel(), &mut look).inspect_err(|e| {
+        if matches!(e, Error::TooBig { .. } | Error::TooMany) {
+            tracing::warn!("extract: 7-Zip stopped: {e}");
+        }
+    })?;
+    // Cancelled right as it ended: nothing is placed.
+    if w.cancel().is_some_and(|c| c.load(Ordering::Relaxed)) {
+        return Err(Error::Cancelled);
     }
-    let out = child.wait_with_output()?;
-    let err = String::from_utf8_lossy(&out.stderr).to_lowercase();
+    let err = out.errors.to_lowercase();
     if !out.status.success() {
         return Err(
             if err.contains("wrong password") || err.contains("encrypted") {
@@ -130,6 +125,7 @@ pub fn extract(
     for (name, why) in safe::check_tree(w.root(), 64)? {
         w.skip(&name, why);
     }
+    w.wrote(Tally::of(w.root()));
     Ok(())
 }
 

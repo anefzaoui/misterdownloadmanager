@@ -132,10 +132,6 @@ impl Site {
             "" | "anonymous" | "ftp" if pass.is_empty() => ("anonymous".into(), "mdm@".into()),
             _ => (user, pass),
         };
-        // The leading slash only separates the path from the server; `;type=i` is a transfer
-        // type (always binary here).
-        let raw = url.path().strip_prefix('/').unwrap_or(url.path());
-        let raw = raw.rsplit_once(";type=").map_or(raw, |(p, _)| p);
         let tls = match security {
             Security::Plain => None,
             _ => Some(connector(&opts.extra_roots)?),
@@ -147,7 +143,8 @@ impl Site {
             } else {
                 21
             }),
-            path: decode(raw),
+            // `;type=i` is a transfer type (always binary here).
+            path: server_path(url),
             user,
             pass,
             security,
@@ -482,6 +479,125 @@ impl Site {
             pool.push((s, Instant::now()));
         }
     }
+}
+
+/// An FTP server's folders listed one after the other (#1774, `folder.rs`) on one session,
+/// logged in as for a download from the address given.
+pub(crate) struct Lister {
+    site: Site,
+    session: Option<Session>,
+    /// `MLSD` isn't known here: `LIST` instead.
+    no_mlsd: bool,
+}
+
+impl Lister {
+    pub async fn open(url: &Url, headers: &HeaderMap, opts: &Options) -> Result<Lister, Error> {
+        let site = Site::new(url, headers, opts)?;
+        let session = site.connect().await?;
+        Ok(Lister {
+            site,
+            session: Some(session),
+            no_mlsd: false,
+        })
+    }
+
+    /// The entries of the folder `url` (an address on the same server, ending in `/`): `MLSD`'s
+    /// (exact types and sizes), else `LIST`'s, read up to `folder::LISTING_MAX` bytes. A list
+    /// past that is cut there (its last line dropped) and the session closed: what the server
+    /// still sends is left unread.
+    pub async fn list(&mut self, url: &Url) -> Result<Vec<crate::folder::Entry>, Error> {
+        let path = server_path(url);
+        // Sent as one command line: a line break in it would be another command.
+        if path.contains(['\r', '\n']) {
+            return Err(net(
+                NetKind::Connect,
+                "the folder's name holds a line break",
+            ));
+        }
+        let mut s = match self.session.take() {
+            Some(s) => s,
+            None => self.site.connect().await?,
+        };
+        let command = |verb: &str| match path.as_str() {
+            "" => verb.to_owned(),
+            p => format!("{verb} {p}"),
+        };
+        let open = [Status::AboutToSend, Status::AlreadyOpen];
+        let lost = |e| failure(e, NetKind::Lost);
+        let read_timeout = self.site.read_timeout;
+        let stream = within(read_timeout, async {
+            if !self.no_mlsd {
+                match s.custom_data_command(command("MLSD"), &open).await {
+                    Ok((_, stream)) => return Ok((stream, true)),
+                    // Not a command this server knows: its LIST.
+                    Err(FtpError::UnexpectedResponse(r))
+                        if matches!(r.status.code(), 500 | 501 | 502 | 504) =>
+                    {
+                        self.no_mlsd = true;
+                    }
+                    Err(FtpError::UnexpectedResponse(r)) => return Err(reply(&r)),
+                    Err(e) => return Err(lost(e)),
+                }
+            }
+            match s.custom_data_command(command("LIST"), &open).await {
+                Ok((_, stream)) => Ok((stream, false)),
+                Err(FtpError::UnexpectedResponse(r)) => Err(reply(&r)),
+                Err(e) => Err(lost(e)),
+            }
+        })
+        .await;
+        let (mut stream, mlsd) = stream?;
+        let max = crate::folder::LISTING_MAX;
+        let mut body = Vec::new();
+        let mut buf = BytesMut::with_capacity(READ);
+        let whole = loop {
+            buf.clear();
+            match tokio::time::timeout(read_timeout, stream.read_buf(&mut buf)).await {
+                Err(_) => return Err(net(NetKind::Timeout, "")),
+                Ok(Err(e)) => return Err(net(NetKind::Lost, &e.to_string())),
+                Ok(Ok(0)) => break true,
+                Ok(Ok(_)) => {
+                    let room = max - body.len();
+                    body.extend_from_slice(&buf[..buf.len().min(room)]);
+                    if body.len() >= max {
+                        break false;
+                    }
+                }
+            }
+        };
+        if whole {
+            if let Ok(Ok(())) = tokio::time::timeout(read_timeout, stream.finish()).await {
+                self.session = Some(s);
+            }
+        } else {
+            // Cut: the line it stopped in isn't whole.
+            let end = body.iter().rposition(|b| *b == b'\n').unwrap_or(0);
+            body.truncate(end);
+            drop(stream);
+        }
+        let text = String::from_utf8_lossy(&body);
+        let mut seen = std::collections::HashSet::new();
+        Ok(text
+            .lines()
+            .filter_map(|l| crate::folder::ftp_entry(l.trim_end_matches('\r'), mlsd, url))
+            .filter(|e| seen.insert(e.name.clone()))
+            .collect())
+    }
+
+    /// Done: the session says goodbye.
+    pub async fn close(mut self) {
+        if let Some(mut s) = self.session.take() {
+            let _ = tokio::time::timeout(Duration::from_secs(2), s.quit()).await;
+        }
+    }
+}
+
+/// The path of `url` as the server is asked for it: relative to the login folder (RFC 1738; the
+/// leading slash only separates it from the server), decoded, without a `;type=` transfer type.
+fn server_path(url: &Url) -> String {
+    let raw = url.path().strip_prefix('/').unwrap_or(url.path());
+    let raw = raw.rsplit_once(";type=").map_or(raw, |(p, _)| p);
+    percent_decode_str(raw).decode_utf8_lossy().into_owned()
 }
 
 /// `REST from` (when not 0) and `RETR path`.

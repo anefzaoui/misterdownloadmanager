@@ -19,6 +19,9 @@ librqbit-dualstack-sockets = "0.7.0"
 # certificates still starts a session (mdm_engine::tls).
 mdm-engine.workspace = true
 flate2.workspace = true
+# The session's HTTP client: its redirects and the names it looks up checked (tracker_http.rs);
+# librqbit's own reqwest, already in the tree.
+reqwest.workspace = true
 # Reading librqbit's saved session (session.json) before it starts (lib.rs).
 serde_json.workspace = true
 thiserror.workspace = true

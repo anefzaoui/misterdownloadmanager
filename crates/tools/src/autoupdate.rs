@@ -3,13 +3,13 @@
 //! gallery-dl) is usually what fixes a page that stopped working.
 //!
 //! - **When:** a check a few seconds after MDM starts, then again while it runs: yt-dlp and
-//!   gallery-dl at most every 6 hours, Node.js once a day, ffmpeg once a week (BtbN rebuilds it each
-//!   day, about 80 MB, for changes a merge seldom needs). When the next check is due is kept in
+//!   gallery-dl at most every 6 hours, Node.js once a day, ffmpeg once a week (about 80 MB, and
+//!   only when MDM's signed list of the builds it checked names a newer one). When the next check is due is kept in
 //!   `<tools>/updates.json`, so starting MDM many times asks GitHub nothing more. A check that
 //!   failed is tried again an hour later; it is logged, never shown as an error.
 //! - **How:** each tool's own install (`install_latest` and the like): the release's checksum list
-//!   checked against its publisher's key (yt-dlp, gallery-dl, Node.js) or its published checksums
-//!   (ffmpeg), the program against it, never an older version, installed beside the current one in
+//!   checked against its publisher's key (yt-dlp, gallery-dl, Node.js), or MDM's own signed list
+//!   of the builds it checked (ffmpeg), the program against it, never an older version, installed beside the current one in
 //!   its version's folder.
 //! - **The switch** to the new version happens only while no download, look-up or other run of MDM
 //!   (of any copy of MDM on this computer) is using that helper: a run holds the helper's

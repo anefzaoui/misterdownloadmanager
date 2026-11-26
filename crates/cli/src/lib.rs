@@ -44,11 +44,13 @@ enum Cmd {
         /// Folder to save into (name from the server), or a file path ending in a name.
         #[arg(short, long, default_value = ".")]
         output: PathBuf,
-        /// Maximum connections (1 to 128).
-        #[arg(short, long, default_value_t = Options::default().max_connections,
+        /// Maximum connections (1 to 128). Default: the app's exception for the address's site
+        /// (Options → Connection, #1778), else 8.
+        #[arg(short, long,
               value_parser = clap::value_parser!(u32).range(1..=MAX_CONNECTIONS_UNLOCKED as i64))]
-        connections: u32,
-        /// Extra request header, e.g. "Referer: https://example.com/" (repeatable).
+        connections: Option<u32>,
+        /// Extra request header, e.g. "Referer: https://example.com/" (repeatable). The app's
+        /// site rules for the address (#1778) add theirs to those not given here.
         #[arg(short = 'H', long = "header")]
         headers: Vec<String>,
         /// The page's address (Referer header), for links that need one or an expired link's renewal.
@@ -444,11 +446,13 @@ enum Cmd {
     Resume {
         /// The `<file>.mdm.json` next to the unfinished download.
         state: PathBuf,
-        /// Maximum connections (1 to 128).
-        #[arg(short, long, default_value_t = Options::default().max_connections,
+        /// Maximum connections (1 to 128). Default: the app's exception for the address's site
+        /// (Options → Connection, #1778), else 8.
+        #[arg(short, long,
               value_parser = clap::value_parser!(u32).range(1..=MAX_CONNECTIONS_UNLOCKED as i64))]
-        connections: u32,
-        /// Extra request header, e.g. "Cookie: id=1" (repeatable).
+        connections: Option<u32>,
+        /// Extra request header, e.g. "Cookie: id=1" (repeatable). The app's site rules for the
+        /// address (#1778) add theirs to those not given here.
         #[arg(short = 'H', long = "header")]
         headers: Vec<String>,
         /// The page's address (Referer header), for links that need one or an expired link's renewal.
@@ -906,6 +910,16 @@ pub struct Net {
     /// Torrent settings' public tracker list (#1776), when it is on: `torrent-get` adds it to a
     /// public torrent as the app does.
     pub public_trackers: Option<PublicTrackers>,
+    /// Options → Connection's site rules and exceptions (#1778): `get` and `resume` ask a site
+    /// as the app does, where the command line doesn't say otherwise.
+    pub sites: SiteRules,
+}
+
+/// The app's site rules and its per-server exceptions (#1778, `mdm_ipc::siterules`).
+#[derive(Clone, Debug, Default, PartialEq, Eq)]
+pub struct SiteRules {
+    pub rules: Vec<mdm_ipc::siterules::SiteRule>,
+    pub exceptions: Vec<(String, u32)>,
 }
 
 /// The public tracker list the app's Torrent settings turned on (#1776): its address, and the
@@ -937,6 +951,7 @@ struct Conn {
     route: mdm_engine::Route,
     torrent_proxy: TorrentProxy,
     public_trackers: Option<PublicTrackers>,
+    sites: SiteRules,
 }
 
 static CONN: std::sync::RwLock<Option<Conn>> = std::sync::RwLock::new(None);
@@ -988,6 +1003,7 @@ impl Conn {
             route,
             torrent_proxy: net.torrent_proxy.clone(),
             public_trackers: net.public_trackers.clone(),
+            sites: net.sites.clone(),
         }
     }
 
@@ -1202,11 +1218,12 @@ async fn run(cmd: Cmd, json: bool, accounts: Option<&dyn Accounts>) -> anyhow::R
             } else {
                 Destination::File(output)
             };
-            let headers = build_headers(&headers, referer, user_agent, cookie)?;
+            let mut headers = build_headers(&headers, referer, user_agent, cookie)?;
             let opts = Options {
                 checksum,
-                ..opts(connections)
+                ..opts(Options::default().max_connections)
             };
+            let opts = with_site_rules(&conn().sites, &url, connections, &mut headers, opts);
             let opts = through_account(accounts, &url, direct, opts, json).await?;
             let req = Request { url, headers, dest };
             watch(Download::start(req, opts), json).await
@@ -1919,16 +1936,22 @@ async fn run(cmd: Cmd, json: bool, accounts: Option<&dyn Accounts>) -> anyhow::R
         } => {
             let base_opts = Options {
                 checksum,
-                ..opts(connections)
+                ..opts(connections.unwrap_or(Options::default().max_connections))
             };
+            let mut headers = build_headers(&headers, referer, user_agent, cookie)?;
             // Through the account its address goes through (#44): the link a service gave
-            // expires, and the service gives a new one.
+            // expires, and the service gives a new one. The site rules for its address too
+            // (#1778).
             let opts = match mdm_engine::state::ResumeState::load(&state) {
-                Ok(saved) => through_account(accounts, &saved.url, direct, base_opts, json).await?,
+                Ok(saved) => {
+                    let sites = conn().sites;
+                    let opts =
+                        with_site_rules(&sites, &saved.url, connections, &mut headers, base_opts);
+                    through_account(accounts, &saved.url, direct, opts, json).await?
+                }
                 // Download::resume says what is wrong with it.
                 Err(_) => base_opts,
             };
-            let headers = build_headers(&headers, referer, user_agent, cookie)?;
             let dl = Download::resume(state, headers, opts)?;
             watch(dl, json).await
         }
@@ -2223,6 +2246,52 @@ impl std::error::Error for NoFormat {}
 /// former one once if a site refuses it, #372, and MDM's own name once if a site's bot check
 /// refuses the browser's and the browser-like connection too, #1422; a `--user-agent` or a
 /// `User-Agent` header given is the only one sent), through this command's connection (#1556).
+/// The app's site rules for `url` (#1778) on what the command line gave: its number of
+/// connections (`given`, else the site's exception, else 8), the headers it didn't give, the
+/// rule's User-Agent unless one was given (the user's choice then: no other tried), and the
+/// browser-like connection from the first request.
+fn with_site_rules(
+    sites: &SiteRules,
+    url: &url::Url,
+    given: Option<u32>,
+    headers: &mut HeaderMap,
+    opts: Options,
+) -> Options {
+    let site = mdm_ipc::siterules::for_url(&sites.rules, &sites.exceptions, url);
+    let mut opts = Options {
+        max_connections: given
+            .or(site.connections)
+            .unwrap_or(Options::default().max_connections)
+            .clamp(1, MAX_CONNECTIONS_UNLOCKED),
+        browser_first: site.browser_like,
+        ..opts
+    };
+    let mut agent = site.user_agent;
+    for (name, value) in &site.headers {
+        if name.eq_ignore_ascii_case("user-agent") {
+            agent = agent.or(Some(value.clone()));
+            continue;
+        }
+        let reserved = mdm_ipc::siterules::RESERVED_HEADERS
+            .iter()
+            .any(|r| r.eq_ignore_ascii_case(name));
+        if let (false, Ok(n), Ok(v)) = (
+            reserved,
+            reqwest::header::HeaderName::from_bytes(name.as_bytes()),
+            HeaderValue::from_str(value),
+        ) && !headers.contains_key(&n)
+        {
+            headers.insert(n, v);
+        }
+    }
+    if let Some(agent) = agent.filter(|_| !headers.contains_key(USER_AGENT)) {
+        opts.speak_as(agent);
+        opts.agent_fallback = None;
+        opts.own_agent = None;
+    }
+    opts
+}
+
 fn opts(connections: u32) -> Options {
     Options {
         max_connections: connections,
@@ -2541,6 +2610,58 @@ mod tests {
         assert!(proxy_arg("socks5://", None).is_err());
     }
 
+    /// #1778: `get` and `resume` ask a site as the app does: its rule's headers, User-Agent and
+    /// browser-like connection, its exception's number of connections; what the command line
+    /// gives wins.
+    #[test]
+    fn the_apps_site_rules_apply_where_the_command_line_is_silent() {
+        let sites = SiteRules {
+            rules: vec![mdm_ipc::siterules::SiteRule {
+                site: "*.example.test".into(),
+                user_agent: "Rule/1".into(),
+                browser_like: true,
+                headers: vec![
+                    ("X-Token".into(), "rule".into()),
+                    ("Referer".into(), "https://rule.example.test/".into()),
+                ],
+            }],
+            exceptions: vec![("*.example.test".into(), 2)],
+        };
+        let url: url::Url = "https://dl.example.test/f.bin".parse().unwrap();
+        let mut headers = build_headers_with(
+            &["Referer: https://given.example.test/".to_owned()],
+            None,
+            None,
+            None,
+            std::io::empty(),
+        )
+        .unwrap();
+        let got = with_site_rules(&sites, &url, None, &mut headers, opts(8));
+        assert_eq!(got.max_connections, 2);
+        assert!(got.browser_first);
+        assert_eq!(got.user_agent, "Rule/1");
+        assert_eq!(got.agent_fallback, None);
+        assert_eq!(headers.get("x-token").unwrap(), "rule");
+        assert_eq!(
+            headers.get("referer").unwrap(),
+            "https://given.example.test/"
+        );
+        // Given on the command line: its own.
+        let mut headers =
+            build_headers_with(&[], None, Some("Mine/1".into()), None, std::io::empty()).unwrap();
+        let got = with_site_rules(&sites, &url, Some(16), &mut headers, opts(8));
+        assert_eq!(got.max_connections, 16);
+        assert_eq!(headers.get("user-agent").unwrap(), "Mine/1");
+        assert_ne!(got.user_agent, "Rule/1");
+        // Another site: nothing of the rule's.
+        let mut headers = HeaderMap::new();
+        let other: url::Url = "https://example.org/f.bin".parse().unwrap();
+        let got = with_site_rules(&sites, &other, None, &mut headers, opts(8));
+        assert_eq!(got.max_connections, 8);
+        assert!(!got.browser_first);
+        assert!(headers.is_empty());
+    }
+
     /// #1776: `torrent-get` adds the public list as the app does: to a public torrent, after its
     /// own tracker, the hash the same; never to a private one; nothing said when nothing is new.
     #[test]
@@ -2601,6 +2722,7 @@ mod tests {
             adapter: String::new(),
             torrent_proxy: TorrentProxy::Through("socks5://127.0.0.1:1080".into()),
             public_trackers: None,
+            sites: SiteRules::default(),
         };
         let cmd = |args: &[&str]| {
             Cli::try_parse_from(std::iter::once(NAME).chain(args.iter().copied()))
