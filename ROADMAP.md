@@ -631,6 +631,10 @@ These ship in the next version.
 - ✅ Galleries: file paths are checked more carefully
 - ✅ Helpers: ffmpeg's download is checked more carefully
 - ✅ Torrents: a torrent made from a folder lists its files by name, the same on every computer
+- ✅ Tests: the check that the torrent session asks trackers through MDM's own client no longer
+  fails now and then on a busy machine (seen on the Linux test machine): its test tracker noted
+  each request after answering it, so the redirected request could be noted first; it now notes
+  each one before answering
 - ✅ Torrents: the engine checks what it's sent more carefully
 - ✅ Extracting: 7z and RAR archives are checked more carefully
 - ✅ Archive test: archives are checked more carefully

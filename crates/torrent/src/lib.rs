@@ -3025,8 +3025,10 @@ mod tests {
                             body.len()
                         )
                     };
-                    let _ = s.write_all(answer.as_bytes()).await;
+                    // Recorded before it is answered: the request its redirect leads to can't
+                    // be recorded first, however late this task runs after its answer.
                     let _ = tx.send(req);
+                    let _ = s.write_all(answer.as_bytes()).await;
                 });
             }
         });
