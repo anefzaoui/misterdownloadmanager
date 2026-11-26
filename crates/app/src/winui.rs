@@ -339,6 +339,14 @@ pub fn name(resp: &Response, name: &str) {
         .accesskit_node_builder(resp.id, |node| node.set_label(name.to_owned()));
 }
 
+/// A control's place among its siblings ("tab 3 of 12"): AccessKit counts from 0.
+pub fn position_in_set(resp: &Response, i: usize, n: usize) {
+    resp.ctx.accesskit_node_builder(resp.id, |node| {
+        node.set_position_in_set(i);
+        node.set_size_of_set(n);
+    });
+}
+
 /// A text box's or drop-down's name for screen readers, from its caption ([`caption_for`]).
 fn name_from_caption(resp: &Response) {
     if let Some(name) = caption_for(&resp.ctx, resp.rect) {
@@ -6299,6 +6307,18 @@ pub fn tabs_light(
             .collect()
     };
     let mut clicked = None;
+    // The strip as a tab list in the accessibility tree, the tabs its children: UI Automation
+    // and AT-SPI read a tab's "of n" from its container, never from the tab itself — so the
+    // count is the strip's, as the download list carries its rows' (list.rs, #1407).
+    let mut strip_ui = ui.new_child(
+        egui::UiBuilder::new()
+            .max_rect(Rect::from_min_max(rc.min, pos2(rc.right(), t)))
+            .accessibility_role(egui::accesskit::Role::TabList),
+    );
+    ui.ctx().accesskit_node_builder(strip_ui.unique_id(), |n| {
+        n.set_size_of_set(tabs.len());
+    });
+    let ui = &mut strip_ui;
     let mut draw = |i: usize, tab: &LightTab, sel: bool| {
         let (sel_x, unsel_x, label_x, shown) = &placed[i];
         let (x0, x1) = if sel { *sel_x } else { *unsel_x };
@@ -6322,6 +6342,8 @@ pub fn tabs_light(
             true,
             Some(sel),
         );
+        // "tab i of n", as a Windows tab control says it (#1407).
+        position_in_set(&resp, i, tabs.len());
         let resp = enter_is_not_a_click(ui, resp);
         if resp.clicked() && !sel {
             clicked = Some(i);
@@ -6386,6 +6408,71 @@ pub fn tabs_light(
         draw(selected, tab, true);
     }
     clicked
+}
+
+#[cfg(test)]
+mod tab_list_tests {
+    use super::*;
+    use egui::accesskit::{Role, TreeUpdate};
+
+    fn pass(count: usize, selected: usize) -> TreeUpdate {
+        let ctx = egui::Context::default();
+        let mut defs = egui::FontDefinitions::default();
+        install_fonts(&mut defs, None);
+        ctx.set_fonts(defs);
+        ctx.enable_accesskit();
+        let labels = ["One", "Two", "Three", "Four"];
+        let tabs: Vec<LightTab> = (0..count)
+            .map(|i| LightTab {
+                label: labels[i],
+                sel: (i as f32 * 60.0, i as f32 * 60.0 + 62.0),
+                unsel: (i as f32 * 60.0 + 2.0, i as f32 * 60.0 + 60.0),
+            })
+            .collect();
+        let input = egui::RawInput {
+            screen_rect: Some(Rect::from_min_size(Pos2::ZERO, egui::vec2(500.0, 400.0))),
+            ..Default::default()
+        };
+        let mut out = ctx.run_ui(input, |ui| {
+            let rc = Rect::from_min_size(pos2(10.0, 10.0), egui::vec2(400.0, 300.0));
+            tabs_light(ui, pos2(10.0, 10.0), rc, &tabs, selected);
+        });
+        out.textures_delta.clear();
+        out.platform_output
+            .accesskit_update
+            .expect("AccessKit is on")
+    }
+
+    #[test]
+    fn the_strip_is_a_tab_list_holding_its_tabs() {
+        // UI Automation and AT-SPI read a tab's "of n" from its container (#1407): the strip
+        // says the count, the tabs are its children, each with its place.
+        let u = pass(3, 1);
+        let strip = u
+            .nodes
+            .iter()
+            .find(|(_, n)| n.role() == Role::TabList)
+            .map(|(_, n)| n)
+            .expect("the strip is a tab list");
+        assert_eq!(strip.size_of_set(), Some(3));
+        let mut tabs: Vec<&egui::accesskit::Node> = u
+            .nodes
+            .iter()
+            .filter(|(_, n)| n.role() == Role::Tab)
+            .map(|(_, n)| n)
+            .collect();
+        assert_eq!(tabs.len(), 3);
+        tabs.sort_by_key(|n| n.position_in_set());
+        for (i, tab) in tabs.iter().enumerate() {
+            assert_eq!(tab.position_in_set(), Some(i));
+        }
+        for (id, _) in u.nodes.iter().filter(|(_, n)| n.role() == Role::Tab) {
+            assert!(
+                strip.children().contains(id),
+                "every tab is the tab list's child"
+            );
+        }
+    }
 }
 
 /// The 8 × 5 "v" of drop-downs, its top-left at `at`.
