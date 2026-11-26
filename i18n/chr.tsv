@@ -488,7 +488,7 @@
 #, machine
 	Address or magnet link	ᎤᏃᎴᎢ ᎠᎴ ᎤᏃᎴᎢ ᎢᏗᏢ
 #. message or event log entry in the main window
-#. Link grabber: where the links came from: the Add URL window (an address typed or pasted there)
+#. Link grabber: where the links came from: an address given on its own (typed or pasted in Add URL, given on the command line)
 #, machine
 	Address typed	ᏗᏓᏂᎸᎩ ᏗᎪᏪᎵ ᏗᏟᏍᏙᏗ ᎨᏒᎢ
 #. text in the Options window; text in preview.rs; text in a download's Properties window
@@ -722,6 +722,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Azerbaijan	ᎠᏤᎵᏆᏯᏂ
+#. button in setup.rs
+#. button of the first start's setup window: the step before
+#, machine
+	Back	ᎠᎦᏙᎬ
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -815,6 +819,10 @@
 #. the trailing ... means it opens a window: keep it
 #, machine
 	Browse...	ᏗᏯᏛᎯᏍᏗ...
+#. text in setup.rs
+#. a step of the first start's setup window: the extension that hands the browser's downloads to MDM
+#, machine
+	Browser extension	ᏗᏓᏟᎶᏍᏗ ᏗᎪᏪᎵ
 #. text in extension.rs
 #, machine
 	Browser integration isn't set up on this computer, so no browser can reach Mister Download Manager yet.	ᏗᏓᏂᏴᏗ ᏗᏕᎬᏔᏅᎢ ᏗᏓᏂᏴᏗ ᏗᏕᎬᏔᏅᎢ ᎥᏝ ᏱᏚᎾᏙᏢᏒᎢ ᎯᎠ ᏗᏓᏂᏴᏗ ᏗᏕᎬᏔᏅᎢ, ᎾᏍᎩ ᎢᏳᏍᏗ ᎥᏝ ᏗᏓᏂᏴᏗ ᏗᏕᎬᏔᏅᎢ ᏱᏚᎾᏙᏢᏒᎢ Mister Download Manager ᎢᏯᏍᏗ.
@@ -988,13 +996,7 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Checking the program...	ᎢᎬᎾᎯᏍᏗᏍᎬ...
-#. text in helpers.rs
-#. a downloaded helper's signature and checksum are being checked; {name} = yt-dlp or ffmpeg
-#. {name} = a file name; {n} = a number (keep the braces as they are)
-#. the trailing ... means it is still going on: keep it
-#, machine
-	Checking {name} ({n} of {total})...	ᎠᎪᎵᏰᏗ {name} ({n} ᎤᎾᏓᏑᏴ {total})...
-#. text in the Checksum window; text in extension.rs; text in the Link grabber window; text in the Options window
+#. text in the Checksum window; text in extension.rs; text in the Link grabber window; text in helpers.rs; text in the Options window
 #. in the browser extension's window, while it reads whether the browsers can reach MDM (a moment, usually)
 #. Test browser integration, while it reads where browser integration stands (a moment, usually)
 #. the trailing ... means it is still going on: keep it
@@ -1017,7 +1019,7 @@
 #. title of the message when the font picked in View → Font can't be used
 #, machine
 	Choose a font file	ᎠᏍᏔᏅᎢ ᎦᏬᏂᎯᏍᏗ ᏗᎪᏪᎵ ᎠᏍᏆᏂᎪᏗᏍᎩ
-#. text in langpick.rs
+#. text in langpick.rs; text in setup.rs
 #, machine
 	Choose a language	ᎦᎴᏴᏍᏗ ᎦᏬᏂᎯᏍᏗ
 #. text in langpick.rs
@@ -1061,7 +1063,7 @@
 #. text in the Options window
 #, machine
 	Clock:	ᎢᏳᏟᎶᏛ:
-#. text in archtest.rs; text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in a dialog box; button in extension.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list; button in the Options window; button in rssdlg.rs; button in torrentfiles.rs; text in traypanel.rs; text in standard windows
+#. text in archtest.rs; text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in a dialog box; button in extension.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list; button in the Options window; button in rssdlg.rs; button in setup.rs; button in torrentfiles.rs; text in traypanel.rs; text in standard windows
 #. both verbs: Verify = check the file now; Close = close the window
 #. tooltip of the × that closes the Categories pane
 #. verb: closes this window
@@ -1612,11 +1614,6 @@
 #. Helpers: a newer version of a helper is being downloaded; {percent} = how far, a number
 #, machine
 	Downloading the update... {percent}%	ᏕᎦᎸᏫᏍᏓᏁᎭ ᏚᎾᏓᏁᏟᏴᏒᎢ... {percent}%
-#. text in helpers.rs
-#. {name} = yt-dlp, ffmpeg or Node.js; {n} of {total} = which helper of how many; {percent} = how far, e.g. 45%
-#. {name} = a file name; {n} = a number (keep the braces as they are)
-#, machine
-	Downloading {name} ({n} of {total})... {percent}	ᎠᎾᏕᎳᎰᏍᏗ {name} ({n} ᎤᎾᏓᏑᏴ {total})... {percent}
 #. text in the download list; text in the Options window
 #. tab title: download settings
 #, machine
@@ -2039,6 +2036,10 @@
 #. text in the Find window
 #, machine
 	Find:	ᎤᏲᎢᏍᏗ:
+#. text in setup.rs
+#. button of the first start's setup window, on its last step: the setup is done
+#, machine
+	Finish	ᎤᏍᏆᏗ
 #. item in the Categories tree in the main window; text in remote.rs
 #. adjective: the downloads that are complete
 #. remote control page (on a phone): tab: downloads finished
@@ -2248,10 +2249,6 @@
 #. button: opens 7-Zip's website (7-Zip is a program's name)
 #, machine
 	Get 7-Zip	7-Zip ᎭᏩᏛᎦ
-#. window title in helpers.rs
-#. title of the first start's window that offers yt-dlp and ffmpeg
-#, machine
-	Get ready for video downloads	ᎤᎾᏛᏅᎢᏍᏓᏁᎸ ᏗᏓᏂᏱᏍᎩ ᏗᏟᎶᏍᏔᏅᎯ
 #. button in the Options window
 #, machine
 	Get System	ᏗᏓᎴᏂᏍᏗ ᏗᏓᎴᏂᏍᏗ
@@ -2534,6 +2531,10 @@
 #. button: download and install the yt-dlp program
 #, machine
 	Install yt-dlp	yt-dlp ᎦᏴᏍᏗ
+#. text in helpers.rs
+#. the first start's video helpers: beside a helper that is there already (MDM's own copy or the system's)
+#, machine
+	Installed	ᎠᎦᏔᏅᎯ
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. Check for updates, after Update now downloaded it: unpacking and putting the new version in place
 #. the trailing ... means it is still going on: keep it
@@ -2739,7 +2740,7 @@
 #. a country's name (where a download's server is)
 #, machine
 	Kyrgyzstan	ᎩᎵᎩᏍᏔᏂ
-#. text in langpick.rs
+#. text in langpick.rs; text in setup.rs
 #. window title (the interface language)
 #, machine
 	Language	ᎦᏬᏂᎯᏍᏗ
@@ -3205,6 +3206,10 @@
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
 #, machine
 	Mister Download Manager is running the queue "{queue}"	Mister Download Manager ᎤᎾᏛᏁᏗ ᎨᏒᎢ "{queue}"
+#. text in setup.rs
+#. the first start's setup window, under "Choose a language"
+#, machine
+	Mister Download Manager shows every window in it. View → Language changes it later.	Mister Download Manager ᏂᎦᏛ ᏗᎦ finestra ᎬᏂᎨᏒ ᏂᎬᏁᎰ. ᎦᏁᏟᏴᏓ ᎦᏟᎶᏍᏗ → ᎦᏬᏂᎯᏍᏗ ᎣᏂᏗᏢ.
 #. text in crashui.rs
 #. crash report window heading: MDM's window doesn't answer (frozen)
 #, machine
@@ -3455,6 +3460,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	New Zealand	ᎢᏤ ᏏᎢᎴᏂᏗ
+#. text in setup.rs
+#. button of the first start's setup window: the next step
+#, machine
+	Next	ᎣᏂᏗᏢ
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3665,7 +3674,7 @@
 #. Link grabber, a link's status: a web page sent it (Click'n'Load), so it isn't looked up (name, size, online) before it is added
 #, machine
 	Not looked up	ᎾᏍᎩ ᎢᏗᏢ ᎢᏤᎳᏍᏓ
-#. text in cnl.rs; button in helpers.rs
+#. text in cnl.rs
 #. button in the Click'n'Load window: refuse these links, ask again next time
 #, machine
 	Not now	ᎥᏝ ᎪᎯ ᎢᏳᎢ
@@ -4209,10 +4218,6 @@
 #. text in helpers.rs
 #, machine
 	Reads a page and lists every quality the site offers, up to 4K, from YouTube, Vimeo and over a thousand other sites.	ᏓᏓᏁᏟᏴᏍᎪᎢ ᎤᎾᏛᏅᎢᏍᏓᏁᎸᎢ ᎠᎴ ᏓᏓᏁᏟᏴᏍᎪᎢ ᏂᎦᎥ ᎤᏟᏍᏗ ᏂᏚᎾᏓᏁᎸᎢ, 4K ᎢᏴᏛ, YouTube-ᏂᏚᎾᏓᏁᎸᎢ, Vimeo-ᏂᏚᎾᏓᏁᎸᎢ ᎠᎴ ᎢᏯᎦᏴᎵ ᎤᏟᏍᏗ ᏂᏚᎾᏓᏁᎸᎢ.
-#. text in helpers.rs
-#. the helpers are downloaded, checked and ready; {list} = names and versions, e.g. "yt-dlp 2026.10.26, ffmpeg 9.0"
-#, machine
-	Ready: {list}	ᎠᏛᏅᎢᏍᏔᏅᎢ: {list}
 #. message or event log entry in the main window
 #. event log entry: Reannounce failed, with the reason
 #. {error} = an error message (keep the braces as they are)
@@ -4999,6 +5004,7 @@
 #, machine
 	Started with yt-dlp {version} ({format})	ᎤᎾᎴᏅᏗ yt-dlp {version} ({format})
 #. text in helpers.rs
+#. the first start's video helpers: a helper's download has started, its size not known yet
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Starting...	ᎠᎴᏅᏗᏍᎬᎢ...
@@ -5019,6 +5025,11 @@
 #. label before the download's state
 #, machine
 	Status:	ᎦᏟᏗ:
+#. text in setup.rs
+#. what a screen reader says of the first start's setup window's steps; {n} = this step's number, {total} = how many, {name} = its name (Language, Video helpers, Browser extension)
+#. {n} = a number; {name} = a file name (keep the braces as they are)
+#, machine
+	Step {n} of {total}: {name}	ᏗᎧᏃᎩᏍᏗ {n} ᎤᏓᎷᎪᏗ {total}: {name}
 #. text in preview.rs
 #. the preview pane: a finished download's file is still where it was saved
 #, machine
@@ -6067,9 +6078,6 @@
 #. a country's name (where a download's server is)
 #, machine
 	Trinidad and Tobago	ᏟᏂᏓᏗ ᎠᎴ ᏙᏆᎪ
-#. button in helpers.rs
-#, machine
-	Try again	ᏔᎵᏁ ᎭᏓᏂᏱᏍᎩ
 #. text in errors.rs
 #. what to do when a helper couldn't be downloaded because its server limits requests; {name} = yt-dlp, ffmpeg or gallery-dl; {helpers} and {other} = the buttons Helpers and Use another program
 #. {name} = a file name (keep the braces as they are)
@@ -6470,6 +6478,10 @@
 #. category name: video files
 #, machine
 	Video	ᏗᏟᎶᏍᏔᏅᎯ
+#. text in setup.rs
+#. a step of the first start's setup window: yt-dlp, ffmpeg and Node.js, the programs that download videos
+#, machine
+	Video helpers	ᏗᎧᏃᎩᏍᏗ ᏗᏂᏍᏕᎵᏍᎩ
 #. text in the Download video window
 #, machine
 	Video lookups use yt-dlp (about 23 MB, checked against its signature).	ᏗᏟᎶᏍᏔᏅᎯ ᏗᎦᏁᎶᏗ ᎬᏔᏅᎢ yt-dlp (23 MB ᎢᏴᏓ, ᎠᏓᏁᎶᏗ ᎤᏙᏢᏒᎢ).
@@ -6556,6 +6568,10 @@
 #. text in the Scheduler window
 #, machine
 	Wednesday	ᏦᎢᏁᎢᎦ
+#. text in setup.rs
+#. title of the first start's setup window (the language, the video helpers, the browser extension)
+#, machine
+	Welcome to Mister Download Manager	ᎣᏏᏲ Mister Download Manager
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -6658,7 +6674,7 @@
 #, machine
 	Yes	ᎥᎥ
 #. button in helpers.rs
-#. the first start's helpers window: download yt-dlp and ffmpeg (the recommended answer)
+#. the first start's helpers: download every missing helper (yt-dlp, ffmpeg, Node.js) at once (the recommended answer)
 #, machine
 	Yes, download them (recommended)	ᎥᎥ, ᏕᎭᏓᏂᏱᏍᎩ (ᎤᎾᏛᏅᎢᏍᏓᏁᎸ)
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)

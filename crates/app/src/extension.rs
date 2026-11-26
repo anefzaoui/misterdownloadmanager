@@ -221,22 +221,98 @@ impl Extension {
         open_steps: &mut bool,
     ) {
         let p = ui.painter().clone();
-        let (ink, muted) = (winui::TEXT(), winui::MUTED());
         // The banner: the logo, what the extension does, in one line, and how.
-        let extra = winui::banner(
-            ui,
-            &p,
-            o,
-            W,
-            "extension-banner",
-            // i18n: the headline of the window that offers the browser extension
-            crate::i18n::t("Catch downloads from your browser"),
-            crate::i18n::t(
-                "Add the free extension: files you download in your browser come here, and videos get a Download button.",
-            ),
-        );
+        let extra = winui::banner(ui, &p, o, W, "extension-banner", headline(), subline());
         // Everything below it moves down with a taller banner.
         let o = o + egui::vec2(0.0, extra);
+        let (connected, lines) = self.content(ui, o, W, BANNER + 16.0, open_steps);
+        crate::dialogs::grow_px(
+            ui.ctx(),
+            "extension-status",
+            14.0 * lines.saturating_sub(3) as f32,
+        );
+        winui::etched_h(&p, o.x + 16.0, o.y + h - 46.0, W - 32.0);
+        let y = h - 36.0;
+        // The fallback, when a store can't be used (a managed browser, a store turned off): the
+        // tutorial, which adds it by hand.
+        by_hand(ui, &p, o.x + 18.0, o.y + y + 17.0);
+        // As wide as their labels in this language (#192), Don't ask again only while no
+        // extension has reached MDM.
+        let row: Vec<(&str, f32)> = if connected {
+            vec![("Close", 90.0)]
+        } else {
+            vec![("Don't ask again", 130.0), ("Close", 90.0)]
+        };
+        let placed = winui::buttons_to_right(&p, W - 18.0, 8.0, &row, 200.0);
+        let close_at = placed[placed.len() - 1];
+        let close = winui::button(
+            ui,
+            r(o, close_at.0, y, close_at.1, 25.0),
+            "Close",
+            ButtonKind::Default,
+            false,
+            None,
+        );
+        if close.clicked() || winui::enter_pressed(ui) {
+            *answer = Some(false);
+        }
+        if !connected {
+            // i18n: button in the browser extension's window: stop offering it at each start
+            let never = winui::button(
+                ui,
+                r(o, placed[0].0, y, placed[0].1, 25.0),
+                "Don't ask again",
+                ButtonKind::Normal,
+                false,
+                None,
+            );
+            if never.clicked() {
+                *answer = Some(true);
+            }
+        }
+    }
+
+    /// The first start's setup page (setup.rs): the browsers' rows and where it stands, as in
+    /// this window, `w` wide under English origin `o`, and the tutorial's link. Its height. Safari's
+    /// steps open in their own window ([`Extension::steps_window`]).
+    pub fn page(&mut self, ui: &mut Ui, o: Pos2, w: f32) -> f32 {
+        // Where it stands, read again now and then beside the window (as `show` does).
+        self.follow(Some(ui.ctx()));
+        ui.ctx().request_repaint_after(LOOK_EVERY);
+        let mut open_steps = false;
+        let (_, lines) = self.content(ui, o, w, PAGE_TOP, &mut open_steps);
+        if open_steps && self.steps.is_none() {
+            self.steps = Some(SafariSteps);
+        }
+        let p = ui.painter().clone();
+        let y = PAGE_TOP + self.browsers.len() as f32 * ROW + 20.0 + 14.0 * lines.max(1) as f32;
+        by_hand(ui, &p, o.x + 18.0, o.y + y + 14.0);
+        y + 24.0
+    }
+
+    /// Safari's steps, in their own window while asked for from the setup's page.
+    pub fn steps_window(&mut self, ctx: &egui::Context) {
+        if let Some(steps) = &mut self.steps
+            && !matches!(steps.show(ctx), Outcome::Open)
+        {
+            self.steps = None;
+        }
+    }
+
+    /// A row per browser with the button that adds the extension to it, from English `top`, and
+    /// where it stands under them, `w` wide from English origin `o`: this window's, or the first
+    /// start's setup (setup.rs). Whether a browser's extension has reached MDM, and how many lines
+    /// the paragraph of where it stands took (three are planned).
+    fn content(
+        &mut self,
+        ui: &mut Ui,
+        o: Pos2,
+        w: f32,
+        top: f32,
+        open_steps: &mut bool,
+    ) -> (bool, usize) {
+        let p = ui.painter().clone();
+        let (ink, muted) = (winui::TEXT(), winui::MUTED());
         // What was read last (beside the window); before the first answer, nothing said wrong.
         let status = self.shown.clone();
         let known = status.is_some();
@@ -255,7 +331,7 @@ impl Extension {
         // while STORE_ID is a placeholder, as in a build of its own).
         let store = mdm_ipc::extension::store_page();
         for (k, (name, program)) in self.browsers.iter().enumerate() {
-            let y = BANNER + 16.0 + k as f32 * ROW;
+            let y = top + k as f32 * ROW;
             let page = if is_gecko(name) {
                 Some(mdm_ipc::extension::FIREFOX_PAGE.to_owned())
             } else {
@@ -290,7 +366,7 @@ impl Extension {
             };
             // As wide as its label in this language (#192).
             let (add_x, add_w) =
-                winui::buttons_to_right(&p, W - 18.0, 8.0, &[(label, 150.0)], 220.0)[0];
+                winui::buttons_to_right(&p, w - 18.0, 8.0, &[(label, 150.0)], 220.0)[0];
             // This browser's extension is there already: said, before its button.
             if is_seen(&seen, name) {
                 let conn = format!(
@@ -368,13 +444,12 @@ impl Extension {
         // extension could reach the app, so that comes first, with the fix.
         // A paragraph longer than the three lines planned grows the window (its height counts
         // this already): it starts as high as before.
-        let grown = crate::dialogs::grow_extra(ui.ctx(), "extension-status");
-        let y = h - 84.0 - grown;
+        let y = top + self.browsers.len() as f32 * ROW + 20.0;
         let mut lines = 0;
         if !registered {
             // As wide as its label in this language (#192); the paragraph ends 10 px before it.
             let (fix_x, fix_w) =
-                winui::buttons_to_right(&p, W - 18.0, 8.0, &[("Set it up", 110.0)], 180.0)[0];
+                winui::buttons_to_right(&p, w - 18.0, 8.0, &[("Set it up", 110.0)], 180.0)[0];
             // macOS kept MDM out of a browser's folder (#1218, #1173): what to allow, and where.
             let why = match &refused {
                 Some(refused) => format!("{} {}", refused_line(refused), refused_how()),
@@ -434,67 +509,46 @@ impl Extension {
                 o.y + y,
                 &line,
                 color,
-                o.x + W - 18.0,
+                o.x + w - 18.0,
                 14.0,
                 ("extension", "status"),
             );
         }
-        crate::dialogs::grow_px(
-            ui.ctx(),
-            "extension-status",
-            14.0 * lines.saturating_sub(3) as f32,
-        );
-        winui::etched_h(&p, o.x + 16.0, o.y + h - 46.0, W - 32.0);
-        let y = h - 36.0;
-        // The fallback, when a store can't be used (a managed browser, a store turned off): the
-        // tutorial, which adds it by hand.
-        if store.is_some()
-            && winui::link(
-                ui,
-                &p,
-                o.x + 18.0,
-                o.y + y + 17.0,
-                // i18n: link in the browser extension's window: the tutorial that adds it without the browser's store
-                "Install it by hand",
-                "by-hand",
-            )
-        {
-            crate::help::open_page(mdm_ipc::extension::GUIDE_DOC);
-        }
-        // As wide as their labels in this language (#192), Don't ask again only while no
-        // extension has reached MDM.
-        let row: Vec<(&str, f32)> = if connected {
-            vec![("Close", 90.0)]
-        } else {
-            vec![("Don't ask again", 130.0), ("Close", 90.0)]
-        };
-        let placed = winui::buttons_to_right(&p, W - 18.0, 8.0, &row, 200.0);
-        let close_at = placed[placed.len() - 1];
-        let close = winui::button(
+        (connected, lines)
+    }
+}
+
+/// The window's headline (and the setup page's, setup.rs).
+pub fn headline() -> &'static str {
+    // i18n: the headline of the window that offers the browser extension
+    crate::i18n::t("Catch downloads from your browser")
+}
+
+/// The window's subline under its headline.
+pub fn subline() -> &'static str {
+    crate::i18n::t(
+        "Add the free extension: files you download in your browser come here, and videos get a Download button.",
+    )
+}
+
+/// The browsers' rows on the setup's page start this far below its top.
+const PAGE_TOP: f32 = 12.0;
+
+/// The fallback, when a store can't be used (a managed browser, a store turned off): the link to
+/// the tutorial that adds it by hand, at English `x` and `baseline`.
+fn by_hand(ui: &Ui, p: &egui::Painter, x: f32, baseline: f32) {
+    if mdm_ipc::extension::store_page().is_some()
+        && winui::link(
             ui,
-            r(o, close_at.0, y, close_at.1, 25.0),
-            "Close",
-            ButtonKind::Default,
-            false,
-            None,
-        );
-        if close.clicked() || winui::enter_pressed(ui) {
-            *answer = Some(false);
-        }
-        if !connected {
-            // i18n: button in the browser extension's window: stop offering it at each start
-            let never = winui::button(
-                ui,
-                r(o, placed[0].0, y, placed[0].1, 25.0),
-                "Don't ask again",
-                ButtonKind::Normal,
-                false,
-                None,
-            );
-            if never.clicked() {
-                *answer = Some(true);
-            }
-        }
+            p,
+            x,
+            baseline,
+            // i18n: link in the browser extension's window: the tutorial that adds it without the browser's store
+            "Install it by hand",
+            "by-hand",
+        )
+    {
+        crate::help::open_page(mdm_ipc::extension::GUIDE_DOC);
     }
 }
 

@@ -70,6 +70,7 @@ mod scrollbar;
 mod secrets;
 mod selection;
 mod settings;
+mod setup;
 mod store;
 mod sysprogress;
 mod theme;

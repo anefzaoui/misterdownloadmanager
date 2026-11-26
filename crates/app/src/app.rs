@@ -1426,10 +1426,12 @@ pub struct App {
     updates: Option<crate::help::Updates>,
     shortcuts: Option<crate::help::Shortcuts>,
     tell_friend: Option<crate::help::TellFriend>,
-    /// The language picker (first start, View → Language...).
+    /// The language picker (View → Language...).
     lang_picker: Option<crate::langpick::Picker>,
-    /// The video helpers' offer (the first start's, after the language).
-    helpers: Option<crate::helpers::Helpers>,
+    /// The first start's setup (#1839): the language, the video helpers and the browser
+    /// extension in one window, and whether this run has weighed it.
+    setup: Option<crate::setup::Setup>,
+    setup_weighed: bool,
     /// "Files already there", opened on its own by `/show existing-files` (screenshots and the
     /// translations' fit check); Add torrent asks it itself.
     shown_existing: Option<crate::dialogs::ExistingFiles>,
@@ -2157,7 +2159,6 @@ impl App {
             settings.language = (code != crate::i18n::system_code()).then_some(code);
             settings.language_asked = true;
         }
-        let ask_language = !settings.language_asked;
         crate::i18n::set_lang(settings.language.as_deref());
         crate::theme::language_fonts(ctx);
         crate::regional::set(&settings.regional);
@@ -2217,7 +2218,6 @@ impl App {
         );
         // Moves MDM's end cut short (#1739): settled by their files, beside the window.
         app.settle_moves();
-        app.lang_picker = ask_language.then(|| crate::langpick::Picker::new(true, None));
         app.remote = remote;
         // Click'n'Load (#37): off unless Options → Archives and Link grabber turned it on.
         if let Err(why) = app.cnl.listen(app.settings.cnl_on) {
@@ -2321,7 +2321,8 @@ impl App {
             shortcuts: None,
             tell_friend: None,
             lang_picker: None,
-            helpers: None,
+            setup: None,
+            setup_weighed: false,
             shown_existing: None,
             extension: None,
             extension_weighed: false,
@@ -3626,7 +3627,18 @@ impl App {
             // starts again (renderer.rs).
             #[cfg(gpu)]
             "renderer-lost" if crate::offscreen() => crate::renderer::test_device_lost(),
-            "helpers" => self.helpers = Some(crate::helpers::Helpers::new()),
+            // The first start's setup, at its first step or at the one named (setup:helpers);
+            // `helpers` is its helpers' step (the window that offered them before #1839).
+            "setup" | "helpers" => {
+                let step = if window == "helpers" { "helpers" } else { tab };
+                self.setup = crate::setup::Setup::new(crate::setup::Need::ALL).map(|s| {
+                    match crate::setup::Step::named(step) {
+                        Some(step) => s.at(step),
+                        None => s,
+                    }
+                });
+                self.setup_weighed = true;
+            }
             "torrent-settings" => self.run(Cmd::TorrentSettings, None, ctx),
             // The first download's: Add trackers (a torrent), its right-click menu.
             "add-trackers" if first.is_some() => self.run(Cmd::TorrentAddTrackers, first, ctx),
@@ -13530,6 +13542,51 @@ impl App {
         }
     }
 
+    /// The first start's setup (#1839, setup.rs): weighed once per run, shown while it is open.
+    /// It is due while the language or the helpers were never asked; its steps are what this
+    /// start needs. Whether it is finished or closed, the language and the helpers count as asked
+    /// from then on, and the browser extension's own window waits for a later start.
+    fn first_start_setup(&mut self, ctx: &egui::Context) {
+        if !self.setup_weighed {
+            self.setup_weighed = true;
+            if crate::setup::due(self.settings.language_asked, self.settings.helpers_asked) {
+                let need = crate::setup::Need {
+                    language: !self.settings.language_asked,
+                    helpers: !self.settings.helpers_asked && crate::helpers::worth_asking(),
+                    extension: !self.extension_weighed
+                        && crate::extension::worth_asking(&self.settings),
+                };
+                tracing::info!("first start's setup: {need:?}");
+                self.setup = crate::setup::Setup::new(need);
+                self.extension_weighed = true;
+                if self.setup.is_none() {
+                    self.setup_done();
+                }
+            }
+        }
+        let Some(setup) = &mut self.setup else {
+            return;
+        };
+        let out = setup.show(ctx, &self.rt);
+        // A language picked: every window in it at once, as View → Language does. Keeping the
+        // system's own language (preselected) follows the system from then on.
+        if let Some(code) = setup.take_language() {
+            let code = code.filter(|c| *c != crate::i18n::system_code());
+            self.run(Cmd::Language(code), None, ctx);
+        }
+        if !matches!(out, Outcome::Open) {
+            self.setup = None;
+            self.setup_done();
+        }
+    }
+
+    /// The setup is over (finished, closed, or nothing to ask): not asked again.
+    fn setup_done(&mut self) {
+        self.settings.language_asked = true;
+        self.settings.helpers_asked = true;
+        self.dirty = true;
+    }
+
     fn help_dialogs(&mut self, ctx: &egui::Context) {
         if let Some(d) = &mut self.lang_picker {
             let first = !self.settings.language_asked;
@@ -13554,31 +13611,18 @@ impl App {
                 }
             }
         }
-        // Once the language is settled: the video helpers, offered once (helpers.rs).
-        if self.lang_picker.is_none()
-            && self.settings.language_asked
-            && !self.settings.helpers_asked
-        {
-            self.settings.helpers_asked = true;
-            self.dirty = true;
-            if crate::helpers::worth_asking() {
-                self.helpers = Some(crate::helpers::Helpers::new());
-            }
-        }
-        if let Some(d) = &mut self.helpers
-            && !matches!(d.show(ctx, &self.rt), Outcome::Open)
-        {
-            self.helpers = None;
-        }
+        self.first_start_setup(ctx);
         if let Some(q) = &mut self.shown_existing
             && !matches!(q.show(ctx), Outcome::Open)
         {
             self.shown_existing = None;
         }
-        // Then the browser extension, once per start until a browser has it (extension.rs).
+        // Then the browser extension, once per start until a browser has it (extension.rs): at
+        // a start with no setup (the setup has it as a step).
         if self.lang_picker.is_none()
-            && self.helpers.is_none()
+            && self.setup.is_none()
             && self.settings.language_asked
+            && self.settings.helpers_asked
             && !self.extension_weighed
         {
             self.extension_weighed = true;

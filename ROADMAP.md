@@ -569,6 +569,11 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ The first start's setup in one window: the language, the video helpers (each with its own
+  Install button and progress) and the browser extension as steps with Back and Next; the
+  language switches the window at once, steps not needed are left out, any can be passed, and it
+  doesn't come back once done. On Linux under X11 the window belongs to the main window
+  ([#1839](https://github.com/anefzaoui/misterdownloadmanager/issues/1839))
 - ✅ Windows: a crash inside the graphics driver while OpenGL draws (Intel's and AMD's OpenGL
   drivers, NVIDIA's Direct3D 11 thread on laptops with two graphics chips) moves MDM off OpenGL
   from the next start, as a freeze there does: Direct3D 12, on WARP when the card can't, and

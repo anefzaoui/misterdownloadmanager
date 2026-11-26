@@ -276,6 +276,127 @@ pub fn banner(
     extra
 }
 
+/// How tall [`steps`] is.
+pub const STEPS_H: f32 = 36.0;
+
+/// The steps of a window that goes through them one after the other (the first start's setup,
+/// setup.rs), on one line from English `y` under origin `o`, `w` wide: each step's number in a
+/// circle and its name, joined by lines. The steps done are the accent's circle with a tick, the
+/// current one the accent's circle with its number and its name in bold, the ones to come an
+/// outline in the muted colour: the accent button's colours (one blue, Windows 11's stepper, in
+/// both modes; a theme's own accent button where it has one, its text readable on it). A screen reader
+/// reads "Step 2 of 3: …" (`step_of`: that sentence, translated by the caller).
+#[allow(clippy::too_many_arguments)]
+pub fn steps(
+    ui: &Ui,
+    p: &Painter,
+    o: Pos2,
+    w: f32,
+    y: f32,
+    names: &[&str],
+    current: usize,
+    step_of: &str,
+) {
+    const D: f32 = 20.0;
+    const GAP: f32 = 6.0;
+    const MARGIN: f32 = 18.0;
+    let c = crate::theme::colors();
+    let n = names.len();
+    if n == 0 {
+        return;
+    }
+    let font = |k: usize| {
+        if k == current {
+            tahoma_bold()
+        } else {
+            tahoma()
+        }
+    };
+    // The names whole when they fit with a line of at least 16 px between steps; else each cut to
+    // its share.
+    let links = (n - 1) as f32;
+    let room = w - 2.0 * MARGIN - n as f32 * (D + GAP) - links * 16.0;
+    let widths: Vec<f32> = (0..n)
+        .map(|k| text_width_font(p, font(k), names[k]))
+        .collect();
+    let total: f32 = widths.iter().sum();
+    let shown: Vec<String> = (0..n)
+        .map(|k| {
+            if total <= room {
+                names[k].to_owned()
+            } else {
+                ellipsize(p, &font(k), names[k], (room / n as f32).max(24.0))
+            }
+        })
+        .collect();
+    let shown_w: Vec<f32> = (0..n)
+        .map(|k| text_width_font(p, font(k), &shown[k]))
+        .collect();
+    let used: f32 = shown_w.iter().map(|t| D + GAP + t).sum();
+    let link = if n > 1 {
+        ((w - 2.0 * MARGIN - used) / links).max(16.0)
+    } else {
+        0.0
+    };
+    let cy = y + STEPS_H / 2.0;
+    let mut x = MARGIN;
+    for k in 0..n {
+        let circle = rect(Rect::from_min_size(
+            pos2(o.x + x, o.y + cy - D / 2.0),
+            vec2(D, D),
+        ));
+        if k <= current {
+            p.circle_filled(circle.center(), D / 2.0, c.button_accent);
+        } else {
+            p.circle_stroke(
+                circle.center(),
+                D / 2.0 - 0.5,
+                egui::Stroke::new(1.0, c.muted),
+            );
+        }
+        if k < current {
+            // A tick, drawn: the same in every font.
+            let m = circle.center();
+            let tick = [
+                pos2(m.x - 4.5, m.y + 0.5),
+                pos2(m.x - 1.5, m.y + 3.5),
+                pos2(m.x + 4.5, m.y - 3.0),
+            ];
+            p.line(tick.to_vec(), egui::Stroke::new(1.6, c.button_accent_text));
+        } else {
+            let number = crate::i18n::integer(k as u64 + 1);
+            let color = if k == current { c.button_accent_text } else { c.muted };
+            let g = galley(p, tahoma_bold(), &number, color);
+            let at = circle.center() - g.size() / 2.0;
+            p.galley(pos2(at.x.round(), at.y.round()), g, color);
+        }
+        x += D + GAP;
+        let color = if k <= current { TEXT() } else { MUTED() };
+        let drawn = text_font(p, font(k), o.x + x, o.y + cy + 4.0, &shown[k], color);
+        if shown[k] != names[k] {
+            full_on_hover(ui, drawn, ("steps", k), names[k]);
+        }
+        x += shown_w[k];
+        if k + 1 < n {
+            let line = if k < current {
+                c.button_accent
+            } else {
+                c.list_frame
+            };
+            let (x0, x1) = (o.x + x + 8.0, o.x + x + link - 8.0);
+            if x1 > x0 {
+                let rc = rect(Rect::from_min_max(
+                    pos2(x0, o.y + cy),
+                    pos2(x1, o.y + cy + 1.0),
+                ));
+                p.rect_filled(rc, 0.0, line);
+            }
+            x += link;
+        }
+    }
+    readable(ui, r(o, 0.0, y, w, STEPS_H), "steps", step_of);
+}
+
 /// A separator dot between two parts of a line ("Germany · about 35 ms"), at English `x`: a
 /// round 3 px dot on the middle of the lowercase letters. The font's "·" is a thin tick sitting
 /// high at small sizes, which reads as an apostrophe. Its rect on screen.

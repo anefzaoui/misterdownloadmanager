@@ -545,7 +545,7 @@
 #, machine
 	Address or magnet link	Adres of magneetlink
 #. message or event log entry in the main window
-#. Link grabber: where the links came from: the Add URL window (an address typed or pasted there)
+#. Link grabber: where the links came from: an address given on its own (typed or pasted in Add URL, given on the command line)
 #, machine
 	Address typed	Adres getypt
 #. text in the Options window; text in preview.rs; text in a download's Properties window
@@ -839,6 +839,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Azerbaijan	Azerbeidzjan
+#. button in setup.rs
+#. button of the first start's setup window: the step before
+#, machine
+	Back	Vorige
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -940,6 +944,10 @@
 #. Site rules: column title: "Yes" when the rule asks the way a browser connects from the first request
 #, machine
 	Browser	Browser
+#. text in setup.rs
+#. a step of the first start's setup window: the extension that hands the browser's downloads to MDM
+#, machine
+	Browser extension	Browserextensie
 #. text in extension.rs
 #, machine
 	Browser integration isn't set up on this computer, so no browser can reach Mister Download Manager yet.	Browserintegratie is niet ingesteld op deze computer, dus geen enkele browser kan Mister Download Manager nog bereiken.
@@ -1134,17 +1142,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Checking the program...	Program controleren...
-#. text in helpers.rs
-#. a downloaded helper's signature and checksum are being checked; {name} = yt-dlp or ffmpeg
-#. {name} = a file name; {n} = a number (keep the braces as they are)
-#. the trailing ... means it is still going on: keep it
-#, machine
-	Checking {name} ({n} of {total})...	Bezig met controleren van {name} ({n} van {total})...
 #. text in the download list (sizes, speeds, status)
 #. the list's Status column while a torrent's files or a finished file are checked (against the torrent's hashes or a checksum); {percent} how much is checked, e.g. "42%". One short word: the column is narrow
 #, machine
 	Checking {percent}	Controleren {percent}
-#. text in the Checksum window; text in extension.rs; text in the Link grabber window; text in the Options window
+#. text in the Checksum window; text in extension.rs; text in the Link grabber window; text in helpers.rs; text in the Options window
 #. in the browser extension's window, while it reads whether the browsers can reach MDM (a moment, usually)
 #. Test browser integration, while it reads where browser integration stands (a moment, usually)
 #. the trailing ... means it is still going on: keep it
@@ -1171,7 +1173,7 @@
 #. file picker title: choose a JavaScript runtime's program (node.exe, deno.exe, qjs.exe, bun.exe)
 #, machine
 	Choose a JavaScript runtime (Node.js, Deno, QuickJS or Bun)	Kies een JavaScript-runtime (Node.js, Deno, QuickJS of Bun)
-#. text in langpick.rs
+#. text in langpick.rs; text in setup.rs
 #, machine
 	Choose a language	Kies een taal
 #. text in a dialog box
@@ -1224,7 +1226,7 @@
 #. text in the Options window
 #, machine
 	Clock:	Klok:
-#. text in archtest.rs; text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in a dialog box; button in extension.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list; button in the Options window; button in rssdlg.rs; button in torrentfiles.rs; text in traypanel.rs; text in standard windows
+#. text in archtest.rs; text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in a dialog box; button in extension.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list; button in the Options window; button in rssdlg.rs; button in setup.rs; button in torrentfiles.rs; text in traypanel.rs; text in standard windows
 #. both verbs: Verify = check the file now; Close = close the window
 #. tooltip of the × that closes the Categories pane
 #. verb: closes this window
@@ -1775,11 +1777,6 @@
 #. Helpers: a newer version of a helper is being downloaded; {percent} = how far, a number
 #, machine
 	Downloading the update... {percent}%	Update downloaden... {percent}%
-#. text in helpers.rs
-#. {name} = yt-dlp, ffmpeg or Node.js; {n} of {total} = which helper of how many; {percent} = how far, e.g. 45%
-#. {name} = a file name; {n} = a number (keep the braces as they are)
-#, machine
-	Downloading {name} ({n} of {total})... {percent}	Bezig met downloaden van {name} ({n} van {total})... {percent}
 #. text in the download list; text in the Options window
 #. tab title: download settings
 #, machine
@@ -2202,6 +2199,10 @@
 #. text in the Find window
 #, machine
 	Find:	Zoeken:
+#. text in setup.rs
+#. button of the first start's setup window, on its last step: the setup is done
+#, machine
+	Finish	Voltooien
 #. item in the Categories tree in the main window; text in remote.rs
 #. adjective: the downloads that are complete
 #. remote control page (on a phone): tab: downloads finished
@@ -2411,10 +2412,6 @@
 #. button: opens 7-Zip's website (7-Zip is a program's name)
 #, machine
 	Get 7-Zip	7-Zip downloaden
-#. window title in helpers.rs
-#. title of the first start's window that offers yt-dlp and ffmpeg
-#, machine
-	Get ready for video downloads	Klaar voor videodownloads
 #. button in the Options window
 #, machine
 	Get System	Systeem ophalen
@@ -2701,6 +2698,10 @@
 #. button: download and install the yt-dlp program
 #, machine
 	Install yt-dlp	yt-dlp installeren
+#. text in helpers.rs
+#. the first start's video helpers: beside a helper that is there already (MDM's own copy or the system's)
+#, machine
+	Installed	Geïnstalleerd
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. Check for updates, after Update now downloaded it: unpacking and putting the new version in place
 #. the trailing ... means it is still going on: keep it
@@ -2906,7 +2907,7 @@
 #. a country's name (where a download's server is)
 #, machine
 	Kyrgyzstan	Kirgizië
-#. text in langpick.rs
+#. text in langpick.rs; text in setup.rs
 #. window title (the interface language)
 #, machine
 	Language	Taal
@@ -3372,6 +3373,10 @@
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
 #, machine
 	Mister Download Manager is running the queue "{queue}"	Mister Download Manager voert de wachtrij "{queue}" uit
+#. text in setup.rs
+#. the first start's setup window, under "Choose a language"
+#, machine
+	Mister Download Manager shows every window in it. View → Language changes it later.	In Mister Download Manager worden alle vensters in deze taal weergegeven. Via Beeld → Taal kunt u dit later wijzigen.
 #. text in crashui.rs
 #. crash report window heading: MDM's window doesn't answer (frozen)
 #, machine
@@ -3622,6 +3627,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	New Zealand	Nieuw-Zeeland
+#. text in setup.rs
+#. button of the first start's setup window: the next step
+#, machine
+	Next	Volgende
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3836,7 +3845,7 @@
 #. Link grabber, a link's status: a web page sent it (Click'n'Load), so it isn't looked up (name, size, online) before it is added
 #, machine
 	Not looked up	Niet opgezocht
-#. text in cnl.rs; button in helpers.rs
+#. text in cnl.rs
 #. button in the Click'n'Load window: refuse these links, ask again next time
 #, machine
 	Not now	Niet nu
@@ -4384,10 +4393,6 @@
 #. text in helpers.rs
 #, machine
 	Reads a page and lists every quality the site offers, up to 4K, from YouTube, Vimeo and over a thousand other sites.	Leest een pagina en toont elke kwaliteit die de site biedt, tot 4K, van YouTube, Vimeo en meer dan duizend andere sites.
-#. text in helpers.rs
-#. the helpers are downloaded, checked and ready; {list} = names and versions, e.g. "yt-dlp 2026.10.26, ffmpeg 9.0"
-#, machine
-	Ready: {list}	Klaar: {list}
 #. message or event log entry in the main window
 #. event log entry: Reannounce failed, with the reason
 #. {error} = an error message (keep the braces as they are)
@@ -5174,6 +5179,7 @@
 #, machine
 	Started with yt-dlp {version} ({format})	Gestart met yt-dlp {version} ({format})
 #. text in helpers.rs
+#. the first start's video helpers: a helper's download has started, its size not known yet
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Starting...	Bezig met starten...
@@ -5194,6 +5200,11 @@
 #. label before the download's state
 #, machine
 	Status:	Status:
+#. text in setup.rs
+#. what a screen reader says of the first start's setup window's steps; {n} = this step's number, {total} = how many, {name} = its name (Language, Video helpers, Browser extension)
+#. {n} = a number; {name} = a file name (keep the braces as they are)
+#, machine
+	Step {n} of {total}: {name}	Stap {n} van {total}: {name}
 #. text in preview.rs
 #. the preview pane: a finished download's file is still where it was saved
 #, machine
@@ -6242,9 +6253,6 @@
 #. a country's name (where a download's server is)
 #, machine
 	Trinidad and Tobago	Trinidad en Tobago
-#. button in helpers.rs
-#, machine
-	Try again	Opnieuw proberen
 #. text in errors.rs
 #. what to do when a helper couldn't be downloaded because its server limits requests; {name} = yt-dlp, ffmpeg or gallery-dl; {helpers} and {other} = the buttons Helpers and Use another program
 #. {name} = a file name (keep the braces as they are)
@@ -6657,6 +6665,10 @@
 #. category name: video files
 #, machine
 	Video	Video
+#. text in setup.rs
+#. a step of the first start's setup window: yt-dlp, ffmpeg and Node.js, the programs that download videos
+#, machine
+	Video helpers	Videohelpers
 #. text in the Download video window
 #, machine
 	Video lookups use yt-dlp (about 23 MB, checked against its signature).	Voor het ophalen van video's wordt yt-dlp gebruikt (ongeveer 23 MB, gecontroleerd aan de hand van de handtekening).
@@ -6743,6 +6755,10 @@
 #. text in the Scheduler window
 #, machine
 	Wednesday	Woensdag
+#. text in setup.rs
+#. title of the first start's setup window (the language, the video helpers, the browser extension)
+#, machine
+	Welcome to Mister Download Manager	Welkom bij Mister Download Manager
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -6845,7 +6861,7 @@
 #, machine
 	Yes	Ja
 #. button in helpers.rs
-#. the first start's helpers window: download yt-dlp and ffmpeg (the recommended answer)
+#. the first start's helpers: download every missing helper (yt-dlp, ffmpeg, Node.js) at once (the recommended answer)
 #, machine
 	Yes, download them (recommended)	Ja, downloaden (aanbevolen)
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
