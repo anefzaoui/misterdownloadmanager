@@ -502,6 +502,80 @@ async fn one_time_links() {
     assert_eq!(log.iter().filter(|e| e.outcome == "fault:once").count(), 3);
 }
 
+/// `lasts_ms`: a link's time runs from its first request, however late that is, and every
+/// address with the same `link` expires with it; another `link` has its own time.
+#[tokio::test]
+async fn links_timed_from_their_first_request() {
+    let s = server("").await;
+    let c = reqwest::Client::new();
+    let status = |path: &str| {
+        let (c, url) = (c.clone(), s.url(path));
+        async move { c.get(&url).send().await.unwrap().status() }
+    };
+    // Asked late: still good, the first request starts its time.
+    tokio::time::sleep(Duration::from_millis(400)).await;
+    assert_eq!(status("/gen/1K/a?seed=1&lasts_ms=200&link=one").await, 200);
+    tokio::time::sleep(Duration::from_millis(400)).await;
+    // Its time is up, for its other addresses too; another link's starts now.
+    assert_eq!(status("/gen/1K/a?seed=1&lasts_ms=200&link=one").await, 403);
+    assert_eq!(status("/gen/1K/b?seed=2&lasts_ms=200&link=one").await, 403);
+    assert_eq!(status("/gen/1K/a?seed=1&lasts_ms=200&link=two").await, 200);
+    assert_eq!(status("/gen/1K/a?seed=1&lasts_ms=x").await, 400);
+}
+
+/// #1781: `image=WxH` makes a generated file a picture of that size (a BMP's header over its
+/// bytes, image/bmp unless `type` says); `/page?images=1` is a gallery of them, every picture it
+/// shows, links or sets as a CSS background whole in its file.
+#[tokio::test]
+async fn pictures_and_their_gallery() {
+    let s = server("").await;
+    let r = reqwest::get(s.url("/gen/256K/photo1.jpg?image=1600x1200"))
+        .await
+        .unwrap();
+    assert_eq!(r.headers()["content-type"], "image/bmp");
+    let b = r.bytes().await.unwrap();
+    assert_eq!(b.len(), 256 << 10);
+    assert_eq!(&b[..2], b"BM");
+    let u32_at = |i: usize| u32::from_le_bytes(b[i..i + 4].try_into().unwrap());
+    assert_eq!((u32_at(18), u32_at(22)), (1600, 1200));
+    let typed = reqwest::get(s.url("/gen/1K/a.webp?image=8x8&type=image%2Fwebp"))
+        .await
+        .unwrap();
+    assert_eq!(typed.headers()["content-type"], "image/webp");
+    for bad in ["8", "0x8", "8x", "99999x2"] {
+        let r = reqwest::get(s.url(&format!("/gen/1K/a.png?image={bad}")))
+            .await
+            .unwrap();
+        assert_eq!(r.status(), 400, "image={bad}");
+    }
+
+    let (_, page) = text(&s, "/page?images=1").await;
+    assert!(!page.contains("<video"), "the gallery alone");
+    assert!(page.contains("<picture><source type=image/webp"));
+    assert!(page.contains("image-set(url('/gen/16K/bg2.png?image=400x300') 1x,"));
+    let mut seen = 0;
+    for part in page.split("/gen/").skip(1) {
+        let address = part.split(['"', '\'', ' ', ')']).next().unwrap();
+        let (size, rest) = address.split_once('/').unwrap();
+        let Some((_, wh)) = rest.split_once("?image=") else {
+            assert!(rest.ends_with(".pdf"), "{address}");
+            continue;
+        };
+        let (w, h) = wh.split_once('x').unwrap();
+        let size = content::parse_size(size).unwrap();
+        let need = content::bmp_len(w.parse().unwrap(), h.parse().unwrap());
+        assert!(
+            size >= need,
+            "{address}: {size} bytes, the picture takes {need}"
+        );
+        seen += 1;
+    }
+    assert_eq!(seen, 19, "every picture's address checked");
+    let (_, seeded) = text(&s, "/page?images=1&seed=7").await;
+    assert_eq!(seeded.matches("?seed=7&image=").count(), 19);
+    assert_eq!(seeded.replace("?seed=7&image=", "?image="), page);
+}
+
 async fn text(s: &LabServer, path: &str) -> (reqwest::header::HeaderMap, String) {
     let r = reqwest::get(s.url(path)).await.unwrap();
     assert_eq!(r.status(), 200, "{path}");
@@ -829,6 +903,39 @@ async fn help_lists_the_routes() {
     ] {
         assert!(help.contains(word), "{word}");
     }
+}
+
+/// `garble` (#1661): the first answer for a file that carries the byte sends 64 bytes from there
+/// inverted, every later one sends them right; answers that don't carry it are untouched.
+#[tokio::test]
+async fn garble_mangles_a_files_bytes_once() {
+    let dir = tempfile::tempdir().unwrap();
+    let data: Vec<u8> = (0..10_000u32).map(|i| (i * 7 % 251) as u8).collect();
+    std::fs::write(dir.path().join("a.zip"), &data).unwrap();
+    let s = LabServer::start(Config {
+        files: Some(dir.path().to_owned()),
+        ..Config::default()
+    })
+    .await
+    .unwrap();
+    let c = reqwest::Client::new();
+    let get = |range: Option<&'static str>| {
+        let mut r = c.get(s.url("/files/a.zip?garble=5000"));
+        if let Some(range) = range {
+            r = r.header("Range", range);
+        }
+        async move { r.send().await.unwrap().bytes().await.unwrap().to_vec() }
+    };
+    // Before the byte: untouched, and the garble still to come.
+    assert_eq!(get(Some("bytes=0-999")).await, &data[..1000]);
+    let first = get(None).await;
+    assert_eq!(first.len(), data.len());
+    let differ: Vec<usize> = (0..data.len()).filter(|&i| first[i] != data[i]).collect();
+    assert_eq!(differ, (5000..5064).collect::<Vec<_>>());
+    assert!(differ.iter().all(|&i| first[i] == !data[i]));
+    // Asked again (the damaged part's range): right.
+    assert_eq!(get(Some("bytes=4990-5099")).await, &data[4990..5100]);
+    assert_eq!(get(None).await, data);
 }
 
 /// `stall_at` (#123): a response stops at that byte and goes on once the server's faults are

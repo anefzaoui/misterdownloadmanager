@@ -1,5 +1,6 @@
 //! Tar (#37), plain or in gzip or xz: read entry by entry (never `unpack_in`), so the same rules
-//! hold as for every format; links, hard links, devices and pipes are left out.
+//! hold as for every format; links, hard links, devices and pipes are left out (counted, and any
+//! data they carry read under the same limits).
 
 use std::io::Read;
 use std::path::Path;
@@ -36,7 +37,9 @@ pub fn extract(archive: &Path, format: Format, w: &mut Writer) -> Result<(), Err
         {
             // Read by the tar crate itself for the entries they describe.
         } else {
-            w.skip(&name, "link or device");
+            // Its data, if it says it has any, is read past here, counted like a file's.
+            let size = entry.size();
+            w.left_out(&name, "link or device", Some(size), &mut entry)?;
         }
     }
     Ok(())

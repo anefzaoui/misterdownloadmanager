@@ -99,10 +99,8 @@ jobs:
       # libclang already. Windows on ARM needs no NASM: its assembly is built by clang.
       - name: NASM
         if: runner.os == 'Windows' && runner.arch != 'ARM64'
-        shell: pwsh
-        run: |
-          choco install nasm --version 2.16.3 --no-progress -y
-          "C:\Program Files\NASM" >> $env:GITHUB_PATH
+        # nasm.us at a pinned SHA256, Chocolatey's feed only if that download fails.
+        uses: ./.github/actions/nasm
 
       # Windows on ARM: LLVM (clang and libclang) for BoringSSL's and AWS-LC's assembly and
       # bindings, where the runner hasn't it.
@@ -180,6 +178,14 @@ jobs:
       - name: Logic against fake Firefox and Chrome APIs
         run: node tools/extension/test.mjs
 
+      # The committed locale files are the catalogs' output: a text added to English's
+      # messages.json without translate.py, or a catalog fix not regenerated, shows here,
+      # like "English catalog matches the code" does for i18n/en.tsv.
+      - name: Locale files match the catalogs
+        run: |
+          python3 tools/extension/locales.py
+          git diff --exit-code -- extension/_locales
+
       # Chrome, Edge, Brave, Opera, Vivaldi (mdm-chromium.zip), Firefox (mdm-firefox.xpi) and
       # the Chrome Web Store's copy (mdm-chrome-store.zip).
       - name: Pack for every browser
@@ -189,7 +195,7 @@ jobs:
       - name: Check the packages
         run: node tools/extension/check-pack.mjs
 
-      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: extension
           path: |

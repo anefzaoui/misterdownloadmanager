@@ -226,25 +226,26 @@ async fn latest() -> Result<Found, String> {
         web: var("MDM_UPDATE_WEB", mdm_tools::github::WEB),
         raw: var("MDM_UPDATE_RAW", mdm_tools::github::RAW),
     };
-    let net = crate::settings::own_net();
-    // The chosen DNS and network adapter, as downloads have them (#36, #35).
-    let builder = |url: &str| {
-        mdm_engine::net::client_builder(&net.dns, &net.route, url)
-            .map(|b| {
-                b.user_agent(concat!("MisterDownloadManager/", env!("CARGO_PKG_VERSION")))
-                    .timeout(Duration::from_secs(20))
-            })
-            .map_err(|e| e.to_string())
+    // Options' proxy, DNS and network adapter, as MDM's own downloads have them (#36, #35,
+    // #1558: a SOCKS proxy too), within 20 s a step.
+    let net = mdm_engine::Options {
+        connect_timeout: Duration::from_secs(20),
+        read_timeout: Duration::from_secs(20),
+        ..crate::settings::own_net()
     };
-    let client = builder(&sources.feed)?.build().map_err(|e| e.to_string())?;
+    let client_for = |url: &str, follow: bool| -> Result<reqwest::Client, String> {
+        let url = url::Url::parse(url).map_err(|e| e.to_string())?;
+        if follow {
+            mdm_engine::http_client(&net, &url)
+        } else {
+            mdm_engine::hop_client(&net, &url)
+        }
+        .map_err(|e| e.to_string())
+    };
+    let client = client_for(&sources.feed, true)?;
     // GitHub's pages are read without following their redirects: where `releases/latest` sends
     // MDM is the answer (mdm_tools::github::latest_tag).
-    let pages = |url: &str| {
-        builder(url)?
-            .redirect(reqwest::redirect::Policy::none())
-            .build()
-            .map_err(|e| e.to_string())
-    };
+    let pages = |url: &str| client_for(url, false);
     let install = mdm_tools::update::Install::detect();
     fetch(&client, &pages, &sources, VERSION, install).await
 }
@@ -532,6 +533,12 @@ impl Updates {
                             crate::i18n::t("Checking for updates..."),
                             ink,
                         );
+                        spoken_line(
+                            ui,
+                            r(o, 11.0, 10.0, 418.0, 20.0),
+                            "update-line",
+                            crate::i18n::t("Checking for updates..."),
+                        );
                     }
                     Some(Ok(Found::Latest)) => {
                         let line = crate::i18n::fmt(
@@ -541,6 +548,7 @@ impl Updates {
                             &[("version", VERSION)],
                         );
                         winui::paragraph(&p, o.x + 11.0, o.y + 24.0, &line, ink, right, 13.0);
+                        spoken_line(ui, r(o, 11.0, 10.0, 418.0, 22.0), "update-line", &line);
                     }
                     Some(Err(e)) => {
                         let line = crate::i18n::fmt(
@@ -552,6 +560,7 @@ impl Updates {
                         if cut {
                             winui::full_on_hover(ui, rect, "update-error", &line);
                         }
+                        spoken_line(ui, r(o, 11.0, 10.0, 418.0, 22.0), "update-line", &line);
                     }
                     Some(Ok(Found::Newer(rel))) => {
                         let line = crate::i18n::fmt(
@@ -570,6 +579,7 @@ impl Updates {
                             right,
                             "update-line",
                         );
+                        spoken_line(ui, r(o, 11.0, 10.0, 418.0, 22.0), "update-line", &line);
                         // A package of another package manager (pacman, …): that one updates it.
                         let have = if install == mdm_tools::update::Install::System {
                             crate::i18n::fmt(
@@ -595,12 +605,19 @@ impl Updates {
                             right,
                             "update-have",
                         );
+                        spoken_line(ui, r(o, 11.0, 32.0, 418.0, 18.0), "update-have", &have);
                         winui::text(
                             &p,
                             o.x + 11.0,
                             o.y + 66.0,
                             crate::i18n::t("What's new:"),
                             ink,
+                        );
+                        spoken_line(
+                            ui,
+                            r(o, 11.0, 54.0, 418.0, 18.0),
+                            "update-whatsnew",
+                            crate::i18n::t("What's new:"),
                         );
                         let notes = egui::Rect::from_min_max(
                             pos2(o.x + 11.0, o.y + 74.0),
@@ -618,6 +635,14 @@ impl Updates {
                             ink,
                             13.0,
                             true,
+                        );
+                        // The notes as a read-only text of its own: a reader walks them line by
+                        // line instead of hearing one very long name (#1190).
+                        spoken_text(
+                            ui,
+                            winui::rect(notes),
+                            "update-notes",
+                            &plain_notes(&rel.notes),
                         );
                         download = Some(rel.clone());
                     }
@@ -897,6 +922,12 @@ impl About {
                     crate::i18n::t("Mister Download Manager"),
                     ink,
                 );
+                spoken_line(
+                    ui,
+                    r(o, 80.0, 14.0, 324.0, 18.0),
+                    "about-name",
+                    crate::i18n::t("Mister Download Manager"),
+                );
                 let version = crate::i18n::fmt(
                     crate::i18n::t("Version {version} ({commit})"),
                     &[("version", VERSION), ("commit", COMMIT)],
@@ -904,16 +935,22 @@ impl About {
                 // Copyable: bug reports ask for it.
                 let rect = winui::text(&p, o.x + 80.0, o.y + 46.0, &version, winui::MUTED());
                 winui::copyable(ui, rect, "about-version", &version, false);
-                let lines = winui::paragraph(
-                    &p,
-                    o.x + 80.0,
-                    o.y + 72.0,
-                    crate::i18n::t(
-                        "The download manager you already know, rebuilt to be faster. Free and open source under the GNU GPL, version 3 or later. Videos are found by yt-dlp; torrents run on librqbit.",
-                    ),
-                    ink,
-                    o.x + 404.0,
-                    13.0,
+                spoken_line(
+                    ui,
+                    r(o, 80.0, 32.0, 324.0, 18.0),
+                    "about-version-line",
+                    &version,
+                );
+                let about = crate::i18n::t(
+                    "The download manager you already know, rebuilt to be faster. Free and open source under the GNU GPL, version 3 or later. Videos are found by yt-dlp; torrents run on librqbit.",
+                );
+                let lines =
+                    winui::paragraph(&p, o.x + 80.0, o.y + 72.0, about, ink, o.x + 404.0, 13.0);
+                spoken_line(
+                    ui,
+                    r(o, 80.0, 60.0, 324.0, 13.0 * lines as f32 + 4.0),
+                    "about-text",
+                    about,
                 );
                 // The links in a row, 18 px apart; one that would pass the paragraph's right
                 // edge (a long translation) starts the next row.
@@ -993,7 +1030,7 @@ impl About {
 // Keyboard shortcuts
 
 /// Every shortcut the main window answers (keep in step with `app.rs` and `list.rs`).
-const SHORTCUTS: [(&str, &str); 29] = [
+const SHORTCUTS: [(&str, &str); 30] = [
     ("Ctrl+N", "Add a download (Add URL)"),
     (
         "Ctrl+B",
@@ -1003,6 +1040,8 @@ const SHORTCUTS: [(&str, &str); 29] = [
     ("F3", "Find the next match"),
     ("Enter", "Open the selected download"),
     ("Alt+Enter", "Properties of the selected download"),
+    // #1368, as Explorer's (where no menu bar title of the language takes P).
+    ("Alt+P", "Show or hide the preview pane"),
     ("Ctrl+M / F2", "Move or rename the selected download"),
     ("Delete", "Delete the selected downloads (asks first)"),
     (
@@ -1051,6 +1090,50 @@ const SHORTCUTS: [(&str, &str); 29] = [
     ("Ctrl+0", "Everything at its normal size (100%)"),
 ];
 
+/// A block of a help window for a screen reader: painted text is invisible to one on its own,
+/// and a reader reads what has the focus, so each block becomes a focusable label of its own —
+/// as the static text of a native dialog is (#1190).
+fn spoken_line(
+    ui: &egui::Ui,
+    rect: egui::Rect,
+    id: impl std::hash::Hash + std::fmt::Debug,
+    text: &str,
+) -> egui::Response {
+    let resp = ui.interact(
+        rect,
+        egui::Id::unique(id),
+        egui::Sense::focusable_noninteractive(),
+    );
+    winui::expose(&resp, egui::Role::Label, text, true, None);
+    // The first block of a window takes the focus when nothing else has it, so a reader hears
+    // what the window says as soon as it opens (later blocks leave the focus alone).
+    if resp.ctx.memory(|m| m.focused()).is_none() {
+        resp.request_focus();
+    }
+    resp
+}
+
+/// A long text shown in a scrolling box, for a screen reader: a read-only text it can walk line
+/// by line, rather than one very long name read out in a single breath.
+fn spoken_text(
+    ui: &egui::Ui,
+    rect: egui::Rect,
+    id: impl std::hash::Hash + std::fmt::Debug,
+    text: &str,
+) -> egui::Response {
+    let resp = ui.interact(
+        rect,
+        egui::Id::unique(id),
+        egui::Sense::focusable_noninteractive(),
+    );
+    winui::expose(&resp, egui::Role::MultilineTextInput, "", true, None);
+    resp.ctx.accesskit_node_builder(resp.id, |n| {
+        n.set_value(text);
+        n.set_read_only();
+    });
+    resp
+}
+
 pub struct Shortcuts;
 
 impl Shortcuts {
@@ -1090,6 +1173,15 @@ impl Shortcuts {
                         ink,
                         o.x + 504.0,
                         ("what", y as i32),
+                    );
+                    // The line for a screen reader: drawn text is invisible to one on its own and
+                    // a reader reads what has the focus, so each line is a focusable label of its
+                    // own, and Tab walks them (#1190).
+                    spoken_line(
+                        ui,
+                        r(o, 8.0, y - 15.0, 504.0, 17.0),
+                        ("shortcut", i),
+                        &format!("{keys}, {what}"),
                     );
                 }
                 let y = 24.0 + 18.0 * rows + 6.0;
@@ -1159,6 +1251,12 @@ impl TellFriend {
                     crate::i18n::t("Send this to a friend:"),
                     ink,
                 );
+                spoken_line(
+                    ui,
+                    r(o, 11.0, 8.0, 398.0, 18.0),
+                    "tell-first",
+                    crate::i18n::t("Send this to a friend:"),
+                );
                 let rect = egui::Rect::from_min_max(
                     pos2(o.x + 11.0, o.y + 30.0),
                     pos2(o.x + 409.0, o.y + 106.0 + extra),
@@ -1166,6 +1264,7 @@ impl TellFriend {
                 // English, as the paragraph is laid out; made where it is on screen.
                 // Read-only text: the read-only field's look (it drew a square box of its own).
                 winui::field_frame(&p, winui::rect(rect), winui::FieldLook::ReadOnly);
+                spoken_line(ui, winui::rect(rect), "tell-message", &message);
                 let lines = winui::paragraph(
                     &p,
                     rect.left() + 6.0,

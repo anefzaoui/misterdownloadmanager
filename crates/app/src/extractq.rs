@@ -108,7 +108,7 @@ pub fn archive_name(name: &str) -> bool {
 /// The volumes of the archive `item` is part of, among `items`: the downloads in its folder (and
 /// its package, if it has one) whose names are volumes of the same set, in volume order. One
 /// item for an archive in one file.
-fn volume_set<'a>(item: &'a Item, items: &'a [Item]) -> Vec<(u32, &'a Item)> {
+pub(crate) fn volume_set<'a>(item: &'a Item, items: &'a [Item]) -> Vec<(u32, &'a Item)> {
     let Some(v) = volume_key(&item.file_name) else {
         return vec![(1, item)];
     };
@@ -139,7 +139,8 @@ impl Extracts {
             Some(p) => p.extract,
             None => settings.extract_auto,
         };
-        if wanted {
+        // Its test found it damaged (#1661): left as it is (Extract still tries it).
+        if wanted && !item.damaged {
             self.offer(item, items, settings, false);
         }
     }
@@ -225,10 +226,15 @@ impl Extracts {
             .retain(|j| !j.ids.iter().any(|i| ids.contains(i)));
     }
 
-    /// Closing: the archive being extracted stops (its staging folder goes).
+    /// Closing: the archive being extracted stops (its staging folder goes). A moment is given
+    /// for that: 7-Zip or HatchZip, ended by the extraction's thread, doesn't end with MDM.
     pub fn stop(&mut self) {
         if let Some(r) = &self.running {
             r.cancel.store(true, Ordering::Relaxed);
+            let until = std::time::Instant::now() + std::time::Duration::from_secs(3);
+            while r.result.lock().unwrap().is_none() && std::time::Instant::now() < until {
+                std::thread::sleep(std::time::Duration::from_millis(20));
+            }
         }
         self.queue.clear();
     }
@@ -340,11 +346,11 @@ impl Extracts {
         if !report.skipped.is_empty() {
             note(
                 items,
-                // i18n: in a download's log, after extracting: entries of the archive not written (links, names that would leave the folder)
+                // i18n: in a download's log, after extracting: entries of the archive not written (links, names that would leave the folder, entries under a file of the archive where a folder should be)
                 crate::i18n::tn(
                     report.skipped.len() as u64,
-                    "{n} entry was left out (a link, or a name leading outside the folder)",
-                    "{n} entries were left out (links, or names leading outside the folder)",
+                    "{n} entry was left out (a link, a name leading outside the folder, or a file in its way)",
+                    "{n} entries were left out (links, names leading outside the folder, or files in their way)",
                 ),
             );
             for (entry, why) in &report.skipped {
@@ -427,14 +433,50 @@ impl Extracts {
 /// 7-Zip weren't installed (the "needs 7-Zip" message). Never set for users.
 const TEST_7ZIP: &str = "MDM_TEST_7ZIP";
 
-/// 7-Zip's program, which extracts 7z and RAR archives: the installed one (Options → Archives
-/// says which), or a test's `MDM_TEST_7ZIP`.
+/// The 7-Zip program chosen in Options → Archives (`Settings::seven_zip_path`, #1525; empty:
+/// none), kept here for the extractions, which run beside the window.
+static CHOSEN_7ZIP: std::sync::RwLock<String> = std::sync::RwLock::new(String::new());
+
+/// Keep the chosen 7-Zip program as the settings have it (written only when it changes).
+pub fn share_chosen_7zip(path: &str) {
+    if *CHOSEN_7ZIP.read().unwrap() != path {
+        *CHOSEN_7ZIP.write().unwrap() = path.to_owned();
+    }
+}
+
+/// 7-Zip's program, which extracts 7z and RAR archives: the one chosen in Options → Archives,
+/// else the installed one (Options → Archives says which), or a test's `MDM_TEST_7ZIP`.
 pub fn seven_zip() -> Option<PathBuf> {
+    let chosen = CHOSEN_7ZIP.read().unwrap().clone();
+    seven_zip_for(&chosen)
+}
+
+/// [`seven_zip`] with `chosen` as the chosen program (Options' draft): it while it is there,
+/// else the one found, so a chosen program removed since doesn't leave archives unextracted.
+pub fn seven_zip_for(chosen: &str) -> Option<PathBuf> {
     match std::env::var_os(TEST_7ZIP) {
         Some(v) if v.is_empty() || v.eq_ignore_ascii_case("none") => None,
         Some(v) => Some(PathBuf::from(v)),
-        None => mdm_extract::find_7zip(),
+        None => Some(PathBuf::from(chosen))
+            .filter(|p| !chosen.is_empty() && p.is_file())
+            .or_else(mdm_extract::find_7zip),
     }
+}
+
+/// Whether `exe` answers as 7-Zip's command line (#1525: a program chosen in Options →
+/// Archives): run with nothing to do, it lists its commands, the one MDM uses among them. An
+/// archiver's window (`peazip.exe`, `7zFM.exe`) doesn't, and is closed after 5 s. Never on the
+/// window's thread.
+pub fn is_7zip(exe: &Path) -> bool {
+    let run = std::process::Command::new(exe);
+    mdm_tools::proc::output(run, "7-Zip", std::time::Duration::from_secs(5))
+        .is_ok_and(|out| lists_extract(&String::from_utf8_lossy(&out)))
+}
+
+/// 7-Zip's list of commands has the one MDM extracts with, as 7z, 7za, 7zz and NanaZipC print
+/// it.
+fn lists_extract(usage: &str) -> bool {
+    usage.contains("x : eXtract files with full paths")
 }
 
 /// Tests only: the HatchZip program to use instead of the one installed; empty or `none`: as
@@ -473,7 +515,20 @@ fn to_trash(files: &[PathBuf]) -> bool {
 
 /// Why `name` wasn't extracted, for its download's log.
 fn failed(name: &str, e: &Error) -> String {
-    let why = match e {
+    crate::i18n::fmt(
+        // i18n: in a download's log: {name} is the archive's file name, {why} the reason
+        crate::i18n::t("Couldn't extract {name}: {why}"),
+        &[
+            ("name", &crate::i18n::isolate(name)),
+            ("why", &reason(name, e)),
+        ],
+    )
+}
+
+/// Why archive `name` wasn't extracted (or tested, archtest.rs), the words after "Couldn't
+/// extract {name}: ".
+pub(crate) fn reason(name: &str, e: &Error) -> String {
+    match e {
         // i18n: why an archive wasn't extracted (after "Couldn't extract {name}: ")
         Error::NeedsPassword => crate::i18n::t("it needs a password").to_owned(),
         // i18n: why an archive wasn't extracted (after "Couldn't extract {name}: ")
@@ -538,12 +593,7 @@ fn failed(name: &str, e: &Error) -> String {
         Error::Io(e) => crate::errors::describe(&mdm_engine::Error::Io(Arc::new(
             std::io::Error::new(e.kind(), e.to_string()),
         ))),
-    };
-    crate::i18n::fmt(
-        // i18n: in a download's log: {name} is the archive's file name, {why} the reason
-        crate::i18n::t("Couldn't extract {name}: {why}"),
-        &[("name", &crate::i18n::isolate(name)), ("why", &why)],
-    )
+    }
 }
 
 fn start(job: Job, ctx: &egui::Context) -> Running {
@@ -833,6 +883,42 @@ mod tests {
     use crate::model::{Category, PackageTag};
     use mdm_extract::VolumeKind;
 
+    /// #1525: a program chosen in Options → Archives is 7-Zip's command line when it lists the
+    /// command MDM extracts with, as 7z, 7zz and NanaZipC do; anything else isn't.
+    #[test]
+    fn a_program_is_7zip_when_it_lists_its_extract_command() {
+        let usage = "\n7-Zip 24.08 (x64) : Copyright (c) 1999-2024 Igor Pavlov : 2024-08-11\n\n\
+            Usage: 7z <command> [<switches>...] <archive_name> [<file_names>...] [@listfile]\n\n\
+            <Commands>\n  a : Add files to archive\n  x : eXtract files with full paths\n";
+        assert!(lists_extract(usage));
+        assert!(lists_extract(&usage.replace("7-Zip 24.08", "NanaZip 5.0")));
+        assert!(!lists_extract(""));
+        assert!(!lists_extract("ffmpeg version 8.0 Copyright (c) 2000-2025"));
+    }
+
+    /// The 7-Zip found on this computer, when there is one, answers as 7-Zip's command line
+    /// (the real program, run as Options → Archives runs a chosen one).
+    #[test]
+    fn the_7zip_found_here_answers_as_7zip() {
+        if let Some(exe) = mdm_extract::find_7zip() {
+            assert!(is_7zip(&exe), "{}", exe.display());
+        }
+    }
+
+    /// #1525: the chosen program is the one used while its file is there; none chosen, or one
+    /// removed since, is the one MDM finds.
+    #[test]
+    fn the_chosen_7zip_is_used_while_it_is_there() {
+        let dir = tempfile::tempdir().unwrap();
+        let own = dir.path().join("7z.exe");
+        std::fs::write(&own, b"").unwrap();
+        assert_eq!(seven_zip_for(&own.display().to_string()), Some(own.clone()));
+        let found = mdm_extract::find_7zip();
+        assert_eq!(seven_zip_for(""), found);
+        std::fs::remove_file(&own).unwrap();
+        assert_eq!(seven_zip_for(&own.display().to_string()), found);
+    }
+
     fn item(id: u64, name: &str, status: Status, pkg: Option<u64>) -> Item {
         let mut i = Item::new(
             id,
@@ -978,6 +1064,76 @@ mod tests {
         job = q.queue.pop_front().unwrap();
         q.finish(job, Ok(Report::default()), None, &mut items);
         assert!(q.take_vault().is_empty());
+    }
+
+    /// What is extracted from a download is marked as it is (its address without its login), a
+    /// torrent's delivered through a debrid account (its address is the magnet link) as the
+    /// internet.
+    #[test]
+    fn extracted_files_are_marked_as_their_archive() {
+        // A ZIP holding one empty file, setup.exe, stored (an empty file's CRC is 0).
+        let name = b"setup.exe";
+        let le16 = |v: usize| (v as u16).to_le_bytes();
+        let le32 = |v: usize| (v as u32).to_le_bytes();
+        // Version 2.0, no flags, stored, 00:00 on 1980-01-01, CRC and both sizes 0.
+        let common = [&le16(20)[..], &[0; 4], &[0, 0, 0x21, 0], &[0; 12]].concat();
+        let local = [
+            &b"PK\x03\x04"[..],
+            &common,
+            &le16(name.len()),
+            &le16(0),
+            name,
+        ]
+        .concat();
+        let central = [
+            &b"PK\x01\x02"[..],
+            &le16(20),
+            &common,
+            &le16(name.len()),
+            &[0; 12],
+            &le32(0),
+            name,
+        ]
+        .concat();
+        let end = [
+            &b"PK\x05\x06"[..],
+            &[0; 4],
+            &le16(1),
+            &le16(1),
+            &le32(central.len()),
+            &le32(local.len()),
+            &le16(0),
+        ]
+        .concat();
+        let zip = [local, central, end].concat();
+        let t = tempfile::tempdir().unwrap();
+        for (k, (url, named)) in [
+            (
+                "magnet:?xt=urn:btih:0123456789abcdef0123456789abcdef01234567&dn=tools",
+                crate::webmark::INTERNET,
+            ),
+            (
+                "ftp://user:pw@files.test/tools.zip",
+                "ftp://files.test/tools.zip",
+            ),
+        ]
+        .into_iter()
+        .enumerate()
+        {
+            let dir = t.path().join(k.to_string());
+            std::fs::create_dir(&dir).unwrap();
+            let archive = dir.join("tools.zip");
+            std::fs::write(&archive, &zip).unwrap();
+            let mut i = item(1, "tools.zip", Status::Complete, None);
+            i.url = url.parse().unwrap();
+            i.dest = archive.clone();
+            let mut q = Extracts::default();
+            q.offer(&i, std::slice::from_ref(&i), &Settings::default(), true);
+            let job = q.queue.pop_front().expect("queued");
+            let report = run(&job, &AtomicBool::new(false)).unwrap();
+            assert_eq!(report.files, 1, "{url}");
+            crate::webmark::assert_marked(&report.folder.join("setup.exe"), named, None);
+        }
     }
 
     #[test]

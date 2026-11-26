@@ -147,7 +147,7 @@ pub(crate) async fn asset(
 ) -> Response {
     let path = shared.file_path(&format!("gh/{name}"));
     let logged = format!("/gh/assets/{name}");
-    serve_file(&shared, peer, &method, &headers, logged, path, true).await
+    serve_file(&shared, peer, &method, &headers, logged, path, true, None).await
 }
 
 /// `GET /gh/raw/<owner>/<repo>/<tag>/<path>`: a file of the repository at a tag.
@@ -160,5 +160,5 @@ pub(crate) async fn raw(
 ) -> Response {
     let path = shared.file_path(&format!("gh/{name}"));
     let logged = format!("/gh/raw/{name}");
-    serve_file(&shared, peer, &method, &headers, logged, path, false).await
+    serve_file(&shared, peer, &method, &headers, logged, path, false, None).await
 }

@@ -9,12 +9,17 @@
 //! the new one numbered. One path for every format and for the external tool, and a failure
 //! leaves nothing behind but the archive.
 //!
+//! A finished archive can be tested as well ([`check`], #1661): every entry read back and
+//! checked, nothing written, and a ZIP's damaged entries placed in the file.
+//!
 //! Portable, no unsafe, no UI and no words: errors are an enum the app words.
 
+pub mod check;
 mod external;
 pub mod hatchzip;
 pub mod safe;
 mod single;
+mod supervise;
 mod tar_fmt;
 pub mod volumes;
 mod zip_fmt;
@@ -22,10 +27,11 @@ mod zip_fmt;
 use std::path::{Path, PathBuf};
 use std::sync::atomic::AtomicBool;
 
+pub use check::{Damage, Verdict};
 pub use external::find_7zip;
 pub use hatchzip::find_hatchzip;
 pub use safe::Limits;
-pub use volumes::{Volume, VolumeKind, volume_key};
+pub use volumes::{OnDisk, Volume, VolumeKind, on_disk, set_key, spanned_part, volume_key};
 
 /// What an archive is, by its first bytes (and, for a compressed tar, its name).
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
@@ -67,7 +73,17 @@ impl Format {
 
     fn from_head(head: &[u8], name: &str) -> Option<Format> {
         let tar_named = |exts: &[&str]| exts.iter().any(|e| name.ends_with(e));
-        if head.starts_with(b"PK\x03\x04") || head.starts_with(b"PK\x05\x06") {
+        // A spanned ZIP's first volume starts with its spanning mark (`PK\x07\x08`, or `PK00`
+        // when it fitted in one volume after all), then its first entry.
+        if [
+            &b"PK\x03\x04"[..],
+            b"PK\x05\x06",
+            b"PK\x07\x08PK",
+            b"PK00PK",
+        ]
+        .iter()
+        .any(|s| head.starts_with(s))
+        {
             Some(Format::Zip)
         } else if head.starts_with(&[b'7', b'z', 0xBC, 0xAF, 0x27, 0x1C]) {
             Some(Format::SevenZip)
@@ -318,6 +334,58 @@ pub fn extract(archive: &Path, policy: &mut Policy<'_>) -> Result<Report, Error>
     Ok(report)
 }
 
+/// One file taken out of an archive elsewhere (a ZIP on its server, #1775): its bytes `data`
+/// written at `path` (its path in the archive, `/` or `\` separated) under the folder `dest` by
+/// the checks and the writer every extracted entry goes through ([`safe`]): the path made a safe
+/// relative one (no `..`, no root, no drive or stream name, each part a safe name) or refused,
+/// its folders made under `dest` but never through a link or over a file, at most `size` bytes
+/// (and a little more: `data` itself checks the exact count), written into a staging folder
+/// first, then put in place under a free name (a file of that name there is kept, the new one
+/// numbered). A failure leaves no file behind. Returns where the file went.
+pub fn put_file(
+    dest: &Path,
+    path: &str,
+    size: u64,
+    data: &mut dyn std::io::Read,
+) -> Result<PathBuf, Error> {
+    let refused = |why: &str| {
+        Error::Io(std::io::Error::new(
+            std::io::ErrorKind::InvalidInput,
+            format!("{path}: {why}"),
+        ))
+    };
+    let rel = safe::rel_path(path, Limits::default().depth).map_err(refused)?;
+    let name = rel
+        .file_name()
+        .map(|n| n.to_string_lossy().into_owned())
+        .ok_or_else(|| refused("empty name"))?;
+    std::fs::create_dir_all(dest)?;
+    let folder = dest.join(rel.parent().unwrap_or(Path::new("")));
+    if safe::through_link(dest, &folder) {
+        return Err(refused("through a link"));
+    }
+    if safe::file_in_the_way(dest, &folder) {
+        return Err(refused("a file is in the way"));
+    }
+    std::fs::create_dir_all(&folder)?;
+    let staging = safe::Staging::new(&folder)?;
+    let limits = Limits {
+        total: size.saturating_add(1 << 20),
+        entries: 1,
+        depth: 1,
+    };
+    let mut w = safe::Writer::new(staging.path(), limits, None);
+    w.file(&name, Some(size), data, None)?;
+    if let Some((_, why)) = w.take_skipped().first() {
+        return Err(refused(why));
+    }
+    let mut placed = None;
+    staging.place(&name, Subfolder::Never, &mut |p| {
+        placed = Some(p.to_path_buf())
+    })?;
+    placed.ok_or_else(|| Error::Damaged(format!("{path} wasn't written")))
+}
+
 /// HatchZip extracts `archive` (its full path) in place into its own folder beside it
 /// ([`hatchzip::work_folder`], or `resume`'s, the folder of the run MDM recorded), then what
 /// came out is put where `policy` says, as our own extractions are. Nothing it wrote is ever
@@ -345,12 +413,27 @@ fn in_place(
             out
         }
     };
+    // In place, the archive's own bytes are freed as its files come out: they are room too, on
+    // top of the limits an extraction beside it has.
+    let size: u64 = match volumes::on_disk(archive) {
+        Ok(OnDisk::Complete { files, .. }) => files
+            .iter()
+            .filter_map(|f| std::fs::metadata(f).ok())
+            .map(|m| m.len())
+            .sum(),
+        _ => std::fs::metadata(archive).map(|m| m.len()).unwrap_or(0),
+    };
+    let limits = Limits {
+        total: policy.limits.total.saturating_add(size),
+        ..policy.limits
+    };
     let run = hatchzip::extract(
         tool,
         archive,
         &out,
         policy.password.as_deref(),
         policy.cancel,
+        limits,
     );
     runs.end(archive);
     if let Err(e) = run {

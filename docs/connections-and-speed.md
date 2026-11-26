@@ -24,6 +24,7 @@ The **Download status** tab shows:
 The buttons:
 
 - **Pause** stops the download and keeps what it has; **Resume** continues it.
+- **Stop and keep** takes **Pause**'s place for a download that may never end by itself: an internet radio, a camera feed, any server that sends no size and can't resume (**Resume capability: No**). Pausing it would throw away what arrived; **Stop and keep** ends it there and keeps what arrived as a finished file, in its folder and listed as **Complete**. See [Downloads that never end](#downloads-that-never-end).
 - **Cancel** stops the download and closes the window. The download stays in the list and can be resumed.
 - Closing the window with its close box keeps the download running.
 - **Hide to the notification area** (a short dash with an arrow down to the corner; on Windows in
@@ -72,9 +73,27 @@ MDM splits a file into parts and downloads them over several connections at once
 - When a connection finishes its part, it takes over half of the largest part still left, so no connection sits idle while another one is still working.
 - A connection that is far slower than the others is dropped and opened again.
 - Some servers allow only a few connections. MDM notices this and stops asking that server for more. What it has learned shows in **Options → Connection** under **Exceptions**, marked **(auto)**.
-- You can set a number for a server yourself: **Options → Connection → New**, then type the server's name and the number of connections.
+- You can set a number for a server yourself: **Options → Connection → New**, then type the server's name and the number of connections. `*` stands for any text: `*.example.com` is every subdomain of example.com (not example.com itself), `files*.example.net` every server whose name starts so. When several exceptions name a server, the first one in the list counts.
 
 Each connection writes straight into the file's place on disk, in a part file named `<name>.mdm.part` next to the final file. When every part is done, MDM checks the size and renames it. There is no temporary folder and no joining step at the end.
+
+## Site rules
+
+Some sites want a particular User-Agent, an extra header or fewer connections, or let only browsers through. **Options → Connection → Site rules...** sets these once for every download from a site:
+
+- **Site** — the site's name, as for the exceptions: `example.com`, `*.example.com` (its subdomains), `files*.example.net`. A scheme in front (`https://example.com`) keeps the rule to that scheme.
+- **User-Agent** — the name MDM gives itself to that site, instead of your browser's or the one set in **Options → Downloads**. Empty: as usual.
+- **Request headers** — one a line, `Name: value` (`Accept-Language: de`, `X-Api-Key: ...`). A header the download already has, such as the browser's **Referer**, is replaced. Headers named **Cookie** and **Authorization** stay with the site when it sends the download elsewhere; others follow it, as in other download programs.
+- **Number of connections** — the site's own number. It is the same as its exception above: a rule's number shows under **Exceptions**, and an exception shows as a rule.
+- **Always connect the way a browser does** — MDM asks the site [the way a browser connects](troubleshooting.md) from the first request, instead of only after the site turned it away ("this site lets only browsers through").
+
+Each setting comes from the first rule in the list that names the site and sets it, so put a narrower rule (`dl.example.com`) above a wider one (`*.example.com`) with **Move up** and **Move down**. Rules apply to downloads MDM's engine makes, as they start or resume. The [command line](command-line.md)'s `get` and `resume` use them too, unless you give the same thing on the command line.
+
+### One download's settings
+
+A stopped download's **Properties → Connection...** changes how that download connects when it goes on: its **User-Agent**, **request headers**, **proxy** (as in **Options**, none, or one you type, `host:port` or `socks5://host:port`) and **number of connections**. They come before the site rules and **Options**, and are kept with the list. While the download runs, the button is greyed: pause it first.
+
+When it resumes, MDM checks it is still the same file (its size, and the ETag and date the server gives) before it writes anything. If the new settings lead to another version of the file, the download stops with **the file changed on the server** and keeps what it had: start it again from the beginning only if you want the new one. Changed settings never mix two files.
 
 ## Resuming
 
@@ -86,6 +105,28 @@ A download resumes where it stopped: after you stop it, after the connection dro
 - If **Resume capability** is **No**, the server can't send a file in parts. MDM then downloads it over one connection, and a download that stops has to start over.
 
 [Resume a broken download](guide-resume-broken-download.md) covers expired links too.
+
+### Downloads that never end
+
+Some addresses never finish on their own: an internet radio station, a camera's live picture, a
+server that keeps sending. Their server says no size and can't send parts, so the progress window
+shows **Resume capability: No**, **Downloaded** grows with no percentage, and its **Pause** button
+reads **Stop and keep**.
+
+- **Stop and keep** ends the download where it is and keeps everything that arrived as the
+  finished file: named, in its folder, **Complete** in the list, with the **Download complete**
+  window as for any other file.
+- **Stop and keep** is the only way to keep it. **Stop** on the toolbar, **Stop All**, a
+  queue's stop (by hand or at its stop time), the tray panel's **Pause**, the phone page's pause
+  and **Cancel** all stop it without keeping anything, as for any download whose server can't
+  resume: a later **Resume** starts it over.
+- A checksum you gave for the download isn't checked against a file kept this way: it can only
+  be for a whole file.
+- Closing MDM while such a download runs, and the command line, don't keep it.
+
+The same goes for any download whose server sends no size and takes no ranges, a file a site
+makes as you ask for it among them: **Stop and keep** keeps what arrived so far as its file, not
+the whole file. To get such a file whole, let it finish.
 
 ## Through your VPN only: the network adapter and its kill switch
 

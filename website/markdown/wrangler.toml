@@ -1,0 +1,14 @@
+# The website's Markdown for AI tools and agents (src/worker.js, src/markdown.js); README.md says
+# what it does and why it isn't routed yet.
+name = "mdm-markdown"
+main = "src/worker.js"
+compatibility_date = "2026-11-01"
+workers_dev = false
+preview_urls = false
+# No route yet. Routed, it would be
+#   routes = [{ pattern = "misterdownloadmanager.com/*", zone_name = "misterdownloadmanager.com" }]
+# with the route's failure mode set to fail open (the site's own answer when the Worker can't run).
+
+# No request logs on Cloudflare: they would hold visitors' addresses.
+[observability]
+enabled = false

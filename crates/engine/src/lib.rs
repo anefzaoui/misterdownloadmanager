@@ -6,14 +6,19 @@ pub mod disk;
 pub mod dns;
 pub mod download;
 pub mod fault;
+pub mod folder;
 pub mod ftp;
 pub mod hosts;
-mod html;
+pub mod hub;
+// Public for the fuzz targets (fuzz/): `links` and `declared_videos` without a network.
+pub mod html;
 pub mod limiter;
 pub mod naming;
 pub mod net;
 pub mod pac;
 pub mod planner;
+pub mod remotezip;
+pub mod repair;
 pub mod server;
 pub mod sites;
 #[doc(hidden)]

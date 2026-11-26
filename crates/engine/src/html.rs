@@ -201,7 +201,9 @@ pub fn links(page: &str, at: &Url) -> Vec<Url> {
         .into_iter()
         .filter_map(|(_, value)| {
             let mut url = base.join(decode(&value).trim()).ok()?;
-            if !(crate::supported(&url) || url.scheme() == "magnet") {
+            // A download names its server: `ftps:x`, a scheme browsers don't know, names none.
+            let served = crate::supported(&url) && url.host_str().is_some_and(|h| !h.is_empty());
+            if !(served || url.scheme() == "magnet") {
                 return None;
             }
             url.set_fragment(None);
@@ -531,6 +533,21 @@ fn opening(lower: &str, at: usize, open: &str) -> Option<usize> {
     None
 }
 
+/// The text of the first `<name>` element of `page` (`title`, `h1`): tags stripped, references
+/// decoded, white space collapsed, up to its closing tag. None when there is none.
+pub(crate) fn element_text(page: &str, name: &str) -> Option<String> {
+    let page = markup(page);
+    let (start, tag) = tags(&page, name).next()?;
+    let inner = start + tag.len();
+    let close = format!("</{}", name.to_ascii_lowercase());
+    let end = page[inner..]
+        .to_ascii_lowercase()
+        .find(&close)
+        .map_or(page.len(), |e| inner + e);
+    let text = decode(&strip_tags(&page[inner..end]));
+    Some(text.split_whitespace().collect::<Vec<_>>().join(" "))
+}
+
 /// `html` without its tags (`<a href=…>name</a>` → `name`).
 fn strip_tags(html: &str) -> String {
     let mut out = String::with_capacity(html.len());
@@ -644,6 +661,20 @@ mod tests {
                 "https://example.com/dir/clip.mp4",
                 "https://example.com/dir/clip.webm",
                 "https://example.com/a.mp3",
+            ]
+        );
+    }
+
+    #[test]
+    fn links_without_a_server_are_none() {
+        // `ftps:` and `ftpes:` aren't schemes a browser knows: written so, they name no server.
+        let page = r#"<a href="ftpes:player">a</a><a href="ftps:/x.bin">b</a>
+            <a href="ftps://ftp.example.org/f.bin">c</a><a href="ftpes://ftp.example.org/g.bin">d</a>"#;
+        assert_eq!(
+            found(page, "https://example.com/"),
+            [
+                "ftps://ftp.example.org/f.bin",
+                "ftpes://ftp.example.org/g.bin"
             ]
         );
     }

@@ -29,7 +29,7 @@ Many sites hand out links that only work for a while, or only while you are sign
 3. On the web page, start the download again. When the browser hands it to MDM, MDM sees it's the same file (from the same site, with the same name, and the same size when both are known) and gives its address to the waiting download, which continues from where it stopped. There's nothing more to do.
 4. Or copy the new download link (right-click → **Copy link**), paste it into **Address** in **File Properties**, click **OK**, then click **Resume**.
 
-A Rapidgator download that stopped because its link expired or was refused waits for a new address the same way, without **Refresh download address**: starting the download again in the browser is enough. For other sites, choose **Refresh download address** first. Only a download the browser hands over by itself gives its address to a waiting one: not **Download with MDM** from the right-click menu, the command line or a script, and never a private window's download, or a private window's waiting one. For Rapidgator, MDM asks the file's page you started the download from for a fresh link by itself, with your browser's sign-in, and goes on without stopping.
+A Rapidgator download that stopped because its link expired or was refused waits for a new address the same way, without **Refresh download address**: starting the download again in the browser is enough. For other sites, choose **Refresh download address** first. Only a download the browser hands over by itself gives its address to a waiting one: not **Download with MDM** from the right-click menu, the command line or a script, and never a private window's download, or a private window's waiting one. For Rapidgator, MDM asks the file's page you started the download from for a fresh link by itself, with your browser's sign-in, and goes on without stopping. LuluStream's links expire too: a download added with the video's own link (its watch page or player) gets a fresh one from that link by itself, and one taken from the site's **Download** button gets it from the video's page you started it from.
 
 The new address has to point at the same file. If it doesn't, MDM stops with **the file changed on the server**.
 
@@ -43,6 +43,8 @@ If the site replaced the file with a new version, the parts MDM has don't fit an
 ## When resuming isn't possible
 
 Look at **Resume capability** in the progress window. **No** means the server can't send a file in parts. MDM then uses one connection, and a download that stops has to start over. For such servers, avoid stopping the download, and avoid a very low speed limit, which can make the server drop the connection.
+
+When such a server also sends no size (an internet radio, a camera feed), the progress window's button reads **Stop and keep**: it is the only way to keep what arrived, as the finished file. **Stop**, **Stop All**, a queue's stop and **Cancel** keep nothing of it. See [Downloads that never end](connections-and-speed.md#downloads-that-never-end).
 
 ## Next steps
 

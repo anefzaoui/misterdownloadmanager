@@ -138,7 +138,8 @@ pub fn hls(
     extra_key_query: Option<&str>,
 ) -> Result<Vec<Piece>, Unlisted> {
     let mut pieces = Vec::new();
-    let mut sequence = 0u64;
+    // The next piece's number; none past the last a u64 holds, where a playlist can't go on.
+    let mut sequence = Some(0u64);
     let mut key: Option<(Url, Option<[u8; 16]>)> = None;
     let mut range: Option<(u64, u64)> = None;
     let mut range_end = 0u64;
@@ -153,14 +154,15 @@ pub fn hls(
     for line in text.lines().map(str::trim).filter(|l| !l.is_empty()) {
         if !line.starts_with('#') {
             let url = join(line).ok_or(Unlisted::NoPieces)?;
+            let n = sequence.ok_or(Unlisted::NoPieces)?;
             pieces.push(Piece {
                 url: with_query(url, extra_query),
                 range: range.take(),
-                key: key_for(&key, sequence),
+                key: key_for(&key, n),
             });
-            sequence += 1;
+            sequence = n.checked_add(1);
         } else if let Some(v) = line.strip_prefix("#EXT-X-MEDIA-SEQUENCE:") {
-            sequence = v.trim().parse().unwrap_or(0);
+            sequence = Some(v.trim().parse().unwrap_or(0));
         } else if let Some(v) = line.strip_prefix("#EXT-X-KEY:") {
             let a = attributes(v);
             match a.get("METHOD").map(String::as_str) {
@@ -190,7 +192,7 @@ pub fn hls(
             pieces.push(Piece {
                 url: with_query(url, extra_query),
                 range: part,
-                key: key_for(&key, sequence),
+                key: key_for(&key, sequence.ok_or(Unlisted::NoPieces)?),
             });
         } else if let Some(v) = line.strip_prefix("#EXT-X-BYTERANGE:") {
             if let Some(r) = byte_range(v, range_end) {
@@ -212,13 +214,21 @@ pub fn hls(
     Ok(pieces)
 }
 
-/// `<length>[@<offset>]`: (offset, length), the offset `after` when left out.
+/// `<length>[@<offset>]`: (offset, length), the offset `after` when left out. None for one that
+/// can't be read, as for a part past the last byte a u64 counts ([`part`]).
 fn byte_range(s: &str, after: u64) -> Option<(u64, u64)> {
     let (len, at) = match s.trim().split_once('@') {
         Some((l, o)) => (l.trim().parse().ok()?, o.trim().parse().ok()?),
         None => (s.trim().parse().ok()?, after),
     };
-    Some((at, len))
+    part(at, len)
+}
+
+/// A piece's part, `len` bytes from `start`, when its last byte (asked as `bytes=start-last`,
+/// at least one byte) is one a u64 counts; None otherwise.
+fn part(start: u64, len: u64) -> Option<(u64, u64)> {
+    start.checked_add(len.max(1))?;
+    Some((start, len))
 }
 
 /// A DASH format's pieces from yt-dlp (`fragments`, each its `url`, or a `path` from
@@ -240,12 +250,12 @@ pub fn dash(format: &Value) -> Option<Vec<Piece>> {
                 (Some(r), _) => {
                     let start = r.get("start")?.as_u64()?;
                     let end = r.get("end")?.as_u64()?;
-                    Some((start, end.checked_sub(start)?))
+                    Some(part(start, end.checked_sub(start)?)?)
                 }
                 (None, Some(r)) => {
                     let (a, b) = r.split_once('-')?;
                     let (a, b): (u64, u64) = (a.trim().parse().ok()?, b.trim().parse().ok()?);
-                    Some((a, b.checked_sub(a)? + 1))
+                    Some(part(a, b.checked_sub(a)?.checked_add(1)?)?)
                 }
                 (None, None) => None,
             };
@@ -279,6 +289,10 @@ pub fn decrypt(data: &[u8], key: &[u8; 16], iv: &[u8; 16]) -> Option<Vec<u8>> {
     }
     Some(buf)
 }
+
+/// The most a piece reserves for its body up front, whatever length an answer announces (the
+/// body still grows to the piece's real size).
+const PIECE_RESERVE: u64 = 1 << 20;
 
 /// The most files of a gallery downloaded at once (#769): Wikimedia's servers answer 429 Too
 /// Many Requests to more (measured: 8 at once, 2 of them refused, again and again).
@@ -923,6 +937,7 @@ async fn ask(
 ) -> Result<Answer, PieceError> {
     let mut headers = run.headers.clone();
     if let Some((start, len)) = range {
+        // Within a u64: every piece's part is made so ([`part`]).
         let r = format!("bytes={start}-{}", start + len.max(1) - 1);
         headers.insert(RANGE, HeaderValue::from_str(&r).expect("ascii"));
     }
@@ -970,7 +985,8 @@ async fn fetch_piece(run: &Run, c: usize, i: usize, piece: &Piece) -> Result<(),
         ));
     }
     let len = resp.content_length();
-    let mut body = Vec::with_capacity(len.unwrap_or(0) as usize);
+    // The announced length is a hint for the reservation only.
+    let mut body = Vec::with_capacity(len.unwrap_or(0).min(PIECE_RESERVE) as usize);
     run.shared.each.lock().unwrap()[i] = (0, len);
     set_conn(run, c, |v| v.status = ConnStatus::Receiving);
     let started = Instant::now();
@@ -1043,9 +1059,14 @@ async fn fetch_piece(run: &Run, c: usize, i: usize, piece: &Piece) -> Result<(),
         std::fs::write(&part, &data).and_then(|_| std::fs::rename(&part, &file))
     })
     .await;
-    if !matches!(written, Ok(Ok(()))) {
+    // A disk full, a read-only folder: no new list of addresses can help, so this is not a
+    // piece the site refused (`Dead`, which asks yt-dlp again).
+    if let Err(e) = written.map_err(std::io::Error::other).and_then(|w| w) {
         undo(got);
-        return Err(PieceError::Dead(format!("{} can't be saved", run.one())));
+        return Err(PieceError::Again(format!(
+            "{} can't be saved: {e}",
+            run.one()
+        )));
     }
     run.shared.whole_bytes.fetch_add(size, Ordering::Relaxed);
     run.shared.whole.fetch_add(1, Ordering::Relaxed);
@@ -1107,6 +1128,53 @@ mod tests {
         assert_eq!(
             ranges,
             [Some((0, 720)), Some((720, 1000)), Some((1720, 500)), None]
+        );
+    }
+
+    #[test]
+    fn parts_and_numbers_past_a_u64_are_unreadable() {
+        let max = u64::MAX;
+        // A part whose last byte a u64 doesn't count is no part (the piece is asked whole), and
+        // the next one doesn't follow on from it.
+        let text = format!(
+            "#EXTM3U\n#EXT-X-BYTERANGE:{max}@{max}\n#EXTINF:4,\na.ts\n\
+             #EXT-X-BYTERANGE:2@{max}\n#EXTINF:4,\nb.ts\n\
+             #EXT-X-BYTERANGE:1@{}\n#EXTINF:4,\nc.ts\n#EXT-X-BYTERANGE:3\n#EXTINF:4,\nd.ts\n\
+             #EXT-X-ENDLIST",
+            max - 1
+        );
+        let ranges: Vec<_> = hls(&text, &base(), None, None)
+            .unwrap()
+            .iter()
+            .map(|p| p.range)
+            .collect();
+        assert_eq!(ranges, [None, None, Some((max - 1, 1)), None]);
+        // The last number a sequence can have is a piece's; none comes after it.
+        let at_end =
+            format!("#EXTM3U\n#EXT-X-MEDIA-SEQUENCE:{max}\n#EXTINF:4,\na.ts\n#EXT-X-ENDLIST");
+        assert_eq!(hls(&at_end, &base(), None, None).unwrap().len(), 1);
+        let past = format!(
+            "#EXTM3U\n#EXT-X-MEDIA-SEQUENCE:{max}\n#EXTINF:4,\na.ts\n#EXTINF:4,\nb.ts\n#EXT-X-ENDLIST"
+        );
+        assert_eq!(hls(&past, &base(), None, None), Err(Unlisted::NoPieces));
+        // DASH: a range to the last byte a u64 counts, or past it.
+        let frags = |f: serde_json::Value| {
+            dash(&serde_json::json!({
+                "fragment_base_url": "https://cdn.example/d/", "fragments": [f]
+            }))
+        };
+        assert_eq!(
+            frags(serde_json::json!({"path": "a", "range": format!("0-{max}")})),
+            None
+        );
+        assert_eq!(
+            frags(serde_json::json!({"path": "a", "byte_range": {"start": max, "end": max}})),
+            None
+        );
+        assert_eq!(
+            frags(serde_json::json!({"path": "a", "range": format!("1-{}", max - 1)})).unwrap()[0]
+                .range,
+            Some((1, max - 1))
         );
     }
 

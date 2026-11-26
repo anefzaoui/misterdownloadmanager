@@ -14,6 +14,8 @@ There are several ways to give MDM something to download. Most of them end in th
 
 MDM takes `http://`, `https://`, `ftp://`, `ftps://`, `ftpes://` and `magnet:` addresses. Anything else gets **Invalid address**.
 
+A `thunder://`, `flashget://` or `qqdl://` link is one of those addresses wrapped in base64, as download pages made for Thunder (Xunlei), FlashGet and QQ's downloader write them. MDM unwraps it and downloads from the address inside, here, from the clipboard and in **Link grabber**; the download is listed under that address. A link that wraps anything else, or that can't be read, gets **Invalid address** too.
+
 ![Enter new address to download, with the Address box, Use authorization and OK](images/help/add-url.webp)
 *The numbers are the steps above: 3 the address, 4 a login if the server needs one, 5 OK.*
 
@@ -29,7 +31,8 @@ same progress window.
 - `ftps://` — implicit FTPS, port 990 unless the address gives another.
 
 The server's certificate is checked against Windows' (or the system's) trusted certificates, as
-for `https://`. A Linux system without them (a minimal install without the `ca-certificates`
+for `https://`, and against Mozilla's, the ones Firefox carries, where the system lacks the root
+a server's certificate comes from (an older Windows that hasn't fetched it yet). A Linux system without them (a minimal install without the `ca-certificates`
 package) still downloads over plain HTTP and FTP; each secure download then fails at once, saying
 to install that package.
 
@@ -50,8 +53,9 @@ password is not written to the resume file next to the download: MDM gives it ag
 resumes.
 
 **Connections.** Passive mode is used by default. **Options → Proxy / Socks → Use FTP in PASV
-mode** switches it off for servers that only take active connections. FTP connects to the
-server directly, not through the HTTP proxy.
+mode** switches it off for servers that only take active connections. FTP goes through a SOCKS
+proxy set in **Options → Proxy / Socks** (passive then, always; `ftps://` can't go through one
+yet), and connects to the server directly when the proxy is an HTTP one.
 
 Browsers no longer download `ftp://` links themselves. Right-click one and choose **Download with
 Mister Download Manager**, or copy it and use **Add URL**.
@@ -97,8 +101,8 @@ MDM asks the server for the file's name and size, and shows them in **Download F
 
 - **URL** — the address.
 - **Category** — chosen from the file's type (Compressed, Documents, Music, Programs, Video or General). Each category has its own folder. **+** beside it makes a new category.
-- **Save As** — the folder and file name. You can type another, pick one of the last 20 folders you saved to from the arrow at its end, or choose the folder and the file name in the system's Save dialog with **...** (a name typed there without an extension keeps the download's). If you choose a file that is already there and answer **Yes** when the dialog asks whether to replace it, the download replaces it once it is complete; until then the old file stays as it was, so it is kept if the download fails or you cancel it. A name already taken that you type in **Save As** itself never replaces anything: the download takes the next free name, such as `name (1).zip`.
-- **Remember this path for "…" category** — tick it to make the folder you typed the category's folder from now on.
+- **Save As** — the folder and file name. You can type another, pick one of the last 20 folders you saved to from the arrow at its end, or choose the folder and the file name in the system's Save dialog with **...** (a name typed there without an extension keeps the download's). If you choose a file that is already there and answer **Yes** when the dialog asks whether to replace it, the download replaces it once it is complete; until then the old file stays as it was, so it is kept if the download fails or you cancel it. A name of a file that is already there that you type in **Save As** itself is asked about as you press **Start Download** or **Download Later**: **Add the duplicate with a numbered file name** takes the next free name, such as `name (1).zip`; **Add the duplicate and overwrite the existing file** replaces it once the download is complete, as above; **Cancel** goes back to the dialog. A name MDM gave that is taken by the time the download starts is numbered without asking.
+- **Remember this path for "…" category** — tick it to make the folder you typed the category's folder from now on. With **Save every download in "General" category's folder** ticked in **Options → Save to**, every download starts in General's folder, and this box names General: the folder you typed becomes the one for every download.
 - **Description** — a note of your own. It shows in the list's **Description** column and Find can search it.
 - **Server** — where the server is: its country's flag and name, and how long a round trip to it takes. See [Where the server is](connections-and-speed.md#where-the-server-is). It stays blank when the browser handed the download over with its name and size, since MDM didn't need to ask the server.
 
@@ -115,6 +119,26 @@ By default MDM starts downloading while this window is open, so no time is lost 
 
 If the folder doesn't exist yet, MDM asks **Do you want to create it?** before it starts.
 
+### Only some files from inside a ZIP
+
+For a `.zip` on a web server, **Preview** (under the file's size) lists what is inside, so you can download only the files you need instead of the whole archive: two files out of a 20 GB archive take two small downloads.
+
+As the window opens, MDM asks the server for the archive's last bytes, where a ZIP keeps its list of files. Only a server that sends parts of a file can give files one by one, so **Preview** works only there; elsewhere it stays grey, and its tooltip says why (**the server can't send parts of the ZIP...**). The whole archive still downloads as usual.
+
+**Preview** opens **Zip preview**: every file in the archive with its **File Name** (its path inside the ZIP), **Packed** (its size inside the ZIP), **Size** and **Modified**. Tick the ones you want (**Select all** ticks every one) and click **OK**. The number of files picked shows under **Preview**; hover over it to see where they go. Then **Start Download** or **Download Later** adds them as one download, in place of the archive:
+
+![Zip preview listing the files inside a ZIP on its server, with their file name, packed size, size and date, the first three ticked, and OK and Cancel buttons](images/help/zip-preview.webp)
+*1 tick every file at once, 2 download the files ticked.*
+
+- They go into a folder named after the archive, in the folder **Save As** shows (`Downloads\Compressed\photos\` for `photos.zip`), each keeping its path from inside the ZIP (`photos\2025\beach.jpg`). A file of the same name already there is kept, and the new one numbered.
+- MDM fetches only each file's own bytes, unpacks it, and checks it against the checksum (CRC-32) and size the archive gives for it. A file that doesn't match is not kept, and the download says so.
+- A stopped download goes on with the files not fetched yet; one stopped part-way is fetched again.
+- **Delete** with **Also delete the files from disk** leaves the folder and its files, as for an image gallery.
+
+Some files can't be taken out on their own and aren't listed (the window counts them under the list): encrypted files, files packed with a method other than the two most ZIPs use (stored and Deflate), links, and names that would put a file outside its folder (`../`, a drive letter, an absolute path). A ZIP split over several files, or one whose list of files doesn't add up (files over each other, a list larger than MDM reads from a server), can't be previewed. For any of these, download the whole archive.
+
+Each link opens a **Download File Info** of its own, so several can be open side by side, to compare their sizes before you choose. Each new one opens a little below and beside the one before and comes to the front; from the second on, its title carries its number: **Download File Info (2)**, **(3)** and so on. **Esc** closes only the window you're in. Up to six are open at once: more links handed over together (a browser passing on several downloads) wait, and open one by one as you close windows; **Cancel** asks whether to cancel the ones still waiting. The same link handed over again brings its open window to the front. If you quit MDM with some still open, their downloads go to the **Main download queue**, as with **Download Later**.
+
 ## Download Later
 
 **Download Later** puts the download in a queue instead of starting it. By default MDM asks which one: pick the queue under **Add to queue**, and tick **Start the queue now** if you want it to run straight away. **Cancel** leaves the download in the list, in no queue.
@@ -127,7 +151,7 @@ More about queues in [Queues and the Scheduler](queues-and-scheduler.md).
 
 With **Options → General → Offer to download links copied to the clipboard** ticked (it is, unless you turned it off), when you copy a link to a file type in **Options → File types** (ZIP, EXE, MP4, PDF and many more), **Download File Info** opens with it filled in, ready for **Start Download**. Links to other pages are left alone. With **Options → Downloads → Show start download dialog** off, the download starts at once instead. Only links copied while MDM runs are taken, never one that was already there.
 
-Copied several links at once, a list or a whole forum post? Choose **Tasks → Add batch download from clipboard** (**Ctrl+B**, also in the tray icon's menu). MDM reads the clipboard then, and only then, and finds every download link in the text: `http`, `https`, `ftp` and magnet links, one per line or among other words, in Markdown (`[name](link)`) or between `<` and `>`. Each one is listed once in **Link grabber**, ticked and sorted into packages: pick a folder for each package, then **Start** or **Add to queue**. Downloads added together end with one **Downloads complete** summary. Magnet links are added as torrents with all their files once their files are known. A copied address with a number in its name, such as `https://example.com/show/ep01.mp4`, opens **Batch download** instead (below). If the clipboard holds no text, or no link, MDM says so.
+Copied several links at once, a list or a whole forum post? Choose **Tasks → Add batch download from clipboard** (**Ctrl+B**, also in the tray icon's menu). MDM reads the clipboard then, and only then, and finds every download link in the text: `http`, `https`, `ftp` and magnet links, one per line or among other words, in Markdown (`[name](link)`) or between `<` and `>`. Each one is listed once in **Link grabber**, ticked and sorted into packages: pick a folder for each package, then **Start** or **Add to queue**. Downloads added together end with one **Downloads complete** summary. Magnet links are added as torrents with all their files once their files are known. `thunder://`, `flashget://` and `qqdl://` links count as the address wrapped in them, here and for a single copied link. A copied address with a number in its name, such as `https://example.com/show/ep01.mp4`, opens **Batch download** instead (below). If the clipboard holds no text, or no link, MDM says so.
 
 ## Drag and drop
 
@@ -146,7 +170,7 @@ For files whose names differ only by a number or a letter, such as `photo001.jpg
 4. For numbers, set **Wildcard size** to the number of digits. With 3, the files are `photo001.jpg`, `photo002.jpg` and so on.
 5. If the server needs a login, tick **Use authorization**.
 6. Check **First file**, **Second file** and **Last file**.
-7. Left empty, **Save to** puts each file in its category's folder (**Options → Save to**). To put every file of the batch in one folder, type it there or choose it with **...**. Then click **OK**.
+7. Left empty, **Save to** puts each file in its category's folder (**Options → Save to**), or in General's folder when every download goes to one folder there. To put every file of the batch in one folder, type it there or choose it with **...**. Then click **OK**.
 
 The downloads go to a queue. As with Download Later, MDM asks which queue unless you turn off **Options → Downloads → Show queue selection panel on closing batch download dialogs**.
 

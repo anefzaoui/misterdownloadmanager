@@ -67,7 +67,7 @@ pub struct Freeze {
     pub main: bool,
     pub seconds: u64,
     /// How much the window thread ran while the frame went on (None: not measured, by an older
-    /// MDM or on macOS). It tells a loop from a wait from a computer too busy to run MDM.
+    /// MDM). It tells a loop from a wait from a computer too busy to run MDM.
     #[serde(default)]
     pub busy: Option<Busy>,
     /// What the frame was doing when the watchdog saw it stop ("the tray icon"; empty: not
@@ -84,10 +84,14 @@ pub struct Busy {
     pub wall_ms: u64,
     /// The processor time the window thread got in it (user + kernel), in ms.
     pub cpu_ms: u64,
-    /// Page faults in it (Windows: the whole process's, soft ones included; Linux: the window
-    /// thread's from disk). None where unknown.
+    /// Page faults in it (Windows and macOS: the whole process's, soft ones included; Linux: the
+    /// window thread's from disk). None where unknown.
     #[serde(default)]
     pub faults: Option<u64>,
+    /// Page-ins in it: pages of the whole process read from disk, its code or its memory (macOS;
+    /// None elsewhere, or by an older MDM). Many mean the window waited for the disk (#1515).
+    #[serde(default)]
+    pub pageins: Option<u64>,
 }
 
 /// What MDM had open and running (counts only: no addresses or file names).

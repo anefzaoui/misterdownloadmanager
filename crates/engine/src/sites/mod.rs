@@ -6,6 +6,7 @@
 pub mod archive;
 pub mod gdrive;
 mod gofile;
+mod lulustream;
 mod mediafire;
 mod rapidgator;
 
@@ -27,6 +28,9 @@ pub enum Refusal {
     Folder,
     /// A site's link is a web page that needs a browser (`site`, its name), not the file (#346).
     NeedsBrowser { site: String },
+    /// A site kept answering its download form with the form again (`site`, its name): it didn't
+    /// give the file this time, and asking again in a moment usually does (LuluStream's).
+    NotTaken { site: String },
     /// A service account's refusal to unlock the link (#44, `crate::unlock`).
     Service {
         service: String,
@@ -56,6 +60,10 @@ impl std::fmt::Display for Refusal {
                 f,
                 "this {site} link is a web page, not the file: open it in your browser and download from there"
             ),
+            Refusal::NotTaken { site } => write!(
+                f,
+                "{site} didn't give the file this time: try again in a moment"
+            ),
             Refusal::Service { service, fault } => write!(f, "{service}: {fault}"),
         }
     }
@@ -66,6 +74,11 @@ impl std::fmt::Display for Refusal {
 pub(crate) enum PageSays {
     /// Ask this address next (a confirmation form's target).
     Next(Url),
+    /// Post this form to `action` next, its fields in `body` as a browser encodes them
+    /// (`application/x-www-form-urlencoded`): a site whose page gives the file only once its form
+    /// is sent back (LuluStream's). Its answer is read as a page; the form again is posted again,
+    /// a few times at most (`download::MAX_FORM_POSTS`).
+    Form { action: Url, body: String },
     /// The site refuses (its error page).
     Refused(Refusal),
     /// Nothing the site's rules know: the generic reading (meta refresh, the page itself) goes on.
@@ -80,7 +93,14 @@ pub(crate) fn not_a_file(url: &Url) -> Option<Refusal> {
 /// The address to ask instead of `url`, when `url` is a site's link to a file rather than the
 /// file (a Drive viewer link → its download address). None: ask `url` itself.
 pub(crate) fn rewrite(url: &Url) -> Option<Url> {
-    gdrive::rewrite(url)
+    gdrive::rewrite(url).or_else(|| lulustream::rewrite(url))
+}
+
+/// The refusal when the site at `at` still answers its form with the form after its last post
+/// (`PageSays::Form`, `download::MAX_FORM_POSTS`). None: the page is just a web page
+/// (`Error::GotWebPage`).
+pub(crate) fn form_refused(at: &Url) -> Option<Refusal> {
+    lulustream::form_refused(at)
 }
 
 /// What the web page `page` (its first `PAGE_PEEK` bytes), answered 200 at `at`, says.
@@ -91,6 +111,8 @@ pub(crate) fn read_page(at: &Url, page: &[u8]) -> PageSays {
         mediafire::read_page(at, &String::from_utf8_lossy(page))
     } else if rapidgator::is_site(at) {
         rapidgator::read_page(at, &String::from_utf8_lossy(page))
+    } else if lulustream::is_site(at) {
+        lulustream::read_page(at, &String::from_utf8_lossy(page))
     } else {
         PageSays::Nothing
     }
@@ -101,7 +123,9 @@ pub(crate) fn read_page(at: &Url, page: &[u8]) -> PageSays {
 /// known only from `pages`: the browser's tab the download was started from and its Referer):
 /// the download's origin (`download::Ctx::refresh_target`). None: `url` itself is all there is.
 pub(crate) fn origin(url: &Url, pages: &[Url]) -> Option<Url> {
-    mediafire::origin(url).or_else(|| rapidgator::origin(url, pages))
+    mediafire::origin(url)
+        .or_else(|| rapidgator::origin(url, pages))
+        .or_else(|| lulustream::origin(url, pages))
 }
 
 /// `url` is a site's address for a file that expires (a signed link: Rapidgator's file hosts'):
@@ -121,7 +145,10 @@ pub(crate) fn refused(asked: &Url, at: &Url, status: u16) -> Option<Refusal> {
 /// the other, as the browser's own domain cookies do (see `gdrive::same_party`,
 /// `archive::same_party` and `rapidgator::same_party`).
 pub(crate) fn same_party(a: &Url, b: &Url) -> bool {
-    gdrive::same_party(a, b) || archive::same_party(a, b) || rapidgator::same_party(a, b)
+    gdrive::same_party(a, b)
+        || archive::same_party(a, b)
+        || rapidgator::same_party(a, b)
+        || lulustream::same_party(a, b)
 }
 
 /// The User-Agent a site's hosts want instead of MDM's default (Drive: a browser's, see
@@ -139,7 +166,10 @@ pub(crate) fn second_look(at: &Url) -> Option<Url> {
 /// `at` is a site's address for a file: a web page from it without a file name is the site
 /// talking, never the file (it is an error, not saved).
 pub(crate) fn expects_file(at: &Url) -> bool {
-    gdrive::expects_file(at) || mediafire::expects_file(at) || rapidgator::expects_file(at)
+    gdrive::expects_file(at)
+        || mediafire::expects_file(at)
+        || rapidgator::expects_file(at)
+        || lulustream::expects_file(at)
 }
 
 #[cfg(test)]

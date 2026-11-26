@@ -18,8 +18,7 @@
 //! itself, as before.
 
 use std::collections::HashSet;
-use std::io::{BufRead, BufReader};
-use std::path::{Path, PathBuf};
+use std::path::{Component, Path, PathBuf};
 use std::sync::{Arc, Mutex};
 use std::time::{Duration, Instant, SystemTime};
 
@@ -176,20 +175,60 @@ pub async fn install_latest(
     if let Some(mine) = chosen::chosen(dir, chosen::Helper::GalleryDl) {
         return Ok(mine);
     }
-    let Some(asset) = asset() else {
+    install_with(dir, net, progress, None).await?;
+    own(dir).ok_or_else(|| Error::Missing("gallery-dl after its install".into()))
+}
+
+/// [`install_latest`] for `autoupdate`: the newest release, installed when it is newer than the
+/// version in use and than `floor` (a version the person went back from), switched to now or once
+/// the runs using gallery-dl end.
+pub(crate) async fn install_with(
+    dir: &Path,
+    net: &mdm_engine::Options,
+    progress: Option<&crate::update::Progress>,
+    floor: Option<&str>,
+) -> Result<crate::autoupdate::Got, Error> {
+    // Android: its wheel (pure Python, named by its version), which the APK's Python runs
+    // (android.rs); signed in the same SHA256SUMS.
+    if asset().is_none() && !cfg!(target_os = "android") {
         return Err(Error::Missing(
             "build for this system: install gallery-dl with the system's packages (Homebrew, pip) and choose it in Helpers".into(),
         ));
-    };
+    }
+    let root = dir.join("gallery-dl");
+    let _installing = crate::autoupdate::installing(&root, "gallery-dl")?;
     let client = crate::client(net, RELEASES)?;
     let body = crate::get_bytes(&client, RELEASES).await?;
     let release: Release =
         serde_json::from_slice(&body).map_err(|e| Error::BadRelease(e.to_string()))?;
+    let wheel = release
+        .assets
+        .iter()
+        .map(|a| a.name.clone())
+        .find(|n| n.starts_with("gallery_dl-") && n.ends_with("-py3-none-any.whl"));
+    let asset: &str = match asset() {
+        Some(a) => a,
+        None => wheel
+            .as_deref()
+            .ok_or_else(|| Error::Missing("gallery-dl's wheel in its release".into()))?,
+    };
     let version = release.tag_name.trim_start_matches('v').to_owned();
-    if let Some(current) = own(dir)
-        && !crate::newer(&version, &current.version)
+    let none = || crate::autoupdate::Got {
+        latest: version.clone(),
+        settled: None,
+    };
+    if own(dir).is_some_and(|current| !crate::newer(&version, &current.version))
+        || floor.is_some_and(|f| !crate::newer(&version, f))
     {
-        return Ok(current); // never the same again, never older
+        return Ok(none()); // never the same again, never older
+    }
+    // Already here (staged, or kept after going back): switched to, not downloaded again.
+    if let Some(here) = crate::autoupdate::kept(&root, &version) {
+        let settled = Some(crate::autoupdate::settle(&root, here)?);
+        return Ok(crate::autoupdate::Got {
+            latest: version,
+            settled,
+        });
     }
     let url = |name: &str| {
         release
@@ -209,7 +248,6 @@ pub async fn install_latest(
     let expected = crate::sum_for(&sums, asset)
         .ok_or_else(|| Error::Missing(format!("checksum for {asset}")))?;
     let exe_url = url(asset)?;
-    let root = dir.join("gallery-dl");
     std::fs::create_dir_all(&root)?;
     // Named by its checksum: one release's cut-off download resumes, never another's.
     let download = root.join(format!(
@@ -222,7 +260,13 @@ pub async fn install_latest(
     if Sha256::digest(&program).as_slice() != expected {
         return Err(Error::BadChecksum);
     }
-    crate::put(dir, "gallery-dl", &version, asset, &program, &exe_url)
+    let placed = crate::place(dir, "gallery-dl", &version, asset, &program, &exe_url)?;
+    tracing::info!("gallery-dl {version} verified and installed");
+    let settled = Some(crate::autoupdate::settle(&root, placed)?);
+    Ok(crate::autoupdate::Got {
+        latest: version,
+        settled,
+    })
 }
 
 /// Whether gallery-dl has a way to read `url` (a gallery, a user's page, a post…). Asked
@@ -353,17 +397,15 @@ impl ByEngine<'_> {
             }
         };
         let mut files: Vec<(url::Url, PathBuf)> = Vec::new();
-        let mut reader = BufReader::new(stdout);
-        let mut buf = Vec::new();
-        loop {
-            buf.clear();
-            match std::io::Read::take(&mut reader, 64 * 1024).read_until(b'\n', &mut buf) {
-                Ok(0) | Err(_) => break,
-                Ok(_) => {}
-            }
+        // To gallery-dl's end (#1521: not to that of whatever it started).
+        let mut output = proc::Output::read(stdout, MAX_LINE);
+        while let Some(buf) = output.next_line(|| proc::ended(child)) {
             if let Some(f) = listed(&String::from_utf8_lossy(&buf), self.folder) {
                 files.push(f);
             }
+        }
+        if output.held_open() {
+            proc::note_held_open("gallery-dl");
         }
         // Its end, and its words if it listed nothing.
         let failure = {
@@ -473,11 +515,14 @@ impl Default for Progress {
             speed: 0.0,
             events: Vec::new(),
             side_files: Vec::new(),
+            chapter_files: Vec::new(),
             sub_problems: Vec::new(),
             engine: None,
             helper: None,
             merging: None,
             merge_failed: None,
+            recorded: 0,
+            recording: false,
         }
     }
 }
@@ -496,11 +541,13 @@ pub struct GalleryJob {
 const LISTED: &str = "prepare-after:MDMG {_url}\t{_path}";
 
 /// A listed file (`MDMG <address>\t<path>`) inside `folder`, the gallery's own: none other.
+/// Every part of its path under `folder` is a plain name.
 fn listed(line: &str, folder: &Path) -> Option<(url::Url, PathBuf)> {
     let (url, path) = line.strip_prefix("MDMG ")?.split_once('\t')?;
     let url = url::Url::parse(url.trim()).ok()?;
     let path = PathBuf::from(path.trim_end_matches(['\r', '\n']));
-    let inside = path.parent() == Some(folder) || path.starts_with(folder);
+    let mut under = path.strip_prefix(folder).ok()?.components().peekable();
+    let inside = under.peek().is_some() && under.all(|c| matches!(c, Component::Normal(_)));
     (matches!(url.scheme(), "http" | "https") && inside && path.file_name().is_some())
         .then_some((url, path))
 }
@@ -520,13 +567,13 @@ impl GalleryJob {
         engine: Option<crate::streams::Engine>,
         saved: Option<mdm_engine::FileHook>,
     ) -> Result<GalleryJob, ProcError> {
+        // gallery-dl runs in a folder of its own (#834) and prints absolute paths: compare and
+        // download into the same absolute folder, or nothing it lists counts as inside it.
+        let folder = crate::workdir::absolute(folder);
         let mut ours: Vec<String> = vec![
             // The files right in `folder` (the gallery's own), not in subfolders of the site's.
             "--directory".into(),
-            // A full path: gallery-dl runs in a folder of its own (#834).
-            crate::workdir::absolute(folder)
-                .to_string_lossy()
-                .into_owned(),
+            folder.to_string_lossy().into_owned(),
             // One file a second at most: gentle with the sites (Wikimedia answers 429 to
             // faster tools) and with the person's line.
             "--sleep".into(),
@@ -555,7 +602,7 @@ impl GalleryJob {
             })
             .unwrap_or_else(|| USER_AGENT.to_owned());
         ours.extend(theirs);
-        std::fs::create_dir_all(folder).map_err(|e| ProcError::Start("gallery-dl".into(), e))?;
+        std::fs::create_dir_all(&folder).map_err(|e| ProcError::Start("gallery-dl".into(), e))?;
         let engine = engine.filter(|_| Accepts::of(&tool.version).print);
         // The listing: gallery-dl's own options, no wait between files (nothing is downloaded).
         let list_args: Vec<String> = {
@@ -580,11 +627,14 @@ impl GalleryJob {
             engine.as_ref().and_then(|e| e.opts.speed_limit),
         ));
         let on_helper = Arc::new(std::sync::atomic::AtomicBool::new(engine.is_none()));
-        let (sh, ch, folder) = (shared.clone(), child.clone(), folder.to_owned());
+        let (sh, ch, folder) = (shared.clone(), child.clone(), folder);
         let (cur, helper) = (current.clone(), on_helper.clone());
         let (tool, url) = (tool.clone(), url.to_owned());
+        // MDM's own gallery-dl, held for the whole download (#1544).
+        let hold = crate::autoupdate::Hold::of([tool.exe.as_path()]);
         std::thread::spawn(move || {
             let _cookies = cookies;
+            let _hold = hold;
             if let Some(engine) = engine {
                 let by_engine = ByEngine {
                     engine,
@@ -620,7 +670,12 @@ impl GalleryJob {
                     }
                 }
             };
-            read(stdout, &sh);
+            // To gallery-dl's end (#1521: not to that of whatever it started).
+            let mut output = proc::Output::read(stdout, MAX_LINE);
+            read(|| output.next_line(|| proc::ended(&ch)), &sh);
+            if output.held_open() {
+                proc::note_held_open("gallery-dl");
+            }
             finish(&sh, &ch, folder, saved.as_ref());
         });
         Ok(GalleryJob {
@@ -735,18 +790,14 @@ fn parse_line(line: &str) -> Option<Line> {
     p.is_absolute().then(|| Line::Saved(p.to_owned()))
 }
 
-/// Count gallery-dl's files as it prints them. Lines are read whole but kept short: a path is
-/// at most a few thousand bytes, and a longer line is no path.
-fn read(stdout: impl std::io::Read, shared: &Mutex<Shared>) {
+/// The longest piece of a gallery-dl line read as one ([`proc::Output`]): a path is at most a
+/// few thousand bytes, and a longer line is no path.
+const MAX_LINE: usize = 64 * 1024;
+
+/// Count gallery-dl's files as it prints them (`next`: its next line, [`MAX_LINE`] at most).
+fn read(mut next: impl FnMut() -> Option<Vec<u8>>, shared: &Mutex<Shared>) {
     let started = Instant::now();
-    let mut reader = BufReader::new(stdout);
-    let mut buf = Vec::new();
-    loop {
-        buf.clear();
-        match std::io::Read::take(&mut reader, 64 * 1024).read_until(b'\n', &mut buf) {
-            Ok(0) | Err(_) => return,
-            Ok(_) => {}
-        }
+    while let Some(buf) = next() {
         let text = String::from_utf8_lossy(&buf);
         let Some(line) = parse_line(&text) else {
             continue;
@@ -838,6 +889,12 @@ fn finish(
 mod tests {
     use super::*;
 
+    /// `text` read as gallery-dl's output is ([`proc::Output`]).
+    fn read_text(text: impl Into<Vec<u8>>, shared: &Mutex<Shared>) {
+        let mut output = proc::Output::read(std::io::Cursor::new(text.into()), MAX_LINE);
+        read(|| output.next_line(|| false), shared);
+    }
+
     /// A gallery whose files are all there already (every file MDM's engine saved comes back so,
     /// #769) is read in time linear in its files: each line's path is told from those listed at
     /// once, not searched for among them, with the lock `progress` waits on held.
@@ -855,7 +912,7 @@ mod tests {
         };
         mdm_labserver::growth::assert_linear(2_000, lines, |text| {
             let shared = Mutex::new(Shared::default());
-            read(&text[..], &shared);
+            read_text(text, &shared);
             let sh = shared.into_inner().unwrap();
             assert_eq!(sh.there as usize, sh.known.len());
             sh.known.len()
@@ -873,13 +930,37 @@ mod tests {
             saved.display(),
             saved.display()
         );
-        read(text.as_bytes(), &shared);
+        read_text(text, &shared);
         let sh = shared.into_inner().unwrap();
         assert_eq!((sh.there, sh.saved), (3, 2));
         assert_eq!(
             sh.known,
             [PathBuf::from("/g/a.jpg"), PathBuf::from("/g/b.jpg"), saved]
         );
+    }
+
+    /// A listed file counts only as one of the gallery folder's own (or its subfolders'), each
+    /// part of its path a name.
+    #[test]
+    fn a_listed_file_is_one_of_the_folders_own() {
+        let folder = std::env::temp_dir().join("mdm-gallery-listed");
+        let line = |p: &Path| format!("MDMG https://img.test/a.jpg\t{}\n", p.display());
+        for p in [folder.join("a.jpg"), folder.join("sub").join("a.jpg")] {
+            let (url, path) = listed(&line(&p), &folder).expect("inside");
+            assert_eq!((url.as_str(), path), ("https://img.test/a.jpg", p));
+        }
+        for p in [
+            folder.clone(),
+            folder.join("..").join("a.jpg"),
+            folder.join("sub").join("..").join("..").join("a.jpg"),
+            folder.join("sub").join("..").join("a.jpg"),
+            folder.join("sub").join(".."),
+            std::env::temp_dir().join("a.jpg"),
+        ] {
+            assert_eq!(listed(&line(&p), &folder), None, "{}", p.display());
+        }
+        let not_web = format!("MDMG file:///a.jpg\t{}", folder.join("a.jpg").display());
+        assert_eq!(listed(&not_web, &folder), None);
     }
 
     const SUMS: &[u8] = include_bytes!("../tests/fixtures/gallery-dl-SHA256SUMS");
@@ -1088,7 +1169,7 @@ mod tests {
         text.push_str(&"x".repeat(200_000));
         text.push('\n');
         let shared = Mutex::new(Shared::default());
-        read(text.as_bytes(), &shared);
+        read_text(text, &shared);
         let sh = shared.lock().unwrap();
         assert_eq!((sh.saved, sh.there), (5000, 5000));
         assert_eq!(sh.progress.downloaded, 5_000_000);

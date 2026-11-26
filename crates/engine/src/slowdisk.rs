@@ -6,7 +6,12 @@
 //! - a flush waits until the disk has written everything waiting, plus `flush_takes`, and
 //!   holds every write to the file meanwhile, as NTFS does (measured in #361).
 //!
-//! The real write or flush still runs, after the wait.
+//! The real write or flush still runs, after the wait. The real flush runs once the writes are
+//! let go (#1626): by then the modelled disk has written what waited, and holding the writes
+//! while the machine's own disk writes it all again counted it twice. On a CI runner whose disk
+//! was busy, that real flush took seconds and the transfer stood still for 6 s, a stall of the
+//! runner's disk, not of the one modelled here. Where the system's own flush holds the writes
+//! (NTFS), it still does so by itself.
 
 use std::sync::{Arc, Mutex, MutexGuard, RwLock};
 use std::time::{Duration, Instant};
@@ -68,6 +73,9 @@ struct Backlog {
 pub struct DiskStats {
     /// How long each flush took, the wait for the disk included.
     pub flushes: Vec<Duration>,
+    /// How long each flush held the writes: the modelled disk's part of it, without the real
+    /// flush that follows.
+    pub holds: Vec<Duration>,
     /// Writes that waited for the disk (its cache full, or a flush), and how long in all.
     pub writes_waited: u64,
     pub write_wait: Duration,
@@ -133,26 +141,51 @@ impl SlowDisk {
     pub fn flush<T>(&self, extra: bool, flush: impl FnOnce() -> T) -> T {
         let extra = extra || self.every_flush;
         let began = self.clock.now();
-        // A forced save of a disk only slow to flush is a plain one (the gate tells tests a slow
-        // flush runs).
-        let _writes_wait = (extra || self.rate > 0).then(|| self.gate.write().unwrap());
+        {
+            // A forced save of a disk only slow to flush is a plain one (the gate tells tests a
+            // slow flush runs).
+            let _writes_wait = (extra || self.rate > 0).then(|| self.gate.write().unwrap());
+            let left = if self.rate > 0 {
+                Duration::from_secs_f64(self.backlog().bytes / self.rate as f64)
+            } else {
+                Duration::ZERO
+            };
+            self.clock.sleep(
+                left + if extra {
+                    self.flush_takes
+                } else {
+                    Duration::ZERO
+                },
+            );
+            self.backlog().bytes = 0.0;
+        }
+        let held = self.clock.now() - began;
+        // The real flush, the writes let go (module doc).
+        let done = flush();
+        let took = self.clock.now() - began;
+        let mut s = self.stats.lock().unwrap();
+        s.flushes.push(took);
+        s.holds.push(held);
+        done
+    }
+
+    /// Run `sync`, a flush of another file on this disk (the resume state's atomic write), once
+    /// the writes already queued ahead of it are on the disk (`every_flush`: plus `flush_takes`).
+    /// Another file's flush neither holds the part file's writes nor writes out what arrives for
+    /// the part file meanwhile (#1633).
+    pub fn sync<T>(&self, sync: impl FnOnce() -> T) -> T {
         let left = if self.rate > 0 {
             Duration::from_secs_f64(self.backlog().bytes / self.rate as f64)
         } else {
             Duration::ZERO
         };
-        self.clock.sleep(
-            left + if extra {
-                self.flush_takes
-            } else {
-                Duration::ZERO
-            },
-        );
-        self.backlog().bytes = 0.0;
-        let done = flush();
-        let took = self.clock.now() - began;
-        self.stats.lock().unwrap().flushes.push(took);
-        done
+        let extra = if self.every_flush {
+            self.flush_takes
+        } else {
+            Duration::ZERO
+        };
+        self.clock.sleep(left + extra);
+        sync()
     }
 
     /// Take `n` bytes into the cache if they fit (or it is empty), else how long until they do.
@@ -227,5 +260,47 @@ mod tests {
         let f = d.stats().flushes;
         assert!(about(f[0], ms(130)), "{f:?}");
         assert!(about(f[1], ms(30)) && f[2] == Duration::ZERO, "{f:?}");
+    }
+
+    /// #1626: the real flush runs once the modelled one has let the writes go. A real flush of
+    /// 2 s (a busy CI runner's disk) counts in the flush's time, not in how long it held the
+    /// writes: those are the modelled disk's 0.5 s for its 50 MiB.
+    #[test]
+    fn the_real_flush_does_not_hold_the_writes() {
+        let clock = Clock::Manual(Arc::new(Mutex::new(Instant::now())));
+        let ms = Duration::from_millis;
+        let d = SlowDisk::with_clock(100 << 20, 256 << 20, Duration::ZERO, clock.clone());
+        d.write(50 << 20, || ());
+        let writes_go = d.flush(true, || {
+            clock.sleep(ms(2000));
+            d.gate.try_read().is_ok()
+        });
+        assert!(writes_go, "the writes waited for the real flush");
+        let s = d.stats();
+        assert!(about(s.flushes[0], ms(2500)), "{:?}", s.flushes);
+        assert!(about(s.holds[0], ms(500)), "{:?}", s.holds);
+    }
+
+    /// #1633: flushing another file on a busy disk (the resume state's atomic write) waits for
+    /// what was already queued, without holding the part file's writes or clearing what they add
+    /// meanwhile.
+    #[test]
+    fn syncing_another_file_waits_for_the_disk_without_holding_writes() {
+        let clock = Clock::Manual(Arc::new(Mutex::new(Instant::now())));
+        let ms = Duration::from_millis;
+        let d = SlowDisk::with_clock(100 << 20, 256 << 20, ms(30), clock.clone());
+        d.write(50 << 20, || ());
+        let t = clock.now();
+        let writes_go = d.sync(|| {
+            // While the state's write waited 500 ms for the earlier 50 MiB, those 50 MiB drained;
+            // 20 MiB written to the part file at the end stay in its cache.
+            d.write(20 << 20, || ());
+            d.gate.try_read().is_ok()
+        });
+        assert!(writes_go, "another file's sync held the part file's writes");
+        assert!(about(clock.now() - t, ms(500)));
+        assert!(d.stats().flushes.is_empty());
+        d.flush(true, || ());
+        assert!(about(d.stats().holds[0], ms(230)), "{:?}", d.stats().holds);
     }
 }

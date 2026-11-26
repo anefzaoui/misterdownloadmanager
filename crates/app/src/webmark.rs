@@ -54,16 +54,112 @@ fn system_keeps() -> bool {
     }
 }
 
+/// What a mark names as the source of a file that names none of its own (a torrent's, a magnet
+/// link's): Windows' own word for the internet zone.
+pub const INTERNET: &str = "about:internet";
+
+/// The address a mark names as a file's source: a web or FTP address without its login (user
+/// name and password: a mark never carries one), as browsers wrote theirs; any other (a magnet
+/// link sent to a debrid account) [`INTERNET`], as a torrent's files are.
+pub fn source(url: &str) -> String {
+    match url::Url::parse(url) {
+        Ok(u) if matches!(u.scheme(), "http" | "https" | "ftp" | "ftps" | "ftpes") => {
+            without_login(u)
+        }
+        _ => INTERNET.to_owned(),
+    }
+}
+
+/// The page a mark names as a file's referrer: a web page's address without its login; none
+/// for anything else.
+pub fn page(referrer: &str) -> Option<String> {
+    url::Url::parse(referrer)
+        .ok()
+        .filter(|u| matches!(u.scheme(), "http" | "https"))
+        .map(without_login)
+}
+
+fn without_login(mut u: url::Url) -> String {
+    // Only an address that can't have a login refuses these (a magnet link): none here.
+    let _ = u.set_username("");
+    let _ = u.set_password(None);
+    u.to_string()
+}
+
 /// Mark `path`, a file being downloaded (or just downloaded) from `url` (`referrer`'s page), as
-/// coming from the internet, unless MDM's option or the system's policy says not to.
+/// coming from the internet, unless MDM's option or the system's policy says not to. Every
+/// download is marked, whatever its address; the mark names it as [`source`] and [`page`] say.
 pub fn mark(path: &Path, url: &str, referrer: Option<&str>) {
     if !wanted(ON.load(Ordering::Relaxed), system_keeps()) {
         return;
     }
+    let (url, referrer) = (source(url), referrer.and_then(page));
     #[cfg(windows)]
-    crate::win32::mark_downloaded(path, url, referrer);
+    crate::win32::mark_downloaded(path, &url, referrer.as_deref());
     #[cfg(unix)]
-    crate::unix::mark_downloaded(path, url, referrer);
+    crate::unix::mark_downloaded(path, &url, referrer.as_deref());
+    // Any other system has no mark to give.
+    #[cfg(not(any(windows, unix)))]
+    let _ = (path, url, referrer);
+}
+
+/// Tests: that `path` carries the mark of a download from `source` (`referrer`'s page): Windows'
+/// zone stream with both addresses, Linux's origin attributes, macOS' quarantine attribute
+/// (which names no address). A Linux file system without extended attributes keeps none, and
+/// is said and passed.
+#[cfg(test)]
+pub fn assert_marked(path: &Path, source: &str, referrer: Option<&str>) {
+    #[cfg(windows)]
+    {
+        let mut stream = path.as_os_str().to_owned();
+        stream.push(":Zone.Identifier");
+        let zone = std::fs::read_to_string(&stream)
+            .unwrap_or_else(|e| panic!("{}: no mark ({e})", path.display()));
+        let lines: Vec<&str> = zone.lines().collect();
+        assert!(lines.contains(&"ZoneId=3"), "{zone}");
+        assert!(
+            lines.contains(&format!("HostUrl={source}").as_str()),
+            "{zone}"
+        );
+        match referrer {
+            Some(r) => assert!(
+                lines.contains(&format!("ReferrerUrl={r}").as_str()),
+                "{zone}"
+            ),
+            None => assert!(!zone.contains("ReferrerUrl="), "{zone}"),
+        }
+    }
+    #[cfg(target_os = "linux")]
+    {
+        let read = |name| crate::unix::xattr(path, name);
+        match read("user.xdg.origin.url") {
+            Err(e) if e.raw_os_error() == Some(libc::ENOTSUP) => {
+                eprintln!(
+                    "{}: no extended attributes here: not checked",
+                    path.display()
+                );
+            }
+            origin => {
+                assert_eq!(
+                    origin.unwrap().as_deref(),
+                    Some(source),
+                    "{}",
+                    path.display()
+                );
+                assert_eq!(read("user.xdg.referrer.url").unwrap().as_deref(), referrer);
+            }
+        }
+    }
+    #[cfg(target_os = "macos")]
+    {
+        let _ = (source, referrer);
+        let q = crate::unix::xattr(path, "com.apple.quarantine").unwrap();
+        assert!(
+            q.is_some_and(|q| q.starts_with("0081;")),
+            "{}",
+            path.display()
+        );
+    }
 }
 
 #[cfg(test)]
@@ -83,6 +179,80 @@ mod tests {
         assert!(keeps_zones(Some(2), Some(1)));
         // A value Windows doesn't define keeps it.
         assert!(keeps_zones(Some(0), None));
+    }
+
+    /// A mark names a web or FTP address without its login, anything else (a magnet link, a
+    /// torrent's own) as the internet; a referrer only when it is a web page's, without its
+    /// login.
+    #[test]
+    fn a_mark_names_an_address_without_its_login() {
+        for (url, named) in [
+            ("https://videos.test/v?x=1", "https://videos.test/v?x=1"),
+            ("https://user:pw@videos.test/v", "https://videos.test/v"),
+            ("http://user@files.test/a.zip", "http://files.test/a.zip"),
+            (
+                "ftp://user:pw@files.test/a/b.txt",
+                "ftp://files.test/a/b.txt",
+            ),
+            (
+                "ftp://files.test/listing.txt",
+                "ftp://files.test/listing.txt",
+            ),
+            ("ftps://u:p@files.test/x", "ftps://files.test/x"),
+            ("ftpes://u:p@files.test/x", "ftpes://files.test/x"),
+            (
+                "magnet:?xt=urn:btih:0123456789abcdef0123456789abcdef01234567&dn=setup.exe",
+                INTERNET,
+            ),
+            (INTERNET, INTERNET),
+            ("file:///C:/x.exe", INTERNET),
+            ("not an address", INTERNET),
+        ] {
+            assert_eq!(source(url), named, "{url}");
+        }
+        assert_eq!(
+            page("https://me:pw@pages.test/p").as_deref(),
+            Some("https://pages.test/p")
+        );
+        assert_eq!(page("ftp://pages.test/"), None);
+        assert_eq!(page("magnet:?xt=urn:btih:00"), None);
+        assert_eq!(page("nope"), None);
+    }
+
+    /// Every download is marked, with its address as [`source`] says, written so on this
+    /// system (Windows' zone stream, Linux's origin attributes, macOS' quarantine).
+    #[test]
+    fn every_download_is_marked_without_a_login() {
+        let dir = tempfile::tempdir().unwrap();
+        for (k, (url, referrer, named, page)) in [
+            (
+                "https://user:pw@videos.test/v",
+                Some("https://me:pw@pages.test/p"),
+                "https://videos.test/v",
+                Some("https://pages.test/p"),
+            ),
+            (
+                "ftp://user:pw@files.test/a/b.txt",
+                None,
+                "ftp://files.test/a/b.txt",
+                None,
+            ),
+            (
+                "magnet:?xt=urn:btih:0123456789abcdef0123456789abcdef01234567&dn=setup.exe",
+                Some("magnet:?xt=urn:btih:00"),
+                INTERNET,
+                None,
+            ),
+            (INTERNET, None, INTERNET, None),
+        ]
+        .into_iter()
+        .enumerate()
+        {
+            let path = dir.path().join(format!("file{k}.bin"));
+            std::fs::write(&path, b"x").unwrap();
+            mark(&path, url, referrer);
+            assert_marked(&path, named, page);
+        }
     }
 
     #[test]

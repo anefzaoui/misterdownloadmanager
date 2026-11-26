@@ -1,0 +1,124 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Mister Download Manager website ratings",
+    "version": "1.0.0",
+    "summary": "The star ratings visitors give Mister Download Manager on misterdownloadmanager.com.",
+    "description": "Visitors of misterdownloadmanager.com rate Mister Download Manager from one to five stars on the home and download pages. Anyone may read the numbers. Rating and removing a rating are for the website's own pages: they need the site's Origin and a Cloudflare Turnstile token from a person on the page. One rating per visitor, kept as a salted hash of the IP address, never the address. Source: https://github.com/anefzaoui/misterdownloadmanager/tree/main/website/ratings",
+    "license": { "name": "GPL-3.0-or-later", "identifier": "GPL-3.0-or-later" },
+    "contact": { "url": "https://github.com/anefzaoui/misterdownloadmanager/issues" }
+  },
+  "servers": [{ "url": "https://ratings.misterdownloadmanager.com" }],
+  "externalDocs": {
+    "description": "How the ratings work, and the site's privacy policy",
+    "url": "https://misterdownloadmanager.com/agents.html#ratings"
+  },
+  "paths": {
+    "/api/ratings": {
+      "get": {
+        "operationId": "getRatings",
+        "summary": "The ratings: average, count, how many gave each number of stars",
+        "description": "No Origin needed. `mine` is the asking visitor's own rating (from the same connection), or null.",
+        "responses": {
+          "200": {
+            "description": "The numbers",
+            "headers": { "Cache-Control": { "schema": { "type": "string", "const": "no-store" } } },
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Summary" } } }
+          },
+          "403": { "$ref": "#/components/responses/Refused" }
+        }
+      },
+      "post": {
+        "operationId": "rate",
+        "summary": "Rate, or change the visitor's rating (the website's pages only)",
+        "description": "Needs `Origin: https://misterdownloadmanager.com` (or www.) and a Turnstile token from the page's widget. At most 8 ratings or removals a visitor in 10 minutes.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["stars", "turnstileToken"],
+                "properties": {
+                  "stars": { "type": "integer", "minimum": 1, "maximum": 5 },
+                  "turnstileToken": { "type": "string", "minLength": 1 }
+                },
+                "maxProperties": 2
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Counted; the numbers after it, and the visitor's rating before it",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Changed" } } }
+          },
+          "400": { "$ref": "#/components/responses/Refused" },
+          "403": { "$ref": "#/components/responses/Refused" },
+          "413": { "$ref": "#/components/responses/Refused" },
+          "415": { "$ref": "#/components/responses/Refused" },
+          "429": { "$ref": "#/components/responses/Refused" },
+          "502": { "$ref": "#/components/responses/Refused" }
+        }
+      },
+      "delete": {
+        "operationId": "removeRating",
+        "summary": "Remove the visitor's own rating (the website's pages only)",
+        "responses": {
+          "200": {
+            "description": "Removed (or there was none); the numbers after it",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Changed" } } }
+          },
+          "403": { "$ref": "#/components/responses/Refused" },
+          "429": { "$ref": "#/components/responses/Refused" }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Summary": {
+        "type": "object",
+        "required": ["average", "count", "distribution", "mine"],
+        "properties": {
+          "average": { "type": "number", "minimum": 0, "maximum": 5, "description": "0 while there is no rating" },
+          "count": { "type": "integer", "minimum": 0 },
+          "distribution": {
+            "type": "object",
+            "description": "How many gave each number of stars",
+            "required": ["1", "2", "3", "4", "5"],
+            "additionalProperties": false,
+            "patternProperties": { "^[1-5]$": { "type": "integer", "minimum": 0 } }
+          },
+          "mine": { "type": ["integer", "null"], "minimum": 1, "maximum": 5 }
+        }
+      },
+      "Changed": {
+        "allOf": [
+          { "$ref": "#/components/schemas/Summary" },
+          {
+            "type": "object",
+            "required": ["previous"],
+            "properties": { "previous": { "type": ["integer", "null"], "minimum": 1, "maximum": 5 } }
+          }
+        ]
+      },
+      "Error": {
+        "type": "object",
+        "required": ["error"],
+        "properties": {
+          "error": {
+            "type": "string",
+            "enum": ["origin", "method", "not-found", "content-type", "too-large", "json", "stars", "token", "client", "turnstile", "turnstile-unreachable", "rate-limit", "not-configured", "server"]
+          }
+        }
+      }
+    },
+    "responses": {
+      "Refused": {
+        "description": "Refused: the error's kind says why",
+        "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } }
+      }
+    }
+  }
+}

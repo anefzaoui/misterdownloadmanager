@@ -30,6 +30,14 @@ pub struct Volume {
     pub file_system: String,
 }
 
+/// Extend a download through its already authorized handle, retaining sparse-file behavior.
+pub fn resize_download_file(file: &std::fs::File, length: u64) -> std::io::Result<()> {
+    if length >= crate::sparse::MIN_SIZE {
+        crate::sparse::set(file, true);
+    }
+    file.set_len(length)
+}
+
 /// The volume `path` is on, or will be once created: a missing folder is looked up through the
 /// nearest folder above it that exists. Only that volume is asked (a network drive too). None
 /// when no folder of the path exists (a removed drive) or the system can't tell: the check is
@@ -330,8 +338,10 @@ pub fn check(volume: &Volume, size: u64) -> Result<(), Refusal> {
     let needed = size.saturating_add(MARGIN);
     if needed > volume.free {
         return Err(Refusal::NoSpace {
-            needed: size,
-            free: volume.free.saturating_sub(MARGIN.min(volume.free)),
+            // What the check compares, and the space the volume really has: a disk with 100 MB
+            // free must not be reported as having none just because the margin didn't fit.
+            needed,
+            free: volume.free,
         });
     }
     Ok(())
@@ -383,6 +393,21 @@ mod tests {
             check(&vol((1 << 30) + MARGIN - 1, "NTFS"), 1 << 30),
             Err(Refusal::NoSpace { .. })
         ));
+    }
+
+    #[test]
+    fn a_refusal_reports_the_need_and_the_real_free_space() {
+        let free = 100 << 20;
+        let size = 50 << 20;
+        let refusal = check(&vol(free, "NTFS"), size).unwrap_err();
+        assert_eq!(
+            refusal,
+            Refusal::NoSpace {
+                needed: size + MARGIN,
+                free,
+            },
+            "the file plus the margin, against what the volume has"
+        );
     }
 
     #[test]

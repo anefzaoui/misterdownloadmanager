@@ -57,7 +57,7 @@ builds none for it): install it with your system's packages or pip.
 ![MDM's main window on Ubuntu 24.04's GNOME desktop: the categories and a list of downloads, each with the desktop's icon for its type](images/main-linux.webp)
 *MDM on Ubuntu's GNOME desktop, with the desktop's own file icons.*
 
-Browser integration is set up by MDM itself at each start (the browsers installed then are found); add the extension as in [Browser integration](browser-integration.md). Firefox installed as a Snap (Ubuntu's) reaches MDM once you allow it; other Snap and Flatpak browsers can't (see [Flatpak and Snap browsers](browser-help.md#linux-sandbox)). The tray icon, Dark Mode support and Launch on startup work on GNOME (Ubuntu's), KDE Plasma, Xfce and Cinnamon.
+Browser integration is set up by MDM itself at each start (the browsers installed then are found); add the extension as in [Browser integration](browser-integration.md). Firefox installed as a Snap (Ubuntu's) reaches MDM once you allow it; other Snap and Flatpak browsers can't (see [Flatpak and Snap browsers](browser-help.md#linux-sandbox)). The tray icon, Dark Mode support and Launch on startup work on GNOME (Ubuntu's), KDE Plasma, Xfce and Cinnamon. Running downloads show their progress on MDM's icon in docks that can show it, such as Ubuntu Dock and KDE Plasma's task manager, as on the Windows taskbar ([more](download-list.md#progress-on-the-taskbar-and-the-dock)).
 
 ![The window that offers the browser extension on Linux: Google Chrome and Mozilla Firefox, each with Add the extension](images/browser-offer-linux.webp)
 *MDM finds the browsers installed and offers each one its extension.*
@@ -193,7 +193,7 @@ From top to bottom:
   - **Tasks** — add downloads, torrents, magnet links, batch downloads and videos from a page; **Torrent settings**; **Link grabber**; **RSS feeds**; show the drop target; import and export the list; exit.
   - **File** — the selected download: **Stop Download**, **Remove**, **Download Now**, **Redownload**.
   - **Downloads** — **Pause All**, **Stop All**, **Delete All Completed**, **Find**, the **Scheduler**, queues, the **Speed Limiter** and **Options**.
-  - **View** — show or hide the categories, sort the list (**Arrange files**), **Dark Mode support**, **Always dark**, **Theme**, **Interface size** (every window larger, 100 % to 200 %; **Ctrl +**, **Ctrl −** and **Ctrl 0** too), **Text** (Windows: smooth or classic letters), **Draw with** (OpenGL, or Direct3D on Windows, Vulkan on Linux, Metal on macOS) and **Language**.
+  - **View** — show or hide the categories, sort the list (**Arrange files**), **Dark Mode support**, **Always dark**, **Theme**, **Interface size** (every window larger, 100 % to 200 %; **Ctrl +**, **Ctrl −** and **Ctrl 0** too), **Font** (the interface's own font file and text size, apart from **Interface size**), **Text** (Windows: smooth or classic letters), **Draw with** (OpenGL, or Direct3D on Windows, Vulkan on Linux, Metal on macOS) and **Language**.
   - **Help** — help pages and tutorials (on the website, in your language when it has it), **Keyboard shortcuts**, **Report a problem**, **Check for updates**, **About**, **Tell a friend** and **Support MDM** (its creator's GitHub Sponsors page: optional, nothing in MDM changes).
 - **Toolbar.** **Add URL**, **Add Torrent**, **Resume**, **Stop**, **Stop All**, **Delete**, **Delete Completed**, **Options**, **Scheduler**, **Start Queue**, **Stop Queue**. The small arrow next to **Add Torrent**, **Start Queue** and **Stop Queue** opens more choices.
 - **Categories** (left). Choose what the list shows: **All Downloads**, **Unfinished**, **Finished** and **Queues**, each with its categories. Drag the gap between the pane and the list to make it wider.
@@ -269,9 +269,12 @@ On Linux this needs a tray, which most desktops have (KDE Plasma, Xfce, Cinnamon
 ![MDM's icon in the top bar of Ubuntu's GNOME, its menu open: Open Mister Download Manager, Add new download, Add batch download, Downloads in progress, Speed Limiter, Scheduler, the main queue, Options and Exit](images/tray-linux.webp)
 *The tray icon's menu on Ubuntu's GNOME.*
 
-- Click the tray icon to bring the window back.
+- Click the tray icon to see what is downloading: a small panel over the icon lists each running download with its progress bar, how much has come of how much, its speed and the time left, and the progress window's **Pause** (then **Resume**; **Stop and save** for a live stream being recorded) and **Cancel** beside it. **Open Mister Download Manager** at its bottom brings the window back. Its **×**, **Esc**, a click elsewhere or another click on the icon closes it.
+- Double-click the tray icon to bring the window back straight away (Windows).
 - Right-click it for **Add new download**, **Add batch download**, **Downloads in progress**, **Speed Limiter**, **Scheduler**, the main download queue, **Options** and **Exit**.
 - **Downloads in progress** lists the running downloads. Choose one to see its progress window.
+- **Options → General → Show downloads when the notification area icon is clicked** is ticked in a new copy of MDM. Untick it and a click on the icon brings the window back (or hides it there while it is in front), as it did before the panel. An MDM that was set up before the panel keeps that click: tick it to have the panel.
+- On Linux the panel depends on the desktop's tray. KDE Plasma and Xfce send MDM the click, so the panel opens beside the icon. GNOME's AppIndicator extension may open the icon's menu on a left click instead, or send no place for the click: the panel then opens at the top right of the screen, under GNOME's top bar. In a native Wayland session the compositor decides where the panel goes and may not give it the focus, so a click elsewhere doesn't close it there: use its **×** or click the icon again. If the panel doesn't suit your desktop, untick the option above.
 
 Minimize hides the main window there too, while **Minimize to the notification area** is on in **Options → General**. It is on by default; where the tray has no icon, Minimize sends the window to the taskbar instead.
 

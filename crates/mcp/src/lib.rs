@@ -367,6 +367,14 @@ fn explain(answer: Result<String, String>) -> Result<String, String> {
                 "Mister Download Manager is closing; try again once it has started.".into(),
             );
         }
+        // The channel itself, not an answer: more connections than it takes at once, or a
+        // request over its line limit. Neither is a success.
+        "busy" => {
+            return Err("Mister Download Manager is busy with other requests; try again.".into());
+        }
+        "too-large" => {
+            return Err("Mister Download Manager didn't take the request: it is too large.".into());
+        }
         _ => {}
     }
     if let Ok(e) = serde_json::from_str::<ErrorAnswer>(&answer) {

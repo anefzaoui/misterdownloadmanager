@@ -12,10 +12,10 @@ How Mister Download Manager's pieces fit together.
 | `crates/mcp` | `mdm-mcp` | The MCP server (`misterdownloadmanager-mcp`): AI assistants list, add and control the running app's downloads through the automation API |
 | `crates/remote` | `mdm-remote` | The remote control (#141): the HTTPS server a paired phone or computer on the local network uses (its page, pairing codes, device tokens, the self-signed certificate); every request becomes an automation API command the app answers |
 | `crates/nmhost` | `mdm-nmhost` | The browser's native messaging host: takes captured downloads from the extension and hands them to the app |
-| `crates/ipc` | `mdm-ipc` | The single-instance channel (a token-protected local socket), the data folder, and the capture rules shared by the app and the host |
+| `crates/ipc` | `mdm-ipc` | The single-instance channel (a token-protected local socket), the data folder, the capture rules shared by the app and the host, and the site rules (#1778: a User-Agent, headers, connections and the browser-like connection by site pattern) shared by the app and the command line |
 | `crates/debrid` | `mdm-debrid` | Debrid accounts (#44): the services' official APIs (Real-Debrid, AllDebrid, Premiumize, TorBox, Mega-Debrid) turn a file host's link into a direct one the engine downloads |
 | `crates/cnl` | `mdm-cnl` | Click'n'Load 2 (#37): the listener on 127.0.0.1:9666 that reads a link site's posts into packages for Link grabber, with limits on what it takes |
-| `crates/extract` | `mdm-extract` | Archive extraction (#37): zip, tar, gz and xz in process; 7z and RAR through an installed 7-Zip, run as its own program; in place through HatchZip when asked |
+| `crates/extract` | `mdm-extract` | Archive extraction (#37): zip, tar, gz and xz in process; 7z and RAR through an installed 7-Zip, run as its own program; in place through HatchZip when asked. Archive tests (`check.rs`, #1661): `7z t`, a ZIP in process without it, and a ZIP's damaged entries placed in the file |
 | `crates/geo` | `mdm-geo` | Where a download's server is (#140): an IP-to-country range table built from DB-IP's Lite data (`tools/geo/build.py`), looked up on this computer only, and the countries' flags |
 | `crates/tools` | `mdm-tools` | Video pages through yt-dlp and ffmpeg, image galleries through gallery-dl (run as separate programs); while a network adapter is chosen, their connections go through a proxy of MDM's on 127.0.0.1 that binds them to it (`relay.rs`); each runs in a folder it can write, also its TEMP (`workdir.rs`) |
 | `crates/crash` | `mdm-crash` | Crash and freeze reports: the monitor process, out-of-process minidumps, symbolicated stacks, the report's text and the release logs ([crash-reports.md](crash-reports.md)) |
@@ -48,21 +48,79 @@ Download
 When every segment is done, the part file is checked against the expected size and renamed into
 place; the file's date can follow the server's.
 
+An answer with no size and no ranges goes on one connection, written in order (`single_stream`),
+and may never end (an internet radio, a camera feed: `Snapshot::endless`). `Download::keep` ends
+it where it is, and what arrived is finished as if the server had ended it there (#1780); only
+the progress window's Stop and keep calls it (`App::keep_by_hand`, `Job::keep`). Every other
+stop cancels it, as any download a server can't resume.
+
+A finished file whose archive test found damage it could place (a ZIP's entries, #1661: the app's
+`archtest.rs`) is made a part file again (`repair.rs`): its last resume state, handed back by a
+download asked to keep it (`Options::keep_state`, `Snapshot::kept`), is written back with only the
+damaged ranges left to fetch, each starting a few bytes early for the overlap check, and the file
+renamed to its part file. Resuming it is an ordinary resume: `If-Range` with the same validators,
+the overlap check, the digest; a file that changed on the server fails as `FileChanged`.
+
 A download's first request (`get`) follows redirects and the pages that lead on to a file by
 themselves (a waiting page's refresh). Sites whose links aren't the file's address have a module
 in `sites/` (Google Drive: `sites/gdrive.rs`; MediaFire: `sites/mediafire.rs`; Rapidgator:
-`sites/rapidgator.rs`): it turns the link into the file's address, reads the site's own pages (a
-confirmation form, a download button, an error page), names its refusals (`Error::Refused`) and,
+`sites/rapidgator.rs`; LuluStream: `sites/lulustream.rs`): it turns the link into the file's
+address, reads the site's own pages (a confirmation form, a download button, an error page),
+names its refusals (`Error::Refused`) and,
 where the file's addresses expire, the page that gives a fresh one (`sites::origin`, asked again
 when a connection meets an expired address, at most once per expiry and never again at once for
 an address it then refused; Rapidgator's page is the browser's tab the download came from,
-`Options::page`), with pure functions tested without a network. The lab server plays such a site
-on its real host names for the end-to-end tests (`labserver/src/drive.rs`,
-`labserver/src/mediafire.rs`, `labserver/src/rapidgator.rs`).
+`Options::page`), with pure functions tested without a network. A page whose file comes only once
+its form is sent back (LuluStream's quality page) says so with `PageSays::Form`: `get` posts that
+form's fields (`application/x-www-form-urlencoded`) with its next request only and reads the
+answer as a page; a site that answers with its form again is posted again after a short, growing
+pause (`FORM_REPOST_PAUSE`), up to `MAX_FORM_POSTS`, and then refuses in the site's name
+(`sites::form_refused`). The lab server
+plays such a site on its real host names for the end-to-end tests (`labserver/src/drive.rs`,
+`labserver/src/mediafire.rs`, `labserver/src/rapidgator.rs`, `labserver/src/lulustream.rs`).
 
 FTP and FTPS (`ftp.rs`) go through the same planner, workers and state: a segment is `REST` +
 `RETR` on a control session instead of a ranged `GET`, `SIZE` and `MDTM` stand in for the
 headers, and sessions are pooled per download and reused between segments.
+
+A folder given to Link grabber (#1774, `folder.rs`) is read with its subfolders, breadth first:
+an FTP folder by `MLSD`, else `LIST` (`ftp::Lister`, one session for every folder), a web
+server's listing page ("Index of", recognized by its title) as `page_links` reads a page. An
+entry is a name in the folder, matched by name: a link elsewhere (another host, the folder above,
+a query, a deeper path) or a name that isn't plain is no entry, and FTP's symbolic links aren't
+followed. The depth asked (at most `MAX_DEPTH`), `MAX_FOLDERS`, `MAX_FILES` and each listing's
+size bound it. The app makes each folder's files a package whose folder is the tree's under the
+download folder (`grabber.rs`); the lab server serves made-up trees, a hostile one and a huge one
+(`labserver/src/tree.rs`) over HTTP and FTP for the end-to-end tests.
+
+A Hugging Face model or dataset (or a folder of one, at a revision) and a GitHub release or tag
+given to Link grabber (#1772, `hub.rs`) are listed through the sites' public APIs: the revision is
+first made its commit, then the tree is read page by page (`Link: rel="next"`, the same API's
+only), each entry's path taken only when it is a relative path of plain names inside the folder
+asked (`hub::relative_path`: no `..`, absolute path, drive or device name), matched by its names;
+a file's address is built from the repository, the commit and those names, never taken from the
+answer. Each file keeps its size and the SHA-256 the site publishes (an LFS file's, a release
+asset's `digest`), which becomes the download's checksum. The app makes one package whose folder
+is the address's path under the download folder, each file in its own folders inside it
+(`Imported::within`), unticked; Sites Logins' password for `huggingface.co` goes as an access
+token (`Authorization: Bearer`) to Hugging Face's own hosts only. The lab server plays both APIs
+(`labserver/src/hub.rs`): pages, a gated repository, hostile paths, a wrong digest and rate limits.
+
+Files inside a ZIP on a server (#1775, `remotezip.rs`) are read from its table of contents, at
+its end: Download File Info's one look (`look`: the last `TAIL` bytes, which tell whether the
+server sends parts, and hold the table of most archives) enables Preview, and Zip preview
+(`zippreview.rs`) lists the table (`list`: the ZIP64 record and the table asked for where they
+aren't in the end). The parsers are pure functions over bytes, fuzzed
+(`fuzz/fuzz_targets/zip_directory.rs`): the table at most `MAX_DIRECTORY` bytes and
+`MAX_ENTRIES` entries, each name at most `MAX_NAME`, ZIP64's fields read within their extra
+field, every entry's data before the table and apart from every other's (overlapping entries
+refuse the archive), names that aren't plain relative paths left out. The files picked are one
+download (`Item::zip`, `Job::Zip`): `Fetch` asks for the table again, then each file's local
+header and data in one range request (`If-Range` with the archive's validator), unpacks stored
+and Deflate data, counts it and checks its CRC-32 against the table's, and hands the bytes to the
+extraction's writer (`mdm_extract::put_file`: the same path checks and staging folder as every
+extracted entry). The lab server serves made-up ZIPs (`labserver/src/zip.rs`): ZIP64, a hostile
+one, overlapping entries, a table too large, and any of them without ranges.
 
 ## App
 
@@ -74,7 +132,9 @@ their Linux and macOS counterparts to `unix.rs` (starting with the session, the 
 sounds, show in folder, the crash handler); every other file is safe, portable Rust. Fonts come from the system:
 Windows' Fonts folder, macOS's system fonts, fontconfig on Linux (`theme.rs`). The interface language's
 script fonts load at start; text in another script gets its font the first time it shows: from MDM's
-lists of the system's fonts for each script, then, on Windows and macOS, from the system's own fallback
+lists of the system's fonts for each script (the first file there that has the letter; on Windows one
+Han list in the interface language's order, `theme::han_files`, for the fonts loaded at start, those
+found later and DirectWrite's alike), then, on Windows and macOS, from the system's own fallback
 (DirectWrite's, CoreText's, through fontique: `egui_system_font_provider`) for what the lists don't
 name; Linux asks fontconfig for any letter. On Windows, Latin,
 Greek, Cyrillic and single-codepoint CJK text is drawn by DirectWrite (`win32.rs`, through egui's glyph rasterizer hook):
@@ -127,11 +187,28 @@ every system (`crates/app/src/renderer.rs`): when the chosen one can't start, th
 tried, so the windows always open. A watched start with the system's API leaves a marker until
 its first frame is drawn: a start that ends before it (a crash inside the driver), one whose
 first frame doesn't come within 10 seconds (MDM then starts again with OpenGL), or a graphics
-card lost twice in 10 minutes is remembered with its reason, which the menu shows.
+card lost twice in 10 minutes is remembered with its reason, which the menu shows. With OpenGL,
+a window eframe can't paint (its context can't be made current on it, its frame can't be shown)
+is skipped and painted again 100 ms later; one whose paints keep failing for seconds is a lost
+device too (MDM starts again; twice in 10 minutes, OpenGL is remembered as failing on Windows).
+On Windows, a freeze or a crash whose report shows the window's or the crashed thread inside
+OpenGL's driver is remembered too, by the crash report's window (`crashui.rs`), from the stack's
+modules (#847, #1659).
+The fork's eframe tells MDM through its viewport hooks (`gl_paint_failed`, #1448).
 
 View → Interface size (`scale.rs`, #262) is egui's zoom factor over the display's own scale:
 every window is laid out in points, so it opens that much larger; one larger than the screen
 scrolls.
+
+View → Font (`theme.rs`, #1489) is separate: the font file the interface's text is drawn in
+(`interface_font` in `settings.json`; Segoe UI, the system's own, unless chosen) and
+`interface_text_size`,
+the percent of the theme's sizes the text is drawn at. `theme::font_size` is the one place the
+sizes come from, for egui's text styles and for the custom-drawn Win32 controls alike
+(`winui::tahoma`); the layout's own measurements don't change, so text can overflow where a
+window is tight, but nothing moves. On Windows the DirectWrite rasterizer
+(`win32::classic_text`) draws the chosen file too, and the glyph atlas is rebuilt when the font
+changes.
 
 ### Data
 
@@ -168,6 +245,19 @@ measured as the widest browser writes it (`wireSize` in `background.js`) and car
 referrer and cookies and its place (`mdm_ipc::LinksPart`); the host hands each over as it comes,
 and the app keeps them (`linkparts.rs`) until the last is in, then opens Link grabber with the
 whole list.
+
+The toolbar button's popup lists MDM's newest downloads (#1496). While it is open,
+`background.js` keeps one native port to the host (`connectNative`: one helper process, not one
+per question) and asks every second `{"recent": …}`; the host asks the running app
+(`mdm_ipc::RecentAsk`), which answers with `mdm_ipc::api::RecentAnswer`: the newest downloads
+that match the search and the filter, the counts of each filter, and the system's icons for the
+file types the popup lacks (`fileicons.rs`, PNG `data:` addresses, each type once per size), the
+whole within 512 KB. The popup's buttons send `{"downloadAct": …}` (`mdm_ipc::RecentAct`): the
+app opens the file or its folder, puts the file on the clipboard or opens the share sheet
+(`fileclip.rs`, each system's own calls in `win32.rs` and `unix.rs`). Neither question starts the
+app. The toolbar button's count of running downloads comes from the same answers, watched while
+any runs. With downloads sent to another MDM, the list is its remote control's (`api/list`), cut
+to the same view in `background.js`.
 
 The host serves only MDM's own extension. Its IDs are in one place, `mdm_ipc::extension`
 (`crates/ipc/src/extension.rs`): the unpacked copy's (`UNPACKED_ID`, from the manifest's public

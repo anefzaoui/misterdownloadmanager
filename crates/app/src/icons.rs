@@ -38,8 +38,14 @@ pub enum Icon {
     HelperVideo,
     /// ffmpeg joins its picture and sound,
     HelperMerge,
-    /// and both are checked before they run.
+    /// and both are checked before they run;
     HelperChecked,
+    /// Node.js runs YouTube's JavaScript (#1570).
+    HelperScript,
+    /// The toolbar's preview pane toggle (#1368): Lucide "panel-right", the pane at the window's
+    /// right; in a right-to-left interface "panel-left", where the pane is there.
+    PreviewPane,
+    PreviewPaneLeft,
 }
 
 impl Icon {
@@ -159,6 +165,17 @@ impl Icon {
                 r#"<path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/>"#,
                 r#"<path d="m9 12 2 2 4-4"/>"#,
             ),
+            // Lucide "braces": a piece of code to run.
+            Icon::HelperScript => concat!(
+                r#"<path d="M8 3H7a2 2 0 0 0-2 2v5a2 2 0 0 1-2 2 2 2 0 0 1 2 2v5c0 1.1.9 2 2 2h1"/>"#,
+                r#"<path d="M16 21h1a2 2 0 0 0 2-2v-5c0-1.1.9-2 2-2a2 2 0 0 1-2-2V5a2 2 0 0 0-2-2h-1"/>"#,
+            ),
+            Icon::PreviewPane => {
+                r#"<rect width="18" height="18" x="3" y="3" rx="2"/><path d="M15 3v18"/><path d="M17.5 8h1"/><path d="M17.5 11h1"/>"#
+            }
+            Icon::PreviewPaneLeft => {
+                r#"<rect width="18" height="18" x="3" y="3" rx="2"/><path d="M9 3v18"/><path d="M5.5 8h1"/><path d="M5.5 11h1"/>"#
+            }
             Icon::PageSounds => concat!(
                 r#"<path d="M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z"/>"#,
                 r#"<path d="M16 9a5 5 0 0 1 0 6"/><path d="M19.364 18.364a9 9 0 0 0 0-12.728"/>"#,
@@ -192,6 +209,9 @@ impl Icon {
             Icon::HelperVideo => ("#df6a9c", "#b07ad9"),
             Icon::HelperMerge => ("#3d8ee6", "#2bb3a3"),
             Icon::HelperChecked => ("#3fa864", "#2f7fcf"),
+            Icon::HelperScript => ("#e6a817", "#3fa864"),
+            // The Options and Scheduler buttons' blues and violets, its neighbours on the band.
+            Icon::PreviewPane | Icon::PreviewPaneLeft => ("#93b6f2", "#9b84d0"),
         }
     }
 
@@ -223,6 +243,9 @@ impl Icon {
             Icon::HelperVideo => "helper-video",
             Icon::HelperMerge => "helper-merge",
             Icon::HelperChecked => "helper-checked",
+            Icon::HelperScript => "helper-script",
+            Icon::PreviewPane => "preview-pane",
+            Icon::PreviewPaneLeft => "preview-pane-left",
         }
     }
 
@@ -329,4 +352,40 @@ impl Icon {
                 .clone()
         })
     }
+}
+
+/// The download list's mark for a private (incognito) window's download (#1581): Lucide
+/// "venetian-mask", 16 × 16, inked in `ink` (the row's text colour, so it reads on a selected
+/// row and in every theme). Made once per ink.
+pub fn private_mark(ink: egui::Color32) -> ImageSource<'static> {
+    use std::cell::RefCell;
+    use std::collections::HashMap;
+    thread_local! {
+        static MADE: RefCell<HashMap<[u8; 4], ImageSource<'static>>> = RefCell::default();
+    }
+    MADE.with(|made| {
+        made.borrow_mut()
+            .entry(ink.to_array())
+            .or_insert_with(|| {
+                let hex = crate::palette::to_hex(ink);
+                let uri: &'static str = Box::leak(
+                    format!("bytes://mdm/list/private-{}.svg", hex.trim_start_matches('#'))
+                        .into_boxed_str(),
+                );
+                let svg = format!(
+                    concat!(
+                        r#"<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="{}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">"#,
+                        r#"<path d="M18 11c-1.5 0-2.5.5-3 2"/>"#,
+                        r#"<path d="M4 6a2 2 0 0 0-2 2v4a5 5 0 0 0 5 5 8 8 0 0 1 5 2 8 8 0 0 1 5-2 5 5 0 0 0 5-5V8a2 2 0 0 0-2-2h-3a8 8 0 0 0-5 2 8 8 0 0 0-5-2z"/>"#,
+                        r#"<path d="M6 11c1.5 0 2.5.5 3 2"/></svg>"#,
+                    ),
+                    hex
+                );
+                ImageSource::Bytes {
+                    uri: uri.into(),
+                    bytes: egui::load::Bytes::Shared(svg.into_bytes().into()),
+                }
+            })
+            .clone()
+    })
 }

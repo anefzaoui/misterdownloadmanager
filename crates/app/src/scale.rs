@@ -114,8 +114,8 @@ fn test_screen() -> Option<Vec2> {
 }
 
 /// The monitor's work area around `at` (the screen without the taskbar), in points of the
-/// window being drawn; where the window manager doesn't say (Linux, macOS), and in an off-screen
-/// test run (its windows are far off the screens, and must stay there), none.
+/// window being drawn; none where the window manager doesn't say (native Wayland, macOS),
+/// or in an off-screen test run (its windows are far off the screens and must stay there).
 pub fn work_area(ctx: &egui::Context, at: Pos2) -> Option<Rect> {
     if crate::offscreen() {
         return None;
@@ -130,7 +130,13 @@ pub fn work_area(ctx: &egui::Context, at: Pos2) -> Option<Rect> {
             pos2(r as f32, b as f32) / ppp,
         ))
     }
-    #[cfg(not(windows))]
+    #[cfg(target_os = "linux")]
+    {
+        let ppp = ctx.pixels_per_point();
+        crate::unix::work_area(at * ppp)
+            .map(|area| Rect::from_min_max(area.min / ppp, area.max / ppp))
+    }
+    #[cfg(not(any(windows, target_os = "linux")))]
     {
         let _ = (ctx, at);
         None

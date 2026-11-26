@@ -38,6 +38,10 @@ Peers on your local network are still found: with **Find peers on the local netw
 
 **Block the addresses in this list** takes the address of a public IP blocklist, in the P2P (PeerGuardian) or eMule `.dat` format, plain or gzipped. MDM downloads it with its own downloader (your Proxy / Socks settings apply), checks it, and fetches it again every 7 days. Peers in it are refused. A list MDM can't read is left out, and the last good one stays. The engine reads the list when it starts.
 
+## A public tracker list
+
+**Add the trackers of this public list to public torrents** (off by default) fetches a list of public trackers with MDM's own downloader, once a day (an hour later when a fetch failed): your Proxy / Socks settings and your network adapter apply, and while the adapter's kill switch holds downloads, the list isn't fetched either. Every tracker on it is checked like a torrent's own: none on your computer or your local network is ever asked. Those trackers then see that you have your public torrents, those already in your list too, as any tracker of a torrent does. A private torrent never gets them, a list MDM can't read leaves the last good one in place, and turning the switch off doesn't take away the trackers already added.
+
 ## Files from a torrent
 
 - MDM refuses a torrent with file names your system can't write safely, says which name, and writes nothing.
@@ -47,7 +51,7 @@ Peers on your local network are still found: with **Find peers on the local netw
 
 ## Proxies
 
-MDM's Proxy / Socks settings are for web and FTP downloads. Torrents can use a SOCKS5 one too: set a `socks5://` proxy in **Options → Proxy / Socks** and turn on **Use the proxy** in Torrent settings. The proxy covers connections to peers and web trackers only, so with it MDM turns off the DHT, local peer discovery, incoming connections, uTP and UDP trackers; it opens no UDP socket toward the network at all. If the proxy is gone from Proxy / Socks while that switch is on, torrents don't start rather than go around it.
+MDM's Proxy / Socks settings are for web and FTP downloads. Torrents can use a SOCKS5 one too: choose **Manual proxy/socks configuration** with **Type** **SOCKS5** in **Options → Proxy / Socks** and turn on **Use the proxy** in Torrent settings. The proxy covers connections to peers and web trackers only, so with it MDM turns off the DHT, local peer discovery, incoming connections, uTP and UDP trackers; it opens no UDP socket toward the network at all. If the proxy is gone from Proxy / Socks while that switch is on, torrents don't start rather than go around it.
 
 To route *everything* through another network, use a VPN for the whole computer.
 
