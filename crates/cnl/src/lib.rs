@@ -244,11 +244,7 @@ fn router(on_found: OnFound) -> Router {
         move |headers: HeaderMap, body: Bytes| {
             let (on_found, rate) = (on_found.clone(), rate.clone());
             async move {
-                let form = form(&body);
-                let package = match read(path, &form) {
-                    Ok(p) => p,
-                    Err(why) => return text(why),
-                };
+                // Every post counts toward its site's minute, whatever it holds.
                 let site = site(&headers);
                 if !rate.take(&site, Instant::now()) {
                     tracing::info!("Click'n'Load: a post refused, too many this minute");
@@ -258,6 +254,11 @@ fn router(on_found: OnFound) -> Router {
                     )
                         .into_response();
                 }
+                let form = form(&body);
+                let package = match read(path, &form) {
+                    Ok(p) => p,
+                    Err(why) => return text(why),
+                };
                 let found = Found { package, site };
                 let took = tokio::task::spawn_blocking(move || on_found(found))
                     .await
@@ -267,8 +268,11 @@ fn router(on_found: OnFound) -> Router {
         }
     };
     Router::new()
-        .route("/flash/add", post(posted("add")))
-        .route("/flash/addcrypted2", post(posted("addcrypted2")))
+        .route("/flash/add", post(posted("add")).options(other))
+        .route(
+            "/flash/addcrypted2",
+            post(posted("addcrypted2")).options(other),
+        )
         .fallback(any(other))
         .layer(DefaultBodyLimit::max(MAX_BODY))
         .layer(axum::middleware::map_response(open_to_pages))
@@ -389,6 +393,25 @@ mod tests {
             );
             assert!(!check.text().await.unwrap().contains("ownloader"));
         }
+        // Chrome's Private Network Access preflight: answered, with the page's headers.
+        let pre = c
+            .request(reqwest::Method::OPTIONS, format!("{base}/flash/add"))
+            .header("access-control-request-method", "POST")
+            .header("access-control-request-private-network", "true")
+            .send()
+            .await
+            .unwrap();
+        assert_eq!(pre.status(), StatusCode::NO_CONTENT);
+        assert_eq!(
+            pre.headers().get("access-control-allow-origin").unwrap(),
+            "*"
+        );
+        assert_eq!(
+            pre.headers()
+                .get("access-control-allow-private-network")
+                .unwrap(),
+            "true"
+        );
         let post = |path: &str, form: Vec<(&str, String)>| {
             let req = c.post(format!("{base}/flash/{path}")).body(
                 url::form_urlencoded::Serializer::new(String::new())
@@ -617,6 +640,28 @@ mod tests {
             }
         }
         assert_eq!((*n.lock().unwrap(), refused), (POSTS_PER_MINUTE, 5));
+        // Posts that can't be read count toward their site's minute as well.
+        let from_other = |body: &'static str| {
+            c.post(&url)
+                .header(header::CONTENT_TYPE, "application/x-www-form-urlencoded")
+                .header(header::ORIGIN, "https://other.example")
+                .body(body)
+                .send()
+        };
+        for _ in 0..POSTS_PER_MINUTE {
+            assert_eq!(
+                from_other("urls=").await.unwrap().text().await.unwrap(),
+                "failed: no links\r\n"
+            );
+        }
+        assert_eq!(
+            from_other("urls=https%3A%2F%2Fa.example%2Fz")
+                .await
+                .unwrap()
+                .status(),
+            StatusCode::TOO_MANY_REQUESTS
+        );
+        assert_eq!(*n.lock().unwrap(), POSTS_PER_MINUTE);
         let big = format!("urls={}", "a".repeat(MAX_BODY + 1));
         assert_eq!(
             send(big).await.unwrap().status(),

@@ -187,6 +187,79 @@ mod tests {
         assert_eq!(urls(&read(Some(one_magnet))), [one_magnet]);
     }
 
+    /// #1782: copied `thunder://`, `flashget://` and `qqdl://` links are the addresses wrapped
+    /// in them: rows in Link grabber, a pattern when it is one numbered address, and nothing
+    /// when what is inside is not something MDM downloads.
+    #[test]
+    fn wrapped_links_are_the_addresses_inside() {
+        use base64::Engine as _;
+        let b64 = |bytes: &[u8]| base64::engine::general_purpose::STANDARD.encode(bytes);
+        let wrappers = |address: &str| {
+            [
+                format!("thunder://{}", b64(format!("AA{address}ZZ").as_bytes())),
+                format!(
+                    "FlashGet://{}&abc",
+                    b64(format!("[FLASHGET]{address}[FLASHGET]").as_bytes())
+                ),
+                format!("qqdl://{}", b64(address.as_bytes())),
+            ]
+        };
+        for address in [
+            "http://a.example.org/setup.exe",
+            "https://a.example.org/setup.exe",
+            "ftp://a.example.org/pub/setup.exe",
+            "magnet:?xt=urn:btih:0123456789abcdef0123456789abcdef01234567&dn=Show",
+        ] {
+            for wrapped in wrappers(address) {
+                assert_eq!(urls(&read(Some(&wrapped))), [address], "{wrapped}");
+                // With the same address plain beside it: still one row.
+                let both = format!("{wrapped}\n{address}");
+                assert_eq!(urls(&read(Some(&both))), [address], "{both}");
+            }
+        }
+        let [a, _, _] = wrappers("https://a.example.org/a.zip");
+        let [_, b, _] = wrappers("https://b.example.org/b.zip");
+        let [_, _, c] = wrappers("ftp://c.example.org/c.zip");
+        let post =
+            format!("One {a}, two {b}\nthree <{c}> and a plain https://d.example.org/d.zip.");
+        assert_eq!(
+            urls(&read(Some(&post))),
+            [
+                "https://a.example.org/a.zip",
+                "https://b.example.org/b.zip",
+                "ftp://c.example.org/c.zip",
+                "https://d.example.org/d.zip"
+            ]
+        );
+        assert_eq!(
+            urls(&read(Some(
+                "thunder://QUFodHRwOi8vZGwuZXhhbXBsZS5jb20vZmlsZXMvc2V0dXAuZXhlWlo="
+            ))),
+            ["http://dl.example.com/files/setup.exe"]
+        );
+        // One numbered address, wrapped: Batch download, as when it is copied plain.
+        for wrapped in wrappers("https://media.example.org/show/ep01.mp4") {
+            assert_eq!(
+                read(Some(&wrapped)),
+                pattern("https://media.example.org/show/ep*.mp4", 1, 2),
+                "{wrapped}"
+            );
+        }
+        // Nothing MDM downloads inside: no links, as for any text without one.
+        let mut not: Vec<String> = Vec::new();
+        not.extend(wrappers("ed2k://|file|a.iso|733468672|0123456789ABCDEF|/"));
+        not.extend(wrappers("file:///C:/x.zip"));
+        not.extend([
+            "thunder://not*base64".to_owned(),
+            format!("thunder://{}", b64(b"https://a.example.org/a.zip")),
+            format!("flashget://{}", b64(b"https://a.example.org/a.zip")),
+            format!("qqdl://{}", b64(b"http://a.example.org/\xd6\xd0.zip")),
+        ]);
+        for wrapped in not {
+            assert_eq!(read(Some(&wrapped)), Clip::NoLinks, "{wrapped}");
+        }
+    }
+
     /// One address with a numbered part: Batch download with that number as the pattern.
     #[test]
     fn a_numbered_address_is_a_pattern() {

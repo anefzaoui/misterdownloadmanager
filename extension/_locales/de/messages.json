@@ -284,6 +284,64 @@
   "popup_media_title_name": {
     "message": "Seitentitel vor die Namen von Mediendateien setzen"
   },
+  "popup_images": {
+    "message": "Bilder auf dieser Seite"
+  },
+  "popup_images_text": {
+    "message": "Suchen Sie die Bilder dieser Seite in der größten verfügbaren Größe und senden Sie die gewünschten an den Link-Grabber."
+  },
+  "popup_images_find": {
+    "message": "Bilder finden"
+  },
+  "popup_images_min": {
+    "message": "Kleinste Größe in Pixeln"
+  },
+  "popup_images_width": {
+    "message": "Kleinste Breite in Pixel"
+  },
+  "popup_images_height": {
+    "message": "Kleinste Höhe in Pixel"
+  },
+  "popup_images_types": {
+    "message": "Bildtypen"
+  },
+  "popup_images_other": {
+    "message": "Andere"
+  },
+  "popup_images_count": {
+    "message": "$shown$ von $total$ ausgewählt",
+    "placeholders": {
+      "shown": {
+        "content": "$1",
+        "example": "12"
+      },
+      "total": {
+        "content": "$2",
+        "example": "40"
+      }
+    }
+  },
+  "popup_images_unsized": {
+    "message": "Größe nicht angegeben, behalten: $n$",
+    "placeholders": {
+      "n": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "popup_images_send": {
+    "message": "An den Link-Grabber senden"
+  },
+  "popup_images_sent": {
+    "message": "An den Link-Grabber gesendet: Wählen Sie dort die herunterzuladenden Bilder aus."
+  },
+  "popup_images_none": {
+    "message": "Keine Bilder auf dieser Seite gefunden."
+  },
+  "popup_images_unreadable": {
+    "message": "Der Browser erlaubt Add-ons nicht, diese Seite zu lesen."
+  },
   "video_cant_save": {
     "message": "kann nicht gespeichert werden"
   },
@@ -291,7 +349,7 @@
     "message": "Beitrag öffnen"
   },
   "video_drag_dots": {
-    "message": "Ziehen Sie an den Punkten, um die Schaltfläche am Rand zu verschieben"
+    "message": "Ziehen Sie die Punkte, um sie in eine andere Ecke oder außerhalb des Videos zu verschieben"
   },
   "video_tip": {
     "message": "$what$ herunterladen",
@@ -765,5 +823,108 @@
   },
   "popup_dl_open_remote": {
     "message": "Seite öffnen"
+  },
+  "video_home": {
+    "message": "Schaltfläche an ihren Platz zurücksetzen"
+  },
+  "video_filter_all": {
+    "message": "Alle"
+  },
+  "video_filter_audio": {
+    "message": "Nur Audio"
+  },
+  "video_filter_kind": {
+    "message": "Anzeigen"
+  },
+  "video_filter_type": {
+    "message": "Dateityp"
+  },
+  "video_filter_codec": {
+    "message": "Codec"
+  },
+  "popup_video_reset_text": {
+    "message": "Download-Schaltfläche über Videos"
+  },
+  "popup_video_reset_sub": {
+    "message": "Wo Sie sie verschoben haben und die Filter des Menüs auf jeder Website"
+  },
+  "popup_video_reset": {
+    "message": "Zurücksetzen"
+  },
+  "popup_video_reset_done": {
+    "message": "Wieder an seinem Platz, das Menü zeigt alles, auf jeder Website"
+  },
+  "status_links_sent": {
+    "message": "Links gesendet: $count$",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "10"
+      }
+    }
+  },
+  "status_links_cut": {
+    "message": "Links gesendet: $sent$, $left$ ausgelassen",
+    "placeholders": {
+      "sent": {
+        "content": "$1",
+        "example": "100"
+      },
+      "left": {
+        "content": "$2",
+        "example": "20"
+      }
+    }
+  },
+  "status_links_partial": {
+    "message": "Links gesendet: $sent$, abgelehnt: $refused$",
+    "placeholders": {
+      "sent": {
+        "content": "$1",
+        "example": "5"
+      },
+      "refused": {
+        "content": "$2",
+        "example": "2"
+      }
+    }
+  },
+  "status_links_partial_cut": {
+    "message": "Links gesendet: $sent$, abgelehnt: $refused$, $left$ ausgelassen",
+    "placeholders": {
+      "sent": {
+        "content": "$1",
+        "example": "5"
+      },
+      "refused": {
+        "content": "$2",
+        "example": "2"
+      },
+      "left": {
+        "content": "$3",
+        "example": "1"
+      }
+    }
+  },
+  "status_links_refused": {
+    "message": "Links abgelehnt: $count$",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "status_links_none": {
+    "message": "Keine erfassbaren Links ($left$ ausgelassen)",
+    "placeholders": {
+      "left": {
+        "content": "$1",
+        "example": "5"
+      }
+    }
+  },
+  "status_unreachable": {
+    "message": "Server nicht erreichbar"
   }
 }

@@ -8,12 +8,15 @@
 
 ## Where links come from
 
-- **The browser.** Right-click a page for **Download all links with Mister Download Manager**, or select part of it for **Download selected links with Mister Download Manager**. The page's referrer and cookies go with each link.
+- **The browser.** Right-click a page for **Download all links with Mister Download Manager**, or select part of it for **Download selected links with Mister Download Manager**. The page's referrer and cookies go with each link. Both also send the pictures located on the page (or in the selection), hidden at first (see **Hide images located on this web page** below).
+- **A page's images.** The browser add-on's toolbar button, **This page → Find images**, sends the pictures of a page at the largest size it lists, those you kept by size and type ([Images on this page](browser-integration.md#images-on-this-page)).
 - **Tasks → Import → From text file** and **From IDM export file**. An `.ef2` file brings each download's referrer and cookies.
 - Several links, or a `.txt` or `.ef2` list, dropped on the download list.
-- **The clipboard.** **Tasks → Add batch download from clipboard** (**Ctrl+B**, also in the tray icon's menu) reads the copied text when you choose it and lists every download link in it: `http`, `https`, `ftp` and magnet links, in a list, a forum post, Markdown or HTML, each once.
+- **The clipboard.** **Tasks → Add batch download from clipboard** (**Ctrl+B**, also in the tray icon's menu) reads the copied text when you choose it and lists every download link in it: `http`, `https`, `ftp` and magnet links, in a list, a forum post, Markdown or HTML, each once. A `thunder://`, `flashget://` or `qqdl://` link is listed as the address wrapped in it, so the same file linked wrapped and plain is one row; this holds for pasted text and imported lists too.
 - **Pasting.** Choose **Tasks → Link grabber...** and press **Ctrl+V**: every download link in the copied text is added.
 - **A web page's address.** Paste or copy the address of a page (`https://example.com/downloads`) and MDM reads the page and lists the links on it, as the browser's **Download all links** does, in a package named after the page. The page itself is left unticked. This works for addresses that came on their own (pasted, copied, typed, in a list), not for the links found on a page, so MDM never wanders off through a site. MDM reads only what the page itself holds: links a page's scripts add after it loads come only through the browser.
+- **A folder.** Paste or copy the address of an `ftp://` folder (`ftp://ftp.example.org/pub/`) or of the page a web server makes of a folder ("Index of /pub/"), and MDM lists every file in it and in its subfolders, each folder's files in a package of their own. See [Folders](#folders).
+- **A Hugging Face model or dataset, a GitHub release.** Paste the address of a model or dataset on Hugging Face, of a folder in one, or of a release on GitHub, in **Add URL** or here, and MDM lists every file in it, with its size and folder. See [Models, datasets and releases](#models-datasets-and-releases).
 - **Click'n'Load** buttons on link sites, once you turn it on. See [Click'n'Load](#clicknload).
 
 A magnet link shows as **Magnet link** and isn't looked up: once you click **Start** or **Add to queue**, MDM finds the torrent's files and adds it with all of them, in the package's folder (or the **Torrents** folder when the package has none).
@@ -28,6 +31,44 @@ Each package is a row you can open and close (click its arrow, double-click it, 
 - **The other links of one page** form a package named after the page.
 - **Everything else** goes into **Various files**.
 - **Links a site packed** (Click'n'Load) keep the site's packages and names, with their archive password when the site gave one.
+- **A folder's files** form a package for each folder, named after it, whose **Save to** keeps the folder's tree (see [Folders](#folders)).
+- **A model's, a dataset's or a release's files** form one package, whose **Save to** keeps their folders (see [Models, datasets and releases](#models-datasets-and-releases)).
+
+## Folders
+
+Give Link grabber a folder's address, the way you give it a page's: paste it with **Ctrl+V**, copy it for **Tasks → Add batch download from clipboard**, put it in a list for **Tasks → Import**, or drop it on the download list.
+
+- **An FTP folder**: an `ftp://`, `ftpes://` or `ftps://` address that ends in `/` (`ftp://ftp.example.org/pub/`). MDM logs in as it does for a download from that address (its user name and password, else your Sites Logins, else as anonymous) and asks the server for the folder's list. Each file comes with the size the server lists, so it isn't looked up again.
+- **A web server's folder listing**: the page Apache, nginx, IIS and other servers make of a folder without its own page, titled **Index of /pub/** (or **Directory listing for /pub/**). MDM recognizes it, so it reads the folder instead of listing the page's links.
+
+Link grabber then lists every file in the folder and in its subfolders. Each folder's files are a package named after the folder, and its **Save to** is that folder under your download folder (**Options → Save to**), so the tree is kept: `ftp://ftp.example.org/pub/iso/disc.iso` goes to `Downloads\pub\iso\disc.iso`. Tick what you want; **Hide web pages** and the package boxes work as for any links.
+
+**Options → Archives and Link grabber → Folders: 3 levels deep, types: ...** sets how far MDM goes and what it keeps:
+
+- **Levels deep**: how many levels of subfolders are read, 3 by default, at most 10. 0 lists the folder's own files only.
+- **Types**: only the files of these types, written as on the **File types** page (`ISO ZIP R0*`). Empty (the default) keeps every type.
+
+MDM stays inside the folder you gave. It never goes up to the folder above (`../`), never onto another site, never through a link the listing makes to somewhere else, and an FTP folder's links to other folders (symbolic links) aren't followed. A name that isn't a plain file or folder name (one with `/` or `\` in it, `..`) is left out. One folder lists at most 10,000 files, and MDM reads at most 500 folders for it; past that, the window's **Source** line says the folder was listed only in part (**pub: only its first 10000 files**).
+
+Folders are read only with **Look links up when they arrive** on (the default), as web pages are. An FTP address without its final `/` is taken for a file.
+
+## Models, datasets and releases
+
+Paste one of these addresses in **Add URL** (**Ctrl+N**), or in Link grabber with **Ctrl+V** (copied, imported or dropped works too):
+
+- **A Hugging Face model or dataset**: `https://huggingface.co/<owner>/<name>` or `https://huggingface.co/datasets/<owner>/<name>`, the whole repository.
+- **A folder of one**, at a branch, a tag or a commit: the address of the folder's page, `https://huggingface.co/<owner>/<name>/tree/<revision>/<folder>`.
+- **A GitHub release**: `https://github.com/<owner>/<repo>/releases/tag/<tag>`, or `…/releases/latest` for the newest one. A tag without a release lists its source code.
+
+MDM asks the site's public API for the list of files and opens Link grabber with all of them in one package: each file with its size and the folder it is in, **unticked**, so you tick only what you need (the package's box ticks them all). Its **Save to** is the address's path under your download folder (**Options → Save to**), and each file keeps its folder inside it: `onnx/model.onnx` of `huggingface.co/org/tiny` goes to `Downloads\org\tiny\onnx\model.onnx`, a dataset's files under `Downloads\datasets\…`, a release's under `Downloads\<owner>\<repo>\<tag>`. A folder of a repository keeps its place in it (`org\tiny\onnx\…`), so files you take later from another folder land beside it. **Start** or **Add to queue** adds them as one group, with one summary when the last is done.
+
+- **Checked against the site's digest.** Hugging Face publishes a SHA-256 for each large file, GitHub for each release file. MDM checks the finished file against it, as **Verify checksum** does; a file that doesn't match stays unfinished and says so (**the file's SHA-256 checksum doesn't match**), and **Redownload** fetches it again. Small files kept in the repository itself, and a release's source code, have no digest of their own to check.
+- **One version.** A repository's files are asked at the commit its branch or tag pointed to when it was listed, so a branch that moves on while they download never mixes two versions.
+- **Straight from the sites.** Files come from Hugging Face's and GitHub's own servers, never through a mirror, through MDM's own connections, speed limits and proxy, like any download.
+- **Gated models.** A repository whose files need its terms accepted downloads with your Hugging Face access token: accept the terms on its page, make a token in your Hugging Face settings, and add it in **Options → Sites Logins** with the site `huggingface.co`, any user name and the token as the password. It is kept with your other passwords, in the system's keychain, and sent only to `huggingface.co`, never on to the servers it sends the files from. The Source line says when a gated repository has no token yet.
+- **Limits.** Both sites let only so many requests through from a computer without an account (GitHub 60 an hour). When the limit is reached, the address's row says **Try again later**, and its tip says for how long.
+
+What a site's list says is checked before it is used: a file whose path would lead out of its folder (`..`, an absolute path, a drive letter, a device name such as `CON`) is left out, and the Source line counts them. At most 10,000 files are listed for one address. As folders are, they are read only with **Look links up when they arrive** on (the default).
 
 ## Click'n'Load
 
@@ -57,6 +98,8 @@ As links arrive, MDM asks each server about its file, as IDM's **Download all li
 Turn the look-ups off in **Options → Archives → Look links up when they arrive**. Some file hosts count a look-up as a download. With the look-ups off, MDM asks nothing of the network until you start, so a web page's address isn't read for its links either.
 
 **Hide web pages** (on by default) leaves out links to pages (`.html`, `.php` and the like, and any link whose look-up found a web page): they are neither shown nor downloaded.
+
+**Hide images located on this web page** leaves out the pictures the browser found shown on the page (its images, at the largest size the page lists for each), so the list holds the page's links. It is ticked again each time a page's links come with such pictures, and not remembered: untick it to see the pictures and tick the ones you want; while it is ticked they are neither shown nor downloaded. A link to a picture (a thumbnail linking to its full size) is a link like any other and always shows, even when the same picture is also shown on the page.
 
 ## The package box
 

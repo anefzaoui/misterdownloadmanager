@@ -94,6 +94,16 @@ fn system_says(ctx: &egui::Context) -> System {
             more_contrast: false,
         }
     }
+    // Android: no accent colour or contrast setting read from the system yet.
+    #[cfg(target_os = "android")]
+    {
+        let _ = ctx;
+        System {
+            accent: None,
+            high_contrast: None,
+            more_contrast: false,
+        }
+    }
 }
 
 /// What Windows says now: its accent from the registry, its high-contrast colours. For the

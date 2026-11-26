@@ -367,6 +367,10 @@ struct LeftoverSearch {
     /// The parts its failed merge kept, by name (yt-dlp names some, `Talk.faud-English.mp4`, as
     /// no other leftover is named), in its folder and named after its stem.
     kept: Vec<PathBuf>,
+    /// The chapter files its split made (yt-dlp's own list, `VideoSpec::chapter_files`): only
+    /// those still in its folder and named `<stem> - ...` (checked again here, a list from an
+    /// older run or edited by hand never reaches another file).
+    chapter_files: Vec<PathBuf>,
 }
 
 impl LeftoverSearch {
@@ -399,6 +403,18 @@ impl LeftoverSearch {
             })
             .cloned()
             .collect();
+        let chapter = format!("{} - ", stem.to_lowercase());
+        let chapter_files = item
+            .video
+            .iter()
+            .flat_map(|v| &v.chapter_files)
+            .filter(|p| {
+                p.parent().is_some_and(|p| low(p) == folder)
+                    && p.file_name()
+                        .is_some_and(|n| n.to_string_lossy().to_lowercase().starts_with(&chapter))
+            })
+            .cloned()
+            .collect();
         Some(LeftoverSearch {
             dir: dir.to_owned(),
             stem,
@@ -406,6 +422,7 @@ impl LeftoverSearch {
             named,
             others: others.iter().map(|o| low(&o.dest)).collect(),
             kept,
+            chapter_files,
         })
     }
 
@@ -414,6 +431,12 @@ impl LeftoverSearch {
         let low = |p: &std::path::Path| p.to_string_lossy().to_lowercase();
         let mut found = mdm_tools::video::own_files(&self.dir, &self.stem, self.outputs);
         for p in self.kept {
+            if p.is_file() && !found.iter().any(|f| low(f) == low(&p)) {
+                found.push(p);
+            }
+        }
+        // The chapter files its split made, by their recorded paths (never a pattern).
+        for p in self.chapter_files {
             if p.is_file() && !found.iter().any(|f| low(f) == low(&p)) {
                 found.push(p);
             }
@@ -499,6 +522,8 @@ enum Cmd {
     AddToQueue(usize),
     RemoveFromQueue,
     ToggleCategories,
+    /// View → Preview pane, the toolbar's toggle, Alt+P (#1368).
+    TogglePreview,
     /// View → Dark Mode support.
     ToggleDarkMode,
     /// View → Always dark (#60).
@@ -519,6 +544,16 @@ enum Cmd {
     WindowSystem(Option<crate::settings::WindowSystemPick>),
     /// View → Interface size → a size in percent (#262).
     InterfaceSize(u16),
+    /// View → Font → Choose a font file (#1489): the interface's text in a TrueType or OpenType
+    /// file picked from disk.
+    InterfaceFont,
+    /// View → Font → System font (#1489): back to the computer's own font.
+    InterfaceFontSystem,
+    /// View → Font → the file in use, shown by its name (#1489): choosing it again reads that
+    /// saved file (a missing one then says so, like a fresh pick).
+    InterfaceFontFile,
+    /// View → Font → a text size in percent (#1489).
+    InterfaceTextSize(u16),
     /// View → Text → Smooth (`true`) or Classic (Windows).
     #[cfg(windows)]
     SmoothText(bool),
@@ -532,6 +567,8 @@ enum Cmd {
     Properties,
     /// Show or hide a list column (data slot).
     ToggleColumn(usize),
+    /// Header right-click → Columns..., View → Customize URL List...: the Columns dialog.
+    ColumnsDialog,
     /// Downloads → Speed Limiter.
     LimiterOn,
     LimiterOff,
@@ -671,24 +708,18 @@ fn halt_saved(
 /// A file move's answer, from its thread.
 type MoveDone = std::sync::mpsc::Receiver<Result<(), String>>;
 
-/// Move a file: a rename, else a copy and the original deleted (a copy whose original can't go,
-/// in use, is taken back: the file stays in one place).
-fn move_file(from: &std::path::Path, to: &std::path::Path) -> Result<(), String> {
-    if std::fs::rename(from, to).is_ok() {
-        return Ok(());
-    }
-    std::fs::copy(from, to).map_err(|e| e.to_string())?;
-    std::fs::remove_file(from).map_err(|e| {
-        let _ = std::fs::remove_file(to);
-        e.to_string()
-    })
+/// An unfinished download's move (#1739), from its thread: where the download is now (its new
+/// place, or its old one when the move failed or was undone) and why it didn't move.
+struct PartsMoved {
+    at: PathBuf,
+    error: Option<String>,
+    /// A move MDM's end cut short, settled at start (`relocate::settle`).
+    settled: bool,
 }
 
-/// Whether Move/Rename can take a download now: a finished file, or nothing of it come in yet.
+/// Whether Move/Rename can take a download now ([`Item::move_refused`]).
 fn can_move(i: &Item) -> bool {
-    !torrent_shares_folder(i)
-        && i.live.is_none()
-        && (i.status == Status::Complete || i.downloaded == 0)
+    i.move_refused().is_none()
 }
 
 fn torrent_shares_folder(item: &Item) -> bool {
@@ -720,14 +751,33 @@ fn item_claims(item: &Item, paths: &mut Vec<PathBuf>) {
     }
 }
 
-/// What is said when a download can't move, or stays while the others of a selection move.
-fn cant_move_notice() -> (&'static str, String) {
+/// What is said when a download that was to replace the file `old` as it completed (a
+/// Redownload, #1698) couldn't, and was saved beside it as `new`: both names, both kept.
+fn not_replaced_text(old: &std::path::Path, new: &std::path::Path) -> String {
+    let name = |p: &std::path::Path| {
+        p.file_name().map_or_else(
+            || p.display().to_string(),
+            |n| n.to_string_lossy().into_owned(),
+        )
+    };
+    crate::i18n::fmt(
+        // i18n: a message after a download (Redownload) was to replace the file it had: {file} = that file's name, still there; {new} = the name the new copy was saved under, in the same folder
+        crate::i18n::t(
+            "{file} could not be replaced: another program may have it open. The new download is saved beside it as {new}, and both files are kept.",
+        ),
+        &[
+            ("file", &crate::i18n::isolate(&name(old))),
+            ("new", &crate::i18n::isolate(&name(new))),
+        ],
+    )
+}
+
+/// What is said when a download can't move, or stays while the others of a selection move: why
+/// ([`Item::move_refused`]).
+fn cant_move_notice(why: &str) -> (&'static str, String) {
     (
         crate::i18n::mark("Move/Rename"),
-        crate::i18n::t(
-            "Only a finished download, or one not started yet, can be moved. Stop it and finish it first.",
-        )
-        .to_owned(),
+        crate::i18n::t(why).to_owned(),
     )
 }
 
@@ -1146,6 +1196,7 @@ impl Cmd {
             Cmd::Open => "Enter",
             Cmd::SelectAll => "Ctrl+A",
             Cmd::Properties => "Alt+Enter",
+            Cmd::TogglePreview if preview_key_free() => "Alt+P",
             Cmd::InterfaceSize(100) => "Ctrl+0",
             _ => return None,
         })
@@ -1258,16 +1309,35 @@ enum Pane {
     /// The menu bar (#1190): Tab from the list reaches it, and Tab again goes on to the toolbar
     /// (Shift+Tab back to the list), so a reader can walk the window's parts.
     Bar,
+    /// The preview pane (#1368), after the list while it shows: its keys scroll it.
+    Preview,
+}
+
+/// Alt+P shows and hides the preview pane, as in Explorer (#1368), where no menu bar title of
+/// the interface language has P for its access key (Polish's Plik, Croatian's Preuzimanja...):
+/// there Alt+P opens that menu, as Windows' own menus answer it.
+fn preview_key_free() -> bool {
+    !crate::chrome::menubar_letters().iter().any(|l| l == "p")
 }
 
 /// Where Tab (Shift+Tab: `back`) takes the keys from `from` (`None`: nothing had them, after a
-/// click on the toolbar or the strip), round; the tree left out while it is hidden.
-fn tab_to(from: Option<Pane>, tree_shown: bool, back: bool) -> Pane {
-    let order: &[Pane] = if tree_shown {
-        &[Pane::Toolbar, Pane::Tree, Pane::List, Pane::Bar]
-    } else {
-        &[Pane::Toolbar, Pane::List, Pane::Bar]
-    };
+/// click on the toolbar or the strip), round; the tree and the preview pane left out while they
+/// are hidden.
+fn tab_to(from: Option<Pane>, tree_shown: bool, preview_shown: bool, back: bool) -> Pane {
+    let order: Vec<Pane> = [
+        Pane::Toolbar,
+        Pane::Tree,
+        Pane::List,
+        Pane::Preview,
+        Pane::Bar,
+    ]
+    .into_iter()
+    .filter(|p| match p {
+        Pane::Tree => tree_shown,
+        Pane::Preview => preview_shown,
+        _ => true,
+    })
+    .collect();
     let n = order.len();
     let at = from.and_then(|p| order.iter().position(|q| *q == p));
     order[match (at, back) {
@@ -1316,6 +1386,9 @@ pub struct App {
     move_many_for: Vec<u64>,
     /// The Categories tree has the keys (else the list or the toolbar; Tab moves between them).
     tree_keys: bool,
+    /// The preview pane has the keys (#1368), and its own state (where it is scrolled to).
+    preview_keys: bool,
+    preview: crate::preview::Pane,
     /// The toolbar has the keys (Tab reaches it, #1190), at button `toolbar_at` (kept when Tab
     /// leaves it, as Windows' toolbars keep theirs).
     toolbar_keys: bool,
@@ -1336,9 +1409,15 @@ pub struct App {
     finished_open: bool,
     queues_open: bool,
     add_url: Option<AddUrl>,
-    file_info: Option<FileInfo>,
-    /// Addresses (and their browser context) waiting for Download File Info to close.
+    /// The Download File Info windows open, one for each address (#1741), in the order they
+    /// opened; at most [`FILE_INFOS_MOST`]. Each knows its number (`FileInfo::nth`).
+    file_infos: Vec<FileInfo>,
+    /// Addresses (and their browser context) waiting for a Download File Info window: more came
+    /// than may be open at once. Each opens, in order, as a window closes.
     file_info_waiting: std::collections::VecDeque<(dialogs::NewUrl, ipc::Command)>,
+    /// `/show zip-preview[:N]` (#1775's shots and checks): Zip preview to open from the newest
+    /// Download File Info once its ZIP's look has answered, its first N files ticked.
+    zip_preview_asked: Option<usize>,
     /// Download File Info's open answers, for the download each was given to (by id) to start
     /// from (#28: a one-time link refuses a second request).
     kept_answers: std::collections::HashMap<u64, mdm_engine::KeptAnswer>,
@@ -1385,6 +1464,16 @@ pub struct App {
     /// Download complete snoozed (#741), and how many finished meanwhile (the tray icon's tip).
     snooze: crate::finish::Snooze,
     snoozed_finished: u64,
+    /// The windows that wait while a full-screen app, a presentation or the locked screen is on
+    /// (#1773, hold.rs).
+    hold: crate::hold::Hold,
+    /// Links copied to the clipboard meanwhile (#1773): each with its number, offered (its
+    /// Download File Info) in turn once the user is back.
+    copied_waiting: std::collections::VecDeque<(u64, String)>,
+    copied_serial: u64,
+    /// The Updates window open is the automatic check's (it waits during a full-screen app,
+    /// #1773), not one asked for from the Help menu.
+    updates_auto: bool,
     settings: Settings,
     speed_settings: Option<dialogs::SpeedSettings>,
     scheduler: Option<crate::scheduler::Scheduler>,
@@ -1435,8 +1524,9 @@ pub struct App {
     video_places: crate::videoplace::VideoPlaces,
     /// Add category / Properties from the Categories tree.
     category_dlg: Option<crate::categories::CategoryDialog>,
-    /// The category dialog was opened by Download File Info's "+" (its result is picked there).
-    category_for_file_info: bool,
+    /// The category dialog was opened by a Download File Info's "+": that window's number (its
+    /// result is picked there).
+    category_for_file_info: Option<dialogs::Nth>,
     /// Delete a category of the user's, asking first.
     confirm_category_delete: Option<dialogs::DeleteCategory>,
     /// File Properties windows, one per download.
@@ -1491,6 +1581,8 @@ pub struct App {
     file_speed: (f64, Instant, u64),
     /// A blocklist is being fetched (torrents::refresh_blocklist).
     blocklist_busy: std::sync::Arc<std::sync::atomic::AtomicBool>,
+    /// The public tracker list, as last fetched (#1776, torrents::PublicTrackers).
+    public_trackers: crate::torrents::PublicTrackers,
     /// Startup work for torrents done (associations refreshed, sharing resumed).
     torrents_started: bool,
     /// The torrent session, started on first use (D-014).
@@ -1541,6 +1633,9 @@ pub struct App {
     save_failed: Option<String>,
     /// Finished files being moved (Move/Rename, Properties → Move): where to, and the answer.
     moving: Vec<(u64, PathBuf, MoveDone)>,
+    /// Unfinished downloads whose part file and resume state are being moved (#1739), or whose
+    /// move MDM's end cut short is being settled: where each is once done.
+    moving_parts: Vec<(u64, std::sync::mpsc::Receiver<PartsMoved>)>,
     /// Finished downloads whose rename on completion is under way: a file's on a thread of its
     /// own (#1103), a torrent's through `torrent_host`. The answer: the new path, and why
     /// sharing stopped.
@@ -1598,6 +1693,8 @@ pub struct App {
     /// Add batch download from clipboard (#709): its read, until it answers.
     batch_clip: Option<crate::clipboard::Prefill>,
     confirm_delete: Option<dialogs::ConfirmDelete>,
+    /// The Columns dialog (header right-click).
+    columns_dialog: Option<dialogs::Columns>,
     /// Queue right-click → Delete, asking first: the queue and the question.
     confirm_queue_delete: Option<(usize, dialogs::Confirm)>,
     /// Redownload, asking first: the download and the question.
@@ -1674,8 +1771,9 @@ pub struct App {
     /// aside (never over it).
     saved_by_hand: std::collections::HashSet<u64>,
     /// Seconds since local midnight at the last scheduler tick (`None` until the clock's first
-    /// answer, #536).
+    /// answer, #536), and the local date then (a clock that goes back is not midnight).
     clock: Option<u32>,
+    clock_day: Option<chrono::NaiveDate>,
     /// Scheduler → "Wake the computer to run this queue": the wake set with the system (#142).
     wake: crate::wake::Waker,
     /// Commands from ipc.rs (command line, second launch, browser).
@@ -1701,6 +1799,25 @@ fn url_login(url: &url::Url) -> Option<(String, String)> {
 pub struct RequestParts {
     pub headers: HeaderMap,
     pub opts: Options,
+}
+
+/// A torrent's event log line once the public tracker list (#1776) was added to it: how many of
+/// its trackers were new (none: no line); None, a private torrent, which never gets them. The
+/// same for a torrent being added and one already in the list.
+fn public_list_note(added: Option<usize>) -> Option<String> {
+    match added {
+        Some(0) => None,
+        Some(n) => Some(crate::i18n::tn(
+            n as u64,
+            // i18n: event log entry: trackers from the public tracker list (Torrent settings) were added to a torrent
+            "{n} tracker added from the public list",
+            "{n} trackers added from the public list",
+        )),
+        // i18n: event log entry: the torrent is private (only its own trackers may be asked), so the public tracker list wasn't added
+        None => Some(
+            crate::i18n::t("A private torrent: the public tracker list isn't added").to_owned(),
+        ),
+    }
 }
 
 /// The Referer a browser would send for `url` from page `referrer` (its default policy,
@@ -1740,17 +1857,16 @@ fn page_data_for(link: &str, page: Option<&str>, data: Option<&str>) -> Option<S
 
 /// Marks each file the engine starts writing as downloaded from the web (Mark-of-the-Web, macOS'
 /// quarantine: `webmark::mark`, as the option and Windows' policy say), as browsers mark theirs.
-/// Only http(s) addresses (an FTP address may carry its login). Also what a video's and a
-/// gallery's jobs show their saved files to, on their own threads before they say they are done
-/// (#1103): never on the window's thread, where a disk slow to take the mark froze the window
-/// (#510), and always before the file can be opened or renamed (a rename keeps the mark).
+/// Every download, whatever its address (web, FTP, a magnet link sent to a debrid account), and
+/// what is extracted from it; the mark names the address without its login (`webmark::source`).
+/// Also what a video's and a gallery's jobs show their saved files to, on their own threads
+/// before they say they are done (#1103): never on the window's thread, where a disk slow to take
+/// the mark froze the window (#510), and always before the file can be opened or renamed (a
+/// rename keeps the mark).
 pub(crate) fn mark_hook(url: &url::Url, referrer: Option<&str>) -> mdm_engine::FileHook {
-    let web = matches!(url.scheme(), "http" | "https");
     let (url, referrer) = (url.to_string(), referrer.map(str::to_owned));
     mdm_engine::FileHook::new(move |path: &std::path::Path| {
-        if web {
-            crate::webmark::mark(path, &url, referrer.as_deref());
-        }
+        crate::webmark::mark(path, &url, referrer.as_deref());
     })
 }
 
@@ -1881,6 +1997,18 @@ pub fn auth_headers(login: Option<&(String, String)>) -> HeaderMap {
     h
 }
 
+/// A login whose password is an access token (Hugging Face's, #1772): `Authorization: Bearer`.
+pub fn token_headers(login: Option<&(String, String)>) -> HeaderMap {
+    let mut h = HeaderMap::new();
+    if let Some((_, token)) = login.filter(|(_, t)| !t.trim().is_empty())
+        && let Ok(mut v) = HeaderValue::from_str(&format!("Bearer {}", token.trim()))
+    {
+        v.set_sensitive(true);
+        h.insert(AUTHORIZATION, v);
+    }
+    h
+}
+
 /// The icon for a file name's extension (empty: none).
 fn file_icon(name: &str) -> IconKey {
     match name.rsplit_once('.') {
@@ -1892,7 +2020,7 @@ fn file_icon(name: &str) -> IconKey {
 /// Sort key for list column col: numbers where IDM sorts numerically, else text.
 /// `queued`: the download is in a queue (the Q column's mark).
 fn sort_key(it: &Item, col: usize, queued: bool) -> (f64, String) {
-    let frac = it.fraction().unwrap_or(0.0);
+    let frac = it.list_fraction().unwrap_or(0.0);
     match col {
         0 => (0.0, it.file_name.to_lowercase()),
         // As the column shows it: in a queue or not.
@@ -1943,6 +2071,7 @@ fn sort_key(it: &Item, col: usize, queued: bool) -> (f64, String) {
             }),
             String::new(),
         ),
+        list::SAVE_TO => (0.0, it.save_folder().display().to_string().to_lowercase()),
         _ => (0.0, it.description.to_lowercase()),
     }
 }
@@ -1986,7 +2115,7 @@ impl App {
     /// The close that follows quits whatever Options' "Keep running when closing the window" says
     /// (`tray::on_close`); only closing the window itself follows that setting. As the app goes
     /// (`Drop`: `finish`) the downloads stop where they are and the list and the settings are
-    /// saved, and the crash monitor is told it's a clean exit (main.rs). A headless run stops at
+    /// saved, and the crash monitor is told it's a clean exit (lib.rs). A headless run stops at
     /// its next pass (`wants_exit`). The session's end does the same at once (`end_session`).
     fn quit(&mut self, ctx: &egui::Context) {
         tracing::info!("quitting");
@@ -2005,7 +2134,7 @@ impl App {
         // The look (#45): the chosen theme before anything is drawn.
         crate::theme::select(&crate::theme::startup_id(&loaded.settings.theme), ctx);
         crate::theme::apply(ctx);
-        // The zoom main.rs started at (View → Interface size, #262).
+        // The zoom lib.rs started at (View → Interface size, #262).
         let zoom = crate::scale::startup(loaded.settings.interface_size);
         let mut settings = loaded.settings;
         if settings.limiter_on_startup {
@@ -2086,6 +2215,8 @@ impl App {
             std::sync::Arc::new(crate::resumeread::from_disk),
             move || repaint.request_repaint(),
         );
+        // Moves MDM's end cut short (#1739): settled by their files, beside the window.
+        app.settle_moves();
         app.lang_picker = ask_language.then(|| crate::langpick::Picker::new(true, None));
         app.remote = remote;
         // Click'n'Load (#37): off unless Options → Archives and Link grabber turned it on.
@@ -2175,6 +2306,8 @@ impl App {
             a11y_lang: "",
             ui_ctx: ctx.clone(),
             tree_keys: false,
+            preview_keys: false,
+            preview: Default::default(),
             toolbar_keys: false,
             bar_keys: false,
             menubar_at: 0,
@@ -2197,8 +2330,9 @@ impl App {
             raise_options: false,
             started: Instant::now(),
             update_checked_this_run: None,
-            file_info: None,
+            file_infos: Vec::new(),
             file_info_waiting: Default::default(),
+            zip_preview_asked: None,
             kept_answers: Default::default(),
             progress: Vec::new(),
             complete: Vec::new(),
@@ -2208,12 +2342,16 @@ impl App {
             summaries: Vec::new(),
             snooze: crate::finish::Snooze::from_saved(settings.complete_snoozed_until, unix_now()),
             snoozed_finished: 0,
+            hold: crate::hold::Hold::new(settings.hold_popups),
+            copied_waiting: Default::default(),
+            copied_serial: 0,
+            updates_auto: false,
             settings,
             speed_settings: None,
             scheduler: None,
             options: None,
             category_dlg: None,
-            category_for_file_info: false,
+            category_for_file_info: None,
             grabber: None,
             link_parts: Default::default(),
             assistive_checked: None,
@@ -2267,6 +2405,7 @@ impl App {
             global_cap: None,
             file_speed: (0.0, Instant::now(), 0),
             blocklist_busy: Default::default(),
+            public_trackers: Default::default(),
             torrents_started: false,
             torrent_host: crate::torrents::Host::new(),
             remote: None,
@@ -2291,6 +2430,7 @@ impl App {
             importing: Default::default(),
             save_failed: None,
             moving: Vec::new(),
+            moving_parts: Vec::new(),
             renaming: Vec::new(),
             rename_checks: Vec::new(),
             deferred_torrent_queue,
@@ -2319,6 +2459,7 @@ impl App {
             exiting: false,
             headless: false,
             confirm_delete: None,
+            columns_dialog: None,
             confirm_queue_delete: None,
             confirm_redownload: None,
             duplicate: None,
@@ -2358,6 +2499,7 @@ impl App {
             stopped_by_hand: Default::default(),
             saved_by_hand: Default::default(),
             clock: None,
+            clock_day: None,
             wake: Default::default(),
             commands,
         }
@@ -2599,7 +2741,7 @@ impl App {
             queued: queued.contains(&it.id),
             // A progress bar only while the download is in flight: a finished file is whole, and
             // a bar at 100% on every row would only add words to it (#1190).
-            progress: it.fraction().filter(|frac| *frac < 1.0),
+            progress: it.list_fraction().filter(|frac| *frac < 1.0),
             cells: [
                 it.file_name.clone(),
                 String::new(),
@@ -2641,6 +2783,8 @@ impl App {
                 it.torrent
                     .as_ref()
                     .map_or(String::new(), |t| model::rate(t.up_speed)),
+                // A path reads left to right in any window, as Explorer's address bar shows it.
+                crate::i18n::ltr(&it.save_folder().display().to_string()),
             ],
             // A short word and a percentage in the cell while checked or joined (#736): the
             // whole words in its tip and for a screen reader.
@@ -2766,8 +2910,57 @@ impl App {
         self.dirty = true;
     }
 
-    /// Options → Downloads → "Start downloading immediately while displaying Download File
-    /// Info": once the address answered (name and size known) and its folder exists, the
+    /// Download File Info's Start or Later with files picked in Zip preview (#1775): one
+    /// download of those files, into a folder named after the archive in Save As's folder
+    /// (`FileInfo::zip_folder`), each file keeping its path there.
+    fn add_zip_pick(&mut self, fi: &FileInfo, start: Start) {
+        let Some(chosen) = fi.zip_pick.clone() else {
+            return;
+        };
+        if let Some((cat, dir)) = fi.remembered() {
+            self.settings
+                .keep_category_dir(cat, std::path::Path::new(&dir), &self.downloads);
+        }
+        let id = self.push_item(
+            fi.url.clone(),
+            fi.zip_folder(),
+            fi.category,
+            fi.description.clone(),
+            Some(chosen.size),
+            fi.login.clone(),
+            fi.context.clone(),
+            if fi.context.referer.is_some() || fi.context.cookies.is_some() {
+                crate::i18n::mark("from the browser")
+            } else {
+                crate::i18n::mark("with Add URL")
+            },
+        );
+        self.set_direct(id, fi.direct);
+        if let Some(item) = self.item(id) {
+            item.note(crate::i18n::fmt(
+                // i18n: event log entry: the download is files picked inside a ZIP in Zip preview (#1775); {files} how many ("3 files")
+                crate::i18n::t("Only {files} picked inside the ZIP"),
+                &[(
+                    "files",
+                    &crate::i18n::tn(chosen.files.len() as u64, "{n} file", "{n} files"),
+                )],
+            ));
+            item.zip = Some(model::ZipPick {
+                files: chosen.files,
+                done: Vec::new(),
+                archive_size: Some(chosen.archive_size),
+            });
+        }
+        self.selection.set(id);
+        if matches!(start, Start::Now) {
+            self.start(id, true);
+        } else {
+            self.queue_later(vec![id], self.settings.queue_panel_later);
+        }
+        self.dirty = true;
+    }
+
+    /// Options → Downloads → "Start downloading immediately while displaying Download File    /// Info": once the address answered (name and size known) and its folder exists, the
     /// download starts behind the dialog; the dialog's answer then keeps, moves or drops it.
     fn start_early(&mut self, fi: &mut FileInfo) {
         // The download this dialog started has its own place: Save As must not count its own
@@ -3295,6 +3488,11 @@ impl App {
                 &self.blocklist_busy,
             );
         }
+        if self.settings.torrent_public_trackers {
+            self.public_trackers
+                .refresh(&self.rt, self.settings.public_trackers_list());
+            self.public_list_to_torrents();
+        }
         let sharing = self.settings.torrent_keep_sharing
             && self
                 .items
@@ -3354,6 +3552,8 @@ impl App {
         let (window, tab) = name.split_once(':').unwrap_or((name, ""));
         match window {
             "addurl" => self.run(Cmd::AddUrl, None, ctx),
+            // Zip preview (#1775) from the newest Download File Info, as its Preview opens it.
+            "zip-preview" => self.zip_preview_asked = Some(tab.parse().unwrap_or(0)),
             // MDM_CRASH_TEST=1 only (crash.rs): the crash reports' own check.
             "crash-test" => crate::crash::test(tab),
             "batch" => self.run(Cmd::Batch, None, ctx),
@@ -3361,6 +3561,7 @@ impl App {
             // clipboard is MDM_TEST_CLIPBOARD's file).
             "batch-clipboard" => self.run(Cmd::BatchClipboard, None, ctx),
             "find" => self.run(Cmd::Find, None, ctx),
+            "columns" => self.run(Cmd::ColumnsDialog, None, ctx),
             "scheduler" => self.run(Cmd::Scheduler, None, ctx),
             "about" => self.run(Cmd::About, None, ctx),
             // Update now's end-to-end tests (feature `test-update`, never in a release): Update
@@ -3470,6 +3671,31 @@ impl App {
                     }
                 }
             }
+            // The preview pane shown (#1368's checks and screenshots), `preview:off` hidden.
+            "preview" => {
+                let on = tab != "off";
+                if self.settings.preview_pane != on {
+                    self.run(Cmd::TogglePreview, None, ctx);
+                }
+            }
+            // The list's selection (checks of what depends on it, screenshots): `select:3` the
+            // third download shown, `select:all`, `select:none`.
+            "select" => {
+                let shown = self.shown_ids();
+                match tab {
+                    "all" => self.run(Cmd::SelectAll, None, ctx),
+                    "none" => self.selection.retain(&Vec::new()),
+                    n => {
+                        if let Some(id) = n
+                            .parse::<usize>()
+                            .ok()
+                            .and_then(|n| shown.get(n.checked_sub(1)?).copied())
+                        {
+                            self.selection.set(id);
+                        }
+                    }
+                }
+            }
             "video-page" => self.run(Cmd::VideoPage, None, ctx),
             // Download video from a page → Helpers... (#51).
             "video-helpers" => {
@@ -3542,7 +3768,13 @@ impl App {
                 self.extension = Some(offer);
             }
             "language" => self.run(Cmd::ChooseLanguage, None, ctx),
-            "move-rename" => self.run(Cmd::MoveRename, None, ctx),
+            // As the right-click menu's item: its menu closes (a dialog starts once every menu
+            // is closed, #615; `/show context:all` left it open, and Move/Rename waited for it).
+            "move-rename" => {
+                self.popup = None;
+                self.open_menu = None;
+                self.run(Cmd::MoveRename, None, ctx);
+            }
             "shortcuts" => self.run(Cmd::Shortcuts, None, ctx),
             // The Help menu's windows and Download a gallery, for screenshots (#192). updates
             // asks GitHub, as Help → Check for updates does.
@@ -3563,6 +3795,20 @@ impl App {
             }
             "speedlimit" => self.run(Cmd::LimiterSettings, None, ctx),
             "properties" if first.is_some() => self.run(Cmd::Properties, first, ctx),
+            // Its Connection... window too (#1778's screenshots and checks).
+            "properties-connection" if first.is_some() => {
+                self.run(Cmd::Properties, first, ctx);
+                let now = self
+                    .items
+                    .first()
+                    .map_or(self.settings.max_connections, |i| {
+                        self.settings.connections_for(&i.url)
+                    });
+                let limit = self.settings.connection_limit();
+                if let Some(pr) = self.properties.iter_mut().find(|p| Some(p.id) == first) {
+                    pr.open_request(now, limit);
+                }
+            }
             "delete" if first.is_some() => self.run(Cmd::Remove, first, ctx),
             // Remove with files on every download (screenshots: the finished files it counts).
             "delete-files" => {
@@ -3590,6 +3836,7 @@ impl App {
                         address: Some(url),
                         move_to: None,
                         direct: None,
+                        own: None,
                     };
                     self.apply_properties(c);
                 }
@@ -3622,6 +3869,9 @@ impl App {
                 let id = crate::chrome::label(tab);
                 self.run(Cmd::Theme(id), None, ctx);
             }
+            // View → Font → Choose a font file..., as its dialog answers: `font:<path>` (tests of
+            // a file that can't be used without the system's dialog, #1489).
+            "font" => self.set_interface_font(Some(std::path::PathBuf::from(tab)), false, ctx),
             // A menu of the menu bar open (menu:0 is Tasks), for screenshots; menu:3:draw opens
             // View with its Draw with submenu (#89).
             "menu" => {
@@ -3629,11 +3879,13 @@ impl App {
                 let (index, sub) = tab.split_once(':').unwrap_or((tab, ""));
                 let index = index.parse().unwrap_or(0);
                 self.open_menu = Some(index);
-                // menu:3:theme opens View → Theme (#45), menu:3:size View → Interface size (#262).
+                // menu:3:theme opens View → Theme (#45), menu:3:size View → Interface size (#262),
+                // menu:3:font View → Font (#1489).
                 let wanted = match sub {
                     "draw" => "Draw with",
                     "theme" => "Theme",
                     "size" => "&Interface size",
+                    "font" => "&Font",
                     _ => "",
                 };
                 let at = self
@@ -3688,7 +3940,7 @@ impl App {
                     "types" => 1,
                     "saveto" => 2,
                     "downloads" => 3,
-                    "connection" => 4,
+                    "connection" | "siterules" | "siterule" => 4,
                     "proxy" => 5,
                     "logins" => 6,
                     "accounts" => 7,
@@ -3738,7 +3990,7 @@ impl App {
             return;
         }
         // The startup entry's (#226) or browser host's (#1333): this start began in the tray
-        // (main.rs), or MDM already ran; either way the window stays where it is.
+        // (lib.rs), or MDM already ran; either way the window stays where it is.
         if cmd.startup || cmd.hidden {
             return;
         }
@@ -3813,9 +4065,12 @@ impl App {
         } else {
             cmd
         };
-        // The browser's right-click menu: a page's (or a selection's) links, to tick in Import.
+        // The browser's right-click menu: a page's (or a selection's) links, to tick in Import;
+        // with "Download all links", the pictures located on the page too (#1781, marked).
         if !cmd.links.is_empty() {
             self.show_for_dialog(ctx);
+            let images: std::collections::HashSet<&str> =
+                cmd.page_images.iter().map(String::as_str).collect();
             let found = cmd
                 .links
                 .iter()
@@ -3825,9 +4080,17 @@ impl App {
                     cookies: page_data_for(url, cmd.referer.as_deref(), cmd.cookies.as_deref()),
                     user_agent: cmd.user_agent.clone(),
                     private: cmd.private,
+                    page_image: images.contains(url.as_str()),
                     ..Default::default()
                 })
-                .collect();
+                .collect::<Vec<_>>();
+            if !images.is_empty() {
+                tracing::info!(
+                    "browser integration: a page's {} links, {} of them pictures located on it",
+                    found.len(),
+                    found.iter().filter(|f| f.page_image).count()
+                );
+            }
             // i18n: in Import, where the addresses came from: a page in the browser
             let source = crate::i18n::t("Links from the browser").to_owned();
             self.show_import(found, source);
@@ -3894,6 +4157,18 @@ impl App {
             );
             return;
         }
+        // A Hugging Face repository or folder, a GitHub release or tag (#1772), given on the
+        // command line (`/d`) or dropped alone: its files in Link grabber, as from Add URL. Silent
+        // (`/n`, a script's command line) asks nothing: the address is downloaded as it is.
+        if !cmd.silent
+            && cmd.name.is_none()
+            && cmd.post.is_none()
+            && mdm_engine::hub::Source::of(&url).is_some()
+        {
+            self.show_for_dialog(ctx);
+            self.grab_package(&url, ctx);
+            return;
+        }
         // A fresh address for a download waiting for one (its link expired): that download goes
         // on from it, rather than a second row starting over.
         if self.take_fresh_address(&url, &cmd) {
@@ -3926,7 +4201,7 @@ impl App {
                 .dir
                 .clone()
                 .map(PathBuf::from)
-                .unwrap_or_else(|| self.settings.category_dir(category, &self.downloads));
+                .unwrap_or_else(|| self.settings.save_dir(category, &self.downloads));
             // Its name as given, numbered on as it starts if it is taken then (#743): the window
             // doesn't wait for the folder, and a duplicate overwritten just before leaves its name
             // to it once its files are gone (`naming::clear`).
@@ -3969,7 +4244,14 @@ impl App {
         let url_login = mdm_engine::ftp::is_ftp(url)
             .then(|| url_login(url))
             .flatten();
-        let mut headers = auth_headers(login.or(site_login.as_ref()).or(url_login.as_ref()));
+        let login = login.or(site_login.as_ref()).or(url_login.as_ref());
+        // Hugging Face (#1772): Sites Logins' password for it is an access token, sent as one,
+        // to its own hosts only (a redirect to its file servers drops it).
+        let mut headers = if mdm_engine::hub::takes_token(url) {
+            token_headers(login)
+        } else {
+            auth_headers(login)
+        };
         let post_type = context.post.as_ref().and(context.post_type.as_ref());
         let referer = context
             .referer
@@ -3986,11 +4268,17 @@ impl App {
                 headers.insert(name, v);
             }
         }
+        // A site rule's headers (#1778): each replaces the browser's of its name. A User-Agent
+        // among them, or the rule's own, is the download's.
+        let site = self.settings.site_settings(url);
+        let mut chosen = None;
+        crate::requestedit::add_headers(&mut headers, &mut chosen, &site.headers);
+        let chosen = site.user_agent.clone().or(chosen);
         // The browser's own User-Agent when it handed the download over, else the one set in
         // Options, else the automatic one (the default browser's, #668).
         let own = self.settings.own_user_agent();
         let given = context.user_agent.as_deref().or(own);
-        let opts = Options {
+        let mut opts = Options {
             max_connections: self.settings.connections_for(url),
             proxy: self.settings.proxy_for(context),
             dns: self.settings.dns(),
@@ -4045,8 +4333,15 @@ impl App {
                 .page_url
                 .as_deref()
                 .and_then(|p| url::Url::parse(p).ok()),
+            // A site rule: the way a browser connects from the first request (#1778).
+            browser_first: site.browser_like,
             ..Options::default()
         };
+        // A site rule's User-Agent is the user's choice for that site, above the browser's and
+        // Options': no other is tried in its place.
+        if let Some(agent) = chosen {
+            crate::requestedit::choose_agent(&mut opts, agent);
+        }
         RequestParts { headers, opts }
     }
 
@@ -4098,10 +4393,12 @@ impl App {
             .filter(|i| {
                 i.status != Status::Complete
                     && i.live.is_none()
+                    && i.move_from.is_none()
                     && i.video.is_none()
                     && i.gallery.is_none()
                     && i.torrent.is_none()
                     && i.remote.is_none()
+                    && i.zip.is_none()
             })
             .map(|i| {
                 i.state_here = Some((i.dest.clone(), true));
@@ -4239,6 +4536,10 @@ impl App {
         if item.live.is_some() || (item.status == Status::Complete && item.gallery.is_none()) {
             return;
         }
+        // Its files are being moved (#1739): it starts once they are at their place.
+        if item.move_from.is_some() {
+            return;
+        }
         // The download limit is reached: it starts when the window has room again (a video or a
         // gallery too, #708: their bytes count toward it).
         if self.settings.limits_on && self.quota.blocked {
@@ -4275,6 +4576,11 @@ impl App {
             self.start_remote(id, show);
             return;
         }
+        // Files picked out of a ZIP on its server (#1775).
+        if self.item(id).is_some_and(|i| i.zip.is_some()) {
+            self.start_zip(id, show);
+            return;
+        }
         // A new download from Download File Info has nothing of its own on the disk yet: nothing
         // to resume, and no place to claim from another row (the engine takes the next free
         // name as it starts). Its start never waits for the disk on the window's thread (#743).
@@ -4306,8 +4612,20 @@ impl App {
             self.dirty = true;
             return;
         }
-        let RequestParts { headers, mut opts } =
-            self.request_parts(&url, login.as_ref(), &context, direct);
+        let RequestParts {
+            mut headers,
+            mut opts,
+        } = self.request_parts(&url, login.as_ref(), &context, direct);
+        // Its own settings, from its Properties (#1778): above the site rules' and Options'.
+        if let Some(own) = self
+            .items
+            .iter()
+            .find(|i| i.id == id)
+            .map(|i| i.own.clone())
+        {
+            let limit = self.settings.connection_limit();
+            crate::requestedit::apply_own(&own, &mut headers, &mut opts, limit);
+        }
         // Download File Info's open answer for it, if it has one (#28); used once.
         let kept = self.kept_answers.remove(&id);
         // The file's own remembered limit, else the Speed Limiter's.
@@ -4332,6 +4650,22 @@ impl App {
             && matches!(&item.state_here, Some((at, true)) if *at == item.dest);
         item.state_here = None;
         self.state_reads.forget(id);
+        // A name still to be numbered may be this row's own already (#1705), when no other row
+        // is at it: one running there, or whose name is settled (its file, its resume state).
+        let own_state = self
+            .items
+            .iter()
+            .find(|i| i.id == id)
+            .filter(|i| fresh && !i.name_from_url)
+            .filter(|i| {
+                let lower = |p: &std::path::Path| p.to_string_lossy().to_lowercase();
+                !self.items.iter().any(|o| {
+                    o.id != id
+                        && lower(&o.dest) == lower(&i.dest)
+                        && (o.live.is_some() || !o.number_at_start)
+                })
+            })
+            .map(|i| state_path(&i.dest));
         let Some(item) = self.item(id) else { return };
         let _guard = rt.enter();
         // A name nobody gave (the address's guess) is the server's to give: into the folder,
@@ -4351,7 +4685,13 @@ impl App {
         item.waits_for_address = false;
         let dl = if fresh {
             item.downloaded = 0;
-            Download::start_with(request, opts, kept)
+            match own_state {
+                // #1705: killed before the list was saved with the name its run took, it may
+                // be at this name already: the engine resumes its own state there, and numbers
+                // the name only past someone else's file.
+                Some(state) => Download::start_or_resume_own(state, request, opts, kept),
+                None => Download::start_with(request, opts, kept),
+            }
         } else {
             // Resume whenever there is something to resume, as the engine finds on its own task:
             // the window never waits for the disk (a folder on a network share that doesn't
@@ -4525,7 +4865,18 @@ impl App {
 
     /// The user's Stop (or Pause): it stays stopped, even in a queue that is running (#341).
     fn stop_by_hand(&mut self, id: u64) {
-        self.halt(id);
+        self.halt(id, false);
+        self.stopped_by_hand.insert(id);
+    }
+
+    /// The progress window's Stop and keep (#1780): an endless stream (no length, no resume: an
+    /// internet radio, a camera feed) ends where it is and what arrived is its finished file
+    /// (`Job::keep`). The only stop that keeps one: Stop, Stop All, a queue's stop, the tray
+    /// panel's and the automation API's pause stop it as `stop_by_hand` does, keeping nothing, as
+    /// for any download its server can't resume. A download that isn't endless (any more) is
+    /// stopped as Pause stops it.
+    fn keep_by_hand(&mut self, id: u64) {
+        self.halt(id, true);
         self.stopped_by_hand.insert(id);
     }
 
@@ -4533,16 +4884,24 @@ impl App {
     /// download limit (#1164): the user's Stop, Stop All and a queue's stop. A live stream being
     /// recorded is stopped and saved (`Job::save`): what it recorded is kept as a video, the
     /// download then done, as one that ended by itself. Cancel (`stop`) and MDM's own stops
-    /// kill it as before (a later start sets its recording aside, never over it).
-    fn halt(&mut self, id: u64) {
+    /// kill it as before (a later start sets its recording aside, never over it). With `keep`
+    /// (`keep_by_hand`), an endless stream is kept instead (`Job::keep`).
+    fn halt(&mut self, id: u64, keep: bool) {
         // A video waiting for its place doesn't start.
         self.video_places.unwait(id);
         self.stop_healing(id);
         // Every other download stops here as `stop` stops it.
         if let Some(l) = self.item(id).and_then(|i| i.live.as_ref()) {
             let before = l.dl.live_state();
-            l.dl.save();
-            if halt_saved(before, l.dl.live_state()) {
+            // A kept stream whose file then can't be named is held as a recording is: a retry
+            // would start it over in place of what arrived.
+            let kept = if keep {
+                l.dl.keep()
+            } else {
+                l.dl.save();
+                false
+            };
+            if kept || halt_saved(before, l.dl.live_state()) {
                 self.saved_by_hand.insert(id);
             }
         }
@@ -4628,6 +4987,7 @@ impl App {
             || i.torrent.is_some()
             || i.video.is_some()
             || i.gallery.is_some()
+            || i.zip.is_some()
         {
             return;
         }
@@ -4648,7 +5008,11 @@ impl App {
     /// the session deletes). No disk here: the files are handed back, for [`crate::deleter`],
     /// their place held from now on.
     fn take_off_list(&mut self, id: u64, files: bool) -> Option<crate::deleter::Doomed> {
-        if !self.item(id).is_some_and(|i| i.live.is_none()) {
+        // Not while it runs, nor while its files are being moved (#1739).
+        if !self
+            .item(id)
+            .is_some_and(|i| i.live.is_none() && i.move_from.is_none())
+        {
             return None;
         }
         // A torrent an action is busy with stays on the list until it is done.
@@ -4676,8 +5040,10 @@ impl App {
             );
         } else if files
             && let Some(i) = self.items.iter().find(|i| i.id == id)
-            // A gallery's folder stays (it may hold other files; #58).
+            // A gallery's folder stays (it may hold other files; #58), and so does the folder of
+            // files picked out of a ZIP (#1775) with what is in it.
             && i.gallery.is_none()
+            && i.zip.is_none()
         {
             // Its state and part file; a video's streams and their parts, kept for Resume (an
             // unfinished run, a failed merge), looked for in its turn; its finished file, which
@@ -4717,7 +5083,7 @@ impl App {
             // A finished file goes with a ticked box: the window says how many (#1563).
             let finished = gone
                 .iter()
-                .filter(|i| i.status == Status::Complete && i.gallery.is_none())
+                .filter(|i| i.status == Status::Complete && i.gallery.is_none() && i.zip.is_none())
                 .count() as u64;
             self.confirm_delete = Some(dialogs::ConfirmDelete::new(
                 gone.iter().map(|i| i.id).collect(),
@@ -4849,9 +5215,8 @@ impl App {
     }
 
     /// Progress of all running downloads together (bytes done / bytes in all), None when
-    /// nothing runs or no size is known. For the taskbar button's progress, which only Windows
-    /// has (macOS and Linux docks have no common way to show one).
-    #[cfg_attr(not(windows), allow(dead_code))]
+    /// nothing runs or no size is known. For the system's progress on MDM's button or icon
+    /// (sysprogress.rs): the taskbar button on Windows, the dock on Linux and macOS (#1777).
     fn overall_progress(&self) -> Option<f64> {
         let (done, total) = self
             .items
@@ -5108,6 +5473,18 @@ impl App {
                 tip.push('\n');
                 tip.push_str(&dialogs::finished_count(self.snoozed_finished));
             }
+            // Windows waiting for the user to be back from a full-screen app (#1773).
+            let waiting = self.hold.waiting();
+            if waiting > 0 {
+                tip.push('\n');
+                // i18n: the tip of MDM's notification area (tray) icon: {n} windows of MDM (Download complete...) wait while a full-screen game, app or presentation is on, and show when the user is back
+                let line = crate::i18n::tn(
+                    waiting as u64,
+                    "{n} window waits until you're back",
+                    "{n} windows wait until you're back",
+                );
+                tip.push_str(&line);
+            }
             t.set_tooltip(&tip);
             // "Downloads in progress": each running download, to show its progress window (#63).
             let running: Vec<(u64, String)> = self
@@ -5342,13 +5719,21 @@ impl App {
         if text.contains(char::is_whitespace) {
             return;
         }
-        let Ok(url) = url::Url::parse(&text) else {
+        let Some((text, url)) = copied_address(text) else {
             return;
         };
         let name = mdm_engine::naming::file_name(None, &url);
         if mdm_engine::supported(&url) && self.settings.clipboard_type(&name) {
             // Where a Download File Info came from, without the address (#1157).
             tracing::info!("clipboard: a newly copied link, offered for download");
+            // Its Download File Info waits during a full-screen app, as every window that comes
+            // up by itself does (#1773), behind those already waiting.
+            if self.hold.busy().is_some() || self.hold.waiting() > 0 {
+                tracing::info!("clipboard: the link waits until the user is back");
+                self.copied_serial += 1;
+                self.copied_waiting.push_back((self.copied_serial, text));
+                return;
+            }
             let cmd = ipc::Command {
                 url: Some(text),
                 ..Default::default()
@@ -5395,6 +5780,13 @@ impl App {
                 // i18n: event log: File Properties: the download goes through the debrid account again
                 crate::i18n::t("Set to download through the debrid account").to_owned()
             });
+        }
+        // Connection... (#1778): its own User-Agent, headers, proxy and connections, from its
+        // next start. The engine still checks it is the same file as it resumes.
+        if let Some(own) = c.own {
+            item.own = own;
+            // i18n: event log: File Properties → Connection settings changed the download's own User-Agent, headers, proxy or connections
+            item.note(crate::i18n::t("Connection settings changed").to_owned());
         }
         let readdressed = c.address.clone();
         if let Some(url) = c.address {
@@ -5528,6 +5920,12 @@ impl App {
         if target == item.dest {
             return;
         }
+        // One of MDM's own engine that isn't finished: its part file and resume state go along,
+        // and it resumes there from where it was (#1739).
+        if item.status != Status::Complete && item.engine_file() {
+            self.move_parts(id, target);
+            return;
+        }
         // A torrent's engine only opens files MDM has checked, at the place it checked: one
         // that is moved here has its old permission withdrawn, and its next start checks the
         // new place.
@@ -5576,7 +5974,7 @@ impl App {
                 let ours = owner.verified(&data, &spec.folder, &from).ok()?;
                 Some((owner, data, ours, spec.folder == from))
             });
-            let moved = move_file(&from, &to);
+            let moved = crate::relocate::move_file(&from, &to, &crate::relocate::Disk::REAL);
             if moved.is_ok()
                 && let Some((owner, data, ours, whole)) = record
             {
@@ -5590,6 +5988,203 @@ impl App {
             let _ = tx.send(moved);
         });
         self.moving.push((id, target, rx));
+    }
+
+    /// The list handed to its saver now, not at the next second's save: written on the saver's
+    /// thread (store::Saver), refused at once when the list couldn't be read at start (said, and
+    /// the error returned). The handle waits for it on another thread.
+    fn save_now(&mut self) -> Result<crate::store::Written, String> {
+        let saved = self.saver.save(
+            self.next_id,
+            &self.items,
+            &self.list.layout(),
+            &self.settings,
+            &self.queues,
+        );
+        self.dirty = false;
+        self.last_save = Instant::now();
+        match saved {
+            Ok(()) => Ok(self.saver.last_queued()),
+            Err(e) => {
+                self.report_save(Err(e.to_string()));
+                Err(e.to_string())
+            }
+        }
+    }
+
+    /// Move unfinished download `id` to `target` (#1739): its part file and resume state, beside
+    /// the window, so it resumes there from where it was. Its new name is numbered past what is
+    /// there, as a new download's is. Crash-safe: the row names both places, and the list is on
+    /// the disk with them, before a file moves (`relocate`); until the move is done it doesn't
+    /// start and says "Moving...". A failure says why, and the download stays where it was.
+    fn move_parts(&mut self, id: u64, target: PathBuf) {
+        let Some(item) = self.items.iter().find(|i| i.id == id) else {
+            return;
+        };
+        if let Some(why) = item.move_refused() {
+            self.notice = Some(cant_move_notice(why));
+            return;
+        }
+        let (Some(dir), Some(name)) = (target.parent(), target.file_name()) else {
+            return;
+        };
+        let target = mdm_engine::naming::destination(dir, &name.to_string_lossy());
+        let old = item.dest.clone();
+        if target == old {
+            return;
+        }
+        // Both names held while it moves: nothing of this process takes either meanwhile (its
+        // old one may still be held by its run letting go: then that run holds it).
+        let Some(hold_new) = mdm_engine::naming::reserve(&target) else {
+            return;
+        };
+        let hold_old = mdm_engine::naming::reserve(&old);
+        // It ran once (its folder was made then), or has bytes in: a folder of it that isn't
+        // there now is a drive away, not one still to be made.
+        let had_data = item.downloaded > 0 || item.last_try.is_some();
+        self.state_reads.forget(id);
+        let folder = crate::i18n::ltr(&dir.display().to_string());
+        let Some(item) = self.item(id) else { return };
+        item.move_from = Some(old.clone());
+        take_place(item, target.clone());
+        // What was read of its state at start was at its old place.
+        item.state_here = None;
+        item.note(crate::i18n::fmt(
+            // i18n: event log: an unfinished download's part file is being moved to another folder; {folder} is that folder
+            crate::i18n::t("Moving to {folder}"),
+            &[("folder", &folder)],
+        ));
+        let written = match self.save_now() {
+            Ok(w) => w,
+            Err(e) => {
+                // The list can't name its new place: nothing moves.
+                if let Some(item) = self.item(id) {
+                    item.move_from = None;
+                    take_place(item, old);
+                }
+                self.dirty = true;
+                self.notice = Some((
+                    crate::i18n::mark("Move/Rename"),
+                    crate::i18n::fmt(
+                        crate::i18n::t("The file could not be moved: {error}"),
+                        &[("error", &e)],
+                    ),
+                ));
+                return;
+            }
+        };
+        let (tx, rx) = std::sync::mpsc::channel();
+        let wake = self.ui_ctx.clone();
+        std::thread::spawn(move || {
+            let holds = (hold_new, hold_old);
+            let moved = written.wait().and_then(|()| {
+                // Paused a moment before and still writing (#1328), or its state being
+                // rewritten (File Properties' new address): after those.
+                mdm_engine::naming::wait_settled(&old);
+                if let Some(dir) = old.parent() {
+                    mdm_engine::naming::wait_cleared(dir);
+                }
+                crate::relocate::move_unfinished(
+                    &old,
+                    &target,
+                    had_data,
+                    &crate::relocate::Disk::REAL,
+                )
+            });
+            if let Err(e) = &moved {
+                tracing::warn!("move: {} stays: {e}", old.display());
+            } else {
+                tracing::info!("move: {} moved to {}", old.display(), target.display());
+            }
+            let (at, error) = match moved {
+                Ok(()) => (target, None),
+                Err(e) => (old, Some(e)),
+            };
+            // Let go before the row hears of it: a start right after takes its place.
+            drop(holds);
+            let _ = tx.send(PartsMoved {
+                at,
+                error,
+                settled: false,
+            });
+            wake.request_repaint();
+        });
+        self.moving_parts.push((id, rx));
+    }
+
+    /// At start: the downloads whose move MDM's end cut short (`Item::move_from`), each settled
+    /// by its files beside the window (`relocate::settle`); until then they don't start.
+    fn settle_moves(&mut self) {
+        for item in self.items.iter().filter(|i| i.move_from.is_some()) {
+            let (Some(old), new) = (item.move_from.clone(), item.dest.clone()) else {
+                continue;
+            };
+            let (tx, rx) = std::sync::mpsc::channel();
+            let wake = self.ui_ctx.clone();
+            std::thread::spawn(move || {
+                let at = crate::relocate::settle(&old, &new, &crate::relocate::Disk::REAL);
+                tracing::info!("move: one cut short settled at {}", at.display());
+                let _ = tx.send(PartsMoved {
+                    at,
+                    error: None,
+                    settled: true,
+                });
+                wake.request_repaint();
+            });
+            self.moving_parts.push((item.id, rx));
+        }
+    }
+
+    /// Unfinished downloads' moves that are done: each row at the place its files are, the list
+    /// saved; a failure said.
+    fn poll_part_moves(&mut self) {
+        let mut done = Vec::new();
+        self.moving_parts.retain(|(id, rx)| match rx.try_recv() {
+            Ok(m) => {
+                done.push((*id, m));
+                false
+            }
+            Err(std::sync::mpsc::TryRecvError::Empty) => true,
+            Err(_) => false,
+        });
+        for (id, m) in done {
+            let Some(item) = self.item(id) else { continue };
+            item.move_from = None;
+            if item.dest != m.at {
+                take_place(item, m.at.clone());
+            }
+            let folder = crate::i18n::ltr(
+                &m.at
+                    .parent()
+                    .map(|d| d.display().to_string())
+                    .unwrap_or_default(),
+            );
+            match (m.error, m.settled) {
+                (Some(e), _) => {
+                    item.note(crate::i18n::t("The file could not be moved"));
+                    self.notice = Some((
+                        crate::i18n::mark("Move/Rename"),
+                        crate::i18n::fmt(
+                            crate::i18n::t("The file could not be moved: {error}"),
+                            &[("error", &e)],
+                        ),
+                    ));
+                }
+                (None, false) => item.note(crate::i18n::fmt(
+                    // i18n: event log: an unfinished download's part file was moved to another folder; it resumes there; {folder} is that folder
+                    crate::i18n::t("Moved to {folder}"),
+                    &[("folder", &folder)],
+                )),
+                (None, true) => item.note(crate::i18n::fmt(
+                    // i18n: event log, at start: MDM was closed while this download was being moved to another folder; {folder} is where its file is now
+                    crate::i18n::t(
+                        "A move was cut short when MDM closed: the download is in {folder}",
+                    ),
+                    &[("folder", &folder)],
+                )),
+            }
+            self.dirty = true;
+        }
     }
 
     /// Moves that finished: the download takes its new place, or the user is told why not.
@@ -5661,6 +6256,7 @@ impl App {
             i.file_name.hash(&mut h);
             (i.status == Status::Complete).hash(&mut h);
             i.gallery.is_some().hash(&mut h);
+            i.zip.is_some().hash(&mut h);
             i.preexisting_folder.hash(&mut h);
             if let Some(t) = &i.torrent {
                 t.folder.hash(&mut h);
@@ -5963,15 +6559,16 @@ impl App {
     /// to is the Video category's folder, the Music category's while a sound-only choice is
     /// chosen (#611; not when the user deleted Music).
     fn video_dialog(&self, page: Option<(&str, mdm_ipc::Command)>) -> crate::videodlg::VideoDialog {
-        let dir = self.settings.category_dir(Category::Video, &self.downloads);
+        let dir = self.settings.save_dir(Category::Video, &self.downloads);
         let music = (!Category::Music.deleted())
-            .then(|| self.settings.category_dir(Category::Music, &self.downloads));
+            .then(|| self.settings.save_dir(Category::Music, &self.downloads));
         match page {
             Some((page, cmd)) => crate::videodlg::VideoDialog::for_page(dir, page, cmd),
             None => crate::videodlg::VideoDialog::new(dir),
         }
         .with_subs(self.settings.video_subs.clone())
         .with_chapters(self.settings.video_chapters)
+        .with_split_chapters(self.settings.video_split_chapters)
         .with_music_folder(music)
     }
 
@@ -6012,6 +6609,7 @@ impl App {
                 subs: add.subs,
                 parts: Vec::new(),
                 named: add.named,
+                chapter_files: Vec::new(),
                 duration: add.duration,
                 part: add.part,
             });
@@ -6067,9 +6665,6 @@ impl App {
             return VideoLookupAnswer::of(lookup::USE_WINDOW);
         }
         let now = Instant::now();
-        let folder = self.settings.category_dir(Category::Video, &self.downloads);
-        let music = (!Category::Music.deleted())
-            .then(|| self.settings.category_dir(Category::Music, &self.downloads));
         if let Some(ask) = &cmd.video_lookup {
             let Some(tool) = mdm_tools::tools_dir()
                 .as_deref()
@@ -6091,6 +6686,10 @@ impl App {
             dialogs::raise(ctx, dialogs::dialog_viewport("video-page"));
             return VideoLookupAnswer::of(lookup::BUSY);
         }
+        let folder = self.settings.save_dir(Category::Video, &self.downloads);
+        // A sound-only choice saves in Music, as in the Download video window (#611).
+        let music = (!Category::Music.deleted())
+            .then(|| self.settings.save_dir(Category::Music, &self.downloads));
         let start_now = !self.settings.only_add_to_queue;
         let picked = self.lookups.pick(pick, cmd.private, now);
         let add = picked.and_then(|p| {
@@ -6172,6 +6771,7 @@ impl App {
                     subs: Default::default(),
                     parts: Vec::new(),
                     named: false,
+                    chapter_files: Vec::new(),
                     duration: None,
                     part: None,
                 });
@@ -6562,9 +7162,7 @@ impl App {
                     mdm_torrent::Source::File(_) => None,
                 })
         {
-            let dir = self
-                .settings
-                .category_dir(Category::Torrents, &self.downloads);
+            let dir = self.settings.save_dir(Category::Torrents, &self.downloads);
             self.add_remote_torrent(magnet, dir, Category::Torrents, true, None, None, None);
             self.show_window(ctx);
             return;
@@ -6584,16 +7182,19 @@ impl App {
             }
             return;
         }
-        self.torrent_dlg = Some(crate::torrentdlg::TorrentDialog::new(
-            source,
-            remote,
-            self.torrent_host.clone(),
-            self.session_hashes(),
-            self.downloads.clone(),
-            self.settings.category_dirs.clone(),
-            &self.rt,
-            ctx,
-        ));
+        self.torrent_dlg = Some(
+            crate::torrentdlg::TorrentDialog::new(
+                source,
+                remote,
+                self.torrent_host.clone(),
+                self.session_hashes(),
+                self.downloads.clone(),
+                self.settings.category_dirs.clone(),
+                &self.rt,
+                ctx,
+            )
+            .with_one_folder(self.settings.one_folder),
+        );
     }
 
     /// The debrid account torrents go to (#44): Options → Accounts' "Torrents and magnet links
@@ -6725,6 +7326,61 @@ impl App {
         }
     }
 
+    /// Files picked out of a ZIP on its server (#1775, Zip preview): the archive's table read
+    /// again, then each file not out yet fetched alone, unpacked, checked against its CRC-32 and
+    /// written under the download's folder, keeping its path there, by the extraction's own
+    /// writer (`mdm_extract::put_file`). The download's own request (its referer, cookies,
+    /// login), speed limit and Options' network.
+    fn start_zip(&mut self, id: u64, show: bool) {
+        let limit = self.settings.speed_limit();
+        let Some((url, login, context, own, direct, spec, folder)) = self.item(id).and_then(|i| {
+            Some((
+                i.url.clone(),
+                i.login.clone(),
+                i.context.clone(),
+                i.own_limit,
+                i.direct,
+                i.zip.clone()?,
+                i.dest.clone(),
+            ))
+        }) else {
+            return;
+        };
+        let RequestParts { headers, mut opts } =
+            self.request_parts(&url, login.as_ref(), &context, direct);
+        opts.speed_limit = own.or(limit);
+        let into = folder.clone();
+        let sink: mdm_engine::remotezip::Sink = Box::new(move |e, data| {
+            mdm_extract::put_file(&into, &e.name, e.size, data).map_err(|e| match e {
+                mdm_extract::Error::Io(e) => e,
+                other => std::io::Error::other(other.to_string()),
+            })
+        });
+        let pick = mdm_engine::remotezip::Pick {
+            files: spec.files,
+            done: spec.done,
+            size: spec.archive_size,
+            folder,
+        };
+        let rt = self.rt.clone();
+        let _guard = rt.enter();
+        let job = mdm_engine::remotezip::Fetch::start(url, headers, opts, pick, sink);
+        let Some(item) = self.item(id) else { return };
+        item.note(if item.downloaded > 0 {
+            crate::i18n::t("Resumed")
+        } else {
+            crate::i18n::t("Started")
+        });
+        item.live = Some(Live::new(model::Job::Zip(job), item.downloaded));
+        item.status = Status::Downloading;
+        item.error = None;
+        item.last_try = Some(model::now_stamp());
+        self.dirty = true;
+        if show && !self.progress.iter().any(|p| p.id == id) {
+            self.progress
+                .push(Progress::new(id, self.settings.show_complete));
+        }
+    }
     /// Add torrent → Download Now / Later. Through the debrid account when torrents go there
     /// (#44): the .torrent's magnet link (its hash, name and trackers) and the files ticked. The
     /// download added, if one was (not when the debrid account takes it).
@@ -6798,12 +7454,26 @@ impl App {
             );
             return None;
         }
+        // The public tracker list's trackers (#1776), as last fetched (it isn't waited for), in
+        // the .torrent kept for it: never in a private torrent's (BEP 27). With no list yet, it
+        // gets the list once one comes (`public_list_to_torrents`).
+        let (kept, public, public_list) = match self
+            .settings
+            .torrent_public_trackers
+            .then(|| {
+                self.public_trackers
+                    .current(self.settings.public_trackers_list())
+            })
+            .flatten()
+        {
+            Some((stamp, list)) => match crate::torrents::with_public_list(&meta.torrent, &list) {
+                Some((with, added)) => (with, Some(added), stamp),
+                None => (meta.torrent.clone(), None, stamp),
+            },
+            None => (meta.torrent.clone(), Some(0), 0),
+        };
         if after {
-            let (hash, bytes, wake) = (
-                meta.info_hash.clone(),
-                meta.torrent.clone(),
-                self.ui_ctx.clone(),
-            );
+            let (hash, bytes, wake) = (meta.info_hash.clone(), kept, self.ui_ctx.clone());
             crate::torrents::kept_files().change(&meta.info_hash, move || {
                 if let Err(e) = crate::torrents::save_torrent(&hash, &bytes) {
                     crate::dialogs::tell(
@@ -6816,7 +7486,7 @@ impl App {
                     wake.request_repaint();
                 }
             });
-        } else if let Err(e) = crate::torrents::save_torrent(&meta.info_hash, &meta.torrent) {
+        } else if let Err(e) = crate::torrents::save_torrent(&meta.info_hash, &kept) {
             self.notice = Some((
                 crate::i18n::mark("Add torrent"),
                 crate::i18n::fmt(
@@ -6869,6 +7539,9 @@ impl App {
         );
         if let Some(item) = self.item(id) {
             item.preexisting_folder = preexisting;
+            if let Some(note) = public_list_note(public) {
+                item.note(note);
+            }
             // The shared folder is where files go, not the torrent's display name.
             if !add.create_subfolder && meta.files.iter().filter(|f| !f.padding).count() > 1 {
                 item.file_name = meta.name.clone();
@@ -6886,6 +7559,7 @@ impl App {
                 upload_limit: None,
                 in_order: add.in_order,
                 ends_first: true,
+                public_list,
             });
         }
         if let Some(item) = self.items.iter().find(|i| i.id == id)
@@ -7140,8 +7814,7 @@ impl App {
             return;
         }
         let dir = if r.folder.trim().is_empty() {
-            self.settings
-                .category_dir(Category::Torrents, &self.downloads)
+            self.settings.save_dir(Category::Torrents, &self.downloads)
         } else {
             PathBuf::from(r.folder.trim())
         };
@@ -7215,6 +7888,39 @@ impl App {
                     ("feed", &crate::i18n::isolate(&feed)),
                 ],
             ));
+        }
+    }
+
+    /// The public tracker list (#1776) added to every torrent in the list that hasn't got this
+    /// list yet (`TorrentSpec::public_list`), while Torrent settings' switch is on: once it is
+    /// turned on, at start, and when a fetch brings a list that changed (only its new trackers
+    /// are new then). Through the same code as a torrent being added
+    /// (`torrents::with_public_list`), one action per torrent; a private one is only recorded,
+    /// and one busy with another action waits for the next tick. Turning the switch off takes
+    /// nothing away.
+    fn public_list_to_torrents(&mut self) {
+        let Some((stamp, list)) = self
+            .public_trackers
+            .current(self.settings.public_trackers_list())
+        else {
+            return;
+        };
+        let due: Vec<u64> = self
+            .items
+            .iter()
+            .filter(|i| {
+                i.torrent
+                    .as_ref()
+                    .is_some_and(|t| t.public_list != stamp && !self.torrent_host.busy(&t.hash))
+            })
+            .map(|i| i.id)
+            .collect();
+        for id in due {
+            if let Some(spec) = self.item(id).and_then(|i| i.torrent.as_mut()) {
+                spec.public_list = stamp;
+            }
+            self.torrent_act(id, crate::torrents::Act::AddPublicList(list.clone()));
+            self.dirty = true;
         }
     }
 
@@ -7310,6 +8016,10 @@ impl App {
                     // i18n: event log entry: trackers were added to the torrent
                     crate::i18n::tn(n as u64, "{n} tracker added", "{n} trackers added")
                 }
+                (_, Ok(Done::PublicListAdded(added))) => match public_list_note(added) {
+                    Some(note) => note,
+                    None => continue,
+                },
                 (_, Ok(Done::Chosen)) => {
                     self.torrent_resync.insert(o.hash.clone(), false);
                     continue;
@@ -7321,7 +8031,7 @@ impl App {
                         // i18n: event log entry: Reannounce failed, with the reason
                         Act::Reannounce => crate::i18n::t("Reannounce failed: {error}"),
                         // i18n: event log entry: Add trackers failed, with the reason
-                        Act::AddTrackers(_) => {
+                        Act::AddTrackers(_) | Act::AddPublicList(_) => {
                             crate::i18n::t("The trackers could not be added: {error}")
                         }
                         // i18n: event log entry: the files chosen in the Files tab could not be applied, with the reason
@@ -7356,7 +8066,10 @@ impl App {
                     p.address
                 );
                 if self.batch.is_none() {
-                    self.batch = Some(crate::batch::Batch::with_pattern(p));
+                    self.batch = Some(
+                        crate::batch::Batch::with_pattern(p)
+                            .with_one_folder(self.one_folder_shown()),
+                    );
                 }
                 dialogs::raise(ctx, dialogs::dialog_viewport("batch"));
                 return;
@@ -7376,6 +8089,16 @@ impl App {
         ));
     }
 
+    /// With one folder for every download (Options → Save to, #1973): General's folder as the
+    /// windows show a folder, for an empty Save to box to name.
+    fn one_folder_shown(&self) -> Option<String> {
+        self.settings.one_folder.then(|| {
+            crate::dialogs::display_path(
+                &self.settings.save_dir(Category::General, &self.downloads),
+            )
+        })
+    }
+
     /// Batch download → OK: every address goes to the main download queue (IDM's default; its
     /// queue selection panel is not built yet), into Save to's folder if one was given, else
     /// each into its category's folder.
@@ -7386,7 +8109,7 @@ impl App {
             let category = Category::of(&name);
             let dir = match &added.folder {
                 Some(folder) => folder.clone(),
-                None => self.settings.category_dir(category, &self.downloads),
+                None => self.settings.save_dir(category, &self.downloads),
             };
             // Numbered on as it starts if the name is taken then (#743): no disk here.
             let dest = mdm_engine::naming::guess(&dir, &name);
@@ -7821,7 +8544,7 @@ impl App {
         }
         let name = mdm_engine::naming::sanitize(&mdm_engine::naming::file_name(None, &url));
         let category = category.unwrap_or_else(|| Category::of(&name));
-        let dir = self.settings.category_dir(category, &self.downloads);
+        let dir = self.settings.save_dir(category, &self.downloads);
         // Numbered on as it starts if the name is taken then (#743): no disk here.
         let dest = mdm_engine::naming::guess(&dir, &name);
         cmd.remote = false;
@@ -7917,13 +8640,7 @@ impl App {
                 continue;
             }
             let category = category.unwrap_or_else(|| crate::torrentdlg::category_of(&meta));
-            let dir = dir.unwrap_or_else(|| {
-                crate::model::category_folder(
-                    category,
-                    &self.downloads,
-                    &self.settings.category_dirs,
-                )
-            });
+            let dir = dir.unwrap_or_else(|| self.settings.save_dir(category, &self.downloads));
             if !meta.existing_in(&dir).is_empty() {
                 tracing::warn!(
                     "remote control: {}: its files are already in {}",
@@ -8129,7 +8846,7 @@ impl App {
     fn stop_queue(&mut self, q: usize) {
         self.queues[q].running = false;
         for id in self.queues[q].items.clone() {
-            self.halt(id);
+            self.halt(id, false);
         }
     }
 
@@ -8146,7 +8863,9 @@ impl App {
         let id = i.id;
         // A video waiting for its place to start (videoplace.rs) runs, for its queue, and so does
         // one waiting for a newer helper (#1544).
-        if self.video_places.waiting(id) || self.healing.contains_key(&id) {
+        // So does one whose files are being moved (#1739): it starts once they are there.
+        if self.video_places.waiting(id) || self.healing.contains_key(&id) || i.move_from.is_some()
+        {
             return Member::Running;
         }
         match i.status {
@@ -8174,6 +8893,17 @@ impl App {
         // window for 8 s (#536). Until its first answer, schedules wait.
         let local = crate::clock::now_known();
         let now_s = local.map(|t| t.num_seconds_from_midnight());
+        let day = local.map(|t| t.date_naive());
+        // Only a date that moved forward is midnight crossed: a clock that went back (summer
+        // time's fall-back, an NTP step, the user setting it, to the day before as well) is not
+        // a day's worth of schedule times coming due at once.
+        let moved = match (self.clock_day, day) {
+            (Some(before), Some(now)) => now.cmp(&before),
+            _ => std::cmp::Ordering::Equal,
+        };
+        if day.is_some() {
+            self.clock_day = day;
+        }
         let prev = std::mem::replace(&mut self.clock, now_s).or(now_s);
         if let (Some(local), Some(now_s), Some(prev)) = (local, now_s, prev) {
             let today = local.date_naive();
@@ -8183,12 +8913,12 @@ impl App {
                 let sch = self.queues[q].schedule.clone();
                 if let Some(t) = sch.start_at
                     && sch.starts_on(date, weekday)
-                    && queue::crossed(t, prev, now_s)
+                    && queue::crossed(t, prev, now_s, moved)
                 {
                     self.queues[q].running = true;
                 }
                 if let Some(t) = sch.stop_at
-                    && queue::crossed(t, prev, now_s)
+                    && queue::crossed(t, prev, now_s, moved)
                 {
                     self.stop_queue(q);
                 }
@@ -8477,6 +9207,14 @@ impl App {
                 self.dirty = true;
             }
             Cmd::ToggleCategories => self.show_categories = !self.show_categories,
+            Cmd::TogglePreview => {
+                self.settings.preview_pane = !self.settings.preview_pane;
+                // Hidden with the keys: they go back to the list.
+                if !self.settings.preview_pane && self.preview_keys {
+                    self.give_keys(Pane::List);
+                }
+                self.dirty = true;
+            }
             Cmd::ChooseLanguage => {
                 if self.lang_picker.is_none() {
                     self.lang_picker = Some(crate::langpick::Picker::new(
@@ -8548,6 +9286,32 @@ impl App {
             }
             // Every window at once (the frames after this one); saved by `follow_zoom`.
             Cmd::InterfaceSize(percent) => crate::scale::set(ctx, percent),
+            Cmd::InterfaceFont => {
+                // i18n: title of the file dialog of View → Font → Choose a font file
+                let title = crate::i18n::t("Choose a font file").to_owned();
+                // i18n: the kind of file View → Font → Choose a font file lists: TrueType and OpenType font files
+                let kinds = crate::i18n::t("Font files").to_owned();
+                let all = crate::i18n::t("All files").to_owned();
+                winui::start_pick(&self.ui_ctx, "app-interface-font", move || {
+                    crate::winui::file_dialog(&title)
+                        .add_filter(kinds, &["ttf", "otf", "ttc"])
+                        .add_filter(all, &["*"])
+                        .pick_file()
+                });
+            }
+            Cmd::InterfaceFontSystem => self.set_interface_font(None, false, ctx),
+            Cmd::InterfaceFontFile => {
+                // The checked line naming the file in use (#1489): choosing it reads that saved
+                // file again, so a file that went away says so, as a fresh pick would.
+                if let Some(path) = self.settings.interface_font.clone() {
+                    self.set_interface_font(Some(path), true, ctx);
+                }
+            }
+            Cmd::InterfaceTextSize(percent) => {
+                self.settings.interface_text_size = percent;
+                crate::theme::set_text_size(ctx, percent);
+                self.dirty = true;
+            }
             #[cfg(windows)]
             Cmd::SmoothText(on) => {
                 crate::theme::set_smooth_text(ctx, on);
@@ -8654,6 +9418,7 @@ impl App {
                 }
             }
             Cmd::ToggleColumn(i) => self.list.visible[i] = !self.list.visible[i],
+            Cmd::ColumnsDialog => self.columns_dialog = Some(dialogs::Columns::new(&self.list)),
             Cmd::LimiterOn | Cmd::LimiterOff => {
                 self.settings.speed_limit_on = cmd == Cmd::LimiterOn;
                 self.apply_speed_limit();
@@ -8686,6 +9451,8 @@ impl App {
                 if self.updates.is_none() {
                     self.updates = Some(crate::help::Updates::check(&self.rt, ctx));
                 }
+                // The automatic check's, waiting (#1773): asked for now, it shows at once.
+                self.updates_auto = false;
             }
             Cmd::About => self.about = Some(crate::help::About),
             Cmd::Support => crate::help::support(),
@@ -8757,7 +9524,8 @@ impl App {
             }
             Cmd::Batch => {
                 if self.batch.is_none() {
-                    self.batch = Some(crate::batch::Batch::new());
+                    self.batch =
+                        Some(crate::batch::Batch::new().with_one_folder(self.one_folder_shown()));
                 }
             }
             // Read now, off the window's thread; what it holds opens a window when it comes
@@ -8880,9 +9648,11 @@ impl App {
     /// Pull engine progress into the rows; open "Download complete" when one finishes.
     fn poll(&mut self, ctx: &egui::Context) {
         self.poll_moves();
+        self.poll_part_moves();
         self.poll_dragged_out();
         self.poll_deferred_torrent_renames();
         if !self.moving.is_empty()
+            || !self.moving_parts.is_empty()
             || !self.renaming.is_empty()
             || !self.rename_checks.is_empty()
             || !self.deferred_torrent_queue.is_empty()
@@ -8893,7 +9663,14 @@ impl App {
         let mut failed = Vec::new();
         let mut any_live = false;
         for i in &mut self.items {
-            if i.poll() {
+            let unnamed = i.number_at_start || i.name_from_url;
+            let ended = i.poll();
+            // #1705: the name its run took is saved with the list at once, not at the next
+            // half-minute's save: killed until then, the row would come back as never started.
+            if unnamed && !(i.number_at_start || i.name_from_url) {
+                self.dirty = true;
+            }
+            if ended {
                 self.dirty = true;
                 match i.status {
                     Status::Complete => {
@@ -8958,6 +9735,7 @@ impl App {
                 q.items.retain(|x| x != id);
             }
         }
+        self.tell_not_replaced(&finished);
         if self.extracts.poll(&mut self.items, ctx) {
             self.dirty = true;
         }
@@ -8968,9 +9746,9 @@ impl App {
             self.dirty = true;
         }
         self.tick_queues();
-        // A download started early behind Download File Info stays quiet until the dialog's
+        // A download started early behind a Download File Info stays quiet until the dialog's
         // answer (Start shows its box then; Cancel drops it).
-        let early = self.file_info.as_ref().and_then(|f| f.early);
+        let early: Vec<u64> = self.file_infos.iter().filter_map(|f| f.early).collect();
         let close = finished_windows(
             finished,
             |id| self.progress.iter().any(|p| p.id == id && !p.hidden),
@@ -8983,7 +9761,7 @@ impl App {
             now,
         );
         for id in close {
-            self.close_finished(id, early);
+            self.close_finished(id, &early);
         }
         self.settle_groups();
         // A snooze over (#741): Download complete shows again.
@@ -9001,7 +9779,10 @@ impl App {
             ctx.request_repaint_after(progress::SHOWN_WHOLE.saturating_sub(now.duration_since(at)));
         }
         if any_live {
-            ctx.request_repaint_after(Duration::from_millis(250));
+            // The list redraws as its progress clock ticks (every 250 ms), not a fixed
+            // 250 ms after this frame: a figure read on one tick is never left waiting
+            // for the next tick after the one it missed (#1441).
+            ctx.request_repaint_after(model::until_progress_tick(now));
             // The speeds shown change on their own clock (#1176): a frame as it ticks.
             ctx.request_repaint_after(model::until_shown(now));
             // The list's progress figures, every 30 s while something runs: after a crash the
@@ -9022,19 +9803,7 @@ impl App {
             self.dirty = true;
         }
         if self.dirty && self.last_save.elapsed() > Duration::from_secs(1) {
-            // Written on the saver's thread (store::Saver); refused at once when the list
-            // couldn't be read at start.
-            if let Err(e) = self.saver.save(
-                self.next_id,
-                &self.items,
-                &self.list.layout(),
-                &self.settings,
-                &self.queues,
-            ) {
-                self.report_save(Err(e.to_string()));
-            }
-            self.dirty = false;
-            self.last_save = Instant::now();
+            let _ = self.save_now();
         }
         if let Some(outcome) = self.saver.outcome() {
             self.report_save(outcome);
@@ -9255,7 +10024,7 @@ impl App {
 
     /// A finished download's progress window closes, and Download complete opens for it (`early`:
     /// the download Download File Info started early, which stays quiet).
-    fn close_finished(&mut self, id: u64, early: Option<u64>) {
+    fn close_finished(&mut self, id: u64, early: &[u64]) {
         // This file's "Show download complete dialog" (its progress window's Options on
         // completion tab), read before the window closes.
         let window = self.progress.iter().find(|p| p.id == id);
@@ -9264,7 +10033,7 @@ impl App {
             self.when_done(w);
         }
         self.progress.retain(|p| p.id != id);
-        if Some(id) == early {
+        if early.contains(&id) {
             return;
         }
         // One of a group: its summary speaks for it (#766).
@@ -9442,7 +10211,6 @@ impl App {
         let resumable = picked.iter().any(|i| i.can_start());
         let deletable = picked.iter().any(|i| i.live.is_none());
         let can_stop_all = self.can_stop_all();
-        let off = |label| I(label, Cmd::None, false, false);
         #[allow(unused_mut)]
         let mut menu = match index {
             0 => vec![
@@ -9584,11 +10352,25 @@ impl App {
                     true,
                     false,
                 ),
+                // MDM's (#1368): the selected download's picture and details beside the list.
+                I(
+                    if self.settings.preview_pane {
+                        // i18n: View menu: hides the pane beside the download list that shows the selected download's picture and details
+                        crate::i18n::mark("Hide &preview pane")
+                    } else {
+                        // i18n: View menu: shows a pane beside the download list with the selected download's picture and details
+                        crate::i18n::mark("Show &preview pane")
+                    },
+                    Cmd::TogglePreview,
+                    true,
+                    false,
+                ),
                 self.arrange_menu(),
                 // i18n: noun: the toolbar (submenu of View with its settings)
                 Sub("Toolbar", false, vec![]),
                 Sub("&Tray icon", false, vec![]),
-                off("C&ustomize URL List..."),
+                // The list's columns, as the header's Columns... (#1566).
+                I("C&ustomize URL List...", Cmd::ColumnsDialog, true, false),
                 I(
                     "Dark Mode support",
                     Cmd::ToggleDarkMode,
@@ -9603,8 +10385,8 @@ impl App {
                     true,
                     self.settings.always_dark,
                 ),
-                // i18n: noun: the list's font (submenu)
-                Sub("Font", false, vec![]),
+                // i18n: noun: the interface's font (View submenu: the font and its size)
+                self.font_menu(),
                 Sep,
                 // IDM's place for it; a window rather than IDM's submenu, which 86 languages
                 // would make taller than the screen (langpick.rs).
@@ -9745,6 +10527,48 @@ impl App {
         MenuEntry::Sub("&Interface size", true, items)
     }
 
+    /// View → Font (#1489): the file the interface's text is drawn in, and its own size, both
+    /// apart from View → Interface size (which zooms every window). Applies at once.
+    fn font_menu(&self) -> MenuEntry<Cmd> {
+        use MenuEntry::{Item as I, Radio, Sep};
+        let chosen = crate::theme::chosen_ui_font();
+        let chosen_on = chosen.is_some();
+        // i18n: View → Font: the computer's own font, the default (Segoe UI on Windows)
+        let system = Radio("&System font", Cmd::InterfaceFontSystem, true, !chosen_on);
+        // i18n: View → Font: a TrueType or OpenType font file on disk to draw the interface's text in
+        let file = I("Choose a font &file...", Cmd::InterfaceFont, true, false);
+        let now = crate::theme::text_size();
+        // The sizes sit in the Font menu itself: a submenu of a submenu can't open (Win32's
+        // menus, and this one's, go two levels deep).
+        let mut items = vec![system];
+        // The file in use, by its name, checked: until now nothing in the group said what was on
+        // (`System font` is off and the sizes say only the text size, #1489). The name is the
+        // file's own, so it isn't translated.
+        if let Some(path) = chosen.as_deref() {
+            let name = path
+                .file_name()
+                .map(|n| n.to_string_lossy().into_owned())
+                .unwrap_or_else(|| path.to_string_lossy().into_owned());
+            // An `&` in a file's name is a letter, not an access key (`&&` is its escape).
+            let shown = name.replace('&', "&&");
+            items.push(Radio(
+                crate::chrome::label(&shown),
+                Cmd::InterfaceFontFile,
+                true,
+                true,
+            ));
+        }
+        items.push(file);
+        items.push(Sep);
+        items.extend(crate::theme::TEXT_SIZES.iter().map(|p| {
+            // As the interface language writes a percentage: 125%, 125 %, %125.
+            let label = crate::chrome::label(&crate::i18n::percent(f64::from(*p) / 100.0, 0));
+            Radio(label, Cmd::InterfaceTextSize(*p), true, *p == now)
+        }));
+        // i18n: View menu: submenu choosing the interface's own font and text size
+        MenuEntry::Sub("&Font", true, items)
+    }
+
     /// View → Text (Windows): how the letters are drawn. Smooth is DirectWrite's natural look
     /// (any size, each letter where it falls: easy to read on a dense screen); Classic is the
     /// hinted whole-pixel look of Windows' old controls. Applies at once.
@@ -9867,6 +10691,8 @@ impl App {
                     Why::TooOld => off("OpenGL here is too old to draw MDM"),
                     // i18n: View → Draw with: a greyed note; why MDM no longer draws with OpenGL: its window froze inside the graphics card's driver while OpenGL drew
                     Why::FrozeInDriver => off("OpenGL froze inside the graphics driver here"),
+                    // i18n: View → Draw with: a greyed note; why MDM no longer draws with OpenGL: MDM crashed inside the graphics card's driver while OpenGL drew ("its": OpenGL's)
+                    Why::CrashedInDriver => off("OpenGL crashed inside its driver here"),
                     // i18n: View → Draw with: a greyed note; why MDM no longer draws with OpenGL: its window stayed empty for 10 seconds, so MDM started again another way
                     Why::NoFirstFrame => off("OpenGL's first frame didn't show within 10 seconds"),
                     // i18n: View → Draw with: a greyed note; why MDM no longer draws with OpenGL: MDM crashed or was closed while starting with it
@@ -10010,7 +10836,7 @@ impl App {
                 by("By &Last Try Date", Some(6)),
                 by("By Date &Added", Some(list::ADDED)),
                 by("By &Description", Some(7)),
-                off("By Save &Path"),
+                by("By Save &Path", Some(list::SAVE_TO)),
                 off("By R&eferer"),
                 off("By Parent &Web Page"),
             ]
@@ -10038,6 +10864,13 @@ impl App {
                     })
                     .collect();
                 e.push(MenuEntry::Sep);
+                // i18n: header menu: opens the dialog that chooses the list's columns
+                e.push(MenuEntry::Item(
+                    "&Columns...",
+                    Cmd::ColumnsDialog,
+                    true,
+                    false,
+                ));
                 e.push(MenuEntry::Item(
                     "Clear all &filters",
                     Cmd::ClearFilters,
@@ -10477,10 +11310,98 @@ impl App {
     }
 
     /// Gives `pane` the main window's keys, and takes them from the other two (#1190).
+    /// The preview pane (#1368) at the list's trailing side, from English `list_left` on: its
+    /// splitter, its frame and what it shows of the selection. `free`: nothing else (a menu, a
+    /// text box) has the keys. Returns where the list ends (English, from the window's left).
+    fn preview_pane(
+        &mut self,
+        ui: &mut Ui,
+        o: Pos2,
+        w: f32,
+        h: f32,
+        list_left: f32,
+        free: bool,
+    ) -> f32 {
+        use crate::preview::{self, Shows, Summary};
+        let ctx = ui.ctx().clone();
+        let top = o.y + chrome::MENU_H + chrome::pane_top();
+        let bottom = o.y + h - STRIP_H - 5.0;
+        let right = o.x + w - 7.0;
+        // As wide as it was left, the list keeping room of its own (a narrow window: the pane
+        // gives way first, never more than 60 % of the room).
+        let room = w - 7.0 - list_left - 4.0;
+        let max_w = (room - preview::LIST_KEEPS).max(preview::MIN_WIDTH);
+        let pane_w = (self.settings.preview_width as f32)
+            .clamp(preview::MIN_WIDTH, max_w)
+            .min((room * 0.6).floor());
+        let left = right - pane_w;
+        // The splitter: the 4 px gap between the list and the pane, dragged sideways.
+        let split = winui::rect(egui::Rect::from_min_max(
+            pos2(left - 4.0, top),
+            pos2(left, bottom),
+        ));
+        let sr = ui.interact(
+            split,
+            egui::Id::unique("preview-splitter"),
+            winui::pointer_drag(),
+        );
+        if sr.hovered() || sr.dragged() {
+            ctx.set_cursor_icon(egui::CursorIcon::ResizeHorizontal);
+        }
+        if sr.dragged()
+            && let Some(p) = sr.interact_pointer_pos()
+        {
+            // The pointer stays on the splitter's middle (the pane's width from the window's
+            // trailing edge: the left in RTL).
+            let nw = (right - winui::mx(p.x) - 2.0)
+                .round()
+                .clamp(preview::MIN_WIDTH, max_w);
+            self.settings.preview_width = nw as u32;
+        }
+        if sr.drag_stopped() {
+            self.dirty = true;
+        }
+        // A press in the pane gives it the keys, as the tree takes them by a click.
+        let pane_rc = winui::rect(egui::Rect::from_min_max(
+            pos2(left, top),
+            pos2(right, bottom),
+        ));
+        if ctx.input(|i| {
+            i.pointer.any_pressed()
+                && i.pointer
+                    .press_origin()
+                    .is_some_and(|at| pane_rc.contains(at))
+        }) {
+            self.give_keys(Pane::Preview);
+        }
+        let picked: Vec<&Item> = self
+            .selection
+            .ids()
+            .iter()
+            .filter_map(|id| self.items.iter().find(|i| i.id == *id))
+            .collect();
+        let shows = match picked.as_slice() {
+            [] => Shows::Nothing,
+            [one] => Shows::One(one),
+            many => Shows::Many(Summary::of(many.iter().copied())),
+        };
+        let keys = self.preview_keys && free;
+        let event = self
+            .preview
+            .show(ui, left, right, top, bottom, &shows, keys);
+        match event {
+            Some(preview::Event::Close) => self.run(Cmd::TogglePreview, None, &ctx),
+            Some(preview::Event::Keys) => self.give_keys(Pane::Preview),
+            None => {}
+        }
+        left - 4.0 - o.x
+    }
+
     fn give_keys(&mut self, pane: Pane) {
         self.toolbar_keys = pane == Pane::Toolbar;
         self.tree_keys = pane == Pane::Tree;
         self.bar_keys = pane == Pane::Bar;
+        self.preview_keys = pane == Pane::Preview;
         self.list.set_keys(pane == Pane::List);
     }
 
@@ -10593,6 +11514,10 @@ impl App {
         // A style theme's title bar, drawn above the layout (Windows; #45), mirrored right to
         // left as the progress window's.
         let full = self.drawn_caption(ui, full);
+        // Whether the keys are in use, read before the panes take theirs (Tab, the arrows, End):
+        // read only after them, the press that moved the keys was gone and no focus ring showed
+        // (the toolbar's, the tree's, the preview pane's, #1368).
+        winui::keyboard_in_use(&ctx);
         let o = full.min;
         let (w, h) = (full.width(), full.height());
         let mut chosen: Option<(Cmd, Option<u64>)> = None;
@@ -10774,13 +11699,19 @@ impl App {
             let entries = self.menu_entries(i);
             // Under the item's leading edge (the menu's top-right in RTL).
             let at = pos2(winui::mx(o.x + x), o.y + chrome::MENU_H - 1.0);
-            let event = match chrome::popup(
+            let event = match chrome::popup_with(
                 &ctx,
                 MenuKind::Bar,
                 &format!("menu-{i}"),
                 at,
                 &entries,
                 &|c: &Cmd| c.hint(),
+                &|c: &Cmd| match c {
+                    // The escape hatch stays in the computer's own font, whatever font is in
+                    // use: a damaged file must not make the way back unreadable (#1489).
+                    Cmd::InterfaceFontSystem => Some(crate::winui::system_font()),
+                    _ => None,
+                },
             ) {
                 PopupResult::Open => None,
                 PopupResult::Neighbor(d) => {
@@ -10833,6 +11764,8 @@ impl App {
                     Some(Pane::Toolbar)
                 } else if self.tree_keys && self.show_categories {
                     Some(Pane::Tree)
+                } else if self.preview_keys && self.settings.preview_pane {
+                    Some(Pane::Preview)
                 } else if self.list.has_keys() {
                     Some(Pane::List)
                 } else if self.bar_keys {
@@ -10840,7 +11773,7 @@ impl App {
                 } else {
                     None
                 };
-                let pane = tab_to(from, self.show_categories, back);
+                let pane = tab_to(from, self.show_categories, self.settings.preview_pane, back);
                 self.give_keys(pane);
                 crate::chrome::show_cues(&ctx);
             }
@@ -10889,7 +11822,16 @@ impl App {
         ];
         let tb: Vec<(Icon, &str, bool)> = buttons.iter().map(|(i, l, e, _)| (*i, *l, *e)).collect();
         let tb_keys = (self.toolbar_keys && free).then_some(self.toolbar_at);
-        match chrome::toolbar(ui, o, w, &tb, tb_keys) {
+        // The preview pane's toggle at the band's end (#1368), its picture on the pane's side.
+        // i18n: toolbar toggle button: shows or hides the preview pane (the selected download's picture and details)
+        let mut toggle = (Icon::PreviewPane, "Preview", self.settings.preview_pane);
+        if winui::rtl() {
+            toggle.0 = Icon::PreviewPaneLeft;
+        }
+        match chrome::toolbar(ui, o, w, &tb, Some(toggle), tb_keys) {
+            Some(ToolbarEvent::Click(k)) if k == buttons.len() => {
+                chosen = Some((Cmd::TogglePreview, None));
+            }
             Some(ToolbarEvent::Click(k)) => chosen = Some((buttons[k].3, None)),
             Some(ToolbarEvent::Drop(k, at)) => {
                 let kind = match buttons[k].0 {
@@ -11024,9 +11966,16 @@ impl App {
         let (ids, rows) = self.list_rows();
         self.selection.retain(&ids);
         let (selected, focus) = self.selection.rows(&ids);
+        // The preview pane (#1368): at the list's trailing side (the left in RTL), as wide as
+        // its splitter leaves it, the list keeping room of its own.
+        let list_right = if self.settings.preview_pane {
+            self.preview_pane(ui, o, w, h, list_left, free)
+        } else {
+            w - 7.0
+        };
         let outer = egui::Rect::from_min_max(
             pos2(o.x + list_left, o.y + chrome::MENU_H + chrome::pane_top()),
-            pos2(o.x + w - 7.0, o.y + h - STRIP_H - 4.0),
+            pos2(o.x + list_right, o.y + h - STRIP_H - 4.0),
         );
         self.list.menu_open = self.popup.is_some() || self.open_menu.is_some();
         // Another node shows from its top (its rows aren't the last one's).
@@ -11055,6 +12004,7 @@ impl App {
         if self.list.has_keys() {
             self.tree_keys = false;
             self.toolbar_keys = false;
+            self.preview_keys = false;
         }
         if let Some(pick) = r.pick {
             self.selection.apply(pick, &ids);
@@ -11165,6 +12115,12 @@ impl App {
             }) {
                 chosen = Some((Cmd::MoveRename, None));
             }
+            // Alt+P: the preview pane, as Explorer's (#1368), unless a menu bar title takes P.
+            if preview_key_free()
+                && ctx.input_mut(|i| i.consume_key(egui::Modifiers::ALT, egui::Key::P))
+            {
+                chosen = Some((Cmd::TogglePreview, None));
+            }
             if find {
                 chosen = Some((Cmd::Find, None));
             } else if next {
@@ -11205,13 +12161,46 @@ impl App {
     }
 
     /// Download File Info for an address from Add URL, the browser (`context`) or the command
-    /// line. One at a time: another that arrives meanwhile waits its turn (the browser has
-    /// already given its own copy up, so none may be dropped).
+    /// line: a window of its own beside those open (#1741), up to [`FILE_INFOS_MOST`]. More
+    /// wait their turn, in the order they came, each opening as a window closes (the browser
+    /// has already given its own copy up, so none may be dropped). An address a window shows
+    /// already opens no second window: that one comes to the front (two windows for one address
+    /// would make two downloads of it by mistake); one already waiting isn't waited for twice.
     fn open_file_info(&mut self, new: dialogs::NewUrl, context: ipc::Command, ctx: &egui::Context) {
-        if self.file_info.is_some() {
+        if let Some(fi) = self.file_infos.iter().find(|f| f.url == new.url) {
+            tracing::info!("Download File Info: the same address again: its window to the front");
+            dialogs::raise(ctx, fi.viewport());
+            return;
+        }
+        if self.file_info_waiting.iter().any(|(w, _)| w.url == new.url) {
+            tracing::info!("Download File Info: the same address again: it waits once");
+            return;
+        }
+        // Behind those waiting already, so that they open in the order they came.
+        if self.file_infos.len() >= FILE_INFOS_MOST || !self.file_info_waiting.is_empty() {
             self.file_info_waiting.push_back((new, context));
             return;
         }
+        self.open_file_info_now(new, context, ctx);
+    }
+
+    /// The downloads that waited for a Download File Info window, in the order they came, while
+    /// there is room for more windows.
+    fn open_waiting_file_infos(&mut self, ctx: &egui::Context) {
+        while self.file_infos.len() < FILE_INFOS_MOST
+            && let Some((new, context)) = self.file_info_waiting.pop_front()
+        {
+            self.open_file_info_now(new, context, ctx);
+        }
+    }
+
+    /// A Download File Info window for `new`, numbered after those open ([`dialogs::Nth`]).
+    fn open_file_info_now(
+        &mut self,
+        new: dialogs::NewUrl,
+        context: ipc::Command,
+        ctx: &egui::Context,
+    ) {
         let direct = crate::debrid::browser_started(&context);
         let request = self.request_parts(&new.url, new.login.as_ref(), &context, direct);
         let mut fi = FileInfo::new(
@@ -11223,10 +12212,18 @@ impl App {
             self.settings.category_dirs.clone(),
             &self.rt,
             ctx,
-        );
+        )
+        .with_one_folder(self.settings.one_folder);
         fi.remember = self.settings.change_folder_on_last;
         fi.folders = self.settings.folder_history.clone();
-        self.file_info = Some(fi);
+        fi.nth = dialogs::Nth::free(self.file_infos.iter().map(|f| f.nth));
+        if fi.nth != dialogs::Nth::FIRST {
+            tracing::info!(
+                "Download File Info: window {} opened beside the others",
+                fi.nth.0
+            );
+        }
+        self.file_infos.push(fi);
     }
 
     /// Options → Downloads → "If a duplicate download link is added", for a new download that
@@ -11689,7 +12686,7 @@ impl App {
             return;
         }
         // Kept at 100 % interface size (the system's logical pixels), as the window is made
-        // before the zoom applies (main.rs).
+        // before the zoom applies (lib.rs).
         let zoom = ctx.zoom_factor();
         let (outer, inner, maximized, minimized) = ctx.input(|i| {
             let v = i.viewport();
@@ -11889,6 +12886,9 @@ impl App {
         if let Some(path) = winui::picked(ctx, "app-theme-file") {
             self.add_theme_file(&path, ctx);
         }
+        if let Some(path) = winui::picked(ctx, "app-interface-font") {
+            self.set_interface_font(Some(path), true, ctx);
+        }
         if let Some(target) = winui::picked(ctx, "app-move-rename")
             && let Some(id) = self.move_rename_for.take()
         {
@@ -11922,6 +12922,36 @@ impl App {
                 ));
             }
         }
+    }
+
+    /// View → Font (#1489): draw the interface's text in the font file at `path`, or in the
+    /// computer's own when `None`. A file is read beside the window's thread (`theme::set_ui_font`)
+    /// and saved once it is in use; one egui can't read is refused with a message, and the font
+    /// in use stays (`tick` polls `theme::poll_ui_font`). `again` says whether a file that is
+    /// already the one in use is read again: a pick and the checked line in the Font menu do, so
+    /// one that has since changed or gone says so.
+    fn set_interface_font(
+        &mut self,
+        path: Option<std::path::PathBuf>,
+        again: bool,
+        ctx: &egui::Context,
+    ) {
+        let Some(path) = path else {
+            crate::theme::set_ui_font(None, false, false);
+            crate::theme::reload_fonts(ctx);
+            self.settings.interface_font = None;
+            self.dirty = true;
+            return;
+        };
+        // Already drawn with and not asked to read it again: nothing to read, the choice is
+        // saved as it is.
+        if !again && crate::theme::chosen_ui_font().as_deref() == Some(path.as_path()) {
+            self.settings.interface_font = Some(path);
+            self.dirty = true;
+            return;
+        }
+        tracing::info!("interface font: {}", path.display());
+        crate::theme::set_ui_font(Some(path), true, again);
     }
 
     /// The addresses in a list file, shown in Import to tick before adding. The file is read and
@@ -12017,7 +13047,21 @@ impl App {
                 s.extract_delete,
             )
         });
+        grabber.set_one_folder(s.one_folder);
         grabber.add(found, source, |u| known.contains(u.as_str()));
+    }
+
+    /// A Hugging Face repository's or a GitHub release's address (#1772) into Link grabber, which
+    /// lists its files through the site's API, and the window to the front.
+    fn grab_package(&mut self, url: &url::Url, ctx: &egui::Context) {
+        let found = vec![crate::transfer::Imported {
+            url: url.to_string(),
+            ..Default::default()
+        }];
+        // i18n: Link grabber: where the links came from: an address given on its own (typed or pasted in Add URL, given on the command line)
+        let source = crate::i18n::t("Address typed").to_owned();
+        self.show_import(found, source);
+        dialogs::raise(ctx, dialogs::dialog_viewport("grabber"));
     }
 
     /// Link grabber's ticked links: each package's to its folder, tagged with the package (its
@@ -12054,10 +13098,16 @@ impl App {
                 };
                 let category = Category::of(&name);
                 let dir = if pk.folder.as_os_str().is_empty() {
-                    self.settings.category_dir(category, &self.downloads)
+                    self.settings.save_dir(category, &self.downloads)
                 } else {
                     pk.folder.clone()
                 };
+                // A package's file (#1772) in the folders it is in inside the package's, each a
+                // plain name again, as a folder's tree's are.
+                let dir = d.within.iter().fold(dir, |dir, name| {
+                    dir.join(mdm_engine::naming::sanitize(name))
+                });
+                let checksum = d.checksum.clone();
                 // Numbered on as it starts if the name is taken then (#743): no disk here, for
                 // each of thousands of links.
                 let dest = mdm_engine::naming::guess(&dir, &name);
@@ -12083,6 +13133,11 @@ impl App {
                 if let Some(i) = self.items.last_mut().filter(|i| i.id == id) {
                     i.package = Some(tag.clone());
                     i.number_at_start = true;
+                    // The digest its site publishes (#1772): the finished file must have it, or
+                    // the download says so instead of finishing.
+                    if checksum.is_some() {
+                        i.checksum = checksum;
+                    }
                     // A name the server didn't give (none looked up) may still change.
                     if size.is_none() {
                         i.name_from_url = true;
@@ -12131,9 +13186,9 @@ impl App {
             .as_mut()
             .map(|g| g.pages_read())
             .unwrap_or_default();
-        for found in read {
+        for (found, note) in read {
             // The same rule as every link added: one in the download list comes unticked.
-            self.show_import(found, String::new());
+            self.show_import(found, note);
         }
         if !self.settings.grabber_check {
             return;
@@ -12166,9 +13221,14 @@ impl App {
     /// Link grabber's web pages to read for their links (#705), each with its own request, on
     /// the runtime: the page's links come back with the page as their referer (the package is
     /// named after it), the agent and private mark the page had. Not the page's cookies, which
-    /// are its own site's.
+    /// are its own site's. A folder (an FTP folder, a web server's listing, #1774) comes back as
+    /// its files and its subfolders' (Options → Archives: how deep, which types), each with the
+    /// folders it goes in and its own folder's page as its referer; one listed only in part
+    /// says so on the window's Source line.
     fn grabber_reads(&mut self, ctx: &egui::Context) {
         let Some(g) = &self.grabber else { return };
+        let depth = self.settings.grabber_depth;
+        let types = self.settings.grabber_types.trim().to_owned();
         for (i, url, d) in g.to_read() {
             let context = ipc::Command {
                 referer: d.referer.clone(),
@@ -12177,13 +13237,30 @@ impl App {
                 ..Default::default()
             };
             let parts = self.request_parts(&url, None, &context, false);
-            let slot: std::sync::Arc<std::sync::Mutex<Option<_>>> = Default::default();
-            let (out, ctx) = (slot.clone(), ctx.clone());
+            let slot: crate::grabber::Read = Default::default();
+            // A Hugging Face repository or a GitHub release (#1772): its site's API lists it.
+            if let Some(source) = mdm_engine::hub::Source::of(&url) {
+                let token = self.settings.site_login(&url).is_some();
+                let (out, ctx) = (slot.clone(), ctx.clone());
+                self.rt.spawn(async move {
+                    let listed = mdm_engine::hub::list(&source, parts.headers, &parts.opts).await;
+                    *out.lock().unwrap() = Some(crate::grabber::package_read(listed, &d, token));
+                    ctx.request_repaint();
+                });
+                if let Some(g) = &mut self.grabber {
+                    g.reading(i, slot);
+                }
+                continue;
+            }
+            let (out, ctx, types) = (slot.clone(), ctx.clone(), types.clone());
             self.rt.spawn(async move {
-                let found = match mdm_engine::page_links(url, parts.headers, &parts.opts).await {
-                    Ok((at, links)) => {
+                let keep =
+                    |name: &str| types.is_empty() || mdm_ipc::capture::type_listed(&types, name);
+                let read = mdm_engine::folder::read(url, parts.headers, &parts.opts, depth, keep);
+                let found = match read.await {
+                    Ok(mdm_engine::folder::Read::Page(at, links)) => {
                         tracing::info!("link grabber: {} links on a page", links.len());
-                        links
+                        let links = links
                             .into_iter()
                             .map(|u| crate::transfer::Imported {
                                 url: u.into(),
@@ -12192,11 +13269,53 @@ impl App {
                                 private: d.private,
                                 ..Default::default()
                             })
-                            .collect()
+                            .collect();
+                        crate::grabber::Listed {
+                            links,
+                            ..Default::default()
+                        }
+                    }
+                    Ok(mdm_engine::folder::Read::Folder(f)) => {
+                        tracing::info!(
+                            "link grabber: {} files in a folder{}",
+                            f.files.len(),
+                            if f.capped { ", listed in part" } else { "" }
+                        );
+                        let note = if f.capped {
+                            crate::i18n::fmt(
+                                // i18n: Link grabber's Source line, after where the links came from: a folder (an FTP folder, a web server's "Index of" page) held more files or subfolders than Link grabber lists; {folder} is its name, {n} how many of its files are listed (10,000)
+                                crate::i18n::t("{folder}: only its first {n} files"),
+                                &[
+                                    ("folder", &f.name),
+                                    ("n", &crate::i18n::integer(f.files.len() as u64)),
+                                ],
+                            )
+                        } else {
+                            String::new()
+                        };
+                        let name = f.name;
+                        let files = f
+                            .files
+                            .into_iter()
+                            .map(|file| crate::transfer::Imported {
+                                url: file.url.into(),
+                                referer: Some(file.listing.to_string()),
+                                user_agent: d.user_agent.clone(),
+                                private: d.private,
+                                folder: std::iter::once(name.clone()).chain(file.folders).collect(),
+                                size: file.size,
+                                ..Default::default()
+                            })
+                            .collect();
+                        crate::grabber::Listed {
+                            links: files,
+                            note,
+                            failed: None,
+                        }
                     }
                     Err(e) => {
                         tracing::info!("link grabber: a page couldn't be read: {e}");
-                        Vec::new()
+                        Default::default()
                     }
                 };
                 *out.lock().unwrap() = Some(found);
@@ -12209,12 +13328,13 @@ impl App {
     }
 
     /// Can this download be fetched again from the start? A file download that isn't running
-    /// (torrents re-check their data instead; a video's file is yt-dlp's to replace).
+    /// ([`Item::can_redownload`]: torrents re-check their data instead; a video's file is
+    /// yt-dlp's to replace, a gallery's files gallery-dl's).
     fn can_redownload(&self, id: u64) -> bool {
         self.items
             .iter()
             .find(|i| i.id == id)
-            .is_some_and(|i| i.live.is_none() && i.torrent.is_none() && i.video.is_none())
+            .is_some_and(Item::can_redownload)
     }
 
     /// Download again from the start: the partial state goes; a finished file is replaced when
@@ -12224,6 +13344,15 @@ impl App {
             return;
         }
         let Some(item) = self.item(id) else { return };
+        // Its finished file stays as it is while the new copy downloads under its part file, and
+        // the new copy takes its place, under its name, only as it completes (#1698,
+        // `Item::replace_file`): a Redownload that fails or is stopped leaves it, and the row
+        // keeps its name (no "name (1)"). A file moved or deleted since: a plain download to its
+        // name. One another program holds then is kept, the new copy saved beside it (said).
+        // A Redownload of one stopped part-way keeps what an earlier one was to replace.
+        if item.status == Status::Complete {
+            item.replace_file = Some(item.dest.clone());
+        }
         // Its state and part file go beside the window (#1170); its start, just below, waits on
         // its own task until they are gone: it never resumes from them.
         let doomed = crate::deleter::Doomed::clearing(
@@ -12247,23 +13376,41 @@ impl App {
         self.start(id, true);
     }
 
+    /// The downloads just finished that were to replace the file at their place and couldn't
+    /// (`Item::not_replaced`: another program had it open): said in one message, both files
+    /// named, and in each one's log.
+    fn tell_not_replaced(&mut self, finished: &[u64]) {
+        let mut texts = Vec::new();
+        for id in finished {
+            let Some(item) = self.item(*id) else { continue };
+            let Some(old) = item.not_replaced.take() else {
+                continue;
+            };
+            let text = not_replaced_text(&old, &item.dest);
+            item.note(text.clone());
+            tracing::warn!(
+                "download {id}: the file at its place couldn't be replaced; saved beside it"
+            );
+            texts.push(text);
+        }
+        if !texts.is_empty() {
+            self.notice = Some((
+                crate::i18n::mark("Mister Download Manager"),
+                texts.join("\n\n"),
+            ));
+        }
+    }
+
     /// Move/Rename: a Save As box at the file's place; a finished file is moved there, one
-    /// that hasn't started gets the new name and folder.
+    /// that hasn't started gets the new name and folder, one stopped part-way takes its part
+    /// file and resume state along (#1739).
     fn move_rename(&mut self, id: u64) {
         let Some(item) = self.items.iter().find(|i| i.id == id) else {
             return;
         };
-        if torrent_shares_folder(item) {
-            self.notice = Some((
-                crate::i18n::mark("Move/Rename"),
-                // i18n: shown when Move or Rename is refused: a torrent saved straight in Save to shares that folder with other files
-                crate::i18n::t("This torrent shares its destination folder").to_owned(),
-            ));
-            return;
-        }
-        if !can_move(item) {
+        if let Some(why) = item.move_refused() {
             // Said, not silently ignored (F2, Ctrl+M on a download that can't move).
-            self.notice = Some(cant_move_notice());
+            self.notice = Some(cant_move_notice(why));
             return;
         }
         let title = crate::i18n::t("Move/Rename").to_owned();
@@ -12275,6 +13422,10 @@ impl App {
         let name = item.file_name.clone();
         self.move_rename_for = Some(id);
         winui::start_pick(&self.ui_ctx, "app-move-rename", move || {
+            // Off-screen test runs have no Save As box to answer: that folder, the same name.
+            if let Some(dir) = std::env::var_os("MDM_TEST_MOVE_TO") {
+                return Some(PathBuf::from(dir).join(&name));
+            }
             crate::winui::file_dialog(&title)
                 .set_directory(from)
                 .set_file_name(name)
@@ -12285,12 +13436,14 @@ impl App {
     /// Move/Rename with several downloads selected (#333): their folder is asked for, not a name
     /// each.
     fn move_many(&mut self, ids: Vec<u64>) {
-        let can = ids
+        let chosen: Vec<&Item> = ids
             .iter()
             .filter_map(|id| self.items.iter().find(|i| i.id == *id))
-            .find(|i| can_move(i));
-        let Some(first) = can else {
-            self.notice = Some(cant_move_notice());
+            .collect();
+        let Some(first) = chosen.iter().find(|i| can_move(i)) else {
+            if let Some(why) = chosen.iter().find_map(|i| i.move_refused()) {
+                self.notice = Some(cant_move_notice(why));
+            }
             return;
         };
         let title = crate::i18n::t("Move/Rename").to_owned();
@@ -12314,13 +13467,13 @@ impl App {
     /// The several downloads' new folder: each that can go goes there, under its own name.
     fn move_many_to(&mut self, ids: Vec<u64>, dir: PathBuf) {
         let mut taken = std::collections::HashSet::new();
-        let mut stay = false;
+        let mut stay = None;
         for id in ids {
             let Some(item) = self.items.iter().find(|i| i.id == id) else {
                 continue;
             };
-            if !can_move(item) {
-                stay = true;
+            if let Some(why) = item.move_refused() {
+                stay = stay.or(Some(why));
                 continue;
             }
             if item.dest.parent() == Some(dir.as_path()) {
@@ -12330,8 +13483,8 @@ impl App {
             self.start_move(id, target);
         }
         self.dirty = true;
-        if stay {
-            self.notice = Some(cant_move_notice());
+        if let Some(why) = stay {
+            self.notice = Some(cant_move_notice(why));
         }
     }
 
@@ -12377,7 +13530,10 @@ impl App {
             self.auto_update = Some(crate::help::check(&self.rt, ctx));
         }
         if self.updates.is_some() {
-            if self.raise_updates && crate::dialogs::focus_when_shown(ctx, "updates") {
+            if self.raise_updates
+                && !self.hold.is_waiting(&crate::hold::PopUp::Update)
+                && crate::dialogs::focus_when_shown(ctx, "updates")
+            {
                 self.raise_updates = false;
             }
         } else {
@@ -12404,6 +13560,7 @@ impl App {
                 tracing::info!("update available: {}", rel.version);
                 self.updates = Some(crate::help::Updates::found(rel));
                 self.raise_updates = true;
+                self.updates_auto = true;
             }
         }
     }
@@ -12464,7 +13621,13 @@ impl App {
                 self.extension = Some(crate::extension::Extension::new());
             }
         }
-        if let Some(d) = &mut self.extension {
+        // It offers itself at start: it waits during a full-screen app (#1773).
+        if self.extension.is_some()
+            && self
+                .hold
+                .lets(crate::hold::PopUp::Extension, Instant::now())
+            && let Some(d) = &mut self.extension
+        {
             match d.show(ctx) {
                 Outcome::Open => {}
                 Outcome::Done(()) => {
@@ -12482,7 +13645,12 @@ impl App {
         }
         let mut weekly = self.settings.update_check;
         let mut close_for_update = false;
-        if let Some(d) = &mut self.updates {
+        // The automatic check's new version waits during a full-screen app (#1773); the one asked
+        // for from the Help menu shows at once.
+        if self.updates.is_some()
+            && (!self.updates_auto || self.hold.lets(crate::hold::PopUp::Update, Instant::now()))
+            && let Some(d) = &mut self.updates
+        {
             match d.show(ctx, &self.rt, &mut weekly) {
                 Outcome::Open => {}
                 // Update now: the new copy is going in place; MDM saves and closes for it.
@@ -12513,7 +13681,31 @@ impl App {
     }
 
     fn dialogs(&mut self, ctx: &egui::Context) {
+        // The windows that come up by themselves wait while a full-screen app, a presentation or
+        // the locked screen is on (#1773): the system asked, each such window below asks whether
+        // it may show, and those no longer asked for leave the line at the end.
+        let now = Instant::now();
+        self.hold.on = self.settings.hold_popups;
+        self.hold.begin(now, crate::hold::system);
         self.help_dialogs(ctx);
+        // Links copied to the clipboard meanwhile, offered in turn once the user is back.
+        let ready: Vec<u64> = self
+            .copied_waiting
+            .iter()
+            .map(|(n, _)| *n)
+            .filter(|n| self.hold.lets(crate::hold::PopUp::CopiedLink(*n), now))
+            .collect();
+        for n in ready {
+            if let Some(at) = self.copied_waiting.iter().position(|(m, _)| *m == n)
+                && let Some((_, text)) = self.copied_waiting.remove(at)
+            {
+                let cmd = ipc::Command {
+                    url: Some(text),
+                    ..Default::default()
+                };
+                self.handle_command(cmd, ctx);
+            }
+        }
         // The next question in turn; one about a download that has left the list meanwhile is
         // checked afresh instead (it may ask again, about another).
         while self.duplicate.is_none()
@@ -12586,13 +13778,20 @@ impl App {
                 self.show_import(links, "Click'n'Load".into());
             }
         }
-        if let Some(d) = &mut self.extracts.needs_7zip
+        // These four follow a finished download by themselves: they wait during a full-screen
+        // app (#1773).
+        if self.extracts.needs_7zip.is_some()
+            && self.hold.lets(crate::hold::PopUp::SevenZip, now)
+            && let Some(d) = &mut self.extracts.needs_7zip
             && !matches!(d.show(ctx), Outcome::Open)
         {
             self.extracts.needs_7zip = None;
         }
         // A damaged archive (#1661): Redownload downloads it (every volume) again.
-        if let Some(d) = &mut self.tests.damaged {
+        if self.tests.damaged.is_some()
+            && self.hold.lets(crate::hold::PopUp::ArchiveDamaged, now)
+            && let Some(d) = &mut self.tests.damaged
+        {
             match d.show(ctx) {
                 Outcome::Open => {}
                 Outcome::Closed | Outcome::Done(false) => self.tests.damaged = None,
@@ -12606,12 +13805,17 @@ impl App {
             }
         }
         // Test archive's outcome, when it found no damage (one at a time).
-        if self.notice.is_none()
+        if self.tests.told.is_some()
+            && self.hold.lets(crate::hold::PopUp::ArchiveTested, now)
+            && self.notice.is_none()
             && let Some(text) = self.tests.told.take()
         {
             self.notice = Some((crate::i18n::mark("Test archive"), text));
         }
-        if let Some(d) = &mut self.extracts.ask {
+        if self.extracts.ask.is_some()
+            && self.hold.lets(crate::hold::PopUp::ArchivePassword, now)
+            && let Some(d) = &mut self.extracts.ask
+        {
             match d.show(ctx) {
                 Outcome::Open => {}
                 Outcome::Closed => self.extracts.answer(None),
@@ -12621,13 +13825,16 @@ impl App {
         if let Some(d) = &mut self.category_dlg {
             match d.show(ctx, &crate::categories::names()) {
                 Outcome::Open => {}
-                Outcome::Closed => self.category_dlg = None,
+                Outcome::Closed => {
+                    self.category_dlg = None;
+                    self.category_for_file_info = None;
+                }
                 Outcome::Done(e) => {
                     self.category_dlg = None;
                     let made = crate::categories::apply(&mut self.settings, e, &self.downloads);
-                    // Made with Download File Info's "+": that download goes in it.
-                    if std::mem::take(&mut self.category_for_file_info)
-                        && let Some(fi) = &mut self.file_info
+                    // Made with a Download File Info's "+": that window's download goes in it.
+                    if let Some(nth) = self.category_for_file_info.take()
+                        && let Some(fi) = self.file_infos.iter_mut().find(|f| f.nth == nth)
                     {
                         fi.set_category(made);
                     }
@@ -12715,6 +13922,12 @@ impl App {
                     };
                     self.open_torrent_dialog_with(Some(new.url.to_string()), Some(remote), ctx);
                 }
+                // A Hugging Face repository or folder, a GitHub release or tag (#1772): its files
+                // in Link grabber, to tick those wanted.
+                Outcome::Done(new) if mdm_engine::hub::Source::of(&new.url).is_some() => {
+                    self.add_url = None;
+                    self.grab_package(&new.url, ctx);
+                }
                 // A video's page, not a file (YouTube, Vimeo…): the video window looks it up.
                 Outcome::Done(new) if mdm_tools::pages::is_video_page(&new.url) => {
                     self.add_url = None;
@@ -12755,7 +13968,25 @@ impl App {
                 }
             }
         }
-        if let Some(n) = &mut self.limit_notice
+        if let Some(d) = &mut self.columns_dialog {
+            match d.show(ctx) {
+                Outcome::Open => {}
+                Outcome::Closed => self.columns_dialog = None,
+                Outcome::Done((order, visible, reset)) => {
+                    self.columns_dialog = None;
+                    if reset {
+                        self.list.reset_columns();
+                    }
+                    self.list.set_columns(order, visible);
+                }
+            }
+        }
+        // The download limit's warning comes by itself: it waits during a full-screen app
+        // (#1773). Not the Turn off countdown below: the computer turns off at its end, and its
+        // Cancel must stay within reach.
+        if self.limit_notice.is_some()
+            && self.hold.lets(crate::hold::PopUp::LimitReached, now)
+            && let Some(n) = &mut self.limit_notice
             && !matches!(n.show(ctx), Outcome::Open)
         {
             self.limit_notice = None;
@@ -12774,6 +14005,7 @@ impl App {
         let mut files_requested = Vec::new();
         let items = &self.items;
         let icons = &mut self.icons;
+        let settings = &self.settings;
         self.properties.retain_mut(|pr| {
             let Some(item) = items.iter().find(|i| i.id == pr.id) else {
                 return false;
@@ -12782,6 +14014,13 @@ impl App {
                 Outcome::Open => {
                     if pr.take_files_requested() {
                         files_requested.push(pr.id);
+                    }
+                    // Connection... (#1778): from what the download gets now.
+                    if pr.take_request_wanted() {
+                        pr.open_request(
+                            settings.connections_for(&item.url),
+                            settings.connection_limit(),
+                        );
                     }
                     true
                 }
@@ -13054,7 +14293,7 @@ impl App {
                     if self.settings.change_folder_on_last
                         && self
                             .settings
-                            .keep_category_dir(add.category, &add.dir, &self.downloads)
+                            .keep_save_dir(add.category, &add.dir, &self.downloads)
                     {
                         self.dirty = true;
                     }
@@ -13088,7 +14327,7 @@ impl App {
                     // Download File Info follows through its box (#475): Music's for a
                     // sound-only choice (#611).
                     if self.settings.change_folder_on_last
-                        && self.settings.keep_category_dir(
+                        && self.settings.keep_save_dir(
                             v.category(),
                             &v.save_folder(),
                             &self.downloads,
@@ -13100,6 +14339,11 @@ impl App {
                     // now start with it.
                     if self.settings.video_chapters != v.chapters() {
                         self.settings.video_chapters = v.chapters();
+                        crate::settings::share_video_settings(&self.settings);
+                        self.dirty = true;
+                    }
+                    if self.settings.video_split_chapters != v.split_chapters() {
+                        self.settings.video_split_chapters = v.split_chapters();
                         crate::settings::share_video_settings(&self.settings);
                         self.dirty = true;
                     }
@@ -13188,14 +14432,22 @@ impl App {
                 }
             }
         }
-        if let Some(mut fi) = self.file_info.take() {
+        // Each Download File Info window open (#1741), in the order they opened: each answers
+        // for its own address.
+        let mut still_open = Vec::new();
+        for mut fi in std::mem::take(&mut self.file_infos) {
             self.start_early(&mut fi);
-            // The downloads waiting their turn behind this one (a browser selection's arrive
-            // one by one): Cancel asks whether they are cancelled too (#394).
+            // The downloads waiting for a window (a browser selection's arrive one by one, more
+            // than may be open at once): Cancel asks whether they are cancelled too (#394).
             fi.waiting = self.file_info_waiting.len();
+            if let Some(n) = self.zip_preview_asked
+                && fi.open_zip_preview_when_ready(n, ctx)
+            {
+                self.zip_preview_asked = None;
+            }
             let out = fi.show(ctx, &mut self.icons);
             if std::mem::take(&mut fi.new_category) {
-                self.category_for_file_info = true;
+                self.category_for_file_info = Some(fi.nth);
                 self.run(Cmd::AddCategory, None, ctx);
             }
             // The folder a download goes to is remembered for the Save As drop list.
@@ -13221,12 +14473,12 @@ impl App {
                 fi.early = None;
             }
             match out {
-                Outcome::Open => self.file_info = Some(fi),
+                Outcome::Open => still_open.push(fi),
                 Outcome::Closed => {
                     if fi.cancel_all {
-                        // #394: "Yes" to "Cancel them too?": the browser's links waiting
-                        // behind this one are cancelled with it (the browser gave its own copy
-                        // up, and Download File Info was their step).
+                        // #394: "Yes" to "Cancel them too?": the browser's links waiting for a
+                        // window are cancelled with it (the browser gave its own copy up, and
+                        // Download File Info was their step). The windows open stay.
                         self.file_info_waiting.clear();
                     }
                     if let Some(id) = fi.early {
@@ -13234,18 +14486,25 @@ impl App {
                         self.after_stop.push((id, None));
                     }
                 }
+                // Files picked in Zip preview (#1775): they are the download, not the archive; one
+                // started behind the dialog (the whole archive) goes.
+                Outcome::Done(start) if fi.zip_pick.is_some() => {
+                    if let Some(id) = fi.early {
+                        self.stop(id);
+                        self.after_stop.push((id, None));
+                    }
+                    self.add_zip_pick(&fi, start);
+                }
                 Outcome::Done(start) => match fi.early {
                     Some(id) => self.adopt_early(&fi, id, start),
                     None => self.add(&mut fi, start),
                 },
             }
         }
-        // The next download that waited for Download File Info.
-        if self.file_info.is_none()
-            && let Some((new, context)) = self.file_info_waiting.pop_front()
-        {
-            self.open_file_info(new, context, ctx);
-        }
+        // Any opened meanwhile come after them.
+        still_open.append(&mut self.file_infos);
+        self.file_infos = still_open;
+        self.open_waiting_file_infos(ctx);
         self.finish_stopped();
         let mut actions = Vec::new();
         // A progress window can be hidden in the tray only when there is one to bring it back.
@@ -13327,6 +14586,7 @@ impl App {
             match a {
                 progress::Action::None => {}
                 progress::Action::Pause => self.stop_by_hand(id),
+                progress::Action::Keep => self.keep_by_hand(id),
                 progress::Action::Resume => self.start(id, true),
                 progress::Action::Cancel => self.cancel_download(id),
                 progress::Action::Rename(name) => {
@@ -13397,8 +14657,14 @@ impl App {
                 }
             }
         }
+        // Download complete and Downloads complete wait during a full-screen app (#1773), and
+        // show when the user is back, in the order they came.
         let mut keep = Vec::new();
         for mut c in std::mem::take(&mut self.complete) {
+            if !self.hold.lets(crate::hold::PopUp::Complete(c.id), now) {
+                keep.push(c);
+                continue;
+            }
             match c.show(ctx) {
                 Outcome::Open => keep.push(c),
                 Outcome::Done(()) | Outcome::Closed => {
@@ -13416,6 +14682,10 @@ impl App {
         // Groups' summaries (#766).
         let mut keep = Vec::new();
         for mut g in std::mem::take(&mut self.summaries) {
+            if !self.hold.lets(crate::hold::PopUp::Summary(g.group), now) {
+                keep.push(g);
+                continue;
+            }
             let outcome = g.show(ctx);
             if matches!(outcome, Outcome::Open) {
                 keep.push(g);
@@ -13433,6 +14703,7 @@ impl App {
             }
         }
         self.summaries = keep;
+        self.hold.end();
     }
 }
 
@@ -13591,6 +14862,25 @@ impl App {
         if handled {
             ctx.request_ui_pass(egui::ViewportId::ROOT);
         }
+        // View → Font (#1489): the chosen file read beside the window's thread. Once it is in
+        // use the choice is saved and the fonts are loaded again; a file egui can't read says
+        // why, and the font in use stays.
+        match crate::theme::poll_ui_font() {
+            Some(crate::theme::UiFontLoad::Loaded) => {
+                self.settings.interface_font = crate::theme::chosen_ui_font();
+                crate::theme::reload_fonts(ctx);
+                self.dirty = true;
+            }
+            Some(crate::theme::UiFontLoad::Failed) => {
+                self.notice = Some((
+                    // i18n: title of the message when the font picked in View → Font can't be used
+                    crate::i18n::mark("Choose a font file"),
+                    // i18n: the message when a file picked in View → Font isn't a TrueType or OpenType font MDM can read
+                    crate::i18n::t("This file can't be used as a font.").to_owned(),
+                ));
+            }
+            None => {}
+        }
         self.lookups.prune(Instant::now());
         crate::crash::step(crate::crash::Step::NetworkSettings);
         // The clock: what must go on whatever the main window's state (#174). Minimized, egui
@@ -13639,15 +14929,19 @@ impl App {
             self.watch_clipboard(ctx);
             crate::crash::step(crate::crash::Step::Tray);
             self.tray(ctx);
-            // The taskbar button's green bar: everything running, as one.
+            // The taskbar button's green bar: everything running, as one. Linux docks and the
+            // macOS Dock show the same on MDM's icon (#1777); a progress window has no icon of
+            // its own there.
+            crate::crash::step(crate::crash::Step::Taskbar);
             #[cfg(windows)]
             {
-                crate::crash::step(crate::crash::Step::Taskbar);
                 crate::win32::taskbar_progress(crate::MAIN_TITLE, self.overall_progress());
                 for window in &mut self.progress {
                     window.update_taskbar(self.items.iter().find(|item| item.id == window.id));
                 }
             }
+            #[cfg(unix)]
+            crate::unix::dock_progress(self.overall_progress());
         }
         if self
             .ticked
@@ -13671,6 +14965,16 @@ impl App {
                 ctx.request_ui_pass(egui::ViewportId::ROOT);
             }
         }
+        // Windows waiting for the user (#1773): the system is asked again, and once back they
+        // show one by one, by passes of the main window's UI (asked for: a minimized or hidden
+        // window runs none by itself).
+        if let Some(after) = self.hold.next_pass(Instant::now()) {
+            if after.is_zero() {
+                ctx.request_ui_pass(egui::ViewportId::ROOT);
+            } else {
+                ctx.request_repaint_after(after);
+            }
+        }
         ctx.request_repaint_after(Duration::from_secs(2));
         crate::crash::logic_end();
     }
@@ -13681,7 +14985,7 @@ impl App {
         // A lost graphics device is noticed before this frame paints (renderer.rs).
         crate::renderer::frame_begin(ui.ctx());
         // Off-screen test runs: no window of ours may become the foreground one (win32.rs). Linux
-        // and macOS need no such pass: their off-screen windows open inactive (main.rs `quiet`)
+        // and macOS need no such pass: their off-screen windows open inactive (lib.rs `quiet`)
         // and nothing raises them then (dialogs::raise).
         #[cfg(windows)]
         if crate::offscreen() {
@@ -13767,6 +15071,7 @@ impl App {
             }
         }
         crate::crash::step(crate::crash::Step::MainWindow);
+        winui::name_window(ui, crate::MAIN_TITLE);
         egui::CentralPanel::no_frame()
             .frame(egui::Frame::new().fill(chrome::WINDOW_BG()))
             .show(ui, |ui| self.paint(ui));
@@ -13782,6 +15087,16 @@ impl App {
 /// A download no Download File Info answered: its address, login and browser context.
 type Unseen = (url::Url, Option<(String, String)>, ipc::Command);
 
+/// How many Download File Info windows may be open at once (#1741): one for each address, side
+/// by side, each a cascade step further ([`dialogs::Nth`]). Six open a step apart still fit
+/// around the main window on a 1366 × 768 screen, and are as many as can be compared at a
+/// glance; more addresses at once (a browser handing over a selection one by one) wait their
+/// turn and open as windows close, with their browser context whole (Link grabber would keep
+/// only the address, referrer, cookies and user agent: a form's POST, the browser's file name
+/// and size would be lost). Cancel asks about the ones waiting (#394); quitting keeps them in the
+/// main queue (`keep_unseen`).
+const FILE_INFOS_MOST: usize = 6;
+
 impl App {
     /// Quitting: downloads the browser handed over that never got their Download File Info
     /// (waiting their turn, or arriving at the last moment) go to the main queue as Download
@@ -13792,13 +15107,14 @@ impl App {
             .drain(..)
             .map(|(new, context)| (new.url, new.login, context))
             .collect();
-        // The one Download File Info shows, unanswered (an early download is in the list
-        // already).
-        if let Some(fi) = self.file_info.take()
-            && fi.early.is_none()
-        {
-            unseen.insert(0, (fi.url.clone(), fi.login.clone(), fi.context.clone()));
-        }
+        // The ones the Download File Info windows show, unanswered, first and in the order they
+        // opened (#1741; an early download is in the list already).
+        let shown: Vec<Unseen> = std::mem::take(&mut self.file_infos)
+            .into_iter()
+            .filter(|fi| fi.early.is_none())
+            .map(|fi| (fi.url, fi.login, fi.context))
+            .collect();
+        unseen.splice(0..0, shown);
         while let Ok(inc) = self.commands.try_recv() {
             if inc.reply.is_none()
                 && let Some(url) = inc
@@ -13819,7 +15135,7 @@ impl App {
                 .unwrap_or_else(|| crate::model::browser_guess(&url, &context));
             let name = mdm_engine::naming::sanitize(&name);
             let category = Category::of(&name);
-            let dir = self.settings.category_dir(category, &self.downloads);
+            let dir = self.settings.save_dir(category, &self.downloads);
             // Numbered on as it starts if the name is taken then (#743): no disk here.
             let dest = mdm_engine::naming::guess(&dir, &name);
             let size = context.size;
@@ -13862,7 +15178,7 @@ impl Drop for App {
 /// How long the session's end may take ([`App::end_session`]): Windows lists a program that
 /// takes 5 s over it as one that keeps the computer from shutting down. Linux's logind gives
 /// 90 s between its SIGTERM and its SIGKILL by default, some desktops less: the same 4 s there.
-/// (macOS: main.rs.)
+/// (macOS: lib.rs.)
 #[cfg(any(windows, target_os = "linux"))]
 const SESSION_END: Duration = Duration::from_millis(4000);
 
@@ -13878,7 +15194,7 @@ impl App {
     /// whose SIGTERM or lost display `unix::on_session_end` and `unix::on_display_lost` hear):
     /// what an Exit does at its end, now, within [`SESSION_END`], on the window's thread between
     /// two frames. Nobody is there to answer a question: nothing is asked. The process ends
-    /// right after (main.rs).
+    /// right after (lib.rs).
     #[cfg(any(windows, target_os = "linux"))]
     pub fn end_session(&mut self) {
         tracing::info!("the session is ending: stopping the downloads and saving the list");
@@ -14080,6 +15396,56 @@ fn share(cap: u64, other: f64) -> u64 {
     rest.max(half).max(1024)
 }
 
+/// The address a newly copied text is, for the clipboard watch: the text itself, or the address
+/// wrapped in a `thunder://`, `flashget://` or `qqdl://` link (#1782), so the download is
+/// offered, and stored, under the address it really comes from. `None`: not an address, or a
+/// wrapped link without an address MDM downloads inside.
+fn copied_address(text: String) -> Option<(String, url::Url)> {
+    let text = match crate::transfer::unwrapped(&text) {
+        crate::transfer::Wrapped::No => text,
+        crate::transfer::Wrapped::Address(inner) => inner,
+        crate::transfer::Wrapped::Unsupported => return None,
+    };
+    let url = url::Url::parse(&text).ok()?;
+    Some((text, url))
+}
+
+#[cfg(test)]
+mod copied_address_tests {
+    use super::copied_address;
+    use base64::Engine as _;
+
+    /// #1782: a copied wrapped link is offered as the address inside it; one with nothing MDM
+    /// downloads inside is not offered at all.
+    #[test]
+    fn a_copied_wrapped_link_is_the_address_inside() {
+        let b64 = |s: &str| base64::engine::general_purpose::STANDARD.encode(s);
+        let plain = "https://dl.example.org/pack/setup.exe";
+        let (text, url) = copied_address(plain.to_owned()).unwrap();
+        assert_eq!((text.as_str(), url.as_str()), (plain, plain));
+        for wrapped in [
+            format!("thunder://{}", b64(&format!("AA{plain}ZZ"))),
+            format!(
+                "FlashGet://{}&abc",
+                b64(&format!("[FLASHGET]{plain}[FLASHGET]"))
+            ),
+            format!("qqdl://{}", b64(plain)),
+        ] {
+            let (text, url) = copied_address(wrapped.clone()).expect(&wrapped);
+            assert_eq!((text.as_str(), url.as_str()), (plain, plain), "{wrapped}");
+        }
+        for not in [
+            format!("thunder://{}", b64("AAed2k://|file|a.iso|1|0|/ZZ")),
+            format!("qqdl://{}", b64("file:///C:/x.zip")),
+            format!("thunder://{}", b64(plain)),
+            "flashget://not base64!".to_owned(),
+            "not an address".to_owned(),
+        ] {
+            assert_eq!(copied_address(not.clone()), None, "{not}");
+        }
+    }
+}
+
 #[cfg(test)]
 mod finished_window_tests {
     use super::finished_windows;
@@ -14273,6 +15639,7 @@ mod same_name_tests {
             subs: Default::default(),
             parts: Vec::new(),
             named: false,
+            chapter_files: Vec::new(),
             duration: None,
             part: None,
         });
@@ -14613,6 +15980,7 @@ mod duplicate_tests {
             subs: Default::default(),
             parts: Vec::new(),
             named: false,
+            chapter_files: Vec::new(),
             duration: None,
             part: None,
         });
@@ -14642,6 +16010,7 @@ mod duplicate_tests {
             subs: Default::default(),
             parts: Vec::new(),
             named: false,
+            chapter_files: Vec::new(),
             duration: None,
             part: None,
         });
@@ -14760,6 +16129,7 @@ mod duplicate_tests {
             subs: Default::default(),
             parts: Vec::new(),
             named: false,
+            chapter_files: Vec::new(),
             duration: Some(754),
             part: None,
         });
@@ -14837,6 +16207,7 @@ mod duplicate_tests {
             subs: Default::default(),
             parts: Vec::new(),
             named: false,
+            chapter_files: Vec::new(),
             duration: Some(30),
             part: None,
         });
@@ -15007,6 +16378,7 @@ mod duplicate_tests {
             subs: Default::default(),
             parts: Vec::new(),
             named: false,
+            chapter_files: Vec::new(),
             duration: None,
             part: None,
         });
@@ -15378,6 +16750,63 @@ mod add_batch_tests {
         assert_eq!(dests, [folder.join("img01.jpg"), folder.join("part02.zip")]);
         assert!(!folder.exists(), "nothing made on the disk by OK");
     }
+
+    /// #1973: with one folder for every download, a batch without a folder of its own, a
+    /// command line's download and a paired device's go to General's folder, each keeping its
+    /// category for the list; the downloads already in the list stay where they were.
+    #[test]
+    fn one_folder_takes_every_new_download() {
+        let mut a = app();
+        a.add_batch(added(None));
+        let before: Vec<_> = a.items.iter().map(|i| i.dest.clone()).collect();
+        assert_ne!(before[0].parent(), before[1].parent());
+
+        a.settings.one_folder = true;
+        let general = a.settings.category_dir(Category::General, &a.downloads);
+        a.add_batch(added(None));
+        let ctx = egui::Context::default();
+        a.handle_command(
+            ipc::Command {
+                url: Some("http://127.0.0.1:9/talk.mp3".into()),
+                later: true,
+                ..Default::default()
+            },
+            &ctx,
+        );
+        let mut remote = ipc::Command {
+            url: Some("http://127.0.0.1:9/movie.mkv".into()),
+            later: true,
+            ..Default::default()
+        };
+        remote.remote = true;
+        a.remote_add(remote);
+        assert_eq!(
+            a.items.len(),
+            6,
+            "{:?}",
+            a.items.iter().map(|i| &i.dest).collect::<Vec<_>>()
+        );
+        let new = &a.items[2..];
+        for i in new {
+            assert_eq!(i.dest.parent(), Some(general.as_path()), "{:?}", i.dest);
+        }
+        let cats: Vec<_> = new.iter().map(|i| i.category).collect();
+        assert_eq!(
+            cats,
+            [
+                Category::of("img01.jpg"),
+                Category::Compressed,
+                Category::Music,
+                Category::Video
+            ],
+            "the categories still sort the list"
+        );
+        let after: Vec<_> = a.items[..2].iter().map(|i| i.dest.clone()).collect();
+        assert_eq!(
+            after, before,
+            "the downloads already in the list stay where they were"
+        );
+    }
 }
 
 #[cfg(test)]
@@ -15560,31 +16989,104 @@ mod page_data_tests {
 
 #[cfg(test)]
 mod mark_hook_tests {
+    use super::*;
+    use crate::webmark::{INTERNET, assert_marked};
+
+    const MAGNET: &str =
+        "magnet:?xt=urn:btih:0123456789abcdef0123456789abcdef01234567&dn=setup.exe";
+
     /// #510, #1103: what a video's or a gallery's job shows its saved files to marks them as
-    /// downloaded from the web (an http(s) address only); a file gone from its path meanwhile
-    /// isn't created again by the mark (the jobs show only files that are there).
+    /// downloaded from the internet, whatever the address: a web one, an FTP one, a magnet link
+    /// (a torrent sent to a debrid account), each named without its login, a magnet link as the
+    /// internet.
     #[test]
-    fn a_saved_file_is_marked_from_a_web_address_only() {
+    fn every_saved_file_is_marked_and_no_login_written() {
         let dir = tempfile::tempdir().unwrap();
-        let here = dir.path().join("video.mp4");
-        let ftp = dir.path().join("listing.txt");
-        std::fs::write(&here, b"x").unwrap();
-        std::fs::write(&ftp, b"x").unwrap();
-        let web = super::mark_hook(&"https://videos.test/v".parse().unwrap(), None);
-        (web.0)(&here);
-        let other = super::mark_hook(&"ftp://files.test/listing.txt".parse().unwrap(), None);
-        (other.0)(&ftp);
-        #[cfg(windows)]
+        for (k, (url, referrer, named, page)) in [
+            (
+                "https://videos.test/v",
+                Some("https://pages.test/p"),
+                "https://videos.test/v",
+                Some("https://pages.test/p"),
+            ),
+            (
+                "https://user:pw@videos.test/v",
+                None,
+                "https://videos.test/v",
+                None,
+            ),
+            (
+                "ftp://user:pw@files.test/listing.txt",
+                None,
+                "ftp://files.test/listing.txt",
+                None,
+            ),
+            (MAGNET, None, INTERNET, None),
+        ]
+        .into_iter()
+        .enumerate()
         {
-            let zone = |p: &std::path::Path| {
-                let mut stream = p.as_os_str().to_owned();
-                stream.push(":Zone.Identifier");
-                std::fs::read_to_string(stream).ok()
-            };
-            let marked = zone(&here).unwrap();
-            assert!(marked.contains("ZoneId=3"), "{marked}");
-            assert!(marked.contains("HostUrl=https://videos.test/v"), "{marked}");
-            assert_eq!(zone(&ftp), None, "an FTP address may carry its login");
+            let path = dir.path().join(format!("saved{k}.bin"));
+            std::fs::write(&path, b"x").unwrap();
+            (mark_hook(&url.parse().unwrap(), referrer).0)(&path);
+            assert_marked(&path, named, page);
+        }
+    }
+
+    fn app() -> std::mem::ManuallyDrop<App> {
+        let rt = Box::leak(Box::new(
+            tokio::runtime::Builder::new_current_thread()
+                .enable_all()
+                .build()
+                .unwrap(),
+        ));
+        let loaded = store::Loaded {
+            next_id: 1,
+            items: Vec::new(),
+            columns: None,
+            settings: Settings::default(),
+            queues: Vec::new(),
+        };
+        let (_, commands) = std::sync::mpsc::channel();
+        std::mem::ManuallyDrop::new(App::assemble(
+            &egui::Context::default(),
+            rt.handle().clone(),
+            commands,
+            loaded,
+            crate::Start::Shown,
+        ))
+    }
+
+    /// The engine's files are marked through the options every download's requests go with
+    /// (`request_parts`): an FTP file (one of a folder Link grabber lists, #1774) with its
+    /// address's login left out, and a torrent's files delivered through a debrid account
+    /// (`start_remote`, whose address is the magnet link) as the internet.
+    #[test]
+    fn the_engines_files_are_marked_whatever_the_address() {
+        let app = app();
+        let dir = tempfile::tempdir().unwrap();
+        for (k, (url, named)) in [
+            (
+                "ftp://user:pw@files.test/pub/tools/setup.exe",
+                "ftp://files.test/pub/tools/setup.exe",
+            ),
+            (MAGNET, INTERNET),
+            (
+                "https://files.test/setup.exe",
+                "https://files.test/setup.exe",
+            ),
+        ]
+        .into_iter()
+        .enumerate()
+        {
+            let url: url::Url = url.parse().unwrap();
+            let opts = app
+                .request_parts(&url, None, &Default::default(), true)
+                .opts;
+            let path = dir.path().join(format!("engine{k}.bin"));
+            std::fs::write(&path, b"x").unwrap();
+            (opts.on_file_created.expect("marked").0)(&path);
+            assert_marked(&path, named, None);
         }
     }
 }
@@ -15737,6 +17239,7 @@ mod deferred_rename_guard_tests {
             upload_limit: None,
             in_order: false,
             ends_first: true,
+            public_list: 0,
         });
         assert!(
             !can_move(&item),
@@ -15794,6 +17297,7 @@ mod deferred_rename_guard_tests {
             upload_limit: None,
             in_order: false,
             ends_first: false,
+            public_list: 0,
         });
 
         let pack_dir = downloads.join("PackFolder");
@@ -15812,6 +17316,7 @@ mod deferred_rename_guard_tests {
             upload_limit: None,
             in_order: false,
             ends_first: false,
+            public_list: 0,
         });
 
         let items = vec![part1, standalone_rar, single_torrent, folder_torrent];
@@ -16329,7 +17834,7 @@ mod pane_tests {
             let mut at = from;
             let mut seen = Vec::new();
             for _ in 0..4 {
-                let to = tab_to(at, shown, back);
+                let to = tab_to(at, shown, false, back);
                 seen.push(to);
                 at = Some(to);
             }
@@ -16339,15 +17844,27 @@ mod pane_tests {
         assert_eq!(round(Some(List), true, true), [Tree, Toolbar, Bar, List]);
         assert_eq!(round(Some(List), false, false), [Bar, Toolbar, List, Bar]);
         // The tree had the keys as it was hidden: on to the toolbar.
-        assert_eq!(tab_to(Some(Tree), false, false), Toolbar);
-        assert_eq!(tab_to(None, true, false), Toolbar);
-        assert_eq!(tab_to(None, true, true), Bar);
+        assert_eq!(tab_to(Some(Tree), false, false, false), Toolbar);
+        assert_eq!(tab_to(None, true, false, false), Toolbar);
+        assert_eq!(tab_to(None, true, false, true), Bar);
         // The bar is one step from the list either way: Tab from the list reaches the menus, and
         // Shift+Tab from the toolbar comes back to them.
-        assert_eq!(tab_to(Some(List), true, false), Bar);
-        assert_eq!(tab_to(Some(Toolbar), true, true), Bar);
-        assert_eq!(tab_to(Some(Bar), true, false), Toolbar);
-        assert_eq!(tab_to(Some(Bar), true, true), List);
+        assert_eq!(tab_to(Some(List), true, false, false), Bar);
+        assert_eq!(tab_to(Some(Toolbar), true, false, true), Bar);
+        assert_eq!(tab_to(Some(Bar), true, false, false), Toolbar);
+        assert_eq!(tab_to(Some(Bar), true, false, true), List);
+    }
+
+    /// #1368: the preview pane, while it shows, comes after the list (Shift+Tab: before the bar).
+    #[test]
+    fn tab_reaches_the_preview_pane_after_the_list() {
+        use Pane::*;
+        assert_eq!(tab_to(Some(List), true, true, false), Preview);
+        assert_eq!(tab_to(Some(Preview), true, true, false), Bar);
+        assert_eq!(tab_to(Some(Bar), true, true, true), Preview);
+        assert_eq!(tab_to(Some(Preview), false, true, true), List);
+        // Hidden with the keys: on to the toolbar, as the tree.
+        assert_eq!(tab_to(Some(Preview), true, false, false), Toolbar);
     }
 }
 
@@ -16477,6 +17994,7 @@ mod start_disk_tests {
             subs: Default::default(),
             parts: Vec::new(),
             named: false,
+            chapter_files: Vec::new(),
             duration: None,
             part: None,
         });
@@ -16592,6 +18110,7 @@ mod start_disk_tests {
             subs: Default::default(),
             parts: Vec::new(),
             named: false,
+            chapter_files: Vec::new(),
             duration: Some(754),
             part: None,
         });
@@ -17012,6 +18531,7 @@ mod start_disk_tests {
             address: Some(new.clone()),
             move_to: None,
             direct: None,
+            own: None,
         });
         assert!(at.elapsed() < AT_ONCE, "the window doesn't wait");
         assert_eq!(get(&app, 1).url, new);
@@ -17080,6 +18600,79 @@ mod start_disk_tests {
         assert!(app.hidden, "main window must stay hidden when dialog opens");
     }
 
+    /// #1741: one Download File Info window for each address, up to FILE_INFOS_MOST, numbered
+    /// from 1 (a closed one's number goes to the next); more wait in the order they came; an
+    /// address shown or waiting already opens nothing more; quitting keeps every unanswered one
+    /// in the main queue, the windows' first.
+    #[test]
+    fn several_download_file_info_windows() {
+        let mut app = app_with(vec![]);
+        let ctx = egui::Context::default();
+        // A name from the browser: nothing is looked up.
+        let open = |app: &mut App, name: &str| {
+            let context = ipc::Command {
+                name: Some(name.to_owned()),
+                ..Default::default()
+            };
+            app.open_file_info(
+                dialogs::NewUrl {
+                    url: address(name),
+                    login: None,
+                },
+                context,
+                &ctx,
+            );
+        };
+        let names: Vec<String> = (1..=FILE_INFOS_MOST + 2)
+            .map(|n| format!("file-{n}.zip"))
+            .collect();
+        for name in &names {
+            open(&mut app, name);
+        }
+        let numbers = |app: &App| app.file_infos.iter().map(|f| f.nth.0).collect::<Vec<_>>();
+        assert_eq!(numbers(&app), (1..=FILE_INFOS_MOST).collect::<Vec<_>>());
+        assert_eq!(app.file_info_waiting.len(), 2, "the rest wait");
+        // The same address again, shown or waiting: nothing more.
+        open(&mut app, &names[0]);
+        open(&mut app, &names[FILE_INFOS_MOST]);
+        assert_eq!(app.file_infos.len(), FILE_INFOS_MOST);
+        assert_eq!(app.file_info_waiting.len(), 2);
+        // The third closes: the first waiting takes its number (and its place in the cascade).
+        app.file_infos.remove(2);
+        app.open_waiting_file_infos(&ctx);
+        assert_eq!(numbers(&app), vec![1, 2, 4, 5, 6, 3]);
+        assert_eq!(
+            app.file_infos[5].url,
+            address(&names[FILE_INFOS_MOST]),
+            "the first that waited"
+        );
+        assert_eq!(app.file_info_waiting.len(), 1);
+        // A new address while one waits: behind it, whatever room there is.
+        app.file_infos.remove(0);
+        open(&mut app, "late.zip");
+        assert_eq!(app.file_infos.len(), FILE_INFOS_MOST - 1);
+        assert_eq!(app.file_info_waiting.len(), 2);
+        app.open_waiting_file_infos(&ctx);
+        assert_eq!(app.file_infos.len(), FILE_INFOS_MOST);
+        assert_eq!(app.file_infos[5].url, address(&names[FILE_INFOS_MOST + 1]));
+        assert_eq!(app.file_info_waiting.len(), 1, "late.zip waits");
+        // Quitting: every unanswered address goes to the main queue, the windows' first.
+        app.keep_unseen();
+        let queued: Vec<String> = app.queues[0]
+            .items
+            .iter()
+            .filter_map(|id| app.items.iter().find(|i| i.id == *id))
+            .map(|i| i.url.path().trim_start_matches('/').to_owned())
+            .collect();
+        let mut want: Vec<String> = [1, 3, 4, 5, 6, 7]
+            .iter()
+            .map(|n| names[*n].clone())
+            .collect();
+        want.push("late.zip".to_owned());
+        assert_eq!(queued, want);
+        assert!(app.file_infos.is_empty());
+    }
+
     #[test]
     fn start_hidden_waits_for_tray() {
         let app = app_with_start(vec![], crate::Start::Hidden);
@@ -17122,16 +18715,18 @@ mod start_disk_tests {
     }
 }
 
-/// The browser's next download of a file whose download waits for a new address (its link
-/// expired) continues that download, end to end against the lab server (`freshlink`,
-/// `App::take_fresh_address`).
+/// Redownload of a finished download (#1698), end to end against the lab server: the new copy
+/// comes in under its part file while the finished file stays as it was, and takes its place,
+/// under its name, only as it completes. One that fails or is stopped leaves the finished file;
+/// one whose file another program holds keeps it and saves the new copy beside it, and says so.
 #[cfg(test)]
-mod fresh_address_tests {
+mod redownload_tests {
     use super::*;
     use mdm_labserver::{Config, Faults, LabServer, content};
 
-    const SIZE: u64 = 2 << 20;
-    const SEED: u64 = 7;
+    const SIZE: u64 = 1 << 20;
+    /// What the finished file held before its Redownload.
+    const OLD: &[u8] = b"the finished file the user had";
 
     fn runtime() -> &'static tokio::runtime::Runtime {
         Box::leak(Box::new(
@@ -17167,6 +18762,282 @@ mod fresh_address_tests {
         ))
     }
 
+    fn server(rt: &tokio::runtime::Runtime, faults: &str) -> LabServer {
+        rt.block_on(LabServer::start(Config {
+            faults: Faults::parse(faults).unwrap(),
+            ..Config::default()
+        }))
+        .unwrap()
+    }
+
+    fn get(app: &App, id: u64) -> &Item {
+        app.items.iter().find(|i| i.id == id).unwrap()
+    }
+
+    /// A finished download of the lab's file `seed` at `dir/data.bin`, its file there the copy
+    /// the user had (`OLD`).
+    fn finished(s: &LabServer, dir: &std::path::Path, seed: u64) -> Item {
+        let port = s.addr().port();
+        let url = format!("http://127.0.0.1:{port}/gen/{SIZE}/data.bin?seed={seed}");
+        let dest = dir.join("data.bin");
+        std::fs::write(&dest, OLD).unwrap();
+        let mut item = Item::new(1, url.parse().unwrap(), dest, Category::General);
+        item.size = Some(SIZE);
+        item.downloaded = SIZE;
+        item.status = Status::Complete;
+        item
+    }
+
+    fn served(seed: u64) -> Vec<u8> {
+        let mut want = vec![0; SIZE as usize];
+        content::fill(seed, 0, &mut want);
+        want
+    }
+
+    /// The folder's file names, sorted.
+    fn names(dir: &std::path::Path) -> Vec<String> {
+        let mut n: Vec<String> = std::fs::read_dir(dir)
+            .unwrap()
+            .map(|e| e.unwrap().file_name().to_string_lossy().into_owned())
+            .collect();
+        n.sort();
+        n
+    }
+
+    /// The window's frames until `done` (at most 30 s).
+    fn until(app: &mut App, done: impl Fn(&Item) -> bool) {
+        let ctx = egui::Context::default();
+        let end = Instant::now() + Duration::from_secs(30);
+        while !done(get(app, 1)) {
+            let i = get(app, 1);
+            assert!(
+                Instant::now() < end,
+                "never came: {:?} {:?} {}",
+                i.status,
+                i.error,
+                i.downloaded
+            );
+            app.poll(&ctx);
+            std::thread::sleep(Duration::from_millis(20));
+        }
+    }
+
+    /// The issue's steps: the finished file stays while the new copy comes in, then the new copy
+    /// takes its place under its name. No "data (1).bin", the row keeps its name, nothing said.
+    #[test]
+    fn redownload_replaces_the_finished_file_as_it_completes() {
+        let rt = runtime();
+        let s = server(rt, "");
+        let dir = tempfile::tempdir().unwrap();
+        let dest = dir.path().join("data.bin");
+        let mut app = app_with(rt, vec![finished(&s, dir.path(), 31)]);
+        s.set_faults(Faults {
+            stall_at: Some(512 << 10),
+            ..Faults::default()
+        });
+        app.redownload(1);
+        assert_eq!(get(&app, 1).replace_file.as_deref(), Some(dest.as_path()));
+        until(&mut app, |i| i.downloaded > 0);
+        // Mid-way: the finished file as it was, the new copy in its part file.
+        assert_eq!(std::fs::read(&dest).unwrap(), OLD);
+        assert!(mdm_engine::naming::part_path(&dest).exists());
+        s.set_faults(Faults::default());
+        until(&mut app, |i| i.status == Status::Complete);
+        assert_eq!(names(dir.path()), ["data.bin"]);
+        assert!(std::fs::read(&dest).unwrap() == served(31), "the new copy");
+        let row = get(&app, 1);
+        assert_eq!(
+            (row.dest.as_path(), row.file_name.as_str()),
+            (dest.as_path(), "data.bin")
+        );
+        assert!(row.replace_file.is_none() && row.not_replaced.is_none());
+        assert!(app.notice.is_none());
+    }
+
+    /// A Redownload that fails, at its very end (the file's checksum doesn't match), leaves the
+    /// finished file as it was; the next one, which completes, still replaces it.
+    #[test]
+    fn a_failed_redownload_keeps_the_finished_file() {
+        let rt = runtime();
+        let s = server(rt, "");
+        let dir = tempfile::tempdir().unwrap();
+        let dest = dir.path().join("data.bin");
+        let mut row = finished(&s, dir.path(), 32);
+        row.checksum = Some(mdm_engine::verify::Hash {
+            algo: mdm_engine::verify::Algo::Sha256,
+            value: vec![0; 32],
+        });
+        let mut app = app_with(rt, vec![row]);
+        app.redownload(1);
+        until(&mut app, |i| i.status == Status::Error);
+        assert_eq!(std::fs::read(&dest).unwrap(), OLD);
+        assert!(!dir.path().join("data (1).bin").exists());
+        assert_eq!(get(&app, 1).file_name, "data.bin");
+        // Again, the checksum right this time: an earlier Redownload's choice still holds.
+        app.item(1).unwrap().checksum = None;
+        app.redownload(1);
+        until(&mut app, |i| i.status == Status::Complete);
+        assert_eq!(names(dir.path()), ["data.bin"]);
+        assert!(std::fs::read(&dest).unwrap() == served(32), "the new copy");
+    }
+
+    /// Stopped part-way, the finished file stays as it was; resumed, the Redownload completes and
+    /// replaces it then.
+    #[test]
+    fn a_stopped_redownload_keeps_the_finished_file_until_it_completes() {
+        let rt = runtime();
+        let s = server(rt, "");
+        let dir = tempfile::tempdir().unwrap();
+        let dest = dir.path().join("data.bin");
+        let mut app = app_with(rt, vec![finished(&s, dir.path(), 33)]);
+        s.set_faults(Faults {
+            stall_at: Some(512 << 10),
+            ..Faults::default()
+        });
+        app.redownload(1);
+        until(&mut app, |i| i.downloaded > 0);
+        app.stop_by_hand(1);
+        until(&mut app, |i| i.live.is_none());
+        assert_eq!(get(&app, 1).status, Status::Stopped);
+        assert_eq!(std::fs::read(&dest).unwrap(), OLD);
+        assert!(!dir.path().join("data (1).bin").exists());
+        s.set_faults(Faults::default());
+        app.start(1, false);
+        until(&mut app, |i| i.status == Status::Complete);
+        assert_eq!(names(dir.path()), ["data.bin"]);
+        assert!(std::fs::read(&dest).unwrap() == served(33), "the new copy");
+    }
+
+    /// Its file moved or deleted since: a plain download to its name.
+    #[test]
+    fn a_redownload_whose_file_is_gone_downloads_to_its_name() {
+        let rt = runtime();
+        let s = server(rt, "");
+        let dir = tempfile::tempdir().unwrap();
+        let dest = dir.path().join("data.bin");
+        let mut app = app_with(rt, vec![finished(&s, dir.path(), 34)]);
+        std::fs::remove_file(&dest).unwrap();
+        app.redownload(1);
+        until(&mut app, |i| i.status == Status::Complete);
+        assert_eq!(names(dir.path()), ["data.bin"]);
+        assert!(std::fs::read(&dest).unwrap() == served(34));
+        assert!(app.notice.is_none());
+    }
+
+    /// The finished file open in another program that doesn't let it be deleted, as the new copy
+    /// completes: it is kept, the new copy saved beside it (the row follows that one), and the
+    /// window says so, both names in it. Windows only: elsewhere an open file doesn't stop the
+    /// rename over it (the program goes on reading the old copy).
+    #[cfg(windows)]
+    #[test]
+    fn a_finished_file_held_open_is_kept_and_the_new_copy_saved_beside_it() {
+        use std::os::windows::fs::OpenOptionsExt;
+        let rt = runtime();
+        let s = server(rt, "");
+        let dir = tempfile::tempdir().unwrap();
+        let dest = dir.path().join("data.bin");
+        let mut app = app_with(rt, vec![finished(&s, dir.path(), 35)]);
+        let held = std::fs::OpenOptions::new()
+            .read(true)
+            .share_mode(1) // FILE_SHARE_READ: no delete, no rename over it
+            .open(&dest)
+            .unwrap();
+        app.redownload(1);
+        until(&mut app, |i| i.status == Status::Complete);
+        drop(held);
+        let beside = dir.path().join("data (1).bin");
+        assert_eq!(names(dir.path()), ["data (1).bin", "data.bin"]);
+        assert_eq!(std::fs::read(&dest).unwrap(), OLD, "the user's file kept");
+        assert!(
+            std::fs::read(&beside).unwrap() == served(35),
+            "the new copy"
+        );
+        let row = get(&app, 1);
+        assert_eq!(row.dest, beside);
+        assert!(row.not_replaced.is_none(), "taken by the window");
+        let (_, text) = app.notice.clone().expect("said");
+        assert!(
+            text.contains("data.bin") && text.contains("data (1).bin"),
+            "{text}"
+        );
+        assert!(row.log.iter().any(|(_, t)| *t == text), "in its log too");
+    }
+
+    /// What can be downloaded again: a file download; a gallery (gallery-dl fetches only what
+    /// isn't there yet) or a torrent through a debrid account no more than a torrent or a video.
+    #[test]
+    fn a_gallery_or_a_debrid_torrent_is_not_offered_for_redownload() {
+        let new = || {
+            let url = "http://127.0.0.1:9/a.bin".parse().unwrap();
+            Item::new(1, url, PathBuf::from("a.bin"), Category::General)
+        };
+        assert!(new().can_redownload());
+        let mut gallery = new();
+        gallery.gallery = Some(Default::default());
+        let mut remote = new();
+        remote.remote = Some(Default::default());
+        assert!(!gallery.can_redownload() && !remote.can_redownload());
+    }
+
+    /// A download whose unfinished file is being moved (#1739) isn't offered for Redownload,
+    /// from the list, its menus or the Recent menu (all ask [`Item::can_redownload`]).
+    #[test]
+    fn a_download_being_moved_is_not_offered_for_redownload() {
+        let url = "http://127.0.0.1:9/a.bin".parse().unwrap();
+        let mut moving = Item::new(1, url, PathBuf::from("b/a.bin"), Category::General);
+        moving.move_from = Some(PathBuf::from("a/a.bin"));
+        assert!(!moving.can_redownload());
+    }
+}
+
+/// The browser's next download of a file whose download waits for a new address (its link
+/// expired) continues that download, end to end against the lab server (`freshlink`,
+/// `App::take_fresh_address`).
+#[cfg(test)]
+mod fresh_address_tests {
+    use super::*;
+    use mdm_labserver::{Config, Faults, LabServer, content};
+
+    const SIZE: u64 = 2 << 20;
+    const SEED: u64 = 7;
+
+    pub(super) fn runtime() -> &'static tokio::runtime::Runtime {
+        Box::leak(Box::new(
+            tokio::runtime::Builder::new_multi_thread()
+                .worker_threads(2)
+                .enable_all()
+                .build()
+                .unwrap(),
+        ))
+    }
+
+    pub(super) fn app_with(
+        rt: &tokio::runtime::Runtime,
+        items: Vec<Item>,
+    ) -> std::mem::ManuallyDrop<App> {
+        let loaded = store::Loaded {
+            next_id: 100,
+            items,
+            columns: None,
+            settings: Settings {
+                // No windows: the test looks at the rows.
+                show_progress: false,
+                show_complete: false,
+                ..Settings::default()
+            },
+            queues: Vec::new(),
+        };
+        let (_, commands) = std::sync::mpsc::channel();
+        // Never dropped: an App saves its list as it goes.
+        std::mem::ManuallyDrop::new(App::assemble(
+            &egui::Context::default(),
+            rt.handle().clone(),
+            commands,
+            loaded,
+            crate::Start::Shown,
+        ))
+    }
+
     fn now_ms() -> u64 {
         std::time::SystemTime::now()
             .duration_since(std::time::UNIX_EPOCH)
@@ -17174,7 +19045,7 @@ mod fresh_address_tests {
             .as_millis() as u64
     }
 
-    fn get(app: &App, id: u64) -> &Item {
+    pub(super) fn get(app: &App, id: u64) -> &Item {
         app.items.iter().find(|i| i.id == id).unwrap()
     }
 
@@ -17256,7 +19127,7 @@ mod fresh_address_tests {
     }
 
     /// Bytes of `range` (`bytes=a-b`; none: the whole file) that `saved` says were on disk.
-    fn on_disk(range: Option<&str>, saved: &mdm_engine::state::ResumeState) -> u64 {
+    pub(super) fn on_disk(range: Option<&str>, saved: &mdm_engine::state::ResumeState) -> u64 {
         let (from, to) = match range.and_then(|r| r.strip_prefix("bytes=")?.split_once('-')) {
             Some((a, b)) => (
                 a.parse::<u64>().unwrap(),
@@ -17526,6 +19397,158 @@ mod fresh_address_tests {
     }
 }
 
+/// #1705: MDM killed while a download ran (a crash, End task, a power cut), before its list was
+/// saved with the name the run took. The row comes back as the list held it at add, its name
+/// still to be numbered at start, with its part file and resume state under that very name.
+/// Resume continues it there; it used to start over as "name (1)" and leave the part behind.
+#[cfg(test)]
+mod killed_tests {
+    use super::fresh_address_tests::{app_with, get, on_disk, runtime};
+    use super::*;
+    use mdm_labserver::{Config, Faults, LabServer, content};
+
+    const SIZE: u64 = 4 << 20;
+    const SEED: u64 = 1705;
+
+    fn server(rt: &tokio::runtime::Runtime) -> (LabServer, url::Url) {
+        let s = rt
+            .block_on(LabServer::start(Config {
+                faults: Faults::parse("rate=4M").unwrap(),
+                ..Config::default()
+            }))
+            .unwrap();
+        let url = s.url(&format!("/gen/{SIZE}/data.bin?seed={SEED}"));
+        (s, url.parse().unwrap())
+    }
+
+    /// What a killed run of `url` leaves at `dest`: part of the file and its resume state.
+    fn cut_off(
+        rt: &tokio::runtime::Runtime,
+        s: &LabServer,
+        url: &url::Url,
+        dest: &std::path::Path,
+    ) -> mdm_engine::state::ResumeState {
+        let faults = s.faults();
+        s.set_faults(Faults {
+            stall_at: Some(1 << 20),
+            ..faults.clone()
+        });
+        let dl = {
+            let _in = rt.enter();
+            Download::start(
+                Request {
+                    url: url.clone(),
+                    headers: HeaderMap::new(),
+                    dest: Destination::File(dest.to_owned()),
+                },
+                Options {
+                    save_interval: Duration::from_millis(100),
+                    ..Options::default()
+                },
+            )
+        };
+        let end = Instant::now() + Duration::from_secs(20);
+        while dl.snapshot().downloaded < 256 << 10 {
+            assert!(Instant::now() < end, "the download never started");
+            std::thread::sleep(Duration::from_millis(20));
+        }
+        dl.cancel();
+        assert!(rt.block_on(dl.wait()).is_err());
+        s.set_faults(faults);
+        settled(rt, s);
+        let saved = mdm_engine::state::ResumeState::load(&state_path(dest)).unwrap();
+        assert!(saved.downloaded() > 0 && saved.downloaded() < SIZE);
+        saved
+    }
+
+    fn settled(rt: &tokio::runtime::Runtime, s: &LabServer) {
+        rt.block_on(async {
+            tokio::time::timeout(Duration::from_secs(10), s.settled())
+                .await
+                .expect("the lab server settles")
+        });
+    }
+
+    /// The row as the list saved at add holds it: nothing downloaded, its name to be numbered.
+    fn as_added(id: u64, url: &url::Url, dest: &std::path::Path) -> Item {
+        let mut item = Item::new(id, url.clone(), dest.to_owned(), Category::General);
+        item.number_at_start = true;
+        item
+    }
+
+    fn finish(app: &mut App, id: u64) {
+        let ctx = egui::Context::default();
+        let end = Instant::now() + Duration::from_secs(30);
+        while get(app, id).status != Status::Complete {
+            let row = get(app, id);
+            assert!(
+                Instant::now() < end,
+                "it never finished: {:?} {:?}",
+                row.status,
+                row.error
+            );
+            app.poll(&ctx);
+            std::thread::sleep(Duration::from_millis(20));
+        }
+    }
+
+    #[test]
+    fn resume_after_a_kill_continues_the_download_under_its_name() {
+        let rt = runtime();
+        let (s, url) = server(rt);
+        let dir = tempfile::tempdir().unwrap();
+        let dest = dir.path().join("data.bin");
+        let saved = cut_off(rt, &s, &url, &dest);
+        let mut app = app_with(rt, vec![as_added(1, &url, &dest)]);
+        s.clear_log();
+        app.start(1, false);
+        finish(&mut app, 1);
+        assert_eq!(get(&app, 1).dest, dest);
+        let mut names: Vec<_> = std::fs::read_dir(dir.path())
+            .unwrap()
+            .map(|e| e.unwrap().file_name().to_string_lossy().into_owned())
+            .collect();
+        names.sort_unstable();
+        assert_eq!(names, ["data.bin"], "one file, its part and state gone");
+        let data = std::fs::read(&dest).unwrap();
+        let mut want = vec![0; SIZE as usize];
+        content::fill(SEED, 0, &mut want);
+        assert!(data == want, "content mismatch");
+        // Continued: of what was on disk only each part's few bytes of check are asked again.
+        settled(rt, &s);
+        let log = s.log();
+        assert!(!log.is_empty());
+        let overlap = Options::default().verify_overlap;
+        for e in &log {
+            let again = on_disk(e.range.as_deref(), &saved);
+            assert!(again <= overlap, "asked again for {again}: {:?}", e.range);
+        }
+    }
+
+    /// The name is numbered as before when it is another row's: a second download of the same
+    /// address, added while the first one is stopped part-way at that name, never takes the
+    /// first one's part.
+    #[test]
+    fn a_name_that_is_another_rows_is_still_numbered() {
+        let rt = runtime();
+        let (s, url) = server(rt);
+        let dir = tempfile::tempdir().unwrap();
+        let dest = dir.path().join("data.bin");
+        let saved = cut_off(rt, &s, &url, &dest);
+        let mut first = Item::new(2, url.clone(), dest.clone(), Category::General);
+        first.downloaded = saved.downloaded();
+        first.size = Some(SIZE);
+        first.status = Status::Stopped;
+        let mut app = app_with(rt, vec![first, as_added(1, &url, &dest)]);
+        app.start(1, false);
+        finish(&mut app, 1);
+        assert_eq!(get(&app, 1).dest, dir.path().join("data (1).bin"));
+        assert_eq!(std::fs::metadata(&get(&app, 1).dest).unwrap().len(), SIZE);
+        let untouched = mdm_engine::state::ResumeState::load(&state_path(&dest)).unwrap();
+        assert_eq!(untouched, saved, "the first row's state is as it was");
+    }
+}
+
 /// #1563: "Also delete the files from disk" is never remembered, and nothing leaves the disk
 /// without the question: a list from 0.5.2 that remembered the box ticked, with the question
 /// turned off, deleted finished files with every Delete All Completed.
@@ -17634,6 +19657,36 @@ mod delete_tests {
     }
 
     #[test]
+    fn header_menu_keeps_quick_columns_filters_reset_and_adds_dialog() {
+        let dir = tempfile::tempdir().unwrap();
+        let (items, _files) = three(dir.path());
+        let app = app_from_052(items, true);
+        let (entries, _) = app.popup_entries(Popup::Columns);
+
+        assert!(
+            entries.iter().any(|entry| matches!(
+                entry,
+                MenuEntry::Item(_, Cmd::ToggleColumn(0), false, true)
+            ))
+        );
+        assert!(
+            entries
+                .iter()
+                .any(|entry| matches!(entry, MenuEntry::Item(_, Cmd::ColumnsDialog, true, false)))
+        );
+        assert!(
+            entries
+                .iter()
+                .any(|entry| matches!(entry, MenuEntry::Item(_, Cmd::ClearFilters, _, false)))
+        );
+        assert!(
+            entries
+                .iter()
+                .any(|entry| matches!(entry, MenuEntry::Item(_, Cmd::ResetColumns, true, false)))
+        );
+    }
+
+    #[test]
     fn remove_with_files_asks_even_without_the_question() {
         let dir = tempfile::tempdir().unwrap();
         let (items, files) = three(dir.path());
@@ -17655,5 +19708,376 @@ mod delete_tests {
         assert_eq!(ids(&app), [2, 3]);
         assert!(app.deleter.finish(Duration::from_secs(10)));
         assert!(files.iter().all(|f| f.exists()));
+    }
+
+    #[test]
+    fn delete_with_files_leaves_unrelated_files_beside_split_video() {
+        let dir = tempfile::tempdir().unwrap();
+        let d = dir.path();
+        let main_video = d.join("Song.mp4");
+        let chapter_1 = d.join("Song - 01 - Intro.mp4");
+        let user_file = d.join("Song - Live.mp4");
+        std::fs::write(&main_video, b"main").unwrap();
+        std::fs::write(&chapter_1, b"ch1").unwrap();
+        std::fs::write(&user_file, b"user").unwrap();
+
+        let url = url::Url::parse("https://example.com/watch?v=song").unwrap();
+        let mut item = Item::new(1, url, main_video.clone(), Category::General);
+        item.status = Status::Complete;
+        item.video = Some(crate::model::VideoSpec {
+            selector: "best".into(),
+            subs: Default::default(),
+            parts: Vec::new(),
+            named: false,
+            chapter_files: vec![chapter_1.clone()],
+            duration: None,
+            part: None,
+        });
+
+        let mut app = app_from_052(vec![item], false);
+        let ctx = egui::Context::default();
+        app.run(Cmd::RemoveWithFiles, Some(1), &ctx);
+        let chosen = app.confirm_delete.take().unwrap().ids;
+        app.confirmed_delete(&chosen, true, false);
+        assert!(app.deleter.finish(Duration::from_secs(10)));
+
+        assert!(!main_video.exists(), "main video deleted");
+        assert!(!chapter_1.exists(), "chapter file deleted");
+        assert!(user_file.exists(), "Song - Live.mp4 must survive deletion");
+    }
+}
+
+/// #1739: an unfinished download moved to another folder, with its part file and resume state,
+/// so it resumes there from where it was; a move MDM's end cut short is settled at the next start.
+#[cfg(test)]
+mod move_unfinished_tests {
+    use super::start_disk_tests::app_with;
+    use super::*;
+    use mdm_engine::naming::part_path;
+    use mdm_engine::state::{ResumeState, state_path};
+    use std::path::Path;
+
+    /// The tests' own data folder (the list a move saves goes there, never a real one's).
+    fn data_dir() -> PathBuf {
+        static DIR: std::sync::OnceLock<PathBuf> = std::sync::OnceLock::new();
+        DIR.get_or_init(|| {
+            let dir = std::env::temp_dir().join(format!("mdm-move-tests-{}", std::process::id()));
+            std::fs::create_dir_all(&dir).unwrap();
+            mdm_ipc::set_data_dir(dir);
+            mdm_ipc::data_dir().unwrap()
+        })
+        .clone()
+    }
+
+    /// A download stopped at 40 of 100 bytes at `dest`: its part file and resume state there.
+    fn stopped(id: u64, dest: &Path) -> Item {
+        std::fs::create_dir_all(dest.parent().unwrap()).unwrap();
+        let url: url::Url = format!("http://files.test/{id}/a.bin").parse().unwrap();
+        let mut item = Item::new(id, url.clone(), dest.to_owned(), Category::General);
+        (item.status, item.downloaded, item.size) = (Status::Stopped, 40, Some(100));
+        std::fs::write(part_path(dest), [7u8; 100]).unwrap();
+        let mut s = ResumeState::new(url.clone(), url, dest.to_owned(), 100, Default::default());
+        s.segments = vec![
+            mdm_engine::planner::SavedSegment {
+                start: 0,
+                cursor: 20,
+                end: 50,
+            },
+            mdm_engine::planner::SavedSegment {
+                start: 50,
+                cursor: 70,
+                end: 100,
+            },
+        ];
+        s.write(&state_path(dest)).unwrap();
+        item
+    }
+
+    fn get(app: &App, id: u64) -> &Item {
+        app.items.iter().find(|i| i.id == id).unwrap()
+    }
+
+    fn until_moved(app: &mut App, id: u64) {
+        let end = Instant::now() + Duration::from_secs(10);
+        while get(app, id).move_from.is_some() {
+            assert!(Instant::now() < end, "the move never ended");
+            app.poll_part_moves();
+            std::thread::sleep(Duration::from_millis(5));
+        }
+    }
+
+    #[test]
+    fn a_stopped_download_moves_with_its_part_and_state_saved_first() {
+        let data = data_dir();
+        let dir = tempfile::tempdir().unwrap();
+        let old = dir.path().join("a").join("a.bin");
+        let to = dir.path().join("b");
+        std::fs::create_dir_all(&to).unwrap();
+        // A file of its name is in the new folder: it takes the next free name.
+        std::fs::write(to.join("a.bin"), b"someone's").unwrap();
+        let mut app = app_with(vec![stopped(1, &old)]);
+        app.start_move(1, to.join("a.bin"));
+        let new = to.join("a (1).bin");
+        let row = get(&app, 1);
+        assert_eq!(row.dest, new);
+        assert_eq!(row.move_from.as_deref(), Some(old.as_path()));
+        assert_eq!(row.status_text(), "Moving...");
+        assert!(row.move_refused().is_some(), "not moved twice at once");
+        // The list on the disk names both places before a file moves.
+        assert!(app.saver.flush_until(None));
+        let saved: serde_json::Value =
+            serde_json::from_slice(&std::fs::read(data.join("downloads.json")).unwrap()).unwrap();
+        let saved = saved["items"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .find(|i| i["id"] == 1)
+            .unwrap()
+            .clone();
+        assert_eq!(saved["dest"].as_str().map(PathBuf::from), Some(new.clone()));
+        assert_eq!(
+            saved["move_from"].as_str().map(PathBuf::from),
+            Some(old.clone())
+        );
+        // Meanwhile it doesn't start.
+        app.start(1, false);
+        assert!(get(&app, 1).live.is_none());
+        until_moved(&mut app, 1);
+        let row = get(&app, 1);
+        assert_eq!(row.dest, new);
+        assert_eq!((row.status, row.downloaded), (Status::Stopped, 40));
+        assert!(row.log.iter().any(|(_, l)| l.starts_with("Moved to")));
+        let s = ResumeState::load(&state_path(&new)).unwrap();
+        assert_eq!((s.dest.clone(), s.downloaded()), (new.clone(), 40));
+        assert_eq!(std::fs::read(part_path(&new)).unwrap(), [7u8; 100]);
+        assert!(!part_path(&old).exists() && !state_path(&old).exists());
+        assert_eq!(std::fs::read(to.join("a.bin")).unwrap(), b"someone's");
+    }
+
+    /// Videos, galleries and torrents keep their unfinished files their helper's or session's
+    /// way: they move once finished, and say so.
+    #[test]
+    fn what_cant_move_yet_says_why() {
+        let dir = tempfile::tempdir().unwrap();
+        let mut video = stopped(1, &dir.path().join("v.mp4"));
+        video.video = Some(model::VideoSpec {
+            selector: "b".into(),
+            subs: Default::default(),
+            parts: Vec::new(),
+            named: false,
+            chapter_files: Vec::new(),
+            duration: None,
+            part: None,
+        });
+        assert!(
+            video
+                .move_refused()
+                .unwrap()
+                .starts_with("A video or a gallery")
+        );
+        video.downloaded = 0;
+        assert_eq!(
+            video.move_refused(),
+            None,
+            "not started: it only takes the new place"
+        );
+        let mut torrent = stopped(2, &dir.path().join("t"));
+        torrent.torrent = Some(crate::torrents::TorrentSpec {
+            ownership: None,
+            hash: "0".repeat(40),
+            files: None,
+            folder: dir.path().join("t"),
+            create_subfolder: true,
+            uploaded: 0,
+            seeded_secs: 0,
+            peers: 0,
+            up_speed: 0.0,
+            upload_limit: None,
+            in_order: false,
+            ends_first: false,
+            public_list: 0,
+        });
+        assert!(torrent.move_refused().unwrap().starts_with("A torrent"));
+        let file = stopped(3, &dir.path().join("f.bin"));
+        assert_eq!(file.move_refused(), None);
+    }
+
+    /// MDM ended during a move: at the next start the files tell where the download is, and the
+    /// row goes there.
+    #[test]
+    fn a_move_cut_short_is_settled_at_start() {
+        let _ = data_dir();
+        let dir = tempfile::tempdir().unwrap();
+        // A copy to another drive cut short: the original is whole, the half copy goes.
+        let old = dir.path().join("a").join("a.bin");
+        let new = dir.path().join("b").join("a.bin");
+        let mut cut = stopped(1, &old);
+        std::fs::create_dir_all(new.parent().unwrap()).unwrap();
+        std::fs::write(part_path(&new), [7u8; 30]).unwrap();
+        cut.move_from = Some(old.clone());
+        cut.dest = new.clone();
+        // Its state written at the new place, the old files not deleted yet: done.
+        let old2 = dir.path().join("a").join("c.bin");
+        let new2 = dir.path().join("b").join("c.bin");
+        let mut done = stopped(2, &new2);
+        let mut s = ResumeState::load(&state_path(&new2)).unwrap();
+        std::fs::write(part_path(&old2), [7u8; 100]).unwrap();
+        s.dest = old2.clone();
+        s.write(&state_path(&old2)).unwrap();
+        done.move_from = Some(old2.clone());
+        let mut app = app_with(vec![cut, done]);
+        app.settle_moves();
+        until_moved(&mut app, 1);
+        until_moved(&mut app, 2);
+        assert_eq!(get(&app, 1).dest, old);
+        assert!(!part_path(&new).exists(), "the half copy is gone");
+        assert_eq!(std::fs::read(part_path(&old)).unwrap(), [7u8; 100]);
+        assert_eq!(get(&app, 2).dest, new2);
+        assert!(!part_path(&old2).exists() && !state_path(&old2).exists());
+        assert!(
+            get(&app, 1)
+                .log
+                .iter()
+                .any(|(_, l)| l.contains("cut short"))
+        );
+    }
+}
+
+/// Stop and keep (#1780), end to end against the lab server: an endless stream (no length, no
+/// ranges) is kept as a finished file only by its progress window's button (`keep_by_hand`).
+/// Stop, Stop All and a queue's stop keep nothing, as for any download a server can't resume
+/// (as IDM's do).
+#[cfg(test)]
+mod stop_and_keep_tests {
+    use super::*;
+    use mdm_labserver::{Config, LabServer};
+
+    fn runtime() -> &'static tokio::runtime::Runtime {
+        Box::leak(Box::new(
+            tokio::runtime::Builder::new_multi_thread()
+                .worker_threads(2)
+                .enable_all()
+                .build()
+                .unwrap(),
+        ))
+    }
+
+    fn app_with(
+        rt: &tokio::runtime::Runtime,
+        items: Vec<Item>,
+        queues: Vec<Queue>,
+    ) -> std::mem::ManuallyDrop<App> {
+        let loaded = store::Loaded {
+            next_id: 100,
+            items,
+            columns: None,
+            settings: Settings {
+                // No windows: the test looks at the rows.
+                show_progress: false,
+                show_complete: false,
+                ..Settings::default()
+            },
+            queues,
+        };
+        let (_, commands) = std::sync::mpsc::channel();
+        // Never dropped: an App saves its list as it goes.
+        std::mem::ManuallyDrop::new(App::assemble(
+            &egui::Context::default(),
+            rt.handle().clone(),
+            commands,
+            loaded,
+            crate::Start::Shown,
+        ))
+    }
+
+    fn get(app: &App, id: u64) -> &Item {
+        app.items.iter().find(|i| i.id == id).unwrap()
+    }
+
+    /// The window's frames until `done` (at most 30 s).
+    fn until(app: &mut App, done: impl Fn(&Item) -> bool) {
+        let ctx = egui::Context::default();
+        let end = Instant::now() + Duration::from_secs(30);
+        while !done(get(app, 1)) {
+            let i = get(app, 1);
+            assert!(
+                Instant::now() < end,
+                "never came: {:?} {:?} {}",
+                i.status,
+                i.error,
+                i.downloaded
+            );
+            app.poll(&ctx);
+            std::thread::sleep(Duration::from_millis(20));
+        }
+    }
+
+    /// The lab's endless stream (a radio's MP3, paced) at `dir/radio.mp3`, not started yet.
+    fn stream(s: &LabServer, dir: &std::path::Path) -> Item {
+        let port = s.addr().port();
+        let url = format!("http://127.0.0.1:{port}/gen/1M/radio.mp3?endless=1&seed=41&rate=256K");
+        let mut item = Item::new(
+            1,
+            url.parse().unwrap(),
+            dir.join("radio.mp3"),
+            Category::General,
+        );
+        item.status = Status::Stopped;
+        item
+    }
+
+    /// `stop` on a running endless stream: it ends stopped, its file never finished.
+    fn stopped_keeps_nothing(how: &str, stop: impl FnOnce(&mut App)) {
+        let rt = runtime();
+        let s = rt.block_on(LabServer::start(Config::default())).unwrap();
+        let dir = tempfile::tempdir().unwrap();
+        let mut app = app_with(rt, vec![stream(&s, dir.path())], Vec::new());
+        // In the main queue (the app's first), as a download added to it.
+        app.queues[0].items = vec![1];
+        app.start(1, false);
+        until(&mut app, Item::endless);
+        stop(&mut app);
+        until(&mut app, |i| i.live.is_none());
+        let row = get(&app, 1);
+        assert_eq!(row.status, Status::Stopped, "{how}");
+        assert!(
+            !dir.path().join("radio.mp3").exists(),
+            "{how}: nothing kept"
+        );
+    }
+
+    #[test]
+    fn stop_keeps_nothing_of_an_endless_stream() {
+        stopped_keeps_nothing("Stop", |app| app.stop_by_hand(1));
+    }
+
+    #[test]
+    fn stop_all_keeps_nothing_of_an_endless_stream() {
+        stopped_keeps_nothing("Stop All", |app| app.stop_all());
+    }
+
+    #[test]
+    fn a_queues_stop_keeps_nothing_of_an_endless_stream() {
+        stopped_keeps_nothing("the queue's stop", |app| app.stop_queue(0));
+    }
+
+    /// The progress window's Stop and keep: the stream is Complete, what arrived its file.
+    #[test]
+    fn the_button_keeps_an_endless_stream() {
+        let rt = runtime();
+        let s = rt.block_on(LabServer::start(Config::default())).unwrap();
+        let dir = tempfile::tempdir().unwrap();
+        let mut app = app_with(rt, vec![stream(&s, dir.path())], Vec::new());
+        app.start(1, false);
+        until(&mut app, Item::endless);
+        app.keep_by_hand(1);
+        until(&mut app, |i| i.live.is_none());
+        let row = get(&app, 1);
+        assert_eq!(row.status, Status::Complete);
+        let kept = std::fs::metadata(dir.path().join("radio.mp3"))
+            .unwrap()
+            .len();
+        assert!(kept > 0);
+        assert_eq!(row.size, Some(kept));
     }
 }

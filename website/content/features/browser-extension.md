@@ -38,8 +38,24 @@ Manager**: MDM downloads it whatever its type.
 
 Point at a video and a small **Download video** button appears at its edge. It opens MDM's
 **Download video from a page** window with the qualities on offer (see
-[video downloads](/features/video.html)). You can hide it on one video or one site, or turn it
-off in **Options**.
+[video downloads](/features/video.html)). On many pages it finds the video before it plays,
+from the stream address the page wrote for its player. You can hide it on one video or one
+site, or turn it off in **Options**.
+
+## All the images on a page
+
+<!--@coming 0.5.3-->
+
+To save a whole gallery, open the toolbar button's **This page** tab and click **Find images**.
+The extension finds each picture the page shows at the largest size the page lists for it, the
+ones it loads only as you scroll, and links that go straight to a picture, each once. Leave out
+icons and thumbnails with a smallest width and height, and any type you don't want (JPEG, PNG,
+WebP, GIF, AVIF...), then **Send to Link grabber**: MDM looks each one up for its name and size,
+and you tick there the ones to download. Nothing is looked for until you click.
+
+Right-click a page for **Download all links** (or a selection for **Download selected
+links**) and the pictures on it come along: Link grabber keeps them out of the way under **Hide
+images located on this web page**. Untick it to pick them with the page's links.
 
 ## Installed from the store, kept up to date
 

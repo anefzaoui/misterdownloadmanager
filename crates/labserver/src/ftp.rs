@@ -1,6 +1,7 @@
 //! A small FTP server for tests: the same deterministic files as HTTP's `/gen`, at
-//! `/gen/{size}[/{name}]` (seed 0, or `/gen/{size}/s{seed}/{name}`), with `SIZE`, `MDTM`,
-//! `REST`, `RETR`, passive (`PASV`, `EPSV`) and active (`PORT`, `EPRT`) data connections, an
+//! `/gen/{size}[/{name}]` (seed 0, or `/gen/{size}/s{seed}/{name}`), and the folders of
+//! `tree.rs` (`/tree/`, `/hostile/`, `/huge/`, listed by `MLSD` and `LIST`, #1774), with `SIZE`,
+//! `MDTM`, `REST`, `RETR`, passive (`PASV`, `EPSV`) and active (`PORT`, `EPRT`) data connections, an
 //! optional login, and FTPS: explicit (`AUTH TLS`, then required before logging in) or implicit
 //! (TLS from the first byte), with protected data connections, under a certificate from its own
 //! test CA (`FtpServer::ca_der`). It counts how many files it sends at once (tests check a
@@ -47,6 +48,8 @@ pub struct FtpConfig {
     pub max_sessions: Option<usize>,
     /// `REST` works (and `FEAT` says so).
     pub rest: bool,
+    /// `MLSD` works (and `FEAT` says so); else only `LIST` lists a folder.
+    pub mlsd: bool,
 }
 
 impl Default for FtpConfig {
@@ -60,6 +63,7 @@ impl Default for FtpConfig {
             cut: None,
             max_sessions: None,
             rest: true,
+            mlsd: true,
         }
     }
 }
@@ -84,6 +88,8 @@ struct Shared {
     transfers: AtomicUsize,
     open: AtomicUsize,
     refused: AtomicUsize,
+    /// The paths asked of `MLSD`, `LIST`, `SIZE` and `RETR`, as `VERB path`, in order.
+    asked: Mutex<Vec<String>>,
 }
 
 impl FtpServer {
@@ -107,6 +113,7 @@ impl FtpServer {
             transfers: AtomicUsize::new(0),
             open: AtomicUsize::new(0),
             refused: AtomicUsize::new(0),
+            asked: Mutex::default(),
         });
         let sh = shared.clone();
         let task = tokio::spawn(async move {
@@ -172,6 +179,11 @@ impl FtpServer {
     /// Sessions turned away by `max_sessions`.
     pub fn refused(&self) -> usize {
         self.shared.refused.load(Ordering::SeqCst)
+    }
+
+    /// What was asked of `MLSD`, `LIST`, `SIZE` and `RETR` so far, as `VERB path`.
+    pub fn asked(&self) -> Vec<String> {
+        self.shared.asked.lock().unwrap().clone()
     }
 }
 
@@ -254,9 +266,16 @@ pub(crate) fn certificate_of(
     Ok((config, ca.der().to_vec()))
 }
 
-/// `/gen/{size}[/s{seed}][/{name}]` → (seed, size).
+/// `/gen/{size}[/s{seed}][/{name}]`, or a file of `tree.rs`'s folders (`/tree/docs/guide.pdf`)
+/// → (seed, size).
 fn file_of(path: &str) -> Option<(u64, u64)> {
-    let mut parts = path.trim_start_matches('/').split('/');
+    let trimmed = path.trim_start_matches('/');
+    if let Some((tree, rest)) = trimmed.split_once('/')
+        && let Some(crate::tree::Node::File { seed, size }) = crate::tree::node(tree, rest)
+    {
+        return Some((seed, size));
+    }
+    let mut parts = trimmed.split('/');
     if parts.next()? != "gen" {
         return None;
     }
@@ -267,6 +286,22 @@ fn file_of(path: &str) -> Option<(u64, u64)> {
         .and_then(|s| s.parse().ok())
         .unwrap_or(0);
     Some((seed, size))
+}
+
+/// The folder of `tree.rs` at `path` (`tree/docs/`, with or without its `/`): its tree and what
+/// it holds.
+fn folder_of(path: &str) -> Option<(String, Vec<crate::tree::Item>)> {
+    let trimmed = path.trim_start_matches('/');
+    let (tree, rest) = trimmed.split_once('/').unwrap_or((trimmed, ""));
+    let rest = if rest.is_empty() || rest.ends_with('/') {
+        rest.to_owned()
+    } else {
+        format!("{rest}/")
+    };
+    match crate::tree::node(tree, &rest)? {
+        crate::tree::Node::Dir(items) => Some((tree.to_owned(), items)),
+        crate::tree::Node::File { .. } => None,
+    }
 }
 
 /// Where the next transfer's data connection comes from.
@@ -407,8 +442,13 @@ where
                 },
                 "SYST" => reply(215, "UNIX Type: L8"),
                 "FEAT" => format!(
-                    "211-Features:\r\n SIZE\r\n MDTM\r\n{} EPSV\r\n{}211 End\r\n",
+                    "211-Features:\r\n SIZE\r\n MDTM\r\n{}{} EPSV\r\n{}211 End\r\n",
                     if config.rest { " REST STREAM\r\n" } else { "" },
+                    if config.mlsd {
+                        " MLST type*;size*;modify*;\r\n"
+                    } else {
+                        ""
+                    },
                     if sh.tls.is_some() {
                         " AUTH TLS\r\n PBSZ\r\n PROT\r\n"
                     } else {
@@ -418,10 +458,59 @@ where
                 "TYPE" | "OPTS" | "NOOP" | "MODE" | "STRU" => reply(200, "OK"),
                 "PWD" => reply(257, "\"/\""),
                 "CWD" => reply(250, "OK"),
-                "SIZE" => match file_of(&arg) {
-                    Some((_, size)) => reply(213, &size.to_string()),
-                    None => reply(550, "No such file"),
-                },
+                "MLSD" if !config.mlsd => reply(500, "MLSD not understood"),
+                "MLSD" | "LIST" => {
+                    sh.asked.lock().unwrap().push(format!("{verb} {arg}"));
+                    let Some((tree, items)) = folder_of(&arg) else {
+                        let _ = write
+                            .write_all(reply(550, "No such folder").as_bytes())
+                            .await;
+                        continue;
+                    };
+                    let text = crate::tree::ftp_lines(&tree, &items, verb == "MLSD");
+                    let conn = match std::mem::replace(&mut s.data, Data::None) {
+                        Data::Passive(l) => l.accept().await.map(|(c, _)| c),
+                        Data::Active(a) => TcpStream::connect(a).await,
+                        Data::None => Err(io::Error::other("no data connection")),
+                    };
+                    let Ok(mut conn) = conn else {
+                        let _ = write
+                            .write_all(reply(425, "Can't open data connection").as_bytes())
+                            .await;
+                        continue;
+                    };
+                    if write
+                        .write_all(reply(150, "Here comes the listing").as_bytes())
+                        .await
+                        .is_err()
+                    {
+                        return None;
+                    }
+                    let sent = match (&sh.tls, s.protect) {
+                        (Some((acceptor, _)), true) => match acceptor.accept(conn).await {
+                            Ok(mut tls) => match tls.write_all(text.as_bytes()).await {
+                                Ok(()) => tls.shutdown().await,
+                                Err(e) => Err(e),
+                            },
+                            Err(e) => Err(e),
+                        },
+                        _ => match conn.write_all(text.as_bytes()).await {
+                            Ok(()) => conn.shutdown().await,
+                            Err(e) => Err(e),
+                        },
+                    };
+                    match sent {
+                        Ok(()) => reply(226, "Directory send OK"),
+                        Err(_) => reply(426, "Connection closed; transfer aborted"),
+                    }
+                }
+                "SIZE" => {
+                    sh.asked.lock().unwrap().push(format!("SIZE {arg}"));
+                    match file_of(&arg) {
+                        Some((_, size)) => reply(213, &size.to_string()),
+                        None => reply(550, "No such file"),
+                    }
+                }
                 "MDTM" => match file_of(&arg) {
                     Some(_) => reply(213, &sh.modified.lock().unwrap().clone()),
                     None => reply(550, "No such file"),
@@ -481,6 +570,7 @@ where
                     }
                 }
                 "RETR" => {
+                    sh.asked.lock().unwrap().push(format!("RETR {arg}"));
                     let Some((seed, size)) = file_of(&arg) else {
                         let _ = write.write_all(reply(550, "No such file").as_bytes()).await;
                         continue;

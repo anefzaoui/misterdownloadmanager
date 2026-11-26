@@ -2,7 +2,7 @@
 //! starting with the session, the browsers' host registration, sounds, showing a file in its
 //! folder, and the torrent link handler. Each runs the system's own tool, so nothing here needs
 //! a library; the exceptions are the desktop's dark mode on Linux (D-Bus through zbus, the
-//! settings daemon's XSETTINGS through x11rb) and the
+//! settings daemon's XSETTINGS through x11rb), the dock's progress (zbus; AppKit on macOS) and the
 //! crash reports (at the end): signals and Mach exceptions through crash-handler, thread and
 //! process ids through libc.
 
@@ -181,7 +181,7 @@ pub async fn terminated() {
 // ---- The session's end (Linux: logging out, shutting down; a `kill`; the display going away) ---
 
 /// Linux: why MDM's session ends, as the system says it (Windows: `win32::SessionEnd`; macOS's
-/// logout quits the app through AppKit, which `App`'s drop saves, main.rs).
+/// logout quits the app through AppKit, which `App`'s drop saves, lib.rs).
 #[cfg(target_os = "linux")]
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum SessionEnd {
@@ -244,7 +244,7 @@ fn ask_end(why: SessionEnd) -> bool {
 }
 
 /// Linux: the session's end that was asked for ([`on_session_end`]), for the window's thread to
-/// run at its next frame (main.rs).
+/// run at its next frame (lib.rs).
 #[cfg(target_os = "linux")]
 pub fn session_ending() -> Option<SessionEnd> {
     SessionEnd::of_code(END_ASKED.load(std::sync::atomic::Ordering::Acquire))
@@ -259,7 +259,7 @@ const END_GRACE: std::time::Duration = std::time::Duration::from_secs(10);
 /// Linux: the session's end reaches MDM as a signal: logind's SIGTERM at logout and shutdown (and
 /// a `kill`), SIGHUP and SIGINT from the terminal it was started from. Each is run as Windows'
 /// session end is: `wake` brings the window's next frame, which saves as an Exit saves and ends
-/// MDM (main.rs). A signal ignored when MDM started (`nohup`'s SIGHUP, a background job's SIGINT)
+/// MDM (lib.rs). A signal ignored when MDM started (`nohup`'s SIGHUP, a background job's SIGINT)
 /// stays ignored. Ctrl+C once more ends MDM at once, and so does a window that hasn't ended
 /// within [`END_GRACE`]: then each download resumes from its last save, as before. Heard on
 /// `rt`, a signal handler itself only wakes it (tokio's).
@@ -342,7 +342,7 @@ fn wait_for_the_window(wake: &dyn Fn(), grace: Option<std::time::Duration>) {
 static WAKE: std::sync::OnceLock<std::sync::Arc<dyn Fn() + Send + Sync>> =
     std::sync::OnceLock::new();
 
-/// Linux: the process ends now, once the session's end has saved (main.rs), without the
+/// Linux: the process ends now, once the session's end has saved (lib.rs), without the
 /// libraries' exit handlers: with the display gone they would only touch it again, which runs
 /// Xlib's handler (and so the end) once more.
 #[cfg(target_os = "linux")]
@@ -972,6 +972,7 @@ pub fn os_version() -> String {
 }
 
 /// What `cmd` prints, trimmed, when it succeeds within `secs` seconds (`launch::output_within`).
+#[cfg(any(target_os = "linux", target_os = "macos"))]
 fn printed_within(cmd: &mut Command, secs: u64) -> Option<String> {
     crate::launch::output_within(cmd, std::time::Duration::from_secs(secs))
         .filter(|o| o.status.success())
@@ -2132,7 +2133,7 @@ fn xwayland_server() -> Result<bool, Box<dyn std::error::Error>> {
 static SAVED_PICK: std::sync::OnceLock<Option<crate::settings::WindowSystemPick>> =
     std::sync::OnceLock::new();
 
-/// Linux: View → Window system's saved choice (#624), for [`window_system`]: main.rs gives it
+/// Linux: View → Window system's saved choice (#624), for [`window_system`]: lib.rs gives it
 /// once the settings are read, before the first window opens.
 #[cfg(target_os = "linux")]
 pub fn set_window_system_pick(saved: Option<crate::settings::WindowSystemPick>) {
@@ -2634,9 +2635,267 @@ pub fn tray_host() -> bool {
         .unwrap_or(false)
 }
 
+/// The X11/XWayland monitor nearest `at`, in physical screen pixels, intersected with the
+/// desktop's work area when available. Native Wayland cannot position these windows.
+#[cfg(target_os = "linux")]
+pub fn work_area(at: egui::Pos2) -> Option<egui::Rect> {
+    if on_wayland() {
+        return None;
+    }
+    // Dialogs can ask every frame. Refresh after a second so monitor/panel changes are picked
+    // up without opening an X connection for every frame.
+    type Areas = (std::time::Instant, Vec<egui::Rect>);
+    static AREAS: std::sync::Mutex<Option<Areas>> = std::sync::Mutex::new(None);
+    let mut cache = AREAS.lock().ok()?;
+    if cache
+        .as_ref()
+        .is_none_or(|(when, _)| when.elapsed() >= std::time::Duration::from_secs(1))
+    {
+        *cache = Some((
+            std::time::Instant::now(),
+            x11_work_areas().unwrap_or_default(),
+        ));
+    }
+    cache.as_ref()?.1.iter().copied().min_by(|a, b| {
+        a.distance_sq_to_pos(at)
+            .total_cmp(&b.distance_sq_to_pos(at))
+    })
+}
+
+#[cfg(target_os = "linux")]
+fn x11_work_areas() -> Result<Vec<egui::Rect>, Box<dyn std::error::Error>> {
+    use x11rb::connection::Connection;
+    use x11rb::protocol::{
+        randr,
+        xproto::{AtomEnum, ConnectionExt},
+    };
+    let (conn, screen) = x11rb::rust_connection::RustConnection::connect(None)?;
+    let screen = &conn.setup().roots[screen];
+    let rect = |x: f32, y: f32, w: f32, h: f32| {
+        egui::Rect::from_min_size(egui::pos2(x, y), egui::vec2(w, h))
+    };
+    let mut areas: Vec<_> = randr::get_monitors(&conn, screen.root, true)
+        .ok()
+        .and_then(|c| c.reply().ok())
+        .map(|reply| {
+            reply
+                .monitors
+                .into_iter()
+                .filter(|m| m.width > 0 && m.height > 0)
+                .map(|m| rect(m.x as f32, m.y as f32, m.width as f32, m.height as f32))
+                .collect()
+        })
+        .unwrap_or_default();
+    if areas.is_empty() {
+        areas.push(rect(
+            0.0,
+            0.0,
+            screen.width_in_pixels as f32,
+            screen.height_in_pixels as f32,
+        ));
+    }
+    let property = |name: &[u8]| -> Result<Vec<u32>, Box<dyn std::error::Error>> {
+        let atom = conn.intern_atom(true, name)?.reply()?.atom;
+        if atom == x11rb::NONE {
+            return Ok(Vec::new());
+        }
+        let reply = conn
+            .get_property(false, screen.root, atom, AtomEnum::CARDINAL, 0, 4096)?
+            .reply()?;
+        Ok(reply.value32().map(|v| v.collect()).unwrap_or_default())
+    };
+    // Some compositors (including Hyprland) publish one work area without a desktop index.
+    let desktop = property(b"_NET_CURRENT_DESKTOP")?
+        .first()
+        .copied()
+        .unwrap_or(0) as usize;
+    let work = property(b"_NET_WORKAREA")?;
+    if let Some(v) = desktop.checked_mul(4).and_then(|i| work.get(i..i + 4)) {
+        let work = rect(
+            v[0] as i32 as f32,
+            v[1] as i32 as f32,
+            v[2] as f32,
+            v[3] as f32,
+        );
+        for area in &mut areas {
+            let clipped = area.intersect(work);
+            if clipped.is_positive() {
+                *area = clipped;
+            }
+        }
+    }
+    Ok(areas)
+}
+
 /// `win32::on_a_screen`: winit has no monitor list before the window exists, so a saved
 /// position is trusted (the window manager keeps windows on screen on Linux and macOS).
 pub fn on_a_screen(_x: i32, _y: i32) -> bool {
+    true
+}
+
+// ---- Dock progress (sysprogress.rs, #1777) ----------------------------------------------------
+
+/// `win32::taskbar_progress` on Linux and macOS: the running downloads' progress on MDM's icon
+/// in the dock, cleared with `None`. Linux docks that read the launcher interface show it (Ubuntu
+/// Dock and Dash to Dock, KDE Plasma's task manager, Latte, Plank); others show nothing, as
+/// before. macOS draws it on MDM's Dock icon. Called every tick; only changes reach the system.
+pub fn dock_progress(progress: Option<f64>) {
+    thread_local! {
+        static SHOWN: std::cell::RefCell<crate::sysprogress::Shown> =
+            const { std::cell::RefCell::new(crate::sysprogress::Shown::new()) };
+    }
+    // During the thread's exit the cache may already be gone: nothing left to show then.
+    let _ = SHOWN.try_with(|shown| shown.borrow_mut().update(progress, show_dock_progress));
+}
+
+#[cfg(not(any(target_os = "linux", target_os = "macos")))]
+fn show_dock_progress(_value: Option<u32>) -> bool {
+    true
+}
+
+/// Linux: Unity's launcher interface (`com.canonical.Unity.LauncherEntry`), which the docks
+/// read: an `Update` signal naming MDM's desktop entry, with `progress` (0 to 1) and
+/// `progress-visible`. Sent from a thread of its own, since a stalled bus must not hold up the
+/// window; it sends only the latest value, and sends a shown one again every few seconds for a
+/// dock that started (or restarted) after it. When MDM ends, its bus name goes away and the docks
+/// drop its progress themselves.
+#[cfg(target_os = "linux")]
+fn show_dock_progress(value: Option<u32>) -> bool {
+    use std::sync::mpsc;
+    static SENDER: std::sync::OnceLock<mpsc::Sender<Option<u32>>> = std::sync::OnceLock::new();
+    let sender = SENDER.get_or_init(|| {
+        let (tx, rx) = mpsc::channel::<Option<u32>>();
+        let _ = std::thread::Builder::new()
+            .name("dock-progress".into())
+            .spawn(move || {
+                if let Err(e) = launcher_entry_loop(&rx) {
+                    tracing::info!("dock progress: stopped ({e})");
+                }
+            });
+        tx
+    });
+    // A thread that found no bus has ended: this fails, and the next tick tries again (cheaply).
+    sender.send(value).is_ok()
+}
+
+#[cfg(target_os = "linux")]
+fn launcher_entry_loop(rx: &std::sync::mpsc::Receiver<Option<u32>>) -> zbus::Result<()> {
+    use std::sync::mpsc::RecvTimeoutError;
+    use zbus::zvariant::Value;
+    const AGAIN: std::time::Duration = std::time::Duration::from_secs(5);
+    let conn = zbus::blocking::Connection::session()?;
+    let uri = format!("application://{}", desktop_entry_id());
+    let mut last: Option<u32> = None;
+    loop {
+        let mut value = match rx.recv_timeout(AGAIN) {
+            Ok(value) => value,
+            // Nothing new: a shown bar again, for a dock that wasn't listening.
+            Err(RecvTimeoutError::Timeout) if last.is_some() => last,
+            Err(RecvTimeoutError::Timeout) => continue,
+            Err(RecvTimeoutError::Disconnected) => return Ok(()),
+        };
+        // Only the latest value matters.
+        while let Ok(newer) = rx.try_recv() {
+            value = newer;
+        }
+        let fraction = f64::from(value.unwrap_or(0)) / f64::from(crate::sysprogress::STEPS);
+        let properties: std::collections::HashMap<&str, Value> = [
+            ("progress", Value::from(fraction)),
+            ("progress-visible", Value::from(value.is_some())),
+        ]
+        .into_iter()
+        .collect();
+        conn.emit_signal(
+            None::<&str>,
+            "/com/canonical/unity/launcherentry/misterdownloadmanager",
+            "com.canonical.Unity.LauncherEntry",
+            "Update",
+            &(uri.as_str(), properties),
+        )?;
+        last = value;
+    }
+}
+
+/// The desktop entry the docks know MDM by: `misterdownloadmanager.desktop`, the one the packages
+/// install (tools/installer/build-linux.sh), unless the launcher that started this very process
+/// named another (GLib's launchers, GNOME's among them, say which entry they started: an AppImage
+/// manager's renamed copy, for one). Only for this process: a terminal opened from the dock passes
+/// its own entry on to whatever runs in it.
+#[cfg(target_os = "linux")]
+fn desktop_entry_id() -> String {
+    launched_entry(
+        std::env::var_os("GIO_LAUNCHED_DESKTOP_FILE").as_deref(),
+        std::env::var("GIO_LAUNCHED_DESKTOP_FILE_PID")
+            .ok()
+            .as_deref(),
+        std::process::id(),
+    )
+    .unwrap_or_else(|| format!("{}.desktop", crate::APP_ID))
+}
+
+#[cfg(any(target_os = "linux", test))]
+fn launched_entry(file: Option<&std::ffi::OsStr>, pid: Option<&str>, ours: u32) -> Option<String> {
+    if pid?.trim().parse::<u32>().ok()? != ours {
+        return None;
+    }
+    let name = Path::new(file?).file_name()?.to_str()?;
+    (name.len() > ".desktop".len() && name.ends_with(".desktop")).then(|| name.to_owned())
+}
+
+/// macOS: MDM's Dock icon with a bar along its bottom (the tile's content view, drawn by
+/// `display`); `None` gives the tile back its plain icon. AppKit on the main thread only, as
+/// [`ns_app`] says: elsewhere there is nothing to draw.
+#[cfg(target_os = "macos")]
+fn show_dock_progress(value: Option<u32>) -> bool {
+    use objc2::MainThreadOnly as _;
+    use objc2::rc::Retained;
+    use objc2_app_kit::{
+        NSApplication, NSImageView, NSProgressIndicator, NSProgressIndicatorStyle, NSView,
+    };
+    use objc2_foundation::{NSPoint, NSRect, NSSize};
+    type Views = Option<(Retained<NSImageView>, Retained<NSProgressIndicator>)>;
+    thread_local! {
+        static VIEWS: std::cell::RefCell<Views> = const { std::cell::RefCell::new(None) };
+    }
+    let Some(mtm) = objc2::MainThreadMarker::new() else {
+        return true;
+    };
+    let app = NSApplication::sharedApplication(mtm);
+    let tile = app.dockTile();
+    let Some(value) = value else {
+        tile.setContentView(None);
+        tile.display();
+        return true;
+    };
+    VIEWS.with_borrow_mut(|views| {
+        if views.is_none() {
+            let Some(icon) = app.applicationIconImage() else {
+                return;
+            };
+            let size = tile.size();
+            let view = NSImageView::imageViewWithImage(&icon, mtm);
+            view.setFrame(NSRect::new(NSPoint::new(0.0, 0.0), size));
+            // Along the bottom (AppKit's views count up from there), inside the icon's margin.
+            let bar_frame = NSRect::new(
+                NSPoint::new(size.width * 0.1, size.height * 0.06),
+                NSSize::new(size.width * 0.8, size.height * 0.14),
+            );
+            let bar =
+                NSProgressIndicator::initWithFrame(NSProgressIndicator::alloc(mtm), bar_frame);
+            bar.setStyle(NSProgressIndicatorStyle::Bar);
+            bar.setIndeterminate(false);
+            bar.setMinValue(0.0);
+            bar.setMaxValue(f64::from(crate::sysprogress::STEPS));
+            view.addSubview(&bar);
+            *views = Some((view, bar));
+        }
+        if let Some((view, bar)) = views.as_ref() {
+            bar.setDoubleValue(f64::from(value));
+            let view: &NSView = view;
+            tile.setContentView(Some(view));
+            tile.display();
+        }
+    });
     true
 }
 
@@ -2737,9 +2996,8 @@ fn icon_theme(kde: bool) -> Option<String> {
 #[allow(unsafe_code)]
 pub fn file_icon(what: &crate::fileicons::What, px: u32) -> Option<crate::fileicons::Native> {
     use crate::fileicons::{Native, What};
-    use objc2::AllocAnyThread as _;
-    use objc2_app_kit::{NSBitmapImageRep, NSDeviceRGBColorSpace, NSGraphicsContext, NSWorkspace};
-    use objc2_foundation::{NSPoint, NSRect, NSSize, NSString};
+    use objc2_app_kit::NSWorkspace;
+    use objc2_foundation::NSString;
     // An extension, or a type identifier where there is none.
     let ty = match what {
         // Finder has no open folder of its own: its folder.
@@ -2751,6 +3009,24 @@ pub fn file_icon(what: &crate::fileicons::What, px: u32) -> Option<crate::fileic
     objc2::rc::autoreleasepool(|_| {
         #[allow(deprecated)] // iconForContentType needs a UTType; this takes the extension as is.
         let image = NSWorkspace::sharedWorkspace().iconForFileType(&NSString::from_str(&ty));
+        let rgba = ns_image_rgba(&image, side)?;
+        Some(Native::Rgba {
+            side: side as u32,
+            rgba,
+            premultiplied: true,
+        })
+    })
+}
+
+/// `image` drawn at `side` pixels square into a bitmap of our own (AppKit picks its picture made
+/// for that size), as premultiplied RGBA.
+#[cfg(target_os = "macos")]
+#[allow(unsafe_code)]
+fn ns_image_rgba(image: &objc2_app_kit::NSImage, side: usize) -> Option<Vec<u8>> {
+    use objc2::AllocAnyThread as _;
+    use objc2_app_kit::{NSBitmapImageRep, NSDeviceRGBColorSpace, NSGraphicsContext};
+    use objc2_foundation::{NSPoint, NSRect, NSSize};
+    {
         // SAFETY: no planes, so the bitmap allocates and owns its pixels: 8-bit RGBA, packed rows
         // (0 lets it choose the row length and bits per pixel). The colour space name is AppKit's
         // own constant.
@@ -2788,11 +3064,189 @@ pub fn file_icon(what: &crate::fileicons::What, px: u32) -> Option<crate::fileic
                 std::slice::from_raw_parts(data.add(y * row), side * 4)
             });
         }
-        Some(Native::Rgba {
-            side: side as u32,
+        Some(rgba)
+    }
+}
+
+// ---- Thumbnails (preview.rs, #1368) -------------------------------------------------------------
+
+/// `win32::thumbnail` on macOS: Finder's icon for the file itself (NSWorkspace `iconForFile`: a
+/// program's own, a folder's custom one), drawn at `px` pixels, marked as an icon. Not Quick
+/// Look's picture of the file's content: that is QuickLookThumbnailing's QLThumbnailGenerator,
+/// which answers later through a completion block, a framework MDM's macOS code doesn't bind
+/// (it would bring objc2's QuickLookThumbnailing and block2 bindings), with no Mac at hand to
+/// try it on. The pane shows the file's icon there instead.
+#[cfg(target_os = "macos")]
+pub fn thumbnail(path: &Path, px: u32) -> Option<crate::preview::Picture> {
+    use objc2_app_kit::NSWorkspace;
+    use objc2_foundation::NSString;
+    let side = px.clamp(16, 512) as usize;
+    let path = path.to_str()?;
+    objc2::rc::autoreleasepool(|_| {
+        let image = NSWorkspace::sharedWorkspace().iconForFile(&NSString::from_str(path));
+        let rgba = ns_image_rgba(&image, side)?;
+        Some(crate::preview::Picture {
+            w: side as u32,
+            h: side as u32,
             rgba,
             premultiplied: true,
+            icon: true,
         })
+    })
+}
+
+/// `win32::thumbnail` on Linux: the picture the desktop's file manager made of the file (the
+/// freedesktop thumbnail cache, GNOME's and KDE's), else one made here: a photo decoded and
+/// scaled down, a video's frame through the ffmpeg MDM uses for videos. None: the type's icon.
+#[cfg(target_os = "linux")]
+pub fn thumbnail(path: &Path, px: u32) -> Option<crate::preview::Picture> {
+    cached_thumbnail(path, px)
+        .or_else(|| decoded_picture(path, px))
+        .or_else(|| video_frame(path, px))
+}
+
+/// The Thumbnail Managing Standard's cache (`$XDG_CACHE_HOME/thumbnails`, `~/.cache/thumbnails`):
+/// the file's picture at the smallest size there at least `px`, else the largest, only one made
+/// from the file as it is now (its `Thumb::MTime` the file's date).
+#[cfg(target_os = "linux")]
+fn cached_thumbnail(path: &Path, px: u32) -> Option<crate::preview::Picture> {
+    use std::os::unix::ffi::OsStrExt;
+    let path = if path.is_absolute() {
+        path.to_path_buf()
+    } else {
+        std::env::current_dir().ok()?.join(path)
+    };
+    let mtime = std::fs::metadata(&path)
+        .ok()?
+        .modified()
+        .ok()?
+        .duration_since(std::time::UNIX_EPOCH)
+        .ok()?
+        .as_secs();
+    let cache = std::env::var_os("XDG_CACHE_HOME")
+        .map(PathBuf::from)
+        .filter(|p| p.is_absolute())
+        .or_else(|| std::env::var_os("HOME").map(|h| PathBuf::from(h).join(".cache")))?
+        .join("thumbnails");
+    let name =
+        crate::preview::thumbnail_name(&crate::preview::thumbnail_uri(path.as_os_str().as_bytes()));
+    let mut sizes = [
+        ("normal", 128u32),
+        ("large", 256),
+        ("x-large", 512),
+        ("xx-large", 1024),
+    ];
+    // The smallest at least as large as asked first, then the larger ones, then the smaller.
+    sizes.sort_by_key(|(_, s)| {
+        if *s >= px {
+            (0, *s)
+        } else {
+            (1, u32::MAX - *s)
+        }
+    });
+    sizes.iter().find_map(|(dir, _)| {
+        let file = cache.join(dir).join(&name);
+        if std::fs::metadata(&file).ok()?.len() > 16 << 20 {
+            return None;
+        }
+        let bytes = std::fs::read(&file).ok()?;
+        let made = crate::preview::png_text(&bytes, "Thumb::MTime")?;
+        // Seconds; some writers add a fraction.
+        if made.trim().parse::<f64>().ok()? as u64 != mtime {
+            return None;
+        }
+        let img = image::load_from_memory_with_format(&bytes, image::ImageFormat::Png).ok()?;
+        rgba_picture(img.to_rgba8())
+    })
+}
+
+/// A photo the desktop has no thumbnail of, decoded here and made `px` on its longer side, within
+/// limits (a huge picture is left to its icon).
+#[cfg(target_os = "linux")]
+fn decoded_picture(path: &Path, px: u32) -> Option<crate::preview::Picture> {
+    let ext = path.extension()?.to_str()?.to_ascii_lowercase();
+    if !matches!(
+        ext.as_str(),
+        "jpg" | "jpeg" | "png" | "gif" | "webp" | "bmp"
+    ) {
+        return None;
+    }
+    if std::fs::metadata(path).ok()?.len() > 200 << 20 {
+        return None;
+    }
+    let mut reader = image::ImageReader::open(path)
+        .ok()?
+        .with_guessed_format()
+        .ok()?;
+    let mut limits = image::Limits::default();
+    limits.max_image_width = Some(20_000);
+    limits.max_image_height = Some(20_000);
+    limits.max_alloc = Some(512 << 20);
+    reader.limits(limits);
+    let img = reader.decode().ok()?;
+    rgba_picture(img.thumbnail(px, px).to_rgba8())
+}
+
+/// A video's frame a few seconds in (its first when it is shorter), made by ffmpeg (the person's
+/// own, MDM's or the system's, as videos use) as a PNG on its output, `px` on its longer side.
+#[cfg(target_os = "linux")]
+fn video_frame(path: &Path, px: u32) -> Option<crate::preview::Picture> {
+    let ext = path.extension()?.to_str()?.to_ascii_lowercase();
+    if !matches!(
+        ext.as_str(),
+        "mp4"
+            | "mkv"
+            | "webm"
+            | "mov"
+            | "avi"
+            | "m4v"
+            | "wmv"
+            | "flv"
+            | "mpg"
+            | "mpeg"
+            | "ts"
+            | "3gp"
+            | "ogv"
+    ) {
+        return None;
+    }
+    let ffmpeg = mdm_tools::tools_dir()
+        .as_deref()
+        .and_then(mdm_tools::ffmpeg::installed)?;
+    let scale = format!("scale={px}:{px}:force_original_aspect_ratio=decrease");
+    ["3", "0"].iter().find_map(|at| {
+        let mut cmd = Command::new(&ffmpeg.exe);
+        cmd.args(["-nostdin", "-v", "error", "-ss", at, "-i"])
+            .arg(path)
+            .args([
+                "-frames:v",
+                "1",
+                "-vf",
+                &scale,
+                "-f",
+                "image2pipe",
+                "-c:v",
+                "png",
+                "-",
+            ]);
+        let out = crate::launch::output_within(&mut cmd, std::time::Duration::from_secs(15))?;
+        if !out.stdout.starts_with(b"\x89PNG") {
+            return None;
+        }
+        let img = image::load_from_memory_with_format(&out.stdout, image::ImageFormat::Png).ok()?;
+        rgba_picture(img.to_rgba8())
+    })
+}
+
+#[cfg(target_os = "linux")]
+fn rgba_picture(img: image::RgbaImage) -> Option<crate::preview::Picture> {
+    let (w, h) = img.dimensions();
+    (w > 0 && h > 0).then(|| crate::preview::Picture {
+        w,
+        h,
+        rgba: img.into_raw(),
+        premultiplied: false,
+        icon: false,
     })
 }
 
@@ -3737,22 +4191,78 @@ fn set_xattr(path: &Path, name: &str, value: &str) {
     };
 }
 
+/// Tests: one extended attribute of `path` (`webmark::assert_marked`): None when it has none of
+/// that name; `Err` when its file system takes none at all (ENOTSUP) or it can't be read.
+#[cfg(test)]
+#[allow(unsafe_code)]
+pub fn xattr(path: &Path, name: &str) -> std::io::Result<Option<String>> {
+    use std::ffi::CString;
+    use std::os::unix::ffi::OsStrExt;
+    let invalid = |_| std::io::Error::from(std::io::ErrorKind::InvalidInput);
+    let p = CString::new(path.as_os_str().as_bytes()).map_err(invalid)?;
+    let n = CString::new(name).map_err(invalid)?;
+    let mut buf = vec![0u8; 4096];
+    // SAFETY: both strings are NUL-terminated and live through the call, which writes at most
+    // `buf.len()` bytes into `buf`.
+    #[cfg(target_os = "macos")]
+    let got = unsafe {
+        libc::getxattr(
+            p.as_ptr(),
+            n.as_ptr(),
+            buf.as_mut_ptr().cast(),
+            buf.len(),
+            0,
+            0,
+        )
+    };
+    #[cfg(not(target_os = "macos"))]
+    let got = unsafe { libc::getxattr(p.as_ptr(), n.as_ptr(), buf.as_mut_ptr().cast(), buf.len()) };
+    let Ok(len) = usize::try_from(got) else {
+        let e = std::io::Error::last_os_error();
+        #[cfg(target_os = "macos")]
+        let missing = libc::ENOATTR;
+        #[cfg(not(target_os = "macos"))]
+        let missing = libc::ENODATA;
+        return if e.raw_os_error() == Some(missing) {
+            Ok(None)
+        } else {
+            Err(e)
+        };
+    };
+    buf.truncate(len);
+    Ok(Some(String::from_utf8_lossy(&buf).into_owned()))
+}
+
+/// macOS: `NSApp` (`NSApplication.sharedApplication`), or `None` off the main thread. AppKit is
+/// used from the main thread only, and the first `sharedApplication` makes the application: made
+/// on another thread it traps (SIGTRAP) and the whole program ends. The windows' thread is the
+/// main one; a unit test's thread isn't, and the app's logic it runs may still bring a window
+/// forward (Download File Info's same address again, #1741), so every AppKit call here starts
+/// from this and does nothing elsewhere.
+#[cfg(target_os = "macos")]
+#[allow(unsafe_code)]
+fn ns_app() -> Option<*mut objc2::runtime::AnyObject> {
+    use objc2::msg_send;
+    use objc2::runtime::{AnyClass, AnyObject};
+    objc2::MainThreadMarker::new()?;
+    let cls = AnyClass::get(c"NSApplication")?;
+    // SAFETY: on the main thread (just checked); the class method that gives the application.
+    let app: *mut AnyObject = unsafe { msg_send![cls, sharedApplication] };
+    (!app.is_null()).then_some(app)
+}
+
 /// macOS: whether `NSApplication.sharedApplication` is currently the active foreground app with a
 /// visible, non-minimized titled window (#558).
 #[cfg(target_os = "macos")]
 #[allow(unsafe_code)]
 pub fn macos_is_active_and_visible() -> bool {
     use objc2::msg_send;
-    use objc2::runtime::{AnyClass, AnyObject, Bool};
-    // SAFETY: called on the main UI thread; queries `NSApplication.sharedApplication`.
+    use objc2::runtime::{AnyObject, Bool};
+    // SAFETY: on the main thread (`ns_app`); queries `NSApplication.sharedApplication`.
     unsafe {
-        let Some(cls) = AnyClass::get(c"NSApplication") else {
+        let Some(app) = ns_app() else {
             return false;
         };
-        let app: *mut AnyObject = msg_send![cls, sharedApplication];
-        if app.is_null() {
-            return false;
-        }
         let active: Bool = msg_send![app, isActive];
         if !active.as_bool() {
             return false;
@@ -3795,17 +4305,13 @@ pub fn macos_is_active_and_visible() -> bool {
 #[allow(unsafe_code)]
 pub fn macos_unhide_app() {
     use objc2::msg_send;
-    use objc2::runtime::{AnyClass, AnyObject, Bool};
-    // SAFETY: called on the main UI thread; reads `isHidden` of, and sends
+    use objc2::runtime::Bool;
+    // SAFETY: on the main thread (`ns_app`); reads `isHidden` of, and sends
     // `unhideWithoutActivation` to, `NSApplication.sharedApplication`.
     unsafe {
-        let Some(cls) = AnyClass::get(c"NSApplication") else {
+        let Some(app) = ns_app() else {
             return;
         };
-        let app: *mut AnyObject = msg_send![cls, sharedApplication];
-        if app.is_null() {
-            return;
-        }
         let hidden: Bool = msg_send![app, isHidden];
         if hidden.as_bool() {
             let _: () = msg_send![app, unhideWithoutActivation];
@@ -3819,16 +4325,12 @@ pub fn macos_unhide_app() {
 #[allow(unsafe_code)]
 pub fn macos_hide_window() {
     use objc2::msg_send;
-    use objc2::runtime::{AnyClass, AnyObject, Bool};
-    // SAFETY: called on the main UI thread; orders out titled windows and hides `NSApp`.
+    use objc2::runtime::{AnyObject, Bool};
+    // SAFETY: on the main thread (`ns_app`); orders out titled windows and hides `NSApp`.
     unsafe {
-        let Some(cls) = AnyClass::get(c"NSApplication") else {
+        let Some(app) = ns_app() else {
             return;
         };
-        let app: *mut AnyObject = msg_send![cls, sharedApplication];
-        if app.is_null() {
-            return;
-        }
         let null_obj: *mut AnyObject = std::ptr::null_mut();
         let windows: *mut AnyObject = msg_send![app, windows];
         let mut visible_titled = 0usize;
@@ -3890,15 +4392,9 @@ unsafe fn activate_nsapp(app: *mut objc2::runtime::AnyObject, all_windows: bool)
 #[cfg(target_os = "macos")]
 #[allow(unsafe_code)]
 pub fn macos_activate_app() {
-    use objc2::msg_send;
-    use objc2::runtime::{AnyClass, AnyObject};
-    // SAFETY: called on the main UI thread; queries `NSApplication.sharedApplication`.
+    // SAFETY: `ns_app` gives `NSApp` on the main thread only.
     unsafe {
-        let Some(cls) = AnyClass::get(c"NSApplication") else {
-            return;
-        };
-        let app: *mut AnyObject = msg_send![cls, sharedApplication];
-        if !app.is_null() {
+        if let Some(app) = ns_app() {
             activate_nsapp(app, false);
         }
     }
@@ -3913,17 +4409,13 @@ pub fn macos_activate_app() {
 #[allow(unsafe_code)]
 pub fn macos_bring_window_forward(title: &str) -> Option<bool> {
     use objc2::msg_send;
-    use objc2::runtime::{AnyClass, AnyObject, Bool};
+    use objc2::runtime::{AnyObject, Bool};
     use objc2_foundation::NSString;
     let want = NSString::from_str(&crate::i18n::os_text(title));
-    // SAFETY: called on the main UI thread; iterates `[NSApp windows]` and orders the matching
+    // SAFETY: on the main thread (`ns_app`); iterates `[NSApp windows]` and orders the matching
     // visible, non-miniaturized titled window to the front.
     unsafe {
-        let cls = AnyClass::get(c"NSApplication")?;
-        let app: *mut AnyObject = msg_send![cls, sharedApplication];
-        if app.is_null() {
-            return None;
-        }
+        let app = ns_app()?;
         let windows: *mut AnyObject = msg_send![app, windows];
         if windows.is_null() {
             return None;
@@ -3978,17 +4470,13 @@ pub fn macos_bring_window_forward(title: &str) -> Option<bool> {
 #[allow(unsafe_code)]
 pub fn macos_window_miniaturized(title: &str) -> Option<bool> {
     use objc2::msg_send;
-    use objc2::runtime::{AnyClass, AnyObject, Bool};
+    use objc2::runtime::{AnyObject, Bool};
     use objc2_foundation::NSString;
     let want = NSString::from_str(&crate::i18n::os_text(title));
-    // SAFETY: called on the main UI thread; iterates `[NSApp windows]` and reads the matching
+    // SAFETY: on the main thread (`ns_app`); iterates `[NSApp windows]` and reads the matching
     // titled window's `isMiniaturized`, changing nothing.
     unsafe {
-        let cls = AnyClass::get(c"NSApplication")?;
-        let app: *mut AnyObject = msg_send![cls, sharedApplication];
-        if app.is_null() {
-            return None;
-        }
+        let app = ns_app()?;
         let windows: *mut AnyObject = msg_send![app, windows];
         if windows.is_null() {
             return None;
@@ -4023,17 +4511,13 @@ pub fn macos_window_miniaturized(title: &str) -> Option<bool> {
 #[allow(unsafe_code)]
 pub fn macos_activate_and_show() {
     use objc2::msg_send;
-    use objc2::runtime::{AnyClass, AnyObject, Bool};
-    // SAFETY: called on the main UI thread; activates `NSRunningApplication.currentApplication` and
+    use objc2::runtime::{AnyObject, Bool};
+    // SAFETY: on the main thread (`ns_app`); activates `NSRunningApplication.currentApplication` and
     // `NSApplication.sharedApplication`, and orders all titled windows to the front.
     unsafe {
-        let Some(cls) = AnyClass::get(c"NSApplication") else {
+        let Some(app) = ns_app() else {
             return;
         };
-        let app: *mut AnyObject = msg_send![cls, sharedApplication];
-        if app.is_null() {
-            return;
-        }
         let null_obj: *mut AnyObject = std::ptr::null_mut();
         activate_nsapp(app, true);
         let windows: *mut AnyObject = msg_send![app, windows];
@@ -4272,6 +4756,10 @@ pub fn rename_no_replace(from: &Path, to: &Path) -> std::io::Result<()> {
                 return Err(err);
             }
         }
+        // Android: the fallback alone (its app sandbox's system call filter isn't relied on for
+        // renameat2).
+        #[cfg(target_os = "android")]
+        let _ = (from_c, to_c);
 
         fallback_rename_no_replace(from, to)
     }
@@ -4325,6 +4813,61 @@ mod macos_focus_tests {
         assert!(super::macos_window_needs_lift(true, true, true));
         assert!(super::macos_window_needs_lift(true, false, false));
         assert!(super::macos_window_needs_lift(false, true, false));
+    }
+
+    /// AppKit off the main thread does nothing (`ns_app`): Download File Info's same address
+    /// again brought its window forward from a test's thread, and the first `NSApp` made there
+    /// trapped and ended the whole macOS test run (#1741).
+    #[cfg(target_os = "macos")]
+    #[test]
+    fn appkit_off_the_main_thread_does_nothing() {
+        std::thread::spawn(|| {
+            assert!(super::ns_app().is_none());
+            super::macos_activate_app();
+            super::macos_unhide_app();
+            super::macos_hide_window();
+            super::macos_activate_and_show();
+            assert!(!super::macos_is_active_and_visible());
+            assert_eq!(
+                super::macos_bring_window_forward("Download File Info"),
+                None
+            );
+            assert_eq!(super::macos_window_miniaturized("Download File Info"), None);
+            super::dock_progress(Some(0.5));
+            super::dock_progress(None);
+        })
+        .join()
+        .expect("nothing traps or panics");
+    }
+}
+
+#[cfg(test)]
+mod dock_progress_tests {
+    use std::ffi::OsStr;
+
+    use super::launched_entry;
+
+    /// The entry a launcher named counts only for the process it started (#1777).
+    #[test]
+    fn the_launched_entry_is_ours_only_when_its_pid_is() {
+        let renamed = OsStr::new("/home/u/.local/share/applications/appimagekit_0f-mdm.desktop");
+        assert_eq!(
+            launched_entry(Some(renamed), Some("4242"), 4242).as_deref(),
+            Some("appimagekit_0f-mdm.desktop")
+        );
+        // A terminal started from the dock hands its own entry down to what runs in it.
+        let terminal = OsStr::new("/usr/share/applications/org.gnome.Terminal.desktop");
+        assert_eq!(launched_entry(Some(terminal), Some("4000"), 4242), None);
+        assert_eq!(launched_entry(Some(terminal), None, 4242), None);
+        assert_eq!(launched_entry(None, Some("4242"), 4242), None);
+        assert_eq!(
+            launched_entry(Some(OsStr::new("/tmp/notes.txt")), Some("4242"), 4242),
+            None
+        );
+        assert_eq!(
+            launched_entry(Some(OsStr::new("/x/.desktop")), Some("4242"), 4242),
+            None
+        );
     }
 }
 
@@ -5054,6 +5597,171 @@ mod host_copy_tests {
     }
 }
 
+// ---- pop-ups that wait (#1773, hold.rs) ---------------------------------------------------
+
+/// The session's lock as logind last said it (`LockedHint`): 0 not known, 1 unlocked, 2 locked.
+#[cfg(target_os = "linux")]
+static SESSION_LOCKED: std::sync::atomic::AtomicU8 = std::sync::atomic::AtomicU8::new(0);
+
+/// Linux: why MDM's pop-ups wait now: the session locked (logind's `LockedHint`, which GNOME's
+/// and KDE's lock screens set), or the active X11 window full screen (`_NET_WM_STATE_FULLSCREEN`:
+/// a game, a video, a presentation; on Wayland, the programs that run on XWayland, as most games
+/// do). A Wayland program's own full screen can't be seen: Wayland tells no program about
+/// another's windows. Nor is the desktop's idle inhibition taken for "busy": a video playing in a
+/// window, or music, holds it too. None where neither can be known: pop-ups show as before.
+#[cfg(target_os = "linux")]
+pub fn pop_ups_wait() -> Option<crate::hold::Busy> {
+    watch_session_lock();
+    if SESSION_LOCKED.load(std::sync::atomic::Ordering::Relaxed) == 2 {
+        return Some(crate::hold::Busy::Away);
+    }
+    active_window_full_screen().then_some(crate::hold::Busy::FullScreen)
+}
+
+/// Follows logind's `LockedHint` for this session on a thread of its own, from the first call.
+#[cfg(target_os = "linux")]
+fn watch_session_lock() {
+    static WATCH: std::sync::Once = std::sync::Once::new();
+    WATCH.call_once(|| {
+        let _ = std::thread::Builder::new()
+            .name("session-lock".into())
+            .spawn(|| {
+                let set = |locked: bool| {
+                    let v = if locked { 2 } else { 1 };
+                    if SESSION_LOCKED.swap(v, std::sync::atomic::Ordering::Relaxed) != v {
+                        tracing::info!(
+                            "the session is {}",
+                            if locked { "locked" } else { "unlocked" }
+                        );
+                    }
+                };
+                let watch = || -> zbus::Result<()> {
+                    let conn = zbus::blocking::Connection::system()?;
+                    // The user's graphical session, whose screen locks (logind's `User.Display`);
+                    // else "auto": this program's session, or its user's graphical one when the
+                    // program runs outside a session (started by the desktop's systemd user
+                    // manager); "self" on a logind before "auto". The program's own session can
+                    // be another one, without a screen (a remote login that started it).
+                    let display = zbus::blocking::Proxy::new(
+                        &conn,
+                        "org.freedesktop.login1",
+                        "/org/freedesktop/login1/user/self",
+                        "org.freedesktop.login1.User",
+                    )
+                    .and_then(|user| {
+                        user.get_property::<(String, zbus::zvariant::OwnedObjectPath)>("Display")
+                    })
+                    .ok()
+                    .map(|(_, path)| path.to_string())
+                    .filter(|path| path != "/");
+                    let session = display
+                        .into_iter()
+                        .chain([
+                            "/org/freedesktop/login1/session/auto".to_owned(),
+                            "/org/freedesktop/login1/session/self".to_owned(),
+                        ])
+                        .find_map(|path| {
+                            let p = zbus::blocking::Proxy::new(
+                                &conn,
+                                "org.freedesktop.login1",
+                                path.clone(),
+                                "org.freedesktop.login1.Session",
+                            )
+                            .ok()?;
+                            let now = p.get_property::<bool>("LockedHint").ok()?;
+                            Some((p, now, path))
+                        });
+                    let Some((session, now, path)) = session else {
+                        return Err(zbus::Error::Failure("no session of logind's".into()));
+                    };
+                    tracing::info!("the session's lock: followed on {path}");
+                    set(now);
+                    for change in session.receive_property_changed::<bool>("LockedHint") {
+                        set(change.get()?);
+                    }
+                    Ok(())
+                };
+                if let Err(e) = watch() {
+                    tracing::info!("the session's lock isn't known: {e}");
+                }
+            });
+    });
+}
+
+/// The X server's connection for [`active_window_full_screen`], and the atoms it asks with.
+#[cfg(target_os = "linux")]
+struct FullScreenLook {
+    conn: x11rb::rust_connection::RustConnection,
+    root: u32,
+    active: u32,
+    state: u32,
+    full: u32,
+}
+
+/// Whether the X server's active window is full screen (EWMH). False without an X server.
+#[cfg(target_os = "linux")]
+fn active_window_full_screen() -> bool {
+    use x11rb::connection::Connection;
+    use x11rb::protocol::xproto::{AtomEnum, ConnectionExt};
+    // Not tried yet: None; no X server: Some(None).
+    static X11: std::sync::Mutex<Option<Option<FullScreenLook>>> = std::sync::Mutex::new(None);
+    if std::env::var_os("DISPLAY").is_none_or(|d| d.is_empty()) {
+        return false;
+    }
+    let Ok(mut x11) = X11.lock() else {
+        return false;
+    };
+    let connect = || -> Result<FullScreenLook, Box<dyn std::error::Error>> {
+        let (conn, screen) = x11rb::rust_connection::RustConnection::connect(None)?;
+        let atom = |name: &[u8]| -> Result<u32, Box<dyn std::error::Error>> {
+            Ok(conn.intern_atom(false, name)?.reply()?.atom)
+        };
+        let (active, state, full) = (
+            atom(b"_NET_ACTIVE_WINDOW")?,
+            atom(b"_NET_WM_STATE")?,
+            atom(b"_NET_WM_STATE_FULLSCREEN")?,
+        );
+        let root = conn.setup().roots[screen].root;
+        Ok(FullScreenLook {
+            conn,
+            root,
+            active,
+            state,
+            full,
+        })
+    };
+    let look = x11.get_or_insert_with(|| connect().ok());
+    let Some(x) = look.as_ref() else {
+        return false;
+    };
+    let ask = || -> Result<bool, Box<dyn std::error::Error>> {
+        let active = x
+            .conn
+            .get_property(false, x.root, x.active, AtomEnum::WINDOW, 0, 1)?
+            .reply()?;
+        let Some(window) = active.value32().and_then(|mut v| v.next()) else {
+            return Ok(false);
+        };
+        if window == x11rb::NONE {
+            return Ok(false);
+        }
+        let state = x
+            .conn
+            .get_property(false, window, x.state, AtomEnum::ATOM, 0, 64)?
+            .reply()?;
+        Ok(state.value32().is_some_and(|mut v| v.any(|a| a == x.full)))
+    };
+    match ask() {
+        Ok(full) => full,
+        Err(_) => {
+            // A window gone between the two questions, or the connection lost: asked again
+            // next time, over a new connection.
+            *x11 = None;
+            false
+        }
+    }
+}
+
 #[cfg(test)]
 mod startup_tests {
     use super::{DELETED, StartupState, entry_program, present, startup_entry, startup_state};
@@ -5224,6 +5932,13 @@ mod startup_tests {
 // (desktops that log in on their own often have a locked keyring, #164), so a locked or missing
 // keyring leaves the secrets in the owner-only settings. macOS: the login keychain's generic
 // passwords (SecItemAdd / SecItemCopyMatching, through security-framework).
+
+// Android: the keystore, exact alarms and wake locks, which the Android app holds (android.rs).
+#[cfg(target_os = "android")]
+pub use crate::android::{
+    default_browser, file_icon, keep_awake, keychain_delete, keychain_list, keychain_probe,
+    keychain_read, keychain_write, thumbnail, wake_at,
+};
 
 #[cfg(target_os = "linux")]
 pub use secret_service::{
@@ -5550,6 +6265,11 @@ pub fn wake_support() -> crate::wake::Support {
     #[cfg(target_os = "macos")]
     {
         crate::wake::Support::MacAdmin
+    }
+    // Android: an exact alarm starts the app, once the Android app is there to set it.
+    #[cfg(target_os = "android")]
+    {
+        crate::android::wake_support()
     }
 }
 

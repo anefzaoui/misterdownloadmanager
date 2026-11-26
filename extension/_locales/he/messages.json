@@ -284,6 +284,64 @@
   "popup_media_title_name": {
     "message": "הוספת כותרת הדף לפני שמות קובצי המדיה"
   },
+  "popup_images": {
+    "message": "תמונות בדף זה"
+  },
+  "popup_images_text": {
+    "message": "מצא את התמונות בדף זה בגודל הגדול ביותר הרשום, ולאחר מכן שלח את אלה שברצונך להוריד אל 'אוסף קישורים'."
+  },
+  "popup_images_find": {
+    "message": "מצא תמונות"
+  },
+  "popup_images_min": {
+    "message": "הגודל הקטן ביותר, בפיקסלים"
+  },
+  "popup_images_width": {
+    "message": "הרוחב הקטן ביותר, בפיקסלים"
+  },
+  "popup_images_height": {
+    "message": "הגובה הקטן ביותר, בפיקסלים"
+  },
+  "popup_images_types": {
+    "message": "סוגי תמונות"
+  },
+  "popup_images_other": {
+    "message": "אחר"
+  },
+  "popup_images_count": {
+    "message": "$shown$ מתוך $total$ נבחרו",
+    "placeholders": {
+      "shown": {
+        "content": "$1",
+        "example": "12"
+      },
+      "total": {
+        "content": "$2",
+        "example": "40"
+      }
+    }
+  },
+  "popup_images_unsized": {
+    "message": "גודל לא צוין, נשמר: $n$",
+    "placeholders": {
+      "n": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "popup_images_send": {
+    "message": "שלח ל'אוסף קישורים'"
+  },
+  "popup_images_sent": {
+    "message": "נשלח ל'אוסף קישורים': סמן את אלה שברצונך להוריד שם."
+  },
+  "popup_images_none": {
+    "message": "לא נמצאו תמונות בדף זה."
+  },
+  "popup_images_unreadable": {
+    "message": "הדפדפן לא מאפשר לתוספים לקרוא דף זה."
+  },
   "video_cant_save": {
     "message": "לא ניתן לשמור"
   },
@@ -291,7 +349,7 @@
     "message": "פתח פוסט"
   },
   "video_drag_dots": {
-    "message": "גרור את הנקודות כדי להזיז אותו לאורך הקצה"
+    "message": "גרור את הנקודות כדי להזיז אותו לפינה אחרת, או מחוץ לסרטון"
   },
   "video_tip": {
     "message": "הורד את $what$",
@@ -765,5 +823,108 @@
   },
   "popup_dl_open_remote": {
     "message": "פתח את הדף שלו"
+  },
+  "video_home": {
+    "message": "החזר את הלחצן למקומו"
+  },
+  "video_filter_all": {
+    "message": "הכל"
+  },
+  "video_filter_audio": {
+    "message": "שמע בלבד"
+  },
+  "video_filter_kind": {
+    "message": "הצג"
+  },
+  "video_filter_type": {
+    "message": "סוג הקובץ"
+  },
+  "video_filter_codec": {
+    "message": "קודק"
+  },
+  "popup_video_reset_text": {
+    "message": "לחצן ההורדה שמעל לסרטונים"
+  },
+  "popup_video_reset_sub": {
+    "message": "המיקומים שאליהם העברת אותו והמסננים בתפריט שלו, בכל אתר"
+  },
+  "popup_video_reset": {
+    "message": "איפוס"
+  },
+  "popup_video_reset_done": {
+    "message": "חזר למקומו, התפריט שלו מציג הכול, בכל אתר"
+  },
+  "status_links_sent": {
+    "message": "קישורים שנשלחו: $count$",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "10"
+      }
+    }
+  },
+  "status_links_cut": {
+    "message": "קישורים שנשלחו: $sent$, $left$ הושמטו",
+    "placeholders": {
+      "sent": {
+        "content": "$1",
+        "example": "100"
+      },
+      "left": {
+        "content": "$2",
+        "example": "20"
+      }
+    }
+  },
+  "status_links_partial": {
+    "message": "קישורים שנשלחו: $sent$, סורבו: $refused$",
+    "placeholders": {
+      "sent": {
+        "content": "$1",
+        "example": "5"
+      },
+      "refused": {
+        "content": "$2",
+        "example": "2"
+      }
+    }
+  },
+  "status_links_partial_cut": {
+    "message": "קישורים שנשלחו: $sent$, סורבו: $refused$, $left$ הושמטו",
+    "placeholders": {
+      "sent": {
+        "content": "$1",
+        "example": "5"
+      },
+      "refused": {
+        "content": "$2",
+        "example": "2"
+      },
+      "left": {
+        "content": "$3",
+        "example": "1"
+      }
+    }
+  },
+  "status_links_refused": {
+    "message": "קישורים שסורבו: $count$",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "status_links_none": {
+    "message": "אין קישורים ניתנים ללכידה ($left$ הושמטו)",
+    "placeholders": {
+      "left": {
+        "content": "$1",
+        "example": "5"
+      }
+    }
+  },
+  "status_unreachable": {
+    "message": "השרת לא נגיש"
   }
 }

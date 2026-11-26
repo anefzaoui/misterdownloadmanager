@@ -284,6 +284,64 @@
   "popup_media_title_name": {
     "message": "የገጹን ርዕስ ከሚዲያ ፋይል ስሞች በፊት አክል"
   },
+  "popup_images": {
+    "message": "በዚህ ገጽ ላይ ያሉ ምስሎች"
+  },
+  "popup_images_text": {
+    "message": "የዚህን ገጽ ምስሎች በዝርዝሩ ውስጥ ባለው ትልቁ መጠን ያግኙ፣ ከዚያ የሚፈልጉትን ወደ Link grabber ይላኩ።"
+  },
+  "popup_images_find": {
+    "message": "ምስሎችን ያግኙ"
+  },
+  "popup_images_min": {
+    "message": "ትንሹ መጠን፣ በፒክሰሎች"
+  },
+  "popup_images_width": {
+    "message": "በፒክስል ትንሹ ስፋት"
+  },
+  "popup_images_height": {
+    "message": "በፒክስል ትንሹ ቁመት"
+  },
+  "popup_images_types": {
+    "message": "የምስል አይነቶች"
+  },
+  "popup_images_other": {
+    "message": "ሌላ"
+  },
+  "popup_images_count": {
+    "message": "ከ$total$ ውስጥ $shown$ ተመርጠዋል",
+    "placeholders": {
+      "shown": {
+        "content": "$1",
+        "example": "12"
+      },
+      "total": {
+        "content": "$2",
+        "example": "40"
+      }
+    }
+  },
+  "popup_images_unsized": {
+    "message": "መጠን አልተሰጠም፣ ተቀምጧል፦ $n$",
+    "placeholders": {
+      "n": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "popup_images_send": {
+    "message": "ወደ Link grabber ይላኩ"
+  },
+  "popup_images_sent": {
+    "message": "ወደ Link grabber ተልከዋል፦ ለማውረድ የሚፈልጉትን እዚያ ይምረጡ።"
+  },
+  "popup_images_none": {
+    "message": "በዚህ ገጽ ላይ ምንም ምስሎች አልተገኙም።"
+  },
+  "popup_images_unreadable": {
+    "message": "አሳሹ ተጨማሪዎች ይህን ገጽ እንዲያነቡ አይፈቅድም።"
+  },
   "video_cant_save": {
     "message": "ማስቀመጥ አይቻልም"
   },
@@ -291,7 +349,7 @@
     "message": "ልጥፍ ክፈት"
   },
   "video_drag_dots": {
-    "message": "ነጥቦቹን በመጎተት በጠርዙ በኩል ያንቀሳቅሱት"
+    "message": "ወደ ሌላ ማዕዘን ወይም ከቪዲዮው ውጭ ለማንቀሳቀስ ነጥቦቹን ይጎትቱ"
   },
   "video_tip": {
     "message": "$what$ ያውርዱ",
@@ -765,5 +823,108 @@
   },
   "popup_dl_open_remote": {
     "message": "ገጹን ይክፈቱ"
+  },
+  "video_home": {
+    "message": "ቁልፉን ወደ ማዕዘኑ ይመልሱ"
+  },
+  "video_filter_all": {
+    "message": "ሁሉም"
+  },
+  "video_filter_audio": {
+    "message": "ድምጽ ብቻ"
+  },
+  "video_filter_kind": {
+    "message": "አሳይ"
+  },
+  "video_filter_type": {
+    "message": "የፋይል አይነት"
+  },
+  "video_filter_codec": {
+    "message": "ኮዴክ"
+  },
+  "popup_video_reset_text": {
+    "message": "በቪዲዮዎች ላይ የማውረድ ቁልፍ"
+  },
+  "popup_video_reset_sub": {
+    "message": "በእያንዳንዱ ጣቢያ ላይ ያንቀሳቀሱበት ቦታ እና የምናሌው ማጣሪያዎች"
+  },
+  "popup_video_reset": {
+    "message": "ዳግም አስጀምር"
+  },
+  "popup_video_reset_done": {
+    "message": "በየጣቢያው፣ በየማዕዘኑ፣ ምናሌው ሁሉንም ነገር እያሳየ"
+  },
+  "status_links_sent": {
+    "message": "አገናኞች ተልከዋል፦ $count$",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "10"
+      }
+    }
+  },
+  "status_links_cut": {
+    "message": "አገናኞች ተልከዋል፦ $sent$፣ $left$ አልተካተቱም",
+    "placeholders": {
+      "sent": {
+        "content": "$1",
+        "example": "100"
+      },
+      "left": {
+        "content": "$2",
+        "example": "20"
+      }
+    }
+  },
+  "status_links_partial": {
+    "message": "አገናኞች ተልከዋል፦ $sent$፣ ውድቅ ተደርገዋል፦ $refused$",
+    "placeholders": {
+      "sent": {
+        "content": "$1",
+        "example": "5"
+      },
+      "refused": {
+        "content": "$2",
+        "example": "2"
+      }
+    }
+  },
+  "status_links_partial_cut": {
+    "message": "አገናኞች ተልከዋል፦ $sent$፣ ውድቅ ተደርገዋል፦ $refused$፣ $left$ አልተካተቱም",
+    "placeholders": {
+      "sent": {
+        "content": "$1",
+        "example": "5"
+      },
+      "refused": {
+        "content": "$2",
+        "example": "2"
+      },
+      "left": {
+        "content": "$3",
+        "example": "1"
+      }
+    }
+  },
+  "status_links_refused": {
+    "message": "አገናኞች ውድቅ ተደርገዋል፦ $count$",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "status_links_none": {
+    "message": "ሊያዙ የሚችሉ አገናኞች የሉም ($left$ አልተካተቱም)",
+    "placeholders": {
+      "left": {
+        "content": "$1",
+        "example": "5"
+      }
+    }
+  },
+  "status_unreachable": {
+    "message": "አገልጋይ አልተደረሰበትም"
   }
 }

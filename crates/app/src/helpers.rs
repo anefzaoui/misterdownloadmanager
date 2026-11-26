@@ -451,8 +451,10 @@ impl Helpers {
             let mut more = 0.0;
             if failed && winui::text_width(&p, &line) > room {
                 // A failure is read whole (#816): wrapped, the window growing by its lines past
-                // the first.
-                let n = winui::readable_paragraph(
+                // the first. And it is a polite live region: a screen reader speaks it as it
+                // comes, without the focus — the running percentages never are, or they would
+                // interrupt endlessly (#1407).
+                let n = winui::readable_paragraph_live(
                     ui,
                     &p,
                     o.x + 20.0,
@@ -476,8 +478,13 @@ impl Helpers {
                     &shown,
                     color,
                 );
-                // Whole for a screen reader too, even when the window cut it (#1407).
-                winui::readable(ui, rc, ("helpers", "status"), &line);
+                // Whole for a screen reader too, even when the window cut it (#1407). A failure
+                // is a polite live region — spoken as it comes; the percentages aren't.
+                if failed {
+                    winui::readable_live(ui, rc, ("helpers", "status"), &line);
+                } else {
+                    winui::readable(ui, rc, ("helpers", "status"), &line);
+                }
                 if shown != line {
                     winui::full_on_hover(ui, rc, "helpers-status", &line);
                 }
@@ -674,6 +681,72 @@ fn tool_of(h: Helper) -> Tool {
     }
 }
 
+/// What a row's own-copy button does (#1801), from where its program comes from now.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+enum OwnButton {
+    /// Forget the program the person chose: MDM's own copy is used again (installed first when
+    /// there is none).
+    Forget,
+    /// Download and install MDM's own copy: `first` where there is none yet ("Install …"), else
+    /// in place of the system's (#452, #571).
+    Install { first: bool },
+    /// Greyed: MDM's own copy is already the one used, or MDM has none for this system (the
+    /// row's status says so).
+    Off,
+}
+
+impl OwnButton {
+    /// For a row whose program is one the person chose (`chosen`), else the one found
+    /// (`found`: whether it is the system's, None when there is none), where MDM has (`has_own`)
+    /// or hasn't a copy of its own for this system and processor.
+    fn of(chosen: bool, found: Option<bool>, has_own: bool) -> OwnButton {
+        match found {
+            _ if chosen => OwnButton::Forget,
+            _ if !has_own => OwnButton::Off,
+            None => OwnButton::Install { first: true },
+            Some(true) => OwnButton::Install { first: false },
+            Some(false) => OwnButton::Off,
+        }
+    }
+
+    /// Its label (translated by the button): "Install yt-dlp" (or its tool's) where there is
+    /// nothing yet, else "Use MDM's own copy".
+    fn label(self, t: Tool) -> &'static str {
+        if self != (OwnButton::Install { first: true }) {
+            // i18n: Video helpers: button: go back to the copy MDM downloads and checks itself
+            return crate::i18n::mark("Use MDM's own copy");
+        }
+        match t {
+            // i18n: button: download and install the yt-dlp program
+            Tool::YtDlp => crate::i18n::mark("Install yt-dlp"),
+            // i18n: button: download and install the ffmpeg program
+            Tool::Ffmpeg => crate::i18n::mark("Install ffmpeg"),
+            // i18n: button: download and install the gallery-dl program
+            Tool::GalleryDl => crate::i18n::mark("Install gallery-dl"),
+            // i18n: button in Download video: download and install Node.js, the JavaScript runtime YouTube needs (Node.js is a program's name)
+            Tool::Node => crate::i18n::mark("Install Node.js"),
+        }
+    }
+}
+
+/// A row's status while MDM's own copy of `t` downloads (#1801): how far, once its size is known,
+/// as an update says it.
+fn downloading_own(dir: Option<&std::path::Path>, tool: Tool) -> String {
+    use crate::i18n::{fmt, t};
+    match dir
+        .and_then(|d| mdm_tools::autoupdate::checking(d, tool))
+        .and_then(|p| p.fraction())
+    {
+        Some(f) => fmt(
+            // i18n: Helpers: MDM's own copy of a helper is being downloaded (where there was none, or in place of the system's); {percent} = how far, a number
+            t("Downloading MDM's own copy... {percent}%"),
+            &[("percent", &format!("{:.0}", f * 100.0))],
+        ),
+        // i18n: Video helpers: MDM's own yt-dlp is being downloaded
+        None => t("Downloading MDM's own copy...").to_owned(),
+    }
+}
+
 /// How long "Updated to …" is said after an update.
 const UPDATED_SHOWN: i64 = 3 * 24 * 3600;
 
@@ -762,24 +835,14 @@ impl Programs {
         rt: &tokio::runtime::Handle,
         ctx: &egui::Context,
     ) {
-        let slot: Answer = Arc::new(Mutex::new(None));
-        let (out, wake) = (slot.clone(), ctx.clone());
-        let net = crate::settings::own_net();
-        rt.spawn(async move {
-            let res = mdm_tools::jsruntime::install_latest(&dir, &net, None).await;
-            if let Err(e) = &res {
-                tracing::warn!("Node.js download failed: {e}");
-            }
-            *out.lock().unwrap() = Some(res.map(|_| ()).map_err(|e| crate::errors::tools(&e)));
-            wake.request_repaint();
-        });
-        self.installing_runtime = Some(slot);
+        self.installing_runtime = Some(Self::start_install(Tool::Node, dir, rt, ctx));
         self.error = None;
     }
 
-    /// MDM's own yt-dlp or gallery-dl in place of the system's (#452, #571): downloaded and
-    /// checked as usual, from then on the one used (`mdm_tools::installed`,
-    /// `mdm_tools::gallery::installed`). It goes on if the window is closed.
+    /// MDM's own yt-dlp, ffmpeg or gallery-dl, where there is none yet (#1801) or in place of
+    /// the system's (#452, #571): downloaded and checked as usual, from then on the one used
+    /// (`mdm_tools::installed` and the like) and kept up to date. It goes on if the window is
+    /// closed.
     fn install_own(
         &mut self,
         h: Helper,
@@ -787,22 +850,29 @@ impl Programs {
         rt: &tokio::runtime::Handle,
         ctx: &egui::Context,
     ) {
+        self.installing = Some((h, Self::start_install(tool_of(h), dir, rt, ctx)));
+        self.error = None;
+    }
+
+    /// Every row's install of MDM's own copy of `t`, in the background
+    /// (`mdm_tools::autoupdate::install_own`: its progress shown as an update's, and the
+    /// automatic checks going on from it).
+    fn start_install(
+        t: Tool,
+        dir: std::path::PathBuf,
+        rt: &tokio::runtime::Handle,
+        ctx: &egui::Context,
+    ) -> Answer {
         let slot: Answer = Arc::new(Mutex::new(None));
         let (out, wake) = (slot.clone(), ctx.clone());
         let net = crate::settings::own_net();
         rt.spawn(async move {
-            let res = if h == Helper::GalleryDl {
-                mdm_tools::gallery::install_latest(&dir, &net, None).await
-            } else if h == Helper::Ffmpeg {
-                mdm_tools::ffmpeg::install_latest(&dir, &net, None).await
-            } else {
-                mdm_tools::install_latest(&dir, &net, None).await
-            };
+            let now = mdm_tools::autoupdate::unix_now();
+            let res = mdm_tools::autoupdate::install_own(&dir, t, &net, now).await;
             *out.lock().unwrap() = Some(res.map(|_| ()).map_err(|e| crate::errors::tools(&e)));
             wake.request_repaint();
         });
-        self.installing = Some((h, slot));
-        self.error = None;
+        slot
     }
 
     /// Check for updates (`tools`: every own copy) or one row's Update, now, in the background:
@@ -1028,7 +1098,7 @@ impl Programs {
         let p = ui.painter().clone();
         for (k, h) in HELPERS.into_iter().enumerate() {
             let y = o.y + 8.0 + k as f32 * 78.0;
-            winui::text_font(
+            let name_rc = winui::text_font(
                 &p,
                 winui::tahoma_bold(),
                 o.x + 14.0,
@@ -1036,6 +1106,8 @@ impl Programs {
                 h.name(),
                 winui::TEXT(),
             );
+            // Painted text a screen reader couldn't see before (#1407).
+            winui::readable(ui, name_rc, ("helper-name", k), h.name());
             let found = self.found[k].as_ref();
             let chosen = self
                 .dir
@@ -1056,15 +1128,13 @@ impl Programs {
                 Helper::GalleryDl => mdm_tools::gallery::asset().is_some(),
                 Helper::Ffmpeg => mdm_tools::ffmpeg::available(),
             };
-            // The system's copy may be the person's to keep up to date: MDM's own can replace it
-            // (#452, #571), where MDM has one for this system and processor.
-            let replaceable = has_own;
-            let system = replaceable && found.is_some_and(mdm_tools::Installed::is_system);
+            // MDM's own copy, where MDM has one for this system and processor: back from the
+            // person's own program, in place of the system's (which may be the person's to keep
+            // up to date, #452, #571), or installed where there is none yet (#1801).
+            let own_button =
+                OwnButton::of(mine, found.map(mdm_tools::Installed::is_system), has_own);
             let status = match (too_old, found) {
-                _ if downloading => {
-                    // i18n: Video helpers: MDM's own yt-dlp is being downloaded
-                    crate::i18n::t("Downloading MDM's own copy...").to_owned()
-                }
+                _ if downloading => downloading_own(self.dir.as_deref(), tool_of(h)),
                 _ if checking => {
                     // i18n: Video helpers: a program just chosen is being checked
                     crate::i18n::t("Checking the program...").to_owned()
@@ -1109,7 +1179,7 @@ impl Programs {
                 )
                 .to_owned(),
             };
-            winui::fit(
+            let status_rc = winui::fit(
                 ui,
                 &p,
                 o.x + 14.0,
@@ -1119,6 +1189,7 @@ impl Programs {
                 o.x + 486.0,
                 ("helper", k),
             );
+            winui::readable(ui, status_rc, ("helper-status", k), &status);
             // Its updates: MDM's own copy's, or the person's to make (#1544).
             let name_end =
                 o.x + 14.0 + winui::text_width_font(&p, winui::tahoma_bold(), h.name()) + 10.0;
@@ -1130,12 +1201,13 @@ impl Programs {
             };
             self.update_row(ui, &p, o, y, name_end, tool_of(h), updates, rt);
             let busy = self.busy();
+            let own_label = own_button.label(tool_of(h));
             // As wide as their labels in this language (#192), side by side from the left.
             let [other_at, own_at] = winui::button_row_from_left(
                 &p,
                 &[
                     ("Use another program...", 14.0, 180.0),
-                    ("Use MDM's own copy", 202.0, 180.0),
+                    (own_label, 202.0, 180.0),
                 ],
                 8.0,
                 486.0,
@@ -1143,7 +1215,9 @@ impl Programs {
             )[..] else {
                 unreachable!("two buttons")
             };
-            if winui::button(
+            // i18n: file picker title; {name} = yt-dlp or ffmpeg
+            let choose = crate::i18n::fmt(crate::i18n::t("Choose {name}"), &[("name", h.name())]);
+            let other = winui::button(
                 ui,
                 r(o, other_at.0, y - o.y + 46.0, other_at.1, 21.0),
                 // i18n: Video helpers: button: pick a program (yt-dlp or ffmpeg) already on the computer
@@ -1155,39 +1229,63 @@ impl Programs {
                 },
                 false,
                 None,
-            )
-            .clicked()
-            {
-                // i18n: file picker title; {name} = yt-dlp or ffmpeg
-                let title =
-                    crate::i18n::fmt(crate::i18n::t("Choose {name}"), &[("name", h.name())]);
+            );
+            // The same label on every row: said with its helper's name (#1407), the visible
+            // label first so voice control finds it by what it shows.
+            winui::name(
+                &other,
+                &crate::i18n::fmt(
+                    // i18n: Helpers: the "Use another program..." button's name for a screen reader; {name} = the helper (yt-dlp, ffmpeg, gallery-dl)
+                    crate::i18n::t("Use another program for {name}..."),
+                    &[("name", h.name())],
+                ),
+            );
+            if other.clicked() {
                 winui::start_pick(ui.ctx(), &format!("helper-{}", h.name()), move || {
-                    crate::winui::file_dialog(&title).pick_file()
+                    crate::winui::file_dialog(&choose).pick_file()
                 });
             }
-            if winui::button(
+            let own_b = winui::button(
                 ui,
                 r(o, own_at.0, y - o.y + 46.0, own_at.1, 21.0),
-                // i18n: Video helpers: button: go back to the copy MDM downloads and checks itself
-                "Use MDM's own copy",
-                if (mine || system) && !busy {
+                own_label,
+                if own_button != OwnButton::Off && !busy {
                     ButtonKind::Normal
                 } else {
                     ButtonKind::Disabled
                 },
                 false,
                 None,
-            )
-            .clicked()
+            );
+            // "Use MDM's own copy" on every row: said with its helper's name (#1407); the
+            // Install labels already carry it.
+            if own_label == "Use MDM's own copy" {
+                winui::name(
+                    &own_b,
+                    &crate::i18n::fmt(
+                        // i18n: Helpers: the "Use MDM's own copy" button's name for a screen reader; {name} = the helper (yt-dlp, ffmpeg, gallery-dl)
+                        crate::i18n::t("Use MDM's own copy of {name}"),
+                        &[("name", h.name())],
+                    ),
+                );
+            }
+            if own_b.clicked()
                 && let Some(dir) = self.dir.clone()
             {
-                if mine {
-                    self.error = mdm_tools::chosen::forget(&dir, h)
-                        .err()
-                        .map(|e| crate::errors::tools(&e));
-                    self.look();
-                } else {
-                    self.install_own(h, dir, rt, ui.ctx());
+                match own_button {
+                    OwnButton::Forget => {
+                        self.error = mdm_tools::chosen::forget(&dir, h)
+                            .err()
+                            .map(|e| crate::errors::tools(&e));
+                        self.look();
+                        // Nothing left once the choice is gone: MDM's own comes, as the
+                        // button said.
+                        if self.error.is_none() && self.found[k].is_none() && has_own {
+                            self.install_own(h, dir, rt, ui.ctx());
+                        }
+                    }
+                    OwnButton::Install { .. } => self.install_own(h, dir, rt, ui.ctx()),
+                    OwnButton::Off => {}
                 }
             }
             // A line under each, the JavaScript runtime's row below them.
@@ -1235,7 +1333,7 @@ impl Programs {
         let y = 370.0;
         // What failed, left of the buttons.
         if let Some(e) = &self.error {
-            winui::fit(
+            let rc = winui::fit(
                 ui,
                 &p,
                 o.x + 14.0,
@@ -1245,6 +1343,7 @@ impl Programs {
                 o.x + check_at.0 - 8.0,
                 "helper-error",
             );
+            winui::readable(ui, rc, ("helpers", "error"), e);
         }
         if winui::button(
             ui,
@@ -1306,6 +1405,12 @@ impl Programs {
             });
             // i18n: Helpers: button: check for a newer version of this helper now and install it
             let update_label = crate::i18n::t("Update");
+            // "Update" and "Go back to ..." repeat on every row: a screen reader says each
+            // with its helper's name (#1407); the runtime's is "Node.js", not "node".
+            let for_tool = match t {
+                Tool::Node => mdm_tools::jsruntime::Kind::Node.label(),
+                _ => t.name(),
+            };
             let mut row: Vec<(&str, f32, f32)> = Vec::new();
             if let Some(l) = &back_label {
                 row.push((l.as_str(), 270.0, 130.0));
@@ -1327,23 +1432,40 @@ impl Programs {
                 && let Some(&(x, w)) = at.next()
             {
                 right = right.min(o.x + x - 8.0);
-                if winui::button(ui, r(o, x, y - o.y + 4.0, w, 21.0), l, kind, false, None)
-                    .clicked()
-                {
+                let resp = winui::button(ui, r(o, x, y - o.y + 4.0, w, 21.0), l, kind, false, None);
+                if let Some(prev) = &own.previous {
+                    winui::name(
+                        &resp,
+                        &crate::i18n::fmt(
+                            // i18n: Helpers: the "Go back" button's name for a screen reader; {version} = the earlier version, {name} = the helper (yt-dlp, ffmpeg, gallery-dl, Node.js)
+                            crate::i18n::t("Go back to {version} of {name}"),
+                            &[("version", &prev.version), ("name", for_tool)],
+                        ),
+                    );
+                }
+                if resp.clicked() {
                     back = Some(t);
                 }
             }
             if let Some(&(x, w)) = at.next() {
                 right = right.min(o.x + x - 8.0);
-                if winui::button(
+                let resp = winui::button(
                     ui,
                     r(o, x, y - o.y + 4.0, w, 21.0),
                     update_label,
                     kind,
                     false,
                     None,
-                )
-                .clicked()
+                );
+                winui::name(
+                    &resp,
+                    &crate::i18n::fmt(
+                        // i18n: Helpers: the Update button's name for a screen reader; {name} = the helper (yt-dlp, ffmpeg, gallery-dl, Node.js)
+                        crate::i18n::t("Update {name}"),
+                        &[("name", for_tool)],
+                    ),
+                );
+                if resp.clicked()
                     && let Some(dir) = self.dir.clone()
                 {
                     self.update(vec![t], dir, rt, ui.ctx());
@@ -1351,7 +1473,7 @@ impl Programs {
             }
         }
         if let Some(s) = &status {
-            winui::fit(
+            let rc = winui::fit(
                 ui,
                 p,
                 from,
@@ -1361,6 +1483,7 @@ impl Programs {
                 right,
                 ("helper-update", t as usize),
             );
+            winui::readable(ui, rc, ("helper-update", t as usize), s);
         }
         if let (Some(t), Some(dir)) = (back, self.dir.clone()) {
             self.go_back(t, dir, ui.ctx());
@@ -1403,7 +1526,7 @@ impl Programs {
         let y = o.y + 8.0 + k as f32 * 78.0;
         // i18n: Video helpers: the row of the JavaScript runtime (Node.js, Deno...) yt-dlp needs for YouTube's videos
         let title = crate::i18n::t("JavaScript runtime (for YouTube)");
-        winui::text_font(
+        let title_rc = winui::text_font(
             p,
             winui::tahoma_bold(),
             o.x + 14.0,
@@ -1411,6 +1534,8 @@ impl Programs {
             title,
             winui::TEXT(),
         );
+        // Painted text a screen reader couldn't see before (#1407).
+        winui::readable(ui, title_rc, ("helper-name", k), title);
         let runtime = self.runtime.clone();
         // MDM's own Node.js, the one in use.
         let own_node = runtime
@@ -1424,17 +1549,19 @@ impl Programs {
         if own_node {
             self.update_row(ui, p, o, y, o.x + 14.0 + after, Tool::Node, None, rt);
         } else {
-            winui::fit(
+            // i18n: Video helpers: what the JavaScript runtime is for, after its name (yt-dlp is a program's name)
+            let what = crate::i18n::t("lets yt-dlp list all of YouTube's qualities");
+            let what_rc = winui::fit(
                 ui,
                 p,
                 o.x + 14.0 + after,
                 y + 16.0,
-                // i18n: Video helpers: what the JavaScript runtime is for, after its name (yt-dlp is a program's name)
-                crate::i18n::t("lets yt-dlp list all of YouTube's qualities"),
+                what,
                 winui::MUTED(),
                 o.x + 486.0,
                 ("helper-what", k),
             );
+            winui::readable(ui, what_rc, ("helper-what", k), what);
         }
         let available = mdm_tools::jsruntime::available();
         let path_of =
@@ -1445,7 +1572,7 @@ impl Programs {
         };
         let looking = self.probe.wanted;
         let status = if self.installing_runtime.is_some() {
-            crate::i18n::t("Downloading MDM's own copy...").to_owned()
+            downloading_own(self.dir.as_deref(), Tool::Node)
         } else if looking {
             // i18n: Video helpers: MDM is asking the JavaScript runtimes on the computer (Node.js, Deno...) for their versions, to see which one yt-dlp can use
             crate::i18n::t("Looking for a JavaScript runtime on this computer...").to_owned()
@@ -1491,7 +1618,7 @@ impl Programs {
             )
             .to_owned()
         };
-        winui::fit(
+        let status_rc = winui::fit(
             ui,
             p,
             o.x + 14.0,
@@ -1501,20 +1628,28 @@ impl Programs {
             o.x + 486.0,
             ("helper", k),
         );
+        winui::readable(ui, status_rc, ("helper-status", k), &status);
         let chosen = runtime.as_ref().is_some_and(|r| r.from == Origin::Chosen);
-        // MDM's own copy, when it is what the button would bring: back from a chosen runtime,
-        // or downloaded where the computer has none (or only MDM's earlier Deno).
-        let own_possible = chosen
-            || (available
-                && runtime
-                    .as_ref()
-                    .is_none_or(|r| r.from == Origin::Own && r.kind != Kind::Node));
+        // MDM's own copy, as the helpers' rows bring it: back from a chosen runtime, or
+        // downloaded where the computer has none ("Install Node.js") or only MDM's earlier Deno
+        // (which it replaces, as the system's copy of a helper); never in place of the
+        // computer's own runtime.
+        let own_button = OwnButton::of(
+            chosen,
+            runtime
+                .as_ref()
+                .map(|r| r.from == Origin::Own && r.kind != Kind::Node),
+            available,
+        );
+        let own_possible = own_button != OwnButton::Off;
         let busy = self.busy() || looking;
+        // While the computer's runtimes are asked, not yet "Install".
+        let own_label = if looking { OwnButton::Off } else { own_button }.label(Tool::Node);
         let [other_at, own_at] = winui::button_row_from_left(
             p,
             &[
                 ("Use another program...", 14.0, 180.0),
-                ("Use MDM's own copy", 202.0, 180.0),
+                (own_label, 202.0, 180.0),
             ],
             8.0,
             486.0,
@@ -1522,7 +1657,10 @@ impl Programs {
         )[..] else {
             unreachable!("two buttons")
         };
-        if winui::button(
+        // i18n: file picker title: choose a JavaScript runtime's program (node.exe, deno.exe, qjs.exe, bun.exe)
+        let choose = crate::i18n::t("Choose a JavaScript runtime (Node.js, Deno, QuickJS or Bun)")
+            .to_owned();
+        let other = winui::button(
             ui,
             r(o, other_at.0, y - o.y + 46.0, other_at.1, 21.0),
             "Use another program...",
@@ -1533,21 +1671,23 @@ impl Programs {
             },
             false,
             None,
-        )
-        .clicked()
-        {
-            // i18n: file picker title: choose a JavaScript runtime's program (node.exe, deno.exe, qjs.exe, bun.exe)
-            let title =
-                crate::i18n::t("Choose a JavaScript runtime (Node.js, Deno, QuickJS or Bun)")
-                    .to_owned();
+        );
+        // The same label on every row: said with what it chooses (#1407), the visible label
+        // first so voice control finds it by what it shows.
+        winui::name(
+            &other,
+            // i18n: Helpers: the "Use another program..." button's name for a screen reader, on the JavaScript runtime's row (Node.js, Deno, QuickJS or Bun)
+            crate::i18n::t("Use another program as the JavaScript runtime..."),
+        );
+        if other.clicked() {
             winui::start_pick(ui.ctx(), "helper-js-runtime", move || {
-                crate::winui::file_dialog(&title).pick_file()
+                crate::winui::file_dialog(&choose).pick_file()
             });
         }
-        if winui::button(
+        let own_b = winui::button(
             ui,
             r(o, own_at.0, y - o.y + 46.0, own_at.1, 21.0),
-            "Use MDM's own copy",
+            own_label,
             if own_possible && !busy {
                 ButtonKind::Normal
             } else {
@@ -1555,8 +1695,20 @@ impl Programs {
             },
             false,
             None,
-        )
-        .clicked()
+        );
+        // "Use MDM's own copy" on every row: said with its helper's name (#1407); the
+        // Install labels already carry it.
+        if own_label == "Use MDM's own copy" {
+            winui::name(
+                &own_b,
+                &crate::i18n::fmt(
+                    // i18n: Helpers: the "Use MDM's own copy" button's name for a screen reader; {name} = the helper (Node.js)
+                    crate::i18n::t("Use MDM's own copy of {name}"),
+                    &[("name", Kind::Node.label())],
+                ),
+            );
+        }
+        if own_b.clicked()
             && let Some(dir) = self.dir.clone()
         {
             if chosen {
@@ -1657,5 +1809,54 @@ mod tests {
         if helpers.probe.wanted {
             assert_eq!(helpers.runtime, None);
         }
+    }
+
+    /// #1801: a helper not installed yet gets "Install <it>" where MDM has a copy for this
+    /// system, greyed where it hasn't; the system's copy is replaced, a chosen program forgotten,
+    /// MDM's own copy in use leaves nothing to do.
+    #[test]
+    fn the_own_copy_button_installs_what_is_missing() {
+        use OwnButton::*;
+        // Nothing yet.
+        assert_eq!(OwnButton::of(false, None, true), Install { first: true });
+        assert_eq!(OwnButton::of(false, None, false), Off);
+        // The system's copy.
+        assert_eq!(
+            OwnButton::of(false, Some(true), true),
+            Install { first: false }
+        );
+        assert_eq!(OwnButton::of(false, Some(true), false), Off);
+        // MDM's own copy in use.
+        assert_eq!(OwnButton::of(false, Some(false), true), Off);
+        // The person's own program, wherever MDM has a copy or not.
+        for found in [None, Some(true), Some(false)] {
+            assert_eq!(OwnButton::of(true, found, true), Forget);
+            assert_eq!(OwnButton::of(true, found, false), Forget);
+        }
+        // Labels: each tool's own Install, already in the catalogs (gallery-dl's window, Download
+        // video), else Use MDM's own copy.
+        let install = Install { first: true };
+        assert_eq!(install.label(Tool::GalleryDl), "Install gallery-dl");
+        assert_eq!(install.label(Tool::YtDlp), "Install yt-dlp");
+        assert_eq!(install.label(Tool::Ffmpeg), "Install ffmpeg");
+        assert_eq!(install.label(Tool::Node), "Install Node.js");
+        for b in [Install { first: false }, Forget, Off] {
+            assert_eq!(b.label(Tool::GalleryDl), "Use MDM's own copy");
+        }
+    }
+
+    /// Before its size is known (or with no install under way here), the download's line says
+    /// only that it downloads.
+    #[test]
+    fn a_download_without_its_size_says_no_percent() {
+        let dir = tempfile::tempdir().unwrap();
+        assert_eq!(
+            downloading_own(Some(dir.path()), Tool::GalleryDl),
+            "Downloading MDM's own copy..."
+        );
+        assert_eq!(
+            downloading_own(None, Tool::Node),
+            "Downloading MDM's own copy..."
+        );
     }
 }

@@ -230,6 +230,12 @@ pub struct Settings {
     /// `show_complete` stays as it is. A snooze until MDM restarts is not saved.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub complete_snoozed_until: Option<i64>,
+    /// Options → Downloads: "Don't show pop-ups while a full-screen app or presentation is
+    /// running" (#1773, hold.rs): Download complete and MDM's other windows that come up by
+    /// themselves wait while a full-screen game, app or video, a presentation or the locked
+    /// screen is on, and show when the user is back. On by default, for lists saved before it
+    /// too.
+    pub hold_popups: bool,
     /// List right-click → On Double click: Open (true) or Properties (IDM default).
     pub double_click_open: bool,
     /// Ask before deleting downloads ("Don't show this dialog again" clears it). Off, Delete only
@@ -250,6 +256,11 @@ pub struct Settings {
     /// and the node last shown.
     pub show_categories: bool,
     pub branches: [bool; 4],
+    /// The preview pane beside the list (#1368, View → Preview pane, Alt+P): the selected
+    /// download's picture and details. Off unless shown.
+    pub preview_pane: bool,
+    /// Its frame's width, dragged with its splitter.
+    pub preview_width: u32,
     pub view: Option<crate::app::View>,
     /// View → Dark Mode support (IDM 6.37): follow Windows' dark app mode; off = always light.
     pub dark_mode_support: bool,
@@ -271,6 +282,15 @@ pub struct Settings {
     /// View → Interface size (#262), percent: one of `crate::scale::STEPS` (100 to 200). Every
     /// window drawn that much larger than the display's own scale makes it.
     pub interface_size: u16,
+    /// View → Font (#1489): the font file the interface's text is drawn in (a path to a
+    /// TrueType or OpenType file), or none for the computer's own font (Segoe UI on Windows).
+    /// It changes the letters only: View → Interface size still sizes every window.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub interface_font: Option<std::path::PathBuf>,
+    /// View → Font (#1489), percent: one of `crate::theme::TEXT_SIZES`. The interface's
+    /// text drawn that much larger or smaller than the theme's sizes; the layout keeps its own
+    /// (View → Interface size zooms all of it).
+    pub interface_text_size: u16,
     /// View → Text (Windows): smooth text as Windows' modern apps draw it, or the classic
     /// controls' hinted, whole-pixel look, the default (`crate::theme::set_smooth_text`): text
     /// doesn't change look on an update; a dense screen can choose Smooth.
@@ -346,9 +366,12 @@ pub struct Settings {
     pub video_panel: bool,
     pub video_panel_sites: String,
     /// General → Download panels → Button size (#1278): Compact shows the button as its round
-    /// form (the logo, the arrow, the ✕) over every video; Full (false, the default) shows its
-    /// words where they fit and the round form only on a small video. The host reads it too.
+    /// form (the logo, the arrow, the ✕) over every video. The host reads it too.
     pub video_panel_compact: bool,
+    /// The same, Full: its words wherever they fit, the round form only on a small video (as
+    /// before Automatic). Neither (the default, and what settings saved before it say):
+    /// Automatic, the round form in a feed and over a small player, the words over a big one.
+    pub video_panel_full: bool,
     /// General: also take the listed types the browser would open itself (a PDF in its viewer,
     /// an MP3 in its player); holding Alt while clicking leaves one to the browser.
     pub capture_opened: bool,
@@ -359,6 +382,10 @@ pub struct Settings {
     /// Save to: a folder per category (category label → folder); missing = the default.
     pub category_dirs: Vec<(String, String)>,
     pub change_folder_on_last: bool,
+    /// Save to → "Save every download in General's folder" (#1973): new downloads of every
+    /// category go to General's folder ([`Settings::save_dir`]); the categories still sort the
+    /// list. Off by default, and in settings saved before it.
+    pub one_folder: bool,
     /// The addresses typed into Add URL and the folders downloads were saved to, newest first
     /// (the Address and Save As drop lists, as IDM's UrlHistory.txt).
     pub url_history: Vec<String>,
@@ -386,8 +413,14 @@ pub struct Settings {
     /// MDM reads as its default again.
     #[serde(deserialize_with = "automatic_agent")]
     pub user_agent: String,
-    /// Connection: per-server connection limits (server, number).
+    /// Connection: per-server connection limits (server, number), in their order: the first
+    /// that names a download's server gives its number (`mdm_ipc::siterules::for_url`). A site
+    /// rule's number of connections is the exception under its pattern.
     pub conn_exceptions: Vec<(String, u32)>,
+    /// Connection → Site rules (#1778): a User-Agent, the browser-like connection and request
+    /// headers by site pattern, the first rule that matches and sets each giving it. Their
+    /// numbers of connections are in `conn_exceptions`, which older versions read.
+    pub site_rules: Vec<mdm_ipc::siterules::SiteRule>,
     /// Proxy / Socks: 0 none, 1 system, 2 automatic script, 3 manual.
     pub proxy_from_browser: bool,
     pub proxy_mode: u8,
@@ -490,6 +523,12 @@ pub struct Settings {
     pub torrent_proxy: bool,
     /// A blocklist's address (empty: none), fetched again every `BLOCKLIST_DAYS`.
     pub torrent_blocklist: String,
+    /// Torrent settings → "Add the trackers of a public list to public torrents" (#1776): off
+    /// by default. Torrents added while it is on get the list's trackers as last fetched (never
+    /// a private one, BEP 27); the list is fetched again once a day (`torrents::PublicTrackers`).
+    pub torrent_public_trackers: bool,
+    /// That list's address (empty: `mdm_torrent::public_trackers::DEFAULT_LIST`).
+    pub torrent_public_trackers_url: String,
     /// Stop the torrent engine when no torrent runs (it stops listening; new settings apply).
     pub torrent_stop_idle: bool,
     /// Torrent settings → "Limit uploading to [n] KBytes/sec" for all torrents together (#39;
@@ -522,6 +561,9 @@ pub struct Settings {
     /// Download video from a page → Embed chapters (#827): a video's chapters go into its file
     /// (with ffmpeg). On; a settings file from before has none: on.
     pub video_chapters: bool,
+    /// Download video from a page → Split into chapters: split video into multiple files based on
+    /// chapters (with ffmpeg). Off; a settings file from before has none: off.
+    pub video_split_chapters: bool,
     /// Options → Sites Logins → Cookies for video sites (#229): the browser whose cookies
     /// yt-dlp reads on this computer when the extension passed none (yt-dlp's name: `firefox`,
     /// `chrome`...; empty: off, the default), and its profile (a name or a folder; empty: the
@@ -559,6 +601,13 @@ pub struct Settings {
     pub grabber_check: bool,
     /// Link grabber: web pages hidden (IDM's "Hide HTML files"). On.
     pub grabber_hide_pages: bool,
+    /// Link grabber (#1774): how many levels of subfolders an FTP folder or a web server's
+    /// listing ("Index of") given to it is read into, 0 for the folder's own files only (at most
+    /// `mdm_engine::folder::MAX_DEPTH`). 3.
+    pub grabber_depth: u8,
+    /// ... only its files of these types, written as Options → File types writes them (`ISO ZIP
+    /// R0*`); every type when empty. Empty.
+    pub grabber_types: String,
     /// Click'n'Load (#37): a page's button posts its links to 127.0.0.1:9666, shown in Link
     /// grabber. Off by default: any page may post there.
     pub cnl_on: bool,
@@ -610,6 +659,7 @@ impl Default for Settings {
             many_connections: false,
             show_complete: true,
             complete_snoozed_until: None,
+            hold_popups: true,
             double_click_open: false,
             confirm_delete: true,
             categories_width: 143,
@@ -617,6 +667,8 @@ impl Default for Settings {
             window_maximized: false,
             show_categories: true,
             branches: [true, false, false, false],
+            preview_pane: false,
+            preview_width: crate::preview::DEFAULT_WIDTH,
             view: None,
             dark_mode_support: true,
             always_dark: false,
@@ -624,6 +676,8 @@ impl Default for Settings {
             renderer: None,
             window_system: None,
             interface_size: 100,
+            interface_font: None,
+            interface_text_size: 100,
             smooth_text: false,
             limits_on: false,
             limits_mb: 200,
@@ -650,11 +704,13 @@ impl Default for Settings {
             video_panel: true,
             video_panel_sites: String::new(),
             video_panel_compact: false,
+            video_panel_full: false,
             capture_opened: true,
             capture_min_kb: 0,
             regional: crate::regional::Regional::default(),
             category_dirs: Vec::new(),
             change_folder_on_last: true,
+            one_folder: false,
             url_history: Vec::new(),
             folder_history: Vec::new(),
             set_creation_date: false,
@@ -669,6 +725,7 @@ impl Default for Settings {
             duplicate_action: 0,
             user_agent: String::new(),
             conn_exceptions: Vec::new(),
+            site_rules: Vec::new(),
             proxy_from_browser: true,
             proxy_mode: 0,
             proxy_script: String::new(),
@@ -711,6 +768,8 @@ impl Default for Settings {
             torrent_lsd: true,
             torrent_proxy: false,
             torrent_blocklist: String::new(),
+            torrent_public_trackers: false,
+            torrent_public_trackers_url: String::new(),
             torrent_stop_idle: true,
             torrent_upload_on: false,
             torrent_upload_kb: 100,
@@ -726,6 +785,7 @@ impl Default for Settings {
             drop_target_pos: None,
             video_subs: Default::default(),
             video_chapters: true,
+            video_split_chapters: false,
             video_cookies: String::new(),
             video_cookies_profile: String::new(),
             ytdlp_config: false,
@@ -738,6 +798,8 @@ impl Default for Settings {
             test_archives_gb: 4,
             grabber_check: true,
             grabber_hide_pages: true,
+            grabber_depth: 3,
+            grabber_types: String::new(),
             cnl_on: false,
             cnl_sites: Vec::new(),
         }
@@ -947,6 +1009,33 @@ impl Settings {
         crate::model::category_folder(cat, downloads, &self.category_dirs)
     }
 
+    /// The folder a new download of this category goes to: its category's, or General's for
+    /// every category with one folder for every download (#1973).
+    pub fn save_dir(
+        &self,
+        cat: crate::model::Category,
+        downloads: &std::path::Path,
+    ) -> std::path::PathBuf {
+        self.category_dir(self.folder_category(cat), downloads)
+    }
+
+    /// The category whose folder a new download of `cat` takes and "Remember this path"
+    /// changes: `cat` itself, or General with one folder for every download (#1973).
+    pub fn folder_category(&self, cat: crate::model::Category) -> crate::model::Category {
+        crate::model::folder_category(cat, self.one_folder)
+    }
+
+    /// The folder a download of `cat` was saved to becomes the folder its kind of download
+    /// takes from now on ([`Self::keep_category_dir`] for [`Self::folder_category`]).
+    pub fn keep_save_dir(
+        &mut self,
+        cat: crate::model::Category,
+        dir: &std::path::Path,
+        downloads: &std::path::Path,
+    ) -> bool {
+        self.keep_category_dir(self.folder_category(cat), dir, downloads)
+    }
+
     /// Manual proxy/socks configuration as it is set (#1558): its type, whether names are looked
     /// up through it, and its address without a scheme (`host` or `host:port`). An address
     /// typed with a proxy's scheme (`socks5://host`, as the docs said before Type) says the type
@@ -989,6 +1078,14 @@ impl Settings {
             let _ = url.set_password(Some(&self.proxy_pass));
         }
         Some(url.as_str().trim_end_matches('/').to_owned())
+    }
+
+    /// The public tracker list's address (#1776): the one given, else the default list.
+    pub fn public_trackers_list(&self) -> &str {
+        match self.torrent_public_trackers_url.trim() {
+            "" => mdm_torrent::public_trackers::DEFAULT_LIST,
+            url => url,
+        }
     }
 
     /// The torrent engine as Torrent settings say (#40), its data in `state_dir`. None when they
@@ -1123,34 +1220,47 @@ impl Settings {
         }
     }
 
-    /// Connections for a download from `url`: a server exception (Options → Connection), else
-    /// the default; never more than `connection_limit` (a hand-edited file can hold anything).
+    /// Connections for a download from `url`: the first server exception that names it
+    /// (Options → Connection, a site rule's number among them: `*` for any text, the first
+    /// match winning), else the default; never more than `connection_limit` (a
+    /// hand-edited file can hold anything).
     pub fn connections_for(&self, url: &url::Url) -> u32 {
-        let host = url.host_str().unwrap_or("").to_ascii_lowercase();
-        self.conn_exceptions
-            .iter()
-            .find(|(server, _)| host_matches(&host, server))
-            .map_or(self.max_connections, |(_, n)| *n)
+        self.site_settings(url)
+            .connections
+            .unwrap_or(self.max_connections)
             .clamp(1, self.connection_limit())
     }
 
+    /// What the site rules and the exceptions give a download from `url` (#1778).
+    pub fn site_settings(&self, url: &url::Url) -> mdm_ipc::siterules::Applied {
+        mdm_ipc::siterules::for_url(&self.site_rules, &self.conn_exceptions, url)
+    }
+
     /// The Sites Logins entry for `url`: its site/path is a prefix of the address (without the
-    /// scheme); `*.` matches subdomains.
+    /// scheme), on whole path segments; `*.` matches subdomains. Of several entries that match,
+    /// the longest (the most specific) gives the login, the first of them when they are as long.
     pub fn site_login(&self, url: &url::Url) -> Option<(String, String)> {
         let host = url.host_str()?.to_ascii_lowercase();
-        let path = url.path();
+        let path = url.path().trim_start_matches('/');
         self.site_logins
             .iter()
-            .find(|(site, _, _)| {
+            .filter_map(|(site, user, pass)| {
                 let site = site.trim();
                 let site = site.split_once("://").map_or(site, |(_, rest)| rest);
                 let (site_host, site_path) = site.split_once('/').unwrap_or((site, ""));
-                host_matches(&host, site_host)
-                    && path
-                        .trim_start_matches('/')
-                        .starts_with(site_path.trim_start_matches('/'))
+                let site_path = site_path.trim_matches('/');
+                let matched = host_matches(&host, site_host)
+                    && (site_path.is_empty()
+                        || path == site_path
+                        || path
+                            .strip_prefix(site_path)
+                            .is_some_and(|rest| rest.starts_with('/')));
+                matched.then(|| (site_path.len(), (user.clone(), pass.clone())))
             })
-            .map(|(_, user, pass)| (user.clone(), pass.clone()))
+            // The first of the longest: `max_by_key` would take the last of equal ones, and the
+            // list's own order decides between them, as it did before.
+            .min_by_key(|(len, _)| std::cmp::Reverse(*len))
+            .map(|(_, login)| login)
     }
 
     /// Should a copied link named `name` be offered? Fewer types than a browser hands over
@@ -1387,6 +1497,7 @@ pub fn share_video_settings(s: &Settings) {
     mdm_tools::proc::set_browser_cookies(s.video_cookies());
     mdm_tools::proc::set_user_config(s.ytdlp_config);
     mdm_tools::video::set_chapters(s.video_chapters);
+    mdm_tools::video::set_split_chapters(s.video_split_chapters);
 }
 
 /// The network adapter MDM's connections go through now (#35).
@@ -1426,6 +1537,20 @@ impl Settings {
                 (true, Some(p)) => mdm_cli::TorrentProxy::Through(p),
                 (true, None) => mdm_cli::TorrentProxy::Missing,
             },
+            // The same switch, address and cache as the app's (#1776).
+            public_trackers: self
+                .torrent_public_trackers
+                .then(crate::torrents::state_dir)
+                .flatten()
+                .map(|dir| mdm_cli::PublicTrackers {
+                    url: self.public_trackers_list().to_owned(),
+                    dir,
+                }),
+            // Site rules and exceptions (#1778): the command line asks a site as the app does.
+            sites: mdm_cli::SiteRules {
+                rules: self.site_rules.clone(),
+                exceptions: self.conn_exceptions.clone(),
+            },
         }
     }
 }
@@ -1448,6 +1573,46 @@ pub fn own_net() -> mdm_engine::Options {
 #[cfg(test)]
 mod tests {
     use std::path::Path;
+
+    /// #1776: the public tracker list is off by default, its address the default list's; the
+    /// default list is saved as none given, another address as typed (trimmed).
+    #[test]
+    fn the_public_tracker_list_is_off_until_turned_on() {
+        use super::Settings;
+        use crate::torrentdlg::Net;
+        use mdm_torrent::public_trackers::DEFAULT_LIST;
+        let old: Settings = serde_json::from_value(serde_json::json!({})).unwrap();
+        let mut s = Settings::default();
+        for s in [&old, &s] {
+            assert!(!s.torrent_public_trackers);
+            assert_eq!(s.public_trackers_list(), DEFAULT_LIST);
+        }
+        let mut net = Net::of(&s);
+        assert!(!net.public_trackers);
+        assert_eq!(net.public_list, DEFAULT_LIST);
+        net.public_trackers = true;
+        net.apply(&mut s);
+        assert!(s.torrent_public_trackers);
+        assert_eq!(s.torrent_public_trackers_url, "");
+        let mut net = Net::of(&s);
+        net.public_list = " https://lists.example.org/trackers.txt ".into();
+        net.apply(&mut s);
+        assert_eq!(
+            s.public_trackers_list(),
+            "https://lists.example.org/trackers.txt"
+        );
+        let again: Settings = serde_json::from_value(serde_json::to_value(&s).unwrap()).unwrap();
+        assert!(again.torrent_public_trackers);
+        assert_eq!(
+            again.public_trackers_list(),
+            "https://lists.example.org/trackers.txt"
+        );
+        // Emptied: the default list again.
+        let mut net = Net::of(&s);
+        net.public_list = "  ".into();
+        net.apply(&mut s);
+        assert_eq!(s.public_trackers_list(), DEFAULT_LIST);
+    }
 
     /// #668: the User-Agent for links added by hand is the default browser's unless one is set.
     /// Saved before, MDM's former default (Internet Explorer 11's) or nothing reads as automatic;
@@ -1481,6 +1646,40 @@ mod tests {
         assert_eq!(again.own_user_agent(), Some("MyAgent/1.0"));
     }
 
+    /// #1489: a settings file written before View → Font existed reads as the computer's own
+    /// font at the theme's sizes, and nothing chosen is saved as nothing.
+    #[test]
+    fn view_font_keeps_its_defaults_in_older_settings() {
+        use super::Settings;
+        let saved = serde_json::json!({ "interface_size": 125 });
+        let s: Settings = serde_json::from_value(saved).unwrap();
+        assert_eq!(s.interface_font, None);
+        assert_eq!(s.interface_text_size, 100);
+        let again = serde_json::to_value(&s).unwrap();
+        assert!(again.get("interface_font").is_none(), "nothing chosen");
+        assert_eq!(again["interface_text_size"], 100);
+    }
+
+    /// #1489: the chosen font is saved as its path, not as the text `display()` makes of it,
+    /// which names another file when the path isn't Unicode on Windows (`serde` refuses such a
+    /// path rather than save that name, so the choice stays as made in memory); the test's path
+    /// is the one a person can have, with a space.
+    #[test]
+    fn the_chosen_font_is_saved_as_its_path() {
+        use super::Settings;
+        let s = Settings {
+            interface_font: Some(std::path::PathBuf::from(r"C:\Fonts\my font.ttf")),
+            ..Default::default()
+        };
+        let saved = serde_json::to_value(&s).unwrap();
+        assert_eq!(
+            saved["interface_font"],
+            serde_json::json!(r"C:\Fonts\my font.ttf")
+        );
+        let again: Settings = serde_json::from_value(saved).unwrap();
+        assert_eq!(again.interface_font, s.interface_font);
+    }
+
     /// #475: a folder chosen for a video is the Video category's next time; the category's own
     /// folder stays "the default", following Downloads, and other categories stay as they were.
     #[test]
@@ -1500,6 +1699,66 @@ mod tests {
         assert_eq!(s.category_dir(Category::Video, downloads), chosen);
         assert_ne!(s.category_dir(Category::Music, downloads), chosen);
         assert!(!s.keep_category_dir(Category::Video, chosen, downloads));
+    }
+
+    /// #1973: one folder for every download sends every category's new downloads to General's
+    /// folder (the user's own and Torrents too), and a folder remembered then is General's; off,
+    /// each category's folder is as before. Settings saved before it (no `one_folder`) read it
+    /// off, and a newer file's field is kept through a save.
+    #[test]
+    fn one_folder_sends_every_category_to_generals() {
+        use crate::model::Category;
+        let root = std::env::temp_dir().join("mdm-1973");
+        let downloads = root.join("Downloads");
+        let downloads = downloads.as_path();
+        let old: super::Settings = serde_json::from_value(serde_json::json!({
+            "category_dirs": [["General", root.join("All").display().to_string()]],
+        }))
+        .unwrap();
+        assert!(!old.one_folder, "off in settings saved before it");
+        let mut s = old.clone();
+        let general = root.join("All");
+        let cats = [
+            Category::Video,
+            Category::Music,
+            Category::Compressed,
+            Category::Torrents,
+            Category::General,
+        ];
+        for c in cats {
+            assert_eq!(
+                s.save_dir(c, downloads),
+                s.category_dir(c, downloads),
+                "{c:?}"
+            );
+        }
+        assert_ne!(s.save_dir(Category::Video, downloads), general);
+        s.one_folder = true;
+        for c in cats {
+            assert_eq!(s.save_dir(c, downloads), general, "{c:?}");
+            assert_eq!(s.folder_category(c), Category::General);
+        }
+        // Each category keeps its own folder for when it is off again.
+        assert_eq!(
+            s.category_dir(Category::Video, downloads),
+            general.join("Video")
+        );
+        // "Remember this path": General's folder is the one that changes.
+        let chosen = root.join("Elsewhere");
+        assert!(s.keep_save_dir(Category::Video, &chosen, downloads));
+        assert_eq!(s.save_dir(Category::Music, downloads), chosen);
+        assert_eq!(s.category_dir(Category::General, downloads), chosen);
+        assert!(
+            !s.category_dirs.iter().any(|(c, _)| c == "Video"),
+            "Video's own folder untouched: {:?}",
+            s.category_dirs
+        );
+        // Saved and read again (a newer version's file read by this one keeps the choice).
+        let again: super::Settings =
+            serde_json::from_value(serde_json::to_value(&s).unwrap()).unwrap();
+        assert!(again.one_folder);
+        s.one_folder = false;
+        assert_eq!(s.save_dir(Category::Video, downloads), chosen.join("Video"));
     }
 
     /// #1563: a list from 0.5.2 that remembered "Also delete the files from disk" ticked (and
@@ -1541,14 +1800,54 @@ mod tests {
         }
     }
 
-    /// #1278: the video button's size is Full unless Compact was chosen, kept across a save,
-    /// and read by the native host under the same name (mdm_ipc::capture::CaptureRules).
+    /// #1773: pop-ups wait during a full-screen app, in a new list and in one saved before the
+    /// switch; turned off, it stays off across a save.
+    #[test]
+    fn pop_ups_wait_by_default_in_new_and_old_lists() {
+        use super::Settings;
+        assert!(Settings::default().hold_popups);
+        let old: Settings = serde_json::from_value(serde_json::json!({})).unwrap();
+        assert!(old.hold_popups, "a list saved before it");
+        let off = Settings {
+            hold_popups: false,
+            ..Settings::default()
+        };
+        let again: Settings = serde_json::from_value(serde_json::to_value(&off).unwrap()).unwrap();
+        assert!(!again.hold_popups);
+    }
+
+    /// #1278: the video button's size is Automatic unless Full or Compact was chosen, kept across
+    /// a save, and read by the native host under the same names
+    /// (mdm_ipc::capture::CaptureRules).
     #[test]
     fn the_video_buttons_size_is_saved_and_read_by_the_host() {
         use super::Settings;
-        assert!(!Settings::default().video_panel_compact, "Full by default");
+        let auto = Settings::default();
+        assert!(
+            !auto.video_panel_compact && !auto.video_panel_full,
+            "Automatic by default"
+        );
         let old: Settings = serde_json::from_value(serde_json::json!({})).unwrap();
-        assert!(!old.video_panel_compact, "settings saved before it: Full");
+        assert!(
+            !old.video_panel_compact,
+            "settings saved before it: Automatic"
+        );
+        assert!(!old.video_panel_full, "settings saved before it: Automatic");
+        let before: Settings =
+            serde_json::from_value(serde_json::json!({ "video_panel_compact": true })).unwrap();
+        assert!(
+            before.video_panel_compact && !before.video_panel_full,
+            "Compact kept"
+        );
+        let full = Settings {
+            video_panel_full: true,
+            ..Settings::default()
+        };
+        let saved = serde_json::to_value(&full).unwrap();
+        let again: Settings = serde_json::from_value(saved.clone()).unwrap();
+        assert!(again.video_panel_full);
+        let rules: mdm_ipc::capture::CaptureRules = serde_json::from_value(saved).unwrap();
+        assert!(rules.video_panel_full && !rules.video_panel_compact);
         let s = Settings {
             video_panel_compact: true,
             ..Settings::default()
@@ -1793,6 +2092,58 @@ mod tests {
             s.site_login(&url("http://dl.corp.net/y")),
             Some(("b".into(), "2".into()))
         );
+        // Whole path segments only.
+        assert_eq!(
+            s.site_login(&url("https://files.example.com/private-backup/x.zip")),
+            None
+        );
+        assert_eq!(
+            s.site_login(&url("https://files.example.com/privatedocs/x.zip")),
+            None
+        );
+        assert_eq!(
+            s.site_login(&url("https://files.example.com/private")),
+            Some(("a".into(), "1".into())),
+            "the path itself"
+        );
+        // The most specific entry wins, wherever it sits in the list.
+        let s = Settings {
+            site_logins: vec![
+                ("files.example.com".into(), "c".into(), "3".into()),
+                ("files.example.com/private".into(), "a".into(), "1".into()),
+            ],
+            ..Settings::default()
+        };
+        assert_eq!(
+            s.site_login(&url("https://files.example.com/private/x.zip")),
+            Some(("a".into(), "1".into())),
+            "the longest match"
+        );
+        assert_eq!(
+            s.site_login(&url("https://files.example.com/other/x.zip")),
+            Some(("c".into(), "3".into())),
+            "the host alone, for the rest"
+        );
+        // As long as each other: the first in the list, as before.
+        let s = Settings {
+            site_logins: vec![
+                ("files.example.com/private".into(), "a".into(), "1".into()),
+                ("files.example.com/private/".into(), "d".into(), "4".into()),
+                ("*.example.com".into(), "e".into(), "5".into()),
+                ("files.example.com".into(), "c".into(), "3".into()),
+            ],
+            ..Settings::default()
+        };
+        assert_eq!(
+            s.site_login(&url("https://files.example.com/private/x.zip")),
+            Some(("a".into(), "1".into())),
+            "the first of two equal paths"
+        );
+        assert_eq!(
+            s.site_login(&url("https://files.example.com/other/x.zip")),
+            Some(("e".into(), "5".into())),
+            "the first of two hosts alone"
+        );
     }
 
     #[test]
@@ -1964,6 +2315,34 @@ mod tests {
         assert_eq!(got("http=http://p:3128/"), http("p", "3128", true, false));
         assert_eq!(got("ftp=f:21"), None);
         assert_eq!(got(""), None);
+    }
+
+    /// #1778: site rules round-trip through the settings file, an older file has none, and the
+    /// exceptions match the same way: `*` any text, the first match winning.
+    #[test]
+    fn site_rules_and_exceptions() {
+        let url = |u: &str| url::Url::parse(u).unwrap();
+        let s = Settings {
+            conn_exceptions: vec![("*.example.test".into(), 4), ("dl.example.test".into(), 2)],
+            site_rules: vec![mdm_ipc::siterules::SiteRule {
+                site: "*.example.test".into(),
+                user_agent: "Rule/1".into(),
+                browser_like: true,
+                headers: vec![("X-A".into(), "1".into())],
+            }],
+            ..Settings::default()
+        };
+        assert_eq!(s.connections_for(&url("https://dl.example.test/f")), 4);
+        assert_eq!(s.connections_for(&url("https://example.test/f")), 8);
+        let got = s.site_settings(&url("https://dl.example.test/f"));
+        assert_eq!(got.user_agent.as_deref(), Some("Rule/1"));
+        assert!(got.browser_like);
+        let back: Settings = serde_json::from_str(&serde_json::to_string(&s).unwrap()).unwrap();
+        assert_eq!(back.site_rules, s.site_rules);
+        let old: Settings =
+            serde_json::from_str(r#"{"conn_exceptions": [["ftp.slow.org", 1]]}"#).unwrap();
+        assert!(old.site_rules.is_empty());
+        assert_eq!(old.connections_for(&url("ftp://ftp.slow.org/a")), 1);
     }
 
     #[test]

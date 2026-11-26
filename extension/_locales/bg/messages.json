@@ -284,6 +284,64 @@
   "popup_media_title_name": {
     "message": "Добавяне на заглавието на страницата пред имената на медийните файлове"
   },
+  "popup_images": {
+    "message": "Изображения на тази страница"
+  },
+  "popup_images_text": {
+    "message": "Намерете снимките от тази страница в най-големия размер, който е посочен, след което изпратете желаните в Link grabber."
+  },
+  "popup_images_find": {
+    "message": "Намерете изображения"
+  },
+  "popup_images_min": {
+    "message": "Най-малък размер в пиксели"
+  },
+  "popup_images_width": {
+    "message": "Най-малка ширина, в пиксели"
+  },
+  "popup_images_height": {
+    "message": "Най-малка височина, в пиксели"
+  },
+  "popup_images_types": {
+    "message": "Типове изображения"
+  },
+  "popup_images_other": {
+    "message": "Други"
+  },
+  "popup_images_count": {
+    "message": "$shown$ от $total$ избрани",
+    "placeholders": {
+      "shown": {
+        "content": "$1",
+        "example": "12"
+      },
+      "total": {
+        "content": "$2",
+        "example": "40"
+      }
+    }
+  },
+  "popup_images_unsized": {
+    "message": "Размерът не е посочен, запазени: $n$",
+    "placeholders": {
+      "n": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "popup_images_send": {
+    "message": "Изпращане до Link grabber"
+  },
+  "popup_images_sent": {
+    "message": "Изпратено до Link grabber: отметнете тези, които да изтеглите там."
+  },
+  "popup_images_none": {
+    "message": "На тази страница не са намерени изображения."
+  },
+  "popup_images_unreadable": {
+    "message": "Браузърът не позволява на добавките да четат тази страница."
+  },
   "video_cant_save": {
     "message": "не може да се запише"
   },
@@ -291,7 +349,7 @@
     "message": "Отворете публикацията"
   },
   "video_drag_dots": {
-    "message": "Плъзнете точките, за да го преместите по ръба"
+    "message": "Плъзнете точките, за да го преместите в друг ъгъл или извън видеоклипа"
   },
   "video_tip": {
     "message": "Изтеглете $what$",
@@ -765,5 +823,108 @@
   },
   "popup_dl_open_remote": {
     "message": "Отваряне на страницата му"
+  },
+  "video_home": {
+    "message": "Върнете бутона в ъгъла му"
+  },
+  "video_filter_all": {
+    "message": "Всички"
+  },
+  "video_filter_audio": {
+    "message": "Само аудио"
+  },
+  "video_filter_kind": {
+    "message": "Покажете"
+  },
+  "video_filter_type": {
+    "message": "Тип файл"
+  },
+  "video_filter_codec": {
+    "message": "Кодек"
+  },
+  "popup_video_reset_text": {
+    "message": "Бутон за изтегляне над видеоклипове"
+  },
+  "popup_video_reset_sub": {
+    "message": "Където сте го преместили, и филтрите на менюто му, за всеки сайт"
+  },
+  "popup_video_reset": {
+    "message": "Нулирайте"
+  },
+  "popup_video_reset_done": {
+    "message": "Върна се в ъгъла си, менюто му показва всичко, на всеки сайт"
+  },
+  "status_links_sent": {
+    "message": "Изпратени връзки: $count$",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "10"
+      }
+    }
+  },
+  "status_links_cut": {
+    "message": "Изпратени връзки: $sent$, $left$ пропуснати връзки",
+    "placeholders": {
+      "sent": {
+        "content": "$1",
+        "example": "100"
+      },
+      "left": {
+        "content": "$2",
+        "example": "20"
+      }
+    }
+  },
+  "status_links_partial": {
+    "message": "Изпратени връзки: $sent$, отказани: $refused$",
+    "placeholders": {
+      "sent": {
+        "content": "$1",
+        "example": "5"
+      },
+      "refused": {
+        "content": "$2",
+        "example": "2"
+      }
+    }
+  },
+  "status_links_partial_cut": {
+    "message": "Изпратени връзки: $sent$, отказани: $refused$, $left$ пропуснати връзки",
+    "placeholders": {
+      "sent": {
+        "content": "$1",
+        "example": "5"
+      },
+      "refused": {
+        "content": "$2",
+        "example": "2"
+      },
+      "left": {
+        "content": "$3",
+        "example": "1"
+      }
+    }
+  },
+  "status_links_refused": {
+    "message": "Отказани връзки: $count$",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "status_links_none": {
+    "message": "Няма връзки за прихващане ($left$ пропуснати връзки)",
+    "placeholders": {
+      "left": {
+        "content": "$1",
+        "example": "5"
+      }
+    }
+  },
+  "status_unreachable": {
+    "message": "Сървърът не е достигнат"
   }
 }

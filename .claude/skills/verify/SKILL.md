@@ -43,7 +43,7 @@ Pick what the diff touches:
 |---|---|
 | the engine, protocols, errors | `cargo run -p mdm-labserver -- --faults "<fault>"` (GET / lists them) and a real download through it: `cargo run -p mdm-app -- --cli get <url> -o <dir>` and the app's window |
 | a window, a dialog, a theme | the app with `MDM_DATA_DIR`, the window opened with `/show <window>` (as `tools/shots/make.py` does), in light and dark, a long language (de) and right to left (ar), at more than one interface size; Classic and a theme that draws its own title bar |
-| the browser add-on | `tools/extension/pack.ps1`, then `node tools/extension/e2e.mjs <browsers> --only=<cases>` (real headless browsers, their own profiles); add a case for the new behaviour |
+| the browser add-on | `tools/extension/pack.ps1`, then `node tools/extension/e2e.mjs <browsers> --only=<cases>` (real headless browsers, their own profiles, free ports); add a case for the new behaviour. Beside another run: its own `E2E_WORK`, `E2E_HOST_NAME` and `CARGO_TARGET_DIR` |
 | Linux or macOS code, fonts, the desktop | the Linux test machine (`tools/lab/linux-vm/vm.ps1`, its guest scripts `build.sh`, `restart-lab.sh`, `shots.sh`); macOS on GitHub's macOS runners (below) |
 | videos, live streams | a local stream (ffmpeg to HLS, a local http server) through the real yt-dlp and ffmpeg |
 | the website | `python tools/website/build.py --serve`, checked at phone width and desktop |

@@ -132,10 +132,6 @@ impl Site {
             "" | "anonymous" | "ftp" if pass.is_empty() => ("anonymous".into(), "mdm@".into()),
             _ => (user, pass),
         };
-        // The leading slash only separates the path from the server; `;type=i` is a transfer
-        // type (always binary here).
-        let raw = url.path().strip_prefix('/').unwrap_or(url.path());
-        let raw = raw.rsplit_once(";type=").map_or(raw, |(p, _)| p);
         let tls = match security {
             Security::Plain => None,
             _ => Some(connector(&opts.extra_roots)?),
@@ -147,7 +143,8 @@ impl Site {
             } else {
                 21
             }),
-            path: decode(raw),
+            // `;type=i` is a transfer type (always binary here).
+            path: server_path(url),
             user,
             pass,
             security,
@@ -484,6 +481,125 @@ impl Site {
     }
 }
 
+/// An FTP server's folders listed one after the other (#1774, `folder.rs`) on one session,
+/// logged in as for a download from the address given.
+pub(crate) struct Lister {
+    site: Site,
+    session: Option<Session>,
+    /// `MLSD` isn't known here: `LIST` instead.
+    no_mlsd: bool,
+}
+
+impl Lister {
+    pub async fn open(url: &Url, headers: &HeaderMap, opts: &Options) -> Result<Lister, Error> {
+        let site = Site::new(url, headers, opts)?;
+        let session = site.connect().await?;
+        Ok(Lister {
+            site,
+            session: Some(session),
+            no_mlsd: false,
+        })
+    }
+
+    /// The entries of the folder `url` (an address on the same server, ending in `/`): `MLSD`'s
+    /// (exact types and sizes), else `LIST`'s, read up to `folder::LISTING_MAX` bytes. A list
+    /// past that is cut there (its last line dropped) and the session closed: what the server
+    /// still sends is left unread.
+    pub async fn list(&mut self, url: &Url) -> Result<Vec<crate::folder::Entry>, Error> {
+        let path = server_path(url);
+        // Sent as one command line: a line break in it would be another command.
+        if path.contains(['\r', '\n']) {
+            return Err(net(
+                NetKind::Connect,
+                "the folder's name holds a line break",
+            ));
+        }
+        let mut s = match self.session.take() {
+            Some(s) => s,
+            None => self.site.connect().await?,
+        };
+        let command = |verb: &str| match path.as_str() {
+            "" => verb.to_owned(),
+            p => format!("{verb} {p}"),
+        };
+        let open = [Status::AboutToSend, Status::AlreadyOpen];
+        let lost = |e| failure(e, NetKind::Lost);
+        let read_timeout = self.site.read_timeout;
+        let stream = within(read_timeout, async {
+            if !self.no_mlsd {
+                match s.custom_data_command(command("MLSD"), &open).await {
+                    Ok((_, stream)) => return Ok((stream, true)),
+                    // Not a command this server knows: its LIST.
+                    Err(FtpError::UnexpectedResponse(r))
+                        if matches!(r.status.code(), 500 | 501 | 502 | 504) =>
+                    {
+                        self.no_mlsd = true;
+                    }
+                    Err(FtpError::UnexpectedResponse(r)) => return Err(reply(&r)),
+                    Err(e) => return Err(lost(e)),
+                }
+            }
+            match s.custom_data_command(command("LIST"), &open).await {
+                Ok((_, stream)) => Ok((stream, false)),
+                Err(FtpError::UnexpectedResponse(r)) => Err(reply(&r)),
+                Err(e) => Err(lost(e)),
+            }
+        })
+        .await;
+        let (mut stream, mlsd) = stream?;
+        let max = crate::folder::LISTING_MAX;
+        let mut body = Vec::new();
+        let mut buf = BytesMut::with_capacity(READ);
+        let whole = loop {
+            buf.clear();
+            match tokio::time::timeout(read_timeout, stream.read_buf(&mut buf)).await {
+                Err(_) => return Err(net(NetKind::Timeout, "")),
+                Ok(Err(e)) => return Err(net(NetKind::Lost, &e.to_string())),
+                Ok(Ok(0)) => break true,
+                Ok(Ok(_)) => {
+                    let room = max - body.len();
+                    body.extend_from_slice(&buf[..buf.len().min(room)]);
+                    if body.len() >= max {
+                        break false;
+                    }
+                }
+            }
+        };
+        if whole {
+            if let Ok(Ok(())) = tokio::time::timeout(read_timeout, stream.finish()).await {
+                self.session = Some(s);
+            }
+        } else {
+            // Cut: the line it stopped in isn't whole.
+            let end = body.iter().rposition(|b| *b == b'\n').unwrap_or(0);
+            body.truncate(end);
+            drop(stream);
+        }
+        let text = String::from_utf8_lossy(&body);
+        let mut seen = std::collections::HashSet::new();
+        Ok(text
+            .lines()
+            .filter_map(|l| crate::folder::ftp_entry(l.trim_end_matches('\r'), mlsd, url))
+            .filter(|e| seen.insert(e.name.clone()))
+            .collect())
+    }
+
+    /// Done: the session says goodbye.
+    pub async fn close(mut self) {
+        if let Some(mut s) = self.session.take() {
+            let _ = tokio::time::timeout(Duration::from_secs(2), s.quit()).await;
+        }
+    }
+}
+
+/// The path of `url` as the server is asked for it: relative to the login folder (RFC 1738; the
+/// leading slash only separates it from the server), decoded, without a `;type=` transfer type.
+fn server_path(url: &Url) -> String {
+    let raw = url.path().strip_prefix('/').unwrap_or(url.path());
+    let raw = raw.rsplit_once(";type=").map_or(raw, |(p, _)| p);
+    percent_decode_str(raw).decode_utf8_lossy().into_owned()
+}
+
 /// `REST from` (when not 0) and `RETR path`.
 async fn retr(
     s: &mut Session,
@@ -491,7 +607,12 @@ async fn retr(
     from: u64,
 ) -> Result<TransferStream<AsyncRustlsStream>, Error> {
     let lost = |e| failure(e, NetKind::Lost);
-    s.resume_transfer(from as usize).await.map_err(lost)?;
+    // suppaftp's REST takes a usize: on a 32-bit build a file of 4 GB or more has no offset
+    // it can ask for, and truncating one would resume at the wrong place in the file.
+    let offset = usize::try_from(from).map_err(|_| {
+        Error::BadState("the file is over 4 GB, which this 32-bit build can't resume".into())
+    })?;
+    s.resume_transfer(offset).await.map_err(lost)?;
     s.retr_as_stream(path).await.map_err(lost)
 }
 
@@ -557,19 +678,55 @@ fn connector(extra: &[Vec<u8>]) -> Result<tokio_rustls::TlsConnector, Error> {
 /// that refuses every server, saying why (#264): the DNS setting that holds it may still use
 /// plain DNS, and FTP stays plain FTP.
 pub(crate) fn client_config(extra: &[Vec<u8>]) -> Result<rustls::ClientConfig, rustls::Error> {
-    use rustls_platform_verifier::Verifier;
     if extra.is_empty() && !crate::tls::system_has_roots() {
         return Ok(crate::tls::no_roots_config());
     }
     let provider = crate::tls::provider();
-    let extra = extra.iter().map(|c| CertificateDer::from(c.clone()));
-    let verifier =
-        Verifier::new_with_extra_roots(crate::tls::mozilla_roots().chain(extra), provider.clone())?;
+    let verifier = verifier(extra, provider.clone())?;
     Ok(rustls::ClientConfig::builder_with_provider(provider)
         .with_safe_default_protocol_versions()?
         .dangerous()
-        .with_custom_certificate_verifier(Arc::new(verifier))
+        .with_custom_certificate_verifier(verifier)
         .with_no_client_auth())
+}
+
+/// The system's verifier, with Mozilla's roots and `extra` also trusted.
+#[cfg(not(target_os = "android"))]
+fn verifier(
+    extra: &[Vec<u8>],
+    provider: Arc<rustls::crypto::CryptoProvider>,
+) -> Result<Arc<dyn rustls::client::danger::ServerCertVerifier>, rustls::Error> {
+    let extra = extra.iter().map(|c| CertificateDer::from(c.clone()));
+    Ok(Arc::new(
+        rustls_platform_verifier::Verifier::new_with_extra_roots(
+            crate::tls::mozilla_roots().chain(extra),
+            provider,
+        )?,
+    ))
+}
+
+/// Android's platform verifier asks the system's trust store through Java and takes no extra
+/// roots: with `extra` (only the tests give any), Mozilla's roots and them are checked by
+/// rustls' own verifier instead.
+#[cfg(target_os = "android")]
+fn verifier(
+    extra: &[Vec<u8>],
+    provider: Arc<rustls::crypto::CryptoProvider>,
+) -> Result<Arc<dyn rustls::client::danger::ServerCertVerifier>, rustls::Error> {
+    if extra.is_empty() {
+        return Ok(Arc::new(rustls_platform_verifier::Verifier::new(provider)?));
+    }
+    let mut roots = rustls::RootCertStore::empty();
+    for c in crate::tls::mozilla_roots() {
+        let _ = roots.add(c);
+    }
+    for c in extra {
+        roots.add(CertificateDer::from(c.clone()))?;
+    }
+    rustls::client::WebPkiServerVerifier::builder_with_provider(Arc::new(roots), provider)
+        .build()
+        .map(|v| v as Arc<dyn rustls::client::danger::ServerCertVerifier>)
+        .map_err(|e| rustls::Error::General(e.to_string()))
 }
 
 /// The login an `Authorization: Basic` header carries.

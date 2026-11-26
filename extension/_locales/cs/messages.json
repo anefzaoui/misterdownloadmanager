@@ -284,6 +284,64 @@
   "popup_media_title_name": {
     "message": "Přidat název stránky před názvy mediálních souborů"
   },
+  "popup_images": {
+    "message": "Obrázky na této stránce"
+  },
+  "popup_images_text": {
+    "message": "Najděte obrázky této stránky v největší uvedené velikosti a poté ty, které chcete, odešlete do okna pro zachytávání odkazů."
+  },
+  "popup_images_find": {
+    "message": "Najít obrázky"
+  },
+  "popup_images_min": {
+    "message": "Nejmenší velikost v pixelech"
+  },
+  "popup_images_width": {
+    "message": "Nejmenší šířka v pixelech"
+  },
+  "popup_images_height": {
+    "message": "Nejmenší výška v pixelech"
+  },
+  "popup_images_types": {
+    "message": "Typy obrázků"
+  },
+  "popup_images_other": {
+    "message": "Jiné"
+  },
+  "popup_images_count": {
+    "message": "Vybráno $shown$ z $total$",
+    "placeholders": {
+      "shown": {
+        "content": "$1",
+        "example": "12"
+      },
+      "total": {
+        "content": "$2",
+        "example": "40"
+      }
+    }
+  },
+  "popup_images_unsized": {
+    "message": "Velikost není uvedena, ponecháno: $n$",
+    "placeholders": {
+      "n": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "popup_images_send": {
+    "message": "Odeslat do okna pro zachytávání odkazů"
+  },
+  "popup_images_sent": {
+    "message": "Odesláno do okna pro zachytávání odkazů: zaškrtněte ty, které chcete stáhnout."
+  },
+  "popup_images_none": {
+    "message": "Na této stránce nebyly nalezeny žádné obrázky."
+  },
+  "popup_images_unreadable": {
+    "message": "Prohlížeč neumožňuje doplňkům číst tuto stránku."
+  },
   "video_cant_save": {
     "message": "nelze uložit"
   },
@@ -291,7 +349,7 @@
     "message": "Otevřít příspěvek"
   },
   "video_drag_dots": {
-    "message": "Přetáhněte tečky pro přesunutí podél okraje"
+    "message": "Přetažením teček jej přesuňte do jiného rohu nebo mimo video"
   },
   "video_tip": {
     "message": "Stáhnout $what$",
@@ -765,5 +823,108 @@
   },
   "popup_dl_open_remote": {
     "message": "Otevřít jeho stránku"
+  },
+  "video_home": {
+    "message": "Vrátit tlačítko do rohu"
+  },
+  "video_filter_all": {
+    "message": "Vše"
+  },
+  "video_filter_audio": {
+    "message": "Jen zvuk"
+  },
+  "video_filter_kind": {
+    "message": "Zobrazit"
+  },
+  "video_filter_type": {
+    "message": "Typ souboru"
+  },
+  "video_filter_codec": {
+    "message": "Kodek"
+  },
+  "popup_video_reset_text": {
+    "message": "Tlačítko stahování nad videi"
+  },
+  "popup_video_reset_sub": {
+    "message": "Kam jste jej přesunuli a filtry jeho nabídky na každém webu"
+  },
+  "popup_video_reset": {
+    "message": "Resetovat"
+  },
+  "popup_video_reset_done": {
+    "message": "Zpět v rohu, nabídka zobrazuje vše na všech webech"
+  },
+  "status_links_sent": {
+    "message": "Odkazy odeslány: $count$",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "10"
+      }
+    }
+  },
+  "status_links_cut": {
+    "message": "Odkazy odeslány: $sent$, $left$ vynecháno",
+    "placeholders": {
+      "sent": {
+        "content": "$1",
+        "example": "100"
+      },
+      "left": {
+        "content": "$2",
+        "example": "20"
+      }
+    }
+  },
+  "status_links_partial": {
+    "message": "Odkazy odeslány: $sent$, odmítnuty: $refused$",
+    "placeholders": {
+      "sent": {
+        "content": "$1",
+        "example": "5"
+      },
+      "refused": {
+        "content": "$2",
+        "example": "2"
+      }
+    }
+  },
+  "status_links_partial_cut": {
+    "message": "Odkazy odeslány: $sent$, odmítnuty: $refused$, $left$ vynecháno",
+    "placeholders": {
+      "sent": {
+        "content": "$1",
+        "example": "5"
+      },
+      "refused": {
+        "content": "$2",
+        "example": "2"
+      },
+      "left": {
+        "content": "$3",
+        "example": "1"
+      }
+    }
+  },
+  "status_links_refused": {
+    "message": "Odkazy odmítnuty: $count$",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "status_links_none": {
+    "message": "Žádné zachytitelné odkazy ($left$ vynecháno)",
+    "placeholders": {
+      "left": {
+        "content": "$1",
+        "example": "5"
+      }
+    }
+  },
+  "status_unreachable": {
+    "message": "Server není dostupný"
   }
 }

@@ -101,21 +101,25 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} download finished|{n} downloads finished	{n} ማውረድ ተጠናቋል|{n} ማውረዶች ተጠናቀዋል
+#. count in preview.rs
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} download selected|{n} downloads selected	{n} ማውረድ ተመርጧል|{n} ማውረዶች ተመርጠዋል
 #. count in the main window
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} downloading|{n} downloading	{n} በማውረድ ላይ|{n} በማውረድ ላይ
 #. count in extracting archives (a download's log, the Archive password window)
-#. in a download's log, after extracting: entries of the archive not written (links, names that would leave the folder)
+#. in a download's log, after extracting: entries of the archive not written (links, names that would leave the folder, entries under a file of the archive where a folder should be)
 #. {n} = a number (keep the braces as they are)
 #, machine
-@plural	{n} entry was left out (a link, or a name leading outside the folder)|{n} entries were left out (links, or names leading outside the folder)	{n} ግቤት ተትቷል (አገናኝ ወይም ከአቃፊው ውጭ የሚመራ ስም)|{n} ግቤቶች ተትተዋል (አገናኞች ወይም ከአቃፊው ውጭ የሚመሩ ስሞች)
+@plural	{n} entry was left out (a link, a name leading outside the folder, or a file in its way)|{n} entries were left out (links, names leading outside the folder, or files in their way)	{n} ግቤት ተትቷል (አገናኝ፣ ከአቃፊው ውጭ የሚመራ ስም፣ ወይም በመንገዱ ላይ ያለ ፋይል)|{n} ግቤቶች ተትተዋል (አገናኞች፣ ከአቃፊው ውጭ የሚመሩ ስሞች፣ ወይም በመንገዳቸው ላይ ያሉ ፋይሎች)
 #. count in a dialog box
 #. the summary of downloads added together; after "12 downloads finished": {n} of them failed
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} failed|{n} failed	{n} አልተሳካም|{n} አልተሳካም
-#. count in the Batch download window; count in the Link grabber window; count in the Add torrent window; count in torrentfiles.rs
+#. count in the main window; count in the Batch download window; count in a dialog box; count in the Link grabber window; count in the Add torrent window; count in torrentfiles.rs; count in zippreview.rs
 #. how many files the pattern gives in all
 #. Link grabber: a package's row: {n} is its number of links
 #. {n} = a number (keep the braces as they are)
@@ -131,6 +135,10 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} file had the name of a file there already and was numbered|{n} files had the name of a file there already and were numbered	{n} ፋይል እዚያ ካለ ፋይል ጋር ተመሳሳይ ስም ስለነበረው ቁጥር ተጨምሮበታል|{n} ፋይሎች እዚያ ካሉ ፋይሎች ጋር ተመሳሳይ ስም ስለነበራቸው ቁጥር ተጨምሮባቸዋል
+#. count in preview.rs
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} finished|{n} finished	{n} ተጠናቋል|{n} ተጠናቀዋል
 #. count in the main window's messages (deleting downloads' files)
 #. the message's next line: how many more deleted files stayed on the disk
 #. {n} = a number (keep the braces as they are)
@@ -163,16 +171,36 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} tracker added|{n} trackers added	{n} መከታተያ ታክሏል|{n} መከታተያዎች ታክለዋል
+#. count in the main window
+#. event log entry: trackers from the public tracker list (Torrent settings) were added to a torrent
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} tracker added from the public list|{n} trackers added from the public list	{n} ትራከር ከህዝብ ዝርዝር ታክሏል|{n} ትራከሮች ከህዝብ ዝርዝር ታክለዋል
 #. count in the Add torrent window
 #. where a magnet's peers came from: {n} = trackers asked; {peers} = "3 peers"
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} tracker: {peers}|{n} trackers: {peers}	{n} መከታተያ: {peers}|{n} መከታተያዎች: {peers}
+#. count in the main window
+#. the tip of MDM's notification area (tray) icon: {n} windows of MDM (Download complete...) wait while a full-screen game, app or presentation is on, and show when the user is back
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} window waits until you're back|{n} windows wait until you're back	{n} መስኮት እስኪመለሱ ድረስ ይጠብቃል|{n} መስኮቶች እስኪመለሱ ድረስ ይጠብቃሉ
+#. count in the Link grabber window
+#. Link grabber's Source line: a Hugging Face repository's or GitHub release's ({package}: its name, "owner/name") files whose names would lead out of its folder (`../`, a drive, a device's name) are left out; {n} how many
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{package}: {n} file left out, its name would lead out of its folder|{package}: {n} files left out, their names would lead out of its folder	{package}: {n} ፋይል ተትቷል፣ ስሙ ከአቃፊው ውጭ ያወጣል|{package}: {n} ፋይሎች ተትተዋል፣ ስማቸው ከአቃፊው ውጭ ያወጣል
 #. count in cnl.rs
 #. Click'n'Load window: {site} is a web site's name such as "example.com"
 #. {site} = a web site's name such as "example.com"; {n} = a number (keep the braces as they are)
 #, machine
 @plural	{site} wants to send {n} link to Link grabber.|{site} wants to send {n} links to Link grabber.	{site} {n} አገናኝ ወደ አገናኝ ያዥ ለመላክ ይፈልጋል።|{site} {n} አገናኞችን ወደ አገናኝ ያዥ ለመላክ ይፈልጋል።
+#. count in preview.rs
+#. the preview pane, several downloads selected: their total size, then how many of them have no known size yet; {size} e.g. "4.20 GB"
+#. {size} = a file size such as "4.2 MB"; {n} = a number (keep the braces as they are)
+#, machine
+@plural	{size} and {n} of unknown size|{size} and {n} of unknown size	{size} እና {n} ያልታወቀ መጠን|{size} እና {n} ያልታወቀ መጠን
 #. count in playlistdlg.rs
 #. in Download video: a playlist title then how many videos it has ({count})
 #. {count} = a number (keep the braces as they are)
@@ -182,6 +210,10 @@
 #. in Download video: a playlist title, then how many of its videos are listed so far ({listed}) of how many ({total})
 #, machine
 @plural	{title}: {listed} of {total} video listed|{title}: {listed} of {total} videos listed	{title}፦ {listed} ከ {total} ቪዲዮ ተዘርዝሯል|{title}፦ {listed} ከ {total} ቪዲዮዎች ተዘርዝረዋል
+#. text in the Options window
+#. tooltip of "Don't show pop-ups while a full-screen app or presentation is running"
+#, machine
+	"Download complete" and the other windows MDM opens by itself wait while a full-screen game, app or video, a presentation or the locked screen is on, and show when you're back. The windows you open yourself, and links from your browser, always show	“ማውረድ ተጠናቋል” እና MDM በራሱ የሚከፍታቸው ሌሎች መስኮቶች ሙሉ ማያ ገጽ ጨዋታ፣ መተግበሪያ ወይም ቪዲዮ፣ የዝግጅት አቀራረብ ወይም የተቆለፈ ማያ ገጽ ሲበራ ይጠብቃሉ፣ እና እርስዎ ሲመለሱ ይታያሉ። እርስዎ እራስዎ የሚከፍቷቸው መስኮቶች እና ከአሳሽዎ የሚመጡ አገናኞች ሁልጊዜ ይታያሉ።
 #. text in the settings
 #. Options → DNS: a server address typed isn't an IP address; {what} is what was typed
 #, machine
@@ -289,6 +321,10 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	A magnet link's files could not be looked up: {error}	የማግኔት ማገናኛውን ፋይሎች መፈለግ አልተቻለም፦ {error}
+#. message or event log entry in the main window
+#. event log, at start: MDM was closed while this download was being moved to another folder; {folder} is where its file is now
+#, machine
+	A move was cut short when MDM closed: the download is in {folder}	MDM ሲዘጋ ዝውውሩ ተቋርጧል፦ ማውረዱ አሁን በ{folder} ውስጥ ይገኛል።
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
@@ -301,6 +337,9 @@
 #. why Part is greyed in Download video: the page is a playlist, whose videos are downloaded whole
 #, machine
 	A playlist's videos are downloaded whole	የአጫዋች ዝርዝር ቪዲዮዎች ሙሉ በሙሉ ይወርዳሉ
+#. message or event log entry in the main window
+#, machine
+	A private torrent: the public tracker list isn't added	የግል ጅረት ነው፦ የህዝብ መከታተያ ዝርዝር አልታከለም
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites: the tooltip of the profile box
 #, machine
@@ -325,6 +364,10 @@
 #. tooltip on the disabled Rename box for a single-file torrent
 #, machine
 	A single-file torrent keeps its name	ነጠላ-ፋይል ቶረንት ስሙን ይጠብቃል
+#. text in the download list (sizes, speeds, status)
+#. why a torrent that isn't finished can't be moved or renamed: the torrent engine writes its pieces into the files where they are
+#, machine
+	A torrent can be moved once it's finished: until then the torrent engine writes its pieces where they are	ቶረንት አንዴ ከተጠናቀቀ በኋላ ሊንቀሳቀስ ይችላል፦ እስከዚያው ድረስ የቶረንት ሞተሩ ክፍሎቹን ባሉበት ፋይሎች ውስጥ ይጽፋል።
 #. text in torrent_ownership.rs
 #. a torrent's folder is a link or junction leading outside its destination
 #, machine
@@ -333,6 +376,10 @@
 #. Add trackers: MDM never contacts a tracker on this computer or the local network
 #, machine
 	A tracker on this computer or the local network is never contacted: {line}	በዚህ ኮምፒውተር ወይም በአካባቢያዊ አውታረ መረብ ላይ ያለ መከታተያ በጭራሽ አይገናኝም፦ {line}
+#. text in the download list (sizes, speeds, status)
+#. why a video or an image gallery that isn't finished can't be moved or renamed: yt-dlp, ffmpeg or gallery-dl keep their unfinished files in its folder
+#, machine
+	A video or a gallery can be moved once it's finished: until then its helper programs keep their unfinished files in its folder	ቪዲዮ ወይም ጋለሪ አንዴ ከተጠናቀቀ በኋላ ሊንቀሳቀስ ይችላል፦ እስከዚያው ድረስ ረዳት ፕሮግራሞቹ ያልተጠናቀቁ ፋይሎቻቸውን በየራሳቸው ማህደር ውስጥ ያቆያሉ።
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 #, machine
@@ -433,6 +480,10 @@
 #. text in extension.rs
 #, machine
 	Add the free extension: files you download in your browser come here, and videos get a Download button.	ነፃውን ቅጥያ ያክሉ፦ በአሳሽዎ የሚያወርዷቸው ፋይሎች እዚህ ይመጣሉ፣ ቪዲዮዎችም የማውረድ ቁልፍ ያገኛሉ።
+#. text in the Add torrent window
+#. Torrent settings: add the trackers of a public tracker list (its address in the box below) to torrents that aren't private, so they find more peers
+#, machine
+	Add the trackers of this public list to public torrents:	የዚህን የህዝብ ዝርዝር መከታተያዎች ለህዝብ ጅረቶች ያክሉ፦
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: add the torrents to the list without starting them
 #, machine
@@ -476,6 +527,10 @@
 #. remote control page (on a phone): a magnet link or .torrent file was added; MDM reads the torrent's files first
 #, machine
 	Added. MDM is reading the torrent: it joins the list in a moment.	ታክሏል። MDM ቶረንቱን እያነበበ ነው: በቅርቡ ዝርዝሩን ይቀላቀላል።
+#. text in preview.rs
+#. label in the preview pane: when the download was added to the list
+#, machine
+	Added:	የታከለበት ቀን፦
 #. text in the Batch download window; text in a dialog box; label in the Options window; text in a download's progress window
 #. noun: the web address (URL)
 #. column title: the web address (URL)
@@ -489,7 +544,11 @@
 #. remote control page (on a phone): label of the box where a download's address or a magnet link is typed
 #, machine
 	Address or magnet link	አድራሻ ወይም ማግኔት ሊንክ
-#. text in the Options window; text in a download's Properties window
+#. message or event log entry in the main window
+#. Link grabber: where the links came from: the Add URL window (an address typed or pasted there)
+#, machine
+	Address typed	አድራሻው ተተይፏል
+#. text in the Options window; text in preview.rs; text in a download's Properties window
 #. Options → DNS over HTTPS: label before the server's https:// address
 #, machine
 	Address:	አድራሻ:
@@ -583,6 +642,10 @@
 #. Link grabber, a link's status: the remedy from the failure's sentence, for a site whose bot check lets only browsers through. The sentence, with the same advice, is the cell's hover tip
 #, machine
 	Alt+click the link	አገናኙን Alt+ጠቅ ያድርጉ
+#. text in requestedit.rs
+#. Site rule: check box; on, MDM connects the way a browser does from the first request to these sites, instead of only after a site turned it away ("this site lets only browsers through")
+#, machine
+	Always connect the way a browser does	ሁልጊዜ እንደ አሳሽ ይገናኙ
 #. message or event log entry in the main window
 #. View menu: a check item; dark mode on, whatever the system's setting
 #, machine
@@ -606,6 +669,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Andorra	አንዶራ
+#. text in a dialog box
+#. why the phone could not be turned off after the queue (fills {error}, Android)
+#, machine
+	Android doesn't let apps turn the phone off	Android መተግበሪያዎች ስልኩን እንዲያጠፉ አይፈቅድም
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -631,6 +698,10 @@
 #. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer's one wake alarm is already set by something else
 #, machine
 	Another program has set the computer's wake alarm	ሌላ ፕሮግራም የኮምፒውተሩን የማንቂያ ደውል አዘጋጅቷል
+#. text in the Options window
+#. Site rule: OK with a site another rule already has
+#, machine
+	Another rule is for this site already: change that one	ለዚህ ጣቢያ ሌላ ህግ አስቀድሞ አለ፦ ያንን ይቀይሩ
 #. text in the Options window
 #. Options → Proxy / Socks: Test's answer; {ms} milliseconds; {ip} the internet address the site saw (the proxy's, or this computer's without one)
 #, machine
@@ -700,6 +771,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Aruba	አሩባ
+#. text in requestedit.rs
+#. a download's Connection settings → Proxy: the proxy set in Options → Proxy / Socks
+#, machine
+	As in Options	በአማራጮች ውስጥ እንዳለው
 #. option (radio button) in the Options window
 #, machine
 	As the system's region writes them	የስርዓቱ ክልል እንደጻፋቸው
@@ -745,6 +820,7 @@
 #, machine
 	Austria	ኦስትሪያ
 #. checkbox in the Options window; text in the Options window
+#. Options → Download panels → Button size: the round button in a feed and over a small video, the button with its words over a big one (the default)
 #. checkbox: the User-Agent is the default browser's, which MDM finds itself
 #, machine
 	Automatic	ራስ-ሰር
@@ -860,6 +936,10 @@
 #. the trailing ... means it opens a window: keep it
 #, machine
 	Browse...	አስስ...
+#. text in the Options window
+#. Site rules: column title: "Yes" when the rule asks the way a browser connects from the first request
+#, machine
+	Browser	አሳሽ
 #. text in extension.rs
 #, machine
 	Browser integration isn't set up on this computer, so no browser can reach Mister Download Manager yet.	የአሳሽ ውህደት በዚህ ኮምፒውተር ላይ አልተዘጋጀም፣ ስለዚህ እስካሁን ምንም አሳሽ Mister Download Managerን ማግኘት አይችልም።
@@ -887,7 +967,7 @@
 #, machine
 	Busy, try later	ስራ ላይ ነው፣ ቆይተው ይሞክሩ
 #. text in the Options window
-#. Options → Download panels: the size of the download button over videos, chosen after it (Full / Compact)
+#. Options → Download panels: the size of the download button over videos, chosen under it (Automatic / Full / Compact)
 #, machine
 	Button size:	የአዝራር መጠን፦
 #. message or event log entry in the main window
@@ -916,7 +996,7 @@
 #. a country's name (where a download's server is)
 #, machine
 	Canada	ካናዳ
-#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in extracting archives (a download's log, the Archive password window); button in the Find window; button in gallerydlg.rs; text in the Link grabber window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; text in remote.rs; button in the Scheduler window; button in the Add torrent window; button in traypanel.rs; button in the Download video window
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in extracting archives (a download's log, the Archive password window); button in the Find window; button in gallerydlg.rs; text in the Link grabber window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; text in remote.rs; button in the Scheduler window; button in the Add torrent window; button in traypanel.rs; button in the Download video window; text in zippreview.rs
 #. button: stop downloading the update
 #, machine
 	Cancel	ይቅር
@@ -1082,12 +1162,22 @@
 #. remote control page (on a phone): what the ".torrent file" button does (screen readers)
 #, machine
 	Choose a .torrent file	.torrent ፋይል ይምረጡ
+#. message or event log entry in the main window
+#. title of the file dialog of View → Font → Choose a font file
+#. title of the message when the font picked in View → Font can't be used
+#, machine
+	Choose a font file	የቅርጸ-ቁምፊ ፋይል ይምረጡ
 #. text in helpers.rs
+#. file picker title: choose a JavaScript runtime's program (node.exe, deno.exe, qjs.exe, bun.exe)
 #, machine
 	Choose a JavaScript runtime (Node.js, Deno, QuickJS or Bun)	የጃቫስክሪፕት ሩንታይም ይምረጡ (Node.js፣ Deno፣ QuickJS ወይም Bun)
 #. text in langpick.rs
 #, machine
 	Choose a language	ቋንቋ ይምረጡ
+#. text in a dialog box
+#. the Columns dialog: what it is for, above its list of the download list's columns
+#, machine
+	Choose columns to show	ለማሳየት ዓምዶችን ይምረጡ
 #. text in langpick.rs
 #, machine
 	Choose the language Mister Download Manager shows its windows in:	Mister Download Manager መስኮቶቹን የሚያሳይበትን ቋንቋ ይምረጡ:
@@ -1096,6 +1186,7 @@
 #, machine
 	Choose the profile's folder	የመገለጫውን አቃፊ ይምረጡ
 #. text in helpers.rs; text in the Options window
+#. file picker title; {name} = yt-dlp or ffmpeg
 #. file picker title; {name} = the program to choose (yt-dlp, ffmpeg, 7-Zip)
 #. {name} = a file name (keep the braces as they are)
 #, machine
@@ -1108,6 +1199,11 @@
 #. verb: clears this filter
 #, machine
 	Clear	አጽዳ
+#. message or event log entry in the main window; window title in cnl.rs
+#. title of the notice when Click'n'Load couldn't start
+#. window title: a web page used Click'n'Load (a link site's button that sends its links to this program)
+#, machine
+	Click'n'Load	ክሊክ ኤንድ ሎድ
 #. text in cnl.rs
 #. notice: Click'n'Load couldn't start; {port} is 9666; JDownloader is another download manager that uses the same port
 #, machine
@@ -1156,11 +1252,15 @@
 #. a country's name (where a download's server is)
 #, machine
 	Colombia	ኮሎምቢያ
+#. window title in a dialog box; text in a dialog box
+#. what a screen reader calls the Columns dialog's list of the download list's columns
+#, machine
+	Columns	ዓምዶች
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
 	Comoros	ኮሞሮስ
-#. option (radio button) in the Options window
+#. text in the Options window
 #. Options → Download panels → Button size: only the round button (the logo, the arrow, the close mark) over every video
 #, machine
 	Compact	ጥቅል
@@ -1210,6 +1310,23 @@
 #. tab title: connection settings
 #, machine
 	Connection	ግንኙነት
+#. text in a download's Properties window
+#. window title: a download's own request settings (User-Agent, headers, connections, proxy), from File Properties → Connection...
+#, machine
+	Connection settings	የግንኙነት ቅንብሮች
+#. message or event log entry in the main window
+#. event log: File Properties → Connection settings changed the download's own User-Agent, headers, proxy or connections
+#, machine
+	Connection settings changed	የግንኙነት ቅንብሮች ተቀይረዋል
+#. text in a download's Properties window
+#. File Properties button: opens the download's own request settings (User-Agent, headers, connections, proxy)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Connection...	ግንኙነት...
+#. text in the Options window
+#. Site rules: column title: the number of connections (empty: the default)
+#, machine
+	Connections	ግንኙነቶች
 #. page title in the Options window
 #, machine
 	Connections and Limits	ግንኙነቶች እና ገደቦች
@@ -1479,6 +1596,10 @@
 #. button in the browser extension's window: stop offering it at each start
 #, machine
 	Don't ask again	እንደገና አይጠይቁ
+#. text in the Options window
+#. checkbox, Options → Downloads: Download complete and MDM's other windows that open by themselves wait while a full-screen game, app or video, a presentation or the locked screen is on, and show when the user is back
+#, machine
+	Don't show pop-ups while a full-screen app or presentation is running	ሙሉ ማያ ገጽ መተግበሪያ ወይም የዝግጅት አቀራረብ እየሰራ እያለ ብቅ-ባይ መስኮቶችን አያሳዩ
 #. checkbox in a dialog box
 #, machine
 	Don't show this dialog again	ይህን መገናኛ እንደገና አታሳዩ
@@ -1637,6 +1758,10 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Downloading MDM's own copy...	የMDMን ቅጂ በማውረድ ላይ...
+#. text in helpers.rs
+#. Helpers: MDM's own copy of a helper is being downloaded (where there was none, or in place of the system's); {percent} = how far, a number
+#, machine
+	Downloading MDM's own copy... {percent}%	የMDMን ቅጂ በማውረድ ላይ... {percent}%
 #. text in archtest.rs
 #. in a download's log: after its archive test found damaged files, only their bytes are downloaded again from the same server; {size} like "1.20 MB"
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
@@ -1671,6 +1796,10 @@
 #. the notice shown once, the first time a download comes from a browser's private (incognito) window: it stays in MDM's list like any other, after a restart too; where to turn that off. {options} = the Options window, {general} = its General tab, {checkbox} = the checkbox "Keep private-window downloads in the list"
 #, machine
 	Downloads from a browser's private window stay in MDM's list like any other, also after MDM restarts; their cookies are never saved. To keep them in memory only, untick {options} → {general} → {checkbox}.	ከአሳሽ የግል መስኮት የሚመጡ ማውረዶች MDM እንደገና ከጀመረ በኋላም እንደሌሎቹ ሁሉ በMDM ዝርዝር ውስጥ ይቆያሉ፤ ኩኪዎቻቸው በጭራሽ አይቀመጡም። በማስታወሻ ውስጥ ብቻ እንዲቆዩ ለማድረግ፣ {options} → {general} → {checkbox} የሚለውን ምልክት ያንሱ።
+#. text in the Options window
+#. Site rules window: how the rules apply; *.example.com stays as it is
+#, machine
+	Downloads from these sites get these settings. Each one comes from the first rule in the list that names the site and sets it; * stands for any text: *.example.com	ከእነዚህ ጣቢያዎች የሚወርዱ ፋይሎች እነዚህን ቅንብሮች ያገኛሉ። እያንዳንዱ ከዝርዝሩ ውስጥ ጣቢያውን ከሚሰይመው እና ከሚያዘጋጀው የመጀመሪያው ህግ የመጣ ነው፤ * ማንኛውንም ጽሑፍ ይወክላል፦ *.example.com
 #. text in the tray icon's menu; text in traypanel.rs
 #. tray menu: a submenu of the downloads now running; choosing one shows its progress window
 #. the notification-area icon's panel (#1365): its title, over the downloads now running (also the tray menu's submenu)
@@ -1743,6 +1872,10 @@
 #. text in the Options window
 #, machine
 	Edit login	መግቢያን አርትዕ
+#. text in the Options window
+#. window title: changing one site rule
+#, machine
+	Edit site rule	የጣቢያ ህግን ያርትዑ
 #. button in the Options window
 #. verb: edit the item
 #. the trailing ... means it opens a window: keep it
@@ -1759,7 +1892,7 @@
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Email	ኢሜይል
-#. text in the Download video window
+#. checkbox in the Download video window; text in the Download video window
 #. checkbox in Download video: the chapters a video's page lists (YouTube's, for one) go into the video file, where players show them and skip between them
 #, machine
 	Embed chapters	ምዕራፎችን ያካትቱ
@@ -1767,6 +1900,10 @@
 #. in Download a gallery, after the "Files at most" box
 #, machine
 	Empty: all of them. On most sites the newest come first.	ባዶ ከሆነ: ሁሉም። በአብዛኛዎቹ ጣቢያዎች ላይ አዲሶቹ መጀመሪያ ይመጣሉ።
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: the hint under the User-Agent box
+#, machine
+	Empty: the browser's, or the one set in Options	ባዶ፦ የአሳሹ፣ ወይም በአማራጮች ውስጥ የተዘጋጀው
 #. text in crashui.rs
 #. crash report window button: end the frozen MDM and start it again
 #, machine
@@ -1844,6 +1981,10 @@
 #. choice in Download video's Part: the part is encoded again so it starts and ends exactly at From and To (slower)
 #, machine
 	Exact cut, encoded again	ትክክለኛ ቁርጥ፣ እንደገና የተመሰጠረ
+#. text in the Options window
+#. Site rule: the hint under the site box; the examples stay as they are
+#, machine
+	example.com, or *.example.com for its subdomains	example.com፣ ወይም ለንዑስ ጎራዎቹ *.example.com
 #. text in the Options window
 #. label before an example date and time written the chosen way
 #, machine
@@ -1948,9 +2089,13 @@
 #, machine
 	Feeds:	ምግቦች:
 #. text in the Add torrent window
-#. Torrent settings, at the bottom
+#. Torrent settings, under the blocklist's address
 #, machine
 	Fetched again every 7 days. Changes apply when no torrent is running.	በየ7 ቀኑ እንደገና ይወሰዳል። ምንም ቶረንት በማይሰራበት ጊዜ ለውጦች ይተገበራሉ።
+#. text in the Add torrent window
+#. Torrent settings, under the public tracker list's address
+#, machine
+	Fetched once a day. Never added to private torrents.	በቀን አንድ ጊዜ ይወሰዳል። ለግል ጅረቶች በጭራሽ አይታከልም።
 #. text in helpers.rs
 #. helper name and what it does (ffmpeg is a program's name)
 #, machine
@@ -1971,7 +2116,8 @@
 #. tooltip of "Mark downloaded files as coming from the internet" on Linux
 #, machine
 	File managers show where the files marked this way came from. Unticked, no download is marked.	የፋይል አስተዳዳሪዎች በዚህ መንገድ ምልክት የተደረገባቸው ፋይሎች ከየት እንደመጡ ያሳያሉ። ይህ ካልተመረጠ፣ ምንም ማውረድ ምልክት አይደረግበትም።
-#. text in the Scheduler window
+#. text in a download's progress window; text in the Scheduler window
+#. Zip preview's column: the file's name (its path inside the ZIP)
 #, machine
 	File Name	የፋይል ስም
 #. text in the Download video window
@@ -1993,6 +2139,10 @@
 #. text in categories.rs
 #, machine
 	File types:	የፋይል አይነቶች:
+#. text in preview.rs
+#. label in the preview pane: whether the downloaded file is still where it was saved
+#, machine
+	File:	ፋይል፦
 #. text in a download's progress window; text in the Add torrent window
 #. tab title: the torrent's files
 #, machine
@@ -2011,6 +2161,10 @@
 #. text in the Scheduler window; tab in the Scheduler window
 #, machine
 	Files in the queue	በወረፋ ውስጥ ያሉ ፋይሎች
+#. text in the download list (sizes, speeds, status)
+#. why files being taken out of a ZIP on its server (#1775) can't be moved or renamed yet: those already out are in its folder, the others still to come there
+#, machine
+	Files taken out of a ZIP can be moved once they're all out	ከዚፕ የወጡ ፋይሎች ሁሉም ከወጡ በኋላ ሊንቀሳቀሱ ይችላሉ።
 #. button in a download's Properties window
 #. File Properties button that opens the selected torrent's file list
 #. the trailing ... means it opens a window: keep it
@@ -2053,6 +2207,10 @@
 #. remote control page (on a phone): tab: downloads finished
 #, machine
 	Finished	ተጠናቋል
+#. text in preview.rs
+#. label in the preview pane: when the download finished
+#, machine
+	Finished:	የተጠናቀቀበት ቀን፦
 #. text in a download's progress window
 #. a download's status: every byte is in, the file is being written out and given its name
 #. the trailing ... means it is still going on: keep it
@@ -2075,6 +2233,14 @@
 #. text in categories.rs
 #, machine
 	Folder:	አቃፊ:
+#. text in the Options window
+#. Options → Archives → Link grabber, one line with two boxes: an FTP folder or a web server's folder listing ("Index of") given to Link grabber is read with its subfolders: {depth} is a number box (how many levels of subfolders, 3 at first; 0 is the folder's own files only), {types} a text box (file types such as ISO ZIP; empty for every type)
+#, machine
+	Folders: {depth} levels deep, types: {types}	እስከ {depth} ደረጃ ጥልቀት ያላቸው ማህደሮች፣ አይነቶች፦ {types}
+#. message or event log entry in the main window
+#. the kind of file View → Font → Choose a font file lists: TrueType and OpenType font files
+#, machine
+	Font files	የቅርጸ-ቁምፊ ፋይሎች
 #. text in finish.rs
 #. Snooze menu of the Download complete window: show no Download complete window for this long
 #, machine
@@ -2198,7 +2364,7 @@
 #, machine
 	FTP downloads don't go through an HTTP proxy. Choose SOCKS5 or SOCKS4 to send them through the proxy.	የFTP ማውረዶች በHTTP ፕሮክሲ አያልፉም። በፕሮክሲው በኩል ለማውረድ SOCKS5 ወይም SOCKS4 ይምረጡ።
 #. text in the Options window
-#. Options → Download panels → Button size: the button with its words ("Download video", the quality) where they fit (the default)
+#. Options → Download panels → Button size: the button with its words ("Download video", the quality) wherever they fit
 #, machine
 	Full	ሙሉ
 #. text in countries.rs
@@ -2270,6 +2436,11 @@
 #. {version} = a version number (keep the braces as they are)
 #, machine
 	Go back to {version}	ወደ {version} ይመለሱ
+#. text in helpers.rs
+#. Helpers: the "Go back" button's name for a screen reader; {version} = the earlier version, {name} = the helper (yt-dlp, ffmpeg, gallery-dl, Node.js)
+#. {version} = a version number; {name} = a file name (keep the braces as they are)
+#, machine
+	Go back to {version} of {name}	ወደ {name} {version} ይመለሱ
 #. text in a download's progress window
 #. a torrent's sharing, when Torrent settings keep it on
 #, machine
@@ -2333,6 +2504,10 @@
 #. legend: pieces downloaded
 #, machine
 	Have	አለኝ
+#. text in the Options window
+#. Site rules: column title: how many request headers the rule adds
+#, machine
+	Headers	ራስጌዎች
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2358,6 +2533,15 @@
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 	Hide &categories	ምድቦችን &ደብቅ
+#. message or event log entry in the main window
+#. View menu: hides the pane beside the download list that shows the selected download's picture and details
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	Hide &preview pane	ቅድመ እይታ ፓነልን &ይደብቁ
+#. text in the Link grabber window
+#. Link grabber check box, ticked when it opens: the pictures shown on the browser's page (its images, not links to pictures), which "Download all links" sends with the links, are not shown
+#, machine
+	Hide images located on this web page	በዚህ ድረ-ገጽ ላይ ያሉ ምስሎችን ደብቅ
 #. button in a download's progress window
 #, machine
 	Hide tab	ትር ደብቅ
@@ -2485,11 +2669,11 @@
 #. in the "7-Zip needed" window, under why
 #, machine
 	Install 7-Zip (free), then right-click the download and choose Extract.	7-ዚፕን (ነጻ) ይጫኑ፣ ከዚያ ማውረዱን በቀኝ ጠቅ ያድርጉ እና ማውጣት የሚለውን ይምረጡ።
-#. text in the Download video window
+#. text in helpers.rs; text in the Download video window
 #. button: download and install the ffmpeg program
 #, machine
 	Install ffmpeg	ffmpeg ይጫኑ
-#. button in gallerydlg.rs
+#. button in gallerydlg.rs; text in helpers.rs
 #. button: download and install the gallery-dl program
 #, machine
 	Install gallery-dl	gallery-dlን ይጫኑ
@@ -2497,7 +2681,7 @@
 #. link in the browser extension's window: the tutorial that adds it without the browser's store
 #, machine
 	Install it by hand	በእጅ ይጫኑት
-#. text in the Download video window
+#. text in helpers.rs; text in the Download video window
 #. button in Download video: download and install Node.js, the JavaScript runtime YouTube needs (Node.js is a program's name)
 #, machine
 	Install Node.js	Node.js ጫን
@@ -2509,7 +2693,7 @@
 #. in the "7-Zip needed" window, under why (Linux: 7-Zip comes from the distribution's packages, named 7zip or p7zip)
 #, machine
 	Install your system's 7zip (or p7zip) package, then right-click the download and choose Extract.	የስርዓትዎን 7zip (ወይም p7zip) ጥቅል ይጫኑ፣ ከዚያ ማውረዱን በቀኝ ጠቅ ያድርጉ እና አውጣ የሚለውን ይምረጡ።
-#. text in the Download video window
+#. text in helpers.rs; text in the Download video window
 #. button: download and install the yt-dlp program
 #, machine
 	Install yt-dlp	yt-dlp ይጫኑ
@@ -2604,6 +2788,14 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	its files could not be written: {error}	ፋይሎቹ ሊጻፉ አልቻሉም: {error}
+#. text in preview.rs
+#. the preview pane: neither the file nor its folder can be found now (an unplugged drive, a network folder away)
+#, machine
+	Its folder can't be reached now	አቃፊው አሁን ሊደረስበት አይችልም
+#. text in relocate.rs
+#. why an unfinished download could not be moved (after "The file could not be moved: "): its folder isn't there now (a drive taken out); {folder} is that folder
+#, machine
+	its folder {folder} can't be reached	የእሱ ማህደር {folder} ሊደረስበት አይችልም።
 #. text in the download list (sizes, speeds, status)
 #. why a video download failed: ffmpeg couldn't join its picture and sound into one file; {error} = ffmpeg's reason, in English
 #. {error} = an error message (keep the braces as they are)
@@ -2791,6 +2983,23 @@
 #. Torrent settings: an upload speed limit for all torrents together, followed by a box with the speed and "KBytes/sec"
 #, machine
 	Limit uploading for all torrents to	ለሁሉም ቶረንቶች የመጫን ገደብ
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: a header's name has a space or another character names can't have; {line} is the line's number
+#, machine
+	Line {line}: a header's name has letters, digits and dashes only	መስመር {line}፦ የራስጌ ስም ፊደሎች፣ አሃዞች እና ሰረዞች ብቻ ሊኖረው ይገባል
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: a header MDM sets itself for each request (Range, Host…) can't be typed; {line} is the line's number, {name} the header's name
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Line {line}: Mister Download Manager sets {name} itself	መስመር {line}፦ Mister Download Manager {name}ን ራሱ ያዘጋጃል
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: a header's value (or the User-Agent) holds a control character; {line} is the line's number
+#, machine
+	Line {line}: the value has a character a header can't hold	መስመር {line}፦ እሴቱ ራስጌ ሊይዘው የማይችል ቁምፊ አለው
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: a line of request headers isn't "Name: value"; {line} is its number
+#, machine
+	Line {line}: write a header as Name: value	መስመር {line}፦ ራስጌን እንደ Name: value ይጻፉ
 #. message or event log entry in the main window; window title in the Link grabber window; group box title in the Options window
 #. Options → Archives: group box title
 #, machine
@@ -2804,6 +3013,10 @@
 #. in Link grabber, where the addresses came from: a page in the browser
 #, machine
 	Links from the browser	አገናኞች ከአሳሹ
+#. text in a dialog box
+#. tooltip of Download File Info's Preview button for a ZIP (#1775): it lists the files inside, to download only some of them
+#, machine
+	List the files inside the ZIP and pick those to download	በዚፕ ውስጥ ያሉትን ፋይሎች ይዘርዝሩ እና ለማውረድ የሚፈልጉትን ይምረጡ
 #. text in playlistdlg.rs
 #. button in Download video: go on listing a playlist from where it stopped
 #, machine
@@ -2881,10 +3094,20 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Looking for your default browser...	ነባሪ አሳሽዎን በመፈለግ ላይ...
+#. text in a dialog box
+#. tooltip of Download File Info's greyed Preview button while MDM asks the server whether it can look inside the ZIP (#1775)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Looking inside the ZIP...	በዚፕ ውስጥ በመመልከት ላይ...
 #. text in the Download video window
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Looking the page up...	ገጹን በመፈለግ ላይ...
+#. text in preview.rs
+#. the preview pane: still looking whether the file is there
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Looking...	በመፈለግ ላይ...
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3052,6 +3275,27 @@
 #. remote control page (on a phone): no pairing code is shown in MDM; "Pair a device" is MDM's button
 #, machine
 	MDM shows no code now. Click Pair a device there first.	MDM አሁን ምንም ኮድ አያሳይም። መጀመሪያ እዚያ መሣሪያ ያጣምሩ የሚለውን ጠቅ ያድርጉ።
+#. text in errors.rs
+#. error installing ffmpeg: the list of builds MDM accepts couldn't be read; {detail} = the technical detail, in English
+#, machine
+	MDM's list of checked ffmpeg builds can't be read ({detail})	MDM የተፈተሹ የffmpeg ግንባታዎች ዝርዝር ሊነበብ አልቻለም ({detail})
+#. text in errors.rs
+#. error installing ffmpeg: MDM installs only builds named in a list it publishes, signed with its key, and that list couldn't be downloaded; {error} = why
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	MDM's list of checked ffmpeg builds could not be downloaded: {error}	MDM የተፈተሹ የffmpeg ግንባታዎች ዝርዝር ማውረድ አልተቻለም፦ {error}
+#. text in errors.rs
+#. error installing ffmpeg: the list of builds MDM accepts has none for this computer's system and processor
+#, machine
+	MDM's list of checked ffmpeg builds has none for this computer	MDM የተፈተሹ የffmpeg ግንባታዎች ዝርዝር ለዚህ ኮምፒውተር የሚሆን ግንባታ የለውም
+#. text in errors.rs
+#. error installing ffmpeg: the list of builds MDM accepts is older than one this copy of MDM already used (it never goes back to an older list)
+#, machine
+	MDM's list of checked ffmpeg builds is older than one already used, so ffmpeg wasn't installed	MDM የተፈተሹ የffmpeg ግንባታዎች ዝርዝር ቀደም ሲል ጥቅም ላይ ከዋለው የበለጠ ያረጀ ነው፣ ስለዚህ ffmpeg አልተጫነም
+#. text in errors.rs
+#. error installing ffmpeg: the list of builds MDM accepts doesn't carry MDM's own signature
+#, machine
+	MDM's list of checked ffmpeg builds isn't signed by MDM's key, so ffmpeg wasn't installed	MDM የተፈተሹ የffmpeg ግንባታዎች ዝርዝር በMDM ቁልፍ አልተፈረመም፣ ስለዚህ ffmpeg አልተጫነም
 #. text in whereis.rs
 #. how far a download's server is, by its round trip (60 to 150 ms)
 #, machine
@@ -3152,6 +3396,10 @@
 #. Monday, as short as a calendar's column head (two letters in English)
 #, machine
 	Mo	ሰኞ
+#. text in a download's progress window
+#. Zip preview's column: when the file was last changed, as the ZIP says
+#, machine
+	Modified	የተሻሻለ
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3205,7 +3453,8 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move between the toolbar, the categories and the download list	በመሳሪያ አሞሌው፣ በምድቦች እና በማውረድ ዝርዝር መካከል ይንቀሳቀሱ
-#. text in the Scheduler window
+#. text in a dialog box; text in the Scheduler window
+#. button in the Columns dialog: move the selected column one place towards the end of the list
 #, machine
 	Move down	ወደ ታች ያንቀሳቅሱ
 #. text in a dialog box
@@ -3221,7 +3470,9 @@
 #. message or event log entry in the main window
 #, machine
 	Move to queue	ወደ ወረፋ ያንቀሳቅሱ
-#. text in the Scheduler window
+#. text in a dialog box; text in the Scheduler window
+#. button in the Columns dialog: move the selected column one place towards the start of the list
+#. tooltip of an icon button in the Scheduler's list of files
 #, machine
 	Move up	ወደ ላይ ያንቀሳቅሱ
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
@@ -3230,10 +3481,27 @@
 #. message or event log entry in the main window
 #, machine
 	Move/Rename	ያንቀሳቅሱ/ዳግም ይሰይሙ
+#. text in preview.rs
+#. the preview pane: a finished download's file is no longer where it was saved
+#, machine
+	Moved or deleted	ተንቀሳቅሷል ወይም ተሰርዟል
+#. message or event log entry in the main window
+#. event log: an unfinished download's part file was moved to another folder; it resumes there; {folder} is that folder
+#, machine
+	Moved to {folder}	ወደ {folder} ተንቀሳቅሷል
 #. message or event log entry in the main window
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Moving the file...	ፋይሉን በማንቀሳቀስ ላይ...
+#. message or event log entry in the main window
+#. event log: an unfinished download's part file is being moved to another folder; {folder} is that folder
+#, machine
+	Moving to {folder}	ወደ {folder} በመንቀሳቀስ ላይ
+#. text in the download list (sizes, speeds, status)
+#. a download's status: its unfinished file is being moved to another folder
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Moving...	በመንቀሳቀስ ላይ...
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3332,6 +3600,10 @@
 #, machine
 	New code	አዲስ ኮድ
 #. text in the Options window
+#. tooltip of Options → Save to → "Save every download in "General" category's folder"
+#, machine
+	New downloads of every category go to this one folder; their categories still sort the list. A download's folder can still be changed in the window that starts it, and the downloads already in the list stay where they are.	የእያንዳንዱ ምድብ አዲስ ማውረዶች ወደዚህ አንድ አቃፊ ይሄዳሉ፤ ምድቦቻቸው አሁንም ዝርዝሩን ይለያሉ። የማውረድ አቃፊው አሁንም በሚያስጀምረው መስኮት ውስጥ ሊቀየር ይችላል፣ እና በዝርዝሩ ውስጥ ያሉት ማውረዶች ባሉበት ይቆያሉ።
+#. text in the Options window
 #, machine
 	New exception	አዲስ ልዩ ሁኔታ
 #. text in the Options window
@@ -3342,6 +3614,10 @@
 #. RSS feeds window, Download rules: make a new rule
 #, machine
 	New rule	አዲስ ደንብ
+#. text in the Options window
+#. window title: adding a site rule
+#, machine
+	New site rule	አዲስ የጣቢያ ህግ
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3395,6 +3671,10 @@
 #. message or event log entry in the main window
 #, machine
 	No download links were found in the clipboard. Copy a text with http, https, ftp or magnet links in it, and try again.	በቅንጥብ ሰሌዳ ውስጥ ምንም የማውረጃ ማገናኛዎች አልተገኙም። http፣ https፣ ftp ወይም ማግኔት ማገናኛዎች ያለበት ጽሑፍ ይቅዱና እንደገና ይሞክሩ።
+#. text in preview.rs
+#. the preview pane (beside the download list) when no download is selected: its title
+#, machine
+	No download selected	ምንም ማውረድ አልተመረጠም
 #. text in traypanel.rs
 #. the notification-area icon's panel (#1365) when no download is running
 #, machine
@@ -3451,6 +3731,10 @@
 #. a magnet link's lookup, after 30 seconds without a peer
 #, machine
 	No peers yet. Few people may share this torrent, or a firewall, a VPN or the network may be blocking BitTorrent.	እስካሁን ምንም እኩያዎች የሉም። ጥቂት ሰዎች ይህን ቶረንት ሊያጋሩ ይችላሉ፣ ወይም ፋየርዎል፣ ቪፒኤን ወይም አውታረ መረቡ BitTorrentን እየከለከለ ሊሆን ይችላል።
+#. text in requestedit.rs
+#. a download's Connection settings → Proxy: straight to the server, no proxy
+#, machine
+	No proxy	ምንም ተኪ የለም
 #. text in the Options window
 #, machine
 	No proxy/socks	ምንም ፕሮክሲ/SOCKS የለም
@@ -3534,12 +3818,20 @@
 #. RSS feeds window: the selected feed hasn't been fetched yet
 #, machine
 	Not fetched yet	ገና አልተወሰደም
+#. text in the Link grabber window
+#. Link grabber, a link's status: a Hugging Face repository or folder, or a GitHub release or tag, that isn't there. The sentence is the cell's hover tip
+#, machine
+	Not found	አልተገኘም
 #. value in a column's filter list in the download list
 #, machine
 	Not in a queue	በወረፋ ውስጥ የለም
 #. text in helpers.rs
 #, machine
 	Not installed yet	ገና አልተጫነም
+#. text in preview.rs
+#. the preview pane: the size of a download is not known yet
+#, machine
+	Not known yet	ገና አልታወቀም
 #. text in the Link grabber window
 #. Link grabber, a link's status: a web page sent it (Click'n'Load), so it isn't looked up (name, size, online) before it is added
 #, machine
@@ -3586,6 +3878,10 @@
 #. text in the Options window
 #, machine
 	Number	ቁጥር
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: check box before the number box; unticked, the number set in Options → Connection applies
+#, machine
+	Number of connections:	የግንኙነቶች ብዛት፦
 #. checkbox in the Scheduler window
 #, machine
 	Number of retries for each file if downloading failed :	ማውረድ ካልተሳካ ለእያንዳንዱ ፋይል የሚደረጉ ሙከራዎች ብዛት:
@@ -3621,7 +3917,7 @@
 #. Link grabber, a link's status: the server hasn't the file; {status} is the HTTP code (404)
 #, machine
 	Offline ({status})	ከመስመር ውጪ ({status})
-#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; text in extracting archives (a download's log, the Archive password window); text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's Properties window; button in the Scheduler window; button in the Add torrent window
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; text in extracting archives (a download's log, the Archive password window); text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's Properties window; button in the Scheduler window; button in the Add torrent window; text in zippreview.rs
 #, machine
 	OK	እሺ
 #. text in countries.rs
@@ -3675,13 +3971,10 @@
 #. Link grabber, a link's status: the server has the file
 #, machine
 	Online	በመስመር ላይ
-#. text in a download's Properties window
-#. tooltip of the greyed Move button in File Properties
+#. text in the Options window
+#. Options → Archives → Link grabber: the hover tip of the types box in "Folders: {depth} levels deep, types: {types}": only a folder's files of these types go into Link grabber; written as the File types page writes them
 #, machine
-	Only a finished download, or one not started yet, can be moved	የተጠናቀቀ ማውረድ ወይም ገና ያልተጀመረ ብቻ ነው ሊንቀሳቀስ የሚችለው
-#. message or event log entry in the main window
-#, machine
-	Only a finished download, or one not started yet, can be moved. Stop it and finish it first.	የተጠናቀቀ ማውረድ ወይም ገና ያልተጀመረ ብቻ ነው ሊንቀሳቀስ የሚችለው። መጀመሪያ ያቁሙትና ያጠናቅቁት።
+	Only a folder's files of these types, written as on the File types page (ISO ZIP R0*). Empty: every type.	የማህደር ፋይሎች በእነዚህ አይነቶች ብቻ፣ በፋይል አይነቶች ገጽ ላይ እንደተጻፈው (ISO ZIP R0*)። ባዶ ከሆነ፦ ሁሉም አይነቶች።
 #. text in the Download video window
 #. checkbox in Download video: download only a part of the video or sound; the From and To boxes follow it
 #, machine
@@ -3710,6 +4003,10 @@
 #. checkbox in a dialog box
 #, machine
 	Only while I'm using the computer	ኮምፒውተሩን ስጠቀም ብቻ
+#. message or event log entry in the main window
+#. event log entry: the download is files picked inside a ZIP in Zip preview (#1775); {files} how many ("3 files")
+#, machine
+	Only {files} picked inside the ZIP	በዚፕ ውስጥ {files} ብቻ ተመርጠዋል
 #. button in a dialog box; text in a dialog box; button in a download's Properties window; button in torrentfiles.rs
 #. verb: opens the downloaded file
 #. title of the message when a downloaded file can't be opened
@@ -3790,6 +4087,10 @@
 #. Link grabber: the box that edits the selected package
 #, machine
 	Package	ጥቅል
+#. text in a download's progress window
+#. Zip preview's column: the file's size as packed (compressed) inside the ZIP
+#, machine
+	Packed	የታሸገ
 #. text in gallerydlg.rs; text in the Download video window
 #, machine
 	Page address	የገጽ አድራሻ
@@ -3878,10 +4179,14 @@
 #. remote control page (on a phone): button: pause a download
 #, machine
 	Pause	ያቁሙ
-#. text in a download's Properties window
+#. text in the download list (sizes, speeds, status)
 #. tooltip of the greyed Move button in File Properties
 #, machine
 	Pause the download first	መጀመሪያ ማውረዱን ያቁሙ
+#. tooltip (why a control is greyed) in a download's Properties window
+#. tooltip of File Properties' greyed Connection... button while the download runs
+#, machine
+	Pause the download to change how it connects	እንዴት እንደሚገናኝ ለመቀየር ማውረዱን ለአፍታ ያቁሙ
 #. text in a download's progress window
 #. a download's status (state it is in, not a command): stopped for now
 #, machine
@@ -3958,8 +4263,8 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Press keys...	ቁልፎችን ይጫኑ...
-#. button in a dialog box
-#. verb: open the part already downloaded
+#. button in a dialog box; text in a dialog box
+#. verb: Download File Info's button; for a ZIP, it lists the files inside it to pick those to download (#1775)
 #, machine
 	Preview	ቅድመ እይታ ያድርጉ
 #. text in a dialog box
@@ -4002,6 +4307,10 @@
 #. label in the Options window
 #, machine
 	Proxy server address	የፕሮክሲ አገልጋይ አድራሻ
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: label before the proxy choice
+#, machine
+	Proxy:	ተኪ፦
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -4062,6 +4371,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Reading the torrent...	ቶረንቱን በማንበብ ላይ...
+#. text in zippreview.rs
+#. Zip preview, while the ZIP's list of files is being read from its server
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Reading the ZIP's list of files...	የዚፕ ፋይሎችን ዝርዝር በማንበብ ላይ...
 #. message or event log entry in the main window
 #. the status strip while Tasks → Import reads a file; {file} is its name
 #. the trailing ... means it is still going on: keep it
@@ -4174,6 +4488,14 @@
 #. group box title: what the * in the address is replaced with (numbers or letters)
 #, machine
 	Replace asterisk to	ኮከቢትን ወደ
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: label above the box of request headers, one a line ("X-Token: abc")
+#, machine
+	Request headers, one a line (Name: value):	የጥያቄ ራስጌዎች፣ አንድ መስመር (ስም፦ እሴት)፦
+#. text in a dialog box
+#. button in the Columns dialog: put the columns back as they first were (order, widths, all shown)
+#, machine
+	Reset	ዳግም አስጀምር
 #. text in crashui.rs
 #. crash report window button: start MDM again
 #, machine
@@ -4291,6 +4613,11 @@
 #. text in a dialog box
 #, machine
 	Save As	አስቀምጥ እንደ
+#. text in the Options window
+#. Options → Save to, a check box: new downloads of every category go to General's folder; {category} is General's name
+#. {category} = a category name such as "Music" (keep the braces as they are)
+#, machine
+	Save every download in "{category}" category's folder	እያንዳንዱን ማውረድ በ“{category}” ምድብ አቃፊ ውስጥ ያስቀምጡ
 #. text in gallerydlg.rs; text in the Options window; text in the Add torrent window; text in the Download video window
 #. tab title: where downloads are saved
 #, machine
@@ -4299,7 +4626,7 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Save To...	ወደዚህ ያስቀምጡ...
-#. text in a download's progress window; text in a download's Properties window
+#. text in preview.rs; text in a download's progress window; text in a download's Properties window
 #, machine
 	Save To:	ወደዚህ ያስቀምጡ፦
 #. text in the Batch download window; text in the Link grabber window; text in rssdlg.rs
@@ -4337,7 +4664,11 @@
 #. text in the Batch download window
 #, machine
 	Second file:	ሁለተኛ ፋይል፦
-#. button in playlistdlg.rs; button in the Add torrent window; text in torrentfiles.rs
+#. text in preview.rs
+#. the preview pane when no download is selected, under its title
+#, machine
+	Select a download to see its picture and details here.	ምስሉን እና ዝርዝሮቹን እዚህ ለማየት ማውረድ ይምረጡ።
+#. button in playlistdlg.rs; button in the Add torrent window; text in torrentfiles.rs; text in zippreview.rs
 #. button in Download video for a playlist: tick every video
 #, machine
 	Select all	ሁሉንም ይምረጡ
@@ -4490,6 +4821,11 @@
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 	Show &categories	ምድቦችን &አሳይ
+#. message or event log entry in the main window
+#. View menu: shows a pane beside the download list with the selected download's picture and details
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	Show &preview pane	ቅድመ እይታ ፓነልን &አሳይ
 #. text in the Options window
 #, machine
 	Show a dialog and ask what to do.	የንግግር ሳጥን አሳይ እና ምን ማድረግ እንዳለብህ ጠይቅ።
@@ -4524,6 +4860,9 @@
 #. button in the browser extension's window: open the tutorial that adds the extension
 #, machine
 	Show me how	እንዴት እንደሚደረግ አሳዩኝ
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Show or hide the preview pane	የቅድመ እይታ ፓነልን ያሳዩ ወይም ይደብቁ
 #. checkbox in the Options window
 #, machine
 	Show queue selection panel on closing batch download dialogs	የቡድን ማውረድ መገናኛዎችን ሲዘጉ የሰልፍ ምርጫ ፓነልን አሳይ
@@ -4555,6 +4894,10 @@
 #. button: sign in to the debrid service in the browser, by typing a code there
 #, machine
 	Sign in in the browser	በአሳሹ ውስጥ ይግቡ
+#. text in the Options window
+#. Options → Accounts (Android): where the debrid accounts' sign-ins and the other passwords are kept (encrypted with a key held by Android's keystore)
+#, machine
+	Sign-ins and passwords are kept encrypted with a key in Android's keystore.	የመግቢያ መረጃዎች እና የይለፍ ቃሎች በአንድሮይድ ቁልፍ ማከማቻ ውስጥ ባለው ቁልፍ የተመሰጠሩ ናቸው።
 #. text in the Options window
 #. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (the macOS login keychain)
 #, machine
@@ -4607,9 +4950,23 @@
 #. a country's name (where a download's server is)
 #, machine
 	Sint Maarten	ሲንት ማርተን
+#. text in the Options window
+#. Site rules: column title: the site pattern
+#, machine
+	Site	ጣቢያ
 #. checkbox in the Find window
 #, machine
 	Site name/Download link/Parent web page/Referer	የጣቢያ ስም/የማውረጃ አገናኝ/የወላጅ ድረ-ገጽ/ሪፈረር
+#. window title in the Options window; text in the Options window
+#. window title: per-site settings (User-Agent, headers, connections, the browser-like connection) by site pattern
+#. Site rules window: the list's name for screen readers
+#, machine
+	Site rules	የጣቢያ ህጎች
+#. text in the Options window
+#. Options → Connection: button: opens the per-site settings (User-Agent, headers, connections)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Site rules...	የጣቢያ ህጎች...
 #. text in the Options window
 #. column title: the site (and path) a login is for
 #, machine
@@ -4617,6 +4974,10 @@
 #. text in the Options window
 #, machine
 	Site/path:	ጣቢያ/መንገድ:
+#. text in the Options window
+#. Site rule: label before the site pattern box (example.com, *.example.com)
+#, machine
+	Site:	ጣቢያ፦
 #. text in the Options window
 #. tab title: user names and passwords for sites
 #, machine
@@ -4636,7 +4997,7 @@
 #. the video's file size is not known
 #, machine
 	size unknown	መጠኑ አይታወቅም
-#. text in a download's Properties window
+#. text in preview.rs; text in a download's Properties window
 #, machine
 	Size:	መጠን:
 #. text in a download's progress window; text in torrentfiles.rs
@@ -4749,6 +5110,10 @@
 #. tooltip on the disabled Rename box when the file is one part of a split archive (.part1.rar, .7z.001…)
 #, machine
 	Split archive volumes keep their names for extraction	የተከፋፈሉ ማህደር ክፍሎች ለመክፈት ስማቸውን ይጠብቃሉ
+#. text in the Download video window
+#. checkbox in Download video: split the video into one file per chapter (the whole video is kept too)
+#, machine
+	Split into chapters	ወደ ምዕራፎች ይከፋፍሉ
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -4770,6 +5135,11 @@
 #. checkbox in the Options window
 #, machine
 	Start downloading immediately while displaying "Download File Info" dialog	"የፋይል መረጃ አውርድ" መገናኛን እያሳየ ወዲያውኑ ማውረድ ጀምር
+#. text in a dialog box
+#. Download File Info, on hover over the number of files picked in Zip preview (#1775): {files} how many ("3 files"), {size} their size together, {folder} the folder they go into (named after the archive)
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	Start downloads only the {files} picked in the ZIP ({size}), into {folder}	በዚፕ ውስጥ የተመረጡትን {files} ({size}) ብቻ ወደ {folder} ያውርዱ
 #. text in the tray icon's menu
 #, machine
 	Start main download queue	ዋናውን የማውረድ ሰልፍ ይጀምሩ
@@ -4825,14 +5195,22 @@
 #. column title: the download's state
 #, machine
 	Status	ሁኔታ
-#. text in a download's Properties window
+#. text in preview.rs; text in a download's Properties window
 #. label before the download's state
 #, machine
 	Status:	ሁኔታ:
+#. text in preview.rs
+#. the preview pane: a finished download's file is still where it was saved
+#, machine
+	Still there	አሁንም እዚያው አለ
 #. text in remote.rs; text in the Add torrent window
 #. remote control page (on a phone): button: stop a queue
 #, machine
 	Stop	አቁም
+#. text in a download's progress window
+#. button in the progress window of a download that never ends by itself (an internet radio, a camera feed: no size, can't be resumed): stop it and keep what has arrived as the finished file
+#, machine
+	Stop and keep	ያቁሙ እና ያቆዩ
 #. text in a download's progress window
 #. button in a live stream's progress window: stop recording it and keep what was recorded as a video file
 #, machine
@@ -4965,10 +5343,6 @@
 #. a country's name (where a download's server is)
 #, machine
 	Tanzania	ታንዛኒያ
-#. text in the Options window
-#. \\n starts a new line: break lines where they fit the translation
-#, machine
-	Tasks → Link grabber, or the browser's "Download all links": a split\narchive's volumes are one package, the other links of a page another.	ተግባራት → አገናኝ ያዥ፣ ወይም የብሮውዘሩ "ሁሉንም አገናኞች አውርድ"፦ የተከፈለ\nማህደር ጥራዞች አንድ ጥቅል ናቸው፣ የአንድ ገጽ ሌሎች አገናኞች ደግሞ ሌላ።
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Tell a friend	ለጓደኛ ይንገሩ
@@ -5151,6 +5525,10 @@
 #. {host} = a server name such as "example.com" (keep the braces as they are)
 #, machine
 	the download from {host} was cut short	ከ{host} ማውረዱ ተቋርጧል
+#. text in the download list (sizes, speeds, status)
+#. why a download can't be moved or renamed now: it is being moved already
+#, machine
+	The download is being moved	ማውረዱ እየተንቀሳቀሰ ነው።
 #. tooltip (why a control is greyed) in a download's Properties window
 #. tooltip of the greyed Open button in File Properties
 #, machine
@@ -5172,6 +5550,10 @@
 #. text in a dialog box
 #, machine
 	The download queue is done.	የማውረድ ወረፋው ተጠናቅቋል።
+#. text in errors.rs
+#. error installing ffmpeg: the file downloaded isn't the build named in the list of builds MDM accepts (its checksum differs), so it was thrown away
+#, machine
+	the downloaded ffmpeg isn't the build MDM's list of checked builds names, so it wasn't installed	የወረደው ffmpeg MDM የተፈተሹ ግንባታዎች ዝርዝር የሰየመው ግንባታ አይደለም፣ ስለዚህ አልተጫነም
 #. text in errors.rs
 #, machine
 	the downloaded program doesn't match its signed checksum	የወረደው ፕሮግራም ከተፈረመበት የቼክሰም ጋር አይዛመድም
@@ -5207,6 +5589,10 @@
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
 	The file does NOT match ({algorithm})	ፋይሉ አይዛመድም ({algorithm})
+#. text in errors.rs
+#. why a file taken out of a ZIP on its server failed (#1775): its bytes aren't what the ZIP's list of files says (its size or its CRC-32 checksum)
+#, machine
+	the file in the ZIP doesn't match the ZIP's list of files (its size or checksum): download the whole archive	በዚፕ ውስጥ ያለው ፋይል ከዚፕ ፋይሎች ዝርዝር ጋር አይዛመድም (መጠኑ ወይም ቼክሰም)፦ ሙሉውን ማህደር ያውርዱ
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
@@ -5275,6 +5661,10 @@
 #. an error: the network adapter chosen in Options (a VPN's, usually) is off or gone; {adapter} its name
 #, machine
 	the network adapter {adapter} is not connected	የአውታረ መረብ አስማሚ {adapter} አልተገናኘም
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: the number of connections typed is out of range; {max} is 32 (or 128)
+#, machine
+	The number of connections must be from 1 to {max}	የግንኙነቶች ብዛት ከ1 እስከ {max} መሆን አለበት
 #. text in torrent_ownership.rs
 #. error when a torrent's output folder path cannot be used
 #, machine
@@ -5336,6 +5726,10 @@
 #. text in errors.rs
 #, machine
 	the server can't send parts of the file, so it can't be resumed	አገልጋዩ የፋይሉን ክፍሎች መላክ አይችልም፣ ስለዚህ ማውረዱን መቀጠል አይቻልም
+#. text in errors.rs
+#. Zip preview (#1775): the server doesn't send parts of a file (HTTP ranges), so MDM can't fetch only some files from inside a ZIP; the whole archive still downloads
+#, machine
+	the server can't send parts of the ZIP, so its files can't be downloaded one by one: download the whole archive	አገልጋዩ የዚፕ ክፍሎችን መላክ አይችልም፣ ስለዚህ ፋይሎቹ አንድ በአንድ ሊወርዱ አይችሉም፦ ሙሉውን ማህደር ያውርዱ
 #. text in errors.rs
 #, machine
 	the server did not answer in time	አገልጋዩ በሰዓቱ አልመለሰም
@@ -5473,9 +5867,17 @@
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	The update is open in your system's package installer.	ዝመናው በሲስተምዎ ጥቅል ጫኝ ውስጥ ተከፍቷል።
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: the User-Agent typed holds a control character
+#, machine
+	The User-Agent has a character a header can't hold	የተጠቃሚ-ወኪሉ ራስጌ ሊይዘው የማይችል ቁምፊ አለው
 #. text in a download's Properties window
 #, machine
 	The web page from which this file was obtained:	ይህ ፋይል የተገኘበት የድር ገጽ:
+#. text in errors.rs
+#. why a file can't be taken out of a ZIP on its server (#1775): the ZIP was replaced on the server after its files were listed; Zip preview is the window that lists them
+#, machine
+	the ZIP changed on the server since its files were listed: open its Zip preview again	ፋይሎቹ ከተዘረዘሩ በኋላ ዚፕ በአገልጋዩ ላይ ተቀይሯል፦ የዚፕ ቅድመ እይታውን እንደገና ይክፈቱ
 #. message or event log entry in the main window
 #. the kind of file View → Theme → Add a theme file lists: MDM's themes (TOML, JSON), Base16 schemes (YAML) and pywal's colors.json
 #, machine
@@ -5499,12 +5901,20 @@
 #. why an archive wasn't extracted (after "Couldn't extract {name}: "); HatchZip is a program's name
 #, machine
 	there isn't enough free space for its files, HatchZip says; nothing was changed	ለፋይሎቹ በቂ ነጻ ቦታ የለም፣ HatchZip ይላል፤ ምንም አልተለወጠም።
+#. text in relocate.rs
+#. why a download's file could not be moved to another drive (after "The file could not be moved: "); {needed} and {free} are sizes ("1.2 GB")
+#, machine
+	there isn't enough free space there ({needed} needed, {free} free)	እዚያ በቂ ነጻ ቦታ የለም ({needed} ያስፈልጋል፣ {free} ነጻ ነው)
 #. text in a download's progress window
 #, machine
 	These settings are unavailable when "Show download complete dialog" is turned on	“ማውረድ ተጠናቋል የሚለውን መገናኛ አሳይ” ሲበራ እነዚህ ቅንብሮች አይገኙም።
 #. text in helpers.rs
 #, machine
 	They keep downloading if you close this window.	ይህን መስኮት ከዘጉ ማውረዶቹ ይቀጥላሉ።
+#. text in errors.rs
+#. error when opening a .torrent file whose piece size or list of pieces doesn't fit its files (damaged, or made wrong); it isn't added
+#, machine
+	this .torrent file is damaged: its pieces don't match its files	ይህ የ.torrent ፋይል ተጎድቷል፦ ክፍሎቹ ከፋይሎቹ ጋር አይዛመዱም።
 #. text in a dialog box
 #, machine
 	This address is already in the list of downloads:	ይህ አድራሻ አስቀድሞ በማውረዶች ዝርዝር ውስጥ አለ:
@@ -5551,10 +5961,26 @@
 #, machine
 	This device's name	የዚህ መሳሪያ ስም
 #. message or event log entry in the main window
+#. the message when a file picked in View → Font isn't a TrueType or OpenType font MDM can read
+#, machine
+	This file can't be used as a font.	ይህ ፋይል እንደ ቅርጸ-ቁምፊ መጠቀም አይቻልም።
+#. message or event log entry in the main window
 #. {error} is why, in English (a file that isn't a theme or a colour scheme, a colour missing)
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	This file can't be used as a theme: {error}	ይህ ፋይል እንደ ገጽታ መጠቀም አይቻልም፦ {error}
+#. text in errors.rs
+#. why a file can't be taken out of a ZIP on its server (#1775): it is encrypted (password-protected) in the ZIP
+#, machine
+	this file is encrypted in the ZIP: download the whole archive and open it with its password	ይህ ፋይል በዚፕ ውስጥ የተመሰጠረ ነው፦ ሙሉውን ማህደር ያውርዱ እና በይለፍ ቃሉ ይክፈቱት
+#. text in errors.rs
+#. why a file can't be taken out of a ZIP on its server (#1775): the ZIP no longer holds it
+#, machine
+	this file is no longer in the ZIP on the server	ይህ ፋይል በአገልጋዩ ላይ ባለው ዚፕ ውስጥ የለም
+#. text in errors.rs
+#. why a file can't be taken out of a ZIP on its server (#1775): it is compressed with a method MDM doesn't unpack there; {method} is the method's name (BZIP2, LZMA, Deflate64…)
+#, machine
+	this file is packed in a way MDM can't unpack from the server ({method}): download the whole archive	ይህ ፋይል MDM ከአገልጋዩ ሊፈታ በማይችል መንገድ የታሸገ ነው ({method})፦ ሙሉውን ማህደር ያውርዱ
 #. text in remote.rs
 #. remote control page (on a phone): the file chosen is too large for a .torrent file
 #, machine
@@ -5589,6 +6015,10 @@
 #. a check of Test browser integration: a portable copy can't be connected
 #, machine
 	This is the installed copy, not a portable one	ይህ የተጫነው ቅጂ ነው፣ ተንቀሳቃሽ ቅጂ አይደለም
+#. text in errors.rs
+#. Zip preview (#1775): the address isn't a ZIP archive whose list of files MDM can read on the server
+#, machine
+	this isn't a ZIP archive MDM can look inside on the server: download the whole file	ይህ MDM በአገልጋዩ ላይ ሊመለከተው የሚችል የዚፕ ማህደር አይደለም፦ ሙሉውን ፋይል ያውርዱ
 #. text in playlistdlg.rs
 #. in Download video, a playlist or channel that lists no video
 #, machine
@@ -5603,6 +6033,7 @@
 	This name is reserved by Windows	ይህ ስም በWindows የተያዘ ነው
 #. tooltip (why a control is greyed) in the Download video window
 #. why "Embed chapters" is greyed: ffmpeg (a helper program) is not installed
+#. why "Split into chapters" is greyed: ffmpeg (a helper program) is not installed
 #. why Part is greyed in Download video: ffmpeg (a helper program) is not installed
 #. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
 #, machine
@@ -5624,6 +6055,10 @@
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	this program isn't {name}	ይህ ፕሮግራም {name} አይደለም
+#. text in requestedit.rs
+#. a download's Connection settings → Proxy: the proxy typed in the box beside
+#, machine
+	This proxy:	ይህ ተኪ፦
 #. text in the Options window
 #. Options → General: shown when the chosen global shortcut is already registered by another program (#558)
 #, machine
@@ -5653,7 +6088,7 @@
 #. torrent start needs explicit write permission; {file} is the first existing file without a matching grant
 #, machine
 	This torrent needs permission to use {file} before it can start.	ይህ ቶረንት ከመጀመሩ በፊት {file}ን ለመጠቀም ፈቃድ ያስፈልገዋል።
-#. message or event log entry in the main window; text in a download's Properties window
+#. message or event log entry in the main window; text in the download list (sizes, speeds, status)
 #. shown when Move or Rename is refused: a torrent saved straight in Save to shares that folder with other files
 #, machine
 	This torrent shares its destination folder	ይህ ቶረንት የመድረሻ ማህደሩን ከሌሎች ፋይሎች ጋር ይጋራል።
@@ -5665,6 +6100,18 @@
 #. the Download video window: the video needs the user to be signed in
 #, machine
 	This video needs you to be signed in. Use the Download video button over it in your browser, which passes your sign-in on, or choose your browser in Options → Sites Logins → Cookies for video sites.	ይህ ቪዲዮ ገብተው እንዲጠቀሙ ይጠይቃል። በአሳሽዎ ውስጥ ያለውን የቪዲዮ ማውረድ ቁልፍ ይጠቀሙ፣ ይህም የመግቢያ መረጃዎን ያስተላልፋል፣ ወይም በአማራጮች → የጣቢያ መግቢያዎች → ለቪዲዮ ጣቢያዎች ኩኪዎች ውስጥ አሳሽዎን ይምረጡ።
+#. text in errors.rs
+#. Zip preview (#1775): a ZIP split over several files (volumes): its files can't be fetched one by one
+#, machine
+	this ZIP is split over several files, so its files can't be downloaded one by one: download every part	ይህ ዚፕ በበርካታ ፋይሎች የተከፈለ ነው፣ ስለዚህ ፋይሎቹ አንድ በአንድ ሊወርዱ አይችሉም፦ ሁሉንም ክፍሎች ያውርዱ
+#. text in errors.rs
+#. Zip preview (#1775): the ZIP's list of files (its table of contents) doesn't add up
+#, machine
+	this ZIP's list of files is damaged: download the whole archive	የዚህ ዚፕ ፋይሎች ዝርዝር ተጎድቷል፦ ሙሉውን ማህደር ያውርዱ
+#. text in errors.rs
+#. Zip preview (#1775): the ZIP's list of files (its table of contents) is larger than MDM reads from a server
+#, machine
+	this ZIP's list of files is too large to read from the server: download the whole archive	የዚህ ዚፕ ፋይሎች ዝርዝር ከአገልጋዩ ለማንበብ በጣም ትልቅ ነው፦ ሙሉውን ማህደር ያውርዱ
 #. text in errors.rs
 #. a download's error: the address is a site's web page that needs a browser, not the file; {site} = the site's name (gofile)
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
@@ -5696,6 +6143,11 @@
 #. tooltip on the Scheduler's "Wake the computer to run this queue" while "Start download at" is off
 #, machine
 	Tick "Start download at" first: the computer is woken for the start time	መጀመሪያ "ማውረድ ይጀምሩ በ" የሚለውን ይምረጡ፡ ኮምፒውተሩ ለመጀመርያው ሰዓት ይነቃል
+#. text in zippreview.rs
+#. Zip preview, under the list: {files} how many files are ticked ("3 files"), {size} their size together ("12.4 MB")
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	Ticked: {files}, {size}	የተመረጡ፦ {files}፣ {size}
 #. text in a download's progress window; text in the Scheduler window
 #, machine
 	Time left	የቀረው ጊዜ
@@ -5766,6 +6218,10 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	torrents could not start: {error}	ቶረንቶች ሊጀመሩ አልቻሉም፦ {error}
+#. text in preview.rs
+#. label in the preview pane: the size of the selected downloads added up
+#, machine
+	Total size:	ጠቅላላ መጠን፦
 #. text in a download's progress window
 #. column title: a server that lists the peers
 #, machine
@@ -5794,6 +6250,10 @@
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	Try again in an hour, or download {name} yourself and choose it in {helpers} → {other}.	ከአንድ ሰዓት በኋላ እንደገና ይሞክሩ፣ ወይም {name} እራስዎ ያውርዱ እና በ{helpers} → {other} ውስጥ ይምረጡት።
+#. text in the Link grabber window
+#. Link grabber, a link's status: the remedy from the failure's sentence, for a site (Hugging Face, GitHub) whose limit of requests without an account is reached. The sentence is the cell's hover tip
+#, machine
+	Try again later	በኋላ እንደገና ይሞክሩ
 #. text in errors.rs
 #. {name} = a file name (keep the braces as they are)
 #, machine
@@ -5859,6 +6319,10 @@
 #. why Options → Remote → Pair a device... is greyed
 #, machine
 	Turn on the remote control first.	በመጀመሪያ የርቀት መቆጣጠሪያውን ያብሩ።
+#. text in the Add torrent window
+#. Torrent settings, under the public tracker list's address: turning the switch off doesn't take away the trackers it added to torrents
+#, machine
+	Turned off, the trackers already added stay.	ሲጠፋ፣ አስቀድመው የተጨመሩት መከታተያዎች ይቀራሉ።
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -5882,6 +6346,10 @@
 #. why Batch download's OK is greyed
 #, machine
 	Type a number in From and in To	በFrom እና To ውስጥ ቁጥር ይተይቡ
+#. text in the Options window
+#. Site rule: OK with no site, or one with a space in it
+#, machine
+	Type a site, such as example.com or *.example.com	እንደ example.com ወይም *.example.com ያለ ጣቢያ ይተይቡ
 #. text in the settings
 #. Options → DNS: no server address was typed
 #, machine
@@ -5898,6 +6366,10 @@
 #. Options → DNS over TLS: the server's name (as its certificate shows it) is missing
 #, machine
 	Type the name the server's certificate shows.	በአገልጋዩ የምስክር ወረቀት ላይ የሚታየውን ስም ያስገቡ።
+#. text in requestedit.rs
+#. a download's Connection settings: the proxy typed isn't an address MDM takes; the examples stay as they are
+#, machine
+	Type the proxy as host:port, http://host:port or socks5://host:port	ተኪውን እንደ host:port፣ http://host:port ወይም socks5://host:port ይተይቡ
 #. text in the Scheduler window
 #. why OK is greyed when naming a new queue
 #, machine
@@ -5990,6 +6462,11 @@
 #, machine
 	Update now	አሁን ያዘምኑ
 #. text in helpers.rs
+#. Helpers: the Update button's name for a screen reader; {name} = the helper (yt-dlp, ffmpeg, gallery-dl, Node.js)
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Update {name}	{name}ን ያዘምኑ
+#. text in helpers.rs
 #. Helpers: a program the person chose, or the system's copy: MDM doesn't update it, the person (or their package manager) does
 #, machine
 	Updated by you	በእርስዎ የተዘመነ
@@ -6012,6 +6489,17 @@
 #. text in the Options window
 #, machine
 	Use advanced browser integration	የላቀ የአሳሽ ውህደትን ይጠቀሙ
+#. text in helpers.rs
+#. Helpers: the "Use another program..." button's name for a screen reader, on the JavaScript runtime's row (Node.js, Deno, QuickJS or Bun)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Use another program as the JavaScript runtime...	ሌላ ፕሮግራም እንደ ጃቫስክሪፕት ማስኬጃ ይጠቀሙ...
+#. text in helpers.rs
+#. Helpers: the "Use another program..." button's name for a screen reader; {name} = the helper (yt-dlp, ffmpeg, gallery-dl)
+#. {name} = a file name (keep the braces as they are)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Use another program for {name}...	ለ{name} ሌላ ፕሮግራም ይጠቀሙ...
 #. text in errors.rs; button in helpers.rs; text in the Options window
 #. Video helpers: button: pick a program (yt-dlp or ffmpeg) already on the computer
 #. Options → Archives: button: pick the 7-Zip command line program to extract 7z and RAR archives with (PeaZip's own 7z.exe, a portable copy), instead of the one MDM finds
@@ -6030,10 +6518,16 @@
 #. checkbox in the Options window
 #, machine
 	Use FTP in PASV mode	FTPን በPASV ሁነታ ተጠቀም
-#. button in helpers.rs
+#. text in helpers.rs
 #. Video helpers: button: go back to the copy MDM downloads and checks itself
 #, machine
 	Use MDM's own copy	የMDM የራሱን ቅጂ ይጠቀሙ
+#. text in helpers.rs
+#. Helpers: the "Use MDM's own copy" button's name for a screen reader; {name} = the helper (yt-dlp, ffmpeg, gallery-dl)
+#. Helpers: the "Use MDM's own copy" button's name for a screen reader; {name} = the helper (Node.js)
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Use MDM's own copy of {name}	የ{name} የMDM ቅጂን ይጠቀሙ
 #. checkbox in the Options window
 #. Options → Sites Logins: checkbox under Cookies for video sites: yt-dlp also reads the person's own yt-dlp config file
 #, machine
@@ -6082,8 +6576,20 @@
 #, machine
 	User names and passwords for servers/sites	የተጠቃሚ ስሞች እና የይለፍ ቃሎች ለአገልጋዮች/ጣቢያዎች
 #. text in the Options window
+#. Site rules: column title: the User-Agent the rule sends (the name a browser or program gives itself to sites)
+#, machine
+	User-Agent	የተጠቃሚ ወኪል
+#. text in the Options window
 #, machine
 	User-Agent for manually added downloads:	በእጅ ለተጨመሩ ማውረዶች የተጠቃሚ-ወኪል:
+#. text in the Options window
+#. Options → Connection: beside the Site rules... button: what it sets
+#, machine
+	User-Agent, headers and connections by site	በጣቢያ መሠረት User-Agent፣ ራስጌዎች እና ግንኙነቶች
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: label before the User-Agent box (the name the browser or program gives itself to sites)
+#, machine
+	User-Agent:	የተጠቃሚ ወኪል፦
 #. text in the Options window
 #, machine
 	User:	ተጠቃሚ:
@@ -6230,6 +6736,10 @@
 #. where a download comes from: Web (web or FTP server) or Torrent (BitTorrent)
 #, machine
 	Web	ድር
+#. text in preview.rs
+#. label in the preview pane: the web page the download was found on
+#, machine
+	Web page:	የድር ገጽ፦
 #. text in the Scheduler window
 #, machine
 	Wednesday	ረቡዕ
@@ -6331,7 +6841,7 @@
 #. a country's name (where a download's server is)
 #, machine
 	Yemen	የመን
-#. button in a dialog box; text in a download's progress window
+#. button in a dialog box; text in the Options window; text in a download's progress window
 #, machine
 	Yes	አዎ
 #. button in helpers.rs
@@ -6451,6 +6961,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Zimbabwe	ዚምባብዌ
+#. text in zippreview.rs
+#. title of the window that lists the files inside a ZIP on its server, to tick those to download (#1775)
+#, machine
+	Zip preview	የዚፕ ቅድመ እይታ
 #. text in the Options window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
@@ -6506,6 +7020,10 @@
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
 	{done} of {size}	{done} ከ {size}
+#. text in preview.rs
+#. the preview pane: how much of a download has come; {done} and {total} sizes, e.g. "12.5 MB of 40.0 MB"
+#, machine
+	{done} of {total}	{done} ከ {total}
 #. text in deferred_rename.rs
 #. appended to an OS error when a case-only rename could not move the temporary file back to its original name; {error} = first OS error, {path} = temporary path left on disk, {rollback_error} = second OS error
 #. {error} = an error message (keep the braces as they are)
@@ -6528,6 +7046,14 @@
 #. text in the Checksum window
 #, machine
 	{file} could not be read to check it	{file} ለመፈተሽ ሊነበብ አልቻለም
+#. message or event log entry in the main window
+#. a message after a download (Redownload) was to replace the file it had: {file} = that file's name, still there; {new} = the name the new copy was saved under, in the same folder
+#, machine
+	{file} could not be replaced: another program may have it open. The new download is saved beside it as {new}, and both files are kept.	{file}ን መተካት አልተቻለም፦ ሌላ ፕሮግራም ከፍቶት ሊሆን ይችላል። አዲሱ ፋይል ከጎኑ በ{new} ስም ተቀምጧል፣ ሁለቱም ፋይሎች ተጠብቀዋል።
+#. text in relocate.rs
+#. why a download could not be moved (after "The file could not be moved: "): a file of that name came into the new folder meanwhile; {file} is its name
+#, machine
+	{file} is already there	{file} እዚያ አለ።
 #. text in a dialog box
 #, machine
 	{file} is no longer where it was saved (moved or deleted). Redownload, in its right-click menu, gets it again.	{file} ከዚህ ቀደም ተቀምጦበት በነበረው ቦታ የለም (ተንቀሳቅሷል ወይም ተሰርዟል)። መልሰው ለማውረድ፣ በቀኝ ጠቅታ ምናሌው ውስጥ ያለውን እንደገና ያውርዱ የሚለውን ይምረጡ።
@@ -6551,6 +7077,11 @@
 #. said after Delete with files when some files stayed on the disk; {file} is the download's name; the files' paths follow it
 #, machine
 	{file}: these files stayed on the disk, because MDM didn't create them or another download uses them:	{file}፦ እነዚህ ፋይሎች በዲስክ ላይ ቆይተዋል፣ ምክንያቱም MDM አልፈጠራቸውም ወይም ሌላ ማውረድ ይጠቀምባቸዋል፦
+#. message or event log entry in the main window; text in the Link grabber window
+#. Link grabber's Source line, after where the links came from: a folder (an FTP folder, a web server's "Index of" page) held more files or subfolders than Link grabber lists; {folder} is its name, {n} how many of its files are listed (10,000)
+#. {n} = a number (keep the braces as they are)
+#, machine
+	{folder}: only its first {n} files	{folder}፦ የመጀመሪያዎቹ {n} ፋይሎች ብቻ
 #. text in a download's progress window
 #. {have} and {total} = numbers of pieces; {size} = one piece's size
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
@@ -6679,6 +7210,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 	{n} (auto)	{n} (በራስ-ሰር)
+#. text in zippreview.rs
+#. Zip preview, under the list: {n} files of the ZIP aren't listed because MDM can't take them out on their own: encrypted ones, ones packed in a way MDM can't unpack from the server, links, or names that would leave their folder; the whole archive still downloads
+#. {n} = a number (keep the braces as they are)
+#, machine
+	{n} more can't be taken out on their own (encrypted, packed another way, or links)	{n} ተጨማሪ በራሳቸው ሊወጡ አይችሉም (የተመሰጠሩ፣ በሌላ መንገድ የታሸጉ ወይም አገናኞች)
 #. text in playlistdlg.rs
 #. in Download video for a playlist: how many videos are ticked, of how many
 #. {n} = a number (keep the braces as they are)
@@ -6688,6 +7224,10 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 	{n} of {total} selected	ከ{total} {n} ተመርጠዋል
+#. text in the Link grabber window
+#. Link grabber's Source line: a gated Hugging Face repository ({package}: "owner/name"), whose files download only for an account that accepted its terms: where to give the account's access token (Options → Sites Logins, keep the names as the Options window shows them)
+#, machine
+	{package} is gated: accept its terms on Hugging Face, then add your access token in Options → Sites Logins (site huggingface.co, the token as its password)	{package} የተገደበ ነው፦ ውሎቹን በHugging Face ላይ ይቀበሉ፣ ከዚያ የመዳረሻ ማስመሰያዎን በOptions → Sites Logins (ጣቢያ huggingface.co፣ ማስመሰያው እንደ የይለፍ ቃል) ውስጥ ያክሉ።
 #. text in the download list (sizes, speeds, status)
 #. a torrent's status while the user's debrid service downloads it, before MDM gets its files; {service} the service ("Real-Debrid"), {percent} how far it is ("45%")
 #, machine
@@ -6791,6 +7331,31 @@
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
 #, machine
 	{site} didn't give the file this time: try again in a moment	{site} በዚህ ጊዜ ፋይሉን አልሰጠም፦ ከጥቂት ጊዜ በኋላ እንደገና ይሞክሩ
+#. text in the Link grabber window
+#. Link grabber, the hover tip of a Hugging Face repository's or GitHub release's status; {site} is "Hugging Face" or "GitHub"
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+	{site} has no such repository, folder, release or tag, or it is private.	{site} እንደዚህ ያለ ማከማቻ፣ አቃፊ፣ ልቀት ወይም መለያ የለውም፣ ወይም የግል ነው።
+#. text in the Link grabber window
+#. Link grabber, a Hugging Face repository's or GitHub release's status (the cell's hover tip): the site ({site}: "Hugging Face", "GitHub") lets only so many requests through from a computer without an account; {n} minutes to wait
+#. {site} = a web site's name such as "example.com"; {n} = a number (keep the braces as they are)
+#, machine
+	{site} lets only so many requests through without an account: try again in {n} minute.	{site} ያለ መለያ የተወሰኑ ጥያቄዎችን ብቻ ነው የሚያስተላልፈው፦ ከ{n} ደቂቃ በኋላ እንደገና ይሞክሩ።
+#. text in the Link grabber window
+#. Link grabber, a Hugging Face repository's or GitHub release's status (the cell's hover tip): the site ({site}) lets only so many requests through without an account, and didn't say for how long
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+	{site} lets only so many requests through without an account: try again later.	{site} ያለ መለያ የተወሰኑ ጥያቄዎችን ብቻ ነው የሚያስተላልፈው፦ በኋላ እንደገና ይሞክሩ።
+#. text in the Link grabber window
+#. Link grabber, a Hugging Face repository's or GitHub release's status: the site ({site}) refused to list its files; {status} is the HTTP code (403)
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+	{site} refused to list its files ({status}).	{site} ፋይሎቹን ለመዘርዘር ፈቃደኛ አልሆነም ({status})።
+#. text in the Link grabber window
+#. Link grabber, a Hugging Face repository's or GitHub release's status: the site's ({site}) answer wasn't what it sends (changed, cut, or not its own)
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+	{site}'s list of files couldn't be read.	የ{site} የፋይሎች ዝርዝር ሊነበብ አልቻለም።
 #. text in a download's Properties window
 #. {size} = a file size such as "4.2 MB"; {bytes} = a number of bytes (keep the braces as they are)
 #, machine
@@ -6813,6 +7378,11 @@
 #. {s} = seconds (keep the braces as they are)
 #, machine
 	{s} sec	{s} ሰከንድ
+#. text in a dialog box
+#. the title of another window of a kind while the first is open (several Download File Info windows, one per link): {title} the window's own title, {n} its number, "Download File Info (2)"
+#. {n} = a number (keep the braces as they are)
+#, machine
+	{title} ({n})	{title} ({n})
 #. message or event log entry in the main window
 #. RSS feeds window, under the rules: {title} was added by the rule {rule}
 #, machine
@@ -6861,10 +7431,14 @@ column	Peers	ፒየሮች
 #. column title: one letter for Queue (the column is narrow)
 #, machine
 column	Q	Q
-#. column title in the main window; column title in the download list
+#. column title in the main window; column title in a dialog box; column title in the download list
 #. tooltip of the narrow "Q" column's title
 #, machine
 column	Queue	ወረፋ
+#. column title in the download list in the download list
+#. column title: the folder the download is saved in
+#, machine
+column	Save To	የማስቀመጫ አቃፊ
 #. column title in the download list in the download list
 #. column title: what a torrent has sent to peers against what it took
 #, machine
@@ -6913,6 +7487,7 @@ extension	Added to MDM	ወደ MDM ታክሏል
 extension	Added to the queue	ወደ ወረፋው ታክሏል
 #. text in the browser extension
 #. filter in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): every download; short
+#. chip in the menu of the download button over a video, filtering the list of qualities: show every quality (or any file type, any codec); short, one word
 #, machine
 extension	All	ሁሉም
 #. text in the browser extension
@@ -6928,6 +7503,14 @@ extension	Another Mister Download Manager (a server)	ሌላ Mister Download Mana
 #. tab above the list of qualities in the menu under the download button over a video: the choices that are sound only (MP3, Opus and the like); short, one word
 #, machine
 extension	Audio	ኦዲዮ
+#. text in the browser extension
+#. chip in the menu of the download button over a video, filtering the list of qualities: show only the sound-only choices (MP3, Opus and the like); short
+#, machine
+extension	Audio only	ድምጽ ብቻ
+#. text in the browser extension
+#. toolbar button's popup: said for a moment after Reset: the download button over videos is in its usual corner again and its menu lists every quality, on every web site
+#, machine
+extension	Back in its corner, its menu showing everything, on every site	በየጣቢያው፣ በየማዕዘኑ፣ ምናሌው ሁሉንም ነገር እያሳየ
 #. text in the browser extension
 #. after the best quality in the menu of the download button over a video, after a star (★ best); lower case; one word
 #, machine
@@ -6977,6 +7560,10 @@ extension	Clear finished	የተጠናቀቁትን ያጽዱ
 #. title of the question in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) before the finished downloads are taken off the list
 #, machine
 extension	Clear finished downloads?	የተጠናቀቁ ማውረዶችን ማጽዳት ይፈልጋሉ፧
+#. text in the browser extension
+#. label before the row of chips (All, AV1, VP9, H.264...) that filters the list of video qualities by the picture's codec in the menu of the download button over a video; short
+#, machine
+extension	Codec	ኮዴክ
 #. text in the browser extension
 #. under the extension's name in the toolbar button's popup: the browser reaches the app; short
 #, machine
@@ -7051,6 +7638,10 @@ extension	Download all links with Mister Download Manager	ሁሉንም አገና
 #, machine
 extension	Download best	ምርጡን አውርድ
 #. text in the browser extension
+#. toolbar button's popup, Settings: the name of the row with the Reset button for the download button the extension shows over videos
+#, machine
+extension	Download button over videos	በቪዲዮዎች ላይ የማውረድ ቁልፍ
+#. text in the browser extension
 #. command in the browser's right-click menu on selected text: download the links in the selection; keep the name Mister Download Manager as it is
 #, machine
 extension	Download selected links with Mister Download Manager	የተመረጡ አገናኞችን በMister Download Manager ያውርዱ
@@ -7093,9 +7684,9 @@ extension	Downloads from {site} stay with the browser	ከ{site} የሚወርዱ 
 #, machine
 extension	Downloads go to {address}	ውርዶች ወደ {address} ይሄዳሉ
 #. text in the browser extension
-#. second line of the tooltip of the download button over a video: dragging its dotted grip moves it along the video's edge
+#. second line of the tooltip of the download button over a video: dragging its dotted grip moves it to another corner or edge of the video, or outside the video next to it
 #, machine
-extension	Drag the dots to move it along the edge	ነጥቦቹን በመጎተት በጠርዙ በኩል ያንቀሳቅሱት
+extension	Drag the dots to move it to another corner, or outside the video	ወደ ሌላ ማዕዘን ወይም ከቪዲዮው ውጭ ለማንቀሳቀስ ነጥቦቹን ይጎትቱ
 #. text in the browser extension
 #. the address typed isn't an https:// address
 #, machine
@@ -7113,6 +7704,18 @@ extension	Failed: {why}	አልተሳካም፦ {why}
 #. a finished download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when its file is no longer where it was saved
 #, machine
 extension	File deleted or moved	ፋይሉ ተሰርዟል ወይም ተንቀሳቅሷል
+#. text in the browser extension
+#. label before the row of chips (All, MP4, WEBM, M4A...) that filters the list of qualities by file type in the menu of the download button over a video; short
+#, machine
+extension	File type	የፋይል አይነት
+#. text in the browser extension
+#. button in the This page tab of the toolbar button's popup: look for the pictures of the current web page (only when clicked); short
+#, machine
+extension	Find images	ምስሎችን ያግኙ
+#. text in the browser extension
+#. in the This page tab of the toolbar button's popup, before the Find images button; Link grabber is the name of the app's window that lists links to tick before downloading them
+#, machine
+extension	Find this page's pictures at the largest size it lists, then send the ones you want to Link grabber.	የዚህን ገጽ ምስሎች በዝርዝሩ ውስጥ ባለው ትልቁ መጠን ያግኙ፣ ከዚያ የሚፈልጉትን ወደ Link grabber ይላኩ።
 #. text in the browser extension
 #. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) after Clear finished
 #, machine
@@ -7149,6 +7752,14 @@ extension	Hold Alt while clicking a link to let the browser download it.	አሳ�
 #. link under a connection problem in the toolbar button's popup, to the help page's section for it
 #, machine
 extension	How to fix it	እንዴት ማስተካከል ይቻላል
+#. text in the browser extension
+#. what a screen reader says for the row of buttons that keep or leave out each type of picture (JPEG, PNG, WEBP...), in the This page tab of the toolbar button's popup
+#, machine
+extension	Image types	የምስል አይነቶች
+#. text in the browser extension
+#. heading in the This page tab of the toolbar button's popup, over the part that finds the pictures of the current web page and sends them to the app
+#, machine
+extension	Images on this page	በዚህ ገጽ ላይ ያሉ ምስሎች
 #. text in the browser extension
 #. pairing failed for another reason
 #, machine
@@ -7198,6 +7809,28 @@ extension	Left to the browser: {name}	ወደ አሳሹ የተተወው: {name}
 #. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) after Copy link
 #, machine
 extension	Link copied	አገናኙ ተቀድቷል
+#. text in the browser extension
+#. the toolbar button's status: all links refused by another MDM
+#. {count} = a number (keep the braces as they are)
+#, machine
+extension	Links refused: {count}	አገናኞች ውድቅ ተደርገዋል፦ {count}
+#. text in the browser extension
+#. the toolbar button's status: links sent to another MDM
+#. {count} = a number (keep the braces as they are)
+#, machine
+extension	Links sent: {count}	አገናኞች ተልከዋል፦ {count}
+#. text in the browser extension
+#. the toolbar button's status: some links refused by another MDM
+#, machine
+extension	Links sent: {sent}, refused: {refused}	አገናኞች ተልከዋል፦ {sent}፣ ውድቅ ተደርገዋል፦ {refused}
+#. text in the browser extension
+#. the toolbar button's status: some links refused and some left out
+#, machine
+extension	Links sent: {sent}, refused: {refused}, {left} left out	አገናኞች ተልከዋል፦ {sent}፣ ውድቅ ተደርገዋል፦ {refused}፣ {left} አልተካተቱም
+#. text in the browser extension
+#. the toolbar button's status: links sent to another MDM, some left out by cap or filter
+#, machine
+extension	Links sent: {sent}, {left} left out	አገናኞች ተልከዋል፦ {sent}፣ {left} አልተካተቱም
 #. text in the browser extension
 #. beside a stream in the toolbar button's popup: it is a live broadcast (no fixed length); short
 #, machine
@@ -7303,6 +7936,10 @@ extension	Never on {site}	በ{site} ላይ ዳግም አታሳዩ
 #, machine
 extension	Never take downloads from {site}	ከ{site} የሚመጡ ውርዶችን ዳግም አትውሰዱ
 #. text in the browser extension
+#. the toolbar button's status: no links matched capturable file types
+#, machine
+extension	No capturable links ({left} left out)	ሊያዙ የሚችሉ አገናኞች የሉም ({left} አልተካተቱም)
+#. text in the browser extension
 #. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when no download matches the search; the words searched for follow
 #, machine
 extension	No download's name or address has “{words}”.	ምንም ማውረድ “{words}” የሚል ስም ወይም አድራሻ የለውም።
@@ -7310,6 +7947,10 @@ extension	No download's name or address has “{words}”.	ምንም ማውረ�
 #. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app has no downloads
 #, machine
 extension	No downloads yet	እስካሁን ምንም ማውረዶች የሉም
+#. text in the browser extension
+#. shown in the This page tab of the toolbar button's popup when Find images found no picture on the current web page
+#, machine
+extension	No images found on this page.	በዚህ ገጽ ላይ ምንም ምስሎች አልተገኙም።
 #. text in the browser extension
 #. shown in the toolbar button's popup when the current web page hasn't loaded any video, sound or stream yet
 #, machine
@@ -7380,6 +8021,10 @@ extension	Options...	አማራጮች...
 #, machine
 extension	original	ኦሪጅናል
 #. text in the browser extension
+#. button among the picture types (JPEG, PNG, WEBP...) in the This page tab of the toolbar button's popup: the pictures of any other or unknown type; short
+#, machine
+extension	Other	ሌላ
+#. text in the browser extension
 #. button: pair this browser with the other MDM using the code
 #, machine
 extension	Pair	ያጣምሩ
@@ -7425,9 +8070,17 @@ extension	Protected	የተጠበቀ
 #, machine
 extension	Protected video	የተጠበቀ ቪዲዮ
 #. text in the browser extension
+#. menu command of the download button over a video, shown after the user dragged the button elsewhere on this site: moves it back to its usual corner of the video
+#, machine
+extension	Put the button back in its corner	ቁልፉን ወደ ማዕዘኑ ይመልሱ
+#. text in the browser extension
 #. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): takes the download off the list, its file stays
 #, machine
 extension	Remove from list	ከዝርዝሩ ያስወግዱ
+#. text in the browser extension
+#. toolbar button's popup, Settings: button that puts the download button over videos back in its corner and clears its menu's filters, on every web site; a verb, short
+#, machine
+extension	Reset	ዳግም አስጀምር
 #. text in the browser extension
 #. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): goes on with a paused, waiting or failed download; verb
 #, machine
@@ -7457,6 +8110,10 @@ extension	Send downloads through this browser's proxy or VPN extension	ውርዶ
 #, machine
 extension	Send downloads to	ውርዶችን ወደ
 #. text in the browser extension
+#. button in the This page tab of the toolbar button's popup: send the selected pictures to the app's Link grabber window, where the user ticks which to download
+#, machine
+extension	Send to Link grabber	ወደ Link grabber ይላኩ
+#. text in the browser extension
 #. on the download button over a video right after it was clicked, while the download goes to the app; MDM is Mister Download Manager's short name, keep it as it is; short
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -7466,9 +8123,17 @@ extension	Sending to MDM...	ወደ MDM በመላክ ላይ...
 #, machine
 extension	Sending to {server}	ወደ {server} በመላክ ላይ
 #. text in the browser extension
+#. shown in the This page tab of the toolbar button's popup after the pictures were sent to the app's Link grabber window
+#, machine
+extension	Sent to Link grabber: tick the ones to download there.	ወደ Link grabber ተልከዋል፦ ለማውረድ የሚፈልጉትን እዚያ ይምረጡ።
+#. text in the browser extension
 #. shown briefly on the download button after it was clicked; keep the name Mister Download Manager as it is
 #, machine
 extension	Sent to Mister Download Manager	ወደ Mister Download Manager ተልኳል
+#. text in the browser extension
+#. the toolbar button's status when the paired server does not answer
+#, machine
+extension	Server not reached	አገልጋይ አልተደረሰበትም
 #. text in the browser extension
 #. tab in the toolbar button's popup: the extension's settings; noun, short
 #, machine
@@ -7481,6 +8146,7 @@ extension	Share...	ያጋሩ...
 #. text in the browser extension
 #. button on the download button over a video after a download was added: shows that download in the app's window; verb; very short
 #. name of the row of filters in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) (All, Running, Done, Failed), read by screen readers; verb
+#. label read by screen readers for the row of chips (All, Video, Audio only) that filters the list of qualities in the menu of the download button over a video; a verb, short
 #, machine
 extension	Show	አሳይ
 #. text in the browser extension
@@ -7495,6 +8161,23 @@ extension	Show in folder	በአቃፊ ውስጥ አሳይ
 #. screen readers' name of a download's Show in folder button in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads)
 #, machine
 extension	Show {file} in folder	{file} በአቃፊ ውስጥ አሳይ
+#. text in the browser extension
+#. in the This page tab of the toolbar button's popup, while a smallest width or height is set: how many of the selected pictures the page gives no size for (they are kept, not left out)
+#. {n} = a number (keep the braces as they are)
+#, machine
+extension	Size not given, kept: {n}	መጠን አልተሰጠም፣ ተቀምጧል፦ {n}
+#. text in the browser extension
+#. what a screen reader says for the box of the smallest height of the pictures to keep, in the This page tab of the toolbar button's popup
+#, machine
+extension	Smallest height, in pixels	በፒክስል ትንሹ ቁመት
+#. text in the browser extension
+#. in the This page tab of the toolbar button's popup, before two boxes for the smallest width and height of the pictures to keep: 'Smallest size, in pixels [ ] × [ ]'; pictures smaller than that are left out; short
+#, machine
+extension	Smallest size, in pixels	ትንሹ መጠን፣ በፒክሰሎች
+#. text in the browser extension
+#. what a screen reader says for the box of the smallest width of the pictures to keep, in the This page tab of the toolbar button's popup
+#, machine
+extension	Smallest width, in pixels	በፒክስል ትንሹ ስፋት
 #. text in the browser extension
 #. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app isn't running
 #, machine
@@ -7528,6 +8211,10 @@ extension	That didn't work. Try again.	ይህ አልሰራም። እንደገና
 #. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when a button's download was removed meanwhile
 #, machine
 extension	That download is no longer in the list.	ይህ ማውረድ ከዝርዝሩ ውስጥ የለም።
+#. text in the browser extension
+#. shown in the This page tab of the toolbar button's popup when Find images can't look into the current page (a page of the browser's own, an add-on store)
+#, machine
+extension	The browser doesn't let add-ons read this page.	አሳሹ ተጨማሪዎች ይህን ገጽ እንዲያነቡ አይፈቅድም።
 #. text in the browser extension
 #. in the toolbar button's popup, on a site where the Chrome Web Store's copy of the extension shows no download button; Help is the link at the bottom of the popup
 #, machine
@@ -7631,6 +8318,10 @@ extension	Waiting	በመጠበቅ ላይ
 #, machine
 extension	What you download with Mister Download Manager shows up here.	በMister Download Manager የሚያወርዱት እዚህ ይታያል።
 #. text in the browser extension
+#. toolbar button's popup, Settings: second line under 'Download button over videos', saying what Reset puts back: the places the user dragged the button to, and the filters chosen in its menu, remembered per web site
+#, machine
+extension	Where you moved it, and its menu's filters, on each site	በእያንዳንዱ ጣቢያ ላይ ያንቀሳቀሱበት ቦታ እና የምናሌው ማጣሪያዎች
+#. text in the browser extension
 #. Tooltip of the Hide the download button in full screen option in the toolbar button's popup; Download video is the name of the button over videos
 #, machine
 extension	While the page is in full screen, its videos show no Download video button	ገጹ በሙሉ ማያ ገጽ ላይ እያለ፣ ቪዲዮዎቹ የቪዲዮ ማውረጃ ቁልፍ አያሳዩም።
@@ -7661,6 +8352,10 @@ extension	{file} removed from the list	{file} ከዝርዝሩ ተወግዷል
 #, machine
 extension	{file} will be deleted from your computer, and the download taken off the list. This can't be undone.	{file} ከኮምፒውተርዎ ይሰረዛል፣ እና ማውረዱ ከዝርዝሩ ይወገዳል። ይህ ሊቀለበስ አይችልም።
 #. text in the browser extension
+#. in the This page tab of the toolbar button's popup: how many of the pictures found pass the size and type filters, and will be sent
+#, machine
+extension	{shown} of {total} selected	ከ{total} ውስጥ {shown} ተመርጠዋል
+#. text in the browser extension
 #. a running download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): the time left, as a clock (minutes:seconds)
 #. {time} = a time of day (keep the braces as they are)
 #, machine
@@ -7669,6 +8364,10 @@ extension	{time} left	{time} ቀርቷል
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
 key	Alt+Enter	Alt+Enter
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Alt+P	Alt+P
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
@@ -7799,6 +8498,12 @@ menu	&Automatic	በ&ራስ-ሰር
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Classic	&ክላሲክ
+#. menu command in the main window
+#. header menu: opens the dialog that chooses the list's columns
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	&Columns...	ዓ&ምዶች...
 #. menu command in standard windows
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -7819,6 +8524,11 @@ menu	&Download Now	አሁን &ያውርዱ
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Exit	&ውጣ
+#. menu command in the main window
+#. View menu: submenu choosing the interface's own font and text size
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Font	ቅ&ርጸ-ቁምፊ
 #. menu command in the main window
 #. verb: load downloads from a file
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
@@ -7898,6 +8608,11 @@ menu	&Stop All	ሁሉንም &ያቁሙ
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Stop Download	ማውረዱን &ያቁሙ
+#. menu command in the main window
+#. View → Font: the computer's own font, the default (Segoe UI on Windows)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&System font	የ&ስርዓት ቅርጸ-ቁምፊ
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -8039,6 +8754,12 @@ menu	C&ustomize URL List...	የ&URL ዝርዝርን ያብጁ...
 #, machine
 menu	Check for &updates...	ለ&ዝማኔዎች ፈትሽ...
 #. menu command in the main window
+#. View → Font: a TrueType or OpenType font file on disk to draw the interface's text in
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Choose a font &file...	የቅርጸ-ቁምፊ ፋ&ይል ይምረጡ...
+#. menu command in the main window
 #. View → Theme: MDM's own look, the default (IDM's layout, Windows 11's controls)
 #, machine
 menu	Classic	ክላሲክ
@@ -8127,10 +8848,6 @@ menu	Find Next (F3)	ቀጣይ ፈልግ (F3)
 #. right-click → Torrent, a choice with a check mark (with Download in order): each file's first and last pieces first, which a video player needs to start
 #, machine
 menu	First and last pieces first	መጀመሪያ እና መጨረሻ ክፍሎች መጀመሪያ
-#. menu command in the main window
-#. noun: the list's font (submenu)
-#, machine
-menu	Font	ቅርጸ-ቁምፊ
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it
@@ -8235,6 +8952,10 @@ menu	Open with...	ክፈት በ...
 #. View → Draw with: a graphics system's name, usually kept as is
 #, machine
 menu	OpenGL	OpenGL
+#. menu command in the main window
+#. View → Draw with: a greyed note; why MDM no longer draws with OpenGL: MDM crashed inside the graphics card's driver while OpenGL drew ("its": OpenGL's)
+#, machine
+menu	OpenGL crashed inside its driver here	OpenGL እዚህ በራሱ ነጂ ውስጥ ሳይታሰብ ተዘግቷል
 #. menu command in the main window
 #. View → Draw with: a greyed note; why MDM no longer draws with OpenGL: it couldn't start on this computer
 #, machine
@@ -8439,6 +9160,10 @@ menubar	&Tasks	&ተግባራት
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menubar	&View	&እይታ
+#. text in preview.rs
+#. noun: title of the side pane beside the download list that shows the selected download's picture and details (#1368)
+#, machine
+pane	Preview	ቅድመ እይታ
 #. toolbar button in the main window
 #, machine
 toolbar	Add Torrent	ቶረንት አክል
@@ -8456,6 +9181,10 @@ toolbar	Delete Completed	የተጠናቀቁትን ሰርዝ
 #. plural noun: opens the Options window (settings)
 #, machine
 toolbar	Options	አማራጮች
+#. toolbar button in the main window
+#. toolbar toggle button: shows or hides the preview pane (the selected download's picture and details)
+#, machine
+toolbar	Preview	ቅድመ እይታ
 #. toolbar button in the main window
 #. verb: continue the selected downloads
 #, machine

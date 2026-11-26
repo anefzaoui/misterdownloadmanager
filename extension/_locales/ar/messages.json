@@ -284,6 +284,64 @@
   "popup_media_title_name": {
     "message": "إضافة عنوان الصفحة قبل أسماء ملفات الوسائط"
   },
+  "popup_images": {
+    "message": "الصور في هذه الصفحة"
+  },
+  "popup_images_text": {
+    "message": "ابحث عن صور هذه الصفحة بأكبر حجم تعرضه، ثم أرسل ما تريده إلى ملتقط الروابط."
+  },
+  "popup_images_find": {
+    "message": "البحث عن الصور"
+  },
+  "popup_images_min": {
+    "message": "أصغر حجم، بالبكسل"
+  },
+  "popup_images_width": {
+    "message": "أقل عرض، بالبكسل"
+  },
+  "popup_images_height": {
+    "message": "أقل ارتفاع، بالبكسل"
+  },
+  "popup_images_types": {
+    "message": "أنواع الصور"
+  },
+  "popup_images_other": {
+    "message": "أخرى"
+  },
+  "popup_images_count": {
+    "message": "$shown$ من $total$ محدد",
+    "placeholders": {
+      "shown": {
+        "content": "$1",
+        "example": "12"
+      },
+      "total": {
+        "content": "$2",
+        "example": "40"
+      }
+    }
+  },
+  "popup_images_unsized": {
+    "message": "الحجم غير معطى، تم الاحتفاظ به: $n$",
+    "placeholders": {
+      "n": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "popup_images_send": {
+    "message": "إرسال إلى ملتقط الروابط"
+  },
+  "popup_images_sent": {
+    "message": "تم الإرسال إلى ملتقط الروابط: حدد ما تريد تنزيله هناك."
+  },
+  "popup_images_none": {
+    "message": "لم يتم العثور على صور في هذه الصفحة."
+  },
+  "popup_images_unreadable": {
+    "message": "لا يسمح المستعرض للإضافات بقراءة هذه الصفحة."
+  },
   "video_cant_save": {
     "message": "لا يمكن حفظه"
   },
@@ -291,7 +349,7 @@
     "message": "افتح المنشور"
   },
   "video_drag_dots": {
-    "message": "اسحب النقاط لتحريكه على طول الحافة"
+    "message": "اسحب النقاط لتحريكه إلى زاوية أخرى، أو خارج الفيديو"
   },
   "video_tip": {
     "message": "نزل $what$",
@@ -765,5 +823,108 @@
   },
   "popup_dl_open_remote": {
     "message": "فتح صفحته"
+  },
+  "video_home": {
+    "message": "أعد الزر إلى مكانه"
+  },
+  "video_filter_all": {
+    "message": "الكل"
+  },
+  "video_filter_audio": {
+    "message": "صوت فقط"
+  },
+  "video_filter_kind": {
+    "message": "إظهار"
+  },
+  "video_filter_type": {
+    "message": "نوع الملف"
+  },
+  "video_filter_codec": {
+    "message": "برنامج الترميز"
+  },
+  "popup_video_reset_text": {
+    "message": "زر التنزيل فوق مقاطع الفيديو"
+  },
+  "popup_video_reset_sub": {
+    "message": "المواضع التي نقلته إليها، وفلاتر قائمته، في كل موقع"
+  },
+  "popup_video_reset": {
+    "message": "إعادة الضبط"
+  },
+  "popup_video_reset_done": {
+    "message": "عاد إلى زاويته، وقائمته تعرض كل شيء، في كل موقع"
+  },
+  "status_links_sent": {
+    "message": "الروابط المرسلة: $count$",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "10"
+      }
+    }
+  },
+  "status_links_cut": {
+    "message": "الروابط المرسلة: $sent$، المتروكة: $left$",
+    "placeholders": {
+      "sent": {
+        "content": "$1",
+        "example": "100"
+      },
+      "left": {
+        "content": "$2",
+        "example": "20"
+      }
+    }
+  },
+  "status_links_partial": {
+    "message": "الروابط المرسلة: $sent$، المرفوضة: $refused$",
+    "placeholders": {
+      "sent": {
+        "content": "$1",
+        "example": "5"
+      },
+      "refused": {
+        "content": "$2",
+        "example": "2"
+      }
+    }
+  },
+  "status_links_partial_cut": {
+    "message": "الروابط المرسلة: $sent$، المرفوضة: $refused$، المتروكة: $left$",
+    "placeholders": {
+      "sent": {
+        "content": "$1",
+        "example": "5"
+      },
+      "refused": {
+        "content": "$2",
+        "example": "2"
+      },
+      "left": {
+        "content": "$3",
+        "example": "1"
+      }
+    }
+  },
+  "status_links_refused": {
+    "message": "الروابط المرفوضة: $count$",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "status_links_none": {
+    "message": "لا توجد روابط قابلة للاستحواذ ($left$ تم تخطيها)",
+    "placeholders": {
+      "left": {
+        "content": "$1",
+        "example": "5"
+      }
+    }
+  },
+  "status_unreachable": {
+    "message": "لم يتم الوصول إلى الخادم"
   }
 }

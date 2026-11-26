@@ -746,6 +746,55 @@ pub fn window_hidden(title: &str) -> bool {
     find_own_window(title).is_some_and(|h| unsafe { IsWindowVisible(h) == 0 && IsIconic(h) == 0 })
 }
 
+/// Whether our dialog titled `title` is owned by the main window: one opened from it (its Help
+/// menu, a toolbar button), as IDM's dialogs are. Ask while the dialog still exists (its closing
+/// pass, #1852).
+pub fn owned_by_main_window(title: &str) -> bool {
+    use windows_sys::Win32::UI::WindowsAndMessaging::{GW_OWNER, GetWindow};
+    let (Some(dialog), Some(main)) = (find_own_window(title), find_own_window(crate::MAIN_TITLE))
+    else {
+        return false;
+    };
+    // SAFETY: plain queries about our own windows.
+    unsafe { GetWindow(dialog, GW_OWNER) == main }
+}
+
+/// Whether the main window should come back to the front now (#1852): it is on the screen
+/// (neither hidden nor minimized) and the window in front is one of ours (a dialog closing) or
+/// the shell (the taskbar or the desktop). Windows leaves the focus on the taskbar when a dialog
+/// activated from its button closes, and the main window behind it never takes it back. False
+/// while another program is in front: its window stays the person's.
+pub fn main_should_come_back() -> bool {
+    use windows_sys::Win32::UI::WindowsAndMessaging::{
+        GetClassNameW, GetForegroundWindow, IsIconic, IsWindowVisible,
+    };
+    let Some(main) = find_own_window(crate::MAIN_TITLE) else {
+        return false;
+    };
+    // SAFETY: plain queries about any window; the class name is a local.
+    unsafe {
+        if IsWindowVisible(main) == 0 || IsIconic(main) != 0 {
+            return false;
+        }
+        let front = GetForegroundWindow();
+        if front.is_null() || front == main {
+            return false;
+        }
+        let mut pid = 0u32;
+        GetWindowThreadProcessId(front, &mut pid);
+        if pid == GetCurrentProcessId() {
+            return true;
+        }
+        let mut class = [0u16; 32];
+        let n = GetClassNameW(front, class.as_mut_ptr(), class.len() as i32);
+        let class = String::from_utf16_lossy(&class[..n.max(0) as usize]);
+        matches!(
+            class.as_str(),
+            "Shell_TrayWnd" | "Shell_SecondaryTrayWnd" | "Progman" | "WorkerW"
+        )
+    }
+}
+
 /// Our window titled `title` shown (it was hidden behind winit's back), not activated, and above
 /// the other programs' windows ([`come_forward`]) unless off-screen.
 pub fn show_hidden(title: &str) {
@@ -4740,6 +4789,305 @@ pub fn idle_seconds() -> u64 {
     u64::from(now.wrapping_sub(info.dwTime) / 1000)
 }
 
+// ---- pop-ups that wait (#1773, hold.rs) ---------------------------------------------------
+
+/// The session is locked, as its lock and unlock were last heard ([`watch_session_lock`]).
+static SESSION_LOCKED: std::sync::atomic::AtomicBool = std::sync::atomic::AtomicBool::new(false);
+
+/// Why MDM's pop-ups wait now: the session locked, what the shell says of the user (the state
+/// Windows holds its own notifications by: `SHQueryUserNotificationState`), or a frameless
+/// window in front filling its monitor (any monitor: [`foreground_full_screen`]). None when
+/// notifications are welcome, or when the shell can't say.
+pub fn pop_ups_wait() -> Option<crate::hold::Busy> {
+    use windows_sys::Win32::UI::Shell::SHQueryUserNotificationState;
+    if SESSION_LOCKED.load(std::sync::atomic::Ordering::Relaxed) {
+        return Some(crate::hold::Busy::Away);
+    }
+    let mut state = 0;
+    // SAFETY: a plain query writing one i32 we own.
+    let hr = unsafe { SHQueryUserNotificationState(&mut state) };
+    let busy = if hr < 0 { None } else { busy_of(state) };
+    busy.or_else(|| foreground_full_screen().then_some(crate::hold::Busy::FullScreen))
+}
+
+/// Whether the window in front fills its whole monitor without a frame: a game, a video or a
+/// slide show full screen. The shell's state says so only for the main monitor (Windows 11 26200
+/// answers "accepts notifications" with a full-screen window in front on another one), and
+/// games are played on any. Not MDM's own windows, nor the desktop's or the taskbars'.
+fn foreground_full_screen() -> bool {
+    use windows_sys::Win32::Graphics::Gdi::{
+        GetMonitorInfoW, MONITOR_DEFAULTTONULL, MONITORINFO, MonitorFromWindow,
+    };
+    use windows_sys::Win32::UI::WindowsAndMessaging::{
+        GetClassNameW, GetForegroundWindow, GetWindowRect, IsIconic, IsZoomed, WS_CAPTION,
+    };
+    // SAFETY: plain queries about the foreground window (any handle is accepted, a gone one
+    // fails), writing into structures and buffers we own, with their sizes given.
+    unsafe {
+        let fg = GetForegroundWindow();
+        if fg.is_null() {
+            return false;
+        }
+        let mut pid = 0;
+        GetWindowThreadProcessId(fg, &mut pid);
+        if pid == GetCurrentProcessId() {
+            return false;
+        }
+        let mut class = [0u16; 64];
+        let n = GetClassNameW(fg, class.as_mut_ptr(), class.len() as i32).max(0) as usize;
+        let class = String::from_utf16_lossy(&class[..n]);
+        if matches!(
+            class.as_str(),
+            "Progman" | "WorkerW" | "Shell_TrayWnd" | "Shell_SecondaryTrayWnd"
+        ) {
+            return false;
+        }
+        let mut window: RECT = zeroed();
+        if GetWindowRect(fg, &mut window) == 0 {
+            return false;
+        }
+        let monitor = MonitorFromWindow(fg, MONITOR_DEFAULTTONULL);
+        if monitor.is_null() {
+            return false;
+        }
+        let mut info: MONITORINFO = zeroed();
+        info.cbSize = size_of::<MONITORINFO>() as u32;
+        if GetMonitorInfoW(monitor, &mut info) == 0 {
+            return false;
+        }
+        let style = GetWindowLongPtrW(fg, GWL_STYLE) as u32;
+        fills_monitor(
+            window,
+            info.rcMonitor,
+            style & WS_CAPTION == WS_CAPTION,
+            IsZoomed(fg) != 0 || IsIconic(fg) != 0,
+        )
+    }
+}
+
+/// A window at `window` covers the whole monitor at `monitor`, without a title bar and not
+/// maximized (a maximized window can cover a monitor that has no taskbar).
+fn fills_monitor(window: RECT, monitor: RECT, captioned: bool, maximized: bool) -> bool {
+    !captioned
+        && !maximized
+        && monitor.right > monitor.left
+        && window.left <= monitor.left
+        && window.top <= monitor.top
+        && window.right >= monitor.right
+        && window.bottom >= monitor.bottom
+}
+
+/// The shell's notification state as a reason to wait.
+fn busy_of(state: i32) -> Option<crate::hold::Busy> {
+    use crate::hold::Busy;
+    use windows_sys::Win32::UI::Shell::{
+        QUNS_BUSY, QUNS_NOT_PRESENT, QUNS_PRESENTATION_MODE, QUNS_RUNNING_D3D_FULL_SCREEN,
+    };
+    match state {
+        // The screen saver, the locked screen, or another user's session in front.
+        QUNS_NOT_PRESENT => Some(Busy::Away),
+        // A full-screen app or video in front (borderless games too), or presentation settings.
+        QUNS_BUSY => Some(Busy::FullScreen),
+        QUNS_RUNNING_D3D_FULL_SCREEN => Some(Busy::Game),
+        QUNS_PRESENTATION_MODE => Some(Busy::Presentation),
+        // QUNS_ACCEPTS_NOTIFICATIONS; QUNS_QUIET_TIME (the first hour after a new account's
+        // first sign-in, which holds Windows' own tips, not a user at work); QUNS_APP (a Store
+        // app in front, which is windowed on Windows 10 and 11); and whatever comes later.
+        _ => None,
+    }
+}
+
+/// The subclass that hears the session's lock and unlock on the main window.
+const LOCK_SUBCLASS: usize = 0x10c;
+
+/// What a lock or an unlock runs ([`watch_session_lock`]).
+type OnLock = Box<dyn Fn()>;
+
+thread_local! {
+    /// Run when the session is locked or unlocked (wakes the window for its pop-ups).
+    static ON_LOCK: std::cell::RefCell<Option<OnLock>> = const { std::cell::RefCell::new(None) };
+}
+
+/// Hear the session's lock and unlock (WM_WTSSESSION_CHANGE) on the main window
+/// ([`set_main_window`]; call this after it, on its thread): [`pop_ups_wait`] knows at once, and
+/// `changed` runs (a frame, for the windows that waited to show as soon as the user is back).
+/// The shell's state says "not present" when locked too, but only when asked.
+///
+/// No appbar's ABN_FULLSCREENAPP either: the state is asked whenever a pop-up would open, so none
+/// is missed; it would only tell the end of a full-screen app sooner than MDM's next look
+/// (`hold::LOOK_EVERY`).
+pub fn watch_session_lock(changed: impl Fn() + 'static) {
+    use windows_sys::Win32::System::RemoteDesktop::{
+        NOTIFY_FOR_THIS_SESSION, WTSRegisterSessionNotification,
+    };
+    let hwnd = MAIN_WINDOW.load(std::sync::atomic::Ordering::Relaxed);
+    if hwnd == 0 {
+        tracing::warn!("the session's lock isn't heard: no main window");
+        return;
+    }
+    ON_LOCK.with(|c| *c.borrow_mut() = Some(Box::new(changed)));
+    // SAFETY: the main window, made on this thread (eframe's creator runs on it); the proc lives
+    // as long as the program. Windows stops the notifications when the window is destroyed.
+    unsafe {
+        SetWindowSubclass(hwnd as HWND, Some(lock_proc), LOCK_SUBCLASS, 0);
+        if WTSRegisterSessionNotification(hwnd as HWND, NOTIFY_FOR_THIS_SESSION) == 0 {
+            tracing::warn!("the session's lock isn't heard: WTSRegisterSessionNotification failed");
+        }
+    }
+}
+
+unsafe extern "system" fn lock_proc(
+    hwnd: HWND,
+    msg: u32,
+    wparam: WPARAM,
+    lparam: LPARAM,
+    _id: usize,
+    _data: usize,
+) -> LRESULT {
+    use windows_sys::Win32::UI::WindowsAndMessaging::{
+        WM_WTSSESSION_CHANGE, WTS_SESSION_LOCK, WTS_SESSION_UNLOCK,
+    };
+    if msg == WM_WTSSESSION_CHANGE {
+        let locked = match wparam as u32 {
+            WTS_SESSION_LOCK => Some(true),
+            WTS_SESSION_UNLOCK => Some(false),
+            _ => None,
+        };
+        if let Some(locked) = locked {
+            tracing::info!(
+                "the session is {}",
+                if locked { "locked" } else { "unlocked" }
+            );
+            SESSION_LOCKED.store(locked, std::sync::atomic::Ordering::Relaxed);
+            ON_LOCK.with(|c| {
+                if let Ok(c) = c.try_borrow()
+                    && let Some(changed) = c.as_ref()
+                {
+                    changed();
+                }
+            });
+        }
+    }
+    // SAFETY: the subclass's own arguments, passed on.
+    unsafe { DefSubclassProc(hwnd, msg, wparam, lparam) }
+}
+
+#[cfg(test)]
+mod pop_ups_wait_tests {
+    use super::*;
+    use crate::hold::Busy;
+    use windows_sys::Win32::UI::Shell::{
+        QUNS_ACCEPTS_NOTIFICATIONS, QUNS_APP, QUNS_BUSY, QUNS_NOT_PRESENT, QUNS_PRESENTATION_MODE,
+        QUNS_QUIET_TIME, QUNS_RUNNING_D3D_FULL_SCREEN,
+    };
+
+    #[test]
+    fn the_shell_s_states_that_hold_pop_ups() {
+        assert_eq!(busy_of(QUNS_NOT_PRESENT), Some(Busy::Away));
+        assert_eq!(busy_of(QUNS_BUSY), Some(Busy::FullScreen));
+        assert_eq!(busy_of(QUNS_RUNNING_D3D_FULL_SCREEN), Some(Busy::Game));
+        assert_eq!(busy_of(QUNS_PRESENTATION_MODE), Some(Busy::Presentation));
+        for free in [QUNS_ACCEPTS_NOTIFICATIONS, QUNS_QUIET_TIME, QUNS_APP, 0, 99] {
+            assert_eq!(busy_of(free), None, "{free}");
+        }
+    }
+
+    #[test]
+    fn a_frameless_window_over_its_whole_monitor_is_full_screen() {
+        let rect = |left, top, right, bottom| RECT {
+            left,
+            top,
+            right,
+            bottom,
+        };
+        // A second monitor up and to the left of the main one.
+        let monitor = rect(-1919, -1083, 1, -3);
+        assert!(fills_monitor(monitor, monitor, false, false));
+        assert!(fills_monitor(
+            rect(-1925, -1090, 7, 4),
+            monitor,
+            false,
+            false
+        ));
+        // A window with a title bar, a maximized one, one short of the edge: not full screen.
+        assert!(!fills_monitor(monitor, monitor, true, false));
+        assert!(!fills_monitor(
+            rect(-1927, -1091, 9, 5),
+            monitor,
+            false,
+            true
+        ));
+        assert!(!fills_monitor(
+            rect(-1919, -1083, 1, -43),
+            monitor,
+            false,
+            false
+        ));
+    }
+
+    /// The real call answers on this computer (whatever it says).
+    #[test]
+    fn the_shell_answers() {
+        use windows_sys::Win32::UI::Shell::SHQueryUserNotificationState;
+        let mut state = 0;
+        // SAFETY: a plain query writing one i32 we own.
+        let hr = unsafe { SHQueryUserNotificationState(&mut state) };
+        assert!(hr >= 0, "{hr:#x}");
+        assert!((1..=7).contains(&state), "{state}");
+    }
+
+    /// A real hidden window of this thread, sent what Windows sends: the lock holds pop-ups and
+    /// wakes the window, the unlock lets them go.
+    #[test]
+    fn the_session_s_lock_is_heard() {
+        use std::cell::Cell;
+        use std::rc::Rc;
+        use windows_sys::Win32::UI::WindowsAndMessaging::{
+            CreateWindowExW, DefWindowProcW, DestroyWindow, RegisterClassW, SendMessageW,
+            WM_WTSSESSION_CHANGE, WNDCLASSW, WS_OVERLAPPEDWINDOW, WTS_SESSION_LOCK,
+            WTS_SESSION_UNLOCK,
+        };
+        let class: Vec<u16> = "mdm-session-lock-test\0".encode_utf16().collect();
+        let woke = Rc::new(Cell::new(0));
+        // SAFETY: a class with the system's own procedure and a hidden window of it on this
+        // thread, destroyed below; NUL-terminated strings; messages sent to it.
+        unsafe {
+            let mut wc: WNDCLASSW = zeroed();
+            wc.lpfnWndProc = Some(DefWindowProcW);
+            wc.lpszClassName = class.as_ptr();
+            RegisterClassW(&wc);
+            let hwnd = CreateWindowExW(
+                0,
+                class.as_ptr(),
+                class.as_ptr(),
+                WS_OVERLAPPEDWINDOW,
+                -20000,
+                -20000,
+                200,
+                100,
+                std::ptr::null_mut(),
+                std::ptr::null_mut(),
+                std::ptr::null_mut(),
+                std::ptr::null(),
+            );
+            assert!(!hwnd.is_null());
+            let seen = woke.clone();
+            ON_LOCK.with(|c| *c.borrow_mut() = Some(Box::new(move || seen.set(seen.get() + 1))));
+            SetWindowSubclass(hwnd, Some(lock_proc), LOCK_SUBCLASS, 0);
+            SendMessageW(hwnd, WM_WTSSESSION_CHANGE, WTS_SESSION_LOCK as WPARAM, 0);
+            assert_eq!(pop_ups_wait(), Some(Busy::Away));
+            assert_eq!(woke.get(), 1);
+            SendMessageW(hwnd, WM_WTSSESSION_CHANGE, WTS_SESSION_UNLOCK as WPARAM, 0);
+            assert!(!SESSION_LOCKED.load(std::sync::atomic::Ordering::Relaxed));
+            assert_eq!(woke.get(), 2);
+            // Other session changes (a remote connection) change nothing.
+            SendMessageW(hwnd, WM_WTSSESSION_CHANGE, 1, 0);
+            assert_eq!(woke.get(), 2);
+            DestroyWindow(hwnd);
+        }
+    }
+}
+
 // ---- taskbar progress (ITaskbarList3) -----------------------------------------------------
 //
 // windows-sys has no COM interface tables, so the three calls used are declared here in
@@ -4790,7 +5138,7 @@ fn taskbar_button_created_message() -> u32 {
 #[derive(Default)]
 pub struct TaskbarProgress {
     window: isize,
-    shown: Option<Option<u32>>,
+    shown: crate::sysprogress::Shown,
     button_generation: u64,
 }
 
@@ -4798,7 +5146,7 @@ impl TaskbarProgress {
     pub const fn new() -> Self {
         Self {
             window: 0,
-            shown: None,
+            shown: crate::sysprogress::Shown::new(),
             button_generation: 0,
         }
     }
@@ -4811,7 +5159,7 @@ impl TaskbarProgress {
     /// window of this process, so do not send to it while forgetting the binding.
     pub fn window_gone(&mut self) {
         self.window = 0;
-        self.shown = None;
+        self.shown.forget();
         self.button_generation = 0;
     }
 
@@ -4823,7 +5171,7 @@ impl TaskbarProgress {
         if self.window != window {
             self.update_with(None, &mut send);
             self.window = window;
-            self.shown = None;
+            self.shown.forget();
             self.button_generation = 0;
         }
     }
@@ -4843,13 +5191,13 @@ impl TaskbarProgress {
             .try_with(|buttons| buttons.borrow().1.get(&self.window).copied().unwrap_or(0))
             .unwrap_or(0);
         if self.button_generation != generation {
-            self.shown = None;
+            self.shown.forget();
             // Take the generation before send: a notification during COM must survive it.
             self.button_generation = generation;
         }
-        let value = progress.map(|p| (p.clamp(0.0, 1.0) * 1000.0).round() as u32);
-        if self.window != 0 && self.shown != Some(value) && send(self.window, value) {
-            self.shown = Some(value);
+        if self.window != 0 {
+            let window = self.window;
+            self.shown.update(progress, |value| send(window, value));
         }
     }
 }
@@ -4923,8 +5271,9 @@ fn write_taskbar_progress(window: isize, value: Option<u32>) -> bool {
                 let this = tb.obj as *mut c_void;
                 match value {
                     Some(v) => {
+                        let steps = u64::from(crate::sysprogress::STEPS);
                         ((**tb.obj).set_progress_state)(this, hwnd, TBPF_NORMAL) >= 0
-                            && ((**tb.obj).set_progress_value)(this, hwnd, u64::from(v), 1000) >= 0
+                            && ((**tb.obj).set_progress_value)(this, hwnd, u64::from(v), steps) >= 0
                     }
                     None => ((**tb.obj).set_progress_state)(this, hwnd, TBPF_NOPROGRESS) >= 0,
                 }
@@ -6678,6 +7027,154 @@ unsafe fn dib_rgba(
     }
 }
 
+// ---- Thumbnails (preview.rs, #1368) -------------------------------------------------------------
+
+/// The start of the shell's `IShellItemImageFactory` vtable (shobjidl_core.h): IUnknown, then
+/// `GetImage`, its one method.
+#[repr(C)]
+struct ImageFactoryVtbl {
+    _query_interface: usize,
+    _add_ref: usize,
+    release: unsafe extern "system" fn(*mut c_void) -> u32,
+    get_image: unsafe extern "system" fn(
+        *mut c_void,
+        windows_sys::Win32::Foundation::SIZE,
+        i32,
+        *mut windows_sys::Win32::Graphics::Gdi::HBITMAP,
+    ) -> windows_sys::core::HRESULT,
+}
+
+/// IID_IShellItemImageFactory, {BCC18B79-BA16-442F-80C4-8A59C30C463B}.
+const IID_IMAGE_FACTORY: windows_sys::core::GUID = windows_sys::core::GUID {
+    data1: 0xBCC1_8B79,
+    data2: 0xBA16,
+    data3: 0x442F,
+    data4: [0x80, 0xC4, 0x8A, 0x59, 0xC3, 0x0C, 0x46, 0x3B],
+};
+
+/// The shell's picture of the file at `path` (the preview pane, #1368), the one Explorer shows:
+/// its thumbnail from whichever handler is registered for its type (pictures, videos, PDFs,
+/// Office documents...), fitting `px` pixels with its shape kept; where there is none, its own
+/// icon (a program's, a shortcut's), marked as an icon. A program, a shortcut or an icon file is
+/// its icon first, as Explorer draws them: the shell's "thumbnail" of one is that icon, small, on
+/// a white sheet. Run on preview.rs's pictures thread.
+pub fn thumbnail(path: &std::path::Path, px: u32) -> Option<crate::preview::Picture> {
+    use std::os::windows::ffi::OsStrExt;
+    use windows_sys::Win32::UI::Shell::{
+        SHCreateItemFromParsingName, SIIGBF_ICONONLY, SIIGBF_RESIZETOFIT, SIIGBF_THUMBNAILONLY,
+    };
+    com_on_this_thread();
+    let wide: Vec<u16> = path.as_os_str().encode_wide().chain([0]).collect();
+    let side = px.clamp(16, 1024) as i32;
+    // SAFETY: the path is NUL-terminated; on success the factory carries a reference for us,
+    // released below. Its vtable is read only as far as GetImage, whose bitmap is ours to read
+    // and delete.
+    unsafe {
+        let mut factory: *mut c_void = std::ptr::null_mut();
+        let hr = SHCreateItemFromParsingName(
+            wide.as_ptr(),
+            std::ptr::null_mut(),
+            &IID_IMAGE_FACTORY,
+            &mut factory,
+        );
+        if hr < 0 || factory.is_null() {
+            return None;
+        }
+        let vtbl = &**(factory as *const *const ImageFactoryVtbl);
+        let size = windows_sys::Win32::Foundation::SIZE { cx: side, cy: side };
+        let mut got = None;
+        let program = path.extension().and_then(|e| e.to_str()).is_some_and(|e| {
+            [
+                "exe", "msi", "com", "scr", "lnk", "ico", "cur", "dll", "appx", "msix",
+            ]
+            .iter()
+            .any(|p| e.eq_ignore_ascii_case(p))
+        });
+        let thumbnail = (SIIGBF_RESIZETOFIT | SIIGBF_THUMBNAILONLY, false);
+        let icon = (SIIGBF_RESIZETOFIT | SIIGBF_ICONONLY, true);
+        let order = if program {
+            [icon, thumbnail]
+        } else {
+            [thumbnail, icon]
+        };
+        for (flags, icon) in order {
+            let mut bitmap: windows_sys::Win32::Graphics::Gdi::HBITMAP = std::ptr::null_mut();
+            if (vtbl.get_image)(factory, size, flags, &mut bitmap) >= 0 && !bitmap.is_null() {
+                let pixels = bitmap_rgba(bitmap);
+                DeleteObject(bitmap as _);
+                if let Some((w, h, rgba)) = pixels {
+                    got = Some(crate::preview::Picture {
+                        w,
+                        h,
+                        rgba,
+                        premultiplied: true,
+                        icon,
+                    });
+                    break;
+                }
+            }
+        }
+        (vtbl.release)(factory);
+        got
+    }
+}
+
+/// A bitmap's pixels as (width, height, RGBA), alpha premultiplied, as the shell's are; a
+/// picture without alpha (a photo's thumbnail: every pixel 0) is opaque.
+unsafe fn bitmap_rgba(
+    bitmap: windows_sys::Win32::Graphics::Gdi::HBITMAP,
+) -> Option<(u32, u32, Vec<u8>)> {
+    use windows_sys::Win32::Graphics::Gdi::{BITMAP, GetObjectW};
+    unsafe {
+        let mut bm: BITMAP = zeroed();
+        if GetObjectW(
+            bitmap as _,
+            size_of::<BITMAP>() as i32,
+            &mut bm as *mut BITMAP as *mut c_void,
+        ) == 0
+        {
+            return None;
+        }
+        let (w, h) = (bm.bmWidth, bm.bmHeight.abs());
+        if w <= 0 || h <= 0 || w > 4096 || h > 4096 {
+            return None;
+        }
+        let mut bmi: BITMAPINFO = zeroed();
+        bmi.bmiHeader = BITMAPINFOHEADER {
+            biSize: size_of::<BITMAPINFOHEADER>() as u32,
+            biWidth: w,
+            biHeight: -h, // top-down
+            biPlanes: 1,
+            biBitCount: 32,
+            biCompression: BI_RGB,
+            ..zeroed()
+        };
+        let mut px = vec![0u8; (w * h * 4) as usize];
+        let dc = GetDC(std::ptr::null_mut());
+        let lines = GetDIBits(
+            dc,
+            bitmap,
+            0,
+            h as u32,
+            px.as_mut_ptr() as *mut c_void,
+            &mut bmi,
+            DIB_RGB_COLORS,
+        );
+        ReleaseDC(std::ptr::null_mut(), dc);
+        if lines != h {
+            return None;
+        }
+        let opaque = !px.as_chunks::<4>().0.iter().any(|c| c[3] != 0);
+        for c in px.as_chunks_mut::<4>().0 {
+            c.swap(0, 2); // BGRA → RGBA
+            if opaque {
+                c[3] = 255;
+            }
+        }
+        Some((w as u32, h as u32, px))
+    }
+}
+
 /// Windows' own "open folder" (Download complete's, as IDM shows), as its system image list index.
 fn open_folder_index() -> Option<i32> {
     use windows_sys::Win32::UI::Shell::{
@@ -7677,7 +8174,7 @@ pub mod private_clipboard {
         use super::*;
 
         /// #629, #1103: why MDM's reads and writes of the clipboard, egui's copy and paste
-        /// among them, take one lock (main.rs `clipboard_lock`). Opened without a window, as
+        /// among them, take one lock (lib.rs `clipboard_lock`). Opened without a window, as
         /// arboard opens it, the clipboard lets a second thread of the process in while the
         /// first still has it open, and the second's close closes it under the first: a read
         /// still under way then works on data the clipboard has let go of, and the heap is
@@ -7879,7 +8376,8 @@ mod zone_policy_tests {
 /// as it is created (the engine renames it, the stream going along). Through `webmark::mark`,
 /// which asks the option and Windows' policy first.
 pub fn mark_downloaded(path: &std::path::Path, url: &str, referrer: Option<&str>) {
-    // Only addresses from the web: never a login's password (the engine has none in `url`).
+    // Both addresses come without their login (`webmark::source`, `webmark::page`); one line
+    // each.
     let clean = |u: &str| u.split(['\r', '\n']).next().unwrap_or("").to_owned();
     let mut text = String::from("[ZoneTransfer]\r\nZoneId=3\r\n");
     if let Some(r) = referrer.filter(|r| r.starts_with("http")) {
@@ -8496,10 +8994,11 @@ pub fn text_rasterizer(
 }
 
 /// Does [`text_rasterizer`] draw this character? One code point that needs no shaping: Latin,
-/// Greek and Cyrillic letters, digits and punctuation, and the CJK characters whose face comes
-/// from the interface language's script font. Scripts whose letters change shape (Arabic, Indic,
-/// ...) and the invisible marks are left to egui and its shaper; so are the brackets of a
-/// right-to-left line, which the shaper mirrors.
+/// Greek and Cyrillic letters, digits and punctuation, and the CJK characters (the family's own
+/// face, usually the chosen file, draws them when it has them, and the interface language's
+/// script font draws the rest). Scripts whose letters change shape (Arabic, Indic, ...) and the
+/// invisible marks are left to egui and its shaper; so are the brackets of a right-to-left line,
+/// which the shaper mirrors.
 fn classic_char(c: char, rtl: bool) -> bool {
     if rtl
         && matches!(
@@ -8522,14 +9021,25 @@ fn classic_char(c: char, rtl: bool) -> bool {
     ) || crate::theme::cjk_script(c).is_some()
 }
 
-/// The font file of a family `theme.rs` sets up (Segoe UI leads the two built-in ones).
-fn classic_font_file(family: &egui::FontFamily) -> Option<&'static str> {
+/// The font file of a family `theme.rs` sets up (the interface's own, View → Font's too, leads
+/// the regular families; Segoe UI is the computer's own).
+fn classic_font_file(family: &egui::FontFamily) -> Option<std::path::PathBuf> {
+    // View → Font (#1489): the chosen file leads the regular families (`theme::fonts`), so
+    // DirectWrite draws its letters too - Chinese, Japanese and Korean ones as well when it has
+    // them, since `lookup` tries it before the language's script files. The bold families keep
+    // their own faces, and `system-ui` is always the computer's own font (the way back from a
+    // damaged file).
+    let chosen = || crate::theme::chosen_ui_font();
+    let font = |name: &str| crate::theme::font_dir().join(name);
     match family {
-        egui::FontFamily::Proportional | egui::FontFamily::Monospace => Some("segoeui.ttf"),
+        egui::FontFamily::Proportional | egui::FontFamily::Monospace => {
+            Some(chosen().unwrap_or_else(|| font("segoeui.ttf")))
+        }
         egui::FontFamily::Name(name) => match &**name {
-            "tahoma" => Some("tahoma.ttf"),
-            "tahoma-bold" => Some("tahomabd.ttf"),
-            "arial-bold" => Some("arialbd.ttf"),
+            "tahoma" => Some(chosen().unwrap_or_else(|| font("tahoma.ttf"))),
+            "tahoma-bold" => Some(font("tahomabd.ttf")),
+            "arial-bold" => Some(font("arialbd.ttf")),
+            "system-ui" => Some(font("segoeui.ttf")),
             _ => None,
         },
     }
@@ -8559,7 +9069,7 @@ mod classic_text {
         factory: IDWriteFactory2,
         dir: PathBuf,
         /// The font files opened so far; `None` for one DirectWrite can't use.
-        faces: HashMap<&'static str, Option<IDWriteFontFace>>,
+        faces: HashMap<PathBuf, Option<IDWriteFontFace>>,
     }
 
     // SAFETY: DirectWrite's shared factory and the objects it makes are free-threaded
@@ -8578,14 +9088,16 @@ mod classic_text {
             })
         }
 
-        fn face(&mut self, file: &'static str) -> Option<IDWriteFontFace> {
-            let (factory, dir) = (&self.factory, &self.dir);
+        fn face(&mut self, file: &std::path::Path) -> Option<IDWriteFontFace> {
+            let factory = self.factory.clone();
+            let full = file.to_path_buf();
             self.faces
-                .entry(file)
+                .entry(full.clone())
                 .or_insert_with(|| {
-                    let full = dir.join(file);
                     // A .ttc holds a collection: the face egui draws with too (#1483).
-                    let collection = file.to_ascii_lowercase().ends_with(".ttc");
+                    let collection = full
+                        .extension()
+                        .is_some_and(|e| e.eq_ignore_ascii_case("ttc"));
                     let index = if collection {
                         crate::theme::font_face_index(&full)
                     } else {
@@ -8614,20 +9126,33 @@ mod classic_text {
                 .clone()
         }
 
-        /// The face and glyph id for `ch`: the family's own face for the scripts it draws, or the
-        /// interface language's CJK face for Chinese, Japanese and Korean text. None when no face
-        /// has a glyph for it: egui and its shaper draw it instead.
+        /// The face and glyph id for `ch`: the family's own face first (the chosen file, for the
+        /// regular families), then the interface language's CJK face for Chinese, Japanese and
+        /// Korean text. None when no face has a glyph for it: egui and its shaper draw it
+        /// instead.
         fn lookup(
             &mut self,
             family: &egui::FontFamily,
             ch: char,
         ) -> Option<(IDWriteFontFace, u16, DWRITE_FONT_METRICS)> {
-            let files: Vec<&'static str> = if crate::theme::cjk_script(ch).is_some() {
-                crate::theme::cjk_font_files(ch)
+            let own = super::classic_font_file(family);
+            let files: Vec<PathBuf> = if crate::theme::cjk_script(ch).is_some() {
+                // View → Font (#1489): a chosen file that carries Chinese, Japanese or Korean
+                // text draws it too, as it already draws the Latin; the language's script files
+                // follow it, so a chosen file without the glyph leaves it to them. `system-ui`
+                // and the bold families keep their own faces, which have no such glyph either,
+                // and the search goes on to those files.
+                let mut files: Vec<PathBuf> = own.into_iter().collect();
+                files.extend(
+                    crate::theme::cjk_font_files(ch)
+                        .into_iter()
+                        .map(|file| self.dir.join(file)),
+                );
+                files
             } else {
-                super::classic_font_file(family).into_iter().collect()
+                own.into_iter().collect()
             };
-            for file in files {
+            for file in &files {
                 let Some(face) = self.face(file) else {
                     continue;
                 };

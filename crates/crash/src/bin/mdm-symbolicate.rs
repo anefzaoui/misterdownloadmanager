@@ -18,14 +18,18 @@ fn main() {
     let mut stores: Vec<PathBuf> = Vec::new();
     for (i, s) in args[1..].iter().enumerate() {
         let p = PathBuf::from(s);
-        if p.extension().is_some_and(|e| e == "zip") {
+        if p.extension().is_some_and(|e| e.eq_ignore_ascii_case("zip")) {
             let dir = tmp.join(i.to_string());
             let bytes = std::fs::read(&p).unwrap_or_else(|e| fail(&format!("{s}: {e}")));
             mdm_crash::symbols::extract(&bytes, &dir)
                 .unwrap_or_else(|e| fail(&format!("{s}: {e}")));
             stores.push(dir);
-        } else {
+        } else if p.is_dir() {
             stores.push(p);
+        } else {
+            // A path that is neither would be dropped silently by analyze, and every frame
+            // would read as unsymbolicated.
+            fail(&format!("{s}: not a symbols zip or a folder"));
         }
     }
     let a = mdm_crash::analyze::analyze(std::path::Path::new(dump), &stores)

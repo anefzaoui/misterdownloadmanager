@@ -622,6 +622,13 @@
           "description": "`/fromhost` (beyond IDM, #1333): started by the browser native messaging host:\nstarts hidden without marking an OS session login.",
           "type": "boolean"
         },
+        "id": {
+          "description": "The hand-over's own id (#1651), random, made by the one sending it: a command sent again\nwith the same id, because its answer never came (lost on the way, or later than the\nsender waited), is answered `ok` and not given to the app twice. Letters, digits and `-`,\nat most 64; none (an older sender's): taken as it comes. Questions (those answered with\nmore than `ok`) aren't sent again, and carry none.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
         "ids": {
           "default": [],
           "items": {
@@ -682,6 +689,13 @@
             "string",
             "null"
           ]
+        },
+        "page_images": {
+          "description": "With `links` (#1781): those of them that are pictures located on the page (shown in it,\nnot links to them), which Link grabber hides while its \"Hide images located on this web\npage\" is ticked. Each is in `links` too, so an older app, which knows nothing of this,\nlists them as links. With `links_part`: those among this part's links.",
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
         },
         "page_url": {
           "description": "From the browser (#607): the web page the download was started from, whole (its tab's\naddress; a link's opened in a tab of its own, the tab that opened it), where the Referer\nis often cut to the site's address by the page's referrer policy. Kept with the download:\nRefresh download address opens it.",

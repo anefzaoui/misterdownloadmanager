@@ -169,6 +169,25 @@ impl SlowDisk {
         done
     }
 
+    /// Run `sync`, a flush of another file on this disk (the resume state's atomic write), once
+    /// the writes already queued ahead of it are on the disk (`every_flush`: plus `flush_takes`).
+    /// Another file's flush neither holds the part file's writes nor writes out what arrives for
+    /// the part file meanwhile (#1633).
+    pub fn sync<T>(&self, sync: impl FnOnce() -> T) -> T {
+        let left = if self.rate > 0 {
+            Duration::from_secs_f64(self.backlog().bytes / self.rate as f64)
+        } else {
+            Duration::ZERO
+        };
+        let extra = if self.every_flush {
+            self.flush_takes
+        } else {
+            Duration::ZERO
+        };
+        self.clock.sleep(left + extra);
+        sync()
+    }
+
     /// Take `n` bytes into the cache if they fit (or it is empty), else how long until they do.
     fn room_in(&self, n: u64) -> Option<Duration> {
         let mut b = self.backlog();
@@ -260,5 +279,28 @@ mod tests {
         let s = d.stats();
         assert!(about(s.flushes[0], ms(2500)), "{:?}", s.flushes);
         assert!(about(s.holds[0], ms(500)), "{:?}", s.holds);
+    }
+
+    /// #1633: flushing another file on a busy disk (the resume state's atomic write) waits for
+    /// what was already queued, without holding the part file's writes or clearing what they add
+    /// meanwhile.
+    #[test]
+    fn syncing_another_file_waits_for_the_disk_without_holding_writes() {
+        let clock = Clock::Manual(Arc::new(Mutex::new(Instant::now())));
+        let ms = Duration::from_millis;
+        let d = SlowDisk::with_clock(100 << 20, 256 << 20, ms(30), clock.clone());
+        d.write(50 << 20, || ());
+        let t = clock.now();
+        let writes_go = d.sync(|| {
+            // While the state's write waited 500 ms for the earlier 50 MiB, those 50 MiB drained;
+            // 20 MiB written to the part file at the end stay in its cache.
+            d.write(20 << 20, || ());
+            d.gate.try_read().is_ok()
+        });
+        assert!(writes_go, "another file's sync held the part file's writes");
+        assert!(about(clock.now() - t, ms(500)));
+        assert!(d.stats().flushes.is_empty());
+        d.flush(true, || ());
+        assert!(about(d.stats().holds[0], ms(230)), "{:?}", d.stats().holds);
     }
 }

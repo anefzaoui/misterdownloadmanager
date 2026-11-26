@@ -284,6 +284,64 @@
   "popup_media_title_name": {
     "message": "Dodaj tytuł strony przed nazwami plików multimedialnych"
   },
+  "popup_images": {
+    "message": "Obrazy na tej stronie"
+  },
+  "popup_images_text": {
+    "message": "Znajdź obrazy z tej strony w największym dostępnym rozmiarze, a następnie wyślij wybrane do narzędzia do pobierania linków."
+  },
+  "popup_images_find": {
+    "message": "Znajdź obrazy"
+  },
+  "popup_images_min": {
+    "message": "Najmniejszy rozmiar w pikselach"
+  },
+  "popup_images_width": {
+    "message": "Najmniejsza szerokość w pikselach"
+  },
+  "popup_images_height": {
+    "message": "Najmniejsza wysokość w pikselach"
+  },
+  "popup_images_types": {
+    "message": "Typy obrazów"
+  },
+  "popup_images_other": {
+    "message": "Inne"
+  },
+  "popup_images_count": {
+    "message": "Wybrano $shown$ z $total$",
+    "placeholders": {
+      "shown": {
+        "content": "$1",
+        "example": "12"
+      },
+      "total": {
+        "content": "$2",
+        "example": "40"
+      }
+    }
+  },
+  "popup_images_unsized": {
+    "message": "Rozmiar niepodany, zachowano: $n$",
+    "placeholders": {
+      "n": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "popup_images_send": {
+    "message": "Wyślij do narzędzia do pobierania linków"
+  },
+  "popup_images_sent": {
+    "message": "Wysłano do narzędzia do pobierania linków: zaznacz tam te, które chcesz pobrać."
+  },
+  "popup_images_none": {
+    "message": "Nie znaleziono obrazów na tej stronie."
+  },
+  "popup_images_unreadable": {
+    "message": "Przeglądarka nie pozwala dodatkom odczytywać tej strony."
+  },
   "video_cant_save": {
     "message": "nie można zapisać"
   },
@@ -291,7 +349,7 @@
     "message": "Otwórz post"
   },
   "video_drag_dots": {
-    "message": "Przeciągnij kropki, aby przesunąć go wzdłuż krawędzi"
+    "message": "Przeciągnij kropki, aby przenieść go w inny róg lub poza film"
   },
   "video_tip": {
     "message": "Pobierz $what$",
@@ -765,5 +823,108 @@
   },
   "popup_dl_open_remote": {
     "message": "Otwórz jego stronę"
+  },
+  "video_home": {
+    "message": "Umieść przycisk z powrotem w rogu"
+  },
+  "video_filter_all": {
+    "message": "Wszystkie"
+  },
+  "video_filter_audio": {
+    "message": "Tylko dźwięk"
+  },
+  "video_filter_kind": {
+    "message": "Pokaż"
+  },
+  "video_filter_type": {
+    "message": "Typ pliku"
+  },
+  "video_filter_codec": {
+    "message": "Kodek"
+  },
+  "popup_video_reset_text": {
+    "message": "Przycisk pobierania nad filmami"
+  },
+  "popup_video_reset_sub": {
+    "message": "Miejsce, do którego przeniesiono przycisk, i filtry jego menu na każdej stronie"
+  },
+  "popup_video_reset": {
+    "message": "Resetuj"
+  },
+  "popup_video_reset_done": {
+    "message": "Przycisk wrócił na swoje miejsce, a jego menu pokazuje wszystko, na każdej stronie"
+  },
+  "status_links_sent": {
+    "message": "Wysłane linki: $count$",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "10"
+      }
+    }
+  },
+  "status_links_cut": {
+    "message": "Wysłane linki: $sent$, $left$ pominiętych",
+    "placeholders": {
+      "sent": {
+        "content": "$1",
+        "example": "100"
+      },
+      "left": {
+        "content": "$2",
+        "example": "20"
+      }
+    }
+  },
+  "status_links_partial": {
+    "message": "Wysłane linki: $sent$, odrzucone: $refused$",
+    "placeholders": {
+      "sent": {
+        "content": "$1",
+        "example": "5"
+      },
+      "refused": {
+        "content": "$2",
+        "example": "2"
+      }
+    }
+  },
+  "status_links_partial_cut": {
+    "message": "Wysłane linki: $sent$, odrzucone: $refused$, $left$ pominiętych",
+    "placeholders": {
+      "sent": {
+        "content": "$1",
+        "example": "5"
+      },
+      "refused": {
+        "content": "$2",
+        "example": "2"
+      },
+      "left": {
+        "content": "$3",
+        "example": "1"
+      }
+    }
+  },
+  "status_links_refused": {
+    "message": "Odrzucone linki: $count$",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "status_links_none": {
+    "message": "Brak linków do przechwycenia ($left$ pominiętych)",
+    "placeholders": {
+      "left": {
+        "content": "$1",
+        "example": "5"
+      }
+    }
+  },
+  "status_unreachable": {
+    "message": "Serwer nieosiągalny"
   }
 }

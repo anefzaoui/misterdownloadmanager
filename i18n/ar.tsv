@@ -89,19 +89,24 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} download finished|{n} downloads finished	اكتمل {n} تنزيل|اكتمل {n} تنزيل|اكتمل {n} تنزيلان|اكتملت {n} تنزيلات|اكتمل {n} تنزيلا|اكتمل {n} تنزيل
+#. count in preview.rs
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} download selected|{n} downloads selected	{n} تنزيل محدد|{n} تنزيل محدد|{n} تنزيلان محددان|{n} تنزيلات محددة|{n} تنزيلا محددا|{n} تنزيل محدد
 #. count in the main window
 #. {n} = a number (keep the braces as they are)
 @plural	{n} downloading|{n} downloading	{n} قيد التنزيل|{n} قيد التنزيل|{n} قيد التنزيل|{n} قيد التنزيل|{n} قيد التنزيل|{n} قيد التنزيل
 #. count in extracting archives (a download's log, the Archive password window)
-#. in a download's log, after extracting: entries of the archive not written (links, names that would leave the folder)
+#. in a download's log, after extracting: entries of the archive not written (links, names that would leave the folder, entries under a file of the archive where a folder should be)
 #. {n} = a number (keep the braces as they are)
-@plural	{n} entry was left out (a link, or a name leading outside the folder)|{n} entries were left out (links, or names leading outside the folder)	تم تخطي {n} عنصر (ارتباط، أو اسم يؤدي إلى خارج المجلد)|تم تخطي {n} عنصر (ارتباط، أو اسم يؤدي إلى خارج المجلد)|تم تخطي {n} عنصرين (ارتباطان، أو اسمان يؤديان إلى خارج المجلد)|تم تخطي {n} عناصر (ارتباطات، أو أسماء تؤدي إلى خارج المجلد)|تم تخطي {n} عنصرا (ارتباطات، أو أسماء تؤدي إلى خارج المجلد)|تم تخطي {n} عنصر (ارتباطات، أو أسماء تؤدي إلى خارج المجلد)
+#, machine
+@plural	{n} entry was left out (a link, a name leading outside the folder, or a file in its way)|{n} entries were left out (links, names leading outside the folder, or files in their way)	تم تخطي {n} إدخال (ارتباط، أو اسم يؤدي إلى خارج المجلد، أو ملف في طريقه)|تم تخطي {n} إدخال (ارتباط، أو اسم يؤدي إلى خارج المجلد، أو ملف في طريقه)|تم تخطي {n} إدخالين (ارتباطان، أو اسمان يؤديان إلى خارج المجلد، أو ملفان في طريقهما)|تم تخطي {n} إدخالات (ارتباطات، أو أسماء تؤدي إلى خارج المجلد، أو ملفات في طريقها)|تم تخطي {n} إدخالا (ارتباطات، أو أسماء تؤدي إلى خارج المجلد، أو ملفات في طريقها)|تم تخطي {n} إدخال (ارتباطات، أو أسماء تؤدي إلى خارج المجلد، أو ملفات في طريقها)
 #. count in a dialog box
 #. the summary of downloads added together; after "12 downloads finished": {n} of them failed
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} failed|{n} failed	فشل {n} تنزيل|فشل {n} تنزيل|فشل {n} تنزيلان|فشلت {n} تنزيلات|فشل {n} تنزيلا|فشل {n} تنزيل
-#. count in the Batch download window; count in the Link grabber window; count in the Add torrent window; count in torrentfiles.rs
+#. count in the main window; count in the Batch download window; count in a dialog box; count in the Link grabber window; count in the Add torrent window; count in torrentfiles.rs; count in zippreview.rs
 #. how many files the pattern gives in all
 #. Link grabber: a package's row: {n} is its number of links
 #. {n} = a number (keep the braces as they are)
@@ -114,6 +119,10 @@
 #. in a download's log, after extracting
 #. {n} = a number (keep the braces as they are)
 @plural	{n} file had the name of a file there already and was numbered|{n} files had the name of a file there already and were numbered	كان لـ{n} ملف اسم ملف موجود بالفعل وتم ترقيمه|كان لـ{n} ملف اسم ملف موجود بالفعل وتم ترقيمه|كان لـ{n} ملفين اسم ملف موجود بالفعل وتم ترقيمهما|كان لـ{n} ملفات اسم ملف موجود بالفعل وتم ترقيمها|كان لـ{n} ملفا اسم ملف موجود بالفعل وتم ترقيمه|كان لـ{n} ملف اسم ملف موجود بالفعل وتم ترقيمه
+#. count in preview.rs
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} finished|{n} finished	{n} مكتمل|{n} مكتمل|{n} مكتملان|{n} مكتملة|{n} مكتملة|{n} مكتمل
 #. count in the main window's messages (deleting downloads' files)
 #. the message's next line: how many more deleted files stayed on the disk
 #. {n} = a number (keep the braces as they are)
@@ -143,15 +152,35 @@
 #. event log entry: trackers were added to the torrent
 #. {n} = a number (keep the braces as they are)
 @plural	{n} tracker added|{n} trackers added	{n} متتبع تمت إضافته|{n} متتبع تمت إضافته|{n} متتبعان تمت إضافتهما|{n} متتبعات تمت إضافتها|{n} متتبعا تمت إضافته|{n} متتبع تمت إضافته
+#. count in the main window
+#. event log entry: trackers from the public tracker list (Torrent settings) were added to a torrent
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} tracker added from the public list|{n} trackers added from the public list	{n} متتبع تمت إضافته من القائمة العامة|{n} متتبع تمت إضافته من القائمة العامة|{n} متتبعان تمت إضافتهما من القائمة العامة|{n} متتبعات تمت إضافتها من القائمة العامة|{n} متتبعا تمت إضافته من القائمة العامة|{n} متتبع تمت إضافته من القائمة العامة
 #. count in the Add torrent window
 #. where a magnet's peers came from: {n} = trackers asked; {peers} = "3 peers"
 #. {n} = a number (keep the braces as they are)
 @plural	{n} tracker: {peers}|{n} trackers: {peers}	{n} متتبع: {peers}|{n} متتبع: {peers}|{n} متتبعان: {peers}|{n} متتبعات: {peers}|{n} متتبعا: {peers}|{n} متتبع: {peers}
+#. count in the main window
+#. the tip of MDM's notification area (tray) icon: {n} windows of MDM (Download complete...) wait while a full-screen game, app or presentation is on, and show when the user is back
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} window waits until you're back|{n} windows wait until you're back	{n} نافذة تنتظر حتى تعود|{n} نافذة تنتظر حتى تعود|{n} نافذتان تنتظران حتى تعود|{n} نوافذ تنتظر حتى تعود|{n} نافذة تنتظر حتى تعود|{n} نافذة تنتظر حتى تعود
+#. count in the Link grabber window
+#. Link grabber's Source line: a Hugging Face repository's or GitHub release's ({package}: its name, "owner/name") files whose names would lead out of its folder (`../`, a drive, a device's name) are left out; {n} how many
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{package}: {n} file left out, its name would lead out of its folder|{package}: {n} files left out, their names would lead out of its folder	{package}: تم تخطي {n} ملف، اسمه سيؤدي إلى خارج مجلده|{package}: تم تخطي {n} ملف، اسمه سيؤدي إلى خارج مجلده|{package}: تم تخطي {n} ملفين، اسماهما سيؤديان إلى خارج مجلدهما|{package}: تم تخطي {n} ملفات، أسماؤها ستؤدي إلى خارج مجلدها|{package}: تم تخطي {n} ملفا، أسماؤها ستؤدي إلى خارج مجلدها|{package}: تم تخطي {n} ملف، أسماؤها ستؤدي إلى خارج مجلدها
 #. count in cnl.rs
 #. Click'n'Load window: {site} is a web site's name such as "example.com"
 #. {site} = a web site's name such as "example.com"; {n} = a number (keep the braces as they are)
 #, machine
 @plural	{site} wants to send {n} link to Link grabber.|{site} wants to send {n} links to Link grabber.	يريد {site} إرسال {n} رابط إلى ملتقط الروابط.|يريد {site} إرسال {n} رابط إلى ملتقط الروابط.|يريد {site} إرسال {n} رابطين إلى ملتقط الروابط.|يريد {site} إرسال {n} روابط إلى ملتقط الروابط.|يريد {site} إرسال {n} رابطا إلى ملتقط الروابط.|يريد {site} إرسال {n} رابط إلى ملتقط الروابط.
+#. count in preview.rs
+#. the preview pane, several downloads selected: their total size, then how many of them have no known size yet; {size} e.g. "4.20 GB"
+#. {size} = a file size such as "4.2 MB"; {n} = a number (keep the braces as they are)
+#, machine
+@plural	{size} and {n} of unknown size|{size} and {n} of unknown size	{size} و{n} بحجم غير معروف|{size} و{n} بحجم غير معروف|{size} و{n} بحجمين غير معروفين|{size} و{n} بأحجام غير معروفة|{size} و{n} بحجم غير معروف|{size} و{n} بحجم غير معروف
 #. count in playlistdlg.rs
 #. in Download video: a playlist title then how many videos it has ({count})
 #. {count} = a number (keep the braces as they are)
@@ -159,6 +188,10 @@
 #. count in playlistdlg.rs
 #. in Download video: a playlist title, then how many of its videos are listed so far ({listed}) of how many ({total})
 @plural	{title}: {listed} of {total} video listed|{title}: {listed} of {total} videos listed	{title}: {listed} من {total} فيديو مدرج|{title}: {listed} من {total} فيديو مدرج|{title}: {listed} من {total} فيديوهان مدرجان|{title}: {listed} من {total} فيديوهات مدرجة|{title}: {listed} من {total} فيديو مدرج|{title}: {listed} من {total} فيديو مدرج
+#. text in the Options window
+#. tooltip of "Don't show pop-ups while a full-screen app or presentation is running"
+#, machine
+	"Download complete" and the other windows MDM opens by itself wait while a full-screen game, app or video, a presentation or the locked screen is on, and show when you're back. The windows you open yourself, and links from your browser, always show	تنتظر نافذة «اكتمل التنزيل» والنوافذ الأخرى التي يفتحها MDM تلقائيا أثناء تشغيل لعبة أو تطبيق أو فيديو بملء الشاشة، أو عرض تقديمي، أو شاشة القفل، وتظهر عند عودتك. تظهر النوافذ التي تفتحها بنفسك، والروابط من مستعرضك، دائما
 #. text in the settings
 #. Options → DNS: a server address typed isn't an IP address; {what} is what was typed
 	"{what}" isn't an IP address.	"{what}" ليس عنوان IP صالحا.
@@ -248,6 +281,10 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	A magnet link's files could not be looked up: {error}	تعذر البحث عن ملفات الرابط المغناطيسي: {error}
+#. message or event log entry in the main window
+#. event log, at start: MDM was closed while this download was being moved to another folder; {folder} is where its file is now
+#, machine
+	A move was cut short when MDM closed: the download is in {folder}	توقف النقل عند إغلاق MDM: التنزيل موجود في {folder}
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 	A NextDNS configuration ID is six letters and digits (0-9, a-f).	معرف ضبط NextDNS هو ستة أحرف وأرقام (0-9، a-f).
@@ -259,6 +296,9 @@
 #. why Part is greyed in Download video: the page is a playlist, whose videos are downloaded whole
 #, machine
 	A playlist's videos are downloaded whole	يتم تنزيل مقاطع فيديو قائمة التشغيل بالكامل
+#. message or event log entry in the main window
+#, machine
+	A private torrent: the public tracker list isn't added	تورنت خاص: لم تضف قائمة المتتبعات العامة
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites: the tooltip of the profile box
 	A profile's name or its folder. Empty: the profile used last. For a browser built on Chromium that isn't listed (Helium, Thorium...), choose Chromium and its profile's folder.	اسم ملف تعريف أو مجلده. اتركه فارغا لاستخدام آخر ملف تعريف. إذا كان المستعرض مبنيا على Chromium وغير مدرج (Helium، Thorium...)، فاختر Chromium ثم مجلد ملف التعريف الخاص به.
@@ -278,6 +318,10 @@
 #. tooltip on the disabled Rename box for a single-file torrent
 #, machine
 	A single-file torrent keeps its name	يحتفظ التورنت ذو الملف الواحد باسمه
+#. text in the download list (sizes, speeds, status)
+#. why a torrent that isn't finished can't be moved or renamed: the torrent engine writes its pieces into the files where they are
+#, machine
+	A torrent can be moved once it's finished: until then the torrent engine writes its pieces where they are	يمكن نقل التورنت بمجرد اكتماله: حتى ذلك الحين، يكتب محرك التورنت قطعه في مكانها
 #. text in torrent_ownership.rs
 #. a torrent's folder is a link or junction leading outside its destination
 #, machine
@@ -285,6 +329,10 @@
 #. text in the Add torrent window
 #. Add trackers: MDM never contacts a tracker on this computer or the local network
 	A tracker on this computer or the local network is never contacted: {line}	لا يتصل MDM أبدا بمتتبع على هذا الكمبيوتر أو الشبكة المحلية: {line}
+#. text in the download list (sizes, speeds, status)
+#. why a video or an image gallery that isn't finished can't be moved or renamed: yt-dlp, ffmpeg or gallery-dl keep their unfinished files in its folder
+#, machine
+	A video or a gallery can be moved once it's finished: until then its helper programs keep their unfinished files in its folder	يمكن نقل الفيديو أو المعرض بمجرد اكتماله: حتى ذلك الحين، تحتفظ برامجه المساعدة بملفاته غير المكتملة في مجلدها
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 	a volume of it is missing	أحد مجلداته مفقود
@@ -366,6 +414,10 @@
 	Add the extension to Safari	إضافة الملحق إلى Safari
 #. text in extension.rs
 	Add the free extension: files you download in your browser come here, and videos get a Download button.	أضف الملحق المجاني: الملفات التي تجلبها في مستعرضك تأتي إلى هنا، وتحصل مقاطع الفيديو على زر تنزيل.
+#. text in the Add torrent window
+#. Torrent settings: add the trackers of a public tracker list (its address in the box below) to torrents that aren't private, so they find more peers
+#, machine
+	Add the trackers of this public list to public torrents:	أضف متتبعات هذه القائمة العامة إلى التورنتات العامة:
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: add the torrents to the list without starting them
 	Add them without starting them	إضافتها دون بدء تشغيلها
@@ -400,6 +452,10 @@
 #. remote control page (on a phone): a magnet link or .torrent file was added; MDM reads the torrent's files first
 #, machine
 	Added. MDM is reading the torrent: it joins the list in a moment.	تمت الإضافة. يقرأ MDM التورنت: سينضم إلى القائمة بعد لحظة.
+#. text in preview.rs
+#. label in the preview pane: when the download was added to the list
+#, machine
+	Added:	أضيف في:
 #. text in the Batch download window; text in a dialog box; label in the Options window; text in a download's progress window
 #. noun: the web address (URL)
 #. column title: the web address (URL)
@@ -411,7 +467,11 @@
 #. remote control page (on a phone): label of the box where a download's address or a magnet link is typed
 #, machine
 	Address or magnet link	عنوان أو رابط مغناطيسي
-#. text in the Options window; text in a download's Properties window
+#. message or event log entry in the main window
+#. Link grabber: where the links came from: the Add URL window (an address typed or pasted there)
+#, machine
+	Address typed	عنوان مكتوب
+#. text in the Options window; text in preview.rs; text in a download's Properties window
 #. Options → DNS over HTTPS: label before the server's https:// address
 	Address:	العنوان:
 #. text in whereis.rs
@@ -486,6 +546,10 @@
 #. Link grabber, a link's status: the remedy from the failure's sentence, for a site whose bot check lets only browsers through. The sentence, with the same advice, is the cell's hover tip
 #, machine
 	Alt+click the link	انقر على الرابط مع الضغط على Alt
+#. text in requestedit.rs
+#. Site rule: check box; on, MDM connects the way a browser does from the first request to these sites, instead of only after a site turned it away ("this site lets only browsers through")
+#, machine
+	Always connect the way a browser does	الاتصال دائما كما يفعل المستعرض
 #. message or event log entry in the main window
 #. View menu: a check item; dark mode on, whatever the system's setting
 	Always dark	داكن دائما
@@ -503,6 +567,10 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Andorra	أندورا
+#. text in a dialog box
+#. why the phone could not be turned off after the queue (fills {error}, Android)
+#, machine
+	Android doesn't let apps turn the phone off	لا يسمح Android للتطبيقات بإيقاف تشغيل الهاتف
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Angola	أنغولا
@@ -524,6 +592,10 @@
 #. text in unix.rs
 #. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer's one wake alarm is already set by something else
 	Another program has set the computer's wake alarm	ضبط برنامج آخر منبه إيقاظ الكمبيوتر
+#. text in the Options window
+#. Site rule: OK with a site another rule already has
+#, machine
+	Another rule is for this site already: change that one	توجد قاعدة أخرى لهذا الموقع بالفعل: غير تلك القاعدة
 #. text in the Options window
 #. Options → Proxy / Socks: Test's answer; {ms} milliseconds; {ip} the internet address the site saw (the proxy's, or this computer's without one)
 #, machine
@@ -580,6 +652,10 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Aruba	أروبا
+#. text in requestedit.rs
+#. a download's Connection settings → Proxy: the proxy set in Options → Proxy / Socks
+#, machine
+	As in Options	كما في الخيارات
 #. option (radio button) in the Options window
 	As the system's region writes them	كما يكتبها إعداد المنطقة للنظام
 #. text in the Options window
@@ -614,6 +690,7 @@
 #. a country's name (where a download's server is)
 	Austria	النمسا
 #. checkbox in the Options window; text in the Options window
+#. Options → Download panels → Button size: the round button in a feed and over a small video, the button with its words over a big one (the default)
 #. checkbox: the User-Agent is the default browser's, which MDM finds itself
 #, machine
 	Automatic	تلقائي
@@ -702,6 +779,10 @@
 #. button in categories.rs; button in the Options window
 #. the trailing ... means it opens a window: keep it
 	Browse...	استعراض...
+#. text in the Options window
+#. Site rules: column title: "Yes" when the rule asks the way a browser connects from the first request
+#, machine
+	Browser	المستعرض
 #. text in extension.rs
 	Browser integration isn't set up on this computer, so no browser can reach Mister Download Manager yet.	لم يتم إعداد الربط بالمستعرض على هذا الكمبيوتر، لذلك لا يمكن لأي مستعرض الوصول إلى Mister Download Manager بعد.
 #. page title in the Options window
@@ -722,7 +803,7 @@
 #. Link grabber, a link's status: the server asked to try later (429, 503)
 	Busy, try later	مشغول، حاول لاحقا
 #. text in the Options window
-#. Options → Download panels: the size of the download button over videos, chosen after it (Full / Compact)
+#. Options → Download panels: the size of the download button over videos, chosen under it (Automatic / Full / Compact)
 #, machine
 	Button size:	حجم الزر:
 #. message or event log entry in the main window
@@ -745,7 +826,7 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Canada	كندا
-#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in extracting archives (a download's log, the Archive password window); button in the Find window; button in gallerydlg.rs; text in the Link grabber window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; text in remote.rs; button in the Scheduler window; button in the Add torrent window; button in traypanel.rs; button in the Download video window
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in extracting archives (a download's log, the Archive password window); button in the Find window; button in gallerydlg.rs; text in the Link grabber window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; text in remote.rs; button in the Scheduler window; button in the Add torrent window; button in traypanel.rs; button in the Download video window; text in zippreview.rs
 #. button: stop downloading the update
 	Cancel	إلغاء
 #. text in errors.rs
@@ -876,17 +957,27 @@
 #. remote control page (on a phone): what the ".torrent file" button does (screen readers)
 #, machine
 	Choose a .torrent file	اختر ملف .torrent
+#. message or event log entry in the main window
+#. title of the file dialog of View → Font → Choose a font file
+#. title of the message when the font picked in View → Font can't be used
+#, machine
+	Choose a font file	اختر ملف الخط
 #. text in helpers.rs
+#. file picker title: choose a JavaScript runtime's program (node.exe, deno.exe, qjs.exe, bun.exe)
 #, machine
 	Choose a JavaScript runtime (Node.js, Deno, QuickJS or Bun)	اختيار وقت تشغيل JavaScript (Node.js أو Deno أو QuickJS أو Bun)
 #. text in langpick.rs
 	Choose a language	اختيار لغة
+#. text in a dialog box
+#. the Columns dialog: what it is for, above its list of the download list's columns
+	Choose columns to show	اختر الأعمدة المعروضة
 #. text in langpick.rs
 	Choose the language Mister Download Manager shows its windows in:	اختر اللغة التي يعرض بها برنامج Mister Download Manager نوافذه:
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites: the title of the window, and the tooltip of the button, that pick a browser profile's folder
 	Choose the profile's folder	اختر مجلد ملف التعريف
 #. text in helpers.rs; text in the Options window
+#. file picker title; {name} = yt-dlp or ffmpeg
 #. file picker title; {name} = the program to choose (yt-dlp, ffmpeg, 7-Zip)
 #. {name} = a file name (keep the braces as they are)
 	Choose {name}	اختيار {name}
@@ -938,10 +1029,13 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Colombia	كولومبيا
+#. window title in a dialog box; text in a dialog box
+#. what a screen reader calls the Columns dialog's list of the download list's columns
+	Columns	الأعمدة
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Comoros	جزر القمر
-#. option (radio button) in the Options window
+#. text in the Options window
 #. Options → Download panels → Button size: only the round button (the logo, the arrow, the close mark) over every video
 #, machine
 	Compact	مدمج
@@ -981,6 +1075,23 @@
 #. text in the Options window
 #. tab title: connection settings
 	Connection	الاتصال
+#. text in a download's Properties window
+#. window title: a download's own request settings (User-Agent, headers, connections, proxy), from File Properties → Connection...
+#, machine
+	Connection settings	إعدادات الاتصال
+#. message or event log entry in the main window
+#. event log: File Properties → Connection settings changed the download's own User-Agent, headers, proxy or connections
+#, machine
+	Connection settings changed	تغيرت إعدادات الاتصال
+#. text in a download's Properties window
+#. File Properties button: opens the download's own request settings (User-Agent, headers, connections, proxy)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Connection...	الاتصال...
+#. text in the Options window
+#. Site rules: column title: the number of connections (empty: the default)
+#, machine
+	Connections	الاتصالات
 #. page title in the Options window
 	Connections and Limits	الاتصالات والحدود
 #. text in the Options window
@@ -1191,6 +1302,10 @@
 #. button in extension.rs
 #. button in the browser extension's window: stop offering it at each start
 	Don't ask again	لا تسأل مرة أخرى
+#. text in the Options window
+#. checkbox, Options → Downloads: Download complete and MDM's other windows that open by themselves wait while a full-screen game, app or video, a presentation or the locked screen is on, and show when the user is back
+#, machine
+	Don't show pop-ups while a full-screen app or presentation is running	عدم إظهار النوافذ المنبثقة أثناء تشغيل تطبيق أو عرض تقديمي بملء الشاشة
 #. checkbox in a dialog box
 	Don't show this dialog again	عدم إظهار مربع الحوار هذا مرة أخرى
 #. text in the Options window
@@ -1314,6 +1429,10 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Downloading MDM's own copy...	قيد تنزيل نسخة MDM الخاصة...
+#. text in helpers.rs
+#. Helpers: MDM's own copy of a helper is being downloaded (where there was none, or in place of the system's); {percent} = how far, a number
+#, machine
+	Downloading MDM's own copy... {percent}%	قيد تنزيل نسخة MDM الخاصة... {percent}%
 #. text in archtest.rs
 #. in a download's log: after its archive test found damaged files, only their bytes are downloaded again from the same server; {size} like "1.20 MB"
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
@@ -1345,6 +1464,10 @@
 #. the notice shown once, the first time a download comes from a browser's private (incognito) window: it stays in MDM's list like any other, after a restart too; where to turn that off. {options} = the Options window, {general} = its General tab, {checkbox} = the checkbox "Keep private-window downloads in the list"
 #, machine
 	Downloads from a browser's private window stay in MDM's list like any other, also after MDM restarts; their cookies are never saved. To keep them in memory only, untick {options} → {general} → {checkbox}.	تبقى التنزيلات من نافذة خاصة في المستعرض في قائمة MDM كأي تنزيل آخر، حتى بعد إعادة تشغيل MDM؛ ولا تحفظ ملفات تعريف الارتباط الخاصة بها أبدا. للاحتفاظ بها في الذاكرة فقط، ألغ تحديد {options} ← {general} ← {checkbox}.
+#. text in the Options window
+#. Site rules window: how the rules apply; *.example.com stays as it is
+#, machine
+	Downloads from these sites get these settings. Each one comes from the first rule in the list that names the site and sets it; * stands for any text: *.example.com	تطبق هذه الإعدادات على التنزيلات من هذه المواقع. يأتي كل إعداد من أول قاعدة في القائمة تحدد الموقع وتضبطه؛ * تعني أي نص: *.example.com
 #. text in the tray icon's menu; text in traypanel.rs
 #. tray menu: a submenu of the downloads now running; choosing one shows its progress window
 #. the notification-area icon's panel (#1365): its title, over the downloads now running (also the tray menu's submenu)
@@ -1402,6 +1525,10 @@
 	Edit list ...	تحرير قائمة...
 #. text in the Options window
 	Edit login	تحرير تسجيل الدخول
+#. text in the Options window
+#. window title: changing one site rule
+#, machine
+	Edit site rule	تعديل قاعدة الموقع
 #. button in the Options window
 #. verb: edit the item
 #. the trailing ... means it opens a window: keep it
@@ -1414,13 +1541,17 @@
 	El Salvador	السلفادور
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 	Email	بريد إلكتروني
-#. text in the Download video window
+#. checkbox in the Download video window; text in the Download video window
 #. checkbox in Download video: the chapters a video's page lists (YouTube's, for one) go into the video file, where players show them and skip between them
 #, machine
 	Embed chapters	تضمين الفصول
 #. text in gallerydlg.rs
 #. in Download a gallery, after the "Files at most" box
 	Empty: all of them. On most sites the newest come first.	فارغ: جميعها. في معظم المواقع، الأحدث يأتي أولا.
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: the hint under the User-Agent box
+#, machine
+	Empty: the browser's, or the one set in Options	فارغ: مستعرضك، أو الذي تم تعيينه في الخيارات
 #. text in crashui.rs
 #. crash report window button: end the frozen MDM and start it again
 	End and restart MDM	إنهاء MDM وإعادة تشغيله
@@ -1481,6 +1612,10 @@
 #. choice in Download video's Part: the part is encoded again so it starts and ends exactly at From and To (slower)
 #, machine
 	Exact cut, encoded again	قص دقيق، معاد ترميزه
+#. text in the Options window
+#. Site rule: the hint under the site box; the examples stay as they are
+#, machine
+	example.com, or *.example.com for its subdomains	example.com، أو *.example.com لنطاقاته الفرعية
 #. text in the Options window
 #. label before an example date and time written the chosen way
 	Example:	مثال:
@@ -1563,8 +1698,12 @@
 #. RSS feeds window, Download rules: the feeds the rule watches
 	Feeds:	الموجزات:
 #. text in the Add torrent window
-#. Torrent settings, at the bottom
+#. Torrent settings, under the blocklist's address
 	Fetched again every 7 days. Changes apply when no torrent is running.	يتم جلبها مرة أخرى كل 7 أيام. تسري التغييرات عندما لا يكون هناك أي تورنت قيد التشغيل.
+#. text in the Add torrent window
+#. Torrent settings, under the public tracker list's address
+#, machine
+	Fetched once a day. Never added to private torrents.	يجلب مرة واحدة يوميا. لا يضاف أبدا إلى التورنتات الخاصة.
 #. text in helpers.rs
 #. helper name and what it does (ffmpeg is a program's name)
 	ffmpeg: joins picture and sound	ffmpeg: يجمع بين الصورة والصوت
@@ -1582,7 +1721,8 @@
 #. tooltip of "Mark downloaded files as coming from the internet" on Linux
 #, machine
 	File managers show where the files marked this way came from. Unticked, no download is marked.	تعرض مديرات الملفات مصدر الملفات التي تم وضع علامة عليها بهذه الطريقة. إذا لم يتم تحديدها، فلن يتم وضع علامة على أي تنزيل.
-#. text in the Scheduler window
+#. text in a download's progress window; text in the Scheduler window
+#. Zip preview's column: the file's name (its path inside the ZIP)
 	File Name	اسم الملف
 #. text in the Download video window
 	File name	اسم الملف
@@ -1597,6 +1737,10 @@
 	File types	أنواع الملفات
 #. text in categories.rs
 	File types:	أنواع الملفات:
+#. text in preview.rs
+#. label in the preview pane: whether the downloaded file is still where it was saved
+#, machine
+	File:	الملف:
 #. text in a download's progress window; text in the Add torrent window
 #. tab title: the torrent's files
 	Files	الملفات
@@ -1610,6 +1754,10 @@
 	Files go to: {folder}	وجهة الملفات: {folder}
 #. text in the Scheduler window; tab in the Scheduler window
 	Files in the queue	الملفات في قائمة الانتظار
+#. text in the download list (sizes, speeds, status)
+#. why files being taken out of a ZIP on its server (#1775) can't be moved or renamed yet: those already out are in its folder, the others still to come there
+#, machine
+	Files taken out of a ZIP can be moved once they're all out	يمكن نقل الملفات المستخرجة من ZIP بمجرد استخراجها كلها
 #. button in a download's Properties window
 #. File Properties button that opens the selected torrent's file list
 #. the trailing ... means it opens a window: keep it
@@ -1643,6 +1791,10 @@
 #. adjective: the downloads that are complete
 #. remote control page (on a phone): tab: downloads finished
 	Finished	مكتمل
+#. text in preview.rs
+#. label in the preview pane: when the download finished
+#, machine
+	Finished:	اكتمل في:
 #. text in a download's progress window
 #. a download's status: every byte is in, the file is being written out and given its name
 #. the trailing ... means it is still going on: keep it
@@ -1660,6 +1812,14 @@
 	FLAC keeps the sound exactly, but it can't add quality the site's sound doesn't have: the file is only bigger.	يحتفظ FLAC بالصوت تماما، ولكنه لا يمكنه إضافة جودة لا يمتلكها صوت الموقع: الملف أكبر فقط.
 #. text in categories.rs
 	Folder:	المجلد:
+#. text in the Options window
+#. Options → Archives → Link grabber, one line with two boxes: an FTP folder or a web server's folder listing ("Index of") given to Link grabber is read with its subfolders: {depth} is a number box (how many levels of subfolders, 3 at first; 0 is the folder's own files only), {types} a text box (file types such as ISO ZIP; empty for every type)
+#, machine
+	Folders: {depth} levels deep, types: {types}	المجلدات: حتى عمق {depth} مستوى، الأنواع: {types}
+#. message or event log entry in the main window
+#. the kind of file View → Font → Choose a font file lists: TrueType and OpenType font files
+#, machine
+	Font files	ملفات الخطوط
 #. text in finish.rs
 #. Snooze menu of the Download complete window: show no Download complete window for this long
 #, machine
@@ -1760,7 +1920,7 @@
 #, machine
 	FTP downloads don't go through an HTTP proxy. Choose SOCKS5 or SOCKS4 to send them through the proxy.	لا تمر تنزيلات FTP عبر وكيل HTTP. اختر SOCKS5 أو SOCKS4 لإرسالها عبر الوكيل.
 #. text in the Options window
-#. Options → Download panels → Button size: the button with its words ("Download video", the quality) where they fit (the default)
+#. Options → Download panels → Button size: the button with its words ("Download video", the quality) wherever they fit
 #, machine
 	Full	كامل
 #. text in countries.rs
@@ -1816,6 +1976,11 @@
 #. {version} = a version number (keep the braces as they are)
 #, machine
 	Go back to {version}	الرجوع إلى الإصدار {version}
+#. text in helpers.rs
+#. Helpers: the "Go back" button's name for a screen reader; {version} = the earlier version, {name} = the helper (yt-dlp, ffmpeg, gallery-dl, Node.js)
+#. {version} = a version number; {name} = a file name (keep the braces as they are)
+#, machine
+	Go back to {version} of {name}	العودة إلى الإصدار {version} من {name}
 #. text in a download's progress window
 #. a torrent's sharing, when Torrent settings keep it on
 	Goes on after the download finishes	يستمر بعد انتهاء التنزيل
@@ -1864,6 +2029,10 @@
 #. text in a download's progress window
 #. legend: pieces downloaded
 	Have	المتوفر
+#. text in the Options window
+#. Site rules: column title: how many request headers the rule adds
+#, machine
+	Headers	الرؤوس
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Heard Island and McDonald Islands	جزيرة هيرد وجزر ماكدونالد
@@ -1883,6 +2052,15 @@
 #. message or event log entry in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 	Hide &categories	إخفاء الفئات(&C)
+#. message or event log entry in the main window
+#. View menu: hides the pane beside the download list that shows the selected download's picture and details
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	Hide &preview pane	إخفاء جزء الم&عاينة
+#. text in the Link grabber window
+#. Link grabber check box, ticked when it opens: the pictures shown on the browser's page (its images, not links to pictures), which "Download all links" sends with the links, are not shown
+#, machine
+	Hide images located on this web page	إخفاء الصور الموجودة في صفحة الويب هذه
 #. button in a download's progress window
 	Hide tab	إخفاء علامة التبويب
 #. text in a download's progress window; text in standard windows
@@ -1986,16 +2164,16 @@
 #. text in extracting archives (a download's log, the Archive password window)
 #. in the "7-Zip needed" window, under why
 	Install 7-Zip (free), then right-click the download and choose Extract.	ثبت 7-Zip (مجاني)، ثم انقر بزر الماوس الأيمن فوق التنزيل واختر استخراج.
-#. text in the Download video window
+#. text in helpers.rs; text in the Download video window
 #. button: download and install the ffmpeg program
 	Install ffmpeg	تثبيت ffmpeg
-#. button in gallerydlg.rs
+#. button in gallerydlg.rs; text in helpers.rs
 #. button: download and install the gallery-dl program
 	Install gallery-dl	تثبيت gallery-dl
 #. link (opens a web page) in extension.rs
 #. link in the browser extension's window: the tutorial that adds it without the browser's store
 	Install it by hand	تثبيته يدويا
-#. text in the Download video window
+#. text in helpers.rs; text in the Download video window
 #. button in Download video: download and install Node.js, the JavaScript runtime YouTube needs (Node.js is a program's name)
 #, machine
 	Install Node.js	تثبيت Node.js
@@ -2007,7 +2185,7 @@
 #. in the "7-Zip needed" window, under why (Linux: 7-Zip comes from the distribution's packages, named 7zip or p7zip)
 #, machine
 	Install your system's 7zip (or p7zip) package, then right-click the download and choose Extract.	ثبت حزمة 7zip (أو p7zip) الخاصة بنظامك، ثم انقر بزر الماوس الأيمن على التنزيل واختر استخراج.
-#. text in the Download video window
+#. text in helpers.rs; text in the Download video window
 #. button: download and install the yt-dlp program
 	Install yt-dlp	تثبيت yt-dlp
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
@@ -2082,6 +2260,14 @@
 #. text in errors.rs
 #. {error} = an error message (keep the braces as they are)
 	its files could not be written: {error}	تعذر كتابة ملفاته: {error}
+#. text in preview.rs
+#. the preview pane: neither the file nor its folder can be found now (an unplugged drive, a network folder away)
+#, machine
+	Its folder can't be reached now	لا يمكن الوصول إلى مجلده الآن
+#. text in relocate.rs
+#. why an unfinished download could not be moved (after "The file could not be moved: "): its folder isn't there now (a drive taken out); {folder} is that folder
+#, machine
+	its folder {folder} can't be reached	يتعذر الوصول إلى مجلده {folder}
 #. text in the download list (sizes, speeds, status)
 #. why a video download failed: ffmpeg couldn't join its picture and sound into one file; {error} = ffmpeg's reason, in English
 #. {error} = an error message (keep the braces as they are)
@@ -2229,6 +2415,23 @@
 #. text in the Add torrent window
 #. Torrent settings: an upload speed limit for all torrents together, followed by a box with the speed and "KBytes/sec"
 	Limit uploading for all torrents to	تحديد الرفع لجميع التورنتات إلى
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: a header's name has a space or another character names can't have; {line} is the line's number
+#, machine
+	Line {line}: a header's name has letters, digits and dashes only	السطر {line}: اسم الرأس يتكون من أحرف وأرقام وواصلات فقط
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: a header MDM sets itself for each request (Range, Host…) can't be typed; {line} is the line's number, {name} the header's name
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Line {line}: Mister Download Manager sets {name} itself	السطر {line}: يحدد Mister Download Manager {name} بنفسه
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: a header's value (or the User-Agent) holds a control character; {line} is the line's number
+#, machine
+	Line {line}: the value has a character a header can't hold	السطر {line}: تحتوي القيمة على حرف لا يمكن للرأس الاحتفاظ به
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: a line of request headers isn't "Name: value"; {line} is its number
+#, machine
+	Line {line}: write a header as Name: value	السطر {line}: اكتب الرأس كـ الاسم: القيمة
 #. message or event log entry in the main window; window title in the Link grabber window; group box title in the Options window
 #. Options → Archives: group box title
 	Link grabber	ملتقط الروابط
@@ -2239,6 +2442,10 @@
 #. in Import, where the addresses came from: a page in the browser
 #. in Link grabber, where the addresses came from: a page in the browser
 	Links from the browser	روابط من المستعرض
+#. text in a dialog box
+#. tooltip of Download File Info's Preview button for a ZIP (#1775): it lists the files inside, to download only some of them
+#, machine
+	List the files inside the ZIP and pick those to download	عرض الملفات داخل ZIP واختيار ما سيتم تنزيله
 #. text in playlistdlg.rs
 #. button in Download video: go on listing a playlist from where it stopped
 	List the rest	عرض البقية
@@ -2302,9 +2509,19 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Looking for your default browser...	قيد البحث عن مستعرضك الافتراضي...
+#. text in a dialog box
+#. tooltip of Download File Info's greyed Preview button while MDM asks the server whether it can look inside the ZIP (#1775)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Looking inside the ZIP...	قيد البحث داخل ZIP...
 #. text in the Download video window
 #. the trailing ... means it is still going on: keep it
 	Looking the page up...	قيد البحث عن الصفحة...
+#. text in preview.rs
+#. the preview pane: still looking whether the file is there
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Looking...	قيد البحث...
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Luxembourg	لوكسمبورغ
@@ -2445,6 +2662,27 @@
 #. remote control page (on a phone): no pairing code is shown in MDM; "Pair a device" is MDM's button
 #, machine
 	MDM shows no code now. Click Pair a device there first.	لا يعرض MDM أي رمز الآن. انقر فوق إقران جهاز هناك أولا.
+#. text in errors.rs
+#. error installing ffmpeg: the list of builds MDM accepts couldn't be read; {detail} = the technical detail, in English
+#, machine
+	MDM's list of checked ffmpeg builds can't be read ({detail})	تعذر قراءة قائمة MDM لإصدارات ffmpeg التي تم التحقق منها ({detail})
+#. text in errors.rs
+#. error installing ffmpeg: MDM installs only builds named in a list it publishes, signed with its key, and that list couldn't be downloaded; {error} = why
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	MDM's list of checked ffmpeg builds could not be downloaded: {error}	تعذر تنزيل قائمة MDM لإصدارات ffmpeg التي تم التحقق منها: {error}
+#. text in errors.rs
+#. error installing ffmpeg: the list of builds MDM accepts has none for this computer's system and processor
+#, machine
+	MDM's list of checked ffmpeg builds has none for this computer	لا تحتوي قائمة MDM لإصدارات ffmpeg التي تم التحقق منها على أي إصدار لهذا الكمبيوتر
+#. text in errors.rs
+#. error installing ffmpeg: the list of builds MDM accepts is older than one this copy of MDM already used (it never goes back to an older list)
+#, machine
+	MDM's list of checked ffmpeg builds is older than one already used, so ffmpeg wasn't installed	قائمة MDM لإصدارات ffmpeg التي تم التحقق منها أقدم من قائمة مستخدمة بالفعل، لذلك لم يتم تثبيت ffmpeg
+#. text in errors.rs
+#. error installing ffmpeg: the list of builds MDM accepts doesn't carry MDM's own signature
+#, machine
+	MDM's list of checked ffmpeg builds isn't signed by MDM's key, so ffmpeg wasn't installed	قائمة MDM لإصدارات ffmpeg التي تم التحقق منها غير موقعة بمفتاح MDM، لذلك لم يتم تثبيت ffmpeg
 #. text in whereis.rs
 #. how far a download's server is, by its round trip (60 to 150 ms)
 	medium	متوسط
@@ -2526,6 +2764,10 @@
 #. text in the Scheduler window
 #. Monday, as short as a calendar's column head (two letters in English)
 	Mo	الاثنين
+#. text in a download's progress window
+#. Zip preview's column: when the file was last changed, as the ZIP says
+#, machine
+	Modified	تاريخ التعديل
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Moldova	مولدوفا
@@ -2569,7 +2811,8 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move between the toolbar, the categories and the download list	التنقل بين شريط الأدوات والفئات وقائمة التنزيلات
-#. text in the Scheduler window
+#. text in a dialog box; text in the Scheduler window
+#. button in the Columns dialog: move the selected column one place towards the end of the list
 	Move down	نقل لأسفل
 #. text in a dialog box
 #. choice in Delete category: what happens to the category's downloads
@@ -2580,15 +2823,34 @@
 	Move to folder	نقل إلى مجلد
 #. message or event log entry in the main window
 	Move to queue	نقل إلى قائمة الانتظار
-#. text in the Scheduler window
+#. text in a dialog box; text in the Scheduler window
+#. button in the Columns dialog: move the selected column one place towards the start of the list
+#. tooltip of an icon button in the Scheduler's list of files
 	Move up	نقل لأعلى
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 	Move without changing the selection	نقل دون تغيير التحديد
 #. message or event log entry in the main window
 	Move/Rename	نقل/إعادة تسمية
+#. text in preview.rs
+#. the preview pane: a finished download's file is no longer where it was saved
+#, machine
+	Moved or deleted	نقل أو حذف
+#. message or event log entry in the main window
+#. event log: an unfinished download's part file was moved to another folder; it resumes there; {folder} is that folder
+#, machine
+	Moved to {folder}	نقل إلى {folder}
 #. message or event log entry in the main window
 #. the trailing ... means it is still going on: keep it
 	Moving the file...	نقل الملف...
+#. message or event log entry in the main window
+#. event log: an unfinished download's part file is being moved to another folder; {folder} is that folder
+#, machine
+	Moving to {folder}	قيد النقل إلى {folder}
+#. text in the download list (sizes, speeds, status)
+#. a download's status: its unfinished file is being moved to another folder
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Moving...	قيد النقل...
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Mozambique	موزمبيق
@@ -2665,6 +2927,10 @@
 #, machine
 	New code	رمز جديد
 #. text in the Options window
+#. tooltip of Options → Save to → "Save every download in "General" category's folder"
+#, machine
+	New downloads of every category go to this one folder; their categories still sort the list. A download's folder can still be changed in the window that starts it, and the downloads already in the list stay where they are.	تذهب التنزيلات الجديدة من كل فئة إلى هذا المجلد؛ ولا تزال فئاتها تفرز القائمة. لا يزال من الممكن تغيير مجلد التنزيل في النافذة التي تبدأه، وتبقى التنزيلات الموجودة بالفعل في القائمة في مكانها.
+#. text in the Options window
 	New exception	استثناء جديد
 #. text in the Options window
 	New login	تسجيل دخول جديد
@@ -2672,6 +2938,10 @@
 #. RSS feeds window: the name a new download rule starts with
 #. RSS feeds window, Download rules: make a new rule
 	New rule	قاعدة جديدة
+#. text in the Options window
+#. window title: adding a site rule
+#, machine
+	New site rule	قاعدة موقع جديدة
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	New Zealand	نيوزيلندا
@@ -2714,6 +2984,10 @@
 #. message or event log entry in the main window
 #, machine
 	No download links were found in the clipboard. Copy a text with http, https, ftp or magnet links in it, and try again.	لم يتم العثور على روابط تنزيل في الحافظة. انسخ نصا يحتوي على روابط http أو https أو ftp أو روابط مغناطيسية، ثم حاول مرة أخرى.
+#. text in preview.rs
+#. the preview pane (beside the download list) when no download is selected: its title
+#, machine
+	No download selected	لم يتم تحديد أي تنزيل
 #. text in traypanel.rs
 #. the notification-area icon's panel (#1365) when no download is running
 #, machine
@@ -2759,6 +3033,10 @@
 #. text in the Add torrent window
 #. a magnet link's lookup, after 30 seconds without a peer
 	No peers yet. Few people may share this torrent, or a firewall, a VPN or the network may be blocking BitTorrent.	لا يوجد قرناء بعد. قد يشارك عدد قليل من الأشخاص هذا التورنت، أو قد يمنع جدار حماية أو VPN أو الشبكة BitTorrent.
+#. text in requestedit.rs
+#. a download's Connection settings → Proxy: straight to the server, no proxy
+#, machine
+	No proxy	لا يوجد وكيل
 #. text in the Options window
 	No proxy/socks	لا يوجد وكيل/SOCKS
 #. text in the Options window
@@ -2821,10 +3099,18 @@
 #. text in rssdlg.rs
 #. RSS feeds window: the selected feed hasn't been fetched yet
 	Not fetched yet	لم يتم جلبها بعد
+#. text in the Link grabber window
+#. Link grabber, a link's status: a Hugging Face repository or folder, or a GitHub release or tag, that isn't there. The sentence is the cell's hover tip
+#, machine
+	Not found	غير موجود
 #. value in a column's filter list in the download list
 	Not in a queue	ليس في قائمة انتظار
 #. text in helpers.rs
 	Not installed yet	لم يتم التثبيت بعد
+#. text in preview.rs
+#. the preview pane: the size of a download is not known yet
+#, machine
+	Not known yet	غير معروف بعد
 #. text in the Link grabber window
 #. Link grabber, a link's status: a web page sent it (Click'n'Load), so it isn't looked up (name, size, online) before it is added
 #, machine
@@ -2861,6 +3147,10 @@
 	November	نوفمبر
 #. text in the Options window
 	Number	العدد
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: check box before the number box; unticked, the number set in Options → Connection applies
+#, machine
+	Number of connections:	عدد الاتصالات:
 #. checkbox in the Scheduler window
 	Number of retries for each file if downloading failed :	عدد مرات إعادة المحاولة لكل ملف إذا فشل التنزيل:
 #. option (radio button) in the Batch download window
@@ -2889,7 +3179,7 @@
 #. text in the Link grabber window
 #. Link grabber, a link's status: the server hasn't the file; {status} is the HTTP code (404)
 	Offline ({status})	غير متصل ({status})
-#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; text in extracting archives (a download's log, the Archive password window); text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's Properties window; button in the Scheduler window; button in the Add torrent window
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; text in extracting archives (a download's log, the Archive password window); text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's Properties window; button in the Scheduler window; button in the Add torrent window; text in zippreview.rs
 	OK	موافق
 #. text in countries.rs
 #. a country's name (where a download's server is)
@@ -2932,11 +3222,10 @@
 #. text in the Link grabber window
 #. Link grabber, a link's status: the server has the file
 	Online	متصل
-#. text in a download's Properties window
-#. tooltip of the greyed Move button in File Properties
-	Only a finished download, or one not started yet, can be moved	لا يمكن نقل سوى تنزيل مكتمل، أو تنزيل لم يبدأ بعد
-#. message or event log entry in the main window
-	Only a finished download, or one not started yet, can be moved. Stop it and finish it first.	لا يمكن نقل سوى تنزيل مكتمل، أو تنزيل لم يبدأ بعد. أوقفه وأكمله أولا.
+#. text in the Options window
+#. Options → Archives → Link grabber: the hover tip of the types box in "Folders: {depth} levels deep, types: {types}": only a folder's files of these types go into Link grabber; written as the File types page writes them
+#, machine
+	Only a folder's files of these types, written as on the File types page (ISO ZIP R0*). Empty: every type.	ملفات المجلد فقط من هذه الأنواع، مكتوبة كما في صفحة أنواع الملفات (ISO ZIP R0*). فارغ: كل الأنواع.
 #. text in the Download video window
 #. checkbox in Download video: download only a part of the video or sound; the From and To boxes follow it
 #, machine
@@ -2961,6 +3250,10 @@
 	Only the {files} file(s) ticked in Add torrent	فقط {files} ملفا تم تحديده في «إضافة تورنت»
 #. checkbox in a dialog box
 	Only while I'm using the computer	فقط أثناء استخدامي للكمبيوتر
+#. message or event log entry in the main window
+#. event log entry: the download is files picked inside a ZIP in Zip preview (#1775); {files} how many ("3 files")
+#, machine
+	Only {files} picked inside the ZIP	تم اختيار {files} فقط داخل ZIP
 #. button in a dialog box; text in a dialog box; button in a download's Properties window; button in torrentfiles.rs
 #. verb: opens the downloaded file
 #. title of the message when a downloaded file can't be opened
@@ -3025,6 +3318,10 @@
 #. text in the Link grabber window
 #. Link grabber: the box that edits the selected package
 	Package	الحزمة
+#. text in a download's progress window
+#. Zip preview's column: the file's size as packed (compressed) inside the ZIP
+#, machine
+	Packed	مضغوط
 #. text in gallerydlg.rs; text in the Download video window
 	Page address	عنوان الصفحة
 #. text in remote.rs
@@ -3098,9 +3395,13 @@
 #. verb: pause the download
 #. remote control page (on a phone): button: pause a download
 	Pause	إيقاف مؤقت
-#. text in a download's Properties window
+#. text in the download list (sizes, speeds, status)
 #. tooltip of the greyed Move button in File Properties
 	Pause the download first	أوقف التنزيل مؤقتا أولا
+#. tooltip (why a control is greyed) in a download's Properties window
+#. tooltip of File Properties' greyed Connection... button while the download runs
+#, machine
+	Pause the download to change how it connects	أوقف التنزيل مؤقتا لتغيير طريقة اتصاله
 #. text in a download's progress window
 #. a download's status (state it is in, not a command): stopped for now
 	Paused	متوقف مؤقتا
@@ -3159,8 +3460,8 @@
 #. Options → General: shown inside the shortcut recorder box while waiting for the user to press a 2-key or 3-key shortcut (#558)
 #. the trailing ... means it is still going on: keep it
 	Press keys...	اضغط المفاتيح...
-#. button in a dialog box
-#. verb: open the part already downloaded
+#. button in a dialog box; text in a dialog box
+#. verb: Download File Info's button; for a ZIP, it lists the files inside it to pick those to download (#1775)
 	Preview	معاينة
 #. text in a dialog box
 #. tooltip of the greyed Preview button in Download File Info
@@ -3193,6 +3494,10 @@
 	proxy server	خادم الوكيل
 #. label in the Options window
 	Proxy server address	عنوان خادم الوكيل
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: label before the proxy choice
+#, machine
+	Proxy:	الوكيل:
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Puerto Rico	بورتوريكو
@@ -3240,6 +3545,11 @@
 #. text in the Add torrent window
 #. the trailing ... means it is still going on: keep it
 	Reading the torrent...	قيد قراءة التورنت...
+#. text in zippreview.rs
+#. Zip preview, while the ZIP's list of files is being read from its server
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Reading the ZIP's list of files...	قيد قراءة قائمة ملفات ZIP...
 #. message or event log entry in the main window
 #. the status strip while Tasks → Import reads a file; {file} is its name
 #. the trailing ... means it is still going on: keep it
@@ -3335,6 +3645,14 @@
 #. text in the Batch download window
 #. group box title: what the * in the address is replaced with (numbers or letters)
 	Replace asterisk to	استبدال النجمة بـ
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: label above the box of request headers, one a line ("X-Token: abc")
+#, machine
+	Request headers, one a line (Name: value):	رؤوس الطلب، واحد في كل سطر (الاسم: القيمة):
+#. text in a dialog box
+#. button in the Columns dialog: put the columns back as they first were (order, widths, all shown)
+#, machine
+	Reset	إعادة تعيين
 #. text in crashui.rs
 #. crash report window button: start MDM again
 	Restart MDM	إعادة تشغيل MDM
@@ -3424,13 +3742,18 @@
 	Saudi Arabia	المملكة العربية السعودية
 #. text in a dialog box
 	Save As	حفظ باسم
+#. text in the Options window
+#. Options → Save to, a check box: new downloads of every category go to General's folder; {category} is General's name
+#. {category} = a category name such as "Music" (keep the braces as they are)
+#, machine
+	Save every download in "{category}" category's folder	حفظ كل تنزيل في مجلد الفئة «{category}»
 #. text in gallerydlg.rs; text in the Options window; text in the Add torrent window; text in the Download video window
 #. tab title: where downloads are saved
 	Save to	حفظ في
 #. group box title in the Options window
 #. the trailing ... means it is still going on: keep it
 	Save To...	حفظ في...
-#. text in a download's progress window; text in a download's Properties window
+#. text in preview.rs; text in a download's progress window; text in a download's Properties window
 	Save To:	حفظ في:
 #. text in the Batch download window; text in the Link grabber window; text in rssdlg.rs
 #. Batch download: the folder every file goes to (a label before its box)
@@ -3461,7 +3784,11 @@
 	Search:	بحث:
 #. text in the Batch download window
 	Second file:	الملف الثاني:
-#. button in playlistdlg.rs; button in the Add torrent window; text in torrentfiles.rs
+#. text in preview.rs
+#. the preview pane when no download is selected, under its title
+#, machine
+	Select a download to see its picture and details here.	حدد تنزيلا لرؤية صورته وتفاصيله هنا.
+#. button in playlistdlg.rs; button in the Add torrent window; text in torrentfiles.rs; text in zippreview.rs
 #. button in Download video for a playlist: tick every video
 	Select all	تحديد الكل
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
@@ -3577,6 +3904,11 @@
 #. message or event log entry in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 	Show &categories	إظهار الفئات(&C)
+#. message or event log entry in the main window
+#. View menu: shows a pane beside the download list with the selected download's picture and details
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	Show &preview pane	إظهار جزء الم&عاينة
 #. text in the Options window
 	Show a dialog and ask what to do.	إظهار مربع حوار يسأل عما يجب فعله.
 #. checkbox in the Options window
@@ -3604,6 +3936,9 @@
 #. text in extension.rs
 #. button in the browser extension's window: open the tutorial that adds the extension
 	Show me how	أرني كيف
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Show or hide the preview pane	إظهار جزء المعاينة أو إخفاؤه
 #. checkbox in the Options window
 	Show queue selection panel on closing batch download dialogs	إظهار لوحة تحديد قائمة الانتظار عند إغلاق مربعات حوار التنزيل الجماعي
 #. checkbox in the Options window
@@ -3627,6 +3962,10 @@
 #. button in the Options window
 #. button: sign in to the debrid service in the browser, by typing a code there
 	Sign in in the browser	تسجيل الدخول في المستعرض
+#. text in the Options window
+#. Options → Accounts (Android): where the debrid accounts' sign-ins and the other passwords are kept (encrypted with a key held by Android's keystore)
+#, machine
+	Sign-ins and passwords are kept encrypted with a key in Android's keystore.	يتم الاحتفاظ ببيانات تسجيل الدخول وكلمات المرور مشفرة بمفتاح في مخزن مفاتيح Android.
 #. text in the Options window
 #. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (the macOS login keychain)
 	Sign-ins and passwords are kept in the macOS keychain.	يتم حفظ بيانات تسجيل الدخول وكلمات المرور في سلسلة مفاتيح macOS.
@@ -3672,13 +4011,31 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Sint Maarten	سينت مارتن
+#. text in the Options window
+#. Site rules: column title: the site pattern
+#, machine
+	Site	الموقع
 #. checkbox in the Find window
 	Site name/Download link/Parent web page/Referer	اسم الموقع/رابط التنزيل/الصفحة الأصلية/المرجع
+#. window title in the Options window; text in the Options window
+#. window title: per-site settings (User-Agent, headers, connections, the browser-like connection) by site pattern
+#. Site rules window: the list's name for screen readers
+#, machine
+	Site rules	قواعد المواقع
+#. text in the Options window
+#. Options → Connection: button: opens the per-site settings (User-Agent, headers, connections)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Site rules...	قواعد المواقع...
 #. text in the Options window
 #. column title: the site (and path) a login is for
 	Site/path	الموقع/المسار
 #. text in the Options window
 	Site/path:	الموقع/المسار:
+#. text in the Options window
+#. Site rule: label before the site pattern box (example.com, *.example.com)
+#, machine
+	Site:	الموقع:
 #. text in the Options window
 #. tab title: user names and passwords for sites
 	Sites Logins	تسجيلات دخول المواقع
@@ -3693,7 +4050,7 @@
 #. text in the Download video window
 #. the video's file size is not known
 	size unknown	الحجم غير معروف
-#. text in a download's Properties window
+#. text in preview.rs; text in a download's Properties window
 	Size:	الحجم:
 #. text in a download's progress window; text in torrentfiles.rs
 #. a torrent file the user chose not to download
@@ -3785,6 +4142,10 @@
 #. tooltip on the disabled Rename box when the file is one part of a split archive (.part1.rar, .7z.001…)
 #, machine
 	Split archive volumes keep their names for extraction	تحتفظ أجزاء الأرشيف المقسم بأسمائها من أجل الاستخراج
+#. text in the Download video window
+#. checkbox in Download video: split the video into one file per chapter (the whole video is kept too)
+#, machine
+	Split into chapters	تقسيم إلى فصول
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Sri Lanka	سريلانكا
@@ -3800,6 +4161,11 @@
 	Start download on Mister Download Manager startup	بدء التنزيل عند بدء تشغيل Mister Download Manager
 #. checkbox in the Options window
 	Start downloading immediately while displaying "Download File Info" dialog	بدء التنزيل فورا أثناء عرض مربع حوار "معلومات ملف التنزيل"
+#. text in a dialog box
+#. Download File Info, on hover over the number of files picked in Zip preview (#1775): {files} how many ("3 files"), {size} their size together, {folder} the folder they go into (named after the archive)
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	Start downloads only the {files} picked in the ZIP ({size}), into {folder}	بدء تنزيل {files} فقط التي تم اختيارها في ZIP ({size})، إلى {folder}
 #. text in the tray icon's menu
 	Start main download queue	بدء قائمة انتظار التنزيل الرئيسية
 #. text in remote.rs
@@ -3843,12 +4209,20 @@
 #. noun: label before the download's state
 #. column title: the download's state
 	Status	الحالة
-#. text in a download's Properties window
+#. text in preview.rs; text in a download's Properties window
 #. label before the download's state
 	Status:	الحالة:
+#. text in preview.rs
+#. the preview pane: a finished download's file is still where it was saved
+#, machine
+	Still there	لا يزال موجودا
 #. text in remote.rs; text in the Add torrent window
 #. remote control page (on a phone): button: stop a queue
 	Stop	إيقاف
+#. text in a download's progress window
+#. button in the progress window of a download that never ends by itself (an internet radio, a camera feed: no size, can't be resumed): stop it and keep what has arrived as the finished file
+#, machine
+	Stop and keep	إيقاف والاحتفاظ
 #. text in a download's progress window
 #. button in a live stream's progress window: stop recording it and keep what was recorded as a video file
 #, machine
@@ -3952,9 +4326,6 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Tanzania	تنزانيا
-#. text in the Options window
-#. \\n starts a new line: break lines where they fit the translation
-	Tasks → Link grabber, or the browser's "Download all links": a split\narchive's volumes are one package, the other links of a page another.	المهام ← ملتقط الروابط، أو "تنزيل كل الروابط" في المستعرض: مجلدات الأرشيف المقسمة هي حزمة واحدة، والروابط الأخرى في الصفحة هي حزمة أخرى.
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 	Tell a friend	أخبر صديقا
 #. group box title in the Options window
@@ -4111,6 +4482,10 @@
 #. {host} = a server name such as "example.com" (keep the braces as they are)
 #, machine
 	the download from {host} was cut short	انقطع التنزيل من {host} قبل اكتماله
+#. text in the download list (sizes, speeds, status)
+#. why a download can't be moved or renamed now: it is being moved already
+#, machine
+	The download is being moved	التنزيل قيد النقل
 #. tooltip (why a control is greyed) in a download's Properties window
 #. tooltip of the greyed Open button in File Properties
 	The download isn't complete yet	التنزيل لم يكتمل بعد
@@ -4126,6 +4501,10 @@
 	The download manager you already know, rebuilt to be faster. Free and open source under the GNU GPL, version 3 or later. Videos are found by yt-dlp; torrents run on librqbit.	مدير التنزيل الذي تعرفه بالفعل، أعيد بناؤه ليكون أسرع. مجاني ومفتوح المصدر بموجب ترخيص GNU GPL، الإصدار 3 أو أحدث. يتم العثور على مقاطع الفيديو بواسطة yt-dlp؛ وتعمل التورنتات على librqbit.
 #. text in a dialog box
 	The download queue is done.	اكتملت قائمة انتظار التنزيل.
+#. text in errors.rs
+#. error installing ffmpeg: the file downloaded isn't the build named in the list of builds MDM accepts (its checksum differs), so it was thrown away
+#, machine
+	the downloaded ffmpeg isn't the build MDM's list of checked builds names, so it wasn't installed	ffmpeg الذي تم تنزيله ليس الإصدار الذي تسميه قائمة MDM للإصدارات التي تم التحقق منها، لذلك لم يتم تثبيته
 #. text in errors.rs
 	the downloaded program doesn't match its signed checksum	البرنامج الذي تم تنزيله لا يطابق بصمته الموقعة
 #. message or event log entry in the main window
@@ -4153,6 +4532,10 @@
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 	The file does NOT match ({algorithm})	الملف غير مطابق ({algorithm})
+#. text in errors.rs
+#. why a file taken out of a ZIP on its server failed (#1775): its bytes aren't what the ZIP's list of files says (its size or its CRC-32 checksum)
+#, machine
+	the file in the ZIP doesn't match the ZIP's list of files (its size or checksum): download the whole archive	الملف في ZIP لا يتطابق مع قائمة ملفات ZIP (حجمه أو بصمة ملفه): نزل الأرشيف بأكمله
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 	The file matches ({algorithm})	الملف مطابق ({algorithm})
@@ -4209,6 +4592,10 @@
 #. text in errors.rs; text in torrent downloads
 #. an error: the network adapter chosen in Options (a VPN's, usually) is off or gone; {adapter} its name
 	the network adapter {adapter} is not connected	محول الشبكة {adapter} غير متصل
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: the number of connections typed is out of range; {max} is 32 (or 128)
+#, machine
+	The number of connections must be from 1 to {max}	يجب أن يكون عدد الاتصالات من 1 إلى {max}
 #. text in torrent_ownership.rs
 #. error when a torrent's output folder path cannot be used
 #, machine
@@ -4259,6 +4646,10 @@
 	the server answered {status}	أجاب الخادم {status}
 #. text in errors.rs
 	the server can't send parts of the file, so it can't be resumed	لا يمكن للخادم إرسال أجزاء من الملف، لذلك لا يمكن متابعته
+#. text in errors.rs
+#. Zip preview (#1775): the server doesn't send parts of a file (HTTP ranges), so MDM can't fetch only some files from inside a ZIP; the whole archive still downloads
+#, machine
+	the server can't send parts of the ZIP, so its files can't be downloaded one by one: download the whole archive	لا يمكن للخادم إرسال أجزاء من ZIP، لذلك لا يمكن تنزيل ملفاته واحدا تلو الآخر: نزل الأرشيف بأكمله
 #. text in errors.rs
 	the server did not answer in time	لم يستجب الخادم في الوقت المحدد
 #. text in errors.rs
@@ -4381,8 +4772,16 @@
 	The update couldn't be installed: {error}	تعذر تثبيت التحديث: {error}
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 	The update is open in your system's package installer.	التحديث مفتوح في مثبت حزم النظام.
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: the User-Agent typed holds a control character
+#, machine
+	The User-Agent has a character a header can't hold	يحتوي User-Agent على حرف لا يمكن للرأس الاحتفاظ به
 #. text in a download's Properties window
 	The web page from which this file was obtained:	صفحة الويب التي جاء منها هذا الملف:
+#. text in errors.rs
+#. why a file can't be taken out of a ZIP on its server (#1775): the ZIP was replaced on the server after its files were listed; Zip preview is the window that lists them
+#, machine
+	the ZIP changed on the server since its files were listed: open its Zip preview again	تغير ZIP على الخادم منذ إدراج ملفاته: افتح معاينة ZIP مرة أخرى
 #. message or event log entry in the main window
 #. the kind of file View → Theme → Add a theme file lists: MDM's themes (TOML, JSON), Base16 schemes (YAML) and pywal's colors.json
 #, machine
@@ -4402,10 +4801,18 @@
 #. why an archive wasn't extracted (after "Couldn't extract {name}: "); HatchZip is a program's name
 #, machine
 	there isn't enough free space for its files, HatchZip says; nothing was changed	لا توجد مساحة حرة كافية لملفاته بحسب HatchZip؛ لم يتغير شيء
+#. text in relocate.rs
+#. why a download's file could not be moved to another drive (after "The file could not be moved: "); {needed} and {free} are sizes ("1.2 GB")
+#, machine
+	there isn't enough free space there ({needed} needed, {free} free)	لا توجد مساحة حرة كافية هناك (مطلوب {needed}، متوفر {free})
 #. text in a download's progress window
 	These settings are unavailable when "Show download complete dialog" is turned on	هذه الإعدادات غير متاحة عند تشغيل "إظهار مربع حوار اكتمال التنزيل"
 #. text in helpers.rs
 	They keep downloading if you close this window.	تستمر في التنزيل إذا أغلقت هذه النافذة.
+#. text in errors.rs
+#. error when opening a .torrent file whose piece size or list of pieces doesn't fit its files (damaged, or made wrong); it isn't added
+#, machine
+	this .torrent file is damaged: its pieces don't match its files	ملف .torrent هذا تالف: قطعه لا تتطابق مع ملفاته
 #. text in a dialog box
 	This address is already in the list of downloads:	هذا العنوان موجود بالفعل في قائمة التنزيلات:
 #. message or event log entry in the main window
@@ -4447,10 +4854,26 @@
 #, machine
 	This device's name	اسم هذا الجهاز
 #. message or event log entry in the main window
+#. the message when a file picked in View → Font isn't a TrueType or OpenType font MDM can read
+#, machine
+	This file can't be used as a font.	لا يمكن استخدام هذا الملف كخط.
+#. message or event log entry in the main window
 #. {error} is why, in English (a file that isn't a theme or a colour scheme, a colour missing)
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	This file can't be used as a theme: {error}	لا يمكن استخدام هذا الملف كسمة: {error}
+#. text in errors.rs
+#. why a file can't be taken out of a ZIP on its server (#1775): it is encrypted (password-protected) in the ZIP
+#, machine
+	this file is encrypted in the ZIP: download the whole archive and open it with its password	هذا الملف مشفر في ZIP: نزل الأرشيف بأكمله وافتحه بكلمة المرور الخاصة به
+#. text in errors.rs
+#. why a file can't be taken out of a ZIP on its server (#1775): the ZIP no longer holds it
+#, machine
+	this file is no longer in the ZIP on the server	هذا الملف لم يعد موجودا في ZIP على الخادم
+#. text in errors.rs
+#. why a file can't be taken out of a ZIP on its server (#1775): it is compressed with a method MDM doesn't unpack there; {method} is the method's name (BZIP2, LZMA, Deflate64…)
+#, machine
+	this file is packed in a way MDM can't unpack from the server ({method}): download the whole archive	هذا الملف مضغوط بطريقة لا يستطيع MDM فك ضغطها من الخادم ({method}): نزل الأرشيف بأكمله
 #. text in remote.rs
 #. remote control page (on a phone): the file chosen is too large for a .torrent file
 #, machine
@@ -4480,6 +4903,10 @@
 #. text in extension.rs
 #. a check of Test browser integration: a portable copy can't be connected
 	This is the installed copy, not a portable one	هذه هي النسخة المثبتة، وليست نسخة محمولة
+#. text in errors.rs
+#. Zip preview (#1775): the address isn't a ZIP archive whose list of files MDM can read on the server
+#, machine
+	this isn't a ZIP archive MDM can look inside on the server: download the whole file	هذا ليس أرشيف ZIP يمكن لـ MDM البحث بداخله على الخادم: نزل الملف بأكمله
 #. text in playlistdlg.rs
 #. in Download video, a playlist or channel that lists no video
 	This list has no videos	هذه القائمة لا تحتوي على مقاطع فيديو
@@ -4492,6 +4919,7 @@
 	This name is reserved by Windows	هذا الاسم محجوز بواسطة Windows
 #. tooltip (why a control is greyed) in the Download video window
 #. why "Embed chapters" is greyed: ffmpeg (a helper program) is not installed
+#. why "Split into chapters" is greyed: ffmpeg (a helper program) is not installed
 #. why Part is greyed in Download video: ffmpeg (a helper program) is not installed
 #. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
 	This needs ffmpeg	يتطلب هذا ffmpeg
@@ -4509,6 +4937,10 @@
 #. error: a program chosen as yt-dlp or ffmpeg didn't answer as one; {name} = yt-dlp or ffmpeg
 #. {name} = a file name (keep the braces as they are)
 	this program isn't {name}	هذا البرنامج ليس {name}
+#. text in requestedit.rs
+#. a download's Connection settings → Proxy: the proxy typed in the box beside
+#, machine
+	This proxy:	هذا الوكيل:
 #. text in the Options window
 #. Options → General: shown when the chosen global shortcut is already registered by another program (#558)
 	This shortcut is already in use	هذا الاختصار قيد الاستخدام بالفعل
@@ -4533,7 +4965,7 @@
 #. torrent start needs explicit write permission; {file} is the first existing file without a matching grant
 #, machine
 	This torrent needs permission to use {file} before it can start.	يحتاج هذا التورنت إلى إذن لاستخدام {file} قبل أن يبدأ.
-#. message or event log entry in the main window; text in a download's Properties window
+#. message or event log entry in the main window; text in the download list (sizes, speeds, status)
 #. shown when Move or Rename is refused: a torrent saved straight in Save to shares that folder with other files
 #, machine
 	This torrent shares its destination folder	يشارك هذا التورنت مجلد وجهته مع ملفات أخرى
@@ -4543,6 +4975,18 @@
 #. text in the Download video window
 #. the Download video window: the video needs the user to be signed in
 	This video needs you to be signed in. Use the Download video button over it in your browser, which passes your sign-in on, or choose your browser in Options → Sites Logins → Cookies for video sites.	يتطلب هذا الفيديو تسجيل دخولك. استخدم زر تنزيل الفيديو الموجود فوقه في مستعرضك، والذي ينقل تسجيل دخولك، أو اختر مستعرضك في الخيارات ← تسجيلات دخول المواقع ← ملفات تعريف الارتباط لمواقع الفيديو.
+#. text in errors.rs
+#. Zip preview (#1775): a ZIP split over several files (volumes): its files can't be fetched one by one
+#, machine
+	this ZIP is split over several files, so its files can't be downloaded one by one: download every part	هذا ZIP مقسم على عدة ملفات، لذلك لا يمكن تنزيل ملفاته واحدا تلو الآخر: نزل كل جزء
+#. text in errors.rs
+#. Zip preview (#1775): the ZIP's list of files (its table of contents) doesn't add up
+#, machine
+	this ZIP's list of files is damaged: download the whole archive	قائمة ملفات ZIP هذه تالفة: نزل الأرشيف بأكمله
+#. text in errors.rs
+#. Zip preview (#1775): the ZIP's list of files (its table of contents) is larger than MDM reads from a server
+#, machine
+	this ZIP's list of files is too large to read from the server: download the whole archive	قائمة ملفات ZIP هذه كبيرة جدا بحيث لا يمكن قراءتها من الخادم: نزل الأرشيف بأكمله
 #. text in errors.rs
 #. a download's error: the address is a site's web page that needs a browser, not the file; {site} = the site's name (gofile)
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
@@ -4568,6 +5012,11 @@
 #. text in the Scheduler window
 #. tooltip on the Scheduler's "Wake the computer to run this queue" while "Start download at" is off
 	Tick "Start download at" first: the computer is woken for the start time	حدد "بدء التنزيل في" أولا: يتم إيقاظ الكمبيوتر لوقت البدء
+#. text in zippreview.rs
+#. Zip preview, under the list: {files} how many files are ticked ("3 files"), {size} their size together ("12.4 MB")
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	Ticked: {files}, {size}	تم تحديد: {files}، {size}
 #. text in a download's progress window; text in the Scheduler window
 	Time left	الوقت المتبقي
 #. text in countries.rs
@@ -4623,6 +5072,10 @@
 #. an error, with the reason
 #. {error} = an error message (keep the braces as they are)
 	torrents could not start: {error}	تعذر بدء التورنت: {error}
+#. text in preview.rs
+#. label in the preview pane: the size of the selected downloads added up
+#, machine
+	Total size:	الحجم الكلي:
 #. text in a download's progress window
 #. column title: a server that lists the peers
 	Tracker	المتتبع
@@ -4645,6 +5098,10 @@
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	Try again in an hour, or download {name} yourself and choose it in {helpers} → {other}.	حاول مرة أخرى بعد ساعة، أو نزل {name} بنفسك واختره في {helpers} ← {other}.
+#. text in the Link grabber window
+#. Link grabber, a link's status: the remedy from the failure's sentence, for a site (Hugging Face, GitHub) whose limit of requests without an account is reached. The sentence is the cell's hover tip
+#, machine
+	Try again later	حاول مرة أخرى لاحقا
 #. text in errors.rs
 #. {name} = a file name (keep the braces as they are)
 #, machine
@@ -4700,6 +5157,10 @@
 #. why Options → Remote → Pair a device... is greyed
 #, machine
 	Turn on the remote control first.	قم بتشغيل التحكم عن بعد أولا.
+#. text in the Add torrent window
+#. Torrent settings, under the public tracker list's address: turning the switch off doesn't take away the trackers it added to torrents
+#, machine
+	Turned off, the trackers already added stay.	عند إيقاف التشغيل، تبقى المتتبعات التي تمت إضافتها بالفعل.
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Tuvalu	توفالو
@@ -4718,6 +5179,10 @@
 #. text in the Batch download window
 #. why Batch download's OK is greyed
 	Type a number in From and in To	اكتب رقما في «من» و«إلى»
+#. text in the Options window
+#. Site rule: OK with no site, or one with a space in it
+#, machine
+	Type a site, such as example.com or *.example.com	اكتب موقعا، مثل example.com أو *.example.com
 #. text in the settings
 #. Options → DNS: no server address was typed
 	Type at least one server address.	اكتب عنوان خادم واحد على الأقل.
@@ -4730,6 +5195,10 @@
 #. text in the settings
 #. Options → DNS over TLS: the server's name (as its certificate shows it) is missing
 	Type the name the server's certificate shows.	اكتب الاسم الذي تظهره شهادة الخادم.
+#. text in requestedit.rs
+#. a download's Connection settings: the proxy typed isn't an address MDM takes; the examples stay as they are
+#, machine
+	Type the proxy as host:port, http://host:port or socks5://host:port	اكتب الوكيل كـ host:port أو http://host:port أو socks5://host:port
 #. text in the Scheduler window
 #. why OK is greyed when naming a new queue
 	Type the queue's name	اكتب اسم قائمة الانتظار
@@ -4804,6 +5273,11 @@
 #. button: download and install the new version, then restart
 	Update now	تحديث الآن
 #. text in helpers.rs
+#. Helpers: the Update button's name for a screen reader; {name} = the helper (yt-dlp, ffmpeg, gallery-dl, Node.js)
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Update {name}	تحديث {name}
+#. text in helpers.rs
 #. Helpers: a program the person chose, or the system's copy: MDM doesn't update it, the person (or their package manager) does
 #, machine
 	Updated by you	تحدثه أنت
@@ -4822,6 +5296,17 @@
 	Uruguay	أوروغواي
 #. text in the Options window
 	Use advanced browser integration	استخدام الربط المتقدم بالمستعرض
+#. text in helpers.rs
+#. Helpers: the "Use another program..." button's name for a screen reader, on the JavaScript runtime's row (Node.js, Deno, QuickJS or Bun)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Use another program as the JavaScript runtime...	استخدم برنامجا آخر كوقت تشغيل JavaScript...
+#. text in helpers.rs
+#. Helpers: the "Use another program..." button's name for a screen reader; {name} = the helper (yt-dlp, ffmpeg, gallery-dl)
+#. {name} = a file name (keep the braces as they are)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Use another program for {name}...	استخدم برنامجا آخر لـ {name}...
 #. text in errors.rs; button in helpers.rs; text in the Options window
 #. Video helpers: button: pick a program (yt-dlp or ffmpeg) already on the computer
 #. Options → Archives: button: pick the 7-Zip command line program to extract 7z and RAR archives with (PeaZip's own 7z.exe, a portable copy), instead of the one MDM finds
@@ -4836,9 +5321,15 @@
 	Use existing torrent files	استخدام ملفات التورنت الموجودة
 #. checkbox in the Options window
 	Use FTP in PASV mode	استخدام FTP في وضع PASV
-#. button in helpers.rs
+#. text in helpers.rs
 #. Video helpers: button: go back to the copy MDM downloads and checks itself
 	Use MDM's own copy	استخدام نسخة MDM الخاصة
+#. text in helpers.rs
+#. Helpers: the "Use MDM's own copy" button's name for a screen reader; {name} = the helper (yt-dlp, ffmpeg, gallery-dl)
+#. Helpers: the "Use MDM's own copy" button's name for a screen reader; {name} = the helper (Node.js)
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Use MDM's own copy of {name}	استخدم نسخة MDM الخاصة من {name}
 #. checkbox in the Options window
 #. Options → Sites Logins: checkbox under Cookies for video sites: yt-dlp also reads the person's own yt-dlp config file
 #, machine
@@ -4877,6 +5368,10 @@
 	User names and passwords for servers/sites	أسماء المستخدمين وكلمات المرور للخوادم/المواقع
 #. text in the Options window
 	User-Agent for manually added downloads:	User-Agent للتنزيلات المضافة يدويا:
+#. text in the Options window
+#. Options → Connection: beside the Site rules... button: what it sets
+#, machine
+	User-Agent, headers and connections by site	User-Agent، الرؤوس والاتصالات حسب الموقع
 #. text in the Options window
 	User:	المستخدم:
 #. label in the Options window
@@ -4996,6 +5491,10 @@
 #. value in a column's filter list in the download list
 #. where a download comes from: Web (web or FTP server) or Torrent (BitTorrent)
 	Web	الويب
+#. text in preview.rs
+#. label in the preview pane: the web page the download was found on
+#, machine
+	Web page:	صفحة الويب:
 #. text in the Scheduler window
 	Wednesday	الأربعاء
 #. text in countries.rs
@@ -5076,7 +5575,7 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Yemen	اليمن
-#. button in a dialog box; text in a download's progress window
+#. button in a dialog box; text in the Options window; text in a download's progress window
 	Yes	نعم
 #. button in helpers.rs
 #. the first start's helpers window: download yt-dlp and ffmpeg (the recommended answer)
@@ -5178,6 +5677,10 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Zimbabwe	زيمبابوي
+#. text in zippreview.rs
+#. title of the window that lists the files inside a ZIP on its server, to tick those to download (#1775)
+#, machine
+	Zip preview	معاينة ZIP
 #. text in the Options window
 #. \\n starts a new line: break lines where they fit the translation
 	ZIP, 7Z, RAR, TAR, GZ and XZ; a split archive (.part1.rar, .7z.001) once\nevery volume is in. A file there already is kept: the new one is numbered.	ZIP و7Z وRAR وTAR وGZ وXZ؛ الأرشيف المقسم (.part1.rar، .7z.001) بعد اكتمال\nكل مجلد. يبقى الملف الموجود بالفعل، ويعطى الجديد رقما.
@@ -5222,6 +5725,10 @@
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
 	{done} of {size}	{done} من {size}
+#. text in preview.rs
+#. the preview pane: how much of a download has come; {done} and {total} sizes, e.g. "12.5 MB of 40.0 MB"
+#, machine
+	{done} of {total}	{done} من {total}
 #. text in deferred_rename.rs
 #. appended to an OS error when a case-only rename could not move the temporary file back to its original name; {error} = first OS error, {path} = temporary path left on disk, {rollback_error} = second OS error
 #. {error} = an error message (keep the braces as they are)
@@ -5240,6 +5747,14 @@
 	{file} could not be opened: {error}	تعذر فتح {file}: {error}
 #. text in the Checksum window
 	{file} could not be read to check it	تعذر قراءة {file} للتحقق منه
+#. message or event log entry in the main window
+#. a message after a download (Redownload) was to replace the file it had: {file} = that file's name, still there; {new} = the name the new copy was saved under, in the same folder
+#, machine
+	{file} could not be replaced: another program may have it open. The new download is saved beside it as {new}, and both files are kept.	تعذر استبدال {file}: قد يكون برنامج آخر يفتحه. تم حفظ التنزيل الجديد بجانبه باسم {new}، وتم الاحتفاظ بالملفين.
+#. text in relocate.rs
+#. why a download could not be moved (after "The file could not be moved: "): a file of that name came into the new folder meanwhile; {file} is its name
+#, machine
+	{file} is already there	{file} موجود بالفعل
 #. text in a dialog box
 	{file} is no longer where it was saved (moved or deleted). Redownload, in its right-click menu, gets it again.	{file} لم يعد في مكانه المحفوظ (نقل أو حذف). «إعادة التنزيل» في قائمة النقر بزر الماوس الأيمن تجلبه من جديد.
 #. message or event log entry in the main window
@@ -5260,6 +5775,11 @@
 #. said after Delete with files when some files stayed on the disk; {file} is the download's name; the files' paths follow it
 #, machine
 	{file}: these files stayed on the disk, because MDM didn't create them or another download uses them:	{file}: بقيت هذه الملفات على القرص، لأن MDM لم ينشئها أو لأن تنزيلا آخر يستخدمها:
+#. message or event log entry in the main window; text in the Link grabber window
+#. Link grabber's Source line, after where the links came from: a folder (an FTP folder, a web server's "Index of" page) held more files or subfolders than Link grabber lists; {folder} is its name, {n} how many of its files are listed (10,000)
+#. {n} = a number (keep the braces as they are)
+#, machine
+	{folder}: only its first {n} files	{folder}: أول {n} ملفات فقط
 #. text in a download's progress window
 #. {have} and {total} = numbers of pieces; {size} = one piece's size
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
@@ -5374,6 +5894,11 @@
 #. a number of connections the app learned by itself for a server
 #. {n} = a number (keep the braces as they are)
 	{n} (auto)	{n} (تلقائي)
+#. text in zippreview.rs
+#. Zip preview, under the list: {n} files of the ZIP aren't listed because MDM can't take them out on their own: encrypted ones, ones packed in a way MDM can't unpack from the server, links, or names that would leave their folder; the whole archive still downloads
+#. {n} = a number (keep the braces as they are)
+#, machine
+	{n} more can't be taken out on their own (encrypted, packed another way, or links)	{n} ملف آخر لا يمكن استخراجه بمفرده (مشفر، أو مضغوط بطريقة أخرى، أو رابط)
 #. text in playlistdlg.rs
 #. in Download video for a playlist: how many videos are ticked, of how many
 #. {n} = a number (keep the braces as they are)
@@ -5381,6 +5906,10 @@
 #. text in the Link grabber window
 #. {n} = a number (keep the braces as they are)
 	{n} of {total} selected	{n} من {total} محدد
+#. text in the Link grabber window
+#. Link grabber's Source line: a gated Hugging Face repository ({package}: "owner/name"), whose files download only for an account that accepted its terms: where to give the account's access token (Options → Sites Logins, keep the names as the Options window shows them)
+#, machine
+	{package} is gated: accept its terms on Hugging Face, then add your access token in Options → Sites Logins (site huggingface.co, the token as its password)	{package} محمي: اقبل شروطه على Hugging Face، ثم أضف رمز الوصول في الخيارات ← تسجيلات دخول المواقع (موقع huggingface.co، الرمز ككلمة مرور له)
 #. text in the download list (sizes, speeds, status)
 #. a torrent's status while the user's debrid service downloads it, before MDM gets its files; {service} the service ("Real-Debrid"), {percent} how far it is ("45%")
 	{percent} at {service}	{percent} في {service}
@@ -5467,6 +5996,31 @@
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
 #, machine
 	{site} didn't give the file this time: try again in a moment	لم يمنحك {site} الملف هذه المرة: حاول مرة أخرى بعد قليل
+#. text in the Link grabber window
+#. Link grabber, the hover tip of a Hugging Face repository's or GitHub release's status; {site} is "Hugging Face" or "GitHub"
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+	{site} has no such repository, folder, release or tag, or it is private.	لا يحتوي {site} على مستودع أو مجلد أو إصدار أو علامة كهذه، أو أنه خاص.
+#. text in the Link grabber window
+#. Link grabber, a Hugging Face repository's or GitHub release's status (the cell's hover tip): the site ({site}: "Hugging Face", "GitHub") lets only so many requests through from a computer without an account; {n} minutes to wait
+#. {site} = a web site's name such as "example.com"; {n} = a number (keep the braces as they are)
+#, machine
+	{site} lets only so many requests through without an account: try again in {n} minute.	يسمح {site} بمرور عدد محدود فقط من الطلبات دون حساب: حاول مرة أخرى بعد {n} دقيقة.
+#. text in the Link grabber window
+#. Link grabber, a Hugging Face repository's or GitHub release's status (the cell's hover tip): the site ({site}) lets only so many requests through without an account, and didn't say for how long
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+	{site} lets only so many requests through without an account: try again later.	يسمح {site} بمرور عدد محدود فقط من الطلبات دون حساب: حاول مرة أخرى لاحقا.
+#. text in the Link grabber window
+#. Link grabber, a Hugging Face repository's or GitHub release's status: the site ({site}) refused to list its files; {status} is the HTTP code (403)
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+	{site} refused to list its files ({status}).	رفض {site} سرد ملفاته ({status}).
+#. text in the Link grabber window
+#. Link grabber, a Hugging Face repository's or GitHub release's status: the site's ({site}) answer wasn't what it sends (changed, cut, or not its own)
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+	{site}'s list of files couldn't be read.	تعذر قراءة قائمة ملفات {site}.
 #. text in a download's Properties window
 #. {size} = a file size such as "4.2 MB"; {bytes} = a number of bytes (keep the braces as they are)
 	{size} ({bytes} Bytes)	{size} ({bytes} بايت)
@@ -5486,6 +6040,11 @@
 #. text in the download list (sizes, speeds, status)
 #. {s} = seconds (keep the braces as they are)
 	{s} sec	{s} ثانية
+#. text in a dialog box
+#. the title of another window of a kind while the first is open (several Download File Info windows, one per link): {title} the window's own title, {n} its number, "Download File Info (2)"
+#. {n} = a number (keep the braces as they are)
+#, machine
+	{title} ({n})	{title} ({n})
 #. message or event log entry in the main window
 #. RSS feeds window, under the rules: {title} was added by the rule {rule}
 	{title}: added by {rule}	{title}: أضيف بواسطة {rule}
@@ -5523,9 +6082,12 @@ column	Peers	القرناء
 #. column title in the download list in the download list
 #. column title: one letter for Queue (the column is narrow)
 column	Q	ق
-#. column title in the main window; column title in the download list
+#. column title in the main window; column title in a dialog box; column title in the download list
 #. tooltip of the narrow "Q" column's title
 column	Queue	قائمة الانتظار
+#. column title in the download list in the download list
+#. column title: the folder the download is saved in
+column	Save To	مكان الحفظ
 #. column title in the download list in the download list
 #. column title: what a torrent has sent to peers against what it took
 #, machine
@@ -5569,6 +6131,7 @@ extension	Added to MDM	أضيف إلى MDM
 extension	Added to the queue	تمت الإضافة إلى قائمة الانتظار
 #. text in the browser extension
 #. filter in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): every download; short
+#. chip in the menu of the download button over a video, filtering the list of qualities: show every quality (or any file type, any codec); short, one word
 #, machine
 extension	All	الكل
 #. text in the browser extension
@@ -5584,6 +6147,14 @@ extension	Another Mister Download Manager (a server)	Mister Download Manager آ�
 #. tab above the list of qualities in the menu under the download button over a video: the choices that are sound only (MP3, Opus and the like); short, one word
 #, machine
 extension	Audio	صوت
+#. text in the browser extension
+#. chip in the menu of the download button over a video, filtering the list of qualities: show only the sound-only choices (MP3, Opus and the like); short
+#, machine
+extension	Audio only	صوت فقط
+#. text in the browser extension
+#. toolbar button's popup: said for a moment after Reset: the download button over videos is in its usual corner again and its menu lists every quality, on every web site
+#, machine
+extension	Back in its corner, its menu showing everything, on every site	عاد إلى زاويته، وقائمته تعرض كل شيء، في كل موقع
 #. text in the browser extension
 #. after the best quality in the menu of the download button over a video, after a star (★ best); lower case; one word
 #, machine
@@ -5631,6 +6202,10 @@ extension	Clear finished	مسح المكتملة
 #. title of the question in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) before the finished downloads are taken off the list
 #, machine
 extension	Clear finished downloads?	مسح التنزيلات المكتملة؟
+#. text in the browser extension
+#. label before the row of chips (All, AV1, VP9, H.264...) that filters the list of video qualities by the picture's codec in the menu of the download button over a video; short
+#, machine
+extension	Codec	برنامج الترميز
 #. text in the browser extension
 #. under the extension's name in the toolbar button's popup: the browser reaches the app; short
 #, machine
@@ -5701,6 +6276,10 @@ extension	Download all links with Mister Download Manager	تنزيل جميع ا
 #, machine
 extension	Download best	تنزيل بأفضل جودة
 #. text in the browser extension
+#. toolbar button's popup, Settings: the name of the row with the Reset button for the download button the extension shows over videos
+#, machine
+extension	Download button over videos	زر التنزيل فوق مقاطع الفيديو
+#. text in the browser extension
 #. command in the browser's right-click menu on selected text: download the links in the selection; keep the name Mister Download Manager as it is
 extension	Download selected links with Mister Download Manager	تنزيل الروابط المحددة باستخدام Mister Download Manager
 #. text in the browser extension
@@ -5739,9 +6318,9 @@ extension	Downloads from {site} stay with the browser	تبقى التنزيلا�
 #, machine
 extension	Downloads go to {address}	تنتقل التنزيلات إلى {address}
 #. text in the browser extension
-#. second line of the tooltip of the download button over a video: dragging its dotted grip moves it along the video's edge
+#. second line of the tooltip of the download button over a video: dragging its dotted grip moves it to another corner or edge of the video, or outside the video next to it
 #, machine
-extension	Drag the dots to move it along the edge	اسحب النقاط لتحريكه على طول الحافة
+extension	Drag the dots to move it to another corner, or outside the video	اسحب النقاط لتحريكه إلى زاوية أخرى، أو خارج الفيديو
 #. text in the browser extension
 #. the address typed isn't an https:// address
 #, machine
@@ -5759,6 +6338,18 @@ extension	Failed: {why}	فشل: {why}
 #. a finished download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when its file is no longer where it was saved
 #, machine
 extension	File deleted or moved	تم حذف الملف أو نقله
+#. text in the browser extension
+#. label before the row of chips (All, MP4, WEBM, M4A...) that filters the list of qualities by file type in the menu of the download button over a video; short
+#, machine
+extension	File type	نوع الملف
+#. text in the browser extension
+#. button in the This page tab of the toolbar button's popup: look for the pictures of the current web page (only when clicked); short
+#, machine
+extension	Find images	البحث عن الصور
+#. text in the browser extension
+#. in the This page tab of the toolbar button's popup, before the Find images button; Link grabber is the name of the app's window that lists links to tick before downloading them
+#, machine
+extension	Find this page's pictures at the largest size it lists, then send the ones you want to Link grabber.	ابحث عن صور هذه الصفحة بأكبر حجم تعرضه، ثم أرسل ما تريده إلى ملتقط الروابط.
 #. text in the browser extension
 #. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) after Clear finished
 #, machine
@@ -5790,6 +6381,14 @@ extension	Hold Alt while clicking a link to let the browser download it.	اضغ�
 #. text in the browser extension
 #. link under a connection problem in the toolbar button's popup, to the help page's section for it
 extension	How to fix it	كيفية إصلاحها
+#. text in the browser extension
+#. what a screen reader says for the row of buttons that keep or leave out each type of picture (JPEG, PNG, WEBP...), in the This page tab of the toolbar button's popup
+#, machine
+extension	Image types	أنواع الصور
+#. text in the browser extension
+#. heading in the This page tab of the toolbar button's popup, over the part that finds the pictures of the current web page and sends them to the app
+#, machine
+extension	Images on this page	الصور في هذه الصفحة
 #. text in the browser extension
 #. pairing failed for another reason
 #, machine
@@ -5839,6 +6438,28 @@ extension	Left to the browser: {name}	متروك للمتصفح: {name}
 #. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) after Copy link
 #, machine
 extension	Link copied	تم نسخ الرابط
+#. text in the browser extension
+#. the toolbar button's status: all links refused by another MDM
+#. {count} = a number (keep the braces as they are)
+#, machine
+extension	Links refused: {count}	الروابط المرفوضة: {count}
+#. text in the browser extension
+#. the toolbar button's status: links sent to another MDM
+#. {count} = a number (keep the braces as they are)
+#, machine
+extension	Links sent: {count}	الروابط المرسلة: {count}
+#. text in the browser extension
+#. the toolbar button's status: some links refused by another MDM
+#, machine
+extension	Links sent: {sent}, refused: {refused}	الروابط المرسلة: {sent}، المرفوضة: {refused}
+#. text in the browser extension
+#. the toolbar button's status: some links refused and some left out
+#, machine
+extension	Links sent: {sent}, refused: {refused}, {left} left out	الروابط المرسلة: {sent}، المرفوضة: {refused}، المتروكة: {left}
+#. text in the browser extension
+#. the toolbar button's status: links sent to another MDM, some left out by cap or filter
+#, machine
+extension	Links sent: {sent}, {left} left out	الروابط المرسلة: {sent}، المتروكة: {left}
 #. text in the browser extension
 #. beside a stream in the toolbar button's popup: it is a live broadcast (no fixed length); short
 extension	Live	مباشر
@@ -5933,6 +6554,10 @@ extension	Never on {site}	عدم الإظهار مطلقا في {site}
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
 extension	Never take downloads from {site}	عدم التقاط التنزيلات من {site} أبدا
 #. text in the browser extension
+#. the toolbar button's status: no links matched capturable file types
+#, machine
+extension	No capturable links ({left} left out)	لا توجد روابط قابلة للاستحواذ ({left} تم تخطيها)
+#. text in the browser extension
 #. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when no download matches the search; the words searched for follow
 #, machine
 extension	No download's name or address has “{words}”.	لا يوجد تنزيل باسم أو عنوان يتضمن «{words}».
@@ -5940,6 +6565,10 @@ extension	No download's name or address has “{words}”.	لا يوجد تنز�
 #. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app has no downloads
 #, machine
 extension	No downloads yet	لا توجد تنزيلات بعد
+#. text in the browser extension
+#. shown in the This page tab of the toolbar button's popup when Find images found no picture on the current web page
+#, machine
+extension	No images found on this page.	لم يتم العثور على صور في هذه الصفحة.
 #. text in the browser extension
 #. shown in the toolbar button's popup when the current web page hasn't loaded any video, sound or stream yet
 extension	No video or sound found on this page yet. Play it, then open this again.	لم يتم العثور على أي فيديو أو صوت في هذه الصفحة بعد. ابدأ تشغيله، ثم افتح هذا مرة أخرى.
@@ -6006,6 +6635,10 @@ extension	Options...	خيارات...
 #, machine
 extension	original	أصلي
 #. text in the browser extension
+#. button among the picture types (JPEG, PNG, WEBP...) in the This page tab of the toolbar button's popup: the pictures of any other or unknown type; short
+#, machine
+extension	Other	أخرى
+#. text in the browser extension
 #. button: pair this browser with the other MDM using the code
 #, machine
 extension	Pair	إقران
@@ -6049,9 +6682,17 @@ extension	Protected	محمي
 #, machine
 extension	Protected video	فيديو محمي
 #. text in the browser extension
+#. menu command of the download button over a video, shown after the user dragged the button elsewhere on this site: moves it back to its usual corner of the video
+#, machine
+extension	Put the button back in its corner	أعد الزر إلى مكانه
+#. text in the browser extension
 #. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): takes the download off the list, its file stays
 #, machine
 extension	Remove from list	إزالة من القائمة
+#. text in the browser extension
+#. toolbar button's popup, Settings: button that puts the download button over videos back in its corner and clears its menu's filters, on every web site; a verb, short
+#, machine
+extension	Reset	إعادة الضبط
 #. text in the browser extension
 #. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): goes on with a paused, waiting or failed download; verb
 #, machine
@@ -6080,6 +6721,10 @@ extension	Send downloads through this browser's proxy or VPN extension	إرسا�
 #, machine
 extension	Send downloads to	إرسال التنزيلات إلى
 #. text in the browser extension
+#. button in the This page tab of the toolbar button's popup: send the selected pictures to the app's Link grabber window, where the user ticks which to download
+#, machine
+extension	Send to Link grabber	إرسال إلى ملتقط الروابط
+#. text in the browser extension
 #. on the download button over a video right after it was clicked, while the download goes to the app; MDM is Mister Download Manager's short name, keep it as it is; short
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -6089,8 +6734,16 @@ extension	Sending to MDM...	قيد الإرسال إلى MDM...
 #, machine
 extension	Sending to {server}	إرسال إلى {server}
 #. text in the browser extension
+#. shown in the This page tab of the toolbar button's popup after the pictures were sent to the app's Link grabber window
+#, machine
+extension	Sent to Link grabber: tick the ones to download there.	تم الإرسال إلى ملتقط الروابط: حدد ما تريد تنزيله هناك.
+#. text in the browser extension
 #. shown briefly on the download button after it was clicked; keep the name Mister Download Manager as it is
 extension	Sent to Mister Download Manager	تم الإرسال إلى Mister Download Manager
+#. text in the browser extension
+#. the toolbar button's status when the paired server does not answer
+#, machine
+extension	Server not reached	لم يتم الوصول إلى الخادم
 #. text in the browser extension
 #. tab in the toolbar button's popup: the extension's settings; noun, short
 #, machine
@@ -6103,6 +6756,7 @@ extension	Share...	مشاركة...
 #. text in the browser extension
 #. button on the download button over a video after a download was added: shows that download in the app's window; verb; very short
 #. name of the row of filters in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) (All, Running, Done, Failed), read by screen readers; verb
+#. label read by screen readers for the row of chips (All, Video, Audio only) that filters the list of qualities in the menu of the download button over a video; a verb, short
 #, machine
 extension	Show	إظهار
 #. text in the browser extension
@@ -6117,6 +6771,23 @@ extension	Show in folder	إظهار في المجلد
 #. screen readers' name of a download's Show in folder button in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads)
 #, machine
 extension	Show {file} in folder	إظهار {file} في المجلد
+#. text in the browser extension
+#. in the This page tab of the toolbar button's popup, while a smallest width or height is set: how many of the selected pictures the page gives no size for (they are kept, not left out)
+#. {n} = a number (keep the braces as they are)
+#, machine
+extension	Size not given, kept: {n}	الحجم غير معطى، تم الاحتفاظ به: {n}
+#. text in the browser extension
+#. what a screen reader says for the box of the smallest height of the pictures to keep, in the This page tab of the toolbar button's popup
+#, machine
+extension	Smallest height, in pixels	أقل ارتفاع، بالبكسل
+#. text in the browser extension
+#. in the This page tab of the toolbar button's popup, before two boxes for the smallest width and height of the pictures to keep: 'Smallest size, in pixels [ ] × [ ]'; pictures smaller than that are left out; short
+#, machine
+extension	Smallest size, in pixels	أصغر حجم، بالبكسل
+#. text in the browser extension
+#. what a screen reader says for the box of the smallest width of the pictures to keep, in the This page tab of the toolbar button's popup
+#, machine
+extension	Smallest width, in pixels	أقل عرض، بالبكسل
 #. text in the browser extension
 #. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app isn't running
 #, machine
@@ -6148,6 +6819,10 @@ extension	That didn't work. Try again.	لم ينجح ذلك. حاول مرة أ�
 #. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when a button's download was removed meanwhile
 #, machine
 extension	That download is no longer in the list.	لم يعد هذا التنزيل في القائمة.
+#. text in the browser extension
+#. shown in the This page tab of the toolbar button's popup when Find images can't look into the current page (a page of the browser's own, an add-on store)
+#, machine
+extension	The browser doesn't let add-ons read this page.	لا يسمح المستعرض للإضافات بقراءة هذه الصفحة.
 #. text in the browser extension
 #. in the toolbar button's popup, on a site where the Chrome Web Store's copy of the extension shows no download button; Help is the link at the bottom of the popup
 #, machine
@@ -6246,6 +6921,10 @@ extension	Waiting	في انتظار
 #, machine
 extension	What you download with Mister Download Manager shows up here.	ما تنزله باستخدام Mister Download Manager يظهر هنا.
 #. text in the browser extension
+#. toolbar button's popup, Settings: second line under 'Download button over videos', saying what Reset puts back: the places the user dragged the button to, and the filters chosen in its menu, remembered per web site
+#, machine
+extension	Where you moved it, and its menu's filters, on each site	المواضع التي نقلته إليها، وفلاتر قائمته، في كل موقع
+#. text in the browser extension
 #. Tooltip of the Hide the download button in full screen option in the toolbar button's popup; Download video is the name of the button over videos
 #, machine
 extension	While the page is in full screen, its videos show no Download video button	أثناء وجود الصفحة في وضع ملء الشاشة، لا تعرض مقاطع الفيديو الخاصة بها زر تنزيل الفيديو
@@ -6276,6 +6955,10 @@ extension	{file} removed from the list	تمت إزالة {file} من القائ�
 #, machine
 extension	{file} will be deleted from your computer, and the download taken off the list. This can't be undone.	سيتم حذف {file} من جهاز الكمبيوتر الخاص بك، وسيتم إزالة التنزيل من القائمة. لا يمكن التراجع عن هذا.
 #. text in the browser extension
+#. in the This page tab of the toolbar button's popup: how many of the pictures found pass the size and type filters, and will be sent
+#, machine
+extension	{shown} of {total} selected	{shown} من {total} محدد
+#. text in the browser extension
 #. a running download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): the time left, as a clock (minutes:seconds)
 #. {time} = a time of day (keep the braces as they are)
 #, machine
@@ -6283,6 +6966,10 @@ extension	{time} left	تبقى {time}
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 key	Alt+Enter	Alt+Enter
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Alt+P	Alt+P
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
@@ -6390,6 +7077,11 @@ menu	&Automatic	تلقا&ئي
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Classic	كلا&سيكي
+#. menu command in the main window
+#. header menu: opens the dialog that chooses the list's columns
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+menu	&Columns...	&الأعمدة...
 #. menu command in standard windows
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 menu	&Copy	&نسخ
@@ -6405,6 +7097,11 @@ menu	&Download Now	&تنزيل الآن
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 menu	&Exit	&إنهاء
+#. menu command in the main window
+#. View menu: submenu choosing the interface's own font and text size
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Font	الخ&ط
 #. menu command in the main window
 #. verb: load downloads from a file
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
@@ -6470,6 +7167,11 @@ menu	&Stop All	&إيقاف الكل
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 menu	&Stop Download	إيقاف الت&نزيل
+#. menu command in the main window
+#. View → Font: the computer's own font, the default (Segoe UI on Windows)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&System font	خط الن&ظام
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 menu	&Tray icon	أيقونة &علبة النظام
@@ -6577,6 +7279,12 @@ menu	C&ustomize URL List...	ت&خصيص قائمة URL...
 #. the trailing ... means it opens a window: keep it
 menu	Check for &updates...	التحقق من ال&تحديثات...
 #. menu command in the main window
+#. View → Font: a TrueType or OpenType font file on disk to draw the interface's text in
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Choose a font &file...	&اختر ملف الخط...
+#. menu command in the main window
 #. View → Theme: MDM's own look, the default (IDM's layout, Windows 11's controls)
 menu	Classic	كلاسيكي
 #. menu command in the main window
@@ -6646,9 +7354,6 @@ menu	Find Next (F3)	بحث عن التالي (F3)
 #. menu command in the main window
 #. right-click → Torrent, a choice with a check mark (with Download in order): each file's first and last pieces first, which a video player needs to start
 menu	First and last pieces first	القطع الأولى والأخيرة أولا
-#. menu command in the main window
-#. noun: the list's font (submenu)
-menu	Font	الخط
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it
@@ -6731,6 +7436,10 @@ menu	Open with...	فتح باستخدام...
 #. menu command in the main window
 #. View → Draw with: a graphics system's name, usually kept as is
 menu	OpenGL	OpenGL
+#. menu command in the main window
+#. View → Draw with: a greyed note; why MDM no longer draws with OpenGL: MDM crashed inside the graphics card's driver while OpenGL drew ("its": OpenGL's)
+#, machine
+menu	OpenGL crashed inside its driver here	انهار OpenGL داخل برنامج تشغيله هنا
 #. menu command in the main window
 #. View → Draw with: a greyed note; why MDM no longer draws with OpenGL: it couldn't start on this computer
 #, machine
@@ -6894,6 +7603,10 @@ menubar	&Tasks	&المهام
 #. menu bar title in the main window (menus, toolbar, Categories pane)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 menubar	&View	&عرض
+#. text in preview.rs
+#. noun: title of the side pane beside the download list that shows the selected download's picture and details (#1368)
+#, machine
+pane	Preview	معاينة
 #. toolbar button in the main window
 toolbar	Add Torrent	إضافة تورنت
 #. toolbar button in the main window
@@ -6906,6 +7619,10 @@ toolbar	Delete Completed	حذف المكتملة
 #. toolbar button in the main window
 #. plural noun: opens the Options window (settings)
 toolbar	Options	خيارات
+#. toolbar button in the main window
+#. toolbar toggle button: shows or hides the preview pane (the selected download's picture and details)
+#, machine
+toolbar	Preview	معاينة
 #. toolbar button in the main window
 #. verb: continue the selected downloads
 toolbar	Resume	متابعة

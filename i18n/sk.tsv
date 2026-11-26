@@ -101,21 +101,25 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} download finished|{n} downloads finished	{n} sťahovanie dokončené|{n} sťahovania dokončené|{n} sťahovaní dokončených
+#. count in preview.rs
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} download selected|{n} downloads selected	{n} vybraté sťahovanie|{n} vybraté sťahovania|{n} vybratých sťahovaní
 #. count in the main window
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} downloading|{n} downloading	{n} sťahovanie|{n} sťahovania|{n} sťahovaní
 #. count in extracting archives (a download's log, the Archive password window)
-#. in a download's log, after extracting: entries of the archive not written (links, names that would leave the folder)
+#. in a download's log, after extracting: entries of the archive not written (links, names that would leave the folder, entries under a file of the archive where a folder should be)
 #. {n} = a number (keep the braces as they are)
 #, machine
-@plural	{n} entry was left out (a link, or a name leading outside the folder)|{n} entries were left out (links, or names leading outside the folder)	{n} položka bola vynechaná (odkaz alebo názov vedúci mimo priečinka)|{n} položky boli vynechané (odkazy alebo názvy vedúce mimo priečinka)|{n} položiek bolo vynechaných (odkazy alebo názvy vedúce mimo priečinka)
+@plural	{n} entry was left out (a link, a name leading outside the folder, or a file in its way)|{n} entries were left out (links, names leading outside the folder, or files in their way)	{n} položka bola vynechaná (prepojenie, názov vedúci mimo priečinka alebo súbor v ceste)|{n} položky boli vynechané (prepojenia, názvy vedúce mimo priečinka alebo súbory v ceste)|{n} položiek bolo vynechaných (prepojenia, názvy vedúce mimo priečinka alebo súbory v ceste)
 #. count in a dialog box
 #. the summary of downloads added together; after "12 downloads finished": {n} of them failed
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} failed|{n} failed	{n} zlyhalo|{n} zlyhali|{n} zlyhalo
-#. count in the Batch download window; count in the Link grabber window; count in the Add torrent window; count in torrentfiles.rs
+#. count in the main window; count in the Batch download window; count in a dialog box; count in the Link grabber window; count in the Add torrent window; count in torrentfiles.rs; count in zippreview.rs
 #. how many files the pattern gives in all
 #. Link grabber: a package's row: {n} is its number of links
 #. {n} = a number (keep the braces as they are)
@@ -131,6 +135,10 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} file had the name of a file there already and was numbered|{n} files had the name of a file there already and were numbered	{n} súbor mal rovnaký názov ako existujúci súbor a bol očíslovaný|{n} súbory mali rovnaký názov ako existujúci súbor a boli očíslované|{n} súborov malo rovnaký názov ako existujúci súbor a bolo očíslovaných
+#. count in preview.rs
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} finished|{n} finished	{n} dokončené sťahovanie|{n} dokončené sťahovania|{n} dokončených sťahovaní
 #. count in the main window's messages (deleting downloads' files)
 #. the message's next line: how many more deleted files stayed on the disk
 #. {n} = a number (keep the braces as they are)
@@ -163,16 +171,36 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} tracker added|{n} trackers added	Pridaný {n} tracker|Pridané {n} trackery|Pridaných {n} trackerov
+#. count in the main window
+#. event log entry: trackers from the public tracker list (Torrent settings) were added to a torrent
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} tracker added from the public list|{n} trackers added from the public list	Bol pridaný {n} sledovač z verejného zoznamu|Boli pridané {n} sledovače z verejného zoznamu|Bolo pridaných {n} sledovačov z verejného zoznamu
 #. count in the Add torrent window
 #. where a magnet's peers came from: {n} = trackers asked; {peers} = "3 peers"
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} tracker: {peers}|{n} trackers: {peers}	{n} sledovač: {peers}|{n} sledovače: {peers}|{n} sledovačov: {peers}
+#. count in the main window
+#. the tip of MDM's notification area (tray) icon: {n} windows of MDM (Download complete...) wait while a full-screen game, app or presentation is on, and show when the user is back
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} window waits until you're back|{n} windows wait until you're back	{n} okno čaká, kým sa vrátite|{n} okná čakajú, kým sa vrátite|{n} okien čaká, kým sa vrátite
+#. count in the Link grabber window
+#. Link grabber's Source line: a Hugging Face repository's or GitHub release's ({package}: its name, "owner/name") files whose names would lead out of its folder (`../`, a drive, a device's name) are left out; {n} how many
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{package}: {n} file left out, its name would lead out of its folder|{package}: {n} files left out, their names would lead out of its folder	{package}: {n} súbor vynechaný, pretože jeho názov by viedol mimo priečinka|{package}: {n} súbory vynechané, pretože ich názvy by viedli mimo priečinka|{package}: {n} súborov vynechaných, pretože ich názvy by viedli mimo priečinka
 #. count in cnl.rs
 #. Click'n'Load window: {site} is a web site's name such as "example.com"
 #. {site} = a web site's name such as "example.com"; {n} = a number (keep the braces as they are)
 #, machine
 @plural	{site} wants to send {n} link to Link grabber.|{site} wants to send {n} links to Link grabber.	{site} chce poslať {n} odkaz do nástroja na získavanie odkazov.|{site} chce poslať {n} odkazy do nástroja na získavanie odkazov.|{site} chce poslať {n} odkazov do nástroja na získavanie odkazov.
+#. count in preview.rs
+#. the preview pane, several downloads selected: their total size, then how many of them have no known size yet; {size} e.g. "4.20 GB"
+#. {size} = a file size such as "4.2 MB"; {n} = a number (keep the braces as they are)
+#, machine
+@plural	{size} and {n} of unknown size|{size} and {n} of unknown size	{size} a {n} neznámej veľkosti|{size} a {n} neznámej veľkosti|{size} a {n} neznámej veľkosti
 #. count in playlistdlg.rs
 #. in Download video: a playlist title then how many videos it has ({count})
 #. {count} = a number (keep the braces as they are)
@@ -182,6 +210,10 @@
 #. in Download video: a playlist title, then how many of its videos are listed so far ({listed}) of how many ({total})
 #, machine
 @plural	{title}: {listed} of {total} video listed|{title}: {listed} of {total} videos listed	{title}: {listed} z {total} videa uvedených|{title}: {listed} z {total} videí uvedených|{title}: {listed} z {total} videí uvedených
+#. text in the Options window
+#. tooltip of "Don't show pop-ups while a full-screen app or presentation is running"
+#, machine
+	"Download complete" and the other windows MDM opens by itself wait while a full-screen game, app or video, a presentation or the locked screen is on, and show when you're back. The windows you open yourself, and links from your browser, always show	Okná „Sťahovanie dokončené“ a ostatné okná, ktoré MDM otvára automaticky, sa nezobrazujú, kým je spustená hra alebo aplikácia na celú obrazovku, prehráva sa video na celej obrazovke, prebieha prezentácia alebo je obrazovka uzamknutá. Zobrazia sa, keď sa vrátite. Okná, ktoré otvoríte sami, a odkazy z vášho prehliadača sa zobrazujú vždy.
 #. text in the settings
 #. Options → DNS: a server address typed isn't an IP address; {what} is what was typed
 #, machine
@@ -289,6 +321,10 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	A magnet link's files could not be looked up: {error}	Súbory magnetického prepojenia sa nepodarilo vyhľadať: {error}
+#. message or event log entry in the main window
+#. event log, at start: MDM was closed while this download was being moved to another folder; {folder} is where its file is now
+#, machine
+	A move was cut short when MDM closed: the download is in {folder}	Presun sa prerušil po zatvorení MDM: súbor sťahovania sa nachádza v priečinku {folder}
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
@@ -301,6 +337,9 @@
 #. why Part is greyed in Download video: the page is a playlist, whose videos are downloaded whole
 #, machine
 	A playlist's videos are downloaded whole	Videá zo zoznamu skladieb sa sťahujú celé
+#. message or event log entry in the main window
+#, machine
+	A private torrent: the public tracker list isn't added	Súkromný torrent: verejný zoznam sledovačov nebol pridaný
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites: the tooltip of the profile box
 #, machine
@@ -325,6 +364,10 @@
 #. tooltip on the disabled Rename box for a single-file torrent
 #, machine
 	A single-file torrent keeps its name	Jednosúborový torrent si ponecháva svoj názov
+#. text in the download list (sizes, speeds, status)
+#. why a torrent that isn't finished can't be moved or renamed: the torrent engine writes its pieces into the files where they are
+#, machine
+	A torrent can be moved once it's finished: until then the torrent engine writes its pieces where they are	Torrent je možné presunúť, keď sa dokončí: dovtedy jeho časti zapisuje torrentový modul tam, kde sú
 #. text in torrent_ownership.rs
 #. a torrent's folder is a link or junction leading outside its destination
 #, machine
@@ -333,6 +376,10 @@
 #. Add trackers: MDM never contacts a tracker on this computer or the local network
 #, machine
 	A tracker on this computer or the local network is never contacted: {line}	Tracker na tomto počítači alebo v lokálnej sieti sa nikdy nekontaktuje: {line}
+#. text in the download list (sizes, speeds, status)
+#. why a video or an image gallery that isn't finished can't be moved or renamed: yt-dlp, ffmpeg or gallery-dl keep their unfinished files in its folder
+#, machine
+	A video or a gallery can be moved once it's finished: until then its helper programs keep their unfinished files in its folder	Video alebo galériu je možné presunúť, keď sa dokončí: dovtedy jej pomocné programy uchovávajú nedokončené súbory v jej priečinku
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 #, machine
@@ -433,6 +480,10 @@
 #. text in extension.rs
 #, machine
 	Add the free extension: files you download in your browser come here, and videos get a Download button.	Pridajte bezplatné rozšírenie: súbory, ktoré stiahnete v prehliadači, sa dostanú sem a videá získajú tlačidlo Stiahnuť.
+#. text in the Add torrent window
+#. Torrent settings: add the trackers of a public tracker list (its address in the box below) to torrents that aren't private, so they find more peers
+#, machine
+	Add the trackers of this public list to public torrents:	Pridať sledovače z tohto verejného zoznamu k verejným torrentom:
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: add the torrents to the list without starting them
 #, machine
@@ -476,6 +527,10 @@
 #. remote control page (on a phone): a magnet link or .torrent file was added; MDM reads the torrent's files first
 #, machine
 	Added. MDM is reading the torrent: it joins the list in a moment.	Pridané. MDM číta torrent: o chvíľu sa pripojí k zoznamu.
+#. text in preview.rs
+#. label in the preview pane: when the download was added to the list
+#, machine
+	Added:	Pridané:
 #. text in the Batch download window; text in a dialog box; label in the Options window; text in a download's progress window
 #. noun: the web address (URL)
 #. column title: the web address (URL)
@@ -489,7 +544,11 @@
 #. remote control page (on a phone): label of the box where a download's address or a magnet link is typed
 #, machine
 	Address or magnet link	Adresa alebo magnet link
-#. text in the Options window; text in a download's Properties window
+#. message or event log entry in the main window
+#. Link grabber: where the links came from: the Add URL window (an address typed or pasted there)
+#, machine
+	Address typed	Zadaná adresa
+#. text in the Options window; text in preview.rs; text in a download's Properties window
 #. Options → DNS over HTTPS: label before the server's https:// address
 #, machine
 	Address:	Adresa:
@@ -583,6 +642,10 @@
 #. Link grabber, a link's status: the remedy from the failure's sentence, for a site whose bot check lets only browsers through. The sentence, with the same advice, is the cell's hover tip
 #, machine
 	Alt+click the link	Alt + kliknutie na odkaz
+#. text in requestedit.rs
+#. Site rule: check box; on, MDM connects the way a browser does from the first request to these sites, instead of only after a site turned it away ("this site lets only browsers through")
+#, machine
+	Always connect the way a browser does	Vždy sa pripájať ako prehliadač
 #. message or event log entry in the main window
 #. View menu: a check item; dark mode on, whatever the system's setting
 #, machine
@@ -606,6 +669,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Andorra	Andorra
+#. text in a dialog box
+#. why the phone could not be turned off after the queue (fills {error}, Android)
+#, machine
+	Android doesn't let apps turn the phone off	Systém Android neumožňuje aplikáciám vypnúť telefón
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -631,6 +698,10 @@
 #. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer's one wake alarm is already set by something else
 #, machine
 	Another program has set the computer's wake alarm	Iný program už nastavil budík na prebudenie počítača
+#. text in the Options window
+#. Site rule: OK with a site another rule already has
+#, machine
+	Another rule is for this site already: change that one	Pre túto lokalitu už existuje iné pravidlo: zmeňte ho
 #. text in the Options window
 #. Options → Proxy / Socks: Test's answer; {ms} milliseconds; {ip} the internet address the site saw (the proxy's, or this computer's without one)
 #, machine
@@ -700,6 +771,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Aruba	Aruba
+#. text in requestedit.rs
+#. a download's Connection settings → Proxy: the proxy set in Options → Proxy / Socks
+#, machine
+	As in Options	Ako v možnostiach
 #. option (radio button) in the Options window
 #, machine
 	As the system's region writes them	Podľa nastavenia oblasti systému
@@ -745,6 +820,7 @@
 #, machine
 	Austria	Rakúsko
 #. checkbox in the Options window; text in the Options window
+#. Options → Download panels → Button size: the round button in a feed and over a small video, the button with its words over a big one (the default)
 #. checkbox: the User-Agent is the default browser's, which MDM finds itself
 #, machine
 	Automatic	Automaticky
@@ -860,6 +936,10 @@
 #. the trailing ... means it opens a window: keep it
 #, machine
 	Browse...	Prehľadávať...
+#. text in the Options window
+#. Site rules: column title: "Yes" when the rule asks the way a browser connects from the first request
+#, machine
+	Browser	Prehliadač
 #. text in extension.rs
 #, machine
 	Browser integration isn't set up on this computer, so no browser can reach Mister Download Manager yet.	Integrácia prehliadača nie je v tomto počítači nastavená, takže žiadny prehliadač zatiaľ nemôže osloviť aplikáciu Mister Download Manager.
@@ -887,7 +967,7 @@
 #, machine
 	Busy, try later	Zaneprázdnené, skúste neskôr
 #. text in the Options window
-#. Options → Download panels: the size of the download button over videos, chosen after it (Full / Compact)
+#. Options → Download panels: the size of the download button over videos, chosen under it (Automatic / Full / Compact)
 #, machine
 	Button size:	Veľkosť tlačidla:
 #. message or event log entry in the main window
@@ -916,7 +996,7 @@
 #. a country's name (where a download's server is)
 #, machine
 	Canada	Kanada
-#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in extracting archives (a download's log, the Archive password window); button in the Find window; button in gallerydlg.rs; text in the Link grabber window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; text in remote.rs; button in the Scheduler window; button in the Add torrent window; button in traypanel.rs; button in the Download video window
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in extracting archives (a download's log, the Archive password window); button in the Find window; button in gallerydlg.rs; text in the Link grabber window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; text in remote.rs; button in the Scheduler window; button in the Add torrent window; button in traypanel.rs; button in the Download video window; text in zippreview.rs
 #. button: stop downloading the update
 #, machine
 	Cancel	Zrušiť
@@ -1077,12 +1157,22 @@
 #. remote control page (on a phone): what the ".torrent file" button does (screen readers)
 #, machine
 	Choose a .torrent file	Vybrať súbor .torrent
+#. message or event log entry in the main window
+#. title of the file dialog of View → Font → Choose a font file
+#. title of the message when the font picked in View → Font can't be used
+#, machine
+	Choose a font file	Vyberte súbor písma
 #. text in helpers.rs
+#. file picker title: choose a JavaScript runtime's program (node.exe, deno.exe, qjs.exe, bun.exe)
 #, machine
 	Choose a JavaScript runtime (Node.js, Deno, QuickJS or Bun)	Vyberte prostredie JavaScriptu (Node.js, Deno, QuickJS alebo Bun)
 #. text in langpick.rs
 #, machine
 	Choose a language	Vybrať jazyk
+#. text in a dialog box
+#. the Columns dialog: what it is for, above its list of the download list's columns
+#, machine
+	Choose columns to show	Vyberte stĺpce, ktoré sa majú zobraziť
 #. text in langpick.rs
 #, machine
 	Choose the language Mister Download Manager shows its windows in:	Vyberte jazyk, v ktorom sa majú zobrazovať okná programu Mister Download Manager:
@@ -1091,6 +1181,7 @@
 #, machine
 	Choose the profile's folder	Vyberte priečinok profilu
 #. text in helpers.rs; text in the Options window
+#. file picker title; {name} = yt-dlp or ffmpeg
 #. file picker title; {name} = the program to choose (yt-dlp, ffmpeg, 7-Zip)
 #. {name} = a file name (keep the braces as they are)
 #, machine
@@ -1156,11 +1247,15 @@
 #. a country's name (where a download's server is)
 #, machine
 	Colombia	Kolumbia
+#. window title in a dialog box; text in a dialog box
+#. what a screen reader calls the Columns dialog's list of the download list's columns
+#, machine
+	Columns	Stĺpce
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
 	Comoros	Komory
-#. option (radio button) in the Options window
+#. text in the Options window
 #. Options → Download panels → Button size: only the round button (the logo, the arrow, the close mark) over every video
 #, machine
 	Compact	Kompaktné
@@ -1210,6 +1305,23 @@
 #. tab title: connection settings
 #, machine
 	Connection	Pripojenie
+#. text in a download's Properties window
+#. window title: a download's own request settings (User-Agent, headers, connections, proxy), from File Properties → Connection...
+#, machine
+	Connection settings	Nastavenia pripojenia
+#. message or event log entry in the main window
+#. event log: File Properties → Connection settings changed the download's own User-Agent, headers, proxy or connections
+#, machine
+	Connection settings changed	Nastavenia pripojenia boli zmenené
+#. text in a download's Properties window
+#. File Properties button: opens the download's own request settings (User-Agent, headers, connections, proxy)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Connection...	Pripojenie...
+#. text in the Options window
+#. Site rules: column title: the number of connections (empty: the default)
+#, machine
+	Connections	Počet pripojení
 #. page title in the Options window
 #, machine
 	Connections and Limits	Pripojenia a limity
@@ -1479,6 +1591,10 @@
 #. button in the browser extension's window: stop offering it at each start
 #, machine
 	Don't ask again	Už sa nepýtať
+#. text in the Options window
+#. checkbox, Options → Downloads: Download complete and MDM's other windows that open by themselves wait while a full-screen game, app or video, a presentation or the locked screen is on, and show when the user is back
+#, machine
+	Don't show pop-ups while a full-screen app or presentation is running	Nezobrazovať kontextové okná, keď je spustená aplikácia na celú obrazovku alebo prezentácia
 #. checkbox in a dialog box
 #, machine
 	Don't show this dialog again	Už nezobrazovať toto dialógové okno
@@ -1637,6 +1753,10 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Downloading MDM's own copy...	Sťahuje sa vlastná kópia MDM...
+#. text in helpers.rs
+#. Helpers: MDM's own copy of a helper is being downloaded (where there was none, or in place of the system's); {percent} = how far, a number
+#, machine
+	Downloading MDM's own copy... {percent}%	Sťahuje sa vlastná kópia MDM... {percent}%
 #. text in archtest.rs
 #. in a download's log: after its archive test found damaged files, only their bytes are downloaded again from the same server; {size} like "1.20 MB"
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
@@ -1671,6 +1791,10 @@
 #. the notice shown once, the first time a download comes from a browser's private (incognito) window: it stays in MDM's list like any other, after a restart too; where to turn that off. {options} = the Options window, {general} = its General tab, {checkbox} = the checkbox "Keep private-window downloads in the list"
 #, machine
 	Downloads from a browser's private window stay in MDM's list like any other, also after MDM restarts; their cookies are never saved. To keep them in memory only, untick {options} → {general} → {checkbox}.	Sťahovania z privátneho okna prehliadača zostávajú v zozname MDM ako každé iné, aj po reštarte MDM; ich súbory cookie sa nikdy neukladajú. Ak ich chcete uchovávať iba v pamäti, zrušte začiarknutie {options} → {general} → {checkbox}.
+#. text in the Options window
+#. Site rules window: how the rules apply; *.example.com stays as it is
+#, machine
+	Downloads from these sites get these settings. Each one comes from the first rule in the list that names the site and sets it; * stands for any text: *.example.com	Sťahovania z týchto lokalít preberajú tieto nastavenia. Každé pochádza z prvého pravidla v zozname, ktoré uvádza lokalitu a nastavuje danú hodnotu; * zastupuje ľubovoľný text: *.example.com
 #. text in the tray icon's menu; text in traypanel.rs
 #. tray menu: a submenu of the downloads now running; choosing one shows its progress window
 #. the notification-area icon's panel (#1365): its title, over the downloads now running (also the tray menu's submenu)
@@ -1743,6 +1867,10 @@
 #. text in the Options window
 #, machine
 	Edit login	Upraviť prihlásenie
+#. text in the Options window
+#. window title: changing one site rule
+#, machine
+	Edit site rule	Upraviť pravidlo lokality
 #. button in the Options window
 #. verb: edit the item
 #. the trailing ... means it opens a window: keep it
@@ -1759,7 +1887,7 @@
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Email	E-mail
-#. text in the Download video window
+#. checkbox in the Download video window; text in the Download video window
 #. checkbox in Download video: the chapters a video's page lists (YouTube's, for one) go into the video file, where players show them and skip between them
 #, machine
 	Embed chapters	Vkladať kapitoly
@@ -1767,6 +1895,10 @@
 #. in Download a gallery, after the "Files at most" box
 #, machine
 	Empty: all of them. On most sites the newest come first.	Prázdne: všetky. Na väčšine stránok sú najnovšie prvé.
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: the hint under the User-Agent box
+#, machine
+	Empty: the browser's, or the one set in Options	Prázdne: prehliadača alebo to, ktoré je nastavené v Možnostiach
 #. text in crashui.rs
 #. crash report window button: end the frozen MDM and start it again
 #, machine
@@ -1844,6 +1976,10 @@
 #. choice in Download video's Part: the part is encoded again so it starts and ends exactly at From and To (slower)
 #, machine
 	Exact cut, encoded again	Presný rez, znova zakódované
+#. text in the Options window
+#. Site rule: the hint under the site box; the examples stay as they are
+#, machine
+	example.com, or *.example.com for its subdomains	example.com, alebo *.example.com pre jej subdomény
 #. text in the Options window
 #. label before an example date and time written the chosen way
 #, machine
@@ -1948,9 +2084,13 @@
 #, machine
 	Feeds:	Kanály:
 #. text in the Add torrent window
-#. Torrent settings, at the bottom
+#. Torrent settings, under the blocklist's address
 #, machine
 	Fetched again every 7 days. Changes apply when no torrent is running.	Znova sa načíta každých 7 dní. Zmeny sa prejavia, keď nie je spustený žiadny torrent.
+#. text in the Add torrent window
+#. Torrent settings, under the public tracker list's address
+#, machine
+	Fetched once a day. Never added to private torrents.	Načíta sa raz denne. Nikdy sa nepridáva k súkromným torrentom.
 #. text in helpers.rs
 #. helper name and what it does (ffmpeg is a program's name)
 #, machine
@@ -1971,7 +2111,8 @@
 #. tooltip of "Mark downloaded files as coming from the internet" on Linux
 #, machine
 	File managers show where the files marked this way came from. Unticked, no download is marked.	Správcovia súborov zobrazujú, odkiaľ pochádzajú takto označené súbory. Ak nie je začiarknuté, žiadne stiahnuté súbory sa neoznačia.
-#. text in the Scheduler window
+#. text in a download's progress window; text in the Scheduler window
+#. Zip preview's column: the file's name (its path inside the ZIP)
 #, machine
 	File Name	Názov súboru
 #. text in the Download video window
@@ -1993,6 +2134,10 @@
 #. text in categories.rs
 #, machine
 	File types:	Typy súborov:
+#. text in preview.rs
+#. label in the preview pane: whether the downloaded file is still where it was saved
+#, machine
+	File:	Súbor:
 #. text in a download's progress window; text in the Add torrent window
 #. tab title: the torrent's files
 #, machine
@@ -2011,6 +2156,10 @@
 #. text in the Scheduler window; tab in the Scheduler window
 #, machine
 	Files in the queue	Súbory v rade
+#. text in the download list (sizes, speeds, status)
+#. why files being taken out of a ZIP on its server (#1775) can't be moved or renamed yet: those already out are in its folder, the others still to come there
+#, machine
+	Files taken out of a ZIP can be moved once they're all out	Súbory extrahované zo ZIP archívu je možné presunúť, keď sú všetky extrahované
 #. button in a download's Properties window
 #. File Properties button that opens the selected torrent's file list
 #. the trailing ... means it opens a window: keep it
@@ -2053,6 +2202,10 @@
 #. remote control page (on a phone): tab: downloads finished
 #, machine
 	Finished	Dokončené
+#. text in preview.rs
+#. label in the preview pane: when the download finished
+#, machine
+	Finished:	Dokončené:
 #. text in a download's progress window
 #. a download's status: every byte is in, the file is being written out and given its name
 #. the trailing ... means it is still going on: keep it
@@ -2075,6 +2228,14 @@
 #. text in categories.rs
 #, machine
 	Folder:	Priečinok:
+#. text in the Options window
+#. Options → Archives → Link grabber, one line with two boxes: an FTP folder or a web server's folder listing ("Index of") given to Link grabber is read with its subfolders: {depth} is a number box (how many levels of subfolders, 3 at first; 0 is the folder's own files only), {types} a text box (file types such as ISO ZIP; empty for every type)
+#, machine
+	Folders: {depth} levels deep, types: {types}	Priečinky: do hĺbky {depth} úrovní, typy: {types}
+#. message or event log entry in the main window
+#. the kind of file View → Font → Choose a font file lists: TrueType and OpenType font files
+#, machine
+	Font files	Súbory písma
 #. text in finish.rs
 #. Snooze menu of the Download complete window: show no Download complete window for this long
 #, machine
@@ -2198,7 +2359,7 @@
 #, machine
 	FTP downloads don't go through an HTTP proxy. Choose SOCKS5 or SOCKS4 to send them through the proxy.	Súbory sťahované cez FTP neprechádzajú cez proxy HTTP. Ak ich chcete smerovať cez proxy, vyberte SOCKS5 alebo SOCKS4.
 #. text in the Options window
-#. Options → Download panels → Button size: the button with its words ("Download video", the quality) where they fit (the default)
+#. Options → Download panels → Button size: the button with its words ("Download video", the quality) wherever they fit
 #, machine
 	Full	Úplné
 #. text in countries.rs
@@ -2270,6 +2431,11 @@
 #. {version} = a version number (keep the braces as they are)
 #, machine
 	Go back to {version}	Vrátiť sa k verzii {version}
+#. text in helpers.rs
+#. Helpers: the "Go back" button's name for a screen reader; {version} = the earlier version, {name} = the helper (yt-dlp, ffmpeg, gallery-dl, Node.js)
+#. {version} = a version number; {name} = a file name (keep the braces as they are)
+#, machine
+	Go back to {version} of {name}	Vrátiť sa na verziu {version} programu {name}
 #. text in a download's progress window
 #. a torrent's sharing, when Torrent settings keep it on
 #, machine
@@ -2333,6 +2499,10 @@
 #. legend: pieces downloaded
 #, machine
 	Have	Dostupné
+#. text in the Options window
+#. Site rules: column title: how many request headers the rule adds
+#, machine
+	Headers	Hlavičky
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2358,6 +2528,15 @@
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 	Hide &categories	Skryť &kategórie
+#. message or event log entry in the main window
+#. View menu: hides the pane beside the download list that shows the selected download's picture and details
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	Hide &preview pane	Skryť &panel ukážky
+#. text in the Link grabber window
+#. Link grabber check box, ticked when it opens: the pictures shown on the browser's page (its images, not links to pictures), which "Download all links" sends with the links, are not shown
+#, machine
+	Hide images located on this web page	Skryť obrázky umiestnené na tejto webovej stránke
 #. button in a download's progress window
 #, machine
 	Hide tab	Skryť kartu
@@ -2484,11 +2663,11 @@
 #. in the "7-Zip needed" window, under why
 #, machine
 	Install 7-Zip (free), then right-click the download and choose Extract.	Nainštalujte 7-Zip (zadarmo), potom kliknite pravým tlačidlom myši na stiahnutý súbor a vyberte Rozbaliť.
-#. text in the Download video window
+#. text in helpers.rs; text in the Download video window
 #. button: download and install the ffmpeg program
 #, machine
 	Install ffmpeg	Nainštalovať ffmpeg
-#. button in gallerydlg.rs
+#. button in gallerydlg.rs; text in helpers.rs
 #. button: download and install the gallery-dl program
 #, machine
 	Install gallery-dl	Nainštalovať gallery-dl
@@ -2496,7 +2675,7 @@
 #. link in the browser extension's window: the tutorial that adds it without the browser's store
 #, machine
 	Install it by hand	Nainštalovať ručne
-#. text in the Download video window
+#. text in helpers.rs; text in the Download video window
 #. button in Download video: download and install Node.js, the JavaScript runtime YouTube needs (Node.js is a program's name)
 #, machine
 	Install Node.js	Nainštalovať Node.js
@@ -2508,7 +2687,7 @@
 #. in the "7-Zip needed" window, under why (Linux: 7-Zip comes from the distribution's packages, named 7zip or p7zip)
 #, machine
 	Install your system's 7zip (or p7zip) package, then right-click the download and choose Extract.	Nainštalujte balík 7zip (alebo p7zip) vášho systému, potom kliknite pravým tlačidlom myši na sťahovanie a vyberte Extrahovať.
-#. text in the Download video window
+#. text in helpers.rs; text in the Download video window
 #. button: download and install the yt-dlp program
 #, machine
 	Install yt-dlp	Nainštalovať yt-dlp
@@ -2603,6 +2782,14 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	its files could not be written: {error}	jej súbory sa nedali zapísať: {error}
+#. text in preview.rs
+#. the preview pane: neither the file nor its folder can be found now (an unplugged drive, a network folder away)
+#, machine
+	Its folder can't be reached now	Jeho priečinok je momentálne nedostupný
+#. text in relocate.rs
+#. why an unfinished download could not be moved (after "The file could not be moved: "): its folder isn't there now (a drive taken out); {folder} is that folder
+#, machine
+	its folder {folder} can't be reached	jeho priečinok {folder} je nedostupný
 #. text in the download list (sizes, speeds, status)
 #. why a video download failed: ffmpeg couldn't join its picture and sound into one file; {error} = ffmpeg's reason, in English
 #. {error} = an error message (keep the braces as they are)
@@ -2790,6 +2977,23 @@
 #. Torrent settings: an upload speed limit for all torrents together, followed by a box with the speed and "KBytes/sec"
 #, machine
 	Limit uploading for all torrents to	Obmedziť nahrávanie pre všetky torrenty na
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: a header's name has a space or another character names can't have; {line} is the line's number
+#, machine
+	Line {line}: a header's name has letters, digits and dashes only	Riadok {line}: názov hlavičky obsahuje iba písmená, číslice a pomlčky
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: a header MDM sets itself for each request (Range, Host…) can't be typed; {line} is the line's number, {name} the header's name
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Line {line}: Mister Download Manager sets {name} itself	Riadok {line}: Mister Download Manager nastavuje {name} sám
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: a header's value (or the User-Agent) holds a control character; {line} is the line's number
+#, machine
+	Line {line}: the value has a character a header can't hold	Riadok {line}: hodnota obsahuje znak, ktorý hlavička nemôže obsahovať
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: a line of request headers isn't "Name: value"; {line} is its number
+#, machine
+	Line {line}: write a header as Name: value	Riadok {line}: napíšte hlavičku ako Názov: hodnota
 #. message or event log entry in the main window; window title in the Link grabber window; group box title in the Options window
 #. Options → Archives: group box title
 #, machine
@@ -2803,6 +3007,10 @@
 #. in Link grabber, where the addresses came from: a page in the browser
 #, machine
 	Links from the browser	Odkazy z prehliadača
+#. text in a dialog box
+#. tooltip of Download File Info's Preview button for a ZIP (#1775): it lists the files inside, to download only some of them
+#, machine
+	List the files inside the ZIP and pick those to download	Zobraziť súbory v ZIP archíve a vybrať tie, ktoré sa majú stiahnuť
 #. text in playlistdlg.rs
 #. button in Download video: go on listing a playlist from where it stopped
 #, machine
@@ -2880,10 +3088,20 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Looking for your default browser...	Hľadá sa váš predvolený prehliadač...
+#. text in a dialog box
+#. tooltip of Download File Info's greyed Preview button while MDM asks the server whether it can look inside the ZIP (#1775)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Looking inside the ZIP...	Prehľadáva sa ZIP archív...
 #. text in the Download video window
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Looking the page up...	Vyhľadáva sa stránka...
+#. text in preview.rs
+#. the preview pane: still looking whether the file is there
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Looking...	Hľadá sa...
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3051,6 +3269,27 @@
 #. remote control page (on a phone): no pairing code is shown in MDM; "Pair a device" is MDM's button
 #, machine
 	MDM shows no code now. Click Pair a device there first.	MDM teraz nezobrazuje žiadny kód. Najprv tam kliknite na Spárovať zariadenie.
+#. text in errors.rs
+#. error installing ffmpeg: the list of builds MDM accepts couldn't be read; {detail} = the technical detail, in English
+#, machine
+	MDM's list of checked ffmpeg builds can't be read ({detail})	Nepodarilo sa prečítať zoznam skontrolovaných zostavení ffmpeg v MDM: {detail}
+#. text in errors.rs
+#. error installing ffmpeg: MDM installs only builds named in a list it publishes, signed with its key, and that list couldn't be downloaded; {error} = why
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	MDM's list of checked ffmpeg builds could not be downloaded: {error}	Zoznam skontrolovaných zostavení ffmpeg v MDM sa nepodarilo stiahnuť: {error}
+#. text in errors.rs
+#. error installing ffmpeg: the list of builds MDM accepts has none for this computer's system and processor
+#, machine
+	MDM's list of checked ffmpeg builds has none for this computer	Zoznam skontrolovaných zostavení ffmpeg v MDM neobsahuje žiadne pre tento počítač
+#. text in errors.rs
+#. error installing ffmpeg: the list of builds MDM accepts is older than one this copy of MDM already used (it never goes back to an older list)
+#, machine
+	MDM's list of checked ffmpeg builds is older than one already used, so ffmpeg wasn't installed	Zoznam skontrolovaných zostavení ffmpeg v MDM je starší ako už použitý, takže ffmpeg nebol nainštalovaný
+#. text in errors.rs
+#. error installing ffmpeg: the list of builds MDM accepts doesn't carry MDM's own signature
+#, machine
+	MDM's list of checked ffmpeg builds isn't signed by MDM's key, so ffmpeg wasn't installed	Zoznam skontrolovaných zostavení ffmpeg v MDM nie je podpísaný kľúčom MDM, takže ffmpeg nebol nainštalovaný
 #. text in whereis.rs
 #. how far a download's server is, by its round trip (60 to 150 ms)
 #, machine
@@ -3151,6 +3390,10 @@
 #. Monday, as short as a calendar's column head (two letters in English)
 #, machine
 	Mo	Po
+#. text in a download's progress window
+#. Zip preview's column: when the file was last changed, as the ZIP says
+#, machine
+	Modified	Upravené
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3204,7 +3447,8 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move between the toolbar, the categories and the download list	Presun medzi panelom s nástrojmi, kategóriami a zoznamom sťahovaní
-#. text in the Scheduler window
+#. text in a dialog box; text in the Scheduler window
+#. button in the Columns dialog: move the selected column one place towards the end of the list
 #, machine
 	Move down	Presunúť nadol
 #. text in a dialog box
@@ -3220,7 +3464,9 @@
 #. message or event log entry in the main window
 #, machine
 	Move to queue	Presunuté do fronty
-#. text in the Scheduler window
+#. text in a dialog box; text in the Scheduler window
+#. button in the Columns dialog: move the selected column one place towards the start of the list
+#. tooltip of an icon button in the Scheduler's list of files
 #, machine
 	Move up	Presunúť nahor
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
@@ -3229,10 +3475,27 @@
 #. message or event log entry in the main window
 #, machine
 	Move/Rename	Presunúť/Premenovať
+#. text in preview.rs
+#. the preview pane: a finished download's file is no longer where it was saved
+#, machine
+	Moved or deleted	Súbor premiestnený alebo odstránený
+#. message or event log entry in the main window
+#. event log: an unfinished download's part file was moved to another folder; it resumes there; {folder} is that folder
+#, machine
+	Moved to {folder}	Presunuté do {folder}
 #. message or event log entry in the main window
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Moving the file...	Presúvanie súboru...
+#. message or event log entry in the main window
+#. event log: an unfinished download's part file is being moved to another folder; {folder} is that folder
+#, machine
+	Moving to {folder}	Presúva sa do {folder}
+#. text in the download list (sizes, speeds, status)
+#. a download's status: its unfinished file is being moved to another folder
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Moving...	Presúva sa...
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3331,6 +3594,10 @@
 #, machine
 	New code	Nový kód
 #. text in the Options window
+#. tooltip of Options → Save to → "Save every download in "General" category's folder"
+#, machine
+	New downloads of every category go to this one folder; their categories still sort the list. A download's folder can still be changed in the window that starts it, and the downloads already in the list stay where they are.	Nové sťahovania všetkých kategórií sa uložia do tohto priečinka; kategórie sa naďalej používajú na triedenie zoznamu. Priečinok sťahovania možno zmeniť v okne, v ktorom sa sťahovanie spúšťa, a sťahovania, ktoré už sú v zozname, zostanú na svojom mieste.
+#. text in the Options window
 #, machine
 	New exception	Nová výnimka
 #. text in the Options window
@@ -3341,6 +3608,10 @@
 #. RSS feeds window, Download rules: make a new rule
 #, machine
 	New rule	Nové pravidlo
+#. text in the Options window
+#. window title: adding a site rule
+#, machine
+	New site rule	Nové pravidlo lokality
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3394,6 +3665,10 @@
 #. message or event log entry in the main window
 #, machine
 	No download links were found in the clipboard. Copy a text with http, https, ftp or magnet links in it, and try again.	V schránke sa nenašli žiadne prepojenia na stiahnutie. Skopírujte text s prepojeniami http, https, ftp alebo magnet a skúste to znova.
+#. text in preview.rs
+#. the preview pane (beside the download list) when no download is selected: its title
+#, machine
+	No download selected	Nie je vybraté žiadne sťahovanie
 #. text in traypanel.rs
 #. the notification-area icon's panel (#1365) when no download is running
 #, machine
@@ -3450,6 +3725,10 @@
 #. a magnet link's lookup, after 30 seconds without a peer
 #, machine
 	No peers yet. Few people may share this torrent, or a firewall, a VPN or the network may be blocking BitTorrent.	Zatiaľ žiadni partneri. Tento torrent môže zdieľať málo ľudí, alebo brána firewall, VPN či sieť môžu blokovať BitTorrent.
+#. text in requestedit.rs
+#. a download's Connection settings → Proxy: straight to the server, no proxy
+#, machine
+	No proxy	Bez proxy servera
 #. text in the Options window
 #, machine
 	No proxy/socks	Žiadny proxy/socks
@@ -3533,12 +3812,20 @@
 #. RSS feeds window: the selected feed hasn't been fetched yet
 #, machine
 	Not fetched yet	Zatiaľ nestiahnuté
+#. text in the Link grabber window
+#. Link grabber, a link's status: a Hugging Face repository or folder, or a GitHub release or tag, that isn't there. The sentence is the cell's hover tip
+#, machine
+	Not found	Nenájdené
 #. value in a column's filter list in the download list
 #, machine
 	Not in a queue	Nie je vo fronte
 #. text in helpers.rs
 #, machine
 	Not installed yet	Ešte nenainštalované
+#. text in preview.rs
+#. the preview pane: the size of a download is not known yet
+#, machine
+	Not known yet	Zatiaľ neznáme
 #. text in the Link grabber window
 #. Link grabber, a link's status: a web page sent it (Click'n'Load), so it isn't looked up (name, size, online) before it is added
 #, machine
@@ -3585,6 +3872,10 @@
 #. text in the Options window
 #, machine
 	Number	Číslo
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: check box before the number box; unticked, the number set in Options → Connection applies
+#, machine
+	Number of connections:	Počet pripojení:
 #. checkbox in the Scheduler window
 #, machine
 	Number of retries for each file if downloading failed :	Počet opakovaní pre každý súbor, ak sťahovanie zlyhalo:
@@ -3620,7 +3911,7 @@
 #. Link grabber, a link's status: the server hasn't the file; {status} is the HTTP code (404)
 #, machine
 	Offline ({status})	Offline ({status})
-#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; text in extracting archives (a download's log, the Archive password window); text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's Properties window; button in the Scheduler window; button in the Add torrent window
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; text in extracting archives (a download's log, the Archive password window); text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's Properties window; button in the Scheduler window; button in the Add torrent window; text in zippreview.rs
 #, machine
 	OK	OK
 #. text in countries.rs
@@ -3674,13 +3965,10 @@
 #. Link grabber, a link's status: the server has the file
 #, machine
 	Online	Online
-#. text in a download's Properties window
-#. tooltip of the greyed Move button in File Properties
+#. text in the Options window
+#. Options → Archives → Link grabber: the hover tip of the types box in "Folders: {depth} levels deep, types: {types}": only a folder's files of these types go into Link grabber; written as the File types page writes them
 #, machine
-	Only a finished download, or one not started yet, can be moved	Presunúť možno len dokončené sťahovanie alebo také, ktoré sa ešte nezačalo
-#. message or event log entry in the main window
-#, machine
-	Only a finished download, or one not started yet, can be moved. Stop it and finish it first.	Presunúť možno len dokončené sťahovanie alebo také, ktoré sa ešte nezačalo. Najprv ho zastavte a dokončite.
+	Only a folder's files of these types, written as on the File types page (ISO ZIP R0*). Empty: every type.	Len súbory priečinka týchto typov, napísané ako na stránke Typy súborov (ISO ZIP R0*). Prázdne: všetky typy.
 #. text in the Download video window
 #. checkbox in Download video: download only a part of the video or sound; the From and To boxes follow it
 #, machine
@@ -3709,6 +3997,10 @@
 #. checkbox in a dialog box
 #, machine
 	Only while I'm using the computer	Len keď používam počítač
+#. message or event log entry in the main window
+#. event log entry: the download is files picked inside a ZIP in Zip preview (#1775); {files} how many ("3 files")
+#, machine
+	Only {files} picked inside the ZIP	V ZIP archíve bolo vybratých iba {files}
 #. button in a dialog box; text in a dialog box; button in a download's Properties window; button in torrentfiles.rs
 #. verb: opens the downloaded file
 #. title of the message when a downloaded file can't be opened
@@ -3789,6 +4081,10 @@
 #. Link grabber: the box that edits the selected package
 #, machine
 	Package	Balík
+#. text in a download's progress window
+#. Zip preview's column: the file's size as packed (compressed) inside the ZIP
+#, machine
+	Packed	Zbalené
 #. text in gallerydlg.rs; text in the Download video window
 #, machine
 	Page address	Adresa stránky
@@ -3877,10 +4173,14 @@
 #. remote control page (on a phone): button: pause a download
 #, machine
 	Pause	Pozastaviť
-#. text in a download's Properties window
+#. text in the download list (sizes, speeds, status)
 #. tooltip of the greyed Move button in File Properties
 #, machine
 	Pause the download first	Najprv pozastavte sťahovanie
+#. tooltip (why a control is greyed) in a download's Properties window
+#. tooltip of File Properties' greyed Connection... button while the download runs
+#, machine
+	Pause the download to change how it connects	Pozastavte sťahovanie, aby ste zmenili spôsob pripojenia
 #. text in a download's progress window
 #. a download's status (state it is in, not a command): stopped for now
 #, machine
@@ -3957,8 +4257,8 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Press keys...	Stlačte klávesy...
-#. button in a dialog box
-#. verb: open the part already downloaded
+#. button in a dialog box; text in a dialog box
+#. verb: Download File Info's button; for a ZIP, it lists the files inside it to pick those to download (#1775)
 #, machine
 	Preview	Náhľad
 #. text in a dialog box
@@ -4001,6 +4301,10 @@
 #. label in the Options window
 #, machine
 	Proxy server address	Adresa proxy servera
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: label before the proxy choice
+#, machine
+	Proxy:	Proxy server:
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -4061,6 +4365,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Reading the torrent...	Čítanie torrentu...
+#. text in zippreview.rs
+#. Zip preview, while the ZIP's list of files is being read from its server
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Reading the ZIP's list of files...	Načítava sa zoznam súborov ZIP archívu...
 #. message or event log entry in the main window
 #. the status strip while Tasks → Import reads a file; {file} is its name
 #. the trailing ... means it is still going on: keep it
@@ -4173,6 +4482,14 @@
 #. group box title: what the * in the address is replaced with (numbers or letters)
 #, machine
 	Replace asterisk to	Nahradiť hviezdičku za
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: label above the box of request headers, one a line ("X-Token: abc")
+#, machine
+	Request headers, one a line (Name: value):	Hlavičky požiadaviek, jedna na riadok (Názov: hodnota):
+#. text in a dialog box
+#. button in the Columns dialog: put the columns back as they first were (order, widths, all shown)
+#, machine
+	Reset	Obnoviť
 #. text in crashui.rs
 #. crash report window button: start MDM again
 #, machine
@@ -4290,6 +4607,11 @@
 #. text in a dialog box
 #, machine
 	Save As	Uložiť ako
+#. text in the Options window
+#. Options → Save to, a check box: new downloads of every category go to General's folder; {category} is General's name
+#. {category} = a category name such as "Music" (keep the braces as they are)
+#, machine
+	Save every download in "{category}" category's folder	Uložiť každé sťahovanie do priečinka kategórie „{category}“
 #. text in gallerydlg.rs; text in the Options window; text in the Add torrent window; text in the Download video window
 #. tab title: where downloads are saved
 #, machine
@@ -4298,7 +4620,7 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Save To...	Uložiť do...
-#. text in a download's progress window; text in a download's Properties window
+#. text in preview.rs; text in a download's progress window; text in a download's Properties window
 #, machine
 	Save To:	Uložiť do:
 #. text in the Batch download window; text in the Link grabber window; text in rssdlg.rs
@@ -4336,7 +4658,11 @@
 #. text in the Batch download window
 #, machine
 	Second file:	Druhý súbor:
-#. button in playlistdlg.rs; button in the Add torrent window; text in torrentfiles.rs
+#. text in preview.rs
+#. the preview pane when no download is selected, under its title
+#, machine
+	Select a download to see its picture and details here.	Vyberte sťahovanie, aby ste tu videli jeho obrázok a podrobnosti.
+#. button in playlistdlg.rs; button in the Add torrent window; text in torrentfiles.rs; text in zippreview.rs
 #. button in Download video for a playlist: tick every video
 #, machine
 	Select all	Vybrať všetko
@@ -4489,6 +4815,11 @@
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 	Show &categories	Zobraziť &kategórie
+#. message or event log entry in the main window
+#. View menu: shows a pane beside the download list with the selected download's picture and details
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	Show &preview pane	Zobraziť &panel ukážky
 #. text in the Options window
 #, machine
 	Show a dialog and ask what to do.	Zobraziť dialógové okno a opýtať sa, čo robiť.
@@ -4523,6 +4854,9 @@
 #. button in the browser extension's window: open the tutorial that adds the extension
 #, machine
 	Show me how	Ukázať mi ako
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Show or hide the preview pane	Zobraziť alebo skryť panel ukážky
 #. checkbox in the Options window
 #, machine
 	Show queue selection panel on closing batch download dialogs	Zobraziť panel výberu frontu pri zatváraní dialógových okien dávkového sťahovania
@@ -4554,6 +4888,10 @@
 #. button: sign in to the debrid service in the browser, by typing a code there
 #, machine
 	Sign in in the browser	Prihlásiť sa v prehliadači
+#. text in the Options window
+#. Options → Accounts (Android): where the debrid accounts' sign-ins and the other passwords are kept (encrypted with a key held by Android's keystore)
+#, machine
+	Sign-ins and passwords are kept encrypted with a key in Android's keystore.	Prihlasovacie údaje a heslá sa uchovávajú šifrované pomocou kľúča v úložisku kľúčov systému Android.
 #. text in the Options window
 #. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (the macOS login keychain)
 #, machine
@@ -4606,9 +4944,23 @@
 #. a country's name (where a download's server is)
 #, machine
 	Sint Maarten	Sint Maarten
+#. text in the Options window
+#. Site rules: column title: the site pattern
+#, machine
+	Site	Lokalita
 #. checkbox in the Find window
 #, machine
 	Site name/Download link/Parent web page/Referer	Názov stránky/Odkaz na stiahnutie/Nadradená webová stránka/Referer
+#. window title in the Options window; text in the Options window
+#. window title: per-site settings (User-Agent, headers, connections, the browser-like connection) by site pattern
+#. Site rules window: the list's name for screen readers
+#, machine
+	Site rules	Pravidlá lokalít
+#. text in the Options window
+#. Options → Connection: button: opens the per-site settings (User-Agent, headers, connections)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Site rules...	Pravidlá lokalít...
 #. text in the Options window
 #. column title: the site (and path) a login is for
 #, machine
@@ -4616,6 +4968,10 @@
 #. text in the Options window
 #, machine
 	Site/path:	Stránka/cesta:
+#. text in the Options window
+#. Site rule: label before the site pattern box (example.com, *.example.com)
+#, machine
+	Site:	Lokalita:
 #. text in the Options window
 #. tab title: user names and passwords for sites
 #, machine
@@ -4635,7 +4991,7 @@
 #. the video's file size is not known
 #, machine
 	size unknown	veľkosť neznáma
-#. text in a download's Properties window
+#. text in preview.rs; text in a download's Properties window
 #, machine
 	Size:	Veľkosť:
 #. text in a download's progress window; text in torrentfiles.rs
@@ -4748,6 +5104,10 @@
 #. tooltip on the disabled Rename box when the file is one part of a split archive (.part1.rar, .7z.001…)
 #, machine
 	Split archive volumes keep their names for extraction	Zväzky rozdeleného archívu si pre rozbalenie ponechávajú svoje názvy
+#. text in the Download video window
+#. checkbox in Download video: split the video into one file per chapter (the whole video is kept too)
+#, machine
+	Split into chapters	Rozdeliť na kapitoly
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -4769,6 +5129,11 @@
 #. checkbox in the Options window
 #, machine
 	Start downloading immediately while displaying "Download File Info" dialog	Spúšťať sťahovanie okamžite pri zobrazení dialógového okna „Informácie o súbore na stiahnutie“
+#. text in a dialog box
+#. Download File Info, on hover over the number of files picked in Zip preview (#1775): {files} how many ("3 files"), {size} their size together, {folder} the folder they go into (named after the archive)
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	Start downloads only the {files} picked in the ZIP ({size}), into {folder}	Spustiť sťahovanie iba {files} vybratých v ZIP archíve ({size}), do priečinka {folder}
 #. text in the tray icon's menu
 #, machine
 	Start main download queue	Spustiť hlavný front sťahovania
@@ -4824,14 +5189,22 @@
 #. column title: the download's state
 #, machine
 	Status	Stav
-#. text in a download's Properties window
+#. text in preview.rs; text in a download's Properties window
 #. label before the download's state
 #, machine
 	Status:	Stav:
+#. text in preview.rs
+#. the preview pane: a finished download's file is still where it was saved
+#, machine
+	Still there	Stále na pôvodnom mieste
 #. text in remote.rs; text in the Add torrent window
 #. remote control page (on a phone): button: stop a queue
 #, machine
 	Stop	Zastaviť
+#. text in a download's progress window
+#. button in the progress window of a download that never ends by itself (an internet radio, a camera feed: no size, can't be resumed): stop it and keep what has arrived as the finished file
+#, machine
+	Stop and keep	Zastaviť a ponechať
 #. text in a download's progress window
 #. button in a live stream's progress window: stop recording it and keep what was recorded as a video file
 #, machine
@@ -4964,10 +5337,6 @@
 #. a country's name (where a download's server is)
 #, machine
 	Tanzania	Tanzánia
-#. text in the Options window
-#. \\n starts a new line: break lines where they fit the translation
-#, machine
-	Tasks → Link grabber, or the browser's "Download all links": a split\narchive's volumes are one package, the other links of a page another.	Úlohy → Sťahovač odkazov, alebo „Stiahnuť všetky odkazy“ v prehliadači: zväzky\nrozdeleného archívu sú jeden balík, ostatné odkazy stránky iný.
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Tell a friend	Povedzte priateľovi
@@ -5155,6 +5524,10 @@
 #. {host} = a server name such as "example.com" (keep the braces as they are)
 #, machine
 	the download from {host} was cut short	sťahovanie z {host} bolo predčasne prerušené
+#. text in the download list (sizes, speeds, status)
+#. why a download can't be moved or renamed now: it is being moved already
+#, machine
+	The download is being moved	Sťahovanie sa presúva
 #. tooltip (why a control is greyed) in a download's Properties window
 #. tooltip of the greyed Open button in File Properties
 #, machine
@@ -5176,6 +5549,10 @@
 #. text in a dialog box
 #, machine
 	The download queue is done.	Front sťahovaní je dokončený.
+#. text in errors.rs
+#. error installing ffmpeg: the file downloaded isn't the build named in the list of builds MDM accepts (its checksum differs), so it was thrown away
+#, machine
+	the downloaded ffmpeg isn't the build MDM's list of checked builds names, so it wasn't installed	Stiahnutý ffmpeg nie je zostavenie uvedené v zozname skontrolovaných zostavení MDM, takže nebol nainštalovaný
 #. text in errors.rs
 #, machine
 	the downloaded program doesn't match its signed checksum	stiahnutý program sa nezhoduje s podpísaným kontrolným súčtom
@@ -5211,6 +5588,10 @@
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
 	The file does NOT match ({algorithm})	Súbor sa NEZHODUJE ({algorithm})
+#. text in errors.rs
+#. why a file taken out of a ZIP on its server failed (#1775): its bytes aren't what the ZIP's list of files says (its size or its CRC-32 checksum)
+#, machine
+	the file in the ZIP doesn't match the ZIP's list of files (its size or checksum): download the whole archive	súbor v ZIP archíve sa nezhoduje so zoznamom súborov ZIP archívu (jeho veľkosť alebo kontrolný súčet): stiahnite si celý archív
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
@@ -5279,6 +5660,10 @@
 #. an error: the network adapter chosen in Options (a VPN's, usually) is off or gone; {adapter} its name
 #, machine
 	the network adapter {adapter} is not connected	sieťový adaptér {adapter} nie je pripojený
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: the number of connections typed is out of range; {max} is 32 (or 128)
+#, machine
+	The number of connections must be from 1 to {max}	Počet pripojení musí byť od 1 do {max}
 #. text in torrent_ownership.rs
 #. error when a torrent's output folder path cannot be used
 #, machine
@@ -5340,6 +5725,10 @@
 #. text in errors.rs
 #, machine
 	the server can't send parts of the file, so it can't be resumed	server nedokáže odosielať časti súboru, takže sťahovanie nemožno obnoviť
+#. text in errors.rs
+#. Zip preview (#1775): the server doesn't send parts of a file (HTTP ranges), so MDM can't fetch only some files from inside a ZIP; the whole archive still downloads
+#, machine
+	the server can't send parts of the ZIP, so its files can't be downloaded one by one: download the whole archive	server nemôže odosielať časti ZIP archívu, takže jeho súbory nemožno sťahovať jednotlivo: stiahnite si celý archív
 #. text in errors.rs
 #, machine
 	the server did not answer in time	server neodpovedal včas
@@ -5477,9 +5866,17 @@
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	The update is open in your system's package installer.	Aktualizácia je otvorená v inštalátore balíkov vášho systému.
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: the User-Agent typed holds a control character
+#, machine
+	The User-Agent has a character a header can't hold	User-Agent obsahuje znak, ktorý hlavička nemôže obsahovať
 #. text in a download's Properties window
 #, machine
 	The web page from which this file was obtained:	Webová stránka, z ktorej bol tento súbor získaný:
+#. text in errors.rs
+#. why a file can't be taken out of a ZIP on its server (#1775): the ZIP was replaced on the server after its files were listed; Zip preview is the window that lists them
+#, machine
+	the ZIP changed on the server since its files were listed: open its Zip preview again	ZIP archív sa na serveri zmenil od zobrazenia jeho súborov: znova otvorte jeho náhľad ZIP archívu
 #. message or event log entry in the main window
 #. the kind of file View → Theme → Add a theme file lists: MDM's themes (TOML, JSON), Base16 schemes (YAML) and pywal's colors.json
 #, machine
@@ -5503,12 +5900,20 @@
 #. why an archive wasn't extracted (after "Couldn't extract {name}: "); HatchZip is a program's name
 #, machine
 	there isn't enough free space for its files, HatchZip says; nothing was changed	nie je dostatok voľného miesta pre jeho súbory, uvádza HatchZip; nič sa nezmenilo
+#. text in relocate.rs
+#. why a download's file could not be moved to another drive (after "The file could not be moved: "); {needed} and {free} are sizes ("1.2 GB")
+#, machine
+	there isn't enough free space there ({needed} needed, {free} free)	nie je tam dostatok voľného miesta ({needed} potrebných, {free} voľných)
 #. text in a download's progress window
 #, machine
 	These settings are unavailable when "Show download complete dialog" is turned on	Tieto nastavenia nie sú dostupné, keď je zapnutá možnosť „Zobraziť dialógové okno po dokončení sťahovania“
 #. text in helpers.rs
 #, machine
 	They keep downloading if you close this window.	Sťahovanie pokračuje aj po zatvorení tohto okna.
+#. text in errors.rs
+#. error when opening a .torrent file whose piece size or list of pieces doesn't fit its files (damaged, or made wrong); it isn't added
+#, machine
+	this .torrent file is damaged: its pieces don't match its files	Tento súbor .torrent je poškodený: jeho časti sa nezhodujú so súbormi
 #. text in a dialog box
 #, machine
 	This address is already in the list of downloads:	Táto adresa je už v zozname sťahovaní:
@@ -5555,10 +5960,26 @@
 #, machine
 	This device's name	Názov tohto zariadenia
 #. message or event log entry in the main window
+#. the message when a file picked in View → Font isn't a TrueType or OpenType font MDM can read
+#, machine
+	This file can't be used as a font.	Tento súbor nemožno použiť ako písmo.
+#. message or event log entry in the main window
 #. {error} is why, in English (a file that isn't a theme or a colour scheme, a colour missing)
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	This file can't be used as a theme: {error}	Tento súbor sa nedá použiť ako téma: {error}
+#. text in errors.rs
+#. why a file can't be taken out of a ZIP on its server (#1775): it is encrypted (password-protected) in the ZIP
+#, machine
+	this file is encrypted in the ZIP: download the whole archive and open it with its password	tento súbor je v ZIP archíve šifrovaný: stiahnite si celý archív a otvorte ho pomocou hesla
+#. text in errors.rs
+#. why a file can't be taken out of a ZIP on its server (#1775): the ZIP no longer holds it
+#, machine
+	this file is no longer in the ZIP on the server	tento súbor už nie je v ZIP archíve na serveri
+#. text in errors.rs
+#. why a file can't be taken out of a ZIP on its server (#1775): it is compressed with a method MDM doesn't unpack there; {method} is the method's name (BZIP2, LZMA, Deflate64…)
+#, machine
+	this file is packed in a way MDM can't unpack from the server ({method}): download the whole archive	tento súbor je zbalený spôsobom, ktorý MDM nemôže rozbaliť zo servera ({method}): stiahnite si celý archív
 #. text in remote.rs
 #. remote control page (on a phone): the file chosen is too large for a .torrent file
 #, machine
@@ -5593,6 +6014,10 @@
 #. a check of Test browser integration: a portable copy can't be connected
 #, machine
 	This is the installed copy, not a portable one	Toto je nainštalovaná kópia, nie prenosná
+#. text in errors.rs
+#. Zip preview (#1775): the address isn't a ZIP archive whose list of files MDM can read on the server
+#, machine
+	this isn't a ZIP archive MDM can look inside on the server: download the whole file	toto nie je ZIP archív, do ktorého sa MDM môže pozrieť na serveri: stiahnite si celý súbor
 #. text in playlistdlg.rs
 #. in Download video, a playlist or channel that lists no video
 #, machine
@@ -5607,6 +6032,7 @@
 	This name is reserved by Windows	Tento názov je vyhradený systémom Windows
 #. tooltip (why a control is greyed) in the Download video window
 #. why "Embed chapters" is greyed: ffmpeg (a helper program) is not installed
+#. why "Split into chapters" is greyed: ffmpeg (a helper program) is not installed
 #. why Part is greyed in Download video: ffmpeg (a helper program) is not installed
 #. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
 #, machine
@@ -5628,6 +6054,10 @@
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	this program isn't {name}	tento program nie je {name}
+#. text in requestedit.rs
+#. a download's Connection settings → Proxy: the proxy typed in the box beside
+#, machine
+	This proxy:	Tento proxy server:
 #. text in the Options window
 #. Options → General: shown when the chosen global shortcut is already registered by another program (#558)
 #, machine
@@ -5657,7 +6087,7 @@
 #. torrent start needs explicit write permission; {file} is the first existing file without a matching grant
 #, machine
 	This torrent needs permission to use {file} before it can start.	Tento torrent potrebuje povolenie na použitie {file}, kým sa môže spustiť.
-#. message or event log entry in the main window; text in a download's Properties window
+#. message or event log entry in the main window; text in the download list (sizes, speeds, status)
 #. shown when Move or Rename is refused: a torrent saved straight in Save to shares that folder with other files
 #, machine
 	This torrent shares its destination folder	Tento torrent zdieľa svoj cieľový priečinok
@@ -5669,6 +6099,18 @@
 #. the Download video window: the video needs the user to be signed in
 #, machine
 	This video needs you to be signed in. Use the Download video button over it in your browser, which passes your sign-in on, or choose your browser in Options → Sites Logins → Cookies for video sites.	Toto video vyžaduje, aby ste boli prihlásení. Použite tlačidlo Stiahnuť video nad ním vo vašom prehliadači, ktoré prenesie vaše prihlásenie, alebo si vyberte prehliadač v Možnostiach → Prihlásenia na stránky → Súbory cookie pre video stránky.
+#. text in errors.rs
+#. Zip preview (#1775): a ZIP split over several files (volumes): its files can't be fetched one by one
+#, machine
+	this ZIP is split over several files, so its files can't be downloaded one by one: download every part	tento ZIP archív je rozdelený do viacerých súborov, takže jeho súbory nemožno sťahovať jednotlivo: stiahnite si každú časť
+#. text in errors.rs
+#. Zip preview (#1775): the ZIP's list of files (its table of contents) doesn't add up
+#, machine
+	this ZIP's list of files is damaged: download the whole archive	zoznam súborov tohto ZIP archívu je poškodený: stiahnite si celý archív
+#. text in errors.rs
+#. Zip preview (#1775): the ZIP's list of files (its table of contents) is larger than MDM reads from a server
+#, machine
+	this ZIP's list of files is too large to read from the server: download the whole archive	zoznam súborov tohto ZIP archívu je príliš veľký na čítanie zo servera: stiahnite si celý archív
 #. text in errors.rs
 #. a download's error: the address is a site's web page that needs a browser, not the file; {site} = the site's name (gofile)
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
@@ -5700,6 +6142,11 @@
 #. tooltip on the Scheduler's "Wake the computer to run this queue" while "Start download at" is off
 #, machine
 	Tick "Start download at" first: the computer is woken for the start time	Najprv začiarknite „Spustiť sťahovanie o“: počítač sa prebudí v čase spustenia
+#. text in zippreview.rs
+#. Zip preview, under the list: {files} how many files are ticked ("3 files"), {size} their size together ("12.4 MB")
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	Ticked: {files}, {size}	Označeno: {files}, {size}
 #. text in a download's progress window; text in the Scheduler window
 #, machine
 	Time left	Zostávajúci čas
@@ -5770,6 +6217,10 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	torrents could not start: {error}	torrenty sa nepodarilo spustiť: {error}
+#. text in preview.rs
+#. label in the preview pane: the size of the selected downloads added up
+#, machine
+	Total size:	Celková veľkosť:
 #. text in a download's progress window
 #. column title: a server that lists the peers
 #, machine
@@ -5798,6 +6249,10 @@
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	Try again in an hour, or download {name} yourself and choose it in {helpers} → {other}.	Skúste to znova o hodinu, alebo si stiahnite {name} sami a vyberte ho v {helpers} → {other}.
+#. text in the Link grabber window
+#. Link grabber, a link's status: the remedy from the failure's sentence, for a site (Hugging Face, GitHub) whose limit of requests without an account is reached. The sentence is the cell's hover tip
+#, machine
+	Try again later	Skúste to znova neskôr
 #. text in errors.rs
 #. {name} = a file name (keep the braces as they are)
 #, machine
@@ -5863,6 +6318,10 @@
 #. why Options → Remote → Pair a device... is greyed
 #, machine
 	Turn on the remote control first.	Najprv zapnite vzdialené ovládanie.
+#. text in the Add torrent window
+#. Torrent settings, under the public tracker list's address: turning the switch off doesn't take away the trackers it added to torrents
+#, machine
+	Turned off, the trackers already added stay.	Po vypnutí zostanú sledovače, ktoré už boli pridané.
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -5886,6 +6345,10 @@
 #. why Batch download's OK is greyed
 #, machine
 	Type a number in From and in To	Zadajte číslo do Od a do Do
+#. text in the Options window
+#. Site rule: OK with no site, or one with a space in it
+#, machine
+	Type a site, such as example.com or *.example.com	Zadajte lokalitu, napríklad example.com alebo *.example.com
 #. text in the settings
 #. Options → DNS: no server address was typed
 #, machine
@@ -5902,6 +6365,10 @@
 #. Options → DNS over TLS: the server's name (as its certificate shows it) is missing
 #, machine
 	Type the name the server's certificate shows.	Zadajte názov uvedený v certifikáte servera.
+#. text in requestedit.rs
+#. a download's Connection settings: the proxy typed isn't an address MDM takes; the examples stay as they are
+#, machine
+	Type the proxy as host:port, http://host:port or socks5://host:port	Zadajte proxy server ako hostiteľ:port, http://hostiteľ:port alebo socks5://hostiteľ:port
 #. text in the Scheduler window
 #. why OK is greyed when naming a new queue
 #, machine
@@ -5994,6 +6461,11 @@
 #, machine
 	Update now	Aktualizovať teraz
 #. text in helpers.rs
+#. Helpers: the Update button's name for a screen reader; {name} = the helper (yt-dlp, ffmpeg, gallery-dl, Node.js)
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Update {name}	Aktualizovať {name}
+#. text in helpers.rs
 #. Helpers: a program the person chose, or the system's copy: MDM doesn't update it, the person (or their package manager) does
 #, machine
 	Updated by you	Aktualizované vami
@@ -6016,6 +6488,17 @@
 #. text in the Options window
 #, machine
 	Use advanced browser integration	Použiť rozšírenú integráciu prehliadača
+#. text in helpers.rs
+#. Helpers: the "Use another program..." button's name for a screen reader, on the JavaScript runtime's row (Node.js, Deno, QuickJS or Bun)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Use another program as the JavaScript runtime...	Použiť iný program ako prostredie JavaScriptu...
+#. text in helpers.rs
+#. Helpers: the "Use another program..." button's name for a screen reader; {name} = the helper (yt-dlp, ffmpeg, gallery-dl)
+#. {name} = a file name (keep the braces as they are)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Use another program for {name}...	Použiť iný program pre {name}...
 #. text in errors.rs; button in helpers.rs; text in the Options window
 #. Video helpers: button: pick a program (yt-dlp or ffmpeg) already on the computer
 #. Options → Archives: button: pick the 7-Zip command line program to extract 7z and RAR archives with (PeaZip's own 7z.exe, a portable copy), instead of the one MDM finds
@@ -6034,10 +6517,16 @@
 #. checkbox in the Options window
 #, machine
 	Use FTP in PASV mode	Použiť FTP v režime PASV
-#. button in helpers.rs
+#. text in helpers.rs
 #. Video helpers: button: go back to the copy MDM downloads and checks itself
 #, machine
 	Use MDM's own copy	Použiť vlastnú kópiu MDM
+#. text in helpers.rs
+#. Helpers: the "Use MDM's own copy" button's name for a screen reader; {name} = the helper (yt-dlp, ffmpeg, gallery-dl)
+#. Helpers: the "Use MDM's own copy" button's name for a screen reader; {name} = the helper (Node.js)
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Use MDM's own copy of {name}	Použiť vlastnú kópiu {name} programu MDM
 #. checkbox in the Options window
 #. Options → Sites Logins: checkbox under Cookies for video sites: yt-dlp also reads the person's own yt-dlp config file
 #, machine
@@ -6086,8 +6575,20 @@
 #, machine
 	User names and passwords for servers/sites	Používateľské mená a heslá pre servery/stránky
 #. text in the Options window
+#. Site rules: column title: the User-Agent the rule sends (the name a browser or program gives itself to sites)
+#, machine
+	User-Agent	User-Agent
+#. text in the Options window
 #, machine
 	User-Agent for manually added downloads:	User-Agent pre ručne pridané sťahovania:
+#. text in the Options window
+#. Options → Connection: beside the Site rules... button: what it sets
+#, machine
+	User-Agent, headers and connections by site	User-Agent, hlavičky a pripojenia podľa lokality
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: label before the User-Agent box (the name the browser or program gives itself to sites)
+#, machine
+	User-Agent:	User-Agent:
 #. text in the Options window
 #, machine
 	User:	Používateľ:
@@ -6234,6 +6735,10 @@
 #. where a download comes from: Web (web or FTP server) or Torrent (BitTorrent)
 #, machine
 	Web	Web
+#. text in preview.rs
+#. label in the preview pane: the web page the download was found on
+#, machine
+	Web page:	Webová stránka:
 #. text in the Scheduler window
 #, machine
 	Wednesday	Streda
@@ -6335,7 +6840,7 @@
 #. a country's name (where a download's server is)
 #, machine
 	Yemen	Jemen
-#. button in a dialog box; text in a download's progress window
+#. button in a dialog box; text in the Options window; text in a download's progress window
 #, machine
 	Yes	Áno
 #. button in helpers.rs
@@ -6455,6 +6960,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Zimbabwe	Zimbabwe
+#. text in zippreview.rs
+#. title of the window that lists the files inside a ZIP on its server, to tick those to download (#1775)
+#, machine
+	Zip preview	Náhľad ZIP archívu
 #. text in the Options window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
@@ -6510,6 +7019,10 @@
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
 	{done} of {size}	{done} z {size}
+#. text in preview.rs
+#. the preview pane: how much of a download has come; {done} and {total} sizes, e.g. "12.5 MB of 40.0 MB"
+#, machine
+	{done} of {total}	{done} z {total}
 #. text in deferred_rename.rs
 #. appended to an OS error when a case-only rename could not move the temporary file back to its original name; {error} = first OS error, {path} = temporary path left on disk, {rollback_error} = second OS error
 #. {error} = an error message (keep the braces as they are)
@@ -6532,6 +7045,14 @@
 #. text in the Checksum window
 #, machine
 	{file} could not be read to check it	Súbor {file} sa nepodarilo prečítať na kontrolu
+#. message or event log entry in the main window
+#. a message after a download (Redownload) was to replace the file it had: {file} = that file's name, still there; {new} = the name the new copy was saved under, in the same folder
+#, machine
+	{file} could not be replaced: another program may have it open. The new download is saved beside it as {new}, and both files are kept.	Súbor {file} sa nepodarilo nahradiť: možno ho má otvorený iný program. Nové stiahnutie je uložené vedľa neho ako {new} a oba súbory sa zachovajú.
+#. text in relocate.rs
+#. why a download could not be moved (after "The file could not be moved: "): a file of that name came into the new folder meanwhile; {file} is its name
+#, machine
+	{file} is already there	{file} už tam je
 #. text in a dialog box
 #, machine
 	{file} is no longer where it was saved (moved or deleted). Redownload, in its right-click menu, gets it again.	{file} už nie je tam, kde bol uložený (presunutý alebo odstránený). Znova ho stiahnete pomocou možnosti Znova stiahnuť v kontextovej ponuke.
@@ -6555,6 +7076,11 @@
 #. said after Delete with files when some files stayed on the disk; {file} is the download's name; the files' paths follow it
 #, machine
 	{file}: these files stayed on the disk, because MDM didn't create them or another download uses them:	{file}: tieto súbory zostali na disku, pretože ich MDM nevytvoril alebo ich používa iné sťahovanie:
+#. message or event log entry in the main window; text in the Link grabber window
+#. Link grabber's Source line, after where the links came from: a folder (an FTP folder, a web server's "Index of" page) held more files or subfolders than Link grabber lists; {folder} is its name, {n} how many of its files are listed (10,000)
+#. {n} = a number (keep the braces as they are)
+#, machine
+	{folder}: only its first {n} files	{folder}: len prvých {n} súborov
 #. text in a download's progress window
 #. {have} and {total} = numbers of pieces; {size} = one piece's size
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
@@ -6683,6 +7209,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 	{n} (auto)	{n} (automaticky)
+#. text in zippreview.rs
+#. Zip preview, under the list: {n} files of the ZIP aren't listed because MDM can't take them out on their own: encrypted ones, ones packed in a way MDM can't unpack from the server, links, or names that would leave their folder; the whole archive still downloads
+#. {n} = a number (keep the braces as they are)
+#, machine
+	{n} more can't be taken out on their own (encrypted, packed another way, or links)	{n} ďalších súborov sa nedá samostatne rozbaliť (šifrované, komprimované iným spôsobom alebo prepojenia)
 #. text in playlistdlg.rs
 #. in Download video for a playlist: how many videos are ticked, of how many
 #. {n} = a number (keep the braces as they are)
@@ -6692,6 +7223,10 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 	{n} of {total} selected	{n} z {total} vybratých
+#. text in the Link grabber window
+#. Link grabber's Source line: a gated Hugging Face repository ({package}: "owner/name"), whose files download only for an account that accepted its terms: where to give the account's access token (Options → Sites Logins, keep the names as the Options window shows them)
+#, machine
+	{package} is gated: accept its terms on Hugging Face, then add your access token in Options → Sites Logins (site huggingface.co, the token as its password)	{package} je chránený: prijmite jeho podmienky na Hugging Face, potom pridajte svoj prístupový token v Možnostiach → Prihlásenia na weby (web huggingface.co, token ako heslo).
 #. text in the download list (sizes, speeds, status)
 #. a torrent's status while the user's debrid service downloads it, before MDM gets its files; {service} the service ("Real-Debrid"), {percent} how far it is ("45%")
 #, machine
@@ -6795,6 +7330,31 @@
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
 #, machine
 	{site} didn't give the file this time: try again in a moment	{site} tentoraz súbor neposkytol: skúste to znova o chvíľu
+#. text in the Link grabber window
+#. Link grabber, the hover tip of a Hugging Face repository's or GitHub release's status; {site} is "Hugging Face" or "GitHub"
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+	{site} has no such repository, folder, release or tag, or it is private.	{site} nemá také úložisko, priečinok, vydanie ani značku, alebo je súkromné.
+#. text in the Link grabber window
+#. Link grabber, a Hugging Face repository's or GitHub release's status (the cell's hover tip): the site ({site}: "Hugging Face", "GitHub") lets only so many requests through from a computer without an account; {n} minutes to wait
+#. {site} = a web site's name such as "example.com"; {n} = a number (keep the braces as they are)
+#, machine
+	{site} lets only so many requests through without an account: try again in {n} minute.	{site} povoľuje len obmedzený počet požiadaviek bez účtu: skúste to znova o {n} minútu.
+#. text in the Link grabber window
+#. Link grabber, a Hugging Face repository's or GitHub release's status (the cell's hover tip): the site ({site}) lets only so many requests through without an account, and didn't say for how long
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+	{site} lets only so many requests through without an account: try again later.	{site} povoľuje len obmedzený počet požiadaviek bez účtu: skúste to znova neskôr.
+#. text in the Link grabber window
+#. Link grabber, a Hugging Face repository's or GitHub release's status: the site ({site}) refused to list its files; {status} is the HTTP code (403)
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+	{site} refused to list its files ({status}).	{site} odmietol zobraziť zoznam svojich súborov ({status}).
+#. text in the Link grabber window
+#. Link grabber, a Hugging Face repository's or GitHub release's status: the site's ({site}) answer wasn't what it sends (changed, cut, or not its own)
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+	{site}'s list of files couldn't be read.	Zoznam súborov {site} sa nedal prečítať.
 #. text in a download's Properties window
 #. {size} = a file size such as "4.2 MB"; {bytes} = a number of bytes (keep the braces as they are)
 #, machine
@@ -6817,6 +7377,11 @@
 #. {s} = seconds (keep the braces as they are)
 #, machine
 	{s} sec	{s} s
+#. text in a dialog box
+#. the title of another window of a kind while the first is open (several Download File Info windows, one per link): {title} the window's own title, {n} its number, "Download File Info (2)"
+#. {n} = a number (keep the braces as they are)
+#, machine
+	{title} ({n})	{title} ({n})
 #. message or event log entry in the main window
 #. RSS feeds window, under the rules: {title} was added by the rule {rule}
 #, machine
@@ -6865,10 +7430,14 @@ column	Peers	Píri
 #. column title: one letter for Queue (the column is narrow)
 #, machine
 column	Q	R
-#. column title in the main window; column title in the download list
+#. column title in the main window; column title in a dialog box; column title in the download list
 #. tooltip of the narrow "Q" column's title
 #, machine
 column	Queue	Poradie
+#. column title in the download list in the download list
+#. column title: the folder the download is saved in
+#, machine
+column	Save To	Cieľový priečinok
 #. column title in the download list in the download list
 #. column title: what a torrent has sent to peers against what it took
 #, machine
@@ -6917,6 +7486,7 @@ extension	Added to MDM	Pridané do MDM
 extension	Added to the queue	Pridané do radu
 #. text in the browser extension
 #. filter in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): every download; short
+#. chip in the menu of the download button over a video, filtering the list of qualities: show every quality (or any file type, any codec); short, one word
 #, machine
 extension	All	Všetky
 #. text in the browser extension
@@ -6932,6 +7502,14 @@ extension	Another Mister Download Manager (a server)	Iný Mister Download Manage
 #. tab above the list of qualities in the menu under the download button over a video: the choices that are sound only (MP3, Opus and the like); short, one word
 #, machine
 extension	Audio	Zvuk
+#. text in the browser extension
+#. chip in the menu of the download button over a video, filtering the list of qualities: show only the sound-only choices (MP3, Opus and the like); short
+#, machine
+extension	Audio only	Len zvuk
+#. text in the browser extension
+#. toolbar button's popup: said for a moment after Reset: the download button over videos is in its usual corner again and its menu lists every quality, on every web site
+#, machine
+extension	Back in its corner, its menu showing everything, on every site	Späť v rohu, jeho ponuka zobrazuje všetko, na každej lokalite
 #. text in the browser extension
 #. after the best quality in the menu of the download button over a video, after a star (★ best); lower case; one word
 #, machine
@@ -6981,6 +7559,10 @@ extension	Clear finished	Vymazať dokončené
 #. title of the question in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) before the finished downloads are taken off the list
 #, machine
 extension	Clear finished downloads?	Vymazať dokončené sťahovania?
+#. text in the browser extension
+#. label before the row of chips (All, AV1, VP9, H.264...) that filters the list of video qualities by the picture's codec in the menu of the download button over a video; short
+#, machine
+extension	Codec	Kodek
 #. text in the browser extension
 #. under the extension's name in the toolbar button's popup: the browser reaches the app; short
 #, machine
@@ -7055,6 +7637,10 @@ extension	Download all links with Mister Download Manager	Stiahnuť všetky odka
 #, machine
 extension	Download best	Stiahnuť najlepšiu kvalitu
 #. text in the browser extension
+#. toolbar button's popup, Settings: the name of the row with the Reset button for the download button the extension shows over videos
+#, machine
+extension	Download button over videos	Tlačidlo sťahovania nad videami
+#. text in the browser extension
 #. command in the browser's right-click menu on selected text: download the links in the selection; keep the name Mister Download Manager as it is
 #, machine
 extension	Download selected links with Mister Download Manager	Stiahnuť vybrané odkazy pomocou Mister Download Manager
@@ -7097,9 +7683,9 @@ extension	Downloads from {site} stay with the browser	Stiahnutia z {site} zostá
 #, machine
 extension	Downloads go to {address}	Sťahovania idú na {address}
 #. text in the browser extension
-#. second line of the tooltip of the download button over a video: dragging its dotted grip moves it along the video's edge
+#. second line of the tooltip of the download button over a video: dragging its dotted grip moves it to another corner or edge of the video, or outside the video next to it
 #, machine
-extension	Drag the dots to move it along the edge	Potiahnutím bodiek ho presuniete po okraji
+extension	Drag the dots to move it to another corner, or outside the video	Potiahnutím bodiek ho presuniete do iného rohu alebo mimo videa
 #. text in the browser extension
 #. the address typed isn't an https:// address
 #, machine
@@ -7117,6 +7703,18 @@ extension	Failed: {why}	Zlyhalo: {why}
 #. a finished download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when its file is no longer where it was saved
 #, machine
 extension	File deleted or moved	Súbor bol odstránený alebo presunutý
+#. text in the browser extension
+#. label before the row of chips (All, MP4, WEBM, M4A...) that filters the list of qualities by file type in the menu of the download button over a video; short
+#, machine
+extension	File type	Typ súboru
+#. text in the browser extension
+#. button in the This page tab of the toolbar button's popup: look for the pictures of the current web page (only when clicked); short
+#, machine
+extension	Find images	Nájsť obrázky
+#. text in the browser extension
+#. in the This page tab of the toolbar button's popup, before the Find images button; Link grabber is the name of the app's window that lists links to tick before downloading them
+#, machine
+extension	Find this page's pictures at the largest size it lists, then send the ones you want to Link grabber.	Nájdite obrázky tejto stránky v najväčšej uvedenej veľkosti a potom odošlite tie, ktoré chcete, do nástroja na získavanie odkazov.
 #. text in the browser extension
 #. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) after Clear finished
 #, machine
@@ -7153,6 +7751,14 @@ extension	Hold Alt while clicking a link to let the browser download it.	Podržt
 #. link under a connection problem in the toolbar button's popup, to the help page's section for it
 #, machine
 extension	How to fix it	Ako to opraviť
+#. text in the browser extension
+#. what a screen reader says for the row of buttons that keep or leave out each type of picture (JPEG, PNG, WEBP...), in the This page tab of the toolbar button's popup
+#, machine
+extension	Image types	Typy obrázkov
+#. text in the browser extension
+#. heading in the This page tab of the toolbar button's popup, over the part that finds the pictures of the current web page and sends them to the app
+#, machine
+extension	Images on this page	Obrázky na tejto stránke
 #. text in the browser extension
 #. pairing failed for another reason
 #, machine
@@ -7202,6 +7808,28 @@ extension	Left to the browser: {name}	Ponechané prehliadaču: {name}
 #. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) after Copy link
 #, machine
 extension	Link copied	Odkaz skopírovaný
+#. text in the browser extension
+#. the toolbar button's status: all links refused by another MDM
+#. {count} = a number (keep the braces as they are)
+#, machine
+extension	Links refused: {count}	Odkazy odmietnuté: {count}
+#. text in the browser extension
+#. the toolbar button's status: links sent to another MDM
+#. {count} = a number (keep the braces as they are)
+#, machine
+extension	Links sent: {count}	Odkazy odoslané: {count}
+#. text in the browser extension
+#. the toolbar button's status: some links refused by another MDM
+#, machine
+extension	Links sent: {sent}, refused: {refused}	Odkazy odoslané: {sent}, odmietnuté: {refused}
+#. text in the browser extension
+#. the toolbar button's status: some links refused and some left out
+#, machine
+extension	Links sent: {sent}, refused: {refused}, {left} left out	Odkazy odoslané: {sent}, odmietnuté: {refused}, {left} vynechaných
+#. text in the browser extension
+#. the toolbar button's status: links sent to another MDM, some left out by cap or filter
+#, machine
+extension	Links sent: {sent}, {left} left out	Odkazy odoslané: {sent}, {left} vynechaných
 #. text in the browser extension
 #. beside a stream in the toolbar button's popup: it is a live broadcast (no fixed length); short
 #, machine
@@ -7307,6 +7935,10 @@ extension	Never on {site}	Nikdy na {site}
 #, machine
 extension	Never take downloads from {site}	Nikdy nepreberať sťahovania z webu {site}
 #. text in the browser extension
+#. the toolbar button's status: no links matched capturable file types
+#, machine
+extension	No capturable links ({left} left out)	Žiadne zachytiteľné odkazy ({left} vynechaných)
+#. text in the browser extension
 #. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when no download matches the search; the words searched for follow
 #, machine
 extension	No download's name or address has “{words}”.	Žiadne sťahovanie nemá v názve alebo adrese „{words}“.
@@ -7314,6 +7946,10 @@ extension	No download's name or address has “{words}”.	Žiadne sťahovanie n
 #. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app has no downloads
 #, machine
 extension	No downloads yet	Zatiaľ žiadne sťahovania
+#. text in the browser extension
+#. shown in the This page tab of the toolbar button's popup when Find images found no picture on the current web page
+#, machine
+extension	No images found on this page.	Na tejto stránke sa nenašli žiadne obrázky.
 #. text in the browser extension
 #. shown in the toolbar button's popup when the current web page hasn't loaded any video, sound or stream yet
 #, machine
@@ -7384,6 +8020,10 @@ extension	Options...	Možnosti...
 #, machine
 extension	original	pôvodné
 #. text in the browser extension
+#. button among the picture types (JPEG, PNG, WEBP...) in the This page tab of the toolbar button's popup: the pictures of any other or unknown type; short
+#, machine
+extension	Other	Iné
+#. text in the browser extension
 #. button: pair this browser with the other MDM using the code
 #, machine
 extension	Pair	Spárovať
@@ -7429,9 +8069,17 @@ extension	Protected	Chránené
 #, machine
 extension	Protected video	Chránené video
 #. text in the browser extension
+#. menu command of the download button over a video, shown after the user dragged the button elsewhere on this site: moves it back to its usual corner of the video
+#, machine
+extension	Put the button back in its corner	Vrátiť tlačidlo do rohu
+#. text in the browser extension
 #. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): takes the download off the list, its file stays
 #, machine
 extension	Remove from list	Odstrániť zo zoznamu
+#. text in the browser extension
+#. toolbar button's popup, Settings: button that puts the download button over videos back in its corner and clears its menu's filters, on every web site; a verb, short
+#, machine
+extension	Reset	Obnoviť
 #. text in the browser extension
 #. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): goes on with a paused, waiting or failed download; verb
 #, machine
@@ -7461,6 +8109,10 @@ extension	Send downloads through this browser's proxy or VPN extension	Odosiela�
 #, machine
 extension	Send downloads to	Odoslať sťahovania do
 #. text in the browser extension
+#. button in the This page tab of the toolbar button's popup: send the selected pictures to the app's Link grabber window, where the user ticks which to download
+#, machine
+extension	Send to Link grabber	Odoslať do nástroja na získavanie odkazov
+#. text in the browser extension
 #. on the download button over a video right after it was clicked, while the download goes to the app; MDM is Mister Download Manager's short name, keep it as it is; short
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -7470,9 +8122,17 @@ extension	Sending to MDM...	Odosiela sa do MDM...
 #, machine
 extension	Sending to {server}	Odosiela sa na {server}
 #. text in the browser extension
+#. shown in the This page tab of the toolbar button's popup after the pictures were sent to the app's Link grabber window
+#, machine
+extension	Sent to Link grabber: tick the ones to download there.	Odoslané do nástroja na získavanie odkazov: tam začiarknite tie, ktoré chcete stiahnuť.
+#. text in the browser extension
 #. shown briefly on the download button after it was clicked; keep the name Mister Download Manager as it is
 #, machine
 extension	Sent to Mister Download Manager	Odoslané do Mister Download Manager
+#. text in the browser extension
+#. the toolbar button's status when the paired server does not answer
+#, machine
+extension	Server not reached	Server nebol dosiahnutý
 #. text in the browser extension
 #. tab in the toolbar button's popup: the extension's settings; noun, short
 #, machine
@@ -7485,6 +8145,7 @@ extension	Share...	Zdieľať...
 #. text in the browser extension
 #. button on the download button over a video after a download was added: shows that download in the app's window; verb; very short
 #. name of the row of filters in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) (All, Running, Done, Failed), read by screen readers; verb
+#. label read by screen readers for the row of chips (All, Video, Audio only) that filters the list of qualities in the menu of the download button over a video; a verb, short
 #, machine
 extension	Show	Zobraziť
 #. text in the browser extension
@@ -7499,6 +8160,23 @@ extension	Show in folder	Zobraziť v priečinku
 #. screen readers' name of a download's Show in folder button in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads)
 #, machine
 extension	Show {file} in folder	Zobraziť {file} v priečinku
+#. text in the browser extension
+#. in the This page tab of the toolbar button's popup, while a smallest width or height is set: how many of the selected pictures the page gives no size for (they are kept, not left out)
+#. {n} = a number (keep the braces as they are)
+#, machine
+extension	Size not given, kept: {n}	Veľkosť nie je uvedená, ponechané: {n}
+#. text in the browser extension
+#. what a screen reader says for the box of the smallest height of the pictures to keep, in the This page tab of the toolbar button's popup
+#, machine
+extension	Smallest height, in pixels	Najmenšia výška v pixeloch
+#. text in the browser extension
+#. in the This page tab of the toolbar button's popup, before two boxes for the smallest width and height of the pictures to keep: 'Smallest size, in pixels [ ] × [ ]'; pictures smaller than that are left out; short
+#, machine
+extension	Smallest size, in pixels	Najmenšia veľkosť v pixeloch
+#. text in the browser extension
+#. what a screen reader says for the box of the smallest width of the pictures to keep, in the This page tab of the toolbar button's popup
+#, machine
+extension	Smallest width, in pixels	Najmenšia šírka v pixeloch
 #. text in the browser extension
 #. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app isn't running
 #, machine
@@ -7532,6 +8210,10 @@ extension	That didn't work. Try again.	Nepodarilo sa. Skúste to znova.
 #. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when a button's download was removed meanwhile
 #, machine
 extension	That download is no longer in the list.	Toto sťahovanie už nie je v zozname.
+#. text in the browser extension
+#. shown in the This page tab of the toolbar button's popup when Find images can't look into the current page (a page of the browser's own, an add-on store)
+#, machine
+extension	The browser doesn't let add-ons read this page.	Prehliadač neumožňuje doplnkom čítať túto stránku.
 #. text in the browser extension
 #. in the toolbar button's popup, on a site where the Chrome Web Store's copy of the extension shows no download button; Help is the link at the bottom of the popup
 #, machine
@@ -7635,6 +8317,10 @@ extension	Waiting	Čaká sa
 #, machine
 extension	What you download with Mister Download Manager shows up here.	To, čo stiahnete pomocou aplikácie Mister Download Manager, sa zobrazí tu.
 #. text in the browser extension
+#. toolbar button's popup, Settings: second line under 'Download button over videos', saying what Reset puts back: the places the user dragged the button to, and the filters chosen in its menu, remembered per web site
+#, machine
+extension	Where you moved it, and its menu's filters, on each site	Kam ste ho presunuli a filtre jeho ponuky na každej lokalite
+#. text in the browser extension
 #. Tooltip of the Hide the download button in full screen option in the toolbar button's popup; Download video is the name of the button over videos
 #, machine
 extension	While the page is in full screen, its videos show no Download video button	Keď je stránka v režime celej obrazovky, pri jej videách sa nezobrazuje tlačidlo Stiahnuť video
@@ -7665,6 +8351,10 @@ extension	{file} removed from the list	{file} odstránený zo zoznamu
 #, machine
 extension	{file} will be deleted from your computer, and the download taken off the list. This can't be undone.	{file} sa odstráni z vášho počítača a sťahovanie sa odstráni zo zoznamu. Túto akciu nemožno vrátiť späť.
 #. text in the browser extension
+#. in the This page tab of the toolbar button's popup: how many of the pictures found pass the size and type filters, and will be sent
+#, machine
+extension	{shown} of {total} selected	{shown} z {total} vybratých
+#. text in the browser extension
 #. a running download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): the time left, as a clock (minutes:seconds)
 #. {time} = a time of day (keep the braces as they are)
 #, machine
@@ -7673,6 +8363,10 @@ extension	{time} left	Zostáva {time}
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
 key	Alt+Enter	Alt+Enter
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Alt+P	Alt+P
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
@@ -7803,6 +8497,12 @@ menu	&Automatic	&Automaticky
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Classic	&Klasické
+#. menu command in the main window
+#. header menu: opens the dialog that chooses the list's columns
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	&Columns...	&Stĺpce...
 #. menu command in standard windows
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -7823,6 +8523,11 @@ menu	&Download Now	&Stiahnuť teraz
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Exit	&Ukončiť
+#. menu command in the main window
+#. View menu: submenu choosing the interface's own font and text size
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Font	P&ísmo
 #. menu command in the main window
 #. verb: load downloads from a file
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
@@ -7902,6 +8607,11 @@ menu	&Stop All	&Zastaviť všetko
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Stop Download	&Zastaviť sťahovanie
+#. menu command in the main window
+#. View → Font: the computer's own font, the default (Segoe UI on Windows)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&System font	S&ystémové písmo
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -8048,6 +8758,12 @@ menu	C&ustomize URL List...	&Prispôsobiť zoznam URL...
 #, machine
 menu	Check for &updates...	Skontrolovať &aktualizácie...
 #. menu command in the main window
+#. View → Font: a TrueType or OpenType font file on disk to draw the interface's text in
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Choose a font &file...	Vy&berte súbor písma...
+#. menu command in the main window
 #. View → Theme: MDM's own look, the default (IDM's layout, Windows 11's controls)
 #, machine
 menu	Classic	Klasický
@@ -8136,10 +8852,6 @@ menu	Find Next (F3)	Nájsť ďalšie (F3)
 #. right-click → Torrent, a choice with a check mark (with Download in order): each file's first and last pieces first, which a video player needs to start
 #, machine
 menu	First and last pieces first	Najprv prvé a posledné časti
-#. menu command in the main window
-#. noun: the list's font (submenu)
-#, machine
-menu	Font	Písmo
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it
@@ -8244,6 +8956,10 @@ menu	Open with...	Otvoriť pomocou...
 #. View → Draw with: a graphics system's name, usually kept as is
 #, machine
 menu	OpenGL	OpenGL
+#. menu command in the main window
+#. View → Draw with: a greyed note; why MDM no longer draws with OpenGL: MDM crashed inside the graphics card's driver while OpenGL drew ("its": OpenGL's)
+#, machine
+menu	OpenGL crashed inside its driver here	OpenGL tu spadol vo svojom ovládači
 #. menu command in the main window
 #. View → Draw with: a greyed note; why MDM no longer draws with OpenGL: it couldn't start on this computer
 #, machine
@@ -8448,6 +9164,10 @@ menubar	&Tasks	Ú&lohy
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menubar	&View	&Zobraziť
+#. text in preview.rs
+#. noun: title of the side pane beside the download list that shows the selected download's picture and details (#1368)
+#, machine
+pane	Preview	Ukážka
 #. toolbar button in the main window
 #, machine
 toolbar	Add Torrent	Pridať torrent
@@ -8465,6 +9185,10 @@ toolbar	Delete Completed	Odstrániť dokončené
 #. plural noun: opens the Options window (settings)
 #, machine
 toolbar	Options	Možnosti
+#. toolbar button in the main window
+#. toolbar toggle button: shows or hides the preview pane (the selected download's picture and details)
+#, machine
+toolbar	Preview	Ukážka
 #. toolbar button in the main window
 #. verb: continue the selected downloads
 #, machine

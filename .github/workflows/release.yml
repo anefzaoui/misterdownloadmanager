@@ -71,7 +71,7 @@ jobs:
         with:
           persist-credentials: false
 
-      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
         with:
           name: geo-data
           path: crates/geo/data
@@ -117,10 +117,8 @@ jobs:
       # libclang already.
       - name: NASM
         if: runner.arch != 'ARM64'
-        shell: pwsh
-        run: |
-          choco install nasm --version 2.16.3 --no-progress -y
-          "C:\Program Files\NASM" >> $env:GITHUB_PATH
+        # nasm.us at a pinned SHA256, Chocolatey's feed only if that download fails.
+        uses: ./.github/actions/nasm
 
       # Windows on ARM: LLVM (clang and libclang) for their assembly and bindings there.
       - name: LLVM
@@ -302,7 +300,7 @@ jobs:
         with:
           persist-credentials: false
 
-      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
         with:
           name: geo-data
           path: crates/geo/data
@@ -370,7 +368,7 @@ jobs:
         with:
           persist-credentials: false
 
-      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
         with:
           name: geo-data
           path: crates/geo/data
@@ -417,7 +415,7 @@ jobs:
         with:
           persist-credentials: false
 
-      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
         with:
           path: dist
           merge-multiple: true
@@ -459,8 +457,18 @@ jobs:
             if ($LASTEXITCODE) { throw "signing SHA256SUMS.txt failed" }
             gpg --batch --verify dist/SHA256SUMS.txt.sig dist/SHA256SUMS.txt
             if ($LASTEXITCODE) { throw "the signature of SHA256SUMS.txt doesn't verify" }
+            # The ffmpeg builds MDM installs (tools/release/ffmpeg-builds.txt, made by
+            # tools/release/ffmpeg_list.py), signed with the same key: MDM fetches this list from
+            # its latest release and installs only a build it names (crates/tools/src/ffmpeg.rs).
+            # Beside SHA256SUMS.txt, not in it: a newer list signed between releases replaces it.
+            Copy-Item tools/release/ffmpeg-builds.txt dist/ffmpeg-builds.txt
+            gpg --batch --yes --detach-sign --local-user 5826D399249DE856EA087D802E293C28E8A69D74 `
+              --output dist/ffmpeg-builds.txt.sig dist/ffmpeg-builds.txt
+            if ($LASTEXITCODE) { throw "signing ffmpeg-builds.txt failed" }
+            gpg --batch --verify dist/ffmpeg-builds.txt.sig dist/ffmpeg-builds.txt
+            if ($LASTEXITCODE) { throw "the signature of ffmpeg-builds.txt doesn't verify" }
           } else {
-            Write-Warning "MDM_RELEASE_KEY isn't set: this release is unsigned, and MDM won't update to it by itself."
+            Write-Warning "MDM_RELEASE_KEY isn't set: this release is unsigned, MDM won't update to it by itself, and MDM can't install ffmpeg until a signed ffmpeg-builds.txt is added to it (tools/release/ffmpeg_list.py)."
           }
           # Notes: the version's section of CHANGELOG.md ("## [X.Y.Z]" up to the next "## "),
           # else GitHub's list of changes since the last tag. First, the browser add-on's stores
@@ -532,7 +540,7 @@ jobs:
         uses: docker/setup-buildx-action@b5ca514318bd6ebac0fb2aedd5d36ec1b5c232a2 # v3.10.0
 
       - name: Log in to GitHub Container Registry
-        uses: docker/login-action@9780b0c442fbb1117ed29e0efdff1e18412f7567 # v3.3.0
+        uses: docker/login-action@8aa5831fb8d48d8f76594c7ddde61ae58019f550 # v4.8.0
         with:
           registry: ghcr.io
           username: ${{ github.actor }}

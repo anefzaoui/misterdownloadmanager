@@ -55,6 +55,11 @@ pub struct ResumeState {
     /// through it, on one connection.
     #[serde(default, skip_serializing_if = "std::ops::Not::not")]
     pub browser_like: bool,
+    /// The file's host is asked over one IP family only, IPv4 (true) or IPv6: it refused the
+    /// link with 403 over the other one (#1660, a link signed for one family's address). A
+    /// resume in another session asks over it too.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub ipv4: Option<bool>,
 }
 
 impl ResumeState {
@@ -74,6 +79,7 @@ impl ResumeState {
             asked_as_own: false,
             final_get: false,
             browser_like: false,
+            ipv4: None,
         }
     }
 

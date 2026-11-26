@@ -533,6 +533,21 @@ fn opening(lower: &str, at: usize, open: &str) -> Option<usize> {
     None
 }
 
+/// The text of the first `<name>` element of `page` (`title`, `h1`): tags stripped, references
+/// decoded, white space collapsed, up to its closing tag. None when there is none.
+pub(crate) fn element_text(page: &str, name: &str) -> Option<String> {
+    let page = markup(page);
+    let (start, tag) = tags(&page, name).next()?;
+    let inner = start + tag.len();
+    let close = format!("</{}", name.to_ascii_lowercase());
+    let end = page[inner..]
+        .to_ascii_lowercase()
+        .find(&close)
+        .map_or(page.len(), |e| inner + e);
+    let text = decode(&strip_tags(&page[inner..end]));
+    Some(text.split_whitespace().collect::<Vec<_>>().join(" "))
+}
+
 /// `html` without its tags (`<a href=…>name</a>` → `name`).
 fn strip_tags(html: &str) -> String {
     let mut out = String::with_capacity(html.len());

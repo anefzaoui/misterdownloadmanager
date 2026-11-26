@@ -284,6 +284,64 @@
   "popup_media_title_name": {
     "message": "Thêm tiêu đề trang vào trước tên tệp phương tiện"
   },
+  "popup_images": {
+    "message": "Hình ảnh trên trang này"
+  },
+  "popup_images_text": {
+    "message": "Tìm các hình ảnh trên trang này với kích thước lớn nhất được liệt kê, sau đó gửi những hình bạn muốn đến Trình lấy liên kết."
+  },
+  "popup_images_find": {
+    "message": "Tìm hình ảnh"
+  },
+  "popup_images_min": {
+    "message": "Kích thước nhỏ nhất, theo pixel"
+  },
+  "popup_images_width": {
+    "message": "Chiều rộng nhỏ nhất, tính bằng pixel"
+  },
+  "popup_images_height": {
+    "message": "Chiều cao nhỏ nhất, tính bằng pixel"
+  },
+  "popup_images_types": {
+    "message": "Loại hình ảnh"
+  },
+  "popup_images_other": {
+    "message": "Khác"
+  },
+  "popup_images_count": {
+    "message": "$shown$ trong số $total$ đã chọn",
+    "placeholders": {
+      "shown": {
+        "content": "$1",
+        "example": "12"
+      },
+      "total": {
+        "content": "$2",
+        "example": "40"
+      }
+    }
+  },
+  "popup_images_unsized": {
+    "message": "Không có kích thước, đã giữ: $n$",
+    "placeholders": {
+      "n": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "popup_images_send": {
+    "message": "Gửi đến Trình lấy liên kết"
+  },
+  "popup_images_sent": {
+    "message": "Đã gửi đến Trình lấy liên kết: đánh dấu những hình ảnh cần tải xuống ở đó."
+  },
+  "popup_images_none": {
+    "message": "Không tìm thấy hình ảnh nào trên trang này."
+  },
+  "popup_images_unreadable": {
+    "message": "Trình duyệt không cho phép tiện ích đọc trang này."
+  },
   "video_cant_save": {
     "message": "không thể lưu"
   },
@@ -291,7 +349,7 @@
     "message": "Mở bài đăng"
   },
   "video_drag_dots": {
-    "message": "Kéo các chấm để di chuyển nút dọc theo cạnh"
+    "message": "Kéo các dấu chấm để di chuyển nó đến một góc khác hoặc ra ngoài video"
   },
   "video_tip": {
     "message": "Tải xuống $what$",
@@ -765,5 +823,108 @@
   },
   "popup_dl_open_remote": {
     "message": "Mở trang của nó"
+  },
+  "video_home": {
+    "message": "Đặt lại nút về vị trí cũ"
+  },
+  "video_filter_all": {
+    "message": "Tất cả"
+  },
+  "video_filter_audio": {
+    "message": "Chỉ âm thanh"
+  },
+  "video_filter_kind": {
+    "message": "Hiển thị"
+  },
+  "video_filter_type": {
+    "message": "Loại tệp"
+  },
+  "video_filter_codec": {
+    "message": "Codec"
+  },
+  "popup_video_reset_text": {
+    "message": "Nút tải xuống trên video"
+  },
+  "popup_video_reset_sub": {
+    "message": "Vị trí bạn đã di chuyển và bộ lọc menu của nó, trên mỗi trang web"
+  },
+  "popup_video_reset": {
+    "message": "Đặt lại"
+  },
+  "popup_video_reset_done": {
+    "message": "Đã đưa nút về vị trí cũ, menu hiển thị mọi mục trên mọi trang web"
+  },
+  "status_links_sent": {
+    "message": "Liên kết đã gửi: $count$",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "10"
+      }
+    }
+  },
+  "status_links_cut": {
+    "message": "Liên kết đã gửi: $sent$, $left$ bị bỏ qua",
+    "placeholders": {
+      "sent": {
+        "content": "$1",
+        "example": "100"
+      },
+      "left": {
+        "content": "$2",
+        "example": "20"
+      }
+    }
+  },
+  "status_links_partial": {
+    "message": "Liên kết đã gửi: $sent$, bị từ chối: $refused$",
+    "placeholders": {
+      "sent": {
+        "content": "$1",
+        "example": "5"
+      },
+      "refused": {
+        "content": "$2",
+        "example": "2"
+      }
+    }
+  },
+  "status_links_partial_cut": {
+    "message": "Liên kết đã gửi: $sent$, bị từ chối: $refused$, $left$ bị bỏ qua",
+    "placeholders": {
+      "sent": {
+        "content": "$1",
+        "example": "5"
+      },
+      "refused": {
+        "content": "$2",
+        "example": "2"
+      },
+      "left": {
+        "content": "$3",
+        "example": "1"
+      }
+    }
+  },
+  "status_links_refused": {
+    "message": "Liên kết bị từ chối: $count$",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "status_links_none": {
+    "message": "Không có liên kết có thể bắt được ($left$ đã bỏ qua)",
+    "placeholders": {
+      "left": {
+        "content": "$1",
+        "example": "5"
+      }
+    }
+  },
+  "status_unreachable": {
+    "message": "Không thể kết nối với máy chủ"
   }
 }

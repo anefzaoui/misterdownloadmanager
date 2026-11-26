@@ -284,6 +284,64 @@
   "popup_media_title_name": {
     "message": "在媒体文件名前加上页面标题"
   },
+  "popup_images": {
+    "message": "此页面上的图片"
+  },
+  "popup_images_text": {
+    "message": "查找此页面上最大尺寸的图片，然后将您想要的图片发送到链接抓取器。"
+  },
+  "popup_images_find": {
+    "message": "查找图片"
+  },
+  "popup_images_min": {
+    "message": "最小尺寸（像素）"
+  },
+  "popup_images_width": {
+    "message": "最小宽度（像素）"
+  },
+  "popup_images_height": {
+    "message": "最小高度（像素）"
+  },
+  "popup_images_types": {
+    "message": "图片类型"
+  },
+  "popup_images_other": {
+    "message": "其他"
+  },
+  "popup_images_count": {
+    "message": "已选择 $total$ 个中的 $shown$ 个",
+    "placeholders": {
+      "shown": {
+        "content": "$1",
+        "example": "12"
+      },
+      "total": {
+        "content": "$2",
+        "example": "40"
+      }
+    }
+  },
+  "popup_images_unsized": {
+    "message": "未给出尺寸，已保留：$n$",
+    "placeholders": {
+      "n": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "popup_images_send": {
+    "message": "发送到链接抓取器"
+  },
+  "popup_images_sent": {
+    "message": "已发送到链接抓取器：请在那里勾选要下载的图片。"
+  },
+  "popup_images_none": {
+    "message": "此页面上未找到图片。"
+  },
+  "popup_images_unreadable": {
+    "message": "浏览器不允许附加组件读取此页面。"
+  },
   "video_cant_save": {
     "message": "无法保存"
   },
@@ -291,7 +349,7 @@
     "message": "打开帖子"
   },
   "video_drag_dots": {
-    "message": "拖动圆点可沿边缘移动"
+    "message": "拖动圆点可将其移动到另一个角落，或视频外部"
   },
   "video_tip": {
     "message": "下载 $what$",
@@ -765,5 +823,108 @@
   },
   "popup_dl_open_remote": {
     "message": "打开其页面"
+  },
+  "video_home": {
+    "message": "将按钮放回原位"
+  },
+  "video_filter_all": {
+    "message": "所有"
+  },
+  "video_filter_audio": {
+    "message": "仅音频"
+  },
+  "video_filter_kind": {
+    "message": "显示"
+  },
+  "video_filter_type": {
+    "message": "文件类型"
+  },
+  "video_filter_codec": {
+    "message": "编码"
+  },
+  "popup_video_reset_text": {
+    "message": "视频上的下载按钮"
+  },
+  "popup_video_reset_sub": {
+    "message": "您移动它的位置，以及其菜单的筛选器，在每个网站上"
+  },
+  "popup_video_reset": {
+    "message": "重置"
+  },
+  "popup_video_reset_done": {
+    "message": "已回到原位，菜单显示所有内容，适用于所有网站"
+  },
+  "status_links_sent": {
+    "message": "已发送链接：$count$",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "10"
+      }
+    }
+  },
+  "status_links_cut": {
+    "message": "链接已发送：$sent$，已忽略：$left$",
+    "placeholders": {
+      "sent": {
+        "content": "$1",
+        "example": "100"
+      },
+      "left": {
+        "content": "$2",
+        "example": "20"
+      }
+    }
+  },
+  "status_links_partial": {
+    "message": "链接已发送：$sent$，已拒绝：$refused$",
+    "placeholders": {
+      "sent": {
+        "content": "$1",
+        "example": "5"
+      },
+      "refused": {
+        "content": "$2",
+        "example": "2"
+      }
+    }
+  },
+  "status_links_partial_cut": {
+    "message": "链接已发送：$sent$，已拒绝：$refused$，已忽略：$left$",
+    "placeholders": {
+      "sent": {
+        "content": "$1",
+        "example": "5"
+      },
+      "refused": {
+        "content": "$2",
+        "example": "2"
+      },
+      "left": {
+        "content": "$3",
+        "example": "1"
+      }
+    }
+  },
+  "status_links_refused": {
+    "message": "已拒绝链接：$count$",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "status_links_none": {
+    "message": "无可捕获链接（已忽略 $left$）",
+    "placeholders": {
+      "left": {
+        "content": "$1",
+        "example": "5"
+      }
+    }
+  },
+  "status_unreachable": {
+    "message": "服务器未响应"
   }
 }

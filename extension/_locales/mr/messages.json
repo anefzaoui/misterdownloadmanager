@@ -284,6 +284,64 @@
   "popup_media_title_name": {
     "message": "मीडिया फायलींच्या नावांपुढे पृष्ठाचे शीर्षक जोडा"
   },
+  "popup_images": {
+    "message": "या पृष्ठावरील इमेजेस"
+  },
+  "popup_images_text": {
+    "message": "या पृष्ठावरील चित्रे सर्वात मोठ्या आकारात शोधा, त्यानंतर तुम्हाला हवी असलेली चित्रे लिंक ग्रॅबरला पाठवा."
+  },
+  "popup_images_find": {
+    "message": "इमेज शोधा"
+  },
+  "popup_images_min": {
+    "message": "पिक्सेलमध्ये सर्वात लहान आकार"
+  },
+  "popup_images_width": {
+    "message": "सर्वात कमी रुंदी, पिक्सेलमध्ये"
+  },
+  "popup_images_height": {
+    "message": "सर्वात कमी उंची, पिक्सेलमध्ये"
+  },
+  "popup_images_types": {
+    "message": "इमेज प्रकार"
+  },
+  "popup_images_other": {
+    "message": "इतर"
+  },
+  "popup_images_count": {
+    "message": "$total$ पैकी $shown$ निवडले",
+    "placeholders": {
+      "shown": {
+        "content": "$1",
+        "example": "12"
+      },
+      "total": {
+        "content": "$2",
+        "example": "40"
+      }
+    }
+  },
+  "popup_images_unsized": {
+    "message": "आकार दिलेला नाही, ठेवली: $n$",
+    "placeholders": {
+      "n": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "popup_images_send": {
+    "message": "लिंक ग्रॅबरला पाठवा"
+  },
+  "popup_images_sent": {
+    "message": "लिंक ग्रॅबरला पाठवले: डाउनलोड करण्यासाठी तेथे टिक करा."
+  },
+  "popup_images_none": {
+    "message": "या पृष्ठावर कोणतीही इमेज सापडली नाही."
+  },
+  "popup_images_unreadable": {
+    "message": "ब्राउझर ॲड-ऑन्सना हे पृष्ठ वाचू देत नाही."
+  },
   "video_cant_save": {
     "message": "जतन करता येत नाही"
   },
@@ -291,7 +349,7 @@
     "message": "पोस्ट उघडा"
   },
   "video_drag_dots": {
-    "message": "कडा बाजूने हलवण्यासाठी ठिपके ओढा"
+    "message": "त्याला दुसऱ्या कोपऱ्यात किंवा व्हिडिओच्या बाहेर हलवण्यासाठी ठिपके ओढा"
   },
   "video_tip": {
     "message": "$what$ डाउनलोड करा",
@@ -765,5 +823,108 @@
   },
   "popup_dl_open_remote": {
     "message": "त्याचे पेज उघडा"
+  },
+  "video_home": {
+    "message": "बटण परत त्याच्या कोपऱ्यात ठेवा"
+  },
+  "video_filter_all": {
+    "message": "सर्व"
+  },
+  "video_filter_audio": {
+    "message": "फक्त ऑडिओ"
+  },
+  "video_filter_kind": {
+    "message": "दाखवा"
+  },
+  "video_filter_type": {
+    "message": "फाइल प्रकार"
+  },
+  "video_filter_codec": {
+    "message": "कोडेक"
+  },
+  "popup_video_reset_text": {
+    "message": "व्हिडिओवरील डाउनलोड बटण"
+  },
+  "popup_video_reset_sub": {
+    "message": "तुम्ही ते कुठे हलवले, आणि त्याचे मेनूचे फिल्टर, प्रत्येक साइटवर"
+  },
+  "popup_video_reset": {
+    "message": "रीसेट करा"
+  },
+  "popup_video_reset_done": {
+    "message": "त्याच्या कोपऱ्यात परत, त्याचे मेनू प्रत्येक साइटवर सर्व काही दाखवत आहे"
+  },
+  "status_links_sent": {
+    "message": "दुवे पाठवले: $count$",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "10"
+      }
+    }
+  },
+  "status_links_cut": {
+    "message": "दुवे पाठवले: $sent$, $left$ वगळले",
+    "placeholders": {
+      "sent": {
+        "content": "$1",
+        "example": "100"
+      },
+      "left": {
+        "content": "$2",
+        "example": "20"
+      }
+    }
+  },
+  "status_links_partial": {
+    "message": "दुवे पाठवले: $sent$, नाकारले: $refused$",
+    "placeholders": {
+      "sent": {
+        "content": "$1",
+        "example": "5"
+      },
+      "refused": {
+        "content": "$2",
+        "example": "2"
+      }
+    }
+  },
+  "status_links_partial_cut": {
+    "message": "दुवे पाठवले: $sent$, नाकारले: $refused$, $left$ वगळले",
+    "placeholders": {
+      "sent": {
+        "content": "$1",
+        "example": "5"
+      },
+      "refused": {
+        "content": "$2",
+        "example": "2"
+      },
+      "left": {
+        "content": "$3",
+        "example": "1"
+      }
+    }
+  },
+  "status_links_refused": {
+    "message": "दुवे नाकारले: $count$",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "status_links_none": {
+    "message": "कॅप्चर करता येण्याजोगे दुवे नाहीत ($left$ वगळले)",
+    "placeholders": {
+      "left": {
+        "content": "$1",
+        "example": "5"
+      }
+    }
+  },
+  "status_unreachable": {
+    "message": "सर्व्हरपर्यंत पोहोचले नाही"
   }
 }

@@ -16,16 +16,18 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 LOCALES = ROOT / "extension" / "_locales"
 
-# Our language codes (i18n/languages.tsv) → the locale folders Chrome accepts (it refuses an
-# extension with any other; Firefox reads the same ones). The others show English.
+# Our language codes (i18n/languages.tsv) → the locale folders the browsers read. Chrome skips a
+# folder it doesn't know (Chromium's extension_l10n_util::GetValidLocales) and Firefox reads the
+# same names, so si (Firefox's Sinhala) ships even though Chrome has no Sinhala; pack.ps1 leaves it
+# out of the other packages (the stores check a package's locales). The others show English.
 CHROME = {
     "am": "am", "ar": "ar", "bg": "bg", "bn": "bn", "ca": "ca", "cs": "cs", "da": "da",
     "de": "de", "el": "el", "es": "es", "es-mx": "es_419", "et": "et", "fa": "fa", "fi": "fi",
     "fil": "fil", "fr": "fr", "gu": "gu", "he": "he", "hi": "hi", "hr": "hr", "hu": "hu",
     "id": "id", "it": "it", "ja": "ja", "kn": "kn", "ko": "ko", "lt": "lt", "lv": "lv",
     "ml": "ml", "mr": "mr", "ms": "ms", "nb": "no", "nl": "nl", "pl": "pl", "pt": "pt_PT",
-    "pt-br": "pt_BR", "ro": "ro", "ru": "ru", "sk": "sk", "sl": "sl", "sr": "sr", "sv": "sv",
-    "ta": "ta", "te": "te", "th": "th", "tr": "tr", "uk": "uk", "vi": "vi",
+    "pt-br": "pt_BR", "ro": "ro", "ru": "ru", "si": "si", "sk": "sk", "sl": "sl", "sr": "sr",
+    "sv": "sv", "ta": "ta", "te": "te", "th": "th", "tr": "tr", "uk": "uk", "vi": "vi",
     "zh-hans": "zh_CN", "zh-hant": "zh_TW",
 }
 

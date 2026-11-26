@@ -23,6 +23,9 @@ pub struct Batch {
     /// The keys go to To when it opens (a pattern made from a copied address, #709), else to
     /// the address.
     focus_to: bool,
+    /// With one folder for every download (Options → Save to, #1973): General's folder, where
+    /// an empty Save to's files go, shown in the empty box.
+    one_folder: Option<String>,
 }
 
 /// What a pattern's addresses are made from: address, letters, from, to, size.
@@ -52,7 +55,15 @@ impl Batch {
             focused: false,
             cached: None,
             focus_to: false,
+            one_folder: None,
         }
+    }
+
+    /// Options → Save to → one folder for every download (#1973): `general` is General's
+    /// folder, which the empty Save to box names (else "Each file's category folder").
+    pub fn with_one_folder(mut self, general: Option<String>) -> Self {
+        self.one_folder = general;
+        self
     }
 
     /// Add batch download from clipboard (#709): the copied address with its number as the
@@ -412,7 +423,10 @@ impl Batch {
             r(o, 102.0, 354.0, 362.0, 21.0),
             &mut self.folder,
             "batch-folder",
-            Some(crate::i18n::t("Each file's category folder")),
+            Some(match &self.one_folder {
+                Some(general) => general.as_str(),
+                None => crate::i18n::t("Each file's category folder"),
+            }),
         );
 
         let valid = !urls.is_empty();

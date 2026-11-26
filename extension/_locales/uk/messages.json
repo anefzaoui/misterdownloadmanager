@@ -284,6 +284,64 @@
   "popup_media_title_name": {
     "message": "Додавати заголовок сторінки перед назвами медіафайлів"
   },
+  "popup_images": {
+    "message": "Зображення на цій сторінці"
+  },
+  "popup_images_text": {
+    "message": "Знайдіть зображення цієї сторінки в найбільшому розмірі, який вона пропонує, а потім надішліть потрібні до Link grabber."
+  },
+  "popup_images_find": {
+    "message": "Знайти зображення"
+  },
+  "popup_images_min": {
+    "message": "Найменший розмір, у пікселях"
+  },
+  "popup_images_width": {
+    "message": "Найменша ширина в пікселях"
+  },
+  "popup_images_height": {
+    "message": "Найменша висота в пікселях"
+  },
+  "popup_images_types": {
+    "message": "Типи зображень"
+  },
+  "popup_images_other": {
+    "message": "Інші"
+  },
+  "popup_images_count": {
+    "message": "$shown$ з $total$ вибрано",
+    "placeholders": {
+      "shown": {
+        "content": "$1",
+        "example": "12"
+      },
+      "total": {
+        "content": "$2",
+        "example": "40"
+      }
+    }
+  },
+  "popup_images_unsized": {
+    "message": "Розмір не вказано, збережено: $n$",
+    "placeholders": {
+      "n": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "popup_images_send": {
+    "message": "Надіслати до Link grabber"
+  },
+  "popup_images_sent": {
+    "message": "Надіслано до Link grabber: позначте там ті, які потрібно завантажити."
+  },
+  "popup_images_none": {
+    "message": "На цій сторінці не знайдено зображень."
+  },
+  "popup_images_unreadable": {
+    "message": "Браузер не дозволяє доповненням читати цю сторінку."
+  },
   "video_cant_save": {
     "message": "неможливо зберегти"
   },
@@ -291,7 +349,7 @@
     "message": "Відкрити допис"
   },
   "video_drag_dots": {
-    "message": "Перетягніть крапки, щоб перемістити його по краю"
+    "message": "Перетягніть крапки, щоб перемістити її в інший кут або за межі відео"
   },
   "video_tip": {
     "message": "Завантажити $what$",
@@ -765,5 +823,108 @@
   },
   "popup_dl_open_remote": {
     "message": "Відкрити його сторінку"
+  },
+  "video_home": {
+    "message": "Повернути кнопку на місце"
+  },
+  "video_filter_all": {
+    "message": "Усі"
+  },
+  "video_filter_audio": {
+    "message": "Лише аудіо"
+  },
+  "video_filter_kind": {
+    "message": "Показати"
+  },
+  "video_filter_type": {
+    "message": "Тип файлу"
+  },
+  "video_filter_codec": {
+    "message": "Кодек"
+  },
+  "popup_video_reset_text": {
+    "message": "Кнопка завантаження над відео"
+  },
+  "popup_video_reset_sub": {
+    "message": "Куди ви її перемістили, і фільтри її меню, на кожному сайті"
+  },
+  "popup_video_reset": {
+    "message": "Скинути"
+  },
+  "popup_video_reset_done": {
+    "message": "Знову на своєму місці, меню показує все, на всіх сайтах"
+  },
+  "status_links_sent": {
+    "message": "Посилань надіслано: $count$",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "10"
+      }
+    }
+  },
+  "status_links_cut": {
+    "message": "Посилань надіслано: $sent$, пропущено: $left$",
+    "placeholders": {
+      "sent": {
+        "content": "$1",
+        "example": "100"
+      },
+      "left": {
+        "content": "$2",
+        "example": "20"
+      }
+    }
+  },
+  "status_links_partial": {
+    "message": "Посилань надіслано: $sent$, відхилено: $refused$",
+    "placeholders": {
+      "sent": {
+        "content": "$1",
+        "example": "5"
+      },
+      "refused": {
+        "content": "$2",
+        "example": "2"
+      }
+    }
+  },
+  "status_links_partial_cut": {
+    "message": "Посилань надіслано: $sent$, відхилено: $refused$, пропущено: $left$",
+    "placeholders": {
+      "sent": {
+        "content": "$1",
+        "example": "5"
+      },
+      "refused": {
+        "content": "$2",
+        "example": "2"
+      },
+      "left": {
+        "content": "$3",
+        "example": "1"
+      }
+    }
+  },
+  "status_links_refused": {
+    "message": "Посилань відхилено: $count$",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "status_links_none": {
+    "message": "Немає посилань для захоплення ($left$ пропущено)",
+    "placeholders": {
+      "left": {
+        "content": "$1",
+        "example": "5"
+      }
+    }
+  },
+  "status_unreachable": {
+    "message": "Сервер недоступний"
   }
 }

@@ -339,6 +339,14 @@ pub fn name(resp: &Response, name: &str) {
         .accesskit_node_builder(resp.id, |node| node.set_label(name.to_owned()));
 }
 
+/// A control's place among its siblings ("tab 3 of 12"): AccessKit counts from 0.
+pub fn position_in_set(resp: &Response, i: usize, n: usize) {
+    resp.ctx.accesskit_node_builder(resp.id, |node| {
+        node.set_position_in_set(i);
+        node.set_size_of_set(n);
+    });
+}
+
 /// A text box's or drop-down's name for screen readers, from its caption ([`caption_for`]).
 fn name_from_caption(resp: &Response) {
     if let Some(name) = caption_for(&resp.ctx, resp.rect) {
@@ -355,6 +363,16 @@ pub fn segoe() -> FontId {
         crate::palette::UiFont::System => FontId::proportional(size),
         crate::palette::UiFont::Tahoma => FontId::new(size, FontFamily::Name("tahoma".into())),
     }
+}
+
+/// The computer's own interface font (Segoe UI on Windows), whatever View → Font chose: the
+/// "System font" menu item is drawn in it, so it stays readable when a chosen file isn't
+/// (#1489).
+pub fn system_font() -> FontId {
+    FontId::new(
+        crate::theme::font_size(crate::theme::metrics().font_ui),
+        FontFamily::Name("system-ui".into()),
+    )
 }
 
 /// Arial Bold −13: the Categories close "x".
@@ -921,6 +939,66 @@ pub fn paragraph(
     lines.len()
 }
 
+/// [`paragraph`] that stays above `bottom`, the last row of the room its page gives it: the lines
+/// that fit are drawn, the last one cut with "..." when more were coming, and the whole text on
+/// hover. For a note at the bottom of a page that a longer translation outgrows.
+#[allow(clippy::too_many_arguments)]
+pub fn paragraph_until(
+    ui: &Ui,
+    p: &Painter,
+    x: f32,
+    baseline: f32,
+    s: &str,
+    color: Color32,
+    right: f32,
+    bottom: f32,
+    line_h: f32,
+) -> usize {
+    let flowed;
+    let s = if crate::i18n::code() == "en" {
+        s
+    } else {
+        flowed = reflow(s);
+        flowed.as_str()
+    };
+    let room = (right - x).max(1.0);
+    let lines = wrap_lines(p, s, room);
+    let shown = lines_until(p, &lines, lines_that_fit(baseline, bottom, line_h), room);
+    for (i, l) in shown.iter().enumerate() {
+        text(p, x, baseline + line_h * i as f32, l, color);
+    }
+    if shown.len() < lines.len() {
+        // The whole note, over any of its lines.
+        let whole = rect(Rect::from_min_max(
+            pos2(x, baseline - line_h),
+            pos2(
+                right,
+                baseline + line_h * (shown.len().saturating_sub(1)) as f32 + 4.0,
+            ),
+        ));
+        full_on_hover(ui, whole, ("note-until", x as i32, baseline as i32), s);
+    }
+    shown.len()
+}
+
+/// How many lines `line_h` apart, the first at `baseline`, end above `bottom`: a line's
+/// descender keeps clear of the edge below it. Always one, for a room of no height.
+fn lines_that_fit(baseline: f32, bottom: f32, line_h: f32) -> usize {
+    let rows = (bottom - baseline - 4.0) / line_h.max(1.0);
+    rows.floor().max(0.0) as usize + 1
+}
+
+/// The first `fits` of `lines`, the last cut with "..." when some were left out.
+fn lines_until(p: &Painter, lines: &[String], fits: usize, room: f32) -> Vec<String> {
+    let mut shown: Vec<String> = lines.iter().take(fits.max(1)).cloned().collect();
+    if lines.len() > shown.len()
+        && let Some(last) = shown.last_mut()
+    {
+        *last = ellipsize(p, &tahoma(), &format!("{last} ..."), room);
+    }
+    shown
+}
+
 /// Data shown as it is (a crash report, release notes), from English `x` to `right`, first
 /// baseline at `baseline`, `line_h` apart; returns the lines drawn. Its line breaks are its own
 /// in every language (a line longer than the room wraps, as in [`paragraph`]), and it reads left
@@ -962,6 +1040,12 @@ fn data_left(x: f32, right: f32) -> f32 {
 /// `s` broken into the lines it shows in `room` px: at its own line breaks, and where a line is
 /// too long, at spaces, or between any two characters in scripts written without spaces.
 fn wrap_lines(p: &Painter, s: &str, room: f32) -> Vec<String> {
+    wrap_lines_font(p, tahoma(), s, room)
+}
+
+/// [`wrap_lines`] in any font (a bold name on several lines: the preview pane's).
+pub fn wrap_lines_font(p: &Painter, font: FontId, s: &str, room: f32) -> Vec<String> {
+    let text_width = |p: &Painter, t: &str| text_width_font(p, font.clone(), t);
     let mut lines: Vec<String> = Vec::new();
     for given in s.split('\n') {
         // A Windows line end (a report written there) breaks the line too.
@@ -1017,6 +1101,170 @@ fn wrap_lines(p: &Painter, s: &str, room: f32) -> Vec<String> {
         lines.push(line.trim_end().to_owned());
     }
     lines
+}
+
+/// A file's name on up to `max` lines of `room` px (`width` measures a text): broken at its own
+/// separators (after a space, `_`, `-`, `.`, `,`, `+`, `~`; before an opening bracket), its
+/// extension never split and kept on the last line with the piece before it; a part with no
+/// separator wider than the room broken between its characters (a letter and its marks together).
+/// Longer than `max` lines: the last one is the name's end, cut at its start with "..." (so the
+/// extension still shows).
+pub fn name_lines(name: &str, room: f32, max: usize, width: impl Fn(&str) -> f32) -> Vec<String> {
+    let max = max.max(1);
+    if width(name) <= room {
+        return vec![name.to_owned()];
+    }
+    // The extension: after the last dot, short, after a stem of its own.
+    let (stem, ext) = match name.rfind('.') {
+        Some(at) if at > 0 && name.len() - at <= 17 && !name[at + 1..].contains(' ') => {
+            name.split_at(at)
+        }
+        _ => (name, ""),
+    };
+    // The stem in pieces, each ending at a separator.
+    let mut pieces: Vec<String> = Vec::new();
+    let mut cur = String::new();
+    for g in stem.graphemes(true) {
+        if matches!(g, "(" | "[" | "{") && !cur.is_empty() {
+            pieces.push(std::mem::take(&mut cur));
+        }
+        cur.push_str(g);
+        if matches!(g, " " | "_" | "-" | "." | "," | "+" | "~" | ")" | "]" | "}") {
+            pieces.push(std::mem::take(&mut cur));
+        }
+    }
+    if !cur.is_empty() {
+        pieces.push(cur);
+    }
+    // A piece wider than the room: cut between its characters.
+    let mut parts: Vec<String> = Vec::new();
+    for piece in pieces {
+        if width(&piece) <= room {
+            parts.push(piece);
+            continue;
+        }
+        let mut chunk = String::new();
+        for g in piece.graphemes(true) {
+            if !chunk.is_empty() && width(&format!("{chunk}{g}")) > room {
+                parts.push(std::mem::take(&mut chunk));
+            }
+            chunk.push_str(g);
+        }
+        if !chunk.is_empty() {
+            parts.push(chunk);
+        }
+    }
+    // The extension goes with the piece before it where they fit together, so it never ends up
+    // alone on a line of its own ("...10s_1MB" / ".mp4").
+    if !ext.is_empty() {
+        match parts.last_mut() {
+            Some(last) if width(&format!("{last}{ext}")) <= room => last.push_str(ext),
+            _ => parts.push(ext.to_owned()),
+        }
+    }
+    let mut lines: Vec<String> = Vec::new();
+    let mut line = String::new();
+    for part in parts {
+        if line.is_empty() || width(&format!("{line}{part}")) <= room {
+            line.push_str(&part);
+        } else {
+            lines.push(std::mem::take(&mut line));
+            line = part;
+        }
+    }
+    lines.push(line);
+    for l in &mut lines {
+        // A space a line ends on isn't seen.
+        let trimmed = l.trim_end_matches(' ').len();
+        l.truncate(trimmed.max(1).min(l.len()));
+    }
+    if lines.len() > max {
+        let rest: String = lines.split_off(max - 1).concat();
+        // The rest's end that fits after "...": the extension stays in sight.
+        let gs: Vec<&str> = rest.graphemes(true).collect();
+        let mut k = gs.len();
+        while k > 0 && width(&format!("...{}", gs[k - 1..].concat())) <= room {
+            k -= 1;
+        }
+        lines.push(format!("...{}", gs[k..].concat()));
+    }
+    lines
+}
+
+/// [`name_lines`] measured in `font`.
+pub fn name_lines_in(p: &Painter, font: FontId, name: &str, room: f32, max: usize) -> Vec<String> {
+    name_lines(name, room, max, |s| text_width_font(p, font.clone(), s))
+}
+
+#[cfg(test)]
+mod name_lines_tests {
+    use super::name_lines;
+
+    /// One unit per character: a room of 10 holds ten.
+    fn lines(name: &str, room: f32, max: usize) -> Vec<String> {
+        name_lines(name, room, max, |s| s.chars().count() as f32)
+    }
+
+    #[test]
+    fn a_name_breaks_at_its_separators_and_keeps_its_extension_whole() {
+        // #1368's: "Big_Buck_Bunny_360_10s_1MB.m" / "p4" before.
+        assert_eq!(
+            lines("Big_Buck_Bunny_360_10s_1MB.mp4", 20.0, 3),
+            ["Big_Buck_Bunny_360_", "10s_1MB.mp4"]
+        );
+        assert_eq!(lines("short.mp4", 20.0, 3), ["short.mp4"]);
+        // Not the extension alone on the last line: the piece before it goes down with it.
+        assert_eq!(
+            lines("Big_Buck_Bunny_360_10s_1MB.mp4", 26.0, 3),
+            ["Big_Buck_Bunny_360_10s_", "1MB.mp4"]
+        );
+        assert_eq!(
+            lines("with-a-rather-long-name.iso.torrent", 26.0, 3),
+            ["with-a-rather-long-name.", "iso.torrent"]
+        );
+        // The extension goes down whole rather than split.
+        assert_eq!(
+            lines("abcdefghij.torrent", 12.0, 3),
+            ["abcdefghij", ".torrent"]
+        );
+        // Spaces and dashes; the space a line ends on dropped.
+        assert_eq!(
+            lines("My holiday photos - final.zip", 12.0, 3),
+            ["My holiday", "photos -", "final.zip"]
+        );
+        // A bracket starts its line.
+        assert_eq!(
+            lines("Report(2026).pdf", 8.0, 3),
+            ["Report", "(2026)", ".pdf"]
+        );
+    }
+
+    #[test]
+    fn a_name_without_separators_breaks_between_letters_not_in_its_extension() {
+        let l = lines("abcdefghijklmnopqrstuvwxyz.torrent", 10.0, 5);
+        assert_eq!(l, ["abcdefghij", "klmnopqrst", "uvwxyz", ".torrent"]);
+        assert!(l.iter().all(|x| x.chars().count() <= 10));
+    }
+
+    #[test]
+    fn too_many_lines_end_with_the_names_end() {
+        let l = lines("a_b_c_d_e_f_g_h_i_j_k_l_m_n_o_p.mp4", 9.0, 3);
+        assert_eq!(l.len(), 3);
+        assert_eq!(l[2], "..._p.mp4");
+        assert_eq!(l[0], "a_b_c_d_");
+    }
+
+    #[test]
+    fn a_name_in_another_script_keeps_its_letters_and_marks() {
+        // Arabic letters with their marks, no separator: broken between whole characters.
+        let name = "مِلَفٌّطَوِيلٌجِدًّا.pdf";
+        let l = name_lines(name, 6.0, 4, |s| {
+            use unicode_segmentation::UnicodeSegmentation;
+            s.graphemes(true).count() as f32
+        });
+        assert_eq!(l.concat(), name);
+        assert_eq!(l.last().map(String::as_str), Some(".pdf"));
+    }
 }
 
 /// Where the text before a line's first input box goes in a [`sentence`].
@@ -5125,13 +5373,23 @@ pub fn radio_light_until(
     pass_focus_on(ui, &resp, enabled);
     let resp = enter_is_not_a_click(ui, resp);
     focus_on_press(&resp);
+    if resp.clicked() && !resp.has_focus() {
+        resp.request_focus();
+    }
+    // The caller updates its choice after `radio_light_until` returns, once earlier controls and
+    // the group's other buttons have already been drawn and exposed with the old one (#1692):
+    // discard this pass so the same frame lays out, paints and publishes the tree with the new
+    // choice at once (as UI Automation's SelectionItem.Select and AT-SPI's click expect).
+    if !selected && resp.clicked() && ui.ctx().current_pass_index() == 0 {
+        ui.ctx().request_discard("radio button chosen");
+    }
     show_focus(ui, &resp, hit.expand(1.0));
     expose(
         &resp,
         egui::Role::RadioButton,
         caption,
         enabled,
-        Some(selected),
+        Some(selected || resp.clicked()),
     );
     let c = glyph + vec2(6.5, 6.5);
     let state = State::of(&resp, enabled);
@@ -5234,6 +5492,31 @@ pub fn readable(ui: &Ui, rc: Rect, salt: impl std::hash::Hash + std::fmt::Debug,
     resp.widget_info(|| egui::WidgetInfo::labeled(egui::Role::Label, true, &text));
 }
 
+/// A [`readable`] Label that is also a polite live region: a screen reader speaks its text as
+/// it changes, without waiting for the focus to reach it. For rare news such as a failure —
+/// never for progress or percentages, which would interrupt endlessly (#1407).
+pub fn readable_live(ui: &Ui, rc: Rect, salt: impl std::hash::Hash + std::fmt::Debug, text: &str) {
+    let resp = ui.interact(rc, widget_id(ui, ("readable", salt)), Sense::hover());
+    let text = text.to_owned();
+    resp.widget_info(|| egui::WidgetInfo::labeled(egui::Role::Label, true, &text));
+    resp.ctx.accesskit_node_builder(resp.id, |n| {
+        n.set_live(egui::accesskit::Live::Polite);
+    });
+}
+
+/// The window's own node in the accessibility tree carries the window's title: egui leaves the
+/// root Window node unnamed, so a screen reader met `[frame] ''` where it looks for the window's
+/// name (#1407). The title is passed in, not read back from the OS window — on X11 winit's
+/// `Window::title()` is a stub that returns `""`. Call once a frame on each window's root ui.
+pub fn name_window(ui: &Ui, title: &str) {
+    if title.is_empty() {
+        return;
+    }
+    let resp = ui.interact(ui.max_rect(), egui::accesskit_root_id(), Sense::hover());
+    let title = title.to_owned();
+    resp.widget_info(move || egui::WidgetInfo::labeled(egui::Role::Window, true, &title));
+}
+
 /// A [`paragraph`] a screen reader can read too: its lines painted, then a [`readable`] Label
 /// node over them, for text that was only painted (#1407). Returns the line count, like
 /// [`paragraph`].
@@ -5249,12 +5532,49 @@ pub fn readable_paragraph(
     line_h: f32,
     salt: impl std::hash::Hash + std::fmt::Debug,
 ) -> usize {
+    readable_paragraph_impl(ui, p, x, baseline, s, color, right, line_h, salt, false)
+}
+
+/// A [`readable_paragraph`] that is a polite live region, like [`readable_live`]: its text is
+/// spoken as it changes, without the focus. For rare news such as a failure only (#1407).
+#[allow(clippy::too_many_arguments)]
+pub fn readable_paragraph_live(
+    ui: &Ui,
+    p: &Painter,
+    x: f32,
+    baseline: f32,
+    s: &str,
+    color: Color32,
+    right: f32,
+    line_h: f32,
+    salt: impl std::hash::Hash + std::fmt::Debug,
+) -> usize {
+    readable_paragraph_impl(ui, p, x, baseline, s, color, right, line_h, salt, true)
+}
+
+#[allow(clippy::too_many_arguments)]
+fn readable_paragraph_impl(
+    ui: &Ui,
+    p: &Painter,
+    x: f32,
+    baseline: f32,
+    s: &str,
+    color: Color32,
+    right: f32,
+    line_h: f32,
+    salt: impl std::hash::Hash + std::fmt::Debug,
+    live: bool,
+) -> usize {
     let lines = paragraph(p, x, baseline, s, color, right, line_h);
     let rc = rect(Rect::from_min_max(
         pos2(x, baseline - 12.0),
         pos2(right, baseline + line_h * (lines as f32 - 1.0) + 4.0),
     ));
-    readable(ui, rc, salt, s);
+    if live {
+        readable_live(ui, rc, salt, s);
+    } else {
+        readable(ui, rc, salt, s);
+    }
     lines
 }
 
@@ -5329,6 +5649,61 @@ pub fn expose_value(resp: &Response, role: egui::Role, value: &str, enabled: boo
         info.current_text_value = Some(value.clone());
         info
     });
+}
+
+/// A download's progress as a progress bar of its own (#1190, #1406): UI Automation reads it
+/// through the RangeValue pattern, so a reader's own progress reporting — its beeps and
+/// percentages — follows it without anyone moving the focus.
+///
+/// An AccessKit node of its own rather than [`expose`]: egui's `WidgetInfo` carries a value but no
+/// range (`Response::widget_info` sets the numeric value alone), and what a reader follows is a
+/// value inside a range, 0–100 here. Unnamed on purpose: a name is read in place of the value.
+/// `frac` is the download's own fraction, 0..=1.
+pub fn expose_progress(ui: &Ui, rc: Rect, id: egui::Id, frac: f64) {
+    ui.interact(rc, id, Sense::hover());
+    ui.ctx().accesskit_node_builder(id, |n| {
+        n.set_role(egui::Role::ProgressIndicator);
+        // Its rectangle, as egui gives one to every control it makes a node of (response.rs,
+        // fill_accesskit_node_common): without it UI Automation reports the node without any
+        // bounds, so a reader's review keys have nowhere on the bar to land — only its value,
+        // through the RangeValue pattern, would reach them.
+        n.set_bounds(egui::accesskit::Rect {
+            x0: f64::from(rc.min.x),
+            y0: f64::from(rc.min.y),
+            x1: f64::from(rc.max.x),
+            y1: f64::from(rc.max.y),
+        });
+        n.set_min_numeric_value(0.0);
+        n.set_max_numeric_value(100.0);
+        n.set_numeric_value(progress_value(frac));
+    });
+}
+
+/// [`expose_progress`]'s value as UI Automation reads it, 0–100: a figure that outran its own
+/// size (a rounded-up byte count, a file that grew under it) stays inside the range, since one
+/// outside it is dropped by the reader rather than clamped by it.
+fn progress_value(frac: f64) -> f64 {
+    frac.clamp(0.0, 1.0) * 100.0
+}
+
+#[cfg(test)]
+mod progress_value_tests {
+    use super::progress_value;
+
+    #[test]
+    fn a_fraction_becomes_a_percentage() {
+        assert_eq!(progress_value(0.0), 0.0);
+        assert_eq!(progress_value(0.25), 25.0);
+        assert_eq!(progress_value(1.0), 100.0);
+        // 41.3 % through, as the "Downloaded" row says it.
+        assert!((progress_value(0.413) - 41.3).abs() < 1e-9);
+    }
+
+    #[test]
+    fn a_figure_outside_the_fraction_stays_in_the_range() {
+        assert_eq!(progress_value(-0.03), 0.0);
+        assert_eq!(progress_value(1.04), 100.0);
+    }
 }
 
 /// The click of a control that opens a popup, except the one ending the press that just closed
@@ -5789,6 +6164,9 @@ pub fn radio_keys(ui: &Ui, group: &[Response]) -> Option<usize> {
         .map(|k| (at as isize + step * k).rem_euclid(n) as usize)
         .find(|&j| group[j].sense.senses_click())?;
     group[next].request_focus();
+    if ui.ctx().current_pass_index() == 0 {
+        ui.ctx().request_discard("radio group arrow");
+    }
     Some(next)
 }
 
@@ -5978,6 +6356,18 @@ pub fn tabs_light(
             .collect()
     };
     let mut clicked = None;
+    // The strip as a tab list in the accessibility tree, the tabs its children: UI Automation
+    // and AT-SPI read a tab's "of n" from its container, never from the tab itself — so the
+    // count is the strip's, as the download list carries its rows' (list.rs, #1407).
+    let mut strip_ui = ui.new_child(
+        egui::UiBuilder::new()
+            .max_rect(Rect::from_min_max(rc.min, pos2(rc.right(), t)))
+            .accessibility_role(egui::accesskit::Role::TabList),
+    );
+    ui.ctx().accesskit_node_builder(strip_ui.unique_id(), |n| {
+        n.set_size_of_set(tabs.len());
+    });
+    let ui = &mut strip_ui;
     let mut draw = |i: usize, tab: &LightTab, sel: bool| {
         let (sel_x, unsel_x, label_x, shown) = &placed[i];
         let (x0, x1) = if sel { *sel_x } else { *unsel_x };
@@ -6001,6 +6391,8 @@ pub fn tabs_light(
             true,
             Some(sel),
         );
+        // "tab i of n", as a Windows tab control says it (#1407).
+        position_in_set(&resp, i, tabs.len());
         let resp = enter_is_not_a_click(ui, resp);
         if resp.clicked() && !sel {
             clicked = Some(i);
@@ -6065,6 +6457,71 @@ pub fn tabs_light(
         draw(selected, tab, true);
     }
     clicked
+}
+
+#[cfg(test)]
+mod tab_list_tests {
+    use super::*;
+    use egui::accesskit::{Role, TreeUpdate};
+
+    fn pass(count: usize, selected: usize) -> TreeUpdate {
+        let ctx = egui::Context::default();
+        let mut defs = egui::FontDefinitions::default();
+        install_fonts(&mut defs, None);
+        ctx.set_fonts(defs);
+        ctx.enable_accesskit();
+        let labels = ["One", "Two", "Three", "Four"];
+        let tabs: Vec<LightTab> = (0..count)
+            .map(|i| LightTab {
+                label: labels[i],
+                sel: (i as f32 * 60.0, i as f32 * 60.0 + 62.0),
+                unsel: (i as f32 * 60.0 + 2.0, i as f32 * 60.0 + 60.0),
+            })
+            .collect();
+        let input = egui::RawInput {
+            screen_rect: Some(Rect::from_min_size(Pos2::ZERO, egui::vec2(500.0, 400.0))),
+            ..Default::default()
+        };
+        let mut out = ctx.run_ui(input, |ui| {
+            let rc = Rect::from_min_size(pos2(10.0, 10.0), egui::vec2(400.0, 300.0));
+            tabs_light(ui, pos2(10.0, 10.0), rc, &tabs, selected);
+        });
+        out.textures_delta.clear();
+        out.platform_output
+            .accesskit_update
+            .expect("AccessKit is on")
+    }
+
+    #[test]
+    fn the_strip_is_a_tab_list_holding_its_tabs() {
+        // UI Automation and AT-SPI read a tab's "of n" from its container (#1407): the strip
+        // says the count, the tabs are its children, each with its place.
+        let u = pass(3, 1);
+        let strip = u
+            .nodes
+            .iter()
+            .find(|(_, n)| n.role() == Role::TabList)
+            .map(|(_, n)| n)
+            .expect("the strip is a tab list");
+        assert_eq!(strip.size_of_set(), Some(3));
+        let mut tabs: Vec<&egui::accesskit::Node> = u
+            .nodes
+            .iter()
+            .filter(|(_, n)| n.role() == Role::Tab)
+            .map(|(_, n)| n)
+            .collect();
+        assert_eq!(tabs.len(), 3);
+        tabs.sort_by_key(|n| n.position_in_set());
+        for (i, tab) in tabs.iter().enumerate() {
+            assert_eq!(tab.position_in_set(), Some(i));
+        }
+        for (id, _) in u.nodes.iter().filter(|(_, n)| n.role() == Role::Tab) {
+            assert!(
+                strip.children().contains(id),
+                "every tab is the tab list's child"
+            );
+        }
+    }
 }
 
 /// The 8 × 5 "v" of drop-downs, its top-left at `at`.
@@ -7532,6 +7989,26 @@ mod tests {
             }
         });
         out.textures_delta.clear();
+    }
+
+    #[test]
+    fn a_note_stops_at_the_bottom_of_its_page() {
+        with_painter(|p| {
+            // Room for three lines of 13 px from 438: 438, 451, 464; 474 is the page's edge, so
+            // the fourth (477) is left out.
+            assert_eq!(lines_that_fit(438.0, 474.0, 13.0), 3);
+            assert_eq!(lines_that_fit(438.0, 481.0, 13.0), 4);
+            // A page with no room at all keeps one line, and no zero-line paragraph.
+            assert_eq!(lines_that_fit(438.0, 430.0, 13.0), 1);
+            let lines: Vec<String> = ["one", "two", "three", "four"].map(String::from).to_vec();
+            let shown = lines_until(p, &lines, 3, 300.0);
+            assert_eq!(shown.len(), 3);
+            // The left-out lines are said by the last one's "...", inside its room.
+            assert!(shown[2].ends_with("..."), "{shown:?}");
+            assert!(text_width(p, &shown[2]) <= 300.0);
+            // Every line fits: drawn as they are.
+            assert_eq!(lines_until(p, &lines, 4, 300.0), lines);
+        });
     }
 
     #[test]
@@ -9293,5 +9770,96 @@ example.org"; // values typed in, not texts to translate
             );
         });
         out.textures_delta.clear();
+    }
+
+    /// #1692: each round radio button is a RadioButton with Click, Focus and its checked state
+    /// (Toggled, which AccessKit maps to UI Automation's SelectionItem and AT-SPI's Checked), and
+    /// pressing an unselected one through AccessKit (or moving with the arrows) updates both
+    /// buttons' states in that same frame's tree, without waiting for a later repaint.
+    #[test]
+    fn a_radio_group_answers_assistive_select_in_the_same_frame() {
+        use egui::accesskit::{Action, Role, Toggled};
+        let ctx = egui::Context::default();
+        ctx.enable_accesskit();
+        // Labels from variables: the catalog's extractor takes literal ones as texts to translate.
+        let (first, second) = ("Quick cut", "Exact cut");
+        let run = |choice: &mut usize, events: Vec<egui::Event>| {
+            let mut ids = [egui::Id::NULL; 2];
+            let mut out = ctx.run_ui(
+                egui::RawInput {
+                    events,
+                    focused: true,
+                    ..Default::default()
+                },
+                |ui| {
+                    let a = radio_light(ui, pos2(20.0, 20.0), *choice == 0, first, true);
+                    if a.clicked() {
+                        *choice = 0;
+                    }
+                    let b = radio_light(ui, pos2(140.0, 20.0), *choice == 1, second, true);
+                    if b.clicked() {
+                        *choice = 1;
+                    }
+                    if let Some(i) = radio_keys(ui, &[a.clone(), b.clone()]) {
+                        *choice = i;
+                    }
+                    ids = [a.id, b.id];
+                },
+            );
+            out.textures_delta.clear();
+            let tree = out
+                .platform_output
+                .accesskit_update
+                .expect("AccessKit tree");
+            let state_of = |id: egui::Id| {
+                let (_, n) = tree
+                    .nodes
+                    .iter()
+                    .find(|(nid, _)| *nid == id.accesskit_id())
+                    .expect("radio node");
+                assert_eq!(n.role(), Role::RadioButton);
+                assert!(n.supports_action(Action::Click));
+                assert!(n.supports_action(Action::Focus));
+                (n.label().unwrap_or("").to_owned(), n.toggled())
+            };
+            (
+                ids,
+                state_of(ids[0]),
+                state_of(ids[1]),
+                tree.focus,
+                out.platform_output.events,
+            )
+        };
+
+        let mut choice = 0;
+        let (ids, a, b, _, _) = run(&mut choice, vec![]);
+        assert_eq!(a, (first.to_owned(), Some(Toggled::True)));
+        assert_eq!(b, (second.to_owned(), Some(Toggled::False)));
+
+        // UI Automation's SelectionItem.Select() (and AT-SPI's "click") sends Action::Click: in
+        // this single frame, the chosen radio turns True, the previous one False, and focus moves.
+        let (ids, a, b, focus, events) =
+            run(&mut choice, vec![ask(ids[1].accesskit_id(), Action::Click)]);
+        assert_eq!(choice, 1);
+        assert_eq!(a, (first.to_owned(), Some(Toggled::False)));
+        assert_eq!(b, (second.to_owned(), Some(Toggled::True)));
+        assert_eq!(focus, ids[1].accesskit_id());
+        assert!(events.iter().any(|e| {
+            matches!(e, egui::output::OutputEvent::Clicked(info) if info.selected == Some(true))
+        }));
+
+        // An arrow key in the group switches back in the same frame too.
+        let left = egui::Event::Key {
+            key: egui::Key::ArrowLeft,
+            physical_key: None,
+            pressed: true,
+            repeat: false,
+            modifiers: egui::Modifiers::NONE,
+        };
+        let (ids, a, b, focus, _) = run(&mut choice, vec![left]);
+        assert_eq!(choice, 0);
+        assert_eq!(a, (first.to_owned(), Some(Toggled::True)));
+        assert_eq!(b, (second.to_owned(), Some(Toggled::False)));
+        assert_eq!(focus, ids[0].accesskit_id());
     }
 }

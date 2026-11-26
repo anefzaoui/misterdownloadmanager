@@ -101,21 +101,25 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} download finished|{n} downloads finished	{n} ಡೌನ್‌ಲೋಡ್ ಪೂರ್ಣಗೊಂಡಿದೆ|{n} ಡೌನ್‌ಲೋಡ್‌ಗಳು ಪೂರ್ಣಗೊಂಡಿವೆ
+#. count in preview.rs
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} download selected|{n} downloads selected	{n} ಡೌನ್‌ಲೋಡ್‌ಗಳನ್ನು ಆಯ್ಕೆಮಾಡಲಾಗಿದೆ|{n} ಡೌನ್‌ಲೋಡ್‌ಗಳನ್ನು ಆಯ್ಕೆಮಾಡಲಾಗಿದೆ
 #. count in the main window
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} downloading|{n} downloading	{n} ಡೌನ್‌ಲೋಡ್ ಆಗುತ್ತಿದೆ|{n} ಡೌನ್‌ಲೋಡ್ ಆಗುತ್ತಿದೆ
 #. count in extracting archives (a download's log, the Archive password window)
-#. in a download's log, after extracting: entries of the archive not written (links, names that would leave the folder)
+#. in a download's log, after extracting: entries of the archive not written (links, names that would leave the folder, entries under a file of the archive where a folder should be)
 #. {n} = a number (keep the braces as they are)
 #, machine
-@plural	{n} entry was left out (a link, or a name leading outside the folder)|{n} entries were left out (links, or names leading outside the folder)	{n} ನಮೂದನ್ನು ಬಿಟ್ಟುಬಿಡಲಾಗಿದೆ (ಲಿಂಕ್, ಅಥವಾ ಫೋಲ್ಡರ್‌ನ ಹೊರಗೆ ಹೋಗುವ ಹೆಸರು)|{n} ನಮೂದುಗಳನ್ನು ಬಿಟ್ಟುಬಿಡಲಾಗಿದೆ (ಲಿಂಕ್‌ಗಳು, ಅಥವಾ ಫೋಲ್ಡರ್‌ನ ಹೊರಗೆ ಹೋಗುವ ಹೆಸರುಗಳು)
+@plural	{n} entry was left out (a link, a name leading outside the folder, or a file in its way)|{n} entries were left out (links, names leading outside the folder, or files in their way)	{n} ನಮೂದನ್ನು ಬಿಟ್ಟುಬಿಡಲಾಗಿದೆ (ಲಿಂಕ್, ಫೋಲ್ಡರ್‌ನ ಹೊರಗೆ ಕರೆದೊಯ್ಯುವ ಹೆಸರು, ಅಥವಾ ಅದರ ದಾರಿಯಲ್ಲಿರುವ ಫೈಲ್)|{n} ನಮೂದುಗಳನ್ನು ಬಿಟ್ಟುಬಿಡಲಾಗಿದೆ (ಲಿಂಕ್‌ಗಳು, ಫೋಲ್ಡರ್‌ನ ಹೊರಗೆ ಕರೆದೊಯ್ಯುವ ಹೆಸರುಗಳು, ಅಥವಾ ಅವುಗಳ ದಾರಿಯಲ್ಲಿರುವ ಫೈಲ್‌ಗಳು)
 #. count in a dialog box
 #. the summary of downloads added together; after "12 downloads finished": {n} of them failed
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} failed|{n} failed	{n} ವಿಫಲವಾಗಿದೆ|{n} ವಿಫಲವಾಗಿವೆ
-#. count in the Batch download window; count in the Link grabber window; count in the Add torrent window; count in torrentfiles.rs
+#. count in the main window; count in the Batch download window; count in a dialog box; count in the Link grabber window; count in the Add torrent window; count in torrentfiles.rs; count in zippreview.rs
 #. how many files the pattern gives in all
 #. Link grabber: a package's row: {n} is its number of links
 #. {n} = a number (keep the braces as they are)
@@ -131,6 +135,10 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} file had the name of a file there already and was numbered|{n} files had the name of a file there already and were numbered	{n} ಫೈಲ್ ಈಗಾಗಲೇ ಅಲ್ಲಿರುವ ಫೈಲ್‌ನ ಹೆಸರನ್ನು ಹೊಂದಿತ್ತು ಮತ್ತು ಸಂಖ್ಯೆ ನೀಡಲಾಗಿದೆ|{n} ಫೈಲ್‌ಗಳು ಈಗಾಗಲೇ ಅಲ್ಲಿರುವ ಫೈಲ್‌ನ ಹೆಸರನ್ನು ಹೊಂದಿದ್ದವು ಮತ್ತು ಸಂಖ್ಯೆ ನೀಡಲಾಗಿದೆ
+#. count in preview.rs
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} finished|{n} finished	{n} ಡೌನ್‌ಲೋಡ್‌ಗಳು ಪೂರ್ಣಗೊಂಡಿವೆ|{n} ಡೌನ್‌ಲೋಡ್‌ಗಳು ಪೂರ್ಣಗೊಂಡಿವೆ
 #. count in the main window's messages (deleting downloads' files)
 #. the message's next line: how many more deleted files stayed on the disk
 #. {n} = a number (keep the braces as they are)
@@ -163,16 +171,36 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} tracker added|{n} trackers added	{n} ಟ್ರ್ಯಾಕರ್ ಸೇರಿಸಲಾಗಿದೆ|{n} ಟ್ರ್ಯಾಕರ್‌ಗಳನ್ನು ಸೇರಿಸಲಾಗಿದೆ
+#. count in the main window
+#. event log entry: trackers from the public tracker list (Torrent settings) were added to a torrent
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} tracker added from the public list|{n} trackers added from the public list	ಸಾರ್ವಜನಿಕ ಪಟ್ಟಿಯಿಂದ {n} ಟ್ರ್ಯಾಕರ್ ಸೇರಿಸಲಾಗಿದೆ|ಸಾರ್ವಜನಿಕ ಪಟ್ಟಿಯಿಂದ {n} ಟ್ರ್ಯಾಕರ್‌ಗಳನ್ನು ಸೇರಿಸಲಾಗಿದೆ
 #. count in the Add torrent window
 #. where a magnet's peers came from: {n} = trackers asked; {peers} = "3 peers"
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} tracker: {peers}|{n} trackers: {peers}	{n} ಟ್ರ್ಯಾಕರ್: {peers}|{n} ಟ್ರ್ಯಾಕರ್‌ಗಳು: {peers}
+#. count in the main window
+#. the tip of MDM's notification area (tray) icon: {n} windows of MDM (Download complete...) wait while a full-screen game, app or presentation is on, and show when the user is back
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} window waits until you're back|{n} windows wait until you're back	{n} ವಿಂಡೋ ನೀವು ಹಿಂತಿರುಗುವವರೆಗೆ ಕಾಯುತ್ತಿದೆ|{n} ವಿಂಡೋಗಳು ನೀವು ಹಿಂತಿರುಗುವವರೆಗೆ ಕಾಯುತ್ತಿವೆ
+#. count in the Link grabber window
+#. Link grabber's Source line: a Hugging Face repository's or GitHub release's ({package}: its name, "owner/name") files whose names would lead out of its folder (`../`, a drive, a device's name) are left out; {n} how many
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{package}: {n} file left out, its name would lead out of its folder|{package}: {n} files left out, their names would lead out of its folder	{package}: {n} ಫೈಲ್ ಅನ್ನು ಬಿಡಲಾಗಿದೆ, ಅದರ ಹೆಸರು ಅದರ ಫೋಲ್ಡರ್‌ನಿಂದ ಹೊರಗೆ ಹೋಗುತ್ತದೆ|{package}: {n} ಫೈಲ್‌ಗಳನ್ನು ಬಿಡಲಾಗಿದೆ, ಅವುಗಳ ಹೆಸರುಗಳು ಅದರ ಫೋಲ್ಡರ್‌ನಿಂದ ಹೊರಗೆ ಹೋಗುತ್ತವೆ
 #. count in cnl.rs
 #. Click'n'Load window: {site} is a web site's name such as "example.com"
 #. {site} = a web site's name such as "example.com"; {n} = a number (keep the braces as they are)
 #, machine
 @plural	{site} wants to send {n} link to Link grabber.|{site} wants to send {n} links to Link grabber.	{site} ಲಿಂಕ್ ಗ್ರ್ಯಾಬರ್‌ಗೆ {n} ಲಿಂಕ್ ಕಳುಹಿಸಲು ಬಯಸುತ್ತದೆ.|{site} ಲಿಂಕ್ ಗ್ರ್ಯಾಬರ್‌ಗೆ {n} ಲಿಂಕ್‌ಗಳನ್ನು ಕಳುಹಿಸಲು ಬಯಸುತ್ತದೆ.
+#. count in preview.rs
+#. the preview pane, several downloads selected: their total size, then how many of them have no known size yet; {size} e.g. "4.20 GB"
+#. {size} = a file size such as "4.2 MB"; {n} = a number (keep the braces as they are)
+#, machine
+@plural	{size} and {n} of unknown size|{size} and {n} of unknown size	{size} ಮತ್ತು {n} ಅಜ್ಞಾತ ಗಾತ್ರದವು|{size} ಮತ್ತು {n} ಅಜ್ಞಾತ ಗಾತ್ರದವು
 #. count in playlistdlg.rs
 #. in Download video: a playlist title then how many videos it has ({count})
 #. {count} = a number (keep the braces as they are)
@@ -182,6 +210,10 @@
 #. in Download video: a playlist title, then how many of its videos are listed so far ({listed}) of how many ({total})
 #, machine
 @plural	{title}: {listed} of {total} video listed|{title}: {listed} of {total} videos listed	{title}: {total} ವೀಡಿಯೊಗಳಲ್ಲಿ {listed} ಪಟ್ಟಿ ಮಾಡಲಾಗಿದೆ|{title}: {total} ವೀಡಿಯೊಗಳಲ್ಲಿ {listed} ಪಟ್ಟಿ ಮಾಡಲಾಗಿದೆ
+#. text in the Options window
+#. tooltip of "Don't show pop-ups while a full-screen app or presentation is running"
+#, machine
+	"Download complete" and the other windows MDM opens by itself wait while a full-screen game, app or video, a presentation or the locked screen is on, and show when you're back. The windows you open yourself, and links from your browser, always show	ಪೂರ್ಣ-ಪರದೆಯ ಆಟ, ಅಪ್ಲಿಕೇಶನ್ ಅಥವಾ ವೀಡಿಯೊ, ಪ್ರಸ್ತುತಿ ಅಥವಾ ಲಾಕ್ ಮಾಡಿದ ಪರದೆಯು ಆನ್ ಆಗಿರುವಾಗ “ಡೌನ್‌ಲೋಡ್ ಪೂರ್ಣಗೊಂಡಿದೆ” ಮತ್ತು MDM ಸ್ವತಃ ತೆರೆಯುವ ಇತರ ವಿಂಡೋಗಳು ಕಾಯುತ್ತವೆ ಮತ್ತು ನೀವು ಹಿಂತಿರುಗಿದಾಗ ತೋರಿಸುತ್ತವೆ. ನೀವು ಸ್ವತಃ ತೆರೆಯುವ ವಿಂಡೋಗಳು ಮತ್ತು ನಿಮ್ಮ ಬ್ರೌಸರ್‌ನಿಂದ ಬರುವ ಲಿಂಕ್‌ಗಳು ಯಾವಾಗಲೂ ತೋರಿಸುತ್ತವೆ.
 #. text in the settings
 #. Options → DNS: a server address typed isn't an IP address; {what} is what was typed
 #, machine
@@ -289,6 +321,10 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	A magnet link's files could not be looked up: {error}	ಮ್ಯಾಗ್ನೆಟ್ ಲಿಂಕ್‌ನ ಫೈಲ್‌ಗಳನ್ನು ಹುಡುಕಲಾಗಲಿಲ್ಲ: {error}
+#. message or event log entry in the main window
+#. event log, at start: MDM was closed while this download was being moved to another folder; {folder} is where its file is now
+#, machine
+	A move was cut short when MDM closed: the download is in {folder}	MDM ಮುಚ್ಚಿದಾಗ ವರ್ಗಾವಣೆ ಕಡಿತಗೊಂಡಿದೆ: ಡೌನ್‌ಲೋಡ್ {folder} ನಲ್ಲಿದೆ
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
@@ -301,6 +337,9 @@
 #. why Part is greyed in Download video: the page is a playlist, whose videos are downloaded whole
 #, machine
 	A playlist's videos are downloaded whole	ಪ್ಲೇಪಟ್ಟಿ ವೀಡಿಯೊಗಳನ್ನು ಸಂಪೂರ್ಣವಾಗಿ ಡೌನ್‌ಲೋಡ್ ಮಾಡಲಾಗುತ್ತದೆ
+#. message or event log entry in the main window
+#, machine
+	A private torrent: the public tracker list isn't added	ಖಾಸಗಿ ಟೊರೆಂಟ್: ಸಾರ್ವಜನಿಕ ಟ್ರ್ಯಾಕರ್ ಪಟ್ಟಿಯನ್ನು ಸೇರಿಸಲಾಗಿಲ್ಲ
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites: the tooltip of the profile box
 #, machine
@@ -325,6 +364,10 @@
 #. tooltip on the disabled Rename box for a single-file torrent
 #, machine
 	A single-file torrent keeps its name	ಏಕ-ಫೈಲ್ ಟೊರೆಂಟ್ ತನ್ನ ಹೆಸರನ್ನು ಉಳಿಸಿಕೊಳ್ಳುತ್ತದೆ
+#. text in the download list (sizes, speeds, status)
+#. why a torrent that isn't finished can't be moved or renamed: the torrent engine writes its pieces into the files where they are
+#, machine
+	A torrent can be moved once it's finished: until then the torrent engine writes its pieces where they are	ಟೊರೆಂಟ್ ಪೂರ್ಣಗೊಂಡ ನಂತರ ಅದನ್ನು ಸರಿಸಬಹುದು: ಅಲ್ಲಿಯವರೆಗೆ ಟೊರೆಂಟ್ ಎಂಜಿನ್ ಅದರ ತುಣುಕುಗಳನ್ನು ಅವು ಇರುವ ಸ್ಥಳದಲ್ಲೇ ಬರೆಯುತ್ತದೆ
 #. text in torrent_ownership.rs
 #. a torrent's folder is a link or junction leading outside its destination
 #, machine
@@ -333,6 +376,10 @@
 #. Add trackers: MDM never contacts a tracker on this computer or the local network
 #, machine
 	A tracker on this computer or the local network is never contacted: {line}	ಈ ಕಂಪ್ಯೂಟರ್‌ನಲ್ಲಿ ಅಥವಾ ಸ್ಥಳೀಯ ನೆಟ್‌ವರ್ಕ್‌ನಲ್ಲಿರುವ ಟ್ರ್ಯಾಕರ್ ಅನ್ನು ಎಂದಿಗೂ ಸಂಪರ್ಕಿಸಲಾಗುವುದಿಲ್ಲ: {line}
+#. text in the download list (sizes, speeds, status)
+#. why a video or an image gallery that isn't finished can't be moved or renamed: yt-dlp, ffmpeg or gallery-dl keep their unfinished files in its folder
+#, machine
+	A video or a gallery can be moved once it's finished: until then its helper programs keep their unfinished files in its folder	ವೀಡಿಯೊ ಅಥವಾ ಗ್ಯಾಲರಿಯನ್ನು ಪೂರ್ಣಗೊಂಡ ನಂತರ ಸರಿಸಬಹುದು: ಅಲ್ಲಿಯವರೆಗೆ ಅದರ ಸಹಾಯಕ ಪ್ರೋಗ್ರಾಂಗಳು ಅಪೂರ್ಣ ಫೈಲ್‌ಗಳನ್ನು ಅದರ ಫೋಲ್ಡರ್‌ನಲ್ಲೇ ಇಡುತ್ತವೆ
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 #, machine
@@ -433,6 +480,10 @@
 #. text in extension.rs
 #, machine
 	Add the free extension: files you download in your browser come here, and videos get a Download button.	ಉಚಿತ ವಿಸ್ತರಣೆಯನ್ನು ಸೇರಿಸಿ: ನಿಮ್ಮ ಬ್ರೌಸರ್‌ನಲ್ಲಿ ನೀವು ಡೌನ್‌ಲೋಡ್ ಮಾಡುವ ಫೈಲ್‌ಗಳು ಇಲ್ಲಿಗೆ ಬರುತ್ತವೆ, ಮತ್ತು ವೀಡಿಯೊಗಳಿಗೆ ಡೌನ್‌ಲೋಡ್ ಬಟನ್ ಸಿಗುತ್ತದೆ.
+#. text in the Add torrent window
+#. Torrent settings: add the trackers of a public tracker list (its address in the box below) to torrents that aren't private, so they find more peers
+#, machine
+	Add the trackers of this public list to public torrents:	ಈ ಸಾರ್ವಜನಿಕ ಪಟ್ಟಿಯ ಟ್ರ್ಯಾಕರ್‌ಗಳನ್ನು ಸಾರ್ವಜನಿಕ ಟೊರೆಂಟ್‌ಗಳಿಗೆ ಸೇರಿಸಿ:
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: add the torrents to the list without starting them
 #, machine
@@ -476,6 +527,10 @@
 #. remote control page (on a phone): a magnet link or .torrent file was added; MDM reads the torrent's files first
 #, machine
 	Added. MDM is reading the torrent: it joins the list in a moment.	ಸೇರಿಸಲಾಗಿದೆ. MDM ಟೊರೆಂಟ್ ಅನ್ನು ಓದುತ್ತಿದೆ: ಅದು ಇನ್ನೇನು ಪಟ್ಟಿಗೆ ಸೇರುತ್ತದೆ.
+#. text in preview.rs
+#. label in the preview pane: when the download was added to the list
+#, machine
+	Added:	ಸೇರಿಸಲಾಗಿದೆ:
 #. text in the Batch download window; text in a dialog box; label in the Options window; text in a download's progress window
 #. noun: the web address (URL)
 #. column title: the web address (URL)
@@ -489,7 +544,11 @@
 #. remote control page (on a phone): label of the box where a download's address or a magnet link is typed
 #, machine
 	Address or magnet link	ವಿಳಾಸ ಅಥವಾ ಮ್ಯಾಗ್ನೆಟ್ ಲಿಂಕ್
-#. text in the Options window; text in a download's Properties window
+#. message or event log entry in the main window
+#. Link grabber: where the links came from: the Add URL window (an address typed or pasted there)
+#, machine
+	Address typed	ವಿಳಾಸವನ್ನು ಟೈಪ್ ಮಾಡಲಾಗಿದೆ
+#. text in the Options window; text in preview.rs; text in a download's Properties window
 #. Options → DNS over HTTPS: label before the server's https:// address
 #, machine
 	Address:	ವಿಳಾಸ:
@@ -583,6 +642,10 @@
 #. Link grabber, a link's status: the remedy from the failure's sentence, for a site whose bot check lets only browsers through. The sentence, with the same advice, is the cell's hover tip
 #, machine
 	Alt+click the link	ಲಿಂಕ್ ಅನ್ನು Alt+ಕ್ಲಿಕ್ ಮಾಡಿ
+#. text in requestedit.rs
+#. Site rule: check box; on, MDM connects the way a browser does from the first request to these sites, instead of only after a site turned it away ("this site lets only browsers through")
+#, machine
+	Always connect the way a browser does	ಯಾವಾಗಲೂ ಬ್ರೌಸರ್‌ನಂತೆ ಸಂಪರ್ಕಿಸಿ
 #. message or event log entry in the main window
 #. View menu: a check item; dark mode on, whatever the system's setting
 #, machine
@@ -606,6 +669,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Andorra	ಅಂಡೋರಾ
+#. text in a dialog box
+#. why the phone could not be turned off after the queue (fills {error}, Android)
+#, machine
+	Android doesn't let apps turn the phone off	ಆ್ಯಪ್‌ಗಳು ಫೋನ್ ಆಫ್ ಮಾಡಲು Android ಅನುಮತಿಸುವುದಿಲ್ಲ
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -631,6 +698,10 @@
 #. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer's one wake alarm is already set by something else
 #, machine
 	Another program has set the computer's wake alarm	ಇನ್ನೊಂದು ಪ್ರೋಗ್ರಾಂ ಕಂಪ್ಯೂಟರ್‌ನ ವೇಕ್ ಅಲಾರಂ ಅನ್ನು ಹೊಂದಿಸಿದೆ
+#. text in the Options window
+#. Site rule: OK with a site another rule already has
+#, machine
+	Another rule is for this site already: change that one	ಈ ಸೈಟ್‌ಗೆ ಈಗಾಗಲೇ ಇನ್ನೊಂದು ನಿಯಮವಿದೆ: ಅದನ್ನು ಬದಲಾಯಿಸಿ
 #. text in the Options window
 #. Options → Proxy / Socks: Test's answer; {ms} milliseconds; {ip} the internet address the site saw (the proxy's, or this computer's without one)
 #, machine
@@ -700,6 +771,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Aruba	ಅರುಬಾ
+#. text in requestedit.rs
+#. a download's Connection settings → Proxy: the proxy set in Options → Proxy / Socks
+#, machine
+	As in Options	ಆಯ್ಕೆಗಳಲ್ಲಿರುವಂತೆ
 #. option (radio button) in the Options window
 #, machine
 	As the system's region writes them	ಸಿಸ್ಟಂನ ಪ್ರದೇಶವು ಬರೆಯುವಂತೆ
@@ -745,6 +820,7 @@
 #, machine
 	Austria	ಆಸ್ಟ್ರಿಯಾ
 #. checkbox in the Options window; text in the Options window
+#. Options → Download panels → Button size: the round button in a feed and over a small video, the button with its words over a big one (the default)
 #. checkbox: the User-Agent is the default browser's, which MDM finds itself
 #, machine
 	Automatic	ಸ್ವಯಂಚಾಲಿತ
@@ -860,6 +936,10 @@
 #. the trailing ... means it opens a window: keep it
 #, machine
 	Browse...	ಬ್ರೌಸ್ ಮಾಡಿ...
+#. text in the Options window
+#. Site rules: column title: "Yes" when the rule asks the way a browser connects from the first request
+#, machine
+	Browser	ಬ್ರೌಸರ್
 #. text in extension.rs
 #, machine
 	Browser integration isn't set up on this computer, so no browser can reach Mister Download Manager yet.	ಈ ಕಂಪ್ಯೂಟರ್‌ನಲ್ಲಿ ಬ್ರೌಸರ್ ಏಕೀಕರಣವನ್ನು ಹೊಂದಿಸಲಾಗಿಲ್ಲ, ಆದ್ದರಿಂದ ಯಾವುದೇ ಬ್ರೌಸರ್ ಇನ್ನೂ Mister Download Manager ಅನ್ನು ತಲುಪಲು ಸಾಧ್ಯವಿಲ್ಲ.
@@ -887,7 +967,7 @@
 #, machine
 	Busy, try later	ನಿರತವಾಗಿದೆ, ನಂತರ ಪ್ರಯತ್ನಿಸಿ
 #. text in the Options window
-#. Options → Download panels: the size of the download button over videos, chosen after it (Full / Compact)
+#. Options → Download panels: the size of the download button over videos, chosen under it (Automatic / Full / Compact)
 #, machine
 	Button size:	ಬಟನ್ ಗಾತ್ರ:
 #. message or event log entry in the main window
@@ -916,7 +996,7 @@
 #. a country's name (where a download's server is)
 #, machine
 	Canada	ಕೆನಡಾ
-#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in extracting archives (a download's log, the Archive password window); button in the Find window; button in gallerydlg.rs; text in the Link grabber window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; text in remote.rs; button in the Scheduler window; button in the Add torrent window; button in traypanel.rs; button in the Download video window
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in extracting archives (a download's log, the Archive password window); button in the Find window; button in gallerydlg.rs; text in the Link grabber window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; text in remote.rs; button in the Scheduler window; button in the Add torrent window; button in traypanel.rs; button in the Download video window; text in zippreview.rs
 #. button: stop downloading the update
 #, machine
 	Cancel	ರದ್ದುಮಾಡಿ
@@ -1082,12 +1162,22 @@
 #. remote control page (on a phone): what the ".torrent file" button does (screen readers)
 #, machine
 	Choose a .torrent file	.torrent ಫೈಲ್ ಆಯ್ಕೆಮಾಡಿ
+#. message or event log entry in the main window
+#. title of the file dialog of View → Font → Choose a font file
+#. title of the message when the font picked in View → Font can't be used
+#, machine
+	Choose a font file	ಫಾಂಟ್ ಫೈಲ್ ಆಯ್ಕೆಮಾಡಿ
 #. text in helpers.rs
+#. file picker title: choose a JavaScript runtime's program (node.exe, deno.exe, qjs.exe, bun.exe)
 #, machine
 	Choose a JavaScript runtime (Node.js, Deno, QuickJS or Bun)	ಜಾವಾಸ್ಕ್ರಿಪ್ಟ್ ರನ್‌ಟೈಮ್ ಆಯ್ಕೆಮಾಡಿ (Node.js, Deno, QuickJS ಅಥವಾ Bun)
 #. text in langpick.rs
 #, machine
 	Choose a language	ಭಾಷೆಯನ್ನು ಆರಿಸಿ
+#. text in a dialog box
+#. the Columns dialog: what it is for, above its list of the download list's columns
+#, machine
+	Choose columns to show	ತೋರಿಸಲು ಕಾಲಮ್‌ಗಳನ್ನು ಆಯ್ಕೆಮಾಡಿ
 #. text in langpick.rs
 #, machine
 	Choose the language Mister Download Manager shows its windows in:	Mister Download Manager ತನ್ನ ವಿಂಡೋಗಳನ್ನು ತೋರಿಸುವ ಭಾಷೆಯನ್ನು ಆರಿಸಿ:
@@ -1096,6 +1186,7 @@
 #, machine
 	Choose the profile's folder	ಪ್ರೊಫೈಲ್‌ನ ಫೋಲ್ಡರ್ ಆಯ್ಕೆಮಾಡಿ
 #. text in helpers.rs; text in the Options window
+#. file picker title; {name} = yt-dlp or ffmpeg
 #. file picker title; {name} = the program to choose (yt-dlp, ffmpeg, 7-Zip)
 #. {name} = a file name (keep the braces as they are)
 #, machine
@@ -1108,6 +1199,11 @@
 #. verb: clears this filter
 #, machine
 	Clear	ತೆರವುಗೊಳಿಸಿ
+#. message or event log entry in the main window; window title in cnl.rs
+#. title of the notice when Click'n'Load couldn't start
+#. window title: a web page used Click'n'Load (a link site's button that sends its links to this program)
+#, machine
+	Click'n'Load	ಕ್ಲಿಕ್'ಎನ್'ಲೋಡ್
 #. text in cnl.rs
 #. notice: Click'n'Load couldn't start; {port} is 9666; JDownloader is another download manager that uses the same port
 #, machine
@@ -1156,11 +1252,15 @@
 #. a country's name (where a download's server is)
 #, machine
 	Colombia	ಕೊಲಂಬಿಯಾ
+#. window title in a dialog box; text in a dialog box
+#. what a screen reader calls the Columns dialog's list of the download list's columns
+#, machine
+	Columns	ಕಾಲಮ್‌ಗಳು
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
 	Comoros	ಕೊಮೊರೋಸ್
-#. option (radio button) in the Options window
+#. text in the Options window
 #. Options → Download panels → Button size: only the round button (the logo, the arrow, the close mark) over every video
 #, machine
 	Compact	ಕಾಂಪ್ಯಾಕ್ಟ್
@@ -1210,6 +1310,23 @@
 #. tab title: connection settings
 #, machine
 	Connection	ಸಂಪರ್ಕ
+#. text in a download's Properties window
+#. window title: a download's own request settings (User-Agent, headers, connections, proxy), from File Properties → Connection...
+#, machine
+	Connection settings	ಸಂಪರ್ಕ ಸೆಟ್ಟಿಂಗ್‌ಗಳು
+#. message or event log entry in the main window
+#. event log: File Properties → Connection settings changed the download's own User-Agent, headers, proxy or connections
+#, machine
+	Connection settings changed	ಸಂಪರ್ಕ ಸೆಟ್ಟಿಂಗ್‌ಗಳನ್ನು ಬದಲಾಯಿಸಲಾಗಿದೆ
+#. text in a download's Properties window
+#. File Properties button: opens the download's own request settings (User-Agent, headers, connections, proxy)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Connection...	ಸಂಪರ್ಕ...
+#. text in the Options window
+#. Site rules: column title: the number of connections (empty: the default)
+#, machine
+	Connections	ಸಂಪರ್ಕಗಳು
 #. page title in the Options window
 #, machine
 	Connections and Limits	ಸಂಪರ್ಕಗಳು ಮತ್ತು ಮಿತಿಗಳು
@@ -1479,6 +1596,10 @@
 #. button in the browser extension's window: stop offering it at each start
 #, machine
 	Don't ask again	ಮತ್ತೆ ಕೇಳಬೇಡಿ
+#. text in the Options window
+#. checkbox, Options → Downloads: Download complete and MDM's other windows that open by themselves wait while a full-screen game, app or video, a presentation or the locked screen is on, and show when the user is back
+#, machine
+	Don't show pop-ups while a full-screen app or presentation is running	ಪೂರ್ಣ-ಪರದೆಯ ಅಪ್ಲಿಕೇಶನ್ ಅಥವಾ ಪ್ರಸ್ತುತಿ ಚಾಲನೆಯಲ್ಲಿರುವಾಗ ಪಾಪ್-ಅಪ್‌ಗಳನ್ನು ತೋರಿಸಬೇಡಿ
 #. checkbox in a dialog box
 #, machine
 	Don't show this dialog again	ಈ ಸಂವಾದವನ್ನು ಮತ್ತೆ ತೋರಿಸಬೇಡಿ
@@ -1637,6 +1758,10 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Downloading MDM's own copy...	MDM ನ ಸ್ವಂತ ನಕಲನ್ನು ಡೌನ್‌ಲೋಡ್ ಮಾಡಲಾಗುತ್ತಿದೆ...
+#. text in helpers.rs
+#. Helpers: MDM's own copy of a helper is being downloaded (where there was none, or in place of the system's); {percent} = how far, a number
+#, machine
+	Downloading MDM's own copy... {percent}%	MDM ನ ಸ್ವಂತ ನಕಲನ್ನು ಡೌನ್‌ಲೋಡ್ ಮಾಡಲಾಗುತ್ತಿದೆ... {percent}%
 #. text in archtest.rs
 #. in a download's log: after its archive test found damaged files, only their bytes are downloaded again from the same server; {size} like "1.20 MB"
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
@@ -1671,6 +1796,10 @@
 #. the notice shown once, the first time a download comes from a browser's private (incognito) window: it stays in MDM's list like any other, after a restart too; where to turn that off. {options} = the Options window, {general} = its General tab, {checkbox} = the checkbox "Keep private-window downloads in the list"
 #, machine
 	Downloads from a browser's private window stay in MDM's list like any other, also after MDM restarts; their cookies are never saved. To keep them in memory only, untick {options} → {general} → {checkbox}.	ಬ್ರೌಸರ್‌ನ ಖಾಸಗಿ ವಿಂಡೋದಿಂದ ಬಂದ ಡೌನ್‌ಲೋಡ್‌ಗಳು MDM ಮರುಪ್ರಾರಂಭಿಸಿದ ನಂತರವೂ ಇತರ ಡೌನ್‌ಲೋಡ್‌ಗಳಂತೆ ಪಟ್ಟಿಯಲ್ಲಿ ಉಳಿಯುತ್ತವೆ; ಅವುಗಳ ಕುಕೀಗಳನ್ನು ಎಂದಿಗೂ ಉಳಿಸಲಾಗುವುದಿಲ್ಲ. ಅವುಗಳನ್ನು ಮೆಮೊರಿಯಲ್ಲಿ ಮಾತ್ರ ಇರಿಸಲು, {options} → {general} → {checkbox} ಆಯ್ಕೆಯ ಗುರುತನ್ನು ತೆಗೆಯಿರಿ.
+#. text in the Options window
+#. Site rules window: how the rules apply; *.example.com stays as it is
+#, machine
+	Downloads from these sites get these settings. Each one comes from the first rule in the list that names the site and sets it; * stands for any text: *.example.com	ಈ ಸೈಟ್‌ಗಳಿಂದ ಡೌನ್‌ಲೋಡ್‌ಗಳಿಗೆ ಈ ಸೆಟ್ಟಿಂಗ್‌ಗಳನ್ನು ಅನ್ವಯಿಸಲಾಗುತ್ತದೆ. ಪ್ರತಿಯೊಂದು ಸೆಟ್ಟಿಂಗ್ ಪಟ್ಟಿಯಲ್ಲಿ ಸೈಟ್ ಅನ್ನು ಹೆಸರಿಸಿ ಅದನ್ನು ಹೊಂದಿಸುವ ಮೊದಲ ನಿಯಮದಿಂದ ಬರುತ್ತದೆ; * ಯಾವುದೇ ಪಠ್ಯವನ್ನು ಸೂಚಿಸುತ್ತದೆ: *.example.com
 #. text in the tray icon's menu; text in traypanel.rs
 #. tray menu: a submenu of the downloads now running; choosing one shows its progress window
 #. the notification-area icon's panel (#1365): its title, over the downloads now running (also the tray menu's submenu)
@@ -1743,6 +1872,10 @@
 #. text in the Options window
 #, machine
 	Edit login	ಲಾಗಿನ್ ಸಂಪಾದಿಸಿ
+#. text in the Options window
+#. window title: changing one site rule
+#, machine
+	Edit site rule	ಸೈಟ್ ನಿಯಮವನ್ನು ಸಂಪಾದಿಸಿ
 #. button in the Options window
 #. verb: edit the item
 #. the trailing ... means it opens a window: keep it
@@ -1759,7 +1892,7 @@
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Email	ಇಮೇಲ್
-#. text in the Download video window
+#. checkbox in the Download video window; text in the Download video window
 #. checkbox in Download video: the chapters a video's page lists (YouTube's, for one) go into the video file, where players show them and skip between them
 #, machine
 	Embed chapters	ಅಧ್ಯಾಯಗಳನ್ನು ಎಂಬೆಡ್ ಮಾಡಿ
@@ -1767,6 +1900,10 @@
 #. in Download a gallery, after the "Files at most" box
 #, machine
 	Empty: all of them. On most sites the newest come first.	ಖಾಲಿ: ಅವೆಲ್ಲವೂ. ಹೆಚ್ಚಿನ ಸೈಟ್‌ಗಳಲ್ಲಿ ಹೊಸವುಗಳು ಮೊದಲು ಬರುತ್ತವೆ.
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: the hint under the User-Agent box
+#, machine
+	Empty: the browser's, or the one set in Options	ಖಾಲಿ: ಬ್ರೌಸರ್‌ನದು ಅಥವಾ ಆಯ್ಕೆಗಳಲ್ಲಿ ಹೊಂದಿಸಿರುವುದು
 #. text in crashui.rs
 #. crash report window button: end the frozen MDM and start it again
 #, machine
@@ -1844,6 +1981,10 @@
 #. choice in Download video's Part: the part is encoded again so it starts and ends exactly at From and To (slower)
 #, machine
 	Exact cut, encoded again	ನಿಖರ ಕಟ್, ಮತ್ತೆ ಎನ್‌ಕೋಡ್ ಮಾಡಲಾಗಿದೆ
+#. text in the Options window
+#. Site rule: the hint under the site box; the examples stay as they are
+#, machine
+	example.com, or *.example.com for its subdomains	example.com, ಅಥವಾ ಅದರ ಉಪಡೊಮೇನ್‌ಗಳಿಗೆ *.example.com
 #. text in the Options window
 #. label before an example date and time written the chosen way
 #, machine
@@ -1948,9 +2089,13 @@
 #, machine
 	Feeds:	ಫೀಡ್‌ಗಳು:
 #. text in the Add torrent window
-#. Torrent settings, at the bottom
+#. Torrent settings, under the blocklist's address
 #, machine
 	Fetched again every 7 days. Changes apply when no torrent is running.	ಪ್ರತಿ 7 ದಿನಗಳಿಗೊಮ್ಮೆ ಮತ್ತೆ ಪಡೆಯಲಾಗುತ್ತದೆ. ಯಾವುದೇ ಟೊರೆಂಟ್ ಚಾಲನೆಯಲ್ಲಿಲ್ಲದಿದ್ದಾಗ ಬದಲಾವಣೆಗಳು ಅನ್ವಯಿಸುತ್ತವೆ.
+#. text in the Add torrent window
+#. Torrent settings, under the public tracker list's address
+#, machine
+	Fetched once a day. Never added to private torrents.	ದಿನಕ್ಕೊಮ್ಮೆ ಪಡೆಯಲಾಗುತ್ತದೆ. ಖಾಸಗಿ ಟೊರೆಂಟ್‌ಗಳಿಗೆ ಎಂದಿಗೂ ಸೇರಿಸಲಾಗುವುದಿಲ್ಲ.
 #. text in helpers.rs
 #. helper name and what it does (ffmpeg is a program's name)
 #, machine
@@ -1971,7 +2116,8 @@
 #. tooltip of "Mark downloaded files as coming from the internet" on Linux
 #, machine
 	File managers show where the files marked this way came from. Unticked, no download is marked.	ಫೈಲ್ ಮ್ಯಾನೇಜರ್‌ಗಳು ಈ ರೀತಿ ಗುರುತಿಸಲಾದ ಫೈಲ್‌ಗಳು ಎಲ್ಲಿಂದ ಬಂದವು ಎಂಬುದನ್ನು ತೋರಿಸುತ್ತವೆ. ಗುರುತಿಸದಿದ್ದರೆ, ಯಾವುದೇ ಡೌನ್‌ಲೋಡ್ ಅನ್ನು ಗುರುತಿಸಲಾಗುವುದಿಲ್ಲ.
-#. text in the Scheduler window
+#. text in a download's progress window; text in the Scheduler window
+#. Zip preview's column: the file's name (its path inside the ZIP)
 #, machine
 	File Name	ಫೈಲ್ ಹೆಸರು
 #. text in the Download video window
@@ -1993,6 +2139,10 @@
 #. text in categories.rs
 #, machine
 	File types:	ಫೈಲ್ ಪ್ರಕಾರಗಳು:
+#. text in preview.rs
+#. label in the preview pane: whether the downloaded file is still where it was saved
+#, machine
+	File:	ಫೈಲ್:
 #. text in a download's progress window; text in the Add torrent window
 #. tab title: the torrent's files
 #, machine
@@ -2011,6 +2161,10 @@
 #. text in the Scheduler window; tab in the Scheduler window
 #, machine
 	Files in the queue	ಕ್ಯೂನಲ್ಲಿರುವ ಫೈಲ್‌ಗಳು
+#. text in the download list (sizes, speeds, status)
+#. why files being taken out of a ZIP on its server (#1775) can't be moved or renamed yet: those already out are in its folder, the others still to come there
+#, machine
+	Files taken out of a ZIP can be moved once they're all out	ZIP ನಿಂದ ಹೊರತೆಗೆದ ಫೈಲ್‌ಗಳನ್ನು ಎಲ್ಲವೂ ಹೊರಬಂದ ನಂತರ ಸರಿಸಬಹುದು
 #. button in a download's Properties window
 #. File Properties button that opens the selected torrent's file list
 #. the trailing ... means it opens a window: keep it
@@ -2053,6 +2207,10 @@
 #. remote control page (on a phone): tab: downloads finished
 #, machine
 	Finished	ಪೂರ್ಣಗೊಂಡವು
+#. text in preview.rs
+#. label in the preview pane: when the download finished
+#, machine
+	Finished:	ಪೂರ್ಣಗೊಂಡಿದೆ:
 #. text in a download's progress window
 #. a download's status: every byte is in, the file is being written out and given its name
 #. the trailing ... means it is still going on: keep it
@@ -2075,6 +2233,14 @@
 #. text in categories.rs
 #, machine
 	Folder:	ಫೋಲ್ಡರ್:
+#. text in the Options window
+#. Options → Archives → Link grabber, one line with two boxes: an FTP folder or a web server's folder listing ("Index of") given to Link grabber is read with its subfolders: {depth} is a number box (how many levels of subfolders, 3 at first; 0 is the folder's own files only), {types} a text box (file types such as ISO ZIP; empty for every type)
+#, machine
+	Folders: {depth} levels deep, types: {types}	ಫೋಲ್ಡರ್‌ಗಳು: {depth} ಹಂತಗಳ ಆಳ, ಪ್ರಕಾರಗಳು: {types}
+#. message or event log entry in the main window
+#. the kind of file View → Font → Choose a font file lists: TrueType and OpenType font files
+#, machine
+	Font files	ಫಾಂಟ್ ಫೈಲ್‌ಗಳು
 #. text in finish.rs
 #. Snooze menu of the Download complete window: show no Download complete window for this long
 #, machine
@@ -2198,7 +2364,7 @@
 #, machine
 	FTP downloads don't go through an HTTP proxy. Choose SOCKS5 or SOCKS4 to send them through the proxy.	FTP ಡೌನ್‌ಲೋಡ್‌ಗಳು HTTP ಪ್ರಾಕ್ಸಿ ಮೂಲಕ ಹೋಗುವುದಿಲ್ಲ. ಅವುಗಳನ್ನು ಪ್ರಾಕ್ಸಿ ಮೂಲಕ ಕಳುಹಿಸಲು SOCKS5 ಅಥವಾ SOCKS4 ಆಯ್ಕೆಮಾಡಿ.
 #. text in the Options window
-#. Options → Download panels → Button size: the button with its words ("Download video", the quality) where they fit (the default)
+#. Options → Download panels → Button size: the button with its words ("Download video", the quality) wherever they fit
 #, machine
 	Full	ಪೂರ್ಣ
 #. text in countries.rs
@@ -2270,6 +2436,11 @@
 #. {version} = a version number (keep the braces as they are)
 #, machine
 	Go back to {version}	{version} ಗೆ ಹಿಂತಿರುಗಿ
+#. text in helpers.rs
+#. Helpers: the "Go back" button's name for a screen reader; {version} = the earlier version, {name} = the helper (yt-dlp, ffmpeg, gallery-dl, Node.js)
+#. {version} = a version number; {name} = a file name (keep the braces as they are)
+#, machine
+	Go back to {version} of {name}	{name} ನ {version} ಗೆ ಹಿಂತಿರುಗಿ
 #. text in a download's progress window
 #. a torrent's sharing, when Torrent settings keep it on
 #, machine
@@ -2333,6 +2504,10 @@
 #. legend: pieces downloaded
 #, machine
 	Have	ಡೌನ್‌ಲೋಡ್ ಆಗಿವೆ
+#. text in the Options window
+#. Site rules: column title: how many request headers the rule adds
+#, machine
+	Headers	ಹೆಡರ್‌ಗಳು
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2358,6 +2533,15 @@
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 	Hide &categories	&ವರ್ಗಗಳನ್ನು ಮರೆಮಾಡಿ
+#. message or event log entry in the main window
+#. View menu: hides the pane beside the download list that shows the selected download's picture and details
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	Hide &preview pane	ಪೂರ್ವವೀಕ್ಷಣೆ ಪೇನ್ ಅನ್ನು ಮರೆಮಾಡಿ(&P)
+#. text in the Link grabber window
+#. Link grabber check box, ticked when it opens: the pictures shown on the browser's page (its images, not links to pictures), which "Download all links" sends with the links, are not shown
+#, machine
+	Hide images located on this web page	ಈ ವೆಬ್ ಪುಟದಲ್ಲಿರುವ ಚಿತ್ರಗಳನ್ನು ಮರೆಮಾಡಿ
 #. button in a download's progress window
 #, machine
 	Hide tab	ಟ್ಯಾಬ್ ಮರೆಮಾಡಿ
@@ -2489,11 +2673,11 @@
 #. in the "7-Zip needed" window, under why
 #, machine
 	Install 7-Zip (free), then right-click the download and choose Extract.	7-Zip (ಉಚಿತ) ಅನ್ನು ಸ್ಥಾಪಿಸಿ, ನಂತರ ಡೌನ್‌ಲೋಡ್ ಮೇಲೆ ಬಲ ಕ್ಲಿಕ್ ಮಾಡಿ ಮತ್ತು ಹೊರತೆಗೆಯಿರಿ ಆಯ್ಕೆಮಾಡಿ.
-#. text in the Download video window
+#. text in helpers.rs; text in the Download video window
 #. button: download and install the ffmpeg program
 #, machine
 	Install ffmpeg	ffmpeg ಅನ್ನು ಸ್ಥಾಪಿಸಿ
-#. button in gallerydlg.rs
+#. button in gallerydlg.rs; text in helpers.rs
 #. button: download and install the gallery-dl program
 #, machine
 	Install gallery-dl	gallery-dl ಅನ್ನು ಸ್ಥಾಪಿಸಿ
@@ -2501,7 +2685,7 @@
 #. link in the browser extension's window: the tutorial that adds it without the browser's store
 #, machine
 	Install it by hand	ಕೈಯಾರೆ ಸ್ಥಾಪಿಸಿ
-#. text in the Download video window
+#. text in helpers.rs; text in the Download video window
 #. button in Download video: download and install Node.js, the JavaScript runtime YouTube needs (Node.js is a program's name)
 #, machine
 	Install Node.js	Node.js ಸ್ಥಾಪಿಸಿ
@@ -2513,7 +2697,7 @@
 #. in the "7-Zip needed" window, under why (Linux: 7-Zip comes from the distribution's packages, named 7zip or p7zip)
 #, machine
 	Install your system's 7zip (or p7zip) package, then right-click the download and choose Extract.	ನಿಮ್ಮ ಸಿಸ್ಟಮ್‌ನ 7zip (ಅಥವಾ p7zip) ಪ್ಯಾಕೇಜ್ ಅನ್ನು ಸ್ಥಾಪಿಸಿ, ನಂತರ ಡೌನ್‌ಲೋಡ್ ಅನ್ನು ಬಲ ಕ್ಲಿಕ್ ಮಾಡಿ ಮತ್ತು ಹೊರತೆಗೆಯಿರಿ ಆಯ್ಕೆಮಾಡಿ.
-#. text in the Download video window
+#. text in helpers.rs; text in the Download video window
 #. button: download and install the yt-dlp program
 #, machine
 	Install yt-dlp	yt-dlp ಅನ್ನು ಸ್ಥಾಪಿಸಿ
@@ -2608,6 +2792,14 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	its files could not be written: {error}	ಅದರ ಫೈಲ್‌ಗಳನ್ನು ಬರೆಯಲಾಗಲಿಲ್ಲ: {error}
+#. text in preview.rs
+#. the preview pane: neither the file nor its folder can be found now (an unplugged drive, a network folder away)
+#, machine
+	Its folder can't be reached now	ಅದರ ಫೋಲ್ಡರ್ ಈಗ ತಲುಪಲು ಸಾಧ್ಯವಿಲ್ಲ
+#. text in relocate.rs
+#. why an unfinished download could not be moved (after "The file could not be moved: "): its folder isn't there now (a drive taken out); {folder} is that folder
+#, machine
+	its folder {folder} can't be reached	ಅದರ ಫೋಲ್ಡರ್ {folder} ಅನ್ನು ತಲುಪಲು ಸಾಧ್ಯವಿಲ್ಲ
 #. text in the download list (sizes, speeds, status)
 #. why a video download failed: ffmpeg couldn't join its picture and sound into one file; {error} = ffmpeg's reason, in English
 #. {error} = an error message (keep the braces as they are)
@@ -2795,6 +2987,23 @@
 #. Torrent settings: an upload speed limit for all torrents together, followed by a box with the speed and "KBytes/sec"
 #, machine
 	Limit uploading for all torrents to	ಎಲ್ಲಾ ಟೊರೆಂಟ್‌ಗಳ ಅಪ್‌ಲೋಡ್ ವೇಗವನ್ನು ಇದಕ್ಕೆ ಮಿತಿಗೊಳಿಸಿ
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: a header's name has a space or another character names can't have; {line} is the line's number
+#, machine
+	Line {line}: a header's name has letters, digits and dashes only	ಸಾಲು {line}: ಹೆಡರ್‌ನ ಹೆಸರಿನಲ್ಲಿ ಅಕ್ಷರಗಳು, ಅಂಕೆಗಳು ಮತ್ತು ಡ್ಯಾಶ್‌ಗಳು ಮಾತ್ರ ಇರಬೇಕು
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: a header MDM sets itself for each request (Range, Host…) can't be typed; {line} is the line's number, {name} the header's name
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Line {line}: Mister Download Manager sets {name} itself	ಸಾಲು {line}: Mister Download Manager ಸ್ವತಃ {name} ಅನ್ನು ಹೊಂದಿಸುತ್ತದೆ
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: a header's value (or the User-Agent) holds a control character; {line} is the line's number
+#, machine
+	Line {line}: the value has a character a header can't hold	ಸಾಲು {line}: ಮೌಲ್ಯದಲ್ಲಿ ಹೆಡರ್ ಹೊಂದಿರದ ಅಕ್ಷರವಿದೆ
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: a line of request headers isn't "Name: value"; {line} is its number
+#, machine
+	Line {line}: write a header as Name: value	ಸಾಲು {line}: ಹೆಡರ್ ಅನ್ನು ಹೆಸರು: ಮೌಲ್ಯ ಎಂದು ಬರೆಯಿರಿ
 #. message or event log entry in the main window; window title in the Link grabber window; group box title in the Options window
 #. Options → Archives: group box title
 #, machine
@@ -2808,6 +3017,10 @@
 #. in Link grabber, where the addresses came from: a page in the browser
 #, machine
 	Links from the browser	ಬ್ರೌಸರ್‌ನಿಂದ ಲಿಂಕ್‌ಗಳು
+#. text in a dialog box
+#. tooltip of Download File Info's Preview button for a ZIP (#1775): it lists the files inside, to download only some of them
+#, machine
+	List the files inside the ZIP and pick those to download	ZIP ಒಳಗಿನ ಫೈಲ್‌ಗಳನ್ನು ಪಟ್ಟಿ ಮಾಡಿ ಮತ್ತು ಡೌನ್‌ಲೋಡ್ ಮಾಡಲು ಅವುಗಳನ್ನು ಆರಿಸಿ
 #. text in playlistdlg.rs
 #. button in Download video: go on listing a playlist from where it stopped
 #, machine
@@ -2885,10 +3098,20 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Looking for your default browser...	ನಿಮ್ಮ ಡೀಫಾಲ್ಟ್ ಬ್ರೌಸರ್ ಅನ್ನು ಹುಡುಕಲಾಗುತ್ತಿದೆ...
+#. text in a dialog box
+#. tooltip of Download File Info's greyed Preview button while MDM asks the server whether it can look inside the ZIP (#1775)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Looking inside the ZIP...	ZIP ಒಳಗೆ ನೋಡಲಾಗುತ್ತಿದೆ...
 #. text in the Download video window
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Looking the page up...	ಪುಟವನ್ನು ಹುಡುಕಲಾಗುತ್ತಿದೆ...
+#. text in preview.rs
+#. the preview pane: still looking whether the file is there
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Looking...	ಹುಡುಕಲಾಗುತ್ತಿದೆ...
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3056,6 +3279,27 @@
 #. remote control page (on a phone): no pairing code is shown in MDM; "Pair a device" is MDM's button
 #, machine
 	MDM shows no code now. Click Pair a device there first.	MDM ಈಗ ಯಾವುದೇ ಕೋಡ್ ಅನ್ನು ತೋರಿಸುವುದಿಲ್ಲ. ಮೊದಲು ಅಲ್ಲಿ ಸಾಧನವನ್ನು ಜೋಡಿಸಿ ಕ್ಲಿಕ್ ಮಾಡಿ.
+#. text in errors.rs
+#. error installing ffmpeg: the list of builds MDM accepts couldn't be read; {detail} = the technical detail, in English
+#, machine
+	MDM's list of checked ffmpeg builds can't be read ({detail})	MDM ನ ಪರಿಶೀಲಿಸಿದ ffmpeg ಬಿಲ್ಡ್‌ಗಳ ಪಟ್ಟಿಯನ್ನು ಓದಲು ಸಾಧ್ಯವಿಲ್ಲ ({detail})
+#. text in errors.rs
+#. error installing ffmpeg: MDM installs only builds named in a list it publishes, signed with its key, and that list couldn't be downloaded; {error} = why
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	MDM's list of checked ffmpeg builds could not be downloaded: {error}	MDM ನ ಪರಿಶೀಲಿಸಿದ ffmpeg ಬಿಲ್ಡ್‌ಗಳ ಪಟ್ಟಿಯನ್ನು ಡೌನ್‌ಲೋಡ್ ಮಾಡಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ: {error}
+#. text in errors.rs
+#. error installing ffmpeg: the list of builds MDM accepts has none for this computer's system and processor
+#, machine
+	MDM's list of checked ffmpeg builds has none for this computer	MDM ನ ಪರಿಶೀಲಿಸಿದ ffmpeg ಬಿಲ್ಡ್‌ಗಳ ಪಟ್ಟಿಯಲ್ಲಿ ಈ ಕಂಪ್ಯೂಟರ್‌ಗೆ ಹೊಂದುವ ಬಿಲ್ಡ್ ಯಾವುದೂ ಇಲ್ಲ
+#. text in errors.rs
+#. error installing ffmpeg: the list of builds MDM accepts is older than one this copy of MDM already used (it never goes back to an older list)
+#, machine
+	MDM's list of checked ffmpeg builds is older than one already used, so ffmpeg wasn't installed	MDM ನ ಪರಿಶೀಲಿಸಿದ ffmpeg ಬಿಲ್ಡ್‌ಗಳ ಪಟ್ಟಿಯು ಈಗಾಗಲೇ ಬಳಸಿದ ಪಟ್ಟಿಗಿಂತ ಹಳೆಯದಾಗಿದೆ, ಆದ್ದರಿಂದ ffmpeg ಅನ್ನು ಸ್ಥಾಪಿಸಲಾಗಿಲ್ಲ
+#. text in errors.rs
+#. error installing ffmpeg: the list of builds MDM accepts doesn't carry MDM's own signature
+#, machine
+	MDM's list of checked ffmpeg builds isn't signed by MDM's key, so ffmpeg wasn't installed	MDM ನ ಪರಿಶೀಲಿಸಿದ ffmpeg ಬಿಲ್ಡ್‌ಗಳ ಪಟ್ಟಿಗೆ MDM ನ ಕೀಲಿಯಿಂದ ಸಹಿ ಮಾಡಲಾಗಿಲ್ಲ, ಆದ್ದರಿಂದ ffmpeg ಅನ್ನು ಸ್ಥಾಪಿಸಲಾಗಿಲ್ಲ
 #. text in whereis.rs
 #. how far a download's server is, by its round trip (60 to 150 ms)
 #, machine
@@ -3156,6 +3400,10 @@
 #. Monday, as short as a calendar's column head (two letters in English)
 #, machine
 	Mo	ಸೋ
+#. text in a download's progress window
+#. Zip preview's column: when the file was last changed, as the ZIP says
+#, machine
+	Modified	ಮಾರ್ಪಡಿಸಲಾಗಿದೆ
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3209,7 +3457,8 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move between the toolbar, the categories and the download list	ಟೂಲ್‌ಬಾರ್, ವರ್ಗಗಳು ಮತ್ತು ಡೌನ್‌ಲೋಡ್ ಪಟ್ಟಿಯ ನಡುವೆ ಸರಿಸಿ
-#. text in the Scheduler window
+#. text in a dialog box; text in the Scheduler window
+#. button in the Columns dialog: move the selected column one place towards the end of the list
 #, machine
 	Move down	ಕೆಳಗೆ ಸರಿಸಿ
 #. text in a dialog box
@@ -3225,7 +3474,9 @@
 #. message or event log entry in the main window
 #, machine
 	Move to queue	ಕ್ಯೂಗೆ ಸರಿಸಿ
-#. text in the Scheduler window
+#. text in a dialog box; text in the Scheduler window
+#. button in the Columns dialog: move the selected column one place towards the start of the list
+#. tooltip of an icon button in the Scheduler's list of files
 #, machine
 	Move up	ಮೇಲಕ್ಕೆ ಸರಿಸಿ
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
@@ -3234,10 +3485,27 @@
 #. message or event log entry in the main window
 #, machine
 	Move/Rename	ಸರಿಸಿ/ಮರುಹೆಸರಿಸಿ
+#. text in preview.rs
+#. the preview pane: a finished download's file is no longer where it was saved
+#, machine
+	Moved or deleted	ಸ್ಥಳಾಂತರಿಸಲಾಗಿದೆ ಅಥವಾ ಅಳಿಸಲಾಗಿದೆ
+#. message or event log entry in the main window
+#. event log: an unfinished download's part file was moved to another folder; it resumes there; {folder} is that folder
+#, machine
+	Moved to {folder}	{folder} ಗೆ ಸರಿಸಲಾಗಿದೆ
 #. message or event log entry in the main window
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Moving the file...	ಫೈಲ್ ಅನ್ನು ಸರಿಸಲಾಗುತ್ತಿದೆ...
+#. message or event log entry in the main window
+#. event log: an unfinished download's part file is being moved to another folder; {folder} is that folder
+#, machine
+	Moving to {folder}	{folder} ಗೆ ಸರಿಸಲಾಗುತ್ತಿದೆ
+#. text in the download list (sizes, speeds, status)
+#. a download's status: its unfinished file is being moved to another folder
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Moving...	ಸರಿಸಲಾಗುತ್ತಿದೆ...
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3336,6 +3604,10 @@
 #, machine
 	New code	ಹೊಸ ಕೋಡ್
 #. text in the Options window
+#. tooltip of Options → Save to → "Save every download in "General" category's folder"
+#, machine
+	New downloads of every category go to this one folder; their categories still sort the list. A download's folder can still be changed in the window that starts it, and the downloads already in the list stay where they are.	ಪ್ರತಿ ವರ್ಗದ ಹೊಸ ಡೌನ್‌ಲೋಡ್‌ಗಳು ಈ ಒಂದು ಫೋಲ್ಡರ್‌ಗೆ ಹೋಗುತ್ತವೆ; ಅವುಗಳ ವರ್ಗಗಳು ಪಟ್ಟಿಯನ್ನು ವಿಂಗಡಿಸುತ್ತವೆ. ಡೌನ್‌ಲೋಡ್‌ನ ಫೋಲ್ಡರ್ ಅನ್ನು ಅದನ್ನು ಪ್ರಾರಂಭಿಸುವ ವಿಂಡೋದಲ್ಲಿ ಬದಲಾಯಿಸಬಹುದು, ಮತ್ತು ಈಗಾಗಲೇ ಪಟ್ಟಿಯಲ್ಲಿರುವ ಡೌನ್‌ಲೋಡ್‌ಗಳು ಅವು ಇರುವಲ್ಲಿಯೇ ಇರುತ್ತವೆ.
+#. text in the Options window
 #, machine
 	New exception	ಹೊಸ ವಿನಾಯಿತಿ
 #. text in the Options window
@@ -3346,6 +3618,10 @@
 #. RSS feeds window, Download rules: make a new rule
 #, machine
 	New rule	ಹೊಸ ನಿಯಮ
+#. text in the Options window
+#. window title: adding a site rule
+#, machine
+	New site rule	ಹೊಸ ಸೈಟ್ ನಿಯಮ
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3399,6 +3675,10 @@
 #. message or event log entry in the main window
 #, machine
 	No download links were found in the clipboard. Copy a text with http, https, ftp or magnet links in it, and try again.	ಕ್ಲಿಪ್‌ಬೋರ್ಡ್‌ನಲ್ಲಿ ಯಾವುದೇ ಡೌನ್‌ಲೋಡ್ ಲಿಂಕ್‌ಗಳು ಕಂಡುಬಂದಿಲ್ಲ. http, https, ftp ಅಥವಾ ಮ್ಯಾಗ್ನೆಟ್ ಲಿಂಕ್‌ಗಳನ್ನು ಹೊಂದಿರುವ ಪಠ್ಯವನ್ನು ನಕಲಿಸಿ ಮತ್ತು ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.
+#. text in preview.rs
+#. the preview pane (beside the download list) when no download is selected: its title
+#, machine
+	No download selected	ಯಾವುದೇ ಡೌನ್‌ಲೋಡ್ ಆಯ್ಕೆಮಾಡಲಾಗಿಲ್ಲ
 #. text in traypanel.rs
 #. the notification-area icon's panel (#1365) when no download is running
 #, machine
@@ -3455,6 +3735,10 @@
 #. a magnet link's lookup, after 30 seconds without a peer
 #, machine
 	No peers yet. Few people may share this torrent, or a firewall, a VPN or the network may be blocking BitTorrent.	ಇನ್ನೂ ಯಾವುದೇ ಪೀರ್‌ಗಳಿಲ್ಲ. ಕೆಲವೇ ಜನರು ಈ ಟೊರೆಂಟ್ ಅನ್ನು ಹಂಚಿಕೊಳ್ಳಬಹುದು, ಅಥವಾ ಫೈರ್‌ವಾಲ್, VPN ಅಥವಾ ನೆಟ್‌ವರ್ಕ್ BitTorrent ಅನ್ನು ನಿರ್ಬಂಧಿಸಬಹುದು.
+#. text in requestedit.rs
+#. a download's Connection settings → Proxy: straight to the server, no proxy
+#, machine
+	No proxy	ಯಾವುದೇ ಪ್ರಾಕ್ಸಿ ಇಲ್ಲ
 #. text in the Options window
 #, machine
 	No proxy/socks	ಯಾವುದೇ ಪ್ರಾಕ್ಸಿ/SOCKS ಇಲ್ಲ
@@ -3538,12 +3822,20 @@
 #. RSS feeds window: the selected feed hasn't been fetched yet
 #, machine
 	Not fetched yet	ಇನ್ನೂ ಪಡೆಯಲಾಗಿಲ್ಲ
+#. text in the Link grabber window
+#. Link grabber, a link's status: a Hugging Face repository or folder, or a GitHub release or tag, that isn't there. The sentence is the cell's hover tip
+#, machine
+	Not found	ಕಂಡುಬಂದಿಲ್ಲ
 #. value in a column's filter list in the download list
 #, machine
 	Not in a queue	ಕ್ಯೂನಲ್ಲಿಲ್ಲ
 #. text in helpers.rs
 #, machine
 	Not installed yet	ಇನ್ನೂ ಸ್ಥಾಪಿಸಿಲ್ಲ
+#. text in preview.rs
+#. the preview pane: the size of a download is not known yet
+#, machine
+	Not known yet	ಇನ್ನೂ ತಿಳಿದಿಲ್ಲ
 #. text in the Link grabber window
 #. Link grabber, a link's status: a web page sent it (Click'n'Load), so it isn't looked up (name, size, online) before it is added
 #, machine
@@ -3590,6 +3882,10 @@
 #. text in the Options window
 #, machine
 	Number	ಸಂಖ್ಯೆ
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: check box before the number box; unticked, the number set in Options → Connection applies
+#, machine
+	Number of connections:	ಸಂಪರ್ಕಗಳ ಸಂಖ್ಯೆ:
 #. checkbox in the Scheduler window
 #, machine
 	Number of retries for each file if downloading failed :	ಡೌನ್‌ಲೋಡ್ ವಿಫಲವಾದರೆ ಪ್ರತಿ ಫೈಲ್‌ಗೆ ಮರುಪ್ರಯತ್ನಗಳ ಸಂಖ್ಯೆ :
@@ -3625,7 +3921,7 @@
 #. Link grabber, a link's status: the server hasn't the file; {status} is the HTTP code (404)
 #, machine
 	Offline ({status})	ಆಫ್‌ಲೈನ್ ({status})
-#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; text in extracting archives (a download's log, the Archive password window); text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's Properties window; button in the Scheduler window; button in the Add torrent window
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; text in extracting archives (a download's log, the Archive password window); text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's Properties window; button in the Scheduler window; button in the Add torrent window; text in zippreview.rs
 #, machine
 	OK	ಸರಿ
 #. text in countries.rs
@@ -3679,13 +3975,10 @@
 #. Link grabber, a link's status: the server has the file
 #, machine
 	Online	ಆನ್‌ಲೈನ್
-#. text in a download's Properties window
-#. tooltip of the greyed Move button in File Properties
+#. text in the Options window
+#. Options → Archives → Link grabber: the hover tip of the types box in "Folders: {depth} levels deep, types: {types}": only a folder's files of these types go into Link grabber; written as the File types page writes them
 #, machine
-	Only a finished download, or one not started yet, can be moved	ಮುಗಿದ ಡೌನ್‌ಲೋಡ್ ಅಥವಾ ಇನ್ನೂ ಪ್ರಾರಂಭಿಸದ ಡೌನ್‌ಲೋಡ್ ಅನ್ನು ಮಾತ್ರ ಸರಿಸಬಹುದು
-#. message or event log entry in the main window
-#, machine
-	Only a finished download, or one not started yet, can be moved. Stop it and finish it first.	ಮುಗಿದ ಡೌನ್‌ಲೋಡ್ ಅಥವಾ ಇನ್ನೂ ಪ್ರಾರಂಭಿಸದ ಡೌನ್‌ಲೋಡ್ ಅನ್ನು ಮಾತ್ರ ಸರಿಸಬಹುದು. ಅದನ್ನು ನಿಲ್ಲಿಸಿ ಮತ್ತು ಮೊದಲು ಅದನ್ನು ಮುಗಿಸಿ.
+	Only a folder's files of these types, written as on the File types page (ISO ZIP R0*). Empty: every type.	ಫೈಲ್ ಪ್ರಕಾರಗಳ ಪುಟದಲ್ಲಿ ಬರೆದಿರುವಂತೆ (ISO ZIP R0*) ಫೋಲ್ಡರ್‌ನ ಈ ಪ್ರಕಾರಗಳ ಫೈಲ್‌ಗಳು ಮಾತ್ರ ಲಿಂಕ್ ಗ್ರ್ಯಾಬರ್‌ಗೆ ಹೋಗುತ್ತವೆ. ಖಾಲಿ ಇದ್ದರೆ: ಎಲ್ಲ ಪ್ರಕಾರಗಳು.
 #. text in the Download video window
 #. checkbox in Download video: download only a part of the video or sound; the From and To boxes follow it
 #, machine
@@ -3714,6 +4007,10 @@
 #. checkbox in a dialog box
 #, machine
 	Only while I'm using the computer	ನಾನು ಕಂಪ್ಯೂಟರ್ ಬಳಸುತ್ತಿರುವಾಗ ಮಾತ್ರ
+#. message or event log entry in the main window
+#. event log entry: the download is files picked inside a ZIP in Zip preview (#1775); {files} how many ("3 files")
+#, machine
+	Only {files} picked inside the ZIP	ZIP ಒಳಗೆ {files} ಮಾತ್ರ ಆಯ್ಕೆಮಾಡಲಾಗಿದೆ
 #. button in a dialog box; text in a dialog box; button in a download's Properties window; button in torrentfiles.rs
 #. verb: opens the downloaded file
 #. title of the message when a downloaded file can't be opened
@@ -3794,6 +4091,10 @@
 #. Link grabber: the box that edits the selected package
 #, machine
 	Package	ಪ್ಯಾಕೇಜ್
+#. text in a download's progress window
+#. Zip preview's column: the file's size as packed (compressed) inside the ZIP
+#, machine
+	Packed	ಪ್ಯಾಕ್ ಮಾಡಲಾಗಿದೆ
 #. text in gallerydlg.rs; text in the Download video window
 #, machine
 	Page address	ಪುಟ ವಿಳಾಸ
@@ -3882,10 +4183,14 @@
 #. remote control page (on a phone): button: pause a download
 #, machine
 	Pause	ವಿರಾಮ
-#. text in a download's Properties window
+#. text in the download list (sizes, speeds, status)
 #. tooltip of the greyed Move button in File Properties
 #, machine
 	Pause the download first	ಮೊದಲು ಡೌನ್‌ಲೋಡ್ ಅನ್ನು ವಿರಾಮಗೊಳಿಸಿ
+#. tooltip (why a control is greyed) in a download's Properties window
+#. tooltip of File Properties' greyed Connection... button while the download runs
+#, machine
+	Pause the download to change how it connects	ಸಂಪರ್ಕಿಸುವ ವಿಧಾನವನ್ನು ಬದಲಾಯಿಸಲು ಡೌನ್‌ಲೋಡ್ ವಿರಾಮಗೊಳಿಸಿ
 #. text in a download's progress window
 #. a download's status (state it is in, not a command): stopped for now
 #, machine
@@ -3962,8 +4267,8 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Press keys...	ಕೀಲಿಗಳನ್ನು ಒತ್ತಿ...
-#. button in a dialog box
-#. verb: open the part already downloaded
+#. button in a dialog box; text in a dialog box
+#. verb: Download File Info's button; for a ZIP, it lists the files inside it to pick those to download (#1775)
 #, machine
 	Preview	ಮುನ್ನೋಟ
 #. text in a dialog box
@@ -4006,6 +4311,10 @@
 #. label in the Options window
 #, machine
 	Proxy server address	ಪ್ರಾಕ್ಸಿ ಸರ್ವರ್ ವಿಳಾಸ
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: label before the proxy choice
+#, machine
+	Proxy:	ಪ್ರಾಕ್ಸಿ:
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -4066,6 +4375,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Reading the torrent...	ಟೊರೆಂಟ್ ಓದುತ್ತಿದೆ...
+#. text in zippreview.rs
+#. Zip preview, while the ZIP's list of files is being read from its server
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Reading the ZIP's list of files...	ZIP ನ ಫೈಲ್‌ಗಳ ಪಟ್ಟಿಯನ್ನು ಓದಲಾಗುತ್ತಿದೆ...
 #. message or event log entry in the main window
 #. the status strip while Tasks → Import reads a file; {file} is its name
 #. the trailing ... means it is still going on: keep it
@@ -4178,6 +4492,14 @@
 #. group box title: what the * in the address is replaced with (numbers or letters)
 #, machine
 	Replace asterisk to	ನಕ್ಷತ್ರ ಚಿಹ್ನೆಯನ್ನು ಬದಲಾಯಿಸಿ
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: label above the box of request headers, one a line ("X-Token: abc")
+#, machine
+	Request headers, one a line (Name: value):	ವಿನಂತಿ ಹೆಡರ್‌ಗಳು, ಪ್ರತಿ ಸಾಲಿಗೆ ಒಂದು (Name: value):
+#. text in a dialog box
+#. button in the Columns dialog: put the columns back as they first were (order, widths, all shown)
+#, machine
+	Reset	ಮರುಹೊಂದಿಸಿ
 #. text in crashui.rs
 #. crash report window button: start MDM again
 #, machine
@@ -4295,6 +4617,11 @@
 #. text in a dialog box
 #, machine
 	Save As	ಹೀಗೆ ಉಳಿಸಿ
+#. text in the Options window
+#. Options → Save to, a check box: new downloads of every category go to General's folder; {category} is General's name
+#. {category} = a category name such as "Music" (keep the braces as they are)
+#, machine
+	Save every download in "{category}" category's folder	ಪ್ರತಿ ಡೌನ್‌ಲೋಡ್ ಅನ್ನು “{category}” ವರ್ಗದ ಫೋಲ್ಡರ್‌ನಲ್ಲಿ ಉಳಿಸಿ
 #. text in gallerydlg.rs; text in the Options window; text in the Add torrent window; text in the Download video window
 #. tab title: where downloads are saved
 #, machine
@@ -4303,7 +4630,7 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Save To...	ಇಲ್ಲಿಗೆ ಉಳಿಸಿ...
-#. text in a download's progress window; text in a download's Properties window
+#. text in preview.rs; text in a download's progress window; text in a download's Properties window
 #, machine
 	Save To:	ಇಲ್ಲಿಗೆ ಉಳಿಸಿ:
 #. text in the Batch download window; text in the Link grabber window; text in rssdlg.rs
@@ -4341,7 +4668,11 @@
 #. text in the Batch download window
 #, machine
 	Second file:	ಎರಡನೇ ಫೈಲ್:
-#. button in playlistdlg.rs; button in the Add torrent window; text in torrentfiles.rs
+#. text in preview.rs
+#. the preview pane when no download is selected, under its title
+#, machine
+	Select a download to see its picture and details here.	ಅದರ ಚಿತ್ರ ಮತ್ತು ವಿವರಗಳನ್ನು ಇಲ್ಲಿ ನೋಡಲು ಡೌನ್‌ಲೋಡ್ ಆಯ್ಕೆಮಾಡಿ.
+#. button in playlistdlg.rs; button in the Add torrent window; text in torrentfiles.rs; text in zippreview.rs
 #. button in Download video for a playlist: tick every video
 #, machine
 	Select all	ಎಲ್ಲವನ್ನೂ ಆಯ್ಕೆಮಾಡಿ
@@ -4494,6 +4825,11 @@
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 	Show &categories	ವರ್ಗಗಳನ್ನು ತೋ&ರಿಸು
+#. message or event log entry in the main window
+#. View menu: shows a pane beside the download list with the selected download's picture and details
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	Show &preview pane	ಪೂರ್ವವೀಕ್ಷಣೆ ಪೇನ್ ಅನ್ನು ತೋರಿಸಿ(&P)
 #. text in the Options window
 #, machine
 	Show a dialog and ask what to do.	ಸಂಭಾಷಣೆಯನ್ನು ತೋರಿಸಿ ಮತ್ತು ಏನು ಮಾಡಬೇಕೆಂದು ಕೇಳಿ.
@@ -4528,6 +4864,9 @@
 #. button in the browser extension's window: open the tutorial that adds the extension
 #, machine
 	Show me how	ನನಗೆ ಹೇಗೆಂದು ತೋರಿಸಿ
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Show or hide the preview pane	ಪೂರ್ವವೀಕ್ಷಣೆ ಪೇನ್ ಅನ್ನು ತೋರಿಸಿ ಅಥವಾ ಮರೆಮಾಡಿ
 #. checkbox in the Options window
 #, machine
 	Show queue selection panel on closing batch download dialogs	ಬ್ಯಾಚ್ ಡೌನ್‌ಲೋಡ್ ಸಂಭಾಷಣೆಗಳನ್ನು ಮುಚ್ಚುವಾಗ ಕ್ಯೂ ಆಯ್ಕೆ ಫಲಕ
@@ -4559,6 +4898,10 @@
 #. button: sign in to the debrid service in the browser, by typing a code there
 #, machine
 	Sign in in the browser	ಬ್ರೌಸರ್‌ನಲ್ಲಿ ಸೈನ್ ಇನ್ ಮಾಡಿ
+#. text in the Options window
+#. Options → Accounts (Android): where the debrid accounts' sign-ins and the other passwords are kept (encrypted with a key held by Android's keystore)
+#, machine
+	Sign-ins and passwords are kept encrypted with a key in Android's keystore.	ಸೈನ್-ಇನ್‌ಗಳು ಮತ್ತು ಪಾಸ್‌ವರ್ಡ್‌ಗಳನ್ನು ಆಂಡ್ರಾಯ್ಡ್‌ನ ಕೀಸ್ಟೋರ್‌ನಲ್ಲಿರುವ ಕೀಲಿಯೊಂದಿಗೆ ಎನ್‌ಕ್ರಿಪ್ಟ್ ಮಾಡಿ ಇಡಲಾಗುತ್ತದೆ.
 #. text in the Options window
 #. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (the macOS login keychain)
 #, machine
@@ -4611,9 +4954,23 @@
 #. a country's name (where a download's server is)
 #, machine
 	Sint Maarten	ಸಿಂಟ್ ಮಾರ್ಟನ್
+#. text in the Options window
+#. Site rules: column title: the site pattern
+#, machine
+	Site	ಸೈಟ್
 #. checkbox in the Find window
 #, machine
 	Site name/Download link/Parent web page/Referer	ಸೈಟ್ ಹೆಸರು/ಡೌನ್‌ಲೋಡ್ ಲಿಂಕ್/ಪೋಷಕ ವೆಬ್ ಪುಟ/ರೆಫರರ್
+#. window title in the Options window; text in the Options window
+#. window title: per-site settings (User-Agent, headers, connections, the browser-like connection) by site pattern
+#. Site rules window: the list's name for screen readers
+#, machine
+	Site rules	ಸೈಟ್ ನಿಯಮಗಳು
+#. text in the Options window
+#. Options → Connection: button: opens the per-site settings (User-Agent, headers, connections)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Site rules...	ಸೈಟ್ ನಿಯಮಗಳು...
 #. text in the Options window
 #. column title: the site (and path) a login is for
 #, machine
@@ -4621,6 +4978,10 @@
 #. text in the Options window
 #, machine
 	Site/path:	ಸೈಟ್/ಪಾತ್:
+#. text in the Options window
+#. Site rule: label before the site pattern box (example.com, *.example.com)
+#, machine
+	Site:	ಸೈಟ್:
 #. text in the Options window
 #. tab title: user names and passwords for sites
 #, machine
@@ -4640,7 +5001,7 @@
 #. the video's file size is not known
 #, machine
 	size unknown	ಗಾತ್ರ ತಿಳಿದಿಲ್ಲ
-#. text in a download's Properties window
+#. text in preview.rs; text in a download's Properties window
 #, machine
 	Size:	ಗಾತ್ರ:
 #. text in a download's progress window; text in torrentfiles.rs
@@ -4753,6 +5114,10 @@
 #. tooltip on the disabled Rename box when the file is one part of a split archive (.part1.rar, .7z.001…)
 #, machine
 	Split archive volumes keep their names for extraction	ವಿಭಜಿತ ಆರ್ಕೈವ್ ಭಾಗಗಳು ಹೊರತೆಗೆಯಲು ತಮ್ಮ ಹೆಸರುಗಳನ್ನು ಉಳಿಸಿಕೊಳ್ಳುತ್ತವೆ
+#. text in the Download video window
+#. checkbox in Download video: split the video into one file per chapter (the whole video is kept too)
+#, machine
+	Split into chapters	ಅಧ್ಯಾಯಗಳಾಗಿ ವಿಭಜಿಸಿ
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -4774,6 +5139,11 @@
 #. checkbox in the Options window
 #, machine
 	Start downloading immediately while displaying "Download File Info" dialog	"ಡೌನ್‌ಲೋಡ್ ಫೈಲ್ ಮಾಹಿತಿ" ಸಂವಾದವನ್ನು ಪ್ರದರ್ಶಿಸುವಾಗ ತಕ್ಷಣವೇ ಡೌನ್‌ಲೋಡ್ ಮಾಡುವುದನ್ನು ಪ್ರಾರಂಭಿಸಿ
+#. text in a dialog box
+#. Download File Info, on hover over the number of files picked in Zip preview (#1775): {files} how many ("3 files"), {size} their size together, {folder} the folder they go into (named after the archive)
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	Start downloads only the {files} picked in the ZIP ({size}), into {folder}	ZIP ನಲ್ಲಿ ಆಯ್ಕೆಮಾಡಿದ {files} ({size}) ಅನ್ನು ಮಾತ್ರ {folder} ಗೆ ಡೌನ್‌ಲೋಡ್ ಮಾಡಿ
 #. text in the tray icon's menu
 #, machine
 	Start main download queue	ಮುಖ್ಯ ಡೌನ್‌ಲೋಡ್ ಕ್ಯೂ ಪ್ರಾರಂಭಿಸಿ
@@ -4829,14 +5199,22 @@
 #. column title: the download's state
 #, machine
 	Status	ಸ್ಥಿತಿ
-#. text in a download's Properties window
+#. text in preview.rs; text in a download's Properties window
 #. label before the download's state
 #, machine
 	Status:	ಸ್ಥಿತಿ:
+#. text in preview.rs
+#. the preview pane: a finished download's file is still where it was saved
+#, machine
+	Still there	ಇನ್ನೂ ಅಲ್ಲಿದೆ
 #. text in remote.rs; text in the Add torrent window
 #. remote control page (on a phone): button: stop a queue
 #, machine
 	Stop	ನಿಲ್ಲಿಸಿ
+#. text in a download's progress window
+#. button in the progress window of a download that never ends by itself (an internet radio, a camera feed: no size, can't be resumed): stop it and keep what has arrived as the finished file
+#, machine
+	Stop and keep	ನಿಲ್ಲಿಸಿ ಉಳಿಸಿ
 #. text in a download's progress window
 #. button in a live stream's progress window: stop recording it and keep what was recorded as a video file
 #, machine
@@ -4969,10 +5347,6 @@
 #. a country's name (where a download's server is)
 #, machine
 	Tanzania	ಟಾಂಜಾನಿಯಾ
-#. text in the Options window
-#. \\n starts a new line: break lines where they fit the translation
-#, machine
-	Tasks → Link grabber, or the browser's "Download all links": a split\narchive's volumes are one package, the other links of a page another.	ಕಾರ್ಯಗಳು → ಲಿಂಕ್ ಗ್ರ್ಯಾಬರ್, ಅಥವಾ ಬ್ರೌಸರ್‌ನ "ಎಲ್ಲಾ ಲಿಂಕ್‌ಗಳನ್ನು ಡೌನ್‌ಲೋಡ್ ಮಾಡಿ": ವಿಭಜಿತ\nಆರ್ಕೈವ್‌ನ ಸಂಪುಟಗಳು ಒಂದು ಪ್ಯಾಕೇಜ್, ಪುಟದ ಇತರ ಲಿಂಕ್‌ಗಳು ಇನ್ನೊಂದು.
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Tell a friend	ಸ್ನೇಹಿತರಿಗೆ ತಿಳಿಸಿ
@@ -5160,6 +5534,10 @@
 #. {host} = a server name such as "example.com" (keep the braces as they are)
 #, machine
 	the download from {host} was cut short	{host} ನಿಂದ ಡೌನ್‌ಲೋಡ್ ಅರ್ಧಕ್ಕೆ ನಿಂತಿದೆ
+#. text in the download list (sizes, speeds, status)
+#. why a download can't be moved or renamed now: it is being moved already
+#, machine
+	The download is being moved	ಡೌನ್‌ಲೋಡ್ ಅನ್ನು ಸರಿಸಲಾಗುತ್ತಿದೆ
 #. tooltip (why a control is greyed) in a download's Properties window
 #. tooltip of the greyed Open button in File Properties
 #, machine
@@ -5181,6 +5559,10 @@
 #. text in a dialog box
 #, machine
 	The download queue is done.	ಡೌನ್‌ಲೋಡ್ ಕ್ಯೂ ಪೂರ್ಣಗೊಂಡಿದೆ.
+#. text in errors.rs
+#. error installing ffmpeg: the file downloaded isn't the build named in the list of builds MDM accepts (its checksum differs), so it was thrown away
+#, machine
+	the downloaded ffmpeg isn't the build MDM's list of checked builds names, so it wasn't installed	ಡೌನ್‌ಲೋಡ್ ಮಾಡಿದ ffmpeg, MDM ನ ಪರಿಶೀಲಿಸಿದ ಬಿಲ್ಡ್‌ಗಳ ಪಟ್ಟಿಯಲ್ಲಿರುವ ಬಿಲ್ಡ್ ಅಲ್ಲ, ಆದ್ದರಿಂದ ಅದನ್ನು ಸ್ಥಾಪಿಸಲಾಗಿಲ್ಲ
 #. text in errors.rs
 #, machine
 	the downloaded program doesn't match its signed checksum	ಡೌನ್‌ಲೋಡ್ ಮಾಡಿದ ಪ್ರೋಗ್ರಾಂ ಅದರ ಸಹಿ ಮಾಡಿದ ಚೆಕ್‌ಸಮ್‌ಗೆ ಹೊಂದಿಕೆಯಾಗುವುದಿಲ್ಲ
@@ -5216,6 +5598,10 @@
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
 	The file does NOT match ({algorithm})	ಫೈಲ್ ಹೊಂದಿಕೆಯಾಗುವುದಿಲ್ಲ ({algorithm})
+#. text in errors.rs
+#. why a file taken out of a ZIP on its server failed (#1775): its bytes aren't what the ZIP's list of files says (its size or its CRC-32 checksum)
+#, machine
+	the file in the ZIP doesn't match the ZIP's list of files (its size or checksum): download the whole archive	ZIP ನಲ್ಲಿರುವ ಫೈಲ್ ZIP ನ ಫೈಲ್‌ಗಳ ಪಟ್ಟಿಗೆ ಹೊಂದಿಕೆಯಾಗುವುದಿಲ್ಲ (ಅದರ ಗಾತ್ರ ಅಥವಾ ಚೆಕ್‌ಸಮ್): ಸಂಪೂರ್ಣ ಆರ್ಕೈವ್ ಅನ್ನು ಡೌನ್‌ಲೋಡ್ ಮಾಡಿ
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
@@ -5284,6 +5670,10 @@
 #. an error: the network adapter chosen in Options (a VPN's, usually) is off or gone; {adapter} its name
 #, machine
 	the network adapter {adapter} is not connected	ನೆಟ್‌ವರ್ಕ್ ಅಡಾಪ್ಟರ್ {adapter} ಸಂಪರ್ಕಗೊಂಡಿಲ್ಲ
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: the number of connections typed is out of range; {max} is 32 (or 128)
+#, machine
+	The number of connections must be from 1 to {max}	ಸಂಪರ್ಕಗಳ ಸಂಖ್ಯೆ 1 ರಿಂದ {max} ರವರೆಗೆ ಇರಬೇಕು
 #. text in torrent_ownership.rs
 #. error when a torrent's output folder path cannot be used
 #, machine
@@ -5345,6 +5735,10 @@
 #. text in errors.rs
 #, machine
 	the server can't send parts of the file, so it can't be resumed	ಸರ್ವರ್ ಫೈಲ್‌ನ ಭಾಗಗಳನ್ನು ಕಳುಹಿಸಲು ಸಾಧ್ಯವಿಲ್ಲ, ಆದ್ದರಿಂದ ಅದನ್ನು ಪುನರಾರಂಭಿಸಲು ಸಾಧ್ಯವಿಲ್ಲ
+#. text in errors.rs
+#. Zip preview (#1775): the server doesn't send parts of a file (HTTP ranges), so MDM can't fetch only some files from inside a ZIP; the whole archive still downloads
+#, machine
+	the server can't send parts of the ZIP, so its files can't be downloaded one by one: download the whole archive	ಸರ್ವರ್ ZIP ನ ಭಾಗಗಳನ್ನು ಕಳುಹಿಸಲು ಸಾಧ್ಯವಿಲ್ಲ, ಆದ್ದರಿಂದ ಅದರ ಫೈಲ್‌ಗಳನ್ನು ಒಂದೊಂದಾಗಿ ಡೌನ್‌ಲೋಡ್ ಮಾಡಲು ಸಾಧ್ಯವಿಲ್ಲ: ಸಂಪೂರ್ಣ ಆರ್ಕೈವ್ ಅನ್ನು ಡೌನ್‌ಲೋಡ್ ಮಾಡಿ
 #. text in errors.rs
 #, machine
 	the server did not answer in time	ಸರ್ವರ್ ಸಮಯಕ್ಕೆ ಉತ್ತರಿಸಲಿಲ್ಲ
@@ -5482,9 +5876,17 @@
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	The update is open in your system's package installer.	ನಿಮ್ಮ ಸಿಸ್ಟಂನ ಪ್ಯಾಕೇಜ್ ಇನ್‌ಸ್ಟಾಲರ್‌ನಲ್ಲಿ ಅಪ್‌ಡೇಟ್ ತೆರೆದಿದೆ.
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: the User-Agent typed holds a control character
+#, machine
+	The User-Agent has a character a header can't hold	User-Agent‌ನಲ್ಲಿ ಹೆಡರ್‌ನಲ್ಲಿ ಇರಿಸಲಾಗದ ಅಕ್ಷರವಿದೆ
 #. text in a download's Properties window
 #, machine
 	The web page from which this file was obtained:	ಈ ಫೈಲ್ ಅನ್ನು ಪಡೆದ ವೆಬ್ ಪುಟ:
+#. text in errors.rs
+#. why a file can't be taken out of a ZIP on its server (#1775): the ZIP was replaced on the server after its files were listed; Zip preview is the window that lists them
+#, machine
+	the ZIP changed on the server since its files were listed: open its Zip preview again	ZIP ನ ಫೈಲ್‌ಗಳನ್ನು ಪಟ್ಟಿ ಮಾಡಿದ ನಂತರ ಸರ್ವರ್‌ನಲ್ಲಿ ಬದಲಾಗಿದೆ: ಅದರ Zip ಪೂರ್ವವೀಕ್ಷಣೆಯನ್ನು ಮತ್ತೆ ತೆರೆಯಿರಿ
 #. message or event log entry in the main window
 #. the kind of file View → Theme → Add a theme file lists: MDM's themes (TOML, JSON), Base16 schemes (YAML) and pywal's colors.json
 #, machine
@@ -5508,12 +5910,20 @@
 #. why an archive wasn't extracted (after "Couldn't extract {name}: "); HatchZip is a program's name
 #, machine
 	there isn't enough free space for its files, HatchZip says; nothing was changed	ಅದರ ಫೈಲ್‌ಗಳಿಗೆ ಸಾಕಷ್ಟು ಉಚಿತ ಸ್ಥಳವಿಲ್ಲ, HatchZip ಹೇಳುತ್ತದೆ; ಏನನ್ನೂ ಬದಲಾಯಿಸಲಾಗಿಲ್ಲ
+#. text in relocate.rs
+#. why a download's file could not be moved to another drive (after "The file could not be moved: "); {needed} and {free} are sizes ("1.2 GB")
+#, machine
+	there isn't enough free space there ({needed} needed, {free} free)	ಅಲ್ಲಿ ಸಾಕಷ್ಟು ಉಚಿತ ಸ್ಥಳವಿಲ್ಲ ({needed} ಅಗತ್ಯವಿದೆ, {free} ಉಚಿತ)
 #. text in a download's progress window
 #, machine
 	These settings are unavailable when "Show download complete dialog" is turned on	"ಡೌನ್‌ಲೋಡ್ ಪೂರ್ಣಗೊಂಡಿದೆ ಸಂವಾದವನ್ನು ತೋರಿಸು" ಆನ್ ಮಾಡಿದಾಗ ಈ ಸೆಟ್ಟಿಂಗ್‌ಗಳು ಲಭ್ಯವಿಲ್ಲ
 #. text in helpers.rs
 #, machine
 	They keep downloading if you close this window.	ನೀವು ಈ ವಿಂಡೋವನ್ನು ಮುಚ್ಚಿದರೂ ಅವು ಡೌನ್‌ಲೋಡ್ ಆಗುತ್ತಲೇ ಇರುತ್ತವೆ.
+#. text in errors.rs
+#. error when opening a .torrent file whose piece size or list of pieces doesn't fit its files (damaged, or made wrong); it isn't added
+#, machine
+	this .torrent file is damaged: its pieces don't match its files	ಈ .torrent ಫೈಲ್ ಹಾನಿಯಾಗಿದೆ: ಅದರ ತುಣುಕುಗಳು ಅದರ ಫೈಲ್‌ಗಳಿಗೆ ಹೊಂದಿಕೆಯಾಗುವುದಿಲ್ಲ
 #. text in a dialog box
 #, machine
 	This address is already in the list of downloads:	ಈ ವಿಳಾಸವು ಈಗಾಗಲೇ ಡೌನ್‌ಲೋಡ್‌ಗಳ ಪಟ್ಟಿಯಲ್ಲಿದೆ:
@@ -5560,10 +5970,26 @@
 #, machine
 	This device's name	ಈ ಸಾಧನದ ಹೆಸರು
 #. message or event log entry in the main window
+#. the message when a file picked in View → Font isn't a TrueType or OpenType font MDM can read
+#, machine
+	This file can't be used as a font.	ಈ ಫೈಲ್ ಅನ್ನು ಫಾಂಟ್ ಆಗಿ ಬಳಸಲಾಗುವುದಿಲ್ಲ.
+#. message or event log entry in the main window
 #. {error} is why, in English (a file that isn't a theme or a colour scheme, a colour missing)
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	This file can't be used as a theme: {error}	ಈ ಫೈಲ್ ಅನ್ನು ಥೀಮ್ ಆಗಿ ಬಳಸಲಾಗುವುದಿಲ್ಲ: {error}
+#. text in errors.rs
+#. why a file can't be taken out of a ZIP on its server (#1775): it is encrypted (password-protected) in the ZIP
+#, machine
+	this file is encrypted in the ZIP: download the whole archive and open it with its password	ಈ ಫೈಲ್ ZIP ನಲ್ಲಿ ಎನ್‌ಕ್ರಿಪ್ಟ್ ಆಗಿದೆ: ಸಂಪೂರ್ಣ ಆರ್ಕೈವ್ ಅನ್ನು ಡೌನ್‌ಲೋಡ್ ಮಾಡಿ ಮತ್ತು ಅದರ ಪಾಸ್‌ವರ್ಡ್‌ನೊಂದಿಗೆ ತೆರೆಯಿರಿ
+#. text in errors.rs
+#. why a file can't be taken out of a ZIP on its server (#1775): the ZIP no longer holds it
+#, machine
+	this file is no longer in the ZIP on the server	ಈ ಫೈಲ್ ಸರ್ವರ್‌ನಲ್ಲಿರುವ ZIP ನಲ್ಲಿ ಇನ್ನು ಮುಂದೆ ಇಲ್ಲ
+#. text in errors.rs
+#. why a file can't be taken out of a ZIP on its server (#1775): it is compressed with a method MDM doesn't unpack there; {method} is the method's name (BZIP2, LZMA, Deflate64…)
+#, machine
+	this file is packed in a way MDM can't unpack from the server ({method}): download the whole archive	ಈ ಫೈಲ್ ಅನ್ನು MDM ಸರ್ವರ್‌ನಿಂದ ಅನ್‌ಪ್ಯಾಕ್ ಮಾಡಲು ಸಾಧ್ಯವಾಗದ ರೀತಿಯಲ್ಲಿ ಪ್ಯಾಕ್ ಮಾಡಲಾಗಿದೆ ({method}): ಸಂಪೂರ್ಣ ಆರ್ಕೈವ್ ಅನ್ನು ಡೌನ್‌ಲೋಡ್ ಮಾಡಿ
 #. text in remote.rs
 #. remote control page (on a phone): the file chosen is too large for a .torrent file
 #, machine
@@ -5598,6 +6024,10 @@
 #. a check of Test browser integration: a portable copy can't be connected
 #, machine
 	This is the installed copy, not a portable one	ಇದು ಸ್ಥಾಪಿಸಲಾದ ನಕಲು, ಪೋರ್ಟಬಲ್ ಅಲ್ಲ
+#. text in errors.rs
+#. Zip preview (#1775): the address isn't a ZIP archive whose list of files MDM can read on the server
+#, machine
+	this isn't a ZIP archive MDM can look inside on the server: download the whole file	ಇದು MDM ಸರ್ವರ್‌ನಲ್ಲಿ ನೋಡಲು ಸಾಧ್ಯವಾಗದ ZIP ಆರ್ಕೈವ್ ಅಲ್ಲ: ಸಂಪೂರ್ಣ ಫೈಲ್ ಅನ್ನು ಡೌನ್‌ಲೋಡ್ ಮಾಡಿ
 #. text in playlistdlg.rs
 #. in Download video, a playlist or channel that lists no video
 #, machine
@@ -5612,6 +6042,7 @@
 	This name is reserved by Windows	ಈ ಹೆಸರನ್ನು Windows ಕಾಯ್ದಿರಿಸಿದೆ
 #. tooltip (why a control is greyed) in the Download video window
 #. why "Embed chapters" is greyed: ffmpeg (a helper program) is not installed
+#. why "Split into chapters" is greyed: ffmpeg (a helper program) is not installed
 #. why Part is greyed in Download video: ffmpeg (a helper program) is not installed
 #. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
 #, machine
@@ -5633,6 +6064,10 @@
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	this program isn't {name}	ಈ ಪ್ರೋಗ್ರಾಂ {name} ಅಲ್ಲ
+#. text in requestedit.rs
+#. a download's Connection settings → Proxy: the proxy typed in the box beside
+#, machine
+	This proxy:	ಈ ಪ್ರಾಕ್ಸಿ:
 #. text in the Options window
 #. Options → General: shown when the chosen global shortcut is already registered by another program (#558)
 #, machine
@@ -5662,7 +6097,7 @@
 #. torrent start needs explicit write permission; {file} is the first existing file without a matching grant
 #, machine
 	This torrent needs permission to use {file} before it can start.	ಈ ಟೊರೆಂಟ್ ಪ್ರಾರಂಭವಾಗುವ ಮೊದಲು {file} ಅನ್ನು ಬಳಸಲು ಅನುಮತಿ ಬೇಕು.
-#. message or event log entry in the main window; text in a download's Properties window
+#. message or event log entry in the main window; text in the download list (sizes, speeds, status)
 #. shown when Move or Rename is refused: a torrent saved straight in Save to shares that folder with other files
 #, machine
 	This torrent shares its destination folder	ಈ ಟೊರೆಂಟ್ ತನ್ನ ಗಮ್ಯಸ್ಥಾನ ಫೋಲ್ಡರ್ ಅನ್ನು ಹಂಚಿಕೊಳ್ಳುತ್ತದೆ
@@ -5674,6 +6109,18 @@
 #. the Download video window: the video needs the user to be signed in
 #, machine
 	This video needs you to be signed in. Use the Download video button over it in your browser, which passes your sign-in on, or choose your browser in Options → Sites Logins → Cookies for video sites.	ಈ ವೀಡಿಯೊಗೆ ಸೈನ್ ಇನ್ ಆಗಿರಬೇಕು. ನಿಮ್ಮ ಸೈನ್-ಇನ್ ವಿವರಗಳನ್ನು ಒದಗಿಸಲು, ಬ್ರೌಸರ್‌ನಲ್ಲಿ ವೀಡಿಯೊದ ಮೇಲಿರುವ ಡೌನ್‌ಲೋಡ್ ವೀಡಿಯೊ ಬಟನ್ ಬಳಸಿ ಅಥವಾ ಆಯ್ಕೆಗಳು → ಸೈಟ್ ಲಾಗಿನ್‌ಗಳು → ವೀಡಿಯೊ ಸೈಟ್‌ಗಳ ಕುಕೀಗಳಲ್ಲಿ ನಿಮ್ಮ ಬ್ರೌಸರ್ ಆಯ್ಕೆಮಾಡಿ.
+#. text in errors.rs
+#. Zip preview (#1775): a ZIP split over several files (volumes): its files can't be fetched one by one
+#, machine
+	this ZIP is split over several files, so its files can't be downloaded one by one: download every part	ಈ ZIP ಅನ್ನು ಹಲವಾರು ಫೈಲ್‌ಗಳಾಗಿ ವಿಭಜಿಸಲಾಗಿದೆ, ಆದ್ದರಿಂದ ಅದರ ಫೈಲ್‌ಗಳನ್ನು ಒಂದೊಂದಾಗಿ ಡೌನ್‌ಲೋಡ್ ಮಾಡಲು ಸಾಧ್ಯವಿಲ್ಲ: ಪ್ರತಿಯೊಂದು ಭಾಗವನ್ನು ಡೌನ್‌ಲೋಡ್ ಮಾಡಿ
+#. text in errors.rs
+#. Zip preview (#1775): the ZIP's list of files (its table of contents) doesn't add up
+#, machine
+	this ZIP's list of files is damaged: download the whole archive	ಈ ZIP ನ ಫೈಲ್‌ಗಳ ಪಟ್ಟಿ ಹಾನಿಯಾಗಿದೆ: ಸಂಪೂರ್ಣ ಆರ್ಕೈವ್ ಅನ್ನು ಡೌನ್‌ಲೋಡ್ ಮಾಡಿ
+#. text in errors.rs
+#. Zip preview (#1775): the ZIP's list of files (its table of contents) is larger than MDM reads from a server
+#, machine
+	this ZIP's list of files is too large to read from the server: download the whole archive	ಈ ZIP ನ ಫೈಲ್‌ಗಳ ಪಟ್ಟಿ ಸರ್ವರ್‌ನಿಂದ ಓದಲು ತುಂಬಾ ದೊಡ್ಡದಾಗಿದೆ: ಸಂಪೂರ್ಣ ಆರ್ಕೈವ್ ಅನ್ನು ಡೌನ್‌ಲೋಡ್ ಮಾಡಿ
 #. text in errors.rs
 #. a download's error: the address is a site's web page that needs a browser, not the file; {site} = the site's name (gofile)
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
@@ -5705,6 +6152,11 @@
 #. tooltip on the Scheduler's "Wake the computer to run this queue" while "Start download at" is off
 #, machine
 	Tick "Start download at" first: the computer is woken for the start time	ಮೊದಲು "ಡೌನ್‌ಲೋಡ್ ಅನ್ನು ಪ್ರಾರಂಭಿಸಿ" ಎಂದು ಗುರುತಿಸಿ: ಪ್ರಾರಂಭದ ಸಮಯಕ್ಕಾಗಿ ಕಂಪ್ಯೂಟರ್ ಅನ್ನು ವೇಕ್ ಮಾಡಲಾಗುತ್ತದೆ
+#. text in zippreview.rs
+#. Zip preview, under the list: {files} how many files are ticked ("3 files"), {size} their size together ("12.4 MB")
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	Ticked: {files}, {size}	ಟಿಕ್ ಮಾಡಲಾಗಿದೆ: {files}, {size}
 #. text in a download's progress window; text in the Scheduler window
 #, machine
 	Time left	ಉಳಿದ ಸಮಯ
@@ -5775,6 +6227,10 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	torrents could not start: {error}	ಟೊರೆಂಟ್‌ಗಳನ್ನು ಪ್ರಾರಂಭಿಸಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ: {error}
+#. text in preview.rs
+#. label in the preview pane: the size of the selected downloads added up
+#, machine
+	Total size:	ಒಟ್ಟು ಗಾತ್ರ:
 #. text in a download's progress window
 #. column title: a server that lists the peers
 #, machine
@@ -5803,6 +6259,10 @@
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	Try again in an hour, or download {name} yourself and choose it in {helpers} → {other}.	ಒಂದು ಗಂಟೆಯ ನಂತರ ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ, ಅಥವಾ {name} ಅನ್ನು ನೀವೇ ಡೌನ್‌ಲೋಡ್ ಮಾಡಿ ಮತ್ತು {helpers} → {other} ನಲ್ಲಿ ಆಯ್ಕೆಮಾಡಿ.
+#. text in the Link grabber window
+#. Link grabber, a link's status: the remedy from the failure's sentence, for a site (Hugging Face, GitHub) whose limit of requests without an account is reached. The sentence is the cell's hover tip
+#, machine
+	Try again later	ನಂತರ ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ
 #. text in errors.rs
 #. {name} = a file name (keep the braces as they are)
 #, machine
@@ -5868,6 +6328,10 @@
 #. why Options → Remote → Pair a device... is greyed
 #, machine
 	Turn on the remote control first.	ಮೊದಲು ರಿಮೋಟ್ ನಿಯಂತ್ರಣವನ್ನು ಆನ್ ಮಾಡಿ.
+#. text in the Add torrent window
+#. Torrent settings, under the public tracker list's address: turning the switch off doesn't take away the trackers it added to torrents
+#, machine
+	Turned off, the trackers already added stay.	ಆಫ್ ಮಾಡಿದರೆ, ಈಗಾಗಲೇ ಸೇರಿಸಿದ ಟ್ರ್ಯಾಕರ್‌ಗಳು ಹಾಗೆಯೇ ಉಳಿಯುತ್ತವೆ.
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -5891,6 +6355,10 @@
 #. why Batch download's OK is greyed
 #, machine
 	Type a number in From and in To	From ಮತ್ತು To ನಲ್ಲಿ ಸಂಖ್ಯೆಯನ್ನು ಟೈಪ್ ಮಾಡಿ
+#. text in the Options window
+#. Site rule: OK with no site, or one with a space in it
+#, machine
+	Type a site, such as example.com or *.example.com	example.com ಅಥವಾ *.example.com ನಂತಹ ಸೈಟ್ ಅನ್ನು ಟೈಪ್ ಮಾಡಿ
 #. text in the settings
 #. Options → DNS: no server address was typed
 #, machine
@@ -5907,6 +6375,10 @@
 #. Options → DNS over TLS: the server's name (as its certificate shows it) is missing
 #, machine
 	Type the name the server's certificate shows.	ಸರ್ವರ್‌ನ ಪ್ರಮಾಣಪತ್ರವು ತೋರಿಸುವ ಹೆಸರನ್ನು ಟೈಪ್ ಮಾಡಿ.
+#. text in requestedit.rs
+#. a download's Connection settings: the proxy typed isn't an address MDM takes; the examples stay as they are
+#, machine
+	Type the proxy as host:port, http://host:port or socks5://host:port	ಪ್ರಾಕ್ಸಿಯನ್ನು host:port, http://host:port ಅಥವಾ socks5://host:port ರೂಪದಲ್ಲಿ ನಮೂದಿಸಿ
 #. text in the Scheduler window
 #. why OK is greyed when naming a new queue
 #, machine
@@ -5999,6 +6471,11 @@
 #, machine
 	Update now	ಈಗ ಅಪ್‌ಡೇಟ್ ಮಾಡಿ
 #. text in helpers.rs
+#. Helpers: the Update button's name for a screen reader; {name} = the helper (yt-dlp, ffmpeg, gallery-dl, Node.js)
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Update {name}	{name} ಅನ್ನು ನವೀಕರಿಸಿ
+#. text in helpers.rs
 #. Helpers: a program the person chose, or the system's copy: MDM doesn't update it, the person (or their package manager) does
 #, machine
 	Updated by you	ನಿಮ್ಮಿಂದ ನವೀಕರಿಸಲಾಗಿದೆ
@@ -6021,6 +6498,17 @@
 #. text in the Options window
 #, machine
 	Use advanced browser integration	ಸುಧಾರಿತ ಬ್ರೌಸರ್ ಇಂಟಿಗ್ರೇಶನ್ ಬಳಸಿ
+#. text in helpers.rs
+#. Helpers: the "Use another program..." button's name for a screen reader, on the JavaScript runtime's row (Node.js, Deno, QuickJS or Bun)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Use another program as the JavaScript runtime...	ಜಾವಾಸ್ಕ್ರಿಪ್ಟ್ ರನ್‌ಟೈಮ್ ಆಗಿ ಇನ್ನೊಂದು ಪ್ರೋಗ್ರಾಂ ಬಳಸಿ...
+#. text in helpers.rs
+#. Helpers: the "Use another program..." button's name for a screen reader; {name} = the helper (yt-dlp, ffmpeg, gallery-dl)
+#. {name} = a file name (keep the braces as they are)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Use another program for {name}...	{name} ಗಾಗಿ ಇನ್ನೊಂದು ಪ್ರೋಗ್ರಾಂ ಬಳಸಿ...
 #. text in errors.rs; button in helpers.rs; text in the Options window
 #. Video helpers: button: pick a program (yt-dlp or ffmpeg) already on the computer
 #. Options → Archives: button: pick the 7-Zip command line program to extract 7z and RAR archives with (PeaZip's own 7z.exe, a portable copy), instead of the one MDM finds
@@ -6039,10 +6527,16 @@
 #. checkbox in the Options window
 #, machine
 	Use FTP in PASV mode	PASV ಮೋಡ್‌ನಲ್ಲಿ FTP ಬಳಸಿ
-#. button in helpers.rs
+#. text in helpers.rs
 #. Video helpers: button: go back to the copy MDM downloads and checks itself
 #, machine
 	Use MDM's own copy	MDM ನ ಸ್ವಂತ ನಕಲನ್ನು ಬಳಸಿ
+#. text in helpers.rs
+#. Helpers: the "Use MDM's own copy" button's name for a screen reader; {name} = the helper (yt-dlp, ffmpeg, gallery-dl)
+#. Helpers: the "Use MDM's own copy" button's name for a screen reader; {name} = the helper (Node.js)
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Use MDM's own copy of {name}	{name} ನ MDM ನ ಸ್ವಂತ ನಕಲನ್ನು ಬಳಸಿ
 #. checkbox in the Options window
 #. Options → Sites Logins: checkbox under Cookies for video sites: yt-dlp also reads the person's own yt-dlp config file
 #, machine
@@ -6091,8 +6585,20 @@
 #, machine
 	User names and passwords for servers/sites	ಸರ್ವರ್‌ಗಳು/ಸೈಟ್‌ಗಳಿಗಾಗಿ ಬಳಕೆದಾರ ಹೆಸರುಗಳು ಮತ್ತು ಪಾಸ್‌ವರ್ಡ್‌ಗಳು
 #. text in the Options window
+#. Site rules: column title: the User-Agent the rule sends (the name a browser or program gives itself to sites)
+#, machine
+	User-Agent	ಬಳಕೆದಾರ-ಏಜೆಂಟ್
+#. text in the Options window
 #, machine
 	User-Agent for manually added downloads:	ಹಸ್ತಚಾಲಿತವಾಗಿ ಸೇರಿಸಿದ ಡೌನ್‌ಲೋಡ್‌ಗಳಿಗಾಗಿ ಬಳಕೆದಾರ-ಏಜೆಂಟ್:
+#. text in the Options window
+#. Options → Connection: beside the Site rules... button: what it sets
+#, machine
+	User-Agent, headers and connections by site	ಬಳಕೆದಾರ-ಏಜೆಂಟ್, ಹೆಡರ್‌ಗಳು ಮತ್ತು ಸೈಟ್ ಮೂಲಕ ಸಂಪರ್ಕಗಳು
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: label before the User-Agent box (the name the browser or program gives itself to sites)
+#, machine
+	User-Agent:	ಬಳಕೆದಾರ-ಏಜೆಂಟ್:
 #. text in the Options window
 #, machine
 	User:	ಬಳಕೆದಾರ:
@@ -6239,6 +6745,10 @@
 #. where a download comes from: Web (web or FTP server) or Torrent (BitTorrent)
 #, machine
 	Web	ವೆಬ್
+#. text in preview.rs
+#. label in the preview pane: the web page the download was found on
+#, machine
+	Web page:	ವೆಬ್ ಪುಟ:
 #. text in the Scheduler window
 #, machine
 	Wednesday	ಬುಧವಾರ
@@ -6340,7 +6850,7 @@
 #. a country's name (where a download's server is)
 #, machine
 	Yemen	ಯೆಮೆನ್
-#. button in a dialog box; text in a download's progress window
+#. button in a dialog box; text in the Options window; text in a download's progress window
 #, machine
 	Yes	ಹೌದು
 #. button in helpers.rs
@@ -6460,6 +6970,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Zimbabwe	ಜಿಂಬಾಬ್ವೆ
+#. text in zippreview.rs
+#. title of the window that lists the files inside a ZIP on its server, to tick those to download (#1775)
+#, machine
+	Zip preview	Zip ಪೂರ್ವವೀಕ್ಷಣೆ
 #. text in the Options window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
@@ -6515,6 +7029,10 @@
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
 	{done} of {size}	{size} ರಲ್ಲಿ {done}
+#. text in preview.rs
+#. the preview pane: how much of a download has come; {done} and {total} sizes, e.g. "12.5 MB of 40.0 MB"
+#, machine
+	{done} of {total}	{total} ರಲ್ಲಿ {done}
 #. text in deferred_rename.rs
 #. appended to an OS error when a case-only rename could not move the temporary file back to its original name; {error} = first OS error, {path} = temporary path left on disk, {rollback_error} = second OS error
 #. {error} = an error message (keep the braces as they are)
@@ -6537,6 +7055,14 @@
 #. text in the Checksum window
 #, machine
 	{file} could not be read to check it	{file} ಅನ್ನು ಪರಿಶೀಲಿಸಲು ಓದಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ
+#. message or event log entry in the main window
+#. a message after a download (Redownload) was to replace the file it had: {file} = that file's name, still there; {new} = the name the new copy was saved under, in the same folder
+#, machine
+	{file} could not be replaced: another program may have it open. The new download is saved beside it as {new}, and both files are kept.	{file} ಅನ್ನು ಬದಲಾಯಿಸಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ: ಇನ್ನೊಂದು ಪ್ರೋಗ್ರಾಂ ಅದನ್ನು ತೆರೆದಿರಬಹುದು. ಹೊಸ ಡೌನ್‌ಲೋಡ್ ಅನ್ನು ಅದರ ಪಕ್ಕದಲ್ಲಿ {new} ಎಂದು ಉಳಿಸಲಾಗಿದೆ, ಮತ್ತು ಎರಡೂ ಫೈಲ್‌ಗಳನ್ನು ಇರಿಸಲಾಗಿದೆ.
+#. text in relocate.rs
+#. why a download could not be moved (after "The file could not be moved: "): a file of that name came into the new folder meanwhile; {file} is its name
+#, machine
+	{file} is already there	{file} ಈಗಾಗಲೇ ಅಲ್ಲಿ ಇದೆ
 #. text in a dialog box
 #, machine
 	{file} is no longer where it was saved (moved or deleted). Redownload, in its right-click menu, gets it again.	{file} ಅನ್ನು ಉಳಿಸಿದ ಸ್ಥಳದಲ್ಲಿ ಕಂಡುಬಂದಿಲ್ಲ (ಸ್ಥಳಾಂತರಿಸಲಾಗಿದೆ ಅಥವಾ ಅಳಿಸಲಾಗಿದೆ). ರೈಟ್-ಕ್ಲಿಕ್ ಮೆನುವಿನ ಮರುಡೌನ್‌ಲೋಡ್ ಆಯ್ಕೆಯು ಅದನ್ನು ಮತ್ತೆ ಡೌನ್‌ಲೋಡ್ ಮಾಡುತ್ತದೆ.
@@ -6560,6 +7086,11 @@
 #. said after Delete with files when some files stayed on the disk; {file} is the download's name; the files' paths follow it
 #, machine
 	{file}: these files stayed on the disk, because MDM didn't create them or another download uses them:	{file}: MDM ಈ ಫೈಲ್‌ಗಳನ್ನು ರಚಿಸದ ಕಾರಣ ಅಥವಾ ಇನ್ನೊಂದು ಡೌನ್‌ಲೋಡ್ ಅವುಗಳನ್ನು ಬಳಸುತ್ತಿರುವ ಕಾರಣ, ಈ ಫೈಲ್‌ಗಳು ಡಿಸ್ಕ್‌ನಲ್ಲೇ ಉಳಿದಿವೆ:
+#. message or event log entry in the main window; text in the Link grabber window
+#. Link grabber's Source line, after where the links came from: a folder (an FTP folder, a web server's "Index of" page) held more files or subfolders than Link grabber lists; {folder} is its name, {n} how many of its files are listed (10,000)
+#. {n} = a number (keep the braces as they are)
+#, machine
+	{folder}: only its first {n} files	{folder}: ಅದರ ಮೊದಲ {n} ಫೈಲ್‌ಗಳು ಮಾತ್ರ
 #. text in a download's progress window
 #. {have} and {total} = numbers of pieces; {size} = one piece's size
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
@@ -6688,6 +7219,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 	{n} (auto)	{n} (ಸ್ವಯಂ)
+#. text in zippreview.rs
+#. Zip preview, under the list: {n} files of the ZIP aren't listed because MDM can't take them out on their own: encrypted ones, ones packed in a way MDM can't unpack from the server, links, or names that would leave their folder; the whole archive still downloads
+#. {n} = a number (keep the braces as they are)
+#, machine
+	{n} more can't be taken out on their own (encrypted, packed another way, or links)	{n} ಹೆಚ್ಚುವರಿ ಫೈಲ್‌ಗಳನ್ನು ಪ್ರತ್ಯೇಕವಾಗಿ ಹೊರತೆಗೆಯಲು ಸಾಧ್ಯವಿಲ್ಲ (ಎನ್‌ಕ್ರಿಪ್ಟ್ ಮಾಡಲಾದವು, ಬೇರೆ ರೀತಿಯಲ್ಲಿ ಪ್ಯಾಕ್ ಮಾಡಲಾದವು ಅಥವಾ ಲಿಂಕ್‌ಗಳು)
 #. text in playlistdlg.rs
 #. in Download video for a playlist: how many videos are ticked, of how many
 #. {n} = a number (keep the braces as they are)
@@ -6697,6 +7233,10 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 	{n} of {total} selected	{total} ರಲ್ಲಿ {n} ಆಯ್ಕೆ ಮಾಡಲಾಗಿದೆ
+#. text in the Link grabber window
+#. Link grabber's Source line: a gated Hugging Face repository ({package}: "owner/name"), whose files download only for an account that accepted its terms: where to give the account's access token (Options → Sites Logins, keep the names as the Options window shows them)
+#, machine
+	{package} is gated: accept its terms on Hugging Face, then add your access token in Options → Sites Logins (site huggingface.co, the token as its password)	{package}ಗೆ ಪ್ರವೇಶ ನಿರ್ಬಂಧವಿದೆ: Hugging Face ನಲ್ಲಿ ಅದರ ನಿಯಮಗಳನ್ನು ಒಪ್ಪಿಕೊಂಡು, ನಂತರ ಆಯ್ಕೆಗಳು → ಸೈಟ್‌ಗಳ ಲಾಗಿನ್‌ಗಳಲ್ಲಿ ಪ್ರವೇಶ ಟೋಕನ್ ಸೇರಿಸಿ (ಸೈಟ್ huggingface.co, ಟೋಕನ್ ಅನ್ನು ಅದರ ಪಾಸ್‌ವರ್ಡ್ ಆಗಿ)
 #. text in the download list (sizes, speeds, status)
 #. a torrent's status while the user's debrid service downloads it, before MDM gets its files; {service} the service ("Real-Debrid"), {percent} how far it is ("45%")
 #, machine
@@ -6800,6 +7340,31 @@
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
 #, machine
 	{site} didn't give the file this time: try again in a moment	{site} ಈ ಬಾರಿ ಫೈಲ್ ನೀಡಲಿಲ್ಲ: ಸ್ವಲ್ಪ ಸಮಯದ ನಂತರ ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ
+#. text in the Link grabber window
+#. Link grabber, the hover tip of a Hugging Face repository's or GitHub release's status; {site} is "Hugging Face" or "GitHub"
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+	{site} has no such repository, folder, release or tag, or it is private.	{site} ಅಂತಹ ರೆಪೊಸಿಟರಿ, ಫೋಲ್ಡರ್, ಬಿಡುಗಡೆ ಅಥವಾ ಟ್ಯಾಗ್ ಹೊಂದಿಲ್ಲ, ಅಥವಾ ಅದು ಖಾಸಗಿಯಾಗಿದೆ.
+#. text in the Link grabber window
+#. Link grabber, a Hugging Face repository's or GitHub release's status (the cell's hover tip): the site ({site}: "Hugging Face", "GitHub") lets only so many requests through from a computer without an account; {n} minutes to wait
+#. {site} = a web site's name such as "example.com"; {n} = a number (keep the braces as they are)
+#, machine
+	{site} lets only so many requests through without an account: try again in {n} minute.	{site} ಖಾತೆಯಿಲ್ಲದೆ ಇಷ್ಟು ವಿನಂತಿಗಳನ್ನು ಮಾತ್ರ ಅನುಮತಿಸುತ್ತದೆ: {n} ನಿಮಿಷದಲ್ಲಿ ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.
+#. text in the Link grabber window
+#. Link grabber, a Hugging Face repository's or GitHub release's status (the cell's hover tip): the site ({site}) lets only so many requests through without an account, and didn't say for how long
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+	{site} lets only so many requests through without an account: try again later.	{site} ಖಾತೆಯಿಲ್ಲದೆ ಇಷ್ಟು ವಿನಂತಿಗಳನ್ನು ಮಾತ್ರ ಅನುಮತಿಸುತ್ತದೆ: ನಂತರ ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.
+#. text in the Link grabber window
+#. Link grabber, a Hugging Face repository's or GitHub release's status: the site ({site}) refused to list its files; {status} is the HTTP code (403)
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+	{site} refused to list its files ({status}).	{site} ಅದರ ಫೈಲ್‌ಗಳನ್ನು ಪಟ್ಟಿ ಮಾಡಲು ನಿರಾಕರಿಸಿದೆ ({status}).
+#. text in the Link grabber window
+#. Link grabber, a Hugging Face repository's or GitHub release's status: the site's ({site}) answer wasn't what it sends (changed, cut, or not its own)
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+	{site}'s list of files couldn't be read.	{site} ನ ಫೈಲ್‌ಗಳ ಪಟ್ಟಿಯನ್ನು ಓದಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ.
 #. text in a download's Properties window
 #. {size} = a file size such as "4.2 MB"; {bytes} = a number of bytes (keep the braces as they are)
 #, machine
@@ -6822,6 +7387,11 @@
 #. {s} = seconds (keep the braces as they are)
 #, machine
 	{s} sec	{s} ಸೆಕೆಂಡ್
+#. text in a dialog box
+#. the title of another window of a kind while the first is open (several Download File Info windows, one per link): {title} the window's own title, {n} its number, "Download File Info (2)"
+#. {n} = a number (keep the braces as they are)
+#, machine
+	{title} ({n})	{title} ({n})
 #. message or event log entry in the main window
 #. RSS feeds window, under the rules: {title} was added by the rule {rule}
 #, machine
@@ -6870,10 +7440,14 @@ column	Peers	ಪೀರ್‌ಗಳು
 #. column title: one letter for Queue (the column is narrow)
 #, machine
 column	Q	Q
-#. column title in the main window; column title in the download list
+#. column title in the main window; column title in a dialog box; column title in the download list
 #. tooltip of the narrow "Q" column's title
 #, machine
 column	Queue	ಕ್ಯೂ
+#. column title in the download list in the download list
+#. column title: the folder the download is saved in
+#, machine
+column	Save To	ಉಳಿಸುವ ಸ್ಥಳ
 #. column title in the download list in the download list
 #. column title: what a torrent has sent to peers against what it took
 #, machine
@@ -6922,6 +7496,7 @@ extension	Added to MDM	MDM ಗೆ ಸೇರಿಸಲಾಗಿದೆ
 extension	Added to the queue	ಕ್ಯೂಗೆ ಸೇರಿಸಲಾಗಿದೆ
 #. text in the browser extension
 #. filter in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): every download; short
+#. chip in the menu of the download button over a video, filtering the list of qualities: show every quality (or any file type, any codec); short, one word
 #, machine
 extension	All	ಎಲ್ಲಾ
 #. text in the browser extension
@@ -6937,6 +7512,14 @@ extension	Another Mister Download Manager (a server)	ಇನ್ನೊಂದು Mi
 #. tab above the list of qualities in the menu under the download button over a video: the choices that are sound only (MP3, Opus and the like); short, one word
 #, machine
 extension	Audio	ಆಡಿಯೊ
+#. text in the browser extension
+#. chip in the menu of the download button over a video, filtering the list of qualities: show only the sound-only choices (MP3, Opus and the like); short
+#, machine
+extension	Audio only	ಆಡಿಯೋ ಮಾತ್ರ
+#. text in the browser extension
+#. toolbar button's popup: said for a moment after Reset: the download button over videos is in its usual corner again and its menu lists every quality, on every web site
+#, machine
+extension	Back in its corner, its menu showing everything, on every site	ಅದರ ಮೂಲ ಸ್ಥಾನಕ್ಕೆ ಮರಳಿದೆ, ಅದರ ಮೆನು ಎಲ್ಲವನ್ನೂ ತೋರಿಸುತ್ತಿದೆ, ಪ್ರತಿ ಸೈಟ್‌ನಲ್ಲಿ
 #. text in the browser extension
 #. after the best quality in the menu of the download button over a video, after a star (★ best); lower case; one word
 #, machine
@@ -6986,6 +7569,10 @@ extension	Clear finished	ಪೂರ್ಣಗೊಂಡವುಗಳನ್ನು ತ
 #. title of the question in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) before the finished downloads are taken off the list
 #, machine
 extension	Clear finished downloads?	ಪೂರ್ಣಗೊಂಡ ಡೌನ್‌ಲೋಡ್‌ಗಳನ್ನು ಪಟ್ಟಿಯಿಂದ ತೆರವುಗೊಳಿಸಬೇಕೇ?
+#. text in the browser extension
+#. label before the row of chips (All, AV1, VP9, H.264...) that filters the list of video qualities by the picture's codec in the menu of the download button over a video; short
+#, machine
+extension	Codec	ಕೋಡೆಕ್
 #. text in the browser extension
 #. under the extension's name in the toolbar button's popup: the browser reaches the app; short
 #, machine
@@ -7060,6 +7647,10 @@ extension	Download all links with Mister Download Manager	Mister Download Manage
 #, machine
 extension	Download best	ಉತ್ತಮ ಗುಣಮಟ್ಟವನ್ನು ಡೌನ್‌ಲೋಡ್ ಮಾಡಿ
 #. text in the browser extension
+#. toolbar button's popup, Settings: the name of the row with the Reset button for the download button the extension shows over videos
+#, machine
+extension	Download button over videos	ವೀಡಿಯೊಗಳ ಮೇಲೆ ಡೌನ್‌ಲೋಡ್ ಬಟನ್
+#. text in the browser extension
 #. command in the browser's right-click menu on selected text: download the links in the selection; keep the name Mister Download Manager as it is
 #, machine
 extension	Download selected links with Mister Download Manager	Mister Download Manager ನೊಂದಿಗೆ ಆಯ್ದ ಲಿಂಕ್‌ಗಳನ್ನು ಡೌನ್‌ಲೋಡ್ ಮಾಡಿ
@@ -7102,9 +7693,9 @@ extension	Downloads from {site} stay with the browser	{site} ನಿಂದ ಡೌ
 #, machine
 extension	Downloads go to {address}	ಡೌನ್‌ಲೋಡ್‌ಗಳು {address} ಗೆ ಹೋಗುತ್ತವೆ
 #. text in the browser extension
-#. second line of the tooltip of the download button over a video: dragging its dotted grip moves it along the video's edge
+#. second line of the tooltip of the download button over a video: dragging its dotted grip moves it to another corner or edge of the video, or outside the video next to it
 #, machine
-extension	Drag the dots to move it along the edge	ಅಂಚಿನಲ್ಲಿ ಸರಿಸಲು ಚುಕ್ಕೆಗಳನ್ನು ಎಳೆಯಿರಿ
+extension	Drag the dots to move it to another corner, or outside the video	ಅದನ್ನು ಇನ್ನೊಂದು ಮೂಲೆಯಲ್ಲಿ ಅಥವಾ ವೀಡಿಯೊದ ಹೊರಗೆ ಸರಿಸಲು ಚುಕ್ಕೆಗಳನ್ನು ಎಳೆಯಿರಿ
 #. text in the browser extension
 #. the address typed isn't an https:// address
 #, machine
@@ -7122,6 +7713,18 @@ extension	Failed: {why}	ವಿಫಲವಾಗಿದೆ: {why}
 #. a finished download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when its file is no longer where it was saved
 #, machine
 extension	File deleted or moved	ಫೈಲ್ ಅಳಿಸಲಾಗಿದೆ ಅಥವಾ ಸರಿಸಲಾಗಿದೆ
+#. text in the browser extension
+#. label before the row of chips (All, MP4, WEBM, M4A...) that filters the list of qualities by file type in the menu of the download button over a video; short
+#, machine
+extension	File type	ಫೈಲ್ ಪ್ರಕಾರ
+#. text in the browser extension
+#. button in the This page tab of the toolbar button's popup: look for the pictures of the current web page (only when clicked); short
+#, machine
+extension	Find images	ಚಿತ್ರಗಳನ್ನು ಹುಡುಕಿ
+#. text in the browser extension
+#. in the This page tab of the toolbar button's popup, before the Find images button; Link grabber is the name of the app's window that lists links to tick before downloading them
+#, machine
+extension	Find this page's pictures at the largest size it lists, then send the ones you want to Link grabber.	ಈ ಪುಟದ ಚಿತ್ರಗಳನ್ನು ಅದು ಪಟ್ಟಿ ಮಾಡುವ ಅತಿದೊಡ್ಡ ಗಾತ್ರದಲ್ಲಿ ಹುಡುಕಿ, ನಂತರ ನಿಮಗೆ ಬೇಕಾದವುಗಳನ್ನು ಲಿಂಕ್ ಗ್ರ್ಯಾಬರ್‌ಗೆ ಕಳುಹಿಸಿ.
 #. text in the browser extension
 #. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) after Clear finished
 #, machine
@@ -7158,6 +7761,14 @@ extension	Hold Alt while clicking a link to let the browser download it.	ಬ್�
 #. link under a connection problem in the toolbar button's popup, to the help page's section for it
 #, machine
 extension	How to fix it	ಅದನ್ನು ಹೇಗೆ ಸರಿಪಡಿಸುವುದು
+#. text in the browser extension
+#. what a screen reader says for the row of buttons that keep or leave out each type of picture (JPEG, PNG, WEBP...), in the This page tab of the toolbar button's popup
+#, machine
+extension	Image types	ಚಿತ್ರದ ಪ್ರಕಾರಗಳು
+#. text in the browser extension
+#. heading in the This page tab of the toolbar button's popup, over the part that finds the pictures of the current web page and sends them to the app
+#, machine
+extension	Images on this page	ಈ ಪುಟದಲ್ಲಿರುವ ಚಿತ್ರಗಳು
 #. text in the browser extension
 #. pairing failed for another reason
 #, machine
@@ -7207,6 +7818,28 @@ extension	Left to the browser: {name}	ಬ್ರೌಸರ್‌ಗೆ ಬಿಡ�
 #. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) after Copy link
 #, machine
 extension	Link copied	ಲಿಂಕ್ ನಕಲಿಸಲಾಗಿದೆ
+#. text in the browser extension
+#. the toolbar button's status: all links refused by another MDM
+#. {count} = a number (keep the braces as they are)
+#, machine
+extension	Links refused: {count}	ಲಿಂಕ್‌ಗಳನ್ನು ನಿರಾಕರಿಸಲಾಗಿದೆ: {count}
+#. text in the browser extension
+#. the toolbar button's status: links sent to another MDM
+#. {count} = a number (keep the braces as they are)
+#, machine
+extension	Links sent: {count}	ಲಿಂಕ್‌ಗಳನ್ನು ಕಳುಹಿಸಲಾಗಿದೆ: {count}
+#. text in the browser extension
+#. the toolbar button's status: some links refused by another MDM
+#, machine
+extension	Links sent: {sent}, refused: {refused}	ಲಿಂಕ್‌ಗಳನ್ನು ಕಳುಹಿಸಲಾಗಿದೆ: {sent}, ನಿರಾಕರಿಸಲಾಗಿದೆ: {refused}
+#. text in the browser extension
+#. the toolbar button's status: some links refused and some left out
+#, machine
+extension	Links sent: {sent}, refused: {refused}, {left} left out	ಲಿಂಕ್‌ಗಳನ್ನು ಕಳುಹಿಸಲಾಗಿದೆ: {sent}, ನಿರಾಕರಿಸಲಾಗಿದೆ: {refused}, {left} ಕೈಬಿಡಲಾಗಿದೆ
+#. text in the browser extension
+#. the toolbar button's status: links sent to another MDM, some left out by cap or filter
+#, machine
+extension	Links sent: {sent}, {left} left out	ಲಿಂಕ್‌ಗಳನ್ನು ಕಳುಹಿಸಲಾಗಿದೆ: {sent}, {left} ಕೈಬಿಡಲಾಗಿದೆ
 #. text in the browser extension
 #. beside a stream in the toolbar button's popup: it is a live broadcast (no fixed length); short
 #, machine
@@ -7312,6 +7945,10 @@ extension	Never on {site}	{site} ನಲ್ಲಿ ಎಂದಿಗೂ ಬೇಡ
 #, machine
 extension	Never take downloads from {site}	{site} ನಿಂದ ಡೌನ್‌ಲೋಡ್‌ಗಳನ್ನು ಎಂದಿಗೂ ತೆಗೆದುಕೊಳ್ಳಬೇಡಿ
 #. text in the browser extension
+#. the toolbar button's status: no links matched capturable file types
+#, machine
+extension	No capturable links ({left} left out)	ಸೆರೆಹಿಡಿಯಬಹುದಾದ ಲಿಂಕ್‌ಗಳಿಲ್ಲ ({left} ಕೈಬಿಡಲಾಗಿದೆ)
+#. text in the browser extension
 #. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when no download matches the search; the words searched for follow
 #, machine
 extension	No download's name or address has “{words}”.	ಯಾವುದೇ ಡೌನ್‌ಲೋಡ್‌ನ ಹೆಸರು ಅಥವಾ ವಿಳಾಸದಲ್ಲಿ “{words}” ಇಲ್ಲ.
@@ -7319,6 +7956,10 @@ extension	No download's name or address has “{words}”.	ಯಾವುದೇ �
 #. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app has no downloads
 #, machine
 extension	No downloads yet	ಇನ್ನೂ ಯಾವುದೇ ಡೌನ್‌ಲೋಡ್‌ಗಳಿಲ್ಲ
+#. text in the browser extension
+#. shown in the This page tab of the toolbar button's popup when Find images found no picture on the current web page
+#, machine
+extension	No images found on this page.	ಈ ಪುಟದಲ್ಲಿ ಯಾವುದೇ ಚಿತ್ರಗಳು ಕಂಡುಬಂದಿಲ್ಲ.
 #. text in the browser extension
 #. shown in the toolbar button's popup when the current web page hasn't loaded any video, sound or stream yet
 #, machine
@@ -7389,6 +8030,10 @@ extension	Options...	ಆಯ್ಕೆಗಳು...
 #, machine
 extension	original	ಮೂಲ
 #. text in the browser extension
+#. button among the picture types (JPEG, PNG, WEBP...) in the This page tab of the toolbar button's popup: the pictures of any other or unknown type; short
+#, machine
+extension	Other	ಇತರೆ
+#. text in the browser extension
 #. button: pair this browser with the other MDM using the code
 #, machine
 extension	Pair	ಜೋಡಿಸಿ
@@ -7434,9 +8079,17 @@ extension	Protected	ರಕ್ಷಿಸಲಾಗಿದೆ
 #, machine
 extension	Protected video	ರಕ್ಷಿತ ವೀಡಿಯೊ
 #. text in the browser extension
+#. menu command of the download button over a video, shown after the user dragged the button elsewhere on this site: moves it back to its usual corner of the video
+#, machine
+extension	Put the button back in its corner	ಬಟನ್ ಅನ್ನು ಅದರ ಮೂಲ ಸ್ಥಾನಕ್ಕೆ ಮರಳಿ ಇರಿಸಿ
+#. text in the browser extension
 #. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): takes the download off the list, its file stays
 #, machine
 extension	Remove from list	ಪಟ್ಟಿಯಿಂದ ತೆಗೆದುಹಾಕಿ
+#. text in the browser extension
+#. toolbar button's popup, Settings: button that puts the download button over videos back in its corner and clears its menu's filters, on every web site; a verb, short
+#, machine
+extension	Reset	ಮರುಹೊಂದಿಸಿ
 #. text in the browser extension
 #. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): goes on with a paused, waiting or failed download; verb
 #, machine
@@ -7466,6 +8119,10 @@ extension	Send downloads through this browser's proxy or VPN extension	ಈ ಬ�
 #, machine
 extension	Send downloads to	ಡೌನ್‌ಲೋಡ್‌ಗಳನ್ನು ಇಲ್ಲಿಗೆ ಕಳುಹಿಸಿ
 #. text in the browser extension
+#. button in the This page tab of the toolbar button's popup: send the selected pictures to the app's Link grabber window, where the user ticks which to download
+#, machine
+extension	Send to Link grabber	ಲಿಂಕ್ ಗ್ರ್ಯಾಬರ್‌ಗೆ ಕಳುಹಿಸಿ
+#. text in the browser extension
 #. on the download button over a video right after it was clicked, while the download goes to the app; MDM is Mister Download Manager's short name, keep it as it is; short
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -7475,9 +8132,17 @@ extension	Sending to MDM...	MDM ಗೆ ಕಳುಹಿಸಲಾಗುತ್ತ�
 #, machine
 extension	Sending to {server}	{server} ಗೆ ಕಳುಹಿಸಲಾಗುತ್ತಿದೆ
 #. text in the browser extension
+#. shown in the This page tab of the toolbar button's popup after the pictures were sent to the app's Link grabber window
+#, machine
+extension	Sent to Link grabber: tick the ones to download there.	ಲಿಂಕ್ ಗ್ರ್ಯಾಬರ್‌ಗೆ ಕಳುಹಿಸಲಾಗಿದೆ: ಅಲ್ಲಿ ಡೌನ್‌ಲೋಡ್ ಮಾಡಲು ಬೇಕಾದವುಗಳನ್ನು ಗುರುತಿಸಿ.
+#. text in the browser extension
 #. shown briefly on the download button after it was clicked; keep the name Mister Download Manager as it is
 #, machine
 extension	Sent to Mister Download Manager	Mister Download Manager ಗೆ ಕಳುಹಿಸಲಾಗಿದೆ
+#. text in the browser extension
+#. the toolbar button's status when the paired server does not answer
+#, machine
+extension	Server not reached	ಸರ್ವರ್ ತಲುಪಿಲ್ಲ
 #. text in the browser extension
 #. tab in the toolbar button's popup: the extension's settings; noun, short
 #, machine
@@ -7490,6 +8155,7 @@ extension	Share...	ಹಂಚಿಕೊಳ್ಳಿ...
 #. text in the browser extension
 #. button on the download button over a video after a download was added: shows that download in the app's window; verb; very short
 #. name of the row of filters in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) (All, Running, Done, Failed), read by screen readers; verb
+#. label read by screen readers for the row of chips (All, Video, Audio only) that filters the list of qualities in the menu of the download button over a video; a verb, short
 #, machine
 extension	Show	ತೋರಿಸಿ
 #. text in the browser extension
@@ -7504,6 +8170,23 @@ extension	Show in folder	ಫೋಲ್ಡರ್‌ನಲ್ಲಿ ತೋರಿಸ
 #. screen readers' name of a download's Show in folder button in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads)
 #, machine
 extension	Show {file} in folder	{file} ಅನ್ನು ಫೋಲ್ಡರ್‌ನಲ್ಲಿ ತೋರಿಸಿ
+#. text in the browser extension
+#. in the This page tab of the toolbar button's popup, while a smallest width or height is set: how many of the selected pictures the page gives no size for (they are kept, not left out)
+#. {n} = a number (keep the braces as they are)
+#, machine
+extension	Size not given, kept: {n}	ಗಾತ್ರ ನೀಡಿಲ್ಲ, ಇರಿಸಲಾಗಿದೆ: {n}
+#. text in the browser extension
+#. what a screen reader says for the box of the smallest height of the pictures to keep, in the This page tab of the toolbar button's popup
+#, machine
+extension	Smallest height, in pixels	ಕನಿಷ್ಠ ಎತ್ತರ, ಪಿಕ್ಸೆಲ್‌ಗಳಲ್ಲಿ
+#. text in the browser extension
+#. in the This page tab of the toolbar button's popup, before two boxes for the smallest width and height of the pictures to keep: 'Smallest size, in pixels [ ] × [ ]'; pictures smaller than that are left out; short
+#, machine
+extension	Smallest size, in pixels	ಪಿಕ್ಸೆಲ್‌ಗಳಲ್ಲಿ ಚಿಕ್ಕ ಗಾತ್ರ
+#. text in the browser extension
+#. what a screen reader says for the box of the smallest width of the pictures to keep, in the This page tab of the toolbar button's popup
+#, machine
+extension	Smallest width, in pixels	ಕನಿಷ್ಠ ಅಗಲ, ಪಿಕ್ಸೆಲ್‌ಗಳಲ್ಲಿ
 #. text in the browser extension
 #. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app isn't running
 #, machine
@@ -7537,6 +8220,10 @@ extension	That didn't work. Try again.	ಅದು ಕೆಲಸ ಮಾಡಲಿಲ
 #. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when a button's download was removed meanwhile
 #, machine
 extension	That download is no longer in the list.	ಆ ಡೌನ್‌ಲೋಡ್ ಇನ್ನು ಪಟ್ಟಿಯಲ್ಲಿಲ್ಲ.
+#. text in the browser extension
+#. shown in the This page tab of the toolbar button's popup when Find images can't look into the current page (a page of the browser's own, an add-on store)
+#, machine
+extension	The browser doesn't let add-ons read this page.	ಬ್ರೌಸರ್ ಆಡ್-ಆನ್‌ಗಳಿಗೆ ಈ ಪುಟವನ್ನು ಓದಲು ಅನುಮತಿಸುವುದಿಲ್ಲ.
 #. text in the browser extension
 #. in the toolbar button's popup, on a site where the Chrome Web Store's copy of the extension shows no download button; Help is the link at the bottom of the popup
 #, machine
@@ -7640,6 +8327,10 @@ extension	Waiting	ಕಾಯಲಾಗುತ್ತಿದೆ
 #, machine
 extension	What you download with Mister Download Manager shows up here.	Mister Download Manager ನೊಂದಿಗೆ ನೀವು ಡೌನ್‌ಲೋಡ್ ಮಾಡುವುದು ಇಲ್ಲಿ ಕಾಣಿಸುತ್ತದೆ.
 #. text in the browser extension
+#. toolbar button's popup, Settings: second line under 'Download button over videos', saying what Reset puts back: the places the user dragged the button to, and the filters chosen in its menu, remembered per web site
+#, machine
+extension	Where you moved it, and its menu's filters, on each site	ನೀವು ಅದನ್ನು ಸರಿಸಿದ ಸ್ಥಳ ಮತ್ತು ಅದರ ಮೆನುವಿನ ಫಿಲ್ಟರ್‌ಗಳು, ಪ್ರತಿ ಸೈಟ್‌ನಲ್ಲಿ
+#. text in the browser extension
 #. Tooltip of the Hide the download button in full screen option in the toolbar button's popup; Download video is the name of the button over videos
 #, machine
 extension	While the page is in full screen, its videos show no Download video button	ಪುಟವು ಪೂರ್ಣ ಪರದೆಯಲ್ಲಿರುವಾಗ, ಅದರ ವೀಡಿಯೊಗಳು ಡೌನ್‌ಲೋಡ್ ವೀಡಿಯೊ ಬಟನ್ ಅನ್ನು ತೋರಿಸುವುದಿಲ್ಲ
@@ -7670,6 +8361,10 @@ extension	{file} removed from the list	{file} ಅನ್ನು ಪಟ್ಟಿಯ
 #, machine
 extension	{file} will be deleted from your computer, and the download taken off the list. This can't be undone.	{file} ಅನ್ನು ನಿಮ್ಮ ಕಂಪ್ಯೂಟರ್‌ನಿಂದ ಅಳಿಸಲಾಗುತ್ತದೆ ಮತ್ತು ಡೌನ್‌ಲೋಡ್ ಅನ್ನು ಪಟ್ಟಿಯಿಂದ ತೆಗೆದುಹಾಕಲಾಗುತ್ತದೆ. ಇದನ್ನು ರದ್ದುಗೊಳಿಸಲು ಸಾಧ್ಯವಿಲ್ಲ.
 #. text in the browser extension
+#. in the This page tab of the toolbar button's popup: how many of the pictures found pass the size and type filters, and will be sent
+#, machine
+extension	{shown} of {total} selected	{total} ರಲ್ಲಿ {shown} ಆಯ್ಕೆಮಾಡಲಾಗಿದೆ
+#. text in the browser extension
 #. a running download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): the time left, as a clock (minutes:seconds)
 #. {time} = a time of day (keep the braces as they are)
 #, machine
@@ -7678,6 +8373,10 @@ extension	{time} left	{time} ಉಳಿದಿದೆ
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
 key	Alt+Enter	Alt+Enter
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Alt+P	Alt+P
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
@@ -7808,6 +8507,12 @@ menu	&Automatic	ಸ್ವಯಂಚಾಲಿತ(&A)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Classic	ಕ್ಲಾಸಿಕ್(&C)
+#. menu command in the main window
+#. header menu: opens the dialog that chooses the list's columns
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	&Columns...	ಕಾಲಮ್‌ಗಳು(&C)...
 #. menu command in standard windows
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -7828,6 +8533,11 @@ menu	&Download Now	ಈಗ ಡೌನ್‌ಲೋಡ್ ಮಾಡಿ(&D)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Exit	ನಿರ್ಗಮಿಸಿ(&E)
+#. menu command in the main window
+#. View menu: submenu choosing the interface's own font and text size
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Font	ಫಾಂ&ಟ್
 #. menu command in the main window
 #. verb: load downloads from a file
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
@@ -7907,6 +8617,11 @@ menu	&Stop All	ಎಲ್ಲವನ್ನೂ ನಿಲ್ಲಿಸಿ(&S)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Stop Download	ಡೌನ್‌ಲೋಡ್ ನಿಲ್ಲಿಸಿ(&S)
+#. menu command in the main window
+#. View → Font: the computer's own font, the default (Segoe UI on Windows)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&System font	&ಸಿಸ್ಟಮ್ ಫಾಂಟ್
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -8048,6 +8763,12 @@ menu	C&ustomize URL List...	URL ಪಟ್ಟಿಯನ್ನು ಕಸ್ಟಮ�
 #, machine
 menu	Check for &updates...	ಅಪ್‌ಡೇಟ್‌ಗಳಿಗಾಗಿ ಪರಿಶೀಲಿಸಿ...(&u)
 #. menu command in the main window
+#. View → Font: a TrueType or OpenType font file on disk to draw the interface's text in
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Choose a font &file...	ಫಾಂಟ್ ಫೈಲ್ &ಆಯ್ಕೆಮಾಡಿ...
+#. menu command in the main window
 #. View → Theme: MDM's own look, the default (IDM's layout, Windows 11's controls)
 #, machine
 menu	Classic	ಕ್ಲಾಸಿಕ್
@@ -8136,10 +8857,6 @@ menu	Find Next (F3)	ಮುಂದಿನದನ್ನು ಹುಡುಕಿ (F3)
 #. right-click → Torrent, a choice with a check mark (with Download in order): each file's first and last pieces first, which a video player needs to start
 #, machine
 menu	First and last pieces first	ಮೊದಲ ಮತ್ತು ಕೊನೆಯ ತುಣುಕುಗಳನ್ನು ಮೊದಲು
-#. menu command in the main window
-#. noun: the list's font (submenu)
-#, machine
-menu	Font	ಫಾಂಟ್
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it
@@ -8244,6 +8961,10 @@ menu	Open with...	ಇದರೊಂದಿಗೆ ತೆರೆಯಿರಿ...
 #. View → Draw with: a graphics system's name, usually kept as is
 #, machine
 menu	OpenGL	OpenGL
+#. menu command in the main window
+#. View → Draw with: a greyed note; why MDM no longer draws with OpenGL: MDM crashed inside the graphics card's driver while OpenGL drew ("its": OpenGL's)
+#, machine
+menu	OpenGL crashed inside its driver here	OpenGL ಇಲ್ಲಿ ಅದರ ಡ್ರೈವರ್ ಒಳಗೆ ಕ್ರ್ಯಾಶ್ ಆಯಿತು
 #. menu command in the main window
 #. View → Draw with: a greyed note; why MDM no longer draws with OpenGL: it couldn't start on this computer
 #, machine
@@ -8448,6 +9169,10 @@ menubar	&Tasks	&ಕಾರ್ಯಗಳು
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menubar	&View	&ವೀಕ್ಷಿಸಿ
+#. text in preview.rs
+#. noun: title of the side pane beside the download list that shows the selected download's picture and details (#1368)
+#, machine
+pane	Preview	ಪೂರ್ವವೀಕ್ಷಣೆ
 #. toolbar button in the main window
 #, machine
 toolbar	Add Torrent	ಟೊರೆಂಟ್ ಸೇರಿಸಿ
@@ -8465,6 +9190,10 @@ toolbar	Delete Completed	ಪೂರ್ಣಗೊಂಡವುಗಳನ್ನು ಅ
 #. plural noun: opens the Options window (settings)
 #, machine
 toolbar	Options	ಆಯ್ಕೆಗಳು
+#. toolbar button in the main window
+#. toolbar toggle button: shows or hides the preview pane (the selected download's picture and details)
+#, machine
+toolbar	Preview	ಪೂರ್ವವೀಕ್ಷಣೆ
 #. toolbar button in the main window
 #. verb: continue the selected downloads
 #, machine

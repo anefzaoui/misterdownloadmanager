@@ -285,6 +285,7 @@ pub(crate) async fn magnet_status(
     Ok(Status::Ready {
         name: m.filename,
         files,
+        partial: false,
     })
 }
 

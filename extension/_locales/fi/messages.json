@@ -284,6 +284,64 @@
   "popup_media_title_name": {
     "message": "Lisää sivun otsikko mediatiedostojen nimien eteen"
   },
+  "popup_images": {
+    "message": "Kuvat tällä sivulla"
+  },
+  "popup_images_text": {
+    "message": "Etsi tämän sivun kuvat suurimmassa koossa, jonka sivu ilmoittaa, ja lähetä haluamasi Linkkien sieppaajaan."
+  },
+  "popup_images_find": {
+    "message": "Etsi kuvia"
+  },
+  "popup_images_min": {
+    "message": "Pienin koko pikseleinä"
+  },
+  "popup_images_width": {
+    "message": "Pienin leveys pikseleinä"
+  },
+  "popup_images_height": {
+    "message": "Pienin korkeus pikseleinä"
+  },
+  "popup_images_types": {
+    "message": "Kuvatyypit"
+  },
+  "popup_images_other": {
+    "message": "Muut"
+  },
+  "popup_images_count": {
+    "message": "$shown$/$total$ valittu",
+    "placeholders": {
+      "shown": {
+        "content": "$1",
+        "example": "12"
+      },
+      "total": {
+        "content": "$2",
+        "example": "40"
+      }
+    }
+  },
+  "popup_images_unsized": {
+    "message": "Kokoa ei annettu, säilytetty: $n$",
+    "placeholders": {
+      "n": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "popup_images_send": {
+    "message": "Lähetä Linkkien sieppaajaan"
+  },
+  "popup_images_sent": {
+    "message": "Lähetetty Linkkien sieppaajaan: valitse ladattavat kuvat sieltä."
+  },
+  "popup_images_none": {
+    "message": "Kuvia ei löytynyt tältä sivulta."
+  },
+  "popup_images_unreadable": {
+    "message": "Selain ei anna lisäosien lukea tätä sivua."
+  },
   "video_cant_save": {
     "message": "ei voi tallentaa"
   },
@@ -291,7 +349,7 @@
     "message": "Avaa julkaisu"
   },
   "video_drag_dots": {
-    "message": "Vedä pisteitä siirtääksesi sitä reunaa pitkin"
+    "message": "Vedä pisteistä siirtääksesi painike toiseen kulmaan tai videon ulkopuolelle"
   },
   "video_tip": {
     "message": "Lataa $what$",
@@ -765,5 +823,108 @@
   },
   "popup_dl_open_remote": {
     "message": "Avaa sen sivu"
+  },
+  "video_home": {
+    "message": "Siirrä painike takaisin kulmaansa"
+  },
+  "video_filter_all": {
+    "message": "Kaikki"
+  },
+  "video_filter_audio": {
+    "message": "Vain ääni"
+  },
+  "video_filter_kind": {
+    "message": "Näytä"
+  },
+  "video_filter_type": {
+    "message": "Tiedostotyyppi"
+  },
+  "video_filter_codec": {
+    "message": "Koodekki"
+  },
+  "popup_video_reset_text": {
+    "message": "Latauspainike videoiden päällä"
+  },
+  "popup_video_reset_sub": {
+    "message": "Paikat, joihin siirsit painikkeen, ja sen valikon suodattimet kullakin sivustolla"
+  },
+  "popup_video_reset": {
+    "message": "Palauta"
+  },
+  "popup_video_reset_done": {
+    "message": "Takaisin kulmassaan, valikko näyttää kaiken kaikilla sivustoilla"
+  },
+  "status_links_sent": {
+    "message": "Lähetetyt linkit: $count$",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "10"
+      }
+    }
+  },
+  "status_links_cut": {
+    "message": "Linkkejä lähetetty: $sent$, jätetty pois: $left$",
+    "placeholders": {
+      "sent": {
+        "content": "$1",
+        "example": "100"
+      },
+      "left": {
+        "content": "$2",
+        "example": "20"
+      }
+    }
+  },
+  "status_links_partial": {
+    "message": "Linkkejä lähetetty: $sent$, hylätty: $refused$",
+    "placeholders": {
+      "sent": {
+        "content": "$1",
+        "example": "5"
+      },
+      "refused": {
+        "content": "$2",
+        "example": "2"
+      }
+    }
+  },
+  "status_links_partial_cut": {
+    "message": "Linkkejä lähetetty: $sent$, hylätty: $refused$, jätetty pois: $left$",
+    "placeholders": {
+      "sent": {
+        "content": "$1",
+        "example": "5"
+      },
+      "refused": {
+        "content": "$2",
+        "example": "2"
+      },
+      "left": {
+        "content": "$3",
+        "example": "1"
+      }
+    }
+  },
+  "status_links_refused": {
+    "message": "Hylätyt linkit: $count$",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "status_links_none": {
+    "message": "Ei tallennettavia linkkejä ($left$ jätetty pois)",
+    "placeholders": {
+      "left": {
+        "content": "$1",
+        "example": "5"
+      }
+    }
+  },
+  "status_unreachable": {
+    "message": "Palvelimeen ei saatu yhteyttä"
   }
 }

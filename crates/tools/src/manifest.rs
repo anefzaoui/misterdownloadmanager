@@ -1289,14 +1289,13 @@ mod tests {
         }
     }
 
-    /// An answer: status, headers, body, sent after `wait`; `length`: with a Content-Length
-    /// (else the body ends with the connection). `held`: never sent while the client waits
-    /// for it: the request is held until the client hangs up (or [`HELD`]).
+    /// An answer: status, headers, body; `length`: with a Content-Length (else the body ends
+    /// with the connection). `held`: never sent while the client waits for it: the request is
+    /// held until the client hangs up (or [`HELD`]).
     struct Answer {
         status: u16,
         headers: Vec<(&'static str, String)>,
         body: Vec<u8>,
-        wait: Duration,
         length: bool,
         held: bool,
     }
@@ -1311,7 +1310,6 @@ mod tests {
             status: 200,
             headers: vec![("Content-Type", "application/vnd.apple.mpegurl".into())],
             body: body.as_bytes().to_vec(),
-            wait: Duration::ZERO,
             length: true,
             held: false,
         }
@@ -1322,7 +1320,6 @@ mod tests {
             status: 302,
             headers: vec![("Location", to.to_owned())],
             body: Vec::new(),
-            wait: Duration::ZERO,
             length: true,
             held: false,
         }
@@ -1372,7 +1369,6 @@ mod tests {
                             headers,
                         });
                         let a = route(&path);
-                        std::thread::sleep(a.wait);
                         if a.held {
                             // Until the client hangs up: it reads nothing more of this.
                             let _ = stream.set_read_timeout(Some(HELD));
@@ -1552,15 +1548,95 @@ mod tests {
         assert_eq!(looping.seen().len(), 6);
     }
 
-    /// How long the held stream's first request waits for its answer: well within the budget
-    /// it is given (its second request is held).
+    /// How long the stream's first request takes to be answered in [`fetch_paused`]: well
+    /// within the budget.
     const FIRST: Duration = Duration::from_millis(1500);
+
+    /// [`fetch`] (within [`BUDGET`]) on Tokio's paused clock, where only the time the test gives
+    /// passes, however fast or busy the machine is: building each request's client, reading its
+    /// answer and waiting for a CPU take none of it. The stream's first request is answered
+    /// after `first` of that clock, its second after `second` (`None`: held by the server until
+    /// the client hangs up). What the fetch read, and how much of that clock it took.
+    fn fetch_paused(first: Duration, second: Option<Duration>) -> (Option<Video>, Duration) {
+        use std::sync::mpsc;
+        let (arrived, arrivals) = mpsc::channel::<String>();
+        let (go, gate) = mpsc::channel::<()>();
+        let gate = Mutex::new(gate);
+        let held = second.is_none();
+        let s = Server::start(Arc::new(move |path: &str| {
+            let _ = arrived.send(path.to_owned());
+            // Each answer waits for the test to let it go (or HELD, a deadlock breaker).
+            let answer = |a: Answer| {
+                let _ = gate.lock().unwrap().recv_timeout(HELD);
+                a
+            };
+            match path {
+                "/master.m3u8" => answer(ok(MASTER)),
+                "/v720.m3u8" if held => Answer {
+                    held: true,
+                    ..ok(MEDIA)
+                },
+                "/v720.m3u8" => answer(ok(MEDIA)),
+                _ => Answer {
+                    status: 404,
+                    ..ok("")
+                },
+            }
+        }));
+        // The test waits for the server's next request on a thread of its own: while it does,
+        // the paused clock stays where it is (Tokio moves it on to the next timer only when
+        // nothing is left to run and no such thread runs).
+        async fn next(arrivals: mpsc::Receiver<String>) -> (mpsc::Receiver<String>, String) {
+            tokio::task::spawn_blocking(move || {
+                let path = arrivals
+                    .recv_timeout(HELD)
+                    .expect("the stream's next request");
+                (arrivals, path)
+            })
+            .await
+            .unwrap()
+        }
+        let rt = tokio::runtime::Builder::new_current_thread()
+            .enable_all()
+            .start_paused(true)
+            .build()
+            .unwrap();
+        let opts = crate::net(mdm_engine::Proxy::None);
+        let url = s.url("/master.m3u8");
+        rt.block_on(async {
+            let start = tokio::time::Instant::now();
+            let (done, ended) = mpsc::channel::<()>();
+            let reading = async {
+                let got = fetch(&url, &browser(), &opts).await;
+                let _ = done.send(());
+                got
+            };
+            let server = async {
+                let (arrivals, path) = next(arrivals).await;
+                assert_eq!(path, "/master.m3u8");
+                tokio::time::advance(first).await;
+                go.send(()).unwrap();
+                let (_, path) = next(arrivals).await;
+                assert_eq!(path, "/v720.m3u8");
+                if let Some(second) = second {
+                    tokio::time::advance(second).await;
+                    go.send(()).unwrap();
+                    // No more time passes until the fetch has read the answer.
+                    tokio::task::spawn_blocking(move || ended.recv_timeout(HELD))
+                        .await
+                        .unwrap()
+                        .unwrap();
+                }
+            };
+            let (got, ()) = tokio::join!(reading, server);
+            (got, start.elapsed())
+        })
+    }
 
     /// More than 2 MB, counted as it comes (with no Content-Length to go by), and 5 s for both
     /// requests together, are too much: nothing then.
     #[test]
     fn too_big_or_too_slow_is_nothing() {
-        use std::time::Instant;
         let padded = |size: usize| {
             let mut text = MASTER.to_owned();
             while text.len() < size {
@@ -1580,22 +1656,6 @@ mod tests {
                 ..ok(&padded(MAX_BYTES + 1))
             },
             "/v720.m3u8" => ok(MEDIA),
-            "/slow/master.m3u8" => Answer {
-                wait: Duration::from_millis(250),
-                ..ok(MASTER)
-            },
-            "/slow/v720.m3u8" => Answer {
-                wait: Duration::from_millis(250),
-                ..ok(MEDIA)
-            },
-            "/held/master.m3u8" => Answer {
-                wait: FIRST,
-                ..ok(MASTER)
-            },
-            "/held/v720.m3u8" => Answer {
-                held: true,
-                ..ok(MEDIA)
-            },
             _ => Answer {
                 status: 404,
                 ..ok("")
@@ -1607,23 +1667,16 @@ mod tests {
             "under 2 MB"
         );
         assert!(fetch_now(&s.url("/big.m3u8"), HELD).is_none(), "over 2 MB");
-        // Slow requests within the budget: the stream.
-        assert!(fetch_now(&s.url("/slow/master.m3u8"), BUDGET).is_some());
+        // The times, on the paused clock: the budget as the fetch applies it, never the
+        // machine's speed. Slow requests within the budget, to its last millisecond: the stream.
+        let (got, took) = fetch_paused(FIRST, Some(BUDGET - FIRST - Duration::from_millis(1)));
+        assert!(got.is_some(), "{took:?}");
         // The budget counts both requests together: the second, held by the server until the
         // client hangs up, is given what the first left of it, not a budget of its own. Given
-        // its own, the fetch would take at least the first's time and a whole budget more.
-        // Only the fetch is timed: the runtime's threads start before and end after it (a busy
-        // machine took its time for those too).
-        let budget = Duration::from_secs(2);
-        let rt = tokio::runtime::Runtime::new().unwrap();
-        let opts = crate::net(mdm_engine::Proxy::None);
-        let url = s.url("/held/master.m3u8");
-        let at = Instant::now();
-        let got = rt.block_on(fetch_within(&url, &browser(), &opts, budget));
-        let took = at.elapsed();
-        drop(rt);
+        // its own, the fetch would take the first's time and a whole budget more.
+        let (got, took) = fetch_paused(FIRST, None);
         assert!(got.is_none());
-        assert!(took >= budget, "{took:?}");
-        assert!(took < FIRST + budget, "a budget for each request: {took:?}");
+        assert!(took >= BUDGET, "{took:?}");
+        assert!(took < FIRST + BUDGET, "a budget for each request: {took:?}");
     }
 }

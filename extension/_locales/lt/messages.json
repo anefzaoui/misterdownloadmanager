@@ -284,6 +284,64 @@
   "popup_media_title_name": {
     "message": "Pridėti puslapio pavadinimą prieš medijos failų vardus"
   },
+  "popup_images": {
+    "message": "Paveikslėliai šiame puslapyje"
+  },
+  "popup_images_text": {
+    "message": "Rasti šio puslapio paveikslėlius didžiausiu nurodytu dydžiu, tada norimus nusiųsti į nuorodų griebtuvą."
+  },
+  "popup_images_find": {
+    "message": "Rasti paveikslėlius"
+  },
+  "popup_images_min": {
+    "message": "Mažiausias dydis pikseliais"
+  },
+  "popup_images_width": {
+    "message": "Mažiausias plotis pikseliais"
+  },
+  "popup_images_height": {
+    "message": "Mažiausias aukštis pikseliais"
+  },
+  "popup_images_types": {
+    "message": "Paveikslėlių tipai"
+  },
+  "popup_images_other": {
+    "message": "Kita"
+  },
+  "popup_images_count": {
+    "message": "$shown$ iš $total$ pasirinktų",
+    "placeholders": {
+      "shown": {
+        "content": "$1",
+        "example": "12"
+      },
+      "total": {
+        "content": "$2",
+        "example": "40"
+      }
+    }
+  },
+  "popup_images_unsized": {
+    "message": "Dydis nenurodytas, palikta: $n$",
+    "placeholders": {
+      "n": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "popup_images_send": {
+    "message": "Siųsti į nuorodų griebtuvą"
+  },
+  "popup_images_sent": {
+    "message": "Išsiųsta į nuorodų griebtuvą: pažymėkite tuos, kuriuos norite atsisiųsti."
+  },
+  "popup_images_none": {
+    "message": "Šiame puslapyje paveikslėlių nerasta."
+  },
+  "popup_images_unreadable": {
+    "message": "Naršyklė neleidžia priedams skaityti šio puslapio."
+  },
   "video_cant_save": {
     "message": "negali būti išsaugotas"
   },
@@ -291,7 +349,7 @@
     "message": "Atidaryti įrašą"
   },
   "video_drag_dots": {
-    "message": "Vilkite taškus, kad perkeltumėte jį palei kraštą"
+    "message": "Vilkite taškus, kad perkeltumėte jį į kitą kampą arba už vaizdo įrašo"
   },
   "video_tip": {
     "message": "Atsisiųsti $what$",
@@ -765,5 +823,108 @@
   },
   "popup_dl_open_remote": {
     "message": "Atidaryti jo puslapį"
+  },
+  "video_home": {
+    "message": "Grąžinti mygtuką į vietą"
+  },
+  "video_filter_all": {
+    "message": "Visi"
+  },
+  "video_filter_audio": {
+    "message": "Tik garsas"
+  },
+  "video_filter_kind": {
+    "message": "Rodyti"
+  },
+  "video_filter_type": {
+    "message": "Failo tipas"
+  },
+  "video_filter_codec": {
+    "message": "Kodekas"
+  },
+  "popup_video_reset_text": {
+    "message": "Atsisiuntimo mygtukas virš vaizdo įrašų"
+  },
+  "popup_video_reset_sub": {
+    "message": "Kur perkėlėte, ir jo meniu filtrai, kiekvienoje svetainėje"
+  },
+  "popup_video_reset": {
+    "message": "Atstatyti"
+  },
+  "popup_video_reset_done": {
+    "message": "Grįžo į vietą, meniu rodo viską, visose svetainėse"
+  },
+  "status_links_sent": {
+    "message": "Nuorodos išsiųstos: $count$",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "10"
+      }
+    }
+  },
+  "status_links_cut": {
+    "message": "Nuorodos išsiųstos: $sent$, $left$ paliktos",
+    "placeholders": {
+      "sent": {
+        "content": "$1",
+        "example": "100"
+      },
+      "left": {
+        "content": "$2",
+        "example": "20"
+      }
+    }
+  },
+  "status_links_partial": {
+    "message": "Nuorodos išsiųstos: $sent$, atmestos: $refused$",
+    "placeholders": {
+      "sent": {
+        "content": "$1",
+        "example": "5"
+      },
+      "refused": {
+        "content": "$2",
+        "example": "2"
+      }
+    }
+  },
+  "status_links_partial_cut": {
+    "message": "Nuorodos išsiųstos: $sent$, atmestos: $refused$, $left$ paliktos",
+    "placeholders": {
+      "sent": {
+        "content": "$1",
+        "example": "5"
+      },
+      "refused": {
+        "content": "$2",
+        "example": "2"
+      },
+      "left": {
+        "content": "$3",
+        "example": "1"
+      }
+    }
+  },
+  "status_links_refused": {
+    "message": "Nuorodos atmestos: $count$",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "status_links_none": {
+    "message": "Nėra užfiksuojamų nuorodų ($left$ paliktos)",
+    "placeholders": {
+      "left": {
+        "content": "$1",
+        "example": "5"
+      }
+    }
+  },
+  "status_unreachable": {
+    "message": "Serveris nepasiektas"
   }
 }

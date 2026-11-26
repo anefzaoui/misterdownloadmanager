@@ -739,6 +739,60 @@ async fn no_range_server_uses_one_connection() {
     assert_eq!(complete[0].range, None, "the probe is a plain GET");
 }
 
+/// #1859: a server without ranges whose probe stops partway starts over on one connection, and a
+/// kind of file that is never a web page (a .zip) has its first bytes read before it is written
+/// (#701). Those bytes count toward the size the answer announced: the whole file isn't taken
+/// for a short one.
+#[tokio::test]
+async fn a_fresh_start_on_one_connection_counts_the_bytes_read_first() {
+    // The probe holds back the byte at 1 MiB until the engine knows the server has no ranges,
+    // then goes on and is cut at 2 MiB (its own drop, set when it was asked): the download has
+    // to start over, under faults that let the new answer through whole.
+    let s = server("no_range=true&rate=8M&stall_at=1M&drop_after=2M").await;
+    let dir = tempfile::tempdir().unwrap();
+    let req = Request {
+        url: s.url("/gen/3M/pack.zip?seed=59").parse().unwrap(),
+        headers: Default::default(),
+        dest: Destination::Dir(dir.path().to_owned()),
+    };
+    let dl = Download::start(req, fast_opts());
+    let deadline = std::time::Instant::now() + std::time::Duration::from_secs(20);
+    while dl.snapshot().resumable != Some(false) {
+        assert!(
+            std::time::Instant::now() < deadline,
+            "never learned the server has no ranges"
+        );
+        tokio::time::sleep(std::time::Duration::from_millis(20)).await;
+    }
+    s.set_faults(Faults::parse("no_range=true&rate=8M").unwrap());
+    let out = dl.wait().await.expect("download succeeds");
+    assert_eq!(out.size, 3 << 20);
+    let mut want = vec![0; 3 << 20];
+    content::fill(59, 0, &mut want);
+    assert!(
+        std::fs::read(&out.path).unwrap() == want,
+        "content mismatch"
+    );
+    tokio::time::timeout(SETTLE, s.settled())
+        .await
+        .expect("every request ends");
+    let log = s.log();
+    let requests: Vec<_> = log
+        .iter()
+        .map(|e| (e.range.clone(), e.outcome.clone(), e.bytes_sent))
+        .collect();
+    // The probe and the fresh start: plain GETs, the last one sent whole.
+    assert!(
+        log.iter().filter(|e| e.range.is_none()).count() >= 2,
+        "{requests:#?}"
+    );
+    assert!(
+        log.iter()
+            .any(|e| e.range.is_none() && e.outcome == "complete"),
+        "{requests:#?}"
+    );
+}
+
 /// Part of #136: a server without ranges sends the file once, even when the range attempts are
 /// answered after the probe's plain GET has run on (a busy machine): every part is taken by the
 /// probe, none is fetched again by a fresh start on one connection.
@@ -1165,6 +1219,24 @@ async fn the_view_names_the_file_when_a_resume_finds_its_place_taken() {
     assert_eq!(std::fs::metadata(&path).unwrap().len(), 8 << 20);
     assert!(!state.exists(), "state file removed on completion");
     assert_eq!(std::fs::read(&dest).unwrap(), b"someone else's");
+}
+
+/// #1872: a resumed download's first snapshot shows the bytes already on disk, before the run
+/// has read its state again: a watcher's speed (the command line's) doesn't count them as new.
+#[tokio::test]
+async fn a_resume_shows_the_bytes_on_disk_from_its_first_snapshot() {
+    let s = server("rate=1M").await;
+    let (_dir, state) = paused(&s, "/gen/8M/shown.bin?seed=73").await;
+    let before = mdm_engine::state::ResumeState::load(&state)
+        .unwrap()
+        .downloaded();
+    assert!(before > 0, "partial progress saved");
+    s.set_faults(Faults::default());
+    // The test's runtime runs one task at a time: the download's own task hasn't started yet.
+    let dl = Download::resume(state, Default::default(), fast_opts()).unwrap();
+    assert_eq!(dl.snapshot().downloaded, before);
+    let out = dl.wait().await.expect("the resume goes on");
+    assert_eq!(out.size, 8 << 20);
 }
 
 #[tokio::test]
@@ -2669,6 +2741,88 @@ async fn a_slow_disk_does_not_stop_the_transfer() {
     );
 }
 
+/// #1633: when the disk is already busy as the download starts, the start-up resume state's
+/// `fsync` holds up the saver for seconds while the connections keep writing into the cache.
+/// That late first progress check must not flush the whole cache at once and freeze the transfer,
+/// both on a fast link that fills the cache and on a slower link (~45 MiB/s) that stays under
+/// the disk's rate so the cache still has `HOLD_MAX` free.
+#[tokio::test]
+async fn a_busy_disk_at_the_start_does_not_stop_the_transfer() {
+    const SIZE: u64 = 1024 << 20;
+    const SLOWER: u64 = 512 << 20;
+    for (label, size, rate, path, seed, single_flush) in [
+        (
+            "busy start",
+            SIZE,
+            "rate=20M&burst=1M",
+            "/gen/1024M/busy.bin?seed=1633",
+            1633u64,
+            false,
+        ),
+        (
+            "busy start (slower link)",
+            SLOWER,
+            "rate=6M&burst=1M",
+            "/gen/512M/busy-slow.bin?seed=1634",
+            1634u64,
+            true,
+        ),
+    ] {
+        let s = server(rate).await;
+        let dir = tempfile::tempdir().unwrap();
+        let disk = mdm_engine::slowdisk::SlowDisk::new(48 << 20, 256 << 20, Default::default());
+        // 240 MiB already queued on the 48 MiB/s disk (5 s before the start-up state's sync finishes).
+        disk.write(240 << 20, || ());
+        let (out, behind) = watch(
+            Download::start(
+                Request {
+                    url: s.url(path).parse().unwrap(),
+                    headers: Default::default(),
+                    dest: Destination::Dir(dir.path().to_owned()),
+                },
+                Options {
+                    save_interval: std::time::Duration::from_millis(100),
+                    slow_disk: Some(disk.clone()),
+                    ..fast_opts()
+                },
+            ),
+            size,
+            None,
+        )
+        .await;
+        let out = out.expect("download succeeds");
+        assert_eq!(out.size, size);
+        let data = std::fs::read(&out.path).unwrap();
+        let mut want = vec![0; data.len()];
+        content::fill(seed, 0, &mut want);
+        assert!(data == want, "content mismatch");
+        tokio::time::timeout(SETTLE, s.settled())
+            .await
+            .expect("every request ends");
+        let stats = disk.stats();
+        let (flushes, holds) = (stats.flushes, stats.holds);
+        eprintln!(
+            "{label}: {} shed, every byte in {:?}, longest quiet {:?}, flushes {flushes:?}, \
+             writes held {holds:?}",
+            behind.shed, behind.received, behind.quiet
+        );
+        assert_eq!(behind.shed, 0, "connections shed for the disk's pace");
+        if single_flush {
+            assert_eq!(
+                flushes.len(),
+                1,
+                "first progress save flushed mid-transfer while start-up sync waited: \
+                 flushes {flushes:?}, writes held {holds:?}"
+            );
+        }
+        assert!(
+            behind.quiet < std::time::Duration::from_millis(1200),
+            "nothing arrived for {:?} (flushes: {flushes:?}, writes held {holds:?})",
+            behind.quiet
+        );
+    }
+}
+
 /// How long a pause or a resume may take here (#1328): generous for a busy runner, where a stop
 /// once took 3.4 s (#201), and far from what the disk took before the fix (10 s and more).
 const PROMPT: std::time::Duration = std::time::Duration::from_secs(4);
@@ -3339,8 +3493,397 @@ async fn a_name_only_the_redirected_answer_gives_is_the_files() {
     }
 }
 
-/// A file served from `--files` through `garble` (#1661): downloaded with `keep_state`, its
-/// last resume state handed back, and the download's server.
+/// A lab server on 127.0.0.1 and on ::1 at one port, so that a host name can have an address of
+/// each IP family (#1660).
+async fn on_both_families(faults: &str) -> LabServer {
+    LabServer::start(Config {
+        both_families: true,
+        faults: Faults::parse(faults).unwrap(),
+        ..Config::default()
+    })
+    .await
+    .expect("a lab server on 127.0.0.1 and ::1 (this machine needs an IPv6 loopback address)")
+}
+
+/// The address of `path` on `s` under the name `host`, and the options that give `host` the
+/// addresses `ips`, in that order (the first one is connected to first).
+fn at_host(s: &LabServer, host: &str, ips: &[&str], path: &str) -> (url::Url, Options) {
+    let url = format!("http://{host}:{}{path}", s.addr().port());
+    let opts = Options {
+        hosts: vec![(
+            host.to_owned(),
+            ips.iter().map(|ip| ip.parse().unwrap()).collect(),
+        )],
+        ..fast_opts()
+    };
+    (url.parse().unwrap(), opts)
+}
+
+/// How `dl` ended, what its log said, and the server's log once every request ended.
+async fn ended(
+    dl: Download,
+    s: &LabServer,
+) -> (
+    Result<mdm_engine::Outcome, mdm_engine::Error>,
+    Vec<String>,
+    Vec<LogEntry>,
+) {
+    use mdm_engine::download::State;
+    let events = loop {
+        let v = dl.snapshot();
+        if matches!(v.state, State::Done | State::Failed | State::Cancelled) {
+            break v.events;
+        }
+        tokio::time::sleep(std::time::Duration::from_millis(2)).await;
+    };
+    let out = dl.wait().await;
+    tokio::time::timeout(SETTLE, s.settled())
+        .await
+        .expect("every request ends");
+    (out, events.into_iter().map(|e| e.text).collect(), s.log())
+}
+
+/// A download of 2 MB from `s` asked at `host`, whose addresses are `ips` ([`at_host`],
+/// [`ended`]); the server's log is of this download only.
+async fn get_at_host(
+    s: &LabServer,
+    host: &str,
+    ips: &[&str],
+) -> (
+    Result<mdm_engine::Outcome, mdm_engine::Error>,
+    Vec<String>,
+    Vec<LogEntry>,
+) {
+    s.clear_log();
+    let dir = tempfile::tempdir().unwrap();
+    let (url, opts) = at_host(s, host, ips, "/gen/2M/a.bin?seed=1660");
+    let req = Request {
+        url,
+        headers: Default::default(),
+        dest: Destination::Dir(dir.path().to_owned()),
+    };
+    ended(Download::start(req, opts), s).await
+}
+
+/// #1660: a link signed for the IPv4 address that loaded its page is refused with 403 over IPv6.
+/// It is asked once more over IPv4 and downloads so, and the log says it. The choice is that
+/// download's: the host's next download starts as any does, and finds out for itself.
+#[tokio::test]
+async fn a_link_refused_over_ipv6_downloads_over_ipv4() {
+    let s = on_both_families("rate=20M&refuse_family=6").await;
+    let host = "signed-for-v4.mdm.test";
+    let said = format!("{host} refused over IPv6, downloading over IPv4");
+    for _ in 0..2 {
+        let (out, events, log) = get_at_host(&s, host, &["::1", "127.0.0.1"]).await;
+        assert_eq!(out.expect("downloads over IPv4").size, 2 << 20, "{log:?}");
+        assert!(log[0].peer.is_ipv6() && log[0].status == 403, "{log:?}");
+        assert!(log[1..].iter().all(|e| e.peer.is_ipv4()), "{log:?}");
+        assert_eq!(log.iter().filter(|e| e.status == 403).count(), 1, "{log:?}");
+        assert!(events.contains(&said), "{events:?}");
+    }
+}
+
+/// #1660, the other way round: a link signed for an IPv6 address, refused over IPv4.
+#[tokio::test]
+async fn a_link_refused_over_ipv4_downloads_over_ipv6() {
+    let s = on_both_families("rate=20M&refuse_family=4").await;
+    let host = "signed-for-v6.mdm.test";
+    let (out, events, log) = get_at_host(&s, host, &["127.0.0.1", "::1"]).await;
+    assert_eq!(out.expect("downloads over IPv6").size, 2 << 20, "{log:?}");
+    assert!(log[0].peer.is_ipv4() && log[0].status == 403, "{log:?}");
+    assert!(log[1..].iter().all(|e| e.peer.is_ipv6()), "{log:?}");
+    let said = format!("{host} refused over IPv4, downloading over IPv6");
+    assert!(events.contains(&said), "{events:?}");
+}
+
+/// #1660: a 403 that both families get is the link's own (expired, forbidden). Each family is
+/// asked once, the 403 is the download's error, and the host is kept to neither: its next
+/// download starts over the family it started with.
+#[tokio::test]
+async fn a_403_over_both_families_stands_and_keeps_the_host_to_neither() {
+    let s = on_both_families("rate=20M&require_cookie=sid=1").await;
+    let host = "forbidden.mdm.test";
+    let (out, events, log) = get_at_host(&s, host, &["::1", "127.0.0.1"]).await;
+    assert!(
+        matches!(out, Err(mdm_engine::Error::Status(s)) if s.as_u16() == 403),
+        "{out:?}"
+    );
+    let peers: Vec<bool> = log.iter().map(|e| e.peer.is_ipv6()).collect();
+    assert_eq!(peers, [true, false], "{log:?}");
+    assert!(
+        !events.iter().any(|e| e.contains("refused over")),
+        "{events:?}"
+    );
+
+    s.set_faults(Faults::parse("rate=20M").unwrap());
+    let (out, _, log) = get_at_host(&s, host, &["::1", "127.0.0.1"]).await;
+    assert_eq!(out.expect("downloads").size, 2 << 20, "{log:?}");
+    assert!(log.iter().all(|e| e.peer.is_ipv6()), "{log:?}");
+}
+
+/// #1660: a host with addresses of one family only has no other one to ask: its 403 is asked
+/// once. Nor are other refusals asked again over the other family (404 here).
+#[tokio::test]
+async fn only_a_403_of_a_host_with_both_families_is_asked_over_the_other() {
+    let s = on_both_families("rate=20M&refuse_family=4").await;
+    let (out, _, log) = get_at_host(&s, "v4-only.mdm.test", &["127.0.0.1"]).await;
+    assert!(
+        matches!(out, Err(mdm_engine::Error::Status(s)) if s.as_u16() == 403),
+        "{out:?}"
+    );
+    assert_eq!(log.len(), 1, "{log:?}");
+
+    s.set_faults(Faults::parse("refuse=404").unwrap());
+    let (out, _, log) = get_at_host(&s, "gone.mdm.test", &["127.0.0.1", "::1"]).await;
+    assert!(
+        matches!(out, Err(mdm_engine::Error::Status(s)) if s.as_u16() == 404),
+        "{out:?}"
+    );
+    assert_eq!(log.len(), 1, "{log:?}");
+}
+
+/// #1660: the other family is asked once. A host whose other address doesn't answer (nothing
+/// listens on ::1 here) isn't tried again as after a temporary failure: the 403 stands at once.
+#[tokio::test]
+async fn the_other_family_is_asked_once_without_retries() {
+    let s = server("rate=20M&refuse_family=4").await;
+    let started = std::time::Instant::now();
+    let (out, events, log) = get_at_host(&s, "half-down.mdm.test", &["127.0.0.1", "::1"]).await;
+    assert!(
+        matches!(out, Err(mdm_engine::Error::Status(s)) if s.as_u16() == 403),
+        "{out:?}"
+    );
+    assert_eq!(log.len(), 1, "{log:?}");
+    assert!(!events.iter().any(|e| e.contains("retrying")), "{events:?}");
+    assert!(started.elapsed() < std::time::Duration::from_secs(5));
+}
+
+/// #1660: the family is the choice of the download that met the 403, never the host's for
+/// every download. While a download whose link works over IPv6 only runs, another one of the
+/// same host switches to IPv4: the first one's new connections (it loses its own again and
+/// again here) still go over IPv6, and none of them meets a 403. The first one's byte at 2 MiB
+/// (past the second one's end) is held back until the second one has ended: on a slow machine
+/// the first one could otherwise end first, and its new connections after the switch go
+/// untested.
+#[tokio::test]
+async fn one_downloads_family_never_changes_another_download_of_the_host() {
+    let s = on_both_families("stall_at=2M").await;
+    let (host, ips) = ("two-links.mdm.test", ["::1", "127.0.0.1"]);
+    let dir = tempfile::tempdir().unwrap();
+    let start = |path: &str| {
+        let (url, opts) = at_host(&s, host, &ips, path);
+        let req = Request {
+            url,
+            headers: Default::default(),
+            dest: Destination::Dir(dir.path().to_owned()),
+        };
+        Download::start(req, opts)
+    };
+    let over_v6 = start("/gen/4M/v6.bin?seed=1&refuse_family=4&rate=2M&drop_after=131072");
+    let deadline = std::time::Instant::now() + SETTLE;
+    while over_v6.snapshot().downloaded < 256 << 10 {
+        assert!(std::time::Instant::now() < deadline, "never started");
+        tokio::time::sleep(std::time::Duration::from_millis(10)).await;
+    }
+    let over_v4 = start("/gen/1M/v4.bin?seed=2&refuse_family=6");
+    assert_eq!(over_v4.wait().await.expect("over IPv4").size, 1 << 20);
+    let still = over_v6.snapshot();
+    assert!(
+        still.downloaded < 4 << 20,
+        "the first one was still running"
+    );
+    s.set_faults(Faults::default());
+    assert_eq!(over_v6.wait().await.expect("over IPv6").size, 4 << 20);
+    tokio::time::timeout(SETTLE, s.settled())
+        .await
+        .expect("every request ends");
+    let log = s.log();
+    let of =
+        |name: &str| -> Vec<&LogEntry> { log.iter().filter(|e| e.path.contains(name)).collect() };
+    let (v6, v4) = (of("v6.bin"), of("v4.bin"));
+    assert!(v6.len() > 8, "it reconnected: {}", v6.len());
+    assert!(
+        v6.iter().all(|e| e.peer.is_ipv6() && e.status != 403),
+        "{v6:?}"
+    );
+    assert!(v4[0].peer.is_ipv6() && v4[0].status == 403, "{v4:?}");
+    assert!(
+        v4[1..].iter().all(|e| e.peer.is_ipv4() && e.status != 403),
+        "{v4:?}"
+    );
+}
+
+/// #1660 with #372: a site that refuses the browser's User-Agent and one IP family at once is
+/// asked as MDM over the other family too, and downloads.
+#[tokio::test]
+async fn a_refused_agent_and_a_refused_family_are_both_got_past() {
+    let s = on_both_families("rate=20M&refuse_agent=Chrome&refuse_family=6").await;
+    let host = "refuses-both.mdm.test";
+    let (url, opts) = at_host(&s, host, &["::1", "127.0.0.1"], "/gen/2M/a.bin?seed=1660");
+    let dir = tempfile::tempdir().unwrap();
+    let req = Request {
+        url,
+        headers: Default::default(),
+        dest: Destination::Dir(dir.path().to_owned()),
+    };
+    let opts = Options {
+        user_agent: "Mozilla/5.0 (Windows NT 10.0) AppleWebKit/537.36 Chrome/156.0".to_owned(),
+        automatic_agent: false,
+        agent_fallback: Some("MDM-test".to_owned()),
+        ..opts
+    };
+    let (out, events, log) = ended(Download::start(req, opts), &s).await;
+    assert_eq!(out.expect("downloads").size, 2 << 20, "{log:?}");
+    let refusals: Vec<(&str, bool)> = log
+        .iter()
+        .take_while(|e| e.status == 403)
+        .map(|e| (e.outcome.as_str(), e.peer.is_ipv6()))
+        .collect();
+    assert_eq!(
+        refusals,
+        [
+            ("fault:refuse_agent", true),
+            ("fault:refuse_agent", false),
+            ("fault:refuse_family", true),
+        ],
+        "{log:?}"
+    );
+    assert!(
+        log[3..].iter().all(|e| e.peer.is_ipv4() && e.status != 403),
+        "{log:?}"
+    );
+    let said = format!("{host} refused over IPv6, downloading over IPv4");
+    assert!(events.contains(&said), "{events:?}");
+}
+
+/// #1660: the file's information window looks at the link first (`probe_kept`), and its look
+/// is refused the same way: it asks the other family too, and the download that goes on from
+/// its answer says so in its log and stays on that family.
+#[tokio::test]
+async fn the_look_at_a_link_asks_the_other_family_and_the_download_says_so() {
+    let s = on_both_families("rate=20M&refuse_family=6").await;
+    let host = "looked-at.mdm.test";
+    let (url, opts) = at_host(&s, host, &["::1", "127.0.0.1"], "/gen/2M/a.bin?seed=1660");
+    let (info, kept) = mdm_engine::probe_kept(url.clone(), Default::default(), &opts)
+        .await
+        .expect("the look gets through over IPv4");
+    assert_eq!(info.size, Some(2 << 20));
+    let dir = tempfile::tempdir().unwrap();
+    let req = Request {
+        url,
+        headers: Default::default(),
+        dest: Destination::Dir(dir.path().to_owned()),
+    };
+    let (out, events, log) = ended(Download::start_with(req, opts, kept), &s).await;
+    assert_eq!(out.expect("downloads over IPv4").size, 2 << 20, "{log:?}");
+    assert!(log[0].peer.is_ipv6() && log[0].status == 403, "{log:?}");
+    assert!(log[1..].iter().all(|e| e.peer.is_ipv4()), "{log:?}");
+    assert_eq!(log.iter().filter(|e| e.status == 403).count(), 1, "{log:?}");
+    let said = format!("{host} refused over IPv6, downloading over IPv4");
+    assert!(events.contains(&said), "{events:?}");
+}
+
+/// #1660: the family is saved with the download. Stopped and resumed (after a restart of MDM
+/// too), it goes on over the family that worked, where the other one would refuse it as an
+/// expired link.
+#[tokio::test]
+async fn a_resume_goes_on_over_the_family_that_worked() {
+    let s = on_both_families("rate=20M&refuse_family=6&stall_at=4194304").await;
+    let host = "resumed.mdm.test";
+    let (url, opts) = at_host(&s, host, &["::1", "127.0.0.1"], "/gen/8M/r.bin?seed=1660");
+    let opts = Options {
+        save_interval: std::time::Duration::from_millis(100),
+        ..opts
+    };
+    let dir = tempfile::tempdir().unwrap();
+    let req = Request {
+        url,
+        headers: Default::default(),
+        dest: Destination::Dir(dir.path().to_owned()),
+    };
+    let dl = Download::start(req, opts.clone());
+    let deadline = std::time::Instant::now() + std::time::Duration::from_secs(20);
+    let file = loop {
+        tokio::time::sleep(std::time::Duration::from_millis(50)).await;
+        let snap = dl.snapshot();
+        if let Some(f) = snap.file.filter(|_| snap.downloaded >= 1 << 20) {
+            break f;
+        }
+        assert!(std::time::Instant::now() < deadline, "never started");
+    };
+    dl.cancel();
+    assert!(matches!(dl.wait().await, Err(mdm_engine::Error::Cancelled)));
+    s.set_faults(Faults::parse("rate=20M&refuse_family=6").unwrap());
+    tokio::time::timeout(SETTLE, s.settled())
+        .await
+        .expect("the stopped download's requests end");
+    let state = mdm_engine::state::state_path(&file);
+    let saved = mdm_engine::state::ResumeState::load(&state).unwrap();
+    assert_eq!(saved.ipv4, Some(true));
+
+    // Another run (MDM restarted, or not): it knows the family from the state alone.
+    s.clear_log();
+    let dl = Download::resume(state, Default::default(), opts).unwrap();
+    let (out, events, log) = ended(dl, &s).await;
+    assert_eq!(out.expect("resumes over IPv4").size, 8 << 20, "{log:?}");
+    assert!(
+        !log.is_empty() && log.iter().all(|e| e.peer.is_ipv4()),
+        "{log:?}"
+    );
+    assert!(log.iter().all(|e| e.status != 403), "{log:?}");
+    let said = format!("Going on over IPv4: {host} refused the link over IPv6");
+    assert!(events.contains(&said), "{events:?}");
+}
+
+/// #1705: a download started under a name still to be numbered (`Destination::Free`) that was
+/// at that name already (killed before its caller kept the name) resumes its own state there.
+/// Another address's state at the name is someone else's: the name is numbered past it.
+#[tokio::test]
+async fn a_name_to_be_numbered_resumes_the_downloads_own_state() {
+    let s = server("rate=1M").await;
+    let (dir, state) = paused(&s, "/gen/8M/kill.bin?seed=1705").await;
+    let saved = mdm_engine::state::ResumeState::load(&state).unwrap();
+    let dest = saved.dest.clone();
+    s.set_faults(Faults::default());
+    s.clear_log();
+    let own = Request {
+        url: saved.url.clone(),
+        headers: Default::default(),
+        dest: Destination::Free(dest.clone()),
+    };
+    let dl = Download::start_or_resume_own(state.clone(), own, fast_opts(), None);
+    let out = dl.wait().await.expect("resumes");
+    assert_eq!(out.path, dest);
+    assert_eq!(std::fs::read(&dest).unwrap(), generated(1705, 8 << 20));
+    assert!(!state.exists() && !dir.path().join("kill (1).bin").exists());
+    tokio::time::timeout(SETTLE, s.settled())
+        .await
+        .expect("every request ends");
+    let log = s.log();
+    for e in &log {
+        let again = on_disk(e.range.as_deref(), &saved);
+        assert!(again <= fast_opts().verify_overlap, "{:?}", e.range);
+    }
+
+    s.set_faults(Faults::parse("rate=1M").unwrap());
+    let (dir, state) = paused(&s, "/gen/8M/kill.bin?seed=1").await;
+    let saved = mdm_engine::state::ResumeState::load(&state).unwrap();
+    s.set_faults(Faults::default());
+    let other = Request {
+        url: s.url("/gen/1M/kill.bin?seed=2").parse().unwrap(),
+        headers: Default::default(),
+        dest: Destination::Free(saved.dest.clone()),
+    };
+    let dl = Download::start_or_resume_own(state.clone(), other, fast_opts(), None);
+    let out = dl.wait().await.expect("downloads under the next name");
+    assert_eq!(out.path, dir.path().join("kill (1).bin"));
+    assert_eq!(std::fs::read(&out.path).unwrap(), generated(2, 1 << 20));
+    let left = mdm_engine::state::ResumeState::load(&state).unwrap();
+    assert_eq!(left, saved, "the other download's state is as it was");
+}
+
+/// A file served from `--files` through `garble` (#1661): downloaded on one connection with
+/// `keep_state`, its last resume state handed back, and the download's server.
 async fn garbled_download(
     data: &[u8],
     garble: u64,
@@ -3378,8 +3921,13 @@ async fn garbled_download(
         headers: Default::default(),
         dest: Destination::Dir(dir.path().to_owned()),
     };
+    // One connection: the one answer that carries the garbled bytes is the one written. The lab
+    // garbles only the first answer that carries the byte, and with more connections the first
+    // one (the whole file, garbled) can be split off before it reads that far: the byte then
+    // comes, right, from a later range, and the file is whole (seen now and then, in CI too).
     let opts = Options {
         keep_state: true,
+        max_connections: 1,
         ..fast_opts()
     };
     let dl = Download::start(req, opts);
@@ -3394,7 +3942,13 @@ async fn garbled_download(
             "{:?}",
             v.error
         );
-        assert!(std::time::Instant::now() < until, "no end: {:?}", v.state);
+        assert!(
+            std::time::Instant::now() < until,
+            "no end: {:?}, {:?}, {:?}",
+            v.state,
+            v.connections,
+            v.events
+        );
         tokio::time::sleep(std::time::Duration::from_millis(5)).await;
     };
     let path = dl.wait().await.unwrap().path;
@@ -3519,4 +4073,91 @@ async fn changed_on_the_server(dated: bool) {
                 .any(|e| e.if_range.is_some() && e.status == 200)
         );
     }
+}
+
+/// #1778: what a paused download's Properties change (its headers and User-Agent, a proxy, the
+/// number of connections), as the app gives them to its resume.
+fn edited(proxy: &LabServer, connections: u32) -> (reqwest::header::HeaderMap, Options) {
+    let mut headers = reqwest::header::HeaderMap::new();
+    headers.insert("x-edited", "after-pause".parse().unwrap());
+    let opts = Options {
+        max_connections: connections,
+        user_agent: "Edited/1.0".into(),
+        proxy: mdm_engine::Proxy::Manual {
+            url: proxy.url("").trim_end_matches('/').to_owned(),
+            login: None,
+            http: true,
+            https: true,
+        },
+        ..fast_opts()
+    };
+    (headers, opts)
+}
+
+/// #1778: a paused download resumed after its settings changed goes on with them, for the same
+/// file: every request of the resume carries the new header and User-Agent, goes through the new
+/// proxy (the lab answers as one, by the address's path) on at most the new number of
+/// connections, and the file is whole.
+#[tokio::test]
+async fn a_resume_after_an_edit_goes_on_with_the_new_settings() {
+    let s = server("rate=1M").await;
+    let (dir, state) = paused(&s, "/gen/8M/edited.bin?seed=1778").await;
+    s.clear_log();
+    let proxy = server("rate=1M").await;
+    let (headers, opts) = edited(&proxy, 2);
+    let out = Download::resume(state, headers, opts)
+        .unwrap()
+        .wait()
+        .await
+        .expect("the same file goes on");
+    assert_eq!(out.path, dir.path().join("edited.bin"));
+    assert!(std::fs::read(&out.path).unwrap() == generated(1778, 8 << 20));
+    tokio::time::timeout(SETTLE, proxy.settled()).await.unwrap();
+    let log = proxy.log();
+    assert!(!log.is_empty());
+    for e in &log {
+        assert_eq!(e.user_agent.as_deref(), Some("Edited/1.0"), "{e:?}");
+        assert_eq!(
+            e.x_headers,
+            vec![("x-edited".to_owned(), "after-pause".to_owned())],
+            "{e:?}"
+        );
+        assert!(
+            e.range.is_some(),
+            "a part of the file, not all of it again: {e:?}"
+        );
+    }
+    assert!(max_concurrent(&log) <= 2, "{}", max_concurrent(&log));
+    tokio::time::timeout(SETTLE, s.settled()).await.unwrap();
+    assert!(s.log().is_empty(), "nothing asked around the new proxy");
+}
+
+/// #1778: changed settings never join two files. Resumed through a proxy that now gives another
+/// version of the file (its ETag and date changed, `etag_change_every=1`), the download stops on
+/// `FileChanged` before writing anything: what was on the disk stays as it was, for the user to
+/// keep or start over.
+#[tokio::test]
+async fn a_resume_after_an_edit_refuses_a_changed_file() {
+    let s = server("rate=1M").await;
+    let (dir, state) = paused(&s, "/gen/8M/edited.bin?seed=1779").await;
+    let part = mdm_engine::naming::part_path(&dir.path().join("edited.bin"));
+    let before = std::fs::read(&part).unwrap();
+    let proxy = server("rate=1M&etag_change_every=1").await;
+    let (headers, opts) = edited(&proxy, 4);
+    let err = Download::resume(state.clone(), headers, opts)
+        .unwrap()
+        .wait()
+        .await
+        .unwrap_err();
+    assert!(matches!(err, mdm_engine::Error::FileChanged), "{err}");
+    assert!(std::fs::read(&part).unwrap() == before, "nothing written");
+    assert!(state.exists(), "kept, as any stopped download's");
+    tokio::time::timeout(SETTLE, proxy.settled()).await.unwrap();
+    assert!(
+        proxy
+            .log()
+            .iter()
+            .all(|e| e.user_agent.as_deref() == Some("Edited/1.0")),
+        "asked with the new settings"
+    );
 }

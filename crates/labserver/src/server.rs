@@ -102,6 +102,10 @@ pub struct LogEntry {
     /// The `Accept-Encoding` header.
     #[serde(default)]
     pub accept_encoding: Option<String>,
+    /// The request's own `X-…` headers (name in lower case, value), in the order sent: what a
+    /// site rule or a download's own headers added (#1778).
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub x_headers: Vec<(String, String)>,
     /// Over HTTPS (`Config::tls`): whether the connection's TLS ClientHello was a browser's as
     /// `browser_only` tells it, with GREASE values among its cipher suites (as Chrome's and
     /// every Chromium browser's are; programs' TLS libraries send none). None over plain HTTP.
@@ -190,6 +194,9 @@ pub type LogSink = Arc<dyn Fn(&LogEntry) + Send + Sync>;
 
 pub struct Config {
     pub bind: SocketAddr,
+    /// Listen on the loopback address of the other IP family too, at the same port (#1660: a
+    /// host name with an IPv4 and an IPv6 address, `refuse_family`).
+    pub both_families: bool,
     pub faults: Faults,
     /// Called for every finished request (e.g. print JSON lines).
     pub on_log: Option<LogSink>,
@@ -241,6 +248,7 @@ impl Default for Config {
     fn default() -> Self {
         Config {
             bind: SocketAddr::from(([127, 0, 0, 1], 0)),
+            both_families: false,
             faults: Faults::default(),
             on_log: None,
             files: None,
@@ -359,6 +367,16 @@ impl Shared {
             origin: header_str(headers, header::ORIGIN),
             sec_fetch_mode: header_str(headers, header::HeaderName::from_static("sec-fetch-mode")),
             accept_encoding: header_str(headers, header::ACCEPT_ENCODING),
+            x_headers: headers
+                .iter()
+                .filter(|(n, _)| n.as_str().starts_with("x-"))
+                .map(|(n, v)| {
+                    (
+                        n.as_str().to_owned(),
+                        String::from_utf8_lossy(v.as_bytes()).into_owned(),
+                    )
+                })
+                .collect(),
             browser_tls: self.browser_tls.lock().unwrap().get(&peer).copied(),
             req_content_type: header_str(headers, header::CONTENT_TYPE),
             req_body_len: has_body.then_some(body.len() as u64),
@@ -402,7 +420,7 @@ pub struct LabServer {
 
 impl LabServer {
     pub async fn start(cfg: Config) -> io::Result<Self> {
-        let listener = TcpListener::bind(cfg.bind).await?;
+        let (listener, other) = listeners(cfg.bind, cfg.both_families).await?;
         let addr = listener.local_addr()?;
         let http2 = cfg.http2;
         let shared = Arc::new(Shared {
@@ -464,6 +482,10 @@ impl LabServer {
             .route("/form/{size}", any(form))
             .route("/form/{size}/{*name}", any(form))
             .route("/files/{*name}", get(files))
+            // Folders as web servers list them (#1774, `tree`).
+            .route("/idx/{style}/{*rest}", get(index))
+            // ZIPs whose files are taken out one by one (#1775, `zip`).
+            .route("/zip/{name}", get(zipped))
             // A fake GitHub: its API rate limited, its release pages (#1337, `github`).
             .route("/gh/api/{*rest}", get(crate::github::api))
             .route(
@@ -476,6 +498,10 @@ impl LabServer {
             )
             .route("/gh/assets/{*name}", get(crate::github::asset))
             .route("/gh/raw/{*name}", get(crate::github::raw))
+            // A fake Hugging Face and GitHub API, their repositories and releases (#1772, `hub`).
+            .route("/hub/hf/{*rest}", get(crate::hub::hf))
+            .route("/hub/ghapi/{*rest}", get(crate::hub::gh_api))
+            .route("/hub/gh/{*rest}", get(crate::hub::gh_file))
             // A file a server's program sends (#695, #800).
             .route("/stream.php", get(script))
             .route("/remote_control.php", get(script))
@@ -608,16 +634,39 @@ impl LabServer {
         let ca = tls.as_ref().map(|(_, ca)| ca.clone());
         let task = match tls {
             None => tokio::spawn(async move {
-                let svc = app.into_make_service_with_connect_info::<SocketAddr>();
-                if let Err(e) = axum::serve(listener, svc).await {
-                    eprintln!("labserver: {e}");
+                let serve = |listener: TcpListener| {
+                    let svc = app
+                        .clone()
+                        .into_make_service_with_connect_info::<SocketAddr>();
+                    async move {
+                        if let Err(e) = axum::serve(listener, svc).await {
+                            eprintln!("labserver: {e}");
+                        }
+                    }
+                };
+                match other {
+                    Some(other) => {
+                        tokio::join!(serve(listener), serve(other));
+                    }
+                    None => serve(listener).await,
                 }
             }),
             Some((mut config, _)) => {
                 if http2 {
                     config.alpn_protocols = vec![b"h2".to_vec(), b"http/1.1".to_vec()];
                 }
-                tokio::spawn(serve_tls(listener, app, Arc::new(config), shared.clone()))
+                let (config, shared) = (Arc::new(config), shared.clone());
+                tokio::spawn(async move {
+                    match other {
+                        Some(other) => {
+                            tokio::join!(
+                                serve_tls(listener, app.clone(), config.clone(), shared.clone()),
+                                serve_tls(other, app, config, shared),
+                            );
+                        }
+                        None => serve_tls(listener, app, config, shared).await,
+                    }
+                })
             }
         };
         Ok(LabServer {
@@ -765,6 +814,14 @@ GET|HEAD /gen/{size}[/{name}]?seed=N&<file params>&<faults>   size: 12345, 64K, 
                    length and tracks, a mdat's header over the rest), for a reader of its header
                    (#1092); with tracks=av|v|a (default av: a picture and a sound) and height=PX
                    (the picture's, default 360). Nothing a player could decode
+    endless=1      a stream that never ends (an internet radio, a camera feed, #1780): 200,
+                   chunked, no Content-Length, Accept-Ranges, ETag or Last-Modified, a Range
+                   ignored, the path's size too; it sends until the client stops reading (pace
+                   it with rate=, start it as one with magic=mp3)
+    image=WxH      the file starts as a W x H picture's header (an uncompressed one-bit BMP whose
+                   pixels are the generated bytes) and is sent as image/bmp (unless type=): a
+                   browser shows it at that size, whatever its name says, when SIZE is at least
+                   62 + ceil(W/32)*4*H bytes (#1781, the add-on's Find images)
   faults (also server-wide with --faults; per-URL values override):
     rate=SIZE slow_every=N slow_rate=SIZE max_conns=N drop_after=SIZE drop_every=N
     fail_every=N fail_first=N no_range=1 no_range_every=N html=1 etag_change_every=N
@@ -796,6 +853,8 @@ GET|HEAD /gen/{size}[/{name}]?seed=N&<file params>&<faults>   size: 12345, 64K, 
     require_cookie=NAME=VALUE|NAME   403 unless the Cookie header has it
     require_referer=PREFIX           403 unless the Referer starts with PREFIX (%-encode ? & =)
     refuse_agent=TEXT                403 when the User-Agent contains TEXT
+    refuse_family=4|6                403 when the request came over that IP family (a link signed
+                                     for the page's address of the other one; --both-families)
     refuse=STATUS  every request answered with that 4xx or 5xx status, before any byte (a site
                    that turns away whatever isn't a browser: FileHippo's 412, #630)
     browser_only=1 a bot check: 403 with cf-mitigated: challenge and a challenge page unless the
@@ -831,7 +890,7 @@ GET /stream.php, /remote_control.php?id=N|file=NAME&size=1M&type=MIME|none&magic
     video/mp4 (type= another, none for none at all), magic= its first bytes a media type's
 GET /redirect?to=URL[&ttl_ms=N][&uses=N][&code=3xx]   302 (or code) to URL (not logged); ttl_ms: a signed link expiring after N ms; uses: a new link each time, expiring after N requests
 /rd/rest/1.0/{user,hosts/domains,unrestrict/link,disable_access_token}, /rd/oauth/v2/{device/code,device/credentials,token}
-                                              a fake Real-Debrid (#44): tokens good (premium), free; links http://hoster.test/file/SIZE/NAME[?gone=1&down=1&chunks=N&ttl_ms=N&rate=SIZE]
+                                              a fake Real-Debrid (#44): tokens good (premium), free; links http://hoster.test/file/SIZE/NAME[?gone=1&down=1&chunks=N&ttl_ms=N&rate=SIZE&busy=N]
 /ad/v4/{user,hosts/domains,link/unlock,link/delayed,pin/check}, /ad/v4.1/pin/get      a fake AllDebrid: the same tokens and links, plus delayed=N
 /pm/api/{account/info,services/list,transfer/directdl}      a fake Premiumize: the same tokens and links
 /tb/v1/api/{user/me,user/auth/device/{start,token},webdl/hosters,webdl/createwebdownload,torrents/createtorrent,*/mylist,*/requestdl,*/control*}
@@ -845,6 +904,23 @@ GET /rss/shows.xml?upto=N&atom=1&torrent=URL   "Open Show" S01E01..N (default 3)
                    (a .torrent to download); atom=1: an Atom feed
 GET /rss/dir.xml   the .torrent files in --rss-dir, newest first, linked to /rss/files/NAME
 
+FOLDERS  made-up folders for Link grabber's folder tests (#1774, src/tree.rs)
+GET /idx/{apache,nginx,iis}/TREE/[PATH/]   the folder as that web server lists it ("Index of");
+                   a folder without its / is redirected; a file is generated bytes (ranges)
+    tree           a.bin, notes.txt, docs/ (four deep), "my files/"
+    hostile        ok.bin and sub/inner.bin, and links out of the folder: ../, absolute paths,
+                   other sites, %2e%2e, a%2fb
+    huge           25,000 files in one folder
+  over FTP (--ftp) at /TREE/[PATH/]: MLSD and LIST (hostile: ../, /etc/passwd, a/b, a link)
+
+ZIPS  made-up archives for taking files out of a ZIP on its server (#1775, src/zip.rs)
+GET /zip/NAME[?no_range=1]   the archive, whole or one range (no_range=1: whole only)
+    files.zip      stored and Deflate files, a folder, an empty file, a data descriptor, an
+                   encrypted one and a BZIP2 one (refused), 1 MiB of generated bytes
+    zip64.zip      the same files in ZIP64 records
+    hostile.zip    names that leave the folder (../, /etc/passwd, C:/, a stream, a link), a bad
+                   CRC-32, a header naming another file, a size the table overstates
+    overlap.zip    two entries over the same bytes;  bigdir.zip  a table larger than allowed
 PAGES  for the browser extension's tests (tools/extension/e2e.mjs); styles and scripts are files
 GET /page?<any of>
     link=PATH      <a id=link href=PATH>download</a>; again for more (#link2, #link3...)
@@ -854,6 +930,14 @@ GET /page?<any of>
                    clipK.mp4, docK.pdf
     pathlen=L      with files: /gen/1K/<folder>/fileK.zip?seed=K instead, each path L characters
                    long, its folder's name made that long
+    images=1       a gallery for the add-on's Find images (#1781), pictures made by image=WxH:
+                   #icon 48x48; #photo1 (srcset 400w, 1600w); a <picture> with a WebP source
+                   (600w, 1200w); photo1 again and linked; #thumb3 linking to photo3.png; #photo4
+                   (1x, 2x); #photo5's data-src under a data: placeholder; a data: picture, a PDF link;
+                   CSS backgrounds, never sent: #bg1 over a gradient, #bg2 an image-set (1x,
+                   2x), #bg3 a gradient, #bg4 photo1 again, #bg5 a data: picture, #bg6 under
+                   display: none;
+                   with seed=N, every picture's address has seed=N (the same pictures at new addresses)
     video=PATH|1   <video id=video controls> 640x360 (1: /gen/1M/clip.mp4?inline=1, also shown
                    when nothing else is asked for, or with muted_loop, iframe or shadow)
     w=PX h=PX      the videos' size
@@ -1230,6 +1314,143 @@ async fn files(
     serve_file(&shared, peer, &method, &headers, logged, path, true, garble).await
 }
 
+/// `GET /idx/{style}/{tree}/{path}` (#1774, `tree`): a folder of a made-up tree as the web server
+/// `style` lists it (`apache`, `nginx`, `iis`), a folder without its `/` redirected to it, a file
+/// the generator's bytes (ranges and the file params as `/gen`'s).
+async fn index(
+    State(shared): State<Arc<Shared>>,
+    ConnectInfo(peer): ConnectInfo<SocketAddr>,
+    method: Method,
+    Path((style, rest)): Path<(String, String)>,
+    RawQuery(query): RawQuery,
+    headers: HeaderMap,
+) -> Response {
+    let logged = format!("/idx/{style}/{rest}");
+    let entry = shared.begin(peer, &method, logged.clone(), query.clone(), &headers, &[]);
+    let (tree, path) = rest.split_once('/').unwrap_or((rest.as_str(), ""));
+    let known_style = matches!(style.as_str(), "apache" | "nginx" | "iis");
+    let is_root = !rest.contains('/');
+    if known_style
+        && (is_root || crate::tree::is_dir_without_slash(tree, path))
+        && crate::tree::node(tree, "").is_some()
+    {
+        shared.record(entry, 301, "complete");
+        let to = format!("/idx/{style}/{}/", url_path(&rest));
+        return (StatusCode::MOVED_PERMANENTLY, [(header::LOCATION, to)]).into_response();
+    }
+    match crate::tree::node(tree, path).filter(|_| known_style) {
+        Some(crate::tree::Node::Dir(items)) => {
+            let base = format!("/idx/{style}/{tree}/{path}");
+            let page = crate::tree::page(&style, tree, &base, &items);
+            let mut entry = entry;
+            entry.body_len = page.len() as u64;
+            entry.bytes_sent = page.len() as u64;
+            shared.record(entry, 200, "complete");
+            ([(header::CONTENT_TYPE, "text/html; charset=utf-8")], page).into_response()
+        }
+        Some(crate::tree::Node::File { seed, size }) => {
+            let name = path.rsplit('/').next().unwrap_or(path);
+            let query = match query.as_deref().filter(|q| !q.is_empty()) {
+                Some(q) => format!("seed={seed}&{q}"),
+                None => format!("seed={seed}"),
+            };
+            serve(
+                shared,
+                entry,
+                &method,
+                &size.to_string(),
+                Some(name),
+                &query,
+            )
+            .await
+        }
+        None => {
+            shared.record(entry, 404, "error");
+            (StatusCode::NOT_FOUND, "no such folder or file\n").into_response()
+        }
+    }
+}
+
+/// `GET /zip/{name}` (#1775, `zip`): a made-up ZIP, whole or one range of it, with an ETag as a
+/// file server sends one; a range asked with an `If-Range` that isn't it is answered whole. With
+/// `no_range=1` (or the server's fault) every answer is the whole archive.
+async fn zipped(
+    State(shared): State<Arc<Shared>>,
+    ConnectInfo(peer): ConnectInfo<SocketAddr>,
+    method: Method,
+    Path(name): Path<String>,
+    RawQuery(query): RawQuery,
+    headers: HeaderMap,
+) -> Response {
+    let entry = shared.begin(
+        peer,
+        &method,
+        format!("/zip/{name}"),
+        query.clone(),
+        &headers,
+        &[],
+    );
+    let Some(data) = crate::zip::zip(&name) else {
+        shared.record(entry, 404, "error");
+        return (StatusCode::NOT_FOUND, "no such ZIP\n").into_response();
+    };
+    let asked = Faults::parse(query.as_deref().unwrap_or("")).unwrap_or_default();
+    let ranges = shared.faults().overridden_by(&asked).no_range != Some(true);
+    let size = data.len() as u64;
+    let etag = format!("\"zip-{size:x}\"");
+    let same = entry.if_range.as_ref().is_none_or(|v| *v == etag);
+    let range = entry
+        .range
+        .as_deref()
+        .filter(|_| ranges && same)
+        .and_then(|r| http_range_header::parse_range_header(r).ok())
+        .and_then(|r| r.validate(size).ok())
+        .filter(|v| v.len() == 1)
+        .map(|v| (*v[0].start(), *v[0].end() + 1));
+    let (start, end, status) = match range {
+        Some((s, e)) => (s, e, StatusCode::PARTIAL_CONTENT),
+        None => (0, size, StatusCode::OK),
+    };
+    let mut builder = Response::builder()
+        .status(status)
+        .header(header::CONTENT_TYPE, "application/zip")
+        .header(header::CONTENT_LENGTH, end - start)
+        .header(header::ETAG, &etag);
+    if ranges {
+        builder = builder.header(header::ACCEPT_RANGES, "bytes");
+    }
+    if status == StatusCode::PARTIAL_CONTENT {
+        builder = builder.header(
+            header::CONTENT_RANGE,
+            format!("bytes {start}-{}/{size}", end - 1),
+        );
+    }
+    let mut entry = entry;
+    entry.body_start = start;
+    entry.body_len = end - start;
+    entry.bytes_sent = if method == Method::HEAD {
+        0
+    } else {
+        end - start
+    };
+    shared.record(entry, status.as_u16(), "zip");
+    if method == Method::HEAD {
+        return builder.body(Body::empty()).unwrap();
+    }
+    builder
+        .body(Body::from(data[start as usize..end as usize].to_vec()))
+        .unwrap()
+}
+/// `path` (decoded, `/`-separated) as an address's path, each segment encoded.
+fn url_path(path: &str) -> String {
+    path.split('/')
+        .map(|s| {
+            percent_encoding::utf8_percent_encode(s, percent_encoding::NON_ALPHANUMERIC).to_string()
+        })
+        .collect::<Vec<_>>()
+        .join("/")
+}
+
 impl Shared {
     /// `name` (a relative path, `/`-separated) in `Config::files`; None without one, or for a
     /// name that would leave it.
@@ -1477,7 +1698,34 @@ struct FileQuery {
     /// `movie=MS`, `tracks=av|v|a`, `height=PX` (#1092): it starts as an MP4 movie of that
     /// length does ([`content::movie_head`], made once the file's size is known).
     movie: Option<(u32, bool, bool, u32)>,
+    /// `endless=1` (#1780): a stream that never ends (an internet radio, a camera feed): no
+    /// Content-Length, no ranges, the path's size ignored.
+    endless: bool,
     faults: Faults,
+}
+
+/// The server's listener at `bind`, and with `both` one on the loopback address of the other IP
+/// family at the same port. A port the system picked (port 0) that is taken in the other family
+/// is left for another one, a few times.
+async fn listeners(bind: SocketAddr, both: bool) -> io::Result<(TcpListener, Option<TcpListener>)> {
+    let mut tries = 0;
+    loop {
+        let listener = TcpListener::bind(bind).await?;
+        if !both {
+            return Ok((listener, None));
+        }
+        let ip: IpAddr = match bind {
+            SocketAddr::V4(_) => std::net::Ipv6Addr::LOCALHOST.into(),
+            SocketAddr::V6(_) => std::net::Ipv4Addr::LOCALHOST.into(),
+        };
+        match TcpListener::bind((ip, listener.local_addr()?.port())).await {
+            Ok(other) => return Ok((listener, Some(other))),
+            Err(e) if e.kind() == io::ErrorKind::AddrInUse && bind.port() == 0 && tries < 8 => {
+                tries += 1;
+            }
+            Err(e) => return Err(e),
+        }
+    }
 }
 
 /// The lab server over HTTPS (`Config::tls`): each connection's ClientHello is read first, and
@@ -1656,6 +1904,12 @@ pub(crate) async fn serve(
         shared.record(entry, 403, "fault:refuse_agent");
         return (StatusCode::FORBIDDEN, format!("agent {want} refused\n")).into_response();
     }
+    if let Some(family) = f.refuse_family
+        && family == if entry.peer.is_ipv4() { 4 } else { 6 }
+    {
+        shared.record(entry, 403, "fault:refuse_family");
+        return (StatusCode::FORBIDDEN, format!("IPv{family} refused\n")).into_response();
+    }
     if let Some(status) = f
         .refuse
         .and_then(|c| StatusCode::from_u16(c).ok())
@@ -1746,6 +2000,7 @@ pub(crate) async fn serve(
     let mut range = None;
     // A syntactically invalid Range is ignored (RFC 9110 §14.2), as is a multi-range request.
     if f.no_range != Some(true)
+        && !q.endless
         && !every(n, f.no_range_every)
         && if_range_ok
         && let Some(r) = entry.range.as_deref()
@@ -1768,6 +2023,8 @@ pub(crate) async fn serve(
     }
     let (start, end, status) = match range {
         Some((s, e)) => (s, e, StatusCode::PARTIAL_CONTENT),
+        // An endless stream (#1780) goes on until the client stops reading.
+        None if q.endless => (0, u64::MAX, StatusCode::OK),
         None => (0, size, StatusCode::OK),
     };
     entry.body_start = start;
@@ -1784,13 +2041,18 @@ pub(crate) async fn serve(
     if let Some(t) = content_type {
         builder = builder.header(header::CONTENT_TYPE, t);
     }
-    let mut builder = builder
-        .header(header::CONTENT_LENGTH, end - start)
-        .header(header::LAST_MODIFIED, &last_modified);
-    if f.no_range != Some(true) {
+    // An endless stream (#1780) says no length, takes no ranges and has no version: chunked, as
+    // an internet radio's server sends it.
+    let mut builder = builder;
+    if !q.endless {
+        builder = builder
+            .header(header::CONTENT_LENGTH, end - start)
+            .header(header::LAST_MODIFIED, &last_modified);
+    }
+    if f.no_range != Some(true) && !q.endless {
         builder = builder.header(header::ACCEPT_RANGES, "bytes");
     }
-    if let Some(etag) = &etag {
+    if let Some(etag) = etag.as_ref().filter(|_| !q.endless) {
         builder = builder.header(header::ETAG, etag);
     }
     // The whole file's digest, whatever the range and the copy: the file's version (a stand-in
@@ -2017,6 +2279,7 @@ fn split_query(q: &str) -> Result<FileQuery, String> {
         content_type: None,
         magic: None,
         movie: None,
+        endless: false,
         faults: Faults::default(),
     };
     let name = |k: &str, v: String| {
@@ -2027,6 +2290,7 @@ fn split_query(q: &str) -> Result<FileQuery, String> {
         }
     };
     let mut rest = Vec::new();
+    let mut image = false;
     for (k, v) in pairs {
         match k.as_str() {
             "seed" => out.seed = v.parse().map_err(|_| format!("invalid seed `{v}`\n"))?,
@@ -2049,6 +2313,16 @@ fn split_query(q: &str) -> Result<FileQuery, String> {
                     content::media_head(&v).ok_or_else(|| format!("invalid magic `{v}`\n"))?,
                 ))
             }
+            // #1781: a picture of that size (a BMP's header), image/bmp unless `type` says.
+            "image" => {
+                let (w, h) = v
+                    .split_once('x')
+                    .and_then(|(w, h)| Some((w.parse::<u32>().ok()?, h.parse::<u32>().ok()?)))
+                    .filter(|&(w, h)| (1..=20_000).contains(&w) && (1..=20_000).contains(&h))
+                    .ok_or_else(|| format!("invalid image `{v}` (WxH, 1 to 20000 each)\n"))?;
+                out.magic = Some(Arc::from(content::bmp_head(w, h)));
+                image = true;
+            }
             // #1092: an MP4 movie's header (its length in ms, its tracks, its picture's height).
             "movie" | "tracks" | "height" => {
                 let (mut ms, mut video, mut audio, mut height) =
@@ -2068,6 +2342,9 @@ fn split_query(q: &str) -> Result<FileQuery, String> {
                 }
                 out.movie = Some((ms, video, audio, height));
             }
+            "endless" => {
+                out.endless = parse_flag(&v).ok_or_else(|| format!("invalid endless `{v}`\n"))?
+            }
             "cd" => out.cd = name(&k, v)?,
             "cdstar" => out.cdstar = name(&k, v)?,
             "cdraw" => out.cd_raw = name(&k, v)?,
@@ -2081,6 +2358,9 @@ fn split_query(q: &str) -> Result<FileQuery, String> {
             }
             _ => rest.push((k, v)),
         }
+    }
+    if image && out.content_type.is_none() {
+        out.content_type = Some("image/bmp".to_owned());
     }
     let rest = serde_urlencoded::to_string(rest).map_err(|e| e.to_string())?;
     out.faults = Faults::parse(&rest).map_err(|e| format!("{e}\n"))?;
@@ -2243,6 +2523,12 @@ mod tests {
         assert!(content_disposition(&split_query("inline=bare").unwrap(), Some("a.pdf")).is_none());
         assert!(split_query("inline=maybe").is_err());
         assert!(split_query("cd=a%0Ab").is_err());
+        // #1780: an endless stream is a file param, not a fault.
+        let q = split_query("endless=1&rate=64K").unwrap();
+        assert!(q.endless);
+        assert_eq!(q.faults.rate, Some(64 << 10));
+        assert!(!split_query("").unwrap().endless);
+        assert!(split_query("endless=maybe").is_err());
         // #1427: a value as a server wrote it, sent as given.
         let raw = "attachment; filename=\"My%20Report.pdf\"";
         let q = split_query(&format!(
