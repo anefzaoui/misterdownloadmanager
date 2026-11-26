@@ -569,6 +569,10 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ Windows: closing a dialog of the main window's with **OK**, after bringing it back with
+  MDM's taskbar button, leaves the main window in front with the keyboard instead of the
+  taskbar ([#1852](https://github.com/anefzaoui/misterdownloadmanager/issues/1852); thanks to
+  [@wmwlwmwl](https://github.com/wmwlwmwl))
 - ✅ Windows: a crash inside the graphics driver while OpenGL draws (Intel's and AMD's OpenGL
   drivers, NVIDIA's Direct3D 11 thread on laptops with two graphics chips) moves MDM off OpenGL
   from the next start, as a freeze there does: Direct3D 12, on WARP when the card can't, and
