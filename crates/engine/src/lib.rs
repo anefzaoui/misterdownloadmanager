@@ -9,6 +9,7 @@ pub mod fault;
 pub mod folder;
 pub mod ftp;
 pub mod hosts;
+pub mod hub;
 // Public for the fuzz targets (fuzz/): `links` and `declared_videos` without a network.
 pub mod html;
 pub mod limiter;

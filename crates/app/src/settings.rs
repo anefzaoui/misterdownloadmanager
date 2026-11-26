@@ -409,8 +409,14 @@ pub struct Settings {
     /// MDM reads as its default again.
     #[serde(deserialize_with = "automatic_agent")]
     pub user_agent: String,
-    /// Connection: per-server connection limits (server, number).
+    /// Connection: per-server connection limits (server, number), in their order: the first
+    /// that names a download's server gives its number (`mdm_ipc::siterules::for_url`). A site
+    /// rule's number of connections is the exception under its pattern.
     pub conn_exceptions: Vec<(String, u32)>,
+    /// Connection → Site rules (#1778): a User-Agent, the browser-like connection and request
+    /// headers by site pattern, the first rule that matches and sets each giving it. Their
+    /// numbers of connections are in `conn_exceptions`, which older versions read.
+    pub site_rules: Vec<mdm_ipc::siterules::SiteRule>,
     /// Proxy / Socks: 0 none, 1 system, 2 automatic script, 3 manual.
     pub proxy_from_browser: bool,
     pub proxy_mode: u8,
@@ -714,6 +720,7 @@ impl Default for Settings {
             duplicate_action: 0,
             user_agent: String::new(),
             conn_exceptions: Vec::new(),
+            site_rules: Vec::new(),
             proxy_from_browser: true,
             proxy_mode: 0,
             proxy_script: String::new(),
@@ -1181,15 +1188,20 @@ impl Settings {
         }
     }
 
-    /// Connections for a download from `url`: a server exception (Options → Connection), else
-    /// the default; never more than `connection_limit` (a hand-edited file can hold anything).
+    /// Connections for a download from `url`: the first server exception that names it
+    /// (Options → Connection, a site rule's number among them: `*` for any text, the first
+    /// match winning), else the default; never more than `connection_limit` (a
+    /// hand-edited file can hold anything).
     pub fn connections_for(&self, url: &url::Url) -> u32 {
-        let host = url.host_str().unwrap_or("").to_ascii_lowercase();
-        self.conn_exceptions
-            .iter()
-            .find(|(server, _)| host_matches(&host, server))
-            .map_or(self.max_connections, |(_, n)| *n)
+        self.site_settings(url)
+            .connections
+            .unwrap_or(self.max_connections)
             .clamp(1, self.connection_limit())
+    }
+
+    /// What the site rules and the exceptions give a download from `url` (#1778).
+    pub fn site_settings(&self, url: &url::Url) -> mdm_ipc::siterules::Applied {
+        mdm_ipc::siterules::for_url(&self.site_rules, &self.conn_exceptions, url)
     }
 
     /// The Sites Logins entry for `url`: its site/path is a prefix of the address (without the
@@ -1502,6 +1514,11 @@ impl Settings {
                     url: self.public_trackers_list().to_owned(),
                     dir,
                 }),
+            // Site rules and exceptions (#1778): the command line asks a site as the app does.
+            sites: mdm_cli::SiteRules {
+                rules: self.site_rules.clone(),
+                exceptions: self.conn_exceptions.clone(),
+            },
         }
     }
 }
@@ -2206,6 +2223,34 @@ mod tests {
         assert_eq!(got("http=http://p:3128/"), http("p", "3128", true, false));
         assert_eq!(got("ftp=f:21"), None);
         assert_eq!(got(""), None);
+    }
+
+    /// #1778: site rules round-trip through the settings file, an older file has none, and the
+    /// exceptions match the same way: `*` any text, the first match winning.
+    #[test]
+    fn site_rules_and_exceptions() {
+        let url = |u: &str| url::Url::parse(u).unwrap();
+        let s = Settings {
+            conn_exceptions: vec![("*.example.test".into(), 4), ("dl.example.test".into(), 2)],
+            site_rules: vec![mdm_ipc::siterules::SiteRule {
+                site: "*.example.test".into(),
+                user_agent: "Rule/1".into(),
+                browser_like: true,
+                headers: vec![("X-A".into(), "1".into())],
+            }],
+            ..Settings::default()
+        };
+        assert_eq!(s.connections_for(&url("https://dl.example.test/f")), 4);
+        assert_eq!(s.connections_for(&url("https://example.test/f")), 8);
+        let got = s.site_settings(&url("https://dl.example.test/f"));
+        assert_eq!(got.user_agent.as_deref(), Some("Rule/1"));
+        assert!(got.browser_like);
+        let back: Settings = serde_json::from_str(&serde_json::to_string(&s).unwrap()).unwrap();
+        assert_eq!(back.site_rules, s.site_rules);
+        let old: Settings =
+            serde_json::from_str(r#"{"conn_exceptions": [["ftp.slow.org", 1]]}"#).unwrap();
+        assert!(old.site_rules.is_empty());
+        assert_eq!(old.connections_for(&url("ftp://ftp.slow.org/a")), 1);
     }
 
     #[test]

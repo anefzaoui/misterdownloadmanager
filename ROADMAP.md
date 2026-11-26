@@ -569,6 +569,18 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ Hugging Face models and datasets (a whole repository or a folder, at a branch, tag or commit)
+  and GitHub releases and tags pasted in Add URL or Link grabber: every file listed with its size
+  and folder, unticked, downloaded as one group with the folders kept, each checked against the
+  SHA-256 the site publishes; gated models with the Hugging Face token saved in Sites Logins
+  ([#1772](https://github.com/anefzaoui/misterdownloadmanager/issues/1772))
+- ✅ Site rules: a User-Agent, extra request headers, a number of connections and "connect the
+  way a browser does" from the first request, for every download from a site pattern
+  (`*.example.com`, the first rule that names a site and sets a setting giving it, as for the
+  per-server exceptions); a stopped download's Properties → Connection... changes its own
+  User-Agent, headers, proxy and connections, and its resume still checks it is the same file
+  (size, ETag, date) before writing anything
+  ([#1778](https://github.com/anefzaoui/misterdownloadmanager/issues/1778))
 - ✅ Only some files from inside a ZIP on a server: Download File Info's Preview lists the files in
   a `.zip` (from its end, with range requests) to tick those to download, each fetched alone and
   checked against its CRC-32 ([#1775](https://github.com/anefzaoui/misterdownloadmanager/issues/1775))

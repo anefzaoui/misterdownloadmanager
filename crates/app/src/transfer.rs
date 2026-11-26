@@ -139,8 +139,16 @@ pub struct Imported {
     /// download folder, each a plain name (the folder's own, then its subfolders'); empty for
     /// any other link.
     pub folder: Vec<String>,
-    /// Its size as the folder's list says it (FTP's): not looked up again.
+    /// Its size as the folder's list says it (FTP's, a site's API, #1772): not looked up again.
     pub size: Option<u64>,
+    /// A file of a package (#1772: a Hugging Face repository, a GitHub release): the folders it
+    /// is in inside its package's folder, each a plain name; empty for any other link.
+    pub within: Vec<String>,
+    /// The digest its site publishes for it (#1772: Hugging Face's SHA-256 of a large file,
+    /// GitHub's of a release file): the finished file is checked against it.
+    pub checksum: Option<mdm_engine::verify::Hash>,
+    /// Comes unticked (#1772: a package's files, of which only those wanted are ticked).
+    pub unticked: bool,
     /// A picture located on the browser's page (#1781: shown in it, not a link to it), sent by
     /// its "Download all links": Link grabber hides it while "Hide images located on this web
     /// page" is ticked.

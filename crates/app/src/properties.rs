@@ -22,6 +22,8 @@ pub struct Changes {
     pub move_to: Option<PathBuf>,
     /// "Through …" changed (#44): downloaded directly (true) or through the account again.
     pub direct: Option<bool>,
+    /// Connection... changed its own request settings (#1778): the next start asks with them.
+    pub own: Option<crate::model::OwnRequest>,
 }
 
 pub struct Properties {
@@ -40,6 +42,11 @@ pub struct Properties {
     route: crate::debrid::Route,
     direct: bool,
     files_requested: bool,
+    /// Its own request settings as Connection... left them (#1778), kept on OK.
+    own: crate::model::OwnRequest,
+    /// Connection...'s window while it is open, and the most connections Options allows.
+    request: Option<(crate::requestedit::RequestEdit, u32)>,
+    request_wanted: bool,
 }
 
 impl Properties {
@@ -59,11 +66,37 @@ impl Properties {
             route,
             direct: item.direct,
             files_requested: false,
+            own: item.own.clone(),
+            request: None,
+            request_wanted: false,
         }
     }
 
     pub fn take_files_requested(&mut self) -> bool {
         std::mem::take(&mut self.files_requested)
+    }
+
+    /// Connection... was pressed: the app opens its window with [`Properties::open_request`].
+    pub fn take_request_wanted(&mut self) -> bool {
+        std::mem::take(&mut self.request_wanted)
+    }
+
+    /// Connection...'s window (#1778), its number of connections starting at what the download
+    /// gets now (`current`); at most `limit`.
+    pub fn open_request(&mut self, current: u32, limit: u32) {
+        let edit = crate::requestedit::RequestEdit::download(&self.own, current);
+        self.request = Some((edit, limit));
+    }
+
+    /// A download whose own request settings can be changed here: a file MDM's engine
+    /// downloads (not a video's or gallery's helper, a torrent or a service's transfer), not
+    /// finished. While it runs they show, greyed: they apply as it starts.
+    fn request_editable(item: &Item) -> bool {
+        item.status != Status::Complete
+            && item.video.is_none()
+            && item.gallery.is_none()
+            && item.torrent.is_none()
+            && item.remote.is_none()
     }
 
     /// `item` took a new address while this window was open (the browser's next download of
@@ -90,6 +123,41 @@ impl Properties {
             LIGHT_BG(),
             |ui, o| self.body(ui, o, icons, item),
         );
+        // Connection... (#1778): its own window over this one, until OK or Cancel.
+        let running = item.live.is_some();
+        if let Some((edit, limit)) = &mut self.request {
+            let limit = *limit;
+            // Above File Properties, with the keyboard (a question's window), as its own window.
+            let out = crate::dialogs::question(
+                ctx,
+                &format!("properties-request-{}", self.id),
+                // i18n: window title: a download's own request settings (User-Agent, headers, connections, proxy), from File Properties → Connection...
+                "Connection settings",
+                [460.0, 284.0],
+                false,
+                LIGHT_BG(),
+                |ui, o| {
+                    let bottom = edit.fields(ui, o, 14.0, 460.0, !running, limit);
+                    crate::options::ok_cancel(ui, o, 460.0 - 14.0 - 154.0, bottom + 6.0, !running)
+                },
+            );
+            match out {
+                Outcome::Open => {}
+                Outcome::Closed => self.request = None,
+                Outcome::Done(()) => match edit.read(limit) {
+                    Ok(e) => {
+                        self.own = crate::model::OwnRequest {
+                            user_agent: e.user_agent,
+                            headers: e.headers,
+                            proxy: e.proxy,
+                            connections: e.connections,
+                        };
+                        self.request = None;
+                    }
+                    Err(why) => edit.error = Some(why),
+                },
+            }
+        }
         match outcome {
             Outcome::Done(()) => {
                 let address = url::Url::parse(self.address.trim())
@@ -105,6 +173,7 @@ impl Properties {
                     address,
                     move_to: self.move_to.take(),
                     direct: (self.direct != item.direct).then_some(self.direct),
+                    own: (self.own != item.own).then(|| self.own.clone()),
                 })
             }
             Outcome::Closed => Outcome::Closed,
@@ -397,6 +466,30 @@ impl Properties {
                 Some(o.x + 467.0),
             );
             self.direct = !on;
+        }
+        // Its own User-Agent, headers, proxy and number of connections (#1778), under the
+        // debrid account's check box: changed while it isn't running, for its next start.
+        if Self::request_editable(item) {
+            // i18n: File Properties button: opens the download's own request settings (User-Agent, headers, connections, proxy)
+            let label = crate::i18n::mark("Connection...");
+            let w = winui::button_width(&p, label, 73.0).min(140.0);
+            let kind = if running {
+                ButtonKind::Disabled
+            } else {
+                ButtonKind::Normal
+            };
+            let pressed =
+                winui::button_light(ui, r(o, 467.0 - w, 350.0, w, 21.0), label, kind, false);
+            let pressed = winui::why_disabled(
+                pressed,
+                running,
+                // i18n: tooltip of File Properties' greyed Connection... button while the download runs
+                "Pause the download to change how it connects",
+            )
+            .clicked();
+            if pressed && !running && self.request.is_none() {
+                self.request_wanted = true;
+            }
         }
         winui::etched_h(&p, o.x + 11.0, o.y + 378.0, 456.0);
         if !complete {

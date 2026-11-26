@@ -1997,6 +1997,18 @@ pub fn auth_headers(login: Option<&(String, String)>) -> HeaderMap {
     h
 }
 
+/// A login whose password is an access token (Hugging Face's, #1772): `Authorization: Bearer`.
+pub fn token_headers(login: Option<&(String, String)>) -> HeaderMap {
+    let mut h = HeaderMap::new();
+    if let Some((_, token)) = login.filter(|(_, t)| !t.trim().is_empty())
+        && let Ok(mut v) = HeaderValue::from_str(&format!("Bearer {}", token.trim()))
+    {
+        v.set_sensitive(true);
+        h.insert(AUTHORIZATION, v);
+    }
+    h
+}
+
 /// The icon for a file name's extension (empty: none).
 fn file_icon(name: &str) -> IconKey {
     match name.rsplit_once('.') {
@@ -3783,6 +3795,20 @@ impl App {
             }
             "speedlimit" => self.run(Cmd::LimiterSettings, None, ctx),
             "properties" if first.is_some() => self.run(Cmd::Properties, first, ctx),
+            // Its Connection... window too (#1778's screenshots and checks).
+            "properties-connection" if first.is_some() => {
+                self.run(Cmd::Properties, first, ctx);
+                let now = self
+                    .items
+                    .first()
+                    .map_or(self.settings.max_connections, |i| {
+                        self.settings.connections_for(&i.url)
+                    });
+                let limit = self.settings.connection_limit();
+                if let Some(pr) = self.properties.iter_mut().find(|p| Some(p.id) == first) {
+                    pr.open_request(now, limit);
+                }
+            }
             "delete" if first.is_some() => self.run(Cmd::Remove, first, ctx),
             // Remove with files on every download (screenshots: the finished files it counts).
             "delete-files" => {
@@ -3810,6 +3836,7 @@ impl App {
                         address: Some(url),
                         move_to: None,
                         direct: None,
+                        own: None,
                     };
                     self.apply_properties(c);
                 }
@@ -3913,7 +3940,7 @@ impl App {
                     "types" => 1,
                     "saveto" => 2,
                     "downloads" => 3,
-                    "connection" => 4,
+                    "connection" | "siterules" | "siterule" => 4,
                     "proxy" => 5,
                     "logins" => 6,
                     "accounts" => 7,
@@ -4130,6 +4157,18 @@ impl App {
             );
             return;
         }
+        // A Hugging Face repository or folder, a GitHub release or tag (#1772), given on the
+        // command line (`/d`) or dropped alone: its files in Link grabber, as from Add URL. Silent
+        // (`/n`, a script's command line) asks nothing: the address is downloaded as it is.
+        if !cmd.silent
+            && cmd.name.is_none()
+            && cmd.post.is_none()
+            && mdm_engine::hub::Source::of(&url).is_some()
+        {
+            self.show_for_dialog(ctx);
+            self.grab_package(&url, ctx);
+            return;
+        }
         // A fresh address for a download waiting for one (its link expired): that download goes
         // on from it, rather than a second row starting over.
         if self.take_fresh_address(&url, &cmd) {
@@ -4205,7 +4244,14 @@ impl App {
         let url_login = mdm_engine::ftp::is_ftp(url)
             .then(|| url_login(url))
             .flatten();
-        let mut headers = auth_headers(login.or(site_login.as_ref()).or(url_login.as_ref()));
+        let login = login.or(site_login.as_ref()).or(url_login.as_ref());
+        // Hugging Face (#1772): Sites Logins' password for it is an access token, sent as one,
+        // to its own hosts only (a redirect to its file servers drops it).
+        let mut headers = if mdm_engine::hub::takes_token(url) {
+            token_headers(login)
+        } else {
+            auth_headers(login)
+        };
         let post_type = context.post.as_ref().and(context.post_type.as_ref());
         let referer = context
             .referer
@@ -4222,11 +4268,17 @@ impl App {
                 headers.insert(name, v);
             }
         }
+        // A site rule's headers (#1778): each replaces the browser's of its name. A User-Agent
+        // among them, or the rule's own, is the download's.
+        let site = self.settings.site_settings(url);
+        let mut chosen = None;
+        crate::requestedit::add_headers(&mut headers, &mut chosen, &site.headers);
+        let chosen = site.user_agent.clone().or(chosen);
         // The browser's own User-Agent when it handed the download over, else the one set in
         // Options, else the automatic one (the default browser's, #668).
         let own = self.settings.own_user_agent();
         let given = context.user_agent.as_deref().or(own);
-        let opts = Options {
+        let mut opts = Options {
             max_connections: self.settings.connections_for(url),
             proxy: self.settings.proxy_for(context),
             dns: self.settings.dns(),
@@ -4281,8 +4333,15 @@ impl App {
                 .page_url
                 .as_deref()
                 .and_then(|p| url::Url::parse(p).ok()),
+            // A site rule: the way a browser connects from the first request (#1778).
+            browser_first: site.browser_like,
             ..Options::default()
         };
+        // A site rule's User-Agent is the user's choice for that site, above the browser's and
+        // Options': no other is tried in its place.
+        if let Some(agent) = chosen {
+            crate::requestedit::choose_agent(&mut opts, agent);
+        }
         RequestParts { headers, opts }
     }
 
@@ -4553,8 +4612,20 @@ impl App {
             self.dirty = true;
             return;
         }
-        let RequestParts { headers, mut opts } =
-            self.request_parts(&url, login.as_ref(), &context, direct);
+        let RequestParts {
+            mut headers,
+            mut opts,
+        } = self.request_parts(&url, login.as_ref(), &context, direct);
+        // Its own settings, from its Properties (#1778): above the site rules' and Options'.
+        if let Some(own) = self
+            .items
+            .iter()
+            .find(|i| i.id == id)
+            .map(|i| i.own.clone())
+        {
+            let limit = self.settings.connection_limit();
+            crate::requestedit::apply_own(&own, &mut headers, &mut opts, limit);
+        }
         // Download File Info's open answer for it, if it has one (#28); used once.
         let kept = self.kept_answers.remove(&id);
         // The file's own remembered limit, else the Speed Limiter's.
@@ -5709,6 +5780,13 @@ impl App {
                 // i18n: event log: File Properties: the download goes through the debrid account again
                 crate::i18n::t("Set to download through the debrid account").to_owned()
             });
+        }
+        // Connection... (#1778): its own User-Agent, headers, proxy and connections, from its
+        // next start. The engine still checks it is the same file as it resumes.
+        if let Some(own) = c.own {
+            item.own = own;
+            // i18n: event log: File Properties → Connection settings changed the download's own User-Agent, headers, proxy or connections
+            item.note(crate::i18n::t("Connection settings changed").to_owned());
         }
         let readdressed = c.address.clone();
         if let Some(url) = c.address {
@@ -12936,6 +13014,19 @@ impl App {
         grabber.add(found, source, |u| known.contains(u.as_str()));
     }
 
+    /// A Hugging Face repository's or a GitHub release's address (#1772) into Link grabber, which
+    /// lists its files through the site's API, and the window to the front.
+    fn grab_package(&mut self, url: &url::Url, ctx: &egui::Context) {
+        let found = vec![crate::transfer::Imported {
+            url: url.to_string(),
+            ..Default::default()
+        }];
+        // i18n: Link grabber: where the links came from: an address given on its own (typed or pasted in Add URL, given on the command line)
+        let source = crate::i18n::t("Address typed").to_owned();
+        self.show_import(found, source);
+        dialogs::raise(ctx, dialogs::dialog_viewport("grabber"));
+    }
+
     /// Link grabber's ticked links: each package's to its folder, tagged with the package (its
     /// archives are extracted when all are in), into the main queue; started too on Start (else
     /// only queued, as IDM's import). A magnet link's torrent is added once its files are known
@@ -12974,6 +13065,12 @@ impl App {
                 } else {
                     pk.folder.clone()
                 };
+                // A package's file (#1772) in the folders it is in inside the package's, each a
+                // plain name again, as a folder's tree's are.
+                let dir = d.within.iter().fold(dir, |dir, name| {
+                    dir.join(mdm_engine::naming::sanitize(name))
+                });
+                let checksum = d.checksum.clone();
                 // Numbered on as it starts if the name is taken then (#743): no disk here, for
                 // each of thousands of links.
                 let dest = mdm_engine::naming::guess(&dir, &name);
@@ -12999,6 +13096,11 @@ impl App {
                 if let Some(i) = self.items.last_mut().filter(|i| i.id == id) {
                     i.package = Some(tag.clone());
                     i.number_at_start = true;
+                    // The digest its site publishes (#1772): the finished file must have it, or
+                    // the download says so instead of finishing.
+                    if checksum.is_some() {
+                        i.checksum = checksum;
+                    }
                     // A name the server didn't give (none looked up) may still change.
                     if size.is_none() {
                         i.name_from_url = true;
@@ -13099,6 +13201,20 @@ impl App {
             };
             let parts = self.request_parts(&url, None, &context, false);
             let slot: crate::grabber::Read = Default::default();
+            // A Hugging Face repository or a GitHub release (#1772): its site's API lists it.
+            if let Some(source) = mdm_engine::hub::Source::of(&url) {
+                let token = self.settings.site_login(&url).is_some();
+                let (out, ctx) = (slot.clone(), ctx.clone());
+                self.rt.spawn(async move {
+                    let listed = mdm_engine::hub::list(&source, parts.headers, &parts.opts).await;
+                    *out.lock().unwrap() = Some(crate::grabber::package_read(listed, &d, token));
+                    ctx.request_repaint();
+                });
+                if let Some(g) = &mut self.grabber {
+                    g.reading(i, slot);
+                }
+                continue;
+            }
             let (out, ctx, types) = (slot.clone(), ctx.clone(), types.clone());
             self.rt.spawn(async move {
                 let keep =
@@ -13117,7 +13233,10 @@ impl App {
                                 ..Default::default()
                             })
                             .collect();
-                        (links, String::new())
+                        crate::grabber::Listed {
+                            links,
+                            ..Default::default()
+                        }
                     }
                     Ok(mdm_engine::folder::Read::Folder(f)) => {
                         tracing::info!(
@@ -13151,11 +13270,15 @@ impl App {
                                 ..Default::default()
                             })
                             .collect();
-                        (files, note)
+                        crate::grabber::Listed {
+                            links: files,
+                            note,
+                            failed: None,
+                        }
                     }
                     Err(e) => {
                         tracing::info!("link grabber: a page couldn't be read: {e}");
-                        (Vec::new(), String::new())
+                        Default::default()
                     }
                 };
                 *out.lock().unwrap() = Some(found);
@@ -13762,6 +13885,12 @@ impl App {
                     };
                     self.open_torrent_dialog_with(Some(new.url.to_string()), Some(remote), ctx);
                 }
+                // A Hugging Face repository or folder, a GitHub release or tag (#1772): its files
+                // in Link grabber, to tick those wanted.
+                Outcome::Done(new) if mdm_engine::hub::Source::of(&new.url).is_some() => {
+                    self.add_url = None;
+                    self.grab_package(&new.url, ctx);
+                }
                 // A video's page, not a file (YouTube, Vimeo…): the video window looks it up.
                 Outcome::Done(new) if mdm_tools::pages::is_video_page(&new.url) => {
                     self.add_url = None;
@@ -13839,6 +13968,7 @@ impl App {
         let mut files_requested = Vec::new();
         let items = &self.items;
         let icons = &mut self.icons;
+        let settings = &self.settings;
         self.properties.retain_mut(|pr| {
             let Some(item) = items.iter().find(|i| i.id == pr.id) else {
                 return false;
@@ -13847,6 +13977,13 @@ impl App {
                 Outcome::Open => {
                     if pr.take_files_requested() {
                         files_requested.push(pr.id);
+                    }
+                    // Connection... (#1778): from what the download gets now.
+                    if pr.take_request_wanted() {
+                        pr.open_request(
+                            settings.connections_for(&item.url),
+                            settings.connection_limit(),
+                        );
                     }
                     true
                 }
@@ -18143,6 +18280,7 @@ mod start_disk_tests {
             address: Some(new.clone()),
             move_to: None,
             direct: None,
+            own: None,
         });
         assert!(at.elapsed() < AT_ONCE, "the window doesn't wait");
         assert_eq!(get(&app, 1).url, new);
