@@ -2210,7 +2210,7 @@ fn client_with(
             && !matches!(opts.proxy, Proxy::Manual { .. } | Proxy::Pac { .. }));
     let ports = Arc::new(std::sync::Mutex::new(std::collections::HashMap::new()));
     if let Some(h) = url.host_str() {
-        ports.lock().unwrap().insert(h.to_ascii_lowercase(), port);
+        crate::tls::HostPort::record(&mut ports.lock().unwrap(), h, port);
     }
     let seen_cert = seen.clone();
     let builder = crate::tls::configure_site(
@@ -2234,7 +2234,7 @@ fn client_with(
         builder.redirect(reqwest::redirect::Policy::custom(move |attempt| {
             if let Some(h) = attempt.url().host_str() {
                 let p = attempt.url().port_or_known_default().unwrap_or(443);
-                ports.lock().unwrap().insert(h.to_ascii_lowercase(), p);
+                crate::tls::HostPort::record(&mut ports.lock().unwrap(), h, p);
             }
             inner.redirect(attempt)
         }))
@@ -2244,7 +2244,7 @@ fn client_with(
         builder.redirect(reqwest::redirect::Policy::custom(move |attempt| {
             if let Some(h) = attempt.url().host_str() {
                 let p = attempt.url().port_or_known_default().unwrap_or(443);
-                ports.lock().unwrap().insert(h.to_ascii_lowercase(), p);
+                crate::tls::HostPort::record(&mut ports.lock().unwrap(), h, p);
             }
             let refused = net::check_url(&route, attempt.url()).err().or_else(|| {
                 (stay_here && !net::is_this_computer(attempt.url().host_str().unwrap_or(""))).then(

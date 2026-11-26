@@ -1529,14 +1529,29 @@ impl Settings {
 }
 
 impl Settings {
-    /// Pin `sha256` for `(host, port)` (#1964), replacing any previous certificate for that site.
-    pub fn allow_cert(&mut self, host: String, port: u16, sha256: String) {
+    /// Pin `sha256` for `(host, port, problem)` (#1964), replacing any previous certificate for
+    /// that site and refusal reason.
+    pub fn allow_cert(
+        &mut self,
+        host: String,
+        port: u16,
+        sha256: String,
+        problem: mdm_engine::CertProblem,
+    ) {
+        if !problem.can_allow() {
+            return;
+        }
         let host = host.to_ascii_lowercase();
         let sha256 = sha256.to_ascii_lowercase();
-        self.allowed_certs
-            .retain(|c| !(c.port == port && c.host.eq_ignore_ascii_case(&host)));
-        self.allowed_certs
-            .push(mdm_engine::AllowedCert { host, port, sha256 });
+        self.allowed_certs.retain(|c| {
+            !(c.port == port && c.host.eq_ignore_ascii_case(&host) && c.problem == problem)
+        });
+        self.allowed_certs.push(mdm_engine::AllowedCert {
+            host,
+            port,
+            sha256,
+            problem,
+        });
     }
 }
 
@@ -2501,13 +2516,44 @@ pub(crate) mod sealed {
 
         #[test]
         fn allowed_certs_are_saved_per_site_port_and_fingerprint() {
+            use mdm_engine::CertProblem;
             let mut s = crate::settings::Settings::default();
-            s.allow_cert("NAS.Local".into(), 8443, "AA".repeat(32));
-            s.allow_cert("nas.local".into(), 8443, "BB".repeat(32));
-            s.allow_cert("nas.local".into(), 443, "CC".repeat(32));
-            assert_eq!(s.allowed_certs.len(), 2);
+            s.allow_cert(
+                "NAS.Local".into(),
+                8443,
+                "AA".repeat(32),
+                CertProblem::Untrusted,
+            );
+            s.allow_cert(
+                "nas.local".into(),
+                8443,
+                "BB".repeat(32),
+                CertProblem::Untrusted,
+            );
+            s.allow_cert(
+                "nas.local".into(),
+                8443,
+                "BB".repeat(32),
+                CertProblem::Expired,
+            );
+            s.allow_cert(
+                "nas.local".into(),
+                443,
+                "CC".repeat(32),
+                CertProblem::WrongName,
+            );
+            // Revoked / NotForWebsites / Other are never allowed.
+            s.allow_cert(
+                "nas.local".into(),
+                443,
+                "DD".repeat(32),
+                CertProblem::Revoked,
+            );
+            assert_eq!(s.allowed_certs.len(), 3);
             assert_eq!(s.allowed_certs[0].port, 8443);
             assert_eq!(s.allowed_certs[0].sha256, "bb".repeat(32));
+            assert_eq!(s.allowed_certs[0].problem, CertProblem::Untrusted);
+            assert_eq!(s.allowed_certs[1].problem, CertProblem::Expired);
             let json = serde_json::to_string(&s).unwrap();
             let back: crate::settings::Settings = serde_json::from_str(&json).unwrap();
             assert_eq!(back.allowed_certs, s.allowed_certs);

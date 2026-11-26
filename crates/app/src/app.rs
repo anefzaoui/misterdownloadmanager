@@ -9694,6 +9694,7 @@ impl App {
                 && let Some(item) = self.items.iter().find(|i| i.id == *id)
                 && let Some(mdm_engine::Error::Certificate(refusal)) =
                     item.snap.as_ref().and_then(|s| s.failure.as_ref())
+                && refusal.problem.can_allow()
                 && let Some(info) = &refusal.info
             {
                 self.cert_asks.push_back((
@@ -14461,8 +14462,12 @@ impl App {
             // The folder a download goes to is remembered for the Save As drop list.
             if matches!(out, Outcome::Done(_)) {
                 for cert in &fi.new_allowed_certs {
-                    self.settings
-                        .allow_cert(cert.host.clone(), cert.port, cert.sha256.clone());
+                    self.settings.allow_cert(
+                        cert.host.clone(),
+                        cert.port,
+                        cert.sha256.clone(),
+                        cert.problem,
+                    );
                     self.dirty = true;
                 }
                 if let Some(dir) = fi.dest().parent() {
@@ -14533,12 +14538,14 @@ impl App {
                             host: info.host.to_ascii_lowercase(),
                             port: info.port,
                             sha256: info.sha256,
+                            problem: info.problem,
                         });
                     self.start(id, true);
                 }
                 Outcome::Done(crate::dialogs::CertChoice::Always) => {
                     self.cert_ask = None;
-                    self.settings.allow_cert(info.host, info.port, info.sha256);
+                    self.settings
+                        .allow_cert(info.host, info.port, info.sha256, info.problem);
                     self.dirty = true;
                     self.start(id, true);
                 }

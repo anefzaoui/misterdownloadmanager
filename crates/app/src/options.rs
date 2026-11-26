@@ -4695,8 +4695,20 @@ impl OptionsDialog {
                     .allowed_certs
                     .iter()
                     .map(|c| {
+                        let reason = match c.problem {
+                            // i18n: Allowed certificates table: short reason label
+                            mdm_engine::CertProblem::Expired => crate::i18n::t("Expired"),
+                            // i18n: Allowed certificates table: short reason label
+                            mdm_engine::CertProblem::NotYetValid => crate::i18n::t("Not yet valid"),
+                            // i18n: Allowed certificates table: short reason label
+                            mdm_engine::CertProblem::Untrusted => crate::i18n::t("Not trusted"),
+                            // i18n: Allowed certificates table: short reason label
+                            mdm_engine::CertProblem::WrongName => crate::i18n::t("Wrong name"),
+                            _ => crate::i18n::t("Other"),
+                        };
                         vec![
                             crate::dialogs::site_label(&c.host, c.port),
+                            reason.to_owned(),
                             crate::dialogs::format_fingerprint(&c.sha256),
                         ]
                     })
@@ -4730,7 +4742,9 @@ impl OptionsDialog {
                             r(o, 14.0, 56.0, 432.0, 154.0),
                             &[
                                 // i18n: column title: site name and port
-                                (crate::i18n::mark("Site"), 165.0),
+                                (crate::i18n::mark("Site"), 135.0),
+                                // i18n: column title: certificate refusal reason allowed
+                                (crate::i18n::mark("Reason"), 225.0),
                                 // i18n: column title: SHA-256 certificate fingerprint
                                 (crate::i18n::mark("Certificate (SHA-256)"), 432.0),
                             ],

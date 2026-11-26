@@ -139,7 +139,8 @@ pub fn is_no_roots(e: &(dyn std::error::Error + 'static)) -> bool {
 
 /// Why a server's certificate was refused (`Error::Certificate`): what a browser warns about
 /// too. MDM has no way around it: the user is told what is wrong with it.
-#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
+#[serde(rename_all = "snake_case")]
 pub enum CertProblem {
     /// Its validity ended.
     Expired,
@@ -155,7 +156,23 @@ pub enum CertProblem {
     /// It isn't made for a website (its extended key usage leaves out TLS servers).
     NotForWebsites,
     /// Refused for another reason (a bad signature, an encoding).
+    #[default]
     Other,
+}
+
+impl CertProblem {
+    /// Whether the user may continue past this refusal (#1964): only untrusted/self-signed,
+    /// expired/not-yet-valid, and wrong-name certificates may be allowed. Revoked, non-website,
+    /// and other failures always stay refused.
+    pub fn can_allow(self) -> bool {
+        matches!(
+            self,
+            CertProblem::Expired
+                | CertProblem::NotYetValid
+                | CertProblem::Untrusted
+                | CertProblem::WrongName
+        )
+    }
 }
 
 impl std::fmt::Display for CertProblem {
@@ -175,19 +192,27 @@ impl std::fmt::Display for CertProblem {
 }
 
 /// A certificate the user chose to trust for one site (`host` and `port`, pinned to its
-/// SHA-256 fingerprint, #1964). If the server later presents another certificate, MDM asks again.
+/// SHA-256 fingerprint and the accepted `problem`, #1964). If the server later presents another
+/// certificate or fails for a different reason, MDM asks again.
 #[derive(Clone, Debug, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
 pub struct AllowedCert {
     pub host: String,
     pub port: u16,
     /// Lowercase 64-character hex SHA-256 of the leaf certificate's DER bytes.
     pub sha256: String,
+    /// The specific refusal reason the user accepted; if the certificate later fails for a
+    /// different reason (e.g. a self-signed certificate subsequently expires), it is asked again.
+    #[serde(default)]
+    pub problem: CertProblem,
 }
 
 impl AllowedCert {
-    /// Whether this entry matches `(host, port, sha256)` (host and hex compared case-insensitively).
-    pub fn matches(&self, host: &str, port: u16, sha256: &str) -> bool {
-        self.port == port
+    /// Whether this entry matches `(host, port, sha256, problem)` (host and hex compared
+    /// case-insensitively), and the problem is one that may be allowed.
+    pub fn matches(&self, host: &str, port: u16, sha256: &str, problem: CertProblem) -> bool {
+        problem.can_allow()
+            && self.problem == problem
+            && self.port == port
             && self.host.eq_ignore_ascii_case(host)
             && self.sha256.eq_ignore_ascii_case(sha256)
     }
@@ -338,11 +363,35 @@ pub fn inspect_cert(der: &[u8]) -> (bool, Option<String>) {
 /// Configure `builder` for a download or probe, using the system verifier + Mozilla roots +
 /// `extra_roots`, while allowing `allowed_certs` for their pinned `(host, port, sha256)` and
 /// recording any refused certificate into `on_refusal`.
+/// Port(s) seen for a host on one `Client` (#1964): `Single(p)` when every request to that host
+/// on this client used `p`, or `Ambiguous { latest }` if a redirect hit the same host on a
+/// different port (in which case pins are never matched so a wrong port never slips through).
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub(crate) enum HostPort {
+    Single(u16),
+    Ambiguous { latest: u16 },
+}
+
+impl HostPort {
+    pub(crate) fn record(map: &mut HashMap<String, HostPort>, host: &str, port: u16) {
+        let key = host.to_ascii_lowercase();
+        match map.get(&key).copied() {
+            None => {
+                map.insert(key, HostPort::Single(port));
+            }
+            Some(HostPort::Single(p)) if p == port => {}
+            Some(_) => {
+                map.insert(key, HostPort::Ambiguous { latest: port });
+            }
+        }
+    }
+}
+
 pub(crate) fn configure_site(
     builder: reqwest::ClientBuilder,
     extra_roots: &[Vec<u8>],
     allowed_certs: &[AllowedCert],
-    ports: Arc<Mutex<HashMap<String, u16>>>,
+    ports: Arc<Mutex<HashMap<String, HostPort>>>,
     default_port: u16,
     on_refusal: Arc<dyn Fn(CertInfo) + Send + Sync>,
 ) -> reqwest::ClientBuilder {
@@ -372,7 +421,7 @@ pub(crate) fn configure_site(
 struct SiteVerifier {
     inner: Arc<dyn ServerCertVerifier>,
     allowed: Vec<AllowedCert>,
-    ports: Arc<Mutex<HashMap<String, u16>>>,
+    ports: Arc<Mutex<HashMap<String, HostPort>>>,
     default_port: u16,
     on_refusal: Arc<dyn Fn(CertInfo) + Send + Sync>,
 }
@@ -387,13 +436,19 @@ impl std::fmt::Debug for SiteVerifier {
 }
 
 impl SiteVerifier {
-    fn port_for(&self, host: &str) -> u16 {
-        self.ports
+    /// Returns `(reported_port, unambiguous)` for `host`.
+    fn port_for(&self, host: &str) -> (u16, bool) {
+        match self
+            .ports
             .lock()
             .unwrap()
             .get(&host.to_ascii_lowercase())
             .copied()
-            .unwrap_or(self.default_port)
+        {
+            Some(HostPort::Single(p)) => (p, true),
+            Some(HostPort::Ambiguous { latest }) => (latest, false),
+            None => (self.default_port, false),
+        }
     }
 }
 
@@ -416,13 +471,19 @@ impl ServerCertVerifier for SiteVerifier {
             Ok(v) => Ok(v),
             Err(err) => {
                 let host = server_name.to_str().to_string();
-                let port = self.port_for(&host);
+                let (port, unambiguous) = self.port_for(&host);
                 let sha256 = sha256_hex(end_entity.as_ref());
-                if self.allowed.iter().any(|a| a.matches(&host, port, &sha256)) {
+                let problem = certificate_problem(&err).unwrap_or(CertProblem::Other);
+                if unambiguous
+                    && problem.can_allow()
+                    && self
+                        .allowed
+                        .iter()
+                        .any(|a| a.matches(&host, port, &sha256, problem))
+                {
                     return Ok(ServerCertVerified::assertion());
                 }
                 let (self_signed, not_after) = inspect_cert(end_entity.as_ref());
-                let problem = certificate_problem(&err).unwrap_or(CertProblem::Other);
                 let expired_since = (problem == CertProblem::Expired)
                     .then_some(not_after)
                     .flatten();
@@ -908,6 +969,7 @@ mod tests {
                 host: info.host.clone(),
                 port: port + 1,
                 sha256: info.sha256.clone(),
+                problem: info.problem,
             });
             assert!(
                 matches!(
@@ -923,6 +985,7 @@ mod tests {
                 host: info.host.clone(),
                 port,
                 sha256: "0".repeat(64),
+                problem: info.problem,
             });
             assert!(
                 matches!(
@@ -932,17 +995,226 @@ mod tests {
                 "{cert:?}: wrong fingerprint must still fail"
             );
 
-            // Matching (host, port, sha256) succeeds.
+            // Different problem for the same cert is still refused.
+            let other_problem = if info.problem == CertProblem::Expired {
+                CertProblem::Untrusted
+            } else {
+                CertProblem::Expired
+            };
+            let mut wrong_reason = base_opts.clone();
+            wrong_reason.allowed_certs.push(AllowedCert {
+                host: info.host.clone(),
+                port,
+                sha256: info.sha256.clone(),
+                problem: other_problem,
+            });
+            assert!(
+                matches!(
+                    crate::probe(
+                        url.clone(),
+                        reqwest::header::HeaderMap::new(),
+                        &wrong_reason
+                    )
+                    .await,
+                    Err(crate::Error::Certificate(_))
+                ),
+                "{cert:?}: different problem must still fail"
+            );
+
+            // Matching (host, port, sha256, problem) succeeds.
             let mut allowed = base_opts.clone();
             allowed.allowed_certs.push(AllowedCert {
                 host: info.host,
                 port,
                 sha256: info.sha256,
+                problem: info.problem,
             });
             let probed = crate::probe(url, reqwest::header::HeaderMap::new(), &allowed)
                 .await
                 .unwrap();
             assert_eq!(probed.size, Some(16 * 1024));
         }
+    }
+
+    /// #1964: only Untrusted, Expired, NotYetValid, and WrongName may be allowed; Revoked,
+    /// NotForWebsites, and Other always stay refused.
+    #[test]
+    fn only_allowable_problems_can_be_bypassed() {
+        for p in [
+            CertProblem::Expired,
+            CertProblem::NotYetValid,
+            CertProblem::Untrusted,
+            CertProblem::WrongName,
+        ] {
+            assert!(p.can_allow(), "{p:?}");
+            let a = AllowedCert {
+                host: "example.com".into(),
+                port: 443,
+                sha256: "aa".repeat(32),
+                problem: p,
+            };
+            assert!(a.matches("example.com", 443, &"aa".repeat(32), p));
+        }
+        for p in [
+            CertProblem::Revoked,
+            CertProblem::NotForWebsites,
+            CertProblem::Other,
+        ] {
+            assert!(!p.can_allow(), "{p:?}");
+            let a = AllowedCert {
+                host: "example.com".into(),
+                port: 443,
+                sha256: "aa".repeat(32),
+                problem: p,
+            };
+            assert!(!a.matches("example.com", 443, &"aa".repeat(32), p));
+        }
+    }
+
+    /// #1964: a pin for `localhost` must not allow `127.0.0.1`, and an allowed site redirecting
+    /// to another host with a bad certificate must still be refused, naming the second host.
+    #[tokio::test]
+    async fn pin_does_not_cross_hosts_or_redirects() {
+        use mdm_labserver::Cert;
+        let lab1 = LabServer::start(Config {
+            tls: true,
+            cert: Cert::SelfSigned,
+            ..Config::default()
+        })
+        .await
+        .unwrap();
+        let lab2 = LabServer::start(Config {
+            tls: true,
+            cert: Cert::SelfSigned,
+            ..Config::default()
+        })
+        .await
+        .unwrap();
+        let p1 = lab1.addr().port();
+        let p2 = lab2.addr().port();
+
+        let err = crate::probe(
+            url::Url::parse(&format!("https://localhost:{p1}/gen/16K")).unwrap(),
+            reqwest::header::HeaderMap::new(),
+            &crate::Options::default(),
+        )
+        .await
+        .unwrap_err();
+        let crate::Error::Certificate(refusal) = err else {
+            panic!("expected certificate error, got {err:?}");
+        };
+        let info1 = refusal.info.unwrap();
+
+        let opts = crate::Options {
+            allowed_certs: vec![AllowedCert {
+                host: "localhost".into(),
+                port: p1,
+                sha256: info1.sha256,
+                problem: info1.problem,
+            }],
+            ..Default::default()
+        };
+
+        // Pin for `localhost` must not let `127.0.0.1` through.
+        let ip_err = crate::probe(
+            url::Url::parse(&format!("https://127.0.0.1:{p1}/gen/16K")).unwrap(),
+            reqwest::header::HeaderMap::new(),
+            &opts,
+        )
+        .await
+        .unwrap_err();
+        let crate::Error::Certificate(ip_refusal) = ip_err else {
+            panic!("expected certificate error for 127.0.0.1, got {ip_err:?}");
+        };
+        assert_eq!(ip_refusal.info.unwrap().host, "127.0.0.1");
+
+        // Allowed `localhost:<p1>` redirecting to `127.0.0.1:<p2>` must still be refused,
+        // naming the second host and port.
+        let target = format!("https://127.0.0.1:{p2}/gen/16K");
+        let redir_url = url::Url::parse(&format!(
+            "https://localhost:{p1}/redirect?to={}",
+            url::form_urlencoded::byte_serialize(target.as_bytes()).collect::<String>()
+        ))
+        .unwrap();
+        let redir_err = crate::probe(redir_url, reqwest::header::HeaderMap::new(), &opts)
+            .await
+            .unwrap_err();
+        let crate::Error::Certificate(redir_refusal) = redir_err else {
+            panic!("expected certificate error after redirect, got {redir_err:?}");
+        };
+        let redir_info = redir_refusal.info.unwrap();
+        assert_eq!(redir_info.host, "127.0.0.1");
+        assert_eq!(redir_info.port, p2);
+    }
+
+    /// #1964: redirecting to the same host on a different port tracks the port per connection,
+    /// so the second port is refused with its own port and the first port stays allowed.
+    #[tokio::test]
+    async fn redirect_to_same_host_on_another_port_tracks_port_per_connection() {
+        use mdm_labserver::Cert;
+        let lab1 = LabServer::start(Config {
+            tls: true,
+            cert: Cert::SelfSigned,
+            ..Config::default()
+        })
+        .await
+        .unwrap();
+        let lab2 = LabServer::start(Config {
+            tls: true,
+            cert: Cert::SelfSigned,
+            ..Config::default()
+        })
+        .await
+        .unwrap();
+        let p1 = lab1.addr().port();
+        let p2 = lab2.addr().port();
+
+        let err = crate::probe(
+            url::Url::parse(&format!("https://localhost:{p1}/gen/16K")).unwrap(),
+            reqwest::header::HeaderMap::new(),
+            &crate::Options::default(),
+        )
+        .await
+        .unwrap_err();
+        let crate::Error::Certificate(r1) = err else {
+            panic!("expected certificate error, got {err:?}");
+        };
+        let info1 = r1.info.unwrap();
+
+        let opts = crate::Options {
+            allowed_certs: vec![AllowedCert {
+                host: "localhost".into(),
+                port: p1,
+                sha256: info1.sha256,
+                problem: info1.problem,
+            }],
+            ..Default::default()
+        };
+
+        let target = format!("https://localhost:{p2}/gen/16K");
+        let redir_url = url::Url::parse(&format!(
+            "https://localhost:{p1}/redirect?to={}",
+            url::form_urlencoded::byte_serialize(target.as_bytes()).collect::<String>()
+        ))
+        .unwrap();
+        let redir_err = crate::probe(redir_url, reqwest::header::HeaderMap::new(), &opts)
+            .await
+            .unwrap_err();
+        let crate::Error::Certificate(redir_refusal) = redir_err else {
+            panic!("expected certificate error on second port, got {redir_err:?}");
+        };
+        let redir_info = redir_refusal.info.unwrap();
+        assert_eq!(redir_info.host, "localhost");
+        assert_eq!(redir_info.port, p2);
+
+        // First port still succeeds.
+        let ok = crate::probe(
+            url::Url::parse(&format!("https://localhost:{p1}/gen/16K")).unwrap(),
+            reqwest::header::HeaderMap::new(),
+            &opts,
+        )
+        .await
+        .unwrap();
+        assert_eq!(ok.size, Some(16 * 1024));
     }
 }

@@ -2479,6 +2479,7 @@ impl FileInfo {
                         host: info.host.to_ascii_lowercase(),
                         port: info.port,
                         sha256: info.sha256,
+                        problem: info.problem,
                     };
                     self.once_certs.push(cert.clone());
                     self.request.opts.allowed_certs.push(cert);
@@ -2490,6 +2491,7 @@ impl FileInfo {
                         host: info.host.to_ascii_lowercase(),
                         port: info.port,
                         sha256: info.sha256,
+                        problem: info.problem,
                     };
                     self.new_allowed_certs.push(cert.clone());
                     self.request.opts.allowed_certs.push(cert);
@@ -2591,7 +2593,9 @@ fn start_probe(
             .map_err(|e| {
                 let text = crate::errors::describe(&e);
                 match e {
-                    mdm_engine::Error::Certificate(refusal) if refusal.info.is_some() => {
+                    mdm_engine::Error::Certificate(refusal)
+                        if refusal.problem.can_allow() && refusal.info.is_some() =>
+                    {
                         ProbeError::Cert(text, *refusal.info.unwrap())
                     }
                     _ => ProbeError::Text(text),
