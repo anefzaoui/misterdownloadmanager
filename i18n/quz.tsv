@@ -7815,6 +7815,28 @@ extension	Left to the browser: {name}	Wamp'unapaq saqesqa: {name}
 #, machine
 extension	Link copied	Tupay k’askachisqa
 #. text in the browser extension
+#. the toolbar button's status: all links refused by another MDM
+#. {count} = a number (keep the braces as they are)
+#, machine
+extension	Links refused: {count}	Waqchachisqa t'inkikuna: {count}
+#. text in the browser extension
+#. the toolbar button's status: links sent to another MDM
+#. {count} = a number (keep the braces as they are)
+#, machine
+extension	Links sent: {count}	Kachasqa t'inkikuna: {count}
+#. text in the browser extension
+#. the toolbar button's status: some links refused by another MDM
+#, machine
+extension	Links sent: {sent}, refused: {refused}	Kachasqa t'inkikuna: {sent}, waqchachisqa: {refused}
+#. text in the browser extension
+#. the toolbar button's status: some links refused and some left out
+#, machine
+extension	Links sent: {sent}, refused: {refused}, {left} left out	Kachasqa t'inkikuna: {sent}, waqchachisqa: {refused}, {left} saqisqa
+#. text in the browser extension
+#. the toolbar button's status: links sent to another MDM, some left out by cap or filter
+#, machine
+extension	Links sent: {sent}, {left} left out	Kachasqa t'inkikuna: {sent}, {left} saqisqa
+#. text in the browser extension
 #. beside a stream in the toolbar button's popup: it is a live broadcast (no fixed length); short
 #, machine
 extension	Live	Kawsay
@@ -7918,6 +7940,10 @@ extension	Never on {site}	Manam imayna {site} nisqapi
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
 #, machine
 extension	Never take downloads from {site}	Manam {site}manta uraykachiykunata hap'inichu
+#. text in the browser extension
+#. the toolbar button's status: no links matched capturable file types
+#, machine
+extension	No capturable links ({left} left out)	Mana hap'ina t'inkikuna ({left} saqisqa)
 #. text in the browser extension
 #. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when no download matches the search; the words searched for follow
 #, machine
@@ -8109,6 +8135,10 @@ extension	Sent to Link grabber: tick the ones to download there.	Link grabber ni
 #. shown briefly on the download button after it was clicked; keep the name Mister Download Manager as it is
 #, machine
 extension	Sent to Mister Download Manager	Mister Download Manager nisqaman kachasqa
+#. text in the browser extension
+#. the toolbar button's status when the paired server does not answer
+#, machine
+extension	Server not reached	Servidor mana chayasqa
 #. text in the browser extension
 #. tab in the toolbar button's popup: the extension's settings; noun, short
 #, machine

@@ -850,5 +850,78 @@
   },
   "popup_video_reset_done": {
     "message": "Πίσω στη γωνία του, το μενού του εμφανίζει τα πάντα, σε κάθε ιστότοπο"
+  },
+  "status_links_sent": {
+    "message": "Στάλθηκαν σύνδεσμοι: $count$",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "10"
+      }
+    }
+  },
+  "status_links_cut": {
+    "message": "Στάλθηκαν σύνδεσμοι: $sent$, $left$ παραλείφθηκαν",
+    "placeholders": {
+      "sent": {
+        "content": "$1",
+        "example": "100"
+      },
+      "left": {
+        "content": "$2",
+        "example": "20"
+      }
+    }
+  },
+  "status_links_partial": {
+    "message": "Στάλθηκαν σύνδεσμοι: $sent$, απορρίφθηκαν: $refused$",
+    "placeholders": {
+      "sent": {
+        "content": "$1",
+        "example": "5"
+      },
+      "refused": {
+        "content": "$2",
+        "example": "2"
+      }
+    }
+  },
+  "status_links_partial_cut": {
+    "message": "Στάλθηκαν σύνδεσμοι: $sent$, απορρίφθηκαν: $refused$, $left$ παραλείφθηκαν",
+    "placeholders": {
+      "sent": {
+        "content": "$1",
+        "example": "5"
+      },
+      "refused": {
+        "content": "$2",
+        "example": "2"
+      },
+      "left": {
+        "content": "$3",
+        "example": "1"
+      }
+    }
+  },
+  "status_links_refused": {
+    "message": "Απορρίφθηκαν σύνδεσμοι: $count$",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "status_links_none": {
+    "message": "Δεν υπάρχουν σύνδεσμοι για λήψη ($left$ παραλείφθηκαν)",
+    "placeholders": {
+      "left": {
+        "content": "$1",
+        "example": "5"
+      }
+    }
+  },
+  "status_unreachable": {
+    "message": "Ο διακομιστής δεν είναι προσβάσιμος"
   }
 }

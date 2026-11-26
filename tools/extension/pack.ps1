@@ -31,6 +31,11 @@ foreach ($kind in "chromium", "firefox", "safari") {
   Copy-Item (Join-Path $src "icons") (Join-Path $dir "icons") -Recurse
   # Its texts in the browser's language (tools/extension/locales.py).
   Copy-Item (Join-Path $src "_locales") (Join-Path $dir "_locales") -Recurse
+  # Sinhala is Firefox's alone: Chrome and Safari have no Sinhala, and the Chrome Web Store and
+  # Edge Add-ons check the locales a package carries when it is uploaded.
+  if ($kind -ne "firefox" -and (Test-Path (Join-Path $dir "_locales/si"))) {
+    Remove-Item -LiteralPath (Join-Path $dir "_locales/si") -Recurse -Force
+  }
   # Norwegian: Chrome takes only "no", Firefox looks for "nb" (Bokmål) as its users' browsers say.
   if ($kind -eq "firefox" -and (Test-Path (Join-Path $dir "_locales/no"))) {
     Copy-Item (Join-Path $dir "_locales/no") (Join-Path $dir "_locales/nb") -Recurse

@@ -850,5 +850,78 @@
   },
   "popup_video_reset_done": {
     "message": "عاد إلى زاويته، وقائمته تعرض كل شيء، في كل موقع"
+  },
+  "status_links_sent": {
+    "message": "الروابط المرسلة: $count$",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "10"
+      }
+    }
+  },
+  "status_links_cut": {
+    "message": "الروابط المرسلة: $sent$، المتروكة: $left$",
+    "placeholders": {
+      "sent": {
+        "content": "$1",
+        "example": "100"
+      },
+      "left": {
+        "content": "$2",
+        "example": "20"
+      }
+    }
+  },
+  "status_links_partial": {
+    "message": "الروابط المرسلة: $sent$، المرفوضة: $refused$",
+    "placeholders": {
+      "sent": {
+        "content": "$1",
+        "example": "5"
+      },
+      "refused": {
+        "content": "$2",
+        "example": "2"
+      }
+    }
+  },
+  "status_links_partial_cut": {
+    "message": "الروابط المرسلة: $sent$، المرفوضة: $refused$، المتروكة: $left$",
+    "placeholders": {
+      "sent": {
+        "content": "$1",
+        "example": "5"
+      },
+      "refused": {
+        "content": "$2",
+        "example": "2"
+      },
+      "left": {
+        "content": "$3",
+        "example": "1"
+      }
+    }
+  },
+  "status_links_refused": {
+    "message": "الروابط المرفوضة: $count$",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "status_links_none": {
+    "message": "لا توجد روابط قابلة للاستحواذ ($left$ تم تخطيها)",
+    "placeholders": {
+      "left": {
+        "content": "$1",
+        "example": "5"
+      }
+    }
+  },
+  "status_unreachable": {
+    "message": "لم يتم الوصول إلى الخادم"
   }
 }

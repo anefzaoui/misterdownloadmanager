@@ -1066,5 +1066,85 @@
   "popup_video_reset_done": {
     "message": "Back in its corner, its menu showing everything, on every site",
     "description": "toolbar button's popup: said for a moment after Reset: the download button over videos is in its usual corner again and its menu lists every quality, on every web site"
+  },
+  "status_links_sent": {
+    "message": "Links sent: $count$",
+    "description": "the toolbar button's status: links sent to another MDM",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "10"
+      }
+    }
+  },
+  "status_links_cut": {
+    "message": "Links sent: $sent$, $left$ left out",
+    "description": "the toolbar button's status: links sent to another MDM, some left out by cap or filter",
+    "placeholders": {
+      "sent": {
+        "content": "$1",
+        "example": "100"
+      },
+      "left": {
+        "content": "$2",
+        "example": "20"
+      }
+    }
+  },
+  "status_links_partial": {
+    "message": "Links sent: $sent$, refused: $refused$",
+    "description": "the toolbar button's status: some links refused by another MDM",
+    "placeholders": {
+      "sent": {
+        "content": "$1",
+        "example": "5"
+      },
+      "refused": {
+        "content": "$2",
+        "example": "2"
+      }
+    }
+  },
+  "status_links_partial_cut": {
+    "message": "Links sent: $sent$, refused: $refused$, $left$ left out",
+    "description": "the toolbar button's status: some links refused and some left out",
+    "placeholders": {
+      "sent": {
+        "content": "$1",
+        "example": "5"
+      },
+      "refused": {
+        "content": "$2",
+        "example": "2"
+      },
+      "left": {
+        "content": "$3",
+        "example": "1"
+      }
+    }
+  },
+  "status_links_refused": {
+    "message": "Links refused: $count$",
+    "description": "the toolbar button's status: all links refused by another MDM",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "status_links_none": {
+    "message": "No capturable links ($left$ left out)",
+    "description": "the toolbar button's status: no links matched capturable file types",
+    "placeholders": {
+      "left": {
+        "content": "$1",
+        "example": "5"
+      }
+    }
+  },
+  "status_unreachable": {
+    "message": "Server not reached",
+    "description": "the toolbar button's status when the paired server does not answer"
   }
 }

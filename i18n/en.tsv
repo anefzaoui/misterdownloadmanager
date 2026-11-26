@@ -5849,6 +5849,23 @@ extension	Left to the browser: {name}	Left to the browser: {name}
 #. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) after Copy link
 extension	Link copied	Link copied
 #. text in the browser extension
+#. the toolbar button's status: all links refused by another MDM
+#. {count} = a number (keep the braces as they are)
+extension	Links refused: {count}	Links refused: {count}
+#. text in the browser extension
+#. the toolbar button's status: links sent to another MDM
+#. {count} = a number (keep the braces as they are)
+extension	Links sent: {count}	Links sent: {count}
+#. text in the browser extension
+#. the toolbar button's status: some links refused by another MDM
+extension	Links sent: {sent}, refused: {refused}	Links sent: {sent}, refused: {refused}
+#. text in the browser extension
+#. the toolbar button's status: some links refused and some left out
+extension	Links sent: {sent}, refused: {refused}, {left} left out	Links sent: {sent}, refused: {refused}, {left} left out
+#. text in the browser extension
+#. the toolbar button's status: links sent to another MDM, some left out by cap or filter
+extension	Links sent: {sent}, {left} left out	Links sent: {sent}, {left} left out
+#. text in the browser extension
 #. beside a stream in the toolbar button's popup: it is a live broadcast (no fixed length); short
 extension	Live	Live
 #. text in the browser extension
@@ -5927,6 +5944,9 @@ extension	Never on {site}	Never on {site}
 #. switch in the This page tab in the toolbar button's popup: on, this web site's downloads are left to the browser from now on
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
 extension	Never take downloads from {site}	Never take downloads from {site}
+#. text in the browser extension
+#. the toolbar button's status: no links matched capturable file types
+extension	No capturable links ({left} left out)	No capturable links ({left} left out)
 #. text in the browser extension
 #. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when no download matches the search; the words searched for follow
 extension	No download's name or address has “{words}”.	No download's name or address has “{words}”.
@@ -6071,6 +6091,9 @@ extension	Sent to Link grabber: tick the ones to download there.	Sent to Link gr
 #. text in the browser extension
 #. shown briefly on the download button after it was clicked; keep the name Mister Download Manager as it is
 extension	Sent to Mister Download Manager	Sent to Mister Download Manager
+#. text in the browser extension
+#. the toolbar button's status when the paired server does not answer
+extension	Server not reached	Server not reached
 #. text in the browser extension
 #. tab in the toolbar button's popup: the extension's settings; noun, short
 extension	Settings	Settings

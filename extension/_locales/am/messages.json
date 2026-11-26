@@ -850,5 +850,78 @@
   },
   "popup_video_reset_done": {
     "message": "በየጣቢያው፣ በየማዕዘኑ፣ ምናሌው ሁሉንም ነገር እያሳየ"
+  },
+  "status_links_sent": {
+    "message": "አገናኞች ተልከዋል፦ $count$",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "10"
+      }
+    }
+  },
+  "status_links_cut": {
+    "message": "አገናኞች ተልከዋል፦ $sent$፣ $left$ አልተካተቱም",
+    "placeholders": {
+      "sent": {
+        "content": "$1",
+        "example": "100"
+      },
+      "left": {
+        "content": "$2",
+        "example": "20"
+      }
+    }
+  },
+  "status_links_partial": {
+    "message": "አገናኞች ተልከዋል፦ $sent$፣ ውድቅ ተደርገዋል፦ $refused$",
+    "placeholders": {
+      "sent": {
+        "content": "$1",
+        "example": "5"
+      },
+      "refused": {
+        "content": "$2",
+        "example": "2"
+      }
+    }
+  },
+  "status_links_partial_cut": {
+    "message": "አገናኞች ተልከዋል፦ $sent$፣ ውድቅ ተደርገዋል፦ $refused$፣ $left$ አልተካተቱም",
+    "placeholders": {
+      "sent": {
+        "content": "$1",
+        "example": "5"
+      },
+      "refused": {
+        "content": "$2",
+        "example": "2"
+      },
+      "left": {
+        "content": "$3",
+        "example": "1"
+      }
+    }
+  },
+  "status_links_refused": {
+    "message": "አገናኞች ውድቅ ተደርገዋል፦ $count$",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "status_links_none": {
+    "message": "ሊያዙ የሚችሉ አገናኞች የሉም ($left$ አልተካተቱም)",
+    "placeholders": {
+      "left": {
+        "content": "$1",
+        "example": "5"
+      }
+    }
+  },
+  "status_unreachable": {
+    "message": "አገልጋይ አልተደረሰበትም"
   }
 }

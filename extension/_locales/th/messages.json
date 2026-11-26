@@ -850,5 +850,78 @@
   },
   "popup_video_reset_done": {
     "message": "กลับไปอยู่มุมเดิม เมนูแสดงตัวเลือกทั้งหมดในทุกเว็บไซต์"
+  },
+  "status_links_sent": {
+    "message": "ลิงก์ที่ส่ง: $count$",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "10"
+      }
+    }
+  },
+  "status_links_cut": {
+    "message": "ลิงก์ที่ส่ง: $sent$, ถูกละเว้น: $left$",
+    "placeholders": {
+      "sent": {
+        "content": "$1",
+        "example": "100"
+      },
+      "left": {
+        "content": "$2",
+        "example": "20"
+      }
+    }
+  },
+  "status_links_partial": {
+    "message": "ลิงก์ที่ส่ง: $sent$, ถูกปฏิเสธ: $refused$",
+    "placeholders": {
+      "sent": {
+        "content": "$1",
+        "example": "5"
+      },
+      "refused": {
+        "content": "$2",
+        "example": "2"
+      }
+    }
+  },
+  "status_links_partial_cut": {
+    "message": "ลิงก์ที่ส่ง: $sent$, ถูกปฏิเสธ: $refused$, ถูกละเว้น: $left$",
+    "placeholders": {
+      "sent": {
+        "content": "$1",
+        "example": "5"
+      },
+      "refused": {
+        "content": "$2",
+        "example": "2"
+      },
+      "left": {
+        "content": "$3",
+        "example": "1"
+      }
+    }
+  },
+  "status_links_refused": {
+    "message": "ลิงก์ที่ถูกปฏิเสธ: $count$",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "status_links_none": {
+    "message": "ไม่มีลิงก์ที่จับได้ ($left$ ถูกละเว้น)",
+    "placeholders": {
+      "left": {
+        "content": "$1",
+        "example": "5"
+      }
+    }
+  },
+  "status_unreachable": {
+    "message": "ไม่สามารถเข้าถึงเซิร์ฟเวอร์ได้"
   }
 }

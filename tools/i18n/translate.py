@@ -93,7 +93,7 @@ TASHKEEL = re.compile("[\u0610-\u061a\u064b-\u065f\u0670\u06d6-\u06ed\u08d3-\u08
 BIDI = re.compile("[\u200b\u200e\u200f\u202a-\u202e\u2066-\u2069\u061c\ufeff\u00ad]")
 JOINERS = "\u200c\u200d"
 PLACEHOLDER = re.compile(r"\{[^{}]*\}")
-ACCESS = re.compile(r"&(?!&)(.)")
+ACCESS = re.compile(r"&(?!&)(\S)")
 
 RULES = """You translate the user interface of Mister Download Manager, a Windows desktop download
 manager, from English into {english} ({native}, language code {code}). Write exactly what a
