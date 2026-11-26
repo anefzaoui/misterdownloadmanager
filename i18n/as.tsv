@@ -7810,6 +7810,28 @@ extension	Left to the browser: {name}	ব্ৰাউজাৰলৈ এৰি �
 #, machine
 extension	Link copied	লিংক কপি কৰা হ’ল
 #. text in the browser extension
+#. the toolbar button's status: all links refused by another MDM
+#. {count} = a number (keep the braces as they are)
+#, machine
+extension	Links refused: {count}	লিংক অস্বীকাৰ কৰা হ’ল: {count}
+#. text in the browser extension
+#. the toolbar button's status: links sent to another MDM
+#. {count} = a number (keep the braces as they are)
+#, machine
+extension	Links sent: {count}	লিংক পঠোৱা হ’ল: {count}
+#. text in the browser extension
+#. the toolbar button's status: some links refused by another MDM
+#, machine
+extension	Links sent: {sent}, refused: {refused}	লিংক পঠোৱা হ’ল: {sent}, অস্বীকাৰ কৰা হ’ল: {refused}
+#. text in the browser extension
+#. the toolbar button's status: some links refused and some left out
+#, machine
+extension	Links sent: {sent}, refused: {refused}, {left} left out	লিংক পঠোৱা হ’ল: {sent}, অস্বীকাৰ কৰা হ’ল: {refused}, {left} বাদ দিয়া হ’ল
+#. text in the browser extension
+#. the toolbar button's status: links sent to another MDM, some left out by cap or filter
+#, machine
+extension	Links sent: {sent}, {left} left out	লিংক পঠোৱা হ’ল: {sent}, {left} বাদ দিয়া হ’ল
+#. text in the browser extension
 #. beside a stream in the toolbar button's popup: it is a live broadcast (no fixed length); short
 #, machine
 extension	Live	লাইভ
@@ -7913,6 +7935,10 @@ extension	Never on {site}	{site}-ত কেতিয়াও নহয়
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
 #, machine
 extension	Never take downloads from {site}	{site}-ৰ পৰা ডাউনলোড কেতিয়াও নল’ব
+#. text in the browser extension
+#. the toolbar button's status: no links matched capturable file types
+#, machine
+extension	No capturable links ({left} left out)	কোনো কেপচাৰ কৰিব পৰা লিংক নাই ({left} বাদ দিয়া হ’ল)
 #. text in the browser extension
 #. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when no download matches the search; the words searched for follow
 #, machine
@@ -8104,6 +8130,10 @@ extension	Sent to Link grabber: tick the ones to download there.	Link grabber-�
 #. shown briefly on the download button after it was clicked; keep the name Mister Download Manager as it is
 #, machine
 extension	Sent to Mister Download Manager	Mister Download Manager-লৈ পঠিওৱা হৈছে
+#. text in the browser extension
+#. the toolbar button's status when the paired server does not answer
+#, machine
+extension	Server not reached	ছাৰ্ভাৰৰ সৈতে সংযোগ কৰিব পৰা নগ’ল
 #. text in the browser extension
 #. tab in the toolbar button's popup: the extension's settings; noun, short
 #, machine

@@ -850,5 +850,78 @@
   },
   "popup_video_reset_done": {
     "message": "அதன் மூலையில் மீண்டும், அதன் மெனுவில் எல்லாமே, எல்லா தளங்களிலும் காட்டப்படுகிறது"
+  },
+  "status_links_sent": {
+    "message": "அனுப்பப்பட்ட இணைப்புகள்: $count$",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "10"
+      }
+    }
+  },
+  "status_links_cut": {
+    "message": "அனுப்பப்பட்ட இணைப்புகள்: $sent$, விடுபட்டவை: $left$",
+    "placeholders": {
+      "sent": {
+        "content": "$1",
+        "example": "100"
+      },
+      "left": {
+        "content": "$2",
+        "example": "20"
+      }
+    }
+  },
+  "status_links_partial": {
+    "message": "அனுப்பப்பட்ட இணைப்புகள்: $sent$, நிராகரிக்கப்பட்டவை: $refused$",
+    "placeholders": {
+      "sent": {
+        "content": "$1",
+        "example": "5"
+      },
+      "refused": {
+        "content": "$2",
+        "example": "2"
+      }
+    }
+  },
+  "status_links_partial_cut": {
+    "message": "அனுப்பப்பட்ட இணைப்புகள்: $sent$, நிராகரிக்கப்பட்டவை: $refused$, விடுபட்டவை: $left$",
+    "placeholders": {
+      "sent": {
+        "content": "$1",
+        "example": "5"
+      },
+      "refused": {
+        "content": "$2",
+        "example": "2"
+      },
+      "left": {
+        "content": "$3",
+        "example": "1"
+      }
+    }
+  },
+  "status_links_refused": {
+    "message": "நிராகரிக்கப்பட்ட இணைப்புகள்: $count$",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "status_links_none": {
+    "message": "பிடிக்கக்கூடிய இணைப்புகள் இல்லை ($left$ விடப்பட்டவை)",
+    "placeholders": {
+      "left": {
+        "content": "$1",
+        "example": "5"
+      }
+    }
+  },
+  "status_unreachable": {
+    "message": "சேவையகம் அடையப்படவில்லை"
   }
 }

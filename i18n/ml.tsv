@@ -7806,6 +7806,28 @@ extension	Left to the browser: {name}	ബ്രൗസറിനായി വി�
 #, machine
 extension	Link copied	ലിങ്ക് പകർത്തി
 #. text in the browser extension
+#. the toolbar button's status: all links refused by another MDM
+#. {count} = a number (keep the braces as they are)
+#, machine
+extension	Links refused: {count}	ലിങ്കുകൾ നിരസിച്ചു: {count}
+#. text in the browser extension
+#. the toolbar button's status: links sent to another MDM
+#. {count} = a number (keep the braces as they are)
+#, machine
+extension	Links sent: {count}	ലിങ്കുകൾ അയച്ചു: {count}
+#. text in the browser extension
+#. the toolbar button's status: some links refused by another MDM
+#, machine
+extension	Links sent: {sent}, refused: {refused}	ലിങ്കുകൾ അയച്ചു: {sent}, നിരസിച്ചു: {refused}
+#. text in the browser extension
+#. the toolbar button's status: some links refused and some left out
+#, machine
+extension	Links sent: {sent}, refused: {refused}, {left} left out	ലിങ്കുകൾ അയച്ചു: {sent}, നിരസിച്ചു: {refused}, {left} ഒഴിവാക്കി
+#. text in the browser extension
+#. the toolbar button's status: links sent to another MDM, some left out by cap or filter
+#, machine
+extension	Links sent: {sent}, {left} left out	ലിങ്കുകൾ അയച്ചു: {sent}, {left} ഒഴിവാക്കി
+#. text in the browser extension
 #. beside a stream in the toolbar button's popup: it is a live broadcast (no fixed length); short
 #, machine
 extension	Live	തത്സമയം
@@ -7909,6 +7931,10 @@ extension	Never on {site}	{site} എന്നതിൽ ഒരിക്കലു�
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
 #, machine
 extension	Never take downloads from {site}	{site} ൽ നിന്നുള്ള ഡൗൺലോഡുകൾ ഇനി എടുക്കരുത്
+#. text in the browser extension
+#. the toolbar button's status: no links matched capturable file types
+#, machine
+extension	No capturable links ({left} left out)	പിടിച്ചെടുക്കാവുന്ന ലിങ്കുകളില്ല ({left} ഒഴിവാക്കി)
 #. text in the browser extension
 #. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when no download matches the search; the words searched for follow
 #, machine
@@ -8100,6 +8126,10 @@ extension	Sent to Link grabber: tick the ones to download there.	ലിങ്ക
 #. shown briefly on the download button after it was clicked; keep the name Mister Download Manager as it is
 #, machine
 extension	Sent to Mister Download Manager	Mister Download Manager ലേക്ക് അയച്ചു
+#. text in the browser extension
+#. the toolbar button's status when the paired server does not answer
+#, machine
+extension	Server not reached	സെർവറിൽ എത്തിച്ചേരാനായില്ല
 #. text in the browser extension
 #. tab in the toolbar button's popup: the extension's settings; noun, short
 #, machine

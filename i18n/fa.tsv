@@ -7754,6 +7754,28 @@ extension	Left to the browser: {name}	واگذارشده به مرورگر: {nam
 #, machine
 extension	Link copied	پیوند کپی شد
 #. text in the browser extension
+#. the toolbar button's status: all links refused by another MDM
+#. {count} = a number (keep the braces as they are)
+#, machine
+extension	Links refused: {count}	پیوندهای رد شده: {count}
+#. text in the browser extension
+#. the toolbar button's status: links sent to another MDM
+#. {count} = a number (keep the braces as they are)
+#, machine
+extension	Links sent: {count}	پیوندهای ارسال شده: {count}
+#. text in the browser extension
+#. the toolbar button's status: some links refused by another MDM
+#, machine
+extension	Links sent: {sent}, refused: {refused}	پیوندهای ارسال شده: {sent}، رد شده: {refused}
+#. text in the browser extension
+#. the toolbar button's status: some links refused and some left out
+#, machine
+extension	Links sent: {sent}, refused: {refused}, {left} left out	پیوندهای ارسال شده: {sent}، رد شده: {refused}، {left} مورد باقی‌مانده
+#. text in the browser extension
+#. the toolbar button's status: links sent to another MDM, some left out by cap or filter
+#, machine
+extension	Links sent: {sent}, {left} left out	پیوندهای ارسال شده: {sent}، {left} مورد باقی‌مانده
+#. text in the browser extension
 #. beside a stream in the toolbar button's popup: it is a live broadcast (no fixed length); short
 #, machine
 extension	Live	زنده
@@ -7856,6 +7878,10 @@ extension	Never on {site}	هرگز در {site}
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
 #, machine
 extension	Never take downloads from {site}	هرگز بارگیری‌های {site} را دریافت نکنید
+#. text in the browser extension
+#. the toolbar button's status: no links matched capturable file types
+#, machine
+extension	No capturable links ({left} left out)	هیچ پیوند قابل دریافت نیست ({left} مورد باقی‌مانده)
 #. text in the browser extension
 #. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when no download matches the search; the words searched for follow
 #, machine
@@ -8040,6 +8066,10 @@ extension	Sent to Link grabber: tick the ones to download there.	به گردآو
 #. shown briefly on the download button after it was clicked; keep the name Mister Download Manager as it is
 #, machine
 extension	Sent to Mister Download Manager	به Mister Download Manager ارسال شد
+#. text in the browser extension
+#. the toolbar button's status when the paired server does not answer
+#, machine
+extension	Server not reached	سرور در دسترس نیست
 #. text in the browser extension
 #. tab in the toolbar button's popup: the extension's settings; noun, short
 #, machine
