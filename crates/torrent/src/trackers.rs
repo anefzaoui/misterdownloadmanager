@@ -149,22 +149,51 @@ pub fn in_magnet(magnet: &str) -> Vec<String> {
 /// link (`so=`).
 const MAGNET_KEYS: [&str; 3] = ["xt", "dn", "tr"];
 
+/// Normalizes a `xt=urn:btih:<32-char base32>` parameter to uppercase so `librqbit::Magnet::parse`
+/// accepts lowercase RFC 4648 Base32 info hashes. Other pairs are kept unchanged.
+fn normalize_magnet_xt<'a>(pair: &'a str, value: &str) -> std::borrow::Cow<'a, str> {
+    let Some(rest) = value
+        .get(..9)
+        .filter(|p| p.eq_ignore_ascii_case("urn:btih:"))
+        .map(|_| &value[9..])
+    else {
+        return std::borrow::Cow::Borrowed(pair);
+    };
+    let is_base32 = rest.len() == 32
+        && rest
+            .bytes()
+            .all(|b| b.is_ascii_alphabetic() || matches!(b, b'2'..=b'7'));
+    if is_base32
+        && (rest.bytes().any(|b| b.is_ascii_lowercase()) || !value.starts_with("urn:btih:"))
+    {
+        std::borrow::Cow::Owned(format!("xt=urn:btih:{}", rest.to_ascii_uppercase()))
+    } else {
+        std::borrow::Cow::Borrowed(pair)
+    }
+}
+
 /// A magnet link with only the parts MDM reads ([`MAGNET_KEYS`]), and of its trackers only those
 /// MDM may contact. Each pair is read decoded, its name as well as its value (`%74r=` is a
-/// `tr=`), with the names as librqbit matches them; the pairs kept stay as they were written.
+/// `tr=`), with the names as librqbit matches them; the pairs kept stay as they were written
+/// (except lowercase Base32 `urn:btih:` hashes, which are uppercased for `librqbit`).
 pub fn filter_magnet(magnet: &str, proxied: bool) -> String {
     let Some(url) = magnet_url(magnet) else {
         return magnet.to_owned();
     };
-    let kept: Vec<&str> = url
+    let kept: Vec<std::borrow::Cow<'_, str>> = url
         .query()
         .unwrap_or_default()
         .split('&')
-        .filter(
+        .filter_map(
             |pair| match url::form_urlencoded::parse(pair.as_bytes()).next() {
-                Some((k, v)) if k == "tr" => allowed(&v, proxied),
-                Some((k, _)) => MAGNET_KEYS.contains(&k.as_ref()),
-                None => false,
+                Some((k, v)) if k == "tr" => {
+                    allowed(&v, proxied).then_some(std::borrow::Cow::Borrowed(pair))
+                }
+                Some((k, v)) if k == "xt" => Some(normalize_magnet_xt(pair, &v)),
+                Some((k, _)) if MAGNET_KEYS.contains(&k.as_ref()) => {
+                    Some(std::borrow::Cow::Borrowed(pair))
+                }
+                _ => None,
             },
         )
         .collect();
@@ -541,6 +570,24 @@ mod tests {
         // A hybrid link's two hashes both stay.
         let both = format!("magnet:?{hash}&xt=urn:btmh:1220{}", "ab".repeat(32));
         assert_eq!(filter_magnet(&both, false), both);
+    }
+
+    #[test]
+    fn lowercase_base32_magnet_is_accepted_by_librqbit() {
+        let link = "magnet:?xt=urn:btih:o63ivnaqbsj4sbze2ihgta6egybhdo4l&tr=udp%3A%2F%2Ftracker.opentrackr.org%3A1337%2Fannounce&dn=BAIXARAPIDO.COM-.EPISODIO-04.WEB-DL.1080P.MKV.5.1.-DUBLADO-DUAL-AUDIO-.The.Chosen.S06E04.1080p.WEB-DL.DUAL.5.1.";
+        assert!(librqbit::Magnet::parse(link).is_err());
+        let filtered = filter_magnet(link, false);
+        assert!(filtered.contains("xt=urn:btih:O63IVNAQBSJ4SBZE2IHGTA6EGYBHDO4L"));
+        let parsed =
+            librqbit::Magnet::parse(&filtered).expect("lowercase base32 magnet should parse");
+        assert_eq!(
+            parsed.as_id20().expect("btih hash").as_string(),
+            "77b68ab4100c93c90724d20e6983c4360271bb8b"
+        );
+        assert_eq!(
+            parsed.trackers,
+            ["udp://tracker.opentrackr.org:1337/announce"]
+        );
     }
 
     /// Add trackers (#39): new ones after the ones there, each once, keys still sorted, the info
