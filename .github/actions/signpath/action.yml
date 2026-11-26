@@ -1,0 +1,191 @@
+name: SignPath signing request
+description: >-
+  Signs one artifact of this run through SignPath (signpath.io), the way release.yml uses it for
+  the Windows files: SignPath fetches the artifact from GitHub itself (by its id, so it records
+  the repository, commit, ref and run it came from), the request carries the version, commit and
+  ref as its parameters, and the log and the run's summary say which request to approve, with
+  its link and the files' SHA-256. It then waits (several hours: a release-signing request waits
+  for the maintainer's approval), downloads the signed files and checks them: the same files as
+  sent, each .exe changed and carrying an Authenticode signature (a valid one, for
+  release-signing). A request denied, failed or not done in time fails the job: nothing unsigned
+  goes on. Windows runners only (Get-AuthenticodeSignature).
+inputs:
+  api-token:
+    description: SignPath's API token (the SIGNPATH_API_TOKEN secret)
+    required: true
+  organization-id:
+    description: SignPath organization
+    required: true
+  project-slug:
+    description: SignPath project
+    required: true
+  signing-policy-slug:
+    description: test-signing or release-signing
+    required: true
+  artifact-name:
+    description: The artifact of this run to sign (uploaded by an earlier job)
+    required: true
+  artifact-id:
+    description: Its id (actions/upload-artifact's artifact-id output)
+    required: true
+  version:
+    description: The version every signed file must say it is (the artifact configuration's)
+    required: true
+  what:
+    description: What is signed, for the log ("the programs", "the installers")
+    required: true
+  output-directory:
+    description: Where the signed files go
+    required: true
+  wait-minutes:
+    description: How long to wait for the request to be done (approval included)
+    default: "330"
+outputs:
+  signing-request-url:
+    description: The request on SignPath's site
+    value: ${{ steps.submit.outputs.signing-request-web-url }}
+runs:
+  using: composite
+  steps:
+    # What is sent, to list it for the approver and to compare with what comes back.
+    - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+      with:
+        name: ${{ inputs.artifact-name }}
+        path: ${{ runner.temp }}/signpath-sent/${{ inputs.artifact-name }}
+
+    # Submitted without waiting here: the action returns once SignPath has fetched the artifact
+    # (its GitHub token lasts only as long as the run), so the request's link is known before the
+    # wait below. Its parameters are .signpath/artifact-configuration.xml's.
+    - name: Submit the signing request
+      id: submit
+      uses: signpath/github-action-submit-signing-request@f6d04783b4569d051e0c80105fe66e82819d0092 # v3.0
+      with:
+        api-token: ${{ inputs.api-token }}
+        organization-id: ${{ inputs.organization-id }}
+        project-slug: ${{ inputs.project-slug }}
+        signing-policy-slug: ${{ inputs.signing-policy-slug }}
+        github-artifact-id: ${{ inputs.artifact-id }}
+        wait-for-completion: false
+        wait-for-completion-timeout-in-seconds: 900
+        parameters: |
+          version: ${{ toJSON(inputs.version) }}
+          commit: ${{ toJSON(github.sha) }}
+          ref: ${{ toJSON(github.ref) }}
+
+    - name: What to check before approving
+      shell: pwsh
+      env:
+        SENT: ${{ runner.temp }}/signpath-sent/${{ inputs.artifact-name }}
+        URL: ${{ steps.submit.outputs.signing-request-web-url }}
+        POLICY: ${{ inputs.signing-policy-slug }}
+        VERSION: ${{ inputs.version }}
+        WHAT: ${{ inputs.what }}
+        REPO: ${{ github.repository }}
+        COMMIT: ${{ github.sha }}
+        REF: ${{ github.ref }}
+        RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+      run: |
+        $ErrorActionPreference = "Stop"
+        $sent = (Resolve-Path -LiteralPath $env:SENT).Path
+        $files = Get-ChildItem -LiteralPath $sent -Recurse -File | Sort-Object FullName | ForEach-Object {
+          [pscustomobject]@{ Name = $_.FullName.Substring($sent.Length + 1).Replace('\', '/'); Sha256 = (Get-FileHash -LiteralPath $_.FullName -Algorithm SHA256).Hash.ToLower() }
+        }
+        $line = "SignPath signing request ($env:POLICY) for $env:WHAT of $env:REPO $env:VERSION, commit $env:COMMIT ($env:REF), run $env:RUN_URL : $env:URL"
+        if ($env:POLICY -eq "release-signing") {
+          "::notice title=Approve in SignPath::$line"
+        } else {
+          "::notice title=Signing in SignPath::$line"
+        }
+        $line
+        $files | ForEach-Object { "  $($_.Sha256)  $($_.Name)" }
+        $summary = @(
+          "### SignPath: $env:WHAT", "",
+          "Request: $env:URL ($env:POLICY)", "",
+          "Before approving, check that the request's origin is **$env:REPO**, commit **$env:COMMIT**, ref **$env:REF**, run $env:RUN_URL, its parameters say version **$env:VERSION**, and it holds these files:", "",
+          "| file | SHA-256 |", "|---|---|"
+        ) + ($files | ForEach-Object { "| ``$($_.Name)`` | ``$($_.Sha256)`` |" })
+        $summary -join "`n" >> $env:GITHUB_STEP_SUMMARY
+
+    # SignPath's connector (the one the action talks to) for the request's status and its signed
+    # files, with the same token.
+    - name: Wait for the signed files
+      shell: pwsh
+      env:
+        TOKEN: ${{ inputs.api-token }}
+        ORGANIZATION: ${{ inputs.organization-id }}
+        ID: ${{ steps.submit.outputs.signing-request-id }}
+        URL: ${{ steps.submit.outputs.signing-request-web-url }}
+        OUT: ${{ inputs.output-directory }}
+        WAIT_MINUTES: ${{ inputs.wait-minutes }}
+      run: |
+        $ErrorActionPreference = "Stop"
+        if (-not $env:ID) { throw "no signing request id" }
+        $base = "https://pipelineconnector.connectors.signpath.io/GitHubActions/GitHubCom/$([uri]::EscapeDataString($env:ORGANIZATION))/SigningRequests/$([uri]::EscapeDataString($env:ID))"
+        $headers = @{ Authorization = "Bearer $env:TOKEN" }
+        $deadline = (Get-Date).AddMinutes([int]$env:WAIT_MINUTES)
+        $said = $null; $saidAt = Get-Date; $errors = 0
+        while ($true) {
+          $status = $null
+          try {
+            $status = Invoke-RestMethod -Uri "$base/Status?api-version=1.0" -Headers $headers -TimeoutSec 60
+            $errors = 0
+          } catch {
+            $errors++
+            "SignPath didn't answer ($($_.Exception.Message)), try $errors of 20"
+            if ($errors -ge 20) { throw "SignPath doesn't answer: the request's state is unknown, nothing goes on" }
+          }
+          if ($status) {
+            if ($status.isFinalStatus) { break }
+            if ($status.status -ne $said -or ((Get-Date) - $saidAt).TotalMinutes -ge 10) {
+              "$(Get-Date -Format u) the signing request is $($status.status): $env:URL"
+              $said = $status.status; $saidAt = Get-Date
+            }
+          }
+          if ((Get-Date) -gt $deadline) {
+            throw "the signing request isn't done after $env:WAIT_MINUTES minutes ($said): nothing is signed, nothing goes on. $env:URL"
+          }
+          Start-Sleep -Seconds 30
+        }
+        if ($status.status -ne "Completed") {
+          throw "the signing request ended as $($status.status): nothing is signed, nothing goes on. $env:URL"
+        }
+        "$(Get-Date -Format u) the signing request is Completed: $env:URL"
+        $zip = Join-Path $env:RUNNER_TEMP "signpath-signed-$env:ID.zip"
+        Invoke-WebRequest -Uri "$base/SignedArtifact?api-version=1.0" -Headers $headers -OutFile $zip -TimeoutSec 600
+        if (Test-Path -LiteralPath $env:OUT) { Remove-Item -LiteralPath $env:OUT -Recurse -Force }
+        Expand-Archive -LiteralPath $zip -DestinationPath $env:OUT
+        Remove-Item -LiteralPath $zip
+
+    - name: Check the signed files
+      shell: pwsh
+      env:
+        SENT: ${{ runner.temp }}/signpath-sent/${{ inputs.artifact-name }}
+        OUT: ${{ inputs.output-directory }}
+        POLICY: ${{ inputs.signing-policy-slug }}
+      run: |
+        $ErrorActionPreference = "Stop"
+        $sent = (Resolve-Path -LiteralPath $env:SENT).Path
+        $out = (Resolve-Path -LiteralPath $env:OUT).Path
+        function Get-Files([string]$dir) {
+          Get-ChildItem -LiteralPath $dir -Recurse -File | ForEach-Object { $_.FullName.Substring($dir.Length + 1).Replace('\', '/') } | Sort-Object
+        }
+        $a = @(Get-Files $sent); $b = @(Get-Files $out)
+        if (($a -join "`n") -ne ($b -join "`n")) {
+          throw "SignPath sent back other files than were sent: sent $($a -join ', '); got $($b -join ', ')"
+        }
+        foreach ($name in $b) {
+          if ($name -notlike "*.exe") { continue }
+          $file = Join-Path $out $name
+          if ((Get-FileHash -LiteralPath $file).Hash -eq (Get-FileHash -LiteralPath (Join-Path $sent $name)).Hash) {
+            throw "$name came back unchanged (not signed)"
+          }
+          $sig = Get-AuthenticodeSignature -LiteralPath $file
+          if (-not $sig.SignerCertificate) { throw "$name came back without a signature" }
+          # The test certificate isn't trusted by Windows (its status says so); the release one
+          # must be.
+          if ($env:POLICY -eq "release-signing" -and $sig.Status -ne "Valid") {
+            throw "$name's signature isn't valid: $($sig.Status) $($sig.StatusMessage)"
+          }
+          "{0}: {1}, {2}, {3}" -f $name, $sig.Status, $sig.SignerCertificate.Subject, $sig.SignerCertificate.Thumbprint
+        }
+        Remove-Item -LiteralPath $sent -Recurse -Force

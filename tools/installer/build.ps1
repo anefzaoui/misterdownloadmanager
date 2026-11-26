@@ -15,14 +15,15 @@
 #   signtool sign /fd sha256 /tr http://timestamp.digicert.com /td sha256 /a $f
 # Inno Setup then signs the programs (in place, so the zip carries them signed too), the
 # installer and its uninstaller.
-# Or signed elsewhere (SignPath, in release.yml), in three runs:
+# Or signed elsewhere (SignPath, in release.yml), in steps:
+#   -BuildOnly               builds the programs and stops
 #   -ToSign <dir>            builds (unless -NoBuild), puts what is to be signed in <dir> and stops:
 #                            the programs and Inno Setup's uninstaller (named uninst-*.e32.exe)
 #   -Signed <dir>            no build: the installer and the zips from those files, once signed
 #   -SignedInstaller <file>  the installer, once signed, replaces the one in target/dist
 param([switch]$NoBuild, [string]$SignCommand = $env:MDM_SIGN_COMMAND,
-  [ValidateSet("x64", "arm64", "x86")][string]$Arch = "x64", [string]$ToSign, [string]$Signed,
-  [string]$SignedInstaller)
+  [ValidateSet("x64", "arm64", "x86")][string]$Arch = "x64", [switch]$BuildOnly, [string]$ToSign,
+  [string]$Signed, [string]$SignedInstaller)
 $ErrorActionPreference = "Stop"
 $root = Split-Path -Parent (Split-Path -Parent $PSScriptRoot)
 $dist = Join-Path $root "target\dist"
@@ -79,6 +80,7 @@ if (-not $NoBuild) {
     Remove-Item Env:CARGO_ENCODED_RUSTFLAGS
   }
 }
+if ($BuildOnly) { return }
 & (Join-Path $root "tools\extension\pack.ps1") | Out-Null
 
 # The installer's languages (tools/installer/languages.py writes them; committed, so no key needed).
