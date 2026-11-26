@@ -2084,6 +2084,13 @@ These ship in the next version.
   there to read
   ([#1407](https://github.com/anefzaoui/misterdownloadmanager/issues/1407); thanks to
   [@Seyamalam](https://github.com/Seyamalam))
+- ✅ Screen readers read the **Add Mister Download Manager to your browser** window: each
+  browser's name, its **Connected** mark and where the window stands were painted text a
+  reader never saw, and every browser's button said the same **Add the extension**; each
+  button now says its browser ("Add the extension to Firefox"), and the steps for Safari
+  read their numbered list
+  ([#1407](https://github.com/anefzaoui/misterdownloadmanager/issues/1407); thanks to
+  [@Seyamalam](https://github.com/Seyamalam))
 - ✅ Tests: the video checks of an address that expires while downloading (a stream's, and DASH
   pieces') no longer fail now and then on a busy computer: the test server times such a link from
   its first request, not from the look-up that gave it, so a slow start can't kill it before the

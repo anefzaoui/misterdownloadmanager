@@ -261,19 +261,22 @@ impl Extension {
             } else {
                 store.clone()
             };
-            winui::text_font(
+            let shown_name = if name.is_empty() {
+                // i18n: a row of the browser extension's window when no browser was found by name
+                crate::i18n::t("Your browser")
+            } else {
+                name.as_str()
+            };
+            let name_rc = winui::text_font(
                 &p,
                 winui::tahoma_bold(),
                 o.x + 22.0,
                 o.y + y + 16.0,
-                if name.is_empty() {
-                    // i18n: a row of the browser extension's window when no browser was found by name
-                    crate::i18n::t("Your browser")
-                } else {
-                    name.as_str()
-                },
+                shown_name,
                 ink,
             );
+            // Painted text a screen reader couldn't see before (#1407).
+            winui::readable(ui, name_rc, ("extension", "name", k), shown_name);
             let safari = name == SAFARI;
             let label = if safari {
                 // i18n: button in the browser extension's window, on Safari's row: open the steps that turn the extension on
@@ -290,17 +293,19 @@ impl Extension {
                 winui::buttons_to_right(&p, W - 18.0, 8.0, &[(label, 150.0)], 220.0)[0];
             // This browser's extension is there already: said, before its button.
             if is_seen(&seen, name) {
-                winui::text_right(
+                let conn = format!(
+                    "\u{2714} {}",
+                    // i18n: in the browser extension's window, beside a browser whose extension reached MDM
+                    crate::i18n::t("Connected")
+                );
+                let (conn_rc, _) = winui::text_right(
                     &p,
                     o.x + add_x - 10.0,
                     o.y + y + 16.0,
-                    &format!(
-                        "\u{2714} {}",
-                        // i18n: in the browser extension's window, beside a browser whose extension reached MDM
-                        crate::i18n::t("Connected")
-                    ),
+                    &conn,
                     winui::SUCCESS(),
                 );
+                winui::readable(ui, conn_rc, ("extension", "connected", k), &conn);
             }
             let add = winui::button(
                 ui,
@@ -314,6 +319,31 @@ impl Extension {
                 false,
                 None,
             );
+            // The same label on every row: said with its browser's name (#1407), the visible
+            // label first so voice control finds it by what it shows. A row for no browser by
+            // name ("Your browser") is always the only one, so its label needs no naming.
+            if !name.is_empty() {
+                let spoken = if safari {
+                    crate::i18n::fmt(
+                        // i18n: the "How to Add" button's name for a screen reader; {name} = the browser (Apple Safari)
+                        crate::i18n::t("How to Add the extension to {name}"),
+                        &[("name", name.as_str())],
+                    )
+                } else if page.is_none() {
+                    crate::i18n::fmt(
+                        // i18n: the "Show me how" button's name for a screen reader; {name} = the browser
+                        crate::i18n::t("Show me how to add the extension to {name}"),
+                        &[("name", name.as_str())],
+                    )
+                } else {
+                    crate::i18n::fmt(
+                        // i18n: the "Add the extension" button's name for a screen reader; {name} = the browser
+                        crate::i18n::t("Add the extension to {name}"),
+                        &[("name", name.as_str())],
+                    )
+                };
+                winui::name(&add, &spoken);
+            }
             if add.clicked() && safari {
                 *open_steps = true;
             } else if add.clicked() {
@@ -353,7 +383,8 @@ impl Extension {
                 )
                 .to_owned(),
             };
-            lines = winui::paragraph(
+            lines = winui::readable_paragraph(
+                ui,
                 &p,
                 o.x + 18.0,
                 o.y + y,
@@ -361,6 +392,7 @@ impl Extension {
                 winui::ERROR(),
                 o.x + fix_x - 10.0,
                 14.0,
+                ("extension", "why"),
             );
             let fix = winui::button(
                 ui,
@@ -395,7 +427,17 @@ impl Extension {
             )
         };
         if !line.is_empty() {
-            lines = winui::paragraph(&p, o.x + 18.0, o.y + y, &line, color, o.x + W - 18.0, 14.0);
+            lines = winui::readable_paragraph(
+                ui,
+                &p,
+                o.x + 18.0,
+                o.y + y,
+                &line,
+                color,
+                o.x + W - 18.0,
+                14.0,
+                ("extension", "status"),
+            );
         }
         crate::dialogs::grow_px(
             ui.ctx(),
@@ -522,12 +564,27 @@ impl SafariSteps {
                         o.x + W - 18.0,
                         14.0,
                     );
+                    // Painted text a screen reader couldn't see before (#1407): the number
+                    // and the step as one label over the step's whole line.
+                    winui::readable(
+                        ui,
+                        winui::rect(egui::Rect::from_min_max(
+                            egui::pos2(o.x + 22.0, o.y + y),
+                            egui::pos2(
+                                o.x + W - 18.0,
+                                o.y + y + 12.0 + 14.0 * (lines.max(1) as f32 - 1.0) + 4.0,
+                            ),
+                        )),
+                        ("safari", "step", k),
+                        &format!("{}. {}", k + 1, crate::i18n::t(step)),
+                    );
                     let more = 14.0 * (lines.max(1) as f32 - 1.0);
                     y += STEP + more;
                     lines_extra += more;
                 }
                 // Safari forgets the unsigned setting when it quits.
-                let note = winui::paragraph(
+                let note = winui::readable_paragraph(
+                    ui,
                     &p,
                     o.x + 22.0,
                     o.y + y + 14.0,
@@ -537,6 +594,7 @@ impl SafariSteps {
                     muted,
                     o.x + W - 18.0,
                     14.0,
+                    ("safari", "note"),
                 );
                 // NOTE plans two lines for it; a language that wraps it more grows the window.
                 lines_extra += 14.0 * (note.max(2) as f32 - 2.0);
