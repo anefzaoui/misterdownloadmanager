@@ -2140,6 +2140,9 @@ These ship in the next version.
 - ✅ Linux: menus opened near a screen's bottom or right edge stay on the screen (X11 and
   XWayland: the monitor's work area, read from RandR and the desktop's work area), submenus and
   larger interface sizes too (thanks to [@madratzz](https://github.com/madratzz))
+- ✅ Torrents: a magnet link with its hash in lower-case Base32 (32 characters) opens; the
+  torrent engine took only upper-case Base32 (thanks to
+  [@jamaica1000](https://github.com/jamaica1000))
 
 ## Being worked on
 
