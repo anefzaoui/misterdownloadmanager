@@ -11,7 +11,11 @@
 //! files". A package has its folder, an archive password and "Extract when done". A folder
 //! given on its own (an `ftp://` folder, a web server's "Index of" page, #1774) is read with its
 //! subfolders: each folder's files are a package whose folder keeps the tree under the download
-//! folder.
+//! folder. A Hugging Face model or dataset (or a folder of one) and a GitHub release or tag
+//! (#1772) are listed through their sites' APIs: one package, its folder the address's path
+//! under the download folder (a site's subfolders kept from its root), each file in its own
+//! folders inside it, unticked (ticked only as wanted), with the size and the digest the site
+//! gives.
 
 use std::path::PathBuf;
 use std::sync::{Arc, Mutex};
@@ -201,6 +205,16 @@ impl Link {
     fn category(&self) -> Category {
         self.category
     }
+
+    /// Its name as its row shows it: a package's file (#1772) with the folders it is in inside
+    /// the package (`onnx/model.onnx`).
+    fn shown_name(&self) -> String {
+        if self.found.within.is_empty() {
+            self.name.clone()
+        } else {
+            format!("{}/{}", self.found.within.join("/"), self.name)
+        }
+    }
 }
 
 /// A link's category: a torrent's is Torrents, whatever its name says.
@@ -223,10 +237,27 @@ fn magnet_name(url: &Url) -> String {
 }
 
 type Check = Arc<Mutex<Option<Result<mdm_engine::ProbeInfo, LinkState>>>>;
-/// A page's links (a folder's files) as they were read (`None` until then; empty when it had
-/// none or couldn't be read), and what to add to the window's Source line (a folder listed only
-/// in part), else nothing.
-pub type Read = Arc<Mutex<Option<(Vec<Imported>, String)>>>;
+
+/// A page's links (a folder's, a package's files) as they were read.
+#[derive(Debug, Default)]
+pub struct Listed {
+    /// Empty when it had none or couldn't be read.
+    pub links: Vec<Imported>,
+    /// What to add to the window's Source line (a folder listed only in part, files left out),
+    /// else nothing.
+    pub note: String,
+    /// Why a package (#1772) couldn't be listed: its row shows it, unticked.
+    pub failed: Option<LinkState>,
+}
+
+/// A page's links as they were read (`None` until then).
+pub type Read = Arc<Mutex<Option<Listed>>>;
+
+/// An address Link grabber reads for its files rather than downloads: an FTP folder (#1774), a
+/// Hugging Face repository or a GitHub release (#1772).
+pub fn is_listing(url: &Url) -> bool {
+    mdm_engine::folder::is_ftp_folder(url) || mdm_engine::hub::Source::of(url).is_some()
+}
 
 /// A package's ticked links, as the window hands them over.
 pub struct Picked {
@@ -382,10 +413,12 @@ impl Grabber {
             {
                 self.packages[pkg].password = pw.to_owned();
             }
-            // A folder's list said its size (FTP's): not looked up again. An FTP folder is read
-            // for its files as a web page is (#1774), never downloaded itself.
-            let folder = mdm_engine::folder::is_ftp_folder(&url);
+            // A folder's list said its size (FTP's, a site's API): not looked up again. An FTP
+            // folder (#1774), a repository or a release (#1772) is read for its files as a web
+            // page is, never downloaded itself.
+            let folder = is_listing(&url);
             let listed = d.size.is_some() || folder;
+            let unticked = d.unticked;
             self.links.push(Link {
                 size: d.size,
                 found: d,
@@ -398,8 +431,9 @@ impl Grabber {
                 } else {
                     LinkState::Unchecked
                 },
-                // An FTP folder can't be downloaded itself: its files are what's wanted.
-                on: !known && !folder,
+                // An FTP folder can't be downloaded itself: its files are what's wanted. A
+                // package's files come unticked (#1772).
+                on: !known && !folder && !unticked,
                 known,
                 magnet,
                 check: None,
@@ -688,18 +722,23 @@ impl Grabber {
 
     /// The links of the pages read since the last call, each page's as one list with its
     /// note for the Source line. A page that had links is unticked: its links were what was
-    /// wanted, not the page; an FTP folder always is (it can't be downloaded itself).
+    /// wanted, not the page; an FTP folder, a repository or a release always is (it can't be
+    /// downloaded itself). A package that couldn't be listed (#1772) shows as a row with why.
     pub fn pages_read(&mut self) -> Vec<(Vec<Imported>, String)> {
         let mut out = Vec::new();
         for l in &mut self.links {
-            let Some((found, note)) = l.read.as_ref().and_then(|r| r.lock().unwrap().take()) else {
+            let Some(read) = l.read.as_ref().and_then(|r| r.lock().unwrap().take()) else {
                 continue;
             };
-            if !found.is_empty() || mdm_engine::folder::is_ftp_folder(&l.url) {
+            if !read.links.is_empty() || is_listing(&l.url) {
                 l.on = false;
             }
-            if !found.is_empty() {
-                out.push((found, note));
+            if let Some(state) = read.failed {
+                l.state = state;
+                l.page = false;
+            }
+            if !read.links.is_empty() || !read.note.is_empty() {
+                out.push((read.links, read.note));
             }
         }
         out
@@ -1117,7 +1156,8 @@ impl Grabber {
                                 LinkState::Failed { full, .. } => full.as_str(),
                                 _ => state.as_str(),
                             };
-                            look.name = [l.name.as_str(), &size, state_full]
+                            let shown_name = l.shown_name();
+                            look.name = [shown_name.as_str(), &size, state_full]
                                 .iter()
                                 .filter(|s| !s.is_empty())
                                 .copied()
@@ -1128,7 +1168,7 @@ impl Grabber {
                                 clip,
                                 glyph,
                                 &mut on,
-                                &l.name,
+                                &shown_name,
                                 ("grabber-link", i),
                             ) {
                                 toggle_link = Some(i);
@@ -1141,7 +1181,7 @@ impl Grabber {
                                 16.0,
                             );
                             let left = glyph.x + 19.0 + crate::fileicons::INDENT;
-                            let name = crate::i18n::isolate(&l.name);
+                            let name = crate::i18n::isolate(&l.shown_name());
                             winui::fit(
                                 ui,
                                 clip,
@@ -1417,12 +1457,14 @@ fn state_text(s: &LinkState) -> String {
 
 /// The words `state_of` puts in the Status column for a failure whose sentence ends in advice,
 /// so the column can be as wide as the longest of them (a test keeps the two in step).
-const REMEDIES: [&str; 5] = [
+const REMEDIES: [&str; 7] = [
     "Alt+click the link",
     "Open in browser",
     "Refresh the address",
     "Download it again",
     "Can't resume",
+    "Try again later",
+    "Not found",
 ];
 
 /// A look-up's failure as a link's status.
@@ -1452,6 +1494,155 @@ pub fn state_of(e: &mdm_engine::Error) -> LinkState {
         // i18n: Link grabber, a link's status: a server that can't send parts of a file, so the download can't resume; there is nothing to do here. The sentence is the cell's hover tip
         mdm_engine::Error::NoRanges => failed(e, Some(crate::i18n::t("Can't resume"))),
         _ => failed(e, None),
+    }
+}
+
+/// A package's files (#1772) as Link grabber lists them, from what its site's API said (`from`:
+/// the address given, its agent and private mark): one package whose folder is the address's
+/// path under the download folder, each file with its folders inside it, its size and its
+/// site's digest, unticked, the package's page its referer. The Source line says what was left
+/// out, and that a gated repository needs an access token when there is none (`token`).
+pub fn package_read(
+    listed: Result<mdm_engine::hub::Package, mdm_engine::hub::HubError>,
+    from: &Imported,
+    token: bool,
+) -> Listed {
+    let p = match listed {
+        Ok(p) => p,
+        Err(e) => {
+            tracing::info!("link grabber: a package couldn't be listed: {e}");
+            return Listed {
+                failed: Some(hub_state(&e)),
+                ..Default::default()
+            };
+        }
+    };
+    tracing::info!(
+        "link grabber: {} files from {}{}{}",
+        p.files.len(),
+        p.site.name(),
+        if p.capped { ", listed in part" } else { "" },
+        if p.refused > 0 { ", some left out" } else { "" },
+    );
+    let mut notes = Vec::new();
+    if p.capped {
+        notes.push(crate::i18n::fmt(
+            crate::i18n::t("{folder}: only its first {n} files"),
+            &[
+                ("folder", &p.name),
+                ("n", &crate::i18n::integer(p.files.len() as u64)),
+            ],
+        ));
+    }
+    if p.refused > 0 {
+        notes.push(crate::i18n::fmt(
+            &crate::i18n::tn(
+                p.refused as u64,
+                // i18n: Link grabber's Source line: a Hugging Face repository's or GitHub release's ({package}: its name, "owner/name") files whose names would lead out of its folder (`../`, a drive, a device's name) are left out; {n} how many
+                "{package}: {n} file left out, its name would lead out of its folder",
+                "{package}: {n} files left out, their names would lead out of its folder",
+            ),
+            &[("package", &p.name)],
+        ));
+    }
+    if p.gated && !token {
+        notes.push(crate::i18n::fmt(
+            // i18n: Link grabber's Source line: a gated Hugging Face repository ({package}: "owner/name"), whose files download only for an account that accepted its terms: where to give the account's access token (Options → Sites Logins, keep the names as the Options window shows them)
+            crate::i18n::t(
+                "{package} is gated: accept its terms on Hugging Face, then add your access token in Options → Sites Logins (site huggingface.co, the token as its password)",
+            ),
+            &[("package", &p.name)],
+        ));
+    }
+    let page = p.page.to_string();
+    let links = p
+        .files
+        .into_iter()
+        .map(|f| Imported {
+            url: f.url.into(),
+            referer: Some(page.clone()),
+            user_agent: from.user_agent.clone(),
+            private: from.private,
+            folder: p.folder.clone(),
+            within: f.folders,
+            size: f.size,
+            checksum: f.digest,
+            unticked: true,
+            ..Default::default()
+        })
+        .collect();
+    Listed {
+        links,
+        note: notes.join(", "),
+        failed: None,
+    }
+}
+
+/// Why a package (#1772) couldn't be listed, as its row's status: the words the row shows and the
+/// whole sentence, a rate limit's with how long to wait.
+pub fn hub_state(e: &mdm_engine::hub::HubError) -> LinkState {
+    use mdm_engine::hub::HubError;
+    let site = |s: mdm_engine::hub::Site| s.name();
+    match e {
+        HubError::Limited { site: s, wait } => {
+            let full = match wait {
+                Some(w) => crate::i18n::fmt(
+                    &crate::i18n::tn(
+                        w.as_secs().div_ceil(60).max(1),
+                        // i18n: Link grabber, a Hugging Face repository's or GitHub release's status (the cell's hover tip): the site ({site}: "Hugging Face", "GitHub") lets only so many requests through from a computer without an account; {n} minutes to wait
+                        "{site} lets only so many requests through without an account: try again in {n} minute.",
+                        "{site} lets only so many requests through without an account: try again in {n} minutes.",
+                    ),
+                    &[("site", site(*s))],
+                ),
+                None => crate::i18n::fmt(
+                    // i18n: Link grabber, a Hugging Face repository's or GitHub release's status (the cell's hover tip): the site ({site}) lets only so many requests through without an account, and didn't say for how long
+                    crate::i18n::t(
+                        "{site} lets only so many requests through without an account: try again later.",
+                    ),
+                    &[("site", site(*s))],
+                ),
+            };
+            LinkState::Failed {
+                // i18n: Link grabber, a link's status: the remedy from the failure's sentence, for a site (Hugging Face, GitHub) whose limit of requests without an account is reached. The sentence is the cell's hover tip
+                short: crate::i18n::t("Try again later").to_owned(),
+                full,
+            }
+        }
+        HubError::NotFound(s) => LinkState::Failed {
+            // i18n: Link grabber, a link's status: a Hugging Face repository or folder, or a GitHub release or tag, that isn't there. The sentence is the cell's hover tip
+            short: crate::i18n::t("Not found").to_owned(),
+            full: crate::i18n::fmt(
+                // i18n: Link grabber, the hover tip of a Hugging Face repository's or GitHub release's status; {site} is "Hugging Face" or "GitHub"
+                crate::i18n::t(
+                    "{site} has no such repository, folder, release or tag, or it is private.",
+                ),
+                &[("site", site(*s))],
+            ),
+        },
+        HubError::Status(s, status) => {
+            let full = crate::i18n::fmt(
+                // i18n: Link grabber, a Hugging Face repository's or GitHub release's status: the site ({site}) refused to list its files; {status} is the HTTP code (403)
+                crate::i18n::t("{site} refused to list its files ({status})."),
+                &[("site", site(*s)), ("status", &status.to_string())],
+            );
+            LinkState::Failed {
+                short: full.clone(),
+                full,
+            }
+        }
+        HubError::Unreadable(s) => {
+            let full = crate::i18n::fmt(
+                // i18n: Link grabber, a Hugging Face repository's or GitHub release's status: the site's ({site}) answer wasn't what it sends (changed, cut, or not its own)
+                crate::i18n::t("{site}'s list of files couldn't be read."),
+                &[("site", site(*s))],
+            );
+            LinkState::Failed {
+                short: full.clone(),
+                full,
+            }
+        }
+        HubError::Net(e) => state_of(e),
     }
 }
 
@@ -1736,13 +1927,13 @@ mod tests {
             referer: Some(page.into()),
             ..Default::default()
         };
-        *slot.lock().unwrap() = Some((
-            vec![
+        *slot.lock().unwrap() = Some(Listed {
+            links: vec![
                 on_page("https://dl.example.org/epanet2.2_setup.exe"),
                 on_page("https://dl.example.org/epanet2.2.zip"),
             ],
-            String::new(),
-        ));
+            ..Default::default()
+        });
         let read = g.pages_read();
         assert_eq!(read.len(), 1);
         g.add(
@@ -1793,8 +1984,8 @@ mod tests {
             ..Default::default()
         };
         let sub = "ftp://ftp.example.org/pub/iso/";
-        *slot.lock().unwrap() = Some((
-            vec![
+        *slot.lock().unwrap() = Some(Listed {
+            links: vec![
                 file(
                     "ftp://ftp.example.org/pub/readme.txt",
                     folder,
@@ -1821,8 +2012,9 @@ mod tests {
                     None,
                 ),
             ],
-            "the first 4 files".into(),
-        ));
+            note: "the first 4 files".into(),
+            failed: None,
+        });
         let read = g.pages_read();
         assert!(!g.links[0].on, "the folder itself is unticked");
         for (links, note) in read {
@@ -1863,6 +2055,113 @@ mod tests {
         let picked = g.picked();
         let iso = picked.iter().find(|p| p.links[0].1 == "disc.iso").unwrap();
         assert_eq!(iso.folder, dl.join("pub").join("iso"));
+    }
+
+    /// #1772: a Hugging Face repository given on its own is listed, not looked up; its files come
+    /// as one package whose folder is the repository's path under the download folder, each
+    /// unticked, in its folders inside it, with its size and SHA-256; the ticked ones go with
+    /// their folders and digests. A listing that failed shows as the address's row, with why.
+    #[test]
+    fn a_packages_files_keep_their_folders_unticked() {
+        use mdm_engine::hub::{File, HubError, Package, Site};
+        let mut g = grabber();
+        let repo = "https://huggingface.co/org/tiny";
+        g.add(vec![link(repo, None)], "Pasted".into(), |_| false);
+        assert!(g.to_check().is_empty(), "a repository isn't looked up");
+        let reads = g.to_read();
+        assert_eq!(reads.len(), 1);
+        assert!(!g.shows(&g.links[0]), "hidden as a page is");
+        let slot: Read = Default::default();
+        g.reading(reads[0].0, slot.clone());
+        let digest = mdm_engine::verify::Hash::parse(&format!("sha256:{}", "ab".repeat(32)));
+        let file = |path: &str, folders: &[&str], size: u64, digest: Option<_>| File {
+            url: Url::parse(&format!(
+                "https://huggingface.co/org/tiny/resolve/{}/{path}",
+                "0".repeat(40)
+            ))
+            .unwrap(),
+            folders: folders.iter().map(|f| (*f).to_owned()).collect(),
+            name: path.rsplit('/').next().unwrap().to_owned(),
+            size: Some(size),
+            digest,
+        };
+        let package = Package {
+            site: Site::HuggingFace,
+            name: "org/tiny".into(),
+            page: Url::parse(repo).unwrap(),
+            folder: vec!["org".into(), "tiny".into()],
+            files: vec![
+                file("config.json", &[], 10, None),
+                file("onnx/model.onnx", &["onnx"], 20, digest.clone()),
+                file("x/data.bin", &["x"], 1, None),
+            ],
+            capped: false,
+            refused: 2,
+            gated: true,
+        };
+        *slot.lock().unwrap() = Some(package_read(Ok(package), &link(repo, None), false));
+        let read = g.pages_read();
+        assert!(!g.links[0].on, "the repository itself is unticked");
+        for (links, note) in read {
+            g.add(links, note, |_| false);
+        }
+        assert!(g.source.contains("2 files left out"), "{}", g.source);
+        assert!(g.source.contains("org/tiny is gated"), "{}", g.source);
+        let files: Vec<&Link> = g.links.iter().skip(1).collect();
+        assert_eq!(files.len(), 3);
+        assert!(files.iter().all(|l| !l.on && l.state == LinkState::Online));
+        assert_eq!(files[0].pkg, files[1].pkg);
+        let dl = PathBuf::from("D:\\dl");
+        assert_eq!(
+            g.packages[files[0].pkg].folder,
+            dl.join("org").join("tiny").display().to_string()
+        );
+        assert_eq!(files[1].shown_name(), "onnx/model.onnx");
+        assert!(g.to_check().is_empty(), "their sizes came with the list");
+        // Nothing ticked, nothing picked; the package's box ticks them all.
+        assert!(g.picked().is_empty());
+        let pkg = files[0].pkg;
+        g.tick_package(pkg);
+        let picked = g.picked();
+        assert_eq!(picked.len(), 1);
+        let onnx = picked[0]
+            .links
+            .iter()
+            .find(|l| l.1 == "model.onnx")
+            .unwrap();
+        assert_eq!(onnx.0.within, ["onnx"]);
+        assert_eq!(onnx.0.checksum, digest);
+        assert_eq!(onnx.2, Some(20));
+        assert_eq!(
+            onnx.0.referer.as_deref(),
+            Some("https://huggingface.co/org/tiny")
+        );
+
+        // A release whose site's limit is reached: its row shows, unticked, with why.
+        let mut g = grabber();
+        let release = "https://github.com/o/r/releases/latest";
+        g.add(vec![link(release, None)], "Pasted".into(), |_| false);
+        let reads = g.to_read();
+        let slot: Read = Default::default();
+        g.reading(reads[0].0, slot.clone());
+        let limited = HubError::Limited {
+            site: Site::GitHub,
+            wait: Some(std::time::Duration::from_secs(90)),
+        };
+        *slot.lock().unwrap() = Some(package_read(Err(limited), &link(release, None), false));
+        assert!(g.pages_read().is_empty());
+        let row = &g.links[0];
+        assert!(g.shows(row) && !row.on);
+        match &row.state {
+            LinkState::Failed { short, full } => {
+                assert_eq!(short, "Try again later");
+                assert!(
+                    full.contains("GitHub") && full.contains("2 minutes"),
+                    "{full}"
+                );
+            }
+            other => panic!("{other:?}"),
+        }
     }
 
     #[test]
@@ -2289,6 +2588,19 @@ mod tests {
             .iter()
             .map(|source| crate::i18n::t(source).to_owned())
             .collect();
+        use mdm_engine::hub::{HubError, Site};
+        for e in [
+            HubError::Limited {
+                site: Site::GitHub,
+                wait: None,
+            },
+            HubError::NotFound(Site::HuggingFace),
+        ] {
+            match hub_state(&e) {
+                LinkState::Failed { short, .. } => shown.push(short),
+                other => panic!("{e:?} is not a failure: {other:?}"),
+            }
+        }
         shown.sort();
         shown.dedup();
         listed.sort();

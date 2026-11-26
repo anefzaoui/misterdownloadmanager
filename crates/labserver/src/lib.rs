@@ -11,6 +11,8 @@ pub mod ftp;
 mod github;
 pub mod growth;
 mod h264;
+/// A fake Hugging Face and GitHub API (#1772).
+pub mod hub;
 pub mod lulustream;
 pub mod mediafire;
 mod pages;
