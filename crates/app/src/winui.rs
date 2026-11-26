@@ -365,7 +365,11 @@ pub fn steps(
             p.line(tick.to_vec(), egui::Stroke::new(1.6, c.button_accent_text));
         } else {
             let number = crate::i18n::integer(k as u64 + 1);
-            let color = if k == current { c.button_accent_text } else { c.muted };
+            let color = if k == current {
+                c.button_accent_text
+            } else {
+                c.muted
+            };
             let g = galley(p, tahoma_bold(), &number, color);
             let at = circle.center() - g.size() / 2.0;
             p.galley(pos2(at.x.round(), at.y.round()), g, color);
