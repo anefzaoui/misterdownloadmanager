@@ -263,7 +263,9 @@ fn prepare(job: &Job, shared: Arc<Mutex<Shared>>, ctx: egui::Context) {
             .map(|v| mdm_crash::symbols::store(&data, v));
         let stores: Vec<PathBuf> = store.iter().cloned().collect();
         let made = report::make(dump.as_deref(), kind, notes.clone(), &data, &stores);
-        note_gl_freeze(&made);
+        // Once per report: noted again after the symbols, it would count as a second failure
+        // in a row and be passed over twice as long (renderer.rs `remember`).
+        let noted = note_gl_failure(&made);
         let missing = made
             .analysis
             .as_ref()
@@ -305,7 +307,9 @@ fn prepare(job: &Job, shared: Arc<Mutex<Shared>>, ctx: egui::Context) {
             match fetched {
                 Ok(()) => {
                     let made = report::make(dump.as_deref(), kind, notes, &data, &stores);
-                    note_gl_freeze(&made);
+                    if !noted {
+                        note_gl_failure(&made);
+                    }
                     set(&shared, &ctx, |s| s.made = Some(made));
                 }
                 Err(e) => {
@@ -330,26 +334,60 @@ fn prepare(job: &Job, shared: Arc<Mutex<Shared>>, ctx: egui::Context) {
     });
 }
 
-/// A freeze while OpenGL drew, its window thread stuck inside OpenGL's driver (#847): remembered,
-/// so the app's next start draws another way (renderer.rs; Windows only). Read from the stack's
-/// modules, which need no symbols.
-fn note_gl_freeze(made: &Made) {
+/// A freeze while OpenGL drew, its window thread stuck inside OpenGL's driver (#847), or a crash
+/// while OpenGL drew, its crashed thread inside OpenGL's driver (#1659): remembered, so the app's
+/// next start draws another way (renderer.rs; Windows only). Read from the stack's modules, which
+/// need no symbols. Whether it was remembered.
+fn note_gl_failure(made: &Made) -> bool {
+    // Off-screen test copies: the app's own stall (MDM_TEST_GL_STALL=1) or, in a debug build,
+    // crash (MDM_TEST_GL_CRASH=1) stands for a driver's.
+    let stall =
+        crate::offscreen() && std::env::var_os("MDM_TEST_GL_STALL").is_some_and(|v| v == "1");
+    let crash = crate::renderer::gl_crash_testing();
+    match gl_failure(made, stall, crash) {
+        Some(GlFailure::Froze(module, seconds)) => {
+            crate::renderer::remember_gl_froze(&module, seconds)
+        }
+        Some(GlFailure::Crashed(module)) => crate::renderer::remember_gl_crashed(&module),
+        None => return false,
+    }
+    true
+}
+
+/// What a report says about OpenGL's driver ([`note_gl_failure`]).
+#[derive(Debug, PartialEq, Eq)]
+enum GlFailure {
+    /// The window froze inside this module, for this many seconds.
+    Froze(String, u64),
+    /// MDM crashed inside this module.
+    Crashed(String),
+}
+
+/// A freeze or a crash inside OpenGL's driver, in a session that drew with OpenGL (a session
+/// drawn with Direct3D 12, Vulkan or Metal, on a card or on a software renderer, never: its
+/// `d3d11.dll` or `opengl32.dll` isn't OpenGL's driver drawing MDM). `stall`, `crash`: the test
+/// copies' own stall or crash counts (renderer.rs `gl_driver_frame`).
+fn gl_failure(made: &Made, stall: bool, crash: bool) -> Option<GlFailure> {
     let drew_gl = made
         .notes
         .session
         .as_ref()
         .is_some_and(|s| s.renderer.starts_with("OpenGL"));
-    let Some(thread) = made.frozen_window_thread().filter(|_| drew_gl) else {
-        return;
-    };
-    let modules = thread.frames.iter().map(|f| f.module.as_deref());
-    // MDM_TEST_GL_STALL=1 (off-screen test copies): the app's stall stands for a driver's.
-    let testing =
-        crate::offscreen() && std::env::var_os("MDM_TEST_GL_STALL").is_some_and(|v| v == "1");
-    if let Some(module) = crate::renderer::gl_driver_frame(modules, testing) {
-        let seconds = made.notes.freeze.as_ref().map_or(0, |f| f.seconds);
-        crate::renderer::remember_gl_froze(&module, seconds);
+    if !drew_gl {
+        return None;
     }
+    fn modules(t: &mdm_crash::analyze::Thread) -> Vec<Option<&str>> {
+        t.frames.iter().map(|f| f.module.as_deref()).collect()
+    }
+    if let Some(thread) = made.frozen_window_thread() {
+        let test = stall.then_some("MDM_TEST_GL_STALL");
+        let module = crate::renderer::gl_driver_frame(modules(thread), test)?;
+        let seconds = made.notes.freeze.as_ref().map_or(0, |f| f.seconds);
+        return Some(GlFailure::Froze(module, seconds));
+    }
+    let thread = made.crashed_thread()?;
+    let test = crash.then_some("MDM_TEST_GL_CRASH");
+    crate::renderer::gl_crash_frame(modules(thread), test).map(GlFailure::Crashed)
 }
 
 fn set(shared: &Mutex<Shared>, ctx: &egui::Context, f: impl FnOnce(&mut Shared)) {
@@ -766,6 +804,143 @@ fn fields(notes: &Notes, kind: Kind, signature: &str, what: &str) -> github::Fie
 
 #[cfg(test)]
 mod tests {
+    use super::{GlFailure, gl_failure};
+    use mdm_crash::analyze::{Analysis, Frame, Thread};
+    use mdm_crash::protocol::{Freeze, Kind, Notes, Session};
+    use mdm_crash::report::Made;
+
+    /// A report of `kind` drawn with `renderer`, its thread 7 (the crashed one, and the window
+    /// thread of a freeze) on these modules, top first (`?`: a frame of no known module).
+    fn report(kind: Kind, renderer: &str, modules: &[&str]) -> Made {
+        let frames = modules
+            .iter()
+            .map(|m| Frame {
+                function: None,
+                file: None,
+                line: None,
+                module: (*m != "?").then(|| (*m).to_owned()),
+                offset: 0x1969e1,
+            })
+            .collect();
+        Made {
+            kind,
+            text: String::new(),
+            signature: String::new(),
+            path: Default::default(),
+            dump: None,
+            analysis: Some(Analysis {
+                requesting: Some(7),
+                threads: vec![Thread {
+                    id: 7,
+                    name: None,
+                    frames,
+                }],
+                ..Default::default()
+            }),
+            notes: Notes {
+                session: Some(Session {
+                    renderer: renderer.to_owned(),
+                    ..Default::default()
+                }),
+                freeze: (kind == Kind::Freeze).then(|| Freeze {
+                    ui_thread: 7,
+                    main: false,
+                    seconds: 9,
+                    busy: None,
+                    step: String::new(),
+                }),
+                ..Default::default()
+            },
+        }
+    }
+
+    const NVIDIA_GL: &str =
+        "OpenGL on NVIDIA GeForce RTX 5060 Laptop GPU/PCIe/SSE2 (3.3.0 NVIDIA 621.24)";
+
+    /// #1659: a crash inside OpenGL's driver counts when the session drew with OpenGL, and only
+    /// then; MDM's own crash doesn't, unless a test copy's crash stands for the driver's.
+    #[test]
+    fn a_crash_inside_the_opengl_driver_is_noted() {
+        let mdm = "misterdownloadmanager.exe";
+        let crashed = |m: &str| Some(GlFailure::Crashed(m.to_owned()));
+        // #1205, #1939: NVIDIA's Direct3D 11 thread under OpenGL.
+        let d3d11 = report(Kind::Crash, NVIDIA_GL, &["d3d11.dll", "?"]);
+        assert_eq!(gl_failure(&d3d11, false, false), crashed("d3d11.dll"));
+        // #1658: Intel's driver thread.
+        let intel = report(
+            Kind::Crash,
+            "OpenGL on Intel(R) UHD Graphics 600 (3.3.0 - Build 30.0.101.1994)",
+            &[
+                "?",
+                "ig9icd64.dll",
+                "KERNELBASE.dll",
+                "ig9icd64.dll",
+                "ntdll.dll",
+            ],
+        );
+        assert_eq!(gl_failure(&intel, false, false), crashed("ig9icd64.dll"));
+        // #1759: AMD's driver on the window thread.
+        let amd = report(
+            Kind::Crash,
+            "OpenGL on AMD Radeon(TM) Graphics (3.3.0 Core Profile Context 26.5.2.260413)",
+            &["atio6axx.dll", "atio6axx.dll", "user32.dll", "uxtheme.dll"],
+        );
+        assert_eq!(gl_failure(&amd, false, false), crashed("atio6axx.dll"));
+
+        // The same stacks in a session drawn with Direct3D 12 (on the card or on WARP): not
+        // OpenGL's driver.
+        for renderer in [
+            "Direct3D 12 on NVIDIA GeForce RTX 5060 Laptop GPU (driver 32.0.16.2101)",
+            "Direct3D 12 (WARP) on Microsoft Basic Render Driver",
+            "",
+        ] {
+            for modules in [
+                &["d3d11.dll", "?"][..],
+                &["?", "ig9icd64.dll"],
+                &["atio6axx.dll"],
+            ] {
+                let r = report(Kind::Crash, renderer, modules);
+                assert_eq!(gl_failure(&r, false, true), None, "{renderer} {modules:?}");
+            }
+        }
+        // Direct3D 11 with MDM's own code on the thread: MDM's.
+        for modules in [
+            &["d3d11.dll", mdm][..],
+            &[mdm, "d3d11.dll"],
+            &["d3d11.dll", "?", mdm],
+        ] {
+            let r = report(Kind::Crash, NVIDIA_GL, modules);
+            assert_eq!(gl_failure(&r, false, false), None, "{modules:?}");
+        }
+        // MDM's own crash: only a test copy's (MDM_TEST_GL_CRASH) counts, named by the test.
+        let own = report(Kind::Crash, NVIDIA_GL, &[mdm, "user32.dll"]);
+        assert_eq!(gl_failure(&own, false, false), None);
+        assert_eq!(gl_failure(&own, true, false), None);
+        assert_eq!(gl_failure(&own, false, true), crashed("MDM_TEST_GL_CRASH"));
+        // A panic isn't a crash inside a driver.
+        let panic = report(Kind::Panic, NVIDIA_GL, &["d3d11.dll", "?"]);
+        assert_eq!(gl_failure(&panic, false, false), None);
+    }
+
+    /// #847: a freeze inside OpenGL's driver, as before; Direct3D 11 counts for a crash only.
+    #[test]
+    fn a_freeze_inside_the_opengl_driver_is_noted() {
+        let mdm = "misterdownloadmanager.exe";
+        let froze = report(Kind::Freeze, NVIDIA_GL, &["ntdll.dll", "nvoglv64.dll", mdm]);
+        assert_eq!(
+            gl_failure(&froze, false, false),
+            Some(GlFailure::Froze("nvoglv64.dll".into(), 9))
+        );
+        let d3d11 = report(Kind::Freeze, NVIDIA_GL, &["d3d11.dll", "?"]);
+        assert_eq!(gl_failure(&d3d11, false, false), None);
+        let own = report(Kind::Freeze, NVIDIA_GL, &["ntdll.dll", mdm]);
+        assert_eq!(gl_failure(&own, false, true), None);
+        assert_eq!(
+            gl_failure(&own, true, false),
+            Some(GlFailure::Froze("MDM_TEST_GL_STALL".into(), 9))
+        );
+    }
+
     #[test]
     fn the_report_fills_fields_the_crash_form_has() {
         // A Windows checkout may give the form CRLF line ends.

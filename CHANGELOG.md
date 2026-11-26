@@ -109,6 +109,7 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Fixed
 
+- Windows: a crash inside the graphics driver while MDM draws with OpenGL no longer happens again at every start. As after a freeze there, the next start draws with Direct3D 12 instead (on Windows' own software renderer, WARP, when the graphics card can't), and **View → Draw with** says "OpenGL crashed inside its driver here". It covers Intel's and AMD's OpenGL drivers and NVIDIA's on laptops with two graphics chips, where OpenGL's frames go through Direct3D 11. OpenGL is tried again after a graphics driver update, after a month, or when you choose it there ([#1659](https://github.com/anefzaoui/misterdownloadmanager/issues/1659), thanks to [@abdul-karim-mia](https://github.com/abdul-karim-mia)).
 - Options: longer translations stay inside their page. The notes at the bottom of **Remote**, **Save to** and **Sites Logins** wrap and, where they would run past it, end with “…” (the whole note on hover) instead of drawing over the buttons, and **Archives**' HatchZip check box ends inside its group box instead of at the window's edge ([#1845](https://github.com/anefzaoui/misterdownloadmanager/issues/1845)).
 - Torrents: a magnet link whose hash is written in lower-case Base32 (32 letters and digits, as some sites write it) opens, instead of being refused as not a torrent (thanks to [@jamaica1000](https://github.com/jamaica1000)).
 - Helpers: ffmpeg's download is checked more carefully.
