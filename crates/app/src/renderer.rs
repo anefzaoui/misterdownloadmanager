@@ -30,9 +30,10 @@
 //! software renderer (WARP) once OpenGL fails here (#847), remembered (`opengl-unfit.txt`, tried
 //! again as above): it can't start, it is too old to draw MDM ([`gl_unfit`], #835), its
 //! first frame doesn't come within [`FIRST_FRAME_WITHIN`], its last start ended before its first
-//! frame, or the window froze inside its driver ([`gl_driver_frame`]: the crash report's window
-//! reads that from the freeze's stack; the cards of #847 froze or crashed there while showing a
-//! frame). WARP draws right on those cards, but keeps the processor busier, so OpenGL comes
+//! frame, or the window froze or MDM crashed inside its driver ([`gl_driver_frame`],
+//! [`gl_crash_frame`]: the crash report's window reads that from the freeze's or the crash's
+//! stack; the cards of #847 froze or crashed there while showing a frame, #1659's crashed).
+//! WARP draws right on those cards, but keeps the processor busier, so OpenGL comes
 //! first. WARP failing too is remembered apart (`direct3d-software-failed.txt`), and OpenGL draws.
 //! Linux and macOS remember no OpenGL failure ([`WATCH_GL`]): their OpenGL is their default, and
 //! their way out is Vulkan or Metal, chosen in View → Draw with.
@@ -47,7 +48,9 @@
 //! card's driver), `MDM_TEST_NO_SOFTWARE=1` (no software renderer either),
 //! `MDM_TEST_NO_FIRST_FRAME=opengl` (only OpenGL's first frame never comes; `direct3d`,
 //! `vulkan`, `metal`: only that API's, on any adapter) and
-//! `MDM_TEST_GL_STALL=1` (the window stalls once while OpenGL draws, as in a driver's present).
+//! `MDM_TEST_GL_STALL=1` (the window stalls once while OpenGL draws, as in a driver's present);
+//! debug builds only, `MDM_TEST_GL_CRASH=1` (MDM crashes once while OpenGL draws, as inside its
+//! driver: [`gl_crash_testing`]).
 
 use std::path::PathBuf;
 use std::sync::atomic::{AtomicBool, Ordering};
@@ -530,18 +533,21 @@ pub enum Why {
     TooOld,
     /// The window froze inside OpenGL's driver ([`gl_driver_frame`], #847).
     FrozeInDriver,
+    /// MDM crashed inside OpenGL's driver ([`gl_crash_frame`], #1659).
+    CrashedInDriver,
     /// Anything else (the log has eframe's error).
     Other,
 }
 
 impl Why {
-    const ALL: [Why; 7] = [
+    const ALL: [Why; 8] = [
         Why::NoAdapter,
         Why::NoFirstFrame,
         Why::EndedEarly,
         Why::LostTwice,
         Why::TooOld,
         Why::FrozeInDriver,
+        Why::CrashedInDriver,
         Why::Other,
     ];
 
@@ -554,6 +560,7 @@ impl Why {
             Why::LostTwice => "lost-twice",
             Why::TooOld => "too-old",
             Why::FrozeInDriver => "froze-in-driver",
+            Why::CrashedInDriver => "crashed-in-driver",
             Why::Other => "other",
         }
     }
@@ -796,8 +803,8 @@ fn in_login_rush() -> bool {
 }
 
 /// The way that drew its first frame: tried again after it failed here, it is forgotten; one
-/// whose failure comes after the first frame (a freeze inside OpenGL's driver, the card lost
-/// twice) is kept as drawing again until it has drawn for [`FINE_FOR`] without failing.
+/// whose failure comes after the first frame (a freeze or a crash inside OpenGL's driver, the card
+/// lost twice) is kept as drawing again until it has drawn for [`FINE_FOR`] without failing.
 fn drew_again() {
     let Some(way) = TRYING.lock().ok().and_then(|t| *t) else {
         return;
@@ -810,7 +817,10 @@ fn drew_again() {
         return;
     };
     let name = way.name();
-    if matches!(f.why, Why::FrozeInDriver | Why::LostTwice) {
+    if matches!(
+        f.why,
+        Why::FrozeInDriver | Why::CrashedInDriver | Why::LostTwice
+    ) {
         if f.drew.is_none() {
             f.drew = Some(unix_now());
             let _ = std::fs::write(&failed, f.text());
@@ -854,7 +864,7 @@ fn mark_adapter(adapter: &str, driver: Option<&str>) {
 const DAY: u64 = 86_400;
 
 /// A way tried again that drew, and failed no more for this long, is forgotten (for a failure
-/// after the first frame: a freeze inside OpenGL's driver, the card lost twice).
+/// after the first frame: a freeze or a crash inside OpenGL's driver, the card lost twice).
 const FINE_FOR: u64 = 30 * DAY;
 
 /// A way's failure, as its file remembers it: its reason's key, its details, then a field a
@@ -1026,16 +1036,19 @@ fn day(secs: u64) -> String {
 ///   three months. These can be passing (a busy computer, #1205; a shutdown or a kill while MDM
 ///   started; a driver reset), and a try again costs one slow or failed start: once a week at
 ///   most, then rarer.
-/// - Can't start (no adapter, another error) and a freeze inside OpenGL's driver: a month, up to
-///   half a year. A start that can't start costs nothing (the next way starts at once, in the
-///   same start), but its cause rarely goes without a driver change; a freeze inside the driver
-///   (#847's cards) costs a frozen window and its report each time.
+/// - Can't start (no adapter, another error) and a freeze or a crash inside OpenGL's driver: a
+///   month, up to half a year. A start that can't start costs nothing (the next way starts at
+///   once, in the same start), but its cause rarely goes without a driver change; a freeze or a
+///   crash inside the driver (#847's cards, #1659's) costs a frozen or lost window and its report
+///   each time.
 /// - Too old (OpenGL older than 3.0, #835): never by time. The version a driver says doesn't
 ///   change without a driver change, which tries it again.
 pub fn wait(why: Why, tries: u32) -> Option<u64> {
     let (first, most) = match why {
         Why::NoFirstFrame | Why::EndedEarly | Why::LostTwice => (7 * DAY, 90 * DAY),
-        Why::NoAdapter | Why::Other | Why::FrozeInDriver => (30 * DAY, 180 * DAY),
+        Why::NoAdapter | Why::Other | Why::FrozeInDriver | Why::CrashedInDriver => {
+            (30 * DAY, 180 * DAY)
+        }
         Why::TooOld => return None,
     };
     let doubled = first.saturating_mul(1u64 << tries.saturating_sub(1).min(16));
@@ -1246,11 +1259,12 @@ pub fn forget_gl_failure() {
 /// OpenGL (`opengl32.dll`, whose `wglSwapBuffers` shows a frame) or a card maker's OpenGL driver
 /// (Intel's `ig*icd*.dll`, NVIDIA's `nvoglv*.dll`, AMD's `atio6axx.dll` / `atioglxx.dll`). Its
 /// module's name, if so. Below the program's code, `opengl32.dll` is in every OpenGL window's
-/// message handling: a freeze in MDM's own code isn't one. `testing` (`MDM_TEST_GL_STALL` in an
-/// off-screen test copy): the program's own code counts, its stall standing for a driver's.
+/// message handling: a freeze in MDM's own code isn't one. `testing` (`MDM_TEST_GL_STALL` or
+/// `MDM_TEST_GL_CRASH` in a test copy, its name): the program's own code counts, its stall or
+/// crash standing for a driver's, and the test's name for the driver's.
 pub fn gl_driver_frame<'a>(
     modules: impl IntoIterator<Item = Option<&'a str>>,
-    testing: bool,
+    testing: Option<&str>,
 ) -> Option<String> {
     let driver = |m: &str| {
         let m = m.to_ascii_lowercase();
@@ -1266,10 +1280,46 @@ pub fn gl_driver_frame<'a>(
         }
         // The program's own code (its .exe): what is below it isn't where the window is stuck.
         if m.to_ascii_lowercase().ends_with(".exe") {
-            return testing.then(|| "MDM_TEST_GL_STALL".to_owned());
+            return testing.map(str::to_owned);
         }
     }
     None
+}
+
+/// Where a crashed thread's stack (its frames' modules, top first; a frame of no known module
+/// skipped) shows MDM crashed inside OpenGL's driver, in a session that drew with OpenGL (#1659):
+/// as a frozen window's ([`gl_driver_frame`]: #1658's thread all in Intel's `ig9icd64.dll`,
+/// #1759's in AMD's `atio6axx.dll`), or on a thread of Direct3D 11's own with nothing of the
+/// program's on it. A laptop with two graphics chips shows OpenGL's frames on the other chip
+/// through Direct3D 11, and NVIDIA's driver crashed there (#1205, #1939: `d3d11.dll` the thread's
+/// only known frame); MDM itself never draws with Direct3D 11, so a `d3d11.dll` thread under
+/// OpenGL is the driver's. One with the program's code (its .exe) anywhere on it is the
+/// program's: not counted. Its module's name, if so; `testing` as for [`gl_driver_frame`].
+pub fn gl_crash_frame<'a>(
+    modules: impl IntoIterator<Item = Option<&'a str>>,
+    testing: Option<&str>,
+) -> Option<String> {
+    let known: Vec<&str> = modules.into_iter().flatten().collect();
+    let exe = |m: &&str| m.to_ascii_lowercase().ends_with(".exe");
+    if let Some(&first) = known.first()
+        && first.eq_ignore_ascii_case("d3d11.dll")
+        && !known.iter().any(exe)
+    {
+        return Some(first.to_owned());
+    }
+    gl_driver_frame(known.into_iter().map(Some), testing)
+}
+
+/// MDM crashed inside OpenGL's driver (the crash report's window read it from the crash's stack,
+/// [`gl_crash_frame`]): remembered, so the next starts draw with the system's API on its software
+/// renderer when the card has none (#1659). Windows only ([`WATCH_GL`]).
+pub fn remember_gl_crashed(module: &str) {
+    if !WATCH_GL {
+        return;
+    }
+    let details = format!("MDM crashed inside {module} as OpenGL drew");
+    tracing::warn!("OpenGL can't draw MDM here: {details}; passed over from the next start");
+    remember_failure(Way::OpenGl, Why::CrashedInDriver, &details);
 }
 
 /// The window froze inside OpenGL's driver (the crash report's window read it from the freeze's
@@ -1299,6 +1349,34 @@ fn stall_test() {
     }
     tracing::info!("testing: the window stalls 12 s while OpenGL draws");
     std::thread::sleep(std::time::Duration::from_secs(12));
+}
+
+/// `MDM_TEST_GL_CRASH=1` in an off-screen test copy of a debug build: MDM crashes once while
+/// OpenGL draws ([`crash_test`]), and the crash report's window takes that crash for one inside
+/// OpenGL's driver ([`gl_crash_frame`], #1659). Never in a release build, whatever the
+/// environment says.
+pub fn gl_crash_testing() -> bool {
+    cfg!(debug_assertions) && testing("MDM_TEST_GL_CRASH")
+}
+
+/// [`gl_crash_testing`]: a few seconds after the first frame drawn with OpenGL, MDM crashes with
+/// an access violation, as #1658's driver did. Windows only: elsewhere OpenGL's failures aren't
+/// remembered ([`WATCH_GL`]), so there is nothing for it to test.
+fn crash_test() {
+    static DONE: AtomicBool = AtomicBool::new(false);
+    if !WATCH_GL
+        || !gl_crash_testing()
+        || ACTIVE.get() != Some(&Api::OpenGl)
+        || !DRAWN.load(Ordering::Relaxed)
+        || since_start() < 5000
+        || DONE.swap(true, Ordering::Relaxed)
+    {
+        return;
+    }
+    tracing::warn!("testing: MDM crashes while OpenGL draws");
+    // WATCH_GL is Windows' only (above): no other system gets here.
+    #[cfg(windows)]
+    crate::win32::crash_now();
 }
 
 /// The version OpenGL says it is; `MDM_TEST_GL_VERSION=2.1` in off-screen test copies, as an old
@@ -1383,6 +1461,7 @@ pub fn frame_begin(ctx: &egui::Context) {
     #[cfg(gpu)]
     gpu::poll();
     stall_test();
+    crash_test();
 }
 
 /// wgpu presents without waiting for the refresh, and MDM paces its frames (see [`Swaps`]).
@@ -2603,7 +2682,7 @@ mod tests {
             (at(&["ntdll.dll", "nvoglv64.dll", mdm]), "nvoglv64.dll"),
             (at(&["kernelbase.dll", "IG9ICD64.DLL", mdm]), "IG9ICD64.DLL"),
         ] {
-            assert_eq!(gl_driver_frame(stack, false).as_deref(), Some(driver));
+            assert_eq!(gl_driver_frame(stack, None).as_deref(), Some(driver));
         }
         // MDM's own code stuck (opengl32.dll lower down, handling the window's messages, as in
         // every OpenGL window), Direct3D's drivers, unknown frames: not OpenGL's.
@@ -2618,14 +2697,101 @@ mod tests {
             ]),
             at(&["ntdll.dll", "nvwgf2umx.dll", "d3d12core.dll", mdm]),
             vec![None, None],
+            // Direct3D 11 counts for a crash only (gl_crash_frame), never for a freeze.
+            vec![Some("d3d11.dll"), None],
         ] {
-            assert_eq!(gl_driver_frame(stack, false), None);
+            assert_eq!(gl_driver_frame(stack, None), None);
         }
         // A test copy's stall (MDM_TEST_GL_STALL): MDM's own code counts.
         let stall = at(&["ntdll.dll", "kernelbase.dll", mdm, "opengl32.dll"]);
         assert_eq!(
-            gl_driver_frame(stall, true).as_deref(),
+            gl_driver_frame(stall, Some("MDM_TEST_GL_STALL")).as_deref(),
             Some("MDM_TEST_GL_STALL")
+        );
+    }
+
+    /// A crashed thread inside OpenGL's driver, as the crash reports of #1659 show it (their
+    /// stacks' modules as the reports list them, `?` a frame of no known module), and not
+    /// anywhere else.
+    #[test]
+    fn a_crash_inside_an_opengl_driver() {
+        let mdm = "misterdownloadmanager.exe";
+        let at = |modules: &[&'static str]| {
+            modules
+                .iter()
+                .map(|m| (*m != "?").then_some(*m))
+                .collect::<Vec<_>>()
+        };
+        // #1205 (RTX 4060 Laptop) and #1939 (RTX 5060 Laptop), NVIDIA 621.24: a thread of
+        // Direct3D 11's, which shows OpenGL's frames on a laptop with two graphics chips.
+        let d3d11 = at(&["d3d11.dll", "?"]);
+        // #1658: Intel UHD Graphics 600, a driver thread jumping to 0x150.
+        let intel = at(&[
+            "?",
+            "ig9icd64.dll",
+            "KERNELBASE.dll",
+            "ig9icd64.dll",
+            "kernel32.dll",
+            "ntdll.dll",
+            "KERNELBASE.dll",
+        ]);
+        // #1759: AMD Radeon, the window thread inside atio6axx.dll from a window message.
+        let amd = at(&[
+            "atio6axx.dll",
+            "atio6axx.dll",
+            "atio6axx.dll",
+            "atio6axx.dll",
+            "atio6axx.dll",
+            "user32.dll",
+            "user32.dll",
+            "user32.dll",
+            "user32.dll",
+            "user32.dll",
+            "ntdll.dll",
+            "atio6axx.dll",
+            "user32.dll",
+            "win32u.dll",
+            "ntdll.dll",
+            "win32u.dll",
+            "ntdll.dll",
+            "atio6axx.dll",
+            "ntdll.dll",
+            "uxtheme.dll",
+            "uxtheme.dll",
+            "uxtheme.dll",
+            "uxtheme.dll",
+        ]);
+        for (stack, driver) in [
+            (d3d11.clone(), "d3d11.dll"),
+            (at(&["D3D11.DLL"]), "D3D11.DLL"),
+            (intel, "ig9icd64.dll"),
+            (amd, "atio6axx.dll"),
+            (at(&["nvoglv64.dll", "opengl32.dll", mdm]), "nvoglv64.dll"),
+        ] {
+            assert_eq!(gl_crash_frame(stack, None).as_deref(), Some(driver));
+        }
+        for stack in [
+            // Direct3D 11 called by MDM's own code (its .exe below or above it): MDM's.
+            at(&["d3d11.dll", mdm]),
+            at(&["d3d11.dll", "?", "user32.dll", mdm]),
+            at(&[mdm, "d3d11.dll"]),
+            // Direct3D 11 under another module first: not the driver's thread of its own.
+            at(&["ntdll.dll", "d3d11.dll", "?"]),
+            // MDM's own crash, Direct3D 12's driver, nothing known.
+            at(&[mdm, "opengl32.dll"]),
+            at(&["nvwgf2umx.dll", "d3d12core.dll", mdm]),
+            at(&["?", "?"]),
+        ] {
+            assert_eq!(gl_crash_frame(stack, None), None);
+        }
+        // A test copy's crash (MDM_TEST_GL_CRASH): MDM's own code counts, named by the test.
+        assert_eq!(
+            gl_crash_frame(at(&[mdm, "user32.dll"]), Some("MDM_TEST_GL_CRASH")).as_deref(),
+            Some("MDM_TEST_GL_CRASH")
+        );
+        assert_eq!(
+            gl_crash_frame(d3d11, Some("MDM_TEST_GL_CRASH")).as_deref(),
+            Some("d3d11.dll")
         );
     }
 
@@ -2884,6 +3050,7 @@ mod tests {
             (Why::NoAdapter, Some(30 * DAY)),
             (Why::Other, Some(30 * DAY)),
             (Why::FrozeInDriver, Some(30 * DAY)),
+            (Why::CrashedInDriver, Some(30 * DAY)),
             (Why::TooOld, None),
         ] {
             assert_eq!(wait(why, 1), first, "{why:?}");
@@ -2912,6 +3079,8 @@ mod tests {
         assert_eq!(waits, [7, 14, 28, 56, 90, 90, 90, 90]);
         assert_eq!(wait(Why::FrozeInDriver, 3), Some(120 * DAY));
         assert_eq!(wait(Why::FrozeInDriver, 9), Some(180 * DAY));
+        assert_eq!(wait(Why::CrashedInDriver, 3), Some(120 * DAY));
+        assert_eq!(wait(Why::CrashedInDriver, 9), Some(180 * DAY));
         assert_eq!(wait(Why::NoFirstFrame, u32::MAX), Some(90 * DAY));
         let twice = failed(Why::NoFirstFrame, t0, 2);
         assert!(pass(verdict(&twice, t0 + 13 * DAY, None)));

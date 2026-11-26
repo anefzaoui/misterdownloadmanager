@@ -931,6 +931,66 @@ pub fn paragraph(
     lines.len()
 }
 
+/// [`paragraph`] that stays above `bottom`, the last row of the room its page gives it: the lines
+/// that fit are drawn, the last one cut with "..." when more were coming, and the whole text on
+/// hover. For a note at the bottom of a page that a longer translation outgrows.
+#[allow(clippy::too_many_arguments)]
+pub fn paragraph_until(
+    ui: &Ui,
+    p: &Painter,
+    x: f32,
+    baseline: f32,
+    s: &str,
+    color: Color32,
+    right: f32,
+    bottom: f32,
+    line_h: f32,
+) -> usize {
+    let flowed;
+    let s = if crate::i18n::code() == "en" {
+        s
+    } else {
+        flowed = reflow(s);
+        flowed.as_str()
+    };
+    let room = (right - x).max(1.0);
+    let lines = wrap_lines(p, s, room);
+    let shown = lines_until(p, &lines, lines_that_fit(baseline, bottom, line_h), room);
+    for (i, l) in shown.iter().enumerate() {
+        text(p, x, baseline + line_h * i as f32, l, color);
+    }
+    if shown.len() < lines.len() {
+        // The whole note, over any of its lines.
+        let whole = rect(Rect::from_min_max(
+            pos2(x, baseline - line_h),
+            pos2(
+                right,
+                baseline + line_h * (shown.len().saturating_sub(1)) as f32 + 4.0,
+            ),
+        ));
+        full_on_hover(ui, whole, ("note-until", x as i32, baseline as i32), s);
+    }
+    shown.len()
+}
+
+/// How many lines `line_h` apart, the first at `baseline`, end above `bottom`: a line's
+/// descender keeps clear of the edge below it. Always one, for a room of no height.
+fn lines_that_fit(baseline: f32, bottom: f32, line_h: f32) -> usize {
+    let rows = (bottom - baseline - 4.0) / line_h.max(1.0);
+    rows.floor().max(0.0) as usize + 1
+}
+
+/// The first `fits` of `lines`, the last cut with "..." when some were left out.
+fn lines_until(p: &Painter, lines: &[String], fits: usize, room: f32) -> Vec<String> {
+    let mut shown: Vec<String> = lines.iter().take(fits.max(1)).cloned().collect();
+    if lines.len() > shown.len()
+        && let Some(last) = shown.last_mut()
+    {
+        *last = ellipsize(p, &tahoma(), &format!("{last} ..."), room);
+    }
+    shown
+}
+
 /// Data shown as it is (a crash report, release notes), from English `x` to `right`, first
 /// baseline at `baseline`, `line_h` apart; returns the lines drawn. Its line breaks are its own
 /// in every language (a line longer than the room wraps, as in [`paragraph`]), and it reads left
@@ -7793,6 +7853,26 @@ mod tests {
             }
         });
         out.textures_delta.clear();
+    }
+
+    #[test]
+    fn a_note_stops_at_the_bottom_of_its_page() {
+        with_painter(|p| {
+            // Room for three lines of 13 px from 438: 438, 451, 464; 474 is the page's edge, so
+            // the fourth (477) is left out.
+            assert_eq!(lines_that_fit(438.0, 474.0, 13.0), 3);
+            assert_eq!(lines_that_fit(438.0, 481.0, 13.0), 4);
+            // A page with no room at all keeps one line, and no zero-line paragraph.
+            assert_eq!(lines_that_fit(438.0, 430.0, 13.0), 1);
+            let lines: Vec<String> = ["one", "two", "three", "four"].map(String::from).to_vec();
+            let shown = lines_until(p, &lines, 3, 300.0);
+            assert_eq!(shown.len(), 3);
+            // The left-out lines are said by the last one's "...", inside its room.
+            assert!(shown[2].ends_with("..."), "{shown:?}");
+            assert!(text_width(p, &shown[2]) <= 300.0);
+            // Every line fits: drawn as they are.
+            assert_eq!(lines_until(p, &lines, 4, 300.0), lines);
+        });
     }
 
     #[test]

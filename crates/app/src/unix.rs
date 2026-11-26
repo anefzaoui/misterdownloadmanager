@@ -2635,6 +2635,98 @@ pub fn tray_host() -> bool {
         .unwrap_or(false)
 }
 
+/// The X11/XWayland monitor nearest `at`, in physical screen pixels, intersected with the
+/// desktop's work area when available. Native Wayland cannot position these windows.
+#[cfg(target_os = "linux")]
+pub fn work_area(at: egui::Pos2) -> Option<egui::Rect> {
+    if on_wayland() {
+        return None;
+    }
+    // Dialogs can ask every frame. Refresh after a second so monitor/panel changes are picked
+    // up without opening an X connection for every frame.
+    type Areas = (std::time::Instant, Vec<egui::Rect>);
+    static AREAS: std::sync::Mutex<Option<Areas>> = std::sync::Mutex::new(None);
+    let mut cache = AREAS.lock().ok()?;
+    if cache
+        .as_ref()
+        .is_none_or(|(when, _)| when.elapsed() >= std::time::Duration::from_secs(1))
+    {
+        *cache = Some((
+            std::time::Instant::now(),
+            x11_work_areas().unwrap_or_default(),
+        ));
+    }
+    cache.as_ref()?.1.iter().copied().min_by(|a, b| {
+        a.distance_sq_to_pos(at)
+            .total_cmp(&b.distance_sq_to_pos(at))
+    })
+}
+
+#[cfg(target_os = "linux")]
+fn x11_work_areas() -> Result<Vec<egui::Rect>, Box<dyn std::error::Error>> {
+    use x11rb::connection::Connection;
+    use x11rb::protocol::{
+        randr,
+        xproto::{AtomEnum, ConnectionExt},
+    };
+    let (conn, screen) = x11rb::rust_connection::RustConnection::connect(None)?;
+    let screen = &conn.setup().roots[screen];
+    let rect = |x: f32, y: f32, w: f32, h: f32| {
+        egui::Rect::from_min_size(egui::pos2(x, y), egui::vec2(w, h))
+    };
+    let mut areas: Vec<_> = randr::get_monitors(&conn, screen.root, true)
+        .ok()
+        .and_then(|c| c.reply().ok())
+        .map(|reply| {
+            reply
+                .monitors
+                .into_iter()
+                .filter(|m| m.width > 0 && m.height > 0)
+                .map(|m| rect(m.x as f32, m.y as f32, m.width as f32, m.height as f32))
+                .collect()
+        })
+        .unwrap_or_default();
+    if areas.is_empty() {
+        areas.push(rect(
+            0.0,
+            0.0,
+            screen.width_in_pixels as f32,
+            screen.height_in_pixels as f32,
+        ));
+    }
+    let property = |name: &[u8]| -> Result<Vec<u32>, Box<dyn std::error::Error>> {
+        let atom = conn.intern_atom(true, name)?.reply()?.atom;
+        if atom == x11rb::NONE {
+            return Ok(Vec::new());
+        }
+        let reply = conn
+            .get_property(false, screen.root, atom, AtomEnum::CARDINAL, 0, 4096)?
+            .reply()?;
+        Ok(reply.value32().map(|v| v.collect()).unwrap_or_default())
+    };
+    // Some compositors (including Hyprland) publish one work area without a desktop index.
+    let desktop = property(b"_NET_CURRENT_DESKTOP")?
+        .first()
+        .copied()
+        .unwrap_or(0) as usize;
+    let work = property(b"_NET_WORKAREA")?;
+    if let Some(v) = desktop.checked_mul(4).and_then(|i| work.get(i..i + 4)) {
+        let work = rect(
+            v[0] as i32 as f32,
+            v[1] as i32 as f32,
+            v[2] as f32,
+            v[3] as f32,
+        );
+        for area in &mut areas {
+            let clipped = area.intersect(work);
+            if clipped.is_positive() {
+                *area = clipped;
+            }
+        }
+    }
+    Ok(areas)
+}
+
 /// `win32::on_a_screen`: winit has no monitor list before the window exists, so a saved
 /// position is trusted (the window manager keeps windows on screen on Linux and macOS).
 pub fn on_a_screen(_x: i32, _y: i32) -> bool {

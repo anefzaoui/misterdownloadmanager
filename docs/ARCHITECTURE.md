@@ -191,6 +191,9 @@ card lost twice in 10 minutes is remembered with its reason, which the menu show
 a window eframe can't paint (its context can't be made current on it, its frame can't be shown)
 is skipped and painted again 100 ms later; one whose paints keep failing for seconds is a lost
 device too (MDM starts again; twice in 10 minutes, OpenGL is remembered as failing on Windows).
+On Windows, a freeze or a crash whose report shows the window's or the crashed thread inside
+OpenGL's driver is remembered too, by the crash report's window (`crashui.rs`), from the stack's
+modules (#847, #1659).
 The fork's eframe tells MDM through its viewport hooks (`gl_paint_failed`, #1448).
 
 View → Interface size (`scale.rs`, #262) is egui's zoom factor over the display's own scale:
