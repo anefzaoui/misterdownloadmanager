@@ -7815,6 +7815,28 @@ extension	Left to the browser: {name}	உலாவியில் விடப�
 #, machine
 extension	Link copied	இணைப்பு நகலெடுக்கப்பட்டது
 #. text in the browser extension
+#. the toolbar button's status: all links refused by another MDM
+#. {count} = a number (keep the braces as they are)
+#, machine
+extension	Links refused: {count}	நிராகரிக்கப்பட்ட இணைப்புகள்: {count}
+#. text in the browser extension
+#. the toolbar button's status: links sent to another MDM
+#. {count} = a number (keep the braces as they are)
+#, machine
+extension	Links sent: {count}	அனுப்பப்பட்ட இணைப்புகள்: {count}
+#. text in the browser extension
+#. the toolbar button's status: some links refused by another MDM
+#, machine
+extension	Links sent: {sent}, refused: {refused}	அனுப்பப்பட்ட இணைப்புகள்: {sent}, நிராகரிக்கப்பட்டவை: {refused}
+#. text in the browser extension
+#. the toolbar button's status: some links refused and some left out
+#, machine
+extension	Links sent: {sent}, refused: {refused}, {left} left out	அனுப்பப்பட்ட இணைப்புகள்: {sent}, நிராகரிக்கப்பட்டவை: {refused}, விடுபட்டவை: {left}
+#. text in the browser extension
+#. the toolbar button's status: links sent to another MDM, some left out by cap or filter
+#, machine
+extension	Links sent: {sent}, {left} left out	அனுப்பப்பட்ட இணைப்புகள்: {sent}, விடுபட்டவை: {left}
+#. text in the browser extension
 #. beside a stream in the toolbar button's popup: it is a live broadcast (no fixed length); short
 #, machine
 extension	Live	நேரலை
@@ -7918,6 +7940,10 @@ extension	Never on {site}	{site} தளத்தில் மீண்டும�
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
 #, machine
 extension	Never take downloads from {site}	{site} இலிருந்து பதிவிறக்கங்களை இனி எடுக்க வேண்டாம்
+#. text in the browser extension
+#. the toolbar button's status: no links matched capturable file types
+#, machine
+extension	No capturable links ({left} left out)	பிடிக்கக்கூடிய இணைப்புகள் இல்லை ({left} விடப்பட்டவை)
 #. text in the browser extension
 #. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when no download matches the search; the words searched for follow
 #, machine
@@ -8109,6 +8135,10 @@ extension	Sent to Link grabber: tick the ones to download there.	இணைப்
 #. shown briefly on the download button after it was clicked; keep the name Mister Download Manager as it is
 #, machine
 extension	Sent to Mister Download Manager	Mister Download Managerக்கு அனுப்பப்பட்டது
+#. text in the browser extension
+#. the toolbar button's status when the paired server does not answer
+#, machine
+extension	Server not reached	சேவையகம் அடையப்படவில்லை
 #. text in the browser extension
 #. tab in the toolbar button's popup: the extension's settings; noun, short
 #, machine

@@ -7819,6 +7819,28 @@ extension	Left to the browser: {name}	Ligg att i nettlesaren: {name}
 #, machine
 extension	Link copied	Lenkje kopiert
 #. text in the browser extension
+#. the toolbar button's status: all links refused by another MDM
+#. {count} = a number (keep the braces as they are)
+#, machine
+extension	Links refused: {count}	Lenkjer vart avviste: {count}
+#. text in the browser extension
+#. the toolbar button's status: links sent to another MDM
+#. {count} = a number (keep the braces as they are)
+#, machine
+extension	Links sent: {count}	Lenkjer vart sende: {count}
+#. text in the browser extension
+#. the toolbar button's status: some links refused by another MDM
+#, machine
+extension	Links sent: {sent}, refused: {refused}	Lenkjer vart sende: {sent}, avviste: {refused}
+#. text in the browser extension
+#. the toolbar button's status: some links refused and some left out
+#, machine
+extension	Links sent: {sent}, refused: {refused}, {left} left out	Lenkjer vart sende: {sent}, avviste: {refused}, {left} utelatne
+#. text in the browser extension
+#. the toolbar button's status: links sent to another MDM, some left out by cap or filter
+#, machine
+extension	Links sent: {sent}, {left} left out	Lenkjer vart sende: {sent}, {left} utelatne
+#. text in the browser extension
 #. beside a stream in the toolbar button's popup: it is a live broadcast (no fixed length); short
 #, machine
 extension	Live	Direkte
@@ -7922,6 +7944,10 @@ extension	Never on {site}	Aldri på {site}
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
 #, machine
 extension	Never take downloads from {site}	Aldri ta nedlastingar frå {site}
+#. text in the browser extension
+#. the toolbar button's status: no links matched capturable file types
+#, machine
+extension	No capturable links ({left} left out)	Ingen lenkjer kan fangast ({left} utelatne)
 #. text in the browser extension
 #. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when no download matches the search; the words searched for follow
 #, machine
@@ -8113,6 +8139,10 @@ extension	Sent to Link grabber: tick the ones to download there.	Sendt til lenkj
 #. shown briefly on the download button after it was clicked; keep the name Mister Download Manager as it is
 #, machine
 extension	Sent to Mister Download Manager	Sendt til Mister Download Manager
+#. text in the browser extension
+#. the toolbar button's status when the paired server does not answer
+#, machine
+extension	Server not reached	Server ikkje nådd
 #. text in the browser extension
 #. tab in the toolbar button's popup: the extension's settings; noun, short
 #, machine

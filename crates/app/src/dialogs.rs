@@ -768,6 +768,19 @@ fn dialog_window<T>(
         keep_on_screen(ctx, key, title);
     }
     if !matches!(out, Outcome::Open) {
+        // #1852: a dialog of the main window's, brought back from the taskbar's button, closes
+        // leaving the focus on the taskbar: Windows doesn't hand it to the owner there, and the
+        // main window behind it stays without the keyboard. Brought forward while the dialog
+        // still has the focus (Windows allows it then), the main window is where the person's
+        // click leaves them. Not while another program is in front, and never for a dialog
+        // opened over one (its own window, not the main window's).
+        #[cfg(windows)]
+        if !crate::offscreen()
+            && crate::win32::owned_by_main_window(title)
+            && crate::win32::main_should_come_back()
+        {
+            let _ = crate::win32::bring_own_forward(crate::MAIN_TITLE);
+        }
         forget_window(ctx, vid, key);
     }
     out

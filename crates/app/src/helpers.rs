@@ -451,8 +451,10 @@ impl Helpers {
             let mut more = 0.0;
             if failed && winui::text_width(&p, &line) > room {
                 // A failure is read whole (#816): wrapped, the window growing by its lines past
-                // the first.
-                let n = winui::readable_paragraph(
+                // the first. And it is a polite live region: a screen reader speaks it as it
+                // comes, without the focus — the running percentages never are, or they would
+                // interrupt endlessly (#1407).
+                let n = winui::readable_paragraph_live(
                     ui,
                     &p,
                     o.x + 20.0,
@@ -476,8 +478,13 @@ impl Helpers {
                     &shown,
                     color,
                 );
-                // Whole for a screen reader too, even when the window cut it (#1407).
-                winui::readable(ui, rc, ("helpers", "status"), &line);
+                // Whole for a screen reader too, even when the window cut it (#1407). A failure
+                // is a polite live region — spoken as it comes; the percentages aren't.
+                if failed {
+                    winui::readable_live(ui, rc, ("helpers", "status"), &line);
+                } else {
+                    winui::readable(ui, rc, ("helpers", "status"), &line);
+                }
                 if shown != line {
                     winui::full_on_hover(ui, rc, "helpers-status", &line);
                 }

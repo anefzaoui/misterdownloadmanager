@@ -7802,6 +7802,28 @@ extension	Left to the browser: {name}	เหลือไว้ให้เบร
 #, machine
 extension	Link copied	คัดลอกลิงก์แล้ว
 #. text in the browser extension
+#. the toolbar button's status: all links refused by another MDM
+#. {count} = a number (keep the braces as they are)
+#, machine
+extension	Links refused: {count}	ลิงก์ที่ถูกปฏิเสธ: {count}
+#. text in the browser extension
+#. the toolbar button's status: links sent to another MDM
+#. {count} = a number (keep the braces as they are)
+#, machine
+extension	Links sent: {count}	ลิงก์ที่ส่ง: {count}
+#. text in the browser extension
+#. the toolbar button's status: some links refused by another MDM
+#, machine
+extension	Links sent: {sent}, refused: {refused}	ลิงก์ที่ส่ง: {sent}, ถูกปฏิเสธ: {refused}
+#. text in the browser extension
+#. the toolbar button's status: some links refused and some left out
+#, machine
+extension	Links sent: {sent}, refused: {refused}, {left} left out	ลิงก์ที่ส่ง: {sent}, ถูกปฏิเสธ: {refused}, ถูกละเว้น: {left}
+#. text in the browser extension
+#. the toolbar button's status: links sent to another MDM, some left out by cap or filter
+#, machine
+extension	Links sent: {sent}, {left} left out	ลิงก์ที่ส่ง: {sent}, ถูกละเว้น: {left}
+#. text in the browser extension
 #. beside a stream in the toolbar button's popup: it is a live broadcast (no fixed length); short
 #, machine
 extension	Live	สด
@@ -7905,6 +7927,10 @@ extension	Never on {site}	ไม่แสดงบน {site}
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
 #, machine
 extension	Never take downloads from {site}	ห้ามดาวน์โหลดจาก {site} อีก
+#. text in the browser extension
+#. the toolbar button's status: no links matched capturable file types
+#, machine
+extension	No capturable links ({left} left out)	ไม่มีลิงก์ที่จับได้ ({left} ถูกละเว้น)
 #. text in the browser extension
 #. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when no download matches the search; the words searched for follow
 #, machine
@@ -8096,6 +8122,10 @@ extension	Sent to Link grabber: tick the ones to download there.	ส่งไป
 #. shown briefly on the download button after it was clicked; keep the name Mister Download Manager as it is
 #, machine
 extension	Sent to Mister Download Manager	ส่งไปยัง Mister Download Manager
+#. text in the browser extension
+#. the toolbar button's status when the paired server does not answer
+#, machine
+extension	Server not reached	ไม่สามารถเข้าถึงเซิร์ฟเวอร์ได้
 #. text in the browser extension
 #. tab in the toolbar button's popup: the extension's settings; noun, short
 #, machine

@@ -5492,6 +5492,18 @@ pub fn readable(ui: &Ui, rc: Rect, salt: impl std::hash::Hash + std::fmt::Debug,
     resp.widget_info(|| egui::WidgetInfo::labeled(egui::Role::Label, true, &text));
 }
 
+/// A [`readable`] Label that is also a polite live region: a screen reader speaks its text as
+/// it changes, without waiting for the focus to reach it. For rare news such as a failure —
+/// never for progress or percentages, which would interrupt endlessly (#1407).
+pub fn readable_live(ui: &Ui, rc: Rect, salt: impl std::hash::Hash + std::fmt::Debug, text: &str) {
+    let resp = ui.interact(rc, widget_id(ui, ("readable", salt)), Sense::hover());
+    let text = text.to_owned();
+    resp.widget_info(|| egui::WidgetInfo::labeled(egui::Role::Label, true, &text));
+    resp.ctx.accesskit_node_builder(resp.id, |n| {
+        n.set_live(egui::accesskit::Live::Polite);
+    });
+}
+
 /// The window's own node in the accessibility tree carries the window's title: egui leaves the
 /// root Window node unnamed, so a screen reader met `[frame] ''` where it looks for the window's
 /// name (#1407). The title is passed in, not read back from the OS window — on X11 winit's
@@ -5520,12 +5532,49 @@ pub fn readable_paragraph(
     line_h: f32,
     salt: impl std::hash::Hash + std::fmt::Debug,
 ) -> usize {
+    readable_paragraph_impl(ui, p, x, baseline, s, color, right, line_h, salt, false)
+}
+
+/// A [`readable_paragraph`] that is a polite live region, like [`readable_live`]: its text is
+/// spoken as it changes, without the focus. For rare news such as a failure only (#1407).
+#[allow(clippy::too_many_arguments)]
+pub fn readable_paragraph_live(
+    ui: &Ui,
+    p: &Painter,
+    x: f32,
+    baseline: f32,
+    s: &str,
+    color: Color32,
+    right: f32,
+    line_h: f32,
+    salt: impl std::hash::Hash + std::fmt::Debug,
+) -> usize {
+    readable_paragraph_impl(ui, p, x, baseline, s, color, right, line_h, salt, true)
+}
+
+#[allow(clippy::too_many_arguments)]
+fn readable_paragraph_impl(
+    ui: &Ui,
+    p: &Painter,
+    x: f32,
+    baseline: f32,
+    s: &str,
+    color: Color32,
+    right: f32,
+    line_h: f32,
+    salt: impl std::hash::Hash + std::fmt::Debug,
+    live: bool,
+) -> usize {
     let lines = paragraph(p, x, baseline, s, color, right, line_h);
     let rc = rect(Rect::from_min_max(
         pos2(x, baseline - 12.0),
         pos2(right, baseline + line_h * (lines as f32 - 1.0) + 4.0),
     ));
-    readable(ui, rc, salt, s);
+    if live {
+        readable_live(ui, rc, salt, s);
+    } else {
+        readable(ui, rc, salt, s);
+    }
     lines
 }
 

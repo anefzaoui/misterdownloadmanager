@@ -7819,6 +7819,28 @@ extension	Left to the browser: {name}	Aan die blaaier oorgelaat: {name}
 #, machine
 extension	Link copied	Skakel gekopieer
 #. text in the browser extension
+#. the toolbar button's status: all links refused by another MDM
+#. {count} = a number (keep the braces as they are)
+#, machine
+extension	Links refused: {count}	Skakels geweier: {count}
+#. text in the browser extension
+#. the toolbar button's status: links sent to another MDM
+#. {count} = a number (keep the braces as they are)
+#, machine
+extension	Links sent: {count}	Skakels gestuur: {count}
+#. text in the browser extension
+#. the toolbar button's status: some links refused by another MDM
+#, machine
+extension	Links sent: {sent}, refused: {refused}	Skakels gestuur: {sent}, geweier: {refused}
+#. text in the browser extension
+#. the toolbar button's status: some links refused and some left out
+#, machine
+extension	Links sent: {sent}, refused: {refused}, {left} left out	Skakels gestuur: {sent}, geweier: {refused}, {left} weggelaat
+#. text in the browser extension
+#. the toolbar button's status: links sent to another MDM, some left out by cap or filter
+#, machine
+extension	Links sent: {sent}, {left} left out	Skakels gestuur: {sent}, {left} weggelaat
+#. text in the browser extension
 #. beside a stream in the toolbar button's popup: it is a live broadcast (no fixed length); short
 #, machine
 extension	Live	Regstreeks
@@ -7922,6 +7944,10 @@ extension	Never on {site}	Nooit op {site}
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
 #, machine
 extension	Never take downloads from {site}	Moet nooit aflaaie van {site} neem nie
+#. text in the browser extension
+#. the toolbar button's status: no links matched capturable file types
+#, machine
+extension	No capturable links ({left} left out)	Geen vasvangbare skakels ({left} uitgelaat)
 #. text in the browser extension
 #. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when no download matches the search; the words searched for follow
 #, machine
@@ -8113,6 +8139,10 @@ extension	Sent to Link grabber: tick the ones to download there.	Na Skakelgryper
 #. shown briefly on the download button after it was clicked; keep the name Mister Download Manager as it is
 #, machine
 extension	Sent to Mister Download Manager	Na Mister Download Manager gestuur
+#. text in the browser extension
+#. the toolbar button's status when the paired server does not answer
+#, machine
+extension	Server not reached	Bediener nie bereik nie
 #. text in the browser extension
 #. tab in the toolbar button's popup: the extension's settings; noun, short
 #, machine

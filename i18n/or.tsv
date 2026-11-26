@@ -7810,6 +7810,28 @@ extension	Left to the browser: {name}	ବ୍ରାଉଜରକୁ ଛଡାଯ�
 #, machine
 extension	Link copied	ଲିଙ୍କ୍ କପି ହେଲା
 #. text in the browser extension
+#. the toolbar button's status: all links refused by another MDM
+#. {count} = a number (keep the braces as they are)
+#, machine
+extension	Links refused: {count}	ଲିଙ୍କ୍ ପ୍ରତ୍ୟାଖ୍ୟାନ କରାଗଲା: {count}
+#. text in the browser extension
+#. the toolbar button's status: links sent to another MDM
+#. {count} = a number (keep the braces as they are)
+#, machine
+extension	Links sent: {count}	ଲିଙ୍କ୍ ପଠାଗଲା: {count}
+#. text in the browser extension
+#. the toolbar button's status: some links refused by another MDM
+#, machine
+extension	Links sent: {sent}, refused: {refused}	ଲିଙ୍କ୍ ପଠାଗଲା: {sent}, ପ୍ରତ୍ୟାଖ୍ୟାନ କରାଗଲା: {refused}
+#. text in the browser extension
+#. the toolbar button's status: some links refused and some left out
+#, machine
+extension	Links sent: {sent}, refused: {refused}, {left} left out	ଲିଙ୍କ୍ ପଠାଗଲା: {sent}, ପ୍ରତ୍ୟାଖ୍ୟାନ କରାଗଲା: {refused}, {left}ଟି ଛାଡ଼ି ଦିଆଗଲା
+#. text in the browser extension
+#. the toolbar button's status: links sent to another MDM, some left out by cap or filter
+#, machine
+extension	Links sent: {sent}, {left} left out	ଲିଙ୍କ୍ ପଠାଗଲା: {sent}, {left}ଟି ଛାଡ଼ି ଦିଆଗଲା
+#. text in the browser extension
 #. beside a stream in the toolbar button's popup: it is a live broadcast (no fixed length); short
 #, machine
 extension	Live	ଲାଇଭ୍
@@ -7913,6 +7935,10 @@ extension	Never on {site}	{site}ରେ କେବେ ନୁହେଁ
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
 #, machine
 extension	Never take downloads from {site}	{site}ରୁ ଆଉ ଡାଉନଲୋଡ୍ ନିଅନ୍ତୁ ନାହିଁ
+#. text in the browser extension
+#. the toolbar button's status: no links matched capturable file types
+#, machine
+extension	No capturable links ({left} left out)	କୌଣସି କ୍ୟାପ୍‌ଚର୍ ଯୋଗ୍ୟ ଲିଙ୍କ୍ ନାହିଁ ({left}ଟି ଛାଡ଼ି ଦିଆଗଲା)
 #. text in the browser extension
 #. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when no download matches the search; the words searched for follow
 #, machine
@@ -8104,6 +8130,10 @@ extension	Sent to Link grabber: tick the ones to download there.	ଲିଙ୍କ
 #. shown briefly on the download button after it was clicked; keep the name Mister Download Manager as it is
 #, machine
 extension	Sent to Mister Download Manager	Mister Download Managerକୁ ପଠାଗଲା
+#. text in the browser extension
+#. the toolbar button's status when the paired server does not answer
+#, machine
+extension	Server not reached	ସର୍ଭରରେ ପହଞ୍ଚି ହେଲା ନାହିଁ
 #. text in the browser extension
 #. tab in the toolbar button's popup: the extension's settings; noun, short
 #, machine

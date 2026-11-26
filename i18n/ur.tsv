@@ -7819,6 +7819,28 @@ extension	Left to the browser: {name}	براؤزر کے لیے چھوڑ دیا �
 #, machine
 extension	Link copied	لنک کاپی ہو گیا
 #. text in the browser extension
+#. the toolbar button's status: all links refused by another MDM
+#. {count} = a number (keep the braces as they are)
+#, machine
+extension	Links refused: {count}	لنکس مسترد کیے گئے: {count}
+#. text in the browser extension
+#. the toolbar button's status: links sent to another MDM
+#. {count} = a number (keep the braces as they are)
+#, machine
+extension	Links sent: {count}	لنکس بھیجے گئے: {count}
+#. text in the browser extension
+#. the toolbar button's status: some links refused by another MDM
+#, machine
+extension	Links sent: {sent}, refused: {refused}	لنکس بھیجے گئے: {sent}، مسترد کیے گئے: {refused}
+#. text in the browser extension
+#. the toolbar button's status: some links refused and some left out
+#, machine
+extension	Links sent: {sent}, refused: {refused}, {left} left out	لنکس بھیجے گئے: {sent}، مسترد کیے گئے: {refused}، {left} چھوڑ دیے گئے
+#. text in the browser extension
+#. the toolbar button's status: links sent to another MDM, some left out by cap or filter
+#, machine
+extension	Links sent: {sent}, {left} left out	لنکس بھیجے گئے: {sent}، {left} چھوڑ دیے گئے
+#. text in the browser extension
 #. beside a stream in the toolbar button's popup: it is a live broadcast (no fixed length); short
 #, machine
 extension	Live	لائیو
@@ -7922,6 +7944,10 @@ extension	Never on {site}	{site} پر کبھی نہیں
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
 #, machine
 extension	Never take downloads from {site}	{site} سے کبھی ڈاؤن لوڈز نہ لیں
+#. text in the browser extension
+#. the toolbar button's status: no links matched capturable file types
+#, machine
+extension	No capturable links ({left} left out)	کوئی قابل گرفت لنک نہیں ({left} چھوڑ دیے گئے)
 #. text in the browser extension
 #. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when no download matches the search; the words searched for follow
 #, machine
@@ -8113,6 +8139,10 @@ extension	Sent to Link grabber: tick the ones to download there.	لنک گراب
 #. shown briefly on the download button after it was clicked; keep the name Mister Download Manager as it is
 #, machine
 extension	Sent to Mister Download Manager	Mister Download Manager کو بھیجا گیا
+#. text in the browser extension
+#. the toolbar button's status when the paired server does not answer
+#, machine
+extension	Server not reached	سرور تک رسائی نہیں ہوئی
 #. text in the browser extension
 #. tab in the toolbar button's popup: the extension's settings; noun, short
 #, machine
