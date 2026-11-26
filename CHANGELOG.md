@@ -111,6 +111,7 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Fixed
 
+- Sinhala: about a hundred of MDM's texts read better (clearer wording, the same word for the same thing throughout, the installer's too), and the ones still missing are translated (thanks to [@ShammiSandaruwan](https://github.com/ShammiSandaruwan)).
 - **Browser add-on:** Download all links / Download selected links sends capturable links to the paired server when another MDM is chosen, capped at 100 links, with a clear consolidated result, and stopping immediately when the server cannot be reached ([#1596](https://github.com/anefzaoui/misterdownloadmanager/issues/1596)).
 - Windows: a dialog opened from the main window (**About**, for one), brought back with MDM's taskbar button and closed with **OK**, left the keyboard on the taskbar: Windows doesn't hand it to the owner there, and the main window behind stayed without it, looking as if it had been put away. The main window now comes back to the front when such a dialog closes, and never over another program ([#1852](https://github.com/anefzaoui/misterdownloadmanager/issues/1852); thanks to [@wmwlwmwl](https://github.com/wmwlwmwl)).
 - Browser add-on: Sinhala (සිංහල) in Firefox. Its texts were already translated, but the add-on's Sinhala folder was never written, so it showed English; Firefox's package now carries it (Chrome and Safari have no Sinhala) ([#1903](https://github.com/anefzaoui/misterdownloadmanager/issues/1903); thanks to [@Raghav2012Code](https://github.com/Raghav2012Code)).

@@ -569,6 +569,7 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ Sinhala: about a hundred texts reworded and the missing ones translated (thanks to [@ShammiSandaruwan](https://github.com/ShammiSandaruwan))
 - ✅ **Browser add-on:** send all and selected links to the paired server when another MDM is chosen ([#1596](https://github.com/anefzaoui/misterdownloadmanager/issues/1596), [PR #1602](https://github.com/anefzaoui/misterdownloadmanager/pull/1602))
 - ✅ Windows: closing a dialog of the main window's with **OK**, after bringing it back with
   MDM's taskbar button, leaves the main window in front with the keyboard instead of the
@@ -2189,6 +2190,11 @@ These ship in the next version.
 - ✅ Torrents: a magnet link with its hash in lower-case Base32 (32 characters) opens; the
   torrent engine took only upper-case Base32 (thanks to
   [@jamaica1000](https://github.com/jamaica1000))
+- ✅ Tests: the check of a download that starts while the disk is busy no longer fails now and
+  then on a slower computer: whether a save may run during the transfer depends on how fast the
+  computer receives, so the download's own check keeps to what the user sees (no stall, no
+  connection dropped), and the save rule is checked at every speed on the test disk's own clock
+  ([#1633](https://github.com/anefzaoui/misterdownloadmanager/issues/1633))
 
 ## Being worked on
 
