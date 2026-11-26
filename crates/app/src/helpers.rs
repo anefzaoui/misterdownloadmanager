@@ -435,17 +435,34 @@ impl Offer {
                 muted,
             )
         };
-        let lines = winui::readable_paragraph(
-            ui,
-            &p,
-            o.x + 18.0,
-            o.y + y + 13.0,
-            &line,
-            color,
-            o.x + text_end,
-            16.0,
-            ("helpers", "status"),
-        );
+        // A failure is a polite live region: a screen reader speaks it as it comes, without the
+        // focus; the other lines never are (#1407, #1978).
+        let at = (o.x + 18.0, o.y + y + 13.0, o.x + text_end);
+        let lines = if self.failed.is_some() {
+            winui::readable_paragraph_live(
+                ui,
+                &p,
+                at.0,
+                at.1,
+                &line,
+                color,
+                at.2,
+                16.0,
+                ("helpers", "status"),
+            )
+        } else {
+            winui::readable_paragraph(
+                ui,
+                &p,
+                at.0,
+                at.1,
+                &line,
+                color,
+                at.2,
+                16.0,
+                ("helpers", "status"),
+            )
+        };
         // What to do about the failure (#816), under it.
         let mut more = 16.0 * lines.saturating_sub(1) as f32;
         if let Some((_, _, advice)) = &self.failed {

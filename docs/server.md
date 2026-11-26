@@ -128,9 +128,14 @@ In the browser extension's menu, under **Send downloads to**:
 - The extension remembers paired servers: switch between any paired server and **This computer**
   with a single click without having to re-pair. Switching back leaves the browser paired; click
   **×** next to a server to unpair and forget it on both sides.
-- Downloads the extension catches, and **Download with Mister Download Manager** on a link,
-  then go to the server instead of this computer. The browser's cookies are not sent to the server:
-  a download that needs you to be signed in to a site stays with this computer.
+- Downloads the extension catches, **Download with Mister Download Manager** on a link, and
+  **Download all links** / **Download selected links**, then go to the server instead of this
+  computer. On the server, links are added and started right away (rather than opened in Link
+  grabber). Only links matching the file types MDM catches (or its default types) are sent,
+  capped at 100 links per batch; links beyond the cap or of other types are left out, and the
+  toolbar button's badge and status notice report how many links were sent, refused, or left out.
+  The browser's cookies are not sent to the server: a download that needs you to be signed in
+  to a site stays with this computer.
 - The **Download video** button over videos sends the server the video's page when you click it,
   and nothing before: whether it shows is up to this computer's MDM (its Options), and when
   there's no MDM on this computer, it shows on every site.

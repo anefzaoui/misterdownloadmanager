@@ -850,5 +850,78 @@
   },
   "popup_video_reset_done": {
     "message": "അതിൻ്റെ കോണിൽ തിരിച്ചെത്തി, എല്ലാ സൈറ്റുകളിലും അതിൻ്റെ മെനു എല്ലാം കാണിക്കുന്നു"
+  },
+  "status_links_sent": {
+    "message": "ലിങ്കുകൾ അയച്ചു: $count$",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "10"
+      }
+    }
+  },
+  "status_links_cut": {
+    "message": "ലിങ്കുകൾ അയച്ചു: $sent$, $left$ ഒഴിവാക്കി",
+    "placeholders": {
+      "sent": {
+        "content": "$1",
+        "example": "100"
+      },
+      "left": {
+        "content": "$2",
+        "example": "20"
+      }
+    }
+  },
+  "status_links_partial": {
+    "message": "ലിങ്കുകൾ അയച്ചു: $sent$, നിരസിച്ചു: $refused$",
+    "placeholders": {
+      "sent": {
+        "content": "$1",
+        "example": "5"
+      },
+      "refused": {
+        "content": "$2",
+        "example": "2"
+      }
+    }
+  },
+  "status_links_partial_cut": {
+    "message": "ലിങ്കുകൾ അയച്ചു: $sent$, നിരസിച്ചു: $refused$, $left$ ഒഴിവാക്കി",
+    "placeholders": {
+      "sent": {
+        "content": "$1",
+        "example": "5"
+      },
+      "refused": {
+        "content": "$2",
+        "example": "2"
+      },
+      "left": {
+        "content": "$3",
+        "example": "1"
+      }
+    }
+  },
+  "status_links_refused": {
+    "message": "ലിങ്കുകൾ നിരസിച്ചു: $count$",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "status_links_none": {
+    "message": "പിടിച്ചെടുക്കാവുന്ന ലിങ്കുകളില്ല ($left$ ഒഴിവാക്കി)",
+    "placeholders": {
+      "left": {
+        "content": "$1",
+        "example": "5"
+      }
+    }
+  },
+  "status_unreachable": {
+    "message": "സെർവറിൽ എത്തിച്ചേരാനായില്ല"
   }
 }
