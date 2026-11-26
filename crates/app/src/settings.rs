@@ -466,6 +466,10 @@ pub struct Settings {
     /// Windows account (`sealed_logins`).
     #[serde(with = "sealed_logins")]
     pub site_logins: Vec<(String, String, String)>,
+    /// HTTPS sites whose refused certificate the user chose "Always for this site" for (#1964),
+    /// pinned to `(host, port, sha256)`.
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub allowed_certs: Vec<mdm_engine::AllowedCert>,
     /// Options → Accounts (#44): debrid service accounts, in the order they are asked.
     pub debrid_accounts: Vec<DebridAccount>,
     /// "Download supported file-host links through these accounts".
@@ -744,6 +748,7 @@ impl Default for Settings {
             net_adapter: String::new(),
             ftp_passive: true,
             site_logins: Vec::new(),
+            allowed_certs: Vec::new(),
             debrid_accounts: Vec::new(),
             debrid_on: true,
             debrid_torrents: false,
@@ -1520,6 +1525,18 @@ impl Settings {
                 exceptions: self.conn_exceptions.clone(),
             },
         }
+    }
+}
+
+impl Settings {
+    /// Pin `sha256` for `(host, port)` (#1964), replacing any previous certificate for that site.
+    pub fn allow_cert(&mut self, host: String, port: u16, sha256: String) {
+        let host = host.to_ascii_lowercase();
+        let sha256 = sha256.to_ascii_lowercase();
+        self.allowed_certs
+            .retain(|c| !(c.port == port && c.host.eq_ignore_ascii_case(&host)));
+        self.allowed_certs
+            .push(mdm_engine::AllowedCert { host, port, sha256 });
     }
 }
 
@@ -2480,6 +2497,20 @@ pub(crate) mod sealed {
             let s: crate::settings::Settings =
                 serde_json::from_value(serde_json::json!({ "close_to_tray": false })).unwrap();
             assert!(!s.close_to_tray);
+        }
+
+        #[test]
+        fn allowed_certs_are_saved_per_site_port_and_fingerprint() {
+            let mut s = crate::settings::Settings::default();
+            s.allow_cert("NAS.Local".into(), 8443, "AA".repeat(32));
+            s.allow_cert("nas.local".into(), 8443, "BB".repeat(32));
+            s.allow_cert("nas.local".into(), 443, "CC".repeat(32));
+            assert_eq!(s.allowed_certs.len(), 2);
+            assert_eq!(s.allowed_certs[0].port, 8443);
+            assert_eq!(s.allowed_certs[0].sha256, "bb".repeat(32));
+            let json = serde_json::to_string(&s).unwrap();
+            let back: crate::settings::Settings = serde_json::from_str(&json).unwrap();
+            assert_eq!(back.allowed_certs, s.allowed_certs);
         }
     }
 }

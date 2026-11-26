@@ -1421,6 +1421,15 @@ pub struct App {
     /// Download File Info's open answers, for the download each was given to (by id) to start
     /// from (#28: a one-time link refuses a second request).
     kept_answers: std::collections::HashMap<u64, mdm_engine::KeptAnswer>,
+    /// Certificates allowed for one download only ("Continue once", #1964).
+    once_certs: std::collections::HashMap<u64, Vec<mdm_engine::AllowedCert>>,
+    /// Downloads started interactively (not by a queue/scheduler), which may prompt on a
+    /// refused certificate (#1964).
+    interactive_starts: std::collections::HashSet<u64>,
+    /// Refused-certificate prompts waiting to be shown (#1964).
+    cert_asks: std::collections::VecDeque<(u64, mdm_engine::CertInfo, String)>,
+    /// The refused-certificate prompt currently open (#1964).
+    cert_ask: Option<(u64, mdm_engine::CertInfo, String)>,
     /// Help menu windows.
     about: Option<crate::help::About>,
     updates: Option<crate::help::Updates>,
@@ -2334,6 +2343,10 @@ impl App {
             file_info_waiting: Default::default(),
             zip_preview_asked: None,
             kept_answers: Default::default(),
+            once_certs: Default::default(),
+            interactive_starts: Default::default(),
+            cert_asks: Default::default(),
+            cert_ask: None,
             progress: Vec::new(),
             complete: Vec::new(),
             finishing: Vec::new(),
@@ -2897,6 +2910,12 @@ impl App {
             item.replace_file = fi.replaces();
         }
         self.selection.set(id);
+        if !fi.once_certs.is_empty() {
+            self.once_certs
+                .entry(id)
+                .or_default()
+                .extend(fi.once_certs.iter().cloned());
+        }
         if matches!(start, Start::Now) {
             // Later: the answer is closed (its download starts some other time).
             if let Some(k) = fi.take_kept() {
@@ -4335,6 +4354,7 @@ impl App {
                 .and_then(|p| url::Url::parse(p).ok()),
             // A site rule: the way a browser connects from the first request (#1778).
             browser_first: site.browser_like,
+            allowed_certs: self.settings.allowed_certs.clone(),
             ..Options::default()
         };
         // A site rule's User-Agent is the user's choice for that site, above the browser's and
@@ -4631,6 +4651,14 @@ impl App {
         // The file's own remembered limit, else the Speed Limiter's.
         opts.speed_limit = own_limit.or(self.settings.speed_limit());
         opts.checksum = checksum;
+        if let Some(once) = self.once_certs.get(&id) {
+            opts.allowed_certs.extend(once.iter().cloned());
+        }
+        if show {
+            self.interactive_starts.insert(id);
+        } else {
+            self.interactive_starts.remove(&id);
+        }
         let Some(item) = self.item(id) else { return };
         // The file at its place, chosen to be replaced (#1088): replaced as it completes, on a
         // first start and on a resume alike. A place moved since doesn't replace anything.
@@ -9659,6 +9687,21 @@ impl App {
         failed.extend(self.healed(ctx));
         for id in &finished {
             self.heal_retry.remove(id);
+            self.interactive_starts.remove(id);
+        }
+        for id in &failed {
+            if self.interactive_starts.remove(id)
+                && let Some(item) = self.items.iter().find(|i| i.id == *id)
+                && let Some(mdm_engine::Error::Certificate(refusal)) =
+                    item.snap.as_ref().and_then(|s| s.failure.as_ref())
+                && let Some(info) = &refusal.info
+            {
+                self.cert_asks.push_back((
+                    *id,
+                    (**info).clone(),
+                    crate::errors::certificate(refusal),
+                ));
+            }
         }
         let now = Instant::now();
         self.check_limits(now);
@@ -14416,14 +14459,19 @@ impl App {
                 self.run(Cmd::AddCategory, None, ctx);
             }
             // The folder a download goes to is remembered for the Save As drop list.
-            if matches!(out, Outcome::Done(_))
-                && let Some(dir) = fi.dest().parent()
-            {
-                crate::settings::remember(
-                    &mut self.settings.folder_history,
-                    &dir.display().to_string(),
-                );
-                self.dirty = true;
+            if matches!(out, Outcome::Done(_)) {
+                for cert in &fi.new_allowed_certs {
+                    self.settings
+                        .allow_cert(cert.host.clone(), cert.port, cert.sha256.clone());
+                    self.dirty = true;
+                }
+                if let Some(dir) = fi.dest().parent() {
+                    crate::settings::remember(
+                        &mut self.settings.folder_history,
+                        &dir.display().to_string(),
+                    );
+                    self.dirty = true;
+                }
             }
             // The address was edited after the early start, or "Download through" changed (#44):
             // that download is the old one's. It goes; the new one starts early in its turn
@@ -14470,6 +14518,35 @@ impl App {
         still_open.append(&mut self.file_infos);
         self.file_infos = still_open;
         self.open_waiting_file_infos(ctx);
+        if self.cert_ask.is_none() {
+            self.cert_ask = self.cert_asks.pop_front();
+        }
+        if let Some((id, info, reason)) = self.cert_ask.clone() {
+            match crate::dialogs::cert_warning(ctx, &info, &reason, None) {
+                Outcome::Open => {}
+                Outcome::Done(crate::dialogs::CertChoice::Once) => {
+                    self.cert_ask = None;
+                    self.once_certs
+                        .entry(id)
+                        .or_default()
+                        .push(mdm_engine::AllowedCert {
+                            host: info.host.to_ascii_lowercase(),
+                            port: info.port,
+                            sha256: info.sha256,
+                        });
+                    self.start(id, true);
+                }
+                Outcome::Done(crate::dialogs::CertChoice::Always) => {
+                    self.cert_ask = None;
+                    self.settings.allow_cert(info.host, info.port, info.sha256);
+                    self.dirty = true;
+                    self.start(id, true);
+                }
+                Outcome::Done(crate::dialogs::CertChoice::Cancel) | Outcome::Closed => {
+                    self.cert_ask = None;
+                }
+            }
+        }
         self.finish_stopped();
         let mut actions = Vec::new();
         // A progress window can be hidden in the tray only when there is one to bring it back.
