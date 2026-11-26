@@ -119,6 +119,7 @@ runs:
         WAIT_MINUTES: ${{ inputs.wait-minutes }}
       run: |
         $ErrorActionPreference = "Stop"
+        trap { "::error title=SignPath::$($_.Exception.Message)"; break }
         if (-not $env:ID) { throw "no signing request id" }
         $base = "https://pipelineconnector.connectors.signpath.io/GitHubActions/GitHubCom/$([uri]::EscapeDataString($env:ORGANIZATION))/SigningRequests/$([uri]::EscapeDataString($env:ID))"
         $headers = @{ Authorization = "Bearer $env:TOKEN" }
@@ -164,6 +165,7 @@ runs:
         POLICY: ${{ inputs.signing-policy-slug }}
       run: |
         $ErrorActionPreference = "Stop"
+        trap { "::error title=SignPath::$($_.Exception.Message)"; break }
         $sent = (Resolve-Path -LiteralPath $env:SENT).Path
         $out = (Resolve-Path -LiteralPath $env:OUT).Path
         function Get-Files([string]$dir) {
