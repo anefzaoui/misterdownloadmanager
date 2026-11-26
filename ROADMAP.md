@@ -569,6 +569,9 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ CodeQL no longer reads the windows' control names as salts or passwords: the shared drawing
+  helpers call a control's name `id` and a box that hides its text `masked`; nothing changes on
+  screen
 - ✅ Sinhala: about a hundred texts reworded and the missing ones translated (thanks to [@ShammiSandaruwan](https://github.com/ShammiSandaruwan))
 - ✅ **Browser add-on:** send all and selected links to the paired server when another MDM is chosen ([#1596](https://github.com/anefzaoui/misterdownloadmanager/issues/1596), [PR #1602](https://github.com/anefzaoui/misterdownloadmanager/pull/1602))
 - ✅ Windows: closing a dialog of the main window's with **OK**, after bringing it back with
