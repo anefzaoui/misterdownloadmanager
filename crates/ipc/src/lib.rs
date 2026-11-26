@@ -8,6 +8,7 @@ pub mod api;
 pub mod browsers;
 pub mod capture;
 pub mod extension;
+pub mod siterules;
 
 use std::io::{BufRead, BufReader, Write};
 use std::net::{Ipv4Addr, SocketAddr, TcpListener, TcpStream};
@@ -167,6 +168,12 @@ pub struct Command {
     /// in. None: the whole list (an older extension's, or a short one).
     #[serde(skip_serializing_if = "Option::is_none")]
     pub links_part: Option<LinksPart>,
+    /// With `links` (#1781): those of them that are pictures located on the page (shown in it,
+    /// not links to them), which Link grabber hides while its "Hide images located on this web
+    /// page" is ticked. Each is in `links` too, so an older app, which knows nothing of this,
+    /// lists them as links. With `links_part`: those among this part's links.
+    #[serde(skip_serializing_if = "Vec::is_empty")]
+    pub page_images: Vec<String>,
     /// From the browser's toolbar button: leave this site's downloads (a host name) to the
     /// browser from now on (Options → File types → excluded sites).
     pub exclude_site: Option<String>,
@@ -556,9 +563,11 @@ pub fn endpoint_path() -> Option<PathBuf> {
     data_dir().map(|d| d.join("ipc.json"))
 }
 
-/// Ask the running app something (automation API) and return its one-line answer.
+/// Ask the running app something (automation API) and return its one-line answer. A busy app
+/// is heard saying `timeout` rather than taken for a closed line: the read outlasts the
+/// channel's own wait.
 pub fn request(cmd: &Command) -> Result<String, String> {
-    exchange(cmd, None, ANSWER_WAIT).map_err(|e| e.to_string())
+    exchange(cmd, None, REPLY_WAIT + Duration::from_secs(1)).map_err(|e| e.to_string())
 }
 
 /// Ask the running app something and return its one-line answer, whatever it is (an older app
@@ -1294,13 +1303,38 @@ mod tests {
         .unwrap();
         let back = serde_json::from_str::<Envelope>(&line).unwrap().cmd;
         assert_eq!(back.links_part, Some(part("b", 1, 3)));
-        // A whole list (an older host's) says nothing of parts.
+        // A whole list (an older host's) says nothing of parts, nor of pictures on the page.
         let whole = serde_json::to_string(&Command {
             links: vec!["https://x.test/a.zip".into()],
             ..Default::default()
         })
         .unwrap();
         assert!(!whole.contains("links_part"), "{whole}");
+        assert!(!whole.contains("page_images"), "{whole}");
+    }
+
+    /// #1781: the pictures located on a page travel with its links, and a line without them (an
+    /// older host's) reads as none; one with them, read by an app that knows nothing of them,
+    /// is still a list of links (an unknown field is passed over).
+    #[test]
+    fn a_pages_pictures_travel_with_its_links() {
+        let cmd = Command {
+            links: vec!["https://x.test/a.zip".into(), "https://x.test/p.jpg".into()],
+            page_images: vec!["https://x.test/p.jpg".into()],
+            ..Default::default()
+        };
+        let line = serde_json::to_string(&cmd).unwrap();
+        let back: Command = serde_json::from_str(&line).unwrap();
+        assert_eq!(back.page_images, ["https://x.test/p.jpg"]);
+        assert_eq!(back.links.len(), 2);
+        let old: Command = serde_json::from_str(r#"{"links":["https://x.test/a.zip"]}"#).unwrap();
+        assert!(old.page_images.is_empty());
+        #[derive(serde::Deserialize)]
+        struct OlderApp {
+            links: Vec<String>,
+        }
+        let older: OlderApp = serde_json::from_str(&line).unwrap();
+        assert_eq!(older.links.len(), 2, "an older app lists them as links");
     }
 
     /// An add may carry the checksum its finished file must have (the command line's

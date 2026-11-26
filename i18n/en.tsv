@@ -88,14 +88,14 @@
 #. {n} = a number (keep the braces as they are)
 @plural	{n} downloading|{n} downloading	{n} downloading|{n} downloading
 #. count in extracting archives (a download's log, the Archive password window)
-#. in a download's log, after extracting: entries of the archive not written (links, names that would leave the folder)
+#. in a download's log, after extracting: entries of the archive not written (links, names that would leave the folder, entries under a file of the archive where a folder should be)
 #. {n} = a number (keep the braces as they are)
-@plural	{n} entry was left out (a link, or a name leading outside the folder)|{n} entries were left out (links, or names leading outside the folder)	{n} entry was left out (a link, or a name leading outside the folder)|{n} entries were left out (links, or names leading outside the folder)
+@plural	{n} entry was left out (a link, a name leading outside the folder, or a file in its way)|{n} entries were left out (links, names leading outside the folder, or files in their way)	{n} entry was left out (a link, a name leading outside the folder, or a file in its way)|{n} entries were left out (links, names leading outside the folder, or files in their way)
 #. count in a dialog box
 #. the summary of downloads added together; after "12 downloads finished": {n} of them failed
 #. {n} = a number (keep the braces as they are)
 @plural	{n} failed|{n} failed	{n} failed|{n} failed
-#. count in the Batch download window; count in the Link grabber window; count in the Add torrent window; count in torrentfiles.rs
+#. count in the main window; count in the Batch download window; count in a dialog box; count in the Link grabber window; count in the Add torrent window; count in torrentfiles.rs; count in zippreview.rs
 #. how many files the pattern gives in all
 #. Link grabber: a package's row: {n} is its number of links
 #. {n} = a number (keep the braces as they are)
@@ -136,6 +136,10 @@
 #. event log entry: trackers were added to the torrent
 #. {n} = a number (keep the braces as they are)
 @plural	{n} tracker added|{n} trackers added	{n} tracker added|{n} trackers added
+#. count in the main window
+#. event log entry: trackers from the public tracker list (Torrent settings) were added to a torrent
+#. {n} = a number (keep the braces as they are)
+@plural	{n} tracker added from the public list|{n} trackers added from the public list	{n} tracker added from the public list|{n} trackers added from the public list
 #. count in the Add torrent window
 #. where a magnet's peers came from: {n} = trackers asked; {peers} = "3 peers"
 #. {n} = a number (keep the braces as they are)
@@ -144,6 +148,10 @@
 #. the tip of MDM's notification area (tray) icon: {n} windows of MDM (Download complete...) wait while a full-screen game, app or presentation is on, and show when the user is back
 #. {n} = a number (keep the braces as they are)
 @plural	{n} window waits until you're back|{n} windows wait until you're back	{n} window waits until you're back|{n} windows wait until you're back
+#. count in the Link grabber window
+#. Link grabber's Source line: a Hugging Face repository's or GitHub release's ({package}: its name, "owner/name") files whose names would lead out of its folder (`../`, a drive, a device's name) are left out; {n} how many
+#. {n} = a number (keep the braces as they are)
+@plural	{package}: {n} file left out, its name would lead out of its folder|{package}: {n} files left out, their names would lead out of its folder	{package}: {n} file left out, its name would lead out of its folder|{package}: {n} files left out, their names would lead out of its folder
 #. count in cnl.rs
 #. Click'n'Load window: {site} is a web site's name such as "example.com"
 #. {site} = a web site's name such as "example.com"; {n} = a number (keep the braces as they are)
@@ -255,6 +263,8 @@
 #. text in the Download video window
 #. why Part is greyed in Download video: the page is a playlist, whose videos are downloaded whole
 	A playlist's videos are downloaded whole	A playlist's videos are downloaded whole
+#. message or event log entry in the main window
+	A private torrent: the public tracker list isn't added	A private torrent: the public tracker list isn't added
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites: the tooltip of the profile box
 	A profile's name or its folder. Empty: the profile used last. For a browser built on Chromium that isn't listed (Helium, Thorium...), choose Chromium and its profile's folder.	A profile's name or its folder. Empty: the profile used last. For a browser built on Chromium that isn't listed (Helium, Thorium...), choose Chromium and its profile's folder.
@@ -363,6 +373,9 @@
 	Add the extension to {name}	Add the extension to {name}
 #. text in extension.rs
 	Add the free extension: files you download in your browser come here, and videos get a Download button.	Add the free extension: files you download in your browser come here, and videos get a Download button.
+#. text in the Add torrent window
+#. Torrent settings: add the trackers of a public tracker list (its address in the box below) to torrents that aren't private, so they find more peers
+	Add the trackers of this public list to public torrents:	Add the trackers of this public list to public torrents:
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: add the torrents to the list without starting them
 	Add them without starting them	Add them without starting them
@@ -408,6 +421,9 @@
 #. text in remote.rs
 #. remote control page (on a phone): label of the box where a download's address or a magnet link is typed
 	Address or magnet link	Address or magnet link
+#. message or event log entry in the main window
+#. Link grabber: where the links came from: an address given on its own (typed or pasted in Add URL, given on the command line)
+	Address typed	Address typed
 #. text in the Options window; text in preview.rs; text in a download's Properties window
 #. Options → DNS over HTTPS: label before the server's https:// address
 	Address:	Address:
@@ -477,6 +493,9 @@
 #. text in the Link grabber window
 #. Link grabber, a link's status: the remedy from the failure's sentence, for a site whose bot check lets only browsers through. The sentence, with the same advice, is the cell's hover tip
 	Alt+click the link	Alt+click the link
+#. text in requestedit.rs
+#. Site rule: check box; on, MDM connects the way a browser does from the first request to these sites, instead of only after a site turned it away ("this site lets only browsers through")
+	Always connect the way a browser does	Always connect the way a browser does
 #. message or event log entry in the main window
 #. View menu: a check item; dark mode on, whatever the system's setting
 	Always dark	Always dark
@@ -494,6 +513,9 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Andorra	Andorra
+#. text in a dialog box
+#. why the phone could not be turned off after the queue (fills {error}, Android)
+	Android doesn't let apps turn the phone off	Android doesn't let apps turn the phone off
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Angola	Angola
@@ -513,6 +535,9 @@
 #. text in unix.rs
 #. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer's one wake alarm is already set by something else
 	Another program has set the computer's wake alarm	Another program has set the computer's wake alarm
+#. text in the Options window
+#. Site rule: OK with a site another rule already has
+	Another rule is for this site already: change that one	Another rule is for this site already: change that one
 #. text in the Options window
 #. Options → Proxy / Socks: Test's answer; {ms} milliseconds; {ip} the internet address the site saw (the proxy's, or this computer's without one)
 	Answered in {ms} ms. The internet sees {ip}.	Answered in {ms} ms. The internet sees {ip}.
@@ -565,6 +590,9 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Aruba	Aruba
+#. text in requestedit.rs
+#. a download's Connection settings → Proxy: the proxy set in Options → Proxy / Socks
+	As in Options	As in Options
 #. option (radio button) in the Options window
 	As the system's region writes them	As the system's region writes them
 #. text in the Options window
@@ -685,6 +713,9 @@
 #. button in categories.rs; button in the Options window
 #. the trailing ... means it opens a window: keep it
 	Browse...	Browse...
+#. text in the Options window
+#. Site rules: column title: "Yes" when the rule asks the way a browser connects from the first request
+	Browser	Browser
 #. text in extension.rs
 	Browser integration isn't set up on this computer, so no browser can reach Mister Download Manager yet.	Browser integration isn't set up on this computer, so no browser can reach Mister Download Manager yet.
 #. page title in the Options window
@@ -726,7 +757,7 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Canada	Canada
-#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in extracting archives (a download's log, the Archive password window); button in the Find window; button in gallerydlg.rs; text in the Link grabber window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; text in remote.rs; button in the Scheduler window; button in the Add torrent window; button in traypanel.rs; button in the Download video window
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in extracting archives (a download's log, the Archive password window); button in the Find window; button in gallerydlg.rs; text in the Link grabber window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; text in remote.rs; button in the Scheduler window; button in the Add torrent window; button in traypanel.rs; button in the Download video window; text in zippreview.rs
 #. button: stop downloading the update
 	Cancel	Cancel
 #. text in errors.rs
@@ -851,11 +882,18 @@
 #. text in remote.rs
 #. remote control page (on a phone): what the ".torrent file" button does (screen readers)
 	Choose a .torrent file	Choose a .torrent file
+#. message or event log entry in the main window
+#. title of the file dialog of View → Font → Choose a font file
+#. title of the message when the font picked in View → Font can't be used
+	Choose a font file	Choose a font file
 #. text in helpers.rs
 #. file picker title: choose a JavaScript runtime's program (node.exe, deno.exe, qjs.exe, bun.exe)
 	Choose a JavaScript runtime (Node.js, Deno, QuickJS or Bun)	Choose a JavaScript runtime (Node.js, Deno, QuickJS or Bun)
 #. text in langpick.rs
 	Choose a language	Choose a language
+#. text in a dialog box
+#. the Columns dialog: what it is for, above its list of the download list's columns
+	Choose columns to show	Choose columns to show
 #. text in langpick.rs
 	Choose the language Mister Download Manager shows its windows in:	Choose the language Mister Download Manager shows its windows in:
 #. text in the Options window
@@ -913,6 +951,9 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Colombia	Colombia
+#. window title in a dialog box; text in a dialog box
+#. what a screen reader calls the Columns dialog's list of the download list's columns
+	Columns	Columns
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Comoros	Comoros
@@ -953,6 +994,19 @@
 #. text in the Options window
 #. tab title: connection settings
 	Connection	Connection
+#. text in a download's Properties window
+#. window title: a download's own request settings (User-Agent, headers, connections, proxy), from File Properties → Connection...
+	Connection settings	Connection settings
+#. message or event log entry in the main window
+#. event log: File Properties → Connection settings changed the download's own User-Agent, headers, proxy or connections
+	Connection settings changed	Connection settings changed
+#. text in a download's Properties window
+#. File Properties button: opens the download's own request settings (User-Agent, headers, connections, proxy)
+#. the trailing ... means it is still going on: keep it
+	Connection...	Connection...
+#. text in the Options window
+#. Site rules: column title: the number of connections (empty: the default)
+	Connections	Connections
 #. page title in the Options window
 	Connections and Limits	Connections and Limits
 #. text in the Options window
@@ -1298,6 +1352,9 @@
 #. message or event log entry in the main window
 #. the notice shown once, the first time a download comes from a browser's private (incognito) window: it stays in MDM's list like any other, after a restart too; where to turn that off. {options} = the Options window, {general} = its General tab, {checkbox} = the checkbox "Keep private-window downloads in the list"
 	Downloads from a browser's private window stay in MDM's list like any other, also after MDM restarts; their cookies are never saved. To keep them in memory only, untick {options} → {general} → {checkbox}.	Downloads from a browser's private window stay in MDM's list like any other, also after MDM restarts; their cookies are never saved. To keep them in memory only, untick {options} → {general} → {checkbox}.
+#. text in the Options window
+#. Site rules window: how the rules apply; *.example.com stays as it is
+	Downloads from these sites get these settings. Each one comes from the first rule in the list that names the site and sets it; * stands for any text: *.example.com	Downloads from these sites get these settings. Each one comes from the first rule in the list that names the site and sets it; * stands for any text: *.example.com
 #. text in the tray icon's menu; text in traypanel.rs
 #. tray menu: a submenu of the downloads now running; choosing one shows its progress window
 #. the notification-area icon's panel (#1365): its title, over the downloads now running (also the tray menu's submenu)
@@ -1351,6 +1408,9 @@
 	Edit list ...	Edit list ...
 #. text in the Options window
 	Edit login	Edit login
+#. text in the Options window
+#. window title: changing one site rule
+	Edit site rule	Edit site rule
 #. button in the Options window
 #. verb: edit the item
 #. the trailing ... means it opens a window: keep it
@@ -1363,12 +1423,15 @@
 	El Salvador	El Salvador
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 	Email	Email
-#. text in the Download video window
+#. checkbox in the Download video window; text in the Download video window
 #. checkbox in Download video: the chapters a video's page lists (YouTube's, for one) go into the video file, where players show them and skip between them
 	Embed chapters	Embed chapters
 #. text in gallerydlg.rs
 #. in Download a gallery, after the "Files at most" box
 	Empty: all of them. On most sites the newest come first.	Empty: all of them. On most sites the newest come first.
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: the hint under the User-Agent box
+	Empty: the browser's, or the one set in Options	Empty: the browser's, or the one set in Options
 #. text in crashui.rs
 #. crash report window button: end the frozen MDM and start it again
 	End and restart MDM	End and restart MDM
@@ -1426,6 +1489,9 @@
 #. text in the Download video window
 #. choice in Download video's Part: the part is encoded again so it starts and ends exactly at From and To (slower)
 	Exact cut, encoded again	Exact cut, encoded again
+#. text in the Options window
+#. Site rule: the hint under the site box; the examples stay as they are
+	example.com, or *.example.com for its subdomains	example.com, or *.example.com for its subdomains
 #. text in the Options window
 #. label before an example date and time written the chosen way
 	Example:	Example:
@@ -1503,8 +1569,11 @@
 #. RSS feeds window, Download rules: the feeds the rule watches
 	Feeds:	Feeds:
 #. text in the Add torrent window
-#. Torrent settings, at the bottom
+#. Torrent settings, under the blocklist's address
 	Fetched again every 7 days. Changes apply when no torrent is running.	Fetched again every 7 days. Changes apply when no torrent is running.
+#. text in the Add torrent window
+#. Torrent settings, under the public tracker list's address
+	Fetched once a day. Never added to private torrents.	Fetched once a day. Never added to private torrents.
 #. text in helpers.rs
 #. helper name and what it does (ffmpeg is a program's name)
 	ffmpeg: joins picture and sound	ffmpeg: joins picture and sound
@@ -1520,7 +1589,8 @@
 #. text in the Options window
 #. tooltip of "Mark downloaded files as coming from the internet" on Linux
 	File managers show where the files marked this way came from. Unticked, no download is marked.	File managers show where the files marked this way came from. Unticked, no download is marked.
-#. text in the Scheduler window
+#. text in a download's progress window; text in the Scheduler window
+#. Zip preview's column: the file's name (its path inside the ZIP)
 	File Name	File Name
 #. text in the Download video window
 	File name	File name
@@ -1551,6 +1621,9 @@
 	Files go to: {folder}	Files go to: {folder}
 #. text in the Scheduler window; tab in the Scheduler window
 	Files in the queue	Files in the queue
+#. text in the download list (sizes, speeds, status)
+#. why files being taken out of a ZIP on its server (#1775) can't be moved or renamed yet: those already out are in its folder, the others still to come there
+	Files taken out of a ZIP can be moved once they're all out	Files taken out of a ZIP can be moved once they're all out
 #. button in a download's Properties window
 #. File Properties button that opens the selected torrent's file list
 #. the trailing ... means it opens a window: keep it
@@ -1601,6 +1674,12 @@
 	FLAC keeps the sound exactly, but it can't add quality the site's sound doesn't have: the file is only bigger.	FLAC keeps the sound exactly, but it can't add quality the site's sound doesn't have: the file is only bigger.
 #. text in categories.rs
 	Folder:	Folder:
+#. text in the Options window
+#. Options → Archives → Link grabber, one line with two boxes: an FTP folder or a web server's folder listing ("Index of") given to Link grabber is read with its subfolders: {depth} is a number box (how many levels of subfolders, 3 at first; 0 is the folder's own files only), {types} a text box (file types such as ISO ZIP; empty for every type)
+	Folders: {depth} levels deep, types: {types}	Folders: {depth} levels deep, types: {types}
+#. message or event log entry in the main window
+#. the kind of file View → Font → Choose a font file lists: TrueType and OpenType font files
+	Font files	Font files
 #. text in finish.rs
 #. Snooze menu of the Download complete window: show no Download complete window for this long
 	For 1 hour	For 1 hour
@@ -1796,6 +1875,9 @@
 #. text in a download's progress window
 #. legend: pieces downloaded
 	Have	Have
+#. text in the Options window
+#. Site rules: column title: how many request headers the rule adds
+	Headers	Headers
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Heard Island and McDonald Islands	Heard Island and McDonald Islands
@@ -1819,6 +1901,9 @@
 #. View menu: hides the pane beside the download list that shows the selected download's picture and details
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 	Hide &preview pane	Hide &preview pane
+#. text in the Link grabber window
+#. Link grabber check box, ticked when it opens: the pictures shown on the browser's page (its images, not links to pictures), which "Download all links" sends with the links, are not shown
+	Hide images located on this web page	Hide images located on this web page
 #. button in a download's progress window
 	Hide tab	Hide tab
 #. text in a download's progress window; text in standard windows
@@ -2152,6 +2237,19 @@
 #. text in the Add torrent window
 #. Torrent settings: an upload speed limit for all torrents together, followed by a box with the speed and "KBytes/sec"
 	Limit uploading for all torrents to	Limit uploading for all torrents to
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: a header's name has a space or another character names can't have; {line} is the line's number
+	Line {line}: a header's name has letters, digits and dashes only	Line {line}: a header's name has letters, digits and dashes only
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: a header MDM sets itself for each request (Range, Host…) can't be typed; {line} is the line's number, {name} the header's name
+#. {name} = a file name (keep the braces as they are)
+	Line {line}: Mister Download Manager sets {name} itself	Line {line}: Mister Download Manager sets {name} itself
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: a header's value (or the User-Agent) holds a control character; {line} is the line's number
+	Line {line}: the value has a character a header can't hold	Line {line}: the value has a character a header can't hold
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: a line of request headers isn't "Name: value"; {line} is its number
+	Line {line}: write a header as Name: value	Line {line}: write a header as Name: value
 #. message or event log entry in the main window; window title in the Link grabber window; group box title in the Options window
 #. Options → Archives: group box title
 	Link grabber	Link grabber
@@ -2162,6 +2260,9 @@
 #. in Import, where the addresses came from: a page in the browser
 #. in Link grabber, where the addresses came from: a page in the browser
 	Links from the browser	Links from the browser
+#. text in a dialog box
+#. tooltip of Download File Info's Preview button for a ZIP (#1775): it lists the files inside, to download only some of them
+	List the files inside the ZIP and pick those to download	List the files inside the ZIP and pick those to download
 #. text in playlistdlg.rs
 #. button in Download video: go on listing a playlist from where it stopped
 	List the rest	List the rest
@@ -2221,6 +2322,10 @@
 #. text in the Options window
 #. the trailing ... means it is still going on: keep it
 	Looking for your default browser...	Looking for your default browser...
+#. text in a dialog box
+#. tooltip of Download File Info's greyed Preview button while MDM asks the server whether it can look inside the ZIP (#1775)
+#. the trailing ... means it is still going on: keep it
+	Looking inside the ZIP...	Looking inside the ZIP...
 #. text in the Download video window
 #. the trailing ... means it is still going on: keep it
 	Looking the page up...	Looking the page up...
@@ -2351,6 +2456,22 @@
 #. text in remote.rs
 #. remote control page (on a phone): no pairing code is shown in MDM; "Pair a device" is MDM's button
 	MDM shows no code now. Click Pair a device there first.	MDM shows no code now. Click Pair a device there first.
+#. text in errors.rs
+#. error installing ffmpeg: the list of builds MDM accepts couldn't be read; {detail} = the technical detail, in English
+	MDM's list of checked ffmpeg builds can't be read ({detail})	MDM's list of checked ffmpeg builds can't be read ({detail})
+#. text in errors.rs
+#. error installing ffmpeg: MDM installs only builds named in a list it publishes, signed with its key, and that list couldn't be downloaded; {error} = why
+#. {error} = an error message (keep the braces as they are)
+	MDM's list of checked ffmpeg builds could not be downloaded: {error}	MDM's list of checked ffmpeg builds could not be downloaded: {error}
+#. text in errors.rs
+#. error installing ffmpeg: the list of builds MDM accepts has none for this computer's system and processor
+	MDM's list of checked ffmpeg builds has none for this computer	MDM's list of checked ffmpeg builds has none for this computer
+#. text in errors.rs
+#. error installing ffmpeg: the list of builds MDM accepts is older than one this copy of MDM already used (it never goes back to an older list)
+	MDM's list of checked ffmpeg builds is older than one already used, so ffmpeg wasn't installed	MDM's list of checked ffmpeg builds is older than one already used, so ffmpeg wasn't installed
+#. text in errors.rs
+#. error installing ffmpeg: the list of builds MDM accepts doesn't carry MDM's own signature
+	MDM's list of checked ffmpeg builds isn't signed by MDM's key, so ffmpeg wasn't installed	MDM's list of checked ffmpeg builds isn't signed by MDM's key, so ffmpeg wasn't installed
 #. text in whereis.rs
 #. how far a download's server is, by its round trip (60 to 150 ms)
 	medium	medium
@@ -2426,6 +2547,9 @@
 #. text in the Scheduler window
 #. Monday, as short as a calendar's column head (two letters in English)
 	Mo	Mo
+#. text in a download's progress window
+#. Zip preview's column: when the file was last changed, as the ZIP says
+	Modified	Modified
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Moldova	Moldova
@@ -2465,7 +2589,8 @@
 	Move a page up / down	Move a page up / down
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 	Move between the toolbar, the categories and the download list	Move between the toolbar, the categories and the download list
-#. text in the Scheduler window
+#. text in a dialog box; text in the Scheduler window
+#. button in the Columns dialog: move the selected column one place towards the end of the list
 	Move down	Move down
 #. text in a dialog box
 #. choice in Delete category: what happens to the category's downloads
@@ -2476,7 +2601,8 @@
 	Move to folder	Move to folder
 #. message or event log entry in the main window
 	Move to queue	Move to queue
-#. text in the Scheduler window
+#. text in a dialog box; text in the Scheduler window
+#. button in the Columns dialog: move the selected column one place towards the start of the list
 #. tooltip of an icon button in the Scheduler's list of files
 	Move up	Move up
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
@@ -2579,6 +2705,9 @@
 #. RSS feeds window: the name a new download rule starts with
 #. RSS feeds window, Download rules: make a new rule
 	New rule	New rule
+#. text in the Options window
+#. window title: adding a site rule
+	New site rule	New site rule
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	New Zealand	New Zealand
@@ -2662,6 +2791,9 @@
 #. text in the Add torrent window
 #. a magnet link's lookup, after 30 seconds without a peer
 	No peers yet. Few people may share this torrent, or a firewall, a VPN or the network may be blocking BitTorrent.	No peers yet. Few people may share this torrent, or a firewall, a VPN or the network may be blocking BitTorrent.
+#. text in requestedit.rs
+#. a download's Connection settings → Proxy: straight to the server, no proxy
+	No proxy	No proxy
 #. text in the Options window
 	No proxy/socks	No proxy/socks
 #. text in the Options window
@@ -2723,6 +2855,9 @@
 #. text in rssdlg.rs
 #. RSS feeds window: the selected feed hasn't been fetched yet
 	Not fetched yet	Not fetched yet
+#. text in the Link grabber window
+#. Link grabber, a link's status: a Hugging Face repository or folder, or a GitHub release or tag, that isn't there. The sentence is the cell's hover tip
+	Not found	Not found
 #. value in a column's filter list in the download list
 	Not in a queue	Not in a queue
 #. text in helpers.rs
@@ -2763,6 +2898,9 @@
 	November	November
 #. text in the Options window
 	Number	Number
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: check box before the number box; unticked, the number set in Options → Connection applies
+	Number of connections:	Number of connections:
 #. checkbox in the Scheduler window
 	Number of retries for each file if downloading failed :	Number of retries for each file if downloading failed :
 #. option (radio button) in the Batch download window
@@ -2788,7 +2926,7 @@
 #. text in the Link grabber window
 #. Link grabber, a link's status: the server hasn't the file; {status} is the HTTP code (404)
 	Offline ({status})	Offline ({status})
-#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; text in extracting archives (a download's log, the Archive password window); text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's Properties window; button in the Scheduler window; button in the Add torrent window
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; text in extracting archives (a download's log, the Archive password window); text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's Properties window; button in the Scheduler window; button in the Add torrent window; text in zippreview.rs
 	OK	OK
 #. text in countries.rs
 #. a country's name (where a download's server is)
@@ -2827,6 +2965,9 @@
 #. text in the Link grabber window
 #. Link grabber, a link's status: the server has the file
 	Online	Online
+#. text in the Options window
+#. Options → Archives → Link grabber: the hover tip of the types box in "Folders: {depth} levels deep, types: {types}": only a folder's files of these types go into Link grabber; written as the File types page writes them
+	Only a folder's files of these types, written as on the File types page (ISO ZIP R0*). Empty: every type.	Only a folder's files of these types, written as on the File types page (ISO ZIP R0*). Empty: every type.
 #. text in the Download video window
 #. checkbox in Download video: download only a part of the video or sound; the From and To boxes follow it
 	Only a part	Only a part
@@ -2848,6 +2989,9 @@
 	Only the {files} file(s) ticked in Add torrent	Only the {files} file(s) ticked in Add torrent
 #. checkbox in a dialog box
 	Only while I'm using the computer	Only while I'm using the computer
+#. message or event log entry in the main window
+#. event log entry: the download is files picked inside a ZIP in Zip preview (#1775); {files} how many ("3 files")
+	Only {files} picked inside the ZIP	Only {files} picked inside the ZIP
 #. button in a dialog box; text in a dialog box; button in a download's Properties window; button in torrentfiles.rs
 #. verb: opens the downloaded file
 #. title of the message when a downloaded file can't be opened
@@ -2908,6 +3052,9 @@
 #. text in the Link grabber window
 #. Link grabber: the box that edits the selected package
 	Package	Package
+#. text in a download's progress window
+#. Zip preview's column: the file's size as packed (compressed) inside the ZIP
+	Packed	Packed
 #. text in gallerydlg.rs; text in the Download video window
 	Page address	Page address
 #. text in remote.rs
@@ -2977,6 +3124,9 @@
 #. text in the download list (sizes, speeds, status)
 #. tooltip of the greyed Move button in File Properties
 	Pause the download first	Pause the download first
+#. tooltip (why a control is greyed) in a download's Properties window
+#. tooltip of File Properties' greyed Connection... button while the download runs
+	Pause the download to change how it connects	Pause the download to change how it connects
 #. text in a download's progress window
 #. a download's status (state it is in, not a command): stopped for now
 	Paused	Paused
@@ -3034,8 +3184,8 @@
 #. Options → General: shown inside the shortcut recorder box while waiting for the user to press a 2-key or 3-key shortcut (#558)
 #. the trailing ... means it is still going on: keep it
 	Press keys...	Press keys...
-#. button in a dialog box
-#. verb: open the part already downloaded
+#. button in a dialog box; text in a dialog box
+#. verb: Download File Info's button; for a ZIP, it lists the files inside it to pick those to download (#1775)
 	Preview	Preview
 #. text in a dialog box
 #. tooltip of the greyed Preview button in Download File Info
@@ -3066,6 +3216,9 @@
 	proxy server	proxy server
 #. label in the Options window
 	Proxy server address	Proxy server address
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: label before the proxy choice
+	Proxy:	Proxy:
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Puerto Rico	Puerto Rico
@@ -3111,6 +3264,10 @@
 #. text in the Add torrent window
 #. the trailing ... means it is still going on: keep it
 	Reading the torrent...	Reading the torrent...
+#. text in zippreview.rs
+#. Zip preview, while the ZIP's list of files is being read from its server
+#. the trailing ... means it is still going on: keep it
+	Reading the ZIP's list of files...	Reading the ZIP's list of files...
 #. message or event log entry in the main window
 #. the status strip while Tasks → Import reads a file; {file} is its name
 #. the trailing ... means it is still going on: keep it
@@ -3196,6 +3353,12 @@
 #. text in the Batch download window
 #. group box title: what the * in the address is replaced with (numbers or letters)
 	Replace asterisk to	Replace asterisk to
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: label above the box of request headers, one a line ("X-Token: abc")
+	Request headers, one a line (Name: value):	Request headers, one a line (Name: value):
+#. text in a dialog box
+#. button in the Columns dialog: put the columns back as they first were (order, widths, all shown)
+	Reset	Reset
 #. text in crashui.rs
 #. crash report window button: start MDM again
 	Restart MDM	Restart MDM
@@ -3321,7 +3484,7 @@
 #. text in preview.rs
 #. the preview pane when no download is selected, under its title
 	Select a download to see its picture and details here.	Select a download to see its picture and details here.
-#. button in playlistdlg.rs; button in the Add torrent window; text in torrentfiles.rs
+#. button in playlistdlg.rs; button in the Add torrent window; text in torrentfiles.rs; text in zippreview.rs
 #. button in Download video for a playlist: tick every video
 	Select all	Select all
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
@@ -3491,6 +3654,9 @@
 #. button: sign in to the debrid service in the browser, by typing a code there
 	Sign in in the browser	Sign in in the browser
 #. text in the Options window
+#. Options → Accounts (Android): where the debrid accounts' sign-ins and the other passwords are kept (encrypted with a key held by Android's keystore)
+	Sign-ins and passwords are kept encrypted with a key in Android's keystore.	Sign-ins and passwords are kept encrypted with a key in Android's keystore.
+#. text in the Options window
 #. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (the macOS login keychain)
 	Sign-ins and passwords are kept in the macOS keychain.	Sign-ins and passwords are kept in the macOS keychain.
 #. text in the Options window
@@ -3529,13 +3695,27 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Sint Maarten	Sint Maarten
+#. text in the Options window
+#. Site rules: column title: the site pattern
+	Site	Site
 #. checkbox in the Find window
 	Site name/Download link/Parent web page/Referer	Site name/Download link/Parent web page/Referer
+#. window title in the Options window; text in the Options window
+#. window title: per-site settings (User-Agent, headers, connections, the browser-like connection) by site pattern
+#. Site rules window: the list's name for screen readers
+	Site rules	Site rules
+#. text in the Options window
+#. Options → Connection: button: opens the per-site settings (User-Agent, headers, connections)
+#. the trailing ... means it is still going on: keep it
+	Site rules...	Site rules...
 #. text in the Options window
 #. column title: the site (and path) a login is for
 	Site/path	Site/path
 #. text in the Options window
 	Site/path:	Site/path:
+#. text in the Options window
+#. Site rule: label before the site pattern box (example.com, *.example.com)
+	Site:	Site:
 #. text in the Options window
 #. tab title: user names and passwords for sites
 	Sites Logins	Sites Logins
@@ -3634,6 +3814,9 @@
 #. message or event log entry in the main window
 #. tooltip on the disabled Rename box when the file is one part of a split archive (.part1.rar, .7z.001…)
 	Split archive volumes keep their names for extraction	Split archive volumes keep their names for extraction
+#. text in the Download video window
+#. checkbox in Download video: split the video into one file per chapter (the whole video is kept too)
+	Split into chapters	Split into chapters
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Sri Lanka	Sri Lanka
@@ -3649,6 +3832,10 @@
 	Start download on Mister Download Manager startup	Start download on Mister Download Manager startup
 #. checkbox in the Options window
 	Start downloading immediately while displaying "Download File Info" dialog	Start downloading immediately while displaying "Download File Info" dialog
+#. text in a dialog box
+#. Download File Info, on hover over the number of files picked in Zip preview (#1775): {files} how many ("3 files"), {size} their size together, {folder} the folder they go into (named after the archive)
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+	Start downloads only the {files} picked in the ZIP ({size}), into {folder}	Start downloads only the {files} picked in the ZIP ({size}), into {folder}
 #. text in the tray icon's menu
 	Start main download queue	Start main download queue
 #. text in remote.rs
@@ -3699,6 +3886,9 @@
 #. text in remote.rs; text in the Add torrent window
 #. remote control page (on a phone): button: stop a queue
 	Stop	Stop
+#. text in a download's progress window
+#. button in the progress window of a download that never ends by itself (an internet radio, a camera feed: no size, can't be resumed): stop it and keep what has arrived as the finished file
+	Stop and keep	Stop and keep
 #. text in a download's progress window
 #. button in a live stream's progress window: stop recording it and keep what was recorded as a video file
 	Stop and save	Stop and save
@@ -3797,9 +3987,6 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Tanzania	Tanzania
-#. text in the Options window
-#. \\n starts a new line: break lines where they fit the translation
-	Tasks → Link grabber, or the browser's "Download all links": a split\narchive's volumes are one package, the other links of a page another.	Tasks → Link grabber, or the browser's "Download all links": a split\narchive's volumes are one package, the other links of a page another.
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 	Tell a friend	Tell a friend
 #. group box title in the Options window
@@ -3958,6 +4145,9 @@
 #. text in a dialog box
 	The download queue is done.	The download queue is done.
 #. text in errors.rs
+#. error installing ffmpeg: the file downloaded isn't the build named in the list of builds MDM accepts (its checksum differs), so it was thrown away
+	the downloaded ffmpeg isn't the build MDM's list of checked builds names, so it wasn't installed	the downloaded ffmpeg isn't the build MDM's list of checked builds names, so it wasn't installed
+#. text in errors.rs
 	the downloaded program doesn't match its signed checksum	the downloaded program doesn't match its signed checksum
 #. message or event log entry in the main window
 #. in the empty download list, under its title
@@ -3982,6 +4172,9 @@
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 	The file does NOT match ({algorithm})	The file does NOT match ({algorithm})
+#. text in errors.rs
+#. why a file taken out of a ZIP on its server failed (#1775): its bytes aren't what the ZIP's list of files says (its size or its CRC-32 checksum)
+	the file in the ZIP doesn't match the ZIP's list of files (its size or checksum): download the whole archive	the file in the ZIP doesn't match the ZIP's list of files (its size or checksum): download the whole archive
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 	The file matches ({algorithm})	The file matches ({algorithm})
@@ -4032,6 +4225,9 @@
 #. text in errors.rs; text in torrent downloads
 #. an error: the network adapter chosen in Options (a VPN's, usually) is off or gone; {adapter} its name
 	the network adapter {adapter} is not connected	the network adapter {adapter} is not connected
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: the number of connections typed is out of range; {max} is 32 (or 128)
+	The number of connections must be from 1 to {max}	The number of connections must be from 1 to {max}
 #. text in torrent_ownership.rs
 #. error when a torrent's output folder path cannot be used
 	The output folder is invalid	The output folder is invalid
@@ -4077,6 +4273,9 @@
 	the server answered {status}	the server answered {status}
 #. text in errors.rs
 	the server can't send parts of the file, so it can't be resumed	the server can't send parts of the file, so it can't be resumed
+#. text in errors.rs
+#. Zip preview (#1775): the server doesn't send parts of a file (HTTP ranges), so MDM can't fetch only some files from inside a ZIP; the whole archive still downloads
+	the server can't send parts of the ZIP, so its files can't be downloaded one by one: download the whole archive	the server can't send parts of the ZIP, so its files can't be downloaded one by one: download the whole archive
 #. text in errors.rs
 	the server did not answer in time	the server did not answer in time
 #. text in errors.rs
@@ -4179,8 +4378,14 @@
 	The update couldn't be installed: {error}	The update couldn't be installed: {error}
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 	The update is open in your system's package installer.	The update is open in your system's package installer.
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: the User-Agent typed holds a control character
+	The User-Agent has a character a header can't hold	The User-Agent has a character a header can't hold
 #. text in a download's Properties window
 	The web page from which this file was obtained:	The web page from which this file was obtained:
+#. text in errors.rs
+#. why a file can't be taken out of a ZIP on its server (#1775): the ZIP was replaced on the server after its files were listed; Zip preview is the window that lists them
+	the ZIP changed on the server since its files were listed: open its Zip preview again	the ZIP changed on the server since its files were listed: open its Zip preview again
 #. message or event log entry in the main window
 #. the kind of file View → Theme → Add a theme file lists: MDM's themes (TOML, JSON), Base16 schemes (YAML) and pywal's colors.json
 	Themes and colour schemes	Themes and colour schemes
@@ -4205,6 +4410,9 @@
 	These settings are unavailable when "Show download complete dialog" is turned on	These settings are unavailable when "Show download complete dialog" is turned on
 #. text in helpers.rs
 	They keep downloading if you close this window.	They keep downloading if you close this window.
+#. text in errors.rs
+#. error when opening a .torrent file whose piece size or list of pieces doesn't fit its files (damaged, or made wrong); it isn't added
+	this .torrent file is damaged: its pieces don't match its files	this .torrent file is damaged: its pieces don't match its files
 #. text in a dialog box
 	This address is already in the list of downloads:	This address is already in the list of downloads:
 #. message or event log entry in the main window
@@ -4239,9 +4447,21 @@
 #. remote control page (on a phone): label of the box naming this phone (shown in MDM's list of paired devices)
 	This device's name	This device's name
 #. message or event log entry in the main window
+#. the message when a file picked in View → Font isn't a TrueType or OpenType font MDM can read
+	This file can't be used as a font.	This file can't be used as a font.
+#. message or event log entry in the main window
 #. {error} is why, in English (a file that isn't a theme or a colour scheme, a colour missing)
 #. {error} = an error message (keep the braces as they are)
 	This file can't be used as a theme: {error}	This file can't be used as a theme: {error}
+#. text in errors.rs
+#. why a file can't be taken out of a ZIP on its server (#1775): it is encrypted (password-protected) in the ZIP
+	this file is encrypted in the ZIP: download the whole archive and open it with its password	this file is encrypted in the ZIP: download the whole archive and open it with its password
+#. text in errors.rs
+#. why a file can't be taken out of a ZIP on its server (#1775): the ZIP no longer holds it
+	this file is no longer in the ZIP on the server	this file is no longer in the ZIP on the server
+#. text in errors.rs
+#. why a file can't be taken out of a ZIP on its server (#1775): it is compressed with a method MDM doesn't unpack there; {method} is the method's name (BZIP2, LZMA, Deflate64…)
+	this file is packed in a way MDM can't unpack from the server ({method}): download the whole archive	this file is packed in a way MDM can't unpack from the server ({method}): download the whole archive
 #. text in remote.rs
 #. remote control page (on a phone): the file chosen is too large for a .torrent file
 	This file is too large to be a torrent.	This file is too large to be a torrent.
@@ -4267,6 +4487,9 @@
 #. text in extension.rs
 #. a check of Test browser integration: a portable copy can't be connected
 	This is the installed copy, not a portable one	This is the installed copy, not a portable one
+#. text in errors.rs
+#. Zip preview (#1775): the address isn't a ZIP archive whose list of files MDM can read on the server
+	this isn't a ZIP archive MDM can look inside on the server: download the whole file	this isn't a ZIP archive MDM can look inside on the server: download the whole file
 #. text in playlistdlg.rs
 #. in Download video, a playlist or channel that lists no video
 	This list has no videos	This list has no videos
@@ -4278,6 +4501,7 @@
 	This name is reserved by Windows	This name is reserved by Windows
 #. tooltip (why a control is greyed) in the Download video window
 #. why "Embed chapters" is greyed: ffmpeg (a helper program) is not installed
+#. why "Split into chapters" is greyed: ffmpeg (a helper program) is not installed
 #. why Part is greyed in Download video: ffmpeg (a helper program) is not installed
 #. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
 	This needs ffmpeg	This needs ffmpeg
@@ -4294,6 +4518,9 @@
 #. error: a program chosen as yt-dlp or ffmpeg didn't answer as one; {name} = yt-dlp or ffmpeg
 #. {name} = a file name (keep the braces as they are)
 	this program isn't {name}	this program isn't {name}
+#. text in requestedit.rs
+#. a download's Connection settings → Proxy: the proxy typed in the box beside
+	This proxy:	This proxy:
 #. text in the Options window
 #. Options → General: shown when the chosen global shortcut is already registered by another program (#558)
 	This shortcut is already in use	This shortcut is already in use
@@ -4325,6 +4552,15 @@
 #. the Download video window: the video needs the user to be signed in
 	This video needs you to be signed in. Use the Download video button over it in your browser, which passes your sign-in on, or choose your browser in Options → Sites Logins → Cookies for video sites.	This video needs you to be signed in. Use the Download video button over it in your browser, which passes your sign-in on, or choose your browser in Options → Sites Logins → Cookies for video sites.
 #. text in errors.rs
+#. Zip preview (#1775): a ZIP split over several files (volumes): its files can't be fetched one by one
+	this ZIP is split over several files, so its files can't be downloaded one by one: download every part	this ZIP is split over several files, so its files can't be downloaded one by one: download every part
+#. text in errors.rs
+#. Zip preview (#1775): the ZIP's list of files (its table of contents) doesn't add up
+	this ZIP's list of files is damaged: download the whole archive	this ZIP's list of files is damaged: download the whole archive
+#. text in errors.rs
+#. Zip preview (#1775): the ZIP's list of files (its table of contents) is larger than MDM reads from a server
+	this ZIP's list of files is too large to read from the server: download the whole archive	this ZIP's list of files is too large to read from the server: download the whole archive
+#. text in errors.rs
 #. a download's error: the address is a site's web page that needs a browser, not the file; {site} = the site's name (gofile)
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
 	this {site} link is a web page, not the file: open it in your browser and download from there	this {site} link is a web page, not the file: open it in your browser and download from there
@@ -4347,6 +4583,10 @@
 #. text in the Scheduler window
 #. tooltip on the Scheduler's "Wake the computer to run this queue" while "Start download at" is off
 	Tick "Start download at" first: the computer is woken for the start time	Tick "Start download at" first: the computer is woken for the start time
+#. text in zippreview.rs
+#. Zip preview, under the list: {files} how many files are ticked ("3 files"), {size} their size together ("12.4 MB")
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+	Ticked: {files}, {size}	Ticked: {files}, {size}
 #. text in a download's progress window; text in the Scheduler window
 	Time left	Time left
 #. text in countries.rs
@@ -4423,6 +4663,9 @@
 #. what to do when a helper couldn't be downloaded because its server limits requests; {name} = yt-dlp, ffmpeg or gallery-dl; {helpers} and {other} = the buttons Helpers and Use another program
 #. {name} = a file name (keep the braces as they are)
 	Try again in an hour, or download {name} yourself and choose it in {helpers} → {other}.	Try again in an hour, or download {name} yourself and choose it in {helpers} → {other}.
+#. text in the Link grabber window
+#. Link grabber, a link's status: the remedy from the failure's sentence, for a site (Hugging Face, GitHub) whose limit of requests without an account is reached. The sentence is the cell's hover tip
+	Try again later	Try again later
 #. text in errors.rs
 #. {name} = a file name (keep the braces as they are)
 	Try again later, or download {name} yourself and choose it in {helpers} → {other}.	Try again later, or download {name} yourself and choose it in {helpers} → {other}.
@@ -4471,6 +4714,9 @@
 #. tooltip (why a control is greyed) in the Options window
 #. why Options → Remote → Pair a device... is greyed
 	Turn on the remote control first.	Turn on the remote control first.
+#. text in the Add torrent window
+#. Torrent settings, under the public tracker list's address: turning the switch off doesn't take away the trackers it added to torrents
+	Turned off, the trackers already added stay.	Turned off, the trackers already added stay.
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Tuvalu	Tuvalu
@@ -4488,6 +4734,9 @@
 #. text in the Batch download window
 #. why Batch download's OK is greyed
 	Type a number in From and in To	Type a number in From and in To
+#. text in the Options window
+#. Site rule: OK with no site, or one with a space in it
+	Type a site, such as example.com or *.example.com	Type a site, such as example.com or *.example.com
 #. text in the settings
 #. Options → DNS: no server address was typed
 	Type at least one server address.	Type at least one server address.
@@ -4500,6 +4749,9 @@
 #. text in the settings
 #. Options → DNS over TLS: the server's name (as its certificate shows it) is missing
 	Type the name the server's certificate shows.	Type the name the server's certificate shows.
+#. text in requestedit.rs
+#. a download's Connection settings: the proxy typed isn't an address MDM takes; the examples stay as they are
+	Type the proxy as host:port, http://host:port or socks5://host:port	Type the proxy as host:port, http://host:port or socks5://host:port
 #. text in the Scheduler window
 #. why OK is greyed when naming a new queue
 	Type the queue's name	Type the queue's name
@@ -4655,7 +4907,16 @@
 #. page title in the Options window; text in the Options window
 	User names and passwords for servers/sites	User names and passwords for servers/sites
 #. text in the Options window
+#. Site rules: column title: the User-Agent the rule sends (the name a browser or program gives itself to sites)
+	User-Agent	User-Agent
+#. text in the Options window
 	User-Agent for manually added downloads:	User-Agent for manually added downloads:
+#. text in the Options window
+#. Options → Connection: beside the Site rules... button: what it sets
+	User-Agent, headers and connections by site	User-Agent, headers and connections by site
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: label before the User-Agent box (the name the browser or program gives itself to sites)
+	User-Agent:	User-Agent:
 #. text in the Options window
 	User:	User:
 #. label in the Options window
@@ -4843,7 +5104,7 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Yemen	Yemen
-#. button in a dialog box; text in a download's progress window
+#. button in a dialog box; text in the Options window; text in a download's progress window
 	Yes	Yes
 #. button in helpers.rs
 #. the first start's helpers window: download yt-dlp and ffmpeg (the recommended answer)
@@ -4933,6 +5194,9 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Zimbabwe	Zimbabwe
+#. text in zippreview.rs
+#. title of the window that lists the files inside a ZIP on its server, to tick those to download (#1775)
+	Zip preview	Zip preview
 #. text in the Options window
 #. \\n starts a new line: break lines where they fit the translation
 	ZIP, 7Z, RAR, TAR, GZ and XZ; a split archive (.part1.rar, .7z.001) once\nevery volume is in. A file there already is kept: the new one is numbered.	ZIP, 7Z, RAR, TAR, GZ and XZ; a split archive (.part1.rar, .7z.001) once\nevery volume is in. A file there already is kept: the new one is numbered.
@@ -5018,6 +5282,10 @@
 #. text in torrent downloads
 #. said after Delete with files when some files stayed on the disk; {file} is the download's name; the files' paths follow it
 	{file}: these files stayed on the disk, because MDM didn't create them or another download uses them:	{file}: these files stayed on the disk, because MDM didn't create them or another download uses them:
+#. message or event log entry in the main window; text in the Link grabber window
+#. Link grabber's Source line, after where the links came from: a folder (an FTP folder, a web server's "Index of" page) held more files or subfolders than Link grabber lists; {folder} is its name, {n} how many of its files are listed (10,000)
+#. {n} = a number (keep the braces as they are)
+	{folder}: only its first {n} files	{folder}: only its first {n} files
 #. text in a download's progress window
 #. {have} and {total} = numbers of pieces; {size} = one piece's size
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
@@ -5119,6 +5387,10 @@
 #. a number of connections the app learned by itself for a server
 #. {n} = a number (keep the braces as they are)
 	{n} (auto)	{n} (auto)
+#. text in zippreview.rs
+#. Zip preview, under the list: {n} files of the ZIP aren't listed because MDM can't take them out on their own: encrypted ones, ones packed in a way MDM can't unpack from the server, links, or names that would leave their folder; the whole archive still downloads
+#. {n} = a number (keep the braces as they are)
+	{n} more can't be taken out on their own (encrypted, packed another way, or links)	{n} more can't be taken out on their own (encrypted, packed another way, or links)
 #. text in playlistdlg.rs
 #. in Download video for a playlist: how many videos are ticked, of how many
 #. {n} = a number (keep the braces as they are)
@@ -5126,6 +5398,9 @@
 #. text in the Link grabber window
 #. {n} = a number (keep the braces as they are)
 	{n} of {total} selected	{n} of {total} selected
+#. text in the Link grabber window
+#. Link grabber's Source line: a gated Hugging Face repository ({package}: "owner/name"), whose files download only for an account that accepted its terms: where to give the account's access token (Options → Sites Logins, keep the names as the Options window shows them)
+	{package} is gated: accept its terms on Hugging Face, then add your access token in Options → Sites Logins (site huggingface.co, the token as its password)	{package} is gated: accept its terms on Hugging Face, then add your access token in Options → Sites Logins (site huggingface.co, the token as its password)
 #. text in the download list (sizes, speeds, status)
 #. a torrent's status while the user's debrid service downloads it, before MDM gets its files; {service} the service ("Real-Debrid"), {percent} how far it is ("45%")
 	{percent} at {service}	{percent} at {service}
@@ -5203,6 +5478,26 @@
 #. a download's error: a video site kept answering MDM's request for the file with its download page again; {site} = the site's name (LuluStream)
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
 	{site} didn't give the file this time: try again in a moment	{site} didn't give the file this time: try again in a moment
+#. text in the Link grabber window
+#. Link grabber, the hover tip of a Hugging Face repository's or GitHub release's status; {site} is "Hugging Face" or "GitHub"
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+	{site} has no such repository, folder, release or tag, or it is private.	{site} has no such repository, folder, release or tag, or it is private.
+#. text in the Link grabber window
+#. Link grabber, a Hugging Face repository's or GitHub release's status (the cell's hover tip): the site ({site}: "Hugging Face", "GitHub") lets only so many requests through from a computer without an account; {n} minutes to wait
+#. {site} = a web site's name such as "example.com"; {n} = a number (keep the braces as they are)
+	{site} lets only so many requests through without an account: try again in {n} minute.	{site} lets only so many requests through without an account: try again in {n} minute.
+#. text in the Link grabber window
+#. Link grabber, a Hugging Face repository's or GitHub release's status (the cell's hover tip): the site ({site}) lets only so many requests through without an account, and didn't say for how long
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+	{site} lets only so many requests through without an account: try again later.	{site} lets only so many requests through without an account: try again later.
+#. text in the Link grabber window
+#. Link grabber, a Hugging Face repository's or GitHub release's status: the site ({site}) refused to list its files; {status} is the HTTP code (403)
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+	{site} refused to list its files ({status}).	{site} refused to list its files ({status}).
+#. text in the Link grabber window
+#. Link grabber, a Hugging Face repository's or GitHub release's status: the site's ({site}) answer wasn't what it sends (changed, cut, or not its own)
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+	{site}'s list of files couldn't be read.	{site}'s list of files couldn't be read.
 #. text in a download's Properties window
 #. {size} = a file size such as "4.2 MB"; {bytes} = a number of bytes (keep the braces as they are)
 	{size} ({bytes} Bytes)	{size} ({bytes} Bytes)
@@ -5260,9 +5555,12 @@ column	Peers	Peers
 #. column title in the download list in the download list
 #. column title: one letter for Queue (the column is narrow)
 column	Q	Q
-#. column title in the main window; column title in the download list
+#. column title in the main window; column title in a dialog box; column title in the download list
 #. tooltip of the narrow "Q" column's title
 column	Queue	Queue
+#. column title in the download list in the download list
+#. column title: the folder the download is saved in
+column	Save To	Save To
 #. column title in the download list in the download list
 #. column title: what a torrent has sent to peers against what it took
 column	Share ratio	Share ratio
@@ -5468,6 +5766,12 @@ extension	File deleted or moved	File deleted or moved
 #. label before the row of chips (All, MP4, WEBM, M4A...) that filters the list of qualities by file type in the menu of the download button over a video; short
 extension	File type	File type
 #. text in the browser extension
+#. button in the This page tab of the toolbar button's popup: look for the pictures of the current web page (only when clicked); short
+extension	Find images	Find images
+#. text in the browser extension
+#. in the This page tab of the toolbar button's popup, before the Find images button; Link grabber is the name of the app's window that lists links to tick before downloading them
+extension	Find this page's pictures at the largest size it lists, then send the ones you want to Link grabber.	Find this page's pictures at the largest size it lists, then send the ones you want to Link grabber.
+#. text in the browser extension
 #. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) after Clear finished
 extension	Finished downloads cleared	Finished downloads cleared
 #. text in the browser extension
@@ -5494,6 +5798,12 @@ extension	Hold Alt while clicking a link to let the browser download it.	Hold Al
 #. text in the browser extension
 #. link under a connection problem in the toolbar button's popup, to the help page's section for it
 extension	How to fix it	How to fix it
+#. text in the browser extension
+#. what a screen reader says for the row of buttons that keep or leave out each type of picture (JPEG, PNG, WEBP...), in the This page tab of the toolbar button's popup
+extension	Image types	Image types
+#. text in the browser extension
+#. heading in the This page tab of the toolbar button's popup, over the part that finds the pictures of the current web page and sends them to the app
+extension	Images on this page	Images on this page
 #. text in the browser extension
 #. pairing failed for another reason
 extension	It didn't work. Try again.	It didn't work. Try again.
@@ -5617,6 +5927,9 @@ extension	No download's name or address has “{words}”.	No download's name or
 #. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app has no downloads
 extension	No downloads yet	No downloads yet
 #. text in the browser extension
+#. shown in the This page tab of the toolbar button's popup when Find images found no picture on the current web page
+extension	No images found on this page.	No images found on this page.
+#. text in the browser extension
 #. shown in the toolbar button's popup when the current web page hasn't loaded any video, sound or stream yet
 extension	No video or sound found on this page yet. Play it, then open this again.	No video or sound found on this page yet. Play it, then open this again.
 #. text in the browser extension
@@ -5668,6 +5981,9 @@ extension	Options...	Options...
 #. text in the browser extension
 #. in the list under the download button over a video, after a sound-only line's bitrate: the sound as the site sends it, not converted (e.g. '128 kbps · original'); lower case; one word
 extension	original	original
+#. text in the browser extension
+#. button among the picture types (JPEG, PNG, WEBP...) in the This page tab of the toolbar button's popup: the pictures of any other or unknown type; short
+extension	Other	Other
 #. text in the browser extension
 #. button: pair this browser with the other MDM using the code
 extension	Pair	Pair
@@ -5733,12 +6049,18 @@ extension	Send downloads through this browser's proxy or VPN extension	Send down
 #. heading in the toolbar button's popup, above the choice of where downloads go
 extension	Send downloads to	Send downloads to
 #. text in the browser extension
+#. button in the This page tab of the toolbar button's popup: send the selected pictures to the app's Link grabber window, where the user ticks which to download
+extension	Send to Link grabber	Send to Link grabber
+#. text in the browser extension
 #. on the download button over a video right after it was clicked, while the download goes to the app; MDM is Mister Download Manager's short name, keep it as it is; short
 #. the trailing ... means it is still going on: keep it
 extension	Sending to MDM...	Sending to MDM...
 #. text in the browser extension
 #. under the extension's name in the toolbar button's popup: downloads go to another Mister Download Manager, a server, at this address; short
 extension	Sending to {server}	Sending to {server}
+#. text in the browser extension
+#. shown in the This page tab of the toolbar button's popup after the pictures were sent to the app's Link grabber window
+extension	Sent to Link grabber: tick the ones to download there.	Sent to Link grabber: tick the ones to download there.
 #. text in the browser extension
 #. shown briefly on the download button after it was clicked; keep the name Mister Download Manager as it is
 extension	Sent to Mister Download Manager	Sent to Mister Download Manager
@@ -5764,6 +6086,19 @@ extension	Show in folder	Show in folder
 #. screen readers' name of a download's Show in folder button in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads)
 extension	Show {file} in folder	Show {file} in folder
 #. text in the browser extension
+#. in the This page tab of the toolbar button's popup, while a smallest width or height is set: how many of the selected pictures the page gives no size for (they are kept, not left out)
+#. {n} = a number (keep the braces as they are)
+extension	Size not given, kept: {n}	Size not given, kept: {n}
+#. text in the browser extension
+#. what a screen reader says for the box of the smallest height of the pictures to keep, in the This page tab of the toolbar button's popup
+extension	Smallest height, in pixels	Smallest height, in pixels
+#. text in the browser extension
+#. in the This page tab of the toolbar button's popup, before two boxes for the smallest width and height of the pictures to keep: 'Smallest size, in pixels [ ] × [ ]'; pictures smaller than that are left out; short
+extension	Smallest size, in pixels	Smallest size, in pixels
+#. text in the browser extension
+#. what a screen reader says for the box of the smallest width of the pictures to keep, in the This page tab of the toolbar button's popup
+extension	Smallest width, in pixels	Smallest width, in pixels
+#. text in the browser extension
 #. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app isn't running
 extension	Start it to see your downloads here.	Start it to see your downloads here.
 #. text in the browser extension
@@ -5788,6 +6123,9 @@ extension	That didn't work. Try again.	That didn't work. Try again.
 #. text in the browser extension
 #. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when a button's download was removed meanwhile
 extension	That download is no longer in the list.	That download is no longer in the list.
+#. text in the browser extension
+#. shown in the This page tab of the toolbar button's popup when Find images can't look into the current page (a page of the browser's own, an add-on store)
+extension	The browser doesn't let add-ons read this page.	The browser doesn't let add-ons read this page.
 #. text in the browser extension
 #. in the toolbar button's popup, on a site where the Chrome Web Store's copy of the extension shows no download button; Help is the link at the bottom of the popup
 extension	The Chrome Web Store's rules keep this copy of the add-on away from this site's videos. Help says what you can do.	The Chrome Web Store's rules keep this copy of the add-on away from this site's videos. Help says what you can do.
@@ -5891,6 +6229,9 @@ extension	{file} removed from the list	{file} removed from the list
 #. text in the browser extension
 #. question in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) before a download's file is deleted
 extension	{file} will be deleted from your computer, and the download taken off the list. This can't be undone.	{file} will be deleted from your computer, and the download taken off the list. This can't be undone.
+#. text in the browser extension
+#. in the This page tab of the toolbar button's popup: how many of the pictures found pass the size and type filters, and will be sent
+extension	{shown} of {total} selected	{shown} of {total} selected
 #. text in the browser extension
 #. a running download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): the time left, as a clock (minutes:seconds)
 #. {time} = a time of day (keep the braces as they are)
@@ -5999,6 +6340,11 @@ menu	&Automatic	&Automatic
 #. View → Text: letters drawn the classic way, hinted to whole pixels (crisp, coarse on a dense screen)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 menu	&Classic	&Classic
+#. menu command in the main window
+#. header menu: opens the dialog that chooses the list's columns
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+menu	&Columns...	&Columns...
 #. menu command in standard windows
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 menu	&Copy	&Copy
@@ -6014,6 +6360,10 @@ menu	&Download Now	&Download Now
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 menu	&Exit	&Exit
+#. menu command in the main window
+#. View menu: submenu choosing the interface's own font and text size
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+menu	&Font	&Font
 #. menu command in the main window
 #. verb: load downloads from a file
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
@@ -6076,6 +6426,10 @@ menu	&Stop All	&Stop All
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 menu	&Stop Download	&Stop Download
+#. menu command in the main window
+#. View → Font: the computer's own font, the default (Segoe UI on Windows)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+menu	&System font	&System font
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 menu	&Tray icon	&Tray icon
@@ -6187,6 +6541,11 @@ menu	C&ustomize URL List...	C&ustomize URL List...
 #. the trailing ... means it opens a window: keep it
 menu	Check for &updates...	Check for &updates...
 #. menu command in the main window
+#. View → Font: a TrueType or OpenType font file on disk to draw the interface's text in
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+menu	Choose a font &file...	Choose a font &file...
+#. menu command in the main window
 #. View → Theme: MDM's own look, the default (IDM's layout, Windows 11's controls)
 menu	Classic	Classic
 #. menu command in the main window
@@ -6252,9 +6611,6 @@ menu	Find Next (F3)	Find Next (F3)
 #. menu command in the main window
 #. right-click → Torrent, a choice with a check mark (with Download in order): each file's first and last pieces first, which a video player needs to start
 menu	First and last pieces first	First and last pieces first
-#. menu command in the main window
-#. noun: the list's font (submenu)
-menu	Font	Font
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it

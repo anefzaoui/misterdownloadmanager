@@ -60,6 +60,12 @@ pub struct TorrentSpec {
     /// end, and a player reads it before anything plays).
     #[serde(default = "first_and_last_first")]
     pub ends_first: bool,
+    /// The public tracker list it got last (#1776): that list's stamp
+    /// (`mdm_torrent::public_trackers::Cache::stamp`; 0: none yet). Another list (a newer fetch
+    /// that changed, another address) is added again, which adds only its new trackers; the same
+    /// list never twice. A private torrent records it too: it was looked at, and gets nothing.
+    #[serde(default)]
+    pub public_list: u64,
 }
 
 fn subfolder_by_default() -> bool {
@@ -488,6 +494,123 @@ pub fn refresh_blocklist(
     });
 }
 
+/// The public tracker list (#1776): its last good copy, read from the torrent data folder on
+/// first use (`mdm_torrent::public_trackers::Cache`, the file the command line reads too), and
+/// fetched again with MDM's own downloader in the background: once a day, an hour after a fetch
+/// that failed. A torrent added meanwhile never waits for it: it takes the list as last fetched,
+/// or none yet, and gets the list once it comes (`App::public_list_to_torrents`).
+#[derive(Clone, Default)]
+pub struct PublicTrackers {
+    cache: Arc<Mutex<Option<mdm_torrent::public_trackers::Cache>>>,
+    busy: Arc<std::sync::atomic::AtomicBool>,
+}
+
+fn unix_now() -> u64 {
+    std::time::SystemTime::now()
+        .duration_since(std::time::UNIX_EPOCH)
+        .map_or(0, |d| d.as_secs())
+}
+
+/// A torrent's kept bytes with the public list added (#1776): the one code for a torrent being
+/// added and one already in the list. None when it is private (BEP 27): it never gets them.
+/// Otherwise the bytes (as they were when the list adds nothing) and how many trackers were new.
+/// Each tracker goes through `trackers::allowed` and is added by `trackers::add`
+/// (`mdm_torrent::public_trackers::add_to`): the info dictionary stays byte for byte.
+pub fn with_public_list(torrent: &[u8], list: &[String]) -> Option<(Vec<u8>, usize)> {
+    if mdm_torrent::trackers::private(torrent) {
+        return None;
+    }
+    Some(match mdm_torrent::public_trackers::add_to(torrent, list) {
+        Some(with) => {
+            let added = mdm_torrent::trackers::listed(&with)
+                .len()
+                .saturating_sub(mdm_torrent::trackers::listed(torrent).len());
+            (with, added)
+        }
+        None => (torrent.to_vec(), 0),
+    })
+}
+
+impl PublicTrackers {
+    /// `f` on the cache (read from the data folder the first time) and that folder. None
+    /// without a data folder.
+    fn with<R>(
+        &self,
+        f: impl FnOnce(&mut mdm_torrent::public_trackers::Cache, &Path) -> R,
+    ) -> Option<R> {
+        let dir = state_dir()?;
+        let mut cache = self.cache.lock().unwrap();
+        let cache = cache.get_or_insert_with(|| mdm_torrent::public_trackers::Cache::load(&dir));
+        Some(f(cache, &dir))
+    }
+
+    /// The list last fetched from `url` and its stamp (`Cache::stamp`, what a torrent records
+    /// once it got it); None while there is none. Never waits for a fetch.
+    pub fn current(&self, url: &str) -> Option<(u64, Vec<String>)> {
+        self.with(|c, _| Some((c.stamp(url)?, c.trackers(url).to_vec())))
+            .flatten()
+    }
+
+    /// Fetch the list at `url` when it is due (`Cache::due`: a day after a good fetch, an hour
+    /// after one that failed; another address at once), one fetch at a time, through Options →
+    /// Proxy / Socks, Connection → DNS and the chosen network adapter (`settings::own_net`). The
+    /// try is recorded before it starts, so MDM closed or crashing during it still waits the
+    /// hour, and the last good list stays. While the chosen adapter is disconnected (its kill
+    /// switch), nothing is tried.
+    pub fn refresh(&self, rt: &tokio::runtime::Handle, url: &str) {
+        use std::sync::atomic::Ordering;
+        let url = url.trim().to_owned();
+        let Ok(parsed) = url::Url::parse(&url) else {
+            return;
+        };
+        if !matches!(parsed.scheme(), "http" | "https")
+            || matches!(crate::settings::own_route(), mdm_engine::Route::Down { .. })
+            || self.busy.swap(true, Ordering::SeqCst)
+        {
+            return;
+        }
+        let now = unix_now();
+        let due = self.with(|c, dir| {
+            if !c.due(&url, now) {
+                return None;
+            }
+            c.tried(&url, now);
+            if let Err(e) = c.save(dir) {
+                tracing::warn!("public trackers: the list's cache wasn't saved: {e}");
+            }
+            Some(dir.to_owned())
+        });
+        let Some(Some(dir)) = due else {
+            self.busy.store(false, Ordering::SeqCst);
+            return;
+        };
+        let this = self.clone();
+        rt.spawn(async move {
+            let fetched =
+                mdm_torrent::public_trackers::download(&url, &dir, crate::settings::own_net())
+                    .await;
+            match fetched {
+                Ok(body) => {
+                    this.with(|c, dir| match c.fetched(&url, &body, unix_now()) {
+                        Some(n) => {
+                            if let Err(e) = c.save(dir) {
+                                tracing::warn!("public trackers: the list wasn't saved: {e}");
+                            }
+                            tracing::info!("public trackers: {n} from {url}");
+                        }
+                        None => tracing::warn!(
+                            "public trackers: {url} sent no tracker MDM may contact; the last \
+                             list stays"
+                        ),
+                    });
+                }
+                Err(e) => tracing::warn!("public trackers: {url}: {e}; the last list stays"),
+            }
+            this.busy.store(false, Ordering::SeqCst);
+        });
+    }
+}
+
 /// How the torrent session is held to the network adapter as it is (#35, #143): None without
 /// one chosen; else why torrents can't start (it isn't connected).
 pub fn route_bind(route: &mdm_engine::Route) -> Result<Option<mdm_torrent::Bind>, String> {
@@ -561,6 +684,8 @@ pub enum Act {
     Reannounce,
     /// Trackers to add, by address (kept in its .torrent, `torrent_file`).
     AddTrackers(Vec<String>),
+    /// The public tracker list to add (#1776), unless it is private (`with_public_list`).
+    AddPublicList(Vec<String>),
     /// The files to download from now on (indexes into the torrent's list); `pause`: it isn't
     /// running in the list (stopped, or finished and shared), so it is held paused, not left to
     /// fetch the files out of sight.
@@ -582,6 +707,9 @@ pub enum Done {
     Reannounced,
     /// How many trackers were new.
     TrackersAdded(usize),
+    /// The public list: how many of its trackers were new; None: a private torrent, left as it
+    /// is.
+    PublicListAdded(Option<usize>),
     Chosen,
 }
 
@@ -656,6 +784,20 @@ impl Host {
                     }
                 }
                 Ok(Done::TrackersAdded(added))
+            }
+            Act::AddPublicList(list) => {
+                let bytes = read_kept(hash).await?;
+                let Some((with, added)) = with_public_list(&bytes, &list) else {
+                    return Ok(Done::PublicListAdded(None));
+                };
+                if with != bytes {
+                    save_torrent(hash, &with).map_err(|e| e.to_string())?;
+                    // The running session's copy too, as Add trackers does.
+                    if let Some(t) = self.get().filter(|t| t.has(hash)) {
+                        t.readd(hash, &with, false).await.map_err(err)?;
+                    }
+                }
+                Ok(Done::PublicListAdded(Some(added)))
             }
             Act::Recheck => {
                 let t = self.session(known).await?;
@@ -2033,6 +2175,64 @@ mod tests {
         );
     }
 
+    /// #1776: the public list on a torrent's kept bytes, for one being added and one already in
+    /// the list alike: after its own trackers, the info hash the same, refused trackers left out;
+    /// a private one never; a torrent that has them all, as it was. A spec saved before it reads
+    /// as having no list yet.
+    #[test]
+    fn the_public_list_goes_to_public_torrents_only() {
+        let info = |private: bool| {
+            format!(
+                "d6:lengthi5e4:name1:a12:piece lengthi16384e6:pieces20:aaaaaaaaaaaaaaaaaaaa{}e",
+                if private { "7:privatei1e" } else { "" }
+            )
+        };
+        let torrent = |private: bool| {
+            let own = "http://own.example/announce";
+            format!("d8:announce{}:{own}4:info{}e", own.len(), info(private)).into_bytes()
+        };
+        let list: Vec<String> = [
+            "udp://tracker.opentrackr.org:1337/announce",
+            "https://tracker.example.org/announce",
+            "http://192.168.1.1/announce",
+        ]
+        .map(String::from)
+        .to_vec();
+        let hash = |t: &[u8]| {
+            mdm_torrent::librqbit::torrent_from_bytes(t)
+                .unwrap()
+                .info_hash
+        };
+        let public = torrent(false);
+        let (with, added) = with_public_list(&public, &list).unwrap();
+        assert_eq!(added, 2);
+        assert_eq!(
+            mdm_torrent::trackers::listed(&with),
+            [
+                "http://own.example/announce",
+                "udp://tracker.opentrackr.org:1337/announce",
+                "https://tracker.example.org/announce"
+            ]
+        );
+        assert_eq!(hash(&with), hash(&public));
+        // Again (at the next start, or the same list fetched again): nothing new.
+        assert_eq!(with_public_list(&with, &list), Some((with.clone(), 0)));
+        // A newer list: only its new tracker.
+        let mut newer = list.clone();
+        newer.push("udp://tracker.new.example.org:6969/announce".into());
+        let (again, added) = with_public_list(&with, &newer).unwrap();
+        assert_eq!(added, 1);
+        assert_eq!(hash(&again), hash(&public));
+        // Private: never.
+        assert_eq!(with_public_list(&torrent(true), &list), None);
+        assert_eq!(with_public_list(b"not a torrent", &list), None);
+        // A spec saved before #1776 has no list yet.
+        let mut saved = serde_json::to_value(a_spec()).unwrap();
+        saved.as_object_mut().unwrap().remove("public_list");
+        let read: TorrentSpec = serde_json::from_value(saved).unwrap();
+        assert_eq!(read.public_list, 0);
+    }
+
     fn a_spec() -> TorrentSpec {
         TorrentSpec {
             ownership: None,
@@ -2047,6 +2247,7 @@ mod tests {
             upload_limit: None,
             in_order: false,
             ends_first: true,
+            public_list: 0,
         }
     }
 
@@ -2448,6 +2649,7 @@ mod tests {
             upload_limit: None,
             in_order: false,
             ends_first: true,
+            public_list: 0,
         };
         let off = SharingLimits::default();
         let ratio2 = SharingLimits {

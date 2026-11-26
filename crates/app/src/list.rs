@@ -47,9 +47,10 @@ themed! {
 /// "Added" (2026-10-30: when the download was added; sorts in order of addition), "Source"
 /// (D-014: a Web or Torrent chip, first by default), and a torrent's "Peers" and "Share ratio"
 /// (#357: how many peers it has connected and what it has given back). "Upload speed" (#357: what
-/// it sends) is the last slot: a saved layout is indexed by slot, so it must not take a slot an
-/// older build already meant something else by.
-pub const COLS: usize = 13;
+/// it sends) and "Save To" (#1827: the folder it's saved in) are the last slots: a saved layout
+/// is indexed by slot, so a new column must not take a slot an older build already meant
+/// something else by.
+pub const COLS: usize = 14;
 pub const TITLES: [&str; COLS] = [
     "File Name",
     // i18n: column title: one letter for Queue (the column is narrow)
@@ -73,6 +74,8 @@ pub const TITLES: [&str; COLS] = [
     "Share ratio",
     // i18n: column title: what a torrent sends to peers, bytes per second
     "Upload speed",
+    // i18n: column title: the folder the download is saved in
+    "Save To",
 ];
 /// The "Status" column's data slot.
 pub const STATUS: usize = 3;
@@ -125,6 +128,9 @@ pub const RATIO: usize = 11;
 /// The "Upload speed" column's data slot (what a torrent sends; blank for anything else). The
 /// last slot, so a layout saved before it existed still means what it meant.
 pub const UPLOAD: usize = 12;
+/// The "Save To" column's data slot: the folder the download is saved in. Last slot, shown by
+/// default after Description.
+pub const SAVE_TO: usize = 13;
 
 /// IDM's default column widths (and ours for Added, room for a 12-hour clock's
 /// `Oct 28 9:05:01 AM 2026`, Source, Peers, Share ratio and Upload speed). Status is wider than
@@ -134,11 +140,13 @@ pub const UPLOAD: usize = 12;
 /// ([`status_width`]). Linux draws with fontconfig's interface font, often DejaVu Sans, wider
 /// than Windows' Segoe UI.
 pub const DEFAULT_WIDTHS: [f32; COLS] = [
-    150.0, 20.0, 75.0, 132.0, 75.0, 95.0, 65.0, 200.0, 145.0, 62.0, 64.0, 92.0, 100.0,
+    150.0, 20.0, 75.0, 132.0, 75.0, 95.0, 65.0, 200.0, 145.0, 62.0, 64.0, 92.0, 100.0, 220.0,
 ];
 /// Default display order: Source first, then IDM's, a torrent's three columns after its rate, and
 /// Added after Last Try Date.
-const DEFAULT_ORDER: [usize; COLS] = [SOURCE, 0, 1, 2, 3, 4, 5, UPLOAD, PEERS, RATIO, 6, ADDED, 7];
+const DEFAULT_ORDER: [usize; COLS] = [
+    SOURCE, 0, 1, 2, 3, 4, 5, UPLOAD, PEERS, RATIO, 6, ADDED, 7, SAVE_TO,
+];
 
 const MIN_WIDTH: f32 = 16.0;
 /// How far from a separator a press grabs it for resizing.
@@ -359,6 +367,10 @@ impl ListState {
                 .map_or(l.order.len(), |p| p + 1);
             l.order.insert(at, UPLOAD);
         }
+        // A layout from before "Save To" gets it last, shown, at its default width.
+        if !l.order.contains(&SAVE_TO) {
+            l.order.push(SAVE_TO);
+        }
         let mut seen = l.order.clone();
         seen.sort_unstable();
         if seen != (0..COLS).collect::<Vec<_>>() {
@@ -380,6 +392,19 @@ impl ListState {
         }
         self.visible[0] = true;
         self.sort = l.sort.filter(|(c, _)| *c < COLS);
+    }
+
+    /// Set the order and which columns show (the Columns dialog). An order that doesn't name
+    /// every column exactly once is ignored; File Name always shows. Widths stay.
+    pub fn set_columns(&mut self, order: Vec<usize>, visible: [bool; COLS]) {
+        let mut seen = order.clone();
+        seen.sort_unstable();
+        if seen != (0..COLS).collect::<Vec<_>>() {
+            return;
+        }
+        self.order = order;
+        self.visible = visible;
+        self.visible[0] = true;
     }
 
     /// Visible columns in display order.
@@ -1271,7 +1296,7 @@ pub fn show(
         let idx = ((pos.y - body_top + shown_scroll) / row_h()).floor() as usize;
         (idx < rows.len()).then_some(idx)
     };
-    let mods = ui.input(|i| i.modifiers);
+    let mods = click_modifiers(ui);
     if let Some(on_screen) = resp.interact_pointer_pos()
         && let pos = english(on_screen)
         && body.contains(pos)
@@ -1747,9 +1772,104 @@ fn move_column(st: &mut ListState, cols: &[(usize, f32, f32)], col: usize, x: f3
     st.order = shown.into_iter().chain(hidden).collect();
 }
 
+/// Ctrl, Shift and Alt as a click had them: as the primary button went down, even when that was
+/// in an earlier frame than the release (as a Windows list view takes them on the press), else
+/// as they are now. A slow frame (software rendering, a loaded machine) can take the key going
+/// down, the click and the key going up all at once, and the frame's own modifiers then miss the
+/// key the click was made with (#1734). The press's keys are kept per window until the next
+/// press: every list that reads clicks calls this in each frame it's drawn, so it sees its own
+/// presses.
+pub(crate) fn click_modifiers(ui: &Ui) -> egui::Modifiers {
+    let id = egui::Id::unique(("list-click-press-modifiers", ui.ctx().viewport_id()));
+    let held = ui.data(|d| d.get_temp::<egui::Modifiers>(id));
+    let (mods, press) =
+        ui.input(|i| modifiers_of_click(&i.events, i.modifiers, held, i.pointer.primary_down()));
+    if let Some(press) = press {
+        ui.data_mut(|d| d.insert_temp(id, press));
+    }
+    mods
+}
+
+/// The click's modifiers from this frame's `events`, the last press's from an earlier frame
+/// (`held`) and the frame's (`now`); and the last press's in this frame, to keep.
+/// - The button went up in this frame: the keys of the press that went before it.
+/// - It went down in this frame (a drag about to start): that press's.
+/// - Nothing this frame but the button is held (a drag starting later): the held press's.
+/// - Otherwise (a key moved the selection): the keys as they are.
+fn modifiers_of_click(
+    events: &[egui::Event],
+    now: egui::Modifiers,
+    held: Option<egui::Modifiers>,
+    down: bool,
+) -> (egui::Modifiers, Option<egui::Modifiers>) {
+    let (mut press, mut fresh, mut release) = (held, None, None);
+    for e in events {
+        if let egui::Event::PointerButton {
+            button: egui::PointerButton::Primary,
+            pressed,
+            modifiers,
+            ..
+        } = e
+        {
+            if *pressed {
+                press = Some(*modifiers);
+                fresh = Some(*modifiers);
+            } else {
+                release = Some(press.unwrap_or(*modifiers));
+            }
+        }
+    }
+    let mods = release.or(fresh).or(press.filter(|_| down)).unwrap_or(now);
+    (mods, fresh)
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    /// #1734: a slow frame takes Ctrl going down, the click and Ctrl going up at once: the click
+    /// still has its Ctrl.
+    #[test]
+    fn a_click_keeps_the_keys_it_was_made_with() {
+        let click = |pressed, modifiers| egui::Event::PointerButton {
+            pos: Pos2::ZERO,
+            button: egui::PointerButton::Primary,
+            pressed,
+            modifiers,
+        };
+        let (none, ctrl, shift) = (
+            egui::Modifiers::NONE,
+            egui::Modifiers::COMMAND,
+            egui::Modifiers::SHIFT,
+        );
+        let at =
+            |events: &[egui::Event], now, held, down| modifiers_of_click(events, now, held, down).0;
+        assert_eq!(
+            at(&[click(true, ctrl), click(false, ctrl)], none, None, false),
+            ctrl
+        );
+        // Pressed with Shift, which went up before the button: the press's.
+        assert_eq!(
+            at(&[click(true, shift), click(false, none)], none, None, false),
+            shift
+        );
+        // Pressed with Ctrl in an earlier frame, the key let go before a later frame took the
+        // release: still the press's.
+        assert_eq!(at(&[click(false, none)], none, Some(ctrl), false), ctrl);
+        // A release with no press known (the press went to another window): the release's.
+        assert_eq!(at(&[click(false, shift)], none, None, false), shift);
+        // A press in this frame is kept for the frame of its release.
+        assert_eq!(
+            modifiers_of_click(&[click(true, ctrl)], none, Some(shift), true),
+            (ctrl, Some(ctrl))
+        );
+        // A drag that starts frames after its press: the press's.
+        assert_eq!(at(&[], none, Some(ctrl), true), ctrl);
+        // No click in this frame and the button up (a key moved the selection): the keys as
+        // they are, whatever an old press had.
+        assert_eq!(at(&[], ctrl, Some(shift), false), ctrl);
+        assert_eq!(at(&[], shift, None, false), shift);
+    }
 
     #[test]
     fn data_cells_keep_their_own_direction() {
@@ -1890,6 +2010,7 @@ mod tests {
         assert_eq!(TITLES[ADDED], "Added");
         assert_eq!(TITLES[SOURCE], "Source");
         assert_eq!(TITLES[UPLOAD], "Upload speed");
+        assert_eq!(TITLES[SAVE_TO], "Save To");
         assert_eq!(TITLES[PEERS], "Peers");
         assert_eq!(TITLES[RATIO], "Share ratio");
     }
@@ -1906,6 +2027,36 @@ mod tests {
     }
 
     #[test]
+    fn set_columns_rejects_a_bad_order_and_keeps_file_name() {
+        let mut st = ListState::default();
+        let before = st.order.clone();
+        st.set_columns(vec![0, 0, 1], [true; COLS]);
+        assert_eq!(st.order, before, "bad order ignored");
+        let mut order = before.clone();
+        order.reverse();
+        let mut vis = [true; COLS];
+        vis[0] = false;
+        st.set_columns(order.clone(), vis);
+        assert_eq!(st.order, order);
+        assert!(st.visible[0], "File Name stays");
+    }
+
+    #[test]
+    fn a_layout_saved_before_save_to_gets_it_last_and_shown() {
+        let mut st = ListState::default();
+        st.apply(Layout {
+            order: DEFAULT_ORDER[..COLS - 1].to_vec(),
+            widths: DEFAULT_WIDTHS[..COLS - 1].to_vec(),
+            visible: vec![true; COLS - 1],
+            sort: None,
+            status_fits: None,
+        });
+        assert_eq!(st.order.last(), Some(&SAVE_TO));
+        assert!(st.visible[SAVE_TO]);
+        assert_eq!(st.widths[SAVE_TO], DEFAULT_WIDTHS[SAVE_TO]);
+    }
+
+    #[test]
     fn a_layout_saved_before_the_added_columns_still_loads() {
         let old = Layout {
             order: vec![0, 2, 1, 3, 4, 5, 6, 7],
@@ -1919,7 +2070,9 @@ mod tests {
         // Source first, the three torrent columns after Transfer rate, Added after Last Try Date.
         assert_eq!(
             st.order,
-            [SOURCE, 0, 2, 1, 3, 4, 5, UPLOAD, PEERS, RATIO, 6, ADDED, 7]
+            [
+                SOURCE, 0, 2, 1, 3, 4, 5, UPLOAD, PEERS, RATIO, 6, ADDED, 7, SAVE_TO
+            ]
         );
         assert_eq!(st.widths[0], 200.0, "the saved widths stay");
         assert_eq!(st.widths[ADDED], DEFAULT_WIDTHS[ADDED]);
@@ -2021,7 +2174,9 @@ mod tests {
         st.apply(old);
         assert_eq!(
             st.order,
-            [SOURCE, 0, 1, 2, 3, 4, 5, UPLOAD, PEERS, RATIO, 6, ADDED, 7]
+            [
+                SOURCE, 0, 1, 2, 3, 4, 5, UPLOAD, PEERS, RATIO, 6, ADDED, 7, SAVE_TO
+            ]
         );
         assert!(st.widths[UPLOAD] > 0.0 && st.widths[PEERS] > 0.0 && st.widths[RATIO] > 0.0);
         // None of the torrent columns were in that layout, so all three get their defaults.
@@ -2057,7 +2212,9 @@ mod tests {
         st.apply(old);
         assert_eq!(
             st.order,
-            [SOURCE, 0, 1, 2, 3, 4, 5, UPLOAD, PEERS, RATIO, 6, ADDED, 7]
+            [
+                SOURCE, 0, 1, 2, 3, 4, 5, UPLOAD, PEERS, RATIO, 6, ADDED, 7, SAVE_TO
+            ]
         );
         assert_eq!(
             st.widths[PEERS], 64.0,

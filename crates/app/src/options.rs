@@ -89,12 +89,86 @@ enum Sub {
     Pair,
     /// Archives → Archive passwords...: one password per line (#37).
     Passwords(String),
+    /// Connection → Site rules... (#1778): the rules, and the one being edited.
+    Rules(Box<RulesEdit>),
+}
+
+/// One row of Site rules: a rule and its number of connections (the exception under its
+/// pattern, Options → Connection → Exceptions).
+#[derive(Clone, Debug, PartialEq, Eq)]
+struct RuleRow {
+    rule: mdm_ipc::siterules::SiteRule,
+    connections: Option<u32>,
+}
+
+/// Site rules' window (#1778): its rows, their order the order they are tried in.
+struct RulesEdit {
+    rows: Vec<RuleRow>,
+    list: winui::RowList,
+    /// The rule being edited: its row (None: a new one), its site as typed, its fields.
+    editing: Option<(Option<usize>, String, crate::requestedit::RequestEdit)>,
+}
+
+/// The settings' site rules and exceptions as Site rules' rows: each rule with the exception
+/// under its pattern, then the exceptions no rule has, each list in its order.
+fn rule_rows(s: &Settings) -> Vec<RuleRow> {
+    use mdm_ipc::siterules::same_pattern;
+    let mut rows: Vec<RuleRow> = s
+        .site_rules
+        .iter()
+        .map(|rule| RuleRow {
+            rule: rule.clone(),
+            connections: s
+                .conn_exceptions
+                .iter()
+                .find(|(site, _)| same_pattern(site, &rule.site))
+                .map(|(_, n)| *n),
+        })
+        .collect();
+    for (site, n) in &s.conn_exceptions {
+        if !rows.iter().any(|r| same_pattern(&r.rule.site, site)) {
+            rows.push(RuleRow {
+                rule: mdm_ipc::siterules::SiteRule {
+                    site: site.clone(),
+                    ..Default::default()
+                },
+                connections: Some(*n),
+            });
+        }
+    }
+    rows
+}
+
+/// Site rules' rows back into the settings, in their order: the rules that set more than a
+/// number of connections, and the numbers as exceptions (which older versions read too).
+fn set_rule_rows(s: &mut Settings, rows: &[RuleRow]) {
+    s.site_rules = rows
+        .iter()
+        .filter(|r| r.rule.sets_anything())
+        .map(|r| r.rule.clone())
+        .collect();
+    s.conn_exceptions = rows
+        .iter()
+        .filter_map(|r| Some((r.rule.site.clone(), r.connections?)))
+        .collect();
 }
 
 /// Options → Remote's page number (the tabs' numbers).
 const REMOTE_PAGE: usize = 11;
 /// Test browser integration: from a check's line to the path under it (#818).
 const DETAIL_H: f32 = 18.0;
+/// What the Sites Logins list shows in place of a password: the same for every one; nothing
+/// for a login without one.
+const PASSWORD_MASK: &str = "********";
+
+/// The Sites Logins list's Password column for `pass`.
+fn password_shown(pass: &str) -> String {
+    if pass.is_empty() {
+        String::new()
+    } else {
+        PASSWORD_MASK.to_owned()
+    }
+}
 
 /// Connection → DNS's sub-dialog: a copy of the DNS fields, kept on OK.
 struct DnsEdit {
@@ -119,6 +193,12 @@ const TEST_SENTENCE: &str =
 
 /// The largest limit for the archive test that can be typed, in GB.
 const TEST_GB_MAX: u32 = 1024;
+
+/// Archives → Link grabber (#1774): how deep a folder given to Link grabber is read, and its
+/// files of which types, one line.
+const FOLDER_SENTENCE: &str =
+    // i18n: Options → Archives → Link grabber, one line with two boxes: an FTP folder or a web server's folder listing ("Index of") given to Link grabber is read with its subfolders: {depth} is a number box (how many levels of subfolders, 3 at first; 0 is the folder's own files only), {types} a text box (file types such as ISO ZIP; empty for every type)
+    crate::i18n::mark("Folders: {depth} levels deep, types: {types}");
 
 /// Archives → Use another program... (#1525): the program picked, and whether it answered as
 /// 7-Zip's command line, once it has.
@@ -279,6 +359,8 @@ pub struct OptionsDialog {
     port: String,
     /// Archives → Test archives ... up to {gb} GB (#1661): the number as typed.
     test_gb: String,
+    /// Archives → Link grabber → Folders: {depth} levels deep (#1774): the number as typed.
+    folder_depth: String,
     device_rows: winui::RowList,
     /// Sites Logins → Cookies for video sites (#229): the browser in the list (an index into
     /// `mdm_tools::proc::cookie_browsers`), kept while Off is chosen.
@@ -358,6 +440,38 @@ impl OptionsDialog {
             "account" => self.sub = Some(Sub::Account(AccountEdit::default())),
             "progress" => self.sub = Some(Sub::Progress(self.s.show_progress)),
             "keys" => self.sub = Some(Sub::Keys(self.s.capture_opened)),
+            // Connection → Site rules... (#1778), and with its first rule (else a new one) open.
+            "siterules" | "siterule" => {
+                let rows = rule_rows(&self.s);
+                let editing = (name == "siterule").then(|| {
+                    let default = self.s.max_connections;
+                    match rows.first() {
+                        Some(row) => (
+                            Some(0),
+                            row.rule.site.clone(),
+                            crate::requestedit::RequestEdit::rule(
+                                &row.rule,
+                                row.connections,
+                                default,
+                            ),
+                        ),
+                        None => (
+                            None,
+                            String::new(),
+                            crate::requestedit::RequestEdit::rule(
+                                &Default::default(),
+                                None,
+                                default,
+                            ),
+                        ),
+                    }
+                });
+                self.sub = Some(Sub::Rules(Box::new(RulesEdit {
+                    rows,
+                    list: Default::default(),
+                    editing,
+                })));
+            }
             _ => {}
         }
         self
@@ -400,6 +514,7 @@ impl OptionsDialog {
             remote: None,
             port: settings.remote_port.to_string(),
             test_gb: settings.test_archives_gb.to_string(),
+            folder_depth: settings.grabber_depth.to_string(),
             device_rows: Default::default(),
             cookie_browser: cookie_browser_at(settings),
             recording_hotkey: false,
@@ -518,9 +633,9 @@ impl OptionsDialog {
                     .parse()
                     .unwrap_or(8)
                     .clamp(1, s.connection_limit());
-                s.limits_mb = self.mb.parse().unwrap_or(200).max(1);
+                s.limits_mb = self.mb.parse().unwrap_or(s.limits_mb).max(1);
                 s.capture_min_kb = self.min_kb.parse().unwrap_or(0);
-                s.limits_hours = self.hours.parse().unwrap_or(5).max(1);
+                s.limits_hours = self.hours.parse().unwrap_or(s.limits_hours).max(1);
                 s.remote_port = self.remote_port();
                 s.test_archives_gb = self
                     .test_gb
@@ -528,6 +643,13 @@ impl OptionsDialog {
                     .parse()
                     .unwrap_or(s.test_archives_gb)
                     .clamp(1, TEST_GB_MAX);
+                s.grabber_depth = self
+                    .folder_depth
+                    .trim()
+                    .parse()
+                    .unwrap_or(s.grabber_depth)
+                    .min(mdm_engine::folder::MAX_DEPTH);
+                s.grabber_types = s.grabber_types.trim().to_owned();
                 Outcome::Done(s)
             }
             Outcome::Closed => Outcome::Closed,
@@ -1614,7 +1736,8 @@ impl OptionsDialog {
             .s
             .conn_exceptions
             .iter()
-            .map(|(server, n)| vec![server.clone(), n.to_string()])
+            // A server's name reads left to right in every language (`*.example.com`).
+            .map(|(server, n)| vec![crate::i18n::ltr(server), n.to_string()])
             .chain(
                 self.learned
                     .iter()
@@ -1629,7 +1752,7 @@ impl OptionsDialog {
                         // i18n: a number of connections the app learned by itself for a server
                         let auto = crate::i18n::t("{n} (auto)");
                         vec![
-                            h.clone(),
+                            crate::i18n::ltr(h),
                             crate::i18n::fmt(auto, &[("n", &crate::i18n::integer(u64::from(*n)))]),
                         ]
                     }),
@@ -1792,6 +1915,41 @@ impl OptionsDialog {
         .clicked()
         {
             self.sub = Some(Sub::Dns(DnsEdit::from(&self.s)));
+        }
+        // Site rules (#1778): a User-Agent, headers, connections and the browser-like
+        // connection by site, in their own window; the exceptions above are their numbers.
+        // i18n: Options → Connection: button: opens the per-site settings (User-Agent, headers, connections)
+        let label = crate::i18n::mark("Site rules...");
+        let w = winui::button_width(&p, label, 103.0).min(250.0);
+        let rules = winui::button_light(
+            ui,
+            r(o, 21.0, 437.0, w, 21.0),
+            label,
+            ButtonKind::Normal,
+            false,
+        );
+        let about = crate::i18n::t(
+            // i18n: Options → Connection: beside the Site rules... button: what it sets
+            "User-Agent, headers and connections by site",
+        );
+        let (rect, cut) = winui::label_into(
+            &p,
+            o.x + 21.0 + w + 8.0,
+            o.y + 452.0,
+            about,
+            LIGHT_TEXT(),
+            o.x + 404.0,
+            o.x + 21.0 + w + 8.0,
+        );
+        if cut {
+            winui::full_on_hover(ui, rect, "site-rules-about", about);
+        }
+        if rules.clicked() {
+            self.sub = Some(Sub::Rules(Box::new(RulesEdit {
+                rows: rule_rows(&self.s),
+                list: Default::default(),
+                editing: None,
+            })));
         }
     }
 
@@ -2436,9 +2594,7 @@ impl OptionsDialog {
             .s
             .site_logins
             .iter()
-            .map(|(site, user, pass)| {
-                vec![site.clone(), user.clone(), "*".repeat(pass.chars().count())]
-            })
+            .map(|(site, user, pass)| vec![site.clone(), user.clone(), password_shown(pass)])
             .collect();
         // The list leaves the page's foot to Cookies for video sites (#229).
         // Named for screen readers by the page's title (#1407).
@@ -2902,17 +3058,65 @@ impl OptionsDialog {
             "Accept Click'n'Load from web pages (port 9666)",
             true,
         );
-        winui::paragraph(
-            &p,
-            o.x + 30.0,
-            o.y + 435.0,
-            crate::i18n::t(
-                "Tasks → Link grabber, or the browser's \"Download all links\": a split\narchive's volumes are one package, the other links of a page another.",
-            ),
-            LIGHT_DISABLED(),
-            o.x + 400.0,
-            13.0,
+        self.folder_row(ui, o, 434.0);
+    }
+
+    /// Archives → Link grabber → "Folders: {depth} levels deep, types: {types}" (#1774): the
+    /// number box and the types box in the translation's order, the types box as wide as the
+    /// line leaves room for; the boxes' tops at `y`.
+    fn folder_row(&mut self, ui: &mut Ui, o: Pos2, y: f32) {
+        let p = ui.painter().clone();
+        let sentence = crate::i18n::t(FOLDER_SENTENCE);
+        let line = winui::SentenceLine {
+            lead: winui::Lead::Left(o.x + 30.0),
+            lead_baseline: o.y + y + 14.0,
+            boxes: o + vec2(30.0, y),
+            gap: 6.0,
+            baseline: o.y + y + 14.0,
+        };
+        // The line laid out with an empty types box first: the box takes the room left before
+        // the group's edge, at least enough for a few types.
+        let width = |s: &str| winui::text_width(&p, s);
+        let (texts, rects) = winui::sentence_layout(
+            sentence,
+            &[line],
+            &[("depth", vec2(54.0, 21.0)), ("types", vec2(0.0, 21.0))],
+            width,
+            o.x + 6.0,
         );
+        let end = texts
+            .iter()
+            .map(|(x, _, s)| x + width(s))
+            .chain(rects.iter().map(|r| r.right()))
+            .fold(o.x + 30.0, f32::max);
+        let types_w = (o.x + 394.0 - end).clamp(70.0, 220.0);
+        let boxes = winui::sentence(
+            ui,
+            &p,
+            sentence,
+            &[line],
+            &[("depth", vec2(54.0, 21.0)), ("types", vec2(types_w, 21.0))],
+            |p, x, baseline, s| {
+                winui::label(p, x, baseline, s, true);
+            },
+        );
+        let names = winui::sentence_names(sentence, &["depth", "types"]);
+        let depth = winui::spin_box(
+            ui,
+            boxes[0],
+            &mut self.folder_depth,
+            0,
+            u64::from(mdm_engine::folder::MAX_DEPTH),
+            true,
+            "opt-folder-depth",
+        );
+        winui::name(&depth, &names[0]);
+        let types = winui::edit_light(ui, boxes[1], &mut self.s.grabber_types, true, false)
+            .on_hover_text(crate::i18n::t(
+                // i18n: Options → Archives → Link grabber: the hover tip of the types box in "Folders: {depth} levels deep, types: {types}": only a folder's files of these types go into Link grabber; written as the File types page writes them
+                "Only a folder's files of these types, written as on the File types page (ISO ZIP R0*). Empty: every type.",
+            ));
+        winui::name(&types, &names[1]);
     }
 
     /// Archives → "Test archives when their download completes, up to {gb} GB" (#1661): the check
@@ -3748,6 +3952,293 @@ impl OptionsDialog {
         matches!(out, Outcome::Open)
     }
 
+    /// Connection → Site rules... (#1778): the list (New, Edit, Delete, Up, Down; OK keeps it),
+    /// and over it the rule being edited. Returns the window's state while it stays open.
+    fn rules_window(
+        &mut self,
+        ctx: &egui::Context,
+        mut edit: Box<RulesEdit>,
+    ) -> Option<Box<RulesEdit>> {
+        let limit = self.s.connection_limit();
+        let default = self.conns.parse().unwrap_or(self.s.max_connections);
+        let editing = edit.editing.is_some();
+        let out = window(
+            ctx,
+            "opt-site-rules",
+            // i18n: window title: per-site settings (User-Agent, headers, connections, the browser-like connection) by site pattern
+            "Site rules",
+            [560.0, 316.0],
+            false,
+            LIGHT_BG(),
+            |ui, o| {
+                let p = ui.painter().clone();
+                winui::paragraph(
+                    &p,
+                    o.x + 14.0,
+                    o.y + 20.0,
+                    crate::i18n::t(
+                        // i18n: Site rules window: how the rules apply; *.example.com stays as it is
+                        "Downloads from these sites get these settings. Each one comes from the first rule in the list that names the site and sets it; * stands for any text: *.example.com",
+                    ),
+                    LIGHT_TEXT(),
+                    o.x + 546.0,
+                    14.0,
+                );
+                let yes = crate::i18n::t("Yes");
+                let rows: Vec<Vec<String>> = edit
+                    .rows
+                    .iter()
+                    .map(|r| {
+                        // A site and a User-Agent read left to right in every language.
+                        vec![
+                            crate::i18n::ltr(&r.rule.site),
+                            r.connections
+                                .map(|n| crate::i18n::integer(u64::from(n)))
+                                .unwrap_or_default(),
+                            if r.rule.user_agent.is_empty() {
+                                String::new()
+                            } else {
+                                crate::i18n::ltr(&r.rule.user_agent)
+                            },
+                            if r.rule.headers.is_empty() {
+                                String::new()
+                            } else {
+                                crate::i18n::integer(r.rule.headers.len() as u64)
+                            },
+                            if r.rule.browser_like {
+                                yes.to_owned()
+                            } else {
+                                String::new()
+                            },
+                        ]
+                    })
+                    .collect();
+                // The buttons as wide as their longest label in this language (#192), the list
+                // ending 8 px before them, its columns sharing its width as in English.
+                let labels = ["New", "Edit", "Delete", "Move up", "Move down"];
+                let bw = winui::button_width(&p, winui::widest_label(&p, &labels), 92.0).min(160.0);
+                let bx = 546.0 - bw;
+                let k = (bx - 8.0 - 14.0) / 432.0;
+                let col = |right: f32| 14.0 + (right - 14.0) * k;
+                // i18n: Site rules window: the list's name for screen readers
+                edit.list.name = crate::i18n::t("Site rules");
+                let (dbl, del_key) = report(
+                    ui,
+                    o,
+                    r(o, 14.0, 62.0, bx - 8.0 - 14.0, 196.0),
+                    &[
+                        // i18n: Site rules: column title: the site pattern
+                        (crate::i18n::mark("Site"), col(168.0)),
+                        // i18n: Site rules: column title: the number of connections (empty: the default)
+                        (crate::i18n::mark("Connections"), col(248.0)),
+                        // i18n: Site rules: column title: the User-Agent the rule sends (the name a browser or program gives itself to sites)
+                        (crate::i18n::mark("User-Agent"), col(358.0)),
+                        // i18n: Site rules: column title: how many request headers the rule adds
+                        (crate::i18n::mark("Headers"), col(400.0)),
+                        // i18n: Site rules: column title: "Yes" when the rule asks the way a browser connects from the first request
+                        (crate::i18n::mark("Browser"), col(444.0)),
+                    ],
+                    &rows,
+                    &mut edit.list,
+                    true,
+                    "opt-site-rules",
+                );
+                let sel = edit.list.selected.filter(|i| *i < edit.rows.len());
+                let free = !editing;
+                let on = |b: bool| {
+                    if b && free {
+                        ButtonKind::Normal
+                    } else {
+                        ButtonKind::Disabled
+                    }
+                };
+                let new =
+                    winui::button_light(ui, r(o, bx, 62.0, bw, 21.0), labels[0], on(true), false)
+                        .clicked();
+                let change = winui::button_light(
+                    ui,
+                    r(o, bx, 91.0, bw, 21.0),
+                    labels[1],
+                    on(sel.is_some()),
+                    false,
+                )
+                .clicked()
+                    || dbl;
+                let delete = winui::button_light(
+                    ui,
+                    r(o, bx, 120.0, bw, 21.0),
+                    labels[2],
+                    on(sel.is_some()),
+                    false,
+                )
+                .clicked()
+                    || del_key;
+                // i18n: Site rules: button: the selected rule is tried one place earlier
+                let up = winui::button_light(
+                    ui,
+                    r(o, bx, 158.0, bw, 21.0),
+                    labels[3],
+                    on(sel.is_some_and(|i| i > 0)),
+                    false,
+                )
+                .clicked();
+                // i18n: Site rules: button: the selected rule is tried one place later
+                let down = winui::button_light(
+                    ui,
+                    r(o, bx, 187.0, bw, 21.0),
+                    labels[4],
+                    on(sel.is_some_and(|i| i + 1 < edit.rows.len())),
+                    false,
+                )
+                .clicked();
+                if free {
+                    if new {
+                        let blank = mdm_ipc::siterules::SiteRule::default();
+                        let fields = crate::requestedit::RequestEdit::rule(&blank, None, default);
+                        edit.editing = Some((None, String::new(), fields));
+                    }
+                    if let Some(i) = sel {
+                        if change {
+                            let row = &edit.rows[i];
+                            let fields = crate::requestedit::RequestEdit::rule(
+                                &row.rule,
+                                row.connections,
+                                default,
+                            );
+                            edit.editing = Some((Some(i), row.rule.site.clone(), fields));
+                        } else if delete {
+                            edit.rows.remove(i);
+                            edit.list.selected = None;
+                        } else if up && i > 0 {
+                            edit.rows.swap(i, i - 1);
+                            edit.list.selected = Some(i - 1);
+                        } else if down && i + 1 < edit.rows.len() {
+                            edit.rows.swap(i, i + 1);
+                            edit.list.selected = Some(i + 1);
+                        }
+                    }
+                }
+                if editing {
+                    // The rule's own window answers first; this one waits.
+                    let _ = ok_cancel(ui, o, 546.0 - 154.0, 274.0, false);
+                    Outcome::Open
+                } else {
+                    ok_cancel(ui, o, 546.0 - 154.0, 274.0, true)
+                }
+            },
+        );
+        if let Some((row, mut site, mut fields)) = edit.editing.take() {
+            let title = if row.is_some() {
+                // i18n: window title: changing one site rule
+                crate::i18n::mark("Edit site rule")
+            } else {
+                // i18n: window title: adding a site rule
+                crate::i18n::mark("New site rule")
+            };
+            // Above the list it was opened from, with the keyboard (a question's window): opened
+            // with it at once (`/show options:siterule`), the list could cover it.
+            let rule_out = crate::dialogs::question(
+                ctx,
+                "opt-site-rule",
+                title,
+                [460.0, 326.0],
+                false,
+                LIGHT_BG(),
+                |ui, o| {
+                    let p = ui.painter().clone();
+                    // i18n: Site rule: label before the site pattern box (example.com, *.example.com)
+                    let label = crate::i18n::t("Site:");
+                    let col = (14.0 + winui::text_width(&p, label).ceil() + 8.0).max(100.0);
+                    winui::text_right(&p, o.x + col - 8.0, o.y + 29.0, label, LIGHT_TEXT());
+                    let typed = winui::edit_light(
+                        ui,
+                        r(o, col, 14.0, 446.0 - col, 23.0),
+                        &mut site,
+                        true,
+                        false,
+                    );
+                    winui::name(&typed, label);
+                    if typed.changed() {
+                        fields.error = None;
+                    }
+                    winui::fit(
+                        ui,
+                        &p,
+                        o.x + col,
+                        o.y + 51.0,
+                        crate::i18n::t(
+                            // i18n: Site rule: the hint under the site box; the examples stay as they are
+                            "example.com, or *.example.com for its subdomains",
+                        ),
+                        LIGHT_DISABLED(),
+                        o.x + 446.0,
+                        "site-rule-hint",
+                    );
+                    let bottom = fields.fields(ui, o, 66.0, 460.0, true, limit);
+                    ok_cancel(ui, o, 460.0 - 14.0 - 154.0, bottom + 6.0, true)
+                },
+            );
+            match rule_out {
+                Outcome::Open => edit.editing = Some((row, site, fields)),
+                Outcome::Closed => {}
+                Outcome::Done(()) => {
+                    let site = site.trim().to_owned();
+                    let taken = edit.rows.iter().enumerate().any(|(i, r)| {
+                        Some(i) != row && mdm_ipc::siterules::same_pattern(&r.rule.site, &site)
+                    });
+                    let read = if site.is_empty() || site.contains(char::is_whitespace) {
+                        Err(crate::i18n::t(
+                            // i18n: Site rule: OK with no site, or one with a space in it
+                            "Type a site, such as example.com or *.example.com",
+                        )
+                        .to_owned())
+                    } else if taken {
+                        Err(crate::i18n::t(
+                            // i18n: Site rule: OK with a site another rule already has
+                            "Another rule is for this site already: change that one",
+                        )
+                        .to_owned())
+                    } else {
+                        fields.read(limit)
+                    };
+                    match read {
+                        Ok(e) => {
+                            let rule = RuleRow {
+                                rule: mdm_ipc::siterules::SiteRule {
+                                    site,
+                                    user_agent: e.user_agent.unwrap_or_default(),
+                                    browser_like: e.browser_like,
+                                    headers: e.headers,
+                                },
+                                connections: e.connections,
+                            };
+                            match row {
+                                Some(i) if i < edit.rows.len() => edit.rows[i] = rule,
+                                _ => {
+                                    edit.rows.push(rule);
+                                    edit.list.selected = Some(edit.rows.len() - 1);
+                                }
+                            }
+                        }
+                        Err(why) => {
+                            fields.error = Some(why);
+                            edit.editing = Some((row, site, fields));
+                        }
+                    }
+                }
+            }
+            return Some(edit);
+        }
+        match out {
+            Outcome::Open => Some(edit),
+            Outcome::Closed => None,
+            Outcome::Done(()) => {
+                set_rule_rows(&mut self.s, &edit.rows);
+                None
+            }
+        }
+    }
+
     fn sub_dialog(&mut self, ctx: &egui::Context) {
         let Some(sub) = self.sub.take() else { return };
         match sub {
@@ -4138,6 +4629,11 @@ impl OptionsDialog {
                         .signin
                         .stop
                         .store(true, std::sync::atomic::Ordering::Relaxed),
+                }
+            }
+            Sub::Rules(edit) => {
+                if let Some(edit) = self.rules_window(ctx, edit) {
+                    self.sub = Some(Sub::Rules(edit));
                 }
             }
             Sub::Passwords(mut list) => {
@@ -5142,7 +5638,7 @@ fn progress_dialog(ui: &mut Ui, o: Pos2, shown: &mut bool) -> Outcome<()> {
     ok_cancel(ui, o, 232.0, 117.0, true)
 }
 
-fn ok_cancel(ui: &mut Ui, o: Pos2, x: f32, y: f32, valid: bool) -> Outcome<()> {
+pub(crate) fn ok_cancel(ui: &mut Ui, o: Pos2, x: f32, y: f32, valid: bool) -> Outcome<()> {
     let kind = if valid {
         ButtonKind::Default
     } else {
@@ -5677,6 +6173,11 @@ fn kept_text(kept: crate::secrets::Kept) -> Option<&'static str> {
             // i18n: Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (the macOS login keychain)
             crate::i18n::mark("Sign-ins and passwords are kept in the macOS keychain.")
         }
+        #[cfg(target_os = "android")]
+        // i18n: Options → Accounts (Android): where the debrid accounts' sign-ins and the other passwords are kept (encrypted with a key held by Android's keystore)
+        Kept::Keychain => crate::i18n::mark(
+            "Sign-ins and passwords are kept encrypted with a key in Android's keystore.",
+        ),
         #[cfg(target_os = "linux")]
         // i18n: Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Linux: GNOME Keyring, KeePassXC... through the Secret Service)
         Kept::Keychain => crate::i18n::mark(
@@ -5752,7 +6253,54 @@ fn snooze_line(ui: &mut Ui, p: &egui::Painter, o: Pos2, until: crate::finish::Un
 
 #[cfg(test)]
 mod tests {
+
+    /// #1778: Site rules shows each rule with its exception's number, then the exceptions no
+    /// rule has; written back, a rule that only sets a number is an exception alone, and the
+    /// order is the list's.
+    #[test]
+    fn site_rules_rows_keep_rules_and_exceptions_in_step() {
+        use mdm_ipc::siterules::SiteRule;
+        let mut s = Settings {
+            conn_exceptions: vec![("slow.example.org".into(), 1), ("*.example.test".into(), 4)],
+            site_rules: vec![SiteRule {
+                site: "*.EXAMPLE.test".into(),
+                user_agent: "Rule/1".into(),
+                ..SiteRule::default()
+            }],
+            ..Settings::default()
+        };
+        let mut rows = rule_rows(&s);
+        assert_eq!(rows.len(), 2);
+        assert_eq!(rows[0].connections, Some(4), "the same pattern, any case");
+        assert_eq!(rows[1].rule.site, "slow.example.org");
+        assert!(!rows[1].rule.sets_anything());
+        set_rule_rows(&mut s, &rows);
+        assert_eq!(
+            s.conn_exceptions,
+            vec![
+                ("*.EXAMPLE.test".to_owned(), 4),
+                ("slow.example.org".to_owned(), 1)
+            ]
+        );
+        assert_eq!(s.site_rules.len(), 1);
+        // The rule's User-Agent emptied, its number kept: an exception alone.
+        rows[0].rule.user_agent.clear();
+        rows.swap(0, 1);
+        set_rule_rows(&mut s, &rows);
+        assert!(s.site_rules.is_empty());
+        assert_eq!(s.conn_exceptions[0].0, "slow.example.org");
+        assert_eq!(rule_rows(&s).len(), 2);
+    }
     use super::*;
+
+    /// Sites Logins' Password column: the same mask for every saved password, nothing without
+    /// one.
+    #[test]
+    fn the_logins_list_shows_one_mask_for_every_password() {
+        assert_eq!(password_shown("a"), PASSWORD_MASK);
+        assert_eq!(password_shown("a longer one"), PASSWORD_MASK);
+        assert_eq!(password_shown(""), "");
+    }
 
     /// #1448: Manual proxy/socks configuration with no protocol ticked gets http and https
     /// ticked, when Options opens on it as when it is chosen; a choice of one is kept, and the

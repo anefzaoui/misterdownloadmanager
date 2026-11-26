@@ -69,7 +69,7 @@ fn kind(i: &Item) -> Option<&'static str> {
 /// `_` for a file without one; `folder` for a gallery's folder and a torrent named without an
 /// extension (its folder).
 pub fn icon_key(i: &Item) -> String {
-    let folder = i.gallery.is_some();
+    let folder = i.gallery.is_some() || i.zip.is_some();
     match What::of(Kind::File(&i.file_name)) {
         _ if folder => "folder".into(),
         What::File(Some(ext)) => ext,

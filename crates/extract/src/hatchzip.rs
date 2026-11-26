@@ -19,11 +19,11 @@
 
 use std::ffi::OsString;
 use std::path::{Path, PathBuf};
-use std::process::{Command, Stdio};
-use std::sync::atomic::{AtomicBool, Ordering};
-use std::time::Duration;
+use std::process::Command;
+use std::sync::atomic::AtomicBool;
 
-use crate::Error;
+use crate::supervise::{self, Tally};
+use crate::{Error, Limits};
 
 /// HatchZip's command line program on the PATH (its installers and packages put `hatchzip`
 /// there; the desktop app alone, `hatchzip-gui`, isn't enough).
@@ -134,14 +134,16 @@ impl Runs {
 }
 
 /// Extract `archive` in place into `out` (made if missing). The password goes through the
-/// environment, never the command line (which other programs can read). `cancel` stops it:
-/// HatchZip is safe to stop at any moment. What it wrote is checked by the caller.
+/// environment, never the command line (which other programs can read). `cancel` stops it, and
+/// so does more in `out` than `limits` allow (bytes or entries), watched by the same loop as
+/// 7-Zip: HatchZip is safe to stop at any moment. What it wrote is checked by the caller.
 pub fn extract(
     tool: &Path,
     archive: &Path,
     out: &Path,
     password: Option<&str>,
     cancel: Option<&AtomicBool>,
+    limits: Limits,
 ) -> Result<(), Error> {
     std::fs::create_dir_all(out)?;
     // Full paths: HatchZip runs in its output folder, MDM's own and writable, never in the
@@ -161,46 +163,19 @@ pub fn extract(
     if let Some(pw) = password {
         cmd.env("HATCHZIP_PASSWORD", pw);
     }
-    cmd.stdin(Stdio::null())
-        .stdout(Stdio::null())
-        .stderr(Stdio::piped());
-    #[cfg(windows)]
-    {
-        use std::os::windows::process::CommandExt;
-        const CREATE_NO_WINDOW: u32 = 0x0800_0000;
-        cmd.creation_flags(CREATE_NO_WINDOW);
-    }
     // The password is never logged.
     tracing::info!(
         "extract: {} extract {} (in place)",
         tool.display(),
         archive.display()
     );
-    let mut child = cmd.spawn()?;
-    // stderr is read on its own thread so a long message can't fill the pipe and stall it.
-    let mut pipe = child.stderr.take();
-    let reader = std::thread::spawn(move || {
-        let mut s = String::new();
-        if let Some(p) = pipe.as_mut() {
-            let _ = std::io::Read::read_to_string(p, &mut s);
+    let mut look = || Tally::over(&out, limits).map(|_| ());
+    let ended = supervise::run(cmd, None, None, cancel, &mut look).inspect_err(|e| {
+        if matches!(e, Error::TooBig { .. } | Error::TooMany) {
+            tracing::warn!("extract: HatchZip stopped: {e}");
         }
-        s
-    });
-    let status = loop {
-        if let Some(st) = child.try_wait()? {
-            break Some(st);
-        }
-        if cancel.is_some_and(|c| c.load(Ordering::Relaxed)) {
-            let _ = child.kill();
-            let _ = child.wait();
-            break None;
-        }
-        std::thread::sleep(Duration::from_millis(100));
-    };
-    let err = reader.join().unwrap_or_default();
-    let Some(status) = status else {
-        return Err(Error::Cancelled);
-    };
+    })?;
+    let (status, err) = (ended.status, ended.errors);
     let first = || {
         err.lines()
             .map(|l| l.trim().trim_start_matches("error:").trim())

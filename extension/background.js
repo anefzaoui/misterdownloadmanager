@@ -434,7 +434,9 @@ async function recentList(ask) {
   // the question), busy, or not reached (`why`).
   const old = reply.why === "refused";
   if (reply.why && !old) await noteStatus(reply.why);
-  await noteRunning(0);
+  // Busy is this question's timeout, not the app having no downloads: the count the badge
+  // shows and the watch that keeps it fresh stay as they were.
+  if (reply.appState !== "busy") await noteRunning(0);
   return { ok: false, remote: null, appState: reply.appState || (old ? "old" : null), why: old ? null : reply.why || null };
 }
 
@@ -936,6 +938,9 @@ const bypass = new Map(); // address -> {at, tab, page, used}
 // download its page starts, stay the browser's that long; anything else only BYPASS_MS.
 const BYPASS_CHECK_MS = 60000;
 const BYPASS_MS = 10000;
+// The press and the click that follow it: page.js says the same Alt+click twice this close
+// together, and only the first lets the browser's download through.
+const BYPASS_PRESS_MS = 2000;
 
 // `clicked`: the download is a link the user just clicked without Alt (Safari's `link`), never
 // one that follows an Alt+click.
@@ -1124,7 +1129,9 @@ function noteMedia(d, found, sent) {
       firsts.add(it.frameId);
       return false;
     });
-    tab.items.splice(Math.max(i, 0), 1);
+    // Nothing may go without taking a frame's first stream: the cap gives way.
+    if (i < 0) break;
+    tab.items.splice(i, 1);
   }
   // The tab seen last goes last; the least recent ones go past MEDIA_TABS.
   media.delete(d.tabId);
@@ -2078,7 +2085,10 @@ async function mediaDownload(tabId, url) {
   if (!shown) return { ok: false, why: "gone" };
   if (shown.drm) return { ok: false, why: "drm" };
   const kept = media.get(tabId);
-  const it = kept.items.find((x) => x.url === url);
+  const it = kept && (kept.items || []).find((x) => x.url === url);
+  // The list was rebuilt while its answer was on its way back: the page changed, or the tab
+  // closed. That is "gone", not a failure with no reason.
+  if (!it) return { ok: false, why: "gone" };
   let tab;
   try {
     tab = await ext.tabs.get(tabId);
@@ -3096,6 +3106,184 @@ function pageLinks(selectedOnly) {
   return links;
 }
 
+// ---- a page's images (#1781) ---------------------------------------------------------------
+
+// The pictures in the page, collected in it when the popup's "Find images" or the right-click
+// menu's "Download all links" / "Download selected links" is clicked (never otherwise): each
+// <img>'s largest size its srcset and its <picture>'s sources list, else the one it shows, and
+// apart the largest a lazy loader's data-srcset / data-src names; then the links that go straight
+// to a picture (`link: true` when it is only that). Each address once, absolute, http(s) only (no
+// data: or blob:), in the page's order, with its width and height in pixels as far as the page
+// tells them (0: it doesn't) and the type its <source> gives. `selectedOnly`: those in the
+// selection. Self-contained: it runs in the page.
+function pageImages(selectedOnly = false) {
+  const web = (u) => /^https?:/i.test(u);
+  const abs = (u) => {
+    try {
+      const a = new URL(u, document.baseURI);
+      a.hash = "";
+      return a.href;
+    } catch {
+      return "";
+    }
+  };
+  // A srcset's candidates, as the HTML standard reads them: the address is the text up to a
+  // space (an address may hold commas), then its descriptor up to the next comma; none is 1x.
+  const candidates = (set, type = "") => {
+    const out = [];
+    const s = String(set || "");
+    let i = 0;
+    while (i < s.length) {
+      while (i < s.length && /[\s,]/.test(s[i])) i++;
+      let j = i;
+      while (j < s.length && !/\s/.test(s[j])) j++;
+      let url = s.slice(i, j);
+      let desc = "";
+      if (/,$/.test(url)) {
+        url = url.replace(/,+$/, "");
+        i = j;
+      } else {
+        let k = s.indexOf(",", j);
+        if (k < 0) k = s.length;
+        desc = s.slice(j, k).trim();
+        i = k + 1;
+      }
+      const w = /^(\d+)w$/.exec(desc);
+      const x = /^(\d*\.?\d+)x$/.exec(desc);
+      if (url) out.push({ url, w: w ? Number(w[1]) : 0, x: w ? 0 : x ? Number(x[1]) : 1, type });
+    }
+    return out;
+  };
+  const one = (url) => (url && url.trim() ? [{ url: url.trim(), w: 0, x: 1, type: "" }] : []);
+  const found = new Map();
+  const add = (url, w, h, type) => {
+    const u = abs(url);
+    if (!u || !web(u)) return;
+    const was = found.get(u);
+    if (!was) found.set(u, { url: u, w, h, type });
+    else if (!was.w && w) Object.assign(was, { w, h });
+  };
+  const sel = selectedOnly ? getSelection() : null;
+  const picked = (el) => !sel || (sel.rangeCount > 0 && sel.containsNode(el, true));
+  for (const img of document.querySelectorAll("img")) {
+    if (!picked(img)) continue;
+    const sources = img.parentElement && img.parentElement.tagName === "PICTURE" ? [...img.parentElement.children].filter((s) => s.tagName === "SOURCE") : [];
+    const attr = (el, name) => el.getAttribute(name);
+    // What it shows, and how big: naturalWidth is the file's width over the density it was
+    // picked at (a 2x file shows at half its pixels). Nothing known while it shows a data:
+    // placeholder or nothing yet.
+    const cur = abs(img.currentSrc || "");
+    const shows = web(cur) && img.naturalWidth > 0;
+    const nw = shows ? img.naturalWidth : 0;
+    const ratio = shows && img.naturalHeight > 0 ? img.naturalHeight / nw : 0;
+    // The sizes the page lists for it, and apart, those a lazy loader will put there.
+    const shown = [...sources.flatMap((s) => candidates(attr(s, "srcset"), attr(s, "type") || "")), ...candidates(attr(img, "srcset")), ...one(attr(img, "src"))];
+    const lazy = [...sources.flatMap((s) => candidates(attr(s, "data-srcset"), attr(s, "type") || "")), ...candidates(attr(img, "data-srcset")), ...one(attr(img, "data-src"))];
+    for (const [pool, own] of [[shown, true], [lazy, false]]) {
+      const real = pool.filter((c) => web(abs(c.url)));
+      if (!real.length) continue;
+      // A width when known: given (800w), else what it shows times the density (2x).
+      const width = (c) => (c.w ? c.w : nw && (own || abs(c.url) === cur) ? Math.round(nw * c.x) : 0);
+      let best = real[0];
+      for (const c of real) {
+        const [a, b] = [width(c), width(best)];
+        if (a > b || (!a && !b && c.x > best.x)) best = c;
+      }
+      const w = width(best);
+      add(best.url, w, w && ratio && (own || abs(best.url) === cur) ? Math.round(w * ratio) : 0, best.type);
+    }
+  }
+  // Links straight to a picture (a gallery's thumbnail linking to its full size): by the
+  // address's file extension, their size unknown.
+  const IMAGE = /\.(jpe?g|jfif|pjpeg|png|apng|gif|webp|avif|bmp|svg|tiff?|ico|heic|heif|jxl)$/i;
+  for (const a of document.querySelectorAll("a[href]")) {
+    if (!picked(a)) continue;
+    let path = "";
+    try {
+      path = new URL(a.href).pathname;
+    } catch {
+      continue;
+    }
+    if (!IMAGE.test(path)) continue;
+    const u = abs(a.href);
+    if (u && web(u) && !found.has(u)) found.set(u, { url: u, w: 0, h: 0, type: "", link: true });
+  }
+  return [...found.values()];
+}
+
+// A picture's type as the popup's filters name it (#1781): by its address's file extension, else a
+// format its query names (an image service's `format=webp`, `fm=png`), else the type its
+// <source> gave, else "other".
+const IMAGE_TYPES = {
+  jpg: "JPEG", jpeg: "JPEG", jfif: "JPEG", pjpeg: "JPEG", png: "PNG", apng: "PNG", gif: "GIF",
+  webp: "WEBP", avif: "AVIF", bmp: "BMP", svg: "SVG", tif: "TIFF", tiff: "TIFF", ico: "ICO",
+  heic: "HEIC", heif: "HEIC", jxl: "JXL",
+};
+function imageType(url, mime) {
+  let u;
+  try {
+    u = new URL(url);
+  } catch {
+    return "other";
+  }
+  const ext = (/\.([a-z0-9]{2,5})$/i.exec(u.pathname) || [])[1];
+  const format = ["format", "fm", "ext"].map((k) => u.searchParams.get(k)).find(Boolean);
+  const sub = (/^image\/([a-z0-9.+-]+)$/i.exec(mime || "") || [])[1];
+  for (const k of [ext, format, sub && sub.replace(/^svg\+xml$/i, "svg")]) {
+    const type = k && IMAGE_TYPES[k.toLowerCase()];
+    if (type) return type;
+  }
+  return "other";
+}
+
+// The images of the tab's page and its frames (pageImages in each), each address once, typed: the
+// one finder of the popup's Find images and the menu's Download all links. `frameId`: that frame's
+// selection only (Download selected links). `link: true`: only a link to it, in every frame.
+// `readable: false`: the browser lets no extension read the page (its own pages, a store).
+async function tabImages(tabId, frameId = null) {
+  let frames;
+  const selected = frameId !== null;
+  try {
+    frames = await ext.scripting.executeScript({ target: selected ? { tabId, frameIds: [frameId] } : { tabId, allFrames: true }, func: pageImages, args: [selected] });
+  } catch {
+    return { readable: false, images: [] };
+  }
+  const seen = new Map();
+  for (const f of frames || []) {
+    for (const i of (f && Array.isArray(f.result) && f.result) || []) {
+      if (!i || typeof i.url !== "string" || !/^https?:\/\//i.test(i.url)) continue;
+      const w = Number(i.w) > 0 ? Math.round(i.w) : 0;
+      const h = w && Number(i.h) > 0 ? Math.round(i.h) : 0;
+      const was = seen.get(i.url);
+      if (!was) seen.set(i.url, { url: i.url, w, h, type: imageType(i.url, i.type), ...(i.link === true ? { link: true } : {}) });
+      else {
+        if (!was.w && w) Object.assign(was, { w, h });
+        if (i.link !== true) delete was.link;
+      }
+    }
+  }
+  return { readable: true, images: [...seen.values()] };
+}
+
+// The images the popup kept (#1781) to Link grabber, as the right-click menu's "Download all
+// links" sends a page's links: the tab's address their referrer, with its cookies, private or
+// not; in parts when long. A failure opens the help page's section, as the menu's does.
+async function sendImages(tabId, links) {
+  const urls = [...new Set(links.filter((u) => typeof u === "string" && /^https?:\/\//i.test(u)))];
+  if (!urls.length) return { ok: false, why: "none" };
+  let tab;
+  try {
+    tab = await ext.tabs.get(tabId);
+  } catch {
+    return { ok: false, why: "gone" };
+  }
+  const incognito = Boolean(tab.incognito);
+  const page = tab.url || "";
+  const reply = await sendLinks({ links: urls, referrer: page, cookies: await cookieHeader(page, { incognito, storeId: tab.cookieStoreId }), private: incognito });
+  if (!reply.ok || reply.left) explain(reply.ok ? "too-large" : reply.why);
+  return { ok: Boolean(reply.ok), why: reply.why };
+}
+
 // ---- a page's links, in parts ------------------------------------------------------------
 
 // The most the host takes in one message, as the browser writes it (crates/ipc MAX_MESSAGE). A
@@ -3128,15 +3316,17 @@ function wireSize(value) {
 }
 
 // `links` cut into parts, in order, each of whose messages (`base` with its links) is at most
-// `limit` bytes (wireSize). `left`: the links too long to go even alone, left out.
-function linkParts(base, links, limit = MESSAGE_MAX) {
-  const empty = wireSize({ ...base, links: [] });
+// `limit` bytes (wireSize). `left`: the links too long to go even alone, left out. `marked`: the
+// links that are pictures located on the page (#1781), each written again in its part's
+// `pageImages`, so measured twice.
+function linkParts(base, links, limit = MESSAGE_MAX, marked = null) {
+  const empty = wireSize({ ...base, links: [], ...(marked && marked.size ? { pageImages: [] } : {}) });
   const parts = [];
   const left = [];
   let part = [];
   let size = empty;
   for (const link of links) {
-    const own = wireSize(link);
+    const own = wireSize(link) + (marked && marked.has(link) ? wireSize(link) + 1 : 0);
     if (empty + own > limit) {
       left.push(link);
       continue;
@@ -3158,19 +3348,25 @@ function linkParts(base, links, limit = MESSAGE_MAX) {
 // message when they fit, as before; else in parts, one after the other, each answered before the
 // next goes. An answer that isn't ok stops it (the app drops a list it didn't get whole) and is
 // the answer. `left`: how many links were too long to send at all (#too-large says so).
+// `message.pageImages` (#1781): those of the links that are pictures located on the page; each
+// part names its own.
 async function sendLinks(message) {
   const sent = await stamped(message);
   if (wireSize(sent) <= MESSAGE_MAX) return native(message);
   const batch = globalThis.crypto && crypto.randomUUID ? crypto.randomUUID() : `${Date.now()}-${Math.random().toString(36).slice(2)}`;
+  const marked = new Set(message.pageImages || []);
+  const base = { ...sent };
+  delete base.pageImages;
+  const own = (links) => (marked.size ? { pageImages: links.filter((l) => marked.has(l)) } : {});
   // Measured with the widest place a part can have.
-  const { parts, left } = linkParts({ ...sent, linksPart: { batch, index: PARTS_MAX, count: PARTS_MAX } }, message.links);
+  const { parts, left } = linkParts({ ...base, linksPart: { batch, index: PARTS_MAX, count: PARTS_MAX } }, message.links, MESSAGE_MAX, marked);
   if (!parts.length || parts.length > PARTS_MAX) {
     // The page's cookies alone fill a message, or the list is beyond any page's.
     await noteStatus("too-large");
     return { ok: false, why: "too-large", error: `${message.links.length} links in ${parts.length} parts` };
   }
   for (const [index, links] of parts.entries()) {
-    const reply = await native({ ...message, links, linksPart: { batch, index, count: parts.length } });
+    const reply = await native({ ...message, links, ...own(links), linksPart: { batch, index, count: parts.length } });
     if (!reply.ok) return reply;
   }
   return { ok: true, parts: parts.length, left: left.length };
@@ -3243,8 +3439,25 @@ async function menuClicked(info, tab) {
     } catch {
       // A page extensions may not read (the browser's own, a store).
     }
-    if (!links.length) return;
-    const reply = await sendLinks({ links, referrer: info.pageUrl, cookies: await cookieHeader(info.pageUrl, { incognito, storeId }), private: incognito });
+    // #1781: the pictures located on the page (its <img>, in every frame; Download selected
+    // links: those in the selection), found as the popup's Find images finds them (no size or
+    // type left out), after the links and marked (`pageImages`): Link grabber hides them until
+    // its "Hide images located on this web page" is unticked. An address the page also links to
+    // is a link, sent once and not marked. An older app (or host) lists them as links.
+    const bare = (u) => {
+      try {
+        const a = new URL(u);
+        a.hash = "";
+        return a.href;
+      } catch {
+        return u;
+      }
+    };
+    const listed = new Set(links.map(bare));
+    const found = await tabImages(tab.id, info.menuItemId === "mdm-selected" ? info.frameId || 0 : null);
+    const images = found.images.filter((i) => !i.link && !listed.has(i.url)).map((i) => i.url);
+    if (!links.length && !images.length) return;
+    const reply = await sendLinks({ links: [...links, ...images], ...(images.length ? { pageImages: images } : {}), referrer: info.pageUrl, cookies: await cookieHeader(info.pageUrl, { incognito, storeId }), private: incognito });
     // Sent, but a link longer than a whole message was left out: the help page says so.
     if (!reply.ok || reply.left) explain(reply.ok ? "too-large" : reply.why);
   }
@@ -3611,8 +3824,11 @@ async function pageMessage(m, sender) {
   }
   // Alt held on a link: as the button went down, and at the click (page.js).
   if (m.type === "bypass" && typeof m.url === "string") {
+    // The same press says itself twice (button down, then click); a later Alt+click on the
+    // same link is a new one, and lets its own download through.
     const was = bypass.get(m.url);
-    bypass.set(m.url, { at: Date.now(), tab: tab.id, page: page || "", used: Boolean(was && was.used) });
+    const samePress = was && Date.now() - was.at < BYPASS_PRESS_MS;
+    bypass.set(m.url, { at: Date.now(), tab: tab.id, page: page || "", used: Boolean(samePress && was.used) });
     return { ok: true };
   }
   if (m.type === "video" && page) {
@@ -3737,6 +3953,10 @@ async function popupMessage(m) {
     const reply = await mediaDownload(m.tab, m.url);
     return { ok: Boolean(reply.ok), why: reply.why };
   }
+  // The popup's "Find images" (#1781): the tab's pictures; then those its filters kept, to Link
+  // grabber.
+  if (m.type === "images" && Number.isInteger(m.tab)) return tabImages(m.tab);
+  if (m.type === "images-send" && Number.isInteger(m.tab) && Array.isArray(m.links)) return sendImages(m.tab, m.links);
   return { ok: false };
 }
 

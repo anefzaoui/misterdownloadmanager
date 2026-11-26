@@ -141,6 +141,10 @@ pub struct Options {
     pub verify_overlap: u64,
     /// Fixed addresses for host names, like hosts-file entries (tests).
     pub hosts: Vec<(String, Vec<std::net::IpAddr>)>,
+    /// Hosts this download asks over one IP family only (IPv4 when true): they refused it with
+    /// 403 over the other one (#1660, a link signed for one family's address). The download's
+    /// own: every client it makes follows it, and no other download does. Set by the engine.
+    pub family: Vec<(String, bool)>,
     /// Options → Connection → DNS: who answers the names (#36).
     pub dns: crate::dns::DnsChoice,
     /// Options → Proxy / Socks → Network adapter (#35): the adapter every connection goes
@@ -226,6 +230,11 @@ pub struct Options {
     /// removing its file: an archive test that finds damage downloads those parts again from it,
     /// under the same validators (#1661, [`crate::repair`]). The state file still goes.
     pub keep_state: bool,
+    /// A site rule says so (#1778): the first request goes the way a browser connects (#668,
+    /// `crate::browserlike`) at once, not only once the site has refused MDM's own connection.
+    /// When that fails (a build without it, a site that refuses it too), MDM's own connection is
+    /// asked as usual. Never for a form's POST or through a service account.
+    pub browser_first: bool,
 }
 
 /// A callback given the path of a file the engine created (`Options::on_file_created`).
@@ -289,6 +298,7 @@ impl Default for Options {
             speed_limit: None,
             verify_overlap: 64,
             hosts: Vec::new(),
+            family: Vec::new(),
             dns: Default::default(),
             route: Default::default(),
             unlocker: None,
@@ -311,6 +321,7 @@ impl Default for Options {
             request_cap: None,
             slow_disk: None,
             keep_state: false,
+            browser_first: false,
         }
     }
 }
@@ -324,7 +335,7 @@ impl Options {
 
     /// A site's own User-Agent may replace this download's (`request_agent`): the agent is the
     /// automatic one, or MDM's former one (#372's fallback, D-007), as before #668.
-    fn site_agent(&self) -> bool {
+    pub(crate) fn site_agent(&self) -> bool {
         self.automatic_agent || self.user_agent == crate::agent::IE11_USER_AGENT
     }
 
@@ -466,6 +477,9 @@ pub enum Error {
     Refused(Refusal),
     /// A secure connection (HTTPS, FTPS) on a system without trusted certificates to check
     /// the server with (a minimal Linux without `ca-certificates`, #264).
+    /// Files can't be taken out of a ZIP on its server (#1775, `remotezip`): why.
+    #[error("{0}")]
+    Zip(crate::remotezip::Problem),
     #[error("{}", crate::tls::NO_ROOTS)]
     NoCertificates,
     /// The server's certificate was refused (expired, not trusted, for another name): what a
@@ -764,7 +778,7 @@ fn post_for(opts: &Options, as_get: bool, headers: &mut HeaderMap) -> Option<Byt
 /// A request for `url` with `headers`: a POST with `post` as its body, else a GET. The client
 /// sends the download's User-Agent (`Options::user_agent`); a site that wants a browser's gets
 /// it instead when `site_agent` (`Options::site_agent`: the agent is MDM's automatic one).
-fn build(
+pub(crate) fn build(
     client: &Client,
     url: Url,
     post: Option<&Bytes>,
@@ -906,6 +920,19 @@ pub struct Snapshot {
     pub kept: Option<Arc<ResumeState>>,
 }
 
+impl Snapshot {
+    /// Downloading an answer that says no length and can't be resumed (#1780): an internet
+    /// radio, a camera feed, which may never end. Once something has arrived,
+    /// [`Download::keep`] ends it where it is and keeps that as the finished file; a pause would
+    /// throw it away. Before, there is nothing to keep, and a stop only stops it.
+    pub fn endless(&self) -> bool {
+        self.state == State::Downloading
+            && self.size.is_none()
+            && self.resumable == Some(false)
+            && self.downloaded > 0
+    }
+}
+
 /// One entry of a download's event log; `seq` counts up within one `Download`.
 #[derive(Clone, Debug)]
 pub struct Event {
@@ -961,6 +988,9 @@ pub struct KeptAnswer {
     unlocked: Option<crate::unlock::Unlocked>,
     /// What its client learnt of the server (#140): the download goes on with it.
     seen: Arc<crate::server::ServerSeen>,
+    /// The look's host refused it over one IP family and answered over the other (#1660): the
+    /// download goes on over that one, and says so in its log.
+    family: Option<FamilySwitch>,
 }
 
 impl std::fmt::Debug for KeptAnswer {
@@ -1022,79 +1052,113 @@ pub async fn probe_kept(
     );
     // Where the look asked, and with what: asked again there if the site refuses (#668).
     let (asked_at, asked_with) = (target.clone(), headers.clone());
-    // A browser's User-Agent refused (#372): asked once more as MDM.
-    let (client, asked) = match get(
-        &client,
-        target.clone(),
-        headers.clone(),
-        opts.post.as_ref(),
-        first_opts.site_agent(),
-        expects,
-        &CancellationToken::new(),
-    )
-    .await
-    {
-        Err(e) if agent_refused(&e) && first_opts.agent_fallback.is_some() => {
-            let mut plain = opts.clone();
-            plain.user_agent = opts.agent_fallback.clone().unwrap_or_default();
-            let client = self::client(&plain, &target, &as_get, &seen)?;
-            let asked = get(
-                &client,
-                target,
-                headers,
-                opts.post.as_ref(),
-                plain.site_agent(),
-                expects,
-                &CancellationToken::new(),
-            )
-            .await;
-            (client, asked)
-        }
-        asked => (client, asked),
-    };
-    let (mut client, mut own_agent) = (client, remembered);
-    let (head, body, browser, headers, took) = match asked {
-        Ok((resp, headers, took)) => (Head::of(&resp), Body::Http(resp), None, headers, took),
-        // #668: the site refused MDM's connection as a program's (`refused_as_a_program`):
-        // looked at once more the way a browser connects, its answer kept for the download
-        // (which then asks no more).
-        Err(e) if refused_as_a_program(&e) && unlocked.is_none() && opts.post.is_none() => {
-            if own_agent.take().is_some() {
-                // Remembered, but no longer let through: learnt again next time.
-                crate::agent::forget_own(&asked_at);
-            }
+    // #1778: a site rule asks the way a browser connects from the first request.
+    let early = match unlocked.is_none() {
+        true => {
             let cancel = CancellationToken::new();
-            match browser_ask(opts, &asked_at, &asked_with, expects, &cancel).await {
-                Ok((b, (head, body, headers, took))) => (head, body, Some(b), headers, took),
-                Err(other @ (Error::Cancelled | Error::Adapter(_))) => return Err(other),
-                // #1422: refused that way too; once more under MDM's own name, the last try.
-                Err(_) => match own.filter(|_| as_own.is_none()) {
-                    Some(own) => {
-                        let o = speaking_own(opts, own.clone());
-                        client = self::client(&o, &asked_at, &as_get, &seen)?;
-                        let (resp, headers, took) = get(
-                            &client,
-                            asked_at.clone(),
-                            asked_with,
-                            None,
-                            o.site_agent(),
-                            expects,
-                            &cancel,
-                        )
-                        .await
-                        .map_err(|other| match other {
-                            Error::Cancelled | Error::Adapter(_) => other,
-                            _ => e,
-                        })?;
-                        crate::agent::remember_own(&asked_at);
-                        own_agent = Some(own);
-                        (Head::of(&resp), Body::Http(resp), None, headers, took)
-                    }
-                    None => return Err(e),
-                },
-            }
+            browser_at_once(opts, &target, &headers, expects, |_| {}, &cancel).await?
         }
-        Err(e) => return Err(e),
+        false => None,
+    };
+    let mut family = None;
+    let (mut client, mut own_agent) = (client, remembered);
+    let (head, body, browser, headers, took) = if let Some((b, answer, switch)) = early {
+        family = switch;
+        let (head, body, headers, took) = answer;
+        (head, body, Some(b), headers, took)
+    } else {
+        let (asked, by) = noting_refuser(get(
+            &client,
+            target.clone(),
+            headers.clone(),
+            opts.post.as_ref(),
+            first_opts.site_agent(),
+            expects,
+            &CancellationToken::new(),
+        ))
+        .await;
+        // #1660: a 403 that may be this IP family's is asked once over the other one, as the
+        // download's first request is (`FirstAsk::at`).
+        let look = Look {
+            url: &target,
+            headers: &headers,
+            as_get: &as_get,
+            seen: &seen,
+            expects,
+        };
+        let (looked, asked) = look
+            .over_other_family(first_opts, client.clone(), asked, by, &mut family)
+            .await?;
+        // A browser's User-Agent refused (#372): asked once more as MDM, and over the other family
+        // too when it is refused so again (a site that refuses both at once).
+        let (got, asked) = match asked {
+            Err(e) if agent_refused(&e) && first_opts.agent_fallback.is_some() => {
+                let mut plain = opts.clone();
+                plain.user_agent = opts.agent_fallback.clone().unwrap_or_default();
+                let client = self::client(&plain, &target, &as_get, &seen)?;
+                let (asked, by) = noting_refuser(get(
+                    &client,
+                    target.clone(),
+                    headers.clone(),
+                    opts.post.as_ref(),
+                    plain.site_agent(),
+                    expects,
+                    &CancellationToken::new(),
+                ))
+                .await;
+                let _ = e;
+                look.over_other_family(&plain, client, asked, by, &mut family)
+                    .await?
+            }
+            asked => (looked, asked),
+        };
+        client = got;
+        match asked {
+            Ok((resp, headers, took)) => (Head::of(&resp), Body::Http(resp), None, headers, took),
+            // #668: the site refused MDM's connection as a program's (`refused_as_a_program`):
+            // looked at once more the way a browser connects, its answer kept for the download
+            // (which then asks no more).
+            Err(e) if refused_as_a_program(&e) && unlocked.is_none() && opts.post.is_none() => {
+                if own_agent.take().is_some() {
+                    // Remembered, but no longer let through: learnt again next time.
+                    crate::agent::forget_own(&asked_at);
+                }
+                let cancel = CancellationToken::new();
+                match browser_ask(opts, &asked_at, &asked_with, expects, &cancel).await {
+                    Ok((b, (head, body, headers, took), switch)) => {
+                        family = switch;
+                        (head, body, Some(b), headers, took)
+                    }
+                    Err(other @ (Error::Cancelled | Error::Adapter(_))) => return Err(other),
+                    // #1422: refused that way too; once more under MDM's own name, the last try.
+                    Err(_) => match own.filter(|_| as_own.is_none()) {
+                        Some(own) => {
+                            let o = speaking_own(opts, own.clone());
+                            client = self::client(&o, &asked_at, &as_get, &seen)?;
+                            let (resp, headers, took) = get(
+                                &client,
+                                asked_at.clone(),
+                                asked_with,
+                                None,
+                                o.site_agent(),
+                                expects,
+                                &cancel,
+                            )
+                            .await
+                            .map_err(|other| match other {
+                                Error::Cancelled | Error::Adapter(_) => other,
+                                _ => e,
+                            })?;
+                            crate::agent::remember_own(&asked_at);
+                            own_agent = Some(own);
+                            (Head::of(&resp), Body::Http(resp), None, headers, took)
+                        }
+                        None => return Err(e),
+                    },
+                }
+            }
+            Err(e) => return Err(e),
+        }
     };
     // Whichever connection it came through, the browser-like one too (#954).
     seen.answered(&head);
@@ -1141,6 +1205,7 @@ pub async fn probe_kept(
         url,
         client,
         seen,
+        family,
         as_get,
         head,
         body,
@@ -1316,12 +1381,19 @@ impl Download {
             return Err(Error::DestinationUnavailable(dir.to_owned()));
         }
         let saved = ResumeState::load(&state_file).map_err(Error::BadState)?;
-        Ok(Download::spawn(saved.url.clone(), move |shared, cancel| {
-            run(
-                run_resume(saved, state_file, headers, opts, shared.clone(), cancel),
-                shared,
-            )
-        }))
+        // The bytes on disk from the first snapshot, not only once the run has read the state
+        // again: a watcher's speed (the command line's) doesn't count them as new (#1872).
+        let on_disk = saved.downloaded();
+        Ok(Download::spawn_showing(
+            saved.url.clone(),
+            on_disk,
+            move |shared, cancel| {
+                run(
+                    run_resume(saved, state_file, headers, opts, shared.clone(), cancel),
+                    shared,
+                )
+            },
+        ))
     }
 
     /// [`Download::resume`] when there is a resume state at `state_file`, else `req` from the
@@ -1463,6 +1535,8 @@ impl Download {
             held: Default::default(),
             checked: Default::default(),
             settle: Default::default(),
+            keep: CancellationToken::new(),
+            kept: Default::default(),
         });
         let task = tokio::spawn(f(shared.clone(), cancel.clone()));
         Download {
@@ -1478,6 +1552,20 @@ impl Download {
 
     pub fn cancel(&self) {
         self.cancel.cancel();
+    }
+
+    /// Stop and keep (#1780): an endless answer ([`Snapshot::endless`]) ends where it is, and
+    /// what arrived becomes the finished file, as if the server had ended it there (named, in its
+    /// folder, `Done`). Any other download is stopped as [`Download::cancel`] stops it. Whether
+    /// it keeps.
+    pub fn keep(&self) -> bool {
+        if self.shared.view.lock().unwrap().endless() {
+            self.shared.keep.cancel();
+            true
+        } else {
+            self.cancel();
+            false
+        }
     }
 
     /// Change this download's speed limit (bytes/s, None = unlimited) while it runs.
@@ -1588,6 +1676,10 @@ struct Shared {
     /// Stopped and still writing (`State::Stopping`): its place waits for it until `run` has
     /// let go of everything (#1328).
     settle: Mutex<Option<naming::Settling>>,
+    /// [`Download::keep`]: an endless answer ends where it is (`single_stream`).
+    keep: CancellationToken,
+    /// It did: what arrived is the file, short of whatever a checksum was for.
+    kept: std::sync::atomic::AtomicBool,
 }
 
 impl Shared {
@@ -1790,7 +1882,22 @@ impl Body {
             Body::Http(r) => r.content_length(),
             Body::Ftp(t) => t.expected(),
             Body::Browser(b) => b.len(),
+            // An HTTP answer's length is what is left of it, so the bytes peeked out of it are
+            // added back; the others' stays the whole body's, the peeked bytes in it.
+            Body::Prefixed(first, rest) if rest.counts_down() => rest
+                .len()
+                .map(|n| n.saturating_add(first.as_ref().map_or(0, |b| b.len() as u64))),
             Body::Prefixed(_, rest) => rest.len(),
+        }
+    }
+
+    /// Does [`Body::len`] fall as the body is read? An HTTP answer's does (hyper counts down
+    /// its Content-Length); FTP's and the browser-like connection's are set when it opens.
+    fn counts_down(&self) -> bool {
+        match self {
+            Body::Http(_) => true,
+            Body::Ftp(_) | Body::Browser(_) => false,
+            Body::Prefixed(_, rest) => rest.counts_down(),
         }
     }
 
@@ -2125,14 +2232,17 @@ fn client_with(
     Ok(builder
         // Each connection's opening timed (#140): the download's own, no extra probe.
         .connector_layer(crate::server::Timed(seen.clone()))
-        .dns_resolver(Arc::new(dns::Resolver::new(
-            &opts.hosts,
-            port,
-            &opts.dns,
-            &opts.extra_roots,
-            route,
-            Some(opts.connect_timeout),
-        )))
+        .dns_resolver(Arc::new(
+            dns::Resolver::new(
+                &opts.hosts,
+                port,
+                &opts.dns,
+                &opts.extra_roots,
+                route,
+                Some(opts.connect_timeout),
+            )
+            .kept_to(&opts.family),
+        ))
         .http1_only()
         .user_agent(&opts.user_agent)
         .connect_timeout(opts.connect_timeout)
@@ -2256,6 +2366,10 @@ async fn run_fresh(
                 "Connection 1: continuing from the answer the file's information window got",
             );
             let _ = shared.seen.set(k.seen);
+            if let Some(switch) = k.family {
+                switch.keep(&mut opts);
+                shared.event(switch.said());
+            }
             browser = k.browser;
             // The look got through under MDM's own name (#1422): so does the rest.
             if let Some(own) = k.own_agent {
@@ -2264,7 +2378,7 @@ async fn run_fresh(
             }
             (k.as_get, k.client, (k.head, k.body), k.headers, k.took)
         }
-        None => {
+        None => 'first: {
             // Through a service account (#44): its direct link, without the host's cookies
             // or logins. The host's link stays the download's origin, asked again (through the
             // service) when the direct link dies.
@@ -2306,6 +2420,20 @@ async fn run_fresh(
                 shared,
                 cancel,
             };
+            // #1778: a site rule asks the way a browser connects from the first request.
+            if unlocked.is_none()
+                && let Some((b, answer, switch)) =
+                    browser_at_once(&opts, &target, &asked, expects, |e| shared.event(e), cancel)
+                        .await?
+            {
+                if let Some(switch) = switch {
+                    switch.keep(&mut opts);
+                }
+                browser = Some(b);
+                let (head, body, headers, ttfb) = answer;
+                let client0 = client(&opts, &target, &as_get, &seen)?;
+                break 'first (as_get, client0, (head, body), headers, ttfb);
+            }
             let (mut client0, mut first, as_mdm) = ask.at(&mut opts, &target, &asked).await?;
             asked_as_mdm = as_mdm;
             // #630: the link refused, where the browser's own download of it ended is asked
@@ -2354,7 +2482,11 @@ async fn run_fresh(
                         crate::agent::forget_own(&target);
                     }
                     match browser_first(&opts, &target, &asked, e, expects, shared, cancel).await {
-                        Ok((b, head, body, headers, ttfb)) => {
+                        Ok((b, head, body, headers, ttfb, switch)) => {
+                            // #1660: the rest of the download keeps to the family it took.
+                            if let Some(switch) = switch {
+                                switch.keep(&mut opts);
+                            }
                             browser = Some(b);
                             (as_get, client0, (head, body), headers, ttfb)
                         }
@@ -2521,6 +2653,7 @@ async fn run_fresh(
         saved.asked_as_mdm = asked_as_mdm;
         saved.asked_as_own = asked_own;
         saved.browser_like = browser.is_some();
+        saved.ipv4 = final_url.host_str().and_then(|h| opts.family_of(h));
         let ctx = Arc::new(Ctx {
             client: client0.clone(),
             validators: Mutex::new(validators),
@@ -2840,6 +2973,16 @@ async fn run_resume(
         );
         opts = speaking_own(&opts, own);
     }
+    // #1660: its host refused the link over one IP family and answered over the other: this
+    // run asks over that one too.
+    if let (Some(v4), Some(host)) = (saved.ipv4, saved.final_url.host_str()) {
+        opts.keep_family(host, v4);
+        shared.event(format!(
+            "Going on over {}: {host} refused the link over {}",
+            family_name(v4),
+            family_name(!v4)
+        ));
+    }
     shared.limiter.set(opts.speed_limit);
     let bad = |what: &str| Error::BadState(format!("{}: {what}", state_file.display()));
     if state_file != state_path(&saved.dest) {
@@ -2873,7 +3016,9 @@ async fn run_resume(
     // Only the browser-like connection got past the site's bot check (#668): it goes on with
     // it, at the address it had (MDM's own connection would be refused); its first connection
     // asks for its part before the others follow (`wait_for_ranges`).
-    let browser = match saved.browser_like && crate::browserlike::AVAILABLE {
+    // So does one whose site rule asks for it (#1778).
+    let browser_like = saved.browser_like || opts.browser_first && opts.post.is_none();
+    let browser = match browser_like && crate::browserlike::AVAILABLE {
         true => Some(Arc::new(crate::browserlike::Browser::new(
             &opts,
             &saved.final_url,
@@ -2882,7 +3027,11 @@ async fn run_resume(
         false => None,
     };
     if browser.is_some() {
-        shared.event("Going on the way a browser connects, as the site's bot check asked");
+        shared.event(if saved.browser_like {
+            "Going on the way a browser connects, as the site's bot check asked"
+        } else {
+            "Going on the way a browser connects, as its site rule says"
+        });
     }
     // Through a service account (#44), the service is asked for today's link even when the
     // state holds none of its links (the download went directly until now).
@@ -3098,6 +3247,12 @@ async fn verify_part(
     let Some(hash) = hash.cloned() else {
         return Ok(());
     };
+    // Stopped and kept (#1780): the part of the stream that arrived, never what a checksum
+    // was given for.
+    if shared.kept.load(Ordering::Relaxed) {
+        shared.event("Not checked against its checksum: stopped and kept before its end");
+        return Ok(());
+    }
     shared.set_state(State::Verifying);
     let _slot = SLOTS.acquire().await.map_err(|_| Error::Cancelled)?;
     let part = naming::part_path(dest);
@@ -3495,6 +3650,203 @@ fn link_refused(e: &Error) -> bool {
         || matches!(e, Error::GotWebPage | Error::NotTheFile { .. })
 }
 
+tokio::task_local! {
+    /// The host that answered a first request with a plain 403, and its address that did
+    /// (#1660): set by `get`, read by `FirstAsk::at` around it.
+    static FORBIDDEN_BY: std::cell::Cell<Option<Refuser>>;
+}
+
+/// Who refused a request with a plain 403: the host, and its address that answered.
+type Refuser = (String, std::net::IpAddr);
+
+fn family_name(v4: bool) -> &'static str {
+    if v4 { "IPv4" } else { "IPv6" }
+}
+
+/// #1660: a host a download asks over its other IP family, after it refused a request with a
+/// plain 403. Some file hosts sign a link for the address that loaded its page, and a browser
+/// that loaded it over IPv4 leaves a link MDM's IPv6 connection is refused with (or the other
+/// way round): a fresh link that looks expired.
+///
+/// The choice is the download's own (`Options::family`), never the process's: another download
+/// of the same host, running or to come, keeps the family its own link works over, and meets
+/// its own 403 if it has one. [`FamilySwitch::begin`] gives the options to ask once more with,
+/// through a new client (no kept-alive socket of the refused family), once, without the
+/// retries of a temporary failure. When that is answered, [`FamilySwitch::keep`] makes the
+/// download's options keep the host to that family (every client it makes from then on, its
+/// resume state for a later run) and [`FamilySwitch::said`] goes to its log; otherwise nothing
+/// was changed and the 403 goes on as it did.
+#[derive(Clone, Debug)]
+struct FamilySwitch {
+    host: String,
+    v4: bool,
+}
+
+impl FamilySwitch {
+    /// Begun when the host has an address of the other family that the chosen adapter reaches
+    /// and the refusal came from the host itself (never through a proxy, whose address the host
+    /// sees: `dns::other_family`): with `opts` kept to that family. Otherwise what the log
+    /// should say of it, if anything: an adapter that can't reach the other family.
+    fn begin(
+        opts: &Options,
+        by: Option<Refuser>,
+    ) -> Result<(FamilySwitch, Options), Option<String>> {
+        let Some((host, by)) = by else {
+            return Err(None);
+        };
+        let v4 = !by.is_ipv4();
+        match dns::other_family(&host, by, &opts.route) {
+            dns::OtherFamily::Has => {
+                let switch = FamilySwitch { host, v4 };
+                let mut kept = opts.clone();
+                switch.keep(&mut kept);
+                Ok((switch, kept))
+            }
+            dns::OtherFamily::Unreachable(adapter) => Err(Some(format!(
+                "{host} refused over {}; its {} addresses can't be reached through {adapter}",
+                family_name(!v4),
+                family_name(v4),
+            ))),
+            dns::OtherFamily::No => Err(None),
+        }
+    }
+
+    fn keep(&self, opts: &mut Options) {
+        opts.keep_family(&self.host, self.v4);
+    }
+
+    fn said(&self) -> String {
+        format!(
+            "{} refused over {}, downloading over {}",
+            self.host,
+            family_name(!self.v4),
+            family_name(self.v4)
+        )
+    }
+}
+
+impl Options {
+    /// Keeps `host` to one IP family for this download (IPv4 when `v4`; `Options::family`).
+    fn keep_family(&mut self, host: &str, v4: bool) {
+        self.family.retain(|(h, _)| !h.eq_ignore_ascii_case(host));
+        self.family.push((host.to_ascii_lowercase(), v4));
+    }
+
+    /// The IP family this download keeps `host` to, if any (IPv4 when true).
+    fn family_of(&self, host: &str) -> Option<bool> {
+        let kept = self
+            .family
+            .iter()
+            .find(|(h, _)| h.eq_ignore_ascii_case(host));
+        kept.map(|(_, v4)| *v4)
+    }
+}
+
+/// `asking` (a `get`), with who refused it with a plain 403, if someone did.
+async fn noting_refuser<T>(asking: impl Future<Output = T>) -> (T, Option<Refuser>) {
+    FORBIDDEN_BY
+        .scope(Default::default(), async {
+            let got = asking.await;
+            (got, FORBIDDEN_BY.with(|c| c.take()))
+        })
+        .await
+}
+
+/// What asking over the other IP family came to ([`FamilySwitch`]).
+enum OtherFamilyAsk {
+    /// Answered: the client and answer to go on with, and the switch to keep.
+    Answered(Box<(Client, (Response, HeaderMap, Duration), FamilySwitch)>),
+    /// Not asked, or not answered: the 403 stands. With what the log says of it, if anything.
+    No(Option<String>),
+}
+
+/// #1660: `get` once more over the other IP family, after `by` refused it with 403
+/// ([`FamilySwitch`]): one request with a new client, never retried.
+#[allow(clippy::too_many_arguments)]
+async fn get_over_other_family(
+    opts: &Options,
+    url: &Url,
+    headers: &HeaderMap,
+    as_get: &AsGet,
+    seen: &Arc<crate::server::ServerSeen>,
+    expects: bool,
+    by: Option<Refuser>,
+    cancel: &CancellationToken,
+) -> Result<OtherFamilyAsk, Error> {
+    let (switch, kept) = match FamilySwitch::begin(opts, by) {
+        Ok(begun) => begun,
+        Err(said) => return Ok(OtherFamilyAsk::No(said)),
+    };
+    let again = match client(&kept, url, as_get, seen) {
+        Ok(client) => {
+            let (url, headers) = (url.clone(), headers.clone());
+            let (post, agent) = (kept.post.as_ref(), kept.site_agent());
+            cancellable(
+                cancel,
+                get(&client, url, headers, post, agent, expects, cancel),
+            )
+            .await
+            .map(|answer| (client, answer))
+        }
+        Err(e) => Err(e),
+    };
+    match again {
+        Ok((client, answer)) => Ok(OtherFamilyAsk::Answered(Box::new((client, answer, switch)))),
+        Err(e @ (Error::Cancelled | Error::Adapter(_))) => Err(e),
+        Err(_) => Ok(OtherFamilyAsk::No(None)),
+    }
+}
+
+/// A look's request (`probe_kept`), for asking it over the other IP family.
+struct Look<'a> {
+    url: &'a Url,
+    headers: &'a HeaderMap,
+    as_get: &'a AsGet,
+    seen: &'a Arc<crate::server::ServerSeen>,
+    expects: bool,
+}
+
+impl Look<'_> {
+    /// `asked` (through `client`, with `opts`), or when it is a 403 the other family answers,
+    /// that answer with its client; the switch is noted in `family` for the download.
+    async fn over_other_family(
+        &self,
+        opts: &Options,
+        client: Client,
+        asked: Result<(Response, HeaderMap, Duration), Error>,
+        by: Option<Refuser>,
+        family: &mut Option<FamilySwitch>,
+    ) -> Result<(Client, Result<(Response, HeaderMap, Duration), Error>), Error> {
+        let Err(e) = asked else {
+            return Ok((client, asked));
+        };
+        if !agent_refused(&e) {
+            return Ok((client, Err(e)));
+        }
+        let cancel = CancellationToken::new();
+        let (url, headers, expects) = (self.url, self.headers, self.expects);
+        match get_over_other_family(
+            opts,
+            url,
+            headers,
+            self.as_get,
+            self.seen,
+            expects,
+            by,
+            &cancel,
+        )
+        .await?
+        {
+            OtherFamilyAsk::Answered(answered) => {
+                let (client, answer, switch) = *answered;
+                *family = Some(switch);
+                Ok((client, Ok(answer)))
+            }
+            OtherFamilyAsk::No(_) => Ok((client, Err(e))),
+        }
+    }
+}
+
 /// What a download's first request needs besides its address, headers and options.
 struct FirstAsk<'a> {
     as_get: &'a AsGet,
@@ -3522,7 +3874,16 @@ impl FirstAsk<'_> {
     ) -> Result<FirstAnswer, Error> {
         let (shared, cancel, expects) = (self.shared, self.cancel, self.expects);
         let client0 = client(opts, url, self.as_get, self.seen)?;
-        match first_get(&client0, url, headers, opts, expects, shared, cancel).await {
+        let (first, by) = noting_refuser(first_get(
+            &client0, url, headers, opts, expects, shared, cancel,
+        ))
+        .await;
+        // #1660: a 403 may be the link's signature refusing this IP family; the other one is
+        // asked first, since it changes nothing else about the download (its User-Agent stays).
+        let (client0, first) = self
+            .over_other_family(opts, url, headers, client0, first, by)
+            .await?;
+        match first {
             Err(e) if agent_refused(&e) && opts.agent_fallback.is_some() => {
                 // #372: the rest of the download goes as MDM too.
                 opts.user_agent = opts.agent_fallback.take().unwrap_or_default();
@@ -3530,10 +3891,58 @@ impl FirstAsk<'_> {
                     "The server refused the browser's User-Agent; asking as Mister Download Manager",
                 );
                 let client1 = client(opts, url, self.as_get, self.seen)?;
-                let first = first_get(&client1, url, headers, opts, expects, shared, cancel).await;
+                let (first, by) = noting_refuser(first_get(
+                    &client1, url, headers, opts, expects, shared, cancel,
+                ))
+                .await;
+                // Refused so again: a site that refuses the browser's User-Agent and this
+                // family at once is asked as MDM over the other family too.
+                let (client1, first) = self
+                    .over_other_family(opts, url, headers, client1, first, by)
+                    .await?;
                 Ok((client1, first, true))
             }
             first => Ok((client0, first, false)),
+        }
+    }
+
+    /// `first` (asked through `client`), or when it is a plain 403 that the other IP family
+    /// answers (#1660, [`FamilySwitch`]), that answer with its client: `opts` then keeps the
+    /// host to that family, and the log says so.
+    async fn over_other_family(
+        &self,
+        opts: &mut Options,
+        url: &Url,
+        headers: &HeaderMap,
+        client: Client,
+        first: Result<((Response, HeaderMap), Duration), Error>,
+        by: Option<Refuser>,
+    ) -> Result<(Client, Result<((Response, HeaderMap), Duration), Error>), Error> {
+        let Err(e) = first else {
+            return Ok((client, first));
+        };
+        if !agent_refused(&e) {
+            return Ok((client, Err(e)));
+        }
+        let (as_get, seen, expects) = (self.as_get, self.seen, self.expects);
+        match get_over_other_family(opts, url, headers, as_get, seen, expects, by, self.cancel)
+            .await?
+        {
+            OtherFamilyAsk::Answered(answered) => {
+                let (client, (resp, headers, took), switch) = *answered;
+                switch.keep(opts);
+                self.shared.event(switch.said());
+                // As `first_get` checks its answer (#1460).
+                let sized = answer_size(resp.status(), resp.headers(), resp.content_length());
+                let checked = sized.map_or(Ok(()), |s| not_the_file(opts.expected_size, s));
+                Ok((client, checked.map(|()| ((resp, headers), took))))
+            }
+            OtherFamilyAsk::No(said) => {
+                if let Some(said) = said {
+                    self.shared.event(said);
+                }
+                Ok((client, Err(e)))
+            }
         }
     }
 
@@ -3628,6 +4037,7 @@ async fn browser_first(
         Body,
         HeaderMap,
         Duration,
+        Option<FamilySwitch>,
     ),
     Error,
 > {
@@ -3638,7 +4048,7 @@ async fn browser_first(
     shared.event(format!(
         "{host}: {refused}; asking once more the way a browser connects"
     ));
-    let (b, asked) = match browser_ask(opts, url, headers, expects, cancel).await {
+    let (b, asked, switch) = match browser_ask(opts, url, headers, expects, cancel).await {
         Ok(got) => got,
         Err(e @ (Error::Cancelled | Error::Adapter(_))) => return Err(e),
         Err(e) => {
@@ -3647,10 +4057,56 @@ async fn browser_first(
         }
     };
     let (head, body, headers, took) = asked;
+    if let Some(switch) = &switch {
+        shared.event(switch.said());
+    }
     shared.event(format!(
         "{host}: the browser-like connection got through; downloading on it"
     ));
-    Ok((b, head, body, headers, took))
+    Ok((b, head, body, headers, took, switch))
+}
+
+/// A first request and its answer through the browser-like connection.
+type BrowserAnswer = (
+    Arc<crate::browserlike::Browser>,
+    (Head, Body, HeaderMap, Duration),
+    Option<FamilySwitch>,
+);
+
+/// #1778: the first request the way a browser connects at once, when a site rule asks for it
+/// (`Options::browser_first`), with its answer (the file's: `check_first`). None when it isn't
+/// asked for, can't be (a build without it, a form's POST) or didn't get the file: the request
+/// then goes on MDM's own connection as any other, the reason told to `event`.
+async fn browser_at_once(
+    opts: &Options,
+    url: &Url,
+    headers: &HeaderMap,
+    expects: bool,
+    event: impl Fn(String),
+    cancel: &CancellationToken,
+) -> Result<Option<BrowserAnswer>, Error> {
+    if !opts.browser_first || !crate::browserlike::AVAILABLE || opts.post.is_some() {
+        return Ok(None);
+    }
+    let host = url.host_str().unwrap_or("?");
+    match browser_ask(opts, url, headers, expects, cancel).await {
+        Ok(got) => {
+            event(format!(
+                "{host}: asked the way a browser connects from the start, as its site rule says"
+            ));
+            if let Some(switch) = &got.2 {
+                event(switch.said());
+            }
+            Ok(Some(got))
+        }
+        Err(e @ (Error::Cancelled | Error::Adapter(_))) => Err(e),
+        Err(e) => {
+            event(format!(
+                "{host}, asked the way a browser connects as its site rule says: {e}; asking on                  Mister Download Manager's own connection"
+            ));
+            Ok(None)
+        }
+    }
 }
 
 /// The browser-like connection for `url`, and its answer to the first request (`browser_first`,
@@ -3665,15 +4121,37 @@ async fn browser_ask(
     (
         Arc<crate::browserlike::Browser>,
         (Head, Body, HeaderMap, Duration),
+        Option<FamilySwitch>,
     ),
     Error,
 > {
     let b = Arc::new(crate::browserlike::Browser::new(opts, url, headers)?);
     let asked = std::time::Instant::now();
-    let (head, body, headers) = b.get(url.clone(), headers.clone(), false, cancel).await?;
+    let (head, body, with) = b.get(url.clone(), headers.clone(), false, cancel).await?;
     let took = asked.elapsed();
+    // #1660: past the bot check, the link's own 403 may be this IP family's: asked once over
+    // the other one, on a browser-like connection of its own.
+    let by = (head.status == StatusCode::FORBIDDEN && !is_bot_check(head.status, &head.headers))
+        .then(|| Some((head.url.host_str()?.to_owned(), head.from?.ip())))
+        .flatten();
+    if let Ok((switch, kept)) = FamilySwitch::begin(opts, by) {
+        drop(body);
+        let b = Arc::new(crate::browserlike::Browser::new(&kept, url, headers)?);
+        let asked = std::time::Instant::now();
+        let again = match b.get(url.clone(), headers.clone(), false, cancel).await {
+            Ok((head, body, with)) => crate::browserlike::check_first(&head, expects)
+                .map(|()| (head, body, with, asked.elapsed())),
+            Err(e) => Err(e),
+        };
+        return match again {
+            Ok(answer) => Ok((b, answer, Some(switch))),
+            Err(e @ (Error::Cancelled | Error::Adapter(_))) => Err(e),
+            // The 403 stands, as `check_first` tells it.
+            Err(_) => Err(Error::Status(head.status)),
+        };
+    }
     crate::browserlike::check_first(&head, expects)?;
-    Ok((b, (head, body, headers, took)))
+    Ok((b, (head, body, with, took), None))
 }
 
 /// A plain `GET` (no Range), or a POST of `post`, that must answer 200 or 206. A GET follows
@@ -3725,8 +4203,9 @@ async fn get(
     let mut party_hops = 0;
     // A site's form to post with the next request only (`PageSays::Form`: LuluStream's), and how
     // many times one was: a site that answers with its form again didn't take it this time
-    // (LuluStream's "Security error", about a post in three), and it is posted once more, up to
-    // `MAX_FORM_POSTS`; those posts don't count as a page's redirects.
+    // (LuluStream's "Security error", about a post in three), and it is posted once more after a
+    // pause (`form_repost_pause`), up to `MAX_FORM_POSTS`; those posts don't count as a page's
+    // redirects.
     let mut form: Option<Bytes> = None;
     let mut posts = 0;
     loop {
@@ -3781,7 +4260,15 @@ async fn get(
                 return Err(Error::Throttled(s, retry_after(resp.headers())));
             }
             s if is_bot_check(s, resp.headers()) => return Err(Error::BotCheck),
-            s => return Err(Error::Status(s)),
+            s => {
+                if s == StatusCode::FORBIDDEN
+                    && let (Some(host), Some(by)) = (from.host_str(), resp.remote_addr())
+                {
+                    // #1660: who refused, for a first request that may ask the other IP family.
+                    let _ = FORBIDDEN_BY.try_with(|c| c.set(Some((host.to_owned(), by.ip()))));
+                }
+                return Err(Error::Status(s));
+            }
         }
         // Where the HTTP redirects ended: the headers' credentials follow as reqwest's did.
         headers = scoped_headers(&headers, &url, &from);
@@ -3840,9 +4327,11 @@ async fn get(
                         // The form again: posted once more, not a page's redirect.
                         hops -= 1;
                     }
+                    // A form's first post goes at once; a repost waits first, below.
+                    let pause = form_repost_pause(posts);
                     posts += 1;
                     form = Some(Bytes::from(body));
-                    (Duration::ZERO, action)
+                    (pause, action)
                 }
                 // Still the form after its last post: the site didn't take it this time, said in
                 // its name where it has one (`sites::form_refused`).
@@ -3900,8 +4389,22 @@ async fn get(
 const MAX_PAGE_REDIRECTS: usize = 5;
 /// Most times a site's form is posted in one look (`get`, `PageSays::Form`): a site that answers
 /// with the form again now and then (LuluStream's, about a post in three) gives the file within
-/// a few; one that never takes it is a web page after these.
+/// a few; one that never takes it is a web page after these. The first goes at once, each one
+/// after it once `form_repost_pause` has passed.
 const MAX_FORM_POSTS: usize = 5;
+/// The pause before a form's first repost, doubled before each one after it (0.5 s, 1 s, 2 s,
+/// 4 s): someone in a browser clicks again after a moment, and all five posts sent within 2.6 s
+/// were refused twice in a row where posts further apart may be taken (#1593).
+const FORM_REPOST_PAUSE: Duration = Duration::from_millis(500);
+
+/// How long to wait before posting a site's form when it was already posted `posts` times in
+/// this look: nothing before the first post, then `FORM_REPOST_PAUSE` doubling.
+fn form_repost_pause(posts: usize) -> Duration {
+    match posts {
+        0 => Duration::ZERO,
+        n => FORM_REPOST_PAUSE * 2u32.pow((n - 1).min(10) as u32),
+    }
+}
 /// How much of a web page is read to find its redirect.
 const PAGE_PEEK: usize = 256 << 10;
 /// The longest wait a page asks for before it leads on that is kept.
@@ -3924,14 +4427,14 @@ async fn read_up_to(
 }
 
 /// The most of a web page [`page_links`] reads.
-const PAGE_LINKS_MAX: usize = 8 << 20;
+pub(crate) const PAGE_LINKS_MAX: usize = 8 << 20;
 /// The most of a web page [`page_videos`] reads: what it declares is in its head, or near it.
 const PAGE_VIDEOS_MAX: usize = 2 << 20;
 
 /// The web page at `url`, asked as a download's look asks (`get`: the user's proxy and agent,
 /// the redirects and waiting pages it follows), read up to `max` bytes, with the address it came
 /// from. None for an answer that isn't a web page (its body isn't read).
-async fn web_page(
+pub(crate) async fn web_page(
     url: Url,
     headers: HeaderMap,
     opts: &Options,
@@ -6065,6 +6568,9 @@ fn too_slow(speed: u64, on_net: Duration, best: u64, left: u64, held: Option<Dur
 }
 
 /// Servers without range support: one connection, written in order. Returns the size.
+///
+/// An answer that says no length ends where it is on [`Download::keep`] (#1780), its last
+/// chunk received written first: what arrived is the file.
 async fn single_stream(
     mut body: Body,
     file: &Arc<File>,
@@ -6074,14 +6580,27 @@ async fn single_stream(
 ) -> Result<u64, Error> {
     shared.conn(0, |c| c.status = ConnStatus::Receiving);
     let expected = body.len();
+    let endless = expected.is_none();
     let mut pos = 0u64;
     loop {
         let next = tokio::select! {
+            biased;
             _ = cancel.cancelled() => return Err(Error::Cancelled),
+            _ = shared.keep.cancelled(), if endless => {
+                // Nothing arrived yet (`Download::keep` asks only once something has): nothing
+                // to keep, stopped as Pause stops it.
+                if pos == 0 {
+                    return Err(Error::Cancelled);
+                }
+                shared.kept.store(true, Ordering::Relaxed);
+                shared.event(format!("Stopped and kept what arrived: {}", disk::human(pos)));
+                break;
+            }
             n = body.chunk() => n,
         };
         let Some(chunk) = next? else { break };
-        // Stop ends a limiter's wait too (under a low limit it is seconds long).
+        // Stop ends a limiter's wait too (under a low limit it is seconds long); so does Stop
+        // and keep, the chunk received still written.
         let paid = async {
             shared.limiter.acquire(chunk.len() as u64).await;
             if let Some(g) = global {
@@ -6089,7 +6608,9 @@ async fn single_stream(
             }
         };
         tokio::select! {
+            biased;
             _ = cancel.cancelled() => return Err(Error::Cancelled),
+            _ = shared.keep.cancelled(), if endless => {}
             _ = paid => {}
         }
         let (f, at, n) = (file.clone(), pos, chunk.len() as u64);
@@ -6152,7 +6673,7 @@ fn write_all_at(file: &File, mut at: u64, mut data: &[u8]) -> io::Result<()> {
 }
 
 /// `Content-Range: bytes a-b/total` → `(a, b, total)`; `total` is `None` for `*`.
-fn parse_content_range(h: &HeaderMap) -> Result<(u64, u64, Option<u64>), Error> {
+pub(crate) fn parse_content_range(h: &HeaderMap) -> Result<(u64, u64, Option<u64>), Error> {
     let raw = h
         .get(header::CONTENT_RANGE)
         .and_then(|v| v.to_str().ok())
@@ -6196,6 +6717,17 @@ pub(crate) async fn cancellable<T>(
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    /// A form's first post isn't held back; each repost waits twice as long as the one before,
+    /// and never longer than a page's own wait may be (#1593).
+    #[test]
+    fn a_forms_reposts_wait_longer_each_time() {
+        let pauses: Vec<u64> = (0..MAX_FORM_POSTS)
+            .map(|posts| form_repost_pause(posts).as_millis() as u64)
+            .collect();
+        assert_eq!(pauses, [0, 500, 1000, 2000, 4000]);
+        assert!(form_repost_pause(MAX_FORM_POSTS - 1) <= PAGE_WAIT);
+    }
 
     #[test]
     fn pages_lead_on_as_browsers_read_them() {

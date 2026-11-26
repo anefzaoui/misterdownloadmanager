@@ -184,9 +184,10 @@ pub fn build_renamed_file_name(current_name: &str, desired_stem: &str, is_dir: b
 }
 
 /// Whether `item`'s destination stands for a folder (multi-file torrent, gallery, multi-file
-/// debrid transfer) rather than a single file.
+/// debrid transfer, files picked out of a ZIP) rather than a single file.
 pub fn is_folder_target(item: &Item) -> bool {
     item.gallery.is_some()
+        || item.zip.is_some()
         || item.torrent.as_ref().is_some_and(|t| t.folder == item.dest)
         || item.dest.is_dir()
 }

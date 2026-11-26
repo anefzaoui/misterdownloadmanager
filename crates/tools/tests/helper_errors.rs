@@ -63,7 +63,8 @@ async fn gallery_dl_names_the_server_and_the_failure() {
 }
 
 /// ffmpeg is installed by MDM on 64-bit Windows only (elsewhere the system's is used, or one
-/// chosen in Helpers: BtbN builds none for 32-bit Windows).
+/// chosen in Helpers: BtbN builds none for 32-bit Windows). Its first request is for MDM's list
+/// of checked builds, on github.com.
 #[cfg(all(windows, any(target_arch = "x86_64", target_arch = "aarch64")))]
 #[tokio::test]
 async fn ffmpeg_names_the_server_and_the_failure() {
@@ -72,9 +73,10 @@ async fn ffmpeg_names_the_server_and_the_failure() {
     let e = mdm_tools::ffmpeg::install_latest(dir.path(), &net, None)
         .await
         .expect_err("no proxy there");
+    assert!(matches!(e, mdm_tools::Error::FfmpegList(_)), "{e}");
     assert_eq!(
         e.network(),
-        Some(("api.github.com".to_owned(), Fault::Refused)),
+        Some(("github.com".to_owned(), Fault::Refused)),
         "{e}"
     );
 }

@@ -110,16 +110,16 @@
 #, machine
 @plural	{n} downloading|{n} downloading	{n} nagda-download|{n} nagda-download
 #. count in extracting archives (a download's log, the Archive password window)
-#. in a download's log, after extracting: entries of the archive not written (links, names that would leave the folder)
+#. in a download's log, after extracting: entries of the archive not written (links, names that would leave the folder, entries under a file of the archive where a folder should be)
 #. {n} = a number (keep the braces as they are)
 #, machine
-@plural	{n} entry was left out (a link, or a name leading outside the folder)|{n} entries were left out (links, or names leading outside the folder)	Hindi isinama ang {n} entry (isang link o pangalan na humahantong sa labas ng folder)|Hindi isinama ang {n} na entry (mga link o pangalan na humahantong sa labas ng folder)
+@plural	{n} entry was left out (a link, a name leading outside the folder, or a file in its way)|{n} entries were left out (links, names leading outside the folder, or files in their way)	{n} entry ang naiwan (isang link, pangalan na lumalabas sa folder, o file na humaharang)|{n} entry ang naiwan (mga link, pangalan na lumalabas sa folder, o mga file na humaharang)
 #. count in a dialog box
 #. the summary of downloads added together; after "12 downloads finished": {n} of them failed
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} failed|{n} failed	Nabigo ang {n}|Nabigo ang {n}
-#. count in the Batch download window; count in the Link grabber window; count in the Add torrent window; count in torrentfiles.rs
+#. count in the main window; count in the Batch download window; count in a dialog box; count in the Link grabber window; count in the Add torrent window; count in torrentfiles.rs; count in zippreview.rs
 #. how many files the pattern gives in all
 #. Link grabber: a package's row: {n} is its number of links
 #. {n} = a number (keep the braces as they are)
@@ -171,6 +171,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} tracker added|{n} trackers added	{n} tracker ang idinagdag|{n} na tracker ang idinagdag
+#. count in the main window
+#. event log entry: trackers from the public tracker list (Torrent settings) were added to a torrent
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} tracker added from the public list|{n} trackers added from the public list	Nadagdag ang {n} tracker mula sa pampublikong listahan|Nadagdag ang {n} tracker mula sa pampublikong listahan
 #. count in the Add torrent window
 #. where a magnet's peers came from: {n} = trackers asked; {peers} = "3 peers"
 #. {n} = a number (keep the braces as they are)
@@ -181,6 +186,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} window waits until you're back|{n} windows wait until you're back	{n} window ang naghihintay hanggang sa makabalik ka|{n} window ang naghihintay hanggang sa makabalik ka
+#. count in the Link grabber window
+#. Link grabber's Source line: a Hugging Face repository's or GitHub release's ({package}: its name, "owner/name") files whose names would lead out of its folder (`../`, a drive, a device's name) are left out; {n} how many
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{package}: {n} file left out, its name would lead out of its folder|{package}: {n} files left out, their names would lead out of its folder	{package}: Hindi isinama ang {n} file dahil magtuturo palabas ng folder nito ang pangalan|{package}: Hindi isinama ang {n} file dahil magtuturo palabas ng folder nito ang mga pangalan
 #. count in cnl.rs
 #. Click'n'Load window: {site} is a web site's name such as "example.com"
 #. {site} = a web site's name such as "example.com"; {n} = a number (keep the braces as they are)
@@ -327,6 +337,9 @@
 #. why Part is greyed in Download video: the page is a playlist, whose videos are downloaded whole
 #, machine
 	A playlist's videos are downloaded whole	Buong na-download ang mga video ng isang playlist
+#. message or event log entry in the main window
+#, machine
+	A private torrent: the public tracker list isn't added	Isang pribadong torrent: hindi nadagdag ang pampublikong listahan ng tracker
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites: the tooltip of the profile box
 #, machine
@@ -467,6 +480,10 @@
 #. text in extension.rs
 #, machine
 	Add the free extension: files you download in your browser come here, and videos get a Download button.	Idagdag ang libreng extension: ang mga file na dina-download mo sa iyong browser ay mapupunta rito, at ang mga video ay magkakaroon ng button na I-download.
+#. text in the Add torrent window
+#. Torrent settings: add the trackers of a public tracker list (its address in the box below) to torrents that aren't private, so they find more peers
+#, machine
+	Add the trackers of this public list to public torrents:	Idagdag ang mga tracker ng pampublikong listahang ito sa mga pampublikong torrent:
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: add the torrents to the list without starting them
 #, machine
@@ -527,7 +544,11 @@
 #. remote control page (on a phone): label of the box where a download's address or a magnet link is typed
 #, machine
 	Address or magnet link	Address o magnet link
-#. text in the Options window; text in a download's Properties window
+#. message or event log entry in the main window
+#. Link grabber: where the links came from: the Add URL window (an address typed or pasted there)
+#, machine
+	Address typed	Na-type na address
+#. text in the Options window; text in preview.rs; text in a download's Properties window
 #. Options → DNS over HTTPS: label before the server's https:// address
 #, machine
 	Address:	Address:
@@ -621,6 +642,10 @@
 #. Link grabber, a link's status: the remedy from the failure's sentence, for a site whose bot check lets only browsers through. The sentence, with the same advice, is the cell's hover tip
 #, machine
 	Alt+click the link	Alt+i-click ang link
+#. text in requestedit.rs
+#. Site rule: check box; on, MDM connects the way a browser does from the first request to these sites, instead of only after a site turned it away ("this site lets only browsers through")
+#, machine
+	Always connect the way a browser does	Palaging kumonekta tulad ng isang browser
 #. message or event log entry in the main window
 #. View menu: a check item; dark mode on, whatever the system's setting
 #, machine
@@ -644,6 +669,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Andorra	Andorra
+#. text in a dialog box
+#. why the phone could not be turned off after the queue (fills {error}, Android)
+#, machine
+	Android doesn't let apps turn the phone off	Hindi pinapayagan ng Android na i-off ng mga app ang telepono
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -669,6 +698,10 @@
 #. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer's one wake alarm is already set by something else
 #, machine
 	Another program has set the computer's wake alarm	May ibang program na nagtakda ng alarm para gisingin ang computer
+#. text in the Options window
+#. Site rule: OK with a site another rule already has
+#, machine
+	Another rule is for this site already: change that one	Mayroon nang ibang panuntunan para sa site na ito: baguhin ang panuntunang iyon
 #. text in the Options window
 #. Options → Proxy / Socks: Test's answer; {ms} milliseconds; {ip} the internet address the site saw (the proxy's, or this computer's without one)
 #, machine
@@ -738,6 +771,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Aruba	Aruba
+#. text in requestedit.rs
+#. a download's Connection settings → Proxy: the proxy set in Options → Proxy / Socks
+#, machine
+	As in Options	Gaya ng sa Mga Opsyon
 #. option (radio button) in the Options window
 #, machine
 	As the system's region writes them	Gaya ng pagsulat ng rehiyon ng system
@@ -899,6 +936,10 @@
 #. the trailing ... means it opens a window: keep it
 #, machine
 	Browse...	I-browse...
+#. text in the Options window
+#. Site rules: column title: "Yes" when the rule asks the way a browser connects from the first request
+#, machine
+	Browser	Browser
 #. text in extension.rs
 #, machine
 	Browser integration isn't set up on this computer, so no browser can reach Mister Download Manager yet.	Hindi pa naka-set up ang integrasyon ng browser sa computer na ito, kaya wala pang browser ang makakaabot sa Mister Download Manager.
@@ -955,7 +996,7 @@
 #. a country's name (where a download's server is)
 #, machine
 	Canada	Canada
-#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in extracting archives (a download's log, the Archive password window); button in the Find window; button in gallerydlg.rs; text in the Link grabber window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; text in remote.rs; button in the Scheduler window; button in the Add torrent window; button in traypanel.rs; button in the Download video window
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in extracting archives (a download's log, the Archive password window); button in the Find window; button in gallerydlg.rs; text in the Link grabber window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; text in remote.rs; button in the Scheduler window; button in the Add torrent window; button in traypanel.rs; button in the Download video window; text in zippreview.rs
 #. button: stop downloading the update
 #, machine
 	Cancel	Kanselahin
@@ -1121,12 +1162,22 @@
 #. remote control page (on a phone): what the ".torrent file" button does (screen readers)
 #, machine
 	Choose a .torrent file	Pumili ng .torrent file
+#. message or event log entry in the main window
+#. title of the file dialog of View → Font → Choose a font file
+#. title of the message when the font picked in View → Font can't be used
+#, machine
+	Choose a font file	Pumili ng font file
 #. text in helpers.rs
+#. file picker title: choose a JavaScript runtime's program (node.exe, deno.exe, qjs.exe, bun.exe)
 #, machine
 	Choose a JavaScript runtime (Node.js, Deno, QuickJS or Bun)	Pumili ng JavaScript runtime (Node.js, Deno, QuickJS o Bun)
 #. text in langpick.rs
 #, machine
 	Choose a language	Pumili ng wika
+#. text in a dialog box
+#. the Columns dialog: what it is for, above its list of the download list's columns
+#, machine
+	Choose columns to show	Pumili ng mga column na ipapakita
 #. text in langpick.rs
 #, machine
 	Choose the language Mister Download Manager shows its windows in:	Piliin ang wikang ipinapakita ng Mister Download Manager sa mga window nito:
@@ -1135,6 +1186,7 @@
 #, machine
 	Choose the profile's folder	Piliin ang folder ng profile
 #. text in helpers.rs; text in the Options window
+#. file picker title; {name} = yt-dlp or ffmpeg
 #. file picker title; {name} = the program to choose (yt-dlp, ffmpeg, 7-Zip)
 #. {name} = a file name (keep the braces as they are)
 #, machine
@@ -1200,6 +1252,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Colombia	Colombia
+#. window title in a dialog box; text in a dialog box
+#. what a screen reader calls the Columns dialog's list of the download list's columns
+#, machine
+	Columns	Mga column
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -1254,6 +1310,23 @@
 #. tab title: connection settings
 #, machine
 	Connection	Koneksyon
+#. text in a download's Properties window
+#. window title: a download's own request settings (User-Agent, headers, connections, proxy), from File Properties → Connection...
+#, machine
+	Connection settings	Mga setting ng koneksyon
+#. message or event log entry in the main window
+#. event log: File Properties → Connection settings changed the download's own User-Agent, headers, proxy or connections
+#, machine
+	Connection settings changed	Binago ang mga setting ng koneksyon
+#. text in a download's Properties window
+#. File Properties button: opens the download's own request settings (User-Agent, headers, connections, proxy)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Connection...	Koneksyon...
+#. text in the Options window
+#. Site rules: column title: the number of connections (empty: the default)
+#, machine
+	Connections	Mga Koneksyon
 #. page title in the Options window
 #, machine
 	Connections and Limits	Mga Koneksyon at Limitasyon
@@ -1723,6 +1796,10 @@
 #. the notice shown once, the first time a download comes from a browser's private (incognito) window: it stays in MDM's list like any other, after a restart too; where to turn that off. {options} = the Options window, {general} = its General tab, {checkbox} = the checkbox "Keep private-window downloads in the list"
 #, machine
 	Downloads from a browser's private window stay in MDM's list like any other, also after MDM restarts; their cookies are never saved. To keep them in memory only, untick {options} → {general} → {checkbox}.	Nananatili sa listahan ng MDM ang mga download mula sa pribadong window ng browser, tulad ng iba pang download, kahit mag-restart ang MDM; hindi kailanman sine-save ang mga cookie ng mga ito. Para panatilihin lang ang mga ito sa memorya, alisin ang tsek sa {options} → {general} → {checkbox}.
+#. text in the Options window
+#. Site rules window: how the rules apply; *.example.com stays as it is
+#, machine
+	Downloads from these sites get these settings. Each one comes from the first rule in the list that names the site and sets it; * stands for any text: *.example.com	Ang mga download mula sa mga site na ito ay makakakuha ng mga setting na ito. Ang bawat isa ay nagmumula sa unang panuntunan sa listahan na nagngangalan sa site at nagtatakda nito; ang * ay kumakatawan sa anumang text: *.example.com
 #. text in the tray icon's menu; text in traypanel.rs
 #. tray menu: a submenu of the downloads now running; choosing one shows its progress window
 #. the notification-area icon's panel (#1365): its title, over the downloads now running (also the tray menu's submenu)
@@ -1795,6 +1872,10 @@
 #. text in the Options window
 #, machine
 	Edit login	I-edit ang login
+#. text in the Options window
+#. window title: changing one site rule
+#, machine
+	Edit site rule	I-edit ang panuntunan ng site
 #. button in the Options window
 #. verb: edit the item
 #. the trailing ... means it opens a window: keep it
@@ -1811,7 +1892,7 @@
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Email	Email
-#. text in the Download video window
+#. checkbox in the Download video window; text in the Download video window
 #. checkbox in Download video: the chapters a video's page lists (YouTube's, for one) go into the video file, where players show them and skip between them
 #, machine
 	Embed chapters	I-embed ang mga chapter
@@ -1819,6 +1900,10 @@
 #. in Download a gallery, after the "Files at most" box
 #, machine
 	Empty: all of them. On most sites the newest come first.	Walang laman: lahat ng ito. Sa karamihan ng mga site, nauuna ang pinakabago.
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: the hint under the User-Agent box
+#, machine
+	Empty: the browser's, or the one set in Options	Walang laman: ang sa browser, o ang nakatakda sa Mga Opsyon
 #. text in crashui.rs
 #. crash report window button: end the frozen MDM and start it again
 #, machine
@@ -1896,6 +1981,10 @@
 #. choice in Download video's Part: the part is encoded again so it starts and ends exactly at From and To (slower)
 #, machine
 	Exact cut, encoded again	Eksaktong hiwa, muling na-encode
+#. text in the Options window
+#. Site rule: the hint under the site box; the examples stay as they are
+#, machine
+	example.com, or *.example.com for its subdomains	example.com, o *.example.com para sa mga subdomain nito
 #. text in the Options window
 #. label before an example date and time written the chosen way
 #, machine
@@ -2000,9 +2089,13 @@
 #, machine
 	Feeds:	Mga Feed:
 #. text in the Add torrent window
-#. Torrent settings, at the bottom
+#. Torrent settings, under the blocklist's address
 #, machine
 	Fetched again every 7 days. Changes apply when no torrent is running.	Kinukuha muli tuwing 7 araw. Nalalapat ang mga pagbabago kapag walang torrent na tumatakbo.
+#. text in the Add torrent window
+#. Torrent settings, under the public tracker list's address
+#, machine
+	Fetched once a day. Never added to private torrents.	Kinukuha nang isang beses sa isang araw. Hindi kailanman idinadagdag sa mga pribadong torrent.
 #. text in helpers.rs
 #. helper name and what it does (ffmpeg is a program's name)
 #, machine
@@ -2023,7 +2116,8 @@
 #. tooltip of "Mark downloaded files as coming from the internet" on Linux
 #, machine
 	File managers show where the files marked this way came from. Unticked, no download is marked.	Ipinapakita ng mga file manager kung saan nagmula ang mga file na minarkahan sa ganitong paraan. Kapag hindi pinili, walang download na mamarkahan.
-#. text in the Scheduler window
+#. text in a download's progress window; text in the Scheduler window
+#. Zip preview's column: the file's name (its path inside the ZIP)
 #, machine
 	File Name	Pangalan ng File
 #. text in the Download video window
@@ -2067,6 +2161,10 @@
 #. text in the Scheduler window; tab in the Scheduler window
 #, machine
 	Files in the queue	Mga file sa queue
+#. text in the download list (sizes, speeds, status)
+#. why files being taken out of a ZIP on its server (#1775) can't be moved or renamed yet: those already out are in its folder, the others still to come there
+#, machine
+	Files taken out of a ZIP can be moved once they're all out	Maililipat ang mga file na kinuha mula sa ZIP kapag nailabas na ang lahat ng ito
 #. button in a download's Properties window
 #. File Properties button that opens the selected torrent's file list
 #. the trailing ... means it opens a window: keep it
@@ -2135,6 +2233,14 @@
 #. text in categories.rs
 #, machine
 	Folder:	Folder:
+#. text in the Options window
+#. Options → Archives → Link grabber, one line with two boxes: an FTP folder or a web server's folder listing ("Index of") given to Link grabber is read with its subfolders: {depth} is a number box (how many levels of subfolders, 3 at first; 0 is the folder's own files only), {types} a text box (file types such as ISO ZIP; empty for every type)
+#, machine
+	Folders: {depth} levels deep, types: {types}	Mga folder: lalim na {depth} level, mga uri: {types}
+#. message or event log entry in the main window
+#. the kind of file View → Font → Choose a font file lists: TrueType and OpenType font files
+#, machine
+	Font files	Mga file ng font
 #. text in finish.rs
 #. Snooze menu of the Download complete window: show no Download complete window for this long
 #, machine
@@ -2330,6 +2436,11 @@
 #. {version} = a version number (keep the braces as they are)
 #, machine
 	Go back to {version}	Bumalik sa {version}
+#. text in helpers.rs
+#. Helpers: the "Go back" button's name for a screen reader; {version} = the earlier version, {name} = the helper (yt-dlp, ffmpeg, gallery-dl, Node.js)
+#. {version} = a version number; {name} = a file name (keep the braces as they are)
+#, machine
+	Go back to {version} of {name}	Bumalik sa {version} ng {name}
 #. text in a download's progress window
 #. a torrent's sharing, when Torrent settings keep it on
 #, machine
@@ -2393,6 +2504,10 @@
 #. legend: pieces downloaded
 #, machine
 	Have	Nakuha
+#. text in the Options window
+#. Site rules: column title: how many request headers the rule adds
+#, machine
+	Headers	Mga Header
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2423,6 +2538,10 @@
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 	Hide &preview pane	Itago ang pane ng pa&preview
+#. text in the Link grabber window
+#. Link grabber check box, ticked when it opens: the pictures shown on the browser's page (its images, not links to pictures), which "Download all links" sends with the links, are not shown
+#, machine
+	Hide images located on this web page	Itago ang mga larawang matatagpuan sa web page na ito
 #. button in a download's progress window
 #, machine
 	Hide tab	Itago ang tab
@@ -2550,11 +2669,11 @@
 #. in the "7-Zip needed" window, under why
 #, machine
 	Install 7-Zip (free), then right-click the download and choose Extract.	I-install ang 7-Zip (libre), pagkatapos ay i-right-click ang download at piliin ang I-extract.
-#. text in the Download video window
+#. text in helpers.rs; text in the Download video window
 #. button: download and install the ffmpeg program
 #, machine
 	Install ffmpeg	I-install ang ffmpeg
-#. button in gallerydlg.rs
+#. button in gallerydlg.rs; text in helpers.rs
 #. button: download and install the gallery-dl program
 #, machine
 	Install gallery-dl	I-install ang gallery-dl
@@ -2562,7 +2681,7 @@
 #. link in the browser extension's window: the tutorial that adds it without the browser's store
 #, machine
 	Install it by hand	I-install ito nang manu-mano
-#. text in the Download video window
+#. text in helpers.rs; text in the Download video window
 #. button in Download video: download and install Node.js, the JavaScript runtime YouTube needs (Node.js is a program's name)
 #, machine
 	Install Node.js	I-install ang Node.js
@@ -2574,7 +2693,7 @@
 #. in the "7-Zip needed" window, under why (Linux: 7-Zip comes from the distribution's packages, named 7zip or p7zip)
 #, machine
 	Install your system's 7zip (or p7zip) package, then right-click the download and choose Extract.	I-install ang 7zip (o p7zip) package ng iyong system, pagkatapos ay i-right-click ang download at piliin ang I-extract.
-#. text in the Download video window
+#. text in helpers.rs; text in the Download video window
 #. button: download and install the yt-dlp program
 #, machine
 	Install yt-dlp	I-install ang yt-dlp
@@ -2864,6 +2983,23 @@
 #. Torrent settings: an upload speed limit for all torrents together, followed by a box with the speed and "KBytes/sec"
 #, machine
 	Limit uploading for all torrents to	Limitahan ang pag-a-upload para sa lahat ng torrent sa
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: a header's name has a space or another character names can't have; {line} is the line's number
+#, machine
+	Line {line}: a header's name has letters, digits and dashes only	Linya {line}: letra, numero at gitling lang ang puwedeng gamitin sa pangalan ng header
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: a header MDM sets itself for each request (Range, Host…) can't be typed; {line} is the line's number, {name} the header's name
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Line {line}: Mister Download Manager sets {name} itself	Linya {line}: itinakda mismo ng Mister Download Manager ang {name}
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: a header's value (or the User-Agent) holds a control character; {line} is the line's number
+#, machine
+	Line {line}: the value has a character a header can't hold	Linya {line}: ang value ay may character na hindi kayang hawakan ng header
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: a line of request headers isn't "Name: value"; {line} is its number
+#, machine
+	Line {line}: write a header as Name: value	Linya {line}: isulat ang header bilang Pangalan: value
 #. message or event log entry in the main window; window title in the Link grabber window; group box title in the Options window
 #. Options → Archives: group box title
 #, machine
@@ -2877,6 +3013,10 @@
 #. in Link grabber, where the addresses came from: a page in the browser
 #, machine
 	Links from the browser	Mga link mula sa browser
+#. text in a dialog box
+#. tooltip of Download File Info's Preview button for a ZIP (#1775): it lists the files inside, to download only some of them
+#, machine
+	List the files inside the ZIP and pick those to download	Ilista ang mga file sa loob ng ZIP at piliin ang mga ida-download
 #. text in playlistdlg.rs
 #. button in Download video: go on listing a playlist from where it stopped
 #, machine
@@ -2954,6 +3094,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Looking for your default browser...	Hinahanap ang iyong default na browser...
+#. text in a dialog box
+#. tooltip of Download File Info's greyed Preview button while MDM asks the server whether it can look inside the ZIP (#1775)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Looking inside the ZIP...	Tinitingnan ang loob ng ZIP...
 #. text in the Download video window
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -3130,6 +3275,27 @@
 #. remote control page (on a phone): no pairing code is shown in MDM; "Pair a device" is MDM's button
 #, machine
 	MDM shows no code now. Click Pair a device there first.	Walang code na ipinapakita ang MDM ngayon. I-click muna ang Ipares ang device doon.
+#. text in errors.rs
+#. error installing ffmpeg: the list of builds MDM accepts couldn't be read; {detail} = the technical detail, in English
+#, machine
+	MDM's list of checked ffmpeg builds can't be read ({detail})	Hindi mabasa ang listahan ng MDM ng mga nasuring build ng ffmpeg ({detail})
+#. text in errors.rs
+#. error installing ffmpeg: MDM installs only builds named in a list it publishes, signed with its key, and that list couldn't be downloaded; {error} = why
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	MDM's list of checked ffmpeg builds could not be downloaded: {error}	Hindi ma-download ang listahan ng MDM ng mga nasuring build ng ffmpeg: {error}
+#. text in errors.rs
+#. error installing ffmpeg: the list of builds MDM accepts has none for this computer's system and processor
+#, machine
+	MDM's list of checked ffmpeg builds has none for this computer	Walang build para sa computer na ito ang listahan ng MDM ng mga nasuring build ng ffmpeg
+#. text in errors.rs
+#. error installing ffmpeg: the list of builds MDM accepts is older than one this copy of MDM already used (it never goes back to an older list)
+#, machine
+	MDM's list of checked ffmpeg builds is older than one already used, so ffmpeg wasn't installed	Mas luma ang listahan ng MDM ng mga nasuring build ng ffmpeg kaysa sa nagamit na, kaya hindi na-install ang ffmpeg
+#. text in errors.rs
+#. error installing ffmpeg: the list of builds MDM accepts doesn't carry MDM's own signature
+#, machine
+	MDM's list of checked ffmpeg builds isn't signed by MDM's key, so ffmpeg wasn't installed	Hindi pirmado ng key ng MDM ang listahan ng MDM ng mga nasuring build ng ffmpeg, kaya hindi na-install ang ffmpeg
 #. text in whereis.rs
 #. how far a download's server is, by its round trip (60 to 150 ms)
 #, machine
@@ -3230,6 +3396,10 @@
 #. Monday, as short as a calendar's column head (two letters in English)
 #, machine
 	Mo	Lu
+#. text in a download's progress window
+#. Zip preview's column: when the file was last changed, as the ZIP says
+#, machine
+	Modified	Petsa ng pagbabago
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3283,7 +3453,8 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move between the toolbar, the categories and the download list	Lumipat sa pagitan ng toolbar, mga kategorya at listahan ng mga download
-#. text in the Scheduler window
+#. text in a dialog box; text in the Scheduler window
+#. button in the Columns dialog: move the selected column one place towards the end of the list
 #, machine
 	Move down	Ilipat pababa
 #. text in a dialog box
@@ -3299,7 +3470,9 @@
 #. message or event log entry in the main window
 #, machine
 	Move to queue	Ilipat sa queue
-#. text in the Scheduler window
+#. text in a dialog box; text in the Scheduler window
+#. button in the Columns dialog: move the selected column one place towards the start of the list
+#. tooltip of an icon button in the Scheduler's list of files
 #, machine
 	Move up	Ilipat pataas
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
@@ -3437,6 +3610,10 @@
 #. RSS feeds window, Download rules: make a new rule
 #, machine
 	New rule	Bagong panuntunan
+#. text in the Options window
+#. window title: adding a site rule
+#, machine
+	New site rule	Bagong panuntunan ng site
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3550,6 +3727,10 @@
 #. a magnet link's lookup, after 30 seconds without a peer
 #, machine
 	No peers yet. Few people may share this torrent, or a firewall, a VPN or the network may be blocking BitTorrent.	Wala pang peer. Posibleng kakaunti ang nagbabahagi ng torrent na ito, o may firewall, VPN, o network na humaharang sa BitTorrent.
+#. text in requestedit.rs
+#. a download's Connection settings → Proxy: straight to the server, no proxy
+#, machine
+	No proxy	Walang proxy
 #. text in the Options window
 #, machine
 	No proxy/socks	Walang proxy/socks
@@ -3633,6 +3814,10 @@
 #. RSS feeds window: the selected feed hasn't been fetched yet
 #, machine
 	Not fetched yet	Hindi pa na-fetch
+#. text in the Link grabber window
+#. Link grabber, a link's status: a Hugging Face repository or folder, or a GitHub release or tag, that isn't there. The sentence is the cell's hover tip
+#, machine
+	Not found	Hindi natagpuan
 #. value in a column's filter list in the download list
 #, machine
 	Not in a queue	Wala sa isang queue
@@ -3689,6 +3874,10 @@
 #. text in the Options window
 #, machine
 	Number	Numero
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: check box before the number box; unticked, the number set in Options → Connection applies
+#, machine
+	Number of connections:	Bilang ng mga koneksyon:
 #. checkbox in the Scheduler window
 #, machine
 	Number of retries for each file if downloading failed :	Bilang ng mga pagsubok muli para sa bawat file kung nabigo ang pag-download :
@@ -3724,7 +3913,7 @@
 #. Link grabber, a link's status: the server hasn't the file; {status} is the HTTP code (404)
 #, machine
 	Offline ({status})	Offline ({status})
-#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; text in extracting archives (a download's log, the Archive password window); text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's Properties window; button in the Scheduler window; button in the Add torrent window
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; text in extracting archives (a download's log, the Archive password window); text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's Properties window; button in the Scheduler window; button in the Add torrent window; text in zippreview.rs
 #, machine
 	OK	OK
 #. text in countries.rs
@@ -3778,13 +3967,10 @@
 #. Link grabber, a link's status: the server has the file
 #, machine
 	Online	Online
-#. text in a download's Properties window
-#. tooltip of the greyed Move button in File Properties
+#. text in the Options window
+#. Options → Archives → Link grabber: the hover tip of the types box in "Folders: {depth} levels deep, types: {types}": only a folder's files of these types go into Link grabber; written as the File types page writes them
 #, machine
-	Only a finished download, or one not started yet, can be moved	Ang natapos na download lang, o ang hindi pa nasisimulan, ang puwedeng ilipat
-#. message or event log entry in the main window
-#, machine
-	Only a finished download, or one not started yet, can be moved. Stop it and finish it first.	Ang natapos na download lang, o ang hindi pa nasisimulan, ang puwedeng ilipat. Ihinto muna ito at tapusin.
+	Only a folder's files of these types, written as on the File types page (ISO ZIP R0*). Empty: every type.	Mga file lang ng folder na may ganitong mga uri, nakasulat tulad ng sa page ng Mga uri ng file (ISO ZIP R0*). Walang laman: bawat uri.
 #. text in the Download video window
 #. checkbox in Download video: download only a part of the video or sound; the From and To boxes follow it
 #, machine
@@ -3813,6 +3999,10 @@
 #. checkbox in a dialog box
 #, machine
 	Only while I'm using the computer	Habang ginagamit ko lang ang computer
+#. message or event log entry in the main window
+#. event log entry: the download is files picked inside a ZIP in Zip preview (#1775); {files} how many ("3 files")
+#, machine
+	Only {files} picked inside the ZIP	Pinili lang ang {files} sa loob ng ZIP
 #. button in a dialog box; text in a dialog box; button in a download's Properties window; button in torrentfiles.rs
 #. verb: opens the downloaded file
 #. title of the message when a downloaded file can't be opened
@@ -3893,6 +4083,10 @@
 #. Link grabber: the box that edits the selected package
 #, machine
 	Package	Package
+#. text in a download's progress window
+#. Zip preview's column: the file's size as packed (compressed) inside the ZIP
+#, machine
+	Packed	Naka-pack
 #. text in gallerydlg.rs; text in the Download video window
 #, machine
 	Page address	Address ng pahina
@@ -3981,10 +4175,14 @@
 #. remote control page (on a phone): button: pause a download
 #, machine
 	Pause	I-pause
-#. text in a download's Properties window
+#. text in the download list (sizes, speeds, status)
 #. tooltip of the greyed Move button in File Properties
 #, machine
 	Pause the download first	I-pause muna ang download
+#. tooltip (why a control is greyed) in a download's Properties window
+#. tooltip of File Properties' greyed Connection... button while the download runs
+#, machine
+	Pause the download to change how it connects	I-pause ang download para baguhin kung paano ito kumokonekta
 #. text in a download's progress window
 #. a download's status (state it is in, not a command): stopped for now
 #, machine
@@ -4061,8 +4259,8 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Press keys...	Pindutin ang mga key...
-#. button in a dialog box
-#. verb: open the part already downloaded
+#. button in a dialog box; text in a dialog box
+#. verb: Download File Info's button; for a ZIP, it lists the files inside it to pick those to download (#1775)
 #, machine
 	Preview	I-preview
 #. text in a dialog box
@@ -4105,6 +4303,10 @@
 #. label in the Options window
 #, machine
 	Proxy server address	Address ng proxy server
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: label before the proxy choice
+#, machine
+	Proxy:	Proxy:
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -4165,6 +4367,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Reading the torrent...	Binabasa ang torrent...
+#. text in zippreview.rs
+#. Zip preview, while the ZIP's list of files is being read from its server
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Reading the ZIP's list of files...	Binabasa ang listahan ng mga file ng ZIP...
 #. message or event log entry in the main window
 #. the status strip while Tasks → Import reads a file; {file} is its name
 #. the trailing ... means it is still going on: keep it
@@ -4277,6 +4484,14 @@
 #. group box title: what the * in the address is replaced with (numbers or letters)
 #, machine
 	Replace asterisk to	Palitan ang asterisk ng
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: label above the box of request headers, one a line ("X-Token: abc")
+#, machine
+	Request headers, one a line (Name: value):	Mga header ng kahilingan, isa bawat linya (Pangalan: value):
+#. text in a dialog box
+#. button in the Columns dialog: put the columns back as they first were (order, widths, all shown)
+#, machine
+	Reset	I-reset
 #. text in crashui.rs
 #. crash report window button: start MDM again
 #, machine
@@ -4402,7 +4617,7 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Save To...	I-save Sa...
-#. text in a download's progress window; text in a download's Properties window
+#. text in preview.rs; text in a download's progress window; text in a download's Properties window
 #, machine
 	Save To:	I-save Sa:
 #. text in the Batch download window; text in the Link grabber window; text in rssdlg.rs
@@ -4444,7 +4659,7 @@
 #. the preview pane when no download is selected, under its title
 #, machine
 	Select a download to see its picture and details here.	Pumili ng download para makita ang larawan at mga detalye nito rito.
-#. button in playlistdlg.rs; button in the Add torrent window; text in torrentfiles.rs
+#. button in playlistdlg.rs; button in the Add torrent window; text in torrentfiles.rs; text in zippreview.rs
 #. button in Download video for a playlist: tick every video
 #, machine
 	Select all	Piliin lahat
@@ -4671,6 +4886,10 @@
 #, machine
 	Sign in in the browser	Mag-sign in sa browser
 #. text in the Options window
+#. Options → Accounts (Android): where the debrid accounts' sign-ins and the other passwords are kept (encrypted with a key held by Android's keystore)
+#, machine
+	Sign-ins and passwords are kept encrypted with a key in Android's keystore.	Naka-encrypt ang mga sign-in at password gamit ang key sa Android keystore.
+#. text in the Options window
 #. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (the macOS login keychain)
 #, machine
 	Sign-ins and passwords are kept in the macOS keychain.	Ang mga pag-sign in at password ay pinananatili sa macOS keychain.
@@ -4722,9 +4941,23 @@
 #. a country's name (where a download's server is)
 #, machine
 	Sint Maarten	Sint Maarten
+#. text in the Options window
+#. Site rules: column title: the site pattern
+#, machine
+	Site	Site
 #. checkbox in the Find window
 #, machine
 	Site name/Download link/Parent web page/Referer	Pangalan ng site/Link ng download/Parent web page/Referer
+#. window title in the Options window; text in the Options window
+#. window title: per-site settings (User-Agent, headers, connections, the browser-like connection) by site pattern
+#. Site rules window: the list's name for screen readers
+#, machine
+	Site rules	Mga panuntunan ng site
+#. text in the Options window
+#. Options → Connection: button: opens the per-site settings (User-Agent, headers, connections)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Site rules...	Mga panuntunan ng site...
 #. text in the Options window
 #. column title: the site (and path) a login is for
 #, machine
@@ -4732,6 +4965,10 @@
 #. text in the Options window
 #, machine
 	Site/path:	Site/path:
+#. text in the Options window
+#. Site rule: label before the site pattern box (example.com, *.example.com)
+#, machine
+	Site:	Site:
 #. text in the Options window
 #. tab title: user names and passwords for sites
 #, machine
@@ -4751,7 +4988,7 @@
 #. the video's file size is not known
 #, machine
 	size unknown	hindi alam ang laki
-#. text in a download's Properties window
+#. text in preview.rs; text in a download's Properties window
 #, machine
 	Size:	Laki:
 #. text in a download's progress window; text in torrentfiles.rs
@@ -4864,6 +5101,10 @@
 #. tooltip on the disabled Rename box when the file is one part of a split archive (.part1.rar, .7z.001…)
 #, machine
 	Split archive volumes keep their names for extraction	Pinapanatili ng mga bahagi ng split archive ang pangalan para sa pag-extract
+#. text in the Download video window
+#. checkbox in Download video: split the video into one file per chapter (the whole video is kept too)
+#, machine
+	Split into chapters	Hatiin sa mga kabanata
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -4885,6 +5126,11 @@
 #. checkbox in the Options window
 #, machine
 	Start downloading immediately while displaying "Download File Info" dialog	Simulan agad ang pag-download habang ipinapakita ang dialog na "Impormasyon ng File ng Download"
+#. text in a dialog box
+#. Download File Info, on hover over the number of files picked in Zip preview (#1775): {files} how many ("3 files"), {size} their size together, {folder} the folder they go into (named after the archive)
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	Start downloads only the {files} picked in the ZIP ({size}), into {folder}	Simulan ang mga download lang ng {files} na pinili sa ZIP ({size}), sa {folder}
 #. text in the tray icon's menu
 #, machine
 	Start main download queue	Simulan ang pangunahing queue ng download
@@ -4940,7 +5186,7 @@
 #. column title: the download's state
 #, machine
 	Status	Status
-#. text in a download's Properties window
+#. text in preview.rs; text in a download's Properties window
 #. label before the download's state
 #, machine
 	Status:	Status:
@@ -4952,6 +5198,10 @@
 #. remote control page (on a phone): button: stop a queue
 #, machine
 	Stop	Ihinto
+#. text in a download's progress window
+#. button in the progress window of a download that never ends by itself (an internet radio, a camera feed: no size, can't be resumed): stop it and keep what has arrived as the finished file
+#, machine
+	Stop and keep	Ihinto at panatilihin
 #. text in a download's progress window
 #. button in a live stream's progress window: stop recording it and keep what was recorded as a video file
 #, machine
@@ -5084,10 +5334,6 @@
 #. a country's name (where a download's server is)
 #, machine
 	Tanzania	Tanzania
-#. text in the Options window
-#. \\n starts a new line: break lines where they fit the translation
-#, machine
-	Tasks → Link grabber, or the browser's "Download all links": a split\narchive's volumes are one package, the other links of a page another.	Mga Gawain → Link grabber, o ang "I-download lahat ng link" ng browser: ang\nmga volume ng split archive ay isang package, ang iba pang link ng isang\npage ay iba.
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Tell a friend	Sabihin sa isang kaibigan
@@ -5301,6 +5547,10 @@
 #, machine
 	The download queue is done.	Tapos na ang download queue.
 #. text in errors.rs
+#. error installing ffmpeg: the file downloaded isn't the build named in the list of builds MDM accepts (its checksum differs), so it was thrown away
+#, machine
+	the downloaded ffmpeg isn't the build MDM's list of checked builds names, so it wasn't installed	Ang na-download na ffmpeg ay hindi ang build na pinangalanan sa listahan ng MDM ng mga nasuring build, kaya hindi ito na-install
+#. text in errors.rs
 #, machine
 	the downloaded program doesn't match its signed checksum	hindi tumutugma ang na-download na program sa nilagdaang checksum nito
 #. message or event log entry in the main window
@@ -5335,6 +5585,10 @@
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
 	The file does NOT match ({algorithm})	HINDI tumutugma ang file ({algorithm})
+#. text in errors.rs
+#. why a file taken out of a ZIP on its server failed (#1775): its bytes aren't what the ZIP's list of files says (its size or its CRC-32 checksum)
+#, machine
+	the file in the ZIP doesn't match the ZIP's list of files (its size or checksum): download the whole archive	hindi tumutugma ang file sa ZIP sa listahan ng mga file ng ZIP (ang laki o checksum nito): i-download ang buong archive
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
@@ -5403,6 +5657,10 @@
 #. an error: the network adapter chosen in Options (a VPN's, usually) is off or gone; {adapter} its name
 #, machine
 	the network adapter {adapter} is not connected	hindi nakakonekta ang network adapter na {adapter}
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: the number of connections typed is out of range; {max} is 32 (or 128)
+#, machine
+	The number of connections must be from 1 to {max}	Ang bilang ng mga koneksyon ay dapat mula 1 hanggang {max}
 #. text in torrent_ownership.rs
 #. error when a torrent's output folder path cannot be used
 #, machine
@@ -5464,6 +5722,10 @@
 #. text in errors.rs
 #, machine
 	the server can't send parts of the file, so it can't be resumed	hindi makapagpadala ang server ng mga bahagi ng file, kaya hindi ito maipagpatuloy
+#. text in errors.rs
+#. Zip preview (#1775): the server doesn't send parts of a file (HTTP ranges), so MDM can't fetch only some files from inside a ZIP; the whole archive still downloads
+#, machine
+	the server can't send parts of the ZIP, so its files can't be downloaded one by one: download the whole archive	hindi makapagpadala ang server ng mga bahagi ng ZIP, kaya hindi mada-download nang paisa-isa ang mga file nito: i-download ang buong archive
 #. text in errors.rs
 #, machine
 	the server did not answer in time	hindi sumagot ang server sa oras
@@ -5601,9 +5863,17 @@
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	The update is open in your system's package installer.	Bukas ang update sa installer ng package ng iyong system.
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: the User-Agent typed holds a control character
+#, machine
+	The User-Agent has a character a header can't hold	Ang User-Agent ay may character na hindi kayang hawakan ng header
 #. text in a download's Properties window
 #, machine
 	The web page from which this file was obtained:	Ang web page kung saan nakuha ang file na ito:
+#. text in errors.rs
+#. why a file can't be taken out of a ZIP on its server (#1775): the ZIP was replaced on the server after its files were listed; Zip preview is the window that lists them
+#, machine
+	the ZIP changed on the server since its files were listed: open its Zip preview again	nagbago ang ZIP sa server mula nang ilista ang mga file nito: buksan muli ang Zip preview nito
 #. message or event log entry in the main window
 #. the kind of file View → Theme → Add a theme file lists: MDM's themes (TOML, JSON), Base16 schemes (YAML) and pywal's colors.json
 #, machine
@@ -5637,6 +5907,10 @@
 #. text in helpers.rs
 #, machine
 	They keep downloading if you close this window.	Patuloy silang magda-download kung isasara mo ang window na ito.
+#. text in errors.rs
+#. error when opening a .torrent file whose piece size or list of pieces doesn't fit its files (damaged, or made wrong); it isn't added
+#, machine
+	this .torrent file is damaged: its pieces don't match its files	nasira ang .torrent file na ito: hindi tugma ang mga piraso nito sa mga file nito
 #. text in a dialog box
 #, machine
 	This address is already in the list of downloads:	Ang address na ito ay nasa listahan na ng mga download:
@@ -5683,10 +5957,26 @@
 #, machine
 	This device's name	Pangalan ng device na ito
 #. message or event log entry in the main window
+#. the message when a file picked in View → Font isn't a TrueType or OpenType font MDM can read
+#, machine
+	This file can't be used as a font.	Ang file na ito ay hindi maaaring gamitin bilang isang font.
+#. message or event log entry in the main window
 #. {error} is why, in English (a file that isn't a theme or a colour scheme, a colour missing)
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	This file can't be used as a theme: {error}	Hindi magagamit ang file na ito bilang tema: {error}
+#. text in errors.rs
+#. why a file can't be taken out of a ZIP on its server (#1775): it is encrypted (password-protected) in the ZIP
+#, machine
+	this file is encrypted in the ZIP: download the whole archive and open it with its password	naka-encrypt ang file na ito sa ZIP: i-download ang buong archive at buksan ito gamit ang password nito
+#. text in errors.rs
+#. why a file can't be taken out of a ZIP on its server (#1775): the ZIP no longer holds it
+#, machine
+	this file is no longer in the ZIP on the server	wala na ang file na ito sa ZIP sa server
+#. text in errors.rs
+#. why a file can't be taken out of a ZIP on its server (#1775): it is compressed with a method MDM doesn't unpack there; {method} is the method's name (BZIP2, LZMA, Deflate64…)
+#, machine
+	this file is packed in a way MDM can't unpack from the server ({method}): download the whole archive	naka-pack ang file na ito sa paraang hindi kayang i-unpack ng MDM mula sa server ({method}): i-download ang buong archive
 #. text in remote.rs
 #. remote control page (on a phone): the file chosen is too large for a .torrent file
 #, machine
@@ -5721,6 +6011,10 @@
 #. a check of Test browser integration: a portable copy can't be connected
 #, machine
 	This is the installed copy, not a portable one	Ito ang naka-install na kopya, hindi isang portable
+#. text in errors.rs
+#. Zip preview (#1775): the address isn't a ZIP archive whose list of files MDM can read on the server
+#, machine
+	this isn't a ZIP archive MDM can look inside on the server: download the whole file	hindi ito isang ZIP archive na kayang tingnan ng MDM sa server: i-download ang buong file
 #. text in playlistdlg.rs
 #. in Download video, a playlist or channel that lists no video
 #, machine
@@ -5735,6 +6029,7 @@
 	This name is reserved by Windows	Nakareserba sa Windows ang pangalang ito
 #. tooltip (why a control is greyed) in the Download video window
 #. why "Embed chapters" is greyed: ffmpeg (a helper program) is not installed
+#. why "Split into chapters" is greyed: ffmpeg (a helper program) is not installed
 #. why Part is greyed in Download video: ffmpeg (a helper program) is not installed
 #. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
 #, machine
@@ -5756,6 +6051,10 @@
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	this program isn't {name}	hindi {name} ang program na ito
+#. text in requestedit.rs
+#. a download's Connection settings → Proxy: the proxy typed in the box beside
+#, machine
+	This proxy:	Ang proxy na ito:
 #. text in the Options window
 #. Options → General: shown when the chosen global shortcut is already registered by another program (#558)
 #, machine
@@ -5785,7 +6084,7 @@
 #. torrent start needs explicit write permission; {file} is the first existing file without a matching grant
 #, machine
 	This torrent needs permission to use {file} before it can start.	Kailangan ng torrent na ito ng pahintulot na gamitin ang {file} bago ito masimulan.
-#. message or event log entry in the main window; text in a download's Properties window
+#. message or event log entry in the main window; text in the download list (sizes, speeds, status)
 #. shown when Move or Rename is refused: a torrent saved straight in Save to shares that folder with other files
 #, machine
 	This torrent shares its destination folder	Ginagamit ng torrent na ito ang destinasyon nitong folder
@@ -5797,6 +6096,18 @@
 #. the Download video window: the video needs the user to be signed in
 #, machine
 	This video needs you to be signed in. Use the Download video button over it in your browser, which passes your sign-in on, or choose your browser in Options → Sites Logins → Cookies for video sites.	Kailangan mong naka-sign in para sa video na ito. Gamitin ang button na I-download ang video sa ibabaw nito sa iyong browser para maipasa ang iyong pag-sign in, o piliin ang iyong browser sa Mga Opsyon → Mga pag-login sa site → Mga cookie para sa mga site ng video.
+#. text in errors.rs
+#. Zip preview (#1775): a ZIP split over several files (volumes): its files can't be fetched one by one
+#, machine
+	this ZIP is split over several files, so its files can't be downloaded one by one: download every part	nahati ang ZIP na ito sa ilang file, kaya hindi mada-download nang paisa-isa ang mga file nito: i-download ang bawat bahagi
+#. text in errors.rs
+#. Zip preview (#1775): the ZIP's list of files (its table of contents) doesn't add up
+#, machine
+	this ZIP's list of files is damaged: download the whole archive	sira ang listahan ng mga file ng ZIP na ito: i-download ang buong archive
+#. text in errors.rs
+#. Zip preview (#1775): the ZIP's list of files (its table of contents) is larger than MDM reads from a server
+#, machine
+	this ZIP's list of files is too large to read from the server: download the whole archive	napakalaki ng listahan ng mga file ng ZIP na ito para basahin mula sa server: i-download ang buong archive
 #. text in errors.rs
 #. a download's error: the address is a site's web page that needs a browser, not the file; {site} = the site's name (gofile)
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
@@ -5828,6 +6139,11 @@
 #. tooltip on the Scheduler's "Wake the computer to run this queue" while "Start download at" is off
 #, machine
 	Tick "Start download at" first: the computer is woken for the start time	Lagyan muna ng tsek ang "Simulan ang pag-download sa": ginigising ang computer para sa oras ng pagsisimula
+#. text in zippreview.rs
+#. Zip preview, under the list: {files} how many files are ticked ("3 files"), {size} their size together ("12.4 MB")
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	Ticked: {files}, {size}	Naka-tick: {files}, {size}
 #. text in a download's progress window; text in the Scheduler window
 #, machine
 	Time left	Natitirang oras
@@ -5930,6 +6246,10 @@
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	Try again in an hour, or download {name} yourself and choose it in {helpers} → {other}.	Subukang muli sa loob ng isang oras, o i-download ang {name} nang mag-isa at piliin ito sa {helpers} → {other}.
+#. text in the Link grabber window
+#. Link grabber, a link's status: the remedy from the failure's sentence, for a site (Hugging Face, GitHub) whose limit of requests without an account is reached. The sentence is the cell's hover tip
+#, machine
+	Try again later	Subukan muli sa ibang pagkakataon
 #. text in errors.rs
 #. {name} = a file name (keep the braces as they are)
 #, machine
@@ -5995,6 +6315,10 @@
 #. why Options → Remote → Pair a device... is greyed
 #, machine
 	Turn on the remote control first.	I-on muna ang remote control.
+#. text in the Add torrent window
+#. Torrent settings, under the public tracker list's address: turning the switch off doesn't take away the trackers it added to torrents
+#, machine
+	Turned off, the trackers already added stay.	Kapag naka-off, mananatili ang mga tracker na nadagdag na.
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -6018,6 +6342,10 @@
 #. why Batch download's OK is greyed
 #, machine
 	Type a number in From and in To	Mag-type ng numero sa Mula at sa Hanggang
+#. text in the Options window
+#. Site rule: OK with no site, or one with a space in it
+#, machine
+	Type a site, such as example.com or *.example.com	Mag-type ng site, tulad ng example.com o *.example.com
 #. text in the settings
 #. Options → DNS: no server address was typed
 #, machine
@@ -6034,6 +6362,10 @@
 #. Options → DNS over TLS: the server's name (as its certificate shows it) is missing
 #, machine
 	Type the name the server's certificate shows.	I-type ang pangalan na ipinapakita ng sertipiko ng server.
+#. text in requestedit.rs
+#. a download's Connection settings: the proxy typed isn't an address MDM takes; the examples stay as they are
+#, machine
+	Type the proxy as host:port, http://host:port or socks5://host:port	I-type ang proxy bilang host:port, http://host:port o socks5://host:port
 #. text in the Scheduler window
 #. why OK is greyed when naming a new queue
 #, machine
@@ -6126,6 +6458,11 @@
 #, machine
 	Update now	I-update ngayon
 #. text in helpers.rs
+#. Helpers: the Update button's name for a screen reader; {name} = the helper (yt-dlp, ffmpeg, gallery-dl, Node.js)
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Update {name}	I-update ang {name}
+#. text in helpers.rs
 #. Helpers: a program the person chose, or the system's copy: MDM doesn't update it, the person (or their package manager) does
 #, machine
 	Updated by you	Ikaw ang nag-update
@@ -6148,6 +6485,17 @@
 #. text in the Options window
 #, machine
 	Use advanced browser integration	Gumamit ng advanced na integrasyon ng browser
+#. text in helpers.rs
+#. Helpers: the "Use another program..." button's name for a screen reader, on the JavaScript runtime's row (Node.js, Deno, QuickJS or Bun)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Use another program as the JavaScript runtime...	Gumamit ng ibang program bilang JavaScript runtime...
+#. text in helpers.rs
+#. Helpers: the "Use another program..." button's name for a screen reader; {name} = the helper (yt-dlp, ffmpeg, gallery-dl)
+#. {name} = a file name (keep the braces as they are)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Use another program for {name}...	Gumamit ng ibang program para sa {name}...
 #. text in errors.rs; button in helpers.rs; text in the Options window
 #. Video helpers: button: pick a program (yt-dlp or ffmpeg) already on the computer
 #. Options → Archives: button: pick the 7-Zip command line program to extract 7z and RAR archives with (PeaZip's own 7z.exe, a portable copy), instead of the one MDM finds
@@ -6166,10 +6514,16 @@
 #. checkbox in the Options window
 #, machine
 	Use FTP in PASV mode	Gumamit ng FTP sa PASV mode
-#. button in helpers.rs
+#. text in helpers.rs
 #. Video helpers: button: go back to the copy MDM downloads and checks itself
 #, machine
 	Use MDM's own copy	Gamitin ang sariling kopya ng MDM
+#. text in helpers.rs
+#. Helpers: the "Use MDM's own copy" button's name for a screen reader; {name} = the helper (yt-dlp, ffmpeg, gallery-dl)
+#. Helpers: the "Use MDM's own copy" button's name for a screen reader; {name} = the helper (Node.js)
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Use MDM's own copy of {name}	Gamitin ang sariling kopya ng {name} ng MDM
 #. checkbox in the Options window
 #. Options → Sites Logins: checkbox under Cookies for video sites: yt-dlp also reads the person's own yt-dlp config file
 #, machine
@@ -6218,8 +6572,20 @@
 #, machine
 	User names and passwords for servers/sites	Mga username at password para sa mga server/site
 #. text in the Options window
+#. Site rules: column title: the User-Agent the rule sends (the name a browser or program gives itself to sites)
+#, machine
+	User-Agent	User-Agent
+#. text in the Options window
 #, machine
 	User-Agent for manually added downloads:	User-Agent para sa mga manual na idinagdag na download:
+#. text in the Options window
+#. Options → Connection: beside the Site rules... button: what it sets
+#, machine
+	User-Agent, headers and connections by site	User-Agent, mga header at koneksyon ayon sa site
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: label before the User-Agent box (the name the browser or program gives itself to sites)
+#, machine
+	User-Agent:	User-Agent:
 #. text in the Options window
 #, machine
 	User:	User:
@@ -6471,7 +6837,7 @@
 #. a country's name (where a download's server is)
 #, machine
 	Yemen	Yemen
-#. button in a dialog box; text in a download's progress window
+#. button in a dialog box; text in the Options window; text in a download's progress window
 #, machine
 	Yes	Oo
 #. button in helpers.rs
@@ -6591,6 +6957,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Zimbabwe	Zimbabwe
+#. text in zippreview.rs
+#. title of the window that lists the files inside a ZIP on its server, to tick those to download (#1775)
+#, machine
+	Zip preview	Zip preview
 #. text in the Options window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
@@ -6672,14 +7042,14 @@
 #. text in the Checksum window
 #, machine
 	{file} could not be read to check it	Hindi mabasa ang {file} para masuri ito
-#. text in relocate.rs
-#. why a download could not be moved (after "The file could not be moved: "): a file of that name came into the new folder meanwhile; {file} is its name
-#, machine
-	{file} is already there	Nandoon na ang {file}
 #. message or event log entry in the main window
 #. a message after a download (Redownload) was to replace the file it had: {file} = that file's name, still there; {new} = the name the new copy was saved under, in the same folder
 #, machine
 	{file} could not be replaced: another program may have it open. The new download is saved beside it as {new}, and both files are kept.	Hindi mapalitan ang {file}: maaaring bukas ito sa ibang programa. Ang bagong download ay na-save sa tabi nito bilang {new}, at parehong pinanatili ang mga file.
+#. text in relocate.rs
+#. why a download could not be moved (after "The file could not be moved: "): a file of that name came into the new folder meanwhile; {file} is its name
+#, machine
+	{file} is already there	Nandoon na ang {file}
 #. text in a dialog box
 #, machine
 	{file} is no longer where it was saved (moved or deleted). Redownload, in its right-click menu, gets it again.	Wala na ang {file} sa pinag-save-an nito (inilipat o na-delete). Kunin itong muli sa I-redownload, sa right-click menu nito.
@@ -6703,6 +7073,11 @@
 #. said after Delete with files when some files stayed on the disk; {file} is the download's name; the files' paths follow it
 #, machine
 	{file}: these files stayed on the disk, because MDM didn't create them or another download uses them:	{file}: nanatili ang mga file na ito sa disk, dahil hindi ginawa ng MDM ang mga ito o ginagamit ang mga ito ng ibang download:
+#. message or event log entry in the main window; text in the Link grabber window
+#. Link grabber's Source line, after where the links came from: a folder (an FTP folder, a web server's "Index of" page) held more files or subfolders than Link grabber lists; {folder} is its name, {n} how many of its files are listed (10,000)
+#. {n} = a number (keep the braces as they are)
+#, machine
+	{folder}: only its first {n} files	{folder}: ang una lang nitong {n} file
 #. text in a download's progress window
 #. {have} and {total} = numbers of pieces; {size} = one piece's size
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
@@ -6831,6 +7206,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 	{n} (auto)	{n} (awtomatiko)
+#. text in zippreview.rs
+#. Zip preview, under the list: {n} files of the ZIP aren't listed because MDM can't take them out on their own: encrypted ones, ones packed in a way MDM can't unpack from the server, links, or names that would leave their folder; the whole archive still downloads
+#. {n} = a number (keep the braces as they are)
+#, machine
+	{n} more can't be taken out on their own (encrypted, packed another way, or links)	{n} pa ang hindi maaaring kunin nang mag-isa (naka-encrypt, naka-pack sa ibang paraan, o mga link)
 #. text in playlistdlg.rs
 #. in Download video for a playlist: how many videos are ticked, of how many
 #. {n} = a number (keep the braces as they are)
@@ -6840,6 +7220,10 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 	{n} of {total} selected	{n} ng {total} napili
+#. text in the Link grabber window
+#. Link grabber's Source line: a gated Hugging Face repository ({package}: "owner/name"), whose files download only for an account that accepted its terms: where to give the account's access token (Options → Sites Logins, keep the names as the Options window shows them)
+#, machine
+	{package} is gated: accept its terms on Hugging Face, then add your access token in Options → Sites Logins (site huggingface.co, the token as its password)	May limitasyon sa access ang {package}: tanggapin ang mga tuntunin nito sa Hugging Face, pagkatapos ay idagdag ang access token sa Options → Sites Logins (site huggingface.co, ang token bilang password nito)
 #. text in the download list (sizes, speeds, status)
 #. a torrent's status while the user's debrid service downloads it, before MDM gets its files; {service} the service ("Real-Debrid"), {percent} how far it is ("45%")
 #, machine
@@ -6943,6 +7327,31 @@
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
 #, machine
 	{site} didn't give the file this time: try again in a moment	Hindi ibinigay ng {site} ang file sa pagkakataong ito: subukang muli maya-maya
+#. text in the Link grabber window
+#. Link grabber, the hover tip of a Hugging Face repository's or GitHub release's status; {site} is "Hugging Face" or "GitHub"
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+	{site} has no such repository, folder, release or tag, or it is private.	Walang ganoong repository, folder, release o tag ang {site}, o pribado ito.
+#. text in the Link grabber window
+#. Link grabber, a Hugging Face repository's or GitHub release's status (the cell's hover tip): the site ({site}: "Hugging Face", "GitHub") lets only so many requests through from a computer without an account; {n} minutes to wait
+#. {site} = a web site's name such as "example.com"; {n} = a number (keep the braces as they are)
+#, machine
+	{site} lets only so many requests through without an account: try again in {n} minute.	Nilimitahan ng {site} ang mga kahilingan nang walang account: subukan muli pagkalipas ng {n} minuto.
+#. text in the Link grabber window
+#. Link grabber, a Hugging Face repository's or GitHub release's status (the cell's hover tip): the site ({site}) lets only so many requests through without an account, and didn't say for how long
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+	{site} lets only so many requests through without an account: try again later.	Nilimitahan ng {site} ang mga kahilingan nang walang account: subukan muli mamaya.
+#. text in the Link grabber window
+#. Link grabber, a Hugging Face repository's or GitHub release's status: the site ({site}) refused to list its files; {status} is the HTTP code (403)
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+	{site} refused to list its files ({status}).	Tumanggi ang {site} na ilista ang mga file nito ({status}).
+#. text in the Link grabber window
+#. Link grabber, a Hugging Face repository's or GitHub release's status: the site's ({site}) answer wasn't what it sends (changed, cut, or not its own)
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+	{site}'s list of files couldn't be read.	Hindi mabasa ang listahan ng mga file ng {site}.
 #. text in a download's Properties window
 #. {size} = a file size such as "4.2 MB"; {bytes} = a number of bytes (keep the braces as they are)
 #, machine
@@ -7018,10 +7427,14 @@ column	Peers	Mga Peer
 #. column title: one letter for Queue (the column is narrow)
 #, machine
 column	Q	Q
-#. column title in the main window; column title in the download list
+#. column title in the main window; column title in a dialog box; column title in the download list
 #. tooltip of the narrow "Q" column's title
 #, machine
 column	Queue	Queue
+#. column title in the download list in the download list
+#. column title: the folder the download is saved in
+#, machine
+column	Save To	Lokasyon ng pag-save
 #. column title in the download list in the download list
 #. column title: what a torrent has sent to peers against what it took
 #, machine
@@ -7267,10 +7680,6 @@ extension	Downloads from {site} stay with the browser	Mananatili sa browser ang 
 #, machine
 extension	Downloads go to {address}	Napupunta ang mga download sa {address}
 #. text in the browser extension
-#. second line of the tooltip of the download button over a video: dragging its dotted grip moves it along the video's edge
-#, machine
-extension	Drag the dots to move it along the edge	I-drag ang mga tuldok para ilipat ito sa gilid
-#. text in the browser extension
 #. second line of the tooltip of the download button over a video: dragging its dotted grip moves it to another corner or edge of the video, or outside the video next to it
 #, machine
 extension	Drag the dots to move it to another corner, or outside the video	I-drag ang mga tuldok para ilipat ito sa ibang sulok, o sa labas ng video
@@ -7295,6 +7704,14 @@ extension	File deleted or moved	Na-delete o nailipat ang file
 #. label before the row of chips (All, MP4, WEBM, M4A...) that filters the list of qualities by file type in the menu of the download button over a video; short
 #, machine
 extension	File type	Uri ng file
+#. text in the browser extension
+#. button in the This page tab of the toolbar button's popup: look for the pictures of the current web page (only when clicked); short
+#, machine
+extension	Find images	Hanapin ang mga larawan
+#. text in the browser extension
+#. in the This page tab of the toolbar button's popup, before the Find images button; Link grabber is the name of the app's window that lists links to tick before downloading them
+#, machine
+extension	Find this page's pictures at the largest size it lists, then send the ones you want to Link grabber.	Hanapin ang mga larawan ng page na ito sa pinakamalaking sukat na nakalista, pagkatapos ay ipadala ang mga gusto mo sa Link grabber.
 #. text in the browser extension
 #. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) after Clear finished
 #, machine
@@ -7331,6 +7748,14 @@ extension	Hold Alt while clicking a link to let the browser download it.	Pinduti
 #. link under a connection problem in the toolbar button's popup, to the help page's section for it
 #, machine
 extension	How to fix it	Paano ito ayusin
+#. text in the browser extension
+#. what a screen reader says for the row of buttons that keep or leave out each type of picture (JPEG, PNG, WEBP...), in the This page tab of the toolbar button's popup
+#, machine
+extension	Image types	Mga uri ng larawan
+#. text in the browser extension
+#. heading in the This page tab of the toolbar button's popup, over the part that finds the pictures of the current web page and sends them to the app
+#, machine
+extension	Images on this page	Mga larawan sa page na ito
 #. text in the browser extension
 #. pairing failed for another reason
 #, machine
@@ -7493,6 +7918,10 @@ extension	No download's name or address has “{words}”.	Walang pangalan o add
 #, machine
 extension	No downloads yet	Wala pang download
 #. text in the browser extension
+#. shown in the This page tab of the toolbar button's popup when Find images found no picture on the current web page
+#, machine
+extension	No images found on this page.	Walang nakitang larawan sa page na ito.
+#. text in the browser extension
 #. shown in the toolbar button's popup when the current web page hasn't loaded any video, sound or stream yet
 #, machine
 extension	No video or sound found on this page yet. Play it, then open this again.	Walang video o tunog na nakita sa pahinang ito. I-play ito, pagkatapos ay buksan muli ito.
@@ -7561,6 +7990,10 @@ extension	Options...	Mga Opsyon...
 #. in the list under the download button over a video, after a sound-only line's bitrate: the sound as the site sends it, not converted (e.g. '128 kbps · original'); lower case; one word
 #, machine
 extension	original	orihinal
+#. text in the browser extension
+#. button among the picture types (JPEG, PNG, WEBP...) in the This page tab of the toolbar button's popup: the pictures of any other or unknown type; short
+#, machine
+extension	Other	Iba pa
 #. text in the browser extension
 #. button: pair this browser with the other MDM using the code
 #, machine
@@ -7647,6 +8080,10 @@ extension	Send downloads through this browser's proxy or VPN extension	Ipadala a
 #, machine
 extension	Send downloads to	Ipadala ang mga download sa
 #. text in the browser extension
+#. button in the This page tab of the toolbar button's popup: send the selected pictures to the app's Link grabber window, where the user ticks which to download
+#, machine
+extension	Send to Link grabber	Ipadala sa Link grabber
+#. text in the browser extension
 #. on the download button over a video right after it was clicked, while the download goes to the app; MDM is Mister Download Manager's short name, keep it as it is; short
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -7655,6 +8092,10 @@ extension	Sending to MDM...	Ipinapadala sa MDM...
 #. under the extension's name in the toolbar button's popup: downloads go to another Mister Download Manager, a server, at this address; short
 #, machine
 extension	Sending to {server}	Ipinapadala sa {server}
+#. text in the browser extension
+#. shown in the This page tab of the toolbar button's popup after the pictures were sent to the app's Link grabber window
+#, machine
+extension	Sent to Link grabber: tick the ones to download there.	Naipadala na sa Link grabber: lagyan ng tsek doon ang mga ida-download.
 #. text in the browser extension
 #. shown briefly on the download button after it was clicked; keep the name Mister Download Manager as it is
 #, machine
@@ -7686,6 +8127,23 @@ extension	Show in folder	Buksan sa folder
 #. screen readers' name of a download's Show in folder button in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads)
 #, machine
 extension	Show {file} in folder	Buksan ang folder ng {file}
+#. text in the browser extension
+#. in the This page tab of the toolbar button's popup, while a smallest width or height is set: how many of the selected pictures the page gives no size for (they are kept, not left out)
+#. {n} = a number (keep the braces as they are)
+#, machine
+extension	Size not given, kept: {n}	Hindi alam ang laki, pinanatili: {n}
+#. text in the browser extension
+#. what a screen reader says for the box of the smallest height of the pictures to keep, in the This page tab of the toolbar button's popup
+#, machine
+extension	Smallest height, in pixels	Pinakamaliit na taas, sa pixel
+#. text in the browser extension
+#. in the This page tab of the toolbar button's popup, before two boxes for the smallest width and height of the pictures to keep: 'Smallest size, in pixels [ ] × [ ]'; pictures smaller than that are left out; short
+#, machine
+extension	Smallest size, in pixels	Pinakamaliit na laki, sa pixel
+#. text in the browser extension
+#. what a screen reader says for the box of the smallest width of the pictures to keep, in the This page tab of the toolbar button's popup
+#, machine
+extension	Smallest width, in pixels	Pinakamaliit na lapad, sa pixel
 #. text in the browser extension
 #. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app isn't running
 #, machine
@@ -7719,6 +8177,10 @@ extension	That didn't work. Try again.	Hindi ito gumana. Subukang muli.
 #. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when a button's download was removed meanwhile
 #, machine
 extension	That download is no longer in the list.	Wala na sa listahan ang download na iyon.
+#. text in the browser extension
+#. shown in the This page tab of the toolbar button's popup when Find images can't look into the current page (a page of the browser's own, an add-on store)
+#, machine
+extension	The browser doesn't let add-ons read this page.	Hindi pinapayagan ng browser ang mga add-on na basahin ang page na ito.
 #. text in the browser extension
 #. in the toolbar button's popup, on a site where the Chrome Web Store's copy of the extension shows no download button; Help is the link at the bottom of the popup
 #, machine
@@ -7855,6 +8317,10 @@ extension	{file} removed from the list	Inalis ang {file} sa listahan
 #. question in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) before a download's file is deleted
 #, machine
 extension	{file} will be deleted from your computer, and the download taken off the list. This can't be undone.	Ide-delete ang {file} mula sa iyong computer, at aalisin ang download sa listahan. Hindi ito mababawi.
+#. text in the browser extension
+#. in the This page tab of the toolbar button's popup: how many of the pictures found pass the size and type filters, and will be sent
+#, machine
+extension	{shown} of {total} selected	{shown} sa {total} ang napili
 #. text in the browser extension
 #. a running download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): the time left, as a clock (minutes:seconds)
 #. {time} = a time of day (keep the braces as they are)
@@ -7998,6 +8464,12 @@ menu	&Automatic	&Awtomatiko
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Classic	&Classic
+#. menu command in the main window
+#. header menu: opens the dialog that chooses the list's columns
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	&Columns...	Mga &column...
 #. menu command in standard windows
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -8018,6 +8490,11 @@ menu	&Download Now	&I-download Ngayon
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Exit	&Lumabas
+#. menu command in the main window
+#. View menu: submenu choosing the interface's own font and text size
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Font	&Font
 #. menu command in the main window
 #. verb: load downloads from a file
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
@@ -8097,6 +8574,11 @@ menu	&Stop All	&Ihinto Lahat
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Stop Download	&Ihinto ang Download
+#. menu command in the main window
+#. View → Font: the computer's own font, the default (Segoe UI on Windows)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&System font	Font n&g system
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -8243,6 +8725,12 @@ menu	C&ustomize URL List...	I-c&ustomize ang Listahan ng URL...
 #, machine
 menu	Check for &updates...	Tingnan kung may mga &update...
 #. menu command in the main window
+#. View → Font: a TrueType or OpenType font file on disk to draw the interface's text in
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Choose a font &file...	&Pumili ng font file...
+#. menu command in the main window
 #. View → Theme: MDM's own look, the default (IDM's layout, Windows 11's controls)
 #, machine
 menu	Classic	Klasiko
@@ -8331,10 +8819,6 @@ menu	Find Next (F3)	Hanapin ang Susunod (F3)
 #. right-click → Torrent, a choice with a check mark (with Download in order): each file's first and last pieces first, which a video player needs to start
 #, machine
 menu	First and last pieces first	Unahin ang una at huling mga piraso
-#. menu command in the main window
-#. noun: the list's font (submenu)
-#, machine
-menu	Font	Font
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it

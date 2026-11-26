@@ -32,7 +32,7 @@ downloads it; a user with a question finds the answer in the help.
 IDM's window, but faster and free. The layout is the one the visitor already knows; the speed
 is measured, not claimed (a public, reproducible benchmark against IDM 6.42); the price is
 nothing, with no ads, no trial and no sign-up. Torrents and video downloads are built in, and
-the app speaks 86 languages.
+the app speaks 87 languages.
 
 MDM is a separate program, written from scratch. It is never presented as IDM, as made by IDM's
 maker (Tonec), or as a crack or copy of it.
@@ -66,13 +66,15 @@ maker (Tonec), or as a crack or copy of it.
   `docs/images/`.
 - Benchmark results, final, 2026-10-29: `website/bench/results.json` (seven scenarios, alternating
   runs, IDM 6.42 vs MDM at defaults); the methodology is on the benchmark page.
-- The app's logo (`website/assets/logo-*`), its 71 flag icons (`crates/app/assets/flags/`, lipis
+- The app's logo (`website/assets/logo-*`), its 72 flag icons (`crates/app/assets/flags/`, lipis
   flag-icons, MIT), browser logos for the extension (`website/assets/browsers/`).
 - Real third-party words and figures, checked by hand: `website/content/quotes.tsv` (reviews and
   articles, quoted exactly with their source and date), `website/content/press.tsv` (independent
   articles and videos), the browser stores' users and ratings (read again at every build,
   `tools/website/tallies.py`, kept with the day in `website/content/stores.json`) and `build.py`
-  FIGURES (GitHub's download count, Trendshift's ranking), each with the date it was checked.
+  FIGURES (GitHub's download count, Trendshift's ranking), each with the date it was checked,
+  and `build.py` AWARDS (SourceForge's *Users Love Us*), only awards actually given, with the
+  giver's own seal served from the site (`website/assets/badges/SOURCES.txt`).
   The site's own star ratings (visitors', one each) are the only rating in its structured data;
   the stores' never are. Nothing beyond these
   may be invented, shortened into a different meaning or combined; no customer or press logos.

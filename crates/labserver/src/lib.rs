@@ -11,6 +11,8 @@ pub mod ftp;
 mod github;
 pub mod growth;
 mod h264;
+/// A fake Hugging Face and GitHub API (#1772).
+pub mod hub;
 pub mod lulustream;
 pub mod mediafire;
 mod pages;
@@ -18,6 +20,8 @@ pub mod rapidgator;
 mod server;
 pub mod socks;
 mod streams;
+pub mod tree;
+pub mod zip;
 
 pub use faults::Faults;
 pub use server::{Cert, Config, HELP, Held, LabServer, LogEntry, LogSink, SlotHold};

@@ -1431,7 +1431,18 @@ pub struct FileInfo {
     /// Its number among the Download File Info windows open at once (#1741): its window's id,
     /// title and place in the cascade, and those of the questions it asks. The app gives it.
     pub nth: Nth,
+    /// A `.zip` address's one look at its end (#1775), once it was looked up: the address it
+    /// was for and its answer, which Preview follows (its table when that came with it).
+    zip_look: Option<(Url, ZipLook)>,
+    /// Zip preview, open over this window.
+    zip_preview: Option<crate::zippreview::ZipPreview>,
+    /// The files ticked in Zip preview: Start (or Later) adds only them, as one download.
+    pub zip_pick: Option<crate::zippreview::Chosen>,
 }
+
+/// [`FileInfo::zip_look`]'s answer, once it came.
+type ZipLook =
+    Arc<Mutex<Option<Result<Option<mdm_engine::remotezip::Listing>, mdm_engine::Error>>>>;
 
 pub enum Start {
     Now,
@@ -1524,6 +1535,9 @@ impl FileInfo {
             replace: None,
             picked_replaces: Default::default(),
             nth: Nth::FIRST,
+            zip_look: None,
+            zip_preview: None,
+            zip_pick: None,
         }
     }
 
@@ -1678,6 +1692,125 @@ impl FileInfo {
         !self.edited && !self.probed()
     }
 
+    /// A `.zip` (by Save As's name) on a web server: Preview looks inside it (#1775).
+    fn is_zip(&self) -> bool {
+        Path::new(&self.save_as)
+            .extension()
+            .is_some_and(|e| e.eq_ignore_ascii_case("zip"))
+            && matches!(self.url.scheme(), "http" | "https")
+    }
+
+    /// Once a `.zip` address is looked up, one look at its end (one request): whether its
+    /// server sends parts, so its files can be picked (Preview), and its table when it came
+    /// with it. Again for another address; nothing for another type.
+    fn follow_zip(&mut self) {
+        if !self.is_zip() {
+            self.zip_look = None;
+            self.zip_pick = None;
+            return;
+        }
+        if !self.probed() || self.zip_look.as_ref().is_some_and(|(u, _)| *u == self.url) {
+            return;
+        }
+        self.zip_pick = None;
+        let look: ZipLook = Default::default();
+        let (out, url) = (look.clone(), self.url.clone());
+        let (headers, opts, size) = (
+            self.request.headers.clone(),
+            self.request.opts.clone(),
+            self.size(),
+        );
+        self.rt.spawn(async move {
+            let got = mdm_engine::remotezip::look(&url, &headers, &opts, size).await;
+            if let Err(e) = &got {
+                tracing::info!("zip preview: no look inside: {e}");
+            }
+            *out.lock().unwrap() = Some(got);
+        });
+        self.zip_look = Some((self.url.clone(), look));
+    }
+
+    /// Preview's state for a `.zip`: enabled once its look found a server that sends parts;
+    /// else greyed, with why (still looking, the server's refusal). None for another type.
+    fn zip_preview_state(&self) -> Option<Result<(), String>> {
+        if !self.is_zip() {
+            return None;
+        }
+        let answer = self.zip_look.as_ref().map(|(_, l)| {
+            l.lock()
+                .unwrap()
+                .as_ref()
+                .map(|r| r.as_ref().map(|_| ()).map_err(crate::errors::describe))
+        });
+        Some(match answer.flatten() {
+            Some(r) => r,
+            // i18n: tooltip of Download File Info's greyed Preview button while MDM asks the server whether it can look inside the ZIP (#1775)
+            None => Err(crate::i18n::t("Looking inside the ZIP...").to_owned()),
+        })
+    }
+
+    /// Open Zip preview: with the look's table when it brought it, else it reads the table.
+    fn open_zip_preview(&mut self, ctx: &egui::Context) {
+        let listing = self
+            .zip_look
+            .as_ref()
+            .and_then(|(_, l)| {
+                l.lock()
+                    .unwrap()
+                    .as_ref()
+                    .and_then(|r| r.as_ref().ok())
+                    .cloned()
+            })
+            .flatten();
+        let archive = Path::new(&self.save_as)
+            .file_name()
+            .map(|n| n.to_string_lossy().into_owned())
+            .unwrap_or_default();
+        let ticked = self
+            .zip_pick
+            .as_ref()
+            .map(|c| c.files.clone())
+            .unwrap_or_default();
+        self.zip_preview = Some(crate::zippreview::ZipPreview::new(
+            self.nth.id("zip-preview"),
+            archive,
+            self.url.clone(),
+            &self.request,
+            self.size(),
+            listing,
+            ticked,
+            &self.rt,
+            ctx,
+        ));
+    }
+
+    /// `/show zip-preview:N` (#1775's shots and checks): Zip preview opened as Preview opens
+    /// it, its first `n` files ticked, once the look has answered. Whether it opened.
+    pub fn open_zip_preview_when_ready(&mut self, n: usize, ctx: &egui::Context) -> bool {
+        if self.zip_preview.is_some() || !matches!(self.zip_preview_state(), Some(Ok(()))) {
+            return false;
+        }
+        self.open_zip_preview(ctx);
+        if let Some(z) = &mut self.zip_preview {
+            z.tick_first(n);
+        }
+        true
+    }
+
+    /// Where the files picked in Zip preview go: a folder named after the archive in Save As's
+    /// folder (each file keeps its path in the archive there).
+    pub fn zip_folder(&self) -> PathBuf {
+        let dest = self.dest();
+        let name = mdm_engine::naming::sanitize(&mdm_extract::base_name(&dest));
+        let name = if name.is_empty() {
+            "zip".to_owned()
+        } else {
+            name
+        };
+        dest.parent()
+            .map_or_else(|| PathBuf::from(&name), |d| d.join(&name))
+    }
+
     pub fn size(&self) -> Option<u64> {
         self.info
             .as_ref()
@@ -1809,6 +1942,19 @@ impl FileInfo {
         // The name numbered in its folder, once the disk has answered (#743).
         self.place.follow(&mut self.save_as);
         self.follow_route(ctx);
+        self.follow_zip();
+        if let Some(z) = &mut self.zip_preview {
+            match z.show(ctx) {
+                Outcome::Open => {}
+                Outcome::Closed => self.zip_preview = None,
+                Outcome::Done(chosen) => {
+                    self.zip_pick = (!chosen.files.is_empty()).then_some(chosen);
+                    self.zip_preview = None;
+                }
+            }
+        }
+        let zip_state = self.zip_preview_state();
+        let mut open_zip = false;
         // The "Download through" line (#44) takes a row of its own while an account takes the
         // address: the window grows by it.
         let dy = if self.through.is_some() { 26.0 } else { 0.0 };
@@ -1827,7 +1973,7 @@ impl FileInfo {
         // open at once (#1741), each with its own.
         let nth = self.nth;
         let own = |base: &str| nth.id(base);
-        window_nth(
+        let out = window_nth(
             ctx,
             FILE_INFO,
             "Download File Info",
@@ -2198,19 +2344,64 @@ impl FileInfo {
                 // 8 px after the group box (it ends at 462) to the window's edge.
                 let (px, pw) =
                     winui::button_around(&p, "Preview", 480.0 + cx, 73.0, 470.0, 562.0 + wide);
-                winui::button(
+                // A ZIP on a server that sends parts: its files to pick (#1775, Zip preview).
+                // Greyed, with why, while that is being asked and where it can't be; greyed for
+                // every other type.
+                let kind = match &zip_state {
+                    Some(Ok(())) => ButtonKind::Normal,
+                    _ => ButtonKind::Disabled,
+                };
+                let preview = winui::button(
                     ui,
                     r(o, px, 128.0, pw, 21.0),
-                    // i18n: verb: open the part already downloaded
+                    // i18n: verb: Download File Info's button; for a ZIP, it lists the files inside it to pick those to download (#1775)
                     "Preview",
-                    ButtonKind::Disabled,
+                    kind,
                     false,
                     None,
-                )
-                .on_hover_text(crate::i18n::t(
+                );
+                let tip = match &zip_state {
+                    Some(Ok(())) => crate::i18n::t(
+                        // i18n: tooltip of Download File Info's Preview button for a ZIP (#1775): it lists the files inside, to download only some of them
+                        "List the files inside the ZIP and pick those to download",
+                    )
+                    .to_owned(),
+                    Some(Err(why)) => why.clone(),
                     // i18n: tooltip of the greyed Preview button in Download File Info
-                    "Preview isn't available yet",
-                ));
+                    None => crate::i18n::t("Preview isn't available yet").to_owned(),
+                };
+                if preview.on_hover_text(tip).clicked() && kind == ButtonKind::Normal {
+                    open_zip = true;
+                }
+                // The files picked in Zip preview: their number under Preview, where they go on
+                // hover.
+                if let Some(c) = &self.zip_pick {
+                    let n = crate::i18n::tn(c.files.len() as u64, "{n} file", "{n} files");
+                    let w = winui::text_width(&p, &n).min(92.0 + wide);
+                    let (at, _) = winui::text_fit(
+                        &p,
+                        o.x + 515.0 + cx - w / 2.0,
+                        o.y + 168.0,
+                        &n,
+                        winui::TEXT(),
+                        o.x + 562.0 + wide,
+                    );
+                    let whole = crate::i18n::fmt(
+                        // i18n: Download File Info, on hover over the number of files picked in Zip preview (#1775): {files} how many ("3 files"), {size} their size together, {folder} the folder they go into (named after the archive)
+                        crate::i18n::t(
+                            "Start downloads only the {files} picked in the ZIP ({size}), into {folder}",
+                        ),
+                        &[
+                            ("files", &n),
+                            ("size", &crate::model::size(c.size)),
+                            (
+                                "folder",
+                                &crate::i18n::isolate(&display_path(&self.zip_folder())),
+                            ),
+                        ],
+                    );
+                    winui::copyable(ui, at, own("file-info-zip-pick"), &whole, true);
+                }
 
                 // The categories in a list window of their own (the shared drop list: keys,
                 // Escape, never cut off by this short window).
@@ -2245,7 +2436,11 @@ impl FileInfo {
                     Outcome::Open
                 }
             },
-        )
+        );
+        if open_zip {
+            self.open_zip_preview(ctx);
+        }
+        out
     }
 }
 
@@ -3295,6 +3490,7 @@ impl TurnOffCountdown {
 
     /// Shut down, sleep or hibernate now.
     pub fn execute(&self) {
+        #[cfg(not(target_os = "android"))]
         use crate::queue::TurnOff;
         #[cfg(windows)]
         {
@@ -3349,6 +3545,15 @@ impl TurnOffCountdown {
             cmd.args(["-e", script]);
             run_or_tell(cmd);
             let _ = self.force;
+        }
+        // Android: no app may shut the phone down or put it to sleep.
+        #[cfg(target_os = "android")]
+        {
+            let _ = (self.mode, self.force);
+            tell_turn_off_failed(
+                // i18n: why the phone could not be turned off after the queue (fills {error}, Android)
+                crate::i18n::t("Android doesn't let apps turn the phone off").to_owned(),
+            );
         }
     }
 }
@@ -3510,6 +3715,273 @@ it from Mister Download Manager list of downloads?",
     }
 }
 
+// ---- Columns ------------------------------------------------------------------------------------
+
+/// The Columns dialog's rows: as tall as any list's, every column in view (no scroll bar).
+const COLUMNS_ROW: f32 = 17.0;
+/// Its list's box: every row, its frame and a pixel each side.
+const COLUMNS_LIST_H: f32 = COLUMNS_ROW * crate::list::COLS as f32 + 4.0;
+/// Where the list starts, under the line that says what to do.
+const COLUMNS_LIST_Y: f32 = 30.0;
+/// OK and Cancel, under the list.
+const COLUMNS_BUTTONS_Y: f32 = COLUMNS_LIST_Y + COLUMNS_LIST_H + 12.0;
+
+/// What the Columns dialog hands back on OK: the order, which columns show, and whether Reset
+/// was pressed (the caller then puts the widths back too).
+pub type ColumnsChoice = (Vec<usize>, [bool; crate::list::COLS], bool);
+
+/// "Columns" (the header's right-click → Columns..., View → Customize URL List...): which columns
+/// the download list shows, and in what order. Its list is the shared row list: Up, Down, Home,
+/// End and typing pick a column, Space or its box shows or hides it, Alt+Up and Alt+Down (or
+/// Move up, Move down) move it. File Name always shows. Works on a copy until OK.
+pub struct Columns {
+    order: Vec<usize>,
+    visible: [bool; crate::list::COLS],
+    rows: winui::RowList,
+    /// The list had the keys last pass: Alt+Up and Alt+Down are its, not the window's.
+    list_focused: bool,
+    reset: bool,
+    focus_requested: bool,
+    /// The buttons' column, as wide as its longest label in this language (95 at least): the
+    /// window grows by what it takes beyond that, the list keeps its width. Measured as the
+    /// window is drawn (a new window is hidden until its second frame, so it opens at its size).
+    side_w: f32,
+}
+
+impl Columns {
+    pub fn new(list: &crate::list::ListState) -> Self {
+        let mut rows = winui::RowList::default();
+        rows.selected = Some(0);
+        Columns {
+            order: list.order.clone(),
+            visible: list.visible,
+            rows,
+            list_focused: false,
+            reset: false,
+            focus_requested: false,
+            side_w: 95.0,
+        }
+    }
+
+    /// A column's name as the header says it (the narrow Q by its whole name).
+    pub fn name(slot: usize) -> String {
+        let t = crate::list::TITLES[slot];
+        if t == "Q" {
+            crate::i18n::tc("column", "Queue").to_owned()
+        } else {
+            crate::i18n::tc("column", t).to_owned()
+        }
+    }
+
+    /// The selected column one place up (`-1`) or down (`1`), when it can go.
+    fn shift(&mut self, by: isize) {
+        let Some(i) = self.rows.selected else { return };
+        let to = i as isize + by;
+        if to < 0 || to as usize >= self.order.len() {
+            return;
+        }
+        self.order.swap(i, to as usize);
+        self.rows.selected = Some(to as usize);
+    }
+
+    pub fn show(&mut self, ctx: &egui::Context) -> Outcome<ColumnsChoice> {
+        let out = window(
+            ctx,
+            "columns",
+            "Columns",
+            [265.0 + self.side_w, COLUMNS_BUTTONS_Y + 32.0],
+            false,
+            winui::BG(),
+            |ui, o| {
+                let p = ui.painter().clone();
+                // i18n: button in the Columns dialog: move the selected column one place towards the start of the list
+                const UP: &str = crate::i18n::mark("Move up");
+                // i18n: button in the Columns dialog: move the selected column one place towards the end of the list
+                const DOWN: &str = crate::i18n::mark("Move down");
+                // i18n: button in the Columns dialog: put the columns back as they first were (order, widths, all shown)
+                const RESET: &str = crate::i18n::mark("Reset");
+                let side_w = [UP, DOWN, RESET]
+                    .iter()
+                    .map(|l| winui::button_width(&p, l, 95.0))
+                    .fold(95.0, f32::max);
+                if side_w != self.side_w {
+                    self.side_w = side_w;
+                    ui.ctx().request_repaint();
+                }
+                let right = 265.0 + self.side_w;
+                winui::text(
+                    &p,
+                    o.x + 11.0,
+                    o.y + 20.0,
+                    // i18n: the Columns dialog: what it is for, above its list of the download list's columns
+                    crate::i18n::t("Choose columns to show"),
+                    winui::TEXT(),
+                );
+                let n = self.order.len();
+                // Taken before the list sees them: plain Up and Down are its own.
+                let (lift, lower) = if self.list_focused {
+                    ui.input_mut(|i| {
+                        (
+                            i.consume_key(egui::Modifiers::ALT, egui::Key::ArrowUp),
+                            i.consume_key(egui::Modifiers::ALT, egui::Key::ArrowDown),
+                        )
+                    })
+                } else {
+                    (false, false)
+                };
+                if lift {
+                    self.shift(-1);
+                }
+                if lower {
+                    self.shift(1);
+                }
+                // i18n: what a screen reader calls the Columns dialog's list of the download list's columns
+                self.rows.name = crate::i18n::t("Columns");
+                let (order, visible) = (&self.order, &mut self.visible);
+                let mut toggle = None;
+                let ev = winui::row_list(
+                    ui,
+                    "columns-rows",
+                    r(o, 11.0, COLUMNS_LIST_Y, 232.0, COLUMNS_LIST_H),
+                    n,
+                    COLUMNS_ROW,
+                    &mut self.rows,
+                    |ui, clip, i, row, look| {
+                        let slot = order[i];
+                        let name = Self::name(slot);
+                        let glyph = egui::pos2(row.left() + 5.0, row.top() + 2.0);
+                        if slot == 0 {
+                            // File Name always shows: its box ticked and greyed.
+                            winui::check_box_glyph(
+                                clip,
+                                winui::rect(egui::Rect::from_min_size(glyph, vec2(13.0, 13.0))),
+                                true,
+                                winui::State::Disabled,
+                            );
+                        } else {
+                            let mut on = visible[slot];
+                            if winui::row_check(
+                                ui,
+                                clip,
+                                glyph,
+                                &mut on,
+                                &name,
+                                ("columns-row", slot),
+                            ) {
+                                toggle = Some(i);
+                            }
+                        }
+                        look.name = name.clone();
+                        winui::fit(
+                            ui,
+                            clip,
+                            glyph.x + 19.0,
+                            row.top() + 12.0,
+                            &name,
+                            look.ink,
+                            row.right() - 4.0,
+                            ("columns-name", slot),
+                        );
+                    },
+                );
+                self.list_focused = ev.focused;
+                if ev.focused {
+                    self.rows
+                        .type_to(ui, "columns-rows", n, |i| Self::name(self.order[i]));
+                }
+                if let Some(i) = toggle.or(ev.space).or(ev.double_clicked) {
+                    let slot = self.order[i];
+                    if slot != 0 {
+                        self.visible[slot] = !self.visible[slot];
+                    }
+                }
+                let at = self.rows.selected;
+                let can_up = at.is_some_and(|i| i > 0);
+                let can_down = at.is_some_and(|i| i + 1 < n);
+                let state = |on: bool| {
+                    if on {
+                        ButtonKind::Normal
+                    } else {
+                        ButtonKind::Disabled
+                    }
+                };
+                if winui::button(
+                    ui,
+                    r(o, 254.0, COLUMNS_LIST_Y, self.side_w, 21.0),
+                    UP,
+                    state(can_up),
+                    false,
+                    None,
+                )
+                .clicked()
+                {
+                    self.shift(-1);
+                }
+                if winui::button(
+                    ui,
+                    r(o, 254.0, COLUMNS_LIST_Y + 27.0, self.side_w, 21.0),
+                    DOWN,
+                    state(can_down),
+                    false,
+                    None,
+                )
+                .clicked()
+                {
+                    self.shift(1);
+                }
+                if winui::button(
+                    ui,
+                    r(o, 254.0, COLUMNS_LIST_Y + 62.0, self.side_w, 21.0),
+                    RESET,
+                    ButtonKind::Normal,
+                    false,
+                    None,
+                )
+                .clicked()
+                {
+                    let fresh = crate::list::ListState::default();
+                    self.order = fresh.order;
+                    self.visible = fresh.visible;
+                    self.reset = true;
+                    self.rows.selected = Some(0);
+                }
+                self.visible[0] = true;
+                let ok = winui::button(
+                    ui,
+                    r(o, right - 172.0, COLUMNS_BUTTONS_Y, 73.0, 21.0),
+                    "OK",
+                    ButtonKind::Default,
+                    false,
+                    None,
+                )
+                .clicked();
+                let cancel = winui::button(
+                    ui,
+                    r(o, right - 88.0, COLUMNS_BUTTONS_Y, 73.0, 21.0),
+                    "Cancel",
+                    ButtonKind::Normal,
+                    false,
+                    None,
+                )
+                .clicked();
+                if cancel || winui::escape_pressed(ui) {
+                    Outcome::Closed
+                } else if ok || winui::enter_pressed(ui) {
+                    Outcome::Done((self.order.clone(), self.visible, self.reset))
+                } else {
+                    Outcome::Open
+                }
+            },
+        );
+        if matches!(out, Outcome::Open) && !self.focus_requested && focus_when_shown(ctx, "columns")
+        {
+            focus(ctx, dialog_viewport("columns"));
+            self.focus_requested = true;
+        }
+        out
+    }
+}
+
 /// Minimize a window as its title bar's Minimize asks (`hwnd`: the window, once known). On
 /// Windows by the system's own command, as the system's title bar sends it, so a window whose
 /// title bar is ours animates down to the taskbar like any other (#874).
@@ -3529,7 +4001,7 @@ pub fn minimize(ctx: &egui::Context, hwnd: Option<isize>) {
 /// to nothing while it sat behind the main window.
 pub fn raise(ctx: &egui::Context, viewport: ViewportId) {
     ctx.send_viewport_cmd_to(viewport, egui::ViewportCommand::Minimized(false));
-    // Off-screen test runs never take the focus (main.rs `offscreen`), as the other paths here.
+    // Off-screen test runs never take the focus (lib.rs `offscreen`), as the other paths here.
     if !crate::offscreen() {
         #[cfg(target_os = "macos")]
         crate::unix::macos_activate_app();
@@ -3547,7 +4019,7 @@ pub fn raise(ctx: &egui::Context, viewport: ViewportId) {
 /// to the input of the window in front; a refusal even then flashes its taskbar button, as
 /// Windows means a program in the background to ask. Linux and macOS: winit's focus, which sends
 /// no input (X11 `_NET_ACTIVE_WINDOW`, macOS `activateIgnoringOtherApps`, nothing on Wayland).
-/// Off-screen test runs never take the focus (main.rs `offscreen`).
+/// Off-screen test runs never take the focus (lib.rs `offscreen`).
 pub fn focus(ctx: &egui::Context, viewport: ViewportId) {
     if crate::offscreen() {
         return;
@@ -3637,6 +4109,7 @@ pub fn dialog_viewport(id: &str) -> ViewportId {
 
 /// Run a shut down / sleep command and say when it fails (hibernation off, a program
 /// holding it up): it did nothing, silently.
+#[cfg(not(target_os = "android"))]
 fn run_or_tell(mut cmd: std::process::Command) {
     std::thread::spawn(move || match cmd.output() {
         Ok(out) if out.status.success() => {}

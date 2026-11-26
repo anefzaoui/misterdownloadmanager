@@ -97,6 +97,10 @@ pub struct Faults {
     /// 403 when the request's `User-Agent` contains this (a bot check that refuses a
     /// browser's User-Agent on a connection that isn't a browser's, #372).
     pub refuse_agent: Option<String>,
+    /// 403 when the request came over this IP family (`4` or `6`): a link signed for the address
+    /// that loaded its page, asked from the computer's address of the other family (#1660).
+    /// `Config::both_families` makes the server listen on both.
+    pub refuse_family: Option<u8>,
     /// Every file request answered with this status (4xx or 5xx) before any byte: a site that
     /// turns away whatever isn't a browser (FileHippo's 412, #630), or a link the browser
     /// already spent.
@@ -181,6 +185,7 @@ impl Faults {
             range_rate: over.range_rate.or(self.range_rate),
             require_cookie: over.require_cookie.clone().or(self.require_cookie.clone()),
             refuse_agent: over.refuse_agent.clone().or(self.refuse_agent.clone()),
+            refuse_family: over.refuse_family.or(self.refuse_family),
             refuse: over.refuse.or(self.refuse),
             browser_only: over.browser_only.or(self.browser_only),
             refuse_browsers: over.refuse_browsers.or(self.refuse_browsers),

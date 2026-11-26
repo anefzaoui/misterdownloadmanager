@@ -5,7 +5,6 @@
 //! writes it.
 
 use std::path::Path;
-use std::process::Command;
 use std::time::Duration;
 
 use serde::{Deserialize, Serialize};
@@ -154,7 +153,7 @@ pub fn ask(h: Helper, exe: &Path) -> Result<Installed, Error> {
 
 /// What `exe` says its version is, asked as `h` asks it; not `h` if it doesn't answer as `h`.
 fn version_of(h: Helper, exe: &Path) -> Result<String, Error> {
-    let mut cmd = Command::new(exe);
+    let mut cmd = crate::proc::program(exe);
     cmd.arg(match h {
         Helper::YtDlp | Helper::GalleryDl => "--version",
         Helper::Ffmpeg => "-version",

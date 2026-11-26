@@ -68,6 +68,7 @@ Name: "lang_pt_br"; MessagesFile: "compiler:Languages\BrazilianPortuguese.isl,la
 Name: "lang_quz"; MessagesFile: "languages\quz.isl"
 Name: "lang_ro"; MessagesFile: "languages\ro.isl"
 Name: "lang_ru"; MessagesFile: "compiler:Languages\Russian.isl,languages\ru.isl"
+Name: "lang_si"; MessagesFile: "languages\si.isl"
 Name: "lang_sk"; MessagesFile: "compiler:Languages\Slovak.isl,languages\sk.isl"
 Name: "lang_sl"; MessagesFile: "compiler:Languages\Slovenian.isl,languages\sl.isl"
 Name: "lang_sq"; MessagesFile: "languages\sq.isl"

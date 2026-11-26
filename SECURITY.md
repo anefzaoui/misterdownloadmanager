@@ -13,8 +13,10 @@ What matters most here:
 - **The browser host and the command channel.** Downloads handed over by the browser extension
   go through the native messaging host (`crates/nmhost`), which only answers MDM's own extension,
   and the running app listens only on `127.0.0.1` with a random token (`crates/ipc`).
-- **Helpers downloaded at run time.** yt-dlp is checked against its developers' signing key and
-  ffmpeg against its published checksums before either runs (`crates/tools`).
+- **Helpers downloaded at run time.** yt-dlp, gallery-dl and Node.js are checked against their
+  developers' signing keys before they run. ffmpeg is installed only when its SHA-256 is in MDM's
+  own list of checked builds, signed with MDM's release key and never older than a list already
+  seen; the build's own release isn't trusted for it (`crates/tools`).
 - **Files written to disk.** Downloaded names are sanitised before they become paths
   (`crates/engine/src/naming.rs`).
 

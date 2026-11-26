@@ -1,6 +1,8 @@
 //! Testing a downloaded archive (#1661): every entry read back and checked against its CRC, as
 //! `7z t` does, without writing anything. 7-Zip tests ZIP, 7z and RAR (and their volumes) when
-//! it is installed; a ZIP is tested in process without it.
+//! it is installed; a ZIP is tested in process without it. A ZIP whose entries overlap is
+//! damaged without being read (extraction's rule, `zip_fmt::overlapping`), and the test in
+//! process reads no more than extraction would write.
 //!
 //! Where the format says where each entry's bytes are, the damaged ones are named by their place
 //! in the file ([`Damage::ranges`]), so a downloader can fetch those bytes again: a ZIP in one
@@ -14,14 +16,13 @@
 
 use std::io::{Read, Seek};
 use std::path::Path;
-use std::process::{Command, Stdio};
+use std::process::Command;
 use std::sync::atomic::{AtomicBool, AtomicU32, Ordering};
-use std::time::Duration;
 
 use zip::result::ZipError;
 
 use crate::volumes::{MultiFile, OnDisk, VolumeKind, on_disk, volume_key};
-use crate::{Error, Format};
+use crate::{Error, Format, Limits};
 
 /// What a test found.
 #[derive(Clone, Debug, PartialEq, Eq)]
@@ -83,6 +84,14 @@ pub fn test(archive: &Path, how: &Test<'_>) -> Result<Verdict, Error> {
     let spanned = format == Format::Zip && several && !split;
     if split {
         MultiFile::open(archive)?.map_err(Error::MissingVolume)?;
+    }
+    // A ZIP whose entries overlap is read by no one, 7-Zip or MDM: damaged as a whole, as
+    // extraction refuses it. Before 7-Zip, which reads a small one as whole.
+    if format == Format::Zip && !spanned && zip_overlaps(archive, split)? {
+        return Ok(Verdict::Damaged(Damage {
+            said: crate::zip_fmt::OVERLAP.into(),
+            ..Default::default()
+        }));
     }
     let Some(tool) = how.tool else {
         if format != Format::Zip || spanned {
@@ -160,72 +169,27 @@ fn run_7zip(
     cmd.args(["t", "-y", "-bso0", "-bse2", "-bsp1", "-p", "--"])
         .arg(&archive)
         // Its own folder: never the one MDM was started in (its install folder, #834).
-        .current_dir(&dir)
-        .stdin(Stdio::null())
-        .stdout(Stdio::piped())
-        .stderr(Stdio::piped());
-    #[cfg(windows)]
-    {
-        use std::os::windows::process::CommandExt;
-        const CREATE_NO_WINDOW: u32 = 0x0800_0000;
-        cmd.creation_flags(CREATE_NO_WINDOW);
-    }
+        .current_dir(&dir);
     tracing::info!("archive test: {} t {}", tool.display(), archive.display());
-    let mut child = cmd.spawn()?;
-    let mut out = child.stdout.take().expect("piped");
-    let mut err = child.stderr.take().expect("piped");
-    let errors = std::thread::spawn(move || {
-        let mut s = Vec::new();
-        let _ = err.read_to_end(&mut s);
-        String::from_utf8_lossy(&s).into_owned()
-    });
     // Its progress: "  42% 3 - name", rewritten in place with backspaces and carriage returns.
-    let reader = std::thread::scope(|scope| {
-        let read = scope.spawn(|| {
-            let mut buf = [0u8; 4096];
-            let mut tail = String::new();
-            while let Ok(n) = out.read(&mut buf) {
-                if n == 0 {
-                    break;
-                }
-                tail.push_str(&String::from_utf8_lossy(&buf[..n]));
-                if let (Some(p), Some(pc)) = (progress, last_percent(&tail)) {
-                    p.store(pc * 10, Ordering::Relaxed);
-                }
-                // Only its end matters: the last figure written.
-                if tail.len() > 256 {
-                    let cut = tail.len() - 64;
-                    let cut = (cut..tail.len())
-                        .find(|i| tail.is_char_boundary(*i))
-                        .unwrap_or(0);
-                    tail.drain(..cut);
-                }
-            }
-        });
-        let status = loop {
-            if cancel.is_some_and(|c| c.load(Ordering::Relaxed)) {
-                let _ = child.kill();
-                let _ = child.wait();
-                break None;
-            }
-            match child.try_wait() {
-                Ok(Some(status)) => break Some(Ok(status)),
-                Ok(None) => std::thread::sleep(Duration::from_millis(100)),
-                Err(e) => {
-                    let _ = child.kill();
-                    break Some(Err(e));
-                }
-            }
-        };
-        let _ = read.join();
-        status
-    });
-    let errors = errors.join().unwrap_or_default();
-    let status = match reader {
-        None => return Err(Error::Cancelled),
-        Some(s) => s?,
+    let mut tail = String::new();
+    let mut on_output = |bytes: &[u8]| {
+        tail.push_str(&String::from_utf8_lossy(bytes));
+        if let (Some(p), Some(pc)) = (progress, last_percent(&tail)) {
+            p.store(pc * 10, Ordering::Relaxed);
+        }
+        // Only its end matters: the last figure written.
+        if tail.len() > 256 {
+            let cut = tail.len() - 64;
+            let cut = (cut..tail.len())
+                .find(|i| tail.is_char_boundary(*i))
+                .unwrap_or(0);
+            tail.drain(..cut);
+        }
     };
-    Ok(read_said(status.code(), &errors))
+    // It writes nothing: there is nothing to look at while it runs.
+    let ended = crate::supervise::run(cmd, None, Some(&mut on_output), cancel, &mut || Ok(()))?;
+    Ok(read_said(ended.status.code(), &ended.errors))
 }
 
 /// The last figure in 7-Zip's progress output: each update ("  42% 3 - name", "  5% T name") is
@@ -392,9 +356,26 @@ impl ZipFound {
     }
 }
 
+/// Whether two entries of the ZIP at `archive` (a split one's first part) overlap
+/// ([`crate::zip_fmt::overlapping`], extraction's rule). One whose directory or a local header
+/// doesn't read isn't decided here: the test reads it as damaged.
+fn zip_overlaps(archive: &Path, split: bool) -> Result<bool, Error> {
+    fn read<R: Read + Seek>(reader: R) -> bool {
+        zip::ZipArchive::new(reader)
+            .ok()
+            .is_some_and(|mut zip| crate::zip_fmt::overlapping(&mut zip).unwrap_or(false))
+    }
+    Ok(if split {
+        read(MultiFile::open(archive)?.map_err(Error::MissingVolume)?)
+    } else {
+        read(std::fs::File::open(archive)?)
+    })
+}
+
 /// Read every entry of the ZIP at `archive` (a split one's first part) and check it (its CRC,
 /// its compressed data), without writing it anywhere. An archive whose central directory doesn't
-/// read is damaged as a whole.
+/// read is damaged as a whole. It reads no more than extraction would write
+/// ([`Limits::for_archive`]): more is [`Error::TooBig`], not tested.
 fn zip_damage(
     archive: &Path,
     cancel: Option<&AtomicBool>,
@@ -406,19 +387,24 @@ fn zip_damage(
         .unwrap_or_default();
     if volume_key(&name).is_some_and(|v| v.kind == VolumeKind::Split) {
         let multi = MultiFile::open(archive)?.map_err(Error::MissingVolume)?;
-        read_zip(multi, cancel, progress)
+        read_zip(multi, cancel, progress, None)
     } else {
-        read_zip(std::fs::File::open(archive)?, cancel, progress)
+        read_zip(std::fs::File::open(archive)?, cancel, progress, None)
     }
 }
 
+/// [`zip_damage`] on `reader`; `budget`, the bytes it may read out of the entries (None: as
+/// extraction's limit for a file of its size).
 fn read_zip<R: Read + Seek>(
     mut reader: R,
     cancel: Option<&AtomicBool>,
     progress: Option<&AtomicU32>,
+    budget: Option<u64>,
 ) -> Result<ZipFound, Error> {
     let len = reader.seek(std::io::SeekFrom::End(0))?;
     reader.seek(std::io::SeekFrom::Start(0))?;
+    let budget = budget.unwrap_or_else(|| Limits::for_archive(len).total);
+    let mut read = 0u64;
     let mut zip = match zip::ZipArchive::new(reader) {
         Ok(z) => z,
         Err(ZipError::Io(e)) if e.kind() != std::io::ErrorKind::UnexpectedEof => {
@@ -514,7 +500,15 @@ fn read_zip<R: Read + Seek>(
             }
             match entry.read(&mut buf) {
                 Ok(0) => break true,
-                Ok(_) => {}
+                Ok(n) => {
+                    read += n as u64;
+                    if read > budget {
+                        return Err(Error::TooBig {
+                            would: read,
+                            limit: budget,
+                        });
+                    }
+                }
                 Err(_) => break false,
             }
         };
@@ -533,6 +527,7 @@ fn read_zip<R: Read + Seek>(
 #[cfg(test)]
 mod tests {
     use super::*;
+    use std::time::Duration;
 
     #[test]
     fn sevens_words_read_as_verdicts() {
@@ -727,6 +722,54 @@ mod tests {
             };
             assert_eq!(d.ranges, Some(vec![(heads[1].1, dir)]), "{tool:?}");
         }
+    }
+
+    /// A ZIP whose entries overlap (2000 entries over one block of 16 MB of zeros: 32 GB to read
+    /// back from 16 KB) is damaged as a whole without being read, by MDM or 7-Zip, in one file
+    /// or split: its directory only, at once, as extraction refuses it.
+    #[test]
+    fn a_zip_whose_entries_overlap_is_damaged_unread() {
+        let t = tempfile::tempdir().unwrap();
+        let p = t.path().join("over.zip");
+        crate::tests::overlapping_zip(&p, 2000, 16 << 20);
+        let data = std::fs::read(&p).unwrap();
+        assert!(data.len() < 1 << 20, "{}", data.len());
+        let one = t.path().join("s.zip.001");
+        std::fs::write(&one, &data[..data.len() / 2]).unwrap();
+        std::fs::write(t.path().join("s.zip.002"), &data[data.len() / 2..]).unwrap();
+        let unread = Verdict::Damaged(Damage {
+            said: crate::zip_fmt::OVERLAP.into(),
+            ..Default::default()
+        });
+        for archive in [&p, &one] {
+            for tool in [None, crate::find_7zip()] {
+                let started = std::time::Instant::now();
+                let r = tested(archive, tool.as_deref());
+                // Reading it back would take minutes; its directory, milliseconds.
+                let took = started.elapsed();
+                assert!(took < Duration::from_secs(30), "{took:?} ({tool:?})");
+                assert_eq!(r.unwrap(), unread, "{archive:?} ({tool:?})");
+            }
+        }
+    }
+
+    /// The test reads no more than extraction would write: more is not tested (never called
+    /// damaged), and a ZIP within it is whole.
+    #[test]
+    fn a_zip_is_read_within_a_budget() {
+        let t = tempfile::tempdir().unwrap();
+        let p = t.path().join("good.zip");
+        zip_of(&p, None);
+        // a.txt 12 000 bytes, dir/b.bin 200 000, c.txt 18 000.
+        let read = |budget| read_zip(std::fs::File::open(&p).unwrap(), None, None, Some(budget));
+        let found = read(230_000).unwrap();
+        assert!(found.bad.is_empty() && !found.unread && !found.encrypted);
+        assert!(matches!(
+            read(100_000),
+            Err(Error::TooBig { limit: 100_000, .. })
+        ));
+        // Extraction's limit for a file of its size (at least 20 GiB) is the test's.
+        assert_eq!(tested(&p, None).unwrap(), Verdict::Whole);
     }
 
     /// Its central directory spoilt: damaged, and nowhere to place it (Redownload only).

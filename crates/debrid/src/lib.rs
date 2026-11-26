@@ -371,7 +371,16 @@ impl Http {
         req: reqwest::RequestBuilder,
         fault: fn(u16, &[u8], Option<u64>) -> Fault,
     ) -> Result<T, Fault> {
-        let (status, body, retry_after) = self.send(ServiceKind::RealDebrid, req).await?;
+        let answer = self.send(ServiceKind::RealDebrid, req).await?;
+        self.read_json(answer, fault)
+    }
+
+    /// Real-Debrid: an answer `send` brought, read as JSON; an error answer through `fault`.
+    fn read_json<T: serde::de::DeserializeOwned>(
+        &self,
+        (status, body, retry_after): (u16, bytes::Bytes, Option<u64>),
+        fault: fn(u16, &[u8], Option<u64>) -> Fault,
+    ) -> Result<T, Fault> {
         if (200..300).contains(&status) {
             return serde_json::from_slice(&body).map_err(|_| {
                 Fault::Service(ServiceFault::Other("an answer MDM can't read".into()))
@@ -623,9 +632,9 @@ impl Session {
             }
             ServiceKind::RealDebrid => {
                 let u = match self
-                    .with_token(
-                        |t| async move { realdebrid::unrestrict(&self.http, &t, link).await },
-                    )
+                    .with_token(|t| async move {
+                        realdebrid::unrestrict(&self.http, &t, link, note, cancel).await
+                    })
                     .await
                 {
                     Ok(u) => u,

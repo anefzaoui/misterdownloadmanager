@@ -5,6 +5,9 @@
 //! atomically, never downgrade, and keep the previous version for rollback. MDM keeps its own
 //! copies up to date by itself (`autoupdate`, #1544).
 
+/// The helpers on Android: bundled in the APK, run through its Python (android.rs).
+#[cfg(target_os = "android")]
+pub mod android;
 // Keeping MDM's own helpers up to date (#1544).
 pub mod autoupdate;
 pub mod bgutil;
@@ -95,6 +98,9 @@ pub enum Error {
     /// Another install of the same helper is under way (here or in another copy of MDM).
     #[error("{0} is being installed or updated already")]
     Busy(String),
+    /// MDM's list of the ffmpeg builds it checked let none in (`ffmpeg`).
+    #[error("MDM's list of checked ffmpeg builds: {0}")]
+    FfmpegList(ffmpeg::ListError),
 }
 
 impl Error {
@@ -108,6 +114,8 @@ impl Error {
             Error::Download { host, error } => {
                 Some((host.clone(), mdm_engine::fault::of_engine(error)?))
             }
+            // ffmpeg's list of checked builds, which couldn't be fetched: that server, and why.
+            Error::FfmpegList(ffmpeg::ListError::Unavailable(e)) => e.network(),
             _ => None,
         }
     }
@@ -166,6 +174,9 @@ fn ytdlp_asset_for(os: &str, arch: &str) -> Option<&'static str> {
         ("macos", _) => Some("yt-dlp_macos.zip"),
         ("linux", "x86_64") => Some("yt-dlp_linux"),
         ("linux", "aarch64") => Some("yt-dlp_linux_aarch64"),
+        // Android: the zipapp, which the APK's own Python runs (android.rs): Android runs no
+        // program the app downloaded.
+        ("android", _) => Some("yt-dlp"),
         _ => None,
     }
 }

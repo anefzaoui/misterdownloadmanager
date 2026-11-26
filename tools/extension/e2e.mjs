@@ -43,11 +43,17 @@
 // .m3u8 or .mpd, served as text/plain or octet-stream, #171), sniffed (#171 without yt-dlp: such
 // streams found only when asked, by the button and the media list, a text decoy never), media (the
 // toolbar button's list of the media a tab loaded: streams, files, a protected stream; #38),
+// images (its Find images on a gallery: the largest sizes listed, each once, never a CSS
+// background, filtered by size and type, the kept ones only to Link grabber, #1781), imageslinks
+// (the right-click menu's Download all links and Download selected links on that gallery: the
+// links, and the <img> pictures marked as located on the page, #1781),
 // scripted (a video a server's program sends, named after its page with its real type: the list,
 // the button, the Download video window; #695, #800), guarded (a stream another site's server
 // serves to its page's player only: looked up and downloaded with the Origin and Referer the
 // browser sent, #900), played (a feed whose page names no video: the file and the stream the tab
 // played for each video, found by its length, downloaded by MDM; never the next video, #1092),
+// beforeplay (a video that hasn't played: the stream address its page wrote for the player looked
+// up, only what the page names asked for, "Download best" downloading it, #1826),
 // qualities (the button's menu: a stream's qualities looked up by MDM, with their sizes; the one
 // picked downloads with its progress window only, MDM's main window hidden), page (the menu on a
 // real video page, E2E_VIDEO_PAGE, and the line E2E_VIDEO_PICK downloaded: off by default), video (shown,
@@ -176,6 +182,11 @@ export async function until(what, ms, test) {
     await sleep(250);
   }
 }
+// A tab's page loaded (its own scripts run): what each session's `tab` waits for before handing
+// it out. Its HTML is there before its scripts at the end of it run: the popup's Reset button
+// exists for hundreds of milliseconds before popup.js gives it its listener, and a click then
+// does nothing.
+export const PAGE_LOADED = 'document.readyState === "complete" && location.protocol !== "about:"';
 // A process and its children, stopped.
 export function killPid(pid) {
   if (WIN) return spawnSync("taskkill", ["/T", "/F", "/PID", String(pid)]);
@@ -595,6 +606,9 @@ async function chromium(bin, profile, dl, page, ready, name = "Chromium") {
         if (r.exceptionDetails) throw new Error(`evaluate: ${r.exceptionDetails.text} ${expression}`);
         return r.result.value;
       };
+      // Target.createTarget answers while the tab is still on about:blank or reading its page:
+      // handed out once that page has loaded (PAGE_LOADED), as Firefox's navigate waits.
+      await until(`${url}, loaded`, 15000, () => ev(PAGE_LOADED).catch(() => false));
       // A picture of its page, cut to the body (the popup's 300 px), for a PR's body; in
       // E2E_COLOR_SCHEME's colours (light or dark) when set, else the system's.
       const shot = async (file) => {
@@ -858,6 +872,9 @@ async function firefox(bin, profile, dl, page, ready, name = "Firefox") {
         if (r.type === "exception") throw new Error(`evaluate: ${r.exceptionDetails.text} ${expression}`);
         return r.result.value === undefined ? undefined : JSON.parse(r.result.value);
       };
+      // An extension's page is found by its address in the tree, which it has before it loaded:
+      // handed out once it has (PAGE_LOADED; a web page's navigate above already waited).
+      if (url.startsWith("moz-extension:")) await until(`${url}, loaded`, 15000, () => ev(PAGE_LOADED).catch(() => false));
       // A click at the centre of `selector`, as a user's (the tab brought to the front first):
       // what a browser lets an extension's page ask a permission from.
       const click = async (selector) => {
@@ -2390,6 +2407,44 @@ async function proxyInChromium(t) {
   if (errors.length) throw new Error(`the service worker's console: ${errors.join(" | ")}`);
   done.push("no proxy: a download as before; no error in the service worker's console");
   return done.join("; ");
+}
+
+// #1781: the lab's gallery shown (its <img> pictures and #bg1's background loaded, so the page
+// knows their sizes, as a user's would): what it shows.
+const GALLERY_SHOWN = `(() => {
+  const i = [...document.images];
+  const bg = performance.getEntriesByType("resource").some((e) => e.name.includes("/bg1.jpg"));
+  return i.every((x) => x.complete) && ["photo1", "photo2", "photo4", "thumb3"].every((id) => document.getElementById(id).naturalWidth > 0) && bg && i.length + " pictures and 6 CSS backgrounds on the page";
+})()`;
+
+// #1781: the gallery's CSS background pictures, never sent: not pictures located on the page.
+const GALLERY_BACKGROUNDS = ["/gen/192K/bg1.jpg", "/gen/16K/bg2.png", "/gen/64K/bg2@2x.png", "/gen/64K/bg6.webp"];
+
+// #1781: MDM's look-ups in Link grabber of the gallery's run `seed` (its requests, not the
+// browser's own for the pictures it showed: those say Sec-Fetch-Mode no-cors): each of `sent`,
+// and none of `left`. On Windows, Link grabber's window is seen and closed: its windows.
+async function galleryLookups(seed, sent, left) {
+  const mdmFor = async (p) => (await requests(p)).filter((e) => e.sec_fetch_mode !== "no-cors" && new URLSearchParams(e.query || "").get("seed") === String(seed));
+  await until(`MDM's look-ups of the ${sent.length} in Link grabber`, 60000, async () => {
+    for (const p of sent) if (!(await mdmFor(p)).length) return false;
+    return true;
+  }).catch(async (e) => {
+    const missing = [];
+    for (const p of sent) if (!(await mdmFor(p)).length) missing.push(p);
+    e.message += ` (none for ${missing.join(", ")})`;
+    throw e;
+  });
+  // A moment more for a look-up that shouldn't come.
+  await sleep(3000);
+  for (const p of left) {
+    const asked = await mdmFor(p);
+    if (asked.length) throw new Error(`MDM asked for ${p}, left out: ${asked.map(brief).join("; ")}`);
+  }
+  if (!WIN) return "";
+  const pid = ourApps()[0];
+  const open = await until("Link grabber", 20000, () => appWindows(pid).includes("Link grabber") && appWindows(pid));
+  appWindows(pid, "Link grabber");
+  return `; windows: ${open.join(", ")}`;
 }
 
 const CASES = {
@@ -4166,6 +4221,145 @@ thumb.addEventListener("mouseleave", () => { preview.classList.add("off"); docum
     }
   },
 
+  // #1781: the toolbar button's Find images on the lab's gallery (/page?images=1). It finds each
+  // picture at the largest size the page lists (a srcset's 1600w, a <picture>'s WebP 1200w, a 2x),
+  // a lazy loader's data-src, a link to a full size; each address once (the large photo is also
+  // shown and linked), no data: picture, no PDF, no CSS background. At least 300 x 300 with GIF
+  // off keeps four, and those four only reach Link grabber: MDM looks each up there and nothing
+  // else. E2E_SHOTS: <lang>-<scheme>-images-page.png (the tab as it opens), -images-found.png (the
+  // filters set) and -images-sent.png.
+  async images(t) {
+    const shots = process.env.E2E_SHOTS ? path.resolve(process.env.E2E_SHOTS) : "";
+    const tag = `${process.env.E2E_LANG || "en"}-${process.env.E2E_COLOR_SCHEME || "system"}`;
+    await clearLog();
+    // Addresses of this run and browser's own: Link grabber, still open with an earlier
+    // browser's list where its window isn't closed (Linux), adds an address it has only once,
+    // and looks nothing new up (Firefox's run found no look-ups after Chrome's).
+    const seed = Date.now() % 1e9;
+    await t.session.navigate(`${LAB}/page?images=1&seed=${seed}&title=Gallery`);
+    // Its pictures shown, so the page knows their sizes, as a user's would be.
+    const shown = await until("the gallery's pictures", 20000, () => t.session.evaluate(GALLERY_SHOWN));
+    const page = await t.session.evaluate("location.href");
+    const popup = await t.session.tab(`${t.session.base}popup.html?page=${encodeURIComponent(page)}`);
+    const state = () =>
+      popup.evaluate(`(() => ({
+        chips: [...document.querySelectorAll("#images-types .chip")].map((c) => [c.dataset.type, c.querySelector(".n").textContent, c.getAttribute("aria-pressed")]),
+        count: document.getElementById("images-count").textContent,
+        unsized: document.getElementById("images-unsized").hidden ? "" : document.getElementById("images-unsized").textContent,
+        send: !document.getElementById("images-send").hidden && !document.getElementById("images-send").disabled,
+        said: document.getElementById("images-said").hidden ? "" : document.getElementById("images-said").textContent,
+        bad: document.getElementById("images-said").classList.contains("bad"),
+      }))()`);
+    const numbers = (s) => (String(s).match(/\d+/g) || []).map(Number);
+    let found;
+    let kept;
+    try {
+      // The This page tab as it opens (its media list asked for first, as before #1781).
+      await until("the popup's This page tab", 15000, () => popup.evaluate(`!document.getElementById("media").hidden`));
+      await sleep(500);
+      if (shots && popup.shot) await popup.shot(path.join(shots, `${tag}-images-page.png`));
+      await until("the popup's Find images", 15000, () => popup.evaluate(`Boolean(document.getElementById("images")) && !document.getElementById("images").hidden`));
+      // Nothing looked for before the click.
+      const before = await state();
+      if (before.chips.length || before.send) throw new Error(`images listed before Find images: ${JSON.stringify(before)}`);
+      await popup.evaluate(`(document.getElementById("images-find").click(), true)`);
+      found = await until("the pictures found", 15000, async () => {
+        const s = await state();
+        return (s.chips.length || s.said) && s;
+      });
+      const types = found.chips.map(([type, n]) => `${type} ${n}`).join(", ");
+      if (types !== "JPEG 1, PNG 3, WEBP 1, GIF 1, AVIF 1") throw new Error(`the types found: ${types || found.said}`);
+      if (numbers(found.count).join(" ") !== "7 7") throw new Error(`found: ${found.count}`);
+      // At least 300 x 300: the icon and the thumbnail left out, the two the page gives no size
+      // for (the lazy one, the linked one) kept and said; then GIF off.
+      await popup.evaluate(`(() => { for (const id of ["images-w", "images-h"]) { const i = document.getElementById(id); i.value = "300"; i.dispatchEvent(new Event("input")); } return true; })()`);
+      const sized = await state();
+      if (numbers(sized.count).join(" ") !== "5 7" || numbers(sized.unsized).join(" ") !== "2") throw new Error(`at least 300 x 300: ${sized.count} / ${sized.unsized}`);
+      await popup.evaluate(`(document.querySelector('#images-types .chip[data-type="GIF"]').click(), true)`);
+      kept = await state();
+      if (numbers(kept.count).join(" ") !== "4 7" || !kept.send) throw new Error(`GIF off: ${kept.count}, send ${kept.send}`);
+      if (shots && popup.shot) {
+        await popup.evaluate(`(document.getElementById("images").scrollIntoView({ block: "nearest" }), true)`);
+        await popup.shot(path.join(shots, `${tag}-images-found.png`));
+      }
+      await popup.evaluate(`(document.getElementById("images-send").click(), true)`);
+      const sent = await until("the popup's answer", 30000, async () => {
+        const s = await state();
+        return s.said && s;
+      });
+      if (sent.bad) throw new Error(`sending: ${sent.said}`);
+      if (shots && popup.shot) {
+        await popup.evaluate(`(document.getElementById("images").scrollIntoView({ block: "nearest" }), true)`);
+        await popup.shot(path.join(shots, `${tag}-images-sent.png`));
+      }
+    } finally {
+      await popup.close();
+    }
+    // MDM's look-ups in Link grabber (its requests, not the browser's own for the pictures it
+    // showed: those say Sec-Fetch-Mode no-cors).
+    const sent = ["/gen/256K/photo1.jpg", "/gen/128K/photo2.webp", "/gen/512K/photo3.png", "/gen/64K/photo5.avif"];
+    const left = ["/gen/1K/icon.png", "/gen/8K/photo3-thumb.png", "/gen/32K/photo4@2x.gif", "/gen/8K/photo4.gif", "/gen/16K/photo1-small.jpg", "/gen/32K/photo2-600.webp", "/gen/32K/photo2.jpg", "/gen/1K/notes.pdf", ...GALLERY_BACKGROUNDS];
+    const windows = await galleryLookups(seed, sent, left);
+    return `${shown}; found ${found.chips.map(([type, n]) => `${type} ${n}`).join(", ")}; 300 x 300 without GIF: ${kept.count}; MDM looked up ${sent.map((p) => p.split("/").pop()).join(", ")} only${windows}`;
+  },
+
+  // #1781: the right-click menu's "Download all links" on the lab's gallery: its links (the large
+  // photo, photo3.png, the PDF) and, after them, its <img> pictures, found as Find images finds
+  // them (none left out by size or type; never a CSS background), marked as located on the page:
+  // MDM's log says how many of the page's links are such pictures (Link grabber hides those while
+  // "Hide images located on this web page" is ticked), and it looks every one up, and nothing
+  // else (the smaller sizes, the 1x of a 2x, the backgrounds). The large photo, shown and linked,
+  // is a link, not marked. Then "Download selected links" on a selection of the gallery's first
+  // part: its one link and the two pictures in it, marked. Firefox's right-click menu is opened
+  // and its item chosen; Chromium's can't be opened headless, so its handler is called as the
+  // menu calls it.
+  async imageslinks(t) {
+    const log = path.join(data, "logs", "mdm.log");
+    const round = async (selected) => {
+      await clearLog();
+      // Addresses of this round's own (see images).
+      const seed = Date.now() % 1e9;
+      const page = `${LAB}/page?images=1&seed=${seed}&title=Gallery`;
+      await t.session.navigate(page);
+      const shown = await until("the gallery's pictures", 20000, () => t.session.evaluate(GALLERY_SHOWN));
+      // The selection: from the gallery's first line to the large photo's link (the icon, photo1,
+      // the <picture>, photo1 again and its link).
+      if (selected) await t.session.evaluate(`(() => { const r = document.createRange(); r.setStartBefore(document.getElementById("blank")); r.setEndAfter(document.getElementById("full1")); const s = getSelection(); s.removeAllRanges(); s.addRange(r); return s.toString().length; })()`);
+      const from = fs.existsSync(log) ? fs.statSync(log).size : 0;
+      const item = selected ? "mdm-selected" : "mdm-all";
+      let clicked;
+      if (t.kind === "chromium") {
+        clicked = await t.session.inExtension(`(async () => {
+          const tab = (await chrome.tabs.query({})).find((x) => x.url === ${JSON.stringify(page)});
+          if (!tab) return "no tab";
+          await menuClicked({ menuItemId: ${JSON.stringify(item)}, pageUrl: tab.url, frameId: 0 }, tab);
+          const { status } = await chrome.storage.local.get("status");
+          return "called; status " + JSON.stringify(status && status.why);
+        })()`);
+      } else {
+        const at = await t.session.evaluate(`(() => { const b = document.getElementById("blank").getBoundingClientRect(); return [b.left + 4, b.top + b.height / 2]; })()`);
+        clicked = await t.session.menu(at[0], at[1], selected ? "Download selected links with Mister Download Manager" : "Download all links with Mister Download Manager");
+        if (!String(clicked).startsWith("chosen")) throw new Error(`the menu: ${clicked}`);
+      }
+      const links = selected ? ["/gen/256K/photo1.jpg"] : ["/gen/256K/photo1.jpg", "/gen/512K/photo3.png", "/gen/1K/notes.pdf"];
+      const pictures = selected ? ["/gen/1K/icon.png", "/gen/128K/photo2.webp"] : ["/gen/1K/icon.png", "/gen/128K/photo2.webp", "/gen/8K/photo3-thumb.png", "/gen/32K/photo4@2x.gif", "/gen/64K/photo5.avif"];
+      const said = () => (fs.existsSync(log) ? fs.readFileSync(log, "utf8").slice(from) : "");
+      const marked = await until("MDM's line on the page's pictures", 30000, () => /a page's (\d+) links, (\d+) of them pictures located on it/.exec(said())).catch((e) => {
+        e.message += ` (${clicked})`;
+        throw e;
+      });
+      if (`${marked[1]} ${marked[2]}` !== `${links.length + pictures.length} ${pictures.length}`) throw new Error(`MDM: ${marked[0]}, not ${links.length + pictures.length} links, ${pictures.length} pictures`);
+      // The look-ups, by the round's seed: the PDF's address has none (one address in every
+      // round), so it is counted in MDM's line above but not looked for here.
+      const seeded = (list) => list.filter((x) => !x.endsWith(".pdf"));
+      const others = ["/gen/1K/icon.png", "/gen/128K/photo2.webp", "/gen/8K/photo3-thumb.png", "/gen/32K/photo4@2x.gif", "/gen/64K/photo5.avif", "/gen/512K/photo3.png"].filter((x) => !pictures.includes(x) && !links.includes(x));
+      const left = ["/gen/8K/photo4.gif", "/gen/16K/photo1-small.jpg", "/gen/32K/photo2-600.webp", "/gen/32K/photo2.jpg", ...GALLERY_BACKGROUNDS, ...others];
+      const windows = await galleryLookups(seed, seeded([...links, ...pictures]), left);
+      return `${selected ? "selected" : "all"}: ${String(clicked).split(" {")[0]}; MDM: ${marked[0]}; looked up ${links.length} links and ${pictures.length} pictures, none of the ${left.length} others${windows} (${shown})`;
+    };
+    return `${await round(false)}; ${await round(true)}`;
+  },
+
   // #695, #800: a video a server's program sends (/remote_control.php, /stream.php as video/mp4,
   // no Content-Disposition), on a page titled "Lab lecture: week N". The toolbar button's list
   // names it after the page with its type ("Lab lecture week 1.mp4 · MP4", never
@@ -4500,10 +4694,12 @@ thumb.addEventListener("mouseleave", () => { preview.classList.add("off"); docum
       const shots = process.env.E2E_SHOTS && s.shot ? path.resolve(process.env.E2E_SHOTS) : "";
       const lang = process.env.E2E_LANG || "en";
       // The button over `v`, the pointer brought onto it again a few times (MDM may be slow to say
-      // the button may show while it looks a video up).
+      // the button may show while it looks a video up). Over `v` itself (buttonOver): the last
+      // video's button stays a moment, faint, after the pointer left it (#1735), and its arrow,
+      // scrolled out of the window with its video, is no button for this one.
       const over = async (v) => {
         for (let i = 0; i < 4; i++) {
-          const b = await hover(s, v);
+          const b = await buttonOver(s, v);
           if (b) return b;
           await s.mouse(2, 2);
           await sleep(1000);
@@ -4521,7 +4717,7 @@ thumb.addEventListener("mouseleave", () => { preview.classList.add("off"); docum
         // "before"), which never offers what played: its menu once its look-up ended, then no more.
         // Its menu: its arrow (the pointer resting on the button starts its look-up, #1053), then
         // what the look-up and what the tab played came to (a minute and a half at most).
-        await clickArrow(s);
+        if (!(await clickArrow(s))) throw new Error(`${sel}: the button has no arrow`);
         const filled = (q) => q && !q.busy && (q.rows.length || q.note);
         const said = new Set();
         const m = await until(`${sel}: its menu`, 90000, async () => {
@@ -4542,6 +4738,17 @@ thumb.addEventListener("mouseleave", () => { preview.classList.add("off"); docum
           return null;
         }
         if (!m.rows.length) throw new Error(`${sel}: its menu says "${m.note}"`);
+        // The whole menu inside the window, where a person can reach its lines (grown with its
+        // filters, #1735, it went past the window's top over a video in the window's middle). Its
+        // lines where they are then.
+        const view = await s.evaluate("({ w: innerWidth, h: innerHeight })");
+        const placed = await until(`${sel}: its menu inside the window`, 3000, async () => {
+          const q = await s.picks("row");
+          return q && q.box.t >= 0 && q.box.l >= 0 && q.box.b <= view.h && q.box.r <= view.w ? q : null;
+        }).catch(async () => {
+          throw new Error(`${sel}: its menu reaches out of the window: ${JSON.stringify(((await s.picks()) || {}).box)} in ${view.w}x${view.h}`);
+        });
+        Object.assign(m, placed);
         const p = await s.pill(PILL_STATE);
         if (!p || p.chip !== chip) throw new Error(`${sel}: the button's chip is "${p && p.chip}", not ${chip}`);
         if (shots && shot) {
@@ -4602,6 +4809,104 @@ thumb.addEventListener("mouseleave", () => { preview.classList.add("off"); docum
       if (three.m.rows.length !== 1 || !megabytes(three.m.rows[0].size, 3)) throw new Error(`#feed3's menu: ${rows(three.m)}`);
       await s.mouse(2, 2);
       return `#feed1: chip "${one.p.chip}", "${rows(one.m)}", ${done.file} ${done.size} bytes, ${got.length} request(s) with the feed as Referer, "${green.text}"; #feed2: ${rows(two.m)}, 360p: ${streamed.file}; #feed3: "${rows(three.m)}"`;
+    } finally {
+      await stopApp();
+    }
+  },
+
+  // #1826: a video that hasn't played, on a site yt-dlp has no reader for (pages answered here at
+  // clips.example.test, which yt-dlp can't reach, so the page's own look-up finds nothing): the
+  // button takes the stream address the page wrote for its player ("\/" for "/") and looks that
+  // up, the video never playing. Only what the page names is asked of the lab (its log); of two
+  // variants named in a JSON script the better one, its look-up ended within its minute; a page
+  // naming none asks the lab for nothing. "Download best" downloads the stream to its end.
+  async beforeplay(t) {
+    if (!ytdlp) throw new Skip("no yt-dlp (E2E_YTDLP or PATH)");
+    if (!ffmpeg) throw new Skip("no ffmpeg (E2E_FFMPEG or PATH)");
+    await stopApp();
+    fs.rmSync(path.join(data, "ipc.json"), { force: true });
+    spawn(appExe, ["/startup"], { env: process.env, stdio: "ignore", detached: false });
+    try {
+      await until("the test instance, in the notification area", 20000, () => mdmList().then(() => true, () => false));
+      const s = t.session;
+      const HOST = "clips.example.test";
+      const esc = (p) => JSON.stringify(`${LAB}${p}`).replaceAll("/", "\\/");
+      const player = (script) =>
+        `<!doctype html><meta charset="utf-8"><title>A clip before it plays</title><body style="margin:0">` +
+        `<video id="clip" width="640" height="360" controls preload="none"></video><script>${script}</script></body>`;
+      const pages = {
+        "/one.html": player(`window.playerConfig = {"sources": {"hls": ${esc("/hls/master.m3u8")}}};`),
+        "/two.html": player(`window.playerConfig = {"hls": {"360": ${esc("/hls/360p/index.m3u8")}, "720": ${esc("/hls/720p/index.m3u8")}}};`),
+        "/none.html": player(`window.playerConfig = {"poster": "/poster.jpg"};`),
+      };
+      await s.serve([HOST], (url) => {
+        const page = pages[new URL(url).pathname];
+        return page ? { status: 200, type: "text/html; charset=utf-8", body: page } : { status: 404, type: "text/plain", body: "not a sample page" };
+      });
+      const earlier = (await mdmList()).filter((d) => d.url.startsWith(`${LAB}/hls/`)).map((d) => d.id);
+      if (earlier.length) await ipc({ action: "delete", ids: earlier });
+      // What the lab was asked for under /hls/ since its log was cleared.
+      const asked = async () => (await (await fetch(`${LAB}/_log`)).json()).filter((e) => e.path.startsWith("/hls")).map((e) => `${e.path} ${e.status}`);
+      const notPlayed = async (page) => {
+        const played = await s.evaluate(`(() => { const v = document.getElementById("clip"); return v.currentSrc || (v.paused ? "" : "playing"); })()`);
+        if (played) throw new Error(`${page}: the clip played (${played})`);
+      };
+      const rows = (m) => m.rows.map((r) => `${r.name}${r.size ? ` ${r.size}` : ""}`).join(", ");
+      // The button over the clip, its menu (the pointer resting on its arrow starts the look-up),
+      // followed until the look-up ended.
+      const menuOf = async (page) => {
+        await s.mouse(2, 2);
+        await clearLog();
+        await s.navigate(`http://${HOST}${page}`);
+        const v = await until(`${page}: the clip`, 10000, () => rect(s, "#clip"));
+        let b = null;
+        for (let i = 0; i < 4 && !b; i++) {
+          b = await hover(s, v);
+          if (!b) {
+            await s.mouse(2, 2);
+            await sleep(1000);
+          }
+        }
+        if (!b) throw new Error(`${page}: no button over the clip`);
+        await clickArrow(s);
+        const opened = Date.now();
+        const said = new Set();
+        const m = await until(`${page}: its menu, its look-up ended`, 75000, async () => {
+          const q = await s.picks("row");
+          if (q) said.add(q.busy ? "looking" : q.note || rows(q));
+          return q && !q.busy && (q.rows.length || q.note) ? q : null;
+        }).catch((e) => {
+          throw new Error(`${e.message} (it said: ${[...said].join(" | ")})`);
+        });
+        await notPlayed(page);
+        return { m, ms: Date.now() - opened, asked: await asked(), p: await s.pill(PILL_STATE) };
+      };
+      // The master playlist the page named: its qualities, the chip its best, and only it and
+      // what it lists asked for.
+      const one = await menuOf("/one.html");
+      if (!one.m.rows.some((r) => /\b720p\b/.test(r.name)) || !one.m.rows.some((r) => /\b360p\b/.test(r.name))) throw new Error(`/one.html's menu: ${rows(one.m) || one.m.note}`);
+      if (!one.p || one.p.chip !== "720p") throw new Error(`/one.html: the chip is "${one.p && one.p.chip}", not 720p`);
+      const strange = one.asked.filter((a) => !/^\/hls\/(?:master\.m3u8|(?:720p|360p|audio)\/[\w.]+) 200$/.test(a));
+      if (!one.asked.length || strange.length) throw new Error(`/one.html: the lab was asked for ${one.asked.join(", ") || "nothing"}`);
+      const before = new Set((await mdmList()).map((d) => d.id));
+      await s.mouse(one.m.rows[0].x, one.m.rows[0].y, "click");
+      const item = await until("/one.html's best quality, in MDM's list", 15000, async () => (await mdmList().catch(() => [])).find((d) => !before.has(d.id)));
+      if (item.url !== `${LAB}/hls/master.m3u8`) throw new Error(`MDM downloads ${item.url}, not the stream the page named`);
+      const done = await until(`${item.file}, complete`, 90000, async () => {
+        const d = (await mdmList().catch(() => [])).find((x) => x.id === item.id);
+        if (d && d.status === "Error") throw new Error(`${item.file}: ${d.error}`);
+        return d && d.status === "Complete" ? d : null;
+      });
+      await notPlayed("/one.html");
+      // Two variants in a JSON script: the 720p one looked up, never the 360p, within the minute.
+      const two = await menuOf("/two.html");
+      if (!two.asked.some((a) => a === "/hls/720p/index.m3u8 200") || two.asked.some((a) => a.startsWith("/hls/360p/"))) throw new Error(`/two.html: the lab was asked for ${two.asked.join(", ") || "nothing"}`);
+      if (two.ms > 65000) throw new Error(`/two.html: its look-up ended ${two.ms} ms after the menu opened, past its minute`);
+      // None named: nothing asked.
+      const none = await menuOf("/none.html");
+      if (none.asked.length) throw new Error(`/none.html: the lab was asked for ${none.asked.join(", ")}`);
+      await s.mouse(2, 2);
+      return `/one.html: chip "${one.p.chip}", ${rows(one.m)} in ${one.ms} ms, lab asked ${one.asked.length}x (${[...new Set(one.asked.map((a) => a.split("/")[2]))].join(", ")}), "Download best": ${done.file} ${done.size} bytes, never played; /two.html: ${rows(two.m) || two.m.note} in ${two.ms} ms, asked ${two.asked.join(", ")}; /none.html: "${none.m.note || rows(none.m)}" in ${none.ms} ms, nothing asked`;
     } finally {
       await stopApp();
     }
