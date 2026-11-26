@@ -111,6 +111,8 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Fixed
 
+- Windows: a graphics driver reset no longer keeps MDM off Direct3D 12 for a month. MDM starts again by itself after a reset, and when the graphics card wasn't back yet at that moment, Direct3D 12 found only Windows' own software renderer: MDM took that as Direct3D 12 not working on the card, and drew with OpenGL from then on. A start like that is no longer remembered, so the next start draws with Direct3D 12 on the card again, and a card an earlier version passed over this way is tried again at the first start ([#1974](https://github.com/anefzaoui/misterdownloadmanager/issues/1974)).
+- Sinhala: about a hundred of MDM's texts read better (clearer wording, the same word for the same thing throughout, the installer's too), and the ones still missing are translated (thanks to [@ShammiSandaruwan](https://github.com/ShammiSandaruwan)).
 - **Browser add-on:** Download all links / Download selected links sends capturable links to the paired server when another MDM is chosen, capped at 100 links, with a clear consolidated result, and stopping immediately when the server cannot be reached ([#1596](https://github.com/anefzaoui/misterdownloadmanager/issues/1596)).
 - Windows: a dialog opened from the main window (**About**, for one), brought back with MDM's taskbar button and closed with **OK**, left the keyboard on the taskbar: Windows doesn't hand it to the owner there, and the main window behind stayed without it, looking as if it had been put away. The main window now comes back to the front when such a dialog closes, and never over another program ([#1852](https://github.com/anefzaoui/misterdownloadmanager/issues/1852); thanks to [@wmwlwmwl](https://github.com/wmwlwmwl)).
 - Browser add-on: Sinhala (සිංහල) in Firefox. Its texts were already translated, but the add-on's Sinhala folder was never written, so it showed English; Firefox's package now carries it (Chrome and Safari have no Sinhala) ([#1903](https://github.com/anefzaoui/misterdownloadmanager/issues/1903); thanks to [@Raghav2012Code](https://github.com/Raghav2012Code)).
@@ -120,6 +122,9 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 - Torrents: a magnet link whose hash is written in lower-case Base32 (32 letters and digits, as some sites write it) opens, instead of being refused as not a torrent (thanks to [@jamaica1000](https://github.com/jamaica1000)).
 - Helpers: ffmpeg's download is checked more carefully.
 - Linux: a menu opened near a screen's bottom or right edge (a right-click in the list, a submenu) opens above or to the left of the pointer and stays on the screen, at any interface size, on X11 and XWayland (thanks to [@madratzz](https://github.com/madratzz)).
+- Torrents: a torrent made from a folder (`torrent-create`) lists its files by name, so the same
+  files make the same torrent on every computer. The order was the file system's, which differs
+  between computers, and so did the torrent and which of its files share a piece.
 - Torrents: the engine checks what it's sent more carefully.
 - Extracting: 7z and RAR archives are checked more carefully.
 - Archive test: archives are checked more carefully.

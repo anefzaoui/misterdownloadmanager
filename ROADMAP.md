@@ -574,6 +574,13 @@ These ship in the next version.
   language switches the window at once, steps not needed are left out, any can be passed, and it
   doesn't come back once done. On Linux under X11 the window belongs to the main window
   ([#1839](https://github.com/anefzaoui/misterdownloadmanager/issues/1839))
+- ✅ CodeQL no longer reads the windows' control names as salts or passwords: the shared drawing
+  helpers call a control's name `id` and a box that hides its text `masked`; nothing changes on
+  screen
+- ✅ Windows: a graphics driver reset no longer keeps MDM off Direct3D 12 for a month: a start
+  just after it that finds no graphics card yet isn't remembered, and the next start draws on the
+  card again ([#1974](https://github.com/anefzaoui/misterdownloadmanager/issues/1974))
+- ✅ Sinhala: about a hundred texts reworded and the missing ones translated (thanks to [@ShammiSandaruwan](https://github.com/ShammiSandaruwan))
 - ✅ **Browser add-on:** send all and selected links to the paired server when another MDM is chosen ([#1596](https://github.com/anefzaoui/misterdownloadmanager/issues/1596), [PR #1602](https://github.com/anefzaoui/misterdownloadmanager/pull/1602))
 - ✅ Windows: closing a dialog of the main window's with **OK**, after bringing it back with
   MDM's taskbar button, leaves the main window in front with the keyboard instead of the
@@ -634,6 +641,11 @@ These ship in the next version.
   ([#1826](https://github.com/anefzaoui/misterdownloadmanager/issues/1826))
 - ✅ Galleries: file paths are checked more carefully
 - ✅ Helpers: ffmpeg's download is checked more carefully
+- ✅ Torrents: a torrent made from a folder lists its files by name, the same on every computer
+- ✅ Tests: the check that the torrent session asks trackers through MDM's own client no longer
+  fails now and then on a busy machine (seen on the Linux test machine): its test tracker noted
+  each request after answering it, so the redirected request could be noted first; it now notes
+  each one before answering
 - ✅ Torrents: the engine checks what it's sent more carefully
 - ✅ Extracting: 7z and RAR archives are checked more carefully
 - ✅ Archive test: archives are checked more carefully
@@ -2191,6 +2203,14 @@ These ship in the next version.
 - ✅ Torrents: a magnet link with its hash in lower-case Base32 (32 characters) opens; the
   torrent engine took only upper-case Base32 (thanks to
   [@jamaica1000](https://github.com/jamaica1000))
+- ✅ Tests: the check of a download that starts while the disk is busy no longer fails now and
+  then on a slower computer: whether a save may run during the transfer depends on how fast the
+  computer receives, so the download's own check keeps to what the user sees (no stall, no
+  connection dropped), and the save rule is checked at every speed on the test disk's own clock
+  ([#1633](https://github.com/anefzaoui/misterdownloadmanager/issues/1633))
+- ✅ Tests: the download checks on 32-bit Windows no longer stop halfway now and then: the
+  largest test downloads (up to 1 GiB) are compared with what they should hold a piece at a
+  time, instead of both whole in memory at once, which a 32-bit test program couldn't always fit
 
 ## Being worked on
 

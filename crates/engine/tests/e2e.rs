@@ -27,6 +27,29 @@ fn fast_opts() -> Options {
     }
 }
 
+/// The length of the file at `path` if it holds the lab's content for `seed` from its first byte,
+/// compared a piece at a time. Read whole beside a copy of what it should hold, the busy-disk
+/// test's 1 GiB file took 2 GiB of memory at once: in a 32-bit test process (Windows x86), with
+/// the other tests' files in memory too, that allocation failed now and then and aborted the
+/// whole suite ("memory allocation of 1073741824 bytes failed").
+fn content_len(path: &std::path::Path, seed: u64) -> Option<u64> {
+    use std::io::Read;
+    let mut file = std::fs::File::open(path).unwrap();
+    let (mut got, mut want) = (vec![0; 4 << 20], vec![0; 4 << 20]);
+    let mut at = 0u64;
+    loop {
+        let n = file.read(&mut got).unwrap();
+        if n == 0 {
+            return Some(at);
+        }
+        content::fill(seed, at, &mut want[..n]);
+        if got[..n] != want[..n] {
+            return None;
+        }
+        at += n as u64;
+    }
+}
+
 /// Download `path` from `s` into a temp dir; returns the log and the verified size.
 async fn fetch(s: &LabServer, path: &str, seed: u64, opts: Options) -> (Vec<LogEntry>, u64) {
     let dir = tempfile::tempdir().unwrap();
@@ -39,11 +62,8 @@ async fn fetch(s: &LabServer, path: &str, seed: u64, opts: Options) -> (Vec<LogE
         .wait()
         .await
         .expect("download succeeds");
-    let data = std::fs::read(&out.path).unwrap();
-    let mut want = vec![0; data.len()];
-    content::fill(seed, 0, &mut want);
-    assert!(data == want, "content mismatch");
-    assert_eq!(data.len() as u64, out.size);
+    let len = content_len(&out.path, seed).expect("content mismatch");
+    assert_eq!(len, out.size);
     // The server logs a request when its response body is dropped, which can trail the client:
     // wait until every one is in the log (and its connection slot is free).
     tokio::time::timeout(SETTLE, s.settled())
@@ -512,10 +532,7 @@ async fn fetch_counting_sheds(
         tokio::time::sleep(std::time::Duration::from_millis(20)).await;
     }
     let out = dl.wait().await.expect("download succeeds");
-    let data = std::fs::read(&out.path).unwrap();
-    let mut want = vec![0; data.len()];
-    content::fill(seed, 0, &mut want);
-    assert!(data == want, "content mismatch");
+    assert!(content_len(&out.path, seed).is_some(), "content mismatch");
     tokio::time::timeout(SETTLE, s.settled())
         .await
         .expect("every request ends");
@@ -2519,7 +2536,13 @@ struct Watched {
     /// While the first slow flush held the writes (`gate` taken exclusively): the bytes that
     /// arrived meanwhile, and the bytes still to come when it began.
     during_flush: Option<(u64, u64)>,
-    /// The longest time no byte arrived, until all but the last sixteenth had.
+    /// The longest time no byte arrived, until all but the last sixteenth had. Not counted
+    /// while the computer's own disk holds a write ([`SlowDisk::writing`]): a busy computer's
+    /// disk once held every connection's write for about 8 s at once, no flush running, and the
+    /// test can't hold it to a pace. A flush of the modelled disk holds the writes before they
+    /// reach it, so its stalls still count.
+    ///
+    /// [`SlowDisk::writing`]: mdm_engine::slowdisk::SlowDisk::writing
     quiet: std::time::Duration,
     /// Connections shed as much slower than the others.
     shed: usize,
@@ -2528,7 +2551,7 @@ struct Watched {
 async fn watch(
     d: Download,
     size: u64,
-    gate: Option<std::sync::Arc<std::sync::RwLock<()>>>,
+    disk: Option<&mdm_engine::slowdisk::SlowDisk>,
 ) -> (Result<mdm_engine::Outcome, mdm_engine::Error>, Watched) {
     use mdm_engine::download::State;
     let started = std::time::Instant::now();
@@ -2541,7 +2564,8 @@ async fn watch(
     loop {
         let v = d.snapshot();
         // The last bytes may wait for the disk with the rest of their connection's memory.
-        if v.downloaded > last || v.downloaded >= size - size / 16 {
+        let computers_disk = disk.is_some_and(|d| d.writing() > 0);
+        if v.downloaded > last || v.downloaded >= size - size / 16 || computers_disk {
             last = v.downloaded;
             last_at = std::time::Instant::now();
         }
@@ -2551,7 +2575,7 @@ async fn watch(
             shed += usize::from(e.text.contains(&slow));
             seen = e.seq;
         }
-        let flushing = gate.as_ref().is_some_and(|g| g.try_read().is_err());
+        let flushing = disk.is_some_and(|d| d.gate.try_read().is_err());
         if flushing && flush_began.is_none() && during_flush.is_none() {
             flush_began = Some(v.downloaded);
         } else if !flushing && let Some(at) = flush_began.take() {
@@ -2626,10 +2650,9 @@ async fn a_slow_disk_does_not_stop_the_transfer() {
         .expect("every request ends");
     let before = s.log().len();
     let slow = mdm_engine::slowdisk::SlowDisk::slow_flush(std::time::Duration::from_millis(1500));
-    let gate = slow.gate.clone();
     let opts = Options {
         save_interval: std::time::Duration::from_millis(100),
-        slow_disk: Some(slow),
+        slow_disk: Some(slow.clone()),
         ..fast_opts()
     };
     let (out, slowed) = watch(
@@ -2642,15 +2665,12 @@ async fn a_slow_disk_does_not_stop_the_transfer() {
             opts,
         ),
         SIZE,
-        Some(gate),
+        Some(&slow),
     )
     .await;
     let out = out.expect("download succeeds");
     assert_eq!(out.size, SIZE);
-    let data = std::fs::read(&out.path).unwrap();
-    let mut want = vec![0; data.len()];
-    content::fill(361, 0, &mut want);
-    assert!(data == want, "content mismatch");
+    assert_eq!(content_len(&out.path, 361), Some(SIZE), "content mismatch");
     tokio::time::timeout(SETTLE, s.settled())
         .await
         .expect("every request ends");
@@ -2702,15 +2722,16 @@ async fn a_slow_disk_does_not_stop_the_transfer() {
             },
         ),
         BEHIND,
-        None,
+        Some(&disk),
     )
     .await;
     let out = out.expect("download succeeds");
     assert_eq!(out.size, BEHIND);
-    let data = std::fs::read(&out.path).unwrap();
-    let mut want = vec![0; data.len()];
-    content::fill(782, 0, &mut want);
-    assert!(data == want, "content mismatch");
+    assert_eq!(
+        content_len(&out.path, 782),
+        Some(BEHIND),
+        "content mismatch"
+    );
     tokio::time::timeout(SETTLE, s.settled())
         .await
         .expect("every request ends");
@@ -2746,18 +2767,29 @@ async fn a_slow_disk_does_not_stop_the_transfer() {
 /// That late first progress check must not flush the whole cache at once and freeze the transfer,
 /// both on a fast link that fills the cache and on a slower link (~45 MiB/s) that stays under
 /// the disk's rate so the cache still has `HOLD_MAX` free.
+///
+/// Whether a flush runs during the transfer is the runner's pace, not the test's: when the link
+/// gives less (30 MiB/s on GitHub's macOS runner) or the download takes longer to start (the
+/// queued bytes drain meanwhile), the memory covers a flush, and the rule rightly runs one (2.4 s,
+/// nothing stood still for more than 29 ms). So this checks what the user sees, no stall and no
+/// connection shed; which flushes the rule lets through, at every pace and start, is
+/// `download::tests::a_busy_start_flushes_only_what_the_memory_covers`, on the disk's own clock.
+/// On the fast link the connections' memory is full the whole way (the disk sets the pace), so
+/// any stall of the computer's own disk stopped the transfer too: 5 runs in 54 failed here with
+/// gigabytes written beside the test (1.5 to 5.3 s without a byte), and where it was measured,
+/// all eight connections' writes to the part file waited 8 s at once for the computer's disk,
+/// no flush running. The quiet time leaves those out (`Watched::quiet`).
 #[tokio::test]
 async fn a_busy_disk_at_the_start_does_not_stop_the_transfer() {
     const SIZE: u64 = 1024 << 20;
     const SLOWER: u64 = 512 << 20;
-    for (label, size, rate, path, seed, single_flush) in [
+    for (label, size, rate, path, seed) in [
         (
             "busy start",
             SIZE,
             "rate=20M&burst=1M",
             "/gen/1024M/busy.bin?seed=1633",
             1633u64,
-            false,
         ),
         (
             "busy start (slower link)",
@@ -2765,7 +2797,6 @@ async fn a_busy_disk_at_the_start_does_not_stop_the_transfer() {
             "rate=6M&burst=1M",
             "/gen/512M/busy-slow.bin?seed=1634",
             1634u64,
-            true,
         ),
     ] {
         let s = server(rate).await;
@@ -2787,15 +2818,12 @@ async fn a_busy_disk_at_the_start_does_not_stop_the_transfer() {
                 },
             ),
             size,
-            None,
+            Some(&disk),
         )
         .await;
         let out = out.expect("download succeeds");
         assert_eq!(out.size, size);
-        let data = std::fs::read(&out.path).unwrap();
-        let mut want = vec![0; data.len()];
-        content::fill(seed, 0, &mut want);
-        assert!(data == want, "content mismatch");
+        assert_eq!(content_len(&out.path, seed), Some(size), "content mismatch");
         tokio::time::timeout(SETTLE, s.settled())
             .await
             .expect("every request ends");
@@ -2807,14 +2835,6 @@ async fn a_busy_disk_at_the_start_does_not_stop_the_transfer() {
             behind.shed, behind.received, behind.quiet
         );
         assert_eq!(behind.shed, 0, "connections shed for the disk's pace");
-        if single_flush {
-            assert_eq!(
-                flushes.len(),
-                1,
-                "first progress save flushed mid-transfer while start-up sync waited: \
-                 flushes {flushes:?}, writes held {holds:?}"
-            );
-        }
         assert!(
             behind.quiet < std::time::Duration::from_millis(1200),
             "nothing arrived for {:?} (flushes: {flushes:?}, writes held {holds:?})",

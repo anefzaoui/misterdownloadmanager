@@ -3025,8 +3025,10 @@ mod tests {
                             body.len()
                         )
                     };
-                    let _ = s.write_all(answer.as_bytes()).await;
+                    // Recorded before it is answered: the request its redirect leads to can't
+                    // be recorded first, however late this task runs after its answer.
                     let _ = tx.send(req);
+                    let _ = s.write_all(answer.as_bytes()).await;
                 });
             }
         });
@@ -3529,6 +3531,43 @@ mod tests {
         leecher.stop().await;
     }
 
+    /// A torrent made from a folder lists its files by name, not in the order the file system
+    /// keeps them (hashed on ext4, newest first on tmpfs, case-insensitive on NTFS): the same
+    /// files make the same torrent everywhere, and which files share a piece doesn't change
+    /// from one computer to the next.
+    #[tokio::test]
+    async fn a_torrent_made_from_a_folder_lists_its_files_by_name() {
+        let tmp = tempfile::tempdir().unwrap();
+        let mut hashes = Vec::new();
+        for (n, order) in [
+            ["c.txt", "b.bin", "a.bin", "Z.bin"],
+            ["a.bin", "Z.bin", "c.txt", "b.bin"],
+        ]
+        .into_iter()
+        .enumerate()
+        {
+            let src = tmp.path().join(n.to_string()).join("set");
+            std::fs::create_dir_all(&src).unwrap();
+            for name in order {
+                std::fs::write(src.join(name), vec![name.as_bytes()[0]; 20_000]).unwrap();
+            }
+            let torrent = make_torrent(&src).await;
+            let parsed = librqbit::torrent_from_bytes(&torrent).unwrap();
+            let names: Vec<String> = parsed
+                .info
+                .data
+                .files
+                .as_ref()
+                .unwrap()
+                .iter()
+                .map(|f| String::from_utf8_lossy(f.path[0].as_ref()).into_owned())
+                .collect();
+            assert_eq!(names, ["Z.bin", "a.bin", "b.bin", "c.txt"]);
+            hashes.push(parsed.info_hash);
+        }
+        assert_eq!(hashes[0], hashes[1], "the same files, the same torrent");
+    }
+
     /// Unticked files are not made in the download's folder: the pieces they share with the
     /// ticked one are kept in a parts file, and a file ticked later gets its bytes from there.
     #[tokio::test(flavor = "multi_thread", worker_threads = 4)]
@@ -3570,6 +3609,10 @@ mod tests {
             index("a.bin").unwrap(),
             index("b.bin").unwrap(),
             index("c.txt").unwrap(),
+        );
+        assert!(
+            ia < ib && ib < ic,
+            "listed by name, so c.txt shares b.bin's last piece"
         );
 
         // The leecher, as the app runs it: only the files MDM hands over are opened.
@@ -4086,6 +4129,10 @@ mod tests {
             index("a.bin").unwrap(),
             index("b.bin").unwrap(),
             index("c.txt").unwrap(),
+        );
+        assert!(
+            ia < ib && ib < ic,
+            "listed by name, so c.txt shares b.bin's last piece"
         );
         let state = tmp.path().join("s2");
         let session = state.join("session");
