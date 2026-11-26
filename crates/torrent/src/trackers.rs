@@ -584,10 +584,7 @@ mod tests {
             parsed.as_id20().expect("btih hash").as_string(),
             "3977d9f5a146c25b7464a63fa1028ae33642951a"
         );
-        assert_eq!(
-            parsed.trackers,
-            ["udp://tracker.example.org:1337/announce"]
-        );
+        assert_eq!(parsed.trackers, ["udp://tracker.example.org:1337/announce"]);
     }
 
     /// Add trackers (#39): new ones after the ones there, each once, keys still sorted, the info
