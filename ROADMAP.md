@@ -2192,6 +2192,9 @@ These ship in the next version.
   computer receives, so the download's own check keeps to what the user sees (no stall, no
   connection dropped), and the save rule is checked at every speed on the test disk's own clock
   ([#1633](https://github.com/anefzaoui/misterdownloadmanager/issues/1633))
+- ✅ Tests: the download checks on 32-bit Windows no longer stop halfway now and then: the
+  largest test downloads (up to 1 GiB) are compared with what they should hold a piece at a
+  time, instead of both whole in memory at once, which a 32-bit test program couldn't always fit
 
 ## Being worked on
 
