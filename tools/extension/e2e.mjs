@@ -5442,7 +5442,7 @@ thumb.addEventListener("mouseleave", () => { preview.classList.add("off"); docum
       await s.navigate(page);
       const links = await linksOf();
       if (selected) {
-        await s.evaluate(`(() => { const li = document.querySelectorAll("#files li"); const g = document.createRange(); g.setStartBefore(li[0]); g.setEndAfter(li[1]); getSelection().removeAllRanges(); getSelection().addRange(g); return true; })()`);
+        await s.evaluate(`(() => { const li = document.querySelectorAll("#files li"); const g = document.createRange(); g.setStart(li[0], 0); g.setEnd(li[1], li[1].childNodes.length); getSelection().removeAllRanges(); getSelection().addRange(g); return true; })()`);
       }
       const mine = await here();
       const tips = new Set();
@@ -5480,7 +5480,8 @@ thumb.addEventListener("mouseleave", () => { preview.classList.add("off"); docum
       // Past the cap: the first 100 of 105.
       const b = `${LAB}/page?files=105&pathlen=48&title=links-b`;
       done.push(`105 files: ${await batch(b, (l) => l.files.slice(0, 100), (l) => `Links sent: 100, ${l.all - 100} left out`)}`);
-      // The selection's two (Chromium).
+      // The selection's two (Chromium): from the first line's start to the second line's end, inside
+      // it (a range that ends where the third line starts touches it, and touching counts).
       if (t.kind === "chromium") {
         const c = `${LAB}/page?files=6&pathlen=56&title=links-c`;
         done.push(`2 of 6 selected: ${await batch(c, (l) => l.files.slice(0, 2), () => "Links sent: 2", true)}`);
