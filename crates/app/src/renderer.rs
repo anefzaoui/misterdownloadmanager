@@ -13,9 +13,11 @@
 //! since when and when MDM tries it again. A graphics card lost while MDM runs (a driver update
 //! or reset) starts MDM again; a second loss soon after counts as the API failing. OpenGL's too:
 //! a paint that fails (eframe couldn't make the context current on a window, #1448) is skipped
-//! and tried again, and a window whose paints keep failing is a lost device ([`gl_lost`]). The
-//! same code does all of this on every system: only [`GPU`] and the backend in `gpu::options`
-//! differ.
+//! and tried again, and a window whose paints keep failing is a lost device ([`gl_lost`]). A way
+//! that can't start just after a loss isn't remembered ([`after_loss`]): the driver may still be
+//! resetting (#1974: Direct3D 12 found only WARP, not the card, and passed the card over for a
+//! month). The same code does all of this on every system: only [`GPU`] and the backend in
+//! `gpu::options` differ.
 //!
 //! A failure isn't remembered for good (#1205: one slow start just after Windows started kept a
 //! laptop on OpenGL from then on). Its file keeps when it happened, on which adapter and driver,
@@ -45,7 +47,9 @@
 //! renderer (Microsoft's WARP, Mesa's lavapipe), as on a computer without a graphics driver.
 //! Another system's name is ignored. Off-screen test copies also take `MDM_TEST_GL_VERSION=2.1`:
 //! the version OpenGL says it is, as an old card's driver does; `MDM_TEST_NO_HARDWARE=1` (no
-//! card's driver), `MDM_TEST_NO_SOFTWARE=1` (no software renderer either),
+//! card's driver; debug builds only, `after-loss`: none in a start just after a lost card, as
+//! while its driver resets: [`reset_testing`]), `MDM_TEST_NO_SOFTWARE=1` (no software renderer
+//! either),
 //! `MDM_TEST_NO_FIRST_FRAME=opengl` (only OpenGL's first frame never comes; `direct3d`,
 //! `vulkan`, `metal`: only that API's, on any adapter) and
 //! `MDM_TEST_GL_STALL=1` (the window stalls once while OpenGL draws, as in a driver's present);
@@ -656,6 +660,17 @@ fn failed_before(way: Way) -> bool {
     let Some(f) = read_failure(way, &failed) else {
         return false;
     };
+    // A start that couldn't start just after a lost card (an older MDM remembered it: #1974):
+    // the driver resetting, not this way failing here. Forgotten, so its count starts afresh.
+    if after_loss(f.why, f.when, &losses()) {
+        tracing::info!(
+            "{name} failed here before ({:?}: {}), tried again: it failed just after the graphics card was lost (its driver resetting)",
+            f.why,
+            f.details
+        );
+        forget(&[way]);
+        return false;
+    }
     let now = unix_now();
     // Tried again, drew, and failed no more for a month: forgotten.
     if f.drew.is_some_and(|d| now.saturating_sub(d) >= FINE_FOR) {
@@ -1594,6 +1609,50 @@ fn lost_again(last: Option<u64>, now: u64) -> bool {
 /// When OpenGL last stopped drawing (its time inside), in the data folder.
 const GL_LOST: &str = "opengl-lost";
 
+/// When the system's API's device was last lost (its time inside): `direct3d-lost`...
+const GPU_LOST: &str = "lost";
+
+/// When the graphics card was last lost here (seconds since 1970), as the system's API and
+/// OpenGL each noted it (the first of two close together).
+fn losses() -> [Option<u64>; 2] {
+    let read = |f: Option<PathBuf>| {
+        f.and_then(|f| std::fs::read_to_string(f).ok())
+            .and_then(|t| t.trim().parse::<u64>().ok())
+    };
+    [
+        read(file(GPU_LOST)),
+        read(mdm_ipc::data_dir().map(|d| d.join(GL_LOST))),
+    ]
+}
+
+/// Did a way fail for `why` at `at` (seconds since 1970) just after the graphics card was lost
+/// (`losses`: when, [`losses`])? Within [`LOST_AGAIN_WITHIN`] of a loss, a way that can't start
+/// (no adapter, another error starting) is the driver still resetting or being updated, not this
+/// way failing here: MDM starts again at once after a loss, and #1974's Direct3D 12 found only
+/// WARP then, its Radeon not yet, and OpenGL only Windows' own 1.1. Such a failure isn't
+/// remembered (the next start tries it again), and an older MDM's is forgotten. Every other
+/// reason keeps its rules: a crash or a freeze inside a driver (#1659), a first frame that
+/// doesn't come, a start that ends before it, the card lost twice, an OpenGL too old (these
+/// start MDM again, which a passing reset would keep doing).
+fn after_loss(why: Why, at: u64, losses: &[Option<u64>]) -> bool {
+    matches!(why, Why::NoAdapter | Why::Other)
+        && losses
+            .iter()
+            .flatten()
+            .any(|&t| t <= at && at - t < LOST_AGAIN_WITHIN.as_secs())
+}
+
+/// `MDM_TEST_NO_HARDWARE=after-loss` in an off-screen test copy of a debug build: no card's
+/// driver in a start just after a lost card (`/show renderer-lost`), as while its driver resets
+/// (#1974); the starts after drawing on the card again.
+#[cfg(gpu)]
+fn reset_testing() -> bool {
+    cfg!(debug_assertions)
+        && crate::offscreen()
+        && std::env::var_os("MDM_TEST_NO_HARDWARE").is_some_and(|v| v == "after-loss")
+        && after_loss(Why::NoAdapter, unix_now(), &losses())
+}
+
 /// Has a window's OpenGL stopped drawing for good? A paint that fails now and then is passing
 /// (#1448's Intel driver failed `wglMakeCurrent` as a window closed: eframe skips that paint and
 /// paints again 100 ms later); one that keeps failing is a lost device (a driver reset or update),
@@ -1964,11 +2023,21 @@ pub fn run<A: eframe::App + 'static>(
         let why = format!("{} didn't start: {e}", attempt.name());
         tracing::warn!("{why}");
         let reason = why_failed(e);
-        if attempt != Attempt::OpenGl {
+        // Just after a lost card (#1974): the driver resetting, not this way failing here.
+        let passing = after_loss(reason, unix_now(), &losses());
+        if passing && watched.is_some() {
+            tracing::warn!(
+                "{} didn't start just after the graphics card was lost (its driver may still be resetting): not remembered, tried again at the next start",
+                attempt.name()
+            );
+        }
+        if attempt != Attempt::OpenGl && !passing {
             set_failed(None, reason, None);
         }
         if let Some(way) = watched {
-            remember_failure(way, reason, &format!("{e}"));
+            if !passing {
+                remember_failure(way, reason, &format!("{e}"));
+            }
             if let Some((starting, _)) = way.files() {
                 let _ = std::fs::remove_file(starting);
             }
@@ -1984,9 +2053,10 @@ fn configure(opts: &mut eframe::NativeOptions, attempt: Attempt) {
         Attempt::OpenGl => {
             opts.renderer = eframe::Renderer::Glow;
             // MDM_TEST_NO_OPENGL=1 (off-screen test copies): a pixel format no OpenGL has, as on
-            // a computer whose only OpenGL is Windows' own 1.1 (Remote Desktop, a VM).
+            // a computer whose only OpenGL is Windows' own 1.1 (Remote Desktop, a VM). A power of
+            // two of samples: glutin asserts it in debug builds (255 panicked there).
             if testing("MDM_TEST_NO_OPENGL") {
-                opts.multisampling = 255;
+                opts.multisampling = 128;
                 opts.depth_buffer = 255;
                 opts.stencil_buffer = 255;
             }
@@ -2085,8 +2155,8 @@ pub fn test_device_lost() {
 #[cfg(gpu)]
 mod gpu {
     use super::{
-        Adapters, DRAWN, FIRST_FRAME_WITHIN, GPU, Way, Why, clock_counted, file, remember_failure,
-        start_again, testing,
+        Adapters, DRAWN, FIRST_FRAME_WITHIN, GPU, GPU_LOST, Way, Why, clock_counted, file,
+        remember_failure, start_again, testing,
     };
     use eframe::egui_wgpu::{WgpuConfiguration, WgpuSetup, WgpuSetupCreateNew};
     use eframe::wgpu;
@@ -2143,9 +2213,6 @@ mod gpu {
             });
     }
 
-    /// When the card was last lost (its time inside).
-    const LOST: &str = "lost";
-
     /// wgpu's errors go to the log instead of ending MDM (its default handler panics), and a
     /// device lost while MDM runs (a driver update or reset: none of the three APIs recovers
     /// by itself) starts MDM again, with the same API, or the next way after a second loss
@@ -2163,9 +2230,7 @@ mod gpu {
             let now = SystemTime::now()
                 .duration_since(SystemTime::UNIX_EPOCH)
                 .map_or(0, |d| d.as_secs());
-            let last = file(LOST)
-                .and_then(|f| std::fs::read_to_string(f).ok())
-                .and_then(|t| t.trim().parse::<u64>().ok());
+            let last = super::losses()[0];
             if super::lost_again(last, now) {
                 // The card's, or its software renderer's when that is what drew.
                 let way = if super::software() {
@@ -2175,7 +2240,7 @@ mod gpu {
                 };
                 let details = format!("{why}, twice within 10 minutes");
                 remember_failure(way, Why::LostTwice, &details);
-            } else if let Some(f) = file(LOST) {
+            } else if let Some(f) = file(GPU_LOST) {
                 let _ = std::fs::write(f, now.to_string());
             }
             start_again(&why);
@@ -2332,8 +2397,9 @@ fn choose(
     // software renderer, as over Remote Desktop. MDM_TEST_SOFTWARE_CARD=1: the other way, a
     // software renderer taken for a card (lavapipe in the lab's virtual machines, which have no
     // graphics card, to check what a card's start does). MDM_TEST_NO_SOFTWARE=1: no software
-    // renderer either (WARP failing, #847: the way on to OpenGL).
-    let no_card = testing("MDM_TEST_NO_HARDWARE");
+    // renderer either (WARP failing, #847: the way on to OpenGL). `after-loss`: no card just
+    // after a lost one ([`reset_testing`], #1974).
+    let no_card = testing("MDM_TEST_NO_HARDWARE") || reset_testing();
     let soft_card = testing("MDM_TEST_SOFTWARE_CARD");
     let no_soft = testing("MDM_TEST_NO_SOFTWARE");
     let hardware = |t: DeviceType| (t != DeviceType::Cpu || soft_card) && !no_card;
@@ -3108,6 +3174,60 @@ mod tests {
             verdict(&drew, t0 + DAY, None),
             Verdict::Retry(Retry::Drawing)
         );
+    }
+
+    /// #1974: the graphics card lost (a driver reset), MDM started again at once, and Direct3D 12
+    /// found only WARP (OpenGL only Windows' own 1.1): that start's failures aren't remembered,
+    /// nor an older MDM's from then counted. A failure on a normal start keeps its month, and
+    /// every reason other than a start that can't start keeps its rules (#1659's crash inside
+    /// the driver among them), right after a loss as well.
+    #[test]
+    fn a_failure_just_after_a_lost_card_is_not_remembered() {
+        let lost = 1_795_000_000;
+        // The card's loss (direct3d-lost), or OpenGL's (opengl-lost).
+        let card = [Some(lost), None];
+        let gl = [None, Some(lost)];
+        // #1974: no hardware adapter in the same second, and OpenGL's 1.1 failing too.
+        assert!(after_loss(Why::NoAdapter, lost, &card));
+        assert!(after_loss(Why::Other, lost, &card));
+        assert!(after_loss(Why::NoAdapter, lost + 1, &gl));
+        // Up to 10 minutes on (a driver update can take that long).
+        let within = LOST_AGAIN_WITHIN.as_secs();
+        assert!(after_loss(Why::NoAdapter, lost + within - 1, &card));
+        assert!(!after_loss(Why::NoAdapter, lost + within, &card));
+        // A normal start: no loss, one long before, or one after the failure (a later loss
+        // doesn't make an older failure the reset's).
+        assert!(!after_loss(Why::NoAdapter, lost, &[None, None]));
+        assert!(!after_loss(Why::NoAdapter, lost + DAY, &card));
+        assert!(!after_loss(Why::NoAdapter, lost - 1, &card));
+        assert!(!after_loss(Why::Other, lost - 1, &gl));
+        // ... remembered, and passed over for its month, as before.
+        let f = failed(Why::NoAdapter, lost + DAY, 1);
+        assert_eq!(
+            verdict(&f, lost + 2 * DAY, None),
+            Verdict::Pass(Again {
+                since: lost + DAY,
+                at: Some(lost + 31 * DAY),
+                on_update: true,
+                next_start: false
+            })
+        );
+        // Every other reason keeps its rules just after a loss: these start MDM again (a reset
+        // that went on would start it again and again) or come after the first frame.
+        for why in [
+            Why::CrashedInDriver,
+            Why::FrozeInDriver,
+            Why::LostTwice,
+            Why::NoFirstFrame,
+            Why::EndedEarly,
+            Why::TooOld,
+        ] {
+            assert!(!after_loss(why, lost, &[Some(lost), Some(lost)]), "{why:?}");
+            assert!(!after_loss(why, lost + 1, &card), "{why:?}");
+        }
+        // #1659's crash inside OpenGL's driver: still a month, then two.
+        assert_eq!(wait(Why::CrashedInDriver, 1), Some(30 * DAY));
+        assert_eq!(wait(Why::CrashedInDriver, 2), Some(60 * DAY));
     }
 
     /// #1205: Direct3D 12's first frame late in the first minutes of a start with the session.

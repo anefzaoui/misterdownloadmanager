@@ -569,6 +569,9 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ Windows: a graphics driver reset no longer keeps MDM off Direct3D 12 for a month: a start
+  just after it that finds no graphics card yet isn't remembered, and the next start draws on the
+  card again ([#1974](https://github.com/anefzaoui/misterdownloadmanager/issues/1974))
 - ✅ Windows: a crash inside the graphics driver while OpenGL draws (Intel's and AMD's OpenGL
   drivers, NVIDIA's Direct3D 11 thread on laptops with two graphics chips) moves MDM off OpenGL
   from the next start, as a freeze there does: Direct3D 12, on WARP when the card can't, and
