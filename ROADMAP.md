@@ -630,6 +630,7 @@ These ship in the next version.
   ([#1826](https://github.com/anefzaoui/misterdownloadmanager/issues/1826))
 - ✅ Galleries: file paths are checked more carefully
 - ✅ Helpers: ffmpeg's download is checked more carefully
+- ✅ Torrents: a torrent made from a folder lists its files by name, the same on every computer
 - ✅ Torrents: the engine checks what it's sent more carefully
 - ✅ Extracting: 7z and RAR archives are checked more carefully
 - ✅ Archive test: archives are checked more carefully
