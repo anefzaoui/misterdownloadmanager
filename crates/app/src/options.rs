@@ -1223,7 +1223,7 @@ impl OptionsDialog {
             58.0,
             398.0,
         );
-        // Taller than IDM's by the row of "Save every download in General's folder" (#1973).
+        // Taller by the row of "Save every download in General's folder" (#1973).
         group(ui, o, 21.0, 94.0, 380.0, 224.0, "Save To...");
         // i18n: noun: label before the list of categories
         text(
