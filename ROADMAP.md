@@ -14,8 +14,6 @@ Everything below ships together, in version 0.5.0.
 
 ### Done
 
-- ✅ Linux X11/XWayland context menus use the monitor’s work area and stay on screen near its bottom and right edges, including submenus and scaled displays.
-
 - ✅ Menus on compositors that animate windows (Hyprland): no border and no slide-in, and going from
   title to title moves one window, so nothing fades; the reporter confirmed it
   ([#277](https://github.com/anefzaoui/misterdownloadmanager/issues/277))
@@ -2127,6 +2125,9 @@ These ship in the next version.
   Tests: the feed case of the add-on's real-browser tests checks that the menu is inside the
   window, and waits for the button over the video it points at, not the last one's, still fading
 - ✅ Torrents: magnet links, torrent files and trackers are checked more carefully.
+- ✅ Linux: menus opened near a screen's bottom or right edge stay on the screen (X11 and
+  XWayland: the monitor's work area, read from RandR and the desktop's work area), submenus and
+  larger interface sizes too (thanks to [@madratzz](https://github.com/madratzz))
 
 ## Being worked on
 

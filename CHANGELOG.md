@@ -106,8 +106,7 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 ### Fixed
 
 - Helpers: ffmpeg's download is checked more carefully.
-- **Linux context menus stay on screen:** right-clicking near a monitor’s bottom or right edge opens the menu above or to the left as needed, including submenus and scaled displays on X11 and XWayland (Omarchy).
-
+- Linux: a menu opened near a screen's bottom or right edge (a right-click in the list, a submenu) opens above or to the left of the pointer and stays on the screen, at any interface size, on X11 and XWayland (thanks to [@madratzz](https://github.com/madratzz)).
 - Torrents: the engine checks what it's sent more carefully.
 - Extracting: 7z and RAR archives are checked more carefully.
 - Archive test: archives are checked more carefully.
