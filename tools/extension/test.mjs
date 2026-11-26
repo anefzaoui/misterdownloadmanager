@@ -3712,9 +3712,7 @@ function videoButton({ stored = {}, location, iframes, videos, subframe = false 
   const english = JSON.parse(readText(new URL("en/messages.json", dir)));
   for (const locale of readdirSync(dir)) {
     const m = JSON.parse(readText(new URL(`${locale}/messages.json`, dir)));
-    for (const key of Object.keys(m)) {
-      assert.ok(english[key], `${locale} has unknown key: ${key}`);
-    }
+    assert.deepEqual(Object.keys(m).sort(), Object.keys(english).sort(), `${locale} has every text`);
   }
   for (const name of ["manifest.json", "manifest.firefox.json"]) {
     const text = readText(`../../extension/${name}`);
