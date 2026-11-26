@@ -382,6 +382,10 @@ pub struct Settings {
     /// Save to: a folder per category (category label → folder); missing = the default.
     pub category_dirs: Vec<(String, String)>,
     pub change_folder_on_last: bool,
+    /// Save to → "Save every download in General's folder" (#1973): new downloads of every
+    /// category go to General's folder ([`Settings::save_dir`]); the categories still sort the
+    /// list. Off by default, and in settings saved before it.
+    pub one_folder: bool,
     /// The addresses typed into Add URL and the folders downloads were saved to, newest first
     /// (the Address and Save As drop lists, as IDM's UrlHistory.txt).
     pub url_history: Vec<String>,
@@ -706,6 +710,7 @@ impl Default for Settings {
             regional: crate::regional::Regional::default(),
             category_dirs: Vec::new(),
             change_folder_on_last: true,
+            one_folder: false,
             url_history: Vec::new(),
             folder_history: Vec::new(),
             set_creation_date: false,
@@ -1002,6 +1007,33 @@ impl Settings {
         downloads: &std::path::Path,
     ) -> std::path::PathBuf {
         crate::model::category_folder(cat, downloads, &self.category_dirs)
+    }
+
+    /// The folder a new download of this category goes to: its category's, or General's for
+    /// every category with one folder for every download (#1973).
+    pub fn save_dir(
+        &self,
+        cat: crate::model::Category,
+        downloads: &std::path::Path,
+    ) -> std::path::PathBuf {
+        self.category_dir(self.folder_category(cat), downloads)
+    }
+
+    /// The category whose folder a new download of `cat` takes and "Remember this path"
+    /// changes: `cat` itself, or General with one folder for every download (#1973).
+    pub fn folder_category(&self, cat: crate::model::Category) -> crate::model::Category {
+        crate::model::folder_category(cat, self.one_folder)
+    }
+
+    /// The folder a download of `cat` was saved to becomes the folder its kind of download
+    /// takes from now on ([`Self::keep_category_dir`] for [`Self::folder_category`]).
+    pub fn keep_save_dir(
+        &mut self,
+        cat: crate::model::Category,
+        dir: &std::path::Path,
+        downloads: &std::path::Path,
+    ) -> bool {
+        self.keep_category_dir(self.folder_category(cat), dir, downloads)
     }
 
     /// Manual proxy/socks configuration as it is set (#1558): its type, whether names are looked
@@ -1667,6 +1699,66 @@ mod tests {
         assert_eq!(s.category_dir(Category::Video, downloads), chosen);
         assert_ne!(s.category_dir(Category::Music, downloads), chosen);
         assert!(!s.keep_category_dir(Category::Video, chosen, downloads));
+    }
+
+    /// #1973: one folder for every download sends every category's new downloads to General's
+    /// folder (the user's own and Torrents too), and a folder remembered then is General's; off,
+    /// each category's folder is as before. Settings saved before it (no `one_folder`) read it
+    /// off, and a newer file's field is kept through a save.
+    #[test]
+    fn one_folder_sends_every_category_to_generals() {
+        use crate::model::Category;
+        let root = std::env::temp_dir().join("mdm-1973");
+        let downloads = root.join("Downloads");
+        let downloads = downloads.as_path();
+        let old: super::Settings = serde_json::from_value(serde_json::json!({
+            "category_dirs": [["General", root.join("All").display().to_string()]],
+        }))
+        .unwrap();
+        assert!(!old.one_folder, "off in settings saved before it");
+        let mut s = old.clone();
+        let general = root.join("All");
+        let cats = [
+            Category::Video,
+            Category::Music,
+            Category::Compressed,
+            Category::Torrents,
+            Category::General,
+        ];
+        for c in cats {
+            assert_eq!(
+                s.save_dir(c, downloads),
+                s.category_dir(c, downloads),
+                "{c:?}"
+            );
+        }
+        assert_ne!(s.save_dir(Category::Video, downloads), general);
+        s.one_folder = true;
+        for c in cats {
+            assert_eq!(s.save_dir(c, downloads), general, "{c:?}");
+            assert_eq!(s.folder_category(c), Category::General);
+        }
+        // Each category keeps its own folder for when it is off again.
+        assert_eq!(
+            s.category_dir(Category::Video, downloads),
+            general.join("Video")
+        );
+        // "Remember this path": General's folder is the one that changes.
+        let chosen = root.join("Elsewhere");
+        assert!(s.keep_save_dir(Category::Video, &chosen, downloads));
+        assert_eq!(s.save_dir(Category::Music, downloads), chosen);
+        assert_eq!(s.category_dir(Category::General, downloads), chosen);
+        assert!(
+            !s.category_dirs.iter().any(|(c, _)| c == "Video"),
+            "Video's own folder untouched: {:?}",
+            s.category_dirs
+        );
+        // Saved and read again (a newer version's file read by this one keeps the choice).
+        let again: super::Settings =
+            serde_json::from_value(serde_json::to_value(&s).unwrap()).unwrap();
+        assert!(again.one_folder);
+        s.one_folder = false;
+        assert_eq!(s.save_dir(Category::Video, downloads), chosen.join("Video"));
     }
 
     /// #1563: a list from 0.5.2 that remembered "Also delete the files from disk" ticked (and

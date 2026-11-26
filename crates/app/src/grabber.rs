@@ -24,7 +24,7 @@ use egui::{Pos2, Rect, Ui, pos2, vec2};
 use url::Url;
 
 use crate::dialogs::{Outcome, window};
-use crate::model::{Category, category_folder};
+use crate::model::Category;
 use crate::transfer::Imported;
 use crate::winui::{self, ButtonKind, LIGHT_BG, LIGHT_TEXT, fill_l as fill, r, text};
 
@@ -304,6 +304,9 @@ pub struct Grabber {
     /// The default folders (Options → Save to), as category_folder reads them.
     downloads: PathBuf,
     dirs: Vec<(String, String)>,
+    /// Options → Save to → one folder for every download (#1973): every package's folder is
+    /// General's (a folder's tree under it), whatever its files' categories.
+    one_folder: bool,
     /// Extract when done, and Delete archives after extracting, for a new package (Options).
     delete_default: bool,
     /// The package the box under the list edits.
@@ -333,11 +336,22 @@ impl Grabber {
             hide_images: true,
             downloads,
             dirs,
+            one_folder: false,
             delete_default,
             current: 0,
             editing: false,
             origins: Default::default(),
             categories: crate::model::categories_changed(),
+        }
+    }
+
+    /// Options → Save to → one folder for every download (#1973), as it is when links come:
+    /// the packages that follow their links' folders take General's.
+    pub fn set_one_folder(&mut self, on: bool) {
+        if self.one_folder != on {
+            self.one_folder = on;
+            let all: Vec<usize> = (0..self.packages.len()).collect();
+            self.settle(&all);
         }
     }
 
@@ -560,8 +574,9 @@ impl Grabber {
         for (k, s) in seen.into_iter().enumerate() {
             let Some(s) = s else { continue };
             let first = s.first.unwrap_or(Category::General);
-            let folder = if s.one {
-                category_folder(first, &self.downloads, &self.dirs)
+            // With one folder for every download, every package's is General's (#1973).
+            let folder = if s.one || self.one_folder {
+                crate::model::save_folder(first, self.one_folder, &self.downloads, &self.dirs)
                     .display()
                     .to_string()
             } else {
@@ -1285,6 +1300,13 @@ impl Grabber {
             Some((o.x + 18.0, o.x + 22.0 + cw)),
         );
         text(&p, o.x + 20.0, o.y + 334.0, caption, LIGHT_TEXT());
+        // An empty Save to's files go each to its category's folder, or all to General's with one
+        // folder for every download (#1973), whose path the empty box then shows.
+        let one = self.one_folder.then(|| {
+            crate::model::save_folder(Category::General, true, &self.downloads, &self.dirs)
+                .display()
+                .to_string()
+        });
         let mut blank = (String::new(), String::new(), String::new(), false, false);
         let pk = self.packages.get_mut(self.current).filter(|_| enabled);
         let (name, folder, password, extract, delete) = match pk {
@@ -1362,8 +1384,11 @@ impl Grabber {
             false,
         );
         if enabled && folder.is_empty() && !typed.has_focus() {
-            // i18n: Link grabber, in the empty "Save to" box: each file goes to its category's folder (Options → Save to)
-            let each = crate::i18n::t("Each file's category folder");
+            let each = match &one {
+                Some(general) => general.as_str(),
+                // i18n: Link grabber, in the empty "Save to" box: each file goes to its category's folder (Options → Save to)
+                None => crate::i18n::t("Each file's category folder"),
+            };
             winui::fit(
                 ui,
                 &p,
@@ -2411,7 +2436,7 @@ mod tests {
             |_| false,
         );
         assert!(g.links.iter().all(|l| l.category() == Category::Video));
-        let video = category_folder(Category::Video, &g.downloads, &g.dirs);
+        let video = crate::model::category_folder(Category::Video, &g.downloads, &g.dirs);
         assert_eq!(g.packages[0].folder, video.display().to_string());
         // A look-up names one a zip: the package has two kinds, so no folder of its own.
         let slot: Check = Default::default();
