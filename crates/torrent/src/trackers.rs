@@ -574,19 +574,19 @@ mod tests {
 
     #[test]
     fn lowercase_base32_magnet_is_accepted_by_librqbit() {
-        let link = "magnet:?xt=urn:btih:o63ivnaqbsj4sbze2ihgta6egybhdo4l&tr=udp%3A%2F%2Ftracker.opentrackr.org%3A1337%2Fannounce&dn=BAIXARAPIDO.COM-.EPISODIO-04.WEB-DL.1080P.MKV.5.1.-DUBLADO-DUAL-AUDIO-.The.Chosen.S06E04.1080p.WEB-DL.DUAL.5.1.";
+        let link = "magnet:?xt=urn:btih:hf35t5nbi3bfw5deuy72cauk4m3effi2&tr=udp%3A%2F%2Ftracker.example.org%3A1337%2Fannounce&dn=Show.S01E04.mkv";
         assert!(librqbit::Magnet::parse(link).is_err());
         let filtered = filter_magnet(link, false);
-        assert!(filtered.contains("xt=urn:btih:O63IVNAQBSJ4SBZE2IHGTA6EGYBHDO4L"));
+        assert!(filtered.contains("xt=urn:btih:HF35T5NBI3BFW5DEUY72CAUK4M3EFFI2"));
         let parsed =
             librqbit::Magnet::parse(&filtered).expect("lowercase base32 magnet should parse");
         assert_eq!(
             parsed.as_id20().expect("btih hash").as_string(),
-            "77b68ab4100c93c90724d20e6983c4360271bb8b"
+            "3977d9f5a146c25b7464a63fa1028ae33642951a"
         );
         assert_eq!(
             parsed.trackers,
-            ["udp://tracker.opentrackr.org:1337/announce"]
+            ["udp://tracker.example.org:1337/announce"]
         );
     }
 
