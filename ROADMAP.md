@@ -570,6 +570,10 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 These ship in the next version.
 
 - ✅ **Browser add-on:** send all and selected links to the paired server when another MDM is chosen ([#1596](https://github.com/anefzaoui/misterdownloadmanager/issues/1596), [PR #1602](https://github.com/anefzaoui/misterdownloadmanager/pull/1602))
+- ✅ Windows: closing a dialog of the main window's with **OK**, after bringing it back with
+  MDM's taskbar button, leaves the main window in front with the keyboard instead of the
+  taskbar ([#1852](https://github.com/anefzaoui/misterdownloadmanager/issues/1852); thanks to
+  [@wmwlwmwl](https://github.com/wmwlwmwl))
 - ✅ Fast downloads started while the disk is already busy no longer freeze on their first
   progress save: when writing the download's initial resume state takes seconds and hundreds of
   megabytes have piled up meanwhile, that first save counts both how long the initial state wait
@@ -2096,6 +2100,11 @@ These ship in the next version.
   reader never saw, and every browser's button said the same **Add the extension**; each
   button now says its browser ("Add the extension to Firefox"), and the steps for Safari
   read their numbered list
+  ([#1407](https://github.com/anefzaoui/misterdownloadmanager/issues/1407); thanks to
+  [@Seyamalam](https://github.com/Seyamalam))
+- ✅ Screen readers speak the **Get ready for video downloads** failure as it comes: the
+  status line is a polite live region while it holds a failure, so a reader says it without
+  the focus; the running percentages aren't one, or they would interrupt endlessly
   ([#1407](https://github.com/anefzaoui/misterdownloadmanager/issues/1407); thanks to
   [@Seyamalam](https://github.com/Seyamalam))
 - ✅ Tests: the video checks of an address that expires while downloading (a stream's, and DASH
