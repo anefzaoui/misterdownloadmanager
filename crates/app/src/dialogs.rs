@@ -782,7 +782,9 @@ fn dialog_window<T>(
         if ctx.data(|d| d.get_temp::<bool>(told)).is_none() {
             let n = ctx.data(|d| d.get_temp::<u32>(tries).unwrap_or(0));
             match crate::unix::belong_to_main(title) {
-                Some(done) => ctx.data_mut(|d| d.insert_temp(told, done)),
+                Some(done) => {
+                    ctx.data_mut(|d| d.insert_temp(told, done));
+                }
                 None if n + 1 >= TRIES => {
                     tracing::info!(
                         "window {title:?}: the main window isn't shown, left on its own"
