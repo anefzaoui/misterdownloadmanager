@@ -121,6 +121,9 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 - Torrents: a magnet link whose hash is written in lower-case Base32 (32 letters and digits, as some sites write it) opens, instead of being refused as not a torrent (thanks to [@jamaica1000](https://github.com/jamaica1000)).
 - Helpers: ffmpeg's download is checked more carefully.
 - Linux: a menu opened near a screen's bottom or right edge (a right-click in the list, a submenu) opens above or to the left of the pointer and stays on the screen, at any interface size, on X11 and XWayland (thanks to [@madratzz](https://github.com/madratzz)).
+- Torrents: a torrent made from a folder (`torrent-create`) lists its files by name, so the same
+  files make the same torrent on every computer. The order was the file system's, which differs
+  between computers, and so did the torrent and which of its files share a piece.
 - Torrents: the engine checks what it's sent more carefully.
 - Extracting: 7z and RAR archives are checked more carefully.
 - Archive test: archives are checked more carefully.

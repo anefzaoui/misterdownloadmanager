@@ -636,6 +636,11 @@ These ship in the next version.
   ([#1826](https://github.com/anefzaoui/misterdownloadmanager/issues/1826))
 - ✅ Galleries: file paths are checked more carefully
 - ✅ Helpers: ffmpeg's download is checked more carefully
+- ✅ Torrents: a torrent made from a folder lists its files by name, the same on every computer
+- ✅ Tests: the check that the torrent session asks trackers through MDM's own client no longer
+  fails now and then on a busy machine (seen on the Linux test machine): its test tracker noted
+  each request after answering it, so the redirected request could be noted first; it now notes
+  each one before answering
 - ✅ Torrents: the engine checks what it's sent more carefully
 - ✅ Extracting: 7z and RAR archives are checked more carefully
 - ✅ Archive test: archives are checked more carefully
@@ -2198,6 +2203,9 @@ These ship in the next version.
   computer receives, so the download's own check keeps to what the user sees (no stall, no
   connection dropped), and the save rule is checked at every speed on the test disk's own clock
   ([#1633](https://github.com/anefzaoui/misterdownloadmanager/issues/1633))
+- ✅ Tests: the download checks on 32-bit Windows no longer stop halfway now and then: the
+  largest test downloads (up to 1 GiB) are compared with what they should hold a piece at a
+  time, instead of both whole in memory at once, which a 32-bit test program couldn't always fit
 
 ## Being worked on
 
