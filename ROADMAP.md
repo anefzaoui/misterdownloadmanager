@@ -569,6 +569,9 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ Windows: a graphics driver reset no longer keeps MDM off Direct3D 12 for a month: a start
+  just after it that finds no graphics card yet isn't remembered, and the next start draws on the
+  card again ([#1974](https://github.com/anefzaoui/misterdownloadmanager/issues/1974))
 - ✅ Sinhala: about a hundred texts reworded and the missing ones translated (thanks to [@ShammiSandaruwan](https://github.com/ShammiSandaruwan))
 - ✅ **Browser add-on:** send all and selected links to the paired server when another MDM is chosen ([#1596](https://github.com/anefzaoui/misterdownloadmanager/issues/1596), [PR #1602](https://github.com/anefzaoui/misterdownloadmanager/pull/1602))
 - ✅ Windows: closing a dialog of the main window's with **OK**, after bringing it back with
@@ -2197,6 +2200,9 @@ These ship in the next version.
   computer receives, so the download's own check keeps to what the user sees (no stall, no
   connection dropped), and the save rule is checked at every speed on the test disk's own clock
   ([#1633](https://github.com/anefzaoui/misterdownloadmanager/issues/1633))
+- ✅ Tests: the download checks on 32-bit Windows no longer stop halfway now and then: the
+  largest test downloads (up to 1 GiB) are compared with what they should hold a piece at a
+  time, instead of both whole in memory at once, which a 32-bit test program couldn't always fit
 
 ## Being worked on
 

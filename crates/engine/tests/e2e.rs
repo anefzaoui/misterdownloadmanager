@@ -27,6 +27,29 @@ fn fast_opts() -> Options {
     }
 }
 
+/// The length of the file at `path` if it holds the lab's content for `seed` from its first byte,
+/// compared a piece at a time. Read whole beside a copy of what it should hold, the busy-disk
+/// test's 1 GiB file took 2 GiB of memory at once: in a 32-bit test process (Windows x86), with
+/// the other tests' files in memory too, that allocation failed now and then and aborted the
+/// whole suite ("memory allocation of 1073741824 bytes failed").
+fn content_len(path: &std::path::Path, seed: u64) -> Option<u64> {
+    use std::io::Read;
+    let mut file = std::fs::File::open(path).unwrap();
+    let (mut got, mut want) = (vec![0; 4 << 20], vec![0; 4 << 20]);
+    let mut at = 0u64;
+    loop {
+        let n = file.read(&mut got).unwrap();
+        if n == 0 {
+            return Some(at);
+        }
+        content::fill(seed, at, &mut want[..n]);
+        if got[..n] != want[..n] {
+            return None;
+        }
+        at += n as u64;
+    }
+}
+
 /// Download `path` from `s` into a temp dir; returns the log and the verified size.
 async fn fetch(s: &LabServer, path: &str, seed: u64, opts: Options) -> (Vec<LogEntry>, u64) {
     let dir = tempfile::tempdir().unwrap();
@@ -39,11 +62,8 @@ async fn fetch(s: &LabServer, path: &str, seed: u64, opts: Options) -> (Vec<LogE
         .wait()
         .await
         .expect("download succeeds");
-    let data = std::fs::read(&out.path).unwrap();
-    let mut want = vec![0; data.len()];
-    content::fill(seed, 0, &mut want);
-    assert!(data == want, "content mismatch");
-    assert_eq!(data.len() as u64, out.size);
+    let len = content_len(&out.path, seed).expect("content mismatch");
+    assert_eq!(len, out.size);
     // The server logs a request when its response body is dropped, which can trail the client:
     // wait until every one is in the log (and its connection slot is free).
     tokio::time::timeout(SETTLE, s.settled())
@@ -512,10 +532,7 @@ async fn fetch_counting_sheds(
         tokio::time::sleep(std::time::Duration::from_millis(20)).await;
     }
     let out = dl.wait().await.expect("download succeeds");
-    let data = std::fs::read(&out.path).unwrap();
-    let mut want = vec![0; data.len()];
-    content::fill(seed, 0, &mut want);
-    assert!(data == want, "content mismatch");
+    assert!(content_len(&out.path, seed).is_some(), "content mismatch");
     tokio::time::timeout(SETTLE, s.settled())
         .await
         .expect("every request ends");
@@ -2653,10 +2670,7 @@ async fn a_slow_disk_does_not_stop_the_transfer() {
     .await;
     let out = out.expect("download succeeds");
     assert_eq!(out.size, SIZE);
-    let data = std::fs::read(&out.path).unwrap();
-    let mut want = vec![0; data.len()];
-    content::fill(361, 0, &mut want);
-    assert!(data == want, "content mismatch");
+    assert_eq!(content_len(&out.path, 361), Some(SIZE), "content mismatch");
     tokio::time::timeout(SETTLE, s.settled())
         .await
         .expect("every request ends");
@@ -2713,10 +2727,11 @@ async fn a_slow_disk_does_not_stop_the_transfer() {
     .await;
     let out = out.expect("download succeeds");
     assert_eq!(out.size, BEHIND);
-    let data = std::fs::read(&out.path).unwrap();
-    let mut want = vec![0; data.len()];
-    content::fill(782, 0, &mut want);
-    assert!(data == want, "content mismatch");
+    assert_eq!(
+        content_len(&out.path, 782),
+        Some(BEHIND),
+        "content mismatch"
+    );
     tokio::time::timeout(SETTLE, s.settled())
         .await
         .expect("every request ends");
@@ -2808,10 +2823,7 @@ async fn a_busy_disk_at_the_start_does_not_stop_the_transfer() {
         .await;
         let out = out.expect("download succeeds");
         assert_eq!(out.size, size);
-        let data = std::fs::read(&out.path).unwrap();
-        let mut want = vec![0; data.len()];
-        content::fill(seed, 0, &mut want);
-        assert!(data == want, "content mismatch");
+        assert_eq!(content_len(&out.path, seed), Some(size), "content mismatch");
         tokio::time::timeout(SETTLE, s.settled())
             .await
             .expect("every request ends");
