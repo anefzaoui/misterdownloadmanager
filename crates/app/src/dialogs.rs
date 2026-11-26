@@ -769,17 +769,31 @@ fn dialog_window<T>(
             }
         }
     }
-    // The main window's own (Linux, X11): said before the window is first shown, while it is
-    // still hidden for its theme (keep_theme shows it on a later pass), so the window manager
-    // maps it as a dialog of the main window. Asked again on later passes until the window is
-    // found.
+    // The main window's own (Linux, X11): said while the window is still hidden for its theme
+    // (keep_theme shows it on a later pass) when the main window is already shown, else as soon
+    // as it is (the first start's first passes come before it is mapped). Asked again on later
+    // passes until done, for a few seconds' worth of them at most (a main window in the
+    // notification area stays hidden).
     #[cfg(target_os = "linux")]
     if kind == Kind::OfMain && matches!(out, Outcome::Open) && !crate::offscreen() {
+        const TRIES: u32 = 120;
         let told = key.with("of-main");
-        if ctx.data(|d| d.get_temp::<bool>(told)).is_none()
-            && let Some(done) = crate::unix::belong_to_main(title)
-        {
-            ctx.data_mut(|d| d.insert_temp(told, done));
+        let tries = key.with("of-main-tries");
+        if ctx.data(|d| d.get_temp::<bool>(told)).is_none() {
+            let n = ctx.data(|d| d.get_temp::<u32>(tries).unwrap_or(0));
+            match crate::unix::belong_to_main(title) {
+                Some(done) => ctx.data_mut(|d| d.insert_temp(told, done)),
+                None if n + 1 >= TRIES => {
+                    tracing::info!(
+                        "window {title:?}: the main window isn't shown, left on its own"
+                    );
+                    ctx.data_mut(|d| d.insert_temp(told, false));
+                }
+                None => {
+                    ctx.data_mut(|d| d.insert_temp(tries, n + 1));
+                    ctx.request_repaint_after(std::time::Duration::from_millis(50));
+                }
+            }
         }
     }
     let activate = dialog_activates_on_open(kind);
@@ -826,6 +840,7 @@ fn forget_window(ctx: &egui::Context, vid: ViewportId, key: egui::Id) {
         d.insert_temp(opened, n + 1);
         d.remove::<bool>(key.with("focus-sent"));
         d.remove::<bool>(key.with("of-main"));
+        d.remove::<u32>(key.with("of-main-tries"));
     });
     forget_place(ctx, key);
     #[cfg(windows)]

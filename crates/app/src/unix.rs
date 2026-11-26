@@ -2392,10 +2392,12 @@ fn withdraw(window: u32) -> Result<(), Box<dyn std::error::Error>> {
 /// of the taskbar and the window switcher, as Windows does with the windows the main window owns.
 /// winit sets neither (it has no parent for a top-level window), and KDE Plasma showed each first
 /// start window as a program of its own. Said while the window is still hidden, before the window
-/// manager first maps it, which is when it reads them. Some(true) once said; Some(false) when it
-/// can't be (Wayland, which lets a program say nothing of the kind through winit; the main window
-/// not shown, minimized or in the notification area: a dialog of a hidden window would hide with
-/// it); None while the window isn't there yet (asked again on the next pass).
+/// manager first maps it, or as soon as the main window is shown (the window managers read them
+/// again when they change: the first passes come before the main window is mapped). Some(true)
+/// once said; Some(false) when it can't be (Wayland, which lets a program say nothing of the kind
+/// through winit; an X11 error); None while the window isn't there yet or the main window isn't
+/// shown (minimized, in the notification area: a dialog of a hidden window would hide with it):
+/// the caller asks again on a later pass, for a while.
 #[cfg(target_os = "linux")]
 pub fn belong_to_main(title: &str) -> Option<bool> {
     let main = MAIN_X11_WINDOW.load(std::sync::atomic::Ordering::Relaxed);
@@ -2407,8 +2409,7 @@ pub fn belong_to_main(title: &str) -> Option<bool> {
             tracing::info!("window {title:?} (0x{window:x}): a dialog of the main window");
             Some(true)
         }
-        Ok(None) => None,
-        Err(Transient::MainHidden) => Some(false),
+        Ok(None) | Err(Transient::MainHidden) => None,
         Err(Transient::X11(e)) => {
             tracing::warn!("window {title:?} couldn't be made a dialog of the main window: {e}");
             Some(false)
@@ -2432,8 +2433,9 @@ impl<E: std::error::Error> From<E> for Transient {
 }
 
 /// [`belong_to_main`]'s work, on a connection of MDM's own: this process's top-level window
-/// named `title` (not yet managed by the window manager, so still the root window's child), made
-/// the transient of `main`. The window's id once done; None when there is no such window yet.
+/// named `title` (the root window's child while the window manager hasn't framed it yet, in its
+/// list of windows, `_NET_CLIENT_LIST`, once it has), made the transient of `main`. The window's
+/// id once done; None when there is no such window yet.
 #[cfg(target_os = "linux")]
 fn make_transient(main: u32, title: &str) -> Result<Option<u32>, Transient> {
     use x11rb::connection::Connection;
@@ -2456,7 +2458,19 @@ fn make_transient(main: u32, title: &str) -> Result<Option<u32>, Transient> {
         atom(b"UTF8_STRING")?,
     );
     let me = std::process::id();
-    for window in conn.query_tree(root)?.reply()?.children {
+    let mut windows = conn.query_tree(root)?.reply()?.children;
+    let managed = conn
+        .get_property(
+            false,
+            root,
+            atom(b"_NET_CLIENT_LIST")?,
+            AtomEnum::WINDOW,
+            0,
+            4096,
+        )?
+        .reply()?;
+    windows.extend(managed.value32().into_iter().flatten());
+    for window in windows {
         if window == main {
             continue;
         }
