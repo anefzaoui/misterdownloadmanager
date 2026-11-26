@@ -37,14 +37,14 @@ pub struct SlowDisk {
 /// The time the disk goes by: the real one, or in tests one that moves only when the disk
 /// waits, so that their checks hold on a slow or busy machine.
 #[derive(Clone, Debug)]
-enum Clock {
+pub(crate) enum Clock {
     Real,
     #[cfg(test)]
     Manual(Arc<Mutex<Instant>>),
 }
 
 impl Clock {
-    fn now(&self) -> Instant {
+    pub(crate) fn now(&self) -> Instant {
         match self {
             Clock::Real => Instant::now(),
             #[cfg(test)]
@@ -52,7 +52,7 @@ impl Clock {
         }
     }
 
-    fn sleep(&self, d: Duration) {
+    pub(crate) fn sleep(&self, d: Duration) {
         match self {
             Clock::Real => std::thread::sleep(d),
             #[cfg(test)]
@@ -86,7 +86,7 @@ impl SlowDisk {
         Self::with_clock(rate, cache, flush_takes, Clock::Real)
     }
 
-    fn with_clock(rate: u64, cache: u64, flush_takes: Duration, clock: Clock) -> Self {
+    pub(crate) fn with_clock(rate: u64, cache: u64, flush_takes: Duration, clock: Clock) -> Self {
         SlowDisk {
             rate,
             cache,

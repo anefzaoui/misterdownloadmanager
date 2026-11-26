@@ -2746,18 +2746,24 @@ async fn a_slow_disk_does_not_stop_the_transfer() {
 /// That late first progress check must not flush the whole cache at once and freeze the transfer,
 /// both on a fast link that fills the cache and on a slower link (~45 MiB/s) that stays under
 /// the disk's rate so the cache still has `HOLD_MAX` free.
+///
+/// Whether a flush runs during the transfer is the runner's pace, not the test's: when the link
+/// gives less (30 MiB/s on GitHub's macOS runner) or the download takes longer to start (the
+/// queued bytes drain meanwhile), the memory covers a flush, and the rule rightly runs one (2.4 s,
+/// nothing stood still for more than 29 ms). So this checks what the user sees, no stall and no
+/// connection shed; which flushes the rule lets through, at every pace and start, is
+/// `download::tests::a_busy_start_flushes_only_what_the_memory_covers`, on the disk's own clock.
 #[tokio::test]
 async fn a_busy_disk_at_the_start_does_not_stop_the_transfer() {
     const SIZE: u64 = 1024 << 20;
     const SLOWER: u64 = 512 << 20;
-    for (label, size, rate, path, seed, single_flush) in [
+    for (label, size, rate, path, seed) in [
         (
             "busy start",
             SIZE,
             "rate=20M&burst=1M",
             "/gen/1024M/busy.bin?seed=1633",
             1633u64,
-            false,
         ),
         (
             "busy start (slower link)",
@@ -2765,7 +2771,6 @@ async fn a_busy_disk_at_the_start_does_not_stop_the_transfer() {
             "rate=6M&burst=1M",
             "/gen/512M/busy-slow.bin?seed=1634",
             1634u64,
-            true,
         ),
     ] {
         let s = server(rate).await;
@@ -2807,14 +2812,6 @@ async fn a_busy_disk_at_the_start_does_not_stop_the_transfer() {
             behind.shed, behind.received, behind.quiet
         );
         assert_eq!(behind.shed, 0, "connections shed for the disk's pace");
-        if single_flush {
-            assert_eq!(
-                flushes.len(),
-                1,
-                "first progress save flushed mid-transfer while start-up sync waited: \
-                 flushes {flushes:?}, writes held {holds:?}"
-            );
-        }
         assert!(
             behind.quiet < std::time::Duration::from_millis(1200),
             "nothing arrived for {:?} (flushes: {flushes:?}, writes held {holds:?})",

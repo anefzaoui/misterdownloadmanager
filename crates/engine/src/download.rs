@@ -6926,6 +6926,86 @@ mod tests {
         assert!(brief_start.due(15 * mb, 24 * mb, s(2), HOLD_MAX));
     }
 
+    /// #1633, the busy start on a link no faster than the disk, timed on the test disk's own
+    /// clock: 240 MiB already queued on a 48 MiB/s disk, then the saver as `segmented` runs it
+    /// (the start-up state's sync, then a check every 100 ms) while the connections write at
+    /// `pace`. Whatever the pace and however long the download took to start, a flush during the
+    /// transfer starts only when the connections' memory covers it with room to spare: what the
+    /// rule lets through holds the writes for at most three quarters of what `HOLD_MAX` lasts.
+    ///
+    /// The end-to-end test (`a_busy_disk_at_the_start_does_not_stop_the_transfer`) once counted
+    /// the flushes for this, which held only at the pace and start it was written for: on
+    /// GitHub's macOS runner the link gave 30 MiB/s, the memory lasted 8.5 s, and a flush of
+    /// 2.4 s rightly ran in the middle (nothing stood still for more than 29 ms).
+    #[test]
+    fn a_busy_start_flushes_only_what_the_memory_covers() {
+        use crate::slowdisk::{Clock, SlowDisk};
+        let mib = 1u64 << 20;
+        let ms = Duration::from_millis;
+        let (size, tick) = (512 * mib, ms(100));
+        // How long the memory lasts at `pace`, and the bytes that come in `d` at it.
+        let lasts = |pace: u64| Duration::from_secs_f64(HOLD_MAX as f64 / pace as f64);
+        let bytes_in = |pace: u64, d: Duration| (pace as f64 * d.as_secs_f64()) as u64;
+        // The first flush during the transfer, if any: when (from the request), and how long it
+        // held the writes.
+        let first_flush = |pace: u64, start: Duration| -> Option<(Duration, Duration)> {
+            let now = std::time::Instant::now();
+            let clock = Clock::Manual(std::sync::Arc::new(std::sync::Mutex::new(now)));
+            let disk = SlowDisk::with_clock(48 * mib, 256 * mib, Duration::ZERO, clock.clone());
+            disk.write(240 * mib, || ());
+            // The request and the part file, before `segmented` starts; the disk writes on.
+            clock.sleep(start);
+            let began = clock.now();
+            disk.sync(|| ());
+            let took = clock.now() - began;
+            // The connections received meanwhile, queued behind what came before them.
+            let mut bytes = bytes_in(pace, took).min(size);
+            disk.write(bytes, || ());
+            let synced = Synced {
+                at: now,
+                bytes: 0,
+                took,
+                covered: 0,
+            };
+            let mut elapsed = took;
+            while bytes < size {
+                clock.sleep(tick);
+                elapsed += tick;
+                let got = bytes_in(pace, tick).min(size - bytes);
+                disk.write(got, || ());
+                bytes += got;
+                // A link no faster than the disk never fills the cache: no write waits, and the
+                // connections hold nothing in memory (`room` is all of it).
+                assert_eq!(disk.stats().writes_waited, 0);
+                if synced.due(bytes, size, elapsed, HOLD_MAX) {
+                    disk.flush(true, || ());
+                    return Some((start + elapsed, disk.stats().holds[0]));
+                }
+            }
+            None
+        };
+        for pace in [8, 16, 24, 30, 36, 40, 44, 46, 48].map(|p| p * mib) {
+            for start in [0, 250, 500, 1000, 1500, 2000, 3000, 5000].map(ms) {
+                if let Some((at, held)) = first_flush(pace, start) {
+                    assert!(
+                        held <= lasts(pace).mul_f64(0.75),
+                        "{} MiB/s, started after {start:?}: a flush at {at:?} held the writes \
+                         {held:?}, the memory lasts {:?}",
+                        pace / mib,
+                        lasts(pace)
+                    );
+                }
+            }
+        }
+        // At the end-to-end test's pace (8 connections of 6 MiB/s, as fast as the disk) and a
+        // prompt start, no flush during the transfer: the 5 s backlog ahead of it never fits.
+        assert_eq!(first_flush(48 * mib, Duration::ZERO), None);
+        assert_eq!(first_flush(46 * mib, ms(250)), None);
+        // At the 30 MiB/s macOS's runner gave, one does, and it fits.
+        let (_, held) = first_flush(30 * mib, ms(250)).expect("a flush during the transfer");
+        assert!(held < lasts(30 * mib) / 2, "{held:?}");
+    }
+
     /// #782: what the slow check makes of connections that wait for the disk. A connection
     /// stood still 8 s for the disk, 2 MiB into its response, then read the 30 MiB the system
     /// kept for it in 50 ms. Over its time on the network that is 128 MiB/s, which made every
