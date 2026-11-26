@@ -5802,6 +5802,23 @@ fn tabs(ui: &mut Ui, o: Pos2, page: usize) -> Option<usize> {
     let first_row = page < 5 || page == REMOTE_PAGE;
     let (front, back): (&[_], &[_]) = if first_row { (&g, &pr) } else { (&pr, &g) };
     let mut clicked = None;
+    // The pages' order on the strip (Remote closes the first row), for the arrows and for a
+    // screen reader's "tab n of 12" (#1407).
+    const ORDER: [usize; 12] = [0, 1, 2, 3, 4, 11, 5, 6, 7, 8, 9, 10];
+    // The strip as one tab list in the accessibility tree, the tabs its children: UI Automation
+    // and AT-SPI read a tab's "of n" from its container, never from the tab itself — so the
+    // count is the strip's, as the download list carries its rows' (list.rs, #1407).
+    let mut strip_ui = ui.new_child(
+        egui::UiBuilder::new()
+            .max_rect(winui::rect(Rect::from_min_max(
+                o + vec2(6.0, 8.0),
+                o + vec2(423.0, 46.0),
+            )))
+            .accessibility_role(egui::accesskit::Role::TabList),
+    );
+    ui.ctx().accesskit_node_builder(strip_ui.unique_id(), |n| {
+        n.set_size_of_set(ORDER.len());
+    });
     let mut tab = |ui: &mut Ui,
                    (i, label, x0, x1, lx): (usize, &str, f32, f32, f32),
                    top: f32,
@@ -5832,6 +5849,11 @@ fn tabs(ui: &mut Ui, o: Pos2, page: usize) -> Option<usize> {
             true,
             Some(sel),
         );
+        winui::position_in_set(
+            &resp,
+            ORDER.iter().position(|p| *p == i).unwrap_or(i),
+            ORDER.len(),
+        );
         let resp = winui::enter_is_not_a_click(ui, resp);
         if resp.clicked() && !sel {
             clicked = Some(i);
@@ -5840,7 +5862,6 @@ fn tabs(ui: &mut Ui, o: Pos2, page: usize) -> Option<usize> {
             winui::keep_keys(ui, &resp, true, false, false);
             if resp.has_focus() {
                 // Left / Right (mirrored in RTL), Home / End through the pages in order.
-                const ORDER: [usize; 12] = [0, 1, 2, 3, 4, 11, 5, 6, 7, 8, 9, 10];
                 let at = ORDER.iter().position(|p| *p == i).unwrap_or(0) as isize;
                 let fwd = if winui::rtl() { -1 } else { 1 };
                 let to = if winui::take_key(ui, egui::Key::ArrowRight) {
@@ -5909,10 +5930,10 @@ fn tabs(ui: &mut Ui, o: Pos2, page: usize) -> Option<usize> {
         winui::show_focus(ui, &resp, rc.shrink(2.0));
     };
     for t in back {
-        tab(ui, *t, 9.0, 22.0, false);
+        tab(&mut strip_ui, *t, 9.0, 22.0, false);
     }
     for t in front.iter().filter(|t| t.0 != page) {
-        tab(ui, *t, 27.0, 40.0, false);
+        tab(&mut strip_ui, *t, 27.0, 40.0, false);
     }
     // Page frame (x 6..421, y 45..468) with its shadow, then the selected tab over its top.
     fill(
@@ -5945,7 +5966,7 @@ fn tabs(ui: &mut Ui, o: Pos2, page: usize) -> Option<usize> {
     );
     fill(&p, o.x + 6.0, o.y + 469.0, o.x + 423.0, o.y + 469.0, shadow);
     if let Some(t) = front.iter().find(|t| t.0 == page) {
-        tab(ui, *t, 25.0, 38.0, true);
+        tab(&mut strip_ui, *t, 25.0, 38.0, true);
     }
     clicked
 }
@@ -6471,6 +6492,70 @@ mod tests {
         winui::install_fonts(&mut defs, None);
         ctx.set_fonts(defs);
         ctx
+    }
+
+    /// #1407: the strip is one tab list holding the twelve tabs: the count is the strip's (UI
+    /// Automation and AT-SPI read a tab's "of n" from its container, never from the tab), each
+    /// tab's place the pages' order on the strip (Remote closes the first row).
+    #[test]
+    fn the_strip_is_a_tab_list_of_twelve() {
+        use egui::accesskit::Role;
+        let ctx = context();
+        ctx.enable_accesskit();
+        let input = egui::RawInput {
+            screen_rect: Some(Rect::from_min_size(Pos2::ZERO, vec2(430.0, 506.0))),
+            ..Default::default()
+        };
+        let mut out = ctx.run_ui(input, |ui| {
+            tabs(ui, Pos2::ZERO, 0);
+        });
+        out.textures_delta.clear();
+        let u = out
+            .platform_output
+            .accesskit_update
+            .expect("AccessKit is on");
+        let strip = u
+            .nodes
+            .iter()
+            .find(|(_, n)| n.role() == Role::TabList)
+            .map(|(_, n)| n)
+            .expect("the strip is a tab list");
+        assert_eq!(strip.size_of_set(), Some(12));
+        let tabs: Vec<&egui::accesskit::Node> = u
+            .nodes
+            .iter()
+            .filter(|(_, n)| n.role() == Role::Tab)
+            .map(|(_, n)| n)
+            .collect();
+        assert_eq!(tabs.len(), 12);
+        for (id, _) in u.nodes.iter().filter(|(_, n)| n.role() == Role::Tab) {
+            assert!(
+                strip.children().contains(id),
+                "every tab is the tab list's child"
+            );
+        }
+        // The pages' order on the strip, Remote closing the first row.
+        let expected = [
+            ("General", 0),
+            ("File types", 1),
+            ("Save to", 2),
+            ("Downloads", 3),
+            ("Connection", 4),
+            ("Remote", 5),
+            ("Proxy / Socks", 6),
+            ("Sites Logins", 7),
+            ("Accounts", 8),
+            ("Sounds", 9),
+            ("Regional", 10),
+            ("Archives", 11),
+        ];
+        for (label, place) in expected {
+            let tab = tabs
+                .iter()
+                .find(|n| n.label() == Some(label))
+                .unwrap_or_else(|| panic!("{label} is a tab"));
+            assert_eq!(tab.position_in_set(), Some(place), "{label}");
+        }
     }
 
     /// #1041: Downloads → Customize "Download progress" dialog → Edit... opens its dialog, with
