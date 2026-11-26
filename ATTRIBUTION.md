@@ -40,6 +40,25 @@ unRAR restriction for its RAR code), run as a separate program when the user has
 It is neither bundled nor linked: UnRAR's licence doesn't allow its code in a GPL program, and a
 built-in 7z decoder made MDM about 1 MB larger.
 
+## Torrents (mdm-torrent)
+
+Torrents run on [librqbit](https://github.com/ikatson/rqbit) by Igor Katson and its
+contributors (Apache-2.0), built from MDM's copy of it,
+[anefzaoui/rqbit](https://github.com/anefzaoui/rqbit), which adds MDM's own changes and these
+fixes taken from upstream ahead of its next release, each under Apache-2.0 by its author:
+
+| Author | Change (ikatson/rqbit pull request) |
+|---|---|
+| Damián Búho | the peers-seen metric's name (#717) |
+| uzinag (qnfm) | torrent ids handed out one at a time, so torrents added together are all added (#711); UTF-8 name fields, `name.utf-8` and `path.utf-8` (#765) |
+| zerx-lab | the fake-peer test harness; a HAVE for every finished piece (#719); one tracker's failure kept to that tracker (#723); a dropped session not kept alive by a silent peer (#752); a pause late in the first check kept (#721); a start during that check keeps its peers (#746) |
+| Lucas Clemente Vella | local peer discovery with a torrent registered twice (#713) |
+| Poonnawit | HTTP trackers asked at their `interval` (#731) |
+| MemoDo-En | the UDP tracker socket falls back to IPv4 without IPv6 (#707) |
+| Jake Huneau | the piece map saved on pause (#754) |
+| Martin Bruse | a file's progress counted with its piece, past an empty file (#656) |
+| Adam Greenwell | a read-only file handle on a Windows sharing violation (#645) |
+
 System resources used at run time and **not** bundled: Windows fonts (Segoe UI, Tahoma,
 Arial) and each system's own file-type icons (the Windows shell's, macOS Finder's, the Linux
 desktop's icon theme).

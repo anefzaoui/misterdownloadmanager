@@ -126,6 +126,30 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 - Torrents: a torrent made from a folder (`torrent-create`) lists its files by name, so the same
   files make the same torrent on every computer. The order was the file system's, which differs
   between computers, and so did the torrent and which of its files share a piece.
+- Torrents: fixes from the BitTorrent engine's (librqbit's) authors and contributors, ahead of
+  its next release:
+  - pieces are announced to peers as they finish, also to a peer that already has them (some
+    trackers' anti-leech tools banned clients that didn't);
+  - trackers are asked again at the interval they ask for, never more often than their minimum
+    and never more than every 5 seconds (MDM asked at their minimum interval, more often than
+    they wanted);
+  - one tracker that fails no longer stops the torrent finding peers from the others;
+  - a paused torrent keeps every finished piece: the ones since its last save were downloaded
+    again after MDM restarted;
+  - torrents with UTF-8 name fields (`name.utf-8`, `path.utf-8`, as BitComet and other programs
+    write them beside names in another encoding) get their correct file names, and a name already in
+    UTF-8 is no longer mangled by a wrong guess of its encoding. A torrent like that which was
+    downloading before this version starts those files again under their correct names; the
+    files with the old names stay in the folder;
+  - command line, on Windows: `torrent-get` no longer fails at the start when another program
+    (a player, an antivirus) has one of the torrent's files open; it reads that file, and fails
+    only if it has to write to it;
+  - a file's progress counts every piece: a file after an empty one in the same piece never
+    reached 100 %;
+  - a torrent paused and started again quickly keeps finding peers on the local network;
+  - after a change in **Torrent settings**, a peer that connects and says nothing no longer
+    keeps the old session (and its port) running for up to 10 seconds;
+  - several torrents added at once no longer wait for each other.
 - Torrents: the engine checks what it's sent more carefully.
 - Extracting: 7z and RAR archives are checked more carefully.
 - Archive test: archives are checked more carefully.

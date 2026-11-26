@@ -648,6 +648,12 @@ These ship in the next version.
   fails now and then on a busy machine (seen on the Linux test machine): its test tracker noted
   each request after answering it, so the redirected request could be noted first; it now notes
   each one before answering
+- ✅ Torrents: the engine's upstream fixes brought in ahead of its release: pieces announced as
+  they finish, trackers asked at the interval they ask for, one failing tracker no longer stops
+  the others, a paused torrent keeps every finished piece, UTF-8 file names (`name.utf-8`,
+  `path.utf-8`), the command line's torrents on Windows past a file another program has open,
+  a file's progress past an empty file, and several torrents added at once without waiting for
+  each other
 - ✅ Torrents: the engine checks what it's sent more carefully
 - ✅ Extracting: 7z and RAR archives are checked more carefully
 - ✅ Archive test: archives are checked more carefully
