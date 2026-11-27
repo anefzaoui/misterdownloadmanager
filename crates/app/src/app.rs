@@ -2757,6 +2757,8 @@ impl App {
             } else {
                 it.status_icon()
             },
+            // Its server's checksum didn't match the file kept (#2064).
+            warned: !self.extracts.extracting(it.id) && it.checksum_warning_text(true).is_some(),
             icon: file_icon(&it.file_name),
             queued: queued.contains(&it.id),
             // A progress bar only while the download is in flight: a finished file is whole, and
@@ -2809,7 +2811,11 @@ impl App {
             // A short word and a percentage in the cell while checked or joined (#736): the
             // whole words in its tip and for a screen reader.
             status_whole: (!self.extracts.extracting(it.id))
-                .then(|| it.finishing(false).or_else(|| it.damaged_text(false)))
+                .then(|| {
+                    it.finishing(false)
+                        .or_else(|| it.damaged_text(false))
+                        .or_else(|| it.checksum_warning_text(false))
+                })
                 .flatten(),
             // The limit holding it back (#1191), in the Transfer rate cell's tip.
             rate_tip: receiving
@@ -13544,6 +13550,8 @@ impl App {
         item.testing = false;
         item.damaged = false;
         item.refetched = false;
+        // So is what its server's checksum said of it (#2064).
+        item.checksum_warning = None;
         item.note(crate::i18n::t("Downloading again from the start"));
         self.tests.forget(&[id]);
         self.dirty = true;
@@ -14294,17 +14302,22 @@ impl App {
             Outcome::Open => true,
             Outcome::Closed => false,
             Outcome::Done(h) => {
-                hashes.push((c.id, h));
+                hashes.push((c.id, h, c.matched()));
                 false
             }
         });
-        for (id, h) in hashes {
+        for (id, h, matched) in hashes {
             if let Some(item) = self.item(id) {
                 item.note(crate::i18n::fmt(
                     // i18n: event log entry: the user gave the checksum the file must have
                     crate::i18n::t("Expected checksum set ({algorithm})"),
                     &[("algorithm", h.algo.name())],
                 ));
+                // The user's own check found the file matches: its server's checksum that
+                // didn't is no longer a warning (#2064).
+                if matched {
+                    item.checksum_warning = None;
+                }
                 item.checksum = Some(h);
                 self.dirty = true;
             }
@@ -19118,6 +19131,7 @@ mod redownload_tests {
         row.checksum = Some(mdm_engine::verify::Hash {
             algo: mdm_engine::verify::Algo::Sha256,
             value: vec![0; 32],
+            origin: mdm_engine::verify::Origin::User,
         });
         let mut app = app_with(rt, vec![row]);
         app.redownload(1);

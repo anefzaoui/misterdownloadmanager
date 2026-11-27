@@ -604,9 +604,11 @@ fn hf_files(body: &[u8], within: &[String]) -> Option<(Vec<TreeFile>, usize)> {
     Some((files, refused))
 }
 
-/// A SHA-256 written in hex.
+/// A SHA-256 written in hex, the site's published digest: a file that doesn't match it fails.
 fn sha256(hex: &str) -> Option<Hash> {
-    Hash::parse(&format!("sha256:{}", hex.trim())).filter(|h| h.algo == Algo::Sha256)
+    Hash::parse(&format!("sha256:{}", hex.trim()))
+        .filter(|h| h.algo == Algo::Sha256)
+        .map(Hash::published)
 }
 
 async fn list_hf(
