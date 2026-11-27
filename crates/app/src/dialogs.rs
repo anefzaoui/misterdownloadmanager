@@ -2778,6 +2778,116 @@ pub fn cert_warning(
         let reason_lines =
             winui::paragraph(&p, o.x + 14.0, y, reason, winui::TEXT(), o.x + 446.0, 14.0);
         y += reason_lines as f32 * 15.0 + 8.0;
+        let issuer_color = if info.problem == mdm_engine::CertProblem::Untrusted {
+            winui::ERROR()
+        } else {
+            winui::TEXT()
+        };
+        let name_color = if info.problem == mdm_engine::CertProblem::WrongName {
+            winui::ERROR()
+        } else {
+            winui::TEXT()
+        };
+        let validity_color = if matches!(
+            info.problem,
+            mdm_engine::CertProblem::Expired | mdm_engine::CertProblem::NotYetValid
+        ) {
+            winui::ERROR()
+        } else {
+            winui::TEXT()
+        };
+        if let Some(issuer) = info.issuer.as_deref().filter(|s| !s.is_empty()) {
+            let issuer_line = crate::i18n::fmt(
+                // i18n: Certificate warning: the certificate's issuer (CA or signer)
+                crate::i18n::t("Issuer: {issuer}"),
+                &[("issuer", issuer)],
+            );
+            let lines = winui::paragraph(
+                &p,
+                o.x + 14.0,
+                y,
+                &issuer_line,
+                issuer_color,
+                o.x + 446.0,
+                13.0,
+            );
+            y += lines as f32 * 14.0 + 3.0;
+        }
+        if let Some(cn) = info.subject_cn.as_deref().filter(|s| !s.is_empty()) {
+            let cn_line = crate::i18n::fmt(
+                // i18n: Certificate warning: the certificate's subject Common Name (CN)
+                crate::i18n::t("CN: {cn}"),
+                &[("cn", &crate::i18n::ltr(cn))],
+            );
+            let lines = winui::paragraph(
+                &p,
+                o.x + 14.0,
+                y,
+                &cn_line,
+                name_color,
+                o.x + 446.0,
+                13.0,
+            );
+            y += lines as f32 * 14.0 + 3.0;
+        }
+        if !info.san.is_empty() {
+            const MAX_SANS: usize = 6;
+            let san_list = if info.san.len() > MAX_SANS {
+                let shown = info.san[..MAX_SANS].join(", ");
+                let more = crate::i18n::fmt(
+                    // i18n: Certificate warning: appended to truncated SAN list; {n} = remaining names count
+                    crate::i18n::t("(+{n} more)"),
+                    &[("n", &crate::i18n::integer((info.san.len() - MAX_SANS) as u64))],
+                );
+                format!("{shown} {more}")
+            } else {
+                info.san.join(", ")
+            };
+            let san_line = crate::i18n::fmt(
+                // i18n: Certificate warning: Subject Alternative Names (SAN) on the certificate
+                crate::i18n::t("SAN: {san}"),
+                &[("san", &crate::i18n::ltr(&san_list))],
+            );
+            let lines = winui::paragraph(
+                &p,
+                o.x + 14.0,
+                y,
+                &san_line,
+                name_color,
+                o.x + 446.0,
+                13.0,
+            );
+            y += lines as f32 * 14.0 + 3.0;
+        }
+        if let Some(validity) = match (info.not_before.as_deref(), info.not_after.as_deref()) {
+            (Some(from), Some(to)) => Some(crate::i18n::fmt(
+                // i18n: Certificate warning: certificate validity date range; {from} and {to} are YYYY-MM-DD
+                crate::i18n::t("Validity: {from} – {to}"),
+                &[("from", from), ("to", to)],
+            )),
+            (None, Some(to)) => Some(crate::i18n::fmt(
+                // i18n: Certificate warning: certificate expiry date when start date is unavailable; {to} is YYYY-MM-DD
+                crate::i18n::t("Validity: until {to}"),
+                &[("to", to)],
+            )),
+            (Some(from), None) => Some(crate::i18n::fmt(
+                // i18n: Certificate warning: certificate start date when end date is unavailable; {from} is YYYY-MM-DD
+                crate::i18n::t("Validity: from {from}"),
+                &[("from", from)],
+            )),
+            (None, None) => None,
+        } {
+            let lines = winui::paragraph(
+                &p,
+                o.x + 14.0,
+                y,
+                &validity,
+                validity_color,
+                o.x + 446.0,
+                13.0,
+            );
+            y += lines as f32 * 14.0 + 5.0;
+        }
         let fp_line = crate::i18n::fmt(
             // i18n: Certificate warning: the certificate's SHA-256 fingerprint
             crate::i18n::t("Certificate (SHA-256): {fingerprint}"),

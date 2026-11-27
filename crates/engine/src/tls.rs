@@ -230,6 +230,16 @@ pub struct CertInfo {
     pub expired_since: Option<String>,
     /// Whether the certificate's issuer equals its subject.
     pub self_signed: bool,
+    /// The certificate's issuer (CN, or O/OU if CN is absent).
+    pub issuer: Option<String>,
+    /// The certificate's subject Common Name (CN).
+    pub subject_cn: Option<String>,
+    /// Subject Alternative Names (DNS names and IP addresses).
+    pub san: Vec<String>,
+    /// The certificate's `notBefore` date (`YYYY-MM-DD`).
+    pub not_before: Option<String>,
+    /// The certificate's `notAfter` date (`YYYY-MM-DD`).
+    pub not_after: Option<String>,
 }
 
 /// A refused server certificate (`Error::Certificate`): why it was refused and, when a TLS
@@ -279,9 +289,20 @@ pub fn sha256_hex(der: &[u8]) -> String {
     out
 }
 
-/// Inspect a DER-encoded X.509 certificate for `(self_signed, not_after_ymd)`.
-/// Pure-Rust minimal ASN.1 DER walk over `Certificate.tbsCertificate`.
-pub fn inspect_cert(der: &[u8]) -> (bool, Option<String>) {
+/// Parsed X.509 leaf certificate fields from [`inspect_cert`].
+#[derive(Clone, Debug, Default, PartialEq, Eq)]
+pub struct CertDetails {
+    pub self_signed: bool,
+    pub issuer: Option<String>,
+    pub subject_cn: Option<String>,
+    pub san: Vec<String>,
+    pub not_before: Option<String>,
+    pub not_after: Option<String>,
+}
+
+/// Inspect a DER-encoded X.509 certificate for its issuer, subject CN, SANs, validity dates,
+/// and whether it is self-signed. Pure-Rust minimal ASN.1 DER walk over `Certificate.tbsCertificate`.
+pub fn inspect_cert(der: &[u8]) -> CertDetails {
     fn read_tlv(data: &[u8]) -> Option<(u8, &[u8], &[u8])> {
         let (&tag, rest) = data.split_first()?;
         let (&len_byte, rest) = rest.split_first()?;
@@ -322,42 +343,184 @@ pub fn inspect_cert(der: &[u8]) -> (bool, Option<String>) {
         }
     }
 
+    fn decode_dir_string(tag: u8, val: &[u8]) -> Option<String> {
+        match tag {
+            // BMPString (UTF-16BE)
+            0x1e if val.len().is_multiple_of(2) => {
+                let (chunks, _) = val.as_chunks::<2>();
+                let units: Vec<u16> = chunks.iter().map(|c| u16::from_be_bytes(*c)).collect();
+                String::from_utf16(&units).ok()
+            }
+            // UTF8String, TeletexString, PrintableString, IA5String, VisibleString
+            0x0c | 0x13 | 0x14 | 0x16 | 0x1a => std::str::from_utf8(val).ok().map(str::to_owned),
+            _ => std::str::from_utf8(val).ok().map(str::to_owned),
+        }
+    }
+
+    fn parse_name_attr(name_val: &[u8], target_oid: &[u8]) -> Option<String> {
+        let mut rdn_seq = name_val;
+        while let Some((tag, set_val, rest)) = read_tlv(rdn_seq) {
+            rdn_seq = rest;
+            if tag != 0x31 {
+                continue;
+            }
+            let mut set = set_val;
+            while let Some((seq_tag, atv_val, set_rest)) = read_tlv(set) {
+                set = set_rest;
+                if seq_tag != 0x30 {
+                    continue;
+                }
+                let Some((0x06, oid, after_oid)) = read_tlv(atv_val) else {
+                    continue;
+                };
+                if oid == target_oid
+                    && let Some((vtag, vbytes, _)) = read_tlv(after_oid)
+                    && let Some(s) = decode_dir_string(vtag, vbytes)
+                    && !s.is_empty()
+                {
+                    return Some(s);
+                }
+            }
+        }
+        None
+    }
+
+    fn parse_san(ext_val: &[u8]) -> Vec<String> {
+        let mut out = Vec::new();
+        let Some((0x30, mut names, _)) = read_tlv(ext_val) else {
+            return out;
+        };
+        while let Some((tag, val, rest)) = read_tlv(names) {
+            names = rest;
+            match tag {
+                // [2] dNSName (IA5String)
+                0x82 => {
+                    if let Ok(s) = std::str::from_utf8(val)
+                        && !s.is_empty()
+                    {
+                        out.push(s.to_owned());
+                    }
+                }
+                // [7] iPAddress (4 bytes IPv4 or 16 bytes IPv6)
+                0x87 => {
+                    if let Ok(octets) = <[u8; 4]>::try_from(val) {
+                        out.push(std::net::Ipv4Addr::from(octets).to_string());
+                    } else if let Ok(octets) = <[u8; 16]>::try_from(val) {
+                        out.push(std::net::Ipv6Addr::from(octets).to_string());
+                    }
+                }
+                _ => {}
+            }
+        }
+        out
+    }
+
+    // OID 2.5.4.3 (CN), 2.5.4.10 (O), 2.5.4.11 (OU), 2.5.29.17 (subjectAltName)
+    const OID_CN: &[u8] = &[0x55, 0x04, 0x03];
+    const OID_O: &[u8] = &[0x55, 0x04, 0x0a];
+    const OID_OU: &[u8] = &[0x55, 0x04, 0x0b];
+    const OID_SAN: &[u8] = &[0x55, 0x1d, 0x11];
+
     let Some((0x30, cert_val, _)) = read_tlv(der) else {
-        return (false, None);
+        return CertDetails::default();
     };
     let Some((0x30, mut tbs, _)) = read_tlv(cert_val) else {
-        return (false, None);
+        return CertDetails::default();
     };
     // Optional explicit [0] version.
     if tbs.first() == Some(&0xa0) {
         let Some((_, _, rest)) = read_tlv(tbs) else {
-            return (false, None);
+            return CertDetails::default();
         };
         tbs = rest;
     }
     // serialNumber, signature
     let Some((_, _, tbs)) = read_tlv(tbs) else {
-        return (false, None);
+        return CertDetails::default();
     };
     let Some((_, _, tbs)) = read_tlv(tbs) else {
-        return (false, None);
+        return CertDetails::default();
     };
     // issuer (raw TLV slice)
     let Some((_, issuer_val, tbs_after_issuer)) = read_tlv(tbs) else {
-        return (false, None);
+        return CertDetails::default();
     };
+    let issuer = parse_name_attr(issuer_val, OID_CN)
+        .or_else(|| parse_name_attr(issuer_val, OID_O))
+        .or_else(|| parse_name_attr(issuer_val, OID_OU));
+
     // validity SEQUENCE { notBefore, notAfter }
     let Some((0x30, validity_val, tbs_after_validity)) = read_tlv(tbs_after_issuer) else {
-        return (false, None);
+        return CertDetails {
+            issuer,
+            ..Default::default()
+        };
     };
-    let not_after = read_tlv(validity_val)
-        .and_then(|(_, _, rest)| read_tlv(rest))
-        .and_then(|(tag, val, _)| parse_time(tag, val));
+    let (not_before, not_after) = match read_tlv(validity_val) {
+        Some((tag1, val1, rest)) => {
+            let nb = parse_time(tag1, val1);
+            let na = read_tlv(rest).and_then(|(tag2, val2, _)| parse_time(tag2, val2));
+            (nb, na)
+        }
+        None => (None, None),
+    };
+
     // subject (raw TLV slice)
-    let self_signed = read_tlv(tbs_after_validity)
-        .map(|(_, subject_val, _)| !issuer_val.is_empty() && issuer_val == subject_val)
-        .unwrap_or(false);
-    (self_signed, not_after)
+    let Some((_, subject_val, mut tbs_after_subject)) = read_tlv(tbs_after_validity) else {
+        return CertDetails {
+            issuer,
+            not_before,
+            not_after,
+            ..Default::default()
+        };
+    };
+    let self_signed = !issuer_val.is_empty() && issuer_val == subject_val;
+    let subject_cn = parse_name_attr(subject_val, OID_CN);
+
+    // subjectPublicKeyInfo, optional issuerUniqueID [1], subjectUniqueID [2], extensions [3]
+    let mut san = Vec::new();
+    if let Some((_, _, rest)) = read_tlv(tbs_after_subject) {
+        tbs_after_subject = rest;
+        while let Some((tag, val, rest)) = read_tlv(tbs_after_subject) {
+            tbs_after_subject = rest;
+            if tag == 0xa3
+                && let Some((0x30, mut exts, _)) = read_tlv(val)
+            {
+                while let Some((ext_tag, ext_seq, ext_rest)) = read_tlv(exts) {
+                    exts = ext_rest;
+                    if ext_tag != 0x30 {
+                        continue;
+                    }
+                    let Some((0x06, oid, mut after_oid)) = read_tlv(ext_seq) else {
+                        continue;
+                    };
+                    if oid != OID_SAN {
+                        continue;
+                    }
+                    // Optional critical BOOLEAN (0x01)
+                    if after_oid.first() == Some(&0x01)
+                        && let Some((_, _, next)) = read_tlv(after_oid)
+                    {
+                        after_oid = next;
+                    }
+                    if let Some((0x04, octets, _)) = read_tlv(after_oid) {
+                        san = parse_san(octets);
+                    }
+                    break;
+                }
+                break;
+            }
+        }
+    }
+
+    CertDetails {
+        self_signed,
+        issuer,
+        subject_cn,
+        san,
+        not_before,
+        not_after,
+    }
 }
 
 /// Configure `builder` for a download or probe, using the system verifier + Mozilla roots +
@@ -483,9 +646,9 @@ impl ServerCertVerifier for SiteVerifier {
                 {
                     return Ok(ServerCertVerified::assertion());
                 }
-                let (self_signed, not_after) = inspect_cert(end_entity.as_ref());
+                let details = inspect_cert(end_entity.as_ref());
                 let expired_since = (problem == CertProblem::Expired)
-                    .then_some(not_after)
+                    .then_some(details.not_after.clone())
                     .flatten();
                 (self.on_refusal)(CertInfo {
                     host,
@@ -493,7 +656,12 @@ impl ServerCertVerifier for SiteVerifier {
                     sha256,
                     problem,
                     expired_since,
-                    self_signed,
+                    self_signed: details.self_signed,
+                    issuer: details.issuer,
+                    subject_cn: details.subject_cn,
+                    san: details.san,
+                    not_before: details.not_before,
+                    not_after: details.not_after,
                 });
                 Err(err)
             }
@@ -1216,5 +1384,69 @@ mod tests {
         .await
         .unwrap();
         assert_eq!(ok.size, Some(16 * 1024));
+    }
+
+    /// #1964: `inspect_cert` extracts issuer, subject CN, SANs (DNS and IP), validity dates,
+    /// and self-signed status from a DER-encoded X.509 certificate.
+    #[test]
+    fn inspect_cert_extracts_issuer_cn_san_and_validity() {
+        let mut params = rcgen::CertificateParams::new(vec![
+            "app.internal.corp".to_owned(),
+            "10.0.0.5".to_owned(),
+        ])
+        .unwrap();
+        params
+            .distinguished_name
+            .push(rcgen::DnType::CommonName, "app.internal.corp");
+        params
+            .distinguished_name
+            .push(rcgen::DnType::OrganizationName, "Internal Corp");
+        params.not_before = rcgen::date_time_ymd(2025, 1, 15);
+        params.not_after = rcgen::date_time_ymd(2026, 6, 30);
+
+        let key = rcgen::KeyPair::generate().unwrap();
+        let cert = params.self_signed(&key).unwrap();
+        let details = inspect_cert(cert.der().as_ref());
+
+        assert!(details.self_signed);
+        assert_eq!(details.issuer.as_deref(), Some("app.internal.corp"));
+        assert_eq!(details.subject_cn.as_deref(), Some("app.internal.corp"));
+        assert_eq!(
+            details.san,
+            vec!["app.internal.corp".to_owned(), "10.0.0.5".to_owned()]
+        );
+        assert_eq!(details.not_before.as_deref(), Some("2025-01-15"));
+        assert_eq!(details.not_after.as_deref(), Some("2026-06-30"));
+    }
+
+    /// #1964: `inspect_cert` distinguishes CA-signed certificates (issuer != subject) and
+    /// extracts the CA's CN as issuer.
+    #[test]
+    fn inspect_cert_ca_signed_extracts_ca_issuer() {
+        let mut ca_params = rcgen::CertificateParams::new(Vec::new()).unwrap();
+        ca_params.is_ca = rcgen::IsCa::Ca(rcgen::BasicConstraints::Unconstrained);
+        ca_params
+            .distinguished_name
+            .push(rcgen::DnType::CommonName, "Corp AD CS Root");
+        let ca_key = rcgen::KeyPair::generate().unwrap();
+        let issuer = rcgen::Issuer::new(ca_params, &ca_key);
+
+        let mut leaf_params =
+            rcgen::CertificateParams::new(vec!["files.corp.local".to_owned()]).unwrap();
+        leaf_params
+            .distinguished_name
+            .push(rcgen::DnType::CommonName, "files.corp.local");
+        leaf_params.not_before = rcgen::date_time_ymd(2026, 1, 1);
+        leaf_params.not_after = rcgen::date_time_ymd(2027, 1, 1);
+        let leaf_key = rcgen::KeyPair::generate().unwrap();
+        let leaf = leaf_params.signed_by(&leaf_key, &issuer).unwrap();
+
+        let details = inspect_cert(leaf.der().as_ref());
+        assert!(!details.self_signed);
+        assert_eq!(details.issuer.as_deref(), Some("Corp AD CS Root"));
+        assert_eq!(details.subject_cn.as_deref(), Some("files.corp.local"));
+        assert_eq!(details.san, vec!["files.corp.local".to_owned()]);
+        assert_eq!(details.not_before.as_deref(), Some("2026-01-01"));
+        assert_eq!(details.not_after.as_deref(), Some("2027-01-01"));
     }
 }
