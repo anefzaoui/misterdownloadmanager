@@ -386,6 +386,10 @@
 #. why a split archive (in several files, its volumes) isn't tested yet, in "{name} isn't complete ({why})": one of its files isn't downloaded yet
 #, machine
 	a volume of it isn't there yet	یکی از بخش‌های آن هنوز موجود نیست
+#. text in the Download video window
+#. why the thumbnail-as-cover checkbox is greyed in Download video: the choice is the site's sound in a WebM file, which can't hold a picture
+#, machine
+	A WebM file can't hold a cover: choose M4A, MP3, Opus or FLAC	فایل WebM نمی‌تواند کاور داشته باشد: M4A، MP3، Opus یا FLAC را انتخاب کنید
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	About Mister Download Manager	درباره Mister Download Manager
@@ -1839,6 +1843,10 @@
 #. Link grabber, in the empty "Save to" box: each file goes to its category's folder (Options → Save to)
 #, machine
 	Each file's category folder	پوشه دسته‌بندی هر فایل
+#. text in the Options window
+#. Options → Regional → Videos' sound: the first choice, each video's own sound (the language it was made in), the default
+#, machine
+	Each video's original	اصلی هر ویدئو
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2246,6 +2254,10 @@
 #. {address} = an example web address with a * in the file name
 #, machine
 	For example:  {address}	برای مثال: {address}
+#. text in the Options window
+#. Options → Regional → Videos' sound: a note under the language list
+#, machine
+	For videos whose sound comes in several languages (dubbed ones), and playlists. A video without it keeps its original sound.	برای ویدئوهایی که صداهایشان به چند زبان (دوبله‌شده) هستند و لیست‌های پخش. ویدئوهای بدون آن، صدای اصلی خود را حفظ می‌کنند.
 #. text in the Add torrent window
 #. Torrent settings, under the switch that makes MDM open magnet links and .torrent files (macOS, Linux)
 #, machine
@@ -4016,6 +4028,10 @@
 #. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer's wake alarm can be set by an administrator only
 #, machine
 	Only an administrator can allow this	فقط یک مدیر می‌تواند این را مجاز کند
+#. text in the Download video window
+#. why the thumbnail-as-cover checkbox is greyed in Download video: the choice is a video, which is saved as it is
+#, machine
+	Only an audio file gets a cover: a video is saved as it is	فقط فایل صوتی کاور می‌گیرد: ویدئو همان‌طور که هست ذخیره می‌شود
 #. tooltip (why a control is greyed) in the Download video window
 #. why "Put them into the video" is greyed: the chosen file type can't hold subtitles
 #, machine
@@ -4352,6 +4368,10 @@
 #. why Batch download's OK is greyed
 #, machine
 	Put a * in the address where the numbers or letters go	یک * در نشانی قرار دهید، جایی که اعداد یا حروف قرار می‌گیرند
+#. text in the Download video window
+#. checkbox in Download video: the picture the site shows for the video (its thumbnail) goes into an audio-only download (MP3, M4A, Opus, FLAC) as its cover, which music players show
+#, machine
+	Put the video's thumbnail in the audio file as its cover	تصویر بندانگشتی ویدئو را به‌عنوان کاور در فایل صوتی قرار بده
 #. checkbox in the Download video window
 #. checkbox in Download video: subtitles go inside the video file instead of a separate .srt file beside it
 #, machine
@@ -5069,9 +5089,17 @@
 #. text in a dialog box
 #, machine
 	Some of the torrent's files are already in this folder:	برخی از فایل‌های تورنت از قبل در این پوشه هستند:
+#. text in the Download video window
+#. label in Download video before the list of the languages a video's sound comes in (its original and the dubbed ones)
+#, machine
+	Sound	صدا
 #. text in the Options window
 #, machine
 	Sound file	فایل صوتی
+#. text in the Options window
+#. Options → Regional → Videos' sound: label before the list of languages
+#, machine
+	Sound language:	زبان صدا:
 #. page title in the Options window
 #, machine
 	Sound settings	تنظیمات صدا
@@ -6692,6 +6720,10 @@
 #. what a screen reader calls the list of a playlist's videos
 #, machine
 	Videos	ویدیوها
+#. group box title in the Options window
+#. Options → Regional: group box title: the language of a video's sound, for videos that come with several (dubbed ones)
+#, machine
+	Videos' sound	صدای ویدئوها
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -7154,9 +7186,17 @@
 #, machine
 	{ip} can't be reached through {adapter}: it has no address of that kind (IPv4 or IPv6)	از طریق {adapter} نمی‌توان به {ip} دسترسی داشت: این آداپتور آدرسی از این نوع (IPv4 یا IPv6) ندارد
 #. text in the Download video window
+#. in Download video's Sound list: a language's sound track that describes the picture for people who can't see it; {language} is the language's name
+#, machine
+	{language}, audio description	{language}، توصیف صوتی
+#. text in the Download video window
 #. in the Subtitles list of Download video: {language} = a language's name; the site made these subtitles automatically (speech recognition)
 #, machine
 	{language}, automatic	{language}، خودکار
+#. text in the Download video window
+#. in Download video's Sound list and the browser's video menu: the video's own sound, the language it was made in (the others are dubbed); {language} is the language's name
+#, machine
+	{language}, original	{language}، صدای اصلی
 #. text in a download's progress window
 #. {live} = peers connected now; {known} = peers heard of
 #, machine

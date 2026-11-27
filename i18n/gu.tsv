@@ -392,6 +392,10 @@
 #. why a split archive (in several files, its volumes) isn't tested yet, in "{name} isn't complete ({why})": one of its files isn't downloaded yet
 #, machine
 	a volume of it isn't there yet	તેનો એક વોલ્યુમ હજુ સુધી ત્યાં નથી
+#. text in the Download video window
+#. why the thumbnail-as-cover checkbox is greyed in Download video: the choice is the site's sound in a WebM file, which can't hold a picture
+#, machine
+	A WebM file can't hold a cover: choose M4A, MP3, Opus or FLAC	WebM ફાઇલ કવર રાખી શકતી નથી: M4A, MP3, Opus અથવા FLAC પસંદ કરો
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	About Mister Download Manager	Mister Download Manager વિશે
@@ -1867,6 +1871,10 @@
 #. Link grabber, in the empty "Save to" box: each file goes to its category's folder (Options → Save to)
 #, machine
 	Each file's category folder	દરેક ફાઇલનું કેટેગરી ફોલ્ડર
+#. text in the Options window
+#. Options → Regional → Videos' sound: the first choice, each video's own sound (the language it was made in), the default
+#, machine
+	Each video's original	દરેક વિડિઓનું મૂળ
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2274,6 +2282,10 @@
 #. {address} = an example web address with a * in the file name
 #, machine
 	For example:  {address}	ઉદાહરણ તરીકે: {address}
+#. text in the Options window
+#. Options → Regional → Videos' sound: a note under the language list
+#, machine
+	For videos whose sound comes in several languages (dubbed ones), and playlists. A video without it keeps its original sound.	જે વીડિયોમાં અવાજ ઘણી ભાષાઓમાં (ડબ કરેલા) આવે છે, અને પ્લેલિસ્ટ માટે. તેના વિનાનો વીડિયો તેનો મૂળ અવાજ જાળવી રાખે છે.
 #. text in the Add torrent window
 #. Torrent settings, under the switch that makes MDM open magnet links and .torrent files (macOS, Linux)
 #, machine
@@ -4044,6 +4056,10 @@
 #. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer's wake alarm can be set by an administrator only
 #, machine
 	Only an administrator can allow this	ફક્ત એડમિનિસ્ટ્રેટર જ આની મંજૂરી આપી શકે છે
+#. text in the Download video window
+#. why the thumbnail-as-cover checkbox is greyed in Download video: the choice is a video, which is saved as it is
+#, machine
+	Only an audio file gets a cover: a video is saved as it is	ફક્ત ઑડિઓ ફાઇલને કવર મળે છે: વિડિઓ જેવો છે તેવો સાચવવામાં આવે છે
 #. tooltip (why a control is greyed) in the Download video window
 #. why "Put them into the video" is greyed: the chosen file type can't hold subtitles
 #, machine
@@ -4380,6 +4396,10 @@
 #. why Batch download's OK is greyed
 #, machine
 	Put a * in the address where the numbers or letters go	સરનામાંમાં * મૂકો જ્યાં સંખ્યાઓ અથવા અક્ષરો જાય છે
+#. text in the Download video window
+#. checkbox in Download video: the picture the site shows for the video (its thumbnail) goes into an audio-only download (MP3, M4A, Opus, FLAC) as its cover, which music players show
+#, machine
+	Put the video's thumbnail in the audio file as its cover	વિડિઓની થંબનેલને ઑડિઓ ફાઇલમાં તેના કવર તરીકે મૂકો
 #. checkbox in the Download video window
 #. checkbox in Download video: subtitles go inside the video file instead of a separate .srt file beside it
 #, machine
@@ -5097,9 +5117,17 @@
 #. text in a dialog box
 #, machine
 	Some of the torrent's files are already in this folder:	આ ફોલ્ડરમાં ટોરેન્ટની કેટલીક ફાઇલો પહેલેથી જ છે:
+#. text in the Download video window
+#. label in Download video before the list of the languages a video's sound comes in (its original and the dubbed ones)
+#, machine
+	Sound	અવાજ
 #. text in the Options window
 #, machine
 	Sound file	સાઉન્ડ ફાઇલ
+#. text in the Options window
+#. Options → Regional → Videos' sound: label before the list of languages
+#, machine
+	Sound language:	અવાજની ભાષા:
 #. page title in the Options window
 #, machine
 	Sound settings	સાઉન્ડ સેટિંગ્સ
@@ -6737,6 +6765,10 @@
 #. what a screen reader calls the list of a playlist's videos
 #, machine
 	Videos	વીડિયો
+#. group box title in the Options window
+#. Options → Regional: group box title: the language of a video's sound, for videos that come with several (dubbed ones)
+#, machine
+	Videos' sound	વિડિઓઝનો અવાજ
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -7207,9 +7239,17 @@
 #, machine
 	{ip} can't be reached through {adapter}: it has no address of that kind (IPv4 or IPv6)	{ip} સુધી {adapter} દ્વારા પહોંચી શકાતું નથી: તેમાં તે પ્રકારનું કોઈ સરનામું નથી (IPv4 અથવા IPv6)
 #. text in the Download video window
+#. in Download video's Sound list: a language's sound track that describes the picture for people who can't see it; {language} is the language's name
+#, machine
+	{language}, audio description	{language}, ઑડિઓ વર્ણન
+#. text in the Download video window
 #. in the Subtitles list of Download video: {language} = a language's name; the site made these subtitles automatically (speech recognition)
 #, machine
 	{language}, automatic	{language}, આપમેળે બનાવેલા
+#. text in the Download video window
+#. in Download video's Sound list and the browser's video menu: the video's own sound, the language it was made in (the others are dubbed); {language} is the language's name
+#, machine
+	{language}, original	{language}, મૂળ
 #. text in a download's progress window
 #. {live} = peers connected now; {known} = peers heard of
 #, machine
