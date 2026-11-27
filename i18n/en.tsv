@@ -304,6 +304,9 @@
 #. text in archtest.rs
 #. why a split archive (in several files, its volumes) isn't tested yet, in "{name} isn't complete ({why})": one of its files isn't downloaded yet
 	a volume of it isn't there yet	a volume of it isn't there yet
+#. text in the Download video window
+#. why the thumbnail-as-cover checkbox is greyed in Download video: the choice is the site's sound in a WebM file, which can't hold a picture
+	A WebM file can't hold a cover: choose M4A, MP3, Opus or FLAC	A WebM file can't hold a cover: choose M4A, MP3, Opus or FLAC
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 	About Mister Download Manager	About Mister Download Manager
 #. text in whereis.rs
@@ -1404,6 +1407,9 @@
 #. text in the Batch download window; text in the Link grabber window
 #. Link grabber, in the empty "Save to" box: each file goes to its category's folder (Options → Save to)
 	Each file's category folder	Each file's category folder
+#. text in the Options window
+#. Options → Regional → Videos' sound: the first choice, each video's own sound (the language it was made in), the default
+	Each video's original	Each video's original
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Ecuador	Ecuador
@@ -1704,6 +1710,9 @@
 #. text in the Batch download window
 #. {address} = an example web address with a * in the file name
 	For example:  {address}	For example:  {address}
+#. text in the Options window
+#. Options → Regional → Videos' sound: a note under the language list
+	For videos whose sound comes in several languages (dubbed ones), and playlists. A video without it keeps its original sound.	For videos whose sound comes in several languages (dubbed ones), and playlists. A video without it keeps its original sound.
 #. text in the Add torrent window
 #. Torrent settings, under the switch that makes MDM open magnet links and .torrent files (macOS, Linux)
 	For your account only. Another app set as the default stays first.	For your account only. Another app set as the default stays first.
@@ -3022,6 +3031,9 @@
 #. text in the Scheduler window
 #. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer's wake alarm can be set by an administrator only
 	Only an administrator can allow this	Only an administrator can allow this
+#. text in the Download video window
+#. why the thumbnail-as-cover checkbox is greyed in Download video: the choice is a video, which is saved as it is
+	Only an audio file gets a cover: a video is saved as it is	Only an audio file gets a cover: a video is saved as it is
 #. tooltip (why a control is greyed) in the Download video window
 #. why "Put them into the video" is greyed: the chosen file type can't hold subtitles
 	Only MP4 and MKV videos can hold subtitles	Only MP4 and MKV videos can hold subtitles
@@ -3274,6 +3286,9 @@
 #. text in the Batch download window
 #. why Batch download's OK is greyed
 	Put a * in the address where the numbers or letters go	Put a * in the address where the numbers or letters go
+#. text in the Download video window
+#. checkbox in Download video: the picture the site shows for the video (its thumbnail) goes into an audio-only download (MP3, M4A, Opus, FLAC) as its cover, which music players show
+	Put the video's thumbnail in the audio file as its cover	Put the video's thumbnail in the audio file as its cover
 #. checkbox in the Download video window
 #. checkbox in Download video: subtitles go inside the video file instead of a separate .srt file beside it
 	Put them into the video	Put them into the video
@@ -3812,8 +3827,14 @@
 	some of its volumes are still downloading	some of its volumes are still downloading
 #. text in a dialog box
 	Some of the torrent's files are already in this folder:	Some of the torrent's files are already in this folder:
+#. text in the Download video window
+#. label in Download video before the list of the languages a video's sound comes in (its original and the dubbed ones)
+	Sound	Sound
 #. text in the Options window
 	Sound file	Sound file
+#. text in the Options window
+#. Options → Regional → Videos' sound: label before the list of languages
+	Sound language:	Sound language:
 #. page title in the Options window
 	Sound settings	Sound settings
 #. text in the Options window
@@ -4561,6 +4582,7 @@
 #. why "Embed chapters" is greyed: ffmpeg (a helper program) is not installed
 #. why "Split into chapters" is greyed: ffmpeg (a helper program) is not installed
 #. why Part is greyed in Download video: ffmpeg (a helper program) is not installed
+#. why the thumbnail-as-cover checkbox is greyed: ffmpeg (a helper program) is not installed
 #. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
 	This needs ffmpeg	This needs ffmpeg
 #. text in the Add torrent window
@@ -5031,6 +5053,9 @@
 #. text in playlistdlg.rs
 #. what a screen reader calls the list of a playlist's videos
 	Videos	Videos
+#. group box title in the Options window
+#. Options → Regional: group box title: the language of a video's sound, for videos that come with several (dubbed ones)
+	Videos' sound	Videos' sound
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Vietnam	Vietnam
@@ -5386,8 +5411,14 @@
 #. an error: the server's address is IPv6 (or IPv4) and the chosen network adapter has none of that kind; {ip} the address, {adapter} the adapter's name
 	{ip} can't be reached through {adapter}: it has no address of that kind (IPv4 or IPv6)	{ip} can't be reached through {adapter}: it has no address of that kind (IPv4 or IPv6)
 #. text in the Download video window
+#. in Download video's Sound list: a language's sound track that describes the picture for people who can't see it; {language} is the language's name
+	{language}, audio description	{language}, audio description
+#. text in the Download video window
 #. in the Subtitles list of Download video: {language} = a language's name; the site made these subtitles automatically (speech recognition)
 	{language}, automatic	{language}, automatic
+#. text in the Download video window
+#. in Download video's Sound list and the browser's video menu: the video's own sound, the language it was made in (the others are dubbed); {language} is the language's name
+	{language}, original	{language}, original
 #. text in a download's progress window
 #. {live} = peers connected now; {known} = peers heard of
 	{live} connected, {known} known	{live} connected, {known} known

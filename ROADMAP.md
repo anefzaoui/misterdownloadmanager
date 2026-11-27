@@ -569,6 +569,17 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 Everything below ships together, in version 0.6.0, the next release.
 
+- ✅ Download video: choose the language of a video's sound when it comes in several (YouTube's
+  dubbed tracks), the original first and marked; every quality, Audio only and MP3, Opus and
+  FLAC take that language's sound, and the button over a video says each line's language.
+  Options → Regional chooses one for every video and playlist, the original when a video lacks
+  it ([#1961](https://github.com/anefzaoui/misterdownloadmanager/issues/1961); thanks to
+  [@toji2002](https://github.com/toji2002), [@Hanif-afzal](https://github.com/Hanif-afzal) and
+  [@twistedwolfyt00](https://github.com/twistedwolfyt00))
+- ✅ Audio only downloads: the video's thumbnail as the cover of an MP3, M4A, Opus or FLAC file,
+  put in by ffmpeg without encoding the sound again; a box in Download video, kept as you leave
+  it ([#1962](https://github.com/anefzaoui/misterdownloadmanager/issues/1962); thanks to
+  [@twistedwolfyt00](https://github.com/twistedwolfyt00))
 - ✅ Import: an `.ef2` list's `filename:` lines name its downloads (only a file name: folder parts
   are left out), shown in Link grabber before they are added
   ([#1963](https://github.com/anefzaoui/misterdownloadmanager/issues/1963); thanks to

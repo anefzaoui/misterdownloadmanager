@@ -165,6 +165,8 @@ How dates and times are written in the list of downloads and the Scheduler.
 - **As the system's region writes them** (the default) — Windows' region settings (Settings → Time & language → Region); on macOS and Linux, your language's usual way. In English the list keeps IDM's own date text.
 - **My own way** — choose the **date order** (day, month, year; month, day, year; or year, month, day), a **12- or 24-hour clock**, and the **first day of the week** in the Scheduler's calendar. **Example** shows the result.
 
+**Videos' sound** — the language a video's sound comes in when the site has it in several (dubbed videos): **Each video's original** (the default), or a language, which every video looked up and every playlist downloads with when it has it. A video without it comes with its original sound, and **Download video** can choose another for one video ([The sound's language](video.md#sound-language)).
+
 ## Archives
 
 ![Options on its Archives page: extracting archives when they are downloaded, and Link grabber's look-ups](images/help/options-archives.webp)

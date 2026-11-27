@@ -567,6 +567,13 @@ pub struct Settings {
     /// Download video from a page → Split into chapters: split video into multiple files based on
     /// chapters (with ffmpeg). Off; a settings file from before has none: off.
     pub video_split_chapters: bool,
+    /// Download video from a page → the video's thumbnail as an audio file's cover (#1962, with
+    /// ffmpeg). On; a settings file from before has none: on.
+    pub video_cover: bool,
+    /// Options → Regional → the sound language videos come in when they have several (#1961:
+    /// dubbed ones), for every video and playlist: a language's code (`de`, `pt-BR`); empty, the
+    /// default, for each video's original.
+    pub video_sound_language: String,
     /// Options → Sites Logins → Cookies for video sites (#229): the browser whose cookies
     /// yt-dlp reads on this computer when the extension passed none (yt-dlp's name: `firefox`,
     /// `chrome`...; empty: off, the default), and its profile (a name or a folder; empty: the
@@ -790,6 +797,8 @@ impl Default for Settings {
             video_subs: Default::default(),
             video_chapters: true,
             video_split_chapters: false,
+            video_cover: true,
+            video_sound_language: String::new(),
             video_cookies: String::new(),
             video_cookies_profile: String::new(),
             ytdlp_config: false,
@@ -1496,12 +1505,28 @@ impl Settings {
 }
 
 /// Keep every yt-dlp run on Options' cookies for video sites (cheap when they didn't change)
-/// and on Use my yt-dlp config file, and every video started on Embed chapters (#827).
+/// and on Use my yt-dlp config file, every video started on Embed chapters (#827) and every
+/// sound on its cover (#1962), and the sound language chosen in Options (#1961).
 pub fn share_video_settings(s: &Settings) {
     mdm_tools::proc::set_browser_cookies(s.video_cookies());
     mdm_tools::proc::set_user_config(s.ytdlp_config);
     mdm_tools::video::set_chapters(s.video_chapters);
     mdm_tools::video::set_split_chapters(s.video_split_chapters);
+    mdm_tools::video::set_cover(s.video_cover);
+    // Shared at every frame: written only when it changed.
+    if *SOUND_LANGUAGE.read().unwrap_or_else(|e| e.into_inner()) != s.video_sound_language {
+        *SOUND_LANGUAGE.write().unwrap_or_else(|e| e.into_inner()) = s.video_sound_language.clone();
+    }
+}
+
+/// Options' sound language for videos (#1961), as `share_video_settings` last shared it.
+static SOUND_LANGUAGE: std::sync::RwLock<String> = std::sync::RwLock::new(String::new());
+
+/// The sound language videos come in when they have several (#1961, Options → Regional): a
+/// language's code, or none for each video's original.
+pub fn sound_language() -> Option<String> {
+    let l = SOUND_LANGUAGE.read().unwrap_or_else(|e| e.into_inner());
+    mdm_tools::resolve::language_code(&l)
 }
 
 /// The network adapter MDM's connections go through now (#35).
