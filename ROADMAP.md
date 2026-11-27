@@ -569,6 +569,12 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 Everything below ships together, in version 0.6.0, the next release.
 
+- ✅ More file types in the built-in categories: apps and installers (APK, IPA, AppImage, DEB,
+  RPM, Flatpak, Snap, MSIX, DMG, PKG…) in Programs, disc and disk images (ISO, IMG, VHD, VMDK…)
+  and more archives in Compressed, e-books, OpenDocument files and spreadsheets in Documents,
+  OPUS, FLAC, M4B and AIFF in Music, M2TS and MTS in Video; a list you edited stays yours
+  ([#1725](https://github.com/anefzaoui/misterdownloadmanager/issues/1725); thanks to
+  [@twistedwolfyt00](https://github.com/twistedwolfyt00))
 - ✅ Site rules give a site a proxy: **No proxy** (straight to the site) or one of its own
   (`host:port`, `socks5://…`) with its login, kept with MDM's other passwords; a download's own
   proxy first, then the first rule that names the site and sets one, then Options. Video and

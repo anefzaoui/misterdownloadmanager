@@ -281,21 +281,54 @@ impl Category {
         self.shipped_extensions()
     }
 
-    /// A built-in category's file types as shipped (the user's: theirs).
+    /// A built-in category's file types as shipped (the user's: theirs). IDM's lists first, then
+    /// the files people download today that IDM's leave to General (#1725): app packages and
+    /// installers of every system, disc and disk images, newer archives, e-books, OpenDocument
+    /// and spreadsheets, lossless and Opus audio, camcorder video. A list the user edited is
+    /// theirs (`BuiltinEdit::types`) and gains none of them; an untouched one has no edit, so it
+    /// follows this list. Each list: IDM's types, then #1725's (from `tar`, `xls`, `flac`, `msix`
+    /// and `m2ts` on).
     fn shipped_extensions(self) -> Vec<String> {
         let fixed: &[&str] = match self {
             Category::General | Category::Torrents => &[],
             Category::Compressed => &[
                 "zip", "rar", "r0*", "r1*", "arj", "gz", "sit", "sitx", "sea", "ace", "bz2", "7z",
+                "tar", "xz", "zst", "lz", "lzma", "lz4", "tgz", "tbz2", "txz", "cab", "iso", "img",
+                "vhd", "vhdx", "vmdk", "qcow2", "wim", "esd",
             ],
-            Category::Documents => &["doc", "pdf", "ppt", "pps", "docx", "pptx"],
+            Category::Documents => &[
+                "doc", "pdf", "ppt", "pps", "docx", "pptx", "xls", "xlsx", "odt", "ods", "odp",
+                "csv", "md", "epub", "mobi", "azw3", "djvu",
+            ],
             Category::Music => &[
-                "mp3", "wav", "wma", "mpa", "ram", "ra", "aac", "aif", "m4a", "tsa",
+                "mp3", "wav", "wma", "mpa", "ram", "ra", "aac", "aif", "m4a", "tsa", "flac",
+                "opus", "aiff", "m4b",
             ],
-            Category::Programs => &["exe", "msi"],
+            Category::Programs => &[
+                "exe",
+                "msi",
+                "msix",
+                "msixbundle",
+                "appx",
+                "appxbundle",
+                "apk",
+                "apks",
+                "xapk",
+                "aab",
+                "ipa",
+                "appimage",
+                "deb",
+                "rpm",
+                "flatpak",
+                "snap",
+                "dmg",
+                "pkg",
+                "run",
+                "jar",
+            ],
             Category::Video => &[
                 "avi", "mpg", "mpe", "mpeg", "asf", "wmv", "mov", "qt", "rm", "mp4", "flv", "m4v",
-                "webm", "ogv", "ogg", "mkv", "ts", "tsv",
+                "webm", "ogv", "ogg", "mkv", "ts", "tsv", "m2ts", "mts",
             ],
             Category::Custom(id) => {
                 return custom(id)

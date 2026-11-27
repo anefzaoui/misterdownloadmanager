@@ -70,13 +70,13 @@ The pane on the left has four branches:
 - **Finished** — complete downloads, by category.
 - **Queues** — each queue; select one to see only its downloads.
 
-Each download falls into a category by its file type: **General**, **Compressed**, **Documents**, **Music**, **Programs** or **Video**. Torrents have their own **Torrents** category. Each category has its own folder, by default inside your Downloads folder (`Downloads\Compressed`, `Downloads\Video` and so on; General uses `Downloads` itself).
+Each download falls into a category by its file type: **General**, **Compressed**, **Documents**, **Music**, **Programs** or **Video**. Torrents have their own **Torrents** category. **Programs** takes programs, installers and app packages (EXE, MSI, APK, IPA, DMG, PKG, DEB, RPM, AppImage, MSIX…), **Compressed** archives and disc images (ZIP, RAR, 7Z, TAR, XZ, ISO, IMG, VHD…), **Documents** text documents, spreadsheets and e-books (PDF, DOCX, XLSX, ODT, EPUB, MOBI…), **Music** audio (MP3, FLAC, OPUS, M4A…) and **Video** videos (MP4, MKV, WEBM…); every other file goes to General. Your own categories come before the built-in ones. Each category has its own folder, by default inside your Downloads folder (`Downloads\Compressed`, `Downloads\Video` and so on; General uses `Downloads` itself).
 
 Right-click a category for:
 
 - **Browse** — open its folder in Explorer.
 - **Properties** — change its name, its file types and its folder. General and Torrents only change their folder. A renamed category keeps its folder; a built-in one keeps its name in your language until you rename it.
-- **Add category** — make your own, for example **Books** for `EPUB MOBI`. Give it a name, the file types (separated by spaces, `*` allowed) and a folder.
+- **Add category** — make your own, for example **Books** for `EPUB MOBI` (they then go to Books, not Documents). Give it a name, the file types (separated by spaces, `*` allowed) and a folder.
 - **Delete** — remove a category, your own or a built-in one (not General or Torrents). MDM asks what happens to its downloads: **Move its downloads to General**, or **Remove its downloads from the list** (a download that is running moves to General instead). Their files stay where they are either way. From then on, files of its types go to another category that has them, or to General.
 
 ![A category's properties: its name, file types and folder](images/help/category-properties.webp)

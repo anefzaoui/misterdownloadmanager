@@ -548,12 +548,12 @@ mod tests {
         assert_eq!(cat.folder(downloads), Path::new(r"D:\Library"));
         assert_eq!(
             Category::of("x.mobi"),
-            Category::General,
-            "MOBI was taken off"
+            Category::Documents,
+            "MOBI was taken off: the built-in Documents has it (#1725)"
         );
         let mut items: Vec<crate::model::Item> = Vec::new();
         delete(&mut s, cat, &mut items);
-        assert_eq!(Category::of("novel.epub"), Category::General);
+        assert_eq!(Category::of("novel.epub"), Category::Documents);
         crate::model::set_custom(&[]);
     }
 
@@ -625,7 +625,7 @@ mod tests {
         same("as shipped");
         assert_eq!(Category::of("a.ZIP"), Category::Compressed);
         assert_eq!(Category::of("movie.R15"), Category::Compressed);
-        assert_eq!(Category::of("novel.epub"), Category::General);
+        assert_eq!(Category::of("novel.epub"), Category::Documents);
 
         let changes = crate::model::categories_changed();
         let custom = |id: u32, name: &str, types: &str| CustomCategory {
@@ -679,11 +679,147 @@ mod tests {
         crate::model::set_builtin(&[]);
         same("as shipped again");
         assert_eq!(Category::of("film.mkv"), Category::Video);
-        assert_eq!(Category::of("novel.epub"), Category::General);
+        assert_eq!(Category::of("novel.epub"), Category::Documents);
         // The same lists again change nothing.
         let changes = crate::model::categories_changed();
         crate::model::set_custom(&[]);
         crate::model::set_builtin(&[]);
         assert_eq!(crate::model::categories_changed(), changes);
+    }
+
+    /// #1725: the files people download today that IDM's lists leave to General go to a
+    /// built-in category as shipped, each type in one category only.
+    #[test]
+    fn todays_downloads_have_a_built_in_category() {
+        let _turn = registry();
+        crate::model::set_custom(&[]);
+        crate::model::set_builtin(&[]);
+        let by_type: Vec<(Category, &[&str])> = vec![
+            (
+                Category::Programs,
+                &[
+                    "exe",
+                    "msi",
+                    "apk",
+                    "apks",
+                    "xapk",
+                    "aab",
+                    "ipa",
+                    "appimage",
+                    "deb",
+                    "rpm",
+                    "flatpak",
+                    "snap",
+                    "msix",
+                    "msixbundle",
+                    "appx",
+                    "appxbundle",
+                    "dmg",
+                    "pkg",
+                    "run",
+                    "jar",
+                ],
+            ),
+            (
+                Category::Compressed,
+                &[
+                    "zip", "7z", "tar", "iso", "img", "vhd", "vhdx", "vmdk", "qcow2", "xz", "zst",
+                    "lz", "lzma", "lz4", "tgz", "tbz2", "txz", "cab", "wim", "esd",
+                ],
+            ),
+            (
+                Category::Documents,
+                &[
+                    "pdf", "docx", "xls", "xlsx", "epub", "mobi", "azw3", "djvu", "odt", "ods",
+                    "odp", "md", "csv",
+                ],
+            ),
+            (
+                Category::Video,
+                &["mp4", "mkv", "webm", "m2ts", "mts", "ts"],
+            ),
+            (Category::Music, &["mp3", "opus", "flac", "m4b", "aiff"]),
+        ];
+        for (cat, types) in by_type {
+            for t in types {
+                assert_eq!(Category::of(&format!("file.{t}")), cat, "{t}");
+                let upper = t.to_ascii_uppercase();
+                assert_eq!(Category::of(&format!("file.{upper}")), cat, "{upper}");
+            }
+        }
+        // A page, a script, a picture: still General.
+        for name in ["index.html", "notes.txt", "photo.jpg", "a.png", "x.json"] {
+            assert_eq!(Category::of(name), Category::General, "{name}");
+        }
+        // No type in two built-in categories (the first would take it from the other).
+        let mut seen: Vec<(String, Category)> = Vec::new();
+        for c in Category::BUILT_IN {
+            for t in c.shipped_types_text().split(' ').filter(|t| !t.is_empty()) {
+                if let Some((_, other)) = seen.iter().find(|(s, _)| s == t) {
+                    panic!("{t} in {other:?} and {c:?}");
+                }
+                seen.push((t.to_owned(), c));
+            }
+        }
+    }
+
+    /// #1725: a built-in category whose types the user never changed (no edit saved) takes the
+    /// new ones at once; one they edited keeps their list, until Restore brings today's back.
+    #[test]
+    fn an_edited_list_stays_and_an_untouched_one_gains_the_new_types() {
+        let _turn = registry();
+        // Settings as an earlier version saved them: Compressed retyped, Programs renamed only,
+        // Music untouched.
+        let mut s: Settings = serde_json::from_str(
+            r#"{"builtin_categories":[
+                {"category":"Compressed","types":"ZIP RAR 7Z"},
+                {"category":"Programs","name":"Apps"}
+            ]}"#,
+        )
+        .unwrap();
+        s.publish_categories();
+        assert_eq!(
+            Category::Compressed.types_text(),
+            "ZIP RAR 7Z",
+            "the user's list"
+        );
+        assert_eq!(
+            Category::of("disk.iso"),
+            Category::General,
+            "not added to theirs"
+        );
+        assert_eq!(Category::of("a.7z"), Category::Compressed);
+        assert_eq!(
+            Category::of("app.apk"),
+            Category::Programs,
+            "renamed, types as shipped"
+        );
+        assert_eq!(Category::Programs.label(), "Apps");
+        assert!(Category::Programs.types_text().contains("APK"));
+        assert_eq!(Category::of("song.flac"), Category::Music);
+        // Saving Programs again unchanged keeps no types: it goes on following the shipped list.
+        let downloads = Path::new(r"C:\d");
+        let shipped = Category::Programs.shipped_types_text();
+        apply(
+            &mut s,
+            edit(Category::Programs, "Apps", &shipped, ""),
+            downloads,
+        );
+        let programs = s
+            .builtin_categories
+            .iter()
+            .find(|e| e.category == Category::Programs)
+            .unwrap();
+        assert!(programs.types.is_none(), "{programs:?}");
+        // Restore: today's lists for every built-in category.
+        restore(&mut s);
+        assert_eq!(Category::of("disk.iso"), Category::Compressed);
+        assert_eq!(
+            Category::Compressed.types_text(),
+            Category::Compressed.shipped_types_text()
+        );
+        assert!(s.builtin_categories.is_empty());
+        s = Settings::default();
+        s.publish_categories();
     }
 }

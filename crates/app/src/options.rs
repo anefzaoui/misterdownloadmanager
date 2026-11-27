@@ -1345,7 +1345,13 @@ impl OptionsDialog {
         ));
         winui::text_in_window(ui, &p, o.x + 31.0, o.y + 178.0, &line, LIGHT_TEXT());
         let types = cat.types_text();
-        readonly(ui, r(o, 31.0, 185.0, 362.0, 23.0), &types);
+        // A list of file types (`EXE MSI APK...`) reads left to right in every language, cut
+        // with its "..." at its end; General's and Torrents' sentence follows the interface.
+        if matches!(cat, Category::General | Category::Torrents) {
+            readonly(ui, r(o, 31.0, 185.0, 362.0, 23.0), &types);
+        } else {
+            readonly_ltr(ui, r(o, 31.0, 185.0, 362.0, 23.0), &types);
+        }
         let dir_line = with_category(crate::i18n::t(
             "Default download directory for \"{category}\" category",
         ));
