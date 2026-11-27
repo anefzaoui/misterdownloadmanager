@@ -13,7 +13,7 @@ computer on your network), the browser extension pointed at it, or its command l
 
 ## With Docker
 
-From the release after 0.5.2, pull the published image from GitHub Container Registry (x86-64
+From version 0.6.0, pull the published image from GitHub Container Registry (x86-64
 only for now):
 
 ```sh

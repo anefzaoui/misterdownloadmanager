@@ -5,8 +5,11 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ## [Unreleased]
 
+These changes come in version 0.6.0.
+
 ### Added
 
+- **Browser logos beside their names:** the **Catch downloads from your browser** window, the first start's browser step and **Options → General**'s browser list show each browser's own logo before its name (Chrome, Edge, Brave, Opera, Opera GX, Vivaldi, Firefox, Safari, Chromium, Yandex, Zen, LibreWolf, Floorp, Waterfox, Thorium, Helium and more), sharp at every display scale. A browser without one gets a plain globe. The logos are trademarks of their owners, credited in **Help → About → Licenses and credits**.
 - **Customizable Download video button scale, free placement, and full-screen menu toggle** ([#1923](https://github.com/anefzaoui/misterdownloadmanager/issues/1923)): **Options → General → Download panels → Edit...** now has a **80%**, **100%** or **120%** scale beside **Button size** (opened from the video button's **More options** `▼` menu via **Button settings...** too), scaling the button in pages already open within a few seconds without a reload. Dragging the button inside the player keeps any interior spot more than 20 pixels from an edge instead of snapping back to an edge (edges, corners, and outside-the-player spots still snap when dragged close to them). **Hide the download button in full screen** is also available directly in the button's **More options** menu alongside the popup setting, and full-screen hiding now reaches embedded cross-origin video frames when the page enters full screen without triggering on browser F11.
 - **One folder for every download** ([#1973](https://github.com/anefzaoui/misterdownloadmanager/issues/1973), asked in [#716](https://github.com/anefzaoui/misterdownloadmanager/issues/716)): **Options → Save to → Save every download in "General" category's folder** sends every new download to General's folder, whatever its category, from the browser, **Add URL**, **Batch download**, Link grabber, queues, the command line, videos and torrents alike. The categories stay, to sort and filter the list, and each keeps its own folder for when the box is unticked again. A single download can still go elsewhere: change its folder in the window that starts it (with **Remember this path**, General's folder changes). Off by default, so nothing changes for anyone who doesn't tick it, and downloads already in the list stay where they are.
 - **Hugging Face models and datasets, and GitHub releases, as one package** ([#1772](https://github.com/anefzaoui/misterdownloadmanager/issues/1772)): paste the address of a model or dataset on Hugging Face (`huggingface.co/<owner>/<name>`, `huggingface.co/datasets/…`), of a folder in one at a branch, tag or commit (`…/tree/<revision>/<folder>`), or of a GitHub release or tag (`github.com/<owner>/<repo>/releases/tag/<tag>`, `…/releases/latest`), in **Add URL** or in Link grabber, and Link grabber lists every file in it, each with its size and its folder, unticked. Tick what you need and it downloads as one group: the files go under your download folder in a folder named after the address (`org\tiny\onnx\model.onnx`, `owner\repo\v1.0\…`), the repository's folders kept. Where the site publishes a digest, Hugging Face's SHA-256 of a large file and GitHub's of a release file, the finished file is checked against it, and one that doesn't match says so instead of passing as finished. A repository's files are asked at the commit its branch pointed to when it was listed, so two versions never mix. Gated Hugging Face repositories download with your access token, saved in **Options → Sites Logins** for `huggingface.co` (the token as the password): kept in the system's keychain with your other passwords and sent only to Hugging Face. The files come straight from Hugging Face's and GitHub's own servers, through MDM's connections, never through a mirror. When a site's limit of requests without an account is reached, the address's row says **Try again later** and for how long. What the sites' lists say is checked first: a file whose path would lead out of its folder is left out, and counted on the window's **Source** line. See [Models, datasets and releases](docs/link-grabber.md#models-datasets-and-releases).
@@ -126,6 +129,30 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 - Torrents: a torrent made from a folder (`torrent-create`) lists its files by name, so the same
   files make the same torrent on every computer. The order was the file system's, which differs
   between computers, and so did the torrent and which of its files share a piece.
+- Torrents: fixes from the BitTorrent engine's (librqbit's) authors and contributors, ahead of
+  its next release:
+  - pieces are announced to peers as they finish, also to a peer that already has them (some
+    trackers' anti-leech tools banned clients that didn't);
+  - trackers are asked again at the interval they ask for, never more often than their minimum
+    and never more than every 5 seconds (MDM asked at their minimum interval, more often than
+    they wanted);
+  - one tracker that fails no longer stops the torrent finding peers from the others;
+  - a paused torrent keeps every finished piece: the ones since its last save were downloaded
+    again after MDM restarted;
+  - torrents with UTF-8 name fields (`name.utf-8`, `path.utf-8`, as BitComet and other programs
+    write them beside names in another encoding) get their correct file names, and a name already in
+    UTF-8 is no longer mangled by a wrong guess of its encoding. A torrent like that which was
+    downloading before this version starts those files again under their correct names; the
+    files with the old names stay in the folder;
+  - command line, on Windows: `torrent-get` no longer fails at the start when another program
+    (a player, an antivirus) has one of the torrent's files open; it reads that file, and fails
+    only if it has to write to it;
+  - a file's progress counts every piece: a file after an empty one in the same piece never
+    reached 100 %;
+  - a torrent paused and started again quickly keeps finding peers on the local network;
+  - after a change in **Torrent settings**, a peer that connects and says nothing no longer
+    keeps the old session (and its port) running for up to 10 seconds;
+  - several torrents added at once no longer wait for each other.
 - Torrents: the engine checks what it's sent more carefully.
 - Extracting: 7z and RAR archives are checked more carefully.
 - Archive test: archives are checked more carefully.

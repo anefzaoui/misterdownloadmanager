@@ -30,7 +30,7 @@ in place and restarts, for the setup and both zips.
 
 ## Windows on ARM and 32-bit Windows
 
-From the version after 0.5.2, the three files come for two more kinds of PC, with the processor
+From version 0.6.0, the three files come for two more kinds of PC, with the processor
 in their names: **Windows on ARM** (`setup-arm64.exe`, `portable-arm64.zip`, `arm64.zip`), for
 PCs with a Snapdragon or another ARM processor, which then run MDM without Windows translating it;
 and **32-bit Windows 10** (`setup-x86.exe`, `portable-x86.zip`, `x86.zip`). **Update now** keeps
@@ -49,7 +49,7 @@ stick](guide-usb-stick.md) shows the set-up.
 
 ## Mac and Linux: what you get
 
-For Linux on x86-64 (and ARM64 from the version after 0.5.2): an AppImage for most
+For Linux on x86-64 (and ARM64 from version 0.6.0): an AppImage for most
 distributions, a `.deb` for Ubuntu, Debian, Mint and Pop!_OS, an `.rpm` for Fedora, openSUSE and
 RHEL, and a `.tar.gz` of the plain programs. For macOS 11 and later, on Apple Silicon or Intel,
 `.dmg` files still marked `-experimental`. Please [tell us how it went](https://github.com/anefzaoui/misterdownloadmanager/issues/new/choose), good

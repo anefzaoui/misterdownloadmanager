@@ -5594,6 +5594,22 @@ pub fn auto_repeat(ui: &Ui, resp: &Response) -> bool {
     fire
 }
 
+/// A browser's logo before its name (the extension's window, the first start's setup, Options'
+/// browser list), in English rect `rc` (mirrored in a right-to-left interface): the browser
+/// `name` (as MDM lists it) and, when known, its `program` tell which (browsericons.rs). One MDM
+/// has none for gets a neutral globe in `ink`, never another browser's logo.
+pub fn browser_icon(
+    ui: &Ui,
+    p: &Painter,
+    name: &str,
+    program: Option<&std::path::Path>,
+    rc: Rect,
+    ink: Color32,
+) {
+    let browser = crate::browsericons::Browser::of(name, program);
+    crate::browsericons::paint(ui, p, browser, rect(rc), ink);
+}
+
 /// What a control is for screen readers (Narrator, NVDA through AccessKit): its role, its name
 /// (the full translated label, "&" taken out), whether it can be used, and for a check box,
 /// radio button, tab or list row whether it is on. Our controls are painted by hand, so egui

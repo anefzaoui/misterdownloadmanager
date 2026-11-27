@@ -47,7 +47,7 @@ and no setting changes it. To hide it, use a VPN for the whole computer.
 
 ## More peers, from a public tracker list
 
-<!--@coming 0.5.3-->
+<!--@coming 0.6.0-->
 
 An old torrent whose trackers went quiet can sit at zero peers. Turn on **Add the trackers of
 this public list to public torrents** in **Tasks → Torrent settings...**, and your public

@@ -39,6 +39,8 @@ If some of the torrent's files are already in the folder, MDM asks before using 
 
 The chosen layout is kept when the torrent is paused or MDM restarts. A multi-file torrent saved directly in **Save to** shares that directory: **Move/Rename** and folder renaming on completion are disabled for it so they cannot move unrelated files. Deleting the torrent's files leaves unrelated files and the shared destination folder in place. The layout option applies to direct BitTorrent downloads; torrents downloaded through a debrid account keep their existing layout.
 
+Some programs (BitComet, for one) write a torrent's names in another encoding and add a UTF-8 copy of them (`name.utf-8`, `path.utf-8`); MDM shows and saves the files under the UTF-8 names. A torrent like that which was downloading in an earlier version starts those files again under their correct names, and leaves the files with the old names in the folder.
+
 MDM refuses a torrent with file names your system can't write safely, says which name, and writes nothing. What others can see, the network switches in **Torrent settings**, blocklists and proxies: [Torrents and your security](torrent-security.md).
 
 ## While it downloads

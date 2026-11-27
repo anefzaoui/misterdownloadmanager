@@ -870,6 +870,10 @@
    "source": "<g1>On Linux</g1>, Chrome-family browsers keep the key to their cookies in the system's keyring (GNOME Keyring, KWallet); yt-dlp asks it, so it must be unlocked.",
    "text": "<g1>在 Linux 上</g1>，Chrome 系列浏览器将其 Cookie 密钥保存在系统的密钥环中（GNOME Keyring、KWallet）；yt-dlp 会请求它，因此密钥环必须处于解锁状态。"
   },
+  "0b208bcb1380dcda": {
+   "source": "MDM runs on 64-bit Linux with a desktop session. It is tested on Ubuntu 24.04, Debian 12 and Fedora, with GNOME, KDE Plasma, Xfce and Cinnamon, on X11 and in Wayland sessions. Pick one of these files (up to version 0.2.4, their names end in <x1/>, as in <x2/>). From version 0.6.0, each also comes for 64-bit ARM computers, with <x3/> in place of <x4/> (<x5/>); they are built and tested on GitHub's ARM machines. On ARM, MDM doesn't download gallery-dl itself (its author builds none for it): install it with your system's packages or pip.",
+   "text": "MDM 运行在带有桌面会话的 64 位 Linux 系统上。它已在 Ubuntu 24.04、Debian 12 和 Fedora 上，使用 GNOME、KDE Plasma、Xfce 和 Cinnamon 桌面环境，在 X11 和 Wayland 会话中进行了测试。请选择其中一个文件（0.2.4 版本及以前，其名称以 <x1/> 结尾，例如 <x2/>）。从 0.6.0 版本开始，每个版本也支持 64 位 ARM 计算机，名称中 <x4/> 的位置替换为 <x3/> (<x5/>)；它们在 GitHub 的 ARM 机器上构建和测试。在 ARM 上，MDM 不会自行下载 gallery-dl（其作者没有为其构建版本）：请通过系统软件包或 pip 安装它。"
+  },
   "0b2740fc08d56719": {
    "source": "A <x1/> from an issue:",
    "text": "来自问题的 <x1/>："
@@ -941,6 +945,10 @@
   "0bf05d42ffbd0dfa": {
    "source": "<g1>The DNS you choose.</g1> With a DNS other than the system's in <g2>Options → Connection → DNS</g2> (Cloudflare, Google, Quad9, AdGuard, NextDNS or your own), MDM asks it, over HTTPS, TLS or TCP, for the addresses of the servers it downloads from. That service sees those names and your IP address, under its own privacy terms.",
    "text": "<g1>您选择的DNS。</g1>如果在<g2>选项 → 连接 → DNS</g2>中选择系统默认DNS以外的DNS（Cloudflare、Google、Quad9、AdGuard、NextDNS或您自己的DNS），MDM会通过HTTPS、TLS或TCP向其请求下载服务器的地址。该服务会根据其自身的隐私条款查看这些名称和您的IP地址。"
+  },
+  "0bfe58d5a6061e7d": {
+   "source": "Open <g1>View → Language...</g1>. The same list as on the first start opens: every language by its flag, its own name and its English name. Type in <g2>Search</g2> to narrow the list, then double-click a language or select it and click <g3>OK</g3>. The window switches at once; there is nothing to restart.",
+   "text": "打开<g1>视图 → 语言...</g1>。会打开与首次启动时相同的列表：每种语言都带有其旗帜、本语种名称和英文名称。在<g2>搜索</g2>框中输入内容以筛选列表，然后双击一种语言或选中它并点击<g3>确定</g3>。窗口会立即切换；无需重启。"
   },
   "0c04a7480c3b5e9c": {
    "source": "The remote control is off until you turn it on. It answers only the devices you paired, each removable at once in Options, and listens only on the computer's private network addresses, never on one the internet can reach. Everything goes over HTTPS, and web pages can't use it.",
@@ -1057,6 +1065,10 @@
   "0dac0eca06d7747e": {
    "source": "<g1>pywal's <x2/></g1>, or any program's file in pywal's shape (wallust's pywal template).",
    "text": "<g1>pywal 的 <x2/></g1>，或任何符合 pywal 格式的程序文件（wallust 的 pywal 模板）。"
+  },
+  "0dacc2e40c7f2886": {
+   "source": "<g1>Remember this path for \"…\" category</g1> — tick it to make the folder you typed the category's folder from now on. With <g2>Save every download in \"General\" category's folder</g2> ticked in <g3>Options → Save to</g3>, every download starts in General's folder, and this box names General: the folder you typed becomes the one for every download.",
+   "text": "<g1>记住此路径用于“…”类别</g1> — 勾选此项，您输入的文件夹将成为该类别的默认文件夹。如果在<g3>选项 → 保存到</g3>中勾选了<g2>将所有下载保存到“常规”类别的文件夹</g2>，则所有下载都将开始于常规文件夹，此时此框将命名常规类别：您输入的文件夹将成为所有下载的默认文件夹。"
   },
   "0db8fa73ad59b887": {
    "source": "macOS <g1>11 and later</g1>",
@@ -1209,6 +1221,10 @@
   "1058e8be7cc50b7e": {
    "source": "High contrast",
    "text": "高对比度"
+  },
+  "105e2af4dcf1adc9": {
+   "source": "Last updated 2026-11-27",
+   "text": "最后更新：2026年11月27日"
   },
   "10825ce1e4e377bf": {
    "source": "Tasks → Import → From IDM export file",
@@ -1405,6 +1421,10 @@
   "12d5cecab885caa3": {
    "source": "a live stream still being recorded (<g1>Recording a live stream</g1>);",
    "text": "正在录制的直播流（<g1>正在录制直播流</g1>）；"
+  },
+  "12dd621d59ebfd7e": {
+   "source": "MDM asks the site's public API for the list of files and opens Link grabber with all of them in one package: each file with its size and the folder it is in, <g1>unticked</g1>, so you tick only what you need (the package's box ticks them all). Its <g2>Save to</g2> is the address's path under your download folder (<g3>Options → Save to</g3>), and each file keeps its folder inside it: <x4/> of <x5/> goes to <x6/>, a dataset's files under <x7/>, a release's under <x8/>. A folder of a repository keeps its place in it (<x9/>), so files you take later from another folder land beside it. <g10>Start</g10> or <g11>Add to queue</g11> adds them as one group, with one summary when the last is done.",
+   "text": "MDM 会向站点的公共 API 请求文件列表，并在链接抓取器中将所有文件作为一个包打开：每个文件都带有其大小和所在文件夹，<g1>未勾选</g1>，因此您只需勾选所需文件（包的复选框会勾选所有文件）。其<g2>保存到</g2>是您下载文件夹（<g3>选项 → 保存到</g3>）下地址的路径，每个文件都会在其中保留其文件夹：<x4/> 的 <x5/> 会保存到 <x6/>，数据集文件在 <x7/> 下，发布文件在 <x8/> 下。仓库的文件夹会保留其在仓库中的位置（<x9/>），因此您稍后从其他文件夹获取的文件会与其并列。<g10>开始</g10>或<g11>添加到队列</g11>会将它们作为一个组添加，当最后一个文件完成时会有一个摘要。"
   },
   "12ed54fb5407aa89": {
    "source": "The website has <x1/> and <x2/>, and every help page as Markdown, for AI tools.",
@@ -1866,6 +1886,10 @@
    "source": "Ctrl+Space",
    "text": "Ctrl+空格"
   },
+  "18ed20e992d45d9d": {
+   "source": "<g1>Coming with version 0.6.0</g1> <g2>It's in the source code now, not yet in the download (version 0.5.2).</g2>",
+   "text": "<g1>0.6.0 版即将推出</g1> <g2>主题功能已在源代码中，但尚未包含在当前下载版本 (0.5.2) 中。</g2>"
+  },
   "1909586657a6c8d0": {
    "source": "Flag",
    "text": "标志"
@@ -1889,6 +1913,10 @@
   "19686779e1123d73": {
    "source": "To open the page by the server's name (<x1/>), give MDM that name: <x2/> (several: separated by commas). Other names are refused, so that no web page can reach MDM through a name of its own.",
    "text": "要通过服务器名称（<x1/>）打开页面，请为 MDM 提供该名称：<x2/>（多个名称用逗号分隔）。其他名称将被拒绝，这样任何网页都无法通过其自己的名称访问 MDM。"
+  },
+  "196da1f2253e1052": {
+   "source": "<g1>Straight from the sites.</g1> Files come from Hugging Face's and GitHub's own servers, never through a mirror, through MDM's own connections, speed limits and proxy, like any download.",
+   "text": "<g1>直接来自站点。</g1> 文件来自 Hugging Face 和 GitHub 自己的服务器，绝不通过镜像，而是通过 MDM 自己的连接、速度限制和代理，就像任何下载一样。"
   },
   "197a78fedd5b9b66": {
    "source": "It isn't offered with <g1>Only a part</g1>: a part has no chapters.",
@@ -1918,6 +1946,10 @@
    "source": "What the stores count, and what people wrote in their own words and languages. Every quote is exact and links to where it was written.",
    "text": "商店统计数据，以及用户用自己的语言写下的真实评价。每条引用都精确无误，并链接到原文。"
   },
+  "19ab8e362b37c9c3": {
+   "source": "Install one, or download them all at once; Next leaves them for later.",
+   "text": "安装一个，或一次性下载所有；点击“下一步”可稍后处理。"
+  },
   "19af82a4564bc92c": {
    "source": "Downloads no longer fail with \"part file still in use\" on a busy computer.",
    "text": "在繁忙的电脑上，下载不再因“部分文件仍在占用”而失败。"
@@ -1941,6 +1973,10 @@
   "1a1c4d85605e18ae": {
    "source": "<g1>Alt+Enter</g1> always opens <g2>Properties</g2>.",
    "text": "按 <g1>Alt+Enter</g1> 始终会打开<g2>属性</g2>。"
+  },
+  "1a1dff89e0e39768": {
+   "source": "The windows are drawn with OpenGL (eframe's glow) or with the system's own graphics API through eframe's wgpu, with that one backend only: Direct3D 12 on Windows (the default there), Vulkan on Linux, Metal on macOS (choices there; OpenGL stays their default until real graphics cards have tried them, #206). View → Draw with picks one, from the next start. One code path does it on every system (<x1/>): when the chosen one can't start, the other one is tried, so the windows always open. A watched start with the system's API leaves a marker until its first frame is drawn: a start that ends before it (a crash inside the driver), one whose first frame doesn't come within 10 seconds (MDM then starts again with OpenGL), or a graphics card lost twice in 10 minutes is remembered with its reason, which the menu shows. A way that can't start within 10 minutes of a lost card isn't remembered: its driver may still be resetting (#1974: Direct3D 12 then finds only WARP), so the next start tries it again. With OpenGL, a window eframe can't paint (its context can't be made current on it, its frame can't be shown) is skipped and painted again 100 ms later; one whose paints keep failing for seconds is a lost device too (MDM starts again; twice in 10 minutes, OpenGL is remembered as failing on Windows). On Windows, a freeze or a crash whose report shows the window's or the crashed thread inside OpenGL's driver is remembered too, by the crash report's window (<x2/>), from the stack's modules (#847, #1659). The fork's eframe tells MDM through its viewport hooks (<x3/>, #1448).",
+   "text": "窗口通过 OpenGL (eframe 的 glow) 或通过 eframe 的 wgpu 使用系统自己的图形 API 绘制，且仅使用该后端：Windows 上的 Direct3D 12（默认），Linux 上的 Vulkan，macOS 上的 Metal（这些系统上的选择；OpenGL 仍是它们的默认设置，直到真正的显卡尝试过它们，#206）。视图 → 绘制方式 从下次启动开始选择一个。一个代码路径在每个系统上都这样做 (<x1/>)：当选定的一个无法启动时，会尝试另一个，因此窗口总能打开。使用系统 API 的受监控启动会在绘制第一帧之前留下标记：如果启动在此之前结束（驱动程序内部崩溃），如果第一帧在 10 秒内未出现（MDM 随后会使用 OpenGL 重新启动），或者显卡在 10 分钟内丢失两次，则会记住其原因，并在菜单中显示。如果一个方式在显卡丢失 10 分钟内无法启动，则不会被记住：其驱动程序可能仍在重置 (#1974：Direct3D 12 此时只会找到 WARP)，因此下次启动会再次尝试。对于 OpenGL，如果窗口 eframe 无法绘制（其上下文无法在其上设置为当前，其帧无法显示），则会跳过并在 100 毫秒后再次绘制；如果其绘制持续失败数秒，则也是设备丢失（MDM 重新启动；如果在 10 分钟内发生两次，则 OpenGL 在 Windows 上被记住为失败）。在 Windows 上，如果冻结或崩溃报告显示窗口或崩溃线程在 OpenGL 驱动程序内部，也会通过崩溃报告窗口 (<x2/>) 从堆栈模块中记住 (#847, #1659)。fork 的 eframe 通过其视口钩子 (<x3/>, #1448) 告知 MDM。"
   },
   "1a2a843c29753c86": {
    "source": "A greyed menu item",
@@ -2410,6 +2446,10 @@
    "source": "— implicit FTPS, port 990 unless the address gives another.",
    "text": "— 隐式 FTPS，默认使用端口 990，地址另有指定时除外。"
   },
+  "2082e4251623ff9a": {
+   "source": "Coming with version 0.6.0",
+   "text": "0.6.0 版即将推出"
+  },
   "20901417c69e606b": {
    "source": "Issues",
    "text": "问题"
@@ -2810,6 +2850,10 @@
    "source": "<g1>1</g1> of 10",
    "text": "<g1>1</g1>/10"
   },
+  "2562f2727d097aa3": {
+   "source": "Or one folder for all of them",
+   "text": "或将所有文件保存到同一文件夹"
+  },
   "257acee667e62714": {
    "source": "Which sites",
    "text": "支持的网站"
@@ -2913,6 +2957,10 @@
   "26ae5fbaf85f0fa2": {
    "source": "The portable copy of MDM runs from any folder, including a USB stick, without installing anything.",
    "text": "MDM 便携版可从任何文件夹运行，包括 U 盘，无需安装。"
+  },
+  "26b88fbdb888bcea": {
+   "source": "If the graphics card is reset while MDM runs (a driver update), MDM starts again by itself. Lost twice in 10 minutes, it goes back to OpenGL, and <g1>View → Draw with</g1> says why. If the card isn't back yet when MDM starts again, that start draws another way (OpenGL, or WARP), and the next start tries the card again.",
+   "text": "如果 MDM 运行时显卡被重置（驱动程序更新），MDM 会自行重新启动。如果在 10 分钟内两次丢失，它会回到 OpenGL，并且<g1>视图 → 绘制方式</g1>会说明原因。如果 MDM 重新启动时显卡尚未恢复，则该次启动会以另一种方式绘制（OpenGL 或 WARP），下次启动会再次尝试使用该显卡。"
   },
   "26e744828e520145": {
    "source": "The main window in the Breeze theme",
@@ -3022,10 +3070,6 @@
    "source": "Up to 128 connections per file, re-split as they go",
    "text": "每个文件最多 128 个连接，下载时可重新分配"
   },
-  "2826420ef85a1bcf": {
-   "source": "Open <g1>View → Language...</g1>. The same window as on the first start opens: every language by its flag, its own name and its English name. Type in <g2>Search</g2> to narrow the list, then double-click a language or select it and click <g3>OK</g3>. The window switches at once; there is nothing to restart.",
-   "text": "打开<g1>视图 → 语言...</g1>。打开的窗口与首次启动时相同，其中每种语言都显示国旗、该语言的名称和英文名称。在<g2>搜索</g2>中输入内容以缩小列表范围，然后双击一种语言，或选择该语言并点击<g3>确定</g3>。界面会立即切换，无需重新启动。"
-  },
   "282685fe5e7ae3c6": {
    "source": "<g1>Click'n'Load</g1> buttons on link sites, once you turn it on. See <g2>Click'n'Load</g2>.",
    "text": "启用后，链接网站上的<g1>Click'n'Load</g1>按钮即可使用。请参阅<g2>Click'n'Load</g2>。"
@@ -3102,10 +3146,6 @@
    "source": "Requests",
    "text": "请求数"
   },
-  "2909bef12c6c1a15": {
-   "source": "Left empty, <g1>Save to</g1> puts each file in its category's folder (<g2>Options → Save to</g2>). To put every file of the batch in one folder, type it there or choose it with <g3>...</g3>. Then click <g4>OK</g4>.",
-   "text": "如果留空，<g1>保存到</g1>会将每个文件放入其类别文件夹（<g2>选项 → 保存到</g2>）。要将批处理中的所有文件放入一个文件夹，请在此处输入或使用<g3>...</g3>选择。然后点击<g4>确定</g4>。"
-  },
   "292621fe40d7beca": {
    "source": "Every video starts ticked. Untick the ones you don't want, or use <g1>Select all</g1> and <g2>Select none</g2>. Private and deleted videos are greyed out and can't be ticked.",
    "text": "每个视频默认都已勾选。取消勾选不需要的视频，或使用<g1>全选</g1>和<g2>不选</g2>。私人和已删除的视频会显示为灰色，无法勾选。"
@@ -3149,6 +3189,10 @@
   "2a014824bb4f981c": {
    "source": "Disabled text, the one grey of every greyed control and label",
    "text": "禁用文本，所有灰色控件和标签的灰色"
+  },
+  "2a0f36d71bedb1bb": {
+   "source": "<g1>A GitHub release</g1>: <x2/>, or <x3/> for the newest one. A tag without a release lists its source code.",
+   "text": "<g1>GitHub 发布</g1>：<x2/>，或 <x3/> 表示最新发布。没有发布的标签会列出其源代码。"
   },
   "2a1c06f26ea84eee": {
    "source": "<g1>pywal itself:</g1> once <x2/> has run, <g3>View → Theme</g3> lists <g4>pywal</g4>, read straight from where pywal writes its colours: <x5/> (on Windows <x6/>, where winwal and pywal write it; <x7/> or <x8/> when you set them). Pick it and MDM follows your wallpaper: each time <x9/> writes new colours, MDM takes them within two seconds. It looks only at the file's date and size, every two seconds, and only while pywal is the theme. A copy added with <g10>Add a theme file…</g10> keeps the colours it had.",
@@ -3245,10 +3289,6 @@
   "2b1f05dd303b4a14": {
    "source": "<g1>Resume capability</g1> — <g2>Yes</g2> if the server lets MDM continue the download later, <g3>No</g3> if it doesn't.",
    "text": "<g1>恢复功能</g1> — 如果服务器允许 MDM 稍后继续下载，则为<g2>是</g2>；如果不允许，则为<g3>否</g3>。"
-  },
-  "2b32b47b6f8a0433": {
-   "source": "<g1>Remember this path for \"…\" category</g1> — tick it to make the folder you typed the category's folder from now on.",
-   "text": "<g1>记住“…”类别的此路径</g1> — 勾选此项可将您输入的文件夹设为该类别从今往后的文件夹。"
   },
   "2b3813b1923fc5e3": {
    "source": "The list covers every display language of Windows 11, including both Chinese scripts, Spanish for Spain and Mexico, French for France and Canada, Portuguese for Portugal and Brazil, and Serbian in Cyrillic and Latin. The <g1>languages page</g1> lists them all.",
@@ -3701,6 +3741,10 @@
   "3119a32ef52a6c93": {
    "source": "A window's headline (Tahoma Bold): the browser extension's, the helpers'",
    "text": "窗口标题（Tahoma Bold）：浏览器扩展、辅助工具的标题"
+  },
+  "311b27709d4b92f5": {
+   "source": "<g1>A model's, a dataset's or a release's files</g1> form one package, whose <g2>Save to</g2> keeps their folders (see <g3>Models, datasets and releases</g3>).",
+   "text": "<g1>模型、数据集或发布的文件</g1>构成一个包，其<g2>保存到</g2>会保留它们的文件夹（请参阅<g3>模型、数据集和发布</g3>）。"
   },
   "313a2ae6414b54cf": {
    "source": "Give Link grabber a folder's address, the way you give it a page's: paste it with <g1>Ctrl+V</g1>, copy it for <g2>Tasks → Add batch download from clipboard</g2>, put it in a list for <g3>Tasks → Import</g3>, or drop it on the download list.",
@@ -4174,6 +4218,10 @@
    "source": "Save To",
    "text": "保存到"
   },
+  "3846da69167664ac": {
+   "source": "<g1>Checked against the site's digest.</g1> Hugging Face publishes a SHA-256 for each large file, GitHub for each release file. MDM checks the finished file against it, as <g2>Verify checksum</g2> does; a file that doesn't match stays unfinished and says so (<g3>the file's SHA-256 checksum doesn't match</g3>), and <g4>Redownload</g4> fetches it again. Small files kept in the repository itself, and a release's source code, have no digest of their own to check.",
+   "text": "<g1>对照站点摘要进行校验。</g1> Hugging Face 为每个大文件发布 SHA-256，GitHub 为每个发布文件发布。MDM 会对照其检查完成的文件，就像<g2>验证校验和</g2>所做的那样；不匹配的文件会保持未完成状态并显示（<g3>文件的 SHA-256 校验和不匹配</g3>），<g4>重新下载</g4>会再次获取它。仓库中保存的小文件和发布的源代码没有自己的摘要可供检查。"
+  },
   "385890444f5eb85e": {
    "source": "Decide exactly how MDM reaches the internet, and see where your files come from.",
    "text": "精确控制 MDM 如何连接互联网，并查看文件来源。"
@@ -4534,6 +4582,10 @@
    "source": "<g1>Available on</g1><g2>The official places first</g2>",
    "text": "<g1>获取途径</g1><g2>官方渠道优先</g2>"
   },
+  "3d219d727371d3f9": {
+   "source": "Windows 10 and 11 is the main platform, on 64-bit PCs (x64); from version 0.6.0, on Windows on ARM PCs and 32-bit Windows 10 too, each with files of its own. Linux is supported too, with an AppImage, a .deb, an .rpm and a .tar.gz in every release: since version 0.5.0 it isn't experimental any more, and it is checked on GNOME, KDE Plasma, Xfce and Cinnamon, in Wayland sessions too, and its packages in clean Ubuntu, Debian and Fedora systems. Still to come there: the Flatpak Firefox isn't checked yet, and screen readers (Orca) don't read MDM's windows yet. macOS builds (.dmg) come with every release too, and stay experimental. See <g1>Windows, Mac and Linux</g1> and <g2>Download</g2>.",
+   "text": "Windows 10 和 11 是主要平台，支持 64 位电脑 (x64)；从 0.6.0 版本开始，也支持基于 ARM 的 Windows 电脑和 32 位 Windows 10，每个版本都有各自的文件。Linux 也受支持，每个版本都提供 AppImage、.deb、.rpm 和 .tar.gz 文件：从 0.5.0 版本开始，它不再是实验性的，并且已在 GNOME、KDE Plasma、Xfce 和 Cinnamon 环境中（包括 Wayland 会话）以及纯净的 Ubuntu、Debian 和 Fedora 系统中进行过测试。尚待完善的功能包括：Flatpak Firefox 尚未测试，屏幕阅读器 (Orca) 尚无法读取 MDM 的窗口。macOS 版本 (.dmg) 也随每个版本发布，但仍处于实验阶段。请参阅<g1>Windows、Mac 和 Linux</g1>以及<g2>下载</g2>。"
+  },
   "3d4a4f2d1b19754e": {
    "source": "Can I move my downloads over from IDM?",
    "text": "我可以将 IDM 中的下载任务迁移过来吗？"
@@ -4622,6 +4674,10 @@
    "source": "Yes. When a video has subtitles, the Subtitles list in the video window offers them: the uploader's languages and the site's automatic captions. They're saved beside the video as an .srt file, or put inside it with Put them into the video. See Subtitles.",
    "text": "是。如果视频有字幕，视频窗口中的“字幕”列表会提供它们：上传者提供的语言和网站的自动字幕。它们会作为 .srt 文件保存在视频旁边，或者通过“将它们放入视频”选项嵌入视频中。请参阅“字幕”。"
   },
+  "3e63a6af144ff571": {
+   "source": "From version 0.6.0, the three files come for two more kinds of PC, with the processor in their names: <g1>Windows on ARM</g1> (<x2/>, <x3/>, <x4/>), for PCs with a Snapdragon or another ARM processor, which then run MDM without Windows translating it; and <g5>32-bit Windows 10</g5> (<x6/>, <x7/>, <x8/>). <g9>Update now</g9> keeps each copy on its own processor's files. MDM downloads yt-dlp's own build for each, and ffmpeg's for Windows on ARM; no ffmpeg is built for 32-bit Windows that MDM can check, so there you choose your own in <g10>Helpers...</g10> for the best video qualities. Linux gets its four files for 64-bit ARM computers too (<x11/>).",
+   "text": "从 0.6.0 版本开始，MDM 为另外两种 PC 提供了三个文件，文件名中包含处理器类型：<g1>ARM 版 Windows</g1>（<x2/>、<x3/>、<x4/>），适用于搭载骁龙或其他 ARM 处理器的 PC，MDM 可直接运行而无需 Windows 翻译；以及<g5>32 位 Windows 10</g5>（<x6/>、<x7/>、<x8/>）。<g9>立即更新</g9> 会为每个副本保留其对应处理器的文件。MDM 会下载适用于 ARM 版 Windows 的 yt-dlp 和 ffmpeg 构建版本；MDM 无法检查 32 位 Windows 的 ffmpeg 构建版本，因此您可以在<g10>帮助程序...</g10>中选择自己的版本以获得最佳视频质量。Linux 也为 64 位 ARM 计算机提供了四个文件（<x11/>）。"
+  },
   "3e6e10c300b6b5ce": {
    "source": "For all downloads together",
    "text": "限制所有下载的总速度"
@@ -4669,6 +4725,10 @@
   "3ee3f6088b3f3e5a": {
    "source": "<g1>Breeze</g1>, after KDE Plasma's look: rounded corners, buttons and boxes whose edge takes the accent under the pointer or when focused, KDE's check boxes and radio buttons (the accent's edge, a tick in the text's colour), a focus frame, KDE's Breeze icons (LGPL-3.0-or-later) and a title bar in KDE's style: the title centred, round buttons that fill under the pointer (Close in red).",
    "text": "<g1>Breeze</g1>：仿照 KDE Plasma 界面风格，采用圆角、指针悬停或获得焦点时边缘显示强调色的按钮和方框、KDE 的复选框和单选按钮（强调色边缘，文本颜色勾选）、焦点框、KDE 的 Breeze 图标（LGPL-3.0-or-later 许可），以及 KDE 风格的标题栏：标题居中，圆形按钮在指针悬停时填充（“关闭”按钮为红色）。"
+  },
+  "3f11ebeb619b7f7f": {
+   "source": "ARM64",
+   "text": "ARM64"
   },
   "3f2b96cbf359bd4a": {
    "source": "The volumes of one split archive (<x1/>, <x2/> and so on) form one package, the other links of a page another, and the rest go into <g3>Various files</g3>. Tick a package to take all its links. Each package has its own folder, an archive password, and <g4>Extract when done</g4>.",
@@ -4970,10 +5030,6 @@
    "source": "Links that work only once no longer fail with \"403 Forbidden\".",
    "text": "仅限一次的链接不再因“403 Forbidden”而失败。"
   },
-  "436b61c80c90a696": {
-   "source": "Windows 10 and 11 is the main platform, on 64-bit PCs (x64); from the version after 0.5.2, on Windows on ARM PCs and 32-bit Windows 10 too, each with files of its own. Linux is supported too, with an AppImage, a .deb, an .rpm and a .tar.gz in every release: since version 0.5.0 it isn't experimental any more, and it is checked on GNOME, KDE Plasma, Xfce and Cinnamon, in Wayland sessions too, and its packages in clean Ubuntu, Debian and Fedora systems. Still to come there: the Flatpak Firefox isn't checked yet, and screen readers (Orca) don't read MDM's windows yet. macOS builds (.dmg) come with every release too, and stay experimental. See Windows, Mac and Linux and Download.",
-   "text": "Windows 10 和 11 是主要平台，支持 64 位电脑 (x64)；从 0.5.2 版本之后，也支持 Windows on ARM 电脑和 32 位 Windows 10，每个版本都有自己的文件。Linux 也受支持，每个版本都提供 AppImage、.deb、.rpm 和 .tar.gz 文件：从 0.5.0 版本开始，它不再是实验性的，并且已在 GNOME、KDE Plasma、Xfce 和 Cinnamon 环境中（包括 Wayland 会话）以及干净的 Ubuntu、Debian 和 Fedora 系统中进行过检查。仍有待改进：Flatpak Firefox 尚未检查，屏幕阅读器 (Orca) 尚未读取 MDM 的窗口。macOS 构建 (.dmg) 也随每个版本提供，但仍处于实验阶段。请参阅 Windows、Mac 和 Linux 以及下载。"
-  },
   "436bac2c4f3d3f4c": {
    "source": "<g1>Downloads → Start queue</g1> and <g2>Downloads → Stop queue</g2> list them too.",
    "text": "<g1>下载 → 启动队列</g1>和<g2>下载 → 停止队列</g2>也会列出所有队列。"
@@ -5013,6 +5069,10 @@
   "43ff6b9c3376c383": {
    "source": "Firefox, Chrome, Edge, Brave, Opera, Vivaldi",
    "text": "Firefox、Chrome、Edge、Brave、Opera、Vivaldi"
+  },
+  "44106fa39bd5cfcd": {
+   "source": "Paste the address of a <g1>Hugging Face</g1> model or dataset, or of a folder in one, or of a <g2>GitHub release</g2>, and Link grabber lists every file in it with its size and folder, unticked. Tick what you need: it downloads as one group into a folder named after the address, with the repository's folders kept, and each file is checked against the SHA-256 the site publishes. Gated models work with your Hugging Face access token, saved in <g3>Options → Sites Logins</g3>. See <g4>Models, datasets and releases</g4>.",
+   "text": "粘贴 <g1>Hugging Face</g1> 模型或数据集的地址，或其中某个文件夹的地址，或 <g2>GitHub 发布</g2>的地址，“链接抓取器”会列出其中所有文件及其大小和所在文件夹，默认不选中。勾选您需要的文件：它们将作为一个组下载到一个以地址命名的文件夹中，并保留仓库的文件夹结构，每个文件都会根据网站发布的 SHA-256 进行校验。受限模型可使用您的 Hugging Face 访问令牌，该令牌保存在<g3>选项 → 站点登录</g3>中。请参阅<g4>模型、数据集和发布</g4>。"
   },
   "441473c88f5bb354": {
    "source": "Not listed",
@@ -5186,10 +5246,6 @@
    "source": "<g1>Numbers</g1> (counts, sizes, speeds, percentages and the list's columns) are written the way the interface language writes them, whatever the Windows region: German <x2/> and <x3/>, French <x4/>, Hindi <x5/>. When your system's region is in that same language, its own way wins (Swiss German <x6/>, or a separator you set in Windows). In English, MDM writes plain digits, as IDM does (<x7/>, <x8/>).",
    "text": "<g1>数字</g1>（计数、大小、速度、百分比和列表列）的显示方式与界面语言的写法一致，无论 Windows 区域设置如何：德语 <x2/> 和 <x3/>，法语 <x4/>，印地语 <x5/>。当您的系统区域设置与该语言相同时，系统自己的方式优先（瑞士德语 <x6/>，或您在 Windows 中设置的分隔符）。在英语中，MDM 使用纯数字，与 IDM 相同（<x7/>，<x8/>）。"
   },
-  "468922e83389883b": {
-   "source": "Windows 10 and 11 is the main platform, on 64-bit PCs (x64); from the version after 0.5.2, on Windows on ARM PCs and 32-bit Windows 10 too, each with files…",
-   "text": "Windows 10 和 11 是主要平台，支持 64 位电脑 (x64)；从 0.5.2 版本之后，也支持基于 ARM 的 Windows 电脑和 32 位 Windows 10，每个版本都有自己的文件…"
-  },
   "4693601d27da4c66": {
    "source": "<g1>DNS over HTTPS</g1> (the default) or <g2>DNS over TLS</g2>: encrypted, so nobody on the way sees or changes the names you look up.",
    "text": "<g1>基于 HTTPS 的 DNS</g1>（默认）或<g2>基于 TLS 的 DNS</g2>：查询经过加密，因此传输过程中无人能看到或更改您查询的名称。"
@@ -5209,6 +5265,10 @@
   "46d294d41c0bd102": {
    "source": "MDM's interface comes in 87 languages: every display language Windows 11 offers, from Afrikaans to Vietnamese, including both Chinese scripts, Spanish for…",
    "text": "MDM 界面支持 87 种语言：Windows 11 提供的所有显示语言，从南非荷兰语到越南语，包括两种中文字体、西班牙语等…"
+  },
+  "46dd41ea58cb0958": {
+   "source": "From version 0.6.0, pull the published image from GitHub Container Registry (x86-64 only for now):",
+   "text": "从 0.6.0 版本开始，从 GitHub Container Registry 拉取已发布的镜像（目前仅支持 x86-64）："
   },
   "46e5d950086d130d": {
    "source": "<g1>Extract in place with HatchZip</g1> (off by default; greyed out when HatchZip isn't installed) — the archive is removed while its files come out, so only they need room. See <g2>Extracting archives</g2>.",
@@ -5245,6 +5305,10 @@
   "476a78eca0326f04": {
    "source": "keeps the list, the settings, the certificate and the paired devices.",
    "text": "保留列表、设置、证书和已配对设备。"
+  },
+  "477e14355df77d93": {
+   "source": "Downloads the extension catches, <g1>Download with Mister Download Manager</g1> on a link, and <g2>Download all links</g2> / <g3>Download selected links</g3>, then go to the server instead of this computer. On the server, links are added and started right away (rather than opened in Link grabber). Only links matching the file types MDM catches (or its default types) are sent, capped at 100 links per batch; links beyond the cap or of other types are left out, and the toolbar button's badge and status notice report how many links were sent, refused, or left out. The browser's cookies are not sent to the server: a download that needs you to be signed in to a site stays with this computer.",
+   "text": "浏览器捕获的下载、链接上的<g1>使用 Mister Download Manager 下载</g1>，以及<g2>下载所有链接</g2> / <g3>下载选定链接</g3>，都会发送到服务器而不是当前电脑。在服务器上，链接会立即添加并开始下载（而不是在链接抓取器中打开）。只有与 MDM 捕获的文件类型（或其默认类型）匹配的链接才会被发送，每批最多 100 个链接；超出限制或不匹配的链接会被忽略，工具栏按钮的徽章和状态通知会报告发送、拒绝或忽略的链接数量。浏览器的 Cookie 不会发送到服务器：需要您登录网站才能下载的任务仍会在当前电脑上处理。"
   },
   "478b98971f744119": {
    "source": "Deleting a queue asks first; a running queue stops when deleted; the toolbar's Start / Stop Queue arrows always work.",
@@ -5426,6 +5490,10 @@
    "source": "The download list in detail →",
    "text": "下载列表详情 →"
   },
+  "4a0f34047feec52c": {
+   "source": "For Linux on x86-64 (and ARM64 from version 0.6.0): an AppImage for most distributions, a <x1/> for Ubuntu, Debian, Mint and Pop!_OS, an <x2/> for Fedora, openSUSE and RHEL, and a <x3/> of the plain programs. For macOS 11 and later, on Apple Silicon or Intel, <x4/> files still marked <x5/>. Please <g6>tell us how it went</g6>, good or bad.",
+   "text": "对于 x86-64 架构的 Linux（以及 0.6.0 版本起的 ARM64）：大多数发行版可使用 AppImage，Ubuntu、Debian、Mint 和 Pop!_OS 可使用 <x1/>，Fedora、openSUSE 和 RHEL 可使用 <x2/>，以及纯程序 <x3/>。对于 macOS 11 及更高版本，无论是 Apple Silicon 还是 Intel 芯片，<x4/> 文件仍标记为 <x5/>。请<g6>告诉我们您的使用体验</g6>，无论好坏。"
+  },
   "4a31bb3dd19b1839": {
    "source": "<g1></g1>87, built in",
    "text": "<g1></g1>内置 87 种"
@@ -5505,6 +5573,10 @@
   "4b59c6336533a5c6": {
    "source": "Downloads → Scheduler",
    "text": "下载 → 计划程序"
+  },
+  "4b73f3d89de7c4e1": {
+   "source": "Rather have every download in one place? Tick <g1>Options → Save to → Save every download in \"General\" category's folder</g1>, and every new download goes to General's folder, whatever its type: from the browser, <g2>Add URL</g2>, a batch, Link grabber, a queue or the command line. The categories stay, to sort and filter the list. One download can still go elsewhere: change its folder in <g3>Download File Info</g3>. Downloads already in the list stay where they are.",
+   "text": "希望所有下载都保存在一个地方？勾选<g1>选项 → 保存到 → 将所有下载保存到“常规”类别的文件夹</g1>，那么无论文件类型如何，所有新下载都会保存到“常规”文件夹：无论是来自浏览器、<g2>添加 URL</g2>、批量下载、链接抓取器、队列还是命令行。类别仍然保留，用于排序和筛选列表。单个下载仍然可以保存到其他位置：在<g3>下载文件信息</g3>中更改其文件夹。列表中已有的下载将保留在原位置。"
   },
   "4b8a2274de78ad9c": {
    "source": "egui's body text: tooltips, multi-line boxes",
@@ -5613,6 +5685,10 @@
   "4cf5674fd62fa773": {
    "source": "A meter's edge",
    "text": "计量器的边缘"
+  },
+  "4cf7f48056de0a54": {
+   "source": "<g1>Coming with version 0.6.0</g1> <g2>This part isn't in the download (version 0.5.2) yet.</g2>",
+   "text": "<g1>0.6.0 版即将推出</g1> <g2>此部分尚未包含在下载中（0.5.2 版）。</g2>"
   },
   "4d0868248400f576": {
    "source": "<g1>No video this can download on that page</g1> means yt-dlp found nothing on the page. Check that the address is the video's own page.",
@@ -5837,10 +5913,6 @@
   "5095a187528ef523": {
    "source": "Closed to the notification area, MDM gives its memory back to Windows: <g1>Memory</g1> drops to under 10 MB within seconds and stays low while it waits. Downloads, queues and the scheduler go on as before. The list of every language (<g2>View → Language</g2>) loads fonts for every script while it's open; MDM lets them go when it closes.",
    "text": "关闭到通知区域后，MDM 会将占用的内存还给 Windows：几秒钟内，<g1>内存</g1>会降至 10 MB 以下，并在等待期间保持较低水平。下载、队列和计划任务照常运行。打开每种语言的列表（<g2>视图 → 语言</g2>）时，会加载所有文字系统所需的字体；关闭列表后，MDM 会释放这些字体。"
-  },
-  "50a2d01abfd3fd4a": {
-   "source": "From the version after 0.5.2, the three files come for two more kinds of PC, with the processor in their names: <g1>Windows on ARM</g1> (<x2/>, <x3/>, <x4/>), for PCs with a Snapdragon or another ARM processor, which then run MDM without Windows translating it; and <g5>32-bit Windows 10</g5> (<x6/>, <x7/>, <x8/>). <g9>Update now</g9> keeps each copy on its own processor's files. MDM downloads yt-dlp's own build for each, and ffmpeg's for Windows on ARM; no ffmpeg is built for 32-bit Windows that MDM can check, so there you choose your own in <g10>Helpers...</g10> for the best video qualities. Linux gets its four files for 64-bit ARM computers too (<x11/>).",
-   "text": "从 0.5.2 版本之后，新增了适用于另外两种 PC 的三个文件，处理器名称已包含在文件名中：<g1>ARM 版 Windows</g1> (<x2/>、<x3/>、<x4/>)，适用于配备骁龙或其他 ARM 处理器的 PC，这样 MDM 无需 Windows 翻译即可运行；以及 <g5>32 位 Windows 10</g5> (<x6/>、<x7/>、<x8/>)。<g9>立即更新</g9> 会为每个副本保留其各自处理器上的文件。MDM 会下载 yt-dlp 针对每种处理器构建的版本，以及适用于 ARM 版 Windows 的 ffmpeg；MDM 无法检查 32 位 Windows 的 ffmpeg 构建版本，因此您可以在<g10>帮助程序...</g10>中选择自己的版本以获得最佳视频质量。Linux 也获得了适用于 64 位 ARM 计算机的四个文件 (<x11/>)。"
   },
   "50a8864f971c1689": {
    "source": "Right-click → <g1>Add category</g1> makes one for what you collect, say <g2>Books</g2> for <x3/>: a name, the file types separated by spaces (<x4/> allowed) and a folder. Change it later with <g5>Properties</g5>, or remove it with <g6>Delete</g6>. The files stay where they are.",
@@ -6073,6 +6145,10 @@
   "536df2f60bd48da6": {
    "source": "Success text (a matching checksum)",
    "text": "成功文本（匹配的校验和）"
+  },
+  "538fe2ede1fc4d57": {
+   "source": "The single-instance channel (a token-protected local socket), the data folder, the capture rules shared by the app and the host, and the site rules (#1778: a User-Agent, headers, connections and the browser-like connection by site pattern) shared by the app and the command line",
+   "text": "单实例通道（受令牌保护的本地套接字）、数据文件夹、应用程序和主机共享的捕获规则，以及应用程序和命令行共享的站点规则（#1778：用户代理、标头、连接和按站点模式的类似浏览器的连接）"
   },
   "539160f92bae4422": {
    "source": "Being re-measured",
@@ -6770,6 +6846,10 @@
    "source": "One click hides a download's window",
    "text": "一键隐藏下载窗口"
   },
+  "5d3af05ef67f6e44": {
+   "source": "What a site's list says is checked before it is used: a file whose path would lead out of its folder (<x1/>, an absolute path, a drive letter, a device name such as <x2/>) is left out, and the Source line counts them. At most 10,000 files are listed for one address. As folders are, they are read only with <g3>Look links up when they arrive</g3> on (the default).",
+   "text": "站点列表的内容在使用前会进行检查：路径会导致文件超出其文件夹（<x1/>、绝对路径、驱动器号、设备名称，例如<x2/>）的文件会被排除，并且“来源”行会统计它们。一个地址最多列出 10,000 个文件。文件夹只有在<g3>链接到达时查找链接</g3>（默认）开启时才会读取。"
+  },
   "5d3b0743b7418c7e": {
    "source": "Choose <g1>Help → Report a problem</g1>. It opens the bug report form on GitHub with your MDM version, your system and its version, how MDM was installed and its interface language already filled in. Describe what happened, what you expected and the steps that make it happen. For a download, include the address if you can share it, and the reason shown under <g2>Status</g2>.",
    "text": "选择<g1>帮助 → 报告问题</g1>。系统会在 GitHub 上打开错误报告表单，并预先填入您的 MDM 版本、系统及其版本、MDM 的安装方式和界面语言。请描述发生了什么、预期结果以及重现问题的步骤。如果问题与下载有关，请尽可能提供下载地址，以及<g2>状态</g2>下显示的原因。"
@@ -7110,10 +7190,6 @@
    "source": "With Docker",
    "text": "使用 Docker"
   },
-  "615e187e2caacd27": {
-   "source": "<g1>Otherwise:</g1> MDM shows the list of languages, each with its flag and its own name. Pick yours.",
-   "text": "<g1>其他情况：</g1>MDM 会显示语言列表，每种语言都标有国旗和该语言的名称。选择您的语言。"
-  },
   "617b3af69a12514a": {
    "source": "works the same way, and follows <x1/> too.",
    "text": "工作方式相同，也遵循 <x1/>。"
@@ -7229,6 +7305,10 @@
   "630073ab1db9fa7e": {
    "source": "Questions",
    "text": "问题"
+  },
+  "631d909be61240f2": {
+   "source": "<g1>Language.</g1> - <g2>Installed with the setup:</g2> MDM starts in the language you chose in the setup, and this step is left out. - <g3>Otherwise:</g3> the list of languages, each with its flag and its own name. Click yours: the window switches to it at once, right to left for Arabic, Hebrew, Persian and Urdu.",
+   "text": "<g1>语言。</g1> - <g2>随安装程序安装：</g2> MDM 以您在安装程序中选择的语言启动，此步骤会被跳过。 - <g3>否则：</g3> 语言列表，每种语言都带有其国旗和本地名称。点击您的语言：窗口会立即切换到该语言，阿拉伯语、希伯来语、波斯语和乌尔都语会从右到左显示。"
   },
   "634ba66c06a04968": {
    "source": "Your download list, settings, logins you save in <g1>Sites Logins</g1>, the history of each download and the files you download are stored only on your computer: in <x2/> on Windows (or the <x3/> folder of the portable copy), and in the usual application-data folder on macOS and Linux. Nothing is uploaded anywhere. Uninstalling offers to delete them. From version 0.5.0, the passwords of Sites Logins, the proxy and debrid accounts go into the system's keychain instead (Windows Credential Manager, the keyring on Linux, the macOS keychain), still on your computer, when one is there and unlocked.",
@@ -7482,6 +7562,10 @@
    "source": "Two helpers, checked before use",
    "text": "两个辅助程序，使用前需检查"
   },
+  "66fc2cbe47fa6280": {
+   "source": "User names and passwords for sites that ask for them. <g1>New</g1> adds a row: the site (with a path if the login is only for part of it), the user name and the password. <g2>Edit</g2> and <g3>Remove</g3> change or delete the selected row. MDM uses the login for every download from that site. A login typed in <g4>Add URL</g4> (<g5>Use authorization</g5>) takes priority for that one download. For <x6/>, the password is your Hugging Face access token, for gated models and datasets: MDM sends it as a token, to Hugging Face only (the user name can be anything; see <g7>Models, datasets and releases</g7>).",
+   "text": "用于需要用户名和密码的网站。<g1>新建</g1>添加一行：网站（如果登录仅适用于部分网站，则包含路径）、用户名和密码。<g2>编辑</g2>和<g3>移除</g3>更改或删除所选行。MDM 将使用该登录信息下载来自该网站的所有内容。在<g4>添加 URL</g4>中输入的登录信息（<g5>使用身份验证</g5>）对此次下载具有优先权。对于 <x6/>，密码是您的 Hugging Face 访问令牌，用于受限模型和数据集：MDM 将其作为令牌发送，且仅发送给 Hugging Face（用户名可以是任意内容；请参阅<g7>模型、数据集和发布</g7>）。"
+  },
   "670bb10cde757ad1": {
    "source": "MDM never writes the token to its event log, crash reports, the automation API or the command line's output.",
    "text": "MDM 绝不会将令牌写入其事件日志、崩溃报告、自动化 API 或命令行输出。"
@@ -7513,14 +7597,6 @@
   "676c0b5817404515": {
    "source": "To route <g1>everything</g1> through another network, use a VPN for the whole computer.",
    "text": "要将<g1>所有</g1>流量通过另一个网络路由，请为整台计算机使用VPN。"
-  },
-  "678b5f7a1583e7d1": {
-   "source": "<g1>Its menu</g1> (the arrow next to it, or <g2>↓</g2> when the button has the keyboard's focus): the video's title, length and site; its filters, when the qualities differ: <g3>All</g3>, <g4>Video</g4> (the picture with its sound) or <g5>Audio only</g5>, and the file type (MP4, WEBM, M4A, MP3...) or the picture's codec (AV1, VP9, H.264), kept for the site; <g6>Download best</g6> first (the best of what the filters keep), then one numbered line per quality under <g7>VIDEO</g7> and <g8>AUDIO</g8>, with its file type, codec, frame rate or bitrate and size (<x9/> <x10/>, as the Download video window says it), the best one marked, and <g11>Most compatible (H.264 + AAC)</g11> beside the resolution of the one that plays everywhere (<g12>Choose the quality</g12>); <g13>All qualities and subtitles...</g13>, which opens the <g14>Download video from a page</g14> window; then <g15>Put the button back in its corner</g15> (once you moved it on the site), <g16>Hide on this video</g16> (<g17>Esc</g17>), <g18>Never on</g18> the site (MDM remembers the site), and <g19>Button settings...</g19>, which opens MDM's Options. The arrow keys move through it, <g20>Enter</g20> picks, <g21>Esc</g21> closes it.",
-   "text": "<g1>其菜单</g1>（按钮旁边的箭头，或当按钮获得键盘焦点时的 <g2>↓</g2>）：显示视频标题、时长和网站；当画质不同时，显示其筛选器：<g3>全部</g3>、<g4>视频</g4>（画面和声音）或<g5>仅音频</g5>，以及文件类型（MP4、WEBM、M4A、MP3...）或画面编码（AV1、VP9、H.264），并为该网站保留；首先是<g6>下载最佳</g6>（筛选器保留的最佳画质），然后是<g7>视频</g7>和<g8>音频</g8>下每种画质的一行，包含文件类型、编码、帧率或比特率和大小（<x9/> <x10/>，如“从页面下载视频”窗口所示），最佳画质会标记出来，并且<g11>最兼容 (H.264 + AAC)</g11>会显示在可在任何地方播放的画质分辨率旁边（<g12>选择画质</g12>）；<g13>所有画质和字幕...</g13>，这会打开<g14>从页面下载视频</g14>窗口；然后是<g15>将按钮放回原位</g15>（一旦您在网站上移动了它），<g16>仅在此视频上隐藏</g16>（<g17>Esc</g17>），<g18>从不在</g18>该网站显示（MDM 会记住该网站），以及<g19>按钮设置...</g19>，这会打开 MDM 的“选项”。方向键可在其中移动，<g20>Enter</g20> 键选择，<g21>Esc</g21> 键关闭。"
-  },
-  "67b09013b9c7d05d": {
-   "source": "Yes downloads both helpers in the background, once.",
-   "text": "点击“是”会在后台下载这两个辅助工具，只需下载一次。"
   },
   "67b7e3e016904e39": {
    "source": "Install MDM with the setup and keep Set up browser integration ticked. In Firefox, then open the add-on's page on addons.mozilla.org and click Add to…",
@@ -8114,10 +8190,6 @@
    "source": "<g1>Drop-down lists for screen readers</g1>: a screen reader or UI Automation can now set a drop-down list's choice by its text, and open or close the list.",
    "text": "<g1>屏幕阅读器的下拉列表</g1>：屏幕阅读器或 UI Automation 现在可以通过文本设置下拉列表的选择，并打开或关闭列表。"
   },
-  "6f4768be9e305804": {
-   "source": "From the release after 0.5.2, pull the published image from GitHub Container Registry (x86-64 only for now):",
-   "text": "从 0.5.2 之后的版本开始，从 GitHub Container Registry 拉取已发布的镜像（目前仅支持 x86-64）："
-  },
   "6f5dd71f3ee9ec81": {
    "source": "Start here",
    "text": "从这里开始"
@@ -8566,6 +8638,10 @@
    "source": "Save it in this folder (else the category's folder from <g1>Options → Save to</g1>).",
    "text": "将其保存到此文件夹（否则保存到<g1>选项 → 保存到</g1>中对应类别的文件夹）。"
   },
+  "757bdf6ec707e08a": {
+   "source": "The setup's Video helpers step: yt-dlp and ffmpeg, each with its Install button, and Yes, download them (recommended)",
+   "text": "设置的视频助手步骤：yt-dlp 和 ffmpeg，每个都有其安装按钮，以及“是，下载（推荐）”"
+  },
   "758225940a5eba45": {
    "source": "IDM itself is closed source. Mister Download Manager is an open-source download manager (GPL-3.0) laid out the way IDM users expect, written from scratch and unrelated to IDM's maker.",
    "text": "IDM 本身是闭源的。Mister Download Manager 是一款开源下载管理器 (GPL-3.0)，其布局符合 IDM 用户的习惯，它是从零开始编写的，与 IDM 的制造商无关。"
@@ -8726,10 +8802,6 @@
    "source": "Browsers built on Firefox or Chromium, such as Zen, LibreWolf, Floorp, Waterfox and Helium, reach MDM. Flatpak browsers on Linux can't start MDM's helper.",
    "text": "基于 Firefox 或 Chromium 构建的浏览器，例如 Zen、LibreWolf、Floorp、Waterfox 和 Helium，都可以连接到 MDM。Linux 上的 Flatpak 浏览器无法启动 MDM 的助手。"
   },
-  "77bd0523361e1992": {
-   "source": "Next, MDM offers its two free video helpers: <g1>yt-dlp</g1>, which finds the video on a page, and <g2>ffmpeg</g2>, which joins its picture and sound. Click <g3>Yes, download them (recommended)</g3> and they download in the background, about 100 MB, once. <g4>Not now</g4> leaves them for later: the video window offers them when you first need them. More in <g5>Videos</g5>.",
-   "text": "接下来，MDM 会提供 2 个免费的视频辅助工具：<g1>yt-dlp</g1>用于查找网页上的视频，<g2>ffmpeg</g2>用于合并视频画面和声音。点击<g3>是，下载它们（推荐）</g3>，这两个工具就会在后台下载，约 100 MB，只需下载一次。点击<g4>暂不</g4>可稍后再下载：首次需要时，视频窗口会提供下载选项。更多信息请参阅<g5>视频</g5>。"
-  },
   "77c9a0380245b26d": {
    "source": "In MDM, click <g1>Add URL</g1> (or press <g2>Ctrl+N</g2>) and click <g3>OK</g3>. MDM sees that the address is a video's page and opens <g4>Download video from a page</g4>. (You can also open it with <g5>Tasks → Download video from a page...</g5>, paste the address and click <g6>Look up</g6>.)",
    "text": "在 MDM 中，点击<g1>添加 URL</g1>（或按<g2>Ctrl+N</g2>），然后点击<g3>确定</g3>。MDM 会识别出这是视频页面，并打开<g4>从页面下载视频</g4>。（也可以通过<g5>任务 → 从页面下载视频…</g5>打开该窗口，粘贴地址并点击<g6>查找</g6>。）"
@@ -8853,6 +8925,10 @@
   "79c3966deb868963": {
    "source": "When the link has expired",
    "text": "当链接已过期时"
+  },
+  "79d1afa0e65a1570": {
+   "source": "<g1>Video helpers</g1> (below).",
+   "text": "<g1>视频助手</g1>（见下文）。"
   },
   "79d241b850b4c52e": {
    "source": "<g1>A public tracker list for torrents</g1>, if you turn it on in <g2>Tasks → Torrent settings</g2>: MDM fetches it from GitHub (ngosang/trackerslist), or the address you entered, once a day (an hour later when a fetch failed). Its trackers then see which public torrents you have, as a torrent's own trackers do.",
@@ -9049,10 +9125,6 @@
   "7c5fbe4cad8057a6": {
    "source": "Download a torrent, or only some of its files. If some of its files are already in the folder, it stops and names them; <x1/> uses them instead (what matches is kept, the rest downloaded). With Torrent settings' <g2>Add the trackers of this public list to public torrents</g2> on, a public torrent gets the list's trackers too, as in the app.",
    "text": "下载种子，或仅下载其部分文件。如果其部分文件已在文件夹中，它会停止并列出这些文件；<x1/> 则使用这些文件（匹配的保留，其余下载）。如果“种子设置”中的<g2>将此公共列表的追踪器添加到公共种子</g2>已开启，公共种子也会获得列表中的追踪器，与应用程序中相同。"
-  },
-  "7c7b3102adfeeb16": {
-   "source": "For Linux on x86-64 (and ARM64 from the version after 0.5.2): an AppImage for most distributions, a <x1/> for Ubuntu, Debian, Mint and Pop!_OS, an <x2/> for Fedora, openSUSE and RHEL, and a <x3/> of the plain programs. For macOS 11 and later, on Apple Silicon or Intel, <x4/> files still marked <x5/>. Please <g6>tell us how it went</g6>, good or bad.",
-   "text": "对于 x86-64 架构的 Linux（0.5.2 版本之后也支持 ARM64）：大多数发行版提供 AppImage，Ubuntu、Debian、Mint 和 Pop!_OS 提供 <x1/>，Fedora、openSUSE 和 RHEL 提供 <x2/>，以及普通程序的 <x3/>。对于 macOS 11 及更高版本，无论 Apple Silicon 还是 Intel 芯片，<x4/> 文件仍标记为 <x5/>。请 <g6>告诉我们您的使用体验</g6>，无论是好是坏。"
   },
   "7c949f90bb503dc8": {
    "source": "Vivaldi",
@@ -9802,6 +9874,10 @@
    "source": "A text box's or a list's inside",
    "text": "文本框或列表内部"
   },
+  "84d72ad2898a481c": {
+   "source": "Make a <x1/> of a file or folder, a folder's files listed by name (peers find it through the DHT).",
+   "text": "创建文件或文件夹的 <x1/>，或按名称列出文件夹中的文件（对等节点通过 DHT 发现）。"
+  },
   "84de272d8a1575cb": {
    "source": "Add to Chrome",
    "text": "添加至 Chrome"
@@ -10314,6 +10390,10 @@
    "source": "Can it download a video's subtitles?",
    "text": "可以下载视频字幕吗？"
   },
+  "8c8becaa84996a37": {
+   "source": "<g1>A folder of one</g1>, at a branch, a tag or a commit: the address of the folder's page, <x2/>.",
+   "text": "<g1>其中一个文件夹</g1>，位于某个分支、标签或提交：文件夹页面的地址，<x2/>。"
+  },
   "8c9a12e93a193e44": {
    "source": "In Firefox",
    "text": "在 Firefox 中"
@@ -10345,10 +10425,6 @@
   "8cfa4742e8d4318b": {
    "source": "The harness",
    "text": "测试工具"
-  },
-  "8d0ba2eee06a5511": {
-   "source": "<g1>Move it</g1>: drag it by its dots to another corner or along the video's edge, or outside the player, above, under or beside it (for a site that covers its player or draws its own controls where the button would be); while you drag, the edge and the spots it snaps to (the corners and the middle) show. Outside the player it stays inside on that edge when the window has no room there (a player at the top of the window, full screen). It stays where you put it on that site; the menu's <g2>Put the button back in its corner</g2> brings it back, and the add-on's popup has <g3>Settings → Download button over videos → Reset</g3> for every site (its filters too).",
-   "text": "<g1>移动它</g1>：通过其圆点将其拖到另一个角落或沿着视频边缘，或拖到播放器外部，上方、下方或旁边（适用于遮盖播放器或在按钮位置绘制自己控件的网站）；拖动时，会显示边缘和它吸附到的位置（角落和中间）。当窗口在该位置没有空间时（窗口顶部的播放器，全屏），它会保持在播放器外部的该边缘内。它会保持在您在该网站上放置的位置；菜单中的<g2>将按钮放回原位</g2>会将其恢复，并且附加组件的弹出窗口中包含<g3>设置 → 视频上的下载按钮 → 重置</g3>，适用于所有网站（也包括其筛选器）。"
   },
   "8d2bf24dd985e649": {
    "source": "When downloads go to another MDM (a server), the list is that server's: <g1>Pause</g1>, <g2>Resume</g2>, <g3>Remove from list</g3> and <g4>Copy link</g4> work, and the buttons that need the file on this computer (open it, its folder, copy, share, delete) aren't shown; a line at the top says so.",
@@ -10782,6 +10858,10 @@
    "source": "<g1>Fix causes, not cases</g1>, and keep producers and consumers of shared data (the download list, the browser extension's messages, the catalogs) in step.",
    "text": "<g1>解决根本原因，而非个别问题</g1>，并确保共享数据（下载列表、浏览器扩展的消息、目录）的生成方和使用方保持同步。"
   },
+  "933b61bdff1bc033": {
+   "source": "A crash report whose crashed thread is inside the graphics driver while MDM drew with OpenGL is the same: the driver's names above, or <x1/> alone with nothing of MDM's on the thread (NVIDIA's driver on a laptop with two graphics chips shows OpenGL's frames through Direct3D 11). On Windows, MDM remembers it and draws with Direct3D 12 from the next start, on WARP if the card can't; updating the graphics driver is still the real fix.",
+   "text": "崩溃报告中，如果崩溃线程在图形驱动程序内部，而 MDM 使用 OpenGL 绘制，情况也一样：上面提到的驱动程序名称，或者<x1/>单独出现，线程上没有 MDM 的任何内容（带有两个图形芯片的笔记本电脑上的 NVIDIA 驱动程序通过 Direct3D 11 显示 OpenGL 帧）。在 Windows 上，MDM 会记住这一点，并在下次启动时使用 Direct3D 12 绘制，如果显卡不支持则使用 WARP；更新图形驱动程序仍然是真正的修复方法。"
+  },
   "93536c27185c18ed": {
    "source": "Download a video from a page — Mister Download Manager help",
    "text": "从页面下载视频 — Mister Download Manager 帮助"
@@ -10914,10 +10994,6 @@
    "source": "Link grabber and archive extraction — Mister Download Manager",
    "text": "链接抓取器和压缩包提取 — Mister Download Manager"
   },
-  "94f64ef46efdc4dd": {
-   "source": "Last updated 2026-11-25",
-   "text": "最后更新：2026年11月25日"
-  },
   "950c43d71bd73d95": {
    "source": "You can change it at any time in <g1>View → Language</g1>. More in <g2>Languages</g2>.",
    "text": "您可以随时在<g1>视图 → 语言</g1>中更改语言。更多信息请参阅<g2>语言</g2>。"
@@ -10946,6 +11022,10 @@
    "source": "Is it a copy or a crack of Internet Download Manager? — Mister Download Manager",
    "text": "是 Internet Download Manager 的副本或破解版吗？— Mister Download Manager"
   },
+  "95820383a2972f1f": {
+   "source": "<g1>Gated models.</g1> A repository whose files need its terms accepted downloads with your Hugging Face access token: accept the terms on its page, make a token in your Hugging Face settings, and add it in <g2>Options → Sites Logins</g2> with the site <x3/>, any user name and the token as the password. It is kept with your other passwords, in the system's keychain, and sent only to <x4/>, never on to the servers it sends the files from. The Source line says when a gated repository has no token yet.",
+   "text": "<g1>受限模型。</g1> 需要接受条款才能下载文件的仓库，使用您的 Hugging Face 访问令牌进行下载：在其页面上接受条款，在您的 Hugging Face 设置中生成一个令牌，并在<g2>选项 → 站点登录</g2>中添加它，站点为<x3/>，任意用户名，令牌作为密码。它与您的其他密码一起保存在系统的钥匙串中，并且只发送到<x4/>，绝不发送到提供文件的服务器。当受限仓库尚无令牌时，“来源”行会显示。"
+  },
   "958664bb01cc22af": {
    "source": "A torrent comes from other people's computers, not from one website. That changes what you can trust and what others can see. This page says plainly what…",
    "text": "种子来自其他人的计算机，而不是来自一个网站。这改变了您可以信任的内容以及其他人可以看到的内容。本页面明确说明了..."
@@ -10961,6 +11041,10 @@
   "95b8e4a4ea276d5d": {
    "source": "Downloads",
    "text": "下载"
+  },
+  "95b9321339f49458": {
+   "source": "Windows 10 and 11 is the main platform, on 64-bit PCs (x64); from version 0.6.0, on Windows on ARM PCs and 32-bit Windows 10 too, each with files of its…",
+   "text": "Windows 10 和 11 是主要平台，支持 64 位电脑 (x64)；从 0.6.0 版本开始，也支持基于 ARM 的 Windows 电脑和 32 位 Windows 10，每个版本都有其专属文件。"
   },
   "95c10421608930fc": {
    "source": "The proxy's password moves to the system's keychain: Windows Credential Manager, the keyring on Linux, the macOS keychain.",
@@ -11021,10 +11105,6 @@
   "9632de50273e0f02": {
    "source": "<g1>The site's star ratings</g1>, at <x2/>, described in <g3>OpenAPI</g3>. Anyone may read the numbers; rating is for this site's pages (below).",
    "text": "<g1>本网站的星级评分</g1>，位于 <x2/>，以 <g3>OpenAPI</g3> 描述。任何人都可以读取这些数字；评分是针对本网站页面（如下）的。"
-  },
-  "963552ab075ccbdb": {
-   "source": "MDM offers yt-dlp and ffmpeg on its first start, with Yes, download them (recommended) and Not now",
-   "text": "MDM 在首次启动时提供 yt-dlp 和 ffmpeg，并带有“是，下载它们（推荐）”和“暂不”选项"
   },
   "9641498adf0c3309": {
    "source": "<g1>A Base16 scheme</g1>, the <x2/> file the <g3>Base16 and Base24 schemes</g3> come in: both the classic layout (<x4/> and <x5/> to <x6/> at the top) and the newer one (<x7/> and a <x8/> block). A Base24 scheme reads as its first 16 colours.",
@@ -11298,10 +11378,6 @@
    "source": "A greyed text box's inside",
    "text": "置灰文本框内部"
   },
-  "98fcb27645bb56dd": {
-   "source": "<g1>Without the setup</g1> (a zip copy): on the first start, MDM shows every language with its flag and its own name. Pick yours.",
-   "text": "<g1>不使用安装程序</g1>（zip 压缩包）：首次启动时，MDM 会显示所有语言的国旗和语言名称。选择所需语言。"
-  },
   "990d8b16ea032009": {
    "source": "<g1>Image galleries</g1> (<g2>#58</g2>): a gallery's address in Add URL (a Wikimedia Commons category, a Flickr album, a DeviantArt or Imgur gallery and more) opens <g3>Download a gallery</g3>, which downloads its pictures with gallery-dl into a folder of their own, all of them or the first N. Started again, a gallery fetches only its new pictures. gallery-dl is an optional helper like yt-dlp: installed from its releases only when signed by its author's key, or your own copy (Helpers). On the command line: <x4/> and <x5/>.",
    "text": "<g1>图片图库</g1>（<g2>#58</g2>）：在“添加 URL”中输入图库地址（Wikimedia Commons 类别、Flickr 相册、DeviantArt 或 Imgur 图库等）会打开<g3>下载图库</g3>，它会使用 gallery-dl 将图片下载到自己的文件夹中，全部下载或下载前 N 张。再次启动时，图库只会获取新图片。gallery-dl 是一个可选的帮助程序，类似于 yt-dlp：仅当由其作者的密钥签名时才从其发布版本安装，或者使用您自己的副本（帮助程序）。在命令行上：<x4/> 和 <x5/>。"
@@ -11421,6 +11497,10 @@
   "9a946958fe91d2d6": {
    "source": "Right-click and choose <g1>Add to queue → Main download queue</g1>.",
    "text": "右键点击并选择<g1>添加到队列 → 主下载队列</g1>。"
+  },
+  "9a9da334e19653c6": {
+   "source": "The first start's setup at its Language step: every language with its flag, its own name and its English name",
+   "text": "首次启动设置的语言步骤：每种语言都带有其国旗、本地名称和英文名称"
   },
   "9ad6d79bda135a68": {
    "source": "Download acceleration and crash-safe resume",
@@ -11554,6 +11634,10 @@
    "source": "Point at the video in your browser and click the Download video button that appears over it, or paste the page's address into Tasks → Download video from a page. MDM lists every quality the site offers, with sizes; pick one and it downloads like any file. It uses yt-dlp, which supports thousands of sites. Download only videos you have the right to. See Download a video from a page.",
    "text": "将鼠标指向浏览器中的视频，然后点击视频上方出现的下载视频按钮，或者将页面地址粘贴到任务 → 从页面下载视频。MDM 会列出网站提供的所有画质及对应大小；选择所需画质，即可像下载普通文件一样下载。MDM 使用 yt-dlp，支持数千个网站。仅下载您有权下载的视频。请参阅从页面下载视频。"
   },
+  "9ce28ea273676ee8": {
+   "source": "<g1>One version.</g1> A repository's files are asked at the commit its branch or tag pointed to when it was listed, so a branch that moves on while they download never mixes two versions.",
+   "text": "<g1>一个版本。</g1> 仓库文件在列出时，会根据其分支或标签指向的提交进行请求，因此在下载过程中移动的分支绝不会混淆两个版本。"
+  },
   "9d1326816ebdec07": {
    "source": "Firefox forgets the extension after a restart",
    "text": "Firefox 重启后会忘记扩展程序"
@@ -11578,6 +11662,10 @@
    "source": "Latest",
    "text": "最新"
   },
+  "9d68b46f0b3fadeb": {
+   "source": "<g1>Move it</g1>: drag it by its dots to any spot over the video, to another corner or edge, or outside the player, above, under or beside it (for a site that covers its player or draws its own controls where the button would be); near an edge or outside, the edge and the spots it snaps to (the corners and the middle) show. Outside the player it stays inside on that edge when the window has no room there (a player at the top of the window, full screen). It stays where you put it on that site; the menu's <g2>Put the button back in its corner</g2> brings it back, and the add-on's popup has <g3>Settings → Download button over videos → Reset</g3> for every site (its filters too).",
+   "text": "<g1>移动它</g1>：通过其圆点将其拖动到视频上的任意位置，拖到另一个角落或边缘，或播放器外部，上方、下方或旁边（适用于覆盖其播放器或在按钮位置绘制自己控件的网站）；靠近边缘或外部时，边缘及其吸附点（角落和中间）会显示出来。当窗口在该位置没有空间时（窗口顶部的播放器，全屏），它会停留在该边缘的播放器内部。它会停留在您在该网站上放置的位置；菜单中的<g2>将按钮放回原位</g2>会将其恢复，附加组件的弹出窗口中有<g3>设置 → 视频上的下载按钮 → 重置</g3>，适用于所有网站（包括其过滤器）。"
+  },
   "9d98aff073986aca": {
    "source": "Options → Archives",
    "text": "选项 → 压缩包"
@@ -11589,10 +11677,6 @@
   "9da027e1258a39d3": {
    "source": "Other programs can ask the running app what it is downloading, and pause, start, remove or delete downloads. The API is <g1>off by default</g1>; turn it on with <x2/> (and off with <x3/>).",
    "text": "其他程序可以询问正在运行的应用正在下载什么，并暂停、开始、移除或删除下载。API <g1>默认关闭</g1>；使用 <x2/> 开启（使用 <x3/> 关闭）。"
-  },
-  "9da7ff11fa220d0e": {
-   "source": "MDM runs on 64-bit Linux with a desktop session. It is tested on Ubuntu 24.04, Debian 12 and Fedora, with GNOME, KDE Plasma, Xfce and Cinnamon, on X11 and in Wayland sessions. Pick one of these files (up to version 0.2.4, their names end in <x1/>, as in <x2/>). From the version after 0.5.2, each also comes for 64-bit ARM computers, with <x3/> in place of <x4/> (<x5/>); they are built and tested on GitHub's ARM machines. On ARM, MDM doesn't download gallery-dl itself (its author builds none for it): install it with your system's packages or pip.",
-   "text": "MDM 运行于带有桌面会话的 64 位 Linux。它已在 Ubuntu 24.04、Debian 12 和 Fedora 上，使用 GNOME、KDE Plasma、Xfce 和 Cinnamon 桌面环境，在 X11 和 Wayland 会话中进行了测试。请选择以下文件之一（直到 0.2.4 版本，它们的名称以<x1/>结尾，如<x2/>所示）。从 0.5.2 版本之后，每个版本也支持 64 位 ARM 计算机，其中<x3/>取代了<x4/>（<x5/>）；它们在 GitHub 的 ARM 机器上构建和测试。在 ARM 上，MDM 不会自行下载 gallery-dl（其作者没有为其构建版本）：请使用您系统的软件包或 pip 进行安装。"
   },
   "9dab30f85bf98356": {
    "source": "Check four things: the extension is installed and turned on; Options → General → Use advanced browser integration is on and your browser is ticked; the file's type is in Options → File types; and the site isn't in the list of sites MDM leaves alone. Right-click a link and choose Download with Mister Download Manager to send any file whatever its type. More in Troubleshooting.",
@@ -11830,6 +11914,10 @@
    "source": "<g1>Sign-ins in the system's keychain</g1> (<g2>#44</g2>): debrid accounts, Sites Logins' passwords and the proxy's password are kept in Windows Credential Manager, in the system keyring on Linux (Secret Service: GNOME Keyring, KeePassXC and others) and in the macOS keychain, and the settings keep only a reference. Those already saved move there on the next start. A locked keyring is never unlocked and no keyring is ever asked for a password: without one, they stay in MDM's settings as before, sealed for your Windows account on Windows (the proxy's password now too, like Sites Logins' passwords). <g3>Options → Accounts</g3> says where they are. A portable copy keeps them in its own folder, and uninstalling with <g4>remove the download list and settings</g4> removes them from Credential Manager too.",
    "text": "<g1>系统钥匙串中的登录信息</g1>（<g2>#44</g2>）：debrid 账户、“站点登录”的密码和代理密码保存在 Windows 凭据管理器中，Linux 上的系统钥匙串（Secret Service：GNOME Keyring、KeePassXC 等）和 macOS 钥匙串中，设置中只保留引用。已保存的密码会在下次启动时移到那里。锁定的钥匙串永远不会解锁，也永远不会要求钥匙串输入密码：如果没有密码，它们会像以前一样保留在 MDM 的设置中，在 Windows 上为您的 Windows 账户密封（代理密码现在也一样，就像“站点登录”的密码一样）。<g3>选项 → 账户</g3>会显示它们的位置。便携式副本将其保存在自己的文件夹中，并且使用<g4>删除下载列表和设置</g4>卸载时也会将其从凭据管理器中删除。"
   },
+  "a03eece63d9b5347": {
+   "source": "The setup's second step offers MDM's free video helpers: <g1>yt-dlp</g1>, which finds the video on a page, <g2>ffmpeg</g2>, which joins its picture and sound (on Windows; elsewhere MDM uses your system's), and <g3>Node.js</g3>, which YouTube needs, when your computer has no JavaScript runtime. Each says whether it is already there; one that isn't has its own <g4>Install</g4> button, and <g5>Yes, download them (recommended)</g5> gets every one that is missing. They download in the background, about 100 MB, once, each with its progress in its row, and go on if you close the window. Nothing is downloaded until you press one. <g6>Next</g6> leaves them for later: the video window offers them when you first need them. The step is left out when they are all there. More in <g7>Videos</g7>.",
+   "text": "安装程序的第二步提供 MDM 的免费视频助手：<g1>yt-dlp</g1> 用于查找页面上的视频，<g2>ffmpeg</g2> 用于合并视频的图像和声音（在 Windows 上；其他系统 MDM 使用您系统的版本），以及 <g3>Node.js</g3>（当您的计算机没有 JavaScript 运行时，YouTube 需要它）。每个助手都会显示是否已存在；不存在的助手有其自己的 <g4>安装</g4> 按钮，点击 <g5>是，下载（推荐）</g5> 会下载所有缺失的助手。它们会在后台下载，大约 100 MB，只下载一次，每行显示其进度，即使您关闭窗口也会继续下载。在您点击按钮之前，不会下载任何内容。<g6>下一步</g6> 会将它们留待以后处理：当您首次需要时，视频窗口会提供它们。如果所有助手都已存在，此步骤会被跳过。更多信息请参见<g7>视频</g7>。"
+  },
   "a04886db62535b92": {
    "source": "A translation longer than the English ends in <g1>...</g1> where it doesn't fit; point at it to read it whole.",
    "text": "翻译比英文长、无法完整显示时，会以<g1>...</g1>结尾；将指针移到上面即可查看全文。"
@@ -11925,10 +12013,6 @@
   "a186c2ecb83c1705": {
    "source": "Keep some speed for everything else",
    "text": "为其他任务保留一些速度"
-  },
-  "a18e9003d93b63fb": {
-   "source": "<g1>Installed with the setup:</g1> MDM starts in the language you chose in the setup.",
-   "text": "<g1>通过安装程序安装：</g1> MDM 以您在安装程序中选择的语言启动。"
   },
   "a1929a4367eebbb2": {
    "source": "Turn it on",
@@ -12037,10 +12121,6 @@
   "a30bd98d3fe7b728": {
    "source": "Learn the download list →",
    "text": "了解下载列表 →"
-  },
-  "a332d36c2ada2664": {
-   "source": "User names and passwords for sites that ask for them. <g1>New</g1> adds a row: the site (with a path if the login is only for part of it), the user name and the password. <g2>Edit</g2> and <g3>Remove</g3> change or delete the selected row. MDM uses the login for every download from that site. A login typed in <g4>Add URL</g4> (<g5>Use authorization</g5>) takes priority for that one download.",
-   "text": "需要用户名和密码的站点的登录信息。<g1>新建</g1>会添加一行，填写站点（如果登录信息仅适用于站点的部分路径，则填写路径）、用户名和密码。<g2>编辑</g2>和<g3>删除</g3>可修改或删除选中的行。MDM 会将此登录信息用于从该站点进行的所有下载。在<g4>添加 URL</g4>（<g5>使用授权</g5>）中输入的登录信息仅对该次下载优先使用。"
   },
   "a343897a0df86275": {
    "source": "Sounds",
@@ -12250,6 +12330,10 @@
    "source": "Get your file's checksum: on Windows with <x1/>, on macOS and Linux with <x2/>. It must match the file's line in SHA256SUMS.txt.",
    "text": "获取文件的校验和：在 Windows 上使用 <x1/>，在 macOS 和 Linux 上使用 <x2/>。它必须与 SHA256SUMS.txt 中该文件对应行的内容匹配。"
   },
+  "a5a0a7f38aabd80f": {
+   "source": "<g1>Its menu</g1> (the arrow next to it, or <g2>↓</g2> when the button has the keyboard's focus): the video's title, length and site; its filters, when the qualities differ: <g3>All</g3>, <g4>Video</g4> (the picture with its sound) or <g5>Audio only</g5>, and the file type (MP4, WEBM, M4A, MP3...) or the picture's codec (AV1, VP9, H.264), kept for the site; <g6>Download best</g6> first (the best of what the filters keep), then one numbered line per quality under <g7>VIDEO</g7> and <g8>AUDIO</g8>, with its file type, codec, frame rate or bitrate and size (<x9/> <x10/>, as the Download video window says it), the best one marked, and <g11>Most compatible (H.264 + AAC)</g11> beside the resolution of the one that plays everywhere (<g12>Choose the quality</g12>); <g13>All qualities and subtitles...</g13>, which opens the <g14>Download video from a page</g14> window; then <g15>Put the button back in its corner</g15> (once you moved it on the site), <g16>Hide on this video</g16> (<g17>Esc</g17>), <g18>Hide the download button in full screen</g18>, <g19>Never on</g19> the site (MDM remembers the site), and <g20>Button settings...</g20>, which opens MDM's Options. The arrow keys move through it, <g21>Enter</g21> picks, <g22>Esc</g22> closes it.",
+   "text": "<g1>其菜单</g1>（按钮旁边的箭头，或当按钮获得键盘焦点时的<g2>↓</g2>）：视频的标题、时长和网站；当画质不同时，其过滤器包括：<g3>全部</g3>、<g4>视频</g4>（带声音的画面）或<g5>仅音频</g5>，以及文件类型（MP4、WEBM、M4A、MP3...）或画面编码（AV1、VP9、H.264），为该网站保留；首先是<g6>下载最佳</g6>（过滤器保留的最佳画质），然后在<g7>视频</g7>和<g8>音频</g8>下，每种画质一行，显示其文件类型、编码、帧率或比特率和大小（<x9/> <x10/>，如“下载视频”窗口所示），最佳画质会标记出来，并且在随处可播放的画质分辨率旁边显示<g11>最兼容 (H.264 + AAC)</g11>（<g12>选择画质</g12>）；<g13>所有画质和字幕...</g13>，这会打开<g14>从页面下载视频</g14>窗口；然后是<g15>将按钮放回原位</g15>（一旦您在网站上移动了它）、<g16>仅在此视频上隐藏</g16>（<g17>Esc</g17>）、<g18>全屏时隐藏下载按钮</g18>、<g19>从不在</g19>该网站上显示（MDM 会记住该网站），以及<g20>按钮设置...</g20>，这会打开 MDM 的“选项”。方向键用于移动，<g21>Enter</g21> 用于选择，<g22>Esc</g22> 用于关闭。"
+  },
   "a5afb35a23f4a21e": {
    "source": "Speed limiter",
    "text": "限速器"
@@ -12313,6 +12397,10 @@
   "a67499fbcf74e61d": {
    "source": "A 256 KiB file",
    "text": "一个 256 KiB 文件"
+  },
+  "a683bb3b8ec14507": {
+   "source": "<g1>A Hugging Face model or dataset, a GitHub release.</g1> Paste the address of a model or dataset on Hugging Face, of a folder in one, or of a release on GitHub, in <g2>Add URL</g2> or here, and MDM lists every file in it, with its size and folder. See <g3>Models, datasets and releases</g3>.",
+   "text": "<g1>Hugging Face 模型或数据集，GitHub 发布。</g1> 在<g2>添加 URL</g2>或此处粘贴 Hugging Face 上的模型或数据集地址，或其中某个文件夹的地址，或 GitHub 上的发布地址，MDM 会列出其中所有文件，包括大小和文件夹。请参阅<g3>模型、数据集和发布</g3>。"
   },
   "a69373ac180f98a4": {
    "source": "The first build is long (up to an hour on a small server: the whole program is optimised as one). The image is small, about 175 MB: Debian's slim base, MDM's two programs and the certificates downloads are checked against. It needs no desktop libraries: MDM loads those only to open a window, which a server never does.",
@@ -12730,6 +12818,10 @@
    "source": ", <x1/>, <x2/>, <x3/>, <x4/> and <x5/> exit with code 1 when the app answers with an error (the API is off, an unknown action), as they do when the app isn't running.",
    "text": "当应用响应错误（API 已关闭，未知操作）时，<x1/>、<x2/>、<x3/>、<x4/> 和 <x5/> 会以代码 1 退出，就像应用未运行时一样。"
   },
+  "ac1cbe46f9402970": {
+   "source": "Windows 10 and 11 is the main platform, on 64-bit PCs (x64); from version 0.6.0, on Windows on ARM PCs and 32-bit Windows 10 too, each with files of its own. Linux is supported too, with an AppImage, a .deb, an .rpm and a .tar.gz in every release: since version 0.5.0 it isn't experimental any more, and it is checked on GNOME, KDE Plasma, Xfce and Cinnamon, in Wayland sessions too, and its packages in clean Ubuntu, Debian and Fedora systems. Still to come there: the Flatpak Firefox isn't checked yet, and screen readers (Orca) don't read MDM's windows yet. macOS builds (.dmg) come with every release too, and stay experimental. See Windows, Mac and Linux and Download.",
+   "text": "Windows 10 和 11 是主要平台，支持 64 位电脑 (x64)；从 0.6.0 版本开始，也支持基于 ARM 的 Windows 电脑和 32 位 Windows 10，每个版本都有其专属文件。Linux 也受支持，每个版本都提供 AppImage、.deb、.rpm 和 .tar.gz 文件：自 0.5.0 版本起，Linux 版本不再是实验性的，并且已在 GNOME、KDE Plasma、Xfce 和 Cinnamon 环境中（包括 Wayland 会话）以及纯净的 Ubuntu、Debian 和 Fedora 系统中进行了检查。待完成的工作包括：Flatpak Firefox 尚未检查，屏幕阅读器 (Orca) 尚未支持读取 MDM 窗口。macOS 版本 (.dmg) 也随每个版本发布，但仍处于实验阶段。请参阅 Windows、Mac 和 Linux 以及下载。"
+  },
   "ac4b27cd07db9df5": {
    "source": "shows every option. A command that fails (the app isn't running, it answers with an error, a download breaks) exits with code 1. For example:",
    "text": "显示所有选项。如果命令失败（应用未运行，应用返回错误，下载中断），则以代码 1 退出。例如："
@@ -12773,10 +12865,6 @@
   "acda1dd9909e3d30": {
    "source": "Find a download in a long list — Mister Download Manager help",
    "text": "在长列表中查找下载 — Mister Download Manager 帮助"
-  },
-  "ace5b63f6d5b0c3c": {
-   "source": "Last updated 2026-11-25 · applies to the app, the browser extension and misterdownloadmanager.com",
-   "text": "最后更新日期：2026年11月25日 · 适用于应用程序、浏览器扩展和 misterdownloadmanager.com"
   },
   "ace85960abd75e71": {
    "source": "The help pages' pictures (<x1/>) come from one list, <x2/>: <x3/> opens each window through MDM's own <x4/> command line in a test instance off the screen, crops and annotates it from the window's accessibility tree, and writes lossless WebP; <x5/> (CI) keeps the list, the pages and the files in step. The published ones are taken on GitHub's Windows runner (<x6/>).",
@@ -13006,9 +13094,9 @@
    "source": "If Mister Download Manager closes unexpectedly or stops responding, a <g1>crash report</g1> window opens. It shows what happened, lets you read the whole report, and can send it to the developers on GitHub. Each report helps fix the problem for everyone.",
    "text": "如果 Mister Download Manager 意外关闭或停止响应，会打开一个<g1>崩溃报告</g1>窗口。窗口会显示发生了什么，您可以阅读完整报告，也可以将报告发送给 GitHub 上的开发者。每份报告都有助于解决问题，让所有人受益。"
   },
-  "afb4eff929c487fb": {
-   "source": "The quickest way is MDM's own copy of Node.js: click <g1>Install Node.js</g1> beside that message, or, in <g2>Helpers...</g2>, <g3>Install Node.js</g3> in the <g4>JavaScript runtime (for YouTube)</g4> row. The first start's helpers window offers it too, when your computer has no runtime. MDM downloads Node.js's newest long-term support (LTS) build for your system and processor from <g5>nodejs.org</g5> with its own downloader (about 40 MB on Windows, 60 MB on Linux and macOS; Windows x64, ARM64 and 32-bit, Linux x64 and ARM64, macOS), checks the release's checksum list against the signing keys of Node.js's releasers and the download against that list before it uses it, keeps only the <x6/> program in the <x7/> folder beside yt-dlp and ffmpeg, and from then on tells yt-dlp to use it. It keeps it up to date the way it keeps yt-dlp's (<g8>Keeping them up to date</g8>), never with an older version. 32-bit Windows gets the newest LTS line Node.js still builds for it, 22, which Node.js supports until April 2027; after that MDM has no Node.js for 32-bit Windows, and a runtime of your own (<g9>Use another program...</g9>) is needed there. MDM never installs a Node.js older than the LTS line current when that MDM was made, whatever nodejs.org's list says. The video is looked up again by itself once Node.js is in.",
-   "text": "最快的方法是 MDM 自己的 Node.js 副本：点击该消息旁边的<g1>安装 Node.js</g1>，或者在<g2>帮助程序...</g2>中，点击<g4>JavaScript 运行时（用于 YouTube）</g4>行中的<g3>安装 Node.js</g3>。当您的计算机没有运行时时，首次启动的帮助程序窗口也会提供此选项。MDM 会从 <g5>nodejs.org</g5> 下载适用于您系统和处理器的最新长期支持 (LTS) 版本的 Node.js，使用其自己的下载器（Windows 上约 40 MB，Linux 和 macOS 上约 60 MB；支持 Windows x64、ARM64 和 32 位，Linux x64 和 ARM64，macOS），在使用前对照 Node.js 发布者的签名密钥检查发布版本的校验和列表，并对照该列表检查下载的文件，然后只将 <x6/> 程序保存在 yt-dlp 和 ffmpeg 旁边的 <x7/> 文件夹中，并从那时起指示 yt-dlp 使用它。它会像保持 yt-dlp 更新一样保持其更新（<g8>保持更新</g8>），绝不会使用旧版本。32 位 Windows 会获得 Node.js 仍为其构建的最新 LTS 版本 22，Node.js 将支持到 2027 年四月；此后 MDM 将不再为 32 位 Windows 提供 Node.js，届时需要您自己的运行时（<g9>使用其他程序...</g9>）。MDM 绝不会安装比该 MDM 制作时当前 LTS 版本更旧的 Node.js，无论 nodejs.org 的列表如何显示。一旦 Node.js 安装完成，视频将自行重新查找。"
+  "afb62db9dee045cd": {
+   "source": "Left empty, <g1>Save to</g1> puts each file in its category's folder (<g2>Options → Save to</g2>), or in General's folder when every download goes to one folder there. To put every file of the batch in one folder, type it there or choose it with <g3>...</g3>. Then click <g4>OK</g4>.",
+   "text": "如果<g1>保存到</g1>留空，每个文件将保存到其类别文件夹（<g2>选项 → 保存到</g2>）中，或者，如果所有下载都保存到同一个文件夹，则保存到常规文件夹中。要将批处理中的所有文件保存到同一个文件夹，请在此处输入路径或使用<g3>...</g3>选择。然后点击<g4>确定</g4>。"
   },
   "afb8fb4785d0361e": {
    "source": "Delete the selected downloads from the list (asks first, unless you turned the question off; their files stay unless you tick the box)",
@@ -13094,9 +13182,9 @@
    "source": "Keyboard shortcuts",
    "text": "键盘快捷方式"
   },
-  "b1286285f8338dd7": {
-   "source": "Make a <x1/> of a file or folder (peers find it through the DHT).",
-   "text": "为文件或文件夹创建 <x1/>（对等方通过 DHT 找到它）。"
+  "b12be233c03e6c85": {
+   "source": "On its first start MDM opens one <g1>Welcome to Mister Download Manager</g1> window that walks you through what it needs, a step at a time: the steps are named on top, <g2>Back</g2> and <g3>Next</g3> move between them, and <g4>Finish</g4> on the last one closes it. Each step can be passed with <g5>Next</g5> without doing anything, <g6>Close</g6> or the window's × ends the setup at any step, and once it is finished or closed it doesn't come back: everything in it stays in the menus. Steps that aren't needed are left out.",
+   "text": "MDM 首次启动时会打开一个 <g1>欢迎使用 Mister Download Manager</g1> 窗口，引导您逐步完成所需设置：顶部显示步骤名称，<g2>上一步</g2> 和 <g3>下一步</g3> 用于在步骤间切换，最后一个步骤的 <g4>完成</g4> 按钮会关闭窗口。每个步骤都可以不进行任何操作直接点击 <g5>下一步</g5> 跳过，点击 <g6>关闭</g6> 或窗口的 × 按钮可在任何步骤结束设置，一旦完成或关闭，此窗口将不再出现：所有设置都保留在菜单中。不需要的步骤会被跳过。"
   },
   "b131e9b7540e88e0": {
    "source": "The browser can't find the small helper program it talks to. It is registered when MDM is installed.",
@@ -13189,10 +13277,6 @@
   "b2181eccf65e86be": {
    "source": "This <g1>website</g1> counts visits with <g2>Statcounter</g2>, which sets a cookie and sees your IP address; it runs only on the website, never in the app.",
    "text": "本<g1>网站</g1>使用<g2>Statcounter</g2>统计访问量，它会设置一个 cookie 并查看您的 IP 地址；它只在网站上运行，绝不会在应用中运行。"
-  },
-  "b21b0cc3853450de": {
-   "source": "On Windows, when OpenGL fails on a card without Direct3D 12, MDM draws with Direct3D on Microsoft's software renderer (WARP) from the next start, and <g1>View → Draw with</g1> says why: OpenGL couldn't start, it is too old to draw MDM (older than 3.0, such as Intel's first HD Graphics, whose OpenGL 2.1 drew MDM's windows as garbage), its first window didn't show within 10 seconds, or MDM froze inside the graphics driver while OpenGL showed a frame (the older Intel HD Graphics and AMD Radeon cards' drivers did). Choosing <g2>OpenGL</g2> there tries it again.",
-   "text": "在 Windows 上，当 OpenGL 在没有 Direct3D 12 的显卡上失败时，MDM 会在下次启动时使用 Microsoft 的软件渲染器 (WARP) 上的 Direct3D 绘制，并且“<g1>视图 → 绘制方式</g1>”会显示原因：OpenGL 无法启动，它太旧无法绘制 MDM（版本低于 3.0，例如英特尔的第一代 HD Graphics，其 OpenGL 2.1 会将 MDM 窗口绘制成乱码），其第一个窗口在 10 秒内没有显示，或者 MDM 在 OpenGL 显示帧时卡在图形驱动程序内部（较旧的英特尔 HD Graphics 和 AMD Radeon 显卡驱动程序曾出现此问题）。在此处选择“<g2>OpenGL</g2>”会再次尝试。"
   },
   "b23baab9a4561a1d": {
    "source": "Pauses running downloads.",
@@ -13369,6 +13453,10 @@
   "b41b3b1523ec47c0": {
    "source": "With a debrid account, torrents and magnet links can go to the service instead of to peers, and MDM downloads the files from it over HTTP: see <g1>Torrents through the service</g1>.",
    "text": "通过网盘账户，种子和磁力链接可以发送到服务而不是对等节点，MDM 会通过 HTTP 从该服务下载文件：请参阅<g1>通过服务下载种子</g1>。"
+  },
+  "b434b184493a9dcf": {
+   "source": "Add the extension to each browser you use, as below: Firefox from its add-ons store, the others from the Chrome Web Store. On the first start this is a step of the setup window. Until a browser's extension has reached MDM, MDM's <g1>Add Mister Download Manager to your browser</g1> window opens at each later start: it lists the browsers it found, and <g2>Add the extension</g2> opens the store's page in that browser. <g3>Install it by hand</g3> opens the steps for loading it without the store; <g4>Don't ask again</g4> stops the window.",
+   "text": "按以下方式将扩展程序添加到您使用的每个浏览器：Firefox 从其附加组件商店获取，其他浏览器从 Chrome 网上应用店获取。首次启动时，这是设置窗口的一个步骤。在浏览器的扩展程序连接到 MDM 之前，MDM 的<g1>将 Mister Download Manager 添加到您的浏览器</g1>窗口会在每次后续启动时打开：它会列出找到的浏览器，<g2>添加扩展</g2>会在该浏览器中打开商店页面。<g3>手动安装</g3>会打开不通过商店加载扩展程序的步骤；<g4>不再询问</g4>会关闭该窗口。"
   },
   "b43709818a581c9e": {
    "source": "Mister Download Manager keeps the layout IDM users know, brings your IDM list over, and costs nothing: free and open source, with no trial, no ads and no sign-up. Below it, nine other free download managers people use instead of IDM, compared honestly.",
@@ -13762,6 +13850,10 @@
    "source": "AI assistants (MCP) — Mister Download Manager help",
    "text": "AI 助手（MCP）— Mister Download Manager 帮助"
   },
+  "b96343aebc14f95f": {
+   "source": "<g1>Customize MDM Download panels in browsers → Edit...</g1> — the download button over videos on web pages: turn it off, choose its <g2>Button size</g2> (<g3>80%</g3>, <g4>100%</g4> or <g5>120%</g5>, and <g6>Automatic</g6>, as installed: only the logo, the arrow and ✕ in a feed and over a small player, its words over a big one; <g7>Full</g7>, its words wherever they fit; or <g8>Compact</g8>, only the logo, the arrow and ✕ on every video), or list the sites it never shows on (separate them by spaces; wildcards like <x9/>, <x10/> or <x11/> work). See <g12>Browser integration</g12>.",
+   "text": "<g1>自定义浏览器中的 MDM 下载面板 → 编辑...</g1> — 网页视频上方的下载按钮：可关闭此按钮，选择其<g2>按钮大小</g2>（<g3>80%</g3>、<g4>100%</g4> 或 <g5>120%</g5>），或选择<g6>自动</g6>（默认安装：在信息流和小型播放器上仅显示徽标、箭头和 ✕；在大型播放器上显示文字；<g7>完整</g7>：在所有合适位置显示文字；或<g8>紧凑</g8>：在每个视频上仅显示徽标、箭头和 ✕），或列出不显示此按钮的网站（用空格分隔；支持 <x9/>、<x10/> 或 <x11/> 等通配符）。请参阅<g12>浏览器集成</g12>。"
+  },
   "b96597d534e090d4": {
    "source": "100 MiB, 150 ms latency, 4 MB/s per connection",
    "text": "100 MiB，150 毫秒延迟，每连接 4 MB/秒"
@@ -13794,6 +13886,10 @@
    "source": "All the ways to add a download →",
    "text": "所有添加下载的方式 →"
   },
+  "ba396576420ac8b0": {
+   "source": "<g1>A Hugging Face model or dataset</g1>: <x2/> or <x3/>, the whole repository.",
+   "text": "<g1>Hugging Face 模型或数据集</g1>：<x2/> 或 <x3/>，整个仓库。"
+  },
   "ba46e50250a22768": {
    "source": "Within two seconds it shows in <g1>View → Theme</g1>, under the built-in themes, by the <x2/> it gives itself. Pick it and the whole window changes at once. After you edit the file, pick it again in <g3>View → Theme</g3> to see the change. <g4>View → Dark Mode support</g4> and <g5>Always dark</g5> switch between its light and dark side.",
    "text": "两秒钟内，它会显示在<g1>视图 → 主题</g1>中，内置主题下方，由其自身提供的 <x2/> 标识。选择它，整个窗口会立即改变。编辑文件后，在<g3>视图 → 主题</g3>中再次选择它以查看更改。<g4>视图 → 深色模式支持</g4>和<g5>始终为深色</g5>可在其浅色和深色模式之间切换。"
@@ -13817,6 +13913,10 @@
   "ba7398fafefc4533": {
    "source": "Peak memory",
    "text": "内存峰值"
+  },
+  "ba81ef3a5c14665b": {
+   "source": "<g1>Browser extension</g1>: each browser MDM found, with <g2>Add the extension</g2> for it, as in <g3>Browser integration</g3>. Left out when a browser's extension already reached MDM, or in a portable copy.",
+   "text": "<g1>浏览器扩展</g1>：MDM 找到的每个浏览器，都带有 <g2>添加扩展</g2> 按钮，如 <g3>浏览器集成</g3> 所示。如果某个浏览器的扩展已连接到 MDM，或在便携版中，此步骤会被跳过。"
   },
   "ba959f6ef5cd85fd": {
    "source": "Remote control",
@@ -13869,10 +13969,6 @@
   "bb66b5a231ef607c": {
    "source": "<g1>The time</g1> is measured from the download's own connections, as each one opens: MDM sends nothing extra to the server. It is an estimate (the time to open a connection, divided by its round trips: one for http, two for https), so it says <g2>about</g2>. The quickest connection counts.",
    "text": "<g1>时间</g1>是从下载自身的连接中测量的，每个连接打开时都会测量：MDM 不会向服务器发送任何额外数据。这是一个估算值（打开连接所需的时间，除以其往返次数：HTTP 为一次，HTTPS 为两次），因此显示<g2>约</g2>。最快的连接会被计算在内。"
-  },
-  "bb6e18e2b1d6d99a": {
-   "source": "Downloads the extension catches, and <g1>Download with Mister Download Manager</g1> on a link, then go to the server instead of this computer. The browser's cookies are not sent to the server: a download that needs you to be signed in to a site stays with this computer.",
-   "text": "扩展程序捕获的下载任务以及链接上的<g1>使用 Mister Download Manager 下载</g1>，将发送到服务器而不是此电脑。浏览器的 Cookie 不会发送到服务器：需要您登录网站才能进行的下载任务仍将保留在此电脑上。"
   },
   "bb7ddff510dd3161": {
    "source": "If your network gives a proxy auto-config (PAC) script, type its address, or pick the file, under <g1>Use automatic configuration script</g1>. MDM fetches it and asks it which way each download goes (<x2/>, <x3/> or <x4/>), as browsers do. Until it has been fetched, or if it can't be, MDM uses the system's settings.",
@@ -14133,10 +14229,6 @@
   "bf124e15a5fd6568": {
    "source": "Open the first menu (<g1>Tasks</g1>); on a Mac <g2>Ctrl+F2</g2>",
    "text": "打开第一个菜单（<g1>任务</g1>）；在Mac上是<g2>Ctrl+F2</g2>"
-  },
-  "bf1c4ba30d7b2674": {
-   "source": "<g1>Customize MDM Download panels in browsers → Edit...</g1> — the download button over videos on web pages: turn it off, choose its <g2>Button size</g2> (<g3>Automatic</g3>, as installed: only the logo, the arrow and ✕ in a feed and over a small player, its words over a big one; <g4>Full</g4>, its words wherever they fit; or <g5>Compact</g5>, only the logo, the arrow and ✕ on every video), or list the sites it never shows on (separate them by spaces; wildcards like <x6/>, <x7/> or <x8/> work). See <g9>Browser integration</g9>.",
-   "text": "<g1>自定义浏览器中的 MDM 下载面板 → 编辑...</g1> — 网页视频上的下载按钮：您可以关闭它，选择其<g2>按钮大小</g2>（<g3>自动</g3>，默认安装：在信息流和小型播放器上只显示徽标、箭头和 ✕，在大型播放器上显示文字；<g4>完整</g4>，只要空间允许就显示文字；或<g5>紧凑</g5>，在所有视频上只显示徽标、箭头和 ✕），或列出它从不显示的网站（用空格分隔；<x6/>、<x7/> 或 <x8/> 等通配符有效）。请参阅<g9>浏览器集成</g9>。"
   },
   "bf34a44f6d2c1b84": {
    "source": "For Ubuntu, Debian, Mint and Pop!_OS: <x1/>. It brings the libraries MDM needs.",
@@ -14477,10 +14569,6 @@
   "c454f486bae227dd": {
    "source": "A 180 GB download that unpacks to 200 GB normally needs 380 GB: the archive and its files at once. With <g1>HatchZip</g1>, a free extractor, installed, tick <g2>Extract in place with HatchZip</g2> in <g3>Options → Archives</g3>: the archive shrinks as its files come out, so a little over 200 GB is enough. HatchZip checks that everything fits and that the password is right before it changes anything. If it stops partway, the files so far stay beside the archive and <g4>Extract</g4> continues.",
    "text": "一个 180 GB 的下载文件，如果解压后是 200 GB，通常需要 380 GB 的空间：即压缩包和解压后的文件同时存在。安装免费解压工具 <g1>HatchZip</g1> 后，在<g3>选项 → 压缩包</g3> 中勾选<g2>使用 HatchZip 原地解压</g2>：压缩包会在文件解压出来时缩小，因此略多于 200 GB 的空间就足够了。HatchZip 会在进行任何更改之前检查所有文件是否能容纳以及密码是否正确。如果中途停止，已解压的文件会保留在压缩包旁边，<g4>解压</g4> 操作可以继续。"
-  },
-  "c45503a700d34859": {
-   "source": "<g1>Turn it off, make it smaller, or see the sites it stays off</g1>: <g2>Options → General → Customize MDM Download panels in browsers → Edit...</g2>. <g3>Button size</g3> is <g4>Automatic</g4> as installed (round in a feed and over a small player, its words over a big one), <g5>Full</g5> (its words wherever they fit) or <g6>Compact</g6> (only MDM's logo, the arrow and <g7>✕</g7>, on every video, as on a small one); after a click it still says what happened in words. Pages already open follow a change within a few seconds, without a reload.",
-   "text": "<g1>关闭它、缩小它，或查看它不显示的网站</g1>：<g2>选项 → 常规 → 自定义浏览器中的 MDM 下载面板 → 编辑...</g2>。<g3>按钮大小</g3> 默认安装时为<g4>自动</g4>（在信息流和小型播放器上为圆形，在大型播放器上显示文字），<g5>完整</g5>（只要能容纳就显示文字）或<g6>紧凑</g6>（在所有视频上仅显示 MDM 的徽标、箭头和 <g7>✕</g7>，如同在小型视频上）；点击后，它仍然会用文字说明发生了什么。已打开的页面会在几秒钟内跟随更改，无需重新加载。"
   },
   "c45a317f4447914b": {
    "source": "WinGet downloads the setup and installs MDM without the setup's questions.",
@@ -14902,10 +14990,6 @@
    "source": "In IDM, choose <g1>Tasks → Export → To IDM export file</g1>. In MDM, choose <g2>Tasks → Import → From IDM export file</g2> and pick that <x3/> file. Each download comes over with its address, the page it came from (its referrer) and its cookies. The downloads join the <g4>Main download queue</g4>, ready to start.",
    "text": "在 IDM 中，选择<g1>任务 → 导出 → 导出到 IDM 文件</g1>。在 MDM 中，选择<g2>任务 → 导入 → 从 IDM 导出文件</g2>并选择该 <x3/> 文件。每个下载任务都会带着地址、来源页面（其 referrer）和 Cookie。下载任务会加入<g4>主下载队列</g4>，准备开始。"
   },
-  "c9f7c3a70c225d2f": {
-   "source": "Windows 10 and 11 is the main platform, on 64-bit PCs (x64); from the version after 0.5.2, on Windows on ARM PCs and 32-bit Windows 10 too, each with files of its own. Linux is supported too, with an AppImage, a .deb, an .rpm and a .tar.gz in every release: since version 0.5.0 it isn't experimental any more, and it is checked on GNOME, KDE Plasma, Xfce and Cinnamon, in Wayland sessions too, and its packages in clean Ubuntu, Debian and Fedora systems. Still to come there: the Flatpak Firefox isn't checked yet, and screen readers (Orca) don't read MDM's windows yet. macOS builds (.dmg) come with every release too, and stay experimental. See <g1>Windows, Mac and Linux</g1> and <g2>Download</g2>.",
-   "text": "Windows 10 和 11 是主要平台，支持 64 位 PC (x64)；从 0.5.2 版本之后，也支持基于 ARM 的 Windows PC 和 32 位 Windows 10，每个版本都有各自的文件。Linux 也受支持，每个版本都提供 AppImage、.deb、.rpm 和 .tar.gz 文件：自 0.5.0 版本起，Linux 支持不再是实验性的，并且已在 GNOME、KDE Plasma、Xfce 和 Cinnamon 环境（包括 Wayland 会话）中进行测试，其软件包已在纯净的 Ubuntu、Debian 和 Fedora 系统中验证。Linux 方面仍有待改进：Flatpak Firefox 尚未经过测试，屏幕阅读器 (Orca) 尚无法读取 MDM 的窗口。macOS 版本 (.dmg) 也随每个版本发布，但仍处于实验阶段。请参阅<g1>Windows、Mac 和 Linux</g1>以及<g2>下载</g2>。"
-  },
   "ca0e326ce66aa589": {
    "source": "<g1>Aero</g1>: Windows 7's look: glossy buttons that turn light blue under the pointer, quiet check boxes, a glossy green progress bar, a glassy title bar with the title on a soft glow (on Windows), and glossy icons drawn for MDM in that manner.",
    "text": "<g1>Aero</g1>：Windows 7 的外观：光泽按钮，指针悬停时变为浅蓝色，低调的复选框，光泽绿色进度条，玻璃质感标题栏，标题带有柔和光晕（在 Windows 上），以及为 MDM 绘制的光泽图标。"
@@ -15166,6 +15250,10 @@
    "source": "The help names Windows' screen readers, Narrator and NVDA. If you use a screen reader on Linux or macOS, please <g1>tell us how it goes</g1>.",
    "text": "帮助文档中提到了 Windows 的屏幕阅读器 Narrator 和 NVDA。如果您在 Linux 或 macOS 上使用屏幕阅读器，请<g1>告诉我们使用情况</g1>。"
   },
+  "cd6525d4afc20d70": {
+   "source": "<g1>Turn it off, make it smaller, or see the sites it stays off</g1>: <g2>Options → General → Customize MDM Download panels in browsers → Edit...</g2>. <g3>Button size</g3> has a <g4>80%</g4>, <g5>100%</g5> or <g6>120%</g6> scale beside it, and is <g7>Automatic</g7> as installed (round in a feed and over a small player, its words over a big one), <g8>Full</g8> (its words wherever they fit) or <g9>Compact</g9> (only MDM's logo, the arrow and <g10>✕</g10>, on every video, as on a small one); after a click it still says what happened in words. Pages already open follow a change within a few seconds, without a reload.",
+   "text": "<g1>关闭它、缩小它或查看它不显示的网站</g1>：<g2>选项 → 常规 → 自定义浏览器中的 MDM 下载面板 → 编辑...</g2>。<g3>按钮大小</g3>旁边有<g4>80%</g4>、<g5>100%</g5>或<g6>120%</g6>的比例，安装时为<g7>自动</g7>（在信息流和小型播放器上为圆形，在大型播放器上显示文字），<g8>完整</g8>（文字在任何合适的地方显示）或<g9>紧凑</g9>（仅显示 MDM 的标志、箭头和<g10>✕</g10>，在每个视频上，如同在小型视频上）；点击后，它仍然会用文字说明发生了什么。已打开的页面会在几秒钟内跟随更改，无需重新加载。"
+  },
   "cd673e3701cb16c6": {
    "source": "<g1>Allow more than 32 connections</g1> — raises the most to 128, for the number above and for the exceptions. Most servers allow far fewer from one address; MDM notices and asks those for fewer. Turned off again, any higher number comes back to 32.",
    "text": "<g1>允许超过 32 个连接</g1> — 将上方设置和例外中的最大连接数提高到 128。大多数服务器允许来自同一地址的连接数远少于此值；MDM 会检测到这一点，并向这些服务器请求较少的连接数。再次关闭此选项后，任何超过 32 的数字都会恢复为 32。"
@@ -15325,10 +15413,6 @@
   "cff4eab6a41db11c": {
    "source": "How do I download a video from YouTube or another site? — Mister Download Manager",
    "text": "如何从 YouTube 或其他网站下载视频？— Mister Download Manager"
-  },
-  "cff5ebbbf76816bf": {
-   "source": "The windows are drawn with OpenGL (eframe's glow) or with the system's own graphics API through eframe's wgpu, with that one backend only: Direct3D 12 on Windows (the default there), Vulkan on Linux, Metal on macOS (choices there; OpenGL stays their default until real graphics cards have tried them, #206). View → Draw with picks one, from the next start. One code path does it on every system (<x1/>): when the chosen one can't start, the other one is tried, so the windows always open. A watched start with the system's API leaves a marker until its first frame is drawn: a start that ends before it (a crash inside the driver), one whose first frame doesn't come within 10 seconds (MDM then starts again with OpenGL), or a graphics card lost twice in 10 minutes is remembered with its reason, which the menu shows. With OpenGL, a window eframe can't paint (its context can't be made current on it, its frame can't be shown) is skipped and painted again 100 ms later; one whose paints keep failing for seconds is a lost device too (MDM starts again; twice in 10 minutes, OpenGL is remembered as failing on Windows). The fork's eframe tells MDM through its viewport hooks (<x2/>, #1448).",
-   "text": "窗口通过 OpenGL（eframe 的 glow）或通过 eframe 的 wgpu 使用系统自己的图形 API 绘制，且仅使用该后端：Windows 上的 Direct3D 12（默认），Linux 上的 Vulkan，macOS 上的 Metal（这些是选项；OpenGL 仍是它们的默认设置，直到真正的显卡尝试过它们，#206）。“视图”→“绘制方式”选择一个，从下次启动开始生效。一个代码路径在每个系统上都这样做（<x1/>）：当选择的那个无法启动时，会尝试另一个，因此窗口总是能打开。使用系统 API 的受监控启动会留下一个标记，直到其第一帧被绘制：如果启动在此之前结束（驱动程序内部崩溃），如果第一帧在 10 秒内未出现（MDM 随后会使用 OpenGL 重新启动），或者显卡在 10 分钟内丢失两次，则会记住其原因，并在菜单中显示。使用 OpenGL 时，eframe 无法绘制的窗口（其上下文无法在其上设置为当前，其帧无法显示）会被跳过，并在 100 毫秒后再次绘制；如果一个窗口的绘制持续失败数秒，它也被视为丢失设备（MDM 重新启动；如果在 10 分钟内发生两次，OpenGL 在 Windows 上被记住为失败）。fork 的 eframe 通过其视口钩子通知 MDM（<x2/>，#1448）。"
   },
   "d00db779505eaf02": {
    "source": "<g1>Don't show pop-ups while a full-screen app or presentation is running</g1> — on by default. While a full-screen game, app or video, a presentation or the locked screen is on, <g2>Download complete</g2> and the other windows MDM opens by itself wait, and show when you're back, one after the other in the order they came: <g3>Downloads complete</g3>, a new version found by the weekly check, the download limit's warning, an archive's test result, its password question or its call for 7-Zip, the browser extension's offer, a link copied to the clipboard, and the crash report. The downloads carry on as usual, and the tray icon's tip says how many windows wait. The windows you open yourself, links you click in the browser and the <g4>Turn off computer</g4> countdown (so you can still cancel it) show at once. On Windows MDM goes by the state Windows holds its own notifications by (games, presentation mode, full-screen apps and videos), by a frameless window that fills its whole screen in front (on any of your screens), and by the screen's lock; on Linux by the session's lock, and by a full-screen window under X11 or XWayland (on Wayland, a native program's full screen can't be seen). On macOS a full-screen app has a Space of its own, which MDM's windows never open over. Untick it and the windows show at once, as before.",
@@ -15586,6 +15670,10 @@
    "source": "on Windows), and MDM follows each new wallpaper's colours within two seconds. <g1>The guide</g1> shows which colour goes where.",
    "text": "在 Windows 上），MDM 会在两秒内跟随每个新壁纸的颜色。<g1>指南</g1>会显示每种颜色对应的位置。"
   },
+  "d3922793116d61af": {
+   "source": "<g1>Limits.</g1> Both sites let only so many requests through from a computer without an account (GitHub 60 an hour). When the limit is reached, the address's row says <g2>Try again later</g2>, and its tip says for how long.",
+   "text": "<g1>限制。</g1> 两个站点都只允许没有帐户的计算机发出一定数量的请求（GitHub 每小时 60 个）。当达到限制时，地址行会显示<g2>稍后重试</g2>，其提示会显示持续时间。"
+  },
   "d394340a01c7d63d": {
    "source": "Gopeed",
    "text": "Gopeed"
@@ -15797,6 +15885,10 @@
   "d5eaf42248247319": {
    "source": "<g1>The queues</g1>: start and stop each one.",
    "text": "<g1>队列</g1>：启动和停止每个队列。"
+  },
+  "d5f27029858206e6": {
+   "source": "Paste one of these addresses in <g1>Add URL</g1> (<g2>Ctrl+N</g2>), or in Link grabber with <g3>Ctrl+V</g3> (copied, imported or dropped works too):",
+   "text": "将以下地址之一粘贴到<g1>添加 URL</g1>（<g2>Ctrl+N</g2>）中，或通过<g3>Ctrl+V</g3>粘贴到链接抓取器中（复制、导入或拖放也同样有效）："
   },
   "d5f572f1d13e144c": {
    "source": "Fair",
@@ -16018,6 +16110,10 @@
    "source": "<g1>Credentials stay with their site.</g1> Logins and cookies are sent only to the host they belong to, even across redirects.",
    "text": "<g1>凭据仅用于对应的网站。</g1>登录信息和 Cookie 只会发送到所属主机，即使经过重定向也是如此。"
   },
+  "d9665014ce0669b0": {
+   "source": "On Windows, when OpenGL fails on a card without Direct3D 12, MDM draws with Direct3D on Microsoft's software renderer (WARP) from the next start, and <g1>View → Draw with</g1> says why: OpenGL couldn't start, it is too old to draw MDM (older than 3.0, such as Intel's first HD Graphics, whose OpenGL 2.1 drew MDM's windows as garbage), its first window didn't show within 10 seconds, MDM froze inside the graphics driver while OpenGL showed a frame (the older Intel HD Graphics and AMD Radeon cards' drivers did), or MDM crashed inside it (<g2>OpenGL crashed inside its driver here</g2>). Choosing <g3>OpenGL</g3> there tries it again; so does a graphics driver update.",
+   "text": "在 Windows 上，当没有 Direct3D 12 的显卡上 OpenGL 失败时，MDM 会在下次启动时使用 Microsoft 软件渲染器 (WARP) 上的 Direct3D 绘制，并且<g1>视图 → 绘制方式</g1>会说明原因：OpenGL 无法启动，它太旧无法绘制 MDM（低于 3.0，例如 Intel 的第一代 HD Graphics，其 OpenGL 2.1 将 MDM 窗口绘制成乱码），它的第一个窗口在 10 秒内未显示，MDM 在 OpenGL 显示帧时在图形驱动程序内部冻结（较旧的 Intel HD Graphics 和 AMD Radeon 显卡驱动程序曾出现此情况），或者 MDM 在其内部崩溃（<g2>OpenGL 在此处其驱动程序内崩溃</g2>）。选择<g3>OpenGL</g3>会再次尝试；更新图形驱动程序也会如此。"
+  },
   "d9686c3ea1ff4f0a": {
    "source": "Install the extension from its page in the Chrome Web Store, <g1>Mister Download Manager</g1>: click <g2>Add to Chrome</g2>. In Edge the button is <g3>Get</g3>: Edge first asks to <g4>Allow extensions from other stores</g4> (click <g5>Allow</g5>), then <g6>Add extension</g6>. The browser keeps it updated. MDM's <g7>Add Mister Download Manager to your browser</g7> window opens that page in each browser for you, and Chrome may offer it by itself at its next start once MDM is installed.",
    "text": "从 Chrome 网上应用店的 <g1>Mister Download Manager</g1> 页面安装扩展：点击<g2>添加到 Chrome</g2>。在 Edge 中，按钮显示为<g3>获取</g3>：Edge 会先询问是否<g4>允许来自其他商店的扩展</g4>（点击<g5>允许</g5>），然后再询问是否<g6>添加扩展</g6>。浏览器会自动更新此扩展。MDM 的<g7>将 Mister Download Manager 添加到您的浏览器</g7>窗口会为您在每个浏览器中打开该页面。安装 MDM 后，Chrome 也可能会在下次启动时自动提供此扩展。"
@@ -16053,10 +16149,6 @@
   "da1944611f1b4a60": {
    "source": "<g1>Off by default</g1>, and nothing listens while it is off.",
    "text": "<g1>默认关闭</g1>，关闭时没有任何监听。"
-  },
-  "da1ff3527672bb25": {
-   "source": "These three are for 64-bit Windows on an Intel or AMD processor (x64), the usual PC. From the version after 0.5.2, each comes for two more kinds of PC too, with the processor in its name:",
-   "text": "这三个版本适用于配备 Intel 或 AMD 处理器（x64）的 64 位 Windows 电脑，即常见的 PC。从 0.5.2 版本之后，每个版本还支持另外两种 PC，处理器类型在其名称中注明："
   },
   "da24d37fd1911825": {
    "source": "<g1>The .deb and .rpm bring what MDM's window needs</g1> (part of <g2>#164</g2>): on a system without libxkbcommon-x11 (a minimal install, a container), MDM installed from them stopped at start under X11 and XWayland, and without the CA certificates (Debian's minimal install) no download started. They now require both, and EGL for Wayland windows. They also require the glibc the programs were built against, read from the programs themselves, instead of a fixed version: a package built on a newer system no longer installs on an older one where it can't start.",
@@ -16225,6 +16317,10 @@
   "dc31d8975851fca3": {
    "source": "Windows: no more crash when a screen is unplugged, turned off or rearranged while MDM runs (<g1>#335</g1>).",
    "text": "Windows：在 MDM 运行时，当屏幕被拔下、关闭或重新排列时，不再发生崩溃（<g1>#335</g1>）。"
+  },
+  "dc4198e428ea091f": {
+   "source": "Windows on ARM · 32-bit Windows",
+   "text": "Windows on ARM · 32 位 Windows"
   },
   "dc773cbdc650469f": {
    "source": "Site rules",
@@ -16486,10 +16582,6 @@
    "source": "<g1><g2></g2>0.03 s</g1><g3></g3>",
    "text": "<g1><g2></g2>0.03 秒</g1><g3></g3>"
   },
-  "e12c33d490b22dd0": {
-   "source": "The single-instance channel (a token-protected local socket), the data folder, and the capture rules shared by the app and the host",
-   "text": "应用和主机共享的单实例通道（受令牌保护的本地套接字）、数据文件夹和捕获规则"
-  },
   "e1369e1deca0e4ec": {
    "source": "The passwords (these, the proxy's and the debrid accounts') are kept in the system's keychain: Windows Credential Manager, the keyring on Linux (Secret Service: GNOME Keyring, KeePassXC and others) or the macOS keychain; MDM's settings keep only a reference. A locked keyring is never unlocked for MDM: without one, they stay in MDM's settings, sealed for your Windows account on Windows. <g1>Options → Accounts</g1> says where they are. A <g2>portable copy</g2> keeps them in its own folder.",
    "text": "密码（这些密码、代理密码和网盘账户密码）保存在系统的钥匙串中：Windows 凭据管理器、Linux 上的密钥环（Secret Service：GNOME Keyring、KeePassXC 及其他）或 macOS 钥匙串；MDM 的设置仅保留一个引用。锁定的密钥环绝不会为 MDM 解锁：如果没有密钥环，它们将保留在 MDM 的设置中，并在 Windows 上为您的 Windows 账户加密。<g1>选项 → 账户</g1>会说明它们的位置。<g2>便携版</g2>会将它们保存在自己的文件夹中。"
@@ -16633,6 +16725,10 @@
   "e3189b0a3f2c9f86": {
    "source": "Video downloads",
    "text": "视频下载"
+  },
+  "e3201638dbf3d7bf": {
+   "source": "<g1>Without the setup</g1> (a zip copy, Linux, macOS): the first start's setup window opens at its <g2>Language</g2> step: every language with its flag and its own name. Click yours and the window switches to it at once.",
+   "text": "<g1>免安装版</g1>（zip 压缩包、Linux、macOS）：首次启动时，设置窗口会在<g2>语言</g2>步骤打开，显示所有语言及其旗帜和本语种名称。点击您的语言，窗口会立即切换到该语言。"
   },
   "e34726ffae8c3bba": {
    "source": "What's new — Mister Download Manager version history",
@@ -16825,6 +16921,10 @@
   "e58722e22694ceea": {
    "source": "Browser extension that sends downloads to a download manager",
    "text": "将下载发送到下载管理器的浏览器扩展"
+  },
+  "e58c3a79f2c454b5": {
+   "source": "A Hugging Face model or dataset (or a folder of one, at a revision) and a GitHub release or tag given to Link grabber (#1772, <x1/>) are listed through the sites' public APIs: the revision is first made its commit, then the tree is read page by page (<x2/>, the same API's only), each entry's path taken only when it is a relative path of plain names inside the folder asked (<x3/>: no <x4/>, absolute path, drive or device name), matched by its names; a file's address is built from the repository, the commit and those names, never taken from the answer. Each file keeps its size and the SHA-256 the site publishes (an LFS file's, a release asset's <x5/>), which becomes the download's checksum. The app makes one package whose folder is the address's path under the download folder, each file in its own folders inside it (<x6/>), unticked; Sites Logins' password for <x7/> goes as an access token (<x8/>) to Hugging Face's own hosts only. The lab server plays both APIs (<x9/>): pages, a gated repository, hostile paths, a wrong digest and rate limits.",
+   "text": "Hugging Face 模型或数据集（或其某个修订版本中的文件夹）以及通过链接抓取器 (#1772, <x1/>) 提供的 GitHub 发布或标签，都通过站点的公共 API 列出：首先将修订版本转换为其提交，然后逐页读取树 (<x2/>，仅使用相同的 API)，仅当条目路径是所请求文件夹内纯名称的相对路径时才获取该路径 (<x3/>：没有 <x4/>、绝对路径、驱动器或设备名称)，并按其名称匹配；文件地址由仓库、提交和这些名称构建，绝不从响应中获取。每个文件都保留其大小和站点发布的 SHA-256（LFS 文件或发布资产的 <x5/>），这成为下载的校验和。应用程序会创建一个软件包，其文件夹是下载文件夹下地址的路径，每个文件都在其内部的各自文件夹中 (<x6/>)，未勾选；站点登录中 <x7/> 的密码作为访问令牌 (<x8/>) 仅发送到 Hugging Face 自己的主机。实验室服务器同时扮演这两个 API (<x9/>)：页面、受限仓库、恶意路径、错误的摘要和速率限制。"
   },
   "e58fc606693e6852": {
    "source": "Website",
@@ -17930,6 +18030,10 @@
    "source": "The list shows the order they will run in. Use the arrow buttons under it to move a download up or down.",
    "text": "列表显示了它们将运行的顺序。使用下面的箭头按钮可以向上或向下移动下载。"
   },
+  "f3a2e46b32aaef2c": {
+   "source": "The quickest way is MDM's own copy of Node.js: click <g1>Install Node.js</g1> beside that message, or, in <g2>Helpers...</g2>, <g3>Install Node.js</g3> in the <g4>JavaScript runtime (for YouTube)</g4> row. The first start's setup offers it too, in its <g5>Video helpers</g5> step, when your computer has no runtime. MDM downloads Node.js's newest long-term support (LTS) build for your system and processor from <g6>nodejs.org</g6> with its own downloader (about 40 MB on Windows, 60 MB on Linux and macOS; Windows x64, ARM64 and 32-bit, Linux x64 and ARM64, macOS), checks the release's checksum list against the signing keys of Node.js's releasers and the download against that list before it uses it, keeps only the <x7/> program in the <x8/> folder beside yt-dlp and ffmpeg, and from then on tells yt-dlp to use it. It keeps it up to date the way it keeps yt-dlp's (<g9>Keeping them up to date</g9>), never with an older version. 32-bit Windows gets the newest LTS line Node.js still builds for it, 22, which Node.js supports until April 2027; after that MDM has no Node.js for 32-bit Windows, and a runtime of your own (<g10>Use another program...</g10>) is needed there. MDM never installs a Node.js older than the LTS line current when that MDM was made, whatever nodejs.org's list says. The video is looked up again by itself once Node.js is in.",
+   "text": "最快的方法是使用 MDM 自带的 Node.js：点击消息旁边的<g1>安装 Node.js</g1>，或者在<g2>帮助程序…</g2>中，点击<g4>JavaScript 运行时（用于 YouTube）</g4>行中的<g3>安装 Node.js</g3>。首次启动设置时，如果您的电脑没有运行时，也会在<g5>视频助手</g5>步骤中提供此选项。MDM 会使用自己的下载器从<g6>nodejs.org</g6>下载适用于您的系统和处理器的最新长期支持（LTS）版 Node.js（Windows 上约 40 MB，Linux 和 macOS 上约 60 MB；支持 Windows x64、ARM64 和 32 位，Linux x64 和 ARM64，macOS），在使用前会根据 Node.js 发布者的签名密钥检查发布版本的校验和列表，并根据该列表检查下载文件，只将<x7/>程序保留在 yt-dlp 和 ffmpeg 旁边的<x8/>文件夹中，然后指示 yt-dlp 使用它。它会像更新 yt-dlp 一样保持其最新状态（<g9>保持最新</g9>），绝不会使用旧版本。32 位 Windows 会获得 Node.js 仍为其构建的最新 LTS 版本 22，Node.js 将支持到 2027 年四月；此后 MDM 将不再为 32 位 Windows 提供 Node.js，届时需要您自己提供运行时（<g10>使用其他程序…</g10>）。无论 nodejs.org 的列表如何显示，MDM 绝不会安装比该 MDM 发布时更旧的 LTS 版本 Node.js。Node.js 安装完成后，视频将自动重新查找。"
+  },
   "f3a43b64feb190bf": {
    "source": "Only one program can listen on port 9666. If JDownloader is running, MDM says so: close it, then turn the option off and on again.",
    "text": "只有一个程序可以监听 9666 端口。如果 JDownloader 正在运行，MDM 会提示：请关闭它，然后再次关闭并打开该选项。"
@@ -17986,6 +18090,10 @@
    "source": "A greyed icon's ink (its end)",
    "text": "置灰图标的墨色（结束）"
   },
+  "f471814e3a16b4a2": {
+   "source": "Last updated 2026-11-27 · applies to the app, the browser extension and misterdownloadmanager.com",
+   "text": "最后更新日期：2026年11月27日 · 适用于应用程序、浏览器扩展和 misterdownloadmanager.com"
+  },
   "f47d19d2ae313a6b": {
    "source": "<g1>MDM as an IDM alternative</g1><g2>Spot something wrong? Tell us</g2>",
    "text": "<g1>MDM 作为 IDM 的替代品</g1><g2>发现错误？告诉我们</g2>"
@@ -18022,6 +18130,10 @@
    "source": "What's new in version 0.2.3 <g1>2026-11-01</g1>",
    "text": "0.2.3 版更新内容 <g1>2026-11-01</g1>"
   },
+  "f511bff33b320d10": {
+   "source": "These three are for 64-bit Windows on an Intel or AMD processor (x64), the usual PC. From version 0.6.0, each comes for two more kinds of PC too, with the processor in its name:",
+   "text": "这三个版本适用于配备英特尔或 AMD 处理器 (x64) 的 64 位 Windows 电脑，即常见的 PC。从 0.6.0 版本开始，每个版本还支持另外两种 PC，处理器类型在其名称中注明："
+  },
   "f54ce429a109d5fe": {
    "source": "<g1>Metro</g1>, after Windows 8's flat look: square corners, flat buttons, boxes that take an accent border when focused, check boxes with a tick, a bordered progress bar, scroll bars with their arrows always shown, one-colour icons (Microsoft's Fluent UI System Icons, MIT) and a title bar in the theme's colour with the title centred.",
    "text": "<g1>现代</g1>，仿照 Windows 8 的扁平化外观：方角、扁平按钮、获得焦点时带有强调色边框的方框、带勾选标记的复选框、带边框的进度条、始终显示箭头的滚动条、单色图标（Microsoft 的 Fluent UI System Icons，MIT 许可）以及主题色标题栏，标题居中显示。"
@@ -18057,10 +18169,6 @@
   "f5d0db4c9a23ece3": {
    "source": "<g1><g2>Adding downloads</g2></g1> — Add URL, the clipboard, the drop target, batch downloads and lists of links, and Start Download versus Download Later.",
    "text": "<g1><g2>添加下载</g2></g1> — 介绍“添加 URL”、剪贴板、拖放目标、批量下载和链接列表，以及“开始下载”与“稍后下载”的区别。"
-  },
-  "f5e911e1675285c5": {
-   "source": "Add the extension to each browser you use, as below: Firefox from its add-ons store, the others from the Chrome Web Store. Until a browser's extension has reached MDM, MDM's <g1>Add Mister Download Manager to your browser</g1> window opens at each start: it lists the browsers it found, and <g2>Add the extension</g2> opens the store's page in that browser. <g3>Install it by hand</g3> opens the steps for loading it without the store; <g4>Don't ask again</g4> stops the window.",
-   "text": "按照以下说明，将扩展程序添加到您使用的每个浏览器：Firefox 从其附加组件商店获取，其他浏览器从 Chrome 网上应用店获取。在浏览器的扩展程序连接到 MDM 之前，MDM 的<g1>将 Mister Download Manager 添加到您的浏览器</g1>窗口会在每次启动时打开：它会列出找到的浏览器，<g2>添加扩展</g2>会在该浏览器中打开商店页面。<g3>手动安装</g3>会打开不通过商店加载扩展程序的步骤；<g4>不再询问</g4>会关闭此窗口。"
   },
   "f6014e24fd45ae66": {
    "source": "What is signed",
@@ -18210,10 +18318,6 @@
    "source": "The site isn't in <g1>Don't start downloading automatically from the following sites</g1>, nor the address in <g2>Don't start downloading automatically from the following addresses</g2>.",
    "text": "该网站不在<g1>不从以下网站自动开始下载</g1>中，地址也不在<g2>不从以下地址自动开始下载</g2>中。"
   },
-  "f89c54d71eb189a4": {
-   "source": "If the graphics card is reset while MDM runs (a driver update), MDM starts again by itself. Lost twice in 10 minutes, it goes back to OpenGL, and <g1>View → Draw with</g1> says why.",
-   "text": "如果 MDM 运行时显卡被重置（例如驱动程序更新），MDM 会自行重新启动。如果在 10 分钟内两次丢失，它会回到 OpenGL，并且“<g1>视图 → 绘制方式</g1>”会显示原因。"
-  },
   "f8b52274ed125d5f": {
    "source": "Tick <g1>Wake the computer to run this queue</g1> and a sleeping computer is woken a minute before the start time, so the network is back when the queue begins. It stays awake while the queue runs; afterwards its own sleep settings apply again. The line under the option says when the next wake is, or why there can't be one.",
    "text": "勾选<g1>唤醒电脑以运行此队列</g1>，休眠的计算机会在开始时间前一分钟被唤醒，以便在队列开始时网络恢复。队列运行时它会保持唤醒状态；之后会再次应用其自身的睡眠设置。选项下方的文字会说明下次唤醒的时间，或为何无法唤醒。"
@@ -18249,6 +18353,10 @@
   "f941e5b8a498c4f3": {
    "source": "Keeping them up to date",
    "text": "保持最新"
+  },
+  "f968baf33894961a": {
+   "source": "Models, datasets and releases",
+   "text": "模型、数据集和发布"
   },
   "f972a60cffbd9bed": {
    "source": "In <g1>Default download directory for \"General\" category</g1>, click <g2>Browse</g2> and choose a folder on the stick, for example <x3/>.",
@@ -18369,6 +18477,10 @@
   "fa92082584a3b68a": {
    "source": "What IDM still does that MDM doesn't",
    "text": "IDM 仍具备而 MDM 尚未实现的功能"
+  },
+  "fa920a8ffcc67161": {
+   "source": "<g1>Save every download in \"General\" category's folder</g1> — off by default. Ticked, every new download goes to General's folder, whatever its category: from the browser, <g2>Add URL</g2>, <g3>Batch download</g3>, Link grabber, queues, the command line, videos and torrents alike. The categories still sort the list. General's folder is the one to set (choose <g4>General</g4> above); the other categories keep their own folders for when it is off again, shown greyed meanwhile. A single download can still go elsewhere: change its folder in the window that starts it (<g5>Remember this path</g5> then changes General's folder). Downloads already in the list stay where they are.",
+   "text": "<g1>将所有下载保存到“常规”类别的文件夹</g1> — 默认关闭。勾选后，所有新下载（无论是来自浏览器、“<g2>添加 URL</g2>”、“<g3>批量下载</g3>”、链接抓取器、队列、命令行、视频还是种子）都将保存到“常规”文件夹，无论其类别如何。类别仍用于列表排序。“常规”文件夹是需要设置的文件夹（在上方选择<g4>常规</g4>）；其他类别将保留其各自的文件夹，当此选项再次关闭时，这些文件夹将重新启用，在此期间显示为灰色。单个下载仍可保存到其他位置：在启动下载的窗口中更改其文件夹（此时<g5>记住此路径</g5>将更改“常规”文件夹）。列表中已有的下载将保留在原位置。"
   },
   "fa9730d3b67e9b77": {
    "source": "<g1>View → Language...</g1> opens the same list. Type in <g2>Search</g2> to narrow it, then double-click a language. The window switches at once. <g3>Windows' language</g3>, at the top, follows Windows' display language, and falls back to English when MDM doesn't have it.",

@@ -3,6 +3,7 @@
 mod app;
 mod archtest;
 mod batch;
+mod browsericons;
 mod categories;
 mod checksum;
 mod chrome;

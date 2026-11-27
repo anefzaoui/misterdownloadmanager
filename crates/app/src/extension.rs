@@ -26,6 +26,8 @@ use crate::winui::{self, ButtonKind, r};
 const W: f32 = 520.0;
 const BANNER: f32 = 84.0;
 const ROW: f32 = 34.0;
+/// A browser's logo before its name: 16 points, the size of a list's icons.
+const ICON: f32 = 16.0;
 /// Safari's row (macOS), as Options and the native host name it.
 const SAFARI: &str = "Apple Safari";
 
@@ -343,10 +345,23 @@ impl Extension {
             } else {
                 name.as_str()
             };
+            // Its logo before its name, beside the name's line (a globe for one MDM has no logo
+            // for, and for "Your browser").
+            winui::browser_icon(
+                ui,
+                &p,
+                name,
+                program.as_deref(),
+                egui::Rect::from_min_size(
+                    egui::pos2(o.x + 22.0, o.y + y + 4.0),
+                    egui::vec2(ICON, ICON),
+                ),
+                muted,
+            );
             let name_rc = winui::text_font(
                 &p,
                 winui::tahoma_bold(),
-                o.x + 22.0,
+                o.x + 22.0 + ICON + 7.0,
                 o.y + y + 16.0,
                 shown_name,
                 ink,
