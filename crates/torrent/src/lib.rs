@@ -5496,7 +5496,9 @@ mod tests {
 
     /// A link to `to` on loopback that the test cuts and restores, as a network that drops
     /// and comes back: cut, its connections are closed and new ones closed as soon as they are
-    /// accepted (a dial on a dead network fails at once). Every dial through it is counted.
+    /// accepted (a dial on a dead network fails at once). Every dial through it is counted
+    /// once it was decided: a dial counted while cut was refused already, whatever the test
+    /// does next.
     struct Link {
         addr: SocketAddr,
         up: tokio::sync::watch::Sender<bool>,
@@ -5514,10 +5516,12 @@ mod tests {
             let (state, counter) = (up.subscribe(), dials.clone());
             tokio::spawn(async move {
                 while let Ok((mut down, _)) = listener.accept().await {
-                    counter.fetch_add(1, Ordering::SeqCst);
                     if !*state.borrow() {
+                        drop(down);
+                        counter.fetch_add(1, Ordering::SeqCst);
                         continue;
                     }
+                    counter.fetch_add(1, Ordering::SeqCst);
                     let mut state = state.clone();
                     tokio::spawn(async move {
                         let Ok(mut peer) = tokio::net::TcpStream::connect(to).await else {
@@ -5555,6 +5559,25 @@ mod tests {
             assert!(std::time::Instant::now() < deadline, "never {what}: {s:?}");
             tokio::time::sleep(Duration::from_millis(20)).await;
         }
+    }
+
+    /// Once `done` holds, polled; it fails after `secs`.
+    async fn until(what: &str, secs: u64, done: impl Fn() -> bool) {
+        let deadline = std::time::Instant::now() + Duration::from_secs(secs);
+        while !done() {
+            assert!(std::time::Instant::now() < deadline, "never {what}");
+            tokio::time::sleep(Duration::from_millis(20)).await;
+        }
+    }
+
+    /// `t`'s torrent `h`'s peers by their state in librqbit: (queued, connecting, live, dead).
+    /// It tells when a refused dial was taken as a failure, which the link can't.
+    fn peer_states(t: &Torrents, h: &str) -> (u32, u32, u32, u32) {
+        let s = t.session.get(id(h).unwrap()).unwrap().stats();
+        s.live.map_or((0, 0, 0, 0), |l| {
+            let p = &l.snapshot.peer_stats;
+            (p.queued, p.connecting, p.live, p.dead)
+        })
     }
 
     /// ikatson/rqbit#363: a network that drops (Wi-Fi, sleep, a VPN switching) kills every peer
@@ -5604,44 +5627,55 @@ mod tests {
             .add(&torrent, &out, None, vec![link.addr], false)
             .await
             .unwrap();
-        wait_for(&leecher, &h, "downloading", 30, |s| s.done >= 64 * 1024).await;
+        // Downloading from the peer: while the torrent is first checked, `done` counts the
+        // bytes checked (the whole size within moments, with nothing on disk), so `done` alone
+        // could read as a download that was over before the cut.
+        wait_for(&leecher, &h, "downloading", 30, |s| {
+            s.phase == Phase::Downloading && s.peers_live == 1 && s.fetched >= 64 * 1024
+        })
+        .await;
 
-        // The network drops: the peer dies, and its retry (10-20 s later) fails, so the next
-        // one is a minute or more away.
+        // The network drops: the peer dies, and its retry (10-20 s later) is refused, so the
+        // next one is a minute or more away. Each stage waits for the session to have taken
+        // the failure (the peer dead, nothing dialing), never for a span of time.
         link.up.send_replace(false);
-        let cut = wait_for(&leecher, &h, "without its peer", 10, |s| s.peers_live == 0).await;
+        let dead = || peer_states(&leecher, &h) == (0, 0, 0, 1);
+        until("the peer dead after the cut", 10, dead).await;
+        let cut = leecher.stats(&h).unwrap();
         let dials_at_cut = link.dials();
-        let deadline = std::time::Instant::now() + Duration::from_secs(40);
-        while link.dials() == dials_at_cut {
-            assert!(
-                std::time::Instant::now() < deadline,
-                "the peer was never dialed again during the cut"
-            );
-            tokio::time::sleep(Duration::from_millis(50)).await;
-        }
+        until("the peer dialed again during the cut", 40, || {
+            link.dials() > dials_at_cut
+        })
+        .await;
+        until("the retry taken as refused", 10, dead).await;
+        // Bytes received, not `done`: a piece received before the cut may still be written
+        // and checked after it.
         let stalled = leecher.stats(&h).unwrap();
-        assert_eq!(stalled.done, cut.done, "nothing came around the cut");
+        assert_eq!(stalled.fetched, cut.fetched, "nothing came around the cut");
 
-        // Back: on its own the torrent stays stalled (the peer's backoff runs on).
+        // Back: on its own the torrent stays stalled (the peer's backoff runs on). An absence
+        // has no signal to wait for: 2 s are watched, and a slow computer can't bring the
+        // next retry (60 s or more after the refusal) into them.
         link.up.send_replace(true);
         let dials = link.dials();
         tokio::time::sleep(Duration::from_secs(2)).await;
         assert_eq!(
-            leecher.stats(&h).unwrap().done,
-            stalled.done,
+            leecher.stats(&h).unwrap().fetched,
+            stalled.fetched,
             "still stalled"
         );
         assert_eq!(link.dials(), dials, "no dial without the change");
 
-        // Told: the dead peer is dialed at once, and the download goes on.
+        // Told: the dead peer is dialed at once, and the download goes on: within 20 s, where
+        // its backoff would have waited a minute or more.
         let told = std::time::Instant::now();
         assert!(leecher.session.network_changed(), "the change acted");
-        wait_for(&leecher, &h, "downloading again", 5, |s| {
-            s.done > stalled.done
+        wait_for(&leecher, &h, "downloading again", 20, |s| {
+            s.fetched > stalled.fetched
         })
         .await;
         let resumed = told.elapsed();
-        wait_for(&leecher, &h, "well on again", 15, |s| {
+        wait_for(&leecher, &h, "well on again", 30, |s| {
             s.done >= stalled.done + 128 * 1024
         })
         .await;
