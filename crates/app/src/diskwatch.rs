@@ -235,7 +235,10 @@ mod tests {
         assert!(ours.contains("theme::read_font"), "{ours}");
         assert!(ours.contains("theme.rs:724"), "{ours}");
         assert!(ours.contains("mdm_engine::x"), "{ours}");
-        assert!(!ours.contains("diskwatch") && !ours.contains("open_native"), "{ours}");
+        assert!(
+            !ours.contains("diskwatch") && !ours.contains("open_native"),
+            "{ours}"
+        );
         assert!(our_frames("   0: ntdll!x\n").contains("no frames"));
     }
 

@@ -569,6 +569,12 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 Everything below ships together, in version 0.6.0, the next release.
 
+- ✅ The window no longer freezes while an antivirus scans a file MDM opens
+  ([#1292](https://github.com/anefzaoui/misterdownloadmanager/issues/1292); thanks to
+  [@seifmoustafa](https://github.com/seifmoustafa) and
+  [@fernandopeguero](https://github.com/fernandopeguero)): fonts, archive tests, Options' look
+  for 7-Zip, theme files and sounds are read beside the window, and test builds log any file
+  the window's thread opens
 - ✅ A download's progress window can start minimized: **Options → Downloads → Customize
   "Download progress" dialog → Edit...** offers **Show normally**, **Show minimized** and
   **Don't show** ([#1966](https://github.com/anefzaoui/misterdownloadmanager/issues/1966); thanks to

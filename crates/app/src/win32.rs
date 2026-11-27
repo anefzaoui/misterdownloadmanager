@@ -9290,62 +9290,97 @@ mod classic_text {
     pub struct Glyphs {
         factory: IDWriteFactory2,
         dir: PathBuf,
-        /// The font files opened so far; `None` for one DirectWrite can't use.
-        faces: HashMap<PathBuf, Option<IDWriteFontFace>>,
     }
 
     // SAFETY: DirectWrite's shared factory and the objects it makes are free-threaded
     // (documented thread-safe); `Glyphs` is only used behind a Mutex.
     unsafe impl Send for Glyphs {}
 
+    /// A font file opened by DirectWrite; `None` for one it can't use.
+    struct Face(Option<IDWriteFontFace>);
+
+    // SAFETY: DirectWrite's objects are free-threaded (documented thread-safe).
+    unsafe impl Send for Face {}
+
+    /// The font files opened so far, for every rasterizer made (one is made again with each
+    /// change of the text's look): each file is opened once.
+    static FACES: std::sync::Mutex<Option<HashMap<PathBuf, Face>>> = std::sync::Mutex::new(None);
+
+    /// Open `full` as a DirectWrite face (this reads the file).
+    fn open_face(factory: &IDWriteFactory2, full: &std::path::Path) -> Option<IDWriteFontFace> {
+        // A .ttc holds a collection: the face egui draws with too (#1483).
+        let collection = full
+            .extension()
+            .is_some_and(|e| e.eq_ignore_ascii_case("ttc"));
+        let index = if collection {
+            crate::theme::font_face_index(full)
+        } else {
+            0
+        };
+        let path: Vec<u16> = full.as_os_str().encode_wide().chain([0]).collect();
+        // SAFETY: `path` is NUL-terminated and outlives the calls; plain COM calls.
+        unsafe {
+            let font = factory
+                .CreateFontFileReference(windows::core::PCWSTR(path.as_ptr()), None)
+                .ok()?;
+            factory
+                .CreateFontFace(
+                    if collection {
+                        DWRITE_FONT_FACE_TYPE_TRUETYPE_COLLECTION
+                    } else {
+                        DWRITE_FONT_FACE_TYPE_TRUETYPE
+                    },
+                    &[Some(font)],
+                    index,
+                    DWRITE_FONT_SIMULATIONS_NONE,
+                )
+                .ok()
+        }
+    }
+
+    /// Keep `file`'s face (the first one kept, when two were opened at once).
+    fn keep_face(file: PathBuf, face: Option<IDWriteFontFace>) -> Option<IDWriteFontFace> {
+        FACES
+            .lock()
+            .unwrap_or_else(|e| e.into_inner())
+            .get_or_insert_with(HashMap::new)
+            .entry(file)
+            .or_insert(Face(face))
+            .0
+            .clone()
+    }
+
     impl Glyphs {
         pub fn new(dir: PathBuf) -> windows::core::Result<Glyphs> {
             // SAFETY: a plain COM call.
             let factory: IDWriteFactory2 =
                 unsafe { DWriteCreateFactory(DWRITE_FACTORY_TYPE_SHARED)? };
-            Ok(Glyphs {
-                factory,
-                dir,
-                faces: HashMap::new(),
-            })
+            Ok(Glyphs { factory, dir })
         }
 
+        /// `file`'s face, once opened. Once the window draws, a file not opened yet is opened
+        /// beside its thread (#1292, `theme::beside`), and egui draws its letters until then.
         fn face(&mut self, file: &std::path::Path) -> Option<IDWriteFontFace> {
-            let factory = self.factory.clone();
-            let full = file.to_path_buf();
-            self.faces
-                .entry(full.clone())
-                .or_insert_with(|| {
-                    // A .ttc holds a collection: the face egui draws with too (#1483).
-                    let collection = full
-                        .extension()
-                        .is_some_and(|e| e.eq_ignore_ascii_case("ttc"));
-                    let index = if collection {
-                        crate::theme::font_face_index(&full)
-                    } else {
-                        0
-                    };
-                    let path: Vec<u16> = full.as_os_str().encode_wide().chain([0]).collect();
-                    // SAFETY: `path` is NUL-terminated and outlives the calls; plain COM calls.
-                    unsafe {
-                        let font = factory
-                            .CreateFontFileReference(windows::core::PCWSTR(path.as_ptr()), None)
-                            .ok()?;
-                        factory
-                            .CreateFontFace(
-                                if collection {
-                                    DWRITE_FONT_FACE_TYPE_TRUETYPE_COLLECTION
-                                } else {
-                                    DWRITE_FONT_FACE_TYPE_TRUETYPE
-                                },
-                                &[Some(font)],
-                                index,
-                                DWRITE_FONT_SIMULATIONS_NONE,
-                            )
-                            .ok()
-                    }
-                })
-                .clone()
+            if let Some(known) = FACES
+                .lock()
+                .unwrap_or_else(|e| e.into_inner())
+                .as_ref()
+                .and_then(|faces| faces.get(file))
+            {
+                return known.0.clone();
+            }
+            if crate::theme::beside::started() {
+                let file = file.to_path_buf();
+                crate::theme::beside::run(format!("face {}", file.display()), move || {
+                    // SAFETY: a plain COM call (the process's shared factory).
+                    let factory: Option<IDWriteFactory2> =
+                        unsafe { DWriteCreateFactory(DWRITE_FACTORY_TYPE_SHARED).ok() };
+                    let face = factory.and_then(|f| open_face(&f, &file));
+                    keep_face(file, face);
+                });
+                return None;
+            }
+            keep_face(file.to_path_buf(), open_face(&self.factory, file))
         }
 
         /// The face and glyph id for `ch`: the family's own face first (the chosen file, for the
