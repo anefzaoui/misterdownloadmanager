@@ -1,8 +1,8 @@
 # Roadmap
 
-What's done for version 0.5.2, what's being built, and what's planned. Each item links to its
-issue, where the details and the discussion are. Released changes are in
-[CHANGELOG.md](CHANGELOG.md). Bug reports are welcome in
+What's in version 0.5.2, what's done for version 0.6.0, what's being built, and what's
+planned. Each item links to its issue, where the details and the discussion are. Released
+changes are in [CHANGELOG.md](CHANGELOG.md). Bug reports are welcome in
 [Issues](https://github.com/anefzaoui/misterdownloadmanager/issues), ideas in
 [Discussions](https://github.com/anefzaoui/misterdownloadmanager/discussions/categories/ideas).
 
@@ -565,10 +565,44 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
   ([#311](https://github.com/anefzaoui/misterdownloadmanager/issues/311))
 - ✅ The Download video button on YouTube in Chrome, Edge, Brave, Opera and Vivaldi
 
-## Done since 0.5.2
+## Version 0.6.0
 
-These ship in the next version.
+Everything below ships together, in version 0.6.0, the next release.
 
+- ✅ Each browser's logo before its name in the browser extension's window, the first start's
+  browser step and Options → General's browser list, sharp at every display scale; a globe for a
+  browser without one
+- ✅ Icons where they help recognition, second part
+  ([#2008](https://github.com/anefzaoui/misterdownloadmanager/issues/2008)): drop-down lists with
+  icons (the categories' in Download File Info and Options → Save to, the queues' in Download
+  later, the browsers' logos in Sites Logins' cookies list); a drawn mark before error and warning
+  lines; one empty-list block (icon, title, what goes there) for RSS feeds, Accounts, Site rules,
+  the Scheduler's files, Add torrent and Link grabber
+- ✅ Icons where they help recognition, first part
+  ([#2008](https://github.com/anefzaoui/misterdownloadmanager/issues/2008)): a status icon before
+  each download's status in the list and the tray panel, in every theme (a theme's own, else
+  MDM's); drawn check and cross marks in Test browser integration and beside "Installed" and
+  "Connected", with the browser's logo on its line; file-type icons in the tray panel; the
+  helpers' role icons in the Helpers window, a new one for gallery-dl
+- 📋 Icons where they help recognition, the rest of
+  [#2008](https://github.com/anefzaoui/misterdownloadmanager/issues/2008): icons in combo boxes
+  (categories, queues, the cookies' browser), message lines, empty lists and the smaller touches
+- ✅ The browser add-on's **Download video** button can be scaled (**80%**, **100%**, **120%**) beside **Button size** in **Options → General → Download panels**, keeps free interior positions when dragged anywhere over the player, offers **Hide the download button in full screen** directly in its menu, and respects DOM full-screen hiding inside embedded frames
+  ([#1923](https://github.com/anefzaoui/misterdownloadmanager/issues/1923))
+- ✅ The first start's setup in one window: the language, the video helpers (each with its own
+  Install button and progress) and the browser extension as steps with Back and Next; the
+  language switches the window at once, steps not needed are left out, any can be passed, and it
+  doesn't come back once done. On Linux under X11 the window belongs to the main window
+  ([#1839](https://github.com/anefzaoui/misterdownloadmanager/issues/1839))
+- ✅ CodeQL no longer reads the windows' control names as salts or passwords: the shared drawing
+  helpers call a control's name `id` and a box that hides its text `masked`; nothing changes on
+  screen
+- ✅ Windows: the tiny window MDM's window toolkit keeps for its own messages is made far off the
+  screens, not at the top left of the main screen. It was never drawn, but programs that list
+  windows saw it there, and MDM's off-screen test runs left it on the screen
+- ✅ Windows: a graphics driver reset no longer keeps MDM off Direct3D 12 for a month: a start
+  just after it that finds no graphics card yet isn't remembered, and the next start draws on the
+  card again ([#1974](https://github.com/anefzaoui/misterdownloadmanager/issues/1974))
 - ✅ Sinhala: about a hundred texts reworded and the missing ones translated (thanks to [@ShammiSandaruwan](https://github.com/ShammiSandaruwan))
 - ✅ **Browser add-on:** send all and selected links to the paired server when another MDM is chosen ([#1596](https://github.com/anefzaoui/misterdownloadmanager/issues/1596), [PR #1602](https://github.com/anefzaoui/misterdownloadmanager/pull/1602))
 - ✅ Windows: closing a dialog of the main window's with **OK**, after bringing it back with
@@ -630,6 +664,21 @@ These ship in the next version.
   ([#1826](https://github.com/anefzaoui/misterdownloadmanager/issues/1826))
 - ✅ Galleries: file paths are checked more carefully
 - ✅ Helpers: ffmpeg's download is checked more carefully
+- ✅ Torrents: a torrent made from a folder lists its files by name, the same on every computer
+- ✅ Tests: the check that the torrent session asks trackers through MDM's own client no longer
+  fails now and then on a busy machine (seen on the Linux test machine): its test tracker noted
+  each request after answering it, so the redirected request could be noted first; it now notes
+  each one before answering
+- ✅ Torrents: the engine's upstream fixes brought in ahead of its release: pieces announced as
+  they finish, trackers asked at the interval they ask for, one failing tracker no longer stops
+  the others, a paused torrent keeps every finished piece, UTF-8 file names (`name.utf-8`,
+  `path.utf-8`), the command line's torrents on Windows past a file another program has open,
+  a file's progress past an empty file, and several torrents added at once without waiting for
+  each other
+- ✅ Torrents: downloads pick up within seconds when the network comes back (Wi-Fi, sleep, VPN),
+  instead of staying stalled: the peers that dropped with it are called again once, at once, and
+  the trackers and the DHT asked again
+- ✅ Torrents: a paused torrent's finished pieces are saved before MDM quits
 - ✅ Torrents: the engine checks what it's sent more carefully
 - ✅ Extracting: 7z and RAR archives are checked more carefully
 - ✅ Archive test: archives are checked more carefully
@@ -2195,6 +2244,9 @@ These ship in the next version.
   computer receives, so the download's own check keeps to what the user sees (no stall, no
   connection dropped), and the save rule is checked at every speed on the test disk's own clock
   ([#1633](https://github.com/anefzaoui/misterdownloadmanager/issues/1633))
+- ✅ Tests: the download checks on 32-bit Windows no longer stop halfway now and then: the
+  largest test downloads (up to 1 GiB) are compared with what they should hold a piece at a
+  time, instead of both whole in memory at once, which a 32-bit test program couldn't always fit
 
 ## Being worked on
 

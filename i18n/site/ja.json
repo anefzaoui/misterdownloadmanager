@@ -870,6 +870,10 @@
    "source": "<g1>On Linux</g1>, Chrome-family browsers keep the key to their cookies in the system's keyring (GNOME Keyring, KWallet); yt-dlp asks it, so it must be unlocked.",
    "text": "<g1>Linux</g1> では、Chrome ファミリーのブラウザーは Cookie のキーをシステムのキーリング (GNOME Keyring、KWallet) に保持します。yt-dlp はそれを要求するため、ロックが解除されている必要があります。"
   },
+  "0b208bcb1380dcda": {
+   "source": "MDM runs on 64-bit Linux with a desktop session. It is tested on Ubuntu 24.04, Debian 12 and Fedora, with GNOME, KDE Plasma, Xfce and Cinnamon, on X11 and in Wayland sessions. Pick one of these files (up to version 0.2.4, their names end in <x1/>, as in <x2/>). From version 0.6.0, each also comes for 64-bit ARM computers, with <x3/> in place of <x4/> (<x5/>); they are built and tested on GitHub's ARM machines. On ARM, MDM doesn't download gallery-dl itself (its author builds none for it): install it with your system's packages or pip.",
+   "text": "MDM は、デスクトップ セッションを備えた 64 ビット Linux で動作します。Ubuntu 24.04、Debian 12、Fedora で、GNOME、KDE Plasma、Xfce、Cinnamon を使用し、X11 および Wayland セッションでテストされています。これらのファイルの中から 1 つを選択してください (バージョン 0.2.4 までは、ファイル名の末尾は <x1/> で、<x2/> のようになります)。バージョン 0.6.0 以降、それぞれ 64 ビット ARM コンピューター用も提供され、<x4/> の代わりに <x3/> (<x5/>) が記載されています。これらは GitHub の ARM マシンでビルドおよびテストされています。ARM では、MDM は gallery-dl 自体をダウンロードしません (作者が ARM 用をビルドしていないため)。システムのパッケージまたは pip でインストールしてください。"
+  },
   "0b2740fc08d56719": {
    "source": "A <x1/> from an issue:",
    "text": "問題からの<x1/>："
@@ -941,6 +945,10 @@
   "0bf05d42ffbd0dfa": {
    "source": "<g1>The DNS you choose.</g1> With a DNS other than the system's in <g2>Options → Connection → DNS</g2> (Cloudflare, Google, Quad9, AdGuard, NextDNS or your own), MDM asks it, over HTTPS, TLS or TCP, for the addresses of the servers it downloads from. That service sees those names and your IP address, under its own privacy terms.",
    "text": "<g1>選択した DNS。</g1> <g2>オプション → 接続 → DNS</g2> でシステム以外の DNS (Cloudflare、Google、Quad9、AdGuard、NextDNS、または独自の DNS) を選択した場合、MDM は HTTPS、TLS、または TCP 経由で、ダウンロード元のサーバーのアドレスをその DNS に問い合わせます。このサービスは、その DNS 自身のプライバシー規約に基づき、これらの名前と IP アドレスを認識します。"
+  },
+  "0bfe58d5a6061e7d": {
+   "source": "Open <g1>View → Language...</g1>. The same list as on the first start opens: every language by its flag, its own name and its English name. Type in <g2>Search</g2> to narrow the list, then double-click a language or select it and click <g3>OK</g3>. The window switches at once; there is nothing to restart.",
+   "text": "<g1>表示 → 言語...</g1> を開きます。最初の起動時と同じリストが表示されます。各言語がその旗、自国語名、英語名で表示されます。<g2>検索</g2>に入力してリストを絞り込み、言語をダブルクリックするか、選択して<g3>OK</g3>をクリックします。ウィンドウはすぐに切り替わり、再起動は不要です。"
   },
   "0c04a7480c3b5e9c": {
    "source": "The remote control is off until you turn it on. It answers only the devices you paired, each removable at once in Options, and listens only on the computer's private network addresses, never on one the internet can reach. Everything goes over HTTPS, and web pages can't use it.",
@@ -1057,6 +1065,10 @@
   "0dac0eca06d7747e": {
    "source": "<g1>pywal's <x2/></g1>, or any program's file in pywal's shape (wallust's pywal template).",
    "text": "<g1>pywal の <x2/></g1>、または pywal の形式のプログラム ファイル (wallust の pywal テンプレート)。"
+  },
+  "0dacc2e40c7f2886": {
+   "source": "<g1>Remember this path for \"…\" category</g1> — tick it to make the folder you typed the category's folder from now on. With <g2>Save every download in \"General\" category's folder</g2> ticked in <g3>Options → Save to</g3>, every download starts in General's folder, and this box names General: the folder you typed becomes the one for every download.",
+   "text": "<g1>「…」カテゴリにこのパスを記憶する</g1> — これをオンにすると、入力したフォルダーが今後そのカテゴリのフォルダーになります。<g3>オプション → 保存先</g3>で<g2>すべてのダウンロードを「一般」カテゴリのフォルダーに保存する</g2>がオンになっている場合、すべてのダウンロードは一般のフォルダーで開始され、このボックスは一般の名前になります。入力したフォルダーがすべてのダウンロードのフォルダーになります。"
   },
   "0db8fa73ad59b887": {
    "source": "macOS <g1>11 and later</g1>",
@@ -1209,6 +1221,10 @@
   "1058e8be7cc50b7e": {
    "source": "High contrast",
    "text": "ハイ コントラスト"
+  },
+  "105e2af4dcf1adc9": {
+   "source": "Last updated 2026-11-27",
+   "text": "最終更新日: 2026-11-27"
   },
   "10825ce1e4e377bf": {
    "source": "Tasks → Import → From IDM export file",
@@ -1405,6 +1421,10 @@
   "12d5cecab885caa3": {
    "source": "a live stream still being recorded (<g1>Recording a live stream</g1>);",
    "text": "まだ録画中のライブ ストリーム（<g1>ライブ ストリームを録画中</g1>）。"
+  },
+  "12dd621d59ebfd7e": {
+   "source": "MDM asks the site's public API for the list of files and opens Link grabber with all of them in one package: each file with its size and the folder it is in, <g1>unticked</g1>, so you tick only what you need (the package's box ticks them all). Its <g2>Save to</g2> is the address's path under your download folder (<g3>Options → Save to</g3>), and each file keeps its folder inside it: <x4/> of <x5/> goes to <x6/>, a dataset's files under <x7/>, a release's under <x8/>. A folder of a repository keeps its place in it (<x9/>), so files you take later from another folder land beside it. <g10>Start</g10> or <g11>Add to queue</g11> adds them as one group, with one summary when the last is done.",
+   "text": "MDM はサイトの公開 API にファイルのリストを要求し、それらすべてを 1 つのパッケージとしてリンク グラバーを開きます。各ファイルはサイズとフォルダーとともに<g1>チェックなし</g1>で表示されるため、必要なものだけをチェックします (パッケージのボックスをチェックするとすべてがチェックされます)。その<g2>保存先</g2>は、ダウンロード フォルダー (<g3>オプション → 保存先</g3>) の下のアドレスのパスであり、各ファイルはその中にフォルダーを保持します。<x4/> の <x5/> は <x6/> に、データセットのファイルは <x7/> の下に、リリースのファイルは <x8/> の下に保存されます。リポジトリのフォルダーは、その中の場所を保持します (<x9/>)。そのため、後で別のフォルダーから取得したファイルは、その横に保存されます。<g10>開始</g10>または<g11>キューに追加</g11>は、それらを 1 つのグループとして追加し、最後のファイルが完了したときに 1 つの概要が表示されます。"
   },
   "12ed54fb5407aa89": {
    "source": "The website has <x1/> and <x2/>, and every help page as Markdown, for AI tools.",
@@ -1866,6 +1886,10 @@
    "source": "Ctrl+Space",
    "text": "Ctrl+Space"
   },
+  "18ed20e992d45d9d": {
+   "source": "<g1>Coming with version 0.6.0</g1> <g2>It's in the source code now, not yet in the download (version 0.5.2).</g2>",
+   "text": "<g1>バージョン 0.6.0 で登場</g1> <g2>現在ソース コードには含まれていますが、ダウンロード (バージョン 0.5.2) にはまだ含まれていません。</g2>"
+  },
   "1909586657a6c8d0": {
    "source": "Flag",
    "text": "フラグ"
@@ -1889,6 +1913,10 @@
   "19686779e1123d73": {
    "source": "To open the page by the server's name (<x1/>), give MDM that name: <x2/> (several: separated by commas). Other names are refused, so that no web page can reach MDM through a name of its own.",
    "text": "サーバー名（<x1/>）でページを開くには、MDMにその名前を<x2/>として指定します（複数ある場合はカンマで区切ります）。他の名前は拒否されるため、どのウェブページも独自の名前でMDMにアクセスすることはできません。"
+  },
+  "196da1f2253e1052": {
+   "source": "<g1>Straight from the sites.</g1> Files come from Hugging Face's and GitHub's own servers, never through a mirror, through MDM's own connections, speed limits and proxy, like any download.",
+   "text": "<g1>サイトから直接。</g1> ファイルは Hugging Face と GitHub 独自のサーバーから取得され、ミラーを介することはなく、他のダウンロードと同様に MDM 独自の接続、速度制限、プロキシを介して取得されます。"
   },
   "197a78fedd5b9b66": {
    "source": "It isn't offered with <g1>Only a part</g1>: a part has no chapters.",
@@ -1918,6 +1946,10 @@
    "source": "What the stores count, and what people wrote in their own words and languages. Every quote is exact and links to where it was written.",
    "text": "ストアの評価と、ユーザーが自分の言葉で書いたレビューです。すべての引用は正確で、元の記述にリンクしています。"
   },
+  "19ab8e362b37c9c3": {
+   "source": "Install one, or download them all at once; Next leaves them for later.",
+   "text": "1 つをインストールするか、すべてを一度にダウンロードします。［次へ］をクリックすると、後でダウンロードできます。"
+  },
   "19af82a4564bc92c": {
    "source": "Downloads no longer fail with \"part file still in use\" on a busy computer.",
    "text": "ビジー状態のコンピューターで「part file still in use」というエラーでダウンロードが失敗することはなくなりました。"
@@ -1941,6 +1973,10 @@
   "1a1c4d85605e18ae": {
    "source": "<g1>Alt+Enter</g1> always opens <g2>Properties</g2>.",
    "text": "<g1>Alt+Enter</g1>を押すと、常に<g2>プロパティ</g2>が開きます。"
+  },
+  "1a1dff89e0e39768": {
+   "source": "The windows are drawn with OpenGL (eframe's glow) or with the system's own graphics API through eframe's wgpu, with that one backend only: Direct3D 12 on Windows (the default there), Vulkan on Linux, Metal on macOS (choices there; OpenGL stays their default until real graphics cards have tried them, #206). View → Draw with picks one, from the next start. One code path does it on every system (<x1/>): when the chosen one can't start, the other one is tried, so the windows always open. A watched start with the system's API leaves a marker until its first frame is drawn: a start that ends before it (a crash inside the driver), one whose first frame doesn't come within 10 seconds (MDM then starts again with OpenGL), or a graphics card lost twice in 10 minutes is remembered with its reason, which the menu shows. A way that can't start within 10 minutes of a lost card isn't remembered: its driver may still be resetting (#1974: Direct3D 12 then finds only WARP), so the next start tries it again. With OpenGL, a window eframe can't paint (its context can't be made current on it, its frame can't be shown) is skipped and painted again 100 ms later; one whose paints keep failing for seconds is a lost device too (MDM starts again; twice in 10 minutes, OpenGL is remembered as failing on Windows). On Windows, a freeze or a crash whose report shows the window's or the crashed thread inside OpenGL's driver is remembered too, by the crash report's window (<x2/>), from the stack's modules (#847, #1659). The fork's eframe tells MDM through its viewport hooks (<x3/>, #1448).",
+   "text": "ウィンドウは、OpenGL (eframe の glow) または eframe の wgpu を介したシステムのグラフィック API を使用して描画されます。使用されるバックエンドは 1 つのみです。Windows では Direct3D 12 (既定)、Linux では Vulkan、macOS では Metal (選択可能ですが、実際のグラフィック カードで試されるまでは OpenGL が既定です、#206)。表示 → 描画方法 で次回の起動時から 1 つを選択します。すべてのシステムで 1 つのコード パスがこれを実行します (<x1/>)。選択されたものが起動できない場合、別のものが試行されるため、ウィンドウは常に開きます。システムの API で監視された起動は、最初のフレームが描画されるまでマーカーを残します。それより前に終了する起動 (ドライバー内部でのクラッシュ)、最初のフレームが 10 秒以内に表示されない起動 (MDM はその後 OpenGL で再起動します)、または 10 分以内にグラフィック カードが 2 回失われた場合、その理由が記憶され、メニューに表示されます。カードが失われてから 10 分以内に起動できない方法は記憶されません。そのドライバーがまだリセット中である可能性があるため (#1974: Direct3D 12 は WARP のみを見つけます)、次回の起動時に再度試行されます。OpenGL の場合、eframe が描画できないウィンドウ (そのコンテキストをカレントにできない、そのフレームを表示できない) はスキップされ、100 ミリ秒後に再度描画されます。数秒間描画が失敗し続けるウィンドウもデバイスの喪失と見なされます (MDM は再起動します。10 分以内に 2 回発生した場合、OpenGL は Windows で失敗したと記憶されます)。Windows では、フリーズまたはクラッシュ レポートでウィンドウまたはクラッシュしたスレッドが OpenGL のドライバー内部にあることが示された場合も、クラッシュ レポートのウィンドウ (<x2/>) によって、スタックのモジュールから記憶されます (#847, #1659)。フォークの eframe は、そのビューポート フック (<x3/>, #1448) を介して MDM に通知します。"
   },
   "1a2a843c29753c86": {
    "source": "A greyed menu item",
@@ -2410,6 +2446,10 @@
    "source": "— implicit FTPS, port 990 unless the address gives another.",
    "text": "— 暗黙的FTPS、アドレスで指定されていない限りポート990。"
   },
+  "2082e4251623ff9a": {
+   "source": "Coming with version 0.6.0",
+   "text": "バージョン 0.6.0 で対応予定"
+  },
   "20901417c69e606b": {
    "source": "Issues",
    "text": "課題"
@@ -2810,6 +2850,10 @@
    "source": "<g1>1</g1> of 10",
    "text": "10件中<g1>1</g1>件"
   },
+  "2562f2727d097aa3": {
+   "source": "Or one folder for all of them",
+   "text": "すべてのファイルを 1 つのフォルダーに"
+  },
   "257acee667e62714": {
    "source": "Which sites",
    "text": "対応サイト"
@@ -2913,6 +2957,10 @@
   "26ae5fbaf85f0fa2": {
    "source": "The portable copy of MDM runs from any folder, including a USB stick, without installing anything.",
    "text": "MDM のポータブル版は、USB スティックを含む任意のフォルダーから、何もインストールせずに実行できます。"
+  },
+  "26b88fbdb888bcea": {
+   "source": "If the graphics card is reset while MDM runs (a driver update), MDM starts again by itself. Lost twice in 10 minutes, it goes back to OpenGL, and <g1>View → Draw with</g1> says why. If the card isn't back yet when MDM starts again, that start draws another way (OpenGL, or WARP), and the next start tries the card again.",
+   "text": "MDM の実行中にグラフィック カードがリセットされた場合 (ドライバーの更新など)、MDM は自動的に再起動します。10 分以内に 2 回失われた場合、OpenGL に戻り、<g1>表示 → 描画方法</g1> にその理由が表示されます。MDM が再起動したときにカードがまだ戻っていない場合、その起動では別の方法 (OpenGL または WARP) で描画し、次回の起動でカードを再試行します。"
   },
   "26e744828e520145": {
    "source": "The main window in the Breeze theme",
@@ -3022,10 +3070,6 @@
    "source": "Up to 128 connections per file, re-split as they go",
    "text": "1ファイルにつき最大128接続、進行中に再分割"
   },
-  "2826420ef85a1bcf": {
-   "source": "Open <g1>View → Language...</g1>. The same window as on the first start opens: every language by its flag, its own name and its English name. Type in <g2>Search</g2> to narrow the list, then double-click a language or select it and click <g3>OK</g3>. The window switches at once; there is nothing to restart.",
-   "text": "<g1>表示 → 言語...</g1>を開きます。初回起動時と同じウィンドウが開き、各言語が国旗、自国語名、英語名とともに表示されます。<g2>検索</g2>に入力して一覧を絞り込み、言語をダブルクリックするか、選択して<g3>OK</g3>をクリックします。ウィンドウはすぐに切り替わるため、再起動する必要はありません。"
-  },
   "282685fe5e7ae3c6": {
    "source": "<g1>Click'n'Load</g1> buttons on link sites, once you turn it on. See <g2>Click'n'Load</g2>.",
    "text": "有効にすると、リンク サイトの <g1>Click'n'Load</g1> ボタンが使えるようになります。<g2>Click'n'Load</g2> を参照してください。"
@@ -3102,10 +3146,6 @@
    "source": "Requests",
    "text": "リクエスト数"
   },
-  "2909bef12c6c1a15": {
-   "source": "Left empty, <g1>Save to</g1> puts each file in its category's folder (<g2>Options → Save to</g2>). To put every file of the batch in one folder, type it there or choose it with <g3>...</g3>. Then click <g4>OK</g4>.",
-   "text": "<g1>保存先</g1>を空欄にすると、各ファイルはカテゴリのフォルダーに保存されます (<g2>オプション → 保存先</g2>)。バッチ内のすべてのファイルを 1 つのフォルダーに保存するには、そこにパスを入力するか、<g3>...</g3> で選択します。次に、<g4>OK</g4> をクリックします。"
-  },
   "292621fe40d7beca": {
    "source": "Every video starts ticked. Untick the ones you don't want, or use <g1>Select all</g1> and <g2>Select none</g2>. Private and deleted videos are greyed out and can't be ticked.",
    "text": "すべての動画は最初から選択されています。不要な動画の選択を解除するか、<g1>すべて選択</g1>または<g2>選択解除</g2>を使用します。非公開または削除済みの動画はグレー表示され、選択できません。"
@@ -3149,6 +3189,10 @@
   "2a014824bb4f981c": {
    "source": "Disabled text, the one grey of every greyed control and label",
    "text": "無効なテキスト、グレー表示されたすべてのコントロールとラベルのグレー"
+  },
+  "2a0f36d71bedb1bb": {
+   "source": "<g1>A GitHub release</g1>: <x2/>, or <x3/> for the newest one. A tag without a release lists its source code.",
+   "text": "<g1>GitHub のリリース</g1>: <x2/>、または最新のものは <x3/>。リリースなしのタグは、そのソース コードを一覧表示します。"
   },
   "2a1c06f26ea84eee": {
    "source": "<g1>pywal itself:</g1> once <x2/> has run, <g3>View → Theme</g3> lists <g4>pywal</g4>, read straight from where pywal writes its colours: <x5/> (on Windows <x6/>, where winwal and pywal write it; <x7/> or <x8/> when you set them). Pick it and MDM follows your wallpaper: each time <x9/> writes new colours, MDM takes them within two seconds. It looks only at the file's date and size, every two seconds, and only while pywal is the theme. A copy added with <g10>Add a theme file…</g10> keeps the colours it had.",
@@ -3245,10 +3289,6 @@
   "2b1f05dd303b4a14": {
    "source": "<g1>Resume capability</g1> — <g2>Yes</g2> if the server lets MDM continue the download later, <g3>No</g3> if it doesn't.",
    "text": "<g1>再開機能</g1> — サーバーがMDMによるダウンロードの継続を許可する場合は<g2>はい</g2>、許可しない場合は<g3>いいえ</g3>。"
-  },
-  "2b32b47b6f8a0433": {
-   "source": "<g1>Remember this path for \"…\" category</g1> — tick it to make the folder you typed the category's folder from now on.",
-   "text": "<g1>このパスを「…」カテゴリに記憶する</g1> — チェックすると、入力したフォルダーが以後このカテゴリのフォルダーになります。"
   },
   "2b3813b1923fc5e3": {
    "source": "The list covers every display language of Windows 11, including both Chinese scripts, Spanish for Spain and Mexico, French for France and Canada, Portuguese for Portugal and Brazil, and Serbian in Cyrillic and Latin. The <g1>languages page</g1> lists them all.",
@@ -3701,6 +3741,10 @@
   "3119a32ef52a6c93": {
    "source": "A window's headline (Tahoma Bold): the browser extension's, the helpers'",
    "text": "ウィンドウの見出し (Tahoma Bold): ブラウザー拡張機能、ヘルパー"
+  },
+  "311b27709d4b92f5": {
+   "source": "<g1>A model's, a dataset's or a release's files</g1> form one package, whose <g2>Save to</g2> keeps their folders (see <g3>Models, datasets and releases</g3>).",
+   "text": "<g1>モデル、データセット、またはリリースのファイル</g1>は 1 つのパッケージを形成し、その<g2>保存先</g2>はフォルダーを保持します (<g3>モデル、データセット、リリース</g3>を参照)。"
   },
   "313a2ae6414b54cf": {
    "source": "Give Link grabber a folder's address, the way you give it a page's: paste it with <g1>Ctrl+V</g1>, copy it for <g2>Tasks → Add batch download from clipboard</g2>, put it in a list for <g3>Tasks → Import</g3>, or drop it on the download list.",
@@ -4174,6 +4218,10 @@
    "source": "Save To",
    "text": "保存先"
   },
+  "3846da69167664ac": {
+   "source": "<g1>Checked against the site's digest.</g1> Hugging Face publishes a SHA-256 for each large file, GitHub for each release file. MDM checks the finished file against it, as <g2>Verify checksum</g2> does; a file that doesn't match stays unfinished and says so (<g3>the file's SHA-256 checksum doesn't match</g3>), and <g4>Redownload</g4> fetches it again. Small files kept in the repository itself, and a release's source code, have no digest of their own to check.",
+   "text": "<g1>サイトのダイジェストに対してチェックされます。</g1> Hugging Face は各大きなファイルに SHA-256 を公開し、GitHub は各リリース ファイルに SHA-256 を公開します。MDM は、<g2>チェックサムの検証</g2>と同様に、完了したファイルをそれに対してチェックします。一致しないファイルは未完了のままであり、その旨が表示され (<g3>ファイルの SHA-256 チェックサムが一致しません</g3>)、<g4>再ダウンロード</g4>すると再度取得されます。リポジトリ自体に保持されている小さなファイルやリリースのソース コードには、チェックする独自のダイジェストはありません。"
+  },
   "385890444f5eb85e": {
    "source": "Decide exactly how MDM reaches the internet, and see where your files come from.",
    "text": "MDM がインターネットに接続する方法を正確に決定し、ファイルの取得元を確認できます。"
@@ -4534,6 +4582,10 @@
    "source": "<g1>Available on</g1><g2>The official places first</g2>",
    "text": "<g1>入手先</g1><g2>公式の場所から優先</g2>"
   },
+  "3d219d727371d3f9": {
+   "source": "Windows 10 and 11 is the main platform, on 64-bit PCs (x64); from version 0.6.0, on Windows on ARM PCs and 32-bit Windows 10 too, each with files of its own. Linux is supported too, with an AppImage, a .deb, an .rpm and a .tar.gz in every release: since version 0.5.0 it isn't experimental any more, and it is checked on GNOME, KDE Plasma, Xfce and Cinnamon, in Wayland sessions too, and its packages in clean Ubuntu, Debian and Fedora systems. Still to come there: the Flatpak Firefox isn't checked yet, and screen readers (Orca) don't read MDM's windows yet. macOS builds (.dmg) come with every release too, and stay experimental. See <g1>Windows, Mac and Linux</g1> and <g2>Download</g2>.",
+   "text": "Windows 10 と 11 (64 ビット PC (x64)) が主なプラットフォームです。バージョン 0.6.0 以降では、ARM PC 用 Windows と 32 ビット Windows 10 も、それぞれ専用のファイルでサポートされています。Linux もサポートされており、各リリースには AppImage、.deb、.rpm、.tar.gz が含まれています。バージョン 0.5.0 以降、実験的なものではなくなり、GNOME、KDE Plasma、Xfce、Cinnamon (Wayland セッションを含む) で確認済みです。また、クリーンな Ubuntu、Debian、Fedora システムでのパッケージも確認済みです。今後の課題として、Flatpak Firefox はまだ確認されておらず、スクリーン リーダー (Orca) はまだ MDM のウィンドウを読み上げません。macOS ビルド (.dmg) も各リリースに含まれていますが、引き続き実験的なものです。<g1>Windows、Mac、Linux</g1> と <g2>ダウンロード</g2> を参照してください。"
+  },
   "3d4a4f2d1b19754e": {
    "source": "Can I move my downloads over from IDM?",
    "text": "IDMからダウンロードを移行できますか？"
@@ -4622,6 +4674,10 @@
    "source": "Yes. When a video has subtitles, the Subtitles list in the video window offers them: the uploader's languages and the site's automatic captions. They're saved beside the video as an .srt file, or put inside it with Put them into the video. See Subtitles.",
    "text": "はい。動画に字幕がある場合、動画ウィンドウの「字幕」リストに表示されます。投稿者が用意した字幕と、サイトの自動字幕です。字幕は動画と同じフォルダーに .srt ファイルとして保存するか、「ビデオに埋め込む」で動画に埋め込めます。「字幕」を参照してください。"
   },
+  "3e63a6af144ff571": {
+   "source": "From version 0.6.0, the three files come for two more kinds of PC, with the processor in their names: <g1>Windows on ARM</g1> (<x2/>, <x3/>, <x4/>), for PCs with a Snapdragon or another ARM processor, which then run MDM without Windows translating it; and <g5>32-bit Windows 10</g5> (<x6/>, <x7/>, <x8/>). <g9>Update now</g9> keeps each copy on its own processor's files. MDM downloads yt-dlp's own build for each, and ffmpeg's for Windows on ARM; no ffmpeg is built for 32-bit Windows that MDM can check, so there you choose your own in <g10>Helpers...</g10> for the best video qualities. Linux gets its four files for 64-bit ARM computers too (<x11/>).",
+   "text": "バージョン 0.6.0 から、3 種類のファイルがさらに 2 種類の PC 向けに提供され、ファイル名にプロセッサ名が含まれるようになりました。<g1>Windows on ARM</g1> (<x2/>、<x3/>、<x4/>) は、Snapdragon またはその他の ARM プロセッサを搭載した PC 向けで、Windows が翻訳することなく MDM を実行できます。もう 1 つは <g5>32 ビット Windows 10</g5> (<x6/>、<x7/>、<x8/>) 向けです。<g9>今すぐ更新</g9> を実行すると、各コピーはそれぞれのプロセッサのファイルに保たれます。MDM は、それぞれの yt-dlp ビルドと、Windows on ARM 向けの ffmpeg をダウンロードします。MDM が確認できる 32 ビット Windows 向けの ffmpeg はビルドされていないため、最高のビデオ品質を得るには <g10>ヘルパー...</g10> でご自身で選択してください。Linux 向けには、64 ビット ARM コンピューター用の 4 つのファイルも提供されます (<x11/>)。"
+  },
   "3e6e10c300b6b5ce": {
    "source": "For all downloads together",
    "text": "すべてのダウンロードを合計して制限"
@@ -4669,6 +4725,10 @@
   "3ee3f6088b3f3e5a": {
    "source": "<g1>Breeze</g1>, after KDE Plasma's look: rounded corners, buttons and boxes whose edge takes the accent under the pointer or when focused, KDE's check boxes and radio buttons (the accent's edge, a tick in the text's colour), a focus frame, KDE's Breeze icons (LGPL-3.0-or-later) and a title bar in KDE's style: the title centred, round buttons that fill under the pointer (Close in red).",
    "text": "<g1>Breeze</g1>: KDE Plasma の外観に合わせたテーマです。角が丸く、ポインターの下またはフォーカス時にアクセント カラーのエッジが表示されるボタンとボックス、KDE のチェック ボックスとラジオ ボタン (アクセントのエッジ、テキストの色でチェック マーク)、フォーカス フレーム、KDE の Breeze アイコン (LGPL-3.0-or-later) を使用し、KDE スタイルのタイトル バーを備えています。タイトルは中央に配置され、ポインターの下で塗りつぶされる丸いボタン (［閉じる］は赤) があります。"
+  },
+  "3f11ebeb619b7f7f": {
+   "source": "ARM64",
+   "text": "ARM64"
   },
   "3f2b96cbf359bd4a": {
    "source": "The volumes of one split archive (<x1/>, <x2/> and so on) form one package, the other links of a page another, and the rest go into <g3>Various files</g3>. Tick a package to take all its links. Each package has its own folder, an archive password, and <g4>Extract when done</g4>.",
@@ -4970,10 +5030,6 @@
    "source": "Links that work only once no longer fail with \"403 Forbidden\".",
    "text": "一度しか機能しないリンクが「403 Forbidden」というエラーで失敗することはなくなりました。"
   },
-  "436b61c80c90a696": {
-   "source": "Windows 10 and 11 is the main platform, on 64-bit PCs (x64); from the version after 0.5.2, on Windows on ARM PCs and 32-bit Windows 10 too, each with files of its own. Linux is supported too, with an AppImage, a .deb, an .rpm and a .tar.gz in every release: since version 0.5.0 it isn't experimental any more, and it is checked on GNOME, KDE Plasma, Xfce and Cinnamon, in Wayland sessions too, and its packages in clean Ubuntu, Debian and Fedora systems. Still to come there: the Flatpak Firefox isn't checked yet, and screen readers (Orca) don't read MDM's windows yet. macOS builds (.dmg) come with every release too, and stay experimental. See Windows, Mac and Linux and Download.",
-   "text": "Windows 10 および 11 が主要なプラットフォームで、64 ビット PC (x64) に対応しています。バージョン 0.5.2 以降では、ARM 版 Windows PC および 32 ビット版 Windows 10 でも、それぞれ専用のファイルで動作します。Linux もサポートされており、各リリースには AppImage、.deb、.rpm、.tar.gz が含まれています。バージョン 0.5.0 以降は実験的なものではなくなり、GNOME、KDE Plasma、Xfce、Cinnamon (Wayland セッションを含む) で確認されており、クリーンな Ubuntu、Debian、Fedora システムでもパッケージが動作します。今後の課題としては、Flatpak 版 Firefox はまだ確認されておらず、スクリーン リーダー (Orca) はまだ MDM のウィンドウを読み上げません。macOS ビルド (.dmg) も各リリースに含まれていますが、引き続き実験的なものです。詳細については、「Windows、Mac、Linux」および「ダウンロード」を参照してください。"
-  },
   "436bac2c4f3d3f4c": {
    "source": "<g1>Downloads → Start queue</g1> and <g2>Downloads → Stop queue</g2> list them too.",
    "text": "<g1>ダウンロード → キューを開始</g1>と<g2>ダウンロード → キューを停止</g2>からも、すべてのキューを選択できます。"
@@ -5013,6 +5069,10 @@
   "43ff6b9c3376c383": {
    "source": "Firefox, Chrome, Edge, Brave, Opera, Vivaldi",
    "text": "Firefox、Chrome、Edge、Brave、Opera、Vivaldi"
+  },
+  "44106fa39bd5cfcd": {
+   "source": "Paste the address of a <g1>Hugging Face</g1> model or dataset, or of a folder in one, or of a <g2>GitHub release</g2>, and Link grabber lists every file in it with its size and folder, unticked. Tick what you need: it downloads as one group into a folder named after the address, with the repository's folders kept, and each file is checked against the SHA-256 the site publishes. Gated models work with your Hugging Face access token, saved in <g3>Options → Sites Logins</g3>. See <g4>Models, datasets and releases</g4>.",
+   "text": "<g1>Hugging Face</g1> のモデルまたはデータセット、あるいはその中のフォルダー、または <g2>GitHub リリース</g2>のアドレスを貼り付けると、リンク グラバーはそこに含まれるすべてのファイルをサイズとフォルダーとともに一覧表示します (チェックはオフ)。必要なものにチェックを入れると、アドレスにちなんだ名前のフォルダーに 1 つのグループとしてダウンロードされ、リポジトリのフォルダーは保持され、各ファイルはサイトが公開する SHA-256 と照合してチェックされます。ゲート付きモデルは、<g3>オプション → サイトのログイン</g3>に保存されている Hugging Face アクセス トークンで動作します。<g4>モデル、データセット、リリース</g4>を参照してください。"
   },
   "441473c88f5bb354": {
    "source": "Not listed",
@@ -5186,10 +5246,6 @@
    "source": "<g1>Numbers</g1> (counts, sizes, speeds, percentages and the list's columns) are written the way the interface language writes them, whatever the Windows region: German <x2/> and <x3/>, French <x4/>, Hindi <x5/>. When your system's region is in that same language, its own way wins (Swiss German <x6/>, or a separator you set in Windows). In English, MDM writes plain digits, as IDM does (<x7/>, <x8/>).",
    "text": "<g1>数字</g1> (件数、サイズ、速度、パーセンテージ、リストの列) は、Windows の地域設定に関わらず、インターフェース言語の表記に従います。例えば、ドイツ語では <x2/> や <x3/>、フランス語では <x4/>、ヒンディー語では <x5/> のようになります。システム地域がその言語と同じ場合、その地域の表記が優先されます (スイスドイツ語の <x6/> や、Windows で設定した区切り文字など)。英語の場合、MDM は IDM と同様に通常の数字で表記します (<x7/>、<x8/>)。"
   },
-  "468922e83389883b": {
-   "source": "Windows 10 and 11 is the main platform, on 64-bit PCs (x64); from the version after 0.5.2, on Windows on ARM PCs and 32-bit Windows 10 too, each with files…",
-   "text": "Windows 10 および 11 (64 ビット PC (x64)) が主要プラットフォームです。バージョン 0.5.2 以降では、Windows on ARM PC および 32 ビット Windows 10 でも、それぞれ専用のファイルで動作します。"
-  },
   "4693601d27da4c66": {
    "source": "<g1>DNS over HTTPS</g1> (the default) or <g2>DNS over TLS</g2>: encrypted, so nobody on the way sees or changes the names you look up.",
    "text": "<g1>DNS over HTTPS</g1>（デフォルト）または <g2>DNS over TLS</g2>：暗号化されているため、途中で誰も検索した名前を見たり変更したりできません。"
@@ -5209,6 +5265,10 @@
   "46d294d41c0bd102": {
    "source": "MDM's interface comes in 87 languages: every display language Windows 11 offers, from Afrikaans to Vietnamese, including both Chinese scripts, Spanish for…",
    "text": "MDMのインターフェースは87言語に対応しています。Windows 11が提供する表示言語すべて、アフリカーンス語からベトナム語まで、中国語の2つの表記、スペイン語などを含みます。"
+  },
+  "46dd41ea58cb0958": {
+   "source": "From version 0.6.0, pull the published image from GitHub Container Registry (x86-64 only for now):",
+   "text": "バージョン 0.6.0 以降では、GitHub Container Registry から公開されているイメージをプルしてください (現時点では x86-64 のみ):"
   },
   "46e5d950086d130d": {
    "source": "<g1>Extract in place with HatchZip</g1> (off by default; greyed out when HatchZip isn't installed) — the archive is removed while its files come out, so only they need room. See <g2>Extracting archives</g2>.",
@@ -5245,6 +5305,10 @@
   "476a78eca0326f04": {
    "source": "keeps the list, the settings, the certificate and the paired devices.",
    "text": "リスト、設定、証明書、ペアリングされたデバイスを保持します。"
+  },
+  "477e14355df77d93": {
+   "source": "Downloads the extension catches, <g1>Download with Mister Download Manager</g1> on a link, and <g2>Download all links</g2> / <g3>Download selected links</g3>, then go to the server instead of this computer. On the server, links are added and started right away (rather than opened in Link grabber). Only links matching the file types MDM catches (or its default types) are sent, capped at 100 links per batch; links beyond the cap or of other types are left out, and the toolbar button's badge and status notice report how many links were sent, refused, or left out. The browser's cookies are not sent to the server: a download that needs you to be signed in to a site stays with this computer.",
+   "text": "拡張機能が検出したダウンロード、リンク上の <g1>Mister Download Manager でダウンロード</g1>、および <g2>すべてのリンクをダウンロード</g2> / <g3>選択したリンクをダウンロード</g3> を実行すると、このコンピューターではなくサーバーに送信されます。サーバーでは、リンクはすぐにダウンロードに追加され、開始されます (リンク グラバーでは開きません)。MDM が検出するファイルの種類 (または既定の種類) に一致するリンクのみが送信され、1 バッチあたり 100 リンクに制限されます。制限を超えるリンクやその他の種類のリンクは除外され、ツールバー ボタンのバッジとステータス通知で、送信されたリンク、拒否されたリンク、除外されたリンクの数が報告されます。ブラウザーの Cookie はサーバーに送信されません。サイトにサインインする必要があるダウンロードは、このコンピューターに残ります。"
   },
   "478b98971f744119": {
    "source": "Deleting a queue asks first; a running queue stops when deleted; the toolbar's Start / Stop Queue arrows always work.",
@@ -5426,6 +5490,10 @@
    "source": "The download list in detail →",
    "text": "ダウンロードリストの詳細 →"
   },
+  "4a0f34047feec52c": {
+   "source": "For Linux on x86-64 (and ARM64 from version 0.6.0): an AppImage for most distributions, a <x1/> for Ubuntu, Debian, Mint and Pop!_OS, an <x2/> for Fedora, openSUSE and RHEL, and a <x3/> of the plain programs. For macOS 11 and later, on Apple Silicon or Intel, <x4/> files still marked <x5/>. Please <g6>tell us how it went</g6>, good or bad.",
+   "text": "x86-64 版 Linux (バージョン 0.6.0 以降は ARM64 版も含む) 向けには、ほとんどのディストリビューション用の AppImage、Ubuntu、Debian、Mint、Pop!_OS 用の <x1/>、Fedora、openSUSE、RHEL 用の <x2/>、そしてプレーンなプログラムの <x3/> があります。macOS 11 以降の Apple Silicon または Intel 搭載機向けには、<x5/> とマークされた <x4/> ファイルが引き続き提供されます。結果がどうであったか、良い点も悪い点も、<g6>ぜひお知らせください</g6>。"
+  },
   "4a31bb3dd19b1839": {
    "source": "<g1></g1>87, built in",
    "text": "<g1></g1>87言語を内蔵"
@@ -5505,6 +5573,10 @@
   "4b59c6336533a5c6": {
    "source": "Downloads → Scheduler",
    "text": "ダウンロード → スケジューラ"
+  },
+  "4b73f3d89de7c4e1": {
+   "source": "Rather have every download in one place? Tick <g1>Options → Save to → Save every download in \"General\" category's folder</g1>, and every new download goes to General's folder, whatever its type: from the browser, <g2>Add URL</g2>, a batch, Link grabber, a queue or the command line. The categories stay, to sort and filter the list. One download can still go elsewhere: change its folder in <g3>Download File Info</g3>. Downloads already in the list stay where they are.",
+   "text": "すべてのダウンロードを 1 か所にまとめたい場合は、<g1>オプション → 保存先 → すべてのダウンロードを「一般」カテゴリのフォルダーに保存</g1> にチェックを入れると、ブラウザーから、<g2>URL を追加</g2>、バッチ、リンク グラバー、キュー、コマンド ラインのいずれからでも、新しいダウンロードはすべて「一般」フォルダーに保存されます。カテゴリは、リストの並べ替えとフィルターのために残ります。個々のダウンロードを別の場所に保存することも可能です。<g3>ダウンロード ファイル情報</g3> でフォルダーを変更してください。すでにリストにあるダウンロードは、元の場所に残ります。"
   },
   "4b8a2274de78ad9c": {
    "source": "egui's body text: tooltips, multi-line boxes",
@@ -5613,6 +5685,10 @@
   "4cf5674fd62fa773": {
    "source": "A meter's edge",
    "text": "メーターの端"
+  },
+  "4cf7f48056de0a54": {
+   "source": "<g1>Coming with version 0.6.0</g1> <g2>This part isn't in the download (version 0.5.2) yet.</g2>",
+   "text": "<g1>バージョン 0.6.0 で登場</g1> <g2>この機能はまだダウンロード (バージョン 0.5.2) に含まれていません。</g2>"
   },
   "4d0868248400f576": {
    "source": "<g1>No video this can download on that page</g1> means yt-dlp found nothing on the page. Check that the address is the video's own page.",
@@ -5837,10 +5913,6 @@
   "5095a187528ef523": {
    "source": "Closed to the notification area, MDM gives its memory back to Windows: <g1>Memory</g1> drops to under 10 MB within seconds and stays low while it waits. Downloads, queues and the scheduler go on as before. The list of every language (<g2>View → Language</g2>) loads fonts for every script while it's open; MDM lets them go when it closes.",
    "text": "通知領域に閉じると、MDMはそのメモリをWindowsに返します。<g1>メモリ</g1>は数秒以内に10MB未満に低下し、待機中は低いままです。ダウンロード、キュー、スケジューラーは以前と同じように続行されます。すべての言語のリスト（<g2>表示 → 言語</g2>）は、開いている間、すべてのスクリプトのフォントを読み込みます。MDMは閉じるとそれらを解放します。"
-  },
-  "50a2d01abfd3fd4a": {
-   "source": "From the version after 0.5.2, the three files come for two more kinds of PC, with the processor in their names: <g1>Windows on ARM</g1> (<x2/>, <x3/>, <x4/>), for PCs with a Snapdragon or another ARM processor, which then run MDM without Windows translating it; and <g5>32-bit Windows 10</g5> (<x6/>, <x7/>, <x8/>). <g9>Update now</g9> keeps each copy on its own processor's files. MDM downloads yt-dlp's own build for each, and ffmpeg's for Windows on ARM; no ffmpeg is built for 32-bit Windows that MDM can check, so there you choose your own in <g10>Helpers...</g10> for the best video qualities. Linux gets its four files for 64-bit ARM computers too (<x11/>).",
-   "text": "バージョン 0.5.2 以降では、さらに 2 種類の PC 向けに 3 つのファイルが提供され、プロセッサ名がファイル名に含まれます。<g1>ARM 版 Windows</g1> (<x2/>、<x3/>、<x4/>) は、Snapdragon またはその他の ARM プロセッサを搭載した PC 向けで、Windows による変換なしに MDM を実行できます。また、<g5>32 ビット版 Windows 10</g5> (<x6/>、<x7/>、<x8/>) も提供されます。<g9>今すぐ更新</g9> を実行すると、各コピーはそれぞれのプロセッサのファイルに保たれます。MDM は、yt-dlp の各ビルドと、ARM 版 Windows 用の ffmpeg をダウンロードします。MDM が確認できる 32 ビット版 Windows 用の ffmpeg はビルドされていないため、最高のビデオ品質を得るには <g10>ヘルパー...</g10> でご自身で選択してください。Linux にも 64 ビット ARM コンピューター用の 4 つのファイルが提供されます (<x11/>)。"
   },
   "50a8864f971c1689": {
    "source": "Right-click → <g1>Add category</g1> makes one for what you collect, say <g2>Books</g2> for <x3/>: a name, the file types separated by spaces (<x4/> allowed) and a folder. Change it later with <g5>Properties</g5>, or remove it with <g6>Delete</g6>. The files stay where they are.",
@@ -6073,6 +6145,10 @@
   "536df2f60bd48da6": {
    "source": "Success text (a matching checksum)",
    "text": "成功テキスト (一致するチェックサム)"
+  },
+  "538fe2ede1fc4d57": {
+   "source": "The single-instance channel (a token-protected local socket), the data folder, the capture rules shared by the app and the host, and the site rules (#1778: a User-Agent, headers, connections and the browser-like connection by site pattern) shared by the app and the command line",
+   "text": "シングル インスタンス チャネル (トークンで保護されたローカル ソケット)、データ フォルダー、アプリとホストで共有されるキャプチャ ルール、およびアプリとコマンド ラインで共有されるサイト ルール (#1778: ユーザー エージェント、ヘッダー、接続、サイト パターンごとのブラウザーのような接続)"
   },
   "539160f92bae4422": {
    "source": "Being re-measured",
@@ -6766,6 +6842,10 @@
    "source": "One click hides a download's window",
    "text": "ワンクリックでダウンロード ウィンドウを隠す"
   },
+  "5d3af05ef67f6e44": {
+   "source": "What a site's list says is checked before it is used: a file whose path would lead out of its folder (<x1/>, an absolute path, a drive letter, a device name such as <x2/>) is left out, and the Source line counts them. At most 10,000 files are listed for one address. As folders are, they are read only with <g3>Look links up when they arrive</g3> on (the default).",
+   "text": "サイトのリストに表示される内容は、使用される前にチェックされます。パスがそのフォルダーの外に出るファイル (<x1/>、絶対パス、ドライブ文字、<x2/> などのデバイス名) は除外され、ソース行にその数が表示されます。1 つのアドレスに対して最大 10,000 個のファイルがリストされます。フォルダーと同様に、<g3>リンクが到着したときに検索</g3>がオンになっている場合 (既定) にのみ読み取られます。"
+  },
   "5d3b0743b7418c7e": {
    "source": "Choose <g1>Help → Report a problem</g1>. It opens the bug report form on GitHub with your MDM version, your system and its version, how MDM was installed and its interface language already filled in. Describe what happened, what you expected and the steps that make it happen. For a download, include the address if you can share it, and the reason shown under <g2>Status</g2>.",
    "text": "<g1>ヘルプ → 問題の報告</g1>を選択します。MDMのバージョン、システムとそのバージョン、MDMのインストール方法、インターフェースの言語が入力された状態で、GitHubのバグ報告フォームが開きます。何が起きたか、どうなることを期待していたか、再現する手順を記入してください。ダウンロードについて報告する場合は、共有できるようであればアドレスと、<g2>状態</g2>の下に表示される理由も記入してください。"
@@ -7106,10 +7186,6 @@
    "source": "With Docker",
    "text": "Dockerを使用する場合"
   },
-  "615e187e2caacd27": {
-   "source": "<g1>Otherwise:</g1> MDM shows the list of languages, each with its flag and its own name. Pick yours.",
-   "text": "<g1>それ以外の場合:</g1> MDMは言語リストを表示します。各言語には旗と独自の言語名が表示されます。お使いの言語を選択してください。"
-  },
   "617b3af69a12514a": {
    "source": "works the same way, and follows <x1/> too.",
    "text": "も同様に機能し、<x1/> にも従います。"
@@ -7225,6 +7301,10 @@
   "630073ab1db9fa7e": {
    "source": "Questions",
    "text": "よくある質問"
+  },
+  "631d909be61240f2": {
+   "source": "<g1>Language.</g1> - <g2>Installed with the setup:</g2> MDM starts in the language you chose in the setup, and this step is left out. - <g3>Otherwise:</g3> the list of languages, each with its flag and its own name. Click yours: the window switches to it at once, right to left for Arabic, Hebrew, Persian and Urdu.",
+   "text": "<g1>言語</g1> - <g2>セットアップでインストール済みの場合:</g2> MDM はセットアップで選択した言語で起動し、このステップはスキップされます。 - <g3>それ以外の場合:</g3> 各言語のリストが表示され、それぞれの旗と自国語名が示されます。お使いの言語をクリックすると、ウィンドウがすぐにその言語に切り替わります (アラビア語、ヘブライ語、ペルシア語、ウルドゥー語の場合は右から左)。"
   },
   "634ba66c06a04968": {
    "source": "Your download list, settings, logins you save in <g1>Sites Logins</g1>, the history of each download and the files you download are stored only on your computer: in <x2/> on Windows (or the <x3/> folder of the portable copy), and in the usual application-data folder on macOS and Linux. Nothing is uploaded anywhere. Uninstalling offers to delete them. From version 0.5.0, the passwords of Sites Logins, the proxy and debrid accounts go into the system's keychain instead (Windows Credential Manager, the keyring on Linux, the macOS keychain), still on your computer, when one is there and unlocked.",
@@ -7478,6 +7558,10 @@
    "source": "Two helpers, checked before use",
    "text": "使用前に確認する 2 つのヘルパー"
   },
+  "66fc2cbe47fa6280": {
+   "source": "User names and passwords for sites that ask for them. <g1>New</g1> adds a row: the site (with a path if the login is only for part of it), the user name and the password. <g2>Edit</g2> and <g3>Remove</g3> change or delete the selected row. MDM uses the login for every download from that site. A login typed in <g4>Add URL</g4> (<g5>Use authorization</g5>) takes priority for that one download. For <x6/>, the password is your Hugging Face access token, for gated models and datasets: MDM sends it as a token, to Hugging Face only (the user name can be anything; see <g7>Models, datasets and releases</g7>).",
+   "text": "ユーザー名とパスワードを要求するサイトの認証情報です。<g1>新規</g1>で新しい行を追加します。サイト (ログインがその一部のみの場合、パスも含む)、ユーザー名、パスワードを入力します。<g2>編集</g2>と<g3>削除</g3>で、選択した行を変更または削除します。MDM は、そのサイトからのすべてのダウンロードにこのログイン情報を使用します。<g4>URL を追加</g4> (<g5>認証を使用する</g5>) で入力されたログイン情報は、そのダウンロードに優先的に適用されます。<x6/>の場合、パスワードは Hugging Face のアクセス トークンであり、ゲート付きモデルとデータセット用です。MDM はこれをトークンとして Hugging Face にのみ送信します (ユーザー名は任意です。<g7>モデル、データセット、リリース</g7>を参照してください)。"
+  },
   "670bb10cde757ad1": {
    "source": "MDM never writes the token to its event log, crash reports, the automation API or the command line's output.",
    "text": "MDMは、トークンをイベントログ、クラッシュレポート、自動化 API、コマンドラインの出力に書き込みません。"
@@ -7509,14 +7593,6 @@
   "676c0b5817404515": {
    "source": "To route <g1>everything</g1> through another network, use a VPN for the whole computer.",
    "text": "<g1>すべて</g1>の通信を別のネットワーク経由にするには、コンピューター全体でVPNを使用してください。"
-  },
-  "678b5f7a1583e7d1": {
-   "source": "<g1>Its menu</g1> (the arrow next to it, or <g2>↓</g2> when the button has the keyboard's focus): the video's title, length and site; its filters, when the qualities differ: <g3>All</g3>, <g4>Video</g4> (the picture with its sound) or <g5>Audio only</g5>, and the file type (MP4, WEBM, M4A, MP3...) or the picture's codec (AV1, VP9, H.264), kept for the site; <g6>Download best</g6> first (the best of what the filters keep), then one numbered line per quality under <g7>VIDEO</g7> and <g8>AUDIO</g8>, with its file type, codec, frame rate or bitrate and size (<x9/> <x10/>, as the Download video window says it), the best one marked, and <g11>Most compatible (H.264 + AAC)</g11> beside the resolution of the one that plays everywhere (<g12>Choose the quality</g12>); <g13>All qualities and subtitles...</g13>, which opens the <g14>Download video from a page</g14> window; then <g15>Put the button back in its corner</g15> (once you moved it on the site), <g16>Hide on this video</g16> (<g17>Esc</g17>), <g18>Never on</g18> the site (MDM remembers the site), and <g19>Button settings...</g19>, which opens MDM's Options. The arrow keys move through it, <g20>Enter</g20> picks, <g21>Esc</g21> closes it.",
-   "text": "<g1>メニュー</g1> (ボタンの横の矢印、またはボタンがキーボードのフォーカスを持っている場合は<g2>↓</g2>): 動画のタイトル、長さ、サイト。画質が異なる場合のフィルター: <g3>すべて</g3>、<g4>ビデオ</g4> (音声付きの映像)、<g5>オーディオのみ</g5>、およびファイルの種類 (MP4、WEBM、M4A、MP3 など) または映像のコーデック (AV1、VP9、H.264) (サイトごとに保持されます)。最初に<g6>最高画質をダウンロード</g6> (フィルターが保持する中で最高の画質)、次に<g7>ビデオ</g7>と<g8>オーディオ</g8>の下に画質ごとに番号付きの行が 1 つずつ表示され、ファイルの種類、コーデック、フレーム レートまたはビットレート、サイズ (<x9/> <x10/>、動画をダウンロード ウィンドウに表示されるとおり) が表示され、最高のものがマークされ、どこでも再生できるものの解像度の横に<g11>最も互換性のある形式 (H.264 + AAC)</g11> が表示されます (<g12>画質を選択</g12>)。次に、<g13>すべての画質と字幕...</g13> があり、これは<g14>ページからビデオをダウンロード</g14> ウィンドウを開きます。次に、<g15>ボタンを元の位置に戻す</g15> (サイト上で移動した場合)、<g16>この動画では非表示</g16> (<g17>Esc</g17>)、サイトでは<g18>常に非表示</g18> (MDM がサイトを記憶します)、および MDM のオプションを開く<g19>ボタンの設定...</g19> があります。矢印キーで移動し、<g20>Enter</g20> で選択し、<g21>Esc</g21> で閉じます。"
-  },
-  "67b09013b9c7d05d": {
-   "source": "Yes downloads both helpers in the background, once.",
-   "text": "はい をクリックすると、両方のヘルパーが一度だけバックグラウンドでダウンロードされます。"
   },
   "67b7e3e016904e39": {
    "source": "Install MDM with the setup and keep Set up browser integration ticked. In Firefox, then open the add-on's page on addons.mozilla.org and click Add to…",
@@ -8110,10 +8186,6 @@
    "source": "<g1>Drop-down lists for screen readers</g1>: a screen reader or UI Automation can now set a drop-down list's choice by its text, and open or close the list.",
    "text": "<g1>スクリーン リーダー用のドロップダウン リスト</g1>: スクリーン リーダーまたは UI オートメーションで、ドロップダウン リストの選択肢をテキストで設定したり、リストを開閉したりできるようになりました。"
   },
-  "6f4768be9e305804": {
-   "source": "From the release after 0.5.2, pull the published image from GitHub Container Registry (x86-64 only for now):",
-   "text": "バージョン 0.5.2 以降のリリースでは、GitHub Container Registry から公開されているイメージをプルしてください (現在のところ x86-64 のみ):"
-  },
   "6f5dd71f3ee9ec81": {
    "source": "Start here",
    "text": "ここから始める"
@@ -8346,6 +8418,10 @@
    "source": "Paste a Google Drive link as it is, the one <g1>Share → Copy link</g1> gives:",
    "text": "Google ドライブのリンクは、<g1>共有 → リンクをコピー</g1>で取得したものをそのまま貼り付けてください。"
   },
+  "7297ca101de5145e": {
+   "source": "The list couldn't be read from GitHub when this page was built. Everyone is on GitHub meanwhile, in the project's <g1>pull requests</g1> and <g2>issues</g2>.",
+   "text": "このページが作成されたとき、GitHub からリストを読み取れませんでした。貢献者全員は、プロジェクトの<g1>プルリクエスト</g1>と<g2>イシュー</g2>で GitHub にいます。"
+  },
   "729a19fc6ce418f9": {
    "source": "Reporting problems",
    "text": "問題の報告"
@@ -8562,6 +8638,10 @@
    "source": "Save it in this folder (else the category's folder from <g1>Options → Save to</g1>).",
    "text": "このフォルダーに保存します（それ以外の場合は、<g1>オプション → 保存先</g1>で設定されたカテゴリのフォルダー）。"
   },
+  "757bdf6ec707e08a": {
+   "source": "The setup's Video helpers step: yt-dlp and ffmpeg, each with its Install button, and Yes, download them (recommended)",
+   "text": "セットアップのビデオ ヘルパー ステップ: yt-dlp と ffmpeg がそれぞれインストール ボタンと「はい、ダウンロードします (推奨)」とともに表示されます"
+  },
   "758225940a5eba45": {
    "source": "IDM itself is closed source. Mister Download Manager is an open-source download manager (GPL-3.0) laid out the way IDM users expect, written from scratch and unrelated to IDM's maker.",
    "text": "IDM自体はクローズドソースです。Mister Download Manager は、IDMユーザーが期待するレイアウトのオープンソースダウンロードマネージャー（GPL-3.0）であり、ゼロから書かれており、IDMのメーカーとは関係ありません。"
@@ -8722,10 +8802,6 @@
    "source": "Browsers built on Firefox or Chromium, such as Zen, LibreWolf, Floorp, Waterfox and Helium, reach MDM. Flatpak browsers on Linux can't start MDM's helper.",
    "text": "Zen、LibreWolf、Floorp、Waterfox、Helium など、Firefox または Chromium をベースにしたブラウザーは MDM に到達します。Linux の Flatpak ブラウザーは MDM のヘルパーを起動できません。"
   },
-  "77bd0523361e1992": {
-   "source": "Next, MDM offers its two free video helpers: <g1>yt-dlp</g1>, which finds the video on a page, and <g2>ffmpeg</g2>, which joins its picture and sound. Click <g3>Yes, download them (recommended)</g3> and they download in the background, about 100 MB, once. <g4>Not now</g4> leaves them for later: the video window offers them when you first need them. More in <g5>Videos</g5>.",
-   "text": "次に、MDMは2つの無料動画ヘルパーを提供します。<g1>yt-dlp</g1>はページ上の動画を見つけ、<g2>ffmpeg</g2>は動画の映像と音声を結合します。<g3>はい、ダウンロードします (推奨)</g3>をクリックすると、約100MBのファイルが一度だけバックグラウンドでダウンロードされます。<g4>今はしない</g4>を選択すると、後でダウンロードできます。動画ウィンドウは、最初に必要になったときにそれらを提供します。詳しくは<g5>動画</g5>をご覧ください。"
-  },
   "77c9a0380245b26d": {
    "source": "In MDM, click <g1>Add URL</g1> (or press <g2>Ctrl+N</g2>) and click <g3>OK</g3>. MDM sees that the address is a video's page and opens <g4>Download video from a page</g4>. (You can also open it with <g5>Tasks → Download video from a page...</g5>, paste the address and click <g6>Look up</g6>.)",
    "text": "MDM で、<g1>URL を追加</g1>をクリック（または<g2>Ctrl+N</g2>を押す）し、<g3>OK</g3>をクリックします。MDM はそのアドレスが動画のページであると認識し、<g4>ページからビデオをダウンロード</g4>を開きます。（<g5>タスク → ページからビデオをダウンロード...</g5>で開き、アドレスを貼り付けて<g6>検索</g6>をクリックすることもできます。）"
@@ -8849,6 +8925,10 @@
   "79c3966deb868963": {
    "source": "When the link has expired",
    "text": "リンクの有効期限が切れた場合"
+  },
+  "79d1afa0e65a1570": {
+   "source": "<g1>Video helpers</g1> (below).",
+   "text": "<g1>ビデオ ヘルパー</g1> (下記)。"
   },
   "79d241b850b4c52e": {
    "source": "<g1>A public tracker list for torrents</g1>, if you turn it on in <g2>Tasks → Torrent settings</g2>: MDM fetches it from GitHub (ngosang/trackerslist), or the address you entered, once a day (an hour later when a fetch failed). Its trackers then see which public torrents you have, as a torrent's own trackers do.",
@@ -9045,10 +9125,6 @@
   "7c5fbe4cad8057a6": {
    "source": "Download a torrent, or only some of its files. If some of its files are already in the folder, it stops and names them; <x1/> uses them instead (what matches is kept, the rest downloaded). With Torrent settings' <g2>Add the trackers of this public list to public torrents</g2> on, a public torrent gets the list's trackers too, as in the app.",
    "text": "トレント、またはその一部のファイルのみをダウンロードします。一部のファイルが既にフォルダーにある場合、ダウンロードは停止し、ファイル名が表示されます。<x1/> は代わりにそれらを使用します (一致するものは保持され、残りはダウンロードされます)。［トレント設定］の <g2>この公開リストのトラッカーを公開トレントに追加する</g2> がオンの場合、アプリと同様に、公開トレントにもリストのトラッカーが追加されます。"
-  },
-  "7c7b3102adfeeb16": {
-   "source": "For Linux on x86-64 (and ARM64 from the version after 0.5.2): an AppImage for most distributions, a <x1/> for Ubuntu, Debian, Mint and Pop!_OS, an <x2/> for Fedora, openSUSE and RHEL, and a <x3/> of the plain programs. For macOS 11 and later, on Apple Silicon or Intel, <x4/> files still marked <x5/>. Please <g6>tell us how it went</g6>, good or bad.",
-   "text": "x86-64 版 Linux (バージョン 0.5.2 以降は ARM64 も): ほとんどのディストリビューション向けに AppImage、Ubuntu、Debian、Mint、Pop!_OS 向けに <x1/>、Fedora、openSUSE、RHEL 向けに <x2/>、そして通常のプログラムの <x3/> があります。macOS 11 以降 (Apple Silicon または Intel) 向けには、まだ <x5/> とマークされた <x4/> ファイルがあります。<g6>ご意見</g6>をお聞かせください。"
   },
   "7c949f90bb503dc8": {
    "source": "Vivaldi",
@@ -9798,6 +9874,10 @@
    "source": "A text box's or a list's inside",
    "text": "テキスト ボックスまたはリストの内部"
   },
+  "84d72ad2898a481c": {
+   "source": "Make a <x1/> of a file or folder, a folder's files listed by name (peers find it through the DHT).",
+   "text": "ファイルまたはフォルダーの<x1/>を作成します。フォルダー内のファイルは名前順にリストされます (ピアは DHT を介してそれを見つけます)。"
+  },
   "84de272d8a1575cb": {
    "source": "Add to Chrome",
    "text": "Chromeに追加"
@@ -10310,6 +10390,10 @@
    "source": "Can it download a video's subtitles?",
    "text": "動画の字幕をダウンロードできますか？"
   },
+  "8c8becaa84996a37": {
+   "source": "<g1>A folder of one</g1>, at a branch, a tag or a commit: the address of the folder's page, <x2/>.",
+   "text": "<g1>その中のフォルダー</g1> (ブランチ、タグ、またはコミット): フォルダーのページのアドレス、<x2/>。"
+  },
   "8c9a12e93a193e44": {
    "source": "In Firefox",
    "text": "Firefoxの場合"
@@ -10341,10 +10425,6 @@
   "8cfa4742e8d4318b": {
    "source": "The harness",
    "text": "ハーネス"
-  },
-  "8d0ba2eee06a5511": {
-   "source": "<g1>Move it</g1>: drag it by its dots to another corner or along the video's edge, or outside the player, above, under or beside it (for a site that covers its player or draws its own controls where the button would be); while you drag, the edge and the spots it snaps to (the corners and the middle) show. Outside the player it stays inside on that edge when the window has no room there (a player at the top of the window, full screen). It stays where you put it on that site; the menu's <g2>Put the button back in its corner</g2> brings it back, and the add-on's popup has <g3>Settings → Download button over videos → Reset</g3> for every site (its filters too).",
-   "text": "<g1>移動</g1>: ドットをドラッグして、別の角や動画の端に沿って、またはプレーヤーの外側、上、下、横に移動します (プレーヤーを覆うサイトや、ボタンがある場所に独自のコントロールを描画するサイトの場合)。ドラッグ中は、端とスナップする場所 (角と中央) が表示されます。プレーヤーの外側では、ウィンドウにその場所がない場合 (ウィンドウの上部にあるプレーヤー、フルスクリーン) は、その端の内側にとどまります。サイトに配置した場所に留まります。メニューの<g2>ボタンを元の位置に戻す</g2>で元に戻り、アドオンのポップアップには、すべてのサイトの<g3>設定 → 動画上のダウンロード ボタン → リセット</g3>があります (フィルターも同様)。"
   },
   "8d2bf24dd985e649": {
    "source": "When downloads go to another MDM (a server), the list is that server's: <g1>Pause</g1>, <g2>Resume</g2>, <g3>Remove from list</g3> and <g4>Copy link</g4> work, and the buttons that need the file on this computer (open it, its folder, copy, share, delete) aren't shown; a line at the top says so.",
@@ -10778,6 +10858,10 @@
    "source": "<g1>Fix causes, not cases</g1>, and keep producers and consumers of shared data (the download list, the browser extension's messages, the catalogs) in step.",
    "text": "<g1>個別の事例ではなく、原因を修正してください。</g1>共有データ（ダウンロードリスト、ブラウザー拡張機能のメッセージ、カタログ）を作成する側と利用する側の整合性も保ってください。"
   },
+  "933b61bdff1bc033": {
+   "source": "A crash report whose crashed thread is inside the graphics driver while MDM drew with OpenGL is the same: the driver's names above, or <x1/> alone with nothing of MDM's on the thread (NVIDIA's driver on a laptop with two graphics chips shows OpenGL's frames through Direct3D 11). On Windows, MDM remembers it and draws with Direct3D 12 from the next start, on WARP if the card can't; updating the graphics driver is still the real fix.",
+   "text": "MDM が OpenGL で描画しているときに、クラッシュしたスレッドがグラフィック ドライバー内にあるクラッシュ レポートも同様です。上記のドライバー名、またはスレッドに MDM のものが何もない <x1/> のみの場合です (2 つのグラフィック チップを搭載したノート PC の NVIDIA ドライバーは、OpenGL のフレームを Direct3D 11 経由で表示します)。Windows では、MDM はそれを記憶し、次回の起動から Direct3D 12 で描画します。カードが対応していない場合は WARP で描画します。グラフィック ドライバーの更新が依然として本当の解決策です。"
+  },
   "93536c27185c18ed": {
    "source": "Download a video from a page — Mister Download Manager help",
    "text": "ページからビデオをダウンロード — Mister Download Manager ヘルプ"
@@ -10910,10 +10994,6 @@
    "source": "Link grabber and archive extraction — Mister Download Manager",
    "text": "リンク グラバーとアーカイブの展開 — Mister Download Manager"
   },
-  "94f64ef46efdc4dd": {
-   "source": "Last updated 2026-11-25",
-   "text": "最終更新日: 2026-11-25"
-  },
   "950c43d71bd73d95": {
    "source": "You can change it at any time in <g1>View → Language</g1>. More in <g2>Languages</g2>.",
    "text": "言語は<g1>表示 → 言語</g1>でいつでも変更できます。詳しくは<g2>言語</g2>をご覧ください。"
@@ -10942,6 +11022,10 @@
    "source": "Is it a copy or a crack of Internet Download Manager? — Mister Download Manager",
    "text": "Internet Download Managerのコピーまたはクラックですか？ — Mister Download Manager"
   },
+  "95820383a2972f1f": {
+   "source": "<g1>Gated models.</g1> A repository whose files need its terms accepted downloads with your Hugging Face access token: accept the terms on its page, make a token in your Hugging Face settings, and add it in <g2>Options → Sites Logins</g2> with the site <x3/>, any user name and the token as the password. It is kept with your other passwords, in the system's keychain, and sent only to <x4/>, never on to the servers it sends the files from. The Source line says when a gated repository has no token yet.",
+   "text": "<g1>ゲート付きモデル。</g1> ファイルに利用規約の同意が必要なリポジトリは、Hugging Face アクセス トークンを使用してダウンロードされます。そのページで利用規約に同意し、Hugging Face の設定でトークンを作成し、<g2>オプション → サイトのログイン</g2>でサイト <x3/>、任意のユーザー名、およびパスワードとしてトークンを追加します。これは他のパスワードとともにシステム キーチェーンに保持され、<x4/> にのみ送信され、ファイルを送信するサーバーには送信されません。ゲート付きリポジトリにまだトークンがない場合、ソース行にその旨が表示されます。"
+  },
   "958664bb01cc22af": {
    "source": "A torrent comes from other people's computers, not from one website. That changes what you can trust and what others can see. This page says plainly what…",
    "text": "トレントは、1つのウェブサイトからではなく、他の人々のコンピューターから提供されます。これにより、信頼できるものと他の人が見ることができるものが変わります。このページでは、MDMが何を行い、何を行わないかを明確に説明しています。"
@@ -10957,6 +11041,10 @@
   "95b8e4a4ea276d5d": {
    "source": "Downloads",
    "text": "ダウンロード"
+  },
+  "95b9321339f49458": {
+   "source": "Windows 10 and 11 is the main platform, on 64-bit PCs (x64); from version 0.6.0, on Windows on ARM PCs and 32-bit Windows 10 too, each with files of its…",
+   "text": "Windows 10 および 11 が主なプラットフォームで、64 ビット PC (x64) に対応しています。バージョン 0.6.0 以降は、ARM PC 版 Windows および 32 ビット版 Windows 10 でも、それぞれ専用のファイルで動作します。"
   },
   "95c10421608930fc": {
    "source": "The proxy's password moves to the system's keychain: Windows Credential Manager, the keyring on Linux, the macOS keychain.",
@@ -11017,10 +11105,6 @@
   "9632de50273e0f02": {
    "source": "<g1>The site's star ratings</g1>, at <x2/>, described in <g3>OpenAPI</g3>. Anyone may read the numbers; rating is for this site's pages (below).",
    "text": "<g1>サイトの星評価</g1>は <x2/> にあり、<g3>OpenAPI</g3> で説明されています。誰でも数字を読み取ることができます。評価はこのサイトのページ (下記) のものです。"
-  },
-  "963552ab075ccbdb": {
-   "source": "MDM offers yt-dlp and ffmpeg on its first start, with Yes, download them (recommended) and Not now",
-   "text": "MDM は初回起動時に yt-dlp と ffmpeg を提供します。「はい、ダウンロードします (推奨)」と「今はしない」の選択肢があります"
   },
   "9641498adf0c3309": {
    "source": "<g1>A Base16 scheme</g1>, the <x2/> file the <g3>Base16 and Base24 schemes</g3> come in: both the classic layout (<x4/> and <x5/> to <x6/> at the top) and the newer one (<x7/> and a <x8/> block). A Base24 scheme reads as its first 16 colours.",
@@ -11294,10 +11378,6 @@
    "source": "A greyed text box's inside",
    "text": "グレー表示されたテキスト ボックスの内部"
   },
-  "98fcb27645bb56dd": {
-   "source": "<g1>Without the setup</g1> (a zip copy): on the first start, MDM shows every language with its flag and its own name. Pick yours.",
-   "text": "<g1>セットアップを使わない場合</g1>（zip版）: 初回起動時に、MDMはすべての言語を国旗と各言語での名称とともに表示します。使う言語を選択してください。"
-  },
   "990d8b16ea032009": {
    "source": "<g1>Image galleries</g1> (<g2>#58</g2>): a gallery's address in Add URL (a Wikimedia Commons category, a Flickr album, a DeviantArt or Imgur gallery and more) opens <g3>Download a gallery</g3>, which downloads its pictures with gallery-dl into a folder of their own, all of them or the first N. Started again, a gallery fetches only its new pictures. gallery-dl is an optional helper like yt-dlp: installed from its releases only when signed by its author's key, or your own copy (Helpers). On the command line: <x4/> and <x5/>.",
    "text": "<g1>画像ギャラリー</g1> (<g2>#58</g2>): URL を追加 にギャラリーのアドレス (Wikimedia Commons カテゴリ、Flickr アルバム、DeviantArt または Imgur ギャラリーなど) を入力すると、<g3>ギャラリーをダウンロード</g3> が開き、gallery-dl を使用してその画像を独自のフォルダーにすべて、または最初の N 枚ダウンロードします。再度開始すると、ギャラリーは新しい画像のみを取得します。gallery-dl は yt-dlp と同様のオプションのヘルパーです。作者のキーで署名されているリリースからのみインストールされるか、または独自のコピー (ヘルパー) を使用します。コマンド ラインでは <x4/> と <x5/> を使用します。"
@@ -11417,6 +11497,10 @@
   "9a946958fe91d2d6": {
    "source": "Right-click and choose <g1>Add to queue → Main download queue</g1>.",
    "text": "右クリックして<g1>キューに追加 → メインダウンロードキュー</g1>を選択します。"
+  },
+  "9a9da334e19653c6": {
+   "source": "The first start's setup at its Language step: every language with its flag, its own name and its English name",
+   "text": "初回起動時のセットアップの言語ステップ: 各言語がその旗、自国語名、英語名とともに表示されます"
   },
   "9ad6d79bda135a68": {
    "source": "Download acceleration and crash-safe resume",
@@ -11550,6 +11634,10 @@
    "source": "Point at the video in your browser and click the Download video button that appears over it, or paste the page's address into Tasks → Download video from a page. MDM lists every quality the site offers, with sizes; pick one and it downloads like any file. It uses yt-dlp, which supports thousands of sites. Download only videos you have the right to. See Download a video from a page.",
    "text": "ブラウザで動画にカーソルを合わせ、表示される動画をダウンロードボタンをクリックするか、ページのURLをタスク → ページから動画をダウンロードに貼り付けます。MDMは、サイトが提供するすべての画質とサイズを一覧表示します。その中から1つを選べば、他のファイルと同じようにダウンロードされます。数千のサイトに対応しているyt-dlpを使用しています。ダウンロードは、権利のある動画のみにしてください。ページから動画をダウンロードをご覧ください。"
   },
+  "9ce28ea273676ee8": {
+   "source": "<g1>One version.</g1> A repository's files are asked at the commit its branch or tag pointed to when it was listed, so a branch that moves on while they download never mixes two versions.",
+   "text": "<g1>1 つのバージョン。</g1> リポジトリのファイルは、リストされたときにブランチまたはタグが指していたコミットで要求されるため、ダウンロード中に移動するブランチが 2 つのバージョンを混在させることはありません。"
+  },
   "9d1326816ebdec07": {
    "source": "Firefox forgets the extension after a restart",
    "text": "Firefox の再起動後に拡張機能が消える"
@@ -11574,6 +11662,10 @@
    "source": "Latest",
    "text": "最新"
   },
+  "9d68b46f0b3fadeb": {
+   "source": "<g1>Move it</g1>: drag it by its dots to any spot over the video, to another corner or edge, or outside the player, above, under or beside it (for a site that covers its player or draws its own controls where the button would be); near an edge or outside, the edge and the spots it snaps to (the corners and the middle) show. Outside the player it stays inside on that edge when the window has no room there (a player at the top of the window, full screen). It stays where you put it on that site; the menu's <g2>Put the button back in its corner</g2> brings it back, and the add-on's popup has <g3>Settings → Download button over videos → Reset</g3> for every site (its filters too).",
+   "text": "<g1>移動</g1>: ドットをドラッグして、動画上の任意の場所、別の隅や端、またはプレーヤーの外側 (上、下、横) に移動します (プレーヤーを覆うサイトや、ボタンがある場所に独自のコントロールを描画するサイトの場合)。端の近くや外側に移動すると、端とスナップする場所 (隅と中央) が表示されます。プレーヤーの外側に移動しても、ウィンドウにその場所がない場合 (ウィンドウの上部にあるプレーヤー、全画面表示) は、その端の内側に留まります。サイト上で配置した場所に留まります。メニューの <g2>ボタンを元の位置に戻す</g2> で元に戻り、アドオンのポップアップにはすべてのサイトの <g3>設定 → 動画上のダウンロード ボタン → リセット</g3> があります (フィルターも同様)。"
+  },
   "9d98aff073986aca": {
    "source": "Options → Archives",
    "text": "オプション → アーカイブ"
@@ -11585,10 +11677,6 @@
   "9da027e1258a39d3": {
    "source": "Other programs can ask the running app what it is downloading, and pause, start, remove or delete downloads. The API is <g1>off by default</g1>; turn it on with <x2/> (and off with <x3/>).",
    "text": "他のプログラムから、実行中のアプリがダウンロードしている内容を確認したり、ダウンロードを一時停止、開始、削除したりできます。APIは<g1>デフォルトでオフ</g1>です。<x2/>でオンにし、<x3/>でオフにします。"
-  },
-  "9da7ff11fa220d0e": {
-   "source": "MDM runs on 64-bit Linux with a desktop session. It is tested on Ubuntu 24.04, Debian 12 and Fedora, with GNOME, KDE Plasma, Xfce and Cinnamon, on X11 and in Wayland sessions. Pick one of these files (up to version 0.2.4, their names end in <x1/>, as in <x2/>). From the version after 0.5.2, each also comes for 64-bit ARM computers, with <x3/> in place of <x4/> (<x5/>); they are built and tested on GitHub's ARM machines. On ARM, MDM doesn't download gallery-dl itself (its author builds none for it): install it with your system's packages or pip.",
-   "text": "MDM は、デスクトップ セッションを備えた 64 ビット Linux で動作します。Ubuntu 24.04、Debian 12、Fedora で、GNOME、KDE Plasma、Xfce、Cinnamon を使用し、X11 および Wayland セッションでテストされています。これらのファイルのいずれかを選択してください (バージョン 0.2.4 までは、ファイル名の末尾が<x1/>で、<x2/>のようになります)。バージョン 0.5.2 以降では、それぞれ 64 ビット ARM コンピューター用も提供され、<x3/>が<x4/> (<x5/>) の代わりになります。これらは GitHub の ARM マシンでビルドおよびテストされています。ARM では、MDM は gallery-dl 自体をダウンロードしません (作者が ARM 用をビルドしていないため)。システムのパッケージまたは pip でインストールしてください。"
   },
   "9dab30f85bf98356": {
    "source": "Check four things: the extension is installed and turned on; Options → General → Use advanced browser integration is on and your browser is ticked; the file's type is in Options → File types; and the site isn't in the list of sites MDM leaves alone. Right-click a link and choose Download with Mister Download Manager to send any file whatever its type. More in Troubleshooting.",
@@ -11826,6 +11914,10 @@
    "source": "<g1>Sign-ins in the system's keychain</g1> (<g2>#44</g2>): debrid accounts, Sites Logins' passwords and the proxy's password are kept in Windows Credential Manager, in the system keyring on Linux (Secret Service: GNOME Keyring, KeePassXC and others) and in the macOS keychain, and the settings keep only a reference. Those already saved move there on the next start. A locked keyring is never unlocked and no keyring is ever asked for a password: without one, they stay in MDM's settings as before, sealed for your Windows account on Windows (the proxy's password now too, like Sites Logins' passwords). <g3>Options → Accounts</g3> says where they are. A portable copy keeps them in its own folder, and uninstalling with <g4>remove the download list and settings</g4> removes them from Credential Manager too.",
    "text": "<g1>システム キーチェーンへのサインイン</g1> (<g2>#44</g2>): デブリッド アカウント、サイトのログインのパスワード、プロキシのパスワードは、Windows Credential Manager、Linux のシステム キーリング (Secret Service: GNOME Keyring、KeePassXC など)、macOS キーチェーンに保持され、設定には参照のみが保持されます。すでに保存されているものは次回の起動時にそこに移動します。ロックされたキーリングは決してロック解除されず、キーリングにパスワードを要求することもありません。パスワードがない場合、以前と同様に MDM の設定に保持され、Windows では Windows アカウント用に封印されます (プロキシのパスワードも、サイトのログインのパスワードと同様に)。<g3>オプション → アカウント</g3>はそれらがどこにあるかを示します。ポータブル コピーはそれらを自身のフォルダーに保持し、<g4>ダウンロード リストと設定を削除</g4>してアンインストールすると、Credential Manager からも削除されます。"
   },
+  "a03eece63d9b5347": {
+   "source": "The setup's second step offers MDM's free video helpers: <g1>yt-dlp</g1>, which finds the video on a page, <g2>ffmpeg</g2>, which joins its picture and sound (on Windows; elsewhere MDM uses your system's), and <g3>Node.js</g3>, which YouTube needs, when your computer has no JavaScript runtime. Each says whether it is already there; one that isn't has its own <g4>Install</g4> button, and <g5>Yes, download them (recommended)</g5> gets every one that is missing. They download in the background, about 100 MB, once, each with its progress in its row, and go on if you close the window. Nothing is downloaded until you press one. <g6>Next</g6> leaves them for later: the video window offers them when you first need them. The step is left out when they are all there. More in <g7>Videos</g7>.",
+   "text": "セットアップの 2 番目のステップでは、MDM の無料ビデオ ヘルパーが提供されます。<g1>yt-dlp</g1> はページ上のビデオを検出し、<g2>ffmpeg</g2> はその画像と音声を結合し (Windows の場合。それ以外では MDM はシステムの ffmpeg を使用します)、<g3>Node.js</g3> はコンピューターに JavaScript ランタイムがない場合に YouTube で必要となります。それぞれがすでに存在するかどうかを示し、存在しないものには独自の <g4>インストール</g4> ボタンが表示されます。<g5>はい、ダウンロードします (推奨)</g5> をクリックすると、不足しているすべてのヘルパーがダウンロードされます。これらはバックグラウンドでダウンロードされ、約 100 MB で、一度だけダウンロードされます。それぞれの進行状況がその行に表示され、ウィンドウを閉じてもダウンロードは続行されます。いずれかのボタンを押すまで何もダウンロードされません。<g6>次へ</g6> をクリックすると、後でダウンロードできます。ビデオ ウィンドウは、最初に必要になったときにそれらを提供します。すべてのヘルパーが揃っている場合、このステップはスキップされます。<g7>動画</g7> で詳細を確認してください。"
+  },
   "a04886db62535b92": {
    "source": "A translation longer than the English ends in <g1>...</g1> where it doesn't fit; point at it to read it whole.",
    "text": "英語より長い翻訳は、表示しきれない場合、末尾が<g1>...</g1>になります。全文を読むには、その部分にポインターを合わせてください。"
@@ -11921,10 +12013,6 @@
   "a186c2ecb83c1705": {
    "source": "Keep some speed for everything else",
    "text": "他の作業のために速度を確保する"
-  },
-  "a18e9003d93b63fb": {
-   "source": "<g1>Installed with the setup:</g1> MDM starts in the language you chose in the setup.",
-   "text": "<g1>セットアップでインストールした場合:</g1> MDMは、セットアップで選択した言語で起動します。"
   },
   "a1929a4367eebbb2": {
    "source": "Turn it on",
@@ -12033,10 +12121,6 @@
   "a30bd98d3fe7b728": {
    "source": "Learn the download list →",
    "text": "ダウンロード リストについて →"
-  },
-  "a332d36c2ada2664": {
-   "source": "User names and passwords for sites that ask for them. <g1>New</g1> adds a row: the site (with a path if the login is only for part of it), the user name and the password. <g2>Edit</g2> and <g3>Remove</g3> change or delete the selected row. MDM uses the login for every download from that site. A login typed in <g4>Add URL</g4> (<g5>Use authorization</g5>) takes priority for that one download.",
-   "text": "ユーザー名とパスワードを要求するサイトのユーザー名とパスワード。<g1>新規</g1>で行を追加します: サイト (ログインがその一部のみの場合、パスを含む)、ユーザー名、パスワード。<g2>編集</g2>と<g3>削除</g3>で選択した行を変更または削除します。MDM はそのサイトからのすべてのダウンロードにログインを使用します。<g4>URL を追加</g4> (<g5>認証を使用する</g5>) で入力されたログインは、その特定のダウンロードに対して優先されます。"
   },
   "a343897a0df86275": {
    "source": "Sounds",
@@ -12246,6 +12330,10 @@
    "source": "Get your file's checksum: on Windows with <x1/>, on macOS and Linux with <x2/>. It must match the file's line in SHA256SUMS.txt.",
    "text": "ファイルのチェックサムを取得します。Windows では <x1/>、macOS と Linux では <x2/> を使用します。これは SHA256SUMS.txt のファイルの行と一致する必要があります。"
   },
+  "a5a0a7f38aabd80f": {
+   "source": "<g1>Its menu</g1> (the arrow next to it, or <g2>↓</g2> when the button has the keyboard's focus): the video's title, length and site; its filters, when the qualities differ: <g3>All</g3>, <g4>Video</g4> (the picture with its sound) or <g5>Audio only</g5>, and the file type (MP4, WEBM, M4A, MP3...) or the picture's codec (AV1, VP9, H.264), kept for the site; <g6>Download best</g6> first (the best of what the filters keep), then one numbered line per quality under <g7>VIDEO</g7> and <g8>AUDIO</g8>, with its file type, codec, frame rate or bitrate and size (<x9/> <x10/>, as the Download video window says it), the best one marked, and <g11>Most compatible (H.264 + AAC)</g11> beside the resolution of the one that plays everywhere (<g12>Choose the quality</g12>); <g13>All qualities and subtitles...</g13>, which opens the <g14>Download video from a page</g14> window; then <g15>Put the button back in its corner</g15> (once you moved it on the site), <g16>Hide on this video</g16> (<g17>Esc</g17>), <g18>Hide the download button in full screen</g18>, <g19>Never on</g19> the site (MDM remembers the site), and <g20>Button settings...</g20>, which opens MDM's Options. The arrow keys move through it, <g21>Enter</g21> picks, <g22>Esc</g22> closes it.",
+   "text": "<g1>そのメニュー</g1> (ボタンの横の矢印、またはキーボードのフォーカスがある場合は <g2>↓</g2>): 動画のタイトル、長さ、サイト。画質が異なる場合のフィルター: <g3>すべて</g3>、<g4>ビデオ</g4> (音声付きの映像)、<g5>オーディオのみ</g5>、およびファイルの種類 (MP4、WEBM、M4A、MP3 など) または映像のコーデック (AV1、VP9、H.264)。これらはサイトごとに保持されます。<g6>最高画質をダウンロード</g6> が最初に表示され (フィルターで保持される中で最高の画質)、次に <g7>ビデオ</g7> と <g8>オーディオ</g8> の下に画質ごとに番号付きの行が表示されます。これにはファイルの種類、コーデック、フレーム レートまたはビットレート、サイズ (<x9/> <x10/>、[動画をダウンロード] ウィンドウに表示されるとおり) が含まれ、最高のものがマークされ、どこでも再生できるものの解像度の横に <g11>最も互換性のある形式 (H.264 + AAC)</g11> が表示されます (<g12>画質を選択</g12>)。<g13>すべての画質と字幕...</g13> をクリックすると、<g14>ページからビデオをダウンロード</g14> ウィンドウが開きます。次に、<g15>ボタンを元の位置に戻す</g15> (サイト上で移動した場合)、<g16>この動画では非表示</g16> (<g17>Esc</g17>)、<g18>全画面表示時にダウンロード ボタンを非表示にする</g18>、そのサイトでは <g19>常に非表示</g19> (MDM がサイトを記憶します)、および MDM のオプションを開く <g20>ボタンの設定...</g20> が続きます。矢印キーで移動し、<g21>Enter</g21> で選択し、<g22>Esc</g22> で閉じます。"
+  },
   "a5afb35a23f4a21e": {
    "source": "Speed limiter",
    "text": "速度制限"
@@ -12309,6 +12397,10 @@
   "a67499fbcf74e61d": {
    "source": "A 256 KiB file",
    "text": "256 KiBファイル"
+  },
+  "a683bb3b8ec14507": {
+   "source": "<g1>A Hugging Face model or dataset, a GitHub release.</g1> Paste the address of a model or dataset on Hugging Face, of a folder in one, or of a release on GitHub, in <g2>Add URL</g2> or here, and MDM lists every file in it, with its size and folder. See <g3>Models, datasets and releases</g3>.",
+   "text": "<g1>Hugging Face のモデルやデータセット、GitHub のリリース</g1>。Hugging Face のモデルやデータセット、またはその中のフォルダー、GitHub のリリースのいずれかのアドレスを<g2>URL を追加</g2>またはここに貼り付けると、MDM はその中のすべてのファイルをサイズとフォルダーとともに一覧表示します。<g3>モデル、データセット、リリース</g3>を参照してください。"
   },
   "a69373ac180f98a4": {
    "source": "The first build is long (up to an hour on a small server: the whole program is optimised as one). The image is small, about 175 MB: Debian's slim base, MDM's two programs and the certificates downloads are checked against. It needs no desktop libraries: MDM loads those only to open a window, which a server never does.",
@@ -12726,6 +12818,10 @@
    "source": ", <x1/>, <x2/>, <x3/>, <x4/> and <x5/> exit with code 1 when the app answers with an error (the API is off, an unknown action), as they do when the app isn't running.",
    "text": "、<x1/>、<x2/>、<x3/>、<x4/>、<x5/>は、アプリが実行されていない場合と同様に、アプリがエラー（APIがオフ、不明なアクション）で応答するとコード1で終了します。"
   },
+  "ac1cbe46f9402970": {
+   "source": "Windows 10 and 11 is the main platform, on 64-bit PCs (x64); from version 0.6.0, on Windows on ARM PCs and 32-bit Windows 10 too, each with files of its own. Linux is supported too, with an AppImage, a .deb, an .rpm and a .tar.gz in every release: since version 0.5.0 it isn't experimental any more, and it is checked on GNOME, KDE Plasma, Xfce and Cinnamon, in Wayland sessions too, and its packages in clean Ubuntu, Debian and Fedora systems. Still to come there: the Flatpak Firefox isn't checked yet, and screen readers (Orca) don't read MDM's windows yet. macOS builds (.dmg) come with every release too, and stay experimental. See Windows, Mac and Linux and Download.",
+   "text": "Windows 10 および 11 が主なプラットフォームで、64 ビット PC (x64) に対応しています。バージョン 0.6.0 以降は、ARM PC 版 Windows および 32 ビット版 Windows 10 でも、それぞれ専用のファイルで動作します。Linux もサポートされており、各リリースには AppImage、.deb、.rpm、.tar.gz が含まれています。バージョン 0.5.0 以降は実験的なものではなくなり、GNOME、KDE Plasma、Xfce、Cinnamon (Wayland セッションを含む) で確認済みで、クリーンな Ubuntu、Debian、Fedora システムのパッケージも確認済みです。まだ対応していないのは、Flatpak 版 Firefox の未確認と、スクリーン リーダー (Orca) が MDM のウィンドウをまだ読み上げない点です。macOS ビルド (.dmg) も各リリースに含まれていますが、引き続き実験的なものです。Windows、Mac、Linux およびダウンロードを参照してください。"
+  },
   "ac4b27cd07db9df5": {
    "source": "shows every option. A command that fails (the app isn't running, it answers with an error, a download breaks) exits with code 1. For example:",
    "text": "すべてのオプションを表示します。コマンドが失敗した場合（アプリが実行されていない、エラーが返される、ダウンロードが中断するなど）、コード1で終了します。例："
@@ -12769,10 +12865,6 @@
   "acda1dd9909e3d30": {
    "source": "Find a download in a long list — Mister Download Manager help",
    "text": "長いリストからダウンロードを検索 — Mister Download Manager ヘルプ"
-  },
-  "ace5b63f6d5b0c3c": {
-   "source": "Last updated 2026-11-25 · applies to the app, the browser extension and misterdownloadmanager.com",
-   "text": "最終更新日: 2026-11-25 · アプリ、ブラウザ拡張機能、misterdownloadmanager.com に適用されます"
   },
   "ace85960abd75e71": {
    "source": "The help pages' pictures (<x1/>) come from one list, <x2/>: <x3/> opens each window through MDM's own <x4/> command line in a test instance off the screen, crops and annotates it from the window's accessibility tree, and writes lossless WebP; <x5/> (CI) keeps the list, the pages and the files in step. The published ones are taken on GitHub's Windows runner (<x6/>).",
@@ -13002,9 +13094,9 @@
    "source": "If Mister Download Manager closes unexpectedly or stops responding, a <g1>crash report</g1> window opens. It shows what happened, lets you read the whole report, and can send it to the developers on GitHub. Each report helps fix the problem for everyone.",
    "text": "Mister Download Manager が予期せず終了したり、応答を停止したりすると、<g1>クラッシュレポート</g1>ウィンドウが開きます。このウィンドウには、何が起こったか、レポート全体を読むことができること、そして GitHub で開発者に送信できることが表示されます。各レポートは、すべての人の問題を解決するのに役立ちます。"
   },
-  "afb4eff929c487fb": {
-   "source": "The quickest way is MDM's own copy of Node.js: click <g1>Install Node.js</g1> beside that message, or, in <g2>Helpers...</g2>, <g3>Install Node.js</g3> in the <g4>JavaScript runtime (for YouTube)</g4> row. The first start's helpers window offers it too, when your computer has no runtime. MDM downloads Node.js's newest long-term support (LTS) build for your system and processor from <g5>nodejs.org</g5> with its own downloader (about 40 MB on Windows, 60 MB on Linux and macOS; Windows x64, ARM64 and 32-bit, Linux x64 and ARM64, macOS), checks the release's checksum list against the signing keys of Node.js's releasers and the download against that list before it uses it, keeps only the <x6/> program in the <x7/> folder beside yt-dlp and ffmpeg, and from then on tells yt-dlp to use it. It keeps it up to date the way it keeps yt-dlp's (<g8>Keeping them up to date</g8>), never with an older version. 32-bit Windows gets the newest LTS line Node.js still builds for it, 22, which Node.js supports until April 2027; after that MDM has no Node.js for 32-bit Windows, and a runtime of your own (<g9>Use another program...</g9>) is needed there. MDM never installs a Node.js older than the LTS line current when that MDM was made, whatever nodejs.org's list says. The video is looked up again by itself once Node.js is in.",
-   "text": "最も簡単な方法は、MDM 独自の Node.js を使うことです。メッセージの横にある<g1>Node.js をインストール</g1>をクリックするか、<g2>ヘルパー...</g2>で<g4>JavaScript ランタイム (YouTube 用)</g4>の行にある<g3>Node.js をインストール</g3>をクリックします。コンピューターにランタイムがない場合、初回起動時のヘルパー ウィンドウでもこのオプションが表示されます。MDM は、<g5>nodejs.org</g5>からお使いのシステムとプロセッサーに合わせた Node.js の最新の長期サポート (LTS) ビルドを独自のダウンローダーでダウンロードします (Windows で約 40 MB、Linux および macOS で約 60 MB。Windows x64、ARM64、32 ビット、Linux x64 および ARM64、macOS に対応)。使用する前に、リリース チェックサム リストを Node.js リリース元の署名キーと照合し、ダウンロードしたファイルをそのリストと照合します。yt-dlp と ffmpeg の横にある<x7/>フォルダーには<x6/>プログラムのみを保持し、それ以降は yt-dlp にそれを使用するよう指示します。yt-dlp と同様に、常に最新の状態に保ちます (<g8>最新の状態に保つ</g8>)。古いバージョンを使用することはありません。32 ビット版 Windows には、Node.js がまだビルドしている最新の LTS ラインであるバージョン 22 が提供され、Node.js は 2027 年 4 月までサポートします。それ以降、MDM は 32 ビット版 Windows 用の Node.js を提供しないため、独自のランタイム (<g9>別のプログラムを選択...</g9>) が必要になります。MDM は、nodejs.org のリストがどうであれ、その MDM が作成された時点の LTS ラインよりも古い Node.js をインストールすることはありません。Node.js がインストールされると、動画は自動的に再検索されます。"
+  "afb62db9dee045cd": {
+   "source": "Left empty, <g1>Save to</g1> puts each file in its category's folder (<g2>Options → Save to</g2>), or in General's folder when every download goes to one folder there. To put every file of the batch in one folder, type it there or choose it with <g3>...</g3>. Then click <g4>OK</g4>.",
+   "text": "<g1>保存先</g1>が空の場合、各ファイルはカテゴリのフォルダー（<g2>オプション → 保存先</g2>）に保存されます。または、すべてのダウンロードが 1 つのフォルダーに保存される場合は、一般のフォルダーに保存されます。バッチ内のすべてのファイルを 1 つのフォルダーに保存するには、そこにフォルダーを入力するか、<g3>...</g3>で選択します。次に<g4>OK</g4>をクリックします。"
   },
   "afb8fb4785d0361e": {
    "source": "Delete the selected downloads from the list (asks first, unless you turned the question off; their files stay unless you tick the box)",
@@ -13090,9 +13182,9 @@
    "source": "Keyboard shortcuts",
    "text": "キーボード ショートカット"
   },
-  "b1286285f8338dd7": {
-   "source": "Make a <x1/> of a file or folder (peers find it through the DHT).",
-   "text": "ファイルまたはフォルダーから<x1/>を作成します（ピアはDHTを介して見つけます）。"
+  "b12be233c03e6c85": {
+   "source": "On its first start MDM opens one <g1>Welcome to Mister Download Manager</g1> window that walks you through what it needs, a step at a time: the steps are named on top, <g2>Back</g2> and <g3>Next</g3> move between them, and <g4>Finish</g4> on the last one closes it. Each step can be passed with <g5>Next</g5> without doing anything, <g6>Close</g6> or the window's × ends the setup at any step, and once it is finished or closed it doesn't come back: everything in it stays in the menus. Steps that aren't needed are left out.",
+   "text": "MDM は初回起動時に <g1>Mister Download Manager へようこそ</g1> ウィンドウを開き、必要な設定を段階的に案内します。手順は上部に表示され、<g2>戻る</g2> と <g3>次へ</g3> で移動し、最後のステップの <g4>完了</g4> で閉じます。各ステップは何もせずに <g5>次へ</g5> でスキップでき、<g6>閉じる</g6> またはウィンドウの × でいつでもセットアップを終了できます。一度完了または閉じると、このウィンドウは再度表示されません。すべての設定はメニューに残ります。不要なステップはスキップされます。"
   },
   "b131e9b7540e88e0": {
    "source": "The browser can't find the small helper program it talks to. It is registered when MDM is installed.",
@@ -13185,10 +13277,6 @@
   "b2181eccf65e86be": {
    "source": "This <g1>website</g1> counts visits with <g2>Statcounter</g2>, which sets a cookie and sees your IP address; it runs only on the website, never in the app.",
    "text": "この<g1>ウェブサイト</g1>は、<g2>Statcounter</g2>で訪問者数をカウントしています。StatcounterはCookieを設定し、お客様のIPアドレスを認識します。これはウェブサイト上でのみ実行され、アプリ内では実行されません。"
-  },
-  "b21b0cc3853450de": {
-   "source": "On Windows, when OpenGL fails on a card without Direct3D 12, MDM draws with Direct3D on Microsoft's software renderer (WARP) from the next start, and <g1>View → Draw with</g1> says why: OpenGL couldn't start, it is too old to draw MDM (older than 3.0, such as Intel's first HD Graphics, whose OpenGL 2.1 drew MDM's windows as garbage), its first window didn't show within 10 seconds, or MDM froze inside the graphics driver while OpenGL showed a frame (the older Intel HD Graphics and AMD Radeon cards' drivers did). Choosing <g2>OpenGL</g2> there tries it again.",
-   "text": "Windows では、Direct3D 12 のないカードで OpenGL が失敗した場合、MDM は次回の起動時から Microsoft のソフトウェア レンダラー (WARP) で Direct3D を使用して描画し、<g1>表示 → 描画方法</g1> にその理由が表示されます。OpenGL が起動できなかった、MDM を描画するには古すぎる (Intel の最初の HD Graphics など、OpenGL 2.1 が MDM のウィンドウを正しく描画できなかった 3.0 より古いもの)、最初のウィンドウが 10 秒以内に表示されなかった、または OpenGL がフレームを表示している間に MDM がグラフィック ドライバー内でフリーズした (古い Intel HD Graphics および AMD Radeon カードのドライバーで発生しました) などです。そこで <g2>OpenGL</g2> を選択すると、再試行されます。"
   },
   "b23baab9a4561a1d": {
    "source": "Pauses running downloads.",
@@ -13365,6 +13453,10 @@
   "b41b3b1523ec47c0": {
    "source": "With a debrid account, torrents and magnet links can go to the service instead of to peers, and MDM downloads the files from it over HTTP: see <g1>Torrents through the service</g1>.",
    "text": "デブリッド アカウントを使用すると、トレントとマグネット リンクをピアではなくサービスに送信でき、MDM は HTTP 経由でそこからファイルをダウンロードします。<g1>サービス経由のトレント</g1> を参照してください。"
+  },
+  "b434b184493a9dcf": {
+   "source": "Add the extension to each browser you use, as below: Firefox from its add-ons store, the others from the Chrome Web Store. On the first start this is a step of the setup window. Until a browser's extension has reached MDM, MDM's <g1>Add Mister Download Manager to your browser</g1> window opens at each later start: it lists the browsers it found, and <g2>Add the extension</g2> opens the store's page in that browser. <g3>Install it by hand</g3> opens the steps for loading it without the store; <g4>Don't ask again</g4> stops the window.",
+   "text": "使用する各ブラウザーに拡張機能を以下のように追加します。Firefox はアドオン ストアから、その他のブラウザーは Chrome Web Store から追加します。初回起動時は、セットアップ ウィンドウの手順の 1 つです。ブラウザーの拡張機能が MDM に到達するまで、MDM の <g1>Mister Download Manager をブラウザーに追加する</g1> ウィンドウがその後の起動ごとに開きます。このウィンドウには、検出されたブラウザーが一覧表示され、<g2>拡張機能を追加</g2> をクリックすると、そのブラウザーのストア ページが開きます。<g3>手動でインストール</g3> をクリックすると、ストアを使用せずに拡張機能を読み込む手順が開きます。<g4>次回から表示しない</g4> をクリックすると、このウィンドウは表示されなくなります。"
   },
   "b43709818a581c9e": {
    "source": "Mister Download Manager keeps the layout IDM users know, brings your IDM list over, and costs nothing: free and open source, with no trial, no ads and no sign-up. Below it, nine other free download managers people use instead of IDM, compared honestly.",
@@ -13758,6 +13850,10 @@
    "source": "AI assistants (MCP) — Mister Download Manager help",
    "text": "AIアシスタント (MCP) — Mister Download Manager ヘルプ"
   },
+  "b96343aebc14f95f": {
+   "source": "<g1>Customize MDM Download panels in browsers → Edit...</g1> — the download button over videos on web pages: turn it off, choose its <g2>Button size</g2> (<g3>80%</g3>, <g4>100%</g4> or <g5>120%</g5>, and <g6>Automatic</g6>, as installed: only the logo, the arrow and ✕ in a feed and over a small player, its words over a big one; <g7>Full</g7>, its words wherever they fit; or <g8>Compact</g8>, only the logo, the arrow and ✕ on every video), or list the sites it never shows on (separate them by spaces; wildcards like <x9/>, <x10/> or <x11/> work). See <g12>Browser integration</g12>.",
+   "text": "<g1>ブラウザーの MDM ダウンロード パネルをカスタマイズ → 編集...</g1> — ウェブページ上の動画に表示されるダウンロード ボタンについて: オフにするか、<g2>ボタンのサイズ</g2> (<g3>80%</g3>、<g4>100%</g4>、<g5>120%</g5>、またはインストール時の<g6>自動</g6> (フィード内や小さいプレーヤー上ではロゴ、矢印、✕のみ、大きいプレーヤー上では文字も表示)、<g7>全体</g7> (収まる場所ならどこでも文字も表示)、<g8>コンパクト</g8> (すべての動画でロゴ、矢印、✕のみ)) を選択するか、表示しないサイトをリストアップします (スペースで区切ります。<x9/>、<x10/>、<x11/> などのワイルドカードが使用できます)。<g12>ブラウザーとの統合</g12>を参照してください。"
+  },
   "b96597d534e090d4": {
    "source": "100 MiB, 150 ms latency, 4 MB/s per connection",
    "text": "100 MiB、150ミリ秒の遅延、接続あたり4 MB/秒"
@@ -13790,6 +13886,10 @@
    "source": "All the ways to add a download →",
    "text": "ダウンロードを追加するすべての方法 →"
   },
+  "ba396576420ac8b0": {
+   "source": "<g1>A Hugging Face model or dataset</g1>: <x2/> or <x3/>, the whole repository.",
+   "text": "<g1>Hugging Face のモデルまたはデータセット</g1>: <x2/> または <x3/>、リポジトリ全体。"
+  },
   "ba46e50250a22768": {
    "source": "Within two seconds it shows in <g1>View → Theme</g1>, under the built-in themes, by the <x2/> it gives itself. Pick it and the whole window changes at once. After you edit the file, pick it again in <g3>View → Theme</g3> to see the change. <g4>View → Dark Mode support</g4> and <g5>Always dark</g5> switch between its light and dark side.",
    "text": "2 秒以内に、<g1>表示 → テーマ</g1> に、組み込みテーマの下に、<x2/> が自動で付与されて表示されます。それを選択すると、ウィンドウ全体が一度に変わります。ファイルを編集した後、変更を確認するには <g3>表示 → テーマ</g3> で再度選択します。<g4>表示 → ダーク モードのサポート</g4> と <g5>常にダーク</g5> で、ライト側とダーク側を切り替えます。"
@@ -13813,6 +13913,10 @@
   "ba7398fafefc4533": {
    "source": "Peak memory",
    "text": "ピークメモリ"
+  },
+  "ba81ef3a5c14665b": {
+   "source": "<g1>Browser extension</g1>: each browser MDM found, with <g2>Add the extension</g2> for it, as in <g3>Browser integration</g3>. Left out when a browser's extension already reached MDM, or in a portable copy.",
+   "text": "<g1>ブラウザー拡張機能</g1>: MDM が検出した各ブラウザーについて、<g3>ブラウザー統合</g3> のように <g2>拡張機能を追加</g2> が表示されます。ブラウザーの拡張機能がすでに MDM に到達している場合、またはポータブル コピーの場合はスキップされます。"
   },
   "ba959f6ef5cd85fd": {
    "source": "Remote control",
@@ -13865,10 +13969,6 @@
   "bb66b5a231ef607c": {
    "source": "<g1>The time</g1> is measured from the download's own connections, as each one opens: MDM sends nothing extra to the server. It is an estimate (the time to open a connection, divided by its round trips: one for http, two for https), so it says <g2>about</g2>. The quickest connection counts.",
    "text": "<g1>時間</g1>は、ダウンロードの各接続が開くときに測定されます。MDM はサーバーに余分なものを送信しません。これは推定値（接続を開く時間 ÷ 往復回数：HTTP は 1 回、HTTPS は 2 回）であるため、<g2>約</g2>と表示されます。最も速い接続がカウントされます。"
-  },
-  "bb6e18e2b1d6d99a": {
-   "source": "Downloads the extension catches, and <g1>Download with Mister Download Manager</g1> on a link, then go to the server instead of this computer. The browser's cookies are not sent to the server: a download that needs you to be signed in to a site stays with this computer.",
-   "text": "拡張機能がキャッチしたダウンロード、およびリンク上の <g1>Mister Download Manager でダウンロード</g1> は、このコンピューターではなくサーバーに送られます。ブラウザーの Cookie はサーバーに送信されません。サイトにサインインしている必要があるダウンロードは、このコンピューターに残ります。"
   },
   "bb7ddff510dd3161": {
    "source": "If your network gives a proxy auto-config (PAC) script, type its address, or pick the file, under <g1>Use automatic configuration script</g1>. MDM fetches it and asks it which way each download goes (<x2/>, <x3/> or <x4/>), as browsers do. Until it has been fetched, or if it can't be, MDM uses the system's settings.",
@@ -14129,10 +14229,6 @@
   "bf124e15a5fd6568": {
    "source": "Open the first menu (<g1>Tasks</g1>); on a Mac <g2>Ctrl+F2</g2>",
    "text": "最初のメニュー（<g1>タスク</g1>）を開く。Macでは<g2>Ctrl+F2</g2>"
-  },
-  "bf1c4ba30d7b2674": {
-   "source": "<g1>Customize MDM Download panels in browsers → Edit...</g1> — the download button over videos on web pages: turn it off, choose its <g2>Button size</g2> (<g3>Automatic</g3>, as installed: only the logo, the arrow and ✕ in a feed and over a small player, its words over a big one; <g4>Full</g4>, its words wherever they fit; or <g5>Compact</g5>, only the logo, the arrow and ✕ on every video), or list the sites it never shows on (separate them by spaces; wildcards like <x6/>, <x7/> or <x8/> work). See <g9>Browser integration</g9>.",
-   "text": "<g1>ブラウザーの MDM ダウンロード パネルをカスタマイズ → 編集...</g1> — ウェブページ上の動画に表示されるダウンロード ボタン: オフにするか、<g2>ボタンのサイズ</g2>を選択します (<g3>自動</g3> (インストール時): フィードや小さなプレーヤーではロゴ、矢印、✕のみ、大きなプレーヤーでは文字も表示されます。<g4>全体</g4>: 表示可能な場所すべてに文字も表示されます。<g5>コンパクト</g5>: すべての動画でロゴ、矢印、✕のみ表示されます)。または、ボタンを表示しないサイトをリストアップします (スペースで区切ります。<x6/>、<x7/>、<x8/> などのワイルドカードが使用できます)。<g9>ブラウザー連携</g9>を参照してください。"
   },
   "bf34a44f6d2c1b84": {
    "source": "For Ubuntu, Debian, Mint and Pop!_OS: <x1/>. It brings the libraries MDM needs.",
@@ -14473,10 +14569,6 @@
   "c454f486bae227dd": {
    "source": "A 180 GB download that unpacks to 200 GB normally needs 380 GB: the archive and its files at once. With <g1>HatchZip</g1>, a free extractor, installed, tick <g2>Extract in place with HatchZip</g2> in <g3>Options → Archives</g3>: the archive shrinks as its files come out, so a little over 200 GB is enough. HatchZip checks that everything fits and that the password is right before it changes anything. If it stops partway, the files so far stay beside the archive and <g4>Extract</g4> continues.",
    "text": "通常、200 GB に展開される 180 GB のダウンロードには、アーカイブとそのファイルが同時に存在するため、380 GB が必要です。無料の抽出ツールである<g1>HatchZip</g1>をインストールし、<g3>オプション → アーカイブ</g3>で<g2>HatchZip でその場で抽出</g2>にチェックを入れると、ファイルが展開されるにつれてアーカイブが縮小するため、200 GB を少し超える程度で十分です。HatchZip は、変更を加える前に、すべてが収まることとパスワードが正しいことを確認します。途中で停止した場合、そこまでのファイルはアーカイブの横に残され、<g4>展開</g4>が続行されます。"
-  },
-  "c45503a700d34859": {
-   "source": "<g1>Turn it off, make it smaller, or see the sites it stays off</g1>: <g2>Options → General → Customize MDM Download panels in browsers → Edit...</g2>. <g3>Button size</g3> is <g4>Automatic</g4> as installed (round in a feed and over a small player, its words over a big one), <g5>Full</g5> (its words wherever they fit) or <g6>Compact</g6> (only MDM's logo, the arrow and <g7>✕</g7>, on every video, as on a small one); after a click it still says what happened in words. Pages already open follow a change within a few seconds, without a reload.",
-   "text": "<g1>オフにする、小さくする、または表示しないサイトを確認する</g1>: <g2>オプション → 一般 → ブラウザーの MDM ダウンロード パネルをカスタマイズ → 編集...</g2>。<g3>ボタンのサイズ</g3>は、インストール時は<g4>自動</g4> (フィード内や小さなプレーヤーの上では丸く、大きなプレーヤーの上では単語が表示されます)、<g5>全体</g5> (単語が収まる場所ならどこでも単語が表示されます)、または<g6>コンパクト</g6> (小さな動画のように、すべての動画で MDM のロゴ、矢印、<g7>✕</g7> のみ) です。クリック後も、何が起こったかを言葉で伝えます。すでに開いているページは、再読み込みなしで数秒以内に変更を反映します。"
   },
   "c45a317f4447914b": {
    "source": "WinGet downloads the setup and installs MDM without the setup's questions.",
@@ -14898,10 +14990,6 @@
    "source": "In IDM, choose <g1>Tasks → Export → To IDM export file</g1>. In MDM, choose <g2>Tasks → Import → From IDM export file</g2> and pick that <x3/> file. Each download comes over with its address, the page it came from (its referrer) and its cookies. The downloads join the <g4>Main download queue</g4>, ready to start.",
    "text": "IDM で、<g1>タスク → エクスポート → IDM エクスポート ファイルへ</g1> を選択します。MDM で、<g2>タスク → インポート → IDM エクスポート ファイルから</g2> を選択し、その <x3/> ファイルを選びます。各ダウンロードは、アドレス、参照元ページ (リファラー)、Cookie とともに移行されます。ダウンロードは<g4>メインのダウンロード キュー</g4>に追加され、すぐに開始できます。"
   },
-  "c9f7c3a70c225d2f": {
-   "source": "Windows 10 and 11 is the main platform, on 64-bit PCs (x64); from the version after 0.5.2, on Windows on ARM PCs and 32-bit Windows 10 too, each with files of its own. Linux is supported too, with an AppImage, a .deb, an .rpm and a .tar.gz in every release: since version 0.5.0 it isn't experimental any more, and it is checked on GNOME, KDE Plasma, Xfce and Cinnamon, in Wayland sessions too, and its packages in clean Ubuntu, Debian and Fedora systems. Still to come there: the Flatpak Firefox isn't checked yet, and screen readers (Orca) don't read MDM's windows yet. macOS builds (.dmg) come with every release too, and stay experimental. See <g1>Windows, Mac and Linux</g1> and <g2>Download</g2>.",
-   "text": "Windows 10 と 11 (64 ビット PC (x64)) が主なプラットフォームです。バージョン 0.5.2 以降では、ARM PC 版 Windows と 32 ビット版 Windows 10 も、それぞれ専用のファイルでサポートされます。Linux もサポートされており、各リリースには AppImage、.deb、.rpm、.tar.gz が含まれています。バージョン 0.5.0 以降は実験的なものではなくなり、GNOME、KDE Plasma、Xfce、Cinnamon (Wayland セッションも含む) で確認済みで、クリーンな Ubuntu、Debian、Fedora システムでもパッケージが確認されています。まだ対応していないのは、Flatpak 版 Firefox の未確認と、スクリーン リーダー (Orca) が MDM のウィンドウをまだ読み上げない点です。macOS ビルド (.dmg) も各リリースに含まれますが、引き続き実験的なものです。<g1>Windows、Mac、Linux</g1> および<g2>ダウンロード</g2>を参照してください。"
-  },
   "ca0e326ce66aa589": {
    "source": "<g1>Aero</g1>: Windows 7's look: glossy buttons that turn light blue under the pointer, quiet check boxes, a glossy green progress bar, a glassy title bar with the title on a soft glow (on Windows), and glossy icons drawn for MDM in that manner.",
    "text": "<g1>Aero</g1>: Windows 7 の外観です。ポインターを合わせると水色に変わる光沢のあるボタン、控えめなチェック ボックス、光沢のある緑色の進行状況バー、ソフトな光沢のあるタイトルが付いたガラスのようなタイトル バー (Windows 上)、そしてそのスタイルで MDM 用に描かれた光沢のあるアイコンが特徴です。"
@@ -15162,6 +15250,10 @@
    "source": "The help names Windows' screen readers, Narrator and NVDA. If you use a screen reader on Linux or macOS, please <g1>tell us how it goes</g1>.",
    "text": "ヘルプには、Windows のスクリーン リーダーである Narrator と NVDA の名前が記載されています。Linux または macOS でスクリーン リーダーを使用している場合は、<g1>その使用状況をお知らせください</g1>。"
   },
+  "cd6525d4afc20d70": {
+   "source": "<g1>Turn it off, make it smaller, or see the sites it stays off</g1>: <g2>Options → General → Customize MDM Download panels in browsers → Edit...</g2>. <g3>Button size</g3> has a <g4>80%</g4>, <g5>100%</g5> or <g6>120%</g6> scale beside it, and is <g7>Automatic</g7> as installed (round in a feed and over a small player, its words over a big one), <g8>Full</g8> (its words wherever they fit) or <g9>Compact</g9> (only MDM's logo, the arrow and <g10>✕</g10>, on every video, as on a small one); after a click it still says what happened in words. Pages already open follow a change within a few seconds, without a reload.",
+   "text": "<g1>オフにする、小さくする、または非表示にするサイトを確認する</g1>: <g2>オプション → 一般 → ブラウザーの MDM ダウンロード パネルをカスタマイズ → 編集...</g2>。<g3>ボタンのサイズ</g3> の横には <g4>80%</g4>、<g5>100%</g5>、<g6>120%</g6> のスケールがあり、インストール時は <g7>自動</g7> (フィード内や小さなプレーヤー上では丸く、大きなプレーヤー上では文字が表示される)、<g8>全体</g8> (収まる場所ならどこでも文字が表示される)、または <g9>コンパクト</g9> (小さな動画と同様に、すべての動画で MDM のロゴ、矢印、<g10>✕</g10> のみ) です。クリック後も、何が起こったかを文字で表示します。すでに開いているページは、数秒以内にリロードなしで変更が反映されます。"
+  },
   "cd673e3701cb16c6": {
    "source": "<g1>Allow more than 32 connections</g1> — raises the most to 128, for the number above and for the exceptions. Most servers allow far fewer from one address; MDM notices and asks those for fewer. Turned off again, any higher number comes back to 32.",
    "text": "<g1>32以上の接続を許可</g1> — 上記の数と例外のために最大数を128に増やします。ほとんどのサーバーは1つのアドレスからのはるかに少ない接続しか許可しません。MDMはそれを検知し、より少ない接続を要求します。再度オフにすると、それより高い数値は32に戻ります。"
@@ -15321,10 +15413,6 @@
   "cff4eab6a41db11c": {
    "source": "How do I download a video from YouTube or another site? — Mister Download Manager",
    "text": "YouTubeなどから動画をダウンロードする方法 — Mister Download Manager"
-  },
-  "cff5ebbbf76816bf": {
-   "source": "The windows are drawn with OpenGL (eframe's glow) or with the system's own graphics API through eframe's wgpu, with that one backend only: Direct3D 12 on Windows (the default there), Vulkan on Linux, Metal on macOS (choices there; OpenGL stays their default until real graphics cards have tried them, #206). View → Draw with picks one, from the next start. One code path does it on every system (<x1/>): when the chosen one can't start, the other one is tried, so the windows always open. A watched start with the system's API leaves a marker until its first frame is drawn: a start that ends before it (a crash inside the driver), one whose first frame doesn't come within 10 seconds (MDM then starts again with OpenGL), or a graphics card lost twice in 10 minutes is remembered with its reason, which the menu shows. With OpenGL, a window eframe can't paint (its context can't be made current on it, its frame can't be shown) is skipped and painted again 100 ms later; one whose paints keep failing for seconds is a lost device too (MDM starts again; twice in 10 minutes, OpenGL is remembered as failing on Windows). The fork's eframe tells MDM through its viewport hooks (<x2/>, #1448).",
-   "text": "ウィンドウは OpenGL (eframe の glow) または eframe の wgpu を介してシステムの独自のグラフィック API で描画され、そのバックエンドのみが使用されます: Windows では Direct3D 12 (既定)、Linux では Vulkan、macOS では Metal (選択肢。OpenGL は、実際のグラフィック カードで試されるまで既定のままです、#206)。［表示］→［描画方法］で 1 つを選択し、次回の起動時から適用されます。すべてのシステムで 1 つのコード パスがこれを実行します (<x1/>): 選択したものが起動できない場合、もう 1 つが試行されるため、ウィンドウは常に開きます。システムの API を使用した監視付き起動は、最初のフレームが描画されるまでマーカーを残します。それより前に終了する起動 (ドライバー内のクラッシュ)、最初のフレームが 10 秒以内に表示されない起動 (MDM はその後 OpenGL で再起動します)、または 10 分以内に 2 回失われたグラフィック カードは、その理由とともに記憶され、メニューに表示されます。OpenGL では、eframe が描画できないウィンドウ (そのコンテキストを現在のものにできない、そのフレームを表示できない) はスキップされ、100 ミリ秒後に再度描画されます。数秒間描画が失敗し続けるウィンドウも失われたデバイスです (MDM は再起動します。10 分以内に 2 回、OpenGL は Windows で失敗したと記憶されます)。フォークの eframe は、そのビューポート フック (<x2/>、#1448) を介して MDM に通知します。"
   },
   "d00db779505eaf02": {
    "source": "<g1>Don't show pop-ups while a full-screen app or presentation is running</g1> — on by default. While a full-screen game, app or video, a presentation or the locked screen is on, <g2>Download complete</g2> and the other windows MDM opens by itself wait, and show when you're back, one after the other in the order they came: <g3>Downloads complete</g3>, a new version found by the weekly check, the download limit's warning, an archive's test result, its password question or its call for 7-Zip, the browser extension's offer, a link copied to the clipboard, and the crash report. The downloads carry on as usual, and the tray icon's tip says how many windows wait. The windows you open yourself, links you click in the browser and the <g4>Turn off computer</g4> countdown (so you can still cancel it) show at once. On Windows MDM goes by the state Windows holds its own notifications by (games, presentation mode, full-screen apps and videos), by a frameless window that fills its whole screen in front (on any of your screens), and by the screen's lock; on Linux by the session's lock, and by a full-screen window under X11 or XWayland (on Wayland, a native program's full screen can't be seen). On macOS a full-screen app has a Space of its own, which MDM's windows never open over. Untick it and the windows show at once, as before.",
@@ -15582,6 +15670,10 @@
    "source": "on Windows), and MDM follows each new wallpaper's colours within two seconds. <g1>The guide</g1> shows which colour goes where.",
    "text": "Windows の場合)。MDM は、新しい壁紙の色に 2 秒以内に追従します。<g1>ガイド</g1>で、どの色がどこに適用されるかを確認できます。"
   },
+  "d3922793116d61af": {
+   "source": "<g1>Limits.</g1> Both sites let only so many requests through from a computer without an account (GitHub 60 an hour). When the limit is reached, the address's row says <g2>Try again later</g2>, and its tip says for how long.",
+   "text": "<g1>制限。</g1> 両方のサイトでは、アカウントなしのコンピューターからのリクエスト数が制限されています (GitHub は 1 時間あたり 60 件)。制限に達すると、アドレスの行に<g2>後でもう一度お試しください</g2>と表示され、そのヒントに期間が表示されます。"
+  },
   "d394340a01c7d63d": {
    "source": "Gopeed",
    "text": "Gopeed"
@@ -15793,6 +15885,10 @@
   "d5eaf42248247319": {
    "source": "<g1>The queues</g1>: start and stop each one.",
    "text": "<g1>キュー</g1>：それぞれを開始および停止します。"
+  },
+  "d5f27029858206e6": {
+   "source": "Paste one of these addresses in <g1>Add URL</g1> (<g2>Ctrl+N</g2>), or in Link grabber with <g3>Ctrl+V</g3> (copied, imported or dropped works too):",
+   "text": "<g1>URL を追加</g1> (<g2>Ctrl+N</g2>) またはリンク グラバーに <g3>Ctrl+V</g3> で、次のいずれかのアドレスを貼り付けます (コピー、インポート、またはドラッグ & ドロップでも機能します)。"
   },
   "d5f572f1d13e144c": {
    "source": "Fair",
@@ -16014,6 +16110,10 @@
    "source": "<g1>Credentials stay with their site.</g1> Logins and cookies are sent only to the host they belong to, even across redirects.",
    "text": "<g1>認証情報はサイトに留まります。</g1> ログイン情報とCookieは、リダイレクトをまたいでも、それらが属するホストにのみ送信されます。"
   },
+  "d9665014ce0669b0": {
+   "source": "On Windows, when OpenGL fails on a card without Direct3D 12, MDM draws with Direct3D on Microsoft's software renderer (WARP) from the next start, and <g1>View → Draw with</g1> says why: OpenGL couldn't start, it is too old to draw MDM (older than 3.0, such as Intel's first HD Graphics, whose OpenGL 2.1 drew MDM's windows as garbage), its first window didn't show within 10 seconds, MDM froze inside the graphics driver while OpenGL showed a frame (the older Intel HD Graphics and AMD Radeon cards' drivers did), or MDM crashed inside it (<g2>OpenGL crashed inside its driver here</g2>). Choosing <g3>OpenGL</g3> there tries it again; so does a graphics driver update.",
+   "text": "Windows で、Direct3D 12 に対応していないグラフィック カードで OpenGL が失敗した場合、MDM は次回の起動から Microsoft のソフトウェア レンダラー (WARP) で Direct3D を使用して描画します。<g1>表示 → 描画方法</g1> にその理由が表示されます。OpenGL が起動できなかった、MDM の描画には古すぎる (3.0 より古い、例えば Intel の初代 HD Graphics の OpenGL 2.1 は MDM のウィンドウを正しく描画できませんでした)、最初のウィンドウが 10 秒以内に表示されなかった、OpenGL がフレームを表示している間に MDM がグラフィック ドライバー内でフリーズした (古い Intel HD Graphics や AMD Radeon カードのドライバーで発生しました)、または MDM がその内部でクラッシュした (<g2>OpenGL がそのドライバー内でクラッシュしました</g2>) などです。そこで <g3>OpenGL</g3> を選択すると再試行されます。グラフィック ドライバーの更新も同様です。"
+  },
   "d9686c3ea1ff4f0a": {
    "source": "Install the extension from its page in the Chrome Web Store, <g1>Mister Download Manager</g1>: click <g2>Add to Chrome</g2>. In Edge the button is <g3>Get</g3>: Edge first asks to <g4>Allow extensions from other stores</g4> (click <g5>Allow</g5>), then <g6>Add extension</g6>. The browser keeps it updated. MDM's <g7>Add Mister Download Manager to your browser</g7> window opens that page in each browser for you, and Chrome may offer it by itself at its next start once MDM is installed.",
    "text": "Chrome Web Store の「<g1>Mister Download Manager</g1>」のページで、<g2>Chrome に追加</g2>をクリックして拡張機能をインストールします。Edge ではボタンが <g3>入手</g3> です。まず Edge から <g4>他のストアからの拡張機能を許可する</g4>よう求められるので、<g5>許可</g5>をクリックし、次に <g6>拡張機能を追加</g6>をクリックします。ブラウザーが拡張機能を自動的に更新します。MDM の<g7>Mister Download Manager をブラウザーに追加する</g7>ウィンドウから、各ブラウザーでそのページを開けます。また、MDM のインストール後、Chrome が次回の起動時に拡張機能の追加を自動的に提案することがあります。"
@@ -16049,10 +16149,6 @@
   "da1944611f1b4a60": {
    "source": "<g1>Off by default</g1>, and nothing listens while it is off.",
    "text": "<g1>デフォルトでオフ</g1>であり、オフの間は何もリッスンしません。"
-  },
-  "da1ff3527672bb25": {
-   "source": "These three are for 64-bit Windows on an Intel or AMD processor (x64), the usual PC. From the version after 0.5.2, each comes for two more kinds of PC too, with the processor in its name:",
-   "text": "これら 3 つは、一般的な PC である Intel または AMD プロセッサ (x64) を搭載した 64 ビット Windows 用です。バージョン 0.5.2 以降では、それぞれさらに 2 種類の PC 用も提供され、プロセッサがその名前に含まれています。"
   },
   "da24d37fd1911825": {
    "source": "<g1>The .deb and .rpm bring what MDM's window needs</g1> (part of <g2>#164</g2>): on a system without libxkbcommon-x11 (a minimal install, a container), MDM installed from them stopped at start under X11 and XWayland, and without the CA certificates (Debian's minimal install) no download started. They now require both, and EGL for Wayland windows. They also require the glibc the programs were built against, read from the programs themselves, instead of a fixed version: a package built on a newer system no longer installs on an older one where it can't start.",
@@ -16221,6 +16317,10 @@
   "dc31d8975851fca3": {
    "source": "Windows: no more crash when a screen is unplugged, turned off or rearranged while MDM runs (<g1>#335</g1>).",
    "text": "Windows: MDM の実行中に画面のプラグが抜かれたり、電源がオフになったり、再配置されたりしたときにクラッシュしなくなりました (<g1>#335</g1>)。"
+  },
+  "dc4198e428ea091f": {
+   "source": "Windows on ARM · 32-bit Windows",
+   "text": "Windows on ARM · 32 ビット Windows"
   },
   "dc773cbdc650469f": {
    "source": "Site rules",
@@ -16482,10 +16582,6 @@
    "source": "<g1><g2></g2>0.03 s</g1><g3></g3>",
    "text": "<g1><g2></g2>0.03 秒</g1><g3></g3>"
   },
-  "e12c33d490b22dd0": {
-   "source": "The single-instance channel (a token-protected local socket), the data folder, and the capture rules shared by the app and the host",
-   "text": "シングルインスタンスチャネル (トークンで保護されたローカルソケット)、データフォルダ、アプリとホストで共有されるキャプチャルール"
-  },
   "e1369e1deca0e4ec": {
    "source": "The passwords (these, the proxy's and the debrid accounts') are kept in the system's keychain: Windows Credential Manager, the keyring on Linux (Secret Service: GNOME Keyring, KeePassXC and others) or the macOS keychain; MDM's settings keep only a reference. A locked keyring is never unlocked for MDM: without one, they stay in MDM's settings, sealed for your Windows account on Windows. <g1>Options → Accounts</g1> says where they are. A <g2>portable copy</g2> keeps them in its own folder.",
    "text": "パスワード (これら、プロキシ、デブリッドアカウントのパスワード) は、システムのキーチェーンに保存されます。Windows Credential Manager、Linux のキーリング (Secret Service: GNOME Keyring、KeePassXC など)、または macOS のキーチェーンです。MDM の設定には参照のみが保持されます。ロックされたキーリングは MDM のためにロック解除されることはありません。キーリングがない場合、パスワードは MDM の設定に保存され、Windows では Windows アカウント用に封印されます。<g1>オプション → アカウント</g1>で保存場所を確認できます。<g2>ポータブル コピー</g2>は、独自のフォルダーに保存します。"
@@ -16629,6 +16725,10 @@
   "e3189b0a3f2c9f86": {
    "source": "Video downloads",
    "text": "ビデオのダウンロード"
+  },
+  "e3201638dbf3d7bf": {
+   "source": "<g1>Without the setup</g1> (a zip copy, Linux, macOS): the first start's setup window opens at its <g2>Language</g2> step: every language with its flag and its own name. Click yours and the window switches to it at once.",
+   "text": "<g1>セットアップなし</g1> (zip コピー、Linux、macOS) の場合: 最初の起動時にセットアップ ウィンドウが開き、<g2>言語</g2>のステップが表示されます。各言語がその旗と自国語名で表示されます。目的の言語をクリックすると、すぐにウィンドウがその言語に切り替わります。"
   },
   "e34726ffae8c3bba": {
    "source": "What's new — Mister Download Manager version history",
@@ -16821,6 +16921,10 @@
   "e58722e22694ceea": {
    "source": "Browser extension that sends downloads to a download manager",
    "text": "ダウンロード マネージャーにダウンロードを送信するブラウザー拡張機能"
+  },
+  "e58c3a79f2c454b5": {
+   "source": "A Hugging Face model or dataset (or a folder of one, at a revision) and a GitHub release or tag given to Link grabber (#1772, <x1/>) are listed through the sites' public APIs: the revision is first made its commit, then the tree is read page by page (<x2/>, the same API's only), each entry's path taken only when it is a relative path of plain names inside the folder asked (<x3/>: no <x4/>, absolute path, drive or device name), matched by its names; a file's address is built from the repository, the commit and those names, never taken from the answer. Each file keeps its size and the SHA-256 the site publishes (an LFS file's, a release asset's <x5/>), which becomes the download's checksum. The app makes one package whose folder is the address's path under the download folder, each file in its own folders inside it (<x6/>), unticked; Sites Logins' password for <x7/> goes as an access token (<x8/>) to Hugging Face's own hosts only. The lab server plays both APIs (<x9/>): pages, a gated repository, hostile paths, a wrong digest and rate limits.",
+   "text": "Link grabber (#1772, <x1/>) に指定された Hugging Face のモデルまたはデータセット (あるいはそのフォルダー、リビジョン指定) と GitHub のリリースまたはタグは、サイトの公開 API を通じてリストされます。まずリビジョンがコミットに変換され、次にツリーがページごとに読み取られます (<x2/>、同じ API のみ)。各エントリのパスは、要求されたフォルダー内のプレーンな名前の相対パスである場合にのみ取得され (<x3/>: <x4/>、絶対パス、ドライブ名、デバイス名は不可)、その名前で照合されます。ファイルの URL は、リポジトリ、コミット、およびこれらの名前から構築され、応答から取得されることはありません。各ファイルは、サイトが公開するサイズと SHA-256 (LFS ファイル、リリース アセットの <x5/>) を保持し、これがダウンロードのチェックサムになります。アプリは、ダウンロード フォルダーの下に URL のパスをフォルダーとする 1 つのパッケージを作成し、その中に各ファイルを独自のフォルダーに入れて (<x6/>) チェックを外します。<x7/> の Sites Logins のパスワードは、Hugging Face 独自のホストにのみアクセス トークン (<x8/>) として送信されます。ラボ サーバーは両方の API をシミュレートします (<x9/>): ページ、ゲート付きリポジトリ、敵対的なパス、誤ったダイジェスト、レート制限。"
   },
   "e58fc606693e6852": {
    "source": "Website",
@@ -17926,6 +18030,10 @@
    "source": "The list shows the order they will run in. Use the arrow buttons under it to move a download up or down.",
    "text": "リストは実行される順序を示しています。その下の矢印ボタンを使って、ダウンロードを上下に移動させます。"
   },
+  "f3a2e46b32aaef2c": {
+   "source": "The quickest way is MDM's own copy of Node.js: click <g1>Install Node.js</g1> beside that message, or, in <g2>Helpers...</g2>, <g3>Install Node.js</g3> in the <g4>JavaScript runtime (for YouTube)</g4> row. The first start's setup offers it too, in its <g5>Video helpers</g5> step, when your computer has no runtime. MDM downloads Node.js's newest long-term support (LTS) build for your system and processor from <g6>nodejs.org</g6> with its own downloader (about 40 MB on Windows, 60 MB on Linux and macOS; Windows x64, ARM64 and 32-bit, Linux x64 and ARM64, macOS), checks the release's checksum list against the signing keys of Node.js's releasers and the download against that list before it uses it, keeps only the <x7/> program in the <x8/> folder beside yt-dlp and ffmpeg, and from then on tells yt-dlp to use it. It keeps it up to date the way it keeps yt-dlp's (<g9>Keeping them up to date</g9>), never with an older version. 32-bit Windows gets the newest LTS line Node.js still builds for it, 22, which Node.js supports until April 2027; after that MDM has no Node.js for 32-bit Windows, and a runtime of your own (<g10>Use another program...</g10>) is needed there. MDM never installs a Node.js older than the LTS line current when that MDM was made, whatever nodejs.org's list says. The video is looked up again by itself once Node.js is in.",
+   "text": "最も簡単な方法は、MDM に組み込まれている Node.js を使用することです。メッセージの横にある<g1>Node.js をインストール</g1>をクリックするか、<g2>ヘルパー...</g2>で<g3>JavaScript ランタイム (YouTube 用)</g3>の行にある<g4>Node.js をインストール</g4>をクリックします。初回起動時のセットアップでも、コンピューターにランタイムがない場合、<g5>ビデオ ヘルパー</g5>のステップでインストールを提案します。MDM は、<g6>nodejs.org</g6>からお使いのシステムとプロセッサに合わせた Node.js の最新の長期サポート (LTS) ビルドを独自のダウンローダーでダウンロードします (Windows で約 40 MB、Linux および macOS で 60 MB。Windows x64、ARM64、32 ビット、Linux x64、ARM64、macOS に対応)。使用する前に、Node.js のリリース担当者の署名キーと照合してリリースのチェックサム リストを確認し、そのリストとダウンロードを照合します。yt-dlp と ffmpeg の横にある<x7/>フォルダーには<x8/>プログラムのみを保持し、それ以降は yt-dlp にそれを使用するように指示します。yt-dlp の更新と同様に (<g9>更新を維持する</g9>)、常に最新の状態に保ち、古いバージョンを使用することはありません。32 ビット版 Windows には、Node.js がまだビルドしている最新の LTS ラインであるバージョン 22 が提供され、Node.js は 2027 年 4 月までサポートします。それ以降、MDM は 32 ビット版 Windows 用の Node.js を提供しないため、独自のランタイム (<g10>別のプログラムを選択...</g10>) が必要になります。MDM は、nodejs.org のリストがどうであれ、その MDM が作成された時点の LTS ラインよりも古い Node.js をインストールすることはありません。Node.js がインストールされると、ビデオは自動的に再検索されます。"
+  },
   "f3a43b64feb190bf": {
    "source": "Only one program can listen on port 9666. If JDownloader is running, MDM says so: close it, then turn the option off and on again.",
    "text": "ポート 9666 でリッスンできるプログラムは 1 つだけです。JDownloader が実行されている場合、MDM はその旨を伝えます。JDownloader を閉じてから、オプションをオフにして再度オンにしてください。"
@@ -17982,6 +18090,10 @@
    "source": "A greyed icon's ink (its end)",
    "text": "グレー表示されたアイコンのインク (終了)"
   },
+  "f471814e3a16b4a2": {
+   "source": "Last updated 2026-11-27 · applies to the app, the browser extension and misterdownloadmanager.com",
+   "text": "最終更新日: 2026-11-27 · アプリ、ブラウザ拡張機能、misterdownloadmanager.com に適用されます"
+  },
   "f47d19d2ae313a6b": {
    "source": "<g1>MDM as an IDM alternative</g1><g2>Spot something wrong? Tell us</g2>",
    "text": "<g1>IDM の代替としての MDM</g1><g2>間違いを見つけましたか？お知らせください</g2>"
@@ -18018,6 +18130,10 @@
    "source": "What's new in version 0.2.3 <g1>2026-11-01</g1>",
    "text": "バージョン 0.2.3 の新機能 <g1>2026-11-01</g1>"
   },
+  "f511bff33b320d10": {
+   "source": "These three are for 64-bit Windows on an Intel or AMD processor (x64), the usual PC. From version 0.6.0, each comes for two more kinds of PC too, with the processor in its name:",
+   "text": "これら 3 つは、一般的な PC である Intel または AMD プロセッサ (x64) を搭載した 64 ビット Windows 用です。バージョン 0.6.0 以降、それぞれさらに 2 種類の PC 用も提供され、プロセッサ名が記載されています。"
+  },
   "f54ce429a109d5fe": {
    "source": "<g1>Metro</g1>, after Windows 8's flat look: square corners, flat buttons, boxes that take an accent border when focused, check boxes with a tick, a bordered progress bar, scroll bars with their arrows always shown, one-colour icons (Microsoft's Fluent UI System Icons, MIT) and a title bar in the theme's colour with the title centred.",
    "text": "Windows 8 のフラットな外観に続く<g1>メトロ</g1>: 角が四角く、フラットなボタン、フォーカス時にアクセントの境界線が付くボックス、チェックマーク付きのチェック ボックス、境界線付きのプログレス バー、常に矢印が表示されるスクロール バー、単色アイコン (Microsoft の Fluent UI System Icons、MIT)、タイトルが中央に配置されたテーマの色で描画されたタイトル バー。"
@@ -18053,10 +18169,6 @@
   "f5d0db4c9a23ece3": {
    "source": "<g1><g2>Adding downloads</g2></g1> — Add URL, the clipboard, the drop target, batch downloads and lists of links, and Start Download versus Download Later.",
    "text": "<g1><g2>ダウンロードの追加</g2></g1> — ［URL を追加］、クリップボード、ドロップ先、複数ファイルのダウンロードとリンク一覧、［ダウンロード開始］と［後でダウンロード］の違い。"
-  },
-  "f5e911e1675285c5": {
-   "source": "Add the extension to each browser you use, as below: Firefox from its add-ons store, the others from the Chrome Web Store. Until a browser's extension has reached MDM, MDM's <g1>Add Mister Download Manager to your browser</g1> window opens at each start: it lists the browsers it found, and <g2>Add the extension</g2> opens the store's page in that browser. <g3>Install it by hand</g3> opens the steps for loading it without the store; <g4>Don't ask again</g4> stops the window.",
-   "text": "以下に示すように、使用する各ブラウザーに拡張機能を追加します。Firefox はアドオン ストアから、その他のブラウザーは Chrome Web Store から追加します。ブラウザーの拡張機能が MDM に到達するまで、MDM の<g1>Mister Download Manager をブラウザーに追加する</g1>ウィンドウが起動するたびに開きます。検出されたブラウザーが一覧表示され、<g2>拡張機能を追加</g2>をクリックすると、そのブラウザーでストアのページが開きます。<g3>手動でインストール</g3>をクリックすると、ストアなしでロードする手順が開きます。<g4>次回から表示しない</g4>をクリックすると、ウィンドウが表示されなくなります。"
   },
   "f6014e24fd45ae66": {
    "source": "What is signed",
@@ -18206,10 +18318,6 @@
    "source": "The site isn't in <g1>Don't start downloading automatically from the following sites</g1>, nor the address in <g2>Don't start downloading automatically from the following addresses</g2>.",
    "text": "サイトが <g1>以下のサイトからのダウンロードを自動的に開始しない</g1> に含まれておらず、アドレスが <g2>以下のURLからのダウンロードを自動的に開始しない</g2> に含まれていないこと。"
   },
-  "f89c54d71eb189a4": {
-   "source": "If the graphics card is reset while MDM runs (a driver update), MDM starts again by itself. Lost twice in 10 minutes, it goes back to OpenGL, and <g1>View → Draw with</g1> says why.",
-   "text": "MDM の実行中にグラフィック カードがリセットされた場合 (ドライバーの更新など)、MDM は自動的に再起動します。10 分以内に 2 回失われた場合、OpenGL に戻り、<g1>表示 → 描画方法</g1> にその理由が表示されます。"
-  },
   "f8b52274ed125d5f": {
    "source": "Tick <g1>Wake the computer to run this queue</g1> and a sleeping computer is woken a minute before the start time, so the network is back when the queue begins. It stays awake while the queue runs; afterwards its own sleep settings apply again. The line under the option says when the next wake is, or why there can't be one.",
    "text": "<g1>このキューを実行するためにコンピューターをスリープ解除する</g1>をオンにすると、開始時刻の 1 分前にスリープ中のコンピューターがスリープ解除され、キューが開始されるときにネットワークが復旧します。キューの実行中はスリープ解除されたままになり、その後は独自の睡眠設定が再び適用されます。オプションの下の行には、次のスリープ解除の時刻、またはスリープ解除できない理由が示されます。"
@@ -18245,6 +18353,10 @@
   "f941e5b8a498c4f3": {
    "source": "Keeping them up to date",
    "text": "最新の状態に保つ"
+  },
+  "f968baf33894961a": {
+   "source": "Models, datasets and releases",
+   "text": "モデル、データセット、リリース"
   },
   "f972a60cffbd9bed": {
    "source": "In <g1>Default download directory for \"General\" category</g1>, click <g2>Browse</g2> and choose a folder on the stick, for example <x3/>.",
@@ -18365,6 +18477,10 @@
   "fa92082584a3b68a": {
    "source": "What IDM still does that MDM doesn't",
    "text": "IDM にあって MDM にない機能"
+  },
+  "fa920a8ffcc67161": {
+   "source": "<g1>Save every download in \"General\" category's folder</g1> — off by default. Ticked, every new download goes to General's folder, whatever its category: from the browser, <g2>Add URL</g2>, <g3>Batch download</g3>, Link grabber, queues, the command line, videos and torrents alike. The categories still sort the list. General's folder is the one to set (choose <g4>General</g4> above); the other categories keep their own folders for when it is off again, shown greyed meanwhile. A single download can still go elsewhere: change its folder in the window that starts it (<g5>Remember this path</g5> then changes General's folder). Downloads already in the list stay where they are.",
+   "text": "<g1>すべてのダウンロードを「一般」カテゴリのフォルダーに保存する</g1> — 既定ではオフです。オンにすると、新しいダウンロードはすべて、カテゴリに関係なく一般のフォルダーに保存されます。ブラウザーから、<g2>URL を追加</g2>、<g3>バッチ ダウンロード</g3>、リンク グラバー、キュー、コマンド ライン、動画、トレントなど、すべてが対象です。カテゴリは引き続きリストを並べ替えます。一般のフォルダーは設定するフォルダーです (上記で<g4>一般</g4>を選択)。他のカテゴリは、オフに戻したときのために独自のフォルダーを保持し、その間はグレー表示されます。個々のダウンロードは別の場所に保存することもできます。開始ウィンドウでフォルダーを変更します (<g5>このパスを記憶する</g5>をオンにすると、一般のフォルダーが変更されます)。すでにリストにあるダウンロードは、元の場所に残ります。"
   },
   "fa9730d3b67e9b77": {
    "source": "<g1>View → Language...</g1> opens the same list. Type in <g2>Search</g2> to narrow it, then double-click a language. The window switches at once. <g3>Windows' language</g3>, at the top, follows Windows' display language, and falls back to English when MDM doesn't have it.",

@@ -477,6 +477,35 @@ pub(crate) fn window<T>(
     )
 }
 
+/// A [`window`] that belongs to the main window, as a dialog to its program (the first start's
+/// setup, #1839): on Linux under X11 (XWayland too) it is the main window's transient
+/// (WM_TRANSIENT_FOR, a dialog's type), so the window manager keeps it over the main window,
+/// centred on it, out of the taskbar and the window switcher, as Windows does with the dialogs
+/// the main window owns (`owned_by_main`). KDE Plasma had shown the first start's windows as
+/// programs of their own, each with its taskbar button. Wayland gives a program no say (winit
+/// has no parent for a window there); macOS and Windows: [`window`].
+pub(crate) fn window_of_main<T>(
+    ctx: &egui::Context,
+    id: &str,
+    title: &str,
+    client: [f32; 2],
+    minimize: bool,
+    bg: egui::Color32,
+    body: impl FnMut(&mut Ui, Pos2) -> Outcome<T>,
+) -> Outcome<T> {
+    dialog_window(
+        ctx,
+        id,
+        title,
+        client,
+        minimize,
+        bg,
+        Kind::OfMain,
+        Nth::FIRST,
+        body,
+    )
+}
+
 /// [`window`] number `nth` of its kind (#1741): its id and title numbered, a cascade step
 /// further than the one before ([`Nth`]).
 #[allow(clippy::too_many_arguments)]
@@ -580,6 +609,8 @@ pub(crate) fn notice_seen(ctx: &egui::Context, id: &str) -> bool {
 #[derive(Clone, Copy, PartialEq, Eq)]
 enum Kind {
     Plain,
+    /// A plain window that belongs to the main window ([`window_of_main`]).
+    OfMain,
     /// Above the app's windows, taking the focus when it opens (`question`).
     Question,
     /// Never takes the focus by itself; above every program's windows while `on_top` (`notice`).
@@ -738,6 +769,35 @@ fn dialog_window<T>(
             }
         }
     }
+    // The main window's own (Linux, X11): said while the window is still hidden for its theme
+    // (keep_theme shows it on a later pass) when the main window is already shown, else as soon
+    // as it is (the first start's first passes come before it is mapped). Asked again on later
+    // passes until done, for a few seconds' worth of them at most (a main window in the
+    // notification area stays hidden).
+    #[cfg(target_os = "linux")]
+    if kind == Kind::OfMain && matches!(out, Outcome::Open) && !crate::offscreen() {
+        const TRIES: u32 = 120;
+        let told = key.with("of-main");
+        let tries = key.with("of-main-tries");
+        if ctx.data(|d| d.get_temp::<bool>(told)).is_none() {
+            let n = ctx.data(|d| d.get_temp::<u32>(tries).unwrap_or(0));
+            match crate::unix::belong_to_main(title) {
+                Some(done) => {
+                    ctx.data_mut(|d| d.insert_temp(told, done));
+                }
+                None if n + 1 >= TRIES => {
+                    tracing::info!(
+                        "window {title:?}: the main window isn't shown, left on its own"
+                    );
+                    ctx.data_mut(|d| d.insert_temp(told, false));
+                }
+                None => {
+                    ctx.data_mut(|d| d.insert_temp(tries, n + 1));
+                    ctx.request_repaint_after(std::time::Duration::from_millis(50));
+                }
+            }
+        }
+    }
     let activate = dialog_activates_on_open(kind);
     keep_theme(
         ctx,
@@ -794,6 +854,8 @@ fn forget_window(ctx: &egui::Context, vid: ViewportId, key: egui::Id) {
         let n = d.get_temp::<u64>(opened).unwrap_or(0);
         d.insert_temp(opened, n + 1);
         d.remove::<bool>(key.with("focus-sent"));
+        d.remove::<bool>(key.with("of-main"));
+        d.remove::<u32>(key.with("of-main-tries"));
     });
     forget_place(ctx, key);
     #[cfg(windows)]
@@ -2048,8 +2110,13 @@ impl FileInfo {
                 );
                 let cat_rect = r(o, 96.0, 36.0, 174.0, 21.0);
                 let shown = self.category.shown();
-                let cat = winui::combo(ui, cat_rect, &shown, "category");
-                if cat.clicked() || winui::combo_keys(ui, &cat) {
+                // Its icon, the Categories tree's (#2008).
+                let icon = winui::ItemIcon::Shell(self.category.icon());
+                let cat = winui::combo_icon(ui, cat_rect, &shown, Some(&icon), "category");
+                if cat.clicked()
+                    || winui::combo_keys(ui, &cat)
+                    || winui::take_open_for_shot("category")
+                {
                     self.category_open = !self.category_open;
                 }
                 let category_was_open = self.category_open;
@@ -2441,11 +2508,16 @@ impl FileInfo {
                 if self.category_open {
                     let all = Category::all();
                     let labels: Vec<String> = all.iter().map(|c| c.shown()).collect();
-                    if let Some(i) = winui::drop_list(
+                    let icons: Vec<winui::ItemIcon> = all
+                        .iter()
+                        .map(|c| winui::ItemIcon::Shell(c.icon()))
+                        .collect();
+                    if let Some(i) = winui::drop_list_icons(
                         ui,
                         &own("file-info-category"),
                         cat_rect,
                         &labels,
+                        &icons,
                         "",
                         &mut self.category_open,
                     ) && let Some(c) = all.get(i)
@@ -3022,11 +3094,19 @@ impl GroupDone {
                                 ],
                             )
                         };
-                        winui::fit(
+                        let baseline = o.y + 137.0 + 17.0 * k as f32;
+                        let x = winui::note_mark(
                             ui,
                             &p,
                             o.x + 24.0,
-                            o.y + 137.0 + 17.0 * k as f32,
+                            baseline,
+                            Some(crate::icons::Mark::Fail),
+                        );
+                        winui::fit(
+                            ui,
+                            &p,
+                            x,
+                            baseline,
                             &line,
                             winui::ERROR(),
                             o.x + 444.0,
@@ -4659,14 +4739,22 @@ impl Duplicate {
 /// whether it starts now. `Done((queue, start))`; Cancel leaves them in the list, in no queue.
 pub struct QueuePick {
     names: Vec<String>,
+    /// Each queue's icon, the Scheduler's (#2008).
+    icons: Vec<winui::ItemIcon>,
     chosen: usize,
     start: bool,
 }
 
 impl QueuePick {
-    pub fn new(names: Vec<String>) -> Self {
+    /// The queues: each one's name, and whether it is a synchronization queue.
+    pub fn new(queues: Vec<(String, bool)>) -> Self {
+        let icons = queues
+            .iter()
+            .map(|(_, sync)| winui::ItemIcon::Shell(crate::scheduler::queue_icon(*sync)))
+            .collect();
         QueuePick {
-            names,
+            names: queues.into_iter().map(|(name, _)| name).collect(),
+            icons,
             chosen: 0,
             start: false,
         }
@@ -4690,10 +4778,11 @@ impl QueuePick {
                     winui::LIGHT_TEXT(),
                 );
                 let names: Vec<&str> = self.names.iter().map(String::as_str).collect();
-                if let Some(i) = winui::combo_light(
+                if let Some(i) = winui::combo_light_icons(
                     ui,
                     r(o, 100.0, 12.0, 228.0, 21.0),
                     &names,
+                    &self.icons,
                     self.chosen,
                     true,
                     "queue-pick",
@@ -5381,6 +5470,16 @@ pub fn ensure_replace_asked<T>(
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    /// #2008: Download later's queue list shows each queue's icon, the Scheduler's: the linked
+    /// folder for a synchronization queue.
+    #[test]
+    fn each_queue_in_the_pick_has_the_schedulers_icon() {
+        let q = QueuePick::new(vec![("Main".into(), false), ("Sync".into(), true)]);
+        assert_eq!(q.names, ["Main", "Sync"]);
+        let silk = |name| winui::ItemIcon::Shell(crate::chrome::IconKey::Silk(name));
+        assert!(q.icons == [silk("folder"), silk("folder_link")]);
+    }
 
     /// #1741: the first Download File Info is the window it always was; the others are
     /// numbered (their ids and titles, which Windows finds them by), each a cascade step

@@ -79,12 +79,21 @@ pub const NEEDS: &[(&str, &str)] = &[
     ("st-queued", "Status: queued"),
     ("st-error", "Status: failed"),
     ("st-seeding", "Status: seeding"),
+    (
+        "st-checking",
+        "Status: checking, joining, extracting or moving a finished download",
+    ),
     ("ui-minimize", "Title bar: Minimize"),
     ("ui-maximize", "Title bar: Maximize"),
     ("ui-restore", "Title bar: Restore"),
     ("ui-close", "Title bar: Close"),
     ("ui-to-tray", "Title bar: Hide to the notification area"),
 ];
+
+/// Needs added after the built-in sets were drawn, each with the need of theirs that stands in
+/// for it, in the set's own style, where a set lacks it: a download being checked or joined is
+/// still under way. A set (a theme's own) may bring its own.
+const STAND_INS: &[(&str, &str)] = &[("st-checking", "st-downloading")];
 
 /// One icon file of a set: its bytes, whether it is a picture (PNG) rather than a drawing (SVG),
 /// and whether it is drawn in one colour (white, tinted with the theme's text colour).
@@ -297,7 +306,7 @@ macro_rules! builtin_files {
 static SETS: LazyLock<Mutex<HashMap<String, Arc<Set>>>> = LazyLock::new(|| {
     let mut sets = HashMap::new();
     // Microsoft's Fluent UI System Icons (MIT, assets/themes/metro/icons/LICENSE), recoloured
-    // white to be tinted; the magnet and the torrent file are MDM's own at their weight, Hide
+    // white to be tinted (st-checking is its "arrow sync circle"); the magnet and the torrent file are MDM's own at their weight, Hide
     // to the notification area MDM's own one-colour picture.
     let metro = builtin_files!("metro";
         16: ["cat-all.svg", "cat-compressed.svg", "cat-documents.svg", "cat-finished.svg",
@@ -307,8 +316,9 @@ static SETS: LazyLock<Mutex<HashMap<String, Arc<Set>>>> = LazyLock::new(|| {
             "ft-executable.svg", "ft-font.svg", "ft-generic.svg", "ft-image.svg", "ft-pdf.svg",
             "ft-presentation.svg", "ft-spreadsheet.svg", "ft-text.svg", "ft-torrent.svg",
             "ft-video.svg", "misc-down.svg", "misc-emblem-ok.svg", "misc-remove.svg", "misc-up.svg",
-            "st-complete.svg", "st-downloading.svg", "st-error.svg", "st-paused.svg",
-            "st-queued.svg", "st-seeding.svg", "tb-add-torrent.svg", "tb-add-url.svg",
+            "st-checking.svg", "st-complete.svg", "st-downloading.svg", "st-error.svg",
+            "st-paused.svg", "st-queued.svg", "st-seeding.svg", "tb-add-torrent.svg",
+            "tb-add-url.svg",
             "tb-delete-completed.svg", "tb-delete.svg", "tb-options.svg", "tb-resume.svg",
             "tb-scheduler.svg", "tb-start-queue.svg", "tb-stop-all.svg", "tb-stop-queue.svg",
             "tb-stop.svg", "ui-close.svg", "ui-maximize.svg", "ui-minimize.svg", "ui-restore.svg",
@@ -319,8 +329,8 @@ static SETS: LazyLock<Mutex<HashMap<String, Arc<Set>>>> = LazyLock::new(|| {
             "ft-archive.svg", "ft-audio.svg", "ft-code.svg", "ft-document.svg", "ft-executable.svg",
             "ft-font.svg", "ft-generic.svg", "ft-image.svg", "ft-pdf.svg", "ft-presentation.svg",
             "ft-spreadsheet.svg", "ft-text.svg", "ft-torrent.svg", "ft-video.svg", "misc-down.svg",
-            "misc-emblem-ok.svg", "misc-remove.svg", "misc-up.svg", "st-complete.svg",
-            "st-downloading.svg", "st-error.svg", "st-paused.svg", "st-queued.svg",
+            "misc-emblem-ok.svg", "misc-remove.svg", "misc-up.svg", "st-checking.svg",
+            "st-complete.svg", "st-downloading.svg", "st-error.svg", "st-paused.svg", "st-queued.svg",
             "st-seeding.svg", "tb-add-torrent.svg", "tb-add-url.svg", "tb-delete-completed.svg",
             "tb-delete.svg", "tb-options.svg", "tb-resume.svg", "tb-scheduler.svg",
             "tb-stop-all.svg", "tb-stop-queue.svg", "tb-stop.svg", "ui-close.svg",
@@ -646,7 +656,10 @@ pub fn source(
             .entry((name.clone(), need.to_owned(), px.round() as u32, [r, g, b]))
             .or_insert_with(|| {
                 let set = set(&name)?;
-                let (size, file) = set.file(need, px)?;
+                let (size, file) = set.file(need, px).or_else(|| {
+                    let (_, stand_in) = STAND_INS.iter().find(|(n, _)| *n == need)?;
+                    set.file(stand_in, px)
+                })?;
                 let ext = if file.png { "png" } else { "svg" };
                 let (ink_name, bytes) = if file.mono && file.png {
                     // White, tinted with the ink when drawn.
@@ -696,8 +709,21 @@ pub fn paint(
     rc: egui::Rect,
     enabled: bool,
 ) -> bool {
+    paint_inked(ui, painter, need, rc, ink(enabled), enabled)
+}
+
+/// [`paint`] with a one-colour icon in `ink` (a selected row's text colour, where the theme's
+/// text colour wouldn't read on the selection).
+pub fn paint_inked(
+    ui: &egui::Ui,
+    painter: &egui::Painter,
+    need: &str,
+    rc: egui::Rect,
+    ink: Color32,
+    enabled: bool,
+) -> bool {
     let px = rc.width() * ui.ctx().pixels_per_point();
-    let Some((src, tint)) = source(need, px, ink(enabled), enabled) else {
+    let Some((src, tint)) = source(need, px, ink, enabled) else {
         return false;
     };
     let img = egui::Image::new(src);
@@ -771,6 +797,28 @@ mod tests {
         }
     }
 
+    /// A need a built-in set may lack: another of its own stands in ([`STAND_INS`]).
+    fn stood_in(need: &str) -> bool {
+        STAND_INS.iter().any(|(n, _)| *n == need)
+    }
+
+    /// Every built-in set draws a need added after it, in its own style: its own icon where it
+    /// has one (Metro's), else the one standing in for it.
+    #[test]
+    fn a_need_added_later_is_drawn_by_every_built_in_set() {
+        for (need, stand_in) in STAND_INS {
+            assert!(NEEDS.iter().any(|(n, _)| n == need), "{need}");
+            for name in ["metro", "adwaita", "breeze", "luna", "aero", "aqua"] {
+                let set = set(name).unwrap();
+                assert!(
+                    set.has(need) || set.has(stand_in),
+                    "{name}: neither {need} nor {stand_in}"
+                );
+            }
+        }
+        assert!(set("metro").unwrap().has("st-checking"));
+    }
+
     /// A one-colour picture as the set holds it: its greys white, so the ink tints them.
     fn assert_white(png: &[u8], need: &str) {
         let img = image::load_from_memory(png).unwrap().to_rgba8();
@@ -809,7 +857,7 @@ mod tests {
     fn era_sets_have_every_picture_but_the_title_bars_glyphs() {
         for name in ["luna", "aero", "aqua"] {
             let set = set(name).unwrap();
-            for (need, _) in NEEDS {
+            for (need, _) in NEEDS.iter().filter(|(n, _)| !stood_in(n)) {
                 let bar = matches!(
                     *need,
                     "ui-minimize" | "ui-maximize" | "ui-restore" | "ui-close"
@@ -906,7 +954,7 @@ mod tests {
     #[test]
     fn adwaita_mixes_pictures_and_symbolic_icons() {
         let adw = set("adwaita").unwrap();
-        for (need, _) in NEEDS {
+        for (need, _) in NEEDS.iter().filter(|(n, _)| !stood_in(n)) {
             for px in [16u32, 24] {
                 let f = adw.files.get(&((*need).to_owned(), px));
                 assert!(f.is_some(), "adwaita lacks {need} at {px}");
@@ -949,7 +997,7 @@ mod tests {
     #[test]
     fn breeze_has_every_need_and_keeps_its_colours() {
         let set = set("breeze").unwrap();
-        for (need, _) in NEEDS {
+        for (need, _) in NEEDS.iter().filter(|(n, _)| !stood_in(n)) {
             assert!(set.has(need), "breeze lacks {need}");
             for px in [16.0, 32.0] {
                 let (_, f) = set.file(need, px).unwrap();

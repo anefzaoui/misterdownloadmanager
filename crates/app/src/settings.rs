@@ -372,6 +372,9 @@ pub struct Settings {
     /// before Automatic). Neither (the default, and what settings saved before it say):
     /// Automatic, the round form in a feed and over a small player, the words over a big one.
     pub video_panel_full: bool,
+    /// General → Download panels → Button size (#1923), percent: one of
+    /// `mdm_ipc::capture::VIDEO_PANEL_SCALES` (80, 100 or 120). The host reads it too.
+    pub video_panel_scale: u16,
     /// General: also take the listed types the browser would open itself (a PDF in its viewer,
     /// an MP3 in its player); holding Alt while clicking leaves one to the browser.
     pub capture_opened: bool,
@@ -705,6 +708,7 @@ impl Default for Settings {
             video_panel_sites: String::new(),
             video_panel_compact: false,
             video_panel_full: false,
+            video_panel_scale: 100,
             capture_opened: true,
             capture_min_kb: 0,
             regional: crate::regional::Regional::default(),
@@ -1860,6 +1864,25 @@ mod tests {
         let rules: mdm_ipc::capture::CaptureRules =
             serde_json::from_value(serde_json::to_value(Settings::default()).unwrap()).unwrap();
         assert!(!rules.video_panel_compact);
+        assert_eq!(auto.video_panel_scale, 100, "100% scale by default");
+        assert_eq!(
+            old.video_panel_scale, 100,
+            "settings saved before #1923: 100%"
+        );
+        assert_eq!(rules.video_panel_scale, 100);
+        for scale in [80, 120] {
+            let scaled = Settings {
+                video_panel_scale: scale,
+                ..Settings::default()
+            };
+            let saved = serde_json::to_value(&scaled).unwrap();
+            let again: Settings = serde_json::from_value(saved.clone()).unwrap();
+            assert_eq!(again.video_panel_scale, scale);
+            let rules: mdm_ipc::capture::CaptureRules = serde_json::from_value(saved).unwrap();
+            assert_eq!(rules.video_panel_scale, scale);
+        }
+        assert_eq!(mdm_ipc::capture::clean_video_panel_scale(0), 100);
+        assert_eq!(mdm_ipc::capture::clean_video_panel_scale(999), 100);
     }
 
     #[test]

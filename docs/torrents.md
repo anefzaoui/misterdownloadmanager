@@ -39,6 +39,8 @@ If some of the torrent's files are already in the folder, MDM asks before using 
 
 The chosen layout is kept when the torrent is paused or MDM restarts. A multi-file torrent saved directly in **Save to** shares that directory: **Move/Rename** and folder renaming on completion are disabled for it so they cannot move unrelated files. Deleting the torrent's files leaves unrelated files and the shared destination folder in place. The layout option applies to direct BitTorrent downloads; torrents downloaded through a debrid account keep their existing layout.
 
+Some programs (BitComet, for one) write a torrent's names in another encoding and add a UTF-8 copy of them (`name.utf-8`, `path.utf-8`); MDM shows and saves the files under the UTF-8 names. A torrent like that which was downloading in an earlier version starts those files again under their correct names, and leaves the files with the old names in the folder.
+
 MDM refuses a torrent with file names your system can't write safely, says which name, and writes nothing. What others can see, the network switches in **Torrent settings**, blocklists and proxies: [Torrents and your security](torrent-security.md).
 
 ## While it downloads
@@ -128,6 +130,8 @@ Choose **Tasks → Torrent settings...** (or the arrow next to **Add Torrent**):
 The same window has the network switches (incoming connections, the port, UPnP, uTP, the DHT, a SOCKS5 proxy), the blocklist and the public tracker list: see [Torrents and your security](torrent-security.md).
 
 MDM starts its torrent engine the first time you add a torrent. If you never use torrents, it never listens for peers.
+
+When the network comes back after a drop (Wi-Fi reconnecting, the computer waking from sleep, a VPN connecting or switching), MDM notices within a few seconds and calls the torrents' peers again at once, and asks their trackers and the DHT again, so a download picks up where it was instead of waiting minutes for each peer's next try. Each peer is called once for it; a tracker is still never asked sooner than its minimum interval. Behind a SOCKS5 proxy, a drop the computer itself doesn't see (the router losing its line while Wi-Fi stays up) is noticed only through the DHT, which is off there, so those torrents come back on their own, as before.
 
 To find peers without trackers, MDM joins the DHT through four public routers (`dht.libtorrent.org`, `dht.transmissionbt.com`, `router.bittorrent.com` and `router.utorrent.com`); any one that answers is enough. It keeps the DHT nodes it found for the next start, so later starts don't depend on those routers.
 

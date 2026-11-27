@@ -356,6 +356,10 @@
 #. RSS feeds window, Download rules: shown when there are no rules yet
 #, machine
 	A rule adds the new articles whose titles it matches, as they come.	規則會在新文章到達時，新增標題符合規則的文章。
+#. text in the Options window
+#. Site rules window: in the empty list of rules, under its title
+#, machine
+	A rule sets the connections, User-Agent or headers for one site.	規則會設定單一網站的連線、User-Agent 或標頭。
 #. text in errors.rs
 #. an error: a server on this computer redirected the download to the internet, which would not go through the chosen network adapter; {adapter} its name
 #, machine
@@ -464,6 +468,10 @@
 #, machine
 	Add new download	新增下載
 #. text in the Options window
+#. Options → Accounts: in the empty list of accounts, under its title
+#, machine
+	Add one to download file-host links through it.	新增帳戶以透過該帳戶下載檔案託管網站的連結。
+#. text in the Options window
 #, machine
 	Add the duplicate and overwrite the existing file	新增重複項目並覆寫現有檔案
 #. text in the Options window
@@ -545,7 +553,7 @@
 #, machine
 	Address or magnet link	位址或磁力連結
 #. message or event log entry in the main window
-#. Link grabber: where the links came from: the Add URL window (an address typed or pasted there)
+#. Link grabber: where the links came from: an address given on its own (typed or pasted in Add URL, given on the command line)
 #, machine
 	Address typed	已輸入位址
 #. text in the Options window; text in preview.rs; text in a download's Properties window
@@ -839,6 +847,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Azerbaijan	亞塞拜然
+#. button in setup.rs
+#. button of the first start's setup window: the step before
+#, machine
+	Back	上一步
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -940,6 +952,10 @@
 #. Site rules: column title: "Yes" when the rule asks the way a browser connects from the first request
 #, machine
 	Browser	瀏覽器
+#. text in setup.rs
+#. a step of the first start's setup window: the extension that hands the browser's downloads to MDM
+#, machine
+	Browser extension	瀏覽器擴充功能
 #. text in extension.rs
 #, machine
 	Browser integration isn't set up on this computer, so no browser can reach Mister Download Manager yet.	此電腦上未設定瀏覽器整合，因此沒有瀏覽器可以連線到 Mister Download Manager。
@@ -1134,17 +1150,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Checking the program...	正在檢查程式...
-#. text in helpers.rs
-#. a downloaded helper's signature and checksum are being checked; {name} = yt-dlp or ffmpeg
-#. {name} = a file name; {n} = a number (keep the braces as they are)
-#. the trailing ... means it is still going on: keep it
-#, machine
-	Checking {name} ({n} of {total})...	正在檢查 {name} ({n} 個中的 {total})...
 #. text in the download list (sizes, speeds, status)
 #. the list's Status column while a torrent's files or a finished file are checked (against the torrent's hashes or a checksum); {percent} how much is checked, e.g. "42%". One short word: the column is narrow
 #, machine
 	Checking {percent}	正在檢查 {percent}
-#. text in the Checksum window; text in extension.rs; text in the Link grabber window; text in the Options window
+#. text in the Checksum window; text in extension.rs; text in the Link grabber window; text in helpers.rs; text in the Options window
 #. in the browser extension's window, while it reads whether the browsers can reach MDM (a moment, usually)
 #. Test browser integration, while it reads where browser integration stands (a moment, usually)
 #. the trailing ... means it is still going on: keep it
@@ -1162,6 +1172,10 @@
 #. remote control page (on a phone): what the ".torrent file" button does (screen readers)
 #, machine
 	Choose a .torrent file	選擇 .torrent 檔案
+#. text in rssdlg.rs
+#. RSS feeds window: in the empty list of articles, under its title
+#, machine
+	Choose a feed to see its articles.	選擇 RSS 摘要以查看其文章。
 #. message or event log entry in the main window
 #. title of the file dialog of View → Font → Choose a font file
 #. title of the message when the font picked in View → Font can't be used
@@ -1171,7 +1185,7 @@
 #. file picker title: choose a JavaScript runtime's program (node.exe, deno.exe, qjs.exe, bun.exe)
 #, machine
 	Choose a JavaScript runtime (Node.js, Deno, QuickJS or Bun)	選擇 JavaScript 執行階段 (Node.js、Deno、QuickJS 或 Bun)
-#. text in langpick.rs
+#. text in langpick.rs; text in setup.rs
 #, machine
 	Choose a language	選擇語言
 #. text in a dialog box
@@ -1219,7 +1233,7 @@
 #. text in the Options window
 #, machine
 	Clock:	時鐘：
-#. text in archtest.rs; text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in a dialog box; button in extension.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list; button in the Options window; button in rssdlg.rs; button in torrentfiles.rs; text in traypanel.rs; text in standard windows
+#. text in archtest.rs; text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in a dialog box; button in extension.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list; button in the Options window; button in rssdlg.rs; button in setup.rs; button in torrentfiles.rs; text in traypanel.rs; text in standard windows
 #. both verbs: Verify = check the file now; Close = close the window
 #. tooltip of the × that closes the Categories pane
 #. verb: closes this window
@@ -1766,15 +1780,14 @@
 #. Check for updates, while Update now downloads; {percent} like "42%"
 #, machine
 	Downloading the update... {percent}	正在下載更新... {percent}
-#. text in helpers.rs
-#. {name} = yt-dlp, ffmpeg or Node.js; {n} of {total} = which helper of how many; {percent} = how far, e.g. 45%
-#. {name} = a file name; {n} = a number (keep the braces as they are)
-#, machine
-	Downloading {name} ({n} of {total})... {percent}	正在下載 {name} ({n} 個中的 {total})... {percent}
 #. text in the download list; text in the Options window
 #. tab title: download settings
 #, machine
 	Downloads	下載
+#. text in the Scheduler window
+#. Scheduler → Files in the queue: in the empty list, under its title
+#, machine
+	Downloads added to this queue show here.	新增至此佇列的下載項目會顯示於此。
 #. window title in a dialog box
 #. title of the window that sums up downloads added together (a playlist, a batch) once all are done
 #, machine
@@ -2193,6 +2206,10 @@
 #. text in the Find window
 #, machine
 	Find:	尋找:
+#. text in setup.rs
+#. button of the first start's setup window, on its last step: the setup is done
+#, machine
+	Finish	完成
 #. item in the Categories tree in the main window; text in remote.rs
 #. adjective: the downloads that are complete
 #. remote control page (on a phone): tab: downloads finished
@@ -2402,10 +2419,6 @@
 #. button: opens 7-Zip's website (7-Zip is a program's name)
 #, machine
 	Get 7-Zip	取得 7-Zip
-#. window title in helpers.rs
-#. title of the first start's window that offers yt-dlp and ffmpeg
-#, machine
-	Get ready for video downloads	準備好下載影片
 #. button in the Options window
 #, machine
 	Get System	取得系統
@@ -2692,6 +2705,10 @@
 #. button: download and install the yt-dlp program
 #, machine
 	Install yt-dlp	安裝 yt-dlp
+#. text in helpers.rs
+#. the first start's video helpers: beside a helper that is there already (MDM's own copy or the system's)
+#, machine
+	Installed	已安裝
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. Check for updates, after Update now downloaded it: unpacking and putting the new version in place
 #. the trailing ... means it is still going on: keep it
@@ -2774,6 +2791,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Italy	義大利
+#. text in rssdlg.rs
+#. RSS feeds window: in the empty list of articles of a feed not read yet
+#, machine
+	Its articles show here once the feed is read.	讀取摘要後，其文章會顯示於此。
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted in place (after "Couldn't extract {name}: "); HatchZip took its files out (the archive is gone), but moving them stopped: {to} holds those moved, {left} the others, {error} the system's reason
 #. {error} = an error message (keep the braces as they are)
@@ -2897,7 +2918,7 @@
 #. a country's name (where a download's server is)
 #, machine
 	Kyrgyzstan	吉爾吉斯斯坦
-#. text in langpick.rs
+#. text in langpick.rs; text in setup.rs
 #. window title (the interface language)
 #, machine
 	Language	語言
@@ -3363,6 +3384,10 @@
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
 #, machine
 	Mister Download Manager is running the queue "{queue}"	Mister Download Manager 正在執行佇列「{queue}」
+#. text in setup.rs
+#. the first start's setup window, under "Choose a language"
+#, machine
+	Mister Download Manager shows every window in it. View → Language changes it later.	Mister Download Manager 的每個視窗都會以該語言顯示。您之後可以透過「檢視」→「語言」來變更。
 #. text in crashui.rs
 #. crash report window heading: MDM's window doesn't answer (frozen)
 #, machine
@@ -3617,6 +3642,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	New Zealand	紐西蘭
+#. text in setup.rs
+#. button of the first start's setup window: the next step
+#, machine
+	Next	下一步
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3636,6 +3665,10 @@
 #. button in a dialog box; text in a download's progress window
 #, machine
 	No	否
+#. text in the Options window
+#. Options → Accounts: the title in the empty list of debrid service accounts
+#, machine
+	No accounts yet	尚無帳戶
 #. text in a dialog box
 #, machine
 	No addresses yet	尚無位址
@@ -3643,6 +3676,10 @@
 #. Options → Proxy / Socks: Test got no answer in time
 #, machine
 	No answer within 20 seconds.	20 秒內沒有回應。
+#. text in rssdlg.rs
+#. RSS feeds window: the title in the empty list of articles of a feed that has none
+#, machine
+	No articles	尚無文章
 #. text in extension.rs
 #. a check of Test browser integration (Linux, macOS): MDM found no browser it can connect to (one installed as a Flatpak isn't found)
 #, machine
@@ -3690,6 +3727,18 @@
 #. title in the empty download list when there are no downloads at all
 #, machine
 	No downloads yet	尚無下載項目
+#. text in rssdlg.rs
+#. RSS feeds window: the title in the empty list of articles, no feed chosen
+#, machine
+	No feed chosen	未選擇 RSS 摘要
+#. text in rssdlg.rs
+#. RSS feeds window: the title in the empty list of feeds
+#, machine
+	No feeds yet	尚無 RSS 摘要
+#. text in the Scheduler window
+#. Scheduler → Files in the queue: the title in the empty list
+#, machine
+	No files in this queue	此佇列中沒有檔案
 #. text in a dialog box
 #, machine
 	No folders yet	尚無資料夾
@@ -3703,6 +3752,10 @@
 #. text in langpick.rs
 #, machine
 	No language matches.	沒有符合的語言。
+#. text in the Link grabber window
+#. Link grabber: the title in its empty list
+#, machine
+	No links yet	尚無連結
 #. text in the Options window
 #. Options → Remote → Status: on, but the computer has no local network address now
 #, machine
@@ -3734,9 +3787,17 @@
 #, machine
 	No proxy/socks	無 Proxy/SOCKS
 #. text in the Options window
+#. Site rules window: the title in the empty list of rules
+#, machine
+	No site rules yet	尚無網站規則
+#. text in the Options window
 #. Options → Accounts: no system keyring/keychain answered (none runs, e.g. a desktop without one), so the sign-ins stay in MDM's settings folder, which only the user's account may read
 #, machine
 	No system keyring answered, so sign-ins and passwords are kept in MDM's settings, which only you can read.	沒有系統金鑰圈回應，因此登入資訊和密碼會保留在 MDM 的設定中，只有您可以讀取。
+#. text in the Add torrent window
+#. Add torrent: the title in the empty list of files, before a torrent is read
+#, machine
+	No torrent yet	尚無種子
 #. message or event log entry in the main window
 #. event log entry: Add trackers changed nothing, the torrent had them all
 #, machine
@@ -3831,7 +3892,7 @@
 #. Link grabber, a link's status: a web page sent it (Click'n'Load), so it isn't looked up (name, size, online) before it is added
 #, machine
 	Not looked up	未查詢
-#. text in cnl.rs; button in helpers.rs
+#. text in cnl.rs
 #. button in the Click'n'Load window: refuse these links, ask again next time
 #, machine
 	Not now	暫不處理
@@ -4375,10 +4436,6 @@
 #. text in helpers.rs
 #, machine
 	Reads a page and lists every quality the site offers, up to 4K, from YouTube, Vimeo and over a thousand other sites.	讀取頁面並列出網站提供的所有品質，最高可達 4K，來自 YouTube、Vimeo 和其他一千多個網站。
-#. text in helpers.rs
-#. the helpers are downloaded, checked and ready; {list} = names and versions, e.g. "yt-dlp 2026.10.26, ffmpeg 9.0"
-#, machine
-	Ready: {list}	已就緒：{list}
 #. message or event log entry in the main window
 #. event log entry: Reannounce failed, with the reason
 #. {error} = an error message (keep the braces as they are)
@@ -5170,6 +5227,7 @@
 #, machine
 	Started with yt-dlp {version} ({format})	已使用 yt-dlp {version} ({format}) 開始
 #. text in helpers.rs
+#. the first start's video helpers: a helper's download has started, its size not known yet
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Starting...	正在啟動...
@@ -5190,6 +5248,11 @@
 #. label before the download's state
 #, machine
 	Status:	狀態:
+#. text in setup.rs
+#. what a screen reader says of the first start's setup window's steps; {n} = this step's number, {total} = how many, {name} = its name (Language, Video helpers, Browser extension)
+#. {n} = a number; {name} = a file name (keep the braces as they are)
+#, machine
+	Step {n} of {total}: {name}	步驟 {n} (共 {total} 個)：{name}
 #. text in preview.rs
 #. the preview pane: a finished download's file is still where it was saved
 #, machine
@@ -5951,6 +6014,10 @@
 #. remote control page (on a phone): label of the box naming this phone (shown in MDM's list of paired devices)
 #, machine
 	This device's name	此裝置的名稱
+#. text in rssdlg.rs
+#. RSS feeds window: in the empty list of articles of a feed that has none
+#, machine
+	This feed has no articles right now.	此 RSS 摘要目前沒有文章。
 #. message or event log entry in the main window
 #. the message when a file picked in View → Font isn't a TrueType or OpenType font MDM can read
 #, machine
@@ -6233,9 +6300,6 @@
 #. a country's name (where a download's server is)
 #, machine
 	Trinidad and Tobago	千里達及托巴哥
-#. button in helpers.rs
-#, machine
-	Try again	再試一次
 #. text in errors.rs
 #. what to do when a helper couldn't be downloaded because its server limits requests; {name} = yt-dlp, ffmpeg or gallery-dl; {helpers} and {other} = the buttons Helpers and Use another program
 #. {name} = a file name (keep the braces as they are)
@@ -6648,6 +6712,10 @@
 #. category name: video files
 #, machine
 	Video	視訊
+#. text in setup.rs
+#. a step of the first start's setup window: yt-dlp, ffmpeg and Node.js, the programs that download videos
+#, machine
+	Video helpers	視訊小幫手
 #. text in the Download video window
 #, machine
 	Video lookups use yt-dlp (about 23 MB, checked against its signature).	視訊查詢使用 yt-dlp (約 23 MB，已根據其簽章檢查)。
@@ -6734,6 +6802,10 @@
 #. text in the Scheduler window
 #, machine
 	Wednesday	星期三
+#. text in setup.rs
+#. title of the first start's setup window (the language, the video helpers, the browser extension)
+#, machine
+	Welcome to Mister Download Manager	歡迎使用 Mister Download Manager
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -6836,7 +6908,7 @@
 #, machine
 	Yes	是
 #. button in helpers.rs
-#. the first start's helpers window: download yt-dlp and ffmpeg (the recommended answer)
+#. the first start's helpers: download every missing helper (yt-dlp, ffmpeg, Node.js) at once (the recommended answer)
 #, machine
 	Yes, download them (recommended)	是，下載它們 (建議)
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)

@@ -870,6 +870,10 @@
    "source": "<g1>On Linux</g1>, Chrome-family browsers keep the key to their cookies in the system's keyring (GNOME Keyring, KWallet); yt-dlp asks it, so it must be unlocked.",
    "text": "<g1>W systemie Linux</g1> przeglądarki z rodziny Chrome przechowują klucz do swoich plików cookie w systemowym pęku kluczy (GNOME Keyring, KWallet); yt-dlp prosi o niego, więc musi być odblokowany."
   },
+  "0b208bcb1380dcda": {
+   "source": "MDM runs on 64-bit Linux with a desktop session. It is tested on Ubuntu 24.04, Debian 12 and Fedora, with GNOME, KDE Plasma, Xfce and Cinnamon, on X11 and in Wayland sessions. Pick one of these files (up to version 0.2.4, their names end in <x1/>, as in <x2/>). From version 0.6.0, each also comes for 64-bit ARM computers, with <x3/> in place of <x4/> (<x5/>); they are built and tested on GitHub's ARM machines. On ARM, MDM doesn't download gallery-dl itself (its author builds none for it): install it with your system's packages or pip.",
+   "text": "MDM działa na 64-bitowym systemie Linux z sesją pulpitu. Jest testowany na Ubuntu 24.04, Debian 12 i Fedora, z GNOME, KDE Plasma, Xfce i Cinnamon, na X11 oraz w sesjach Wayland. Wybierz jeden z tych plików (do wersji 0.2.4, ich nazwy kończą się na <x1/>, jak w <x2/>). Od wersji 0.6.0 każdy jest również dostępny dla 64-bitowych komputerów ARM, z <x3/> zamiast <x4/> (<x5/>); są one budowane i testowane na maszynach ARM GitHub. Na ARM MDM nie pobiera samego gallery-dl (jego autor nie tworzy dla niego żadnych wersji): zainstaluj go za pomocą pakietów systemowych lub pip."
+  },
   "0b2740fc08d56719": {
    "source": "A <x1/> from an issue:",
    "text": "<x1/> z problemu:"
@@ -941,6 +945,10 @@
   "0bf05d42ffbd0dfa": {
    "source": "<g1>The DNS you choose.</g1> With a DNS other than the system's in <g2>Options → Connection → DNS</g2> (Cloudflare, Google, Quad9, AdGuard, NextDNS or your own), MDM asks it, over HTTPS, TLS or TCP, for the addresses of the servers it downloads from. That service sees those names and your IP address, under its own privacy terms.",
    "text": "<g1>Wybrany przez Ciebie DNS.</g1> Jeśli w <g2>Opcje → Połączenie → DNS</g2> wybierzesz DNS inny niż systemowy (Cloudflare, Google, Quad9, AdGuard, NextDNS lub własny), MDM zapyta go, za pośrednictwem HTTPS, TLS lub TCP, o adresy serwerów, z których pobiera pliki. Ta usługa widzi te nazwy i Twój adres IP, zgodnie z własnymi warunkami prywatności."
+  },
+  "0bfe58d5a6061e7d": {
+   "source": "Open <g1>View → Language...</g1>. The same list as on the first start opens: every language by its flag, its own name and its English name. Type in <g2>Search</g2> to narrow the list, then double-click a language or select it and click <g3>OK</g3>. The window switches at once; there is nothing to restart.",
+   "text": "Otwórz <g1>Widok → Język…</g1>. Otworzy się ta sama lista, co przy pierwszym uruchomieniu: każdy język z jego flagą, nazwą własną i angielską. Wpisz coś w polu <g2>Szukaj</g2>, aby zawęzić listę, a następnie kliknij dwukrotnie język lub wybierz go i kliknij <g3>OK</g3>. Okno natychmiast się przełączy; nie trzeba niczego ponownie uruchamiać."
   },
   "0c04a7480c3b5e9c": {
    "source": "The remote control is off until you turn it on. It answers only the devices you paired, each removable at once in Options, and listens only on the computer's private network addresses, never on one the internet can reach. Everything goes over HTTPS, and web pages can't use it.",
@@ -1057,6 +1065,10 @@
   "0dac0eca06d7747e": {
    "source": "<g1>pywal's <x2/></g1>, or any program's file in pywal's shape (wallust's pywal template).",
    "text": "<g1>Plik <x2/> programu pywal</g1> lub plik dowolnego programu w formacie pywal (szablon pywal programu wallust)."
+  },
+  "0dacc2e40c7f2886": {
+   "source": "<g1>Remember this path for \"…\" category</g1> — tick it to make the folder you typed the category's folder from now on. With <g2>Save every download in \"General\" category's folder</g2> ticked in <g3>Options → Save to</g3>, every download starts in General's folder, and this box names General: the folder you typed becomes the one for every download.",
+   "text": "<g1>Zapamiętaj tę ścieżkę dla kategorii „…”</g1> — zaznacz, aby wpisany folder stał się domyślnym dla tej kategorii. Jeśli włączono <g2>Zapisuj każde pobieranie w folderze kategorii „Ogólne”</g2> w <g3>Opcje → Zapisz w</g3>, każde pobieranie rozpoczyna się w folderze Ogólne, a to pole dotyczy kategorii Ogólne: wpisany folder stanie się domyślnym dla wszystkich pobrań."
   },
   "0db8fa73ad59b887": {
    "source": "macOS <g1>11 and later</g1>",
@@ -1209,6 +1221,10 @@
   "1058e8be7cc50b7e": {
    "source": "High contrast",
    "text": "Wysoki kontrast"
+  },
+  "105e2af4dcf1adc9": {
+   "source": "Last updated 2026-11-27",
+   "text": "Ostatnia aktualizacja: 27.11.2026"
   },
   "10825ce1e4e377bf": {
    "source": "Tasks → Import → From IDM export file",
@@ -1405,6 +1421,10 @@
   "12d5cecab885caa3": {
    "source": "a live stream still being recorded (<g1>Recording a live stream</g1>);",
    "text": "strumień na żywo, który jest nadal nagrywany (<g1>Nagrywanie strumienia na żywo</g1>);"
+  },
+  "12dd621d59ebfd7e": {
+   "source": "MDM asks the site's public API for the list of files and opens Link grabber with all of them in one package: each file with its size and the folder it is in, <g1>unticked</g1>, so you tick only what you need (the package's box ticks them all). Its <g2>Save to</g2> is the address's path under your download folder (<g3>Options → Save to</g3>), and each file keeps its folder inside it: <x4/> of <x5/> goes to <x6/>, a dataset's files under <x7/>, a release's under <x8/>. A folder of a repository keeps its place in it (<x9/>), so files you take later from another folder land beside it. <g10>Start</g10> or <g11>Add to queue</g11> adds them as one group, with one summary when the last is done.",
+   "text": "MDM prosi publiczne API witryny o listę plików i otwiera Link grabber ze wszystkimi w jednym pakiecie: każdy plik z jego rozmiarem i folderem, w którym się znajduje, <g1>niezaznaczony</g1>, więc zaznaczasz tylko to, czego potrzebujesz (pole pakietu zaznacza je wszystkie). Jego <g2>Zapisz w</g2> to ścieżka adresu w folderze pobierania (<g3>Opcje → Zapisz w</g3>), a każdy plik zachowuje swój folder w nim: <x4/> z <x5/> trafia do <x6/>, pliki zbioru danych pod <x7/>, wydania pod <x8/>. Folder repozytorium zachowuje swoje miejsce w nim (<x9/>), więc pliki pobrane później z innego folderu lądują obok. <g10>Rozpocznij</g10> lub <g11>Dodaj do kolejki</g11> dodaje je jako jedną grupę, z jednym podsumowaniem po zakończeniu ostatniego."
   },
   "12ed54fb5407aa89": {
    "source": "The website has <x1/> and <x2/>, and every help page as Markdown, for AI tools.",
@@ -1866,6 +1886,10 @@
    "source": "Ctrl+Space",
    "text": "Ctrl+Spacja"
   },
+  "18ed20e992d45d9d": {
+   "source": "<g1>Coming with version 0.6.0</g1> <g2>It's in the source code now, not yet in the download (version 0.5.2).</g2>",
+   "text": "<g1>Dostępne od wersji 0.6.0</g1> <g2>Funkcja jest już w kodzie źródłowym, ale jeszcze nie w wersji do pobrania (0.5.2).</g2>"
+  },
   "1909586657a6c8d0": {
    "source": "Flag",
    "text": "Flaga"
@@ -1889,6 +1913,10 @@
   "19686779e1123d73": {
    "source": "To open the page by the server's name (<x1/>), give MDM that name: <x2/> (several: separated by commas). Other names are refused, so that no web page can reach MDM through a name of its own.",
    "text": "Aby otworzyć stronę według nazwy serwera (<x1/>), podaj MDM tę nazwę: <x2/> (kilka: oddzielone przecinkami). Inne nazwy są odrzucane, aby żadna strona internetowa nie mogła uzyskać dostępu do MDM za pośrednictwem własnej nazwy."
+  },
+  "196da1f2253e1052": {
+   "source": "<g1>Straight from the sites.</g1> Files come from Hugging Face's and GitHub's own servers, never through a mirror, through MDM's own connections, speed limits and proxy, like any download.",
+   "text": "<g1>Bezpośrednio z witryn.</g1> Pliki pochodzą z własnych serwerów Hugging Face i GitHub, nigdy przez lustro, przez własne połączenia MDM, limity prędkości i proxy, jak każde pobieranie."
   },
   "197a78fedd5b9b66": {
    "source": "It isn't offered with <g1>Only a part</g1>: a part has no chapters.",
@@ -1918,6 +1946,10 @@
    "source": "What the stores count, and what people wrote in their own words and languages. Every quote is exact and links to where it was written.",
    "text": "To, co liczą sklepy, i to, co ludzie napisali własnymi słowami i w swoich językach. Każdy cytat jest dokładny i zawiera link do miejsca, w którym został napisany."
   },
+  "19ab8e362b37c9c3": {
+   "source": "Install one, or download them all at once; Next leaves them for later.",
+   "text": "Zainstaluj jeden lub pobierz wszystkie naraz; Dalej pozostawia je na później."
+  },
   "19af82a4564bc92c": {
    "source": "Downloads no longer fail with \"part file still in use\" on a busy computer.",
    "text": "Pobieranie nie kończy się już błędem „plik częściowy nadal w użyciu” na zajętym komputerze."
@@ -1941,6 +1973,10 @@
   "1a1c4d85605e18ae": {
    "source": "<g1>Alt+Enter</g1> always opens <g2>Properties</g2>.",
    "text": "<g1>Alt+Enter</g1> zawsze otwiera <g2>Właściwości</g2>."
+  },
+  "1a1dff89e0e39768": {
+   "source": "The windows are drawn with OpenGL (eframe's glow) or with the system's own graphics API through eframe's wgpu, with that one backend only: Direct3D 12 on Windows (the default there), Vulkan on Linux, Metal on macOS (choices there; OpenGL stays their default until real graphics cards have tried them, #206). View → Draw with picks one, from the next start. One code path does it on every system (<x1/>): when the chosen one can't start, the other one is tried, so the windows always open. A watched start with the system's API leaves a marker until its first frame is drawn: a start that ends before it (a crash inside the driver), one whose first frame doesn't come within 10 seconds (MDM then starts again with OpenGL), or a graphics card lost twice in 10 minutes is remembered with its reason, which the menu shows. A way that can't start within 10 minutes of a lost card isn't remembered: its driver may still be resetting (#1974: Direct3D 12 then finds only WARP), so the next start tries it again. With OpenGL, a window eframe can't paint (its context can't be made current on it, its frame can't be shown) is skipped and painted again 100 ms later; one whose paints keep failing for seconds is a lost device too (MDM starts again; twice in 10 minutes, OpenGL is remembered as failing on Windows). On Windows, a freeze or a crash whose report shows the window's or the crashed thread inside OpenGL's driver is remembered too, by the crash report's window (<x2/>), from the stack's modules (#847, #1659). The fork's eframe tells MDM through its viewport hooks (<x3/>, #1448).",
+   "text": "Okna są rysowane za pomocą OpenGL (eframe's glow) lub za pomocą własnego API graficznego systemu poprzez wgpu eframe, tylko z tym jednym backendem: Direct3D 12 na Windows (domyślnie), Vulkan na Linux, Metal na macOS (wybory tam; OpenGL pozostaje ich domyślnym, dopóki prawdziwe karty graficzne ich nie wypróbują, #206). Widok → Rysuj za pomocą wybiera jeden, od następnego uruchomienia. Jedna ścieżka kodu robi to na każdym systemie (<x1/>): gdy wybrany nie może się uruchomić, próbowany jest drugi, więc okna zawsze się otwierają. Monitorowane uruchomienie z API systemowym pozostawia znacznik do momentu narysowania pierwszej klatki: uruchomienie, które kończy się wcześniej (awaria w sterowniku), takie, którego pierwsza klatka nie pojawia się w ciągu 10 sekund (MDM uruchamia się wtedy ponownie z OpenGL), lub karta graficzna utracona dwukrotnie w ciągu 10 minut jest zapamiętywana z powodu, który pokazuje menu. Sposób, który nie może się uruchomić w ciągu 10 minut od utraty karty, nie jest zapamiętywany: jego sterownik może nadal się resetować (#1974: Direct3D 12 znajduje wtedy tylko WARP), więc następne uruchomienie próbuje go ponownie. Z OpenGL, okno, którego eframe nie może namalować (jego kontekst nie może stać się bieżący, jego klatka nie może być wyświetlona), jest pomijane i malowane ponownie 100 ms później; takie, którego malowanie ciągle się nie udaje przez sekundy, jest również utraconym urządzeniem (MDM uruchamia się ponownie; dwukrotnie w ciągu 10 minut, OpenGL jest zapamiętywane jako nieudane na Windows). Na Windows, zawieszenie lub awaria, której raport pokazuje okno lub zawieszony wątek w sterowniku OpenGL, jest również zapamiętywana przez okno raportu awarii (<x2/>), z modułów stosu (#847, #1659). Eframe forka informuje MDM poprzez swoje haki viewportu (<x3/>, #1448)."
   },
   "1a2a843c29753c86": {
    "source": "A greyed menu item",
@@ -2089,6 +2125,10 @@
   "1be93bd020009908": {
    "source": "<g1>The keyboard focus got lost</g1> when a button greyed itself or Escape closed a drop-down: Tab started over at the top of the window. It now moves on, or comes back, as in Windows.",
    "text": "<g1>Fokus klawiatury gubił się</g1>, gdy przycisk się wyszarzał lub Escape zamykał rozwijane menu: Tab zaczynał od nowa na górze okna. Teraz przesuwa się dalej lub wraca, jak w Windows."
+  },
+  "1c004ef83082f283": {
+   "source": "<g1>Site rules...</g1> — a User-Agent, request headers, a number of connections and <g2>Always connect the way a browser does</g2>, by site. See <g3>Site rules</g3>.",
+   "text": "<g1>Reguły witryn...</g1> — User-Agent, nagłówki żądań, liczba połączeń i <g2>Zawsze łącz się jak przeglądarka</g2>, według witryny. Zobacz <g3>Reguły witryn</g3>."
   },
   "1c0101659f1e2203": {
    "source": "<g1>Feeds</g1>: the feeds it watches; none ticked, all of them.",
@@ -2405,6 +2445,10 @@
   "20802419a2c5daee": {
    "source": "— implicit FTPS, port 990 unless the address gives another.",
    "text": "— niejawny FTPS, port 990, chyba że adres podaje inny."
+  },
+  "2082e4251623ff9a": {
+   "source": "Coming with version 0.6.0",
+   "text": "Dostępne w wersji 0.6.0"
   },
   "20901417c69e606b": {
    "source": "Issues",
@@ -2806,6 +2850,10 @@
    "source": "<g1>1</g1> of 10",
    "text": "<g1>1</g1> z 10"
   },
+  "2562f2727d097aa3": {
+   "source": "Or one folder for all of them",
+   "text": "Albo jeden folder dla wszystkich"
+  },
   "257acee667e62714": {
    "source": "Which sites",
    "text": "Które witryny"
@@ -2909,6 +2957,10 @@
   "26ae5fbaf85f0fa2": {
    "source": "The portable copy of MDM runs from any folder, including a USB stick, without installing anything.",
    "text": "Przenośna kopia MDM działa z dowolnego folderu, w tym z pamięci USB, bez instalacji."
+  },
+  "26b88fbdb888bcea": {
+   "source": "If the graphics card is reset while MDM runs (a driver update), MDM starts again by itself. Lost twice in 10 minutes, it goes back to OpenGL, and <g1>View → Draw with</g1> says why. If the card isn't back yet when MDM starts again, that start draws another way (OpenGL, or WARP), and the next start tries the card again.",
+   "text": "Jeśli karta graficzna zostanie zresetowana podczas działania MDM (aktualizacja sterownika), MDM uruchomi się ponownie samodzielnie. Jeśli utraci połączenie dwukrotnie w ciągu 10 minut, powróci do OpenGL, a <g1>Widok → Rysuj za pomocą</g1> wyjaśni dlaczego. Jeśli karta nie wróci do działania, gdy MDM uruchomi się ponownie, to uruchomienie rysuje w inny sposób (OpenGL lub WARP), a następne uruchomienie ponownie próbuje użyć karty."
   },
   "26e744828e520145": {
    "source": "The main window in the Breeze theme",
@@ -3018,10 +3070,6 @@
    "source": "Up to 128 connections per file, re-split as they go",
    "text": "Do 128 połączeń na plik, dzielonych ponownie w trakcie pobierania"
   },
-  "2826420ef85a1bcf": {
-   "source": "Open <g1>View → Language...</g1>. The same window as on the first start opens: every language by its flag, its own name and its English name. Type in <g2>Search</g2> to narrow the list, then double-click a language or select it and click <g3>OK</g3>. The window switches at once; there is nothing to restart.",
-   "text": "Otwórz <g1>Widok → Język...</g1>. Otworzy się to samo okno co przy pierwszym uruchomieniu: każdy język jest pokazany z flagą, nazwą w swoim języku i nazwą angielską. Wpisz tekst w polu <g2>Szukaj</g2>, aby zawęzić listę, a następnie kliknij dwukrotnie język lub zaznacz go i kliknij <g3>OK</g3>. Język zmieni się od razu; nie trzeba ponownie uruchamiać programu."
-  },
   "282685fe5e7ae3c6": {
    "source": "<g1>Click'n'Load</g1> buttons on link sites, once you turn it on. See <g2>Click'n'Load</g2>.",
    "text": "Przyciski <g1>Click'n'Load</g1> na stronach z linkami, po włączeniu tej funkcji. Zobacz <g2>Click'n'Load</g2>."
@@ -3098,10 +3146,6 @@
    "source": "Requests",
    "text": "Żądania"
   },
-  "2909bef12c6c1a15": {
-   "source": "Left empty, <g1>Save to</g1> puts each file in its category's folder (<g2>Options → Save to</g2>). To put every file of the batch in one folder, type it there or choose it with <g3>...</g3>. Then click <g4>OK</g4>.",
-   "text": "Jeśli pole <g1>Zapisz w</g1> pozostawisz puste, każdy plik trafi do folderu swojej kategorii (<g2>Opcje → Zapisz w</g2>). Aby wszystkie pliki z partii trafiły do jednego folderu, wpisz go tam lub wybierz za pomocą <g3>...</g3>. Następnie kliknij <g4>OK</g4>."
-  },
   "292621fe40d7beca": {
    "source": "Every video starts ticked. Untick the ones you don't want, or use <g1>Select all</g1> and <g2>Select none</g2>. Private and deleted videos are greyed out and can't be ticked.",
    "text": "Każdy film jest domyślnie zaznaczony. Odznacz te, których nie chcesz, lub użyj <g1>Zaznacz wszystko</g1> i <g2>Odznacz wszystko</g2>. Filmy prywatne i usunięte są wyszarzone i nie można ich zaznaczyć."
@@ -3145,6 +3189,10 @@
   "2a014824bb4f981c": {
    "source": "Disabled text, the one grey of every greyed control and label",
    "text": "Wyłączony tekst, jedyna szarość każdego wyszarzonego elementu sterującego i etykiety"
+  },
+  "2a0f36d71bedb1bb": {
+   "source": "<g1>A GitHub release</g1>: <x2/>, or <x3/> for the newest one. A tag without a release lists its source code.",
+   "text": "<g1>Wydanie z GitHub</g1>: <x2/> lub <x3/> dla najnowszego. Tag bez wydania wyświetla jego kod źródłowy."
   },
   "2a1c06f26ea84eee": {
    "source": "<g1>pywal itself:</g1> once <x2/> has run, <g3>View → Theme</g3> lists <g4>pywal</g4>, read straight from where pywal writes its colours: <x5/> (on Windows <x6/>, where winwal and pywal write it; <x7/> or <x8/> when you set them). Pick it and MDM follows your wallpaper: each time <x9/> writes new colours, MDM takes them within two seconds. It looks only at the file's date and size, every two seconds, and only while pywal is the theme. A copy added with <g10>Add a theme file…</g10> keeps the colours it had.",
@@ -3241,10 +3289,6 @@
   "2b1f05dd303b4a14": {
    "source": "<g1>Resume capability</g1> — <g2>Yes</g2> if the server lets MDM continue the download later, <g3>No</g3> if it doesn't.",
    "text": "<g1>Możliwość wznowienia</g1> — <g2>Tak</g2>, jeśli serwer pozwala MDM kontynuować pobieranie później, <g3>Nie</g3>, jeśli nie pozwala."
-  },
-  "2b32b47b6f8a0433": {
-   "source": "<g1>Remember this path for \"…\" category</g1> — tick it to make the folder you typed the category's folder from now on.",
-   "text": "<g1>Zapamiętaj tę ścieżkę dla kategorii „…”</g1> — zaznacz, aby wpisany folder stał się domyślnym folderem dla tej kategorii."
   },
   "2b3813b1923fc5e3": {
    "source": "The list covers every display language of Windows 11, including both Chinese scripts, Spanish for Spain and Mexico, French for France and Canada, Portuguese for Portugal and Brazil, and Serbian in Cyrillic and Latin. The <g1>languages page</g1> lists them all.",
@@ -3697,6 +3741,10 @@
   "3119a32ef52a6c93": {
    "source": "A window's headline (Tahoma Bold): the browser extension's, the helpers'",
    "text": "Nagłówek okna (Tahoma Bold): rozszerzenia przeglądarki, pomocników"
+  },
+  "311b27709d4b92f5": {
+   "source": "<g1>A model's, a dataset's or a release's files</g1> form one package, whose <g2>Save to</g2> keeps their folders (see <g3>Models, datasets and releases</g3>).",
+   "text": "<g1>Pliki modelu, zbioru danych lub wydania</g1> tworzą jeden pakiet, którego <g2>Zapisz w</g2> zachowuje ich foldery (zobacz <g3>Modele, zbiory danych i wydania</g3>)."
   },
   "313a2ae6414b54cf": {
    "source": "Give Link grabber a folder's address, the way you give it a page's: paste it with <g1>Ctrl+V</g1>, copy it for <g2>Tasks → Add batch download from clipboard</g2>, put it in a list for <g3>Tasks → Import</g3>, or drop it on the download list.",
@@ -4170,6 +4218,10 @@
    "source": "Save To",
    "text": "Zapisz w"
   },
+  "3846da69167664ac": {
+   "source": "<g1>Checked against the site's digest.</g1> Hugging Face publishes a SHA-256 for each large file, GitHub for each release file. MDM checks the finished file against it, as <g2>Verify checksum</g2> does; a file that doesn't match stays unfinished and says so (<g3>the file's SHA-256 checksum doesn't match</g3>), and <g4>Redownload</g4> fetches it again. Small files kept in the repository itself, and a release's source code, have no digest of their own to check.",
+   "text": "<g1>Sprawdzono z sumą kontrolną witryny.</g1> Hugging Face publikuje SHA-256 dla każdego dużego pliku, GitHub dla każdego pliku wydania. MDM sprawdza ukończony plik z nią, tak jak robi to <g2>Weryfikuj sumę kontrolną</g2>; plik, który nie pasuje, pozostaje niedokończony i tak jest oznaczony (<g3>suma kontrolna SHA-256 pliku nie pasuje</g3>), a <g4>Pobierz ponownie</g4> pobiera go ponownie. Małe pliki przechowywane w samym repozytorium oraz kod źródłowy wydania nie mają własnej sumy kontrolnej do sprawdzenia."
+  },
   "385890444f5eb85e": {
    "source": "Decide exactly how MDM reaches the internet, and see where your files come from.",
    "text": "Dokładnie zdecyduj, jak MDM łączy się z internetem, i zobacz, skąd pochodzą Twoje pliki."
@@ -4530,6 +4582,10 @@
    "source": "<g1>Available on</g1><g2>The official places first</g2>",
    "text": "<g1>Dostępne na</g1><g2>Najpierw oficjalne miejsca</g2>"
   },
+  "3d219d727371d3f9": {
+   "source": "Windows 10 and 11 is the main platform, on 64-bit PCs (x64); from version 0.6.0, on Windows on ARM PCs and 32-bit Windows 10 too, each with files of its own. Linux is supported too, with an AppImage, a .deb, an .rpm and a .tar.gz in every release: since version 0.5.0 it isn't experimental any more, and it is checked on GNOME, KDE Plasma, Xfce and Cinnamon, in Wayland sessions too, and its packages in clean Ubuntu, Debian and Fedora systems. Still to come there: the Flatpak Firefox isn't checked yet, and screen readers (Orca) don't read MDM's windows yet. macOS builds (.dmg) come with every release too, and stay experimental. See <g1>Windows, Mac and Linux</g1> and <g2>Download</g2>.",
+   "text": "Systemy Windows 10 i 11 to główna platforma, na komputerach 64-bitowych (x64); od wersji 0.6.0 również na komputerach z systemem Windows na ARM i 32-bitowym Windows 10, każdy z własnymi plikami. Linux jest również obsługiwany, z AppImage, .deb, .rpm i .tar.gz w każdym wydaniu: od wersji 0.5.0 nie jest już eksperymentalny i jest sprawdzany na GNOME, KDE Plasma, Xfce i Cinnamon, również w sesjach Wayland, a jego pakiety w czystych systemach Ubuntu, Debian i Fedora. Nadal brakuje: Flatpak Firefox nie jest jeszcze sprawdzony, a czytniki ekranu (Orca) nie odczytują jeszcze okien MDM. Kompilacje macOS (.dmg) również są dostępne w każdym wydaniu i pozostają eksperymentalne. Zobacz <g1>Windows, Mac i Linux</g1> oraz <g2>Pobierz</g2>."
+  },
   "3d4a4f2d1b19754e": {
    "source": "Can I move my downloads over from IDM?",
    "text": "Czy mogę przenieść moje pobrane pliki z IDM?"
@@ -4618,6 +4674,10 @@
    "source": "Yes. When a video has subtitles, the Subtitles list in the video window offers them: the uploader's languages and the site's automatic captions. They're saved beside the video as an .srt file, or put inside it with Put them into the video. See Subtitles.",
    "text": "Tak. Gdy film ma napisy, na liście Napisy w oknie wideo są dostępne języki przesłane przez autora oraz napisy wygenerowane automatycznie przez witrynę. Są one zapisywane obok filmu jako plik .srt lub umieszczane w nim za pomocą opcji Umieść je w filmie. Zobacz Napisy."
   },
+  "3e63a6af144ff571": {
+   "source": "From version 0.6.0, the three files come for two more kinds of PC, with the processor in their names: <g1>Windows on ARM</g1> (<x2/>, <x3/>, <x4/>), for PCs with a Snapdragon or another ARM processor, which then run MDM without Windows translating it; and <g5>32-bit Windows 10</g5> (<x6/>, <x7/>, <x8/>). <g9>Update now</g9> keeps each copy on its own processor's files. MDM downloads yt-dlp's own build for each, and ffmpeg's for Windows on ARM; no ffmpeg is built for 32-bit Windows that MDM can check, so there you choose your own in <g10>Helpers...</g10> for the best video qualities. Linux gets its four files for 64-bit ARM computers too (<x11/>).",
+   "text": "Od wersji 0.6.0 dostępne są trzy pliki dla dwóch dodatkowych typów komputerów, z nazwami procesorów: <g1>Windows na ARM</g1> (<x2/>, <x3/>, <x4/>), dla komputerów z procesorem Snapdragon lub innym procesorem ARM, które uruchamiają MDM bez tłumaczenia przez Windows; oraz <g5>32-bitowy Windows 10</g5> (<x6/>, <x7/>, <x8/>). <g9>Aktualizuj teraz</g9> zachowuje każdą kopię na plikach jej własnego procesora. MDM pobiera własną kompilację yt-dlp dla każdego, a ffmpeg dla Windows na ARM; nie ma kompilacji ffmpeg dla 32-bitowego Windows, którą MDM mógłby sprawdzić, więc tam wybierasz własną w <g10>Pomocnicy...</g10> dla najlepszej jakości wideo. Linux otrzymuje swoje cztery pliki również dla 64-bitowych komputerów ARM (<x11/>)."
+  },
   "3e6e10c300b6b5ce": {
    "source": "For all downloads together",
    "text": "Dla wszystkich pobierań razem"
@@ -4665,6 +4725,10 @@
   "3ee3f6088b3f3e5a": {
    "source": "<g1>Breeze</g1>, after KDE Plasma's look: rounded corners, buttons and boxes whose edge takes the accent under the pointer or when focused, KDE's check boxes and radio buttons (the accent's edge, a tick in the text's colour), a focus frame, KDE's Breeze icons (LGPL-3.0-or-later) and a title bar in KDE's style: the title centred, round buttons that fill under the pointer (Close in red).",
    "text": "<g1>Breeze</g1>, na wzór wyglądu KDE Plasma: zaokrąglone rogi, przyciski i pola, których krawędź przyjmuje akcent pod wskaźnikiem lub po zaznaczeniu, pola wyboru i przyciski radiowe KDE (krawędź akcentu, znacznik w kolorze tekstu), ramka fokusu, ikony Breeze KDE (LGPL-3.0-or-later) i pasek tytułowy w stylu KDE: tytuł wyśrodkowany, okrągłe przyciski, które wypełniają się pod wskaźnikiem (Zamknij na czerwono)."
+  },
+  "3f11ebeb619b7f7f": {
+   "source": "ARM64",
+   "text": "ARM64"
   },
   "3f2b96cbf359bd4a": {
    "source": "The volumes of one split archive (<x1/>, <x2/> and so on) form one package, the other links of a page another, and the rest go into <g3>Various files</g3>. Tick a package to take all its links. Each package has its own folder, an archive password, and <g4>Extract when done</g4>.",
@@ -4966,10 +5030,6 @@
    "source": "Links that work only once no longer fail with \"403 Forbidden\".",
    "text": "Linki, które działają tylko raz, nie kończą się już błędem „403 Forbidden”."
   },
-  "436b61c80c90a696": {
-   "source": "Windows 10 and 11 is the main platform, on 64-bit PCs (x64); from the version after 0.5.2, on Windows on ARM PCs and 32-bit Windows 10 too, each with files of its own. Linux is supported too, with an AppImage, a .deb, an .rpm and a .tar.gz in every release: since version 0.5.0 it isn't experimental any more, and it is checked on GNOME, KDE Plasma, Xfce and Cinnamon, in Wayland sessions too, and its packages in clean Ubuntu, Debian and Fedora systems. Still to come there: the Flatpak Firefox isn't checked yet, and screen readers (Orca) don't read MDM's windows yet. macOS builds (.dmg) come with every release too, and stay experimental. See Windows, Mac and Linux and Download.",
-   "text": "Główną platformą są 64-bitowe komputery (x64) z systemami Windows 10 i 11; od wersji następującej po 0.5.2, także komputery z Windows na ARM i 32-bitowy Windows 10, każdy z własnymi plikami. Linux jest również obsługiwany, z AppImage, .deb, .rpm i .tar.gz w każdym wydaniu: od wersji 0.5.0 nie jest już eksperymentalny i jest sprawdzany na GNOME, KDE Plasma, Xfce i Cinnamon, także w sesjach Wayland, a jego pakiety w czystych systemach Ubuntu, Debian i Fedora. Nadal do zrobienia: Flatpak Firefox nie jest jeszcze sprawdzony, a czytniki ekranu (Orca) nie odczytują jeszcze okien MDM. Kompilacje dla macOS (.dmg) również są dostępne w każdym wydaniu i pozostają eksperymentalne. Zobacz Windows, Mac i Linux oraz Pobierz."
-  },
   "436bac2c4f3d3f4c": {
    "source": "<g1>Downloads → Start queue</g1> and <g2>Downloads → Stop queue</g2> list them too.",
    "text": "Opcje <g1>Pobrane pliki → Rozpocznij kolejkę</g1> i <g2>Pobrane pliki → Zatrzymaj kolejkę</g2> również je wyświetlają."
@@ -5009,6 +5069,10 @@
   "43ff6b9c3376c383": {
    "source": "Firefox, Chrome, Edge, Brave, Opera, Vivaldi",
    "text": "Firefox, Chrome, Edge, Brave, Opera, Vivaldi"
+  },
+  "44106fa39bd5cfcd": {
+   "source": "Paste the address of a <g1>Hugging Face</g1> model or dataset, or of a folder in one, or of a <g2>GitHub release</g2>, and Link grabber lists every file in it with its size and folder, unticked. Tick what you need: it downloads as one group into a folder named after the address, with the repository's folders kept, and each file is checked against the SHA-256 the site publishes. Gated models work with your Hugging Face access token, saved in <g3>Options → Sites Logins</g3>. See <g4>Models, datasets and releases</g4>.",
+   "text": "Wklej adres modelu lub zbioru danych <g1>Hugging Face</g1>, albo folderu w jednym z nich, lub <g2>wydania GitHub</g2>, a Link grabber wyświetli listę wszystkich plików wraz z ich rozmiarem i folderem, niezaznaczonych. Zaznacz, czego potrzebujesz: pobierze się to jako jedna grupa do folderu nazwanego adresem, z zachowaniem folderów repozytorium, a każdy plik zostanie sprawdzony pod kątem SHA-256 opublikowanego przez witrynę. Modele z ograniczonym dostępem działają z Twoim tokenem dostępu Hugging Face, zapisanym w <g3>Opcje → Loginy do witryn</g3>. Zobacz <g4>Modele, zbiory danych i wydania</g4>."
   },
   "441473c88f5bb354": {
    "source": "Not listed",
@@ -5182,10 +5246,6 @@
    "source": "<g1>Numbers</g1> (counts, sizes, speeds, percentages and the list's columns) are written the way the interface language writes them, whatever the Windows region: German <x2/> and <x3/>, French <x4/>, Hindi <x5/>. When your system's region is in that same language, its own way wins (Swiss German <x6/>, or a separator you set in Windows). In English, MDM writes plain digits, as IDM does (<x7/>, <x8/>).",
    "text": "<g1>Numery</g1> (liczby, rozmiary, prędkości, wartości procentowe i kolumny listy) są zapisywane zgodnie z zasadami języka interfejsu, niezależnie od regionu systemu Windows: niemiecki <x2/> i <x3/>, francuski <x4/>, hindi <x5/>. Jeśli region systemu jest ustawiony na ten sam język, obowiązują jego własne zasady (szwajcarski niemiecki <x6/> lub separator ustawiony w systemie Windows). W języku angielskim MDM zapisuje cyfry wprost, tak jak IDM (<x7/>, <x8/>)."
   },
-  "468922e83389883b": {
-   "source": "Windows 10 and 11 is the main platform, on 64-bit PCs (x64); from the version after 0.5.2, on Windows on ARM PCs and 32-bit Windows 10 too, each with files…",
-   "text": "Systemy Windows 10 i 11 to główna platforma, na 64-bitowych komputerach (x64); od wersji po 0.5.2 także na komputerach z Windows na ARM i 32-bitowym Windows 10, każdy z własnymi plikami…"
-  },
   "4693601d27da4c66": {
    "source": "<g1>DNS over HTTPS</g1> (the default) or <g2>DNS over TLS</g2>: encrypted, so nobody on the way sees or changes the names you look up.",
    "text": "<g1>DNS przez HTTPS</g1> (domyślnie) lub <g2>DNS przez TLS</g2>: zaszyfrowane, więc nikt po drodze nie widzi ani nie zmienia wyszukiwanych nazw."
@@ -5205,6 +5265,10 @@
   "46d294d41c0bd102": {
    "source": "MDM's interface comes in 87 languages: every display language Windows 11 offers, from Afrikaans to Vietnamese, including both Chinese scripts, Spanish for…",
    "text": "Interfejs MDM jest dostępny w 87 językach: we wszystkich językach wyświetlania oferowanych przez system Windows 11, od afrikaans po wietnamski, w tym w obu chińskich pismach, hiszpańskim dla…"
+  },
+  "46dd41ea58cb0958": {
+   "source": "From version 0.6.0, pull the published image from GitHub Container Registry (x86-64 only for now):",
+   "text": "Od wersji 0.6.0 pobierz opublikowany obraz z GitHub Container Registry (na razie tylko x86-64):"
   },
   "46e5d950086d130d": {
    "source": "<g1>Extract in place with HatchZip</g1> (off by default; greyed out when HatchZip isn't installed) — the archive is removed while its files come out, so only they need room. See <g2>Extracting archives</g2>.",
@@ -5241,6 +5305,10 @@
   "476a78eca0326f04": {
    "source": "keeps the list, the settings, the certificate and the paired devices.",
    "text": "przechowuje listę, ustawienia, certyfikat i sparowane urządzenia."
+  },
+  "477e14355df77d93": {
+   "source": "Downloads the extension catches, <g1>Download with Mister Download Manager</g1> on a link, and <g2>Download all links</g2> / <g3>Download selected links</g3>, then go to the server instead of this computer. On the server, links are added and started right away (rather than opened in Link grabber). Only links matching the file types MDM catches (or its default types) are sent, capped at 100 links per batch; links beyond the cap or of other types are left out, and the toolbar button's badge and status notice report how many links were sent, refused, or left out. The browser's cookies are not sent to the server: a download that needs you to be signed in to a site stays with this computer.",
+   "text": "Pobrane pliki przechwycone przez rozszerzenie, <g1>Pobierz za pomocą Mister Download Manager</g1> z linku oraz <g2>Pobierz wszystkie linki</g2> / <g3>Pobierz wybrane linki</g3> są przesyłane na serwer zamiast na ten komputer. Na serwerze linki są dodawane i uruchamiane od razu (zamiast otwierać się w Link grabberze). Wysyłane są tylko linki pasujące do typów plików przechwytywanych przez MDM (lub jego domyślnych typów), z limitem 100 linków na partię; linki przekraczające limit lub innych typów są pomijane, a plakietka przycisku paska narzędzi i powiadomienie o statusie informują, ile linków zostało wysłanych, odrzuconych lub pominiętych. Pliki cookie przeglądarki nie są wysyłane na serwer: pobieranie, które wymaga zalogowania się do witryny, pozostaje na tym komputerze."
   },
   "478b98971f744119": {
    "source": "Deleting a queue asks first; a running queue stops when deleted; the toolbar's Start / Stop Queue arrows always work.",
@@ -5422,6 +5490,10 @@
    "source": "The download list in detail →",
    "text": "Lista pobrań w szczegółach →"
   },
+  "4a0f34047feec52c": {
+   "source": "For Linux on x86-64 (and ARM64 from version 0.6.0): an AppImage for most distributions, a <x1/> for Ubuntu, Debian, Mint and Pop!_OS, an <x2/> for Fedora, openSUSE and RHEL, and a <x3/> of the plain programs. For macOS 11 and later, on Apple Silicon or Intel, <x4/> files still marked <x5/>. Please <g6>tell us how it went</g6>, good or bad.",
+   "text": "Dla systemu Linux na x86-64 (i ARM64 od wersji 0.6.0): AppImage dla większości dystrybucji, <x1/> dla Ubuntu, Debiana, Minta i Pop!_OS, <x2/> dla Fedory, openSUSE i RHEL oraz <x3/> zwykłych programów. Dla systemu macOS 11 i nowszych, na Apple Silicon lub Intel, pliki <x4/> są nadal oznaczone jako <x5/>. Prosimy o <g6>przekazanie nam opinii</g6>, pozytywnej lub negatywnej."
+  },
   "4a31bb3dd19b1839": {
    "source": "<g1></g1>87, built in",
    "text": "<g1></g1>87, wbudowane"
@@ -5501,6 +5573,10 @@
   "4b59c6336533a5c6": {
    "source": "Downloads → Scheduler",
    "text": "Pobrane pliki → Harmonogram"
+  },
+  "4b73f3d89de7c4e1": {
+   "source": "Rather have every download in one place? Tick <g1>Options → Save to → Save every download in \"General\" category's folder</g1>, and every new download goes to General's folder, whatever its type: from the browser, <g2>Add URL</g2>, a batch, Link grabber, a queue or the command line. The categories stay, to sort and filter the list. One download can still go elsewhere: change its folder in <g3>Download File Info</g3>. Downloads already in the list stay where they are.",
+   "text": "Wolisz mieć wszystkie pobrane pliki w jednym miejscu? Zaznacz <g1>Opcje → Zapisz w → Zapisuj każde pobieranie w folderze kategorii „Ogólne”</g1>, a każde nowe pobieranie trafi do folderu Ogólne, niezależnie od jego typu: z przeglądarki, <g2>Dodaj URL</g2>, partii, Link grabbera, kolejki czy wiersza poleceń. Kategorie pozostają, aby sortować i filtrować listę. Pojedyncze pobieranie nadal może trafić gdzie indziej: zmień jego folder w <g3>Informacje o pliku do pobrania</g3>. Pobrane pliki już znajdujące się na liście pozostają tam, gdzie są."
   },
   "4b8a2274de78ad9c": {
    "source": "egui's body text: tooltips, multi-line boxes",
@@ -5609,6 +5685,10 @@
   "4cf5674fd62fa773": {
    "source": "A meter's edge",
    "text": "Krawędź miernika"
+  },
+  "4cf7f48056de0a54": {
+   "source": "<g1>Coming with version 0.6.0</g1> <g2>This part isn't in the download (version 0.5.2) yet.</g2>",
+   "text": "<g1>Dostępne od wersji 0.6.0</g1> <g2>Ta funkcja nie jest jeszcze dostępna w wersji 0.5.2.</g2>"
   },
   "4d0868248400f576": {
    "source": "<g1>No video this can download on that page</g1> means yt-dlp found nothing on the page. Check that the address is the video's own page.",
@@ -5833,10 +5913,6 @@
   "5095a187528ef523": {
    "source": "Closed to the notification area, MDM gives its memory back to Windows: <g1>Memory</g1> drops to under 10 MB within seconds and stays low while it waits. Downloads, queues and the scheduler go on as before. The list of every language (<g2>View → Language</g2>) loads fonts for every script while it's open; MDM lets them go when it closes.",
    "text": "Po zamknięciu do obszaru powiadomień MDM zwalnia pamięć zajmowaną w systemie Windows: wartość <g1>Pamięć</g1> spada poniżej 10 MB w ciągu kilku sekund i pozostaje niska, gdy program czeka. Pobieranie, kolejki i harmonogram działają jak wcześniej. Otwarta lista wszystkich języków (<g2>Widok → Język</g2>) wczytuje czcionki dla wszystkich alfabetów; MDM zwalnia je po zamknięciu listy."
-  },
-  "50a2d01abfd3fd4a": {
-   "source": "From the version after 0.5.2, the three files come for two more kinds of PC, with the processor in their names: <g1>Windows on ARM</g1> (<x2/>, <x3/>, <x4/>), for PCs with a Snapdragon or another ARM processor, which then run MDM without Windows translating it; and <g5>32-bit Windows 10</g5> (<x6/>, <x7/>, <x8/>). <g9>Update now</g9> keeps each copy on its own processor's files. MDM downloads yt-dlp's own build for each, and ffmpeg's for Windows on ARM; no ffmpeg is built for 32-bit Windows that MDM can check, so there you choose your own in <g10>Helpers...</g10> for the best video qualities. Linux gets its four files for 64-bit ARM computers too (<x11/>).",
-   "text": "Od wersji po 0.5.2, trzy pliki są dostępne dla dwóch dodatkowych typów komputerów, z nazwą procesora w nazwie pliku: <g1>Windows na ARM</g1> (<x2/>, <x3/>, <x4/>), dla komputerów z procesorem Snapdragon lub innym procesorem ARM, które uruchamiają MDM bez tłumaczenia przez Windows; oraz <g5>32-bitowy Windows 10</g5> (<x6/>, <x7/>, <x8/>). <g9>Aktualizuj teraz</g9> utrzymuje każdą kopię na plikach jej własnego procesora. MDM pobiera własną kompilację yt-dlp dla każdego z nich oraz ffmpeg dla Windows na ARM; nie ma kompilacji ffmpeg dla 32-bitowego Windows, którą MDM mógłby sprawdzić, więc tam wybierasz własną w <g10>Pomocnicy...</g10> dla najlepszej jakości wideo. Linux również otrzymuje swoje cztery pliki dla 64-bitowych komputerów ARM (<x11/>)."
   },
   "50a8864f971c1689": {
    "source": "Right-click → <g1>Add category</g1> makes one for what you collect, say <g2>Books</g2> for <x3/>: a name, the file types separated by spaces (<x4/> allowed) and a folder. Change it later with <g5>Properties</g5>, or remove it with <g6>Delete</g6>. The files stay where they are.",
@@ -6069,6 +6145,10 @@
   "536df2f60bd48da6": {
    "source": "Success text (a matching checksum)",
    "text": "Tekst sukcesu (pasująca suma kontrolna)"
+  },
+  "538fe2ede1fc4d57": {
+   "source": "The single-instance channel (a token-protected local socket), the data folder, the capture rules shared by the app and the host, and the site rules (#1778: a User-Agent, headers, connections and the browser-like connection by site pattern) shared by the app and the command line",
+   "text": "Kanał pojedynczej instancji (lokalny socket chroniony tokenem), folder danych, reguły przechwytywania współdzielone przez aplikację i hosta oraz reguły witryn (#1778: User-Agent, nagłówki, połączenia i połączenie podobne do przeglądarki według wzorca witryny) współdzielone przez aplikację i wiersz poleceń"
   },
   "539160f92bae4422": {
    "source": "Being re-measured",
@@ -6766,6 +6846,10 @@
    "source": "One click hides a download's window",
    "text": "Jedno kliknięcie ukrywa okno pobierania"
   },
+  "5d3af05ef67f6e44": {
+   "source": "What a site's list says is checked before it is used: a file whose path would lead out of its folder (<x1/>, an absolute path, a drive letter, a device name such as <x2/>) is left out, and the Source line counts them. At most 10,000 files are listed for one address. As folders are, they are read only with <g3>Look links up when they arrive</g3> on (the default).",
+   "text": "To, co mówi lista witryny, jest sprawdzane przed użyciem: plik, którego ścieżka prowadziłaby poza jego folder (<x1/>, ścieżka bezwzględna, litera dysku, nazwa urządzenia, taka jak <x2/>), jest pomijany, a linia Źródło zlicza je. Dla jednego adresu listowanych jest maksymalnie 10 000 plików. Foldery są odczytywane tylko z włączoną opcją <g3>Wyszukuj linki po ich otrzymaniu</g3> (domyślnie)."
+  },
   "5d3b0743b7418c7e": {
    "source": "Choose <g1>Help → Report a problem</g1>. It opens the bug report form on GitHub with your MDM version, your system and its version, how MDM was installed and its interface language already filled in. Describe what happened, what you expected and the steps that make it happen. For a download, include the address if you can share it, and the reason shown under <g2>Status</g2>.",
    "text": "Wybierz <g1>Pomoc → Zgłoś problem</g1>. Otworzy się formularz zgłaszania błędów na GitHubie z już wypełnionymi danymi: wersją MDM, systemem i jego wersją, sposobem instalacji MDM oraz językiem interfejsu. Opisz, co się stało, czego oczekiwałeś i kroki, które do tego doprowadziły. W przypadku pobierania, jeśli możesz, podaj adres i przyczynę wyświetloną w <g2>Stanie</g2>."
@@ -7106,10 +7190,6 @@
    "source": "With Docker",
    "text": "Z Dockerem"
   },
-  "615e187e2caacd27": {
-   "source": "<g1>Otherwise:</g1> MDM shows the list of languages, each with its flag and its own name. Pick yours.",
-   "text": "<g1>W przeciwnym razie:</g1> MDM wyświetla listę języków, każdy z flagą i własną nazwą. Wybierz swój."
-  },
   "617b3af69a12514a": {
    "source": "works the same way, and follows <x1/> too.",
    "text": "działa tak samo i również podąża za <x1/>."
@@ -7225,6 +7305,10 @@
   "630073ab1db9fa7e": {
    "source": "Questions",
    "text": "Pytania"
+  },
+  "631d909be61240f2": {
+   "source": "<g1>Language.</g1> - <g2>Installed with the setup:</g2> MDM starts in the language you chose in the setup, and this step is left out. - <g3>Otherwise:</g3> the list of languages, each with its flag and its own name. Click yours: the window switches to it at once, right to left for Arabic, Hebrew, Persian and Urdu.",
+   "text": "<g1>Język.</g1> – <g2>Zainstalowano z instalatorem:</g2> MDM uruchamia się w języku wybranym podczas instalacji, a ten krok jest pomijany. – <g3>W przeciwnym razie:</g3> lista języków, każdy z flagą i własną nazwą. Kliknij swój: okno natychmiast przełączy się na wybrany język, od prawej do lewej dla arabskiego, hebrajskiego, perskiego i urdu."
   },
   "634ba66c06a04968": {
    "source": "Your download list, settings, logins you save in <g1>Sites Logins</g1>, the history of each download and the files you download are stored only on your computer: in <x2/> on Windows (or the <x3/> folder of the portable copy), and in the usual application-data folder on macOS and Linux. Nothing is uploaded anywhere. Uninstalling offers to delete them. From version 0.5.0, the passwords of Sites Logins, the proxy and debrid accounts go into the system's keychain instead (Windows Credential Manager, the keyring on Linux, the macOS keychain), still on your computer, when one is there and unlocked.",
@@ -7478,6 +7562,10 @@
    "source": "Two helpers, checked before use",
    "text": "Dwóch pomocników, sprawdzanych przed użyciem"
   },
+  "66fc2cbe47fa6280": {
+   "source": "User names and passwords for sites that ask for them. <g1>New</g1> adds a row: the site (with a path if the login is only for part of it), the user name and the password. <g2>Edit</g2> and <g3>Remove</g3> change or delete the selected row. MDM uses the login for every download from that site. A login typed in <g4>Add URL</g4> (<g5>Use authorization</g5>) takes priority for that one download. For <x6/>, the password is your Hugging Face access token, for gated models and datasets: MDM sends it as a token, to Hugging Face only (the user name can be anything; see <g7>Models, datasets and releases</g7>).",
+   "text": "Nazwy użytkownika i hasła do witryn, które ich wymagają. <g1>Nowy</g1> dodaje wiersz: witrynę (ze ścieżką, jeśli logowanie dotyczy tylko jej części), nazwę użytkownika i hasło. <g2>Edytuj</g2> i <g3>Usuń</g3> zmieniają lub usuwają wybrany wiersz. MDM używa loginu do każdego pobierania z tej witryny. Login wpisany w <g4>Dodaj URL</g4> (<g5>Użyj autoryzacji</g5>) ma priorytet dla tego jednego pobierania. Dla <x6/> hasłem jest Twój token dostępu Hugging Face, dla modeli i zbiorów danych z ograniczonym dostępem: MDM wysyła go jako token, tylko do Hugging Face (nazwa użytkownika może być dowolna; zobacz <g7>Modele, zbiory danych i wydania</g7>)."
+  },
   "670bb10cde757ad1": {
    "source": "MDM never writes the token to its event log, crash reports, the automation API or the command line's output.",
    "text": "MDM nigdy nie zapisuje tokenu w dzienniku zdarzeń, raportach awarii, API automatyzacji ani w wynikach wiersza poleceń."
@@ -7509,14 +7597,6 @@
   "676c0b5817404515": {
    "source": "To route <g1>everything</g1> through another network, use a VPN for the whole computer.",
    "text": "Aby przekierować <g1>cały ruch</g1> przez inną sieć, użyj VPN na całym komputerze."
-  },
-  "678b5f7a1583e7d1": {
-   "source": "<g1>Its menu</g1> (the arrow next to it, or <g2>↓</g2> when the button has the keyboard's focus): the video's title, length and site; its filters, when the qualities differ: <g3>All</g3>, <g4>Video</g4> (the picture with its sound) or <g5>Audio only</g5>, and the file type (MP4, WEBM, M4A, MP3...) or the picture's codec (AV1, VP9, H.264), kept for the site; <g6>Download best</g6> first (the best of what the filters keep), then one numbered line per quality under <g7>VIDEO</g7> and <g8>AUDIO</g8>, with its file type, codec, frame rate or bitrate and size (<x9/> <x10/>, as the Download video window says it), the best one marked, and <g11>Most compatible (H.264 + AAC)</g11> beside the resolution of the one that plays everywhere (<g12>Choose the quality</g12>); <g13>All qualities and subtitles...</g13>, which opens the <g14>Download video from a page</g14> window; then <g15>Put the button back in its corner</g15> (once you moved it on the site), <g16>Hide on this video</g16> (<g17>Esc</g17>), <g18>Never on</g18> the site (MDM remembers the site), and <g19>Button settings...</g19>, which opens MDM's Options. The arrow keys move through it, <g20>Enter</g20> picks, <g21>Esc</g21> closes it.",
-   "text": "<g1>Jego menu</g1> (strzałka obok niego lub <g2>↓</g2>, gdy przycisk ma fokus klawiatury): tytuł filmu, długość i witryna; jego filtry, gdy jakości się różnią: <g3>Wszystkie</g3>, <g4>Wideo</g4> (obraz z dźwiękiem) lub <g5>Tylko dźwięk</g5>, oraz typ pliku (MP4, WEBM, M4A, MP3...) lub kodek obrazu (AV1, VP9, H.264), zachowany dla witryny; najpierw <g6>Pobierz najlepszą jakość</g6> (najlepsze z tego, co zachowują filtry), następnie jedna numerowana linia na jakość pod <g7>WIDEO</g7> i <g8>DŹWIĘK</g8>, z typem pliku, kodekiem, liczbą klatek na sekundę lub bitrate i rozmiarem (<x9/> <x10/>, jak podaje okno Pobierz wideo), najlepsza oznaczona, oraz <g11>Najbardziej zgodny (H.264 + AAC)</g11> obok rozdzielczości tego, który odtwarza się wszędzie (<g12>Wybierz jakość</g12>); <g13>Wszystkie jakości i napisy...</g13>, co otwiera okno <g14>Pobierz wideo ze strony</g14>; następnie <g15>Umieść przycisk z powrotem w rogu</g15> (po przeniesieniu go na witrynie), <g16>Ukryj na tym wideo</g16> (<g17>Esc</g17>), <g18>Nigdy na</g18> witrynie (MDM zapamiętuje witrynę) i <g19>Ustawienia przycisku...</g19>, co otwiera Opcje MDM. Klawisze strzałek poruszają się po nim, <g20>Enter</g20> wybiera, <g21>Esc</g21> zamyka go."
-  },
-  "67b09013b9c7d05d": {
-   "source": "Yes downloads both helpers in the background, once.",
-   "text": "Kliknięcie „Tak” powoduje jednorazowe pobranie obu narzędzi w tle."
   },
   "67b7e3e016904e39": {
    "source": "Install MDM with the setup and keep Set up browser integration ticked. In Firefox, then open the add-on's page on addons.mozilla.org and click Add to…",
@@ -8110,10 +8190,6 @@
    "source": "<g1>Drop-down lists for screen readers</g1>: a screen reader or UI Automation can now set a drop-down list's choice by its text, and open or close the list.",
    "text": "<g1>Listy rozwijane dla czytników ekranu</g1>: czytnik ekranu lub UI Automation może teraz ustawić wybór listy rozwijanej za pomocą jej tekstu oraz otworzyć lub zamknąć listę."
   },
-  "6f4768be9e305804": {
-   "source": "From the release after 0.5.2, pull the published image from GitHub Container Registry (x86-64 only for now):",
-   "text": "Od wersji po 0.5.2 pobierz opublikowany obraz z GitHub Container Registry (na razie tylko dla x86-64):"
-  },
   "6f5dd71f3ee9ec81": {
    "source": "Start here",
    "text": "Zacznij tutaj"
@@ -8566,6 +8642,10 @@
    "source": "Save it in this folder (else the category's folder from <g1>Options → Save to</g1>).",
    "text": "Zapisz w tym folderze (w przeciwnym razie w folderze kategorii z <g1>Opcje → Zapisz w</g1>)."
   },
+  "757bdf6ec707e08a": {
+   "source": "The setup's Video helpers step: yt-dlp and ffmpeg, each with its Install button, and Yes, download them (recommended)",
+   "text": "Krok Pomocnicy wideo konfiguracji: yt-dlp i ffmpeg, każdy z przyciskiem Zainstaluj oraz Tak, pobierz je (zalecane)"
+  },
   "758225940a5eba45": {
    "source": "IDM itself is closed source. Mister Download Manager is an open-source download manager (GPL-3.0) laid out the way IDM users expect, written from scratch and unrelated to IDM's maker.",
    "text": "Sam IDM jest oprogramowaniem o zamkniętym kodzie źródłowym. Mister Download Manager to menedżer pobierania open source (GPL-3.0), stworzony od podstaw, niezwiązany z twórcami IDM i zaprojektowany z myślą o układzie, którego oczekują użytkownicy IDM."
@@ -8726,10 +8806,6 @@
    "source": "Browsers built on Firefox or Chromium, such as Zen, LibreWolf, Floorp, Waterfox and Helium, reach MDM. Flatpak browsers on Linux can't start MDM's helper.",
    "text": "Przeglądarki oparte na Firefox lub Chromium, takie jak Zen, LibreWolf, Floorp, Waterfox i Helium, łączą się z MDM. Przeglądarki Flatpak w systemie Linux nie mogą uruchomić pomocnika MDM."
   },
-  "77bd0523361e1992": {
-   "source": "Next, MDM offers its two free video helpers: <g1>yt-dlp</g1>, which finds the video on a page, and <g2>ffmpeg</g2>, which joins its picture and sound. Click <g3>Yes, download them (recommended)</g3> and they download in the background, about 100 MB, once. <g4>Not now</g4> leaves them for later: the video window offers them when you first need them. More in <g5>Videos</g5>.",
-   "text": "Następnie MDM oferuje dwa bezpłatne narzędzia do obsługi wideo: <g1>yt-dlp</g1>, które znajduje wideo na stronie, oraz <g2>ffmpeg</g2>, które łączy obraz i dźwięk. Kliknij <g3>Tak, pobierz je (zalecane)</g3>, aby pobrać je w tle. Zajmują około 100 MB i są pobierane tylko raz. Jeśli klikniesz <g4>Nie teraz</g4>, możesz pobrać je później: okno wideo zaproponuje ich pobranie, gdy będą potrzebne po raz pierwszy. Więcej informacji znajdziesz w sekcji <g5>Wideo</g5>."
-  },
   "77c9a0380245b26d": {
    "source": "In MDM, click <g1>Add URL</g1> (or press <g2>Ctrl+N</g2>) and click <g3>OK</g3>. MDM sees that the address is a video's page and opens <g4>Download video from a page</g4>. (You can also open it with <g5>Tasks → Download video from a page...</g5>, paste the address and click <g6>Look up</g6>.)",
    "text": "W MDM kliknij <g1>Dodaj URL</g1> (lub naciśnij <g2>Ctrl+N</g2>) i kliknij <g3>OK</g3>. MDM rozpoznaje, że adres prowadzi do strony z wideo, i otwiera okno <g4>Pobierz wideo ze strony</g4>. (Możesz też otworzyć je przez <g5>Zadania → Pobierz wideo ze strony...</g5>, wkleić adres i kliknąć <g6>Wyszukaj</g6>.)"
@@ -8853,6 +8929,10 @@
   "79c3966deb868963": {
    "source": "When the link has expired",
    "text": "Gdy link wygaśnie"
+  },
+  "79d1afa0e65a1570": {
+   "source": "<g1>Video helpers</g1> (below).",
+   "text": "<g1>Pomocnicy wideo</g1> (poniżej)."
   },
   "79d241b850b4c52e": {
    "source": "<g1>A public tracker list for torrents</g1>, if you turn it on in <g2>Tasks → Torrent settings</g2>: MDM fetches it from GitHub (ngosang/trackerslist), or the address you entered, once a day (an hour later when a fetch failed). Its trackers then see which public torrents you have, as a torrent's own trackers do.",
@@ -9049,10 +9129,6 @@
   "7c5fbe4cad8057a6": {
    "source": "Download a torrent, or only some of its files. If some of its files are already in the folder, it stops and names them; <x1/> uses them instead (what matches is kept, the rest downloaded). With Torrent settings' <g2>Add the trackers of this public list to public torrents</g2> on, a public torrent gets the list's trackers too, as in the app.",
    "text": "Pobierz torrenta lub tylko niektóre z jego plików. Jeśli niektóre z jego plików są już w folderze, zatrzymuje się i podaje ich nazwy; <x1/> używa ich zamiast tego (to, co pasuje, jest zachowywane, reszta pobierana). Gdy w Ustawieniach torrenta włączona jest opcja <g2>Dodaj trackery z tej publicznej listy do publicznych torrentów</g2>, publiczny torrent również otrzymuje trackery z listy, tak jak w aplikacji."
-  },
-  "7c7b3102adfeeb16": {
-   "source": "For Linux on x86-64 (and ARM64 from the version after 0.5.2): an AppImage for most distributions, a <x1/> for Ubuntu, Debian, Mint and Pop!_OS, an <x2/> for Fedora, openSUSE and RHEL, and a <x3/> of the plain programs. For macOS 11 and later, on Apple Silicon or Intel, <x4/> files still marked <x5/>. Please <g6>tell us how it went</g6>, good or bad.",
-   "text": "Dla Linuxa na x86-64 (i ARM64 od wersji po 0.5.2): AppImage dla większości dystrybucji, <x1/> dla Ubuntu, Debiana, Minta i Pop!_OS, <x2/> dla Fedory, openSUSE i RHEL oraz <x3/> zwykłych programów. Dla macOS 11 i nowszych, na Apple Silicon lub Intel, pliki <x4/> są nadal oznaczone jako <x5/>. Prosimy o <g6>przekazanie nam, jak poszło</g6>, dobrze czy źle."
   },
   "7c949f90bb503dc8": {
    "source": "Vivaldi",
@@ -9802,6 +9878,10 @@
    "source": "A text box's or a list's inside",
    "text": "Wnętrze pola tekstowego lub listy"
   },
+  "84d72ad2898a481c": {
+   "source": "Make a <x1/> of a file or folder, a folder's files listed by name (peers find it through the DHT).",
+   "text": "Utwórz <x1/> pliku lub folderu, pliki folderu wymienione według nazwy (użytkownicy znajdują go przez DHT)."
+  },
   "84de272d8a1575cb": {
    "source": "Add to Chrome",
    "text": "Dodaj do Chrome"
@@ -10314,6 +10394,10 @@
    "source": "Can it download a video's subtitles?",
    "text": "Czy program pobiera napisy do filmów?"
   },
+  "8c8becaa84996a37": {
+   "source": "<g1>A folder of one</g1>, at a branch, a tag or a commit: the address of the folder's page, <x2/>.",
+   "text": "<g1>Folder jednego z nich</g1>, w gałęzi, tagu lub commicie: adres strony folderu, <x2/>."
+  },
   "8c9a12e93a193e44": {
    "source": "In Firefox",
    "text": "W Firefox"
@@ -10345,10 +10429,6 @@
   "8cfa4742e8d4318b": {
    "source": "The harness",
    "text": "Uprząż"
-  },
-  "8d0ba2eee06a5511": {
-   "source": "<g1>Move it</g1>: drag it by its dots to another corner or along the video's edge, or outside the player, above, under or beside it (for a site that covers its player or draws its own controls where the button would be); while you drag, the edge and the spots it snaps to (the corners and the middle) show. Outside the player it stays inside on that edge when the window has no room there (a player at the top of the window, full screen). It stays where you put it on that site; the menu's <g2>Put the button back in its corner</g2> brings it back, and the add-on's popup has <g3>Settings → Download button over videos → Reset</g3> for every site (its filters too).",
-   "text": "<g1>Przenieś</g1>: przeciągnij go za kropki do innego rogu lub wzdłuż krawędzi filmu, albo poza odtwarzacz, powyżej, poniżej lub obok niego (dla witryny, która zakrywa swój odtwarzacz lub rysuje własne kontrolki tam, gdzie byłby przycisk); podczas przeciągania pokazują się krawędź i miejsca, do których się przyczepia (rogi i środek). Poza odtwarzaczem pozostaje wewnątrz na tej krawędzi, gdy okno nie ma tam miejsca (odtwarzacz na górze okna, pełny ekran). Pozostaje tam, gdzie go umieścisz na tej witrynie; <g2>Umieść przycisk z powrotem w rogu</g2> w menu przywraca go, a wyskakujące okienko dodatku ma <g3>Ustawienia → Przycisk pobierania nad filmami → Resetuj</g3> dla każdej witryny (również jej filtry)."
   },
   "8d2bf24dd985e649": {
    "source": "When downloads go to another MDM (a server), the list is that server's: <g1>Pause</g1>, <g2>Resume</g2>, <g3>Remove from list</g3> and <g4>Copy link</g4> work, and the buttons that need the file on this computer (open it, its folder, copy, share, delete) aren't shown; a line at the top says so.",
@@ -10782,6 +10862,10 @@
    "source": "<g1>Fix causes, not cases</g1>, and keep producers and consumers of shared data (the download list, the browser extension's messages, the catalogs) in step.",
    "text": "<g1>Naprawiaj przyczyny, nie pojedyncze przypadki</g1>, a producentów i odbiorców wspólnych danych (listy pobierania, komunikatów rozszerzenia przeglądarki, katalogów) utrzymuj w zgodzie."
   },
+  "933b61bdff1bc033": {
+   "source": "A crash report whose crashed thread is inside the graphics driver while MDM drew with OpenGL is the same: the driver's names above, or <x1/> alone with nothing of MDM's on the thread (NVIDIA's driver on a laptop with two graphics chips shows OpenGL's frames through Direct3D 11). On Windows, MDM remembers it and draws with Direct3D 12 from the next start, on WARP if the card can't; updating the graphics driver is still the real fix.",
+   "text": "Raport o awarii, którego wątek uległ awarii w sterowniku graficznym, gdy MDM rysował za pomocą OpenGL, jest taki sam: nazwy sterowników powyżej lub samo <x1/> bez niczego z MDM w wątku (sterownik NVIDIA na laptopie z dwoma układami graficznymi wyświetla klatki OpenGL przez Direct3D 11). W systemie Windows MDM zapamiętuje to i od następnego uruchomienia rysuje za pomocą Direct3D 12, na WARP, jeśli karta nie może; aktualizacja sterownika graficznego nadal jest prawdziwym rozwiązaniem."
+  },
   "93536c27185c18ed": {
    "source": "Download a video from a page — Mister Download Manager help",
    "text": "Pobieranie wideo ze strony — pomoc Mister Download Manager"
@@ -10914,10 +10998,6 @@
    "source": "Link grabber and archive extraction — Mister Download Manager",
    "text": "Link grabber i wyodrębnianie archiwów — Mister Download Manager"
   },
-  "94f64ef46efdc4dd": {
-   "source": "Last updated 2026-11-25",
-   "text": "Ostatnia aktualizacja: 25.11.2026"
-  },
   "950c43d71bd73d95": {
    "source": "You can change it at any time in <g1>View → Language</g1>. More in <g2>Languages</g2>.",
    "text": "Możesz to zmienić w dowolnym momencie w <g1>Widok → Język</g1>. Więcej w <g2>Języki</g2>."
@@ -10946,6 +11026,10 @@
    "source": "Is it a copy or a crack of Internet Download Manager? — Mister Download Manager",
    "text": "Czy to kopia lub crack Internet Download Manager? — Mister Download Manager"
   },
+  "95820383a2972f1f": {
+   "source": "<g1>Gated models.</g1> A repository whose files need its terms accepted downloads with your Hugging Face access token: accept the terms on its page, make a token in your Hugging Face settings, and add it in <g2>Options → Sites Logins</g2> with the site <x3/>, any user name and the token as the password. It is kept with your other passwords, in the system's keychain, and sent only to <x4/>, never on to the servers it sends the files from. The Source line says when a gated repository has no token yet.",
+   "text": "<g1>Modele z bramką.</g1> Repozytorium, którego pliki wymagają akceptacji warunków, pobiera się za pomocą tokenu dostępu Hugging Face: zaakceptuj warunki na jego stronie, utwórz token w ustawieniach Hugging Face i dodaj go w <g2>Opcje → Loginy do witryn</g2> z witryną <x3/>, dowolną nazwą użytkownika i tokenem jako hasłem. Jest on przechowywany z innymi hasłami w systemowym pęku kluczy i wysyłany tylko do <x4/>, nigdy do serwerów, z których wysyła pliki. Linia Źródło informuje, gdy repozytorium z bramką nie ma jeszcze tokenu."
+  },
   "958664bb01cc22af": {
    "source": "A torrent comes from other people's computers, not from one website. That changes what you can trust and what others can see. This page says plainly what…",
    "text": "Torrent pochodzi z komputerów innych ludzi, a nie z jednej strony internetowej. To zmienia to, czemu możesz ufać i co inni mogą zobaczyć. Ta strona jasno określa, co..."
@@ -10961,6 +11045,10 @@
   "95b8e4a4ea276d5d": {
    "source": "Downloads",
    "text": "Pobrane pliki"
+  },
+  "95b9321339f49458": {
+   "source": "Windows 10 and 11 is the main platform, on 64-bit PCs (x64); from version 0.6.0, on Windows on ARM PCs and 32-bit Windows 10 too, each with files of its…",
+   "text": "Windows 10 i 11 to główna platforma, na 64-bitowych komputerach (x64); od wersji 0.6.0 także na komputerach z Windows on ARM i 32-bitowym Windows 10, każdy z własnymi plikami…"
   },
   "95c10421608930fc": {
    "source": "The proxy's password moves to the system's keychain: Windows Credential Manager, the keyring on Linux, the macOS keychain.",
@@ -11021,10 +11109,6 @@
   "9632de50273e0f02": {
    "source": "<g1>The site's star ratings</g1>, at <x2/>, described in <g3>OpenAPI</g3>. Anyone may read the numbers; rating is for this site's pages (below).",
    "text": "<g1>Oceny w gwiazdkach strony</g1>, pod <x2/>, opisane w <g3>OpenAPI</g3>. Każdy może odczytać liczby; ocenianie dotyczy stron tej witryny (poniżej)."
-  },
-  "963552ab075ccbdb": {
-   "source": "MDM offers yt-dlp and ffmpeg on its first start, with Yes, download them (recommended) and Not now",
-   "text": "Przy pierwszym uruchomieniu MDM oferuje pobranie yt-dlp i ffmpeg. Dostępne opcje: Tak, pobierz je (zalecane) i Nie teraz"
   },
   "9641498adf0c3309": {
    "source": "<g1>A Base16 scheme</g1>, the <x2/> file the <g3>Base16 and Base24 schemes</g3> come in: both the classic layout (<x4/> and <x5/> to <x6/> at the top) and the newer one (<x7/> and a <x8/> block). A Base24 scheme reads as its first 16 colours.",
@@ -11298,10 +11382,6 @@
    "source": "A greyed text box's inside",
    "text": "Wnętrze wyszarzałego pola tekstowego"
   },
-  "98fcb27645bb56dd": {
-   "source": "<g1>Without the setup</g1> (a zip copy): on the first start, MDM shows every language with its flag and its own name. Pick yours.",
-   "text": "<g1>Bez instalatora</g1> (kopia zip): przy pierwszym uruchomieniu MDM pokazuje wszystkie języki wraz z ich flagami i nazwami. Wybierz swój język."
-  },
   "990d8b16ea032009": {
    "source": "<g1>Image galleries</g1> (<g2>#58</g2>): a gallery's address in Add URL (a Wikimedia Commons category, a Flickr album, a DeviantArt or Imgur gallery and more) opens <g3>Download a gallery</g3>, which downloads its pictures with gallery-dl into a folder of their own, all of them or the first N. Started again, a gallery fetches only its new pictures. gallery-dl is an optional helper like yt-dlp: installed from its releases only when signed by its author's key, or your own copy (Helpers). On the command line: <x4/> and <x5/>.",
    "text": "<g1>Galerie obrazów</g1> (<g2>#58</g2>): adres galerii w Dodaj URL (kategoria Wikimedia Commons, album Flickr, galeria DeviantArt lub Imgur i inne) otwiera <g3>Pobierz galerię</g3>, która pobiera jej zdjęcia za pomocą gallery-dl do własnego folderu, wszystkie lub pierwsze N. Ponownie uruchomiona galeria pobiera tylko nowe zdjęcia. gallery-dl to opcjonalny pomocnik, podobnie jak yt-dlp: instalowany z jego wydań tylko wtedy, gdy jest podpisany kluczem autora, lub twoja własna kopia (Pomocnicy). W wierszu poleceń: <x4/> i <x5/>."
@@ -11421,6 +11501,10 @@
   "9a946958fe91d2d6": {
    "source": "Right-click and choose <g1>Add to queue → Main download queue</g1>.",
    "text": "Kliknij prawym przyciskiem myszy i wybierz <g1>Dodaj do kolejki → Główna kolejka pobierania</g1>."
+  },
+  "9a9da334e19653c6": {
+   "source": "The first start's setup at its Language step: every language with its flag, its own name and its English name",
+   "text": "Konfiguracja pierwszego uruchomienia na etapie Język: każdy język z flagą, własną nazwą i angielską nazwą"
   },
   "9ad6d79bda135a68": {
    "source": "Download acceleration and crash-safe resume",
@@ -11554,6 +11638,10 @@
    "source": "Point at the video in your browser and click the Download video button that appears over it, or paste the page's address into Tasks → Download video from a page. MDM lists every quality the site offers, with sizes; pick one and it downloads like any file. It uses yt-dlp, which supports thousands of sites. Download only videos you have the right to. See Download a video from a page.",
    "text": "Najedź kursorem na wideo w przeglądarce i kliknij przycisk Pobierz wideo, który się nad nim pojawi, lub wklej adres strony w Zadania → Pobierz wideo ze strony. MDM wyświetli wszystkie jakości i rozmiary oferowane przez stronę. Wybierz jedną z nich, a wideo pobierze się jak każdy inny plik. Program korzysta z yt-dlp, który obsługuje tysiące stron. Pobieraj tylko filmy, do których masz prawo. Zobacz Pobierz wideo ze strony."
   },
+  "9ce28ea273676ee8": {
+   "source": "<g1>One version.</g1> A repository's files are asked at the commit its branch or tag pointed to when it was listed, so a branch that moves on while they download never mixes two versions.",
+   "text": "<g1>Jedna wersja.</g1> Pliki repozytorium są pobierane z commita, na który wskazywała jego gałąź lub tag w momencie ich listowania, więc gałąź, która przesuwa się podczas pobierania, nigdy nie miesza dwóch wersji."
+  },
   "9d1326816ebdec07": {
    "source": "Firefox forgets the extension after a restart",
    "text": "Firefox zapomina o rozszerzeniu po ponownym uruchomieniu"
@@ -11578,6 +11666,10 @@
    "source": "Latest",
    "text": "Najnowsze"
   },
+  "9d68b46f0b3fadeb": {
+   "source": "<g1>Move it</g1>: drag it by its dots to any spot over the video, to another corner or edge, or outside the player, above, under or beside it (for a site that covers its player or draws its own controls where the button would be); near an edge or outside, the edge and the spots it snaps to (the corners and the middle) show. Outside the player it stays inside on that edge when the window has no room there (a player at the top of the window, full screen). It stays where you put it on that site; the menu's <g2>Put the button back in its corner</g2> brings it back, and the add-on's popup has <g3>Settings → Download button over videos → Reset</g3> for every site (its filters too).",
+   "text": "<g1>Przenieś</g1>: przeciągnij go za kropki w dowolne miejsce nad wideo, do innego rogu lub krawędzi, lub poza odtwarzacz, nad, pod lub obok niego (dla witryny, która zakrywa swój odtwarzacz lub rysuje własne elementy sterujące tam, gdzie byłby przycisk); w pobliżu krawędzi lub poza nią, krawędź i miejsca, do których się przyciąga (rogi i środek), są widoczne. Poza odtwarzaczem pozostaje wewnątrz na tej krawędzi, gdy okno nie ma tam miejsca (odtwarzacz u góry okna, pełny ekran). Pozostaje tam, gdzie go umieścisz na tej witrynie; <g2>Umieść przycisk z powrotem w rogu</g2> w menu przywraca go, a wyskakujące okienko dodatku ma <g3>Ustawienia → Przycisk pobierania nad filmami → Resetuj</g3> dla każdej witryny (również jej filtry)."
+  },
   "9d98aff073986aca": {
    "source": "Options → Archives",
    "text": "Opcje → Archiwa"
@@ -11589,10 +11681,6 @@
   "9da027e1258a39d3": {
    "source": "Other programs can ask the running app what it is downloading, and pause, start, remove or delete downloads. The API is <g1>off by default</g1>; turn it on with <x2/> (and off with <x3/>).",
    "text": "Inne programy mogą sprawdzać, co pobiera działająca aplikacja, a także wstrzymywać, uruchamiać, usuwać pobrania z listy lub kasować pobrane pliki. API jest <g1>domyślnie wyłączone</g1>; włącz je za pomocą <x2/> (wyłącz za pomocą <x3/>)."
-  },
-  "9da7ff11fa220d0e": {
-   "source": "MDM runs on 64-bit Linux with a desktop session. It is tested on Ubuntu 24.04, Debian 12 and Fedora, with GNOME, KDE Plasma, Xfce and Cinnamon, on X11 and in Wayland sessions. Pick one of these files (up to version 0.2.4, their names end in <x1/>, as in <x2/>). From the version after 0.5.2, each also comes for 64-bit ARM computers, with <x3/> in place of <x4/> (<x5/>); they are built and tested on GitHub's ARM machines. On ARM, MDM doesn't download gallery-dl itself (its author builds none for it): install it with your system's packages or pip.",
-   "text": "MDM działa w 64-bitowym systemie Linux z sesją pulpitu. Jest testowany na Ubuntu 24.04, Debian 12 i Fedorze, z GNOME, KDE Plasma, Xfce i Cinnamon, na X11 i w sesjach Wayland. Wybierz jeden z tych plików (do wersji 0.2.4 ich nazwy kończą się na <x1/>, jak w <x2/>). Od wersji po 0.5.2 każdy jest również dostępny dla 64-bitowych komputerów ARM, z <x3/> zamiast <x4/> (<x5/>); są one budowane i testowane na maszynach ARM GitHub. Na ARM MDM nie pobiera gallery-dl samodzielnie (jego autor nie tworzy dla niego żadnej kompilacji): zainstaluj go za pomocą pakietów systemowych lub pip."
   },
   "9dab30f85bf98356": {
    "source": "Check four things: the extension is installed and turned on; Options → General → Use advanced browser integration is on and your browser is ticked; the file's type is in Options → File types; and the site isn't in the list of sites MDM leaves alone. Right-click a link and choose Download with Mister Download Manager to send any file whatever its type. More in Troubleshooting.",
@@ -11830,6 +11918,10 @@
    "source": "<g1>Sign-ins in the system's keychain</g1> (<g2>#44</g2>): debrid accounts, Sites Logins' passwords and the proxy's password are kept in Windows Credential Manager, in the system keyring on Linux (Secret Service: GNOME Keyring, KeePassXC and others) and in the macOS keychain, and the settings keep only a reference. Those already saved move there on the next start. A locked keyring is never unlocked and no keyring is ever asked for a password: without one, they stay in MDM's settings as before, sealed for your Windows account on Windows (the proxy's password now too, like Sites Logins' passwords). <g3>Options → Accounts</g3> says where they are. A portable copy keeps them in its own folder, and uninstalling with <g4>remove the download list and settings</g4> removes them from Credential Manager too.",
    "text": "<g1>Loginy w systemowym pęku kluczy</g1> (<g2>#44</g2>): konta debrid, hasła z Loginy do witryn i hasło proxy są przechowywane w Menedżerze poświadczeń Windows, w systemowym pęku kluczy na Linux (Secret Service: GNOME Keyring, KeePassXC i inne) oraz w pęku kluczy macOS, a ustawienia przechowują tylko odniesienie. Te już zapisane przenoszą się tam przy następnym uruchomieniu. Zablokowany pęk kluczy nigdy nie jest odblokowywany i nigdy nie jest proszony o hasło: bez niego pozostają w ustawieniach MDM jak poprzednio, zabezpieczone dla Twojego konta Windows na Windows (hasło proxy również, podobnie jak hasła z Loginy do witryn). <g3>Opcje → Konta</g3> informuje, gdzie się znajdują. Przenośna kopia przechowuje je w swoim własnym folderze, a odinstalowanie z opcją <g4>usuń listę pobierania i ustawienia</g4> usuwa je również z Menedżera poświadczeń."
   },
+  "a03eece63d9b5347": {
+   "source": "The setup's second step offers MDM's free video helpers: <g1>yt-dlp</g1>, which finds the video on a page, <g2>ffmpeg</g2>, which joins its picture and sound (on Windows; elsewhere MDM uses your system's), and <g3>Node.js</g3>, which YouTube needs, when your computer has no JavaScript runtime. Each says whether it is already there; one that isn't has its own <g4>Install</g4> button, and <g5>Yes, download them (recommended)</g5> gets every one that is missing. They download in the background, about 100 MB, once, each with its progress in its row, and go on if you close the window. Nothing is downloaded until you press one. <g6>Next</g6> leaves them for later: the video window offers them when you first need them. The step is left out when they are all there. More in <g7>Videos</g7>.",
+   "text": "Drugi krok instalacji oferuje darmowe pomocniki wideo MDM: <g1>yt-dlp</g1>, który znajduje wideo na stronie, <g2>ffmpeg</g2>, który łączy obraz i dźwięk (w systemie Windows; w innych systemach MDM używa systemowego), oraz <g3>Node.js</g3>, którego potrzebuje YouTube, gdy komputer nie ma środowiska uruchomieniowego JavaScript. Przy każdym z nich jest informacja, czy jest już zainstalowany; brakujący ma własny przycisk <g4>Zainstaluj</g4>, a <g5>Tak, pobierz je (zalecane)</g5> pobiera wszystkie brakujące. Pobierają się w tle, około 100 MB, jednorazowo, z postępem w swoim wierszu, i kontynuują, jeśli zamkniesz okno. Nic nie zostanie pobrane, dopóki nie naciśniesz jednego z przycisków. <g6>Dalej</g6> pozostawia je na później: okno wideo oferuje je, gdy będziesz ich potrzebować po raz pierwszy. Krok jest pomijany, gdy wszystkie są już zainstalowane. Więcej w <g7>Filmy</g7>."
+  },
   "a04886db62535b92": {
    "source": "A translation longer than the English ends in <g1>...</g1> where it doesn't fit; point at it to read it whole.",
    "text": "Jeśli tłumaczenie jest dłuższe niż tekst angielski i się nie mieści, kończy się na <g1>...</g1>; najedź na nie, aby przeczytać całość."
@@ -11925,10 +12017,6 @@
   "a186c2ecb83c1705": {
    "source": "Keep some speed for everything else",
    "text": "Zachowaj szybkość dla reszty"
-  },
-  "a18e9003d93b63fb": {
-   "source": "<g1>Installed with the setup:</g1> MDM starts in the language you chose in the setup.",
-   "text": "<g1>Po instalacji:</g1> MDM uruchamia się w języku wybranym podczas instalacji."
   },
   "a1929a4367eebbb2": {
    "source": "Turn it on",
@@ -12037,10 +12125,6 @@
   "a30bd98d3fe7b728": {
    "source": "Learn the download list →",
    "text": "Poznaj listę pobierania →"
-  },
-  "a332d36c2ada2664": {
-   "source": "User names and passwords for sites that ask for them. <g1>New</g1> adds a row: the site (with a path if the login is only for part of it), the user name and the password. <g2>Edit</g2> and <g3>Remove</g3> change or delete the selected row. MDM uses the login for every download from that site. A login typed in <g4>Add URL</g4> (<g5>Use authorization</g5>) takes priority for that one download.",
-   "text": "Nazwy użytkowników i hasła do witryn, które ich wymagają. <g1>Nowy</g1> dodaje wiersz z witryną (i ścieżką, jeśli login dotyczy tylko jej części), nazwą użytkownika i hasłem. <g2>Edytuj</g2> i <g3>Usuń</g3> zmieniają lub usuwają wybrany wiersz. MDM używa tego loginu przy każdym pobieraniu z tej witryny. Login wpisany w <g4>Dodaj URL</g4> (<g5>Użyj autoryzacji</g5>) ma pierwszeństwo w przypadku danego pobierania."
   },
   "a343897a0df86275": {
    "source": "Sounds",
@@ -12250,6 +12334,10 @@
    "source": "Get your file's checksum: on Windows with <x1/>, on macOS and Linux with <x2/>. It must match the file's line in SHA256SUMS.txt.",
    "text": "Uzyskaj sumę kontrolną swojego pliku: w systemie Windows za pomocą <x1/>, w systemach macOS i Linux za pomocą <x2/>. Musi ona odpowiadać linii pliku w SHA256SUMS.txt."
   },
+  "a5a0a7f38aabd80f": {
+   "source": "<g1>Its menu</g1> (the arrow next to it, or <g2>↓</g2> when the button has the keyboard's focus): the video's title, length and site; its filters, when the qualities differ: <g3>All</g3>, <g4>Video</g4> (the picture with its sound) or <g5>Audio only</g5>, and the file type (MP4, WEBM, M4A, MP3...) or the picture's codec (AV1, VP9, H.264), kept for the site; <g6>Download best</g6> first (the best of what the filters keep), then one numbered line per quality under <g7>VIDEO</g7> and <g8>AUDIO</g8>, with its file type, codec, frame rate or bitrate and size (<x9/> <x10/>, as the Download video window says it), the best one marked, and <g11>Most compatible (H.264 + AAC)</g11> beside the resolution of the one that plays everywhere (<g12>Choose the quality</g12>); <g13>All qualities and subtitles...</g13>, which opens the <g14>Download video from a page</g14> window; then <g15>Put the button back in its corner</g15> (once you moved it on the site), <g16>Hide on this video</g16> (<g17>Esc</g17>), <g18>Hide the download button in full screen</g18>, <g19>Never on</g19> the site (MDM remembers the site), and <g20>Button settings...</g20>, which opens MDM's Options. The arrow keys move through it, <g21>Enter</g21> picks, <g22>Esc</g22> closes it.",
+   "text": "<g1>Jego menu</g1> (strzałka obok niego lub <g2>↓</g2>, gdy przycisk ma fokus klawiatury): tytuł, długość i witryna wideo; jego filtry, gdy jakości się różnią: <g3>Wszystkie</g3>, <g4>Wideo</g4> (obraz z dźwiękiem) lub <g5>Tylko dźwięk</g5>, oraz typ pliku (MP4, WEBM, M4A, MP3...) lub kodek obrazu (AV1, VP9, H.264), zachowany dla witryny; najpierw <g6>Pobierz najlepszą jakość</g6> (najlepsza z tego, co zachowują filtry), następnie jedna numerowana linia na jakość pod <g7>WIDEO</g7> i <g8>AUDIO</g8>, z typem pliku, kodekiem, liczbą klatek na sekundę lub bitrate i rozmiarem (<x9/> <x10/>, jak podaje okno Pobierz wideo), najlepsza oznaczona, oraz <g11>Najbardziej zgodny (H.264 + AAC)</g11> obok rozdzielczości tej, która odtwarza się wszędzie (<g12>Wybierz jakość</g12>); <g13>Wszystkie jakości i napisy...</g13>, co otwiera okno <g14>Pobierz wideo ze strony</g14>; następnie <g15>Umieść przycisk z powrotem w rogu</g15> (po przeniesieniu go na witrynie), <g16>Ukryj na tym wideo</g16> (<g17>Esc</g17>), <g18>Ukryj przycisk pobierania w trybie pełnoekranowym</g18>, <g19>Nigdy na</g19> witrynie (MDM zapamiętuje witrynę) i <g20>Ustawienia przycisku...</g20>, co otwiera Opcje MDM. Klawisze strzałek poruszają się po nim, <g21>Enter</g21> wybiera, <g22>Esc</g22> zamyka."
+  },
   "a5afb35a23f4a21e": {
    "source": "Speed limiter",
    "text": "Ogranicznik prędkości"
@@ -12313,6 +12401,10 @@
   "a67499fbcf74e61d": {
    "source": "A 256 KiB file",
    "text": "Plik 256 KiB"
+  },
+  "a683bb3b8ec14507": {
+   "source": "<g1>A Hugging Face model or dataset, a GitHub release.</g1> Paste the address of a model or dataset on Hugging Face, of a folder in one, or of a release on GitHub, in <g2>Add URL</g2> or here, and MDM lists every file in it, with its size and folder. See <g3>Models, datasets and releases</g3>.",
+   "text": "<g1>Model lub zbiór danych z Hugging Face, wydanie z GitHub.</g1> Wklej adres modelu lub zbioru danych z Hugging Face, folderu w nim, albo wydania z GitHub, w <g2>Dodaj URL</g2> lub tutaj, a MDM wyświetli każdy plik z jego rozmiarem i folderem. Zobacz <g3>Modele, zbiory danych i wydania</g3>."
   },
   "a69373ac180f98a4": {
    "source": "The first build is long (up to an hour on a small server: the whole program is optimised as one). The image is small, about 175 MB: Debian's slim base, MDM's two programs and the certificates downloads are checked against. It needs no desktop libraries: MDM loads those only to open a window, which a server never does.",
@@ -12730,6 +12822,10 @@
    "source": ", <x1/>, <x2/>, <x3/>, <x4/> and <x5/> exit with code 1 when the app answers with an error (the API is off, an unknown action), as they do when the app isn't running.",
    "text": ", <x1/>, <x2/>, <x3/>, <x4/> i <x5/> kończą działanie z kodem 1, gdy aplikacja odpowiada błędem (API jest wyłączone, nieznana akcja), tak jak wtedy, gdy aplikacja nie jest uruchomiona."
   },
+  "ac1cbe46f9402970": {
+   "source": "Windows 10 and 11 is the main platform, on 64-bit PCs (x64); from version 0.6.0, on Windows on ARM PCs and 32-bit Windows 10 too, each with files of its own. Linux is supported too, with an AppImage, a .deb, an .rpm and a .tar.gz in every release: since version 0.5.0 it isn't experimental any more, and it is checked on GNOME, KDE Plasma, Xfce and Cinnamon, in Wayland sessions too, and its packages in clean Ubuntu, Debian and Fedora systems. Still to come there: the Flatpak Firefox isn't checked yet, and screen readers (Orca) don't read MDM's windows yet. macOS builds (.dmg) come with every release too, and stay experimental. See Windows, Mac and Linux and Download.",
+   "text": "Windows 10 i 11 to główna platforma, na 64-bitowych komputerach (x64); od wersji 0.6.0 także na komputerach z Windows on ARM i 32-bitowym Windows 10, każdy z własnymi plikami. Linux jest również obsługiwany, z AppImage, .deb, .rpm i .tar.gz w każdym wydaniu: od wersji 0.5.0 nie jest już eksperymentalny i jest sprawdzany na GNOME, KDE Plasma, Xfce i Cinnamon, także w sesjach Wayland, oraz jego pakiety w czystych systemach Ubuntu, Debian i Fedora. Nadal brakuje: Flatpak Firefox nie jest jeszcze sprawdzony, a czytniki ekranu (Orca) nie odczytują jeszcze okien MDM. Kompilacje macOS (.dmg) również są dostępne w każdym wydaniu i pozostają eksperymentalne. Zobacz Windows, Mac i Linux oraz Pobierz."
+  },
   "ac4b27cd07db9df5": {
    "source": "shows every option. A command that fails (the app isn't running, it answers with an error, a download breaks) exits with code 1. For example:",
    "text": "pokazuje wszystkie opcje. Jeśli polecenie zakończy się niepowodzeniem (aplikacja nie działa, odpowiada błędem lub pobieranie zostaje przerwane), program kończy działanie z kodem 1. Na przykład:"
@@ -12773,10 +12869,6 @@
   "acda1dd9909e3d30": {
    "source": "Find a download in a long list — Mister Download Manager help",
    "text": "Znajdź pobieranie na długiej liście — pomoc Mister Download Manager"
-  },
-  "ace5b63f6d5b0c3c": {
-   "source": "Last updated 2026-11-25 · applies to the app, the browser extension and misterdownloadmanager.com",
-   "text": "Ostatnia aktualizacja: 25.11.2026 · dotyczy aplikacji, rozszerzenia przeglądarki i strony misterdownloadmanager.com"
   },
   "ace85960abd75e71": {
    "source": "The help pages' pictures (<x1/>) come from one list, <x2/>: <x3/> opens each window through MDM's own <x4/> command line in a test instance off the screen, crops and annotates it from the window's accessibility tree, and writes lossless WebP; <x5/> (CI) keeps the list, the pages and the files in step. The published ones are taken on GitHub's Windows runner (<x6/>).",
@@ -13006,9 +13098,9 @@
    "source": "If Mister Download Manager closes unexpectedly or stops responding, a <g1>crash report</g1> window opens. It shows what happened, lets you read the whole report, and can send it to the developers on GitHub. Each report helps fix the problem for everyone.",
    "text": "Jeśli Mister Download Manager zostanie nieoczekiwanie zamknięty lub przestanie odpowiadać, otworzy się okno <g1>raportu o błędach</g1>. Pokazuje ono, co się stało, pozwala przeczytać cały raport i może wysłać go programistom na GitHub. Każdy raport pomaga rozwiązać problem dla wszystkich."
   },
-  "afb4eff929c487fb": {
-   "source": "The quickest way is MDM's own copy of Node.js: click <g1>Install Node.js</g1> beside that message, or, in <g2>Helpers...</g2>, <g3>Install Node.js</g3> in the <g4>JavaScript runtime (for YouTube)</g4> row. The first start's helpers window offers it too, when your computer has no runtime. MDM downloads Node.js's newest long-term support (LTS) build for your system and processor from <g5>nodejs.org</g5> with its own downloader (about 40 MB on Windows, 60 MB on Linux and macOS; Windows x64, ARM64 and 32-bit, Linux x64 and ARM64, macOS), checks the release's checksum list against the signing keys of Node.js's releasers and the download against that list before it uses it, keeps only the <x6/> program in the <x7/> folder beside yt-dlp and ffmpeg, and from then on tells yt-dlp to use it. It keeps it up to date the way it keeps yt-dlp's (<g8>Keeping them up to date</g8>), never with an older version. 32-bit Windows gets the newest LTS line Node.js still builds for it, 22, which Node.js supports until April 2027; after that MDM has no Node.js for 32-bit Windows, and a runtime of your own (<g9>Use another program...</g9>) is needed there. MDM never installs a Node.js older than the LTS line current when that MDM was made, whatever nodejs.org's list says. The video is looked up again by itself once Node.js is in.",
-   "text": "Najszybszym sposobem jest własna kopia Node.js MDM: kliknij <g1>Zainstaluj Node.js</g1> obok tej wiadomości lub w <g2>Pomocnikach...</g2> <g3>Zainstaluj Node.js</g3> w wierszu <g4>Środowisko uruchomieniowe JavaScript (dla YouTube)</g4>. Okno pomocników przy pierwszym uruchomieniu również to oferuje, gdy twój komputer nie ma środowiska uruchomieniowego. MDM pobiera najnowszą wersję Node.js z długoterminowym wsparciem (LTS) dla twojego systemu i procesora ze strony <g5>nodejs.org</g5> za pomocą własnego menedżera pobierania (około 40 MB w systemie Windows, 60 MB w systemie Linux i macOS; Windows x64, ARM64 i 32-bitowy, Linux x64 i ARM64, macOS), sprawdza listę sum kontrolnych wydania względem kluczy podpisywania wydawców Node.js oraz pobrany plik względem tej listy przed jego użyciem, zachowuje tylko program <x6/> w folderze <x7/> obok yt-dlp i ffmpeg, a od tego momentu instruuje yt-dlp, aby go używał. Utrzymuje go aktualnym w taki sam sposób, jak yt-dlp (<g8>Utrzymywanie ich aktualności</g8>), nigdy nie używając starszej wersji. 32-bitowy Windows otrzymuje najnowszą linię LTS Node.js, którą nadal dla niego buduje, wersję 22, którą Node.js wspiera do kwietnia 2027; po tym czasie MDM nie ma Node.js dla 32-bitowego Windowsa, i tam potrzebne jest własne środowisko uruchomieniowe (<g9>Użyj innego programu...</g9>). MDM nigdy nie instaluje Node.js starszego niż bieżąca linia LTS w momencie utworzenia tego MDM, niezależnie od tego, co mówi lista nodejs.org. Wideo jest ponownie wyszukiwane automatycznie, gdy tylko Node.js zostanie zainstalowany."
+  "afb62db9dee045cd": {
+   "source": "Left empty, <g1>Save to</g1> puts each file in its category's folder (<g2>Options → Save to</g2>), or in General's folder when every download goes to one folder there. To put every file of the batch in one folder, type it there or choose it with <g3>...</g3>. Then click <g4>OK</g4>.",
+   "text": "Pozostawienie pola <g1>Zapisz w</g1> pustego spowoduje umieszczenie każdego pliku w folderze jego kategorii (<g2>Opcje → Zapisz w</g2>) lub w folderze Ogólne, jeśli wszystkie pobrania trafiają do jednego folderu. Aby umieścić wszystkie pliki z partii w jednym folderze, wpisz go lub wybierz za pomocą <g3>...</g3>. Następnie kliknij <g4>OK</g4>."
   },
   "afb8fb4785d0361e": {
    "source": "Delete the selected downloads from the list (asks first, unless you turned the question off; their files stay unless you tick the box)",
@@ -13094,9 +13186,9 @@
    "source": "Keyboard shortcuts",
    "text": "Skróty klawiaturowe"
   },
-  "b1286285f8338dd7": {
-   "source": "Make a <x1/> of a file or folder (peers find it through the DHT).",
-   "text": "Utwórz <x1/> pliku lub folderu (użytkownicy znajdują go przez DHT)."
+  "b12be233c03e6c85": {
+   "source": "On its first start MDM opens one <g1>Welcome to Mister Download Manager</g1> window that walks you through what it needs, a step at a time: the steps are named on top, <g2>Back</g2> and <g3>Next</g3> move between them, and <g4>Finish</g4> on the last one closes it. Each step can be passed with <g5>Next</g5> without doing anything, <g6>Close</g6> or the window's × ends the setup at any step, and once it is finished or closed it doesn't come back: everything in it stays in the menus. Steps that aren't needed are left out.",
+   "text": "Przy pierwszym uruchomieniu MDM otwiera okno <g1>Witaj w Mister Download Manager</g1>, które krok po kroku przeprowadza Cię przez niezbędne ustawienia: kroki są nazwane u góry, <g2>Wstecz</g2> i <g3>Dalej</g3> służą do przechodzenia między nimi, a <g4>Zakończ</g4> na ostatnim kroku zamyka okno. Każdy krok można pominąć, klikając <g5>Dalej</g5> bez wykonywania żadnych czynności, <g6>Zamknij</g6> lub znak × w oknie kończy konfigurację na dowolnym etapie, a po jej zakończeniu lub zamknięciu okno nie pojawia się ponownie: wszystko pozostaje dostępne w menu. Kroki, które nie są potrzebne, są pomijane."
   },
   "b131e9b7540e88e0": {
    "source": "The browser can't find the small helper program it talks to. It is registered when MDM is installed.",
@@ -13189,10 +13281,6 @@
   "b2181eccf65e86be": {
    "source": "This <g1>website</g1> counts visits with <g2>Statcounter</g2>, which sets a cookie and sees your IP address; it runs only on the website, never in the app.",
    "text": "Ta <g1>strona internetowa</g1> zlicza wizyty za pomocą <g2>Statcounter</g2>, który ustawia plik cookie i widzi Twój adres IP; działa tylko na stronie internetowej, nigdy w aplikacji."
-  },
-  "b21b0cc3853450de": {
-   "source": "On Windows, when OpenGL fails on a card without Direct3D 12, MDM draws with Direct3D on Microsoft's software renderer (WARP) from the next start, and <g1>View → Draw with</g1> says why: OpenGL couldn't start, it is too old to draw MDM (older than 3.0, such as Intel's first HD Graphics, whose OpenGL 2.1 drew MDM's windows as garbage), its first window didn't show within 10 seconds, or MDM froze inside the graphics driver while OpenGL showed a frame (the older Intel HD Graphics and AMD Radeon cards' drivers did). Choosing <g2>OpenGL</g2> there tries it again.",
-   "text": "W Windows, gdy OpenGL zawiedzie na karcie bez Direct3D 12, MDM rysuje za pomocą Direct3D na programowym rendererze Microsoftu (WARP) od następnego uruchomienia, a <g1>Widok → Rysuj za pomocą</g1> podaje przyczynę: OpenGL nie mógł się uruchomić, jest za stary, aby rysować MDM (starszy niż 3.0, np. pierwsze Intel HD Graphics, którego OpenGL 2.1 rysował okna MDM jako śmieci), jego pierwsze okno nie pojawiło się w ciągu 10 sekund, lub MDM zawiesił się w sterowniku graficznym, gdy OpenGL wyświetlał klatkę (sterowniki starszych kart Intel HD Graphics i AMD Radeon tak robiły). Wybranie <g2>OpenGL</g2> tam próbuje ponownie."
   },
   "b23baab9a4561a1d": {
    "source": "Pauses running downloads.",
@@ -13369,6 +13457,10 @@
   "b41b3b1523ec47c0": {
    "source": "With a debrid account, torrents and magnet links can go to the service instead of to peers, and MDM downloads the files from it over HTTP: see <g1>Torrents through the service</g1>.",
    "text": "Z kontem debrid torrenty i linki magnet mogą być przesyłane do usługi zamiast do węzłów, a MDM pobiera z niej pliki przez HTTP: zobacz <g1>Torrenty przez usługę</g1>."
+  },
+  "b434b184493a9dcf": {
+   "source": "Add the extension to each browser you use, as below: Firefox from its add-ons store, the others from the Chrome Web Store. On the first start this is a step of the setup window. Until a browser's extension has reached MDM, MDM's <g1>Add Mister Download Manager to your browser</g1> window opens at each later start: it lists the browsers it found, and <g2>Add the extension</g2> opens the store's page in that browser. <g3>Install it by hand</g3> opens the steps for loading it without the store; <g4>Don't ask again</g4> stops the window.",
+   "text": "Dodaj rozszerzenie do każdej używanej przeglądarki, jak poniżej: Firefox ze sklepu z dodatkami, pozostałe z Chrome Web Store. Przy pierwszym uruchomieniu jest to krok okna konfiguracji. Dopóki rozszerzenie przeglądarki nie połączy się z MDM, okno MDM <g1>Dodaj Mister Download Manager do przeglądarki</g1> otwiera się przy każdym kolejnym uruchomieniu: wyświetla znalezione przeglądarki, a <g2>Dodaj rozszerzenie</g2> otwiera stronę sklepu w tej przeglądarce. <g3>Zainstaluj ręcznie</g3> otwiera kroki ładowania bez sklepu; <g4>Nie pytaj ponownie</g4> zamyka okno."
   },
   "b43709818a581c9e": {
    "source": "Mister Download Manager keeps the layout IDM users know, brings your IDM list over, and costs nothing: free and open source, with no trial, no ads and no sign-up. Below it, nine other free download managers people use instead of IDM, compared honestly.",
@@ -13762,6 +13854,10 @@
    "source": "AI assistants (MCP) — Mister Download Manager help",
    "text": "Asystenci AI (MCP) — pomoc Mister Download Manager"
   },
+  "b96343aebc14f95f": {
+   "source": "<g1>Customize MDM Download panels in browsers → Edit...</g1> — the download button over videos on web pages: turn it off, choose its <g2>Button size</g2> (<g3>80%</g3>, <g4>100%</g4> or <g5>120%</g5>, and <g6>Automatic</g6>, as installed: only the logo, the arrow and ✕ in a feed and over a small player, its words over a big one; <g7>Full</g7>, its words wherever they fit; or <g8>Compact</g8>, only the logo, the arrow and ✕ on every video), or list the sites it never shows on (separate them by spaces; wildcards like <x9/>, <x10/> or <x11/> work). See <g12>Browser integration</g12>.",
+   "text": "<g1>Dostosuj panele pobierania MDM w przeglądarkach → Edytuj...</g1> — przycisk pobierania nad filmami na stronach internetowych: wyłącz go, wybierz <g2>Rozmiar przycisku</g2> (<g3>80%</g3>, <g4>100%</g4> lub <g5>120%</g5>, oraz <g6>Automatyczne</g6>, jak zainstalowano: tylko logo, strzałka i ✕ w kanale i nad małym odtwarzaczem, jego słowa nad dużym; <g7>Pełny</g7>, jego słowa wszędzie tam, gdzie pasują; lub <g8>Kompaktowy</g8>, tylko logo, strzałka i ✕ na każdym filmie), lub wymień witryny, na których nigdy się nie wyświetla (oddziel je spacjami; działają symbole wieloznaczne, takie jak <x9/>, <x10/> lub <x11/>). Zobacz <g12>Integracja z przeglądarką</g12>."
+  },
   "b96597d534e090d4": {
    "source": "100 MiB, 150 ms latency, 4 MB/s per connection",
    "text": "100 MiB, 150 ms opóźnienia, 4 MB/s na połączenie"
@@ -13794,6 +13890,10 @@
    "source": "All the ways to add a download →",
    "text": "Wszystkie sposoby dodawania pobierania →"
   },
+  "ba396576420ac8b0": {
+   "source": "<g1>A Hugging Face model or dataset</g1>: <x2/> or <x3/>, the whole repository.",
+   "text": "<g1>Model lub zbiór danych z Hugging Face</g1>: <x2/> lub <x3/>, całe repozytorium."
+  },
   "ba46e50250a22768": {
    "source": "Within two seconds it shows in <g1>View → Theme</g1>, under the built-in themes, by the <x2/> it gives itself. Pick it and the whole window changes at once. After you edit the file, pick it again in <g3>View → Theme</g3> to see the change. <g4>View → Dark Mode support</g4> and <g5>Always dark</g5> switch between its light and dark side.",
    "text": "W ciągu dwóch sekund pojawi się w <g1>Widok → Motyw</g1>, pod wbudowanymi motywami, z <x2/>, które sam sobie nadaje. Wybierz go, a całe okno zmieni się natychmiast. Po edycji pliku wybierz go ponownie w <g3>Widok → Motyw</g3>, aby zobaczyć zmianę. <g4>Widok → Obsługa trybu ciemnego</g4> i <g5>Zawsze ciemny</g5> przełączają między jego jasną a ciemną stroną."
@@ -13817,6 +13917,10 @@
   "ba7398fafefc4533": {
    "source": "Peak memory",
    "text": "Szczytowe zużycie pamięci"
+  },
+  "ba81ef3a5c14665b": {
+   "source": "<g1>Browser extension</g1>: each browser MDM found, with <g2>Add the extension</g2> for it, as in <g3>Browser integration</g3>. Left out when a browser's extension already reached MDM, or in a portable copy.",
+   "text": "<g1>Rozszerzenie przeglądarki</g1>: każda znaleziona przez MDM przeglądarka, z opcją <g2>Dodaj rozszerzenie</g2>, jak w <g3>Integracja z przeglądarką</g3>. Pomijane, gdy rozszerzenie przeglądarki jest już połączone z MDM lub w przenośnej kopii."
   },
   "ba959f6ef5cd85fd": {
    "source": "Remote control",
@@ -13869,10 +13973,6 @@
   "bb66b5a231ef607c": {
    "source": "<g1>The time</g1> is measured from the download's own connections, as each one opens: MDM sends nothing extra to the server. It is an estimate (the time to open a connection, divided by its round trips: one for http, two for https), so it says <g2>about</g2>. The quickest connection counts.",
    "text": "<g1>Czas</g1> jest mierzony z własnych połączeń pobierania, w miarę otwierania każdego z nich: MDM nie wysyła niczego dodatkowego do serwera. Jest to szacunek (czas otwarcia połączenia, podzielony przez jego podróże w obie strony: jeden dla http, dwa dla https), dlatego mówi <g2>około</g2>. Liczy się najszybsze połączenie."
-  },
-  "bb6e18e2b1d6d99a": {
-   "source": "Downloads the extension catches, and <g1>Download with Mister Download Manager</g1> on a link, then go to the server instead of this computer. The browser's cookies are not sent to the server: a download that needs you to be signed in to a site stays with this computer.",
-   "text": "Pobrane pliki przechwycone przez rozszerzenie oraz <g1>Pobierz za pomocą Mister Download Manager</g1> na linku trafią na serwer zamiast na ten komputer. Pliki cookie przeglądarki nie są wysyłane na serwer: pobieranie, które wymaga zalogowania się do witryny, pozostaje na tym komputerze."
   },
   "bb7ddff510dd3161": {
    "source": "If your network gives a proxy auto-config (PAC) script, type its address, or pick the file, under <g1>Use automatic configuration script</g1>. MDM fetches it and asks it which way each download goes (<x2/>, <x3/> or <x4/>), as browsers do. Until it has been fetched, or if it can't be, MDM uses the system's settings.",
@@ -14133,10 +14233,6 @@
   "bf124e15a5fd6568": {
    "source": "Open the first menu (<g1>Tasks</g1>); on a Mac <g2>Ctrl+F2</g2>",
    "text": "Otwórz pierwsze menu (<g1>Zadania</g1>); na Macu <g2>Ctrl+F2</g2>"
-  },
-  "bf1c4ba30d7b2674": {
-   "source": "<g1>Customize MDM Download panels in browsers → Edit...</g1> — the download button over videos on web pages: turn it off, choose its <g2>Button size</g2> (<g3>Automatic</g3>, as installed: only the logo, the arrow and ✕ in a feed and over a small player, its words over a big one; <g4>Full</g4>, its words wherever they fit; or <g5>Compact</g5>, only the logo, the arrow and ✕ on every video), or list the sites it never shows on (separate them by spaces; wildcards like <x6/>, <x7/> or <x8/> work). See <g9>Browser integration</g9>.",
-   "text": "<g1>Dostosuj panele pobierania MDM w przeglądarkach → Edytuj...</g1> — przycisk pobierania nad filmami na stronach internetowych: wyłącz go, wybierz jego <g2>Rozmiar przycisku</g2> (<g3>Automatyczne</g3>, jak zainstalowano: tylko logo, strzałka i ✕ w kanale i nad małym odtwarzaczem, jego słowa nad dużym; <g4>Pełny</g4>, jego słowa wszędzie tam, gdzie się mieszczą; lub <g5>Kompaktowy</g5>, tylko logo, strzałka i ✕ na każdym filmie) lub wymień witryny, na których nigdy się nie wyświetla (oddziel je spacjami; działają symbole wieloznaczne, takie jak <x6/>, <x7/> lub <x8/>). Zobacz <g9>Integracja z przeglądarką</g9>."
   },
   "bf34a44f6d2c1b84": {
    "source": "For Ubuntu, Debian, Mint and Pop!_OS: <x1/>. It brings the libraries MDM needs.",
@@ -14477,10 +14573,6 @@
   "c454f486bae227dd": {
    "source": "A 180 GB download that unpacks to 200 GB normally needs 380 GB: the archive and its files at once. With <g1>HatchZip</g1>, a free extractor, installed, tick <g2>Extract in place with HatchZip</g2> in <g3>Options → Archives</g3>: the archive shrinks as its files come out, so a little over 200 GB is enough. HatchZip checks that everything fits and that the password is right before it changes anything. If it stops partway, the files so far stay beside the archive and <g4>Extract</g4> continues.",
    "text": "Pobieranie pliku o rozmiarze 180 GB, który po rozpakowaniu zajmuje 200 GB, normalnie wymaga 380 GB: archiwum i jego pliki jednocześnie. Po zainstalowaniu <g1>HatchZip</g1>, darmowego programu do rozpakowywania, zaznacz opcję <g2>Wyodrębnij na miejscu za pomocą HatchZip</g2> w <g3>Opcje → Archiwa</g3>: archiwum zmniejsza się w miarę wyodrębniania plików, więc wystarczy nieco ponad 200 GB. HatchZip sprawdza, czy wszystko się zmieści i czy hasło jest poprawne, zanim cokolwiek zmieni. Jeśli proces zostanie przerwany, dotychczasowe pliki pozostają obok archiwum, a <g4>Wyodrębnij</g4> kontynuuje."
-  },
-  "c45503a700d34859": {
-   "source": "<g1>Turn it off, make it smaller, or see the sites it stays off</g1>: <g2>Options → General → Customize MDM Download panels in browsers → Edit...</g2>. <g3>Button size</g3> is <g4>Automatic</g4> as installed (round in a feed and over a small player, its words over a big one), <g5>Full</g5> (its words wherever they fit) or <g6>Compact</g6> (only MDM's logo, the arrow and <g7>✕</g7>, on every video, as on a small one); after a click it still says what happened in words. Pages already open follow a change within a few seconds, without a reload.",
-   "text": "<g1>Wyłącz, zmniejsz lub zobacz witryny, na których pozostaje wyłączony</g1>: <g2>Opcje → Ogólne → Dostosuj panele pobierania MDM w przeglądarkach → Edytuj...</g2>. <g3>Rozmiar przycisku</g3> jest <g4>Automatyczne</g4> po zainstalowaniu (okrągły w kanale i nad małym odtwarzaczem, jego słowa nad dużym), <g5>Pełny</g5> (jego słowa wszędzie tam, gdzie się mieszczą) lub <g6>Kompaktowy</g6> (tylko logo MDM, strzałka i <g7>✕</g7>, na każdym filmie, jak na małym); po kliknięciu nadal mówi, co się stało, słowami. Strony już otwarte podążają za zmianą w ciągu kilku sekund, bez przeładowania."
   },
   "c45a317f4447914b": {
    "source": "WinGet downloads the setup and installs MDM without the setup's questions.",
@@ -14902,10 +14994,6 @@
    "source": "In IDM, choose <g1>Tasks → Export → To IDM export file</g1>. In MDM, choose <g2>Tasks → Import → From IDM export file</g2> and pick that <x3/> file. Each download comes over with its address, the page it came from (its referrer) and its cookies. The downloads join the <g4>Main download queue</g4>, ready to start.",
    "text": "W IDM wybierz <g1>Zadania → Eksportuj → Do pliku eksportu IDM</g1>. W MDM wybierz <g2>Zadania → Importuj → Z pliku eksportu IDM</g2> i wskaż ten plik <x3/>. Każde pobieranie przenosi się z adresem, stroną źródłową (refererem) i plikami cookie. Pobierane pliki dołączają do <g4>Głównej kolejki pobierania</g4>, gotowe do rozpoczęcia."
   },
-  "c9f7c3a70c225d2f": {
-   "source": "Windows 10 and 11 is the main platform, on 64-bit PCs (x64); from the version after 0.5.2, on Windows on ARM PCs and 32-bit Windows 10 too, each with files of its own. Linux is supported too, with an AppImage, a .deb, an .rpm and a .tar.gz in every release: since version 0.5.0 it isn't experimental any more, and it is checked on GNOME, KDE Plasma, Xfce and Cinnamon, in Wayland sessions too, and its packages in clean Ubuntu, Debian and Fedora systems. Still to come there: the Flatpak Firefox isn't checked yet, and screen readers (Orca) don't read MDM's windows yet. macOS builds (.dmg) come with every release too, and stay experimental. See <g1>Windows, Mac and Linux</g1> and <g2>Download</g2>.",
-   "text": "Główną platformą jest Windows 10 i 11 na komputerach 64-bitowych (x64); od wersji po 0.5.2 także na komputerach z Windowsem na ARM i 32-bitowym Windowsem 10, każda z własnymi plikami. Linux jest również obsługiwany, z AppImage, .deb, .rpm i .tar.gz w każdym wydaniu: od wersji 0.5.0 nie jest już eksperymentalny i jest sprawdzany na GNOME, KDE Plasma, Xfce i Cinnamon, także w sesjach Wayland, oraz jego pakiety w czystych systemach Ubuntu, Debian i Fedora. Nadal brakuje: Flatpak Firefox nie jest jeszcze sprawdzony, a czytniki ekranu (Orca) nie odczytują jeszcze okien MDM. Kompilacje macOS (.dmg) również są dostępne w każdym wydaniu i pozostają eksperymentalne. Zobacz <g1>Windows, Mac i Linux</g1> oraz <g2>Pobierz</g2>."
-  },
   "ca0e326ce66aa589": {
    "source": "<g1>Aero</g1>: Windows 7's look: glossy buttons that turn light blue under the pointer, quiet check boxes, a glossy green progress bar, a glassy title bar with the title on a soft glow (on Windows), and glossy icons drawn for MDM in that manner.",
    "text": "<g1>Aero</g1>: wygląd Windows 7: błyszczące przyciski, które pod wskaźnikiem zmieniają kolor na jasnoniebieski, dyskretne pola wyboru, błyszczący zielony pasek postępu, szklany pasek tytułu z tytułem na delikatnej poświacie (w systemie Windows) i błyszczące ikony narysowane dla MDM w tym stylu."
@@ -15166,6 +15254,10 @@
    "source": "The help names Windows' screen readers, Narrator and NVDA. If you use a screen reader on Linux or macOS, please <g1>tell us how it goes</g1>.",
    "text": "W pomocy wymieniono czytniki ekranu dla Windows: Narrator i NVDA. Jeśli używasz czytnika ekranu na Linux lub macOS, <g1>daj nam znać, jak działa</g1>."
   },
+  "cd6525d4afc20d70": {
+   "source": "<g1>Turn it off, make it smaller, or see the sites it stays off</g1>: <g2>Options → General → Customize MDM Download panels in browsers → Edit...</g2>. <g3>Button size</g3> has a <g4>80%</g4>, <g5>100%</g5> or <g6>120%</g6> scale beside it, and is <g7>Automatic</g7> as installed (round in a feed and over a small player, its words over a big one), <g8>Full</g8> (its words wherever they fit) or <g9>Compact</g9> (only MDM's logo, the arrow and <g10>✕</g10>, on every video, as on a small one); after a click it still says what happened in words. Pages already open follow a change within a few seconds, without a reload.",
+   "text": "<g1>Wyłącz, zmniejsz lub zobacz witryny, na których pozostaje wyłączony</g1>: <g2>Opcje → Ogólne → Dostosuj panele pobierania MDM w przeglądarkach → Edytuj...</g2>. <g3>Rozmiar przycisku</g3> ma obok skalę <g4>80%</g4>, <g5>100%</g5> lub <g6>120%</g6> i jest <g7>Automatyczny</g7> po zainstalowaniu (okrągły w kanale i nad małym odtwarzaczem, jego słowa nad dużym), <g8>Pełny</g8> (jego słowa wszędzie tam, gdzie pasują) lub <g9>Kompaktowy</g9> (tylko logo MDM, strzałka i <g10>✕</g10>, na każdym wideo, jak na małym); po kliknięciu nadal mówi, co się stało, słowami. Już otwarte strony stosują zmianę w ciągu kilku sekund, bez ponownego ładowania."
+  },
   "cd673e3701cb16c6": {
    "source": "<g1>Allow more than 32 connections</g1> — raises the most to 128, for the number above and for the exceptions. Most servers allow far fewer from one address; MDM notices and asks those for fewer. Turned off again, any higher number comes back to 32.",
    "text": "<g1>Zezwól na więcej niż 32 połączenia</g1> — zwiększa limit do 128, dla powyższej liczby i dla wyjątków. Większość serwerów zezwala na znacznie mniej z jednego adresu; MDM to zauważa i prosi o mniej. Po ponownym wyłączeniu, każda wyższa liczba wraca do 32."
@@ -15325,10 +15417,6 @@
   "cff4eab6a41db11c": {
    "source": "How do I download a video from YouTube or another site? — Mister Download Manager",
    "text": "Jak pobrać wideo z YouTube lub innej strony? — Mister Download Manager"
-  },
-  "cff5ebbbf76816bf": {
-   "source": "The windows are drawn with OpenGL (eframe's glow) or with the system's own graphics API through eframe's wgpu, with that one backend only: Direct3D 12 on Windows (the default there), Vulkan on Linux, Metal on macOS (choices there; OpenGL stays their default until real graphics cards have tried them, #206). View → Draw with picks one, from the next start. One code path does it on every system (<x1/>): when the chosen one can't start, the other one is tried, so the windows always open. A watched start with the system's API leaves a marker until its first frame is drawn: a start that ends before it (a crash inside the driver), one whose first frame doesn't come within 10 seconds (MDM then starts again with OpenGL), or a graphics card lost twice in 10 minutes is remembered with its reason, which the menu shows. With OpenGL, a window eframe can't paint (its context can't be made current on it, its frame can't be shown) is skipped and painted again 100 ms later; one whose paints keep failing for seconds is a lost device too (MDM starts again; twice in 10 minutes, OpenGL is remembered as failing on Windows). The fork's eframe tells MDM through its viewport hooks (<x2/>, #1448).",
-   "text": "Okna są rysowane za pomocą OpenGL (glow eframe) lub za pomocą własnego API graficznego systemu przez wgpu eframe, tylko z jednym backendem: Direct3D 12 w systemie Windows (tam domyślny), Vulkan w systemie Linux, Metal w systemie macOS (tam wybory; OpenGL pozostaje ich domyślnym, dopóki prawdziwe karty graficzne ich nie wypróbują, #206). Widok → Rysuj za pomocą wybiera jeden, od następnego uruchomienia. Jedna ścieżka kodu robi to w każdym systemie (<x1/>): gdy wybrany nie może się uruchomić, próbowany jest inny, więc okna zawsze się otwierają. Monitorowane uruchomienie z API systemu pozostawia znacznik, dopóki nie zostanie narysowana pierwsza klatka: uruchomienie, które kończy się wcześniej (awaria w sterowniku), takie, którego pierwsza klatka nie pojawia się w ciągu 10 sekund (MDM uruchamia się ponownie z OpenGL), lub karta graficzna utracona dwukrotnie w ciągu 10 minut jest zapamiętywana z przyczyną, którą pokazuje menu. Z OpenGL, okno, którego eframe nie może namalować (jego kontekst nie może być na nim aktywny, jego ramka nie może być pokazana) jest pomijane i malowane ponownie 100 ms później; takie, którego malowanie ciągle zawodzi przez sekundy, jest również utraconym urządzeniem (MDM uruchamia się ponownie; dwukrotnie w ciągu 10 minut, OpenGL jest zapamiętywane jako zawodzące w systemie Windows). Fork eframe informuje MDM za pośrednictwem swoich haków widoku (<x2/>, #1448)."
   },
   "d00db779505eaf02": {
    "source": "<g1>Don't show pop-ups while a full-screen app or presentation is running</g1> — on by default. While a full-screen game, app or video, a presentation or the locked screen is on, <g2>Download complete</g2> and the other windows MDM opens by itself wait, and show when you're back, one after the other in the order they came: <g3>Downloads complete</g3>, a new version found by the weekly check, the download limit's warning, an archive's test result, its password question or its call for 7-Zip, the browser extension's offer, a link copied to the clipboard, and the crash report. The downloads carry on as usual, and the tray icon's tip says how many windows wait. The windows you open yourself, links you click in the browser and the <g4>Turn off computer</g4> countdown (so you can still cancel it) show at once. On Windows MDM goes by the state Windows holds its own notifications by (games, presentation mode, full-screen apps and videos), by a frameless window that fills its whole screen in front (on any of your screens), and by the screen's lock; on Linux by the session's lock, and by a full-screen window under X11 or XWayland (on Wayland, a native program's full screen can't be seen). On macOS a full-screen app has a Space of its own, which MDM's windows never open over. Untick it and the windows show at once, as before.",
@@ -15586,6 +15674,10 @@
    "source": "on Windows), and MDM follows each new wallpaper's colours within two seconds. <g1>The guide</g1> shows which colour goes where.",
    "text": "w systemie Windows), a MDM dostosowuje się do kolorów każdej nowej tapety w ciągu dwóch sekund. <g1>Przewodnik</g1> pokazuje, który kolor gdzie pasuje."
   },
+  "d3922793116d61af": {
+   "source": "<g1>Limits.</g1> Both sites let only so many requests through from a computer without an account (GitHub 60 an hour). When the limit is reached, the address's row says <g2>Try again later</g2>, and its tip says for how long.",
+   "text": "<g1>Limity.</g1> Obie witryny przepuszczają tylko określoną liczbę żądań z komputera bez konta (GitHub 60 na godzinę). Po osiągnięciu limitu wiersz adresu wyświetla <g2>Spróbuj ponownie później</g2>, a jego podpowiedź informuje, na jak długo."
+  },
   "d394340a01c7d63d": {
    "source": "Gopeed",
    "text": "Gopeed"
@@ -15797,6 +15889,10 @@
   "d5eaf42248247319": {
    "source": "<g1>The queues</g1>: start and stop each one.",
    "text": "<g1>Kolejki</g1>: uruchamiaj i zatrzymuj każdą z nich."
+  },
+  "d5f27029858206e6": {
+   "source": "Paste one of these addresses in <g1>Add URL</g1> (<g2>Ctrl+N</g2>), or in Link grabber with <g3>Ctrl+V</g3> (copied, imported or dropped works too):",
+   "text": "Wklej jeden z tych adresów w <g1>Dodaj URL</g1> (<g2>Ctrl+N</g2>) lub w Link grabberze za pomocą <g3>Ctrl+V</g3> (skopiowany, zaimportowany lub upuszczony również działa):"
   },
   "d5f572f1d13e144c": {
    "source": "Fair",
@@ -16018,6 +16114,10 @@
    "source": "<g1>Credentials stay with their site.</g1> Logins and cookies are sent only to the host they belong to, even across redirects.",
    "text": "<g1>Dane uwierzytelniające są używane tylko w odpowiedniej witrynie.</g1> Dane logowania i pliki cookie są wysyłane tylko do hosta, do którego należą, także po przekierowaniu."
   },
+  "d9665014ce0669b0": {
+   "source": "On Windows, when OpenGL fails on a card without Direct3D 12, MDM draws with Direct3D on Microsoft's software renderer (WARP) from the next start, and <g1>View → Draw with</g1> says why: OpenGL couldn't start, it is too old to draw MDM (older than 3.0, such as Intel's first HD Graphics, whose OpenGL 2.1 drew MDM's windows as garbage), its first window didn't show within 10 seconds, MDM froze inside the graphics driver while OpenGL showed a frame (the older Intel HD Graphics and AMD Radeon cards' drivers did), or MDM crashed inside it (<g2>OpenGL crashed inside its driver here</g2>). Choosing <g3>OpenGL</g3> there tries it again; so does a graphics driver update.",
+   "text": "W systemie Windows, gdy OpenGL zawiedzie na karcie bez Direct3D 12, MDM od następnego uruchomienia rysuje za pomocą Direct3D na programowym rendererze Microsoftu (WARP), a <g1>Widok → Rysuj za pomocą</g1> wyjaśnia dlaczego: OpenGL nie mógł się uruchomić, jest za stary, aby rysować MDM (starszy niż 3.0, np. pierwsze karty Intel HD Graphics, których OpenGL 2.1 rysował okna MDM jako śmieci), jego pierwsze okno nie pojawiło się w ciągu 10 sekund, MDM zawiesił się w sterowniku graficznym, gdy OpenGL wyświetlał klatkę (tak działo się w sterownikach starszych kart Intel HD Graphics i AMD Radeon), lub MDM uległ awarii w jego obrębie (<g2>OpenGL uległ awarii w swoim sterowniku</g2>). Wybranie <g3>OpenGL</g3> w tym miejscu próbuje ponownie; podobnie jak aktualizacja sterownika graficznego."
+  },
   "d9686c3ea1ff4f0a": {
    "source": "Install the extension from its page in the Chrome Web Store, <g1>Mister Download Manager</g1>: click <g2>Add to Chrome</g2>. In Edge the button is <g3>Get</g3>: Edge first asks to <g4>Allow extensions from other stores</g4> (click <g5>Allow</g5>), then <g6>Add extension</g6>. The browser keeps it updated. MDM's <g7>Add Mister Download Manager to your browser</g7> window opens that page in each browser for you, and Chrome may offer it by itself at its next start once MDM is installed.",
    "text": "Zainstaluj rozszerzenie ze strony <g1>Mister Download Manager</g1> w Chrome Web Store: kliknij <g2>Dodaj do Chrome</g2>. W Edge przycisk nazywa się <g3>Pobierz</g3>: Edge najpierw poprosi o <g4>Zezwól na rozszerzenia z innych sklepów</g4> (kliknij <g5>Zezwól</g5>), a następnie o <g6>Dodaj rozszerzenie</g6>. Przeglądarka będzie je aktualizować. Okno MDM <g7>Dodaj Mister Download Manager do przeglądarki</g7> otwiera tę stronę w każdej przeglądarce, a Chrome może samo zaproponować dodanie rozszerzenia przy następnym uruchomieniu po zainstalowaniu MDM."
@@ -16053,10 +16153,6 @@
   "da1944611f1b4a60": {
    "source": "<g1>Off by default</g1>, and nothing listens while it is off.",
    "text": "<g1>Domyślnie wyłączone</g1>, i nic nie nasłuchuje, gdy jest wyłączone."
-  },
-  "da1ff3527672bb25": {
-   "source": "These three are for 64-bit Windows on an Intel or AMD processor (x64), the usual PC. From the version after 0.5.2, each comes for two more kinds of PC too, with the processor in its name:",
-   "text": "Te trzy są przeznaczone dla 64-bitowego systemu Windows z procesorem Intel lub AMD (x64), czyli dla typowego komputera PC. Od wersji po 0.5.2 każda z nich jest dostępna również dla dwóch innych rodzajów komputerów PC, z nazwą procesora w nazwie pliku:"
   },
   "da24d37fd1911825": {
    "source": "<g1>The .deb and .rpm bring what MDM's window needs</g1> (part of <g2>#164</g2>): on a system without libxkbcommon-x11 (a minimal install, a container), MDM installed from them stopped at start under X11 and XWayland, and without the CA certificates (Debian's minimal install) no download started. They now require both, and EGL for Wayland windows. They also require the glibc the programs were built against, read from the programs themselves, instead of a fixed version: a package built on a newer system no longer installs on an older one where it can't start.",
@@ -16225,6 +16321,10 @@
   "dc31d8975851fca3": {
    "source": "Windows: no more crash when a screen is unplugged, turned off or rearranged while MDM runs (<g1>#335</g1>).",
    "text": "Windows: brak już awarii, gdy ekran jest odłączany, wyłączany lub przestawiany podczas działania MDM (<g1>#335</g1>)."
+  },
+  "dc4198e428ea091f": {
+   "source": "Windows on ARM · 32-bit Windows",
+   "text": "Windows na ARM · Windows 32-bitowy"
   },
   "dc773cbdc650469f": {
    "source": "Site rules",
@@ -16486,10 +16586,6 @@
    "source": "<g1><g2></g2>0.03 s</g1><g3></g3>",
    "text": "<g1><g2></g2>0.03 s</g1><g3></g3>"
   },
-  "e12c33d490b22dd0": {
-   "source": "The single-instance channel (a token-protected local socket), the data folder, and the capture rules shared by the app and the host",
-   "text": "Kanał pojedynczej instancji (lokalny socket chroniony tokenem), folder danych i reguły przechwytywania współdzielone przez aplikację i hosta"
-  },
   "e1369e1deca0e4ec": {
    "source": "The passwords (these, the proxy's and the debrid accounts') are kept in the system's keychain: Windows Credential Manager, the keyring on Linux (Secret Service: GNOME Keyring, KeePassXC and others) or the macOS keychain; MDM's settings keep only a reference. A locked keyring is never unlocked for MDM: without one, they stay in MDM's settings, sealed for your Windows account on Windows. <g1>Options → Accounts</g1> says where they are. A <g2>portable copy</g2> keeps them in its own folder.",
    "text": "Hasła (te, do proxy i do kont debrid) są przechowywane w systemowym pęku kluczy: Menedżerze poświadczeń Windows, pęku kluczy w systemie Linux (Secret Service: Pęk kluczy GNOME, KeePassXC i inne) lub pęku kluczy macOS; ustawienia MDM przechowują tylko odniesienie. Zablokowany pęk kluczy nigdy nie jest odblokowywany dla MDM: bez niego pozostają w ustawieniach MDM, zabezpieczone dla Twojego konta Windows w systemie Windows. <g1>Opcje → Konta</g1> wskazuje, gdzie się znajdują. <g2>Przenośna kopia</g2> przechowuje je we własnym folderze."
@@ -16633,6 +16729,10 @@
   "e3189b0a3f2c9f86": {
    "source": "Video downloads",
    "text": "Pobieranie wideo"
+  },
+  "e3201638dbf3d7bf": {
+   "source": "<g1>Without the setup</g1> (a zip copy, Linux, macOS): the first start's setup window opens at its <g2>Language</g2> step: every language with its flag and its own name. Click yours and the window switches to it at once.",
+   "text": "<g1>Bez instalacji</g1> (wersja zip, Linux, macOS): okno konfiguracji przy pierwszym uruchomieniu otwiera się na kroku <g2>Język</g2>. Wyświetla każdy język z jego flagą i nazwą. Kliknij swój język, a okno natychmiast się na niego przełączy."
   },
   "e34726ffae8c3bba": {
    "source": "What's new — Mister Download Manager version history",
@@ -16825,6 +16925,10 @@
   "e58722e22694ceea": {
    "source": "Browser extension that sends downloads to a download manager",
    "text": "Rozszerzenie przeglądarki, które wysyła pobierane pliki do menedżera pobierania"
+  },
+  "e58c3a79f2c454b5": {
+   "source": "A Hugging Face model or dataset (or a folder of one, at a revision) and a GitHub release or tag given to Link grabber (#1772, <x1/>) are listed through the sites' public APIs: the revision is first made its commit, then the tree is read page by page (<x2/>, the same API's only), each entry's path taken only when it is a relative path of plain names inside the folder asked (<x3/>: no <x4/>, absolute path, drive or device name), matched by its names; a file's address is built from the repository, the commit and those names, never taken from the answer. Each file keeps its size and the SHA-256 the site publishes (an LFS file's, a release asset's <x5/>), which becomes the download's checksum. The app makes one package whose folder is the address's path under the download folder, each file in its own folders inside it (<x6/>), unticked; Sites Logins' password for <x7/> goes as an access token (<x8/>) to Hugging Face's own hosts only. The lab server plays both APIs (<x9/>): pages, a gated repository, hostile paths, a wrong digest and rate limits.",
+   "text": "Model lub zestaw danych Hugging Face (albo folder z nimi, w określonej rewizji) oraz wydanie lub tag GitHub podane do Link grabbera (#1772, <x1/>) są listowane za pośrednictwem publicznych API witryn: rewizja jest najpierw przekształcana w swój commit, następnie drzewo jest odczytywane strona po stronie (<x2/>, tylko to samo API), ścieżka każdego wpisu jest brana tylko wtedy, gdy jest to ścieżka względna o prostych nazwach wewnątrz żądanego folderu (<x3/>: bez <x4/>, ścieżki bezwzględnej, nazwy dysku lub urządzenia), dopasowana do jej nazw; adres pliku jest budowany z repozytorium, commita i tych nazw, nigdy nie jest brany z odpowiedzi. Każdy plik zachowuje swój rozmiar i SHA-256 opublikowane przez witrynę (pliku LFS, zasobu wydania <x5/>), co staje się sumą kontrolną pobierania. Aplikacja tworzy jeden pakiet, którego folderem jest ścieżka adresu w folderze pobierania, każdy plik w swoich własnych folderach wewnątrz niego (<x6/>), niezaznaczony; hasło z Loginy do witryn dla <x7/> jest przekazywane jako token dostępu (<x8/>) tylko do własnych hostów Hugging Face. Serwer laboratoryjny obsługuje oba API (<x9/>): strony, repozytorium z dostępem, wrogie ścieżki, błędny skrót i limity szybkości."
   },
   "e58fc606693e6852": {
    "source": "Website",
@@ -17930,6 +18034,10 @@
    "source": "The list shows the order they will run in. Use the arrow buttons under it to move a download up or down.",
    "text": "Lista pokazuje kolejność, w jakiej będą pobierane. Użyj przycisków strzałek pod nią, aby przesunąć pobieranie w górę lub w dół."
   },
+  "f3a2e46b32aaef2c": {
+   "source": "The quickest way is MDM's own copy of Node.js: click <g1>Install Node.js</g1> beside that message, or, in <g2>Helpers...</g2>, <g3>Install Node.js</g3> in the <g4>JavaScript runtime (for YouTube)</g4> row. The first start's setup offers it too, in its <g5>Video helpers</g5> step, when your computer has no runtime. MDM downloads Node.js's newest long-term support (LTS) build for your system and processor from <g6>nodejs.org</g6> with its own downloader (about 40 MB on Windows, 60 MB on Linux and macOS; Windows x64, ARM64 and 32-bit, Linux x64 and ARM64, macOS), checks the release's checksum list against the signing keys of Node.js's releasers and the download against that list before it uses it, keeps only the <x7/> program in the <x8/> folder beside yt-dlp and ffmpeg, and from then on tells yt-dlp to use it. It keeps it up to date the way it keeps yt-dlp's (<g9>Keeping them up to date</g9>), never with an older version. 32-bit Windows gets the newest LTS line Node.js still builds for it, 22, which Node.js supports until April 2027; after that MDM has no Node.js for 32-bit Windows, and a runtime of your own (<g10>Use another program...</g10>) is needed there. MDM never installs a Node.js older than the LTS line current when that MDM was made, whatever nodejs.org's list says. The video is looked up again by itself once Node.js is in.",
+   "text": "Najszybszym sposobem jest użycie kopii Node.js wbudowanej w MDM: kliknij <g1>Zainstaluj Node.js</g1> obok komunikatu lub w <g2>Pomocnikach…</g2> wybierz <g3>Zainstaluj Node.js</g3> w wierszu <g4>Środowisko uruchomieniowe JavaScript (dla YouTube)</g4>. Konfiguracja przy pierwszym uruchomieniu również oferuje tę opcję w kroku <g5>Pomocnicy wideo</g5>, jeśli na komputerze nie ma środowiska uruchomieniowego. MDM pobiera najnowszą wersję Node.js z długoterminowym wsparciem (LTS) dla Twojego systemu i procesora ze strony <g6>nodejs.org</g6> za pomocą własnego menedżera pobierania (około 40 MB w systemie Windows, 60 MB w systemie Linux i macOS; Windows x64, ARM64 i 32-bitowy, Linux x64 i ARM64, macOS), sprawdza listę sum kontrolnych wydania względem kluczy podpisywania wydawców Node.js oraz pobrany plik względem tej listy, zanim go użyje, zachowuje tylko program <x7/> w folderze <x8/> obok yt-dlp i ffmpeg, a następnie instruuje yt-dlp, aby go używał. Utrzymuje go w aktualności w taki sam sposób, jak yt-dlp (<g9>Utrzymywanie ich w aktualności</g9>), nigdy nie używając starszej wersji. 32-bitowy Windows otrzymuje najnowszą linię LTS Node.js, którą nadal dla niego buduje, czyli 22, którą Node.js wspiera do kwietnia 2027; po tym czasie MDM nie będzie miał Node.js dla 32-bitowego Windowsa, a wymagane będzie własne środowisko uruchomieniowe (<g10>Użyj innego programu…</g10>). MDM nigdy nie instaluje Node.js starszego niż linia LTS aktualna w momencie utworzenia danego MDM, niezależnie od tego, co mówi lista nodejs.org. Wideo jest ponownie wyszukiwane automatycznie po zainstalowaniu Node.js."
+  },
   "f3a43b64feb190bf": {
    "source": "Only one program can listen on port 9666. If JDownloader is running, MDM says so: close it, then turn the option off and on again.",
    "text": "Tylko jeden program może nasłuchiwać na porcie 9666. Jeśli JDownloader jest uruchomiony, MDM to zgłasza: zamknij go, a następnie wyłącz i ponownie włącz opcję."
@@ -17986,6 +18094,10 @@
    "source": "A greyed icon's ink (its end)",
    "text": "Kolor wyszarzałej ikony (koniec)"
   },
+  "f471814e3a16b4a2": {
+   "source": "Last updated 2026-11-27 · applies to the app, the browser extension and misterdownloadmanager.com",
+   "text": "Ostatnia aktualizacja: 27.11.2026 · dotyczy aplikacji, rozszerzenia przeglądarki i strony misterdownloadmanager.com"
+  },
   "f47d19d2ae313a6b": {
    "source": "<g1>MDM as an IDM alternative</g1><g2>Spot something wrong? Tell us</g2>",
    "text": "<g1>MDM jako alternatywa dla IDM</g1><g2>Zauważyłeś błąd? Powiedz nam</g2>"
@@ -18022,6 +18134,10 @@
    "source": "What's new in version 0.2.3 <g1>2026-11-01</g1>",
    "text": "Co nowego w wersji 0.2.3 <g1>2026-11-01</g1>"
   },
+  "f511bff33b320d10": {
+   "source": "These three are for 64-bit Windows on an Intel or AMD processor (x64), the usual PC. From version 0.6.0, each comes for two more kinds of PC too, with the processor in its name:",
+   "text": "Te trzy pliki są dla 64-bitowego systemu Windows na procesorze Intel lub AMD (x64), czyli typowego komputera PC. Od wersji 0.6.0 każdy jest dostępny również dla dwóch innych typów komputerów PC, z nazwą procesora w nazwie pliku:"
+  },
   "f54ce429a109d5fe": {
    "source": "<g1>Metro</g1>, after Windows 8's flat look: square corners, flat buttons, boxes that take an accent border when focused, check boxes with a tick, a bordered progress bar, scroll bars with their arrows always shown, one-colour icons (Microsoft's Fluent UI System Icons, MIT) and a title bar in the theme's colour with the title centred.",
    "text": "<g1>Metro</g1>, wzorowany na płaskim wyglądzie Windows 8: kwadratowe rogi, płaskie przyciski, pola, które przyjmują ramkę akcentu po zaznaczeniu, pola wyboru z zaznaczeniem, pasek postępu z ramką, paski przewijania ze zawsze widocznymi strzałkami, jednokolorowe ikony (Microsoft Fluent UI System Icons, MIT) i pasek tytułu w kolorze motywu z wyśrodkowanym tytułem."
@@ -18057,10 +18173,6 @@
   "f5d0db4c9a23ece3": {
    "source": "<g1><g2>Adding downloads</g2></g1> — Add URL, the clipboard, the drop target, batch downloads and lists of links, and Start Download versus Download Later.",
    "text": "<g1><g2>Dodawanie pobrań</g2></g1> — Dodaj URL, schowek, cel przeciągania i upuszczania, pobieranie wsadowe i listy linków, a także różnice między Rozpocznij pobieranie a Pobierz później."
-  },
-  "f5e911e1675285c5": {
-   "source": "Add the extension to each browser you use, as below: Firefox from its add-ons store, the others from the Chrome Web Store. Until a browser's extension has reached MDM, MDM's <g1>Add Mister Download Manager to your browser</g1> window opens at each start: it lists the browsers it found, and <g2>Add the extension</g2> opens the store's page in that browser. <g3>Install it by hand</g3> opens the steps for loading it without the store; <g4>Don't ask again</g4> stops the window.",
-   "text": "Dodaj rozszerzenie do każdej używanej przeglądarki, jak poniżej: Firefox ze swojego sklepu z dodatkami, pozostałe z Chrome Web Store. Dopóki rozszerzenie przeglądarki nie zostanie dodane do MDM, okno <g1>Dodaj Mister Download Manager do przeglądarki</g1> MDM będzie otwierać się przy każdym uruchomieniu: wyświetla ono znalezione przeglądarki, a <g2>Dodaj rozszerzenie</g2> otwiera stronę sklepu w tej przeglądarce. <g3>Zainstaluj ręcznie</g3> otwiera instrukcje dotyczące ładowania rozszerzenia bez sklepu; <g4>Nie pytaj ponownie</g4> zatrzymuje wyświetlanie okna."
   },
   "f6014e24fd45ae66": {
    "source": "What is signed",
@@ -18210,10 +18322,6 @@
    "source": "The site isn't in <g1>Don't start downloading automatically from the following sites</g1>, nor the address in <g2>Don't start downloading automatically from the following addresses</g2>.",
    "text": "Witryny nie ma na liście <g1>Nie rozpoczynaj automatycznego pobierania z następujących witryn</g1>, a adresu nie ma na liście <g2>Nie rozpoczynaj automatycznego pobierania z następujących adresów</g2>."
   },
-  "f89c54d71eb189a4": {
-   "source": "If the graphics card is reset while MDM runs (a driver update), MDM starts again by itself. Lost twice in 10 minutes, it goes back to OpenGL, and <g1>View → Draw with</g1> says why.",
-   "text": "Jeśli karta graficzna zostanie zresetowana podczas działania MDM (aktualizacja sterownika), MDM uruchomi się ponownie samoczynnie. Jeśli zdarzy się to dwukrotnie w ciągu 10 minut, powróci do OpenGL, a <g1>Widok → Rysuj za pomocą</g1> poda przyczynę."
-  },
   "f8b52274ed125d5f": {
    "source": "Tick <g1>Wake the computer to run this queue</g1> and a sleeping computer is woken a minute before the start time, so the network is back when the queue begins. It stays awake while the queue runs; afterwards its own sleep settings apply again. The line under the option says when the next wake is, or why there can't be one.",
    "text": "Zaznacz <g1>Wybudź komputer, aby uruchomić tę kolejkę</g1>, a uśpiony komputer zostanie wybudzony minutę przed czasem rozpoczęcia, dzięki czemu sieć będzie ponownie dostępna, gdy kolejka się rozpocznie. Pozostaje aktywny podczas działania kolejki; następnie ponownie obowiązują jego własne ustawienia uśpienia. Linia pod opcją informuje, kiedy nastąpi następne wybudzenie lub dlaczego nie może go być."
@@ -18249,6 +18357,10 @@
   "f941e5b8a498c4f3": {
    "source": "Keeping them up to date",
    "text": "Aktualizowanie ich"
+  },
+  "f968baf33894961a": {
+   "source": "Models, datasets and releases",
+   "text": "Modele, zbiory danych i wydania"
   },
   "f972a60cffbd9bed": {
    "source": "In <g1>Default download directory for \"General\" category</g1>, click <g2>Browse</g2> and choose a folder on the stick, for example <x3/>.",
@@ -18369,6 +18481,10 @@
   "fa92082584a3b68a": {
    "source": "What IDM still does that MDM doesn't",
    "text": "Co IDM nadal robi, a MDM nie"
+  },
+  "fa920a8ffcc67161": {
+   "source": "<g1>Save every download in \"General\" category's folder</g1> — off by default. Ticked, every new download goes to General's folder, whatever its category: from the browser, <g2>Add URL</g2>, <g3>Batch download</g3>, Link grabber, queues, the command line, videos and torrents alike. The categories still sort the list. General's folder is the one to set (choose <g4>General</g4> above); the other categories keep their own folders for when it is off again, shown greyed meanwhile. A single download can still go elsewhere: change its folder in the window that starts it (<g5>Remember this path</g5> then changes General's folder). Downloads already in the list stay where they are.",
+   "text": "<g1>Zapisuj każde pobieranie w folderze kategorii „Ogólne”</g1> — domyślnie wyłączone. Po zaznaczeniu każde nowe pobieranie trafia do folderu Ogólne, niezależnie od kategorii: z przeglądarki, <g2>Dodaj URL</g2>, <g3>Pobieranie wsadowe</g3>, Link grabber, kolejek, wiersza poleceń, filmów i torrentów. Kategorie nadal sortują listę. Folder Ogólne jest tym, który należy ustawić (wybierz <g4>Ogólne</g4> powyżej); pozostałe kategorie zachowują swoje własne foldery, gdy opcja zostanie ponownie wyłączona, w międzyczasie wyświetlane na szaro. Pojedyncze pobieranie nadal może trafić gdzie indziej: zmień jego folder w oknie, które je uruchamia (<g5>Zapamiętaj tę ścieżkę</g5> zmienia wtedy folder Ogólne). Pobierania już na liście pozostają tam, gdzie są."
   },
   "fa9730d3b67e9b77": {
    "source": "<g1>View → Language...</g1> opens the same list. Type in <g2>Search</g2> to narrow it, then double-click a language. The window switches at once. <g3>Windows' language</g3>, at the top, follows Windows' display language, and falls back to English when MDM doesn't have it.",

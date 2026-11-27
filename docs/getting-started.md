@@ -16,8 +16,8 @@ Every version is on the [Releases](https://github.com/anefzaoui/misterdownloadma
 | `MisterDownloadManager-<version>-portable.zip` | A portable copy. The download list and settings stay in a `data` folder next to the program, and nothing is written to the registry. Browser integration needs the installer. See [Portable mode](portable.md). |
 | `MisterDownloadManager-<version>-x64.zip` | The same programs without an installer. It keeps its data in `%APPDATA%\misterdownloadmanager`, like an installed copy. |
 
-These three are for 64-bit Windows on an Intel or AMD processor (x64), the usual PC. From the
-version after 0.5.2, each comes for two more kinds of PC too, with the processor in its name:
+These three are for 64-bit Windows on an Intel or AMD processor (x64), the usual PC. From
+version 0.6.0, each comes for two more kinds of PC too, with the processor in its name:
 
 | Files | For |
 |---|---|
@@ -42,7 +42,7 @@ WinGet downloads the setup and installs MDM without the setup's questions.
 MDM runs on 64-bit Linux with a desktop session. It is tested on Ubuntu 24.04, Debian 12 and
 Fedora, with GNOME, KDE Plasma, Xfce and Cinnamon, on X11 and in Wayland sessions. Pick one
 of these files (up to version 0.2.4, their names end in `-experimental`, as in
-`...-linux-x86_64-experimental.deb`). From the version after 0.5.2, each also comes for 64-bit
+`...-linux-x86_64-experimental.deb`). From version 0.6.0, each also comes for 64-bit
 ARM computers, with `arm64` in place of `x86_64` (`...-linux-arm64.deb`); they are built and
 tested on GitHub's ARM machines. On ARM, MDM doesn't download gallery-dl itself (its author
 builds none for it): install it with your system's packages or pip.
@@ -164,23 +164,42 @@ The zips hold the same programs as the setup: the app, `misterdownloadmanager-cl
 
 ## First start and the language
 
-- **Installed with the setup:** MDM starts in the language you chose in the setup.
-- **Otherwise:** MDM shows the list of languages, each with its flag and its own name. Pick yours.
+On its first start MDM opens one **Welcome to Mister Download Manager** window that walks you
+through what it needs, a step at a time: the steps are named on top, **Back** and **Next** move
+between them, and **Finish** on the last one closes it. Each step can be passed with **Next**
+without doing anything, **Close** or the window's × ends the setup at any step, and once it is
+finished or closed it doesn't come back: everything in it stays in the menus. Steps that aren't
+needed are left out.
 
-You can change it at any time in **View → Language**. More in [Languages](languages.md).
+1. **Language.**
+   - **Installed with the setup:** MDM starts in the language you chose in the setup, and this
+     step is left out.
+   - **Otherwise:** the list of languages, each with its flag and its own name. Click yours: the
+     window switches to it at once, right to left for Arabic, Hebrew, Persian and Urdu.
 
-![The language list on first start: every language with its flag, its own name and its English name](images/help/first-language.webp)
-*Pick your language. View → Language changes it later.*
+   You can change it at any time in **View → Language**. More in [Languages](languages.md).
+
+   ![The first start's setup at its Language step: every language with its flag, its own name and its English name](images/help/first-language.webp)
+   *Pick your language. View → Language changes it later.*
+
+2. **Video helpers** (below).
+3. **Browser extension**: each browser MDM found, with **Add the extension** for it, as in
+   [Browser integration](browser-integration.md#set-it-up). Left out when a browser's extension
+   already reached MDM, or in a portable copy.
 
 ## The video helpers
 
-Next, MDM offers its two free video helpers: **yt-dlp**, which finds the video on a page, and
-**ffmpeg**, which joins its picture and sound. Click **Yes, download them (recommended)** and they
-download in the background, about 100 MB, once. **Not now** leaves them for later: the video
-window offers them when you first need them. More in [Videos](video.md).
+The setup's second step offers MDM's free video helpers: **yt-dlp**, which finds the video on a
+page, **ffmpeg**, which joins its picture and sound (on Windows; elsewhere MDM uses your system's),
+and **Node.js**, which YouTube needs, when your computer has no JavaScript runtime. Each says
+whether it is already there; one that isn't has its own **Install** button, and **Yes, download
+them (recommended)** gets every one that is missing. They download in the background, about
+100 MB, once, each with its progress in its row, and go on if you close the window. Nothing is
+downloaded until you press one. **Next** leaves them for later: the video window offers them when
+you first need them. The step is left out when they are all there. More in [Videos](video.md).
 
-![MDM offers yt-dlp and ffmpeg on its first start, with Yes, download them (recommended) and Not now](images/help/first-helpers.webp)
-*Yes downloads both helpers in the background, once.*
+![The setup's Video helpers step: yt-dlp and ffmpeg, each with its Install button, and Yes, download them (recommended)](images/help/first-helpers.webp)
+*Install one, or download them all at once; Next leaves them for later.*
 
 ## The main window
 

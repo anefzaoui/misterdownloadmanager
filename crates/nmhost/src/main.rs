@@ -323,6 +323,9 @@ struct Reply {
     /// feed and over a small player. An older host doesn't say (its Full was its default).
     #[serde(skip_serializing_if = "Option::is_none")]
     full: Option<bool>,
+    /// The same, its scale (#1923), percent (80 or 120; 100, the default, isn't sent).
+    #[serde(skip_serializing_if = "Option::is_none")]
+    scale: Option<u16>,
     /// For `recent` (#1496): the app's list.
     #[serde(skip_serializing_if = "Option::is_none")]
     recent: Option<mdm_ipc::api::RecentAnswer>,
@@ -465,10 +468,12 @@ fn answer(m: Message, rules: &mdm_ipc::capture::CaptureRules) -> Reply {
     // if need be), which opens its window or keeps the setting.
     if m.panel {
         let ok = rules.panel_on(&m.url, m.referrer.as_deref(), browser);
+        let scale = mdm_ipc::capture::clean_video_panel_scale(rules.video_panel_scale);
         return Reply {
             ok,
             compact: ok.then_some(rules.video_panel_compact),
             full: ok.then_some(rules.video_panel_full),
+            scale: (ok && scale != 100).then_some(scale),
             ..Default::default()
         };
     }
@@ -2067,6 +2072,26 @@ mod tests {
             None
         );
         rules.video_panel_compact = false;
+        // #1923: non-default scales (80%, 120%) come with `panel` when it may show; 100% and
+        // out-of-range values omit `scale`.
+        for scale in [80, 120] {
+            rules.video_panel_scale = scale;
+            let r = answer(ask("https://videos.test/watch"), &rules);
+            assert_eq!(r.scale, Some(scale));
+            assert_eq!(
+                serde_json::to_value(&r).unwrap(),
+                serde_json::json!({ "ok": true, "compact": false, "full": false, "scale": scale })
+            );
+            assert_eq!(
+                answer(ask("https://www.quiet.test/watch"), &rules).scale,
+                None
+            );
+        }
+        for scale in [100, 0, 999] {
+            rules.video_panel_scale = scale;
+            assert_eq!(answer(ask("https://videos.test/watch"), &rules).scale, None);
+        }
+        rules.video_panel_scale = 100;
         // #532: a player embedded from another site, in a tab on a listed site.
         let embedded = Message {
             referrer: Some("https://www.quiet.test/post".into()),
