@@ -4992,8 +4992,10 @@ pub fn focus_ring(p: &Painter, rc: Rect) {
 /// [`focus_ring`] whose ring or frame (where the theme draws one) has corners of `radius`: a
 /// control rounded otherwise than the others (Mac OS X's push buttons, round at the ends).
 pub fn focus_ring_round(p: &Painter, rc: Rect, radius: f32) {
-    // Only once the keyboard is in use in this window, as Windows shows focus rectangles.
-    if !keyboard_in_use(p.ctx()) {
+    // Only once the keyboard is in use in this window, as Windows shows focus rectangles. Never
+    // on a phone (phone.rs): its on-screen keyboard's Enter and Space turned them on, a desktop
+    // mark on a touch screen.
+    if !keyboard_in_use(p.ctx()) || crate::app::phone::active(p.ctx()) {
         return;
     }
     let ink = crate::theme::colors().focus_ring;

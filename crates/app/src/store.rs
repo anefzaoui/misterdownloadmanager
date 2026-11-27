@@ -136,6 +136,10 @@ fn load_from(p: &Path, empty: Loaded) -> Loaded {
                 // Downloads that were running when the app closed are now stopped (resumable).
                 if i.status == Status::Downloading {
                     i.status = Status::Stopped;
+                    // Android: the app was ended without saying so (its process killed); the
+                    // download goes on at this start (android.rs `take_interrupted`).
+                    #[cfg(target_os = "android")]
+                    crate::android::note_interrupted(&[i.id]);
                 }
                 // Each row as saved: the downloads' own folders aren't touched here. Their resume
                 // states (the record of what is on disk) are read beside the window once it is

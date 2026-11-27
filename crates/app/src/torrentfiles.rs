@@ -102,7 +102,10 @@ impl TorrentFiles {
             &format!("torrent-files-{}", self.id),
             // i18n: title of the separate window listing a torrent's files
             "Torrent files",
-            [548.0, 430.0],
+            [
+                548.0,
+                430.0 + crate::app::phone::phone_buttons_extra(ctx, 2),
+            ],
             false,
             LIGHT_BG(),
             |ui, o| {
@@ -207,10 +210,21 @@ impl TorrentFiles {
                         dialogs::open_file(&self.base.join(&file.path));
                     }
                 }
-                let (open_at, folder_at, close_at) = (18.0, 380.0, 458.0);
+                // A phone: big buttons across the page (drawn to fit, as the table is).
+                let (open_r, folder_r, close_r) = if crate::app::phone::active(ui.ctx()) {
+                    let (b, _) = crate::app::phone::button_rects(o, 407.0, 548.0, 3, false);
+                    (b[0], b[1], b[2])
+                } else {
+                    let (open_at, folder_at, close_at) = (18.0, 380.0, 458.0);
+                    (
+                        r(o, open_at, 407.0, 75.0, 22.0),
+                        r(o, folder_at, 407.0, 75.0, 22.0),
+                        r(o, close_at, 407.0, 72.0, 22.0),
+                    )
+                };
                 let open = winui::button(
                     ui,
-                    r(o, open_at, 407.0, 75.0, 22.0),
+                    open_r,
                     "Open",
                     // Nothing says which of several files: those open by a double click.
                     if self.complete && self.rows.len() == 1 {
@@ -231,7 +245,7 @@ impl TorrentFiles {
                 }
                 if winui::button(
                     ui,
-                    r(o, folder_at, 407.0, 75.0, 22.0),
+                    folder_r,
                     // i18n: button that opens the torrent's containing folder in the file manager
                     "Open folder",
                     ButtonKind::Normal,
@@ -244,7 +258,7 @@ impl TorrentFiles {
                 }
                 let close = winui::button(
                     ui,
-                    r(o, close_at, 407.0, 72.0, 22.0),
+                    close_r,
                     // i18n: button that closes the torrent file list window
                     "Close",
                     ButtonKind::Normal,

@@ -57,7 +57,7 @@ toml.workspace = true
 tokio.workspace = true
 url.workspace = true
 percent-encoding.workspace = true
-# rfd on desktops; on Android a stand-in whose dialogs answer "cancelled" (crates/filedialog).
+# rfd on desktops; on Android the Android app's pickers (crates/filedialog).
 rfd = { package = "mdm-filedialog", path = "../filedialog" }
 # Options → Remote → Pair a device's QR code of the address (#141; Nayuki's, no dependencies).
 qrcodegen = "1.8.0"

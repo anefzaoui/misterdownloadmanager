@@ -81,7 +81,10 @@ impl CategoryDialog {
             ctx,
             "category-edit",
             title,
-            [420.0, 196.0],
+            [
+                420.0,
+                196.0 + crate::app::phone::phone_buttons_extra(ctx, 1),
+            ],
             false,
             LIGHT_BG(),
             |ui, o| {
@@ -179,9 +182,18 @@ impl CategoryDialog {
                     );
                 }
                 let valid = built_in || (!name.is_empty() && !taken);
+                // A phone: the two big across the window.
+                let (ok_at, cancel_at) = crate::app::phone::pair_or(
+                    ui.ctx(),
+                    o,
+                    164.0,
+                    420.0,
+                    r(o, 254.0, 164.0, 73.0, 21.0),
+                    r(o, 335.0, 164.0, 73.0, 21.0),
+                );
                 let ok = winui::button_light(
                     ui,
-                    r(o, 254.0, 164.0, 73.0, 21.0),
+                    ok_at,
                     "OK",
                     if valid {
                         ButtonKind::Default
@@ -197,14 +209,9 @@ impl CategoryDialog {
                     "Type the category's name",
                 )
                 .clicked();
-                let cancel = winui::button_light(
-                    ui,
-                    r(o, 335.0, 164.0, 73.0, 21.0),
-                    "Cancel",
-                    ButtonKind::Normal,
-                    false,
-                )
-                .clicked();
+                let cancel =
+                    winui::button_light(ui, cancel_at, "Cancel", ButtonKind::Normal, false)
+                        .clicked();
                 if cancel || winui::escape_pressed(ui) {
                     Outcome::Closed
                 } else if valid && (ok || winui::enter_pressed(ui)) {

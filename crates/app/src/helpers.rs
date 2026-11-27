@@ -112,6 +112,11 @@ impl RuntimeProbe {
 /// Whether to offer the helpers at this start: never asked, and one of them is missing (ffmpeg
 /// counts only where MDM can install one, Windows; elsewhere the system's is used).
 pub fn worth_asking() -> bool {
+    // Android: ffmpeg, Python and QuickJS come in the app (mdm-tools' android.rs), and yt-dlp is
+    // offered the first time a video is downloaded: nothing to ask at the first start.
+    if cfg!(target_os = "android") {
+        return false;
+    }
     let Some(dir) = mdm_tools::tools_dir() else {
         return false;
     };
@@ -1026,7 +1031,10 @@ impl Programs {
             "video-helpers",
             // i18n: window title: where MDM takes its helper programs (yt-dlp, ffmpeg, gallery-dl) from
             "Helpers",
-            [500.0, 402.0],
+            [
+                500.0,
+                402.0 + crate::app::phone::phone_buttons_extra(ctx, 1),
+            ],
             false,
             winui::BG(),
             |ui, o| self.body(ui, o, rt),
@@ -1215,30 +1223,41 @@ impl Programs {
             };
             // i18n: file picker title; {name} = yt-dlp or ffmpeg
             let choose = crate::i18n::fmt(crate::i18n::t("Choose {name}"), &[("name", h.name())]);
-            let other = winui::button(
-                ui,
-                r(o, other_at.0, y - o.y + 46.0, other_at.1, 21.0),
-                // i18n: Video helpers: button: pick a program (yt-dlp or ffmpeg) already on the computer
-                "Use another program...",
-                if busy {
-                    ButtonKind::Disabled
-                } else {
-                    ButtonKind::Normal
-                },
-                false,
-                None,
-            );
+            // Not on Android: it runs no program an app saved itself, only the APK's own and
+            // what MDM installs for its Python (MDM's own copy, beside it).
+            let (other_at, own_at) = if cfg!(target_os = "android") {
+                ((other_at.0, 0.0), (other_at.0, own_at.1))
+            } else {
+                (other_at, own_at)
+            };
+            let other = (!cfg!(target_os = "android")).then(|| {
+                winui::button(
+                    ui,
+                    r(o, other_at.0, y - o.y + 46.0, other_at.1, 21.0),
+                    // i18n: Video helpers: button: pick a program (yt-dlp or ffmpeg) already on the computer
+                    "Use another program...",
+                    if busy {
+                        ButtonKind::Disabled
+                    } else {
+                        ButtonKind::Normal
+                    },
+                    false,
+                    None,
+                )
+            });
             // The same label on every row: said with its helper's name (#1407), the visible
             // label first so voice control finds it by what it shows.
-            winui::name(
-                &other,
-                &crate::i18n::fmt(
-                    // i18n: Helpers: the "Use another program..." button's name for a screen reader; {name} = the helper (yt-dlp, ffmpeg, gallery-dl)
-                    crate::i18n::t("Use another program for {name}..."),
-                    &[("name", h.name())],
-                ),
-            );
-            if other.clicked() {
+            if let Some(other) = &other {
+                winui::name(
+                    other,
+                    &crate::i18n::fmt(
+                        // i18n: Helpers: the "Use another program..." button's name for a screen reader; {name} = the helper (yt-dlp, ffmpeg, gallery-dl)
+                        crate::i18n::t("Use another program for {name}..."),
+                        &[("name", h.name())],
+                    ),
+                );
+            }
+            if other.as_ref().is_some_and(|b| b.clicked()) {
                 winui::start_pick(ui.ctx(), &format!("helper-{}", h.name()), move || {
                     crate::winui::file_dialog(&choose).pick_file()
                 });
@@ -1329,6 +1348,15 @@ impl Programs {
             })
             .collect();
         let y = 370.0;
+        // A phone: the two big across the page.
+        let (check_r, close_r) = crate::app::phone::pair_or(
+            ui.ctx(),
+            o,
+            y,
+            500.0,
+            r(o, check_at.0, y, check_at.1, 21.0),
+            r(o, close_at.0, y, close_at.1, 21.0),
+        );
         // What failed, left of the buttons.
         if let Some(e) = &self.error {
             let x = winui::note_mark(
@@ -1352,7 +1380,7 @@ impl Programs {
         }
         if winui::button(
             ui,
-            r(o, check_at.0, y, check_at.1, 21.0),
+            check_r,
             // i18n: Helpers: button: look for newer versions of MDM's own helpers now, and install them
             "Check for updates",
             if own.is_empty() || self.busy() || self.any_update_running() {
@@ -1368,14 +1396,7 @@ impl Programs {
         {
             self.update(own, dir, rt, ui.ctx());
         }
-        let close = winui::button(
-            ui,
-            r(o, close_at.0, y, close_at.1, 21.0),
-            "Close",
-            ButtonKind::Default,
-            false,
-            None,
-        );
+        let close = winui::button(ui, close_r, "Close", ButtonKind::Default, false, None);
         if close.clicked() || winui::escape_pressed(ui) || winui::enter_pressed(ui) {
             Outcome::Done(())
         } else {
@@ -1666,26 +1687,36 @@ impl Programs {
         // i18n: file picker title: choose a JavaScript runtime's program (node.exe, deno.exe, qjs.exe, bun.exe)
         let choose = crate::i18n::t("Choose a JavaScript runtime (Node.js, Deno, QuickJS or Bun)")
             .to_owned();
-        let other = winui::button(
-            ui,
-            r(o, other_at.0, y - o.y + 46.0, other_at.1, 21.0),
-            "Use another program...",
-            if busy {
-                ButtonKind::Disabled
-            } else {
-                ButtonKind::Normal
-            },
-            false,
-            None,
-        );
+        // Not on Android (as the helpers' rows): the APK's QuickJS is its runtime.
+        let (other_at, own_at) = if cfg!(target_os = "android") {
+            ((other_at.0, 0.0), (other_at.0, own_at.1))
+        } else {
+            (other_at, own_at)
+        };
+        let other = (!cfg!(target_os = "android")).then(|| {
+            winui::button(
+                ui,
+                r(o, other_at.0, y - o.y + 46.0, other_at.1, 21.0),
+                "Use another program...",
+                if busy {
+                    ButtonKind::Disabled
+                } else {
+                    ButtonKind::Normal
+                },
+                false,
+                None,
+            )
+        });
         // The same label on every row: said with what it chooses (#1407), the visible label
         // first so voice control finds it by what it shows.
-        winui::name(
-            &other,
-            // i18n: Helpers: the "Use another program..." button's name for a screen reader, on the JavaScript runtime's row (Node.js, Deno, QuickJS or Bun)
-            crate::i18n::t("Use another program as the JavaScript runtime..."),
-        );
-        if other.clicked() {
+        if let Some(other) = &other {
+            winui::name(
+                other,
+                // i18n: Helpers: the "Use another program..." button's name for a screen reader, on the JavaScript runtime's row (Node.js, Deno, QuickJS or Bun)
+                crate::i18n::t("Use another program as the JavaScript runtime..."),
+            );
+        }
+        if other.as_ref().is_some_and(|b| b.clicked()) {
             winui::start_pick(ui.ctx(), "helper-js-runtime", move || {
                 crate::winui::file_dialog(&choose).pick_file()
             });

@@ -663,6 +663,27 @@ fn dialog_window<T>(
     if window_was_gone(ctx, key.with("window-pass")) {
         forget_window(ctx, vid, key);
     }
+    if crate::app::phone::active(ctx) {
+        // A phone: a page over the main window (phone.rs), its layout scrolled in it.
+        crate::crash::window(id);
+        let (out, closed) = crate::app::phone::sheet(ctx, key.with("sheet"), title, bg, |ui| {
+            keyboard_to_click(ui.ctx());
+            // Laid out wider than the phone: drawn smaller to fit (phone.rs).
+            let out = crate::app::phone::fitted(ui, key, client[0], |ui| {
+                scroll(ui, key, client, |ui, o| {
+                    let _surface = winui::Surface::enter(o.x, o.x + client[0]);
+                    body(ui, o)
+                })
+            });
+            crate::chrome::tell_screen_readers(ui.ctx());
+            out
+        });
+        let out = if closed { Outcome::Closed } else { out };
+        if !matches!(out, Outcome::Open) {
+            forget_window(ctx, vid, key);
+        }
+        return out;
+    }
     // Hidden until `keep_theme` has given it its theme (see there).
     let mut builder = crate::window_builder()
         .with_visible(false)
@@ -1091,11 +1112,12 @@ impl AddUrl {
             self.fill_from_clipboard(&clip);
         }
         self.follow_site_login(site_login);
+        let at = AddUrlLayout::for_window(ctx);
         window(
             ctx,
             "add-url",
             "Enter new address to download",
-            [560.0, 93.0],
+            at.client,
             false,
             winui::BG(),
             |ui, o| {
@@ -1103,12 +1125,12 @@ impl AddUrl {
                 // i18n: noun: the web address (URL)
                 winui::text(
                     &p,
-                    o.x + 12.0,
-                    o.y + 25.0,
+                    o.x + at.address_label.x,
+                    o.y + at.address_label.y,
                     crate::i18n::t("Address"),
                     winui::TEXT(),
                 );
-                let addr_rc = r(o, 68.0, 11.0, 396.0, 21.0);
+                let addr_rc = at.address.translate(o.to_vec2());
                 let addr = winui::combo_edit(ui, addr_rc, &mut self.address);
                 // An error about the address goes once it is edited.
                 if addr.changed() {
@@ -1124,9 +1146,9 @@ impl AddUrl {
                     self.list_open = !self.list_open;
                 }
                 // Up / Down step through the addresses entered before.
-                let at = self.history.iter().position(|h| *h == self.address.trim());
+                let at_history = self.history.iter().position(|h| *h == self.address.trim());
                 if !self.list_open
-                    && let Some(i) = winui::history_keys(ui, &addr, self.history.len(), at)
+                    && let Some(i) = winui::history_keys(ui, &addr, self.history.len(), at_history)
                 {
                     self.address = self.history[i].clone();
                     self.error = None;
@@ -1152,48 +1174,50 @@ impl AddUrl {
                 let _ = &addr;
                 let enter = winui::enter_pressed(ui);
 
-                winui::group_box(
-                    &p,
-                    r(o, 11.0, 45.0, 453.0, 40.0),
-                    Some(winui::caption_gap(
+                if let Some(group) = at.group {
+                    winui::group_box(
                         &p,
-                        o.x + 20.0,
-                        o.x + 124.0,
-                        "Use authorization",
-                        false,
-                    )),
-                );
-                winui::checkbox(
-                    ui,
-                    o + vec2(20.0, 39.0),
-                    &mut self.auth,
-                    "Use authorization",
-                    true,
-                );
+                        group.translate(o.to_vec2()),
+                        Some(winui::caption_gap(
+                            &p,
+                            o.x + 20.0,
+                            o.x + 124.0,
+                            "Use authorization",
+                            false,
+                        )),
+                    );
+                }
+                winui::checkbox(ui, o + at.check, &mut self.auth, "Use authorization", true);
                 let label = if self.auth {
                     winui::TEXT()
                 } else {
                     winui::TEXT_DISABLED()
                 };
-                // i18n: noun: the user name and password section
-                winui::text(&p, o.x + 84.0, o.y + 69.0, crate::i18n::t("Login"), label);
+                winui::text(
+                    &p,
+                    o.x + at.login_label.x,
+                    o.y + at.login_label.y,
+                    // i18n: noun: the user name and password section
+                    crate::i18n::t("Login"),
+                    label,
+                );
                 winui::edit(
                     ui,
-                    r(o, 116.0, 55.0, 117.0, 23.0),
+                    at.login.translate(o.to_vec2()),
                     &mut self.login,
                     self.auth,
                     false,
                 );
                 winui::text(
                     &p,
-                    o.x + 289.0,
-                    o.y + 69.0,
+                    o.x + at.password_label.x,
+                    o.y + at.password_label.y,
                     crate::i18n::t("Password"),
                     label,
                 );
                 winui::edit(
                     ui,
-                    r(o, 342.0, 55.0, 113.0, 23.0),
+                    at.password.translate(o.to_vec2()),
                     &mut self.password,
                     self.auth,
                     true,
@@ -1201,7 +1225,7 @@ impl AddUrl {
 
                 let ok = winui::button(
                     ui,
-                    r(o, 475.0, 12.0, 79.0, 19.0),
+                    at.ok.translate(o.to_vec2()),
                     "OK",
                     ButtonKind::Default,
                     false,
@@ -1210,7 +1234,7 @@ impl AddUrl {
                 .clicked();
                 let cancel = winui::button(
                     ui,
-                    r(o, 475.0, 40.0, 79.0, 21.0),
+                    at.cancel.translate(o.to_vec2()),
                     "Cancel",
                     ButtonKind::Normal,
                     false,
@@ -1219,26 +1243,27 @@ impl AddUrl {
                 .clicked();
                 if let Some(e) = &self.error {
                     let red = winui::ERROR();
+                    let (x, y, right) = at.error;
                     // Ends before the OK / Cancel buttons; whole on hover when cut.
                     // On the group box's top line, over a strip of the dialog's colour (as a
                     // caption sits on its line), not struck through by it.
-                    let w = winui::text_width(&p, e).min(465.0 - 140.0) + 6.0;
+                    let w = winui::text_width(&p, e).min(right - x) + 6.0;
                     winui::fill_l(
                         &p,
-                        o.x + 137.0,
-                        o.y + 39.0,
-                        o.x + 137.0 + w,
-                        o.y + 52.0,
+                        o.x + x - 3.0,
+                        o.y + y - 10.0,
+                        o.x + x - 3.0 + w,
+                        o.y + y + 3.0,
                         winui::BG(),
                     );
                     winui::fit(
                         ui,
                         &p,
-                        o.x + 140.0,
-                        o.y + 49.0,
+                        o.x + x,
+                        o.y + y,
                         e,
                         red,
-                        o.x + 465.0,
+                        o.x + right,
                         "add-url-error",
                     );
                 }
@@ -1260,6 +1285,72 @@ impl AddUrl {
                 Outcome::Open
             },
         )
+    }
+}
+
+/// Where Add URL's parts are, from its client's top left: the desktop's window (IDM's, client
+/// 560 × 93), or on a phone one column as wide as the screen (phone.rs).
+struct AddUrlLayout {
+    client: [f32; 2],
+    /// Labels: where their text's baseline starts.
+    address_label: Pos2,
+    address: egui::Rect,
+    /// The "Use authorization" box around the sign-in (none on a phone).
+    group: Option<egui::Rect>,
+    check: egui::Vec2,
+    login_label: Pos2,
+    login: egui::Rect,
+    password_label: Pos2,
+    password: egui::Rect,
+    ok: egui::Rect,
+    cancel: egui::Rect,
+    /// The error's baseline start and where it must end.
+    error: (f32, f32, f32),
+}
+
+impl AddUrlLayout {
+    fn for_window(ctx: &egui::Context) -> Self {
+        if crate::app::phone::active(ctx) {
+            return Self::phone(crate::app::phone::sheet_width(ctx));
+        }
+        let o = Pos2::ZERO;
+        AddUrlLayout {
+            client: [560.0, 93.0],
+            address_label: egui::pos2(12.0, 25.0),
+            address: r(o, 68.0, 11.0, 396.0, 21.0),
+            group: Some(r(o, 11.0, 45.0, 453.0, 40.0)),
+            check: vec2(20.0, 39.0),
+            login_label: egui::pos2(84.0, 69.0),
+            login: r(o, 116.0, 55.0, 117.0, 23.0),
+            password_label: egui::pos2(289.0, 69.0),
+            password: r(o, 342.0, 55.0, 113.0, 23.0),
+            ok: r(o, 475.0, 12.0, 79.0, 19.0),
+            cancel: r(o, 475.0, 40.0, 79.0, 21.0),
+            error: (140.0, 49.0, 465.0),
+        }
+    }
+
+    /// One column `width` wide: each label over its box, the boxes and buttons tall enough for
+    /// a finger, OK and Cancel at the bottom.
+    fn phone(width: f32) -> Self {
+        let o = Pos2::ZERO;
+        let (pad, w) = (16.0, width - 32.0);
+        let field = 36.0;
+        let button = (w - 12.0) / 2.0;
+        AddUrlLayout {
+            client: [width, 330.0],
+            address_label: egui::pos2(pad, 24.0),
+            address: r(o, pad, 32.0, w, field),
+            group: None,
+            check: vec2(pad, 112.0),
+            login_label: egui::pos2(pad, 150.0),
+            login: r(o, pad, 158.0, w, field),
+            password_label: egui::pos2(pad, 214.0),
+            password: r(o, pad, 222.0, w, field),
+            ok: r(o, pad + button + 12.0, 278.0, button, 40.0),
+            cancel: r(o, pad, 278.0, button, 40.0),
+            error: (pad, 92.0, pad + w),
+        }
     }
 }
 
@@ -2073,24 +2164,24 @@ impl FileInfo {
         // open at once (#1741), each with its own.
         let nth = self.nth;
         let own = |base: &str| nth.id(base);
+        let lay = if crate::app::phone::active(ctx) {
+            FileInfoLayout::phone(crate::app::phone::sheet_width(ctx), dy)
+        } else {
+            FileInfoLayout::desktop(wide, cx, dy)
+        };
         let out = window_nth(
             ctx,
             FILE_INFO,
             "Download File Info",
-            [570.0 + wide, 234.0 + dy],
+            lay.client,
             true,
             winui::BG(),
             nth,
             |ui, o| {
                 let p = ui.painter().clone();
-                winui::text_right(
-                    &p,
-                    o.x + 88.0,
-                    o.y + 18.0,
-                    crate::i18n::t("URL"),
-                    winui::TEXT(),
-                );
-                let url_rc = r(o, 96.0, 5.0, 366.0, 23.0);
+                let v = o.to_vec2();
+                lay.url_label.draw(&p, o, crate::i18n::t("URL"));
+                let url_rc = lay.url.translate(v);
                 let url_box = winui::edit(ui, url_rc, &mut self.url_text, true, false);
                 // An edited address is the one downloaded (it was ignored before).
                 if url_box.changed() {
@@ -2101,14 +2192,8 @@ impl FileInfo {
                 }
 
                 // i18n: noun: label before the list of categories
-                winui::text_right(
-                    &p,
-                    o.x + 88.0,
-                    o.y + 46.0,
-                    crate::i18n::t("Category"),
-                    winui::TEXT(),
-                );
-                let cat_rect = r(o, 96.0, 36.0, 174.0, 21.0);
+                lay.category_label.draw(&p, o, crate::i18n::t("Category"));
+                let cat_rect = lay.category.translate(v);
                 let shown = self.category.shown();
                 // Its icon, the Categories tree's (#2008).
                 let icon = winui::ItemIcon::Shell(self.category.icon());
@@ -2121,24 +2206,22 @@ impl FileInfo {
                 }
                 let category_was_open = self.category_open;
                 // "+": a new category (the app's category window).
-                let new_category = winui::small_button(ui, r(o, 276.0, 35.0, 22.0, 21.0), "+");
+                let new_category = winui::small_button(ui, lay.new_category.translate(v), "+");
                 winui::name(&new_category, crate::i18n::t("Add category"));
                 if new_category.clicked() {
                     self.new_category = true;
                 }
 
-                winui::text_right(
-                    &p,
-                    o.x + 88.0,
-                    o.y + 77.0,
-                    crate::i18n::t("Save As"),
-                    winui::TEXT(),
-                );
-                let save_rc = r(o, 96.0, 63.0, 335.0, 21.0);
+                lay.save_label.draw(&p, o, crate::i18n::t("Save As"));
+                let save_rc = lay.save.translate(v);
                 let save = winui::combo_edit(ui, save_rc, &mut self.save_as);
-                // Opened, the keys are in Save As (its name is what one changes here).
+                // Opened, the keys are in Save As (its name is what one changes here). Not on a
+                // phone, where its keyboard would cover the page and Start Download (a tap on the
+                // box brings it).
                 if !self.focused {
-                    save.request_focus();
+                    if !crate::app::phone::active(ui.ctx()) {
+                        save.request_focus();
+                    }
                     self.focused = true;
                 }
                 if save.changed() {
@@ -2185,7 +2268,7 @@ impl FileInfo {
                     }
                 }
                 // "...": the system's Save dialog, its folder and file name (#1088).
-                let browse = winui::small_button(ui, r(o, 439.0, 64.0, 22.0, 21.0), "...");
+                let browse = winui::small_button(ui, lay.browse.translate(v), "...");
                 winui::name(&browse, crate::i18n::t("Browse"));
                 if browse.clicked() {
                     let dest = self.dest();
@@ -2218,24 +2301,16 @@ impl FileInfo {
                     crate::i18n::t("Remember this path for \"{category}\" category"),
                     &[("category", &self.folder_category().shown())],
                 );
-                let gap_end = o.x + 122.0 + winui::text_width(&p, &caption) + 5.0;
-                winui::group_box(
-                    &p,
-                    r(o, 96.0, 97.0, 366.0, 45.0),
-                    Some((o.x + 104.0, gap_end)),
-                );
-                winui::checkbox(
-                    ui,
-                    o + vec2(104.0, 90.0),
-                    &mut self.remember,
-                    &caption,
-                    true,
-                );
+                if let Some(group) = lay.group {
+                    let gap_end = o.x + 122.0 + winui::text_width(&p, &caption) + 5.0;
+                    winui::group_box(&p, group.translate(v), Some((o.x + 104.0, gap_end)));
+                }
+                winui::checkbox(ui, o + lay.remember, &mut self.remember, &caption, true);
                 let mut folder = format!(
                     "{}\\",
                     display_path(&self.folder_of(self.category)).trim_end_matches('\\')
                 );
-                let folder_rc = r(o, 104.0, 112.0, 348.0, 23.0);
+                let folder_rc = lay.folder.translate(v);
                 // Read-only, and not a password box: bool::default() for both flags.
                 let folder_resp =
                     winui::edit(ui, folder_rc, &mut folder, bool::default(), bool::default());
@@ -2244,16 +2319,11 @@ impl FileInfo {
                 winui::copyable(ui, folder_rc, "remembered-folder", &folder, false);
 
                 // i18n: noun: label before a free-text box describing the file
-                winui::text_right(
-                    &p,
-                    o.x + 87.0,
-                    o.y + 161.0,
-                    crate::i18n::t("Description"),
-                    winui::TEXT(),
-                );
+                lay.description_label
+                    .draw(&p, o, crate::i18n::t("Description"));
                 winui::edit(
                     ui,
-                    r(o, 96.0, 148.0, 366.0, 23.0),
+                    lay.description.translate(v),
                     &mut self.description,
                     true,
                     false,
@@ -2270,11 +2340,11 @@ impl FileInfo {
                     );
                     winui::checkbox_until(
                         ui,
-                        o + vec2(96.0, 186.0),
+                        o + lay.through,
                         &mut on,
                         &caption,
                         true,
-                        Some(o.x + 462.0),
+                        Some(o.x + lay.right),
                     );
                     if on == self.direct {
                         self.direct = !on;
@@ -2286,44 +2356,28 @@ impl FileInfo {
                 // nothing was asked (the browser had the answer). When the look failed, why, in
                 // words (#762: a refused certificate said so), where the size says "Error".
                 // i18n: label before where a download's server is (its country and round trip)
-                winui::text_right(
-                    &p,
-                    o.x + 88.0,
-                    o.y + 193.0 + dy,
-                    crate::i18n::t("Server"),
-                    winui::TEXT(),
-                );
+                lay.server_label.draw(&p, o, crate::i18n::t("Server"));
+                let (sx, sy) = (o.x + lay.server.x, o.y + lay.server.y);
                 match &self.info {
-                    None => crate::whereis::line(
-                        ui,
-                        o.x + 96.0,
-                        o.y + 193.0 + dy,
-                        o.x + 462.0,
-                        None,
-                        &own(FILE_INFO),
-                    ),
+                    None => {
+                        crate::whereis::line(ui, sx, sy, o.x + lay.right, None, &own(FILE_INFO))
+                    }
                     Some(Ok(pi)) => {
                         if let Some(server) = &pi.server {
                             let seen = crate::whereis::Seen::from(server);
                             crate::whereis::line(
                                 ui,
-                                o.x + 96.0,
-                                o.y + 193.0 + dy,
-                                o.x + 462.0,
+                                sx,
+                                sy,
+                                o.x + lay.right,
                                 Some(&seen),
                                 &own(FILE_INFO),
                             );
                         }
                     }
                     Some(Err(reason)) => {
-                        let (rect, cut) = winui::text_fit(
-                            &p,
-                            o.x + 96.0,
-                            o.y + 193.0 + dy,
-                            reason,
-                            winui::ERROR(),
-                            o.x + 462.0,
-                        );
+                        let (rect, cut) =
+                            winui::text_fit(&p, sx, sy, reason, winui::ERROR(), o.x + lay.right);
                         winui::copyable(ui, rect, own("file-info-failed"), reason, cut);
                     }
                 }
@@ -2365,46 +2419,34 @@ impl FileInfo {
                     (ButtonKind::Normal, ButtonKind::Default)
                 };
                 // The row as wide as its labels in this language need (#192), ending where it
-                // ends in English.
-                let [later_at, start_at, cancel_at] = winui::button_row(
-                    &p,
-                    &[
-                        ("Download Later", 97.0, 109.0),
-                        ("Start Download", 225.0, 109.0),
-                        ("Cancel", 352.0, 109.0),
-                    ],
-                    19.0,
-                    11.0,
-                    200.0,
-                )[..] else {
-                    unreachable!("three buttons")
+                // ends in English (a phone's: the screen's width in thirds).
+                let [later_rc, start_rc, cancel_rc] = match lay.buttons {
+                    Some(b) => b.map(|b| b.translate(v)),
+                    None => {
+                        let [later_at, start_at, cancel_at] = winui::button_row(
+                            &p,
+                            &[
+                                ("Download Later", 97.0, 109.0),
+                                ("Start Download", 225.0, 109.0),
+                                ("Cancel", 352.0, 109.0),
+                            ],
+                            19.0,
+                            11.0,
+                            200.0,
+                        )[..] else {
+                            unreachable!("three buttons")
+                        };
+                        [later_at, start_at, cancel_at].map(|(x, w)| r(o, x, 206.0 + dy, w, 21.0))
+                    }
                 };
-                let later = winui::button(
-                    ui,
-                    r(o, later_at.0, 206.0 + dy, later_at.1, 21.0),
-                    "Download Later",
-                    later_kind,
-                    false,
-                    Some(9),
-                );
+                let later =
+                    winui::button(ui, later_rc, "Download Later", later_kind, false, Some(9));
                 let later = winui::why_disabled(later, blocked.is_some(), blocked.unwrap_or(""));
-                let start = winui::button(
-                    ui,
-                    r(o, start_at.0, 206.0 + dy, start_at.1, 21.0),
-                    "Start Download",
-                    start_kind,
-                    true,
-                    Some(0),
-                );
+                let start =
+                    winui::button(ui, start_rc, "Start Download", start_kind, true, Some(0));
                 let start = winui::why_disabled(start, blocked.is_some(), blocked.unwrap_or(""));
-                let cancel = winui::button(
-                    ui,
-                    r(o, cancel_at.0, 206.0 + dy, cancel_at.1, 21.0),
-                    "Cancel",
-                    ButtonKind::Normal,
-                    false,
-                    Some(0),
-                );
+                let cancel =
+                    winui::button(ui, cancel_rc, "Cancel", ButtonKind::Normal, false, Some(0));
 
                 // Right column, centred on x ≈ 516 (+ cx): file icon, size, Preview.
                 // The shell's own 32 px icon for this file type, as IDM shows.
@@ -2412,11 +2454,7 @@ impl FileInfo {
                     .extension()
                     .map(|e| e.to_string_lossy().to_ascii_lowercase())
                     .unwrap_or_default();
-                icons.paint(
-                    ui,
-                    crate::chrome::IconKey::ExtLarge(ext),
-                    o + vec2(500.0 + cx, 45.0),
-                );
+                icons.paint(ui, crate::chrome::IconKey::ExtLarge(ext), o + lay.icon);
                 let (size, reason) = match &self.info {
                     None => ("...".to_owned(), None),
                     Some(Ok(pi)) => (
@@ -2429,21 +2467,32 @@ impl FileInfo {
                     Some(Err(e)) => (crate::i18n::t("Error").to_owned(), Some(e.clone())),
                 };
                 let w = winui::text_width(&p, &size);
-                let at = winui::text(
-                    &p,
-                    o.x + 515.0 + cx - w / 2.0,
-                    o.y + 103.0,
-                    &size,
-                    winui::TEXT(),
-                );
+                let size_x = if lay.size_centred {
+                    lay.size.x - w / 2.0
+                } else {
+                    lay.size.x
+                };
+                let size_at = winui::text(&p, o.x + size_x, o.y + lay.size.y, &size, winui::TEXT());
                 // Why the address didn't answer (not found, sign-in needed…): on hover, copyable.
                 if let Some(reason) = reason {
-                    winui::copyable(ui, at, own("file-info-error"), &reason, true);
+                    winui::copyable(ui, size_at, own("file-info-error"), &reason, true);
                 }
                 // As wide as its label in this language (#192), around the column's centre, from
                 // 8 px after the group box (it ends at 462) to the window's edge.
-                let (px, pw) =
-                    winui::button_around(&p, "Preview", 480.0 + cx, 73.0, 470.0, 562.0 + wide);
+                let preview_rc = lay.preview.map_or_else(
+                    || {
+                        let (px, pw) = winui::button_around(
+                            &p,
+                            "Preview",
+                            480.0 + cx,
+                            73.0,
+                            470.0,
+                            562.0 + wide,
+                        );
+                        r(o, px, 128.0, pw, 21.0)
+                    },
+                    |b| b.translate(v),
+                );
                 // A ZIP on a server that sends parts: its files to pick (#1775, Zip preview).
                 // Greyed, with why, while that is being asked and where it can't be; greyed for
                 // every other type.
@@ -2452,13 +2501,9 @@ impl FileInfo {
                     _ => ButtonKind::Disabled,
                 };
                 let preview = winui::button(
-                    ui,
-                    r(o, px, 128.0, pw, 21.0),
+                    ui, preview_rc,
                     // i18n: verb: Download File Info's button; for a ZIP, it lists the files inside it to pick those to download (#1775)
-                    "Preview",
-                    kind,
-                    false,
-                    None,
+                    "Preview", kind, false, None,
                 );
                 let tip = match &zip_state {
                     Some(Ok(())) => crate::i18n::t(
@@ -2546,6 +2591,135 @@ impl FileInfo {
             self.open_zip_preview(ctx);
         }
         out
+    }
+}
+
+/// A label's place: its baseline at `y`, ending at `x` (the desktop's, right-aligned before
+/// its box) or starting there (a phone's, over its box).
+#[derive(Clone, Copy)]
+struct LabelAt {
+    x: f32,
+    y: f32,
+    right: bool,
+}
+
+impl LabelAt {
+    fn draw(self, p: &egui::Painter, o: Pos2, text: &str) {
+        if self.right {
+            winui::text_right(p, o.x + self.x, o.y + self.y, text, winui::TEXT());
+        } else {
+            winui::text(p, o.x + self.x, o.y + self.y, text, winui::TEXT());
+        }
+    }
+}
+
+/// Where Download File Info's parts are, from its client's top left: the desktop's window
+/// (IDM's, client 570 × 234 and wider for a long Preview), or on a phone one column as wide as
+/// the screen (phone.rs). `dy`: the "Download through" row's height, when it shows.
+struct FileInfoLayout {
+    client: [f32; 2],
+    url_label: LabelAt,
+    url: egui::Rect,
+    category_label: LabelAt,
+    category: egui::Rect,
+    new_category: egui::Rect,
+    save_label: LabelAt,
+    save: egui::Rect,
+    browse: egui::Rect,
+    /// The "Remember this path" box (none on a phone).
+    group: Option<egui::Rect>,
+    remember: egui::Vec2,
+    folder: egui::Rect,
+    description_label: LabelAt,
+    description: egui::Rect,
+    through: egui::Vec2,
+    server_label: LabelAt,
+    server: egui::Pos2,
+    /// Where the server's line and the "Download through" caption end.
+    right: f32,
+    /// Download Later, Start Download, Cancel (none: the desktop's row, fitted to the labels).
+    buttons: Option<[egui::Rect; 3]>,
+    icon: egui::Vec2,
+    /// The size's baseline: its centre (the desktop's right column) or its start.
+    size: egui::Pos2,
+    size_centred: bool,
+    /// Preview (none: the desktop's, fitted to its label).
+    preview: Option<egui::Rect>,
+}
+
+impl FileInfoLayout {
+    fn desktop(wide: f32, cx: f32, dy: f32) -> Self {
+        let o = Pos2::ZERO;
+        let label = |x, y| LabelAt { x, y, right: true };
+        FileInfoLayout {
+            client: [570.0 + wide, 234.0 + dy],
+            url_label: label(88.0, 18.0),
+            url: r(o, 96.0, 5.0, 366.0, 23.0),
+            category_label: label(88.0, 46.0),
+            category: r(o, 96.0, 36.0, 174.0, 21.0),
+            new_category: r(o, 276.0, 35.0, 22.0, 21.0),
+            save_label: label(88.0, 77.0),
+            save: r(o, 96.0, 63.0, 335.0, 21.0),
+            browse: r(o, 439.0, 64.0, 22.0, 21.0),
+            group: Some(r(o, 96.0, 97.0, 366.0, 45.0)),
+            remember: vec2(104.0, 90.0),
+            folder: r(o, 104.0, 112.0, 348.0, 23.0),
+            description_label: label(87.0, 161.0),
+            description: r(o, 96.0, 148.0, 366.0, 23.0),
+            through: vec2(96.0, 186.0),
+            server_label: label(88.0, 193.0 + dy),
+            server: egui::pos2(96.0, 193.0 + dy),
+            right: 462.0,
+            buttons: None,
+            icon: vec2(500.0 + cx, 45.0),
+            size: egui::pos2(515.0 + cx, 103.0),
+            size_centred: true,
+            preview: None,
+        }
+    }
+
+    /// One column `width` wide: each label over its box, the boxes and buttons tall enough for
+    /// a finger, the file's icon and size, then the three buttons across the bottom.
+    fn phone(width: f32, dy: f32) -> Self {
+        let o = Pos2::ZERO;
+        let (pad, w) = (16.0, width - 32.0);
+        let (field, small) = (36.0, 40.0);
+        let label = |y| LabelAt {
+            x: pad,
+            y,
+            right: false,
+        };
+        let third = (w - 16.0) / 3.0;
+        let bottom = 456.0 + dy;
+        FileInfoLayout {
+            client: [width, bottom + 56.0],
+            url_label: label(24.0),
+            url: r(o, pad, 32.0, w, field),
+            category_label: label(92.0),
+            category: r(o, pad, 100.0, w - small - 8.0, field),
+            new_category: r(o, pad + w - small, 100.0, small, field),
+            save_label: label(160.0),
+            save: r(o, pad, 168.0, w - small - 8.0, field),
+            browse: r(o, pad + w - small, 168.0, small, field),
+            group: None,
+            remember: vec2(pad, 218.0),
+            folder: r(o, pad, 242.0, w, field),
+            description_label: label(302.0),
+            description: r(o, pad, 310.0, w, field),
+            through: vec2(pad, 358.0),
+            server_label: label(372.0 + dy),
+            server: egui::pos2(pad + 60.0, 372.0 + dy),
+            right: pad + w,
+            buttons: Some([
+                r(o, pad, bottom, third, 40.0),
+                r(o, pad + third + 8.0, bottom, third, 40.0),
+                r(o, pad + 2.0 * (third + 8.0), bottom, third, 40.0),
+            ]),
+            icon: vec2(pad, 390.0 + dy),
+            size: egui::pos2(pad + 44.0, 412.0 + dy),
+            size_centred: false,
+            preview: Some(r(o, pad + w - 110.0, 392.0 + dy, 110.0, field)),
+        }
     }
 }
 
@@ -2684,11 +2858,19 @@ impl Complete {
     pub fn show(&mut self, ctx: &egui::Context) -> Outcome<()> {
         let id = format!("complete-{}", self.id);
         self.seen |= notice_seen(ctx, &id);
+        // A phone (phone.rs): the page's width, the buttons two by two and finger-sized.
+        let phone = crate::app::phone::active(ctx);
+        let wide = if phone {
+            crate::app::phone::sheet_width(ctx)
+        } else {
+            455.0
+        };
+        let client = if phone { [wide, 330.0] } else { [455.0, 215.0] };
         notice(
             ctx,
             &id,
             "Download complete",
-            [455.0, 215.0],
+            client,
             true,
             winui::BG(),
             !self.seen,
@@ -2727,7 +2909,7 @@ impl Complete {
                         o.y + 52.0,
                         &self.notices.join(" "),
                         winui::ERROR(),
-                        o.x + 444.0,
+                        o.x + wide - 11.0,
                         ("complete-notice", self.id),
                     );
                 }
@@ -2742,7 +2924,7 @@ impl Complete {
                 // Read-only and copyable (an editable copy let typing seem to work, then reverted).
                 winui::readonly_field(
                     ui,
-                    r(o, 11.0, 78.0, 434.0, 23.0),
+                    r(o, 11.0, 78.0, wide - 21.0, 23.0),
                     &self.url,
                     winui::BG(),
                     true,
@@ -2757,31 +2939,42 @@ impl Complete {
                 );
                 winui::readonly_field(
                     ui,
-                    r(o, 11.0, 124.0, 434.0, 23.0),
+                    r(o, 11.0, 124.0, wide - 21.0, 23.0),
                     &display_path(&self.path),
                     winui::BG(),
                     true,
                     "complete-saved",
                 );
 
-                let btn = |ui: &mut Ui, (x, w): (f32, f32), label: &str, kind| {
-                    winui::button(ui, r(o, x, 157.0, w, 21.0), label, kind, false, None)
+                let btn = |ui: &mut Ui, at: egui::Rect, label: &str, kind| {
+                    winui::button(ui, at, label, kind, false, None)
                 };
-                // As wide as their labels in this language (#192): a longer one pushes those
-                // after it right, Close last at the window's edge.
-                let [open_at, with_at, folder_at, close_at] = winui::button_row_from_left(
-                    &p,
-                    &[
-                        ("Open", 12.0, 90.0),
-                        ("Open with...", 115.0, 90.0),
-                        ("Open folder", 219.0, 90.0),
-                        ("Close", 354.0, 90.0),
-                    ],
-                    13.0,
-                    444.0,
-                    200.0,
-                )[..] else {
-                    unreachable!("four buttons")
+                let [open_at, with_at, folder_at, close_at] = if phone {
+                    // Two by two, each half the page.
+                    let half = (wide - 24.0 - 8.0) / 2.0;
+                    let at = |col: f32, row: f32| {
+                        r(o, 12.0 + col * (half + 8.0), 157.0 + row * 52.0, half, 44.0)
+                    };
+                    [at(0.0, 0.0), at(1.0, 0.0), at(0.0, 1.0), at(1.0, 1.0)]
+                } else {
+                    // As wide as their labels in this language (#192): a longer one pushes
+                    // those after it right, Close last at the window's edge.
+                    let [a, b, c, d] = winui::button_row_from_left(
+                        &p,
+                        &[
+                            ("Open", 12.0, 90.0),
+                            ("Open with...", 115.0, 90.0),
+                            ("Open folder", 219.0, 90.0),
+                            ("Close", 354.0, 90.0),
+                        ],
+                        13.0,
+                        444.0,
+                        200.0,
+                    )[..] else {
+                        unreachable!("four buttons")
+                    };
+                    let at = |(x, w): (f32, f32)| r(o, x, 157.0, w, 21.0);
+                    [at(a), at(b), at(c), at(d)]
                 };
                 // i18n: verb: opens the downloaded file
                 let open = btn(ui, open_at, "Open", ButtonKind::Default);
@@ -2790,8 +2983,14 @@ impl Complete {
                 // i18n: verb: closes this window
                 let close = btn(ui, close_at, "Close", ButtonKind::Normal);
                 // Windows: the drag handle at the trailing edge, after the snooze.
-                let room = if cfg!(windows) { 406.0 } else { 444.0 };
-                if let Some(s) = complete_footer(ui, o, 191.0, &mut self.dont_show, room) {
+                let (footer_y, room) = if phone {
+                    (157.0 + 52.0 + 44.0 + 30.0, wide - 11.0)
+                } else if cfg!(windows) {
+                    (191.0, 406.0)
+                } else {
+                    (191.0, 444.0)
+                };
+                if let Some(s) = complete_footer(ui, o, footer_y, &mut self.dont_show, room) {
                     self.snooze = Some(s);
                 }
 
@@ -2803,7 +3002,7 @@ impl Complete {
                 // drag built yet (no drag source in their window library), so the handle isn't
                 // shown there and nothing is moved: Open folder is the way to the file.
                 #[cfg(windows)]
-                {
+                if !phone {
                     let handle = r(o, 414.0, 187.0, 27.0, 20.0);
                     let grip = ui
                         .interact(
@@ -3709,11 +3908,20 @@ impl ConfirmDelete {
         let extra = grow_extra(ctx, "confirm-delete");
         // The finished files' line under the box, while it is ticked (#1563).
         let warned = grow_extra(ctx, "confirm-delete-finished");
+        // A phone (phone.rs): the page's width, Yes and No side by side and finger-sized under
+        // "Don't show this dialog again".
+        let phone = crate::app::phone::active(ctx);
+        let wide = if phone {
+            crate::app::phone::sheet_width(ctx)
+        } else {
+            374.0
+        };
+        let tall = if phone { 180.0 } else { 146.0 };
         question(
             ctx,
             "confirm-delete",
             "Confirm deletion of downloads",
-            [374.0, 146.0 + extra + warned],
+            [wide, tall + extra + warned],
             false,
             winui::LIGHT_BG(),
             |ui, o| {
@@ -3748,8 +3956,8 @@ it from Mister Download Manager list of downloads?",
                         &[("n", &crate::i18n::integer(n))],
                     )
                 };
-                let lines =
-                    winui::paragraph(&p, o.x + 11.0, o.y + 21.0, &text, black, o.x + 362.0, 13.0);
+                let right = o.x + wide - 12.0;
+                let lines = winui::paragraph(&p, o.x + 11.0, o.y + 21.0, &text, black, right, 13.0);
                 grow_to(ui.ctx(), "confirm-delete", lines, 3);
                 let o = o + vec2(0.0, extra);
                 let files = if n == 1 {
@@ -3784,7 +3992,7 @@ it from Mister Download Manager list of downloads?",
                         o.y + 88.0,
                         &text,
                         winui::ERROR(),
-                        o.x + 362.0,
+                        right,
                         13.0,
                     );
                     lines as f32 * 13.0 + 6.0
@@ -3793,25 +4001,27 @@ it from Mister Download Manager list of downloads?",
                 };
                 grow_px(ui.ctx(), "confirm-delete-finished", warn);
                 let o = o + vec2(0.0, warn);
-                let yes = winui::button_light(
-                    ui,
-                    r(o, 94.0, 86.0, 73.0, 21.0),
-                    "Yes",
-                    ButtonKind::Default,
-                    false,
-                )
-                .clicked();
-                let no = winui::button_light(
-                    ui,
-                    r(o, 207.0, 86.0, 73.0, 21.0),
-                    "No",
-                    ButtonKind::Normal,
-                    false,
-                )
-                .clicked();
+                // Where Yes and No are, and the "Don't show" box's top.
+                let (yes_at, no_at, dont_y) = if phone {
+                    let half = (wide - 24.0 - 8.0) / 2.0;
+                    (
+                        r(o, 12.0, 122.0, half, 44.0),
+                        r(o, 12.0 + half + 8.0, 122.0, half, 44.0),
+                        88.0,
+                    )
+                } else {
+                    (
+                        r(o, 94.0, 86.0, 73.0, 21.0),
+                        r(o, 207.0, 86.0, 73.0, 21.0),
+                        120.0,
+                    )
+                };
+                let yes =
+                    winui::button_light(ui, yes_at, "Yes", ButtonKind::Default, false).clicked();
+                let no = winui::button_light(ui, no_at, "No", ButtonKind::Normal, false).clicked();
                 winui::checkbox_light(
                     ui,
-                    o + vec2(24.0, 120.0),
+                    o + vec2(24.0, dont_y),
                     &mut self.dont_show,
                     "Don't show this dialog again",
                     true,
@@ -4444,9 +4654,15 @@ fn open_file_platform(path: &Path) -> Result<(), std::io::Error> {
     // Linux and macOS: no folder to give. Their file managers start a file's program in no
     // folder of the file's either (macOS's LaunchServices starts every app in `/`; a Linux
     // desktop's in the launcher's own), and programs there don't write beside themselves.
-    #[cfg(not(windows))]
+    #[cfg(all(not(windows), not(target_os = "android")))]
     {
         open::that_detached(path)
+    }
+    // Android: the app set for the file's type, through an intent (the Android app's Platform).
+    #[cfg(target_os = "android")]
+    {
+        crate::android::open_with_system("view", &path.to_string_lossy())
+            .map_err(std::io::Error::other)
     }
 }
 
@@ -4595,9 +4811,34 @@ pub fn open_download_with(path: &Path, moved_away: bool) {
             // Linux and macOS have no chooser MDM can call for a file: the desktop's opener
             // (xdg-open, which goes through the desktop portal in a sandbox, or macOS's `open`)
             // opens it with the program set for its type, which the user changes there.
-            #[cfg(not(windows))]
+            #[cfg(all(not(windows), not(target_os = "android")))]
             {
                 open::that_detached(p).map_err(|e| e.to_string())
+            }
+            // Android's own chooser of apps for the file.
+            #[cfg(target_os = "android")]
+            {
+                crate::android::open_with_system("chooser", &p.to_string_lossy())
+            }
+        });
+    });
+}
+
+/// A finished download's file to Android's share sheet (another app, a message, nearby
+/// devices). Android only: the desktop's systems have no share sheet MDM calls this way, and the
+/// menu offers it only there.
+pub fn share_download(path: &Path, moved_away: bool) {
+    let path = path.to_owned();
+    crate::launch::spawn("share", move || {
+        hand_over(&path, moved_away, |p| {
+            #[cfg(target_os = "android")]
+            {
+                crate::android::open_with_system("share", &p.to_string_lossy())
+            }
+            #[cfg(not(target_os = "android"))]
+            {
+                let _ = p;
+                Ok(())
             }
         });
     });
@@ -4765,7 +5006,10 @@ impl QueuePick {
             ctx,
             "queue-pick",
             "Download later",
-            [340.0, 110.0],
+            [
+                340.0,
+                110.0 + crate::app::phone::phone_buttons_extra(ctx, 1),
+            ],
             false,
             winui::LIGHT_BG(),
             |ui, o| {
@@ -4796,22 +5040,19 @@ impl QueuePick {
                     "Start the queue now",
                     true,
                 );
-                let ok = winui::button_light(
-                    ui,
+                // A phone: the two big across the page.
+                let (ok_at, cancel_at) = crate::app::phone::pair_or(
+                    ui.ctx(),
+                    o,
+                    78.0,
+                    340.0,
                     r(o, 174.0, 78.0, 73.0, 21.0),
-                    "OK",
-                    ButtonKind::Default,
-                    false,
-                )
-                .clicked();
-                let cancel = winui::button_light(
-                    ui,
                     r(o, 255.0, 78.0, 73.0, 21.0),
-                    "Cancel",
-                    ButtonKind::Normal,
-                    false,
-                )
-                .clicked();
+                );
+                let ok = winui::button_light(ui, ok_at, "OK", ButtonKind::Default, false).clicked();
+                let cancel =
+                    winui::button_light(ui, cancel_at, "Cancel", ButtonKind::Normal, false)
+                        .clicked();
                 if cancel || winui::escape_pressed(ui) {
                     Outcome::Closed
                 } else if ok || winui::enter_pressed(ui) {
@@ -4843,7 +5084,10 @@ impl Confirm {
             ctx,
             &key,
             self.title,
-            [400.0, 96.0 + extra],
+            [
+                400.0,
+                96.0 + extra + crate::app::phone::phone_buttons_extra(ctx, 1),
+            ],
             false,
             winui::BG(),
             |ui, o| {
@@ -4859,24 +5103,18 @@ impl Confirm {
                 );
                 grow_to(ui.ctx(), &key, lines, 3);
                 let o = o + vec2(0.0, extra);
-                let yes = winui::button(
-                    ui,
+                // A phone: the two big across the page.
+                let (yes_at, no_at) = crate::app::phone::pair_or(
+                    ui.ctx(),
+                    o,
+                    64.0,
+                    400.0,
                     r(o, 234.0, 64.0, 73.0, 21.0),
-                    "Yes",
-                    ButtonKind::Default,
-                    false,
-                    None,
-                )
-                .clicked();
-                let no = winui::button(
-                    ui,
                     r(o, 316.0, 64.0, 73.0, 21.0),
-                    "No",
-                    ButtonKind::Normal,
-                    false,
-                    None,
-                )
-                .clicked();
+                );
+                let yes =
+                    winui::button(ui, yes_at, "Yes", ButtonKind::Default, false, None).clicked();
+                let no = winui::button(ui, no_at, "No", ButtonKind::Normal, false, None).clicked();
                 if no || winui::escape_pressed(ui) {
                     Outcome::Closed
                 } else if yes || winui::enter_pressed(ui) {
@@ -4924,7 +5162,10 @@ impl DeleteCategory {
             ctx,
             key,
             "Delete category",
-            [500.0, 150.0 + extra],
+            [
+                500.0,
+                150.0 + extra + crate::app::phone::phone_buttons_extra(ctx, 1),
+            ],
             false,
             winui::LIGHT_BG(),
             |ui, o| {
@@ -4969,23 +5210,26 @@ impl DeleteCategory {
                 )[..] else {
                     unreachable!("two buttons")
                 };
-                // i18n: button: deletes the category
+                // A phone: the two big across the page.
+                let (delete_r, cancel_r) = crate::app::phone::pair_or(
+                    ui.ctx(),
+                    o,
+                    118.0,
+                    500.0,
+                    r(o, delete_at.0, 118.0, delete_at.1, 21.0),
+                    r(o, cancel_at.0, 118.0, cancel_at.1, 21.0),
+                );
                 let delete = winui::button_light(
                     ui,
-                    r(o, delete_at.0, 118.0, delete_at.1, 21.0),
+                    delete_r,
+                    // i18n: button: deletes the category
                     "Delete",
                     ButtonKind::Default,
                     false,
                 )
                 .clicked();
-                let cancel = winui::button_light(
-                    ui,
-                    r(o, cancel_at.0, 118.0, cancel_at.1, 21.0),
-                    "Cancel",
-                    ButtonKind::Normal,
-                    false,
-                )
-                .clicked();
+                let cancel = winui::button_light(ui, cancel_r, "Cancel", ButtonKind::Normal, false)
+                    .clicked();
                 if cancel || winui::escape_pressed(ui) {
                     Outcome::Closed
                 } else if delete || winui::enter_pressed(ui) {
@@ -5148,7 +5392,10 @@ impl ExistingFiles {
             ctx,
             "existing-files",
             "Files already there",
-            [460.0, 206.0],
+            [
+                460.0,
+                206.0 + crate::app::phone::phone_buttons_extra(ctx, 1),
+            ],
             false,
             winui::BG(),
             |ui, o| {
@@ -5209,25 +5456,19 @@ impl ExistingFiles {
                     right,
                     18.0,
                 );
-                let yes = winui::button(
-                    ui,
+                // A phone: the two big across the page.
+                let (yes_at, no_at) = crate::app::phone::pair_or(
+                    ui.ctx(),
+                    o,
+                    172.0,
+                    460.0,
                     r(o, 294.0, 172.0, 73.0, 21.0),
-                    "Yes",
-                    ButtonKind::Normal,
-                    false,
-                    None,
-                )
-                .clicked();
-                // No is the default: a file the user didn't mean to give up stays as it is.
-                let no = winui::button(
-                    ui,
                     r(o, 376.0, 172.0, 73.0, 21.0),
-                    "No",
-                    ButtonKind::Default,
-                    false,
-                    None,
-                )
-                .clicked();
+                );
+                let yes =
+                    winui::button(ui, yes_at, "Yes", ButtonKind::Normal, false, None).clicked();
+                // No is the default: a file the user didn't mean to give up stays as it is.
+                let no = winui::button(ui, no_at, "No", ButtonKind::Default, false, None).clicked();
                 if yes {
                     Outcome::Done(())
                 } else if no || winui::escape_pressed(ui) || winui::enter_pressed(ui) {

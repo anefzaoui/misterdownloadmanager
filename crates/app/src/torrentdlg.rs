@@ -432,7 +432,20 @@ impl TorrentDialog {
             ctx,
             "add-torrent",
             "Add torrent",
-            [600.0, 512.0],
+            // A phone's page width (phone.rs), the desktop's 600 pt window.
+            [
+                if crate::app::phone::active(ctx) {
+                    crate::app::phone::sheet_width(ctx)
+                } else {
+                    600.0
+                },
+                // A phone: Download in order on its own row, the buttons big under it.
+                if crate::app::phone::active(ctx) {
+                    512.0 + 26.0 + 2.0 * crate::app::phone::BUTTON_H + 8.0 - 21.0 + 8.0
+                } else {
+                    512.0
+                },
+            ],
             false,
             winui::BG(),
             |ui, o| self.body(ui, o, rt, allow_subfolder_choice),
@@ -547,6 +560,12 @@ impl TorrentDialog {
         allow_subfolder_choice: bool,
     ) -> Outcome<()> {
         let p = ui.painter().clone();
+        // The right edge: the desktop's 600 pt window less its margin; a phone's page (phone.rs).
+        let right = if crate::app::phone::active(ui.ctx()) {
+            crate::app::phone::sheet_width(ui.ctx()) - 11.0
+        } else {
+            589.0
+        };
         let busy = self.lookup.is_some();
         let kind = |on: bool, default: bool| match (on, default) {
             (false, _) => ButtonKind::Disabled,
@@ -564,18 +583,21 @@ impl TorrentDialog {
         text(&p, o.x + 11.0, o.y + 23.0, source_label, winui::TEXT());
         let edit = winui::edit(
             ui,
-            r(o, fx, 9.0, 480.0 - fx, 21.0),
+            r(o, fx, 9.0, right - 109.0 - fx, 21.0),
             &mut self.source,
             !busy,
             false,
         );
+        // The keys in the source box, not on a phone (its keyboard would cover the page).
         if !self.focused {
-            edit.request_focus();
+            if !crate::app::phone::active(ui.ctx()) {
+                edit.request_focus();
+            }
             self.focused = true;
         }
         let browse = winui::button(
             ui,
-            r(o, 486.0, 9.0, 22.0, 21.0),
+            r(o, right - 103.0, 9.0, 22.0, 21.0),
             "...",
             kind(!busy, false),
             false,
@@ -600,7 +622,7 @@ impl TorrentDialog {
         // While it looks up, the button stops it (a magnet with no peers took up to 3 minutes).
         let look = winui::button(
             ui,
-            r(o, 514.0, 9.0, 75.0, 21.0),
+            r(o, right - 75.0, 9.0, 75.0, 21.0),
             // i18n: button: stop looking the torrent up
             if busy {
                 crate::i18n::mark("Stop")
@@ -649,7 +671,7 @@ impl TorrentDialog {
             text(&p, o.x + 31.0, line, &msg, winui::TEXT());
         } else if let Some(e) = shown_err {
             let x = winui::note_mark(ui, &p, o.x + 11.0, line, Some(crate::icons::Mark::Fail));
-            let (rect, cut) = winui::text_fit(&p, x, line, e, winui::ERROR(), o.x + 589.0);
+            let (rect, cut) = winui::text_fit(&p, x, line, e, winui::ERROR(), o.x + right);
             if cut {
                 winui::full_on_hover(ui, rect, "torrent-error", e);
             }
@@ -674,13 +696,13 @@ impl TorrentDialog {
             };
             crate::fileicons::paint_at(ui, &p, kind, egui::pos2(o.x + 11.0, line - 12.0), 16.0);
             let x = o.x + 11.0 + crate::fileicons::INDENT;
-            let (rect, cut) = winui::text_fit(&p, x, line, &summary, winui::TEXT(), o.x + 589.0);
+            let (rect, cut) = winui::text_fit(&p, x, line, &summary, winui::TEXT(), o.x + right);
             if cut {
                 winui::full_on_hover(ui, rect, "torrent-name", &summary);
             }
         }
 
-        self.file_list(ui, r(o, 11.0, 58.0, 578.0, 262.0));
+        self.file_list(ui, r(o, 11.0, 58.0, right - 11.0, 262.0));
 
         // Select all / none, each as wide as its label in this language (#192), and what is chosen.
         let has = self.meta.is_some();
@@ -722,7 +744,7 @@ impl TorrentDialog {
         if has {
             winui::text_right(
                 &p,
-                o.x + 589.0,
+                o.x + right,
                 o.y + 343.0,
                 &crate::i18n::fmt(
                     // i18n: the files chosen: {files} = "3 files", {size} = their total size
@@ -743,7 +765,7 @@ impl TorrentDialog {
         text(&p, o.x + 11.0, o.y + 375.0, folder_label, winui::TEXT());
         if winui::edit(
             ui,
-            r(o, fx, 361.0, 561.0 - fx, 21.0),
+            r(o, fx, 361.0, right - 28.0 - fx, 21.0),
             &mut self.folder,
             true,
             false,
@@ -754,7 +776,7 @@ impl TorrentDialog {
         }
         if winui::button(
             ui,
-            r(o, 567.0, 361.0, 22.0, 21.0),
+            r(o, right - 22.0, 361.0, 22.0, 21.0),
             "...",
             ButtonKind::Normal,
             false,
@@ -779,7 +801,7 @@ impl TorrentDialog {
             // i18n: Add torrent: keep a multi-file torrent inside its own outer folder; untick to use Save to directly
             "Create a folder for this torrent",
             has && self.rename.is_dir && !busy && allow_subfolder_choice,
-            Some(o.x + 589.0),
+            Some(o.x + right),
         );
         let create = winui::why_disabled(
             create,
@@ -799,6 +821,7 @@ impl TorrentDialog {
             &p,
             o,
             fx,
+            right,
             417.0,
             has && can_rename,
             busy,
@@ -820,7 +843,7 @@ impl TorrentDialog {
                 &[("folder", &crate::i18n::ltr(&goes.display().to_string()))],
             );
             let (rect, cut) =
-                winui::text_fit(&p, o.x + fx, o.y + 454.0, &s, winui::MUTED(), o.x + 589.0);
+                winui::text_fit(&p, o.x + fx, o.y + 454.0, &s, winui::MUTED(), o.x + right);
             if cut {
                 winui::full_on_hover(ui, rect, "torrent-goes", &s);
             }
@@ -829,7 +852,7 @@ impl TorrentDialog {
         // The bottom row, each button as wide as its label in this language (#192).
         let [now_at, later_at, cancel_at] = winui::buttons_to_right(
             &p,
-            589.0,
+            right,
             6.0,
             &[("Download Now", 105.0), ("Later", 91.0), ("Cancel", 91.0)],
             160.0,
@@ -838,6 +861,7 @@ impl TorrentDialog {
         };
         // #39: its files' start first, to watch a video while it downloads (also later, from
         // its right-click menu). Its caption stops before the buttons.
+        let phone = crate::app::phone::active(ui.ctx());
         winui::checkbox_until(
             ui,
             pos2(o.x + 14.0, o.y + 484.0),
@@ -845,26 +869,30 @@ impl TorrentDialog {
             // i18n: Add torrent, a checkbox: download the files from their start, to watch a video while it downloads
             "Download in order",
             has,
-            Some(o.x + now_at.0),
+            Some(o.x + if phone { right } else { now_at.0 }),
         );
+        // A phone: big buttons across the page under it, Download Now first.
+        let (now_r, later_r, cancel_r) = if phone {
+            let (b, _) = crate::app::phone::button_rects(o, 510.0, right + 11.0, 3, true);
+            (b[0], b[1], b[2])
+        } else {
+            (
+                r(o, now_at.0, 480.0, now_at.1, 21.0),
+                r(o, later_at.0, 480.0, later_at.1, 21.0),
+                r(o, cancel_at.0, 480.0, cancel_at.1, 21.0),
+            )
+        };
         let ready = has
             && count > 0
             && !self.folder.trim().is_empty()
             && !busy
             && (!self.can_rename() || self.rename.candidate_error().is_none());
-        let now = winui::button(
-            ui,
-            r(o, now_at.0, 480.0, now_at.1, 21.0),
-            "Download Now",
-            kind(ready, true),
-            false,
-            None,
-        )
-        .clicked()
+        let now = winui::button(ui, now_r, "Download Now", kind(ready, true), false, None)
+            .clicked()
             || (ready && winui::enter_pressed(ui));
         let later = winui::button(
             ui,
-            r(o, later_at.0, 480.0, later_at.1, 21.0),
+            later_r,
             // i18n: button: add it now, start downloading later
             "Later",
             kind(ready, false),
@@ -872,15 +900,8 @@ impl TorrentDialog {
             None,
         )
         .clicked();
-        let cancel = winui::button(
-            ui,
-            r(o, cancel_at.0, 480.0, cancel_at.1, 21.0),
-            "Cancel",
-            ButtonKind::Normal,
-            false,
-            None,
-        )
-        .clicked();
+        let cancel =
+            winui::button(ui, cancel_r, "Cancel", ButtonKind::Normal, false, None).clicked();
         if cancel || winui::escape_pressed(ui) {
             return Outcome::Closed;
         }
@@ -1248,7 +1269,10 @@ impl TorrentSettings {
             ctx,
             "torrent-settings",
             "Torrent settings",
-            [470.0, 610.0],
+            [
+                470.0,
+                610.0 + crate::app::phone::phone_buttons_extra(ctx, 1),
+            ],
             false,
             winui::BG(),
             |ui, o| {
@@ -1586,24 +1610,20 @@ impl TorrentSettings {
                     o.x + 456.0,
                     ("torrent-settings", 10),
                 );
-                let ok = winui::button(
-                    ui,
-                    r(o, 298.0, 578.0, 77.0, 21.0),
-                    "OK",
-                    ButtonKind::Default,
-                    false,
-                    None,
-                )
-                .clicked();
-                let cancel = winui::button(
-                    ui,
-                    r(o, 381.0, 578.0, 77.0, 21.0),
-                    "Cancel",
-                    ButtonKind::Normal,
-                    false,
-                    None,
-                )
-                .clicked();
+                // A phone: OK and Cancel big across the page.
+                let (ok_at, cancel_at) = if crate::app::phone::active(ui.ctx()) {
+                    let (b, _) = crate::app::phone::button_rects(o, 578.0, 470.0, 2, false);
+                    (b[0], b[1])
+                } else {
+                    (
+                        r(o, 298.0, 578.0, 77.0, 21.0),
+                        r(o, 381.0, 578.0, 77.0, 21.0),
+                    )
+                };
+                let ok = winui::button(ui, ok_at, "OK", ButtonKind::Default, false, None).clicked();
+                let cancel =
+                    winui::button(ui, cancel_at, "Cancel", ButtonKind::Normal, false, None)
+                        .clicked();
                 if cancel || winui::escape_pressed(ui) {
                     Outcome::Closed
                 } else if ok || winui::enter_pressed(ui) {
@@ -1693,7 +1713,10 @@ impl AddTrackers {
             ctx,
             "add-trackers",
             "Add trackers",
-            [460.0, 250.0],
+            [
+                crate::app::phone::layout_width(ctx, 460.0),
+                250.0 + crate::app::phone::phone_buttons_extra(ctx, 1),
+            ],
             false,
             winui::BG(),
             |ui, o| {
@@ -1709,18 +1732,27 @@ impl AddTrackers {
                         &[("name", &crate::i18n::isolate(&self.name))],
                     ),
                     winui::TEXT(),
-                    o.x + 446.0,
+                    o.x + crate::app::phone::layout_width(ui.ctx(), 460.0) - 14.0,
                     ("add-trackers", 1),
                 );
                 let before = self.text.clone();
                 let field = winui::multiline_light(
                     ui,
-                    r(o, 14.0, 32.0, 432.0, 140.0),
+                    r(
+                        o,
+                        14.0,
+                        32.0,
+                        crate::app::phone::layout_width(ui.ctx(), 460.0) - 28.0,
+                        140.0,
+                    ),
                     &mut self.text,
                     "add-trackers",
                     true,
                 );
-                if !std::mem::replace(&mut self.focused, true) {
+                // Not on a phone: the keyboard it opens would cover the page.
+                if !std::mem::replace(&mut self.focused, true)
+                    && !crate::app::phone::active(ui.ctx())
+                {
                     field.request_focus();
                 }
                 if self.text != before {
@@ -1736,27 +1768,24 @@ impl AddTrackers {
                     ),
                 };
                 // Two lines' room: a translated reason is long.
+                let w = crate::app::phone::layout_width(ui.ctx(), 460.0);
                 let mark = crate::icons::Mark::of_ink(color);
                 let x = winui::note_mark(ui, &p, o.x + 14.0, o.y + 190.0, mark);
-                winui::paragraph(&p, x, o.y + 190.0, &line, color, o.x + 446.0, 14.0);
-                let ok = winui::button(
-                    ui,
-                    r(o, 288.0, 218.0, 77.0, 21.0),
-                    "OK",
-                    ButtonKind::Default,
-                    false,
-                    None,
-                )
-                .clicked();
-                let cancel = winui::button(
-                    ui,
-                    r(o, 371.0, 218.0, 77.0, 21.0),
-                    "Cancel",
-                    ButtonKind::Normal,
-                    false,
-                    None,
-                )
-                .clicked();
+                winui::paragraph(&p, x, o.y + 190.0, &line, color, o.x + w - 14.0, 14.0);
+                // A phone: OK and Cancel big across the page.
+                let (ok_at, cancel_at) = if crate::app::phone::active(ui.ctx()) {
+                    let (b, _) = crate::app::phone::button_rects(o, 226.0, w, 2, false);
+                    (b[0], b[1])
+                } else {
+                    (
+                        r(o, 288.0, 218.0, 77.0, 21.0),
+                        r(o, 371.0, 218.0, 77.0, 21.0),
+                    )
+                };
+                let ok = winui::button(ui, ok_at, "OK", ButtonKind::Default, false, None).clicked();
+                let cancel =
+                    winui::button(ui, cancel_at, "Cancel", ButtonKind::Normal, false, None)
+                        .clicked();
                 // Enter is a new line in the box: only OK adds them.
                 if cancel || winui::escape_pressed(ui) {
                     Outcome::Closed

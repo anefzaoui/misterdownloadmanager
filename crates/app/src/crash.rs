@@ -469,6 +469,13 @@ pub fn frame_end() {
     });
 }
 
+/// Whether the last frame drew a window besides the main one (a dialog, a progress window): on
+/// Android, Back then closes it rather than leaving the app.
+#[cfg_attr(not(target_os = "android"), allow(dead_code))]
+pub fn other_windows() -> bool {
+    WINDOWS.with(|w| w.borrow().1.iter().any(|id| id != "main"))
+}
+
 /// A window is drawn this frame (dialogs::dialog_window, the progress windows…).
 pub fn window(id: &str) {
     WINDOWS.with(|w| {

@@ -38,7 +38,8 @@ The libraries Link grabber's archive extraction is built on (all compatible with
 
 7z and RAR archives are extracted by [7-Zip](https://www.7-zip.org/) (GNU LGPL, with the
 unRAR restriction for its RAR code), run as a separate program when the user has it installed.
-It is neither bundled nor linked: UnRAR's licence doesn't allow its code in a GPL program, and a
+On the desktop it is neither bundled nor linked (the Android app carries it as its own
+program, below): UnRAR's licence doesn't allow its code in a GPL program, and a
 built-in 7z decoder made MDM about 1 MB larger.
 
 ## Torrents (mdm-torrent)
@@ -65,3 +66,15 @@ Arial) and each system's own file-type icons (the Windows shell's, macOS Finder'
 desktop's icon theme).
 
 MDM contains no artwork, text or code from Internet Download Manager (see the README).
+
+## The Android app (android/)
+
+What the APK carries besides MDM's own code, each fetched by the build from its source (see
+`android/third_party/README.md`):
+
+| Component | Licence | For |
+|---|---|---|
+| [GameActivity](https://developer.android.com/games/agdk/game-activity) 4.4, AndroidX AppCompat 1.7 and Core 1.17 | Apache-2.0 | the activity MDM's interface is drawn in |
+| [rustls-platform-verifier](https://github.com/rustls/rustls-platform-verifier)'s Android component | MIT OR Apache-2.0 | checking servers' certificates with Android's own trust store |
+| [youtubedl-android](https://github.com/JunkFood02/youtubedl-android) 0.18.1's native files: Python, ffmpeg and ffprobe, QuickJS (not its Java code) | GPL-3.0 (the project); Python: PSF License; ffmpeg: LGPL-2.1-or-later or GPL, as the project builds it; QuickJS: MIT | video downloads (yt-dlp) |
+| [7-Zip](https://www.7-zip.org/) 26.06's `7zz`, built from its source with the NDK | GNU LGPL-2.1, with the unRAR restriction for its RAR code; its `License.txt` is in the APK | 7z and RAR archives, run as its own program as on the desktop; `-Pmdm.sevenZipRar=false` builds it without the RAR code |

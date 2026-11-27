@@ -74,7 +74,7 @@
 #. count in the download list (sizes, speeds, status)
 #. {n} = a number (keep the braces as they are)
 @plural	{n} byte|{n} bytes	{n} byte|{n} bytes
-#. count in the main window
+#. count in the main window; count in phone.rs
 #. {n} = a number (keep the braces as they are)
 @plural	{n} download|{n} downloads	{n} download|{n} downloads
 #. count in a dialog box
@@ -84,7 +84,7 @@
 #. count in preview.rs
 #. {n} = a number (keep the braces as they are)
 @plural	{n} download selected|{n} downloads selected	{n} download selected|{n} downloads selected
-#. count in the main window
+#. count in the main window; count in phone.rs
 #. {n} = a number (keep the braces as they are)
 @plural	{n} downloading|{n} downloading	{n} downloading|{n} downloading
 #. count in extracting archives (a download's log, the Archive password window)
@@ -123,7 +123,7 @@
 #. Options → Archives: beside the Archive passwords button: how many are saved
 #. {n} = a number (keep the braces as they are)
 @plural	{n} saved|{n} saved	{n} saved|{n} saved
-#. count in the main window
+#. count in the main window; count in phone.rs
 #. {n} = a number (keep the braces as they are)
 @plural	{n} selected|{n} selected	{n} selected|{n} selected
 #. count in the Options window
@@ -457,10 +457,10 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Algeria	Algeria
-#. text in remote.rs
+#. text in phone.rs; text in remote.rs
 #. remote control page (on a phone): tab: every download
 	All	All
-#. item in the Categories tree in the main window
+#. item in the Categories tree in the main window; text in phone.rs
 	All Downloads	All Downloads
 #. message or event log entry in the main window; text in standard windows
 	All files	All files
@@ -795,6 +795,7 @@
 #. page title in the Options window
 	Categories, file types, folders	Categories, file types, folders
 #. text in a dialog box; text in the Options window; text in remote.rs
+#. noun: label before the list of categories
 #. remote control page (on a phone): label of the category choice for a new download
 	Category	Category
 #. text in categories.rs; text in a dialog box
@@ -1239,7 +1240,7 @@
 #. window title in gallerydlg.rs
 #. window title: download an image gallery's files (gallery-dl)
 	Download a gallery	Download a gallery
-#. window title in a dialog box; text in a dialog box; text in the Options window
+#. text in android.rs; window title in a dialog box; text in a dialog box; text in the Options window
 	Download complete	Download complete
 #. text in the Options window
 #. Options, Downloads, under "Show download complete dialog": snoozed with "Until MDM restarts"
@@ -1637,7 +1638,7 @@
 #. File Properties button that opens the selected torrent's file list
 #. the trailing ... means it opens a window: keep it
 	Files...	Files...
-#. button in the Find window
+#. button in the Find window; text in phone.rs
 #. verb: button that starts the search
 	Find	Find
 #. text in the Options window
@@ -2519,7 +2520,7 @@
 #. text in a download's progress window
 #. legend: pieces not downloaded yet
 	Missing	Missing
-#. message or event log entry in the main window; window title in a dialog box; text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. message or event log entry in the main window; window title in a dialog box; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); text in phone.rs
 	Mister Download Manager	Mister Download Manager
 #. text in unix.rs
 #. Linux, at start, on the terminal and in a message box: a library the window needs isn't installed; {libraries} = its file names (libxkbcommon-x11.so.0…), left as they are
@@ -2527,7 +2528,8 @@
 #. text in crashui.rs
 #. crash report window heading: MDM crashed and is gone
 	Mister Download Manager closed unexpectedly	Mister Download Manager closed unexpectedly
-#. window title in the Options window
+#. text in the Options window
+#. window title: the Options window
 	Mister Download Manager Configuration	Mister Download Manager Configuration
 #. text in crashui.rs
 	Mister Download Manager crash report	Mister Download Manager crash report
@@ -3040,14 +3042,15 @@
 #. message or event log entry in the main window
 #. event log entry: the download is files picked inside a ZIP in Zip preview (#1775); {files} how many ("3 files")
 	Only {files} picked inside the ZIP	Only {files} picked inside the ZIP
-#. button in a dialog box; text in a dialog box; button in a download's Properties window; button in torrentfiles.rs
+#. text in android.rs; button in a dialog box; text in a dialog box; button in a download's Properties window; button in torrentfiles.rs
 #. verb: opens the downloaded file
 #. title of the message when a downloaded file can't be opened
 #. verb: opens the file
 	Open	Open
-#. button in crashui.rs; button in a dialog box; text in a dialog box; button in torrentfiles.rs
+#. button in crashui.rs; button in a dialog box; text in a dialog box; button in a download's progress window; button in torrentfiles.rs
 #. crash report window button: show the report's file in its folder
 #. title of the message when the folder of a downloaded file can't be shown
+#. button that opens the folder the download is saved in
 #. button that opens the torrent's containing folder in the file manager
 	Open folder	Open folder
 #. text in the Link grabber window; text in a download's progress window
@@ -3166,7 +3169,8 @@
 #. text in the Link grabber window
 #. Link grabber: where links came from: the clipboard (pasted with Ctrl+V)
 	Pasted	Pasted
-#. text in a download's progress window; text in remote.rs
+#. text in phone.rs; text in a download's progress window; text in remote.rs
+#. verb: a download's own button in the phone's list
 #. verb: pause the download
 #. remote control page (on a phone): button: pause a download
 	Pause	Pause
@@ -3233,8 +3237,7 @@
 #. Options → General: shown inside the shortcut recorder box while waiting for the user to press a 2-key or 3-key shortcut (#558)
 #. the trailing ... means it is still going on: keep it
 	Press keys...	Press keys...
-#. button in a dialog box; text in a dialog box
-#. verb: Download File Info's button; for a ZIP, it lists the files inside it to pick those to download (#1775)
+#. button in a dialog box
 	Preview	Preview
 #. text in a dialog box
 #. tooltip of the greyed Preview button in Download File Info
@@ -3413,7 +3416,8 @@
 #. text in a download's Properties window
 #. {result} = how the last attempt ended (a status or an error message)
 	Result: {result}	Result: {result}
-#. text in a download's progress window
+#. text in phone.rs; text in a download's progress window
+#. verb: a download's own button in the phone's list
 #. verb: continue the download
 	Resume	Resume
 #. text in a download's progress window
@@ -4090,6 +4094,9 @@
 	the .torrent file kept for it is gone	the .torrent file kept for it is gone
 #. text in a download's Properties window
 	The address must be an http(s) or ftp(s) address	The address must be an http(s) or ftp(s) address
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. {author}: the name of the person who made the Android app (shown as a link)
+	The Android app: {author}	The Android app: {author}
 #. text in extracting archives (a download's log, the Archive password window)
 	The archive could not be moved to the Recycle Bin: it was kept	The archive could not be moved to the Recycle Bin: it was kept
 #. text in extracting archives (a download's log, the Archive password window)
@@ -5020,7 +5027,7 @@
 #. Helpers: a newer version is downloaded and checked, and is used as soon as the downloads using this helper end; {version} = its version
 #. {version} = a version number (keep the braces as they are)
 	Version {version} is ready: used once its downloads end	Version {version} is ready: used once its downloads end
-#. text in the download list (sizes, speeds, status)
+#. text in the download list (sizes, speeds, status); text in phone.rs
 #. category name: video files
 	Video	Video
 #. text in setup.rs
@@ -6792,7 +6799,7 @@ menu	OpenGL's first frame didn't show within 10 seconds	OpenGL's first frame did
 #. menu command in the main window
 #. View → Draw with: a greyed note; why MDM no longer draws with OpenGL: MDM crashed or was closed while starting with it
 menu	OpenGL's last start ended before its first frame	OpenGL's last start ended before its first frame
-#. menu command in the main window
+#. menu command in the main window; menu command in a download's progress window
 #. what double-clicking a download does — noun: show its properties
 #. noun: opens the download's Properties window
 #. noun: opens the category's properties
@@ -6843,6 +6850,10 @@ menu	Schedule	Schedule
 #. menu command in the main window; menu command in standard windows
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 menu	Select &all	Select &all
+#. menu command in the main window
+#. verb: sends the downloaded file to another app (Android's share sheet)
+#. the trailing ... means it opens a window: keep it
+menu	Share...	Share...
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 menu	Show &drop target	Show &drop target
@@ -6936,9 +6947,9 @@ menubar	&View	&View
 pane	Preview	Preview
 #. toolbar button in the main window
 toolbar	Add Torrent	Add Torrent
-#. toolbar button in the main window
+#. toolbar button in the main window; toolbar button in phone.rs
 toolbar	Add URL	Add URL
-#. toolbar button in the main window
+#. toolbar button in the main window; toolbar button in phone.rs
 #. verb: delete the selected downloads
 toolbar	Delete	Delete
 #. toolbar button in the main window
@@ -6949,18 +6960,18 @@ toolbar	Options	Options
 #. toolbar button in the main window
 #. toolbar toggle button: shows or hides the preview pane (the selected download's picture and details)
 toolbar	Preview	Preview
-#. toolbar button in the main window
+#. toolbar button in the main window; toolbar button in phone.rs
 #. verb: continue the selected downloads
 toolbar	Resume	Resume
-#. toolbar button in the main window
+#. toolbar button in the main window; toolbar button in phone.rs
 #. noun: the tool that starts and stops queues on time
 toolbar	Scheduler	Scheduler
 #. toolbar button in the main window
 toolbar	Start Queue	Start Queue
-#. toolbar button in the main window
+#. toolbar button in android.rs; toolbar button in the main window; toolbar button in phone.rs
 #. verb: stop the selected downloads
 toolbar	Stop	Stop
-#. toolbar button in the main window
+#. toolbar button in android.rs; toolbar button in the main window; toolbar button in phone.rs
 toolbar	Stop All	Stop All
 #. toolbar button in the main window
 toolbar	Stop Queue	Stop Queue

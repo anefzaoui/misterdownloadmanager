@@ -60,7 +60,10 @@ impl ChecksumDialog {
             ctx,
             &id,
             "Verify checksum",
-            [430.0, 118.0 + extra],
+            [
+                430.0,
+                118.0 + extra + crate::app::phone::phone_buttons_extra(ctx, 1),
+            ],
             false,
             LIGHT_BG(),
             |ui, o| {
@@ -79,7 +82,8 @@ impl ChecksumDialog {
                     true,
                     false,
                 );
-                if !self.focused {
+                // Not on a phone: the keyboard it opens would cover the page (phone.rs).
+                if !self.focused && !crate::app::phone::active(ui.ctx()) {
                     edit.request_focus();
                     self.focused = true;
                 }
@@ -195,13 +199,17 @@ impl ChecksumDialog {
                 )[..] else {
                     unreachable!("two buttons")
                 };
-                let go = winui::button_light(
-                    ui,
-                    r(o, go_at.0, 87.0, go_at.1, 21.0),
-                    primary,
-                    kind,
-                    false,
-                );
+                // A phone: the two big across the page.
+                let (go_r, close_r) = if crate::app::phone::active(ui.ctx()) {
+                    let (b, _) = crate::app::phone::button_rects(o, 87.0, 430.0, 2, false);
+                    (b[0], b[1])
+                } else {
+                    (
+                        r(o, go_at.0, 87.0, go_at.1, 21.0),
+                        r(o, close_at.0, 87.0, close_at.1, 21.0),
+                    )
+                };
+                let go = winui::button_light(ui, go_r, primary, kind, false);
                 let go = winui::why_disabled(
                     go,
                     !valid,
@@ -214,14 +222,8 @@ impl ChecksumDialog {
                     },
                 )
                 .clicked();
-                let close = winui::button_light(
-                    ui,
-                    r(o, close_at.0, 87.0, close_at.1, 21.0),
-                    secondary,
-                    ButtonKind::Normal,
-                    false,
-                )
-                .clicked();
+                let close = winui::button_light(ui, close_r, secondary, ButtonKind::Normal, false)
+                    .clicked();
                 let enter = winui::enter_pressed(ui);
                 if close || winui::escape_pressed(ui) {
                     // A checked file keeps its hash with the download.

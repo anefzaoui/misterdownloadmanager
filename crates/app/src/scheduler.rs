@@ -176,6 +176,10 @@ pub struct Scheduler {
 
 /// How much lower everything under "Start download at" sits than in IDM's window: the room for
 /// "Wake the computer to run this queue" and its note (#142).
+/// On a phone (phone.rs), how far the queue's page moves from its desktop place: left to the
+/// page's edge, and down under the queues' box.
+const PHONE_SHIFT: egui::Vec2 = egui::vec2(205.0, 140.0);
+
 const DY: f32 = 40.0;
 
 // i18n: checkbox in the Scheduler, under the start time: wake the computer from sleep shortly before the queue starts, and keep it awake while the queue runs
@@ -330,12 +334,21 @@ impl Scheduler {
             .collect();
         let running = running.as_slice();
         let naming = self.naming.is_some() || self.deleting.is_some();
+        // A phone (phone.rs): the queues over the queue's page, not beside it.
+        let client = if crate::app::phone::active(ctx) {
+            [
+                651.0 - PHONE_SHIFT.x,
+                465.0 + DY + PHONE_SHIFT.y + crate::app::phone::phone_buttons_extra(ctx, 3),
+            ]
+        } else {
+            [651.0, 465.0 + DY]
+        };
         let outcome = window(
             ctx,
             "scheduler",
             // i18n: noun: the tool that starts and stops queues on time
             "Scheduler",
-            [651.0, 465.0 + DY],
+            client,
             false,
             LIGHT_BG(),
             |ui, o| self.body(ui, o, icons, items, running, wake_error, actions, naming),
@@ -385,6 +398,7 @@ impl Scheduler {
         modal: bool,
     ) -> Outcome<()> {
         let p = ui.painter().clone();
+        let phone = crate::app::phone::active(ui.ctx());
 
         // ---- left pane ----------------------------------------------------------------
         let clock = r(o, 11.0, 7.0, 32.0, 32.0);
@@ -397,7 +411,12 @@ impl Scheduler {
             crate::i18n::t("Queues"),
             LIGHT_TEXT(),
         );
-        let tree = r(o, 11.0, 44.0, 173.0, 379.0 + DY);
+        // On a phone, a short box across the top, its buttons beside it.
+        let tree = if phone {
+            r(o, 11.0, 44.0, 300.0, PHONE_SHIFT.y - 54.0)
+        } else {
+            r(o, 11.0, 44.0, 173.0, 379.0 + DY)
+        };
         let delete_key = self.tree(ui, icons, tree);
         // The bottom row (the queue's buttons under the tree, the window's beside it), each as
         // wide as its label in this language (#192): a longer one moves its neighbours along.
@@ -416,18 +435,23 @@ impl Scheduler {
             21.0,
             200.0,
         );
-        let new_queue = winui::button_light(
-            ui,
-            r(o, row[0].0, 432.0 + DY, row[0].1, 21.0),
-            "&New queue",
-            ButtonKind::Normal,
-            false,
-        )
-        .clicked();
+        let (new_at, delete_at) = if phone {
+            (
+                r(o, 320.0, 44.0, 110.0, 21.0),
+                r(o, 320.0, 72.0, 110.0, 21.0),
+            )
+        } else {
+            (
+                r(o, row[0].0, 432.0 + DY, row[0].1, 21.0),
+                r(o, row[1].0, 432.0 + DY, row[1].1, 21.0),
+            )
+        };
+        let new_queue =
+            winui::button_light(ui, new_at, "&New queue", ButtonKind::Normal, false).clicked();
         let deletable = self.selected >= 2 && self.selected < self.queues.len();
         let delete = winui::button_light(
             ui,
-            r(o, row[1].0, 432.0 + DY, row[1].1, 21.0),
+            delete_at,
             // i18n: verb: delete the queue
             "&Delete",
             if deletable {
@@ -446,9 +470,17 @@ impl Scheduler {
         } else {
             442.0 + DY
         };
-        winui::etched_v(&p, o.x + 197.0, o.y + 11.0, line_h);
+        if !phone {
+            winui::etched_v(&p, o.x + 197.0, o.y + 11.0, line_h);
+        }
 
         // ---- right pane ---------------------------------------------------------------
+        // On a phone, under the queues, from the page's leading edge.
+        let o = if phone {
+            o - vec2(PHONE_SHIFT.x, -PHONE_SHIFT.y)
+        } else {
+            o
+        };
         let on_queue = self.selected < self.queues.len();
         if on_queue {
             // A built-in queue's name is in the catalog; the user's own stay as typed.
@@ -502,20 +534,30 @@ impl Scheduler {
                 ButtonKind::Disabled
             }
         };
-        let btn = |ui: &mut Ui, (x, w): (f32, f32), label: &str, k: ButtonKind| {
-            winui::button_light(ui, r(o, x, 432.0 + DY, w, 21.0), label, k, false).clicked()
+        // A phone: the window's five buttons big across the page, two by two.
+        let big = phone.then(|| {
+            // From the page's edge: `o` here is the queue's page's, moved left by the shift.
+            let page = o + vec2(PHONE_SHIFT.x, 0.0);
+            crate::app::phone::button_rects(page, 432.0 + DY, 651.0 - PHONE_SHIFT.x, 5, false).0
+        });
+        let btn = |ui: &mut Ui, k: usize, label: &str, kind: ButtonKind| {
+            let at = match &big {
+                Some(b) => b[k - 2],
+                None => r(o, row[k].0, 432.0 + DY, row[k].1, 21.0),
+            };
+            winui::button_light(ui, at, label, kind, false).clicked()
         };
         // i18n: verb: start the queue now
         let start = btn(
             ui,
-            row[2],
+            2,
             crate::i18n::mark("&Start now"),
             kind(on_queue && !is_running),
         );
         // i18n: verb: stop the queue
-        let stop = btn(ui, row[3], crate::i18n::mark("S&top"), kind(is_running));
+        let stop = btn(ui, 3, crate::i18n::mark("S&top"), kind(is_running));
         // i18n: noun: button that opens the help
-        if btn(ui, row[4], crate::i18n::mark("&Help"), ButtonKind::Normal) {
+        if btn(ui, 4, crate::i18n::mark("&Help"), ButtonKind::Normal) {
             crate::help::open_page("queues-and-scheduler.md#the-scheduler-window");
         }
         let dirty = {
@@ -523,9 +565,9 @@ impl Scheduler {
             (&q, &l) != (&self.applied.0, &self.applied.1)
         };
         // i18n: verb: save the changes
-        let apply = btn(ui, row[5], crate::i18n::mark("&Apply"), kind(dirty));
+        let apply = btn(ui, 5, crate::i18n::mark("&Apply"), kind(dirty));
         // i18n: verb: close the window
-        let close = btn(ui, row[6], crate::i18n::mark("&Close"), ButtonKind::Normal);
+        let close = btn(ui, 6, crate::i18n::mark("&Close"), ButtonKind::Normal);
 
         if modal {
             return Outcome::Open;

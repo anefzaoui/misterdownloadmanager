@@ -314,6 +314,11 @@ pub struct OptionsDialog {
     /// The settings it opened with: OK applies only what changed from them.
     pub from: Settings,
     page: usize,
+    /// A phone (phone.rs): a section's page is open, else the list of sections is shown.
+    phone_section: bool,
+    /// A phone's list of sections asked for the Helpers window (yt-dlp, ffmpeg, gallery-dl): the
+    /// app opens it ([`Self::take_programs_asked`]).
+    programs_asked: bool,
     /// The browsers check list's scroll and selection.
     browser_rows: winui::RowList,
     category: usize,
@@ -497,6 +502,8 @@ impl OptionsDialog {
             hours: s.limits_hours.to_string(),
             s,
             page: 0,
+            phone_section: false,
+            programs_asked: false,
             category: 0,
             exc_rows: Default::default(),
             login_rows: Default::default(),
@@ -532,37 +539,74 @@ impl OptionsDialog {
         if modal || self.page != 0 {
             self.recording_hotkey = false;
         }
-        let outcome = window(
-            ctx,
-            "options",
-            "Mister Download Manager Configuration",
-            [430.0, 506.0],
-            false,
-            LIGHT_BG(),
-            |ui, o| {
-                // Ctrl+Tab through the pages in the tabs' order (Archives, 10, came last).
-                const ORDER: [usize; 12] = [0, 1, 2, 3, 4, 11, 5, 6, 7, 8, 9, 10];
-                let at = ORDER.iter().position(|p| *p == self.page).unwrap_or(0);
-                let by_key = winui::tab_keys(ui, ORDER.len(), at).map(|i| ORDER[i]);
-                if let Some(p) = tabs(ui, o, self.page).or(by_key) {
-                    self.page = p;
-                }
-                match self.page {
-                    0 => self.general(ui, o),
-                    1 => self.file_types(ui, o),
-                    2 => self.save_to(ui, o, downloads),
-                    3 => self.downloads(ui, o),
-                    4 => self.connection(ui, o),
-                    5 => self.proxy(ui, o),
-                    6 => self.logins(ui, o),
-                    7 => self.accounts(ui, o),
-                    9 => self.regional(ui, o),
-                    10 => self.archives(ui, o),
-                    REMOTE_PAGE => self.remote_page(ui, o),
-                    8 => self.sounds(ui, o),
-                    _ => self.regional(ui, o),
-                }
-                let ok = winui::button_light(
+        // A phone (phone.rs): the sections as a list of rows, each opening its page.
+        let phone = crate::app::phone::active(ctx);
+        let listing = phone && !self.phone_section;
+        let client = if listing {
+            // The sections, and Helpers after them.
+            let rows = PHONE_SECTIONS.len() as f32 + 1.0;
+            [
+                crate::app::phone::sheet_width(ctx),
+                rows * PHONE_ROW + 16.0 + 60.0,
+            ]
+        } else if phone {
+            // A section's page on a phone: no tabs, so its content (16 to 414 points) is laid
+            // out 412 wide, moved left by `PHONE_PAGE_SHIFT`: full size on most phones.
+            [430.0 - 2.0 * PHONE_PAGE_SHIFT, 506.0]
+        } else {
+            [430.0, 506.0]
+        };
+        // A section's page on a phone: its name in the top bar, with ← back to the list.
+        let title = if phone && !listing {
+            crate::app::phone::sheet_back(ctx);
+            PHONE_SECTIONS
+                .iter()
+                .find(|(p, _)| *p == self.page)
+                .map_or("General", |(_, l)| *l)
+        } else {
+            // i18n: window title: the Options window
+            "Mister Download Manager Configuration"
+        };
+        let outcome = window(ctx, "options", title, client, false, LIGHT_BG(), |ui, o| {
+            if listing {
+                return self.phone_list(ui, o, client[0]);
+            }
+            let o = if phone {
+                o - vec2(PHONE_PAGE_SHIFT, 0.0)
+            } else {
+                o
+            };
+            // A phone: ← in the top bar, or Back, goes back to the list.
+            if phone && winui::take_key(ui, egui::Key::Escape) {
+                self.phone_section = false;
+                return Outcome::Open;
+            }
+            // Ctrl+Tab through the pages in the tabs' order (Archives, 10, came last).
+            const ORDER: [usize; 12] = [0, 1, 2, 3, 4, 11, 5, 6, 7, 8, 9, 10];
+            let at = ORDER.iter().position(|p| *p == self.page).unwrap_or(0);
+            let by_key = winui::tab_keys(ui, ORDER.len(), at).map(|i| ORDER[i]);
+            let tabbed = if phone { None } else { tabs(ui, o, self.page) };
+            if let Some(p) = tabbed.or(by_key) {
+                self.page = p;
+            }
+            match self.page {
+                0 => self.general(ui, o),
+                1 => self.file_types(ui, o),
+                2 => self.save_to(ui, o, downloads),
+                3 => self.downloads(ui, o),
+                4 => self.connection(ui, o),
+                5 => self.proxy(ui, o),
+                6 => self.logins(ui, o),
+                7 => self.accounts(ui, o),
+                9 => self.regional(ui, o),
+                10 => self.archives(ui, o),
+                REMOTE_PAGE => self.remote_page(ui, o),
+                8 => self.sounds(ui, o),
+                _ => self.regional(ui, o),
+            }
+            // A phone's OK is under its list of sections (`phone_list`).
+            let ok = !phone
+                && winui::button_light(
                     ui,
                     r(o, 269.0, 477.0, 73.0, 21.0),
                     "OK",
@@ -570,7 +614,8 @@ impl OptionsDialog {
                     false,
                 )
                 .clicked();
-                if winui::button_light(
+            if !phone
+                && winui::button_light(
                     ui,
                     r(o, 350.0, 477.0, 73.0, 21.0),
                     // i18n: noun: button that opens the help
@@ -579,20 +624,19 @@ impl OptionsDialog {
                     false,
                 )
                 .clicked()
-                {
-                    crate::help::open_page("options.md");
-                }
-                if modal {
-                    Outcome::Open
-                } else if winui::escape_pressed(ui) {
-                    Outcome::Closed
-                } else if ok || winui::enter_pressed(ui) {
-                    Outcome::Done(())
-                } else {
-                    Outcome::Open
-                }
-            },
-        );
+            {
+                crate::help::open_page("options.md");
+            }
+            if modal {
+                Outcome::Open
+            } else if winui::escape_pressed(ui) {
+                Outcome::Closed
+            } else if ok || winui::enter_pressed(ui) {
+                Outcome::Done(())
+            } else {
+                Outcome::Open
+            }
+        });
         if self.sub.is_some() {
             self.sub_dialog(ctx);
         }
@@ -672,6 +716,27 @@ impl OptionsDialog {
             63.0,
             405.0,
         );
+        // A phone (phone.rs): only what means something there. No start with the system, no
+        // browser add-on to integrate with or keys for it, no notification-area icon, no global
+        // shortcut (Android has none of them for an app).
+        if crate::app::phone::active(ui.ctx()) {
+            let s = &mut self.s;
+            for (y, v, label) in [
+                (
+                    94.0,
+                    &mut s.clipboard_autostart,
+                    "Offer to download links copied to the clipboard",
+                ),
+                (
+                    122.0,
+                    &mut s.confirm_delete,
+                    "Confirm before deleting downloads",
+                ),
+            ] {
+                winui::checkbox_light(ui, o + vec2(30.0, y), v, label, true);
+            }
+            return;
+        }
         let portable = mdm_ipc::portable_dir().is_some();
         let s = &mut self.s;
         if portable {
@@ -2752,7 +2817,11 @@ impl OptionsDialog {
                 self.sub = Some(Sub::Login(Some(i), site, user, pass));
             }
         }
-        self.video_cookies(ui, o);
+        // Not on Android: a browser's cookies are in its own app's storage, which no other app
+        // can read.
+        if !cfg!(target_os = "android") {
+            self.video_cookies(ui, o);
+        }
     }
 
     /// Sites Logins → Cookies for video sites (#229): Off, or the browser whose cookies yt-dlp
@@ -3042,21 +3111,24 @@ impl OptionsDialog {
             "opt-rar-tool",
         );
         let has_hatchzip = self.hatch_zip.is_some();
+        // Not on Android, where the APK's own 7-Zip extracts them: no other program an app may run.
         // Its caption is long in some languages: it ends inside the group box, whole on hover.
-        winui::checkbox_light_until(
-            ui,
-            o + vec2(30.0, 300.0),
-            &mut s.extract_in_place,
-            if has_hatchzip {
-                // i18n: Options → Archives check box: HatchZip (a program's name) removes the archive while extracting it, so only the extracted files need disk space
-                "Extract in place with HatchZip: only the files need room"
-            } else {
-                // i18n: Options → Archives check box, greyed: HatchZip (a program's name, hatchzip.dev its site) isn't installed
-                "Extract in place with HatchZip (hatchzip.dev, not installed)"
-            },
-            has_hatchzip,
-            Some(o.x + 402.0),
-        );
+        if !cfg!(target_os = "android") {
+            winui::checkbox_light_until(
+                ui,
+                o + vec2(30.0, 300.0),
+                &mut s.extract_in_place,
+                if has_hatchzip {
+                    // i18n: Options → Archives check box: HatchZip (a program's name) removes the archive while extracting it, so only the extracted files need disk space
+                    "Extract in place with HatchZip: only the files need room"
+                } else {
+                    // i18n: Options → Archives check box, greyed: HatchZip (a program's name, hatchzip.dev its site) isn't installed
+                    "Extract in place with HatchZip (hatchzip.dev, not installed)"
+                },
+                has_hatchzip,
+                Some(o.x + 402.0),
+            );
+        }
         // The passwords tried on an encrypted archive before it is asked (#37).
         let (pw_x, pw_w) = winui::button_row_from_left(
             &p,
@@ -3089,18 +3161,20 @@ impl OptionsDialog {
         };
         let (tool_x, tool_w) =
             winui::buttons_to_right(&p, 394.0, 0.0, &[(tool_label, 150.0)], 200.0)[0];
-        if winui::button_light(
-            ui,
-            r(o, tool_x, 320.0, tool_w, 21.0),
-            tool_label,
-            if self.checking_7zip.is_some() {
-                ButtonKind::Disabled
-            } else {
-                ButtonKind::Normal
-            },
-            false,
-        )
-        .clicked()
+        // Not on Android either: Android runs no program an app saved itself.
+        if !cfg!(target_os = "android")
+            && winui::button_light(
+                ui,
+                r(o, tool_x, 320.0, tool_w, 21.0),
+                tool_label,
+                if self.checking_7zip.is_some() {
+                    ButtonKind::Disabled
+                } else {
+                    ButtonKind::Normal
+                },
+                false,
+            )
+            .clicked()
         {
             self.not_7zip = false;
             if own {
@@ -4383,7 +4457,10 @@ impl OptionsDialog {
                     ctx,
                     "opt-login",
                     title,
-                    [300.0, 150.0],
+                    [
+                        300.0,
+                        150.0 + crate::app::phone::phone_buttons_extra(ctx, 1),
+                    ],
                     false,
                     LIGHT_BG(),
                     |ui, o| {
@@ -4452,7 +4529,10 @@ impl OptionsDialog {
                     ctx,
                     "opt-exception",
                     title,
-                    [300.0, 118.0],
+                    [
+                        300.0,
+                        118.0 + crate::app::phone::phone_buttons_extra(ctx, 1),
+                    ],
                     false,
                     LIGHT_BG(),
                     |ui, o| {
@@ -4518,7 +4598,10 @@ impl OptionsDialog {
                     "opt-panels",
                     // i18n: window title: the download button the extension shows over videos
                     "Download panels",
-                    [380.0, 241.0 + DY],
+                    [
+                        380.0,
+                        241.0 + DY + crate::app::phone::phone_buttons_extra(ctx, 1),
+                    ],
                     false,
                     LIGHT_BG(),
                     |ui, o| {
@@ -4745,7 +4828,10 @@ impl OptionsDialog {
                     "opt-dns",
                     // i18n: window title: the settings of the DNS chosen in Options → Connection
                     "DNS settings",
-                    [400.0, 312.0],
+                    [
+                        400.0,
+                        312.0 + crate::app::phone::phone_buttons_extra(ctx, 1),
+                    ],
                     false,
                     LIGHT_BG(),
                     |ui, o| dns_dialog(ui, o, &mut e),
@@ -4801,7 +4887,10 @@ impl OptionsDialog {
                     "opt-archive-passwords",
                     // i18n: window title: the passwords tried on encrypted archives
                     "Archive passwords",
-                    [420.0, 230.0],
+                    [
+                        420.0,
+                        230.0 + crate::app::phone::phone_buttons_extra(ctx, 1),
+                    ],
                     false,
                     LIGHT_BG(),
                     |ui, o| {
@@ -4842,7 +4931,10 @@ impl OptionsDialog {
                     "opt-addresses",
                     // i18n: window title: the addresses whose downloads stay with the browser
                     "Addresses left to the browser",
-                    [420.0, 230.0],
+                    [
+                        420.0,
+                        230.0 + crate::app::phone::phone_buttons_extra(ctx, 1),
+                    ],
                     false,
                     LIGHT_BG(),
                     |ui, o| {
@@ -4887,7 +4979,10 @@ impl OptionsDialog {
                     "opt-keys",
                     // i18n: window title: the keys that force or prevent downloading with MDM
                     "Keys",
-                    [400.0, 160.0],
+                    [
+                        400.0,
+                        160.0 + crate::app::phone::phone_buttons_extra(ctx, 1),
+                    ],
                     false,
                     LIGHT_BG(),
                     |ui, o| {
@@ -5823,15 +5918,17 @@ pub(crate) fn ok_cancel(ui: &mut Ui, o: Pos2, x: f32, y: f32, valid: bool) -> Ou
     } else {
         ButtonKind::Disabled
     };
-    let ok = winui::button_light(ui, r(o, x, y, 73.0, 21.0), "OK", kind, false).clicked();
-    let cancel = winui::button_light(
-        ui,
+    // A phone: the two big across the window (its right edge is the buttons' and its margin).
+    let (ok_at, cancel_at) = crate::app::phone::pair_or(
+        ui.ctx(),
+        o,
+        y,
+        x + 81.0 + 73.0 + 11.0,
+        r(o, x, y, 73.0, 21.0),
         r(o, x + 81.0, y, 73.0, 21.0),
-        "Cancel",
-        ButtonKind::Normal,
-        false,
-    )
-    .clicked();
+    );
+    let ok = winui::button_light(ui, ok_at, "OK", kind, false).clicked();
+    let cancel = winui::button_light(ui, cancel_at, "Cancel", ButtonKind::Normal, false).clicked();
     if cancel || winui::escape_pressed(ui) {
         Outcome::Closed
     } else if valid && (ok || winui::enter_pressed(ui)) {
@@ -5884,6 +5981,116 @@ fn tab_row(
 }
 
 /// The two-row tab strip and the page frame; returns the page clicked.
+/// The sections a phone lists (page, tab title), in the tabs' order. Not on Android: Sounds (no
+/// sound player there yet) and Remote (no desktop browser add-on to pair with a phone's MDM).
+const PHONE_SECTIONS: [(usize, &str); 10] = [
+    (0, "General"),
+    (1, "File types"),
+    (2, "Save to"),
+    (3, "Downloads"),
+    (4, "Connection"),
+    (5, "Proxy / Socks"),
+    (6, "Sites Logins"),
+    (7, "Accounts"),
+    (9, "Regional"),
+    (10, "Archives"),
+];
+
+/// A row of the phone's list of sections.
+const PHONE_ROW: f32 = 52.0;
+
+/// How far a section's page moves left on a phone (its tabs' frame isn't drawn there).
+const PHONE_PAGE_SHIFT: f32 = 9.0;
+
+impl OptionsDialog {
+    /// Whether the phone's list asked for the Helpers window since the last call.
+    pub fn take_programs_asked(&mut self) -> bool {
+        std::mem::take(&mut self.programs_asked)
+    }
+
+    /// A phone's Options (phone.rs): its sections as rows a finger can hit, each opening its page
+    /// ([`PHONE_SECTIONS`]); OK and Cancel under them.
+    fn phone_list(&mut self, ui: &mut Ui, o: Pos2, width: f32) -> Outcome<()> {
+        let p = ui.painter().clone();
+        let mut y = 8.0;
+        // The sections, then Helpers (yt-dlp, ffmpeg, gallery-dl: a window of its own, as on
+        // the desktop, where Download video's Helpers... opens it).
+        let rows = PHONE_SECTIONS
+            .iter()
+            .map(|(p, l)| (Some(*p), *l))
+            .chain([(None, "Helpers")]);
+        for (page, label) in rows {
+            let row = r(o, 0.0, y, width, PHONE_ROW);
+            let resp = ui.interact(
+                row,
+                egui::Id::unique(("options-section", label)),
+                egui::Sense::click(),
+            );
+            if resp.is_pointer_button_down_on() {
+                p.rect_filled(row, 0.0, crate::theme::colors().toolbar_pressed);
+            }
+            let text = crate::i18n::t(label);
+            winui::expose(&resp, egui::Role::Button, text, true, None);
+            winui::text_font(
+                &p,
+                egui::FontId::new(16.0, winui::tahoma().family),
+                o.x + 16.0,
+                o.y + y + PHONE_ROW / 2.0 + 6.0,
+                text,
+                winui::TEXT(),
+            );
+            winui::text_font(
+                &p,
+                egui::FontId::new(16.0, winui::tahoma().family),
+                o.x + width - 28.0,
+                o.y + y + PHONE_ROW / 2.0 + 6.0,
+                if crate::i18n::rtl() { "‹" } else { "›" },
+                winui::MUTED(),
+            );
+            p.hline(
+                r(o, 16.0, y + PHONE_ROW - 1.0, width - 16.0, 1.0).x_range(),
+                o.y + y + PHONE_ROW - 0.5,
+                egui::Stroke::new(1.0, winui::HEADER_LINE()),
+            );
+            if resp.clicked() {
+                match page {
+                    Some(page) => {
+                        self.page = page;
+                        self.phone_section = true;
+                    }
+                    None => self.programs_asked = true,
+                }
+            }
+            y += PHONE_ROW;
+        }
+        y += 16.0;
+        let half = (width - 32.0 - 8.0) / 2.0;
+        let ok = winui::button_light(
+            ui,
+            r(o, 16.0, y, half, 44.0),
+            "OK",
+            ButtonKind::Default,
+            false,
+        )
+        .clicked();
+        let cancel = winui::button_light(
+            ui,
+            r(o, 16.0 + half + 8.0, y, half, 44.0),
+            "Cancel",
+            ButtonKind::Normal,
+            false,
+        )
+        .clicked();
+        if cancel || winui::escape_pressed(ui) {
+            Outcome::Closed
+        } else if ok {
+            Outcome::Done(())
+        } else {
+            Outcome::Open
+        }
+    }
+}
+
 fn tabs(ui: &mut Ui, o: Pos2, page: usize) -> Option<usize> {
     // (page, label, x0, x1, label x): the rows never move sideways, only swap front and back.
     // Remote (#141, ours) joins the first row, which is sized by its labels since.

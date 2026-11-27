@@ -894,6 +894,9 @@ fn link_texts(line: &str) -> String {
 // ---------------------------------------------------------------------------------------------
 // About
 
+/// Who made the Android app, and their GitHub profile: About's credit line there.
+const ANDROID_AUTHOR: (&str, &str) = ("Pavan Kalyan Neerukonda", "https://github.com/pavan-98");
+
 pub struct About;
 
 impl About {
@@ -904,7 +907,10 @@ impl About {
             ctx,
             "about",
             "About Mister Download Manager",
-            [420.0, 236.0 + extra],
+            [
+                420.0,
+                236.0 + extra + crate::app::phone::phone_buttons_extra(ctx, 1),
+            ],
             false,
             winui::BG(),
             |ui, o| {
@@ -952,9 +958,29 @@ impl About {
                     "about-text",
                     about,
                 );
+                let mut below = o.y + 72.0 + 13.0 * lines as f32;
+                // The Android app's author, in the app it credits (the maintainer's offer), their
+                // name a link to their GitHub profile. On Android (and in the phone's preview on a
+                // desktop, MDM_PHONE).
+                if cfg!(target_os = "android") || crate::app::phone::active(ui.ctx()) {
+                    // i18n: {author}: the name of the person who made the Android app (shown as a link)
+                    let template = crate::i18n::t("The Android app: {author}");
+                    let (before, after) = template.split_once("{author}").unwrap_or((template, ""));
+                    let base = below + 6.0;
+                    let mut x = o.x + 80.0;
+                    winui::text(&p, x, base, before, winui::MUTED());
+                    x += winui::text_width(&p, before);
+                    let name = ANDROID_AUTHOR.0;
+                    if winui::link(ui, &p, x, base, name, "android-author") {
+                        crate::launch::open(ANDROID_AUTHOR.1);
+                    }
+                    x += winui::text_width(&p, name);
+                    winui::text(&p, x, base, after, winui::MUTED());
+                    below += 6.0 + 13.0;
+                }
                 // The links in a row, 18 px apart; one that would pass the paragraph's right
                 // edge (a long translation) starts the next row.
-                let (mut x, mut y) = (o.x + 80.0, o.y + 72.0 + 13.0 * lines as f32 + 14.0);
+                let (mut x, mut y) = (o.x + 80.0, below + 14.0);
                 let mut place = |label: &str| {
                     let w = winui::text_width(&p, crate::i18n::t(label));
                     if x > o.x + 80.0 && x + w > o.x + 404.0 {
@@ -1007,15 +1033,12 @@ impl About {
                 }
                 // The last row ends above OK (at 204 when it fits as planned).
                 crate::dialogs::grow_px(ui.ctx(), "about", y + 12.0 - (o.y + 194.0));
-                let ok = winui::button(
-                    ui,
-                    r(o, 336.0, 204.0 + extra, 73.0, 21.0),
-                    "OK",
-                    ButtonKind::Default,
-                    false,
-                    None,
-                )
-                .clicked();
+                let ok_at = if crate::app::phone::active(ui.ctx()) {
+                    crate::app::phone::button_rects(o, 204.0 + extra, 420.0, 1, true).0[0]
+                } else {
+                    r(o, 336.0, 204.0 + extra, 73.0, 21.0)
+                };
+                let ok = winui::button(ui, ok_at, "OK", ButtonKind::Default, false, None).clicked();
                 if ok || winui::escape_pressed(ui) || winui::enter_pressed(ui) {
                     Outcome::Closed
                 } else {

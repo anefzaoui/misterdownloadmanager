@@ -48,6 +48,10 @@ impl Helpers {
     pub fn qjs(&self) -> PathBuf {
         self.bin().join("qjs")
     }
+    /// 7-Zip (`7zz`) as the APK carries it, run from the native-library folder.
+    pub fn seven_zip(&self) -> PathBuf {
+        self.lib.join("lib7zz.so")
+    }
     fn library_path(&self) -> String {
         let mut dirs = vec![
             self.python_home().join("lib"),
@@ -106,6 +110,13 @@ pub fn helpers() -> Option<&'static Helpers> {
         return None;
     }
     Some(HELPERS.wait())
+}
+
+/// The APK's 7-Zip, for 7z and RAR archives (crates/extract's search of the PATH can't find it:
+/// the PATH with the helpers' `bin` is only the helpers'). None before the helpers are started,
+/// or in an APK built without it.
+pub fn seven_zip() -> Option<PathBuf> {
+    Some(helpers()?.seven_zip()).filter(|p| p.is_file())
 }
 
 static STARTED: OnceLock<()> = OnceLock::new();
@@ -167,7 +178,7 @@ fn unpack(lib: &Path, root: &Path) -> Result<(), String> {
         ("ffprobe", "libffprobe.so"),
         ("qjs", "libqjs.so"),
         ("python", "libpython.so"),
-        // 7-Zip for 7z and RAR (crates/extract finds `7zz` on the PATH, which android.rs sets).
+        // 7-Zip for 7z and RAR (the app finds it with `seven_zip`; here for the helpers).
         ("7zz", "lib7zz.so"),
     ] {
         let link = bin.join(name);

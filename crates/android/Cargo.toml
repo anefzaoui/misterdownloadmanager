@@ -1,0 +1,31 @@
+[package]
+name = "mdm-android"
+description = "Mister Download Manager for Android: libmdm.so, the app the Android project (android/) runs"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+authors.workspace = true
+publish.workspace = true
+
+[lib]
+name = "mdm"
+crate-type = ["cdylib"]
+
+# Built for Android only; on other systems the crate is empty.
+[target.'cfg(target_os = "android")'.dependencies]
+mdm-app = { path = "../app" }
+mdm-ipc.workspace = true
+mdm-tools.workspace = true
+# The activity backend: GameActivity, for the soft keyboard's input and AccessKit.
+eframe = { workspace = true, features = ["android-game-activity"] }
+egui-winit.workspace = true
+jni = { version = "0.22.4", default-features = false }
+rustls-platform-verifier.workspace = true
+tracing.workspace = true
+# The log's lines in logcat too, and a panic's before the process ends.
+android_logger = "0.15.1"
+log = "0.4"
+
+[lints]
+workspace = true

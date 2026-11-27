@@ -1228,7 +1228,7 @@ fn on_demand_tweak() -> egui::FontTweak {
 
 /// `fc-match` for one pattern, asked right now (Linux, a character no loaded font has): the font
 /// files in fontconfig's order ([`fc_match`]).
-#[cfg(not(any(windows, target_os = "macos")))]
+#[cfg(target_os = "linux")]
 fn fc_lookup(pattern: &str) -> Vec<std::path::PathBuf> {
     match fc_match(pattern).output() {
         Ok(out) if out.status.success() => fc_candidates(&String::from_utf8_lossy(&out.stdout)),
@@ -1242,7 +1242,7 @@ fn fc_lookup(pattern: &str) -> Vec<std::path::PathBuf> {
 /// (`scalable=true` outranks the family and the language in fontconfig's order: Noto Sans CJK
 /// before a preferred bitmap font), and MDM takes the first it can read ([`pick_font`]: a
 /// scalable Type 1 font is no more readable than a bitmap one).
-#[cfg(not(any(windows, target_os = "macos")))]
+#[cfg(target_os = "linux")]
 fn fc_match(pattern: &str) -> std::process::Command {
     let mut command = std::process::Command::new("fc-match");
     command
@@ -1251,8 +1251,100 @@ fn fc_match(pattern: &str) -> std::process::Command {
     command
 }
 
+/// Android's answer to [`fc_lookup`]'s `:charset=` pattern (a character no loaded font has): the
+/// files of the system's font families that have it, in the system's own fallback order
+/// (fonts.xml, `android::font_families`).
+#[cfg(target_os = "android")]
+fn fc_lookup(pattern: &str) -> Vec<std::path::PathBuf> {
+    let Some(c) = pattern
+        .strip_prefix(":charset=")
+        .and_then(|hex| u32::from_str_radix(hex, 16).ok())
+        .and_then(char::from_u32)
+    else {
+        return Vec::new();
+    };
+    let text = c.to_string();
+    crate::android::font_families()
+        .iter()
+        .filter(|f| {
+            read_font(&f.file).is_some_and(|bytes| covers(&bytes, text_face(&bytes), &text))
+        })
+        .map(|f| f.file.clone())
+        .collect()
+}
+
+/// Android's answer to [`fc_files`]: the interface font (fonts.xml's `sans-serif`), the symbols'
+/// ([`SYMBOL_PATTERN`]: its `und-Zsym` family) and each script's (`:lang=…`, by the languages
+/// fonts.xml gives its families: [`android_langs`]).
+#[cfg(target_os = "android")]
+fn fc_files() -> &'static std::collections::HashMap<String, Vec<std::path::PathBuf>> {
+    static FILES: std::sync::OnceLock<std::collections::HashMap<String, Vec<std::path::PathBuf>>> =
+        std::sync::OnceLock::new();
+    FILES.get_or_init(|| {
+        let families = crate::android::font_families();
+        let files =
+            |want: &dyn Fn(&crate::android::FontFamily) -> bool| -> Vec<std::path::PathBuf> {
+                families
+                    .iter()
+                    .filter(|f| want(f))
+                    .map(|f| f.file.clone())
+                    .collect()
+            };
+        let mut map = std::collections::HashMap::new();
+        map.insert(
+            "sans-serif".to_owned(),
+            files(&|f| f.name.as_deref() == Some("sans-serif")),
+        );
+        map.insert(
+            SYMBOL_PATTERN.to_owned(),
+            files(&|f| f.langs.iter().any(|l| l == "und-Zsym")),
+        );
+        for (_, fc) in SCRIPT_LANGS {
+            let tags = android_langs(fc);
+            map.insert(
+                format!(":lang={fc}"),
+                files(&|f| f.langs.iter().any(|l| tags.contains(&l.as_str()))),
+            );
+        }
+        map.retain(|_, files| !files.is_empty());
+        map
+    })
+}
+
+/// The languages Android's fonts.xml names a script's families by, for fontconfig's language
+/// `fc` ([`SCRIPT_LANGS`]).
+#[cfg(target_os = "android")]
+fn android_langs(fc: &str) -> &'static [&'static str] {
+    match fc {
+        "ar" | "fa" | "ur" | "ug" => &["und-Arab"],
+        "he" => &["und-Hebr"],
+        "hy" => &["und-Armn"],
+        "ka" => &["und-Geor", "und-Geok"],
+        "am" => &["und-Ethi"],
+        "chr" => &["und-Cher"],
+        "km" => &["und-Khmr"],
+        "lo" => &["und-Laoo"],
+        "th" => &["und-Thai"],
+        "ja" => &["ja", "ja-Jpan"],
+        "ko" => &["ko", "ko-Kore"],
+        "zh-cn" => &["zh-Hans"],
+        "zh-tw" => &["zh-Hant", "zh-Bopo"],
+        "hi" | "mr" | "ne" | "kok" => &["und-Deva"],
+        "as" | "bn" => &["und-Beng"],
+        "gu" => &["und-Gujr"],
+        "pa" => &["und-Guru"],
+        "or" => &["und-Orya"],
+        "ta" => &["und-Taml"],
+        "te" => &["und-Telu"],
+        "kn" => &["und-Knda"],
+        "ml" => &["und-Mlym"],
+        "si" => &["und-Sinh"],
+        _ => &[],
+    }
+}
+
 /// The font files in `fc-match`'s answer ([`fc_match`]), in its order, each once.
-#[cfg_attr(any(windows, target_os = "macos"), allow(dead_code))]
+#[cfg_attr(not(target_os = "linux"), allow(dead_code))]
 fn fc_candidates(out: &str) -> Vec<std::path::PathBuf> {
     let mut files: Vec<std::path::PathBuf> = Vec::new();
     for line in out.lines().map(str::trim).filter(|l| !l.is_empty()) {
@@ -1622,7 +1714,7 @@ fn fc_font(pattern: &str) -> Option<(std::path::PathBuf, Vec<u8>)> {
 /// once, all together (a third of the time), and [`prepare_fonts`] starts that while the window
 /// opens; the fonts only wait for what is still running. A font installed while MDM runs is
 /// used from its next start.
-#[cfg(not(any(windows, target_os = "macos")))]
+#[cfg(target_os = "linux")]
 fn fc_files() -> &'static std::collections::HashMap<String, Vec<std::path::PathBuf>> {
     use std::process::Stdio;
     static FILES: std::sync::OnceLock<std::collections::HashMap<String, Vec<std::path::PathBuf>>> =
@@ -2018,6 +2110,11 @@ pub fn apply_theme(ctx: &egui::Context) {
     ctx.set_visuals_of(egui::Theme::Light, visuals(Visuals::light(), &theme.light));
     let margin = |v: f32| v.round().clamp(0.0, 127.0) as i8;
     ctx.all_styles_mut(|s| {
+        // A finger is wider than a pointer: on Android a touch near a control (a desktop
+        // window's small button, check box or field, on a phone's page) still reaches it.
+        if cfg!(target_os = "android") {
+            s.interaction.interact_radius = 12.0;
+        }
         s.spacing.tooltip_width = m.tooltip_width;
         s.spacing.menu_margin = egui::Margin {
             left: margin(m.tooltip_margin_x),

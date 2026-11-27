@@ -147,6 +147,14 @@ pub fn work_area(ctx: &egui::Context, at: Pos2) -> Option<Rect> {
 /// less a frame (Windows), else the monitor less a frame and the desktop's panels. None when
 /// unknown.
 pub fn room(ctx: &egui::Context, at: Pos2) -> Option<Vec2> {
+    // A phone's layout (Android): its one window is the room, every window a page in it
+    // under its top bar (phone.rs `sheet`).
+    if crate::app::phone::active(ctx) {
+        return Some(egui::vec2(
+            crate::app::phone::sheet_width(ctx),
+            crate::app::phone::sheet_height(ctx),
+        ));
+    }
     let zoom = ctx.zoom_factor();
     if let Some(screen) = test_screen() {
         let ppp = ctx.pixels_per_point();
@@ -366,6 +374,11 @@ pub fn pane<R>(
         };
         pos2(x.round(), (port.min.y - off.y).round())
     };
+    // A phone (phone.rs): a finger moves the page, both ways, from wherever it lands off a
+    // control (the controls, drawn after, take their own touches). Sensed before the body, so
+    // under it.
+    let drag = crate::app::phone::active(ui.ctx())
+        .then(|| ui.interact(port, id.with("pane-drag"), egui::Sense::drag()));
     let at = origin(off);
     let mut inner = ui.new_child(egui::UiBuilder::new().max_rect(Rect::from_min_size(at, content)));
     inner.set_clip_rect(port.intersect(ui.clip_rect()));
@@ -394,6 +407,11 @@ pub fn pane<R>(
         .is_some_and(|p| port.contains(p));
     if hovered && need_v && !crate::winui::wheel_taken(ui) {
         off.y += crate::winui::wheel_rows(ui, 16.0, (port.height() / 16.0).floor().max(1.0)) * 16.0;
+    }
+    if let Some(d) = drag.filter(|d| d.dragged()) {
+        let moved = d.drag_delta();
+        off.y -= moved.y;
+        off.x += if rtl { moved.x } else { -moved.x };
     }
     // The bars, in the window's direction.
     let _surface = crate::winui::Surface::enter(view.min.x, view.max.x);

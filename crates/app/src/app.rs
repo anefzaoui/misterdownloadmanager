@@ -563,6 +563,9 @@ enum Cmd {
     ChooseLanguage,
     Open,
     OpenWith,
+    /// Android's share sheet for a finished download's file (only offered there: the desktop's
+    /// systems have no such sheet MDM can call the same way).
+    ShareFile,
     OpenFolder,
     Properties,
     /// Show or hide a list column (data slot).
@@ -1218,7 +1221,13 @@ enum Popup {
     DropTarget,
     /// Categories right-click: the node's view (None: the "Queues" root).
     Node(Option<View>),
+    /// The phone layout's "more" button: the commands its bars don't show (phone.rs).
+    PhoneMore,
 }
+
+// The main window in a phone's layout (Android).
+#[path = "phone.rs"]
+pub(crate) mod phone;
 
 /// Hidden to the tray, the window's memory is given back 2 s after it hid (its last frames done),
 /// again 2 minutes after it hid (the clock's ticks page some back in, about 5 MB in the first
@@ -1432,6 +1441,9 @@ pub struct App {
     /// extension in one window, and whether this run has weighed it.
     setup: Option<crate::setup::Setup>,
     setup_weighed: bool,
+    /// The Helpers window (yt-dlp, ffmpeg, gallery-dl) opened from a phone's Options list; on
+    /// the desktop Download video's Helpers... opens it.
+    programs: Option<crate::helpers::Programs>,
     /// "Files already there", opened on its own by `/show existing-files` (screenshots and the
     /// translations' fit check); Add torrent asks it itself.
     shown_existing: Option<crate::dialogs::ExistingFiles>,
@@ -2254,7 +2266,12 @@ impl App {
         if let Some(cols) = loaded.columns {
             list.apply(cols);
         }
-        let downloads = dirs::download_dir()
+        // Android: the phone's Download folder (android.rs); elsewhere the user's Downloads.
+        #[cfg(target_os = "android")]
+        let downloads = crate::android::downloads_dir();
+        #[cfg(not(target_os = "android"))]
+        let downloads = dirs::download_dir();
+        let downloads = downloads
             .or_else(|| dirs::home_dir().map(|h| h.join("Downloads")))
             .unwrap_or_else(|| PathBuf::from("."));
         // The Categories pane as it was left, and the node shown (if it still exists).
@@ -2307,6 +2324,7 @@ impl App {
             lang_picker: None,
             setup: None,
             setup_weighed: false,
+            programs: None,
             shown_existing: None,
             extension: None,
             extension_weighed: false,
@@ -2646,7 +2664,7 @@ impl App {
     }
 
     /// "2 downloading, 1.25 MB/sec" while downloads run (the status strip, the tray's tip).
-    fn activity(&self) -> Option<String> {
+    pub(crate) fn activity(&self) -> Option<String> {
         let running: Vec<&Item> = self.items.iter().filter(|i| i.live.is_some()).collect();
         if running.is_empty() {
             return None;
@@ -4893,7 +4911,7 @@ impl App {
     }
 
     /// The user's Stop (or Pause): it stays stopped, even in a queue that is running (#341).
-    fn stop_by_hand(&mut self, id: u64) {
+    pub(crate) fn stop_by_hand(&mut self, id: u64) {
         self.halt(id, false);
         self.stopped_by_hand.insert(id);
     }
@@ -4970,7 +4988,7 @@ impl App {
     /// Stop All: everything stops, the queues too (#1164), and nothing starts again by itself.
     /// A running queue's downloads stop with it (not by hand), so starting it again, or its
     /// schedule, goes on with them.
-    fn stop_all(&mut self) {
+    pub(crate) fn stop_all(&mut self) {
         let live = self.items.iter().filter(|i| i.live.is_some()).map(|i| i.id);
         let (queues, ids) = stop_all_plan(&self.queues, live, self.restarts_pending());
         for q in queues {
@@ -5000,7 +5018,13 @@ impl App {
             .collect();
         self.deleter.delete(doomed);
         let after = self.shown_ids();
-        self.selection.after_removal(&before, &after);
+        // A phone (phone.rs) picks nothing after a removal: the row after isn't what the person
+        // picked, and selection mode ends with nothing picked. The desktop picks it, as Explorer.
+        if crate::app::phone::active(&self.ui_ctx) {
+            self.selection.apply(crate::selection::Pick::Clear, &after);
+        } else {
+            self.selection.after_removal(&before, &after);
+        }
     }
 
     /// Download `id` went through a debrid account and ended (done, or taken off the list): the
@@ -9416,6 +9440,11 @@ impl App {
                     dialogs::open_download_with(&d, moved_away);
                 }
             }
+            Cmd::ShareFile => {
+                if let Some(d) = dest {
+                    dialogs::share_download(&d, moved_away);
+                }
+            }
             Cmd::OpenFolder => {
                 if let Some(d) = dest {
                     dialogs::show_download_in_folder(&d, moved_away);
@@ -10052,6 +10081,11 @@ impl App {
     /// Download complete for `id`, unless it is snoozed (#741): then the tray icon's tip counts
     /// it instead.
     fn complete_window(&mut self, id: u64) {
+        // Not on Android: its notification says so, with Open (android.rs `Notices`); a page
+        // over the app for each finished download isn't how Android's apps tell it.
+        if cfg!(target_os = "android") {
+            return;
+        }
         if self.snooze.active(unix_now()) {
             self.snoozed_finished += 1;
             return;
@@ -10904,6 +10938,7 @@ impl App {
                 None,
             ),
             Popup::Node(node) => (self.node_entries(node), None),
+            Popup::PhoneMore => (self.phone_more_entries(), None),
             Popup::DropTarget => (
                 vec![
                     MenuEntry::Item("Show Mister Download Manager", Cmd::ShowMain, true, false),
@@ -10914,6 +10949,46 @@ impl App {
                 None,
             ),
         }
+    }
+
+    /// The phone layout's "more" menu: the menu bar's commands its bars leave out, in the menus'
+    /// own words.
+    fn phone_more_entries(&self) -> Vec<MenuEntry<Cmd>> {
+        use MenuEntry::{Item as I, Sep, Sub};
+        let can_stop_all = self.can_stop_all();
+        vec![
+            // First: the top bar's sort button opens it (phone.rs).
+            self.arrange_menu(),
+            Sep,
+            I("Open &torrent file...", Cmd::OpenTorrentFile, true, false),
+            I("Add &magnet link...", Cmd::AddMagnet, true, false),
+            I("Add &batch download", Cmd::Batch, true, false),
+            I(
+                "Download &video from a page...",
+                Cmd::VideoPage,
+                true,
+                false,
+            ),
+            I("&Link grabber...", Cmd::LinkGrabber, true, false),
+            Sep,
+            I("&Stop All", Cmd::StopAll, can_stop_all, false),
+            I(
+                "&Delete All Completed",
+                Cmd::DeleteCompleted,
+                self.items.iter().any(|i| i.status == Status::Complete),
+                false,
+            ),
+            Sep,
+            Sub("Start &queue", true, self.queue_drop(true)),
+            Sub("S&top queue", true, self.queue_drop(false)),
+            I("S&cheduler", Cmd::Scheduler, true, false),
+            I("&Options", Cmd::Options, true, false),
+            I("&Language...", Cmd::ChooseLanguage, true, false),
+            Sep,
+            I("H&elp contents", Cmd::HelpPage("README.md"), true, false),
+            I("&About Mister Download Manager", Cmd::About, true, false),
+            I("&Exit", Cmd::Exit, true, false),
+        ]
     }
 
     /// Right-click on the list's blank space: what applies to the whole list (IDM greys the
@@ -11060,6 +11135,23 @@ impl App {
             // i18n: noun: opens the download's Properties window
             I("Properties", Cmd::Properties, sel, false),
         ];
+        // Android: Share..., after Open folder (its share sheet: another app, a message).
+        if cfg!(target_os = "android")
+            && let Some(k) = entries
+                .iter()
+                .position(|e| matches!(e, I(_, Cmd::OpenFolder, ..)))
+        {
+            // i18n: verb: sends the downloaded file to another app (Android's share sheet)
+            entries.insert(k + 1, I("Share...", Cmd::ShareFile, done, false));
+        }
+        // A phone (phone.rs) has no double click: a tap opens a download.
+        if crate::app::phone::active(&self.ui_ctx)
+            && let Some(k) = entries
+                .iter()
+                .position(|e| matches!(e, Sub("On Double click", ..)))
+        {
+            entries.drain(k - 1..=k);
+        }
         // A torrent's own actions (#39), after Verify checksum.
         if let Some((i, spec)) = torrent {
             let busy = self.torrent_host.busy(&spec.hash);
@@ -11511,6 +11603,10 @@ impl App {
     }
 
     fn paint(&mut self, ui: &mut Ui) {
+        // A phone's screen: its own layout (phone.rs).
+        if phone::active(ui.ctx()) {
+            return self.paint_phone(ui);
+        }
         let ctx = ui.ctx().clone();
         let full = ui.max_rect();
         // The client area, laid out from the right in a right-to-left interface (winui).
@@ -12582,7 +12678,8 @@ impl App {
     /// Tasks → Show drop target: the box while it's on; what is dropped on it is added as if
     /// given on the command line (an address, a magnet link, a .torrent file).
     fn drop_target(&mut self, ctx: &egui::Context) {
-        if !self.settings.drop_target {
+        // A phone has no desktop to float it over (phone.rs; nor is it offered there).
+        if !self.settings.drop_target || phone::active(ctx) {
             self.drop_target = None;
             return;
         }
@@ -13639,6 +13736,21 @@ impl App {
             }
         }
         self.first_start_setup(ctx);
+        if self
+            .options
+            .as_mut()
+            .is_some_and(|o| o.take_programs_asked())
+            && self.programs.is_none()
+        {
+            self.programs = Some(crate::helpers::Programs::new());
+        }
+        if let Some(d) = &mut self.programs {
+            if !matches!(d.show(ctx, &self.rt), Outcome::Open) {
+                self.programs = None;
+            }
+            // Its Back (Escape) was its own: Options, under it, doesn't close with it.
+            ctx.input_mut(|i| i.consume_key(egui::Modifiers::NONE, egui::Key::Escape));
+        }
         if let Some(q) = &mut self.shown_existing
             && !matches!(q.show(ctx), Outcome::Open)
         {
@@ -14625,6 +14737,7 @@ impl App {
                 progress::Action::Keep => self.keep_by_hand(id),
                 progress::Action::Resume => self.start(id, true),
                 progress::Action::Cancel => self.cancel_download(id),
+                progress::Action::Properties => self.run(Cmd::Properties, Some(id), ctx),
                 progress::Action::Rename(name) => {
                     if let Some(item) = self.item(id) {
                         item.rename_on_complete = name;
@@ -15255,6 +15368,10 @@ impl App {
         let began = Instant::now();
         // The longest first: the downloads save while the rest is done.
         let stopping = self.stop_for_the_end();
+        // Android ends the app itself (the activity closed, the app swiped away): what was
+        // downloading goes on at the next start.
+        #[cfg(target_os = "android")]
+        crate::android::note_interrupted(&stopping);
         // yt-dlp, gallery-dl and all they started end, and none starts any more (#1301: on
         // Linux and macOS nothing else ends them with MDM).
         mdm_tools::proc::end_all();
@@ -15340,6 +15457,18 @@ impl App {
     /// which flushes what they received and saves their resume state; their ids. Torrents keep
     /// their own resume data as they go, and a video's or a gallery's helpers end with MDM
     /// (`mdm_tools::proc::end_all`).
+    /// Android: the downloads that were running when the app last ended (android.rs
+    /// `take_interrupted`) start again (a start reads its own resume state, as Resume's does).
+    #[cfg(target_os = "android")]
+    pub(crate) fn resume_interrupted(&mut self, ids: &[u64]) {
+        for &id in ids {
+            if self.items.iter().any(|i| i.id == id && i.can_start()) {
+                tracing::info!("download {id}: running when the app last ended, resumed");
+                self.start(id, true);
+            }
+        }
+    }
+
     fn stop_for_the_end(&self) -> Vec<u64> {
         self.items
             .iter()
