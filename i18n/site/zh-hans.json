@@ -2824,7 +2824,7 @@
   },
   "24ed95a046395b12": {
    "source": "<g1>Launch Mister Download Manager on startup</g1> — start MDM when you sign in to Windows. It starts in the notification area, its window hidden, with its downloads, queues and Scheduler running; click its icon (or start MDM again) to show the window. On Linux and macOS it starts with your session the same way; where no notification area shows MDM's icon (some Linux desktops), it starts minimized, and the option's tooltip says so. MDM waits for the notification area up to 30 seconds after making its icon, its window hidden, as a desktop's can come up after MDM at sign-in. Off by default. Greyed in a <g2>portable copy</g2>, which writes nothing to the registry.",
-   "text": "<g1>启动时运行 Mister Download Manager</g1> — 在您登录 Windows 时启动 MDM。它会在通知区域启动，窗口隐藏，下载、队列和计划程序都在运行；点击其图标（或再次启动 MDM）以显示窗口。在 Linux 和 macOS 上，它以相同方式随会话启动；如果通知区域未显示 MDM 图标（某些 Linux 桌面），它会最小化启动，并且该选项的工具提示会说明这一点。MDM 在创建图标后会等待通知区域最多 30 秒，其窗口隐藏，因为桌面可能在登录时 MDM 之后才出现。默认关闭。在<g2>便携版</g2>中显示为灰色，因为它不会写入注册表。"
+   "text": "<g1>开机时运行 Mister Download Manager</g1> — 在您登录 Windows 时启动 MDM。它会在通知区域启动，窗口隐藏，下载、队列和计划程序都在运行；点击其图标（或再次启动 MDM）以显示窗口。在 Linux 和 macOS 上，它以相同方式随会话启动；如果通知区域未显示 MDM 图标（某些 Linux 桌面），它会最小化启动，并且该选项的工具提示会说明这一点。MDM 在创建图标后会等待通知区域最多 30 秒，其窗口隐藏，因为桌面可能在登录时 MDM 之后才出现。默认关闭。在<g2>便携版</g2>中显示为灰色，因为它不会写入注册表。"
   },
   "24fd327a01fbb7a5": {
    "source": "An old torrent whose trackers went quiet can sit at zero peers. Turn on <g1>Add the trackers of this public list to public torrents</g1> in <g2>Tasks → Torrent settings...</g2>, and your public torrents, those already in your list and each one you add, also ask the trackers of <g3>ngosang/trackerslist</g3>'s best list, or of a list at an address you choose. MDM fetches the list once a day, through your proxy and network adapter, and keeps the last good copy, so adding a torrent never waits for it. Private torrents never get them: they may only ask their own trackers. The command line's <x4/> follows the same switch.",
@@ -5700,7 +5700,7 @@
   },
   "4d14bced2740498b": {
    "source": "Start in the notification area, the window hidden: what <g1>Launch Mister Download Manager on startup</g1> starts MDM with when you sign in. Where no notification area shows MDM's icon (some Linux desktops), MDM starts minimized. A running MDM stays as it is.",
-   "text": "在通知区域启动，窗口隐藏：这是您登录时，<g1>启动时运行 Mister Download Manager</g1> 启动 MDM 的方式。在没有通知区域显示 MDM 图标的地方（某些 Linux 桌面），MDM 会最小化启动。正在运行的 MDM 保持不变。"
+   "text": "在通知区域启动，窗口隐藏：这是您登录时，<g1>开机时运行 Mister Download Manager</g1> 启动 MDM 的方式。在没有通知区域显示 MDM 图标的地方（某些 Linux 桌面），MDM 会最小化启动。正在运行的 MDM 保持不变。"
   },
   "4d35cd399872baf1": {
    "source": "Open the selected download (a double-click follows right-click → <g1>On Double click</g1>)",
@@ -9392,7 +9392,7 @@
   },
   "7f571de697da32a1": {
    "source": "Tick <g1>Launch Mister Download Manager on startup</g1> in <g2>Options → General</g2> and MDM starts when you sign in, hidden, its icon in the notification area. Its downloads, queues, the <g3>Scheduler</g3> and downloads from the browser all run from there. Click the icon, or start MDM again, and the window opens as usual.",
-   "text": "在<g2>选项 → 常规</g2>中勾选<g1>启动时运行 Mister Download Manager</g1>，MDM 就会在您登录时隐藏启动，其图标显示在通知区域。所有下载、队列、<g3>计划程序</g3>以及来自浏览器的下载都将从那里运行。点击图标或再次启动 MDM，窗口将照常打开。"
+   "text": "在<g2>选项 → 常规</g2>中勾选<g1>开机时运行 Mister Download Manager</g1>，MDM 就会在您登录时隐藏启动，其图标显示在通知区域。所有下载、队列、<g3>计划程序</g3>以及来自浏览器的下载都将从那里运行。点击图标或再次启动 MDM，窗口将照常打开。"
   },
   "7f5c3e858ef54b57": {
    "source": "To run MDM on a home server instead, see <g1>Server mode</g1>.",
@@ -12624,7 +12624,7 @@
   },
   "a9bcf619bcfbf758": {
    "source": "<g1>Launch Mister Download Manager on startup</g1> in <g2>Options → General</g2> is greyed: starting with Windows needs the registry.",
-   "text": "<g1>启动时运行 Mister Download Manager</g1>在<g2>选项 → 常规</g2>中显示为灰色：随 Windows 启动需要使用注册表。"
+   "text": "<g1>开机时运行 Mister Download Manager</g1>在<g2>选项 → 常规</g2>中显示为灰色：随 Windows 启动需要使用注册表。"
   },
   "a9c0ebf6a6817e58": {
    "source": "The browser opens PDFs and music instead of sending them",
@@ -17844,7 +17844,7 @@
   },
   "f1049590a0018070": {
    "source": "<g1>Started with the computer, MDM waits in the notification area</g1> (<g2>#226</g2>): with <g3>Options → General → Launch Mister Download Manager on startup</g3>, MDM no longer opens its window in front at every sign-in. It starts hidden, its icon in the notification area, with its downloads, queues, Scheduler and browser hand-overs running; its icon, or starting MDM again, shows the window as before. The same on Linux and macOS; where no notification area shows MDM's icon (some Linux desktops), it starts minimized, and the option's tooltip says so (it waits for one up to 30 seconds after its icon is made, its window hidden: a desktop's can come up after MDM at sign-in). The startup entry now passes <x4/> (new on the <g5>command line</g5>); an entry written by an earlier version or its installer is written again at the next start, and the installer writes the new one.",
-   "text": "<g1>随电脑启动，MDM 在通知区域等待</g1>（<g2>#226</g2>）：通过<g3>选项 → 常规 → 启动时运行 Mister Download Manager</g3>，MDM 不再在每次登录时都将窗口置于前台。它会隐藏启动，图标显示在通知区域，同时其下载、队列、计划程序和浏览器交接功能都在运行；点击其图标或再次启动 MDM，窗口会像以前一样显示。在 Linux 和 macOS 上也是如此；如果通知区域不显示 MDM 的图标（某些 Linux 桌面），它会最小化启动，并且该选项的工具提示会说明这一点（它会在图标创建后等待最多 30 秒，窗口隐藏：桌面可能在登录时 MDM 之后出现）。启动项现在传递 <x4/>（<g5>命令行</g5>上的新功能）；由早期版本或其安装程序写入的启动项会在下次启动时重新写入，安装程序会写入新的启动项。"
+   "text": "<g1>随电脑启动，MDM 在通知区域等待</g1>（<g2>#226</g2>）：通过<g3>选项 → 常规 → 开机时运行 Mister Download Manager</g3>，MDM 不再在每次登录时都将窗口置于前台。它会隐藏启动，图标显示在通知区域，同时其下载、队列、计划程序和浏览器交接功能都在运行；点击其图标或再次启动 MDM，窗口会像以前一样显示。在 Linux 和 macOS 上也是如此；如果通知区域不显示 MDM 的图标（某些 Linux 桌面），它会最小化启动，并且该选项的工具提示会说明这一点（它会在图标创建后等待最多 30 秒，窗口隐藏：桌面可能在登录时 MDM 之后出现）。启动项现在传递 <x4/>（<g5>命令行</g5>上的新功能）；由早期版本或其安装程序写入的启动项会在下次启动时重新写入，安装程序会写入新的启动项。"
   },
   "f1198b0bddc112e0": {
    "source": "<g1>Save to</g1>: the folder its files go to. When a package holds several kinds of files, the box says <g2>Each file's category folder</g2>: each file goes to its category's folder (<g3>Options → Save to</g3>), as Import always did.",
