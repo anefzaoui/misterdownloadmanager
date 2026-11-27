@@ -91,6 +91,8 @@ enum Sub {
     Passwords(String),
     /// Connection → Site rules... (#1778): the rules, and the one being edited.
     Rules(Box<RulesEdit>),
+    /// Sites Logins → Certificates... (#1964): the allowed HTTPS site certificates.
+    Certs(winui::RowList),
 }
 
 /// One row of Site rules: a rule and its number of connections (the exception under its
@@ -446,6 +448,10 @@ impl OptionsDialog {
                 })
             }
             "keys" => self.sub = Some(Sub::Keys(self.s.capture_opened)),
+            "certs" => {
+                self.page = 6;
+                self.sub = Some(Sub::Certs(Default::default()));
+            }
             // Connection → Site rules... (#1778), and with its first rule (else a new one) open.
             "siterules" | "siterule" => {
                 let rows = rule_rows(&self.s);
@@ -2911,6 +2917,36 @@ impl OptionsDialog {
             // i18n: Options → Sites Logins → Use my yt-dlp config file: its tooltip
             "yt-dlp also reads its own config files (on Windows %APPDATA%\\yt-dlp\\config.txt, on Linux and macOS ~/.config/yt-dlp/config). Most of what MDM chooses, the folder, the name and the quality, still wins, but options there that skip or filter videos apply too.",
         ));
+        // Allowed HTTPS certificates (#1964): sites whose certificate the user chose to trust.
+        // i18n: Options → Sites Logins: button: opens the list of allowed HTTPS site certificates
+        let certs_label = crate::i18n::mark("Certificates...");
+        let cw = winui::button_width(&p, certs_label, 103.0).min(200.0);
+        let certs_btn = winui::button_light(
+            ui,
+            r(o, 21.0, 442.0, cw, 21.0),
+            certs_label,
+            ButtonKind::Normal,
+            false,
+        );
+        let certs_about = crate::i18n::t(
+            // i18n: Options → Sites Logins: beside the Certificates... button
+            "Sites whose certificate you chose to trust",
+        );
+        let (rect, cut) = winui::label_into(
+            &p,
+            o.x + 21.0 + cw + 8.0,
+            o.y + 457.0,
+            certs_about,
+            LIGHT_TEXT(),
+            o.x + 404.0,
+            o.x + 21.0 + cw + 8.0,
+        );
+        if cut {
+            winui::full_on_hover(ui, rect, "allowed-certs-about", certs_about);
+        }
+        if certs_btn.clicked() {
+            self.sub = Some(Sub::Certs(Default::default()));
+        }
     }
 
     /// Archives (ours, #37): extracting archives when their download completes, what becomes
@@ -4801,6 +4837,109 @@ impl OptionsDialog {
             Sub::Rules(edit) => {
                 if let Some(edit) = self.rules_window(ctx, edit) {
                     self.sub = Some(Sub::Rules(edit));
+                }
+            }
+            Sub::Certs(mut list) => {
+                let mut rows: Vec<Vec<String>> = self
+                    .s
+                    .allowed_certs
+                    .iter()
+                    .map(|c| {
+                        let reason = match c.problem {
+                            // i18n: Allowed certificates table: short reason label
+                            mdm_engine::CertProblem::Expired => crate::i18n::t("Expired"),
+                            // i18n: Allowed certificates table: short reason label
+                            mdm_engine::CertProblem::NotYetValid => crate::i18n::t("Not yet valid"),
+                            // i18n: Allowed certificates table: short reason label
+                            mdm_engine::CertProblem::Untrusted => crate::i18n::t("Not trusted"),
+                            // i18n: Allowed certificates table: short reason label
+                            mdm_engine::CertProblem::WrongName => crate::i18n::t("Wrong name"),
+                            _ => crate::i18n::t("Other"),
+                        };
+                        vec![
+                            crate::dialogs::site_label(&c.host, c.port),
+                            reason.to_owned(),
+                            crate::dialogs::format_fingerprint(&c.sha256),
+                        ]
+                    })
+                    .collect();
+                list.name = crate::i18n::t("Allowed certificates");
+                let out = window(
+                    ctx,
+                    "opt-allowed-certs",
+                    // i18n: window title: HTTPS sites whose certificate the user chose to trust
+                    "Allowed certificates",
+                    [460.0, 260.0],
+                    false,
+                    LIGHT_BG(),
+                    |ui, o| {
+                        let p = ui.painter().clone();
+                        winui::paragraph(
+                            &p,
+                            o.x + 14.0,
+                            o.y + 20.0,
+                            // i18n: Allowed certificates window: explanation
+                            crate::i18n::t(
+                                "Sites whose security certificate you chose to trust. Each entry is pinned to that certificate's SHA-256 fingerprint.",
+                            ),
+                            LIGHT_TEXT(),
+                            o.x + 446.0,
+                            14.0,
+                        );
+                        let (_, del_key) = report(
+                            ui,
+                            o,
+                            r(o, 14.0, 56.0, 432.0, 154.0),
+                            &[
+                                // i18n: column title: site name and port
+                                (crate::i18n::mark("Site"), 135.0),
+                                // i18n: column title: certificate refusal reason allowed
+                                (crate::i18n::mark("Reason"), 225.0),
+                                // i18n: column title: SHA-256 certificate fingerprint
+                                (crate::i18n::mark("Certificate (SHA-256)"), 432.0),
+                            ],
+                            &rows,
+                            &mut list,
+                            false,
+                            "opt-certs-list",
+                        );
+                        let sel = list.selected.filter(|i| *i < rows.len());
+                        let rem_kind = if sel.is_some() {
+                            ButtonKind::Normal
+                        } else {
+                            ButtonKind::Disabled
+                        };
+                        let rem = winui::button_light(
+                            ui,
+                            r(o, 14.0, 222.0, 86.0, 21.0),
+                            "Remove",
+                            rem_kind,
+                            false,
+                        )
+                        .clicked()
+                            || del_key;
+                        if rem && let Some(i) = sel {
+                            self.s.allowed_certs.remove(i);
+                            rows.remove(i);
+                            list.selected = None;
+                        }
+                        let close = winui::button_light(
+                            ui,
+                            r(o, 368.0, 222.0, 78.0, 21.0),
+                            "Close",
+                            ButtonKind::Default,
+                            false,
+                        )
+                        .clicked();
+                        if close || winui::escape_pressed(ui) {
+                            Outcome::<()>::Closed
+                        } else {
+                            Outcome::Open
+                        }
+                    },
+                );
+                if matches!(out, Outcome::Open) {
+                    self.sub = Some(Sub::Certs(list));
                 }
             }
             Sub::Passwords(mut list) => {

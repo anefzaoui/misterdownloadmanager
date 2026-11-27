@@ -625,6 +625,10 @@
 #. Click'n'Load window, under the question: nothing happens to the links before the user adds them in Link grabber
 #, machine
 	Allow only sites you use. Nothing is looked up or downloaded before you add it in Link grabber.	อนุญาตเฉพาะเว็บไซต์ที่ใช้เท่านั้น จะไม่มีการค้นหาหรือดาวน์โหลดใด ๆ ก่อนที่จะเพิ่มในตัวดึงลิงก์
+#. text in the Options window; window title in the Options window
+#. window title: HTTPS sites whose certificate the user chose to trust
+#, machine
+	Allowed certificates	ใบรับรองที่อนุญาต
 #. text in errors.rs
 #, machine
 	already being downloaded: {path}	กำลังดาวน์โหลดอยู่แล้ว: {path}
@@ -658,6 +662,9 @@
 #. View menu: a check item; dark mode on, whatever the system's setting
 #, machine
 	Always dark	มืดตลอดเวลา
+#. button in a dialog box
+#, machine
+	Always for this site	สำหรับไซต์นี้เสมอ
 #. text in the Options window
 #. Options → Archives: where extracted files go
 #, machine
@@ -1067,6 +1074,11 @@
 #, machine
 	Central African Republic	สาธารณรัฐแอฟริกากลาง
 #. text in the Options window
+#. column title: SHA-256 certificate fingerprint
+#, machine
+	Certificate (SHA-256)	ใบรับรอง (SHA-256)
+#. text in a dialog box; text in the Options window
+#. Certificate warning: the certificate's SHA-256 fingerprint
 #. Options → Remote → Status: the certificate's fingerprint, which the phone's browser shows when it warns about it; {fingerprint} = hex digits
 #, machine
 	Certificate (SHA-256): {fingerprint}	ใบรับรอง (SHA-256): {fingerprint}
@@ -1074,6 +1086,11 @@
 #. Options → DNS over TLS: label before the name the server's certificate shows
 #, machine
 	Certificate name:	ชื่อใบรับรอง:
+#. text in the Options window
+#. Options → Sites Logins: button: opens the list of allowed HTTPS site certificates
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Certificates...	ใบรับรอง...
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -1342,6 +1359,13 @@
 #. text in the Options window
 #, machine
 	Connections:	การเชื่อมต่อ:
+#. text in a dialog box
+#. Certificate warning: question before Continue once / Always for this site / Cancel
+#, machine
+	Continue anyway?	ดำเนินการต่อหรือไม่
+#. button in a dialog box
+#, machine
+	Continue once	ดำเนินการต่อครั้งเดียว
 #. link (opens a web page) in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Contributors	ผู้สนับสนุน
@@ -1952,7 +1976,6 @@
 #, machine
 	Eritrea	เอริเทรีย
 #. text in a dialog box; item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window; text in remote.rs
-#. in Download File Info, where the size goes: the address didn't answer
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): it failed
 #, machine
@@ -2022,6 +2045,10 @@
 #. Options → Accounts: a note that the debrid services' support (Real-Debrid, AllDebrid, Premiumize) is new and not yet tried with real paid accounts
 #, machine
 	Experimental: built from the services' public API documentation, not yet confirmed with real accounts.	ทดลอง: สร้างจากเอกสาร API สาธารณะของบริการ ยังไม่ได้รับการยืนยันด้วยบัญชีจริง
+#. text in the Options window
+#. Allowed certificates table: short reason label
+#, machine
+	Expired	หมดอายุ
 #. message or event log entry in the main window; text in the Options window
 #, machine
 	Export	ส่งออก
@@ -3922,8 +3949,16 @@
 #, machine
 	Not tested: it is larger than {limit} (Options → Archives). Right-click → Test archive tests it	ไม่ได้ทดสอบ: มีขนาดใหญ่กว่า {limit} (ตัวเลือก → ไฟล์เก็บถาวร) คลิกขวา → ทดสอบไฟล์เก็บถาวร เพื่อทดสอบ
 #. text in the Options window
+#. Allowed certificates table: short reason label
+#, machine
+	Not trusted	ไม่น่าเชื่อถือ
+#. text in the Options window
 #, machine
 	Not used: file parts are written next to the file	ไม่ได้ใช้งาน: ส่วนของไฟล์จะถูกเขียนถัดจากไฟล์
+#. text in the Options window
+#. Allowed certificates table: short reason label
+#, machine
+	Not yet valid	ยังไม่ถูกต้อง
 #. text in a dialog box
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
@@ -4145,6 +4180,9 @@
 #. Options → Add an account: label before the field for the service's API token (the other way to sign in)
 #, machine
 	Or paste your API token:	หรือวางโทเค็น API ของคุณ:
+#. text in the Options window
+#, machine
+	Other	อื่น ๆ
 #. text in the Link grabber window
 #. Link grabber: the box that edits the selected package
 #, machine
@@ -4452,6 +4490,10 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	Reannounce failed: {error}	การประกาศซ้ำล้มเหลว: {error}
+#. text in the Options window
+#. column title: certificate refusal reason allowed
+#, machine
+	Reason	เหตุผล
 #. text in a download's progress window
 #. column title: how much came from the peer
 #, machine
@@ -4723,6 +4765,10 @@
 #. text in the Batch download window
 #, machine
 	Second file:	ไฟล์ที่สอง:
+#. text in a dialog box
+#. window title when a server's HTTPS certificate is refused
+#, machine
+	Security Alert	การแจ้งเตือนด้านความปลอดภัย
 #. text in preview.rs
 #. the preview pane when no download is selected, under its title
 #, machine
@@ -5017,6 +5063,7 @@
 	Sint Maarten	ซินต์มาร์เติน
 #. text in the Options window
 #. Site rules: column title: the site pattern
+#. column title: site name and port
 #, machine
 	Site	ไซต์
 #. checkbox in the Find window
@@ -5043,6 +5090,11 @@
 #. Site rule: label before the site pattern box (example.com, *.example.com)
 #, machine
 	Site:	ไซต์:
+#. text in a dialog box
+#. Certificate warning: the site whose certificate was refused; {site} = host or host:port
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+	Site: {site}	ไซต์: {site}
 #. text in the Options window
 #. tab title: user names and passwords for sites
 #, machine
@@ -5053,6 +5105,14 @@
 #. text in helpers.rs
 #, machine
 	Sites send their best quality as separate video and audio. ffmpeg puts them together into one file that plays anywhere.	เว็บไซต์ส่งคุณภาพที่ดีที่สุดเป็นวิดีโอและเสียงแยกกัน ffmpeg จะรวมเข้าด้วยกันเป็นไฟล์เดียวที่เล่นได้ทุกที่
+#. text in the Options window
+#. Options → Sites Logins: beside the Certificates... button
+#, machine
+	Sites whose certificate you chose to trust	ไซต์ที่คุณเลือกเชื่อถือใบรับรอง
+#. text in the Options window
+#. Allowed certificates window: explanation
+#, machine
+	Sites whose security certificate you chose to trust. Each entry is pinned to that certificate's SHA-256 fingerprint.	ไซต์ที่คุณเลือกเชื่อถือใบรับรองความปลอดภัย แต่ละรายการจะถูกปักหมุดไว้กับลายนิ้วมือ SHA-256 ของใบรับรองนั้น
 #. text in the Link grabber window; text in a download's progress window; text in the Scheduler window; text in the Add torrent window
 #. column title: the file's size
 #. column title: file size
@@ -5860,6 +5920,9 @@
 #, machine
 	The site's certificate isn't trusted, by yt-dlp nor by this computer: an antivirus's web filter or a proxy that reads HTTPS may be in the way. Turn its HTTPS scanning off, or add its certificate to the computer's, then look the page up again.	ใบรับรองของเว็บไซต์ไม่น่าเชื่อถือ ทั้งจาก yt-dlp และคอมพิวเตอร์เครื่องนี้: ตัวกรองเว็บของโปรแกรมป้องกันไวรัสหรือพร็อกซีที่อ่าน HTTPS อาจขัดขวางอยู่ ปิดการสแกน HTTPS หรือเพิ่มใบรับรองลงในคอมพิวเตอร์ จากนั้นค้นหาหน้าเว็บอีกครั้ง
 #. text in errors.rs
+#, machine
+	the site's security certificate expired on {date}, so MDM can't be sure it's the real site (your browser warns about it too)	ใบรับรองความปลอดภัยของไซต์หมดอายุเมื่อวันที่ {date} ดังนั้น MDM จึงไม่แน่ใจว่าเป็นไซต์จริงหรือไม่ (เบราว์เซอร์ของคุณก็เตือนเช่นกัน)
+#. text in errors.rs
 #. why a download failed: the site's security certificate (what proves a secure, HTTPS, site is the one it says) is past its end date. Browsers warn about the same site
 #, machine
 	the site's security certificate has expired, so MDM can't be sure it's the real site (your browser warns about it too)	ใบรับรองความปลอดภัยของเว็บไซต์หมดอายุแล้ว MDM จึงไม่สามารถยืนยันได้ว่าเป็นเว็บไซต์จริง (เบราว์เซอร์ของคุณก็เตือนเช่นกัน)
@@ -5867,6 +5930,10 @@
 #. why a download failed: the site's security certificate was made for other site names than the one in the address
 #, machine
 	the site's security certificate is for another site name, so MDM can't be sure it's the real site (your browser warns about it too)	ใบรับรองความปลอดภัยของเว็บไซต์มีไว้สำหรับชื่อเว็บไซต์อื่น MDM จึงไม่สามารถยืนยันได้ว่าเป็นเว็บไซต์จริง (เบราว์เซอร์ของคุณก็เตือนเช่นกัน)
+#. text in errors.rs
+#. why a download failed: the site's security certificate is self-signed
+#, machine
+	the site's security certificate is self-signed, so MDM can't be sure it's the real site (your browser warns about it too)	ใบรับรองความปลอดภัยของไซต์เป็นแบบลงนามเอง ดังนั้น MDM จึงไม่แน่ใจว่าเป็นไซต์จริงหรือไม่ (เบราว์เซอร์ของคุณก็เตือนเช่นกัน)
 #. text in errors.rs
 #. why a download failed: the site's security certificate is made for other uses than a website (its "extended key usage" leaves out web servers)
 #, machine
@@ -6902,6 +6969,10 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 	Wrong code. Tries left: {n}	รหัสผิด เหลือการลอง: {n}
+#. text in the Options window
+#. Allowed certificates table: short reason label
+#, machine
+	Wrong name	ชื่อไม่ถูกต้อง
 #. text in extracting archives (a download's log, the Archive password window)
 #. in Archive password: {name} is the archive's file name
 #. {name} = a file name (keep the braces as they are)

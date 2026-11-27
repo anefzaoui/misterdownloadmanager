@@ -692,7 +692,7 @@ pub(crate) fn client_config(extra: &[Vec<u8>]) -> Result<rustls::ClientConfig, r
 
 /// The system's verifier, with Mozilla's roots and `extra` also trusted.
 #[cfg(not(target_os = "android"))]
-fn verifier(
+pub(crate) fn verifier(
     extra: &[Vec<u8>],
     provider: Arc<rustls::crypto::CryptoProvider>,
 ) -> Result<Arc<dyn rustls::client::danger::ServerCertVerifier>, rustls::Error> {
@@ -709,7 +709,7 @@ fn verifier(
 /// roots: with `extra` (only the tests give any), Mozilla's roots and them are checked by
 /// rustls' own verifier instead.
 #[cfg(target_os = "android")]
-fn verifier(
+pub(crate) fn verifier(
     extra: &[Vec<u8>],
     provider: Arc<rustls::crypto::CryptoProvider>,
 ) -> Result<Arc<dyn rustls::client::danger::ServerCertVerifier>, rustls::Error> {

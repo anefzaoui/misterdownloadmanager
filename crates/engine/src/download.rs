@@ -235,6 +235,8 @@ pub struct Options {
     /// When that fails (a build without it, a site that refuses it too), MDM's own connection is
     /// asked as usual. Never for a form's POST or through a service account.
     pub browser_first: bool,
+    /// Certificates the user chose to trust for their `(host, port, sha256)` (#1964).
+    pub allowed_certs: Vec<crate::tls::AllowedCert>,
 }
 
 /// A callback given the path of a file the engine created (`Options::on_file_created`).
@@ -322,6 +324,7 @@ impl Default for Options {
             slow_disk: None,
             keep_state: false,
             browser_first: false,
+            allowed_certs: Vec::new(),
         }
     }
 }
@@ -483,9 +486,9 @@ pub enum Error {
     #[error("{}", crate::tls::NO_ROOTS)]
     NoCertificates,
     /// The server's certificate was refused (expired, not trusted, for another name): what a
-    /// browser warns about. Retrying won't help, and there is no way around it (#762).
+    /// browser warns about. Retrying won't help unless the user allows it (#762, #1964).
     #[error("{0}")]
-    Certificate(crate::tls::CertProblem),
+    Certificate(crate::tls::CertRefusal),
 }
 
 /// What failed on the network (`Error::Net`).
@@ -642,6 +645,18 @@ pub(crate) fn strip_os_error_code(s: &str) -> String {
     s.trim().trim_end_matches('.').to_owned()
 }
 
+fn enrich_cert(err: Error, seen: &crate::server::ServerSeen) -> Error {
+    match err {
+        Error::Certificate(mut refusal) => {
+            if refusal.info.is_none() {
+                refusal.info = seen.take_refused_cert().map(Box::new);
+            }
+            Error::Certificate(refusal)
+        }
+        other => other,
+    }
+}
+
 impl From<io::Error> for Error {
     fn from(e: io::Error) -> Self {
         // NOT_READY, BAD_NETPATH, DEV_NOT_EXIST, NETNAME_DELETED, BAD_NET_NAME,
@@ -670,7 +685,7 @@ impl From<reqwest::Error> for Error {
             return Error::NoCertificates;
         }
         if let Some(problem) = crate::tls::certificate_problem(&e) {
-            return Error::Certificate(problem);
+            return Error::Certificate(problem.into());
         }
         Error::Http(Arc::new(e))
     }
@@ -1157,7 +1172,7 @@ pub async fn probe_kept(
                     },
                 }
             }
-            Err(e) => return Err(e),
+            Err(e) => return Err(enrich_cert(e, &seen)),
         }
     };
     // Whichever connection it came through, the browser-like one too (#954).
@@ -2092,14 +2107,7 @@ fn client_with(
     // An IP address in the URL never reaches the resolver, which drops what the chosen adapter
     // can't reach (#35): check it here.
     net::check_url(route, url)?;
-    let mut builder = Client::builder();
-    if !opts.extra_roots.is_empty() {
-        builder = builder.tls_certs_merge(
-            opts.extra_roots
-                .iter()
-                .filter_map(|der| reqwest::Certificate::from_der(der).ok()),
-        );
-    }
+    let builder = Client::builder();
     // With an adapter chosen, the system's proxy is looked up now, so that it can be checked
     // (and a proxy on this computer recognised) like the others.
     let system = match (&opts.proxy, route.is_any()) {
@@ -2200,7 +2208,20 @@ fn client_with(
     let to_this_computer = through_local_proxy
         || (net::is_this_computer(url.host_str().unwrap_or_default())
             && !matches!(opts.proxy, Proxy::Manual { .. } | Proxy::Pac { .. }));
-    let builder = net::bind_client(builder, route, to_this_computer)?;
+    let ports = Arc::new(std::sync::Mutex::new(std::collections::HashMap::new()));
+    if let Some(h) = url.host_str() {
+        crate::tls::HostPort::record(&mut ports.lock().unwrap(), h, port);
+    }
+    let seen_cert = seen.clone();
+    let builder = crate::tls::configure_site(
+        builder,
+        &opts.extra_roots,
+        &opts.allowed_certs,
+        ports.clone(),
+        port,
+        Arc::new(move |info| seen_cert.record_refused_cert(info)),
+    );
+    let builder = net::bind_route(builder, route, to_this_computer)?;
     let inner = match opts.post {
         Some(_) => as_get.policy(),
         None => get_policy(),
@@ -2210,11 +2231,21 @@ fn client_with(
             .redirect(reqwest::redirect::Policy::none())
             .referer(false)
     } else if route.is_any() {
-        builder.redirect(inner)
+        builder.redirect(reqwest::redirect::Policy::custom(move |attempt| {
+            if let Some(h) = attempt.url().host_str() {
+                let p = attempt.url().port_or_known_default().unwrap_or(443);
+                crate::tls::HostPort::record(&mut ports.lock().unwrap(), h, p);
+            }
+            inner.redirect(attempt)
+        }))
     } else {
         let route = route.clone();
         let stay_here = to_this_computer && !through_local_proxy;
         builder.redirect(reqwest::redirect::Policy::custom(move |attempt| {
+            if let Some(h) = attempt.url().host_str() {
+                let p = attempt.url().port_or_known_default().unwrap_or(443);
+                crate::tls::HostPort::record(&mut ports.lock().unwrap(), h, p);
+            }
             let refused = net::check_url(&route, attempt.url()).err().or_else(|| {
                 (stay_here && !net::is_this_computer(attempt.url().host_str().unwrap_or(""))).then(
                     || net::NetError::Unbound {
@@ -2258,7 +2289,12 @@ async fn run(
     body: impl Future<Output = Result<Outcome, Error>>,
     shared: Arc<Shared>,
 ) -> Result<Outcome, Error> {
-    let result = body.await;
+    let result = body.await.map_err(|e| {
+        shared
+            .seen
+            .get()
+            .map_or(e.clone(), |seen| enrich_cert(e, seen))
+    });
     // Said as it stopped (`Shared::stopping`) when it was downloading.
     let said = shared.view.lock().unwrap().state == State::Stopping;
     match &result {
@@ -2502,10 +2538,10 @@ async fn run_fresh(
                             let head = Head::of(&resp);
                             (as_get, client1, (head, Body::Http(resp)), headers, ttfb)
                         }
-                        Err(e) => return Err(e),
+                        Err(e) => return Err(enrich_cert(e, &seen)),
                     }
                 }
-                Err(e) => return Err(e),
+                Err(e) => return Err(enrich_cert(e, &seen)),
             }
         }
     };
@@ -3094,7 +3130,7 @@ async fn run_resume(
             }
             // Not answering now: the connections retry, and each checks its overlap.
             Err(e) if e.transient() => {}
-            Err(e) => return Err(e),
+            Err(e) => return Err(enrich_cert(e, &seen)),
         }
         Some(site)
     } else {

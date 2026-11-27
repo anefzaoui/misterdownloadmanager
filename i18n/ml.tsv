@@ -625,6 +625,10 @@
 #. Click'n'Load window, under the question: nothing happens to the links before the user adds them in Link grabber
 #, machine
 	Allow only sites you use. Nothing is looked up or downloaded before you add it in Link grabber.	നിങ്ങൾ ഉപയോഗിക്കുന്ന സൈറ്റുകൾ മാത്രം അനുവദിക്കുക. ലിങ്ക് ഗ്രാബറിൽ ചേർക്കുന്നതിന് മുമ്പ് ഒന്നും തിരയുകയോ ഡൗൺലോഡ് ചെയ്യുകയോ ചെയ്യുന്നില്ല.
+#. text in the Options window; window title in the Options window
+#. window title: HTTPS sites whose certificate the user chose to trust
+#, machine
+	Allowed certificates	അനുവദിച്ച സർട്ടിഫിക്കറ്റുകൾ
 #. text in errors.rs
 #, machine
 	already being downloaded: {path}	ഇതിനകം ഡൗൺലോഡ് ചെയ്യുന്നു: {path}
@@ -658,6 +662,9 @@
 #. View menu: a check item; dark mode on, whatever the system's setting
 #, machine
 	Always dark	എല്ലായ്‌പ്പോഴും ഇരുണ്ടത്
+#. button in a dialog box
+#, machine
+	Always for this site	ഈ സൈറ്റിനായി എപ്പോഴും
 #. text in the Options window
 #. Options → Archives: where extracted files go
 #, machine
@@ -1067,6 +1074,11 @@
 #, machine
 	Central African Republic	മധ്യ ആഫ്രിക്കൻ റിപ്പബ്ലിക്
 #. text in the Options window
+#. column title: SHA-256 certificate fingerprint
+#, machine
+	Certificate (SHA-256)	സർട്ടിഫിക്കറ്റ് (SHA-256)
+#. text in a dialog box; text in the Options window
+#. Certificate warning: the certificate's SHA-256 fingerprint
 #. Options → Remote → Status: the certificate's fingerprint, which the phone's browser shows when it warns about it; {fingerprint} = hex digits
 #, machine
 	Certificate (SHA-256): {fingerprint}	സർട്ടിഫിക്കറ്റ് (SHA-256): {fingerprint}
@@ -1074,6 +1086,11 @@
 #. Options → DNS over TLS: label before the name the server's certificate shows
 #, machine
 	Certificate name:	സർട്ടിഫിക്കറ്റിന്റെ പേര്:
+#. text in the Options window
+#. Options → Sites Logins: button: opens the list of allowed HTTPS site certificates
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Certificates...	സർട്ടിഫിക്കറ്റുകൾ...
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -1342,6 +1359,13 @@
 #. text in the Options window
 #, machine
 	Connections:	കണക്ഷനുകൾ:
+#. text in a dialog box
+#. Certificate warning: question before Continue once / Always for this site / Cancel
+#, machine
+	Continue anyway?	എന്തായാലും തുടരണോ?
+#. button in a dialog box
+#, machine
+	Continue once	ഒരു തവണ തുടരുക
 #. link (opens a web page) in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Contributors	സംഭാവന ചെയ്തവർ
@@ -1952,7 +1976,6 @@
 #, machine
 	Eritrea	എറിത്രിയ
 #. text in a dialog box; item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window; text in remote.rs
-#. in Download File Info, where the size goes: the address didn't answer
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): it failed
 #, machine
@@ -2022,6 +2045,10 @@
 #. Options → Accounts: a note that the debrid services' support (Real-Debrid, AllDebrid, Premiumize) is new and not yet tried with real paid accounts
 #, machine
 	Experimental: built from the services' public API documentation, not yet confirmed with real accounts.	പരീക്ഷണാത്മകം: സേവനങ്ങളുടെ പൊതു API ഡോക്യുമെന്റേഷനിൽ നിന്ന് നിർമ്മിച്ചത്, യഥാർത്ഥ അക്കൗണ്ടുകൾ ഉപയോഗിച്ച് ഇതുവരെ സ്ഥിരീകരിച്ചിട്ടില്ല.
+#. text in the Options window
+#. Allowed certificates table: short reason label
+#, machine
+	Expired	കാലഹരണപ്പെട്ടു
 #. message or event log entry in the main window; text in the Options window
 #, machine
 	Export	എക്‌സ്‌പോർട്ട് ചെയ്യുക
@@ -3922,8 +3949,16 @@
 #, machine
 	Not tested: it is larger than {limit} (Options → Archives). Right-click → Test archive tests it	പരിശോധിച്ചില്ല: ഇത് {limit} (ഓപ്ഷനുകൾ → ആർക്കൈവുകൾ) എന്നതിലും വലുതാണ്. റൈറ്റ്-ക്ലിക്ക് → ആർക്കൈവ് പരിശോധിക്കുക എന്നത് ഇത് പരിശോധിക്കുന്നു
 #. text in the Options window
+#. Allowed certificates table: short reason label
+#, machine
+	Not trusted	വിശ്വസനീയമല്ല
+#. text in the Options window
 #, machine
 	Not used: file parts are written next to the file	ഉപയോഗിക്കുന്നില്ല: ഫയൽ പൂർത്തിയാകുമ്പോൾ ഫയൽ ഭാഗങ്ങൾ അതിനടുത്തേക്ക് എഴുതുന്നു
+#. text in the Options window
+#. Allowed certificates table: short reason label
+#, machine
+	Not yet valid	ഇതുവരെ സാധുവല്ല
 #. text in a dialog box
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
@@ -4145,6 +4180,9 @@
 #. Options → Add an account: label before the field for the service's API token (the other way to sign in)
 #, machine
 	Or paste your API token:	അല്ലെങ്കിൽ നിങ്ങളുടെ API ടോക്കൺ ഒട്ടിക്കുക:
+#. text in the Options window
+#, machine
+	Other	മറ്റുള്ളവ
 #. text in the Link grabber window
 #. Link grabber: the box that edits the selected package
 #, machine
@@ -4452,6 +4490,10 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	Reannounce failed: {error}	വീണ്ടും പ്രഖ്യാപിക്കുന്നത് പരാജയപ്പെട്ടു: {error}
+#. text in the Options window
+#. column title: certificate refusal reason allowed
+#, machine
+	Reason	കാരണം
 #. text in a download's progress window
 #. column title: how much came from the peer
 #, machine
@@ -4723,6 +4765,10 @@
 #. text in the Batch download window
 #, machine
 	Second file:	രണ്ടാമത്തെ ഫയൽ:
+#. text in a dialog box
+#. window title when a server's HTTPS certificate is refused
+#, machine
+	Security Alert	സുരക്ഷാ മുന്നറിയിപ്പ്
 #. text in preview.rs
 #. the preview pane when no download is selected, under its title
 #, machine
@@ -5017,6 +5063,7 @@
 	Sint Maarten	സിന്റ് മാർട്ടൻ
 #. text in the Options window
 #. Site rules: column title: the site pattern
+#. column title: site name and port
 #, machine
 	Site	സൈറ്റ്
 #. checkbox in the Find window
@@ -5043,6 +5090,11 @@
 #. Site rule: label before the site pattern box (example.com, *.example.com)
 #, machine
 	Site:	സൈറ്റ്:
+#. text in a dialog box
+#. Certificate warning: the site whose certificate was refused; {site} = host or host:port
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+	Site: {site}	സൈറ്റ്: {site}
 #. text in the Options window
 #. tab title: user names and passwords for sites
 #, machine
@@ -5053,6 +5105,14 @@
 #. text in helpers.rs
 #, machine
 	Sites send their best quality as separate video and audio. ffmpeg puts them together into one file that plays anywhere.	സൈറ്റുകൾ അവയുടെ മികച്ച ഗുണനിലവാരം പ്രത്യേക വീഡിയോയും ഓഡിയോയും ആയി അയയ്ക്കുന്നു. ffmpeg അവയെ എവിടെയും പ്ലേ ചെയ്യാൻ കഴിയുന്ന ഒരു ഫയലായി ഒരുമിപ്പിക്കുന്നു.
+#. text in the Options window
+#. Options → Sites Logins: beside the Certificates... button
+#, machine
+	Sites whose certificate you chose to trust	നിങ്ങൾ വിശ്വസിക്കാൻ തിരഞ്ഞെടുത്ത സൈറ്റുകളുടെ സർട്ടിഫിക്കറ്റുകൾ
+#. text in the Options window
+#. Allowed certificates window: explanation
+#, machine
+	Sites whose security certificate you chose to trust. Each entry is pinned to that certificate's SHA-256 fingerprint.	നിങ്ങൾ വിശ്വസിക്കാൻ തിരഞ്ഞെടുത്ത സൈറ്റുകളുടെ സുരക്ഷാ സർട്ടിഫിക്കറ്റുകൾ. ഓരോ എൻട്രിയും ആ സർട്ടിഫിക്കറ്റിന്റെ SHA-256 ഫിംഗർപ്രിന്റിലേക്ക് പിൻ ചെയ്തിരിക്കുന്നു.
 #. text in the Link grabber window; text in a download's progress window; text in the Scheduler window; text in the Add torrent window
 #. column title: the file's size
 #. column title: file size
@@ -5860,6 +5920,9 @@
 #, machine
 	The site's certificate isn't trusted, by yt-dlp nor by this computer: an antivirus's web filter or a proxy that reads HTTPS may be in the way. Turn its HTTPS scanning off, or add its certificate to the computer's, then look the page up again.	സൈറ്റിന്റെ സർട്ടിഫിക്കറ്റിനെ yt-dlp-യോ ഈ കമ്പ്യൂട്ടറോ വിശ്വസിക്കുന്നില്ല: ഒരു ആന്റിവൈറസിന്റെ വെബ് ഫിൽട്ടറോ HTTPS വായിക്കുന്ന ഒരു പ്രോക്സിയോ തടസ്സമായേക്കാം. അതിന്റെ HTTPS സ്കാനിംഗ് ഓഫാക്കുക, അല്ലെങ്കിൽ അതിന്റെ സർട്ടിഫിക്കറ്റ് കമ്പ്യൂട്ടറിന്റെ സർട്ടിഫിക്കറ്റുകളിലേക്ക് ചേർക്കുക, തുടർന്ന് പേജ് വീണ്ടും പരിശോധിക്കുക.
 #. text in errors.rs
+#, machine
+	the site's security certificate expired on {date}, so MDM can't be sure it's the real site (your browser warns about it too)	സൈറ്റിന്റെ സുരക്ഷാ സർട്ടിഫിക്കറ്റ് {date} ന് കാലഹരണപ്പെട്ടു, അതിനാൽ ഇത് യഥാർത്ഥ സൈറ്റാണെന്ന് MDM-ന് ഉറപ്പില്ല (നിങ്ങളുടെ ബ്രൗസറും ഇതിനെക്കുറിച്ച് മുന്നറിയിപ്പ് നൽകുന്നുണ്ട്)
+#. text in errors.rs
 #. why a download failed: the site's security certificate (what proves a secure, HTTPS, site is the one it says) is past its end date. Browsers warn about the same site
 #, machine
 	the site's security certificate has expired, so MDM can't be sure it's the real site (your browser warns about it too)	സൈറ്റിന്റെ സുരക്ഷാ സർട്ടിഫിക്കറ്റിന്റെ കാലാവധി കഴിഞ്ഞു, അതിനാൽ ഇത് യഥാർത്ഥ സൈറ്റാണെന്ന് MDM-ന് ഉറപ്പില്ല (നിങ്ങളുടെ ബ്രൗസറും ഇതിനെക്കുറിച്ച് മുന്നറിയിപ്പ് നൽകുന്നു)
@@ -5867,6 +5930,10 @@
 #. why a download failed: the site's security certificate was made for other site names than the one in the address
 #, machine
 	the site's security certificate is for another site name, so MDM can't be sure it's the real site (your browser warns about it too)	സൈറ്റിന്റെ സുരക്ഷാ സർട്ടിഫിക്കറ്റ് മറ്റൊരു സൈറ്റ് നാമത്തിനുള്ളതാണ്, അതിനാൽ ഇത് യഥാർത്ഥ സൈറ്റാണെന്ന് MDM-ന് ഉറപ്പില്ല (നിങ്ങളുടെ ബ്രൗസറും ഇതിനെക്കുറിച്ച് മുന്നറിയിപ്പ് നൽകുന്നു)
+#. text in errors.rs
+#. why a download failed: the site's security certificate is self-signed
+#, machine
+	the site's security certificate is self-signed, so MDM can't be sure it's the real site (your browser warns about it too)	സൈറ്റിന്റെ സുരക്ഷാ സർട്ടിഫിക്കറ്റ് സ്വയം ഒപ്പിട്ടതാണ്, അതിനാൽ ഇത് യഥാർത്ഥ സൈറ്റാണെന്ന് MDM-ന് ഉറപ്പില്ല (നിങ്ങളുടെ ബ്രൗസറും ഇതിനെക്കുറിച്ച് മുന്നറിയിപ്പ് നൽകുന്നുണ്ട്)
 #. text in errors.rs
 #. why a download failed: the site's security certificate is made for other uses than a website (its "extended key usage" leaves out web servers)
 #, machine
@@ -6906,6 +6973,10 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 	Wrong code. Tries left: {n}	തെറ്റായ കോഡ്. ശേഷിക്കുന്ന ശ്രമങ്ങൾ: {n}
+#. text in the Options window
+#. Allowed certificates table: short reason label
+#, machine
+	Wrong name	തെറ്റായ പേര്
 #. text in extracting archives (a download's log, the Archive password window)
 #. in Archive password: {name} is the archive's file name
 #. {name} = a file name (keep the braces as they are)
