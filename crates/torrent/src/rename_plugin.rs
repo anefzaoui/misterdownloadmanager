@@ -387,7 +387,11 @@ mod tests {
         apply_to_entries(dir.path(), hash, &mut entries);
         assert_eq!(entries[0].path, PathBuf::from("RenamedVideo.mp4"));
 
-        let factory = storage_factory(dir.path().to_path_buf(), false);
+        let factory = storage_factory(
+            dir.path().to_path_buf(),
+            false,
+            librqbit::storage::filesystem::open_files::global(),
+        );
         assert!(factory.is_type_id(TypeId::of::<FilesystemStorageFactory>()));
 
         remove_renamed_file(dir.path(), hash);

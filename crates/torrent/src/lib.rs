@@ -3668,6 +3668,7 @@ mod tests {
             authorized_storage::Prepared {
                 files: vec![make(ib)],
                 parted: vec![ia, ic],
+                ..Default::default()
             },
             Arc::new(|| Err(std::io::ErrorKind::PermissionDenied.into())),
         );
@@ -3704,6 +3705,7 @@ mod tests {
             authorized_storage::Prepared {
                 files: vec![make(ib), make(ic)],
                 parted: vec![ia],
+                ..Default::default()
             },
             Arc::new(|| Err(std::io::ErrorKind::PermissionDenied.into())),
         );
@@ -3734,7 +3736,7 @@ mod tests {
         leecher.stop().await;
     }
 
-    /// A torrent of 2,000 small files, all ticked, handed over as the app does (a few open, the
+    /// A torrent of 2,000 small files (up to 1000 bytes), all ticked, handed over as the app does (a few open, the
     /// others checked and closed, given again one by one by `open_one`), in a session whose
     /// budget is 24 open files: never more than 24 open (Linux: the process's descriptors into
     /// the folder agree), nothing open while it is paused, and every file whole at the end.
@@ -3747,7 +3749,7 @@ mod tests {
             .map(|i| {
                 (
                     PathBuf::from(format!("d{:02}", i % 40)).join(format!("f{i:04}.bin")),
-                    (0..1 + (i * 37) % 300).map(|j| (i + j) as u8).collect(),
+                    (0..1 + (i * 37) % 1000).map(|j| (i + j) as u8).collect(),
                 )
             })
             .collect();
@@ -3774,8 +3776,9 @@ mod tests {
             .unwrap();
         wait_for(&seeder, &hash, "checked", 60, |s| s.phase == Phase::Finished).await;
         assert!(seeder.open_files() <= MAX, "{}", seeder.open_files());
-        // About 300 KB at 64 KiB/s: paused on the way.
-        seeder.set_upload_limit(Some(64 * 1024));
+        // About 1 MB at 128 KiB/s, some 8 s: paused a third of the way, well before the end
+        // even if the limit lets a second's worth through at once.
+        seeder.set_upload_limit(Some(128 * 1024));
         let addr = seeder.listen_addr().expect("seeder listens");
 
         let mut config = offline(&tmp.path().join("s2"));
@@ -3833,7 +3836,7 @@ mod tests {
             .await
             .unwrap();
         let (mut most, mut most_fds) = (0, 0);
-        let mut sample = |most: &mut usize, most_fds: &mut usize| {
+        let sample = |most: &mut usize, most_fds: &mut usize| {
             *most = (*most).max(leecher.open_files());
             *most_fds = (*most_fds).max(fds_under(&out).unwrap_or(0));
         };
@@ -3980,6 +3983,7 @@ mod tests {
             authorized_storage::Prepared {
                 files: vec![make(ib), make(id)],
                 parted: vec![ia, ic],
+                ..Default::default()
             },
             no_reopen(),
         );
@@ -4010,6 +4014,7 @@ mod tests {
             authorized_storage::Prepared {
                 files: vec![make(ib), make(ic), make(id)],
                 parted: vec![ia],
+                ..Default::default()
             },
             no_reopen(),
         );
@@ -4388,6 +4393,7 @@ mod tests {
             authorized_storage::Prepared {
                 files: vec![make(ib)],
                 parted: vec![ia, ic],
+                ..Default::default()
             },
             Arc::new(|| Err(std::io::ErrorKind::PermissionDenied.into())),
         );
@@ -4419,6 +4425,7 @@ mod tests {
             authorized_storage::Prepared {
                 files: vec![make(ib), make(ic)],
                 parted: vec![ia],
+                ..Default::default()
             },
             Arc::new(|| Err(std::io::ErrorKind::PermissionDenied.into())),
         );
