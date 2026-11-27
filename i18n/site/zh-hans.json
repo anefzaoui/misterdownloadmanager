@@ -178,10 +178,6 @@
    "source": "Your rating is removed.",
    "text": "您的评分已移除。"
   },
-  "02b5060ed69a72ad": {
-   "source": "<g1>Live figures</g1>: the home page asks the same service on Cloudflare for how many times MDM's files were downloaded from GitHub and how many people use the browser add-on, to show them under the contributors. That request carries only what every request to a website does (your IP address and browser details, which Cloudflare sees); the service keeps nothing of it and writes no log. The figures themselves come from GitHub and the browser stores, read by the service, never by your browser.",
-   "text": "<g1>实时数据</g1>：主页向 Cloudflare 上的同一服务请求 MDM 文件从 GitHub 下载的次数以及有多少人使用浏览器附加组件，以便在贡献者下方显示这些数据。该请求仅包含访问网站的每个请求都会携带的信息（您的 IP 地址和浏览器详细信息，Cloudflare 会看到这些信息）；该服务不保留任何信息，也不写入任何日志。这些数据本身来自 GitHub 和浏览器商店，由服务读取，您的浏览器从不读取。"
-  },
   "02b5c8ba8b04167b": {
    "source": "AppImage",
    "text": "AppImage"
@@ -5562,6 +5558,10 @@
    "source": "system, tahoma",
    "text": "系统、Tahoma"
   },
+  "4a9972769bfc01f5": {
+   "source": "<g1><x2/> downloads</g1><g3>on GitHub, every version together</g3>",
+   "text": "<g1><x2/> 次下载</g1><g3>在 GitHub 上，所有版本合计</g3>"
+  },
   "4aa48dc3c710de33": {
    "source": "Torrent settings: sharing, limits and what others can see",
    "text": "种子设置：共享、限制以及其他人可以看到的内容"
@@ -7209,6 +7209,10 @@
   "6111bd2651de0090": {
    "source": "<g1>The download engine</g1>: up to 32 connections per file, re-splitting the slowest part until the last byte, and crash-safe resume after a restart or a dropped connection. HTTP, HTTPS, <g2>FTP and FTPS</g2> (<x3/>, <x4/> explicit TLS, <x5/> implicit TLS), proxies, SOCKS and <g6>proxy auto-config (PAC)</g6> scripts.",
    "text": "<g1>下载引擎</g1>：每个文件最多 32 个连接，重新分割最慢的部分直到最后一个字节，并在重启或连接中断后安全恢复。支持 HTTP、HTTPS、<g2>FTP 和 FTPS</g2>（<x3/>、<x4/> 显式 TLS、<x5/> 隐式 TLS）、代理、SOCKS 和<g6>代理自动配置 (PAC)</g6> 脚本。"
+  },
+  "611a1e12da3b7aef": {
+   "source": "<g1>Live figures</g1>: the home page asks the same service on Cloudflare for how many times MDM was downloaded from GitHub and how many people use the browser add-on, to show them under the contributors. That request carries only what every request to a website does (your IP address and browser details, which Cloudflare sees); the service keeps nothing of it and writes no log. The figures themselves come from GitHub and the browser stores, read by the service, never by your browser.",
+   "text": "<g1>实时数据</g1>：主页会向 Cloudflare 上的同一服务请求 MDM 从 GitHub 下载的次数以及有多少人使用浏览器扩展，以便在贡献者下方显示这些数据。该请求仅包含访问任何网站时都会发送的信息（您的 IP 地址和浏览器详细信息，Cloudflare 可见）；该服务不会保留任何信息，也不会写入日志。这些数据本身来自 GitHub 和浏览器商店，由该服务读取，您的浏览器绝不会读取。"
   },
   "611ef764b31d8702": {
    "source": "Android",
@@ -9694,10 +9698,6 @@
    "source": "<g1>Keep some speed for everything else</g1> walks through the settings step by step.",
    "text": "<g1>为其他活动保留一些速度</g1>将逐步引导您完成设置。"
   },
-  "821f8fc23327fd14": {
-   "source": "Every file of every version on GitHub; the add-on in the Chrome Web Store and Firefox Add-ons together. As of <x1/>",
-   "text": "GitHub 上每个版本的所有文件；Chrome 网上应用店和 Firefox 附加组件中的扩展。截至 <x1/>"
-  },
   "82214b19e565baff": {
    "source": "Pick it in <g1>View → Theme</g1>, and look at both sides: <g2>View → Always dark</g2> on and off. Check that text is readable and the focus mark visible in both.",
    "text": "在<g1>视图 → 主题</g1>中选择它，并查看两侧：<g2>视图 → 始终为深色</g2>的开启和关闭状态。检查文本是否可读，以及焦点标记在两种模式下是否可见。"
@@ -10561,6 +10561,10 @@
   "8dd172f00bd75694": {
    "source": "On 64-bit Windows 10 and 11, MDM is the stable, recommended build. The <g1>download page</g1> offers three files:",
    "text": "在 64 位 Windows 10 和 11 上，MDM 是稳定且推荐的构建版本。<g1>下载页面</g1>提供三种文件："
+  },
+  "8dda4226f9b32e88": {
+   "source": "<g1>The home page's live figures</g1>, at <x2/>, in the same <g3>OpenAPI</g3>: how many times MDM was downloaded from GitHub, every version together and how many people use the browser add-on (the Chrome Web Store's users, Firefox Add-ons' daily users), each with when it was read. Read again at most every 15 minutes; a source that can't be read keeps its last figure.",
+   "text": "<g1>主页上的实时数据</g1>，位于 <x2/>，采用相同的 <g3>OpenAPI</g3> 格式：MDM 从 GitHub 下载的总次数（所有版本合计），以及浏览器扩展的用户数量（Chrome 网上应用店用户、Firefox 附加组件每日用户），每项数据都附带读取时间。数据最多每 15 分钟读取一次；无法读取的来源将保留其上次数据。"
   },
   "8de593350090e7e8": {
    "source": "If MDM never opens, see <g1>The setup or MDM won't start</g1>.",
@@ -13166,6 +13170,10 @@
    "source": "Why doesn't MDM take over my download?",
    "text": "为什么 MDM 没有接管我的下载？"
   },
+  "af9888f01857da47": {
+   "source": "From GitHub, the Chrome Web Store and Firefox Add-ons. As of <x1/>",
+   "text": "可从 GitHub、Chrome 网上应用店和 Firefox 附加组件获取。截至 <x1/>"
+  },
   "afa015658a79d608": {
    "source": "<g1>URL</g1> — the address.",
    "text": "<g1>URL</g1> — 地址。"
@@ -14366,10 +14374,6 @@
    "source": "Your browsers hand it their downloads, and proven open-source tools do the specialist work. <g1>Set up the extension</g1>.",
    "text": "浏览器会将下载任务交给 MDM，专业工作则由成熟的开源工具完成。<g1>设置扩展</g1>。"
   },
-  "bfb6903b0d513363": {
-   "source": "<g1><x2/> downloads</g1><g3>every file of every version together</g3>",
-   "text": "<g1><x2/> 下载</g1><g3>每个版本的所有文件</g3>"
-  },
   "bfd9e614f4714695": {
    "source": "The people who made Mister Download Manager possible: everyone who sent a pull request, opened an issue or joined a conversation on GitHub.",
    "text": "感谢这些杰出人士让 Mister Download Manager 成为可能：每一位在 GitHub 上提交拉取请求、提出问题或参与讨论的朋友。"
@@ -15297,10 +15301,6 @@
   "cc8e6434e304ae05": {
    "source": "<g1>Code signing policy</g1><g2>What is signed, who approves it, and privacy</g2>",
    "text": "<g1>代码签名策略</g1><g2>签名内容、批准方和隐私</g2>"
-  },
-  "cc8f4e5b14712fff": {
-   "source": "<g1>The home page's live figures</g1>, at <x2/>, in the same <g3>OpenAPI</g3>: how many times MDM's files were downloaded from GitHub (every file of every release) and how many people use the browser add-on (the Chrome Web Store's users, Firefox Add-ons' daily users), each with when it was read. Read again at most every 15 minutes; a source that can't be read keeps its last figure.",
-   "text": "<g1>主页上的实时数据</g1>，位于 <x2/>，采用相同的 <g3>OpenAPI</g3> 格式：MDM 文件从 GitHub 的下载次数（每个版本的所有文件）以及浏览器扩展的用户数量（Chrome 网上应用店用户、Firefox 附加组件的每日用户），每次数据读取时都会记录时间。最多每 15 分钟读取一次；无法读取的来源将保留其上次数据。"
   },
   "cca215a39bfa83ba": {
    "source": "<g1>Less memory in the notification area</g1> (<g2>#72</g2>): closed to the tray, or minimized there (on by default), MDM gives the memory it isn't using back to Windows. Task Manager's <g3>Memory</g3> drops from about 50 MB to under 10 MB (with 500 downloads in the list, from 58 to about 14 MB). It gives it back again 2 minutes after hiding, when the clock's ticks and a one-time allocation have brought some back, then every 10 minutes while MDM stays there. After the language list (which needs a font for every script) closes, those fonts are let go: about 70 MB less than before. On Linux the heap's free memory goes back to the system the same way. <g4>MDM uses a lot of memory</g4> explains Task Manager's figures.",

@@ -351,8 +351,8 @@ def tallies_board() -> str:
     data = esc(json.dumps(baked, separators=(",", ":")))
     return (f'<div class="tallies-board" data-tallies data-api="{esc(STATS_API)}" data-baked="{data}">'
             f'<dl class="tallies">{"".join(rows)}</dl>'
-            f'<p class="tallies-fine">Every file of every version on GitHub; the add-on in the Chrome Web Store and '
-            f'Firefox Add-ons together. As of <time datetime="{day}" translate="no" dir="ltr" data-tally-day>{day}</time></p></div>')
+            f'<p class="tallies-fine">From GitHub, the Chrome Web Store and Firefox Add-ons. '
+            f'As of <time datetime="{day}" translate="no" dir="ltr" data-tally-day>{day}</time></p></div>')
 
 
 def github_slug(text: str, separator: str = "-") -> str:
@@ -1336,7 +1336,7 @@ def downloads_figure() -> tuple[str, str, str, str] | None:
     if not DOWNLOADS.get("total"):
         return None
     return ("GitHub Releases", f"{REPO}/releases", f'{num(floor_figure(DOWNLOADS["total"]), plus=True)} downloads',
-            "every file of every version together")
+            "on GitHub, every version together")
 
 
 def store_figure(key: str) -> tuple[str, str, str, str] | None:

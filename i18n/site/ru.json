@@ -178,10 +178,6 @@
    "source": "Your rating is removed.",
    "text": "Ваша оценка удалена."
   },
-  "02b5060ed69a72ad": {
-   "source": "<g1>Live figures</g1>: the home page asks the same service on Cloudflare for how many times MDM's files were downloaded from GitHub and how many people use the browser add-on, to show them under the contributors. That request carries only what every request to a website does (your IP address and browser details, which Cloudflare sees); the service keeps nothing of it and writes no log. The figures themselves come from GitHub and the browser stores, read by the service, never by your browser.",
-   "text": "<g1>Прямой эфир</g1>: домашняя страница запрашивает у того же сервиса на Cloudflare данные о количестве загрузок файлов MDM с GitHub и о количестве пользователей расширения для браузера, чтобы показать их под списком участников. Этот запрос содержит только то, что любой запрос к веб-сайту (ваш IP-адрес и данные браузера, которые видит Cloudflare); сервис ничего из этого не хранит и не записывает логи. Сами данные поступают с GitHub и из магазинов браузеров, считываются сервисом, а не вашим браузером."
-  },
   "02b5c8ba8b04167b": {
    "source": "AppImage",
    "text": "AppImage"
@@ -5562,6 +5558,10 @@
    "source": "system, tahoma",
    "text": "system, tahoma"
   },
+  "4a9972769bfc01f5": {
+   "source": "<g1><x2/> downloads</g1><g3>on GitHub, every version together</g3>",
+   "text": "<g1><x2/> загрузок</g1><g3>на GitHub, все версии вместе</g3>"
+  },
   "4aa48dc3c710de33": {
    "source": "Torrent settings: sharing, limits and what others can see",
    "text": "Настройки торрента: общий доступ, ограничения и что могут видеть другие"
@@ -7209,6 +7209,10 @@
   "6111bd2651de0090": {
    "source": "<g1>The download engine</g1>: up to 32 connections per file, re-splitting the slowest part until the last byte, and crash-safe resume after a restart or a dropped connection. HTTP, HTTPS, <g2>FTP and FTPS</g2> (<x3/>, <x4/> explicit TLS, <x5/> implicit TLS), proxies, SOCKS and <g6>proxy auto-config (PAC)</g6> scripts.",
    "text": "<g1>Движок загрузки</g1>: до 32 соединений на файл, повторное разделение самой медленной части до последнего байта и безопасное возобновление после перезапуска или обрыва соединения. HTTP, HTTPS, <g2>FTP и FTPS</g2> (<x3/>, <x4/> явный TLS, <x5/> неявный TLS), прокси, SOCKS и скрипты <g6>автоматической настройки прокси (PAC)</g6>."
+  },
+  "611a1e12da3b7aef": {
+   "source": "<g1>Live figures</g1>: the home page asks the same service on Cloudflare for how many times MDM was downloaded from GitHub and how many people use the browser add-on, to show them under the contributors. That request carries only what every request to a website does (your IP address and browser details, which Cloudflare sees); the service keeps nothing of it and writes no log. The figures themselves come from GitHub and the browser stores, read by the service, never by your browser.",
+   "text": "<g1>Прямой эфир</g1>: домашняя страница запрашивает у того же сервиса Cloudflare данные о количестве загрузок MDM с GitHub и числе пользователей расширения для браузера, чтобы показать их под списком участников. Этот запрос передаёт только то, что передаёт любой запрос к веб-сайту (ваш IP-адрес и данные браузера, которые видит Cloudflare); сервис ничего из этого не хранит и не ведёт журналов. Сами данные поступают с GitHub и из магазинов браузеров, считываются сервисом, а не вашим браузером."
   },
   "611ef764b31d8702": {
    "source": "Android",
@@ -9694,10 +9698,6 @@
    "source": "<g1>Keep some speed for everything else</g1> walks through the settings step by step.",
    "text": "<g1>Оставьте немного скорости для всего остального</g1> пошагово объясняет настройки."
   },
-  "821f8fc23327fd14": {
-   "source": "Every file of every version on GitHub; the add-on in the Chrome Web Store and Firefox Add-ons together. As of <x1/>",
-   "text": "Каждый файл каждой версии на GitHub; дополнение в Chrome Web Store и Firefox Add-ons вместе. По состоянию на <x1/>"
-  },
   "82214b19e565baff": {
    "source": "Pick it in <g1>View → Theme</g1>, and look at both sides: <g2>View → Always dark</g2> on and off. Check that text is readable and the focus mark visible in both.",
    "text": "Выберите ее в <g1>Вид → Тема</g1> и посмотрите на обе стороны: <g2>Вид → Всегда темная</g2> включена и выключена. Убедитесь, что текст читаем, а маркер фокуса виден в обоих режимах."
@@ -10561,6 +10561,10 @@
   "8dd172f00bd75694": {
    "source": "On 64-bit Windows 10 and 11, MDM is the stable, recommended build. The <g1>download page</g1> offers three files:",
    "text": "На 64-битных Windows 10 и 11 MDM является стабильной, рекомендуемой сборкой. На <g1>странице загрузки</g1> предлагаются три файла:"
+  },
+  "8dda4226f9b32e88": {
+   "source": "<g1>The home page's live figures</g1>, at <x2/>, in the same <g3>OpenAPI</g3>: how many times MDM was downloaded from GitHub, every version together and how many people use the browser add-on (the Chrome Web Store's users, Firefox Add-ons' daily users), each with when it was read. Read again at most every 15 minutes; a source that can't be read keeps its last figure.",
+   "text": "<g1>Актуальные данные с главной страницы</g1> по адресу <x2/> в том же <g3>OpenAPI</g3>: сколько раз MDM был загружен с GitHub (все версии вместе) и сколько людей используют дополнение для браузера (пользователи Chrome Web Store, ежедневные пользователи Firefox Add-ons), с указанием времени последнего чтения для каждого показателя. Данные обновляются не чаще чем раз в 15 минут; если источник недоступен, сохраняется последнее значение."
   },
   "8de593350090e7e8": {
    "source": "If MDM never opens, see <g1>The setup or MDM won't start</g1>.",
@@ -13166,6 +13170,10 @@
    "source": "Why doesn't MDM take over my download?",
    "text": "Почему MDM не перехватывает мою загрузку?"
   },
+  "af9888f01857da47": {
+   "source": "From GitHub, the Chrome Web Store and Firefox Add-ons. As of <x1/>",
+   "text": "Из GitHub, Интернет-магазина Chrome и Дополнений Firefox. По состоянию на <x1/>"
+  },
   "afa015658a79d608": {
    "source": "<g1>URL</g1> — the address.",
    "text": "<g1>URL</g1> — адрес."
@@ -14366,10 +14374,6 @@
    "source": "Your browsers hand it their downloads, and proven open-source tools do the specialist work. <g1>Set up the extension</g1>.",
    "text": "Ваши браузеры передают ему свои загрузки, а проверенные инструменты с открытым исходным кодом выполняют специализированную работу. <g1>Настройте расширение</g1>."
   },
-  "bfb6903b0d513363": {
-   "source": "<g1><x2/> downloads</g1><g3>every file of every version together</g3>",
-   "text": "<g1><x2/> загружает</g1><g3>каждый файл каждой версии вместе</g3>"
-  },
   "bfd9e614f4714695": {
    "source": "The people who made Mister Download Manager possible: everyone who sent a pull request, opened an issue or joined a conversation on GitHub.",
    "text": "Люди, благодаря которым Mister Download Manager стал возможен: все, кто отправлял запросы на слияние, сообщал об ошибках или участвовал в обсуждениях на GitHub."
@@ -15297,10 +15301,6 @@
   "cc8e6434e304ae05": {
    "source": "<g1>Code signing policy</g1><g2>What is signed, who approves it, and privacy</g2>",
    "text": "<g1>Политика подписи кода</g1><g2>Что подписывается, кто это одобряет и конфиденциальность</g2>"
-  },
-  "cc8f4e5b14712fff": {
-   "source": "<g1>The home page's live figures</g1>, at <x2/>, in the same <g3>OpenAPI</g3>: how many times MDM's files were downloaded from GitHub (every file of every release) and how many people use the browser add-on (the Chrome Web Store's users, Firefox Add-ons' daily users), each with when it was read. Read again at most every 15 minutes; a source that can't be read keeps its last figure.",
-   "text": "<g1>Актуальные данные на главной странице</g1>, по <x2/>, в том же <g3>OpenAPI</g3>: сколько раз файлы MDM были загружены с GitHub (каждый файл каждого выпуска) и сколько людей используют расширение для браузера (пользователи Chrome Web Store, ежедневные пользователи Firefox Add-ons), с указанием времени последнего чтения. Данные обновляются не чаще чем раз в 15 минут; если источник недоступен, сохраняется последнее значение."
   },
   "cca215a39bfa83ba": {
    "source": "<g1>Less memory in the notification area</g1> (<g2>#72</g2>): closed to the tray, or minimized there (on by default), MDM gives the memory it isn't using back to Windows. Task Manager's <g3>Memory</g3> drops from about 50 MB to under 10 MB (with 500 downloads in the list, from 58 to about 14 MB). It gives it back again 2 minutes after hiding, when the clock's ticks and a one-time allocation have brought some back, then every 10 minutes while MDM stays there. After the language list (which needs a font for every script) closes, those fonts are let go: about 70 MB less than before. On Linux the heap's free memory goes back to the system the same way. <g4>MDM uses a lot of memory</g4> explains Task Manager's figures.",

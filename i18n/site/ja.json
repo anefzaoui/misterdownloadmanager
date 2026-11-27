@@ -178,10 +178,6 @@
    "source": "Your rating is removed.",
    "text": "あなたの評価は削除されました。"
   },
-  "02b5060ed69a72ad": {
-   "source": "<g1>Live figures</g1>: the home page asks the same service on Cloudflare for how many times MDM's files were downloaded from GitHub and how many people use the browser add-on, to show them under the contributors. That request carries only what every request to a website does (your IP address and browser details, which Cloudflare sees); the service keeps nothing of it and writes no log. The figures themselves come from GitHub and the browser stores, read by the service, never by your browser.",
-   "text": "<g1>ライブの数値</g1>: ホームページでは、コントリビューターの下に表示するために、MDM のファイルが GitHub から何回ダウンロードされたか、ブラウザ アドオンを使用しているユーザーが何人いるかを Cloudflare の同じサービスに問い合わせます。このリクエストには、ウェブサイトへのすべてのリクエストと同様の情報 (IP アドレスとブラウザの詳細。これらは Cloudflare が確認します) のみが含まれます。サービスはこれらの情報を一切保持せず、ログも書き込みません。数値自体は GitHub とブラウザ ストアからサービスによって読み取られ、ユーザーのブラウザによって読み取られることはありません。"
-  },
   "02b5c8ba8b04167b": {
    "source": "AppImage",
    "text": "AppImage"
@@ -5562,6 +5558,10 @@
    "source": "system, tahoma",
    "text": "システム、Tahoma"
   },
+  "4a9972769bfc01f5": {
+   "source": "<g1><x2/> downloads</g1><g3>on GitHub, every version together</g3>",
+   "text": "<g1><x2/>ダウンロード</g1><g3>（GitHub、全バージョン合計）</g3>"
+  },
   "4aa48dc3c710de33": {
    "source": "Torrent settings: sharing, limits and what others can see",
    "text": "トレント設定：共有、制限、他のユーザーに見える情報"
@@ -7205,6 +7205,10 @@
   "6111bd2651de0090": {
    "source": "<g1>The download engine</g1>: up to 32 connections per file, re-splitting the slowest part until the last byte, and crash-safe resume after a restart or a dropped connection. HTTP, HTTPS, <g2>FTP and FTPS</g2> (<x3/>, <x4/> explicit TLS, <x5/> implicit TLS), proxies, SOCKS and <g6>proxy auto-config (PAC)</g6> scripts.",
    "text": "<g1>ダウンロードエンジン</g1>: ファイルごとに最大32接続、最後のバイトまで最も遅い部分を再分割し、再起動または接続切断後のクラッシュセーフな再開。HTTP、HTTPS、<g2>FTPおよびFTPS</g2>（<x3/>、<x4/>明示的TLS、<x5/>暗黙的TLS）、プロキシ、SOCKS、および<g6>プロキシ自動設定（PAC）</g6>スクリプト。"
+  },
+  "611a1e12da3b7aef": {
+   "source": "<g1>Live figures</g1>: the home page asks the same service on Cloudflare for how many times MDM was downloaded from GitHub and how many people use the browser add-on, to show them under the contributors. That request carries only what every request to a website does (your IP address and browser details, which Cloudflare sees); the service keeps nothing of it and writes no log. The figures themselves come from GitHub and the browser stores, read by the service, never by your browser.",
+   "text": "<g1>ライブの数値</g1>: ホームページでは、GitHub から MDM がダウンロードされた回数と、ブラウザー アドオンを使用している人数を Cloudflare の同じサービスに問い合わせ、貢献者の下に表示しています。このリクエストには、ウェブサイトへのすべてのリクエストと同様の情報 (IP アドレスとブラウザーの詳細。これらは Cloudflare が確認します) のみが含まれます。サービスはこれらの情報を一切保持せず、ログも書き込みません。数値自体は GitHub とブラウザー ストアからサービスによって読み取られ、お客様のブラウザーによって読み取られることはありません。"
   },
   "611ef764b31d8702": {
    "source": "Android",
@@ -9690,10 +9694,6 @@
    "source": "<g1>Keep some speed for everything else</g1> walks through the settings step by step.",
    "text": "<g1>他の作業のために速度を確保する</g1> で、設定を順を追って説明します。"
   },
-  "821f8fc23327fd14": {
-   "source": "Every file of every version on GitHub; the add-on in the Chrome Web Store and Firefox Add-ons together. As of <x1/>",
-   "text": "GitHub にあるすべてのバージョンのファイル、Chrome Web Store と Firefox Add-ons にあるアドオンを合計したダウンロード数です。<x1/> 時点"
-  },
   "82214b19e565baff": {
    "source": "Pick it in <g1>View → Theme</g1>, and look at both sides: <g2>View → Always dark</g2> on and off. Check that text is readable and the focus mark visible in both.",
    "text": "<g1>表示 → テーマ</g1> で選択し、両方の側面を確認します。<g2>表示 → 常にダーク</g2> をオン/オフにして、テキストが読みやすく、フォーカス マークが両方で表示されることを確認します。"
@@ -10557,6 +10557,10 @@
   "8dd172f00bd75694": {
    "source": "On 64-bit Windows 10 and 11, MDM is the stable, recommended build. The <g1>download page</g1> offers three files:",
    "text": "64 ビット版 Windows 10 および 11 では、MDM は安定版であり、推奨されるビルドです。<g1>ダウンロード ページ</g1>では、次の 3 つのファイルを提供しています。"
+  },
+  "8dda4226f9b32e88": {
+   "source": "<g1>The home page's live figures</g1>, at <x2/>, in the same <g3>OpenAPI</g3>: how many times MDM was downloaded from GitHub, every version together and how many people use the browser add-on (the Chrome Web Store's users, Firefox Add-ons' daily users), each with when it was read. Read again at most every 15 minutes; a source that can't be read keeps its last figure.",
+   "text": "<g1>ホームページのライブ数値</g1>は、<x2/> の同じ <g3>OpenAPI</g3> で提供されます。GitHub からの MDM のダウンロード数（全バージョン合計）、ブラウザ アドオンのユーザー数（Chrome ウェブストアのユーザー、Firefox アドオンのデイリーユーザー）が、それぞれ読み取り日時とともに表示されます。読み取りは最大 15 分ごとに実行されます。読み取れないソースは、前回の数値を保持します。"
   },
   "8de593350090e7e8": {
    "source": "If MDM never opens, see <g1>The setup or MDM won't start</g1>.",
@@ -13162,6 +13166,10 @@
    "source": "Why doesn't MDM take over my download?",
    "text": "MDMがダウンロードを引き継がないのはなぜですか？"
   },
+  "af9888f01857da47": {
+   "source": "From GitHub, the Chrome Web Store and Firefox Add-ons. As of <x1/>",
+   "text": "GitHub、Chrome ウェブストア、Firefox アドオンから入手できます。<x1/>現在、"
+  },
   "afa015658a79d608": {
    "source": "<g1>URL</g1> — the address.",
    "text": "<g1>URL</g1> — アドレス。"
@@ -14362,10 +14370,6 @@
    "source": "Your browsers hand it their downloads, and proven open-source tools do the specialist work. <g1>Set up the extension</g1>.",
    "text": "お使いのブラウザがダウンロードを渡し、実績のあるオープンソースツールが専門的な作業を行います。<g1>拡張機能をセットアップ</g1>。"
   },
-  "bfb6903b0d513363": {
-   "source": "<g1><x2/> downloads</g1><g3>every file of every version together</g3>",
-   "text": "<g1><x2/> ダウンロード</g1><g3>すべてのバージョンのファイルを合計</g3>"
-  },
   "bfd9e614f4714695": {
    "source": "The people who made Mister Download Manager possible: everyone who sent a pull request, opened an issue or joined a conversation on GitHub.",
    "text": "Mister Download Manager を可能にした人々: プルリクエストを送信したり、イシューを起票したり、GitHub で議論に参加したりしてくださったすべての人々。"
@@ -15293,10 +15297,6 @@
   "cc8e6434e304ae05": {
    "source": "<g1>Code signing policy</g1><g2>What is signed, who approves it, and privacy</g2>",
    "text": "<g1>コード署名ポリシー</g1><g2>署名されるもの、承認者、プライバシー</g2>"
-  },
-  "cc8f4e5b14712fff": {
-   "source": "<g1>The home page's live figures</g1>, at <x2/>, in the same <g3>OpenAPI</g3>: how many times MDM's files were downloaded from GitHub (every file of every release) and how many people use the browser add-on (the Chrome Web Store's users, Firefox Add-ons' daily users), each with when it was read. Read again at most every 15 minutes; a source that can't be read keeps its last figure.",
-   "text": "<g1>ホームページのリアルタイムの数値</g1>は、<x2/> の同じ <g3>OpenAPI</g3> で確認できます。GitHub から MDM のファイル (すべてのリリースのすべてのファイル) がダウンロードされた回数と、ブラウザー アドオン (Chrome Web Store のユーザー、Firefox アドオンのデイリー ユーザー) の利用者数を示し、それぞれ読み取り日時も表示されます。最大 15 分ごとに再読み込みされます。読み取れないソースは前回の数値を保持します。"
   },
   "cca215a39bfa83ba": {
    "source": "<g1>Less memory in the notification area</g1> (<g2>#72</g2>): closed to the tray, or minimized there (on by default), MDM gives the memory it isn't using back to Windows. Task Manager's <g3>Memory</g3> drops from about 50 MB to under 10 MB (with 500 downloads in the list, from 58 to about 14 MB). It gives it back again 2 minutes after hiding, when the clock's ticks and a one-time allocation have brought some back, then every 10 minutes while MDM stays there. After the language list (which needs a font for every script) closes, those fonts are let go: about 70 MB less than before. On Linux the heap's free memory goes back to the system the same way. <g4>MDM uses a lot of memory</g4> explains Task Manager's figures.",
