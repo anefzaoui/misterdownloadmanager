@@ -156,7 +156,9 @@ fn make_files(dir: &Path, total: u64) {
 /// `n` small files, `d00/f00000.bin` and on: 1 to 300 bytes each, no two alike.
 fn make_many(dir: &Path, n: usize) {
     for i in 0..n {
-        let path = dir.join(format!("d{:02}", i % 40)).join(format!("f{i:05}.bin"));
+        let path = dir
+            .join(format!("d{:02}", i % 40))
+            .join(format!("f{i:05}.bin"));
         let bytes: Vec<u8> = (0..1 + (i * 37) % 300)
             .map(|j| (i.wrapping_mul(31) + j) as u8)
             .collect();

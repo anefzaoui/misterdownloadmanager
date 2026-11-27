@@ -34,7 +34,9 @@ pub fn identities(
 }
 
 /// [`identities`] of everything handed over, the files handed over closed (`later`) too.
-pub fn identities_of(prepared: &mdm_torrent::authorized_storage::Prepared) -> Vec<(usize, Identity)> {
+pub fn identities_of(
+    prepared: &mdm_torrent::authorized_storage::Prepared,
+) -> Vec<(usize, Identity)> {
     let mut all = identities(&prepared.files);
     all.extend(prepared.later.iter().map(|f| (f.index, f.identity)));
     all
@@ -1763,7 +1765,10 @@ mod tests {
         assert_eq!(p.files.len(), KEEP_OPEN, "only the first few stay open");
         assert_eq!(p.later.len(), 8);
         assert!(p.pinned.is_empty());
-        assert!(p.later.iter().all(|f| f.path.is_file()), "made, as at Start");
+        assert!(
+            p.later.iter().all(|f| f.path.is_file()),
+            "made, as at Start"
+        );
         assert_eq!(identities_of(&p).len(), KEEP_OPEN + 8);
 
         let first = &p.later[0];

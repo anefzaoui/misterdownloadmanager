@@ -30,17 +30,17 @@ url = "2.5.8"
 # What the top workspace patches, for the crates used here (see its Cargo.toml): librqbit and its
 # uTP from MDM's commits.
 [patch.crates-io]
-librqbit = { git = "https://github.com/anefzaoui/rqbit.git", rev = "637ffe184cb589a4ddd68a8ecff7802feac97eb3" }
-librqbit-bencode = { git = "https://github.com/anefzaoui/rqbit.git", rev = "637ffe184cb589a4ddd68a8ecff7802feac97eb3" }
-librqbit-buffers = { git = "https://github.com/anefzaoui/rqbit.git", rev = "637ffe184cb589a4ddd68a8ecff7802feac97eb3" }
-librqbit-clone-to-owned = { git = "https://github.com/anefzaoui/rqbit.git", rev = "637ffe184cb589a4ddd68a8ecff7802feac97eb3" }
-librqbit-core = { git = "https://github.com/anefzaoui/rqbit.git", rev = "637ffe184cb589a4ddd68a8ecff7802feac97eb3" }
-librqbit-dht = { git = "https://github.com/anefzaoui/rqbit.git", rev = "637ffe184cb589a4ddd68a8ecff7802feac97eb3" }
-librqbit-lsd = { git = "https://github.com/anefzaoui/rqbit.git", rev = "637ffe184cb589a4ddd68a8ecff7802feac97eb3" }
-librqbit-peer-protocol = { git = "https://github.com/anefzaoui/rqbit.git", rev = "637ffe184cb589a4ddd68a8ecff7802feac97eb3" }
-librqbit-sha1-wrapper = { git = "https://github.com/anefzaoui/rqbit.git", rev = "637ffe184cb589a4ddd68a8ecff7802feac97eb3" }
-librqbit-tracker-comms = { git = "https://github.com/anefzaoui/rqbit.git", rev = "637ffe184cb589a4ddd68a8ecff7802feac97eb3" }
-librqbit-upnp = { git = "https://github.com/anefzaoui/rqbit.git", rev = "637ffe184cb589a4ddd68a8ecff7802feac97eb3" }
+librqbit = { git = "https://github.com/anefzaoui/rqbit.git", rev = "2bd387185e9a84c6a482cdcacdc28536b8e28351" }
+librqbit-bencode = { git = "https://github.com/anefzaoui/rqbit.git", rev = "2bd387185e9a84c6a482cdcacdc28536b8e28351" }
+librqbit-buffers = { git = "https://github.com/anefzaoui/rqbit.git", rev = "2bd387185e9a84c6a482cdcacdc28536b8e28351" }
+librqbit-clone-to-owned = { git = "https://github.com/anefzaoui/rqbit.git", rev = "2bd387185e9a84c6a482cdcacdc28536b8e28351" }
+librqbit-core = { git = "https://github.com/anefzaoui/rqbit.git", rev = "2bd387185e9a84c6a482cdcacdc28536b8e28351" }
+librqbit-dht = { git = "https://github.com/anefzaoui/rqbit.git", rev = "2bd387185e9a84c6a482cdcacdc28536b8e28351" }
+librqbit-lsd = { git = "https://github.com/anefzaoui/rqbit.git", rev = "2bd387185e9a84c6a482cdcacdc28536b8e28351" }
+librqbit-peer-protocol = { git = "https://github.com/anefzaoui/rqbit.git", rev = "2bd387185e9a84c6a482cdcacdc28536b8e28351" }
+librqbit-sha1-wrapper = { git = "https://github.com/anefzaoui/rqbit.git", rev = "2bd387185e9a84c6a482cdcacdc28536b8e28351" }
+librqbit-tracker-comms = { git = "https://github.com/anefzaoui/rqbit.git", rev = "2bd387185e9a84c6a482cdcacdc28536b8e28351" }
+librqbit-upnp = { git = "https://github.com/anefzaoui/rqbit.git", rev = "2bd387185e9a84c6a482cdcacdc28536b8e28351" }
 librqbit-utp = { git = "https://github.com/ikatson/librqbit-utp.git", rev = "06e1c53c8df6edb2830d6aab64a6d4bed8479908" }
 
 # Fuzzing builds keep the overflow and debug checks on, so an arithmetic overflow is a finding.

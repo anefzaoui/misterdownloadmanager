@@ -287,36 +287,55 @@ impl Parts {
                 if create && let Some(dir) = self.path.parent() {
                     std::fs::create_dir_all(dir)?;
                 }
-                self.entry.make_room();
-                *slot = Some(
-                    std::fs::OpenOptions::new()
-                        .read(true)
-                        .write(true)
-                        .create(create)
-                        .truncate(false)
-                        .open(&self.path)?,
-                );
-                self.entry.opened(self);
+                self.entry.admit(self);
+                match std::fs::OpenOptions::new()
+                    .read(true)
+                    .write(true)
+                    .create(create)
+                    .truncate(false)
+                    .open(&self.path)
+                {
+                    Ok(f) => *slot = Some(f),
+                    Err(e) => {
+                        self.entry.closed();
+                        return Err(e);
+                    }
+                }
             }
         }
         Err(io::Error::other("a parts file was closed while in use"))
     }
 
-    /// Writes what was written to disk and closes the handle.
+    /// Writes what was written to disk and closes the handle; one the budget closed after it
+    /// was written is opened again (by its path: MDM's own file) to be written to disk.
     fn close(&self) -> io::Result<()> {
         let file = self
             .file
             .write()
             .map_err(|_| io::Error::other("lock"))?
             .take();
-        let Some(file) = file else {
-            return Ok(());
-        };
-        self.entry.closed();
-        if self.written.swap(false, Ordering::AcqRel) {
-            file.sync_data()?;
+        if file.is_some() {
+            self.entry.closed();
         }
-        Ok(())
+        if !self.written.swap(false, Ordering::AcqRel) {
+            return Ok(());
+        }
+        let file = match file {
+            Some(f) => f,
+            None => match std::fs::OpenOptions::new()
+                .read(true)
+                .write(true)
+                .open(&self.path)
+            {
+                Ok(f) => f,
+                Err(e) if e.kind() == io::ErrorKind::NotFound => return Ok(()),
+                Err(e) => {
+                    self.written.store(true, Ordering::Release);
+                    return Err(e);
+                }
+            },
+        };
+        file.sync_data()
     }
 }
 
@@ -325,18 +344,12 @@ impl CachedHandle for Parts {
         self.entry.last_used()
     }
 
+    /// Closed by the budget, not written to disk here: a pause does that ([`Parts::close`]).
     fn try_close(&self) -> bool {
         let Ok(mut slot) = self.file.try_write() else {
             return false;
         };
-        let Some(file) = slot.as_ref() else {
-            return false;
-        };
-        if self.written.swap(false, Ordering::AcqRel)
-            && let Err(e) = file.sync_data()
-        {
-            self.written.store(true, Ordering::Release);
-            tracing::warn!("a torrent's parts file kept open: {e}");
+        if slot.is_none() {
             return false;
         }
         drop(slot.take());
@@ -494,14 +507,12 @@ impl FileSlot {
     /// closed early.
     fn install(self: &Arc<Self>, file: File) {
         if self.evictable {
-            self.entry.make_room();
+            // Counted in (room made) before it is held: never past the budget.
+            self.entry.admit(self);
         }
         let mut slot = self.file.write().unwrap_or_else(|e| e.into_inner());
         *slot = Some(file);
         self.read_only.store(false, Ordering::Release);
-        if self.evictable {
-            self.entry.opened(self);
-        }
     }
 
     /// Moves it, handle and all, to the storage `take()` makes; this one is left without.
@@ -540,7 +551,9 @@ impl FileSlot {
         Ok(slot)
     }
 
-    /// Writes what was written to disk and closes the handle, noting the file's length.
+    /// Writes what was written to disk and closes the handle, noting the file's length. One the
+    /// budget closed after it was written stays `written`: the storage gives it again to write
+    /// it to disk ([`Storage::close_files`]).
     fn close(&self) -> io::Result<()> {
         // Taking the lock for writing waited for every read and write still using it.
         let Some(file) = self
@@ -604,8 +617,9 @@ impl CachedHandle for FileSlot {
         self.entry.last_used()
     }
 
-    /// Closed by the budget, as a pause closes it (written to disk, its length noted), when
-    /// no read or write uses it.
+    /// Closed by the budget when no read or write uses it, its length noted. Not written to
+    /// disk here (a sync for each of thousands of files): a pause does that, as it did when
+    /// every file was held open.
     fn try_close(&self) -> bool {
         if !self.evictable {
             return false;
@@ -617,13 +631,6 @@ impl CachedHandle for FileSlot {
             return false;
         };
         let len = file.metadata().map(|m| m.len()).ok();
-        if self.written.swap(false, Ordering::AcqRel)
-            && let Err(e) = file.sync_data()
-        {
-            self.written.store(true, Ordering::Release);
-            tracing::warn!("a torrent file kept open: {e}");
-            return false;
-        }
         if let Ok(mut closed) = self.closed_len.lock() {
             *closed = len;
         }
@@ -744,6 +751,33 @@ impl Storage {
             }
         }
         Err(io::Error::from(io::ErrorKind::NotConnected).into())
+    }
+
+    /// A file the budget closed after it was written (still `written`, no handle), given again
+    /// by the app to be written to disk before the pause's bitfield counts its pieces. One the
+    /// app can't give (moved, deleted) has nothing of ours left to write; the next start finds
+    /// it changed.
+    fn sync_closed(slot: &FileSlot, grant: &Option<Arc<Grant>>) -> io::Result<()> {
+        if !slot.written.load(Ordering::Acquire) {
+            return Ok(());
+        }
+        let Some(open_one) = grant.as_ref().and_then(|g| g.open_one.as_ref()) else {
+            return Ok(());
+        };
+        let _opening = slot.opening.lock().map_err(|_| io::Error::other("lock"))?;
+        match open_one(slot.index) {
+            Ok(given) if given.path == slot.path => {
+                given.file.sync_data()?;
+                slot.written.store(false, Ordering::Release);
+                Ok(())
+            }
+            Ok(_) => Ok(()),
+            Err(e) => {
+                tracing::debug!("a torrent file closed early wasn't given again to sync: {e}");
+                slot.written.store(false, Ordering::Release);
+                Ok(())
+            }
+        }
     }
 
     /// One file given again by the app (`open_one`): it was closed to keep the process within
@@ -977,6 +1011,16 @@ impl TorrentStorage for Storage {
         if let Some(Slot::Parts(_)) = self.files.get(file_id) {
             return Ok(());
         }
+        // As long already (resumed, seeded): nothing to write, nor to sync at the pause.
+        let len = self.with_file(
+            file_id,
+            false,
+            || None,
+            |file| Ok(Some(file.metadata()?.len())),
+        )?;
+        if len.is_none_or(|len| len == length) {
+            return Ok(());
+        }
         self.with_file(
             file_id,
             true,
@@ -1029,10 +1073,11 @@ impl TorrentStorage for Storage {
             return Ok(());
         }
         let mut first_error = None;
+        let grant = self.grant().ok();
         for slot in &self.files {
             let closed = match slot {
                 Slot::Padding => Ok(()),
-                Slot::File(slot) => slot.close(),
+                Slot::File(slot) => slot.close().and_then(|()| Self::sync_closed(slot, &grant)),
                 Slot::Parts(p) => p.close(),
             };
             if let Err(e) = closed {

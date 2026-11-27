@@ -3774,7 +3774,10 @@ mod tests {
             .add(&torrent, &src, None, Vec::new(), false)
             .await
             .unwrap();
-        wait_for(&seeder, &hash, "checked", 60, |s| s.phase == Phase::Finished).await;
+        wait_for(&seeder, &hash, "checked", 60, |s| {
+            s.phase == Phase::Finished
+        })
+        .await;
         assert!(seeder.open_files() <= MAX, "{}", seeder.open_files());
         // About 1 MB at 128 KiB/s, some 8 s: paused a third of the way, well before the end
         // even if the limit lets a second's worth through at once.
@@ -3847,7 +3850,10 @@ mod tests {
             if s.done * 3 >= s.total && s.phase == Phase::Downloading {
                 break;
             }
-            assert!(s.phase != Phase::Finished, "finished before the pause: {s:?}");
+            assert!(
+                s.phase != Phase::Finished,
+                "finished before the pause: {s:?}"
+            );
             assert!(std::time::Instant::now() < deadline, "no transfer: {s:?}");
             tokio::time::sleep(Duration::from_millis(5)).await;
         }
@@ -3883,18 +3889,28 @@ mod tests {
         leecher.stop().await;
     }
 
-    /// Linux: how many of the process's descriptors are files under `dir`.
+    /// Linux: how many of the process's descriptors are files under `dir`. Only those in two
+    /// listings of `/proc/self/fd` in a row: one listing isn't taken at one instant, and counts
+    /// a file closed and another opened while it is read.
     fn fds_under(dir: &Path) -> Option<usize> {
         #[cfg(target_os = "linux")]
         {
             let dir = std::fs::canonicalize(dir).ok()?;
-            Some(
-                std::fs::read_dir("/proc/self/fd")
-                    .ok()?
-                    .filter_map(|e| std::fs::read_link(e.ok()?.path()).ok())
-                    .filter(|p| p.starts_with(&dir))
-                    .count(),
-            )
+            let listing = || -> Option<std::collections::HashSet<(std::ffi::OsString, std::path::PathBuf)>> {
+                Some(
+                    std::fs::read_dir("/proc/self/fd")
+                        .ok()?
+                        .filter_map(|e| {
+                            let e = e.ok()?;
+                            let to = std::fs::read_link(e.path()).ok()?;
+                            to.starts_with(&dir).then(|| (e.file_name(), to))
+                        })
+                        .collect(),
+                )
+            };
+            let first = listing()?;
+            let second = listing()?;
+            Some(first.intersection(&second).count())
         }
         #[cfg(not(target_os = "linux"))]
         {
