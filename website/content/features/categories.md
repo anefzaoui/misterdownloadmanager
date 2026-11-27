@@ -26,7 +26,7 @@ from then on. **Options → Save to** shows each category's file types and folde
 
 ## Or one folder for all of them
 
-<!--@coming 0.5.3-->
+<!--@coming 0.6.0-->
 
 Rather have every download in one place? Tick **Options → Save to → Save every download in
 "General" category's folder**, and every new download goes to General's folder, whatever its

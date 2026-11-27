@@ -254,19 +254,22 @@ overflow-checks = false
 # answers once another one has, and loads its saved IPv6 nodes (#650), and a piece whose hash
 # check a pause cuts short queued again instead of lost (#706), and the peers that others name
 # asked of MDM before they are used (`peer_filter`), and a torrent made from a folder listing its
-# files by name, until upstream has them
-# (ikatson/rqbit); every crate of that repository from the same commit.
-librqbit = { git = "https://github.com/anefzaoui/rqbit.git", rev = "05766c863dacff7be47c416393fa152d125fa6a3" }
-librqbit-bencode = { git = "https://github.com/anefzaoui/rqbit.git", rev = "05766c863dacff7be47c416393fa152d125fa6a3" }
-librqbit-buffers = { git = "https://github.com/anefzaoui/rqbit.git", rev = "05766c863dacff7be47c416393fa152d125fa6a3" }
-librqbit-clone-to-owned = { git = "https://github.com/anefzaoui/rqbit.git", rev = "05766c863dacff7be47c416393fa152d125fa6a3" }
-librqbit-core = { git = "https://github.com/anefzaoui/rqbit.git", rev = "05766c863dacff7be47c416393fa152d125fa6a3" }
-librqbit-dht = { git = "https://github.com/anefzaoui/rqbit.git", rev = "05766c863dacff7be47c416393fa152d125fa6a3" }
-librqbit-lsd = { git = "https://github.com/anefzaoui/rqbit.git", rev = "05766c863dacff7be47c416393fa152d125fa6a3" }
-librqbit-peer-protocol = { git = "https://github.com/anefzaoui/rqbit.git", rev = "05766c863dacff7be47c416393fa152d125fa6a3" }
-librqbit-sha1-wrapper = { git = "https://github.com/anefzaoui/rqbit.git", rev = "05766c863dacff7be47c416393fa152d125fa6a3" }
-librqbit-tracker-comms = { git = "https://github.com/anefzaoui/rqbit.git", rev = "05766c863dacff7be47c416393fa152d125fa6a3" }
-librqbit-upnp = { git = "https://github.com/anefzaoui/rqbit.git", rev = "05766c863dacff7be47c416393fa152d125fa6a3" }
+# files by name, until upstream has them (ikatson/rqbit); and upstream's own fixes not released
+# yet, from its main branch and its open pull requests (branch mdm/upstream-picks: a HAVE for
+# every finished piece, HTTP trackers' `interval`, the piece map saved on pause, UTF-8 names,
+# torrent ids handed out one at a time and more; their authors in ATTRIBUTION.md). Every crate
+# of that repository from the same commit.
+librqbit = { git = "https://github.com/anefzaoui/rqbit.git", rev = "4252ae1ee9d29aecf09bbae8b59c6ed0b0d70b43" }
+librqbit-bencode = { git = "https://github.com/anefzaoui/rqbit.git", rev = "4252ae1ee9d29aecf09bbae8b59c6ed0b0d70b43" }
+librqbit-buffers = { git = "https://github.com/anefzaoui/rqbit.git", rev = "4252ae1ee9d29aecf09bbae8b59c6ed0b0d70b43" }
+librqbit-clone-to-owned = { git = "https://github.com/anefzaoui/rqbit.git", rev = "4252ae1ee9d29aecf09bbae8b59c6ed0b0d70b43" }
+librqbit-core = { git = "https://github.com/anefzaoui/rqbit.git", rev = "4252ae1ee9d29aecf09bbae8b59c6ed0b0d70b43" }
+librqbit-dht = { git = "https://github.com/anefzaoui/rqbit.git", rev = "4252ae1ee9d29aecf09bbae8b59c6ed0b0d70b43" }
+librqbit-lsd = { git = "https://github.com/anefzaoui/rqbit.git", rev = "4252ae1ee9d29aecf09bbae8b59c6ed0b0d70b43" }
+librqbit-peer-protocol = { git = "https://github.com/anefzaoui/rqbit.git", rev = "4252ae1ee9d29aecf09bbae8b59c6ed0b0d70b43" }
+librqbit-sha1-wrapper = { git = "https://github.com/anefzaoui/rqbit.git", rev = "4252ae1ee9d29aecf09bbae8b59c6ed0b0d70b43" }
+librqbit-tracker-comms = { git = "https://github.com/anefzaoui/rqbit.git", rev = "4252ae1ee9d29aecf09bbae8b59c6ed0b0d70b43" }
+librqbit-upnp = { git = "https://github.com/anefzaoui/rqbit.git", rev = "4252ae1ee9d29aecf09bbae8b59c6ed0b0d70b43" }
 # librqbit's uTP (#1384) as merged upstream after 0.7.0, until a release has it
 # (ikatson/librqbit-utp#3, #4): on Windows, one packet sent to a closed port (or one oversized
 # datagram) no longer stops uTP for the whole session, and ringbuf 0.5.

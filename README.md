@@ -116,7 +116,7 @@ one:
 | `...-setup-x86.exe`, `...-portable-x86.zip`, `...-x86.zip` | The same three for **32-bit Windows 10**. There, choose your own ffmpeg in **Helpers** for the best video qualities: none is built for it that MDM can check. |
 | `...-extension-chromium.zip` | You want to add the browser extension by hand (Chrome, Edge, Brave, Opera, Vivaldi). From the stores is easier: [Add to Chrome](https://chromewebstore.google.com/detail/mister-download-manager/ejoleppdfgjdndddcjoehopknmlglojp), [Add to Firefox](https://addons.mozilla.org/firefox/addon/mister-download-manager/). |
 
-The ARM64 and 32-bit files come with every release after 0.5.2; **Check for updates** keeps each
+The ARM64 and 32-bit files come with every release from 0.6.0; **Check for updates** keeps each
 copy on its own processor's files.
 
 > [!NOTE]
@@ -170,7 +170,7 @@ Up to version 0.2.4, the files' names end in `-experimental`.
 | `...-linux-x86_64.rpm` | Fedora, openSUSE, RHEL: `sudo dnf install ./<file>.rpm`. |
 | `...-linux-x86_64.AppImage` | Any Linux. Make it executable and run it. |
 | `...-linux-x86_64.tar.gz` | The plain programs, for any distribution. |
-| `...-linux-arm64.*` | The same four for 64-bit ARM computers, from the release after 0.5.2 (built and tested on GitHub's ARM machines). |
+| `...-linux-arm64.*` | The same four for 64-bit ARM computers, from version 0.6.0 (built and tested on GitHub's ARM machines). |
 
 <p align="center">
   <picture>

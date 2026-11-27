@@ -709,10 +709,6 @@ pub struct Torrents {
     api: Api,
     /// Through a proxy: UDP trackers are dropped (`trackers::allowed`).
     proxied: bool,
-    /// One add at a time: librqbit gives a new torrent the saved ids' highest plus one, so two
-    /// adds at once both took id 0, and the second was answered "already managed" with the
-    /// first one's handle: it was never added (two torrents started together, #39).
-    adding: tokio::sync::Mutex<()>,
     /// librqbit's saved state (`session.json`, and each torrent's .torrent and piece map).
     session_dir: PathBuf,
     /// Each checking torrent's bytes checked and when they last moved: librqbit leaves a check
@@ -1166,7 +1162,6 @@ impl Torrents {
             session,
             api,
             proxied,
-            adding: tokio::sync::Mutex::new(()),
             session_dir: cfg.state_dir.join("session"),
             checks,
             watch,
@@ -1280,13 +1275,13 @@ impl Torrents {
             initial_peers: (!peers.is_empty()).then_some(peers),
             ..Default::default()
         };
-        let res = {
-            let _one = self.adding.lock().await;
-            self.session
-                .add_torrent(AddTorrent::from_bytes(torrent), Some(opts))
-                .await
-                .map_err(engine)?
-        };
+        // Adds run side by side: librqbit gives each torrent an id of its own (rqbit #711; two
+        // adds at once took the same id, and the second got the first's handle, #39).
+        let res = self
+            .session
+            .add_torrent(AddTorrent::from_bytes(torrent), Some(opts))
+            .await
+            .map_err(engine)?;
         let handle = res
             .into_handle()
             .ok_or_else(|| engine("the torrent was listed instead of started"))?;
@@ -1400,6 +1395,8 @@ impl Torrents {
             TorrentStatsState::Paused => Ok(()),
             // librqbit pausing a check stops it where it is and leaves the torrent Initializing
             // for good (a Recheck stuck at 17 %): the check ends first, then it is paused.
+            // Still so with rqbit #721, which keeps only a pause that comes after the check's
+            // last piece: without this, `pausing_during_the_check_lets_it_finish` stops at 0 %.
             TorrentStatsState::Initializing { .. } => {
                 let session = self.session.clone();
                 let (wanted, hash) = (self.pause_after_check.clone(), hash.to_owned());
@@ -4668,6 +4665,60 @@ mod tests {
         want.sort();
         assert_eq!(all, want);
         t.stop().await;
+    }
+
+    /// #39: many torrents added at once, each from a task of its own, are all in the session,
+    /// each its own, and no add waits for another. librqbit gives each a torrent id of its own
+    /// (rqbit #711): it used to give them the same one, and the later ones got the first's
+    /// handle, so MDM let only one add in at a time.
+    #[tokio::test(flavor = "multi_thread", worker_threads = 4)]
+    async fn many_torrents_added_at_once_are_all_there() {
+        let tmp = tempfile::tempdir().unwrap();
+        let t = std::sync::Arc::new(
+            Torrents::start(offline(&tmp.path().join("state")))
+                .await
+                .unwrap(),
+        );
+        let gate = std::sync::Arc::new(tokio::sync::Barrier::new(16));
+        let adds: Vec<_> = (0..16)
+            .map(|i| {
+                let (t, gate) = (t.clone(), gate.clone());
+                let out = tmp.path().join(format!("out-{i}"));
+                tokio::spawn(async move {
+                    let torrent = torrent_naming(&format!("{i}.bin"));
+                    gate.wait().await;
+                    t.add(&torrent, &out, None, Vec::new(), true).await
+                })
+            })
+            .collect();
+        let mut got = Vec::new();
+        for add in adds {
+            got.push(add.await.unwrap().expect("every add succeeds"));
+        }
+        let mut want: Vec<String> = (0..16)
+            .map(|i| {
+                librqbit::torrent_from_bytes(&torrent_naming(&format!("{i}.bin")))
+                    .unwrap()
+                    .info_hash
+                    .as_string()
+            })
+            .collect();
+        want.sort();
+        got.sort();
+        assert_eq!(got, want, "each add answered with its own torrent");
+        let mut all = t.hashes();
+        all.sort();
+        assert_eq!(all, want, "all of them in the session");
+        // Saved under ids of their own: a restart finds all of them.
+        t.stop().await;
+        drop(t);
+        let again = Torrents::start(offline(&tmp.path().join("state")))
+            .await
+            .unwrap();
+        let mut back = again.hashes();
+        back.sort();
+        assert_eq!(back, want, "all of them back after a restart");
+        again.stop().await;
     }
 
     /// #39: what a seeder sends is held back by the session's upload limit, then by its
