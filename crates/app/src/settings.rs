@@ -474,8 +474,9 @@ pub struct Settings {
     #[serde(with = "sealed_logins")]
     pub site_logins: Vec<(String, String, String)>,
     /// HTTPS sites whose refused certificate the user chose "Always for this site" for (#1964),
-    /// pinned to `(host, port, sha256)`.
-    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    /// pinned to `(host, port, sha256)`. Written even when empty: Options' OK applies only
+    /// the keys it changed (`merge_changes`), so a list emptied there must still be a key.
+    #[serde(default)]
     pub allowed_certs: Vec<mdm_engine::AllowedCert>,
     /// Options → Accounts (#44): debrid service accounts, in the order they are asked.
     pub debrid_accounts: Vec<DebridAccount>,
@@ -2672,6 +2673,21 @@ pub(crate) mod sealed {
             let json = serde_json::to_string(&s).unwrap();
             let back: crate::settings::Settings = serde_json::from_str(&json).unwrap();
             assert_eq!(back.allowed_certs, s.allowed_certs);
+        }
+
+        /// #1964: Options → Sites Logins → Certificates... removing the last allowed certificate
+        /// takes effect when OK merges the dialog's changes into the live settings.
+        #[test]
+        fn removing_the_last_allowed_cert_in_options_sticks() {
+            use crate::settings::Settings;
+            use mdm_engine::CertProblem;
+            let mut live = Settings::default();
+            live.allow_cert("nas.local".into(), 8443, "ab".repeat(32), CertProblem::Untrusted);
+            let from = live.clone();
+            let mut to = from.clone();
+            to.allowed_certs.clear();
+            let merged = Settings::merge_changes(&live, &from, &to);
+            assert!(merged.allowed_certs.is_empty(), "{:?}", merged.allowed_certs);
         }
     }
 }
