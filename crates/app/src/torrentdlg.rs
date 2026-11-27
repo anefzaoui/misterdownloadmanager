@@ -2051,7 +2051,7 @@ mod tests {
         let mut dialog = TorrentDialog::new(
             Some(String::new()),
             None,
-            Host::new(),
+            Host::new(crate::torrents::state_dir().map(mdm_torrent::Config::new)),
             HashSet::new(),
             std::env::temp_dir(),
             Vec::new(),
