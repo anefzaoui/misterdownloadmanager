@@ -625,6 +625,10 @@
 #. Click'n'Load window, under the question: nothing happens to the links before the user adds them in Link grabber
 #, machine
 	Allow only sites you use. Nothing is looked up or downloaded before you add it in Link grabber.	तपाईंले प्रयोग गर्ने साइटहरूलाई मात्र अनुमति दिनुहोस्। तपाईंले लिङ्क ग्राबरमा थप्नु अघि केही पनि हेरिएको वा डाउनलोड गरिएको छैन।
+#. text in the Options window; window title in the Options window
+#. window title: HTTPS sites whose certificate the user chose to trust
+#, machine
+	Allowed certificates	अनुमति दिइएका प्रमाणपत्रहरू
 #. text in errors.rs
 #, machine
 	already being downloaded: {path}	पहिले नै डाउनलोड भइरहेको छ: {path}
@@ -658,6 +662,9 @@
 #. View menu: a check item; dark mode on, whatever the system's setting
 #, machine
 	Always dark	सधैँ गाढा
+#. button in a dialog box
+#, machine
+	Always for this site	यो साइटका लागि सधैँ
 #. text in the Options window
 #. Options → Archives: where extracted files go
 #, machine
@@ -1067,6 +1074,11 @@
 #, machine
 	Central African Republic	मध्य अफ्रिकी गणतन्त्र
 #. text in the Options window
+#. column title: SHA-256 certificate fingerprint
+#, machine
+	Certificate (SHA-256)	प्रमाणपत्र (SHA-256)
+#. text in a dialog box; text in the Options window
+#. Certificate warning: the certificate's SHA-256 fingerprint
 #. Options → Remote → Status: the certificate's fingerprint, which the phone's browser shows when it warns about it; {fingerprint} = hex digits
 #, machine
 	Certificate (SHA-256): {fingerprint}	प्रमाणपत्र (SHA-256): {fingerprint}
@@ -1074,6 +1086,11 @@
 #. Options → DNS over TLS: label before the name the server's certificate shows
 #, machine
 	Certificate name:	प्रमाणपत्रको नाम:
+#. text in the Options window
+#. Options → Sites Logins: button: opens the list of allowed HTTPS site certificates
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Certificates...	प्रमाणपत्रहरू...
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -1347,6 +1364,13 @@
 #. text in the Options window
 #, machine
 	Connections:	जडानहरू:
+#. text in a dialog box
+#. Certificate warning: question before Continue once / Always for this site / Cancel
+#, machine
+	Continue anyway?	जे भए पनि जारी राख्नुहोस्?
+#. button in a dialog box
+#, machine
+	Continue once	एक पटक जारी राख्नुहोस्
 #. link (opens a web page) in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Contributors	योगदानकर्ताहरू
@@ -1957,7 +1981,6 @@
 #, machine
 	Eritrea	इरिट्रिया
 #. text in a dialog box; item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window; text in remote.rs
-#. in Download File Info, where the size goes: the address didn't answer
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): it failed
 #, machine
@@ -2027,6 +2050,10 @@
 #. Options → Accounts: a note that the debrid services' support (Real-Debrid, AllDebrid, Premiumize) is new and not yet tried with real paid accounts
 #, machine
 	Experimental: built from the services' public API documentation, not yet confirmed with real accounts.	प्रयोगात्मक: सेवाहरूको सार्वजनिक API कागजातबाट निर्मित, वास्तविक खाताहरूसँग अझै पुष्टि भएको छैन।
+#. text in the Options window
+#. Allowed certificates table: short reason label
+#, machine
+	Expired	म्याद सकिएको
 #. message or event log entry in the main window; text in the Options window
 #, machine
 	Export	निर्यात गर्नुहोस्
@@ -3931,8 +3958,16 @@
 #, machine
 	Not tested: it is larger than {limit} (Options → Archives). Right-click → Test archive tests it	परीक्षण गरिएन: यो {limit} (विकल्पहरू → आर्काइभहरू) भन्दा ठूलो छ। दायाँ क्लिक गरेर → आर्काइभ परीक्षण गर्नुहोस् चयन गर्दा यसको परीक्षण हुन्छ
 #. text in the Options window
+#. Allowed certificates table: short reason label
+#, machine
+	Not trusted	विश्वसनीय छैन
+#. text in the Options window
 #, machine
 	Not used: file parts are written next to the file	प्रयोग गरिएको छैन: फाइलका भागहरू फाइलको छेउमा लेखिएका छन्
+#. text in the Options window
+#. Allowed certificates table: short reason label
+#, machine
+	Not yet valid	अझै मान्य छैन
 #. text in a dialog box
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
@@ -4154,6 +4189,9 @@
 #. Options → Add an account: label before the field for the service's API token (the other way to sign in)
 #, machine
 	Or paste your API token:	वा तपाईंको API टोकन टाँस्नुहोस्:
+#. text in the Options window
+#, machine
+	Other	अन्य
 #. text in the Link grabber window
 #. Link grabber: the box that edits the selected package
 #, machine
@@ -4461,6 +4499,10 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	Reannounce failed: {error}	पुनः घोषणा असफल भयो: {error}
+#. text in the Options window
+#. column title: certificate refusal reason allowed
+#, machine
+	Reason	कारण
 #. text in a download's progress window
 #. column title: how much came from the peer
 #, machine
@@ -4732,6 +4774,10 @@
 #. text in the Batch download window
 #, machine
 	Second file:	दोस्रो फाइल:
+#. text in a dialog box
+#. window title when a server's HTTPS certificate is refused
+#, machine
+	Security Alert	सुरक्षा चेतावनी
 #. text in preview.rs
 #. the preview pane when no download is selected, under its title
 #, machine
@@ -5026,6 +5072,7 @@
 	Sint Maarten	सिन्ट मार्टेन
 #. text in the Options window
 #. Site rules: column title: the site pattern
+#. column title: site name and port
 #, machine
 	Site	साइट
 #. checkbox in the Find window
@@ -5052,6 +5099,11 @@
 #. Site rule: label before the site pattern box (example.com, *.example.com)
 #, machine
 	Site:	साइट:
+#. text in a dialog box
+#. Certificate warning: the site whose certificate was refused; {site} = host or host:port
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+	Site: {site}	साइट: {site}
 #. text in the Options window
 #. tab title: user names and passwords for sites
 #, machine
@@ -5062,6 +5114,14 @@
 #. text in helpers.rs
 #, machine
 	Sites send their best quality as separate video and audio. ffmpeg puts them together into one file that plays anywhere.	साइटहरूले तिनीहरूको उत्कृष्ट गुणस्तरलाई छुट्टै भिडियो र अडियोको रूपमा पठाउँछन्। ffmpeg ले तिनीहरूलाई एक फाइलमा एकसाथ राख्छ जुन जहाँ पनि प्ले हुन्छ।
+#. text in the Options window
+#. Options → Sites Logins: beside the Certificates... button
+#, machine
+	Sites whose certificate you chose to trust	तपाईंले विश्वास गर्न रोज्नुभएका साइटका प्रमाणपत्रहरू
+#. text in the Options window
+#. Allowed certificates window: explanation
+#, machine
+	Sites whose security certificate you chose to trust. Each entry is pinned to that certificate's SHA-256 fingerprint.	तपाईंले विश्वास गर्न रोज्नुभएका साइटका सुरक्षा प्रमाणपत्रहरू। प्रत्येक प्रविष्टि त्यस प्रमाणपत्रको SHA-256 फिंगरप्रिन्टमा पिन गरिएको छ।
 #. text in the Link grabber window; text in a download's progress window; text in the Scheduler window; text in the Add torrent window
 #. column title: the file's size
 #. column title: file size
@@ -5864,6 +5924,9 @@
 #, machine
 	The site's certificate isn't trusted, by yt-dlp nor by this computer: an antivirus's web filter or a proxy that reads HTTPS may be in the way. Turn its HTTPS scanning off, or add its certificate to the computer's, then look the page up again.	साइटको प्रमाणपत्र yt-dlp वा यो कम्प्युटरले विश्वास गर्दैन: एन्टिभाइरसको वेब फिल्टर वा HTTPS पढ्ने प्रोक्सी बाटोमा हुन सक्छ। यसको HTTPS स्क्यानिङ बन्द गर्नुहोस्, वा यसको प्रमाणपत्र कम्प्युटरमा थप्नुहोस्, त्यसपछि पृष्ठ फेरि हेर्नुहोस्।
 #. text in errors.rs
+#, machine
+	the site's security certificate expired on {date}, so MDM can't be sure it's the real site (your browser warns about it too)	साइटको सुरक्षा प्रमाणपत्र {date} मा म्याद सकियो, त्यसैले MDM यो वास्तविक साइट हो भनी निश्चित हुन सक्दैन (तपाईंको ब्राउजरले पनि यस बारे चेतावनी दिन्छ)
+#. text in errors.rs
 #. why a download failed: the site's security certificate (what proves a secure, HTTPS, site is the one it says) is past its end date. Browsers warn about the same site
 #, machine
 	the site's security certificate has expired, so MDM can't be sure it's the real site (your browser warns about it too)	साइटको सुरक्षा प्रमाणपत्रको म्याद सकिएको छ, त्यसैले MDM ले यो वास्तविक साइट हो भन्ने निश्चित गर्न सक्दैन (तपाईंको ब्राउजरले पनि यसबारे चेतावनी दिन्छ)
@@ -5871,6 +5934,10 @@
 #. why a download failed: the site's security certificate was made for other site names than the one in the address
 #, machine
 	the site's security certificate is for another site name, so MDM can't be sure it's the real site (your browser warns about it too)	साइटको सुरक्षा प्रमाणपत्र ठेगानामा भएको साइटको नामका लागि जारी गरिएको होइन, त्यसैले MDM ले यो वास्तविक साइट हो भन्ने निश्चित गर्न सक्दैन (तपाईंको ब्राउजरले पनि यसबारे चेतावनी दिन्छ)
+#. text in errors.rs
+#. why a download failed: the site's security certificate is self-signed
+#, machine
+	the site's security certificate is self-signed, so MDM can't be sure it's the real site (your browser warns about it too)	साइटको सुरक्षा प्रमाणपत्र स्व-हस्ताक्षरित छ, त्यसैले MDM यो वास्तविक साइट हो भनी निश्चित हुन सक्दैन (तपाईंको ब्राउजरले पनि यस बारे चेतावनी दिन्छ)
 #. text in errors.rs
 #. why a download failed: the site's security certificate is made for other uses than a website (its "extended key usage" leaves out web servers)
 #, machine
@@ -6914,6 +6981,10 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 	Wrong code. Tries left: {n}	गलत कोड। बाँकी प्रयासहरू: {n}
+#. text in the Options window
+#. Allowed certificates table: short reason label
+#, machine
+	Wrong name	गलत नाम
 #. text in extracting archives (a download's log, the Archive password window)
 #. in Archive password: {name} is the archive's file name
 #. {name} = a file name (keep the braces as they are)

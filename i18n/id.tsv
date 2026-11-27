@@ -515,6 +515,10 @@
 #. Click'n'Load window, under the question: nothing happens to the links before the user adds them in Link grabber
 #, machine
 	Allow only sites you use. Nothing is looked up or downloaded before you add it in Link grabber.	Izinkan hanya situs yang Anda gunakan. Tidak ada yang dicari atau diunduh sebelum Anda menambahkannya di Link grabber.
+#. text in the Options window; window title in the Options window
+#. window title: HTTPS sites whose certificate the user chose to trust
+#, machine
+	Allowed certificates	Sertifikat yang diizinkan
 #. text in errors.rs
 	already being downloaded: {path}	sedang diunduh: {path}
 #. text in the Link grabber window
@@ -541,6 +545,9 @@
 #. message or event log entry in the main window
 #. View menu: a check item; dark mode on, whatever the system's setting
 	Always dark	Selalu gelap
+#. button in a dialog box
+#, machine
+	Always for this site	Selalu untuk situs ini
 #. text in the Options window
 #. Options → Archives: where extracted files go
 	Always into a folder named after it	Selalu ke dalam folder yang dinamai sesuai namanya
@@ -860,11 +867,21 @@
 #. a country's name (where a download's server is)
 	Central African Republic	Republik Afrika Tengah
 #. text in the Options window
+#. column title: SHA-256 certificate fingerprint
+#, machine
+	Certificate (SHA-256)	Sertifikat (SHA-256)
+#. text in a dialog box; text in the Options window
+#. Certificate warning: the certificate's SHA-256 fingerprint
 #. Options → Remote → Status: the certificate's fingerprint, which the phone's browser shows when it warns about it; {fingerprint} = hex digits
 	Certificate (SHA-256): {fingerprint}	Sertifikat (SHA-256): {fingerprint}
 #. text in the Options window
 #. Options → DNS over TLS: label before the name the server's certificate shows
 	Certificate name:	Nama sertifikat:
+#. text in the Options window
+#. Options → Sites Logins: button: opens the list of allowed HTTPS site certificates
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Certificates...	Sertifikat...
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Chad	Chad
@@ -1088,6 +1105,13 @@
 	Connections and Limits	Koneksi dan Batas
 #. text in the Options window
 	Connections:	Koneksi:
+#. text in a dialog box
+#. Certificate warning: question before Continue once / Always for this site / Cancel
+#, machine
+	Continue anyway?	Lanjutkan saja?
+#. button in a dialog box
+#, machine
+	Continue once	Lanjutkan sekali
 #. link (opens a web page) in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Contributors	Kontributor
@@ -1561,7 +1585,6 @@
 #. a country's name (where a download's server is)
 	Eritrea	Eritrea
 #. text in a dialog box; item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window; text in remote.rs
-#. in Download File Info, where the size goes: the address didn't answer
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): it failed
 	Error	Galat
@@ -1615,6 +1638,10 @@
 #. text in the Options window
 #. Options → Accounts: a note that the debrid services' support (Real-Debrid, AllDebrid, Premiumize) is new and not yet tried with real paid accounts
 	Experimental: built from the services' public API documentation, not yet confirmed with real accounts.	Eksperimental: dibuat berdasarkan dokumentasi API publik layanan, belum dikonfirmasi dengan akun berbayar sungguhan.
+#. text in the Options window
+#. Allowed certificates table: short reason label
+#, machine
+	Expired	Kedaluwarsa
 #. message or event log entry in the main window; text in the Options window
 	Export	Ekspor
 #. button in the Options window
@@ -3116,7 +3143,15 @@
 #, machine
 	Not tested: it is larger than {limit} (Options → Archives). Right-click → Test archive tests it	Tidak diuji: ukurannya lebih besar dari {limit} (Opsi → Arsip). Klik kanan → Uji arsip untuk mengujinya
 #. text in the Options window
+#. Allowed certificates table: short reason label
+#, machine
+	Not trusted	Tidak tepercaya
+#. text in the Options window
 	Not used: file parts are written next to the file	Tidak digunakan: bagian file ditulis di samping file
+#. text in the Options window
+#. Allowed certificates table: short reason label
+#, machine
+	Not yet valid	Belum valid
 #. text in a dialog box
 #. \\n starts a new line: break lines where they fit the translation
 	Note: Internet servers may break connection when the speed is too limited! Thus it's not\nrecommended to use Speed Limiter to download from servers that do not support\n"resume" feature.	Catatan: Server internet dapat memutuskan koneksi jika kecepatannya terlalu rendah! Oleh karena itu, tidak\ndianjurkan menggunakan Pembatas Kecepatan untuk mengunduh dari server yang tidak mendukung\nfitur "melanjutkan unduhan".
@@ -3288,6 +3323,9 @@
 #. text in the Options window
 #. Options → Add an account: label before the field for the service's API token (the other way to sign in)
 	Or paste your API token:	Atau tempel token API Anda:
+#. text in the Options window
+#, machine
+	Other	Lainnya
 #. text in the Link grabber window
 #. Link grabber: the box that edits the selected package
 	Package	Paket
@@ -3527,6 +3565,10 @@
 #. event log entry: Reannounce failed, with the reason
 #. {error} = an error message (keep the braces as they are)
 	Reannounce failed: {error}	Pengumuman ulang gagal: {error}
+#. text in the Options window
+#. column title: certificate refusal reason allowed
+#, machine
+	Reason	Alasan
 #. text in a download's progress window
 #. column title: how much came from the peer
 	Received	Diterima
@@ -3740,6 +3782,10 @@
 	Search:	Cari:
 #. text in the Batch download window
 	Second file:	File kedua:
+#. text in a dialog box
+#. window title when a server's HTTPS certificate is refused
+#, machine
+	Security Alert	Peringatan Keamanan
 #. text in preview.rs
 #. the preview pane when no download is selected, under its title
 #, machine
@@ -3973,6 +4019,7 @@
 	Sint Maarten	Sint Maarten
 #. text in the Options window
 #. Site rules: column title: the site pattern
+#. column title: site name and port
 #, machine
 	Site	Situs
 #. checkbox in the Find window
@@ -3996,6 +4043,11 @@
 #. Site rule: label before the site pattern box (example.com, *.example.com)
 #, machine
 	Site:	Situs:
+#. text in a dialog box
+#. Certificate warning: the site whose certificate was refused; {site} = host or host:port
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+	Site: {site}	Situs: {site}
 #. text in the Options window
 #. tab title: user names and passwords for sites
 	Sites Logins	Login Situs
@@ -4003,6 +4055,14 @@
 	Sites send their best quality as separate video and audio, and ffmpeg joins them. On this system MDM uses yours: install ffmpeg with your package manager.	Situs mengirimkan kualitas terbaiknya sebagai video dan audio terpisah, lalu ffmpeg menggabungkannya. Pada sistem ini, MDM menggunakan ffmpeg milik Anda: instal ffmpeg dengan manajer paket Anda.
 #. text in helpers.rs
 	Sites send their best quality as separate video and audio. ffmpeg puts them together into one file that plays anywhere.	Situs mengirimkan kualitas terbaiknya sebagai video dan audio terpisah. ffmpeg menggabungkannya menjadi satu file yang dapat diputar di mana saja.
+#. text in the Options window
+#. Options → Sites Logins: beside the Certificates... button
+#, machine
+	Sites whose certificate you chose to trust	Situs yang sertifikatnya Anda pilih untuk dipercaya
+#. text in the Options window
+#. Allowed certificates window: explanation
+#, machine
+	Sites whose security certificate you chose to trust. Each entry is pinned to that certificate's SHA-256 fingerprint.	Situs yang sertifikat keamanannya Anda pilih untuk dipercaya. Setiap entri disematkan ke sidik jari SHA-256 sertifikat tersebut.
 #. text in the Link grabber window; text in a download's progress window; text in the Scheduler window; text in the Add torrent window
 #. column title: the file's size
 #. column title: file size
@@ -4644,6 +4704,9 @@
 #, machine
 	The site's certificate isn't trusted, by yt-dlp nor by this computer: an antivirus's web filter or a proxy that reads HTTPS may be in the way. Turn its HTTPS scanning off, or add its certificate to the computer's, then look the page up again.	Sertifikat situs tidak dipercaya, baik oleh yt-dlp maupun oleh komputer ini: filter web antivirus atau proksi yang membaca HTTPS mungkin menghalangi. Matikan pemindaian HTTPS-nya, atau tambahkan sertifikatnya ke komputer, lalu cari halaman lagi.
 #. text in errors.rs
+#, machine
+	the site's security certificate expired on {date}, so MDM can't be sure it's the real site (your browser warns about it too)	sertifikat keamanan situs kedaluwarsa pada {date}, jadi MDM tidak dapat memastikan itu situs yang asli (browser Anda juga memperingatkan tentang hal itu)
+#. text in errors.rs
 #. why a download failed: the site's security certificate (what proves a secure, HTTPS, site is the one it says) is past its end date. Browsers warn about the same site
 #, machine
 	the site's security certificate has expired, so MDM can't be sure it's the real site (your browser warns about it too)	sertifikat keamanan situs telah kedaluwarsa, jadi MDM tidak dapat memastikan bahwa situs tersebut asli (browser Anda juga memperingatkan hal ini)
@@ -4651,6 +4714,10 @@
 #. why a download failed: the site's security certificate was made for other site names than the one in the address
 #, machine
 	the site's security certificate is for another site name, so MDM can't be sure it's the real site (your browser warns about it too)	sertifikat keamanan situs ditujukan untuk nama situs lain, jadi MDM tidak dapat memastikan bahwa situs tersebut asli (browser Anda juga memperingatkan hal ini)
+#. text in errors.rs
+#. why a download failed: the site's security certificate is self-signed
+#, machine
+	the site's security certificate is self-signed, so MDM can't be sure it's the real site (your browser warns about it too)	sertifikat keamanan situs ditandatangani sendiri, jadi MDM tidak dapat memastikan itu situs yang asli (browser Anda juga memperingatkan tentang hal itu)
 #. text in errors.rs
 #. why a download failed: the site's security certificate is made for other uses than a website (its "extended key usage" leaves out web servers)
 #, machine
@@ -5497,6 +5564,10 @@
 #. remote control page (on a phone): pairing failed; {n} = how many more codes may be tried
 #. {n} = a number (keep the braces as they are)
 	Wrong code. Tries left: {n}	Kode salah. Sisa percobaan: {n}
+#. text in the Options window
+#. Allowed certificates table: short reason label
+#, machine
+	Wrong name	Nama salah
 #. text in extracting archives (a download's log, the Archive password window)
 #. in Archive password: {name} is the archive's file name
 #. {name} = a file name (keep the braces as they are)

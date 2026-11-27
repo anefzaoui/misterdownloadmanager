@@ -625,6 +625,10 @@
 #. Click'n'Load window, under the question: nothing happens to the links before the user adds them in Link grabber
 #, machine
 	Allow only sites you use. Nothing is looked up or downloaded before you add it in Link grabber.	Разрешайте только те сайты, которые вы используете. Ничего не ищется и не загружается, пока вы не добавите это в Link grabber.
+#. text in the Options window; window title in the Options window
+#. window title: HTTPS sites whose certificate the user chose to trust
+#, machine
+	Allowed certificates	Разрешённые сертификаты
 #. text in errors.rs
 #, machine
 	already being downloaded: {path}	уже загружается: {path}
@@ -658,6 +662,9 @@
 #. View menu: a check item; dark mode on, whatever the system's setting
 #, machine
 	Always dark	Всегда темная
+#. button in a dialog box
+#, machine
+	Always for this site	Всегда для этого сайта
 #. text in the Options window
 #. Options → Archives: where extracted files go
 #, machine
@@ -1067,6 +1074,11 @@
 #, machine
 	Central African Republic	Центральноафриканская Республика
 #. text in the Options window
+#. column title: SHA-256 certificate fingerprint
+#, machine
+	Certificate (SHA-256)	Сертификат (SHA-256)
+#. text in a dialog box; text in the Options window
+#. Certificate warning: the certificate's SHA-256 fingerprint
 #. Options → Remote → Status: the certificate's fingerprint, which the phone's browser shows when it warns about it; {fingerprint} = hex digits
 #, machine
 	Certificate (SHA-256): {fingerprint}	Сертификат (SHA-256): {fingerprint}
@@ -1074,6 +1086,11 @@
 #. Options → DNS over TLS: label before the name the server's certificate shows
 #, machine
 	Certificate name:	Имя сертификата:
+#. text in the Options window
+#. Options → Sites Logins: button: opens the list of allowed HTTPS site certificates
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Certificates...	Сертификаты...
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -1342,6 +1359,13 @@
 #. text in the Options window
 #, machine
 	Connections:	Подключения:
+#. text in a dialog box
+#. Certificate warning: question before Continue once / Always for this site / Cancel
+#, machine
+	Continue anyway?	Всё равно продолжить?
+#. button in a dialog box
+#, machine
+	Continue once	Продолжить один раз
 #. link (opens a web page) in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Contributors	Участники
@@ -1952,7 +1976,6 @@
 #, machine
 	Eritrea	Эритрея
 #. text in a dialog box; item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window; text in remote.rs
-#. in Download File Info, where the size goes: the address didn't answer
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): it failed
 #, machine
@@ -2022,6 +2045,10 @@
 #. Options → Accounts: a note that the debrid services' support (Real-Debrid, AllDebrid, Premiumize) is new and not yet tried with real paid accounts
 #, machine
 	Experimental: built from the services' public API documentation, not yet confirmed with real accounts.	Экспериментальная функция: создана на основе общедоступной документации API служб, еще не проверена на реальных учетных записях.
+#. text in the Options window
+#. Allowed certificates table: short reason label
+#, machine
+	Expired	Истёк
 #. message or event log entry in the main window; text in the Options window
 #, machine
 	Export	Экспорт
@@ -3922,8 +3949,16 @@
 #, machine
 	Not tested: it is larger than {limit} (Options → Archives). Right-click → Test archive tests it	Не протестировано: размер превышает {limit} (Параметры → Архивы). Щелкните правой кнопкой мыши → Протестировать архив, чтобы протестировать его
 #. text in the Options window
+#. Allowed certificates table: short reason label
+#, machine
+	Not trusted	Недоверенный
+#. text in the Options window
 #, machine
 	Not used: file parts are written next to the file	Не используется: части файла записываются рядом с файлом
+#. text in the Options window
+#. Allowed certificates table: short reason label
+#, machine
+	Not yet valid	Ещё недействителен
 #. text in a dialog box
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
@@ -4145,6 +4180,9 @@
 #. Options → Add an account: label before the field for the service's API token (the other way to sign in)
 #, machine
 	Or paste your API token:	Или вставьте свой токен API:
+#. text in the Options window
+#, machine
+	Other	Другое
 #. text in the Link grabber window
 #. Link grabber: the box that edits the selected package
 #, machine
@@ -4452,6 +4490,10 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	Reannounce failed: {error}	Повторный анонс не удался: {error}
+#. text in the Options window
+#. column title: certificate refusal reason allowed
+#, machine
+	Reason	Причина
 #. text in a download's progress window
 #. column title: how much came from the peer
 #, machine
@@ -4723,6 +4765,10 @@
 #. text in the Batch download window
 #, machine
 	Second file:	Второй файл:
+#. text in a dialog box
+#. window title when a server's HTTPS certificate is refused
+#, machine
+	Security Alert	Предупреждение безопасности
 #. text in preview.rs
 #. the preview pane when no download is selected, under its title
 #, machine
@@ -5017,6 +5063,7 @@
 	Sint Maarten	Синт-Мартен
 #. text in the Options window
 #. Site rules: column title: the site pattern
+#. column title: site name and port
 #, machine
 	Site	Сайт
 #. checkbox in the Find window
@@ -5043,6 +5090,11 @@
 #. Site rule: label before the site pattern box (example.com, *.example.com)
 #, machine
 	Site:	Сайт:
+#. text in a dialog box
+#. Certificate warning: the site whose certificate was refused; {site} = host or host:port
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+	Site: {site}	Сайт: {site}
 #. text in the Options window
 #. tab title: user names and passwords for sites
 #, machine
@@ -5053,6 +5105,14 @@
 #. text in helpers.rs
 #, machine
 	Sites send their best quality as separate video and audio. ffmpeg puts them together into one file that plays anywhere.	Сайты отправляют видео и аудио наилучшего качества по отдельности. ffmpeg объединяет их в один файл, который воспроизводится где угодно.
+#. text in the Options window
+#. Options → Sites Logins: beside the Certificates... button
+#, machine
+	Sites whose certificate you chose to trust	Сайты, сертификаты которых вы решили доверять
+#. text in the Options window
+#. Allowed certificates window: explanation
+#, machine
+	Sites whose security certificate you chose to trust. Each entry is pinned to that certificate's SHA-256 fingerprint.	Сайты, сертификаты безопасности которых вы решили доверять. Каждая запись привязана к отпечатку SHA-256 этого сертификата.
 #. text in the Link grabber window; text in a download's progress window; text in the Scheduler window; text in the Add torrent window
 #. column title: the file's size
 #. column title: file size
@@ -5860,6 +5920,9 @@
 #, machine
 	The site's certificate isn't trusted, by yt-dlp nor by this computer: an antivirus's web filter or a proxy that reads HTTPS may be in the way. Turn its HTTPS scanning off, or add its certificate to the computer's, then look the page up again.	Сертификат сайта не является доверенным ни для yt-dlp, ни для этого компьютера: возможно, мешает веб-фильтр антивируса или прокси, который читает HTTPS-соединения. Отключите сканирование HTTPS или добавьте его сертификат на компьютер, затем снова найдите страницу.
 #. text in errors.rs
+#, machine
+	the site's security certificate expired on {date}, so MDM can't be sure it's the real site (your browser warns about it too)	срок действия сертификата безопасности сайта истёк {date}, поэтому MDM не может быть уверен, что это настоящий сайт (ваш браузер тоже предупреждает об этом)
+#. text in errors.rs
 #. why a download failed: the site's security certificate (what proves a secure, HTTPS, site is the one it says) is past its end date. Browsers warn about the same site
 #, machine
 	the site's security certificate has expired, so MDM can't be sure it's the real site (your browser warns about it too)	срок действия сертификата безопасности сайта истек, поэтому MDM не может быть уверен, что это настоящий сайт (ваш браузер тоже предупреждает об этом)
@@ -5867,6 +5930,10 @@
 #. why a download failed: the site's security certificate was made for other site names than the one in the address
 #, machine
 	the site's security certificate is for another site name, so MDM can't be sure it's the real site (your browser warns about it too)	сертификат безопасности сайта предназначен для другого имени сайта, поэтому MDM не может быть уверен, что это настоящий сайт (ваш браузер тоже предупреждает об этом)
+#. text in errors.rs
+#. why a download failed: the site's security certificate is self-signed
+#, machine
+	the site's security certificate is self-signed, so MDM can't be sure it's the real site (your browser warns about it too)	сертификат безопасности сайта самоподписан, поэтому MDM не может быть уверен, что это настоящий сайт (ваш браузер тоже предупреждает об этом)
 #. text in errors.rs
 #. why a download failed: the site's security certificate is made for other uses than a website (its "extended key usage" leaves out web servers)
 #, machine
@@ -6902,6 +6969,10 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 	Wrong code. Tries left: {n}	Неверный код. Осталось попыток: {n}
+#. text in the Options window
+#. Allowed certificates table: short reason label
+#, machine
+	Wrong name	Неверное имя
 #. text in extracting archives (a download's log, the Archive password window)
 #. in Archive password: {name} is the archive's file name
 #. {name} = a file name (keep the braces as they are)

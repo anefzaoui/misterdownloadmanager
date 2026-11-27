@@ -215,6 +215,15 @@ pub fn bind_client(
     to_this_computer: bool,
 ) -> Result<reqwest::ClientBuilder, NetError> {
     let builder = crate::tls::configure(builder);
+    bind_route(builder, route, to_this_computer)
+}
+
+/// Bind `builder` to `route` without altering its TLS configuration.
+pub(crate) fn bind_route(
+    builder: reqwest::ClientBuilder,
+    route: &Route,
+    to_this_computer: bool,
+) -> Result<reqwest::ClientBuilder, NetError> {
     match route {
         Route::Any => Ok(builder),
         Route::Down { label } => Err(NetError::Down {

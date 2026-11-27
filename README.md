@@ -29,7 +29,10 @@
 </p>
 
 <p align="center">
-  <a href="https://trendshift.io/repositories/337427" target="_blank"><img src="https://trendshift.io/api/badge/trendshift/repositories/337427/daily?language=Rust" alt="Mister Download Manager on Trendshift: number 1 Rust repository of the day" width="200" height="44"></a><br>
+  <a href="https://trendshift.io/repositories/337427" target="_blank"><img src="https://trendshift.io/api/badge/trendshift/repositories/337427/daily?language=Rust" alt="Mister Download Manager on Trendshift: number 1 Rust repository of the day" width="200" height="44"></a>
+  <a href="https://trendshift.io/repositories/337427" target="_blank"><img src="https://trendshift.io/api/badge/trendshift/repositories/337427/weekly?language=Rust" alt="Mister Download Manager on Trendshift: number 1 Rust repository of the week" width="200" height="44"></a><br>
+  <a href="https://trendshift.io/repositories/337427" target="_blank"><img src="https://trendshift.io/api/badge/trendshift/repositories/337427/weekly" alt="Mister Download Manager on Trendshift: number 3 repository of the week, all languages" width="200" height="44"></a>
+  <a href="https://trendshift.io/repositories/337427" target="_blank"><img src="https://trendshift.io/api/badge/trendshift/repositories/337427/daily" alt="Mister Download Manager on Trendshift: number 4 repository of the day, all languages" width="200" height="44"></a><br>
   <a href="https://github.com/anefzaoui/misterdownloadmanager/stargazers"><img src="https://img.shields.io/github/stars/anefzaoui/misterdownloadmanager?style=social&label=Star%20MDM" alt="Star Mister Download Manager on GitHub" height="28"></a><br>
   <sub>⭐ <b>Like it? Give it a star.</b> MDM has no ads and no marketing budget: stars are how people find it.</sub>
 </p>
@@ -512,6 +515,8 @@ Bug reports are welcome in
 [Issues](https://github.com/anefzaoui/misterdownloadmanager/issues/new/choose): **Help → Report a problem**
 in the app fills in your version and system. Ideas are welcome in
 [Discussions](https://github.com/anefzaoui/misterdownloadmanager/discussions/categories/ideas). Pull requests are accepted under the same licence: start with [CONTRIBUTING.md](CONTRIBUTING.md).
+How the project is run, from reviews to releases, is in [GOVERNANCE.md](GOVERNANCE.md), and everyone
+who takes part follows the [Code of conduct](CODE_OF_CONDUCT.md).
 
 ## Made possible by these amazing humans
 

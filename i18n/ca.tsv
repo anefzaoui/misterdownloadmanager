@@ -625,6 +625,10 @@
 #. Click'n'Load window, under the question: nothing happens to the links before the user adds them in Link grabber
 #, machine
 	Allow only sites you use. Nothing is looked up or downloaded before you add it in Link grabber.	Permet només els llocs que utilitzes. No es cerca ni es baixa res abans que ho afegeixis al Capturador d’enllaços.
+#. text in the Options window; window title in the Options window
+#. window title: HTTPS sites whose certificate the user chose to trust
+#, machine
+	Allowed certificates	Certificats permesos
 #. text in errors.rs
 #, machine
 	already being downloaded: {path}	ja s'està baixant: {path}
@@ -658,6 +662,9 @@
 #. View menu: a check item; dark mode on, whatever the system's setting
 #, machine
 	Always dark	Sempre fosc
+#. button in a dialog box
+#, machine
+	Always for this site	Sempre per a aquest lloc
 #. text in the Options window
 #. Options → Archives: where extracted files go
 #, machine
@@ -1067,6 +1074,11 @@
 #, machine
 	Central African Republic	República Centreafricana
 #. text in the Options window
+#. column title: SHA-256 certificate fingerprint
+#, machine
+	Certificate (SHA-256)	Certificat (SHA-256)
+#. text in a dialog box; text in the Options window
+#. Certificate warning: the certificate's SHA-256 fingerprint
 #. Options → Remote → Status: the certificate's fingerprint, which the phone's browser shows when it warns about it; {fingerprint} = hex digits
 #, machine
 	Certificate (SHA-256): {fingerprint}	Certificat (SHA-256): {fingerprint}
@@ -1074,6 +1086,11 @@
 #. Options → DNS over TLS: label before the name the server's certificate shows
 #, machine
 	Certificate name:	Nom del certificat:
+#. text in the Options window
+#. Options → Sites Logins: button: opens the list of allowed HTTPS site certificates
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Certificates...	Certificats...
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -1347,6 +1364,13 @@
 #. text in the Options window
 #, machine
 	Connections:	Connexions:
+#. text in a dialog box
+#. Certificate warning: question before Continue once / Always for this site / Cancel
+#, machine
+	Continue anyway?	Vols continuar igualment?
+#. button in a dialog box
+#, machine
+	Continue once	Continua una vegada
 #. link (opens a web page) in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Contributors	Col·laboradors
@@ -1957,7 +1981,6 @@
 #, machine
 	Eritrea	Eritrea
 #. text in a dialog box; item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window; text in remote.rs
-#. in Download File Info, where the size goes: the address didn't answer
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): it failed
 #, machine
@@ -2027,6 +2050,10 @@
 #. Options → Accounts: a note that the debrid services' support (Real-Debrid, AllDebrid, Premiumize) is new and not yet tried with real paid accounts
 #, machine
 	Experimental: built from the services' public API documentation, not yet confirmed with real accounts.	Experimental: creat a partir de la documentació de l'API pública dels serveis, encara no s'ha confirmat amb comptes reals.
+#. text in the Options window
+#. Allowed certificates table: short reason label
+#, machine
+	Expired	Caducat
 #. message or event log entry in the main window; text in the Options window
 #, machine
 	Export	Exportació
@@ -3931,8 +3958,16 @@
 #, machine
 	Not tested: it is larger than {limit} (Options → Archives). Right-click → Test archive tests it	No s’ha comprovat: és més gran que {limit} (Opcions → Arxius). Fes clic dret → Comprova l’arxiu per comprovar-lo
 #. text in the Options window
+#. Allowed certificates table: short reason label
+#, machine
+	Not trusted	No és de confiança
+#. text in the Options window
 #, machine
 	Not used: file parts are written next to the file	No s'utilitza: les parts del fitxer s'escriuen al costat del fitxer
+#. text in the Options window
+#. Allowed certificates table: short reason label
+#, machine
+	Not yet valid	Encara no és vàlid
 #. text in a dialog box
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
@@ -4154,6 +4189,9 @@
 #. Options → Add an account: label before the field for the service's API token (the other way to sign in)
 #, machine
 	Or paste your API token:	O enganxeu el vostre testimoni d'API:
+#. text in the Options window
+#, machine
+	Other	Altres
 #. text in the Link grabber window
 #. Link grabber: the box that edits the selected package
 #, machine
@@ -4461,6 +4499,10 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	Reannounce failed: {error}	La reanunciació ha fallat: {error}
+#. text in the Options window
+#. column title: certificate refusal reason allowed
+#, machine
+	Reason	Motiu
 #. text in a download's progress window
 #. column title: how much came from the peer
 #, machine
@@ -4732,6 +4774,10 @@
 #. text in the Batch download window
 #, machine
 	Second file:	Segon fitxer:
+#. text in a dialog box
+#. window title when a server's HTTPS certificate is refused
+#, machine
+	Security Alert	Alerta de seguretat
 #. text in preview.rs
 #. the preview pane when no download is selected, under its title
 #, machine
@@ -5026,6 +5072,7 @@
 	Sint Maarten	Sint Maarten
 #. text in the Options window
 #. Site rules: column title: the site pattern
+#. column title: site name and port
 #, machine
 	Site	Lloc
 #. checkbox in the Find window
@@ -5052,6 +5099,11 @@
 #. Site rule: label before the site pattern box (example.com, *.example.com)
 #, machine
 	Site:	Lloc:
+#. text in a dialog box
+#. Certificate warning: the site whose certificate was refused; {site} = host or host:port
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+	Site: {site}	Lloc: {site}
 #. text in the Options window
 #. tab title: user names and passwords for sites
 #, machine
@@ -5062,6 +5114,14 @@
 #. text in helpers.rs
 #, machine
 	Sites send their best quality as separate video and audio. ffmpeg puts them together into one file that plays anywhere.	Els llocs web envien el vídeo i l’àudio per separat amb la qualitat més alta. ffmpeg els uneix en un sol fitxer que es pot reproduir a qualsevol lloc.
+#. text in the Options window
+#. Options → Sites Logins: beside the Certificates... button
+#, machine
+	Sites whose certificate you chose to trust	Llocs el certificat dels quals has triat que siguin de confiança
+#. text in the Options window
+#. Allowed certificates window: explanation
+#, machine
+	Sites whose security certificate you chose to trust. Each entry is pinned to that certificate's SHA-256 fingerprint.	Llocs el certificat de seguretat dels quals has triat que siguin de confiança. Cada entrada està fixada a la signatura SHA-256 d'aquest certificat.
 #. text in the Link grabber window; text in a download's progress window; text in the Scheduler window; text in the Add torrent window
 #. column title: the file's size
 #. column title: file size
@@ -5869,6 +5929,9 @@
 #, machine
 	The site's certificate isn't trusted, by yt-dlp nor by this computer: an antivirus's web filter or a proxy that reads HTTPS may be in the way. Turn its HTTPS scanning off, or add its certificate to the computer's, then look the page up again.	El certificat del lloc no és de confiança ni per a yt-dlp ni per a aquest ordinador: el filtre web d’un antivirus o un servidor intermediari que llegeix connexions HTTPS pot interferir-hi. Desactiva l’escaneig HTTPS o instal·la’n el certificat a l’ordinador i, a continuació, torna a consultar la pàgina.
 #. text in errors.rs
+#, machine
+	the site's security certificate expired on {date}, so MDM can't be sure it's the real site (your browser warns about it too)	el certificat de seguretat del lloc va caducar el {date}, així que MDM no pot assegurar-se que sigui el lloc real (el navegador també t'avisa)
+#. text in errors.rs
 #. why a download failed: the site's security certificate (what proves a secure, HTTPS, site is the one it says) is past its end date. Browsers warn about the same site
 #, machine
 	the site's security certificate has expired, so MDM can't be sure it's the real site (your browser warns about it too)	el certificat de seguretat del lloc ha caducat, de manera que MDM no pot assegurar-se que sigui el lloc real (el navegador també t’avisa)
@@ -5876,6 +5939,10 @@
 #. why a download failed: the site's security certificate was made for other site names than the one in the address
 #, machine
 	the site's security certificate is for another site name, so MDM can't be sure it's the real site (your browser warns about it too)	el certificat de seguretat del lloc és per a un altre nom de lloc, de manera que MDM no pot assegurar-se que sigui el lloc real (el navegador també t’avisa)
+#. text in errors.rs
+#. why a download failed: the site's security certificate is self-signed
+#, machine
+	the site's security certificate is self-signed, so MDM can't be sure it's the real site (your browser warns about it too)	el certificat de seguretat del lloc és autofirmat, així que MDM no pot assegurar-se que sigui el lloc real (el navegador també t'avisa)
 #. text in errors.rs
 #. why a download failed: the site's security certificate is made for other uses than a website (its "extended key usage" leaves out web servers)
 #, machine
@@ -6919,6 +6986,10 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 	Wrong code. Tries left: {n}	Codi incorrecte. Intentos restants: {n}
+#. text in the Options window
+#. Allowed certificates table: short reason label
+#, machine
+	Wrong name	Nom incorrecte
 #. text in extracting archives (a download's log, the Archive password window)
 #. in Archive password: {name} is the archive's file name
 #. {name} = a file name (keep the braces as they are)

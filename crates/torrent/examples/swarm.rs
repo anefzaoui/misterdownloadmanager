@@ -3,7 +3,7 @@
 //! generated multi-file torrent, and a tracker that hands them to whoever announces. Writes
 //! `<out>/Open Movie Night.torrent`, then seeds until stopped.
 //!
-//!   cargo run --release -p mdm-torrent --example swarm -- target/swarm [size MB] [seeders] [port] [lsd|-] [piece KB]
+//!   cargo run --release -p mdm-torrent --example swarm -- target/swarm [size MB] [seeders] [port] [lsd|-] [piece KB] [files]
 //!
 //! The app leaves out trackers on this computer (#40), so for the app add `lsd`: the seeders
 //! then answer Local Service Discovery, and the app finds them that way (Torrent settings'
@@ -12,6 +12,8 @@
 //! LSD names (so Windows Firewall asks about this program once). Pieces are 1 MiB unless
 //! `piece KB` says otherwise (smaller ones make the list's progress, counted in whole pieces,
 //! finer for measuring speeds). Two swarms of different sizes are two different torrents.
+//! `files` (in a folder of its own): that many small files (1 to 300 bytes, in 40 folders)
+//! instead of the five, for a torrent of thousands of files.
 
 use std::io::Write;
 use std::net::{IpAddr, Ipv4Addr, SocketAddr};
@@ -35,9 +37,14 @@ async fn main() {
         .get(5)
         .and_then(|a| a.parse::<u32>().ok())
         .map_or(1 << 20, |kb| kb.max(16) << 10);
+    let many: usize = args.get(6).and_then(|a| a.parse().ok()).unwrap_or(0);
 
     let data = out.join("data").join(NAME);
-    make_files(&data, total);
+    if many > 0 {
+        make_many(&data, many);
+    } else {
+        make_files(&data, total);
+    }
     let tracker = format!("http://127.0.0.1:{port}/announce");
     let spawner = librqbit::spawn_utils::BlockingSpawner::new(4);
     let made = librqbit::create_torrent(
@@ -143,6 +150,23 @@ fn make_files(dir: &Path, total: u64) {
             f.write_all(&buf[..n]).expect("written");
             left -= n as u64;
         }
+    }
+}
+
+/// `n` small files, `d00/f00000.bin` and on: 1 to 300 bytes each, no two alike.
+fn make_many(dir: &Path, n: usize) {
+    for i in 0..n {
+        let path = dir
+            .join(format!("d{:02}", i % 40))
+            .join(format!("f{i:05}.bin"));
+        let bytes: Vec<u8> = (0..1 + (i * 37) % 300)
+            .map(|j| (i.wrapping_mul(31) + j) as u8)
+            .collect();
+        if std::fs::read(&path).is_ok_and(|b| b == bytes) {
+            continue;
+        }
+        std::fs::create_dir_all(path.parent().expect("in a folder")).expect("folder");
+        std::fs::write(&path, bytes).expect("file");
     }
 }
 

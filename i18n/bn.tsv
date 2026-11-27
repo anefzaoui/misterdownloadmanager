@@ -594,6 +594,10 @@
 #. Click'n'Load window, under the question: nothing happens to the links before the user adds them in Link grabber
 #, machine
 	Allow only sites you use. Nothing is looked up or downloaded before you add it in Link grabber.	শুধুমাত্র আপনার ব্যবহৃত সাইটগুলোকে অনুমতি দিন। লিংক গ্র্যাবাবে যোগ করার আগে কিছুই দেখা বা ডাউনলোড করা হয় না।
+#. text in the Options window; window title in the Options window
+#. window title: HTTPS sites whose certificate the user chose to trust
+#, machine
+	Allowed certificates	অনুমোদিত শংসাপত্র
 #. text in errors.rs
 	already being downloaded: {path}	ইতোমধ্যে ডাউনলোড হচ্ছে: {path}
 #. text in the Link grabber window
@@ -622,6 +626,9 @@
 #. View menu: a check item; dark mode on, whatever the system's setting
 #, machine
 	Always dark	সর্বদা ডার্ক
+#. button in a dialog box
+#, machine
+	Always for this site	এই সাইটের জন্য সর্বদা
 #. text in the Options window
 #. Options → Archives: where extracted files go
 #, machine
@@ -1013,6 +1020,11 @@
 #, machine
 	Central African Republic	মধ্য আফ্রিকান প্রজাতন্ত্র
 #. text in the Options window
+#. column title: SHA-256 certificate fingerprint
+#, machine
+	Certificate (SHA-256)	শংসাপত্র (SHA-256)
+#. text in a dialog box; text in the Options window
+#. Certificate warning: the certificate's SHA-256 fingerprint
 #. Options → Remote → Status: the certificate's fingerprint, which the phone's browser shows when it warns about it; {fingerprint} = hex digits
 #, machine
 	Certificate (SHA-256): {fingerprint}	শংসাপত্র (SHA-256): {fingerprint}
@@ -1020,6 +1032,11 @@
 #. Options → DNS over TLS: label before the name the server's certificate shows
 #, machine
 	Certificate name:	শংসাপত্রের নাম:
+#. text in the Options window
+#. Options → Sites Logins: button: opens the list of allowed HTTPS site certificates
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Certificates...	শংসাপত্র...
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -1276,6 +1293,13 @@
 #. text in the Options window
 #, machine
 	Connections:	সংযোগ:
+#. text in a dialog box
+#. Certificate warning: question before Continue once / Always for this site / Cancel
+#, machine
+	Continue anyway?	আপনি কি তবুও চালিয়ে যেতে চান?
+#. button in a dialog box
+#, machine
+	Continue once	একবার চালিয়ে যান
 #. link (opens a web page) in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Contributors	অবদানকারীগণ
@@ -1844,7 +1868,6 @@
 #, machine
 	Eritrea	ইরিত্রিয়া
 #. text in a dialog box; item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window; text in remote.rs
-#. in Download File Info, where the size goes: the address didn't answer
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): it failed
 #, machine
@@ -1910,6 +1933,10 @@
 #. text in the Options window
 #. Options → Accounts: a note that the debrid services' support (Real-Debrid, AllDebrid, Premiumize) is new and not yet tried with real paid accounts
 	Experimental: built from the services' public API documentation, not yet confirmed with real accounts.	পরীক্ষামূলক: পরিষেবাগুলোর পাবলিক API ডকুমেন্টেশন থেকে তৈরি করা হয়েছে, বাস্তব অ্যাকাউন্টে এখনও পরীক্ষা করা হয়নি।
+#. text in the Options window
+#. Allowed certificates table: short reason label
+#, machine
+	Expired	মেয়াদ উত্তীর্ণ
 #. message or event log entry in the main window; text in the Options window
 	Export	এক্সপোর্ট
 #. button in the Options window
@@ -3729,7 +3756,15 @@
 #, machine
 	Not tested: it is larger than {limit} (Options → Archives). Right-click → Test archive tests it	পরীক্ষা করা হয়নি: এটি {limit}-এর চেয়ে বড় (বিকল্প → আর্কাইভ)। ডান-ক্লিক → “আর্কাইভ পরীক্ষা করুন” দিয়ে এটি পরীক্ষা করা হবে
 #. text in the Options window
+#. Allowed certificates table: short reason label
+#, machine
+	Not trusted	অবিশ্বস্ত
+#. text in the Options window
 	Not used: file parts are written next to the file	ব্যবহৃত নয়: ফাইলের অংশগুলো ফাইলের পাশে লেখা হয়
+#. text in the Options window
+#. Allowed certificates table: short reason label
+#, machine
+	Not yet valid	এখনো বৈধ নয়
 #. text in a dialog box
 #. \\n starts a new line: break lines where they fit the translation
 	Note: Internet servers may break connection when the speed is too limited! Thus it's not\nrecommended to use Speed Limiter to download from servers that do not support\n"resume" feature.	দ্রষ্টব্য: গতি খুব বেশি সীমিত করলে ইন্টারনেট সার্ভার সংযোগ কেটে দিতে পারে!\nতাই যেসব সার্ভার “পুনরায় শুরু” সুবিধা সমর্থন করে না, সেগুলো থেকে ডাউনলোড করতে\nস্পিড লিমিটার ব্যবহার না করাই ভালো।
@@ -3936,6 +3971,9 @@
 #. Options → Add an account: label before the field for the service's API token (the other way to sign in)
 #, machine
 	Or paste your API token:	অথবা আপনার API টোকেন পেস্ট করুন:
+#. text in the Options window
+#, machine
+	Other	অন্যান্য
 #. text in the Link grabber window
 #. Link grabber: the box that edits the selected package
 #, machine
@@ -4228,6 +4266,10 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	Reannounce failed: {error}	পুনরায় ঘোষণা ব্যর্থ হয়েছে: {error}
+#. text in the Options window
+#. column title: certificate refusal reason allowed
+#, machine
+	Reason	কারণ
 #. text in a download's progress window
 #. column title: how much came from the peer
 	Received	প্রাপ্ত
@@ -4479,6 +4521,10 @@
 #. text in the Batch download window
 #, machine
 	Second file:	দ্বিতীয় ফাইল:
+#. text in a dialog box
+#. window title when a server's HTTPS certificate is refused
+#, machine
+	Security Alert	নিরাপত্তা সতর্কতা
 #. text in preview.rs
 #. the preview pane when no download is selected, under its title
 #, machine
@@ -4748,6 +4794,7 @@
 	Sint Maarten	সিন্ট মার্টেন
 #. text in the Options window
 #. Site rules: column title: the site pattern
+#. column title: site name and port
 #, machine
 	Site	সাইট
 #. checkbox in the Find window
@@ -4773,6 +4820,11 @@
 #. Site rule: label before the site pattern box (example.com, *.example.com)
 #, machine
 	Site:	সাইট:
+#. text in a dialog box
+#. Certificate warning: the site whose certificate was refused; {site} = host or host:port
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+	Site: {site}	সাইট: {site}
 #. text in the Options window
 #. tab title: user names and passwords for sites
 #, machine
@@ -4783,6 +4835,14 @@
 #. text in helpers.rs
 #, machine
 	Sites send their best quality as separate video and audio. ffmpeg puts them together into one file that plays anywhere.	সাইটগুলো সেরা মানের ভিডিও ও অডিও আলাদা আলাদা পাঠায়। ffmpeg সেগুলো জোড়া লাগিয়ে এমন একটি ফাইল তৈরি করে, যা যেকোনো জায়গায় চালানো যায়।
+#. text in the Options window
+#. Options → Sites Logins: beside the Certificates... button
+#, machine
+	Sites whose certificate you chose to trust	যেসব সাইটের শংসাপত্র আপনি বিশ্বাস করতে বেছে নিয়েছেন
+#. text in the Options window
+#. Allowed certificates window: explanation
+#, machine
+	Sites whose security certificate you chose to trust. Each entry is pinned to that certificate's SHA-256 fingerprint.	যেসব সাইটের নিরাপত্তা শংসাপত্র আপনি বিশ্বাস করতে বেছে নিয়েছেন। প্রতিটি এন্ট্রি সেই শংসাপত্রের SHA-256 ফিঙ্গারপ্রিন্টের সাথে পিন করা আছে।
 #. text in the Link grabber window; text in a download's progress window; text in the Scheduler window; text in the Add torrent window
 #. column title: the file's size
 #. column title: file size
@@ -5536,6 +5596,9 @@
 #, machine
 	The site's certificate isn't trusted, by yt-dlp nor by this computer: an antivirus's web filter or a proxy that reads HTTPS may be in the way. Turn its HTTPS scanning off, or add its certificate to the computer's, then look the page up again.	সাইটের সার্টিফিকেট yt-dlp বা এই কম্পিউটার দ্বারা বিশ্বস্ত নয়: একটি অ্যান্টিভাইরাসের ওয়েব ফিল্টার বা HTTPS পড়া একটি প্রক্সি বাধা দিতে পারে। এর HTTPS স্ক্যানিং বন্ধ করুন, অথবা এর সার্টিফিকেট কম্পিউটারে যোগ করুন, তারপর আবার পেজটি দেখুন।
 #. text in errors.rs
+#, machine
+	the site's security certificate expired on {date}, so MDM can't be sure it's the real site (your browser warns about it too)	সাইটের নিরাপত্তা শংসাপত্রের মেয়াদ {date}-এ শেষ হয়েছে, তাই MDM নিশ্চিত হতে পারছে না যে এটি আসল সাইট (আপনার ব্রাউজারও এটি সম্পর্কে সতর্ক করে)
+#. text in errors.rs
 #. why a download failed: the site's security certificate (what proves a secure, HTTPS, site is the one it says) is past its end date. Browsers warn about the same site
 #, machine
 	the site's security certificate has expired, so MDM can't be sure it's the real site (your browser warns about it too)	সাইটের নিরাপত্তা সার্টিফিকেট মেয়াদোত্তীর্ণ হয়ে গেছে, তাই MDM নিশ্চিত হতে পারছে না যে এটি আসল সাইট (আপনার ব্রাউজারও এটি সম্পর্কে সতর্ক করে)
@@ -5543,6 +5606,10 @@
 #. why a download failed: the site's security certificate was made for other site names than the one in the address
 #, machine
 	the site's security certificate is for another site name, so MDM can't be sure it's the real site (your browser warns about it too)	সাইটের নিরাপত্তা সার্টিফিকেটটি অন্য সাইটের নামের জন্য, তাই MDM নিশ্চিত হতে পারছে না যে এটি আসল সাইট (আপনার ব্রাউজারও এ বিষয়ে সতর্ক করে)
+#. text in errors.rs
+#. why a download failed: the site's security certificate is self-signed
+#, machine
+	the site's security certificate is self-signed, so MDM can't be sure it's the real site (your browser warns about it too)	সাইটের নিরাপত্তা শংসাপত্র স্ব-স্বাক্ষরিত, তাই MDM নিশ্চিত হতে পারছে না যে এটি আসল সাইট (আপনার ব্রাউজারও এটি সম্পর্কে সতর্ক করে)
 #. text in errors.rs
 #. why a download failed: the site's security certificate is made for other uses than a website (its "extended key usage" leaves out web servers)
 #, machine
@@ -6536,6 +6603,10 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 	Wrong code. Tries left: {n}	ভুল কোড। বাকি চেষ্টা: {n}
+#. text in the Options window
+#. Allowed certificates table: short reason label
+#, machine
+	Wrong name	ভুল নাম
 #. text in extracting archives (a download's log, the Archive password window)
 #. in Archive password: {name} is the archive's file name
 #. {name} = a file name (keep the braces as they are)

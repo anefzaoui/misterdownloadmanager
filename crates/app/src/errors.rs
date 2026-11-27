@@ -3,7 +3,7 @@
 //! event log. Every engine error is named here, so a new one can't reach the list untranslated.
 //! Data inside a message (status codes, paths, sizes) goes in as isolates (crate::i18n::fmt).
 
-use mdm_engine::{CertProblem, Error, NetKind, Refusal};
+use mdm_engine::{CertProblem, CertRefusal, Error, NetKind, Refusal};
 
 use crate::i18n::{fmt, ltr, t};
 
@@ -99,7 +99,7 @@ pub fn describe(e: &Error) -> String {
             // i18n: a download's error on a computer (a minimal Linux) without the certificates that secure connections check servers with; "ca-certificates" is the package's name, left as is
             t("this computer has no certificates to check the server with: install the ca-certificates package, then try again").to_owned()
         }
-        Error::Certificate(problem) => certificate(*problem).to_owned(),
+        Error::Certificate(refusal) => certificate(refusal),
         Error::Net { kind, cause } => {
             let what = match kind {
                 NetKind::Connect => t("cannot connect to the server"),
@@ -187,10 +187,32 @@ fn path_too_long(path: &std::path::Path) -> String {
     }
 }
 
-/// Why the server's certificate was refused (#762), in words a user can act on: a browser
-/// warns about the same, and MDM has no way around it.
-fn certificate(problem: CertProblem) -> &'static str {
-    match problem {
+/// Why the server's certificate was refused (#762, #1964), in words a user can act on.
+pub fn certificate(refusal: &CertRefusal) -> String {
+    if let Some(info) = &refusal.info {
+        match refusal.problem {
+            CertProblem::Expired => {
+                if let Some(date) = &info.expired_since {
+                    // i18n: why a download failed: the site's security certificate expired on {date} (YYYY-MM-DD)
+                    return crate::i18n::fmt(
+                        t(
+                            "the site's security certificate expired on {date}, so MDM can't be sure it's the real site (your browser warns about it too)",
+                        ),
+                        &[("date", date)],
+                    );
+                }
+            }
+            CertProblem::Untrusted if info.self_signed => {
+                // i18n: why a download failed: the site's security certificate is self-signed
+                return t(
+                    "the site's security certificate is self-signed, so MDM can't be sure it's the real site (your browser warns about it too)",
+                )
+                .to_owned();
+            }
+            _ => {}
+        }
+    }
+    match refusal.problem {
         // i18n: why a download failed: the site's security certificate (what proves a secure, HTTPS, site is the one it says) is past its end date. Browsers warn about the same site
         CertProblem::Expired => t(
             "the site's security certificate has expired, so MDM can't be sure it's the real site (your browser warns about it too)",
@@ -220,6 +242,7 @@ fn certificate(problem: CertProblem) -> &'static str {
             "the site's security certificate was refused, so MDM can't be sure it's the real site",
         ),
     }
+    .to_owned()
 }
 
 /// A site's refusal to give the file (Google Drive, #34), with what to do about it.
@@ -707,7 +730,7 @@ mod tests {
         ];
         let said: Vec<String> = all
             .iter()
-            .map(|p| describe(&Error::Certificate(*p)))
+            .map(|p| describe(&Error::Certificate((*p).into())))
             .collect();
         for (p, s) in all.iter().zip(&said) {
             assert!(s.contains("certificate"), "{p:?}: {s}");
@@ -718,6 +741,32 @@ mod tests {
         assert!(said[5].contains("isn't made for websites"));
         let distinct: std::collections::HashSet<_> = said.iter().collect();
         assert_eq!(distinct.len(), all.len());
+
+        let expired = describe(&Error::Certificate(CertRefusal {
+            problem: P::Expired,
+            info: Some(Box::new(mdm_engine::CertInfo {
+                host: "nas.local".into(),
+                port: 8443,
+                sha256: "ab".repeat(32),
+                problem: P::Expired,
+                expired_since: Some("2021-05-25".into()),
+                self_signed: false,
+            })),
+        }));
+        assert!(expired.contains("2021-05-25"));
+
+        let self_signed = describe(&Error::Certificate(CertRefusal {
+            problem: P::Untrusted,
+            info: Some(Box::new(mdm_engine::CertInfo {
+                host: "nas.local".into(),
+                port: 8443,
+                sha256: "cd".repeat(32),
+                problem: P::Untrusted,
+                expired_since: None,
+                self_signed: true,
+            })),
+        }));
+        assert!(self_signed.contains("self-signed"));
     }
 
     /// #816: a helper that couldn't be downloaded names the server and why, and says what to do.

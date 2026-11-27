@@ -33,6 +33,20 @@ pub fn identities(
         .collect()
 }
 
+/// [`identities`] of everything handed over, the files handed over closed (`later`) too.
+pub fn identities_of(
+    prepared: &mdm_torrent::authorized_storage::Prepared,
+) -> Vec<(usize, Identity)> {
+    let mut all = identities(&prepared.files);
+    all.extend(prepared.later.iter().map(|f| (f.index, f.identity)));
+    all
+}
+
+/// How many of a torrent's files a Start hands over open; the others are checked, closed, and
+/// given again one by one when the engine first uses them ([`Ownership::open_one`]): a torrent
+/// of thousands of files never holds them all open, not even while it is prepared.
+pub const KEEP_OPEN: usize = 32;
+
 /// Whether a file now at a torrent's path is another object than the one the engine holds:
 /// only files both sides can identify are compared.
 pub fn swapped(held: &[(usize, Identity)], now: &[(usize, Identity)]) -> bool {
@@ -566,6 +580,25 @@ impl Ownership {
         use std::collections::{HashMap, HashSet};
         let mut ledger = self.load(data)?;
         let mut opened = Vec::new();
+        let mut later = Vec::new();
+        let mut pinned = Vec::new();
+        // Past the first few, a checked file is closed again and handed over by identity: the
+        // engine gets it back through `open_one`, which checks it is that same object. One whose
+        // filesystem gives no identity couldn't be checked so, and stays open.
+        let mut hand_over = |file: PreparedFile, id: Option<Identity>| match id {
+            Some(identity) if opened.len() >= KEEP_OPEN => {
+                later.push(mdm_torrent::authorized_storage::LaterFile {
+                    index: file.index,
+                    path: file.path,
+                    identity,
+                })
+            }
+            Some(_) => opened.push(file),
+            None => {
+                pinned.push(file.index);
+                opened.push(file);
+            }
+        };
         // What the ledger already says, looked up by file, and what this start adds to it:
         // a torrent of 50 000 files must not cost a scan of the ledger for each of them.
         let mut owned: HashMap<usize, Vec<Identity>> = HashMap::new();
@@ -621,7 +654,8 @@ impl Ownership {
                     // The object the person agreed to, replacing what was recorded for it.
                     owned.remove(&claim.index);
                     reset.insert(claim.index);
-                    if let Ok(id) = identity(&file.file) {
+                    let id = identity(&file.file).ok();
+                    if let Some(id) = id {
                         owned.entry(claim.index).or_default().push(id);
                         new_consented.push(Receipt {
                             index: claim.index,
@@ -629,7 +663,7 @@ impl Ownership {
                             identity: id,
                         });
                     }
-                    opened.push(file);
+                    hand_over(file, id);
                     continue;
                 }
                 match path.symlink_metadata() {
@@ -659,7 +693,7 @@ impl Ownership {
                             file,
                         };
                         if allowed {
-                            opened.push(file);
+                            hand_over(file, id);
                         } else if !ticked(claim.index) {
                             // Someone else's file where an unticked one would be: left as it
                             // is, and nothing to ask.
@@ -696,7 +730,8 @@ impl Ownership {
                 }
                 match open_inside(&path, true, &expected) {
                     Ok(file) => {
-                        match identity(&file) {
+                        let id = identity(&file).ok();
+                        match id.ok_or(()) {
                             Ok(id) => {
                                 owned.entry(claim.index).or_default().push(id);
                                 reset.insert(claim.index);
@@ -714,11 +749,14 @@ impl Ownership {
                                 }
                             }
                         }
-                        opened.push(PreparedFile {
-                            index: claim.index,
-                            path,
-                            file,
-                        });
+                        hand_over(
+                            PreparedFile {
+                                index: claim.index,
+                                path,
+                                file,
+                            },
+                            id,
+                        );
                     }
                     Err(e) if e.kind() == io::ErrorKind::AlreadyExists => {
                         // Whatever won the race must be a plain file, not a link that
@@ -747,7 +785,55 @@ impl Ownership {
         result.map(|()| mdm_torrent::authorized_storage::Prepared {
             files: opened,
             parted,
+            later,
+            pinned,
         })
+    }
+
+    /// One file of the torrent given again to the engine, which closed its handle to keep the
+    /// process within its budget of open files (or was handed it closed: `Prepared::later`). As
+    /// at Start: the path checked, the file opened without following a link and never made,
+    /// inside the folder it was resolved to; and it must be `want`, the very object handed over.
+    pub fn open_one(
+        &self,
+        folder: &Path,
+        dest: &Path,
+        index: usize,
+        want: Option<Identity>,
+    ) -> io::Result<mdm_torrent::authorized_storage::PreparedFile> {
+        let changed = || {
+            io::Error::new(
+                io::ErrorKind::NotFound,
+                "a file of this torrent was moved, deleted or replaced",
+            )
+        };
+        let want = want.ok_or_else(changed)?;
+        let claim = self
+            .files
+            .iter()
+            .find(|c| c.index == index)
+            .ok_or(io::ErrorKind::InvalidInput)?;
+        mdm_torrent::check_relative_path(&claim.path)
+            .map_err(|_| io::Error::from(io::ErrorKind::InvalidInput))?;
+        let multi = self.files.len() != 1;
+        let path = if multi {
+            folder.join(&claim.path)
+        } else {
+            dest.to_owned()
+        };
+        let folder_key = key(folder);
+        let expected = key(path.parent().ok_or(io::ErrorKind::InvalidInput)?);
+        if multi && !expected.starts_with(&folder_key) {
+            return Err(outside_error());
+        }
+        let file = match open_inside(&path, false, &expected) {
+            Err(e) if e.kind() == io::ErrorKind::NotFound => return Err(changed()),
+            r => r?,
+        };
+        if identity(&file).ok() != Some(want) {
+            return Err(changed());
+        }
+        Ok(mdm_torrent::authorized_storage::PreparedFile { index, path, file })
     }
 
     /// Make `path` and what is missing above it. Folders at and below `root` (the torrent's
@@ -1659,6 +1745,60 @@ mod tests {
         assert!(swapped(&held, &now));
     }
 
+    /// A torrent of more files than a Start keeps open: the others are handed over closed, by
+    /// identity, and `open_one` gives each back only as the object handed over; one replaced,
+    /// moved away or deleted since is refused, and nothing is made in its place.
+    #[test]
+    fn direct_files_past_the_first_few_are_given_again_one_by_one() {
+        let tmp = tempfile::tempdir().unwrap();
+        let root = tmp.path().join("Many");
+        std::fs::create_dir_all(&root).unwrap();
+        let names: Vec<String> = (0..KEEP_OPEN + 8)
+            .map(|i| format!("d{}/f{i}.bin", i % 3))
+            .collect();
+        let refs: Vec<&str> = names.iter().map(String::as_str).collect();
+        let own = owner(&refs);
+        own.initialize(tmp.path(), &root, &root, &[]).unwrap();
+        let p = own
+            .prepare_for(tmp.path(), &root, &root, Vec::new(), None)
+            .unwrap();
+        assert_eq!(p.files.len(), KEEP_OPEN, "only the first few stay open");
+        assert_eq!(p.later.len(), 8);
+        assert!(p.pinned.is_empty());
+        assert!(
+            p.later.iter().all(|f| f.path.is_file()),
+            "made, as at Start"
+        );
+        assert_eq!(identities_of(&p).len(), KEEP_OPEN + 8);
+
+        let first = &p.later[0];
+        let got = own
+            .open_one(&root, &root, first.index, Some(first.identity))
+            .unwrap();
+        assert_eq!(got.path, first.path);
+        assert_eq!(identity(&got.file).unwrap(), first.identity);
+        drop(got);
+        // Replaced by another object: refused, and left as it is.
+        std::fs::rename(&first.path, tmp.path().join("old")).unwrap();
+        std::thread::sleep(std::time::Duration::from_millis(20));
+        std::fs::write(&first.path, b"other").unwrap();
+        assert!(
+            own.open_one(&root, &root, first.index, Some(first.identity))
+                .is_err()
+        );
+        assert_eq!(std::fs::read(&first.path).unwrap(), b"other");
+        // Deleted: refused, and not made again.
+        let second = &p.later[1];
+        std::fs::remove_file(&second.path).unwrap();
+        assert!(
+            own.open_one(&root, &root, second.index, Some(second.identity))
+                .is_err()
+        );
+        assert!(!second.path.exists());
+        // No identity to check it against: refused.
+        assert!(own.open_one(&root, &root, p.later[2].index, None).is_err());
+    }
+
     #[test]
     fn direct_damaged_ledger_recovers_without_granting_implicit_write_permission() {
         for damage in ["missing", "garbage", "newer", "other token"] {
@@ -1856,7 +1996,12 @@ mod tests {
             "{:?}",
             started.elapsed()
         );
-        assert_eq!(own.prepare(tmp.path(), &root, &root).unwrap().len(), 1500);
+        // Every one handed over: the first few open, the others closed, by identity.
+        let p = own
+            .prepare_for(tmp.path(), &root, &root, Vec::new(), None)
+            .unwrap();
+        assert_eq!(p.files.len(), KEEP_OPEN);
+        assert_eq!(p.files.len() + p.later.len(), 1500);
     }
 
     #[test]

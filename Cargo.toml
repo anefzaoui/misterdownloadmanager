@@ -263,17 +263,17 @@ overflow-checks = false
 # and (branch mdm/release-files) a paused torrent's files closed and a finished one's held
 # read-only on Windows (`TorrentStorage::close_files`, `on_file_completed`, ikatson/rqbit#369).
 # Every crate of that repository from the same commit.
-librqbit = { git = "https://github.com/anefzaoui/rqbit.git", rev = "6ae4fcb6889ada879dd9053779d5ea07edac3859" }
-librqbit-bencode = { git = "https://github.com/anefzaoui/rqbit.git", rev = "6ae4fcb6889ada879dd9053779d5ea07edac3859" }
-librqbit-buffers = { git = "https://github.com/anefzaoui/rqbit.git", rev = "6ae4fcb6889ada879dd9053779d5ea07edac3859" }
-librqbit-clone-to-owned = { git = "https://github.com/anefzaoui/rqbit.git", rev = "6ae4fcb6889ada879dd9053779d5ea07edac3859" }
-librqbit-core = { git = "https://github.com/anefzaoui/rqbit.git", rev = "6ae4fcb6889ada879dd9053779d5ea07edac3859" }
-librqbit-dht = { git = "https://github.com/anefzaoui/rqbit.git", rev = "6ae4fcb6889ada879dd9053779d5ea07edac3859" }
-librqbit-lsd = { git = "https://github.com/anefzaoui/rqbit.git", rev = "6ae4fcb6889ada879dd9053779d5ea07edac3859" }
-librqbit-peer-protocol = { git = "https://github.com/anefzaoui/rqbit.git", rev = "6ae4fcb6889ada879dd9053779d5ea07edac3859" }
-librqbit-sha1-wrapper = { git = "https://github.com/anefzaoui/rqbit.git", rev = "6ae4fcb6889ada879dd9053779d5ea07edac3859" }
-librqbit-tracker-comms = { git = "https://github.com/anefzaoui/rqbit.git", rev = "6ae4fcb6889ada879dd9053779d5ea07edac3859" }
-librqbit-upnp = { git = "https://github.com/anefzaoui/rqbit.git", rev = "6ae4fcb6889ada879dd9053779d5ea07edac3859" }
+librqbit = { git = "https://github.com/anefzaoui/rqbit.git", rev = "ee59e8ae532d12580dba8b84670c8a23fa818c23" }
+librqbit-bencode = { git = "https://github.com/anefzaoui/rqbit.git", rev = "ee59e8ae532d12580dba8b84670c8a23fa818c23" }
+librqbit-buffers = { git = "https://github.com/anefzaoui/rqbit.git", rev = "ee59e8ae532d12580dba8b84670c8a23fa818c23" }
+librqbit-clone-to-owned = { git = "https://github.com/anefzaoui/rqbit.git", rev = "ee59e8ae532d12580dba8b84670c8a23fa818c23" }
+librqbit-core = { git = "https://github.com/anefzaoui/rqbit.git", rev = "ee59e8ae532d12580dba8b84670c8a23fa818c23" }
+librqbit-dht = { git = "https://github.com/anefzaoui/rqbit.git", rev = "ee59e8ae532d12580dba8b84670c8a23fa818c23" }
+librqbit-lsd = { git = "https://github.com/anefzaoui/rqbit.git", rev = "ee59e8ae532d12580dba8b84670c8a23fa818c23" }
+librqbit-peer-protocol = { git = "https://github.com/anefzaoui/rqbit.git", rev = "ee59e8ae532d12580dba8b84670c8a23fa818c23" }
+librqbit-sha1-wrapper = { git = "https://github.com/anefzaoui/rqbit.git", rev = "ee59e8ae532d12580dba8b84670c8a23fa818c23" }
+librqbit-tracker-comms = { git = "https://github.com/anefzaoui/rqbit.git", rev = "ee59e8ae532d12580dba8b84670c8a23fa818c23" }
+librqbit-upnp = { git = "https://github.com/anefzaoui/rqbit.git", rev = "ee59e8ae532d12580dba8b84670c8a23fa818c23" }
 # librqbit's uTP (#1384) as merged upstream after 0.7.0, until a release has it
 # (ikatson/librqbit-utp#3, #4): on Windows, one packet sent to a closed port (or one oversized
 # datagram) no longer stops uTP for the whole session, and ringbuf 0.5.
