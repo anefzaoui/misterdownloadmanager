@@ -512,6 +512,8 @@ Bug reports are welcome in
 [Issues](https://github.com/anefzaoui/misterdownloadmanager/issues/new/choose): **Help → Report a problem**
 in the app fills in your version and system. Ideas are welcome in
 [Discussions](https://github.com/anefzaoui/misterdownloadmanager/discussions/categories/ideas). Pull requests are accepted under the same licence: start with [CONTRIBUTING.md](CONTRIBUTING.md).
+How the project is run, from reviews to releases, is in [GOVERNANCE.md](GOVERNANCE.md), and everyone
+who takes part follows the [Code of conduct](CODE_OF_CONDUCT.md).
 
 ## Made possible by these amazing humans
 

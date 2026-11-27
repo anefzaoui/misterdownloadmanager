@@ -112,3 +112,6 @@ open it yourself. Security problems: see [SECURITY.md](SECURITY.md).
 
 Pull requests are accepted under the project's licence, the
 [GNU GPL, version 3 or later](LICENSE).
+
+Everyone who takes part follows the [Code of conduct](CODE_OF_CONDUCT.md). Who reviews and merges
+changes, and how decisions are made, is in [GOVERNANCE.md](GOVERNANCE.md).

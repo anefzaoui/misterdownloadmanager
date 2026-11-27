@@ -2273,6 +2273,9 @@ Everything below ships together, in version 0.6.0, the next release.
   decides; it now holds the re-add half-way, the torrent out of the session, until its numbers
   were read there, which a fast computer hardly ever did
   ([#2002](https://github.com/anefzaoui/misterdownloadmanager/issues/2002))
+- ✅ GOVERNANCE.md says how MDM is run (who decides, how changes are reviewed and released, AI-assisted
+  development, what happens if the maintainer can't continue), and CODE_OF_CONDUCT.md adopts the
+  Contributor Covenant 2.1
 
 ## Being worked on
 
