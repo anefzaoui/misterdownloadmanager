@@ -351,6 +351,10 @@
 #. RSS feeds window, Download rules: shown when there are no rules yet
 #, machine
 	A rule adds the new articles whose titles it matches, as they come.	ច្បាប់មួយបន្ថែមអត្ថបទថ្មីដែលចំណងជើងរបស់វាត្រូវគ្នា នៅពេលដែលពួកវាចូលមក។
+#. text in the Options window
+#. Site rules window: in the empty list of rules, under its title
+#, machine
+	A rule sets the connections, User-Agent or headers for one site.	ច្បាប់កំណត់ការតភ្ជាប់, User-Agent ឬបឋមកថាសម្រាប់គេហទំព័រមួយ។
 #. text in errors.rs
 #. an error: a server on this computer redirected the download to the internet, which would not go through the chosen network adapter; {adapter} its name
 #, machine
@@ -458,6 +462,10 @@
 #. link in the empty download list: opens Add URL
 #, machine
 	Add new download	បន្ថែមការទាញយកថ្មី
+#. text in the Options window
+#. Options → Accounts: in the empty list of accounts, under its title
+#, machine
+	Add one to download file-host links through it.	បន្ថែមមួយដើម្បីទាញយកតំណឯកសារតាមរយៈវា។
 #. text in the Options window
 #, machine
 	Add the duplicate and overwrite the existing file	បន្ថែមឯកសារស្ទួន ហើយសរសេរជាន់លើឯកសារដែលមានស្រាប់
@@ -1159,6 +1167,10 @@
 #. remote control page (on a phone): what the ".torrent file" button does (screen readers)
 #, machine
 	Choose a .torrent file	ជ្រើសរើសឯកសារ .torrent
+#. text in rssdlg.rs
+#. RSS feeds window: in the empty list of articles, under its title
+#, machine
+	Choose a feed to see its articles.	ជ្រើសរើសព័ត៌មានដើម្បីមើលអត្ថបទរបស់វា។
 #. message or event log entry in the main window
 #. title of the file dialog of View → Font → Choose a font file
 #. title of the message when the font picked in View → Font can't be used
@@ -1771,6 +1783,10 @@
 #. tab title: download settings
 #, machine
 	Downloads	ការទាញយក
+#. text in the Scheduler window
+#. Scheduler → Files in the queue: in the empty list, under its title
+#, machine
+	Downloads added to this queue show here.	ការទាញយកដែលបានបន្ថែមទៅជួរនេះបង្ហាញនៅទីនេះ។
 #. window title in a dialog box
 #. title of the window that sums up downloads added together (a playlist, a batch) once all are done
 #, machine
@@ -2770,6 +2786,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Italy	អ៊ីតាលី
+#. text in rssdlg.rs
+#. RSS feeds window: in the empty list of articles of a feed not read yet
+#, machine
+	Its articles show here once the feed is read.	អត្ថបទរបស់វាបង្ហាញនៅទីនេះនៅពេលដែលព័ត៌មានត្រូវបានអាន។
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted in place (after "Couldn't extract {name}: "); HatchZip took its files out (the archive is gone), but moving them stopped: {to} holds those moved, {left} the others, {error} the system's reason
 #. {error} = an error message (keep the braces as they are)
@@ -3640,6 +3660,10 @@
 #. button in a dialog box; text in a download's progress window
 #, machine
 	No	ទេ
+#. text in the Options window
+#. Options → Accounts: the title in the empty list of debrid service accounts
+#, machine
+	No accounts yet	មិនទាន់មានគណនីនៅឡើយទេ
 #. text in a dialog box
 #, machine
 	No addresses yet	មិនទាន់មានអាសយដ្ឋាននៅឡើយទេ
@@ -3647,6 +3671,10 @@
 #. Options → Proxy / Socks: Test got no answer in time
 #, machine
 	No answer within 20 seconds.	គ្មានការឆ្លើយតបក្នុងរយៈពេល 20 វិនាទីទេ។
+#. text in rssdlg.rs
+#. RSS feeds window: the title in the empty list of articles of a feed that has none
+#, machine
+	No articles	គ្មានអត្ថបទ
 #. text in extension.rs
 #. a check of Test browser integration (Linux, macOS): MDM found no browser it can connect to (one installed as a Flatpak isn't found)
 #, machine
@@ -3694,6 +3722,18 @@
 #. title in the empty download list when there are no downloads at all
 #, machine
 	No downloads yet	មិនទាន់មានការទាញយកនៅឡើយទេ
+#. text in rssdlg.rs
+#. RSS feeds window: the title in the empty list of articles, no feed chosen
+#, machine
+	No feed chosen	មិនបានជ្រើសរើសព័ត៌មាន
+#. text in rssdlg.rs
+#. RSS feeds window: the title in the empty list of feeds
+#, machine
+	No feeds yet	មិនទាន់មានព័ត៌មាននៅឡើយទេ
+#. text in the Scheduler window
+#. Scheduler → Files in the queue: the title in the empty list
+#, machine
+	No files in this queue	គ្មានឯកសារនៅក្នុងជួរនេះ
 #. text in a dialog box
 #, machine
 	No folders yet	មិនទាន់មានថតឯកសារនៅឡើយទេ
@@ -3707,6 +3747,10 @@
 #. text in langpick.rs
 #, machine
 	No language matches.	គ្មានភាសាណាត្រូវគ្នាទេ។
+#. text in the Link grabber window
+#. Link grabber: the title in its empty list
+#, machine
+	No links yet	មិនទាន់មានតំណនៅឡើយទេ
 #. text in the Options window
 #. Options → Remote → Status: on, but the computer has no local network address now
 #, machine
@@ -3738,9 +3782,17 @@
 #, machine
 	No proxy/socks	គ្មានប្រូកស៊ី/SOCKS
 #. text in the Options window
+#. Site rules window: the title in the empty list of rules
+#, machine
+	No site rules yet	មិនទាន់មានច្បាប់គេហទំព័រនៅឡើយទេ
+#. text in the Options window
 #. Options → Accounts: no system keyring/keychain answered (none runs, e.g. a desktop without one), so the sign-ins stay in MDM's settings folder, which only the user's account may read
 #, machine
 	No system keyring answered, so sign-ins and passwords are kept in MDM's settings, which only you can read.	គ្មាន keyring ប្រព័ន្ធណាមួយឆ្លើយតបទេ ដូច្នេះព័ត៌មានចូល និងពាក្យសម្ងាត់ត្រូវបានរក្សាទុកក្នុងការកំណត់របស់ MDM ដែលមានតែអ្នកប៉ុណ្ណោះអាចអានបាន។
+#. text in the Add torrent window
+#. Add torrent: the title in the empty list of files, before a torrent is read
+#, machine
+	No torrent yet	មិនទាន់មាន torrent នៅឡើយទេ
 #. message or event log entry in the main window
 #. event log entry: Add trackers changed nothing, the torrent had them all
 #, machine
@@ -5966,6 +6018,10 @@
 #. remote control page (on a phone): label of the box naming this phone (shown in MDM's list of paired devices)
 #, machine
 	This device's name	ឈ្មោះឧបករណ៍នេះ
+#. text in rssdlg.rs
+#. RSS feeds window: in the empty list of articles of a feed that has none
+#, machine
+	This feed has no articles right now.	ព័ត៌មាននេះមិនមានអត្ថបទនៅពេលនេះទេ។
 #. message or event log entry in the main window
 #. the message when a file picked in View → Font isn't a TrueType or OpenType font MDM can read
 #, machine

@@ -1964,6 +1964,10 @@ pub fn run<A: eframe::App + 'static>(
     options: impl Fn() -> eframe::NativeOptions,
     creator: impl FnOnce(&eframe::CreationContext<'_>) -> A,
 ) -> eframe::Result {
+    // Windows: the window winit makes with the event loop (eframe's, made on this thread at the
+    // first try) is made off the screens, not at the main screen's top left (win32.rs).
+    #[cfg(windows)]
+    let _off_screen = crate::win32::EventTargetOffScreen::install();
     let creator = std::rc::Rc::new(std::cell::RefCell::new(Some(creator)));
     let mut result = Ok(());
     let mut instead: Option<String> = None;

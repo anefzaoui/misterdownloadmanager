@@ -301,6 +301,10 @@
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: shown when there are no rules yet
 	A rule adds the new articles whose titles it matches, as they come.	Aturan menambahkan artikel baru yang judulnya cocok, saat artikel tersebut masuk.
+#. text in the Options window
+#. Site rules window: in the empty list of rules, under its title
+#, machine
+	A rule sets the connections, User-Agent or headers for one site.	Aturan menetapkan koneksi, User-Agent, atau header untuk satu situs.
 #. text in errors.rs
 #. an error: a server on this computer redirected the download to the internet, which would not go through the chosen network adapter; {adapter} its name
 	a server on this computer sent the download elsewhere, which would not go through {adapter}	server di komputer ini mengirim unduhan ke tempat lain, yang tidak akan melalui {adapter}
@@ -386,6 +390,10 @@
 #. message or event log entry in the main window; text in the tray icon's menu
 #. link in the empty download list: opens Add URL
 	Add new download	Tambahkan unduhan baru
+#. text in the Options window
+#. Options → Accounts: in the empty list of accounts, under its title
+#, machine
+	Add one to download file-host links through it.	Tambahkan akun untuk mengunduh tautan dari layanan hosting file.
 #. text in the Options window
 	Add the duplicate and overwrite the existing file	Tambahkan duplikat dan timpa file yang ada
 #. text in the Options window
@@ -934,6 +942,10 @@
 #. text in remote.rs
 #. remote control page (on a phone): what the ".torrent file" button does (screen readers)
 	Choose a .torrent file	Pilih file .torrent
+#. text in rssdlg.rs
+#. RSS feeds window: in the empty list of articles, under its title
+#, machine
+	Choose a feed to see its articles.	Pilih feed untuk melihat artikelnya.
 #. message or event log entry in the main window
 #. title of the file dialog of View → Font → Choose a font file
 #. title of the message when the font picked in View → Font can't be used
@@ -1419,6 +1431,10 @@
 #. text in the download list; text in the Options window
 #. tab title: download settings
 	Downloads	Unduhan
+#. text in the Scheduler window
+#. Scheduler → Files in the queue: in the empty list, under its title
+#, machine
+	Downloads added to this queue show here.	Unduhan yang ditambahkan ke antrean ini akan ditampilkan di sini.
 #. window title in a dialog box
 #. title of the window that sums up downloads added together (a playlist, a batch) once all are done
 	Downloads complete	Unduhan selesai
@@ -2197,6 +2213,10 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Italy	Italia
+#. text in rssdlg.rs
+#. RSS feeds window: in the empty list of articles of a feed not read yet
+#, machine
+	Its articles show here once the feed is read.	Artikelnya akan ditampilkan di sini setelah feed dibaca.
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted in place (after "Couldn't extract {name}: "); HatchZip took its files out (the archive is gone), but moving them stopped: {to} holds those moved, {left} the others, {error} the system's reason
 #. {error} = an error message (keep the braces as they are)
@@ -2886,12 +2906,20 @@
 	Niue	Niue
 #. button in a dialog box; text in a download's progress window
 	No	Tidak
+#. text in the Options window
+#. Options → Accounts: the title in the empty list of debrid service accounts
+#, machine
+	No accounts yet	Belum ada akun
 #. text in a dialog box
 	No addresses yet	Belum ada alamat
 #. text in the Options window
 #. Options → Proxy / Socks: Test got no answer in time
 #, machine
 	No answer within 20 seconds.	Tidak ada jawaban dalam 20 detik.
+#. text in rssdlg.rs
+#. RSS feeds window: the title in the empty list of articles of a feed that has none
+#, machine
+	No articles	Tidak ada artikel
 #. text in extension.rs
 #. a check of Test browser integration (Linux, macOS): MDM found no browser it can connect to (one installed as a Flatpak isn't found)
 	No browser MDM can connect to was found	Tidak ada browser yang dapat dihubungkan oleh MDM yang ditemukan
@@ -2929,6 +2957,18 @@
 #. message or event log entry in the main window
 #. title in the empty download list when there are no downloads at all
 	No downloads yet	Belum ada unduhan
+#. text in rssdlg.rs
+#. RSS feeds window: the title in the empty list of articles, no feed chosen
+#, machine
+	No feed chosen	Tidak ada feed yang dipilih
+#. text in rssdlg.rs
+#. RSS feeds window: the title in the empty list of feeds
+#, machine
+	No feeds yet	Belum ada feed
+#. text in the Scheduler window
+#. Scheduler → Files in the queue: the title in the empty list
+#, machine
+	No files in this queue	Tidak ada file dalam antrean ini
 #. text in a dialog box
 	No folders yet	Belum ada folder
 #. text in a dialog box
@@ -2938,6 +2978,10 @@
 	No language matches the search	Tidak ada bahasa yang cocok dengan pencarian
 #. text in langpick.rs
 	No language matches.	Tidak ada bahasa yang cocok.
+#. text in the Link grabber window
+#. Link grabber: the title in its empty list
+#, machine
+	No links yet	Belum ada tautan
 #. text in the Options window
 #. Options → Remote → Status: on, but the computer has no local network address now
 	No local network now: it starts when the computer joins one.	Tidak ada jaringan lokal sekarang: akan dimulai saat komputer bergabung dengan satu jaringan.
@@ -2963,8 +3007,16 @@
 #. text in the Options window
 	No proxy/socks	Tanpa proksi/SOCKS
 #. text in the Options window
+#. Site rules window: the title in the empty list of rules
+#, machine
+	No site rules yet	Belum ada aturan situs
+#. text in the Options window
 #. Options → Accounts: no system keyring/keychain answered (none runs, e.g. a desktop without one), so the sign-ins stay in MDM's settings folder, which only the user's account may read
 	No system keyring answered, so sign-ins and passwords are kept in MDM's settings, which only you can read.	Gantungan kunci sistem tidak merespons, jadi info masuk dan kata sandi disimpan di pengaturan MDM, yang hanya Anda yang dapat membacanya.
+#. text in the Add torrent window
+#. Add torrent: the title in the empty list of files, before a torrent is read
+#, machine
+	No torrent yet	Belum ada torrent
 #. message or event log entry in the main window
 #. event log entry: Add trackers changed nothing, the torrent had them all
 	No tracker added: it has them already	Tidak ada pelacak yang ditambahkan: sudah ada
@@ -4727,6 +4779,10 @@
 #. text in remote.rs
 #. remote control page (on a phone): label of the box naming this phone (shown in MDM's list of paired devices)
 	This device's name	Nama perangkat ini
+#. text in rssdlg.rs
+#. RSS feeds window: in the empty list of articles of a feed that has none
+#, machine
+	This feed has no articles right now.	Feed ini tidak memiliki artikel saat ini.
 #. message or event log entry in the main window
 #. the message when a file picked in View → Font isn't a TrueType or OpenType font MDM can read
 #, machine

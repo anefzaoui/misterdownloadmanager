@@ -118,7 +118,13 @@ impl ShellIcons {
             16.0
         };
         let rc = winui::rect(Rect::from_min_size(min, vec2(side, side)));
-        match &key {
+        Self::paint_rect(ui, painter, &key, rc);
+    }
+
+    /// `paint_in` filling the screen rect `rc` (a combo's face, a drop list's row: places laid
+    /// out on screen already).
+    pub fn paint_rect(ui: &Ui, painter: &egui::Painter, key: &IconKey, rc: Rect) {
+        match key {
             IconKey::Silk(name) => {
                 if let Some(src) = silk(name) {
                     paint_image(ui, painter, src, rc);
@@ -520,6 +526,7 @@ fn mirror_for_screen_readers<C>(
     entries: &[MenuEntry<C>],
     sub_key: egui::Id,
     hint: &dyn Fn(&C) -> Option<&'static str>,
+    icon: &dyn Fn(&C) -> Option<winui::ItemIcon>,
 ) {
     let Some((Some(hl0), hl1)) =
         ctx.data(|d| d.get_temp::<(Option<usize>, Option<usize>)>(sub_key.with("kb")))
@@ -529,7 +536,7 @@ fn mirror_for_screen_readers<C>(
     if hl0 == usize::MAX {
         return;
     }
-    let size = menu_size(ctx, entries, hint, &|_| None);
+    let size = menu_size(ctx, entries, hint, &|_| None, icon);
     let screen = Rect::from_min_size(place_menu(ctx, at, size, None), size);
     let open_sub = ctx.data(|d| d.get_temp::<usize>(sub_key));
     let sub_screen = ctx.data(|d| d.get_temp::<Rect>(sub_key.with("sub-rect")));
@@ -1047,6 +1054,21 @@ pub fn popup<C: Clone>(
     popup_with(ctx, kind, id, pos, entries, hint, &|_| None)
 }
 
+/// Like [`popup`] for a drop-down list whose choices start with a 16-point icon (#2008:
+/// categories, queues, browsers): `icon` gives an entry's, `None` for one without. The icons go
+/// in a column of their own after the check column (the chosen item's bullet stays), the labels
+/// after them.
+pub fn popup_icons<C: Clone>(
+    ctx: &egui::Context,
+    kind: MenuKind,
+    id: &str,
+    pos: Pos2,
+    entries: &[MenuEntry<C>],
+    icon: &dyn Fn(&C) -> Option<winui::ItemIcon>,
+) -> PopupResult<C> {
+    popup_all(ctx, kind, id, pos, entries, &|_| None, &|_| None, icon)
+}
+
 /// Like [`popup`], with `font` choosing the font an entry's label is drawn and measured in
 /// (`None`: the menu's own font). View → Font's "System font" is drawn in the computer's own
 /// font even while another one is chosen, so it can always be read and clicked (#1489).
@@ -1058,6 +1080,21 @@ pub fn popup_with<C: Clone>(
     entries: &[MenuEntry<C>],
     hint: &dyn Fn(&C) -> Option<&'static str>,
     font: &dyn Fn(&C) -> Option<egui::FontId>,
+) -> PopupResult<C> {
+    popup_all(ctx, kind, id, pos, entries, hint, font, &|_| None)
+}
+
+/// [`popup_with`] and [`popup_icons`] in one: a shortcut hint, a font and an icon per entry.
+#[allow(clippy::too_many_arguments)]
+fn popup_all<C: Clone>(
+    ctx: &egui::Context,
+    kind: MenuKind,
+    id: &str,
+    pos: Pos2,
+    entries: &[MenuEntry<C>],
+    hint: &dyn Fn(&C) -> Option<&'static str>,
+    font: &dyn Fn(&C) -> Option<egui::FontId>,
+    icon: &dyn Fn(&C) -> Option<winui::ItemIcon>,
 ) -> PopupResult<C> {
     let sub_key = egui::Id::unique(("popup-sub", id));
     // The control that has the keys while the menu is open (a drop-down list, a text box): the
@@ -1108,6 +1145,7 @@ pub fn popup_with<C: Clone>(
         0,
         hint,
         font,
+        icon,
     );
     mirror_for_screen_readers(
         ctx,
@@ -1117,6 +1155,7 @@ pub fn popup_with<C: Clone>(
         entries,
         sub_key,
         hint,
+        icon,
     );
     if let Some(c) = result {
         ctx.data_mut(|d| {
@@ -1324,6 +1363,7 @@ fn menu_size<C>(
     entries: &[MenuEntry<C>],
     hint: &dyn Fn(&C) -> Option<&'static str>,
     font: &dyn Fn(&C) -> Option<egui::FontId>,
+    icon: &dyn Fn(&C) -> Option<winui::ItemIcon>,
 ) -> egui::Vec2 {
     let painter = ctx.layer_painter(egui::LayerId::background());
     let widest = entries
@@ -1369,7 +1409,27 @@ fn menu_size<C>(
         })
         .sum();
     let has_sub = entries.iter().any(|e| matches!(e, MenuEntry::Sub(..)));
-    vec2(38.0 + widest + if has_sub { 48.0 } else { 30.0 }, h + 6.0)
+    let icons = if has_icons(entries, icon) {
+        ICON_COLUMN
+    } else {
+        0.0
+    };
+    vec2(
+        38.0 + icons + widest + if has_sub { 48.0 } else { 30.0 },
+        h + 6.0,
+    )
+}
+
+/// The room a drop-down list's icons take before its labels (#2008): the 16-point icon and a gap
+/// of 6, as a list row's file-type icon has before its name.
+const ICON_COLUMN: f32 = 22.0;
+
+/// Whether any of `entries` (one level) has an icon.
+fn has_icons<C>(entries: &[MenuEntry<C>], icon: &dyn Fn(&C) -> Option<winui::ItemIcon>) -> bool {
+    entries.iter().any(|e| match e {
+        MenuEntry::Item(_, c, ..) | MenuEntry::Radio(_, c, ..) => icon(c).is_some(),
+        _ => false,
+    })
 }
 
 /// How a borderless window of ours looks and takes the pointer ([`style_popup`]).
@@ -1595,10 +1655,17 @@ fn popup_level<C: Clone>(
     depth: usize,
     hint: &dyn Fn(&C) -> Option<&'static str>,
     font: &dyn Fn(&C) -> Option<egui::FontId>,
+    icon: &dyn Fn(&C) -> Option<winui::ItemIcon>,
 ) {
     // A system dialog waits for this window to close (winui::start_pick, #615).
     winui::menu_drawn(ctx);
-    let size = menu_size(ctx, entries, hint, font);
+    // A list whose choices have icons: a column for them after the check column (#2008).
+    let label_x = if has_icons(entries, icon) {
+        38.0 + ICON_COLUMN
+    } else {
+        38.0
+    };
+    let size = menu_size(ctx, entries, hint, font, icon);
     let kb_key = sub_key.with("kb");
     let kb: Option<usize> = ctx
         .data(|d| d.get_temp::<(Option<usize>, Option<usize>)>(kb_key))
@@ -1845,10 +1912,21 @@ fn popup_level<C: Clone>(
                 _ => None,
             }
             .unwrap_or_else(winui::segoe);
+            // Its icon, when the list has them: 16 points at the icon column, centred in the
+            // slot (#2008); greyed with its label.
+            if let MenuEntry::Item(_, c, ..) | MenuEntry::Radio(_, c, ..) = e
+                && let Some(ic) = icon(c)
+            {
+                let rc = winui::rect(Rect::from_min_size(
+                    pos2(o.x + 38.0, y + 3.0),
+                    vec2(winui::MARK, winui::MARK),
+                ));
+                winui::item_icon(ui, &painter, &ic, rc, color, enabled);
+            }
             let drawn = text_font(
                 &painter,
                 label_font.clone(),
-                o.x + 38.0,
+                o.x + label_x,
                 y + 14.0,
                 t_visual,
                 color,
@@ -1991,6 +2069,7 @@ fn popup_level<C: Clone>(
             depth + 1,
             hint,
             font,
+            icon,
         );
     }
 }
@@ -3346,6 +3425,7 @@ mod tests {
                     0,
                     &|_| None,
                     &|_| None,
+                    &|_| None,
                 );
             });
             out.textures_delta.clear();
@@ -3379,6 +3459,37 @@ mod tests {
         let x = o.x + (right - o.x) * 0.9 - o.x;
         frame(at(x, 80.0));
         assert_eq!(open(&ctx), Some(3), "kept on the way into it");
+    }
+
+    /// #2008: a drop-down list whose choices have icons is a column wider, for them; one whose
+    /// choices have none keeps its size, and the separators and submenus never ask for one.
+    #[test]
+    fn a_list_with_icons_has_a_column_for_them() {
+        let [a, b] = ["a", "b"]; // not texts to translate (tools/i18n/extract.py)
+        let entries: Vec<MenuEntry<usize>> = vec![
+            MenuEntry::Radio(a, 0, true, true),
+            MenuEntry::Sep,
+            MenuEntry::Radio(b, 1, true, false),
+        ];
+        let ctx = egui::Context::default();
+        let mut sizes = None;
+        let mut out = ctx.run_ui(egui::RawInput::default(), |ui| {
+            let icon = |i: &usize| {
+                (*i == 1).then_some(crate::winui::ItemIcon::Shell(super::IconKey::Silk(
+                    "folder",
+                )))
+            };
+            assert!(super::has_icons(&entries, &icon));
+            assert!(!super::has_icons(&entries, &|_| None));
+            sizes = Some((
+                super::menu_size(ui.ctx(), &entries, &|_| None, &|_| None, &|_| None),
+                super::menu_size(ui.ctx(), &entries, &|_| None, &|_| None, &icon),
+            ));
+        });
+        out.textures_delta.clear();
+        let (plain, with) = sizes.expect("measured");
+        assert_eq!(with.x, plain.x + super::ICON_COLUMN);
+        assert_eq!(with.y, plain.y);
     }
 
     /// #733: a tap on a touch screen chooses the item under the finger. egui-winit makes the
@@ -3423,6 +3534,7 @@ mod tests {
                         sub_key,
                         &mut result,
                         0,
+                        &|_| None,
                         &|_| None,
                         &|_| None,
                     );
@@ -3508,6 +3620,7 @@ mod tests {
                         sub_key,
                         &mut result,
                         0,
+                        &|_| None,
                         &|_| None,
                         &|_| None,
                     );

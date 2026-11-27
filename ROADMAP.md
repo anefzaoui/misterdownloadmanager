@@ -572,6 +572,21 @@ Everything below ships together, in version 0.6.0, the next release.
 - ✅ Each browser's logo before its name in the browser extension's window, the first start's
   browser step and Options → General's browser list, sharp at every display scale; a globe for a
   browser without one
+- ✅ Icons where they help recognition, second part
+  ([#2008](https://github.com/anefzaoui/misterdownloadmanager/issues/2008)): drop-down lists with
+  icons (the categories' in Download File Info and Options → Save to, the queues' in Download
+  later, the browsers' logos in Sites Logins' cookies list); a drawn mark before error and warning
+  lines; one empty-list block (icon, title, what goes there) for RSS feeds, Accounts, Site rules,
+  the Scheduler's files, Add torrent and Link grabber
+- ✅ Icons where they help recognition, first part
+  ([#2008](https://github.com/anefzaoui/misterdownloadmanager/issues/2008)): a status icon before
+  each download's status in the list and the tray panel, in every theme (a theme's own, else
+  MDM's); drawn check and cross marks in Test browser integration and beside "Installed" and
+  "Connected", with the browser's logo on its line; file-type icons in the tray panel; the
+  helpers' role icons in the Helpers window, a new one for gallery-dl
+- 📋 Icons where they help recognition, the rest of
+  [#2008](https://github.com/anefzaoui/misterdownloadmanager/issues/2008): icons in combo boxes
+  (categories, queues, the cookies' browser), message lines, empty lists and the smaller touches
 - ✅ The browser add-on's **Download video** button can be scaled (**80%**, **100%**, **120%**) beside **Button size** in **Options → General → Download panels**, keeps free interior positions when dragged anywhere over the player, offers **Hide the download button in full screen** directly in its menu, and respects DOM full-screen hiding inside embedded frames
   ([#1923](https://github.com/anefzaoui/misterdownloadmanager/issues/1923))
 - ✅ The first start's setup in one window: the language, the video helpers (each with its own
@@ -582,6 +597,9 @@ Everything below ships together, in version 0.6.0, the next release.
 - ✅ CodeQL no longer reads the windows' control names as salts or passwords: the shared drawing
   helpers call a control's name `id` and a box that hides its text `masked`; nothing changes on
   screen
+- ✅ Windows: the tiny window MDM's window toolkit keeps for its own messages is made far off the
+  screens, not at the top left of the main screen. It was never drawn, but programs that list
+  windows saw it there, and MDM's off-screen test runs left it on the screen
 - ✅ Windows: a graphics driver reset no longer keeps MDM off Direct3D 12 for a month: a start
   just after it that finds no graphics card yet isn't remembered, and the next start draws on the
   card again ([#1974](https://github.com/anefzaoui/misterdownloadmanager/issues/1974))
@@ -657,6 +675,15 @@ Everything below ships together, in version 0.6.0, the next release.
   `path.utf-8`), the command line's torrents on Windows past a file another program has open,
   a file's progress past an empty file, and several torrents added at once without waiting for
   each other
+- ✅ Torrents: downloads pick up within seconds when the network comes back (Wi-Fi, sleep, VPN),
+  instead of staying stalled: the peers that dropped with it are called again once, at once, and
+  the trackers and the DHT asked again
+- ✅ Tests: the check that a torrent picks up when the network comes back no longer fails now and
+  then (seen on a Windows runner): it took the torrent's first check of its files for the
+  download, as both count up the same number, and cut the network before the peer was ever
+  reached; each stage now waits for the session's own word (downloading, the peer given up, its
+  retry refused) instead of the time that should have passed
+- ✅ Torrents: a paused torrent's finished pieces are saved before MDM quits
 - ✅ Torrents: the engine checks what it's sent more carefully
 - ✅ Extracting: 7z and RAR archives are checked more carefully
 - ✅ Archive test: archives are checked more carefully

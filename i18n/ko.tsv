@@ -356,6 +356,10 @@
 #. RSS feeds window, Download rules: shown when there are no rules yet
 #, machine
 	A rule adds the new articles whose titles it matches, as they come.	규칙은 제목과 일치하는 새 항목이 들어올 때 추가합니다.
+#. text in the Options window
+#. Site rules window: in the empty list of rules, under its title
+#, machine
+	A rule sets the connections, User-Agent or headers for one site.	규칙은 한 사이트에 대한 연결, User-Agent 또는 헤더를 설정합니다.
 #. text in errors.rs
 #. an error: a server on this computer redirected the download to the internet, which would not go through the chosen network adapter; {adapter} its name
 #, machine
@@ -463,6 +467,10 @@
 #. link in the empty download list: opens Add URL
 #, machine
 	Add new download	새 다운로드 추가
+#. text in the Options window
+#. Options → Accounts: in the empty list of accounts, under its title
+#, machine
+	Add one to download file-host links through it.	파일 호스트 링크를 다운로드하려면 계정을 추가하세요.
 #. text in the Options window
 #, machine
 	Add the duplicate and overwrite the existing file	중복 항목을 추가하고 기존 파일을 덮어쓰기
@@ -1164,6 +1172,10 @@
 #. remote control page (on a phone): what the ".torrent file" button does (screen readers)
 #, machine
 	Choose a .torrent file	.torrent 파일 선택
+#. text in rssdlg.rs
+#. RSS feeds window: in the empty list of articles, under its title
+#, machine
+	Choose a feed to see its articles.	피드를 선택하여 게시물을 확인하세요.
 #. message or event log entry in the main window
 #. title of the file dialog of View → Font → Choose a font file
 #. title of the message when the font picked in View → Font can't be used
@@ -1781,6 +1793,10 @@
 #. tab title: download settings
 #, machine
 	Downloads	다운로드
+#. text in the Scheduler window
+#. Scheduler → Files in the queue: in the empty list, under its title
+#, machine
+	Downloads added to this queue show here.	이 대기열에 추가된 다운로드가 여기에 표시됩니다.
 #. window title in a dialog box
 #. title of the window that sums up downloads added together (a playlist, a batch) once all are done
 #, machine
@@ -2784,6 +2800,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Italy	이탈리아
+#. text in rssdlg.rs
+#. RSS feeds window: in the empty list of articles of a feed not read yet
+#, machine
+	Its articles show here once the feed is read.	피드를 읽으면 게시물이 여기에 표시됩니다.
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted in place (after "Couldn't extract {name}: "); HatchZip took its files out (the archive is gone), but moving them stopped: {to} holds those moved, {left} the others, {error} the system's reason
 #. {error} = an error message (keep the braces as they are)
@@ -3654,6 +3674,10 @@
 #. button in a dialog box; text in a download's progress window
 #, machine
 	No	아니요
+#. text in the Options window
+#. Options → Accounts: the title in the empty list of debrid service accounts
+#, machine
+	No accounts yet	아직 계정이 없습니다.
 #. text in a dialog box
 #, machine
 	No addresses yet	아직 주소가 없습니다.
@@ -3661,6 +3685,10 @@
 #. Options → Proxy / Socks: Test got no answer in time
 #, machine
 	No answer within 20 seconds.	20초 이내에 응답이 없습니다.
+#. text in rssdlg.rs
+#. RSS feeds window: the title in the empty list of articles of a feed that has none
+#, machine
+	No articles	게시물 없음
 #. text in extension.rs
 #. a check of Test browser integration (Linux, macOS): MDM found no browser it can connect to (one installed as a Flatpak isn't found)
 #, machine
@@ -3708,6 +3736,18 @@
 #. title in the empty download list when there are no downloads at all
 #, machine
 	No downloads yet	아직 다운로드가 없습니다.
+#. text in rssdlg.rs
+#. RSS feeds window: the title in the empty list of articles, no feed chosen
+#, machine
+	No feed chosen	선택된 피드 없음
+#. text in rssdlg.rs
+#. RSS feeds window: the title in the empty list of feeds
+#, machine
+	No feeds yet	아직 피드가 없습니다.
+#. text in the Scheduler window
+#. Scheduler → Files in the queue: the title in the empty list
+#, machine
+	No files in this queue	이 대기열에 파일 없음
 #. text in a dialog box
 #, machine
 	No folders yet	아직 폴더가 없습니다.
@@ -3721,6 +3761,10 @@
 #. text in langpick.rs
 #, machine
 	No language matches.	일치하는 언어가 없습니다.
+#. text in the Link grabber window
+#. Link grabber: the title in its empty list
+#, machine
+	No links yet	아직 링크 없음
 #. text in the Options window
 #. Options → Remote → Status: on, but the computer has no local network address now
 #, machine
@@ -3752,9 +3796,17 @@
 #, machine
 	No proxy/socks	프록시/SOCKS 없음
 #. text in the Options window
+#. Site rules window: the title in the empty list of rules
+#, machine
+	No site rules yet	아직 사이트 규칙 없음
+#. text in the Options window
 #. Options → Accounts: no system keyring/keychain answered (none runs, e.g. a desktop without one), so the sign-ins stay in MDM's settings folder, which only the user's account may read
 #, machine
 	No system keyring answered, so sign-ins and passwords are kept in MDM's settings, which only you can read.	시스템 키링이 응답하지 않아 로그인 및 암호는 사용자만 읽을 수 있는 MDM 설정에 보관됩니다.
+#. text in the Add torrent window
+#. Add torrent: the title in the empty list of files, before a torrent is read
+#, machine
+	No torrent yet	아직 토렌트 없음
 #. message or event log entry in the main window
 #. event log entry: Add trackers changed nothing, the torrent had them all
 #, machine
@@ -5980,6 +6032,10 @@
 #. remote control page (on a phone): label of the box naming this phone (shown in MDM's list of paired devices)
 #, machine
 	This device's name	이 장치의 이름
+#. text in rssdlg.rs
+#. RSS feeds window: in the empty list of articles of a feed that has none
+#, machine
+	This feed has no articles right now.	이 피드에는 현재 게시물이 없습니다.
 #. message or event log entry in the main window
 #. the message when a file picked in View → Font isn't a TrueType or OpenType font MDM can read
 #, machine

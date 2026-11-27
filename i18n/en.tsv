@@ -277,6 +277,9 @@
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: shown when there are no rules yet
 	A rule adds the new articles whose titles it matches, as they come.	A rule adds the new articles whose titles it matches, as they come.
+#. text in the Options window
+#. Site rules window: in the empty list of rules, under its title
+	A rule sets the connections, User-Agent or headers for one site.	A rule sets the connections, User-Agent or headers for one site.
 #. text in errors.rs
 #. an error: a server on this computer redirected the download to the internet, which would not go through the chosen network adapter; {adapter} its name
 	a server on this computer sent the download elsewhere, which would not go through {adapter}	a server on this computer sent the download elsewhere, which would not go through {adapter}
@@ -357,6 +360,9 @@
 #. message or event log entry in the main window; text in the tray icon's menu
 #. link in the empty download list: opens Add URL
 	Add new download	Add new download
+#. text in the Options window
+#. Options → Accounts: in the empty list of accounts, under its title
+	Add one to download file-host links through it.	Add one to download file-host links through it.
 #. text in the Options window
 	Add the duplicate and overwrite the existing file	Add the duplicate and overwrite the existing file
 #. text in the Options window
@@ -883,6 +889,9 @@
 #. text in remote.rs
 #. remote control page (on a phone): what the ".torrent file" button does (screen readers)
 	Choose a .torrent file	Choose a .torrent file
+#. text in rssdlg.rs
+#. RSS feeds window: in the empty list of articles, under its title
+	Choose a feed to see its articles.	Choose a feed to see its articles.
 #. message or event log entry in the main window
 #. title of the file dialog of View → Font → Choose a font file
 #. title of the message when the font picked in View → Font can't be used
@@ -1340,6 +1349,9 @@
 #. text in the download list; text in the Options window
 #. tab title: download settings
 	Downloads	Downloads
+#. text in the Scheduler window
+#. Scheduler → Files in the queue: in the empty list, under its title
+	Downloads added to this queue show here.	Downloads added to this queue show here.
 #. window title in a dialog box
 #. title of the window that sums up downloads added together (a playlist, a batch) once all are done
 	Downloads complete	Downloads complete
@@ -2086,6 +2098,9 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Italy	Italy
+#. text in rssdlg.rs
+#. RSS feeds window: in the empty list of articles of a feed not read yet
+	Its articles show here once the feed is read.	Its articles show here once the feed is read.
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted in place (after "Couldn't extract {name}: "); HatchZip took its files out (the archive is gone), but moving them stopped: {to} holds those moved, {left} the others, {error} the system's reason
 #. {error} = an error message (keep the braces as they are)
@@ -2734,11 +2749,17 @@
 	Niue	Niue
 #. button in a dialog box; text in a download's progress window
 	No	No
+#. text in the Options window
+#. Options → Accounts: the title in the empty list of debrid service accounts
+	No accounts yet	No accounts yet
 #. text in a dialog box
 	No addresses yet	No addresses yet
 #. text in the Options window
 #. Options → Proxy / Socks: Test got no answer in time
 	No answer within 20 seconds.	No answer within 20 seconds.
+#. text in rssdlg.rs
+#. RSS feeds window: the title in the empty list of articles of a feed that has none
+	No articles	No articles
 #. text in extension.rs
 #. a check of Test browser integration (Linux, macOS): MDM found no browser it can connect to (one installed as a Flatpak isn't found)
 	No browser MDM can connect to was found	No browser MDM can connect to was found
@@ -2774,6 +2795,15 @@
 #. message or event log entry in the main window
 #. title in the empty download list when there are no downloads at all
 	No downloads yet	No downloads yet
+#. text in rssdlg.rs
+#. RSS feeds window: the title in the empty list of articles, no feed chosen
+	No feed chosen	No feed chosen
+#. text in rssdlg.rs
+#. RSS feeds window: the title in the empty list of feeds
+	No feeds yet	No feeds yet
+#. text in the Scheduler window
+#. Scheduler → Files in the queue: the title in the empty list
+	No files in this queue	No files in this queue
 #. text in a dialog box
 	No folders yet	No folders yet
 #. text in a dialog box
@@ -2783,6 +2813,9 @@
 	No language matches the search	No language matches the search
 #. text in langpick.rs
 	No language matches.	No language matches.
+#. text in the Link grabber window
+#. Link grabber: the title in its empty list
+	No links yet	No links yet
 #. text in the Options window
 #. Options → Remote → Status: on, but the computer has no local network address now
 	No local network now: it starts when the computer joins one.	No local network now: it starts when the computer joins one.
@@ -2806,8 +2839,14 @@
 #. text in the Options window
 	No proxy/socks	No proxy/socks
 #. text in the Options window
+#. Site rules window: the title in the empty list of rules
+	No site rules yet	No site rules yet
+#. text in the Options window
 #. Options → Accounts: no system keyring/keychain answered (none runs, e.g. a desktop without one), so the sign-ins stay in MDM's settings folder, which only the user's account may read
 	No system keyring answered, so sign-ins and passwords are kept in MDM's settings, which only you can read.	No system keyring answered, so sign-ins and passwords are kept in MDM's settings, which only you can read.
+#. text in the Add torrent window
+#. Add torrent: the title in the empty list of files, before a torrent is read
+	No torrent yet	No torrent yet
 #. message or event log entry in the main window
 #. event log entry: Add trackers changed nothing, the torrent had them all
 	No tracker added: it has them already	No tracker added: it has them already
@@ -3113,6 +3152,7 @@
 #. Options → Add an account: label before the field for the password at the debrid service
 	Password:	Password:
 #. text in the Add torrent window
+#. "Look up" is the button that reads the torrent: use its translation
 	Paste a magnet link or choose a .torrent file, then Look up.	Paste a magnet link or choose a .torrent file, then Look up.
 #. text in the Link grabber window
 #. Link grabber, while it is empty
@@ -4461,6 +4501,9 @@
 #. text in remote.rs
 #. remote control page (on a phone): label of the box naming this phone (shown in MDM's list of paired devices)
 	This device's name	This device's name
+#. text in rssdlg.rs
+#. RSS feeds window: in the empty list of articles of a feed that has none
+	This feed has no articles right now.	This feed has no articles right now.
 #. message or event log entry in the main window
 #. the message when a file picked in View → Font isn't a TrueType or OpenType font MDM can read
 	This file can't be used as a font.	This file can't be used as a font.

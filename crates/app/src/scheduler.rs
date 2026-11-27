@@ -184,6 +184,12 @@ const WAKE_LABEL: &str = crate::i18n::mark("Wake the computer to run this queue"
 // i18n: the Scheduler's page (and checkbox) that caps how much is downloaded in a time
 const LIMITS_LABEL: &str = crate::i18n::mark("Download limits");
 
+/// A queue's icon: its list's here, and its choice's in Download Later's queue list (#2008). A
+/// synchronization queue has the linked folder.
+pub fn queue_icon(sync: bool) -> IconKey {
+    IconKey::Silk(if sync { "folder_link" } else { "folder" })
+}
+
 /// A new queue's proposed name: "Queue # 3".
 fn queue_name(n: usize) -> String {
     crate::i18n::fmt(
@@ -578,19 +584,11 @@ impl Scheduler {
             &mut self.tree_rows,
             |ui, clip, i, row, look| {
                 let (label, icon) = match queues.get(i) {
-                    Some(q) => (
-                        crate::i18n::t(q.name.as_str()),
-                        if q.sync { "folder_link" } else { "folder" },
-                    ),
-                    None => (crate::i18n::t(LIMITS_LABEL), "folder_delete"),
+                    Some(q) => (crate::i18n::t(q.name.as_str()), queue_icon(q.sync)),
+                    None => (crate::i18n::t(LIMITS_LABEL), IconKey::Silk("folder_delete")),
                 };
                 look.name = label.to_owned();
-                icons.paint_in(
-                    ui,
-                    clip,
-                    IconKey::Silk(icon),
-                    pos2(row.left() + 4.0, row.top()),
-                );
+                icons.paint_in(ui, clip, icon, pos2(row.left() + 4.0, row.top()));
                 winui::fit(
                     ui,
                     clip,
@@ -1206,6 +1204,21 @@ impl Scheduler {
                 }
             },
         );
+        if rows.is_empty() {
+            let p = ui.painter().clone();
+            winui::empty_state(
+                ui,
+                &p,
+                winui::rect(body),
+                crate::icons::EmptyIcon::Files,
+                // i18n: Scheduler → Files in the queue: the title in the empty list
+                crate::i18n::mark("No files in this queue"),
+                // i18n: Scheduler → Files in the queue: in the empty list, under its title
+                crate::i18n::mark("Downloads added to this queue show here."),
+                None,
+                "sched-files-empty",
+            );
+        }
         // Ctrl-click adds or drops a file, Shift-click picks a run, Ctrl+A picks them all.
         let mods = crate::list::click_modifiers(ui);
         if let Some(i) = ev.clicked.or(ev.picked.filter(|_| ev.context.is_none())) {
