@@ -13148,6 +13148,7 @@ impl App {
                     dir.join(mdm_engine::naming::sanitize(name))
                 });
                 let checksum = d.checksum.clone();
+                let explicit_name = d.name.is_some();
                 // Numbered on as it starts if the name is taken then (#743): no disk here, for
                 // each of thousands of links.
                 let dest = mdm_engine::naming::guess(&dir, &name);
@@ -13178,8 +13179,9 @@ impl App {
                     if checksum.is_some() {
                         i.checksum = checksum;
                     }
-                    // A name the server didn't give (none looked up) may still change.
-                    if size.is_none() {
+                    // A name the server didn't give (none looked up) may still change, unless
+                    // the list explicitly named it (#1963: an `.ef2` block's `filename:`).
+                    if size.is_none() && !explicit_name {
                         i.name_from_url = true;
                     }
                 }
@@ -17003,6 +17005,58 @@ mod mark_hook_tests {
             (opts.on_file_created.expect("marked").0)(&path);
             assert_marked(&path, named, None);
         }
+    }
+
+    /// #1963: `.ef2` `filename:` lines keep their extension, category, and explicit name (`!name_from_url`)
+    /// when added from Link grabber, while blocks without `filename:` behave as before.
+    #[test]
+    fn ef2_filename_keeps_explicit_name_and_category_when_added() {
+        let mut app = app();
+        let ef2 = "<\r\nhttps://cdn.example.org/1225296974-1-30112.m4s\r\nfilename: 01 - Title.mp4\r\n>\r\n\
+                   <\r\nhttps://cdn.example.org/1225296974-1-30280.m4s\r\nfilename: 01 - Title.m4a\r\n>\r\n\
+                   <\r\nhttps://cdn.example.org/plain.bin\r\n>\r\n";
+        let found = crate::transfer::import(ef2);
+        app.show_import(found.clone(), "list.ef2".into());
+        let picked = crate::grabber::Picked {
+            name: "cdn.example.org".into(),
+            folder: PathBuf::new(),
+            password: None,
+            extract: false,
+            delete: false,
+            links: app
+                .grabber
+                .as_ref()
+                .unwrap()
+                .links
+                .iter()
+                .map(|l| (l.found.clone(), l.name.clone(), l.size))
+                .collect(),
+        };
+        app.add_grabbed(false, vec![picked]);
+
+        assert_eq!(app.items.len(), 3);
+        let mp4 = app
+            .items
+            .iter()
+            .find(|i| i.file_name == "01 - Title.mp4")
+            .expect("explicit mp4 name");
+        assert_eq!(mp4.category, Category::Video);
+        assert!(!mp4.name_from_url);
+
+        let m4a = app
+            .items
+            .iter()
+            .find(|i| i.file_name == "01 - Title.m4a")
+            .expect("explicit m4a name");
+        assert_eq!(m4a.category, Category::Music);
+        assert!(!m4a.name_from_url);
+
+        let plain = app
+            .items
+            .iter()
+            .find(|i| i.file_name == "plain.bin")
+            .expect("fallback name");
+        assert!(plain.name_from_url);
     }
 }
 
