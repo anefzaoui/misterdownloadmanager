@@ -303,3 +303,28 @@ impl ChecksumDialog {
         }
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    /// #2064: only a finished check that found the typed checksum clears a server's warning.
+    #[test]
+    fn matched_only_when_the_check_found_the_typed_checksum() {
+        let md5 = "9e107d9d372bb6826bd81d3542a419d6";
+        let typed = Hash::parse(md5).unwrap();
+        let mut d = ChecksumDialog::new(1, Some(&typed), Some(PathBuf::from("fox.txt")));
+        assert!(!d.matched(), "not checked yet");
+        let check: Check = Arc::new(Mutex::new(None));
+        d.check = Some(check.clone());
+        assert!(!d.matched(), "still checking");
+        *check.lock().unwrap() = Some(Ok(vec![0; 16]));
+        assert!(!d.matched(), "another checksum");
+        *check.lock().unwrap() = Some(Ok(typed.value.clone()));
+        assert!(d.matched());
+        *check.lock().unwrap() = Some(Err("gone".into()));
+        assert!(!d.matched(), "unreadable");
+        d.text = "not a hash".into();
+        assert!(!d.matched());
+    }
+}
