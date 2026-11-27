@@ -122,6 +122,9 @@ impl Importing {
 #[derive(Clone, Debug, Default, PartialEq)]
 pub struct Imported {
     pub url: String,
+    /// A file name the list gave (#1963: an `.ef2` block's `filename:` line), sanitized to one
+    /// file name with any folder parts stripped; `None` lets the URL/server name the download.
+    pub name: Option<String>,
     pub referer: Option<String>,
     pub cookies: Option<String>,
     pub user_agent: Option<String>,
@@ -221,6 +224,7 @@ fn ef2_blocks(text: &str) -> Vec<Imported> {
                         "referer" => d.referer = Some(v),
                         "cookie" => d.cookies = Some(v),
                         "user-agent" => d.user_agent = Some(v),
+                        "filename" => d.name = mdm_engine::naming::single_file_name(&v),
                         _ => {}
                     }
                 }
@@ -499,6 +503,22 @@ mod tests {
                 },
             ]
         );
+    }
+
+    /// #1963: `.ef2` blocks carrying `filename:` keep only a sanitized single file name, leaving
+    /// out any folder parts or drive letters, and falling back to URL naming when empty.
+    #[test]
+    fn ef2_filename_lines_set_sanitized_single_name() {
+        let ef2 = "<\r\nhttps://cdn.example.org/1225296974-1-30112.m4s\r\nfilename: 01 - Title.mp4\r\nreferer: https://www.bilibili.com/\r\n>\r\n\
+                   <\r\nhttps://cdn.example.org/1225296974-1-30280.m4s\r\nFileName: C:\\Users\\me\\..\\out\\01: Title?.m4a\r\n>\r\n\
+                   <\r\nhttps://cdn.example.org/plain.zip\r\nfilename: D:sub/dir/\r\n>\r\n\
+                   <\r\nhttps://cdn.example.org/drive.zip\r\nfilename: E:picked.zip\r\n>\r\n";
+        let got = import(ef2);
+        assert_eq!(got.len(), 4);
+        assert_eq!(got[0].name.as_deref(), Some("01 - Title.mp4"));
+        assert_eq!(got[1].name.as_deref(), Some("01_ Title_.m4a"));
+        assert_eq!(got[2].name, None);
+        assert_eq!(got[3].name.as_deref(), Some("picked.zip"));
     }
 
     #[test]

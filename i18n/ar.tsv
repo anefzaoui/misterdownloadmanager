@@ -1317,6 +1317,9 @@
 #. button in extension.rs
 #. button in the browser extension's window: stop offering it at each start
 	Don't ask again	لا تسأل مرة أخرى
+#. option (radio button) in the Options window
+#, machine
+	Don't show	عدم الإظهار
 #. text in the Options window
 #. checkbox, Options → Downloads: Download complete and MDM's other windows that open by themselves wait while a full-screen game, app or video, a presentation or the locked screen is on, and show when the user is back
 #, machine
@@ -2735,6 +2738,9 @@
 #. text in the Options window
 #. checkbox: the Minimize button hides MDM's windows to the notification area (system tray) instead of the taskbar
 	Minimize to the notification area	تصغير إلى منطقة الإشعارات
+#. text in the Options window
+#, machine
+	Minimized, the window waits on the taskbar and doesn't take the focus.	عند التصغير، تنتظر النافذة في شريط المهام ولا تأخذ التركيز.
 #. text in rssdlg.rs; text in the Add torrent window
 #. RSS feeds window: the unit after the minutes box
 #. Torrent settings: the unit after the minutes box
@@ -3442,6 +3448,7 @@
 #. Options → Add an account: label before the field for the password at the debrid service
 	Password:	كلمة المرور:
 #. text in the Add torrent window
+#. "Look up" is the button that reads the torrent: use its translation
 	Paste a magnet link or choose a .torrent file, then Look up.	الصق رابط مغناطيسي أو اختر ملف .torrent، ثم ابحث.
 #. text in the Link grabber window
 #. Link grabber, while it is empty
@@ -3983,7 +3990,7 @@
 	Show details >>	إظهار التفاصيل >>
 #. checkbox in the Options window; checkbox in a download's progress window
 	Show download complete dialog	إظهار مربع حوار اكتمال التنزيل
-#. checkbox in the Options window
+#. text in the Options window
 #, machine
 	Show download progress dialog when a download starts	إظهار مربع حوار تقدم التنزيل عند بدء التنزيل
 #. text in the Options window
@@ -3997,6 +4004,12 @@
 #. text in extension.rs
 #. button in the browser extension's window: open the tutorial that adds the extension
 	Show me how	أرني كيف
+#. option (radio button) in the Options window
+#, machine
+	Show minimized	إظهار مصغرة
+#. option (radio button) in the Options window
+#, machine
+	Show normally	إظهار عادية
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Show or hide the preview pane	إظهار جزء المعاينة أو إخفاؤه

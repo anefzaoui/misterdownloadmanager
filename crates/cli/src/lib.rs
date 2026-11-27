@@ -907,12 +907,38 @@ pub struct Net {
     /// The network adapter by name ("" any), looked for when the command starts.
     pub adapter: String,
     pub torrent_proxy: TorrentProxy,
+    /// Torrent settings' network switches (#40): the DHT turned off there is off here too.
+    pub torrent_net: TorrentNet,
     /// Torrent settings' public tracker list (#1776), when it is on: `torrent-get` adds it to a
     /// public torrent as the app does.
     pub public_trackers: Option<PublicTrackers>,
     /// Options → Connection's site rules and exceptions (#1778): `get` and `resume` ask a site
     /// as the app does, where the command line doesn't say otherwise.
     pub sites: SiteRules,
+}
+
+/// Torrent settings → Network (#40) for `torrent-info` and `torrent-get`'s session, as the app's
+/// takes them: the DHT, finding peers on the local network, UPnP, incoming connections and uTP.
+/// Without the app's settings, all on (the engine's defaults, as the app's own are).
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub struct TorrentNet {
+    pub dht: bool,
+    pub lsd: bool,
+    pub upnp: bool,
+    pub listen: bool,
+    pub utp: bool,
+}
+
+impl Default for TorrentNet {
+    fn default() -> Self {
+        TorrentNet {
+            dht: true,
+            lsd: true,
+            upnp: true,
+            listen: true,
+            utp: true,
+        }
+    }
 }
 
 /// The app's site rules and its per-server exceptions (#1778, `mdm_ipc::siterules`).
@@ -950,6 +976,7 @@ struct Conn {
     dns: mdm_engine::DnsChoice,
     route: mdm_engine::Route,
     torrent_proxy: TorrentProxy,
+    torrent_net: TorrentNet,
     public_trackers: Option<PublicTrackers>,
     sites: SiteRules,
 }
@@ -1002,6 +1029,7 @@ impl Conn {
             dns: dns.cloned().unwrap_or_else(|| net.dns.clone()),
             route,
             torrent_proxy: net.torrent_proxy.clone(),
+            torrent_net: net.torrent_net.clone(),
             public_trackers: net.public_trackers.clone(),
             sites: net.sites.clone(),
         }
@@ -2493,25 +2521,36 @@ fn mb(b: u64) -> String {
     format!("{:.2} MB", b as f64 / (1 << 20) as f64)
 }
 
-/// A throwaway torrent session for the command line (its own state folder, nothing kept),
-/// through Torrent settings' SOCKS5 proxy when they say to use it (#1556), as the app's.
+/// A throwaway torrent session for the command line (its own state folder, nothing kept), as
+/// Torrent settings say ([`session_config`]).
 async fn torrents() -> anyhow::Result<(mdm_torrent::Torrents, tempfile::TempDir)> {
-    let proxy = match conn().torrent_proxy {
+    let dir = tempfile::tempdir()?;
+    let t = mdm_torrent::Torrents::start(session_config(&conn(), dir.path().to_owned())?).await?;
+    Ok((t, dir))
+}
+
+/// The command line's torrent session in `dir`: Torrent settings' network switches (the DHT off
+/// there is off here) and their SOCKS5 proxy when they say to use it (#1556), as the app's.
+fn session_config(c: &Conn, dir: std::path::PathBuf) -> anyhow::Result<mdm_torrent::Config> {
+    let proxy = match &c.torrent_proxy {
         TorrentProxy::Off => None,
-        TorrentProxy::Through(p) => Some(p),
+        TorrentProxy::Through(p) => Some(p.clone()),
         TorrentProxy::Missing => anyhow::bail!(
             "Torrent settings say to use the proxy, and Options → Proxy / Socks has no SOCKS5 proxy: set one, or turn Use the proxy off"
         ),
     };
-    let dir = tempfile::tempdir()?;
-    let t = mdm_torrent::Torrents::start(mdm_torrent::Config {
+    let n = &c.torrent_net;
+    Ok(mdm_torrent::Config {
         // Its own folder, nothing of the person's is there: the engine may open what it makes.
         require_authorization: false,
         proxy,
-        ..mdm_torrent::Config::new(dir.path().to_owned())
+        dht: n.dht,
+        lsd: n.lsd,
+        upnp: n.upnp,
+        listen: n.listen,
+        utp: n.utp,
+        ..mdm_torrent::Config::new(dir)
     })
-    .await?;
-    Ok((t, dir))
 }
 
 /// `torrent` with Torrent settings' public tracker list (#1776) when it is on, as the app adds
@@ -2713,6 +2752,39 @@ mod tests {
         assert_eq!(public_list_added(&private, &[]), (private, None));
     }
 
+    /// `torrent-info` and `torrent-get` take Torrent settings' network switches: the DHT turned
+    /// off there isn't started here, nor local discovery, UPnP, incoming connections or uTP.
+    #[test]
+    fn the_torrent_commands_take_torrent_settings_switches() {
+        let off = TorrentNet {
+            dht: false,
+            lsd: false,
+            upnp: false,
+            listen: false,
+            utp: false,
+        };
+        let net = Net {
+            torrent_net: off,
+            ..Net::default()
+        };
+        let cmd = Cli::try_parse_from([NAME, "torrent-info", "x.torrent"])
+            .unwrap()
+            .cmd;
+        let dir = std::path::PathBuf::from("state");
+        let c = session_config(&Conn::of(&cmd, &net), dir.clone()).unwrap();
+        assert_eq!(
+            (c.dht, c.lsd, c.upnp, c.listen, c.utp),
+            (false, false, false, false, false)
+        );
+        assert_eq!((c.proxy, c.require_authorization), (None, false));
+        // Without the app's settings: the engine's defaults.
+        let c = session_config(&Conn::of(&cmd, &Net::default()), dir).unwrap();
+        assert_eq!(
+            (c.dht, c.lsd, c.upnp, c.listen, c.utp),
+            (true, true, true, true, true)
+        );
+    }
+
     /// #1556: a command goes through the app's network settings, its own switches over them.
     #[test]
     fn a_command_takes_the_apps_network_and_its_own_switches() {
@@ -2721,6 +2793,7 @@ mod tests {
             dns: parse_dns("quad9-tls").unwrap(),
             adapter: String::new(),
             torrent_proxy: TorrentProxy::Through("socks5://127.0.0.1:1080".into()),
+            torrent_net: TorrentNet::default(),
             public_trackers: None,
             sites: SiteRules::default(),
         };
