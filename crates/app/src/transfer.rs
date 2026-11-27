@@ -122,6 +122,7 @@ impl Importing {
 #[derive(Clone, Debug, Default, PartialEq)]
 pub struct Imported {
     pub url: String,
+    pub filename: Option<String>,
     pub referer: Option<String>,
     pub cookies: Option<String>,
     pub user_agent: Option<String>,
@@ -218,6 +219,7 @@ fn ef2_blocks(text: &str) -> Vec<Imported> {
                 } else if let Some((k, v)) = line.split_once(':') {
                     let v = v.trim().to_owned();
                     match k.trim().to_ascii_lowercase().as_str() {
+                        "filename" if !v.is_empty() => d.filename = Some(v),
                         "referer" => d.referer = Some(v),
                         "cookie" => d.cookies = Some(v),
                         "user-agent" => d.user_agent = Some(v),
@@ -499,6 +501,18 @@ mod tests {
                 },
             ]
         );
+    }
+
+    #[test]
+    fn ef2_import_preserves_an_explicit_filename() {
+        let text = "<\nhttps://example.org/server-name.txt\nfilename: imported-name.txt\n>\n\
+                    <\nhttps://example.org/other.txt\nfilename: \n>\n";
+        let downloads = import(text);
+
+        assert_eq!(downloads.len(), 2);
+        assert_eq!(downloads[0].url, "https://example.org/server-name.txt");
+        assert_eq!(downloads[0].filename.as_deref(), Some("imported-name.txt"));
+        assert_eq!(downloads[1].filename, None);
     }
 
     #[test]

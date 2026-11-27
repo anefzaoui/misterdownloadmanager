@@ -380,10 +380,10 @@ impl Grabber {
                 pictures.insert(address_key(&url), self.links.len());
             }
             let magnet = url.scheme() == "magnet";
-            let name = mdm_engine::naming::sanitize(&if magnet {
-                magnet_name(&url)
-            } else {
-                mdm_engine::naming::file_name(None, &url)
+            let name = mdm_engine::naming::sanitize(&match d.filename.as_deref() {
+                Some(name) => name.to_owned(),
+                None if magnet => magnet_name(&url),
+                None => mdm_engine::naming::file_name(None, &url),
             });
             let known = known(&url);
             let origin = if known {
@@ -759,7 +759,7 @@ impl Grabber {
                     l.page = info.web_page;
                     l.size = info.size;
                     let named = mdm_engine::naming::sanitize(&info.file_name);
-                    if !named.is_empty() && named != l.name {
+                    if l.found.filename.is_none() && !named.is_empty() && named != l.name {
                         l.category = category_of(l.magnet, &named);
                         l.name = named;
                         moved.push(l.pkg);

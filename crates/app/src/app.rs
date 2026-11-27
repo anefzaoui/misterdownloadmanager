@@ -13073,6 +13073,7 @@ impl App {
                     dir.join(mdm_engine::naming::sanitize(name))
                 });
                 let checksum = d.checksum.clone();
+                let has_imported_filename = d.filename.is_some();
                 // Numbered on as it starts if the name is taken then (#743): no disk here, for
                 // each of thousands of links.
                 let dest = mdm_engine::naming::guess(&dir, &name);
@@ -13104,7 +13105,7 @@ impl App {
                         i.checksum = checksum;
                     }
                     // A name the server didn't give (none looked up) may still change.
-                    if size.is_none() {
+                    if size.is_none() && !has_imported_filename {
                         i.name_from_url = true;
                     }
                 }
