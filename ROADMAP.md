@@ -569,6 +569,12 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 Everything below ships together, in version 0.6.0, the next release.
 
+- ✅ Google Drive shared folders: a folder's link in Add URL, Link grabber or the browser's
+  right-click command opens its files and its subfolders' in Link grabber, ticked, named and
+  sized as Drive lists them, downloaded into the same folders on disk; Docs, Sheets and Slides
+  as Office files; a folder shared with your account only, with the browser's sign-in; Drive's
+  refusals said per file as for single files, and a folder of more than 50 items said as listed
+  in part ([#2032](https://github.com/anefzaoui/misterdownloadmanager/issues/2032))
 - ✅ Import: an `.ef2` list's `filename:` lines name its downloads (only a file name: folder parts
   are left out), shown in Link grabber before they are added
   ([#1963](https://github.com/anefzaoui/misterdownloadmanager/issues/1963); thanks to

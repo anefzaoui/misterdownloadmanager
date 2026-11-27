@@ -63,7 +63,7 @@ the overlap check, the digest; a file that changed on the server fails as `FileC
 
 A download's first request (`get`) follows redirects and the pages that lead on to a file by
 themselves (a waiting page's refresh). Sites whose links aren't the file's address have a module
-in `sites/` (Google Drive: `sites/gdrive.rs`; MediaFire: `sites/mediafire.rs`; Rapidgator:
+in `sites/` (Google Drive: `sites/gdrive.rs`, its shared folders' pages read there and listed by `hub.rs`; MediaFire: `sites/mediafire.rs`; Rapidgator:
 `sites/rapidgator.rs`; LuluStream: `sites/lulustream.rs`): it turns the link into the file's
 address, reads the site's own pages (a confirmation form, a download button, an error page),
 names its refusals (`Error::Refused`) and,
