@@ -4,6 +4,12 @@
 //! it shares with ticked files (its first and last piece at most) go to a parts file of MDM's
 //! own, `<session>/<hash>.parts/<index>`, as other BitTorrent clients do. Ticked later, it is
 //! made then, and what the parts file held is copied into it.
+//!
+//! A paused torrent holds none of its files (`close_files`): another program may move, rename or
+//! delete them meanwhile. When it starts they are given again by its grant, checked by the app
+//! as at Start, and a file that isn't the one it was is an error, never written into. On
+//! Windows a finished file is held read-only and shared (`on_file_completed`), so it can be
+//! opened, copied, renamed or moved while it is seeded.
 use librqbit::storage::TorrentStorage;
 use librqbit::{ManagedTorrentShared, TorrentMetadata};
 use std::{
@@ -11,7 +17,10 @@ use std::{
     fs::File,
     io,
     path::{Path, PathBuf},
-    sync::{Arc, Mutex, OnceLock, RwLock},
+    sync::{
+        Arc, Mutex, OnceLock, RwLock,
+        atomic::{AtomicBool, Ordering},
+    },
 };
 
 #[derive(Debug)]
@@ -306,15 +315,142 @@ fn write_at(file: &File, mut offset: u64, mut buf: &[u8]) -> io::Result<()> {
 
 enum Slot {
     Padding,
-    // One lock per file: positioned writes to different pieces remain concurrent.
-    File(RwLock<Option<File>>),
+    File(FileSlot),
     Parts(Parts),
+}
+
+/// A file the app handed over.
+struct FileSlot {
+    /// Where the app opened it: a handle given again must be for the same path.
+    path: PathBuf,
+    // One lock per file: positioned writes to different pieces remain concurrent.
+    file: RwLock<Option<File>>,
+    /// Written through since it was handed over: written to disk before the handle closes.
+    written: AtomicBool,
+    /// Every piece of it is ours (`on_file_completed`): it is only read from now on.
+    finished: AtomicBool,
+    /// The handle can't write (Windows, finished: see `on_file_completed`).
+    read_only: AtomicBool,
+    /// Its length when it was closed: a file given again must be as long, or it is not the
+    /// one the pieces are in (made again empty, or another one put there).
+    closed_len: Mutex<Option<u64>>,
+}
+
+impl FileSlot {
+    fn new(path: PathBuf, file: File) -> Self {
+        Self {
+            path,
+            file: RwLock::new(Some(file)),
+            written: AtomicBool::new(false),
+            finished: AtomicBool::new(false),
+            read_only: AtomicBool::new(false),
+            closed_len: Mutex::new(None),
+        }
+    }
+
+    /// Moves it, handle and all, to the storage `take()` makes; this one is left without.
+    fn take(&self) -> io::Result<Self> {
+        let file = self
+            .file
+            .write()
+            .map_err(|_| io::Error::other("lock"))?
+            .take();
+        Ok(Self {
+            path: self.path.clone(),
+            file: RwLock::new(file),
+            written: AtomicBool::new(self.written.swap(false, Ordering::AcqRel)),
+            finished: AtomicBool::new(self.finished.load(Ordering::Acquire)),
+            read_only: AtomicBool::new(self.read_only.load(Ordering::Acquire)),
+            closed_len: Mutex::new(
+                *self
+                    .closed_len
+                    .lock()
+                    .map_err(|_| io::Error::other("lock"))?,
+            ),
+        })
+    }
+
+    /// Writes what was written to disk and closes the handle, noting the file's length.
+    fn close(&self) -> io::Result<()> {
+        // Taking the lock for writing waited for every read and write still using it.
+        let Some(file) = self
+            .file
+            .write()
+            .map_err(|_| io::Error::other("lock"))?
+            .take()
+        else {
+            return Ok(());
+        };
+        let len = file.metadata().map(|m| m.len()).ok();
+        *self
+            .closed_len
+            .lock()
+            .map_err(|_| io::Error::other("lock"))? = len;
+        if self.written.swap(false, Ordering::AcqRel) {
+            file.sync_data()?;
+        }
+        Ok(())
+    }
+
+    /// Windows: the handle swapped for a read-only one of the same file, which other programs
+    /// may read, run, rename, move and delete while it is seeded (`into_read_only`). Elsewhere
+    /// an open file stops none of that, and the handle stays as it is.
+    fn hold_read_only(&self) -> io::Result<()> {
+        #[cfg(windows)]
+        {
+            let mut slot = self.file.write().map_err(|_| io::Error::other("lock"))?;
+            if self.read_only.load(Ordering::Acquire) {
+                return Ok(());
+            }
+            let Some(file) = slot.take() else {
+                return Ok(());
+            };
+            if self.written.swap(false, Ordering::AcqRel)
+                && let Err(e) = file.sync_data()
+            {
+                *slot = Some(file);
+                return Err(e);
+            }
+            match librqbit::storage::filesystem::into_read_only(file) {
+                Ok(read_only) => {
+                    *slot = Some(read_only);
+                    self.read_only.store(true, Ordering::Release);
+                }
+                Err((file, e)) => {
+                    *slot = Some(file);
+                    return Err(e);
+                }
+            }
+        }
+        Ok(())
+    }
+}
+
+/// Whether a storage's files are open.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+enum Phase {
+    Open,
+    /// Closed while the torrent is paused (`close_files`): given again on their next use, by
+    /// the grant.
+    Closed,
+    /// Moved to the storage `take()` made: this one never has a file again.
+    Taken,
+}
+
+/// A file is not the one it was when the torrent was paused (moved, deleted, replaced): nothing
+/// of it is written, nor read as its pieces.
+fn changed_while_paused() -> io::Error {
+    io::Error::new(
+        io::ErrorKind::NotFound,
+        "a file of this torrent was moved, deleted or replaced while it was paused",
+    )
 }
 
 pub(crate) struct Storage {
     session: PathBuf,
     hash: String,
     files: Vec<Slot>,
+    phase: Mutex<Phase>,
 }
 impl Storage {
     pub(crate) fn new(session: PathBuf, hash: String) -> Self {
@@ -322,11 +458,28 @@ impl Storage {
             session,
             hash,
             files: Vec::new(),
+            phase: Mutex::new(Phase::Open),
         }
     }
+
+    fn grant(&self) -> io::Result<Arc<Grant>> {
+        grants()
+            .lock()
+            .unwrap()
+            .get(&(self.session.clone(), self.hash.clone()))
+            .cloned()
+            .ok_or_else(|| {
+                io::Error::new(
+                    io::ErrorKind::PermissionDenied,
+                    "the app gave no files for this torrent",
+                )
+            })
+    }
+
     fn with_file<T>(
         &self,
         index: usize,
+        write: bool,
         padding: impl FnOnce() -> T,
         op: impl FnOnce(&File) -> io::Result<T>,
     ) -> anyhow::Result<T> {
@@ -339,12 +492,93 @@ impl Storage {
             Slot::Parts(_) => return Err(io::Error::from(io::ErrorKind::InvalidInput).into()),
             Slot::File(slot) => slot,
         };
-        let file = slot
-            .read()
-            .map_err(|_| io::Error::from(io::ErrorKind::Other))?;
-        Ok(op(file.as_ref().ok_or_else(|| {
-            io::Error::from(io::ErrorKind::NotConnected)
-        })?)?)
+        let mut op = Some(op);
+        for opened_again in [false, true] {
+            {
+                let file = slot
+                    .file
+                    .read()
+                    .map_err(|_| io::Error::from(io::ErrorKind::Other))?;
+                if let Some(file) = file.as_ref() {
+                    if write {
+                        // A finished file is never written: a piece we have is never asked
+                        // for again.
+                        if slot.read_only.load(Ordering::Acquire) {
+                            return Err(io::Error::new(
+                                io::ErrorKind::PermissionDenied,
+                                "a finished file is not written",
+                            )
+                            .into());
+                        }
+                        slot.written.store(true, Ordering::Release);
+                    }
+                    let op = op.take().expect("called once");
+                    return Ok(op(file)?);
+                }
+            }
+            if !opened_again {
+                self.open_again()?;
+            }
+        }
+        Err(io::Error::from(io::ErrorKind::NotConnected).into())
+    }
+
+    /// The files of a paused torrent given again (it starts, or a read or write came): the
+    /// handles the app checked for this start (`Run::start`, which also told whether a file
+    /// was swapped), or else from the grant's `reopen`, as a later `init` does. Every file must
+    /// be at its path with the length it had when it was closed; then all are installed at
+    /// once. Nothing is made here, and nothing is written into a file that isn't the one it
+    /// was.
+    fn open_again(&self) -> anyhow::Result<()> {
+        let mut phase = self.phase.lock().map_err(|_| io::Error::other("lock"))?;
+        match *phase {
+            Phase::Open => return Ok(()),
+            Phase::Taken => return Err(io::Error::from(io::ErrorKind::NotConnected).into()),
+            Phase::Closed => {}
+        }
+        let grant = self.grant()?;
+        let first = grant.first.lock().unwrap().take();
+        let prepared = match first {
+            Some(p) => p,
+            None => (grant.reopen)()?,
+        };
+        let mut given: HashMap<_, _> = prepared.files.into_iter().map(|f| (f.index, f)).collect();
+        let mut opened = Vec::new();
+        for (index, slot) in self.files.iter().enumerate() {
+            let Slot::File(slot) = slot else {
+                continue;
+            };
+            let file = given.remove(&index).ok_or_else(changed_while_paused)?;
+            if file.path != slot.path {
+                return Err(io::Error::new(
+                    io::ErrorKind::PermissionDenied,
+                    "a file was given again at another path",
+                )
+                .into());
+            }
+            let len = file.file.metadata()?.len();
+            let was = *slot
+                .closed_len
+                .lock()
+                .map_err(|_| io::Error::other("lock"))?;
+            if was.is_some_and(|was| was != len) {
+                return Err(changed_while_paused().into());
+            }
+            opened.push((slot, file.file));
+        }
+        // What is left (files kept in a parts file now) is closed as it goes.
+        drop(given);
+        for (slot, file) in opened {
+            *slot.file.write().map_err(|_| io::Error::other("lock"))? = Some(file);
+            slot.read_only.store(false, Ordering::Release);
+            if slot.finished.load(Ordering::Acquire)
+                && let Err(e) = slot.hold_read_only()
+            {
+                tracing::debug!("torrent file kept read/write: {e}");
+            }
+        }
+        *phase = Phase::Open;
+        Ok(())
     }
 }
 
@@ -355,12 +589,7 @@ impl TorrentStorage for Storage {
         metadata: &TorrentMetadata,
     ) -> anyhow::Result<()> {
         let key = (self.session.clone(), self.hash.clone());
-        let grant = grants()
-            .lock()
-            .unwrap()
-            .get(&key)
-            .cloned()
-            .ok_or_else(|| io::Error::from(io::ErrorKind::PermissionDenied))?;
+        let grant = self.grant()?;
         let first = grant.first.lock().unwrap().take();
         let prepared = match first {
             Some(p) => p,
@@ -387,7 +616,7 @@ impl TorrentStorage for Storage {
                     }
                     // Ticked since it was kept in a parts file: what it held goes in.
                     move_parts_into(&parts, &file.file, info.len, piece)?;
-                    opened.push(Slot::File(RwLock::new(Some(file.file))));
+                    opened.push(Slot::File(FileSlot::new(file.path, file.file)));
                 }
                 None if parted_ok.contains(&index) => {
                     now_parted.insert(index);
@@ -401,6 +630,7 @@ impl TorrentStorage for Storage {
         }
         parted().lock().unwrap().insert(key, now_parted);
         self.files = opened;
+        *self.phase.get_mut().map_err(|_| io::Error::other("lock"))? = Phase::Open;
         Ok(())
     }
 
@@ -414,7 +644,7 @@ impl TorrentStorage for Storage {
             Some(Slot::Parts(p)) => return Ok(p.read(offset, buf)?),
             _ => {}
         }
-        self.with_file(file_id, || (), |file| read_at(file, offset, buf))
+        self.with_file(file_id, false, || (), |file| read_at(file, offset, buf))
     }
 
     fn pwrite_all(&self, file_id: usize, offset: u64, buf: &[u8]) -> anyhow::Result<()> {
@@ -425,7 +655,7 @@ impl TorrentStorage for Storage {
             let file = p.open(true)?;
             return Ok(write_at(&file, at, buf)?);
         }
-        self.with_file(file_id, || (), |file| write_at(file, offset, buf))
+        self.with_file(file_id, true, || (), |file| write_at(file, offset, buf))
     }
 
     fn ensure_file_length(&self, file_id: usize, length: u64) -> anyhow::Result<()> {
@@ -435,6 +665,7 @@ impl TorrentStorage for Storage {
         }
         self.with_file(
             file_id,
+            true,
             || (),
             |file| mdm_engine::disk::resize_download_file(file, length),
         )
@@ -446,15 +677,12 @@ impl TorrentStorage for Storage {
         Err(io::Error::from(io::ErrorKind::PermissionDenied).into())
     }
     fn take(&self) -> anyhow::Result<Box<dyn TorrentStorage>> {
+        let mut phase = self.phase.lock().map_err(|_| io::Error::other("lock"))?;
         let mut files = Vec::with_capacity(self.files.len());
         for slot in &self.files {
             files.push(match slot {
                 Slot::Padding => Slot::Padding,
-                Slot::File(slot) => Slot::File(RwLock::new(
-                    slot.write()
-                        .map_err(|_| io::Error::from(io::ErrorKind::Other))?
-                        .take(),
-                )),
+                Slot::File(slot) => Slot::File(slot.take()?),
                 Slot::Parts(p) => {
                     let file = p
                         .file
@@ -470,11 +698,60 @@ impl TorrentStorage for Storage {
                 }
             });
         }
+        let now = std::mem::replace(&mut *phase, Phase::Taken);
         Ok(Box::new(Self {
             session: self.session.clone(),
             hash: self.hash.clone(),
             files,
+            phase: Mutex::new(now),
         }))
+    }
+
+    /// The torrent is paused: every file and parts file written to disk and closed, so that
+    /// other programs may move, rename or delete them meanwhile. When it starts again they are
+    /// given again by the grant ([`Storage::open_again`]); handles the app checked for a start
+    /// this storage never used (paused again before any read or write) are closed too.
+    fn close_files(&self) -> anyhow::Result<()> {
+        let mut phase = self.phase.lock().map_err(|_| io::Error::other("lock"))?;
+        if *phase == Phase::Taken {
+            return Ok(());
+        }
+        let mut first_error = None;
+        for slot in &self.files {
+            let closed = match slot {
+                Slot::Padding => Ok(()),
+                Slot::File(slot) => slot.close(),
+                Slot::Parts(p) => match p.file.lock() {
+                    Ok(mut f) => f.take().map_or(Ok(()), |f| f.sync_data()),
+                    Err(_) => Err(io::Error::other("lock")),
+                },
+            };
+            if let Err(e) = closed {
+                first_error.get_or_insert(e);
+            }
+        }
+        if *phase == Phase::Closed
+            && let Ok(grant) = self.grant()
+        {
+            drop(grant.first.lock().unwrap().take());
+        }
+        *phase = Phase::Closed;
+        first_error.map_or(Ok(()), |e| Err(e.into()))
+    }
+
+    /// Every piece of the file is ours: on Windows it is held read-only from now on (see
+    /// [`FileSlot::hold_read_only`]); a paused torrent's files are given again first, as this
+    /// is when a finished torrent starts to be shared.
+    fn on_file_completed(&self, file_id: usize) -> anyhow::Result<()> {
+        let Some(Slot::File(slot)) = self.files.get(file_id) else {
+            return Ok(());
+        };
+        slot.finished.store(true, Ordering::Release);
+        if cfg!(windows) {
+            self.open_again()?;
+            slot.hold_read_only()?;
+        }
+        Ok(())
     }
 }
 

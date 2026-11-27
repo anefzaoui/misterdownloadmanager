@@ -394,10 +394,16 @@ impl Grabber {
                 pictures.insert(address_key(&url), self.links.len());
             }
             let magnet = url.scheme() == "magnet";
-            let name = mdm_engine::naming::sanitize(&if magnet {
-                magnet_name(&url)
-            } else {
-                mdm_engine::naming::file_name(None, &url)
+            let given_name = d
+                .name
+                .as_deref()
+                .and_then(mdm_engine::naming::single_file_name);
+            let name = given_name.unwrap_or_else(|| {
+                mdm_engine::naming::sanitize(&if magnet {
+                    magnet_name(&url)
+                } else {
+                    mdm_engine::naming::file_name(None, &url)
+                })
             });
             let known = known(&url);
             let origin = if known {
@@ -774,7 +780,7 @@ impl Grabber {
                     l.page = info.web_page;
                     l.size = info.size;
                     let named = mdm_engine::naming::sanitize(&info.file_name);
-                    if !named.is_empty() && named != l.name {
+                    if l.found.name.is_none() && !named.is_empty() && named != l.name {
                         l.category = category_of(l.magnet, &named);
                         l.name = named;
                         moved.push(l.pkg);
@@ -1857,6 +1863,41 @@ mod tests {
         // One kind of file: its category's folder.
         let various = picked.iter().find(|p| p.links[0].1 == "song.mp3").unwrap();
         assert_ne!(various.folder, PathBuf::new());
+    }
+
+    /// #1963: `.ef2` blocks with `filename:` show that name in Link grabber, categorize by its
+    /// extension, keep only the final file name component, and preserve it across link checks.
+    #[test]
+    fn ef2_filename_shows_and_categorizes_in_grabber() {
+        let ef2 = "<\r\nhttps://cdn.example.org/1225296974-1-30112.m4s\r\nreferer: https://www.bilibili.com/\r\nfilename: ..\\nested/01 - Title.mp4\r\n>\r\n\
+                   <\r\nhttps://cdn.example.org/1225296974-1-30280.m4s\r\nreferer: https://www.bilibili.com/\r\nfilename: 01 - Title.m4a\r\n>\r\n\
+                   <\r\nhttps://cdn.example.org/fallback.bin\r\n>\r\n";
+        let found = crate::transfer::import(ef2);
+        assert_eq!(found.len(), 3);
+        let mut g = grabber();
+        g.add(found, "list.ef2".into(), |_| false);
+
+        assert_eq!(g.links[0].name, "01 - Title.mp4");
+        assert_eq!(g.links[0].category, Category::Video);
+        assert_eq!(g.links[1].name, "01 - Title.m4a");
+        assert_eq!(g.links[1].category, Category::Music);
+        assert_eq!(g.links[2].name, "fallback.bin");
+
+        // Link checks update size/state without overwriting the explicit `.ef2` filename.
+        let slot = Arc::new(Mutex::new(Some(Ok(mdm_engine::ProbeInfo {
+            final_url: "https://cdn.example.org/1225296974-1-30112.m4s"
+                .parse()
+                .unwrap(),
+            size: Some(1024),
+            file_name: "1225296974-1-30112.m4s".into(),
+            server: None,
+            web_page: false,
+        }))));
+        g.links[0].check = Some(slot);
+        g.take_answers();
+        assert_eq!(g.links[0].name, "01 - Title.mp4");
+        assert_eq!(g.links[0].size, Some(1024));
+        assert!(matches!(g.links[0].state, LinkState::Online));
     }
 
     #[test]

@@ -91,6 +91,28 @@ fn last_component(name: &str) -> &str {
     name.rsplit(['/', '\\']).next().unwrap_or_default()
 }
 
+/// Strip a leading Windows drive prefix (`C:file.zip` → `file.zip`), leaving colons later
+/// in a file name untouched so [`sanitize`] replaces them.
+fn strip_drive_prefix(name: &str) -> &str {
+    let b = name.as_bytes();
+    if b.len() >= 2 && b[0].is_ascii_alphabetic() && b[1] == b':' {
+        &name[2..]
+    } else {
+        name
+    }
+}
+
+/// Clean an explicit single file name (such as an `.ef2` `filename:` entry, #1963): drop any
+/// folder parts (`/`, `\`, a drive letter) and sanitize invalid file-name characters while
+/// keeping the extension; returns `None` when nothing usable remains.
+pub fn single_file_name(raw: &str) -> Option<String> {
+    let tail = strip_drive_prefix(last_component(raw.trim())).trim();
+    let usable = tail
+        .chars()
+        .any(|c| !is_format_char(c) && !matches!(c, '.' | ' '));
+    usable.then(|| sanitize(tail))
+}
+
 /// The address's own name for its file, not sanitized: a script's `file=` or `filename=` value
 /// when it names a file of a known type (`stream.php?file=FL262-1E01-4.mp4` →
 /// `FL262-1E01-4.mp4`, #695), else its last path part.
@@ -2230,5 +2252,23 @@ mod tests {
             given != d.path().join(&typed) && stem_fits(d.path(), &stem),
             "{given:?}"
         );
+    }
+
+    #[test]
+    fn single_file_name_strips_paths_and_sanitizes() {
+        assert_eq!(
+            single_file_name(r"..\..\sub/dir\01: Title*.mp4").as_deref(),
+            Some("01_ Title_.mp4")
+        );
+        assert_eq!(
+            single_file_name(r"C:\folder\01 - Title.m4a").as_deref(),
+            Some("01 - Title.m4a")
+        );
+        assert_eq!(single_file_name("D:clip.mkv").as_deref(), Some("clip.mkv"));
+        assert_eq!(single_file_name("CON.txt").as_deref(), Some("_CON.txt"));
+        assert_eq!(single_file_name("   "), None);
+        assert_eq!(single_file_name(r"..\..\"), None);
+        assert_eq!(single_file_name(r"C:\folder\"), None);
+        assert_eq!(single_file_name(".."), None);
     }
 }
