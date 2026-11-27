@@ -70,6 +70,10 @@
    "source": "A code signature lets Windows show who published a program and check that it wasn't changed after it was built. When a release of Mister Download Manager (\"MDM\") is signed, its signature covers the Windows files that come from this project:",
    "text": "امضای کد به Windows اجازه می‌دهد تا ناشر یک برنامه را نشان دهد و بررسی کند که پس از ساخت، تغییری در آن ایجاد نشده است. وقتی یک نسخه از Mister Download Manager («MDM») امضا می‌شود، امضای آن شامل فایل‌های Windows است که از این پروژه می‌آیند:"
   },
+  "01579d403b821195": {
+   "source": "<x1/> pull requests",
+   "text": "<x1/> درخواست پول"
+  },
   "015f73be8184c2cb": {
    "source": "Yes. MDM writes its progress as it goes, so after a lost connection, a crash or a restart it carries on where it stopped. Before resuming it checks that the file on the server hasn't changed. When a download address has expired, <g1>Refresh download address</g1> lets you give it a fresh one and keep the data. See <g2>Resume a broken download</g2>.",
    "text": "بله. MDM پیشرفت خود را در حین کار می‌نویسد، بنابراین پس از قطع اتصال، خرابی یا راه‌اندازی مجدد، از همان جایی که متوقف شده بود ادامه می‌دهد. قبل از ادامه، بررسی می‌کند که فایل روی سرور تغییر نکرده باشد. هنگامی که نشانی بارگیری منقضی شده است، <g1>تازه‌سازی نشانی بارگیری</g1> به شما امکان می‌دهد یک نشانی جدید به آن بدهید و داده‌ها را حفظ کنید. به <g2>ادامه بارگیری قطع شده</g2> مراجعه کنید."
@@ -226,6 +230,10 @@
    "source": "<g1>Help → About Mister Download Manager</g1> shows the version you have.",
    "text": "<g1>راهنما → درباره Mister Download Manager</g1> نسخه نصب‌شده را نشان می‌دهد."
   },
+  "030e42728ee6a418": {
+   "source": "<g1>Pull requests</g1><g2><x3/> people</g2>",
+   "text": "<g1>درخواست‌های پول</g1><g2><x3/> نفر</g2>"
+  },
   "031da5c20d1881e4": {
    "source": "Everything the Scheduler can do →",
    "text": "هر کاری زمان‌بند می‌تواند انجام دهد ←"
@@ -261,6 +269,10 @@
   "03660b1f49838403": {
    "source": "Contribute",
    "text": "مشارکت"
+  },
+  "03d03dddf2309b1d": {
+   "source": "App downloads",
+   "text": "بارگیری‌های برنامه"
   },
   "03db33586ae11954": {
    "source": "<g1>A recording in several parts</g1> (a picture and a sound part yt-dlp left apart) is made one MP4 with all of them. If they can't be joined, the download says so and every part stays as it is.",
@@ -778,6 +790,10 @@
    "source": "Too many tries from your connection. Please try again in a few minutes.",
    "text": "تعداد تلاش‌ها از اتصال شما زیاد است. لطفا چند دقیقه دیگر دوباره امتحان کنید."
   },
+  "0a07d4f9fc7fb519": {
+   "source": "When the network comes back after a drop (Wi-Fi reconnecting, the computer waking from sleep, a VPN connecting or switching), MDM notices within a few seconds and calls the torrents' peers again at once, and asks their trackers and the DHT again, so a download picks up where it was instead of waiting minutes for each peer's next try. Each peer is called once for it; a tracker is still never asked sooner than its minimum interval. Behind a SOCKS5 proxy, a drop the computer itself doesn't see (the router losing its line while Wi-Fi stays up) is noticed only through the DHT, which is off there, so those torrents come back on their own, as before.",
+   "text": "هنگامی که شبکه پس از قطع شدن (اتصال مجدد Wi-Fi، بیدار شدن رایانه از حالت خواب، اتصال یا تغییر VPN) بازمی‌گردد، MDM ظرف چند ثانیه متوجه می‌شود و بلافاصله همتایان تورنت‌ها را دوباره فراخوانی می‌کند و دوباره از ردیاب‌ها و DHT آن‌ها درخواست می‌کند، بنابراین بارگیری از همان جایی که بود ادامه می‌یابد به جای اینکه دقایق طولانی برای تلاش بعدی هر همتا منتظر بماند. هر همتا یک بار برای آن فراخوانی می‌شود؛ یک ردیاب همچنان زودتر از حداقل فاصله زمانی خود درخواست نمی‌شود. پشت یک پروکسی SOCKS5، قطعی‌ای که خود رایانه آن را نمی‌بیند (روتر خط خود را از دست می‌دهد در حالی که Wi-Fi فعال است) تنها از طریق DHT متوجه می‌شود، که در آنجا خاموش است، بنابراین آن تورنت‌ها به خودی خود، مانند قبل، بازمی‌گردند."
+  },
   "0a15fc764eba9ef6": {
    "source": "Some servers drop the connection when the speed is very low. Avoid a tight limit for a server that can't resume: the progress window shows <g1>Resume capability: No</g1> for those.",
    "text": "برخی سرورها وقتی سرعت بسیار پایین است، اتصال را قطع می‌کنند. از محدودیت شدید برای سروری که نمی‌تواند ادامه دهد، خودداری کنید: پنجره پیشرفت برای این موارد <g1>قابلیت ادامه: خیر</g1> را نشان می‌دهد."
@@ -1114,6 +1130,10 @@
    "source": "Read the site",
    "text": "خواندن سایت"
   },
+  "0e9fede041092f7d": {
+   "source": "A file is made when its first byte is downloaded, and only a ticked one is made in the folder: what an unticked file shares with a ticked one waits in MDM's own torrent data. A running torrent keeps only the files it is reading or writing open, a few hundred at most for all of MDM's torrents together (fewer where the system allows fewer, as macOS does), so a torrent of thousands of files runs where it used to fail with \"Too many open files\".",
+   "text": "یک فایل زمانی ساخته می‌شود که اولین بایت آن بارگیری شود، و تنها فایل‌های علامت‌خورده در پوشه ساخته می‌شوند: آنچه یک فایل علامت‌نخورده با یک فایل علامت‌خورده به اشتراک می‌گذارد، در داده‌های تورنت خود MDM منتظر می‌ماند. یک تورنت در حال اجرا تنها فایل‌هایی را که در حال خواندن یا نوشتن است، باز نگه می‌دارد، حداکثر چند صد فایل برای همه تورنت‌های MDM با هم (در جاهایی که سیستم تعداد کمتری را اجازه می‌دهد، مانند macOS، کمتر)، بنابراین یک تورنت با هزاران فایل در جایی که قبلا با خطای «فایل‌های باز زیاد» شکست می‌خورد، اجرا می‌شود."
+  },
   "0ea74b188ec2ca88": {
    "source": "If it says <g1>the site sent a web page instead of the file</g1>, the link led to the site's own page: a file host's countdown, a captcha, a <g2>Download</g2> button to press, or a sign-in. MDM never saves that page as your file. Click <g3>Open in browser</g3> in the download's progress window (or open the link yourself), finish there, and when the browser starts the real download, MDM's extension hands it to MDM. Without the extension, let the browser download it.",
    "text": "اگر پیام <g1>سایت به جای فایل، یک صفحه وب فرستاد</g1> را مشاهده کردید، پیوند به صفحه خود سایت منتهی شده است: شمارش معکوس یک میزبان فایل، یک کپچا، دکمه <g2>بارگیری</g2> که باید فشار دهید، یا صفحه ورود. MDM هرگز آن صفحه را به عنوان فایل شما ذخیره نمی‌کند. در پنجره پیشرفت بارگیری روی <g3>باز کردن در مرورگر</g3> کلیک کنید (یا خودتان پیوند را باز کنید)، کار را در آنجا به پایان برسانید، و وقتی مرورگر بارگیری واقعی را آغاز کرد، افزونه MDM آن را به MDM منتقل می‌کند. بدون افزونه، اجازه دهید مرورگر آن را بارگیری کند."
@@ -1393,6 +1413,10 @@
   "1294135f300139c9": {
    "source": "The benchmark data could not be loaded.",
    "text": "داده‌های بنچمارک بارگیری نشد."
+  },
+  "12947e2a74bc1b46": {
+   "source": "Each running download has its own progress window. It opens when the download starts (unless you turned that off, or chose <g1>Show minimized</g1>, in <g2>Options → Downloads → Customize \"Download progress\" dialog → Edit...</g2>); to open it again, double-click the download in the list.",
+   "text": "هر بارگیری در حال اجرا پنجره پیشرفت مخصوص به خود را دارد. این پنجره با شروع بارگیری باز می‌شود (مگر اینکه آن را غیرفعال کرده باشید، یا گزینه <g1>کوچک‌شده نمایش بده</g1> را در <g2>گزینه‌ها → بارگیری‌ها → سفارشی‌سازی کادر محاوره‌ای «پیشرفت دانلود» → ویرایش...</g2> انتخاب کرده باشید)؛ برای باز کردن مجدد آن، روی بارگیری در فهرست دوبار کلیک کنید."
   },
   "12a228101626f4bc": {
    "source": "How MDM uses connections",
@@ -2526,6 +2550,10 @@
    "source": "On macOS only an administrator can schedule a wake, so the option is greyed. MDM doesn't ask for an administrator's password. An administrator can have the Mac wake every day a minute before the queue starts, for example at 10:59 PM for a queue that starts at 11:00 PM:",
    "text": "در macOS فقط مدیر سیستم می‌تواند زمان بیدار شدن رایانه را تنظیم کند؛ بنابراین این گزینه غیرفعال است. MDM رمز عبور مدیر سیستم را درخواست نمی‌کند. برای نمونه، مدیر سیستم می‌تواند Mac را هر روز یک دقیقه پیش از شروع صف بیدار کند؛ مثلا ساعت 10:59 شب برای صفی که ساعت 11:00 شب شروع می‌شود:"
   },
+  "216eae12c95fa610": {
+   "source": "Everyone who sent a pull request, opened an issue or commented on GitHub since version <x1/>.",
+   "text": "همه کسانی که از نسخه <x1/> تاکنون، درخواست پول، گزارش مشکل یا نظر خود را در GitHub ارسال کرده‌اند."
+  },
   "2171be975f40efe2": {
    "source": "<g1>Moving from IDM</g1><g2>Your IDM list comes over in one file, each download with its address, referrer and cookies.</g2>",
    "text": "<g1>انتقال از IDM</g1><g2>لیست IDM شما در یک فایل منتقل می‌شود، هر بارگیری با آدرس، ارجاع‌دهنده و کوکی‌های خود.</g2>"
@@ -2778,10 +2806,6 @@
    "source": "<g1>File</g1> — the selected download: <g2>Stop Download</g2>, <g3>Remove</g3>, <g4>Download Now</g4>, <g5>Redownload</g5>.",
    "text": "<g1>فایل</g1> — دانلود انتخاب‌شده: <g2>توقف دانلود</g2>، <g3>حذف</g3>، <g4>اکنون بارگیری کن</g4>، <g5>بارگیری مجدد</g5>."
   },
-  "246d9835d86f1864": {
-   "source": "<g1>280,000+ downloads</g1><g2>of the app, every version together</g2>",
-   "text": "<g1>بیش از 280,000 بارگیری</g1><g2>از برنامه، همه نسخه‌ها با هم</g2>"
-  },
   "247f85e9dde5fa21": {
    "source": "Privacy policy",
    "text": "سیاست حفظ حریم خصوصی"
@@ -2970,6 +2994,10 @@
    "source": "If an error message quotes something you typed, that text is in the report, so read it before sending.",
    "text": "اگر یک پیام خطا چیزی را که شما تایپ کرده‌اید نقل قول کند، آن متن در گزارش موجود است، بنابراین قبل از ارسال آن را بخوانید."
   },
+  "270083ee32a0f734": {
+   "source": "Browser add-on users",
+   "text": "کاربران افزونه مرورگر"
+  },
   "2703f69d017d87af": {
    "source": "Close a menu or dialog (an open drop-down list first)",
    "text": "بستن یک منو یا کادر محاوره‌ای (ابتدا یک لیست کشویی باز)"
@@ -3093,10 +3121,6 @@
   "28363ce0cfaf4e8e": {
    "source": "The browser extension, from the browsers' own stores: the Chrome Web Store's is for Edge, Brave, Opera and Vivaldi too. It also comes with the app and as <g1>its own download</g1>, to add by hand. Every file is built from the public source by GitHub Actions and listed with its SHA-256 checksum.",
    "text": "افزونه مرورگر، از فروشگاه‌های خود مرورگرها: فروشگاه وب Chrome برای Edge، Brave، Opera و Vivaldi نیز هست. همچنین همراه با برنامه و به صورت <g1>یک دانلود جداگانه</g1> ارائه می‌شود تا به صورت دستی اضافه شود. هر فایل توسط GitHub Actions از منبع عمومی ساخته شده و با چک‌سام SHA-256 آن لیست شده است."
-  },
-  "2853aef8c3261b3e": {
-   "source": "misterdownloadmanager.com is a static site. Three companies take part in showing it to you (Cloudflare also keeps its star ratings), and a fourth if you play the home page's film:",
-   "text": "misterdownloadmanager.com یک سایت ایستا است. سه شرکت در نمایش آن به شما مشارکت دارند (Cloudflare همچنین امتیازات ستاره‌ای آن را نگه می‌دارد)، و اگر فیلم صفحه اصلی را پخش کنید، شرکت چهارمی نیز مشارکت می‌کند:"
   },
   "285bca50f6f03a0a": {
    "source": "Start Download: the progress window shows it coming in.",
@@ -4350,6 +4374,10 @@
    "source": "<g1>Connection...</g1> — for a stopped download: its own User-Agent, request headers, proxy and number of connections, for when it goes on. MDM still checks it is the same file before it writes anything. See <g2>One download's settings</g2>.",
    "text": "<g1>اتصال…</g1> — برای یک بارگیری متوقف شده: User-Agent، سربرگ‌های درخواست، پروکسی و تعداد اتصالات مخصوص به خود، برای زمانی که ادامه می‌یابد. MDM همچنان قبل از نوشتن هر چیزی، بررسی می‌کند که فایل همان فایل قبلی باشد. به <g2>تنظیمات یک بارگیری</g2> مراجعه کنید."
   },
+  "39f69afa6e85f9d1": {
+   "source": "<g1>Issues</g1><g2><x3/> people</g2>",
+   "text": "<g1>مشکلات</g1><g2><x3/> نفر</g2>"
+  },
   "3a14e0e8b14737d7": {
    "source": "Choose <g1>Downloads → Speed Limiter → Turn on</g1>.",
    "text": "گزینه <g1>بارگیری‌ها → محدودکننده سرعت → روشن کردن</g1> را انتخاب کنید."
@@ -4565,6 +4593,10 @@
   "3cc4f48aaeb666b9": {
    "source": "Steps",
    "text": "مراحل"
+  },
+  "3ccaf5a331b1edd2": {
+   "source": "A stopped torrent keeps none of its files open: you can move, rename or delete them, or open them in another program, while it waits. When you start it again, MDM opens them where they are; a file that was moved away or deleted meanwhile is made again and its pieces downloaded again. A finished torrent that is shared (<g1>Keep sharing torrents after they finish</g1>, in Torrent settings) keeps its files open only to read them: other programs can open, copy, run, move or rename them meanwhile.",
+   "text": "یک تورنت متوقف‌شده هیچ‌یک از فایل‌های خود را باز نگه نمی‌دارد: می‌توانید آن‌ها را جابه‌جا، تغییر نام یا حذف کنید، یا در برنامه دیگری باز کنید، در حالی که منتظر است. وقتی دوباره آن را شروع می‌کنید، MDM آن‌ها را در همان جایی که هستند باز می‌کند؛ فایلی که در این مدت جابه‌جا یا حذف شده بود، دوباره ساخته می‌شود و قطعات آن دوباره بارگیری می‌شوند. یک تورنت کامل‌شده که به اشتراک گذاشته می‌شود (<g1>پس از اتمام، تورنت‌ها را به اشتراک‌گذاری ادامه بده</g1>، در تنظیمات تورنت) فایل‌های خود را تنها برای خواندن باز نگه می‌دارد: برنامه‌های دیگر می‌توانند در این مدت آن‌ها را باز، کپی، اجرا، جابه‌جا یا تغییر نام دهند."
   },
   "3cd4e5cff6113414": {
    "source": "<g1>Then move the archives to the Recycle Bin</g1> has nothing to move afterwards: the archive is already gone.",
@@ -4906,10 +4938,6 @@
    "source": "When an address is already in the list, MDM asks what to do, or follows the answer you chose in <g1>Options → Downloads → If a duplicate download link is added</g1>.",
    "text": "هنگامی که یک آدرس از قبل در فهرست باشد، MDM می‌پرسد چه کاری انجام دهد، یا از پاسخی که در <g1>گزینه‌ها → بارگیری‌ها → اگر پیوند بارگیری تکراری اضافه شود</g1> انتخاب کرده‌اید پیروی می‌کند."
   },
-  "415322c0b133befd": {
-   "source": "Each running download has its own progress window. It opens when the download starts (unless you turned that off in Options → Downloads → Customize…",
-   "text": "هر بارگیری در حال اجرا پنجره پیشرفت مخصوص به خود را دارد. این پنجره با شروع بارگیری باز می‌شود (مگر اینکه این گزینه را در گزینه‌ها ← بارگیری‌ها ← سفارشی‌سازی… غیرفعال کرده باشید)."
-  },
   "4160d55635d3e362": {
    "source": "Freeze reports that tell the kind of freeze",
    "text": "گزارش‌های توقف که نوع توقف را نشان می‌دهند"
@@ -5210,6 +5238,10 @@
    "source": "<g1>Start now</g1> and <g2>Stop</g2> run or halt the selected queue straight away.",
    "text": "<g1>شروع فوری</g1> و <g2>توقف</g2> صف انتخاب‌شده را فورا اجرا یا متوقف می‌کنند."
   },
+  "45fa036667aca21e": {
+   "source": "A checksum you give this way (or with the command line's <x1/>), or one the site publishes and MDM reads itself (Hugging Face's and GitHub's, in <g2>Link grabber</g2>), must match: a file that doesn't stays unfinished, says <g3>the file's SHA-256 checksum doesn't match</g3>, and <g4>Redownload</g4> fetches it again.",
+   "text": "جمع کنترلی که شما به این روش (یا با <x1/> خط فرمان) می‌دهید، یا جمع کنترلی که سایت منتشر می‌کند و MDM خودش آن را می‌خواند (مانند سایت‌های Hugging Face و GitHub، در <g2>رباینده پیوند</g2>)، باید مطابقت داشته باشد: فایلی که مطابقت ندارد ناتمام می‌ماند، پیام <g3>جمع کنترلی SHA-256 فایل مطابقت ندارد</g3> را نشان می‌دهد و <g4>بارگیری مجدد</g4> آن را دوباره دریافت می‌کند."
+  },
   "460c28c064c58629": {
    "source": "To remove it, open the same window and untick <g1>Limit all downloads together to</g1>.",
    "text": "برای برداشتن این محدودیت، همان پنجره را باز کنید و علامت گزینه <g1>محدود کردن همه دانلودها با هم به</g1> را بردارید."
@@ -5353,6 +5385,10 @@
   "47cff7958a924e1e": {
    "source": "Compare it with the same file's line in that release's <x1/> (capital or small letters don't matter). To be sure the list itself is ours, check its signature, <x2/>, with MDM's release key: see <g3>Check your download</g3>.",
    "text": "آن را با خط مربوط به همان فایل در <x1/> آن نسخه مقایسه کنید (حروف بزرگ یا کوچک تفاوتی ندارند). برای اطمینان از اینکه خود لیست از ماست، امضای آن، <x2/>، را با کلید انتشار MDM بررسی کنید: به <g3>بررسی بارگیری شما</g3> مراجعه کنید."
+  },
+  "47dc0178565f7f38": {
+   "source": "<g1>The home page's live figures</g1>, at <x2/>, in the same <g3>OpenAPI</g3>: how many times the app was downloaded (every GitHub release's installers and packages) and how many people use the browser add-on (the Chrome Web Store's users, Firefox Add-ons' daily users), each with when it was read. Read again at most every 15 minutes; a source that can't be read keeps its last figure.",
+   "text": "<g1>آمار زنده صفحه اصلی</g1>، در <x2/>، در همان <g3>OpenAPI</g3>: تعداد دفعاتی که برنامه بارگیری شده است (نصب‌کننده‌ها و بسته‌های هر انتشار GitHub) و تعداد افرادی که از افزونه مرورگر استفاده می‌کنند (کاربران Chrome Web Store، کاربران روزانه افزونه‌های Firefox)، هر کدام با زمان خوانده شدن. حداکثر هر 15 دقیقه دوباره خوانده می‌شود؛ منبعی که قابل خواندن نیست، آخرین آمار خود را حفظ می‌کند."
   },
   "4809c370b5c131eb": {
    "source": "its picture: the one your file manager shows (Windows' thumbnail of a photo, a video, a PDF or a document, a program's own icon; on Linux your desktop's thumbnail, or one MDM makes of a photo or a video's frame), else its file type's large icon. Only a finished file has one;",
@@ -5642,6 +5678,10 @@
    "source": "<g1>Linux</g1>: install the <g2>.deb</g2> with <x3/> (Debian, Ubuntu, Mint) or the <g4>.rpm</g4> with <x5/> (Fedora), and the packages bring what MDM needs. Or make the <g6>AppImage</g6> executable (<x7/>) and run it. MDM connects itself to your browsers at each start; then add the extension from your browser's store, above. <g8>More in the help</g8>.",
    "text": "<g1>Linux</g1>: فایل <g2>.deb</g2> را با <x3/> (دبیان، اوبونتو، مینت) یا فایل <g4>.rpm</g4> را با <x5/> (فدورا) نصب کنید؛ بسته‌ها هر آنچه MDM نیاز دارد را فراهم می‌کنند. یا <g6>AppImage</g6> را اجرایی کنید (<x7/>) و آن را اجرا کنید. MDM در هر بار اجرا خود را به مرورگرهای شما متصل می‌کند؛ سپس افزونه را از فروشگاه مرورگر خود، که در بالا ذکر شد، اضافه کنید. <g8>جزئیات بیشتر در راهنما</g8>."
   },
+  "4c5ff93f41d1a8f9": {
+   "source": "Without one, MDM checks the file against the checksum its server sends with it, if any (<x1/>, <x2/>, <x3/>, Google Cloud Storage's <x4/>). Servers sometimes send the checksum of the file as they store it rather than of what they send, so a file that doesn't match is still kept: its status says <g5>Checksum warning</g5>, and its tip, its log, <g6>Properties</g6> and <g7>Download complete</g7> say <g8>Downloaded, but the server's MD5 checksum didn't match; the file may still be fine</g8>. If it matters, check it with <g9>Verify checksum...</g9> and the checksum its site publishes: when it matches, the warning goes. A server's checksum isn't used at all when the server says it changed the file on the way (a compressed answer, or a file stored encoded, as PikPak's are).",
+   "text": "بدون این کار، MDM فایل را با جمع کنترلی که سرور همراه آن می‌فرستد (در صورت وجود، مانند <x1/>، <x2/>، <x3/>، و <x4/> Google Cloud Storage) بررسی می‌کند. گاهی اوقات سرورها جمع کنترلی فایل را همان‌طور که ذخیره کرده‌اند می‌فرستند، نه آنچه را که ارسال می‌کنند؛ بنابراین فایلی که مطابقت ندارد همچنان نگهداری می‌شود: وضعیت آن <g5>هشدار بررسی یکپارچگی</g5> را نشان می‌دهد، و راهنمای آن، گزارش آن، <g6>ویژگی‌ها</g6> و <g7>بارگیری کامل شد</g7> می‌گویند <g8>بارگیری شد، اما جمع کنترلی MD5 سرور مطابقت نداشت؛ فایل ممکن است همچنان سالم باشد</g8>. اگر این موضوع مهم است، آن را با <g9>تأیید جمع کنترلی...</g9> و جمع کنترلی که سایت منتشر می‌کند، بررسی کنید: وقتی مطابقت داشته باشد، هشدار از بین می‌رود. جمع کنترلی سرور اصلا استفاده نمی‌شود وقتی سرور می‌گوید فایل را در مسیر تغییر داده است (پاسخ فشرده، یا فایلی که به صورت رمزگذاری شده ذخیره شده است، مانند فایل‌های PikPak)."
+  },
   "4c75f1e3123da2b1": {
    "source": "— plain FTP.",
    "text": "— FTP ساده."
@@ -5821,6 +5861,10 @@
   "4e56d054c4ea1845": {
    "source": "<g1>A minimized MDM keeps working</g1>: with the main window minimized (not to the notification area), queues didn't start their next file, the Scheduler's starts and stops didn't fire, download limits, the network adapter's kill switch, the clipboard monitor, the update check, the taskbar's progress and saving the list all waited until the window was restored. They run in every window state now, and their windows (Download complete, a limit's notice) open at once.",
    "text": "<g1>MDM کوچک‌شده به کار خود ادامه می‌دهد</g1>: با کوچک شدن پنجره اصلی (نه به ناحیه اعلان)، صف‌ها فایل بعدی خود را شروع نمی‌کردند، شروع و توقف‌های زمان‌بند فعال نمی‌شدند، محدودیت‌های بارگیری، سوئیچ قطع شبکه آداپتور، مانیتور کلیپ‌بورد، بررسی به‌روزرسانی، پیشرفت نوار وظیفه و ذخیره لیست همگی منتظر می‌ماندند تا پنجره بازیابی شود. اکنون آنها در هر وضعیت پنجره اجرا می‌شوند و پنجره‌های آنها (بارگیری کامل شد، اعلان محدودیت) بلافاصله باز می‌شوند."
+  },
+  "4e60a529980083e7": {
+   "source": "The downloads join the <g1>Main download queue</g1>, ready to start (<g2>Start</g2> starts it too). <g3>Tasks → Import → From IDM export file</g3> reads an <x4/> file, with each download's referrer and cookies, and the file name a list gives it in a <x5/> line.",
+   "text": "بارگیری‌ها به <g1>صف اصلی دانلود</g1> اضافه می‌شوند و آماده شروع هستند (دکمه <g2>شروع</g2> نیز آن را آغاز می‌کند). <g3>وظایف → وارد کردن → از فایل خروجی IDM</g3> یک فایل <x4/> را می‌خواند که شامل ارجاع‌دهنده و کوکی‌های هر بارگیری و نام فایلی است که در خط <x5/> مشخص شده است."
   },
   "4e96b700836944de": {
    "source": "<g1>Password</g1>: the archives' password, if they have one. It is kept in memory only and is never saved by itself: to keep one for other packages, add it to your <g2>archive passwords</g2>.",
@@ -6318,6 +6362,10 @@
    "source": "A small file",
    "text": "یک فایل کوچک"
   },
+  "55a523d7ca4b905f": {
+   "source": "Thanks to",
+   "text": "تشکر از"
+  },
   "55ecea9df3d3ed23": {
    "source": "Paste the address of a playlist (<x1/>) or a channel's videos (<x2/>) and click <g3>Look up</g3>. Instead of one video's qualities, the window lists the list's videos, each with its length.",
    "text": "نشانی یک فهرست پخش (<x1/>) یا ویدیوهای یک کانال (<x2/>) را بچسبانید و روی <g3>جستجو</g3> کلیک کنید. به‌جای کیفیت‌های یک ویدیو، پنجره ویدیوهای فهرست را همراه با مدت‌زمان هرکدام نشان می‌دهد."
@@ -6450,6 +6498,10 @@
    "source": "Windows 10/11 and Linux; macOS to try",
    "text": "Windows 10/11 و Linux؛ macOS آزمایشی"
   },
+  "57df30288a29fe94": {
+   "source": "Made possible by these amazing humans",
+   "text": "این پروژه با کمک این انسان‌های شگفت‌انگیز ممکن شد"
+  },
   "57e101e4403fd046": {
    "source": "Command",
    "text": "دستور"
@@ -6541,6 +6593,10 @@
   "58f22a0b1aeea2b4": {
    "source": "Watch it work.",
    "text": "نحوه کار را ببینید."
+  },
+  "58f7b730058089bc": {
+   "source": "Everyone who takes part follows the <g1>Code of conduct</g1>. Who reviews and merges changes, and how decisions are made, is in <g2>GOVERNANCE.md</g2>.",
+   "text": "همه مشارکت‌کنندگان از <g1>آیین‌نامه رفتار</g1> پیروی می‌کنند. اینکه چه کسی تغییرات را بازبینی و ادغام می‌کند و تصمیم‌ها چگونه گرفته می‌شوند، در <g2>GOVERNANCE.md</g2> آمده است."
   },
   "59130ab4ecc47c65": {
    "source": "<g1>Hide to the notification area</g1> (a short dash with an arrow down to the corner; on Windows in the title bar, left of Minimize) puts the window in the notification area; <g2>Downloads in progress</g2> in the tray icon's menu brings it back. See <g3>The tray icon</g3>.",
@@ -7141,6 +7197,10 @@
   "60e4ea08eb29abeb": {
    "source": "<g1>Stop</g1> on a download in a running queue stays stopped, instead of the queue starting it again a moment later; <g2>Stop All</g2> too (<g3>#341</g3>).",
    "text": "<g1>توقف</g1> روی یک بارگیری در صف در حال اجرا، متوقف می‌ماند، به جای اینکه صف لحظه‌ای بعد دوباره آن را شروع کند؛ <g2>توقف همه</g2> نیز همین‌طور (<g3>#341</g3>)."
+  },
+  "60f1159fcf53ce4a": {
+   "source": "Every version from GitHub; the add-on in the Chrome Web Store and Firefox Add-ons together. As of <x1/>",
+   "text": "همه نسخه‌ها از GitHub؛ افزونه در فروشگاه وب Chrome و افزونه‌های Firefox با هم. از تاریخ <x1/>"
   },
   "60f3c58ee8c2af81": {
    "source": "<g1>Options where you expect them</g1> Every setting where an IDM user looks first: connections, proxies, folders, sounds.",
@@ -8034,6 +8094,10 @@
    "source": "<g1>32-bit Windows 10.</g1> Not sure which you have? <g2>Settings → System → About → System type</g2> says it. MDM can't download ffmpeg for you there (none is built for 32-bit Windows that MDM can check): to get the best video qualities, choose an ffmpeg of your own in <g3>Helpers...</g3> (<g4>Video</g4>).",
    "text": "<g1>Windows 10 سی و دو بیتی.</g1> مطمئن نیستید کدام را دارید؟ <g2>تنظیمات ← سیستم ← درباره ← نوع سیستم</g2> آن را می‌گوید. MDM نمی‌تواند ffmpeg را برای شما در آنجا بارگیری کند (هیچ نسخه‌ای برای Windows 32-بیتی که MDM بتواند بررسی کند، ساخته نشده است): برای دریافت بهترین کیفیت‌های ویدئویی، ffmpeg خود را در <g3>کمک‌کننده‌ها...</g3> (<g4>ویدئو</g4>) انتخاب کنید."
   },
+  "6d9da62489a6a428": {
+   "source": "misterdownloadmanager.com is a static site. Three companies take part in showing it to you (Cloudflare also keeps its star ratings and serves its live figures), and a fourth if you play the home page's film:",
+   "text": "misterdownloadmanager.com یک سایت ایستا است. سه شرکت در نمایش آن به شما مشارکت دارند (Cloudflare همچنین رتبه‌بندی ستاره‌ای آن را حفظ می‌کند و آمار زنده آن را ارائه می‌دهد)، و شرکت چهارم در صورتی که فیلم صفحه اصلی را پخش کنید:"
+  },
   "6da2e37f647df28e": {
    "source": "Select every download up to this one",
    "text": "انتخاب همه دانلودها تا این مورد"
@@ -8253,6 +8317,10 @@
   "700b58886e17c427": {
    "source": "<g1><g2>Options</g2></g1> — every page of the Options window.",
    "text": "<g1><g2>گزینه‌ها</g2></g1> — هر صفحه از پنجره گزینه‌ها."
+  },
+  "702b1d80d041e97d": {
+   "source": "<g1>Tasks → Import → From text file</g1> and <g2>From IDM export file</g2>. An <x3/> file brings each download's referrer and cookies, and its file name when the list gives one (a <x4/> line; only the name, never a folder).",
+   "text": "<g1>وظایف ← وارد کردن ← از فایل متنی</g1> و <g2>از فایل خروجی IDM</g2>. یک فایل <x3/> ارجاع‌دهنده و کوکی‌های هر بارگیری و نام فایل آن را (وقتی لیست آن را مشخص کرده باشد، یک خط <x4/>؛ فقط نام، نه پوشه) وارد می‌کند."
   },
   "70304346a925831b": {
    "source": "MDM opens <g1>Download File Info</g1> instead of the browser downloading the file. Click <g2>Start Download</g2>.",
@@ -8886,6 +8954,10 @@
    "source": "You need your own paid account with one of these services: MDM doesn't sell or include one. Sharing an account or its links breaks the services' terms and can get the account suspended.",
    "text": "شما به حساب پولی خود با یکی از این سرویس‌ها نیاز دارید: MDM هیچ حسابی را نمی‌فروشد یا شامل نمی‌شود. اشتراک‌گذاری یک حساب یا پیوندهای آن، شرایط سرویس‌ها را نقض می‌کند و می‌تواند منجر به تعلیق حساب شود."
   },
+  "7931468b8d7d517a": {
+   "source": "<x1/> <g2>Everyone who helped</g2>",
+   "text": "<x1/> <g2>همه کسانی که کمک کردند</g2>"
+  },
   "7957b18548166390": {
    "source": "Questions and answers — Mister Download Manager",
    "text": "پرسش و پاسخ — Mister Download Manager"
@@ -9109,6 +9181,10 @@
   "7c5a4c12e8dbea2f": {
    "source": "Apple Silicon",
    "text": "اپل سیلیکون"
+  },
+  "7c5fbe4cad8057a6": {
+   "source": "Download a torrent, or only some of its files. If some of its files are already in the folder, it stops and names them; <x1/> uses them instead (what matches is kept, the rest downloaded). With Torrent settings' <g2>Add the trackers of this public list to public torrents</g2> on, a public torrent gets the list's trackers too, as in the app.",
+   "text": "یک تورنت یا فقط برخی از فایل‌های آن را بارگیری می‌کند. اگر برخی از فایل‌های آن از قبل در پوشه باشند، متوقف می‌شود و نام آن‌ها را ذکر می‌کند؛ <x1/> به‌جای آن از آن‌ها استفاده می‌کند (آنچه مطابقت دارد حفظ می‌شود، بقیه بارگیری می‌شوند). با فعال بودن <g2>افزودن ردیاب‌های این لیست عمومی به تورنت‌های عمومی</g2> در تنظیمات تورنت، یک تورنت عمومی نیز ردیاب‌های لیست را دریافت می‌کند، همانند برنامه."
   },
   "7c949f90bb503dc8": {
    "source": "Vivaldi",
@@ -10526,10 +10602,6 @@
    "source": "Check that the Speed Limiter is off: <g1>Downloads → Speed Limiter → Turn off</g1>. Also look at <g2>Downloads → Speed Limiter → Settings... → Limit all downloads together to</g2>, which applies even with the limiter off.",
    "text": "بررسی کنید که محدودکننده سرعت خاموش باشد: <g1>بارگیری‌ها → محدودکننده سرعت → خاموش کردن</g1>. همچنین <g2>بارگیری‌ها → محدودکننده سرعت → تنظیمات... → محدود کردن همه بارگیری‌ها با هم به</g2> را بررسی کنید؛ این محدودیت حتی وقتی محدودکننده خاموش است نیز اعمال می‌شود."
   },
-  "8e9db9ede7b54a27": {
-   "source": "<g1>Customize \"Download progress\" dialog → Edit...</g1> — <g2>Show download progress dialog when a download starts</g2>: on by default. Untick it and a download no longer opens its progress window when it starts, from the browser, a link you add, a video or a queue; it goes on in the main window's list, where a double-click opens its progress window. <g3>Download complete</g3> still shows when it finishes, as <g4>Show download complete dialog</g4> below says.",
-   "text": "<g1>سفارشی‌سازی کادر محاوره‌ای «پیشرفت دانلود» → ویرایش...</g1> — <g2>نمایش گفتگوی پیشرفت بارگیری هنگام شروع بارگیری</g2>: به‌طور پیش‌فرض فعال است. آن را غیرفعال کنید تا بارگیری هنگام شروع، از مرورگر، پیوندی که اضافه می‌کنید، یک ویدیو یا یک صف، پنجره پیشرفت خود را باز نکند؛ در فهرست پنجره اصلی ادامه می‌یابد، جایی که با دوبار کلیک پنجره پیشرفت آن باز می‌شود. <g3>بارگیری کامل شد</g3> همچنان هنگام پایان نمایش داده می‌شود، همان‌طور که <g4>نمایش کادر محاوره‌ای تکمیل دانلود</g4> در پایین می‌گوید."
-  },
   "8e9f9863589b4bd6": {
    "source": "Fuzzing",
    "text": "فازینگ"
@@ -10753,6 +10825,10 @@
   "91f7b61e72ddf0bc": {
    "source": "<g1>Acceleration and resume</g1><g2>A file split over up to 32 connections, re-split until the last byte, and resumed after any crash.</g2>",
    "text": "<g1>افزایش سرعت و ادامه بارگیری</g1><g2>یک فایل تا 32 اتصال تقسیم می‌شود، تا بایت آخر دوباره تقسیم می‌شود و پس از هر خرابی ادامه می‌یابد.</g2>"
+  },
+  "92055d4da1d101c5": {
+   "source": "<x1/> people who sent a pull request, reported a problem or joined a conversation on GitHub. <g2>Meet them all</g2>",
+   "text": "<x1/> افرادی که یک پول ریکوئست فرستادند، مشکلی را گزارش کردند یا به گفتگویی در GitHub پیوستند. <g2>با همه آنها آشنا شوید</g2>"
   },
   "92078a4a178bf949": {
    "source": "A title bar MDM draws, while its window isn't the active one (transparent: as when active)",
@@ -11726,6 +11802,10 @@
    "source": "Send downloads from your browser",
    "text": "ارسال دانلودها از مرورگر شما"
   },
+  "9e23173a22cf615a": {
+   "source": "<x1/> comment",
+   "text": "<x1/> نظر"
+  },
   "9e2414e7eb93b062": {
    "source": "Windows 7's feel: glossy buttons, a glassy title bar and a glossy green progress bar.",
    "text": "حس Windows 7: دکمه‌های براق، نوار عنوان شیشه‌ای و نوار پیشرفت سبز براق."
@@ -11861,10 +11941,6 @@
   "9f782f136a8bb467": {
    "source": "The built-in categories can now be renamed, given other file types, or deleted.",
    "text": "دسته‌بندی‌های داخلی اکنون می‌توانند تغییر نام داده، انواع فایل دیگری به آن‌ها اختصاص داده شده یا حذف شوند."
-  },
-  "9f7cefd031ac2a9a": {
-   "source": "Download a file with up to 8 connections (<x1/>, 1 to 128), showing progress. <x2/> pauses it; <x3/> continues. <x4/> sets the referring page address (Referer header), <x5/> sets the request's User-Agent (then the only one sent; without it, MDM speaks as your default browser, and, when a site's bot check refuses that and the way a browser connects too, once more under its own name), <x6/> sets the Cookie header (a cookie on the command line ends up in the shell's history; <x7/> reads it from standard input instead). <x8/> checks the finished file: hex MD5, SHA-1, SHA-256, SHA-512 or CRC32, optionally named (<x9/>). <x10/> picks the DNS instead of Options': <x11/>; a service and how to ask it, <x12/>, <x13/>, <x14/>, <x15/>, <x16/>; DNS servers' addresses, <x17/>; or a DNS-over-HTTPS address. It never falls back to the system's DNS. <x18/> sends every connection through one network adapter instead of Options' (<x19/> for none), by its name (<x20/>, <x21/>) or one of its addresses; when it isn't connected, nothing is sent and the download fails. <x22/> takes the place of Options' proxy for this run (see above). The app's <g23>site rules</g23> for the address apply too (their headers, User-Agent, browser-like connection, number of connections and proxy), where the command line gives none of the same: <x24/> goes before every rule's proxy. A link from a file host that one of your debrid accounts (<g25>Options → Accounts</g25>) supports goes through that account, as in the app, and <x26/> says <x27/>; <x28/> downloads the address itself (<g29>Debrid service accounts</g29>).",
-   "text": "فایلی را با حداکثر 8 اتصال (<x1/>، 1 تا 128)، همراه با نمایش پیشرفت، بارگیری می‌کند. <x2/> آن را متوقف می‌کند؛ <x3/> ادامه می‌دهد. <x4/> آدرس صفحه ارجاع‌دهنده (سربرگ Referer) را تنظیم می‌کند، <x5/> User-Agent درخواست را تنظیم می‌کند (در این صورت فقط همین مورد ارسال می‌شود؛ بدون آن، MDM خود را مرورگر پیش‌فرض شما معرفی می‌کند و اگر بررسی ربات سایت آن را رد کند و همچنین روش اتصال مرورگر را نیز رد کند، یک بار دیگر با نام خود MDM ارتباط برقرار می‌کند)، <x6/> سربرگ Cookie را تنظیم می‌کند (کوکی در خط فرمان در تاریخچه پوسته ذخیره می‌شود؛ <x7/> آن را از ورودی استاندارد می‌خواند). <x8/> فایل تکمیل‌شده را بررسی می‌کند: MD5، SHA-1، SHA-256، SHA-512 یا CRC32 هگزادسیمال، که به صورت اختیاری نام‌گذاری شده است (<x9/>). <x10/> DNS را به جای DNS تنظیم‌شده در «گزینه‌ها» انتخاب می‌کند: <x11/>؛ یک سرویس و نحوه درخواست از آن، <x12/>، <x13/>، <x14/>، <x15/>، <x16/>؛ آدرس سرورهای DNS، <x17/>؛ یا یک آدرس DNS-over-HTTPS. هرگز به DNS سیستم بازنمی‌گردد. <x18/> هر اتصال را به جای تنظیمات «گزینه‌ها» از طریق یک آداپتور شبکه ارسال می‌کند (<x19/> برای هیچ‌کدام)، با نام آن (<x20/>، <x21/>) یا یکی از آدرس‌های آن؛ وقتی متصل نباشد، چیزی ارسال نمی‌شود و بارگیری با شکست مواجه می‌شود. <x22/> برای این اجرا جایگزین پراکسی تنظیم‌شده در «گزینه‌ها» می‌شود (به بالا مراجعه کنید). <g23>قوانین سایت</g23> برنامه برای آدرس نیز اعمال می‌شود (سربرگ‌ها، User-Agent، اتصال شبیه مرورگر، تعداد اتصالات و پراکسی)، در جایی که خط فرمان هیچ‌یک از موارد مشابه را ارائه نمی‌دهد: <x24/> قبل از پراکسی هر قانون قرار می‌گیرد. پیوندی از یک میزبان فایل که یکی از حساب‌های debrid شما (<g25>گزینه‌ها ← حساب‌ها</g25>) از آن پشتیبانی می‌کند، مانند برنامه، از طریق آن حساب انجام می‌شود و <x26/> می‌گوید <x27/>؛ <x28/> خود آدرس را بارگیری می‌کند (<g29>حساب‌های سرویس debrid</g29>)."
   },
   "9f93bf61864af099": {
    "source": "Plainly: everyone sharing the same torrent sees your IP address. That is how BitTorrent works, and no setting changes it. To hide it, use a VPN for the whole computer. <g1>Torrents and your security</g1> says what others can see.",
@@ -12061,10 +12137,6 @@
   "a20d923b503a9161": {
    "source": "A live stream saved by a queue's stop counts as complete, so a daily queue doesn't start it again the next day.",
    "text": "یک پخش زنده که توسط توقف یک صف ذخیره شده باشد، کامل محسوب می‌شود، بنابراین یک صف روزانه آن را روز بعد دوباره شروع نمی‌کند."
-  },
-  "a21a2e8b8e4dad43": {
-   "source": "<g1>#1 in Rust</g1><g2>repository of the day on <x3/></g2>",
-   "text": "<g1>شماره 1 در Rust</g1><g2>مخزن روز در <x3/></g2>"
   },
   "a21dffa69dd07677": {
    "source": "Every row, and easier to read",
@@ -13022,6 +13094,10 @@
    "source": "About Mister Download Manager",
    "text": "درباره Mister Download Manager"
   },
+  "aee6606bd3b4de07": {
+   "source": "<g1>Proof of delivery</g1><g2>Figures as of <x3/> · quotes exact, linked to their source</g2>",
+   "text": "<g1>گواهی تحویل</g1><g2>آمار تا تاریخ <x3/> · نقل‌قول‌ها دقیق، با پیوند به منبع</g2>"
+  },
   "aeea31ff4889dbde": {
    "source": "<g1>Address</g1> (Add URL) and <g2>Save As</g2> (Download File Info) list the last 20 addresses and folders from their arrows; <g3>...</g3> beside Save As chooses a folder, <g4>+</g4> beside Category makes one.",
    "text": "<g1>آدرس</g1> (افزودن URL) و <g2>ذخیره با نام</g2> (اطلاعات فایل بارگیری) 20 آدرس و پوشه آخر را از فلش‌های خود لیست می‌کنند؛ <g3>...</g3> کنار ذخیره با نام یک پوشه را انتخاب می‌کند، <g4>+</g4> کنار دسته یکی را می‌سازد."
@@ -13114,6 +13190,10 @@
    "source": "Choose a download",
    "text": "یک بارگیری انتخاب کنید"
   },
+  "afd25bc6979c1269": {
+   "source": "<g1>Customize \"Download progress\" dialog → Edit...</g1> — <g2>Show download progress dialog when a download starts</g2>: <g3>Show normally</g3>, on by default; <g4>Show minimized</g4>, which starts the download's progress window minimized on the taskbar, without taking the focus from the program you are in; or <g5>Don't show</g5>, where a download no longer opens its progress window when it starts, from the browser, a link you add, a video or a queue, and it goes on in the main window's list, where a double-click opens its progress window. <g6>Download complete</g6> still shows when it finishes, as <g7>Show download complete dialog</g7> below says.",
+   "text": "<g1>سفارشی‌سازی کادر محاوره‌ای «پیشرفت دانلود» → ویرایش...</g1> — <g2>نمایش گفتگوی پیشرفت بارگیری هنگام شروع بارگیری</g2>: <g3>به‌طور عادی نمایش بده</g3>، که به‌طور پیش‌فرض فعال است؛ <g4>کوچک‌شده نمایش بده</g4>، که پنجره پیشرفت بارگیری را در نوار وظیفه به‌صورت کوچک‌شده باز می‌کند، بدون اینکه تمرکز را از برنامه‌ای که در آن هستید بگیرد؛ یا <g5>نمایش نده</g5>، که در این حالت بارگیری دیگر پنجره پیشرفت خود را هنگام شروع از مرورگر، پیوندی که اضافه می‌کنید، یک ویدئو یا صف باز نمی‌کند و در لیست پنجره اصلی ادامه می‌یابد، جایی که با دوبار کلیک پنجره پیشرفت آن باز می‌شود. <g6>بارگیری کامل شد</g6> همچنان هنگام پایان نمایش داده می‌شود، همان‌طور که <g7>نمایش کادر محاوره‌ای تکمیل دانلود</g7> در پایین توضیح می‌دهد."
+  },
   "aff376e66e9d2870": {
    "source": "Queues",
    "text": "صف‌ها"
@@ -13137,6 +13217,10 @@
   "b08e516b19471d83": {
    "source": "<g1>All files and checksums</g1><g2>Version 0.5.2 on GitHub Releases, with SHA256SUMS.txt</g2>",
    "text": "<g1>همه فایل‌ها و مجموع‌های بررسی</g1><g2>نسخه 0.5.2 در GitHub Releases، همراه با SHA256SUMS.txt</g2>"
+  },
+  "b0911cd9d54fd304": {
+   "source": "<g1>In figures</g1><g2>Figures as of <x3/>, rounded down</g2>",
+   "text": "<g1>آمار و ارقام</g1><g2>آمار تا تاریخ <x3/>، گرد شده به پایین</g2>"
   },
   "b0912015dbe6e3fb": {
    "source": "<g1>Crash reports:</g1> after a crash, the report window may fetch that version's debugging symbols from MDM's GitHub release and ask GitHub whether the same problem was reported already. The report itself opens in your browser, on GitHub, only if you choose to send it.",
@@ -14550,6 +14634,10 @@
    "source": "Options on its Sounds page: a sound for each event",
    "text": "گزینه‌ها در صفحه صداها آن: یک صدا برای هر رویداد"
   },
+  "c3cdbcead710be30": {
+   "source": "first when the download goes through a debrid account, then a <x1/> line every half second, then <x2/> (with <x3/> when the file didn't match the checksum its server sent, and was kept), or <x4/> after <x5/> (<x6/> is the file <x7/> takes).",
+   "text": "ابتدا وقتی بارگیری از طریق یک حساب debrid انجام می‌شود، سپس یک خط <x1/> هر نیم ثانیه، سپس <x2/> (با <x3/> وقتی فایل با جمع کنترلی که سرورش ارسال کرده بود مطابقت نداشت و حفظ شد)، یا <x4/> پس از <x5/> (<x6/> فایلی است که <x7/> می‌گیرد)."
+  },
   "c3d39f291e3ad7b6": {
    "source": "View → Draw with open: OpenGL and Direct3D",
    "text": "نما → ترسیم با باز: OpenGL و Direct3D"
@@ -14805,6 +14893,10 @@
   "c763f3aa0f51a5a2": {
    "source": "<g1>Server mode</g1><g2>Mister Download Manager</g2>",
    "text": "<g1>حالت سرور</g1><g2>Mister Download Manager</g2>"
+  },
+  "c76c7692d362ad5a": {
+   "source": "Each running download has its own progress window. It opens when the download starts (unless you turned that off, or chose Show minimized, in Options →…",
+   "text": "هر بارگیری در حال اجرا پنجره پیشرفت مخصوص به خود را دارد. این پنجره با شروع بارگیری باز می‌شود (مگر اینکه آن را غیرفعال کرده باشید، یا گزینه کوچک‌شده نمایش بده را در گزینه‌ها →…"
   },
   "c7853bd84d0526f0": {
    "source": "Options → Archives →",
@@ -15254,6 +15346,10 @@
    "source": "Files named photo001.jpg to photo150.jpg don't need 150 clicks. Write the address once with an asterisk where the number changes, and MDM queues every file. A list of links in a text file goes in just as easily.",
    "text": "فایل‌هایی با نام photo001.jpg تا photo150.jpg نیازی به 150 کلیک ندارند. آدرس را یک بار با یک ستاره در جایی که شماره تغییر می‌کند بنویسید، و MDM هر فایل را در صف قرار می‌دهد. یک فهرست از پیوندها در یک فایل متنی نیز به همین راحتی وارد می‌شود."
   },
+  "cd505aa9d732174d": {
+   "source": "Download a video. Without <x1/> or <x2/>, the best quality, the one the Download video window starts on: with ffmpeg the best picture with the best sound joined to it (a site whose pictures and sounds come apart, such as Bilibili, needs ffmpeg for a video), else the best file with both. <x3/> (or <x4/>) takes that height, or the nearest below it the page offers (else the nearest above), and says so. <x5/> takes the most compatible quality, as the window's <g6>Most compatible (H.264 + AAC)</g6>: the best H.264 picture with AAC sound, in an MP4 that plays in every editor, TV and phone; a page without one says so (nothing is converted). <x7/> takes a quality's selector from <x8/> (<x9/> = the best single file; <x10/> = the sound alone as the site has it, not converted; <x11/>, <x12/>, <x13/> or <x14/> = the sound as an MP3 at that bitrate, <x15/> at its best variable one; <x16/> = as Opus; <x17/> = as FLAC, lossless but no better than the site's sound; conversions need ffmpeg). <x18/>: MDM's own downloader brings each stream yt-dlp finds over this many connections (8 by default, 1 to 128), a stream in pieces (HLS, DASH) this many pieces at once. <x19/> saves subtitles beside it: language codes from <x20/> (<x21/>), or <x22/> for every one the uploader gave; <x23/> takes the site's automatic captions instead; <x24/> puts them into the video (needs ffmpeg, MP4 or MKV). With ffmpeg, the video's chapters go into the file too, as Download video's <g25>Embed chapters</g25> does. <x26/> splits the video into numbered chapter files without re-encoding, beside the main video. <x27/> sends the downloads' connections, and yt-dlp's (and ffmpeg's), through one network adapter, as for <x28/>; when it isn't connected, nothing starts. When no format of the page matches, the error lists the ones it offers, as <x29/> does.",
+   "text": "یک ویدیو را بارگیری می‌کند. بدون <x1/> یا <x2/>، بهترین کیفیت، همان کیفیتی که پنجره دانلود ویدیو با آن شروع می‌شود: با ffmpeg بهترین تصویر با بهترین صدا که به آن متصل شده است (سایتی که تصاویر و صداهایش جداگانه هستند، مانند Bilibili، برای ویدیو به ffmpeg نیاز دارد)، در غیر این صورت بهترین فایل با هر دو. <x3/> (یا <x4/>) آن ارتفاع را می‌گیرد، یا نزدیک‌ترین ارتفاع پایین‌تر از آن را که صفحه ارائه می‌دهد (در غیر این صورت نزدیک‌ترین ارتفاع بالاتر)، و این را اعلام می‌کند. <x5/> سازگارترین کیفیت را می‌گیرد، مانند <g6>سازگارترین (H.264 + AAC)</g6> در پنجره: بهترین تصویر H.264 با صدای AAC، در یک MP4 که در هر ویرایشگر، تلویزیون و تلفن پخش می‌شود؛ صفحه‌ای که این را نداشته باشد، این را اعلام می‌کند (چیزی تبدیل نمی‌شود). <x7/> انتخاب‌گر کیفیت را از <x8/> می‌گیرد (<x9/> = بهترین فایل تکی؛ <x10/> = فقط صدا همان‌طور که سایت دارد، تبدیل‌نشده؛ <x11/>، <x12/>، <x13/> یا <x14/> = صدا به‌عنوان MP3 با آن بیت‌ریت، <x15/> با بهترین بیت‌ریت متغیر آن؛ <x16/> = به‌عنوان Opus؛ <x17/> = به‌عنوان FLAC، بدون افت کیفیت اما بهتر از صدای سایت نیست؛ تبدیل‌ها به ffmpeg نیاز دارند). <x18/>: دانلودکننده MDM هر جریانی را که yt-dlp پیدا می‌کند، با این تعداد اتصال (8 به‌طور پیش‌فرض، 1 تا 128) منتقل می‌کند، یک جریان تکه‌تکه (HLS, DASH) با این تعداد تکه به‌طور همزمان. <x19/> زیرنویس‌ها را در کنار آن ذخیره می‌کند: کدهای زبان از <x20/> (<x21/>)، یا <x22/> برای هر زیرنویسی که آپلودکننده ارائه داده است؛ <x23/> به‌جای آن، زیرنویس‌های خودکار سایت را می‌گیرد؛ <x24/> آن‌ها را در ویدیو قرار می‌دهد (به ffmpeg، MP4 یا MKV نیاز دارد). با ffmpeg، فصل‌های ویدیو نیز در فایل قرار می‌گیرند، همان‌طور که <g25>تعبیه فصل‌ها</g25> در دانلود ویدیو انجام می‌دهد. <x26/> ویدیو را بدون بازرمزگذاری، به فایل‌های فصل شماره‌گذاری‌شده، در کنار ویدیوی اصلی تقسیم می‌کند. <x27/> اتصالات بارگیری‌ها، و yt-dlp (و ffmpeg) را از طریق یک آداپتور شبکه ارسال می‌کند، همانند <x28/>؛ وقتی متصل نباشد، چیزی شروع نمی‌شود. وقتی هیچ فرمتی از صفحه مطابقت نداشته باشد، خطا، فرمت‌های ارائه‌شده را لیست می‌کند، همان‌طور که <x29/> انجام می‌دهد."
+  },
   "cd5d07eb9607e523": {
    "source": "The help names Windows' screen readers, Narrator and NVDA. If you use a screen reader on Linux or macOS, please <g1>tell us how it goes</g1>.",
    "text": "راهنما، صفحه‌خوان‌های Windows، Narrator و NVDA را نام می‌برد. اگر از صفحه‌خوان در Linux یا macOS استفاده می‌کنید، لطفا <g1>تجربه خود را به ما بگویید</g1>."
@@ -15325,6 +15421,10 @@
   "ce429dd626934c96": {
    "source": "Link grabber and archives — Mister Download Manager help",
    "text": "دریافت‌کننده پیوند و بایگانی‌ها — راهنمای Mister Download Manager"
+  },
+  "ce5bf471e6fccfb8": {
+   "source": "<g1>Comments</g1><g2><x3/> people</g2>",
+   "text": "<g1>نظرات</g1><g2><x3/> نفر</g2>"
   },
   "ce6720d5953dad4f": {
    "source": "The previous / next button (greyed ones too: a screen reader says they are unavailable)",
@@ -15585,10 +15685,6 @@
   "d276ebf66aa4bbaa": {
    "source": "No. MDM needs Windows 10 or 11. The Rust toolchain it is built with no longer supports Windows 7 and 8, and neither does Microsoft.",
    "text": "خیر. MDM به Windows 10 یا 11 نیاز دارد. ابزارهای Rust که MDM با آن ساخته شده است، دیگر از Windows 7 و 8 پشتیبانی نمی‌کنند و مایکروسافت نیز همین‌طور."
-  },
-  "d29a7b052989ea0c": {
-   "source": "<g1>In figures</g1><g2>Store figures as of <x3/>, the others checked on <x4/>, rounded down</g2>",
-   "text": "<g1>آمار و ارقام</g1><g2>آمار فروشگاه تا <x3/>، بقیه در <x4/> بررسی شده‌اند، گرد شده به پایین</g2>"
   },
   "d2a15d4e9d4e0387": {
    "source": "To add every link in a text file:",
@@ -15930,6 +16026,10 @@
    "source": "Mister Download Manager and IDM, side by side.",
    "text": "Mister Download Manager و IDM، کنار هم."
   },
+  "d65efc937a364b03": {
+   "source": "<x1/> issue",
+   "text": "<x1/> مشکل"
+  },
   "d663f408764b1150": {
    "source": "Replay",
    "text": "پخش مجدد"
@@ -16041,10 +16141,6 @@
   "d7d939199fe34589": {
    "source": "<g1><g2>Languages</g2></g1> — the 87 interface languages, numbers and dates, right-to-left layouts, and how to help translate.",
    "text": "<g1><g2>زبان‌ها</g2></g1> — 87 زبان رابط کاربری، اعداد و تاریخ‌ها، چیدمان‌های راست به چپ و نحوه کمک به ترجمه."
-  },
-  "d7df5f97a90fd99c": {
-   "source": "Each running download has its own progress window. It opens when the download starts (unless you turned that off in <g1>Options → Downloads → Customize \"Download progress\" dialog → Edit...</g1>); to open it again, double-click the download in the list.",
-   "text": "هر بارگیری در حال اجرا پنجره پیشرفت مخصوص به خود را دارد. این پنجره با شروع بارگیری باز می‌شود (مگر اینکه این گزینه را در <g1>گزینه‌ها ← بارگیری‌ها ← سفارشی‌سازی کادر محاوره‌ای «پیشرفت دانلود» ← ویرایش…</g1> غیرفعال کرده باشید)؛ برای باز کردن دوباره آن، روی بارگیری در فهرست دوبار کلیک کنید."
   },
   "d7e47d8cb056d141": {
    "source": "<g1>Download in order</g1>, to watch a video while it downloads, with each file's first and last pieces early. Other torrents fetch the rarest pieces first.",
@@ -16562,6 +16658,10 @@
    "source": "The site's <g1>robots.txt</g1> lets every crawler in, and says so for AI in <g2>Content Signals</g2>:",
    "text": "<g1>robots.txt</g1> سایت به هر خزنده اجازه ورود می‌دهد و این را برای هوش مصنوعی در <g2>Content Signals</g2> بیان می‌کند:"
   },
+  "e0a07e732b511f78": {
+   "source": "<g1><x2/> downloads</g1><g3>of the app, every version together</g3>",
+   "text": "<g1><x2/> بارگیری</g1><g3>برنامه، همه نسخه‌ها با هم</g3>"
+  },
   "e0a6f19ecc901965": {
    "source": "For a <x1/> file: <g2>Open magnet links and .torrent files with Mister Download Manager</g2> is on in <g3>Tasks → Torrent settings</g3>.",
    "text": "برای فایل <x1/>: <g2>باز کردن پیوندهای مگنت و فایل‌های .torrent با Mister Download Manager</g2> در <g3>وظایف ← تنظیمات تورنت</g3> فعال است."
@@ -16689,6 +16789,10 @@
   "e21e4c0c6fc923a2": {
    "source": "MDM's main window on Ubuntu 24.04's GNOME desktop: the categories and a list of downloads, each with the desktop's icon for its type",
    "text": "پنجره اصلی MDM روی دسکتاپ گنوم اوبونتو 24.04: دسته‌ها و فهرستی از بارگیری‌ها، هر کدام با نماد دسکتاپ برای نوع خود"
+  },
+  "e22a4ae089ee0db8": {
+   "source": "<g1>Live figures</g1>: the home page asks the same service on Cloudflare for how many times the app was downloaded and how many people use the browser add-on, to show them under the contributors. That request carries only what every request to a website does (your IP address and browser details, which Cloudflare sees); the service keeps nothing of it and writes no log. The figures themselves come from GitHub and the browser stores, read by the service, never by your browser.",
+   "text": "<g1>آمار زنده</g1>: صفحه اصلی از همان سرویس در Cloudflare می‌پرسد که برنامه چند بار بارگیری شده و چند نفر از افزونه مرورگر استفاده می‌کنند تا آنها را زیر مشارکت‌کنندگان نمایش دهد. این درخواست فقط آنچه را که هر درخواستی به یک وب‌سایت حمل می‌کند (آدرس IP و جزئیات مرورگر شما، که Cloudflare آنها را می‌بیند) حمل می‌کند؛ سرویس هیچ‌یک از آنها را نگه نمی‌دارد و هیچ گزارشی نمی‌نویسد. خود آمار از GitHub و فروشگاه‌های مرورگر می‌آیند که توسط سرویس خوانده می‌شوند، نه توسط مرورگر شما."
   },
   "e22ae1bbb5224f5c": {
    "source": "Download manager",
@@ -17026,9 +17130,21 @@
    "source": "No, if it came from this site or GitHub Releases. Some antivirus programs judge a program they don't know by an educated guess, not by a known virus…",
    "text": "خیر، اگر از این سایت یا انتشارات GitHub دریافت شده باشد. برخی از برنامه‌های آنتی‌ویروس، برنامه‌ای را که نمی‌شناسند، با حدس و گمان ارزیابی می‌کنند، نه بر اساس ویروس‌های شناخته‌شده…"
   },
+  "e6d677c76529ac72": {
+   "source": "<g1>#1</g1><g2>Rust</g2>",
+   "text": "<g1>شماره 1</g1><g2>Rust</g2>"
+  },
+  "e6e4ffbd1a17c7e8": {
+   "source": "<x1/> pull request",
+   "text": "<x1/> درخواست پول"
+  },
   "e6e9f590b183bea4": {
    "source": "Link grabber: paste many links, MDM groups them, checks which are online, and extracts archives when they arrive.",
    "text": "رباینده پیوند: چندین پیوند را بچسبانید، MDM آن‌ها را گروه‌بندی می‌کند، بررسی می‌کند کدام یک آنلاین هستند و پس از رسیدن، آرشیوها را استخراج می‌کند."
+  },
+  "e6f2d5c5287999ae": {
+   "source": "Some programs (BitComet, for one) write a torrent's names in another encoding and add a UTF-8 copy of them (<x1/>, <x2/>); MDM shows and saves the files under the UTF-8 names. A torrent like that which was downloading in an earlier version starts those files again under their correct names, and leaves the files with the old names in the folder.",
+   "text": "برخی برنامه‌ها (مانند BitComet) نام تورنت‌ها را با رمزگذاری دیگری می‌نویسند و یک کپی UTF-8 از آن‌ها اضافه می‌کنند (<x1/>، <x2/>)؛ MDM فایل‌ها را با نام‌های UTF-8 نمایش می‌دهد و ذخیره می‌کند. چنین تورنتی که در نسخه قبلی در حال بارگیری بود، آن فایل‌ها را با نام‌های صحیحشان دوباره شروع می‌کند و فایل‌های با نام‌های قدیمی را در پوشه باقی می‌گذارد."
   },
   "e700b8b592a5b4c0": {
    "source": "Free forever: no trial, no ads, no key",
@@ -18306,6 +18422,10 @@
    "source": "<g1>Stop sharing after sharing for … minutes</g1> — or once it has been shared that long, over all its runs. Off by default.",
    "text": "<g1>توقف اشتراک‌گذاری پس از اشتراک‌گذاری به مدت … دقیقه</g1> — یا وقتی این مدت در مجموع اجراهایش سپری شود. به‌طور پیش‌فرض خاموش است."
   },
+  "f821c9c149c3e050": {
+   "source": "<x1/> comments",
+   "text": "<x1/> نظر"
+  },
   "f82dc8051d1faab0": {
    "source": "names besides its addresses the page may be opened by",
    "text": "نام‌هایی علاوه بر آدرس‌های آن که صفحه ممکن است با آنها باز شود"
@@ -18410,6 +18530,10 @@
    "source": "What's new in version 0.5.0 <g1>2026-11-08</g1>",
    "text": "تازه‌های نسخه 0.5.0 <g1>2026-11-08</g1>"
   },
+  "f9a8db1326e07676": {
+   "source": "<x1/> issues",
+   "text": "<x1/> مشکل"
+  },
   "f9b1393934105e30": {
    "source": "Yes. The portable download is a zip: unzip it anywhere, a USB stick included, and run it. Your downloads list and settings stay in its own <x1/> folder, so nothing is written to the computer. See <g2>Portable mode</g2>.",
    "text": "بله. دانلود قابل حمل یک فایل زیپ است: آن را در هر جایی، از جمله یک فلش USB، از حالت فشرده خارج کنید و اجرا کنید. فهرست دانلودها و تنظیمات شما در پوشه <x1/> خودش باقی می‌ماند، بنابراین چیزی روی رایانه نوشته نمی‌شود. <g2>حالت قابل حمل</g2> را ببینید."
@@ -18421,6 +18545,10 @@
   "f9c366e9c3fc0557": {
    "source": "Check <g1>Options → Connection</g1>. A low <g2>Default max. conn. number</g2>, or an exception for the server, means fewer connections. Rows marked <g3>(auto)</g3> are servers that refused more connections; MDM can't do more there.",
    "text": "<g1>گزینه‌ها → اتصال</g1> را بررسی کنید. اگر <g2>حداکثر تعداد اتصال پیش‌فرض</g2> کم باشد یا برای سرور استثنایی تعریف شده باشد، تعداد اتصال‌ها کمتر می‌شود. ردیف‌های دارای علامت <g3>(auto)</g3> مربوط به سرورهایی هستند که اتصال‌های بیشتری را نپذیرفته‌اند؛ MDM نمی‌تواند تعداد اتصال‌ها را در این سرورها افزایش دهد."
+  },
+  "f9cf9c317bb4b9cf": {
+   "source": "Download a file with up to 8 connections (<x1/>, 1 to 128), showing progress. <x2/> pauses it; <x3/> continues. <x4/> sets the referring page address (Referer header), <x5/> sets the request's User-Agent (then the only one sent; without it, MDM speaks as your default browser, and, when a site's bot check refuses that and the way a browser connects too, once more under its own name), <x6/> sets the Cookie header (a cookie on the command line ends up in the shell's history; <x7/> reads it from standard input instead). <x8/> checks the finished file: hex MD5, SHA-1, SHA-256, SHA-512 or CRC32, optionally named (<x9/>); a file that doesn't match fails. Without it, a checksum the server sends is checked, and a file that doesn't match it is kept with a <x10/> line (see <g11>Verify checksum</g11>). <x12/> picks the DNS instead of Options': <x13/>; a service and how to ask it, <x14/>, <x15/>, <x16/>, <x17/>, <x18/>; DNS servers' addresses, <x19/>; or a DNS-over-HTTPS address. It never falls back to the system's DNS. <x20/> sends every connection through one network adapter instead of Options' (<x21/> for none), by its name (<x22/>, <x23/>) or one of its addresses; when it isn't connected, nothing is sent and the download fails. <x24/> takes the place of Options' proxy for this run (see above). The app's <g25>site rules</g25> for the address apply too (their headers, User-Agent, browser-like connection, number of connections and proxy), where the command line gives none of the same: <x26/> goes before every rule's proxy. A link from a file host that one of your debrid accounts (<g27>Options → Accounts</g27>) supports goes through that account, as in the app, and <x28/> says <x29/>; <x30/> downloads the address itself (<g31>Debrid service accounts</g31>).",
+   "text": "فایلی را با حداکثر 8 اتصال (<x1/>، 1 تا 128)، همراه با نمایش پیشرفت، بارگیری می‌کند. <x2/> آن را متوقف می‌کند؛ <x3/> ادامه می‌دهد. <x4/> نشانی صفحه ارجاع‌دهنده (سربرگ Referer) را تنظیم می‌کند، <x5/> User-Agent درخواست را تنظیم می‌کند (در این صورت فقط همین مورد ارسال می‌شود؛ بدون آن، MDM مانند مرورگر پیش‌فرض شما عمل می‌کند و اگر بررسی ربات سایت آن را رد کند و همچنین نحوه اتصال مرورگر را نیز رد کند، یک بار دیگر با نام خود MDM عمل می‌کند)، <x6/> سربرگ Cookie را تنظیم می‌کند (کوکی در خط فرمان در تاریخچه شل ذخیره می‌شود؛ <x7/> آن را از ورودی استاندارد می‌خواند). <x8/> فایل تکمیل‌شده را بررسی می‌کند: MD5، SHA-1، SHA-256، SHA-512 یا CRC32 هگزادسیمال، که به‌صورت اختیاری نام‌گذاری می‌شود (<x9/>)؛ فایلی که مطابقت نداشته باشد، رد می‌شود. بدون این گزینه، جمع کنترلی که سرور ارسال می‌کند بررسی می‌شود و فایلی که مطابقت نداشته باشد با یک خط <x10/> نگهداری می‌شود (به <g11>تأیید جمع کنترلی</g11> مراجعه کنید). <x12/> DNS را به‌جای تنظیمات گزینه‌ها انتخاب می‌کند: <x13/>؛ یک سرویس و نحوه درخواست آن، <x14/>، <x15/>، <x16/>، <x17/>، <x18/>؛ نشانی سرورهای DNS، <x19/>؛ یا یک نشانی DNS-over-HTTPS. هرگز به DNS سیستم بازنمی‌گردد. <x20/> هر اتصال را به‌جای تنظیمات گزینه‌ها (برای هیچ‌کدام <x21/>) از طریق یک آداپتور شبکه ارسال می‌کند، با نام آن (<x22/>، <x23/>) یا یکی از نشانی‌های آن؛ وقتی متصل نباشد، چیزی ارسال نمی‌شود و بارگیری با شکست مواجه می‌شود. <x24/> در این اجرا جایگزین پراکسی تنظیمات گزینه‌ها می‌شود (به بالا مراجعه کنید). <g25>قوانین سایت</g25> برنامه برای نشانی نیز اعمال می‌شود (سربرگ‌ها، User-Agent، اتصال شبیه مرورگر، تعداد اتصالات و پراکسی)، در جایی که خط فرمان هیچ‌یک از موارد مشابه را ارائه نمی‌دهد: <x26/> قبل از پراکسی هر قانون قرار می‌گیرد. پیوندی از یک میزبان فایل که یکی از حساب‌های debrid شما (<g27>گزینه‌ها ← حساب‌ها</g27>) پشتیبانی می‌کند، از طریق آن حساب انجام می‌شود، همانند برنامه، و <x28/> می‌گوید <x29/>؛ <x30/> خود نشانی را بارگیری می‌کند (<g31>حساب‌های سرویس debrid</g31>)."
   },
   "f9d1377f746da798": {
    "source": "No features were removed, only an old label and some bulky files.",
@@ -18469,10 +18597,6 @@
   "fa5983ecf8199d6b": {
    "source": "<g1>macOS</g1>: open the <g2>.dmg</g2> and drag Mister Download Manager to Applications, then right-click it and choose <g3>Open</g3> the first time.",
    "text": "<g1>macOS</g1>: فایل <g2>.dmg</g2> را باز کنید و Mister Download Manager را به Applications بکشید، سپس برای اولین بار روی آن راست‌کلیک کرده و <g3>باز کردن</g3> را انتخاب کنید."
-  },
-  "fa5f14a1aee829e9": {
-   "source": "first when the download goes through a debrid account, then a <x1/> line every half second, then <x2/>, or <x3/> after <x4/> (<x5/> is the file <x6/> takes).",
-   "text": "ابتدا وقتی بارگیری از طریق حساب debrid انجام می‌شود، سپس هر نیم‌ثانیه یک خط <x1/>، بعد <x2/> یا پس از <x4/>، <x3/> (<x5/> فایلی است که <x6/> دریافت می‌کند)."
   },
   "fa642946eaf6222a": {
    "source": "Point at a download (or reach it with the keyboard) for <g1>Show in folder</g1> and <g2>Pause</g2> or <g3>Resume</g3>. Click a finished file's name to open it. Its <g4>⋯</g4> menu has the rest:",
@@ -18917,10 +19041,6 @@
   "ff3a9a6f1b38ed2c": {
    "source": "Check MDM's own helpers (yt-dlp, ffmpeg, gallery-dl, Node.js) for newer versions now, install them (each checked as its first install was), and print their versions. A helper a download is using switches to its new version once that download ends. Programs you chose in Helpers, and your system's, are yours to update.",
    "text": "اکنون کمک‌کننده‌های خود MDM (yt-dlp، ffmpeg، gallery-dl، Node.js) را برای نسخه‌های جدیدتر بررسی می‌کند، آن‌ها را نصب می‌کند (هر کدام مانند اولین نصب خود بررسی می‌شوند) و نسخه‌های آن‌ها را چاپ می‌کند. یک کمک‌کننده که یک بارگیری از آن استفاده می‌کند، پس از پایان آن بارگیری به نسخه جدید خود تغییر می‌کند. برنامه‌هایی که شما در کمک‌کننده‌ها انتخاب کرده‌اید و برنامه‌های سیستم شما، مسئولیت به‌روزرسانی آن‌ها با شماست."
-  },
-  "ff442f775d7b9907": {
-   "source": "<g1>Proof of delivery</g1><g2>Store figures as of <x3/>, the others checked on <x4/> · quotes exact, linked to their source</g2>",
-   "text": "<g1>گواهی تحویل</g1><g2>آمار تا تاریخ <x3/>، بقیه در تاریخ <x4/> بررسی شده‌اند · نقل‌قول‌ها دقیق و به منبعشان پیوند داده شده‌اند</g2>"
   },
   "ff71942d9ac7e304": {
    "source": "<g1>Your AI assistant, only if you connect one.</g1> MDM's MCP server (<x2/>) talks only to the MDM on your computer. But if you add it to an AI assistant (Claude, Cursor, VS Code…) and turn on the automation API, the assistant can read your download list, and what it reads (file names, addresses, folders) goes to that assistant's AI service, under its privacy terms. Nothing of this happens unless you set it up; see <g3>AI assistants</g3>.",

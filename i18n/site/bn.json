@@ -70,6 +70,10 @@
    "source": "A code signature lets Windows show who published a program and check that it wasn't changed after it was built. When a release of Mister Download Manager (\"MDM\") is signed, its signature covers the Windows files that come from this project:",
    "text": "একটি কোড স্বাক্ষর Windows-কে দেখাতে দেয় কে একটি প্রোগ্রাম প্রকাশ করেছে এবং এটি তৈরি হওয়ার পরে পরিবর্তন করা হয়নি তা পরীক্ষা করতে দেয়। যখন Mister Download Manager (\"MDM\")-এর একটি রিলিজ সাইন করা হয়, তখন এর স্বাক্ষর এই প্রোজেক্ট থেকে আসা Windows ফাইলগুলোকে কভার করে:"
   },
+  "01579d403b821195": {
+   "source": "<x1/> pull requests",
+   "text": "<x1/>টি পুল রিকোয়েস্ট"
+  },
   "015f73be8184c2cb": {
    "source": "Yes. MDM writes its progress as it goes, so after a lost connection, a crash or a restart it carries on where it stopped. Before resuming it checks that the file on the server hasn't changed. When a download address has expired, <g1>Refresh download address</g1> lets you give it a fresh one and keep the data. See <g2>Resume a broken download</g2>.",
    "text": "হ্যাঁ। MDM ডাউনলোডের অগ্রগতি সংরক্ষণ করে, তাই সংযোগ বিচ্ছিন্ন হলে, ক্র্যাশ করলে বা কম্পিউটার পুনরায় চালু করলে এটি যেখানে থেমেছিল, সেখান থেকেই আবার শুরু হয়। আবার শুরু করার আগে এটি দেখে যে সার্ভারের ফাইলটি পরিবর্তিত হয়েছে কি না। ডাউনলোডের ঠিকানার মেয়াদ শেষ হয়ে গেলে, <g1>ডাউনলোডের ঠিকানা রিফ্রেশ করুন</g1> ব্যবহার করে নতুন ঠিকানা দিয়ে ডেটা অক্ষত রাখতে পারেন। দেখুন <g2>বিচ্ছিন্ন হয়ে যাওয়া ডাউনলোড আবার শুরু করুন</g2>।"
@@ -226,6 +230,10 @@
    "source": "<g1>Help → About Mister Download Manager</g1> shows the version you have.",
    "text": "<g1>সহায়তা → Mister Download Manager সম্পর্কে</g1> থেকে আপনার ব্যবহৃত সংস্করণটি দেখা যায়।"
   },
+  "030e42728ee6a418": {
+   "source": "<g1>Pull requests</g1><g2><x3/> people</g2>",
+   "text": "<g1>পুল রিকোয়েস্ট</g1><g2><x3/> জন</g2>"
+  },
   "031da5c20d1881e4": {
    "source": "Everything the Scheduler can do →",
    "text": "সময়সূচী কী কী করতে পারে →"
@@ -261,6 +269,10 @@
   "03660b1f49838403": {
    "source": "Contribute",
    "text": "অবদান রাখুন"
+  },
+  "03d03dddf2309b1d": {
+   "source": "App downloads",
+   "text": "অ্যাপ ডাউনলোড"
   },
   "03db33586ae11954": {
    "source": "<g1>A recording in several parts</g1> (a picture and a sound part yt-dlp left apart) is made one MP4 with all of them. If they can't be joined, the download says so and every part stays as it is.",
@@ -778,6 +790,10 @@
    "source": "Too many tries from your connection. Please try again in a few minutes.",
    "text": "আপনার সংযোগ থেকে অনেক বেশি চেষ্টা করা হয়েছে। অনুগ্রহ করে কয়েক মিনিট পর আবার চেষ্টা করুন।"
   },
+  "0a07d4f9fc7fb519": {
+   "source": "When the network comes back after a drop (Wi-Fi reconnecting, the computer waking from sleep, a VPN connecting or switching), MDM notices within a few seconds and calls the torrents' peers again at once, and asks their trackers and the DHT again, so a download picks up where it was instead of waiting minutes for each peer's next try. Each peer is called once for it; a tracker is still never asked sooner than its minimum interval. Behind a SOCKS5 proxy, a drop the computer itself doesn't see (the router losing its line while Wi-Fi stays up) is noticed only through the DHT, which is off there, so those torrents come back on their own, as before.",
+   "text": "নেটওয়ার্ক সংযোগ বিচ্ছিন্ন হওয়ার পর যখন ফিরে আসে (Wi-Fi পুনরায় সংযোগ করা হচ্ছে, কম্পিউটার স্লিপ থেকে জেগে উঠছে, একটি VPN সংযোগ করা হচ্ছে বা পরিবর্তন হচ্ছে), MDM কয়েক সেকেন্ডের মধ্যে তা বুঝতে পারে এবং সাথে সাথে টরেন্টের পিয়ারগুলোকে আবার ডাকে, এবং তাদের ট্র্যাকার ও DHT-কে আবার জিজ্ঞাসা করে, ফলে প্রতিটি পিয়ারের পরবর্তী চেষ্টার জন্য মিনিটখানেক অপেক্ষা না করে ডাউনলোড যেখান থেকে থেমেছিল সেখান থেকে আবার শুরু হয়। প্রতিটি পিয়ারকে একবার করে ডাকা হয়; একটি ট্র্যাকারকে তার সর্বনিম্ন ব্যবধানের আগে কখনোই জিজ্ঞাসা করা হয় না। একটি SOCKS5 প্রক্সির পেছনে, কম্পিউটার নিজে যে সংযোগ বিচ্ছিন্নতা দেখতে পায় না (Wi-Fi চালু থাকা অবস্থায় রাউটার তার লাইন হারানো) তা শুধুমাত্র DHT-এর মাধ্যমে বোঝা যায়, যা সেখানে বন্ধ থাকে, তাই সেই টরেন্টগুলো আগের মতোই নিজে থেকে ফিরে আসে।"
+  },
   "0a15fc764eba9ef6": {
    "source": "Some servers drop the connection when the speed is very low. Avoid a tight limit for a server that can't resume: the progress window shows <g1>Resume capability: No</g1> for those.",
    "text": "কিছু সার্ভার গতি খুব কম হলে সংযোগ বিচ্ছিন্ন করে দেয়। এমন সার্ভারের জন্য কঠোর সীমা এড়িয়ে চলুন যা পুনরায় শুরু করতে পারে না: অগ্রগতি উইন্ডো সেগুলির জন্য <g1>পুনরায় শুরু করার ক্ষমতা: না</g1> দেখায়।"
@@ -1114,6 +1130,10 @@
    "source": "Read the site",
    "text": "সাইটটি পড়ুন"
   },
+  "0e9fede041092f7d": {
+   "source": "A file is made when its first byte is downloaded, and only a ticked one is made in the folder: what an unticked file shares with a ticked one waits in MDM's own torrent data. A running torrent keeps only the files it is reading or writing open, a few hundred at most for all of MDM's torrents together (fewer where the system allows fewer, as macOS does), so a torrent of thousands of files runs where it used to fail with \"Too many open files\".",
+   "text": "একটি ফাইল তৈরি হয় যখন এর প্রথম বাইট ডাউনলোড হয়, এবং ফোল্ডারে শুধুমাত্র টিক দেওয়া ফাইলটি তৈরি হয়: টিক না দেওয়া ফাইলটি টিক দেওয়া ফাইলের সাথে যা শেয়ার করে তা MDM-এর নিজস্ব টরেন্ট ডেটাতে অপেক্ষা করে। একটি চলমান টরেন্ট শুধুমাত্র সেই ফাইলগুলো খোলা রাখে যা এটি পড়ছে বা লিখছে, MDM-এর সব টরেন্টের জন্য সর্বোচ্চ কয়েকশো (যেখানে সিস্টেম কম অনুমতি দেয়, যেমন macOS-এ, সেখানে কম), তাই হাজার হাজার ফাইলের একটি টরেন্ট চলে যেখানে আগে “Too many open files” ত্রুটির কারণে ব্যর্থ হতো।"
+  },
   "0ea74b188ec2ca88": {
    "source": "If it says <g1>the site sent a web page instead of the file</g1>, the link led to the site's own page: a file host's countdown, a captcha, a <g2>Download</g2> button to press, or a sign-in. MDM never saves that page as your file. Click <g3>Open in browser</g3> in the download's progress window (or open the link yourself), finish there, and when the browser starts the real download, MDM's extension hands it to MDM. Without the extension, let the browser download it.",
    "text": "যদি লেখা থাকে <g1>সাইটটি ফাইলের পরিবর্তে একটি ওয়েব পেজ পাঠিয়েছে</g1>, তাহলে লিঙ্কটি সাইটের নিজস্ব পেজে নিয়ে গেছে: একটি ফাইল হোস্টের কাউন্টডাউন, একটি ক্যাপচা, চাপার জন্য একটি <g2>ডাউনলোড</g2> বোতাম, অথবা সাইন-ইন। MDM কখনোই সেই পেজটিকে আপনার ফাইল হিসেবে সংরক্ষণ করে না। ডাউনলোডের অগ্রগতি উইন্ডোতে <g3>ব্রাউজারে খুলুন</g3> ক্লিক করুন (অথবা লিঙ্কটি নিজে খুলুন), সেখানে কাজ শেষ করুন, এবং যখন ব্রাউজার আসল ডাউনলোড শুরু করবে, তখন MDM-এর এক্সটেনশন এটি MDM-এর কাছে হস্তান্তর করবে। এক্সটেনশন ছাড়া, ব্রাউজারকে এটি ডাউনলোড করতে দিন।"
@@ -1393,6 +1413,10 @@
   "1294135f300139c9": {
    "source": "The benchmark data could not be loaded.",
    "text": "বেঞ্চমার্ক ডেটা লোড করা যায়নি।"
+  },
+  "12947e2a74bc1b46": {
+   "source": "Each running download has its own progress window. It opens when the download starts (unless you turned that off, or chose <g1>Show minimized</g1>, in <g2>Options → Downloads → Customize \"Download progress\" dialog → Edit...</g2>); to open it again, double-click the download in the list.",
+   "text": "প্রতিটি চলমান ডাউনলোডের নিজস্ব অগ্রগতি উইন্ডো আছে। ডাউনলোড শুরু হলে এটি খোলে (যদি না আপনি এটি বন্ধ করে থাকেন, অথবা <g2>বিকল্প → ডাউনলোড → “ডাউনলোড অগ্রগতি” ডায়ালগ কাস্টমাইজ করুন → সম্পাদনা করুন...</g2>-এ <g1>ছোট করে দেখান</g1> বেছে নিয়ে থাকেন); এটি আবার খুলতে, তালিকার ডাউনলোডটিতে ডাবল-ক্লিক করুন।"
   },
   "12a228101626f4bc": {
    "source": "How MDM uses connections",
@@ -2526,6 +2550,10 @@
    "source": "On macOS only an administrator can schedule a wake, so the option is greyed. MDM doesn't ask for an administrator's password. An administrator can have the Mac wake every day a minute before the queue starts, for example at 10:59 PM for a queue that starts at 11:00 PM:",
    "text": "macOS-এ শুধু প্রশাসকই কম্পিউটার জাগানোর সময়সূচি সেট করতে পারেন, তাই বিকল্পটি নিষ্ক্রিয় থাকে। MDM প্রশাসকের পাসওয়ার্ড চায় না। উদাহরণস্বরূপ, প্রশাসক প্রতিদিন কিউ শুরুর এক মিনিট আগে Mac-কে জাগানোর ব্যবস্থা করতে পারেন: রাত 11:00টায় শুরু হওয়া কিউয়ের জন্য রাত 10:59টায়:"
   },
+  "216eae12c95fa610": {
+   "source": "Everyone who sent a pull request, opened an issue or commented on GitHub since version <x1/>.",
+   "text": "যারা <x1/> সংস্করণ থেকে GitHub-এ পুল রিকোয়েস্ট পাঠিয়েছেন, ইস্যু খুলেছেন বা মন্তব্য করেছেন, তাদের সবাইকে ধন্যবাদ।"
+  },
   "2171be975f40efe2": {
    "source": "<g1>Moving from IDM</g1><g2>Your IDM list comes over in one file, each download with its address, referrer and cookies.</g2>",
    "text": "<g1>IDM থেকে স্থানান্তর</g1><g2>আপনার IDM তালিকা একটি ফাইলে আসে, প্রতিটি ডাউনলোড তার ঠিকানা, রেফারার এবং কুকিজ সহ।</g2>"
@@ -2778,10 +2806,6 @@
    "source": "<g1>File</g1> — the selected download: <g2>Stop Download</g2>, <g3>Remove</g3>, <g4>Download Now</g4>, <g5>Redownload</g5>.",
    "text": "<g1>ফাইল</g1> — নির্বাচিত ডাউনলোড: <g2>ডাউনলোড বন্ধ করুন</g2>, <g3>সরান</g3>, <g4>এখনই ডাউনলোড করুন</g4>, <g5>পুনরায় ডাউনলোড করুন</g5>।"
   },
-  "246d9835d86f1864": {
-   "source": "<g1>280,000+ downloads</g1><g2>of the app, every version together</g2>",
-   "text": "<g1>2,80,000+ ডাউনলোড</g1><g2>অ্যাপটির, সব সংস্করণ একসাথে</g2>"
-  },
   "247f85e9dde5fa21": {
    "source": "Privacy policy",
    "text": "গোপনীয়তা নীতি"
@@ -2970,6 +2994,10 @@
    "source": "If an error message quotes something you typed, that text is in the report, so read it before sending.",
    "text": "যদি একটি ত্রুটি বার্তা আপনার টাইপ করা কিছু উদ্ধৃত করে, তাহলে সেই লেখাটি রিপোর্টে থাকে, তাই পাঠানোর আগে এটি পড়ুন।"
   },
+  "270083ee32a0f734": {
+   "source": "Browser add-on users",
+   "text": "ব্রাউজার অ্যাড-অন ব্যবহারকারী"
+  },
   "2703f69d017d87af": {
    "source": "Close a menu or dialog (an open drop-down list first)",
    "text": "একটি মেনু বা ডায়ালগ বন্ধ করুন (প্রথমে একটি খোলা ড্রপ-ডাউন তালিকা)"
@@ -3093,10 +3121,6 @@
   "28363ce0cfaf4e8e": {
    "source": "The browser extension, from the browsers' own stores: the Chrome Web Store's is for Edge, Brave, Opera and Vivaldi too. It also comes with the app and as <g1>its own download</g1>, to add by hand. Every file is built from the public source by GitHub Actions and listed with its SHA-256 checksum.",
    "text": "ব্রাউজার এক্সটেনশন, ব্রাউজারগুলির নিজস্ব স্টোর থেকে: Chrome Web Store-এর এক্সটেনশনটি Edge, Brave, Opera এবং Vivaldi-এর জন্যও। এটি অ্যাপের সাথেও আসে এবং <g1>এর নিজস্ব ডাউনলোড</g1> হিসাবেও, হাতে যোগ করার জন্য। প্রতিটি ফাইল GitHub Actions দ্বারা পাবলিক সোর্স থেকে তৈরি করা হয় এবং এর SHA-256 চেকমার্ক সহ তালিকাভুক্ত করা হয়।"
-  },
-  "2853aef8c3261b3e": {
-   "source": "misterdownloadmanager.com is a static site. Three companies take part in showing it to you (Cloudflare also keeps its star ratings), and a fourth if you play the home page's film:",
-   "text": "misterdownloadmanager.com একটি স্ট্যাটিক সাইট। তিনটি কোম্পানি এটি আপনাকে দেখাতে অংশ নেয় (Cloudflare এর স্টার রেটিংও রাখে), এবং চতুর্থটি যদি আপনি হোম পেজের ফিল্ম চালান:"
   },
   "285bca50f6f03a0a": {
    "source": "Start Download: the progress window shows it coming in.",
@@ -4350,6 +4374,10 @@
    "source": "<g1>Connection...</g1> — for a stopped download: its own User-Agent, request headers, proxy and number of connections, for when it goes on. MDM still checks it is the same file before it writes anything. See <g2>One download's settings</g2>.",
    "text": "<g1>সংযোগ...</g1> — একটি থামানো ডাউনলোডের জন্য: এর নিজস্ব ইউজার-এজেন্ট, রিকোয়েস্ট হেডার, প্রক্সি এবং সংযোগের সংখ্যা, যখন এটি আবার শুরু হয়। MDM কিছু লেখার আগে এটি একই ফাইল কিনা তা পরীক্ষা করে। <g2>একটি ডাউনলোডের সেটিংস</g2> দেখুন।"
   },
+  "39f69afa6e85f9d1": {
+   "source": "<g1>Issues</g1><g2><x3/> people</g2>",
+   "text": "<g1>ইস্যু</g1><g2><x3/> জন</g2>"
+  },
   "3a14e0e8b14737d7": {
    "source": "Choose <g1>Downloads → Speed Limiter → Turn on</g1>.",
    "text": "<g1>ডাউনলোডগুলি → স্পিড লিমিটার → চালু করুন</g1> নির্বাচন করুন।"
@@ -4565,6 +4593,10 @@
   "3cc4f48aaeb666b9": {
    "source": "Steps",
    "text": "ধাপসমূহ"
+  },
+  "3ccaf5a331b1edd2": {
+   "source": "A stopped torrent keeps none of its files open: you can move, rename or delete them, or open them in another program, while it waits. When you start it again, MDM opens them where they are; a file that was moved away or deleted meanwhile is made again and its pieces downloaded again. A finished torrent that is shared (<g1>Keep sharing torrents after they finish</g1>, in Torrent settings) keeps its files open only to read them: other programs can open, copy, run, move or rename them meanwhile.",
+   "text": "একটি থামানো টরেন্ট তার কোনো ফাইল খোলা রাখে না: আপনি সেগুলোকে সরাতে, নাম পরিবর্তন করতে বা মুছে ফেলতে পারবেন, অথবা অন্য প্রোগ্রামে খুলতে পারবেন, যখন এটি অপেক্ষা করছে। যখন আপনি এটি আবার শুরু করবেন, MDM সেগুলোকে যেখানে আছে সেখানেই খুলবে; যে ফাইলটি এর মধ্যে সরানো বা মুছে ফেলা হয়েছে তা আবার তৈরি হবে এবং এর খণ্ডগুলো আবার ডাউনলোড হবে। একটি সম্পূর্ণ টরেন্ট যা শেয়ার করা হচ্ছে (<g1>টরেন্ট শেষ হওয়ার পরেও শেয়ার করা চালিয়ে যান</g1>, টরেন্ট সেটিংস-এ) তার ফাইলগুলো শুধুমাত্র পড়ার জন্য খোলা রাখে: অন্য প্রোগ্রামগুলো এর মধ্যে সেগুলোকে খুলতে, কপি করতে, চালাতে, সরাতে বা নাম পরিবর্তন করতে পারবে।"
   },
   "3cd4e5cff6113414": {
    "source": "<g1>Then move the archives to the Recycle Bin</g1> has nothing to move afterwards: the archive is already gone.",
@@ -4906,10 +4938,6 @@
    "source": "When an address is already in the list, MDM asks what to do, or follows the answer you chose in <g1>Options → Downloads → If a duplicate download link is added</g1>.",
    "text": "যখন একটি ঠিকানা ইতিমধ্যেই তালিকায় থাকে, MDM জিজ্ঞাসা করে কী করতে হবে, অথবা <g1>সেটিংস → ডাউনলোডগুলি → যদি একটি সদৃশ ডাউনলোড লিঙ্ক যোগ করা হয়</g1> এ আপনি যে উত্তরটি বেছে নিয়েছেন তা অনুসরণ করে।"
   },
-  "415322c0b133befd": {
-   "source": "Each running download has its own progress window. It opens when the download starts (unless you turned that off in Options → Downloads → Customize…",
-   "text": "প্রতিটি চলমান ডাউনলোডের নিজস্ব অগ্রগতি উইন্ডো আছে। ডাউনলোড শুরু হলে এটি খোলে (যদি না আপনি বিকল্প → ডাউনলোড → কাস্টমাইজ করুন...-এ এটি বন্ধ করে থাকেন)।"
-  },
   "4160d55635d3e362": {
    "source": "Freeze reports that tell the kind of freeze",
    "text": "ফ্রিজ রিপোর্ট যা ফ্রিজের ধরন বলে"
@@ -5210,6 +5238,10 @@
    "source": "<g1>Start now</g1> and <g2>Stop</g2> run or halt the selected queue straight away.",
    "text": "<g1>এখনই শুরু করুন</g1> এবং <g2>বন্ধ করুন</g2> নির্বাচিত সারিটি অবিলম্বে চালায় বা থামায়।"
   },
+  "45fa036667aca21e": {
+   "source": "A checksum you give this way (or with the command line's <x1/>), or one the site publishes and MDM reads itself (Hugging Face's and GitHub's, in <g2>Link grabber</g2>), must match: a file that doesn't stays unfinished, says <g3>the file's SHA-256 checksum doesn't match</g3>, and <g4>Redownload</g4> fetches it again.",
+   "text": "আপনি যে চেকসামটি এভাবে দেন (বা কমান্ড লাইনের <x1/> দিয়ে), অথবা সাইট থেকে প্রকাশিত এবং MDM নিজে পড়ে এমন একটি (Hugging Face এবং GitHub-এর, <g2>লিংক গ্র্যাবার</g2>-এ) মিলতে হবে: যে ফাইলটি মেলে না, সেটি অসম্পূর্ণ থাকে, <g3>ফাইলের SHA-256 চেকসাম মেলেনি</g3> বলে, এবং <g4>আবার ডাউনলোড করুন</g4> সেটি আবার নিয়ে আসে।"
+  },
   "460c28c064c58629": {
    "source": "To remove it, open the same window and untick <g1>Limit all downloads together to</g1>.",
    "text": "সীমাটি তুলে নিতে একই উইন্ডো খুলে <g1>একসাথে সব ডাউনলোড সীমিত করুন</g1>-এর টিক তুলে দিন।"
@@ -5353,6 +5385,10 @@
   "47cff7958a924e1e": {
    "source": "Compare it with the same file's line in that release's <x1/> (capital or small letters don't matter). To be sure the list itself is ours, check its signature, <x2/>, with MDM's release key: see <g3>Check your download</g3>.",
    "text": "সেই রিলিজের <x1/>-এর একই ফাইলের লাইনের সাথে এটি তুলনা করুন (বড় বা ছোট অক্ষর কোনো ব্যাপার নয়)। তালিকাটি আমাদের কিনা তা নিশ্চিত হতে, MDM-এর রিলিজ কী দিয়ে এর স্বাক্ষর, <x2/>, যাচাই করুন: <g3>আপনার ডাউনলোড যাচাই করুন</g3> দেখুন।"
+  },
+  "47dc0178565f7f38": {
+   "source": "<g1>The home page's live figures</g1>, at <x2/>, in the same <g3>OpenAPI</g3>: how many times the app was downloaded (every GitHub release's installers and packages) and how many people use the browser add-on (the Chrome Web Store's users, Firefox Add-ons' daily users), each with when it was read. Read again at most every 15 minutes; a source that can't be read keeps its last figure.",
+   "text": "<g1>হোম পেজের লাইভ সংখ্যা</g1>, <x2/>-এ, একই <g3>OpenAPI</g3>-তে: অ্যাপটি কতবার ডাউনলোড করা হয়েছে (প্রতিটি GitHub রিলিজের ইনস্টলার ও প্যাকেজ) এবং কতজন ব্রাউজার অ্যাড-অন ব্যবহার করেন (Chrome Web Store-এর ব্যবহারকারী, Firefox Add-ons-এর দৈনিক ব্যবহারকারী), প্রতিটি কখন পড়া হয়েছিল তা সহ। প্রতি 15 মিনিটে সর্বোচ্চ একবার আবার পড়া হয়; যে উৎস পড়া যায় না সেটি তার শেষ সংখ্যা ধরে রাখে।"
   },
   "4809c370b5c131eb": {
    "source": "its picture: the one your file manager shows (Windows' thumbnail of a photo, a video, a PDF or a document, a program's own icon; on Linux your desktop's thumbnail, or one MDM makes of a photo or a video's frame), else its file type's large icon. Only a finished file has one;",
@@ -5642,6 +5678,10 @@
    "source": "<g1>Linux</g1>: install the <g2>.deb</g2> with <x3/> (Debian, Ubuntu, Mint) or the <g4>.rpm</g4> with <x5/> (Fedora), and the packages bring what MDM needs. Or make the <g6>AppImage</g6> executable (<x7/>) and run it. MDM connects itself to your browsers at each start; then add the extension from your browser's store, above. <g8>More in the help</g8>.",
    "text": "<g1>Linux</g1>: <g2>.deb</g2> ফাইলটি <x3/> (ডেবিয়ান, উবুন্টু, মিন্ট) দিয়ে অথবা <g4>.rpm</g4> ফাইলটি <x5/> (ফেডোরা) দিয়ে ইনস্টল করুন, এবং প্যাকেজগুলো MDM-এর প্রয়োজনীয় সবকিছু নিয়ে আসবে। অথবা <g6>AppImage</g6> এক্সিকিউটেবল (<x7/>) তৈরি করে চালান। MDM প্রতিটি স্টার্টআপে আপনার ব্রাউজারগুলির সাথে নিজেকে সংযুক্ত করে; তারপর উপরে আপনার ব্রাউজারের স্টোর থেকে এক্সটেনশনটি যোগ করুন। <g8>সাহায্যে আরও দেখুন</g8>।"
   },
+  "4c5ff93f41d1a8f9": {
+   "source": "Without one, MDM checks the file against the checksum its server sends with it, if any (<x1/>, <x2/>, <x3/>, Google Cloud Storage's <x4/>). Servers sometimes send the checksum of the file as they store it rather than of what they send, so a file that doesn't match is still kept: its status says <g5>Checksum warning</g5>, and its tip, its log, <g6>Properties</g6> and <g7>Download complete</g7> say <g8>Downloaded, but the server's MD5 checksum didn't match; the file may still be fine</g8>. If it matters, check it with <g9>Verify checksum...</g9> and the checksum its site publishes: when it matches, the warning goes. A server's checksum isn't used at all when the server says it changed the file on the way (a compressed answer, or a file stored encoded, as PikPak's are).",
+   "text": "একটি ছাড়া, MDM ফাইলটিকে তার সার্ভার থেকে পাঠানো চেকসামের সাথে যাচাই করে, যদি থাকে (<x1/>, <x2/>, <x3/>, Google Cloud Storage-এর <x4/>)। সার্ভারগুলো কখনও কখনও ফাইলটি যেভাবে সংরক্ষণ করে তার চেকসাম পাঠায়, পাঠানোর জিনিসের নয়, তাই যে ফাইলটি মেলে না সেটিও রাখা হয়: এর অবস্থা <g5>চেকসাম সতর্কতা</g5> দেখায়, এবং এর টিপ, এর লগ, <g6>বৈশিষ্ট্য</g6> এবং <g7>ডাউনলোড সম্পূর্ণ</g7> বলে <g8>ডাউনলোড করা হয়েছে, কিন্তু সার্ভারের MD5 চেকসাম মেলেনি; ফাইলটি এখনও ঠিক থাকতে পারে</g8>। যদি এটি গুরুত্বপূর্ণ হয়, তবে <g9>চেকসাম যাচাই করুন...</g9> এবং এর সাইট থেকে প্রকাশিত চেকসাম দিয়ে এটি যাচাই করুন: যখন এটি মেলে, তখন সতর্কতা চলে যায়। সার্ভারের চেকসাম একেবারেই ব্যবহার করা হয় না যখন সার্ভার বলে যে এটি পথে ফাইলটি পরিবর্তন করেছে (একটি সংকুচিত উত্তর, বা একটি এনকোড করা ফাইল, যেমন PikPak-এর)।"
+  },
   "4c75f1e3123da2b1": {
    "source": "— plain FTP.",
    "text": "— সাধারণ FTP।"
@@ -5821,6 +5861,10 @@
   "4e56d054c4ea1845": {
    "source": "<g1>A minimized MDM keeps working</g1>: with the main window minimized (not to the notification area), queues didn't start their next file, the Scheduler's starts and stops didn't fire, download limits, the network adapter's kill switch, the clipboard monitor, the update check, the taskbar's progress and saving the list all waited until the window was restored. They run in every window state now, and their windows (Download complete, a limit's notice) open at once.",
    "text": "<g1>একটি মিনিমাইজড MDM কাজ করতে থাকে</g1>: প্রধান উইন্ডো মিনিমাইজ করা থাকলে (নোটিফিকেশন এরিয়াতে নয়), কিউগুলি তাদের পরবর্তী ফাইল শুরু করত না, সময়সূচী-এর শুরু এবং বন্ধ কাজ করত না, ডাউনলোড সীমা, নেটওয়ার্ক অ্যাডাপ্টারের কিল সুইচ, ক্লিপবোর্ড মনিটর, আপডেট চেক, টাস্কবারের অগ্রগতি এবং তালিকা সংরক্ষণ সবই উইন্ডো পুনরুদ্ধার না হওয়া পর্যন্ত অপেক্ষা করত। তারা এখন প্রতিটি উইন্ডো অবস্থায় চলে, এবং তাদের উইন্ডো (ডাউনলোড সম্পূর্ণ, একটি সীমার বিজ্ঞপ্তি) অবিলম্বে খোলে।"
+  },
+  "4e60a529980083e7": {
+   "source": "The downloads join the <g1>Main download queue</g1>, ready to start (<g2>Start</g2> starts it too). <g3>Tasks → Import → From IDM export file</g3> reads an <x4/> file, with each download's referrer and cookies, and the file name a list gives it in a <x5/> line.",
+   "text": "ডাউনলোডগুলো <g1>প্রধান ডাউনলোড সারি</g1>-তে যোগ হয়, শুরু করার জন্য প্রস্তুত থাকে (<g2>শুরু করুন</g2> চাপলেও এটি শুরু হয়)। <g3>কাজ → ইম্পোর্ট → IDM-এর এক্সপোর্ট ফাইল থেকে</g3> একটি <x4/> ফাইল পড়ে, যেখানে প্রতিটি ডাউনলোডের রেফারার ও কুকিজ থাকে এবং একটি <x5/> লাইনে ফাইলের নাম দেওয়া থাকে।"
   },
   "4e96b700836944de": {
    "source": "<g1>Password</g1>: the archives' password, if they have one. It is kept in memory only and is never saved by itself: to keep one for other packages, add it to your <g2>archive passwords</g2>.",
@@ -6318,6 +6362,10 @@
    "source": "A small file",
    "text": "একটি ছোট ফাইল"
   },
+  "55a523d7ca4b905f": {
+   "source": "Thanks to",
+   "text": "ধন্যবাদ"
+  },
   "55ecea9df3d3ed23": {
    "source": "Paste the address of a playlist (<x1/>) or a channel's videos (<x2/>) and click <g3>Look up</g3>. Instead of one video's qualities, the window lists the list's videos, each with its length.",
    "text": "প্লেলিস্টের (<x1/>) বা কোনো চ্যানেলের ভিডিওর (<x2/>) ঠিকানা পেস্ট করুন এবং <g3>খুঁজুন</g3>-এ ক্লিক করুন। একটি ভিডিওর গুণমানের বদলে, উইন্ডোতে প্লেলিস্টের ভিডিওগুলো এবং প্রতিটির দৈর্ঘ্য দেখানো হয়।"
@@ -6450,6 +6498,10 @@
    "source": "Windows 10/11 and Linux; macOS to try",
    "text": "Windows 10/11 এবং Linux; macOS পরীক্ষামূলক"
   },
+  "57df30288a29fe94": {
+   "source": "Made possible by these amazing humans",
+   "text": "এই অসাধারণ মানুষগুলোর জন্যই এটি সম্ভব হয়েছে"
+  },
   "57e101e4403fd046": {
    "source": "Command",
    "text": "কমান্ড"
@@ -6541,6 +6593,10 @@
   "58f22a0b1aeea2b4": {
    "source": "Watch it work.",
    "text": "এটি কীভাবে কাজ করে দেখুন।"
+  },
+  "58f7b730058089bc": {
+   "source": "Everyone who takes part follows the <g1>Code of conduct</g1>. Who reviews and merges changes, and how decisions are made, is in <g2>GOVERNANCE.md</g2>.",
+   "text": "যারা অংশ নেন, তাদের সবাইকে <g1>আচরণবিধি</g1> মেনে চলতে হয়। কে পরিবর্তনগুলো পর্যালোচনা ও একত্র করেন এবং কীভাবে সিদ্ধান্ত নেওয়া হয়, তা <g2>GOVERNANCE.md</g2>-তে আছে।"
   },
   "59130ab4ecc47c65": {
    "source": "<g1>Hide to the notification area</g1> (a short dash with an arrow down to the corner; on Windows in the title bar, left of Minimize) puts the window in the notification area; <g2>Downloads in progress</g2> in the tray icon's menu brings it back. See <g3>The tray icon</g3>.",
@@ -7141,6 +7197,10 @@
   "60e4ea08eb29abeb": {
    "source": "<g1>Stop</g1> on a download in a running queue stays stopped, instead of the queue starting it again a moment later; <g2>Stop All</g2> too (<g3>#341</g3>).",
    "text": "চলমান সারিতে থাকা একটি ডাউনলোডের উপর <g1>বন্ধ করুন</g1> বন্ধ থাকে, সারিটি কিছুক্ষণ পরে আবার শুরু করার পরিবর্তে; <g2>সব বন্ধ করুন</g2>-এর ক্ষেত্রেও তাই (<g3>#341</g3>)।"
+  },
+  "60f1159fcf53ce4a": {
+   "source": "Every version from GitHub; the add-on in the Chrome Web Store and Firefox Add-ons together. As of <x1/>",
+   "text": "GitHub-এর প্রতিটি সংস্করণ; Chrome Web Store এবং Firefox Add-ons-এর অ্যাড-অন একসাথে। <x1/> থেকে"
   },
   "60f3c58ee8c2af81": {
    "source": "<g1>Options where you expect them</g1> Every setting where an IDM user looks first: connections, proxies, folders, sounds.",
@@ -8034,6 +8094,10 @@
    "source": "<g1>32-bit Windows 10.</g1> Not sure which you have? <g2>Settings → System → About → System type</g2> says it. MDM can't download ffmpeg for you there (none is built for 32-bit Windows that MDM can check): to get the best video qualities, choose an ffmpeg of your own in <g3>Helpers...</g3> (<g4>Video</g4>).",
    "text": "<g1>32-বিট Windows 10।</g1> আপনার কোনটি আছে নিশ্চিত নন? <g2>সেটিংস → সিস্টেম → অ্যাবাউট → সিস্টেম টাইপ</g2> এটি বলে। MDM আপনার জন্য সেখানে ffmpeg ডাউনলোড করতে পারে না (32-বিট Windows-এর জন্য এমন কোনো বিল্ড নেই যা MDM পরীক্ষা করতে পারে): সেরা ভিডিও গুণমান পেতে, <g3>হেল্পার...</g3> (<g4>ভিডিও</g4>)-এ আপনার নিজের একটি ffmpeg বেছে নিন।"
   },
+  "6d9da62489a6a428": {
+   "source": "misterdownloadmanager.com is a static site. Three companies take part in showing it to you (Cloudflare also keeps its star ratings and serves its live figures), and a fourth if you play the home page's film:",
+   "text": "misterdownloadmanager.com একটি স্ট্যাটিক সাইট। তিনটি কোম্পানি আপনাকে এটি দেখাতে অংশ নেয় (Cloudflare এর স্টার রেটিংও রাখে এবং এর লাইভ ডেটা পরিবেশন করে), এবং চতুর্থটি যদি আপনি হোম পেজের ভিডিও চালান:"
+  },
   "6da2e37f647df28e": {
    "source": "Select every download up to this one",
    "text": "এই পর্যন্ত প্রতিটি ডাউনলোড নির্বাচন করুন"
@@ -8254,6 +8318,10 @@
    "source": "<g1><g2>Options</g2></g1> — every page of the Options window.",
    "text": "<g1><g2>বিকল্প</g2></g1> — বিকল্প উইন্ডোর প্রতিটি পৃষ্ঠা।"
   },
+  "702b1d80d041e97d": {
+   "source": "<g1>Tasks → Import → From text file</g1> and <g2>From IDM export file</g2>. An <x3/> file brings each download's referrer and cookies, and its file name when the list gives one (a <x4/> line; only the name, never a folder).",
+   "text": "<g1>কাজ → ইম্পোর্ট → টেক্সট ফাইল থেকে</g1> এবং <g2>IDM-এর এক্সপোর্ট ফাইল থেকে</g2>। একটি <x3/> ফাইল প্রতিটি ডাউনলোডের রেফারার ও কুকিজ নিয়ে আসে, এবং তালিকায় ফাইলের নাম দেওয়া থাকলে সেটিও নিয়ে আসে (একটি <x4/> লাইন; শুধু নাম, কোনো ফোল্ডার নয়)।"
+  },
   "70304346a925831b": {
    "source": "MDM opens <g1>Download File Info</g1> instead of the browser downloading the file. Click <g2>Start Download</g2>.",
    "text": "ব্রাউজারের বদলে MDM <g1>ফাইল তথ্য ডাউনলোড করুন</g1> উইন্ডোটি খুলবে। <g2>ডাউনলোড শুরু করুন</g2> ক্লিক করুন।"
@@ -8417,10 +8485,6 @@
   "72769bded1d786a9": {
    "source": "Paste a Google Drive link as it is, the one <g1>Share → Copy link</g1> gives:",
    "text": "Google Drive-এর লিঙ্কটি যেমন আছে তেমনই পেস্ট করুন। <g1>Share → Copy link</g1> থেকে পাওয়া লিঙ্কটি এমন হয়:"
-  },
-  "7297ca101de5145e": {
-   "source": "The list couldn't be read from GitHub when this page was built. Everyone is on GitHub meanwhile, in the project's <g1>pull requests</g1> and <g2>issues</g2>.",
-   "text": "এই পেজটি তৈরি করার সময় GitHub থেকে তালিকাটি পড়া যায়নি। সবাই GitHub-এ আছেন, প্রোজেক্টের <g1>পুল রিকোয়েস্ট</g1> এবং <g2>ইস্যু</g2>-তে।"
   },
   "729a19fc6ce418f9": {
    "source": "Reporting problems",
@@ -8889,6 +8953,10 @@
   "79298af691e8bdd2": {
    "source": "You need your own paid account with one of these services: MDM doesn't sell or include one. Sharing an account or its links breaks the services' terms and can get the account suspended.",
    "text": "আপনার এই পরিষেবাগুলির মধ্যে একটিতে আপনার নিজস্ব পেইড অ্যাকাউন্ট প্রয়োজন: MDM বিক্রি করে না বা একটি অন্তর্ভুক্ত করে না। একটি অ্যাকাউন্ট বা তার লিঙ্ক শেয়ার করা পরিষেবাগুলির শর্তাবলী লঙ্ঘন করে এবং অ্যাকাউন্টটি স্থগিত হতে পারে।"
+  },
+  "7931468b8d7d517a": {
+   "source": "<x1/> <g2>Everyone who helped</g2>",
+   "text": "<x1/> <g2>যারা সাহায্য করেছেন</g2>"
   },
   "7957b18548166390": {
    "source": "Questions and answers — Mister Download Manager",
@@ -10534,10 +10602,6 @@
    "source": "Check that the Speed Limiter is off: <g1>Downloads → Speed Limiter → Turn off</g1>. Also look at <g2>Downloads → Speed Limiter → Settings... → Limit all downloads together to</g2>, which applies even with the limiter off.",
    "text": "স্পিড লিমিটার বন্ধ আছে কিনা তা পরীক্ষা করুন: <g1>ডাউনলোডগুলি → স্পিড লিমিটার → বন্ধ করুন</g1>। এছাড়াও <g2>ডাউনলোডগুলি → স্পিড লিমিটার → সেটিংস... → একসাথে সব ডাউনলোড সীমিত করুন</g2> দেখুন, যা লিমিটার বন্ধ থাকলেও প্রযোজ্য হয়।"
   },
-  "8e9db9ede7b54a27": {
-   "source": "<g1>Customize \"Download progress\" dialog → Edit...</g1> — <g2>Show download progress dialog when a download starts</g2>: on by default. Untick it and a download no longer opens its progress window when it starts, from the browser, a link you add, a video or a queue; it goes on in the main window's list, where a double-click opens its progress window. <g3>Download complete</g3> still shows when it finishes, as <g4>Show download complete dialog</g4> below says.",
-   "text": "<g1>“ডাউনলোড অগ্রগতি” ডায়ালগ কাস্টমাইজ করুন → সম্পাদনা করুন...</g1> — <g2>ডাউনলোড শুরু হলে ডাউনলোড প্রোগ্রেস ডায়ালগ দেখান</g2>: ডিফল্টভাবে চালু থাকে। এটি আনটিক করলে ব্রাউজার থেকে, আপনার যোগ করা একটি লিংক থেকে, একটি ভিডিও থেকে বা একটি সারি থেকে ডাউনলোড শুরু হলে তার অগ্রগতি উইন্ডো আর খোলে না; এটি মূল উইন্ডোর তালিকায় চলতে থাকে, যেখানে ডাবল-ক্লিক করলে এর অগ্রগতি উইন্ডো খোলে। <g3>ডাউনলোড সম্পূর্ণ</g3> হলে এটি শেষ হলে এখনো দেখায়, যেমন নিচের <g4>ডাউনলোড সম্পূর্ণ হলে ডায়ালগ দেখান</g4> বলে।"
-  },
   "8e9f9863589b4bd6": {
    "source": "Fuzzing",
    "text": "ফাজিং"
@@ -10761,6 +10825,10 @@
   "91f7b61e72ddf0bc": {
    "source": "<g1>Acceleration and resume</g1><g2>A file split over up to 32 connections, re-split until the last byte, and resumed after any crash.</g2>",
    "text": "<g1>ত্বরান্বিতকরণ ও পুনরায় শুরু</g1><g2>একটি ফাইল 32টি পর্যন্ত সংযোগে বিভক্ত হয়, শেষ বাইট পর্যন্ত পুনরায় বিভক্ত হয় এবং যেকোনো ক্র্যাশের পর পুনরায় শুরু করা যায়।</g2>"
+  },
+  "92055d4da1d101c5": {
+   "source": "<x1/> people who sent a pull request, reported a problem or joined a conversation on GitHub. <g2>Meet them all</g2>",
+   "text": "<x1/> যারা পুল রিকোয়েস্ট পাঠিয়েছেন, কোনো সমস্যা জানিয়েছেন বা GitHub-এ আলোচনায় অংশ নিয়েছেন। <g2>তাদের সবার সাথে পরিচিত হন</g2>"
   },
   "92078a4a178bf949": {
    "source": "A title bar MDM draws, while its window isn't the active one (transparent: as when active)",
@@ -11734,6 +11802,10 @@
    "source": "Send downloads from your browser",
    "text": "আপনার ব্রাউজার থেকে ডাউনলোড পাঠান"
   },
+  "9e23173a22cf615a": {
+   "source": "<x1/> comment",
+   "text": "<x1/>টি মন্তব্য"
+  },
   "9e2414e7eb93b062": {
    "source": "Windows 7's feel: glossy buttons, a glassy title bar and a glossy green progress bar.",
    "text": "Windows 7-এর অনুভূতি: চকচকে বোতাম, একটি কাঁচের মতো টাইটেল বার এবং একটি চকচকে সবুজ প্রগ্রেস বার।"
@@ -11869,10 +11941,6 @@
   "9f782f136a8bb467": {
    "source": "The built-in categories can now be renamed, given other file types, or deleted.",
    "text": "অন্তর্নির্মিত বিভাগগুলির এখন নাম পরিবর্তন করা, অন্যান্য ফাইলের ধরন দেওয়া বা মুছে ফেলা যেতে পারে।"
-  },
-  "9f7cefd031ac2a9a": {
-   "source": "Download a file with up to 8 connections (<x1/>, 1 to 128), showing progress. <x2/> pauses it; <x3/> continues. <x4/> sets the referring page address (Referer header), <x5/> sets the request's User-Agent (then the only one sent; without it, MDM speaks as your default browser, and, when a site's bot check refuses that and the way a browser connects too, once more under its own name), <x6/> sets the Cookie header (a cookie on the command line ends up in the shell's history; <x7/> reads it from standard input instead). <x8/> checks the finished file: hex MD5, SHA-1, SHA-256, SHA-512 or CRC32, optionally named (<x9/>). <x10/> picks the DNS instead of Options': <x11/>; a service and how to ask it, <x12/>, <x13/>, <x14/>, <x15/>, <x16/>; DNS servers' addresses, <x17/>; or a DNS-over-HTTPS address. It never falls back to the system's DNS. <x18/> sends every connection through one network adapter instead of Options' (<x19/> for none), by its name (<x20/>, <x21/>) or one of its addresses; when it isn't connected, nothing is sent and the download fails. <x22/> takes the place of Options' proxy for this run (see above). The app's <g23>site rules</g23> for the address apply too (their headers, User-Agent, browser-like connection, number of connections and proxy), where the command line gives none of the same: <x24/> goes before every rule's proxy. A link from a file host that one of your debrid accounts (<g25>Options → Accounts</g25>) supports goes through that account, as in the app, and <x26/> says <x27/>; <x28/> downloads the address itself (<g29>Debrid service accounts</g29>).",
-   "text": "প্রগতি দেখিয়ে সর্বোচ্চ 8টি সংযোগ (<x1/>, 1 থেকে 128) দিয়ে একটি ফাইল ডাউনলোড করুন। <x2/> এটিতে বিরতি দেয়; <x3/> চালিয়ে যায়। <x4/> রেফার করা পেজের ঠিকানা (Referer হেডার) সেট করে, <x5/> রিকোয়েস্টের ইউজার-এজেন্ট সেট করে (তখন শুধু এটিই পাঠানো হয়; এটি ছাড়া, MDM আপনার ডিফল্ট ব্রাউজার হিসেবে কথা বলে, এবং যখন কোনো সাইটের বট চেক এটি এবং ব্রাউজারের সংযোগের পদ্ধতিও প্রত্যাখ্যান করে, তখন এটি নিজের নামে আরও একবার কথা বলে), <x6/> কুকি হেডার সেট করে (কমান্ড লাইনে একটি কুকি শেল-এর ইতিহাসে শেষ হয়; <x7/> এর পরিবর্তে স্ট্যান্ডার্ড ইনপুট থেকে এটি পড়ে)। <x8/> শেষ হওয়া ফাইলটি যাচাই করে: হেক্স MD5, SHA-1, SHA-256, SHA-512 অথবা CRC32, ঐচ্ছিকভাবে নাম সহ (<x9/>)। <x10/> বিকল্প-এর পরিবর্তে DNS বেছে নেয়: <x11/>; একটি পরিষেবা এবং কীভাবে এটি জিজ্ঞাসা করতে হয়, <x12/>, <x13/>, <x14/>, <x15/>, <x16/>; DNS সার্ভারগুলোর ঠিকানা, <x17/>; অথবা একটি DNS-over-HTTPS ঠিকানা। এটি কখনোই সিস্টেমের DNS-এ ফিরে যায় না। <x18/> বিকল্প-এর পরিবর্তে এই রানের জন্য প্রতিটি সংযোগ একটি নেটওয়ার্ক অ্যাডাপ্টারের মাধ্যমে পাঠায় (<x19/> কোনোটির জন্য নয়), এর নাম দিয়ে (<x20/>, <x21/>) অথবা এর একটি ঠিকানা দিয়ে; যখন এটি সংযুক্ত থাকে না, তখন কিছুই পাঠানো হয় না এবং ডাউনলোড ব্যর্থ হয়। <x22/> এই রানের জন্য বিকল্প-এর প্রক্সির স্থান নেয় (উপরে দেখুন)। অ্যাপের <g23>সাইট নিয়মগুলো</g23> ঠিকানার জন্যও প্রযোজ্য (তাদের হেডার, ইউজার-এজেন্ট, ব্রাউজারের মতো সংযোগ, সংযোগের সংখ্যা এবং প্রক্সি), যেখানে কমান্ড লাইন একই রকম কিছু দেয় না: <x24/> প্রতিটি নিয়মের প্রক্সির আগে যায়। একটি ফাইল হোস্ট থেকে একটি লিংক যা আপনার ডিব্রিড অ্যাকাউন্টগুলোর (<g25>বিকল্প → অ্যাকাউন্ট</g25>) মধ্যে একটি সমর্থন করে, সেটি অ্যাপের মতো সেই অ্যাকাউন্টের মাধ্যমে যায়, এবং <x26/> বলে <x27/>; <x28/> ঠিকানাটি নিজেই ডাউনলোড করে (<g29>ডিব্রিড পরিষেবা অ্যাকাউন্ট</g29>)।"
   },
   "9f93bf61864af099": {
    "source": "Plainly: everyone sharing the same torrent sees your IP address. That is how BitTorrent works, and no setting changes it. To hide it, use a VPN for the whole computer. <g1>Torrents and your security</g1> says what others can see.",
@@ -12069,10 +12137,6 @@
   "a20d923b503a9161": {
    "source": "A live stream saved by a queue's stop counts as complete, so a daily queue doesn't start it again the next day.",
    "text": "একটি সারির থামানো দ্বারা সংরক্ষিত একটি লাইভ স্ট্রিম সম্পূর্ণ হিসাবে গণ্য হয়, তাই একটি দৈনিক সারি পরের দিন এটি আবার শুরু করে না।"
-  },
-  "a21a2e8b8e4dad43": {
-   "source": "<g1>#1 in Rust</g1><g2>repository of the day on <x3/></g2>",
-   "text": "<g1>Rust-এ #1</g1><g2><x3/>-এ দিনের রিপোজিটরি</g2>"
   },
   "a21dffa69dd07677": {
    "source": "Every row, and easier to read",
@@ -13030,6 +13094,10 @@
    "source": "About Mister Download Manager",
    "text": "Mister Download Manager সম্পর্কে"
   },
+  "aee6606bd3b4de07": {
+   "source": "<g1>Proof of delivery</g1><g2>Figures as of <x3/> · quotes exact, linked to their source</g2>",
+   "text": "<g1>ডেলিভারির প্রমাণ</g1><g2><x3/> পর্যন্ত পরিসংখ্যান · উদ্ধৃতিগুলো সঠিক, তাদের উৎসের সাথে সংযুক্ত</g2>"
+  },
   "aeea31ff4889dbde": {
    "source": "<g1>Address</g1> (Add URL) and <g2>Save As</g2> (Download File Info) list the last 20 addresses and folders from their arrows; <g3>...</g3> beside Save As chooses a folder, <g4>+</g4> beside Category makes one.",
    "text": "<g1>ঠিকানা</g1> (URL যোগ করুন) এবং <g2>হিসাবে সংরক্ষণ করুন</g2> (ফাইল তথ্য ডাউনলোড করুন)-এর তীর থেকে সাম্প্রতিক 20টি ঠিকানা ও ফোল্ডার দেখা যায়; Save As-এর পাশে <g3>...</g3> দিয়ে ফোল্ডার বেছে নিন, আর শ্রেণীর পাশে <g4>+</g4> দিয়ে নতুন শ্রেণী তৈরি করুন।"
@@ -13122,6 +13190,10 @@
    "source": "Choose a download",
    "text": "ডাউনলোড বেছে নিন"
   },
+  "afd25bc6979c1269": {
+   "source": "<g1>Customize \"Download progress\" dialog → Edit...</g1> — <g2>Show download progress dialog when a download starts</g2>: <g3>Show normally</g3>, on by default; <g4>Show minimized</g4>, which starts the download's progress window minimized on the taskbar, without taking the focus from the program you are in; or <g5>Don't show</g5>, where a download no longer opens its progress window when it starts, from the browser, a link you add, a video or a queue, and it goes on in the main window's list, where a double-click opens its progress window. <g6>Download complete</g6> still shows when it finishes, as <g7>Show download complete dialog</g7> below says.",
+   "text": "<g1>“ডাউনলোড অগ্রগতি” ডায়ালগ কাস্টমাইজ করুন → সম্পাদনা করুন...</g1> — <g2>ডাউনলোড শুরু হলে ডাউনলোড প্রোগ্রেস ডায়ালগ দেখান</g2>: <g3>সাধারণভাবে দেখান</g3>, এটি ডিফল্টভাবে চালু থাকে; <g4>ছোট করে দেখান</g4>, যা ডাউনলোডের অগ্রগতি উইন্ডোকে টাস্কবারে ছোট করে দেখায়, আপনার বর্তমান প্রোগ্রাম থেকে ফোকাস না সরিয়ে; অথবা <g5>দেখান যাবে না</g5>, যেখানে ব্রাউজার থেকে, আপনার যোগ করা কোনো লিংক থেকে, কোনো ভিডিও থেকে বা কোনো সারি থেকে ডাউনলোড শুরু হলে তার অগ্রগতি উইন্ডো আর খোলে না, এবং এটি মূল উইন্ডোর তালিকায় চলতে থাকে, যেখানে ডাবল-ক্লিক করলে এর অগ্রগতি উইন্ডো খোলে। ডাউনলোড শেষ হলে <g6>ডাউনলোড সম্পূর্ণ</g6> ডায়ালগটি এখনো দেখায়, যেমনটি নিচের <g7>ডাউনলোড সম্পূর্ণ হলে ডায়ালগ দেখান</g7> সেটিংসে বলা আছে।"
+  },
   "aff376e66e9d2870": {
    "source": "Queues",
    "text": "সারি"
@@ -13145,6 +13217,10 @@
   "b08e516b19471d83": {
    "source": "<g1>All files and checksums</g1><g2>Version 0.5.2 on GitHub Releases, with SHA256SUMS.txt</g2>",
    "text": "<g1>সমস্ত ফাইল এবং চেকসাম</g1><g2>GitHub রিলিজ-এ সংস্করণ 0.5.2, SHA256SUMS.txt সহ</g2>"
+  },
+  "b0911cd9d54fd304": {
+   "source": "<g1>In figures</g1><g2>Figures as of <x3/>, rounded down</g2>",
+   "text": "<g1>সংখ্যায়</g1><g2><x3/> তারিখের হিসাব, নিচের দিকে পূর্ণসংখ্যায় রূপান্তরিত</g2>"
   },
   "b0912015dbe6e3fb": {
    "source": "<g1>Crash reports:</g1> after a crash, the report window may fetch that version's debugging symbols from MDM's GitHub release and ask GitHub whether the same problem was reported already. The report itself opens in your browser, on GitHub, only if you choose to send it.",
@@ -14558,6 +14634,10 @@
    "source": "Options on its Sounds page: a sound for each event",
    "text": "বিকল্প-এর সাউন্ড পৃষ্ঠা: প্রতিটি ইভেন্টের জন্য একটি সাউন্ড"
   },
+  "c3cdbcead710be30": {
+   "source": "first when the download goes through a debrid account, then a <x1/> line every half second, then <x2/> (with <x3/> when the file didn't match the checksum its server sent, and was kept), or <x4/> after <x5/> (<x6/> is the file <x7/> takes).",
+   "text": "প্রথমে যখন ডাউনলোড একটি ডিব্রিড অ্যাকাউন্টের মাধ্যমে যায়, তারপর প্রতি আধা সেকেন্ডে একটি <x1/> লাইন, তারপর <x2/> (যখন ফাইলটি তার সার্ভার দ্বারা পাঠানো চেকসামের সাথে মেলেনি, এবং রাখা হয়েছিল তখন <x3/> সহ), অথবা <x4/> এর পরে <x5/> (<x6/> হল সেই ফাইল যা <x7/> নেয়)।"
+  },
   "c3d39f291e3ad7b6": {
    "source": "View → Draw with open: OpenGL and Direct3D",
    "text": "দেখুন → আঁকার মাধ্যম: OpenGL ও Direct3D"
@@ -14813,6 +14893,10 @@
   "c763f3aa0f51a5a2": {
    "source": "<g1>Server mode</g1><g2>Mister Download Manager</g2>",
    "text": "<g1>সার্ভার মোড</g1><g2>Mister Download Manager</g2>"
+  },
+  "c76c7692d362ad5a": {
+   "source": "Each running download has its own progress window. It opens when the download starts (unless you turned that off, or chose Show minimized, in Options →…",
+   "text": "প্রতিটি চলমান ডাউনলোডের নিজস্ব অগ্রগতি উইন্ডো আছে। ডাউনলোড শুরু হলে এটি খোলে (যদি না আপনি এটি বন্ধ করে থাকেন, অথবা বিকল্প →…-এ ছোট করে দেখান বেছে নিয়ে থাকেন)"
   },
   "c7853bd84d0526f0": {
    "source": "Options → Archives →",
@@ -15338,6 +15422,10 @@
    "source": "Link grabber and archives — Mister Download Manager help",
    "text": "লিঙ্ক গ্র্যাবার এবং আর্কাইভ — Mister Download Manager সাহায্য"
   },
+  "ce5bf471e6fccfb8": {
+   "source": "<g1>Comments</g1><g2><x3/> people</g2>",
+   "text": "<g1>মন্তব্য</g1><g2><x3/> জন</g2>"
+  },
   "ce6720d5953dad4f": {
    "source": "The previous / next button (greyed ones too: a screen reader says they are unavailable)",
    "text": "আগের / পরের বোতাম (ধূসর করা বোতামগুলোও: স্ক্রিন রিডার বলে যে সেগুলো অনুপলব্ধ)"
@@ -15597,10 +15685,6 @@
   "d276ebf66aa4bbaa": {
    "source": "No. MDM needs Windows 10 or 11. The Rust toolchain it is built with no longer supports Windows 7 and 8, and neither does Microsoft.",
    "text": "না। MDM-এর জন্য Windows 10 বা 11 প্রয়োজন। যে Rust টুলচেইন দিয়ে এটি তৈরি করা হয়েছে, সেটি আর Windows 7 এবং 8 সমর্থন করে না, এবং Microsoft-ও করে না।"
-  },
-  "d29a7b052989ea0c": {
-   "source": "<g1>In figures</g1><g2>Store figures as of <x3/>, the others checked on <x4/>, rounded down</g2>",
-   "text": "<g1>সংখ্যায়</g1><g2><x3/> তারিখের স্টোরের সংখ্যা, বাকিগুলো <x4/> তারিখে যাচাই করা হয়েছে, নিচের দিকে বৃত্তাকার</g2>"
   },
   "d2a15d4e9d4e0387": {
    "source": "To add every link in a text file:",
@@ -15942,6 +16026,10 @@
    "source": "Mister Download Manager and IDM, side by side.",
    "text": "Mister Download Manager এবং IDM, পাশাপাশি।"
   },
+  "d65efc937a364b03": {
+   "source": "<x1/> issue",
+   "text": "<x1/>টি ইস্যু"
+  },
   "d663f408764b1150": {
    "source": "Replay",
    "text": "পুনরায় চালান"
@@ -16053,10 +16141,6 @@
   "d7d939199fe34589": {
    "source": "<g1><g2>Languages</g2></g1> — the 87 interface languages, numbers and dates, right-to-left layouts, and how to help translate.",
    "text": "<g1><g2>ভাষা</g2></g1> — 87টি ইন্টারফেস ভাষা, সংখ্যা ও তারিখ, ডান থেকে বাম লেআউট এবং অনুবাদে কীভাবে সাহায্য করবেন।"
-  },
-  "d7df5f97a90fd99c": {
-   "source": "Each running download has its own progress window. It opens when the download starts (unless you turned that off in <g1>Options → Downloads → Customize \"Download progress\" dialog → Edit...</g1>); to open it again, double-click the download in the list.",
-   "text": "প্রতিটি চলমান ডাউনলোডের নিজস্ব অগ্রগতি উইন্ডো আছে। ডাউনলোড শুরু হলে এটি খোলে (যদি না আপনি <g1>বিকল্প → ডাউনলোড → “ডাউনলোড অগ্রগতি” ডায়ালগ কাস্টমাইজ করুন → সম্পাদনা করুন...</g1>-এ এটি বন্ধ করে থাকেন); এটি আবার খুলতে, তালিকার ডাউনলোডটিতে ডাবল-ক্লিক করুন।"
   },
   "d7e47d8cb056d141": {
    "source": "<g1>Download in order</g1>, to watch a video while it downloads, with each file's first and last pieces early. Other torrents fetch the rarest pieces first.",
@@ -16574,6 +16658,10 @@
    "source": "The site's <g1>robots.txt</g1> lets every crawler in, and says so for AI in <g2>Content Signals</g2>:",
    "text": "সাইটের <g1>robots.txt</g1> প্রতিটি ক্রলারকে প্রবেশ করতে দেয়, এবং <g2>Content Signals</g2>-এ এআই-এর জন্য তা বলে:"
   },
+  "e0a07e732b511f78": {
+   "source": "<g1><x2/> downloads</g1><g3>of the app, every version together</g3>",
+   "text": "<g1><x2/> ডাউনলোড</g1><g3>অ্যাপের, সব সংস্করণ একসাথে</g3>"
+  },
   "e0a6f19ecc901965": {
    "source": "For a <x1/> file: <g2>Open magnet links and .torrent files with Mister Download Manager</g2> is on in <g3>Tasks → Torrent settings</g3>.",
    "text": "একটি <x1/> ফাইলের জন্য: <g2>Mister Download Manager দিয়ে ম্যাগনেট লিংক এবং .টরেন্ট ফাইল খুলুন</g2> অপশনটি <g3>কাজ → টরেন্ট সেটিংস</g3>-এ চালু আছে।"
@@ -17038,9 +17126,21 @@
    "source": "No, if it came from this site or GitHub Releases. Some antivirus programs judge a program they don't know by an educated guess, not by a known virus…",
    "text": "না, যদি এটি এই সাইট বা GitHub রিলিজ থেকে এসে থাকে। কিছু অ্যান্টিভাইরাস প্রোগ্রাম অজানা প্রোগ্রামকে পরিচিত ভাইরাস দিয়ে নয়, বরং অনুমান করে বিচার করে..."
   },
+  "e6d677c76529ac72": {
+   "source": "<g1>#1</g1><g2>Rust</g2>",
+   "text": "<g1>1 নং</g1><g2>Rust</g2>"
+  },
+  "e6e4ffbd1a17c7e8": {
+   "source": "<x1/> pull request",
+   "text": "<x1/>টি পুল রিকোয়েস্ট"
+  },
   "e6e9f590b183bea4": {
    "source": "Link grabber: paste many links, MDM groups them, checks which are online, and extracts archives when they arrive.",
    "text": "লিঙ্ক গ্র্যাবার: অনেক লিঙ্ক পেস্ট করুন, MDM সেগুলিকে গ্রুপ করে, কোনটি অনলাইন আছে তা পরীক্ষা করে এবং আর্কাইভগুলি আসার পর সেগুলিকে এক্সট্র্যাক্ট করে।"
+  },
+  "e6f2d5c5287999ae": {
+   "source": "Some programs (BitComet, for one) write a torrent's names in another encoding and add a UTF-8 copy of them (<x1/>, <x2/>); MDM shows and saves the files under the UTF-8 names. A torrent like that which was downloading in an earlier version starts those files again under their correct names, and leaves the files with the old names in the folder.",
+   "text": "কিছু প্রোগ্রাম (যেমন BitComet) টরেন্টের নাম অন্য এনকোডিং-এ লেখে এবং সেগুলোর একটি UTF-8 কপি যোগ করে (<x1/>, <x2/>); MDM UTF-8 নামগুলো দেখায় এবং সেভ করে। আগের সংস্করণে ডাউনলোড হওয়া এমন একটি টরেন্ট সঠিক নামে ফাইলগুলো আবার শুরু করে এবং পুরোনো নামের ফাইলগুলো ফোল্ডারে রেখে দেয়।"
   },
   "e700b8b592a5b4c0": {
    "source": "Free forever: no trial, no ads, no key",
@@ -18318,6 +18418,10 @@
    "source": "<g1>Stop sharing after sharing for … minutes</g1> — or once it has been shared that long, over all its runs. Off by default.",
    "text": "<g1>এতক্ষণ শেয়ার করার পর শেয়ার করা বন্ধ করুন</g1> — অথবা এটি যতবার শেয়ার করা হয়েছে, তার সব রান মিলিয়ে। এটি ডিফল্টরূপে বন্ধ থাকে।"
   },
+  "f821c9c149c3e050": {
+   "source": "<x1/> comments",
+   "text": "<x1/>টি মন্তব্য"
+  },
   "f82dc8051d1faab0": {
    "source": "names besides its addresses the page may be opened by",
    "text": "এর ঠিকানাগুলি ছাড়াও যে নামগুলি দ্বারা পৃষ্ঠাটি খোলা যেতে পারে"
@@ -18422,6 +18526,10 @@
    "source": "What's new in version 0.5.0 <g1>2026-11-08</g1>",
    "text": "সংস্করণ 0.5.0-এ নতুন কী আছে <g1>2026-11-08</g1>"
   },
+  "f9a8db1326e07676": {
+   "source": "<x1/> issues",
+   "text": "<x1/>টি ইস্যু"
+  },
   "f9b1393934105e30": {
    "source": "Yes. The portable download is a zip: unzip it anywhere, a USB stick included, and run it. Your downloads list and settings stay in its own <x1/> folder, so nothing is written to the computer. See <g2>Portable mode</g2>.",
    "text": "হ্যাঁ। পোর্টেবল ডাউনলোডটি একটি জিপ: এটি যেকোনো জায়গায় আনজিপ করুন, একটি USB স্টিক সহ, এবং চালান। আপনার ডাউনলোড তালিকা এবং সেটিংস এর নিজস্ব <x1/> ফোল্ডারে থাকে, তাই কম্পিউটারে কিছুই লেখা হয় না। <g2>পোর্টেবল মোড</g2> দেখুন।"
@@ -18433,6 +18541,10 @@
   "f9c366e9c3fc0557": {
    "source": "Check <g1>Options → Connection</g1>. A low <g2>Default max. conn. number</g2>, or an exception for the server, means fewer connections. Rows marked <g3>(auto)</g3> are servers that refused more connections; MDM can't do more there.",
    "text": "<g1>বিকল্প → সংযোগ</g1> পরীক্ষা করুন। একটি কম <g2>ডিফল্ট সর্বোচ্চ সংযোগ সংখ্যা</g2>, অথবা সার্ভারের জন্য একটি ব্যতিক্রম, কম সংযোগ বোঝায়। <g3>(স্বয়ংক্রিয়)</g3> চিহ্নিত সারিগুলি হল সার্ভার যা আরও সংযোগ প্রত্যাখ্যান করেছে; MDM সেখানে আরও কিছু করতে পারে না।"
+  },
+  "f9cf9c317bb4b9cf": {
+   "source": "Download a file with up to 8 connections (<x1/>, 1 to 128), showing progress. <x2/> pauses it; <x3/> continues. <x4/> sets the referring page address (Referer header), <x5/> sets the request's User-Agent (then the only one sent; without it, MDM speaks as your default browser, and, when a site's bot check refuses that and the way a browser connects too, once more under its own name), <x6/> sets the Cookie header (a cookie on the command line ends up in the shell's history; <x7/> reads it from standard input instead). <x8/> checks the finished file: hex MD5, SHA-1, SHA-256, SHA-512 or CRC32, optionally named (<x9/>); a file that doesn't match fails. Without it, a checksum the server sends is checked, and a file that doesn't match it is kept with a <x10/> line (see <g11>Verify checksum</g11>). <x12/> picks the DNS instead of Options': <x13/>; a service and how to ask it, <x14/>, <x15/>, <x16/>, <x17/>, <x18/>; DNS servers' addresses, <x19/>; or a DNS-over-HTTPS address. It never falls back to the system's DNS. <x20/> sends every connection through one network adapter instead of Options' (<x21/> for none), by its name (<x22/>, <x23/>) or one of its addresses; when it isn't connected, nothing is sent and the download fails. <x24/> takes the place of Options' proxy for this run (see above). The app's <g25>site rules</g25> for the address apply too (their headers, User-Agent, browser-like connection, number of connections and proxy), where the command line gives none of the same: <x26/> goes before every rule's proxy. A link from a file host that one of your debrid accounts (<g27>Options → Accounts</g27>) supports goes through that account, as in the app, and <x28/> says <x29/>; <x30/> downloads the address itself (<g31>Debrid service accounts</g31>).",
+   "text": "প্রগতি দেখিয়ে সর্বোচ্চ 8টি সংযোগ (<x1/>, 1 থেকে 128) দিয়ে একটি ফাইল ডাউনলোড করুন। <x2/> এটিকে বিরতি দেয়; <x3/> চালিয়ে যায়। <x4/> রেফার করা পেজের ঠিকানা (রেফারার হেডার) সেট করে, <x5/> রিকোয়েস্টের ইউজার-এজেন্ট সেট করে (তখন শুধু এটিই পাঠানো হয়; এটি ছাড়া, MDM আপনার ডিফল্ট ব্রাউজার হিসেবে কথা বলে, এবং যখন কোনো সাইটের বট চেক এটি এবং ব্রাউজারের সংযোগ পদ্ধতি উভয়ই প্রত্যাখ্যান করে, তখন এটি নিজের নামে আরও একবার কথা বলে), <x6/> কুকি হেডার সেট করে (কমান্ড লাইনে একটি কুকি শেল-এর ইতিহাসে চলে যায়; <x7/> এর পরিবর্তে স্ট্যান্ডার্ড ইনপুট থেকে এটি পড়ে)। <x8/> সম্পূর্ণ ফাইলটি চেক করে: হেক্স MD5, SHA-1, SHA-256, SHA-512 অথবা CRC32, ঐচ্ছিকভাবে নাম দেওয়া হয় (<x9/>); যে ফাইলটি মেলে না সেটি ব্যর্থ হয়। এটি ছাড়া, সার্ভার যে চেকসাম পাঠায় সেটি চেক করা হয়, এবং যে ফাইলটি মেলে না সেটি একটি <x10/> লাইন সহ রাখা হয় (<g11>চেকসাম যাচাই করুন</g11> দেখুন)। <x12/> বিকল্প-এর পরিবর্তে DNS বেছে নেয়: <x13/>; একটি পরিষেবা এবং কীভাবে এটি জিজ্ঞাসা করতে হয়, <x14/>, <x15/>, <x16/>, <x17/>, <x18/>; DNS সার্ভারের ঠিকানা, <x19/>; অথবা একটি DNS-ওভার-HTTPS ঠিকানা। এটি কখনোই সিস্টেমের DNS-এ ফিরে যায় না। <x20/> বিকল্প-এর পরিবর্তে প্রতিটি সংযোগ একটি নেটওয়ার্ক অ্যাডাপ্টারের মাধ্যমে পাঠায় (<x21/> কোনোটির জন্য নয়), এর নাম (<x22/>, <x23/>) অথবা এর একটি ঠিকানা দ্বারা; যখন এটি সংযুক্ত থাকে না, তখন কিছুই পাঠানো হয় না এবং ডাউনলোড ব্যর্থ হয়। <x24/> এই রানের জন্য বিকল্প-এর প্রক্সির স্থান নেয় (উপরে দেখুন)। অ্যাপের <g25>সাইট নিয়ম</g25> ঠিকানার জন্যও প্রযোজ্য (তাদের হেডার, ইউজার-এজেন্ট, ব্রাউজার-সদৃশ সংযোগ, সংযোগের সংখ্যা এবং প্রক্সি), যেখানে কমান্ড লাইন একই রকম কিছু দেয় না: <x26/> প্রতিটি নিয়মের প্রক্সির আগে যায়। একটি ফাইল হোস্ট থেকে একটি লিংক যা আপনার ডিব্রিড অ্যাকাউন্টগুলোর (<g27>বিকল্প → অ্যাকাউন্ট</g27>) মধ্যে একটি সমর্থন করে সেটি সেই অ্যাকাউন্টের মাধ্যমে যায়, যেমন অ্যাপে, এবং <x28/> বলে <x29/>; <x30/> ঠিকানাটি নিজেই ডাউনলোড করে (<g31>ডিব্রিড পরিষেবা অ্যাকাউন্ট</g31>)।"
   },
   "f9d1377f746da798": {
    "source": "No features were removed, only an old label and some bulky files.",
@@ -18481,10 +18593,6 @@
   "fa5983ecf8199d6b": {
    "source": "<g1>macOS</g1>: open the <g2>.dmg</g2> and drag Mister Download Manager to Applications, then right-click it and choose <g3>Open</g3> the first time.",
    "text": "<g1>macOS</g1>: <g2>.dmg</g2> ফাইলটি খুলুন এবং Mister Download Manager-কে Applications-এ টেনে আনুন, তারপর প্রথমবার এটিতে রাইট-ক্লিক করে <g3>খুলুন</g3> নির্বাচন করুন।"
-  },
-  "fa5f14a1aee829e9": {
-   "source": "first when the download goes through a debrid account, then a <x1/> line every half second, then <x2/>, or <x3/> after <x4/> (<x5/> is the file <x6/> takes).",
-   "text": "ডাউনলোডটি ডিব্রিড অ্যাকাউন্টের মাধ্যমে হলে প্রথমে <x1/> দেখায়, তারপর প্রতি অর্ধ সেকেন্ডে একটি <x2/> লাইন, এরপর <x3/>; অথবা <x4/>-এর পরে <x5/> (<x6/> যে ফাইলটি নেয়)।"
   },
   "fa642946eaf6222a": {
    "source": "Point at a download (or reach it with the keyboard) for <g1>Show in folder</g1> and <g2>Pause</g2> or <g3>Resume</g3>. Click a finished file's name to open it. Its <g4>⋯</g4> menu has the rest:",
@@ -18933,10 +19041,6 @@
   "ff3a9a6f1b38ed2c": {
    "source": "Check MDM's own helpers (yt-dlp, ffmpeg, gallery-dl, Node.js) for newer versions now, install them (each checked as its first install was), and print their versions. A helper a download is using switches to its new version once that download ends. Programs you chose in Helpers, and your system's, are yours to update.",
    "text": "MDM-এর নিজস্ব হেল্পারগুলো (yt-dlp, ffmpeg, gallery-dl, Node.js) এখন নতুন সংস্করণের জন্য চেক করুন, সেগুলো ইনস্টল করুন (প্রতিটি তার প্রথম ইনস্টলের মতো চেক করা হয়), এবং তাদের সংস্করণগুলো প্রিন্ট করুন। একটি ডাউনলোড যে হেল্পারটি ব্যবহার করছে, সেই ডাউনলোডটি শেষ হওয়ার পর তার নতুন সংস্করণে চলে যায়। হেল্পারগুলোতে আপনি যে প্রোগ্রামগুলো বেছে নিয়েছেন, এবং আপনার সিস্টেমের প্রোগ্রামগুলো, আপনারই আপডেট করার দায়িত্ব।"
-  },
-  "ff442f775d7b9907": {
-   "source": "<g1>Proof of delivery</g1><g2>Store figures as of <x3/>, the others checked on <x4/> · quotes exact, linked to their source</g2>",
-   "text": "<g1>ডেলিভারির প্রমাণ</g1><g2><x3/> তারিখের স্টোর ফিগার, বাকিগুলো <x4/> তারিখে যাচাই করা হয়েছে · উদ্ধৃতিগুলো নির্ভুল, তাদের উৎসের সাথে সংযুক্ত</g2>"
   },
   "ff71942d9ac7e304": {
    "source": "<g1>Your AI assistant, only if you connect one.</g1> MDM's MCP server (<x2/>) talks only to the MDM on your computer. But if you add it to an AI assistant (Claude, Cursor, VS Code…) and turn on the automation API, the assistant can read your download list, and what it reads (file names, addresses, folders) goes to that assistant's AI service, under its privacy terms. Nothing of this happens unless you set it up; see <g3>AI assistants</g3>.",

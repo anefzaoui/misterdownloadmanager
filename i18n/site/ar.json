@@ -70,6 +70,10 @@
    "source": "A code signature lets Windows show who published a program and check that it wasn't changed after it was built. When a release of Mister Download Manager (\"MDM\") is signed, its signature covers the Windows files that come from this project:",
    "text": "يسمح توقيع الرمز لنظام Windows بإظهار من نشر البرنامج والتحقق من عدم تغييره بعد إنشائه. عندما يتم توقيع إصدار من Mister Download Manager («MDM»)، يغطي توقيعه ملفات Windows التي تأتي من هذا المشروع:"
   },
+  "01579d403b821195": {
+   "source": "<x1/> pull requests",
+   "text": "<x1/> طلبات سحب"
+  },
   "015f73be8184c2cb": {
    "source": "Yes. MDM writes its progress as it goes, so after a lost connection, a crash or a restart it carries on where it stopped. Before resuming it checks that the file on the server hasn't changed. When a download address has expired, <g1>Refresh download address</g1> lets you give it a fresh one and keep the data. See <g2>Resume a broken download</g2>.",
    "text": "نعم. يكتب MDM بيانات التقدم أثناء التنزيل، لذا يواصل التنزيل من حيث توقف بعد انقطاع الاتصال أو تعطل البرنامج أو إعادة تشغيله. قبل المتابعة، يتحقق من أن الملف على الخادم لم يتغير. إذا انتهت صلاحية عنوان التنزيل، يتيح لك <g1>تحديث عنوان التنزيل</g1> إدخال عنوان جديد ومتابعة التنزيل مع الاحتفاظ بالبيانات. انظر <g2>متابعة تنزيل متوقف</g2>."
@@ -226,6 +230,10 @@
    "source": "<g1>Help → About Mister Download Manager</g1> shows the version you have.",
    "text": "تعرض <g1>تعليمات → حول Mister Download Manager</g1> الإصدار المثبت لديك."
   },
+  "030e42728ee6a418": {
+   "source": "<g1>Pull requests</g1><g2><x3/> people</g2>",
+   "text": "<g1>طلبات السحب</g1><g2><x3/> أشخاص</g2>"
+  },
   "031da5c20d1881e4": {
    "source": "Everything the Scheduler can do →",
    "text": "كل ما يمكن أن تفعله الجدولة →"
@@ -261,6 +269,10 @@
   "03660b1f49838403": {
    "source": "Contribute",
    "text": "ساهم"
+  },
+  "03d03dddf2309b1d": {
+   "source": "App downloads",
+   "text": "تنزيلات التطبيق"
   },
   "03db33586ae11954": {
    "source": "<g1>A recording in several parts</g1> (a picture and a sound part yt-dlp left apart) is made one MP4 with all of them. If they can't be joined, the download says so and every part stays as it is.",
@@ -778,6 +790,10 @@
    "source": "Too many tries from your connection. Please try again in a few minutes.",
    "text": "عدد كبير جدا من المحاولات من اتصالك. يرجى المحاولة مرة أخرى بعد بضع دقائق."
   },
+  "0a07d4f9fc7fb519": {
+   "source": "When the network comes back after a drop (Wi-Fi reconnecting, the computer waking from sleep, a VPN connecting or switching), MDM notices within a few seconds and calls the torrents' peers again at once, and asks their trackers and the DHT again, so a download picks up where it was instead of waiting minutes for each peer's next try. Each peer is called once for it; a tracker is still never asked sooner than its minimum interval. Behind a SOCKS5 proxy, a drop the computer itself doesn't see (the router losing its line while Wi-Fi stays up) is noticed only through the DHT, which is off there, so those torrents come back on their own, as before.",
+   "text": "عندما تعود الشبكة بعد انقطاع (إعادة اتصال Wi-Fi، استيقاظ الكمبيوتر من وضع السكون، اتصال VPN أو تبديله)، يلاحظ MDM ذلك في غضون ثوان قليلة ويعاود الاتصال بقرناء التورنت مرة واحدة، ويطلب من متتبعاتهم وDHT مرة أخرى، بحيث يستأنف التنزيل من حيث توقف بدلا من الانتظار لدقائق لكل محاولة تالية للقرين. يتم استدعاء كل قرين مرة واحدة؛ لا يطلب من المتتبع أبدا قبل الحد الأدنى لفاصلته الزمنية. خلف وكيل SOCKS5، لا يلاحظ الانقطاع الذي لا يراه الكمبيوتر نفسه (فقدان الموجه لخطه بينما يظل Wi-Fi متصلا) إلا عبر DHT، والذي يكون متوقفا هناك، لذا تعود هذه التورنتات من تلقاء نفسها، كما كان من قبل."
+  },
   "0a15fc764eba9ef6": {
    "source": "Some servers drop the connection when the speed is very low. Avoid a tight limit for a server that can't resume: the progress window shows <g1>Resume capability: No</g1> for those.",
    "text": "تسقط بعض الخوادم الاتصال عندما تكون السرعة منخفضة جدا. تجنب وضع حد صارم لخادم لا يمكنه المتابعة: تعرض نافذة التقدم <g1>إمكانية المتابعة: لا</g1> لتلك الخوادم."
@@ -1114,6 +1130,10 @@
    "source": "Read the site",
    "text": "قراءة الموقع"
   },
+  "0e9fede041092f7d": {
+   "source": "A file is made when its first byte is downloaded, and only a ticked one is made in the folder: what an unticked file shares with a ticked one waits in MDM's own torrent data. A running torrent keeps only the files it is reading or writing open, a few hundred at most for all of MDM's torrents together (fewer where the system allows fewer, as macOS does), so a torrent of thousands of files runs where it used to fail with \"Too many open files\".",
+   "text": "ينشأ الملف عند تنزيل أول بايت منه، وينشأ الملف المحدد فقط في المجلد: ما يشاركه الملف غير المحدد مع الملف المحدد ينتظر في بيانات التورنت الخاصة بـ MDM. يحتفظ التورنت قيد التشغيل بالملفات التي يقرأها أو يكتبها فقط مفتوحة، بضع مئات على الأكثر لجميع تورنتات MDM معا (أقل حيث يسمح النظام بذلك، كما هو الحال في macOS)، لذا فإن تورنتا يحتوي على آلاف الملفات يعمل حيث كان يفشل سابقا برسالة \"عدد كبير جدا من الملفات المفتوحة\"."
+  },
   "0ea74b188ec2ca88": {
    "source": "If it says <g1>the site sent a web page instead of the file</g1>, the link led to the site's own page: a file host's countdown, a captcha, a <g2>Download</g2> button to press, or a sign-in. MDM never saves that page as your file. Click <g3>Open in browser</g3> in the download's progress window (or open the link yourself), finish there, and when the browser starts the real download, MDM's extension hands it to MDM. Without the extension, let the browser download it.",
    "text": "إذا ظهرت رسالة <g1>أرسل الموقع صفحة ويب بدلا من الملف</g1>، فهذا يعني أن الرابط أدى إلى صفحة الموقع نفسه: عد تنازلي لموقع استضافة، أو اختبار CAPTCHA، أو زر <g2>تنزيل</g2> للضغط عليه، أو صفحة تسجيل دخول. لا يحفظ MDM هذه الصفحة كملفك أبدا. انقر على <g3>فتح في المستعرض</g3> في نافذة تقدم التنزيل (أو افتح الرابط بنفسك)، وأكمل هناك، وعندما يبدأ المستعرض التنزيل الحقيقي، تسلمه إضافة MDM إلى MDM. بدون الإضافة، دع المستعرض ينزله."
@@ -1393,6 +1413,10 @@
   "1294135f300139c9": {
    "source": "The benchmark data could not be loaded.",
    "text": "تعذر تحميل بيانات المعيار."
+  },
+  "12947e2a74bc1b46": {
+   "source": "Each running download has its own progress window. It opens when the download starts (unless you turned that off, or chose <g1>Show minimized</g1>, in <g2>Options → Downloads → Customize \"Download progress\" dialog → Edit...</g2>); to open it again, double-click the download in the list.",
+   "text": "لكل تنزيل قيد التشغيل نافذة تقدم خاصة به. تفتح هذه النافذة عند بدء التنزيل (إلا إذا أوقفت ذلك، أو اخترت <g1>إظهار مصغرة</g1>، في <g2>الخيارات → التنزيلات → تخصيص مربع حوار \"تقدم التنزيل\" → تحرير...</g2>)؛ لإعادة فتحها، انقر نقرا مزدوجا على التنزيل في القائمة."
   },
   "12a228101626f4bc": {
    "source": "How MDM uses connections",
@@ -2526,6 +2550,10 @@
    "source": "On macOS only an administrator can schedule a wake, so the option is greyed. MDM doesn't ask for an administrator's password. An administrator can have the Mac wake every day a minute before the queue starts, for example at 10:59 PM for a queue that starts at 11:00 PM:",
    "text": "على macOS، لا يستطيع جدولة الإيقاظ إلا مسؤول، لذا يكون الخيار معطلا. لا يطلب MDM كلمة مرور المسؤول. يمكن للمسؤول ضبط جهاز Mac ليستيقظ كل يوم قبل دقيقة من بدء قائمة الانتظار، مثلا عند 10:59 مساء لقائمة انتظار تبدأ عند 11:00 مساء:"
   },
+  "216eae12c95fa610": {
+   "source": "Everyone who sent a pull request, opened an issue or commented on GitHub since version <x1/>.",
+   "text": "كل من أرسل طلب سحب، أو فتح مشكلة، أو علق على GitHub منذ الإصدار <x1/>."
+  },
   "2171be975f40efe2": {
    "source": "<g1>Moving from IDM</g1><g2>Your IDM list comes over in one file, each download with its address, referrer and cookies.</g2>",
    "text": "<g1>الانتقال من IDM</g1><g2>تنتقل قائمة IDM الخاصة بك في ملف واحد، كل تنزيل مع عنوانه، والمرجع، وملفات تعريف الارتباط.</g2>"
@@ -2778,10 +2806,6 @@
    "source": "<g1>File</g1> — the selected download: <g2>Stop Download</g2>, <g3>Remove</g3>, <g4>Download Now</g4>, <g5>Redownload</g5>.",
    "text": "<g1>ملف</g1> — التنزيل المحدد: <g2>إيقاف التنزيل</g2>، <g3>إزالة</g3>، <g4>تنزيل الآن</g4>، <g5>إعادة التنزيل</g5>."
   },
-  "246d9835d86f1864": {
-   "source": "<g1>280,000+ downloads</g1><g2>of the app, every version together</g2>",
-   "text": "<g1>أكثر من 280,000 تنزيل</g1><g2>للتطبيق، جميع الإصدارات معا</g2>"
-  },
   "247f85e9dde5fa21": {
    "source": "Privacy policy",
    "text": "سياسة الخصوصية"
@@ -2970,6 +2994,10 @@
    "source": "If an error message quotes something you typed, that text is in the report, so read it before sending.",
    "text": "إذا كانت رسالة الخطأ تقتبس شيئا كتبته، فإن هذا النص موجود في التقرير، لذا اقرأه قبل الإرسال."
   },
+  "270083ee32a0f734": {
+   "source": "Browser add-on users",
+   "text": "مستخدمو الإضافة في المستعرض"
+  },
   "2703f69d017d87af": {
    "source": "Close a menu or dialog (an open drop-down list first)",
    "text": "إغلاق قائمة أو مربع حوار (قائمة منسدلة مفتوحة أولا)"
@@ -3093,10 +3121,6 @@
   "28363ce0cfaf4e8e": {
    "source": "The browser extension, from the browsers' own stores: the Chrome Web Store's is for Edge, Brave, Opera and Vivaldi too. It also comes with the app and as <g1>its own download</g1>, to add by hand. Every file is built from the public source by GitHub Actions and listed with its SHA-256 checksum.",
    "text": "ملحق المتصفح، من متاجر المتصفحات نفسها: متجر Chrome Web Store يعمل أيضا مع Edge وBrave وOpera وVivaldi. يأتي أيضا مع التطبيق وكـ<g1>تنزيل خاص به</g1>، للإضافة يدويا. يتم بناء كل ملف من المصدر العام بواسطة GitHub Actions ويتم إدراجه مع مجموع التحقق SHA-256 الخاص به."
-  },
-  "2853aef8c3261b3e": {
-   "source": "misterdownloadmanager.com is a static site. Three companies take part in showing it to you (Cloudflare also keeps its star ratings), and a fourth if you play the home page's film:",
-   "text": "misterdownloadmanager.com هو موقع ثابت. تشارك ثلاث شركات في عرضه لك (يحتفظ Cloudflare أيضا بتقييمات النجوم الخاصة به)، ورابعة إذا قمت بتشغيل فيلم الصفحة الرئيسية:"
   },
   "285bca50f6f03a0a": {
    "source": "Start Download: the progress window shows it coming in.",
@@ -4350,6 +4374,10 @@
    "source": "<g1>Connection...</g1> — for a stopped download: its own User-Agent, request headers, proxy and number of connections, for when it goes on. MDM still checks it is the same file before it writes anything. See <g2>One download's settings</g2>.",
    "text": "<g1>الاتصال...</g1> — لتنزيل متوقف: وكيل المستخدم الخاص به، ورؤوس الطلب، والوكيل، وعدد الاتصالات، عندما يستمر. لا يزال MDM يتحقق من أنه نفس الملف قبل أن يكتب أي شيء. انظر <g2>إعدادات تنزيل واحد</g2>."
   },
+  "39f69afa6e85f9d1": {
+   "source": "<g1>Issues</g1><g2><x3/> people</g2>",
+   "text": "<g1>المشاكل</g1><g2><x3/> أشخاص</g2>"
+  },
   "3a14e0e8b14737d7": {
    "source": "Choose <g1>Downloads → Speed Limiter → Turn on</g1>.",
    "text": "اختر <g1>التنزيلات ← محدد السرعة ← تشغيل</g1>."
@@ -4565,6 +4593,10 @@
   "3cc4f48aaeb666b9": {
    "source": "Steps",
    "text": "الخطوات"
+  },
+  "3ccaf5a331b1edd2": {
+   "source": "A stopped torrent keeps none of its files open: you can move, rename or delete them, or open them in another program, while it waits. When you start it again, MDM opens them where they are; a file that was moved away or deleted meanwhile is made again and its pieces downloaded again. A finished torrent that is shared (<g1>Keep sharing torrents after they finish</g1>, in Torrent settings) keeps its files open only to read them: other programs can open, copy, run, move or rename them meanwhile.",
+   "text": "لا يحتفظ التورنت المتوقف بأي من ملفاته مفتوحة: يمكنك نقلها أو إعادة تسميتها أو حذفها، أو فتحها في برنامج آخر، بينما تنتظر. عندما تبدأ تشغيله مرة أخرى، يفتحها MDM في مكانها؛ الملف الذي تم نقله أو حذفه في هذه الأثناء ينشأ مرة أخرى ويتم تنزيل قطعه مرة أخرى. التورنت المكتمل الذي يتم بذره (<g1>متابعة بذر التورنت بعد اكتماله</g1>، في إعدادات التورنت) يحتفظ بملفاته مفتوحة للقراءة فقط: يمكن للبرامج الأخرى فتحها أو نسخها أو تشغيلها أو نقلها أو إعادة تسميتها في هذه الأثناء."
   },
   "3cd4e5cff6113414": {
    "source": "<g1>Then move the archives to the Recycle Bin</g1> has nothing to move afterwards: the archive is already gone.",
@@ -4906,10 +4938,6 @@
    "source": "When an address is already in the list, MDM asks what to do, or follows the answer you chose in <g1>Options → Downloads → If a duplicate download link is added</g1>.",
    "text": "عندما يكون العنوان موجودا بالفعل في القائمة، يسأل MDM عما يجب فعله، أو يتبع الإجابة التي اخترتها في <g1>الخيارات → التنزيلات → إذا تمت إضافة رابط تنزيل مكرر</g1>."
   },
-  "415322c0b133befd": {
-   "source": "Each running download has its own progress window. It opens when the download starts (unless you turned that off in Options → Downloads → Customize…",
-   "text": "لكل تنزيل قيد التشغيل نافذة تقدم خاصة به. تفتح هذه النافذة عند بدء التنزيل (إلا إذا أوقفت ذلك في الخيارات → التنزيلات → تخصيص..."
-  },
   "4160d55635d3e362": {
    "source": "Freeze reports that tell the kind of freeze",
    "text": "تقارير التوقف التي تخبر بنوع التوقف"
@@ -5210,6 +5238,10 @@
    "source": "<g1>Start now</g1> and <g2>Stop</g2> run or halt the selected queue straight away.",
    "text": "يقوم <g1>بدء الآن</g1> و<g2>إيقاف</g2> بتشغيل أو إيقاف قائمة الانتظار المحددة على الفور."
   },
+  "45fa036667aca21e": {
+   "source": "A checksum you give this way (or with the command line's <x1/>), or one the site publishes and MDM reads itself (Hugging Face's and GitHub's, in <g2>Link grabber</g2>), must match: a file that doesn't stays unfinished, says <g3>the file's SHA-256 checksum doesn't match</g3>, and <g4>Redownload</g4> fetches it again.",
+   "text": "يجب أن تتطابق بصمة الملف التي تحددها بهذه الطريقة (أو باستخدام <x1/> في سطر الأوامر)، أو التي ينشرها الموقع ويقرأها MDM بنفسه (مثل Hugging Face وGitHub، في <g2>ملتقط الروابط</g2>): أي ملف لا يتطابق يبقى غير مكتمل، ويظهر <g3>بصمة SHA-256 للملف غير متطابقة</g3>، و<g4>إعادة التنزيل</g4> تجلبه مرة أخرى."
+  },
   "460c28c064c58629": {
    "source": "To remove it, open the same window and untick <g1>Limit all downloads together to</g1>.",
    "text": "لإزالته، افتح نفس النافذة وألغ تحديد <g1>تحديد جميع التنزيلات معا إلى</g1>."
@@ -5353,6 +5385,10 @@
   "47cff7958a924e1e": {
    "source": "Compare it with the same file's line in that release's <x1/> (capital or small letters don't matter). To be sure the list itself is ours, check its signature, <x2/>, with MDM's release key: see <g3>Check your download</g3>.",
    "text": "قارنها بالسطر الخاص بنفس الملف في <x1/> الخاص بهذا الإصدار (الأحرف الكبيرة أو الصغيرة لا تهم). للتأكد من أن القائمة نفسها هي قائمتنا، تحقق من توقيعها، <x2/>، باستخدام مفتاح إصدار MDM: انظر <g3>التحقق من تنزيلك</g3>."
+  },
+  "47dc0178565f7f38": {
+   "source": "<g1>The home page's live figures</g1>, at <x2/>, in the same <g3>OpenAPI</g3>: how many times the app was downloaded (every GitHub release's installers and packages) and how many people use the browser add-on (the Chrome Web Store's users, Firefox Add-ons' daily users), each with when it was read. Read again at most every 15 minutes; a source that can't be read keeps its last figure.",
+   "text": "<g1>الأرقام المباشرة للصفحة الرئيسية</g1>، في <x2/>، بنفس <g3>OpenAPI</g3>: عدد مرات تنزيل التطبيق (مثبتات وحزم كل إصدار GitHub) وعدد مستخدمي الإضافة في المستعرض (مستخدمو سوق Chrome الإلكتروني، والمستخدمون اليوميون لإضافات Firefox)، مع وقت قراءة كل منها. تقرأ مرة أخرى كل 15 دقيقة كحد أقصى؛ المصدر الذي لا يمكن قراءته يحتفظ بآخر رقم له."
   },
   "4809c370b5c131eb": {
    "source": "its picture: the one your file manager shows (Windows' thumbnail of a photo, a video, a PDF or a document, a program's own icon; on Linux your desktop's thumbnail, or one MDM makes of a photo or a video's frame), else its file type's large icon. Only a finished file has one;",
@@ -5642,6 +5678,10 @@
    "source": "<g1>Linux</g1>: install the <g2>.deb</g2> with <x3/> (Debian, Ubuntu, Mint) or the <g4>.rpm</g4> with <x5/> (Fedora), and the packages bring what MDM needs. Or make the <g6>AppImage</g6> executable (<x7/>) and run it. MDM connects itself to your browsers at each start; then add the extension from your browser's store, above. <g8>More in the help</g8>.",
    "text": "<g1>نظام Linux</g1>: ثبت حزمة <g2>.deb</g2> باستخدام <x3/> (Debian، Ubuntu، Mint) أو حزمة <g4>.rpm</g4> باستخدام <x5/> (Fedora)، وستجلب الحزم ما يحتاجه MDM. أو اجعل <g6>AppImage</g6> قابلا للتنفيذ (<x7/>) وشغله. يتصل MDM بمستعرضاتك تلقائيا عند كل بدء تشغيل؛ ثم أضف الإضافة من متجر مستعرضك، أعلاه. <g8>المزيد في التعليمات</g8>."
   },
+  "4c5ff93f41d1a8f9": {
+   "source": "Without one, MDM checks the file against the checksum its server sends with it, if any (<x1/>, <x2/>, <x3/>, Google Cloud Storage's <x4/>). Servers sometimes send the checksum of the file as they store it rather than of what they send, so a file that doesn't match is still kept: its status says <g5>Checksum warning</g5>, and its tip, its log, <g6>Properties</g6> and <g7>Download complete</g7> say <g8>Downloaded, but the server's MD5 checksum didn't match; the file may still be fine</g8>. If it matters, check it with <g9>Verify checksum...</g9> and the checksum its site publishes: when it matches, the warning goes. A server's checksum isn't used at all when the server says it changed the file on the way (a compressed answer, or a file stored encoded, as PikPak's are).",
+   "text": "بدون بصمة ملف، يتحقق MDM من الملف مقابل بصمة الملف التي يرسلها الخادم معه، إن وجدت (<x1/>، <x2/>، <x3/>، <x4/> لتخزين Google Cloud). ترسل الخوادم أحيانا بصمة الملف كما تخزنه بدلا من ما ترسله، لذلك يتم الاحتفاظ بالملف الذي لا يتطابق: تظهر حالته <g5>تحذير بصمة الملف</g5>، وتظهر في تلميحه وسجله و<g6>خصائص</g6> و<g7>اكتمل التنزيل</g7> <g8>تم التنزيل، لكن بصمة MD5 للخادم لم تتطابق؛ قد يكون الملف سليما</g8>. إذا كان الأمر مهما، فتحقق منه باستخدام <g9>التحقق من بصمة الملف...</g9> وبصمة الملف التي ينشرها موقعه: عندما تتطابق، يختفي التحذير. لا تستخدم بصمة ملف الخادم على الإطلاق عندما يقول الخادم إنه غير الملف أثناء النقل (استجابة مضغوطة، أو ملف مخزن مشفرا، كما هو الحال في PikPak)."
+  },
   "4c75f1e3123da2b1": {
    "source": "— plain FTP.",
    "text": "— FTP غير مشفر."
@@ -5821,6 +5861,10 @@
   "4e56d054c4ea1845": {
    "source": "<g1>A minimized MDM keeps working</g1>: with the main window minimized (not to the notification area), queues didn't start their next file, the Scheduler's starts and stops didn't fire, download limits, the network adapter's kill switch, the clipboard monitor, the update check, the taskbar's progress and saving the list all waited until the window was restored. They run in every window state now, and their windows (Download complete, a limit's notice) open at once.",
    "text": "<g1>يستمر MDM المصغر في العمل</g1>: مع تصغير النافذة الرئيسية (وليس إلى منطقة الإشعارات)، لم تبدأ قوائم الانتظار ملفها التالي، ولم يتم تشغيل عمليات بدء وإيقاف المجدول، وانتظرت حدود التنزيل، ومفتاح إيقاف محول الشبكة، ومراقب الحافظة، والتحقق من التحديث، وتقدم شريط المهام، وحفظ القائمة، حتى تم استعادة النافذة. تعمل الآن في كل حالات النافذة، وتفتح نوافذها (اكتمل التنزيل، إشعار الحد) على الفور."
+  },
+  "4e60a529980083e7": {
+   "source": "The downloads join the <g1>Main download queue</g1>, ready to start (<g2>Start</g2> starts it too). <g3>Tasks → Import → From IDM export file</g3> reads an <x4/> file, with each download's referrer and cookies, and the file name a list gives it in a <x5/> line.",
+   "text": "تنضم التنزيلات إلى <g1>قائمة انتظار التنزيل الرئيسية</g1>، لتكون جاهزة للبدء (يؤدي <g2>بدء</g2> إلى بدء تشغيلها أيضا). يقرأ <g3>المهام → استيراد → من ملف تصدير IDM</g3> ملف <x4/>، مع مرجع كل تنزيل وملفات تعريف الارتباط الخاصة به، واسم الملف الذي تمنحه قائمة في سطر <x5/>."
   },
   "4e96b700836944de": {
    "source": "<g1>Password</g1>: the archives' password, if they have one. It is kept in memory only and is never saved by itself: to keep one for other packages, add it to your <g2>archive passwords</g2>.",
@@ -6318,6 +6362,10 @@
    "source": "A small file",
    "text": "ملف صغير"
   },
+  "55a523d7ca4b905f": {
+   "source": "Thanks to",
+   "text": "شكر خاص لـ"
+  },
   "55ecea9df3d3ed23": {
    "source": "Paste the address of a playlist (<x1/>) or a channel's videos (<x2/>) and click <g3>Look up</g3>. Instead of one video's qualities, the window lists the list's videos, each with its length.",
    "text": "الصق عنوان قائمة تشغيل (<x1/>) أو عنوان مقاطع فيديو قناة (<x2/>)، ثم انقر <g3>بحث</g3>. بدلا من عرض جودات فيديو واحد، تعرض النافذة مقاطع فيديو القائمة، مع مدة كل منها."
@@ -6450,6 +6498,10 @@
    "source": "Windows 10/11 and Linux; macOS to try",
    "text": "Windows 10/11 و Linux؛ macOS تجريبي"
   },
+  "57df30288a29fe94": {
+   "source": "Made possible by these amazing humans",
+   "text": "أصبح هذا ممكنا بفضل هؤلاء الأشخاص الرائعين"
+  },
   "57e101e4403fd046": {
    "source": "Command",
    "text": "الأمر"
@@ -6541,6 +6593,10 @@
   "58f22a0b1aeea2b4": {
    "source": "Watch it work.",
    "text": "شاهد كيف يعمل."
+  },
+  "58f7b730058089bc": {
+   "source": "Everyone who takes part follows the <g1>Code of conduct</g1>. Who reviews and merges changes, and how decisions are made, is in <g2>GOVERNANCE.md</g2>.",
+   "text": "يتبع كل مشارك <g1>مدونة قواعد السلوك</g1>. تجد معلومات حول من يراجع التغييرات ويدمجها، وكيفية اتخاذ القرارات، في <g2>GOVERNANCE.md</g2>."
   },
   "59130ab4ecc47c65": {
    "source": "<g1>Hide to the notification area</g1> (a short dash with an arrow down to the corner; on Windows in the title bar, left of Minimize) puts the window in the notification area; <g2>Downloads in progress</g2> in the tray icon's menu brings it back. See <g3>The tray icon</g3>.",
@@ -7141,6 +7197,10 @@
   "60e4ea08eb29abeb": {
    "source": "<g1>Stop</g1> on a download in a running queue stays stopped, instead of the queue starting it again a moment later; <g2>Stop All</g2> too (<g3>#341</g3>).",
    "text": "يبقى <g1>إيقاف</g1> على تنزيل في قائمة انتظار قيد التشغيل متوقفا، بدلا من أن تبدأه قائمة الانتظار مرة أخرى بعد لحظة؛ وينطبق الأمر نفسه على <g2>إيقاف الكل</g2> (<g3>#341</g3>)."
+  },
+  "60f1159fcf53ce4a": {
+   "source": "Every version from GitHub; the add-on in the Chrome Web Store and Firefox Add-ons together. As of <x1/>",
+   "text": "كل إصدار من GitHub؛ والإضافة في سوق Chrome الإلكتروني وإضافات Firefox معا. اعتبارا من <x1/>"
   },
   "60f3c58ee8c2af81": {
    "source": "<g1>Options where you expect them</g1> Every setting where an IDM user looks first: connections, proxies, folders, sounds.",
@@ -8034,6 +8094,10 @@
    "source": "<g1>32-bit Windows 10.</g1> Not sure which you have? <g2>Settings → System → About → System type</g2> says it. MDM can't download ffmpeg for you there (none is built for 32-bit Windows that MDM can check): to get the best video qualities, choose an ffmpeg of your own in <g3>Helpers...</g3> (<g4>Video</g4>).",
    "text": "<g1>Windows 10 32 بت.</g1> لست متأكدا مما لديك؟ <g2>الإعدادات ← النظام ← حول ← نوع النظام</g2> يخبرك بذلك. لا يمكن لـ MDM تنزيل ffmpeg لك هناك (لا يوجد إصدار مبني لـ Windows 32 بت يمكن لـ MDM التحقق منه): للحصول على أفضل جودة للفيديو، اختر ffmpeg الخاص بك في <g3>البرامج المساعدة...</g3> (<g4>فيديو</g4>)."
   },
+  "6d9da62489a6a428": {
+   "source": "misterdownloadmanager.com is a static site. Three companies take part in showing it to you (Cloudflare also keeps its star ratings and serves its live figures), and a fourth if you play the home page's film:",
+   "text": "misterdownloadmanager.com موقع ثابت. تشارك ثلاث شركات في عرضه لك (تحتفظ Cloudflare أيضا بتقييماته بالنجوم وتقدم أرقامه المباشرة)، ورابعة إذا شغلت الفيلم في الصفحة الرئيسية:"
+  },
   "6da2e37f647df28e": {
    "source": "Select every download up to this one",
    "text": "تحديد كل التنزيلات حتى هذا التنزيل"
@@ -8254,6 +8318,10 @@
    "source": "<g1><g2>Options</g2></g1> — every page of the Options window.",
    "text": "<g1><g2>الخيارات</g2></g1> — كل صفحة من نافذة الخيارات."
   },
+  "702b1d80d041e97d": {
+   "source": "<g1>Tasks → Import → From text file</g1> and <g2>From IDM export file</g2>. An <x3/> file brings each download's referrer and cookies, and its file name when the list gives one (a <x4/> line; only the name, never a folder).",
+   "text": "<g1>المهام → استيراد → من ملف نصي</g1> و<g2>من ملف تصدير IDM</g2>. يجلب ملف <x3/> مرجع كل تنزيل وملفات تعريف الارتباط الخاصة به، واسم ملفه عندما تقدم القائمة واحدا (سطر <x4/>؛ الاسم فقط، وليس مجلدا أبدا)."
+  },
   "70304346a925831b": {
    "source": "MDM opens <g1>Download File Info</g1> instead of the browser downloading the file. Click <g2>Start Download</g2>.",
    "text": "سيفتح MDM نافذة <g1>معلومات ملف التنزيل</g1> بدلا من أن ينزل المستعرض الملف. انقر على <g2>بدء التنزيل</g2>."
@@ -8417,10 +8485,6 @@
   "72769bded1d786a9": {
    "source": "Paste a Google Drive link as it is, the one <g1>Share → Copy link</g1> gives:",
    "text": "الصق رابط Google Drive كما هو، أي الرابط الذي يظهر عند اختيار <g1>مشاركة → نسخ الرابط</g1>:"
-  },
-  "7297ca101de5145e": {
-   "source": "The list couldn't be read from GitHub when this page was built. Everyone is on GitHub meanwhile, in the project's <g1>pull requests</g1> and <g2>issues</g2>.",
-   "text": "تعذر قراءة القائمة من GitHub عند إنشاء هذه الصفحة. الجميع موجودون على GitHub في هذه الأثناء، في <g1>طلبات السحب</g1> و<g2>المشكلات</g2> الخاصة بالمشروع."
   },
   "729a19fc6ce418f9": {
    "source": "Reporting problems",
@@ -8889,6 +8953,10 @@
   "79298af691e8bdd2": {
    "source": "You need your own paid account with one of these services: MDM doesn't sell or include one. Sharing an account or its links breaks the services' terms and can get the account suspended.",
    "text": "تحتاج إلى حسابك المدفوع الخاص بك مع إحدى هذه الخدمات: لا يبيع MDM أو يتضمن حسابا. يؤدي مشاركة حساب أو روابطه إلى انتهاك شروط الخدمات وقد يؤدي إلى تعليق الحساب."
+  },
+  "7931468b8d7d517a": {
+   "source": "<x1/> <g2>Everyone who helped</g2>",
+   "text": "<x1/> <g2>كل من ساعد</g2>"
   },
   "7957b18548166390": {
    "source": "Questions and answers — Mister Download Manager",
@@ -10534,10 +10602,6 @@
    "source": "Check that the Speed Limiter is off: <g1>Downloads → Speed Limiter → Turn off</g1>. Also look at <g2>Downloads → Speed Limiter → Settings... → Limit all downloads together to</g2>, which applies even with the limiter off.",
    "text": "تأكد من إيقاف تشغيل محدد السرعة: <g1>التنزيلات ← محدد السرعة ← إيقاف التشغيل</g1>. انظر أيضا إلى <g2>التنزيلات ← محدد السرعة ← الإعدادات... ← تحديد جميع التنزيلات معا إلى</g2>، والذي ينطبق حتى مع إيقاف تشغيل المحدد."
   },
-  "8e9db9ede7b54a27": {
-   "source": "<g1>Customize \"Download progress\" dialog → Edit...</g1> — <g2>Show download progress dialog when a download starts</g2>: on by default. Untick it and a download no longer opens its progress window when it starts, from the browser, a link you add, a video or a queue; it goes on in the main window's list, where a double-click opens its progress window. <g3>Download complete</g3> still shows when it finishes, as <g4>Show download complete dialog</g4> below says.",
-   "text": "<g1>تخصيص مربع حوار \"تقدم التنزيل\" ← تحرير...</g1> — <g2>إظهار مربع حوار تقدم التنزيل عند بدء التنزيل</g2>: قيد التشغيل افتراضيا. ألغ تحديدها ولن يفتح التنزيل نافذة تقدمه عند البدء، سواء من المستعرض، أو رابط تضيفه، أو فيديو، أو قائمة انتظار؛ يستمر في قائمة النافذة الرئيسية، حيث يفتح النقر المزدوج نافذة تقدمه. لا يزال <g3>اكتمل التنزيل</g3> يظهر عند الانتهاء، كما هو موضح في <g4>إظهار مربع حوار اكتمال التنزيل</g4> أدناه."
-  },
   "8e9f9863589b4bd6": {
    "source": "Fuzzing",
    "text": "اختبار الضبابية"
@@ -10761,6 +10825,10 @@
   "91f7b61e72ddf0bc": {
    "source": "<g1>Acceleration and resume</g1><g2>A file split over up to 32 connections, re-split until the last byte, and resumed after any crash.</g2>",
    "text": "<g1>التسريع والمتابعة</g1><g2>ينقسم الملف إلى 32 اتصالا كحد أقصى، ويعاد تقسيمه حتى آخر بايت، ويستأنف بعد أي عطل.</g2>"
+  },
+  "92055d4da1d101c5": {
+   "source": "<x1/> people who sent a pull request, reported a problem or joined a conversation on GitHub. <g2>Meet them all</g2>",
+   "text": "<x1/> الأشخاص الذين أرسلوا طلب سحب، أو أبلغوا عن مشكلة، أو انضموا إلى محادثة على GitHub. <g2>قابلهم جميعا</g2>"
   },
   "92078a4a178bf949": {
    "source": "A title bar MDM draws, while its window isn't the active one (transparent: as when active)",
@@ -11734,6 +11802,10 @@
    "source": "Send downloads from your browser",
    "text": "إرسال التنزيلات من متصفحك"
   },
+  "9e23173a22cf615a": {
+   "source": "<x1/> comment",
+   "text": "<x1/> تعليق"
+  },
   "9e2414e7eb93b062": {
    "source": "Windows 7's feel: glossy buttons, a glassy title bar and a glossy green progress bar.",
    "text": "إحساس Windows 7: أزرار لامعة، شريط عنوان زجاجي، وشريط تقدم أخضر لامع."
@@ -11869,10 +11941,6 @@
   "9f782f136a8bb467": {
    "source": "The built-in categories can now be renamed, given other file types, or deleted.",
    "text": "يمكن الآن إعادة تسمية الفئات المضمنة، أو إعطاؤها أنواع ملفات أخرى، أو حذفها."
-  },
-  "9f7cefd031ac2a9a": {
-   "source": "Download a file with up to 8 connections (<x1/>, 1 to 128), showing progress. <x2/> pauses it; <x3/> continues. <x4/> sets the referring page address (Referer header), <x5/> sets the request's User-Agent (then the only one sent; without it, MDM speaks as your default browser, and, when a site's bot check refuses that and the way a browser connects too, once more under its own name), <x6/> sets the Cookie header (a cookie on the command line ends up in the shell's history; <x7/> reads it from standard input instead). <x8/> checks the finished file: hex MD5, SHA-1, SHA-256, SHA-512 or CRC32, optionally named (<x9/>). <x10/> picks the DNS instead of Options': <x11/>; a service and how to ask it, <x12/>, <x13/>, <x14/>, <x15/>, <x16/>; DNS servers' addresses, <x17/>; or a DNS-over-HTTPS address. It never falls back to the system's DNS. <x18/> sends every connection through one network adapter instead of Options' (<x19/> for none), by its name (<x20/>, <x21/>) or one of its addresses; when it isn't connected, nothing is sent and the download fails. <x22/> takes the place of Options' proxy for this run (see above). The app's <g23>site rules</g23> for the address apply too (their headers, User-Agent, browser-like connection, number of connections and proxy), where the command line gives none of the same: <x24/> goes before every rule's proxy. A link from a file host that one of your debrid accounts (<g25>Options → Accounts</g25>) supports goes through that account, as in the app, and <x26/> says <x27/>; <x28/> downloads the address itself (<g29>Debrid service accounts</g29>).",
-   "text": "ينزل ملفا بما يصل إلى 8 اتصالات (<x1/>، من 1 إلى 128)، مع إظهار التقدم. <x2/> يوقفه مؤقتا؛ <x3/> يتابعه. <x4/> يحدد عنوان الصفحة المرجعية (رأس Referer)، <x5/> يحدد User-Agent للطلب (وهو الوحيد الذي يرسل حينها؛ وبدونه، يتحدث MDM كمستعرضك الافتراضي، وعندما يرفض فحص الروبوت الخاص بالموقع ذلك وطريقة اتصال المستعرض أيضا، يتحدث مرة أخرى باسمه الخاص)، <x6/> يحدد رأس Cookie (تصل ملفات تعريف الارتباط في سطر الأوامر إلى سجل shell؛ <x7/> يقرأها من الإدخال القياسي بدلا من ذلك). <x8/> يتحقق من الملف المكتمل: MD5 سداسي عشري، SHA-1، SHA-256، SHA-512 أو CRC32، مع تسمية اختيارية (<x9/>). <x10/> يختار DNS بدلا من خيارات «الخيارات»: <x11/>؛ خدمة وكيفية طلبها، <x12/>، <x13/>، <x14/>، <x15/>، <x16/>؛ عناوين خوادم DNS، <x17/>؛ أو عنوان DNS-over-HTTPS. لا يعود أبدا إلى DNS الخاص بالنظام. <x18/> يرسل كل اتصال عبر محول شبكة واحد بدلا من خيارات «الخيارات» (<x19/> لـ«لا شيء»)، باسمه (<x20/>، <x21/>) أو أحد عناوينه؛ عندما لا يكون متصلا، لا يتم إرسال أي شيء ويفشل التنزيل. <x22/> يحل محل وكيل «الخيارات» لهذا التشغيل (انظر أعلاه). تنطبق <g23>قواعد الموقع</g23> الخاصة بالتطبيق على العنوان أيضا (رؤوسها، User-Agent، الاتصال الشبيه بالمستعرض، عدد الاتصالات والوكيل)، حيث لا يوفر سطر الأوامر أيا من نفس الشيء: <x24/> يسبق وكيل كل قاعدة. يمر رابط من موقع استضافة يدعمه أحد حسابات Debrid الخاصة بك (<g25>الخيارات ← الحسابات</g25>) عبر هذا الحساب، كما هو الحال في التطبيق، و<x26/> يقول <x27/>؛ <x28/> ينزل العنوان نفسه (<g29>حسابات خدمة Debrid</g29>)."
   },
   "9f93bf61864af099": {
    "source": "Plainly: everyone sharing the same torrent sees your IP address. That is how BitTorrent works, and no setting changes it. To hide it, use a VPN for the whole computer. <g1>Torrents and your security</g1> says what others can see.",
@@ -12069,10 +12137,6 @@
   "a20d923b503a9161": {
    "source": "A live stream saved by a queue's stop counts as complete, so a daily queue doesn't start it again the next day.",
    "text": "يعتبر البث المباشر الذي تم حفظه بإيقاف قائمة الانتظار مكتملا، لذلك لا تبدأه قائمة الانتظار اليومية مرة أخرى في اليوم التالي."
-  },
-  "a21a2e8b8e4dad43": {
-   "source": "<g1>#1 in Rust</g1><g2>repository of the day on <x3/></g2>",
-   "text": "<g1>الأول في Rust</g1><g2>مستودع اليوم على <x3/></g2>"
   },
   "a21dffa69dd07677": {
    "source": "Every row, and easier to read",
@@ -13030,6 +13094,10 @@
    "source": "About Mister Download Manager",
    "text": "حول Mister Download Manager"
   },
+  "aee6606bd3b4de07": {
+   "source": "<g1>Proof of delivery</g1><g2>Figures as of <x3/> · quotes exact, linked to their source</g2>",
+   "text": "<g1>إثبات التسليم</g1><g2>الأرقام اعتبارا من <x3/> · الاقتباسات دقيقة، مرتبطة بمصدرها</g2>"
+  },
   "aeea31ff4889dbde": {
    "source": "<g1>Address</g1> (Add URL) and <g2>Save As</g2> (Download File Info) list the last 20 addresses and folders from their arrows; <g3>...</g3> beside Save As chooses a folder, <g4>+</g4> beside Category makes one.",
    "text": "تعرض قائمتا <g1>العنوان</g1> (إضافة URL) و<g2>حفظ باسم</g2> (معلومات ملف التنزيل) آخر 20 عنوانا ومجلدا عبر السهمين؛ يتيح <g3>...</g3> بجانب «حفظ باسم» اختيار مجلد، وينشئ <g4>+</g4> بجانب «الفئة» فئة جديدة."
@@ -13122,6 +13190,10 @@
    "source": "Choose a download",
    "text": "اختيار تنزيل"
   },
+  "afd25bc6979c1269": {
+   "source": "<g1>Customize \"Download progress\" dialog → Edit...</g1> — <g2>Show download progress dialog when a download starts</g2>: <g3>Show normally</g3>, on by default; <g4>Show minimized</g4>, which starts the download's progress window minimized on the taskbar, without taking the focus from the program you are in; or <g5>Don't show</g5>, where a download no longer opens its progress window when it starts, from the browser, a link you add, a video or a queue, and it goes on in the main window's list, where a double-click opens its progress window. <g6>Download complete</g6> still shows when it finishes, as <g7>Show download complete dialog</g7> below says.",
+   "text": "<g1>تخصيص مربع حوار \"تقدم التنزيل\" → تحرير...</g1> — <g2>إظهار مربع حوار تقدم التنزيل عند بدء التنزيل</g2>: <g3>إظهار عادية</g3>، وهو الخيار الافتراضي؛ أو <g4>إظهار مصغرة</g4>، الذي يبدأ نافذة تقدم التنزيل مصغرة في شريط المهام، دون سحب التركيز من البرنامج الذي تستخدمه؛ أو <g5>عدم الإظهار</g5>، حيث لا يفتح التنزيل نافذة التقدم الخاصة به عند البدء، سواء من المستعرض أو رابط تضيفه أو فيديو أو قائمة انتظار، ويستمر في قائمة النافذة الرئيسية، حيث يفتح النقر المزدوج نافذة التقدم الخاصة به. لا يزال مربع <g6>اكتمل التنزيل</g6> يظهر عند الانتهاء، كما هو موضح في <g7>إظهار مربع حوار اكتمال التنزيل</g7> أدناه."
+  },
   "aff376e66e9d2870": {
    "source": "Queues",
    "text": "قوائم الانتظار"
@@ -13145,6 +13217,10 @@
   "b08e516b19471d83": {
    "source": "<g1>All files and checksums</g1><g2>Version 0.5.2 on GitHub Releases, with SHA256SUMS.txt</g2>",
    "text": "<g1>جميع الملفات وبصمات الملفات</g1><g2>الإصدار 0.5.2 على GitHub Releases، مع SHA256SUMS.txt</g2>"
+  },
+  "b0911cd9d54fd304": {
+   "source": "<g1>In figures</g1><g2>Figures as of <x3/>, rounded down</g2>",
+   "text": "<g1>بالأرقام</g1><g2>الأرقام اعتبارا من <x3/>، مقربة للأسفل</g2>"
   },
   "b0912015dbe6e3fb": {
    "source": "<g1>Crash reports:</g1> after a crash, the report window may fetch that version's debugging symbols from MDM's GitHub release and ask GitHub whether the same problem was reported already. The report itself opens in your browser, on GitHub, only if you choose to send it.",
@@ -14558,6 +14634,10 @@
    "source": "Options on its Sounds page: a sound for each event",
    "text": "الخيارات في صفحة الأصوات: صوت لكل حدث"
   },
+  "c3cdbcead710be30": {
+   "source": "first when the download goes through a debrid account, then a <x1/> line every half second, then <x2/> (with <x3/> when the file didn't match the checksum its server sent, and was kept), or <x4/> after <x5/> (<x6/> is the file <x7/> takes).",
+   "text": "أولا عندما يمر التنزيل عبر حساب Debrid، ثم سطر <x1/> كل نصف ثانية، ثم <x2/> (مع <x3/> عندما لا يتطابق الملف مع بصمة الملف التي أرسلها خادمه، وتم الاحتفاظ به)، أو <x4/> بعد <x5/> (<x6/> هو الملف الذي يأخذه <x7/>)."
+  },
   "c3d39f291e3ad7b6": {
    "source": "View → Draw with open: OpenGL and Direct3D",
    "text": "عرض → الرسم باستخدام: OpenGL وDirect3D"
@@ -14813,6 +14893,10 @@
   "c763f3aa0f51a5a2": {
    "source": "<g1>Server mode</g1><g2>Mister Download Manager</g2>",
    "text": "<g1>وضع الخادم</g1><g2>Mister Download Manager</g2>"
+  },
+  "c76c7692d362ad5a": {
+   "source": "Each running download has its own progress window. It opens when the download starts (unless you turned that off, or chose Show minimized, in Options →…",
+   "text": "لكل تنزيل قيد التشغيل نافذة تقدم خاصة به. تفتح هذه النافذة عند بدء التنزيل (إلا إذا أوقفت ذلك، أو اخترت إظهار مصغرة، في الخيارات →…"
   },
   "c7853bd84d0526f0": {
    "source": "Options → Archives →",
@@ -15338,6 +15422,10 @@
    "source": "Link grabber and archives — Mister Download Manager help",
    "text": "ملتقط الروابط والأرشيفات — تعليمات Mister Download Manager"
   },
+  "ce5bf471e6fccfb8": {
+   "source": "<g1>Comments</g1><g2><x3/> people</g2>",
+   "text": "<g1>التعليقات</g1><g2><x3/> أشخاص</g2>"
+  },
   "ce6720d5953dad4f": {
    "source": "The previous / next button (greyed ones too: a screen reader says they are unavailable)",
    "text": "الزر السابق / التالي (بما في ذلك الأزرار المعطلة: يخبر قارئ الشاشة أنها غير متاحة)"
@@ -15597,10 +15685,6 @@
   "d276ebf66aa4bbaa": {
    "source": "No. MDM needs Windows 10 or 11. The Rust toolchain it is built with no longer supports Windows 7 and 8, and neither does Microsoft.",
    "text": "لا. يحتاج MDM إلى Windows 10 أو 11. لا تدعم سلسلة أدوات Rust التي تم بناؤه بها نظامي التشغيل Windows 7 و8، ولا تدعمهما Microsoft أيضا."
-  },
-  "d29a7b052989ea0c": {
-   "source": "<g1>In figures</g1><g2>Store figures as of <x3/>, the others checked on <x4/>, rounded down</g2>",
-   "text": "<g1>بالأرقام</g1><g2>أرقام المتجر حتى <x3/>، والأخرى تم التحقق منها في <x4/>، مقربة للأسفل</g2>"
   },
   "d2a15d4e9d4e0387": {
    "source": "To add every link in a text file:",
@@ -15942,6 +16026,10 @@
    "source": "Mister Download Manager and IDM, side by side.",
    "text": "Mister Download Manager و IDM، جنبا إلى جنب."
   },
+  "d65efc937a364b03": {
+   "source": "<x1/> issue",
+   "text": "<x1/> مشكلة"
+  },
   "d663f408764b1150": {
    "source": "Replay",
    "text": "إعادة التشغيل"
@@ -16053,10 +16141,6 @@
   "d7d939199fe34589": {
    "source": "<g1><g2>Languages</g2></g1> — the 87 interface languages, numbers and dates, right-to-left layouts, and how to help translate.",
    "text": "<g1><g2>اللغات</g2></g1> — لغات الواجهة الـ 87، والأرقام والتواريخ، والتخطيطات من اليمين إلى اليسار، وكيفية المساعدة في الترجمة."
-  },
-  "d7df5f97a90fd99c": {
-   "source": "Each running download has its own progress window. It opens when the download starts (unless you turned that off in <g1>Options → Downloads → Customize \"Download progress\" dialog → Edit...</g1>); to open it again, double-click the download in the list.",
-   "text": "لكل تنزيل قيد التشغيل نافذة تقدم خاصة به. تفتح هذه النافذة عند بدء التنزيل (إلا إذا أوقفت ذلك في <g1>الخيارات → التنزيلات → تخصيص مربع حوار \"تقدم التنزيل\" → تحرير...</g1>)؛ ولإعادة فتحها، انقر نقرا مزدوجا على التنزيل في القائمة."
   },
   "d7e47d8cb056d141": {
    "source": "<g1>Download in order</g1>, to watch a video while it downloads, with each file's first and last pieces early. Other torrents fetch the rarest pieces first.",
@@ -16574,6 +16658,10 @@
    "source": "The site's <g1>robots.txt</g1> lets every crawler in, and says so for AI in <g2>Content Signals</g2>:",
    "text": "يسمح ملف <g1>robots.txt</g1> الخاص بالموقع لكل برامج الزحف بالدخول، ويذكر ذلك للذكاء الاصطناعي في <g2>Content Signals</g2>:"
   },
+  "e0a07e732b511f78": {
+   "source": "<g1><x2/> downloads</g1><g3>of the app, every version together</g3>",
+   "text": "<g1><x2/> تنزيل</g1><g3>للتطبيق، كل الإصدارات معا</g3>"
+  },
   "e0a6f19ecc901965": {
    "source": "For a <x1/> file: <g2>Open magnet links and .torrent files with Mister Download Manager</g2> is on in <g3>Tasks → Torrent settings</g3>.",
    "text": "بالنسبة لملف <x1/>: <g2>فتح الروابط المغناطيسية وملفات .torrent باستخدام Mister Download Manager</g2> قيد التشغيل في <g3>المهام ← إعدادات التورنت</g3>."
@@ -16701,6 +16789,10 @@
   "e21e4c0c6fc923a2": {
    "source": "MDM's main window on Ubuntu 24.04's GNOME desktop: the categories and a list of downloads, each with the desktop's icon for its type",
    "text": "نافذة MDM الرئيسية على سطح مكتب GNOME في Ubuntu 24.04: الفئات وقائمة التنزيلات، كل منها مع أيقونة سطح المكتب لنوعها"
+  },
+  "e22a4ae089ee0db8": {
+   "source": "<g1>Live figures</g1>: the home page asks the same service on Cloudflare for how many times the app was downloaded and how many people use the browser add-on, to show them under the contributors. That request carries only what every request to a website does (your IP address and browser details, which Cloudflare sees); the service keeps nothing of it and writes no log. The figures themselves come from GitHub and the browser stores, read by the service, never by your browser.",
+   "text": "<g1>الأرقام المباشرة</g1>: تطلب الصفحة الرئيسية من نفس الخدمة على Cloudflare عدد مرات تنزيل التطبيق وعدد الأشخاص الذين يستخدمون الوظيفة الإضافية للمستعرض، لعرضها تحت المساهمين. يحمل هذا الطلب فقط ما يحمله أي طلب إلى موقع ويب (عنوان IP الخاص بك وتفاصيل المستعرض، والتي تراها Cloudflare)؛ لا تحتفظ الخدمة بأي شيء منه ولا تكتب أي سجل. تأتي الأرقام نفسها من GitHub ومتاجر المستعرض، وتقرأها الخدمة، وليس مستعرضك أبدا."
   },
   "e22ae1bbb5224f5c": {
    "source": "Download manager",
@@ -17038,9 +17130,21 @@
    "source": "No, if it came from this site or GitHub Releases. Some antivirus programs judge a program they don't know by an educated guess, not by a known virus…",
    "text": "لا، إذا كان من هذا الموقع أو إصدارات GitHub. تحكم بعض برامج مكافحة الفيروسات على برنامج لا تعرفه بتخمين مدروس، وليس بفيروس معروف..."
   },
+  "e6d677c76529ac72": {
+   "source": "<g1>#1</g1><g2>Rust</g2>",
+   "text": "<g1>#1</g1><g2>Rust</g2>"
+  },
+  "e6e4ffbd1a17c7e8": {
+   "source": "<x1/> pull request",
+   "text": "<x1/> طلب سحب"
+  },
   "e6e9f590b183bea4": {
    "source": "Link grabber: paste many links, MDM groups them, checks which are online, and extracts archives when they arrive.",
    "text": "ملتقط الروابط: الصق العديد من الروابط، يقوم MDM بتجميعها، ويتحقق من المتصل منها، ويستخرج الأرشيفات عند وصولها."
+  },
+  "e6f2d5c5287999ae": {
+   "source": "Some programs (BitComet, for one) write a torrent's names in another encoding and add a UTF-8 copy of them (<x1/>, <x2/>); MDM shows and saves the files under the UTF-8 names. A torrent like that which was downloading in an earlier version starts those files again under their correct names, and leaves the files with the old names in the folder.",
+   "text": "تكتب بعض البرامج (BitComet، على سبيل المثال) أسماء ملفات التورنت بتشفير آخر وتضيف نسخة UTF-8 منها (<x1/>، <x2/>)؛ يعرض MDM الملفات ويحفظها بالأسماء المشفرة بـ UTF-8. التورنت الذي كان قيد التنزيل في إصدار سابق سيبدأ تنزيل هذه الملفات مرة أخرى بأسمائها الصحيحة، ويترك الملفات ذات الأسماء القديمة في المجلد."
   },
   "e700b8b592a5b4c0": {
    "source": "Free forever: no trial, no ads, no key",
@@ -18318,6 +18422,10 @@
    "source": "<g1>Stop sharing after sharing for … minutes</g1> — or once it has been shared that long, over all its runs. Off by default.",
    "text": "<g1>إيقاف البذر بعد مدة … دقيقة</g1> — أو بمجرد أن يستمر بذره لهذه المدة، عبر جميع مرات تشغيله. متوقف افتراضيا."
   },
+  "f821c9c149c3e050": {
+   "source": "<x1/> comments",
+   "text": "<x1/> تعليقات"
+  },
   "f82dc8051d1faab0": {
    "source": "names besides its addresses the page may be opened by",
    "text": "أسماء بخلاف عناوينه التي يمكن فتح الصفحة بها"
@@ -18422,6 +18530,10 @@
    "source": "What's new in version 0.5.0 <g1>2026-11-08</g1>",
    "text": "ما الجديد في الإصدار 0.5.0 <g1>2026-11-08</g1>"
   },
+  "f9a8db1326e07676": {
+   "source": "<x1/> issues",
+   "text": "<x1/> مشاكل"
+  },
   "f9b1393934105e30": {
    "source": "Yes. The portable download is a zip: unzip it anywhere, a USB stick included, and run it. Your downloads list and settings stay in its own <x1/> folder, so nothing is written to the computer. See <g2>Portable mode</g2>.",
    "text": "نعم. النسخة المحمولة ملف zip: فك ضغطه في أي مكان، حتى على وحدة تخزين USB، ثم شغله. تبقى قائمة التنزيلات والإعدادات في مجلد <x1/> الخاص به، فلا يكتب أي شيء على الكمبيوتر. راجع <g2>الوضع المحمول</g2>."
@@ -18433,6 +18545,10 @@
   "f9c366e9c3fc0557": {
    "source": "Check <g1>Options → Connection</g1>. A low <g2>Default max. conn. number</g2>, or an exception for the server, means fewer connections. Rows marked <g3>(auto)</g3> are servers that refused more connections; MDM can't do more there.",
    "text": "تحقق من <g1>الخيارات ← الاتصال</g1>. يعني انخفاض <g2>الحد الأقصى الافتراضي لعدد الاتصالات</g2>، أو استثناء للخادم، عددا أقل من الاتصالات. الصفوف التي تحمل علامة <g3>(تلقائي)</g3> هي خوادم رفضت المزيد من الاتصالات؛ لا يمكن لـ MDM فعل المزيد هناك."
+  },
+  "f9cf9c317bb4b9cf": {
+   "source": "Download a file with up to 8 connections (<x1/>, 1 to 128), showing progress. <x2/> pauses it; <x3/> continues. <x4/> sets the referring page address (Referer header), <x5/> sets the request's User-Agent (then the only one sent; without it, MDM speaks as your default browser, and, when a site's bot check refuses that and the way a browser connects too, once more under its own name), <x6/> sets the Cookie header (a cookie on the command line ends up in the shell's history; <x7/> reads it from standard input instead). <x8/> checks the finished file: hex MD5, SHA-1, SHA-256, SHA-512 or CRC32, optionally named (<x9/>); a file that doesn't match fails. Without it, a checksum the server sends is checked, and a file that doesn't match it is kept with a <x10/> line (see <g11>Verify checksum</g11>). <x12/> picks the DNS instead of Options': <x13/>; a service and how to ask it, <x14/>, <x15/>, <x16/>, <x17/>, <x18/>; DNS servers' addresses, <x19/>; or a DNS-over-HTTPS address. It never falls back to the system's DNS. <x20/> sends every connection through one network adapter instead of Options' (<x21/> for none), by its name (<x22/>, <x23/>) or one of its addresses; when it isn't connected, nothing is sent and the download fails. <x24/> takes the place of Options' proxy for this run (see above). The app's <g25>site rules</g25> for the address apply too (their headers, User-Agent, browser-like connection, number of connections and proxy), where the command line gives none of the same: <x26/> goes before every rule's proxy. A link from a file host that one of your debrid accounts (<g27>Options → Accounts</g27>) supports goes through that account, as in the app, and <x28/> says <x29/>; <x30/> downloads the address itself (<g31>Debrid service accounts</g31>).",
+   "text": "تنزيل ملف بما يصل إلى 8 اتصالات (<x1/>، من 1 إلى 128)، مع إظهار التقدم. <x2/> يوقفه مؤقتا؛ <x3/> يتابعه. <x4/> يحدد عنوان الصفحة المرجعية (رأس Referer)، <x5/> يحدد User-Agent للطلب (ثم هو الوحيد الذي يتم إرساله؛ بدونه، يتحدث MDM كمستعرضك الافتراضي، وعندما يرفض فحص الروبوت الخاص بالموقع ذلك وطريقة اتصال المستعرض أيضا، مرة أخرى باسمه الخاص)، <x6/> يحدد رأس Cookie (ملف تعريف الارتباط في سطر الأوامر ينتهي في سجل الأوامر؛ <x7/> يقرأه من الإدخال القياسي بدلا من ذلك). <x8/> يتحقق من الملف المكتمل: MD5 سداسي عشري، SHA-1، SHA-256، SHA-512 أو CRC32، اختياريا باسم (<x9/>)؛ الملف الذي لا يتطابق يفشل. بدونه، يتم التحقق من بصمة الملف التي يرسلها الخادم، ويتم الاحتفاظ بالملف الذي لا يتطابق معها مع سطر <x10/> (انظر <g11>التحقق من بصمة الملف</g11>). <x12/> يختار DNS بدلا من خيارات «الخيارات»: <x13/>؛ خدمة وكيفية طلبها، <x14/>، <x15/>، <x16/>، <x17/>، <x18/>؛ عناوين خوادم DNS، <x19/>؛ أو عنوان DNS-over-HTTPS. لا يعود أبدا إلى DNS الخاص بالنظام. <x20/> يرسل كل اتصال عبر محول شبكة واحد بدلا من «الخيارات» (<x21/> لـ «لا شيء»)، باسمه (<x22/>، <x23/>) أو أحد عناوينه؛ عندما لا يكون متصلا، لا يتم إرسال أي شيء ويفشل التنزيل. <x24/> يحل محل وكيل «الخيارات» لهذه الجلسة (انظر أعلاه). تنطبق <g25>قواعد الموقع</g25> الخاصة بالتطبيق للعنوان أيضا (رؤوسها، User-Agent، الاتصال الشبيه بالمستعرض، عدد الاتصالات والوكيل)، حيث لا يوفر سطر الأوامر أيا من نفس الشيء: <x26/> يأتي قبل وكيل كل قاعدة. رابط من موقع استضافة ملفات يدعمه أحد حسابات Debrid الخاصة بك (<g27>الخيارات → الحسابات</g27>) يمر عبر هذا الحساب، كما هو الحال في التطبيق، و<x28/> يقول <x29/>؛ <x30/> ينزل العنوان نفسه (<g31>حسابات خدمة Debrid</g31>)."
   },
   "f9d1377f746da798": {
    "source": "No features were removed, only an old label and some bulky files.",
@@ -18481,10 +18597,6 @@
   "fa5983ecf8199d6b": {
    "source": "<g1>macOS</g1>: open the <g2>.dmg</g2> and drag Mister Download Manager to Applications, then right-click it and choose <g3>Open</g3> the first time.",
    "text": "<g1>نظام macOS</g1>: افتح ملف <g2>.dmg</g2> واسحب Mister Download Manager إلى التطبيقات، ثم انقر بزر الفأرة الأيمن عليه واختر <g3>فتح</g3> في المرة الأولى."
-  },
-  "fa5f14a1aee829e9": {
-   "source": "first when the download goes through a debrid account, then a <x1/> line every half second, then <x2/>, or <x3/> after <x4/> (<x5/> is the file <x6/> takes).",
-   "text": "أولا عندما يمر التنزيل عبر حساب Debrid، ثم سطر <x1/> كل نصف ثانية، ثم <x2/>، أو <x3/> بعد <x4/> (<x5/> هو الملف الذي يأخذه <x6/>)."
   },
   "fa642946eaf6222a": {
    "source": "Point at a download (or reach it with the keyboard) for <g1>Show in folder</g1> and <g2>Pause</g2> or <g3>Resume</g3>. Click a finished file's name to open it. Its <g4>⋯</g4> menu has the rest:",
@@ -18933,10 +19045,6 @@
   "ff3a9a6f1b38ed2c": {
    "source": "Check MDM's own helpers (yt-dlp, ffmpeg, gallery-dl, Node.js) for newer versions now, install them (each checked as its first install was), and print their versions. A helper a download is using switches to its new version once that download ends. Programs you chose in Helpers, and your system's, are yours to update.",
    "text": "تحقق من البرامج المساعدة الخاصة بـ MDM (yt-dlp، ffmpeg، gallery-dl، Node.js) بحثا عن إصدارات أحدث الآن، وثبتها (يتم فحص كل منها كما كان تثبيتها الأول)، واطبع إصداراتها. يتحول البرنامج المساعد الذي يستخدمه التنزيل إلى إصداره الجديد بمجرد انتهاء هذا التنزيل. البرامج التي اخترتها في البرامج المساعدة، وتلك الموجودة في نظامك، هي مسؤوليتك لتحديثها."
-  },
-  "ff442f775d7b9907": {
-   "source": "<g1>Proof of delivery</g1><g2>Store figures as of <x3/>, the others checked on <x4/> · quotes exact, linked to their source</g2>",
-   "text": "<g1>إثبات التسليم</g1><g2>الأرقام المخزنة اعتبارا من <x3/>، والأخرى تم التحقق منها في <x4/> · الاقتباسات دقيقة، ومربوطة بمصدرها</g2>"
   },
   "ff71942d9ac7e304": {
    "source": "<g1>Your AI assistant, only if you connect one.</g1> MDM's MCP server (<x2/>) talks only to the MDM on your computer. But if you add it to an AI assistant (Claude, Cursor, VS Code…) and turn on the automation API, the assistant can read your download list, and what it reads (file names, addresses, folders) goes to that assistant's AI service, under its privacy terms. Nothing of this happens unless you set it up; see <g3>AI assistants</g3>.",

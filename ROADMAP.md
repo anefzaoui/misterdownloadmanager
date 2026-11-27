@@ -569,6 +569,11 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 Everything below ships together, in version 0.6.0, the next release.
 
+- ✅ Website: live counters under the home page's contributors, the app's downloads (GitHub's
+  releases) and the browser add-on's users (the Chrome Web Store and Firefox Add-ons), on
+  split-flap tiles that flip up from zero when the page opens; read at most every 15 minutes, the
+  build's figures when they can't be; the site's download figure is now GitHub's real count, read
+  at every build
 - ✅ A checksum the server announces that doesn't match no longer fails the download: the file is
   kept, with a warning in the list, its log, Properties and Download complete; a checksum you
   enter, or one the site publishes, still must match. A `Content-MD5` beside a body the server
