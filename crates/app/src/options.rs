@@ -404,6 +404,17 @@ impl OptionsDialog {
         self
     }
 
+    /// With Save to's category `key` chosen (its settings name, `Programs`; a user's by its
+    /// name), for `/show options:saveto:<category>`: screenshots of a category's file types.
+    pub fn with_category(mut self, key: &str, downloads: &std::path::Path) -> Self {
+        let cats = Category::all();
+        if let Some(i) = cats.iter().position(|c| c.key().eq_ignore_ascii_case(key)) {
+            self.category = i;
+            self.cat_dir = display_dir(&self.s.category_dir(cats[i], downloads));
+        }
+        self
+    }
+
     /// With the app's remote control (Remote: its state, devices and pairing).
     pub fn with_remote(mut self, remote: Option<mdm_remote::Remote>) -> Self {
         self.remote = remote;

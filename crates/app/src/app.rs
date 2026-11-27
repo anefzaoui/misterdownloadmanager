@@ -3998,6 +3998,8 @@ impl App {
                 }
             }
             "options" => {
+                // options:saveto:Programs: Save to with that category chosen (screenshots).
+                let (tab, category) = tab.split_once(':').unwrap_or((tab, ""));
                 let page = match tab {
                     "types" => 1,
                     "saveto" => 2,
@@ -4016,6 +4018,13 @@ impl App {
                 };
                 self.run(Cmd::Options, None, ctx);
                 self.options = self.options.take().map(|o| o.on_page(page));
+                if !category.is_empty() {
+                    let downloads = self.downloads.clone();
+                    self.options = self
+                        .options
+                        .take()
+                        .map(|o| o.with_category(category, &downloads));
+                }
                 self.raise_options = true;
                 // General → Download panels → Edit... (the video button's settings).
                 if tab == "panels" {
