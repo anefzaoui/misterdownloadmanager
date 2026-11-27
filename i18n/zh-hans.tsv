@@ -289,7 +289,7 @@
 	A single-file torrent keeps its name	单文件种子保留原文件名
 #. text in the download list (sizes, speeds, status)
 #. why a torrent that isn't finished can't be moved or renamed: the torrent engine writes its pieces into the files where they are
-	A torrent can be moved once it's finished: until then the torrent engine writes its pieces where they are	种子完成后才能移动：在此之前，种子引擎会就地写入其分片
+	A torrent can be moved once it's finished: until then the torrent engine writes its pieces where they are	种子完成后才能移动：在此之前，种子引擎会就地写入其分块
 #. text in torrent_ownership.rs
 #. a torrent's folder is a link or junction leading outside its destination
 	A torrent file's folder points outside its destination	某个种子文件的文件夹指向其目标位置之外
@@ -298,7 +298,7 @@
 	A tracker on this computer or the local network is never contacted: {line}	不会连接本机或本地网络上的 Tracker：{line}
 #. text in the download list (sizes, speeds, status)
 #. why a video or an image gallery that isn't finished can't be moved or renamed: yt-dlp, ffmpeg or gallery-dl keep their unfinished files in its folder
-	A video or a gallery can be moved once it's finished: until then its helper programs keep their unfinished files in its folder	视频或图库下载完成后才能移动：在此之前，其辅助程序会将未完成的文件保留在当前文件夹中
+	A video or a gallery can be moved once it's finished: until then its helper programs keep their unfinished files in its folder	视频或图库下载完成后才能移动：在此之前，其帮助程序会将未完成的文件保留在当前文件夹中
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 	a volume of it is missing	缺少其中一个分卷
@@ -444,7 +444,7 @@
 	Afghanistan	阿富汗
 #. text in the Options window
 #. Options → Add an account: a note under the user name and password fields (Mega-Debrid bans the address for some minutes after a few wrong passwords)
-	After a few wrong passwords the service blocks this connection for some minutes.	连续输错几次密码后，服务会暂停此连接几分钟。
+	After a few wrong passwords the service blocks this connection for some minutes.	连续输错几次密码后，服务会屏蔽此连接几分钟。
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Aland Islands	奥兰群岛
@@ -479,7 +479,7 @@
 #. Click'n'Load window, under the question: nothing happens to the links before the user adds them in Link grabber
 	Allow only sites you use. Nothing is looked up or downloaded before you add it in Link grabber.	仅允许您使用的网站。在您将链接添加到链接抓取器之前，不会查询或下载任何内容。
 #. text in errors.rs
-	already being downloaded: {path}	已在下载：{path}
+	already being downloaded: {path}	已在下载中：{path}
 #. text in the Link grabber window
 #. Link grabber: the package of links the download list has already
 	Already in the list	已在列表中
@@ -1331,7 +1331,7 @@
 	Downloading MDM's own copy...	正在下载 MDM 自带的 yt-dlp…
 #. text in helpers.rs
 #. Helpers: MDM's own copy of a helper is being downloaded (where there was none, or in place of the system's); {percent} = how far, a number
-	Downloading MDM's own copy... {percent}%	正在下载 MDM 自带的副本… {percent}%
+	Downloading MDM's own copy... {percent}%	正在下载 MDM 自己的副本… {percent}%
 #. text in archtest.rs
 #. in a download's log: after its archive test found damaged files, only their bytes are downloaded again from the same server; {size} like "1.20 MB"
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
@@ -4335,7 +4335,7 @@
 #. text in errors.rs
 #. why a download failed (#1460): the browser's own download of the link was a file of {size} (such as 117.65 MB), but when MDM asked the server for it, it sent only {sent} (such as 4.65 KB): an error or a notice, not the file. Some links work only once, or only in the browser. Alt+click: the link clicked with the Alt key held, which leaves the download to the browser
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
-	the server sent only {sent} where the browser's file is {size} (a link that works once, or only in the browser): Alt+click the link to let the browser download it	服务器只发送了 {sent}，而浏览器文件为 {size}（链接只能使用一次，或只能在浏览器中打开）：Alt+单击链接，让浏览器下载
+	the server sent only {sent} where the browser's file is {size} (a link that works once, or only in the browser): Alt+click the link to let the browser download it	服务器只发送了 {sent}，而浏览器中的文件为 {size}（链接只能使用一次，或只能在浏览器中打开）：Alt+单击链接，让浏览器下载
 #. text in debrid.rs
 #. Options → Accounts: the service doesn't say whether the account is premium (Mega-Debrid, signed in with an API key); a free account's links are refused when downloading
 	the service doesn't say whether it is premium	服务未说明是否为高级账户
@@ -4359,7 +4359,7 @@
 	The site's bot check (Cloudflare) refused yt-dlp, even with {browser}'s cookies. Use the Download video button over the video in {browser}, or try the page again later.	站点的人机校验（Cloudflare）拒绝了 yt-dlp，即使已带上 {browser} 的 Cookie。请在 {browser} 中点击视频上方的“下载视频”按钮，或稍后重试该页面。
 #. text in the Download video window
 #. the Download video window: the site's bot check (Cloudflare) turned yt-dlp away and no browser cookies were used
-	The site's bot check (Cloudflare) refused yt-dlp. If the page opens in your browser, choose that browser in Options → Sites Logins → Cookies for video sites and look the page up again, or use the Download video button over the video.	站点的人机校验（Cloudflare）拒绝了 yt-dlp。若该页面能在浏览器中打开，请在“选项”→“站点登录”→“视频网站的 Cookie”中选择该浏览器后重新解析，或点击视频上方的“下载视频”按钮。
+	The site's bot check (Cloudflare) refused yt-dlp. If the page opens in your browser, choose that browser in Options → Sites Logins → Cookies for video sites and look the page up again, or use the Download video button over the video.	站点的人机校验（Cloudflare）拒绝了 yt-dlp。若该页面能在浏览器中打开，请在“选项”→“站点登录”→“视频网站的 Cookie”中选择该浏览器后重新查找该页面，或点击视频上方的“下载视频”按钮。
 #. text in the Download video window
 #. the Download video window: the site's certificate is trusted neither by yt-dlp nor by the computer (asked again with the computer's certificates, #955); usually an antivirus or a proxy that reads secure (HTTPS) connections signs sites with a certificate of its own
 	The site's certificate isn't trusted, by yt-dlp nor by this computer: an antivirus's web filter or a proxy that reads HTTPS may be in the way. Turn its HTTPS scanning off, or add its certificate to the computer's, then look the page up again.	yt-dlp 和此计算机均不信任该网站的证书：可能是防病毒软件的网络筛选器或读取 HTTPS 的代理在阻止。请关闭其 HTTPS 扫描，或将其证书添加到计算机中，然后重新查找该页面。
@@ -4616,7 +4616,7 @@
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
 	this {site} link is a web page, not the file: open it in your browser and download from there	此 {site} 链接是网页而非文件：请在浏览器中打开并从那里下载
 #. text in helpers.rs
-	Three free helpers make it work. Get them now, and saving a video is one click away when you find one.	三个免费的辅助程序让它正常运行。立即获取它们，找到视频后即可一键保存。
+	Three free helpers make it work. Get them now, and saving a video is one click away when you find one.	三个免费帮助程序让它正常运行。立即获取它们，找到视频后即可一键保存。
 #. text in whereis.rs
 #. where a download's server is, when a proxy carries it (the proxy's place not known)
 	through a proxy	通过代理
@@ -4770,7 +4770,7 @@
 #. a country's name (where a download's server is)
 	Tuvalu	图瓦卢
 #. text in helpers.rs
-	Two free helpers make it work. Get them now, and saving a video is one click away when you find one.	两个免费辅助程序即可让它工作。立即获取，找到视频后一键保存。
+	Two free helpers make it work. Get them now, and saving a video is one click away when you find one.	两个免费帮助程序即可让它工作。立即获取，找到视频后一键保存。
 #. label in the Options window; text in the Options window
 #. Options → Proxy / Socks → Manual: label before the kind of proxy (HTTP, HTTPS, SOCKS5, SOCKS4)
 	Type	类型
@@ -5270,7 +5270,7 @@
 	{algorithm}: checked when the download finishes	{algorithm}：下载完成后进行校验
 #. text in the Download video window
 #. the Download video window: Chrome 127 and later (and Edge, Brave) on Windows encrypt their cookies so only they can read them; {browser} = its name
-	{browser} keeps its cookies locked to itself on Windows, so yt-dlp can't read them. Choose Firefox in Options → Sites Logins, or use the Download video button over the video in {browser}.	{browser} 在 Windows 上将 Cookie 加密为仅自己可读，因此 yt-dlp 无法读取。请在“选项”→“站点登录”中选择 Firefox，或使用 {browser} 中视频上的“下载视频”按钮。
+	{browser} keeps its cookies locked to itself on Windows, so yt-dlp can't read them. Choose Firefox in Options → Sites Logins, or use the Download video button over the video in {browser}.	{browser} 在 Windows 上将 Cookie 锁定为仅自己可读，因此 yt-dlp 无法读取。请在“选项”→“站点登录”中选择 Firefox，或使用 {browser} 中视频上的“下载视频”按钮。
 #. text in extension.rs
 #. a check of Test browser integration: {browser} is a browser's name
 	{browser}: the extension connected	{browser}：扩展已连接
