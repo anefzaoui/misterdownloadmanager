@@ -1999,6 +1999,30 @@ fn video_goes(start_now: bool, from_menu: bool, queue_panel: bool) -> VideoGoes 
     }
 }
 
+/// A download's cookie jar holding the browser's cookies the extension handed over with it
+/// (#1540), each with the domain and path the browser keeps for it; none when it sent none (the
+/// engine makes an empty one, for the cookies servers set on the way).
+fn browser_jar(
+    cookies: &[ipc::BrowserCookie],
+) -> Option<std::sync::Arc<mdm_engine::cookies::CookieJar>> {
+    if cookies.is_empty() {
+        return None;
+    }
+    let jar = mdm_engine::cookies::CookieJar::new();
+    for c in cookies {
+        jar.add_browser(
+            &c.name,
+            &c.value,
+            &c.domain,
+            c.host_only,
+            &c.path,
+            c.secure,
+            c.expires,
+        );
+    }
+    Some(std::sync::Arc::new(jar))
+}
+
 pub fn auth_headers(login: Option<&(String, String)>) -> HeaderMap {
     let mut h = HeaderMap::new();
     if let Some((user, pass)) = login {
@@ -4398,6 +4422,9 @@ impl App {
             // A site rule: the way a browser connects from the first request (#1778).
             browser_first: site.browser_like,
             allowed_certs: self.settings.allowed_certs.clone(),
+            // The browser's cookies for each host the download goes through (#1540): the
+            // address's, its redirects', where they ended; each to its own hosts only.
+            cookie_jar: browser_jar(&context.cookie_jar),
             ..Options::default()
         };
         // A site rule's User-Agent is the user's choice for that site, above the browser's and

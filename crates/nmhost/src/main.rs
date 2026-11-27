@@ -92,7 +92,8 @@ struct Message {
     /// The web page the download was started from, whole (#607; `mdm_ipc::Command::page_url`).
     page_url: Option<String>,
     cookies: Option<String>,
-    /// The same cookies with their domains and flags (`mdm_ipc::Command::cookie_jar`); an older
+    /// The browser's cookies with their domains and flags (`mdm_ipc::Command::cookie_jar`): a
+    /// video's, or a file's for every host its download went through (#1540); an older
     /// extension sends none.
     cookie_jar: Vec<mdm_ipc::BrowserCookie>,
     user_agent: Option<String>,
@@ -3129,6 +3130,47 @@ mod tests {
         let c = to_command(old);
         assert!(c.cookie_jar.is_empty());
         assert!(!serde_json::to_string(&c).unwrap().contains("cookie_jar"));
+    }
+
+    /// #1540: a file's hand-off with the cookies of each host its download went through in the
+    /// browser (the link's, the redirect's, where it ended; a partitioned one with its
+    /// `partitionKey`, which the app doesn't need): all reach the app with their domains, with
+    /// where it ended.
+    #[test]
+    fn a_files_cookies_for_each_host_reach_the_app() {
+        let m: Message = serde_json::from_str(
+            r#"{"url":"https://site.test/get?id=1","finalUrl":"https://files.cdn.test/f/a.zip","cookies":"sid=1","filename":"a.zip",
+              "cookieJar":[{"name":"sid","value":"1","domain":"site.test","hostOnly":true,"path":"/","secure":true},
+                           {"name":"gate","value":"2","domain":".cdn.test","hostOnly":false,"path":"/","secure":true},
+                           {"name":"part","value":"3","domain":"files.cdn.test","hostOnly":true,"path":"/f","secure":true,"partitionKey":{"topLevelSite":"https://site.test"}}]}"#,
+        )
+        .unwrap();
+        let c = to_command(m);
+        assert_eq!(
+            c.final_url.as_deref(),
+            Some("https://files.cdn.test/f/a.zip")
+        );
+        assert_eq!(c.cookies.as_deref(), Some("sid=1"));
+        let hosts: Vec<_> = c
+            .cookie_jar
+            .iter()
+            .map(|k| {
+                (
+                    k.name.as_str(),
+                    k.domain.as_str(),
+                    k.host_only,
+                    k.path.as_str(),
+                )
+            })
+            .collect();
+        assert_eq!(
+            hosts,
+            [
+                ("sid", "site.test", true, "/"),
+                ("gate", ".cdn.test", false, "/"),
+                ("part", "files.cdn.test", true, "/f"),
+            ]
+        );
     }
 
     #[test]

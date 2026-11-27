@@ -20,6 +20,8 @@
 //!   look-up's addresses expire together, however late the download starts)
 //! - `GET /hop?to=URL&how=meta|header[&wait=S][&cookie=N=V]` — a page that sends the browser on to
 //!   `URL` itself (`<meta http-equiv="refresh">` or a `Refresh` header), as download sites' waiting pages do
+//! - `GET /jump?to=URL&set=SET-COOKIE` — a redirect (302) that sets cookies on the way (#1540), as
+//!   a file host's sign-in step does before its CDN; logged with the Cookie it was sent
 //! - `GET /page`, `/formpage`, `/cookie`, `/assets/*` — web pages for the browser tests (`pages`)
 //! - `GET /declared` — a page that declares its video and hides another (#1076, `pages`)
 //! - `GET /hls/*`, `/dash/*` — adaptive streams (`streams`); `/hls2/*`, `/dash2/*` the same with
@@ -457,6 +459,7 @@ impl LabServer {
             .route("/declared", get(pages::declared))
             .route("/formpage", get(pages::formpage))
             .route("/cookie", get(pages::cookie))
+            .route("/jump", get(jump))
             .route("/assets/{file}", get(pages::asset))
             .route("/hls/master.m3u8", get(streams::hls_master))
             .route("/hls/broken-audio.m3u8", get(streams::hls_broken_master))
@@ -850,7 +853,7 @@ GET|HEAD /gen/{size}[/{name}]?seed=N&<file params>&<faults>   size: 12345, 64K, 
     garble=SIZE    /files only: the first answer for a path that carries the byte at that
                    offset sends 64 bytes from there inverted (a proxy that mangled a range);
                    later answers send them right
-    require_cookie=NAME=VALUE|NAME   403 unless the Cookie header has it
+    require_cookie=NAME=VALUE|NAME[,...]   403 unless the Cookie header has it (each of them)
     require_referer=PREFIX           403 unless the Referer starts with PREFIX (%-encode ? & =)
     refuse_agent=TEXT                403 when the User-Agent contains TEXT
     refuse_family=4|6                403 when the request came over that IP family (a link signed
@@ -889,6 +892,8 @@ GET /stream.php, /remote_control.php?id=N|file=NAME&size=1M&type=MIME|none&magic
     a generated file a server's program sends (#695, #800): no Content-Disposition, Content-Type
     video/mp4 (type= another, none for none at all), magic= its first bytes a media type's
 GET /redirect?to=URL[&ttl_ms=N][&uses=N][&code=3xx]   302 (or code) to URL (not logged); ttl_ms: a signed link expiring after N ms; uses: a new link each time, expiring after N requests
+GET /jump?to=URL&set=SET-COOKIE   (set repeatable, %-encoded) 302 to URL with each as a Set-Cookie
+    header (`gate=1; Domain=cdn.test; Path=/`), logged with the Cookie it was sent (#1540)
 /rd/rest/1.0/{user,hosts/domains,unrestrict/link,disable_access_token}, /rd/oauth/v2/{device/code,device/credentials,token}
                                               a fake Real-Debrid (#44): tokens good (premium), free; links http://hoster.test/file/SIZE/NAME[?gone=1&down=1&chunks=N&ttl_ms=N&rate=SIZE&busy=N]
 /ad/v4/{user,hosts/domains,link/unlock,link/delayed,pin/check}, /ad/v4.1/pin/get      a fake AllDebrid: the same tokens and links, plus delayed=N
@@ -1121,6 +1126,31 @@ async fn redirect(RawQuery(q): RawQuery) -> Response {
         .filter(StatusCode::is_redirection)
         .unwrap_or(StatusCode::FOUND);
     (code, [(header::LOCATION, to)]).into_response()
+}
+
+/// `/jump?to=URL&set=SET-COOKIE` (`set` repeatable): a redirect (302) to `URL` that sets each
+/// `set` as a `Set-Cookie` header of its own, whole (`gate=1; Domain=cdn.test; Path=/`), as a file
+/// host's sign-in step sets its session for the CDN it sends the download to (#1540). Logged
+/// (`log_simple`), with the Cookie header it was sent: what each hop of a chain got.
+async fn jump(RawQuery(q): RawQuery) -> Response {
+    let m: Vec<(String, String)> = q
+        .and_then(|q| serde_urlencoded::from_str(&q).ok())
+        .unwrap_or_default();
+    let Some(to) = m.iter().find(|(k, _)| k == "to").map(|(_, v)| v.clone()) else {
+        return (StatusCode::BAD_REQUEST, "/jump?to=URL&set=SET-COOKIE\n").into_response();
+    };
+    let mut resp = (StatusCode::FOUND, [(header::LOCATION, to)]).into_response();
+    for (_, v) in m.iter().filter(|(k, _)| k == "set") {
+        match v.parse() {
+            Ok(cookie) => {
+                resp.headers_mut().append(header::SET_COOKIE, cookie);
+            }
+            Err(_) => {
+                return (StatusCode::BAD_REQUEST, format!("bad cookie `{v}`\n")).into_response();
+            }
+        }
+    }
+    resp
 }
 
 /// `/hop?to=URL&how=meta|header[&wait=S][&cookie=NAME=VALUE]`: a web page (200) that sends the

@@ -2,6 +2,7 @@
 
 pub mod agent;
 pub mod browserlike;
+pub mod cookies;
 pub mod disk;
 pub mod dns;
 pub mod download;

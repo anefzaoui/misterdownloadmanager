@@ -68,6 +68,10 @@ pub(crate) struct Browser {
     /// The connections whose answers are coming in, by number ([`Lease`]).
     #[cfg(feature = "browser-connection")]
     in_use: Arc<Mutex<Vec<bool>>>,
+    /// The download's cookie jar (#1540, `Options::cookie_jar`): each request's cookies come
+    /// from it, and each answer's go into it, as on MDM's own connection.
+    #[cfg_attr(not(feature = "browser-connection"), allow(dead_code))]
+    jar: Option<Arc<crate::cookies::CookieJar>>,
 }
 
 /// One connection of a [`Browser`], taken for one request and its answer: the lowest number no
@@ -163,6 +167,7 @@ impl Browser {
                 route: opts.route.clone(),
                 stay_here,
                 in_use: Default::default(),
+                jar: opts.cookie_jar.clone(),
             })
         }
         #[cfg(not(feature = "browser-connection"))]
@@ -227,8 +232,13 @@ impl Connection {
     /// Refused when this build has none ([`AVAILABLE`]: `Error::BotCheck`), or when the network
     /// adapter can't hold its connections (#35).
     pub fn new(opts: &Options, url: &Url, headers: &HeaderMap) -> Result<Connection, Error> {
+        // Its callers decide each request's cookies themselves: no download's jar.
+        let opts = Options {
+            cookie_jar: None,
+            ..opts.clone()
+        };
         Ok(Connection(std::sync::Arc::new(Browser::new(
-            opts, url, headers,
+            &opts, url, headers,
         )?)))
     }
 
@@ -710,6 +720,11 @@ mod imp {
             // The download's User-Agent in the headers' place, never beside one they carry:
             // wreq's `header` adds a second (#1494).
             let mut sent = headers.clone();
+            // The download's cookie jar (#1540): the Cookie these headers carry for `url` is
+            // given to it, and its own header for `url` goes in its place.
+            if let Some(jar) = &b.jar {
+                jar.ready(&url, &mut sent, true);
+            }
             sent.insert(header::USER_AGENT, b.agent.clone());
             if range {
                 // As browsers ask for a part of a file: its bytes as they are.
@@ -727,6 +742,9 @@ mod imp {
                 req.send().await.map_err(|e| net_error(&e))
             })
             .await?;
+            if let Some(jar) = &b.jar {
+                jar.take(resp.headers(), &url);
+            }
             if resp.status().is_redirection()
                 && let Some(next) = resp
                     .headers()

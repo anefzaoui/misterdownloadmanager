@@ -63,6 +63,11 @@ function fakeApi({
   activeTab,
   // runtime.connectNative (#1496): a port to the host, answered as sendNativeMessage answers.
   nativePort = false,
+  // The browser's cookies (#1540): cookies.getAll answers from them as a browser does (by
+  // domain, path and partition); none: one cookie of .tube.test for every address. `partitions`
+  // false: a browser that knows no partition key (Safari, Chromium before 119) refuses it.
+  cookieStore,
+  partitions = true,
 }) {
   const raw = [];
   // Objects made inside the sandbox have its prototypes: compare plain copies.
@@ -120,6 +125,7 @@ function fakeApi({
     cookies: {
       getAll: async (q) => {
         calls.push(["cookies", q]);
+        if (cookieStore) return storeCookies(cookieStore, q, partitions);
         // As Chrome gives one: its other fields aren't sent.
         return [{ name: "sid", value: "1", domain: ".tube.test", hostOnly: false, path: "/", secure: true, httpOnly: true, sameSite: "lax", session: false, expirationDate: 1893456000.5, storeId: "0" }];
       },
@@ -331,6 +337,26 @@ const complaints = [];
 const quietConsole = { ...console, error: (...a) => complaints.push(["error", ...a]), warn: (...a) => complaints.push(["warn", ...a]) };
 
 // `extra`: more of the script's globals (a `Date` whose clock the test moves).
+// cookies.getAll as browsers answer it (#1540): the cookies of `q.url` by domain (a host-only
+// one for its own host), path, Secure and store; without a partition key the unpartitioned ones
+// only, with `{}` those of every partition too, with a site that partition's. A browser without
+// partitions (`partitions` false) refuses any key.
+function storeCookies(list, q, partitions) {
+  if ("partitionKey" in q && !partitions) throw new Error("Unexpected property: 'partitionKey'");
+  const u = new URL(q.url);
+  const host = u.hostname;
+  return list.filter((c) => {
+    const d = c.domain.replace(/^\./, "");
+    const domainOk = c.hostOnly ? host === d : host === d || host.endsWith(`.${d}`);
+    const pathOk = u.pathname === c.path || u.pathname.startsWith(c.path.endsWith("/") ? c.path : `${c.path}/`);
+    const secureOk = !c.secure || u.protocol === "https:";
+    const storeOk = (c.storeId || "0") === (q.storeId || "0");
+    const key = c.partitionKey;
+    const partOk = !("partitionKey" in q) ? !key : !q.partitionKey.topLevelSite ? true : Boolean(key) && key.topLevelSite === q.partitionKey.topLevelSite;
+    return domainOk && pathOk && secureOk && storeOk && partOk;
+  });
+}
+
 function load(api, firefox, extra = {}) {
   const ctx = {
     fetch: fakeFetch,
@@ -393,7 +419,12 @@ const ok = (what) => {
     ["https://x/a.zip", "https://page/", "sid=1", "a.zip", 2048, "application/zip", "UA", "0.2.5"],
   );
   assert.deepEqual(m.brands, ["Chromium", "Brave"]);
-  assert.equal(m.cookieJar, undefined, "a file's download: the header the app sends");
+  // And each cookie with its domain (#1540): the app's jar sends it to its own hosts only.
+  assert.deepEqual(
+    m.cookieJar,
+    [{ name: "sid", value: "1", domain: ".tube.test", hostOnly: false, path: "/", secure: true, expirationDate: 1893456000.5 }],
+    "a file's download: its cookies with their domains too",
+  );
   assert.deepEqual(steps(calls), ["pause", "cancel", "erase"]);
   ok("Firefox: taken with its container's cookies, size and type");
 }
@@ -6330,6 +6361,119 @@ const until = async (what, ms, check) => {
   assert.equal(kept(["JPEG", "AVIF"], 0, 0), "ae");
   assert.equal(kept(["PNG", "JPEG", "AVIF", "GIF"], 0, 0), "");
   ok("#1781 Find images: the tab's frames together and typed; the kept ones to Link grabber with the page's context; Download all and selected links send the pictures too, marked");
+}
+// #1540: a file whose download went through other hosts in the browser (a sign-in host, a CDN)
+// goes to the app with the cookies of each host it went through, partitioned ones of its page
+// included, each with its domain (the app sends each to its own hosts), never another site's
+// partition, a host no redirect reached, nor another store's.
+{
+  const site = "https://site.test";
+  const cookieStore = [
+    { name: "sid", value: "a", domain: "site.test", hostOnly: true, path: "/", secure: true },
+    { name: "login", value: "b", domain: ".login.test", hostOnly: false, path: "/", secure: true },
+    { name: "tok", value: "c", domain: "files.cdn.test", hostOnly: true, path: "/", secure: true, expirationDate: 1893456000.5 },
+    { name: "deep", value: "d", domain: "files.cdn.test", hostOnly: true, path: "/f", secure: false },
+    { name: "chip", value: "e", domain: "files.cdn.test", hostOnly: true, path: "/", secure: true, partitionKey: { topLevelSite: site } },
+    { name: "theirs", value: "f", domain: "files.cdn.test", hostOnly: true, path: "/", secure: true, partitionKey: { topLevelSite: "https://elsewhere.test" } },
+    { name: "other", value: "g", domain: "other.test", hostOnly: true, path: "/", secure: true },
+    { name: "private", value: "h", domain: "files.cdn.test", hostOnly: true, path: "/", secure: true, storeId: "1" },
+  ];
+  const { api, calls, listeners } = fakeApi({ firefox: true, cookieStore });
+  load(api, true);
+  // The page's link redirected through the sign-in host to the CDN.
+  listeners.beforeRedirect({ url: `${site}/get?id=1`, redirectUrl: "https://auth.login.test/go?t=1", type: "main_frame" });
+  listeners.beforeRedirect({ url: "https://auth.login.test/go?t=1", redirectUrl: "https://files.cdn.test/f/a.zip", type: "main_frame" });
+  listeners.created({ id: 41, url: "https://files.cdn.test/f/a.zip", referrer: `${site}/files`, filename: "C:\\dl\\a.zip", mime: "application/zip" });
+  await settle();
+  const [m] = natives(calls);
+  assert.deepEqual([m.url, m.finalUrl], [`${site}/get?id=1`, "https://files.cdn.test/f/a.zip"]);
+  assert.equal(m.cookies, "sid=a", "the header is the link's own, as before");
+  assert.deepEqual(
+    m.cookieJar.map((c) => [c.name, c.domain, c.hostOnly, c.path, c.secure]),
+    [
+      ["sid", "site.test", true, "/", true],
+      ["login", ".login.test", false, "/", true],
+      ["tok", "files.cdn.test", true, "/", true],
+      ["deep", "files.cdn.test", true, "/f", false],
+      ["chip", "files.cdn.test", true, "/", true],
+    ],
+  );
+  assert.equal(m.cookieJar.find((c) => c.name === "tok").expirationDate, 1893456000.5);
+  const fields = ["name", "value", "domain", "hostOnly", "path", "secure", "expirationDate"];
+  assert.ok(m.cookieJar.every((c) => Object.keys(c).every((k) => fields.includes(k))), "only what the app reads (no partition, no store)");
+  // Each host asked once without a partition and once for all of them; none other.
+  const asked = calls.filter((c) => c[0] === "cookies").map((c) => [c[1].url, "partitionKey" in c[1]]);
+  for (const u of [`${site}/get?id=1`, "https://auth.login.test/go?t=1", "https://files.cdn.test/f/a.zip"]) {
+    assert.ok(asked.some(([a, p]) => a === u && !p) && asked.some(([a, p]) => a === u && p), `${u} asked both ways`);
+  }
+  assert.ok(!asked.some(([a]) => a.includes("other.test")), "a host the download never reached isn't asked");
+
+  // A private window: its own store's cookies only.
+  const priv = fakeApi({ firefox: false, cookieStore });
+  load(priv.api, false);
+  priv.listeners.determining({ id: 42, url: `${site}/get?id=2`, finalUrl: "https://files.cdn.test/f/b.zip", filename: "b.zip", incognito: true }, () => {});
+  await settle();
+  const [pm] = natives(priv.calls);
+  assert.deepEqual(pm.cookieJar.map((c) => c.name), ["private"]);
+  assert.equal(pm.cookies, "", "no private cookie for the link's host");
+
+  // A browser without partitioned cookies: the others still go, nothing written as an error.
+  const old = fakeApi({ firefox: false, cookieStore, partitions: false });
+  load(old.api, false);
+  old.listeners.determining({ id: 43, url: `${site}/get?id=3`, finalUrl: "https://files.cdn.test/f/c.zip", filename: "c.zip", referrer: `${site}/files` }, () => {});
+  await settle();
+  const [om] = natives(old.calls);
+  assert.deepEqual(om.cookieJar.map((c) => c.name), ["sid", "tok", "deep"]);
+
+  // No cookie anywhere: no jar at all (the message an older app knows).
+  const none = fakeApi({ firefox: false, cookieStore: [] });
+  load(none.api, false);
+  none.listeners.determining({ id: 44, url: "https://x.test/a.zip", filename: "a.zip" }, () => {});
+  await settle();
+  const [nm] = natives(none.calls);
+  assert.ok(!("cookieJar" in nm) && nm.cookies === "");
+  ok("#1540: a file goes with the cookies of each host its redirects went through, its page's partitioned ones included, each with its domain");
+}
+
+// #1540: a partitioned cookie goes when its partition is the download's page's site or the
+// file's own (the browser went there itself), on the same scheme; never a look-alike host's.
+{
+  const cookieStore = [
+    { name: "page", value: "1", domain: "cdn.test", hostOnly: true, path: "/", secure: true, partitionKey: { topLevelSite: "https://site.test" } },
+    { name: "own", value: "2", domain: "cdn.test", hostOnly: true, path: "/", secure: true, partitionKey: { topLevelSite: "https://cdn.test" } },
+    { name: "plain", value: "3", domain: "cdn.test", hostOnly: true, path: "/", secure: true, partitionKey: { topLevelSite: "http://site.test" } },
+    { name: "alike", value: "4", domain: "cdn.test", hostOnly: true, path: "/", secure: true, partitionKey: { topLevelSite: "https://ite.test" } },
+  ];
+  const { api, calls, listeners } = fakeApi({ firefox: false, cookieStore });
+  load(api, false);
+  listeners.determining({ id: 45, url: "https://cdn.test/a.zip", filename: "a.zip", referrer: "https://www.site.test/files" }, () => {});
+  await settle();
+  const [m] = natives(calls);
+  assert.deepEqual(m.cookieJar.map((c) => c.name), ["page", "own"]);
+  ok("#1540: partitioned cookies of the page's site and of the file's own, never another site's");
+}
+
+// #1540: what the browser sent the address the download ended at goes too (a cookie no store
+// lists), for that host only and under the names the stores don't have; an address it sent
+// nothing to adds nothing, and an old capture is forgotten.
+{
+  const cookieStore = [{ name: "tok", value: "c", domain: "files.cdn.test", hostOnly: true, path: "/", secure: true }];
+  const { api, calls, listeners } = fakeApi({ firefox: false, cookieStore });
+  load(api, false);
+  await settle();
+  listeners.sendHeaders({ requestId: "d1", tabId: 3, type: "main_frame", url: "https://files.cdn.test/f/a.zip", requestHeaders: [{ name: "Cookie", value: "tok=c; hidden=z" }] });
+  listeners.sendHeaders({ requestId: "d2", tabId: 3, type: "main_frame", url: "https://unrelated.test/", requestHeaders: [{ name: "Cookie", value: "u=1" }] });
+  listeners.determining({ id: 46, url: "https://site.test/get?id=4", finalUrl: "https://files.cdn.test/f/a.zip", filename: "a.zip" }, () => {});
+  await settle();
+  const [m] = natives(calls);
+  assert.deepEqual(
+    m.cookieJar.map((c) => [c.name, c.domain, c.hostOnly, c.path, c.secure]),
+    [
+      ["tok", "files.cdn.test", true, "/", true],
+      ["hidden", "files.cdn.test", true, "/", true],
+    ],
+  );
+  ok("#1540: the cookies the browser sent where the download ended go too, for that host only");
 }
 assert.deepEqual(complaints, [], "nothing written to the console as an error or warning");
 

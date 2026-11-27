@@ -569,6 +569,11 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 Everything below ships together, in version 0.6.0, the next release.
 
+- ✅ Downloads that redirect through other sites keep the cookies each site needs: the browser
+  add-on hands over the cookies of every address the download went through (partitioned ones
+  included), MDM keeps those a server sets along the way, and each site gets only its own
+  ([#1540](https://github.com/anefzaoui/misterdownloadmanager/issues/1540); thanks to
+  [@solovyov-jenya2004](https://github.com/solovyov-jenya2004))
 - ✅ A download's progress window can start minimized: **Options → Downloads → Customize
   "Download progress" dialog → Edit...** offers **Show normally**, **Show minimized** and
   **Don't show** ([#1966](https://github.com/anefzaoui/misterdownloadmanager/issues/1966); thanks to

@@ -1,8 +1,10 @@
 //! End-to-end: the engine downloads from a labserver (with faults) and the file is verified
 //! byte for byte against the generator.
 
+use mdm_engine::cookies::CookieJar;
 use mdm_engine::{Destination, Download, Options, Request};
 use mdm_labserver::{Config, Faults, LabServer, LogEntry, content};
+use std::sync::Arc;
 
 #[path = "support/resume.rs"]
 mod resume;
@@ -2125,6 +2127,182 @@ async fn cookies_are_sent_to_their_own_host() {
         s.log()
             .iter()
             .all(|e| e.cookie.as_deref() == Some("sid=secret"))
+    );
+}
+
+/// `u` percent-encoded for a query's value.
+fn enc(u: &str) -> String {
+    url::form_urlencoded::byte_serialize(u.as_bytes()).collect()
+}
+
+/// The log's entries for `host` (its `Host` header's name, without the port).
+fn for_host<'a>(log: &'a [LogEntry], host: &str) -> Vec<&'a LogEntry> {
+    log.iter()
+        .filter(|e| {
+            e.host
+                .as_deref()
+                .is_some_and(|h| h.split(':').next() == Some(host))
+        })
+        .collect()
+}
+
+/// #1540: a download that redirects through a sign-in host to a CDN, as file hosts' do. The
+/// link's host (A) has the browser's session, the sign-in step (B) sets a cookie for the CDN's
+/// whole domain on its redirect, and the file (C) wants that cookie and the browser's own for
+/// it, on every connection. Each host gets its own cookies and no other's: the link's never
+/// reaches B or C, C's never A or B, and a browser cookie of a host the download never asks
+/// goes nowhere.
+#[tokio::test]
+async fn cookies_follow_a_redirect_chain_each_to_its_own_hosts() {
+    let s = server("").await;
+    let port = s.addr().port();
+    let file = format!(
+        "http://files.cdn.test:{port}/gen/4M/chain.bin?seed=41&require_cookie={}",
+        enc("gate=open,tok=c")
+    );
+    let b = format!(
+        "http://login.cdn.test:{port}/jump?to={}&set={}",
+        enc(&file),
+        enc("gate=open; Domain=cdn.test; Path=/")
+    );
+    let a = format!("http://site.test:{port}/jump?to={}", enc(&b));
+    // The browser's cookies as the extension hands them over: each with its domain.
+    let jar = CookieJar::new();
+    assert!(jar.add_browser("sid", "a", "site.test", true, "/", false, None));
+    assert!(jar.add_browser("tok", "c", "files.cdn.test", true, "/", false, None));
+    assert!(jar.add_browser("far", "x", "other.test", true, "/", false, None));
+    let mut headers = reqwest::header::HeaderMap::new();
+    headers.insert(reqwest::header::COOKIE, "sid=a".parse().unwrap());
+    let here: Vec<std::net::IpAddr> = vec!["127.0.0.1".parse().unwrap()];
+    let opts = Options {
+        hosts: ["site.test", "login.cdn.test", "files.cdn.test"]
+            .iter()
+            .map(|h| (h.to_string(), here.clone()))
+            .collect(),
+        cookie_jar: Some(Arc::new(jar)),
+        max_connections: 4,
+        ..fast_opts()
+    };
+    let dir = tempfile::tempdir().unwrap();
+    let req = Request {
+        url: a.parse().unwrap(),
+        headers,
+        dest: Destination::Dir(dir.path().to_owned()),
+    };
+    let out = Download::start(req, opts).wait().await.expect("downloaded");
+    assert_eq!(content_len(&out.path, 41), Some(4 << 20), "content");
+    tokio::time::sleep(std::time::Duration::from_millis(300)).await;
+    let log = s.log();
+    let cookie = |e: &LogEntry| e.cookie.clone().unwrap_or_default();
+    let (at_a, at_b, at_c) = (
+        for_host(&log, "site.test"),
+        for_host(&log, "login.cdn.test"),
+        for_host(&log, "files.cdn.test"),
+    );
+    assert!(
+        !at_a.is_empty() && !at_b.is_empty() && at_c.len() >= 2,
+        "every hop asked, the file in parts"
+    );
+    assert!(
+        at_a.iter().all(|e| cookie(e) == "sid=a"),
+        "A: its own session only"
+    );
+    assert!(
+        at_b.iter().all(|e| e.cookie.is_none()),
+        "B: nothing of A's or C's"
+    );
+    for e in &at_c {
+        let mut got: Vec<String> = cookie(e).split("; ").map(str::to_owned).collect();
+        got.sort_unstable();
+        assert_eq!(
+            got,
+            ["gate=open", "tok=c"],
+            "C: B's cookie for its domain and its own"
+        );
+        assert!(e.status == 200 || e.status == 206, "C answered the file");
+    }
+    assert!(
+        log.iter().all(|e| !cookie(e).contains("far=")),
+        "a host never asked gets nothing"
+    );
+}
+
+/// #1540: a server that sets a cookie on a redirect to its own host (a session for the file it
+/// sends to) gets it back there, with the browser's own; the download makes its jar itself when
+/// it is given none.
+#[tokio::test]
+async fn a_cookie_set_on_a_redirect_goes_back_to_its_host() {
+    let s = server("").await;
+    let file = format!(
+        "/gen/2M/own.bin?seed=42&require_cookie={}",
+        enc("sid=a,step=2")
+    );
+    let path = format!("/jump?to={}&set={}", enc(&file), enc("step=2; Path=/"));
+    let mut headers = reqwest::header::HeaderMap::new();
+    headers.insert(reqwest::header::COOKIE, "sid=a".parse().unwrap());
+    let dir = tempfile::tempdir().unwrap();
+    let req = Request {
+        url: s.url(&path).parse().unwrap(),
+        headers,
+        dest: Destination::Dir(dir.path().to_owned()),
+    };
+    let out = Download::start(req, fast_opts())
+        .wait()
+        .await
+        .expect("downloaded");
+    assert_eq!(content_len(&out.path, 42), Some(2 << 20), "content");
+    tokio::time::sleep(std::time::Duration::from_millis(300)).await;
+    let files: Vec<_> = s
+        .log()
+        .into_iter()
+        .filter(|e| e.path.starts_with("/gen/"))
+        .collect();
+    assert!(!files.is_empty());
+    assert!(
+        files.iter().all(|e| e.status == 200 || e.status == 206),
+        "never refused"
+    );
+}
+
+/// #1540, and MDM's rule since before it: nothing goes from https down to http. A link over HTTPS
+/// that redirects to a plain-HTTP server: neither the link's cookie nor the browser's cookie for
+/// that server reaches it.
+#[tokio::test]
+async fn no_cookie_goes_from_https_down_to_http() {
+    let plain = server("").await;
+    let secure = LabServer::start(Config {
+        tls: true,
+        ..Config::default()
+    })
+    .await
+    .unwrap();
+    let file = plain.url("/gen/1M/down.bin?seed=43");
+    let path = format!("/jump?to={}", enc(&file));
+    let jar = CookieJar::new();
+    assert!(jar.add_browser("plain", "1", "127.0.0.1", true, "/", false, None));
+    let mut headers = reqwest::header::HeaderMap::new();
+    headers.insert(reqwest::header::COOKIE, "sid=a".parse().unwrap());
+    let dir = tempfile::tempdir().unwrap();
+    let req = Request {
+        url: secure.url(&path).parse().unwrap(),
+        headers,
+        dest: Destination::Dir(dir.path().to_owned()),
+    };
+    let opts = Options {
+        extra_roots: vec![secure.ca_der().unwrap()],
+        cookie_jar: Some(Arc::new(jar)),
+        ..fast_opts()
+    };
+    Download::start(req, opts).wait().await.expect("downloaded");
+    tokio::time::sleep(std::time::Duration::from_millis(300)).await;
+    let asked = secure.log();
+    assert!(!asked.is_empty() && asked.iter().all(|e| e.cookie.as_deref() == Some("sid=a")));
+    let down = plain.log();
+    assert!(!down.is_empty());
+    assert!(
+        down.iter().all(|e| e.cookie.is_none()),
+        "a cookie went down to http: {:?}",
+        down.iter().map(|e| e.cookie.is_some()).collect::<Vec<_>>()
     );
 }
 
