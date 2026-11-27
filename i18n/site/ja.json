@@ -18958,6 +18958,10 @@
    "source": "Where theme files go",
    "text": "テーマ ファイルの保存場所"
   },
+  "ffb19e8a15974427": {
+   "source": "On Windows, Microsoft's software renderer (WARP) keeps the processor much busier than Mesa's (llvmpipe), the more so the larger the window. Where WARP draws for want of a graphics driver, MDM offers once to download llvmpipe (about 66 MB, from Mesa's Windows builds on GitHub), and <g1>View → Draw with → Download Mesa's software renderer (llvmpipe)...</g1> offers it at any time. Nothing downloads until you press <g2>Download</g2>; it is checked against MDM's signed list of checked builds, as ffmpeg is, and kept in MDM's data folder (<x3/>). MDM draws with it from its next start, and <g4>View → Draw with</g4> says <g5>Software (llvmpipe)</g5>. If it can't start or draw there, MDM remembers that and draws with WARP again (<g6>Software (llvmpipe) didn't start here: WARP draws</g6>); a newer llvmpipe is tried again. To stop using it, quit MDM and delete the <x7/> folder.",
+   "text": "Windows では、Microsoft のソフトウェア レンダラー (WARP) は Mesa の (llvmpipe) よりもプロセッサをはるかに多く使用し、ウィンドウが大きいほどその傾向が顕著になります。グラフィック ドライバーがないために WARP が描画する場合、MDM は一度 llvmpipe (約 66 MB、GitHub の Mesa の Windows ビルドから) をダウンロードするよう提案し、<g1>表示 → 描画方法 → Mesa のソフトウェア レンダラー (llvmpipe) をダウンロード...</g1> からはいつでもダウンロードできます。<g2>ダウンロード</g2> を押すまで何もダウンロードされません。ffmpeg と同様に、MDM の署名済みビルド リストと照合され、MDM のデータ フォルダー (<x3/>) に保存されます。MDM は次回の起動時からこれを使用して描画し、<g4>表示 → 描画方法</g4> には <g5>ソフトウェア (llvmpipe)</g5> と表示されます。ここで起動または描画できない場合、MDM はそれを記憶し、再び WARP で描画します (<g6>ソフトウェア (llvmpipe) はここで起動しませんでした: WARP が描画します</g6>)。新しい llvmpipe が再度試行されます。使用を停止するには、MDM を終了し、<x7/> フォルダーを削除してください。"
+  },
   "ffbc009bfa4aa85a": {
    "source": "Drag a link from your browser onto it. MDM adds it as if you had used <g1>Add URL</g1>.",
    "text": "ブラウザーからリンクをドラッグし、ボックスにドロップします。<g1>URL を追加</g1>を選んだ場合と同じように、MDM がリンクを追加します。"

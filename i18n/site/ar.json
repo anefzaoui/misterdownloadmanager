@@ -18962,6 +18962,10 @@
    "source": "Where theme files go",
    "text": "أين توجد ملفات السمات"
   },
+  "ffb19e8a15974427": {
+   "source": "On Windows, Microsoft's software renderer (WARP) keeps the processor much busier than Mesa's (llvmpipe), the more so the larger the window. Where WARP draws for want of a graphics driver, MDM offers once to download llvmpipe (about 66 MB, from Mesa's Windows builds on GitHub), and <g1>View → Draw with → Download Mesa's software renderer (llvmpipe)...</g1> offers it at any time. Nothing downloads until you press <g2>Download</g2>; it is checked against MDM's signed list of checked builds, as ffmpeg is, and kept in MDM's data folder (<x3/>). MDM draws with it from its next start, and <g4>View → Draw with</g4> says <g5>Software (llvmpipe)</g5>. If it can't start or draw there, MDM remembers that and draws with WARP again (<g6>Software (llvmpipe) didn't start here: WARP draws</g6>); a newer llvmpipe is tried again. To stop using it, quit MDM and delete the <x7/> folder.",
+   "text": "على Windows، يبقي عارض برامج Microsoft (WARP) المعالج مشغولا أكثر بكثير من عارض Mesa (llvmpipe)، ويزداد الأمر كلما كانت النافذة أكبر. حيث يرسم WARP لعدم وجود برنامج تشغيل رسوميات، يعرض MDM مرة واحدة تنزيل llvmpipe (حوالي 66 ميغابايت، من إصدارات Mesa لـ Windows على GitHub)، و<g1>عرض → الرسم باستخدام → تنزيل عارض برامج Mesa (llvmpipe)...</g1> يعرضه في أي وقت. لا يتم تنزيل أي شيء حتى تضغط على <g2>تنزيل</g2>؛ يتم التحقق منه مقابل قائمة MDM الموقعة للإصدارات التي تم فحصها، كما هو الحال مع ffmpeg، ويتم حفظه في مجلد بيانات MDM (<x3/>). يرسم MDM باستخدامه من بدء تشغيله التالي، ويقول <g4>عرض → الرسم باستخدام</g4> <g5>البرنامج (llvmpipe)</g5>. إذا لم يتمكن من البدء أو الرسم هناك، يتذكر MDM ذلك ويرسم باستخدام WARP مرة أخرى (<g6>لم يبدأ البرنامج (llvmpipe) هنا: يرسم WARP</g6>)؛ يتم تجربة llvmpipe أحدث مرة أخرى. لإيقاف استخدامه، أغلق MDM واحذف مجلد <x7/>."
+  },
   "ffbc009bfa4aa85a": {
    "source": "Drag a link from your browser onto it. MDM adds it as if you had used <g1>Add URL</g1>.",
    "text": "اسحب رابطا من مستعرضك وأفلته عليه. سيضيفه MDM كما لو اخترت <g1>إضافة URL</g1>."

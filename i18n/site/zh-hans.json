@@ -18958,6 +18958,10 @@
    "source": "Where theme files go",
    "text": "主题文件存放位置"
   },
+  "ffb19e8a15974427": {
+   "source": "On Windows, Microsoft's software renderer (WARP) keeps the processor much busier than Mesa's (llvmpipe), the more so the larger the window. Where WARP draws for want of a graphics driver, MDM offers once to download llvmpipe (about 66 MB, from Mesa's Windows builds on GitHub), and <g1>View → Draw with → Download Mesa's software renderer (llvmpipe)...</g1> offers it at any time. Nothing downloads until you press <g2>Download</g2>; it is checked against MDM's signed list of checked builds, as ffmpeg is, and kept in MDM's data folder (<x3/>). MDM draws with it from its next start, and <g4>View → Draw with</g4> says <g5>Software (llvmpipe)</g5>. If it can't start or draw there, MDM remembers that and draws with WARP again (<g6>Software (llvmpipe) didn't start here: WARP draws</g6>); a newer llvmpipe is tried again. To stop using it, quit MDM and delete the <x7/> folder.",
+   "text": "在 Windows 上，微软的软件渲染器 (WARP) 比 Mesa 的 (llvmpipe) 会使处理器更繁忙，窗口越大越是如此。当因缺少图形驱动而由 WARP 绘制时，MDM 会提供一次下载 llvmpipe 的选项（约 66 MB，来自 GitHub 上的 Mesa Windows 构建），并且 <g1>视图 → 绘制方式 → 下载 Mesa 软件渲染器 (llvmpipe)...</g1> 随时提供此选项。在您按下<g2>下载</g2>之前不会下载任何内容；它会像 ffmpeg 一样，根据 MDM 签名的已检查构建列表进行检查，并保存在 MDM 的数据文件夹中 (<x3/>)。MDM 会在下次启动时使用它进行绘制，并且 <g4>视图 → 绘制方式</g4> 会显示 <g5>软件 (llvmpipe)</g5>。如果它无法在此处启动或绘制，MDM 会记住这一点并再次使用 WARP 绘制 (<g6>软件 (llvmpipe) 未在此处启动：WARP 正在绘制</g6>)；届时会尝试使用更新的 llvmpipe。要停止使用它，请退出 MDM 并删除 <x7/> 文件夹。"
+  },
   "ffbc009bfa4aa85a": {
    "source": "Drag a link from your browser onto it. MDM adds it as if you had used <g1>Add URL</g1>.",
    "text": "将浏览器中的链接拖到该方框上。MDM 会像您使用了<g1>添加 URL</g1>一样添加它。"
