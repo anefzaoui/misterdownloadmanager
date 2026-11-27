@@ -1270,13 +1270,12 @@ RELEASE_KEY = f"{REPO}/blob/main/crates/tools/keys/mdm-release.asc"
 # rounded down. The others as each source showed them on FIGURES_CHECKED, rounded down: read them
 # again where they come from before changing them (and the date): GitHub's releases API, the
 # download_count of the app's own files in every release (installers, zips, .dmg, AppImage, .deb,
-# .rpm, .tar.gz: not the checksums, symbols or extensions); Trendshift's page (its placements).
+# .rpm, .tar.gz: not the checksums, symbols or extensions). Trendshift's placements are with the
+# awards (AWARDS).
 FIGURES_CHECKED = "2026-11-18"
 FIGURES_FIXED = [
     # (field name, where it comes from, value, its fine print)
     ("GitHub Releases", f"{REPO}/releases", "280,000+ downloads", "of the app, every version together"),
-    ("Trendshift", TRENDSHIFT, "#1 in Rust",
-     'repository of the day on <time datetime="2026-11-09" translate="no">2026-11-09</time>'),
 ]
 
 
@@ -1326,37 +1325,61 @@ def content_tsv(name: str) -> list[list[str]]:
 def figures_fields() -> str:
     """The stores' figures in the label's field grammar, each a link to where it was read. The
     sources' names are names (translate="no": a lone element in its block would still be sent)."""
-    return '<dl class="fields figures">' + "".join(
+    shown = figures()
+    # --n: how many there are (a store's can be missing), so the desktop row is always full.
+    return f'<dl class="fields figures" style="--n: {len(shown)}">' + "".join(
         f'<div><dt translate="no">{name}</dt><dd><a href="{esc(href)}">{value}</a><small>{fine}</small></dd></div>'
-        for name, href, value, fine in figures()) + "</dl>"
+        for name, href, value, fine in shown) + "</dl>"
 
 
-# Awards given to MDM, shown under the figures (home and /press.html): (who gave it, the award's
-# name, where it is shown, its light image, its dark image, its fine print, the day it was seen).
-# Only awards actually given: SourceForge's badge page shows its other badges greyed out until a
-# project earns them. The images are the givers' own, copied unchanged into website/assets/badges/
-# (SOURCES.txt says from where) and served from this site: showing them asks no other site for
-# anything (the privacy page lists the only outside requests).
+# Awards given to MDM, shown under the figures (home and /press.html). Only awards actually given:
+# SourceForge's badge page shows its other badges greyed out until a project earns them; Trendshift's
+# repository page lists the placements MDM reached ("achievements"), each the best it has had, and
+# when it first did (read them again there before changing them). Each award:
+#   giver, name: who gave it (a name, translate="no") and the award's name; `proper` when that name
+#     is a name too (SourceForge's "Users Love Us"), so it isn't translated;
+#   href: where it is shown; fine: its fine print (HTML), with the day it was seen or reached;
+#   seal: the giver's own badge, light and dark, copied unchanged into website/assets/badges/
+#     (SOURCES.txt says from where) and served from this site, so showing it asks no other site for
+#     anything (the privacy page lists the only outside requests);
+#   stamp: or, for a giver whose badge is a banner rather than a seal (Trendshift's), the rank as
+#     the site's own ink stamp (the rank, the list it was on), never the giver's artwork.
 SOURCEFORGE_PROJECT = "https://sourceforge.net/projects/mister-download-manager.mirror/"
 AWARDS = [
-    ("SourceForge", "Users Love Us", SOURCEFORGE_PROJECT,
-     "/assets/badges/sourceforge-users-love-us.svg", "/assets/badges/sourceforge-users-love-us-dark.svg",
-     "Given by SourceForge, which keeps a copy of every release", "2026-11-24"),
+    {"giver": "SourceForge", "name": "Users Love Us", "proper": True, "href": SOURCEFORGE_PROJECT,
+     "seal": ("/assets/badges/sourceforge-users-love-us.svg", "/assets/badges/sourceforge-users-love-us-dark.svg"),
+     "fine": 'Given by SourceForge, which keeps a copy of every release. '
+             'Seen on <time datetime="2026-11-24" translate="no">2026-11-24</time>'},
+    # trendshift.io/api/badge/trendshift/repositories/337427/{daily,weekly}[?language=Rust], checked
+    # on 2026-11-27: #1 Rust repository of the day (first on 2026-11-09) and of the week (week 46 of
+    # 2026); every language: #4 of the day (2026-11-09), #3 of the week (week 46). No monthly one.
+    {"giver": "Trendshift", "name": "#1 Rust repository of the day and of the week", "href": TRENDSHIFT,
+     "stamp": ("#1", "Rust"),
+     "fine": 'All languages together: #3 repository of the week, #4 of the day. Reached on '
+             '<time datetime="2026-11-09" translate="no">2026-11-09</time>, in week 46 of 2026'},
 ]
 
 
 def awards_row() -> str:
-    """AWARDS as a ruled row of seals: the badge (a day and a night version), who gave it as the
-    field name, the award's name as a link, its fine print. The seal repeats the name's link, so it
-    is hidden from screen readers and the keyboard. Names are names (translate="no")."""
-    items = "".join(
-        f'<li class="award"><a class="award-seal" href="{esc(href)}" tabindex="-1" aria-hidden="true">'
-        f'<img class="for-light-i" src="{light}" alt="" width="84" height="84" loading="lazy" decoding="async">'
-        f'<img class="for-dark-i" src="{dark}" alt="" width="84" height="84" loading="lazy" decoding="async"></a>'
-        f'<div class="award-text"><p class="field-name" translate="no">{giver}</p>'
-        f'<p class="award-name" translate="no"><a href="{esc(href)}">{name}</a></p>'
-        f'<p class="award-fine">{fine}. Seen on <time datetime="{day}" translate="no">{day}</time></p></div></li>'
-        for giver, name, href, light, dark, fine, day in AWARDS)
+    """AWARDS as a ruled row of seals: the badge (a day and a night version) or the rank's stamp,
+    who gave it as the field name, the award's name as a link, its fine print. The seal repeats the
+    name's link, so it is hidden from screen readers and the keyboard. Givers are names
+    (translate="no"), and so are the awards' names that are names."""
+    def seal(a: dict) -> str:
+        if "seal" in a:
+            light, dark = a["seal"]
+            return (f'<img class="for-light-i" src="{light}" alt="" width="84" height="84" loading="lazy" decoding="async">'
+                    f'<img class="for-dark-i" src="{dark}" alt="" width="84" height="84" loading="lazy" decoding="async">')
+        rank, field = a["stamp"]
+        return f'<span class="rank-stamp" translate="no"><b>{rank}</b><span>{field}</span></span>'
+
+    def item(a: dict) -> str:
+        keep = ' translate="no"' if a.get("proper") else ""
+        return (f'<li class="award"><a class="award-seal" href="{esc(a["href"])}" tabindex="-1" aria-hidden="true">{seal(a)}</a>'
+                f'<div class="award-text"><p class="field-name" translate="no">{a["giver"]}</p>'
+                f'<p class="award-name"{keep}><a href="{esc(a["href"])}">{a["name"]}</a></p>'
+                f'<p class="award-fine">{a["fine"]}</p></div></li>')
+    items = "".join(item(a) for a in AWARDS)
     return f'<ul class="awards" role="list">{items}</ul>' if items else ""
 
 

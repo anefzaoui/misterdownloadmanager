@@ -2276,6 +2276,9 @@ Everything below ships together, in version 0.6.0, the next release.
 - ✅ GOVERNANCE.md says how MDM is run (who decides, how changes are reviewed and released, AI-assisted
   development, what happens if the maintainer can't continue), and CODE_OF_CONDUCT.md adopts the
   Contributor Covenant 2.1
+- ✅ All of MDM's Trendshift placements, not just the first: #1 Rust repository of the day and
+  of the week, #3 repository of the week and #4 of the day among all languages; four badges in the
+  README, and on the website's proof of delivery and press page, with the site's own stamp
 
 ## Being worked on
 
