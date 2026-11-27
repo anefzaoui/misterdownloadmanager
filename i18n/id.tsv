@@ -301,6 +301,10 @@
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: shown when there are no rules yet
 	A rule adds the new articles whose titles it matches, as they come.	Aturan menambahkan artikel baru yang judulnya cocok, saat artikel tersebut masuk.
+#. text in the Options window
+#. Site rules window: in the empty list of rules, under its title
+#, machine
+	A rule sets the connections, User-Agent or headers for one site.	Aturan menetapkan koneksi, User-Agent, atau header untuk satu situs.
 #. text in errors.rs
 #. an error: a server on this computer redirected the download to the internet, which would not go through the chosen network adapter; {adapter} its name
 	a server on this computer sent the download elsewhere, which would not go through {adapter}	server di komputer ini mengirim unduhan ke tempat lain, yang tidak akan melalui {adapter}
@@ -387,6 +391,10 @@
 #. link in the empty download list: opens Add URL
 	Add new download	Tambahkan unduhan baru
 #. text in the Options window
+#. Options → Accounts: in the empty list of accounts, under its title
+#, machine
+	Add one to download file-host links through it.	Tambahkan akun untuk mengunduh tautan dari layanan hosting file.
+#. text in the Options window
 	Add the duplicate and overwrite the existing file	Tambahkan duplikat dan timpa file yang ada
 #. text in the Options window
 	Add the duplicate with a numbered file name	Tambahkan duplikat dengan nama file bernomor
@@ -449,7 +457,7 @@
 #. remote control page (on a phone): label of the box where a download's address or a magnet link is typed
 	Address or magnet link	Alamat atau tautan magnet
 #. message or event log entry in the main window
-#. Link grabber: where the links came from: the Add URL window (an address typed or pasted there)
+#. Link grabber: where the links came from: an address given on its own (typed or pasted in Add URL, given on the command line)
 #, machine
 	Address typed	Alamat diketik
 #. text in the Options window; text in preview.rs; text in a download's Properties window
@@ -684,6 +692,10 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Azerbaijan	Azerbaijan
+#. button in setup.rs
+#. button of the first start's setup window: the step before
+#, machine
+	Back	Kembali
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Bahamas	Bahama
@@ -761,6 +773,10 @@
 #. Site rules: column title: "Yes" when the rule asks the way a browser connects from the first request
 #, machine
 	Browser	Browser
+#. text in setup.rs
+#. a step of the first start's setup window: the extension that hands the browser's downloads to MDM
+#, machine
+	Browser extension	Ekstensi browser
 #. text in extension.rs
 	Browser integration isn't set up on this computer, so no browser can reach Mister Download Manager yet.	Integrasi browser belum diatur di komputer ini, jadi belum ada browser yang dapat menjangkau Mister Download Manager.
 #. page title in the Options window
@@ -909,15 +925,10 @@
 #. Video helpers: a program just chosen is being checked
 #. the trailing ... means it is still going on: keep it
 	Checking the program...	Memeriksa program...
-#. text in helpers.rs
-#. a downloaded helper's signature and checksum are being checked; {name} = yt-dlp or ffmpeg
-#. {name} = a file name; {n} = a number (keep the braces as they are)
-#. the trailing ... means it is still going on: keep it
-	Checking {name} ({n} of {total})...	Memeriksa {name} ({n} dari {total})...
 #. text in the download list (sizes, speeds, status)
 #. the list's Status column while a torrent's files or a finished file are checked (against the torrent's hashes or a checksum); {percent} how much is checked, e.g. "42%". One short word: the column is narrow
 	Checking {percent}	Memeriksa {percent}
-#. text in the Checksum window; text in extension.rs; text in the Link grabber window; text in the Options window
+#. text in the Checksum window; text in extension.rs; text in the Link grabber window; text in helpers.rs; text in the Options window
 #. in the browser extension's window, while it reads whether the browsers can reach MDM (a moment, usually)
 #. Test browser integration, while it reads where browser integration stands (a moment, usually)
 #. the trailing ... means it is still going on: keep it
@@ -931,6 +942,10 @@
 #. text in remote.rs
 #. remote control page (on a phone): what the ".torrent file" button does (screen readers)
 	Choose a .torrent file	Pilih file .torrent
+#. text in rssdlg.rs
+#. RSS feeds window: in the empty list of articles, under its title
+#, machine
+	Choose a feed to see its articles.	Pilih feed untuk melihat artikelnya.
 #. message or event log entry in the main window
 #. title of the file dialog of View → Font → Choose a font file
 #. title of the message when the font picked in View → Font can't be used
@@ -940,7 +955,7 @@
 #. file picker title: choose a JavaScript runtime's program (node.exe, deno.exe, qjs.exe, bun.exe)
 #, machine
 	Choose a JavaScript runtime (Node.js, Deno, QuickJS or Bun)	Pilih runtime JavaScript (Node.js, Deno, QuickJS, atau Bun)
-#. text in langpick.rs
+#. text in langpick.rs; text in setup.rs
 	Choose a language	Pilih bahasa
 #. text in a dialog box
 #. the Columns dialog: what it is for, above its list of the download list's columns
@@ -984,7 +999,7 @@
 	Clipboard	Papan klip
 #. text in the Options window
 	Clock:	Jam:
-#. text in archtest.rs; text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in a dialog box; button in extension.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list; button in the Options window; button in rssdlg.rs; button in torrentfiles.rs; text in traypanel.rs; text in standard windows
+#. text in archtest.rs; text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in a dialog box; button in extension.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list; button in the Options window; button in rssdlg.rs; button in setup.rs; button in torrentfiles.rs; text in traypanel.rs; text in standard windows
 #. both verbs: Verify = check the file now; Close = close the window
 #. tooltip of the × that closes the Categories pane
 #. verb: closes this window
@@ -1413,13 +1428,13 @@
 #. Helpers: a newer version of a helper is being downloaded; {percent} = how far, a number
 #, machine
 	Downloading the update... {percent}%	Mengunduh pembaruan... {percent}%
-#. text in helpers.rs
-#. {name} = yt-dlp, ffmpeg or Node.js; {n} of {total} = which helper of how many; {percent} = how far, e.g. 45%
-#. {name} = a file name; {n} = a number (keep the braces as they are)
-	Downloading {name} ({n} of {total})... {percent}	Mengunduh {name} ({n} dari {total})... {percent}
 #. text in the download list; text in the Options window
 #. tab title: download settings
 	Downloads	Unduhan
+#. text in the Scheduler window
+#. Scheduler → Files in the queue: in the empty list, under its title
+#, machine
+	Downloads added to this queue show here.	Unduhan yang ditambahkan ke antrean ini akan ditampilkan di sini.
 #. window title in a dialog box
 #. title of the window that sums up downloads added together (a playlist, a batch) once all are done
 	Downloads complete	Unduhan selesai
@@ -1745,6 +1760,10 @@
 	Find the next match	Temukan kecocokan berikutnya
 #. text in the Find window
 	Find:	Temukan:
+#. text in setup.rs
+#. button of the first start's setup window, on its last step: the setup is done
+#, machine
+	Finish	Selesai
 #. item in the Categories tree in the main window; text in remote.rs
 #. adjective: the downloads that are complete
 #. remote control page (on a phone): tab: downloads finished
@@ -1907,9 +1926,6 @@
 #. text in extracting archives (a download's log, the Archive password window)
 #. button: opens 7-Zip's website (7-Zip is a program's name)
 	Get 7-Zip	Dapatkan 7-Zip
-#. window title in helpers.rs
-#. title of the first start's window that offers yt-dlp and ffmpeg
-	Get ready for video downloads	Bersiap untuk mengunduh video
 #. button in the Options window
 	Get System	Dapatkan sistem
 #. text in the Add torrent window
@@ -2130,6 +2146,10 @@
 #. text in helpers.rs; text in the Download video window
 #. button: download and install the yt-dlp program
 	Install yt-dlp	Instal yt-dlp
+#. text in helpers.rs
+#. the first start's video helpers: beside a helper that is there already (MDM's own copy or the system's)
+#, machine
+	Installed	Terinstal
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. Check for updates, after Update now downloaded it: unpacking and putting the new version in place
 #. the trailing ... means it is still going on: keep it
@@ -2193,6 +2213,10 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Italy	Italia
+#. text in rssdlg.rs
+#. RSS feeds window: in the empty list of articles of a feed not read yet
+#, machine
+	Its articles show here once the feed is read.	Artikelnya akan ditampilkan di sini setelah feed dibaca.
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted in place (after "Couldn't extract {name}: "); HatchZip took its files out (the archive is gone), but moving them stopped: {to} holds those moved, {left} the others, {error} the system's reason
 #. {error} = an error message (keep the braces as they are)
@@ -2290,7 +2314,7 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Kyrgyzstan	Kirgizstan
-#. text in langpick.rs
+#. text in langpick.rs; text in setup.rs
 #. window title (the interface language)
 	Language	Bahasa
 #. text in countries.rs
@@ -2661,6 +2685,10 @@
 #. why the computer isn't going to sleep, in the system's list of programs that keep it awake; {queue} = the queue's name
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
 	Mister Download Manager is running the queue "{queue}"	Mister Download Manager sedang menjalankan antrean "{queue}"
+#. text in setup.rs
+#. the first start's setup window, under "Choose a language"
+#, machine
+	Mister Download Manager shows every window in it. View → Language changes it later.	Mister Download Manager menampilkan semua jendelanya. Ubah bahasa nanti melalui Tampilan → Bahasa.
 #. text in crashui.rs
 #. crash report window heading: MDM's window doesn't answer (frozen)
 	Mister Download Manager stopped responding	Mister Download Manager berhenti merespons
@@ -2860,6 +2888,10 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	New Zealand	Selandia Baru
+#. text in setup.rs
+#. button of the first start's setup window: the next step
+#, machine
+	Next	Berikutnya
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Nicaragua	Nikaragua
@@ -2874,12 +2906,20 @@
 	Niue	Niue
 #. button in a dialog box; text in a download's progress window
 	No	Tidak
+#. text in the Options window
+#. Options → Accounts: the title in the empty list of debrid service accounts
+#, machine
+	No accounts yet	Belum ada akun
 #. text in a dialog box
 	No addresses yet	Belum ada alamat
 #. text in the Options window
 #. Options → Proxy / Socks: Test got no answer in time
 #, machine
 	No answer within 20 seconds.	Tidak ada jawaban dalam 20 detik.
+#. text in rssdlg.rs
+#. RSS feeds window: the title in the empty list of articles of a feed that has none
+#, machine
+	No articles	Tidak ada artikel
 #. text in extension.rs
 #. a check of Test browser integration (Linux, macOS): MDM found no browser it can connect to (one installed as a Flatpak isn't found)
 	No browser MDM can connect to was found	Tidak ada browser yang dapat dihubungkan oleh MDM yang ditemukan
@@ -2917,6 +2957,18 @@
 #. message or event log entry in the main window
 #. title in the empty download list when there are no downloads at all
 	No downloads yet	Belum ada unduhan
+#. text in rssdlg.rs
+#. RSS feeds window: the title in the empty list of articles, no feed chosen
+#, machine
+	No feed chosen	Tidak ada feed yang dipilih
+#. text in rssdlg.rs
+#. RSS feeds window: the title in the empty list of feeds
+#, machine
+	No feeds yet	Belum ada feed
+#. text in the Scheduler window
+#. Scheduler → Files in the queue: the title in the empty list
+#, machine
+	No files in this queue	Tidak ada file dalam antrean ini
 #. text in a dialog box
 	No folders yet	Belum ada folder
 #. text in a dialog box
@@ -2926,6 +2978,10 @@
 	No language matches the search	Tidak ada bahasa yang cocok dengan pencarian
 #. text in langpick.rs
 	No language matches.	Tidak ada bahasa yang cocok.
+#. text in the Link grabber window
+#. Link grabber: the title in its empty list
+#, machine
+	No links yet	Belum ada tautan
 #. text in the Options window
 #. Options → Remote → Status: on, but the computer has no local network address now
 	No local network now: it starts when the computer joins one.	Tidak ada jaringan lokal sekarang: akan dimulai saat komputer bergabung dengan satu jaringan.
@@ -2951,8 +3007,16 @@
 #. text in the Options window
 	No proxy/socks	Tanpa proksi/SOCKS
 #. text in the Options window
+#. Site rules window: the title in the empty list of rules
+#, machine
+	No site rules yet	Belum ada aturan situs
+#. text in the Options window
 #. Options → Accounts: no system keyring/keychain answered (none runs, e.g. a desktop without one), so the sign-ins stay in MDM's settings folder, which only the user's account may read
 	No system keyring answered, so sign-ins and passwords are kept in MDM's settings, which only you can read.	Gantungan kunci sistem tidak merespons, jadi info masuk dan kata sandi disimpan di pengaturan MDM, yang hanya Anda yang dapat membacanya.
+#. text in the Add torrent window
+#. Add torrent: the title in the empty list of files, before a torrent is read
+#, machine
+	No torrent yet	Belum ada torrent
 #. message or event log entry in the main window
 #. event log entry: Add trackers changed nothing, the torrent had them all
 	No tracker added: it has them already	Tidak ada pelacak yang ditambahkan: sudah ada
@@ -3026,7 +3090,7 @@
 #. Link grabber, a link's status: a web page sent it (Click'n'Load), so it isn't looked up (name, size, online) before it is added
 #, machine
 	Not looked up	Belum dicari
-#. text in cnl.rs; button in helpers.rs
+#. text in cnl.rs
 #. button in the Click'n'Load window: refuse these links, ask again next time
 	Not now	Nanti saja
 #. text in helpers.rs
@@ -3452,9 +3516,6 @@
 	Reading {file}...	Membaca {file}...
 #. text in helpers.rs
 	Reads a page and lists every quality the site offers, up to 4K, from YouTube, Vimeo and over a thousand other sites.	Membaca halaman dan mencantumkan setiap kualitas yang ditawarkan situs, hingga 4K, dari YouTube, Vimeo, dan lebih dari seribu situs lainnya.
-#. text in helpers.rs
-#. the helpers are downloaded, checked and ready; {list} = names and versions, e.g. "yt-dlp 2026.10.26, ffmpeg 9.0"
-	Ready: {list}	Siap: {list}
 #. message or event log entry in the main window
 #. event log entry: Reannounce failed, with the reason
 #. {error} = an error message (keep the braces as they are)
@@ -4079,6 +4140,7 @@
 #. {version} = a version number; {format} = a video format code (keep the braces as they are)
 	Started with yt-dlp {version} ({format})	Dimulai dengan yt-dlp {version} ({format})
 #. text in helpers.rs
+#. the first start's video helpers: a helper's download has started, its size not known yet
 #. the trailing ... means it is still going on: keep it
 	Starting...	Memulai...
 #. text in the Download video window
@@ -4095,6 +4157,11 @@
 #. text in preview.rs; text in a download's Properties window
 #. label before the download's state
 	Status:	Status:
+#. text in setup.rs
+#. what a screen reader says of the first start's setup window's steps; {n} = this step's number, {total} = how many, {name} = its name (Language, Video helpers, Browser extension)
+#. {n} = a number; {name} = a file name (keep the braces as they are)
+#, machine
+	Step {n} of {total}: {name}	Langkah {n} dari {total}: {name}
 #. text in preview.rs
 #. the preview pane: a finished download's file is still where it was saved
 #, machine
@@ -4712,6 +4779,10 @@
 #. text in remote.rs
 #. remote control page (on a phone): label of the box naming this phone (shown in MDM's list of paired devices)
 	This device's name	Nama perangkat ini
+#. text in rssdlg.rs
+#. RSS feeds window: in the empty list of articles of a feed that has none
+#, machine
+	This feed has no articles right now.	Feed ini tidak memiliki artikel saat ini.
 #. message or event log entry in the main window
 #. the message when a file picked in View → Font isn't a TrueType or OpenType font MDM can read
 #, machine
@@ -4942,8 +5013,6 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Trinidad and Tobago	Trinidad dan Tobago
-#. button in helpers.rs
-	Try again	Coba lagi
 #. text in errors.rs
 #. what to do when a helper couldn't be downloaded because its server limits requests; {name} = yt-dlp, ffmpeg or gallery-dl; {helpers} and {other} = the buttons Helpers and Use another program
 #. {name} = a file name (keep the braces as they are)
@@ -5276,6 +5345,10 @@
 #. text in the download list (sizes, speeds, status)
 #. category name: video files
 	Video	Video
+#. text in setup.rs
+#. a step of the first start's setup window: yt-dlp, ffmpeg and Node.js, the programs that download videos
+#, machine
+	Video helpers	Pembantu video
 #. text in the Download video window
 	Video lookups use yt-dlp (about 23 MB, checked against its signature).	Pencarian video menggunakan yt-dlp (sekitar 23 MB, diperiksa terhadap tanda tangannya).
 #. text in playlistdlg.rs
@@ -5344,6 +5417,10 @@
 	Web page:	Halaman web:
 #. text in the Scheduler window
 	Wednesday	Rabu
+#. text in setup.rs
+#. title of the first start's setup window (the language, the video helpers, the browser extension)
+#, machine
+	Welcome to Mister Download Manager	Selamat datang di Mister Download Manager
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Western Sahara	Sahara Barat
@@ -5422,7 +5499,7 @@
 #. button in a dialog box; text in the Options window; text in a download's progress window
 	Yes	Ya
 #. button in helpers.rs
-#. the first start's helpers window: download yt-dlp and ffmpeg (the recommended answer)
+#. the first start's helpers: download every missing helper (yt-dlp, ffmpeg, Node.js) at once (the recommended answer)
 	Yes, download them (recommended)	Ya, unduh semuanya (disarankan)
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. {version} = a version number (keep the braces as they are)

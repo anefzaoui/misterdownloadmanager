@@ -796,7 +796,7 @@ impl Cols {
 
 /// A label (muted) and its value, beside it or under it ([`Cols`]), the row's top at `y`; read
 /// by a screen reader as one line. Returns where the next row starts.
-fn field(ui: &mut Ui, c: Cols, y: f32, label: &str, value: &str, how: Value, salt: &str) -> f32 {
+fn field(ui: &mut Ui, c: Cols, y: f32, label: &str, value: &str, how: Value, id: &str) -> f32 {
     let p = ui.painter().clone();
     let label_base = y + 11.0;
     let (value_x, value_base) = match c.value_x {
@@ -812,7 +812,7 @@ fn field(ui: &mut Ui, c: Cols, y: f32, label: &str, value: &str, how: Value, sal
         label,
         winui::MUTED(),
         label_end,
-        ("preview-label", salt),
+        ("preview-label", id),
     );
     let color = match how {
         Value::Warning => winui::ERROR(),
@@ -829,9 +829,9 @@ fn field(ui: &mut Ui, c: Cols, y: f32, label: &str, value: &str, how: Value, sal
                 &data,
                 color,
                 c.x1,
-                ("preview-value", salt),
+                ("preview-value", id),
             );
-            winui::copyable(ui, rc, ("preview-copy", salt), value, false);
+            winui::copyable(ui, rc, ("preview-copy", id), value, false);
         }
         _ => {
             winui::fit(
@@ -842,7 +842,7 @@ fn field(ui: &mut Ui, c: Cols, y: f32, label: &str, value: &str, how: Value, sal
                 value,
                 color,
                 c.x1,
-                ("preview-value", salt),
+                ("preview-value", id),
             );
         }
     }
@@ -853,7 +853,7 @@ fn field(ui: &mut Ui, c: Cols, y: f32, label: &str, value: &str, how: Value, sal
     winui::readable(
         ui,
         rc,
-        ("preview-field", salt),
+        ("preview-field", id),
         &format!("{} {value}", label.trim()),
     );
     value_base + 4.0 + if c.value_x.is_some() { 5.0 } else { 8.0 }

@@ -90,6 +90,7 @@
     video_filter_type: "File type",
     video_filter_codec: "Codec",
     video_home: "Put the button back in its corner",
+    popup_video_hide_fullscreen: "Hide the download button in full screen",
   };
   // Sizes as the browser's language writes them.
   const lang = ext.i18n.getUILanguage?.() || undefined;
@@ -991,6 +992,24 @@
     if (r && r.full === true) return "full";
     return "auto";
   }
+  // Options → Download panels → Button size's scale (#1923), from the app's answer to `panel`:
+  // 80% (0.8), 100% (1, the default when not said) or 120% (1.2).
+  function scaleFactor(r) {
+    return r && r.scale === 80 ? 0.8 : r && r.scale === 120 ? 1.2 : 1;
+  }
+  // Whether this document or its embedding page is in DOM full screen (#670, #1923). Cross-origin
+  // player frames can't read `top.document`, so they follow the top frame's `top-fullscreen` relay
+  // (`parentFs`) instead of `window.fullScreen` (which is true in browser F11 too).
+  function pageFullscreen(doc, win, parentFs) {
+    if (Boolean(doc && (doc.fullscreenElement || doc.webkitFullscreenElement || doc.mozFullScreenElement))) return true;
+    try {
+      const topDoc = win && win.top && win.top !== win && win.top.document;
+      if (topDoc && (topDoc.fullscreenElement || topDoc.webkitFullscreenElement || topDoc.mozFullScreenElement)) return true;
+    } catch {
+      return Boolean(parentFs);
+    }
+    return Boolean(parentFs);
+  }
   // The round button (the logo, the arrow, the ✕) or the whole one (`mode`: sizeMode's): round
   // where its words don't fit, and always when Compact is chosen. Automatic keeps the words for a
   // big player only (a watch page's), and is round over a small one and in a feed (`feed`), where
@@ -1023,18 +1042,18 @@
   // or null (as it is). Grown with its filters (#1735) and its lines since, the menu no longer
   // fit below a feed's video in the middle of a window, and above it went past the window's
   // top: "Download best" and the pictures' lines out of reach.
-  function menuFit(top, h, listH, listFull, viewH) {
+  function menuFit(top, h, listH, listFull, viewH, gap = 36) {
     const MARGIN = 8;
     const MIN_LIST = 84;
     const natural = h - listH + listFull;
-    const below = viewH - (top + 36) - MARGIN;
+    const below = viewH - (top + gap) - MARGIN;
     const above = top - 6 - MARGIN;
-    if (natural <= below) return { top: 36, list: null };
+    if (natural <= below) return { top: gap, list: null };
     if (natural <= above) return { top: Math.round(-natural - 6), list: null };
     const down = below >= above;
     const list = Math.floor(Math.max(Math.min(MIN_LIST, listFull), listFull - (natural - Math.max(below, above))));
     const shown = natural - listFull + list;
-    return { top: down ? 36 : Math.round(Math.max(-shown - 6, MARGIN - top)), list };
+    return { top: down ? gap : Math.round(Math.max(-shown - 6, MARGIN - top)), list };
   }
 
   // ---- the menu's filters (#1735): plain functions, run as they are by tools/extension/test.mjs.
@@ -1129,21 +1148,33 @@
   // Options → Download panels → Button size (#1278; sizeMode): Automatic, Full or Compact. It comes
   // with the app's answer, so a change in Options reaches a page already open with it.
   let size = "auto";
+  let scale = 1;
+  let parentFullscreen = false;
+  const isSubframe = (() => {
+    try {
+      return typeof window !== "undefined" && Boolean(window.top) && window !== window.top;
+    } catch {
+      return true;
+    }
+  })();
+  const inFullscreen = () => pageFullscreen(document, typeof window !== "undefined" ? window : null, parentFullscreen);
   // A right-to-left language mirrors the button's corners as it mirrors its words: its own
   // corner is the top's end (the top left), and the others follow from there.
   const rtl = (ext.i18n.getMessage("@@bidi_dir") || "ltr") === "rtl";
   const HOME = { x: rtl ? 0 : 1, y: 0 };
-  // Hidden while the page is fullscreen, when chosen in the popup (off: it shows, as now).
+  // Hidden while the page is fullscreen, when chosen in the popup or menu (#670, #1923).
   let hideFullscreen = false;
   try {
     ext.storage.local.get({ hideVideoFullscreen: false }).then((v) => {
       hideFullscreen = Boolean(v.hideVideoFullscreen);
+      syncFullscreenItem();
     }).catch(() => {});
     ext.storage.onChanged.addListener((changes, area) => {
       if (area === "local" && changes.hideVideoFullscreen) {
         hideFullscreen = Boolean(changes.hideVideoFullscreen.newValue);
+        syncFullscreenItem();
         // Either way at once: a video already in full screen follows the box as it is ticked.
-        if (document.fullscreenElement && video) {
+        if (inFullscreen() && video) {
           if (hideFullscreen) hide(true);
           else show(video);
         }
@@ -1238,10 +1269,11 @@
 /* The tab: a light raised frame at the video's edge; the Download part in green, the arrow and
    the close (hide on this video) beside it, each its own square button. */
 .pill {
-  display: inline-flex; align-items: stretch; gap: 3px; height: 30px; padding: 2px;
-  background: linear-gradient(var(--bg), var(--bg2)); border: 1px solid var(--bd); border-radius: 5px;
+  --s: 1;
+  display: inline-flex; align-items: stretch; gap: calc(3px * var(--s)); height: calc(30px * var(--s)); padding: calc(2px * var(--s));
+  background: linear-gradient(var(--bg), var(--bg2)); border: 1px solid var(--bd); border-radius: calc(5px * var(--s));
   box-shadow: var(--sh); color: var(--tx);
-  font: 400 12px/1 var(--font); white-space: nowrap;
+  font: 400 calc(12px * var(--s))/1 var(--font); white-space: nowrap;
   opacity: 0; transform: translateY(-2px);
   transition: opacity .14s ease-out, transform .14s ease-out;
   user-select: none; -webkit-user-select: none; touch-action: none;
@@ -1257,14 +1289,14 @@ button {
   all: unset; box-sizing: border-box; display: inline-flex; align-items: center;
   color: inherit; cursor: pointer; font: inherit;
 }
-.go { gap: 6px; padding-inline: 5px 9px; border-radius: 3px; cursor: grab; }
+.go { gap: calc(6px * var(--s)); padding-inline: calc(5px * var(--s)) calc(9px * var(--s)); border-radius: calc(3px * var(--s)); cursor: grab; }
 .pill:not(.bare) .go { background: var(--go); color: var(--go-ink); box-shadow: inset 0 -1px 0 rgba(0, 0, 0, .14); }
 .pill:not(.bare) .go:hover { background: var(--go-hi); }
 .pill:not(.bare) .go .label { font-weight: 700; }
-.more, .x { width: 22px; justify-content: center; flex: none; color: var(--tx2);
-  border: 1px solid var(--bd); border-radius: 3px; background: var(--bg); }
+.more, .x { width: calc(22px * var(--s)); justify-content: center; flex: none; color: var(--tx2);
+  border: 1px solid var(--bd); border-radius: calc(3px * var(--s)); background: var(--bg); }
 .more:hover, .x:hover, .more[aria-expanded="true"] { background: var(--hov); color: var(--tx); }
-.more svg, .x svg { width: 10px; height: 10px; }
+.more svg, .x svg { width: calc(10px * var(--s)); height: calc(10px * var(--s)); }
 .more[aria-expanded="true"] svg { transform: rotate(180deg); }
 /* The keyboard's ring: a dark one, outside the frame. */
 .pill:has(button:focus-visible) { outline: 2px solid var(--tx); outline-offset: 2px; }
@@ -1272,24 +1304,24 @@ button:focus-visible { outline: none; }
 .more:focus-visible, .x:focus-visible, .act:focus-visible { box-shadow: 0 0 0 1px var(--tx) inset; }
 /* Its grip: there all along (the tab keeps its width: the arrow and ✕ never move from under the
    pointer), seen while the pointer is on it. */
-.grip { display: grid; visibility: hidden; grid-template-columns: repeat(2, 2px); gap: 2px; align-content: center; padding-inline-start: 1px; }
-.grip i { display: block; width: 2px; height: 2px; border-radius: 1px; background: currentColor; opacity: .55; }
+.grip { display: grid; visibility: hidden; grid-template-columns: repeat(2, calc(2px * var(--s))); gap: calc(2px * var(--s)); align-content: center; padding-inline-start: 1px; }
+.grip i { display: block; width: calc(2px * var(--s)); height: calc(2px * var(--s)); border-radius: 1px; background: currentColor; opacity: .55; }
 .pill:not(.bare):hover .grip, .pill.dragging .grip { visibility: visible; }
 .pill.bare .grip { display: none; }
-.icon { display: flex; align-items: center; justify-content: center; width: 18px; height: 18px; flex: none; }
+.icon { display: flex; align-items: center; justify-content: center; width: calc(18px * var(--s)); height: calc(18px * var(--s)); flex: none; }
 .icon > * { display: none; }
-.icon img { width: 18px; height: 18px; }
-.icon svg { width: 16px; height: 16px; }
+.icon img { width: calc(18px * var(--s)); height: calc(18px * var(--s)); }
+.icon svg { width: calc(16px * var(--s)); height: calc(16px * var(--s)); }
 .pill[data-state="ready"] .icon .logo, .pill[data-state="looking"] .icon .logo,
 .pill[data-state="sending"] .icon .spin, .pill[data-state="sent"] .icon .i-sent,
 .pill[data-state="warn"] .icon .i-warn, .pill[data-state="err"] .icon .i-err,
 .pill[data-state="off"] .icon .i-off, .pill[data-state="drm"] .icon .i-drm { display: block; }
-.spin { width: 14px !important; height: 14px !important; border-radius: 50%; border: 2px solid rgba(8, 32, 11, .25); border-top-color: var(--go-ink);
+.spin { width: calc(14px * var(--s)) !important; height: calc(14px * var(--s)) !important; border-radius: 50%; border: 2px solid rgba(8, 32, 11, .25); border-top-color: var(--go-ink);
   animation: spin .8s linear infinite; }
 @keyframes spin { to { transform: rotate(360deg); } }
 @keyframes shimmer { from { background-position: 100% 0; } to { background-position: -100% 0; } }
-.chip { font: 700 10.5px/15px var(--font); color: var(--go-ink); background: rgba(255, 255, 255, .55); border-radius: 3px; padding: 0 4px; }
-.chip.skel { width: 30px; height: 15px; padding: 0; background-size: 200% 100%;
+.chip { font: 700 calc(10.5px * var(--s))/calc(15px * var(--s)) var(--font); color: var(--go-ink); background: rgba(255, 255, 255, .55); border-radius: 3px; padding: 0 calc(4px * var(--s)); }
+.chip.skel { width: calc(30px * var(--s)); height: calc(15px * var(--s)); padding: 0; background-size: 200% 100%;
   background-image: linear-gradient(90deg, rgba(255, 255, 255, .3), rgba(255, 255, 255, .8), rgba(255, 255, 255, .3));
   animation: shimmer 1.4s linear infinite; }
 .chip:empty:not(.skel), .sub:empty, .label:empty, .acts:empty { display: none; }
@@ -1303,18 +1335,18 @@ button:focus-visible { outline: none; }
 .pill[data-state="off"] .label, .pill[data-state="drm"] .label { color: var(--tx2); }
 .pill[data-state="sending"] .go { background: var(--go); color: var(--go-ink); }
 .pill[data-state="sending"] .label { font-weight: 700; }
-.acts { display: inline-flex; align-items: center; gap: 2px; padding-inline-end: 4px; }
-.act { font: 600 11.5px/1 var(--font); color: var(--accent); padding: 4px 6px; border-radius: 4px; }
+.acts { display: inline-flex; align-items: center; gap: 2px; padding-inline-end: calc(4px * var(--s)); }
+.act { font: 600 calc(11.5px * var(--s))/1 var(--font); color: var(--accent); padding: calc(4px * var(--s)) calc(6px * var(--s)); border-radius: calc(4px * var(--s)); }
 .act:hover { background: var(--hov); }
 .act.fill { background: var(--go); color: var(--go-ink); }
 .act.fill:hover { background: var(--go-hi); }
-.pill.bare .go { cursor: default; padding-inline-end: 4px; }
+.pill.bare .go { cursor: default; padding-inline-end: calc(4px * var(--s)); }
 .pill.bare .more { display: none; }
 /* Small video, or words that wouldn't fit: the logo in green, the arrow, the close; a state keeps
    its message and its main action. */
 .pill.compact .chip, .pill.compact .sub, .pill.compact .act:not(.fill) { display: none; }
 .pill.compact:not(.bare) .label { display: none; }
-.pill.compact:not(.bare) .go { padding-inline: 4px; }
+.pill.compact:not(.bare) .go { padding-inline: calc(4px * var(--s)); }
 .pill.dragging { cursor: grabbing; transition: none; transform: translateY(-1px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, .25), 0 16px 32px rgba(0, 0, 0, .3); }
 .pill.dragging .go { cursor: grabbing; }
@@ -1372,7 +1404,10 @@ button:focus-visible { outline: none; }
 .menu .q { width: 46px; font-weight: 600; flex: none; }
 .menu .f { color: var(--tx2); flex: 1; overflow: hidden; text-overflow: ellipsis; }
 .menu .z { color: var(--tx2); font-variant-numeric: tabular-nums; }
-.menu .k { margin-inline-start: auto; padding-inline-start: 12px; color: var(--tx2); font-size: 11px; }
+.menu .k { margin-inline-start: auto; padding-inline-start: 12px; color: var(--tx2); font-size: 11px; flex: none; }
+.menu .k:empty { display: none; }
+.menu [data-act="fullscreen"] > span:nth-child(2) { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+.menu [data-act="fullscreen"] .k { color: var(--accent); font-weight: 700; }
 .menu .top .lead { color: var(--accent); font-weight: 600; }
 .menu .top .f { color: var(--tx); }
 .menu .best { font: 700 10px/13px var(--font); color: var(--accent); border: 1.5px solid var(--accent); border-radius: 3px; padding: 0 3px; margin-inline-start: 4px; }
@@ -1451,6 +1486,7 @@ button:focus-visible { outline: none; }
   <div class="hr"></div>
   <button role="menuitem" data-act="home" hidden><span class="mi"><svg viewBox="0 0 16 16" ${ICON} stroke-width="1.4"><rect x="2.5" y="2.5" width="11" height="11" rx="1.5"/><path d="M9 5.5h1.5v1.5"/></svg></span><span></span></button>
   <button role="menuitem" data-act="hide"><span class="mi"><svg viewBox="0 0 16 16" ${ICON} stroke-width="1.4"><circle cx="8" cy="8" r="5.5"/><path d="M4.2 11.8l7.6-7.6"/></svg></span><span></span><span class="k">Esc</span></button>
+  <button role="menuitemcheckbox" aria-checked="false" data-act="fullscreen"><span class="mi"><svg viewBox="0 0 16 16" ${ICON} stroke-width="1.4"><path d="M3 6V3h3M10 3h3v3M13 10v3h-3M6 13H3v-3"/></svg></span><span></span><span class="k"></span></button>
   <button role="menuitem" data-act="never"><span class="mi"><svg viewBox="0 0 16 16" ${ICON} stroke-width="1.4"><circle cx="8" cy="8" r="5.5"/><path d="M2.5 8h11M8 2.5c2 2 2 9 0 11M8 2.5c-2 2-2 9 0 11"/></svg></span><span></span></button>
   <button role="menuitem" data-act="settings"><span class="mi"><svg viewBox="0 0 16 16" ${ICON} stroke-width="1.4"><circle cx="8" cy="8" r="2"/><path d="M8 1.8v2M8 12.2v2M1.8 8h2M12.2 8h2M3.6 3.6l1.4 1.4M11 11l1.4 1.4M3.6 12.4 5 11M11 5l1.4-1.4"/></svg></span><span></span></button>
 </div>`;
@@ -1484,6 +1520,13 @@ button:focus-visible { outline: none; }
   item("part").lastElementChild.textContent = t("video_part");
   item("home").lastElementChild.textContent = t("video_home");
   item("hide").children[1].textContent = t("video_hide_here");
+  item("fullscreen").children[1].textContent = t("popup_video_hide_fullscreen");
+  function syncFullscreenItem() {
+    const el = item("fullscreen");
+    el.setAttribute("aria-checked", String(hideFullscreen));
+    el.lastElementChild.textContent = hideFullscreen ? "✓" : "";
+  }
+  syncFullscreenItem();
   item("never").lastElementChild.textContent = ext.i18n.getMessage("video_never_site", [host]) || `Never on ${host}`;
   item("settings").lastElementChild.textContent = t("video_settings");
   $(".tip .how").textContent = t("video_drag_dots");
@@ -1812,6 +1855,13 @@ button:focus-visible { outline: none; }
     render();
   }
 
+  function measureFullWidth() {
+    const was = pill.classList.contains("compact");
+    pill.classList.remove("compact");
+    fullWidth = pill.offsetWidth;
+    if (was) pill.classList.add("compact");
+  }
+
   function render() {
     const c = video ? describeNow(video) : null;
     const look = lookOf(c);
@@ -1851,10 +1901,7 @@ button:focus-visible { outline: none; }
     go.setAttribute("aria-label", [text, small.replace(/^· /, ""), quality && quality.text].filter(Boolean).join(", "));
     $(".tip .what").textContent = bare ? [text, small].filter(Boolean).join(" ") : tipFor(look, t, lang);
     // Its width with its words: compact or not follows from it and the video's.
-    const was = pill.classList.contains("compact");
-    pill.classList.remove("compact");
-    fullWidth = pill.offsetWidth;
-    if (was) pill.classList.add("compact");
+    measureFullWidth();
     if (video) position();
   }
 
@@ -2066,8 +2113,9 @@ button:focus-visible { outline: none; }
   // window either way: where neither side has room for it whole, its list of qualities is made
   // shorter (it scrolls) on the side with more room (menuFit).
   function placeMenu(top, left, w) {
+    const gap = (pill.offsetHeight || 30) + 6;
     const full = Math.min(rows.scrollHeight, 300, innerHeight * 0.45);
-    const fit = menuFit(top, menu.offsetHeight, rows.offsetHeight, full, innerHeight);
+    const fit = menuFit(top, menu.offsetHeight, rows.offsetHeight, full, innerHeight, gap);
     const list = fit.list === null ? "" : `${fit.list}px`;
     if (rows.style.maxHeight !== list) rows.style.maxHeight = list;
     menu.style.top = `${fit.top}px`;
@@ -2075,13 +2123,27 @@ button:focus-visible { outline: none; }
   }
 
   function placeTip(left, w) {
-    if (tip.classList.contains("on")) tip.style.left = towardEnd(left, w) ? `${w - tip.offsetWidth}px` : "0";
+    if (tip.classList.contains("on")) {
+      tip.style.top = `${(pill.offsetHeight || 30) + 6}px`;
+      tip.style.left = towardEnd(left, w) ? `${w - tip.offsetWidth}px` : "0";
+    }
   }
 
   // While dragging: the track it slides along on its edge (over the player or outside it, through
   // the button's middle from one end of the edge to the other) and the spots it snaps to on it
   // (its ends and its middle), in the button's own coordinates (it sits at `left`, `top`).
   function drawGuide(r, w, h, left, top) {
+    const roomX = Math.max(0, r.width - w - 2 * INSET);
+    const roomY = Math.max(0, r.height - h - 2 * INSET);
+    if (
+      !dragging.at.out &&
+      roomX > 0 &&
+      roomY > 0 &&
+      Math.min(dragging.at.x * roomX, (1 - dragging.at.x) * roomX, dragging.at.y * roomY, (1 - dragging.at.y) * roomY) > 20
+    ) {
+      guide.classList.remove("on");
+      return;
+    }
     // On the edge it snaps to (over the player, a free spot is between them).
     const edge = edgeOf(dragging.at);
     const at = { ...dragging.at, ...(edge === "left" || edge === "right" ? { x: edge === "left" ? 0 : 1 } : { y: edge === "top" ? 0 : 1 }) };
@@ -2110,8 +2172,9 @@ button:focus-visible { outline: none; }
 
   // ---- where it sits: plain functions, run as they are by tools/extension/test.mjs. A spot (`at`)
   // is where on the video's edge: x and y from 0 to 1 of the room the video leaves around the
-  // button, one of them 0 or 1 (the edge it is on). Outside the player (#1735: a site that covers
-  // its player, or draws over where the button would be): `out`, against its `side`.
+  // button, one of them 0 or 1 (the edge it is on), or `free: true` inside the player (#1923).
+  // Outside the player (#1735: a site that covers its player, or draws over where the button would
+  // be): `out`, against its `side`.
 
   // The edge a spot is on (its side outside the player), else the nearest one.
   function edgeOf(at) {
@@ -2120,12 +2183,19 @@ button:focus-visible { outline: none; }
     return Object.keys(d).reduce((a, b) => (d[a] <= d[b] ? a : b));
   }
 
-  // Snap a free spot (after a drag, or as kept for the site) to its edge: into a corner, or the
-  // edge's middle, when close to one; else where it was dropped along it. Outside the player,
-  // along its side. Anything else kept (a value that isn't a number) counts as 0.
-  function snap(at) {
+  // Snap a free spot (after a drag, or as kept for the site) to its edge when close to one
+  // (within 20 px during a drag), else keep free interior placement anywhere over the player
+  // (#1923). Outside the player, snap along its side. Anything else kept counts as 0.
+  function snap(at, roomX, roomY) {
     const n = (v) => Math.min(1, Math.max(0, Number.isFinite(Number(v)) ? Number(v) : 0));
     const free = { x: n(at && at.x), y: n(at && at.y), out: Boolean(at && at.out), side: at && at.side };
+    if (!free.out) {
+      const hasRoom = Number.isFinite(roomX) && Number.isFinite(roomY) && roomX > 0 && roomY > 0;
+      const interior =
+        Boolean(at && at.free) ||
+        (hasRoom && Math.min(free.x * roomX, (1 - free.x) * roomX, free.y * roomY, (1 - free.y) * roomY) > 20);
+      if (interior) return { x: free.x, y: free.y, free: true };
+    }
     const edge = edgeOf(free);
     const c = (v) => (v < 0.08 ? 0 : v > 0.92 ? 1 : Math.abs(v - 0.5) < 0.06 ? 0.5 : v);
     const out = free.out && edge === free.side ? { out: true, side: edge } : {};
@@ -2203,7 +2273,7 @@ button:focus-visible { outline: none; }
       if (status && status.state !== "off") endStatus(true);
       current = null;
     }
-    if (hideFullscreen && document.fullscreenElement) return hide(true);
+    if (hideFullscreen && inFullscreen()) return hide(true);
     if (!attach()) return hide(true);
     lastOver = Date.now();
     pill.classList.remove("faint");
@@ -2281,7 +2351,7 @@ button:focus-visible { outline: none; }
   function tick() {
     raf = 0;
     if (!video) return hide(true);
-    if (hideFullscreen && document.fullscreenElement) return hide(true);
+    if (hideFullscreen && inFullscreen()) return hide(true);
     const onButton = root.matches(":hover");
     if (!video.isConnected || !eligible(video)) {
       if (!held && lastRect && !isDismissed(video)) held = hold();
@@ -2351,10 +2421,18 @@ button:focus-visible { outline: none; }
     if (answered()) return Promise.resolve();
     asking = asking || send({ type: "panel" }).then(async (r) => {
       allowed = !never && Boolean(r && r.on);
+      if (isSubframe) parentFullscreen = Boolean(r && r.topFullscreen);
       askedAt = Date.now();
       const was = size;
+      const wasScale = scale;
       size = sizeMode(r);
-      if (allowed && size !== was && video) position();
+      scale = scaleFactor(r);
+      if (scale !== wasScale) {
+        pill.style.setProperty("--s", String(scale));
+        measureFullWidth();
+        pinned = null;
+      }
+      if (allowed && (size !== was || scale !== wasScale) && video) position();
       // Switched off meanwhile: gone now, unless the menu, a drag or its "Turn on" has it in hand.
       if (!allowed && video && !menuOpen && !dragging && !(status && status.state === "off")) {
         video = null;
@@ -2805,6 +2883,17 @@ button:focus-visible { outline: none; }
     if (act === "window") return download(null, true);
     // #1662: the app's window with Part ticked, From where the video is now.
     if (act === "part") return download(null, true, partFrom(video));
+    if (act === "fullscreen") {
+      hideFullscreen = !hideFullscreen;
+      syncFullscreenItem();
+      try {
+        ext.storage.local.set({ hideVideoFullscreen: hideFullscreen }).catch(() => {});
+      } catch {
+        // Without storage: kept for this page.
+      }
+      if (hideFullscreen && inFullscreen()) hide(true);
+      return;
+    }
     closeMenu();
     if (act === "hide") return hideHere();
     if (act === "home") {
@@ -2934,7 +3023,8 @@ button:focus-visible { outline: none; }
       if (e.type === "pointerup" && !pill.classList.contains("bare")) download();
       return;
     }
-    place = snap(d.at);
+    const { roomX, roomY } = rects();
+    place = snap(d.at, roomX, roomY);
     chosen = true;
     // It snaps to its spot although the pointer is still on it (#560's pin is for a video
     // that changes under a still pointer, not for the user's own move).
@@ -3011,6 +3101,29 @@ button:focus-visible { outline: none; }
     }
   }
 
+  const FULLSCREEN_EVENTS = ["fullscreenchange", "webkitfullscreenchange", "mozfullscreenchange"];
+  const onFullscreenChange = () => {
+    if (!isSubframe) {
+      send({
+        type: "top-fullscreen",
+        on: Boolean(document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement),
+      });
+    }
+    if (!video) return;
+    // Entering full screen: out of the way at once, as the player's own controls are; the
+    // pointer's next move brings it back. Leaving it: shown again, as before.
+    if (inFullscreen()) hide(true);
+    else show(video);
+  };
+  function onTopFullscreen(m) {
+    if (m && m.type === "top-fullscreen") {
+      parentFullscreen = Boolean(m.on);
+      if (!video) return;
+      if (inFullscreen()) hide(true);
+      else show(video);
+    }
+  }
+
   // The extension updated or removed under this page: the button and its listeners go (a fresh
   // copy of this script comes with the new extension).
   function teardown() {
@@ -3022,6 +3135,8 @@ button:focus-visible { outline: none; }
     removeEventListener("pointermove", onMove, true);
     if (isDriveFrame) removeEventListener("pointermove", onFrameMove, true);
     if (isDriveViewer) ext.runtime?.onMessage?.removeListener(onDriveFramePointer);
+    if (isSubframe) ext.runtime?.onMessage?.removeListener(onTopFullscreen);
+    for (const ev of FULLSCREEN_EVENTS) document.removeEventListener(ev, onFullscreenChange);
     removeEventListener("keydown", onTab, true);
     removeEventListener("loadstart", onLoadStart, true);
     root.remove();
@@ -3035,6 +3150,9 @@ button:focus-visible { outline: none; }
   }
   if (isDriveViewer) {
     ext.runtime?.onMessage?.addListener(onDriveFramePointer);
+  }
+  if (isSubframe) {
+    ext.runtime?.onMessage?.addListener(onTopFullscreen);
   }
   addEventListener("pointermove", onMove, { capture: true, passive: true });
   addEventListener("pointerdown", (e) => {
@@ -3079,12 +3197,6 @@ button:focus-visible { outline: none; }
       focusedPlayer.focus();
     }
   });
-  document.addEventListener("fullscreenchange", () => {
-    if (!video) return;
-    // Entering full screen: out of the way at once, as the player's own controls are; the
-    // pointer's next move brings it back. Leaving it: shown again, as before.
-    if (document.fullscreenElement) hide(true);
-    else show(video);
-  });
+  for (const ev of FULLSCREEN_EVENTS) document.addEventListener(ev, onFullscreenChange);
   addEventListener("blur", () => hide());
 })();

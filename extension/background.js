@@ -1421,7 +1421,10 @@ if (ext.webRequest && ext.webRequest.onResponseStarted) {
     ["responseHeaders"],
   );
 }
-ext.tabs.onRemoved.addListener((id) => mediaBack.then(() => media.delete(id) && keepMedia()));
+ext.tabs.onRemoved.addListener((id) => {
+  tabFullscreen.delete(id);
+  mediaBack.then(() => media.delete(id) && keepMedia());
+});
 // Another page in the tab: what the last one loaded goes (not for a move within the page, #part).
 ext.tabs.onUpdated.addListener((id, change) => {
   if (!change.url) return;
@@ -1429,6 +1432,7 @@ ext.tabs.onUpdated.addListener((id, change) => {
     const page = change.url.split("#")[0];
     const tab = media.get(id);
     if (tab && tab.page === page) return;
+    tabFullscreen.delete(id);
     // #1092: the files a player fetched in ranges stay while the tab stays on the site: a feed
     // moves to another address as it shows its first video (Douyin's goes from /jingxuan to
     // /?recommend=1), after its player fetched it. Offered only for a video of their length.
@@ -3669,6 +3673,7 @@ async function injectOpenTabs() {
 // Automatic (video.js sizeMode).
 const PANEL_KEEP_MS = 5000;
 const panelCache = new Map();
+const tabFullscreen = new Set();
 async function panelOn(page, top) {
   // The host name without a port: as video.js names the site, and as the app matches sites.
   const site = new URL(page).hostname;
@@ -3677,13 +3682,26 @@ async function panelOn(page, top) {
   forget(panelCache, PANEL_KEEP_MS);
   if (panelCache.get(site)?.hidden) return { on: false, compact: false };
   const kept = panelCache.get(key);
-  if (kept) return { on: kept.on, compact: kept.compact, ...(kept.full ? { full: true } : {}) };
+  if (kept) {
+    return {
+      on: kept.on,
+      compact: kept.compact,
+      ...(kept.full ? { full: true } : {}),
+      ...(kept.scale ? { scale: kept.scale } : {}),
+    };
+  }
   // Always this computer's MDM's Options: a question, never a download (`download`). With another
   // MDM chosen and none here to ask, the button shows, as Options have it at first: the other
   // MDM's remote control adds and lists downloads, it has no Options to ask.
   let reply = await native({ panel: true, url: page, ...(key !== site ? { referrer: top } : {}) });
   if (!reply.ok && reply.why && (await remoteTarget())) reply = { ok: true };
-  const answer = { on: Boolean(reply.ok), compact: Boolean(reply.ok && reply.compact), ...(reply.ok && reply.full === true ? { full: true } : {}) };
+  const scale = reply.ok && (reply.scale === 80 || reply.scale === 120) ? reply.scale : 0;
+  const answer = {
+    on: Boolean(reply.ok),
+    compact: Boolean(reply.ok && reply.compact),
+    ...(reply.ok && reply.full === true ? { full: true } : {}),
+    ...(scale ? { scale } : {}),
+  };
   if (reply.ok || !reply.why) panelCache.set(key, { ...answer, at: Date.now() });
   return answer;
 }
@@ -3933,9 +3951,23 @@ async function pageMessage(m, sender) {
     }
     return { ok: false };
   }
+  if (m.type === "top-fullscreen") {
+    if (Number.isInteger(tab.id) && sender.frameId === 0) {
+      const on = Boolean(m.on);
+      if (on) tabFullscreen.add(tab.id);
+      else tabFullscreen.delete(tab.id);
+      ext.tabs.sendMessage(tab.id, { type: "top-fullscreen", on }).catch(() => {});
+      return { ok: true };
+    }
+    return { ok: false };
+  }
   if (m.type === "panel") {
     const top = tab.url && /^https?:/i.test(tab.url) ? tab.url : "";
-    return page ? await panelOn(page, top) : { on: false, compact: false };
+    const ans = page ? await panelOn(page, top) : { on: false, compact: false };
+    if (sender.frameId && Number.isInteger(tab.id) && tabFullscreen.has(tab.id)) {
+      return { ...ans, topFullscreen: true };
+    }
+    return ans;
   }
   if (m.type === "link" && typeof m.url === "string") {
     const name = typeof m.name === "string" ? m.name.split(/[\\/]/).pop().slice(0, 255) : "";

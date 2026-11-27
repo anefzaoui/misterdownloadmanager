@@ -356,6 +356,10 @@
 #. RSS feeds window, Download rules: shown when there are no rules yet
 #, machine
 	A rule adds the new articles whose titles it matches, as they come.	ஒரு விதி, வரும் புதிய கட்டுரைகளின் தலைப்புகள் பொருந்தினால் அவற்றைச் சேர்க்கும்.
+#. text in the Options window
+#. Site rules window: in the empty list of rules, under its title
+#, machine
+	A rule sets the connections, User-Agent or headers for one site.	ஒரு தளத்திற்கான இணைப்புகள், பயனர் முகவர் அல்லது தலைப்புகளை ஒரு விதி அமைக்கிறது.
 #. text in errors.rs
 #. an error: a server on this computer redirected the download to the internet, which would not go through the chosen network adapter; {adapter} its name
 #, machine
@@ -464,6 +468,10 @@
 #, machine
 	Add new download	புதிய பதிவிறக்கத்தைச் சேர்
 #. text in the Options window
+#. Options → Accounts: in the empty list of accounts, under its title
+#, machine
+	Add one to download file-host links through it.	கோப்பு ஹோஸ்ட் இணைப்புகளைப் பதிவிறக்க ஒன்றைச் சேர்க்கவும்.
+#. text in the Options window
 #, machine
 	Add the duplicate and overwrite the existing file	நகலைச் சேர்த்து, ஏற்கனவே உள்ள கோப்பை மேலெழுதவும்
 #. text in the Options window
@@ -545,7 +553,7 @@
 #, machine
 	Address or magnet link	முகவரி அல்லது மேக்னட் இணைப்பு
 #. message or event log entry in the main window
-#. Link grabber: where the links came from: the Add URL window (an address typed or pasted there)
+#. Link grabber: where the links came from: an address given on its own (typed or pasted in Add URL, given on the command line)
 #, machine
 	Address typed	முகவரி தட்டச்சு செய்யப்பட்டது
 #. text in the Options window; text in preview.rs; text in a download's Properties window
@@ -839,6 +847,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Azerbaijan	அஜர்பைஜான்
+#. button in setup.rs
+#. button of the first start's setup window: the step before
+#, machine
+	Back	பின்செல்
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -940,6 +952,10 @@
 #. Site rules: column title: "Yes" when the rule asks the way a browser connects from the first request
 #, machine
 	Browser	உலாவி
+#. text in setup.rs
+#. a step of the first start's setup window: the extension that hands the browser's downloads to MDM
+#, machine
+	Browser extension	உலாவி நீட்டிப்பு
 #. text in extension.rs
 #, machine
 	Browser integration isn't set up on this computer, so no browser can reach Mister Download Manager yet.	இந்தக் கணினியில் உலாவி ஒருங்கிணைப்பு அமைக்கப்படவில்லை, எனவே எந்த உலாவியும் Mister Download Managerஐ இன்னும் அணுக முடியாது.
@@ -1134,17 +1150,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Checking the program...	நிரலைச் சரிபார்க்கிறது...
-#. text in helpers.rs
-#. a downloaded helper's signature and checksum are being checked; {name} = yt-dlp or ffmpeg
-#. {name} = a file name; {n} = a number (keep the braces as they are)
-#. the trailing ... means it is still going on: keep it
-#, machine
-	Checking {name} ({n} of {total})...	{name} சரிபார்க்கப்படுகிறது ({total} இல் {n})...
 #. text in the download list (sizes, speeds, status)
 #. the list's Status column while a torrent's files or a finished file are checked (against the torrent's hashes or a checksum); {percent} how much is checked, e.g. "42%". One short word: the column is narrow
 #, machine
 	Checking {percent}	சரிபார்க்கிறது {percent}
-#. text in the Checksum window; text in extension.rs; text in the Link grabber window; text in the Options window
+#. text in the Checksum window; text in extension.rs; text in the Link grabber window; text in helpers.rs; text in the Options window
 #. in the browser extension's window, while it reads whether the browsers can reach MDM (a moment, usually)
 #. Test browser integration, while it reads where browser integration stands (a moment, usually)
 #. the trailing ... means it is still going on: keep it
@@ -1162,6 +1172,10 @@
 #. remote control page (on a phone): what the ".torrent file" button does (screen readers)
 #, machine
 	Choose a .torrent file	.torrent கோப்பைத் தேர்வுசெய்யவும்
+#. text in rssdlg.rs
+#. RSS feeds window: in the empty list of articles, under its title
+#, machine
+	Choose a feed to see its articles.	ஊட்டத்தின் கட்டுரைகளைக் காண ஒரு ஊட்டத்தைத் தேர்ந்தெடுக்கவும்.
 #. message or event log entry in the main window
 #. title of the file dialog of View → Font → Choose a font file
 #. title of the message when the font picked in View → Font can't be used
@@ -1171,7 +1185,7 @@
 #. file picker title: choose a JavaScript runtime's program (node.exe, deno.exe, qjs.exe, bun.exe)
 #, machine
 	Choose a JavaScript runtime (Node.js, Deno, QuickJS or Bun)	JavaScript இயக்க நேரத்தைத் தேர்ந்தெடுக்கவும் (Node.js, Deno, QuickJS அல்லது Bun)
-#. text in langpick.rs
+#. text in langpick.rs; text in setup.rs
 #, machine
 	Choose a language	ஒரு மொழியைத் தேர்வுசெய்யவும்
 #. text in a dialog box
@@ -1224,7 +1238,7 @@
 #. text in the Options window
 #, machine
 	Clock:	கடிகாரம்:
-#. text in archtest.rs; text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in a dialog box; button in extension.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list; button in the Options window; button in rssdlg.rs; button in torrentfiles.rs; text in traypanel.rs; text in standard windows
+#. text in archtest.rs; text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in a dialog box; button in extension.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list; button in the Options window; button in rssdlg.rs; button in setup.rs; button in torrentfiles.rs; text in traypanel.rs; text in standard windows
 #. both verbs: Verify = check the file now; Close = close the window
 #. tooltip of the × that closes the Categories pane
 #. verb: closes this window
@@ -1775,15 +1789,14 @@
 #. Helpers: a newer version of a helper is being downloaded; {percent} = how far, a number
 #, machine
 	Downloading the update... {percent}%	புதுப்பிப்பைப் பதிவிறக்குகிறது... {percent}%
-#. text in helpers.rs
-#. {name} = yt-dlp, ffmpeg or Node.js; {n} of {total} = which helper of how many; {percent} = how far, e.g. 45%
-#. {name} = a file name; {n} = a number (keep the braces as they are)
-#, machine
-	Downloading {name} ({n} of {total})... {percent}	{name} பதிவிறக்கப்படுகிறது ({total} இல் {n})... {percent}
 #. text in the download list; text in the Options window
 #. tab title: download settings
 #, machine
 	Downloads	பதிவிறக்கங்கள்
+#. text in the Scheduler window
+#. Scheduler → Files in the queue: in the empty list, under its title
+#, machine
+	Downloads added to this queue show here.	இந்த வரிசையில் சேர்க்கப்பட்ட பதிவிறக்கங்கள் இங்கே காட்டப்படும்.
 #. window title in a dialog box
 #. title of the window that sums up downloads added together (a playlist, a batch) once all are done
 #, machine
@@ -2202,6 +2215,10 @@
 #. text in the Find window
 #, machine
 	Find:	கண்டறி:
+#. text in setup.rs
+#. button of the first start's setup window, on its last step: the setup is done
+#, machine
+	Finish	முடி
 #. item in the Categories tree in the main window; text in remote.rs
 #. adjective: the downloads that are complete
 #. remote control page (on a phone): tab: downloads finished
@@ -2411,10 +2428,6 @@
 #. button: opens 7-Zip's website (7-Zip is a program's name)
 #, machine
 	Get 7-Zip	7-Zip ஐப் பெறவும்
-#. window title in helpers.rs
-#. title of the first start's window that offers yt-dlp and ffmpeg
-#, machine
-	Get ready for video downloads	வீடியோ பதிவிறக்கங்களுக்குத் தயாராகுங்கள்
 #. button in the Options window
 #, machine
 	Get System	கணினியைப் பெறு
@@ -2697,6 +2710,10 @@
 #. button: download and install the yt-dlp program
 #, machine
 	Install yt-dlp	yt-dlp ஐ நிறுவவும்
+#. text in helpers.rs
+#. the first start's video helpers: beside a helper that is there already (MDM's own copy or the system's)
+#, machine
+	Installed	நிறுவப்பட்டுள்ளது
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. Check for updates, after Update now downloaded it: unpacking and putting the new version in place
 #. the trailing ... means it is still going on: keep it
@@ -2779,6 +2796,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Italy	இத்தாலி
+#. text in rssdlg.rs
+#. RSS feeds window: in the empty list of articles of a feed not read yet
+#, machine
+	Its articles show here once the feed is read.	ஊட்டம் படிக்கப்பட்டதும் அதன் கட்டுரைகள் இங்கே காட்டப்படும்.
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted in place (after "Couldn't extract {name}: "); HatchZip took its files out (the archive is gone), but moving them stopped: {to} holds those moved, {left} the others, {error} the system's reason
 #. {error} = an error message (keep the braces as they are)
@@ -2902,7 +2923,7 @@
 #. a country's name (where a download's server is)
 #, machine
 	Kyrgyzstan	கிர்கிஸ்தான்
-#. text in langpick.rs
+#. text in langpick.rs; text in setup.rs
 #. window title (the interface language)
 #, machine
 	Language	மொழி
@@ -3368,6 +3389,10 @@
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
 #, machine
 	Mister Download Manager is running the queue "{queue}"	Mister Download Manager "{queue}" வரிசையை இயக்குகிறது
+#. text in setup.rs
+#. the first start's setup window, under "Choose a language"
+#, machine
+	Mister Download Manager shows every window in it. View → Language changes it later.	Mister Download Manager இல் உள்ள ஒவ்வொரு சாளரமும் அந்த மொழியில் காட்டப்படும். பின்னர் காட்சி → மொழி வழியாக இதை மாற்றலாம்.
 #. text in crashui.rs
 #. crash report window heading: MDM's window doesn't answer (frozen)
 #, machine
@@ -3622,6 +3647,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	New Zealand	நியூசிலாந்து
+#. text in setup.rs
+#. button of the first start's setup window: the next step
+#, machine
+	Next	அடுத்து
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3641,6 +3670,10 @@
 #. button in a dialog box; text in a download's progress window
 #, machine
 	No	இல்லை
+#. text in the Options window
+#. Options → Accounts: the title in the empty list of debrid service accounts
+#, machine
+	No accounts yet	இதுவரை கணக்குகள் இல்லை
 #. text in a dialog box
 #, machine
 	No addresses yet	இதுவரை முகவரிகள் இல்லை
@@ -3648,6 +3681,10 @@
 #. Options → Proxy / Socks: Test got no answer in time
 #, machine
 	No answer within 20 seconds.	20 வினாடிகளுக்குள் பதில் இல்லை.
+#. text in rssdlg.rs
+#. RSS feeds window: the title in the empty list of articles of a feed that has none
+#, machine
+	No articles	கட்டுரைகள் இல்லை
 #. text in extension.rs
 #. a check of Test browser integration (Linux, macOS): MDM found no browser it can connect to (one installed as a Flatpak isn't found)
 #, machine
@@ -3695,6 +3732,18 @@
 #. title in the empty download list when there are no downloads at all
 #, machine
 	No downloads yet	இன்னும் பதிவிறக்கங்கள் இல்லை
+#. text in rssdlg.rs
+#. RSS feeds window: the title in the empty list of articles, no feed chosen
+#, machine
+	No feed chosen	ஊட்டம் எதுவும் தேர்ந்தெடுக்கப்படவில்லை
+#. text in rssdlg.rs
+#. RSS feeds window: the title in the empty list of feeds
+#, machine
+	No feeds yet	இதுவரை ஊட்டங்கள் இல்லை
+#. text in the Scheduler window
+#. Scheduler → Files in the queue: the title in the empty list
+#, machine
+	No files in this queue	இந்த வரிசையில் கோப்புகள் இல்லை
 #. text in a dialog box
 #, machine
 	No folders yet	இதுவரை கோப்புறைகள் இல்லை
@@ -3708,6 +3757,10 @@
 #. text in langpick.rs
 #, machine
 	No language matches.	எந்த மொழியும் பொருந்தவில்லை.
+#. text in the Link grabber window
+#. Link grabber: the title in its empty list
+#, machine
+	No links yet	இதுவரை இணைப்புகள் இல்லை
 #. text in the Options window
 #. Options → Remote → Status: on, but the computer has no local network address now
 #, machine
@@ -3739,9 +3792,17 @@
 #, machine
 	No proxy/socks	ப்ராக்ஸி/SOCKS இல்லை
 #. text in the Options window
+#. Site rules window: the title in the empty list of rules
+#, machine
+	No site rules yet	இதுவரை தள விதிகள் இல்லை
+#. text in the Options window
 #. Options → Accounts: no system keyring/keychain answered (none runs, e.g. a desktop without one), so the sign-ins stay in MDM's settings folder, which only the user's account may read
 #, machine
 	No system keyring answered, so sign-ins and passwords are kept in MDM's settings, which only you can read.	கணினி கீரிங் பதிலளிக்கவில்லை, எனவே உள்நுழைவுகளும் கடவுச்சொற்களும் MDM அமைப்புகளில் வைக்கப்பட்டுள்ளன; அவற்றை நீங்கள் மட்டுமே படிக்க முடியும்.
+#. text in the Add torrent window
+#. Add torrent: the title in the empty list of files, before a torrent is read
+#, machine
+	No torrent yet	இதுவரை டோரண்ட் இல்லை
 #. message or event log entry in the main window
 #. event log entry: Add trackers changed nothing, the torrent had them all
 #, machine
@@ -3836,7 +3897,7 @@
 #. Link grabber, a link's status: a web page sent it (Click'n'Load), so it isn't looked up (name, size, online) before it is added
 #, machine
 	Not looked up	சரிபார்க்கப்படவில்லை
-#. text in cnl.rs; button in helpers.rs
+#. text in cnl.rs
 #. button in the Click'n'Load window: refuse these links, ask again next time
 #, machine
 	Not now	இப்போது வேண்டாம்
@@ -4384,10 +4445,6 @@
 #. text in helpers.rs
 #, machine
 	Reads a page and lists every quality the site offers, up to 4K, from YouTube, Vimeo and over a thousand other sites.	ஒரு பக்கத்தைப் படித்து, YouTube, Vimeo மற்றும் ஆயிரக்கணக்கான பிற தளங்களிலிருந்து 4K வரை தளம் வழங்கும் ஒவ்வொரு தரத்தையும் பட்டியலிடுகிறது.
-#. text in helpers.rs
-#. the helpers are downloaded, checked and ready; {list} = names and versions, e.g. "yt-dlp 2026.10.26, ffmpeg 9.0"
-#, machine
-	Ready: {list}	தயார்: {list}
 #. message or event log entry in the main window
 #. event log entry: Reannounce failed, with the reason
 #. {error} = an error message (keep the braces as they are)
@@ -5179,6 +5236,7 @@
 #, machine
 	Started with yt-dlp {version} ({format})	yt-dlp {version} ({format}) உடன் தொடங்கப்பட்டது
 #. text in helpers.rs
+#. the first start's video helpers: a helper's download has started, its size not known yet
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Starting...	தொடங்குகிறது...
@@ -5199,6 +5257,11 @@
 #. label before the download's state
 #, machine
 	Status:	நிலை:
+#. text in setup.rs
+#. what a screen reader says of the first start's setup window's steps; {n} = this step's number, {total} = how many, {name} = its name (Language, Video helpers, Browser extension)
+#. {n} = a number; {name} = a file name (keep the braces as they are)
+#, machine
+	Step {n} of {total}: {name}	{total} இல் படி {n}: {name}
 #. text in preview.rs
 #. the preview pane: a finished download's file is still where it was saved
 #, machine
@@ -5965,6 +6028,10 @@
 #. remote control page (on a phone): label of the box naming this phone (shown in MDM's list of paired devices)
 #, machine
 	This device's name	இந்தச் சாதனத்தின் பெயர்
+#. text in rssdlg.rs
+#. RSS feeds window: in the empty list of articles of a feed that has none
+#, machine
+	This feed has no articles right now.	இந்த ஊட்டத்திற்கு இப்போதைக்கு கட்டுரைகள் இல்லை.
 #. message or event log entry in the main window
 #. the message when a file picked in View → Font isn't a TrueType or OpenType font MDM can read
 #, machine
@@ -6247,9 +6314,6 @@
 #. a country's name (where a download's server is)
 #, machine
 	Trinidad and Tobago	டிரினிடாட் மற்றும் டொபாகோ
-#. button in helpers.rs
-#, machine
-	Try again	மீண்டும் முயற்சிக்கவும்
 #. text in errors.rs
 #. what to do when a helper couldn't be downloaded because its server limits requests; {name} = yt-dlp, ffmpeg or gallery-dl; {helpers} and {other} = the buttons Helpers and Use another program
 #. {name} = a file name (keep the braces as they are)
@@ -6662,6 +6726,10 @@
 #. category name: video files
 #, machine
 	Video	வீடியோ
+#. text in setup.rs
+#. a step of the first start's setup window: yt-dlp, ffmpeg and Node.js, the programs that download videos
+#, machine
+	Video helpers	வீடியோ உதவியாளர்கள்
 #. text in the Download video window
 #, machine
 	Video lookups use yt-dlp (about 23 MB, checked against its signature).	வீடியோ தேடல்கள் yt-dlp ஐப் பயன்படுத்துகின்றன (சுமார் 23 MB, அதன் கையொப்பத்திற்கு எதிராகச் சரிபார்க்கப்பட்டது).
@@ -6748,6 +6816,10 @@
 #. text in the Scheduler window
 #, machine
 	Wednesday	புதன்
+#. text in setup.rs
+#. title of the first start's setup window (the language, the video helpers, the browser extension)
+#, machine
+	Welcome to Mister Download Manager	Mister Download Manager க்கு வரவேற்கிறோம்
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -6850,7 +6922,7 @@
 #, machine
 	Yes	ஆம்
 #. button in helpers.rs
-#. the first start's helpers window: download yt-dlp and ffmpeg (the recommended answer)
+#. the first start's helpers: download every missing helper (yt-dlp, ffmpeg, Node.js) at once (the recommended answer)
 #, machine
 	Yes, download them (recommended)	ஆம், அவற்றைப் பதிவிறக்கவும் (பரிந்துரைக்கப்படுகிறது)
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)

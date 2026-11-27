@@ -38,6 +38,7 @@ function fakeApi({
   // undefined: an older host, which doesn't say.
   panelCompact,
   panelFull,
+  panelScale,
   access = true,
   rules = {},
   rulesReply,
@@ -161,7 +162,13 @@ function fakeApi({
           const on = typeof panelOn === "function" ? panelOn(m) : panelOn !== false;
           const compact = typeof panelCompact === "function" ? panelCompact(m) : panelCompact;
           const full = typeof panelFull === "function" ? panelFull(m) : panelFull;
-          return { ok: on, ...(on && compact !== undefined ? { compact } : {}), ...(on && full !== undefined ? { full } : {}) };
+          const scale = typeof panelScale === "function" ? panelScale(m) : panelScale;
+          return {
+            ok: on,
+            ...(on && compact !== undefined ? { compact } : {}),
+            ...(on && full !== undefined ? { full } : {}),
+            ...(on && scale !== undefined ? { scale } : {}),
+          };
         }
         // A notice of a download left alone (#208): an older host, which knows none, takes it
         // for an address it can't download (`noticeReply`).
@@ -1145,6 +1152,30 @@ const ok = (what) => {
   assert.deepEqual(await askNewer(), { on: true, compact: false, full: true }, "kept a moment");
   clock.t += 6000;
   assert.deepEqual(await askNewer(), { on: true, compact: false }, "Automatic again");
+  // #1923: Options → Download panels → Button size's scale (80% or 120%) comes with the answer,
+  // stays cached for PANEL_KEEP_MS, and follows a change in Options; 100% and off omit `scale`.
+  let scale = 80;
+  let scaledOn = true;
+  const scaled = fakeApi({
+    firefox: false,
+    panelOn: () => scaledOn,
+    panelCompact: () => false,
+    panelScale: () => (scale === 100 ? undefined : scale),
+  });
+  load(scaled.api, false, { Date: FakeDate });
+  const askScaled = () => new Promise((r) => scaled.listeners.message({ type: "panel" }, page, (v) => r(JSON.parse(JSON.stringify(v)))));
+  assert.deepEqual(await askScaled(), { on: true, compact: false, scale: 80 });
+  scale = 120;
+  assert.deepEqual(await askScaled(), { on: true, compact: false, scale: 80 }, "scale kept a moment");
+  clock.t += 6000;
+  assert.deepEqual(await askScaled(), { on: true, compact: false, scale: 120 }, "120% in Options: next question has it");
+  scale = 100;
+  clock.t += 6000;
+  assert.deepEqual(await askScaled(), { on: true, compact: false }, "100% default omits scale");
+  scale = 80;
+  scaledOn = false;
+  clock.t += 6000;
+  assert.deepEqual(await askScaled(), { on: false, compact: false }, "off: never scaled");
   ok("#1278: the video button's size comes from Options with its answer, and follows a change");
 }
 {
@@ -2689,7 +2720,7 @@ function samplePage(html) {
 
 // #670: video.js's button against a fake DOM — whether it shows over a video while the page is
 // in full screen, with the popup's option off (as installed) or on.
-function videoButton({ stored = {}, location, iframes, videos, subframe = false } = {}) {
+function videoButton({ stored = {}, location, iframes, videos, subframe = false, fullscreenMedia = false, topFullscreen = false, fullScreenWindow = false, panelScale } = {}) {
   const source = readText("../../extension/video.js");
   const handlers = {};
   // The frames asked for, by id: one cancelled since (a tick after a hide) does not run.
@@ -2804,15 +2835,30 @@ function videoButton({ stored = {}, location, iframes, videos, subframe = false 
     },
     createTreeWalker: () => ({ nextNode: () => null }),
   };
-  // The storage listeners the script keeps, so a change can be fired at them as the browser does.
+  // The storage and runtime listeners the script keeps, so changes can be fired at them.
   const storageListeners = [];
+  const runtimeListeners = [];
+  let currentScale = panelScale;
   const api = {
     i18n: { getMessage: () => "" },
-    runtime: { id: "ours", sendMessage: async (m) => (m.type === "panel" ? { on: true } : { ok: false }) },
+    runtime: {
+      id: "ours",
+      sendMessage: async (m) =>
+        m.type === "panel"
+          ? { on: true, ...(topFullscreen ? { topFullscreen: true } : {}), ...(currentScale ? { scale: currentScale } : {}) }
+          : { ok: false },
+      onMessage: {
+        addListener: (f) => runtimeListeners.push(f),
+        removeListener: (f) => {
+          const i = runtimeListeners.indexOf(f);
+          if (i >= 0) runtimeListeners.splice(i, 1);
+        },
+      },
+    },
     storage: {
       local: {
         get: async (defaults) => ({ ...defaults, ...stored }),
-        set: async () => {},
+        set: async (patch) => Object.assign(stored, patch),
       },
       onChanged: { addListener: (f) => storageListeners.push(f) },
     },
@@ -2822,6 +2868,7 @@ function videoButton({ stored = {}, location, iframes, videos, subframe = false 
     top: null,
     location: loc,
     document: doc,
+    fullScreen: fullScreenWindow,
   };
   win.top = subframe ? {} : win;
   class HTMLAudioElement {}
@@ -2830,7 +2877,7 @@ function videoButton({ stored = {}, location, iframes, videos, subframe = false 
     location: loc,
     window: win,
     document: doc,
-    matchMedia: () => ({ matches: false, addEventListener() {} }),
+    matchMedia: (q) => ({ matches: Boolean(fullscreenMedia && String(q).includes("fullscreen")), addEventListener() {} }),
     getComputedStyle: () => ({ visibility: "visible", display: "block", opacity: "1" }),
     requestAnimationFrame: (f) => (frames.set(++frameId, f), frameId),
     cancelAnimationFrame: (id) => frames.delete(id),
@@ -2874,6 +2921,13 @@ function videoButton({ stored = {}, location, iframes, videos, subframe = false 
       stored.hideVideoFullscreen = value;
       for (const f of storageListeners) f({ hideVideoFullscreen: { newValue: value } }, "local");
       await settle();
+    },
+    topFullscreenChange: async (on) => {
+      for (const f of [...runtimeListeners]) f({ type: "top-fullscreen", on });
+      await settle();
+    },
+    setPanelScale: (next) => {
+      currentScale = next;
     },
     hasFramePointer: () => Boolean((handlers.pointermove || []).some((f) => f.name === "onFrameMove")),
   };
@@ -2925,6 +2979,47 @@ function videoButton({ stored = {}, location, iframes, videos, subframe = false 
   await b.move();
   assert.equal(b.display(), "block", "turned off in full screen: the button comes back");
   ok("#670: turning the option on and off while in full screen");
+}
+{
+  // #1923: cross-origin embedded player frame obeys real DOM full screen relayed from the top
+  // frame, without false positives from browser window F11 (`window.fullScreen` / `display-mode: fullscreen`).
+  const f11Only = videoButton({
+    stored: { hideVideoFullscreen: true },
+    subframe: true,
+    fullscreenMedia: true,
+    fullScreenWindow: true,
+  });
+  await f11Only.move();
+  assert.equal(f11Only.display(), "block", "F11 browser fullscreen alone does not hide embedded video button");
+  await f11Only.topFullscreenChange(true);
+  assert.equal(f11Only.display(), "none", "relayed top DOM fullscreen hides embedded button at once");
+  await f11Only.move();
+  assert.equal(f11Only.display(), "none", "stays hidden while top frame is in DOM fullscreen");
+  await f11Only.topFullscreenChange(false);
+  assert.equal(f11Only.display(), "block", "leaving top DOM fullscreen shows embedded button again");
+
+  // Also check background.js relays `top-fullscreen` only from frameId 0 and attaches `topFullscreen` to subframe `panel` replies.
+  const { api, calls, listeners } = fakeApi({ firefox: true });
+  load(api, true);
+  const frame0 = { id: "ours", tab: { id: 7, url: "https://site.test/watch" }, frameId: 0, url: "https://site.test/watch" };
+  const sub = { id: "ours", tab: { id: 7, url: "https://site.test/watch" }, frameId: 2, url: "https://embed.other/player" };
+  const spoof = await new Promise((r) => listeners.message({ type: "top-fullscreen", on: true }, sub, r));
+  assert.equal(spoof.ok, false, "subframe cannot spoof top-fullscreen");
+  const setFs = await new Promise((r) => listeners.message({ type: "top-fullscreen", on: true }, frame0, r));
+  assert.equal(setFs.ok, true);
+  assert.ok(calls.some((c) => c[0] === "tabMessage" && c[1] === 7 && c[2]?.type === "top-fullscreen" && c[2]?.on === true), "relayed to tab frames");
+  const subPanel = await new Promise((r) => listeners.message({ type: "panel" }, sub, r));
+  assert.equal(subPanel.topFullscreen, true, "subframe panel reply carries topFullscreen");
+  listeners.tabUpdated(7, { url: "https://site.test/next" });
+  await settle();
+  const afterNav = await new Promise((r) => listeners.message({ type: "panel" }, sub, r));
+  assert.equal(afterNav.topFullscreen, undefined, "navigation clears tabFullscreen");
+
+  // Dynamic check that video.js's ask() applies a non-default `scale` from `panel` without error.
+  const bScaled = videoButton({ panelScale: 80 });
+  await bScaled.move();
+  assert.equal(bScaled.display(), "block", "80% scaled button renders and shows");
+  ok("#1923: cross-origin iframe obeys real DOM fullscreen without F11 false positives");
 }
 {
   // #758: on docs.google.com / drive.google.com, non-video preview frames (Docs, Sheets) must not get the button.
@@ -3618,7 +3713,52 @@ function videoButton({ stored = {}, location, iframes, videos, subframe = false 
     assert.ok(source.includes("const CORNERS = rtl ? [{ x: 1, y: 0 }, { x: 1, y: 1 }, { x: 0, y: 1 }] : [{ x: 0, y: 0 }, { x: 0, y: 1 }, { x: 1, y: 1 }];"), "the other corners mirrored too");
     assert.ok(fn("look").includes('if (video && root.matches(":hover")) return;'), "on the button (outside its player, over the next post): it stays with its video");
     assert.ok(fn("openMenu").includes('item("home").hidden = !chosen;'), "Put the button back in its corner: once it was moved");
+    // #1923: pixel-aware free interior placement (> 20 px from edges) vs. 20 px edge snap.
+    const interior = plain(w.snap({ x: 0.94, y: 0.4 }, 1750, 1034)); // 105 px from right on 1080p (> 20 px)
+    assert.deepEqual(interior, { x: 0.94, y: 0.4, free: true }, "105 px from edge on 1080p stays free");
+    assert.deepEqual(plain(w.snap(interior)), { x: 0.94, y: 0.4, free: true }, "kept free spot survives reload");
+    assert.deepEqual(plain(w.snap({ x: 0.992, y: 0.4 }, 1750, 1034)), { x: 1, y: 0.4 }, "14 px from right edge snaps to edge");
+    assert.deepEqual(plain(w.snap({ x: 0.4, y: 0.015 }, 1750, 1034)), { x: 0.4, y: 0 }, "15.5 px from top edge snaps to top");
     ok("video.js: the button moves to a corner or outside the player, snapped, kept per site (#1735)");
+  }
+  // #1923: Options scale (80% / 100% / 120% from `panel`), menu full-screen toggle, and iframe full-screen check.
+  {
+    const w = make(["scaleFactor", "menuFit", "pageFullscreen"], "{ scaleFactor, menuFit, pageFullscreen }");
+    assert.deepEqual(
+      [{ scale: 80 }, { scale: 100 }, { scale: 120 }, {}, null, { scale: 999 }].map(w.scaleFactor),
+      [0.8, 1, 1.2, 1, 1, 1],
+    );
+    // menuFit respects the scaled button's gap (30 px at 80%, 36 px at 100%, 42 px at 120%).
+    assert.equal(w.menuFit(10, 200, 100, 100, 800, 30).top, 30);
+    assert.equal(w.menuFit(10, 200, 100, 100, 800).top, 36);
+    assert.equal(w.menuFit(10, 200, 100, 100, 800, 42).top, 42);
+    // Same-document, same-origin parent, and cross-origin relayed full screen.
+    assert.equal(w.pageFullscreen({ fullscreenElement: {} }, null, false), true);
+    assert.equal(w.pageFullscreen({ webkitFullscreenElement: {} }, null, false), true);
+    assert.equal(w.pageFullscreen({ mozFullScreenElement: {} }, null, false), true);
+    assert.equal(w.pageFullscreen({}, { top: null }, false), false);
+    assert.equal(w.pageFullscreen({}, { top: { document: { fullscreenElement: {} } } }, false), true);
+    const crossWin = {
+      fullScreen: true,
+      get top() {
+        return {
+          get document() {
+            throw new Error("cross-origin");
+          },
+        };
+      },
+    };
+    assert.equal(w.pageFullscreen({}, crossWin, false), false, "browser F11 alone is false");
+    assert.equal(w.pageFullscreen({}, crossWin, true), true, "relayed top DOM fullscreen is true");
+    // Wiring: scale comes from `panel` (no duplicate Size in menu or popup), menu has fullscreen checkbox, teardown cleans listeners.
+    const english = JSON.parse(readText("../../extension/_locales/en/messages.json"));
+    assert.ok(english.popup_video_hide_fullscreen, "en/messages.json has popup_video_hide_fullscreen");
+    assert.ok(source.includes(`popup_video_hide_fullscreen: ${JSON.stringify(english.popup_video_hide_fullscreen.message)}`), "video.js FALLBACK has popup_video_hide_fullscreen");
+    assert.ok(!english.video_size_label && !source.includes("scale-row") && !readText("../../extension/popup.html").includes("video-scale"), "no second Size control in popup or menu");
+    assert.ok(source.includes('role="menuitemcheckbox" aria-checked="false" data-act="fullscreen"'), "menu has fullscreen menuitemcheckbox");
+    assert.ok(fn("ask").includes("scale = scaleFactor(r);") && fn("ask").includes("pinned = null;"), "ask applies panel scale and resets pinned");
+    assert.ok(fn("teardown").includes("removeEventListener(ev, onFullscreenChange)") && fn("teardown").includes("removeListener(onTopFullscreen)"), "teardown cleans fullscreen listeners");
+    ok("video.js: Options scale from panel, pixel-aware free drag, menu fullscreen toggle, iframe fullscreen (#1923)");
   }
   // #1735: the menu's filters. What it lists (both kinds, the sound only), its file types and
   // codecs where they differ; a filter kept from another video never empties the list.

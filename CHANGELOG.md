@@ -5,8 +5,14 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ## [Unreleased]
 
+These changes come in version 0.6.0.
+
 ### Added
 
+- **Icons in the drop-down lists, marks on messages, and empty lists that say what goes there** ([#2008](https://github.com/anefzaoui/misterdownloadmanager/issues/2008)): the **Category** lists in **Download File Info** and **Options → Save to** show each category's icon, the same as in the Categories tree, and **Download later**'s queue list shows each queue's icon, as the **Scheduler** does. **Options → Sites Logins → Cookies for video sites** shows each browser's logo before its name. Error and warning lines start with a drawn mark, so they don't rely on colour alone: **Add torrent**, **Add trackers**, the video helpers' downloads, **Download video from a page**, **Download a gallery**, **Options → Accounts**' note, the failed downloads in **Downloads complete**, and **Checksum**'s result (a check when the file matches). Empty lists now show an icon, a title and what goes there, as the main list does: **RSS feeds** (feeds and articles), **Options → Accounts**, **Site rules**, the **Scheduler**'s files in a queue, **Add torrent** and **Link grabber**.
+- **Status icons in the download list, drawn checks and crosses** ([#2008](https://github.com/anefzaoui/misterdownloadmanager/issues/2008)): the **Status** column shows a small icon before each download's status, in every theme, the classic look included: complete, downloading, paused, waiting, failed, seeding, and being checked or joined. A theme with its own status icons shows them; the others get MDM's, in the theme's colours. The notification area's panel shows each running download's file-type icon before its name and its status icon under its bar. **Test browser integration**, and the **Installed** and **Connected** beside the video helpers and the browsers, now draw their check and cross marks instead of taking them from a font, so they look the same on every system, and each "the extension connected" line starts with its browser's logo. The **Helpers** window shows each helper's role icon before its name, as the first start's setup does, with a new one for gallery-dl.
+- **Browser logos beside their names:** the **Catch downloads from your browser** window, the first start's browser step and **Options → General**'s browser list show each browser's own logo before its name (Chrome, Edge, Brave, Opera, Opera GX, Vivaldi, Firefox, Safari, Chromium, Yandex, Zen, LibreWolf, Floorp, Waterfox, Thorium, Helium and more), sharp at every display scale. A browser without one gets a plain globe. The logos are trademarks of their owners, credited in **Help → About → Licenses and credits**.
+- **Customizable Download video button scale, free placement, and full-screen menu toggle** ([#1923](https://github.com/anefzaoui/misterdownloadmanager/issues/1923)): **Options → General → Download panels → Edit...** now has a **80%**, **100%** or **120%** scale beside **Button size** (opened from the video button's **More options** `▼` menu via **Button settings...** too), scaling the button in pages already open within a few seconds without a reload. Dragging the button inside the player keeps any interior spot more than 20 pixels from an edge instead of snapping back to an edge (edges, corners, and outside-the-player spots still snap when dragged close to them). **Hide the download button in full screen** is also available directly in the button's **More options** menu alongside the popup setting, and full-screen hiding now reaches embedded cross-origin video frames when the page enters full screen without triggering on browser F11.
 - **One folder for every download** ([#1973](https://github.com/anefzaoui/misterdownloadmanager/issues/1973), asked in [#716](https://github.com/anefzaoui/misterdownloadmanager/issues/716)): **Options → Save to → Save every download in "General" category's folder** sends every new download to General's folder, whatever its category, from the browser, **Add URL**, **Batch download**, Link grabber, queues, the command line, videos and torrents alike. The categories stay, to sort and filter the list, and each keeps its own folder for when the box is unticked again. A single download can still go elsewhere: change its folder in the window that starts it (with **Remember this path**, General's folder changes). Off by default, so nothing changes for anyone who doesn't tick it, and downloads already in the list stay where they are.
 - **Hugging Face models and datasets, and GitHub releases, as one package** ([#1772](https://github.com/anefzaoui/misterdownloadmanager/issues/1772)): paste the address of a model or dataset on Hugging Face (`huggingface.co/<owner>/<name>`, `huggingface.co/datasets/…`), of a folder in one at a branch, tag or commit (`…/tree/<revision>/<folder>`), or of a GitHub release or tag (`github.com/<owner>/<repo>/releases/tag/<tag>`, `…/releases/latest`), in **Add URL** or in Link grabber, and Link grabber lists every file in it, each with its size and its folder, unticked. Tick what you need and it downloads as one group: the files go under your download folder in a folder named after the address (`org\tiny\onnx\model.onnx`, `owner\repo\v1.0\…`), the repository's folders kept. Where the site publishes a digest, Hugging Face's SHA-256 of a large file and GitHub's of a release file, the finished file is checked against it, and one that doesn't match says so instead of passing as finished. A repository's files are asked at the commit its branch pointed to when it was listed, so two versions never mix. Gated Hugging Face repositories download with your access token, saved in **Options → Sites Logins** for `huggingface.co` (the token as the password): kept in the system's keychain with your other passwords and sent only to Hugging Face. The files come straight from Hugging Face's and GitHub's own servers, through MDM's connections, never through a mirror. When a site's limit of requests without an account is reached, the address's row says **Try again later** and for how long. What the sites' lists say is checked first: a file whose path would lead out of its folder is left out, and counted on the window's **Source** line. See [Models, datasets and releases](docs/link-grabber.md#models-datasets-and-releases).
 - **Site rules** ([#1778](https://github.com/anefzaoui/misterdownloadmanager/issues/1778)): **Options → Connection → Site rules...** sets, for every download from a site, its User-Agent, extra request headers, its number of connections and **Always connect the way a browser does** (from the first request, instead of only after the site turned MDM away). A site is a name with `*` for any text (`*.example.com`, `files*.example.net`), and each setting comes from the first rule that names the site, as with the per-server exceptions, which are the rules' numbers of connections. The command line's `get` and `resume` use them too, where they aren't given on it. A stopped download's **Properties → Connection...** changes its own User-Agent, headers, proxy and number of connections; when it goes on, MDM still checks it is the same file (its size and the ETag and date the server gives) before writing anything, so changed settings never mix two files. See [Site rules](docs/connections-and-speed.md#site-rules).
@@ -90,6 +96,7 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Changed
 
+- **The first start's setup in one window** ([#1839](https://github.com/anefzaoui/misterdownloadmanager/issues/1839)): the language, the video helpers and the browser extension are now the steps of one **Welcome to Mister Download Manager** window, with **Back**, **Next** and the steps named on top, instead of a window each, one after the other. Picking a language lays the window out in it at once, right to left for Arabic, Hebrew, Persian and Urdu. Each helper (yt-dlp, ffmpeg where MDM has its own, Node.js where the computer has no JavaScript runtime) says whether it is already there and has its own **Install** button and progress; nothing is downloaded until you press one. Steps that aren't needed are left out (the installer already chose the language, the helpers are there), **Next** passes a step without doing anything, and once the setup is finished or closed it doesn't come back. On Linux (X11 and XWayland, as on KDE Plasma and GNOME) the window belongs to the main window, as on Windows: kept over it, without a taskbar button of its own (thanks to [@StarDust-rs](https://github.com/StarDust-rs) for the idea).
 - **Options → Connection → Exceptions**: `*` now stands for any text anywhere in a server's name, and `*.example.com` names example.com's subdomains, not example.com itself; a scheme in front (`https://example.com`) keeps one to that scheme; when several exceptions name a server, the first one in the list counts, as before ([#1778](https://github.com/anefzaoui/misterdownloadmanager/issues/1778)).
 - **Scrollbars of the browser add-on's own look:** the list of qualities in the Download video button's menu, and the popup's lists, scroll with a thin scrollbar drawn in their own colours (the menu's paper white or navy board, the popup's light or dark), no longer the browser's stock grey one. It sits on the left in right-to-left languages and gets a little stronger while the pointer is on the list.
 - **SourceForge's badges in the README and on the website:** the README shows SourceForge's download button, the downloads from the SourceForge mirror and its *Users Love Us* award; the website's home page and [Press and mentions](https://misterdownloadmanager.com/press.html) show the award with the other figures, its picture served by the site itself.
@@ -110,6 +117,8 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Fixed
 
+- Windows: a graphics driver reset no longer keeps MDM off Direct3D 12 for a month. MDM starts again by itself after a reset, and when the graphics card wasn't back yet at that moment, Direct3D 12 found only Windows' own software renderer: MDM took that as Direct3D 12 not working on the card, and drew with OpenGL from then on. A start like that is no longer remembered, so the next start draws with Direct3D 12 on the card again, and a card an earlier version passed over this way is tried again at the first start ([#1974](https://github.com/anefzaoui/misterdownloadmanager/issues/1974)).
+- Sinhala: about a hundred of MDM's texts read better (clearer wording, the same word for the same thing throughout, the installer's too), and the ones still missing are translated (thanks to [@ShammiSandaruwan](https://github.com/ShammiSandaruwan)).
 - **Browser add-on:** Download all links / Download selected links sends capturable links to the paired server when another MDM is chosen, capped at 100 links, with a clear consolidated result, and stopping immediately when the server cannot be reached ([#1596](https://github.com/anefzaoui/misterdownloadmanager/issues/1596)).
 - Windows: a dialog opened from the main window (**About**, for one), brought back with MDM's taskbar button and closed with **OK**, left the keyboard on the taskbar: Windows doesn't hand it to the owner there, and the main window behind stayed without it, looking as if it had been put away. The main window now comes back to the front when such a dialog closes, and never over another program ([#1852](https://github.com/anefzaoui/misterdownloadmanager/issues/1852); thanks to [@wmwlwmwl](https://github.com/wmwlwmwl)).
 - Browser add-on: Sinhala (සිංහල) in Firefox. Its texts were already translated, but the add-on's Sinhala folder was never written, so it showed English; Firefox's package now carries it (Chrome and Safari have no Sinhala) ([#1903](https://github.com/anefzaoui/misterdownloadmanager/issues/1903); thanks to [@Raghav2012Code](https://github.com/Raghav2012Code)).
@@ -119,6 +128,52 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 - Torrents: a magnet link whose hash is written in lower-case Base32 (32 letters and digits, as some sites write it) opens, instead of being refused as not a torrent (thanks to [@jamaica1000](https://github.com/jamaica1000)).
 - Helpers: ffmpeg's download is checked more carefully.
 - Linux: a menu opened near a screen's bottom or right edge (a right-click in the list, a submenu) opens above or to the left of the pointer and stays on the screen, at any interface size, on X11 and XWayland (thanks to [@madratzz](https://github.com/madratzz)).
+- Torrents: a torrent made from a folder (`torrent-create`) lists its files by name, so the same
+  files make the same torrent on every computer. The order was the file system's, which differs
+  between computers, and so did the torrent and which of its files share a piece.
+- Torrents: downloads pick up within seconds when the network comes back (Wi-Fi, sleep, VPN),
+  instead of staying stalled. A drop closed every peer's connection, and each peer was tried
+  again later and later while the network was gone (up to an hour apart), so a torrent with few
+  peers could sit at 0 KB/s for minutes or an hour after the network was back. MDM now notices
+  the network coming back (a new address, a wake from sleep, the DHT answering again), calls each
+  of those peers once at once and asks the trackers and the DHT again (a tracker never sooner
+  than its minimum interval); a magnet link still looking for its file list asks its peers again.
+- Torrents: a paused torrent no longer keeps its files locked, and a finished one lets other
+  programs open, move or rename them. A paused torrent held every one of its files open for
+  writing, and a finished one kept doing so while it was shared: on Windows another program
+  couldn't open such a file without letting others write it (copying it, for one), nor run it,
+  until MDM let go. A pause now writes everything to disk and closes the files; starting the
+  torrent opens them again, where they are. A file that was moved or deleted meanwhile is made
+  again and its pieces downloaded again, as before, and never written into as though it still
+  held them. A finished file being shared is held read-only on Windows, so other programs can
+  read, copy, run, move, rename or delete it while it is shared.
+- Torrents: a paused torrent's finished pieces are saved before MDM quits. The pause saved them
+  in the background, so quitting right after a pause (and quitting MDM, which pauses every
+  torrent) could lose the pieces finished since the last save, and they were downloaded again.
+- Torrents: fixes from the BitTorrent engine's (librqbit's) authors and contributors, ahead of
+  its next release:
+  - pieces are announced to peers as they finish, also to a peer that already has them (some
+    trackers' anti-leech tools banned clients that didn't);
+  - trackers are asked again at the interval they ask for, never more often than their minimum
+    and never more than every 5 seconds (MDM asked at their minimum interval, more often than
+    they wanted);
+  - one tracker that fails no longer stops the torrent finding peers from the others;
+  - a paused torrent keeps every finished piece: the ones since its last save were downloaded
+    again after MDM restarted;
+  - torrents with UTF-8 name fields (`name.utf-8`, `path.utf-8`, as BitComet and other programs
+    write them beside names in another encoding) get their correct file names, and a name already in
+    UTF-8 is no longer mangled by a wrong guess of its encoding. A torrent like that which was
+    downloading before this version starts those files again under their correct names; the
+    files with the old names stay in the folder;
+  - command line, on Windows: `torrent-get` no longer fails at the start when another program
+    (a player, an antivirus) has one of the torrent's files open; it reads that file, and fails
+    only if it has to write to it;
+  - a file's progress counts every piece: a file after an empty one in the same piece never
+    reached 100 %;
+  - a torrent paused and started again quickly keeps finding peers on the local network;
+  - after a change in **Torrent settings**, a peer that connects and says nothing no longer
+    keeps the old session (and its port) running for up to 10 seconds;
+  - several torrents added at once no longer wait for each other.
 - Torrents: the engine checks what it's sent more carefully.
 - Extracting: 7z and RAR archives are checked more carefully.
 - Archive test: archives are checked more carefully.

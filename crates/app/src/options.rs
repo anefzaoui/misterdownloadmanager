@@ -67,9 +67,9 @@ enum Sub {
     Login(Option<usize>, String, String, String),
     /// Connection → New / Edit exception: (row, server, number).
     Exception(Option<usize>, String, String),
-    /// General → Download panels → Edit...: (the button over videos on, its size (#1278), the
-    /// sites it stays off, what Export / Import said).
-    Panels(bool, PanelSize, String, String),
+    /// General → Download panels → Edit...: (the button over videos on, its size (#1278), its
+    /// scale in percent (#1923), the sites it stays off, what Export / Import said).
+    Panels(bool, PanelSize, u16, String, String),
     /// General → Keys...: (also take the files the browser would open).
     Keys(bool),
     /// Downloads → Customize "Download progress" dialog → Edit... (#1041): (show it when a
@@ -420,6 +420,7 @@ impl OptionsDialog {
         self.sub = Some(Sub::Panels(
             self.s.video_panel,
             PanelSize::of(&self.s),
+            mdm_ipc::capture::clean_video_panel_scale(self.s.video_panel_scale),
             self.s.video_panel_sites.clone(),
             String::new(),
         ));
@@ -965,8 +966,20 @@ impl OptionsDialog {
                     name,
                     ("browser", i),
                 );
-                // Its name in the row's ink (white on the selection).
-                text(clip, row.left() + 23.0, row.top() + 12.0, name, look.ink);
+                // Its logo between the box and the name (a globe in the row's ink for a name
+                // MDM has no logo for), then its name in the row's ink (white on the selection).
+                winui::browser_icon(
+                    ui,
+                    clip,
+                    name,
+                    None,
+                    Rect::from_min_size(
+                        pos2(row.left() + 22.0, row.top() + 0.5),
+                        egui::vec2(16.0, 16.0),
+                    ),
+                    look.ink,
+                );
+                text(clip, row.left() + 42.0, row.top() + 12.0, name, look.ink);
             },
         );
         if let Some(i) = ev.space {
@@ -1077,6 +1090,7 @@ impl OptionsDialog {
             self.sub = Some(Sub::Panels(
                 self.s.video_panel,
                 PanelSize::of(&self.s),
+                mdm_ipc::capture::clean_video_panel_scale(self.s.video_panel_scale),
                 self.s.video_panel_sites.clone(),
                 String::new(),
             ));
@@ -1238,10 +1252,16 @@ impl OptionsDialog {
         self.category = self.category.min(cats.len() - 1);
         let names: Vec<String> = cats.iter().map(|c| c.label().into_owned()).collect();
         let labels: Vec<&str> = names.iter().map(String::as_str).collect();
-        if let Some(i) = winui::combo_light(
+        // Each with its icon, the Categories tree's (#2008).
+        let icons: Vec<winui::ItemIcon> = cats
+            .iter()
+            .map(|c| winui::ItemIcon::Shell(c.icon()))
+            .collect();
+        if let Some(i) = winui::combo_light_icons(
             ui,
             r(o, 30.0, 136.0, 212.0, 21.0),
             &labels,
+            &icons,
             self.category,
             true,
             "opt-category",
@@ -2492,6 +2512,21 @@ impl OptionsDialog {
             false,
             "opt-accounts",
         );
+        if rows.is_empty() {
+            let p = ui.painter().clone();
+            winui::empty_state(
+                ui,
+                &p,
+                report_body(r(o, 21.0, 93.0, 383.0, 124.0)),
+                crate::icons::EmptyIcon::Accounts,
+                // i18n: Options → Accounts: the title in the empty list of debrid service accounts
+                crate::i18n::mark("No accounts yet"),
+                // i18n: Options → Accounts: in the empty list of accounts, under its title
+                crate::i18n::mark("Add one to download file-host links through it."),
+                None,
+                "opt-accounts-empty",
+            );
+        }
         let sel = self.account_rows.selected.filter(|i| *i < rows.len());
         // i18n: button: add a debrid service account (opens the sign-in)
         let add = winui::button_light(
@@ -2558,9 +2593,16 @@ impl OptionsDialog {
             // i18n: Options → Accounts: a note that the debrid services' support (Real-Debrid, AllDebrid, Premiumize) is new and not yet tried with real paid accounts
             "Experimental: built from the services' public API documentation, not yet confirmed with real accounts.",
         );
-        winui::paragraph(
+        let x = winui::note_mark(
+            ui,
             &p,
             o.x + 21.0,
+            o.y + 256.0,
+            Some(crate::icons::Mark::Warn),
+        );
+        winui::paragraph(
+            &p,
+            x,
             o.y + 256.0,
             note,
             crate::theme::colors().warning,
@@ -2753,10 +2795,16 @@ impl OptionsDialog {
             .iter()
             .map(|b| crate::videodlg::browser_label(b))
             .collect();
-        if let Some(i) = winui::combo_light(
+        // Each browser's logo, as in General's list and the extension's window (#2008).
+        let logos: Vec<winui::ItemIcon> = browsers
+            .iter()
+            .map(|b| winui::ItemIcon::Browser(crate::browsericons::Browser::of_cookie_id(b)))
+            .collect();
+        if let Some(i) = winui::combo_light_icons(
             ui,
             r(o, 200.0, 311.0, 192.0, 21.0),
             &names,
+            &logos,
             at,
             on,
             "opt-cookie-browser",
@@ -2823,11 +2871,19 @@ impl OptionsDialog {
             )
         };
         // Three lines at most: the room above the check box below (a longer language's note is
-        // cut with "..." and shown whole on hover, never drawn over it).
-        winui::paragraph_until(
+        // cut with "..." and shown whole on hover, never drawn over it). The warning starts with
+        // its mark (#2008).
+        let x = winui::note_mark(
             ui,
             &p,
             o.x + 30.0,
+            o.y + 380.0,
+            crate::icons::Mark::of_ink(ink),
+        );
+        winui::paragraph_until(
+            ui,
+            &p,
+            x,
             o.y + 380.0,
             note,
             ink,
@@ -4094,6 +4150,23 @@ impl OptionsDialog {
                     true,
                     "opt-site-rules",
                 );
+                if rows.is_empty() {
+                    let p = ui.painter().clone();
+                    winui::empty_state(
+                        ui,
+                        &p,
+                        report_body(r(o, 14.0, 62.0, bx - 8.0 - 14.0, 196.0)),
+                        crate::icons::EmptyIcon::Sites,
+                        // i18n: Site rules window: the title in the empty list of rules
+                        crate::i18n::mark("No site rules yet"),
+                        // i18n: Site rules window: in the empty list of rules, under its title
+                        crate::i18n::mark(
+                            "A rule sets the connections, User-Agent or headers for one site.",
+                        ),
+                        None,
+                        "site-rules-empty",
+                    );
+                }
                 let sel = edit.list.selected.filter(|i| *i < edit.rows.len());
                 let free = !editing;
                 let on = |b: bool| {
@@ -4437,7 +4510,7 @@ impl OptionsDialog {
                     Outcome::Closed => {}
                 }
             }
-            Sub::Panels(mut on, mut size, mut sites, mut said) => {
+            Sub::Panels(mut on, mut size, mut scale, mut sites, mut said) => {
                 // The rows under the size's choices, moved down by their row (#1735's feedback).
                 const DY: f32 = 24.0;
                 let out = window(
@@ -4457,15 +4530,49 @@ impl OptionsDialog {
                             "Show a download button over videos in browsers",
                             true,
                         );
-                        // Its size (#1278): Automatic, the round button in a feed and over a small
-                        // player, its words over a big one (the default); Full, its words wherever
-                        // they fit; Compact, the round button over every video. The choices on a
-                        // row of their own, under their label: three after it ran past the window
-                        // in German.
+                        // Its size (#1278) and scale (#1923): Automatic, the round button in a feed
+                        // and over a small player, its words over a big one (the default); Full, its
+                        // words wherever they fit; Compact, the round button over every video; and
+                        // 80%, 100% or 120% beside the label.
                         let shade = if on { LIGHT_TEXT() } else { LIGHT_DISABLED() };
                         // i18n: Options → Download panels: the size of the download button over videos, chosen under it (Automatic / Full / Compact)
                         let size_label = crate::i18n::t("Button size:");
-                        winui::text_in_window(ui, &p, o.x + 30.0, o.y + 52.0, size_label, shade);
+                        let scale_items = mdm_ipc::capture::VIDEO_PANEL_SCALES
+                            .map(|s| crate::i18n::percent(f64::from(s) / 100.0, 0));
+                        let scale_refs: [&str; 3] = [
+                            scale_items[0].as_str(),
+                            scale_items[1].as_str(),
+                            scale_items[2].as_str(),
+                        ];
+                        let scale_w = winui::combo_fit_width(&p, &scale_refs, 68.0, 96.0);
+                        let scale_x = (30.0 + winui::text_width(&p, size_label) + 10.0)
+                            .clamp(110.0, 366.0 - scale_w);
+                        let (size_rc, size_cut) = winui::label_into(
+                            &p,
+                            o.x + 30.0,
+                            o.y + 52.0,
+                            size_label,
+                            shade,
+                            o.x + scale_x,
+                            o.x + 14.0,
+                        );
+                        if size_cut {
+                            winui::full_on_hover(ui, size_rc, "opt-panels-size", size_label);
+                        }
+                        let scale_at = mdm_ipc::capture::VIDEO_PANEL_SCALES
+                            .iter()
+                            .position(|&s| s == scale)
+                            .unwrap_or(1);
+                        if let Some(i) = winui::combo_light(
+                            ui,
+                            r(o, scale_x, 39.0, scale_w, 21.0),
+                            &scale_refs,
+                            scale_at,
+                            on,
+                            "opt-panel-scale",
+                        ) {
+                            scale = mdm_ipc::capture::VIDEO_PANEL_SCALES[i];
+                        }
                         let captions = [
                             // i18n: Options → Download panels → Button size: the round button in a feed and over a small video, the button with its words over a big one (the default)
                             crate::i18n::mark("Automatic"),
@@ -4621,10 +4728,11 @@ impl OptionsDialog {
                     },
                 );
                 match out {
-                    Outcome::Open => self.sub = Some(Sub::Panels(on, size, sites, said)),
+                    Outcome::Open => self.sub = Some(Sub::Panels(on, size, scale, sites, said)),
                     Outcome::Done(()) => {
                         self.s.video_panel = on;
                         size.set(&mut self.s);
+                        self.s.video_panel_scale = scale;
                         self.s.video_panel_sites =
                             sites.split_whitespace().collect::<Vec<_>>().join(" ");
                     }
@@ -4855,7 +4963,11 @@ impl OptionsDialog {
                         let p = ui.painter().clone();
                         let mut y = o.y + 22.0;
                         let mut how_h = 0.0;
+                        // Each line's mark (#2008): drawn, the same on every system, as the
+                        // text's start is.
+                        let mark_at = |y: f32| egui::pos2(o.x + 14.0, y - 12.0);
                         if checking {
+                            winui::state_mark(ui, &p, mark_at(y), crate::icons::Mark::Busy);
                             winui::text_in_window(
                                 ui,
                                 &p,
@@ -4867,13 +4979,29 @@ impl OptionsDialog {
                             );
                         }
                         for (k, c) in checks.iter().enumerate() {
-                            let (mark, color) = if c.ok {
-                                ("\u{2714}", winui::SUCCESS())
+                            let mark = if c.ok {
+                                crate::icons::Mark::Ok
                             } else {
-                                ("\u{2716}", winui::ERROR())
+                                crate::icons::Mark::Fail
                             };
-                            winui::text_in_window(ui, &p, o.x + 14.0, y, mark, color);
-                            winui::text_in_window(ui, &p, o.x + 34.0, y, &c.text, LIGHT_TEXT());
+                            winui::state_mark(ui, &p, mark_at(y), mark);
+                            // A browser's line: its logo after the mark, then the text.
+                            let mut text_x = o.x + 34.0;
+                            if let Some(browser) = &c.browser {
+                                winui::browser_icon(
+                                    ui,
+                                    &p,
+                                    browser,
+                                    None,
+                                    egui::Rect::from_min_size(
+                                        egui::pos2(text_x, y - 12.0),
+                                        egui::vec2(winui::MARK, winui::MARK),
+                                    ),
+                                    LIGHT_TEXT(),
+                                );
+                                text_x += winui::MARK + 4.0;
+                            }
+                            winui::text_in_window(ui, &p, text_x, y, &c.text, LIGHT_TEXT());
                             if let Some(path) = &c.detail {
                                 y += DETAIL_H;
                                 // A path reads left to right in a right-to-left language too.
@@ -6085,6 +6213,16 @@ pub(crate) fn list_frame(p: &egui::Painter, rc: Rect) {
     );
 }
 
+/// Where a [`report`] in the screen rect `rc` has its rows: under its header, inside its
+/// frame (on screen; an empty list's block goes there).
+fn report_body(rc: Rect) -> Rect {
+    let rc = winui::rect(rc);
+    winui::rect(Rect::from_min_max(
+        pos2(rc.left() + 1.0, rc.top() + 1.0 + 25.0),
+        pos2(rc.right() - 1.0, rc.bottom() - 1.0),
+    ))
+}
+
 /// A report list (header 25 px, rows 17 px): `cols` are (title, right edge in client x).
 /// Returns true on a double click of a row.
 #[allow(clippy::too_many_arguments)]
@@ -6127,10 +6265,7 @@ fn report(
         x0 = right;
     }
     // The rows: the shared row list under the header (its frame on the list's).
-    let body = Rect::from_min_max(
-        pos2(rc.left() + 1.0, head + 25.0),
-        pos2(rc.right() - 1.0, rc.bottom() - 1.0),
-    );
+    let body = winui::rect(report_body(winui::rect(rc)));
     let gridc = winui::GRID();
     let ev = winui::row_list(
         ui,

@@ -2386,6 +2386,125 @@ fn withdraw(window: u32) -> Result<(), Box<dyn std::error::Error>> {
     Ok(())
 }
 
+/// Linux, X11 and XWayland: MDM's window titled `title` made a dialog of the main window
+/// (`dialogs::window_of_main`, #1839): its WM_TRANSIENT_FOR the main window and its type a
+/// dialog's (EWMH), so the window manager keeps it over the main window, centred on it, and out
+/// of the taskbar and the window switcher, as Windows does with the windows the main window owns.
+/// winit sets neither (it has no parent for a top-level window), and KDE Plasma showed each first
+/// start window as a program of its own. Said while the window is still hidden, before the window
+/// manager first maps it, or as soon as the main window is shown (the window managers read them
+/// again when they change: the first passes come before the main window is mapped). Some(true)
+/// once said; Some(false) when it can't be (Wayland, which lets a program say nothing of the kind
+/// through winit; an X11 error); None while the window isn't there yet or the main window isn't
+/// shown (minimized, in the notification area: a dialog of a hidden window would hide with it):
+/// the caller asks again on a later pass, for a while.
+#[cfg(target_os = "linux")]
+pub fn belong_to_main(title: &str) -> Option<bool> {
+    let main = MAIN_X11_WINDOW.load(std::sync::atomic::Ordering::Relaxed);
+    if main == 0 || on_wayland() {
+        return Some(false);
+    }
+    match make_transient(main, &crate::i18n::os_text(title)) {
+        Ok(Some(window)) => {
+            tracing::info!("window {title:?} (0x{window:x}): a dialog of the main window");
+            Some(true)
+        }
+        Ok(None) | Err(Transient::MainHidden) => None,
+        Err(Transient::X11(e)) => {
+            tracing::warn!("window {title:?} couldn't be made a dialog of the main window: {e}");
+            Some(false)
+        }
+    }
+}
+
+/// Why [`make_transient`] didn't.
+#[cfg(target_os = "linux")]
+enum Transient {
+    /// The main window isn't shown.
+    MainHidden,
+    X11(String),
+}
+
+#[cfg(target_os = "linux")]
+impl<E: std::error::Error> From<E> for Transient {
+    fn from(e: E) -> Self {
+        Transient::X11(e.to_string())
+    }
+}
+
+/// [`belong_to_main`]'s work, on a connection of MDM's own: this process's top-level window
+/// named `title` (the root window's child while the window manager hasn't framed it yet, in its
+/// list of windows, `_NET_CLIENT_LIST`, once it has), made the transient of `main`. The window's
+/// id once done; None when there is no such window yet.
+#[cfg(target_os = "linux")]
+fn make_transient(main: u32, title: &str) -> Result<Option<u32>, Transient> {
+    use x11rb::connection::Connection;
+    use x11rb::protocol::xproto::{AtomEnum, ConnectionExt, MapState, PropMode};
+    use x11rb::wrapper::ConnectionExt as _;
+    let (conn, screen) = x11rb::rust_connection::RustConnection::connect(None)?;
+    let root = match conn.setup().roots.get(screen) {
+        Some(s) => s.root,
+        None => return Err(Transient::X11("no such screen".to_owned())),
+    };
+    if conn.get_window_attributes(main)?.reply()?.map_state != MapState::VIEWABLE {
+        return Err(Transient::MainHidden);
+    }
+    let atom = |name: &[u8]| -> Result<u32, Transient> {
+        Ok(conn.intern_atom(false, name)?.reply()?.atom)
+    };
+    let (pid_atom, name_atom, utf8) = (
+        atom(b"_NET_WM_PID")?,
+        atom(b"_NET_WM_NAME")?,
+        atom(b"UTF8_STRING")?,
+    );
+    let me = std::process::id();
+    let mut windows = conn.query_tree(root)?.reply()?.children;
+    let managed = conn
+        .get_property(
+            false,
+            root,
+            atom(b"_NET_CLIENT_LIST")?,
+            AtomEnum::WINDOW,
+            0,
+            4096,
+        )?
+        .reply()?;
+    windows.extend(managed.value32().into_iter().flatten());
+    for window in windows {
+        if window == main {
+            continue;
+        }
+        let pid = conn
+            .get_property(false, window, pid_atom, AtomEnum::CARDINAL, 0, 1)?
+            .reply()?;
+        if pid.value32().and_then(|mut v| v.next()) != Some(me) {
+            continue;
+        }
+        let name = conn
+            .get_property(false, window, name_atom, utf8, 0, 1024)?
+            .reply()?;
+        if name.value != title.as_bytes() {
+            continue;
+        }
+        conn.change_property32(
+            PropMode::REPLACE,
+            window,
+            AtomEnum::WM_TRANSIENT_FOR,
+            AtomEnum::WINDOW,
+            &[main],
+        )?;
+        let (kind, dialog) = (
+            atom(b"_NET_WM_WINDOW_TYPE")?,
+            atom(b"_NET_WM_WINDOW_TYPE_DIALOG")?,
+        );
+        conn.change_property32(PropMode::REPLACE, window, kind, AtomEnum::ATOM, &[dialog])?;
+        // A round trip: both reached the server before the connection closes.
+        conn.get_input_focus()?.reply()?;
+        return Ok(Some(window));
+    }
+    Ok(None)
+}
+
 /// Linux, XWayland only: a window of MDM's was clicked while it hasn't the keyboard (winit
 /// saw it lose the X input focus, or never get it), so the X server's input focus goes to it:
 /// to the window under the pointer, when it is MDM's and the focus is elsewhere. A window manager

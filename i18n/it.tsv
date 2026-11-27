@@ -310,6 +310,10 @@
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: shown when there are no rules yet
 	A rule adds the new articles whose titles it matches, as they come.	Una regola aggiunge i nuovi articoli i cui titoli corrispondono, man mano che arrivano.
+#. text in the Options window
+#. Site rules window: in the empty list of rules, under its title
+#, machine
+	A rule sets the connections, User-Agent or headers for one site.	Una regola definisce le connessioni, lo User-Agent o le intestazioni di un sito.
 #. text in errors.rs
 #. an error: a server on this computer redirected the download to the internet, which would not go through the chosen network adapter; {adapter} its name
 	a server on this computer sent the download elsewhere, which would not go through {adapter}	un server su questo computer ha reindirizzato il download altrove, dove non passerebbe tramite {adapter}
@@ -399,6 +403,10 @@
 #. link in the empty download list: opens Add URL
 	Add new download	Aggiungi nuovo download
 #. text in the Options window
+#. Options → Accounts: in the empty list of accounts, under its title
+#, machine
+	Add one to download file-host links through it.	Aggiungine uno per scaricare i collegamenti di file hosting tramite esso.
+#. text in the Options window
 	Add the duplicate and overwrite the existing file	Aggiungi il duplicato e sovrascrivi il file esistente
 #. text in the Options window
 	Add the duplicate with a numbered file name	Aggiungi il duplicato con un nome file numerato
@@ -462,7 +470,7 @@
 #. remote control page (on a phone): label of the box where a download's address or a magnet link is typed
 	Address or magnet link	Indirizzo o link magnet
 #. message or event log entry in the main window
-#. Link grabber: where the links came from: the Add URL window (an address typed or pasted there)
+#. Link grabber: where the links came from: an address given on its own (typed or pasted in Add URL, given on the command line)
 #, machine
 	Address typed	Indirizzo digitato
 #. text in the Options window; text in preview.rs; text in a download's Properties window
@@ -698,6 +706,10 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Azerbaijan	Azerbaigian
+#. button in setup.rs
+#. button of the first start's setup window: the step before
+#, machine
+	Back	Indietro
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Bahamas	Bahamas
@@ -775,6 +787,10 @@
 #. Site rules: column title: "Yes" when the rule asks the way a browser connects from the first request
 #, machine
 	Browser	Browser
+#. text in setup.rs
+#. a step of the first start's setup window: the extension that hands the browser's downloads to MDM
+#, machine
+	Browser extension	Estensione del browser
 #. text in extension.rs
 	Browser integration isn't set up on this computer, so no browser can reach Mister Download Manager yet.	L'integrazione con i browser non è configurata su questo computer, quindi nessun browser può ancora raggiungere Mister Download Manager.
 #. page title in the Options window
@@ -925,16 +941,11 @@
 #. Video helpers: a program just chosen is being checked
 #. the trailing ... means it is still going on: keep it
 	Checking the program...	Verifica del programma...
-#. text in helpers.rs
-#. a downloaded helper's signature and checksum are being checked; {name} = yt-dlp or ffmpeg
-#. {name} = a file name; {n} = a number (keep the braces as they are)
-#. the trailing ... means it is still going on: keep it
-	Checking {name} ({n} of {total})...	Verifica di {name} ({n} di {total})...
 #. text in the download list (sizes, speeds, status)
 #. the list's Status column while a torrent's files or a finished file are checked (against the torrent's hashes or a checksum); {percent} how much is checked, e.g. "42%". One short word: the column is narrow
 #, machine
 	Checking {percent}	Verifica {percent}
-#. text in the Checksum window; text in extension.rs; text in the Link grabber window; text in the Options window
+#. text in the Checksum window; text in extension.rs; text in the Link grabber window; text in helpers.rs; text in the Options window
 #. in the browser extension's window, while it reads whether the browsers can reach MDM (a moment, usually)
 #. Test browser integration, while it reads where browser integration stands (a moment, usually)
 #. the trailing ... means it is still going on: keep it
@@ -948,6 +959,10 @@
 #. text in remote.rs
 #. remote control page (on a phone): what the ".torrent file" button does (screen readers)
 	Choose a .torrent file	Scegli un file .torrent
+#. text in rssdlg.rs
+#. RSS feeds window: in the empty list of articles, under its title
+#, machine
+	Choose a feed to see its articles.	Scegli un feed per visualizzare i suoi articoli.
 #. message or event log entry in the main window
 #. title of the file dialog of View → Font → Choose a font file
 #. title of the message when the font picked in View → Font can't be used
@@ -957,7 +972,7 @@
 #. file picker title: choose a JavaScript runtime's program (node.exe, deno.exe, qjs.exe, bun.exe)
 #, machine
 	Choose a JavaScript runtime (Node.js, Deno, QuickJS or Bun)	Scegli un runtime JavaScript (Node.js, Deno, QuickJS o Bun)
-#. text in langpick.rs
+#. text in langpick.rs; text in setup.rs
 	Choose a language	Scegli una lingua
 #. text in a dialog box
 #. the Columns dialog: what it is for, above its list of the download list's columns
@@ -1002,7 +1017,7 @@
 	Clipboard	Appunti
 #. text in the Options window
 	Clock:	Formato ora:
-#. text in archtest.rs; text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in a dialog box; button in extension.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list; button in the Options window; button in rssdlg.rs; button in torrentfiles.rs; text in traypanel.rs; text in standard windows
+#. text in archtest.rs; text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in a dialog box; button in extension.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list; button in the Options window; button in rssdlg.rs; button in setup.rs; button in torrentfiles.rs; text in traypanel.rs; text in standard windows
 #. both verbs: Verify = check the file now; Close = close the window
 #. tooltip of the × that closes the Categories pane
 #. verb: closes this window
@@ -1439,13 +1454,13 @@
 #. Helpers: a newer version of a helper is being downloaded; {percent} = how far, a number
 #, machine
 	Downloading the update... {percent}%	Download dell'aggiornamento in corso... {percent}%
-#. text in helpers.rs
-#. {name} = yt-dlp, ffmpeg or Node.js; {n} of {total} = which helper of how many; {percent} = how far, e.g. 45%
-#. {name} = a file name; {n} = a number (keep the braces as they are)
-	Downloading {name} ({n} of {total})... {percent}	Download di {name} ({n} di {total})... {percent}
 #. text in the download list; text in the Options window
 #. tab title: download settings
 	Downloads	Download
+#. text in the Scheduler window
+#. Scheduler → Files in the queue: in the empty list, under its title
+#, machine
+	Downloads added to this queue show here.	I download aggiunti a questa coda vengono visualizzati qui.
 #. window title in a dialog box
 #. title of the window that sums up downloads added together (a playlist, a batch) once all are done
 #, machine
@@ -1779,6 +1794,10 @@
 	Find the next match	Trova la corrispondenza successiva
 #. text in the Find window
 	Find:	Trova:
+#. text in setup.rs
+#. button of the first start's setup window, on its last step: the setup is done
+#, machine
+	Finish	Fine
 #. item in the Categories tree in the main window; text in remote.rs
 #. adjective: the downloads that are complete
 #. remote control page (on a phone): tab: downloads finished
@@ -1945,9 +1964,6 @@
 #. text in extracting archives (a download's log, the Archive password window)
 #. button: opens 7-Zip's website (7-Zip is a program's name)
 	Get 7-Zip	Scarica 7-Zip
-#. window title in helpers.rs
-#. title of the first start's window that offers yt-dlp and ffmpeg
-	Get ready for video downloads	Preparati a scaricare video
 #. button in the Options window
 	Get System	Leggi dal sistema
 #. text in the Add torrent window
@@ -2176,6 +2192,10 @@
 #. text in helpers.rs; text in the Download video window
 #. button: download and install the yt-dlp program
 	Install yt-dlp	Installa yt-dlp
+#. text in helpers.rs
+#. the first start's video helpers: beside a helper that is there already (MDM's own copy or the system's)
+#, machine
+	Installed	Installato
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. Check for updates, after Update now downloaded it: unpacking and putting the new version in place
 #. the trailing ... means it is still going on: keep it
@@ -2239,6 +2259,10 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Italy	Italia
+#. text in rssdlg.rs
+#. RSS feeds window: in the empty list of articles of a feed not read yet
+#, machine
+	Its articles show here once the feed is read.	I suoi articoli vengono visualizzati qui una volta letto il feed.
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted in place (after "Couldn't extract {name}: "); HatchZip took its files out (the archive is gone), but moving them stopped: {to} holds those moved, {left} the others, {error} the system's reason
 #. {error} = an error message (keep the braces as they are)
@@ -2339,7 +2363,7 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Kyrgyzstan	Kirghizistan
-#. text in langpick.rs
+#. text in langpick.rs; text in setup.rs
 #. window title (the interface language)
 	Language	Lingua
 #. text in countries.rs
@@ -2717,6 +2741,10 @@
 #. why the computer isn't going to sleep, in the system's list of programs that keep it awake; {queue} = the queue's name
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
 	Mister Download Manager is running the queue "{queue}"	Mister Download Manager sta eseguendo la coda "{queue}"
+#. text in setup.rs
+#. the first start's setup window, under "Choose a language"
+#, machine
+	Mister Download Manager shows every window in it. View → Language changes it later.	Mister Download Manager mostra ogni finestra in questa lingua. Puoi cambiarla in seguito da Visualizza → Lingua.
 #. text in crashui.rs
 #. crash report window heading: MDM's window doesn't answer (frozen)
 	Mister Download Manager stopped responding	Mister Download Manager non risponde
@@ -2917,6 +2945,10 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	New Zealand	Nuova Zelanda
+#. text in setup.rs
+#. button of the first start's setup window: the next step
+#, machine
+	Next	Avanti
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Nicaragua	Nicaragua
@@ -2931,12 +2963,20 @@
 	Niue	Niue
 #. button in a dialog box; text in a download's progress window
 	No	No
+#. text in the Options window
+#. Options → Accounts: the title in the empty list of debrid service accounts
+#, machine
+	No accounts yet	Ancora nessun account
 #. text in a dialog box
 	No addresses yet	Ancora nessun indirizzo
 #. text in the Options window
 #. Options → Proxy / Socks: Test got no answer in time
 #, machine
 	No answer within 20 seconds.	Nessuna risposta entro 20 secondi.
+#. text in rssdlg.rs
+#. RSS feeds window: the title in the empty list of articles of a feed that has none
+#, machine
+	No articles	Nessun articolo
 #. text in extension.rs
 #. a check of Test browser integration (Linux, macOS): MDM found no browser it can connect to (one installed as a Flatpak isn't found)
 	No browser MDM can connect to was found	Non è stato trovato nessun browser a cui MDM possa connettersi
@@ -2975,6 +3015,18 @@
 #. message or event log entry in the main window
 #. title in the empty download list when there are no downloads at all
 	No downloads yet	Ancora nessun download
+#. text in rssdlg.rs
+#. RSS feeds window: the title in the empty list of articles, no feed chosen
+#, machine
+	No feed chosen	Nessun feed selezionato
+#. text in rssdlg.rs
+#. RSS feeds window: the title in the empty list of feeds
+#, machine
+	No feeds yet	Ancora nessun feed
+#. text in the Scheduler window
+#. Scheduler → Files in the queue: the title in the empty list
+#, machine
+	No files in this queue	Nessun file in questa coda
 #. text in a dialog box
 	No folders yet	Ancora nessuna cartella
 #. text in a dialog box
@@ -2984,6 +3036,10 @@
 	No language matches the search	Nessuna lingua corrisponde alla ricerca
 #. text in langpick.rs
 	No language matches.	Nessuna lingua corrispondente.
+#. text in the Link grabber window
+#. Link grabber: the title in its empty list
+#, machine
+	No links yet	Ancora nessun collegamento
 #. text in the Options window
 #. Options → Remote → Status: on, but the computer has no local network address now
 	No local network now: it starts when the computer joins one.	Nessuna rete locale al momento: si avvierà quando il computer si connetterà a una rete.
@@ -3009,8 +3065,16 @@
 #. text in the Options window
 	No proxy/socks	Nessun proxy/socks
 #. text in the Options window
+#. Site rules window: the title in the empty list of rules
+#, machine
+	No site rules yet	Ancora nessuna regola del sito
+#. text in the Options window
 #. Options → Accounts: no system keyring/keychain answered (none runs, e.g. a desktop without one), so the sign-ins stay in MDM's settings folder, which only the user's account may read
 	No system keyring answered, so sign-ins and passwords are kept in MDM's settings, which only you can read.	Nessun portachiavi di sistema ha risposto, quindi gli accessi e le password sono conservati nelle impostazioni di MDM, che solo tu puoi leggere.
+#. text in the Add torrent window
+#. Add torrent: the title in the empty list of files, before a torrent is read
+#, machine
+	No torrent yet	Ancora nessun torrent
 #. message or event log entry in the main window
 #. event log entry: Add trackers changed nothing, the torrent had them all
 	No tracker added: it has them already	Nessun tracker aggiunto: li ha già tutti
@@ -3084,7 +3148,7 @@
 #. Link grabber, a link's status: a web page sent it (Click'n'Load), so it isn't looked up (name, size, online) before it is added
 #, machine
 	Not looked up	Non cercato
-#. text in cnl.rs; button in helpers.rs
+#. text in cnl.rs
 #. button in the Click'n'Load window: refuse these links, ask again next time
 	Not now	Non ora
 #. text in helpers.rs
@@ -3514,9 +3578,6 @@
 	Reading {file}...	Lettura di {file}...
 #. text in helpers.rs
 	Reads a page and lists every quality the site offers, up to 4K, from YouTube, Vimeo and over a thousand other sites.	Analizza una pagina ed elenca tutte le qualità offerte dal sito, fino al 4K, da YouTube, Vimeo e oltre mille altri siti.
-#. text in helpers.rs
-#. the helpers are downloaded, checked and ready; {list} = names and versions, e.g. "yt-dlp 2026.10.26, ffmpeg 9.0"
-	Ready: {list}	Pronti: {list}
 #. message or event log entry in the main window
 #. event log entry: Reannounce failed, with the reason
 #. {error} = an error message (keep the braces as they are)
@@ -4149,6 +4210,7 @@
 #. {version} = a version number; {format} = a video format code (keep the braces as they are)
 	Started with yt-dlp {version} ({format})	Avviato con yt-dlp {version} ({format})
 #. text in helpers.rs
+#. the first start's video helpers: a helper's download has started, its size not known yet
 #. the trailing ... means it is still going on: keep it
 	Starting...	Avvio in corso...
 #. text in the Download video window
@@ -4165,6 +4227,11 @@
 #. text in preview.rs; text in a download's Properties window
 #. label before the download's state
 	Status:	Stato:
+#. text in setup.rs
+#. what a screen reader says of the first start's setup window's steps; {n} = this step's number, {total} = how many, {name} = its name (Language, Video helpers, Browser extension)
+#. {n} = a number; {name} = a file name (keep the braces as they are)
+#, machine
+	Step {n} of {total}: {name}	Passaggio {n} di {total}: {name}
 #. text in preview.rs
 #. the preview pane: a finished download's file is still where it was saved
 #, machine
@@ -4797,6 +4864,10 @@
 #. text in remote.rs
 #. remote control page (on a phone): label of the box naming this phone (shown in MDM's list of paired devices)
 	This device's name	Nome di questo dispositivo
+#. text in rssdlg.rs
+#. RSS feeds window: in the empty list of articles of a feed that has none
+#, machine
+	This feed has no articles right now.	Questo feed non ha articoli al momento.
 #. message or event log entry in the main window
 #. the message when a file picked in View → Font isn't a TrueType or OpenType font MDM can read
 #, machine
@@ -5032,8 +5103,6 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Trinidad and Tobago	Trinidad e Tobago
-#. button in helpers.rs
-	Try again	Riprova
 #. text in errors.rs
 #. what to do when a helper couldn't be downloaded because its server limits requests; {name} = yt-dlp, ffmpeg or gallery-dl; {helpers} and {other} = the buttons Helpers and Use another program
 #. {name} = a file name (keep the braces as they are)
@@ -5374,6 +5443,10 @@
 #. text in the download list (sizes, speeds, status)
 #. category name: video files
 	Video	Video
+#. text in setup.rs
+#. a step of the first start's setup window: yt-dlp, ffmpeg and Node.js, the programs that download videos
+#, machine
+	Video helpers	Programmi di supporto per i video
 #. text in the Download video window
 	Video lookups use yt-dlp (about 23 MB, checked against its signature).	La ricerca dei video usa yt-dlp (circa 23 MB, verificato con la sua firma).
 #. text in playlistdlg.rs
@@ -5442,6 +5515,10 @@
 	Web page:	Pagina web:
 #. text in the Scheduler window
 	Wednesday	mercoledì
+#. text in setup.rs
+#. title of the first start's setup window (the language, the video helpers, the browser extension)
+#, machine
+	Welcome to Mister Download Manager	Benvenuto in Mister Download Manager
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Western Sahara	Sahara occidentale
@@ -5521,7 +5598,7 @@
 #. button in a dialog box; text in the Options window; text in a download's progress window
 	Yes	Sì
 #. button in helpers.rs
-#. the first start's helpers window: download yt-dlp and ffmpeg (the recommended answer)
+#. the first start's helpers: download every missing helper (yt-dlp, ffmpeg, Node.js) at once (the recommended answer)
 	Yes, download them (recommended)	Sì, scaricali (consigliato)
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. {version} = a version number (keep the braces as they are)

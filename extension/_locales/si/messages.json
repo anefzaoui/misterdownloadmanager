@@ -174,7 +174,7 @@
     "message": "මෙම පිටුවේ තවමත් කිසිදු වීඩියෝවක් හෝ ශ්‍රව්‍යයක් හමු නොවීය. එය ධාවනය කර, පසුව මෙය නැවත විවෘත කරන්න."
   },
   "popup_media_streamed": {
-    "message": "මෙම පිටුවේ ධාවකය එහි වීඩියෝව කොටස් වශයෙන් ප්‍රවාහය කරයි, එබැවින් ලැයිස්තුගත කිරීමට ගොනුවක් නොමැත. වීඩියෝව වෙත යොමු කර එහි \"වීඩියෝව බාගන්න\" බොත්තම භාවිතා කරන්න."
+    "message": "මෙම පිටුවේ ධාවකය එහි වීඩියෝව කොටස් වශයෙන් ප්‍රවාහය කරයි, එබැවින් ලැයිස්තුගත කිරීමට ගොනුවක් නොමැත. වීඩියෝව වෙත යොමු කර එහි \"වීඩියෝව බාගන්න\" බොත්තම භාවිත කරන්න."
   },
   "popup_media_store": {
     "message": "Chrome Web Store හි නීති මඟින් මෙම දිගු පිටපත මෙම අඩවියේ වීඩියෝවලින් ඈත් කර තබයි. ඔබට කළ හැකි දේ උදවු හි දැක්වේ."
@@ -198,7 +198,7 @@
     "message": "මෙය කුමන වීඩියෝවක් දැයි හඳුනාගත නොහැක: එහිම පිටුව විවෘත කර එහිදී උත්සාහ කරන්න"
   },
   "video_looking": {
-    "message": "ගුණාංග සොයා බලමින්…"
+    "message": "ගුණාත්මකභාවයන් සොයමින්…"
   },
   "video_no_choices": {
     "message": "මෙහි බාගැනීමට වීඩියෝවක් නැත"
@@ -850,5 +850,78 @@
   },
   "popup_video_reset_done": {
     "message": "එහි කෙළවරේ, එහි මෙනුව සියල්ල පෙන්වයි, සෑම වෙබ් අඩවියකම"
+  },
+  "status_links_sent": {
+    "message": "යැවූ සබැඳි: $count$",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "10"
+      }
+    }
+  },
+  "status_links_cut": {
+    "message": "යැවූ සබැඳි: $sent$, $left$ මඟ හැරුණි",
+    "placeholders": {
+      "sent": {
+        "content": "$1",
+        "example": "100"
+      },
+      "left": {
+        "content": "$2",
+        "example": "20"
+      }
+    }
+  },
+  "status_links_partial": {
+    "message": "යැවූ සබැඳි: $sent$, ප්‍රතික්ෂේප කළ: $refused$",
+    "placeholders": {
+      "sent": {
+        "content": "$1",
+        "example": "5"
+      },
+      "refused": {
+        "content": "$2",
+        "example": "2"
+      }
+    }
+  },
+  "status_links_partial_cut": {
+    "message": "යැවූ සබැඳි: $sent$, ප්‍රතික්ෂේප කළ: $refused$, $left$ මඟ හැරුණි",
+    "placeholders": {
+      "sent": {
+        "content": "$1",
+        "example": "5"
+      },
+      "refused": {
+        "content": "$2",
+        "example": "2"
+      },
+      "left": {
+        "content": "$3",
+        "example": "1"
+      }
+    }
+  },
+  "status_links_refused": {
+    "message": "ප්‍රතික්ෂේප කළ සබැඳි: $count$",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "status_links_none": {
+    "message": "බාගත කළ නොහැකි සබැඳි නැත ($left$ ඉතිරි විය)",
+    "placeholders": {
+      "left": {
+        "content": "$1",
+        "example": "5"
+      }
+    }
+  },
+  "status_unreachable": {
+    "message": "සේවාදායකයට ළඟා විය නොහැක"
   }
 }
