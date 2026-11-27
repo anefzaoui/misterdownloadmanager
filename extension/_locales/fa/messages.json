@@ -284,6 +284,64 @@
   "popup_media_title_name": {
     "message": "افزودن عنوان صفحه پیش از نام فایل رسانه"
   },
+  "popup_images": {
+    "message": "تصاویر در این صفحه"
+  },
+  "popup_images_text": {
+    "message": "تصاویر این صفحه را در بزرگ‌ترین اندازه فهرست‌شده پیدا کنید، سپس موارد دلخواهتان را به گردآورنده پیوندها بفرستید."
+  },
+  "popup_images_find": {
+    "message": "یافتن تصاویر"
+  },
+  "popup_images_min": {
+    "message": "کوچک‌ترین اندازه، بر حسب پیکسل"
+  },
+  "popup_images_width": {
+    "message": "کوچک‌ترین عرض، بر حسب پیکسل"
+  },
+  "popup_images_height": {
+    "message": "کوچک‌ترین ارتفاع، بر حسب پیکسل"
+  },
+  "popup_images_types": {
+    "message": "انواع تصویر"
+  },
+  "popup_images_other": {
+    "message": "سایر"
+  },
+  "popup_images_count": {
+    "message": "$shown$ مورد از $total$ مورد انتخاب شده‌اند",
+    "placeholders": {
+      "shown": {
+        "content": "$1",
+        "example": "12"
+      },
+      "total": {
+        "content": "$2",
+        "example": "40"
+      }
+    }
+  },
+  "popup_images_unsized": {
+    "message": "اندازه مشخص نیست، نگه داشته شد: $n$",
+    "placeholders": {
+      "n": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "popup_images_send": {
+    "message": "ارسال به گردآورنده پیوندها"
+  },
+  "popup_images_sent": {
+    "message": "به گردآورنده پیوندها ارسال شد: موارد مورد نظر برای بارگیری را در آنجا علامت بزنید."
+  },
+  "popup_images_none": {
+    "message": "تصویری در این صفحه یافت نشد."
+  },
+  "popup_images_unreadable": {
+    "message": "مرورگر به افزونه‌ها اجازه نمی‌دهد این صفحه را بخوانند."
+  },
   "video_cant_save": {
     "message": "امکان ذخیره‌سازی ندارد"
   },
@@ -291,7 +349,7 @@
     "message": "باز کردن پست"
   },
   "video_drag_dots": {
-    "message": "نقطه‌ها را بکشید تا در امتداد لبه حرکت کند"
+    "message": "دسته نقطه‌چین را بکشید تا آن را به گوشه‌ای دیگر یا بیرون از ویدئو منتقل کنید"
   },
   "video_tip": {
     "message": "بارگیری $what$",
@@ -331,6 +389,9 @@
   },
   "video_all_qualities": {
     "message": "همه کیفیت‌ها و زیرنویس‌ها..."
+  },
+  "video_part": {
+    "message": "بارگیری یک بخش از اینجا..."
   },
   "video_failed": {
     "message": "Mister Download Manager نصب نشده است یا اجرا نشد"
@@ -759,5 +820,108 @@
   },
   "popup_dl_open_remote": {
     "message": "باز کردن صفحه‌اش"
+  },
+  "video_home": {
+    "message": "دکمه را به گوشه خود برگردانید"
+  },
+  "video_filter_all": {
+    "message": "همه"
+  },
+  "video_filter_audio": {
+    "message": "فقط صدا"
+  },
+  "video_filter_kind": {
+    "message": "نمایش"
+  },
+  "video_filter_type": {
+    "message": "نوع فایل"
+  },
+  "video_filter_codec": {
+    "message": "کدک"
+  },
+  "popup_video_reset_text": {
+    "message": "دکمه بارگیری روی ویدئوها"
+  },
+  "popup_video_reset_sub": {
+    "message": "مکان‌هایی که دکمه را به آن‌ها منتقل کردید و فیلترهای منوی آن، در هر سایت"
+  },
+  "popup_video_reset": {
+    "message": "بازنشانی"
+  },
+  "popup_video_reset_done": {
+    "message": "دوباره در گوشه خود، منوی آن همه چیز را در هر سایتی نشان می‌دهد"
+  },
+  "status_links_sent": {
+    "message": "پیوندهای ارسال شده: $count$",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "10"
+      }
+    }
+  },
+  "status_links_cut": {
+    "message": "پیوندهای ارسال شده: $sent$، $left$ مورد باقی‌مانده",
+    "placeholders": {
+      "sent": {
+        "content": "$1",
+        "example": "100"
+      },
+      "left": {
+        "content": "$2",
+        "example": "20"
+      }
+    }
+  },
+  "status_links_partial": {
+    "message": "پیوندهای ارسال شده: $sent$، رد شده: $refused$",
+    "placeholders": {
+      "sent": {
+        "content": "$1",
+        "example": "5"
+      },
+      "refused": {
+        "content": "$2",
+        "example": "2"
+      }
+    }
+  },
+  "status_links_partial_cut": {
+    "message": "پیوندهای ارسال شده: $sent$، رد شده: $refused$، $left$ مورد باقی‌مانده",
+    "placeholders": {
+      "sent": {
+        "content": "$1",
+        "example": "5"
+      },
+      "refused": {
+        "content": "$2",
+        "example": "2"
+      },
+      "left": {
+        "content": "$3",
+        "example": "1"
+      }
+    }
+  },
+  "status_links_refused": {
+    "message": "پیوندهای رد شده: $count$",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "status_links_none": {
+    "message": "هیچ پیوند قابل دریافت نیست ($left$ مورد باقی‌مانده)",
+    "placeholders": {
+      "left": {
+        "content": "$1",
+        "example": "5"
+      }
+    }
+  },
+  "status_unreachable": {
+    "message": "سرور در دسترس نیست"
   }
 }

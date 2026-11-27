@@ -31,15 +31,45 @@ const SOUND_EVENTS: [&str; 4] = [
     crate::i18n::mark("Queue processing stopped/finished"),
 ];
 
+/// General → Download panels → Button size (#1278), as Options shows it: Automatic (neither of
+/// the settings: the round button in a feed and over a small player, the words over a big one),
+/// Full (`video_panel_full`) or Compact (`video_panel_compact`).
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+enum PanelSize {
+    Auto,
+    Full,
+    Compact,
+}
+
+impl PanelSize {
+    /// In the order Options lists them.
+    const ALL: [PanelSize; 3] = [PanelSize::Auto, PanelSize::Full, PanelSize::Compact];
+
+    fn of(s: &Settings) -> Self {
+        if s.video_panel_compact {
+            PanelSize::Compact
+        } else if s.video_panel_full {
+            PanelSize::Full
+        } else {
+            PanelSize::Auto
+        }
+    }
+
+    fn set(self, s: &mut Settings) {
+        s.video_panel_compact = self == PanelSize::Compact;
+        s.video_panel_full = self == PanelSize::Full;
+    }
+}
+
 /// A small entry dialog opened from a page.
 enum Sub {
     /// Sites Logins → New / Edit: (row being edited, site/path, user, password).
     Login(Option<usize>, String, String, String),
     /// Connection → New / Edit exception: (row, server, number).
     Exception(Option<usize>, String, String),
-    /// General → Download panels → Edit...: (the button over videos on, its size Compact
-    /// (#1278), the sites it stays off, what Export / Import said).
-    Panels(bool, bool, String, String),
+    /// General → Download panels → Edit...: (the button over videos on, its size (#1278), its
+    /// scale in percent (#1923), the sites it stays off, what Export / Import said).
+    Panels(bool, PanelSize, u16, String, String),
     /// General → Keys...: (also take the files the browser would open).
     Keys(bool),
     /// Downloads → Customize "Download progress" dialog → Edit... (#1041): (show it when a
@@ -59,12 +89,86 @@ enum Sub {
     Pair,
     /// Archives → Archive passwords...: one password per line (#37).
     Passwords(String),
+    /// Connection → Site rules... (#1778): the rules, and the one being edited.
+    Rules(Box<RulesEdit>),
+}
+
+/// One row of Site rules: a rule and its number of connections (the exception under its
+/// pattern, Options → Connection → Exceptions).
+#[derive(Clone, Debug, PartialEq, Eq)]
+struct RuleRow {
+    rule: mdm_ipc::siterules::SiteRule,
+    connections: Option<u32>,
+}
+
+/// Site rules' window (#1778): its rows, their order the order they are tried in.
+struct RulesEdit {
+    rows: Vec<RuleRow>,
+    list: winui::RowList,
+    /// The rule being edited: its row (None: a new one), its site as typed, its fields.
+    editing: Option<(Option<usize>, String, crate::requestedit::RequestEdit)>,
+}
+
+/// The settings' site rules and exceptions as Site rules' rows: each rule with the exception
+/// under its pattern, then the exceptions no rule has, each list in its order.
+fn rule_rows(s: &Settings) -> Vec<RuleRow> {
+    use mdm_ipc::siterules::same_pattern;
+    let mut rows: Vec<RuleRow> = s
+        .site_rules
+        .iter()
+        .map(|rule| RuleRow {
+            rule: rule.clone(),
+            connections: s
+                .conn_exceptions
+                .iter()
+                .find(|(site, _)| same_pattern(site, &rule.site))
+                .map(|(_, n)| *n),
+        })
+        .collect();
+    for (site, n) in &s.conn_exceptions {
+        if !rows.iter().any(|r| same_pattern(&r.rule.site, site)) {
+            rows.push(RuleRow {
+                rule: mdm_ipc::siterules::SiteRule {
+                    site: site.clone(),
+                    ..Default::default()
+                },
+                connections: Some(*n),
+            });
+        }
+    }
+    rows
+}
+
+/// Site rules' rows back into the settings, in their order: the rules that set more than a
+/// number of connections, and the numbers as exceptions (which older versions read too).
+fn set_rule_rows(s: &mut Settings, rows: &[RuleRow]) {
+    s.site_rules = rows
+        .iter()
+        .filter(|r| r.rule.sets_anything())
+        .map(|r| r.rule.clone())
+        .collect();
+    s.conn_exceptions = rows
+        .iter()
+        .filter_map(|r| Some((r.rule.site.clone(), r.connections?)))
+        .collect();
 }
 
 /// Options → Remote's page number (the tabs' numbers).
 const REMOTE_PAGE: usize = 11;
 /// Test browser integration: from a check's line to the path under it (#818).
 const DETAIL_H: f32 = 18.0;
+/// What the Sites Logins list shows in place of a password: the same for every one; nothing
+/// for a login without one.
+const PASSWORD_MASK: &str = "********";
+
+/// The Sites Logins list's Password column for `pass`.
+fn password_shown(pass: &str) -> String {
+    if pass.is_empty() {
+        String::new()
+    } else {
+        PASSWORD_MASK.to_owned()
+    }
+}
 
 /// Connection → DNS's sub-dialog: a copy of the DNS fields, kept on OK.
 struct DnsEdit {
@@ -81,6 +185,20 @@ struct DnsEdit {
 
 /// A test's answer line and whether it worked, filled in by its thread.
 type TestSlot = std::sync::Arc<std::sync::Mutex<Option<(String, bool)>>>;
+
+/// Archives → the archive test (#1661): the check box, its number box and the unit, one line.
+const TEST_SENTENCE: &str =
+    // i18n: Options → Archives check box with a number box in it: {gb} is the box (a size in gigabytes, 4 at first); the words before it are the check box's caption, those after it follow the box, on one line. A test reads the archive back whole and checks it before its download counts as done
+    crate::i18n::mark("Test archives when their download completes, up to {gb} GB");
+
+/// The largest limit for the archive test that can be typed, in GB.
+const TEST_GB_MAX: u32 = 1024;
+
+/// Archives → Link grabber (#1774): how deep a folder given to Link grabber is read, and its
+/// files of which types, one line.
+const FOLDER_SENTENCE: &str =
+    // i18n: Options → Archives → Link grabber, one line with two boxes: an FTP folder or a web server's folder listing ("Index of") given to Link grabber is read with its subfolders: {depth} is a number box (how many levels of subfolders, 3 at first; 0 is the folder's own files only), {types} a text box (file types such as ISO ZIP; empty for every type)
+    crate::i18n::mark("Folders: {depth} levels deep, types: {types}");
 
 /// Archives → Use another program... (#1525): the program picked, and whether it answered as
 /// 7-Zip's command line, once it has.
@@ -239,6 +357,10 @@ pub struct OptionsDialog {
     /// port as typed, and the paired devices list's scroll and selection.
     remote: Option<mdm_remote::Remote>,
     port: String,
+    /// Archives → Test archives ... up to {gb} GB (#1661): the number as typed.
+    test_gb: String,
+    /// Archives → Link grabber → Folders: {depth} levels deep (#1774): the number as typed.
+    folder_depth: String,
     device_rows: winui::RowList,
     /// Sites Logins → Cookies for video sites (#229): the browser in the list (an index into
     /// `mdm_tools::proc::cookie_browsers`), kept while Off is chosen.
@@ -297,7 +419,8 @@ impl OptionsDialog {
     pub fn with_panels(mut self) -> Self {
         self.sub = Some(Sub::Panels(
             self.s.video_panel,
-            self.s.video_panel_compact,
+            PanelSize::of(&self.s),
+            mdm_ipc::capture::clean_video_panel_scale(self.s.video_panel_scale),
             self.s.video_panel_sites.clone(),
             String::new(),
         ));
@@ -318,6 +441,38 @@ impl OptionsDialog {
             "account" => self.sub = Some(Sub::Account(AccountEdit::default())),
             "progress" => self.sub = Some(Sub::Progress(self.s.show_progress)),
             "keys" => self.sub = Some(Sub::Keys(self.s.capture_opened)),
+            // Connection → Site rules... (#1778), and with its first rule (else a new one) open.
+            "siterules" | "siterule" => {
+                let rows = rule_rows(&self.s);
+                let editing = (name == "siterule").then(|| {
+                    let default = self.s.max_connections;
+                    match rows.first() {
+                        Some(row) => (
+                            Some(0),
+                            row.rule.site.clone(),
+                            crate::requestedit::RequestEdit::rule(
+                                &row.rule,
+                                row.connections,
+                                default,
+                            ),
+                        ),
+                        None => (
+                            None,
+                            String::new(),
+                            crate::requestedit::RequestEdit::rule(
+                                &Default::default(),
+                                None,
+                                default,
+                            ),
+                        ),
+                    }
+                });
+                self.sub = Some(Sub::Rules(Box::new(RulesEdit {
+                    rows,
+                    list: Default::default(),
+                    editing,
+                })));
+            }
             _ => {}
         }
         self
@@ -359,6 +514,8 @@ impl OptionsDialog {
             proxy_test: None,
             remote: None,
             port: settings.remote_port.to_string(),
+            test_gb: settings.test_archives_gb.to_string(),
+            folder_depth: settings.grabber_depth.to_string(),
             device_rows: Default::default(),
             cookie_browser: cookie_browser_at(settings),
             recording_hotkey: false,
@@ -477,10 +634,23 @@ impl OptionsDialog {
                     .parse()
                     .unwrap_or(8)
                     .clamp(1, s.connection_limit());
-                s.limits_mb = self.mb.parse().unwrap_or(200).max(1);
+                s.limits_mb = self.mb.parse().unwrap_or(s.limits_mb).max(1);
                 s.capture_min_kb = self.min_kb.parse().unwrap_or(0);
-                s.limits_hours = self.hours.parse().unwrap_or(5).max(1);
+                s.limits_hours = self.hours.parse().unwrap_or(s.limits_hours).max(1);
                 s.remote_port = self.remote_port();
+                s.test_archives_gb = self
+                    .test_gb
+                    .trim()
+                    .parse()
+                    .unwrap_or(s.test_archives_gb)
+                    .clamp(1, TEST_GB_MAX);
+                s.grabber_depth = self
+                    .folder_depth
+                    .trim()
+                    .parse()
+                    .unwrap_or(s.grabber_depth)
+                    .min(mdm_engine::folder::MAX_DEPTH);
+                s.grabber_types = s.grabber_types.trim().to_owned();
                 Outcome::Done(s)
             }
             Outcome::Closed => Outcome::Closed,
@@ -796,8 +966,20 @@ impl OptionsDialog {
                     name,
                     ("browser", i),
                 );
-                // Its name in the row's ink (white on the selection).
-                text(clip, row.left() + 23.0, row.top() + 12.0, name, look.ink);
+                // Its logo between the box and the name (a globe in the row's ink for a name
+                // MDM has no logo for), then its name in the row's ink (white on the selection).
+                winui::browser_icon(
+                    ui,
+                    clip,
+                    name,
+                    None,
+                    Rect::from_min_size(
+                        pos2(row.left() + 22.0, row.top() + 0.5),
+                        egui::vec2(16.0, 16.0),
+                    ),
+                    look.ink,
+                );
+                text(clip, row.left() + 42.0, row.top() + 12.0, name, look.ink);
             },
         );
         if let Some(i) = ev.space {
@@ -907,7 +1089,8 @@ impl OptionsDialog {
         if panels_edit.clicked() {
             self.sub = Some(Sub::Panels(
                 self.s.video_panel,
-                self.s.video_panel_compact,
+                PanelSize::of(&self.s),
+                mdm_ipc::capture::clean_video_panel_scale(self.s.video_panel_scale),
                 self.s.video_panel_sites.clone(),
                 String::new(),
             ));
@@ -1054,7 +1237,8 @@ impl OptionsDialog {
             58.0,
             398.0,
         );
-        group(ui, o, 21.0, 94.0, 380.0, 201.0, "Save To...");
+        // Taller by the row of "Save every download in General's folder" (#1973).
+        group(ui, o, 21.0, 94.0, 380.0, 224.0, "Save To...");
         // i18n: noun: label before the list of categories
         text(
             &p,
@@ -1068,10 +1252,16 @@ impl OptionsDialog {
         self.category = self.category.min(cats.len() - 1);
         let names: Vec<String> = cats.iter().map(|c| c.label().into_owned()).collect();
         let labels: Vec<&str> = names.iter().map(String::as_str).collect();
-        if let Some(i) = winui::combo_light(
+        // Each with its icon, the Categories tree's (#2008).
+        let icons: Vec<winui::ItemIcon> = cats
+            .iter()
+            .map(|c| winui::ItemIcon::Shell(c.icon()))
+            .collect();
+        if let Some(i) = winui::combo_light_icons(
             ui,
             r(o, 30.0, 136.0, 212.0, 21.0),
             &labels,
+            &icons,
             self.category,
             true,
             "opt-category",
@@ -1122,6 +1312,12 @@ impl OptionsDialog {
         let cat = cats[self.category];
         let label = cat.shown();
         let with_category = |template: &str| crate::i18n::fmt(template, &[("category", &label)]);
+        // One folder for every download (#1973): the downloads of every category go to
+        // General's folder, which only General's row changes; another category's own folder
+        // is kept for when it is off, shown greyed meanwhile as General's.
+        let general = Category::General.shown();
+        let with_general = |template: &str| crate::i18n::fmt(template, &[("category", &general)]);
+        let locked = self.s.one_folder && cat != Category::General;
         let line = with_category(crate::i18n::t(
             "Automatically put in \"{category}\" category the following file types:",
         ));
@@ -1135,23 +1331,27 @@ impl OptionsDialog {
         // Browse as wide as its label in this language (#192); the box ends 7 px before it.
         let (browse_x, browse_w) =
             winui::buttons_to_right(&p, 392.0, 0.0, &[("Browse", 73.0)], 160.0)[0];
-        winui::edit_light_on(
-            ui,
-            r(o, 31.0, 239.0, browse_x - 7.0 - 31.0, 23.0),
-            &mut self.cat_dir,
-            true,
-            false,
-            LIGHT_PAGE(),
-        );
+        let dir_rc = r(o, 31.0, 239.0, browse_x - 7.0 - 31.0, 23.0);
+        if locked {
+            let mut one = display_dir(&self.s.category_dir(Category::General, downloads));
+            winui::edit_light_on(ui, dir_rc, &mut one, false, false, LIGHT_PAGE());
+        } else {
+            winui::edit_light_on(ui, dir_rc, &mut self.cat_dir, true, false, LIGHT_PAGE());
+        }
         if winui::button_light(
             ui,
             r(o, browse_x, 240.0, browse_w, 21.0),
             // i18n: verb: choose a folder
             "Browse",
-            ButtonKind::Normal,
+            if locked {
+                ButtonKind::Disabled
+            } else {
+                ButtonKind::Normal
+            },
             false,
         )
         .clicked()
+            && !locked
         {
             let (title, from) = (dir_line.clone(), self.cat_dir.clone());
             winui::start_pick(ui.ctx(), "options-category-folder", move || {
@@ -1160,13 +1360,21 @@ impl OptionsDialog {
                     .pick_folder()
             });
         }
-        if let Some(dir) = winui::picked(ui.ctx(), "options-category-folder") {
+        if let Some(dir) = winui::picked(ui.ctx(), "options-category-folder")
+            && !locked
+        {
             self.cat_dir = display_dir(&dir);
         }
-        self.commit_cat_dir(downloads);
-        let line = with_category(crate::i18n::t(
-            "Change folder for \"{category}\" category on last selected",
-        ));
+        if !locked {
+            self.commit_cat_dir(downloads);
+        }
+        // With one folder, the folder a last selection changes is General's (#1973).
+        let template = crate::i18n::t("Change folder for \"{category}\" category on last selected");
+        let line = if self.s.one_folder {
+            with_general(template)
+        } else {
+            with_category(template)
+        };
         winui::checkbox_light(
             ui,
             o + vec2(33.0, 271.0),
@@ -1174,9 +1382,24 @@ impl OptionsDialog {
             &line,
             true,
         );
+        let one_line = with_general(crate::i18n::t(
+            // i18n: Options → Save to, a check box: new downloads of every category go to General's folder; {category} is General's name
+            "Save every download in \"{category}\" category's folder",
+        ));
         winui::checkbox_light(
             ui,
-            o + vec2(33.0, 306.0),
+            o + vec2(33.0, 294.0),
+            &mut self.s.one_folder,
+            &one_line,
+            true,
+        )
+        .on_hover_text(crate::i18n::t(
+            // i18n: tooltip of Options → Save to → "Save every download in "General" category's folder"
+            "New downloads of every category go to this one folder; their categories still sort the list. A download's folder can still be changed in the window that starts it, and the downloads already in the list stay where they are.",
+        ));
+        winui::checkbox_light(
+            ui,
+            o + vec2(33.0, 329.0),
             &mut self.s.set_creation_date,
             "Set file creation date as provided by the server",
             true,
@@ -1199,37 +1422,39 @@ impl OptionsDialog {
         );
         winui::checkbox_light(
             ui,
-            o + vec2(33.0, 329.0),
+            o + vec2(33.0, 352.0),
             &mut self.s.mark_downloads,
             "Mark downloaded files as coming from the internet",
             true,
         )
         .on_hover_text(tip);
-        // Down by the row above it; its empty bottom shortened by as much.
-        group(ui, o, 21.0, 356.0, 380.0, 96.0, "Temporary directory");
+        // Down by the rows above it; its empty bottom shortened by as much.
+        group(ui, o, 21.0, 379.0, 380.0, 90.0, "Temporary directory");
         // D-004: no temporary directory — parts are written next to the file, so there is
         // nothing to assemble at the end.
         let none = crate::i18n::t("Not used: file parts are written next to the file");
         let (browse_x, browse_w) =
             winui::buttons_to_right(&p, 390.0, 0.0, &[("Browse", 73.0)], 160.0)[0];
-        readonly(ui, r(o, 30.0, 371.0, browse_x - 6.0 - 30.0, 23.0), none);
+        readonly(ui, r(o, 30.0, 394.0, browse_x - 6.0 - 30.0, 23.0), none);
         winui::button_light(
             ui,
-            r(o, browse_x, 372.0, browse_w, 21.0),
+            r(o, browse_x, 395.0, browse_w, 21.0),
             // i18n: verb: choose a folder
             "Browse",
             ButtonKind::Disabled,
             false,
         );
-        winui::paragraph(
+        winui::paragraph_until(
+            ui,
             &p,
             o.x + 30.0,
-            o.y + 409.0,
+            o.y + 432.0,
             crate::i18n::t(
                 "Mister Download Manager writes every connection straight into the final\nfile (a sparse part file next to it), so no temporary directory and no\nassembling step are needed.",
             ),
             LIGHT_TEXT(),
             o.x + 426.0,
+            o.y + 452.0,
             13.0,
         );
         // #93: the built-in categories by file type as shipped again (beside OK, on this page).
@@ -1333,10 +1558,27 @@ impl OptionsDialog {
             "Show download complete dialog",
             true,
         );
+        // MDM's (#1773): pop-ups wait while a full-screen app, a presentation or the locked
+        // screen is on (hold.rs). A row under Download complete; the note and the separator 19
+        // lower, the four rows after them 20 apart (were 29, 25, 24) to end where they did.
+        let hold = winui::checkbox_light(
+            ui,
+            o + vec2(24.0, 179.0),
+            &mut s.hold_popups,
+            // i18n: checkbox, Options → Downloads: Download complete and MDM's other windows that open by themselves wait while a full-screen game, app or video, a presentation or the locked screen is on, and show when the user is back
+            "Don't show pop-ups while a full-screen app or presentation is running",
+            true,
+        );
+        if hold.hovered() {
+            // i18n: tooltip of "Don't show pop-ups while a full-screen app or presentation is running"
+            hold.on_hover_text(crate::i18n::t(
+                "\"Download complete\" and the other windows MDM opens by itself wait while a full-screen game, app or video, a presentation or the locked screen is on, and show when you're back. The windows you open yourself, and links from your browser, always show",
+            ));
+        }
         // Download complete snoozed (#741): until when, and Resume now, in the note's place
         // while it lasts (the note comes back after).
         if let Some(until) = self.snoozed_until {
-            if snooze_line(ui, &p, o, until) {
+            if snooze_line(ui, &p, o + vec2(0.0, 19.0), until) {
                 self.resume_snooze = true;
                 ui.ctx().request_repaint();
             }
@@ -1344,36 +1586,36 @@ impl OptionsDialog {
             text(
                 &p,
                 o.x + 31.0,
-                o.y + 191.0,
+                o.y + 210.0,
                 crate::i18n::t("Note: These settings don't relate to queue processing"),
                 LIGHT_TEXT(),
             );
         }
-        winui::etched_h(&p, o.x + 21.0, o.y + 198.0, 381.0);
+        winui::etched_h(&p, o.x + 21.0, o.y + 217.0, 381.0);
         winui::checkbox_light(
             ui,
-            o + vec2(24.0, 212.0),
+            o + vec2(24.0, 231.0),
             &mut s.start_immediately,
             "Start downloading immediately while displaying \"Download File Info\" dialog",
             true,
         );
         winui::checkbox_light(
             ui,
-            o + vec2(24.0, 241.0),
+            o + vec2(24.0, 251.0),
             &mut s.queue_panel_later,
             "Show queue selection panel on pressing \"Download Later\" button",
             true,
         );
         winui::checkbox_light(
             ui,
-            o + vec2(24.0, 266.0),
+            o + vec2(24.0, 271.0),
             &mut s.queue_panel_batch,
             "Show queue selection panel on closing batch download dialogs",
             true,
         );
         winui::checkbox_light(
             ui,
-            o + vec2(24.0, 290.0),
+            o + vec2(24.0, 291.0),
             &mut s.ignore_mtime,
             "Ignore file modification time changes when resuming a download",
             true,
@@ -1550,7 +1792,8 @@ impl OptionsDialog {
             .s
             .conn_exceptions
             .iter()
-            .map(|(server, n)| vec![server.clone(), n.to_string()])
+            // A server's name reads left to right in every language (`*.example.com`).
+            .map(|(server, n)| vec![crate::i18n::ltr(server), n.to_string()])
             .chain(
                 self.learned
                     .iter()
@@ -1565,7 +1808,7 @@ impl OptionsDialog {
                         // i18n: a number of connections the app learned by itself for a server
                         let auto = crate::i18n::t("{n} (auto)");
                         vec![
-                            h.clone(),
+                            crate::i18n::ltr(h),
                             crate::i18n::fmt(auto, &[("n", &crate::i18n::integer(u64::from(*n)))]),
                         ]
                     }),
@@ -1728,6 +1971,41 @@ impl OptionsDialog {
         .clicked()
         {
             self.sub = Some(Sub::Dns(DnsEdit::from(&self.s)));
+        }
+        // Site rules (#1778): a User-Agent, headers, connections and the browser-like
+        // connection by site, in their own window; the exceptions above are their numbers.
+        // i18n: Options → Connection: button: opens the per-site settings (User-Agent, headers, connections)
+        let label = crate::i18n::mark("Site rules...");
+        let w = winui::button_width(&p, label, 103.0).min(250.0);
+        let rules = winui::button_light(
+            ui,
+            r(o, 21.0, 437.0, w, 21.0),
+            label,
+            ButtonKind::Normal,
+            false,
+        );
+        let about = crate::i18n::t(
+            // i18n: Options → Connection: beside the Site rules... button: what it sets
+            "User-Agent, headers and connections by site",
+        );
+        let (rect, cut) = winui::label_into(
+            &p,
+            o.x + 21.0 + w + 8.0,
+            o.y + 452.0,
+            about,
+            LIGHT_TEXT(),
+            o.x + 404.0,
+            o.x + 21.0 + w + 8.0,
+        );
+        if cut {
+            winui::full_on_hover(ui, rect, "site-rules-about", about);
+        }
+        if rules.clicked() {
+            self.sub = Some(Sub::Rules(Box::new(RulesEdit {
+                rows: rule_rows(&self.s),
+                list: Default::default(),
+                editing: None,
+            })));
         }
     }
 
@@ -2234,6 +2512,21 @@ impl OptionsDialog {
             false,
             "opt-accounts",
         );
+        if rows.is_empty() {
+            let p = ui.painter().clone();
+            winui::empty_state(
+                ui,
+                &p,
+                report_body(r(o, 21.0, 93.0, 383.0, 124.0)),
+                crate::icons::EmptyIcon::Accounts,
+                // i18n: Options → Accounts: the title in the empty list of debrid service accounts
+                crate::i18n::mark("No accounts yet"),
+                // i18n: Options → Accounts: in the empty list of accounts, under its title
+                crate::i18n::mark("Add one to download file-host links through it."),
+                None,
+                "opt-accounts-empty",
+            );
+        }
         let sel = self.account_rows.selected.filter(|i| *i < rows.len());
         // i18n: button: add a debrid service account (opens the sign-in)
         let add = winui::button_light(
@@ -2300,9 +2593,16 @@ impl OptionsDialog {
             // i18n: Options → Accounts: a note that the debrid services' support (Real-Debrid, AllDebrid, Premiumize) is new and not yet tried with real paid accounts
             "Experimental: built from the services' public API documentation, not yet confirmed with real accounts.",
         );
-        winui::paragraph(
+        let x = winui::note_mark(
+            ui,
             &p,
             o.x + 21.0,
+            o.y + 256.0,
+            Some(crate::icons::Mark::Warn),
+        );
+        winui::paragraph(
+            &p,
+            x,
             o.y + 256.0,
             note,
             crate::theme::colors().warning,
@@ -2372,9 +2672,7 @@ impl OptionsDialog {
             .s
             .site_logins
             .iter()
-            .map(|(site, user, pass)| {
-                vec![site.clone(), user.clone(), "*".repeat(pass.chars().count())]
-            })
+            .map(|(site, user, pass)| vec![site.clone(), user.clone(), password_shown(pass)])
             .collect();
         // The list leaves the page's foot to Cookies for video sites (#229).
         // Named for screen readers by the page's title (#1407).
@@ -2497,10 +2795,16 @@ impl OptionsDialog {
             .iter()
             .map(|b| crate::videodlg::browser_label(b))
             .collect();
-        if let Some(i) = winui::combo_light(
+        // Each browser's logo, as in General's list and the extension's window (#2008).
+        let logos: Vec<winui::ItemIcon> = browsers
+            .iter()
+            .map(|b| winui::ItemIcon::Browser(crate::browsericons::Browser::of_cookie_id(b)))
+            .collect();
+        if let Some(i) = winui::combo_light_icons(
             ui,
             r(o, 200.0, 311.0, 192.0, 21.0),
             &names,
+            &logos,
             at,
             on,
             "opt-cookie-browser",
@@ -2566,8 +2870,27 @@ impl OptionsDialog {
                 LIGHT_DISABLED(),
             )
         };
-        // Two lines at most: a longer language wraps rather than being cut.
-        winui::paragraph(&p, o.x + 30.0, o.y + 380.0, note, ink, o.x + 400.0, 13.0);
+        // Three lines at most: the room above the check box below (a longer language's note is
+        // cut with "..." and shown whole on hover, never drawn over it). The warning starts with
+        // its mark (#2008).
+        let x = winui::note_mark(
+            ui,
+            &p,
+            o.x + 30.0,
+            o.y + 380.0,
+            crate::icons::Mark::of_ink(ink),
+        );
+        winui::paragraph_until(
+            ui,
+            &p,
+            x,
+            o.y + 380.0,
+            note,
+            ink,
+            o.x + 400.0,
+            o.y + 410.0,
+            13.0,
+        );
         winui::checkbox_light(
             ui,
             o + vec2(22.0, 414.0),
@@ -2601,7 +2924,7 @@ impl OptionsDialog {
         );
         let s = &mut self.s;
         // i18n: Options → Archives: group box title
-        group(ui, o, 16.0, 92.0, 392.0, 243.0, "Archives");
+        group(ui, o, 16.0, 92.0, 392.0, 259.0, "Archives");
         winui::checkbox_light(
             ui,
             o + vec2(30.0, 110.0),
@@ -2623,10 +2946,12 @@ impl OptionsDialog {
             },
             true,
         );
+        self.test_row(ui, o, 158.0);
+        let s = &mut self.s;
         text(
             &p,
             o.x + 30.0,
-            o.y + 166.0,
+            o.y + 188.0,
             // i18n: Options → Archives: a label before the list of where extracted files go
             crate::i18n::t("What an archive holds goes:"),
             LIGHT_TEXT(),
@@ -2641,7 +2966,7 @@ impl OptionsDialog {
         ];
         if let Some(i) = winui::combo_light(
             ui,
-            r(o, 30.0, 173.0, 364.0, 21.0),
+            r(o, 30.0, 195.0, 364.0, 21.0),
             &INTO,
             s.extract_subfolder.min(2) as usize,
             true,
@@ -2652,7 +2977,7 @@ impl OptionsDialog {
         winui::paragraph(
             &p,
             o.x + 30.0,
-            o.y + 218.0,
+            o.y + 236.0,
             crate::i18n::t(
                 "ZIP, 7Z, RAR, TAR, GZ and XZ; a split archive (.part1.rar, .7z.001) once\nevery volume is in. A file there already is kept: the new one is numbered.",
             ),
@@ -2710,16 +3035,17 @@ impl OptionsDialog {
             ui,
             &p,
             o.x + 30.0,
-            o.y + 264.0,
+            o.y + 282.0,
             &rar,
             ink,
             o.x + 400.0,
             "opt-rar-tool",
         );
         let has_hatchzip = self.hatch_zip.is_some();
-        winui::checkbox_light(
+        // Its caption is long in some languages: it ends inside the group box, whole on hover.
+        winui::checkbox_light_until(
             ui,
-            o + vec2(30.0, 284.0),
+            o + vec2(30.0, 300.0),
             &mut s.extract_in_place,
             if has_hatchzip {
                 // i18n: Options → Archives check box: HatchZip (a program's name) removes the archive while extracting it, so only the extracted files need disk space
@@ -2729,6 +3055,7 @@ impl OptionsDialog {
                 "Extract in place with HatchZip (hatchzip.dev, not installed)"
             },
             has_hatchzip,
+            Some(o.x + 402.0),
         );
         // The passwords tried on an encrypted archive before it is asked (#37).
         let (pw_x, pw_w) = winui::button_row_from_left(
@@ -2741,7 +3068,7 @@ impl OptionsDialog {
         // i18n: Options → Archives: button: edit the list of passwords tried on encrypted archives
         if winui::button_light(
             ui,
-            r(o, pw_x, 304.0, pw_w, 21.0),
+            r(o, pw_x, 320.0, pw_w, 21.0),
             "Archive passwords...",
             ButtonKind::Normal,
             false,
@@ -2764,7 +3091,7 @@ impl OptionsDialog {
             winui::buttons_to_right(&p, 394.0, 0.0, &[(tool_label, 150.0)], 200.0)[0];
         if winui::button_light(
             ui,
-            r(o, tool_x, 304.0, tool_w, 21.0),
+            r(o, tool_x, 320.0, tool_w, 21.0),
             tool_label,
             if self.checking_7zip.is_some() {
                 ButtonKind::Disabled
@@ -2803,7 +3130,7 @@ impl OptionsDialog {
                 ui,
                 &p,
                 o.x + pw_x + pw_w + 10.0,
-                o.y + 320.0,
+                o.y + 336.0,
                 // i18n: Options → Archives: beside the Archive passwords button: how many are saved
                 &crate::i18n::tn(saved, "{n} saved", "{n} saved"),
                 LIGHT_DISABLED(),
@@ -2812,10 +3139,10 @@ impl OptionsDialog {
             );
         }
         // i18n: Options → Archives: group box title
-        group(ui, o, 16.0, 335.0, 392.0, 128.0, "Link grabber");
+        group(ui, o, 16.0, 351.0, 392.0, 116.0, "Link grabber");
         winui::checkbox_light(
             ui,
-            o + vec2(30.0, 353.0),
+            o + vec2(30.0, 367.0),
             &mut s.grabber_check,
             // i18n: Options → Archives → Link grabber check box (IDM's Download all links looks every link up)
             "Look links up when they arrive (name, size, online)",
@@ -2823,30 +3150,136 @@ impl OptionsDialog {
         );
         winui::checkbox_light(
             ui,
-            o + vec2(30.0, 377.0),
+            o + vec2(30.0, 389.0),
             &mut s.grabber_hide_pages,
             "Hide web pages",
             true,
         );
         winui::checkbox_light(
             ui,
-            o + vec2(30.0, 401.0),
+            o + vec2(30.0, 411.0),
             &mut s.cnl_on,
             // i18n: Options → Archives → Link grabber check box: Click'n'Load, a link site's button that sends its links to a program on this computer (port 9666, as JDownloader)
             "Accept Click'n'Load from web pages (port 9666)",
             true,
         );
-        winui::paragraph(
-            &p,
-            o.x + 30.0,
-            o.y + 429.0,
-            crate::i18n::t(
-                "Tasks → Link grabber, or the browser's \"Download all links\": a split\narchive's volumes are one package, the other links of a page another.",
-            ),
-            LIGHT_DISABLED(),
-            o.x + 400.0,
-            13.0,
+        self.folder_row(ui, o, 434.0);
+    }
+
+    /// Archives → Link grabber → "Folders: {depth} levels deep, types: {types}" (#1774): the
+    /// number box and the types box in the translation's order, the types box as wide as the
+    /// line leaves room for; the boxes' tops at `y`.
+    fn folder_row(&mut self, ui: &mut Ui, o: Pos2, y: f32) {
+        let p = ui.painter().clone();
+        let sentence = crate::i18n::t(FOLDER_SENTENCE);
+        let line = winui::SentenceLine {
+            lead: winui::Lead::Left(o.x + 30.0),
+            lead_baseline: o.y + y + 14.0,
+            boxes: o + vec2(30.0, y),
+            gap: 6.0,
+            baseline: o.y + y + 14.0,
+        };
+        // The line laid out with an empty types box first: the box takes the room left before
+        // the group's edge, at least enough for a few types.
+        let width = |s: &str| winui::text_width(&p, s);
+        let (texts, rects) = winui::sentence_layout(
+            sentence,
+            &[line],
+            &[("depth", vec2(54.0, 21.0)), ("types", vec2(0.0, 21.0))],
+            width,
+            o.x + 6.0,
         );
+        let end = texts
+            .iter()
+            .map(|(x, _, s)| x + width(s))
+            .chain(rects.iter().map(|r| r.right()))
+            .fold(o.x + 30.0, f32::max);
+        let types_w = (o.x + 394.0 - end).clamp(70.0, 220.0);
+        let boxes = winui::sentence(
+            ui,
+            &p,
+            sentence,
+            &[line],
+            &[("depth", vec2(54.0, 21.0)), ("types", vec2(types_w, 21.0))],
+            |p, x, baseline, s| {
+                winui::label(p, x, baseline, s, true);
+            },
+        );
+        let names = winui::sentence_names(sentence, &["depth", "types"]);
+        let depth = winui::spin_box(
+            ui,
+            boxes[0],
+            &mut self.folder_depth,
+            0,
+            u64::from(mdm_engine::folder::MAX_DEPTH),
+            true,
+            "opt-folder-depth",
+        );
+        winui::name(&depth, &names[0]);
+        let types = winui::edit_light(ui, boxes[1], &mut self.s.grabber_types, true, false)
+            .on_hover_text(crate::i18n::t(
+                // i18n: Options → Archives → Link grabber: the hover tip of the types box in "Folders: {depth} levels deep, types: {types}": only a folder's files of these types go into Link grabber; written as the File types page writes them
+                "Only a folder's files of these types, written as on the File types page (ISO ZIP R0*). Empty: every type.",
+            ));
+        winui::name(&types, &names[1]);
+    }
+
+    /// Archives → "Test archives when their download completes, up to {gb} GB" (#1661): the check
+    /// box's caption is the sentence's words before its number box, the unit after it, as the
+    /// translation places them; at `y` (the glyph's top).
+    fn test_row(&mut self, ui: &mut Ui, o: Pos2, y: f32) {
+        let p = ui.painter().clone();
+        let sentence = crate::i18n::t(TEST_SENTENCE);
+        let pieces = winui::sentence_pieces(sentence, &["gb"]);
+        let row = pieces.first().cloned().unwrap_or_default();
+        let at = row.iter().position(|p| *p == winui::Piece::Slot("gb"));
+        let text_of = |pieces: &[winui::Piece]| {
+            pieces
+                .iter()
+                .filter_map(|p| match p {
+                    winui::Piece::Text(t) => Some(*t),
+                    winui::Piece::Slot(_) => None,
+                })
+                .collect::<Vec<_>>()
+                .join(" ")
+        };
+        let (lead, tail) = match at {
+            Some(i) => (text_of(&row[..i]), text_of(&row[i + 1..])),
+            None => (text_of(&row), String::new()),
+        };
+        const BOX_W: f32 = 54.0;
+        let tail_w = winui::text_width(&p, &tail).ceil();
+        // The caption ends before the box, the box and its unit before the group's edge.
+        let room_end = 394.0 - tail_w - 6.0 - BOX_W - 6.0;
+        let box_x = (winui::checkbox_caption_end(&p, 30.0, &lead).ceil() + 6.0).min(room_end + 6.0);
+        winui::checkbox_light_until(
+            ui,
+            o + vec2(30.0, y),
+            &mut self.s.test_archives,
+            &lead,
+            true,
+            Some(o.x + room_end),
+        );
+        let on = self.s.test_archives;
+        let gb = winui::spin_box(
+            ui,
+            r(o, box_x, y - 4.0, BOX_W, 21.0),
+            &mut self.test_gb,
+            1,
+            u64::from(TEST_GB_MAX),
+            on,
+            "opt-test-gb",
+        );
+        winui::name(&gb, &winui::sentence_names(sentence, &["gb"])[0]);
+        if !tail.is_empty() {
+            text(
+                &p,
+                o.x + box_x + BOX_W + 6.0,
+                o.y + y + 10.0,
+                &tail,
+                if on { LIGHT_TEXT() } else { LIGHT_DISABLED() },
+            );
+        }
     }
 
     /// Regional (ours): how dates and times are written in the list and the Scheduler, as the
@@ -3449,7 +3882,8 @@ impl OptionsDialog {
             r.remove(&d.id);
             self.device_rows.selected = None;
         }
-        winui::paragraph(
+        winui::paragraph_until(
+            ui,
             &p,
             o.x + 21.0,
             o.y + 438.0,
@@ -3459,6 +3893,7 @@ impl OptionsDialog {
             ),
             LIGHT_TEXT(),
             o.x + 406.0,
+            o.y + 474.0,
             13.0,
         );
     }
@@ -3624,6 +4059,310 @@ impl OptionsDialog {
         matches!(out, Outcome::Open)
     }
 
+    /// Connection → Site rules... (#1778): the list (New, Edit, Delete, Up, Down; OK keeps it),
+    /// and over it the rule being edited. Returns the window's state while it stays open.
+    fn rules_window(
+        &mut self,
+        ctx: &egui::Context,
+        mut edit: Box<RulesEdit>,
+    ) -> Option<Box<RulesEdit>> {
+        let limit = self.s.connection_limit();
+        let default = self.conns.parse().unwrap_or(self.s.max_connections);
+        let editing = edit.editing.is_some();
+        let out = window(
+            ctx,
+            "opt-site-rules",
+            // i18n: window title: per-site settings (User-Agent, headers, connections, the browser-like connection) by site pattern
+            "Site rules",
+            [560.0, 316.0],
+            false,
+            LIGHT_BG(),
+            |ui, o| {
+                let p = ui.painter().clone();
+                winui::paragraph(
+                    &p,
+                    o.x + 14.0,
+                    o.y + 20.0,
+                    crate::i18n::t(
+                        // i18n: Site rules window: how the rules apply; *.example.com stays as it is
+                        "Downloads from these sites get these settings. Each one comes from the first rule in the list that names the site and sets it; * stands for any text: *.example.com",
+                    ),
+                    LIGHT_TEXT(),
+                    o.x + 546.0,
+                    14.0,
+                );
+                let yes = crate::i18n::t("Yes");
+                let rows: Vec<Vec<String>> = edit
+                    .rows
+                    .iter()
+                    .map(|r| {
+                        // A site and a User-Agent read left to right in every language.
+                        vec![
+                            crate::i18n::ltr(&r.rule.site),
+                            r.connections
+                                .map(|n| crate::i18n::integer(u64::from(n)))
+                                .unwrap_or_default(),
+                            if r.rule.user_agent.is_empty() {
+                                String::new()
+                            } else {
+                                crate::i18n::ltr(&r.rule.user_agent)
+                            },
+                            if r.rule.headers.is_empty() {
+                                String::new()
+                            } else {
+                                crate::i18n::integer(r.rule.headers.len() as u64)
+                            },
+                            if r.rule.browser_like {
+                                yes.to_owned()
+                            } else {
+                                String::new()
+                            },
+                        ]
+                    })
+                    .collect();
+                // The buttons as wide as their longest label in this language (#192), the list
+                // ending 8 px before them, its columns sharing its width as in English.
+                let labels = ["New", "Edit", "Delete", "Move up", "Move down"];
+                let bw = winui::button_width(&p, winui::widest_label(&p, &labels), 92.0).min(160.0);
+                let bx = 546.0 - bw;
+                let k = (bx - 8.0 - 14.0) / 432.0;
+                let col = |right: f32| 14.0 + (right - 14.0) * k;
+                // i18n: Site rules window: the list's name for screen readers
+                edit.list.name = crate::i18n::t("Site rules");
+                let (dbl, del_key) = report(
+                    ui,
+                    o,
+                    r(o, 14.0, 62.0, bx - 8.0 - 14.0, 196.0),
+                    &[
+                        // i18n: Site rules: column title: the site pattern
+                        (crate::i18n::mark("Site"), col(168.0)),
+                        // i18n: Site rules: column title: the number of connections (empty: the default)
+                        (crate::i18n::mark("Connections"), col(248.0)),
+                        // i18n: Site rules: column title: the User-Agent the rule sends (the name a browser or program gives itself to sites)
+                        (crate::i18n::mark("User-Agent"), col(358.0)),
+                        // i18n: Site rules: column title: how many request headers the rule adds
+                        (crate::i18n::mark("Headers"), col(400.0)),
+                        // i18n: Site rules: column title: "Yes" when the rule asks the way a browser connects from the first request
+                        (crate::i18n::mark("Browser"), col(444.0)),
+                    ],
+                    &rows,
+                    &mut edit.list,
+                    true,
+                    "opt-site-rules",
+                );
+                if rows.is_empty() {
+                    let p = ui.painter().clone();
+                    winui::empty_state(
+                        ui,
+                        &p,
+                        report_body(r(o, 14.0, 62.0, bx - 8.0 - 14.0, 196.0)),
+                        crate::icons::EmptyIcon::Sites,
+                        // i18n: Site rules window: the title in the empty list of rules
+                        crate::i18n::mark("No site rules yet"),
+                        // i18n: Site rules window: in the empty list of rules, under its title
+                        crate::i18n::mark(
+                            "A rule sets the connections, User-Agent or headers for one site.",
+                        ),
+                        None,
+                        "site-rules-empty",
+                    );
+                }
+                let sel = edit.list.selected.filter(|i| *i < edit.rows.len());
+                let free = !editing;
+                let on = |b: bool| {
+                    if b && free {
+                        ButtonKind::Normal
+                    } else {
+                        ButtonKind::Disabled
+                    }
+                };
+                let new =
+                    winui::button_light(ui, r(o, bx, 62.0, bw, 21.0), labels[0], on(true), false)
+                        .clicked();
+                let change = winui::button_light(
+                    ui,
+                    r(o, bx, 91.0, bw, 21.0),
+                    labels[1],
+                    on(sel.is_some()),
+                    false,
+                )
+                .clicked()
+                    || dbl;
+                let delete = winui::button_light(
+                    ui,
+                    r(o, bx, 120.0, bw, 21.0),
+                    labels[2],
+                    on(sel.is_some()),
+                    false,
+                )
+                .clicked()
+                    || del_key;
+                // i18n: Site rules: button: the selected rule is tried one place earlier
+                let up = winui::button_light(
+                    ui,
+                    r(o, bx, 158.0, bw, 21.0),
+                    labels[3],
+                    on(sel.is_some_and(|i| i > 0)),
+                    false,
+                )
+                .clicked();
+                // i18n: Site rules: button: the selected rule is tried one place later
+                let down = winui::button_light(
+                    ui,
+                    r(o, bx, 187.0, bw, 21.0),
+                    labels[4],
+                    on(sel.is_some_and(|i| i + 1 < edit.rows.len())),
+                    false,
+                )
+                .clicked();
+                if free {
+                    if new {
+                        let blank = mdm_ipc::siterules::SiteRule::default();
+                        let fields = crate::requestedit::RequestEdit::rule(&blank, None, default);
+                        edit.editing = Some((None, String::new(), fields));
+                    }
+                    if let Some(i) = sel {
+                        if change {
+                            let row = &edit.rows[i];
+                            let fields = crate::requestedit::RequestEdit::rule(
+                                &row.rule,
+                                row.connections,
+                                default,
+                            );
+                            edit.editing = Some((Some(i), row.rule.site.clone(), fields));
+                        } else if delete {
+                            edit.rows.remove(i);
+                            edit.list.selected = None;
+                        } else if up && i > 0 {
+                            edit.rows.swap(i, i - 1);
+                            edit.list.selected = Some(i - 1);
+                        } else if down && i + 1 < edit.rows.len() {
+                            edit.rows.swap(i, i + 1);
+                            edit.list.selected = Some(i + 1);
+                        }
+                    }
+                }
+                if editing {
+                    // The rule's own window answers first; this one waits.
+                    let _ = ok_cancel(ui, o, 546.0 - 154.0, 274.0, false);
+                    Outcome::Open
+                } else {
+                    ok_cancel(ui, o, 546.0 - 154.0, 274.0, true)
+                }
+            },
+        );
+        if let Some((row, mut site, mut fields)) = edit.editing.take() {
+            let title = if row.is_some() {
+                // i18n: window title: changing one site rule
+                crate::i18n::mark("Edit site rule")
+            } else {
+                // i18n: window title: adding a site rule
+                crate::i18n::mark("New site rule")
+            };
+            // Above the list it was opened from, with the keyboard (a question's window): opened
+            // with it at once (`/show options:siterule`), the list could cover it.
+            let rule_out = crate::dialogs::question(
+                ctx,
+                "opt-site-rule",
+                title,
+                [460.0, 326.0],
+                false,
+                LIGHT_BG(),
+                |ui, o| {
+                    let p = ui.painter().clone();
+                    // i18n: Site rule: label before the site pattern box (example.com, *.example.com)
+                    let label = crate::i18n::t("Site:");
+                    let col = (14.0 + winui::text_width(&p, label).ceil() + 8.0).max(100.0);
+                    winui::text_right(&p, o.x + col - 8.0, o.y + 29.0, label, LIGHT_TEXT());
+                    let typed = winui::edit_light(
+                        ui,
+                        r(o, col, 14.0, 446.0 - col, 23.0),
+                        &mut site,
+                        true,
+                        false,
+                    );
+                    winui::name(&typed, label);
+                    if typed.changed() {
+                        fields.error = None;
+                    }
+                    winui::fit(
+                        ui,
+                        &p,
+                        o.x + col,
+                        o.y + 51.0,
+                        crate::i18n::t(
+                            // i18n: Site rule: the hint under the site box; the examples stay as they are
+                            "example.com, or *.example.com for its subdomains",
+                        ),
+                        LIGHT_DISABLED(),
+                        o.x + 446.0,
+                        "site-rule-hint",
+                    );
+                    let bottom = fields.fields(ui, o, 66.0, 460.0, true, limit);
+                    ok_cancel(ui, o, 460.0 - 14.0 - 154.0, bottom + 6.0, true)
+                },
+            );
+            match rule_out {
+                Outcome::Open => edit.editing = Some((row, site, fields)),
+                Outcome::Closed => {}
+                Outcome::Done(()) => {
+                    let site = site.trim().to_owned();
+                    let taken = edit.rows.iter().enumerate().any(|(i, r)| {
+                        Some(i) != row && mdm_ipc::siterules::same_pattern(&r.rule.site, &site)
+                    });
+                    let read = if site.is_empty() || site.contains(char::is_whitespace) {
+                        Err(crate::i18n::t(
+                            // i18n: Site rule: OK with no site, or one with a space in it
+                            "Type a site, such as example.com or *.example.com",
+                        )
+                        .to_owned())
+                    } else if taken {
+                        Err(crate::i18n::t(
+                            // i18n: Site rule: OK with a site another rule already has
+                            "Another rule is for this site already: change that one",
+                        )
+                        .to_owned())
+                    } else {
+                        fields.read(limit)
+                    };
+                    match read {
+                        Ok(e) => {
+                            let rule = RuleRow {
+                                rule: mdm_ipc::siterules::SiteRule {
+                                    site,
+                                    user_agent: e.user_agent.unwrap_or_default(),
+                                    browser_like: e.browser_like,
+                                    headers: e.headers,
+                                },
+                                connections: e.connections,
+                            };
+                            match row {
+                                Some(i) if i < edit.rows.len() => edit.rows[i] = rule,
+                                _ => {
+                                    edit.rows.push(rule);
+                                    edit.list.selected = Some(edit.rows.len() - 1);
+                                }
+                            }
+                        }
+                        Err(why) => {
+                            fields.error = Some(why);
+                            edit.editing = Some((row, site, fields));
+                        }
+                    }
+                }
+            }
+            return Some(edit);
+        }
+        match out {
+            Outcome::Open => Some(edit),
+            Outcome::Closed => None,
+            Outcome::Done(()) => {
+                set_rule_rows(&mut self.s, &edit.rows);
+                None
+            }
+        }
+    }
+
     fn sub_dialog(&mut self, ctx: &egui::Context) {
         let Some(sub) = self.sub.take() else { return };
         match sub {
@@ -3771,13 +4510,15 @@ impl OptionsDialog {
                     Outcome::Closed => {}
                 }
             }
-            Sub::Panels(mut on, mut compact, mut sites, mut said) => {
+            Sub::Panels(mut on, mut size, mut scale, mut sites, mut said) => {
+                // The rows under the size's choices, moved down by their row (#1735's feedback).
+                const DY: f32 = 24.0;
                 let out = window(
                     ctx,
                     "opt-panels",
                     // i18n: window title: the download button the extension shows over videos
                     "Download panels",
-                    [380.0, 241.0],
+                    [380.0, 241.0 + DY],
                     false,
                     LIGHT_BG(),
                     |ui, o| {
@@ -3789,51 +4530,89 @@ impl OptionsDialog {
                             "Show a download button over videos in browsers",
                             true,
                         );
-                        // Its size (#1278): Full, its words where they fit; Compact, the round
-                        // button over every video.
+                        // Its size (#1278) and scale (#1923): Automatic, the round button in a feed
+                        // and over a small player, its words over a big one (the default); Full, its
+                        // words wherever they fit; Compact, the round button over every video; and
+                        // 80%, 100% or 120% beside the label.
                         let shade = if on { LIGHT_TEXT() } else { LIGHT_DISABLED() };
-                        // i18n: Options → Download panels: the size of the download button over videos, chosen after it (Full / Compact)
+                        // i18n: Options → Download panels: the size of the download button over videos, chosen under it (Automatic / Full / Compact)
                         let size_label = crate::i18n::t("Button size:");
-                        winui::text_in_window(ui, &p, o.x + 30.0, o.y + 52.0, size_label, shade);
-                        // i18n: Options → Download panels → Button size: the button with its words ("Download video", the quality) where they fit (the default)
-                        let full_caption = crate::i18n::mark("Full");
-                        let full_x = (30.0 + winui::text_width(&p, size_label) + 12.0).max(110.0);
-                        let compact_x = full_x
-                            + 16.0
-                            + winui::text_width(&p, crate::i18n::t(full_caption))
-                            + 20.0;
-                        let full = winui::radio_light(
-                            ui,
-                            o + vec2(full_x, 42.0),
-                            !compact,
-                            full_caption,
-                            on,
+                        let scale_items = mdm_ipc::capture::VIDEO_PANEL_SCALES
+                            .map(|s| crate::i18n::percent(f64::from(s) / 100.0, 0));
+                        let scale_refs: [&str; 3] = [
+                            scale_items[0].as_str(),
+                            scale_items[1].as_str(),
+                            scale_items[2].as_str(),
+                        ];
+                        let scale_w = winui::combo_fit_width(&p, &scale_refs, 68.0, 96.0);
+                        let scale_x = (30.0 + winui::text_width(&p, size_label) + 10.0)
+                            .clamp(110.0, 366.0 - scale_w);
+                        let (size_rc, size_cut) = winui::label_into(
+                            &p,
+                            o.x + 30.0,
+                            o.y + 52.0,
+                            size_label,
+                            shade,
+                            o.x + scale_x,
+                            o.x + 14.0,
                         );
-                        let small = winui::radio_light(
+                        if size_cut {
+                            winui::full_on_hover(ui, size_rc, "opt-panels-size", size_label);
+                        }
+                        let scale_at = mdm_ipc::capture::VIDEO_PANEL_SCALES
+                            .iter()
+                            .position(|&s| s == scale)
+                            .unwrap_or(1);
+                        if let Some(i) = winui::combo_light(
                             ui,
-                            o + vec2(compact_x, 42.0),
-                            compact,
+                            r(o, scale_x, 39.0, scale_w, 21.0),
+                            &scale_refs,
+                            scale_at,
+                            on,
+                            "opt-panel-scale",
+                        ) {
+                            scale = mdm_ipc::capture::VIDEO_PANEL_SCALES[i];
+                        }
+                        let captions = [
+                            // i18n: Options → Download panels → Button size: the round button in a feed and over a small video, the button with its words over a big one (the default)
+                            crate::i18n::mark("Automatic"),
+                            // i18n: Options → Download panels → Button size: the button with its words ("Download video", the quality) wherever they fit
+                            crate::i18n::mark("Full"),
                             // i18n: Options → Download panels → Button size: only the round button (the logo, the arrow, the close mark) over every video
-                            "Compact",
-                            on,
-                        );
-                        match winui::radio_keys(ui, &[full.clone(), small.clone()]) {
-                            Some(i) => compact = i == 1,
-                            None if full.clicked() => compact = false,
-                            None if small.clicked() => compact = true,
-                            None => {}
+                            crate::i18n::mark("Compact"),
+                        ];
+                        let mut x = 30.0;
+                        let radios: Vec<_> = PanelSize::ALL
+                            .iter()
+                            .zip(captions)
+                            .map(|(choice, caption)| {
+                                let radio = winui::radio_light(
+                                    ui,
+                                    o + vec2(x, 42.0 + DY),
+                                    size == *choice,
+                                    caption,
+                                    on,
+                                );
+                                x += 16.0 + winui::text_width(&p, crate::i18n::t(caption)) + 20.0;
+                                radio
+                            })
+                            .collect();
+                        if let Some(i) = winui::radio_keys(ui, &radios)
+                            .or_else(|| radios.iter().position(|r| r.clicked()))
+                        {
+                            size = PanelSize::ALL[i];
                         }
                         winui::text_in_window(
                             ui,
                             &p,
                             o.x + 14.0,
-                            o.y + 83.0,
+                            o.y + 83.0 + DY,
                             crate::i18n::t("Never show it on these sites:"),
                             shade,
                         );
                         multiline(
                             ui,
-                            r(o, 14.0, 90.0, 352.0, 55.0),
+                            r(o, 14.0, 90.0 + DY, 352.0, 55.0),
                             &mut sites,
                             "panel-sites",
                             on,
@@ -3847,7 +4626,7 @@ impl OptionsDialog {
                         let (rect, cut) = winui::text_fit(
                             &p,
                             o.x + 14.0,
-                            o.y + 161.0,
+                            o.y + 161.0 + DY,
                             hint,
                             LIGHT_TEXT(),
                             o.x + 366.0,
@@ -3867,7 +4646,7 @@ impl OptionsDialog {
                         };
                         if winui::button_light(
                             ui,
-                            r(o, export_at.0, 172.0, export_at.1, 21.0),
+                            r(o, export_at.0, 172.0 + DY, export_at.1, 21.0),
                             "Export...",
                             ButtonKind::Normal,
                             false,
@@ -3884,7 +4663,7 @@ impl OptionsDialog {
                         }
                         if winui::button_light(
                             ui,
-                            r(o, import_at.0, 172.0, import_at.1, 21.0),
+                            r(o, import_at.0, 172.0 + DY, import_at.1, 21.0),
                             "Import...",
                             ButtonKind::Normal,
                             false,
@@ -3936,7 +4715,7 @@ impl OptionsDialog {
                             let (rect, cut) = winui::text_fit(
                                 &p,
                                 o.x + 14.0,
-                                o.y + 187.0,
+                                o.y + 187.0 + DY,
                                 &said,
                                 LIGHT_TEXT(),
                                 o.x + 205.0,
@@ -3945,14 +4724,15 @@ impl OptionsDialog {
                                 winui::full_on_hover(ui, rect, "opt-panels-said", &said);
                             }
                         }
-                        ok_cancel(ui, o, 212.0, 208.0, true)
+                        ok_cancel(ui, o, 212.0, 208.0 + DY, true)
                     },
                 );
                 match out {
-                    Outcome::Open => self.sub = Some(Sub::Panels(on, compact, sites, said)),
+                    Outcome::Open => self.sub = Some(Sub::Panels(on, size, scale, sites, said)),
                     Outcome::Done(()) => {
                         self.s.video_panel = on;
-                        self.s.video_panel_compact = compact;
+                        size.set(&mut self.s);
+                        self.s.video_panel_scale = scale;
                         self.s.video_panel_sites =
                             sites.split_whitespace().collect::<Vec<_>>().join(" ");
                     }
@@ -4008,6 +4788,11 @@ impl OptionsDialog {
                         .signin
                         .stop
                         .store(true, std::sync::atomic::Ordering::Relaxed),
+                }
+            }
+            Sub::Rules(edit) => {
+                if let Some(edit) = self.rules_window(ctx, edit) {
+                    self.sub = Some(Sub::Rules(edit));
                 }
             }
             Sub::Passwords(mut list) => {
@@ -4178,7 +4963,11 @@ impl OptionsDialog {
                         let p = ui.painter().clone();
                         let mut y = o.y + 22.0;
                         let mut how_h = 0.0;
+                        // Each line's mark (#2008): drawn, the same on every system, as the
+                        // text's start is.
+                        let mark_at = |y: f32| egui::pos2(o.x + 14.0, y - 12.0);
                         if checking {
+                            winui::state_mark(ui, &p, mark_at(y), crate::icons::Mark::Busy);
                             winui::text_in_window(
                                 ui,
                                 &p,
@@ -4190,13 +4979,29 @@ impl OptionsDialog {
                             );
                         }
                         for (k, c) in checks.iter().enumerate() {
-                            let (mark, color) = if c.ok {
-                                ("\u{2714}", winui::SUCCESS())
+                            let mark = if c.ok {
+                                crate::icons::Mark::Ok
                             } else {
-                                ("\u{2716}", winui::ERROR())
+                                crate::icons::Mark::Fail
                             };
-                            winui::text_in_window(ui, &p, o.x + 14.0, y, mark, color);
-                            winui::text_in_window(ui, &p, o.x + 34.0, y, &c.text, LIGHT_TEXT());
+                            winui::state_mark(ui, &p, mark_at(y), mark);
+                            // A browser's line: its logo after the mark, then the text.
+                            let mut text_x = o.x + 34.0;
+                            if let Some(browser) = &c.browser {
+                                winui::browser_icon(
+                                    ui,
+                                    &p,
+                                    browser,
+                                    None,
+                                    egui::Rect::from_min_size(
+                                        egui::pos2(text_x, y - 12.0),
+                                        egui::vec2(winui::MARK, winui::MARK),
+                                    ),
+                                    LIGHT_TEXT(),
+                                );
+                                text_x += winui::MARK + 4.0;
+                            }
+                            winui::text_in_window(ui, &p, text_x, y, &c.text, LIGHT_TEXT());
                             if let Some(path) = &c.detail {
                                 y += DETAIL_H;
                                 // A path reads left to right in a right-to-left language too.
@@ -5012,7 +5817,7 @@ fn progress_dialog(ui: &mut Ui, o: Pos2, shown: &mut bool) -> Outcome<()> {
     ok_cancel(ui, o, 232.0, 117.0, true)
 }
 
-fn ok_cancel(ui: &mut Ui, o: Pos2, x: f32, y: f32, valid: bool) -> Outcome<()> {
+pub(crate) fn ok_cancel(ui: &mut Ui, o: Pos2, x: f32, y: f32, valid: bool) -> Outcome<()> {
     let kind = if valid {
         ButtonKind::Default
     } else {
@@ -5125,6 +5930,23 @@ fn tabs(ui: &mut Ui, o: Pos2, page: usize) -> Option<usize> {
     let first_row = page < 5 || page == REMOTE_PAGE;
     let (front, back): (&[_], &[_]) = if first_row { (&g, &pr) } else { (&pr, &g) };
     let mut clicked = None;
+    // The pages' order on the strip (Remote closes the first row), for the arrows and for a
+    // screen reader's "tab n of 12" (#1407).
+    const ORDER: [usize; 12] = [0, 1, 2, 3, 4, 11, 5, 6, 7, 8, 9, 10];
+    // The strip as one tab list in the accessibility tree, the tabs its children: UI Automation
+    // and AT-SPI read a tab's "of n" from its container, never from the tab itself — so the
+    // count is the strip's, as the download list carries its rows' (list.rs, #1407).
+    let mut strip_ui = ui.new_child(
+        egui::UiBuilder::new()
+            .max_rect(winui::rect(Rect::from_min_max(
+                o + vec2(6.0, 8.0),
+                o + vec2(423.0, 46.0),
+            )))
+            .accessibility_role(egui::accesskit::Role::TabList),
+    );
+    ui.ctx().accesskit_node_builder(strip_ui.unique_id(), |n| {
+        n.set_size_of_set(ORDER.len());
+    });
     let mut tab = |ui: &mut Ui,
                    (i, label, x0, x1, lx): (usize, &str, f32, f32, f32),
                    top: f32,
@@ -5155,6 +5977,11 @@ fn tabs(ui: &mut Ui, o: Pos2, page: usize) -> Option<usize> {
             true,
             Some(sel),
         );
+        winui::position_in_set(
+            &resp,
+            ORDER.iter().position(|p| *p == i).unwrap_or(i),
+            ORDER.len(),
+        );
         let resp = winui::enter_is_not_a_click(ui, resp);
         if resp.clicked() && !sel {
             clicked = Some(i);
@@ -5163,7 +5990,6 @@ fn tabs(ui: &mut Ui, o: Pos2, page: usize) -> Option<usize> {
             winui::keep_keys(ui, &resp, true, false, false);
             if resp.has_focus() {
                 // Left / Right (mirrored in RTL), Home / End through the pages in order.
-                const ORDER: [usize; 12] = [0, 1, 2, 3, 4, 11, 5, 6, 7, 8, 9, 10];
                 let at = ORDER.iter().position(|p| *p == i).unwrap_or(0) as isize;
                 let fwd = if winui::rtl() { -1 } else { 1 };
                 let to = if winui::take_key(ui, egui::Key::ArrowRight) {
@@ -5232,10 +6058,10 @@ fn tabs(ui: &mut Ui, o: Pos2, page: usize) -> Option<usize> {
         winui::show_focus(ui, &resp, rc.shrink(2.0));
     };
     for t in back {
-        tab(ui, *t, 9.0, 22.0, false);
+        tab(&mut strip_ui, *t, 9.0, 22.0, false);
     }
     for t in front.iter().filter(|t| t.0 != page) {
-        tab(ui, *t, 27.0, 40.0, false);
+        tab(&mut strip_ui, *t, 27.0, 40.0, false);
     }
     // Page frame (x 6..421, y 45..468) with its shadow, then the selected tab over its top.
     fill(
@@ -5268,7 +6094,7 @@ fn tabs(ui: &mut Ui, o: Pos2, page: usize) -> Option<usize> {
     );
     fill(&p, o.x + 6.0, o.y + 469.0, o.x + 423.0, o.y + 469.0, shadow);
     if let Some(t) = front.iter().find(|t| t.0 == page) {
-        tab(ui, *t, 25.0, 38.0, true);
+        tab(&mut strip_ui, *t, 25.0, 38.0, true);
     }
     clicked
 }
@@ -5387,6 +6213,16 @@ pub(crate) fn list_frame(p: &egui::Painter, rc: Rect) {
     );
 }
 
+/// Where a [`report`] in the screen rect `rc` has its rows: under its header, inside its
+/// frame (on screen; an empty list's block goes there).
+fn report_body(rc: Rect) -> Rect {
+    let rc = winui::rect(rc);
+    winui::rect(Rect::from_min_max(
+        pos2(rc.left() + 1.0, rc.top() + 1.0 + 25.0),
+        pos2(rc.right() - 1.0, rc.bottom() - 1.0),
+    ))
+}
+
 /// A report list (header 25 px, rows 17 px): `cols` are (title, right edge in client x).
 /// Returns true on a double click of a row.
 #[allow(clippy::too_many_arguments)]
@@ -5429,10 +6265,7 @@ fn report(
         x0 = right;
     }
     // The rows: the shared row list under the header (its frame on the list's).
-    let body = Rect::from_min_max(
-        pos2(rc.left() + 1.0, head + 25.0),
-        pos2(rc.right() - 1.0, rc.bottom() - 1.0),
-    );
+    let body = winui::rect(report_body(winui::rect(rc)));
     let gridc = winui::GRID();
     let ev = winui::row_list(
         ui,
@@ -5547,6 +6380,11 @@ fn kept_text(kept: crate::secrets::Kept) -> Option<&'static str> {
             // i18n: Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (the macOS login keychain)
             crate::i18n::mark("Sign-ins and passwords are kept in the macOS keychain.")
         }
+        #[cfg(target_os = "android")]
+        // i18n: Options → Accounts (Android): where the debrid accounts' sign-ins and the other passwords are kept (encrypted with a key held by Android's keystore)
+        Kept::Keychain => crate::i18n::mark(
+            "Sign-ins and passwords are kept encrypted with a key in Android's keystore.",
+        ),
         #[cfg(target_os = "linux")]
         // i18n: Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Linux: GNOME Keyring, KeePassXC... through the Secret Service)
         Kept::Keychain => crate::i18n::mark(
@@ -5622,7 +6460,54 @@ fn snooze_line(ui: &mut Ui, p: &egui::Painter, o: Pos2, until: crate::finish::Un
 
 #[cfg(test)]
 mod tests {
+
+    /// #1778: Site rules shows each rule with its exception's number, then the exceptions no
+    /// rule has; written back, a rule that only sets a number is an exception alone, and the
+    /// order is the list's.
+    #[test]
+    fn site_rules_rows_keep_rules_and_exceptions_in_step() {
+        use mdm_ipc::siterules::SiteRule;
+        let mut s = Settings {
+            conn_exceptions: vec![("slow.example.org".into(), 1), ("*.example.test".into(), 4)],
+            site_rules: vec![SiteRule {
+                site: "*.EXAMPLE.test".into(),
+                user_agent: "Rule/1".into(),
+                ..SiteRule::default()
+            }],
+            ..Settings::default()
+        };
+        let mut rows = rule_rows(&s);
+        assert_eq!(rows.len(), 2);
+        assert_eq!(rows[0].connections, Some(4), "the same pattern, any case");
+        assert_eq!(rows[1].rule.site, "slow.example.org");
+        assert!(!rows[1].rule.sets_anything());
+        set_rule_rows(&mut s, &rows);
+        assert_eq!(
+            s.conn_exceptions,
+            vec![
+                ("*.EXAMPLE.test".to_owned(), 4),
+                ("slow.example.org".to_owned(), 1)
+            ]
+        );
+        assert_eq!(s.site_rules.len(), 1);
+        // The rule's User-Agent emptied, its number kept: an exception alone.
+        rows[0].rule.user_agent.clear();
+        rows.swap(0, 1);
+        set_rule_rows(&mut s, &rows);
+        assert!(s.site_rules.is_empty());
+        assert_eq!(s.conn_exceptions[0].0, "slow.example.org");
+        assert_eq!(rule_rows(&s).len(), 2);
+    }
     use super::*;
+
+    /// Sites Logins' Password column: the same mask for every saved password, nothing without
+    /// one.
+    #[test]
+    fn the_logins_list_shows_one_mask_for_every_password() {
+        assert_eq!(password_shown("a"), PASSWORD_MASK);
+        assert_eq!(password_shown("a longer one"), PASSWORD_MASK);
+        assert_eq!(password_shown(""), "");
+    }
 
     /// #1448: Manual proxy/socks configuration with no protocol ticked gets http and https
     /// ticked, when Options opens on it as when it is chosen; a choice of one is kept, and the
@@ -5742,6 +6627,70 @@ mod tests {
         winui::install_fonts(&mut defs, None);
         ctx.set_fonts(defs);
         ctx
+    }
+
+    /// #1407: the strip is one tab list holding the twelve tabs: the count is the strip's (UI
+    /// Automation and AT-SPI read a tab's "of n" from its container, never from the tab), each
+    /// tab's place the pages' order on the strip (Remote closes the first row).
+    #[test]
+    fn the_strip_is_a_tab_list_of_twelve() {
+        use egui::accesskit::Role;
+        let ctx = context();
+        ctx.enable_accesskit();
+        let input = egui::RawInput {
+            screen_rect: Some(Rect::from_min_size(Pos2::ZERO, vec2(430.0, 506.0))),
+            ..Default::default()
+        };
+        let mut out = ctx.run_ui(input, |ui| {
+            tabs(ui, Pos2::ZERO, 0);
+        });
+        out.textures_delta.clear();
+        let u = out
+            .platform_output
+            .accesskit_update
+            .expect("AccessKit is on");
+        let strip = u
+            .nodes
+            .iter()
+            .find(|(_, n)| n.role() == Role::TabList)
+            .map(|(_, n)| n)
+            .expect("the strip is a tab list");
+        assert_eq!(strip.size_of_set(), Some(12));
+        let tabs: Vec<&egui::accesskit::Node> = u
+            .nodes
+            .iter()
+            .filter(|(_, n)| n.role() == Role::Tab)
+            .map(|(_, n)| n)
+            .collect();
+        assert_eq!(tabs.len(), 12);
+        for (id, _) in u.nodes.iter().filter(|(_, n)| n.role() == Role::Tab) {
+            assert!(
+                strip.children().contains(id),
+                "every tab is the tab list's child"
+            );
+        }
+        // The pages' order on the strip, Remote closing the first row.
+        let expected = [
+            ("General", 0),
+            ("File types", 1),
+            ("Save to", 2),
+            ("Downloads", 3),
+            ("Connection", 4),
+            ("Remote", 5),
+            ("Proxy / Socks", 6),
+            ("Sites Logins", 7),
+            ("Accounts", 8),
+            ("Sounds", 9),
+            ("Regional", 10),
+            ("Archives", 11),
+        ];
+        for (label, place) in expected {
+            let tab = tabs
+                .iter()
+                .find(|n| n.label() == Some(label))
+                .unwrap_or_else(|| panic!("{label} is a tab"));
+            assert_eq!(tab.position_in_set(), Some(place), "{label}");
+        }
     }
 
     /// #1041: Downloads → Customize "Download progress" dialog → Edit... opens its dialog, with

@@ -39,6 +39,8 @@ If some of the torrent's files are already in the folder, MDM asks before using 
 
 The chosen layout is kept when the torrent is paused or MDM restarts. A multi-file torrent saved directly in **Save to** shares that directory: **Move/Rename** and folder renaming on completion are disabled for it so they cannot move unrelated files. Deleting the torrent's files leaves unrelated files and the shared destination folder in place. The layout option applies to direct BitTorrent downloads; torrents downloaded through a debrid account keep their existing layout.
 
+Some programs (BitComet, for one) write a torrent's names in another encoding and add a UTF-8 copy of them (`name.utf-8`, `path.utf-8`); MDM shows and saves the files under the UTF-8 names. A torrent like that which was downloading in an earlier version starts those files again under their correct names, and leaves the files with the old names in the folder.
+
 MDM refuses a torrent with file names your system can't write safely, says which name, and writes nothing. What others can see, the network switches in **Torrent settings**, blocklists and proxies: [Torrents and your security](torrent-security.md).
 
 ## While it downloads
@@ -123,9 +125,13 @@ Choose **Tasks → Torrent settings...** (or the arrow next to **Add Torrent**):
 
 - **Connect over uTP too (UDP)** — on by default. uTP is BitTorrent over UDP. Many peers (qBittorrent's, µTorrent's, Transmission's and others) take uTP, and some take nothing else: without it, MDM can't reach those, and a torrent with few peers may find almost none. MDM tries TCP first and uTP when TCP doesn't answer within a second, on the same port it listens on, so uTP needs **Accept incoming connections** on. A SOCKS5 proxy carries only TCP, so with **Use the proxy** on, uTP is off. A chosen network adapter holds uTP's socket too.
 
-The same window has the network switches (incoming connections, the port, UPnP, uTP, the DHT, a SOCKS5 proxy) and the blocklist: see [Torrents and your security](torrent-security.md).
+- **Add the trackers of this public list to public torrents** — off by default. While it is on, every public torrent also asks the trackers of a public tracker list, so it finds peers sooner, above all an old torrent whose own trackers have gone quiet: the ones you add from then on, and those already in your list (once, when you turn it on). The list is [ngosang/trackerslist](https://github.com/ngosang/trackerslist)'s best trackers unless you type another address in the box (one tracker per line). MDM fetches it with its own downloader, through your proxy and network adapter, once a day (an hour later when a fetch failed), and keeps the last good copy: a new torrent never waits for it, and takes the list as last fetched. When a newer list brings new trackers, each torrent gets those too. A **private torrent** (one from a private tracker, marked so inside the torrent) never gets them: it may only ask its own trackers. Turning it off doesn't take away the trackers already added. Each torrent's **Trackers** tab shows them, and its event log says how many were added. `misterdownloadmanager-cli torrent-get` follows the same switch.
+
+The same window has the network switches (incoming connections, the port, UPnP, uTP, the DHT, a SOCKS5 proxy), the blocklist and the public tracker list: see [Torrents and your security](torrent-security.md).
 
 MDM starts its torrent engine the first time you add a torrent. If you never use torrents, it never listens for peers.
+
+When the network comes back after a drop (Wi-Fi reconnecting, the computer waking from sleep, a VPN connecting or switching), MDM notices within a few seconds and calls the torrents' peers again at once, and asks their trackers and the DHT again, so a download picks up where it was instead of waiting minutes for each peer's next try. Each peer is called once for it; a tracker is still never asked sooner than its minimum interval. Behind a SOCKS5 proxy, a drop the computer itself doesn't see (the router losing its line while Wi-Fi stays up) is noticed only through the DHT, which is off there, so those torrents come back on their own, as before.
 
 To find peers without trackers, MDM joins the DHT through four public routers (`dht.libtorrent.org`, `dht.transmissionbt.com`, `router.bittorrent.com` and `router.utorrent.com`); any one that answers is enough. It keeps the DHT nodes it found for the next start, so later starts don't depend on those routers.
 

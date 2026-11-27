@@ -47,10 +47,7 @@ pub fn info(i: &Item, remote: bool, exists: Option<bool>) -> DownloadInfo {
         // Its last event is its completion (or what came after: a rename, a check).
         finished: i.log.last().map(|(at, _)| *at).filter(|_| complete),
         kind: kind(i).map(str::to_owned),
-        redownload: i.live.is_none()
-            && i.torrent.is_none()
-            && i.video.is_none()
-            && i.remote.is_none(),
+        redownload: i.can_redownload(),
         icon: None,
     }
 }
@@ -72,7 +69,7 @@ fn kind(i: &Item) -> Option<&'static str> {
 /// `_` for a file without one; `folder` for a gallery's folder and a torrent named without an
 /// extension (its folder).
 pub fn icon_key(i: &Item) -> String {
-    let folder = i.gallery.is_some();
+    let folder = i.gallery.is_some() || i.zip.is_some();
     match What::of(Kind::File(&i.file_name)) {
         _ if folder => "folder".into(),
         What::File(Some(ext)) => ext,

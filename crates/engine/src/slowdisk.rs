@@ -13,6 +13,7 @@
 //! runner's disk, not of the one modelled here. Where the system's own flush holds the writes
 //! (NTFS), it still does so by itself.
 
+use std::sync::atomic::{AtomicUsize, Ordering};
 use std::sync::{Arc, Mutex, MutexGuard, RwLock};
 use std::time::{Duration, Instant};
 
@@ -29,6 +30,8 @@ pub struct SlowDisk {
     pub every_flush: bool,
     /// Held exclusively for each flush and shared for each write (tests watch it).
     pub gate: Arc<RwLock<()>>,
+    /// Real writes under way, the modelled wait over (`SlowDisk::writing`).
+    writing: Arc<AtomicUsize>,
     backlog: Arc<Mutex<Backlog>>,
     stats: Arc<Mutex<DiskStats>>,
     clock: Clock,
@@ -37,14 +40,14 @@ pub struct SlowDisk {
 /// The time the disk goes by: the real one, or in tests one that moves only when the disk
 /// waits, so that their checks hold on a slow or busy machine.
 #[derive(Clone, Debug)]
-enum Clock {
+pub(crate) enum Clock {
     Real,
     #[cfg(test)]
     Manual(Arc<Mutex<Instant>>),
 }
 
 impl Clock {
-    fn now(&self) -> Instant {
+    pub(crate) fn now(&self) -> Instant {
         match self {
             Clock::Real => Instant::now(),
             #[cfg(test)]
@@ -52,7 +55,7 @@ impl Clock {
         }
     }
 
-    fn sleep(&self, d: Duration) {
+    pub(crate) fn sleep(&self, d: Duration) {
         match self {
             Clock::Real => std::thread::sleep(d),
             #[cfg(test)]
@@ -86,13 +89,14 @@ impl SlowDisk {
         Self::with_clock(rate, cache, flush_takes, Clock::Real)
     }
 
-    fn with_clock(rate: u64, cache: u64, flush_takes: Duration, clock: Clock) -> Self {
+    pub(crate) fn with_clock(rate: u64, cache: u64, flush_takes: Duration, clock: Clock) -> Self {
         SlowDisk {
             rate,
             cache,
             flush_takes,
             every_flush: false,
             gate: Default::default(),
+            writing: Default::default(),
             backlog: Arc::new(Mutex::new(Backlog {
                 bytes: 0.0,
                 at: clock.now(),
@@ -133,7 +137,19 @@ impl SlowDisk {
             s.writes_waited += 1;
             s.write_wait += waited;
         }
-        write()
+        self.writing.fetch_add(1, Ordering::SeqCst);
+        let done = write();
+        self.writing.fetch_sub(1, Ordering::SeqCst);
+        done
+    }
+
+    /// How many writes the machine's own disk is taking now, the modelled disk done with them.
+    /// While one is under way, a transfer standing still waits for the machine's disk, not for
+    /// the one modelled here: a test can't hold a busy computer's disk to a pace. Measured on a
+    /// computer writing gigabytes beside the test: every connection's 256 KiB write to the part
+    /// file took about 8 s at once, with no flush running (#1633).
+    pub fn writing(&self) -> usize {
+        self.writing.load(Ordering::SeqCst)
     }
 
     /// Run `flush` once everything in the cache is on the disk; `extra`: plus `flush_takes`
@@ -167,6 +183,25 @@ impl SlowDisk {
         s.flushes.push(took);
         s.holds.push(held);
         done
+    }
+
+    /// Run `sync`, a flush of another file on this disk (the resume state's atomic write), once
+    /// the writes already queued ahead of it are on the disk (`every_flush`: plus `flush_takes`).
+    /// Another file's flush neither holds the part file's writes nor writes out what arrives for
+    /// the part file meanwhile (#1633).
+    pub fn sync<T>(&self, sync: impl FnOnce() -> T) -> T {
+        let left = if self.rate > 0 {
+            Duration::from_secs_f64(self.backlog().bytes / self.rate as f64)
+        } else {
+            Duration::ZERO
+        };
+        let extra = if self.every_flush {
+            self.flush_takes
+        } else {
+            Duration::ZERO
+        };
+        self.clock.sleep(left + extra);
+        sync()
     }
 
     /// Take `n` bytes into the cache if they fit (or it is empty), else how long until they do.
@@ -260,5 +295,28 @@ mod tests {
         let s = d.stats();
         assert!(about(s.flushes[0], ms(2500)), "{:?}", s.flushes);
         assert!(about(s.holds[0], ms(500)), "{:?}", s.holds);
+    }
+
+    /// #1633: flushing another file on a busy disk (the resume state's atomic write) waits for
+    /// what was already queued, without holding the part file's writes or clearing what they add
+    /// meanwhile.
+    #[test]
+    fn syncing_another_file_waits_for_the_disk_without_holding_writes() {
+        let clock = Clock::Manual(Arc::new(Mutex::new(Instant::now())));
+        let ms = Duration::from_millis;
+        let d = SlowDisk::with_clock(100 << 20, 256 << 20, ms(30), clock.clone());
+        d.write(50 << 20, || ());
+        let t = clock.now();
+        let writes_go = d.sync(|| {
+            // While the state's write waited 500 ms for the earlier 50 MiB, those 50 MiB drained;
+            // 20 MiB written to the part file at the end stay in its cache.
+            d.write(20 << 20, || ());
+            d.gate.try_read().is_ok()
+        });
+        assert!(writes_go, "another file's sync held the part file's writes");
+        assert!(about(clock.now() - t, ms(500)));
+        assert!(d.stats().flushes.is_empty());
+        d.flush(true, || ());
+        assert!(about(d.stats().holds[0], ms(230)), "{:?}", d.stats().holds);
     }
 }

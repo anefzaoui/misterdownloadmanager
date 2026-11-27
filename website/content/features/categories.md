@@ -24,6 +24,16 @@ folder inside your Downloads folder, so a ZIP file lands in `Downloads\Compresse
 Pick another folder in **Download File Info** and, by default, it becomes the category's folder
 from then on. **Options → Save to** shows each category's file types and folder in one place.
 
+## Or one folder for all of them
+
+<!--@coming 0.6.0-->
+
+Rather have every download in one place? Tick **Options → Save to → Save every download in
+"General" category's folder**, and every new download goes to General's folder, whatever its
+type: from the browser, **Add URL**, a batch, Link grabber, a queue or the command line. The
+categories stay, to sort and filter the list. One download can still go elsewhere: change its
+folder in **Download File Info**. Downloads already in the list stay where they are.
+
 ## Finished and unfinished, at a glance
 
 The pane on the left has four branches. **All Downloads** holds everything, **Unfinished** what
@@ -36,6 +46,14 @@ folder.
 
 MDM opens where you left it, with the same branches open and the same category shown. **View →
 Hide categories** gives the list the whole window.
+
+## See where each one went
+
+The list's **Save To** column shows the folder each download is saved in, so a file you sent
+somewhere else is easy to spot. Click its title, or choose **View → Arrange files → By Save
+Path**, to sort the list by folder. Like every column, right-click any column title to show or
+hide it, and drag it where you want it. **Columns...** in that menu (or **View → Customize URL
+List...**) opens a window to choose them all and their order at once, from the keyboard too.
 
 ## Make your own
 

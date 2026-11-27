@@ -82,7 +82,7 @@ SCRIPT = {
     "he": "HEBREW", "hi": "DEVANAGARI", "hy": "ARMENIAN", "ja": ("HIRAGANA", "KATAKANA", "CJK"),
     "ka": "GEORGIAN", "kk": "CYRILLIC", "km": "KHMER", "kn": "KANNADA", "ko": "HANGUL",
     "kok": "DEVANAGARI", "lo": "LAO", "mk": "CYRILLIC", "ml": "MALAYALAM", "mr": "DEVANAGARI",
-    "ne": "DEVANAGARI", "or": "ORIYA", "pa": "GURMUKHI", "ru": "CYRILLIC", "sr": "CYRILLIC",
+    "ne": "DEVANAGARI", "or": "ORIYA", "pa": "GURMUKHI", "ru": "CYRILLIC", "si": "SINHALA", "sr": "CYRILLIC",
     "ta": "TAMIL", "te": "TELUGU", "th": "THAI", "tt": "CYRILLIC", "ug": "ARABIC",
     "uk": "CYRILLIC", "ur": "ARABIC", "zh-hans": "CJK", "zh-hant": "CJK",
 }
@@ -93,7 +93,7 @@ TASHKEEL = re.compile("[\u0610-\u061a\u064b-\u065f\u0670\u06d6-\u06ed\u08d3-\u08
 BIDI = re.compile("[\u200b\u200e\u200f\u202a-\u202e\u2066-\u2069\u061c\ufeff\u00ad]")
 JOINERS = "\u200c\u200d"
 PLACEHOLDER = re.compile(r"\{[^{}]*\}")
-ACCESS = re.compile(r"&(?!&)(.)")
+ACCESS = re.compile(r"&(?!&)(\S)")
 
 RULES = """You translate the user interface of Mister Download Manager, a Windows desktop download
 manager, from English into {english} ({native}, language code {code}). Write exactly what a

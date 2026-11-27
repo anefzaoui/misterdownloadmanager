@@ -36,6 +36,15 @@ a few connections per address, and MDM notices when one says no: it stops asking
 for more and lists what it learned under **Exceptions** in **Options → Connection**. You can set
 a number for a server yourself there too.
 
+## Rules by site
+
+<!--@coming 0.6.0-->
+
+**Options → Connection → Site rules...** gives every download from a site (`*.example.com`) its
+own User-Agent, extra request headers, number of connections, or a browser's way of connecting
+from the first request. A stopped download's **Properties → Connection...** changes its own
+headers, proxy and connections, and MDM still checks the file is the same one before it goes on.
+
 ## More than 32, if you want them
 
 <!--@coming 0.5-->

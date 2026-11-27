@@ -6,7 +6,7 @@
 
 <h3 align="center">Downloads faster than IDM. Free, forever.</h3>
 
-<p align="center">🌐 <a href="https://misterdownloadmanager.com"><b>misterdownloadmanager.com</b></a>: the official website, with the downloads, help and news</p>
+<p align="center">🌐 <a href="https://misterdownloadmanager.com"><b>misterdownloadmanager.com</b></a>: the official website, with the downloads, help and news. Liked MDM? <a href="https://misterdownloadmanager.com/#rate">Rate it there</a>, one to five stars.</p>
 
 <p align="center">
   <a href="https://github.com/anefzaoui/misterdownloadmanager/releases/latest"><img src="https://img.shields.io/badge/Download%20for-Windows-2a78d6?style=flat-square&logo=data%3Aimage%2Fsvg%2Bxml%3Bbase64%2CPHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0id2hpdGUiPjxwYXRoIGQ9Ik0yIDMuNWw4LjUtMS4ydjguMkgyek0xMS41IDIuMkwyMiAuOHY5LjdIMTEuNXpNMiAxMS41aDguNXY4LjJMMiAxOC41ek0xMS41IDExLjVIMjJ2OS43bC0xMC41LTEuNHoiLz48L3N2Zz4%3D" alt="Download for Windows" height="34"></a>
@@ -25,19 +25,24 @@
 </p>
 
 <p align="center">
+  <a href="https://youtu.be/TATDxWuu4Q8"><img src="docs/images/film-thumb.webp" alt="Mister Download Manager film, 1:09, plays on YouTube" width="880"></a>
+</p>
+
+<p align="center">
+  <a href="https://trendshift.io/repositories/337427" target="_blank"><img src="https://trendshift.io/api/badge/trendshift/repositories/337427/daily?language=Rust" alt="Mister Download Manager on Trendshift: number 1 Rust repository of the day" width="200" height="44"></a><br>
   <a href="https://github.com/anefzaoui/misterdownloadmanager/stargazers"><img src="https://img.shields.io/github/stars/anefzaoui/misterdownloadmanager?style=social&label=Star%20MDM" alt="Star Mister Download Manager on GitHub" height="28"></a><br>
   <sub>⭐ <b>Like it? Give it a star.</b> MDM has no ads and no marketing budget: stars are how people find it.</sub>
 </p>
 
 <p align="center">
   Windows 10 and 11 (x64, ARM64, 32-bit) · Linux (Ubuntu, Debian, Mint, Fedora, openSUSE, Arch and more; x86-64 and ARM64) · macOS (Apple Silicon and Intel, experimental)<br>
-  86 languages · no ads, no trial, no sign-up
+  87 languages · no ads, no trial, no sign-up
 </p>
 
 <table align="center">
   <tr>
     <td align="center" width="210"><img src="docs/images/icons/faster.png" width="76" alt=""><h1>5×</h1><b>Faster</b><br><sub>a 1 GB file: 1 s instead of 5.5 s, on a local test server</sub></td>
-    <td align="center" width="210"><img src="docs/images/icons/languages.png" width="76" alt=""><h1>+46</h1><b>More languages</b><br><sub>86 instead of IDM's 40</sub></td>
+    <td align="center" width="210"><img src="docs/images/icons/languages.png" width="76" alt=""><h1>+47</h1><b>More languages</b><br><sub>87 instead of IDM's 40</sub></td>
     <td align="center" width="210"><img src="docs/images/icons/free.png" width="76" alt=""><h1>100%</h1><b>Cheaper (free!)</b><br><sub>no licence, no trial, ever</sub></td>
     <td align="center" width="210"><img src="docs/images/icons/torrent.png" width="76" alt=""><h1>Torrent</h1><b>Supported fully</b><br><sub>magnet links, .torrent files, seeding</sub></td>
   </tr>
@@ -111,12 +116,14 @@ one:
 | `...-setup-x86.exe`, `...-portable-x86.zip`, `...-x86.zip` | The same three for **32-bit Windows 10**. There, choose your own ffmpeg in **Helpers** for the best video qualities: none is built for it that MDM can check. |
 | `...-extension-chromium.zip` | You want to add the browser extension by hand (Chrome, Edge, Brave, Opera, Vivaldi). From the stores is easier: [Add to Chrome](https://chromewebstore.google.com/detail/mister-download-manager/ejoleppdfgjdndddcjoehopknmlglojp), [Add to Firefox](https://addons.mozilla.org/firefox/addon/mister-download-manager/). |
 
-The ARM64 and 32-bit files come with every release after 0.5.2; **Check for updates** keeps each
+The ARM64 and 32-bit files come with every release from 0.6.0; **Check for updates** keeps each
 copy on its own processor's files.
 
 > [!NOTE]
 > Windows may say *"Windows protected your PC"* the first time, because this early version isn't
 > code-signed yet. Click **More info**, then **Run anyway**.
+>
+> Your antivirus flags it? See [My antivirus flags MDM](https://misterdownloadmanager.com/help/troubleshooting.html#antivirus): how to check that your copy is ours, and report the false alarm.
 
 Or with [WinGet](https://learn.microsoft.com/windows/package-manager/winget/), Windows' package
 manager: in a terminal, the first line installs MDM and the second updates it.
@@ -125,6 +132,21 @@ manager: in a terminal, the first line installs MDM and the second updates it.
 winget install AhmedNefzaoui.MisterDownloadManager
 winget upgrade AhmedNefzaoui.MisterDownloadManager
 ```
+
+Or from [SourceForge](https://sourceforge.net/projects/mister-download-manager.mirror/), an
+automatic, exact copy of the GitHub releases (SourceForge shows ads around its downloads), where
+MDM has SourceForge's *Users Love Us* award:
+
+<p align="center">
+  <a href="https://sourceforge.net/projects/mister-download-manager.mirror/files/latest/download"><img align="middle" src="https://a.fsdn.com/con/app/sf-download-button" srcset="https://a.fsdn.com/con/app/sf-download-button?button_size=2x 2x" alt="Download Mister Download Manager from SourceForge" width="276" height="48"></a>
+  &nbsp;&nbsp;
+  <a href="https://sourceforge.net/projects/mister-download-manager.mirror/"><picture>
+    <source media="(prefers-color-scheme: dark)" srcset="website/assets/badges/sourceforge-users-love-us-dark.svg">
+    <img align="middle" src="website/assets/badges/sourceforge-users-love-us.svg" alt="SourceForge's Users Love Us award for Mister Download Manager" width="96" height="96">
+  </picture></a>
+  <br>
+  <a href="https://sourceforge.net/projects/mister-download-manager.mirror/files/"><img src="https://img.shields.io/sourceforge/dt/mister-download-manager?logo=sourceforge&label=downloads%20from%20SourceForge" alt="Downloads from SourceForge"></a>
+</p>
 
 ### Code signing policy
 
@@ -138,6 +160,8 @@ MDM runs on Linux too, tested on Ubuntu 24.04, Debian 12 and Fedora with GNOME, 
 and Cinnamon, on X11 and in Wayland sessions: the tray, dark mode, browser integration (Ubuntu's
 Snap Firefox included) and the packages' installs. Not there yet: screen readers (Orca) don't
 read its windows, and Flatpak browsers can't reach it ([more](docs/getting-started.md#on-linux)).
+Running downloads show their progress on MDM's icon in the dock (Ubuntu Dock, KDE Plasma and
+other docks that can show it), as they do on the Windows taskbar and in the macOS Dock.
 Up to version 0.2.4, the files' names end in `-experimental`.
 
 | File | For |
@@ -146,7 +170,7 @@ Up to version 0.2.4, the files' names end in `-experimental`.
 | `...-linux-x86_64.rpm` | Fedora, openSUSE, RHEL: `sudo dnf install ./<file>.rpm`. |
 | `...-linux-x86_64.AppImage` | Any Linux. Make it executable and run it. |
 | `...-linux-x86_64.tar.gz` | The plain programs, for any distribution. |
-| `...-linux-arm64.*` | The same four for 64-bit ARM computers, from the release after 0.5.2 (built and tested on GitHub's ARM machines). |
+| `...-linux-arm64.*` | The same four for 64-bit ARM computers, from version 0.6.0 (built and tested on GitHub's ARM machines). |
 
 <p align="center">
   <picture>
@@ -169,7 +193,7 @@ help make them as solid as the Windows and Linux versions.
 
 ## 🌍 In your language
 
-Every language Windows 11 offers, **86 in all**. MDM asks on its first start, and you can change
+Every language Windows 11 offers, **87 in all**. MDM asks on its first start, and you can change
 it any time in **View → Language**. Arabic, Hebrew, Persian, Urdu and Uyghur get a fully mirrored,
 right-to-left window.
 
@@ -244,6 +268,7 @@ right-to-left window.
 <img src="crates/app/assets/flags/gb-sct.svg" width="28" height="21" alt="Gàidhlig (Scottish Gaelic)" title="Gàidhlig (Scottish Gaelic)">
 <img src="crates/app/assets/flags/rs.svg" width="28" height="21" alt="Српски (ћирилица) (Serbian (Cyrillic))" title="Српски (ћирилица) (Serbian (Cyrillic))">
 <img src="crates/app/assets/flags/rs.svg" width="28" height="21" alt="Srpski (latinica) (Serbian (Latin))" title="Srpski (latinica) (Serbian (Latin))">
+<img src="crates/app/assets/flags/lk.svg" width="28" height="21" alt="සිංහල (Sinhala)" title="සිංහල (Sinhala)">
 <img src="crates/app/assets/flags/sk.svg" width="28" height="21" alt="Slovenčina (Slovak)" title="Slovenčina (Slovak)">
 <img src="crates/app/assets/flags/si.svg" width="28" height="21" alt="Slovenščina (Slovenian)" title="Slovenščina (Slovenian)">
 <img src="crates/app/assets/flags/mx.svg" width="28" height="21" alt="Español (México) (Spanish (Mexico))" title="Español (México) (Spanish (Mexico))">
@@ -284,7 +309,7 @@ right-to-left window.
     <td><img src="docs/images/progress-video.webp" alt="A video's progress window"><br><sub><b>A video's progress</b>: speed and time left while yt-dlp brings it in.</sub></td>
   </tr>
   <tr>
-    <td><img src="docs/images/language-picker.webp" alt="Language picker"><br><sub><b>86 languages</b>, chosen by flag on the first start.</sub></td>
+    <td><img src="docs/images/language-picker.webp" alt="Language picker"><br><sub><b>87 languages</b>, chosen by flag on the first start.</sub></td>
     <td><img src="docs/images/arabic-main.webp" alt="Arabic interface"><br><sub><b>Right to left</b> for Arabic, Hebrew, Persian, Urdu and Uyghur.</sub></td>
   </tr>
   <tr>
@@ -298,15 +323,33 @@ right-to-left window.
 - **Speeds up every download** by fetching parts of the file at the same time, and keeps
   re-balancing until the last byte.
 - **Resumes** after a crash, a restart or a dropped connection, without starting over.
+- **Site rules**: a User-Agent, extra request headers, a number of connections and "connect the
+  way a browser does" for every download from a site (`*.example.com`). A stopped download's
+  Properties change its own headers, proxy and connections, and MDM checks it is still the same
+  file before it goes on ([how](docs/connections-and-speed.md#site-rules)).
 - **Catches downloads from Firefox, Chrome, Edge, Brave, Opera, Vivaldi and Helium** (the
   extension is on Firefox Add-ons and the Chrome Web Store), and gives them back to the browser
-  when MDM isn't running.
-- **Downloads videos** from web pages (a button appears over the video; playlists, subtitles,
-  the sound alone), **image galleries** with gallery-dl, and **torrents and magnet links**
-  (sequential order, RSS feeds, sharing limits).
+  when MDM isn't running. Its toolbar button finds **all the images on a page**, at the largest
+  size the page lists, filtered by size and type, and sends them to the Link grabber; the
+  right-click menu's **Download all links** brings the page's pictures too, hidden until you ask.
+- **Downloads videos** from web pages (a button appears over the video, on many pages before it plays; playlists,
+  subtitles, the sound alone), **image galleries** with gallery-dl, and **torrents and magnet links**
+  (sequential order, RSS feeds, sharing limits, an optional public tracker list for more peers).
 - **Many links at once**: the Link grabber sorts them into packages and extracts the archives
-  (zip, 7z, rar) when they're in. It takes Click'n'Load from link sites, asking once per site. Debrid accounts (Real-Debrid, AllDebrid, Premiumize, TorBox, Mega-Debrid; experimental) download
+  (zip, 7z, rar) when they're in. Give it an **FTP folder or a web server's "Index of" page** and it
+  lists every file in it and its subfolders, keeping the folder tree when they download; paste a
+  **Hugging Face model or dataset** or a **GitHub release** and it lists their files, each checked
+  against the digest the site publishes. For a big
+  `.zip` on a server, **Preview** lists the files inside and downloads only the ones you tick. It takes
+  Click'n'Load from link sites, asking once per site, and
+  unwraps `thunder://`, `flashget://` and `qqdl://` links to the address inside them. Debrid accounts (Real-Debrid, AllDebrid, Premiumize, TorBox, Mega-Debrid; experimental) download
   file-host links through your own account.
+- **Sorts downloads into categories** by file type, each with a folder of its own, or **every
+  download in one folder** if you prefer, the categories still sorting the list
+  ([how](docs/options.md#save-to)).
+- **A list laid out your way**: show, move, resize and sort its columns, **Save To** (the folder
+  each download is in) among them, choose them and their order in the **Columns** window (from
+  the keyboard too), and filter any column ([how](docs/download-list.md)).
 - **Downloads overnight** with queues and a scheduler that can wake the computer, then shuts it
   down if you like.
 - **Through your VPN only**, if you want: hold every download to one network adapter, with a kill
@@ -316,9 +359,12 @@ right-to-left window.
 - **Works from scripts too**: IDM's command-line switches, a command-line tool, and a local API for other programs ([how](docs/command-line.md)).
 - **Works with your AI assistant**: an MCP server lets Claude, Cursor or VS Code list, add, pause and remove your downloads ([set it up](docs/ai-assistants.md)).
 - **Leaves you some speed**: limit one download or all of them, only while you're at the computer.
+- **Stays out of your game**: while a full-screen game, video or presentation is on, or the screen
+  is locked, **Download complete** and MDM's other pop-ups wait, and show when you're back
+  ([how](docs/options.md#downloads)).
 - **Day and dark mode, and themes**: Classic, Native, High contrast, Metro, Adwaita, Breeze,
   Luna, Aero and Aqua, or your own in a text file ([how](docs/themes.md)). Everything larger, up
-  to 200 %, with **View → Interface size**. 86 languages, and a portable version for USB sticks.
+  to 200 %, with **View → Interface size**. 87 languages, and a portable version for USB sticks.
 - **Works from the keyboard and with screen readers** (Narrator, NVDA): every window, dialog and
   menu ([the keys](docs/keyboard-shortcuts.md)).
 - **No ads, no trial, no account**. Free and open source.
@@ -441,6 +487,7 @@ pieces fit.
 | `tools/lab/wsl/` | A WSL2 machine that builds MDM for Linux in minutes and shoots its windows on a virtual screen ([README](tools/lab/wsl/README.md)) |
 | `tools\lab\progress-shots.ps1` | The progress window of a video (yt-dlp) and of a torrent, from a swarm on this computer (`cargo run -p mdm-torrent --example swarm`) |
 | `python tools/website/build.py --serve` | misterdownloadmanager.com into `target/site` (help pages from `docs/`, news from the CHANGELOG, FAQ and legal pages from `website/content/`), served on http://127.0.0.1:8765; GitHub Pages publishes it (`pages.yml`) |
+| `website/ratings/`, `website/markdown/` | The website's two Cloudflare Workers: the visitors' star ratings ([README](website/ratings/README.md)), and Markdown for AI tools and agents ([README](website/markdown/README.md)). Every page of the site also has a Markdown version (`/download.md` beside `/download.html`), and the site publishes `llms.txt`, an API catalog and an MCP server card: [For AI tools and agents](https://misterdownloadmanager.com/agents.html) |
 | `python tools/readme/social.py` | The repository's social preview card (`docs/images/social-preview.png`) |
 | `MDM_FIT_AUDIT=<file>` | Lists every text that doesn't fit its window or runs over another, for checking a translation |
 | `MDM_OFFSCREEN=1` | Opens every window off the screen, without focus, tray icon or sound (screenshots and checks) |

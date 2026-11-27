@@ -664,9 +664,9 @@ JS_STRING = re.compile(r"""\bt\(\s*"((?:[^"\\]|\\.)*)"\s*\)""")
 
 
 def js_strings() -> list[str]:
-    """Every `t("…")` in the site's scripts (main.js, bench.js): their words for people."""
+    """Every `t("…")` in the site's scripts (main.js, bench.js, rate.js): their words for people."""
     out = []
-    for name in ("main.js", "bench.js"):
+    for name in ("main.js", "bench.js", "rate.js"):
         for m in JS_STRING.finditer((ROOT / "website" / name).read_text("utf-8")):
             s = json.loads(f'"{m.group(1)}"')
             if s not in out:

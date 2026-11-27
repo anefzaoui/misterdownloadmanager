@@ -40,7 +40,7 @@ These pages explain each part of the program. The tutorials walk through the thi
 
 - **[Options](options.md)** — every page of the Options window.
 - **[Themes](themes.md)** — the built-in looks (Classic, Native, High contrast, Metro, Adwaita, Breeze, Luna, Aero, Aqua, Emerald), and how to make your own in a text file.
-- **[Languages](languages.md)** — the 86 interface languages, numbers and dates, right-to-left layouts, and how to help translate.
+- **[Languages](languages.md)** — the 87 interface languages, numbers and dates, right-to-left layouts, and how to help translate.
 - **[Portable mode](portable.md)** — run MDM from a folder or a USB stick without installing it.
 - **[Keyboard shortcuts](keyboard-shortcuts.md)** — every key the main window answers, and screen readers.
 - **[Command line and automation](command-line.md)** — IDM's command-line switches, the `misterdownloadmanager-cli` tool, and the automation API other programs can use.
@@ -63,6 +63,7 @@ These pages explain each part of the program. The tutorials walk through the thi
 - **[Troubleshooting](troubleshooting.md)** — what to check when a download fails, the browser doesn't hand over a download, or a schedule doesn't start.
 - **[The browser and MDM aren't connected](browser-help.md)** — what the extension's red **!** means, reason by reason, and how to fix each.
 - **[Releases](https://github.com/anefzaoui/misterdownloadmanager/releases)** — download the latest version.
+- **[Rate MDM](https://misterdownloadmanager.com/#rate)** — one to five stars on the website's home or download page; pick again to change your rating, or remove it.
 - **[Report a problem](https://github.com/anefzaoui/misterdownloadmanager/issues/new/choose)** — or use **Help → Report a problem** in MDM, which fills in your version, system and how MDM was installed for you.
 
 ---

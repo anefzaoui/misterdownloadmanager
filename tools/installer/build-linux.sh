@@ -70,7 +70,7 @@ import sys
 from PIL import Image
 Image.open(sys.argv[1]).convert("RGBA").resize((256, 256), Image.LANCZOS).save(sys.argv[2])
 EOF
-# StartupWMClass: the class every window of MDM carries (main.rs APP_ID), so a window pinned to
+# StartupWMClass: the class every window of MDM carries (lib.rs APP_ID), so a window pinned to
 # the taskbar or the dock is this entry's, whatever name an AppImage manager gives the entry (#940).
 cat > "$tree/usr/share/applications/misterdownloadmanager.desktop" <<EOF
 [Desktop Entry]

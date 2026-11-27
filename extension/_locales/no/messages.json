@@ -284,6 +284,64 @@
   "popup_media_title_name": {
     "message": "Legg til sidetittelen foran navn på mediefiler"
   },
+  "popup_images": {
+    "message": "Bilder på denne siden"
+  },
+  "popup_images_text": {
+    "message": "Finn bildene på denne siden i den største størrelsen den viser, og send de du vil ha til Koblingsfanger."
+  },
+  "popup_images_find": {
+    "message": "Finn bilder"
+  },
+  "popup_images_min": {
+    "message": "Minste størrelse, i piksler"
+  },
+  "popup_images_width": {
+    "message": "Minste bredde, i piksler"
+  },
+  "popup_images_height": {
+    "message": "Minste høyde, i piksler"
+  },
+  "popup_images_types": {
+    "message": "Bildetyper"
+  },
+  "popup_images_other": {
+    "message": "Annet"
+  },
+  "popup_images_count": {
+    "message": "$shown$ av $total$ valgt",
+    "placeholders": {
+      "shown": {
+        "content": "$1",
+        "example": "12"
+      },
+      "total": {
+        "content": "$2",
+        "example": "40"
+      }
+    }
+  },
+  "popup_images_unsized": {
+    "message": "Ukjent størrelse, beholdt: $n$",
+    "placeholders": {
+      "n": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "popup_images_send": {
+    "message": "Send til Koblingsfanger"
+  },
+  "popup_images_sent": {
+    "message": "Sendt til Koblingsfanger: Merk dem du vil laste ned der."
+  },
+  "popup_images_none": {
+    "message": "Ingen bilder funnet på denne siden."
+  },
+  "popup_images_unreadable": {
+    "message": "Nettleseren lar ikke tillegg lese denne siden."
+  },
   "video_cant_save": {
     "message": "kan ikke lagres"
   },
@@ -291,7 +349,7 @@
     "message": "Åpne innlegg"
   },
   "video_drag_dots": {
-    "message": "Dra prikkene for å flytte den langs kanten"
+    "message": "Dra i prikkene for å flytte den til et annet hjørne eller utenfor videoen"
   },
   "video_tip": {
     "message": "Last ned $what$",
@@ -331,6 +389,9 @@
   },
   "video_all_qualities": {
     "message": "Alle kvaliteter og undertekster..."
+  },
+  "video_part": {
+    "message": "Last ned en del herfra ..."
   },
   "video_failed": {
     "message": "Mister Download Manager er ikke installert eller startet ikke"
@@ -759,5 +820,108 @@
   },
   "popup_dl_open_remote": {
     "message": "Åpne siden"
+  },
+  "video_home": {
+    "message": "Sett knappen tilbake i hjørnet"
+  },
+  "video_filter_all": {
+    "message": "Alle"
+  },
+  "video_filter_audio": {
+    "message": "Bare lyd"
+  },
+  "video_filter_kind": {
+    "message": "Vis"
+  },
+  "video_filter_type": {
+    "message": "Filtype"
+  },
+  "video_filter_codec": {
+    "message": "Kodek"
+  },
+  "popup_video_reset_text": {
+    "message": "Nedlastingsknapp over videoer"
+  },
+  "popup_video_reset_sub": {
+    "message": "Hvor du flyttet den, og filtrene i menyen, på hvert nettsted"
+  },
+  "popup_video_reset": {
+    "message": "Tilbakestill"
+  },
+  "popup_video_reset_done": {
+    "message": "Tilbake i hjørnet, med alt i menyen, på alle nettsteder"
+  },
+  "status_links_sent": {
+    "message": "Koblinger sendt: $count$",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "10"
+      }
+    }
+  },
+  "status_links_cut": {
+    "message": "Koblinger sendt: $sent$, $left$ utelatt",
+    "placeholders": {
+      "sent": {
+        "content": "$1",
+        "example": "100"
+      },
+      "left": {
+        "content": "$2",
+        "example": "20"
+      }
+    }
+  },
+  "status_links_partial": {
+    "message": "Koblinger sendt: $sent$, avvist: $refused$",
+    "placeholders": {
+      "sent": {
+        "content": "$1",
+        "example": "5"
+      },
+      "refused": {
+        "content": "$2",
+        "example": "2"
+      }
+    }
+  },
+  "status_links_partial_cut": {
+    "message": "Koblinger sendt: $sent$, avvist: $refused$, $left$ utelatt",
+    "placeholders": {
+      "sent": {
+        "content": "$1",
+        "example": "5"
+      },
+      "refused": {
+        "content": "$2",
+        "example": "2"
+      },
+      "left": {
+        "content": "$3",
+        "example": "1"
+      }
+    }
+  },
+  "status_links_refused": {
+    "message": "Koblinger avvist: $count$",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "status_links_none": {
+    "message": "Ingen koblinger til filtyper som kan fanges opp ($left$ utelatt)",
+    "placeholders": {
+      "left": {
+        "content": "$1",
+        "example": "5"
+      }
+    }
+  },
+  "status_unreachable": {
+    "message": "Fikk ikke kontakt med serveren"
   }
 }

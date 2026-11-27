@@ -35,6 +35,8 @@ for (const kind of ["chromium", "chrome-store", "firefox", "safari"]) {
   ].filter(Boolean);
   for (const f of files) assert.ok(existsSync(new URL(f, dir)), `${kind}: ${f} is there`);
   assert.ok(existsSync(new URL("_locales/en/messages.json", dir)), `${kind}: English texts`);
+  // Sinhala is Firefox's only (pack.ps1 leaves it out elsewhere: the stores check a package's locales).
+  assert.equal(existsSync(new URL("_locales/si/messages.json", dir)), kind === "firefox", `${kind}: Sinhala only for Firefox`);
   if (kind === "chromium") assert.equal(idOf(m.key), unpackedId, "the key gives the ID the host serves");
   if (kind === "chrome-store") {
     assert.equal(m.key, undefined, "the store signs it with its own key");

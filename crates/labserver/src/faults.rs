@@ -97,6 +97,10 @@ pub struct Faults {
     /// 403 when the request's `User-Agent` contains this (a bot check that refuses a
     /// browser's User-Agent on a connection that isn't a browser's, #372).
     pub refuse_agent: Option<String>,
+    /// 403 when the request came over this IP family (`4` or `6`): a link signed for the address
+    /// that loaded its page, asked from the computer's address of the other family (#1660).
+    /// `Config::both_families` makes the server listen on both.
+    pub refuse_family: Option<u8>,
     /// Every file request answered with this status (4xx or 5xx) before any byte: a site that
     /// turns away whatever isn't a browser (FileHippo's 412, #630), or a link the browser
     /// already spent.
@@ -134,7 +138,16 @@ pub struct Faults {
     /// URL's own value is never lifted). A download can't finish meanwhile, only be stopped.
     #[serde(deserialize_with = "size_opt")]
     pub stall_at: Option<u64>,
+    /// `/files` only: the first answer for a path that carries the file's byte at this offset
+    /// sends [`GARBLED`] bytes from there inverted, as a proxy that mangled a range (#1661);
+    /// every later answer sends them right. An archive downloaded through it is damaged there,
+    /// and its damaged part downloaded again comes whole.
+    #[serde(deserialize_with = "size_opt")]
+    pub garble: Option<u64>,
 }
+
+/// How many bytes `garble` inverts.
+pub const GARBLED: u64 = 64;
 
 impl Faults {
     pub fn parse(query: &str) -> Result<Self, serde_urlencoded::de::Error> {
@@ -172,6 +185,7 @@ impl Faults {
             range_rate: over.range_rate.or(self.range_rate),
             require_cookie: over.require_cookie.clone().or(self.require_cookie.clone()),
             refuse_agent: over.refuse_agent.clone().or(self.refuse_agent.clone()),
+            refuse_family: over.refuse_family.or(self.refuse_family),
             refuse: over.refuse.or(self.refuse),
             browser_only: over.browser_only.or(self.browser_only),
             refuse_browsers: over.refuse_browsers.or(self.refuse_browsers),
@@ -184,6 +198,7 @@ impl Faults {
                 .or(self.require_referer.clone()),
             once: over.once.or(self.once),
             stall_at: over.stall_at.or(self.stall_at),
+            garble: over.garble.or(self.garble),
         }
     }
 }

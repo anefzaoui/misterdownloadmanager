@@ -284,6 +284,64 @@
   "popup_media_title_name": {
     "message": "Lisa meediafailide nimede ette lehe pealkiri"
   },
+  "popup_images": {
+    "message": "Selle lehe pildid"
+  },
+  "popup_images_text": {
+    "message": "Otsi sellelt lehelt piltide suurimaid versioone, mida see loetleb, ja saada soovitud pildid lingipüüdjasse."
+  },
+  "popup_images_find": {
+    "message": "Otsi pilte"
+  },
+  "popup_images_min": {
+    "message": "Väikseim suurus pikslites"
+  },
+  "popup_images_width": {
+    "message": "Väikseim laius pikslites"
+  },
+  "popup_images_height": {
+    "message": "Väikseim kõrgus pikslites"
+  },
+  "popup_images_types": {
+    "message": "Pilditüübid"
+  },
+  "popup_images_other": {
+    "message": "Muu"
+  },
+  "popup_images_count": {
+    "message": "$shown$ valitud $total$-st",
+    "placeholders": {
+      "shown": {
+        "content": "$1",
+        "example": "12"
+      },
+      "total": {
+        "content": "$2",
+        "example": "40"
+      }
+    }
+  },
+  "popup_images_unsized": {
+    "message": "Suurus teadmata, jäetud alles: $n$",
+    "placeholders": {
+      "n": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "popup_images_send": {
+    "message": "Saada lingipüüdjasse"
+  },
+  "popup_images_sent": {
+    "message": "Saadetud lingipüüdjasse: märgi seal allalaaditavad pildid."
+  },
+  "popup_images_none": {
+    "message": "Sellelt lehelt ei leitud pilte."
+  },
+  "popup_images_unreadable": {
+    "message": "Brauser ei luba lisandmoodulitel seda lehte lugeda."
+  },
   "video_cant_save": {
     "message": "ei saa salvestada"
   },
@@ -291,7 +349,7 @@
     "message": "Ava postitus"
   },
   "video_drag_dots": {
-    "message": "Lohista punkte, et seda serva mööda liigutada"
+    "message": "Lohistage punkte, et teisaldada see teise nurka või videost välja"
   },
   "video_tip": {
     "message": "Laadi alla $what$",
@@ -331,6 +389,9 @@
   },
   "video_all_qualities": {
     "message": "Kõik kvaliteedid ja subtiitrid..."
+  },
+  "video_part": {
+    "message": "Laadi osa siit alla..."
   },
   "video_failed": {
     "message": "Mister Download Manager pole installitud või ei käivitunud"
@@ -759,5 +820,108 @@
   },
   "popup_dl_open_remote": {
     "message": "Ava selle leht"
+  },
+  "video_home": {
+    "message": "Aseta nupp tagasi oma kohale"
+  },
+  "video_filter_all": {
+    "message": "Kõik"
+  },
+  "video_filter_audio": {
+    "message": "Ainult heli"
+  },
+  "video_filter_kind": {
+    "message": "Näita"
+  },
+  "video_filter_type": {
+    "message": "Failitüüp"
+  },
+  "video_filter_codec": {
+    "message": "Koodek"
+  },
+  "popup_video_reset_text": {
+    "message": "Allalaadimisnupp videote kohal"
+  },
+  "popup_video_reset_sub": {
+    "message": "Kuhu te nupu teisaldasite ja selle menüü filtrid igal saidil"
+  },
+  "popup_video_reset": {
+    "message": "Lähtesta"
+  },
+  "popup_video_reset_done": {
+    "message": "Tagasi oma kohale, menüüs kuvatakse kõik valikud igal saidil"
+  },
+  "status_links_sent": {
+    "message": "Lingid saadetud: $count$",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "10"
+      }
+    }
+  },
+  "status_links_cut": {
+    "message": "Lingid saadetud: $sent$, $left$ jäeti välja",
+    "placeholders": {
+      "sent": {
+        "content": "$1",
+        "example": "100"
+      },
+      "left": {
+        "content": "$2",
+        "example": "20"
+      }
+    }
+  },
+  "status_links_partial": {
+    "message": "Saadetud linke: $sent$, tagasi lükatud linke: $refused$",
+    "placeholders": {
+      "sent": {
+        "content": "$1",
+        "example": "5"
+      },
+      "refused": {
+        "content": "$2",
+        "example": "2"
+      }
+    }
+  },
+  "status_links_partial_cut": {
+    "message": "Saadetud linke: $sent$, tagasi lükatud linke: $refused$, $left$ jäeti välja",
+    "placeholders": {
+      "sent": {
+        "content": "$1",
+        "example": "5"
+      },
+      "refused": {
+        "content": "$2",
+        "example": "2"
+      },
+      "left": {
+        "content": "$3",
+        "example": "1"
+      }
+    }
+  },
+  "status_links_refused": {
+    "message": "Tagasi lükatud linke: $count$",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "status_links_none": {
+    "message": "Püütavaid linke pole ($left$ jäeti välja)",
+    "placeholders": {
+      "left": {
+        "content": "$1",
+        "example": "5"
+      }
+    }
+  },
+  "status_unreachable": {
+    "message": "Server pole kättesaadav"
   }
 }

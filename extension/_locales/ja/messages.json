@@ -284,6 +284,64 @@
   "popup_media_title_name": {
     "message": "メディアファイル名の前にページのタイトルを付ける"
   },
+  "popup_images": {
+    "message": "このページの画像"
+  },
+  "popup_images_text": {
+    "message": "このページの画像を最大サイズで検索し、必要な画像をリンク グラバーに送信します。"
+  },
+  "popup_images_find": {
+    "message": "画像を検索"
+  },
+  "popup_images_min": {
+    "message": "最小サイズ (ピクセル)"
+  },
+  "popup_images_width": {
+    "message": "最小の幅 (ピクセル)"
+  },
+  "popup_images_height": {
+    "message": "最小の高さ (ピクセル)"
+  },
+  "popup_images_types": {
+    "message": "画像の種類"
+  },
+  "popup_images_other": {
+    "message": "その他"
+  },
+  "popup_images_count": {
+    "message": "$total$ 個中 $shown$ 個を選択済み",
+    "placeholders": {
+      "shown": {
+        "content": "$1",
+        "example": "12"
+      },
+      "total": {
+        "content": "$2",
+        "example": "40"
+      }
+    }
+  },
+  "popup_images_unsized": {
+    "message": "サイズが指定されていません、保持: $n$",
+    "placeholders": {
+      "n": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "popup_images_send": {
+    "message": "リンク グラバーに送信"
+  },
+  "popup_images_sent": {
+    "message": "リンク グラバーに送信しました。ダウンロードする画像をそこで選択してください。"
+  },
+  "popup_images_none": {
+    "message": "このページに画像は見つかりませんでした。"
+  },
+  "popup_images_unreadable": {
+    "message": "ブラウザーはアドオンがこのページを読み取ることを許可していません。"
+  },
   "video_cant_save": {
     "message": "保存できません"
   },
@@ -291,7 +349,7 @@
     "message": "投稿を開く"
   },
   "video_drag_dots": {
-    "message": "ドットをドラッグして端に沿って移動"
+    "message": "点線をドラッグして、別の隅または端、または動画の外に移動します"
   },
   "video_tip": {
     "message": "$what$ をダウンロード",
@@ -331,6 +389,9 @@
   },
   "video_all_qualities": {
     "message": "すべての画質と字幕..."
+  },
+  "video_part": {
+    "message": "ここから一部をダウンロード..."
   },
   "video_failed": {
     "message": "Mister Download Manager がインストールされていないか、起動していません"
@@ -759,5 +820,108 @@
   },
   "popup_dl_open_remote": {
     "message": "そのページを開く"
+  },
+  "video_home": {
+    "message": "ボタンを元の位置に戻す"
+  },
+  "video_filter_all": {
+    "message": "すべて"
+  },
+  "video_filter_audio": {
+    "message": "オーディオのみ"
+  },
+  "video_filter_kind": {
+    "message": "表示"
+  },
+  "video_filter_type": {
+    "message": "ファイルの種類"
+  },
+  "video_filter_codec": {
+    "message": "コーデック"
+  },
+  "popup_video_reset_text": {
+    "message": "動画上のダウンロード ボタン"
+  },
+  "popup_video_reset_sub": {
+    "message": "各サイトで移動した場所と、メニューのフィルター"
+  },
+  "popup_video_reset": {
+    "message": "リセット"
+  },
+  "popup_video_reset_done": {
+    "message": "ボタンは元の位置に戻り、メニューにはすべてのサイトですべての品質が表示されます"
+  },
+  "status_links_sent": {
+    "message": "送信されたリンク: $count$",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "10"
+      }
+    }
+  },
+  "status_links_cut": {
+    "message": "送信されたリンク: $sent$、除外されたリンク: $left$",
+    "placeholders": {
+      "sent": {
+        "content": "$1",
+        "example": "100"
+      },
+      "left": {
+        "content": "$2",
+        "example": "20"
+      }
+    }
+  },
+  "status_links_partial": {
+    "message": "送信されたリンク: $sent$、拒否されたリンク: $refused$",
+    "placeholders": {
+      "sent": {
+        "content": "$1",
+        "example": "5"
+      },
+      "refused": {
+        "content": "$2",
+        "example": "2"
+      }
+    }
+  },
+  "status_links_partial_cut": {
+    "message": "送信されたリンク: $sent$、拒否されたリンク: $refused$、除外されたリンク: $left$",
+    "placeholders": {
+      "sent": {
+        "content": "$1",
+        "example": "5"
+      },
+      "refused": {
+        "content": "$2",
+        "example": "2"
+      },
+      "left": {
+        "content": "$3",
+        "example": "1"
+      }
+    }
+  },
+  "status_links_refused": {
+    "message": "拒否されたリンク: $count$",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "status_links_none": {
+    "message": "取得可能なリンクなし ($left$ 件が除外されました)",
+    "placeholders": {
+      "left": {
+        "content": "$1",
+        "example": "5"
+      }
+    }
+  },
+  "status_unreachable": {
+    "message": "サーバーに到達できません"
   }
 }

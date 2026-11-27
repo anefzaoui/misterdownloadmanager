@@ -33,18 +33,18 @@
 id = "first-language"
 page = "getting-started.md"
 under = "First start and the language"
-take = "language"
-alt = "The language list on first start: every language with its flag, its own name and its English name"
+take = "setup"
+alt = "The first start's setup at its Language step: every language with its flag, its own name and its English name"
 caption = "Pick your language. View → Language changes it later."
 
 [[shot]]
 id = "first-helpers"
 page = "getting-started.md"
 under = "The video helpers"
-take = "helpers"
+take = "setup:helpers"
 ring = ["Yes, download them (recommended)"]
-alt = "MDM offers yt-dlp and ffmpeg on its first start, with Yes, download them (recommended) and Not now"
-caption = "Yes downloads both helpers in the background, once."
+alt = "The setup's Video helpers step: yt-dlp and ffmpeg, each with its Install button, and Yes, download them (recommended)"
+caption = "Install one, or download them all at once; Next leaves them for later."
 
 [[shot]]
 id = "main-window"
@@ -132,6 +132,16 @@ take = "@download:gen/250M/project-files-2026.zip"
 marks = [{ at = [30, 61, 0, 21], side = "center" }, { at = [30, 91, 0, 20], side = "center" }, { at = "Start Download", side = "corner" }, { at = "Download Later", side = "corner" }]
 alt = "Download File Info for a ZIP file: its address, the Compressed category, the folder it goes to, its size, and the Download Later, Start Download and Cancel buttons"
 caption = "1 the category, 2 where the file goes, 3 start now, 4 or put it in a queue."
+
+[[shot]]
+id = "zip-preview"
+page = "adding-downloads.md"
+under = "Only some files from inside a ZIP"
+# Download File Info for a ZIP on the lab server, then its Preview (#1775), three files ticked.
+take = "@download:zip/files.zip+zip-preview:3"
+marks = [{ at = "Select all", side = "corner" }, { at = "OK", side = "corner" }]
+alt = "Zip preview listing the files inside a ZIP on its server, with their file name, packed size, size and date, the first three ticked, and OK and Cancel buttons"
+caption = "1 tick every file at once, 2 download the files ticked."
 
 [[shot]]
 id = "batch"
@@ -232,6 +242,16 @@ under = "Start a video download"
 take = "video-subs"
 alt = "The video window after Look up: the qualities with their sizes, Save to, File name and Subtitles"
 caption = "Pick a quality, then Download Now."
+
+[[shot]]
+id = "video-part"
+page = "video.md"
+under = "Download only a part {#part}"
+take = "video-part"
+# Subtitles greyed, Part's two lines and Embed chapters.
+crop = [0, 330, 0, 120]
+alt = "The Part row of the video window: Only a part ticked, from 1:30 to 4:10, a quick cut, the part's size beside it"
+caption = "Only from 1:30 to 4:10, cut quickly; a part has no subtitles or chapters."
 
 [[shot]]
 id = "video-progress"

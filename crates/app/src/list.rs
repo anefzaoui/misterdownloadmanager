@@ -47,9 +47,10 @@ themed! {
 /// "Added" (2026-10-30: when the download was added; sorts in order of addition), "Source"
 /// (D-014: a Web or Torrent chip, first by default), and a torrent's "Peers" and "Share ratio"
 /// (#357: how many peers it has connected and what it has given back). "Upload speed" (#357: what
-/// it sends) is the last slot: a saved layout is indexed by slot, so it must not take a slot an
-/// older build already meant something else by.
-pub const COLS: usize = 13;
+/// it sends) and "Save To" (#1827: the folder it's saved in) are the last slots: a saved layout
+/// is indexed by slot, so a new column must not take a slot an older build already meant
+/// something else by.
+pub const COLS: usize = 14;
 pub const TITLES: [&str; COLS] = [
     "File Name",
     // i18n: column title: one letter for Queue (the column is narrow)
@@ -73,6 +74,8 @@ pub const TITLES: [&str; COLS] = [
     "Share ratio",
     // i18n: column title: what a torrent sends to peers, bytes per second
     "Upload speed",
+    // i18n: column title: the folder the download is saved in
+    "Save To",
 ];
 /// The "Status" column's data slot.
 pub const STATUS: usize = 3;
@@ -82,27 +85,31 @@ pub const RATE: usize = 5;
 const OLD_STATUS_WIDTH: f32 = 65.0;
 /// A cell's text starts 6 px in and ends 3 px before the column's separator, its last pixel.
 pub const CELL_PAD: f32 = 6.0 + 3.0 + 1.0;
+/// The Status cell's text starts after its status icon (#2008): 16 px more than a cell's.
+pub const STATUS_ICON: f32 = 16.0;
 
 /// The Status column's default width (#736) in the interface language `code`, whose 100 % is
 /// written `full`: [`DEFAULT_WIDTHS`]'s, or wider where `measure` (the list's font) needs it
-/// for the widest of what the cell says while a file is checked or a video joined.
+/// for the widest of what the cell says while a file is checked or a video joined, after its
+/// status icon.
 pub fn status_width(code: &str, full: &str, measure: impl Fn(&str) -> f32) -> f32 {
     let need = finishing_texts(code, full)
         .iter()
         .map(|s| measure(s))
         .fold(0.0, f32::max);
-    DEFAULT_WIDTHS[STATUS].max((need + CELL_PAD).ceil())
+    DEFAULT_WIDTHS[STATUS].max((need + CELL_PAD + STATUS_ICON).ceil())
 }
 
 /// What the Status cell says at its widest while a file is checked or a video joined, in
 /// language `code` (`crate::model::checking` and `merging`): the word with 100 % (as `full`, and
-/// as English writes it) and with "..." before MDM knows how far.
+/// as English writes it) and with "..." before MDM knows how far; and "Damaged", an archive its
+/// test found damaged (#1661).
 pub fn finishing_texts(code: &str, full: &str) -> Vec<String> {
     let i18n = crate::i18n::i18n();
     let Some(lang) = i18n.from_code(code) else {
         return Vec::new();
     };
-    let mut texts = Vec::new();
+    let mut texts = vec![i18n.t(lang, "Damaged").to_owned()];
     for template in ["Checking {percent}", "Merging {percent}"] {
         for percent in [full, "100%", "..."] {
             texts.push(crate::i18n::fmt(
@@ -124,20 +131,26 @@ pub const RATIO: usize = 11;
 /// The "Upload speed" column's data slot (what a torrent sends; blank for anything else). The
 /// last slot, so a layout saved before it existed still means what it meant.
 pub const UPLOAD: usize = 12;
+/// The "Save To" column's data slot: the folder the download is saved in. Last slot, shown by
+/// default after Description.
+pub const SAVE_TO: usize = 13;
 
 /// IDM's default column widths (and ours for Added, room for a 12-hour clock's
 /// `Oct 28 9:05:01 AM 2026`, Source, Peers, Share ratio and Upload speed). Status is wider than
 /// IDM's 65 px (#736): one word and a percentage while a file is checked or a video joined
-/// ("Checking 45%", German's "Zusammenführen 100 %"). 132 px is the least it has: while nobody
+/// ("Checking 45%", German's "Zusammenführen 100 %") after its status icon (#2008). 148 px is
+/// the least it has (132 before the icon): while nobody
 /// resized it, it grows to what the list's font needs in the interface language
 /// ([`status_width`]). Linux draws with fontconfig's interface font, often DejaVu Sans, wider
 /// than Windows' Segoe UI.
 pub const DEFAULT_WIDTHS: [f32; COLS] = [
-    150.0, 20.0, 75.0, 132.0, 75.0, 95.0, 65.0, 200.0, 145.0, 62.0, 64.0, 92.0, 100.0,
+    150.0, 20.0, 75.0, 148.0, 75.0, 95.0, 65.0, 200.0, 145.0, 62.0, 64.0, 92.0, 100.0, 220.0,
 ];
 /// Default display order: Source first, then IDM's, a torrent's three columns after its rate, and
 /// Added after Last Try Date.
-const DEFAULT_ORDER: [usize; COLS] = [SOURCE, 0, 1, 2, 3, 4, 5, UPLOAD, PEERS, RATIO, 6, ADDED, 7];
+const DEFAULT_ORDER: [usize; COLS] = [
+    SOURCE, 0, 1, 2, 3, 4, 5, UPLOAD, PEERS, RATIO, 6, ADDED, 7, SAVE_TO,
+];
 
 const MIN_WIDTH: f32 = 16.0;
 /// How far from a separator a press grabs it for resizing.
@@ -358,6 +371,10 @@ impl ListState {
                 .map_or(l.order.len(), |p| p + 1);
             l.order.insert(at, UPLOAD);
         }
+        // A layout from before "Save To" gets it last, shown, at its default width.
+        if !l.order.contains(&SAVE_TO) {
+            l.order.push(SAVE_TO);
+        }
         let mut seen = l.order.clone();
         seen.sort_unstable();
         if seen != (0..COLS).collect::<Vec<_>>() {
@@ -381,6 +398,19 @@ impl ListState {
         self.sort = l.sort.filter(|(c, _)| *c < COLS);
     }
 
+    /// Set the order and which columns show (the Columns dialog). An order that doesn't name
+    /// every column exactly once is ignored; File Name always shows. Widths stay.
+    pub fn set_columns(&mut self, order: Vec<usize>, visible: [bool; COLS]) {
+        let mut seen = order.clone();
+        seen.sort_unstable();
+        if seen != (0..COLS).collect::<Vec<_>>() {
+            return;
+        }
+        self.order = order;
+        self.visible = visible;
+        self.visible[0] = true;
+    }
+
     /// Visible columns in display order.
     fn shown(&self) -> Vec<usize> {
         self.order
@@ -394,6 +424,8 @@ impl ListState {
 pub struct Row {
     /// What the Status filter sees: Downloading, Stopped, Waiting, Complete or Error.
     pub status_group: &'static str,
+    /// The icon before the Status text (#2008): the theme's own, or MDM's.
+    pub status_icon: crate::icons::StatusIcon,
     pub icon: IconKey,
     /// In a queue: the Q column shows a queue icon (IDM: stacked files).
     pub queued: bool,
@@ -1019,23 +1051,16 @@ pub fn show(
         if let Some(row) = rows.get(idx) {
             let picked = selected.get(idx).copied().unwrap_or(false);
             expose_row(idx, row, picked);
-            // The download's progress as a progress bar of its own (#1190): UI Automation reads
-            // it through the RangeValue pattern, so a reader's own progress reporting — its beeps
-            // and percentages — follows it without anyone moving the focus. Unnamed on purpose: a
-            // name would be read in place of the value.
+            // The download's progress as a progress bar of its own (#1190, #1406): the same node
+            // the Download status page carries, so a reader's progress reporting follows it
+            // without anyone moving the focus (winui::expose_progress).
             if let Some(frac) = row.progress {
                 let bar = row_id(idx).with("progress");
                 let bar_rc = screen(Rect::from_min_size(
                     pos2(cl, top),
                     egui::vec2(rr - cl, row_h()),
                 ));
-                rows_ui.interact(bar_rc, bar, egui::Sense::hover());
-                ui.ctx().accesskit_node_builder(bar, |n| {
-                    n.set_role(egui::Role::ProgressIndicator);
-                    n.set_min_numeric_value(0.0);
-                    n.set_max_numeric_value(100.0);
-                    n.set_numeric_value(frac.clamp(0.0, 1.0) * 100.0);
-                });
+                winui::expose_progress(&rows_ui, bar_rc, bar, frac);
             }
             let sel = picked && st.focused;
             // The focused row's dotted outline only once the keyboard is in use, as every
@@ -1074,21 +1099,25 @@ pub fn show(
                 let tx = if *c == 0 {
                     icons.paint_in(ui, &bp, row.icon.clone(), pos2(x0 + 4.0, top));
                     x0 + 22.0
-                } else if *c == STATUS && row.private.is_some() {
+                } else if *c == STATUS {
+                    let cell = Rect::from_min_max(pos2(*x0, top), pos2(*x1 - 1.0, top + row_h()));
+                    let clip = bp.with_clip_rect(screen(cell.intersect(body)));
+                    let mut x = x0 + 4.0;
                     // A private window's download (#1581): a mask before its status, in the
                     // row's text colour, kept to the cell.
-                    let ink = if sel { winui::SELECTION_TEXT() } else { TEXT() };
-                    let cell = Rect::from_min_max(pos2(*x0, top), pos2(*x1 - 1.0, top + row_h()));
-                    crate::chrome::paint_image(
-                        ui,
-                        &bp.with_clip_rect(screen(cell.intersect(body))),
-                        crate::icons::private_mark(ink),
-                        screen(Rect::from_min_size(
-                            pos2(x0 + 4.0, top),
-                            egui::vec2(16.0, 16.0),
-                        )),
-                    );
-                    x0 + 22.0
+                    if row.private.is_some() {
+                        let ink = if sel { winui::SELECTION_TEXT() } else { TEXT() };
+                        crate::chrome::paint_image(
+                            ui,
+                            &clip,
+                            crate::icons::private_mark(ink),
+                            screen(Rect::from_min_size(pos2(x, top), egui::vec2(16.0, 16.0))),
+                        );
+                        x += 18.0;
+                    }
+                    // Its status icon before the text (#2008), in every theme.
+                    winui::status_icon(ui, &clip, row.status_icon, pos2(x, top), sel);
+                    x + 18.0
                 } else {
                     x0 + 6.0
                 };
@@ -1277,7 +1306,7 @@ pub fn show(
         let idx = ((pos.y - body_top + shown_scroll) / row_h()).floor() as usize;
         (idx < rows.len()).then_some(idx)
     };
-    let mods = ui.input(|i| i.modifiers);
+    let mods = click_modifiers(ui);
     if let Some(on_screen) = resp.interact_pointer_pos()
         && let pos = english(on_screen)
         && body.contains(pos)
@@ -1753,9 +1782,104 @@ fn move_column(st: &mut ListState, cols: &[(usize, f32, f32)], col: usize, x: f3
     st.order = shown.into_iter().chain(hidden).collect();
 }
 
+/// Ctrl, Shift and Alt as a click had them: as the primary button went down, even when that was
+/// in an earlier frame than the release (as a Windows list view takes them on the press), else
+/// as they are now. A slow frame (software rendering, a loaded machine) can take the key going
+/// down, the click and the key going up all at once, and the frame's own modifiers then miss the
+/// key the click was made with (#1734). The press's keys are kept per window until the next
+/// press: every list that reads clicks calls this in each frame it's drawn, so it sees its own
+/// presses.
+pub(crate) fn click_modifiers(ui: &Ui) -> egui::Modifiers {
+    let id = egui::Id::unique(("list-click-press-modifiers", ui.ctx().viewport_id()));
+    let held = ui.data(|d| d.get_temp::<egui::Modifiers>(id));
+    let (mods, press) =
+        ui.input(|i| modifiers_of_click(&i.events, i.modifiers, held, i.pointer.primary_down()));
+    if let Some(press) = press {
+        ui.data_mut(|d| d.insert_temp(id, press));
+    }
+    mods
+}
+
+/// The click's modifiers from this frame's `events`, the last press's from an earlier frame
+/// (`held`) and the frame's (`now`); and the last press's in this frame, to keep.
+/// - The button went up in this frame: the keys of the press that went before it.
+/// - It went down in this frame (a drag about to start): that press's.
+/// - Nothing this frame but the button is held (a drag starting later): the held press's.
+/// - Otherwise (a key moved the selection): the keys as they are.
+fn modifiers_of_click(
+    events: &[egui::Event],
+    now: egui::Modifiers,
+    held: Option<egui::Modifiers>,
+    down: bool,
+) -> (egui::Modifiers, Option<egui::Modifiers>) {
+    let (mut press, mut fresh, mut release) = (held, None, None);
+    for e in events {
+        if let egui::Event::PointerButton {
+            button: egui::PointerButton::Primary,
+            pressed,
+            modifiers,
+            ..
+        } = e
+        {
+            if *pressed {
+                press = Some(*modifiers);
+                fresh = Some(*modifiers);
+            } else {
+                release = Some(press.unwrap_or(*modifiers));
+            }
+        }
+    }
+    let mods = release.or(fresh).or(press.filter(|_| down)).unwrap_or(now);
+    (mods, fresh)
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    /// #1734: a slow frame takes Ctrl going down, the click and Ctrl going up at once: the click
+    /// still has its Ctrl.
+    #[test]
+    fn a_click_keeps_the_keys_it_was_made_with() {
+        let click = |pressed, modifiers| egui::Event::PointerButton {
+            pos: Pos2::ZERO,
+            button: egui::PointerButton::Primary,
+            pressed,
+            modifiers,
+        };
+        let (none, ctrl, shift) = (
+            egui::Modifiers::NONE,
+            egui::Modifiers::COMMAND,
+            egui::Modifiers::SHIFT,
+        );
+        let at =
+            |events: &[egui::Event], now, held, down| modifiers_of_click(events, now, held, down).0;
+        assert_eq!(
+            at(&[click(true, ctrl), click(false, ctrl)], none, None, false),
+            ctrl
+        );
+        // Pressed with Shift, which went up before the button: the press's.
+        assert_eq!(
+            at(&[click(true, shift), click(false, none)], none, None, false),
+            shift
+        );
+        // Pressed with Ctrl in an earlier frame, the key let go before a later frame took the
+        // release: still the press's.
+        assert_eq!(at(&[click(false, none)], none, Some(ctrl), false), ctrl);
+        // A release with no press known (the press went to another window): the release's.
+        assert_eq!(at(&[click(false, shift)], none, None, false), shift);
+        // A press in this frame is kept for the frame of its release.
+        assert_eq!(
+            modifiers_of_click(&[click(true, ctrl)], none, Some(shift), true),
+            (ctrl, Some(ctrl))
+        );
+        // A drag that starts frames after its press: the press's.
+        assert_eq!(at(&[], none, Some(ctrl), true), ctrl);
+        // No click in this frame and the button up (a key moved the selection): the keys as
+        // they are, whatever an old press had.
+        assert_eq!(at(&[], ctrl, Some(shift), false), ctrl);
+        assert_eq!(at(&[], shift, None, false), shift);
+    }
 
     #[test]
     fn data_cells_keep_their_own_direction() {
@@ -1854,6 +1978,7 @@ mod tests {
         cells[SOURCE] = source.into();
         Row {
             status_group: status,
+            status_icon: crate::icons::StatusIcon::Complete,
             icon: IconKey::Silk("page_white"),
             queued,
             cells,
@@ -1896,6 +2021,7 @@ mod tests {
         assert_eq!(TITLES[ADDED], "Added");
         assert_eq!(TITLES[SOURCE], "Source");
         assert_eq!(TITLES[UPLOAD], "Upload speed");
+        assert_eq!(TITLES[SAVE_TO], "Save To");
         assert_eq!(TITLES[PEERS], "Peers");
         assert_eq!(TITLES[RATIO], "Share ratio");
     }
@@ -1912,6 +2038,36 @@ mod tests {
     }
 
     #[test]
+    fn set_columns_rejects_a_bad_order_and_keeps_file_name() {
+        let mut st = ListState::default();
+        let before = st.order.clone();
+        st.set_columns(vec![0, 0, 1], [true; COLS]);
+        assert_eq!(st.order, before, "bad order ignored");
+        let mut order = before.clone();
+        order.reverse();
+        let mut vis = [true; COLS];
+        vis[0] = false;
+        st.set_columns(order.clone(), vis);
+        assert_eq!(st.order, order);
+        assert!(st.visible[0], "File Name stays");
+    }
+
+    #[test]
+    fn a_layout_saved_before_save_to_gets_it_last_and_shown() {
+        let mut st = ListState::default();
+        st.apply(Layout {
+            order: DEFAULT_ORDER[..COLS - 1].to_vec(),
+            widths: DEFAULT_WIDTHS[..COLS - 1].to_vec(),
+            visible: vec![true; COLS - 1],
+            sort: None,
+            status_fits: None,
+        });
+        assert_eq!(st.order.last(), Some(&SAVE_TO));
+        assert!(st.visible[SAVE_TO]);
+        assert_eq!(st.widths[SAVE_TO], DEFAULT_WIDTHS[SAVE_TO]);
+    }
+
+    #[test]
     fn a_layout_saved_before_the_added_columns_still_loads() {
         let old = Layout {
             order: vec![0, 2, 1, 3, 4, 5, 6, 7],
@@ -1925,7 +2081,9 @@ mod tests {
         // Source first, the three torrent columns after Transfer rate, Added after Last Try Date.
         assert_eq!(
             st.order,
-            [SOURCE, 0, 2, 1, 3, 4, 5, UPLOAD, PEERS, RATIO, 6, ADDED, 7]
+            [
+                SOURCE, 0, 2, 1, 3, 4, 5, UPLOAD, PEERS, RATIO, 6, ADDED, 7, SAVE_TO
+            ]
         );
         assert_eq!(st.widths[0], 200.0, "the saved widths stay");
         assert_eq!(st.widths[ADDED], DEFAULT_WIDTHS[ADDED]);
@@ -1975,10 +2133,10 @@ mod tests {
         let mut st = ListState::default();
         st.apply(Layout {
             status_fits: Some(true),
-            ..saved(147.0)
+            ..saved(163.0)
         });
         assert!(st.status_fits);
-        assert_eq!(st.widths[STATUS], 147.0, "as fitted where it was saved");
+        assert_eq!(st.widths[STATUS], 163.0, "as fitted where it was saved");
         // A layout saved before #736 has no such field.
         let old: Layout = serde_json::from_str(
             r#"{"order":[0,1,2,3,4,5,6,7],"widths":[200,20,75,65,75,95,65,300],
@@ -1993,7 +2151,8 @@ mod tests {
         assert!(st.status_fits);
     }
 
-    /// #736: Status's default is 132 px, or what the font needs where that is more.
+    /// #736: Status's default is 148 px (#2008: 132 and its icon), or what the font needs
+    /// where that is more.
     #[test]
     fn status_width_grows_with_the_font() {
         let texts = finishing_texts("de", "100\u{a0}%");
@@ -2004,9 +2163,10 @@ mod tests {
         // A wide font: the widest text, its padding, whole pixels.
         let wide = |s: &str| s.chars().count() as f32 * 7.3;
         let widest = texts.iter().map(|t| wide(t)).fold(0.0, f32::max);
+        // After the status icon (#2008).
         assert_eq!(
             status_width("de", "100\u{a0}%", wide),
-            (widest + CELL_PAD).ceil()
+            (widest + CELL_PAD + STATUS_ICON).ceil()
         );
     }
 
@@ -2027,7 +2187,9 @@ mod tests {
         st.apply(old);
         assert_eq!(
             st.order,
-            [SOURCE, 0, 1, 2, 3, 4, 5, UPLOAD, PEERS, RATIO, 6, ADDED, 7]
+            [
+                SOURCE, 0, 1, 2, 3, 4, 5, UPLOAD, PEERS, RATIO, 6, ADDED, 7, SAVE_TO
+            ]
         );
         assert!(st.widths[UPLOAD] > 0.0 && st.widths[PEERS] > 0.0 && st.widths[RATIO] > 0.0);
         // None of the torrent columns were in that layout, so all three get their defaults.
@@ -2063,7 +2225,9 @@ mod tests {
         st.apply(old);
         assert_eq!(
             st.order,
-            [SOURCE, 0, 1, 2, 3, 4, 5, UPLOAD, PEERS, RATIO, 6, ADDED, 7]
+            [
+                SOURCE, 0, 1, 2, 3, 4, 5, UPLOAD, PEERS, RATIO, 6, ADDED, 7, SAVE_TO
+            ]
         );
         assert_eq!(
             st.widths[PEERS], 64.0,
@@ -2098,6 +2262,7 @@ mod tests {
         let rows: Vec<Row> = (0..3)
             .map(|i| Row {
                 status_group: "Complete",
+                status_icon: crate::icons::StatusIcon::Complete,
                 icon: IconKey::Silk("page_white"),
                 queued: false,
                 cells: std::array::from_fn(|c| match c {

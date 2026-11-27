@@ -284,6 +284,64 @@
   "popup_media_title_name": {
     "message": "在媒體檔案名稱前加上頁面標題"
   },
+  "popup_images": {
+    "message": "此頁面上的影像"
+  },
+  "popup_images_text": {
+    "message": "尋找此頁面上最大尺寸的圖片，然後將您想要的圖片傳送至連結擷取器。"
+  },
+  "popup_images_find": {
+    "message": "尋找影像"
+  },
+  "popup_images_min": {
+    "message": "最小尺寸 (像素)"
+  },
+  "popup_images_width": {
+    "message": "最小寬度 (像素)"
+  },
+  "popup_images_height": {
+    "message": "最小高度 (像素)"
+  },
+  "popup_images_types": {
+    "message": "影像類型"
+  },
+  "popup_images_other": {
+    "message": "其他"
+  },
+  "popup_images_count": {
+    "message": "已選取 $total$ 個中的 $shown$ 個",
+    "placeholders": {
+      "shown": {
+        "content": "$1",
+        "example": "12"
+      },
+      "total": {
+        "content": "$2",
+        "example": "40"
+      }
+    }
+  },
+  "popup_images_unsized": {
+    "message": "未提供大小，已保留：$n$",
+    "placeholders": {
+      "n": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "popup_images_send": {
+    "message": "傳送至連結擷取器"
+  },
+  "popup_images_sent": {
+    "message": "已傳送至連結擷取器：請勾選要下載的項目。"
+  },
+  "popup_images_none": {
+    "message": "此頁面上找不到影像。"
+  },
+  "popup_images_unreadable": {
+    "message": "瀏覽器不允許附加元件讀取此頁面。"
+  },
   "video_cant_save": {
     "message": "無法儲存"
   },
@@ -291,7 +349,7 @@
     "message": "開啟貼文"
   },
   "video_drag_dots": {
-    "message": "拖曳點點以沿邊緣移動"
+    "message": "拖曳圓點可將其移至其他角落，或移至影片外側"
   },
   "video_tip": {
     "message": "下載 $what$",
@@ -331,6 +389,9 @@
   },
   "video_all_qualities": {
     "message": "所有畫質和字幕..."
+  },
+  "video_part": {
+    "message": "從這裡下載部分內容..."
   },
   "video_failed": {
     "message": "Mister Download Manager 未安裝或未啟動"
@@ -759,5 +820,108 @@
   },
   "popup_dl_open_remote": {
     "message": "開啟其頁面"
+  },
+  "video_home": {
+    "message": "將按鈕放回原本角落"
+  },
+  "video_filter_all": {
+    "message": "全部"
+  },
+  "video_filter_audio": {
+    "message": "僅音訊"
+  },
+  "video_filter_kind": {
+    "message": "顯示"
+  },
+  "video_filter_type": {
+    "message": "檔案類型"
+  },
+  "video_filter_codec": {
+    "message": "編解碼器"
+  },
+  "popup_video_reset_text": {
+    "message": "影片上的下載按鈕"
+  },
+  "popup_video_reset_sub": {
+    "message": "您移動按鈕的位置，以及其功能表在各網站上的篩選條件"
+  },
+  "popup_video_reset": {
+    "message": "重設"
+  },
+  "popup_video_reset_done": {
+    "message": "已回到原本角落，功能表在所有網站上顯示所有選項"
+  },
+  "status_links_sent": {
+    "message": "已傳送連結：$count$",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "10"
+      }
+    }
+  },
+  "status_links_cut": {
+    "message": "已傳送連結：$sent$，已省略：$left$",
+    "placeholders": {
+      "sent": {
+        "content": "$1",
+        "example": "100"
+      },
+      "left": {
+        "content": "$2",
+        "example": "20"
+      }
+    }
+  },
+  "status_links_partial": {
+    "message": "已傳送連結：$sent$，已拒絕：$refused$",
+    "placeholders": {
+      "sent": {
+        "content": "$1",
+        "example": "5"
+      },
+      "refused": {
+        "content": "$2",
+        "example": "2"
+      }
+    }
+  },
+  "status_links_partial_cut": {
+    "message": "已傳送連結：$sent$，已拒絕：$refused$，已省略：$left$",
+    "placeholders": {
+      "sent": {
+        "content": "$1",
+        "example": "5"
+      },
+      "refused": {
+        "content": "$2",
+        "example": "2"
+      },
+      "left": {
+        "content": "$3",
+        "example": "1"
+      }
+    }
+  },
+  "status_links_refused": {
+    "message": "已拒絕連結：$count$",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "status_links_none": {
+    "message": "無可擷取連結 (已省略 $left$)",
+    "placeholders": {
+      "left": {
+        "content": "$1",
+        "example": "5"
+      }
+    }
+  },
+  "status_unreachable": {
+    "message": "無法連線至伺服器"
   }
 }

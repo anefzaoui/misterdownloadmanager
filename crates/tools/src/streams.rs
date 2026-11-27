@@ -105,9 +105,12 @@ pub struct Plan {
 }
 
 impl Plan {
-    /// Every stream's size, as far as known: the progress's total from the start.
+    /// Every stream's size, as far as known: the progress's total from the start. A size yt-dlp
+    /// gives absurdly (near `u64::MAX`) saturates instead of overflowing the total.
     pub fn total(&self) -> Option<u64> {
-        self.streams.iter().map(|s| s.size).sum()
+        self.streams
+            .iter()
+            .try_fold(0u64, |sum, s| s.size.map(|n| sum.saturating_add(n)))
     }
 
     /// When the site serves every stream of the choice from: the latest `available_at`, as
@@ -1011,6 +1014,22 @@ mod tests {
                  "cookies": "SID=s; Domain=.googlevideo.com; Path=/"}
             ]
         })
+    }
+
+    #[test]
+    fn huge_announced_sizes_saturate_the_total() {
+        // A page can announce anything; two absurd formats must not overflow the sum.
+        let v = json!({
+            "id": "x", "ext": "mp4", "format_id": "1+2", "filename": "/v/x.mp4",
+            "requested_formats": [
+                {"format_id": "1", "ext": "mp4", "protocol": "https", "filesize": 1e30,
+                 "url": "https://x.test/1"},
+                {"format_id": "2", "ext": "m4a", "protocol": "https", "filesize": 1e30,
+                 "url": "https://x.test/2"}
+            ]
+        });
+        let p = plan(&v).unwrap();
+        assert_eq!(p.total(), Some(u64::MAX));
     }
 
     #[test]

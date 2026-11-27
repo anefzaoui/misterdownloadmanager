@@ -284,6 +284,64 @@
   "popup_media_title_name": {
     "message": "Dodaj naslov stranice ispred naziva medijskih datoteka"
   },
+  "popup_images": {
+    "message": "Slike na ovoj stranici"
+  },
+  "popup_images_text": {
+    "message": "Pronađite slike ove stranice u najvećoj navedenoj veličini, a zatim pošaljite željene u Hvatač veza."
+  },
+  "popup_images_find": {
+    "message": "Pronađi slike"
+  },
+  "popup_images_min": {
+    "message": "Najmanja veličina, u pikselima"
+  },
+  "popup_images_width": {
+    "message": "Najmanja širina, u pikselima"
+  },
+  "popup_images_height": {
+    "message": "Najmanja visina, u pikselima"
+  },
+  "popup_images_types": {
+    "message": "Vrste slika"
+  },
+  "popup_images_other": {
+    "message": "Ostalo"
+  },
+  "popup_images_count": {
+    "message": "$shown$ od $total$ odabranih",
+    "placeholders": {
+      "shown": {
+        "content": "$1",
+        "example": "12"
+      },
+      "total": {
+        "content": "$2",
+        "example": "40"
+      }
+    }
+  },
+  "popup_images_unsized": {
+    "message": "Veličina nije navedena, zadržano: $n$",
+    "placeholders": {
+      "n": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "popup_images_send": {
+    "message": "Pošalji u Hvatač veza"
+  },
+  "popup_images_sent": {
+    "message": "Poslano u Hvatač veza: tamo odaberite koje želite preuzeti."
+  },
+  "popup_images_none": {
+    "message": "Nema slika na ovoj stranici."
+  },
+  "popup_images_unreadable": {
+    "message": "Preglednik ne dopušta dodacima čitanje ove stranice."
+  },
   "video_cant_save": {
     "message": "nije moguće spremiti"
   },
@@ -291,7 +349,7 @@
     "message": "Otvori objavu"
   },
   "video_drag_dots": {
-    "message": "Povucite točkice da biste ih pomaknuli uz rub"
+    "message": "Povucite točkice da biste ga premjestili u drugi kut ili izvan videozapisa"
   },
   "video_tip": {
     "message": "Preuzmi $what$",
@@ -331,6 +389,9 @@
   },
   "video_all_qualities": {
     "message": "Sve kvalitete i titlovi..."
+  },
+  "video_part": {
+    "message": "Preuzmi dio odavde..."
   },
   "video_failed": {
     "message": "Mister Download Manager nije instaliran ili se nije pokrenuo"
@@ -759,5 +820,108 @@
   },
   "popup_dl_open_remote": {
     "message": "Otvori njegovu stranicu"
+  },
+  "video_home": {
+    "message": "Vrati gumb u kut"
+  },
+  "video_filter_all": {
+    "message": "Sve"
+  },
+  "video_filter_audio": {
+    "message": "Samo zvuk"
+  },
+  "video_filter_kind": {
+    "message": "Prikaži"
+  },
+  "video_filter_type": {
+    "message": "Vrsta datoteke"
+  },
+  "video_filter_codec": {
+    "message": "Kodek"
+  },
+  "popup_video_reset_text": {
+    "message": "Gumb za preuzimanje preko videozapisa"
+  },
+  "popup_video_reset_sub": {
+    "message": "Gdje ste ga premjestili i filtri izbornika, na svakoj web-lokaciji"
+  },
+  "popup_video_reset": {
+    "message": "Poništi"
+  },
+  "popup_video_reset_done": {
+    "message": "Vraćeno u kut, izbornik prikazuje sve, na svakoj web-lokaciji"
+  },
+  "status_links_sent": {
+    "message": "Veze poslane: $count$",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "10"
+      }
+    }
+  },
+  "status_links_cut": {
+    "message": "Veze poslane: $sent$, $left$ izostavljeno",
+    "placeholders": {
+      "sent": {
+        "content": "$1",
+        "example": "100"
+      },
+      "left": {
+        "content": "$2",
+        "example": "20"
+      }
+    }
+  },
+  "status_links_partial": {
+    "message": "Veze poslane: $sent$, odbijene: $refused$",
+    "placeholders": {
+      "sent": {
+        "content": "$1",
+        "example": "5"
+      },
+      "refused": {
+        "content": "$2",
+        "example": "2"
+      }
+    }
+  },
+  "status_links_partial_cut": {
+    "message": "Veze poslane: $sent$, odbijene: $refused$, $left$ izostavljeno",
+    "placeholders": {
+      "sent": {
+        "content": "$1",
+        "example": "5"
+      },
+      "refused": {
+        "content": "$2",
+        "example": "2"
+      },
+      "left": {
+        "content": "$3",
+        "example": "1"
+      }
+    }
+  },
+  "status_links_refused": {
+    "message": "Veze odbijene: $count$",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "status_links_none": {
+    "message": "Nema veza za hvatanje ($left$ izostavljeno)",
+    "placeholders": {
+      "left": {
+        "content": "$1",
+        "example": "5"
+      }
+    }
+  },
+  "status_unreachable": {
+    "message": "Poslužitelj nije dostupan"
   }
 }

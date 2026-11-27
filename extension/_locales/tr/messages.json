@@ -284,6 +284,64 @@
   "popup_media_title_name": {
     "message": "Medya dosyası adlarının önüne sayfa başlığını ekle"
   },
+  "popup_images": {
+    "message": "Bu sayfadaki görseller"
+  },
+  "popup_images_text": {
+    "message": "Bu sayfadaki resimleri listelediği en büyük boyutta bul, ardından istediklerini Bağlantı yakalayıcıya gönder."
+  },
+  "popup_images_find": {
+    "message": "Görselleri bul"
+  },
+  "popup_images_min": {
+    "message": "Piksel cinsinden en küçük boyut"
+  },
+  "popup_images_width": {
+    "message": "En küçük genişlik, piksel olarak"
+  },
+  "popup_images_height": {
+    "message": "En küçük yükseklik, piksel olarak"
+  },
+  "popup_images_types": {
+    "message": "Görsel türleri"
+  },
+  "popup_images_other": {
+    "message": "Diğer"
+  },
+  "popup_images_count": {
+    "message": "$total$ taneden $shown$ tanesi seçildi",
+    "placeholders": {
+      "shown": {
+        "content": "$1",
+        "example": "12"
+      },
+      "total": {
+        "content": "$2",
+        "example": "40"
+      }
+    }
+  },
+  "popup_images_unsized": {
+    "message": "Boyutu belirtilmemiş, tutuldu: $n$",
+    "placeholders": {
+      "n": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "popup_images_send": {
+    "message": "Bağlantı yakalayıcıya gönder"
+  },
+  "popup_images_sent": {
+    "message": "Bağlantı yakalayıcıya gönderildi: indirmek istediklerinizi orada işaretleyin."
+  },
+  "popup_images_none": {
+    "message": "Bu sayfada görsel bulunamadı."
+  },
+  "popup_images_unreadable": {
+    "message": "Tarayıcı, eklentilerin bu sayfayı okumasına izin vermiyor."
+  },
   "video_cant_save": {
     "message": "kaydedilemez"
   },
@@ -291,7 +349,7 @@
     "message": "Gönderiyi aç"
   },
   "video_drag_dots": {
-    "message": "Taşımak için noktaları kenar boyunca sürükleyin"
+    "message": "Başka bir köşeye veya videonun dışına taşımak için noktaları sürükleyin"
   },
   "video_tip": {
     "message": "$what$ indir",
@@ -331,6 +389,9 @@
   },
   "video_all_qualities": {
     "message": "Tüm kaliteler ve altyazılar..."
+  },
+  "video_part": {
+    "message": "Buradan bir bölüm indir..."
   },
   "video_failed": {
     "message": "Mister Download Manager yüklü değil veya başlatılamadı"
@@ -759,5 +820,108 @@
   },
   "popup_dl_open_remote": {
     "message": "Sayfasını aç"
+  },
+  "video_home": {
+    "message": "Düğmeyi köşesine geri koy"
+  },
+  "video_filter_all": {
+    "message": "Tümü"
+  },
+  "video_filter_audio": {
+    "message": "Yalnızca ses"
+  },
+  "video_filter_kind": {
+    "message": "Göster"
+  },
+  "video_filter_type": {
+    "message": "Dosya türü"
+  },
+  "video_filter_codec": {
+    "message": "Kodek"
+  },
+  "popup_video_reset_text": {
+    "message": "Videoların üzerindeki indirme düğmesi"
+  },
+  "popup_video_reset_sub": {
+    "message": "Taşıdığınız yer ve menüsünün filtreleri, her sitede"
+  },
+  "popup_video_reset": {
+    "message": "Sıfırla"
+  },
+  "popup_video_reset_done": {
+    "message": "Köşesine geri döndü, menüsü her sitede her şeyi gösteriyor"
+  },
+  "status_links_sent": {
+    "message": "Bağlantılar gönderildi: $count$",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "10"
+      }
+    }
+  },
+  "status_links_cut": {
+    "message": "Bağlantılar gönderildi: $sent$, $left$ dışarıda bırakıldı",
+    "placeholders": {
+      "sent": {
+        "content": "$1",
+        "example": "100"
+      },
+      "left": {
+        "content": "$2",
+        "example": "20"
+      }
+    }
+  },
+  "status_links_partial": {
+    "message": "Bağlantılar gönderildi: $sent$, reddedildi: $refused$",
+    "placeholders": {
+      "sent": {
+        "content": "$1",
+        "example": "5"
+      },
+      "refused": {
+        "content": "$2",
+        "example": "2"
+      }
+    }
+  },
+  "status_links_partial_cut": {
+    "message": "Bağlantılar gönderildi: $sent$, reddedildi: $refused$, $left$ dışarıda bırakıldı",
+    "placeholders": {
+      "sent": {
+        "content": "$1",
+        "example": "5"
+      },
+      "refused": {
+        "content": "$2",
+        "example": "2"
+      },
+      "left": {
+        "content": "$3",
+        "example": "1"
+      }
+    }
+  },
+  "status_links_refused": {
+    "message": "Bağlantılar reddedildi: $count$",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "status_links_none": {
+    "message": "Yakalanabilir bağlantı yok ($left$ dışarıda bırakıldı)",
+    "placeholders": {
+      "left": {
+        "content": "$1",
+        "example": "5"
+      }
+    }
+  },
+  "status_unreachable": {
+    "message": "Sunucuya ulaşılamadı"
   }
 }

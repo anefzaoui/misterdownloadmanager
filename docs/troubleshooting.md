@@ -20,6 +20,14 @@ Every download keeps a log of its recent events: retries, redirects, the server'
 6. If it says **this site lets only browsers through**, the site's bot check (Cloudflare's, for one) turned MDM away. MDM has already asked once more connecting the way your browser does, with your browser's cookies for that site, and once under its own name (some checks let a program that says what it is through), and the site still wants its check answered in a browser. Hold **Alt** (**Option** on a Mac) as you click the link: the browser opens it in the tab, runs the site's check there ("Just a moment...", sometimes a box to tick), and keeps the download that comes after it. MDM leaves that download alone for a minute after your click. See [Browser integration](browser-integration.md#keys-to-force-or-prevent-capture).
 7. If it says **the site sent a web page instead of the file**, the link led to the site's own page: a file host's countdown, a captcha, a **Download** button to press, or a sign-in. MDM never saves that page as your file. Click **Open in browser** in the download's progress window (or open the link yourself), finish there, and when the browser starts the real download, MDM's extension hands it to MDM. Without the extension, let the browser download it.
 
+## A download says Damaged
+
+Its archive's test found files in it that don't read back whole ([Testing archives](link-grabber.md#testing-archives)): hover over **Status** to see which.
+
+1. Right-click → **Redownload** (or the **Damaged archive** window's **Redownload**) downloads it again from the start.
+2. A ZIP whose damaged parts MDM downloaded again and still came damaged, or a 7z or RAR that is damaged again after a **Redownload**, is probably damaged on the server itself: ask the site for another copy.
+3. To test it again by hand, right-click → **Test archive**.
+
 ## A download starts over instead of resuming
 
 - Look at **Resume capability** in the progress window. **No** means the server can't send a file in parts, so MDM can't continue it later.
@@ -71,6 +79,8 @@ Closed to the notification area, MDM gives its memory back to Windows: **Memory*
 
 MDM keeps Internet Download Manager's compact sizes. On a large or high-resolution screen, choose **View → Interface size** (110 %, 115 %, 120 %, 125 %, 150 %, 175 % or 200 %), or press **Ctrl +** and **Ctrl −** in any MDM window, as in a browser; **Ctrl 0** goes back to 100 %. Every window follows at once, and MDM starts at that size next time. It comes on top of Windows' own display scale (**Settings → System → Display → Scale**).
 
+Where only the letters are too small, the sizes under **View → Font** draw the interface's text larger (or smaller) on its own: from 75 % to 150 % of the theme's sizes. The windows keep their compact layout, so nothing is pushed off the screen; the text is simply larger in the same place. **View → Font** also draws every window's text in a font file of your own (**Choose a font file...**, a TrueType, OpenType or collection file), and **System font** goes back to Segoe UI (Windows) or the computer's own font. While a file is in use, its own name sits checked in the menu, so what is on is always said. Both choices are saved for the next start. If the chosen file is moved or deleted, MDM draws with the system font until another one is chosen.
+
 A window larger than the screen at that size (Options at 200 % on a 1366 × 768 screen) opens as large as the screen allows, and the rest scrolls: with the scroll bars, the mouse wheel, or **Tab** to the next control.
 
 MDM tells Windows it draws for each monitor's own scale, so Windows never stretches its windows into blur, and it draws Windows' fonts grid-fitted to whole pixels. If the text still looks blurred, tell us your screen's resolution and Windows' display scale when you [report it](https://github.com/anefzaoui/misterdownloadmanager/issues).
@@ -85,10 +95,11 @@ On Windows, MDM draws its windows with Direct3D 12; on Linux and macOS, with Ope
 - If Direct3D, Vulkan or Metal can't start on your graphics card (no driver for it, some virtual machines), or its first window doesn't show within 10 seconds of its own (the time MDM spends loading your list and its icons doesn't count, however slow the computer is just after it starts), MDM draws with OpenGL, and **View → Draw with** says so and why. Choosing it again tries it again at the next start.
 - On Linux, Vulkan needs your graphics card's Vulkan driver: Mesa's (`mesa-vulkan-drivers` on Ubuntu and Debian, `vulkan-radeon` or `vulkan-intel` on Arch) for AMD and Intel, NVIDIA's own driver for NVIDIA.
 - If neither can start, MDM draws with a software renderer (Microsoft's on Windows, Mesa's on Linux), so the window still opens (Remote Desktop, a virtual machine without a graphics driver). It works, but keeps the processor busier while a window changes.
-- On Windows, when OpenGL fails on a card without Direct3D 12, MDM draws with Direct3D on Microsoft's software renderer (WARP) from the next start, and **View → Draw with** says why: OpenGL couldn't start, it is too old to draw MDM (older than 3.0, such as Intel's first HD Graphics, whose OpenGL 2.1 drew MDM's windows as garbage), its first window didn't show within 10 seconds, or MDM froze inside the graphics driver while OpenGL showed a frame (the older Intel HD Graphics and AMD Radeon cards' drivers did). Choosing **OpenGL** there tries it again.
-- If the graphics card is reset while MDM runs (a driver update), MDM starts again by itself. Lost twice in 10 minutes, it goes back to OpenGL, and **View → Draw with** says why.
+- On Windows, when OpenGL fails on a card without Direct3D 12, MDM draws with Direct3D on Microsoft's software renderer (WARP) from the next start, and **View → Draw with** says why: OpenGL couldn't start, it is too old to draw MDM (older than 3.0, such as Intel's first HD Graphics, whose OpenGL 2.1 drew MDM's windows as garbage), its first window didn't show within 10 seconds, MDM froze inside the graphics driver while OpenGL showed a frame (the older Intel HD Graphics and AMD Radeon cards' drivers did), or MDM crashed inside it (**OpenGL crashed inside its driver here**). Choosing **OpenGL** there tries it again; so does a graphics driver update.
+- If the graphics card is reset while MDM runs (a driver update), MDM starts again by itself. Lost twice in 10 minutes, it goes back to OpenGL, and **View → Draw with** says why. If the card isn't back yet when MDM starts again, that start draws another way (OpenGL, or WARP), and the next start tries the card again.
 - Updating the graphics driver from the card maker's site (Intel, AMD or NVIDIA) fixes many of these problems.
 - A freeze whose report shows the window thread inside the graphics driver as it shows a frame (`ig4icd64.dll` or `ig9icd64.dll` for Intel, `nvoglv64.dll` for NVIDIA, `atio6axx.dll` for AMD, under `opengl32.dll`) is the driver's OpenGL stuck, not MDM: on Windows, choose **View → Draw with → Direct3D** (the default) and restart MDM, and update the graphics driver. If **Draw with** says Direct3D didn't start there, the line under it says why; MDM then remembers the freeze and draws with WARP from the next start.
+- A crash report whose crashed thread is inside the graphics driver while MDM drew with OpenGL is the same: the driver's names above, or `d3d11.dll` alone with nothing of MDM's on the thread (NVIDIA's driver on a laptop with two graphics chips shows OpenGL's frames through Direct3D 11). On Windows, MDM remembers it and draws with Direct3D 12 from the next start, on WARP if the card can't; updating the graphics driver is still the real fix.
 - A freeze or crash report says which one was drawing, on which graphics card and driver, and why that one (chosen, the default, or the other one failing), on its `Drawing with:` line near the top: include it when you report a problem. A freeze report also says whether MDM was busy, waiting, or hardly ran at all (a computer too busy to run it); see [Crash reports](crash-reports.md).
 
 ## The setup or MDM won't start
@@ -100,17 +111,23 @@ On Windows, MDM draws its windows with Direct3D 12; on Linux and macOS, with Ope
 
 ## My antivirus or VirusTotal flags MDM {#antivirus}
 
-A few antivirus programs flag new installers just because they have rarely seen them, and machine-learning engines do this the most. On VirusTotal, a handful of small engines flagging a new setup while the big ones stay clean is usually a false positive. We report these to the vendors when we see them.
+It is most likely a false alarm. Some antivirus programs judge a program they don't know by an educated guess, not by a known virus: detection names such as `Malware.AI`, `Gen:`, `ML` or `Heur` mean such a guess. What they flag most is a new download few people have run yet, from a small project, without a publisher's signature; MDM's installer isn't code-signed yet. On VirusTotal, a handful of engines flagging a new setup while most stay clean is the usual sign of a false positive.
 
-To check that your copy is the real one:
+**Check that your copy is ours:**
 
-1. Download MDM only from [the website](https://misterdownloadmanager.com) or [GitHub Releases](https://github.com/anefzaoui/misterdownloadmanager/releases).
-2. Get your file's SHA-256. On Windows, run `certutil -hashfile "MisterDownloadManager-0.5.0-setup.exe" SHA256`; on Linux, `sha256sum` and the file's name.
-3. Compare it with the same file's line in that release's `SHA256SUMS.txt`.
+1. Download MDM only from [misterdownloadmanager.com](https://misterdownloadmanager.com/download.html) or [GitHub Releases](https://github.com/anefzaoui/misterdownloadmanager/releases).
+2. Get your file's SHA-256 checksum, with the downloaded file's name in place of `<file>`: on Windows, in PowerShell, `Get-FileHash <file>`; on Linux, `sha256sum <file>`; on macOS, `shasum -a 256 <file>`.
+3. Compare it with the same file's line in that release's `SHA256SUMS.txt` (capital or small letters don't matter). To be sure the list itself is ours, check its signature, `SHA256SUMS.txt.sig`, with MDM's release key: see [Check your download](https://misterdownloadmanager.com/download.html#check-your-download).
 
-If they match, it is the file we published. Every release is built on GitHub from the [public source code](https://github.com/anefzaoui/misterdownloadmanager), so anyone can read what went into it.
+If they match, it is the file we published. MDM is open source and built in public: every release is built from the [public source code](https://github.com/anefzaoui/misterdownloadmanager) by GitHub Actions, on GitHub's servers, with [every build's log](https://github.com/anefzaoui/misterdownloadmanager/actions) there to see, so anyone can read what went into it and build it again.
 
-If your antivirus quarantined MDM, restore it and add an exception for its folder. If it flags something other than the setup or MDM's own programs, or a copy from anywhere else, don't run it, and please [tell us](https://github.com/anefzaoui/misterdownloadmanager/issues).
+**Then:**
+
+- Report the file to your antivirus as a false positive: [Microsoft Defender](https://www.microsoft.com/en-us/wdsi/filesubmission), [Malwarebytes](https://help.malwarebytes.com/hc/en-us/articles/31589211404571-Report-a-false-positive-to-Malwarebytes-Support), [Avast](https://www.avast.com/report-false-positive), [AVG](https://www.avg.com/en-ww/report-false-positive), [Bitdefender](https://www.bitdefender.com/consumer/support/answer/29358/), [Kaspersky](https://support.kaspersky.com/1870), [ESET](https://support.eset.com/en/kb141).
+- [Tell us on GitHub](https://github.com/anefzaoui/misterdownloadmanager/issues) which antivirus it was, the detection's name and the file, so we can report it too.
+- If your antivirus quarantined MDM, restore it and add an exception for its folder.
+
+If the checksum doesn't match, or the copy came from anywhere else, don't run it: delete it and [tell us](https://github.com/anefzaoui/misterdownloadmanager/issues).
 
 ## HTTPS downloads fail with "no certificates" (Linux)
 
@@ -148,7 +165,7 @@ When there is one, **Update now** downloads it, checks it, puts it in place and 
 
 MDM installs an update only when the release's list of checksums is signed by MDM's release key and the file matches it; anything else is refused, and **Download** opens the [Releases](https://github.com/anefzaoui/misterdownloadmanager/releases) page instead. Updating this way starts with version 0.2.1: earlier versions open the Releases page.
 
-MDM asks GitHub's API for the newest version (of MDM, and of yt-dlp and ffmpeg). GitHub answers 60 such questions an hour for each internet address, so on a network many people share (a mobile or home internet provider that puts many customers behind one address, a campus, an office) others can use them up. MDM then reads GitHub's ordinary release pages instead, with the same checks of what it downloads. If GitHub refuses those too, the window says **api.github.com refused the request (403 Forbidden): too many requests from your network for now**: try again in an hour, or from another network.
+MDM asks GitHub's API for the newest version (of MDM, and of yt-dlp). GitHub answers 60 such questions an hour for each internet address, so on a network many people share (a mobile or home internet provider that puts many customers behind one address, a campus, an office) others can use them up. MDM then reads GitHub's ordinary release pages instead, with the same checks of what it downloads. If GitHub refuses those too, the window says **api.github.com refused the request (403 Forbidden): too many requests from your network for now**: try again in an hour, or from another network.
 
 The AppImage can also be updated by AppImage tools (AppImageLauncher, Gear Lever, AppImageUpdate): it carries the address of its updates, and each release has its `.AppImage.zsync` file, so those tools download only the parts that changed. This starts with the AppImage of the version after 0.2.4.
 

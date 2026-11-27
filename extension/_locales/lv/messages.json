@@ -284,6 +284,64 @@
   "popup_media_title_name": {
     "message": "Pievienot lapas nosaukumu multivides failu nosaukumu priekšā"
   },
+  "popup_images": {
+    "message": "Attēli šajā lapā"
+  },
+  "popup_images_text": {
+    "message": "Atrast šīs lapas attēlus lielākajā pieejamajā izmērā, pēc tam nosūtīt vēlamo uz saišu uztvērēju."
+  },
+  "popup_images_find": {
+    "message": "Atrast attēlus"
+  },
+  "popup_images_min": {
+    "message": "Mazākais izmērs, pikseļos"
+  },
+  "popup_images_width": {
+    "message": "Mazākais platums pikseļos"
+  },
+  "popup_images_height": {
+    "message": "Mazākais augstums pikseļos"
+  },
+  "popup_images_types": {
+    "message": "Attēlu tipi"
+  },
+  "popup_images_other": {
+    "message": "Cits"
+  },
+  "popup_images_count": {
+    "message": "$shown$ no $total$ atlasītajiem",
+    "placeholders": {
+      "shown": {
+        "content": "$1",
+        "example": "12"
+      },
+      "total": {
+        "content": "$2",
+        "example": "40"
+      }
+    }
+  },
+  "popup_images_unsized": {
+    "message": "Izmērs nav norādīts, saglabāti: $n$",
+    "placeholders": {
+      "n": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "popup_images_send": {
+    "message": "Sūtīt uz saišu uztvērēju"
+  },
+  "popup_images_sent": {
+    "message": "Nosūtīts uz saišu uztvērēju: atzīmējiet tos, kurus lejupielādēt."
+  },
+  "popup_images_none": {
+    "message": "Šajā lapā attēli nav atrasti."
+  },
+  "popup_images_unreadable": {
+    "message": "Pārlūkprogramma neļauj pievienojumprogrammām lasīt šo lapu."
+  },
   "video_cant_save": {
     "message": "nevar saglabāt"
   },
@@ -291,7 +349,7 @@
     "message": "Atvērt ziņu"
   },
   "video_drag_dots": {
-    "message": "Velciet punktus, lai pārvietotu to gar malu"
+    "message": "Velciet punktus, lai pārvietotu to uz citu stūri vai ārpus video"
   },
   "video_tip": {
     "message": "Lejupielādēt $what$",
@@ -331,6 +389,9 @@
   },
   "video_all_qualities": {
     "message": "Lejupielādēt visās kvalitātēs un ar subtitriem..."
+  },
+  "video_part": {
+    "message": "Lejupielādēt daļu, sākot no šejienes..."
   },
   "video_failed": {
     "message": "Mister Download Manager nav instalēts vai nav palaists"
@@ -759,5 +820,108 @@
   },
   "popup_dl_open_remote": {
     "message": "Atvērt tā lapu"
+  },
+  "video_home": {
+    "message": "Novietot pogu atpakaļ tās stūrī"
+  },
+  "video_filter_all": {
+    "message": "Visi"
+  },
+  "video_filter_audio": {
+    "message": "Tikai audio"
+  },
+  "video_filter_kind": {
+    "message": "Rādīt"
+  },
+  "video_filter_type": {
+    "message": "Faila tips"
+  },
+  "video_filter_codec": {
+    "message": "Kodeks"
+  },
+  "popup_video_reset_text": {
+    "message": "Lejupielādes poga virs videoklipiem"
+  },
+  "popup_video_reset_sub": {
+    "message": "Vietas, uz kurām to pārvietojāt, un tās izvēlnes filtri katrā vietnē"
+  },
+  "popup_video_reset": {
+    "message": "Atiestatīt"
+  },
+  "popup_video_reset_done": {
+    "message": "Atkal savā stūrī, izvēlnē redzams viss, visās vietnēs"
+  },
+  "status_links_sent": {
+    "message": "Saites nosūtītas: $count$",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "10"
+      }
+    }
+  },
+  "status_links_cut": {
+    "message": "Saites nosūtītas: $sent$, $left$ saites izlaistas",
+    "placeholders": {
+      "sent": {
+        "content": "$1",
+        "example": "100"
+      },
+      "left": {
+        "content": "$2",
+        "example": "20"
+      }
+    }
+  },
+  "status_links_partial": {
+    "message": "Saites nosūtītas: $sent$, noraidītas: $refused$",
+    "placeholders": {
+      "sent": {
+        "content": "$1",
+        "example": "5"
+      },
+      "refused": {
+        "content": "$2",
+        "example": "2"
+      }
+    }
+  },
+  "status_links_partial_cut": {
+    "message": "Saites nosūtītas: $sent$, noraidītas: $refused$, $left$ saites izlaistas",
+    "placeholders": {
+      "sent": {
+        "content": "$1",
+        "example": "5"
+      },
+      "refused": {
+        "content": "$2",
+        "example": "2"
+      },
+      "left": {
+        "content": "$3",
+        "example": "1"
+      }
+    }
+  },
+  "status_links_refused": {
+    "message": "Saites noraidītas: $count$",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "status_links_none": {
+    "message": "Nav iegūstamu saišu ($left$ saites izlaistas)",
+    "placeholders": {
+      "left": {
+        "content": "$1",
+        "example": "5"
+      }
+    }
+  },
+  "status_unreachable": {
+    "message": "Serveris nav sasniedzams"
   }
 }

@@ -284,6 +284,64 @@
   "popup_media_title_name": {
     "message": "Добавлять заголовок страницы перед именами медиафайлов"
   },
+  "popup_images": {
+    "message": "Изображения на этой странице"
+  },
+  "popup_images_text": {
+    "message": "Найти изображения этой страницы в максимально возможном размере, затем отправить нужные в Link grabber."
+  },
+  "popup_images_find": {
+    "message": "Найти изображения"
+  },
+  "popup_images_min": {
+    "message": "Минимальный размер в пикселях"
+  },
+  "popup_images_width": {
+    "message": "Минимальная ширина в пикселях"
+  },
+  "popup_images_height": {
+    "message": "Минимальная высота в пикселях"
+  },
+  "popup_images_types": {
+    "message": "Типы изображений"
+  },
+  "popup_images_other": {
+    "message": "Другие"
+  },
+  "popup_images_count": {
+    "message": "Выбрано $shown$ из $total$",
+    "placeholders": {
+      "shown": {
+        "content": "$1",
+        "example": "12"
+      },
+      "total": {
+        "content": "$2",
+        "example": "40"
+      }
+    }
+  },
+  "popup_images_unsized": {
+    "message": "Размер не указан, сохранено: $n$",
+    "placeholders": {
+      "n": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "popup_images_send": {
+    "message": "Отправить в Link grabber"
+  },
+  "popup_images_sent": {
+    "message": "Отправлено в Link grabber: отметьте те, которые нужно загрузить."
+  },
+  "popup_images_none": {
+    "message": "Изображения на этой странице не найдены."
+  },
+  "popup_images_unreadable": {
+    "message": "Браузер не позволяет дополнениям читать эту страницу."
+  },
   "video_cant_save": {
     "message": "невозможно сохранить"
   },
@@ -291,7 +349,7 @@
     "message": "Открыть запись"
   },
   "video_drag_dots": {
-    "message": "Перетащите точки, чтобы переместить кнопку вдоль края"
+    "message": "Перетащите точки, чтобы переместить ее в другой угол или за пределы видео"
   },
   "video_tip": {
     "message": "Скачать $what$",
@@ -331,6 +389,9 @@
   },
   "video_all_qualities": {
     "message": "Все качества и субтитры..."
+  },
+  "video_part": {
+    "message": "Загрузить часть отсюда..."
   },
   "video_failed": {
     "message": "Mister Download Manager не установлен или не запустился"
@@ -759,5 +820,108 @@
   },
   "popup_dl_open_remote": {
     "message": "Открыть его страницу"
+  },
+  "video_home": {
+    "message": "Вернуть кнопку на место"
+  },
+  "video_filter_all": {
+    "message": "Все"
+  },
+  "video_filter_audio": {
+    "message": "Только аудио"
+  },
+  "video_filter_kind": {
+    "message": "Показать"
+  },
+  "video_filter_type": {
+    "message": "Тип файла"
+  },
+  "video_filter_codec": {
+    "message": "Кодек"
+  },
+  "popup_video_reset_text": {
+    "message": "Кнопка загрузки над видео"
+  },
+  "popup_video_reset_sub": {
+    "message": "Место, куда вы ее переместили, и фильтры ее меню на каждом сайте"
+  },
+  "popup_video_reset": {
+    "message": "Сбросить"
+  },
+  "popup_video_reset_done": {
+    "message": "Кнопка вернулась на место, в меню отображаются все параметры на каждом сайте"
+  },
+  "status_links_sent": {
+    "message": "Ссылки отправлены: $count$",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "10"
+      }
+    }
+  },
+  "status_links_cut": {
+    "message": "Ссылки отправлены: $sent$, $left$ пропущено",
+    "placeholders": {
+      "sent": {
+        "content": "$1",
+        "example": "100"
+      },
+      "left": {
+        "content": "$2",
+        "example": "20"
+      }
+    }
+  },
+  "status_links_partial": {
+    "message": "Ссылки отправлены: $sent$, отклонены: $refused$",
+    "placeholders": {
+      "sent": {
+        "content": "$1",
+        "example": "5"
+      },
+      "refused": {
+        "content": "$2",
+        "example": "2"
+      }
+    }
+  },
+  "status_links_partial_cut": {
+    "message": "Ссылки отправлены: $sent$, отклонены: $refused$, $left$ пропущено",
+    "placeholders": {
+      "sent": {
+        "content": "$1",
+        "example": "5"
+      },
+      "refused": {
+        "content": "$2",
+        "example": "2"
+      },
+      "left": {
+        "content": "$3",
+        "example": "1"
+      }
+    }
+  },
+  "status_links_refused": {
+    "message": "Ссылки отклонены: $count$",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "status_links_none": {
+    "message": "Нет ссылок для захвата ($left$ пропущено)",
+    "placeholders": {
+      "left": {
+        "content": "$1",
+        "example": "5"
+      }
+    }
+  },
+  "status_unreachable": {
+    "message": "Сервер недоступен"
   }
 }

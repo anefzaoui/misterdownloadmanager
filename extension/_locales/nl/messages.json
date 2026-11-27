@@ -284,6 +284,64 @@
   "popup_media_title_name": {
     "message": "Voeg de paginatitel toe vóór de namen van mediabestanden"
   },
+  "popup_images": {
+    "message": "Afbeeldingen op deze pagina"
+  },
+  "popup_images_text": {
+    "message": "Zoek de afbeeldingen van deze pagina op de grootste vermelde grootte en stuur de gewenste afbeeldingen naar Linkgrabber."
+  },
+  "popup_images_find": {
+    "message": "Afbeeldingen zoeken"
+  },
+  "popup_images_min": {
+    "message": "Kleinste grootte, in pixels"
+  },
+  "popup_images_width": {
+    "message": "Kleinste breedte, in pixels"
+  },
+  "popup_images_height": {
+    "message": "Kleinste hoogte, in pixels"
+  },
+  "popup_images_types": {
+    "message": "Afbeeldingstypen"
+  },
+  "popup_images_other": {
+    "message": "Overige"
+  },
+  "popup_images_count": {
+    "message": "$shown$ van $total$ geselecteerd",
+    "placeholders": {
+      "shown": {
+        "content": "$1",
+        "example": "12"
+      },
+      "total": {
+        "content": "$2",
+        "example": "40"
+      }
+    }
+  },
+  "popup_images_unsized": {
+    "message": "Grootte niet opgegeven, behouden: $n$",
+    "placeholders": {
+      "n": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "popup_images_send": {
+    "message": "Verzenden naar Linkgrabber"
+  },
+  "popup_images_sent": {
+    "message": "Verzonden naar Linkgrabber: vink daar de te downloaden afbeeldingen aan."
+  },
+  "popup_images_none": {
+    "message": "Geen afbeeldingen gevonden op deze pagina."
+  },
+  "popup_images_unreadable": {
+    "message": "De browser staat add-ons niet toe deze pagina te lezen."
+  },
   "video_cant_save": {
     "message": "kan niet worden opgeslagen"
   },
@@ -291,7 +349,7 @@
     "message": "Bericht openen"
   },
   "video_drag_dots": {
-    "message": "Sleep de stippen om de knop langs de rand te verplaatsen"
+    "message": "Sleep de stippen om de knop naar een andere hoek of buiten de video te verplaatsen"
   },
   "video_tip": {
     "message": "$what$ downloaden",
@@ -331,6 +389,9 @@
   },
   "video_all_qualities": {
     "message": "Alle kwaliteiten en ondertitels..."
+  },
+  "video_part": {
+    "message": "Een deel vanaf hier downloaden..."
   },
   "video_failed": {
     "message": "Mister Download Manager is niet geïnstalleerd of is niet gestart"
@@ -759,5 +820,108 @@
   },
   "popup_dl_open_remote": {
     "message": "De pagina openen"
+  },
+  "video_home": {
+    "message": "Knop terug op zijn plek zetten"
+  },
+  "video_filter_all": {
+    "message": "Alles"
+  },
+  "video_filter_audio": {
+    "message": "Alleen audio"
+  },
+  "video_filter_kind": {
+    "message": "Weergeven"
+  },
+  "video_filter_type": {
+    "message": "Bestandstype"
+  },
+  "video_filter_codec": {
+    "message": "Codec"
+  },
+  "popup_video_reset_text": {
+    "message": "Downloadknop boven video's"
+  },
+  "popup_video_reset_sub": {
+    "message": "Waar u de knop hebt verplaatst en de filters van het menu, per site"
+  },
+  "popup_video_reset": {
+    "message": "Opnieuw instellen"
+  },
+  "popup_video_reset_done": {
+    "message": "Terug op zijn plek, met alles in het menu, op elke site"
+  },
+  "status_links_sent": {
+    "message": "Koppelingen verzonden: $count$",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "10"
+      }
+    }
+  },
+  "status_links_cut": {
+    "message": "Koppelingen verzonden: $sent$, $left$ overgeslagen",
+    "placeholders": {
+      "sent": {
+        "content": "$1",
+        "example": "100"
+      },
+      "left": {
+        "content": "$2",
+        "example": "20"
+      }
+    }
+  },
+  "status_links_partial": {
+    "message": "Koppelingen verzonden: $sent$, geweigerd: $refused$",
+    "placeholders": {
+      "sent": {
+        "content": "$1",
+        "example": "5"
+      },
+      "refused": {
+        "content": "$2",
+        "example": "2"
+      }
+    }
+  },
+  "status_links_partial_cut": {
+    "message": "Koppelingen verzonden: $sent$, geweigerd: $refused$, $left$ overgeslagen",
+    "placeholders": {
+      "sent": {
+        "content": "$1",
+        "example": "5"
+      },
+      "refused": {
+        "content": "$2",
+        "example": "2"
+      },
+      "left": {
+        "content": "$3",
+        "example": "1"
+      }
+    }
+  },
+  "status_links_refused": {
+    "message": "Koppelingen geweigerd: $count$",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "status_links_none": {
+    "message": "Geen vastlegbare koppelingen ($left$ overgeslagen)",
+    "placeholders": {
+      "left": {
+        "content": "$1",
+        "example": "5"
+      }
+    }
+  },
+  "status_unreachable": {
+    "message": "Server niet bereikt"
   }
 }

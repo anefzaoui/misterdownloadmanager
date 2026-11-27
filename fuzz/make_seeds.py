@@ -142,11 +142,38 @@ def torrents() -> None:
     }
     seed("torrent", "single", bencode(single))
     seed("torrent", "multi", bencode(multi))
+    # Keys repeated (bencode doesn't allow it, a crafted file can): a second announce-list, whose
+    # tracker filtering once let through (fuzzing found it).
+    seed(
+        "torrent",
+        "repeated-keys",
+        b"d"
+        + bencode("announce") + bencode("http://127.0.0.1:8080/announce")
+        + bencode("announce-list") + bencode([["http://10.0.0.1/announce"]])
+        + bencode("announce-list") + bencode([["https://t2.example/a"]])
+        + bencode("info") + bencode(single["info"])
+        + b"e",
+    )
     seed(
         "torrent",
         "magnet",
         b"magnet:?xt=urn:btih:0123456789abcdef0123456789abcdef01234567&dn=x"
         b"&tr=udp%3A%2F%2Ftracker.example.org%3A1337&tr=http%3A%2F%2F192.168.1.2%2Fa&tr=",
+    )
+    # A host written in each of the forms an address takes.
+    forms = ["167772161", "0x0a000001", "010.0.0.1", "127.1", "10.0.0.1.", "[::ffff:a00:1]", "nas", "t.localhost."]
+    urls = [f"{s}://{h}:6969/announce" for h in forms for s in ("udp", "http")]
+    seed(
+        "torrent",
+        "tracker-forms",
+        bencode({"announce": urls[0], "announce-list": [[u] for u in urls], "info": single["info"]}),
+    )
+    seed(
+        "torrent",
+        "tracker-forms-magnet",
+        b"magnet:?xt=urn:btih:0123456789abcdef0123456789abcdef01234567"
+        + b"".join(b"&tr=" + u.encode() for u in urls)
+        + b"&%74r=udp://167772161:6969&t\nr=udp://127.1:6969",
     )
 
 
@@ -218,6 +245,42 @@ def archives() -> None:
     seed("archive", "xz", b"\x05" + lzma.compress(b"one file\n"))
 
 
+def zip_directories() -> None:
+    """A ZIP's table as a server sends it (#1775): classic, with a comment, ZIP64, a data
+    descriptor (written to a stream that can't seek), and names that leave the folder."""
+
+    def made(force64: bool, comment: bytes, stream: bool) -> bytes:
+        buf = io.BytesIO()
+        out = buf
+        if stream:
+            class Unseekable(io.RawIOBase):
+                def writable(self):
+                    return True
+
+                def write(self, b):
+                    return buf.write(b)
+
+            out = Unseekable()
+        with zipfile.ZipFile(out, "w", zipfile.ZIP_DEFLATED) as z:
+            for name, data, method in [
+                ("readme.txt", b"hello\n", zipfile.ZIP_STORED),
+                ("docs/", b"", zipfile.ZIP_STORED),
+                ("docs/guide.txt", b"the quick brown fox\n" * 50, zipfile.ZIP_DEFLATED),
+                ("../up.txt", b"x", zipfile.ZIP_STORED),
+                ("C:/evil.txt", b"y", zipfile.ZIP_STORED),
+            ]:
+                info = zipfile.ZipInfo(name, (2025, 9, 1, 0, 0, 0))
+                info.compress_type = method
+                with z.open(info, "w", force_zip64=force64) as w:
+                    w.write(data)
+            z.comment = comment
+        return buf.getvalue()
+
+    seed("zip_directory", "classic", made(False, b"", False))
+    seed("zip_directory", "comment", made(False, b"a comment at the end", False))
+    seed("zip_directory", "zip64", made(True, b"", False))
+    seed("zip_directory", "descriptor", made(False, b"", True))
+
 if __name__ == "__main__":
     hls()
     ytdlp()
@@ -227,3 +290,4 @@ if __name__ == "__main__":
     signatures()
     cnl()
     archives()
+    zip_directories()

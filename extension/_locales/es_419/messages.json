@@ -284,6 +284,64 @@
   "popup_media_title_name": {
     "message": "Agregar el título de la página antes de los nombres de los archivos multimedia"
   },
+  "popup_images": {
+    "message": "Imágenes en esta página"
+  },
+  "popup_images_text": {
+    "message": "Busca las imágenes de esta página en el tamaño más grande que se indique y luego envía las que quieras al capturador de enlaces."
+  },
+  "popup_images_find": {
+    "message": "Buscar imágenes"
+  },
+  "popup_images_min": {
+    "message": "Tamaño más pequeño, en píxeles"
+  },
+  "popup_images_width": {
+    "message": "Anchura mínima, en píxeles"
+  },
+  "popup_images_height": {
+    "message": "Altura mínima, en píxeles"
+  },
+  "popup_images_types": {
+    "message": "Tipos de imagen"
+  },
+  "popup_images_other": {
+    "message": "Otro"
+  },
+  "popup_images_count": {
+    "message": "$shown$ de $total$ seleccionadas",
+    "placeholders": {
+      "shown": {
+        "content": "$1",
+        "example": "12"
+      },
+      "total": {
+        "content": "$2",
+        "example": "40"
+      }
+    }
+  },
+  "popup_images_unsized": {
+    "message": "Tamaño no especificado, conservado: $n$",
+    "placeholders": {
+      "n": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "popup_images_send": {
+    "message": "Enviar al capturador de enlaces"
+  },
+  "popup_images_sent": {
+    "message": "Enviado al capturador de enlaces: marca las que quieras descargar allí."
+  },
+  "popup_images_none": {
+    "message": "No se encontraron imágenes en esta página."
+  },
+  "popup_images_unreadable": {
+    "message": "El navegador no permite que los complementos lean esta página."
+  },
   "video_cant_save": {
     "message": "no se puede guardar"
   },
@@ -291,7 +349,7 @@
     "message": "Abrir publicación"
   },
   "video_drag_dots": {
-    "message": "Arrastra los puntos para moverlo por el borde"
+    "message": "Arrastra los puntos para moverlo a otra esquina o fuera del video"
   },
   "video_tip": {
     "message": "Descargar $what$",
@@ -331,6 +389,9 @@
   },
   "video_all_qualities": {
     "message": "Todas las calidades y subtítulos..."
+  },
+  "video_part": {
+    "message": "Descargar una parte desde aquí..."
   },
   "video_failed": {
     "message": "Mister Download Manager no está instalado o no se inició"
@@ -759,5 +820,108 @@
   },
   "popup_dl_open_remote": {
     "message": "Abrir su página"
+  },
+  "video_home": {
+    "message": "Volver a colocar el botón en su esquina"
+  },
+  "video_filter_all": {
+    "message": "Todo"
+  },
+  "video_filter_audio": {
+    "message": "Solo audio"
+  },
+  "video_filter_kind": {
+    "message": "Mostrar"
+  },
+  "video_filter_type": {
+    "message": "Tipo de archivo"
+  },
+  "video_filter_codec": {
+    "message": "Códec"
+  },
+  "popup_video_reset_text": {
+    "message": "Botón de descarga sobre videos"
+  },
+  "popup_video_reset_sub": {
+    "message": "Dónde lo moviste y los filtros de su menú, en cada sitio"
+  },
+  "popup_video_reset": {
+    "message": "Restablecer"
+  },
+  "popup_video_reset_done": {
+    "message": "De vuelta en su esquina, su menú mostrando todo, en cada sitio"
+  },
+  "status_links_sent": {
+    "message": "Enlaces enviados: $count$",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "10"
+      }
+    }
+  },
+  "status_links_cut": {
+    "message": "Enlaces enviados: $sent$, $left$ omitidos",
+    "placeholders": {
+      "sent": {
+        "content": "$1",
+        "example": "100"
+      },
+      "left": {
+        "content": "$2",
+        "example": "20"
+      }
+    }
+  },
+  "status_links_partial": {
+    "message": "Enlaces enviados: $sent$, rechazados: $refused$",
+    "placeholders": {
+      "sent": {
+        "content": "$1",
+        "example": "5"
+      },
+      "refused": {
+        "content": "$2",
+        "example": "2"
+      }
+    }
+  },
+  "status_links_partial_cut": {
+    "message": "Enlaces enviados: $sent$, rechazados: $refused$, $left$ omitidos",
+    "placeholders": {
+      "sent": {
+        "content": "$1",
+        "example": "5"
+      },
+      "refused": {
+        "content": "$2",
+        "example": "2"
+      },
+      "left": {
+        "content": "$3",
+        "example": "1"
+      }
+    }
+  },
+  "status_links_refused": {
+    "message": "Enlaces rechazados: $count$",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "status_links_none": {
+    "message": "No hay enlaces capturables ($left$ omitidos)",
+    "placeholders": {
+      "left": {
+        "content": "$1",
+        "example": "5"
+      }
+    }
+  },
+  "status_unreachable": {
+    "message": "No se pudo conectar con el servidor"
   }
 }

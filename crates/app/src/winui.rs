@@ -276,6 +276,131 @@ pub fn banner(
     extra
 }
 
+/// How tall [`steps`] is.
+pub const STEPS_H: f32 = 36.0;
+
+/// The steps of a window that goes through them one after the other (the first start's setup,
+/// setup.rs), on one line from English `y` under origin `o`, `w` wide: each step's number in a
+/// circle and its name, joined by lines. The steps done are the accent's circle with a tick, the
+/// current one the accent's circle with its number and its name in bold, the ones to come an
+/// outline in the muted colour: the accent button's colours (one blue, Windows 11's stepper, in
+/// both modes; a theme's own accent button where it has one, its text readable on it). A screen reader
+/// reads "Step 2 of 3: …" (`step_of`: that sentence, translated by the caller).
+#[allow(clippy::too_many_arguments)]
+pub fn steps(
+    ui: &Ui,
+    p: &Painter,
+    o: Pos2,
+    w: f32,
+    y: f32,
+    names: &[&str],
+    current: usize,
+    step_of: &str,
+) {
+    const D: f32 = 20.0;
+    const GAP: f32 = 6.0;
+    const MARGIN: f32 = 18.0;
+    let c = crate::theme::colors();
+    let n = names.len();
+    if n == 0 {
+        return;
+    }
+    let font = |k: usize| {
+        if k == current {
+            tahoma_bold()
+        } else {
+            tahoma()
+        }
+    };
+    // The names whole when they fit with a line of at least 16 px between steps; else each cut to
+    // its share.
+    let links = (n - 1) as f32;
+    let room = w - 2.0 * MARGIN - n as f32 * (D + GAP) - links * 16.0;
+    let widths: Vec<f32> = (0..n)
+        .map(|k| text_width_font(p, font(k), names[k]))
+        .collect();
+    let total: f32 = widths.iter().sum();
+    let shown: Vec<String> = (0..n)
+        .map(|k| {
+            if total <= room {
+                names[k].to_owned()
+            } else {
+                ellipsize(p, &font(k), names[k], (room / n as f32).max(24.0))
+            }
+        })
+        .collect();
+    let shown_w: Vec<f32> = (0..n)
+        .map(|k| text_width_font(p, font(k), &shown[k]))
+        .collect();
+    let used: f32 = shown_w.iter().map(|t| D + GAP + t).sum();
+    let link = if n > 1 {
+        ((w - 2.0 * MARGIN - used) / links).max(16.0)
+    } else {
+        0.0
+    };
+    let cy = y + STEPS_H / 2.0;
+    let mut x = MARGIN;
+    for k in 0..n {
+        let circle = rect(Rect::from_min_size(
+            pos2(o.x + x, o.y + cy - D / 2.0),
+            vec2(D, D),
+        ));
+        if k <= current {
+            p.circle_filled(circle.center(), D / 2.0, c.button_accent);
+        } else {
+            p.circle_stroke(
+                circle.center(),
+                D / 2.0 - 0.5,
+                egui::Stroke::new(1.0, c.muted),
+            );
+        }
+        if k < current {
+            // A tick, drawn: the same in every font.
+            let m = circle.center();
+            let tick = [
+                pos2(m.x - 4.5, m.y + 0.5),
+                pos2(m.x - 1.5, m.y + 3.5),
+                pos2(m.x + 4.5, m.y - 3.0),
+            ];
+            p.line(tick.to_vec(), egui::Stroke::new(1.6, c.button_accent_text));
+        } else {
+            let number = crate::i18n::integer(k as u64 + 1);
+            let color = if k == current {
+                c.button_accent_text
+            } else {
+                c.muted
+            };
+            let g = galley(p, tahoma_bold(), &number, color);
+            let at = circle.center() - g.size() / 2.0;
+            p.galley(pos2(at.x.round(), at.y.round()), g, color);
+        }
+        x += D + GAP;
+        let color = if k <= current { TEXT() } else { MUTED() };
+        let drawn = text_font(p, font(k), o.x + x, o.y + cy + 4.0, &shown[k], color);
+        if shown[k] != names[k] {
+            full_on_hover(ui, drawn, ("steps", k), names[k]);
+        }
+        x += shown_w[k];
+        if k + 1 < n {
+            let line = if k < current {
+                c.button_accent
+            } else {
+                c.list_frame
+            };
+            let (x0, x1) = (o.x + x + 8.0, o.x + x + link - 8.0);
+            if x1 > x0 {
+                let rc = rect(Rect::from_min_max(
+                    pos2(x0, o.y + cy),
+                    pos2(x1, o.y + cy + 1.0),
+                ));
+                p.rect_filled(rc, 0.0, line);
+            }
+            x += link;
+        }
+    }
+    readable(ui, r(o, 0.0, y, w, STEPS_H), "steps", step_of);
+}
+
 /// A separator dot between two parts of a line ("Germany · about 35 ms"), at English `x`: a
 /// round 3 px dot on the middle of the lowercase letters. The font's "·" is a thin tick sitting
 /// high at small sizes, which reads as an apostrophe. Its rect on screen.
@@ -339,6 +464,14 @@ pub fn name(resp: &Response, name: &str) {
         .accesskit_node_builder(resp.id, |node| node.set_label(name.to_owned()));
 }
 
+/// A control's place among its siblings ("tab 3 of 12"): AccessKit counts from 0.
+pub fn position_in_set(resp: &Response, i: usize, n: usize) {
+    resp.ctx.accesskit_node_builder(resp.id, |node| {
+        node.set_position_in_set(i);
+        node.set_size_of_set(n);
+    });
+}
+
 /// A text box's or drop-down's name for screen readers, from its caption ([`caption_for`]).
 fn name_from_caption(resp: &Response) {
     if let Some(name) = caption_for(&resp.ctx, resp.rect) {
@@ -355,6 +488,16 @@ pub fn segoe() -> FontId {
         crate::palette::UiFont::System => FontId::proportional(size),
         crate::palette::UiFont::Tahoma => FontId::new(size, FontFamily::Name("tahoma".into())),
     }
+}
+
+/// The computer's own interface font (Segoe UI on Windows), whatever View → Font chose: the
+/// "System font" menu item is drawn in it, so it stays readable when a chosen file isn't
+/// (#1489).
+pub fn system_font() -> FontId {
+    FontId::new(
+        crate::theme::font_size(crate::theme::metrics().font_ui),
+        FontFamily::Name("system-ui".into()),
+    )
 }
 
 /// Arial Bold −13: the Categories close "x".
@@ -921,6 +1064,66 @@ pub fn paragraph(
     lines.len()
 }
 
+/// [`paragraph`] that stays above `bottom`, the last row of the room its page gives it: the lines
+/// that fit are drawn, the last one cut with "..." when more were coming, and the whole text on
+/// hover. For a note at the bottom of a page that a longer translation outgrows.
+#[allow(clippy::too_many_arguments)]
+pub fn paragraph_until(
+    ui: &Ui,
+    p: &Painter,
+    x: f32,
+    baseline: f32,
+    s: &str,
+    color: Color32,
+    right: f32,
+    bottom: f32,
+    line_h: f32,
+) -> usize {
+    let flowed;
+    let s = if crate::i18n::code() == "en" {
+        s
+    } else {
+        flowed = reflow(s);
+        flowed.as_str()
+    };
+    let room = (right - x).max(1.0);
+    let lines = wrap_lines(p, s, room);
+    let shown = lines_until(p, &lines, lines_that_fit(baseline, bottom, line_h), room);
+    for (i, l) in shown.iter().enumerate() {
+        text(p, x, baseline + line_h * i as f32, l, color);
+    }
+    if shown.len() < lines.len() {
+        // The whole note, over any of its lines.
+        let whole = rect(Rect::from_min_max(
+            pos2(x, baseline - line_h),
+            pos2(
+                right,
+                baseline + line_h * (shown.len().saturating_sub(1)) as f32 + 4.0,
+            ),
+        ));
+        full_on_hover(ui, whole, ("note-until", x as i32, baseline as i32), s);
+    }
+    shown.len()
+}
+
+/// How many lines `line_h` apart, the first at `baseline`, end above `bottom`: a line's
+/// descender keeps clear of the edge below it. Always one, for a room of no height.
+fn lines_that_fit(baseline: f32, bottom: f32, line_h: f32) -> usize {
+    let rows = (bottom - baseline - 4.0) / line_h.max(1.0);
+    rows.floor().max(0.0) as usize + 1
+}
+
+/// The first `fits` of `lines`, the last cut with "..." when some were left out.
+fn lines_until(p: &Painter, lines: &[String], fits: usize, room: f32) -> Vec<String> {
+    let mut shown: Vec<String> = lines.iter().take(fits.max(1)).cloned().collect();
+    if lines.len() > shown.len()
+        && let Some(last) = shown.last_mut()
+    {
+        *last = ellipsize(p, &tahoma(), &format!("{last} ..."), room);
+    }
+    shown
+}
+
 /// Data shown as it is (a crash report, release notes), from English `x` to `right`, first
 /// baseline at `baseline`, `line_h` apart; returns the lines drawn. Its line breaks are its own
 /// in every language (a line longer than the room wraps, as in [`paragraph`]), and it reads left
@@ -962,6 +1165,12 @@ fn data_left(x: f32, right: f32) -> f32 {
 /// `s` broken into the lines it shows in `room` px: at its own line breaks, and where a line is
 /// too long, at spaces, or between any two characters in scripts written without spaces.
 fn wrap_lines(p: &Painter, s: &str, room: f32) -> Vec<String> {
+    wrap_lines_font(p, tahoma(), s, room)
+}
+
+/// [`wrap_lines`] in any font (a bold name on several lines: the preview pane's).
+pub fn wrap_lines_font(p: &Painter, font: FontId, s: &str, room: f32) -> Vec<String> {
+    let text_width = |p: &Painter, t: &str| text_width_font(p, font.clone(), t);
     let mut lines: Vec<String> = Vec::new();
     for given in s.split('\n') {
         // A Windows line end (a report written there) breaks the line too.
@@ -1017,6 +1226,170 @@ fn wrap_lines(p: &Painter, s: &str, room: f32) -> Vec<String> {
         lines.push(line.trim_end().to_owned());
     }
     lines
+}
+
+/// A file's name on up to `max` lines of `room` px (`width` measures a text): broken at its own
+/// separators (after a space, `_`, `-`, `.`, `,`, `+`, `~`; before an opening bracket), its
+/// extension never split and kept on the last line with the piece before it; a part with no
+/// separator wider than the room broken between its characters (a letter and its marks together).
+/// Longer than `max` lines: the last one is the name's end, cut at its start with "..." (so the
+/// extension still shows).
+pub fn name_lines(name: &str, room: f32, max: usize, width: impl Fn(&str) -> f32) -> Vec<String> {
+    let max = max.max(1);
+    if width(name) <= room {
+        return vec![name.to_owned()];
+    }
+    // The extension: after the last dot, short, after a stem of its own.
+    let (stem, ext) = match name.rfind('.') {
+        Some(at) if at > 0 && name.len() - at <= 17 && !name[at + 1..].contains(' ') => {
+            name.split_at(at)
+        }
+        _ => (name, ""),
+    };
+    // The stem in pieces, each ending at a separator.
+    let mut pieces: Vec<String> = Vec::new();
+    let mut cur = String::new();
+    for g in stem.graphemes(true) {
+        if matches!(g, "(" | "[" | "{") && !cur.is_empty() {
+            pieces.push(std::mem::take(&mut cur));
+        }
+        cur.push_str(g);
+        if matches!(g, " " | "_" | "-" | "." | "," | "+" | "~" | ")" | "]" | "}") {
+            pieces.push(std::mem::take(&mut cur));
+        }
+    }
+    if !cur.is_empty() {
+        pieces.push(cur);
+    }
+    // A piece wider than the room: cut between its characters.
+    let mut parts: Vec<String> = Vec::new();
+    for piece in pieces {
+        if width(&piece) <= room {
+            parts.push(piece);
+            continue;
+        }
+        let mut chunk = String::new();
+        for g in piece.graphemes(true) {
+            if !chunk.is_empty() && width(&format!("{chunk}{g}")) > room {
+                parts.push(std::mem::take(&mut chunk));
+            }
+            chunk.push_str(g);
+        }
+        if !chunk.is_empty() {
+            parts.push(chunk);
+        }
+    }
+    // The extension goes with the piece before it where they fit together, so it never ends up
+    // alone on a line of its own ("...10s_1MB" / ".mp4").
+    if !ext.is_empty() {
+        match parts.last_mut() {
+            Some(last) if width(&format!("{last}{ext}")) <= room => last.push_str(ext),
+            _ => parts.push(ext.to_owned()),
+        }
+    }
+    let mut lines: Vec<String> = Vec::new();
+    let mut line = String::new();
+    for part in parts {
+        if line.is_empty() || width(&format!("{line}{part}")) <= room {
+            line.push_str(&part);
+        } else {
+            lines.push(std::mem::take(&mut line));
+            line = part;
+        }
+    }
+    lines.push(line);
+    for l in &mut lines {
+        // A space a line ends on isn't seen.
+        let trimmed = l.trim_end_matches(' ').len();
+        l.truncate(trimmed.max(1).min(l.len()));
+    }
+    if lines.len() > max {
+        let rest: String = lines.split_off(max - 1).concat();
+        // The rest's end that fits after "...": the extension stays in sight.
+        let gs: Vec<&str> = rest.graphemes(true).collect();
+        let mut k = gs.len();
+        while k > 0 && width(&format!("...{}", gs[k - 1..].concat())) <= room {
+            k -= 1;
+        }
+        lines.push(format!("...{}", gs[k..].concat()));
+    }
+    lines
+}
+
+/// [`name_lines`] measured in `font`.
+pub fn name_lines_in(p: &Painter, font: FontId, name: &str, room: f32, max: usize) -> Vec<String> {
+    name_lines(name, room, max, |s| text_width_font(p, font.clone(), s))
+}
+
+#[cfg(test)]
+mod name_lines_tests {
+    use super::name_lines;
+
+    /// One unit per character: a room of 10 holds ten.
+    fn lines(name: &str, room: f32, max: usize) -> Vec<String> {
+        name_lines(name, room, max, |s| s.chars().count() as f32)
+    }
+
+    #[test]
+    fn a_name_breaks_at_its_separators_and_keeps_its_extension_whole() {
+        // #1368's: "Big_Buck_Bunny_360_10s_1MB.m" / "p4" before.
+        assert_eq!(
+            lines("Big_Buck_Bunny_360_10s_1MB.mp4", 20.0, 3),
+            ["Big_Buck_Bunny_360_", "10s_1MB.mp4"]
+        );
+        assert_eq!(lines("short.mp4", 20.0, 3), ["short.mp4"]);
+        // Not the extension alone on the last line: the piece before it goes down with it.
+        assert_eq!(
+            lines("Big_Buck_Bunny_360_10s_1MB.mp4", 26.0, 3),
+            ["Big_Buck_Bunny_360_10s_", "1MB.mp4"]
+        );
+        assert_eq!(
+            lines("with-a-rather-long-name.iso.torrent", 26.0, 3),
+            ["with-a-rather-long-name.", "iso.torrent"]
+        );
+        // The extension goes down whole rather than split.
+        assert_eq!(
+            lines("abcdefghij.torrent", 12.0, 3),
+            ["abcdefghij", ".torrent"]
+        );
+        // Spaces and dashes; the space a line ends on dropped.
+        assert_eq!(
+            lines("My holiday photos - final.zip", 12.0, 3),
+            ["My holiday", "photos -", "final.zip"]
+        );
+        // A bracket starts its line.
+        assert_eq!(
+            lines("Report(2026).pdf", 8.0, 3),
+            ["Report", "(2026)", ".pdf"]
+        );
+    }
+
+    #[test]
+    fn a_name_without_separators_breaks_between_letters_not_in_its_extension() {
+        let l = lines("abcdefghijklmnopqrstuvwxyz.torrent", 10.0, 5);
+        assert_eq!(l, ["abcdefghij", "klmnopqrst", "uvwxyz", ".torrent"]);
+        assert!(l.iter().all(|x| x.chars().count() <= 10));
+    }
+
+    #[test]
+    fn too_many_lines_end_with_the_names_end() {
+        let l = lines("a_b_c_d_e_f_g_h_i_j_k_l_m_n_o_p.mp4", 9.0, 3);
+        assert_eq!(l.len(), 3);
+        assert_eq!(l[2], "..._p.mp4");
+        assert_eq!(l[0], "a_b_c_d_");
+    }
+
+    #[test]
+    fn a_name_in_another_script_keeps_its_letters_and_marks() {
+        // Arabic letters with their marks, no separator: broken between whole characters.
+        let name = "مِلَفٌّطَوِيلٌجِدًّا.pdf";
+        let l = name_lines(name, 6.0, 4, |s| {
+            use unicode_segmentation::UnicodeSegmentation;
+            s.graphemes(true).count() as f32
+        });
+        assert_eq!(l.concat(), name);
+        assert_eq!(l.last().map(String::as_str), Some(".pdf"));
+    }
 }
 
 /// Where the text before a line's first input box goes in a [`sentence`].
@@ -1080,8 +1453,9 @@ pub fn sentence_pieces<'a>(template: &'a str, slots: &[&str]) -> Vec<Vec<Piece<'
 /// sentence, in the sentence's own order — "Download {files} files at the same time" names
 /// its box "Download files at the same time", so a reader says what a box's number is,
 /// whatever language the sentence is translated into (a box first on its line is named by the
-/// words after it, as the Japanese catalog runs it). A sentence holds one box on a line
-/// today; where a line had two, the words between them would join both their names. A box
+/// words after it, as the Japanese catalog runs it). Where a line holds two boxes ("from
+/// {from} to {to}", #1662), the words between them name the box after them: the first is
+/// "from", the second "to" (a first box with no words before it keeps the ones after it). A box
 /// with no words around it takes the sentence's own words, its placeholders dropped: a
 /// slot's id is code, not a language. Any leftover `{...}` (a placeholder the caller didn't
 /// name a slot) and the `&` of a keyboard letter drop out of a name, as they do out of a
@@ -1123,7 +1497,13 @@ pub fn sentence_names(template: &str, slots: &[&str]) -> Vec<String> {
                             }
                         }
                         Piece::Slot(s) if s == *slot => seen = true,
-                        Piece::Slot(_) if seen => past = true,
+                        Piece::Slot(_) if seen && !past => {
+                            past = true;
+                            // The words up to the next box are that box's own.
+                            if !before.is_empty() {
+                                after.clear();
+                            }
+                        }
                         Piece::Slot(_) => before.clear(),
                         _ => {}
                     }
@@ -1282,15 +1662,13 @@ fn window_edges(p: &Painter) -> (f32, f32) {
 
 /// A tooltip with the whole of a cut text while the pointer is over it (as Windows shows
 /// for truncated list items).
-pub fn full_on_hover(
-    ui: &Ui,
-    rect: Rect,
-    salt: impl std::hash::Hash + std::fmt::Debug,
-    full: &str,
-) {
-    let id = ui.scope_id().with(("full-text", salt));
-    ui.interact(rect, id, egui::Sense::hover())
-        .on_hover_text(full);
+pub fn full_on_hover(ui: &Ui, rect: Rect, id: impl std::hash::Hash + std::fmt::Debug, full: &str) {
+    ui.interact(
+        rect,
+        ui.scope_id().with(("full-text", id)),
+        egui::Sense::hover(),
+    )
+    .on_hover_text(full);
 }
 
 // ---- row list -------------------------------------------------------------------------------
@@ -1345,6 +1723,8 @@ impl RowList {
 pub struct RowEvents {
     /// The selection moved to this row (a click, the keys).
     pub picked: Option<usize>,
+    /// A left click on this row (even the one already selected).
+    pub clicked: Option<usize>,
     pub double_clicked: Option<usize>,
     /// Enter on the selected row (not taken: [`take_key`] it to keep it from the dialog).
     pub entered: Option<usize>,
@@ -1642,6 +2022,9 @@ pub fn row_list(
                 ui.ctx().request_repaint();
             }
         }
+        if r.clicked() {
+            ev.clicked = Some(i);
+        }
         if r.double_clicked() {
             ev.double_clicked = Some(i);
         }
@@ -1714,10 +2097,10 @@ pub fn row_list(
 
 /// Text that opens or does something when clicked: link colour, underlined under the pointer.
 /// `label` is English (translated here).
-pub fn link(ui: &Ui, p: &Painter, x: f32, baseline: f32, label: &str, salt: &str) -> bool {
+pub fn link(ui: &Ui, p: &Painter, x: f32, baseline: f32, label: &str, id: &str) -> bool {
     let rect = text(p, x, baseline, crate::i18n::t(label), LINK());
     let resp = ui
-        .interact(rect, ui.scope_id().with(("link", salt)), Sense::click())
+        .interact(rect, ui.scope_id().with(("link", id)), Sense::click())
         .on_hover_cursor(egui::CursorIcon::PointingHand);
     expose(&resp, egui::Role::Link, crate::i18n::t(label), true, None);
     // A Tab stop shows that it has the keys.
@@ -1736,7 +2119,7 @@ pub fn link(ui: &Ui, p: &Painter, x: f32, baseline: f32, label: &str, salt: &str
 /// first baseline `baseline`, with a [`link`] after it (`label`, English, translated here): on
 /// the note's line when they fit together, else the note wraps and the link ends its second
 /// line. A note longer than that is cut, and shown whole on hover. True when the link is
-/// clicked; `salt` tells notes apart.
+/// clicked; `id` tells notes apart.
 #[allow(clippy::too_many_arguments)]
 pub fn note_with_link(
     ui: &Ui,
@@ -1748,13 +2131,13 @@ pub fn note_with_link(
     color: Color32,
     right: f32,
     label: &str,
-    salt: &str,
+    id: &str,
 ) -> bool {
     const GAP: f32 = 8.0;
     let link_w = text_width(p, crate::i18n::t(label));
     if text_width(p, s) + GAP + link_w <= right - x {
         text(p, x, baseline, s, color);
-        return link(ui, p, x + text_width(p, s) + GAP, baseline, label, salt);
+        return link(ui, p, x + text_width(p, s) + GAP, baseline, label, id);
     }
     let lines = wrap_lines(p, s, (right - x).max(1.0));
     let first = lines.first().map_or("", String::as_str);
@@ -1763,10 +2146,10 @@ pub fn note_with_link(
     let second = baseline + line_h;
     let (rest_rect, cut) = text_fit(p, x, second, &rest, color, right - GAP - link_w);
     if cut {
-        full_on_hover(ui, first_rect.union(rest_rect), (salt, "note"), s);
+        full_on_hover(ui, first_rect.union(rest_rect), (id, "note"), s);
     }
     let rest_w = text_width(p, &rest).min(right - GAP - link_w - x);
-    link(ui, p, x + rest_w + GAP, second, label, salt)
+    link(ui, p, x + rest_w + GAP, second, label, id)
 }
 
 /// A disabled control says why on hover: `reason` (English, translated here) while `disabled`.
@@ -1779,7 +2162,7 @@ pub fn why_disabled(resp: Response, disabled: bool, reason: &str) -> Response {
 }
 
 /// [`text_fit`] that shows the whole text on hover whenever it cut it: the one way to draw a
-/// line that may not fit (no caller can forget the hover). `salt` tells the lines apart.
+/// line that may not fit (no caller can forget the hover). `id` tells the lines apart.
 #[allow(clippy::too_many_arguments)]
 pub fn fit(
     ui: &Ui,
@@ -1789,9 +2172,9 @@ pub fn fit(
     s: &str,
     color: Color32,
     right: f32,
-    salt: impl std::hash::Hash + std::fmt::Debug,
+    id: impl std::hash::Hash + std::fmt::Debug,
 ) -> Rect {
-    fit_whole(ui, p, x, baseline, s, s, color, right, salt)
+    fit_whole(ui, p, x, baseline, s, s, color, right, id)
 }
 
 /// [`fit`] for a cell that shows one text and tips another: the Link grabber's Status says a
@@ -1806,11 +2189,11 @@ pub fn fit_whole(
     full: &str,
     color: Color32,
     right: f32,
-    salt: impl std::hash::Hash + std::fmt::Debug,
+    id: impl std::hash::Hash + std::fmt::Debug,
 ) -> Rect {
     let (rect, cut) = text_fit(p, x, baseline, shown, color, right);
     if cut || shown != full {
-        full_on_hover(ui, rect, salt, full);
+        full_on_hover(ui, rect, id, full);
     }
     rect
 }
@@ -1826,12 +2209,12 @@ pub fn fit_middle(
     s: &str,
     color: Color32,
     right: f32,
-    salt: impl std::hash::Hash + std::fmt::Debug,
+    id: impl std::hash::Hash + std::fmt::Debug,
 ) -> Rect {
     let shown = ellipsize_middle(p, &tahoma(), s, (right - x).max(0.0));
     let rect = text(p, x, baseline, &shown, color);
     if shown != s {
-        full_on_hover(ui, rect, salt, s);
+        full_on_hover(ui, rect, id, s);
     }
     rect
 }
@@ -1842,11 +2225,11 @@ pub fn fit_middle(
 pub fn copyable(
     ui: &Ui,
     rect: Rect,
-    salt: impl std::hash::Hash + std::fmt::Debug,
+    id: impl std::hash::Hash + std::fmt::Debug,
     text: &str,
     cut: bool,
 ) -> Response {
-    let resp = ui.interact(rect, ui.scope_id().with(("copyable", salt)), pointer_only());
+    let resp = ui.interact(rect, ui.scope_id().with(("copyable", id)), pointer_only());
     copy_menu(&resp, text);
     if cut { resp.on_hover_text(text) } else { resp }
 }
@@ -2263,9 +2646,9 @@ pub fn edit_frame(p: &Painter, rc: Rect, enabled: bool) {
 
 /// A single-line edit: frame + egui text editing positioned so text starts at x+5 with its
 /// baseline at top+13.
-pub fn edit(ui: &mut Ui, rc: Rect, value: &mut String, enabled: bool, password: bool) -> Response {
+pub fn edit(ui: &mut Ui, rc: Rect, value: &mut String, enabled: bool, masked: bool) -> Response {
     edit_frame(ui.painter(), rc, enabled);
-    let resp = edit_text(ui, rc, value, enabled, password, 5.0);
+    let resp = edit_text(ui, rc, value, enabled, masked, 5.0);
     edit_focus_line(ui, &resp, rc);
     resp
 }
@@ -2322,7 +2705,7 @@ fn edit_text(
     rc: Rect,
     value: &mut String,
     enabled: bool,
-    password: bool,
+    masked: bool,
     inset: f32,
 ) -> Response {
     let color = if enabled {
@@ -2330,16 +2713,7 @@ fn edit_text(
     } else {
         EDIT_TEXT_DISABLED()
     };
-    edit_text_with(
-        ui,
-        rc,
-        value,
-        enabled,
-        password,
-        inset,
-        color,
-        start_align(),
-    )
+    edit_text_with(ui, rc, value, enabled, masked, inset, color, start_align())
 }
 
 /// Text aligned to its start: left, right in RTL.
@@ -2366,7 +2740,7 @@ fn edit_text_with(
     rc: Rect,
     value: &mut String,
     enabled: bool,
-    password: bool,
+    masked: bool,
     inset: f32,
     color: Color32,
     align: egui::Align,
@@ -2422,7 +2796,7 @@ fn edit_text_with(
     // out left of 0, so it never scrolled: its end stayed out of sight, and End, the arrows, a
     // click or typing there went on out of view. A line that fits keeps its alignment: there is
     // nothing to scroll.
-    let align = if align != egui::Align::LEFT && overflows(ui, value, password, inner.width()) {
+    let align = if align != egui::Align::LEFT && overflows(ui, value, masked, inner.width()) {
         egui::Align::LEFT
     } else {
         align
@@ -2434,7 +2808,7 @@ fn edit_text_with(
         .margin(egui::Margin::ZERO)
         .font(tahoma())
         .text_color(color)
-        .password(password)
+        .password(masked)
         // Enter keeps the focus in the box (the dialog's default button answers it; a box that
         // lost the keys on Enter took the next typing nowhere).
         .return_key(None)
@@ -2455,7 +2829,7 @@ fn edit_text_with(
                         modifiers,
                         physical_key,
                         repeat,
-                    } if password
+                    } if masked
                         && modifiers.command
                         && matches!(
                             key,
@@ -2515,14 +2889,14 @@ fn edit_text_with(
         ui.data_mut(|d| d.insert_temp(was_empty, true));
     }
     if enabled {
-        edit_menu(&resp, value, password, false);
+        edit_menu(&resp, value, masked, false);
     }
     resp
 }
 
-/// Is a one-line box's text (`password`: its dots, as egui shows them) wider than `width`?
-fn overflows(ui: &Ui, value: &str, password: bool, width: f32) -> bool {
-    let shown = if password {
+/// Is a one-line box's text (`masked`: its dots, as egui shows them) wider than `width`?
+fn overflows(ui: &Ui, value: &str, masked: bool, width: f32) -> bool {
+    let shown = if masked {
         "\u{2022}".repeat(value.graphemes(true).count())
     } else {
         value.to_owned()
@@ -2727,7 +3101,7 @@ fn readonly_with_icon(
     if cut { resp.on_hover_text(value) } else { resp }
 }
 
-pub fn edit_menu(resp: &Response, value: &mut String, password: bool, multiline: bool) {
+pub fn edit_menu(resp: &Response, value: &mut String, masked: bool, multiline: bool) {
     use crate::chrome::PopupResult;
     use egui::text::{CCursor, CCursorRange};
     use egui::text_edit::TextEditState;
@@ -2774,7 +3148,7 @@ pub fn edit_menu(resp: &Response, value: &mut String, password: bool, multiline:
     let now = (state.cursor.char_range().unwrap_or_default(), value.clone());
     let entries = edit_entries(
         undoer.has_undo(&now),
-        has && !password,
+        has && !masked,
         clip.is_some(),
         has,
         n > 0,
@@ -3079,8 +3453,16 @@ pub fn combo_frame(p: &Painter, rc: Rect, focused: bool) {
     combo_chevron(p, rc);
 }
 
-/// Drop-list combo showing `value`; returns the click response.
-pub fn combo(ui: &mut Ui, rc: Rect, value: &str, id: &str) -> Response {
+/// Drop-list combo showing `value` (its list a [`drop_list`] of the caller's), with `icon` before
+/// it when given (#2008: Download File Info's category, the one its [`drop_list_icons`] has for
+/// it); returns the click response.
+pub fn combo_icon(
+    ui: &mut Ui,
+    rc: Rect,
+    value: &str,
+    icon: Option<&ItemIcon>,
+    id: &str,
+) -> Response {
     let resp = ui.interact(rc, widget_id(ui, ("combo", id)), Sense::click());
     let resp = opener_click(ui, resp);
     expose_value(&resp, egui::Role::ComboBox, value, true);
@@ -3089,12 +3471,23 @@ pub fn combo(ui: &mut Ui, rc: Rect, value: &str, id: &str) -> Response {
     dropdown_frame_light(ui.painter(), rc, State::of(&resp, true));
     combo_chevron(ui.painter(), rc);
     show_focus(ui, &resp, rc.shrink(2.0));
+    let room = if let Some(icon) = icon {
+        item_icon(ui, ui.painter(), icon, face_icon_rect(rc), TEXT(), true);
+        ITEM_ICON_ROOM
+    } else {
+        0.0
+    };
     // Short of the arrow zone: a longer value ends in "..." and shows whole on hover.
-    let shown = ellipsize(ui.painter(), &tahoma(), value, rc.width() - 5.0 - 22.0);
+    let shown = ellipsize(
+        ui.painter(),
+        &tahoma(),
+        value,
+        rc.width() - 5.0 - 22.0 - room,
+    );
     text_start(
         ui.painter(),
         tahoma(),
-        lead(rc) + 5.0 * fwd(),
+        lead(rc) + (5.0 + room) * fwd(),
         rc.top() + 13.0,
         &shown,
         TEXT(),
@@ -3207,6 +3600,20 @@ pub fn drop_list(
     empty: &str,
     open: &mut bool,
 ) -> Option<usize> {
+    drop_list_icons(ui, id, anchor, items, &[], empty, open)
+}
+
+/// [`drop_list`] whose items start with `icons` (one per item, by index; none past its end):
+/// Download File Info's categories (#2008).
+pub fn drop_list_icons(
+    ui: &mut Ui,
+    id: &str,
+    anchor: Rect,
+    items: &[String],
+    icons: &[ItemIcon],
+    empty: &str,
+    open: &mut bool,
+) -> Option<usize> {
     use crate::chrome::{MenuEntry, PopupResult, label};
     // A menu label: long addresses shortened in the middle, "&" kept as text (not an access key).
     let shown = |t: &str| {
@@ -3239,13 +3646,13 @@ pub fn drop_list(
     } else {
         anchor.left_bottom()
     };
-    let menu = crate::chrome::popup(
+    let menu = crate::chrome::popup_icons(
         ui.ctx(),
         crate::chrome::MenuKind::List,
         &format!("drop-{id}"),
         at,
         &entries,
-        &|_| None,
+        &|i| icons.get(*i).cloned(),
     );
     match menu {
         PopupResult::Chosen(i) => {
@@ -3883,6 +4290,58 @@ pub fn number_in(value: &str, min: u64, max: u64) -> u64 {
     value.parse::<u64>().unwrap_or(min).clamp(min, max)
 }
 
+/// A time typed in a box (a video's part, #1662): `h:mm:ss`, `m:ss` or seconds
+/// ([`mdm_tools::part::parse_time`]), digits and colons only; Up / Down step it by a second,
+/// Page Up / Down by ten, within `0..=max` (the video's length, when known). Left, a time it can
+/// read is written as the window shows times (`hours`: `0:01:30` beside a video of an hour or
+/// more) and brought within `max`. `ok`: the caller's word on it (it may be fine alone and wrong
+/// beside another box, an end before the start): its frame is red while it isn't, as a number
+/// box's out of range.
+pub fn time_field(
+    ui: &mut Ui,
+    rc: Rect,
+    value: &mut String,
+    max: Option<u32>,
+    hours: bool,
+    enabled: bool,
+    ok: bool,
+) -> Response {
+    edit_frame(ui.painter(), rc, enabled);
+    let resp = field_text(ui, rc, value, enabled);
+    value.retain(|c| c.is_ascii_digit() || c == ':');
+    value.truncate(10);
+    let max = max.unwrap_or(u32::MAX);
+    if resp.has_focus() {
+        keep_keys(ui, &resp, false, true, false);
+        let step: i64 = if take_key(ui, egui::Key::ArrowUp) {
+            1
+        } else if take_key(ui, egui::Key::ArrowDown) {
+            -1
+        } else if take_key(ui, egui::Key::PageUp) {
+            10
+        } else if take_key(ui, egui::Key::PageDown) {
+            -10
+        } else {
+            0
+        };
+        if step != 0 {
+            let now = i64::from(mdm_tools::part::parse_time(value).unwrap_or(0));
+            let next = (now + step).clamp(0, i64::from(max)) as u32;
+            *value = mdm_tools::part::clock(next, hours);
+        }
+    }
+    if resp.lost_focus()
+        && let Some(t) = mdm_tools::part::parse_time(value)
+    {
+        *value = mdm_tools::part::clock(t.min(max), hours);
+    }
+    if enabled && !ok {
+        error_frame(ui.painter(), rc);
+    }
+    edit_focus_line(ui, &resp, rc);
+    resp
+}
+
 /// [`edit_light`] on a surface `parent` (a disabled edit shows it: `#f9f9f9` on a tab page).
 pub fn edit_light_on(
     ui: &mut Ui,
@@ -3901,7 +4360,7 @@ fn edit_light_with(
     value: &mut String,
     enabled: bool,
     align_right: bool,
-    password: bool,
+    masked: bool,
     parent: Color32,
 ) -> Response {
     // `parent`: the surface a box sits on (kept for its callers; the frame paints the inside).
@@ -3918,7 +4377,7 @@ fn edit_light_with(
     } else {
         start_align()
     };
-    let resp = edit_text_with(ui, rc, value, enabled, password, 5.0, color, align);
+    let resp = edit_text_with(ui, rc, value, enabled, masked, 5.0, color, align);
     edit_focus_line(ui, &resp, rc);
     resp
 }
@@ -4650,7 +5109,7 @@ crate::theme::themed! {
 /// check boxes and of the check lists (Options → Browsers, Sounds).
 /// A check box in a list's row ([`row_list`]): its 13 × 13 box at English `at`, ticked by a
 /// click (hot and pressed as any check box), not a Tab stop of its own (the list is: Space
-/// ticks the selected row). `salt` names the item, so the box stays its own while the list
+/// ticks the selected row). `id` names the item, so the box stays its own while the list
 /// scrolls. True when clicked.
 pub fn row_check(
     ui: &Ui,
@@ -4658,12 +5117,12 @@ pub fn row_check(
     at: Pos2,
     on: &mut bool,
     label: &str,
-    salt: impl std::hash::Hash + std::fmt::Debug,
+    id: impl std::hash::Hash + std::fmt::Debug,
 ) -> bool {
     let rc = rect(Rect::from_min_size(at, vec2(13.0, 13.0)));
     let resp = ui.interact(
         rc.expand(2.0),
-        widget_id(ui, ("row-check", salt)),
+        widget_id(ui, ("row-check", id)),
         pointer_only(),
     );
     if resp.clicked() {
@@ -5061,13 +5520,23 @@ pub fn radio_light_until(
     pass_focus_on(ui, &resp, enabled);
     let resp = enter_is_not_a_click(ui, resp);
     focus_on_press(&resp);
+    if resp.clicked() && !resp.has_focus() {
+        resp.request_focus();
+    }
+    // The caller updates its choice after `radio_light_until` returns, once earlier controls and
+    // the group's other buttons have already been drawn and exposed with the old one (#1692):
+    // discard this pass so the same frame lays out, paints and publishes the tree with the new
+    // choice at once (as UI Automation's SelectionItem.Select and AT-SPI's click expect).
+    if !selected && resp.clicked() && ui.ctx().current_pass_index() == 0 {
+        ui.ctx().request_discard("radio button chosen");
+    }
     show_focus(ui, &resp, hit.expand(1.0));
     expose(
         &resp,
         egui::Role::RadioButton,
         caption,
         enabled,
-        Some(selected),
+        Some(selected || resp.clicked()),
     );
     let c = glyph + vec2(6.5, 6.5);
     let state = State::of(&resp, enabled);
@@ -5158,16 +5627,287 @@ pub fn auto_repeat(ui: &Ui, resp: &Response) -> bool {
     fire
 }
 
+/// A browser's logo before its name (the extension's window, the first start's setup, Options'
+/// browser list), in English rect `rc` (mirrored in a right-to-left interface): the browser
+/// `name` (as MDM lists it) and, when known, its `program` tell which (browsericons.rs). One MDM
+/// has none for gets a neutral globe in `ink`, never another browser's logo.
+pub fn browser_icon(
+    ui: &Ui,
+    p: &Painter,
+    name: &str,
+    program: Option<&std::path::Path>,
+    rc: Rect,
+    ink: Color32,
+) {
+    let browser = crate::browsericons::Browser::of(name, program);
+    crate::browsericons::paint(ui, p, browser, rect(rc), ink);
+}
+
+/// The side of a [`state_mark`] and a [`status_icon`], in points: a 16-point icon, as a list's
+/// file-type icons.
+pub const MARK: f32 = 16.0;
+
+/// The icon before a drop-down list's item (#2008: [`combo_light_icons`], [`combo_icon`],
+/// [`drop_list_icons`]): the same icon the thing has elsewhere in MDM.
+#[derive(Clone, PartialEq)]
+pub enum ItemIcon {
+    /// A small icon by key: a category's or a queue's, as the Categories tree and the
+    /// Scheduler draw them (Silk, or the theme set's own).
+    Shell(crate::chrome::IconKey),
+    /// A browser's own logo (browsericons.rs).
+    Browser(crate::browsericons::Browser),
+}
+
+/// Draws `icon` in the screen rect `rc` ([`MARK`] points square) on whole pixels; `ink` colours a
+/// one-colour icon (a browser MDM has no logo for). Greyed when not `enabled`, as its label is.
+pub fn item_icon(ui: &Ui, p: &Painter, icon: &ItemIcon, rc: Rect, ink: Color32, enabled: bool) {
+    use egui::emath::GuiRounding as _;
+    let rc = rc.round_to_pixels(ui.ctx().pixels_per_point());
+    let mut p = p.clone();
+    if !enabled {
+        p.multiply_opacity(0.4);
+    }
+    match icon {
+        ItemIcon::Shell(key) => crate::chrome::ShellIcons::paint_rect(ui, &p, key, rc),
+        ItemIcon::Browser(b) => crate::browsericons::paint(ui, &p, *b, rc, ink),
+    }
+}
+
+/// The drop-down an off-screen test copy opens on its next draw (`/show combo-open:<id>`, for
+/// screenshots of a list: nothing is clicked).
+static OPEN_FOR_SHOT: std::sync::Mutex<Option<String>> = std::sync::Mutex::new(None);
+
+/// Opens the drop-down whose id is `id` when it is next drawn (off-screen test copies only).
+pub fn open_combo_for_shot(id: &str) {
+    if crate::offscreen() {
+        *OPEN_FOR_SHOT.lock().unwrap_or_else(|e| e.into_inner()) = Some(id.to_owned());
+    }
+}
+
+/// Whether the drop-down `id` is the one [`open_combo_for_shot`] asked for (once).
+pub fn take_open_for_shot(id: &str) -> bool {
+    let mut want = OPEN_FOR_SHOT.lock().unwrap_or_else(|e| e.into_inner());
+    if want.as_deref() == Some(id) {
+        *want = None;
+        true
+    } else {
+        false
+    }
+}
+
+/// Where a drop-down's face draws its item's icon: [`MARK`] points square, 5 points in from the
+/// leading edge, centred in the box's height on a whole point. Its label starts
+/// [`ITEM_ICON_ROOM`] further in.
+fn face_icon_rect(rc: Rect) -> Rect {
+    let top = rc.top() + ((rc.height() - MARK) / 2.0).floor();
+    let start = lead(rc) + 5.0 * fwd();
+    let left = if rtl() { start - MARK } else { start };
+    Rect::from_min_size(pos2(left, top), vec2(MARK, MARK))
+}
+
+/// The room an item's icon takes on a drop-down's face before its label: the icon and a gap of
+/// 5 (the list's own icon column: chrome.rs).
+const ITEM_ICON_ROOM: f32 = MARK + 5.0;
+
+/// A result's mark before its line or word (#2008): it holds, it failed, a warning, or under way
+/// (`crate::icons::Mark`), [`MARK`] points square at English `min` (mirrored in a right-to-left
+/// interface), in the theme's colour for it. Drawn, never a font's check or cross, so it looks
+/// the same with every font and on every system. Its top sits 12 points above the baseline of
+/// the text it leads.
+pub fn state_mark(ui: &Ui, p: &Painter, min: Pos2, mark: crate::icons::Mark) {
+    let rc = rect(Rect::from_min_size(min, vec2(MARK, MARK)));
+    paint_icon(ui, p, mark.source(mark.ink()), rc);
+}
+
+/// The room a message line's mark takes before its text ([`note_mark`]): the mark and a gap of 4.
+pub const NOTE_INDENT: f32 = MARK + 4.0;
+
+/// A message line's mark (#2008): an error's, a warning's or a result's [`state_mark`] before a
+/// red, orange or green line, so its meaning doesn't rest on colour alone (a Windows 11 InfoBar's
+/// icon, without the bar). Drawn at English `x` with its top 12 points above `baseline`, the
+/// line's (or a paragraph's first line's); returns the English x its text starts at, so a wrapped
+/// paragraph hangs after the mark. With no `mark`, nothing is drawn and the text keeps `x`.
+pub fn note_mark(
+    ui: &Ui,
+    p: &Painter,
+    x: f32,
+    baseline: f32,
+    mark: Option<crate::icons::Mark>,
+) -> f32 {
+    match mark {
+        Some(mark) => {
+            state_mark(ui, p, pos2(x, baseline - 12.0), mark);
+            x + NOTE_INDENT
+        }
+        None => x,
+    }
+}
+
+/// An empty list's block (#2008), in the screen rect `body` (the list's inside): its role
+/// `icon` in the muted ink, a bold `title`, `why` under it (wrapped to the list's width) and,
+/// when given, an `action` link (the main list's Add new download). The texts are English,
+/// translated here. In the middle of the list, or near its top when it is short; a list too short
+/// for the large icon gets a smaller one. True when the link is clicked.
+#[allow(clippy::too_many_arguments)]
+pub fn empty_state(
+    ui: &Ui,
+    p: &Painter,
+    body: Rect,
+    icon: crate::icons::EmptyIcon,
+    title: &str,
+    why: &str,
+    action: Option<&str>,
+    id: &str,
+) -> bool {
+    let p = p.with_clip_rect(p.clip_rect().intersect(body));
+    let (title, why) = (crate::i18n::t(title), crate::i18n::t(why));
+    let title_font = tahoma_bold();
+    // The reason wrapped to the list, 12 points in from each side.
+    let lines = wrap_lines_font(&p, tahoma(), why, (body.width() - 24.0).max(40.0));
+    let extra = 16.0 * lines.len().saturating_sub(1) as f32;
+    let link_h = if action.is_some() { 14.0 + 13.0 } else { 0.0 };
+    // The main list's block: icon 40, 26 to the title's baseline, 21 to the reason's, 27 to the
+    // link's; a short list's: icon 24, a little closer.
+    let large = 40.0 + 26.0 + 21.0 + extra + link_h + 3.0 + 32.0;
+    let (side, gap) = if body.height() >= large {
+        (40.0, 26.0)
+    } else {
+        (24.0, 22.0)
+    };
+    let block_h = side + gap + 21.0 + extra + link_h + 3.0;
+    let top =
+        (body.center().y - block_h / 2.0).max(body.top() + if side > 30.0 { 16.0 } else { 8.0 });
+    let cx = body.center().x;
+    // Drawn at the screen's pixel size (paint_icon), its lines 1.5 points wide.
+    let src = icon.source(side as u32, MUTED());
+    paint_icon(
+        ui,
+        &p,
+        src,
+        Rect::from_center_size(pos2(cx, top + side / 2.0), vec2(side, side)),
+    );
+    let tw = text_width_font(&p, title_font.clone(), title);
+    let mut y = top + side + gap;
+    text_at(&p, title_font, (cx - tw / 2.0).round(), y, title, TEXT());
+    y += 21.0;
+    for line in &lines {
+        let w = text_width(&p, line);
+        text_at(&p, tahoma(), (cx - w / 2.0).round(), y, line, MUTED());
+        y += 16.0;
+    }
+    match action {
+        Some(action) => {
+            let aw = text_width(&p, crate::i18n::t(action));
+            // On screen already: the link is placed in English (mirrored back in RTL).
+            let x = if rtl() {
+                mx(cx + aw / 2.0)
+            } else {
+                cx - aw / 2.0
+            };
+            link(ui, &p, x, y - 16.0 + 27.0, action, id)
+        }
+        None => false,
+    }
+}
+
+/// `s` in `color`, ending at English `right` on `baseline`, with its `mark` before it (a helper's
+/// "Installed", a browser's "Connected"); cut with "..." past the window's near edge, as
+/// [`text_right`]. The text's rect on screen.
+pub fn marked_text_right(
+    ui: &Ui,
+    p: &Painter,
+    right: f32,
+    baseline: f32,
+    mark: crate::icons::Mark,
+    s: &str,
+    color: Color32,
+) -> Rect {
+    let near = window_edges(p).0 + MARK + 4.0;
+    let (rc, _) = text_right_within(p, right, baseline, s, color, near);
+    // The text's start in English: its screen rect's leading edge, mirrored back.
+    let start = if rtl() { mx(rc.right()) } else { rc.left() };
+    state_mark(ui, p, pos2(start - 4.0 - MARK, baseline - 12.0), mark);
+    rc
+}
+
+/// A download's status icon before its status (#2008: the download list's Status column, the
+/// notification area's panel, the Scheduler's files), [`MARK`] points square at English `min`:
+/// the active theme's own `st-*` icon where its set has one, else MDM's
+/// (`crate::icons::StatusIcon`, in the state's colour). `on_selection`: drawn on a selected
+/// row's accent fill, where a one-colour icon takes the selection's text colour.
+pub fn status_icon(
+    ui: &Ui,
+    p: &Painter,
+    kind: crate::icons::StatusIcon,
+    min: Pos2,
+    on_selection: bool,
+) {
+    let rc = rect(Rect::from_min_size(min, vec2(MARK, MARK)));
+    let theme_ink = if on_selection {
+        SELECTION_TEXT()
+    } else {
+        crate::themeicons::ink(true)
+    };
+    if crate::themeicons::paint_inked(ui, p, kind.need(), rc, theme_ink, true) {
+        return;
+    }
+    let ink = if on_selection {
+        SELECTION_TEXT()
+    } else {
+        kind.ink()
+    };
+    paint_icon(ui, p, kind.source(ink), rc);
+}
+
+/// An SVG icon in `rc` (on screen) through `p` (so it keeps to a list's clip), rasterized at the
+/// screen's pixel size on whole pixels, so it stays sharp at every scale.
+fn paint_icon(ui: &Ui, p: &Painter, src: egui::ImageSource<'static>, rc: Rect) {
+    use egui::emath::GuiRounding as _;
+    let rc = rc.round_to_pixels(ui.ctx().pixels_per_point());
+    let img = egui::Image::new(src)
+        .fit_to_exact_size(rc.size())
+        .texture_options(egui::TextureOptions::LINEAR);
+    if let Ok(egui::load::TexturePoll::Ready { texture }) = img.load_for_size(ui.ctx(), rc.size()) {
+        let uv = Rect::from_min_max(pos2(0.0, 0.0), pos2(1.0, 1.0));
+        p.image(texture.id, rc, uv, Color32::WHITE);
+    }
+}
+
 /// What a control is for screen readers (Narrator, NVDA through AccessKit): its role, its name
 /// (the full translated label, "&" taken out), whether it can be used, and for a check box,
 /// radio button, tab or list row whether it is on. Our controls are painted by hand, so egui
 /// can't tell otherwise. Call right after the control's `interact`, before any tooltip.
 /// A line of text a window paints (a status, an error) made readable too: a screen reader and UI
-/// Automation find it as static text at `rc`, by `salt`, with `text` as it reads (no mnemonic).
-pub fn readable(ui: &Ui, rc: Rect, salt: impl std::hash::Hash + std::fmt::Debug, text: &str) {
-    let resp = ui.interact(rc, widget_id(ui, ("readable", salt)), Sense::hover());
+/// Automation find it as static text at `rc`, by `id`, with `text` as it reads (no mnemonic).
+pub fn readable(ui: &Ui, rc: Rect, id: impl std::hash::Hash + std::fmt::Debug, text: &str) {
+    let resp = ui.interact(rc, widget_id(ui, ("readable", id)), Sense::hover());
     let text = text.to_owned();
     resp.widget_info(|| egui::WidgetInfo::labeled(egui::Role::Label, true, &text));
+}
+
+/// A [`readable`] Label that is also a polite live region: a screen reader speaks its text as
+/// it changes, without waiting for the focus to reach it. For rare news such as a failure —
+/// never for progress or percentages, which would interrupt endlessly (#1407).
+pub fn readable_live(ui: &Ui, rc: Rect, id: impl std::hash::Hash + std::fmt::Debug, text: &str) {
+    let resp = ui.interact(rc, widget_id(ui, ("readable", id)), Sense::hover());
+    let text = text.to_owned();
+    resp.widget_info(|| egui::WidgetInfo::labeled(egui::Role::Label, true, &text));
+    resp.ctx.accesskit_node_builder(resp.id, |n| {
+        n.set_live(egui::accesskit::Live::Polite);
+    });
+}
+
+/// The window's own node in the accessibility tree carries the window's title: egui leaves the
+/// root Window node unnamed, so a screen reader met `[frame] ''` where it looks for the window's
+/// name (#1407). The title is passed in, not read back from the OS window — on X11 winit's
+/// `Window::title()` is a stub that returns `""`. Call once a frame on each window's root ui.
+pub fn name_window(ui: &Ui, title: &str) {
+    if title.is_empty() {
+        return;
+    }
+    let resp = ui.interact(ui.max_rect(), egui::accesskit_root_id(), Sense::hover());
+    let title = title.to_owned();
+    resp.widget_info(move || egui::WidgetInfo::labeled(egui::Role::Window, true, &title));
 }
 
 /// A [`paragraph`] a screen reader can read too: its lines painted, then a [`readable`] Label
@@ -5183,14 +5923,51 @@ pub fn readable_paragraph(
     color: Color32,
     right: f32,
     line_h: f32,
-    salt: impl std::hash::Hash + std::fmt::Debug,
+    id: impl std::hash::Hash + std::fmt::Debug,
+) -> usize {
+    readable_paragraph_impl(ui, p, x, baseline, s, color, right, line_h, id, false)
+}
+
+/// A [`readable_paragraph`] that is a polite live region, like [`readable_live`]: its text is
+/// spoken as it changes, without the focus. For rare news such as a failure only (#1407).
+#[allow(clippy::too_many_arguments)]
+pub fn readable_paragraph_live(
+    ui: &Ui,
+    p: &Painter,
+    x: f32,
+    baseline: f32,
+    s: &str,
+    color: Color32,
+    right: f32,
+    line_h: f32,
+    id: impl std::hash::Hash + std::fmt::Debug,
+) -> usize {
+    readable_paragraph_impl(ui, p, x, baseline, s, color, right, line_h, id, true)
+}
+
+#[allow(clippy::too_many_arguments)]
+fn readable_paragraph_impl(
+    ui: &Ui,
+    p: &Painter,
+    x: f32,
+    baseline: f32,
+    s: &str,
+    color: Color32,
+    right: f32,
+    line_h: f32,
+    id: impl std::hash::Hash + std::fmt::Debug,
+    live: bool,
 ) -> usize {
     let lines = paragraph(p, x, baseline, s, color, right, line_h);
     let rc = rect(Rect::from_min_max(
         pos2(x, baseline - 12.0),
         pos2(right, baseline + line_h * (lines as f32 - 1.0) + 4.0),
     ));
-    readable(ui, rc, salt, s);
+    if live {
+        readable_live(ui, rc, id, s);
+    } else {
+        readable(ui, rc, id, s);
+    }
     lines
 }
 
@@ -5265,6 +6042,61 @@ pub fn expose_value(resp: &Response, role: egui::Role, value: &str, enabled: boo
         info.current_text_value = Some(value.clone());
         info
     });
+}
+
+/// A download's progress as a progress bar of its own (#1190, #1406): UI Automation reads it
+/// through the RangeValue pattern, so a reader's own progress reporting — its beeps and
+/// percentages — follows it without anyone moving the focus.
+///
+/// An AccessKit node of its own rather than [`expose`]: egui's `WidgetInfo` carries a value but no
+/// range (`Response::widget_info` sets the numeric value alone), and what a reader follows is a
+/// value inside a range, 0–100 here. Unnamed on purpose: a name is read in place of the value.
+/// `frac` is the download's own fraction, 0..=1.
+pub fn expose_progress(ui: &Ui, rc: Rect, id: egui::Id, frac: f64) {
+    ui.interact(rc, id, Sense::hover());
+    ui.ctx().accesskit_node_builder(id, |n| {
+        n.set_role(egui::Role::ProgressIndicator);
+        // Its rectangle, as egui gives one to every control it makes a node of (response.rs,
+        // fill_accesskit_node_common): without it UI Automation reports the node without any
+        // bounds, so a reader's review keys have nowhere on the bar to land — only its value,
+        // through the RangeValue pattern, would reach them.
+        n.set_bounds(egui::accesskit::Rect {
+            x0: f64::from(rc.min.x),
+            y0: f64::from(rc.min.y),
+            x1: f64::from(rc.max.x),
+            y1: f64::from(rc.max.y),
+        });
+        n.set_min_numeric_value(0.0);
+        n.set_max_numeric_value(100.0);
+        n.set_numeric_value(progress_value(frac));
+    });
+}
+
+/// [`expose_progress`]'s value as UI Automation reads it, 0–100: a figure that outran its own
+/// size (a rounded-up byte count, a file that grew under it) stays inside the range, since one
+/// outside it is dropped by the reader rather than clamped by it.
+fn progress_value(frac: f64) -> f64 {
+    frac.clamp(0.0, 1.0) * 100.0
+}
+
+#[cfg(test)]
+mod progress_value_tests {
+    use super::progress_value;
+
+    #[test]
+    fn a_fraction_becomes_a_percentage() {
+        assert_eq!(progress_value(0.0), 0.0);
+        assert_eq!(progress_value(0.25), 25.0);
+        assert_eq!(progress_value(1.0), 100.0);
+        // 41.3 % through, as the "Downloaded" row says it.
+        assert!((progress_value(0.413) - 41.3).abs() < 1e-9);
+    }
+
+    #[test]
+    fn a_figure_outside_the_fraction_stays_in_the_range() {
+        assert_eq!(progress_value(-0.03), 0.0);
+        assert_eq!(progress_value(1.04), 100.0);
+    }
 }
 
 /// The click of a control that opens a popup, except the one ending the press that just closed
@@ -5725,6 +6557,9 @@ pub fn radio_keys(ui: &Ui, group: &[Response]) -> Option<usize> {
         .map(|k| (at as isize + step * k).rem_euclid(n) as usize)
         .find(|&j| group[j].sense.senses_click())?;
     group[next].request_focus();
+    if ui.ctx().current_pass_index() == 0 {
+        ui.ctx().request_discard("radio group arrow");
+    }
     Some(next)
 }
 
@@ -5914,6 +6749,18 @@ pub fn tabs_light(
             .collect()
     };
     let mut clicked = None;
+    // The strip as a tab list in the accessibility tree, the tabs its children: UI Automation
+    // and AT-SPI read a tab's "of n" from its container, never from the tab itself — so the
+    // count is the strip's, as the download list carries its rows' (list.rs, #1407).
+    let mut strip_ui = ui.new_child(
+        egui::UiBuilder::new()
+            .max_rect(Rect::from_min_max(rc.min, pos2(rc.right(), t)))
+            .accessibility_role(egui::accesskit::Role::TabList),
+    );
+    ui.ctx().accesskit_node_builder(strip_ui.unique_id(), |n| {
+        n.set_size_of_set(tabs.len());
+    });
+    let ui = &mut strip_ui;
     let mut draw = |i: usize, tab: &LightTab, sel: bool| {
         let (sel_x, unsel_x, label_x, shown) = &placed[i];
         let (x0, x1) = if sel { *sel_x } else { *unsel_x };
@@ -5937,6 +6784,8 @@ pub fn tabs_light(
             true,
             Some(sel),
         );
+        // "tab i of n", as a Windows tab control says it (#1407).
+        position_in_set(&resp, i, tabs.len());
         let resp = enter_is_not_a_click(ui, resp);
         if resp.clicked() && !sel {
             clicked = Some(i);
@@ -6001,6 +6850,71 @@ pub fn tabs_light(
         draw(selected, tab, true);
     }
     clicked
+}
+
+#[cfg(test)]
+mod tab_list_tests {
+    use super::*;
+    use egui::accesskit::{Role, TreeUpdate};
+
+    fn pass(count: usize, selected: usize) -> TreeUpdate {
+        let ctx = egui::Context::default();
+        let mut defs = egui::FontDefinitions::default();
+        install_fonts(&mut defs, None);
+        ctx.set_fonts(defs);
+        ctx.enable_accesskit();
+        let labels = ["One", "Two", "Three", "Four"];
+        let tabs: Vec<LightTab> = (0..count)
+            .map(|i| LightTab {
+                label: labels[i],
+                sel: (i as f32 * 60.0, i as f32 * 60.0 + 62.0),
+                unsel: (i as f32 * 60.0 + 2.0, i as f32 * 60.0 + 60.0),
+            })
+            .collect();
+        let input = egui::RawInput {
+            screen_rect: Some(Rect::from_min_size(Pos2::ZERO, egui::vec2(500.0, 400.0))),
+            ..Default::default()
+        };
+        let mut out = ctx.run_ui(input, |ui| {
+            let rc = Rect::from_min_size(pos2(10.0, 10.0), egui::vec2(400.0, 300.0));
+            tabs_light(ui, pos2(10.0, 10.0), rc, &tabs, selected);
+        });
+        out.textures_delta.clear();
+        out.platform_output
+            .accesskit_update
+            .expect("AccessKit is on")
+    }
+
+    #[test]
+    fn the_strip_is_a_tab_list_holding_its_tabs() {
+        // UI Automation and AT-SPI read a tab's "of n" from its container (#1407): the strip
+        // says the count, the tabs are its children, each with its place.
+        let u = pass(3, 1);
+        let strip = u
+            .nodes
+            .iter()
+            .find(|(_, n)| n.role() == Role::TabList)
+            .map(|(_, n)| n)
+            .expect("the strip is a tab list");
+        assert_eq!(strip.size_of_set(), Some(3));
+        let mut tabs: Vec<&egui::accesskit::Node> = u
+            .nodes
+            .iter()
+            .filter(|(_, n)| n.role() == Role::Tab)
+            .map(|(_, n)| n)
+            .collect();
+        assert_eq!(tabs.len(), 3);
+        tabs.sort_by_key(|n| n.position_in_set());
+        for (i, tab) in tabs.iter().enumerate() {
+            assert_eq!(tab.position_in_set(), Some(i));
+        }
+        for (id, _) in u.nodes.iter().filter(|(_, n)| n.role() == Role::Tab) {
+            assert!(
+                strip.children().contains(id),
+                "every tab is the tab list's child"
+            );
+        }
+    }
 }
 
 /// The 8 × 5 "v" of drop-downs, its top-left at `at`.
@@ -6076,6 +6990,21 @@ pub fn combo_light(
     enabled: bool,
     id: &str,
 ) -> Option<usize> {
+    combo_light_icons(ui, rc, items, &[], selected, enabled, id)
+}
+
+/// [`combo_light`] whose items start with `icons` (one per item, by index; none past its end),
+/// on its face and in its list (#2008): Options' category, Download Later's queue, Sites Logins'
+/// browser. The same icon each thing has elsewhere in MDM.
+pub fn combo_light_icons(
+    ui: &mut Ui,
+    rc: Rect,
+    items: &[&str],
+    icons: &[ItemIcon],
+    selected: usize,
+    enabled: bool,
+    id: &str,
+) -> Option<usize> {
     let key = widget_id(ui, ("combo-light", id));
     let sense = if enabled {
         Sense::click()
@@ -6088,6 +7017,9 @@ pub fn combo_light(
     focus_on_press(&resp);
     keep_keys(ui, &resp, false, true, false);
     let mut open = ui.data(|d| d.get_temp::<bool>(key).unwrap_or(false)) && enabled;
+    if enabled && take_open_for_shot(id) {
+        open = true;
+    }
     let popup_id = format!("combo-light-{}", key.short_debug_format());
     let mut chosen = None;
     let last = items.len().saturating_sub(1);
@@ -6140,12 +7072,19 @@ pub fn combo_light(
     if enabled && let Some(i) = assistive_choice(&resp, items, &mut open) {
         chosen = Some(i).filter(|i| *i != selected);
     }
+    // The chosen item's icon before its label.
+    let room = if let Some(icon) = icons.get(selected) {
+        item_icon(ui, &p, icon, face_icon_rect(rc), color, enabled);
+        ITEM_ICON_ROOM
+    } else {
+        0.0
+    };
     // Cut with "..." before the chevron when too long (a translation), whole on hover.
-    let label = ellipsize(&p, &tahoma(), full, rc.width() - 5.0 - 19.0);
+    let label = ellipsize(&p, &tahoma(), full, rc.width() - 5.0 - 19.0 - room);
     let drawn = text_start(
         &p,
         tahoma(),
-        lead(rc) + 5.0 * fwd(),
+        lead(rc) + (5.0 + room) * fwd(),
         rc.top() + 13.0,
         &label,
         color,
@@ -6179,13 +7118,13 @@ pub fn combo_light(
         } else {
             rc.left_bottom()
         };
-        match crate::chrome::popup(
+        match crate::chrome::popup_icons(
             ui.ctx(),
             crate::chrome::MenuKind::List,
             &popup_id,
             at,
             &entries,
-            &|_| None,
+            &|i| icons.get(*i).cloned(),
         ) {
             PopupResult::Chosen(i) => {
                 open = false;
@@ -7324,6 +8263,40 @@ pub mod caption {
 mod tests {
     use super::*;
 
+    /// #2008: a drop-down's item icon sits 5 points in from its leading edge, centred in its
+    /// height on a whole point, the label after it; at the right in a right-to-left interface.
+    #[test]
+    fn a_drop_downs_icon_leads_its_label() {
+        let rc = Rect::from_min_size(pos2(100.0, 40.0), vec2(200.0, 21.0));
+        let ltr = face_icon_rect(rc);
+        assert_eq!(
+            ltr,
+            Rect::from_min_size(pos2(105.0, 42.0), vec2(MARK, MARK))
+        );
+        let _rtl = Surface::enter_if(true, 0.0, 400.0);
+        let rtl = face_icon_rect(rc);
+        assert_eq!(
+            rtl,
+            Rect::from_min_size(pos2(279.0, 42.0), vec2(MARK, MARK))
+        );
+        assert_eq!(ITEM_ICON_ROOM, MARK + 5.0);
+    }
+
+    /// #2008: a message line's mark goes at its x, its text after it; no mark, no room taken.
+    #[test]
+    fn a_message_lines_text_hangs_after_its_mark() {
+        let ctx = egui::Context::default();
+        let mut out = ctx.run_ui(egui::RawInput::default(), |ui| {
+            let p = ui.painter().clone();
+            assert_eq!(note_mark(ui, &p, 11.0, 30.0, None), 11.0);
+            assert_eq!(
+                note_mark(ui, &p, 11.0, 30.0, Some(crate::icons::Mark::Fail)),
+                11.0 + NOTE_INDENT
+            );
+        });
+        out.textures_delta.clear();
+    }
+
     /// #1192: every system dialog `start_pick` shows is counted open while it runs (the freeze
     /// watchdog doesn't take macOS's window thread in it for a frozen window), and closed once
     /// answered, or when the code that shows it panics.
@@ -7468,6 +8441,26 @@ mod tests {
             }
         });
         out.textures_delta.clear();
+    }
+
+    #[test]
+    fn a_note_stops_at_the_bottom_of_its_page() {
+        with_painter(|p| {
+            // Room for three lines of 13 px from 438: 438, 451, 464; 474 is the page's edge, so
+            // the fourth (477) is left out.
+            assert_eq!(lines_that_fit(438.0, 474.0, 13.0), 3);
+            assert_eq!(lines_that_fit(438.0, 481.0, 13.0), 4);
+            // A page with no room at all keeps one line, and no zero-line paragraph.
+            assert_eq!(lines_that_fit(438.0, 430.0, 13.0), 1);
+            let lines: Vec<String> = ["one", "two", "three", "four"].map(String::from).to_vec();
+            let shown = lines_until(p, &lines, 3, 300.0);
+            assert_eq!(shown.len(), 3);
+            // The left-out lines are said by the last one's "...", inside its room.
+            assert!(shown[2].ends_with("..."), "{shown:?}");
+            assert!(text_width(p, &shown[2]) <= 300.0);
+            // Every line fits: drawn as they are.
+            assert_eq!(lines_until(p, &lines, 4, 300.0), lines);
+        });
     }
 
     #[test]
@@ -9059,6 +10052,11 @@ example.org"; // values typed in, not texts to translate
             sentence_names("{hours} h: {mb} MB", &["mb", "hours"]),
             vec!["h: MB".to_owned(), "h:".to_owned()]
         );
+        // #1662: two boxes, each after its own words: the words between them are the second's.
+        assert_eq!(
+            sentence_names("from {from} to {to}", &["from", "to"]),
+            vec!["from".to_owned(), "to".to_owned()]
+        );
         // A box alone on its line takes the sentence's own words, placeholders dropped; a
         // sentence of nothing but the box names it with nothing.
         assert_eq!(
@@ -9224,5 +10222,96 @@ example.org"; // values typed in, not texts to translate
             );
         });
         out.textures_delta.clear();
+    }
+
+    /// #1692: each round radio button is a RadioButton with Click, Focus and its checked state
+    /// (Toggled, which AccessKit maps to UI Automation's SelectionItem and AT-SPI's Checked), and
+    /// pressing an unselected one through AccessKit (or moving with the arrows) updates both
+    /// buttons' states in that same frame's tree, without waiting for a later repaint.
+    #[test]
+    fn a_radio_group_answers_assistive_select_in_the_same_frame() {
+        use egui::accesskit::{Action, Role, Toggled};
+        let ctx = egui::Context::default();
+        ctx.enable_accesskit();
+        // Labels from variables: the catalog's extractor takes literal ones as texts to translate.
+        let (first, second) = ("Quick cut", "Exact cut");
+        let run = |choice: &mut usize, events: Vec<egui::Event>| {
+            let mut ids = [egui::Id::NULL; 2];
+            let mut out = ctx.run_ui(
+                egui::RawInput {
+                    events,
+                    focused: true,
+                    ..Default::default()
+                },
+                |ui| {
+                    let a = radio_light(ui, pos2(20.0, 20.0), *choice == 0, first, true);
+                    if a.clicked() {
+                        *choice = 0;
+                    }
+                    let b = radio_light(ui, pos2(140.0, 20.0), *choice == 1, second, true);
+                    if b.clicked() {
+                        *choice = 1;
+                    }
+                    if let Some(i) = radio_keys(ui, &[a.clone(), b.clone()]) {
+                        *choice = i;
+                    }
+                    ids = [a.id, b.id];
+                },
+            );
+            out.textures_delta.clear();
+            let tree = out
+                .platform_output
+                .accesskit_update
+                .expect("AccessKit tree");
+            let state_of = |id: egui::Id| {
+                let (_, n) = tree
+                    .nodes
+                    .iter()
+                    .find(|(nid, _)| *nid == id.accesskit_id())
+                    .expect("radio node");
+                assert_eq!(n.role(), Role::RadioButton);
+                assert!(n.supports_action(Action::Click));
+                assert!(n.supports_action(Action::Focus));
+                (n.label().unwrap_or("").to_owned(), n.toggled())
+            };
+            (
+                ids,
+                state_of(ids[0]),
+                state_of(ids[1]),
+                tree.focus,
+                out.platform_output.events,
+            )
+        };
+
+        let mut choice = 0;
+        let (ids, a, b, _, _) = run(&mut choice, vec![]);
+        assert_eq!(a, (first.to_owned(), Some(Toggled::True)));
+        assert_eq!(b, (second.to_owned(), Some(Toggled::False)));
+
+        // UI Automation's SelectionItem.Select() (and AT-SPI's "click") sends Action::Click: in
+        // this single frame, the chosen radio turns True, the previous one False, and focus moves.
+        let (ids, a, b, focus, events) =
+            run(&mut choice, vec![ask(ids[1].accesskit_id(), Action::Click)]);
+        assert_eq!(choice, 1);
+        assert_eq!(a, (first.to_owned(), Some(Toggled::False)));
+        assert_eq!(b, (second.to_owned(), Some(Toggled::True)));
+        assert_eq!(focus, ids[1].accesskit_id());
+        assert!(events.iter().any(|e| {
+            matches!(e, egui::output::OutputEvent::Clicked(info) if info.selected == Some(true))
+        }));
+
+        // An arrow key in the group switches back in the same frame too.
+        let left = egui::Event::Key {
+            key: egui::Key::ArrowLeft,
+            physical_key: None,
+            pressed: true,
+            repeat: false,
+            modifiers: egui::Modifiers::NONE,
+        };
+        let (ids, a, b, focus, _) = run(&mut choice, vec![left]);
+        assert_eq!(choice, 0);
+        assert_eq!(a, (first.to_owned(), Some(Toggled::True)));
+        assert_eq!(b, (second.to_owned(), Some(Toggled::False)));
+        assert_eq!(focus, ids[0].accesskit_id());
     }
 }

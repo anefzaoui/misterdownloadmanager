@@ -355,11 +355,18 @@ pub struct Progress {
     /// A live stream's window, once seen as one: its Pause button is laid out for "Stop and
     /// save" too, and keeps that size when the label changes back.
     live_stream: bool,
+    /// An endless stream's window (#1780), once seen as one: its Pause button is laid out for
+    /// "Stop and keep" too, as `live_stream`'s for "Stop and save".
+    endless: bool,
 }
 
 pub enum Action {
     None,
     Pause,
+    /// Stop and keep (#1780): an endless stream's button ends it and keeps what arrived as its
+    /// finished file (`App::keep_by_hand`). The only way to keep one: every other stop keeps
+    /// nothing, as for any download a server can't resume.
+    Keep,
     Resume,
     /// Stop the download and close the dialog.
     Cancel,
@@ -427,6 +434,7 @@ impl Progress {
             rename_guard_stamp: None,
             rename_guard: None,
             live_stream: false,
+            endless: false,
         }
     }
 
@@ -598,6 +606,7 @@ impl Progress {
         // The window, once its frame is applied (Windows: its caption parts go to its hit test).
         let action = ctx.show_viewport_immediate(vid, builder, |ui, _| {
             crate::dialogs::keyboard_to_click(ui.ctx());
+            winui::name_window(ui, &title_now);
             // Painted in the pass that closes it too (see dialogs::close_requested).
             let close = crate::dialogs::close_requested(ui);
             if !close && minimize_hides && ui.ctx().input(|i| i.viewport().minimized == Some(true))
@@ -784,9 +793,19 @@ impl Progress {
         // the file is checked or a video joined (#736), it starts again in the accent colour and
         // shows how far that is.
         let bar = r(lower, 17.0, 180.0, 513.0, 16.0);
-        match finishing_fraction(snap) {
+        let finishing = finishing_fraction(snap);
+        match finishing {
             Some(f) => winui::meter_in(&p, bar, f as f32, crate::theme::colors().accent),
             None => winui::meter(&p, bar, drawn.0 as f32),
+        }
+        // The same bar for a screen reader (#1406): the value it fills towards, which is what the
+        // page's own text says (the download's fraction; while the last bytes are checked or a
+        // video's streams joined, how far that is). Unnamed, as the list's rows are: a name is
+        // read in place of the value. A download whose size isn't known has no percentage to tell
+        // and gets no node, and neither has one that is finished (the bar is full, the text says
+        // Complete).
+        if let Some(f) = finishing.or(frac) {
+            winui::expose_progress(ui, bar, egui::Id::unique(("progress", item.id, "bar")), f);
         }
 
         let mut action = if hide { Action::Hide } else { Action::None };
@@ -812,6 +831,8 @@ impl Progress {
         let live = item.live_state();
         self.live_stream |=
             live.is_some() || matches!(item.video_helper(), Some(mdm_tools::streams::Helper::Live));
+        let endless = item.endless();
+        self.endless |= endless;
         let mut row = vec![
             (
                 winui::widest_label(&p, &["<< Hide details", "Show details >>"]),
@@ -819,7 +840,7 @@ impl Progress {
                 138.0,
             ),
             (
-                winui::widest_label(&p, pause_labels(self.live_stream)),
+                winui::widest_label(&p, pause_labels(self.live_stream, self.endless)),
                 311.0,
                 82.0,
             ),
@@ -865,7 +886,7 @@ impl Progress {
             self.details = !self.details;
         }
         let running = item.status == Status::Downloading;
-        let (label, pkind) = pause_button(item.status, live);
+        let (label, pkind) = pause_button(item.status, live, endless);
         if winui::button(
             ui,
             r(lower, pause_at.0, 206.0, pause_at.1, 22.0),
@@ -876,11 +897,7 @@ impl Progress {
         )
         .clicked()
         {
-            action = if running {
-                Action::Pause
-            } else {
-                Action::Resume
-            };
+            action = pause_action(running, live, endless);
         }
         if winui::button(
             ui,
@@ -1374,6 +1391,26 @@ impl Progress {
                 winui::text_fit(p, o.x + x, o.y + base, s, color, o.x + PAGE_TEXT_RIGHT);
             winui::copyable(ui, rect, key, s, cut);
         };
+
+        // Each row as a node of its own, named by its caption and carrying its value (#1406):
+        // the page paints them, and painted text is invisible to a reader on its own. The whole
+        // value is said, even where the row itself shows it cut with "..." ([fit] draws the cut
+        // one). A focusable label, as the help windows' blocks are (#1407): read with Tab, or
+        // from the reader's own review keys, without touching the copy menu the value keeps
+        // (Sense::focusable_noninteractive senses no clicks).
+        let spoken = |ui: &Ui, label: &str, base: f32, value: &str| {
+            let name = spoken_name(crate::i18n::t(label), value);
+            let rc = winui::rect(egui::Rect::from_min_max(
+                egui::pos2(o.x + 33.0, o.y + base - 12.0),
+                egui::pos2(o.x + PAGE_TEXT_RIGHT, o.y + base + 4.0),
+            ));
+            let resp = ui.interact(
+                rc,
+                egui::Id::unique(("status-row", item.id, label)),
+                egui::Sense::focusable_noninteractive(),
+            );
+            winui::expose(&resp, egui::Role::Label, &name, true, None);
+        };
         let web_page = item.got_web_page();
         // A failure that takes a paragraph to explain: the reason under "Error", in the rows of
         // the sizes and times, which say nothing then (a site's page, #701; an answer far smaller
@@ -1446,6 +1483,12 @@ impl Progress {
             // A video's stream, not its page (#795).
             &crate::i18n::ltr(item.file_address().as_str()),
             winui::TEXT(),
+        );
+        spoken(
+            ui,
+            "Address",
+            44.0,
+            &crate::i18n::ltr(item.file_address().as_str()),
         );
         let rows: [(&str, f32, f32, String); 6] = [
             // i18n: noun: label before the download's state
@@ -1542,6 +1585,7 @@ impl Progress {
                 winui::TEXT()
             };
             fit(ui, label, vx, base, &value, vc);
+            spoken(ui, label, base, &value);
         }
         if explained {
             winui::paragraph(
@@ -2100,6 +2144,40 @@ pub(crate) fn files_table(
     )
 }
 
+/// Zip preview's table of a ZIP's files (#1775, zippreview.rs), ticked or not: each one's name
+/// (its path in the archive), its packed size, its size and when it was last changed. The row
+/// whose box was clicked.
+pub(crate) fn zip_table(
+    ui: &mut Ui,
+    p: &egui::Painter,
+    o: Pos2,
+    id: &str,
+    rows: &[Vec<String>],
+    checks: &[bool],
+    shown: usize,
+) -> Option<usize> {
+    table_sized(
+        ui,
+        p,
+        o,
+        id,
+        &[
+            // i18n: Zip preview's column: the file's name (its path inside the ZIP)
+            (25.0, crate::i18n::mark("File Name")),
+            // i18n: Zip preview's column: the file's size as packed (compressed) inside the ZIP
+            (225.0, crate::i18n::mark("Packed")),
+            (295.0, crate::i18n::mark("Size")),
+            // i18n: Zip preview's column: when the file was last changed, as the ZIP says
+            (365.0, crate::i18n::mark("Modified")),
+        ],
+        &[220.0, 290.0, 360.0],
+        rows,
+        true,
+        Some(checks),
+        shown,
+    )
+}
+
 /// The height of a [`table_sized`] of `shown` rows' body (the progress window's 6: 100 px).
 pub(crate) fn table_body_height(shown: usize) -> f32 {
     17.0 * shown as f32 - 2.0
@@ -2335,17 +2413,37 @@ fn segment_bar(p: &egui::Painter, o: Pos2, item: &Item, segments: &[(u64, f64)])
     }
 }
 
+/// What the Pause button does (`pause_button` says it): resume a stopped download, keep an
+/// endless stream (#1780, its only way to be kept), else pause (a live recording is saved by
+/// the app's `halt`).
+fn pause_action(running: bool, live: Option<mdm_tools::video::LiveState>, endless: bool) -> Action {
+    if !running {
+        Action::Resume
+    } else if endless && live.is_none() {
+        Action::Keep
+    } else {
+        Action::Pause
+    }
+}
+
 /// The Pause button's label and kind: a live stream being recorded is stopped and saved (still
-/// `Action::Pause`, the app's `halt` saves it), and while it is saved the button waits.
+/// `Action::Pause`, the app's `halt` saves it), and while it is saved the button waits. An
+/// endless stream (`Item::endless`, #1780) is stopped and kept (`Action::Keep`): only by this
+/// button, its other stops keep nothing.
 pub(crate) fn pause_button(
     status: Status,
     live: Option<mdm_tools::video::LiveState>,
+    endless: bool,
 ) -> (&'static str, ButtonKind) {
     use mdm_tools::video::LiveState;
     match live {
         // i18n: button in a live stream's progress window: stop recording it and keep what was recorded as a video file
         Some(LiveState::Recording) => (crate::i18n::mark("Stop and save"), ButtonKind::Normal),
         Some(LiveState::Saving) => (crate::i18n::mark("Stop and save"), ButtonKind::Disabled),
+        None if endless && status == Status::Downloading => {
+            // i18n: button in the progress window of a download that never ends by itself (an internet radio, a camera feed: no size, can't be resumed): stop it and keep what has arrived as the finished file
+            (crate::i18n::mark("Stop and keep"), ButtonKind::Normal)
+        }
         None => match status {
             // i18n: verb: pause the download
             Status::Downloading => (crate::i18n::mark("Pause"), ButtonKind::Normal),
@@ -2357,12 +2455,14 @@ pub(crate) fn pause_button(
 }
 
 /// The labels the Pause button can show for one download, its width the widest's: "Stop and
-/// save" only in a live stream's window, so no other's buttons move.
-pub(crate) fn pause_labels(live_stream: bool) -> &'static [&'static str] {
-    if live_stream {
-        &["Pause", "Resume", "Stop and save"]
-    } else {
-        &["Pause", "Resume"]
+/// save" only in a live stream's window, "Stop and keep" only in an endless stream's (#1780), so
+/// no other's buttons move.
+pub(crate) fn pause_labels(live_stream: bool, endless: bool) -> &'static [&'static str] {
+    match (live_stream, endless) {
+        (true, false) => &["Pause", "Resume", "Stop and save"],
+        (false, true) => &["Pause", "Resume", "Stop and keep"],
+        (true, true) => &["Pause", "Resume", "Stop and save", "Stop and keep"],
+        (false, false) => &["Pause", "Resume"],
     }
 }
 
@@ -2541,9 +2641,46 @@ fn connections(ui: &mut Ui, p: &egui::Painter, o: Pos2, snap: Option<&Snapshot>)
     );
 }
 
+/// A status row's name for a screen reader: its caption, then its whole value, with every `&`
+/// doubled. [`winui::expose`] reads a single `&` as a keyboard mnemonic and drops it — right for a
+/// button's own label, and wrong here, where the row draws its caption and its value as they are:
+/// an address with a query string (`?seed=1406&rate=24K`) has to be read whole, and a file name
+/// with one too (#1406, the review's fix: `expose` turns `&&` back into one `&`).
+fn spoken_name(caption: &str, value: &str) -> String {
+    let name = if value.is_empty() {
+        caption.to_owned()
+    } else {
+        format!("{caption}: {value}")
+    };
+    name.replace('&', "&&")
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    /// The name a row is said with: caption, then value, and the value's own `&` doubled so that
+    /// `winui::expose` (which reads `&&` as one `&`) says the address whole.
+    #[test]
+    fn a_row_with_a_query_string_is_said_whole() {
+        assert_eq!(
+            spoken_name(
+                "Address",
+                "http://127.0.0.1:8099/gen/2G/a.bin?seed=1406&rate=24K&Expires=7"
+            ),
+            "Address: http://127.0.0.1:8099/gen/2G/a.bin?seed=1406&&rate=24K&&Expires=7"
+        );
+        // A file name with one, in any row's value (and the caption as it is drawn: no `&` there).
+        assert_eq!(
+            spoken_name("File size", "2.000 GB & more"),
+            "File size: 2.000 GB && more"
+        );
+    }
+
+    #[test]
+    fn a_row_without_a_value_is_its_caption_alone() {
+        assert_eq!(spoken_name("Time left", ""), "Time left");
+    }
 
     /// A live stream being recorded: its Pause button stops and saves it; while it is saved
     /// the button waits; every other download's is Pause or Resume as before. Only a live
@@ -2551,8 +2688,8 @@ mod tests {
     #[test]
     fn a_recording_live_streams_pause_button_stops_and_saves_it() {
         use mdm_tools::video::LiveState;
-        let label = |status, live| pause_button(status, live).0;
-        let enabled = |status, live| pause_button(status, live).1 != ButtonKind::Disabled;
+        let label = |status, live| pause_button(status, live, false).0;
+        let enabled = |status, live| pause_button(status, live, false).1 != ButtonKind::Disabled;
         let recording = Some(LiveState::Recording);
         let saving = Some(LiveState::Saving);
         assert_eq!(label(Status::Downloading, recording), "Stop and save");
@@ -2576,11 +2713,57 @@ mod tests {
             Status::Queued,
         ] {
             for live in [None, recording, saving] {
-                assert!(pause_labels(true).contains(&label(status, live)));
+                assert!(pause_labels(true, false).contains(&label(status, live)));
             }
-            assert!(pause_labels(false).contains(&label(status, None)));
+            assert!(pause_labels(false, false).contains(&label(status, None)));
         }
-        assert!(!pause_labels(false).contains(&"Stop and save"));
+        assert!(!pause_labels(false, false).contains(&"Stop and save"));
+    }
+
+    /// An endless stream (#1780) running: its Pause button stops and keeps it; stopped (by
+    /// Cancel) it resumes as any other; only its window lays the button out for "Stop and keep".
+    #[test]
+    fn an_endless_streams_pause_button_stops_and_keeps_it() {
+        let label = |status| pause_button(status, None, true).0;
+        assert_eq!(label(Status::Downloading), "Stop and keep");
+        assert!(pause_button(Status::Downloading, None, true).1 == ButtonKind::Normal);
+        for status in [Status::Stopped, Status::Error] {
+            assert_eq!(label(status), "Resume");
+        }
+        for status in [Status::Queued, Status::Complete] {
+            assert_eq!(label(status), "Pause");
+            assert!(pause_button(status, None, true).1 == ButtonKind::Disabled);
+        }
+        for status in [
+            Status::Downloading,
+            Status::Stopped,
+            Status::Error,
+            Status::Queued,
+            Status::Complete,
+        ] {
+            assert!(pause_labels(false, true).contains(&label(status)));
+            assert!(pause_labels(true, true).contains(&label(status)));
+        }
+        assert!(!pause_labels(false, false).contains(&"Stop and keep"));
+        assert!(!pause_labels(true, false).contains(&"Stop and keep"));
+    }
+
+    /// The button keeps only an endless stream it shows "Stop and keep" for (the app's
+    /// `keep_by_hand`); every other running download pauses (a recording saves), a stopped one
+    /// resumes.
+    #[test]
+    fn only_an_endless_streams_button_keeps_it() {
+        use mdm_tools::video::LiveState;
+        assert!(matches!(pause_action(true, None, true), Action::Keep));
+        assert!(matches!(pause_action(true, None, false), Action::Pause));
+        let recording = Some(LiveState::Recording);
+        assert!(matches!(
+            pause_action(true, recording, false),
+            Action::Pause
+        ));
+        for endless in [false, true] {
+            assert!(matches!(pause_action(false, None, endless), Action::Resume));
+        }
     }
 
     /// A live stream's status says it is saved, else that it records, before anything else

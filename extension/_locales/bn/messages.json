@@ -284,6 +284,64 @@
   "popup_media_title_name": {
     "message": "মিডিয়া ফাইলের নামের আগে পেজের শিরোনাম যোগ করুন"
   },
+  "popup_images": {
+    "message": "এই পেজের ছবি"
+  },
+  "popup_images_text": {
+    "message": "এই পেজের ছবিগুলো সবচেয়ে বড় আকারে খুঁজুন, তারপর আপনি যেগুলো চান সেগুলো লিংক গ্র্যাবাবে পাঠান।"
+  },
+  "popup_images_find": {
+    "message": "ছবি খুঁজুন"
+  },
+  "popup_images_min": {
+    "message": "পিক্সেল-এ ক্ষুদ্রতম আকার"
+  },
+  "popup_images_width": {
+    "message": "সবচেয়ে কম প্রস্থ, পিক্সেল-এ"
+  },
+  "popup_images_height": {
+    "message": "সবচেয়ে কম উচ্চতা, পিক্সেল-এ"
+  },
+  "popup_images_types": {
+    "message": "ছবির প্রকার"
+  },
+  "popup_images_other": {
+    "message": "অন্যান্য"
+  },
+  "popup_images_count": {
+    "message": "নির্বাচিত $total$টির মধ্যে $shown$টি",
+    "placeholders": {
+      "shown": {
+        "content": "$1",
+        "example": "12"
+      },
+      "total": {
+        "content": "$2",
+        "example": "40"
+      }
+    }
+  },
+  "popup_images_unsized": {
+    "message": "আকার দেওয়া হয়নি, রাখা হয়েছে: $n$টি",
+    "placeholders": {
+      "n": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "popup_images_send": {
+    "message": "লিংক গ্র্যাবাবে পাঠান"
+  },
+  "popup_images_sent": {
+    "message": "লিংক গ্র্যাবাবে পাঠানো হয়েছে: সেখানে ডাউনলোড করার জন্য টিক দিন।"
+  },
+  "popup_images_none": {
+    "message": "এই পেজে কোনো ছবি পাওয়া যায়নি।"
+  },
+  "popup_images_unreadable": {
+    "message": "ব্রাউজার অ্যাড-অনগুলোকে এই পেজ পড়তে দেয় না।"
+  },
   "video_cant_save": {
     "message": "সংরক্ষণ করা যাবে না"
   },
@@ -291,7 +349,7 @@
     "message": "পোস্ট খুলুন"
   },
   "video_drag_dots": {
-    "message": "প্রান্ত বরাবর সরাতে বিন্দুগুলো টেনে আনুন"
+    "message": "অন্য কোণায় বা ভিডিওর বাইরে সরাতে ডটগুলো টেনে আনুন"
   },
   "video_tip": {
     "message": "$what$ ডাউনলোড করুন",
@@ -331,6 +389,9 @@
   },
   "video_all_qualities": {
     "message": "সব গুণমান এবং সাবটাইটেল..."
+  },
+  "video_part": {
+    "message": "এখান থেকে একটি অংশ ডাউনলোড করুন..."
   },
   "video_failed": {
     "message": "Mister Download Manager ইনস্টল করা নেই বা চালু হয়নি"
@@ -759,5 +820,108 @@
   },
   "popup_dl_open_remote": {
     "message": "এর পেজ খুলুন"
+  },
+  "video_home": {
+    "message": "বোতামটি তার কোণায় ফিরিয়ে আনুন"
+  },
+  "video_filter_all": {
+    "message": "সব"
+  },
+  "video_filter_audio": {
+    "message": "শুধু অডিও"
+  },
+  "video_filter_kind": {
+    "message": "দেখান"
+  },
+  "video_filter_type": {
+    "message": "ফাইলের ধরন"
+  },
+  "video_filter_codec": {
+    "message": "কোডেক"
+  },
+  "popup_video_reset_text": {
+    "message": "ভিডিওর উপর ডাউনলোড বোতাম"
+  },
+  "popup_video_reset_sub": {
+    "message": "যেখানে আপনি এটি সরিয়েছিলেন এবং প্রতিটি সাইটে এর মেনুর ফিল্টারগুলো"
+  },
+  "popup_video_reset": {
+    "message": "রিসেট করুন"
+  },
+  "popup_video_reset_done": {
+    "message": "তার কোণায় ফিরে এসেছে, তার মেনু সবকিছু দেখাচ্ছে, প্রতিটি সাইটে"
+  },
+  "status_links_sent": {
+    "message": "লিংক পাঠানো হয়েছে: $count$",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "10"
+      }
+    }
+  },
+  "status_links_cut": {
+    "message": "লিংক পাঠানো হয়েছে: $sent$, $left$টি বাদ দেওয়া হয়েছে",
+    "placeholders": {
+      "sent": {
+        "content": "$1",
+        "example": "100"
+      },
+      "left": {
+        "content": "$2",
+        "example": "20"
+      }
+    }
+  },
+  "status_links_partial": {
+    "message": "লিংক পাঠানো হয়েছে: $sent$, প্রত্যাখ্যান করা হয়েছে: $refused$",
+    "placeholders": {
+      "sent": {
+        "content": "$1",
+        "example": "5"
+      },
+      "refused": {
+        "content": "$2",
+        "example": "2"
+      }
+    }
+  },
+  "status_links_partial_cut": {
+    "message": "লিংক পাঠানো হয়েছে: $sent$, প্রত্যাখ্যান করা হয়েছে: $refused$, $left$টি বাদ দেওয়া হয়েছে",
+    "placeholders": {
+      "sent": {
+        "content": "$1",
+        "example": "5"
+      },
+      "refused": {
+        "content": "$2",
+        "example": "2"
+      },
+      "left": {
+        "content": "$3",
+        "example": "1"
+      }
+    }
+  },
+  "status_links_refused": {
+    "message": "লিংক প্রত্যাখ্যান করা হয়েছে: $count$",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "status_links_none": {
+    "message": "ক্যাপচার করা যায় এমন কোনো লিংক নেই ($left$টি বাদ দেওয়া হয়েছে)",
+    "placeholders": {
+      "left": {
+        "content": "$1",
+        "example": "5"
+      }
+    }
+  },
+  "status_unreachable": {
+    "message": "সার্ভারে পৌঁছানো যায়নি"
   }
 }

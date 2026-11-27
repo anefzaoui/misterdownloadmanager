@@ -284,6 +284,64 @@
   "popup_media_title_name": {
     "message": "Aggiungi il titolo della pagina davanti ai nomi dei file multimediali"
   },
+  "popup_images": {
+    "message": "Immagini in questa pagina"
+  },
+  "popup_images_text": {
+    "message": "Trova le immagini di questa pagina nella dimensione più grande elencata, poi invia quelle che vuoi a Link grabber."
+  },
+  "popup_images_find": {
+    "message": "Trova immagini"
+  },
+  "popup_images_min": {
+    "message": "Dimensioni minime, in pixel"
+  },
+  "popup_images_width": {
+    "message": "Larghezza minima, in pixel"
+  },
+  "popup_images_height": {
+    "message": "Altezza minima, in pixel"
+  },
+  "popup_images_types": {
+    "message": "Tipi di immagine"
+  },
+  "popup_images_other": {
+    "message": "Altro"
+  },
+  "popup_images_count": {
+    "message": "$shown$ di $total$ selezionate",
+    "placeholders": {
+      "shown": {
+        "content": "$1",
+        "example": "12"
+      },
+      "total": {
+        "content": "$2",
+        "example": "40"
+      }
+    }
+  },
+  "popup_images_unsized": {
+    "message": "Dimensioni non indicate, immagini mantenute: $n$",
+    "placeholders": {
+      "n": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "popup_images_send": {
+    "message": "Invia a Link grabber"
+  },
+  "popup_images_sent": {
+    "message": "Inviate a Link grabber: seleziona lì quelle da scaricare."
+  },
+  "popup_images_none": {
+    "message": "Nessuna immagine trovata in questa pagina."
+  },
+  "popup_images_unreadable": {
+    "message": "Il browser non consente agli add-on di leggere questa pagina."
+  },
   "video_cant_save": {
     "message": "non può essere salvato"
   },
@@ -291,7 +349,7 @@
     "message": "Apri post"
   },
   "video_drag_dots": {
-    "message": "Trascina i puntini per spostarlo lungo il bordo"
+    "message": "Trascina i puntini per spostarlo in un altro angolo o fuori dal video"
   },
   "video_tip": {
     "message": "Scarica $what$",
@@ -331,6 +389,9 @@
   },
   "video_all_qualities": {
     "message": "Tutte le qualità e i sottotitoli..."
+  },
+  "video_part": {
+    "message": "Scarica una parte da qui..."
   },
   "video_failed": {
     "message": "Mister Download Manager non è installato o non si è avviato"
@@ -759,5 +820,108 @@
   },
   "popup_dl_open_remote": {
     "message": "Apri la sua pagina"
+  },
+  "video_home": {
+    "message": "Riporta il pulsante al suo posto"
+  },
+  "video_filter_all": {
+    "message": "Tutti"
+  },
+  "video_filter_audio": {
+    "message": "Solo audio"
+  },
+  "video_filter_kind": {
+    "message": "Mostra"
+  },
+  "video_filter_type": {
+    "message": "Tipo di file"
+  },
+  "video_filter_codec": {
+    "message": "Codec"
+  },
+  "popup_video_reset_text": {
+    "message": "Pulsante di download sui video"
+  },
+  "popup_video_reset_sub": {
+    "message": "Dove lo hai spostato e i filtri del suo menu, su ogni sito"
+  },
+  "popup_video_reset": {
+    "message": "Reimposta"
+  },
+  "popup_video_reset_done": {
+    "message": "Di nuovo al suo posto, il suo menu mostra tutto, su ogni sito"
+  },
+  "status_links_sent": {
+    "message": "Collegamenti inviati: $count$",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "10"
+      }
+    }
+  },
+  "status_links_cut": {
+    "message": "Collegamenti inviati: $sent$, $left$ esclusi",
+    "placeholders": {
+      "sent": {
+        "content": "$1",
+        "example": "100"
+      },
+      "left": {
+        "content": "$2",
+        "example": "20"
+      }
+    }
+  },
+  "status_links_partial": {
+    "message": "Collegamenti inviati: $sent$, rifiutati: $refused$",
+    "placeholders": {
+      "sent": {
+        "content": "$1",
+        "example": "5"
+      },
+      "refused": {
+        "content": "$2",
+        "example": "2"
+      }
+    }
+  },
+  "status_links_partial_cut": {
+    "message": "Collegamenti inviati: $sent$, rifiutati: $refused$, $left$ esclusi",
+    "placeholders": {
+      "sent": {
+        "content": "$1",
+        "example": "5"
+      },
+      "refused": {
+        "content": "$2",
+        "example": "2"
+      },
+      "left": {
+        "content": "$3",
+        "example": "1"
+      }
+    }
+  },
+  "status_links_refused": {
+    "message": "Collegamenti rifiutati: $count$",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "status_links_none": {
+    "message": "Nessun collegamento acquisibile ($left$ esclusi)",
+    "placeholders": {
+      "left": {
+        "content": "$1",
+        "example": "5"
+      }
+    }
+  },
+  "status_unreachable": {
+    "message": "Server non raggiungibile"
   }
 }

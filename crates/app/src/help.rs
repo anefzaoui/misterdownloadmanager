@@ -1030,7 +1030,7 @@ impl About {
 // Keyboard shortcuts
 
 /// Every shortcut the main window answers (keep in step with `app.rs` and `list.rs`).
-const SHORTCUTS: [(&str, &str); 29] = [
+const SHORTCUTS: [(&str, &str); 30] = [
     ("Ctrl+N", "Add a download (Add URL)"),
     (
         "Ctrl+B",
@@ -1040,6 +1040,8 @@ const SHORTCUTS: [(&str, &str); 29] = [
     ("F3", "Find the next match"),
     ("Enter", "Open the selected download"),
     ("Alt+Enter", "Properties of the selected download"),
+    // #1368, as Explorer's (where no menu bar title of the language takes P).
+    ("Alt+P", "Show or hide the preview pane"),
     ("Ctrl+M / F2", "Move or rename the selected download"),
     ("Delete", "Delete the selected downloads (asks first)"),
     (

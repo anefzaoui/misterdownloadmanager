@@ -10,6 +10,11 @@
 #. Click'n'Load window: a page whose web site the browser doesn't name, so MDM can't tell which site it is
 #. {n} = a number (keep the braces as they are)
 @plural	An unknown site wants to send {n} link to Link grabber.|An unknown site wants to send {n} links to Link grabber.	未知网站要向链接抓取器发送 {n} 个链接。
+#. count in traypanel.rs
+#. the notification-area icon's panel (#1365), under the downloads it lists: how many others are running; {n} a number
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	And {n} more|And {n} more	还有 {n} 个
 #. count in torrent downloads
 #. number of additional files in a list of files
 #. {n} = a number (keep the braces as they are)
@@ -41,6 +46,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	Matches {n} article now (it adds new ones only):|Matches {n} articles now (it adds new ones only):	当前匹配 {n} 篇文章（仅添加新文章）：
+#. count in archtest.rs
+#. in a download's log: the archive test found files in it that don't read back whole; {n} how many, {files} their names
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	The archive test found {n} damaged file: {files}|The archive test found {n} damaged files: {files}	存档测试发现 {n} 个损坏文件：{files}
 #. count in a dialog box
 #. Cancel in Download File Info with downloads waiting behind it
 #. {n} = a number (keep the braces as they are)
@@ -75,19 +85,23 @@
 #. the summary of downloads added together (the Downloads complete window; the tip of the tray icon): {n} of them finished
 #. {n} = a number (keep the braces as they are)
 @plural	{n} download finished|{n} downloads finished	{n} 个下载已完成
+#. count in preview.rs
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} download selected|{n} downloads selected	{n} 个下载任务已选中
 #. count in the main window
 #. {n} = a number (keep the braces as they are)
 @plural	{n} downloading|{n} downloading	{n} 个下载中
 #. count in extracting archives (a download's log, the Archive password window)
-#. in a download's log, after extracting: entries of the archive not written (links, names that would leave the folder)
+#. in a download's log, after extracting: entries of the archive not written (links, names that would leave the folder, entries under a file of the archive where a folder should be)
 #. {n} = a number (keep the braces as they are)
 #, machine
-@plural	{n} entry was left out (a link, or a name leading outside the folder)|{n} entries were left out (links, or names leading outside the folder)	已省略 {n} 个条目（链接或指向文件夹外部的名称）
+@plural	{n} entry was left out (a link, a name leading outside the folder, or a file in its way)|{n} entries were left out (links, names leading outside the folder, or files in their way)	已忽略 {n} 个条目（链接、指向文件夹外部的名称或其路径中的文件）
 #. count in a dialog box
 #. the summary of downloads added together; after "12 downloads finished": {n} of them failed
 #. {n} = a number (keep the braces as they are)
 @plural	{n} failed|{n} failed	其中 {n} 个失败
-#. count in the Batch download window; count in the Link grabber window; count in the Add torrent window; count in torrentfiles.rs
+#. count in the main window; count in the Batch download window; count in a dialog box; count in the Link grabber window; count in the Add torrent window; count in torrentfiles.rs; count in zippreview.rs
 #. how many files the pattern gives in all
 #. Link grabber: a package's row: {n} is its number of links
 #. {n} = a number (keep the braces as they are)
@@ -101,6 +115,10 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} file had the name of a file there already and was numbered|{n} files had the name of a file there already and were numbered	已为 {n} 个同名文件重新编号
+#. count in preview.rs
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} finished|{n} finished	{n} 个已完成
 #. count in the main window's messages (deleting downloads' files)
 #. the message's next line: how many more deleted files stayed on the disk
 #. {n} = a number (keep the braces as they are)
@@ -126,14 +144,34 @@
 #. event log entry: trackers were added to the torrent
 #. {n} = a number (keep the braces as they are)
 @plural	{n} tracker added|{n} trackers added	已添加 {n} 个 Tracker
+#. count in the main window
+#. event log entry: trackers from the public tracker list (Torrent settings) were added to a torrent
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} tracker added from the public list|{n} trackers added from the public list	已从公共列表中添加 {n} 个跟踪器
 #. count in the Add torrent window
 #. where a magnet's peers came from: {n} = trackers asked; {peers} = "3 peers"
 #. {n} = a number (keep the braces as they are)
 @plural	{n} tracker: {peers}|{n} trackers: {peers}	{n} 个 Tracker：{peers}
+#. count in the main window
+#. the tip of MDM's notification area (tray) icon: {n} windows of MDM (Download complete...) wait while a full-screen game, app or presentation is on, and show when the user is back
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} window waits until you're back|{n} windows wait until you're back	{n} 个窗口正在等待，直到您返回
+#. count in the Link grabber window
+#. Link grabber's Source line: a Hugging Face repository's or GitHub release's ({package}: its name, "owner/name") files whose names would lead out of its folder (`../`, a drive, a device's name) are left out; {n} how many
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{package}: {n} file left out, its name would lead out of its folder|{package}: {n} files left out, their names would lead out of its folder	{package}：已排除 {n} 个文件，因为其文件名会使路径超出所在文件夹
 #. count in cnl.rs
 #. Click'n'Load window: {site} is a web site's name such as "example.com"
 #. {site} = a web site's name such as "example.com"; {n} = a number (keep the braces as they are)
 @plural	{site} wants to send {n} link to Link grabber.|{site} wants to send {n} links to Link grabber.	{site} 要向链接抓取器发送 {n} 个链接。
+#. count in preview.rs
+#. the preview pane, several downloads selected: their total size, then how many of them have no known size yet; {size} e.g. "4.20 GB"
+#. {size} = a file size such as "4.2 MB"; {n} = a number (keep the braces as they are)
+#, machine
+@plural	{size} and {n} of unknown size|{size} and {n} of unknown size	{size}，其中 {n} 个大小未知
 #. count in playlistdlg.rs
 #. in Download video: a playlist title then how many videos it has ({count})
 #. {count} = a number (keep the braces as they are)
@@ -141,6 +179,10 @@
 #. count in playlistdlg.rs
 #. in Download video: a playlist title, then how many of its videos are listed so far ({listed}) of how many ({total})
 @plural	{title}: {listed} of {total} video listed|{title}: {listed} of {total} videos listed	{title}：已列出 {total} 个视频中的 {listed} 个
+#. text in the Options window
+#. tooltip of "Don't show pop-ups while a full-screen app or presentation is running"
+#, machine
+	"Download complete" and the other windows MDM opens by itself wait while a full-screen game, app or video, a presentation or the locked screen is on, and show when you're back. The windows you open yourself, and links from your browser, always show	当全屏游戏、应用或视频、演示文稿或锁屏界面处于活动状态时，MDM 自动打开的“下载完成”及其他窗口会等待，并在您返回时显示。您自己打开的窗口以及来自浏览器的链接始终会显示。
 #. text in the settings
 #. Options → DNS: a server address typed isn't an IP address; {what} is what was typed
 	"{what}" isn't an IP address.	“{what}”不是 IP 地址。
@@ -183,6 +225,11 @@
 #. text in the Options window
 #. a 24-hour clock, with an example
 	24-hour (21:41)	24 小时制（21:41）
+#. text in archtest.rs
+#. why an archive wasn't tested (after "Couldn't test {name}: "); 7-Zip is a program's name, {error} its words, in English
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	7-Zip couldn't test it ({error})	7-Zip 无法测试 ({error})
 #. window title in extracting archives (a download's log, the Archive password window)
 #. window title: 7-Zip (a program's name) must be installed
 	7-Zip needed	需要 7-Zip
@@ -219,10 +266,25 @@
 #. Link grabber added a magnet link whose torrent could not be found; {error} says why
 #. {error} = an error message (keep the braces as they are)
 	A magnet link's files could not be looked up: {error}	无法获取磁力链接的文件列表：{error}
+#. message or event log entry in the main window
+#. event log, at start: MDM was closed while this download was being moved to another folder; {folder} is where its file is now
+#, machine
+	A move was cut short when MDM closed: the download is in {folder}	MDM 关闭时移动中断：下载位于 {folder}
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
 	A NextDNS configuration ID is six letters and digits (0-9, a-f).	NextDNS 配置 ID 由 6 位字母或数字（0-9、a-f）组成。
+#. text in the Download video window
+#. why "Embed chapters" (and the subtitles) are greyed in Download video: only a part of the video is downloaded, and its chapters and subtitles would be the whole video's
+#, machine
+	A part is saved without the video's chapters and subtitles	部分保存不含视频章节和字幕
+#. text in the Download video window
+#. why Part is greyed in Download video: the page is a playlist, whose videos are downloaded whole
+#, machine
+	A playlist's videos are downloaded whole	播放列表中的视频将完整下载
+#. message or event log entry in the main window
+#, machine
+	A private torrent: the public tracker list isn't added	私有种子：未添加公共跟踪器列表
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites: the tooltip of the profile box
 #, machine
@@ -236,6 +298,10 @@
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: shown when there are no rules yet
 	A rule adds the new articles whose titles it matches, as they come.	规则会在新文章发布时添加标题匹配的文章。
+#. text in the Options window
+#. Site rules window: in the empty list of rules, under its title
+#, machine
+	A rule sets the connections, User-Agent or headers for one site.	规则可为单个站点设置连接、User-Agent 或标头。
 #. text in errors.rs
 #. an error: a server on this computer redirected the download to the internet, which would not go through the chosen network adapter; {adapter} its name
 #, machine
@@ -244,6 +310,10 @@
 #. tooltip on the disabled Rename box for a single-file torrent
 #, machine
 	A single-file torrent keeps its name	单文件种子需保留原文件名
+#. text in the download list (sizes, speeds, status)
+#. why a torrent that isn't finished can't be moved or renamed: the torrent engine writes its pieces into the files where they are
+#, machine
+	A torrent can be moved once it's finished: until then the torrent engine writes its pieces where they are	种子下载完成后才能移动：在此之前，种子引擎会将其片段写入当前位置的文件
 #. text in torrent_ownership.rs
 #. a torrent's folder is a link or junction leading outside its destination
 #, machine
@@ -251,16 +321,25 @@
 #. text in the Add torrent window
 #. Add trackers: MDM never contacts a tracker on this computer or the local network
 	A tracker on this computer or the local network is never contacted: {line}	不会连接本机或本地网络上的 Tracker：{line}
+#. text in the download list (sizes, speeds, status)
+#. why a video or an image gallery that isn't finished can't be moved or renamed: yt-dlp, ffmpeg or gallery-dl keep their unfinished files in its folder
+#, machine
+	A video or a gallery can be moved once it's finished: until then its helper programs keep their unfinished files in its folder	视频或图库下载完成后才能移动：在此之前，其辅助程序会将未完成的文件保留在当前文件夹中
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 #, machine
 	a volume of it is missing	缺少其中一个卷
+#. text in archtest.rs
+#. why a split archive (in several files, its volumes) isn't tested yet, in "{name} isn't complete ({why})": one of its files isn't downloaded yet
+#, machine
+	a volume of it isn't there yet	其中一个分卷尚未下载
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 	About Mister Download Manager	关于 Mister Download Manager
 #. text in whereis.rs
 #. a download's server's round trip: {ms} a number of milliseconds, {reach} near, medium or far
 	about {ms} ms ({reach})	约 {ms} 毫秒（{reach}）
 #. text in the Download video window
+#. in Download video beside the part's From and To: the part's size, estimated from the whole video's; {size} is "12.3 MB"
 #. a file size that is only an estimate, as a screen reader says it in the Download video window's list of qualities; {size} is "532 MB"
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
@@ -315,6 +394,10 @@
 #. link in the empty download list: opens Add URL
 	Add new download	添加新下载任务
 #. text in the Options window
+#. Options → Accounts: in the empty list of accounts, under its title
+#, machine
+	Add one to download file-host links through it.	添加一个帐户，通过它下载文件托管链接。
+#. text in the Options window
 #, machine
 	Add the duplicate and overwrite the existing file	添加重复项并覆盖现有文件
 #. text in the Options window
@@ -327,6 +410,10 @@
 	Add the extension to Safari	将扩展添加到 Safari
 #. text in extension.rs
 	Add the free extension: files you download in your browser come here, and videos get a Download button.	添加免费扩展：您在浏览器中下载的文件会出现在这里，视频页面会出现“下载”按钮。
+#. text in the Add torrent window
+#. Torrent settings: add the trackers of a public tracker list (its address in the box below) to torrents that aren't private, so they find more peers
+#, machine
+	Add the trackers of this public list to public torrents:	将此公共列表中的跟踪器添加到公共种子：
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: add the torrents to the list without starting them
 	Add them without starting them	添加但不启动
@@ -346,7 +433,6 @@
 #. button in the Options window
 #. button: add a debrid service account (opens the sign-in)
 #. the trailing ... means it opens a window: keep it
-#, machine
 	Add...	添加...
 #. message or event log entry in the main window
 #. event log entry: an RSS download rule added this torrent; {rule} is the rule's name, {feed} the feed's
@@ -354,78 +440,67 @@
 	Added by the RSS rule {rule} from {feed}	由 RSS 规则 {rule} 从 {feed} 添加
 #. message or event log entry in the main window
 #. {source} = how the download was added, e.g. "from the browser" (keep the braces as they are)
-#, machine
 	Added {source}	已添加 {source}
 #. text in remote.rs
 #. remote control page (on a phone): a download was added
-#, machine
 	Added.	已添加。
 #. text in remote.rs
 #. remote control page (on a phone): a magnet link or .torrent file was added; MDM reads the torrent's files first
-#, machine
 	Added. MDM is reading the torrent: it joins the list in a moment.	已添加。MDM 正在读取种子，稍后加入列表。
+#. text in preview.rs
+#. label in the preview pane: when the download was added to the list
+#, machine
+	Added:	添加时间:
 #. text in the Batch download window; text in a dialog box; label in the Options window; text in a download's progress window
 #. noun: the web address (URL)
 #. column title: the web address (URL)
-#, machine
 	Address	地址
 #. message or event log entry in the main window
 #. {host} = a server name such as "example.com" (keep the braces as they are)
-#, machine
 	Address changed to {host}	地址已更改为 {host}
 #. text in remote.rs
 #. remote control page (on a phone): label of the box where a download's address or a magnet link is typed
-#, machine
 	Address or magnet link	地址或磁力链接
-#. text in the Options window; text in a download's Properties window
-#. Options → DNS over HTTPS: label before the server's https:// address
+#. message or event log entry in the main window
+#. Link grabber: where the links came from: an address given on its own (typed or pasted in Add URL, given on the command line)
 #, machine
+	Address typed	手动输入的地址
+#. text in the Options window; text in preview.rs; text in a download's Properties window
+#. Options → DNS over HTTPS: label before the server's https:// address
 	Address:	地址：
 #. text in whereis.rs
 #. the tooltip of where a download's server is: its IP address
-#, machine
 	Address: {address}	地址：{address}
 #. window title in the Options window
 #. window title: the addresses whose downloads stay with the browser
-#, machine
-	Addresses left to the browser	留给浏览器的地址
+	Addresses left to the browser	交由浏览器处理的地址
 #. text in extension.rs
 #. a check of Test browser integration (Options → General)
-#, machine
-	Advanced browser integration is on	高级浏览器集成已开启
+	Advanced browser integration is on	高级浏览器集成已启用
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Afghanistan	阿富汗
 #. text in the Options window
 #. Options → Add an account: a note under the user name and password fields (Mega-Debrid bans the address for some minutes after a few wrong passwords)
-#, machine
-	After a few wrong passwords the service blocks this connection for some minutes.	输入几次错误密码后，此服务会在几分钟内阻止此连接。
+	After a few wrong passwords the service blocks this connection for some minutes.	若连续输错多次密码，服务器可能会暂时屏蔽此连接数分钟。
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Aland Islands	奥兰群岛
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Albania	阿尔巴尼亚
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Algeria	阿尔及利亚
 #. text in remote.rs
 #. remote control page (on a phone): tab: every download
-#, machine
 	All	全部
 #. item in the Categories tree in the main window
-#, machine
 	All Downloads	所有下载任务
 #. message or event log entry in the main window; text in standard windows
-#, machine
 	All files	所有文件
 #. text in helpers.rs
-#, machine
-	All set: on a page with a video, use Tasks → Download video from a page.	一切就绪：在包含视频的页面上，使用“任务”→“从页面下载视频”。
+	All set: on a page with a video, use Tasks → Download video from a page.	准备就绪：在包含视频的页面上，点击“任务”→“从页面下载视频”即可。
 #. text in the Download video window
 #. in the Subtitles list of Download video: every language the video's uploader gave
 #, machine
@@ -434,7 +509,6 @@
 	All three are open source. MDM gets them from their official releases with its own downloader and checks each file's signature before it runs. About 140 MB, once.	这三款软件都是开源的。MDM通过自带的下载器从官方发布版本中获取它们，并在运行前检查每个文件的签名。大约140 MB，一次性下载。
 #. text in cnl.rs
 #. button in the Click'n'Load window: let this site send links (remembered)
-#, machine
 	Allow	允许
 #. text in the Options window
 #. checkbox under the number of connections per download; {n} is 32
@@ -450,7 +524,6 @@
 	already being downloaded: {path}	正在下载：{path}
 #. text in the Link grabber window
 #. Link grabber: the package of links the download list has already
-#, machine
 	Already in the list	已在列表中
 #. text in crashui.rs
 #. crash report window: the same problem has an issue on GitHub already; {number} and {title} are the issue's
@@ -461,50 +534,48 @@
 #, machine
 	Also attach the crash data (.dmp): it may hold addresses, cookies and passwords	同时附加崩溃数据（.dmp）：可能包含地址、Cookie 和密码
 #. text in a dialog box
-#, machine
 	Also delete the file from disk	同时从磁盘中删除文件
 #. checkbox in the Options window
-#, machine
 	Also take files the browser would open (PDF, music, video)	同时下载浏览器会打开的文件（PDF、音乐、视频）
 #. text in the Link grabber window
 #. Link grabber, a link's status: the remedy from the failure's sentence, for a site whose bot check lets only browsers through. The sentence, with the same advice, is the cell's hover tip
 #, machine
 	Alt+click the link	Alt+单击链接
+#. text in requestedit.rs
+#. Site rule: check box; on, MDM connects the way a browser does from the first request to these sites, instead of only after a site turned it away ("this site lets only browsers through")
+#, machine
+	Always connect the way a browser does	始终以浏览器方式连接
 #. message or event log entry in the main window
 #. View menu: a check item; dark mode on, whatever the system's setting
 #, machine
 	Always dark	始终深色
 #. text in the Options window
 #. Options → Archives: where extracted files go
-#, machine
 	Always into a folder named after it	始终解压到同名文件夹
 #. checkbox in a dialog box
-#, machine
 	Always turn on Speed Limiter on Mister Download Manager startup	在 Mister Download Manager 启动时始终开启限速器
 #. text in regional.rs; text in the Scheduler window
 #. before noon, after a time of day (12-hour clock). Its pair is "PM": write both the same way (this language's own short marks, or both kept as AM and PM)
-#, machine
 	AM	上午
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	American Samoa	美属萨摩亚
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Andorra	安道尔
+#. text in a dialog box
+#. why the phone could not be turned off after the queue (fills {error}, Android)
+#, machine
+	Android doesn't let apps turn the phone off	Android 不允许应用关闭手机
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Angola	安哥拉
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Anguilla	安圭拉
 #. text in the Options window
 #. Options → Connection → DNS: a DNS server the user types in
 #. the trailing ... means it is still going on: keep it
-#, machine
 	Another DNS...	其他 DNS...
 #. text in torrent downloads
 #. starting a torrent whose destination another listed download claims
@@ -519,6 +590,10 @@
 #, machine
 	Another program has set the computer's wake alarm	其他程序已设置计算机的唤醒定时器
 #. text in the Options window
+#. Site rule: OK with a site another rule already has
+#, machine
+	Another rule is for this site already: change that one	此站点已有其他规则：请更改该规则
+#. text in the Options window
 #. Options → Proxy / Socks: Test's answer; {ms} milliseconds; {ip} the internet address the site saw (the proxy's, or this computer's without one)
 #, machine
 	Answered in {ms} ms. The internet sees {ip}.	已在 {ms} 毫秒内响应。网站看到的 IP 是 {ip}。
@@ -528,36 +603,28 @@
 	Answered in {ms} ms: {ip}	在 {ms} 毫秒内应答：{ip}
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Antarctica	南极洲
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Antigua and Barbuda	安提瓜和巴布达
 #. text in the Options window
 #. Options → Network adapter: the first choice: no adapter is chosen, the system picks one for each connection
-#, machine
 	Any (the system chooses)	任意（系统选择）
 #. text in the Scheduler window
-#, machine
 	April	四月
 #. window title in extracting archives (a download's log, the Archive password window); text in extracting archives (a download's log, the Archive password window); text in the Link grabber window
 #. what a screen reader calls the Archive password window's box
 #. what a screen reader calls Link grabber's password box
-#, machine
 	Archive password	压缩包密码
 #. window title in the Options window
 #. window title: the passwords tried on encrypted archives
-#, machine
 	Archive passwords	压缩包密码
 #. text in the settings
 #. the list of archive passwords in the system's keychain (Credential Manager, the keyring): its name there
-#, machine
 	archive passwords	压缩包密码
 #. button in the Options window
 #. Options → Archives: button: edit the list of passwords tried on encrypted archives
 #. the trailing ... means it opens a window: keep it
-#, machine
 	Archive passwords...	压缩包密码...
 #. group box title in the Options window; text in the Options window
 #. Options → Archives: group box title
@@ -566,47 +633,41 @@
 	Archives	压缩包
 #. text in the Options window
 #. Options page title: extracting downloaded archives, and Link grabber
-#, machine
 	Archives and Link grabber	压缩包和链接抓取器
 #. text in a dialog box
 #. {name} = a file name (keep the braces as they are)
-#, machine
 	Are you sure you want to delete "{name}" from Mister Download Manager list of downloads?	确定要从 Mister Download Manager 下载列表中删除“{name}”吗？
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Argentina	阿根廷
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Armenia	亚美尼亚
 #. text in rssdlg.rs
 #, machine
 	Articles	文章
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Aruba	阿鲁巴
-#. option (radio button) in the Options window
+#. text in requestedit.rs
+#. a download's Connection settings → Proxy: the proxy set in Options → Proxy / Socks
 #, machine
+	As in Options	与“选项”中设置的相同
+#. option (radio button) in the Options window
 	As the system's region writes them	按系统区域设置写入
 #. text in the Options window
-#, machine
 	Ask it with:	使用以下方式询问：
 #. message or event log entry in the main window
 #. event log entry: the torrent's trackers were asked for peers again (Reannounce)
-#, machine
 	Asked the trackers for peers again	已再次向 Tracker 请求节点
 #. text in the Options window
 #. Options → Add an account: the sign-in is starting or being checked
 #. the trailing ... means it is still going on: keep it
-#, machine
 	Asking the service...	正在请求服务...
 #. text in the Options window
 #. Options → Proxy / Socks: Test is running
 #. Options → DNS settings: the test is running
 #. the trailing ... means it is still going on: keep it
-#, machine
 	Asking...	正在查询...
 #. text in the Download video window
 #. a choice in the Download video window: only the sound; {type} is MP3, M4A…
@@ -621,17 +682,15 @@
 #, machine
 	Audio only, original {type}	仅音频，原始 {type}
 #. text in the Scheduler window
-#, machine
 	August	八月
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Australia	澳大利亚
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Austria	奥地利
 #. checkbox in the Options window; text in the Options window
+#. Options → Download panels → Button size: the round button in a feed and over a small video, the button with its words over a big one (the default)
 #. checkbox: the User-Agent is the default browser's, which MDM finds itself
 #, machine
 	Automatic	自动
@@ -641,103 +700,83 @@
 	Automatic (by file type)	自动（按文件类型）
 #. text in the Options window
 #. {category} = a category name such as "Music" (keep the braces as they are)
-#, machine
 	Automatically put in "{category}" category the following file types:	自动将以下文件类型放入“{category}”类别：
 #. text in the Options window
-#, machine
 	Automatically start downloading the following file types:	自动开始下载以下文件类型：
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Azerbaijan	阿塞拜疆
+#. button in setup.rs
+#. button of the first start's setup window: the step before
+#, machine
+	Back	上一步
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Bahamas	巴哈马
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Bahrain	巴林
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Bangladesh	孟加拉国
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Barbados	巴巴多斯
 #. window title in the Batch download window
-#, machine
 	Batch download	批量下载
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Belarus	白俄罗斯
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Belgium	比利时
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Belize	伯利兹
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Benin	贝宁
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Bermuda	百慕大
 #. text in playlistdlg.rs
 #. a quality in Download video for a whole playlist: each video's best
-#, machine
 	Best quality	最佳画质
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Bhutan	不丹
 #. text in cnl.rs
 #. button in the Click'n'Load window: refuse this site's links (remembered)
-#, machine
 	Block	阻止
 #. text in the Add torrent window
 #. Torrent settings: the address of an IP blocklist (empty: none)
-#, machine
 	Block the addresses in this list (P2P or eMule format):	阻止此列表中的地址（P2P 或 eMule 格式）：
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Bolivia	玻利维亚
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Bonaire, Sint Eustatius and Saba	博奈尔、圣尤斯特歇斯和萨巴
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Bosnia and Herzegovina	波斯尼亚和黑塞哥维那
 #. text in helpers.rs
 #, machine
 	Both are open source. MDM gets them from their official releases with its own downloader and checks each file's signature before it runs. About 100 MB, once.	两者均为开源软件。MDM 使用自带下载器从官方发布页获取，并在运行前校验每个文件的签名。约 100 MB，只需下载一次。
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Botswana	博茨瓦纳
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Bouvet Island	布韦岛
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Brazil	巴西
 #. text in the Options window
 #, machine
 	Bring back {names} as they were shipped: their names, file types and folders? Your own categories, General and Torrents stay as they are. Downloads already moved to General stay there.	恢复 {names} 的默认设置：名称、文件类型和文件夹？您自己的类别、“常规”和“种子”保持不变。已移至“常规”的下载任务仍保留在该类别。
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	British Indian Ocean Territory	英属印度洋领地
 #. text in a dialog box; text in the Link grabber window; button in the Link grabber window; button in the Options window
 #. verb: choose a folder
@@ -747,6 +786,14 @@
 #. the trailing ... means it opens a window: keep it
 #, machine
 	Browse...	浏览...
+#. text in the Options window
+#. Site rules: column title: "Yes" when the rule asks the way a browser connects from the first request
+#, machine
+	Browser	浏览器
+#. text in setup.rs
+#. a step of the first start's setup window: the extension that hands the browser's downloads to MDM
+#, machine
+	Browser extension	浏览器扩展
 #. text in extension.rs
 #, machine
 	Browser integration isn't set up on this computer, so no browser can reach Mister Download Manager yet.	此计算机尚未设置浏览器集成，浏览器暂时无法访问 Mister Download Manager。
@@ -755,26 +802,22 @@
 	Browser/System Integration	浏览器/系统集成
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Brunei	文莱
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Bulgaria	保加利亚
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Burkina Faso	布基纳法索
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Burundi	布隆迪
 #. text in the Link grabber window
 #. Link grabber, a link's status: the server asked to try later (429, 503)
 #, machine
 	Busy, try later	繁忙，请稍后重试
 #. text in the Options window
-#. Options → Download panels: the size of the download button over videos, chosen after it (Full / Compact)
+#. Options → Download panels: the size of the download button over videos, chosen under it (Automatic / Full / Compact)
 #, machine
 	Button size:	按钮大小:
 #. message or event log entry in the main window
@@ -785,15 +828,12 @@
 	by Link grabber	通过链接抓取器
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Cabo Verde	佛得角
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Cambodia	柬埔寨
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Cameroon	喀麦隆
 #. text in the Link grabber window
 #. Link grabber, a link's status: a server that can't send parts of a file, so the download can't resume; there is nothing to do here. The sentence is the cell's hover tip
@@ -801,9 +841,8 @@
 	Can't resume	无法续传
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Canada	加拿大
-#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in extracting archives (a download's log, the Archive password window); button in the Find window; button in gallerydlg.rs; text in the Link grabber window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; text in remote.rs; button in the Scheduler window; button in the Add torrent window; button in the Download video window
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in extracting archives (a download's log, the Archive password window); button in the Find window; button in gallerydlg.rs; text in the Link grabber window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; text in remote.rs; button in the Scheduler window; button in the Add torrent window; button in traypanel.rs; button in the Download video window; text in zippreview.rs
 #. button: stop downloading the update
 #, machine
 	Cancel	取消
@@ -851,11 +890,9 @@
 	Category properties	类别属性
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Cayman Islands	开曼群岛
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Central African Republic	中非共和国
 #. text in the Options window
 #. Options → Remote → Status: the certificate's fingerprint, which the phone's browser shows when it warns about it; {fingerprint} = hex digits
@@ -867,7 +904,6 @@
 	Certificate name:	证书名称：
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Chad	乍得
 #. text in the Scheduler window
 #. link after "Windows' power options don't allow wake timers": opens Power Options' advanced settings, where it can be changed
@@ -879,7 +915,6 @@
 	Change folder for "{category}" category on last selected	上次选择下载时更改“{category}”类别的文件夹
 #. text in the Link grabber window
 #. Link grabber button (IDM's): tick every link
-#, machine
 	Check all	全选
 #. text in rssdlg.rs
 #. RSS feeds window, at the bottom: "Check feeds every [30] minutes"
@@ -887,11 +922,9 @@
 	Check feeds every	每隔
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend); text in helpers.rs
 #. Helpers: button: look for newer versions of MDM's own helpers now, and install them
-#, machine
 	Check for updates	检查更新
 #. checkbox in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. check box in the update window: look for a new version every time MDM starts
-#, machine
 	Check for updates at every start	每次启动时检查更新
 #. text in errors.rs
 #. what to do when the proxy set in Options didn't let a helper's download connect; {proxy} = the Options tab Proxy / Socks; {name} = yt-dlp, ffmpeg or gallery-dl; {helpers} and {other} = the buttons Helpers and Use another program
@@ -901,6 +934,10 @@
 #. text in helpers.rs
 #, machine
 	Check your connection, then try again, or get them later from the video window.	检查您的连接，然后重试，或者稍后从视频窗口获取。
+#. text in the Options window
+#. tooltip of "Show downloads when the notification area icon is clicked": what the click on MDM's tray icon does when it is ticked and when not
+#, machine
+	Checked, a click on MDM's icon shows what is downloading, with Pause and Cancel, and a double click opens the window; unchecked, a click shows or hides the window	选中后，单击 MDM 图标会显示正在下载的内容，并提供暂停和取消选项；双击则打开窗口。未选中时，单击图标会显示或隐藏窗口
 #. text in the Options window
 #. tooltip of the close-setting: checked keeps MDM running when the window closes, in the notification area when available or else the taskbar; downloads continue; unchecked closing quits
 #, machine
@@ -937,40 +974,45 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Checking the program...	正在检查程序...
-#. text in helpers.rs
-#. a downloaded helper's signature and checksum are being checked; {name} = yt-dlp or ffmpeg
-#. {name} = a file name; {n} = a number (keep the braces as they are)
-#. the trailing ... means it is still going on: keep it
-#, machine
-	Checking {name} ({n} of {total})...	正在检查 {name}（{n} / {total}）...
 #. text in the download list (sizes, speeds, status)
 #. the list's Status column while a torrent's files or a finished file are checked (against the torrent's hashes or a checksum); {percent} how much is checked, e.g. "42%". One short word: the column is narrow
 #, machine
 	Checking {percent}	正在检查 {percent}
-#. text in the Checksum window; text in extension.rs; text in the Link grabber window; text in the Options window
+#. text in the Checksum window; text in extension.rs; text in the Link grabber window; text in helpers.rs; text in the Options window
 #. in the browser extension's window, while it reads whether the browsers can reach MDM (a moment, usually)
 #. Test browser integration, while it reads where browser integration stands (a moment, usually)
 #. the trailing ... means it is still going on: keep it
-#, machine
 	Checking...	正在检查...
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Chile	智利
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	China	中国
 #. text in remote.rs
 #. remote control page (on a phone): what the ".torrent file" button does (screen readers)
 #, machine
 	Choose a .torrent file	选择 .torrent 文件
+#. text in rssdlg.rs
+#. RSS feeds window: in the empty list of articles, under its title
+#, machine
+	Choose a feed to see its articles.	选择一个源以查看其文章。
+#. message or event log entry in the main window
+#. title of the file dialog of View → Font → Choose a font file
+#. title of the message when the font picked in View → Font can't be used
+#, machine
+	Choose a font file	选择字体文件
 #. text in helpers.rs
+#. file picker title: choose a JavaScript runtime's program (node.exe, deno.exe, qjs.exe, bun.exe)
 #, machine
 	Choose a JavaScript runtime (Node.js, Deno, QuickJS or Bun)	选择一个 JavaScript 运行时（Node.js、Deno、QuickJS 或 Bun）
-#. text in langpick.rs
+#. text in langpick.rs; text in setup.rs
 #, machine
 	Choose a language	选择语言
+#. text in a dialog box
+#. the Columns dialog: what it is for, above its list of the download list's columns
+#, machine
+	Choose columns to show	选择要显示的列
 #. text in langpick.rs
 #, machine
 	Choose the language Mister Download Manager shows its windows in:	选择 Mister Download Manager 显示窗口的语言：
@@ -979,13 +1021,13 @@
 #, machine
 	Choose the profile's folder	选择配置文件文件夹
 #. text in helpers.rs; text in the Options window
+#. file picker title; {name} = yt-dlp or ffmpeg
 #. file picker title; {name} = the program to choose (yt-dlp, ffmpeg, 7-Zip)
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	Choose {name}	选择 {name}
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Christmas Island	圣诞岛
 #. button in the download list; button in the Options window
 #. verb: clears this filter
@@ -1002,30 +1044,25 @@
 	Click'n'Load can't start: {error}	Click'n'Load 无法启动：{error}
 #. text in a download's progress window
 #. column title: the peer's torrent program
-#, machine
 	Client	客户端
 #. message or event log entry in the main window
 #. Link grabber: where the links came from: the clipboard (Tasks → Add batch download from clipboard)
-#, machine
 	Clipboard	剪贴板
 #. text in the Options window
-#, machine
 	Clock:	时钟：
-#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in a dialog box; button in extension.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list; button in the Options window; button in rssdlg.rs; button in torrentfiles.rs; text in standard windows
+#. text in archtest.rs; text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in a dialog box; button in extension.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list; button in the Options window; button in rssdlg.rs; button in setup.rs; button in torrentfiles.rs; text in traypanel.rs; text in standard windows
 #. both verbs: Verify = check the file now; Close = close the window
 #. tooltip of the × that closes the Categories pane
 #. verb: closes this window
 #. verb: closes the filter box
 #. button that closes the torrent file list window
 #. a window's title-bar button: closes the window
-#, machine
 	Close	关闭
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Close a menu or dialog	关闭菜单或对话框
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Cocos (Keeling) Islands	科科斯（基林）群岛
 #. text in remote.rs
 #. remote control page (on a phone): label of the pairing code's box (8 digits)
@@ -1037,13 +1074,15 @@
 	Code:	配对码：
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Colombia	哥伦比亚
+#. window title in a dialog box; text in a dialog box
+#. what a screen reader calls the Columns dialog's list of the download list's columns
+#, machine
+	Columns	列
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Comoros	科摩罗
-#. option (radio button) in the Options window
+#. text in the Options window
 #. Options → Download panels → Button size: only the round button (the logo, the arrow, the close mark) over every video
 #, machine
 	Compact	紧凑
@@ -1072,8 +1111,7 @@
 	Confirm deletion of downloads	确认删除下载任务
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
-	Congo	刚果
+	Congo	刚果（布）
 #. text in the Add torrent window
 #. Torrent settings: uTP, BitTorrent over UDP, which many peers use (more peers, often faster)
 #, machine
@@ -1087,12 +1125,27 @@
 	Connected: downloads from your browser now come here.	已连接：浏览器下载的文件现在会转到这里。
 #. text in a download's progress window
 #. the trailing ... means it is still going on: keep it
-#, machine
 	Connecting...	正在连接...
 #. text in the Options window
 #. tab title: connection settings
-#, machine
 	Connection	连接
+#. text in a download's Properties window
+#. window title: a download's own request settings (User-Agent, headers, connections, proxy), from File Properties → Connection...
+#, machine
+	Connection settings	连接设置
+#. message or event log entry in the main window
+#. event log: File Properties → Connection settings changed the download's own User-Agent, headers, proxy or connections
+#, machine
+	Connection settings changed	连接设置已更改
+#. text in a download's Properties window
+#. File Properties button: opens the download's own request settings (User-Agent, headers, connections, proxy)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Connection...	连接...
+#. text in the Options window
+#. Site rules: column title: the number of connections (empty: the default)
+#, machine
+	Connections	连接数
 #. page title in the Options window
 #, machine
 	Connections and Limits	连接和限制
@@ -1100,25 +1153,20 @@
 #, machine
 	Connections:	连接数：
 #. link (opens a web page) in the Help menu's windows (About, updates, shortcuts, Tell a friend)
-#, machine
 	Contributors	贡献者
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Cook Islands	库克群岛
 #. group box title in the Options window
 #. Options → Sites Logins: group box title: yt-dlp signs in to video sites with a browser's cookies
 #, machine
 	Cookies for video sites	视频网站的 Cookie
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
-#, machine
 	Copied to the clipboard.	已复制到剪贴板。
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
-#, machine
 	Copy	复制
 #. button in the Options window
 #. button: copy the sign-in code
-#, machine
 	Copy code	复制代码
 #. button in crashui.rs
 #. crash report window button: copy the report's text
@@ -1126,7 +1174,6 @@
 	Copy report	复制报告
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Costa Rica	哥斯达黎加
 #. text in rssdlg.rs
 #. RSS feeds window: the selected feed's last fetch failed, with why
@@ -1161,6 +1208,11 @@
 #. {name} = a file name; {error} = an error message (keep the braces as they are)
 #, machine
 	Couldn't look for a newer {name}: {error}	无法查找比 {name} 更新的版本：{error}
+#. text in archtest.rs
+#. in a download's log: {name} is the archive's file name, {why} the reason it wasn't tested (as after "Couldn't extract {name}: ")
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Couldn't test {name}: {why}	无法测试 {name}：{why}
 #. checkbox in the Add torrent window
 #. Add torrent: keep a multi-file torrent inside its own outer folder; untick to use Save to directly
 #, machine
@@ -1170,15 +1222,12 @@
 	Create folder	创建文件夹
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Croatia	克罗地亚
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Cuba	古巴
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Curaçao	库拉索
 #. text in the Options window
 #, machine
@@ -1194,20 +1243,29 @@
 	Customize MDM menu items in context menu of browsers	自定义浏览器上下文菜单中的 MDM 菜单项
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Cyprus	塞浦路斯
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Czech Republic	捷克共和国
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Côte d'Ivoire	科特迪瓦
 #. text in the Scheduler window; option (radio button) in the Scheduler window
 #. adverb: every day (the other choice is once, on a date)
 #, machine
 	Daily	每日
+#. text in the download list (sizes, speeds, status)
+#. a download's status: its archive's test (Options → Archives) found it damaged. One short word: the list's Status column is narrow
+#, machine
+	Damaged	已损坏
+#. window title in archtest.rs
+#. window title: an archive (zip, 7z, rar) that was downloaded is damaged
+#, machine
+	Damaged archive	损坏的存档
+#. text in the download list (sizes, speeds, status)
+#. a download's status, whole (the Status cell's tip): its archive's test found it damaged; "Redownload" is the right-click command
+#, machine
+	Damaged: its archive test found errors. Right-click → Redownload downloads it again	已损坏：存档测试发现错误。右键单击 → 重新下载可再次下载
 #. text in the Options window
 #, machine
 	Date order:	日期顺序：
@@ -1218,11 +1276,10 @@
 #. a date's order: day first (30/10/2026)
 #, machine
 	Day, month, year	日、月、年
-#. page title in the Options window
+#. page title in the Options window; text in the Options window
 #, machine
 	Debrid service accounts	Debrid 服务账户
 #. text in the Scheduler window
-#, machine
 	December	十二月
 #. text in standard windows
 #. a spin box's arrow, for screen readers: one less
@@ -1278,7 +1335,6 @@
 	Delete the selected downloads and their files (asks first)	删除所选下载任务及其文件（先询问）
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Denmark	丹麦
 #. text in a dialog box
 #, machine
@@ -1306,7 +1362,6 @@
 	displayed in the list of queues	显示在队列列表中
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Djibouti	吉布提
 #. text in the settings
 #. a way of asking a DNS, in its name in messages: "Cloudflare (DNS over HTTPS)"
@@ -1335,16 +1390,18 @@
 	Documents	文档
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Dominica	多米尼克
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Dominican Republic	多米尼加共和国
 #. button in extension.rs
 #. button in the browser extension's window: stop offering it at each start
 #, machine
 	Don't ask again	不再询问
+#. text in the Options window
+#. checkbox, Options → Downloads: Download complete and MDM's other windows that open by themselves wait while a full-screen game, app or video, a presentation or the locked screen is on, and show when the user is back
+#, machine
+	Don't show pop-ups while a full-screen app or presentation is running	当全屏应用或演示文稿正在运行时，不显示弹出窗口
 #. checkbox in a dialog box
 #, machine
 	Don't show this dialog again	不再显示此对话框
@@ -1408,14 +1465,6 @@
 #. window title in a dialog box
 #, machine
 	Download later	稍后下载
-#. text in the Scheduler's download limits
-#. a11y name of the second Download limits box, where "every {n} hours" puts its {n}
-#, machine
-	Download limit: every how many hours	下载限制：间隔多少小时
-#. text in the Scheduler's download limits
-#. a11y name of the first Download limits box, where "Download no more than {n} MBytes" puts its {n}
-#, machine
-	Download limit: MBytes	下载限制：MB
 #. window title in a dialog box; text in the Options window; checkbox in the Options window; text in the Scheduler window
 #. the Scheduler's page (and checkbox) that caps how much is downloaded in a time
 #, machine
@@ -1511,6 +1560,15 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Downloading MDM's own copy...	正在下载 MDM 自带的 yt-dlp...
+#. text in helpers.rs
+#. Helpers: MDM's own copy of a helper is being downloaded (where there was none, or in place of the system's); {percent} = how far, a number
+#, machine
+	Downloading MDM's own copy... {percent}%	正在下载 MDM 自己的副本... {percent}%
+#. text in archtest.rs
+#. in a download's log: after its archive test found damaged files, only their bytes are downloaded again from the same server; {size} like "1.20 MB"
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	Downloading the damaged parts again ({size})	正在重新下载损坏的部分 ({size})
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. Check for updates, while Update now downloads; {percent} like "42%"
 #, machine
@@ -1519,15 +1577,14 @@
 #. Helpers: a newer version of a helper is being downloaded; {percent} = how far, a number
 #, machine
 	Downloading the update... {percent}%	正在下载更新... {percent}%
-#. text in helpers.rs
-#. {name} = yt-dlp, ffmpeg or Node.js; {n} of {total} = which helper of how many; {percent} = how far, e.g. 45%
-#. {name} = a file name; {n} = a number (keep the braces as they are)
-#, machine
-	Downloading {name} ({n} of {total})... {percent}	正在下载 {name}（{n} / {total}）... {percent}
 #. text in the download list; text in the Options window
 #. tab title: download settings
 #, machine
 	Downloads	下载
+#. text in the Scheduler window
+#. Scheduler → Files in the queue: in the empty list, under its title
+#, machine
+	Downloads added to this queue show here.	添加到此队列的下载会显示在此处。
 #. window title in a dialog box
 #. title of the window that sums up downloads added together (a playlist, a batch) once all are done
 #, machine
@@ -1540,8 +1597,13 @@
 #. the notice shown once, the first time a download comes from a browser's private (incognito) window: it stays in MDM's list like any other, after a restart too; where to turn that off. {options} = the Options window, {general} = its General tab, {checkbox} = the checkbox "Keep private-window downloads in the list"
 #, machine
 	Downloads from a browser's private window stay in MDM's list like any other, also after MDM restarts; their cookies are never saved. To keep them in memory only, untick {options} → {general} → {checkbox}.	来自浏览器隐私窗口的下载任务会像其他任务一样保留在 MDM 列表中，即使 MDM 重启后也是如此；其 Cookie 永远不会保存。若要仅将其保留在内存中，请取消勾选“{options}”→“{general}”→“{checkbox}”。
-#. text in the tray icon's menu
+#. text in the Options window
+#. Site rules window: how the rules apply; *.example.com stays as it is
+#, machine
+	Downloads from these sites get these settings. Each one comes from the first rule in the list that names the site and sets it; * stands for any text: *.example.com	来自这些站点的下载将应用这些设置。每个设置都来自列表中第一个命名该站点并设置它的规则；* 代表任意文本：*.example.com
+#. text in the tray icon's menu; text in traypanel.rs
 #. tray menu: a submenu of the downloads now running; choosing one shows its progress window
+#. the notification-area icon's panel (#1365): its title, over the downloads now running (also the tray menu's submenu)
 #, machine
 	Downloads in progress	正在进行的下载任务
 #. text in a dialog box
@@ -1550,7 +1612,6 @@
 	Downloads stopped and will resume automatically at {time}.	下载任务已停止，将于 {time} 自动续传。
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	DR Congo	刚果民主共和国
 #. text in droptarget.rs
 #. the drop target's tooltip on macOS and Linux (they hand over files only)
@@ -1595,7 +1656,6 @@
 	Each file's category folder	每个文件所属类别的文件夹
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Ecuador	厄瓜多尔
 #. button in the Options window
 #. verb: edit the item
@@ -1611,6 +1671,10 @@
 #. text in the Options window
 #, machine
 	Edit login	编辑登录信息
+#. text in the Options window
+#. window title: changing one site rule
+#, machine
+	Edit site rule	编辑站点规则
 #. button in the Options window
 #. verb: edit the item
 #. the trailing ... means it opens a window: keep it
@@ -1618,16 +1682,14 @@
 	Edit...	编辑...
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Egypt	埃及
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	El Salvador	萨尔瓦多
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Email	电子邮件
-#. text in the Download video window
+#. checkbox in the Download video window; text in the Download video window
 #. checkbox in Download video: the chapters a video's page lists (YouTube's, for one) go into the video file, where players show them and skip between them
 #, machine
 	Embed chapters	嵌入章节
@@ -1635,6 +1697,10 @@
 #. in Download a gallery, after the "Files at most" box
 #, machine
 	Empty: all of them. On most sites the newest come first.	留空则下载全部。大多数网站最新的文件排在最前面。
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: the hint under the User-Agent box
+#, machine
+	Empty: the browser's, or the one set in Options	留空：使用浏览器设置，或“选项”中设置的
 #. text in crashui.rs
 #. crash report window button: end the frozen MDM and start it again
 #, machine
@@ -1665,11 +1731,9 @@
 	Episodes: like 1x2;1x5-8;2x1- (season x episode)	剧集：例如 1x2;1x5-8;2x1-（季 x 集）
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Equatorial Guinea	赤道几内亚
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Eritrea	厄立特里亚
 #. text in a dialog box; item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window; text in remote.rs
 #. in Download File Info, where the size goes: the address didn't answer
@@ -1684,15 +1748,12 @@
 	Error: {error}	错误：{error}
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Estonia	爱沙尼亚
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
-	Eswatini	埃斯瓦蒂尼
+	Eswatini	斯威士兰
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Ethiopia	埃塞俄比亚
 #. text in the Options window
 #, machine
@@ -1708,6 +1769,14 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Everything at its normal size (100%)	全部恢复正常大小（100%）
+#. text in the Download video window
+#. choice in Download video's Part: the part is encoded again so it starts and ends exactly at From and To (slower)
+#, machine
+	Exact cut, encoded again	精确剪切，重新编码
+#. text in the Options window
+#. Site rule: the hint under the site box; the examples stay as they are
+#, machine
+	example.com, or *.example.com for its subdomains	example.com，或 *.example.com（包含其子域）
 #. text in the Options window
 #. label before an example date and time written the chosen way
 #, machine
@@ -1782,7 +1851,6 @@
 	Failed:	失败：
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Falkland Islands	福克兰群岛
 #. text in whereis.rs
 #. how far a download's server is, by its round trip (over 150 ms)
@@ -1790,10 +1858,12 @@
 	far	远
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Faroe Islands	法罗群岛
-#. text in the Scheduler window
+#. text in the Download video window
+#. tooltip of "Quick cut, at keyframes" in Download video: what it does
 #, machine
+	Fast: the streams are copied as they are, so the part may start a little before From	快速：流按原样复制，因此部分可能在“从”时间之前一点开始
+#. text in the Scheduler window
 	February	二月
 #. text in rssdlg.rs
 #. RSS feeds window: label before the box where a feed's web address is typed
@@ -1808,16 +1878,19 @@
 #, machine
 	Feeds:	源：
 #. text in the Add torrent window
-#. Torrent settings, at the bottom
+#. Torrent settings, under the blocklist's address
 #, machine
 	Fetched again every 7 days. Changes apply when no torrent is running.	每 7 天重新获取一次。没有种子运行时，更改才会生效。
+#. text in the Add torrent window
+#. Torrent settings, under the public tracker list's address
+#, machine
+	Fetched once a day. Never added to private torrents.	每天获取一次。从不添加到私有种子。
 #. text in helpers.rs
 #. helper name and what it does (ffmpeg is a program's name)
 #, machine
 	ffmpeg: joins picture and sound	ffmpeg：合并视频和音频
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Fiji	斐济
 #. text in a download's progress window; text in a download's Properties window
 #. noun: a file of no known type
@@ -1831,7 +1904,8 @@
 #. tooltip of "Mark downloaded files as coming from the internet" on Linux
 #, machine
 	File managers show where the files marked this way came from. Unticked, no download is marked.	文件管理器会显示这样标记的文件来自哪里。如果未勾选，则不会标记任何下载。
-#. text in the Scheduler window
+#. text in a download's progress window; text in the Scheduler window
+#. Zip preview's column: the file's name (its path inside the ZIP)
 #, machine
 	File Name	文件名
 #. text in the Download video window
@@ -1853,6 +1927,10 @@
 #. text in categories.rs
 #, machine
 	File types:	文件类型：
+#. text in preview.rs
+#. label in the preview pane: whether the downloaded file is still where it was saved
+#, machine
+	File:	文件:
 #. text in a download's progress window; text in the Add torrent window
 #. tab title: the torrent's files
 #, machine
@@ -1871,6 +1949,10 @@
 #. text in the Scheduler window; tab in the Scheduler window
 #, machine
 	Files in the queue	队列中的文件
+#. text in the download list (sizes, speeds, status)
+#. why files being taken out of a ZIP on its server (#1775) can't be moved or renamed yet: those already out are in its folder, the others still to come there
+#, machine
+	Files taken out of a ZIP can be moved once they're all out	ZIP 文件中的文件全部解压后才能移动
 #. button in a download's Properties window
 #. File Properties button that opens the selected torrent's file list
 #. the trailing ... means it opens a window: keep it
@@ -1908,11 +1990,19 @@
 #. text in the Find window
 #, machine
 	Find:	查找：
+#. text in setup.rs
+#. button of the first start's setup window, on its last step: the setup is done
+#, machine
+	Finish	完成
 #. item in the Categories tree in the main window; text in remote.rs
 #. adjective: the downloads that are complete
 #. remote control page (on a phone): tab: downloads finished
 #, machine
 	Finished	已完成
+#. text in preview.rs
+#. label in the preview pane: when the download finished
+#, machine
+	Finished:	完成时间:
 #. text in a download's progress window
 #. a download's status: every byte is in, the file is being written out and given its name
 #. the trailing ... means it is still going on: keep it
@@ -1920,7 +2010,6 @@
 	Finishing...	正在完成...
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Finland	芬兰
 #. text in the Options window
 #, machine
@@ -1935,6 +2024,14 @@
 #. text in categories.rs
 #, machine
 	Folder:	文件夹：
+#. text in the Options window
+#. Options → Archives → Link grabber, one line with two boxes: an FTP folder or a web server's folder listing ("Index of") given to Link grabber is read with its subfolders: {depth} is a number box (how many levels of subfolders, 3 at first; 0 is the folder's own files only), {types} a text box (file types such as ISO ZIP; empty for every type)
+#, machine
+	Folders: {depth} levels deep, types: {types}	文件夹：{depth} 级深度，类型：{types}
+#. message or event log entry in the main window
+#. the kind of file View → Font → Choose a font file lists: TrueType and OpenType font files
+#, machine
+	Font files	字体文件
 #. text in finish.rs
 #. Snooze menu of the Download complete window: show no Download complete window for this long
 #, machine
@@ -1975,7 +2072,6 @@
 	Fr	周五
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	France	法国
 #. text in debrid.rs
 #. Options → Accounts: a debrid account without premium (it can't unlock links)
@@ -1987,18 +2083,14 @@
 	Free, official and checked	免费、官方、已验证
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	French Guiana	法属圭亚那
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	French Polynesia	法属波利尼西亚
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	French Southern Territories	法属南部领地
 #. text in the Scheduler window
-#, machine
 	Friday	星期五
 #. message or event log entry in the main window
 #. where a download came from, in its log: an image gallery, by gallery-dl
@@ -2043,6 +2135,10 @@
 #. message or event log entry in the main window
 #, machine
 	from the command line	来自命令行
+#. text in the Download video window
+#. in Download video after "Only a part": {from} and {to} are boxes where times are typed (1:30, 1:02:03), drawn where they stand in the translation
+#, machine
+	from {from} to {to}	从 {from} 到 {to}
 #. text in the Batch download window
 #, machine
 	From:	从：
@@ -2054,12 +2150,11 @@
 #, machine
 	FTP downloads don't go through an HTTP proxy. Choose SOCKS5 or SOCKS4 to send them through the proxy.	FTP 下载不通过 HTTP 代理。请选择 SOCKS5 或 SOCKS4 以通过代理发送。
 #. text in the Options window
-#. Options → Download panels → Button size: the button with its words ("Download video", the quality) where they fit (the default)
+#. Options → Download panels → Button size: the button with its words ("Download video", the quality) wherever they fit
 #, machine
 	Full	完整
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Gabon	加蓬
 #. text in gallerydlg.rs
 #. in Download a gallery, before gallery-dl is installed
@@ -2081,7 +2176,6 @@
 	gallery-dl is not installed (Add URL with a gallery's address installs it)	gallery-dl 未安装（通过“添加 URL”添加图库地址即可安装）
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Gambia	冈比亚
 #. message or event log entry in the main window; text in the download list (sizes, speeds, status); text in the Options window; text in a download's progress window
 #. category name: files of no particular kind
@@ -2091,20 +2185,14 @@
 	General	常规
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Georgia	格鲁吉亚
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Germany	德国
 #. text in extracting archives (a download's log, the Archive password window)
 #. button: opens 7-Zip's website (7-Zip is a program's name)
 #, machine
 	Get 7-Zip	获取 7-Zip
-#. window title in helpers.rs
-#. title of the first start's window that offers yt-dlp and ffmpeg
-#, machine
-	Get ready for video downloads	视频下载准备
 #. button in the Options window
 #, machine
 	Get System	从系统获取
@@ -2115,17 +2203,20 @@
 	Getting the file list from peers...  {n} s	正在从节点获取文件列表... {n} 秒
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Ghana	加纳
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Gibraltar	直布罗陀
 #. text in helpers.rs
 #. Helpers: button: use the previous version of a helper again (if the new one misbehaves); {version} = that version
 #. {version} = a version number (keep the braces as they are)
 #, machine
 	Go back to {version}	恢复到 {version}
+#. text in helpers.rs
+#. Helpers: the "Go back" button's name for a screen reader; {version} = the earlier version, {name} = the helper (yt-dlp, ffmpeg, gallery-dl, Node.js)
+#. {version} = a version number; {name} = a file name (keep the braces as they are)
+#, machine
+	Go back to {version} of {name}	返回 {name} 的 {version} 版本
 #. text in a download's progress window
 #. a torrent's sharing, when Torrent settings keep it on
 #, machine
@@ -2136,47 +2227,36 @@
 	Google Drive won't give this file now: {message} (signing in to Google in your browser often helps; otherwise, try again later)	Google 云端硬盘目前无法提供此文件：{message}（在浏览器中登录 Google 通常可解决；否则请稍后重试）
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Greece	希腊
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Greenland	格陵兰
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Grenada	格林纳达
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Guadeloupe	瓜德罗普
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Guam	关岛
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Guatemala	危地马拉
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Guernsey	根西岛
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Guinea	几内亚
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Guinea-Bissau	几内亚比绍
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Guyana	圭亚那
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Haiti	海地
 #. checkbox in a download's progress window; checkbox in the Scheduler window
 #, machine
@@ -2189,9 +2269,12 @@
 #. legend: pieces downloaded
 #, machine
 	Have	已下载
+#. text in the Options window
+#. Site rules: column title: how many request headers the rule adds
+#, machine
+	Headers	标头
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Heard Island and McDonald Islands	赫德岛和麦克唐纳群岛
 #. button in the Options window
 #. noun: button that opens the help
@@ -2214,6 +2297,15 @@
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 	Hide &categories	隐藏类别(&C)
+#. message or event log entry in the main window
+#. View menu: hides the pane beside the download list that shows the selected download's picture and details
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	Hide &preview pane	隐藏预览窗格(&P)
+#. text in the Link grabber window
+#. Link grabber check box, ticked when it opens: the pictures shown on the browser's page (its images, not links to pictures), which "Download all links" sends with the links, are not shown
+#, machine
+	Hide images located on this web page	隐藏此网页上的图片
 #. button in a download's progress window
 #, machine
 	Hide tab	隐藏选项卡
@@ -2233,11 +2325,9 @@
 	Home page	主页
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Honduras	洪都拉斯
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Hong Kong	香港
 #. text in extension.rs
 #. button in the browser extension's window, on Safari's row: open the steps that turn the extension on
@@ -2264,14 +2354,12 @@
 	https	https
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Hungary	匈牙利
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	I download with Mister Download Manager: fast, free, and it looks like the download manager you already know. {link}	我使用 Mister Download Manager 下载：快速、免费，界面与您熟悉的下载管理器相似。{link}
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Iceland	冰岛
 #. text in the Options window
 #, machine
@@ -2323,11 +2411,9 @@
 	Increase	增加
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	India	印度
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Indonesia	印度尼西亚
 #. text in a download's progress window
 #. column title: what the connection is doing
@@ -2341,11 +2427,11 @@
 #. in the "7-Zip needed" window, under why
 #, machine
 	Install 7-Zip (free), then right-click the download and choose Extract.	安装 7-Zip（免费），然后右键单击下载任务并选择“解压”。
-#. text in the Download video window
+#. text in helpers.rs; text in the Download video window
 #. button: download and install the ffmpeg program
 #, machine
 	Install ffmpeg	安装 ffmpeg
-#. button in gallerydlg.rs
+#. button in gallerydlg.rs; text in helpers.rs
 #. button: download and install the gallery-dl program
 #, machine
 	Install gallery-dl	安装 gallery-dl
@@ -2353,7 +2439,7 @@
 #. link in the browser extension's window: the tutorial that adds it without the browser's store
 #, machine
 	Install it by hand	手动安装
-#. text in the Download video window
+#. text in helpers.rs; text in the Download video window
 #. button in Download video: download and install Node.js, the JavaScript runtime YouTube needs (Node.js is a program's name)
 #, machine
 	Install Node.js	安装 Node.js
@@ -2365,10 +2451,14 @@
 #. in the "7-Zip needed" window, under why (Linux: 7-Zip comes from the distribution's packages, named 7zip or p7zip)
 #, machine
 	Install your system's 7zip (or p7zip) package, then right-click the download and choose Extract.	安装您系统的 7zip (或 p7zip) 软件包，然后右键单击下载并选择“解压”。
-#. text in the Download video window
+#. text in helpers.rs; text in the Download video window
 #. button: download and install the yt-dlp program
 #, machine
 	Install yt-dlp	安装 yt-dlp
+#. text in helpers.rs
+#. the first start's video helpers: beside a helper that is there already (MDM's own copy or the system's)
+#, machine
+	Installed	已安装
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. Check for updates, after Update now downloaded it: unpacking and putting the new version in place
 #. the trailing ... means it is still going on: keep it
@@ -2387,23 +2477,18 @@
 	IP addresses (optional):	IP 地址（可选）：
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Iran	伊朗
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Iraq	伊拉克
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Ireland	爱尔兰
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Isle of Man	马恩岛
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Israel	以色列
 #. text in the Options window
 #. Options → Remote → Status: it could not start; {error} = the system's reason
@@ -2449,8 +2534,11 @@
 	It's possible to add a group of sequential file names like img001.jpg, img002.jpg, etc.,\nimg100.jpg to MDM download queue. Use the asterisk wildcard for the file name pattern.	可将一组连续的文件名（如 img001.jpg、img002.jpg 至 img100.jpg）添加到 MDM 下载队列。\n文件名模式可使用星号通配符。
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Italy	意大利
+#. text in rssdlg.rs
+#. RSS feeds window: in the empty list of articles of a feed not read yet
+#, machine
+	Its articles show here once the feed is read.	读取源后，其文章会显示在此处。
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted in place (after "Couldn't extract {name}: "); HatchZip took its files out (the archive is gone), but moving them stopped: {to} holds those moved, {left} the others, {error} the system's reason
 #. {error} = an error message (keep the braces as they are)
@@ -2460,6 +2548,14 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	its files could not be written: {error}	无法写入其文件：{error}
+#. text in preview.rs
+#. the preview pane: neither the file nor its folder can be found now (an unplugged drive, a network folder away)
+#, machine
+	Its folder can't be reached now	其文件夹当前无法访问
+#. text in relocate.rs
+#. why an unfinished download could not be moved (after "The file could not be moved: "): its folder isn't there now (a drive taken out); {folder} is that folder
+#, machine
+	its folder {folder} can't be reached	其文件夹 {folder} 无法访问
 #. text in the download list (sizes, speeds, status)
 #. why a video download failed: ffmpeg couldn't join its picture and sound into one file; {error} = ffmpeg's reason, in English
 #. {error} = an error message (keep the braces as they are)
@@ -2475,14 +2571,11 @@
 	its release information is not as expected: {detail}	其发布信息与预期不符：{detail}
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Jamaica	牙买加
 #. text in the Scheduler window
-#, machine
 	January	一月
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Japan	日本
 #. text in helpers.rs
 #. Video helpers: the row of the JavaScript runtime (Node.js, Deno...) yt-dlp needs for YouTube's videos
@@ -2490,24 +2583,19 @@
 	JavaScript runtime (for YouTube)	JavaScript 运行时（用于 YouTube）
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Jersey	泽西岛
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Jordan	约旦
 #. text in the Scheduler window
-#, machine
 	July	七月
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Jump to the download whose name starts with it	跳转到名称以此开头的下载任务
 #. text in the Scheduler window
-#, machine
 	June	六月
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Kazakhstan	哈萨克斯坦
 #. text in a dialog box; text in a download's progress window; text in the Add torrent window
 #, machine
@@ -2529,7 +2617,6 @@
 	Keep sharing torrents after they finish	下载完成后继续做种
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Kenya	肯尼亚
 #. text in the Add torrent window
 #. Add trackers: under the box
@@ -2548,7 +2635,6 @@
 	Keys...	按键...
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Kiribati	基里巴斯
 #. text in a download's Properties window
 #. Properties, where a download's server is: not seen yet (it hasn't run)
@@ -2556,23 +2642,19 @@
 	known once it has run	运行后可知
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Kosovo	科索沃
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Kuwait	科威特
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Kyrgyzstan	吉尔吉斯斯坦
-#. text in langpick.rs
+#. text in langpick.rs; text in setup.rs
 #. window title (the interface language)
 #, machine
 	Language	语言
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Laos	老挝
 #. message or event log entry in the main window
 #. RSS: a feed bigger than MDM reads (5 MB)
@@ -2596,18 +2678,15 @@
 	Later	稍后
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Latvia	拉脱维亚
 #. text in the Options window
 #, machine
 	Launch Mister Download Manager on startup	启动时运行 Mister Download Manager
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Lebanon	黎巴嫩
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Lesotho	莱索托
 #. checkbox in the Options window
 #. Options → Remote check box (off by default)
@@ -2623,18 +2702,15 @@
 	Letters	字母
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Liberia	利比里亚
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Libya	利比亚
 #. link (opens a web page) in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Licenses and credits	许可证和鸣谢
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Liechtenstein	列支敦士登
 #. checkbox in a dialog box
 #, machine
@@ -2647,6 +2723,23 @@
 #. Torrent settings: an upload speed limit for all torrents together, followed by a box with the speed and "KBytes/sec"
 #, machine
 	Limit uploading for all torrents to	将所有种子的上传速度限制为
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: a header's name has a space or another character names can't have; {line} is the line's number
+#, machine
+	Line {line}: a header's name has letters, digits and dashes only	第 {line} 行：标头名称只能包含字母、数字和短划线
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: a header MDM sets itself for each request (Range, Host…) can't be typed; {line} is the line's number, {name} the header's name
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Line {line}: Mister Download Manager sets {name} itself	第 {line} 行：Mister Download Manager 会自行设置 {name}
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: a header's value (or the User-Agent) holds a control character; {line} is the line's number
+#, machine
+	Line {line}: the value has a character a header can't hold	第 {line} 行：值包含标头不能包含的字符
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: a line of request headers isn't "Name: value"; {line} is its number
+#, machine
+	Line {line}: write a header as Name: value	第 {line} 行：请将标头写为“名称: 值”
 #. message or event log entry in the main window; window title in the Link grabber window; group box title in the Options window
 #. Options → Archives: group box title
 #, machine
@@ -2660,6 +2753,10 @@
 #. in Link grabber, where the addresses came from: a page in the browser
 #, machine
 	Links from the browser	来自浏览器的链接
+#. text in a dialog box
+#. tooltip of Download File Info's Preview button for a ZIP (#1775): it lists the files inside, to download only some of them
+#, machine
+	List the files inside the ZIP and pick those to download	列出 ZIP 文件中的文件并选择要下载的文件
 #. text in playlistdlg.rs
 #. button in Download video: go on listing a playlist from where it stopped
 #, machine
@@ -2689,7 +2786,6 @@
 	Lists of addresses	地址列表
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Lithuania	立陶宛
 #. text in playlistdlg.rs
 #. button in Download video for a channel: list its next videos
@@ -2737,17 +2833,25 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Looking for your default browser...	正在查找您的默认浏览器...
+#. text in a dialog box
+#. tooltip of Download File Info's greyed Preview button while MDM asks the server whether it can look inside the ZIP (#1775)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Looking inside the ZIP...	正在查看 ZIP 文件内部...
 #. text in the Download video window
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Looking the page up...	正在查找页面...
+#. text in preview.rs
+#. the preview pane: still looking whether the file is there
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Looking...	正在查找...
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Luxembourg	卢森堡
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Macau	澳门
 #. text in the Options window
 #. tooltip of "Mark downloaded files as coming from the internet" on macOS
@@ -2763,7 +2867,6 @@
 	macOS keeps Mister Download Manager out of {browser}'s folder.	macOS 阻止 Mister Download Manager 访问 {browser} 文件夹。
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Madagascar	马达加斯加
 #. text in the Link grabber window
 #. Link grabber, a link's status: a magnet link (a torrent, its files looked up once it is added)
@@ -2784,23 +2887,18 @@
 	Making the report readable: fetching the symbols ({done} of {total} MB)…	正在生成可读报告：获取符号（{done} / {total} MB）…
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Malawi	马拉维
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Malaysia	马来西亚
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Maldives	马尔代夫
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Mali	马里
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Malta	马耳他
 #. text in the Options window
 #, machine
@@ -2814,18 +2912,15 @@
 #, machine
 	Map the port on the router (UPnP)	在路由器上映射端口（UPnP）
 #. text in the Scheduler window
-#, machine
 	March	三月
 #. checkbox in the Options window
 #, machine
 	Mark downloaded files as coming from the internet	将下载的文件标记为来自互联网
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Marshall Islands	马绍尔群岛
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Martinique	马提尼克
 #. checkbox in the Find window
 #, machine
@@ -2835,11 +2930,9 @@
 	Match whole string only	只匹配整个字符串
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Mauritania	毛里塔尼亚
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Mauritius	毛里求斯
 #. group box title in the Options window
 #, machine
@@ -2861,11 +2954,9 @@
 	Maximum upload speed:	最大上传速度：
 #. text in the Scheduler window
 #. the month (the fifth of the year)
-#, machine
 	May	五月
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Mayotte	马约特
 #. text in the Options window
 #. Options → Remote → Pair a device: the remote control isn't listening (no network, port taken): the Remote page says why
@@ -2908,6 +2999,27 @@
 #. remote control page (on a phone): no pairing code is shown in MDM; "Pair a device" is MDM's button
 #, machine
 	MDM shows no code now. Click Pair a device there first.	MDM 现在没有显示配对码。请先点击“配对设备”。
+#. text in errors.rs
+#. error installing ffmpeg: the list of builds MDM accepts couldn't be read; {detail} = the technical detail, in English
+#, machine
+	MDM's list of checked ffmpeg builds can't be read ({detail})	MDM 检查过的 ffmpeg 构建列表无法读取 ({detail})
+#. text in errors.rs
+#. error installing ffmpeg: MDM installs only builds named in a list it publishes, signed with its key, and that list couldn't be downloaded; {error} = why
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	MDM's list of checked ffmpeg builds could not be downloaded: {error}	MDM 检查过的 ffmpeg 构建列表无法下载：{error}
+#. text in errors.rs
+#. error installing ffmpeg: the list of builds MDM accepts has none for this computer's system and processor
+#, machine
+	MDM's list of checked ffmpeg builds has none for this computer	MDM 检查过的 ffmpeg 构建列表不包含适用于此计算机的版本
+#. text in errors.rs
+#. error installing ffmpeg: the list of builds MDM accepts is older than one this copy of MDM already used (it never goes back to an older list)
+#, machine
+	MDM's list of checked ffmpeg builds is older than one already used, so ffmpeg wasn't installed	MDM 检查过的 ffmpeg 构建列表版本过旧，因此未安装 ffmpeg
+#. text in errors.rs
+#. error installing ffmpeg: the list of builds MDM accepts doesn't carry MDM's own signature
+#, machine
+	MDM's list of checked ffmpeg builds isn't signed by MDM's key, so ffmpeg wasn't installed	MDM 检查过的 ffmpeg 构建列表未由 MDM 的密钥签名，因此未安装 ffmpeg
 #. text in whereis.rs
 #. how far a download's server is, by its round trip (60 to 150 ms)
 #, machine
@@ -2927,11 +3039,9 @@
 	Merging... ({percent})	正在合并... ({percent})
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Mexico	墨西哥
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Micronesia	密克罗尼西亚
 #. text in standard windows
 #. a window's title-bar button: minimizes the window
@@ -2980,6 +3090,10 @@
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
 #, machine
 	Mister Download Manager is running the queue "{queue}"	Mister Download Manager 正在运行队列“{queue}”
+#. text in setup.rs
+#. the first start's setup window, under "Choose a language"
+#, machine
+	Mister Download Manager shows every window in it. View → Language changes it later.	Mister Download Manager 将以该语言显示所有窗口。您可以在“视图”→“语言”中更改它。
 #. text in crashui.rs
 #. crash report window heading: MDM's window doesn't answer (frozen)
 #, machine
@@ -3008,24 +3122,23 @@
 #. Monday, as short as a calendar's column head (two letters in English)
 #, machine
 	Mo	周一
+#. text in a download's progress window
+#. Zip preview's column: when the file was last changed, as the ZIP says
+#, machine
+	Modified	修改日期
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Moldova	摩尔多瓦
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Monaco	摩纳哥
 #. text in the Options window; text in the Scheduler window
-#, machine
 	Monday	星期一
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Mongolia	蒙古
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Montenegro	黑山
 #. text in the Options window
 #. a date's order: month first (10/30/2026)
@@ -3033,7 +3146,6 @@
 	Month, day, year	月、日、年
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Montserrat	蒙特塞拉特
 #. text in remote.rs
 #. remote control page (on a phone): its menu's button
@@ -3041,7 +3153,6 @@
 	More	更多
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Morocco	摩洛哥
 #. text in playlistdlg.rs
 #. a quality in Download video for a whole playlist: each video's best H.264 video with AAC sound, an MP4 that every video editor, TV and phone plays; keep "(H.264 + AAC)" as it is
@@ -3061,7 +3172,8 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move between the toolbar, the categories and the download list	在工具栏、类别和下载列表之间移动
-#. text in the Scheduler window
+#. text in a dialog box; text in the Scheduler window
+#. button in the Columns dialog: move the selected column one place towards the end of the list
 #, machine
 	Move down	下移
 #. text in a dialog box
@@ -3077,7 +3189,9 @@
 #. message or event log entry in the main window
 #, machine
 	Move to queue	移动到队列
-#. text in the Scheduler window
+#. text in a dialog box; text in the Scheduler window
+#. button in the Columns dialog: move the selected column one place towards the start of the list
+#. tooltip of an icon button in the Scheduler's list of files
 #, machine
 	Move up	上移
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
@@ -3086,13 +3200,29 @@
 #. message or event log entry in the main window
 #, machine
 	Move/Rename	移动/重命名
+#. text in preview.rs
+#. the preview pane: a finished download's file is no longer where it was saved
+#, machine
+	Moved or deleted	已移动或删除
+#. message or event log entry in the main window
+#. event log: an unfinished download's part file was moved to another folder; it resumes there; {folder} is that folder
+#, machine
+	Moved to {folder}	已移动到 {folder}
 #. message or event log entry in the main window
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Moving the file...	正在移动文件...
+#. message or event log entry in the main window
+#. event log: an unfinished download's part file is being moved to another folder; {folder} is that folder
+#, machine
+	Moving to {folder}	正在移动到 {folder}
+#. text in the download list (sizes, speeds, status)
+#. a download's status: its unfinished file is being moved to another folder
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Moving...	正在移动...
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Mozambique	莫桑比克
 #. text in the Download video window
 #. why "Embed chapters" is greyed in Download video: the choice is a sound converted to MP3, Opus or FLAC, which MDM saves without chapters
@@ -3118,7 +3248,6 @@
 	My own way:	我的方式：
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Myanmar	缅甸
 #. text in a download's progress window
 #. column title: connection number (abbreviation of Number)
@@ -3139,11 +3268,9 @@
 	Names in your hosts file and local names (single words, .local, .lan) stay with the system's DNS. Video pages and torrent trackers use the system's DNS for now.	hosts 文件中的名称和本地名称（单个单词、.local、.lan）仍使用系统的 DNS。视频页面和种子 Tracker 目前使用系统的 DNS。
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Namibia	纳米比亚
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Nauru	瑙鲁
 #. text in whereis.rs
 #. how far a download's server is, by its round trip (under 60 ms)
@@ -3155,11 +3282,9 @@
 	Needs a login	需要登录
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Nepal	尼泊尔
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Netherlands	荷兰
 #. text in the Options window
 #, machine
@@ -3181,12 +3306,15 @@
 	New address from the browser ({host}): going on from it	来自浏览器的新地址 ({host})：正在从该地址继续
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	New Caledonia	新喀里多尼亚
 #. button in the Options window
 #. Options → Remote → Pair a device: button: show a new code
 #, machine
 	New code	新配对码
+#. text in the Options window
+#. tooltip of Options → Save to → "Save every download in "General" category's folder"
+#, machine
+	New downloads of every category go to this one folder; their categories still sort the list. A download's folder can still be changed in the window that starts it, and the downloads already in the list stay where they are.	所有类别的新下载都将保存到此文件夹；列表仍按类别排序。下载任务的保存文件夹仍可在启动下载的窗口中更改，列表中已有的下载任务将保留在原位置。
 #. text in the Options window
 #, machine
 	New exception	新建例外
@@ -3198,29 +3326,36 @@
 #. RSS feeds window, Download rules: make a new rule
 #, machine
 	New rule	新建规则
+#. text in the Options window
+#. window title: adding a site rule
+#, machine
+	New site rule	新建站点规则
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	New Zealand	新西兰
+#. text in setup.rs
+#. button of the first start's setup window: the next step
+#, machine
+	Next	下一步
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Nicaragua	尼加拉瓜
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Niger	尼日尔
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Nigeria	尼日利亚
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Niue	纽埃
 #. button in a dialog box; text in a download's progress window
 #, machine
 	No	否
+#. text in the Options window
+#. Options → Accounts: the title in the empty list of debrid service accounts
+#, machine
+	No accounts yet	暂无帐户
 #. text in a dialog box
 #, machine
 	No addresses yet	尚无地址
@@ -3228,6 +3363,10 @@
 #. Options → Proxy / Socks: Test got no answer in time
 #, machine
 	No answer within 20 seconds.	20 秒内无响应。
+#. text in rssdlg.rs
+#. RSS feeds window: the title in the empty list of articles of a feed that has none
+#, machine
+	No articles	暂无文章
 #. text in extension.rs
 #. a check of Test browser integration (Linux, macOS): MDM found no browser it can connect to (one installed as a Flatpak isn't found)
 #, machine
@@ -3251,6 +3390,14 @@
 #. message or event log entry in the main window
 #, machine
 	No download links were found in the clipboard. Copy a text with http, https, ftp or magnet links in it, and try again.	剪贴板中未找到下载链接。请复制包含 http、https、ftp 或 magnet 链接的文本，然后重试。
+#. text in preview.rs
+#. the preview pane (beside the download list) when no download is selected: its title
+#, machine
+	No download selected	未选择下载任务
+#. text in traypanel.rs
+#. the notification-area icon's panel (#1365) when no download is running
+#, machine
+	No downloads are running	没有正在运行的下载
 #. message or event log entry in the main window
 #. title in the empty download list (this category or queue has no downloads)
 #, machine
@@ -3267,6 +3414,18 @@
 #. title in the empty download list when there are no downloads at all
 #, machine
 	No downloads yet	尚无下载任务
+#. text in rssdlg.rs
+#. RSS feeds window: the title in the empty list of articles, no feed chosen
+#, machine
+	No feed chosen	未选择源
+#. text in rssdlg.rs
+#. RSS feeds window: the title in the empty list of feeds
+#, machine
+	No feeds yet	暂无源
+#. text in the Scheduler window
+#. Scheduler → Files in the queue: the title in the empty list
+#, machine
+	No files in this queue	此队列中没有文件
 #. text in a dialog box
 #, machine
 	No folders yet	尚无文件夹
@@ -3280,6 +3439,10 @@
 #. text in langpick.rs
 #, machine
 	No language matches.	无匹配语言。
+#. text in the Link grabber window
+#. Link grabber: the title in its empty list
+#, machine
+	No links yet	暂无链接
 #. text in the Options window
 #. Options → Remote → Status: on, but the computer has no local network address now
 #, machine
@@ -3303,13 +3466,25 @@
 #. a magnet link's lookup, after 30 seconds without a peer
 #, machine
 	No peers yet. Few people may share this torrent, or a firewall, a VPN or the network may be blocking BitTorrent.	暂无节点。分享此种子的人可能很少，也可能是防火墙、VPN 或网络在阻止 BitTorrent。
+#. text in requestedit.rs
+#. a download's Connection settings → Proxy: straight to the server, no proxy
+#, machine
+	No proxy	无代理
 #. text in the Options window
 #, machine
 	No proxy/socks	无代理/SOCKS
 #. text in the Options window
+#. Site rules window: the title in the empty list of rules
+#, machine
+	No site rules yet	暂无站点规则
+#. text in the Options window
 #. Options → Accounts: no system keyring/keychain answered (none runs, e.g. a desktop without one), so the sign-ins stay in MDM's settings folder, which only the user's account may read
 #, machine
 	No system keyring answered, so sign-ins and passwords are kept in MDM's settings, which only you can read.	系统密钥环无响应，因此登录信息和密码保存在 MDM 的设置中，只有您可以读取。
+#. text in the Add torrent window
+#. Add torrent: the title in the empty list of files, before a torrent is read
+#, machine
+	No torrent yet	暂无种子
 #. message or event log entry in the main window
 #. event log entry: Add trackers changed nothing, the torrent had them all
 #, machine
@@ -3349,23 +3524,18 @@
 	None: peers come from the DHT and other peers	无：节点来自 DHT 和其他节点
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Norfolk Island	诺福克岛
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	North Korea	朝鲜
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	North Macedonia	北马其顿
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Northern Mariana Islands	北马里亚纳群岛
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Norway	挪威
 #. text in the Checksum window
 #, machine
@@ -3386,17 +3556,25 @@
 #. RSS feeds window: the selected feed hasn't been fetched yet
 #, machine
 	Not fetched yet	尚未获取
+#. text in the Link grabber window
+#. Link grabber, a link's status: a Hugging Face repository or folder, or a GitHub release or tag, that isn't there. The sentence is the cell's hover tip
+#, machine
+	Not found	未找到
 #. value in a column's filter list in the download list
 #, machine
 	Not in a queue	不在队列中
 #. text in helpers.rs
 #, machine
 	Not installed yet	尚未安装
+#. text in preview.rs
+#. the preview pane: the size of a download is not known yet
+#, machine
+	Not known yet	大小未知
 #. text in the Link grabber window
 #. Link grabber, a link's status: a web page sent it (Click'n'Load), so it isn't looked up (name, size, online) before it is added
 #, machine
 	Not looked up	未查找
-#. text in cnl.rs; button in helpers.rs
+#. text in cnl.rs
 #. button in the Click'n'Load window: refuse these links, ask again next time
 #, machine
 	Not now	暂不
@@ -3410,6 +3588,15 @@
 #. Options → Accounts: the service doesn't take this file host (shouldn't happen when signing in)
 #, machine
 	not supported by this service	此服务不支持
+#. text in archtest.rs
+#. in a download's log and the Test archive message: a split archive is tested only once every volume is downloaded; {name} is its file name, {why} which volume is missing
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Not tested yet: {name} isn't complete ({why})	尚未测试：{name} 不完整 ({why})
+#. text in archtest.rs
+#. in a download's log: an archive larger than Options → Archives' limit for its test wasn't tested; {limit} like "4.00 GB"; "Test archive" is the right-click command
+#, machine
+	Not tested: it is larger than {limit} (Options → Archives). Right-click → Test archive tests it	未测试：它大于 {limit}（选项 → 存档）。右键单击 → 测试存档可测试它
 #. text in the Options window
 #, machine
 	Not used: file parts are written next to the file	未使用：文件分块直接写在文件旁边
@@ -3424,11 +3611,14 @@
 #, machine
 	Nothing to download in {item}: drop links, a .torrent file, or a list of addresses (.txt, .ef2).	{item} 中没有可下载内容：请拖放链接、.torrent 文件或地址列表（.txt、.ef2）。
 #. text in the Scheduler window
-#, machine
 	November	十一月
 #. text in the Options window
 #, machine
 	Number	数字
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: check box before the number box; unticked, the number set in Options → Connection applies
+#, machine
+	Number of connections:	连接数：
 #. checkbox in the Scheduler window
 #, machine
 	Number of retries for each file if downloading failed :	如果下载失败，每个文件的重试次数：
@@ -3437,7 +3627,6 @@
 #, machine
 	Numbers	数字
 #. text in the Scheduler window
-#, machine
 	October	十月
 #. option (radio button) in the Options window
 #, machine
@@ -3464,12 +3653,11 @@
 #. Link grabber, a link's status: the server hasn't the file; {status} is the HTTP code (404)
 #, machine
 	Offline ({status})	离线（{status}）
-#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; text in extracting archives (a download's log, the Archive password window); text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's Properties window; button in the Scheduler window; button in the Add torrent window
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; text in extracting archives (a download's log, the Archive password window); text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's Properties window; button in the Scheduler window; button in the Add torrent window; text in zippreview.rs
 #, machine
 	OK	确定
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Oman	阿曼
 #. text in the Scheduler window
 #. the Scheduler, under "Wake the computer to run this queue" (Windows): its power option "Allow wake timers" is off, on battery
@@ -3518,13 +3706,14 @@
 #. Link grabber, a link's status: the server has the file
 #, machine
 	Online	在线
-#. text in a download's Properties window
-#. tooltip of the greyed Move button in File Properties
+#. text in the Options window
+#. Options → Archives → Link grabber: the hover tip of the types box in "Folders: {depth} levels deep, types: {types}": only a folder's files of these types go into Link grabber; written as the File types page writes them
 #, machine
-	Only a finished download, or one not started yet, can be moved	只有已完成或尚未开始的下载任务才能移动
-#. message or event log entry in the main window
+	Only a folder's files of these types, written as on the File types page (ISO ZIP R0*). Empty: every type.	仅限文件夹中这些类型的文件，格式与“文件类型”页面相同（ISO ZIP R0*）。留空：所有类型。
+#. text in the Download video window
+#. checkbox in Download video: download only a part of the video or sound; the From and To boxes follow it
 #, machine
-	Only a finished download, or one not started yet, can be moved. Stop it and finish it first.	只有已完成或尚未开始的下载任务才能移动。请先停止并完成该任务。
+	Only a part	仅下载部分内容
 #. text in the Scheduler window
 #. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer's wake alarm can be set by an administrator only
 #, machine
@@ -3542,9 +3731,17 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 	Only the first {n} videos are listed.	仅列出前 {n} 个视频。
+#. message or event log entry in the main window
+#. event log: a torrent through a debrid account gets only the files ticked in Add torrent; {files} how many ("3")
+#, machine
+	Only the {files} file(s) ticked in Add torrent	仅下载“添加种子”中勾选的 {files} 个文件
 #. checkbox in a dialog box
 #, machine
 	Only while I'm using the computer	仅在我使用计算机时
+#. message or event log entry in the main window
+#. event log entry: the download is files picked inside a ZIP in Zip preview (#1775); {files} how many ("3 files")
+#, machine
+	Only {files} picked inside the ZIP	仅下载 ZIP 文件中选定的 {files}
 #. button in a dialog box; text in a dialog box; button in a download's Properties window; button in torrentfiles.rs
 #. verb: opens the downloaded file
 #. title of the message when a downloaded file can't be opened
@@ -3566,7 +3763,8 @@
 #. checkbox in the Add torrent window
 #, machine
 	Open magnet links and .torrent files with Mister Download Manager	使用 Mister Download Manager 打开磁力链接和 .torrent 文件
-#. text in the tray icon's menu
+#. text in the tray icon's menu; text in traypanel.rs
+#. the notification-area icon's panel (#1365): its button that opens the main window (also the tray menu's first item)
 #, machine
 	Open Mister Download Manager	打开 Mister Download Manager
 #. text in extension.rs
@@ -3624,6 +3822,10 @@
 #. Link grabber: the box that edits the selected package
 #, machine
 	Package	包
+#. text in a download's progress window
+#. Zip preview's column: the file's size as packed (compressed) inside the ZIP
+#, machine
+	Packed	压缩大小
 #. text in gallerydlg.rs; text in the Download video window
 #, machine
 	Page address	页面地址
@@ -3654,28 +3856,26 @@
 	Paired devices:	已配对设备：
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Pakistan	巴基斯坦
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Palau	帕劳
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Palestine	巴勒斯坦
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Panama	巴拿马
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Papua New Guinea	巴布亚新几内亚
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Paraguay	巴拉圭
+#. text in the Download video window
+#. label in Download video before the choice to download only a part of the video or sound (from one time to another)
+#, machine
+	Part	部分
 #. text in the Batch download window; text in a dialog box; label in the Options window; text in the Options window; text in a download's Properties window
 #, machine
 	Password	密码
@@ -3708,10 +3908,14 @@
 #. remote control page (on a phone): button: pause a download
 #, machine
 	Pause	暂停
-#. text in a download's Properties window
+#. text in the download list (sizes, speeds, status)
 #. tooltip of the greyed Move button in File Properties
 #, machine
 	Pause the download first	先暂停下载
+#. tooltip (why a control is greyed) in a download's Properties window
+#. tooltip of File Properties' greyed Connection... button while the download runs
+#, machine
+	Pause the download to change how it connects	暂停下载以更改连接方式
 #. text in a download's progress window
 #. a download's status (state it is in, not a command): stopped for now
 #, machine
@@ -3729,11 +3933,9 @@
 	Periodic synchronization	定期同步
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Peru	秘鲁
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Philippines	菲律宾
 #. text in a download's progress window
 #. tab title: the parts the torrent is made of
@@ -3741,7 +3943,6 @@
 	Pieces	分块
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Pitcairn	皮特凯恩
 #. text in the settings
 #. a way of asking a DNS, in its name in messages: "Cloudflare (plain DNS)"
@@ -3757,7 +3958,6 @@
 	PM	下午
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Poland	波兰
 #. label in the Options window
 #, machine
@@ -3773,7 +3973,6 @@
 	Port:	端口：
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Portugal	葡萄牙
 #. text in debrid.rs
 #. Options → Accounts: a debrid account with premium (no end date given)
@@ -3787,8 +3986,8 @@
 #. Options → General: shown inside the shortcut recorder box while waiting for the user to press a 2-key or 3-key shortcut (#558)
 #. the trailing ... means it is still going on: keep it
 	Press keys...	请按下组合键...
-#. button in a dialog box
-#. verb: open the part already downloaded
+#. button in a dialog box; text in a dialog box
+#. verb: Download File Info's button; for a ZIP, it lists the files inside it to pick those to download (#1775)
 #, machine
 	Preview	预览
 #. text in a dialog box
@@ -3831,9 +4030,12 @@
 #. label in the Options window
 #, machine
 	Proxy server address	代理服务器地址
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: label before the proxy choice
+#, machine
+	Proxy:	代理：
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Puerto Rico	波多黎各
 #. text in the Batch download window
 #. why Batch download's OK is greyed
@@ -3845,7 +4047,6 @@
 	Put them into the video	将字幕嵌入视频
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Qatar	卡塔尔
 #. text in the Download video window
 #. what a screen reader calls the list of a video's formats (1080p, 720p, audio only…)
@@ -3871,6 +4072,10 @@
 #. plural noun: the download queues
 #, machine
 	Queues	队列
+#. text in the Download video window
+#. choice in Download video's Part: cut where the video has a keyframe, the streams copied as they are (fast; it may start a little before From)
+#, machine
+	Quick cut, at keyframes	快速剪切，在关键帧处
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites: a note under the choices
 #, machine
@@ -3887,6 +4092,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Reading the torrent...	正在读取种子...
+#. text in zippreview.rs
+#. Zip preview, while the ZIP's list of files is being read from its server
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Reading the ZIP's list of files...	正在读取 ZIP 文件的文件列表...
 #. message or event log entry in the main window
 #. the status strip while Tasks → Import reads a file; {file} is its name
 #. the trailing ... means it is still going on: keep it
@@ -3895,10 +4105,6 @@
 #. text in helpers.rs
 #, machine
 	Reads a page and lists every quality the site offers, up to 4K, from YouTube, Vimeo and over a thousand other sites.	读取页面并列出网站提供的所有画质，最高可达 4K，支持 YouTube、Vimeo 及一千多个其他网站。
-#. text in helpers.rs
-#. the helpers are downloaded, checked and ready; {list} = names and versions, e.g. "yt-dlp 2026.10.26, ffmpeg 9.0"
-#, machine
-	Ready: {list}	就绪：{list}
 #. message or event log entry in the main window
 #. event log entry: Reannounce failed, with the reason
 #. {error} = an error message (keep the braces as they are)
@@ -3922,10 +4128,18 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Recording...	正在录制...
-#. message or event log entry in the main window
+#. message or event log entry in the main window; text in archtest.rs
 #. window title, verb: download the file again from the start
 #, machine
 	Redownload	重新下载
+#. text in archtest.rs
+#. in the "Damaged archive" window, under what was found; "Redownload" is the button beside
+#, machine
+	Redownload downloads every volume again from the start.	重新下载会从头开始再次下载所有卷。
+#. text in archtest.rs
+#. in the "Damaged archive" window, under what was found; "Redownload" is the button beside
+#, machine
+	Redownload downloads it again from the start.	重新下载会从头开始再次下载。
 #. text in a download's Properties window
 #, machine
 	Referer:	引用页：
@@ -3991,6 +4205,14 @@
 #. group box title: what the * in the address is replaced with (numbers or letters)
 #, machine
 	Replace asterisk to	将星号替换为
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: label above the box of request headers, one a line ("X-Token: abc")
+#, machine
+	Request headers, one a line (Name: value):	请求标头，每行一个（名称: 值）：
+#. text in a dialog box
+#. button in the Columns dialog: put the columns back as they first were (order, widths, all shown)
+#, machine
+	Reset	重置
 #. text in crashui.rs
 #. crash report window button: start MDM again
 #, machine
@@ -4029,22 +4251,18 @@
 	Retrying: {error}	正在重试：{error}
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Romania	罗马尼亚
 #. window title in rssdlg.rs
 #, machine
 	RSS feeds	RSS 源
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Russia	俄罗斯
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Rwanda	卢旺达
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Réunion	留尼汪
 #. text in the Scheduler window
 #. verb: stop the queue
@@ -4060,54 +4278,47 @@
 	Safari turns "Allow unsigned extensions" off each time it quits: do steps 1 to 6 again after restarting it.	Safari 每次退出时都会关闭“允许未签名的扩展”：重启 Safari 后请再次执行第 1 至 6 步。
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Saint Barthélemy	圣巴泰勒米
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Saint Helena, Ascension and Tristan da Cunha	圣赫勒拿、阿森松和特里斯坦-达库尼亚
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Saint Kitts and Nevis	圣基茨和尼维斯
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Saint Lucia	圣卢西亚
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Saint Martin	圣马丁
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Saint Pierre and Miquelon	圣皮埃尔和密克隆
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Saint Vincent and the Grenadines	圣文森特和格林纳丁斯
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Samoa	萨摩亚
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	San Marino	圣马力诺
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Sao Tome and Principe	圣多美和普林西比
 #. text in the Options window; text in the Scheduler window
-#, machine
 	Saturday	星期六
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Saudi Arabia	沙特阿拉伯
 #. text in a dialog box
 #, machine
 	Save As	另存为
+#. text in the Options window
+#. Options → Save to, a check box: new downloads of every category go to General's folder; {category} is General's name
+#. {category} = a category name such as "Music" (keep the braces as they are)
+#, machine
+	Save every download in "{category}" category's folder	将所有下载保存到“{category}”类别文件夹中
 #. text in gallerydlg.rs; text in the Options window; text in the Add torrent window; text in the Download video window
 #. tab title: where downloads are saved
 #, machine
@@ -4116,7 +4327,7 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Save To...	保存到...
-#. text in a download's progress window; text in a download's Properties window
+#. text in preview.rs; text in a download's progress window; text in a download's Properties window
 #, machine
 	Save To:	保存到：
 #. text in the Batch download window; text in the Link grabber window; text in rssdlg.rs
@@ -4154,7 +4365,11 @@
 #. text in the Batch download window
 #, machine
 	Second file:	第二个文件：
-#. button in playlistdlg.rs; button in the Add torrent window; text in torrentfiles.rs
+#. text in preview.rs
+#. the preview pane when no download is selected, under its title
+#, machine
+	Select a download to see its picture and details here.	选择一个下载任务以在此处查看其图片和详细信息。
+#. button in playlistdlg.rs; button in the Add torrent window; text in torrentfiles.rs; text in zippreview.rs
 #. button in Download video for a playlist: tick every video
 #, machine
 	Select all	全选
@@ -4204,7 +4419,6 @@
 	Send torrents and magnet links to the first account instead of to peers	将种子和磁力链接发送到第一个账户，而非节点
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Senegal	塞内加尔
 #. text in a download's progress window
 #. column title: how much went to the peer
@@ -4212,11 +4426,9 @@
 #, machine
 	Sent	发送量
 #. text in the Scheduler window
-#, machine
 	September	九月
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Serbia	塞尔维亚
 #. text in a dialog box; text in the Options window; text in a download's progress window
 #. label before where a download's server is (its country and round trip)
@@ -4268,7 +4480,6 @@
 	Settings...	设置...
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Seychelles	塞舌尔
 #. text in a download's progress window
 #. sent divided by received
@@ -4305,6 +4516,11 @@
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 	Show &categories	显示类别(&C)
+#. message or event log entry in the main window
+#. View menu: shows a pane beside the download list with the selected download's picture and details
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	Show &preview pane	显示预览窗格(&P)
 #. text in the Options window
 #, machine
 	Show a dialog and ask what to do.	显示对话框并询问如何操作。
@@ -4327,6 +4543,10 @@
 #. checkbox in the Options window
 #, machine
 	Show download progress dialog when a download starts	下载开始时显示下载进度对话框
+#. text in the Options window
+#. checkbox: a click on MDM's icon in the notification area (system tray) shows a small panel over it with the downloads now running, their progress, Pause and Cancel; unticked, the click shows or hides the main window
+#, machine
+	Show downloads when the notification area icon is clicked	单击通知区域图标时显示下载
 #. button in a dialog box
 #. button: shows these downloads in MDM's list, selected
 #, machine
@@ -4335,6 +4555,9 @@
 #. button in the browser extension's window: open the tutorial that adds the extension
 #, machine
 	Show me how	查看教程
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Show or hide the preview pane	显示或隐藏预览窗格
 #. checkbox in the Options window
 #, machine
 	Show queue selection panel on closing batch download dialogs	关闭批量下载对话框时显示队列选择面板
@@ -4356,7 +4579,6 @@
 	Shut down	关机
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Sierra Leone	塞拉利昂
 #. button in the Options window
 #. button: sign in to the debrid service with the user name and password typed in
@@ -4366,6 +4588,10 @@
 #. button: sign in to the debrid service in the browser, by typing a code there
 #, machine
 	Sign in in the browser	在浏览器中登录
+#. text in the Options window
+#. Options → Accounts (Android): where the debrid accounts' sign-ins and the other passwords are kept (encrypted with a key held by Android's keystore)
+#, machine
+	Sign-ins and passwords are kept encrypted with a key in Android's keystore.	登录信息和密码使用 Android 密钥库中的密钥加密保存。
 #. text in the Options window
 #. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (the macOS login keychain)
 #, machine
@@ -4412,15 +4638,27 @@
 	Since {date}: MDM tries it again on {retry}, or after a driver update	自 {date} 起：MDM 将在 {retry} 或驱动程序更新后再次尝试
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Singapore	新加坡
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Sint Maarten	圣马丁岛
+#. text in the Options window
+#. Site rules: column title: the site pattern
+#, machine
+	Site	站点
 #. checkbox in the Find window
 #, machine
 	Site name/Download link/Parent web page/Referer	站点名称/下载链接/上级网页/引用页
+#. window title in the Options window; text in the Options window
+#. window title: per-site settings (User-Agent, headers, connections, the browser-like connection) by site pattern
+#. Site rules window: the list's name for screen readers
+#, machine
+	Site rules	站点规则
+#. text in the Options window
+#. Options → Connection: button: opens the per-site settings (User-Agent, headers, connections)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Site rules...	站点规则...
 #. text in the Options window
 #. column title: the site (and path) a login is for
 #, machine
@@ -4428,6 +4666,10 @@
 #. text in the Options window
 #, machine
 	Site/path:	站点/路径：
+#. text in the Options window
+#. Site rule: label before the site pattern box (example.com, *.example.com)
+#, machine
+	Site:	站点：
 #. text in the Options window
 #. tab title: user names and passwords for sites
 #, machine
@@ -4447,7 +4689,7 @@
 #. the video's file size is not known
 #, machine
 	size unknown	大小未知
-#. text in a download's Properties window
+#. text in preview.rs; text in a download's Properties window
 #, machine
 	Size:	大小：
 #. text in a download's progress window; text in torrentfiles.rs
@@ -4461,11 +4703,9 @@
 	Sleep	睡眠
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Slovakia	斯洛伐克
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Slovenia	斯洛文尼亚
 #. text in a dialog box
 #. button in the Download complete window: opens a menu of how long no Download complete window shows (30 minutes, 1 hour...)
@@ -4473,16 +4713,18 @@
 	Snooze	暂停通知
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Solomon Islands	所罗门群岛
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Somalia	索马里
 #. text in a download's progress window
 #. legend: pieces partly downloaded
 #, machine
 	Some	部分
+#. text in archtest.rs
+#. why a split archive (in several files, its volumes) isn't tested yet, in "{name} isn't complete ({why})": some of its files are still downloading or waiting in the list
+#, machine
+	some of its volumes are still downloading	其中一些分卷仍在下载中
 #. text in a dialog box
 #, machine
 	Some of the torrent's files are already in this folder:	此文件夹中已存在种子的部分文件：
@@ -4507,23 +4749,18 @@
 	Source: {source}	来源：{source}
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	South Africa	南非
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	South Georgia and the South Sandwich Islands	南乔治亚岛和南桑威奇群岛
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	South Korea	韩国
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	South Sudan	南苏丹
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Spain	西班牙
 #. text in a download's progress window; text in the tray icon's menu
 #. tab title: the tool that limits the download speed
@@ -4556,9 +4793,12 @@
 #. tooltip on the disabled Rename box when the file is one part of a split archive (.part1.rar, .7z.001…)
 #, machine
 	Split archive volumes keep their names for extraction	分卷压缩包需保留原文件名以便解压
+#. text in the Download video window
+#. checkbox in Download video: split the video into one file per chapter (the whole video is kept too)
+#, machine
+	Split into chapters	按章节拆分
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Sri Lanka	斯里兰卡
 #. text in the Link grabber window; text in remote.rs
 #. Link grabber button: download the ticked links now
@@ -4577,6 +4817,11 @@
 #. checkbox in the Options window
 #, machine
 	Start downloading immediately while displaying "Download File Info" dialog	显示“下载文件信息”对话框时立即开始下载
+#. text in a dialog box
+#. Download File Info, on hover over the number of files picked in Zip preview (#1775): {files} how many ("3 files"), {size} their size together, {folder} the folder they go into (named after the archive)
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	Start downloads only the {files} picked in the ZIP ({size}), into {folder}	仅下载 ZIP 文件中选定的 {files}（{size}），保存到 {folder}
 #. text in the tray icon's menu
 #, machine
 	Start main download queue	启动主下载队列
@@ -4616,9 +4861,14 @@
 #, machine
 	Started with yt-dlp {version} ({format})	已使用 yt-dlp {version}（{format}）启动
 #. text in helpers.rs
+#. the first start's video helpers: a helper's download has started, its size not known yet
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Starting...	正在启动...
+#. text in the Download video window
+#. tooltip of "Exact cut, encoded again" in Download video: what it does
+#, machine
+	Starts and ends exactly at From and To: ffmpeg encodes the part again, which takes longer	精确地从“从”时间开始到“到”时间结束：ffmpeg 会重新编码该部分，这需要更长时间
 #. text in the Options window
 #. column title: the account's state (premium, days left)
 #, machine
@@ -4628,14 +4878,27 @@
 #. column title: the download's state
 #, machine
 	Status	状态
-#. text in a download's Properties window
+#. text in preview.rs; text in a download's Properties window
 #. label before the download's state
 #, machine
 	Status:	状态：
+#. text in setup.rs
+#. what a screen reader says of the first start's setup window's steps; {n} = this step's number, {total} = how many, {name} = its name (Language, Video helpers, Browser extension)
+#. {n} = a number; {name} = a file name (keep the braces as they are)
+#, machine
+	Step {n} of {total}: {name}	第 {n} 步，共 {total} 步：{name}
+#. text in preview.rs
+#. the preview pane: a finished download's file is still where it was saved
+#, machine
+	Still there	仍在原处
 #. text in remote.rs; text in the Add torrent window
 #. remote control page (on a phone): button: stop a queue
 #, machine
 	Stop	停止
+#. text in a download's progress window
+#. button in the progress window of a download that never ends by itself (an internet radio, a camera feed: no size, can't be resumed): stop it and keep what has arrived as the finished file
+#, machine
+	Stop and keep	停止并保留
 #. text in a download's progress window
 #. button in a live stream's progress window: stop recording it and keep what was recorded as a video file
 #, machine
@@ -4713,25 +4976,20 @@
 	Subtitles in {language} couldn't be downloaded: {site} refused (too many requests).	{language} 字幕无法下载：{site} 拒绝请求（请求过多）。
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Sudan	苏丹
 #. text in the Options window; text in the Scheduler window
-#, machine
 	Sunday	星期日
 #. link (opens a web page) in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Support MDM on GitHub Sponsors	在 GitHub Sponsors 上赞助 MDM
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Suriname	苏里南
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Svalbard and Jan Mayen	斯瓦尔巴和扬马延
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Sweden	瑞典
 #. text in extension.rs
 #. step 3 of turning on the Safari extension; the quoted tab name is what Safari's settings show in this language: use Apple's own word for it, or keep the English name when unsure
@@ -4747,31 +5005,22 @@
 	Switch to the "Extensions" tab (the puzzle piece).	切换到“扩展”标签页（拼图图标）。
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Switzerland	瑞士
 #. message or event log entry in the main window
 #, machine
 	Synchronization queue	同步队列
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Syria	叙利亚
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Taiwan	台湾
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Tajikistan	塔吉克斯坦
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Tanzania	坦桑尼亚
-#. text in the Options window
-#. \\n starts a new line: break lines where they fit the translation
-#, machine
-	Tasks → Link grabber, or the browser's "Download all links": a split\narchive's volumes are one package, the other links of a page another.	“任务”→“链接抓取器”，或浏览器的“下载所有链接”：拆分\n压缩包的分卷算一个包，页面的其他链接算另一个包。
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Tell a friend	推荐给朋友
@@ -4782,6 +5031,13 @@
 #. button: asks the chosen DNS for an address, to see it works
 #, machine
 	Test	测试
+#. message or event log entry in the main window
+#, machine
+	Test archive	测试存档
+#. text in the Options window
+#. Options → Archives check box with a number box in it: {gb} is the box (a size in gigabytes, 4 at first); the words before it are the check box's caption, those after it follow the box, on one line. A test reads the archive back whole and checks it before its download counts as done
+#, machine
+	Test archives when their download completes, up to {gb} GB	下载完成后测试存档，最大 {gb} GB
 #. window title in the Options window
 #. window title: Options → General → Test browser integration
 #, machine
@@ -4790,13 +5046,25 @@
 #. the trailing ... means it opens a window: keep it
 #, machine
 	Test browser integration...	测试浏览器集成...
+#. text in archtest.rs
+#. in a download's log: the archive's damaged parts were downloaded again, and its test now finds no error
+#, machine
+	Tested again: the archive has no errors now	再次测试：存档现在没有错误
+#. text in archtest.rs; text in the download list (sizes, speeds, status)
+#. in a download's log: its archive is being tested (read back and checked) before the download counts as done
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Testing the archive...	正在测试存档...
+#. text in the download list (sizes, speeds, status)
+#. a download's status while its archive (zip, 7z, rar) is read back and checked before the download counts as done; {percent} how far, e.g. "45%"
+#, machine
+	Testing the archive... ({percent})	正在测试存档... ({percent})
 #. text in the Scheduler window
 #. Thursday, as short as a calendar's column head (two letters in English)
 #, machine
 	Th	周四
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Thailand	泰国
 #. text in the Batch download window
 #. why Batch download's OK is greyed
@@ -4806,6 +5074,10 @@
 #. Options → Archives, in red: the program chosen with "Use another program..." isn't 7-Zip's command line program (an archiver's window was picked instead); 7z.exe is that program's file name
 #, machine
 	That isn't 7-Zip's command line program (7z.exe).	这不是 7-Zip 的命令行程序 (7z.exe)。
+#. text in the Download video window
+#. why Download Now is greyed in Download video: Part's times are the whole video's (untick Only a part to download it whole)
+#, machine
+	That's the whole video: change From or To, or untick Only a part	这是整个视频：更改“从”或“到”时间，或取消勾选“仅下载部分内容”
 #. text in torrent downloads
 #. an error: the copy of the .torrent file the app keeps is missing
 #, machine
@@ -4819,6 +5091,14 @@
 #. text in extracting archives (a download's log, the Archive password window)
 #, machine
 	The archive could not be moved to the Trash: it was kept	无法将压缩包移至废纸篓：已保留
+#. text in archtest.rs
+#. in a download's log: the archive's own structure doesn't read back (its headers, its end), or it isn't the archive its name says
+#, machine
+	The archive test failed: it is damaged, or not the archive its name says	存档测试失败：它已损坏，或者与名称不符
+#. text in archtest.rs
+#. in a download's log: the archive was read back whole and checked
+#, machine
+	The archive test found no errors	存档测试未发现错误
 #. text in extracting archives (a download's log, the Archive password window)
 #. in a download's log: the downloaded archive, after it was extracted
 #, machine
@@ -4901,6 +5181,11 @@
 #. text in errors.rs
 #, machine
 	the connection was lost while receiving data	接收数据时连接丢失
+#. text in archtest.rs
+#. in a download's log: the bytes of the archive's damaged files couldn't be downloaded again; {error} why
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	The damaged parts couldn't be downloaded again: {error}	无法再次下载损坏的部分：{error}
 #. text in torrent downloads
 #. files kept appearing while the user was confirming a torrent start; stop rather than repeat questions indefinitely
 #, machine
@@ -4917,6 +5202,10 @@
 #. {host} = a server name such as "example.com" (keep the braces as they are)
 #, machine
 	the download from {host} was cut short	从 {host} 下载已中断
+#. text in the download list (sizes, speeds, status)
+#. why a download can't be moved or renamed now: it is being moved already
+#, machine
+	The download is being moved	下载正在移动
 #. tooltip (why a control is greyed) in a download's Properties window
 #. tooltip of the greyed Open button in File Properties
 #, machine
@@ -4938,6 +5227,10 @@
 #. text in a dialog box
 #, machine
 	The download queue is done.	下载队列已完成。
+#. text in errors.rs
+#. error installing ffmpeg: the file downloaded isn't the build named in the list of builds MDM accepts (its checksum differs), so it was thrown away
+#, machine
+	the downloaded ffmpeg isn't the build MDM's list of checked builds names, so it wasn't installed	下载的 ffmpeg 与 MDM 检查过的构建列表中的名称不符，因此未安装
 #. text in errors.rs
 #, machine
 	the downloaded program doesn't match its signed checksum	下载的程序与其签名校验和不匹配
@@ -4973,6 +5266,10 @@
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
 	The file does NOT match ({algorithm})	文件校验和不匹配（{algorithm}）
+#. text in errors.rs
+#. why a file taken out of a ZIP on its server failed (#1775): its bytes aren't what the ZIP's list of files says (its size or its CRC-32 checksum)
+#, machine
+	the file in the ZIP doesn't match the ZIP's list of files (its size or checksum): download the whole archive	ZIP 文件中的文件与 ZIP 文件列表不匹配（大小或校验和）：请下载整个压缩包
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
@@ -5041,6 +5338,10 @@
 #. an error: the network adapter chosen in Options (a VPN's, usually) is off or gone; {adapter} its name
 #, machine
 	the network adapter {adapter} is not connected	网络适配器 {adapter} 未连接
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: the number of connections typed is out of range; {max} is 32 (or 128)
+#, machine
+	The number of connections must be from 1 to {max}	连接数必须介于 1 到 {max} 之间
 #. text in torrent_ownership.rs
 #. error when a torrent's output folder path cannot be used
 #, machine
@@ -5103,6 +5404,10 @@
 #, machine
 	the server can't send parts of the file, so it can't be resumed	服务器无法发送文件分块，因此无法续传
 #. text in errors.rs
+#. Zip preview (#1775): the server doesn't send parts of a file (HTTP ranges), so MDM can't fetch only some files from inside a ZIP; the whole archive still downloads
+#, machine
+	the server can't send parts of the ZIP, so its files can't be downloaded one by one: download the whole archive	服务器无法发送 ZIP 文件的部分内容，因此无法逐个下载其中的文件：请下载整个压缩包
+#. text in errors.rs
 #, machine
 	the server did not answer in time	服务器未及时响应
 #. text in errors.rs
@@ -5123,6 +5428,10 @@
 #. Options → Accounts: the service doesn't say whether the account is premium (Mega-Debrid, signed in with an API key); a free account's links are refused when downloading
 #, machine
 	the service doesn't say whether it is premium	服务未说明是否为高级账户
+#. tooltip (why a control is greyed) in the Download video window
+#. why Part is greyed in Download video: the site doesn't say how long the video is (a live stream, for one)
+#, machine
+	The site doesn't say how long this video is	站点未说明此视频的时长
 #. text in errors.rs
 #. why a download failed (#701): a file host answered with its own web page (a countdown before the link, a captcha, a sign-in) where the file was expected. The browser gets past it; MDM's browser extension then hands the real file back to MDM
 #, machine
@@ -5235,9 +5544,17 @@
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	The update is open in your system's package installer.	更新已在系统的软件包安装程序中打开。
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: the User-Agent typed holds a control character
+#, machine
+	The User-Agent has a character a header can't hold	User-Agent 包含标头不能包含的字符
 #. text in a download's Properties window
 #, machine
 	The web page from which this file was obtained:	文件来源网页：
+#. text in errors.rs
+#. why a file can't be taken out of a ZIP on its server (#1775): the ZIP was replaced on the server after its files were listed; Zip preview is the window that lists them
+#, machine
+	the ZIP changed on the server since its files were listed: open its Zip preview again	自列出文件以来，服务器上的 ZIP 文件已更改：重新打开 ZIP 预览
 #. message or event log entry in the main window
 #. the kind of file View → Theme → Add a theme file lists: MDM's themes (TOML, JSON), Base16 schemes (YAML) and pywal's colors.json
 #, machine
@@ -5261,12 +5578,20 @@
 #. why an archive wasn't extracted (after "Couldn't extract {name}: "); HatchZip is a program's name
 #, machine
 	there isn't enough free space for its files, HatchZip says; nothing was changed	HatchZip 表示没有足够的可用空间来存储其文件；未进行任何更改
+#. text in relocate.rs
+#. why a download's file could not be moved to another drive (after "The file could not be moved: "); {needed} and {free} are sizes ("1.2 GB")
+#, machine
+	there isn't enough free space there ({needed} needed, {free} free)	可用空间不足（需要 {needed}，可用 {free}）
 #. text in a download's progress window
 #, machine
 	These settings are unavailable when "Show download complete dialog" is turned on	启用“显示下载完成对话框”后，这些设置不可用
 #. text in helpers.rs
 #, machine
 	They keep downloading if you close this window.	关闭此窗口后，下载仍会继续。
+#. text in errors.rs
+#. error when opening a .torrent file whose piece size or list of pieces doesn't fit its files (damaged, or made wrong); it isn't added
+#, machine
+	this .torrent file is damaged: its pieces don't match its files	此 .torrent 文件已损坏：其分块与文件不匹配
 #. text in a dialog box
 #, machine
 	This address is already in the list of downloads:	此地址已在下载任务列表中：
@@ -5312,11 +5637,31 @@
 #. remote control page (on a phone): label of the box naming this phone (shown in MDM's list of paired devices)
 #, machine
 	This device's name	此设备名称
+#. text in rssdlg.rs
+#. RSS feeds window: in the empty list of articles of a feed that has none
+#, machine
+	This feed has no articles right now.	此源目前没有文章。
+#. message or event log entry in the main window
+#. the message when a file picked in View → Font isn't a TrueType or OpenType font MDM can read
+#, machine
+	This file can't be used as a font.	该文件不能用作字体。
 #. message or event log entry in the main window
 #. {error} is why, in English (a file that isn't a theme or a colour scheme, a colour missing)
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	This file can't be used as a theme: {error}	此文件不能用作主题：{error}
+#. text in errors.rs
+#. why a file can't be taken out of a ZIP on its server (#1775): it is encrypted (password-protected) in the ZIP
+#, machine
+	this file is encrypted in the ZIP: download the whole archive and open it with its password	此文件在 ZIP 文件中已加密：请下载整个压缩包并使用密码打开
+#. text in errors.rs
+#. why a file can't be taken out of a ZIP on its server (#1775): the ZIP no longer holds it
+#, machine
+	this file is no longer in the ZIP on the server	此文件不再位于服务器上的 ZIP 文件中
+#. text in errors.rs
+#. why a file can't be taken out of a ZIP on its server (#1775): it is compressed with a method MDM doesn't unpack there; {method} is the method's name (BZIP2, LZMA, Deflate64…)
+#, machine
+	this file is packed in a way MDM can't unpack from the server ({method}): download the whole archive	此文件以 MDM 无法从服务器解压的方式打包 ({method})：请下载整个压缩包
 #. text in remote.rs
 #. remote control page (on a phone): the file chosen is too large for a .torrent file
 #, machine
@@ -5351,6 +5696,10 @@
 #. a check of Test browser integration: a portable copy can't be connected
 #, machine
 	This is the installed copy, not a portable one	这是已安装的副本，不是便携版
+#. text in errors.rs
+#. Zip preview (#1775): the address isn't a ZIP archive whose list of files MDM can read on the server
+#, machine
+	this isn't a ZIP archive MDM can look inside on the server: download the whole file	这不是 MDM 可以在服务器上查看内部的 ZIP 压缩包：请下载整个文件
 #. text in playlistdlg.rs
 #. in Download video, a playlist or channel that lists no video
 #, machine
@@ -5365,6 +5714,8 @@
 	This name is reserved by Windows	此名称为 Windows 保留名称
 #. tooltip (why a control is greyed) in the Download video window
 #. why "Embed chapters" is greyed: ffmpeg (a helper program) is not installed
+#. why "Split into chapters" is greyed: ffmpeg (a helper program) is not installed
+#. why Part is greyed in Download video: ffmpeg (a helper program) is not installed
 #. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
 #, machine
 	This needs ffmpeg	此功能需要 ffmpeg
@@ -5385,6 +5736,10 @@
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	this program isn't {name}	此程序不是 {name}
+#. text in requestedit.rs
+#. a download's Connection settings → Proxy: the proxy typed in the box beside
+#, machine
+	This proxy:	此代理：
 #. text in the Options window
 #. Options → General: shown when the chosen global shortcut is already registered by another program (#558)
 	This shortcut is already in use	此快捷键已被占用
@@ -5413,7 +5768,7 @@
 #. torrent start needs explicit write permission; {file} is the first existing file without a matching grant
 #, machine
 	This torrent needs permission to use {file} before it can start.	此种子需要使用 {file} 的权限才能启动。
-#. message or event log entry in the main window; text in a download's Properties window
+#. message or event log entry in the main window; text in the download list (sizes, speeds, status)
 #. shown when Move or Rename is refused: a torrent saved straight in Save to shares that folder with other files
 #, machine
 	This torrent shares its destination folder	此种子共享其目标文件夹
@@ -5425,6 +5780,18 @@
 #. the Download video window: the video needs the user to be signed in
 #, machine
 	This video needs you to be signed in. Use the Download video button over it in your browser, which passes your sign-in on, or choose your browser in Options → Sites Logins → Cookies for video sites.	此视频需要登录。请使用浏览器中视频上方的“下载视频”按钮（会传递您的登录信息），或在“选项”→“站点登录”→“视频网站的 Cookie”中选择您的浏览器。
+#. text in errors.rs
+#. Zip preview (#1775): a ZIP split over several files (volumes): its files can't be fetched one by one
+#, machine
+	this ZIP is split over several files, so its files can't be downloaded one by one: download every part	此 ZIP 文件已拆分为多个文件，因此无法逐个下载其中的文件：请下载所有部分
+#. text in errors.rs
+#. Zip preview (#1775): the ZIP's list of files (its table of contents) doesn't add up
+#, machine
+	this ZIP's list of files is damaged: download the whole archive	此 ZIP 文件的文件列表已损坏：请下载整个压缩包
+#. text in errors.rs
+#. Zip preview (#1775): the ZIP's list of files (its table of contents) is larger than MDM reads from a server
+#, machine
+	this ZIP's list of files is too large to read from the server: download the whole archive	此 ZIP 文件的文件列表过大，无法从服务器读取：请下载整个压缩包
 #. text in errors.rs
 #. a download's error: the address is a site's web page that needs a browser, not the file; {site} = the site's name (gofile)
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
@@ -5450,23 +5817,34 @@
 #, machine
 	Through {service}: the service downloads the torrent, then MDM its files	通过 {service}：由服务下载种子，再由 MDM 下载其文件
 #. text in the Scheduler window
-#, machine
 	Thursday	星期四
 #. text in the Scheduler window
 #. tooltip on the Scheduler's "Wake the computer to run this queue" while "Start download at" is off
 #, machine
 	Tick "Start download at" first: the computer is woken for the start time	请先勾选“开始下载时间”：计算机会在开始时间被唤醒
+#. text in zippreview.rs
+#. Zip preview, under the list: {files} how many files are ticked ("3 files"), {size} their size together ("12.4 MB")
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	Ticked: {files}, {size}	已勾选：{files}，{size}
 #. text in a download's progress window; text in the Scheduler window
 #, machine
 	Time left	剩余时间
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Timor-Leste	东帝汶
 #. text in unix.rs
 #. Linux, after a missing library's name: {command} = the terminal command that installs it ("sudo apt install libxkbcommon-x11-0"), left as it is
 #, machine
 	To install what's missing: {command}	要安装缺失的组件：{command}
+#. text in the Download video window
+#. why Download Now is greyed in Download video: Part's To time is past the video's end
+#, machine
+	To is past the end of the video	“到”时间已超过视频结尾
+#. text in the Download video window
+#. why Download Now is greyed in Download video: Part's To time isn't after its From time
+#, machine
+	To must come after From	“到”时间必须在“从”时间之后
 #. text in the Batch download window
 #, machine
 	To:	到：
@@ -5476,15 +5854,12 @@
 	Today: {date}	今天：{date}
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Togo	多哥
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Tokelau	托克劳
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Tonga	汤加
 #. text in errors.rs
 #, machine
@@ -5518,6 +5893,10 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	torrents could not start: {error}	种子无法启动：{error}
+#. text in preview.rs
+#. label in the preview pane: the size of the selected downloads added up
+#, machine
+	Total size:	总大小:
 #. text in a download's progress window
 #. column title: a server that lists the peers
 #, machine
@@ -5536,16 +5915,16 @@
 	Transfer rate	传输速度
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Trinidad and Tobago	特立尼达和多巴哥
-#. button in helpers.rs
-#, machine
-	Try again	重试
 #. text in errors.rs
 #. what to do when a helper couldn't be downloaded because its server limits requests; {name} = yt-dlp, ffmpeg or gallery-dl; {helpers} and {other} = the buttons Helpers and Use another program
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	Try again in an hour, or download {name} yourself and choose it in {helpers} → {other}.	请在一小时后重试，或者自行下载 {name}，然后在“{helpers}”→“{other}”中选择。
+#. text in the Link grabber window
+#. Link grabber, a link's status: the remedy from the failure's sentence, for a site (Hugging Face, GitHub) whose limit of requests without an account is reached. The sentence is the cell's hover tip
+#, machine
+	Try again later	稍后重试
 #. text in errors.rs
 #. {name} = a file name (keep the braces as they are)
 #, machine
@@ -5559,19 +5938,15 @@
 #, machine
 	Tu	周二
 #. text in the Scheduler window
-#, machine
 	Tuesday	星期二
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Tunisia	突尼斯
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Turkmenistan	土库曼斯坦
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Turks and Caicos Islands	特克斯和凯科斯群岛
 #. text in the tray icon's menu
 #. verb: turn the Speed Limiter off
@@ -5611,9 +5986,12 @@
 #. why Options → Remote → Pair a device... is greyed
 #, machine
 	Turn on the remote control first.	请先开启远程控制。
+#. text in the Add torrent window
+#. Torrent settings, under the public tracker list's address: turning the switch off doesn't take away the trackers it added to torrents
+#, machine
+	Turned off, the trackers already added stay.	关闭后，已添加的跟踪器将保留。
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Tuvalu	图瓦卢
 #. text in helpers.rs
 #, machine
@@ -5634,6 +6012,10 @@
 #. why Batch download's OK is greyed
 #, machine
 	Type a number in From and in To	在“从”和“到”中输入一个数字
+#. text in the Options window
+#. Site rule: OK with no site, or one with a space in it
+#, machine
+	Type a site, such as example.com or *.example.com	输入一个站点，例如 example.com 或 *.example.com
 #. text in the settings
 #. Options → DNS: no server address was typed
 #, machine
@@ -5650,10 +6032,18 @@
 #. Options → DNS over TLS: the server's name (as its certificate shows it) is missing
 #, machine
 	Type the name the server's certificate shows.	输入服务器证书显示的名称。
+#. text in requestedit.rs
+#. a download's Connection settings: the proxy typed isn't an address MDM takes; the examples stay as they are
+#, machine
+	Type the proxy as host:port, http://host:port or socks5://host:port	请将代理输入为 host:port、http://host:port 或 socks5://host:port
 #. text in the Scheduler window
 #. why OK is greyed when naming a new queue
 #, machine
 	Type the queue's name	输入队列名称
+#. text in the Download video window
+#. why Download Now is greyed in Download video: a Part box holds something that isn't a time
+#, machine
+	Type the times as 1:30 or 1:02:03	请将时间输入为 1:30 或 1:02:03
 #. text in the Options window
 #. Options → Add an account: waiting while the user types the code at the service's page; {page} its address, {time} minutes:seconds left
 #. {time} = a time of day (keep the braces as they are)
@@ -5668,15 +6058,12 @@
 	Type:	类型：
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Türkiye	土耳其
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Uganda	乌干达
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Ukraine	乌克兰
 #. text in the Link grabber window
 #. Link grabber button (IDM's): untick every link
@@ -5689,19 +6076,15 @@
 	Unfinished	未完成
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	United Arab Emirates	阿拉伯联合酋长国
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	United Kingdom	英国
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	United States	美国
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	United States Minor Outlying Islands	美国本土外小岛屿
 #. text in a download's Properties window
 #. the web page is not known
@@ -5738,6 +6121,11 @@
 #, machine
 	Update now	立即更新
 #. text in helpers.rs
+#. Helpers: the Update button's name for a screen reader; {name} = the helper (yt-dlp, ffmpeg, gallery-dl, Node.js)
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Update {name}	更新 {name}
+#. text in helpers.rs
 #. Helpers: a program the person chose, or the system's copy: MDM doesn't update it, the person (or their package manager) does
 #, machine
 	Updated by you	由您更新
@@ -5755,11 +6143,21 @@
 	URL	URL
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Uruguay	乌拉圭
 #. text in the Options window
 #, machine
 	Use advanced browser integration	使用高级浏览器集成
+#. text in helpers.rs
+#. Helpers: the "Use another program..." button's name for a screen reader, on the JavaScript runtime's row (Node.js, Deno, QuickJS or Bun)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Use another program as the JavaScript runtime...	使用其他程序作为 JavaScript 运行时...
+#. text in helpers.rs
+#. Helpers: the "Use another program..." button's name for a screen reader; {name} = the helper (yt-dlp, ffmpeg, gallery-dl)
+#. {name} = a file name (keep the braces as they are)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Use another program for {name}...	为 {name} 使用其他程序...
 #. text in errors.rs; button in helpers.rs; text in the Options window
 #. Video helpers: button: pick a program (yt-dlp or ffmpeg) already on the computer
 #. Options → Archives: button: pick the 7-Zip command line program to extract 7z and RAR archives with (PeaZip's own 7z.exe, a portable copy), instead of the one MDM finds
@@ -5778,10 +6176,16 @@
 #. checkbox in the Options window
 #, machine
 	Use FTP in PASV mode	在 PASV 模式下使用 FTP
-#. button in helpers.rs
+#. text in helpers.rs
 #. Video helpers: button: go back to the copy MDM downloads and checks itself
 #, machine
 	Use MDM's own copy	使用 MDM 自带的副本
+#. text in helpers.rs
+#. Helpers: the "Use MDM's own copy" button's name for a screen reader; {name} = the helper (yt-dlp, ffmpeg, gallery-dl)
+#. Helpers: the "Use MDM's own copy" button's name for a screen reader; {name} = the helper (Node.js)
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Use MDM's own copy of {name}	使用 MDM 自带的 {name} 副本
 #. checkbox in the Options window
 #. Options → Sites Logins: checkbox under Cookies for video sites: yt-dlp also reads the person's own yt-dlp config file
 #, machine
@@ -5826,12 +6230,24 @@
 #. Options → Add an account: label before the field for the user name at the debrid service
 #, machine
 	User name:	用户名：
-#. page title in the Options window
+#. page title in the Options window; text in the Options window
 #, machine
 	User names and passwords for servers/sites	服务器/站点的用户名和密码
 #. text in the Options window
+#. Site rules: column title: the User-Agent the rule sends (the name a browser or program gives itself to sites)
+#, machine
+	User-Agent	用户代理
+#. text in the Options window
 #, machine
 	User-Agent for manually added downloads:	手动添加下载任务的用户代理：
+#. text in the Options window
+#. Options → Connection: beside the Site rules... button: what it sets
+#, machine
+	User-Agent, headers and connections by site	按站点设置 User-Agent、标头和连接
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: label before the User-Agent box (the name the browser or program gives itself to sites)
+#, machine
+	User-Agent:	用户代理:
 #. text in the Options window
 #, machine
 	User:	用户：
@@ -5844,14 +6260,12 @@
 	uTP uses the port for incoming connections: turn on Accept incoming connections	uTP 使用传入连接的端口：请打开“接受传入连接”
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Uzbekistan	乌兹别克斯坦
 #. text in a download's progress window
 #, machine
 	Value	值
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Vanuatu	瓦努阿图
 #. text in the Link grabber window
 #. Link grabber: the package of links that belong to no other
@@ -5859,11 +6273,9 @@
 	Various files	各种文件
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Vatican City	梵蒂冈
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Venezuela	委内瑞拉
 #. text in the Checksum window
 #. both verbs: Verify = check the file now; Close = close the window
@@ -5899,6 +6311,10 @@
 #. category name: video files
 #, machine
 	Video	视频
+#. text in setup.rs
+#. a step of the first start's setup window: yt-dlp, ffmpeg and Node.js, the programs that download videos
+#, machine
+	Video helpers	视频助手
 #. text in the Download video window
 #, machine
 	Video lookups use yt-dlp (about 23 MB, checked against its signature).	视频查找使用 yt-dlp（约 23 MB，已校验签名）。
@@ -5908,7 +6324,6 @@
 	Videos	视频
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Vietnam	越南
 #. text in countries.rs
 #. a country's name (where a download's server is)
@@ -5921,6 +6336,11 @@
 #. text in the Options window
 #, machine
 	Virus checking settings	病毒检查设置
+#. text in archtest.rs
+#. why a split archive (in several files, its volumes) isn't tested yet, in "{name} isn't complete ({why})"; {n} is the number of the volume not downloaded yet
+#. {n} = a number (keep the braces as they are)
+#, machine
+	volume {n} isn't there yet	分卷 {n} 尚未下载
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: "); {n} is the volume's number
 #. {n} = a number (keep the braces as they are)
@@ -5963,7 +6383,6 @@
 	Wake the computer to run this queue	唤醒计算机以运行此队列
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Wallis and Futuna	瓦利斯和富图纳群岛
 #. text in the Scheduler window
 #. Wednesday, as short as a calendar's column head (two letters in English)
@@ -5973,12 +6392,18 @@
 #. where a download comes from: Web (web or FTP server) or Torrent (BitTorrent)
 #, machine
 	Web	Web
-#. text in the Scheduler window
+#. text in preview.rs
+#. label in the preview pane: the web page the download was found on
 #, machine
+	Web page:	网页:
+#. text in the Scheduler window
 	Wednesday	星期三
+#. text in setup.rs
+#. title of the first start's setup window (the language, the video helpers, the browser extension)
+#, machine
+	Welcome to Mister Download Manager	欢迎使用 Mister Download Manager
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Western Sahara	西撒哈拉
 #. text in the Options window
 #. Options → Archives: a label before the list of where extracted files go
@@ -6071,13 +6496,12 @@
 	Year, month, day	年、月、日
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Yemen	也门
-#. button in a dialog box; text in a download's progress window
+#. button in a dialog box; text in the Options window; text in a download's progress window
 #, machine
 	Yes	是
 #. button in helpers.rs
-#. the first start's helpers window: download yt-dlp and ffmpeg (the recommended answer)
+#. the first start's helpers: download every missing helper (yt-dlp, ffmpeg, Node.js) at once (the recommended answer)
 #, machine
 	Yes, download them (recommended)	是，下载（推荐）
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
@@ -6187,12 +6611,14 @@
 	yt-dlp: finds the video	yt-dlp：查找视频
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Zambia	赞比亚
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Zimbabwe	津巴布韦
+#. text in zippreview.rs
+#. title of the window that lists the files inside a ZIP on its server, to tick those to download (#1775)
+#, machine
+	Zip preview	ZIP 预览
 #. text in the Options window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
@@ -6243,11 +6669,15 @@
 #. Options → Remote → Pair a device: done; {device} = the name it was given
 #, machine
 	{device} is paired. It can control MDM now.	{device} 已配对，现在可以控制 MDM。
-#. text in remote.rs
+#. text in remote.rs; text in traypanel.rs
 #. remote control page (on a phone): progress; {done} and {size} are sizes ("1.2 MB of 7.5 MB")
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
 	{done} of {size}	{done} / {size}
+#. text in preview.rs
+#. the preview pane: how much of a download has come; {done} and {total} sizes, e.g. "12.5 MB of 40.0 MB"
+#, machine
+	{done} of {total}	{done} / {total}
 #. text in deferred_rename.rs
 #. appended to an OS error when a case-only rename could not move the temporary file back to its original name; {error} = first OS error, {path} = temporary path left on disk, {rollback_error} = second OS error
 #. {error} = an error message (keep the braces as they are)
@@ -6270,6 +6700,14 @@
 #. text in the Checksum window
 #, machine
 	{file} could not be read to check it	无法读取 {file} 以进行校验
+#. message or event log entry in the main window
+#. a message after a download (Redownload) was to replace the file it had: {file} = that file's name, still there; {new} = the name the new copy was saved under, in the same folder
+#, machine
+	{file} could not be replaced: another program may have it open. The new download is saved beside it as {new}, and both files are kept.	无法替换 {file}：它可能正被其他程序打开。新下载的文件已另存为 {new}，两个文件均已保留。
+#. text in relocate.rs
+#. why a download could not be moved (after "The file could not be moved: "): a file of that name came into the new folder meanwhile; {file} is its name
+#, machine
+	{file} is already there	{file} 已存在
 #. text in a dialog box
 #, machine
 	{file} is no longer where it was saved (moved or deleted). Redownload, in its right-click menu, gets it again.	{file} 已不在原来的保存位置（已移动或删除）。可通过右键菜单中的“重新下载”再次下载。
@@ -6293,6 +6731,11 @@
 #. said after Delete with files when some files stayed on the disk; {file} is the download's name; the files' paths follow it
 #, machine
 	{file}: these files stayed on the disk, because MDM didn't create them or another download uses them:	{file}：这些文件保留在磁盘上，因为 MDM 未创建它们或另一个下载正在使用它们：
+#. message or event log entry in the main window; text in the Link grabber window
+#. Link grabber's Source line, after where the links came from: a folder (an FTP folder, a web server's "Index of" page) held more files or subfolders than Link grabber lists; {folder} is its name, {n} how many of its files are listed (10,000)
+#. {n} = a number (keep the braces as they are)
+#, machine
+	{folder}: only its first {n} files	{folder}：仅其前 {n} 个文件
 #. text in a download's progress window
 #. {have} and {total} = numbers of pieces; {size} = one piece's size
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
@@ -6376,6 +6819,16 @@
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	{name} is being downloaded already: try again in a moment	{name} 正在下载中：请稍后重试
+#. text in archtest.rs
+#. in the "Damaged archive" window: {name} is the archive's file name
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	{name} is damaged: its test found errors in it.	{name} 已损坏：其测试发现其中有错误。
+#. text in archtest.rs
+#. in the "Damaged archive" window: {name} is the archive's first volume's file name
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	{name} is damaged: its test found errors in one of its volumes.	{name} 已损坏：其测试发现其中一个卷有错误。
 #. text in extracting archives (a download's log, the Archive password window)
 #. in Archive password: {name} is the archive's file name
 #. {name} = a file name (keep the braces as they are)
@@ -6411,6 +6864,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 	{n} (auto)	{n}（自动）
+#. text in zippreview.rs
+#. Zip preview, under the list: {n} files of the ZIP aren't listed because MDM can't take them out on their own: encrypted ones, ones packed in a way MDM can't unpack from the server, links, or names that would leave their folder; the whole archive still downloads
+#. {n} = a number (keep the braces as they are)
+#, machine
+	{n} more can't be taken out on their own (encrypted, packed another way, or links)	另有 {n} 个文件无法单独取出（已加密、以其他方式打包或为链接）
 #. text in playlistdlg.rs
 #. in Download video for a playlist: how many videos are ticked, of how many
 #. {n} = a number (keep the braces as they are)
@@ -6420,6 +6878,10 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 	{n} of {total} selected	已选择 {n} / {total}
+#. text in the Link grabber window
+#. Link grabber's Source line: a gated Hugging Face repository ({package}: "owner/name"), whose files download only for an account that accepted its terms: where to give the account's access token (Options → Sites Logins, keep the names as the Options window shows them)
+#, machine
+	{package} is gated: accept its terms on Hugging Face, then add your access token in Options → Sites Logins (site huggingface.co, the token as its password)	{package} 受限：请在 Hugging Face 上接受其条款，然后在“选项”→“站点登录”中添加您的访问令牌（站点 huggingface.co，令牌作为其密码）
 #. text in the download list (sizes, speeds, status)
 #. a torrent's status while the user's debrid service downloads it, before MDM gets its files; {service} the service ("Real-Debrid"), {percent} how far it is ("45%")
 #, machine
@@ -6472,6 +6934,10 @@
 #, machine
 	{service} can't reach this file host right now; MDM will try again later	{service} 暂时无法访问此文件主机；MDM 将稍后重试
 #. text in errors.rs
+#. a torrent through a debrid service: a file ticked in Add torrent isn't among the files the service has, so nothing was downloaded (rather than every file); {service} its name, {file} the file's path in the torrent
+#, machine
+	{service} doesn't list {file}, chosen in Add torrent: nothing was downloaded. Add the torrent again with all its files, or without this one	{service} 未列出在“添加种子”中选择的 {file}：未下载任何内容。请重新添加所有文件或不含此文件的种子
+#. text in errors.rs
 #. a debrid service's error: it isn't answering
 #, machine
 	{service} is not responding; try again later	{service} 没有响应；请稍后重试
@@ -6519,6 +6985,31 @@
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
 #, machine
 	{site} didn't give the file this time: try again in a moment	{site} 这次没有提供文件：请稍后再试
+#. text in the Link grabber window
+#. Link grabber, the hover tip of a Hugging Face repository's or GitHub release's status; {site} is "Hugging Face" or "GitHub"
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+	{site} has no such repository, folder, release or tag, or it is private.	{site} 没有此存储库、文件夹、发布或标签，或者它是私有的。
+#. text in the Link grabber window
+#. Link grabber, a Hugging Face repository's or GitHub release's status (the cell's hover tip): the site ({site}: "Hugging Face", "GitHub") lets only so many requests through from a computer without an account; {n} minutes to wait
+#. {site} = a web site's name such as "example.com"; {n} = a number (keep the braces as they are)
+#, machine
+	{site} lets only so many requests through without an account: try again in {n} minute.	{site} 在未登录帐户的情况下只允许这么多请求：请在 {n} 分钟后重试。
+#. text in the Link grabber window
+#. Link grabber, a Hugging Face repository's or GitHub release's status (the cell's hover tip): the site ({site}) lets only so many requests through without an account, and didn't say for how long
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+	{site} lets only so many requests through without an account: try again later.	{site} 在未登录帐户的情况下只允许这么多请求：请稍后重试。
+#. text in the Link grabber window
+#. Link grabber, a Hugging Face repository's or GitHub release's status: the site ({site}) refused to list its files; {status} is the HTTP code (403)
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+	{site} refused to list its files ({status}).	{site} 拒绝列出其文件 ({status})。
+#. text in the Link grabber window
+#. Link grabber, a Hugging Face repository's or GitHub release's status: the site's ({site}) answer wasn't what it sends (changed, cut, or not its own)
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+	{site}'s list of files couldn't be read.	{site} 的文件列表无法读取。
 #. text in a download's Properties window
 #. {size} = a file size such as "4.2 MB"; {bytes} = a number of bytes (keep the braces as they are)
 #, machine
@@ -6541,6 +7032,11 @@
 #. {s} = seconds (keep the braces as they are)
 #, machine
 	{s} sec	{s} 秒
+#. text in a dialog box
+#. the title of another window of a kind while the first is open (several Download File Info windows, one per link): {title} the window's own title, {n} its number, "Download File Info (2)"
+#. {n} = a number (keep the braces as they are)
+#, machine
+	{title} ({n})	{title} ({n})
 #. message or event log entry in the main window
 #. RSS feeds window, under the rules: {title} was added by the rule {rule}
 #, machine
@@ -6589,10 +7085,14 @@ column	Peers	节点
 #. column title: one letter for Queue (the column is narrow)
 #, machine
 column	Q	队
-#. column title in the main window; column title in the download list
+#. column title in the main window; column title in a dialog box; column title in the download list
 #. tooltip of the narrow "Q" column's title
 #, machine
 column	Queue	队列
+#. column title in the download list in the download list
+#. column title: the folder the download is saved in
+#, machine
+column	Save To	保存到
 #. column title in the download list in the download list
 #. column title: what a torrent has sent to peers against what it took
 #, machine
@@ -6641,6 +7141,7 @@ extension	Added to MDM	已添加到 MDM
 extension	Added to the queue	已添加到队列
 #. text in the browser extension
 #. filter in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): every download; short
+#. chip in the menu of the download button over a video, filtering the list of qualities: show every quality (or any file type, any codec); short, one word
 #, machine
 extension	All	所有
 #. text in the browser extension
@@ -6656,6 +7157,14 @@ extension	Another Mister Download Manager (a server)	另一个 Mister Download M
 #. tab above the list of qualities in the menu under the download button over a video: the choices that are sound only (MP3, Opus and the like); short, one word
 #, machine
 extension	Audio	音频
+#. text in the browser extension
+#. chip in the menu of the download button over a video, filtering the list of qualities: show only the sound-only choices (MP3, Opus and the like); short
+#, machine
+extension	Audio only	仅音频
+#. text in the browser extension
+#. toolbar button's popup: said for a moment after Reset: the download button over videos is in its usual corner again and its menu lists every quality, on every web site
+#, machine
+extension	Back in its corner, its menu showing everything, on every site	已回到原位，菜单显示所有内容，适用于所有网站
 #. text in the browser extension
 #. after the best quality in the menu of the download button over a video, after a star (★ best); lower case; one word
 #, machine
@@ -6705,6 +7214,10 @@ extension	Clear finished	清除已完成
 #. title of the question in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) before the finished downloads are taken off the list
 #, machine
 extension	Clear finished downloads?	清除已完成的下载？
+#. text in the browser extension
+#. label before the row of chips (All, AV1, VP9, H.264...) that filters the list of video qualities by the picture's codec in the menu of the download button over a video; short
+#, machine
+extension	Codec	编码
 #. text in the browser extension
 #. under the extension's name in the toolbar button's popup: the browser reaches the app; short
 #, machine
@@ -6762,6 +7275,11 @@ extension	Done	已完成
 #, machine
 extension	Download	下载
 #. text in the browser extension
+#. command in the menu of the download button over a video: opens the app's Download video window with Part ticked, From set to where the video is playing now, to download only a part of it
+#. the trailing ... means it is still going on: keep it
+#, machine
+extension	Download a part from here...	从此处下载部分...
+#. text in the browser extension
 #. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): downloads the file again from the start
 #, machine
 extension	Download again	重新下载
@@ -6773,6 +7291,10 @@ extension	Download all links with Mister Download Manager	使用 Mister Download
 #. first line of the list under the download button over a video: downloads the best quality at once; the quality, its file type and size follow on the same line; short
 #, machine
 extension	Download best	下载最佳
+#. text in the browser extension
+#. toolbar button's popup, Settings: the name of the row with the Reset button for the download button the extension shows over videos
+#, machine
+extension	Download button over videos	视频上的下载按钮
 #. text in the browser extension
 #. command in the browser's right-click menu on selected text: download the links in the selection; keep the name Mister Download Manager as it is
 #, machine
@@ -6816,9 +7338,9 @@ extension	Downloads from {site} stay with the browser	来自 {site} 的下载任
 #, machine
 extension	Downloads go to {address}	下载任务发送到 {address}
 #. text in the browser extension
-#. second line of the tooltip of the download button over a video: dragging its dotted grip moves it along the video's edge
+#. second line of the tooltip of the download button over a video: dragging its dotted grip moves it to another corner or edge of the video, or outside the video next to it
 #, machine
-extension	Drag the dots to move it along the edge	拖动圆点可沿边缘移动
+extension	Drag the dots to move it to another corner, or outside the video	拖动圆点可将其移动到另一个角落，或视频外部
 #. text in the browser extension
 #. the address typed isn't an https:// address
 #, machine
@@ -6836,6 +7358,18 @@ extension	Failed: {why}	失败：{why}
 #. a finished download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when its file is no longer where it was saved
 #, machine
 extension	File deleted or moved	文件已删除或移动
+#. text in the browser extension
+#. label before the row of chips (All, MP4, WEBM, M4A...) that filters the list of qualities by file type in the menu of the download button over a video; short
+#, machine
+extension	File type	文件类型
+#. text in the browser extension
+#. button in the This page tab of the toolbar button's popup: look for the pictures of the current web page (only when clicked); short
+#, machine
+extension	Find images	查找图片
+#. text in the browser extension
+#. in the This page tab of the toolbar button's popup, before the Find images button; Link grabber is the name of the app's window that lists links to tick before downloading them
+#, machine
+extension	Find this page's pictures at the largest size it lists, then send the ones you want to Link grabber.	查找此页面上最大尺寸的图片，然后将您想要的图片发送到链接抓取器。
 #. text in the browser extension
 #. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) after Clear finished
 #, machine
@@ -6872,6 +7406,14 @@ extension	Hold Alt while clicking a link to let the browser download it.	按住 
 #. link under a connection problem in the toolbar button's popup, to the help page's section for it
 #, machine
 extension	How to fix it	如何修复
+#. text in the browser extension
+#. what a screen reader says for the row of buttons that keep or leave out each type of picture (JPEG, PNG, WEBP...), in the This page tab of the toolbar button's popup
+#, machine
+extension	Image types	图片类型
+#. text in the browser extension
+#. heading in the This page tab of the toolbar button's popup, over the part that finds the pictures of the current web page and sends them to the app
+#, machine
+extension	Images on this page	此页面上的图片
 #. text in the browser extension
 #. pairing failed for another reason
 #, machine
@@ -6921,6 +7463,28 @@ extension	Left to the browser: {name}	已留给浏览器：{name}
 #. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) after Copy link
 #, machine
 extension	Link copied	链接已复制
+#. text in the browser extension
+#. the toolbar button's status: all links refused by another MDM
+#. {count} = a number (keep the braces as they are)
+#, machine
+extension	Links refused: {count}	已拒绝链接：{count}
+#. text in the browser extension
+#. the toolbar button's status: links sent to another MDM
+#. {count} = a number (keep the braces as they are)
+#, machine
+extension	Links sent: {count}	已发送链接：{count}
+#. text in the browser extension
+#. the toolbar button's status: some links refused by another MDM
+#, machine
+extension	Links sent: {sent}, refused: {refused}	链接已发送：{sent}，已拒绝：{refused}
+#. text in the browser extension
+#. the toolbar button's status: some links refused and some left out
+#, machine
+extension	Links sent: {sent}, refused: {refused}, {left} left out	链接已发送：{sent}，已拒绝：{refused}，已忽略：{left}
+#. text in the browser extension
+#. the toolbar button's status: links sent to another MDM, some left out by cap or filter
+#, machine
+extension	Links sent: {sent}, {left} left out	链接已发送：{sent}，已忽略：{left}
 #. text in the browser extension
 #. beside a stream in the toolbar button's popup: it is a live broadcast (no fixed length); short
 #, machine
@@ -7026,6 +7590,10 @@ extension	Never on {site}	在 {site} 上永不显示
 #, machine
 extension	Never take downloads from {site}	永不接管来自 {site} 的下载任务
 #. text in the browser extension
+#. the toolbar button's status: no links matched capturable file types
+#, machine
+extension	No capturable links ({left} left out)	无可捕获链接（已忽略 {left}）
+#. text in the browser extension
 #. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when no download matches the search; the words searched for follow
 #, machine
 extension	No download's name or address has “{words}”.	没有下载任务的名称或地址包含“{words}”。
@@ -7033,6 +7601,10 @@ extension	No download's name or address has “{words}”.	没有下载任务的
 #. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app has no downloads
 #, machine
 extension	No downloads yet	暂无下载
+#. text in the browser extension
+#. shown in the This page tab of the toolbar button's popup when Find images found no picture on the current web page
+#, machine
+extension	No images found on this page.	此页面上未找到图片。
 #. text in the browser extension
 #. shown in the toolbar button's popup when the current web page hasn't loaded any video, sound or stream yet
 #, machine
@@ -7103,6 +7675,10 @@ extension	Options...	选项...
 #, machine
 extension	original	原始
 #. text in the browser extension
+#. button among the picture types (JPEG, PNG, WEBP...) in the This page tab of the toolbar button's popup: the pictures of any other or unknown type; short
+#, machine
+extension	Other	其他
+#. text in the browser extension
 #. button: pair this browser with the other MDM using the code
 #, machine
 extension	Pair	配对
@@ -7148,9 +7724,17 @@ extension	Protected	受保护
 #, machine
 extension	Protected video	受保护视频
 #. text in the browser extension
+#. menu command of the download button over a video, shown after the user dragged the button elsewhere on this site: moves it back to its usual corner of the video
+#, machine
+extension	Put the button back in its corner	将按钮放回原位
+#. text in the browser extension
 #. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): takes the download off the list, its file stays
 #, machine
 extension	Remove from list	从列表中移除
+#. text in the browser extension
+#. toolbar button's popup, Settings: button that puts the download button over videos back in its corner and clears its menu's filters, on every web site; a verb, short
+#, machine
+extension	Reset	重置
 #. text in the browser extension
 #. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): goes on with a paused, waiting or failed download; verb
 #, machine
@@ -7180,6 +7764,10 @@ extension	Send downloads through this browser's proxy or VPN extension	通过此
 #, machine
 extension	Send downloads to	将下载任务发送到
 #. text in the browser extension
+#. button in the This page tab of the toolbar button's popup: send the selected pictures to the app's Link grabber window, where the user ticks which to download
+#, machine
+extension	Send to Link grabber	发送到链接抓取器
+#. text in the browser extension
 #. on the download button over a video right after it was clicked, while the download goes to the app; MDM is Mister Download Manager's short name, keep it as it is; short
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -7189,9 +7777,17 @@ extension	Sending to MDM...	正在发送到 MDM...
 #, machine
 extension	Sending to {server}	正在发送到 {server}
 #. text in the browser extension
+#. shown in the This page tab of the toolbar button's popup after the pictures were sent to the app's Link grabber window
+#, machine
+extension	Sent to Link grabber: tick the ones to download there.	已发送到链接抓取器：请在那里勾选要下载的图片。
+#. text in the browser extension
 #. shown briefly on the download button after it was clicked; keep the name Mister Download Manager as it is
 #, machine
 extension	Sent to Mister Download Manager	已发送到 Mister Download Manager
+#. text in the browser extension
+#. the toolbar button's status when the paired server does not answer
+#, machine
+extension	Server not reached	服务器未响应
 #. text in the browser extension
 #. tab in the toolbar button's popup: the extension's settings; noun, short
 #, machine
@@ -7204,6 +7800,7 @@ extension	Share...	共享...
 #. text in the browser extension
 #. button on the download button over a video after a download was added: shows that download in the app's window; verb; very short
 #. name of the row of filters in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) (All, Running, Done, Failed), read by screen readers; verb
+#. label read by screen readers for the row of chips (All, Video, Audio only) that filters the list of qualities in the menu of the download button over a video; a verb, short
 #, machine
 extension	Show	显示
 #. text in the browser extension
@@ -7218,6 +7815,23 @@ extension	Show in folder	在文件夹中显示
 #. screen readers' name of a download's Show in folder button in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads)
 #, machine
 extension	Show {file} in folder	在文件夹中显示 {file}
+#. text in the browser extension
+#. in the This page tab of the toolbar button's popup, while a smallest width or height is set: how many of the selected pictures the page gives no size for (they are kept, not left out)
+#. {n} = a number (keep the braces as they are)
+#, machine
+extension	Size not given, kept: {n}	未给出尺寸，已保留：{n}
+#. text in the browser extension
+#. what a screen reader says for the box of the smallest height of the pictures to keep, in the This page tab of the toolbar button's popup
+#, machine
+extension	Smallest height, in pixels	最小高度（像素）
+#. text in the browser extension
+#. in the This page tab of the toolbar button's popup, before two boxes for the smallest width and height of the pictures to keep: 'Smallest size, in pixels [ ] × [ ]'; pictures smaller than that are left out; short
+#, machine
+extension	Smallest size, in pixels	最小尺寸（像素）
+#. text in the browser extension
+#. what a screen reader says for the box of the smallest width of the pictures to keep, in the This page tab of the toolbar button's popup
+#, machine
+extension	Smallest width, in pixels	最小宽度（像素）
 #. text in the browser extension
 #. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app isn't running
 #, machine
@@ -7251,6 +7865,10 @@ extension	That didn't work. Try again.	操作失败。请重试。
 #. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when a button's download was removed meanwhile
 #, machine
 extension	That download is no longer in the list.	该下载已不在列表中。
+#. text in the browser extension
+#. shown in the This page tab of the toolbar button's popup when Find images can't look into the current page (a page of the browser's own, an add-on store)
+#, machine
+extension	The browser doesn't let add-ons read this page.	浏览器不允许附加组件读取此页面。
 #. text in the browser extension
 #. in the toolbar button's popup, on a site where the Chrome Web Store's copy of the extension shows no download button; Help is the link at the bottom of the popup
 #, machine
@@ -7354,6 +7972,10 @@ extension	Waiting	正在等待
 #, machine
 extension	What you download with Mister Download Manager shows up here.	您使用 Mister Download Manager 下载的内容将显示在此处。
 #. text in the browser extension
+#. toolbar button's popup, Settings: second line under 'Download button over videos', saying what Reset puts back: the places the user dragged the button to, and the filters chosen in its menu, remembered per web site
+#, machine
+extension	Where you moved it, and its menu's filters, on each site	您移动它的位置，以及其菜单的筛选器，在每个网站上
+#. text in the browser extension
 #. Tooltip of the Hide the download button in full screen option in the toolbar button's popup; Download video is the name of the button over videos
 #, machine
 extension	While the page is in full screen, its videos show no Download video button	页面全屏时，视频上不会显示“下载视频”按钮
@@ -7383,29 +8005,32 @@ extension	{file} removed from the list	{file} 已从列表中移除
 #. question in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) before a download's file is deleted
 extension	{file} will be deleted from your computer, and the download taken off the list. This can't be undone.	{file} 将从您的计算机中删除，并从列表中移除下载。此操作无法撤销。
 #. text in the browser extension
+#. in the This page tab of the toolbar button's popup: how many of the pictures found pass the size and type filters, and will be sent
+#, machine
+extension	{shown} of {total} selected	已选择 {total} 个中的 {shown} 个
+#. text in the browser extension
 #. a running download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): the time left, as a clock (minutes:seconds)
 #. {time} = a time of day (keep the braces as they are)
 #, machine
 extension	{time} left	剩余 {time}
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
-#, machine
 key	Alt+Enter	Alt+Enter
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
+key	Alt+P	Alt+P
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 key	Ctrl++ / Ctrl+-	Ctrl++ / Ctrl+-
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
-#, machine
 key	Ctrl+0	Ctrl+0
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
-#, machine
 key	Ctrl+A	Ctrl+A
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
-#, machine
 key	Ctrl+B	Ctrl+B
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
@@ -7413,15 +8038,12 @@ key	Ctrl+B	Ctrl+B
 key	Ctrl+click	Ctrl+单击
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
-#, machine
 key	Ctrl+F	Ctrl+F
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
-#, machine
 key	Ctrl+M / F2	Ctrl+M / F2
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
-#, machine
 key	Ctrl+N	Ctrl+N
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
@@ -7433,7 +8055,6 @@ key	Ctrl+Space	Ctrl+Space
 key	Ctrl+Up / Ctrl+Down	Ctrl+向上 / Ctrl+向下
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
-#, machine
 key	Delete	Delete
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
@@ -7445,23 +8066,18 @@ key	Down / Alt+Down	向下 / Alt+向下
 key	Drag on blank space	在空白处拖动
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
-#, machine
 key	Enter	Enter
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
-#, machine
 key	Enter / Space	Enter / 空格
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
-#, machine
 key	Esc	Esc
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
-#, machine
 key	F3	F3
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
-#, machine
 key	Home / End	Home / End
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
@@ -7477,11 +8093,9 @@ key	Page Up / Page Down	Page Up / Page Down
 key	Shift+click	Shift+单击
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
-#, machine
 key	Shift+Delete	Shift+Delete
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
-#, machine
 key	Shift+F10	Shift+F10
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
@@ -7493,7 +8107,6 @@ key	Shift+F10 / Menu	Shift+F10 / 菜单
 key	Shift+Up / Shift+Down	Shift+向上 / Shift+向下
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
-#, machine
 key	Tab / Shift+Tab	Tab / Shift+Tab
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
@@ -7521,6 +8134,12 @@ menu	&Automatic	&自动
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Classic	经典(&C)
+#. menu command in the main window
+#. header menu: opens the dialog that chooses the list's columns
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	&Columns...	列(&C)...
 #. menu command in standard windows
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -7541,6 +8160,11 @@ menu	&Download Now	立即下载(&D)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Exit	退出(&E)
+#. menu command in the main window
+#. View menu: submenu choosing the interface's own font and text size
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Font	字体(&F)
 #. menu command in the main window
 #. verb: load downloads from a file
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
@@ -7620,6 +8244,11 @@ menu	&Stop All	全部停止(&S)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Stop Download	停止下载(&S)
+#. menu command in the main window
+#. View → Font: the computer's own font, the default (Segoe UI on Windows)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&System font	系统字体(&S)
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -7756,6 +8385,12 @@ menu	C&ustomize URL List...	自定义 URL 列表(&U)...
 #, machine
 menu	Check for &updates...	检查更新(&U)...
 #. menu command in the main window
+#. View → Font: a TrueType or OpenType font file on disk to draw the interface's text in
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Choose a font &file...	选择字体文件...(&F)
+#. menu command in the main window
 #. View → Theme: MDM's own look, the default (IDM's layout, Windows 11's controls)
 #, machine
 menu	Classic	经典
@@ -7845,10 +8480,6 @@ menu	Find Next (F3)	查找下一个 (F3)
 #, machine
 menu	First and last pieces first	先下载首尾分块
 #. menu command in the main window
-#. noun: the list's font (submenu)
-#, machine
-menu	Font	字体
-#. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it
 #, machine
@@ -7929,7 +8560,6 @@ menu	On Double click	双击时
 #. menu command in the main window
 #. verb: opens the downloaded file
 #. what double-clicking a download does — verb: open the file
-#, machine
 menu	Open	打开
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
@@ -7951,6 +8581,10 @@ menu	Open with...	打开方式...
 #. View → Draw with: a graphics system's name, usually kept as is
 #, machine
 menu	OpenGL	OpenGL
+#. menu command in the main window
+#. View → Draw with: a greyed note; why MDM no longer draws with OpenGL: MDM crashed inside the graphics card's driver while OpenGL drew ("its": OpenGL's)
+#, machine
+menu	OpenGL crashed inside its driver here	OpenGL 在此处其驱动程序内崩溃
 #. menu command in the main window
 #. View → Draw with: a greyed note; why MDM no longer draws with OpenGL: it couldn't start on this computer
 #, machine
@@ -8047,42 +8681,36 @@ menu	Show &drop target	显示拖放目标(&D)
 menu	Show Mister Download Manager	显示 Mister Download Manager
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
-#, machine
 menu	Speed &Limiter	限速器(&L)
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
-#, machine
 menu	Start &queue	启动队列(&Q)
 #. menu command in the main window
-#, machine
 menu	Start now	立即开始
 #. menu command in the main window
 #. verb: stops the queue
-#, machine
 menu	Stop	停止
 #. menu command in the main window
-#, machine
 menu	Stop Download	停止下载
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
-#, machine
 menu	Support &MDM	赞助 MDM(&M)
 #. menu command in the main window
 #. View menu: submenu choosing how the text is drawn (smooth or classic)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
-#, machine
 menu	Te&xt	文本(&X)
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
-#, machine
 menu	Tell a &friend	推荐给朋友(&F)
 #. menu command in the main window
-#. View → Draw with: a greyed note under "… didn't start here"; why: the graphics card stopped working twice (a driver update or reset)
+#. verb: read the downloaded archive (zip, 7z, rar) back and check that none of its files is damaged
 #, machine
+menu	Test archive	测试存档
+#. menu command in the main window
+#. View → Draw with: a greyed note under "… didn't start here"; why: the graphics card stopped working twice (a driver update or reset)
 menu	The graphics card was lost twice in 10 minutes	10 分钟内显卡失效两次
 #. menu command in the main window
 #. View menu: submenu choosing MDM's look (colours, sizes, icons): Classic, Native…
-#, machine
 menu	Theme	主题
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
@@ -8092,15 +8720,12 @@ menu	To &IDM export file...	导出到 IDM 文件(&I)...
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it
-#, machine
 menu	To &text file...	导出到文本文件(&T)...
 #. menu command in the main window; menu command in the main window (menus, toolbar, Categories pane)
 #. noun: the toolbar (submenu of View with its settings)
-#, machine
 menu	Toolbar	工具栏
 #. menu command in the main window
 #. right-click menu: the submenu of a torrent's own commands
-#, machine
 menu	Torrent	种子
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
@@ -8133,61 +8758,54 @@ menu	Vulkan didn't start here: OpenGL draws	Vulkan 未能启动：使用 OpenGL 
 menu	Vulkan draws with a software renderer	Vulkan 使用软件渲染器绘制
 #. menu bar title in the main window (menus, toolbar, Categories pane)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
-#, machine
 menubar	&Downloads	下载(&D)
 #. menu bar title in the main window (menus, toolbar, Categories pane)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
-#, machine
 menubar	&File	文件(&F)
 #. menu bar title in the main window (menus, toolbar, Categories pane)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
-#, machine
 menubar	&Help	帮助(&H)
 #. menu bar title in the main window (menus, toolbar, Categories pane)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
-#, machine
 menubar	&Tasks	任务(&T)
 #. menu bar title in the main window (menus, toolbar, Categories pane)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
-#, machine
 menubar	&View	视图(&V)
-#. toolbar button in the main window
+#. text in preview.rs
+#. noun: title of the side pane beside the download list that shows the selected download's picture and details (#1368)
 #, machine
+pane	Preview	预览
+#. toolbar button in the main window
 toolbar	Add Torrent	添加种子
 #. toolbar button in the main window
-#, machine
 toolbar	Add URL	添加 URL
 #. toolbar button in the main window
 #. verb: delete the selected downloads
-#, machine
 toolbar	Delete	删除
 #. toolbar button in the main window
-#, machine
 toolbar	Delete Completed	删除已完成任务
 #. toolbar button in the main window
 #. plural noun: opens the Options window (settings)
-#, machine
 toolbar	Options	选项
+#. toolbar button in the main window
+#. toolbar toggle button: shows or hides the preview pane (the selected download's picture and details)
+#, machine
+toolbar	Preview	预览
 #. toolbar button in the main window
 #. verb: continue the selected downloads
 #, machine
 toolbar	Resume	续传
 #. toolbar button in the main window
 #. noun: the tool that starts and stops queues on time
-#, machine
 toolbar	Scheduler	计划任务
 #. toolbar button in the main window
-#, machine
 toolbar	Start Queue	启动队列
 #. toolbar button in the main window
 #. verb: stop the selected downloads
-#, machine
 toolbar	Stop	停止
 #. toolbar button in the main window
-#, machine
 toolbar	Stop All	全部停止
 #. toolbar button in the main window
-#, machine
 toolbar	Stop Queue	停止队列
 #. unit after a number in the download list (sizes, speeds, status)
 #. {n} = a number (keep the braces as they are)
