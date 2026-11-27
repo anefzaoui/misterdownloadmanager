@@ -569,6 +569,10 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 Everything below ships together, in version 0.6.0, the next release.
 
+- ✅ Website FAQ: why installing yt-dlp or another helper times out where GitHub can't be reached, and what to do
+  (a proxy in Options → Proxy / Socks, or Helpers → Use another program)
+  ([#1926](https://github.com/anefzaoui/misterdownloadmanager/issues/1926); thanks to
+  [@HandSome507](https://github.com/HandSome507))
 - ✅ A download's progress window can start minimized: **Options → Downloads → Customize
   "Download progress" dialog → Edit...** offers **Show normally**, **Show minimized** and
   **Don't show** ([#1966](https://github.com/anefzaoui/misterdownloadmanager/issues/1966); thanks to
