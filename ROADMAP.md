@@ -1462,6 +1462,10 @@ Everything below ships together, in version 0.6.0, the next release.
   ([#948](https://github.com/anefzaoui/misterdownloadmanager/issues/948))
 - ✅ A download refused for its site's security certificate says why (expired, not trusted, for
   another name) instead of a bare **Error** (follows [#762](https://github.com/anefzaoui/misterdownloadmanager/issues/762))
+- ✅ HTTPS servers with a self-signed, expired or untrusted certificate: when refused, MDM says why
+  and offers **Continue once**, **Always for this site** (pinned to the certificate's SHA-256
+  fingerprint, site and port) or **Cancel**, with allowed sites listed in **Options → Sites
+  Logins → Certificates...** where they can be removed ([#1964](https://github.com/anefzaoui/misterdownloadmanager/issues/1964))
 - ✅ **Options → Downloads → Customize "Download progress" dialog → Edit...** works: it can turn
   off the progress window that opens when a download starts; the button was greyed and did
   nothing ([#1041](https://github.com/anefzaoui/misterdownloadmanager/issues/1041))
@@ -2283,6 +2287,9 @@ Everything below ships together, in version 0.6.0, the next release.
 - ✅ GOVERNANCE.md says how MDM is run (who decides, how changes are reviewed and released, AI-assisted
   development, what happens if the maintainer can't continue), and CODE_OF_CONDUCT.md adopts the
   Contributor Covenant 2.1
+- ✅ All of MDM's Trendshift placements, not just the first: #1 Rust repository of the day and
+  of the week, #3 repository of the week and #4 of the day among all languages; four badges in the
+  README, and on the website's proof of delivery and press page, with the site's own stamp
 
 ## Being worked on
 

@@ -29,7 +29,10 @@
 </p>
 
 <p align="center">
-  <a href="https://trendshift.io/repositories/337427" target="_blank"><img src="https://trendshift.io/api/badge/trendshift/repositories/337427/daily?language=Rust" alt="Mister Download Manager on Trendshift: number 1 Rust repository of the day" width="200" height="44"></a><br>
+  <a href="https://trendshift.io/repositories/337427" target="_blank"><img src="https://trendshift.io/api/badge/trendshift/repositories/337427/daily?language=Rust" alt="Mister Download Manager on Trendshift: number 1 Rust repository of the day" width="200" height="44"></a>
+  <a href="https://trendshift.io/repositories/337427" target="_blank"><img src="https://trendshift.io/api/badge/trendshift/repositories/337427/weekly?language=Rust" alt="Mister Download Manager on Trendshift: number 1 Rust repository of the week" width="200" height="44"></a><br>
+  <a href="https://trendshift.io/repositories/337427" target="_blank"><img src="https://trendshift.io/api/badge/trendshift/repositories/337427/weekly" alt="Mister Download Manager on Trendshift: number 3 repository of the week, all languages" width="200" height="44"></a>
+  <a href="https://trendshift.io/repositories/337427" target="_blank"><img src="https://trendshift.io/api/badge/trendshift/repositories/337427/daily" alt="Mister Download Manager on Trendshift: number 4 repository of the day, all languages" width="200" height="44"></a><br>
   <a href="https://github.com/anefzaoui/misterdownloadmanager/stargazers"><img src="https://img.shields.io/github/stars/anefzaoui/misterdownloadmanager?style=social&label=Star%20MDM" alt="Star Mister Download Manager on GitHub" height="28"></a><br>
   <sub>⭐ <b>Like it? Give it a star.</b> MDM has no ads and no marketing budget: stars are how people find it.</sub>
 </p>
