@@ -166,6 +166,10 @@ The right-click menu has everything you can do with a download: **Open**, **Open
 
 Many sites publish a checksum next to the download. Right-click the download, choose **Verify checksum...** and paste it. MDM reads MD5, SHA-1, SHA-256, SHA-512 and CRC32. A finished file is checked at once; an unfinished one is checked when its download ends. MDM then says **The file matches** or **The file does NOT match**.
 
+A checksum you give this way (or with the command line's `--checksum`), or one the site publishes and MDM reads itself (Hugging Face's and GitHub's, in [Link grabber](link-grabber.md)), must match: a file that doesn't stays unfinished, says **the file's SHA-256 checksum doesn't match**, and **Redownload** fetches it again.
+
+Without one, MDM checks the file against the checksum its server sends with it, if any (`Content-MD5`, `Digest`, `Repr-Digest`, Google Cloud Storage's `x-goog-hash`). Servers sometimes send the checksum of the file as they store it rather than of what they send, so a file that doesn't match is still kept: its status says **Checksum warning**, and its tip, its log, **Properties** and **Download complete** say *Downloaded, but the server's MD5 checksum didn't match; the file may still be fine*. If it matters, check it with **Verify checksum...** and the checksum its site publishes: when it matches, the warning goes. A server's checksum isn't used at all when the server says it changed the file on the way (a compressed answer, or a file stored encoded, as PikPak's are).
+
 ## Selecting several downloads
 
 - **Ctrl+click** adds or removes one download.

@@ -975,6 +975,10 @@
 #. Test browser integration, while it reads where browser integration stands (a moment, usually)
 #. the trailing ... means it is still going on: keep it
 	Checking...	قيد التحقق...
+#. text in the download list (sizes, speeds, status)
+#. a download's status: it finished, but the checksum its server announced didn't match its file (the file is kept). Short: the list's Status column is narrow
+#, machine
+	Checksum warning	تحذير بصمة الملف
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Chile	تشيلي
@@ -1452,6 +1456,11 @@
 #. text in a dialog box
 #. {size} = a file size such as "4.2 MB"; {bytes} = a number of bytes (keep the braces as they are)
 	Downloaded {size} ({bytes} Bytes)	تم تنزيل {size} ({bytes} بايت)
+#. text in the download list (sizes, speeds, status)
+#. a download's status, whole (the Status cell's tip, Properties, the log, Download complete): it finished, but the checksum its server announced didn't match the file, which is kept. "Check it": the user can verify the file against a checksum they trust (right-click → Verify checksum...)
+#. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
+#, machine
+	Downloaded, but the server's {algorithm} checksum didn't match; the file may still be fine. Check it if it matters	تم التنزيل، لكن بصمة الملف {algorithm} التي أعلنها الخادم غير مطابقة؛ قد يكون الملف سليما. تحقق من بصمته إذا كان الأمر مهما
 #. item in the Categories tree in the download list; value in a column's filter list in the download list; text in remote.rs
 #. a download's status (state it is in, not a command)
 	Downloading	قيد التنزيل

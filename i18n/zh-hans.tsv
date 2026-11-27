@@ -1000,6 +1000,10 @@
 #. Test browser integration, while it reads where browser integration stands (a moment, usually)
 #. the trailing ... means it is still going on: keep it
 	Checking...	正在检查...
+#. text in the download list (sizes, speeds, status)
+#. a download's status: it finished, but the checksum its server announced didn't match its file (the file is kept). Short: the list's Status column is narrow
+#, machine
+	Checksum warning	校验和警告
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Chile	智利
@@ -1563,6 +1567,11 @@
 #. {size} = a file size such as "4.2 MB"; {bytes} = a number of bytes (keep the braces as they are)
 #, machine
 	Downloaded {size} ({bytes} Bytes)	已下载 {size}（{bytes} 字节）
+#. text in the download list (sizes, speeds, status)
+#. a download's status, whole (the Status cell's tip, Properties, the log, Download complete): it finished, but the checksum its server announced didn't match the file, which is kept. "Check it": the user can verify the file against a checksum they trust (right-click → Verify checksum...)
+#. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
+#, machine
+	Downloaded, but the server's {algorithm} checksum didn't match; the file may still be fine. Check it if it matters	已下载，但服务器提供的 {algorithm} 校验和不匹配；文件可能仍然完好。如有需要，请验证文件校验和
 #. item in the Categories tree in the download list; value in a column's filter list in the download list; text in remote.rs
 #. a download's status (state it is in, not a command)
 #, machine
