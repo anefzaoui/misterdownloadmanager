@@ -14,7 +14,9 @@
 //!
 //! The app loads `opengl32.dll` from there before OpenGL starts (renderer.rs, win32.rs).
 
-use std::path::{Path, PathBuf};
+use std::path::Path;
+#[cfg(windows)]
+use std::path::PathBuf;
 
 use crate::ffmpeg::{ListError, Source};
 use crate::{Error, Installed};
