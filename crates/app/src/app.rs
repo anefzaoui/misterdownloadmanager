@@ -1455,8 +1455,7 @@ pub struct App {
     #[cfg(windows)]
     soft_gl: Option<crate::softgl::Offer>,
     #[cfg(windows)]
-    soft_gl_lookup:
-        Option<std::sync::Arc<std::sync::Mutex<Option<Result<crate::softgl::Offered, String>>>>>,
+    soft_gl_lookup: Option<crate::softgl::Lookup>,
     #[cfg(windows)]
     soft_gl_weighed: bool,
     /// The weekly update check, while it runs.

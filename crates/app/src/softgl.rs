@@ -46,8 +46,12 @@ pub struct Offered {
     size: u64,
 }
 
-/// The list read in the background: the offer, or why there is none (in the interface's words).
-pub fn look_up(rt: &tokio::runtime::Handle, ctx: &egui::Context) -> Slot<Result<Offered, String>> {
+/// The list being read in the background: then the offer, or why there is none (in the
+/// interface's words).
+pub type Lookup = Slot<Result<Offered, String>>;
+
+/// The list read in the background ([`Lookup`]).
+pub fn look_up(rt: &tokio::runtime::Handle, ctx: &egui::Context) -> Lookup {
     let slot: Slot<Result<Offered, String>> = Arc::new(Mutex::new(None));
     let (out, ctx) = (slot.clone(), ctx.clone());
     let net = crate::settings::own_net();
@@ -75,7 +79,7 @@ pub fn look_up(rt: &tokio::runtime::Handle, ctx: &egui::Context) -> Slot<Result<
 
 enum State {
     /// Reading the list (View → Draw with's offer).
-    Looking(Slot<Result<Offered, String>>),
+    Looking(Lookup),
     Offered(Offered),
     Downloading {
         offered: Offered,
