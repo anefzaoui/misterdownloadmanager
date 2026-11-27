@@ -684,6 +684,8 @@ Everything below ships together, in version 0.6.0, the next release.
   the trackers and the DHT asked again
 - ✅ Torrents: a paused torrent no longer keeps its files locked, and a finished one lets other
   programs open, move or rename them (on Windows, held read-only while it is shared)
+- ✅ Torrents: files you didn't tick are no longer created on disk; big torrents keep fewer
+  files open (a budget for the whole of MDM, the least recently used file closed first)
 - ✅ Tests: the check that a torrent picks up when the network comes back no longer fails now and
   then (seen on a Windows runner): it took the torrent's first check of its files for the
   download, as both count up the same number, and cut the network before the peer was ever
