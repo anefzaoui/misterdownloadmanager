@@ -569,6 +569,11 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 Everything below ships together, in version 0.6.0, the next release.
 
+- ✅ Browser integration on Windows reads the registry as the browsers do, its 32-bit part first: an older entry
+  there that leads nowhere no longer hides MDM's from Edge, Test browser integration says when one is in the way,
+  and MDM's start and its setup for everyone fix it
+  ([#1688](https://github.com/anefzaoui/misterdownloadmanager/issues/1688); thanks to
+  [@Priest6969](https://github.com/Priest6969))
 - ✅ A download's progress window can start minimized: **Options → Downloads → Customize
   "Download progress" dialog → Edit...** offers **Show normally**, **Show minimized** and
   **Don't show** ([#1966](https://github.com/anefzaoui/misterdownloadmanager/issues/1966); thanks to
