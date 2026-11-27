@@ -31,6 +31,36 @@ use crate::winui::{self, ButtonKind, LIGHT_BG, LIGHT_TEXT, fill_l as fill, r, te
 const ROW: f32 = 18.0;
 /// The top of the window's last row of buttons (Add to queue, Start, Cancel).
 const BUTTONS_Y: f32 = 446.0;
+
+/// The window's width: the desktop's, or on a phone (phone.rs) the page's (the list and the
+/// fields take what it leaves).
+fn width(ctx: &egui::Context) -> f32 {
+    crate::app::phone::layout_width(ctx, 640.0)
+}
+
+/// On a phone (phone.rs): the package's rows one under another (its password and "Delete
+/// archives" each get a row of their own), this much lower than the desktop's.
+const PHONE_PASSWORD_ROW: f32 = 31.0;
+const PHONE_DELETE_ROW: f32 = 22.0;
+
+/// How much taller the package's box is on a phone, and so how much lower the buttons are.
+fn phone_extra(ctx: &egui::Context) -> f32 {
+    if crate::app::phone::active(ctx) {
+        PHONE_PASSWORD_ROW + PHONE_DELETE_ROW
+    } else {
+        0.0
+    }
+}
+
+/// How much taller the window is on a phone: its package's rows and its big buttons (Start on
+/// its own row, then Add to queue and Cancel).
+fn phone_height(ctx: &egui::Context) -> f32 {
+    if crate::app::phone::active(ctx) {
+        phone_extra(ctx) + 2.0 * crate::app::phone::BUTTON_H + 8.0 - 21.0
+    } else {
+        0.0
+    }
+}
 /// Links looked up at once, and at once from one host.
 const CHECKS: usize = 8;
 const CHECKS_PER_HOST: usize = 4;
@@ -856,7 +886,7 @@ impl Grabber {
             ctx,
             "grabber",
             "Link grabber",
-            [640.0, BUTTONS_Y + 30.0],
+            [width(ctx), BUTTONS_Y + 30.0 + phone_height(ctx)],
             true,
             LIGHT_BG(),
             |ui, o| self.body(ui, o),
@@ -896,12 +926,12 @@ impl Grabber {
             o.y + 20.0,
             &line,
             LIGHT_TEXT(),
-            o.x + 629.0,
+            o.x + width(ui.ctx()) - 11.0,
             "grabber-source",
         );
         self.list(
             ui,
-            Rect::from_min_size(o + vec2(11.0, 30.0), vec2(618.0, 236.0)),
+            Rect::from_min_size(o + vec2(11.0, 30.0), vec2(width(ui.ctx()) - 22.0, 236.0)),
         );
 
         // Under the list: Hide web pages and, under it, Hide images located on this web page;
@@ -934,11 +964,24 @@ impl Grabber {
         );
         // After the first check box's caption, however long it is in this language.
         let after = 11.0 + 18.0 + winui::text_width(&p, crate::i18n::t("Hide web pages")) + 24.0;
-        text(&p, o.x + after, o.y + 288.0, &count, LIGHT_TEXT());
+        // Up to the buttons after it (a phone's page is narrow), whole on hover when cut.
+        let buttons_w = winui::button_width(&p, "Check all", 73.0)
+            + winui::button_width(&p, "Uncheck all", 73.0)
+            + 8.0;
+        winui::fit(
+            ui,
+            &p,
+            o.x + after,
+            o.y + 288.0,
+            &count,
+            LIGHT_TEXT(),
+            o.x + width(ui.ctx()) - 11.0 - buttons_w - 8.0,
+            "grabber-count",
+        );
         let picks = winui::buttons_light_right(
             ui,
             o,
-            629.0,
+            width(ui.ctx()) - 11.0,
             296.0,
             &[
                 // i18n: Link grabber button (IDM's): tick every link
@@ -965,19 +1008,27 @@ impl Grabber {
             (true, true) => ButtonKind::Default,
             (true, false) => ButtonKind::Normal,
         };
-        let row = winui::buttons_light_right(
-            ui,
-            o,
-            629.0,
-            BUTTONS_Y,
-            &[
-                // i18n: Link grabber button: add the ticked links to the download queue without starting them (IDM's OK)
-                (crate::i18n::mark("Add to queue"), kind(false)),
-                // i18n: Link grabber button: download the ticked links now
-                (crate::i18n::mark("Start"), kind(true)),
-                (crate::i18n::mark("Cancel"), ButtonKind::Normal),
-            ],
-        );
+        let buttons = [
+            // i18n: Link grabber button: add the ticked links to the download queue without starting them (IDM's OK)
+            (crate::i18n::mark("Add to queue"), kind(false)),
+            // i18n: Link grabber button: download the ticked links now
+            (crate::i18n::mark("Start"), kind(true)),
+            (crate::i18n::mark("Cancel"), ButtonKind::Normal),
+        ];
+        let buttons_y = BUTTONS_Y + phone_extra(ui.ctx());
+        let row = if crate::app::phone::active(ui.ctx()) {
+            // A phone: big buttons across the page, Start first.
+            let (at, _) = crate::app::phone::button_rects(o, buttons_y, width(ui.ctx()), 3, true);
+            let order = [1, 0, 2];
+            let mut row: Vec<Option<egui::Response>> = vec![None, None, None];
+            for (k, b) in order.into_iter().enumerate() {
+                let (label, kind) = buttons[b];
+                row[b] = Some(winui::button_light(ui, at[k], label, kind, false));
+            }
+            row.into_iter().flatten().collect()
+        } else {
+            winui::buttons_light_right(ui, o, width(ui.ctx()) - 11.0, buttons_y, &buttons)
+        };
         let (later, start, cancel) = (row[0].clicked(), row[1].clicked(), row[2].clicked());
         if cancel || winui::escape_pressed(ui) {
             Outcome::Closed
@@ -1291,6 +1342,11 @@ impl Grabber {
 
     /// The selected package's name, folder, password and what happens to its archives.
     fn package_box(&mut self, ui: &mut Ui, o: Pos2) {
+        // The fields' right edge (the box's, less its padding).
+        let right = width(ui.ctx()) - 19.0;
+        let phone = crate::app::phone::active(ui.ctx());
+        // A phone's rows below the name: the password has its own (`PHONE_PASSWORD_ROW`).
+        let s = if phone { PHONE_PASSWORD_ROW } else { 0.0 };
         let p = ui.painter().clone();
         // A package has a row when some of its links show.
         let shown = self.shown();
@@ -1304,7 +1360,13 @@ impl Grabber {
         let cw = winui::text_width(&p, caption);
         winui::group_box(
             &p,
-            r(o, 11.0, 330.0, 618.0, 106.0),
+            r(
+                o,
+                11.0,
+                330.0,
+                width(ui.ctx()) - 22.0,
+                106.0 + phone_extra(ui.ctx()),
+            ),
             Some((o.x + 18.0, o.x + 22.0 + cw)),
         );
         text(&p, o.x + 20.0, o.y + 334.0, caption, LIGHT_TEXT());
@@ -1361,17 +1423,21 @@ impl Grabber {
         };
         // Row 1: the name, then the password.
         label(ui, 21.0, 360.0, name_label, bx - 4.0);
-        let pw_x = 340.0;
-        let pbx = (pw_x + wide(pw_label) + 8.0).min(470.0);
-        let named = winui::edit_light(
-            ui,
-            r(o, bx, 345.0, pw_x - 12.0 - bx, 23.0),
-            name,
-            enabled,
-            false,
-        );
-        label(ui, pw_x, 360.0, pw_label, pbx - 4.0);
-        let pw = winui::password_light(ui, r(o, pbx, 345.0, 621.0 - pbx, 23.0), password, enabled);
+        // On a phone the password goes under the name, in the labels' column.
+        let (pw_x, pw_y) = if phone {
+            (21.0, 345.0 + s)
+        } else {
+            (340.0, 345.0)
+        };
+        let pbx = if phone {
+            bx
+        } else {
+            (pw_x + wide(pw_label) + 8.0).min(470.0)
+        };
+        let name_w = if phone { right - bx } else { pw_x - 12.0 - bx };
+        let named = winui::edit_light(ui, r(o, bx, 345.0, name_w, 23.0), name, enabled, false);
+        label(ui, pw_x, pw_y + 15.0, pw_label, pbx - 4.0);
+        let pw = winui::password_light(ui, r(o, pbx, pw_y, right - pbx, 23.0), password, enabled);
         // i18n: what a screen reader calls Link grabber's password box
         let pw_name = crate::i18n::t("Archive password");
         ui.ctx().accesskit_node_builder(pw.id, |n| {
@@ -1381,12 +1447,12 @@ impl Grabber {
             n.set_author_id("grabber-password");
         });
         // Row 2: the folder, and Browse.
-        label(ui, 21.0, 391.0, folder_label, bx - 4.0);
+        label(ui, 21.0, 391.0 + s, folder_label, bx - 4.0);
         // i18n: verb: choose a folder
         let bw = winui::button_width(&p, "Browse", 73.0);
         let typed = winui::edit_light(
             ui,
-            r(o, bx, 376.0, 621.0 - bw - 8.0 - bx, 23.0),
+            r(o, bx, 376.0 + s, right - bw - 8.0 - bx, 23.0),
             folder,
             enabled,
             false,
@@ -1401,16 +1467,16 @@ impl Grabber {
                 ui,
                 &p,
                 o.x + bx + 5.0,
-                o.y + 391.0,
+                o.y + 391.0 + s,
                 each,
                 winui::MUTED(),
-                o.x + 621.0 - bw - 12.0,
+                o.x + right - bw - 12.0,
                 "grabber-each",
             );
         }
         let browse = winui::button_light(
             ui,
-            r(o, 621.0 - bw, 377.0, bw, 21.0),
+            r(o, right - bw, 377.0 + s, bw, 21.0),
             "Browse",
             if enabled {
                 ButtonKind::Normal
@@ -1436,13 +1502,27 @@ impl Grabber {
         let was = *extract;
         // i18n: Link grabber check box: extract the package's archives once they are downloaded
         let extract_label = crate::i18n::mark("Extract when done");
-        winui::checkbox_light(ui, o + vec2(21.0, 411.0), extract, extract_label, enabled);
+        winui::checkbox_light(
+            ui,
+            o + vec2(21.0, 411.0 + s),
+            extract,
+            extract_label,
+            enabled,
+        );
         let extract_now = *extract;
-        let next = 21.0 + 18.0 + wide(crate::i18n::t(extract_label)) + 24.0;
+        // On a phone, under it.
+        let delete_at = if phone {
+            vec2(21.0, 411.0 + s + PHONE_DELETE_ROW)
+        } else {
+            vec2(
+                21.0 + 18.0 + wide(crate::i18n::t(extract_label)) + 24.0,
+                411.0,
+            )
+        };
         // i18n: Link grabber check box: after extracting, the archives go to the Recycle Bin
         winui::checkbox_light(
             ui,
-            o + vec2(next, 411.0),
+            o + delete_at,
             delete,
             "Delete archives after extracting",
             enabled && extract_now,

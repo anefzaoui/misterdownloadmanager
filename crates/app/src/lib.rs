@@ -215,10 +215,10 @@ fn system_clipboard_text() -> clipboard::Read {
 }
 
 /// Android: arboard has no clipboard there; only the app in front may read it, through Java
-/// (the Android app's part).
+/// (the Android app's part, android.rs `Host::clipboard`).
 #[cfg(target_os = "android")]
 fn system_clipboard_text() -> clipboard::Read {
-    clipboard::Read::NoText
+    android::clipboard_read()
 }
 
 /// A number that changes whenever the clipboard does, so the watch for copied links
@@ -235,9 +235,13 @@ pub fn clipboard_changes() -> Option<u64> {
     }
     #[cfg(windows)]
     return Some(u64::from(win32::clipboard_sequence()));
+    // Android: one its clipboard's listener counts (each read there shows the person a notice,
+    // so the watch must not read once a second).
+    #[cfg(target_os = "android")]
+    return android::clipboard_changes();
     // Linux and macOS: no such number without the clipboard's own protocol (X11's XFixes,
     // macOS's changeCount): the watch reads the text each time, off the window's thread.
-    #[cfg(not(windows))]
+    #[cfg(not(any(windows, target_os = "android")))]
     None
 }
 
@@ -273,6 +277,13 @@ fn read_clipboard(off: bool, read: impl FnOnce() -> clipboard::Read) -> clipboar
 /// Put `text` on the clipboard (egui hands it to the system after the frame). An off-screen
 /// run leaves the clipboard alone and logs what it would have copied, for a check to read.
 pub fn copy_text(ctx: &egui::Context, text: String) {
+    // Android: egui's copy goes nowhere there; the Android app's clipboard takes it.
+    #[cfg(target_os = "android")]
+    {
+        let _ = ctx;
+        let _ = set_clipboard(&text);
+    }
+    #[cfg(not(target_os = "android"))]
     if let Some(text) = write_clipboard(offscreen(), text) {
         ctx.copy_text(text);
     }
@@ -290,7 +301,7 @@ pub fn set_clipboard(text: &str) -> bool {
         }),
         // Android: arboard has no clipboard there (the Android app's part, through Java).
         #[cfg(target_os = "android")]
-        Some(_) => false,
+        Some(text) => android::clipboard_write(&text),
         None => true,
     }
 }
@@ -611,11 +622,24 @@ fn app() -> eframe::Result {
         .filter(|_| scale::test_zoom().is_none() && !offscreen())
         .filter(|[x, y, w, h]| *w >= 600 && *h >= 300 && on_a_screen(x + 40, y + 10));
     let size = saved.map_or([930.0 * z, 470.0 * z], |[_, _, w, h]| [w as f32, h as f32]);
+    // MDM_PHONE=1 (phone.rs): a phone's screen (a Pixel's 412 × 892 points), to look at the
+    // phone's layout on a desktop; MDM_PHONE=360, a phone that many points wide.
+    let phone_var = std::env::var("MDM_PHONE").ok();
+    let phone = phone_var.is_some();
+    let phone_w = phone_var
+        .and_then(|v| v.parse::<f32>().ok())
+        .filter(|w| (320.0..600.0).contains(w))
+        .unwrap_or(412.0);
+    let (size, min) = if phone {
+        ([phone_w * z, 892.0 * z], [320.0 * z, 480.0 * z])
+    } else {
+        (size, [600.0 * z, 300.0 * z])
+    };
     let mut viewport = quiet(
         window_builder()
             .with_title(MAIN_TITLE)
             .with_inner_size(size)
-            .with_min_inner_size([600.0 * z, 300.0 * z])
+            .with_min_inner_size(min)
             .with_maximized(loaded.settings.window_maximized && !offscreen())
             .with_icon(app_icon()),
     );
@@ -657,6 +681,11 @@ fn app() -> eframe::Result {
         #[cfg(target_os = "linux")]
         unix::set_main_window(cc);
         scale::start(&cc.egui_ctx, z);
+        // The phone's layout looked at on a desktop (MDM_PHONE): its dialogs in the window, as
+        // Android has them (one window), not windows of their own.
+        if phone {
+            cc.egui_ctx.set_embed_viewports(true);
+        }
         let _ = window.set(cc.egui_ctx.clone());
         clipboard::wake(&cc.egui_ctx);
         renderer::test_slow_start();

@@ -49,6 +49,25 @@ pub struct Properties {
     request_wanted: bool,
 }
 
+/// The window's width: the desktop's, or on a phone (phone.rs) the page's.
+fn width(ctx: &egui::Context) -> f32 {
+    crate::app::phone::layout_width(ctx, 477.0)
+}
+
+/// On a phone, a row under the login for what the desktop has beside it (Through {service},
+/// Connection...): what follows moves this much lower for each.
+const PHONE_ROW: f32 = 26.0;
+
+/// How much taller the window is on a phone: that row, and the big buttons under the result
+/// line (OK, then Open and Files...) where the desktop has them beside it.
+fn phone_height(ctx: &egui::Context) -> f32 {
+    if crate::app::phone::active(ctx) {
+        2.0 * PHONE_ROW + 2.0 * crate::app::phone::BUTTON_H + 8.0 + 10.0
+    } else {
+        0.0
+    }
+}
+
 impl Properties {
     pub fn new(item: &Item, route: crate::debrid::Route) -> Self {
         let (login, password) = item.login.clone().unwrap_or_default();
@@ -118,7 +137,7 @@ impl Properties {
             ctx,
             &format!("properties-{}", self.id),
             "File Properties",
-            [477.0, 420.0],
+            [width(ctx), 420.0 + phone_height(ctx)],
             false,
             LIGHT_BG(),
             |ui, o| self.body(ui, o, icons, item),
@@ -202,6 +221,8 @@ impl Properties {
 
     fn body(&mut self, ui: &mut Ui, o: Pos2, icons: &mut ShellIcons, item: &Item) -> Outcome<()> {
         let p = ui.painter().clone();
+        let phone = crate::app::phone::active(ui.ctx());
+        let w = width(ui.ctx());
         let complete = item.status == Status::Complete;
         let running = item.live.is_some();
         // The address can be replaced while the download isn't finished or running.
@@ -221,11 +242,11 @@ impl Properties {
         icons.paint(ui, IconKey::ExtLarge(ext.clone()), o + vec2(11.0, 11.0));
         let fit = |ui: &mut Ui, x: f32, base: f32, s: &str| {
             let (rect, cut) =
-                winui::text_fit(&p, o.x + x, o.y + base, s, LIGHT_TEXT(), o.x + 466.0);
+                winui::text_fit(&p, o.x + x, o.y + base, s, LIGHT_TEXT(), o.x + w - 11.0);
             winui::copyable(ui, rect, ("props", base as i32), s, cut);
         };
         fit(ui, 87.0, 31.0, &item.file_name);
-        winui::etched_h(&p, o.x + 11.0, o.y + 50.0, 456.0);
+        winui::etched_h(&p, o.x + 11.0, o.y + 50.0, w - 21.0);
         let size = item.size.map_or_else(String::new, |s| {
             crate::i18n::fmt(
                 crate::i18n::t("{size} ({bytes} Bytes)"),
@@ -301,7 +322,7 @@ impl Properties {
                 ui,
                 o.x + col,
                 o.y + 128.0,
-                o.x + 466.0,
+                o.x + w - 11.0,
                 seen.as_ref(),
                 &format!("props-{}", self.id),
             );
@@ -323,7 +344,7 @@ impl Properties {
         };
         readonly(
             ui,
-            r(o, col, 140.0, 383.0 - col, 23.0),
+            r(o, col, 140.0, w - 94.0 - col, 23.0),
             &dest.display().to_string(),
         );
         // Moving: a finished file is moved; one that hasn't started gets a new destination; one
@@ -332,7 +353,7 @@ impl Properties {
         let movable = refused.is_none();
         let pick = winui::button_light(
             ui,
-            r(o, 393.0, 141.0, 73.0, 21.0),
+            r(o, w - 84.0, 141.0, 73.0, 21.0),
             // i18n: verb: move the file to another folder
             "Move",
             if movable {
@@ -367,7 +388,7 @@ impl Properties {
         if address_editable {
             let edit = winui::edit_light(
                 ui,
-                r(o, col, 171.0, 467.0 - col, 23.0),
+                r(o, col, 171.0, w - 10.0 - col, 23.0),
                 &mut self.address,
                 true,
                 false,
@@ -376,7 +397,7 @@ impl Properties {
                 self.error = None;
             }
         } else {
-            readonly(ui, r(o, col, 171.0, 467.0 - col, 23.0), &self.address);
+            readonly(ui, r(o, col, 171.0, w - 10.0 - col, 23.0), &self.address);
         }
         text(
             &p,
@@ -387,12 +408,12 @@ impl Properties {
         );
         winui::edit_light(
             ui,
-            r(o, col, 202.0, 467.0 - col, 23.0),
+            r(o, col, 202.0, w - 10.0 - col, 23.0),
             &mut self.description,
             true,
             false,
         );
-        winui::etched_h(&p, o.x + 11.0, o.y + 233.0, 456.0);
+        winui::etched_h(&p, o.x + 11.0, o.y + 233.0, w - 21.0);
         text(
             &p,
             o.x + 11.0,
@@ -404,7 +425,7 @@ impl Properties {
         // i18n: the web page is not known
         let page = item.web_page().unwrap_or(crate::i18n::t("Unknown"));
         fit(ui, 11.0, 272.0, page);
-        winui::etched_h(&p, o.x + 11.0, o.y + 282.0, 456.0);
+        winui::etched_h(&p, o.x + 11.0, o.y + 282.0, w - 21.0);
         // i18n: HTTP term (sic): the page the download was started from
         text(
             &p,
@@ -415,7 +436,7 @@ impl Properties {
         );
         winui::edit_light(
             ui,
-            r(o, col, 291.0, 467.0 - col, 23.0),
+            r(o, col, 291.0, w - 10.0 - col, 23.0),
             &mut self.referer,
             editable,
             false,
@@ -457,29 +478,44 @@ impl Properties {
                 crate::i18n::t("Through {service}"),
                 &[("service", service)],
             );
+            // On a phone, under the password (no room beside it).
+            let at = if phone {
+                vec2(11.0, 384.0)
+            } else {
+                vec2(322.0, 329.0)
+            };
             winui::checkbox_light_until(
                 ui,
-                o + vec2(322.0, 329.0),
+                o + at,
                 &mut on,
                 &caption,
                 editable,
-                Some(o.x + 467.0),
+                Some(o.x + w - 10.0),
             );
             self.direct = !on;
         }
         // Its own User-Agent, headers, proxy and number of connections (#1778), under the
-        // debrid account's check box: changed while it isn't running, for its next start.
+        // debrid account's check box: changed while it isn't running, for its next start. On a
+        // phone, on a row of its own under the login (and under Through {service}).
+        let through_row = phone && self.route.service(&item.url).is_some();
+        let mut phone_rows = f32::from(u8::from(through_row));
         if Self::request_editable(item) {
             // i18n: File Properties button: opens the download's own request settings (User-Agent, headers, connections, proxy)
             let label = crate::i18n::mark("Connection...");
-            let w = winui::button_width(&p, label, 73.0).min(140.0);
+            let cw = winui::button_width(&p, label, 73.0).min(140.0);
             let kind = if running {
                 ButtonKind::Disabled
             } else {
                 ButtonKind::Normal
             };
-            let pressed =
-                winui::button_light(ui, r(o, 467.0 - w, 350.0, w, 21.0), label, kind, false);
+            let at = if phone {
+                let y = 380.0 + PHONE_ROW * phone_rows;
+                phone_rows += 1.0;
+                r(o, 11.0, y, cw, 21.0)
+            } else {
+                r(o, w - 10.0 - cw, 350.0, cw, 21.0)
+            };
+            let pressed = winui::button_light(ui, at, label, kind, false);
             let pressed = winui::why_disabled(
                 pressed,
                 running,
@@ -491,7 +527,9 @@ impl Properties {
                 self.request_wanted = true;
             }
         }
-        winui::etched_h(&p, o.x + 11.0, o.y + 378.0, 456.0);
+        // What follows moves down past them on a phone.
+        let o = o + vec2(0.0, PHONE_ROW * phone_rows);
+        winui::etched_h(&p, o.x + 11.0, o.y + 378.0, w - 21.0);
         if !complete {
             let last = item.last_try.clone().unwrap_or_default();
             let last_try = crate::i18n::fmt(
@@ -510,12 +548,12 @@ impl Properties {
                 o.y + 415.0,
                 e,
                 winui::ERROR(),
-                o.x + 250.0,
+                o.x + if phone { w - 11.0 } else { 250.0 },
                 "props-error",
             );
         } else if !complete {
             let result = item.error.clone().unwrap_or_else(|| item.status_text());
-            let x1 = o.x + 250.0;
+            let x1 = o.x + if phone { w - 11.0 } else { 250.0 };
             let (rect, cut) = winui::text_fit(
                 &p,
                 o.x + 11.0,
@@ -540,9 +578,22 @@ impl Properties {
             385.0,
             120.0,
         )[0];
+        // A phone: big buttons under the result line, OK first, then Open and Files...
+        let torrent = item.torrent.is_some();
+        let (ok_at, open_at, files_at) = if phone {
+            let (b, _) =
+                crate::app::phone::button_rects(o, 430.0, w, 2 + usize::from(torrent), true);
+            (b[0], b[1], b.get(2).copied().unwrap_or(b[1]))
+        } else {
+            (
+                r(o, w - 84.0, 390.0, 73.0, 21.0),
+                r(o, open_x, 390.0, open_w, 21.0),
+                r(o, 170.0, 390.0, 78.0, 21.0),
+            )
+        };
         let open = winui::button_light(
             ui,
-            r(o, open_x, 390.0, open_w, 21.0),
+            open_at,
             // i18n: verb: opens the file
             "Open",
             if complete {
@@ -562,10 +613,10 @@ impl Properties {
         if open && complete {
             crate::dialogs::open_download(&item.dest, item.moved_away);
         }
-        if item.torrent.is_some()
+        if torrent
             && winui::button_light(
                 ui,
-                r(o, 170.0, 390.0, 78.0, 21.0),
+                files_at,
                 // i18n: File Properties button that opens the selected torrent's file list
                 "Files...",
                 ButtonKind::Normal,
@@ -575,14 +626,7 @@ impl Properties {
         {
             self.files_requested = true;
         }
-        let ok = winui::button_light(
-            ui,
-            r(o, 393.0, 390.0, 73.0, 21.0),
-            "OK",
-            ButtonKind::Default,
-            false,
-        )
-        .clicked();
+        let ok = winui::button_light(ui, ok_at, "OK", ButtonKind::Default, false).clicked();
         let address_ok = self.address_ok(item);
         if winui::escape_pressed(ui) {
             Outcome::Closed

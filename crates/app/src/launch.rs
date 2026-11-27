@@ -39,7 +39,25 @@ pub fn run_detached_with_fallback(
 pub fn open(target: impl AsRef<OsStr>) {
     let target = target.as_ref().to_owned();
     spawn("launch", move || {
-        let _ = open::that_detached(&target);
+        // Android: an address to its browser, a folder to its Downloads, a file to its app.
+        #[cfg(target_os = "android")]
+        {
+            let t = target.to_string_lossy();
+            let kind = if t.contains("://") {
+                "url"
+            } else if std::path::Path::new(&target).is_dir() {
+                "folder"
+            } else {
+                "view"
+            };
+            if let Err(e) = crate::android::open_with_system(kind, &t) {
+                tracing::warn!("open {t}: {e}");
+            }
+        }
+        #[cfg(not(target_os = "android"))]
+        {
+            let _ = open::that_detached(&target);
+        }
     });
 }
 

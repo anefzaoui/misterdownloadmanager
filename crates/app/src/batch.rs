@@ -6,6 +6,25 @@ use egui::{Pos2, Ui, vec2};
 use crate::dialogs::{Outcome, window};
 use crate::winui::{self, ButtonKind, LIGHT_BG, LIGHT_TEXT, r, text};
 
+/// The window's width: the desktop's, or on a phone (phone.rs) the page's.
+fn width(ctx: &egui::Context) -> f32 {
+    crate::app::phone::layout_width(ctx, 474.0)
+}
+
+/// On a phone, a row the desktop has beside another moves under it, this much lower: Wildcard
+/// size under From and To, the password under the login.
+const PHONE_ROW: f32 = 30.0;
+
+/// How much taller the window is on a phone: those two rows, the description's extra lines on
+/// a narrow page (up to three), and OK and Cancel big.
+fn phone_height(ctx: &egui::Context) -> f32 {
+    if crate::app::phone::active(ctx) {
+        2.0 * PHONE_ROW + 3.0 * 13.0 + crate::app::phone::BUTTON_H - 21.0
+    } else {
+        0.0
+    }
+}
+
 pub struct Batch {
     address: String,
     letters: bool,
@@ -179,7 +198,7 @@ impl Batch {
             ctx,
             "batch",
             "Batch download",
-            [474.0, 420.0],
+            [width(ctx), 420.0 + phone_height(ctx)],
             false,
             LIGHT_BG(),
             |ui, o| self.body(ui, o, urls, why),
@@ -208,6 +227,8 @@ impl Batch {
         why: Option<&'static str>,
     ) -> Outcome<()> {
         let p = ui.painter().clone();
+        let phone = crate::app::phone::active(ui.ctx());
+        let w = width(ui.ctx());
         let lines = winui::paragraph(
             &p,
             o.x + 11.0,
@@ -216,7 +237,7 @@ impl Batch {
                 "It's possible to add a group of sequential file names like img001.jpg, img002.jpg, etc.,\nimg100.jpg to MDM download queue. Use the asterisk wildcard for the file name pattern.",
             ),
             LIGHT_TEXT(),
-            o.x + 470.0,
+            o.x + w - 4.0,
             13.0,
         );
         text(
@@ -233,6 +254,8 @@ impl Batch {
             ),
             LIGHT_TEXT(),
         );
+        // A narrower page wraps the paragraph on more lines: what follows moves down with it.
+        let o = o + vec2(0.0, (13.0 * (lines as f32 - 2.0)).max(0.0));
         // i18n: noun: the web address (URL) pattern
         text(
             &p,
@@ -243,12 +266,13 @@ impl Batch {
         );
         let edit = winui::edit_light(
             ui,
-            r(o, 59.0, 72.0, 405.0, 21.0),
+            r(o, 59.0, 72.0, w - 69.0, 21.0),
             &mut self.address,
             true,
             false,
         );
-        let focus_address = !self.focused && !self.focus_to;
+        // Not on a phone: the keyboard it opens would cover the page (phone.rs).
+        let focus_address = !self.focused && !self.focus_to && !crate::app::phone::active(ui.ctx());
         if focus_address {
             edit.request_focus();
         }
@@ -259,7 +283,13 @@ impl Batch {
         let cw = winui::text_width(&p, caption);
         winui::group_box(
             &p,
-            r(o, 11.0, 110.0, 453.0, 82.0),
+            r(
+                o,
+                11.0,
+                110.0,
+                w - 21.0,
+                82.0 + if phone { PHONE_ROW } else { 0.0 },
+            ),
             Some((o.x + 18.0, o.x + 22.0 + cw)),
         );
         text(&p, o.x + 20.0, o.y + 114.0, caption, LIGHT_TEXT());
@@ -312,24 +342,48 @@ impl Batch {
         // A longer translation starts earlier instead of running into the box (down to just
         // after the To box), cut with "..." past that, whole on hover.
         let size_label = crate::i18n::t("Wildcard size");
-        let (rect, cut) = winui::label_into(
-            &p,
-            o.x + 334.0,
-            o.y + 173.0,
-            size_label,
-            LIGHT_TEXT(),
-            o.x + 402.0,
-            o.x + 270.0,
-        );
+        // On a phone, on a row of its own under From and To.
+        let (size_y, size_x): (f32, f32) = if phone {
+            (173.0 + PHONE_ROW, 80.0)
+        } else {
+            (173.0, 402.0)
+        };
+        let (rect, cut) = if phone {
+            let rect = winui::text(&p, o.x + 17.0, o.y + size_y, size_label, LIGHT_TEXT());
+            (rect, false)
+        } else {
+            winui::label_into(
+                &p,
+                o.x + 334.0,
+                o.y + size_y,
+                size_label,
+                LIGHT_TEXT(),
+                o.x + 402.0,
+                o.x + 270.0,
+            )
+        };
         if cut {
             winui::full_on_hover(ui, rect, "batch-size", size_label);
         }
-        self.spin(ui, o, 402.0, 429.0, "size");
+        let size_x = if phone {
+            size_x.max(17.0 + winui::text_width(&p, size_label) + 8.0)
+        } else {
+            size_x
+        };
+        self.spin_at(ui, o, size_x, size_x + 27.0, size_y - 19.0, "size");
+        // What follows moves down past the phone's extra row.
+        let o = o + vec2(0.0, if phone { PHONE_ROW } else { 0.0 });
 
         // Use authorization (the group's title is the checkbox).
         winui::group_box(
             &p,
-            r(o, 11.0, 211.0, 453.0, 40.0),
+            r(
+                o,
+                11.0,
+                211.0,
+                w - 21.0,
+                40.0 + if phone { PHONE_ROW } else { 0.0 },
+            ),
             Some(winui::caption_gap(
                 &p,
                 o.x + 20.0,
@@ -346,17 +400,35 @@ impl Batch {
             true,
         );
         let on = self.auth;
+        // On a phone the password under the login, both as wide as the box lets them be.
+        let (login_x, field_x, login_w) = if phone {
+            (30.0, 116.0, w - 21.0 - 9.0 - 116.0)
+        } else {
+            (85.0, 116.0, 117.0)
+        };
         // i18n: noun: the user name for the server (an input box follows)
-        winui::label(&p, o.x + 85.0, o.y + 236.0, crate::i18n::t("Login"), on);
+        winui::label(&p, o.x + login_x, o.y + 236.0, crate::i18n::t("Login"), on);
         winui::edit_light(
             ui,
-            r(o, 116.0, 221.0, 117.0, 23.0),
+            r(o, field_x, 221.0, login_w, 23.0),
             &mut self.login,
             on,
             false,
         );
-        winui::label(&p, o.x + 290.0, o.y + 236.0, crate::i18n::t("Password"), on);
-        winui::password_light(ui, r(o, 342.0, 221.0, 113.0, 23.0), &mut self.password, on);
+        let (pw_label_x, pw_x, pw_y, pw_w) = if phone {
+            (30.0, field_x, 221.0 + PHONE_ROW, login_w)
+        } else {
+            (290.0, 342.0, 221.0, 113.0)
+        };
+        winui::label(
+            &p,
+            o.x + pw_label_x,
+            o.y + pw_y + 15.0,
+            crate::i18n::t("Password"),
+            on,
+        );
+        winui::password_light(ui, r(o, pw_x, pw_y, pw_w, 23.0), &mut self.password, on);
+        let o = o + vec2(0.0, if phone { PHONE_ROW } else { 0.0 });
 
         // Preview: first, second and last file.
         let name = |i: Option<&url::Url>| {
@@ -389,7 +461,7 @@ impl Batch {
             ),
         ];
         for (label, _, y, value) in rows {
-            let rc = r(o, 102.0, y, 362.0, 18.0);
+            let rc = r(o, 102.0, y, w - 112.0, 18.0);
             // The caption on the field's text line.
             let base = winui::baseline_in(o.y + y, 18.0);
             text(&p, o.x + 11.0, base, label, LIGHT_TEXT());
@@ -420,7 +492,7 @@ impl Batch {
         );
         winui::folder_box(
             ui,
-            r(o, 102.0, 354.0, 362.0, 21.0),
+            r(o, 102.0, 354.0, w - 112.0, 21.0),
             &mut self.folder,
             "batch-folder",
             Some(match &self.one_folder {
@@ -430,9 +502,19 @@ impl Batch {
         );
 
         let valid = !urls.is_empty();
+        // A phone: OK and Cancel big, side by side across the page.
+        let (ok_at, cancel_at) = if phone {
+            let (b, _) = crate::app::phone::button_rects(o, 387.0, w, 2, false);
+            (b[0], b[1])
+        } else {
+            (
+                r(o, 274.0, 387.0, 73.0, 21.0),
+                r(o, 372.0, 387.0, 73.0, 21.0),
+            )
+        };
         let ok = winui::button_light(
             ui,
-            r(o, 274.0, 387.0, 73.0, 21.0),
+            ok_at,
             "OK",
             if valid {
                 ButtonKind::Default
@@ -442,14 +524,8 @@ impl Batch {
             false,
         );
         let ok = winui::why_disabled(ok, !valid, why.unwrap_or("")).clicked();
-        let cancel = winui::button_light(
-            ui,
-            r(o, 372.0, 387.0, 73.0, 21.0),
-            "Cancel",
-            ButtonKind::Normal,
-            false,
-        )
-        .clicked();
+        let cancel =
+            winui::button_light(ui, cancel_at, "Cancel", ButtonKind::Normal, false).clicked();
         if cancel || winui::escape_pressed(ui) {
             Outcome::Closed
         } else if valid && (ok || winui::enter_pressed(ui)) {
@@ -461,6 +537,19 @@ impl Batch {
 
     /// An edit with its up-down buddy (`x` edit, `spin_x` buddy), 26 px tall.
     fn spin(&mut self, ui: &mut Ui, o: Pos2, x: f32, spin_x: f32, which: &str) -> egui::Response {
+        self.spin_at(ui, o, x, spin_x, 154.0, which)
+    }
+
+    /// [`Self::spin`] with its top at `top` (a phone's Wildcard size has a row of its own).
+    fn spin_at(
+        &mut self,
+        ui: &mut Ui,
+        o: Pos2,
+        x: f32,
+        spin_x: f32,
+        top: f32,
+        which: &str,
+    ) -> egui::Response {
         let letters = self.letters && which != "size";
         let value = match which {
             "from" => &mut self.from,
@@ -468,7 +557,7 @@ impl Batch {
             _ => &mut self.size,
         };
         // One box, its arrows inside (they were a separate up-down beside it).
-        let rc = r(o, x, 154.0, spin_x + 18.0 - x, 26.0);
+        let rc = r(o, x, top, spin_x + 18.0 - x, 26.0);
         let id = format!("batch-{which}");
         // The wildcard size runs 1 to 10 (what expand() makes); from and to, any number.
         let (min, max) = if which == "size" {

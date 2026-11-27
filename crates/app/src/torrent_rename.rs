@@ -206,7 +206,8 @@ impl TorrentRenamePlugin {
         }
     }
 
-    /// Render the `Rename` row at vertical position `y`.
+    /// Render the `Rename` row at vertical position `y`, its fields from `fx` to `right` (the
+    /// window's right edge, less its margin).
     /// Returns `true` if the user edited either the main name or the extension.
     #[allow(clippy::too_many_arguments)]
     pub fn draw(
@@ -215,6 +216,7 @@ impl TorrentRenamePlugin {
         p: &Painter,
         o: Pos2,
         fx: f32,
+        right: f32,
         y: f32,
         has: bool,
         busy: bool,
@@ -226,8 +228,8 @@ impl TorrentRenamePlugin {
         let stem_enabled = has && !busy;
         let ext_enabled = has && !busy && !self.is_dir;
 
-        let stem_rc = r(o, fx, y, 468.0 - fx, 21.0);
-        let ext_rc = r(o, 480.0, y, 589.0 - 480.0, 21.0);
+        let stem_rc = r(o, fx, y, right - 121.0 - fx, 21.0);
+        let ext_rc = r(o, right - 109.0, y, 109.0, 21.0);
 
         // Main name (stem) input box
         let stem_changed = winui::edit(ui, stem_rc, &mut self.stem, stem_enabled, false).changed();
@@ -238,7 +240,7 @@ impl TorrentRenamePlugin {
         } else {
             winui::LIGHT_DISABLED()
         };
-        text(p, o.x + 472.0, o.y + y + 14.0, ".", dot_color); // not translated: file extension dot
+        text(p, o.x + right - 117.0, o.y + y + 14.0, ".", dot_color); // not translated: file extension dot
 
         // Extension input box (greyed out / disabled when downloading a directory)
         let ext_changed = winui::edit(ui, ext_rc, &mut self.ext, ext_enabled, false).changed();

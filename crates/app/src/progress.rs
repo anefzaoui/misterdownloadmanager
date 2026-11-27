@@ -376,6 +376,8 @@ pub enum Action {
     Resume,
     /// Stop the download and close the dialog.
     Cancel,
+    /// Its Properties (a phone's page: the desktop's are in its menu).
+    Properties,
     /// Set this download's speed limit (bytes/s, None = off).
     /// This download's limit (None: unlimited); `true`: remember it for the file.
     Limit(Option<u64>, bool),
@@ -612,72 +614,98 @@ impl Progress {
             .with_resizable(cfg!(windows))
             .with_icon(crate::app_icon())
             .with_maximize_button(false);
+        let phone = crate::app::phone::active(ctx);
         if let Some(p) = crate::dialogs::place(ctx, key, [548.0, 412.0 + drop]) {
             builder = builder.with_position(p);
         }
         // Minimize hides it in the notification area when asked (and a tray can bring it back).
         let minimize_hides = self.tray && self.minimize_to_tray;
         // The window, once its frame is applied (Windows: its caption parts go to its hit test).
-        let action = ctx.show_viewport_immediate(vid, builder, |ui, _| {
-            crate::dialogs::keyboard_to_click(ui.ctx());
-            winui::name_window(ui, &title_now);
-            // Painted in the pass that closes it too (see dialogs::close_requested).
-            let close = crate::dialogs::close_requested(ui);
-            if !close
-                && !self.minimized
-                && minimize_hides
-                && ui.ctx().input(|i| i.viewport().minimized == Some(true))
-            {
-                return Action::Hide;
-            }
-            let action = egui::CentralPanel::no_frame()
-                .frame(egui::Frame::new().fill(winui::BG()))
-                .show(ui, |ui| {
-                    let o = ui.max_rect().min;
-                    // The window's width, laid out from the right in a right-to-left
-                    // interface (the title bar; the layout under it has its own).
-                    let _surface = winui::Surface::enter(o.x, o.x + shown[0]);
-                    let caption = draw_caption(ui, o, shown[0], &title_now, &buttons, hwnd);
-                    // The layout under the title bar, scrolled when the window is smaller.
-                    let below = egui::Rect::from_min_max(o + vec2(0.0, TITLE_H), ui.max_rect().max);
-                    let mut rest = ui.new_child(egui::UiBuilder::new().max_rect(below));
-                    let action = crate::dialogs::scroll(&mut rest, key, body, |ui, o| {
-                        let _surface = winui::Surface::enter(o.x, o.x + body[0]);
-                        self.body(ui, o, item, snap, frac, (bar, &drawn.segments))
-                    });
-                    // The system menu's "Hide to the notification area" (Alt+Space).
-                    #[cfg(windows)]
-                    if let Some(h) = hwnd
-                        && crate::win32::take_hide_asked(h)
-                    {
-                        return Action::Hide;
+        let action = if phone {
+            // A phone: a page over the main window (phone.rs) in its own layout
+            // ([`Progress::phone_body`]), scrolled when the screen is short.
+            let (action, closed) =
+                crate::app::phone::sheet(ctx, key.with("sheet"), &title_now, winui::BG(), |ui| {
+                    crate::dialogs::keyboard_to_click(ui.ctx());
+                    let action = egui::ScrollArea::vertical()
+                        .show(ui, |ui| {
+                            let area = ui.max_rect();
+                            self.phone_body(ui, area, item, snap, frac, (bar, &drawn.segments))
+                        })
+                        .inner;
+                    // Back (Esc) hides the page; the download goes on.
+                    if matches!(action, Action::None) && winui::escape_pressed(ui) {
+                        Action::Close
+                    } else {
+                        action
                     }
-                    match caption {
-                        Some(CaptionButton::Close) => Action::Close,
-                        Some(CaptionButton::ToTray) => Action::Hide,
-                        Some(CaptionButton::Minimize) if minimize_hides => Action::Hide,
-                        Some(CaptionButton::Minimize) => {
-                            crate::dialogs::minimize(ui.ctx(), hwnd);
-                            action
+                });
+            if closed { Action::Close } else { action }
+        } else {
+            ctx.show_viewport_immediate(vid, builder, |ui, _| {
+                crate::dialogs::keyboard_to_click(ui.ctx());
+                winui::name_window(ui, &title_now);
+                // Painted in the pass that closes it too (see dialogs::close_requested).
+                let close = crate::dialogs::close_requested(ui);
+                if !close
+                    && !self.minimized
+                    && minimize_hides
+                    && ui.ctx().input(|i| i.viewport().minimized == Some(true))
+                {
+                    return Action::Hide;
+                }
+                let action = egui::CentralPanel::no_frame()
+                    .frame(egui::Frame::new().fill(winui::BG()))
+                    .show(ui, |ui| {
+                        let o = ui.max_rect().min;
+                        // The window's width, laid out from the right in a right-to-left
+                        // interface (the title bar; the layout under it has its own).
+                        let _surface = winui::Surface::enter(o.x, o.x + shown[0]);
+                        let caption = draw_caption(ui, o, shown[0], &title_now, &buttons, hwnd);
+                        // The layout under the title bar, scrolled when the window is smaller.
+                        let below =
+                            egui::Rect::from_min_max(o + vec2(0.0, TITLE_H), ui.max_rect().max);
+                        let mut rest = ui.new_child(egui::UiBuilder::new().max_rect(below));
+                        let action = crate::dialogs::scroll(&mut rest, key, body, |ui, o| {
+                            let _surface = winui::Surface::enter(o.x, o.x + body[0]);
+                            self.body(ui, o, item, snap, frac, (bar, &drawn.segments))
+                        });
+                        // The system menu's "Hide to the notification area" (Alt+Space).
+                        #[cfg(windows)]
+                        if let Some(h) = hwnd
+                            && crate::win32::take_hide_asked(h)
+                        {
+                            return Action::Hide;
                         }
-                        _ => action,
-                    }
-                })
-                .inner;
-            // Its menu opened from the keyboard, said to screen readers (#328).
-            crate::chrome::tell_screen_readers(ui.ctx());
-            if close {
-                return Action::Close;
-            }
-            // Escape hides the window (the download goes on), as the × does.
-            if matches!(action, Action::None) && winui::escape_pressed(ui) {
-                Action::Close
-            } else {
-                action
-            }
-        });
+                        match caption {
+                            Some(CaptionButton::Close) => Action::Close,
+                            Some(CaptionButton::ToTray) => Action::Hide,
+                            Some(CaptionButton::Minimize) if minimize_hides => Action::Hide,
+                            Some(CaptionButton::Minimize) => {
+                                crate::dialogs::minimize(ui.ctx(), hwnd);
+                                action
+                            }
+                            _ => action,
+                        }
+                    })
+                    .inner;
+                // Its menu opened from the keyboard, said to screen readers (#328).
+                crate::chrome::tell_screen_readers(ui.ctx());
+                if close {
+                    return Action::Close;
+                }
+                // Escape hides the window (the download goes on), as the × does.
+                if matches!(action, Action::None) && winui::escape_pressed(ui) {
+                    Action::Close
+                } else {
+                    action
+                }
+            })
+        };
         // Elsewhere the window manager is asked for its size at a new interface size (#262).
-        crate::dialogs::follow_scale(ctx, vid, key, shown);
+        if !phone {
+            crate::dialogs::follow_scale(ctx, vid, key, shown);
+        }
         // The glide's frames: while the download runs, its figures move and the window can be
         // seen (minimized, or hidden in the tray where it isn't drawn at all, it waits).
         let minimized = ctx.input_for(vid, |i| i.viewport().minimized) == Some(true);
@@ -720,30 +748,32 @@ impl Progress {
         if closing {
             self.taskbar.set_window(0);
         }
-        crate::dialogs::keep_theme(
-            ctx,
-            vid,
-            key,
-            &title_now,
-            crate::theme::dark_surface(),
-            !closing,
-            !self.minimized,
-        );
-        if self.minimized && !self.minimized_sent {
-            // Asked for after the reveal, in the same frame: showing a hidden minimized window
-            // puts it back on the screen, so the minimize must have the last word.
-            let shown = ctx.data(|d| d.get_temp::<bool>(key.with("shown")).unwrap_or(false));
-            if shown {
-                ctx.send_viewport_cmd_to(vid, egui::ViewportCommand::Minimized(true));
-                self.minimized_sent = true;
-                ctx.request_repaint();
+        if !phone {
+            crate::dialogs::keep_theme(
+                ctx,
+                vid,
+                key,
+                &title_now,
+                crate::theme::dark_surface(),
+                !closing,
+                !self.minimized,
+            );
+            if self.minimized && !self.minimized_sent {
+                // Asked for after the reveal, in the same frame: showing a hidden minimized window
+                // puts it back on the screen, so the minimize must have the last word.
+                let shown = ctx.data(|d| d.get_temp::<bool>(key.with("shown")).unwrap_or(false));
+                if shown {
+                    ctx.send_viewport_cmd_to(vid, egui::ViewportCommand::Minimized(true));
+                    self.minimized_sent = true;
+                    ctx.request_repaint();
+                }
+            } else if self.minimized_sent
+                && ctx.input_for(vid, |i| i.viewport().minimized) == Some(false)
+            {
+                // Opened again: from now on, Minimize follows "Minimize to the notification area".
+                self.minimized = false;
+                self.minimized_sent = false;
             }
-        } else if self.minimized_sent
-            && ctx.input_for(vid, |i| i.viewport().minimized) == Some(false)
-        {
-            // Opened again: from now on, Minimize follows "Minimize to the notification area".
-            self.minimized = false;
-            self.minimized_sent = false;
         }
         let action = match (action, self.pending_limit.take()) {
             (Action::None, Some((limit, remember))) => Action::Limit(limit, remember),
@@ -959,6 +989,230 @@ impl Progress {
             segment_bar(&p, lower, item, drawn.1);
             connections(ui, &p, lower, snap);
         }
+        action
+    }
+
+    /// The window as a phone's sheet: the address, the status page's figures in one column, the
+    /// progress bar the sheet's width, and Pause (or Resume) and Cancel big enough for a finger.
+    /// The details (connections, the speed limiter, what to do on completion) are the desktop's.
+    fn phone_body(
+        &mut self,
+        ui: &mut Ui,
+        area: egui::Rect,
+        item: &Item,
+        snap: Option<&Snapshot>,
+        frac: Option<f64>,
+        (fill, segments): (f64, &[(u64, f64)]),
+    ) -> Action {
+        const PAD: f32 = 16.0;
+        const ROW: f32 = 26.0;
+        let p = ui.painter().clone();
+        let _surface = winui::Surface::enter(area.min.x, area.max.x);
+        let (left, right) = (area.min.x + PAD, area.max.x - PAD);
+        let o = area.min;
+        let mut y = o.y + PAD + 12.0;
+        // Each row a node of its own for a screen reader, as on the desktop's page (#1406).
+        let spoken = |ui: &Ui, label: &str, base: f32, value: &str| {
+            let name = spoken_name(crate::i18n::t(label), value);
+            let rc = winui::rect(egui::Rect::from_min_max(
+                egui::pos2(left, base - 14.0),
+                egui::pos2(right, base + 6.0),
+            ));
+            let resp = ui.interact(
+                rc,
+                egui::Id::unique(("status-row", item.id, label)),
+                egui::Sense::focusable_noninteractive(),
+            );
+            winui::expose(&resp, egui::Role::Label, &name, true, None);
+        };
+        let address = crate::i18n::ltr(item.file_address().as_str());
+        let (rect, cut) = winui::text_fit(&p, left, y, &address, winui::MUTED(), right);
+        winui::copyable(ui, rect, "url", &address, cut);
+        spoken(ui, "Address", y, &address);
+        y += ROW + 6.0;
+
+        let (rows, explained) = self.figures(item, snap, frac);
+        // The labels' column: as wide as the widest, up to 45 % of the sheet (a long translation
+        // is cut, and said whole).
+        let column = rows
+            .iter()
+            .map(|(label, _)| winui::text_width(&p, crate::i18n::t(label)).ceil())
+            .fold(0.0, f32::max)
+            .min((right - left) * 0.45);
+        let vx = left + column + 12.0;
+        for (label, value) in &rows {
+            if explained && *label != "Status" {
+                continue;
+            }
+            winui::text_fit(&p, left, y, crate::i18n::t(label), winui::MUTED(), vx - 6.0);
+            let color = if *label == "Status" {
+                crate::theme::colors().status_value
+            } else {
+                winui::TEXT()
+            };
+            let (rect, cut) = winui::text_fit(&p, vx, y, value, color, right);
+            winui::copyable(ui, rect, label, value, cut);
+            spoken(ui, label, y, value);
+            y += ROW;
+        }
+        if explained {
+            let lines = winui::paragraph(
+                &p,
+                left,
+                y,
+                &crate::i18n::sentence_start(item.error.as_deref().unwrap_or_default()),
+                winui::TEXT(),
+                right,
+                18.0,
+            );
+            y += lines as f32 * 18.0 + 8.0;
+        }
+        // Where its server is (#140), as on the desktop's page.
+        let seen = snap
+            .and_then(|s| s.server.as_ref())
+            .map(crate::whereis::Seen::from)
+            .or_else(|| item.server.clone());
+        if let Some(why) = item.video_helper() {
+            let line = helper_line(&why);
+            let (rect, cut) = winui::text_fit(&p, left, y, &line, winui::TEXT(), right);
+            winui::copyable(ui, rect, "helper", &line, cut);
+            y += ROW;
+        } else if item.torrent.is_none()
+            && item.gallery.is_none()
+            && (item.video.is_none() || seen.is_some())
+        {
+            let label = crate::i18n::t("Server");
+            winui::text_fit(&p, left, y, label, winui::MUTED(), vx - 6.0);
+            let id = format!("progress-{}", item.id);
+            crate::whereis::line(ui, vx, y, right, seen.as_ref(), &id);
+            y += ROW;
+        }
+
+        // The bar, the sheet's width.
+        y += 4.0;
+        let bar = winui::rect(egui::Rect::from_min_max(
+            egui::pos2(left, y),
+            egui::pos2(right, y + 20.0),
+        ));
+        let finishing = finishing_fraction(snap);
+        match finishing {
+            Some(f) => winui::meter_in(&p, bar, f as f32, crate::theme::colors().accent),
+            None => winui::meter(&p, bar, fill as f32),
+        }
+        if let Some(f) = finishing.or(frac) {
+            winui::expose_progress(ui, bar, egui::Id::unique(("progress", item.id, "bar")), f);
+        }
+        y += 20.0 + 10.0;
+        // Under it, the desktop's split view: each connection's part of the file, from where it
+        // started, as far as it got.
+        let split = item.torrent.is_none() && !segments.is_empty() && item.size.is_some();
+        if split {
+            phone_segments(
+                &p,
+                egui::Rect::from_min_max(egui::pos2(left, y), egui::pos2(right, y + 12.0)),
+                item,
+                segments,
+            );
+            y += 12.0;
+        }
+        y += PAD + 6.0;
+
+        // The buttons: the site's page opened in the browser (#701), then Pause or Resume and
+        // Cancel, side by side.
+        let mut action = Action::None;
+        let height = 44.0;
+        if item.got_web_page() {
+            let at = winui::rect(egui::Rect::from_min_size(
+                egui::pos2(left, y),
+                egui::vec2(right - left, height),
+            ));
+            let label = crate::i18n::mark("Open in browser");
+            if winui::button(ui, at, label, ButtonKind::Default, false, None).clicked() {
+                crate::launch::open_page(item.url.as_str());
+            }
+            y += height + 8.0;
+        }
+        let half = (right - left - 8.0) / 2.0;
+        let live = item.live_state();
+        self.live_stream |=
+            live.is_some() || matches!(item.video_helper(), Some(mdm_tools::streams::Helper::Live));
+        self.endless |= item.endless();
+        let (label, kind) = pause_button(item.status, live, item.endless());
+        let pause_at = winui::rect(egui::Rect::from_min_size(
+            egui::pos2(left, y),
+            egui::vec2(half, height),
+        ));
+        if winui::button(ui, pause_at, label, kind, false, None).clicked() {
+            action = pause_action(item.status == Status::Downloading, live, item.endless());
+        }
+        let cancel_at = winui::rect(egui::Rect::from_min_size(
+            egui::pos2(right - half, y),
+            egui::vec2(half, height),
+        ));
+        if winui::button(ui, cancel_at, "Cancel", ButtonKind::Normal, false, None).clicked() {
+            action = Action::Cancel;
+        }
+        y += height + 8.0;
+        // Its Properties and its folder, as its menu has them on the desktop.
+        let props_at = winui::rect(egui::Rect::from_min_size(
+            egui::pos2(left, y),
+            egui::vec2(half, height),
+        ));
+        // The menu's word (translated there).
+        let props = crate::i18n::tc("menu", "Properties");
+        if winui::button(ui, props_at, props, ButtonKind::Normal, false, None).clicked() {
+            action = Action::Properties;
+        }
+        let folder_at = winui::rect(egui::Rect::from_min_size(
+            egui::pos2(right - half, y),
+            egui::vec2(half, height),
+        ));
+        // i18n: button that opens the folder the download is saved in
+        if winui::button(
+            ui,
+            folder_at,
+            "Open folder",
+            ButtonKind::Normal,
+            false,
+            None,
+        )
+        .clicked()
+        {
+            crate::dialogs::show_in_folder(&item.dest);
+        }
+        y += height + PAD;
+        // Its connections, each with what it got and what it is doing (the desktop's table).
+        let mut conns: Vec<_> = snap
+            .map(|s| s.connections.iter().collect())
+            .unwrap_or_default();
+        conns.sort_by_key(|c| c.id);
+        if split && !conns.is_empty() {
+            winui::text(
+                &p,
+                left,
+                y,
+                crate::i18n::t("Start positions and download progress by connections"),
+                winui::MUTED(),
+            );
+            y += 10.0;
+            for c in conns {
+                y += ROW;
+                let n = (c.id + 1).to_string();
+                winui::text(&p, left, y, &n, winui::MUTED());
+                winui::text(&p, left + 28.0, y, &size3(c.downloaded), winui::TEXT());
+                let info = conn_info(&c.status);
+                let (rect, cut) = winui::text_fit(&p, left + 120.0, y, &info, winui::TEXT(), right);
+                if cut {
+                    winui::full_on_hover(ui, rect, ("phone-conn", c.id), &info);
+                }
+            }
+            y += PAD;
+        }
+        // The scrolled height: what was laid out.
+        ui.allocate_rect(
+            egui::Rect::from_min_max(o, egui::pos2(area.max.x, y)),
+            egui::Sense::hover(),
+        );
         action
     }
 
@@ -1444,70 +1698,6 @@ impl Progress {
             );
             winui::expose(&resp, egui::Role::Label, &name, true, None);
         };
-        let web_page = item.got_web_page();
-        // A failure that takes a paragraph to explain: the reason under "Error", in the rows of
-        // the sizes and times, which say nothing then (a site's page, #701; an answer far smaller
-        // than the browser's file, #1460; a video's failed merge, what stays for Resume).
-        let explained = web_page || item.got_other_answer() || item.merge_failed();
-        let status = match item.status {
-            // A live stream being recorded or saved shows no progress of its own: said first.
-            _ if let Some(live) = live_status(item.live_state()) => live.to_owned(),
-            // A torrent reading and checking its files says so, not "Receiving data" (#39).
-            _ if let Some(checking) = item.torrent_checking() => checking,
-            // After the last byte: the file checked, a video's streams joined (#736), as the
-            // list says, not "Connecting...".
-            _ if let Some(finishing) = item.finishing(false) => finishing,
-            // A torrent its debrid service is downloading (#44).
-            Status::Downloading if item.at_service().is_some() => {
-                item.at_service().unwrap_or_default()
-            }
-            Status::Downloading => {
-                // A video (yt-dlp) has no engine connections: data arriving is the sign.
-                let receiving = snap.is_some_and(|s| {
-                    s.connections
-                        .iter()
-                        .any(|c| matches!(c.status, ConnStatus::Receiving))
-                }) || ((item.video.is_some() || item.torrent.is_some())
-                    && item.rate() > 0.0);
-                // Every byte in and none on its way (#736): the last of it written out, the
-                // file named; nothing is connecting.
-                let completing = item.torrent.is_none()
-                    && snap.is_some_and(|s| {
-                        s.state == mdm_engine::download::State::Completing
-                            || (s.size.is_some_and(|t| t > 0 && s.downloaded >= t)
-                                && !s
-                                    .connections
-                                    .iter()
-                                    .any(|c| matches!(c.status, ConnStatus::Connecting)))
-                    });
-                if completing {
-                    // i18n: a download's status: every byte is in, the file is being written out and given its name
-                    crate::i18n::t("Finishing...")
-                } else if receiving {
-                    crate::i18n::t("Receiving data...")
-                } else {
-                    crate::i18n::t("Connecting...")
-                }
-                .to_owned()
-            }
-            // i18n: a download's status (state it is in, not a command): finished
-            Status::Complete => crate::i18n::t("Complete").to_owned(),
-            // i18n: a download's status (state it is in, not a command): stopped for now
-            Status::Stopped => crate::i18n::t("Paused").to_owned(),
-            // i18n: a download's status (state it is in, not a command): waiting in a queue
-            Status::Queued => crate::i18n::t("Waiting").to_owned(),
-            // The site's page instead of the file (#701): why, and what to do, under it.
-            Status::Error if explained => crate::i18n::t("Error").to_owned(),
-            Status::Error => crate::i18n::fmt(
-                // i18n: a download's status: it failed, with the reason
-                crate::i18n::t("Error: {error}"),
-                &[(
-                    "error",
-                    // i18n: the reason a download failed is not known
-                    item.error.as_deref().unwrap_or(crate::i18n::t("unknown")),
-                )],
-            ),
-        };
         fit(
             ui,
             "url",
@@ -1523,68 +1713,21 @@ impl Progress {
             44.0,
             &crate::i18n::ltr(item.file_address().as_str()),
         );
-        let rows: [(&str, f32, f32, String); 6] = [
-            // i18n: noun: label before the download's state
-            (crate::i18n::mark("Status"), 61.0, 102.0, status),
-            (
-                crate::i18n::mark("File size"),
-                80.0,
-                135.0,
-                item.size.map_or(String::new(), size3),
-            ),
-            (
-                // i18n: label before the amount received so far
-                crate::i18n::mark("Downloaded"),
-                96.0,
-                135.0,
-                match frac {
-                    // No size: only how much has come, no 0 % that never moves.
-                    None => size3(item.downloaded),
-                    Some(frac) if crate::i18n::code() == "en" => {
-                        format!("{} ( {:.2} % )", size3(item.downloaded), frac * 100.0) // not translated: English path (IDM's spacing)
-                    }
-                    Some(frac) => format!(
-                        "{} ( {} )",
-                        size3(item.downloaded),
-                        crate::i18n::percent(frac, 2)
-                    ),
-                },
-            ),
-            (
-                crate::i18n::mark("Transfer rate"),
-                112.0,
-                135.0,
-                // Every byte in (#736): nothing comes in while the file is checked or joined.
-                if item.status == Status::Downloading && !item.past_last_byte() {
-                    // The limit holding it back beside the speed (#1191).
-                    let rate = model::rate(item.rate());
-                    match self.limit {
-                        Some(limit) => limit.after(&rate),
-                        None => rate,
-                    }
-                } else {
-                    String::new()
-                },
-            ),
-            (
-                crate::i18n::mark("Time left"),
-                128.0,
-                135.0,
-                item.time_left(),
-            ),
-            (
-                // i18n: label: whether the server lets a stopped download continue (Yes / No)
-                crate::i18n::mark("Resume capability"),
-                145.0,
-                135.0,
-                match item.resumable {
-                    Some(true) => crate::i18n::t("Yes"),
-                    Some(false) => crate::i18n::t("No"),
-                    None => "",
-                }
-                .to_owned(),
-            ),
+        let (figures, explained) = self.figures(item, snap, frac);
+        // Where each row sits on the page: its baseline and its value's column.
+        const AT: [(f32, f32); 6] = [
+            (61.0, 102.0),
+            (80.0, 135.0),
+            (96.0, 135.0),
+            (112.0, 135.0),
+            (128.0, 135.0),
+            (145.0, 135.0),
         ];
+        let rows: Vec<(&str, f32, f32, String)> = figures
+            .into_iter()
+            .zip(AT)
+            .map(|((label, value), (base, vx))| (label, base, vx, value))
+            .collect();
         // A value starts 6 px after its label at the least (a long translation); the rows that share
         // the column at 135 (all but Status) keep sharing one.
         let after = |label: &str| 33.0 + winui::text_width(p, crate::i18n::t(label)).ceil() + 6.0;
@@ -1658,6 +1801,131 @@ impl Progress {
             );
         }
         self.rename_row(ui, p, o, column, item);
+    }
+
+    /// The status page's figures (its Status, File size, Downloaded, Transfer rate, Time left and
+    /// Resume capability rows: label and value), for the desktop's page and the phone's sheet;
+    /// and whether a failure's explanation takes the place of all but Status.
+    fn figures(
+        &self,
+        item: &Item,
+        snap: Option<&Snapshot>,
+        frac: Option<f64>,
+    ) -> (Vec<(&'static str, String)>, bool) {
+        let web_page = item.got_web_page();
+        // A failure that takes a paragraph to explain: the reason under "Error", in the rows of
+        // the sizes and times, which say nothing then (a site's page, #701; an answer far smaller
+        // than the browser's file, #1460; a video's failed merge, what stays for Resume).
+        let explained = web_page || item.got_other_answer() || item.merge_failed();
+        let status = match item.status {
+            // A live stream being recorded or saved shows no progress of its own: said first.
+            _ if let Some(live) = live_status(item.live_state()) => live.to_owned(),
+            // A torrent reading and checking its files says so, not "Receiving data" (#39).
+            _ if let Some(checking) = item.torrent_checking() => checking,
+            // After the last byte: the file checked, a video's streams joined (#736), as the
+            // list says, not "Connecting...".
+            _ if let Some(finishing) = item.finishing(false) => finishing,
+            // A torrent its debrid service is downloading (#44).
+            Status::Downloading if item.at_service().is_some() => {
+                item.at_service().unwrap_or_default()
+            }
+            Status::Downloading => {
+                // A video (yt-dlp) has no engine connections: data arriving is the sign.
+                let receiving = snap.is_some_and(|s| {
+                    s.connections
+                        .iter()
+                        .any(|c| matches!(c.status, ConnStatus::Receiving))
+                }) || ((item.video.is_some() || item.torrent.is_some())
+                    && item.rate() > 0.0);
+                // Every byte in and none on its way (#736): the last of it written out, the
+                // file named; nothing is connecting.
+                let completing = item.torrent.is_none()
+                    && snap.is_some_and(|s| {
+                        s.state == mdm_engine::download::State::Completing
+                            || (s.size.is_some_and(|t| t > 0 && s.downloaded >= t)
+                                && !s
+                                    .connections
+                                    .iter()
+                                    .any(|c| matches!(c.status, ConnStatus::Connecting)))
+                    });
+                if completing {
+                    // i18n: a download's status: every byte is in, the file is being written out and given its name
+                    crate::i18n::t("Finishing...")
+                } else if receiving {
+                    crate::i18n::t("Receiving data...")
+                } else {
+                    crate::i18n::t("Connecting...")
+                }
+                .to_owned()
+            }
+            // i18n: a download's status (state it is in, not a command): finished
+            Status::Complete => crate::i18n::t("Complete").to_owned(),
+            // i18n: a download's status (state it is in, not a command): stopped for now
+            Status::Stopped => crate::i18n::t("Paused").to_owned(),
+            // i18n: a download's status (state it is in, not a command): waiting in a queue
+            Status::Queued => crate::i18n::t("Waiting").to_owned(),
+            // The site's page instead of the file (#701): why, and what to do, under it.
+            Status::Error if explained => crate::i18n::t("Error").to_owned(),
+            Status::Error => crate::i18n::fmt(
+                // i18n: a download's status: it failed, with the reason
+                crate::i18n::t("Error: {error}"),
+                &[(
+                    "error",
+                    // i18n: the reason a download failed is not known
+                    item.error.as_deref().unwrap_or(crate::i18n::t("unknown")),
+                )],
+            ),
+        };
+        let rows = vec![
+            // i18n: noun: label before the download's state
+            (crate::i18n::mark("Status"), status),
+            (
+                crate::i18n::mark("File size"),
+                item.size.map_or(String::new(), size3),
+            ),
+            (
+                // i18n: label before the amount received so far
+                crate::i18n::mark("Downloaded"),
+                match frac {
+                    // No size: only how much has come, no 0 % that never moves.
+                    None => size3(item.downloaded),
+                    Some(frac) if crate::i18n::code() == "en" => {
+                        format!("{} ( {:.2} % )", size3(item.downloaded), frac * 100.0) // not translated: English path (IDM's spacing)
+                    }
+                    Some(frac) => format!(
+                        "{} ( {} )",
+                        size3(item.downloaded),
+                        crate::i18n::percent(frac, 2)
+                    ),
+                },
+            ),
+            (
+                crate::i18n::mark("Transfer rate"),
+                // Every byte in (#736): nothing comes in while the file is checked or joined.
+                if item.status == Status::Downloading && !item.past_last_byte() {
+                    // The limit holding it back beside the speed (#1191).
+                    let rate = model::rate(item.rate());
+                    match self.limit {
+                        Some(limit) => limit.after(&rate),
+                        None => rate,
+                    }
+                } else {
+                    String::new()
+                },
+            ),
+            (crate::i18n::mark("Time left"), item.time_left()),
+            (
+                // i18n: label: whether the server lets a stopped download continue (Yes / No)
+                crate::i18n::mark("Resume capability"),
+                match item.resumable {
+                    Some(true) => crate::i18n::t("Yes"),
+                    Some(false) => crate::i18n::t("No"),
+                    None => "",
+                }
+                .to_owned(),
+            ),
+        ];
+        (rows, explained)
     }
 
     fn rename_row(&mut self, ui: &mut Ui, p: &egui::Painter, o: Pos2, column: f32, item: &Item) {
@@ -2459,6 +2727,50 @@ fn pause_action(running: bool, live: Option<mdm_tools::video::LiveState>, endles
     }
 }
 
+/// A phone's split view at screen `at`: the desktop's segment bar's colours (its middle row's)
+/// in a rounded frame: each connection's part filled from where it started as far as it got,
+/// its start marked, all inside the frame.
+fn phone_segments(p: &egui::Painter, at: egui::Rect, item: &Item, segments: &[(u64, f64)]) {
+    let colors = crate::theme::colors();
+    let s = &colors.segments;
+    let (missing, done, start) = (s.missing[6], s.done[6], s.start[6]);
+    let radius = (at.height() / 4.0).floor();
+    p.rect_filled(at, radius, missing);
+    let inner = at.shrink(1.0);
+    let clip = p.with_clip_rect(inner.intersect(p.clip_rect()));
+    if let Some(total) = item.size.filter(|t| *t > 0) {
+        let w = f64::from(inner.width());
+        let x = |col: f32| {
+            let col = col.clamp(0.0, inner.width());
+            if winui::rtl() {
+                inner.max.x - col
+            } else {
+                inner.min.x + col
+            }
+        };
+        for &(first, got) in segments {
+            if let Some((a, b)) = segment_columns(first, got, total, w) {
+                let (l, r) = (x(a - 1.0), x(b + 1.0));
+                clip.rect_filled(
+                    egui::Rect::from_x_y_ranges(l.min(r)..=l.max(r), inner.y_range()),
+                    0.0,
+                    done,
+                );
+            }
+            // Its start: a mark a line wide, kept inside the frame.
+            let col = (first as f64 / total as f64 * w) as f32;
+            let sx = x(col.max(1.0).min(inner.width() - 1.0));
+            clip.vline(sx, inner.y_range(), egui::Stroke::new(2.0, start));
+        }
+    }
+    p.rect_stroke(
+        at,
+        radius,
+        egui::Stroke::new(1.0, colors.segment_border),
+        egui::StrokeKind::Inside,
+    );
+}
+
 /// The Pause button's label and kind: a live stream being recorded is stopped and saved (still
 /// `Action::Pause`, the app's `halt` saves it), and while it is saved the button waits. An
 /// endless stream (`Item::endless`, #1780) is stopped and kept (`Action::Keep`): only by this
@@ -2539,6 +2851,33 @@ fn helper_line(why: &mdm_tools::streams::Helper) -> String {
 fn connections_bg() -> Color32 {
     let own = crate::theme::colors().connections;
     if own.a() > 0 { own } else { winui::FIELD() }
+}
+
+/// What a connection is doing, in words: the connections table's Info.
+fn conn_info(status: &ConnStatus) -> String {
+    match status {
+        ConnStatus::Connecting => crate::i18n::t("Connecting...").to_owned(),
+        ConnStatus::Receiving => crate::i18n::t("Receiving data...").to_owned(),
+        ConnStatus::Retrying(e) => crate::i18n::fmt(
+            // i18n: a connection's state: it failed and tries again, with the reason
+            crate::i18n::t("Retrying: {error}"),
+            &[("error", &crate::errors::describe(e))],
+        ),
+        ConnStatus::Finished => String::new(),
+        ConnStatus::Failed(e) => crate::i18n::fmt(
+            crate::i18n::t("Error: {error}"),
+            &[("error", &crate::errors::describe(e))],
+        ),
+        ConnStatus::Retired { host, cap } => crate::i18n::fmt(
+            // i18n: a connection closed because the server allows only that many
+            &crate::i18n::tn(
+                u64::from(*cap),
+                "{host} allows {n} connection",
+                "{host} allows {n} connections",
+            ),
+            &[("host", &crate::i18n::ltr(host))],
+        ),
+    }
 }
 
 /// The connections table (spec "Connections table"): N. · Downloaded · Info.
@@ -2627,29 +2966,7 @@ fn connections(ui: &mut Ui, p: &egui::Painter, o: Pos2, snap: Option<&Snapshot>)
             &size3(c.downloaded),
             winui::TEXT(),
         );
-        let info = match &c.status {
-            ConnStatus::Connecting => crate::i18n::t("Connecting...").to_owned(),
-            ConnStatus::Receiving => crate::i18n::t("Receiving data...").to_owned(),
-            ConnStatus::Retrying(e) => crate::i18n::fmt(
-                // i18n: a connection's state: it failed and tries again, with the reason
-                crate::i18n::t("Retrying: {error}"),
-                &[("error", &crate::errors::describe(e))],
-            ),
-            ConnStatus::Finished => String::new(),
-            ConnStatus::Failed(e) => crate::i18n::fmt(
-                crate::i18n::t("Error: {error}"),
-                &[("error", &crate::errors::describe(e))],
-            ),
-            ConnStatus::Retired { host, cap } => crate::i18n::fmt(
-                // i18n: a connection closed because the server allows only that many
-                &crate::i18n::tn(
-                    u64::from(*cap),
-                    "{host} allows {n} connection",
-                    "{host} allows {n} connections",
-                ),
-                &[("host", &crate::i18n::ltr(host))],
-            ),
-        };
+        let info = conn_info(&c.status);
         // The Info column ends at the scrollbar.
         let (rect, cut) = winui::text_fit(
             &clip,

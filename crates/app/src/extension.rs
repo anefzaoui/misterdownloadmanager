@@ -34,7 +34,9 @@ const SAFARI: &str = "Apple Safari";
 /// Whether to offer the extension at this start: browser integration on and registered (not a
 /// portable copy, which registers nothing), no browser's extension seen yet, not refused.
 pub fn worth_asking(settings: &crate::settings::Settings) -> bool {
-    !settings.extension_never_ask
+    // Android: a phone's browsers take no add-on (links come through Share and Open with).
+    !cfg!(target_os = "android")
+        && !settings.extension_never_ask
         && settings.advanced_integration
         && mdm_ipc::portable_dir().is_none()
         && !mdm_ipc::extension::seen()

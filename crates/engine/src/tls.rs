@@ -76,7 +76,8 @@ fn name_constrained(cert: &[u8]) -> bool {
     })
 }
 
-/// [`mozilla_roots`] as reqwest takes them, made once.
+/// [`mozilla_roots`] as reqwest takes them, made once (not on Android: [`configure`]).
+#[cfg_attr(target_os = "android", allow(dead_code))]
 fn mozilla_certificates() -> Vec<reqwest::Certificate> {
     static CERTS: std::sync::OnceLock<Vec<reqwest::Certificate>> = std::sync::OnceLock::new();
     CERTS
@@ -94,7 +95,13 @@ fn mozilla_certificates() -> Vec<reqwest::Certificate> {
 /// HTTP included). MDM's own clients get it through `net::bind_client`; the torrent session's
 /// (trackers, UPnP) through librqbit's `SessionOptions::configure_http_client` (mdm-torrent).
 pub fn configure(builder: reqwest::ClientBuilder) -> reqwest::ClientBuilder {
-    configure_with(builder, system_has_roots(), mozilla_certificates())
+    // Android: the system's verifier there (Java's, with the user's own certificates) takes no
+    // roots besides its own, and refused every connection given some: Android's alone.
+    #[cfg(target_os = "android")]
+    let fallback = Vec::new();
+    #[cfg(not(target_os = "android"))]
+    let fallback = mozilla_certificates();
+    configure_with(builder, system_has_roots(), fallback)
 }
 
 /// `fallback`: the roots trusted besides the system's (Mozilla's; the tests give a test CA in

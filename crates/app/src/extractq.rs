@@ -459,8 +459,18 @@ pub fn seven_zip_for(chosen: &str) -> Option<PathBuf> {
         Some(v) => Some(PathBuf::from(v)),
         None => Some(PathBuf::from(chosen))
             .filter(|p| !chosen.is_empty() && p.is_file())
-            .or_else(mdm_extract::find_7zip),
+            .or_else(found_7zip),
     }
+}
+
+/// The 7-Zip found here: on Android the APK's own (mdm-tools), elsewhere one installed
+/// ([`mdm_extract::find_7zip`]).
+fn found_7zip() -> Option<PathBuf> {
+    #[cfg(target_os = "android")]
+    if let Some(exe) = mdm_tools::android::seven_zip() {
+        return Some(exe);
+    }
+    mdm_extract::find_7zip()
 }
 
 /// Whether `exe` answers as 7-Zip's command line (#1525: a program chosen in Options →

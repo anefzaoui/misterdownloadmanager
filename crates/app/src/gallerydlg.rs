@@ -93,7 +93,10 @@ impl GalleryDialog {
             "gallery-page",
             // i18n: window title: download an image gallery's files (gallery-dl)
             "Download a gallery",
-            [500.0, 214.0],
+            [
+                500.0,
+                214.0 + crate::app::phone::phone_buttons_extra(ctx, 3),
+            ],
             false,
             winui::BG(),
             |ui, o| self.body(ui, o, rt),
@@ -378,15 +381,19 @@ impl GalleryDialog {
             &[("Helpers...", 90.0)],
             now_at.0 - 8.0 - 11.0,
         )[0];
-        if winui::button(
-            ui,
-            r(o, helpers_at.0, 182.0, helpers_at.1, 21.0),
-            "Helpers...",
-            ButtonKind::Normal,
-            false,
-            None,
-        )
-        .clicked()
+        // A phone: big buttons across the window, Download Now first.
+        let [now_r, later_r, cancel_r, helpers_r] = if crate::app::phone::active(ui.ctx()) {
+            let (b, _) = crate::app::phone::button_rects(o, 182.0, 500.0, 4, true);
+            [b[0], b[1], b[2], b[3]]
+        } else {
+            [
+                r(o, now_at.0, 182.0, now_at.1, 21.0),
+                r(o, later_at.0, 182.0, later_at.1, 21.0),
+                r(o, cancel_at.0, 182.0, cancel_at.1, 21.0),
+                r(o, helpers_at.0, 182.0, helpers_at.1, 21.0),
+            ]
+        };
+        if winui::button(ui, helpers_r, "Helpers...", ButtonKind::Normal, false, None).clicked()
             && self.helpers.is_none()
         {
             self.helpers = Some(crate::helpers::Programs::new());
@@ -397,34 +404,11 @@ impl GalleryDialog {
             (true, true) => ButtonKind::Default,
             (true, false) => ButtonKind::Normal,
         };
-        let now = winui::button(
-            ui,
-            r(o, now_at.0, 182.0, now_at.1, 21.0),
-            "Download Now",
-            kind(true),
-            false,
-            None,
-        )
-        .clicked()
+        let now = winui::button(ui, now_r, "Download Now", kind(true), false, None).clicked()
             || (ready && winui::enter_pressed(ui));
-        let later = winui::button(
-            ui,
-            r(o, later_at.0, 182.0, later_at.1, 21.0),
-            "Later",
-            kind(false),
-            false,
-            None,
-        )
-        .clicked();
-        let cancel = winui::button(
-            ui,
-            r(o, cancel_at.0, 182.0, cancel_at.1, 21.0),
-            "Cancel",
-            ButtonKind::Normal,
-            false,
-            None,
-        )
-        .clicked();
+        let later = winui::button(ui, later_r, "Later", kind(false), false, None).clicked();
+        let cancel =
+            winui::button(ui, cancel_r, "Cancel", ButtonKind::Normal, false, None).clicked();
         if cancel || winui::escape_pressed(ui) {
             return Outcome::Closed;
         }

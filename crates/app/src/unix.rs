@@ -755,6 +755,11 @@ const REGISTER_LIMIT: std::time::Duration = std::time::Duration::from_secs(20);
 /// copied to the data folder with the AppImage's path beside it (`app-path`: the host starts
 /// that when MDM isn't running), and registered from there (#253).
 pub fn register_browsers() {
+    // Android: a phone's browsers take no add-on's native messaging host; links come to MDM
+    // through Share and Open with instead (the Android app's manifest).
+    if cfg!(target_os = "android") {
+        return;
+    }
     let started = std::thread::Builder::new()
         .name("register-browsers".into())
         .spawn(|| register_browsers_now(REGISTER_LIMIT, "--repair"));
@@ -1169,6 +1174,15 @@ const SHOW_ITEMS_LIMIT: std::time::Duration = std::time::Duration::from_secs(5);
 /// at the limit by crate::launch (zbus's blocking calls have no time limit of their own, and a
 /// connection to the session bus would be made for this one call).
 pub fn show_in_folder(path: &Path) {
+    // Android has no folder view to give a file to: its Downloads, where MDM's folder is.
+    #[cfg(target_os = "android")]
+    {
+        if let Err(e) = crate::android::open_with_system("folder", &path.to_string_lossy()) {
+            tracing::warn!("show in folder: {e}");
+        }
+        return;
+    }
+    #[cfg_attr(target_os = "android", allow(unreachable_code))]
     let dir = path.parent().map(Path::to_path_buf);
     if !path.exists() {
         if let Some(dir) = dir.filter(|d| d.is_dir()) {

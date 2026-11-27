@@ -177,8 +177,12 @@ impl Picker {
         if search.changed() {
             self.keys_moved = false;
         }
+        // The filter has the keys from the start; not on a phone, where its keyboard would
+        // cover half the list (a tap on the box brings it).
         if !self.focus_asked {
-            search.request_focus();
+            if !crate::app::phone::active(ui.ctx()) {
+                search.request_focus();
+            }
             self.focus_asked = true;
         }
 
