@@ -684,6 +684,7 @@ impl RemoteTorrent {
             at_service,
             finishing: None,
             kept: None,
+            checksum_warning: None,
         }
     }
 }

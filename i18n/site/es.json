@@ -1662,6 +1662,10 @@
    "source": "Yes. MDM accepts IDM's familiar command-line switches, comes with misterdownloadmanager-cli for downloads from a terminal, and has a local, token-protected…",
    "text": "Sí. MDM acepta los conocidos parámetros de línea de comandos de IDM, incluye misterdownloadmanager-cli para descargas desde un terminal y tiene una API de automatización local protegida por token…"
   },
+  "15dfb8668baab702": {
+   "source": "See <g1>Proxy / Socks</g1> and <g2>Use your own copies</g2>.",
+   "text": "Consulta <g1>Proxy/Socks</g1> y <g2>Usar tus propias copias</g2>."
+  },
   "15f41ea989aec521": {
    "source": "<g1>Base16 and pywal colour schemes as themes</g1>: a Base16 or Base24 scheme (<x2/>, the classic layout and tinted-theming's <x3/> one) or pywal's <x4/> (wallust's pywal-shaped one too), added with <g5>View → Theme → Add a theme file…</g5> or put in the themes folder, is a theme on the classic look: only the colours change. base00 and base01 are the backgrounds, base05 and base04 the text, base0D the focus, the selection and the progress bar (pywal: its background and foreground, color4); text is kept at 4.5:1 or more against every background and the accent at 3:1, moved a little where a scheme falls short. Once <x6/> has run, <g7>View → Theme</g7> lists <g8>pywal</g8>, read from where pywal writes it (<x9/>, <x10/> on Windows), and MDM follows each new wallpaper's colours within two seconds. A theme file can <x11/> a scheme to change more than its colours.",
    "text": "<g1>Esquemas de color Base16 y pywal como temas</g1>: un esquema Base16 o Base24 (<x2/>, el diseño clásico y el de <x3/> con temas tintados) o el <x4/> de pywal (también el de wallust con forma de pywal), añadido con <g5>Ver → Tema → Añadir un archivo de tema…</g5> o puesto en la carpeta de temas, es un tema con el aspecto clásico: solo cambian los colores. base00 y base01 son los fondos, base05 y base04 el texto, base0D el enfoque, la selección y la barra de progreso (pywal: su fondo y primer plano, color4); el texto se mantiene con una relación de 4.5:1 o más contra cada fondo y el acento en 3:1, movido un poco donde un esquema se queda corto. Una vez que <x6/> se ha ejecutado, <g7>Ver → Tema</g7> lista <g8>pywal</g8>, leído de donde pywal lo escribe (<x9/>, <x10/> en Windows), y MDM sigue los colores de cada nuevo fondo de pantalla en dos segundos. Un archivo de tema puede <x11/> un esquema para cambiar más que sus colores."
@@ -2125,10 +2129,6 @@
   "1be93bd020009908": {
    "source": "<g1>The keyboard focus got lost</g1> when a button greyed itself or Escape closed a drop-down: Tab started over at the top of the window. It now moves on, or comes back, as in Windows.",
    "text": "<g1>Se perdía el foco del teclado</g1> cuando un botón se atenuaba o Escape cerraba un menú desplegable: Tab volvía al principio de la ventana. Ahora pasa al siguiente control o vuelve al anterior, como en Windows."
-  },
-  "1c004ef83082f283": {
-   "source": "<g1>Site rules...</g1> — a User-Agent, request headers, a number of connections and <g2>Always connect the way a browser does</g2>, by site. See <g3>Site rules</g3>.",
-   "text": "<g1>Reglas de sitio...</g1>: un User-Agent, encabezados de solicitud, número de conexiones y <g2>Conectar siempre como lo hace un navegador</g2>, por sitio. Consulta <g3>Reglas de sitio</g3>."
   },
   "1c0101659f1e2203": {
    "source": "<g1>Feeds</g1>: the feeds it watches; none ticked, all of them.",
@@ -3145,6 +3145,10 @@
   "28eeaa8ad9bf85a3": {
    "source": "Requests",
    "text": "Solicitudes"
+  },
+  "291af5108373e0c4": {
+   "source": "MDM downloads yt-dlp, ffmpeg and gallery-dl from their official releases on GitHub. Where GitHub can't be reached or is very slow, as often in mainland…",
+   "text": "MDM descarga yt-dlp, ffmpeg y gallery-dl de sus lanzamientos oficiales en GitHub. Cuando no se puede acceder a GitHub o es muy lento, como suele ocurrir en la China continental…"
   },
   "292621fe40d7beca": {
    "source": "Every video starts ticked. Untick the ones you don't want, or use <g1>Select all</g1> and <g2>Select none</g2>. Private and deleted videos are greyed out and can't be ticked.",
@@ -4890,6 +4894,10 @@
    "source": "Changes",
    "text": "Cambios"
   },
+  "41150cfc2e8c323a": {
+   "source": "Some sites want a particular User-Agent, an extra header or fewer connections, let only browsers through, or need a proxy (or none) when the others don't. <g1>Options → Connection → Site rules...</g1> sets these once for every download from a site:",
+   "text": "Algunos sitios web requieren un User-Agent concreto, una cabecera adicional o menos conexiones, solo permiten navegadores o necesitan un proxy (o ninguno) cuando otros no. <g1>Opciones → Conexión → Reglas de sitio...</g1> configura esto una sola vez para cada descarga de un sitio:"
+  },
   "41333ec069d15e15": {
    "source": "A magnet link takes a long time",
    "text": "Un enlace magnet tarda mucho"
@@ -5538,10 +5546,6 @@
    "source": "A key MDM doesn't know, or a value it can't read, is skipped and written to MDM's log (the <x1/> folder beside the themes folder), so a file made for a newer MDM still loads. The built-in themes are written the same way: <g2>read them on GitHub</g2>.",
    "text": "Una clave que MDM no conoce, o un valor que no puede leer, se omite y se escribe en el registro de MDM (la carpeta <x1/> junto a la carpeta de temas), de modo que un archivo hecho para un MDM más reciente aún se carga. Los temas integrados se escriben de la misma manera: <g2>léelos en GitHub</g2>."
   },
-  "4ac401467a9a37d2": {
-   "source": "The downloads join the <g1>Main download queue</g1>, ready to start (<g2>Start</g2> starts it too). <g3>Tasks → Import → From IDM export file</g3> reads an <x4/> file, with each download's referrer and cookies.",
-   "text": "Las descargas se añaden a la <g1>Cola de descarga principal</g1>, listas para empezar (<g2>Iniciar</g2> también inicia la cola). <g3>Tareas → Importar → Desde archivo de exportación de IDM</g3> lee un archivo <x4/> con la URL de origen y las cookies de cada descarga."
-  },
   "4ace27f6171583db": {
    "source": "A <x1/> and a Compose file come with MDM's source. For now you build the image yourself; a published image comes later. The first build is long, up to an hour on a small server, and the image is small, about 175 MB, with no desktop libraries.",
    "text": "Un <x1/> y un archivo Compose vienen con el código fuente de MDM. Por ahora, tú mismo construyes la imagen; una imagen publicada llegará más tarde. La primera construcción es larga, hasta una hora en un servidor pequeño, y la imagen es pequeña, de unos 175 MB, sin bibliotecas de escritorio."
@@ -6090,10 +6094,6 @@
    "source": "After a click it says what happened, in its own colour:",
    "text": "Después de un clic, indica lo que sucedió, en su propio color:"
   },
-  "529f7c22e85ee030": {
-   "source": "Download a file with up to 8 connections (<x1/>, 1 to 128), showing progress. <x2/> pauses it; <x3/> continues. <x4/> sets the referring page address (Referer header), <x5/> sets the request's User-Agent (then the only one sent; without it, MDM speaks as your default browser, and, when a site's bot check refuses that and the way a browser connects too, once more under its own name), <x6/> sets the Cookie header (a cookie on the command line ends up in the shell's history; <x7/> reads it from standard input instead). <x8/> checks the finished file: hex MD5, SHA-1, SHA-256, SHA-512 or CRC32, optionally named (<x9/>). <x10/> picks the DNS instead of Options': <x11/>; a service and how to ask it, <x12/>, <x13/>, <x14/>, <x15/>, <x16/>; DNS servers' addresses, <x17/>; or a DNS-over-HTTPS address. It never falls back to the system's DNS. <x18/> sends every connection through one network adapter instead of Options' (<x19/> for none), by its name (<x20/>, <x21/>) or one of its addresses; when it isn't connected, nothing is sent and the download fails. <x22/> takes the place of Options' proxy for this run (see above). The app's <g23>site rules</g23> for the address apply too (their headers, User-Agent, browser-like connection and number of connections), where the command line gives none of the same. A link from a file host that one of your debrid accounts (<g24>Options → Accounts</g24>) supports goes through that account, as in the app, and <x25/> says <x26/>; <x27/> downloads the address itself (<g28>Debrid service accounts</g28>).",
-   "text": "Descarga un archivo con hasta 8 conexiones (<x1/>, de 1 a 128), mostrando el progreso. <x2/> lo pausa; <x3/> lo continúa. <x4/> establece la dirección de la página de referencia (encabezado Referer), <x5/> establece el User-Agent de la solicitud (entonces es el único que se envía; sin él, MDM se identifica como tu navegador predeterminado y, si la comprobación de bots de un sitio lo rechaza, así como la forma en que se conecta un navegador, se identifica una vez más con su propio nombre), <x6/> establece el encabezado Cookie (una cookie en la línea de comandos termina en el historial del shell; <x7/> la lee de la entrada estándar en su lugar). <x8/> comprueba el archivo terminado: MD5 hexadecimal, SHA-1, SHA-256, SHA-512 o CRC32, opcionalmente con nombre (<x9/>). <x10/> elige el DNS en lugar del de Opciones: <x11/>; un servicio y cómo solicitarlo, <x12/>, <x13/>, <x14/>, <x15/>, <x16/>; direcciones de servidores DNS, <x17/>; o una dirección DNS-over-HTTPS. Nunca recurre al DNS del sistema. <x18/> envía cada conexión a través de un adaptador de red en lugar del de Opciones (<x19/> para ninguno), por su nombre (<x20/>, <x21/>) o una de sus direcciones; si no está conectado, no se envía nada y la descarga falla. <x22/> sustituye al proxy de Opciones para esta ejecución (ver arriba). También se aplican las <g23>reglas del sitio</g23> de la aplicación para la dirección (sus encabezados, User-Agent, conexión tipo navegador y número de conexiones), cuando la línea de comandos no proporciona ninguna de las mismas. Un vínculo de un servidor de archivos que una de tus cuentas de descarga premium (<g24>Opciones → Cuentas</g24>) admite pasa por esa cuenta, como en la aplicación, y <x25/> dice <x26/>; <x27/> descarga la dirección misma (<g28>Cuentas de servicios de descarga premium</g28>)."
-  },
   "52ceae361fb11f6c": {
    "source": "A list's, a table's or a box's outline",
    "text": "El contorno de una lista, una tabla o un cuadro"
@@ -6145,10 +6145,6 @@
   "536df2f60bd48da6": {
    "source": "Success text (a matching checksum)",
    "text": "Texto de éxito (una suma de comprobación coincidente)"
-  },
-  "538fe2ede1fc4d57": {
-   "source": "The single-instance channel (a token-protected local socket), the data folder, the capture rules shared by the app and the host, and the site rules (#1778: a User-Agent, headers, connections and the browser-like connection by site pattern) shared by the app and the command line",
-   "text": "El canal de instancia única (un socket local protegido por token), la carpeta de datos, las reglas de captura compartidas por la aplicación y el host, y las reglas de sitio (#1778: un User-Agent, encabezados, conexiones y la conexión tipo navegador por patrón de sitio) compartidas por la aplicación y la línea de comandos"
   },
   "539160f92bae4422": {
    "source": "Being re-measured",
@@ -9054,14 +9050,6 @@
    "source": "Testing archives",
    "text": "Comprobar archivos"
   },
-  "7b65292951ac598b": {
-   "source": "Some sites want a particular User-Agent, an extra header or fewer connections, or let only browsers through. <g1>Options → Connection → Site rules...</g1> sets these once for every download from a site:",
-   "text": "Algunos sitios web requieren un User-Agent específico, un encabezado adicional, menos conexiones o solo permiten el acceso a navegadores. <g1>Opciones → Conexión → Reglas de sitio...</g1> configura estas opciones una vez para cada descarga de un sitio:"
-  },
-  "7b655c3076cd7d8b": {
-   "source": "<g1>Tasks → Import → From text file</g1> and <g2>From IDM export file</g2>. An <x3/> file brings each download's referrer and cookies.",
-   "text": "<g1>Tareas → Importar → Desde archivo de texto</g1> y <g2>Desde archivo de exportación de IDM</g2>. Un archivo <x3/> incluye el referente y las cookies de cada descarga."
-  },
   "7b75149d61c4c0ff": {
    "source": "A download that is running isn't deleted. Stop it first.",
    "text": "Las descargas en curso no se eliminan. Deténlas primero."
@@ -9357,6 +9345,10 @@
   "7ee169488133ab57": {
    "source": "Link grabber gathers many links at once, sorts them into packages, and lets you tick the ones to download. MDM can then extract the archives it downloaded…",
    "text": "El capturador de enlaces reúne muchos enlaces a la vez, los clasifica en paquetes y le permite marcar los que desea descargar. MDM puede entonces extraer los archivos que descargó…"
+  },
+  "7ee305b094d7654d": {
+   "source": "The single-instance channel (a token-protected local socket), the data folder, the capture rules shared by the app and the host, and the site rules (#1778: a User-Agent, headers, connections, the browser-like connection and, #1960, a proxy by site pattern) shared by the app and the command line",
+   "text": "El canal de instancia única (un socket local protegido por token), la carpeta de datos, las reglas de captura compartidas por la aplicación y el host, y las reglas de sitio (#1778: un User-Agent, cabeceras, conexiones, la conexión tipo navegador y, #1960, un proxy por patrón de sitio) compartidas por la aplicación y la línea de comandos"
   },
   "7ee9063b38514440": {
    "source": "Listed by",
@@ -9806,6 +9798,10 @@
    "source": "Every signed file is built from the public source code at <g1>github.com/anefzaoui/misterdownloadmanager</g1> by GitHub Actions, on GitHub's servers, never on a personal computer. Each one says it is Mister Download Manager and which version it is.",
    "text": "Cada archivo firmado se construye a partir del código fuente público en <g1>github.com/anefzaoui/misterdownloadmanager</g1> mediante GitHub Actions, en los servidores de GitHub, nunca en un ordenador personal. Cada uno indica que es Mister Download Manager y qué versión es."
   },
+  "8414d2ed3c86b744": {
+   "source": "Which proxy a download goes through: its own (below) first, then the first rule that names the site and sets a proxy, then <g1>Options → Proxy / Socks</g1> (and the browser's proxy, when <g2>Use proxy/socks from a browser's request</g2> is on). A rule's proxy also carries Download File Info's look-up and, for a video or gallery page the rule names, yt-dlp's and gallery-dl's look-up and the video's download, so the links they get are used from the same address. The <g3>Network adapter</g3> chosen in <g4>Options → Proxy / Socks</g4>, and its kill switch, still hold every connection: with an adapter chosen, nothing goes around it.",
+   "text": "El proxy por el que pasa una descarga: primero el suyo propio (abajo), luego la primera regla que nombra el sitio y establece un proxy, luego <g1>Opciones → Proxy/Socks</g1> (y el proxy del navegador, cuando <g2>Usar proxy/socks de una solicitud del navegador</g2> está activado). El proxy de una regla también se encarga de la búsqueda de Información del archivo de descarga y, para una página de vídeo o galería que la regla nombra, de la búsqueda de yt-dlp y gallery-dl y de la descarga del vídeo, de modo que los enlaces que obtienen se utilizan desde la misma dirección. El <g3>Adaptador de red</g3> elegido en <g4>Opciones → Proxy/Socks</g4>, y su interruptor de seguridad, siguen controlando cada conexión: con un adaptador elegido, nada lo evita."
+  },
   "842fc0e6d2b7d24d": {
    "source": "At the start time the queue starts on its own. In the morning, the finished files are under <g1>Finished</g1> in the categories.",
    "text": "A la hora de inicio, la cola se pone en marcha automáticamente. Por la mañana, encontrarás los archivos descargados en <g1>Finalizado</g1>, dentro de las categorías."
@@ -9933,6 +9929,10 @@
   "8581b3f6f6759cc7": {
    "source": "Proxy / Socks: no proxy, the system's, or your own.",
    "text": "Proxy/Socks: sin proxy, el del sistema o uno propio."
+  },
+  "8587f400d941af9d": {
+   "source": "<g1>Options → Connection → Site rules...</g1> gives every download from a site (<x2/>) its own User-Agent, extra request headers, number of connections, a browser's way of connecting from the first request, or a proxy: none, or one of its own, so only the sites that need a proxy go through one. A stopped download's <g3>Properties → Connection...</g3> changes its own headers, proxy and connections, and MDM still checks the file is the same one before it goes on.",
+   "text": "<g1>Opciones → Conexión → Reglas de sitio...</g1> permite asignar a cada descarga de un sitio (<x2/>) su propio User-Agent, encabezados de solicitud adicionales, número de conexiones, la forma de conexión de un navegador desde la primera solicitud o un proxy: ninguno, o uno propio, de modo que solo los sitios que lo necesiten pasen por un proxy. Las <g3>Propiedades → Conexión...</g3> de una descarga detenida permiten cambiar sus propios encabezados, proxy y conexiones, y MDM sigue comprobando que el archivo sea el mismo antes de continuar."
   },
   "85ab2d681187a715": {
    "source": "Not sure yet? <g1>Show it in the discussions</g1> first. The <g2>contributing guide</g2> explains how pull requests work here.",
@@ -10357,6 +10357,10 @@
   "8bf1347e6970e3e9": {
    "source": "MDM works with screen readers such as Narrator and NVDA, which hear what each control is and its state. Everything can be done from the keyboard, with the keys most Windows programs use.",
    "text": "MDM funciona con lectores de pantalla como Narrator y NVDA, que reconocen cada control y su estado. Todo se puede hacer desde el teclado, con las teclas que usan la mayoría de los programas de Windows."
+  },
+  "8bf561be5473c2d1": {
+   "source": "MDM downloads yt-dlp, ffmpeg and gallery-dl from their official releases on GitHub. Where GitHub can't be reached or is very slow, as often in mainland China, the install stops with \"the server did not answer in time\". Two ways around it:",
+   "text": "MDM descarga yt-dlp, ffmpeg y gallery-dl de sus lanzamientos oficiales en GitHub. Cuando no se puede acceder a GitHub o es muy lento, como suele ocurrir en la China continental, la instalación se detiene con el mensaje «el servidor no respondió a tiempo». Hay dos maneras de evitarlo:"
   },
   "8bf5db6373827a5f": {
    "source": "Media on this page",
@@ -11777,6 +11781,10 @@
   "9e7ae999aa690d3f": {
    "source": "Start or stop a download queue in the running app (automation API). Starts or stops the main queue if omitted.",
    "text": "Inicia o detiene una cola de descargas en la aplicación en ejecución (API de automatización). Inicia o detiene la cola principal si se omite."
+  },
+  "9e84ad8c276cf077": {
+   "source": "Why does installing yt-dlp or another helper time out?",
+   "text": "¿Por qué la instalación de yt-dlp u otro asistente agota el tiempo de espera?"
   },
   "9ea4c71fa0f481c4": {
    "source": "MDM follows your system: when Windows (or your desktop's light/dark preference on Linux and macOS) is set to dark mode, so is MDM. To keep MDM light whatever the system does, turn off <g1>View → Dark Mode support</g1>. To keep it dark whatever the system does, for example on a desktop that reports no preference, turn on <g2>View → Always dark</g2>.",
@@ -13333,6 +13341,10 @@
   "b27995b1d5cff0b2": {
    "source": "A calendar's day or arrow pressed",
    "text": "Un día o una flecha de calendario pulsada"
+  },
+  "b292a3f16372b154": {
+   "source": "MDM downloads yt-dlp, ffmpeg and gallery-dl from their official releases on GitHub. Where GitHub can't be reached or is very slow, as often in mainland China, the install stops with \"the server did not answer in time\". Two ways around it: With a proxy program (Clash, v2rayN and the like), enter its address and port in Options → Proxy / Socks (Manual proxy/socks configuration, often 127.0.0.1 and 7890), or choose Use system settings when the program sets Windows' proxy. Then click Install yt-dlp again: MDM's own downloads, its helpers included, go through it. Or download the program in your browser (yt-dlp's is on its release page), then in Download video from a page click Helpers..., then Use another program... in its row, and choose the file. MDM uses it from then on; keep it up to date yourself. See Proxy / Socks and Use your own copies.",
+   "text": "MDM descarga yt-dlp, ffmpeg y gallery-dl de sus lanzamientos oficiales en GitHub. Cuando no se puede acceder a GitHub o es muy lento, como suele ocurrir en la China continental, la instalación se detiene con el mensaje «el servidor no respondió a tiempo». Hay dos maneras de evitarlo: Con un programa de proxy (Clash, v2rayN y similares), introduce su dirección y puerto en Opciones → Proxy/Socks (Configuración manual de proxy/socks, a menudo 127.0.0.1 y 7890), o elige Usar configuración del sistema cuando el programa configure el proxy de Windows. Luego, haz clic de nuevo en Instalar yt-dlp: las descargas de MDM, incluidos sus ayudantes, pasarán por él. O descarga el programa en tu navegador (el de yt-dlp está en su página de lanzamientos), luego en Descargar vídeo de una página haz clic en Ayudantes..., después en Usar otro programa... en su fila, y elige el archivo. MDM lo usará a partir de entonces; manténlo actualizado tú mismo. Consulta Proxy/Socks y Usar tus propias copias."
   },
   "b298f93960114202": {
    "source": ", with or without <x1/>;",
@@ -16654,6 +16666,10 @@
    "source": "Aqua",
    "text": "Aqua"
   },
+  "e1db1cbca152db19": {
+   "source": "With a proxy program (Clash, v2rayN and the like), enter its address and port in <g1>Options → Proxy / Socks</g1> (<g2>Manual proxy/socks configuration</g2>, often <x3/> and <x4/>), or choose <g5>Use system settings</g5> when the program sets Windows' proxy. Then click <g6>Install yt-dlp</g6> again: MDM's own downloads, its helpers included, go through it.",
+   "text": "Con un programa de proxy (Clash, v2rayN y similares), introduce su dirección y puerto en <g1>Opciones → Proxy/Socks</g1> (<g2>Configuración manual de proxy/socks</g2>, a menudo <x3/> y <x4/>), o elige <g5>Usar configuración del sistema</g5> cuando el programa configure el proxy de Windows. Luego, haz clic de nuevo en <g6>Instalar yt-dlp</g6>: las descargas de MDM, incluidos sus ayudantes, pasarán por él."
+  },
   "e1db876325f14b62": {
    "source": "Downloads still work, but some of the extension's features need a newer MDM. Update it with <g1>Help → Check for updates...</g1> in MDM.",
    "text": "Las descargas siguen funcionando, pero algunas funciones de la extensión necesitan una versión más reciente de MDM. Actualízalo desde <g1>Ayuda → Buscar actualizaciones...</g1> en MDM."
@@ -16745,6 +16761,10 @@
   "e355f6dfc0ceea1d": {
    "source": "How do I report a bug or ask for a feature? — Mister Download Manager",
    "text": "¿Cómo informo de un error o pido una función? — Mister Download Manager"
+  },
+  "e356f60156d8a735": {
+   "source": "<g1>Site rules...</g1> — a User-Agent, request headers, a number of connections, <g2>Always connect the way a browser does</g2> and a proxy (none, or one of its own with its login), by site. See <g3>Site rules</g3>.",
+   "text": "<g1>Reglas de sitio...</g1>: un User-Agent, encabezados de solicitud, número de conexiones, <g2>Conectar siempre como lo hace un navegador</g2> y un proxy (ninguno o uno propio con su inicio de sesión), por sitio. Consulta <g3>Reglas de sitio</g3>."
   },
   "e3696cca91bc9263": {
    "source": "A browser fetches a file over one connection. MDM asks the server for several parts of the file at once, up to 32 connections (128 if you allow it), and keeps re-splitting: when a connection finishes its part, it takes over half of the biggest part still left, so no slow connection holds up the end. It also remembers servers that refuse extra connections and stops asking them. See <g1>Connections and speed</g1>.",
@@ -17826,10 +17846,6 @@
    "source": "More questions",
    "text": "Más preguntas"
   },
-  "f0964936a9646338": {
-   "source": "<g1>Options → Connection → Site rules...</g1> gives every download from a site (<x2/>) its own User-Agent, extra request headers, number of connections, or a browser's way of connecting from the first request. A stopped download's <g3>Properties → Connection...</g3> changes its own headers, proxy and connections, and MDM still checks the file is the same one before it goes on.",
-   "text": "<g1>Opciones → Conexión → Reglas de sitio...</g1> permite que cada descarga de un sitio (<x2/>) tenga su propio User-Agent, encabezados de solicitud adicionales, número de conexiones o una forma de conexión del navegador desde la primera solicitud. Las <g3>Propiedades → Conexión...</g3> de una descarga detenida cambian sus propios encabezados, proxy y conexiones, y MDM sigue comprobando que el archivo sea el mismo antes de continuar."
-  },
   "f09a7e7e0cc71c2e": {
    "source": "In the system's keychain, as are Sites Logins' passwords and the proxy's. MDM's settings keep only a reference to it. <g1>Options → Accounts</g1> says where they are on your computer.",
    "text": "En el llavero del sistema, como las contraseñas de los Inicios de sesión de sitios y las del proxy. La configuración de MDM solo guarda una referencia a ellos. <g1>Opciones → Cuentas</g1> indica dónde se encuentran en tu equipo."
@@ -17849,6 +17865,10 @@
   "f0f10f730052f164": {
    "source": "<g1>Windows, Mac and Linux</g1><g2>Mister Download Manager</g2>",
    "text": "<g1>Windows, Mac y Linux</g1><g2>Mister Download Manager</g2>"
+  },
+  "f0ff5ae3081fa8a5": {
+   "source": "<g1>Proxy</g1> — <g2>As in Options</g2> (the default: <g3>Options → Proxy / Socks</g3> decides), <g4>No proxy</g4> (straight to the site, whatever Options says), or <g5>This proxy:</g5> one of its own, typed as a download's own proxy is, <x6/>, <x7/>, <x8/>, <x9/> (<x10/> to have the proxy look the site's name up). <g11>Proxy user</g11> and <g12>Password</g12> are its login, if it needs one; the password is kept with MDM's other passwords (in the system's keychain), never in the settings file as it is. This replaces switching Options back and forth, or writing a proxy auto-config script, when only some sites need a proxy.",
+   "text": "<g1>Proxy</g1> — <g2>Como en Opciones</g2> (el valor predeterminado: <g3>Opciones → Proxy/Socks</g3> decide), <g4>Sin proxy</g4> (directo al sitio, sin importar lo que digan las Opciones), o <g5>Este proxy:</g5> uno propio, escrito como el proxy de una descarga, <x6/>, <x7/>, <x8/>, <x9/> (<x10/> para que el proxy busque el nombre del sitio). <g11>Usuario del proxy</g11> y <g12>Contraseña</g12> son sus credenciales de inicio de sesión, si las necesita; la contraseña se guarda con las demás contraseñas de MDM (en el llavero del sistema), nunca en el archivo de configuración tal cual. Esto evita tener que cambiar las Opciones una y otra vez, o escribir un script de configuración automática de proxy, cuando solo algunos sitios necesitan un proxy."
   },
   "f10113695e758efd": {
    "source": "A playlist's or channel's videos, one line each as they're listed: its place, length, title and address.",
@@ -18326,6 +18346,10 @@
    "source": "Check <g1>First file</g1>, <g2>Second file</g2> and <g3>Last file</g3>.",
    "text": "Marca <g1>Primer archivo</g1>, <g2>Segundo archivo</g2> y <g3>Último archivo</g3>."
   },
+  "f893460826bf1425": {
+   "source": "Why does installing yt-dlp or another helper time out? — Mister Download Manager",
+   "text": "¿Por qué la instalación de yt-dlp u otro ayudante agota el tiempo de espera? — Mister Download Manager"
+  },
   "f89a410af1a10630": {
    "source": "The site isn't in <g1>Don't start downloading automatically from the following sites</g1>, nor the address in <g2>Don't start downloading automatically from the following addresses</g2>.",
    "text": "El sitio no está en <g1>No iniciar la descarga automáticamente desde los siguientes sitios</g1>, ni la dirección en <g2>No iniciar la descarga automáticamente desde las siguientes direcciones</g2>."
@@ -18501,6 +18525,10 @@
   "fa9795c4c18f5dc7": {
    "source": "Rules by site",
    "text": "Reglas por sitio"
+  },
+  "faa66b10495d59c3": {
+   "source": "Or download the program in your browser (yt-dlp's is on <g1>its release page</g1>), then in <g2>Download video from a page</g2> click <g3>Helpers...</g3>, then <g4>Use another program...</g4> in its row, and choose the file. MDM uses it from then on; keep it up to date yourself.",
+   "text": "O descarga el programa en tu navegador (el de yt-dlp está en <g1>su página de lanzamientos</g1>), luego en <g2>Descargar vídeo de una página</g2> haz clic en <g3>Ayudantes...</g3>, después en <g4>Usar otro programa...</g4> en su fila, y elige el archivo. MDM lo usará a partir de entonces; manténlo actualizado tú mismo."
   },
   "fac6b9216d050977": {
    "source": "Grabbing the videos its browser extension finds on a page",

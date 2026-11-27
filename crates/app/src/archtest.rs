@@ -1251,6 +1251,7 @@ mod tests {
             server: None,
             finishing: None,
             kept: None,
+            checksum_warning: None,
         };
         snap.kept = Some(Arc::new(state));
         item.snap = Some(snap);
