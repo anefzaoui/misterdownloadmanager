@@ -966,8 +966,20 @@ impl OptionsDialog {
                     name,
                     ("browser", i),
                 );
-                // Its name in the row's ink (white on the selection).
-                text(clip, row.left() + 23.0, row.top() + 12.0, name, look.ink);
+                // Its logo between the box and the name (a globe in the row's ink for a name
+                // MDM has no logo for), then its name in the row's ink (white on the selection).
+                winui::browser_icon(
+                    ui,
+                    clip,
+                    name,
+                    None,
+                    Rect::from_min_size(
+                        pos2(row.left() + 22.0, row.top() + 0.5),
+                        egui::vec2(16.0, 16.0),
+                    ),
+                    look.ink,
+                );
+                text(clip, row.left() + 42.0, row.top() + 12.0, name, look.ink);
             },
         );
         if let Some(i) = ev.space {
