@@ -4012,41 +4012,71 @@ mod tests {
             tokio::time::sleep(Duration::from_millis(50)).await;
         };
 
-        // The window's reading, every 2 ms, from just before the re-add until it downloads
-        // again.
-        let over = std::sync::atomic::AtomicBool::new(false);
-        let sample = async {
-            let mut seen = Vec::new();
-            while !over.load(std::sync::atomic::Ordering::SeqCst) {
-                seen.push(leecher.seen(&h2));
-                tokio::time::sleep(Duration::from_millis(2)).await;
-            }
-            seen
+        // The window's readings, 2 ms apart, from just before the re-add until its own numbers
+        // are back. The re-add is run a step at a time and left where the torrent is out of the
+        // session until the watch has read it there: left to itself it is back in about 2 ms,
+        // between two of the watch's readings (#2002).
+        let deadline = std::time::Instant::now() + Duration::from_secs(60);
+        let pause = || tokio::time::sleep(Duration::from_millis(2));
+        let mut seen = Vec::new();
+        let mut look = |waiting_for: &str| {
+            let s = leecher
+                .seen(&h2)
+                .unwrap_or_else(|| panic!("reading {}: out of the session", seen.len()));
+            assert!(
+                std::time::Instant::now() < deadline,
+                "never {waiting_for}: {s:?}"
+            );
+            let phase = s.phase;
+            seen.push(s);
+            phase
         };
-        let readd = async {
-            leecher.readd(&h2, &torrent, false).await.unwrap();
-            let deadline = std::time::Instant::now() + Duration::from_secs(30);
-            loop {
-                let s = leecher.stats(&h2).unwrap();
-                if matches!(s.phase, Phase::Downloading | Phase::Finished) {
-                    break;
-                }
-                assert!(std::time::Instant::now() < deadline, "never resumed: {s:?}");
-                tokio::time::sleep(Duration::from_millis(20)).await;
-            }
-            // And a reading of the watch's own after that.
-            tokio::time::sleep(watch::EVERY * 2).await;
-            over.store(true, std::sync::atomic::Ordering::SeqCst);
+        // Whether the watch hasn't read since `last`: nothing is put meanwhile, so each of its
+        // readings is a new `Arc`.
+        let unread = |last: &Option<Arc<watch::Seen>>| {
+            leecher.watch.get(&h2).as_ref().map(Arc::as_ptr) == last.as_ref().map(Arc::as_ptr)
         };
-        let (seen, ()) = tokio::join!(sample, readd);
-        assert!(seen.len() > 20, "too few readings: {}", seen.len());
+        let mut readd = std::pin::pin!(leecher.readd(&h2, &torrent, false));
+        // Out of the session: the re-add stays there while it isn't run. It holds librqbit's
+        // persistence lock, so nothing else is added or removed in this session meanwhile.
+        while leecher.has(&h2) {
+            look("out of the session");
+            let step =
+                std::future::poll_fn(|cx| std::task::Poll::Ready(readd.as_mut().poll(cx))).await;
+            assert!(step.is_pending(), "over before it was out: {step:?}");
+            pause().await;
+        }
+        // Two readings of the watch's there: the first may have begun before the delete.
+        for _ in 0..2 {
+            let last = leecher.watch.get(&h2);
+            while unread(&last) {
+                look("read out of the session");
+                pause().await;
+            }
+        }
+        look("read out of the session");
+        assert!(!leecher.has(&h2), "back before the watch read it");
+        // Run to its end. Back and checked: the reading that finds it so ends the re-add.
+        let (readded, ()) = tokio::join!(readd, async {
+            while !matches!(
+                look("its own numbers again"),
+                Phase::Downloading | Phase::Finished
+            ) {
+                pause().await;
+            }
+        });
+        readded.unwrap();
+        // And a reading of the watch's own after that.
+        let had = leecher.watch.get(&h2);
+        while unread(&had) {
+            look("read again");
+            pause().await;
+        }
+        look("read again");
         // Never less than the reading before it (the watch's readings lag librqbit's by up to
         // one, so not against `before` itself).
         let (mut done, mut files) = (0, 0);
         for (i, s) in seen.iter().enumerate() {
-            let s = s
-                .as_ref()
-                .unwrap_or_else(|| panic!("reading {i}: out of the session"));
             let in_files: u64 = s.file_done.iter().sum();
             assert!(
                 s.done >= done && in_files >= files,
@@ -4057,7 +4087,7 @@ mod tests {
             assert_eq!(s.total, before.total, "reading {i}: {s:?}");
             (done, files) = (s.done, in_files);
         }
-        let last = seen.last().unwrap().as_ref().unwrap();
+        let last = seen.last().unwrap();
         assert!(
             matches!(last.phase, Phase::Downloading | Phase::Finished),
             "its own numbers again: {last:?}"

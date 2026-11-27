@@ -1763,6 +1763,8 @@ pub struct App {
     queues: Vec<Queue>,
     /// Failure time and count per download, for queue retries.
     failures: HashMap<u64, (Instant, u32)>,
+    /// Sites resting after their bot check refused a download (`crate::sitewait`).
+    site_waits: crate::sitewait::SiteWaits,
     /// MDM's own helpers kept up to date while it runs (#1544).
     keeper: crate::helpers::Keeper,
     /// Videos and galleries that failed with words meaning their helper is out of date (#1544):
@@ -2490,6 +2492,7 @@ impl App {
             last_layout: None,
             queues,
             failures: HashMap::new(),
+            site_waits: Default::default(),
             keeper: Default::default(),
             healing: HashMap::new(),
             heal_retry: Default::default(),
@@ -8887,7 +8890,14 @@ impl App {
     fn members(&self, now: Instant) -> std::collections::HashMap<u64, Member> {
         self.items
             .iter()
-            .map(|i| (i.id, self.member_of(i, now)))
+            .map(|i| {
+                let m = self.member_of(i, now);
+                // A resting site's downloads (`crate::sitewait`) wait without counting as done.
+                let resting = matches!(m, Member::Waiting | Member::Failed { .. })
+                    && crate::sitewait::site_of(&i.url)
+                        .is_some_and(|s| self.site_waits.resting(&s, now));
+                (i.id, if resting { Member::Held } else { m })
+            })
             .collect()
     }
 
@@ -9766,6 +9776,20 @@ impl App {
         for id in failed {
             let e = self.failures.entry(id).or_insert((now, 0));
             *e = (now, e.1 + 1);
+            // The site's bot check refused it: the whole site rests (`crate::sitewait`), so a
+            // queue doesn't go on through that site's other files as fast as they are refused.
+            if let Some(site) = self
+                .items
+                .iter()
+                .find(|i| i.id == id && i.refused_by_site)
+                .and_then(|i| crate::sitewait::site_of(&i.url))
+            {
+                let rest = self.site_waits.refused(&site, now);
+                tracing::info!(
+                    "{site}: its bot check refused a download; its downloads wait {} s",
+                    rest.as_secs()
+                );
+            }
             for q in &mut self.queues {
                 queue::requeue_failed(q, id);
             }
@@ -9773,6 +9797,14 @@ impl App {
         for id in &finished {
             self.release_link(*id);
             self.failures.remove(id);
+            if let Some(site) = self
+                .items
+                .iter()
+                .find(|i| i.id == *id)
+                .and_then(|i| crate::sitewait::site_of(&i.url))
+            {
+                self.site_waits.worked(&site);
+            }
             let renaming = self.apply_deferred_rename(*id);
             if !renaming {
                 // Its archive, when it is to be extracted and its last volume is in (#37).
@@ -9794,6 +9826,10 @@ impl App {
             self.dirty = true;
         }
         self.tick_queues();
+        // A resting site's downloads start again when its rest is over, window shown or not.
+        if let Some(end) = self.site_waits.next_end(now) {
+            ctx.request_repaint_after(end - now + Duration::from_millis(250));
+        }
         // A download started early behind a Download File Info stays quiet until the dialog's
         // answer (Start shows its box then; Cancel drops it).
         let early: Vec<u64> = self.file_infos.iter().filter_map(|f| f.early).collect();
@@ -13156,6 +13192,7 @@ impl App {
                     dir.join(mdm_engine::naming::sanitize(name))
                 });
                 let checksum = d.checksum.clone();
+                let explicit_name = d.name.is_some();
                 // Numbered on as it starts if the name is taken then (#743): no disk here, for
                 // each of thousands of links.
                 let dest = mdm_engine::naming::guess(&dir, &name);
@@ -13186,8 +13223,9 @@ impl App {
                     if checksum.is_some() {
                         i.checksum = checksum;
                     }
-                    // A name the server didn't give (none looked up) may still change.
-                    if size.is_none() {
+                    // A name the server didn't give (none looked up) may still change, unless
+                    // the list explicitly named it (#1963: an `.ef2` block's `filename:`).
+                    if size.is_none() && !explicit_name {
                         i.name_from_url = true;
                     }
                 }
@@ -17052,6 +17090,58 @@ mod mark_hook_tests {
             assert_marked(&path, named, None);
         }
     }
+
+    /// #1963: `.ef2` `filename:` lines keep their extension, category, and explicit name (`!name_from_url`)
+    /// when added from Link grabber, while blocks without `filename:` behave as before.
+    #[test]
+    fn ef2_filename_keeps_explicit_name_and_category_when_added() {
+        let mut app = app();
+        let ef2 = "<\r\nhttps://cdn.example.org/1225296974-1-30112.m4s\r\nfilename: 01 - Title.mp4\r\n>\r\n\
+                   <\r\nhttps://cdn.example.org/1225296974-1-30280.m4s\r\nfilename: 01 - Title.m4a\r\n>\r\n\
+                   <\r\nhttps://cdn.example.org/plain.bin\r\n>\r\n";
+        let found = crate::transfer::import(ef2);
+        app.show_import(found.clone(), "list.ef2".into());
+        let picked = crate::grabber::Picked {
+            name: "cdn.example.org".into(),
+            folder: PathBuf::new(),
+            password: None,
+            extract: false,
+            delete: false,
+            links: app
+                .grabber
+                .as_ref()
+                .unwrap()
+                .links
+                .iter()
+                .map(|l| (l.found.clone(), l.name.clone(), l.size))
+                .collect(),
+        };
+        app.add_grabbed(false, vec![picked]);
+
+        assert_eq!(app.items.len(), 3);
+        let mp4 = app
+            .items
+            .iter()
+            .find(|i| i.file_name == "01 - Title.mp4")
+            .expect("explicit mp4 name");
+        assert_eq!(mp4.category, Category::Video);
+        assert!(!mp4.name_from_url);
+
+        let m4a = app
+            .items
+            .iter()
+            .find(|i| i.file_name == "01 - Title.m4a")
+            .expect("explicit m4a name");
+        assert_eq!(m4a.category, Category::Music);
+        assert!(!m4a.name_from_url);
+
+        let plain = app
+            .items
+            .iter()
+            .find(|i| i.file_name == "plain.bin")
+            .expect("fallback name");
+        assert!(plain.name_from_url);
+    }
 }
 
 #[cfg(test)]
@@ -17720,6 +17810,72 @@ mod live_save_tests {
         // Saved already (a second Stop): still saved by hand.
         assert!(halt_saved(saving, saving));
         assert!(!halt_saved(None, None));
+    }
+
+    /// A site whose bot check refused one download rests (`crate::sitewait`): a running queue
+    /// starts none of that site's other files meanwhile, nor retries the refused one, and isn't
+    /// finished while they wait; another site's file starts as usual. When the rest is over, or
+    /// a file of that site finishes, the site's files start again.
+    #[test]
+    fn a_refused_site_rests_and_its_files_wait_in_the_queue() {
+        let address = |n: &str| url::Url::parse(&format!("https://www.host.test/f/{n}")).unwrap();
+        let mut items: Vec<Item> = (1..=3)
+            .map(|id| {
+                let name = format!("part{id}.rar");
+                Item::new(
+                    id,
+                    address(&name),
+                    PathBuf::from(&name),
+                    Category::Compressed,
+                )
+            })
+            .collect();
+        items[0].status = Status::Error;
+        items[1].status = Status::Queued;
+        items[2].status = Status::Queued;
+        let mut other = Item::new(
+            4,
+            url::Url::parse("https://other.test/file.bin").unwrap(),
+            PathBuf::from("file.bin"),
+            Category::General,
+        );
+        other.status = Status::Queued;
+        items.push(other);
+        let mut app = super::start_disk_tests::app_with(items);
+        let now = Instant::now();
+        app.failures.insert(1, (now, 1));
+        assert_eq!(
+            app.site_waits.refused("host.test", now),
+            crate::sitewait::RESTS[0]
+        );
+        let q = Queue {
+            items: vec![1, 2, 3, 4],
+            running: true,
+            files_at_once: 4,
+            ..Queue::new("Main download queue", false)
+        };
+        let later = now + queue::RETRY_DELAY;
+        let members = app.members(later);
+        assert_eq!(
+            queue::to_start(&q, |id| member_in(&members, id), later),
+            [4]
+        );
+        assert!(!queue::finished(&q, |id| member_in(&members, id)));
+        // The rest is over: the site's files start again, the refused one with them.
+        let after = now + crate::sitewait::RESTS[0];
+        let members = app.members(after);
+        assert_eq!(
+            queue::to_start(&q, |id| member_in(&members, id), after),
+            [1, 2, 3, 4]
+        );
+        // A file of that site came through: no rest left.
+        app.site_waits.refused("host.test", after);
+        app.site_waits.worked("host.test");
+        let members = app.members(after);
+        assert_eq!(
+            queue::to_start(&q, |id| member_in(&members, id), after),
+            [1, 2, 3, 4]
+        );
     }
 
     /// A live stream a stop began to save, whose saving failed (its recording left as it was), is

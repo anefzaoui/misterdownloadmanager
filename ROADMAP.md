@@ -569,6 +569,10 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 Everything below ships together, in version 0.6.0, the next release.
 
+- ✅ Import: an `.ef2` list's `filename:` lines name its downloads (only a file name: folder parts
+  are left out), shown in Link grabber before they are added
+  ([#1963](https://github.com/anefzaoui/misterdownloadmanager/issues/1963); thanks to
+  [@abdul-karim-mia](https://github.com/abdul-karim-mia))
 - ✅ Each browser's logo before its name in the browser extension's window, the first start's
   browser step and Options → General's browser list, sharp at every display scale; a globe for a
   browser without one
@@ -2255,6 +2259,16 @@ Everything below ships together, in version 0.6.0, the next release.
 - ✅ Tests: the download checks on 32-bit Windows no longer stop halfway now and then: the
   largest test downloads (up to 1 GiB) are compared with what they should hold a piece at a
   time, instead of both whole in memory at once, which a 32-bit test program couldn't always fit
+- ✅ A screen reader says a download's size with one space before the unit ("1.00 MB"): the
+  Size column's padding for its looks ("1.00  MB", as IDM writes it) was read aloud, extra
+  space and all, both in the size cell and in the status of a download with no known total
+  ([#1407](https://github.com/anefzaoui/misterdownloadmanager/issues/1407); thanks to
+  [@Seyamalam](https://github.com/Seyamalam))
+- ✅ Tests: the check that a torrent added again keeps showing what it had no longer fails now
+  and then on a slow computer: it counted how often it had looked, which the computer's pace
+  decides; it now holds the re-add half-way, the torrent out of the session, until its numbers
+  were read there, which a fast computer hardly ever did
+  ([#2002](https://github.com/anefzaoui/misterdownloadmanager/issues/2002))
 
 ## Being worked on
 
@@ -2262,6 +2276,10 @@ These ship in a later version, when they're ready.
 
 ### Being built
 
+- 🔄 A site whose bot check refused a download rests, not just that file: no other download of
+  that site starts, and none is retried, for 2 minutes, then 5, 15 and 30 after each refusal in a
+  row; a queue no longer runs through a site's files as fast as they are refused
+  ([#2024](https://github.com/anefzaoui/misterdownloadmanager/issues/2024)): in review
 - 🔄 **The tray icon's downloads panel**: a click on the icon shows what is downloading, with the progress window's Pause/Resume (Stop and save for a recording) and Cancel for each download and a button for the main window; a double click opens the window; **Options → General → Show downloads when the notification area icon is clicked** (ticked in a new copy, unticked in one set up before it) ([#1365](https://github.com/anefzaoui/misterdownloadmanager/issues/1365)): draft, in review
 - 🔄 **Add torrent**: choose whether a multi-file torrent gets an outer folder, with shared-destination ownership and deletion safeguards ([discussion #965](https://github.com/anefzaoui/misterdownloadmanager/discussions/965), [PR #1121](https://github.com/anefzaoui/misterdownloadmanager/pull/1121)): in review
 - 🔄 **Add torrent**: a **Rename** row (main name and extension) to rename a single-file torrent or a multi-file torrent's folder before the download starts ([#517](https://github.com/anefzaoui/misterdownloadmanager/issues/517)): in review
