@@ -61,10 +61,9 @@ def main():
         for key, m in english.items():
             # The catalogs write Chrome's $name$ placeholders as {name}.
             source = re.sub(r"\$(\w+)\$", r"{\1}", m["message"])
-            # Keep every English key in every browser locale. Chrome falls back to the
-            # default locale for absent keys, but complete catalogs let us catch drift
-            # and keep the generated files self-contained.
-            entry = {"message": re.sub(r"\{(\w+)\}", r"$\1$", have.get(source, source))}
+            if source not in have:
+                continue
+            entry = {"message": re.sub(r"\{(\w+)\}", r"$\1$", have[source])}
             if "placeholders" in m:
                 entry["placeholders"] = m["placeholders"]
             messages[key] = entry

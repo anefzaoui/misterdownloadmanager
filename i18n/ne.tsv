@@ -2627,7 +2627,7 @@
 #. text in extension.rs
 #. under "macOS keeps Mister Download Manager out of …'s folder" (Test browser integration, the browser extension's window): how to allow it. The quoted words and System Settings → Privacy & Security → Full Disk Access are macOS's own: use Apple's words in this language, or keep the English ones when unsure
 #, machine
-	If macOS asks whether it may access data from other apps, allow it. Or turn on Mister Download Manager in System Settings → Privacy & Security → Full Disk Access. Then press Set it up.	यदि macOS ले अन्य एपहरूबाट डेटा पहुँच गर्न अनुमति दिने बारे सोध्छ भने, यसलाई अनुमति दिनुहोस्। वा प्रणाली सेटिङहरू → गोपनीयता र सुरक्षा → पूर्ण डिस्क पहुँचमा Mister Download Manager अन गर्नुहोस्। त्यसपछि यसलाई सेट अप गर्नुहोस्(&S) थिच्नुहोस्।
+	If macOS asks whether it may access data from other apps, allow it. Or turn on Mister Download Manager in System Settings → Privacy & Security → Full Disk Access. Then press Set it up.	यदि macOS ले अन्य एपहरूबाट डेटा पहुँच गर्न अनुमति दिने बारे सोध्छ भने, अनुमति दिनुहोस्। वा System Settings → Privacy & Security → Full Disk Access मा Mister Download Manager अन गर्नुहोस्। त्यसपछि Set it up थिच्नुहोस्।
 #. text in errors.rs
 #. what to do when a helper's server couldn't be reached; {proxy} = the Options tab Proxy / Socks; {name} = yt-dlp, ffmpeg or gallery-dl; {helpers} and {other} = the buttons Helpers and Use another program
 #. {name} = a file name (keep the braces as they are)
@@ -4221,6 +4221,7 @@
 #, machine
 	Password:	पासवर्ड:
 #. text in the Add torrent window
+#. "Look up" is the button that reads the torrent: use its translation
 #, machine
 	Paste a magnet link or choose a .torrent file, then Look up.	म्याग्नेट लिङ्क टाँस्नुहोस् वा .torrent फाइल छान्नुहोस्, त्यसपछि खोज्नुहोस्।
 #. text in the Link grabber window
@@ -5787,6 +5788,9 @@
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
 	The selected download is not complete. Are you sure you want to delete\nit from Mister Download Manager list of downloads?	चयन गरिएको डाउनलोड पूरा भएको छैन। के तपाईं यसलाई Mister Download Manager को डाउनलोड सूचीबाट\nमेटाउन चाहनुहुन्छ?
+#. text in the Download video window
+#, machine
+	The selected quality is no longer available. Choose another quality.	चयन गरिएको गुणस्तर अब उपलब्ध छैन। अर्को गुणस्तर छान्नुहोस्।
 #. text in errors.rs
 #, machine
 	the server answered {status}	सर्भरले {status} जवाफ दियो
@@ -8324,6 +8328,10 @@ extension	These are the downloads of the Mister Download Manager at {server}. Op
 #. why a download stayed with the browser: the app's Options don't capture downloads from this browser (its box is unticked in the list of browsers)
 #, machine
 extension	This browser isn't ticked in Options → General.	यो ब्राउजर विकल्पहरू → सामान्यमा टिक गरिएको छैन।
+#. text in the browser extension
+#. browser video download could not use the confirmed lookup; ask the user to select again instead of silently changing the format
+#, machine
+extension	This choice expired. Choose a quality again.	यो विकल्पको म्याद सकियो। फेरि गुणस्तर छान्नुहोस्।
 #. text in the browser extension
 #. choice under Send downloads to: the Mister Download Manager on this computer
 #, machine

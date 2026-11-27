@@ -2622,7 +2622,7 @@
 #. text in extension.rs
 #. under "macOS keeps Mister Download Manager out of …'s folder" (Test browser integration, the browser extension's window): how to allow it. The quoted words and System Settings → Privacy & Security → Full Disk Access are macOS's own: use Apple's words in this language, or keep the English ones when unsure
 #, machine
-	If macOS asks whether it may access data from other apps, allow it. Or turn on Mister Download Manager in System Settings → Privacy & Security → Full Disk Access. Then press Set it up.	Ak sa systém macOS opýta, či môže pristupovať k údajom z iných aplikácií, povoľte to. Alebo zapnite Mister Download Manager v Systémových nastaveniach → Súkromie a zabezpečenie → Úplný prístup na disk. Potom stlačte &Nastaviť.
+	If macOS asks whether it may access data from other apps, allow it. Or turn on Mister Download Manager in System Settings → Privacy & Security → Full Disk Access. Then press Set it up.	Ak sa systém macOS opýta, či môže pristupovať k údajom z iných aplikácií, povoľte to. Alebo zapnite Mister Download Manager v Systémových nastaveniach → Súkromie a bezpečnosť → Úplný prístup na disk. Potom vyberte možnosť Nastaviť.
 #. checkbox in the Options window
 #, machine
 	Ignore file modification time changes when resuming a download	Ignorovať zmeny času úpravy súboru pri obnovení sťahovania
@@ -4211,6 +4211,7 @@
 #, machine
 	Password:	Heslo:
 #. text in the Add torrent window
+#. "Look up" is the button that reads the torrent: use its translation
 #, machine
 	Paste a magnet link or choose a .torrent file, then Look up.	Prilepte magnetický odkaz alebo vyberte súbor .torrent a potom vyhľadajte.
 #. text in the Link grabber window
@@ -5782,6 +5783,9 @@
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
 	The selected download is not complete. Are you sure you want to delete\nit from Mister Download Manager list of downloads?	Vybrané sťahovanie nie je dokončené. Naozaj ho chcete\nodstrániť zo zoznamu sťahovaní aplikácie Mister Download Manager?
+#. text in the Download video window
+#, machine
+	The selected quality is no longer available. Choose another quality.	Vybratá kvalita už nie je k dispozícii. Vyberte inú kvalitu.
 #. text in errors.rs
 #, machine
 	the server answered {status}	server odpovedal {status}
@@ -8319,6 +8323,10 @@ extension	These are the downloads of the Mister Download Manager at {server}. Op
 #. why a download stayed with the browser: the app's Options don't capture downloads from this browser (its box is unticked in the list of browsers)
 #, machine
 extension	This browser isn't ticked in Options → General.	Tento prehliadač nie je začiarknutý v Možnostiach → Všeobecné.
+#. text in the browser extension
+#. browser video download could not use the confirmed lookup; ask the user to select again instead of silently changing the format
+#, machine
+extension	This choice expired. Choose a quality again.	Táto voľba vypršala. Znova vyberte kvalitu.
 #. text in the browser extension
 #. choice under Send downloads to: the Mister Download Manager on this computer
 #, machine

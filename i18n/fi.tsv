@@ -2627,7 +2627,7 @@
 #. text in extension.rs
 #. under "macOS keeps Mister Download Manager out of …'s folder" (Test browser integration, the browser extension's window): how to allow it. The quoted words and System Settings → Privacy & Security → Full Disk Access are macOS's own: use Apple's words in this language, or keep the English ones when unsure
 #, machine
-	If macOS asks whether it may access data from other apps, allow it. Or turn on Mister Download Manager in System Settings → Privacy & Security → Full Disk Access. Then press Set it up.	Jos macOS kysyy, saako se käyttää muiden appien tietoja, salli se. Tai ota Mister Download Manager käyttöön kohdassa Järjestelmäasetukset → Tietosuoja ja suojaus → Täysi pääsy levylle. Paina sitten &Määritä.
+	If macOS asks whether it may access data from other apps, allow it. Or turn on Mister Download Manager in System Settings → Privacy & Security → Full Disk Access. Then press Set it up.	Jos macOS kysyy, saako se käyttää muiden sovellusten tietoja, salli se. Tai ota Mister Download Manager käyttöön kohdassa Järjestelmäasetukset → Tietosuoja ja suojaus → Täysi levyn käyttöoikeus. Paina sitten Määritä.
 #. text in errors.rs
 #. what to do when a helper's server couldn't be reached; {proxy} = the Options tab Proxy / Socks; {name} = yt-dlp, ffmpeg or gallery-dl; {helpers} and {other} = the buttons Helpers and Use another program
 #. {name} = a file name (keep the braces as they are)
@@ -4221,6 +4221,7 @@
 #, machine
 	Password:	Salasana:
 #. text in the Add torrent window
+#. "Look up" is the button that reads the torrent: use its translation
 #, machine
 	Paste a magnet link or choose a .torrent file, then Look up.	Liitä magneettilinkki tai valitse .torrent-tiedosto ja etsi.
 #. text in the Link grabber window
@@ -5792,6 +5793,9 @@
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
 	The selected download is not complete. Are you sure you want to delete\nit from Mister Download Manager list of downloads?	Valittu lataus ei ole valmis. Haluatko varmasti poistaa\nsen Mister Download Managerin latausluettelosta?
+#. text in the Download video window
+#, machine
+	The selected quality is no longer available. Choose another quality.	Valittu laatu ei ole enää saatavilla. Valitse toinen laatu.
 #. text in errors.rs
 #, machine
 	the server answered {status}	palvelin vastasi {status}
@@ -8329,6 +8333,10 @@ extension	These are the downloads of the Mister Download Manager at {server}. Op
 #. why a download stayed with the browser: the app's Options don't capture downloads from this browser (its box is unticked in the list of browsers)
 #, machine
 extension	This browser isn't ticked in Options → General.	Tätä selainta ei ole valittu kohdassa Asetukset → Yleiset.
+#. text in the browser extension
+#. browser video download could not use the confirmed lookup; ask the user to select again instead of silently changing the format
+#, machine
+extension	This choice expired. Choose a quality again.	Tämä valinta vanheni. Valitse laatu uudelleen.
 #. text in the browser extension
 #. choice under Send downloads to: the Mister Download Manager on this computer
 #, machine

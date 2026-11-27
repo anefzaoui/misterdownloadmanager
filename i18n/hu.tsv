@@ -2627,7 +2627,7 @@
 #. text in extension.rs
 #. under "macOS keeps Mister Download Manager out of …'s folder" (Test browser integration, the browser extension's window): how to allow it. The quoted words and System Settings → Privacy & Security → Full Disk Access are macOS's own: use Apple's words in this language, or keep the English ones when unsure
 #, machine
-	If macOS asks whether it may access data from other apps, allow it. Or turn on Mister Download Manager in System Settings → Privacy & Security → Full Disk Access. Then press Set it up.	Ha a macOS rákérdez, hogy hozzáférhet-e más alkalmazások adataihoz, engedélyezze. Vagy kapcsolja be a(z) Mister Download Manager alkalmazást a Rendszerbeállítások → Adatvédelem és biztonság → Teljes lemezhozzáférés menüpontban. Ezután nyomja meg a &Beállítás gombot.
+	If macOS asks whether it may access data from other apps, allow it. Or turn on Mister Download Manager in System Settings → Privacy & Security → Full Disk Access. Then press Set it up.	Ha a macOS rákérdez, hogy hozzáférhet-e más alkalmazások adataihoz, engedélyezze. Vagy kapcsolja be a(z) Mister Download Manager alkalmazást a Rendszerbeállítások → Adatvédelem és biztonság → Teljes lemezhozzáférés menüpontban. Ezután nyomja meg a Beállítás gombot.
 #. text in errors.rs
 #. what to do when a helper's server couldn't be reached; {proxy} = the Options tab Proxy / Socks; {name} = yt-dlp, ffmpeg or gallery-dl; {helpers} and {other} = the buttons Helpers and Use another program
 #. {name} = a file name (keep the braces as they are)
@@ -4221,6 +4221,7 @@
 #, machine
 	Password:	Jelszó:
 #. text in the Add torrent window
+#. "Look up" is the button that reads the torrent: use its translation
 #, machine
 	Paste a magnet link or choose a .torrent file, then Look up.	Illesszen be egy mágneses hivatkozást, vagy válasszon egy .torrent fájlt, majd kattintson a Keresés gombra.
 #. text in the Link grabber window
@@ -5787,6 +5788,9 @@
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
 	The selected download is not complete. Are you sure you want to delete\nit from Mister Download Manager list of downloads?	A kiválasztott letöltés nem fejeződött be. Biztosan törölni szeretné\na(z) Mister Download Manager letöltési listájáról?
+#. text in the Download video window
+#, machine
+	The selected quality is no longer available. Choose another quality.	A kiválasztott minőség már nem érhető el. Válasszon másik minőséget.
 #. text in errors.rs
 #, machine
 	the server answered {status}	a szerver {status} választ adott
@@ -8324,6 +8328,10 @@ extension	These are the downloads of the Mister Download Manager at {server}. Op
 #. why a download stayed with the browser: the app's Options don't capture downloads from this browser (its box is unticked in the list of browsers)
 #, machine
 extension	This browser isn't ticked in Options → General.	Ez a böngésző nincs bejelölve a Beállítások → Általános menüpontban.
+#. text in the browser extension
+#. browser video download could not use the confirmed lookup; ask the user to select again instead of silently changing the format
+#, machine
+extension	This choice expired. Choose a quality again.	Ez a választás lejárt. Válasszon újra minőséget.
 #. text in the browser extension
 #. choice under Send downloads to: the Mister Download Manager on this computer
 #, machine

@@ -2622,7 +2622,7 @@
 #. text in extension.rs
 #. under "macOS keeps Mister Download Manager out of …'s folder" (Test browser integration, the browser extension's window): how to allow it. The quoted words and System Settings → Privacy & Security → Full Disk Access are macOS's own: use Apple's words in this language, or keep the English ones when unsure
 #, machine
-	If macOS asks whether it may access data from other apps, allow it. Or turn on Mister Download Manager in System Settings → Privacy & Security → Full Disk Access. Then press Set it up.	Εάν το macOS ρωτήσει αν μπορεί να αποκτήσει πρόσβαση σε δεδομένα από άλλες εφαρμογές, επιτρέψτε το. Ή ενεργοποιήστε το Mister Download Manager στις Ρυθμίσεις συστήματος → Απόρρητο και ασφάλεια → Πλήρης πρόσβαση δίσκου. Στη συνέχεια, πατήστε &Ρύθμιση.
+	If macOS asks whether it may access data from other apps, allow it. Or turn on Mister Download Manager in System Settings → Privacy & Security → Full Disk Access. Then press Set it up.	Αν το macOS ζητήσει άδεια πρόσβασης σε δεδομένα από άλλες εφαρμογές, επιτρέψτε την πρόσβαση. Ή ενεργοποιήστε το Mister Download Manager στις Ρυθμίσεις συστήματος → Απόρρητο και ασφάλεια → Πλήρης πρόσβαση στον δίσκο. Στη συνέχεια, πατήστε Ρύθμιση.
 #. text in errors.rs
 #. what to do when a helper's server couldn't be reached; {proxy} = the Options tab Proxy / Socks; {name} = yt-dlp, ffmpeg or gallery-dl; {helpers} and {other} = the buttons Helpers and Use another program
 #. {name} = a file name (keep the braces as they are)
@@ -4216,6 +4216,7 @@
 #, machine
 	Password:	Κωδικός πρόσβασης:
 #. text in the Add torrent window
+#. "Look up" is the button that reads the torrent: use its translation
 #, machine
 	Paste a magnet link or choose a .torrent file, then Look up.	Επικολλήστε έναν σύνδεσμο magnet ή επιλέξτε ένα αρχείο .torrent και, στη συνέχεια, Αναζήτηση.
 #. text in the Link grabber window
@@ -5787,6 +5788,9 @@
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
 	The selected download is not complete. Are you sure you want to delete\nit from Mister Download Manager list of downloads?	Η επιλεγμένη λήψη δεν είναι πλήρης. Είστε βέβαιοι ότι θέλετε να τη διαγράψετε\nαπό τη λίστα λήψεων του Mister Download Manager;
+#. text in the Download video window
+#, machine
+	The selected quality is no longer available. Choose another quality.	Η επιλεγμένη ποιότητα δεν είναι πλέον διαθέσιμη. Επιλέξτε άλλη ποιότητα.
 #. text in errors.rs
 #, machine
 	the server answered {status}	ο διακομιστής απάντησε {status}
@@ -8316,6 +8320,10 @@ extension	These are the downloads of the Mister Download Manager at {server}. Op
 #. why a download stayed with the browser: the app's Options don't capture downloads from this browser (its box is unticked in the list of browsers)
 #, machine
 extension	This browser isn't ticked in Options → General.	Αυτό το πρόγραμμα περιήγησης δεν είναι επιλεγμένο στις Επιλογές → Γενικά.
+#. text in the browser extension
+#. browser video download could not use the confirmed lookup; ask the user to select again instead of silently changing the format
+#, machine
+extension	This choice expired. Choose a quality again.	Αυτή η επιλογή έληξε. Επιλέξτε ξανά μια ποιότητα.
 #. text in the browser extension
 #. choice under Send downloads to: the Mister Download Manager on this computer
 #, machine
