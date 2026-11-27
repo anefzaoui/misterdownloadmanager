@@ -359,7 +359,7 @@
 #. text in the Options window
 #. Site rules window: in the empty list of rules, under its title
 #, machine
-	A rule sets the connections, User-Agent or headers for one site.	Qayda bir sayt üçün bağlantıları, User-Agent-i və ya başlıqları təyin edir.
+	A rule sets the connections, User-Agent, headers or proxy for one site.	Qayda bir sayt üçün bağlantıları, İstifadəçi Agenti, başlıqları və ya proksini təyin edir.
 #. text in errors.rs
 #. an error: a server on this computer redirected the download to the internet, which would not go through the chosen network adapter; {adapter} its name
 #, machine
@@ -1345,6 +1345,10 @@
 #. window title: a download's own request settings (User-Agent, headers, connections, proxy), from File Properties → Connection...
 #, machine
 	Connection settings	Bağlantı parametrləri
+#. text in the Options window
+#. Options → Connection: beside the Site rules... button: what it sets (a User-Agent, request headers, a number of connections, a proxy, each for the sites a rule names)
+#, machine
+	Connection settings by site	Sayta görə bağlantı parametrləri
 #. message or event log entry in the main window
 #. event log: File Properties → Connection settings changed the download's own User-Agent, headers, proxy or connections
 #, machine
@@ -2654,10 +2658,6 @@
 #. Options → DNS settings: checkbox: when the chosen DNS can't be reached, use the system's instead
 #, machine
 	If it can't be reached, use the system's DNS	Əlçatan deyilsə, sistemin DNS-indən istifadə et
-#. text in extension.rs
-#. under "macOS keeps Mister Download Manager out of …'s folder" (Test browser integration, the browser extension's window): how to allow it. The quoted words and System Settings → Privacy & Security → Full Disk Access are macOS's own: use Apple's words in this language, or keep the English ones when unsure
-#, machine
-	If macOS asks whether it may access data from other apps, allow it. Or turn on Mister Download Manager in System Settings → Privacy & Security → Full Disk Access. Then press Set it up.	Əgər macOS digər proqramlardan məlumatlara daxil olmaq üçün icazə istəyirsə, icazə verin. Və ya Sistem Parametrləri → Məxfilik və Təhlükəsizlik → Tam Disk Girişi bölməsində Mister Download Manager proqramını aktiv edin. Sonra &Qur düyməsini basın.
 #. text in errors.rs
 #. what to do when a helper's server couldn't be reached; {proxy} = the Options tab Proxy / Socks; {name} = yt-dlp, ffmpeg or gallery-dl; {helpers} and {other} = the buttons Helpers and Use another program
 #. {name} = a file name (keep the braces as they are)
@@ -4259,9 +4259,10 @@
 #. text in the Batch download window; text in a dialog box; label in the Options window; text in the Options window; text in a download's Properties window
 #, machine
 	Password	Parol
-#. text in the Link grabber window; text in the Options window
+#. text in the Link grabber window; text in the Options window; text in requestedit.rs
 #. Link grabber: the package's archives' password (a label before its box)
 #. Options → Add an account: label before the field for the password at the debrid service
+#. Site rule: label before the proxy's password, beside its user name
 #, machine
 	Password:	Parol:
 #. text in the Add torrent window
@@ -4403,6 +4404,10 @@
 #. text in a download's progress window
 #, machine
 	Property	Xüsusiyyət
+#. text in the Options window
+#. Site rules: column title: the rule's proxy (empty: the one in Options → Proxy / Socks; "No proxy"; or its address)
+#, machine
+	Proxy	Proksi
 #. text in errors.rs; text in the Options window
 #. tab title
 #, machine
@@ -4417,6 +4422,10 @@
 #. label in the Options window
 #, machine
 	Proxy server address	Proksi server ünvanı
+#. text in requestedit.rs
+#. Site rule: label before the proxy's user name (its login), under the proxy's address
+#, machine
+	Proxy user:	Proksi istifadəçisi:
 #. text in requestedit.rs
 #. Site rule / a download's Connection settings: label before the proxy choice
 #, machine
@@ -5822,6 +5831,10 @@
 #. why a download failed (#1102): the folder and file name together are longer than Windows allows ({limit} characters, 259), counting the temporary files saved beside the file while it downloads (their names are longer). {path} = the path
 #, machine
 	the path is too long for Windows: at most {limit} characters with the files saved while it downloads. Choose a shorter file name or folder ({path})	Yol Windows üçün çox uzundur: endirmə zamanı saxlanılan fayllarla birlikdə ən çox {limit} simvol ola bilər. Daha qısa fayl adı və ya qovluq seçin ({path})
+#. text in requestedit.rs
+#. Site rule: the proxy's user name or password holds a control character (a line break, a tab)
+#, machine
+	The proxy's user name and password can't hold line breaks or tabs	Proksinin istifadəçi adı və parolunda sətir sonu və ya tab simvolları ola bilməz
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. why updates could not be checked: the newest release on the site has no number
 #, machine
@@ -6523,6 +6536,10 @@
 #. a download's Connection settings: the proxy typed isn't an address MDM takes; the examples stay as they are
 #, machine
 	Type the proxy as host:port, http://host:port or socks5://host:port	Proksini host:port, http://host:port və ya socks5://host:port kimi yazın
+#. text in requestedit.rs
+#. Site rule: a password was typed for the proxy, but no user name
+#, machine
+	Type the proxy's user name too, or leave its password empty	Proksinin istifadəçi adını da daxil edin və ya parolunu boş buraxın
 #. text in the Scheduler window
 #. why OK is greyed when naming a new queue
 #, machine
@@ -6735,10 +6752,6 @@
 #. text in the Options window
 #, machine
 	User-Agent for manually added downloads:	Əllə əlavə edilmiş endirmələr üçün User-Agent:
-#. text in the Options window
-#. Options → Connection: beside the Site rules... button: what it sets
-#, machine
-	User-Agent, headers and connections by site	Sayt üzrə User-Agent, başlıqlar və bağlantılar
 #. text in requestedit.rs
 #. Site rule / a download's Connection settings: label before the User-Agent box (the name the browser or program gives itself to sites)
 #, machine

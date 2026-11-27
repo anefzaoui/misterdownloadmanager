@@ -359,7 +359,7 @@
 #. text in the Options window
 #. Site rules window: in the empty list of rules, under its title
 #, machine
-	A rule sets the connections, User-Agent or headers for one site.	規則會設定單一網站的連線、User-Agent 或標頭。
+	A rule sets the connections, User-Agent, headers or proxy for one site.	規則會設定單一網站的連線、User-Agent、標頭或 Proxy。
 #. text in errors.rs
 #. an error: a server on this computer redirected the download to the internet, which would not go through the chosen network adapter; {adapter} its name
 #, machine
@@ -1340,6 +1340,10 @@
 #. window title: a download's own request settings (User-Agent, headers, connections, proxy), from File Properties → Connection...
 #, machine
 	Connection settings	連線設定
+#. text in the Options window
+#. Options → Connection: beside the Site rules... button: what it sets (a User-Agent, request headers, a number of connections, a proxy, each for the sites a rule names)
+#, machine
+	Connection settings by site	依網站設定連線
 #. message or event log entry in the main window
 #. event log: File Properties → Connection settings changed the download's own User-Agent, headers, proxy or connections
 #, machine
@@ -2645,10 +2649,6 @@
 #. Options → DNS settings: checkbox: when the chosen DNS can't be reached, use the system's instead
 #, machine
 	If it can't be reached, use the system's DNS	若無法連線，使用系統的 DNS
-#. text in extension.rs
-#. under "macOS keeps Mister Download Manager out of …'s folder" (Test browser integration, the browser extension's window): how to allow it. The quoted words and System Settings → Privacy & Security → Full Disk Access are macOS's own: use Apple's words in this language, or keep the English ones when unsure
-#, machine
-	If macOS asks whether it may access data from other apps, allow it. Or turn on Mister Download Manager in System Settings → Privacy & Security → Full Disk Access. Then press Set it up.	如果 macOS 詢問是否允許存取其他 App 的資料，請允許。或在「系統設定」→「隱私權與安全性」→「完全取用磁碟」中開啟 Mister Download Manager。然後按下「&設定」。
 #. text in errors.rs
 #. what to do when a helper's server couldn't be reached; {proxy} = the Options tab Proxy / Socks; {name} = yt-dlp, ffmpeg or gallery-dl; {helpers} and {other} = the buttons Helpers and Use another program
 #. {name} = a file name (keep the braces as they are)
@@ -4250,9 +4250,10 @@
 #. text in the Batch download window; text in a dialog box; label in the Options window; text in the Options window; text in a download's Properties window
 #, machine
 	Password	密碼
-#. text in the Link grabber window; text in the Options window
+#. text in the Link grabber window; text in the Options window; text in requestedit.rs
 #. Link grabber: the package's archives' password (a label before its box)
 #. Options → Add an account: label before the field for the password at the debrid service
+#. Site rule: label before the proxy's password, beside its user name
 #, machine
 	Password:	密碼：
 #. text in the Add torrent window
@@ -4408,6 +4409,10 @@
 #. label in the Options window
 #, machine
 	Proxy server address	Proxy 伺服器位址
+#. text in requestedit.rs
+#. Site rule: label before the proxy's user name (its login), under the proxy's address
+#, machine
+	Proxy user:	Proxy 使用者：
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -5804,6 +5809,10 @@
 #. why a download failed (#1102): the folder and file name together are longer than Windows allows ({limit} characters, 259), counting the temporary files saved beside the file while it downloads (their names are longer). {path} = the path
 #, machine
 	the path is too long for Windows: at most {limit} characters with the files saved while it downloads. Choose a shorter file name or folder ({path})	路徑對於 Windows 來說太長：下載時儲存的檔案最多 {limit} 個字元。請選擇較短的檔案名稱或資料夾 ({path})
+#. text in requestedit.rs
+#. Site rule: the proxy's user name or password holds a control character (a line break, a tab)
+#, machine
+	The proxy's user name and password can't hold line breaks or tabs	Proxy 的使用者名稱和密碼不能包含換行符號或定位字元。
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. why updates could not be checked: the newest release on the site has no number
 #, machine
@@ -6505,6 +6514,10 @@
 #. a download's Connection settings: the proxy typed isn't an address MDM takes; the examples stay as they are
 #, machine
 	Type the proxy as host:port, http://host:port or socks5://host:port	請輸入代理伺服器，格式為 host:port、http://host:port 或 socks5://host:port
+#. text in requestedit.rs
+#. Site rule: a password was typed for the proxy, but no user name
+#, machine
+	Type the proxy's user name too, or leave its password empty	請同時輸入 Proxy 的使用者名稱，或將其密碼留空。
 #. text in the Scheduler window
 #. why OK is greyed when naming a new queue
 #, machine
@@ -6717,10 +6730,6 @@
 #. text in the Options window
 #, machine
 	User-Agent for manually added downloads:	手動新增下載的使用者代理程式:
-#. text in the Options window
-#. Options → Connection: beside the Site rules... button: what it sets
-#, machine
-	User-Agent, headers and connections by site	依網站設定使用者代理程式、標頭和連線
 #. text in requestedit.rs
 #. Site rule / a download's Connection settings: label before the User-Agent box (the name the browser or program gives itself to sites)
 #, machine

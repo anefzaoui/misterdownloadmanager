@@ -338,7 +338,7 @@
 #. text in the Options window
 #. Site rules window: in the empty list of rules, under its title
 #, machine
-	A rule sets the connections, User-Agent or headers for one site.	একটি নিয়ম একটি সাইটের জন্য সংযোগ, ইউজার-এজেন্ট বা হেডার সেট করে।
+	A rule sets the connections, User-Agent, headers or proxy for one site.	একটি নিয়ম একটি সাইটের জন্য সংযোগ, ইউজার-এজেন্ট, হেডার বা প্রক্সি সেট করে।
 #. text in errors.rs
 #. an error: a server on this computer redirected the download to the internet, which would not go through the chosen network adapter; {adapter} its name
 #, machine
@@ -1274,6 +1274,10 @@
 #. window title: a download's own request settings (User-Agent, headers, connections, proxy), from File Properties → Connection...
 #, machine
 	Connection settings	সংযোগ সেটিংস
+#. text in the Options window
+#. Options → Connection: beside the Site rules... button: what it sets (a User-Agent, request headers, a number of connections, a proxy, each for the sites a rule names)
+#, machine
+	Connection settings by site	সাইট অনুযায়ী সংযোগ সেটিংস
 #. message or event log entry in the main window
 #. event log: File Properties → Connection settings changed the download's own User-Agent, headers, proxy or connections
 #, machine
@@ -4040,9 +4044,10 @@
 #. text in the Batch download window; text in a dialog box; label in the Options window; text in the Options window; text in a download's Properties window
 #, machine
 	Password	পাসওয়ার্ড
-#. text in the Link grabber window; text in the Options window
+#. text in the Link grabber window; text in the Options window; text in requestedit.rs
 #. Link grabber: the package's archives' password (a label before its box)
 #. Options → Add an account: label before the field for the password at the debrid service
+#. Site rule: label before the proxy's password, beside its user name
 #, machine
 	Password:	পাসওয়ার্ড:
 #. text in the Add torrent window
@@ -4171,6 +4176,10 @@
 	Properties of the selected download	নির্বাচিত ডাউনলোডের বৈশিষ্ট্য
 #. text in a download's progress window
 	Property	বৈশিষ্ট্য
+#. text in the Options window
+#. Site rules: column title: the rule's proxy (empty: the one in Options → Proxy / Socks; "No proxy"; or its address)
+#, machine
+	Proxy	প্রক্সি
 #. text in errors.rs; text in the Options window
 #. tab title
 #, machine
@@ -4185,6 +4194,10 @@
 #. label in the Options window
 #, machine
 	Proxy server address	প্রক্সি সার্ভারের ঠিকানা
+#. text in requestedit.rs
+#. Site rule: label before the proxy's user name (its login), under the proxy's address
+#, machine
+	Proxy user:	প্রক্সি ব্যবহারকারীর নাম:
 #. text in requestedit.rs
 #. Site rule / a download's Connection settings: label before the proxy choice
 #, machine
@@ -5497,6 +5510,10 @@
 #. why a download failed (#1102): the folder and file name together are longer than Windows allows ({limit} characters, 259), counting the temporary files saved beside the file while it downloads (their names are longer). {path} = the path
 #, machine
 	the path is too long for Windows: at most {limit} characters with the files saved while it downloads. Choose a shorter file name or folder ({path})	Windows-এর জন্য পাথ খুব লম্বা: ডাউনলোড করার সময় সংরক্ষিত ফাইলগুলো সহ সর্বোচ্চ {limit} অক্ষর। একটি ছোট ফাইলের নাম বা ফোল্ডার বেছে নিন ({path})
+#. text in requestedit.rs
+#. Site rule: the proxy's user name or password holds a control character (a line break, a tab)
+#, machine
+	The proxy's user name and password can't hold line breaks or tabs	প্রক্সির ব্যবহারকারীর নাম এবং পাসওয়ার্ডে লাইন ব্রেক বা ট্যাব থাকতে পারে না
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. why updates could not be checked: the newest release on the site has no number
 #, machine
@@ -6157,6 +6174,10 @@
 #. a download's Connection settings: the proxy typed isn't an address MDM takes; the examples stay as they are
 #, machine
 	Type the proxy as host:port, http://host:port or socks5://host:port	প্রক্সিটিকে host:port, http://host:port অথবা socks5://host:port হিসেবে টাইপ করুন
+#. text in requestedit.rs
+#. Site rule: a password was typed for the proxy, but no user name
+#, machine
+	Type the proxy's user name too, or leave its password empty	প্রক্সির ব্যবহারকারীর নামও লিখুন, অথবা এর পাসওয়ার্ড খালি রাখুন
 #. text in the Scheduler window
 #. why OK is greyed when naming a new queue
 #, machine
@@ -6365,10 +6386,6 @@
 #. text in the Options window
 #, machine
 	User-Agent for manually added downloads:	ম্যানুয়ালি যোগ করা ডাউনলোডের জন্য ইউজার-এজেন্ট:
-#. text in the Options window
-#. Options → Connection: beside the Site rules... button: what it sets
-#, machine
-	User-Agent, headers and connections by site	সাইট অনুযায়ী ইউজার-এজেন্ট, হেডার এবং সংযোগ
 #. text in requestedit.rs
 #. Site rule / a download's Connection settings: label before the User-Agent box (the name the browser or program gives itself to sites)
 #, machine

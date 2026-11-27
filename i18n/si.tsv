@@ -359,7 +359,7 @@
 #. text in the Options window
 #. Site rules window: in the empty list of rules, under its title
 #, machine
-	A rule sets the connections, User-Agent or headers for one site.	රීතියක් මඟින් එක් වෙබ් අඩවියක් සඳහා සම්බන්ධතා, පරිශීලක නියෝජිත හෝ ශීර්ෂ සකසයි.
+	A rule sets the connections, User-Agent, headers or proxy for one site.	රීතියක් එක් අඩවියක් සඳහා සම්බන්ධතා, User-Agent, ශීර්ෂ හෝ ප්‍රොක්සිය සකසයි.
 #. text in errors.rs
 #. an error: a server on this computer redirected the download to the internet, which would not go through the chosen network adapter; {adapter} its name
 #, machine
@@ -1345,6 +1345,10 @@
 #. window title: a download's own request settings (User-Agent, headers, connections, proxy), from File Properties → Connection...
 #, machine
 	Connection settings	සම්බන්ධතා සැකසුම්
+#. text in the Options window
+#. Options → Connection: beside the Site rules... button: what it sets (a User-Agent, request headers, a number of connections, a proxy, each for the sites a rule names)
+#, machine
+	Connection settings by site	අඩවිය අනුව සම්බන්ධතා සැකසුම්
 #. message or event log entry in the main window
 #. event log: File Properties → Connection settings changed the download's own User-Agent, headers, proxy or connections
 #, machine
@@ -4259,9 +4263,10 @@
 #. text in the Batch download window; text in a dialog box; label in the Options window; text in the Options window; text in a download's Properties window
 #, machine
 	Password	මුරපදය
-#. text in the Link grabber window; text in the Options window
+#. text in the Link grabber window; text in the Options window; text in requestedit.rs
 #. Link grabber: the package's archives' password (a label before its box)
 #. Options → Add an account: label before the field for the password at the debrid service
+#. Site rule: label before the proxy's password, beside its user name
 #, machine
 	Password:	මුරපදය:
 #. text in the Add torrent window
@@ -4403,6 +4408,10 @@
 #. text in a download's progress window
 #, machine
 	Property	ගුණාංගය
+#. text in the Options window
+#. Site rules: column title: the rule's proxy (empty: the one in Options → Proxy / Socks; "No proxy"; or its address)
+#, machine
+	Proxy	ප්‍රොක්සිය
 #. text in errors.rs; text in the Options window
 #. tab title
 #, machine
@@ -4417,6 +4426,10 @@
 #. label in the Options window
 #, machine
 	Proxy server address	ප්‍රොක්සි සේවාදායක ලිපිනය
+#. text in requestedit.rs
+#. Site rule: label before the proxy's user name (its login), under the proxy's address
+#, machine
+	Proxy user:	ප්‍රොක්සි පරිශීලක:
 #. text in requestedit.rs
 #. Site rule / a download's Connection settings: label before the proxy choice
 #, machine
@@ -5822,6 +5835,10 @@
 #. why a download failed (#1102): the folder and file name together are longer than Windows allows ({limit} characters, 259), counting the temporary files saved beside the file while it downloads (their names are longer). {path} = the path
 #, machine
 	the path is too long for Windows: at most {limit} characters with the files saved while it downloads. Choose a shorter file name or folder ({path})	Windows සඳහා මාර්ගය දිග වැඩිය: බාගැනීමේදී සුරකින ගොනු ද ඇතුළුව උපරිම අක්ෂර {limit}කි. කෙටි ගොනු නමක් හෝ ෆෝල්ඩරයක් තෝරන්න ({path})
+#. text in requestedit.rs
+#. Site rule: the proxy's user name or password holds a control character (a line break, a tab)
+#, machine
+	The proxy's user name and password can't hold line breaks or tabs	ප්‍රොක්සියේ පරිශීලක නාමයට සහ මුරපදයට රේඛා බිඳීම් හෝ ටැබ් අඩංගු විය නොහැක
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. why updates could not be checked: the newest release on the site has no number
 #, machine
@@ -6523,6 +6540,10 @@
 #. a download's Connection settings: the proxy typed isn't an address MDM takes; the examples stay as they are
 #, machine
 	Type the proxy as host:port, http://host:port or socks5://host:port	ප්‍රොක්සිය host:port, http://host:port හෝ socks5://host:port ලෙස ඇතුළත් කරන්න
+#. text in requestedit.rs
+#. Site rule: a password was typed for the proxy, but no user name
+#, machine
+	Type the proxy's user name too, or leave its password empty	ප්‍රොක්සියේ පරිශීලක නාමයද ටයිප් කරන්න, නැතහොත් එහි මුරපදය හිස්ව තබන්න
 #. text in the Scheduler window
 #. why OK is greyed when naming a new queue
 #, machine
@@ -6735,10 +6756,6 @@
 #. text in the Options window
 #, machine
 	User-Agent for manually added downloads:	හස්තීයව එක් කරන ලද බාගැනීම් සඳහා User-Agent:
-#. text in the Options window
-#. Options → Connection: beside the Site rules... button: what it sets
-#, machine
-	User-Agent, headers and connections by site	අඩවිය අනුව User-Agent, ශීර්ෂක සහ සම්බන්ධතා
 #. text in requestedit.rs
 #. Site rule / a download's Connection settings: label before the User-Agent box (the name the browser or program gives itself to sites)
 #, machine

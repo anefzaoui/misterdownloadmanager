@@ -4342,7 +4342,9 @@ impl App {
         let given = context.user_agent.as_deref().or(own);
         let mut opts = Options {
             max_connections: self.settings.connections_for(url),
-            proxy: self.settings.proxy_for(context),
+            // A site rule's proxy, else Options' (#1960); the download's own comes after
+            // (`apply_own`). The network adapter holds it either way.
+            proxy: self.settings.download_proxy(url, context),
             dns: self.settings.dns(),
             route: self.route.clone(),
             // Through a debrid account when one takes this host (#44).
@@ -4677,7 +4679,7 @@ impl App {
             return;
         };
         // The browser's proxy needs its VPN extension's own login (#42): said, never bypassed.
-        if let Some(why) = self.settings.browser_proxy_refused(&context) {
+        if let Some(why) = self.settings.browser_proxy_refused(&url, &context) {
             if let Some(item) = self.item(id) {
                 item.status = Status::Error;
                 item.error = Some(why);
@@ -15067,6 +15069,8 @@ impl App {
             crate::pacfetch::watch_system(&self.rt);
         }
         crate::settings::share_proxy(self.settings.proxy());
+        // The site rules' proxies for the helpers' runs (#1960), as the pages' downloads get them.
+        mdm_tools::proc::set_site_rules(&self.settings.site_rules);
         crate::settings::share_dns(self.settings.dns());
         crate::settings::share_video_settings(&self.settings);
         crate::extractq::share_chosen_7zip(&self.settings.seven_zip_path);

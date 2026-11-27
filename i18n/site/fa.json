@@ -70,10 +70,6 @@
    "source": "A code signature lets Windows show who published a program and check that it wasn't changed after it was built. When a release of Mister Download Manager (\"MDM\") is signed, its signature covers the Windows files that come from this project:",
    "text": "امضای کد به Windows اجازه می‌دهد تا ناشر یک برنامه را نشان دهد و بررسی کند که پس از ساخت، تغییری در آن ایجاد نشده است. وقتی یک نسخه از Mister Download Manager («MDM») امضا می‌شود، امضای آن شامل فایل‌های Windows است که از این پروژه می‌آیند:"
   },
-  "01579d403b821195": {
-   "source": "<x1/> pull requests",
-   "text": "<x1/> درخواست پول"
-  },
   "015f73be8184c2cb": {
    "source": "Yes. MDM writes its progress as it goes, so after a lost connection, a crash or a restart it carries on where it stopped. Before resuming it checks that the file on the server hasn't changed. When a download address has expired, <g1>Refresh download address</g1> lets you give it a fresh one and keep the data. See <g2>Resume a broken download</g2>.",
    "text": "بله. MDM پیشرفت خود را در حین کار می‌نویسد، بنابراین پس از قطع اتصال، خرابی یا راه‌اندازی مجدد، از همان جایی که متوقف شده بود ادامه می‌دهد. قبل از ادامه، بررسی می‌کند که فایل روی سرور تغییر نکرده باشد. هنگامی که نشانی بارگیری منقضی شده است، <g1>تازه‌سازی نشانی بارگیری</g1> به شما امکان می‌دهد یک نشانی جدید به آن بدهید و داده‌ها را حفظ کنید. به <g2>ادامه بارگیری قطع شده</g2> مراجعه کنید."
@@ -229,10 +225,6 @@
   "03069bf346ba733c": {
    "source": "<g1>Help → About Mister Download Manager</g1> shows the version you have.",
    "text": "<g1>راهنما → درباره Mister Download Manager</g1> نسخه نصب‌شده را نشان می‌دهد."
-  },
-  "030e42728ee6a418": {
-   "source": "<g1>Pull requests</g1><g2><x3/> people</g2>",
-   "text": "<g1>درخواست‌های پول</g1><g2><x3/> نفر</g2>"
   },
   "031da5c20d1881e4": {
    "source": "Everything the Scheduler can do →",
@@ -2137,10 +2129,6 @@
   "1be93bd020009908": {
    "source": "<g1>The keyboard focus got lost</g1> when a button greyed itself or Escape closed a drop-down: Tab started over at the top of the window. It now moves on, or comes back, as in Windows.",
    "text": "<g1>فوکوس صفحه‌کلید از دست می‌رفت</g1> وقتی دکمه‌ای غیرفعال می‌شد یا Escape منوی کشویی را می‌بست: Tab دوباره از بالای پنجره شروع می‌کرد. اکنون مانند Windows به مورد بعدی می‌رود یا به مورد قبلی برمی‌گردد."
-  },
-  "1c004ef83082f283": {
-   "source": "<g1>Site rules...</g1> — a User-Agent, request headers, a number of connections and <g2>Always connect the way a browser does</g2>, by site. See <g3>Site rules</g3>.",
-   "text": "<g1>قوانین سایت…</g1> — یک User-Agent، سربرگ‌های درخواست، تعداد اتصالات و <g2>همیشه مانند مرورگر متصل شو</g2>، بر اساس سایت. به <g3>قوانین سایت</g3> مراجعه کنید."
   },
   "1c0101659f1e2203": {
    "source": "<g1>Feeds</g1>: the feeds it watches; none ticked, all of them.",
@@ -4362,10 +4350,6 @@
    "source": "<g1>Connection...</g1> — for a stopped download: its own User-Agent, request headers, proxy and number of connections, for when it goes on. MDM still checks it is the same file before it writes anything. See <g2>One download's settings</g2>.",
    "text": "<g1>اتصال…</g1> — برای یک بارگیری متوقف شده: User-Agent، سربرگ‌های درخواست، پروکسی و تعداد اتصالات مخصوص به خود، برای زمانی که ادامه می‌یابد. MDM همچنان قبل از نوشتن هر چیزی، بررسی می‌کند که فایل همان فایل قبلی باشد. به <g2>تنظیمات یک بارگیری</g2> مراجعه کنید."
   },
-  "39f69afa6e85f9d1": {
-   "source": "<g1>Issues</g1><g2><x3/> people</g2>",
-   "text": "<g1>مشکلات</g1><g2><x3/> نفر</g2>"
-  },
   "3a14e0e8b14737d7": {
    "source": "Choose <g1>Downloads → Speed Limiter → Turn on</g1>.",
    "text": "گزینه <g1>بارگیری‌ها → محدودکننده سرعت → روشن کردن</g1> را انتخاب کنید."
@@ -4909,6 +4893,10 @@
   "41054cd642019862": {
    "source": "Changes",
    "text": "تغییرات"
+  },
+  "41150cfc2e8c323a": {
+   "source": "Some sites want a particular User-Agent, an extra header or fewer connections, let only browsers through, or need a proxy (or none) when the others don't. <g1>Options → Connection → Site rules...</g1> sets these once for every download from a site:",
+   "text": "برخی سایت‌ها یک User-Agent خاص، یک سرآیند اضافی یا اتصالات کمتر می‌خواهند، فقط به مرورگرها اجازه عبور می‌دهند یا به یک پروکسی (یا هیچ‌کدام) نیاز دارند، در حالی که بقیه این‌طور نیستند. <g1>گزینه‌ها → اتصال → قوانین سایت...</g1> این موارد را یک بار برای هر بارگیری از یک سایت تنظیم می‌کند:"
   },
   "41333ec069d15e15": {
    "source": "A magnet link takes a long time",
@@ -5558,10 +5546,6 @@
    "source": "A key MDM doesn't know, or a value it can't read, is skipped and written to MDM's log (the <x1/> folder beside the themes folder), so a file made for a newer MDM still loads. The built-in themes are written the same way: <g2>read them on GitHub</g2>.",
    "text": "کلیدی که MDM نمی‌شناسد، یا مقداری که نمی‌تواند بخواند، نادیده گرفته شده و در گزارش MDM (پوشه <x1/> در کنار پوشه پوسته‌ها) نوشته می‌شود تا فایلی که برای MDM جدیدتر ساخته شده، همچنان بارگیری شود. پوسته‌های داخلی نیز به همین شیوه نوشته شده‌اند: <g2>آن‌ها را در GitHub بخوانید</g2>."
   },
-  "4ac401467a9a37d2": {
-   "source": "The downloads join the <g1>Main download queue</g1>, ready to start (<g2>Start</g2> starts it too). <g3>Tasks → Import → From IDM export file</g3> reads an <x4/> file, with each download's referrer and cookies.",
-   "text": "دانلودها به <g1>صف اصلی دانلود</g1> اضافه می‌شوند و آماده شروع هستند (<g2>شروع</g2> نیز آن را شروع می‌کند). <g3>وظایف → وارد کردن → از فایل خروجی IDM</g3> یک فایل <x4/> را می‌خواند که شامل ارجاع‌دهنده و کوکی‌های هر دانلود است."
-  },
   "4ace27f6171583db": {
    "source": "A <x1/> and a Compose file come with MDM's source. For now you build the image yourself; a published image comes later. The first build is long, up to an hour on a small server, and the image is small, about 175 MB, with no desktop libraries.",
    "text": "یک <x1/> و یک فایل Compose همراه با سورس MDM ارائه می‌شوند. در حال حاضر باید ایمیج را خودتان بسازید؛ یک ایمیج منتشرشده بعدا ارائه خواهد شد. اولین ساخت طولانی است، تا یک ساعت روی یک سرور کوچک، و ایمیج کوچک است، حدود 175 مگابایت، بدون کتابخانه‌های دسکتاپ."
@@ -6110,10 +6094,6 @@
    "source": "After a click it says what happened, in its own colour:",
    "text": "پس از کلیک، آنچه اتفاق افتاده است را با رنگ خودش بیان می‌کند:"
   },
-  "529f7c22e85ee030": {
-   "source": "Download a file with up to 8 connections (<x1/>, 1 to 128), showing progress. <x2/> pauses it; <x3/> continues. <x4/> sets the referring page address (Referer header), <x5/> sets the request's User-Agent (then the only one sent; without it, MDM speaks as your default browser, and, when a site's bot check refuses that and the way a browser connects too, once more under its own name), <x6/> sets the Cookie header (a cookie on the command line ends up in the shell's history; <x7/> reads it from standard input instead). <x8/> checks the finished file: hex MD5, SHA-1, SHA-256, SHA-512 or CRC32, optionally named (<x9/>). <x10/> picks the DNS instead of Options': <x11/>; a service and how to ask it, <x12/>, <x13/>, <x14/>, <x15/>, <x16/>; DNS servers' addresses, <x17/>; or a DNS-over-HTTPS address. It never falls back to the system's DNS. <x18/> sends every connection through one network adapter instead of Options' (<x19/> for none), by its name (<x20/>, <x21/>) or one of its addresses; when it isn't connected, nothing is sent and the download fails. <x22/> takes the place of Options' proxy for this run (see above). The app's <g23>site rules</g23> for the address apply too (their headers, User-Agent, browser-like connection and number of connections), where the command line gives none of the same. A link from a file host that one of your debrid accounts (<g24>Options → Accounts</g24>) supports goes through that account, as in the app, and <x25/> says <x26/>; <x27/> downloads the address itself (<g28>Debrid service accounts</g28>).",
-   "text": "یک فایل را با حداکثر 8 اتصال (<x1/>، 1 تا 128)، همراه با نمایش پیشرفت، بارگیری می‌کند. <x2/> آن را متوقف می‌کند؛ <x3/> ادامه می‌دهد. <x4/> آدرس صفحه ارجاع‌دهنده (سربرگ Referer) را تنظیم می‌کند، <x5/> User-Agent درخواست را تنظیم می‌کند (در این صورت فقط همین مورد ارسال می‌شود؛ بدون آن، MDM به‌عنوان مرورگر پیش‌فرض شما عمل می‌کند، و اگر بررسی ربات سایت آن را و نحوه اتصال مرورگر را رد کند، یک بار دیگر با نام خود MDM عمل می‌کند)، <x6/> سربرگ Cookie را تنظیم می‌کند (کوکی در خط فرمان به تاریخچه shell می‌رود؛ <x7/> آن را از ورودی استاندارد می‌خواند). <x8/> فایل تکمیل‌شده را بررسی می‌کند: MD5 هگز، SHA-1، SHA-256، SHA-512 یا CRC32، که به‌صورت اختیاری نام‌گذاری می‌شود (<x9/>). <x10/> DNS را به‌جای DNS تنظیم‌شده در Options انتخاب می‌کند: <x11/>؛ یک سرویس و نحوه درخواست از آن، <x12/>، <x13/>، <x14/>، <x15/>، <x16/>؛ آدرس سرورهای DNS، <x17/>؛ یا یک آدرس DNS-over-HTTPS. هرگز به DNS سیستم بازنمی‌گردد. <x18/> هر اتصال را به‌جای تنظیمات Options از طریق یک آداپتور شبکه ارسال می‌کند (<x19/> برای هیچ‌کدام)، با نام آن (<x20/>، <x21/>) یا یکی از آدرس‌های آن؛ اگر متصل نباشد، چیزی ارسال نمی‌شود و بارگیری با شکست مواجه می‌شود. <x22/> برای این اجرا جایگزین پراکسی تنظیم‌شده در Options می‌شود (به بالا مراجعه کنید). <g23>قوانین سایت</g23> برنامه برای آدرس نیز اعمال می‌شود (سربرگ‌ها، User-Agent، اتصال شبیه مرورگر و تعداد اتصالات)، در صورتی که خط فرمان هیچ‌یک از موارد مشابه را ارائه ندهد. پیوندی از یک میزبان فایل که یکی از حساب‌های debrid شما (<g24>Options → Accounts</g24>) از آن پشتیبانی می‌کند، مانند برنامه، از طریق آن حساب انجام می‌شود، و <x25/> می‌گوید <x26/>؛ <x27/> خود آدرس را بارگیری می‌کند (<g28>Debrid service accounts</g28>)."
-  },
   "52ceae361fb11f6c": {
    "source": "A list's, a table's or a box's outline",
    "text": "خط بیرونی فهرست، جدول یا کادر"
@@ -6165,10 +6145,6 @@
   "536df2f60bd48da6": {
    "source": "Success text (a matching checksum)",
    "text": "متن موفقیت (یک جمع کنترلی منطبق)"
-  },
-  "538fe2ede1fc4d57": {
-   "source": "The single-instance channel (a token-protected local socket), the data folder, the capture rules shared by the app and the host, and the site rules (#1778: a User-Agent, headers, connections and the browser-like connection by site pattern) shared by the app and the command line",
-   "text": "کانال تک‌نمونه (یک سوکت محلی محافظت‌شده با توکن)، پوشه داده، قوانین ضبط مشترک بین برنامه و میزبان، و قوانین سایت (شماره 1778: عامل کاربر، سربرگ‌ها، اتصالات و اتصال شبیه مرورگر بر اساس الگوی سایت) مشترک بین برنامه و خط فرمان"
   },
   "539160f92bae4422": {
    "source": "Being re-measured",
@@ -6473,10 +6449,6 @@
   "57d8abd136298ad0": {
    "source": "Windows 10/11 and Linux; macOS to try",
    "text": "Windows 10/11 و Linux؛ macOS آزمایشی"
-  },
-  "57df30288a29fe94": {
-   "source": "Made possible by these amazing humans",
-   "text": "ساخته شده به دست این انسان‌های شگفت‌انگیز"
   },
   "57e101e4403fd046": {
    "source": "Command",
@@ -8914,10 +8886,6 @@
    "source": "You need your own paid account with one of these services: MDM doesn't sell or include one. Sharing an account or its links breaks the services' terms and can get the account suspended.",
    "text": "شما به حساب پولی خود با یکی از این سرویس‌ها نیاز دارید: MDM هیچ حسابی را نمی‌فروشد یا شامل نمی‌شود. اشتراک‌گذاری یک حساب یا پیوندهای آن، شرایط سرویس‌ها را نقض می‌کند و می‌تواند منجر به تعلیق حساب شود."
   },
-  "7931468b8d7d517a": {
-   "source": "<x1/> <g2>Everyone who helped</g2>",
-   "text": "<x1/> <g2>همه کسانی که کمک کردند</g2>"
-  },
   "7957b18548166390": {
    "source": "Questions and answers — Mister Download Manager",
    "text": "پرسش و پاسخ — Mister Download Manager"
@@ -9077,14 +9045,6 @@
   "7b51945e72d7d774": {
    "source": "Testing archives",
    "text": "آزمایش بایگانی‌ها"
-  },
-  "7b65292951ac598b": {
-   "source": "Some sites want a particular User-Agent, an extra header or fewer connections, or let only browsers through. <g1>Options → Connection → Site rules...</g1> sets these once for every download from a site:",
-   "text": "برخی سایت‌ها یک User-Agent خاص، یک سربرگ اضافی یا تعداد اتصال کمتر می‌خواهند، یا فقط به مرورگرها اجازه عبور می‌دهند. <g1>گزینه‌ها ← اتصال ← قوانین سایت...</g1> این موارد را یک بار برای هر بارگیری از یک سایت تنظیم می‌کند:"
-  },
-  "7b655c3076cd7d8b": {
-   "source": "<g1>Tasks → Import → From text file</g1> and <g2>From IDM export file</g2>. An <x3/> file brings each download's referrer and cookies.",
-   "text": "<g1>وظایف ← وارد کردن ← از فایل متنی</g1> و <g2>از فایل خروجی IDM</g2>. یک فایل <x3/> ارجاع‌دهنده و کوکی‌های هر بارگیری را به همراه دارد."
   },
   "7b75149d61c4c0ff": {
    "source": "A download that is running isn't deleted. Stop it first.",
@@ -9377,6 +9337,10 @@
   "7ee169488133ab57": {
    "source": "Link grabber gathers many links at once, sorts them into packages, and lets you tick the ones to download. MDM can then extract the archives it downloaded…",
    "text": "رباینده پیوند، چندین پیوند را هم‌زمان جمع‌آوری و در بسته‌ها مرتب می‌کند و امکان انتخاب مواردی را که می‌خواهید بارگیری کنید فراهم می‌کند. سپس MDM می‌تواند بایگانی‌هایی را که بارگیری کرده است استخراج کند…"
+  },
+  "7ee305b094d7654d": {
+   "source": "The single-instance channel (a token-protected local socket), the data folder, the capture rules shared by the app and the host, and the site rules (#1778: a User-Agent, headers, connections, the browser-like connection and, #1960, a proxy by site pattern) shared by the app and the command line",
+   "text": "کانال تک‌نمونه‌ای (یک سوکت محلی محافظت‌شده با توکن)، پوشه داده، قوانین ضبط مشترک بین برنامه و میزبان، و قوانین سایت (شماره 1778: عامل کاربر، سربرگ‌ها، اتصالات، اتصال شبیه مرورگر و، شماره 1960، یک پروکسی بر اساس الگوی سایت) مشترک بین برنامه و خط فرمان"
   },
   "7ee9063b38514440": {
    "source": "Listed by",
@@ -9826,6 +9790,10 @@
    "source": "Every signed file is built from the public source code at <g1>github.com/anefzaoui/misterdownloadmanager</g1> by GitHub Actions, on GitHub's servers, never on a personal computer. Each one says it is Mister Download Manager and which version it is.",
    "text": "هر فایل امضا شده از کد منبع عمومی در <g1>github.com/anefzaoui/misterdownloadmanager</g1> توسط GitHub Actions، روی سرورهای GitHub ساخته می‌شود، نه روی یک رایانه شخصی. هر یک از آنها نشان می‌دهد که Mister Download Manager است و چه نسخه‌ای دارد."
   },
+  "8414d2ed3c86b744": {
+   "source": "Which proxy a download goes through: its own (below) first, then the first rule that names the site and sets a proxy, then <g1>Options → Proxy / Socks</g1> (and the browser's proxy, when <g2>Use proxy/socks from a browser's request</g2> is on). A rule's proxy also carries Download File Info's look-up and, for a video or gallery page the rule names, yt-dlp's and gallery-dl's look-up and the video's download, so the links they get are used from the same address. The <g3>Network adapter</g3> chosen in <g4>Options → Proxy / Socks</g4>, and its kill switch, still hold every connection: with an adapter chosen, nothing goes around it.",
+   "text": "بارگیری از کدام پروکسی عبور می‌کند: ابتدا پروکسی خودش (در پایین)، سپس اولین قانونی که سایت را نام می‌برد و یک پروکسی تنظیم می‌کند، سپس <g1>گزینه‌ها → پروکسی / SOCKS</g1> (و پروکسی مرورگر، زمانی که <g2>استفاده از پروکسی/SOCKS از درخواست مرورگر</g2> روشن است). پروکسی یک قانون همچنین جستجوی اطلاعات فایل بارگیری‌شده را انجام می‌دهد و برای یک صفحه ویدئو یا گالری که قانون نام می‌برد، جستجوی yt-dlp و gallery-dl و بارگیری ویدئو را نیز انجام می‌دهد، بنابراین پیوندهایی که دریافت می‌کنند از همان آدرس استفاده می‌شوند. <g3>کارت شبکه</g3> انتخاب‌شده در <g4>گزینه‌ها → پروکسی / SOCKS</g4> و سوئیچ قطع آن، همچنان همه اتصالات را نگه می‌دارند: با انتخاب یک کارت شبکه، هیچ چیز از آن عبور نمی‌کند."
+  },
   "842fc0e6d2b7d24d": {
    "source": "At the start time the queue starts on its own. In the morning, the finished files are under <g1>Finished</g1> in the categories.",
    "text": "در زمان شروع، صف خودکار آغاز می‌شود. صبح، فایل‌های تکمیل‌شده را در دسته‌بندی‌ها، زیر <g1>تکمیل‌شده</g1> پیدا می‌کنید."
@@ -9953,6 +9921,10 @@
   "8581b3f6f6759cc7": {
    "source": "Proxy / Socks: no proxy, the system's, or your own.",
    "text": "پروکسی / SOCKS: بدون پروکسی، پروکسی سیستم یا پروکسی دلخواه شما."
+  },
+  "8587f400d941af9d": {
+   "source": "<g1>Options → Connection → Site rules...</g1> gives every download from a site (<x2/>) its own User-Agent, extra request headers, number of connections, a browser's way of connecting from the first request, or a proxy: none, or one of its own, so only the sites that need a proxy go through one. A stopped download's <g3>Properties → Connection...</g3> changes its own headers, proxy and connections, and MDM still checks the file is the same one before it goes on.",
+   "text": "<g1>گزینه‌ها → اتصال → قوانین سایت…</g1> به هر بارگیری از یک سایت (<x2/>) اجازه می‌دهد User-Agent، سربرگ‌های درخواست اضافی، تعداد اتصالات، روش اتصال مرورگر از اولین درخواست، یا یک پروکسی مخصوص به خود را داشته باشد: هیچ‌کدام، یا یکی از پروکسی‌های خودش، تا فقط سایت‌هایی که نیاز به پروکسی دارند از آن استفاده کنند. <g3>ویژگی‌ها → اتصال…</g3> یک بارگیری متوقف‌شده، سربرگ‌ها، پروکسی و اتصالات خودش را تغییر می‌دهد، و MDM همچنان قبل از ادامه، بررسی می‌کند که فایل همان فایل قبلی است."
   },
   "85ab2d681187a715": {
    "source": "Not sure yet? <g1>Show it in the discussions</g1> first. The <g2>contributing guide</g2> explains how pull requests work here.",
@@ -10781,10 +10753,6 @@
   "91f7b61e72ddf0bc": {
    "source": "<g1>Acceleration and resume</g1><g2>A file split over up to 32 connections, re-split until the last byte, and resumed after any crash.</g2>",
    "text": "<g1>افزایش سرعت و ادامه بارگیری</g1><g2>یک فایل تا 32 اتصال تقسیم می‌شود، تا بایت آخر دوباره تقسیم می‌شود و پس از هر خرابی ادامه می‌یابد.</g2>"
-  },
-  "92055d4da1d101c5": {
-   "source": "<x1/> people who sent a pull request, reported a problem or joined a conversation on GitHub. <g2>Meet them all</g2>",
-   "text": "<x1/> افرادی که یک پول ریکوئست فرستادند، مشکلی را گزارش کردند یا به گفت‌وگو در GitHub پیوستند. <g2>با همه آن‌ها آشنا شوید</g2>"
   },
   "92078a4a178bf949": {
    "source": "A title bar MDM draws, while its window isn't the active one (transparent: as when active)",
@@ -11758,10 +11726,6 @@
    "source": "Send downloads from your browser",
    "text": "ارسال دانلودها از مرورگر شما"
   },
-  "9e23173a22cf615a": {
-   "source": "<x1/> comment",
-   "text": "<x1/> نظر"
-  },
   "9e2414e7eb93b062": {
    "source": "Windows 7's feel: glossy buttons, a glassy title bar and a glossy green progress bar.",
    "text": "حس Windows 7: دکمه‌های براق، نوار عنوان شیشه‌ای و نوار پیشرفت سبز براق."
@@ -11897,6 +11861,10 @@
   "9f782f136a8bb467": {
    "source": "The built-in categories can now be renamed, given other file types, or deleted.",
    "text": "دسته‌بندی‌های داخلی اکنون می‌توانند تغییر نام داده، انواع فایل دیگری به آن‌ها اختصاص داده شده یا حذف شوند."
+  },
+  "9f7cefd031ac2a9a": {
+   "source": "Download a file with up to 8 connections (<x1/>, 1 to 128), showing progress. <x2/> pauses it; <x3/> continues. <x4/> sets the referring page address (Referer header), <x5/> sets the request's User-Agent (then the only one sent; without it, MDM speaks as your default browser, and, when a site's bot check refuses that and the way a browser connects too, once more under its own name), <x6/> sets the Cookie header (a cookie on the command line ends up in the shell's history; <x7/> reads it from standard input instead). <x8/> checks the finished file: hex MD5, SHA-1, SHA-256, SHA-512 or CRC32, optionally named (<x9/>). <x10/> picks the DNS instead of Options': <x11/>; a service and how to ask it, <x12/>, <x13/>, <x14/>, <x15/>, <x16/>; DNS servers' addresses, <x17/>; or a DNS-over-HTTPS address. It never falls back to the system's DNS. <x18/> sends every connection through one network adapter instead of Options' (<x19/> for none), by its name (<x20/>, <x21/>) or one of its addresses; when it isn't connected, nothing is sent and the download fails. <x22/> takes the place of Options' proxy for this run (see above). The app's <g23>site rules</g23> for the address apply too (their headers, User-Agent, browser-like connection, number of connections and proxy), where the command line gives none of the same: <x24/> goes before every rule's proxy. A link from a file host that one of your debrid accounts (<g25>Options → Accounts</g25>) supports goes through that account, as in the app, and <x26/> says <x27/>; <x28/> downloads the address itself (<g29>Debrid service accounts</g29>).",
+   "text": "فایلی را با حداکثر 8 اتصال (<x1/>، 1 تا 128)، همراه با نمایش پیشرفت، بارگیری می‌کند. <x2/> آن را متوقف می‌کند؛ <x3/> ادامه می‌دهد. <x4/> آدرس صفحه ارجاع‌دهنده (سربرگ Referer) را تنظیم می‌کند، <x5/> User-Agent درخواست را تنظیم می‌کند (در این صورت فقط همین مورد ارسال می‌شود؛ بدون آن، MDM خود را مرورگر پیش‌فرض شما معرفی می‌کند و اگر بررسی ربات سایت آن را رد کند و همچنین روش اتصال مرورگر را نیز رد کند، یک بار دیگر با نام خود MDM ارتباط برقرار می‌کند)، <x6/> سربرگ Cookie را تنظیم می‌کند (کوکی در خط فرمان در تاریخچه پوسته ذخیره می‌شود؛ <x7/> آن را از ورودی استاندارد می‌خواند). <x8/> فایل تکمیل‌شده را بررسی می‌کند: MD5، SHA-1، SHA-256، SHA-512 یا CRC32 هگزادسیمال، که به صورت اختیاری نام‌گذاری شده است (<x9/>). <x10/> DNS را به جای DNS تنظیم‌شده در «گزینه‌ها» انتخاب می‌کند: <x11/>؛ یک سرویس و نحوه درخواست از آن، <x12/>، <x13/>، <x14/>، <x15/>، <x16/>؛ آدرس سرورهای DNS، <x17/>؛ یا یک آدرس DNS-over-HTTPS. هرگز به DNS سیستم بازنمی‌گردد. <x18/> هر اتصال را به جای تنظیمات «گزینه‌ها» از طریق یک آداپتور شبکه ارسال می‌کند (<x19/> برای هیچ‌کدام)، با نام آن (<x20/>، <x21/>) یا یکی از آدرس‌های آن؛ وقتی متصل نباشد، چیزی ارسال نمی‌شود و بارگیری با شکست مواجه می‌شود. <x22/> برای این اجرا جایگزین پراکسی تنظیم‌شده در «گزینه‌ها» می‌شود (به بالا مراجعه کنید). <g23>قوانین سایت</g23> برنامه برای آدرس نیز اعمال می‌شود (سربرگ‌ها، User-Agent، اتصال شبیه مرورگر، تعداد اتصالات و پراکسی)، در جایی که خط فرمان هیچ‌یک از موارد مشابه را ارائه نمی‌دهد: <x24/> قبل از پراکسی هر قانون قرار می‌گیرد. پیوندی از یک میزبان فایل که یکی از حساب‌های debrid شما (<g25>گزینه‌ها ← حساب‌ها</g25>) از آن پشتیبانی می‌کند، مانند برنامه، از طریق آن حساب انجام می‌شود و <x26/> می‌گوید <x27/>؛ <x28/> خود آدرس را بارگیری می‌کند (<g29>حساب‌های سرویس debrid</g29>)."
   },
   "9f93bf61864af099": {
    "source": "Plainly: everyone sharing the same torrent sees your IP address. That is how BitTorrent works, and no setting changes it. To hide it, use a VPN for the whole computer. <g1>Torrents and your security</g1> says what others can see.",
@@ -15358,10 +15326,6 @@
    "source": "Link grabber and archives — Mister Download Manager help",
    "text": "دریافت‌کننده پیوند و بایگانی‌ها — راهنمای Mister Download Manager"
   },
-  "ce5bf471e6fccfb8": {
-   "source": "<g1>Comments</g1><g2><x3/> people</g2>",
-   "text": "<g1>نظرات</g1><g2><x3/> نفر</g2>"
-  },
   "ce6720d5953dad4f": {
    "source": "The previous / next button (greyed ones too: a screen reader says they are unavailable)",
    "text": "دکمه قبلی / بعدی (دکمه‌های خاکستری نیز: صفحه‌خوان می‌گوید که آنها در دسترس نیستند)"
@@ -15965,10 +15929,6 @@
   "d6470f6add1181a2": {
    "source": "Mister Download Manager and IDM, side by side.",
    "text": "Mister Download Manager و IDM، کنار هم."
-  },
-  "d65efc937a364b03": {
-   "source": "<x1/> issue",
-   "text": "<x1/> مشکل"
   },
   "d663f408764b1150": {
    "source": "Replay",
@@ -16794,6 +16754,10 @@
    "source": "How do I report a bug or ask for a feature? — Mister Download Manager",
    "text": "چگونه یک باگ را گزارش کنم یا درخواستی برای یک ویژگی بدهم؟ — Mister Download Manager"
   },
+  "e356f60156d8a735": {
+   "source": "<g1>Site rules...</g1> — a User-Agent, request headers, a number of connections, <g2>Always connect the way a browser does</g2> and a proxy (none, or one of its own with its login), by site. See <g3>Site rules</g3>.",
+   "text": "<g1>قوانین سایت…</g1> — عامل کاربر، سربرگ‌های درخواست، تعداد اتصال‌ها، <g2>همیشه مانند مرورگر متصل شو</g2> و یک پروکسی (هیچ‌کدام، یا پروکسی خودش با اطلاعات ورود) بر اساس سایت. به <g3>قوانین سایت</g3> مراجعه کنید."
+  },
   "e3696cca91bc9263": {
    "source": "A browser fetches a file over one connection. MDM asks the server for several parts of the file at once, up to 32 connections (128 if you allow it), and keeps re-splitting: when a connection finishes its part, it takes over half of the biggest part still left, so no slow connection holds up the end. It also remembers servers that refuse extra connections and stops asking them. See <g1>Connections and speed</g1>.",
    "text": "مرورگر فایل را با یک اتصال دریافت می‌کند. MDM همزمان از سرور چندین قسمت از فایل را درخواست می‌کند، تا 32 اتصال (128 اگر شما اجازه دهید)، و به تقسیم مجدد ادامه می‌دهد: وقتی یک اتصال کار خود را تمام می‌کند، نیمی از بزرگترین قسمت باقی‌مانده را بر عهده می‌گیرد، بنابراین هیچ اتصال کندی پایان کار را به تأخیر نمی‌اندازد. همچنین سرورهایی را که اتصالات اضافی را رد می‌کنند به خاطر می‌سپارد و دیگر از آنها درخواست نمی‌کند. به <g1>اتصالات و سرعت</g1> مراجعه کنید."
@@ -17061,10 +17025,6 @@
   "e6b85e1428494d1c": {
    "source": "No, if it came from this site or GitHub Releases. Some antivirus programs judge a program they don't know by an educated guess, not by a known virus…",
    "text": "خیر، اگر از این سایت یا انتشارات GitHub دریافت شده باشد. برخی از برنامه‌های آنتی‌ویروس، برنامه‌ای را که نمی‌شناسند، با حدس و گمان ارزیابی می‌کنند، نه بر اساس ویروس‌های شناخته‌شده…"
-  },
-  "e6e4ffbd1a17c7e8": {
-   "source": "<x1/> pull request",
-   "text": "<x1/> درخواست پول"
   },
   "e6e9f590b183bea4": {
    "source": "Link grabber: paste many links, MDM groups them, checks which are online, and extracts archives when they arrive.",
@@ -17878,10 +17838,6 @@
    "source": "More questions",
    "text": "سوالات بیشتر"
   },
-  "f0964936a9646338": {
-   "source": "<g1>Options → Connection → Site rules...</g1> gives every download from a site (<x2/>) its own User-Agent, extra request headers, number of connections, or a browser's way of connecting from the first request. A stopped download's <g3>Properties → Connection...</g3> changes its own headers, proxy and connections, and MDM still checks the file is the same one before it goes on.",
-   "text": "<g1>گزینه‌ها → اتصال → قوانین سایت…</g1> به هر بارگیری از یک سایت (<x2/>) امکان می‌دهد تا User-Agent، سربرگ‌های درخواست اضافی، تعداد اتصالات، یا روش اتصال مرورگر را از اولین درخواست خود داشته باشد. <g3>ویژگی‌ها → اتصال…</g3> یک بارگیری متوقف‌شده، سربرگ‌ها، پروکسی و اتصالات آن را تغییر می‌دهد و MDM همچنان قبل از ادامه، بررسی می‌کند که فایل همان فایل قبلی است."
-  },
   "f09a7e7e0cc71c2e": {
    "source": "In the system's keychain, as are Sites Logins' passwords and the proxy's. MDM's settings keep only a reference to it. <g1>Options → Accounts</g1> says where they are on your computer.",
    "text": "در زنجیره کلید سیستم، مانند گذرواژه‌های «ورود به سایت‌ها» و گذرواژه پراکسی. تنظیمات MDM فقط یک ارجاع به آن را نگه می‌دارد. <g1>گزینه‌ها ← حساب‌ها</g1> نشان می‌دهد که آن‌ها در کجای رایانه شما قرار دارند."
@@ -17901,6 +17857,10 @@
   "f0f10f730052f164": {
    "source": "<g1>Windows, Mac and Linux</g1><g2>Mister Download Manager</g2>",
    "text": "<g1>Windows، مک و Linux</g1><g2>Mister Download Manager</g2>"
+  },
+  "f0ff5ae3081fa8a5": {
+   "source": "<g1>Proxy</g1> — <g2>As in Options</g2> (the default: <g3>Options → Proxy / Socks</g3> decides), <g4>No proxy</g4> (straight to the site, whatever Options says), or <g5>This proxy:</g5> one of its own, typed as a download's own proxy is, <x6/>, <x7/>, <x8/>, <x9/> (<x10/> to have the proxy look the site's name up). <g11>Proxy user</g11> and <g12>Password</g12> are its login, if it needs one; the password is kept with MDM's other passwords (in the system's keychain), never in the settings file as it is. This replaces switching Options back and forth, or writing a proxy auto-config script, when only some sites need a proxy.",
+   "text": "<g1>پروکسی</g1> — <g2>مطابق تنظیمات</g2> (پیش‌فرض: <g3>گزینه‌ها → پروکسی / SOCKS</g3> تصمیم می‌گیرد)، <g4>بدون پروکسی</g4> (مستقیما به سایت، هر آنچه تنظیمات می‌گوید)، یا <g5>این پروکسی:</g5> یکی از پروکسی‌های خودش، که مانند پروکسی خود بارگیری تایپ می‌شود، <x6/>، <x7/>، <x8/>، <x9/> (<x10/> برای اینکه پروکسی نام سایت را جستجو کند). <g11>کاربر پروکسی</g11> و <g12>گذرواژه</g12> اطلاعات ورود به آن هستند، اگر نیاز داشته باشد؛ گذرواژه با سایر گذرواژه‌های MDM (در زنجیره کلید سیستم) نگهداری می‌شود، هرگز در فایل تنظیمات به همان صورت نیست. این کار جایگزین جابه‌جایی مداوم تنظیمات یا نوشتن یک اسکریپت پیکربندی خودکار پروکسی می‌شود، زمانی که فقط برخی سایت‌ها به پروکسی نیاز دارند."
   },
   "f10113695e758efd": {
    "source": "A playlist's or channel's videos, one line each as they're listed: its place, length, title and address.",
@@ -18346,10 +18306,6 @@
    "source": "<g1>Stop sharing after sharing for … minutes</g1> — or once it has been shared that long, over all its runs. Off by default.",
    "text": "<g1>توقف اشتراک‌گذاری پس از اشتراک‌گذاری به مدت … دقیقه</g1> — یا وقتی این مدت در مجموع اجراهایش سپری شود. به‌طور پیش‌فرض خاموش است."
   },
-  "f821c9c149c3e050": {
-   "source": "<x1/> comments",
-   "text": "<x1/> نظر"
-  },
   "f82dc8051d1faab0": {
    "source": "names besides its addresses the page may be opened by",
    "text": "نام‌هایی علاوه بر آدرس‌های آن که صفحه ممکن است با آنها باز شود"
@@ -18453,10 +18409,6 @@
   "f99db8564b0343d7": {
    "source": "What's new in version 0.5.0 <g1>2026-11-08</g1>",
    "text": "تازه‌های نسخه 0.5.0 <g1>2026-11-08</g1>"
-  },
-  "f9a8db1326e07676": {
-   "source": "<x1/> issues",
-   "text": "<x1/> مشکل"
   },
   "f9b1393934105e30": {
    "source": "Yes. The portable download is a zip: unzip it anywhere, a USB stick included, and run it. Your downloads list and settings stay in its own <x1/> folder, so nothing is written to the computer. See <g2>Portable mode</g2>.",

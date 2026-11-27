@@ -301,7 +301,7 @@
 #. text in the Options window
 #. Site rules window: in the empty list of rules, under its title
 #, machine
-	A rule sets the connections, User-Agent or headers for one site.	规则可为单个站点设置连接、User-Agent 或标头。
+	A rule sets the connections, User-Agent, headers or proxy for one site.	规则为特定站点设置连接、User-Agent、标头或代理。
 #. text in errors.rs
 #. an error: a server on this computer redirected the download to the internet, which would not go through the chosen network adapter; {adapter} its name
 #, machine
@@ -1150,6 +1150,10 @@
 #. window title: a download's own request settings (User-Agent, headers, connections, proxy), from File Properties → Connection...
 #, machine
 	Connection settings	连接设置
+#. text in the Options window
+#. Options → Connection: beside the Site rules... button: what it sets (a User-Agent, request headers, a number of connections, a proxy, each for the sites a rule names)
+#, machine
+	Connection settings by site	按站点设置连接
 #. message or event log entry in the main window
 #. event log: File Properties → Connection settings changed the download's own User-Agent, headers, proxy or connections
 #, machine
@@ -3923,9 +3927,10 @@
 #. text in the Batch download window; text in a dialog box; label in the Options window; text in the Options window; text in a download's Properties window
 #, machine
 	Password	密码
-#. text in the Link grabber window; text in the Options window
+#. text in the Link grabber window; text in the Options window; text in requestedit.rs
 #. Link grabber: the package's archives' password (a label before its box)
 #. Options → Add an account: label before the field for the password at the debrid service
+#. Site rule: label before the proxy's password, beside its user name
 #, machine
 	Password:	密码：
 #. text in the Add torrent window
@@ -4061,6 +4066,10 @@
 #. text in a download's progress window
 #, machine
 	Property	属性
+#. text in the Options window
+#. Site rules: column title: the rule's proxy (empty: the one in Options → Proxy / Socks; "No proxy"; or its address)
+#, machine
+	Proxy	代理
 #. text in errors.rs; text in the Options window
 #. tab title
 #, machine
@@ -4075,6 +4084,10 @@
 #. label in the Options window
 #, machine
 	Proxy server address	代理服务器地址
+#. text in requestedit.rs
+#. Site rule: label before the proxy's user name (its login), under the proxy's address
+#, machine
+	Proxy user:	代理用户：
 #. text in requestedit.rs
 #. Site rule / a download's Connection settings: label before the proxy choice
 #, machine
@@ -5427,6 +5440,10 @@
 #. why a download failed (#1102): the folder and file name together are longer than Windows allows ({limit} characters, 259), counting the temporary files saved beside the file while it downloads (their names are longer). {path} = the path
 #, machine
 	the path is too long for Windows: at most {limit} characters with the files saved while it downloads. Choose a shorter file name or folder ({path})	Windows 路径过长：下载时保存的文件最多 {limit} 个字符。请选择较短的文件名或文件夹 ({path})
+#. text in requestedit.rs
+#. Site rule: the proxy's user name or password holds a control character (a line break, a tab)
+#, machine
+	The proxy's user name and password can't hold line breaks or tabs	代理用户名和密码不能包含换行符或制表符
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. why updates could not be checked: the newest release on the site has no number
 #, machine
@@ -6116,6 +6133,10 @@
 #. a download's Connection settings: the proxy typed isn't an address MDM takes; the examples stay as they are
 #, machine
 	Type the proxy as host:port, http://host:port or socks5://host:port	请将代理输入为 host:port、http://host:port 或 socks5://host:port
+#. text in requestedit.rs
+#. Site rule: a password was typed for the proxy, but no user name
+#, machine
+	Type the proxy's user name too, or leave its password empty	请同时输入代理用户名，或将密码留空
 #. text in the Scheduler window
 #. why OK is greyed when naming a new queue
 #, machine
@@ -6320,10 +6341,6 @@
 #. text in the Options window
 #, machine
 	User-Agent for manually added downloads:	手动添加下载任务的用户代理：
-#. text in the Options window
-#. Options → Connection: beside the Site rules... button: what it sets
-#, machine
-	User-Agent, headers and connections by site	按站点设置 User-Agent、标头和连接
 #. text in requestedit.rs
 #. Site rule / a download's Connection settings: label before the User-Agent box (the name the browser or program gives itself to sites)
 #, machine

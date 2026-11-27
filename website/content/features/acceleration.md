@@ -41,8 +41,9 @@ a number for a server yourself there too.
 <!--@coming 0.6.0-->
 
 **Options → Connection → Site rules...** gives every download from a site (`*.example.com`) its
-own User-Agent, extra request headers, number of connections, or a browser's way of connecting
-from the first request. A stopped download's **Properties → Connection...** changes its own
+own User-Agent, extra request headers, number of connections, a browser's way of connecting
+from the first request, or a proxy: none, or one of its own, so only the sites that need a proxy
+go through one. A stopped download's **Properties → Connection...** changes its own
 headers, proxy and connections, and MDM still checks the file is the same one before it goes on.
 
 ## More than 32, if you want them

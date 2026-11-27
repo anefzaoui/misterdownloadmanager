@@ -573,6 +573,13 @@ Everything below ships together, in version 0.6.0, the next release.
   (a proxy in Options → Proxy / Socks, or Helpers → Use another program)
   ([#1926](https://github.com/anefzaoui/misterdownloadmanager/issues/1926); thanks to
   [@HandSome507](https://github.com/HandSome507))
+- ✅ Site rules give a site a proxy: **No proxy** (straight to the site) or one of its own
+  (`host:port`, `socks5://…`) with its login, kept with MDM's other passwords; a download's own
+  proxy first, then the first rule that names the site and sets one, then Options. Video and
+  gallery look-ups for that site go through it too, and the network adapter still holds every
+  connection ([#1960](https://github.com/anefzaoui/misterdownloadmanager/issues/1960), from
+  [#1619](https://github.com/anefzaoui/misterdownloadmanager/discussions/1619); thanks to
+  [@MoeHero](https://github.com/MoeHero))
 - ✅ A download's progress window can start minimized: **Options → Downloads → Customize
   "Download progress" dialog → Edit...** offers **Show normally**, **Show minimized** and
   **Don't show** ([#1966](https://github.com/anefzaoui/misterdownloadmanager/issues/1966); thanks to

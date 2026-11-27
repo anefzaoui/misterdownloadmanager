@@ -2130,10 +2130,6 @@
    "source": "<g1>The keyboard focus got lost</g1> when a button greyed itself or Escape closed a drop-down: Tab started over at the top of the window. It now moves on, or comes back, as in Windows.",
    "text": "<g1>键盘焦点会丢失</g1>：按钮变灰或按 Escape 关闭下拉菜单时，按 Tab 会从窗口顶部重新开始。现在，焦点会像在 Windows 中一样继续移动或返回。"
   },
-  "1c004ef83082f283": {
-   "source": "<g1>Site rules...</g1> — a User-Agent, request headers, a number of connections and <g2>Always connect the way a browser does</g2>, by site. See <g3>Site rules</g3>.",
-   "text": "<g1>站点规则…</g1> — 按站点设置用户代理、请求头、连接数和<g2>始终以浏览器方式连接</g2>。参见<g3>站点规则</g3>。"
-  },
   "1c0101659f1e2203": {
    "source": "<g1>Feeds</g1>: the feeds it watches; none ticked, all of them.",
    "text": "<g1>源</g1>：规则适用的源；如果没有勾选任何源，则适用于所有源。"
@@ -4898,6 +4894,10 @@
    "source": "Changes",
    "text": "变更"
   },
+  "41150cfc2e8c323a": {
+   "source": "Some sites want a particular User-Agent, an extra header or fewer connections, let only browsers through, or need a proxy (or none) when the others don't. <g1>Options → Connection → Site rules...</g1> sets these once for every download from a site:",
+   "text": "有些网站要求特定的用户代理、额外的请求头或更少的连接数，只允许浏览器访问，或者在其他网站不需要代理时，它们需要（或不需要）代理。<g1>选项 → 连接 → 站点规则...</g1> 可以为来自某个网站的每次下载设置这些规则："
+  },
   "41333ec069d15e15": {
    "source": "A magnet link takes a long time",
    "text": "磁力链接需要很长时间"
@@ -5546,10 +5546,6 @@
    "source": "A key MDM doesn't know, or a value it can't read, is skipped and written to MDM's log (the <x1/> folder beside the themes folder), so a file made for a newer MDM still loads. The built-in themes are written the same way: <g2>read them on GitHub</g2>.",
    "text": "MDM 不认识的键或无法读取的值将被跳过并写入 MDM 日志（主题文件夹旁边的 <x1/> 文件夹），因此为较新 MDM 创建的文件仍然可以加载。内置主题也是以相同方式编写的：<g2>在 GitHub 上阅读它们</g2>。"
   },
-  "4ac401467a9a37d2": {
-   "source": "The downloads join the <g1>Main download queue</g1>, ready to start (<g2>Start</g2> starts it too). <g3>Tasks → Import → From IDM export file</g3> reads an <x4/> file, with each download's referrer and cookies.",
-   "text": "下载会加入<g1>主下载队列</g1>，等待开始（点击<g2>开始</g2>也可启动队列）。<g3>任务 → 导入 → 从 IDM 导出文件</g3>可读取<x4/>文件，其中包含每个下载的来源页和 Cookie。"
-  },
   "4ace27f6171583db": {
    "source": "A <x1/> and a Compose file come with MDM's source. For now you build the image yourself; a published image comes later. The first build is long, up to an hour on a small server, and the image is small, about 175 MB, with no desktop libraries.",
    "text": "MDM 的源代码中包含一个 <x1/> 和一个 Compose 文件。目前您需要自行构建镜像；已发布的镜像将在稍后提供。首次构建时间较长，在小型服务器上可能长达一小时，但镜像很小，大约 175 MB，不包含桌面库。"
@@ -6098,10 +6094,6 @@
    "source": "After a click it says what happened, in its own colour:",
    "text": "点击后，它会用自己的颜色显示发生的情况："
   },
-  "529f7c22e85ee030": {
-   "source": "Download a file with up to 8 connections (<x1/>, 1 to 128), showing progress. <x2/> pauses it; <x3/> continues. <x4/> sets the referring page address (Referer header), <x5/> sets the request's User-Agent (then the only one sent; without it, MDM speaks as your default browser, and, when a site's bot check refuses that and the way a browser connects too, once more under its own name), <x6/> sets the Cookie header (a cookie on the command line ends up in the shell's history; <x7/> reads it from standard input instead). <x8/> checks the finished file: hex MD5, SHA-1, SHA-256, SHA-512 or CRC32, optionally named (<x9/>). <x10/> picks the DNS instead of Options': <x11/>; a service and how to ask it, <x12/>, <x13/>, <x14/>, <x15/>, <x16/>; DNS servers' addresses, <x17/>; or a DNS-over-HTTPS address. It never falls back to the system's DNS. <x18/> sends every connection through one network adapter instead of Options' (<x19/> for none), by its name (<x20/>, <x21/>) or one of its addresses; when it isn't connected, nothing is sent and the download fails. <x22/> takes the place of Options' proxy for this run (see above). The app's <g23>site rules</g23> for the address apply too (their headers, User-Agent, browser-like connection and number of connections), where the command line gives none of the same. A link from a file host that one of your debrid accounts (<g24>Options → Accounts</g24>) supports goes through that account, as in the app, and <x25/> says <x26/>; <x27/> downloads the address itself (<g28>Debrid service accounts</g28>).",
-   "text": "下载文件，最多 8 个连接（<x1/>，1 到 128），显示进度。<x2/> 暂停；<x3/> 继续。<x4/> 设置引用页面地址（Referer 头），<x5/> 设置请求的用户代理（User-Agent）（此时只发送此项；若无此项，MDM 会以您的默认浏览器身份通信，当网站的机器人检查拒绝此身份和浏览器连接方式时，MDM 会再次以其自身名称通信），<x6/> 设置 Cookie 头（命令行中的 Cookie 会留在 shell 历史记录中；<x7/> 则从标准输入读取）。<x8/> 检查完成的文件：十六进制 MD5、SHA-1、SHA-256、SHA-512 或 CRC32，可选择命名（<x9/>）。<x10/> 选择 DNS 而非“选项”中的：<x11/>；一个服务及其查询方式，<x12/>、<x13/>、<x14/>、<x15/>、<x16/>；DNS 服务器地址，<x17/>；或一个 DNS-over-HTTPS 地址。它绝不会回退到系统的 DNS。<x18/> 将所有连接通过一个网络适配器发送，而非“选项”中的（<x19/> 表示不使用），通过其名称（<x20/>、<x21/>）或其某个地址；如果未连接，则不发送任何内容，下载失败。<x22/> 在本次运行中取代“选项”中的代理（见上文）。应用程序的<g23>站点规则</g23>也适用于该地址（其头、用户代理、类似浏览器的连接和连接数），前提是命令行未提供相同内容。来自您的某个 Debrid 账户（<g24>选项 → 账户</g24>）支持的文件主机链接会通过该账户，与应用程序中一样，<x25/> 表示 <x26/>；<x27/> 下载地址本身（<g28>Debrid 服务账户</g28>）。"
-  },
   "52ceae361fb11f6c": {
    "source": "A list's, a table's or a box's outline",
    "text": "列表、表格或方框的轮廓"
@@ -6153,10 +6145,6 @@
   "536df2f60bd48da6": {
    "source": "Success text (a matching checksum)",
    "text": "成功文本（匹配的校验和）"
-  },
-  "538fe2ede1fc4d57": {
-   "source": "The single-instance channel (a token-protected local socket), the data folder, the capture rules shared by the app and the host, and the site rules (#1778: a User-Agent, headers, connections and the browser-like connection by site pattern) shared by the app and the command line",
-   "text": "单实例通道（受令牌保护的本地套接字）、数据文件夹、应用程序和主机共享的捕获规则，以及应用程序和命令行共享的站点规则（#1778：用户代理、标头、连接和按站点模式的类似浏览器的连接）"
   },
   "539160f92bae4422": {
    "source": "Being re-measured",
@@ -9058,14 +9046,6 @@
    "source": "Testing archives",
    "text": "测试压缩包"
   },
-  "7b65292951ac598b": {
-   "source": "Some sites want a particular User-Agent, an extra header or fewer connections, or let only browsers through. <g1>Options → Connection → Site rules...</g1> sets these once for every download from a site:",
-   "text": "某些站点需要特定的用户代理、额外的标头或更少的连接，或者只允许浏览器访问。“<g1>选项 → 连接 → 站点规则...</g1>”可以为来自某个站点的所有下载一次性设置这些规则："
-  },
-  "7b655c3076cd7d8b": {
-   "source": "<g1>Tasks → Import → From text file</g1> and <g2>From IDM export file</g2>. An <x3/> file brings each download's referrer and cookies.",
-   "text": "<g1>任务 → 导入 → 从文本文件</g1>和<g2>从 IDM 导出文件</g2>。<x3/>文件会包含每个下载的引用页和 Cookie。"
-  },
   "7b75149d61c4c0ff": {
    "source": "A download that is running isn't deleted. Stop it first.",
    "text": "正在下载的任务不会被删除。请先停止下载。"
@@ -9361,6 +9341,10 @@
   "7ee169488133ab57": {
    "source": "Link grabber gathers many links at once, sorts them into packages, and lets you tick the ones to download. MDM can then extract the archives it downloaded…",
    "text": "链接抓取器可一次收集多个链接，将它们整理到不同的包中，并让您勾选要下载的链接。之后，MDM 还可以提取下载的存档…"
+  },
+  "7ee305b094d7654d": {
+   "source": "The single-instance channel (a token-protected local socket), the data folder, the capture rules shared by the app and the host, and the site rules (#1778: a User-Agent, headers, connections, the browser-like connection and, #1960, a proxy by site pattern) shared by the app and the command line",
+   "text": "单实例通道（受令牌保护的本地套接字）、数据文件夹、应用程序和主机共享的捕获规则，以及应用程序和命令行共享的站点规则（#1778：用户代理、请求头、连接、类似浏览器的连接，以及 #1960：按站点模式设置的代理）"
   },
   "7ee9063b38514440": {
    "source": "Listed by",
@@ -9810,6 +9794,10 @@
    "source": "Every signed file is built from the public source code at <g1>github.com/anefzaoui/misterdownloadmanager</g1> by GitHub Actions, on GitHub's servers, never on a personal computer. Each one says it is Mister Download Manager and which version it is.",
    "text": "每个签名文件都由 GitHub Actions 在 GitHub 服务器上，而非个人计算机上，从 <g1>github.com/anefzaoui/misterdownloadmanager</g1> 的公共源代码构建。每个文件都表明它是 Mister Download Manager 及其版本。"
   },
+  "8414d2ed3c86b744": {
+   "source": "Which proxy a download goes through: its own (below) first, then the first rule that names the site and sets a proxy, then <g1>Options → Proxy / Socks</g1> (and the browser's proxy, when <g2>Use proxy/socks from a browser's request</g2> is on). A rule's proxy also carries Download File Info's look-up and, for a video or gallery page the rule names, yt-dlp's and gallery-dl's look-up and the video's download, so the links they get are used from the same address. The <g3>Network adapter</g3> chosen in <g4>Options → Proxy / Socks</g4>, and its kill switch, still hold every connection: with an adapter chosen, nothing goes around it.",
+   "text": "下载任务通过哪个代理：首先是它自己的代理（如下），然后是第一个指定该网站并设置了代理的规则，然后是<g1>选项 → 代理/SOCKS</g1>（当<g2>使用浏览器请求中的代理/SOCKS</g2>开启时，也包括浏览器的代理）。规则中的代理也用于“下载文件信息”的查找，以及对于规则中指定的视频或图库页面，yt-dlp 和 gallery-dl 的查找和视频下载，这样它们获取的链接都来自同一个地址。<g3>选项 → 代理/SOCKS</g3>中选择的<g4>网络适配器</g4>及其断路开关仍然适用于所有连接：一旦选择了适配器，所有连接都将通过它。"
+  },
   "842fc0e6d2b7d24d": {
    "source": "At the start time the queue starts on its own. In the morning, the finished files are under <g1>Finished</g1> in the categories.",
    "text": "到达开始时间后，队列会自动启动。早上，可以在类别下的<g1>已完成</g1>中找到已完成的文件。"
@@ -9937,6 +9925,10 @@
   "8581b3f6f6759cc7": {
    "source": "Proxy / Socks: no proxy, the system's, or your own.",
    "text": "代理/Socks：不使用代理、使用系统代理或使用自定义代理。"
+  },
+  "8587f400d941af9d": {
+   "source": "<g1>Options → Connection → Site rules...</g1> gives every download from a site (<x2/>) its own User-Agent, extra request headers, number of connections, a browser's way of connecting from the first request, or a proxy: none, or one of its own, so only the sites that need a proxy go through one. A stopped download's <g3>Properties → Connection...</g3> changes its own headers, proxy and connections, and MDM still checks the file is the same one before it goes on.",
+   "text": "<g1>选项 → 连接 → 站点规则...</g1> 可为来自特定站点 (<x2/>) 的每个下载任务设置其自己的用户代理、额外请求头、连接数、首次请求的浏览器连接方式或代理：可以选择不使用代理，或使用其自己的代理，这样只有需要代理的站点才通过代理连接。已停止下载任务的 <g3>属性 → 连接...</g3> 可更改其自身的请求头、代理和连接数，MDM 在继续下载前仍会检查文件是否与之前相同。"
   },
   "85ab2d681187a715": {
    "source": "Not sure yet? <g1>Show it in the discussions</g1> first. The <g2>contributing guide</g2> explains how pull requests work here.",
@@ -11873,6 +11865,10 @@
   "9f782f136a8bb467": {
    "source": "The built-in categories can now be renamed, given other file types, or deleted.",
    "text": "内置类别现在可以重命名、指定其他文件类型或删除。"
+  },
+  "9f7cefd031ac2a9a": {
+   "source": "Download a file with up to 8 connections (<x1/>, 1 to 128), showing progress. <x2/> pauses it; <x3/> continues. <x4/> sets the referring page address (Referer header), <x5/> sets the request's User-Agent (then the only one sent; without it, MDM speaks as your default browser, and, when a site's bot check refuses that and the way a browser connects too, once more under its own name), <x6/> sets the Cookie header (a cookie on the command line ends up in the shell's history; <x7/> reads it from standard input instead). <x8/> checks the finished file: hex MD5, SHA-1, SHA-256, SHA-512 or CRC32, optionally named (<x9/>). <x10/> picks the DNS instead of Options': <x11/>; a service and how to ask it, <x12/>, <x13/>, <x14/>, <x15/>, <x16/>; DNS servers' addresses, <x17/>; or a DNS-over-HTTPS address. It never falls back to the system's DNS. <x18/> sends every connection through one network adapter instead of Options' (<x19/> for none), by its name (<x20/>, <x21/>) or one of its addresses; when it isn't connected, nothing is sent and the download fails. <x22/> takes the place of Options' proxy for this run (see above). The app's <g23>site rules</g23> for the address apply too (their headers, User-Agent, browser-like connection, number of connections and proxy), where the command line gives none of the same: <x24/> goes before every rule's proxy. A link from a file host that one of your debrid accounts (<g25>Options → Accounts</g25>) supports goes through that account, as in the app, and <x26/> says <x27/>; <x28/> downloads the address itself (<g29>Debrid service accounts</g29>).",
+   "text": "下载一个文件，最多 8 个连接（<x1/>，1 到 128），并显示进度。<x2/> 暂停；<x3/> 继续。<x4/> 设置引用页面地址（Referer 头），<x5/> 设置请求的 User-Agent（此时只发送此项；若无，MDM 会模拟您的默认浏览器，当网站的机器人检测拒绝此方式时，MDM 会再次以自身名义连接），<x6/> 设置 Cookie 头（命令行中的 cookie 会留在 shell 历史记录中；<x7/> 改为从标准输入读取）。<x8/> 检查完成的文件：十六进制 MD5、SHA-1、SHA-256、SHA-512 或 CRC32，可选择命名（<x9/>）。<x10/> 选择 DNS 而非“选项”中的设置：<x11/>；服务及其查询方式，<x12/>、<x13/>、<x14/>、<x15/>、<x16/>；DNS 服务器地址，<x17/>；或 DNS-over-HTTPS 地址。它绝不会回退到系统 DNS。<x18/> 通过一个网络适配器发送所有连接，而不是“选项”中的设置（<x19/> 表示不使用），按其名称（<x20/>、<x21/>）或其某个地址；如果未连接，则不发送任何内容，下载失败。<x22/> 在本次运行中替代“选项”中的代理（见上文）。应用程序的 <g23>站点规则</g23> 也适用于该地址（其头部、User-Agent、浏览器式连接、连接数和代理），如果命令行未提供相同内容：<x24/> 位于每个规则的代理之前。来自文件主机且您的某个 debrid 账户（<g25>选项 → 账户</g25>）支持的链接将通过该账户下载，如同在应用程序中一样，<x26/> 表示 <x27/>；<x28/> 下载地址本身（<g29>Debrid 服务账户</g29>）。"
   },
   "9f93bf61864af099": {
    "source": "Plainly: everyone sharing the same torrent sees your IP address. That is how BitTorrent works, and no setting changes it. To hide it, use a VPN for the whole computer. <g1>Torrents and your security</g1> says what others can see.",
@@ -16766,6 +16762,10 @@
    "source": "How do I report a bug or ask for a feature? — Mister Download Manager",
    "text": "如何报告错误或提出功能请求？— Mister Download Manager"
   },
+  "e356f60156d8a735": {
+   "source": "<g1>Site rules...</g1> — a User-Agent, request headers, a number of connections, <g2>Always connect the way a browser does</g2> and a proxy (none, or one of its own with its login), by site. See <g3>Site rules</g3>.",
+   "text": "<g1>站点规则...</g1> — 按站点设置用户代理、请求头、连接数、<g2>始终以浏览器方式连接</g2>以及代理（无代理，或使用其自己的代理及登录信息）。请参阅<g3>站点规则</g3>。"
+  },
   "e3696cca91bc9263": {
    "source": "A browser fetches a file over one connection. MDM asks the server for several parts of the file at once, up to 32 connections (128 if you allow it), and keeps re-splitting: when a connection finishes its part, it takes over half of the biggest part still left, so no slow connection holds up the end. It also remembers servers that refuse extra connections and stops asking them. See <g1>Connections and speed</g1>.",
    "text": "浏览器通过一个连接获取文件。MDM 会同时向服务器请求文件的多个部分，最多 32 个连接（如果允许，可达 128 个），并持续重新分配：当一个连接完成其部分时，它会接管剩余最大部分的一半，这样就不会有慢速连接拖延整个下载。它还会记住拒绝额外连接的服务器，并停止向它们请求。请参阅<g1>连接和速度</g1>。"
@@ -17846,10 +17846,6 @@
    "source": "More questions",
    "text": "更多问题"
   },
-  "f0964936a9646338": {
-   "source": "<g1>Options → Connection → Site rules...</g1> gives every download from a site (<x2/>) its own User-Agent, extra request headers, number of connections, or a browser's way of connecting from the first request. A stopped download's <g3>Properties → Connection...</g3> changes its own headers, proxy and connections, and MDM still checks the file is the same one before it goes on.",
-   "text": "<g1>选项 → 连接 → 站点规则...</g1> 允许您为来自特定站点 (<x2/>) 的每个下载设置自己的用户代理、额外的请求头、连接数，或从首次请求开始就使用浏览器的连接方式。已停止下载的 <g3>属性 → 连接...</g3> 可以更改其自身的请求头、代理和连接，MDM 在继续下载前仍会检查文件是否相同。"
-  },
   "f09a7e7e0cc71c2e": {
    "source": "In the system's keychain, as are Sites Logins' passwords and the proxy's. MDM's settings keep only a reference to it. <g1>Options → Accounts</g1> says where they are on your computer.",
    "text": "与“站点登录”密码和代理密码一样，都保存在系统密钥链中。MDM 的设置仅保留对其的引用。<g1>选项 → 账户</g1> 会显示它们在您计算机上的位置。"
@@ -17869,6 +17865,10 @@
   "f0f10f730052f164": {
    "source": "<g1>Windows, Mac and Linux</g1><g2>Mister Download Manager</g2>",
    "text": "<g1>Windows、Mac 和 Linux</g1><g2>Mister Download Manager</g2>"
+  },
+  "f0ff5ae3081fa8a5": {
+   "source": "<g1>Proxy</g1> — <g2>As in Options</g2> (the default: <g3>Options → Proxy / Socks</g3> decides), <g4>No proxy</g4> (straight to the site, whatever Options says), or <g5>This proxy:</g5> one of its own, typed as a download's own proxy is, <x6/>, <x7/>, <x8/>, <x9/> (<x10/> to have the proxy look the site's name up). <g11>Proxy user</g11> and <g12>Password</g12> are its login, if it needs one; the password is kept with MDM's other passwords (in the system's keychain), never in the settings file as it is. This replaces switching Options back and forth, or writing a proxy auto-config script, when only some sites need a proxy.",
+   "text": "<g1>代理</g1> — <g2>与“选项”中设置的相同</g2>（默认：由<g3>选项 → 代理/SOCKS</g3>决定），<g4>无代理</g4>（直接连接网站，无论“选项”中如何设置），或者<g5>此代理：</g5>，即它自己的代理，输入方式与下载任务的代理相同，<x6/>、<x7/>、<x8/>、<x9/>（<x10/> 用于让代理查找网站名称）。<g11>代理用户</g11>和<g12>密码</g12>是其登录凭据（如果需要）；密码与其他 MDM 密码一起保存在系统钥匙串中，绝不会以明文形式保存在设置文件中。当只有部分网站需要代理时，这可以避免反复切换“选项”设置或编写代理自动配置脚本。"
   },
   "f10113695e758efd": {
    "source": "A playlist's or channel's videos, one line each as they're listed: its place, length, title and address.",

@@ -2130,10 +2130,6 @@
    "source": "<g1>The keyboard focus got lost</g1> when a button greyed itself or Escape closed a drop-down: Tab started over at the top of the window. It now moves on, or comes back, as in Windows.",
    "text": "<g1>De toetsenbordfocus ging verloren</g1> wanneer een knop zichzelf grijs maakte of Escape een vervolgkeuzelijst sloot: met Tab begon u weer bovenaan het venster. Nu gaat de focus verder of keert die terug, zoals in Windows."
   },
-  "1c004ef83082f283": {
-   "source": "<g1>Site rules...</g1> — a User-Agent, request headers, a number of connections and <g2>Always connect the way a browser does</g2>, by site. See <g3>Site rules</g3>.",
-   "text": "<g1>Siteregels…</g1> — een User-Agent, aanvraagheaders, het aantal verbindingen en <g2>Altijd verbinding maken zoals een browser dat doet</g2>, per site. Zie <g3>Siteregels</g3>."
-  },
   "1c0101659f1e2203": {
    "source": "<g1>Feeds</g1>: the feeds it watches; none ticked, all of them.",
    "text": "<g1>Feeds</g1>: de feeds die de regel controleert. Als geen enkele feed is aangevinkt, worden alle feeds gecontroleerd."
@@ -4898,6 +4894,10 @@
    "source": "Changes",
    "text": "Wijzigingen"
   },
+  "41150cfc2e8c323a": {
+   "source": "Some sites want a particular User-Agent, an extra header or fewer connections, let only browsers through, or need a proxy (or none) when the others don't. <g1>Options → Connection → Site rules...</g1> sets these once for every download from a site:",
+   "text": "Sommige sites willen een bepaalde User-Agent, een extra header of minder verbindingen, laten alleen browsers toe, of hebben een proxy nodig (of geen) wanneer andere dat niet doen. <g1>Opties → Verbinding → Siteregels...</g1> stelt deze eenmalig in voor elke download van een site:"
+  },
   "41333ec069d15e15": {
    "source": "A magnet link takes a long time",
    "text": "Een magneetlink duurt lang"
@@ -5546,10 +5546,6 @@
    "source": "A key MDM doesn't know, or a value it can't read, is skipped and written to MDM's log (the <x1/> folder beside the themes folder), so a file made for a newer MDM still loads. The built-in themes are written the same way: <g2>read them on GitHub</g2>.",
    "text": "Een sleutel die MDM niet kent, of een waarde die het niet kan lezen, wordt overgeslagen en naar het logboek van MDM geschreven (de map <x1/> naast de themamap), zodat een bestand dat voor een nieuwere MDM is gemaakt, nog steeds wordt geladen. De ingebouwde thema's zijn op dezelfde manier geschreven: <g2>lees ze op GitHub</g2>."
   },
-  "4ac401467a9a37d2": {
-   "source": "The downloads join the <g1>Main download queue</g1>, ready to start (<g2>Start</g2> starts it too). <g3>Tasks → Import → From IDM export file</g3> reads an <x4/> file, with each download's referrer and cookies.",
-   "text": "De downloads worden toegevoegd aan de <g1>Hoofd-downloadwachtrij</g1> en zijn klaar om te starten (<g2>Starten</g2> start de wachtrij ook). <g3>Taken → Importeren → Uit IDM-exportbestand</g3> leest een <x4/>-bestand, inclusief de verwijzende URL en cookies van elke download."
-  },
   "4ace27f6171583db": {
    "source": "A <x1/> and a Compose file come with MDM's source. For now you build the image yourself; a published image comes later. The first build is long, up to an hour on a small server, and the image is small, about 175 MB, with no desktop libraries.",
    "text": "Een <x1/> en een Compose-bestand worden meegeleverd met de broncode van MDM. Voorlopig bouwt u de image zelf; een gepubliceerde image volgt later. De eerste build duurt lang, tot een uur op een kleine server, en de image is klein, ongeveer 175 MB, zonder desktopbibliotheken."
@@ -6098,10 +6094,6 @@
    "source": "After a click it says what happened, in its own colour:",
    "text": "Na een klik geeft het aan wat er is gebeurd, in zijn eigen kleur:"
   },
-  "529f7c22e85ee030": {
-   "source": "Download a file with up to 8 connections (<x1/>, 1 to 128), showing progress. <x2/> pauses it; <x3/> continues. <x4/> sets the referring page address (Referer header), <x5/> sets the request's User-Agent (then the only one sent; without it, MDM speaks as your default browser, and, when a site's bot check refuses that and the way a browser connects too, once more under its own name), <x6/> sets the Cookie header (a cookie on the command line ends up in the shell's history; <x7/> reads it from standard input instead). <x8/> checks the finished file: hex MD5, SHA-1, SHA-256, SHA-512 or CRC32, optionally named (<x9/>). <x10/> picks the DNS instead of Options': <x11/>; a service and how to ask it, <x12/>, <x13/>, <x14/>, <x15/>, <x16/>; DNS servers' addresses, <x17/>; or a DNS-over-HTTPS address. It never falls back to the system's DNS. <x18/> sends every connection through one network adapter instead of Options' (<x19/> for none), by its name (<x20/>, <x21/>) or one of its addresses; when it isn't connected, nothing is sent and the download fails. <x22/> takes the place of Options' proxy for this run (see above). The app's <g23>site rules</g23> for the address apply too (their headers, User-Agent, browser-like connection and number of connections), where the command line gives none of the same. A link from a file host that one of your debrid accounts (<g24>Options → Accounts</g24>) supports goes through that account, as in the app, and <x25/> says <x26/>; <x27/> downloads the address itself (<g28>Debrid service accounts</g28>).",
-   "text": "Download een bestand met maximaal 8 verbindingen (<x1/>, 1 tot 128), met voortgangsweergave. <x2/> pauzeert de download; <x3/> gaat verder. <x4/> stelt het verwijzende paginadres in (Referer-header), <x5/> stelt de User-Agent van het verzoek in (dan wordt alleen deze verzonden; zonder dit spreekt MDM als uw standaardbrowser, en, wanneer een botcontrole van een site dat en de manier waarop een browser verbinding maakt weigert, nogmaals onder zijn eigen naam), <x6/> stelt de Cookie-header in (een cookie op de opdrachtregel komt in de geschiedenis van de shell terecht; <x7/> leest deze in plaats daarvan van de standaardinvoer). <x8/> controleert het voltooide bestand: hex MD5, SHA-1, SHA-256, SHA-512 of CRC32, optioneel benoemd (<x9/>). <x10/> kiest de DNS in plaats van die van Opties: <x11/>; een service en hoe deze te bevragen, <x12/>, <x13/>, <x14/>, <x15/>, <x16/>; adressen van DNS-servers, <x17/>; of een DNS-over-HTTPS-adres. Het valt nooit terug op de DNS van het systeem. <x18/> stuurt elke verbinding via één netwerkadapter in plaats van die van Opties (<x19/> voor geen), op naam (<x20/>, <x21/>) of een van de adressen; wanneer deze niet is verbonden, wordt er niets verzonden en mislukt de download. <x22/> neemt de plaats in van de proxy van Opties voor deze uitvoering (zie hierboven). De <g23>siteregels</g23> van de app voor het adres zijn ook van toepassing (hun headers, User-Agent, browserachtige verbinding en aantal verbindingen), waar de opdrachtregel geen van dezelfde geeft. Een link van een bestandshost die een van uw debrid-accounts (<g24>Opties → Accounts</g24>) ondersteunt, gaat via dat account, zoals in de app, en <x25/> zegt <x26/>; <x27/> downloadt het adres zelf (<g28>Debrid-serviceaccounts</g28>)."
-  },
   "52ceae361fb11f6c": {
    "source": "A list's, a table's or a box's outline",
    "text": "Omtrek van een lijst, tabel of vak"
@@ -6153,10 +6145,6 @@
   "536df2f60bd48da6": {
    "source": "Success text (a matching checksum)",
    "text": "Succestekst (een overeenkomende checksum)"
-  },
-  "538fe2ede1fc4d57": {
-   "source": "The single-instance channel (a token-protected local socket), the data folder, the capture rules shared by the app and the host, and the site rules (#1778: a User-Agent, headers, connections and the browser-like connection by site pattern) shared by the app and the command line",
-   "text": "Het single-instance-kanaal (een met token beveiligde lokale socket), de datafolder, de vastlegregels die door de app en de host worden gedeeld, en de siteregels (#1778: een User-Agent, headers, verbindingen en de browserachtige verbinding per sitepatroon) die door de app en de commandoregel worden gedeeld"
   },
   "539160f92bae4422": {
    "source": "Being re-measured",
@@ -9062,14 +9050,6 @@
    "source": "Testing archives",
    "text": "Archieven testen"
   },
-  "7b65292951ac598b": {
-   "source": "Some sites want a particular User-Agent, an extra header or fewer connections, or let only browsers through. <g1>Options → Connection → Site rules...</g1> sets these once for every download from a site:",
-   "text": "Sommige sites willen een specifieke User-Agent, een extra header of minder verbindingen, of laten alleen browsers toe. <g1>Opties → Verbinding → Siteregels...</g1> stelt deze eenmalig in voor elke download van een site:"
-  },
-  "7b655c3076cd7d8b": {
-   "source": "<g1>Tasks → Import → From text file</g1> and <g2>From IDM export file</g2>. An <x3/> file brings each download's referrer and cookies.",
-   "text": "<g1>Taken → Importeren → Uit tekstbestand</g1> en <g2>Uit IDM-exportbestand</g2>. Een <x3/>-bestand bevat de verwijzende pagina en cookies van elke download."
-  },
   "7b75149d61c4c0ff": {
    "source": "A download that is running isn't deleted. Stop it first.",
    "text": "Een actieve download wordt niet verwijderd. Stop deze eerst."
@@ -9365,6 +9345,10 @@
   "7ee169488133ab57": {
    "source": "Link grabber gathers many links at once, sorts them into packages, and lets you tick the ones to download. MDM can then extract the archives it downloaded…",
    "text": "De Linkgrabber verzamelt veel links tegelijk, sorteert ze in pakketten en laat u de links aanvinken die u wilt downloaden. MDM kan vervolgens de gedownloade archieven uitpakken…"
+  },
+  "7ee305b094d7654d": {
+   "source": "The single-instance channel (a token-protected local socket), the data folder, the capture rules shared by the app and the host, and the site rules (#1778: a User-Agent, headers, connections, the browser-like connection and, #1960, a proxy by site pattern) shared by the app and the command line",
+   "text": "Het single-instance-kanaal (een met token beveiligde lokale socket), de gegevensmap, de vastlegregels die worden gedeeld door de app en de host, en de siteregels (#1778: een User-Agent, headers, verbindingen, de browserachtige verbinding en, #1960, een proxy per sitepatroon) die worden gedeeld door de app en de opdrachtregel"
   },
   "7ee9063b38514440": {
    "source": "Listed by",
@@ -9814,6 +9798,10 @@
    "source": "Every signed file is built from the public source code at <g1>github.com/anefzaoui/misterdownloadmanager</g1> by GitHub Actions, on GitHub's servers, never on a personal computer. Each one says it is Mister Download Manager and which version it is.",
    "text": "Elk ondertekend bestand wordt gebouwd vanuit de openbare broncode op <g1>github.com/anefzaoui/misterdownloadmanager</g1> door GitHub Actions, op de servers van GitHub, nooit op een persoonlijke computer. Elk bestand vermeldt dat het Mister Download Manager is en welke versie het betreft."
   },
+  "8414d2ed3c86b744": {
+   "source": "Which proxy a download goes through: its own (below) first, then the first rule that names the site and sets a proxy, then <g1>Options → Proxy / Socks</g1> (and the browser's proxy, when <g2>Use proxy/socks from a browser's request</g2> is on). A rule's proxy also carries Download File Info's look-up and, for a video or gallery page the rule names, yt-dlp's and gallery-dl's look-up and the video's download, so the links they get are used from the same address. The <g3>Network adapter</g3> chosen in <g4>Options → Proxy / Socks</g4>, and its kill switch, still hold every connection: with an adapter chosen, nothing goes around it.",
+   "text": "Welke proxy een download gebruikt: eerst zijn eigen (hieronder), dan de eerste regel die de site benoemt en een proxy instelt, dan <g1>Opties → Proxy/Socks</g1> (en de proxy van de browser, wanneer <g2>Gebruik proxy/socks van een browserverzoek</g2> is ingeschakeld). De proxy van een regel voert ook de opzoeking van Bestandsinfo downloaden uit, en voor een video- of galerijpagina die de regel benoemt, de opzoeking van yt-dlp en gallery-dl en de download van de video, zodat de links die ze krijgen vanaf hetzelfde adres worden gebruikt. De <g3>Netwerkadapter</g3> gekozen in <g4>Opties → Proxy/Socks</g4>, en de kill switch ervan, houden nog steeds elke verbinding vast: met een gekozen adapter gaat er niets omheen."
+  },
   "842fc0e6d2b7d24d": {
    "source": "At the start time the queue starts on its own. In the morning, the finished files are under <g1>Finished</g1> in the categories.",
    "text": "Op de starttijd wordt de wachtrij automatisch gestart. ’s Ochtends staan de voltooide bestanden onder <g1>Voltooid</g1> in de categorieën."
@@ -9941,6 +9929,10 @@
   "8581b3f6f6759cc7": {
    "source": "Proxy / Socks: no proxy, the system's, or your own.",
    "text": "Proxy / SOCKS: geen proxy, de proxy van het systeem of uw eigen proxy."
+  },
+  "8587f400d941af9d": {
+   "source": "<g1>Options → Connection → Site rules...</g1> gives every download from a site (<x2/>) its own User-Agent, extra request headers, number of connections, a browser's way of connecting from the first request, or a proxy: none, or one of its own, so only the sites that need a proxy go through one. A stopped download's <g3>Properties → Connection...</g3> changes its own headers, proxy and connections, and MDM still checks the file is the same one before it goes on.",
+   "text": "<g1>Opties → Verbinding → Siteregels…</g1> geeft elke download van een site (<x2/>) zijn eigen User-Agent, extra aanvraagheaders, aantal verbindingen, een browser-manier van verbinden vanaf de eerste aanvraag, of een proxy: geen, of een eigen proxy, zodat alleen de sites die een proxy nodig hebben er een gebruiken. De <g3>Eigenschappen → Verbinding…</g3> van een gestopte download wijzigt zijn eigen headers, proxy en verbindingen, en MDM controleert nog steeds of het bestand hetzelfde is voordat het verdergaat."
   },
   "85ab2d681187a715": {
    "source": "Not sure yet? <g1>Show it in the discussions</g1> first. The <g2>contributing guide</g2> explains how pull requests work here.",
@@ -11877,6 +11869,10 @@
   "9f782f136a8bb467": {
    "source": "The built-in categories can now be renamed, given other file types, or deleted.",
    "text": "De ingebouwde categorieën kunnen nu worden hernoemd, andere bestandstypen krijgen of worden verwijderd."
+  },
+  "9f7cefd031ac2a9a": {
+   "source": "Download a file with up to 8 connections (<x1/>, 1 to 128), showing progress. <x2/> pauses it; <x3/> continues. <x4/> sets the referring page address (Referer header), <x5/> sets the request's User-Agent (then the only one sent; without it, MDM speaks as your default browser, and, when a site's bot check refuses that and the way a browser connects too, once more under its own name), <x6/> sets the Cookie header (a cookie on the command line ends up in the shell's history; <x7/> reads it from standard input instead). <x8/> checks the finished file: hex MD5, SHA-1, SHA-256, SHA-512 or CRC32, optionally named (<x9/>). <x10/> picks the DNS instead of Options': <x11/>; a service and how to ask it, <x12/>, <x13/>, <x14/>, <x15/>, <x16/>; DNS servers' addresses, <x17/>; or a DNS-over-HTTPS address. It never falls back to the system's DNS. <x18/> sends every connection through one network adapter instead of Options' (<x19/> for none), by its name (<x20/>, <x21/>) or one of its addresses; when it isn't connected, nothing is sent and the download fails. <x22/> takes the place of Options' proxy for this run (see above). The app's <g23>site rules</g23> for the address apply too (their headers, User-Agent, browser-like connection, number of connections and proxy), where the command line gives none of the same: <x24/> goes before every rule's proxy. A link from a file host that one of your debrid accounts (<g25>Options → Accounts</g25>) supports goes through that account, as in the app, and <x26/> says <x27/>; <x28/> downloads the address itself (<g29>Debrid service accounts</g29>).",
+   "text": "Download een bestand met maximaal 8 verbindingen (<x1/>, 1 tot 128), met voortgangsweergave. <x2/> pauzeert de download; <x3/> hervat deze. <x4/> stelt het verwijzende paginadres in (Referer-header), <x5/> stelt de User-Agent van het verzoek in (dan wordt alleen deze verzonden; zonder dit spreekt MDM als uw standaardbrowser, en, wanneer een botcontrole van een site dat en de manier waarop een browser verbinding maakt weigert, nogmaals onder zijn eigen naam), <x6/> stelt de Cookie-header in (een cookie op de opdrachtregel komt in de geschiedenis van de shell terecht; <x7/> leest deze in plaats daarvan van de standaardinvoer). <x8/> controleert het voltooide bestand: hex MD5, SHA-1, SHA-256, SHA-512 of CRC32, optioneel benoemd (<x9/>). <x10/> kiest de DNS in plaats van die van de Opties: <x11/>; een service en hoe deze aan te roepen, <x12/>, <x13/>, <x14/>, <x15/>, <x16/>; adressen van DNS-servers, <x17/>; of een DNS-over-HTTPS-adres. Het valt nooit terug op de DNS van het systeem. <x18/> stuurt elke verbinding via één netwerkadapter in plaats van die van de Opties (<x19/> voor geen), op naam (<x20/>, <x21/>) of een van de adressen; wanneer deze niet is verbonden, wordt er niets verzonden en mislukt de download. <x22/> neemt de plaats in van de proxy van de Opties voor deze uitvoering (zie hierboven). De <g23>siteregels</g23> van de app voor het adres zijn ook van toepassing (hun headers, User-Agent, browserachtige verbinding, aantal verbindingen en proxy), waar de opdrachtregel geen van dezelfde geeft: <x24/> gaat vóór de proxy van elke regel. Een link van een bestandshost die een van uw debrid-accounts (<g25>Opties → Accounts</g25>) ondersteunt, gaat via dat account, net als in de app, en <x26/> zegt <x27/>; <x28/> downloadt het adres zelf (<g29>Debrid-serviceaccounts</g29>)."
   },
   "9f93bf61864af099": {
    "source": "Plainly: everyone sharing the same torrent sees your IP address. That is how BitTorrent works, and no setting changes it. To hide it, use a VPN for the whole computer. <g1>Torrents and your security</g1> says what others can see.",
@@ -16766,6 +16762,10 @@
    "source": "How do I report a bug or ask for a feature? — Mister Download Manager",
    "text": "Hoe meld ik een bug of vraag ik een functie aan? — Mister Download Manager"
   },
+  "e356f60156d8a735": {
+   "source": "<g1>Site rules...</g1> — a User-Agent, request headers, a number of connections, <g2>Always connect the way a browser does</g2> and a proxy (none, or one of its own with its login), by site. See <g3>Site rules</g3>.",
+   "text": "<g1>Siteregels...</g1> — een User-Agent, verzoekheaders, een aantal verbindingen, <g2>Altijd verbinding maken zoals een browser dat doet</g2> en een proxy (geen, of een eigen met login), per site. Zie <g3>Siteregels</g3>."
+  },
   "e3696cca91bc9263": {
    "source": "A browser fetches a file over one connection. MDM asks the server for several parts of the file at once, up to 32 connections (128 if you allow it), and keeps re-splitting: when a connection finishes its part, it takes over half of the biggest part still left, so no slow connection holds up the end. It also remembers servers that refuse extra connections and stops asking them. See <g1>Connections and speed</g1>.",
    "text": "Een browser haalt een bestand op via één verbinding. MDM vraagt de server om meerdere delen van het bestand tegelijk, tot 32 verbindingen (128 als u dit toestaat), en blijft opnieuw splitsen: wanneer een verbinding zijn deel heeft voltooid, neemt het de helft over van het grootste deel dat nog over is, zodat geen trage verbinding het einde ophoudt. Het onthoudt ook servers die extra verbindingen weigeren en stopt met ze te vragen. Zie <g1>Verbindingen en snelheid</g1>."
@@ -17846,10 +17846,6 @@
    "source": "More questions",
    "text": "Meer vragen"
   },
-  "f0964936a9646338": {
-   "source": "<g1>Options → Connection → Site rules...</g1> gives every download from a site (<x2/>) its own User-Agent, extra request headers, number of connections, or a browser's way of connecting from the first request. A stopped download's <g3>Properties → Connection...</g3> changes its own headers, proxy and connections, and MDM still checks the file is the same one before it goes on.",
-   "text": "Via <g1>Opties → Verbinding → Siteregels…</g1> kunt u voor elke download van een site (<x2/>) een eigen User-Agent, extra aanvraagheaders, het aantal verbindingen of de verbindingsmethode van een browser vanaf de eerste aanvraag instellen. Via <g3>Eigenschappen → Verbinding…</g3> van een gestopte download kunt u de headers, proxy en verbindingen wijzigen. MDM controleert nog steeds of het bestand hetzelfde is voordat het verdergaat."
-  },
   "f09a7e7e0cc71c2e": {
    "source": "In the system's keychain, as are Sites Logins' passwords and the proxy's. MDM's settings keep only a reference to it. <g1>Options → Accounts</g1> says where they are on your computer.",
    "text": "In de sleutelhanger van het systeem, net als de wachtwoorden van siteaanmeldingen en de proxy. De instellingen van MDM bewaren er alleen een verwijzing naar. <g1>Opties → Accounts</g1> geeft aan waar ze op uw computer staan."
@@ -17869,6 +17865,10 @@
   "f0f10f730052f164": {
    "source": "<g1>Windows, Mac and Linux</g1><g2>Mister Download Manager</g2>",
    "text": "<g1>Windows, Mac en Linux</g1><g2>Mister Download Manager</g2>"
+  },
+  "f0ff5ae3081fa8a5": {
+   "source": "<g1>Proxy</g1> — <g2>As in Options</g2> (the default: <g3>Options → Proxy / Socks</g3> decides), <g4>No proxy</g4> (straight to the site, whatever Options says), or <g5>This proxy:</g5> one of its own, typed as a download's own proxy is, <x6/>, <x7/>, <x8/>, <x9/> (<x10/> to have the proxy look the site's name up). <g11>Proxy user</g11> and <g12>Password</g12> are its login, if it needs one; the password is kept with MDM's other passwords (in the system's keychain), never in the settings file as it is. This replaces switching Options back and forth, or writing a proxy auto-config script, when only some sites need a proxy.",
+   "text": "<g1>Proxy</g1> — <g2>Zoals in Opties</g2> (de standaard: <g3>Opties → Proxy/Socks</g3> beslist), <g4>Geen proxy</g4> (rechtstreeks naar de site, wat Opties ook zegt), of <g5>Deze proxy:</g5> een eigen proxy, ingevoerd zoals de eigen proxy van een download, <x6/>, <x7/>, <x8/>, <x9/> (<x10/> om de proxy de naam van de site te laten opzoeken). <g11>Proxy gebruiker</g11> en <g12>Wachtwoord</g12> zijn de inloggegevens, indien nodig; het wachtwoord wordt bewaard met de andere wachtwoorden van MDM (in de sleutelhanger van het systeem), nooit als zodanig in het instellingenbestand. Dit vervangt het heen en weer schakelen van Opties, of het schrijven van een proxy auto-config script, wanneer slechts enkele sites een proxy nodig hebben."
   },
   "f10113695e758efd": {
    "source": "A playlist's or channel's videos, one line each as they're listed: its place, length, title and address.",
