@@ -625,6 +625,10 @@
 #. Click'n'Load window, under the question: nothing happens to the links before the user adds them in Link grabber
 #, machine
 	Allow only sites you use. Nothing is looked up or downloaded before you add it in Link grabber.	நீங்கள் பயன்படுத்தும் தளங்களை மட்டும் அனுமதிக்கவும். இணைப்பு கிராப்பரில் இணைப்புகளைச் சேர்ப்பதற்கு முன் எதுவும் தேடப்படாது அல்லது பதிவிறக்கப்படாது.
+#. text in the Options window; window title in the Options window
+#. window title: HTTPS sites whose certificate the user chose to trust
+#, machine
+	Allowed certificates	அனுமதிக்கப்பட்ட சான்றிதழ்கள்
 #. text in errors.rs
 #, machine
 	already being downloaded: {path}	ஏற்கனவே பதிவிறக்கப்பட்டு வருகிறது: {path}
@@ -658,6 +662,9 @@
 #. View menu: a check item; dark mode on, whatever the system's setting
 #, machine
 	Always dark	எப்போதும் இருண்டது
+#. button in a dialog box
+#, machine
+	Always for this site	இந்தத் தளத்திற்கு எப்போதும் அனுமதிக்கவும்
 #. text in the Options window
 #. Options → Archives: where extracted files go
 #, machine
@@ -1067,6 +1074,11 @@
 #, machine
 	Central African Republic	மத்திய ஆப்பிரிக்கக் குடியரசு
 #. text in the Options window
+#. column title: SHA-256 certificate fingerprint
+#, machine
+	Certificate (SHA-256)	சான்றிதழ் (SHA-256)
+#. text in a dialog box; text in the Options window
+#. Certificate warning: the certificate's SHA-256 fingerprint
 #. Options → Remote → Status: the certificate's fingerprint, which the phone's browser shows when it warns about it; {fingerprint} = hex digits
 #, machine
 	Certificate (SHA-256): {fingerprint}	சான்றிதழ் (SHA-256): {fingerprint}
@@ -1074,6 +1086,11 @@
 #. Options → DNS over TLS: label before the name the server's certificate shows
 #, machine
 	Certificate name:	சான்றிதழ் பெயர்:
+#. text in the Options window
+#. Options → Sites Logins: button: opens the list of allowed HTTPS site certificates
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Certificates...	சான்றிதழ்கள்...
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -1347,6 +1364,13 @@
 #. text in the Options window
 #, machine
 	Connections:	இணைப்புகள்:
+#. text in a dialog box
+#. Certificate warning: question before Continue once / Always for this site / Cancel
+#, machine
+	Continue anyway?	எப்படியும் தொடர வேண்டுமா?
+#. button in a dialog box
+#, machine
+	Continue once	ஒருமுறை தொடரவும்
 #. link (opens a web page) in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Contributors	பங்களிப்பாளர்கள்
@@ -1957,7 +1981,6 @@
 #, machine
 	Eritrea	எரித்திரியா
 #. text in a dialog box; item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window; text in remote.rs
-#. in Download File Info, where the size goes: the address didn't answer
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): it failed
 #, machine
@@ -2027,6 +2050,10 @@
 #. Options → Accounts: a note that the debrid services' support (Real-Debrid, AllDebrid, Premiumize) is new and not yet tried with real paid accounts
 #, machine
 	Experimental: built from the services' public API documentation, not yet confirmed with real accounts.	சோதனைக்குரியது: சேவைகளின் பொது API ஆவணத்திலிருந்து உருவாக்கப்பட்டது, உண்மையான கணக்குகளுடன் இன்னும் உறுதிப்படுத்தப்படவில்லை.
+#. text in the Options window
+#. Allowed certificates table: short reason label
+#, machine
+	Expired	காலாவதியானது
 #. message or event log entry in the main window; text in the Options window
 #, machine
 	Export	ஏற்றுமதி
@@ -3927,8 +3954,16 @@
 #, machine
 	Not tested: it is larger than {limit} (Options → Archives). Right-click → Test archive tests it	சோதிக்கப்படவில்லை: இது {limit} ஐ விட பெரியது (விருப்பங்கள் → காப்பகங்கள்). வலது கிளிக் → காப்பகத்தைச் சோதி என்பதைத் தட்டவும்
 #. text in the Options window
+#. Allowed certificates table: short reason label
+#, machine
+	Not trusted	நம்பகமற்றது
+#. text in the Options window
 #, machine
 	Not used: file parts are written next to the file	பயன்படுத்தப்படவில்லை: கோப்பு பாகங்கள் கோப்புக்கு அடுத்ததாக எழுதப்படுகின்றன
+#. text in the Options window
+#. Allowed certificates table: short reason label
+#, machine
+	Not yet valid	இன்னும் செல்லுபடியாகவில்லை
 #. text in a dialog box
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
@@ -4150,6 +4185,9 @@
 #. Options → Add an account: label before the field for the service's API token (the other way to sign in)
 #, machine
 	Or paste your API token:	அல்லது உங்கள் API டோக்கனை ஒட்டவும்:
+#. text in the Options window
+#, machine
+	Other	மற்றவை
 #. text in the Link grabber window
 #. Link grabber: the box that edits the selected package
 #, machine
@@ -4457,6 +4495,10 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	Reannounce failed: {error}	மீண்டும் அறிவித்தல் தோல்வியடைந்தது: {error}
+#. text in the Options window
+#. column title: certificate refusal reason allowed
+#, machine
+	Reason	காரணம்
 #. text in a download's progress window
 #. column title: how much came from the peer
 #, machine
@@ -4728,6 +4770,10 @@
 #. text in the Batch download window
 #, machine
 	Second file:	இரண்டாவது கோப்பு:
+#. text in a dialog box
+#. window title when a server's HTTPS certificate is refused
+#, machine
+	Security Alert	பாதுகாப்பு எச்சரிக்கை
 #. text in preview.rs
 #. the preview pane when no download is selected, under its title
 #, machine
@@ -5022,6 +5068,7 @@
 	Sint Maarten	சின்ட் மார்டன்
 #. text in the Options window
 #. Site rules: column title: the site pattern
+#. column title: site name and port
 #, machine
 	Site	தளம்
 #. checkbox in the Find window
@@ -5048,6 +5095,11 @@
 #. Site rule: label before the site pattern box (example.com, *.example.com)
 #, machine
 	Site:	தளம்:
+#. text in a dialog box
+#. Certificate warning: the site whose certificate was refused; {site} = host or host:port
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+	Site: {site}	தளம்: {site}
 #. text in the Options window
 #. tab title: user names and passwords for sites
 #, machine
@@ -5058,6 +5110,14 @@
 #. text in helpers.rs
 #, machine
 	Sites send their best quality as separate video and audio. ffmpeg puts them together into one file that plays anywhere.	தளங்கள் அவற்றின் சிறந்த தரத்தை தனித்தனி வீடியோ மற்றும் ஆடியோவாக அனுப்புகின்றன. ffmpeg அவற்றை எங்கும் இயக்கக்கூடிய ஒரு கோப்பாக இணைக்கிறது.
+#. text in the Options window
+#. Options → Sites Logins: beside the Certificates... button
+#, machine
+	Sites whose certificate you chose to trust	நீங்கள் நம்பத் தேர்ந்தெடுத்த சான்றிதழ்களைக் கொண்ட தளங்கள்
+#. text in the Options window
+#. Allowed certificates window: explanation
+#, machine
+	Sites whose security certificate you chose to trust. Each entry is pinned to that certificate's SHA-256 fingerprint.	நீங்கள் நம்பத் தேர்ந்தெடுத்த பாதுகாப்புச் சான்றிதழ்களைக் கொண்ட தளங்கள். ஒவ்வொரு உள்ளீடும் அந்தச் சான்றிதழின் SHA-256 கைரேகையுடன் இணைக்கப்பட்டுள்ளது.
 #. text in the Link grabber window; text in a download's progress window; text in the Scheduler window; text in the Add torrent window
 #. column title: the file's size
 #. column title: file size
@@ -5865,6 +5925,9 @@
 #, machine
 	The site's certificate isn't trusted, by yt-dlp nor by this computer: an antivirus's web filter or a proxy that reads HTTPS may be in the way. Turn its HTTPS scanning off, or add its certificate to the computer's, then look the page up again.	தளத்தின் சான்றிதழை yt-dlp-உம் இந்தக் கணினியும் நம்பவில்லை: வைரஸ் தடுப்பு நிரலின் வலை வடிகட்டி அல்லது HTTPS இணைப்புகளைப் படிக்கும் ப்ராக்ஸி குறுக்கிடக்கூடும். அதன் HTTPS ஸ்கேனிங்கை அணைக்கவும் அல்லது அதன் சான்றிதழைக் கணினியில் சேர்க்கவும், பின்னர் பக்கத்தை மீண்டும் சரிபார்க்கவும்.
 #. text in errors.rs
+#, machine
+	the site's security certificate expired on {date}, so MDM can't be sure it's the real site (your browser warns about it too)	தளத்தின் பாதுகாப்புச் சான்றிதழ் {date} அன்று காலாவதியானது, எனவே இது உண்மையான தளம் என்று MDM உறுதிப்படுத்த முடியாது (உங்கள் உலாவியும் அதைப் பற்றி எச்சரிக்கிறது)
+#. text in errors.rs
 #. why a download failed: the site's security certificate (what proves a secure, HTTPS, site is the one it says) is past its end date. Browsers warn about the same site
 #, machine
 	the site's security certificate has expired, so MDM can't be sure it's the real site (your browser warns about it too)	தளத்தின் பாதுகாப்புச் சான்றிதழ் காலாவதியாகிவிட்டது, எனவே இது உண்மையான தளம் என்று MDM உறுதியாக இருக்க முடியாது (உங்கள் உலாவியும் அதைப் பற்றி எச்சரிக்கிறது)
@@ -5872,6 +5935,10 @@
 #. why a download failed: the site's security certificate was made for other site names than the one in the address
 #, machine
 	the site's security certificate is for another site name, so MDM can't be sure it's the real site (your browser warns about it too)	தளத்தின் பாதுகாப்புச் சான்றிதழ் மற்றொரு தளப் பெயருக்கானது, எனவே இது உண்மையான தளம் என்று MDM உறுதியாக இருக்க முடியாது (உங்கள் உலாவியும் அதைப் பற்றி எச்சரிக்கிறது)
+#. text in errors.rs
+#. why a download failed: the site's security certificate is self-signed
+#, machine
+	the site's security certificate is self-signed, so MDM can't be sure it's the real site (your browser warns about it too)	தளத்தின் பாதுகாப்புச் சான்றிதழ் சுயமாக கையொப்பமிடப்பட்டது, எனவே இது உண்மையான தளம் என்று MDM உறுதிப்படுத்த முடியாது (உங்கள் உலாவியும் அதைப் பற்றி எச்சரிக்கிறது)
 #. text in errors.rs
 #. why a download failed: the site's security certificate is made for other uses than a website (its "extended key usage" leaves out web servers)
 #, machine
@@ -6915,6 +6982,10 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 	Wrong code. Tries left: {n}	தவறான குறியீடு. மீதமுள்ள முயற்சிகள்: {n}
+#. text in the Options window
+#. Allowed certificates table: short reason label
+#, machine
+	Wrong name	தவறான பெயர்
 #. text in extracting archives (a download's log, the Archive password window)
 #. in Archive password: {name} is the archive's file name
 #. {name} = a file name (keep the braces as they are)

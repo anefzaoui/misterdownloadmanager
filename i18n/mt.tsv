@@ -625,6 +625,10 @@
 #. Click'n'Load window, under the question: nothing happens to the links before the user adds them in Link grabber
 #, machine
 	Allow only sites you use. Nothing is looked up or downloaded before you add it in Link grabber.	Ħalli biss siti li tuża. Xejn ma jiġi mfittex jew imniżżel qabel ma żżidu f'Link grabber.
+#. text in the Options window; window title in the Options window
+#. window title: HTTPS sites whose certificate the user chose to trust
+#, machine
+	Allowed certificates	Ċertifikati permessi
 #. text in errors.rs
 #, machine
 	already being downloaded: {path}	diġà qed jitniżżel: {path}
@@ -658,6 +662,9 @@
 #. View menu: a check item; dark mode on, whatever the system's setting
 #, machine
 	Always dark	Dejjem skur
+#. button in a dialog box
+#, machine
+	Always for this site	Dejjem għal dan is-sit
 #. text in the Options window
 #. Options → Archives: where extracted files go
 #, machine
@@ -1067,6 +1074,11 @@
 #, machine
 	Central African Republic	Repubblika Ċentru-Afrikana
 #. text in the Options window
+#. column title: SHA-256 certificate fingerprint
+#, machine
+	Certificate (SHA-256)	Ċertifikat (SHA-256)
+#. text in a dialog box; text in the Options window
+#. Certificate warning: the certificate's SHA-256 fingerprint
 #. Options → Remote → Status: the certificate's fingerprint, which the phone's browser shows when it warns about it; {fingerprint} = hex digits
 #, machine
 	Certificate (SHA-256): {fingerprint}	Ċertifikat (SHA-256): {fingerprint}
@@ -1074,6 +1086,11 @@
 #. Options → DNS over TLS: label before the name the server's certificate shows
 #, machine
 	Certificate name:	Isem taċ-ċertifikat:
+#. text in the Options window
+#. Options → Sites Logins: button: opens the list of allowed HTTPS site certificates
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Certificates...	Ċertifikati...
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -1347,6 +1364,13 @@
 #. text in the Options window
 #, machine
 	Connections:	Konnessjonijiet:
+#. text in a dialog box
+#. Certificate warning: question before Continue once / Always for this site / Cancel
+#, machine
+	Continue anyway?	Trid tkompli xorta waħda?
+#. button in a dialog box
+#, machine
+	Continue once	Kompli darba
 #. link (opens a web page) in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Contributors	Kontributuri
@@ -1957,7 +1981,6 @@
 #, machine
 	Eritrea	Eritrea
 #. text in a dialog box; item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window; text in remote.rs
-#. in Download File Info, where the size goes: the address didn't answer
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): it failed
 #, machine
@@ -2027,6 +2050,10 @@
 #. Options → Accounts: a note that the debrid services' support (Real-Debrid, AllDebrid, Premiumize) is new and not yet tried with real paid accounts
 #, machine
 	Experimental: built from the services' public API documentation, not yet confirmed with real accounts.	Sperimentali: mibni mid-dokumentazzjoni pubblika tal-API tas-servizzi, għadu ma ġiex ikkonfermat b'kontijiet reali.
+#. text in the Options window
+#. Allowed certificates table: short reason label
+#, machine
+	Expired	Skada
 #. message or event log entry in the main window; text in the Options window
 #, machine
 	Export	Esportazzjoni
@@ -3927,8 +3954,16 @@
 #, machine
 	Not tested: it is larger than {limit} (Options → Archives). Right-click → Test archive tests it	Mhux ittestjat: huwa akbar minn {limit} (Għażliet → Arkivji). Ikklikkja bil-lemin → Ittestja l-arkivju biex tittestjah
 #. text in the Options window
+#. Allowed certificates table: short reason label
+#, machine
+	Not trusted	Mhux fdat
+#. text in the Options window
 #, machine
 	Not used: file parts are written next to the file	Mhux użat: il-partijiet tal-fajl jinkitbu ħdejn il-fajl
+#. text in the Options window
+#. Allowed certificates table: short reason label
+#, machine
+	Not yet valid	Għadu mhux validu
 #. text in a dialog box
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
@@ -4150,6 +4185,9 @@
 #. Options → Add an account: label before the field for the service's API token (the other way to sign in)
 #, machine
 	Or paste your API token:	Jew waħħal it-token tal-API tiegħek:
+#. text in the Options window
+#, machine
+	Other	Oħrajn
 #. text in the Link grabber window
 #. Link grabber: the box that edits the selected package
 #, machine
@@ -4457,6 +4495,10 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	Reannounce failed: {error}	Reannounce falla: {error}
+#. text in the Options window
+#. column title: certificate refusal reason allowed
+#, machine
+	Reason	Raġuni
 #. text in a download's progress window
 #. column title: how much came from the peer
 #, machine
@@ -4728,6 +4770,10 @@
 #. text in the Batch download window
 #, machine
 	Second file:	It-tieni fajl:
+#. text in a dialog box
+#. window title when a server's HTTPS certificate is refused
+#, machine
+	Security Alert	Twissija ta' Sigurtà
 #. text in preview.rs
 #. the preview pane when no download is selected, under its title
 #, machine
@@ -5022,6 +5068,7 @@
 	Sint Maarten	Sint Maarten
 #. text in the Options window
 #. Site rules: column title: the site pattern
+#. column title: site name and port
 #, machine
 	Site	Sit
 #. checkbox in the Find window
@@ -5048,6 +5095,11 @@
 #. Site rule: label before the site pattern box (example.com, *.example.com)
 #, machine
 	Site:	Sit:
+#. text in a dialog box
+#. Certificate warning: the site whose certificate was refused; {site} = host or host:port
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+	Site: {site}	Sit: {site}
 #. text in the Options window
 #. tab title: user names and passwords for sites
 #, machine
@@ -5058,6 +5110,14 @@
 #. text in helpers.rs
 #, machine
 	Sites send their best quality as separate video and audio. ffmpeg puts them together into one file that plays anywhere.	Is-siti jibagħtu l-aqwa kwalità tagħhom bħala vidjo u awdjo separati. ffmpeg jgħaqqadhom f'fajl wieħed li jista' jintlagħab kullimkien.
+#. text in the Options window
+#. Options → Sites Logins: beside the Certificates... button
+#, machine
+	Sites whose certificate you chose to trust	Siti li ċ-ċertifikat tagħhom għażilt li tafda
+#. text in the Options window
+#. Allowed certificates window: explanation
+#, machine
+	Sites whose security certificate you chose to trust. Each entry is pinned to that certificate's SHA-256 fingerprint.	Siti li għażilt li tafda ċ-ċertifikat ta’ sigurtà tagħhom. Kull entrata hija marbuta mal-impronta SHA-256 taċ-ċertifikat.
 #. text in the Link grabber window; text in a download's progress window; text in the Scheduler window; text in the Add torrent window
 #. column title: the file's size
 #. column title: file size
@@ -5865,6 +5925,9 @@
 #, machine
 	The site's certificate isn't trusted, by yt-dlp nor by this computer: an antivirus's web filter or a proxy that reads HTTPS may be in the way. Turn its HTTPS scanning off, or add its certificate to the computer's, then look the page up again.	Iċ-ċertifikat tas-sit mhuwiex fdat, la minn yt-dlp u lanqas minn dan il-kompjuter: filtru tal-web ta' antivirus jew proxy li jaqra l-HTTPS jista' jkun qed ifixkel. Itfi l-iskannjar tal-HTTPS tiegħu, jew żid iċ-ċertifikat tiegħu mal-kompjuter, imbagħad erġa' fittex il-paġna.
 #. text in errors.rs
+#, machine
+	the site's security certificate expired on {date}, so MDM can't be sure it's the real site (your browser warns about it too)	iċ-ċertifikat ta' sigurtà tas-sit skada fi {date}, għalhekk MDM ma jistax ikun ċert li huwa s-sit reali (il-browser tiegħek iwissi dwar dan ukoll)
+#. text in errors.rs
 #. why a download failed: the site's security certificate (what proves a secure, HTTPS, site is the one it says) is past its end date. Browsers warn about the same site
 #, machine
 	the site's security certificate has expired, so MDM can't be sure it's the real site (your browser warns about it too)	iċ-ċertifikat tas-sigurtà tas-sit skada, għalhekk MDM ma jistax ikun ċert li huwa s-sit reali (il-browser tiegħek iwissi dwaru wkoll)
@@ -5872,6 +5935,10 @@
 #. why a download failed: the site's security certificate was made for other site names than the one in the address
 #, machine
 	the site's security certificate is for another site name, so MDM can't be sure it's the real site (your browser warns about it too)	iċ-ċertifikat tas-sigurtà tas-sit huwa għal isem ta' sit ieħor, għalhekk MDM ma jistax ikun ċert li huwa s-sit reali (il-browser tiegħek iwissi dwaru wkoll)
+#. text in errors.rs
+#. why a download failed: the site's security certificate is self-signed
+#, machine
+	the site's security certificate is self-signed, so MDM can't be sure it's the real site (your browser warns about it too)	iċ-ċertifikat ta' sigurtà tas-sit huwa self-signed, għalhekk MDM ma jistax ikun ċert li huwa s-sit reali (il-browser tiegħek iwissi dwar dan ukoll)
 #. text in errors.rs
 #. why a download failed: the site's security certificate is made for other uses than a website (its "extended key usage" leaves out web servers)
 #, machine
@@ -6915,6 +6982,10 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 	Wrong code. Tries left: {n}	Kodiċi żbaljat. Tentattivi li fadal: {n}
+#. text in the Options window
+#. Allowed certificates table: short reason label
+#, machine
+	Wrong name	Isem ħażin
 #. text in extracting archives (a download's log, the Archive password window)
 #. in Archive password: {name} is the archive's file name
 #. {name} = a file name (keep the braces as they are)

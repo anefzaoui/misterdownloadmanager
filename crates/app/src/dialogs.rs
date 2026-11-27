@@ -1448,7 +1448,7 @@ pub struct FileInfo {
     rt: tokio::runtime::Handle,
     request: crate::app::RequestParts,
     probe: Arc<Mutex<Option<Probed>>>,
-    info: Option<Result<ProbeInfo, String>>,
+    info: Option<Result<ProbeInfo, ProbeError>>,
     /// The look's open answer, for the download to read instead of asking again (#28).
     kept: Option<mdm_engine::KeptAnswer>,
     edited: bool,
@@ -1516,6 +1516,27 @@ pub struct FileInfo {
     zip_preview: Option<crate::zippreview::ZipPreview>,
     /// The files ticked in Zip preview: Start (or Later) adds only them, as one download.
     pub zip_pick: Option<crate::zippreview::Chosen>,
+    /// Certificates allowed for this download only ("Continue once", #1964).
+    pub once_certs: Vec<mdm_engine::AllowedCert>,
+    /// Certificates the user chose "Always for this site" for while this dialog was open (#1964).
+    pub new_allowed_certs: Vec<mdm_engine::AllowedCert>,
+    /// Certificate warning prompt open over this Download File Info window (#1964).
+    cert_ask: Option<(String, mdm_engine::CertInfo)>,
+}
+
+/// How `FileInfo`'s background probe failed (#1964).
+#[derive(Clone, Debug)]
+enum ProbeError {
+    Text(String),
+    Cert(String, mdm_engine::CertInfo),
+}
+
+impl ProbeError {
+    fn text(&self) -> &str {
+        match self {
+            ProbeError::Text(s) | ProbeError::Cert(s, _) => s,
+        }
+    }
 }
 
 /// [`FileInfo::zip_look`]'s answer, once it came.
@@ -1617,6 +1638,9 @@ impl FileInfo {
             zip_look: None,
             zip_preview: None,
             zip_pick: None,
+            once_certs: Vec::new(),
+            new_allowed_certs: Vec::new(),
+            cert_ask: None,
         }
     }
 
@@ -2037,6 +2061,9 @@ impl FileInfo {
                 let dir = self.folder_of(self.category);
                 self.save_as = self.place.name_in(&dir, &pi.file_name);
             }
+            if let Err(ProbeError::Cert(reason, info)) = &res {
+                self.cert_ask = Some((reason.clone(), info.clone()));
+            }
             self.info = Some(res);
         }
         // The name numbered in its folder, once the disk has answered (#743).
@@ -2316,15 +2343,16 @@ impl FileInfo {
                         }
                     }
                     Some(Err(reason)) => {
+                        let text = reason.text();
                         let (rect, cut) = winui::text_fit(
                             &p,
                             o.x + 96.0,
                             o.y + 193.0 + dy,
-                            reason,
+                            text,
                             winui::ERROR(),
                             o.x + 462.0,
                         );
-                        winui::copyable(ui, rect, own("file-info-failed"), reason, cut);
+                        winui::copyable(ui, rect, own("file-info-failed"), text, cut);
                     }
                 }
 
@@ -2426,7 +2454,10 @@ impl FileInfo {
                         None,
                     ),
                     // i18n: in Download File Info, where the size goes: the address didn't answer
-                    Some(Err(e)) => (crate::i18n::t("Error").to_owned(), Some(e.clone())),
+                    Some(Err(e)) => (
+                        crate::i18n::t("Error").to_owned(),
+                        Some(e.text().to_owned()),
+                    ),
                 };
                 let w = winui::text_width(&p, &size);
                 let at = winui::text(
@@ -2545,6 +2576,38 @@ impl FileInfo {
         if open_zip {
             self.open_zip_preview(ctx);
         }
+        if let Some((reason, info)) = self.cert_ask.clone() {
+            match cert_warning(ctx, &info, &reason, Some(self.nth)) {
+                Outcome::Open => {}
+                Outcome::Done(CertChoice::Once) => {
+                    let cert = mdm_engine::AllowedCert {
+                        host: info.host.to_ascii_lowercase(),
+                        port: info.port,
+                        sha256: info.sha256,
+                        problem: info.problem,
+                    };
+                    self.once_certs.push(cert.clone());
+                    self.request.opts.allowed_certs.push(cert);
+                    self.cert_ask = None;
+                    self.look_again(ctx);
+                }
+                Outcome::Done(CertChoice::Always) => {
+                    let cert = mdm_engine::AllowedCert {
+                        host: info.host.to_ascii_lowercase(),
+                        port: info.port,
+                        sha256: info.sha256,
+                        problem: info.problem,
+                    };
+                    self.new_allowed_certs.push(cert.clone());
+                    self.request.opts.allowed_certs.push(cert);
+                    self.cert_ask = None;
+                    self.look_again(ctx);
+                }
+                Outcome::Done(CertChoice::Cancel) | Outcome::Closed => {
+                    self.cert_ask = None;
+                }
+            }
+        }
         out
     }
 }
@@ -2617,7 +2680,7 @@ fn cancel_waiting(ctx: &egui::Context, n: usize, nth: Nth) -> Outcome<bool> {
 /// Look `url` up in the background (name, size) as the download will ask it (`request`), the
 /// answer landing in the slot returned.
 /// A look's result: what it learned, and its open answer when the download can read it.
-type Probed = Result<(ProbeInfo, Option<mdm_engine::KeptAnswer>), String>;
+type Probed = Result<(ProbeInfo, Option<mdm_engine::KeptAnswer>), ProbeError>;
 
 fn start_probe(
     rt: &tokio::runtime::Handle,
@@ -2632,11 +2695,191 @@ fn start_probe(
         // In the interface language (the engine's own words are English).
         let res = mdm_engine::probe_kept(url, headers, &opts)
             .await
-            .map_err(|e| crate::errors::describe(&e));
+            .map_err(|e| {
+                let text = crate::errors::describe(&e);
+                match e {
+                    mdm_engine::Error::Certificate(refusal)
+                        if refusal.problem.can_allow() && refusal.info.is_some() =>
+                    {
+                        ProbeError::Cert(text, *refusal.info.unwrap())
+                    }
+                    _ => ProbeError::Text(text),
+                }
+            });
         *slot.lock().unwrap() = Some(res);
         ctx.request_repaint();
     });
     probe
+}
+
+/// User's decision when a server's certificate is refused (#1964).
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum CertChoice {
+    Once,
+    Always,
+    Cancel,
+}
+
+/// Format a 64-char hex SHA-256 fingerprint into uppercase colon-separated pairs.
+pub fn format_fingerprint(hex: &str) -> String {
+    let upper = hex.to_ascii_uppercase();
+    let mut out = String::with_capacity(upper.len() + upper.len() / 2);
+    for (i, b) in upper.as_bytes().iter().enumerate() {
+        if i > 0 && i % 2 == 0 {
+            out.push(':');
+        }
+        out.push(*b as char);
+    }
+    out
+}
+
+/// Format `host` and `port` as a site label (omitting `:443`).
+pub fn site_label(host: &str, port: u16) -> String {
+    if port == 443 {
+        host.to_owned()
+    } else {
+        format!("{host}:{port}")
+    }
+}
+
+/// Modal prompt when an HTTPS server's certificate is refused (#1964): explains why and offers
+/// **Continue once**, **Always for this site**, or **Cancel**.
+pub fn cert_warning(
+    ctx: &egui::Context,
+    info: &mdm_engine::CertInfo,
+    reason: &str,
+    nth: Option<Nth>,
+) -> Outcome<CertChoice> {
+    let base_id = "cert-warning";
+    let grow = nth.map_or_else(|| base_id.to_owned(), |n| n.id(base_id));
+    let extra = grow_extra(ctx, &grow);
+    let site = site_label(&info.host, info.port);
+    let fp = format_fingerprint(&info.sha256);
+    // i18n: window title when a server's HTTPS certificate is refused
+    let title = crate::i18n::t("Security Alert");
+    let body = |ui: &mut Ui, o: Pos2| {
+        let p = ui.painter().clone();
+        let mut y = o.y + 18.0;
+        let site_line = crate::i18n::fmt(
+            // i18n: Certificate warning: the site whose certificate was refused; {site} = host or host:port
+            crate::i18n::t("Site: {site}"),
+            &[("site", &crate::i18n::ltr(&site))],
+        );
+        let site_lines = winui::paragraph(
+            &p,
+            o.x + 14.0,
+            y,
+            &site_line,
+            winui::TEXT(),
+            o.x + 446.0,
+            14.0,
+        );
+        y += site_lines as f32 * 15.0 + 6.0;
+        let reason_lines =
+            winui::paragraph(&p, o.x + 14.0, y, reason, winui::TEXT(), o.x + 446.0, 14.0);
+        y += reason_lines as f32 * 15.0 + 8.0;
+        let fp_line = crate::i18n::fmt(
+            // i18n: Certificate warning: the certificate's SHA-256 fingerprint
+            crate::i18n::t("Certificate (SHA-256): {fingerprint}"),
+            &[("fingerprint", &fp)],
+        );
+        let fp_lines = winui::paragraph(
+            &p,
+            o.x + 14.0,
+            y,
+            &fp_line,
+            winui::TEXT(),
+            o.x + 446.0,
+            13.0,
+        );
+        let fp_rect = egui::Rect::from_min_max(
+            egui::pos2(o.x + 14.0, y - 12.0),
+            egui::pos2(o.x + 446.0, y + fp_lines as f32 * 14.0),
+        );
+        winui::copyable(ui, fp_rect, egui::Id::unique((&grow, "fp")), &fp, true);
+        y += fp_lines as f32 * 14.0 + 10.0;
+        let ask = crate::i18n::t(
+            // i18n: Certificate warning: question before Continue once / Always for this site / Cancel
+            "Continue anyway?",
+        );
+        winui::paragraph(&p, o.x + 14.0, y, ask, winui::TEXT(), o.x + 446.0, 14.0);
+        let needed_extra = (y + 20.0 - (o.y + 130.0)).max(0.0);
+        grow_px(ctx, &grow, needed_extra);
+
+        let buttons = winui::button_row_from_left(
+            &p,
+            &[
+                // i18n: Certificate warning button: allow this certificate for this download only
+                ("Continue once", 14.0, 118.0),
+                // i18n: Certificate warning button: remember this certificate's fingerprint for this site
+                ("Always for this site", 140.0, 150.0),
+                // i18n: Cancel button
+                ("Cancel", 368.0, 78.0),
+            ],
+            14.0,
+            446.0,
+            190.0,
+        );
+        let once = winui::button(
+            ui,
+            r(o, buttons[0].0, 138.0 + extra, buttons[0].1, 22.0),
+            "Continue once",
+            ButtonKind::Normal,
+            false,
+            None,
+        )
+        .clicked();
+        let always = winui::button(
+            ui,
+            r(o, buttons[1].0, 138.0 + extra, buttons[1].1, 22.0),
+            "Always for this site",
+            ButtonKind::Normal,
+            false,
+            None,
+        )
+        .clicked();
+        let cancel = winui::button(
+            ui,
+            r(o, buttons[2].0, 138.0 + extra, buttons[2].1, 22.0),
+            "Cancel",
+            ButtonKind::Default,
+            false,
+            None,
+        )
+        .clicked();
+
+        if cancel || winui::escape_pressed(ui) {
+            Outcome::Done(CertChoice::Cancel)
+        } else if once {
+            Outcome::Done(CertChoice::Once)
+        } else if always {
+            Outcome::Done(CertChoice::Always)
+        } else {
+            Outcome::Open
+        }
+    };
+    if let Some(n) = nth {
+        question_nth(
+            ctx,
+            base_id,
+            title,
+            [460.0, 174.0 + extra],
+            false,
+            winui::BG(),
+            n,
+            body,
+        )
+    } else {
+        question(
+            ctx,
+            base_id,
+            title,
+            [460.0, 174.0 + extra],
+            false,
+            winui::BG(),
+            body,
+        )
+    }
 }
 
 // ---- Download complete (client 455 × 215) --------------------------------------------------

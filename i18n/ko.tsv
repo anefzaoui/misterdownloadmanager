@@ -625,6 +625,10 @@
 #. Click'n'Load window, under the question: nothing happens to the links before the user adds them in Link grabber
 #, machine
 	Allow only sites you use. Nothing is looked up or downloaded before you add it in Link grabber.	사용하는 사이트만 허용하세요. 링크 그래버에 추가하기 전에는 아무것도 조회하거나 다운로드되지 않습니다.
+#. text in the Options window; window title in the Options window
+#. window title: HTTPS sites whose certificate the user chose to trust
+#, machine
+	Allowed certificates	허용된 인증서
 #. text in errors.rs
 #, machine
 	already being downloaded: {path}	이미 다운로드 중: {path}
@@ -658,6 +662,9 @@
 #. View menu: a check item; dark mode on, whatever the system's setting
 #, machine
 	Always dark	항상 어둡게
+#. button in a dialog box
+#, machine
+	Always for this site	이 사이트에 항상 적용
 #. text in the Options window
 #. Options → Archives: where extracted files go
 #, machine
@@ -1067,6 +1074,11 @@
 #, machine
 	Central African Republic	중앙아프리카 공화국
 #. text in the Options window
+#. column title: SHA-256 certificate fingerprint
+#, machine
+	Certificate (SHA-256)	인증서(SHA-256)
+#. text in a dialog box; text in the Options window
+#. Certificate warning: the certificate's SHA-256 fingerprint
 #. Options → Remote → Status: the certificate's fingerprint, which the phone's browser shows when it warns about it; {fingerprint} = hex digits
 #, machine
 	Certificate (SHA-256): {fingerprint}	인증서(SHA-256): {fingerprint}
@@ -1074,6 +1086,11 @@
 #. Options → DNS over TLS: label before the name the server's certificate shows
 #, machine
 	Certificate name:	인증서 이름:
+#. text in the Options window
+#. Options → Sites Logins: button: opens the list of allowed HTTPS site certificates
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Certificates...	인증서...
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -1347,6 +1364,13 @@
 #. text in the Options window
 #, machine
 	Connections:	연결:
+#. text in a dialog box
+#. Certificate warning: question before Continue once / Always for this site / Cancel
+#, machine
+	Continue anyway?	그래도 계속하시겠습니까?
+#. button in a dialog box
+#, machine
+	Continue once	한 번만 계속
 #. link (opens a web page) in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Contributors	기여자
@@ -1957,7 +1981,6 @@
 #, machine
 	Eritrea	에리트레아
 #. text in a dialog box; item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window; text in remote.rs
-#. in Download File Info, where the size goes: the address didn't answer
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): it failed
 #, machine
@@ -2027,6 +2050,10 @@
 #. Options → Accounts: a note that the debrid services' support (Real-Debrid, AllDebrid, Premiumize) is new and not yet tried with real paid accounts
 #, machine
 	Experimental: built from the services' public API documentation, not yet confirmed with real accounts.	실험적 기능: 서비스의 공개 API 설명서를 기반으로 빌드되었으며, 실제 계정으로는 아직 확인되지 않았습니다.
+#. text in the Options window
+#. Allowed certificates table: short reason label
+#, machine
+	Expired	만료됨
 #. message or event log entry in the main window; text in the Options window
 #, machine
 	Export	내보내기
@@ -3931,8 +3958,16 @@
 #, machine
 	Not tested: it is larger than {limit} (Options → Archives). Right-click → Test archive tests it	테스트하지 않음: {limit}보다 큽니다(옵션 → 보관 파일). 마우스 오른쪽 단추 클릭 → 보관 파일 테스트를 클릭하여 테스트합니다.
 #. text in the Options window
+#. Allowed certificates table: short reason label
+#, machine
+	Not trusted	신뢰할 수 없음
+#. text in the Options window
 #, machine
 	Not used: file parts are written next to the file	사용 안 함: 파일 부분이 파일 옆에 기록됩니다.
+#. text in the Options window
+#. Allowed certificates table: short reason label
+#, machine
+	Not yet valid	아직 유효하지 않음
 #. text in a dialog box
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
@@ -4154,6 +4189,9 @@
 #. Options → Add an account: label before the field for the service's API token (the other way to sign in)
 #, machine
 	Or paste your API token:	또는 API 토큰 붙여넣기:
+#. text in the Options window
+#, machine
+	Other	기타
 #. text in the Link grabber window
 #. Link grabber: the box that edits the selected package
 #, machine
@@ -4461,6 +4499,10 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	Reannounce failed: {error}	재공지에 실패했습니다: {error}
+#. text in the Options window
+#. column title: certificate refusal reason allowed
+#, machine
+	Reason	이유
 #. text in a download's progress window
 #. column title: how much came from the peer
 #, machine
@@ -4732,6 +4774,10 @@
 #. text in the Batch download window
 #, machine
 	Second file:	두 번째 파일:
+#. text in a dialog box
+#. window title when a server's HTTPS certificate is refused
+#, machine
+	Security Alert	보안 경고
 #. text in preview.rs
 #. the preview pane when no download is selected, under its title
 #, machine
@@ -5026,6 +5072,7 @@
 	Sint Maarten	신트마르턴
 #. text in the Options window
 #. Site rules: column title: the site pattern
+#. column title: site name and port
 #, machine
 	Site	사이트
 #. checkbox in the Find window
@@ -5052,6 +5099,11 @@
 #. Site rule: label before the site pattern box (example.com, *.example.com)
 #, machine
 	Site:	사이트:
+#. text in a dialog box
+#. Certificate warning: the site whose certificate was refused; {site} = host or host:port
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+	Site: {site}	사이트: {site}
 #. text in the Options window
 #. tab title: user names and passwords for sites
 #, machine
@@ -5062,6 +5114,14 @@
 #. text in helpers.rs
 #, machine
 	Sites send their best quality as separate video and audio. ffmpeg puts them together into one file that plays anywhere.	사이트는 최고의 품질을 별도의 비디오 및 오디오로 보냅니다. ffmpeg는 이를 어디서든 재생할 수 있는 하나의 파일로 결합합니다.
+#. text in the Options window
+#. Options → Sites Logins: beside the Certificates... button
+#, machine
+	Sites whose certificate you chose to trust	신뢰하도록 선택한 인증서가 있는 사이트
+#. text in the Options window
+#. Allowed certificates window: explanation
+#, machine
+	Sites whose security certificate you chose to trust. Each entry is pinned to that certificate's SHA-256 fingerprint.	보안 인증서를 신뢰하도록 선택한 사이트입니다. 각 항목은 해당 인증서의 SHA-256 지문에 고정됩니다.
 #. text in the Link grabber window; text in a download's progress window; text in the Scheduler window; text in the Add torrent window
 #. column title: the file's size
 #. column title: file size
@@ -5869,6 +5929,9 @@
 #, machine
 	The site's certificate isn't trusted, by yt-dlp nor by this computer: an antivirus's web filter or a proxy that reads HTTPS may be in the way. Turn its HTTPS scanning off, or add its certificate to the computer's, then look the page up again.	yt-dlp와 이 컴퓨터 모두 사이트의 인증서를 신뢰하지 않습니다. 백신 프로그램의 웹 필터 또는 HTTPS를 읽는 프록시가 방해할 수 있습니다. HTTPS 검사를 끄거나 해당 인증서를 컴퓨터의 인증서 저장소에 추가한 다음 페이지를 다시 조회하세요.
 #. text in errors.rs
+#, machine
+	the site's security certificate expired on {date}, so MDM can't be sure it's the real site (your browser warns about it too)	사이트의 보안 인증서가 {date}에 만료되어 MDM이 실제 사이트인지 확인할 수 없습니다(브라우저에서도 경고합니다).
+#. text in errors.rs
 #. why a download failed: the site's security certificate (what proves a secure, HTTPS, site is the one it says) is past its end date. Browsers warn about the same site
 #, machine
 	the site's security certificate has expired, so MDM can't be sure it's the real site (your browser warns about it too)	사이트의 보안 인증서가 만료되어 MDM에서 실제 사이트인지 확인할 수 없습니다(브라우저에서도 경고합니다).
@@ -5876,6 +5939,10 @@
 #. why a download failed: the site's security certificate was made for other site names than the one in the address
 #, machine
 	the site's security certificate is for another site name, so MDM can't be sure it's the real site (your browser warns about it too)	사이트의 보안 인증서가 다른 사이트 이름용이므로 MDM에서 실제 사이트인지 확인할 수 없습니다(브라우저에서도 경고합니다).
+#. text in errors.rs
+#. why a download failed: the site's security certificate is self-signed
+#, machine
+	the site's security certificate is self-signed, so MDM can't be sure it's the real site (your browser warns about it too)	사이트의 보안 인증서가 자체 서명되어 MDM이 실제 사이트인지 확인할 수 없습니다(브라우저에서도 경고합니다).
 #. text in errors.rs
 #. why a download failed: the site's security certificate is made for other uses than a website (its "extended key usage" leaves out web servers)
 #, machine
@@ -6919,6 +6986,10 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 	Wrong code. Tries left: {n}	잘못된 코드입니다. 남은 시도 횟수: {n}
+#. text in the Options window
+#. Allowed certificates table: short reason label
+#, machine
+	Wrong name	잘못된 이름
 #. text in extracting archives (a download's log, the Archive password window)
 #. in Archive password: {name} is the archive's file name
 #. {name} = a file name (keep the braces as they are)

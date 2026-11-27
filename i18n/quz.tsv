@@ -625,6 +625,10 @@
 #. Click'n'Load window, under the question: nothing happens to the links before the user adds them in Link grabber
 #, machine
 	Allow only sites you use. Nothing is looked up or downloaded before you add it in Link grabber.	Chay llamk'achisqayki kawsaykunallata saqiy. Manaraq Link grabberman yapasqaykimantaqa, mana imapas maskhasqa nitaq uraykachisqa kanchu.
+#. text in the Options window; window title in the Options window
+#. window title: HTTPS sites whose certificate the user chose to trust
+#, machine
+	Allowed certificates	Saqillayku khipukuna
 #. text in errors.rs
 #, machine
 	already being downloaded: {path}	ñawpaqmantapacha uraykachasqaña: {path}
@@ -658,6 +662,9 @@
 #. View menu: a check item; dark mode on, whatever the system's setting
 #, machine
 	Always dark	Sapa kuti laqa
+#. button in a dialog box
+#, machine
+	Always for this site	Kay sitiopaq sapa kuti
 #. text in the Options window
 #. Options → Archives: where extracted files go
 #, machine
@@ -1067,6 +1074,11 @@
 #, machine
 	Central African Republic	Central African Republic
 #. text in the Options window
+#. column title: SHA-256 certificate fingerprint
+#, machine
+	Certificate (SHA-256)	Khipu (SHA-256)
+#. text in a dialog box; text in the Options window
+#. Certificate warning: the certificate's SHA-256 fingerprint
 #. Options → Remote → Status: the certificate's fingerprint, which the phone's browser shows when it warns about it; {fingerprint} = hex digits
 #, machine
 	Certificate (SHA-256): {fingerprint}	Chiqanchay (SHA-256): {fingerprint}
@@ -1074,6 +1086,11 @@
 #. Options → DNS over TLS: label before the name the server's certificate shows
 #, machine
 	Certificate name:	Certificado suti:
+#. text in the Options window
+#. Options → Sites Logins: button: opens the list of allowed HTTPS site certificates
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Certificates...	Khipukuna...
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -1347,6 +1364,13 @@
 #. text in the Options window
 #, machine
 	Connections:	Tinkiykuna:
+#. text in a dialog box
+#. Certificate warning: question before Continue once / Always for this site / Cancel
+#, machine
+	Continue anyway?	¿Imayna kaptinpas qatiy?
+#. button in a dialog box
+#, machine
+	Continue once	Huk kutilla qatiy
 #. link (opens a web page) in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Contributors	Yanapaqkuna
@@ -1957,7 +1981,6 @@
 #, machine
 	Eritrea	Eritrea
 #. text in a dialog box; item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window; text in remote.rs
-#. in Download File Info, where the size goes: the address didn't answer
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): it failed
 #, machine
@@ -2027,6 +2050,10 @@
 #. Options → Accounts: a note that the debrid services' support (Real-Debrid, AllDebrid, Premiumize) is new and not yet tried with real paid accounts
 #, machine
 	Experimental: built from the services' public API documentation, not yet confirmed with real accounts.	Yachayllaraq: kay ruwaykunaqa mana allinta ruwasqa kanchu, manaraqmi cheqaq cuentaswan allinta qhawasqachu.
+#. text in the Options window
+#. Allowed certificates table: short reason label
+#, machine
+	Expired	Pachantin
 #. message or event log entry in the main window; text in the Options window
 #, machine
 	Export	Hawaman apachiy
@@ -3927,8 +3954,16 @@
 #, machine
 	Not tested: it is larger than {limit} (Options → Archives). Right-click → Test archive tests it	Mana qhawasqa: {limit}manta aswan hatun (Akllanakuna → Khipukuna). Paña ñit'iy → Khiputa qhaway qhawachinqa
 #. text in the Options window
+#. Allowed certificates table: short reason label
+#, machine
+	Not trusted	Mana iñisqa
+#. text in the Options window
 #, machine
 	Not used: file parts are written next to the file	Mana llamk'achisqa: willay rakinakuna willaypaq qhipanpi qillqasqa kanku
+#. text in the Options window
+#. Allowed certificates table: short reason label
+#, machine
+	Not yet valid	Manaraq chanin
 #. text in a dialog box
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
@@ -4150,6 +4185,9 @@
 #. Options → Add an account: label before the field for the service's API token (the other way to sign in)
 #, machine
 	Or paste your API token:	Ichaqa API tokenniykita k'askachiy:
+#. text in the Options window
+#, machine
+	Other	Huk
 #. text in the Link grabber window
 #. Link grabber: the box that edits the selected package
 #, machine
@@ -4457,6 +4495,10 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	Reannounce failed: {error}	Watiqmanta willayqa mana atirqan: {error}
+#. text in the Options window
+#. column title: certificate refusal reason allowed
+#, machine
+	Reason	Imarayku
 #. text in a download's progress window
 #. column title: how much came from the peer
 #, machine
@@ -4728,6 +4770,10 @@
 #. text in the Batch download window
 #, machine
 	Second file:	Iskay ñiqin willañiqi:
+#. text in a dialog box
+#. window title when a server's HTTPS certificate is refused
+#, machine
+	Security Alert	Imayna kawsaymanta willay
 #. text in preview.rs
 #. the preview pane when no download is selected, under its title
 #, machine
@@ -5022,6 +5068,7 @@
 	Sint Maarten	Sint Maarten
 #. text in the Options window
 #. Site rules: column title: the site pattern
+#. column title: site name and port
 #, machine
 	Site	Sitio
 #. checkbox in the Find window
@@ -5048,6 +5095,11 @@
 #. Site rule: label before the site pattern box (example.com, *.example.com)
 #, machine
 	Site:	Sitio:
+#. text in a dialog box
+#. Certificate warning: the site whose certificate was refused; {site} = host or host:port
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+	Site: {site}	Sitio: {site}
 #. text in the Options window
 #. tab title: user names and passwords for sites
 #, machine
@@ -5058,6 +5110,14 @@
 #. text in helpers.rs
 #, machine
 	Sites send their best quality as separate video and audio. ffmpeg puts them together into one file that plays anywhere.	Webkunaqa aswan allin k'umuykachayta sapanchasqa videota hinaspa audiota kachamunku. ffmpeg nisqaqa huk willañiqipi huñun, maypipas pukllayta atikunapaq.
+#. text in the Options window
+#. Options → Sites Logins: beside the Certificates... button
+#, machine
+	Sites whose certificate you chose to trust	Sitio khipunta iñiyta akllarqanki
+#. text in the Options window
+#. Allowed certificates window: explanation
+#, machine
+	Sites whose security certificate you chose to trust. Each entry is pinned to that certificate's SHA-256 fingerprint.	Sitio seguridad khipunta iñiyta akllarqanki. Sapa qillqa chay khipuq SHA-256 ruk'anaman watasqa kachkan.
 #. text in the Link grabber window; text in a download's progress window; text in the Scheduler window; text in the Add torrent window
 #. column title: the file's size
 #. column title: file size
@@ -5865,6 +5925,9 @@
 #, machine
 	The site's certificate isn't trusted, by yt-dlp nor by this computer: an antivirus's web filter or a proxy that reads HTTPS may be in the way. Turn its HTTPS scanning off, or add its certificate to the computer's, then look the page up again.	Kay sitiopa certificadonta mana yupaychankuchu, nitaq yt-dlp nitaq kay computadorapas: huk antiviruspa web hark'aqnin utaq HTTPSta ñawinchaspa huk proxy hark'achkanman. HTTPS mask'aynin wañuchiy, utaq certificadonta computadorapa certificadokunaman yapay, chaymanta p'anqata kaqmanta mask'ay.
 #. text in errors.rs
+#, machine
+	the site's security certificate expired on {date}, so MDM can't be sure it's the real site (your browser warns about it too)	Chay sitiopaq seguridad khipu {date} p'unchawpi tukurqan, chayrayku MDM mana atinchu chiqap sitio kasqanta yachanata (qampa qhawayniykipas chaymanta willasunki)
+#. text in errors.rs
 #. why a download failed: the site's security certificate (what proves a secure, HTTPS, site is the one it says) is past its end date. Browsers warn about the same site
 #, machine
 	the site's security certificate has expired, so MDM can't be sure it's the real site (your browser warns about it too)	kawsaypa seguridad certificado tukusqaña, chayrayku MDM mana atinchu chiqap kawsay kasqanta yachayta (ñawpaqtaqa qhawana programaykiwan hark'asqa kachkan)
@@ -5872,6 +5935,10 @@
 #. why a download failed: the site's security certificate was made for other site names than the one in the address
 #, machine
 	the site's security certificate is for another site name, so MDM can't be sure it's the real site (your browser warns about it too)	Web p'anqapa seguridad certificadoqa huk web p'anqapa sutinpaqmi, chayrayku MDM mana atinchu chiqap web p'anqa kasqanta yachayta (ñawpaqtaqa qhawana programaykipas yuyaychachkan)
+#. text in errors.rs
+#. why a download failed: the site's security certificate is self-signed
+#, machine
+	the site's security certificate is self-signed, so MDM can't be sure it's the real site (your browser warns about it too)	Chay sitiopaq seguridad khipu kikinpa qillqasqan kachkan, chayrayku MDM mana atinchu chiqap sitio kasqanta yachanata (qampa qhawayniykipas chaymanta willasunki)
 #. text in errors.rs
 #. why a download failed: the site's security certificate is made for other uses than a website (its "extended key usage" leaves out web servers)
 #, machine
@@ -6915,6 +6982,10 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 	Wrong code. Tries left: {n}	Pantay codigo. {n} qhipaqta qallarinapaq
+#. text in the Options window
+#. Allowed certificates table: short reason label
+#, machine
+	Wrong name	Mana chanin suti
 #. text in extracting archives (a download's log, the Archive password window)
 #. in Archive password: {name} is the archive's file name
 #. {name} = a file name (keep the braces as they are)

@@ -625,6 +625,10 @@
 #. Click'n'Load window, under the question: nothing happens to the links before the user adds them in Link grabber
 #, machine
 	Allow only sites you use. Nothing is looked up or downloaded before you add it in Link grabber.	صرف ان سائٹس کی اجازت دیں جو آپ استعمال کرتے ہیں۔ جب تک آپ اسے لنک گریبر میں شامل نہیں کرتے، کچھ بھی تلاش یا ڈاؤن لوڈ نہیں کیا جاتا۔
+#. text in the Options window; window title in the Options window
+#. window title: HTTPS sites whose certificate the user chose to trust
+#, machine
+	Allowed certificates	اجازت یافتہ سرٹیفکیٹس
 #. text in errors.rs
 #, machine
 	already being downloaded: {path}	پہلے سے ڈاؤن لوڈ ہو رہی ہے: {path}
@@ -658,6 +662,9 @@
 #. View menu: a check item; dark mode on, whatever the system's setting
 #, machine
 	Always dark	ہمیشہ گہرا
+#. button in a dialog box
+#, machine
+	Always for this site	اس سائٹ کے لیے ہمیشہ
 #. text in the Options window
 #. Options → Archives: where extracted files go
 #, machine
@@ -1067,6 +1074,11 @@
 #, machine
 	Central African Republic	وسطی افریقی جمہوریہ
 #. text in the Options window
+#. column title: SHA-256 certificate fingerprint
+#, machine
+	Certificate (SHA-256)	سرٹیفکیٹ (SHA-256)
+#. text in a dialog box; text in the Options window
+#. Certificate warning: the certificate's SHA-256 fingerprint
 #. Options → Remote → Status: the certificate's fingerprint, which the phone's browser shows when it warns about it; {fingerprint} = hex digits
 #, machine
 	Certificate (SHA-256): {fingerprint}	سرٹیفکیٹ (SHA-256): {fingerprint}
@@ -1074,6 +1086,11 @@
 #. Options → DNS over TLS: label before the name the server's certificate shows
 #, machine
 	Certificate name:	سرٹیفکیٹ کا نام:
+#. text in the Options window
+#. Options → Sites Logins: button: opens the list of allowed HTTPS site certificates
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Certificates...	سرٹیفکیٹس...
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -1347,6 +1364,13 @@
 #. text in the Options window
 #, machine
 	Connections:	کنکشنز:
+#. text in a dialog box
+#. Certificate warning: question before Continue once / Always for this site / Cancel
+#, machine
+	Continue anyway?	پھر بھی جاری رکھیں؟
+#. button in a dialog box
+#, machine
+	Continue once	ایک بار جاری رکھیں
 #. link (opens a web page) in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Contributors	معاونین
@@ -1957,7 +1981,6 @@
 #, machine
 	Eritrea	اریٹیریا
 #. text in a dialog box; item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window; text in remote.rs
-#. in Download File Info, where the size goes: the address didn't answer
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): it failed
 #, machine
@@ -2027,6 +2050,10 @@
 #. Options → Accounts: a note that the debrid services' support (Real-Debrid, AllDebrid, Premiumize) is new and not yet tried with real paid accounts
 #, machine
 	Experimental: built from the services' public API documentation, not yet confirmed with real accounts.	تجرباتی: سروسز کے عوامی API دستاویزات سے بنایا گیا ہے، ابھی تک حقیقی اکاؤنٹس کے ساتھ تصدیق نہیں ہوئی ہے۔
+#. text in the Options window
+#. Allowed certificates table: short reason label
+#, machine
+	Expired	میعاد ختم ہو گئی
 #. message or event log entry in the main window; text in the Options window
 #, machine
 	Export	برآمد کریں
@@ -3931,8 +3958,16 @@
 #, machine
 	Not tested: it is larger than {limit} (Options → Archives). Right-click → Test archive tests it	ٹیسٹ نہیں کیا گیا: یہ {limit} (اختیارات → آرکائیوز) سے بڑا ہے۔ رائٹ کلک → آرکائیو ٹیسٹ کریں سے اس کا ٹیسٹ کیا جاتا ہے
 #. text in the Options window
+#. Allowed certificates table: short reason label
+#, machine
+	Not trusted	غیر معتبر
+#. text in the Options window
 #, machine
 	Not used: file parts are written next to the file	استعمال نہیں ہوتا: فائل کے حصے اسی فولڈر میں لکھے جاتے ہیں
+#. text in the Options window
+#. Allowed certificates table: short reason label
+#, machine
+	Not yet valid	ابھی تک درست نہیں
 #. text in a dialog box
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
@@ -4154,6 +4189,9 @@
 #. Options → Add an account: label before the field for the service's API token (the other way to sign in)
 #, machine
 	Or paste your API token:	یا اپنا API ٹوکن پیسٹ کریں:
+#. text in the Options window
+#, machine
+	Other	دیگر
 #. text in the Link grabber window
 #. Link grabber: the box that edits the selected package
 #, machine
@@ -4461,6 +4499,10 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	Reannounce failed: {error}	دوبارہ اعلان ناکام ہو گیا: {error}
+#. text in the Options window
+#. column title: certificate refusal reason allowed
+#, machine
+	Reason	وجہ
 #. text in a download's progress window
 #. column title: how much came from the peer
 #, machine
@@ -4732,6 +4774,10 @@
 #. text in the Batch download window
 #, machine
 	Second file:	دوسری فائل:
+#. text in a dialog box
+#. window title when a server's HTTPS certificate is refused
+#, machine
+	Security Alert	سیکیورٹی الرٹ
 #. text in preview.rs
 #. the preview pane when no download is selected, under its title
 #, machine
@@ -5026,6 +5072,7 @@
 	Sint Maarten	سنٹ مارٹن
 #. text in the Options window
 #. Site rules: column title: the site pattern
+#. column title: site name and port
 #, machine
 	Site	سائٹ
 #. checkbox in the Find window
@@ -5052,6 +5099,11 @@
 #. Site rule: label before the site pattern box (example.com, *.example.com)
 #, machine
 	Site:	سائٹ:
+#. text in a dialog box
+#. Certificate warning: the site whose certificate was refused; {site} = host or host:port
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+	Site: {site}	سائٹ: {site}
 #. text in the Options window
 #. tab title: user names and passwords for sites
 #, machine
@@ -5062,6 +5114,14 @@
 #. text in helpers.rs
 #, machine
 	Sites send their best quality as separate video and audio. ffmpeg puts them together into one file that plays anywhere.	سائٹس اپنی بہترین کوالٹی کو الگ ویڈیو اور آڈیو کے طور پر بھیجتی ہیں۔ ffmpeg انہیں ایک فائل میں اکٹھا کرتا ہے جو کہیں بھی چلتی ہے۔
+#. text in the Options window
+#. Options → Sites Logins: beside the Certificates... button
+#, machine
+	Sites whose certificate you chose to trust	وہ سائٹس جن کے سرٹیفکیٹ پر آپ نے بھروسہ کرنے کا انتخاب کیا ہے
+#. text in the Options window
+#. Allowed certificates window: explanation
+#, machine
+	Sites whose security certificate you chose to trust. Each entry is pinned to that certificate's SHA-256 fingerprint.	وہ سائٹس جن کے سیکیورٹی سرٹیفکیٹ پر آپ نے بھروسہ کرنے کا انتخاب کیا ہے۔ ہر اندراج اس سرٹیفکیٹ کے SHA-256 فنگر پرنٹ سے منسلک ہے۔
 #. text in the Link grabber window; text in a download's progress window; text in the Scheduler window; text in the Add torrent window
 #. column title: the file's size
 #. column title: file size
@@ -5869,6 +5929,9 @@
 #, machine
 	The site's certificate isn't trusted, by yt-dlp nor by this computer: an antivirus's web filter or a proxy that reads HTTPS may be in the way. Turn its HTTPS scanning off, or add its certificate to the computer's, then look the page up again.	سائٹ کا سرٹیفکیٹ yt-dlp اور نہ ہی اس کمپیوٹر کے ذریعے قابل اعتماد ہے: اینٹی وائرس کا ویب فلٹر یا HTTPS پڑھنے والا پراکسی رکاوٹ بن سکتا ہے۔ اس کی HTTPS اسکیننگ بند کریں، یا اس کا سرٹیفکیٹ کمپیوٹر میں شامل کریں، پھر صفحہ دوبارہ تلاش کریں۔
 #. text in errors.rs
+#, machine
+	the site's security certificate expired on {date}, so MDM can't be sure it's the real site (your browser warns about it too)	سائٹ کا سیکیورٹی سرٹیفکیٹ {date} کو ختم ہو گیا، اس لیے MDM یقینی نہیں بنا سکتا کہ یہ اصلی سائٹ ہے (آپ کا براؤزر بھی اس کے بارے میں خبردار کرتا ہے)
+#. text in errors.rs
 #. why a download failed: the site's security certificate (what proves a secure, HTTPS, site is the one it says) is past its end date. Browsers warn about the same site
 #, machine
 	the site's security certificate has expired, so MDM can't be sure it's the real site (your browser warns about it too)	سائٹ کا سیکیورٹی سرٹیفکیٹ میعاد ختم ہو چکا ہے، لہذا MDM اس بات کا یقین نہیں کر سکتا کہ یہ اصلی سائٹ ہے (آپ کا براؤزر بھی اس کے بارے میں خبردار کرتا ہے)
@@ -5876,6 +5939,10 @@
 #. why a download failed: the site's security certificate was made for other site names than the one in the address
 #, machine
 	the site's security certificate is for another site name, so MDM can't be sure it's the real site (your browser warns about it too)	سائٹ کا سیکیورٹی سرٹیفکیٹ کسی اور سائٹ کے نام کے لیے ہے، لہذا MDM اس بات کا یقین نہیں کر سکتا کہ یہ اصلی سائٹ ہے (آپ کا براؤزر بھی اس کے بارے میں خبردار کرتا ہے)
+#. text in errors.rs
+#. why a download failed: the site's security certificate is self-signed
+#, machine
+	the site's security certificate is self-signed, so MDM can't be sure it's the real site (your browser warns about it too)	سائٹ کا سیکیورٹی سرٹیفکیٹ خود دستخط شدہ ہے، اس لیے MDM یقینی نہیں بنا سکتا کہ یہ اصلی سائٹ ہے (آپ کا براؤزر بھی اس کے بارے میں خبردار کرتا ہے)
 #. text in errors.rs
 #. why a download failed: the site's security certificate is made for other uses than a website (its "extended key usage" leaves out web servers)
 #, machine
@@ -6919,6 +6986,10 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 	Wrong code. Tries left: {n}	غلط کوڈ۔ باقی کوششیں: {n}
+#. text in the Options window
+#. Allowed certificates table: short reason label
+#, machine
+	Wrong name	غلط نام
 #. text in extracting archives (a download's log, the Archive password window)
 #. in Archive password: {name} is the archive's file name
 #. {name} = a file name (keep the braces as they are)
