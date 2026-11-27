@@ -1541,6 +1541,14 @@ impl Settings {
                 (true, Some(p)) => mdm_cli::TorrentProxy::Through(p),
                 (true, None) => mdm_cli::TorrentProxy::Missing,
             },
+            // As the app's session takes them (`torrent_config`).
+            torrent_net: mdm_cli::TorrentNet {
+                dht: self.torrent_dht,
+                lsd: self.torrent_lsd,
+                upnp: self.torrent_upnp,
+                listen: self.torrent_incoming,
+                utp: self.torrent_utp,
+            },
             // The same switch, address and cache as the app's (#1776).
             public_trackers: self
                 .torrent_public_trackers

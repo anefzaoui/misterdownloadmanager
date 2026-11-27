@@ -2193,6 +2193,12 @@ impl App {
             start,
         );
         app.zoom = zoom;
+        // The chosen network adapter (#35) before the first frame's commands, which run before
+        // the clock's `network_adapter_tick`: a torrent session a magnet link started then was
+        // held to no adapter.
+        let route = app.netwatch.route(&app.settings.net_adapter, ctx);
+        crate::settings::share_route(route.clone());
+        app.route = route;
         // The unfinished downloads' resume states: beside the window, which opens with the list
         // as saved (a folder that doesn't answer held its first frame for 21 s).
         let repaint = ctx.clone();
@@ -2224,6 +2230,11 @@ impl App {
         start: crate::Start,
     ) -> Self {
         let settings = loaded.settings;
+        // Torrent settings from the start: a command at the first frame (a magnet link Windows
+        // started MDM for) may start the session before the clock's first `torrent_tick`.
+        let torrent_host = crate::torrents::Host::new(
+            crate::torrents::state_dir().and_then(|d| settings.torrent_config(d)),
+        );
         let mut queues = loaded.queues;
         if queues.len() < 2 {
             // The built-in queues' names are saved in English and translated where shown
@@ -2392,7 +2403,7 @@ impl App {
             blocklist_busy: Default::default(),
             public_trackers: Default::default(),
             torrents_started: false,
-            torrent_host: crate::torrents::Host::new(),
+            torrent_host,
             remote: None,
             remote_torrents: Vec::new(),
             cnl,

@@ -117,6 +117,7 @@ These changes come in version 0.6.0.
 
 ### Fixed
 
+- Torrents: turning DHT off in Torrent settings now really keeps it off, also when MDM is started for a magnet link or a .torrent file, and for the command line's `torrent-info` and `torrent-get`. The other Torrent settings switches and the chosen network adapter apply from the first moment too, and MDM's log says when the DHT is off.
 - Windows: a graphics driver reset no longer keeps MDM off Direct3D 12 for a month. MDM starts again by itself after a reset, and when the graphics card wasn't back yet at that moment, Direct3D 12 found only Windows' own software renderer: MDM took that as Direct3D 12 not working on the card, and drew with OpenGL from then on. A start like that is no longer remembered, so the next start draws with Direct3D 12 on the card again, and a card an earlier version passed over this way is tried again at the first start ([#1974](https://github.com/anefzaoui/misterdownloadmanager/issues/1974)).
 - Sinhala: about a hundred of MDM's texts read better (clearer wording, the same word for the same thing throughout, the installer's too), and the ones still missing are translated (thanks to [@ShammiSandaruwan](https://github.com/ShammiSandaruwan)).
 - **Browser add-on:** Download all links / Download selected links sends capturable links to the paired server when another MDM is chosen, capped at 100 links, with a clear consolidated result, and stopping immediately when the server cannot be reached ([#1596](https://github.com/anefzaoui/misterdownloadmanager/issues/1596)).
