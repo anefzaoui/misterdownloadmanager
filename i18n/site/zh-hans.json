@@ -1662,6 +1662,10 @@
    "source": "Yes. MDM accepts IDM's familiar command-line switches, comes with misterdownloadmanager-cli for downloads from a terminal, and has a local, token-protected…",
    "text": "是。MDM 接受 IDM 熟悉的命令行开关，附带 misterdownloadmanager-cli 用于从终端下载，并具有一个本地的、受令牌保护的…"
   },
+  "15dfb8668baab702": {
+   "source": "See <g1>Proxy / Socks</g1> and <g2>Use your own copies</g2>.",
+   "text": "请参阅<g1>代理/SOCKS</g1>和<g2>使用您自己的副本</g2>。"
+  },
   "15f41ea989aec521": {
    "source": "<g1>Base16 and pywal colour schemes as themes</g1>: a Base16 or Base24 scheme (<x2/>, the classic layout and tinted-theming's <x3/> one) or pywal's <x4/> (wallust's pywal-shaped one too), added with <g5>View → Theme → Add a theme file…</g5> or put in the themes folder, is a theme on the classic look: only the colours change. base00 and base01 are the backgrounds, base05 and base04 the text, base0D the focus, the selection and the progress bar (pywal: its background and foreground, color4); text is kept at 4.5:1 or more against every background and the accent at 3:1, moved a little where a scheme falls short. Once <x6/> has run, <g7>View → Theme</g7> lists <g8>pywal</g8>, read from where pywal writes it (<x9/>, <x10/> on Windows), and MDM follows each new wallpaper's colours within two seconds. A theme file can <x11/> a scheme to change more than its colours.",
    "text": "<g1>Base16 和 pywal 配色方案作为主题</g1>：Base16 或 Base24 方案（<x2/>，经典布局和着色主题的 <x3/> 方案）或 pywal 的 <x4/>（wallust 的 pywal 格式方案），通过<g5>视图 → 主题 → 添加主题文件…</g5>添加或放入主题文件夹，是经典外观的主题：仅颜色发生变化。base00 和 base01 是背景色，base05 和 base04 是文本色，base0D 是焦点、选择和进度条的颜色（pywal：其背景色和前景色，color4）；文本与所有背景的对比度保持在 4.5:1 或更高，强调色对比度保持在 3:1，在方案不足时略作调整。一旦 <x6/> 运行，<g7>视图 → 主题</g7>会列出 <g8>pywal</g8>，从 pywal 写入的位置读取（<x9/>，Windows 上为 <x10/>），MDM 会在两秒内跟随每个新壁纸的颜色。主题文件可以 <x11/> 方案以更改更多颜色以外的设置。"
@@ -3141,6 +3145,10 @@
   "28eeaa8ad9bf85a3": {
    "source": "Requests",
    "text": "请求数"
+  },
+  "291af5108373e0c4": {
+   "source": "MDM downloads yt-dlp, ffmpeg and gallery-dl from their official releases on GitHub. Where GitHub can't be reached or is very slow, as often in mainland…",
+   "text": "MDM 从 GitHub 官方发布页面下载 yt-dlp、ffmpeg 和 gallery-dl。如果 GitHub 无法访问或速度很慢（在中国大陆经常如此），安装会因“服务器未及时响应”而停止。有两种解决方法：使用代理程序（如 Clash、v2rayN 等），在选项 → 代理/SOCKS（手动代理/SOCKS 配置，通常是 127.0.0.1 和 7890）中输入其地址和端口，或者当代理程序设置了 Windows 代理时，选择使用系统设置。然后再次点击安装 yt-dlp：MDM 自己的下载（包括其帮助程序）都会通过代理进行。或者在浏览器中下载程序（yt-dlp 的下载地址在其发布页面），然后在从页面下载视频中点击帮助程序...，接着在其行中点击使用其他程序...，并选择该文件。MDM 此后将使用该文件；您需要自行保持其更新。请参阅代理/SOCKS和使用您自己的副本。"
   },
   "292621fe40d7beca": {
    "source": "Every video starts ticked. Untick the ones you don't want, or use <g1>Select all</g1> and <g2>Select none</g2>. Private and deleted videos are greyed out and can't be ticked.",
@@ -10346,6 +10354,10 @@
    "source": "MDM works with screen readers such as Narrator and NVDA, which hear what each control is and its state. Everything can be done from the keyboard, with the keys most Windows programs use.",
    "text": "MDM 支持 Narrator 和 NVDA 等屏幕阅读器，它们能识别每个控件及其状态。所有操作都可通过键盘完成，使用大多数 Windows 程序通用的按键。"
   },
+  "8bf561be5473c2d1": {
+   "source": "MDM downloads yt-dlp, ffmpeg and gallery-dl from their official releases on GitHub. Where GitHub can't be reached or is very slow, as often in mainland China, the install stops with \"the server did not answer in time\". Two ways around it:",
+   "text": "MDM 从 GitHub 官方发布页面下载 yt-dlp、ffmpeg 和 gallery-dl。如果 GitHub 无法访问或速度很慢（在中国大陆经常如此），安装会因“服务器未及时响应”而停止。有两种解决方法："
+  },
   "8bf5db6373827a5f": {
    "source": "Media on this page",
    "text": "此页面上的媒体"
@@ -11765,6 +11777,10 @@
   "9e7ae999aa690d3f": {
    "source": "Start or stop a download queue in the running app (automation API). Starts or stops the main queue if omitted.",
    "text": "在运行中的应用中启动或停止下载队列（自动化 API）。如果省略，则启动或停止主队列。"
+  },
+  "9e84ad8c276cf077": {
+   "source": "Why does installing yt-dlp or another helper time out?",
+   "text": "为什么安装 yt-dlp 或其他辅助工具会超时？"
   },
   "9ea4c71fa0f481c4": {
    "source": "MDM follows your system: when Windows (or your desktop's light/dark preference on Linux and macOS) is set to dark mode, so is MDM. To keep MDM light whatever the system does, turn off <g1>View → Dark Mode support</g1>. To keep it dark whatever the system does, for example on a desktop that reports no preference, turn on <g2>View → Always dark</g2>.",
@@ -13325,6 +13341,10 @@
   "b27995b1d5cff0b2": {
    "source": "A calendar's day or arrow pressed",
    "text": "日历日期或箭头被按下时"
+  },
+  "b292a3f16372b154": {
+   "source": "MDM downloads yt-dlp, ffmpeg and gallery-dl from their official releases on GitHub. Where GitHub can't be reached or is very slow, as often in mainland China, the install stops with \"the server did not answer in time\". Two ways around it: With a proxy program (Clash, v2rayN and the like), enter its address and port in Options → Proxy / Socks (Manual proxy/socks configuration, often 127.0.0.1 and 7890), or choose Use system settings when the program sets Windows' proxy. Then click Install yt-dlp again: MDM's own downloads, its helpers included, go through it. Or download the program in your browser (yt-dlp's is on its release page), then in Download video from a page click Helpers..., then Use another program... in its row, and choose the file. MDM uses it from then on; keep it up to date yourself. See Proxy / Socks and Use your own copies.",
+   "text": "MDM 从 GitHub 官方发布页面下载 yt-dlp、ffmpeg 和 gallery-dl。如果 GitHub 无法访问或速度很慢（在中国大陆经常如此），安装会因“服务器未及时响应”而停止。有两种解决方法：使用代理程序（如 Clash、v2rayN 等），在选项 → 代理/SOCKS（手动代理/SOCKS 配置，通常是 127.0.0.1 和 7890）中输入其地址和端口，或者当代理程序设置了 Windows 代理时，选择使用系统设置。然后再次点击安装 yt-dlp：MDM 自己的下载（包括其帮助程序）都会通过代理进行。或者在浏览器中下载程序（yt-dlp 的下载地址在其发布页面），然后在从页面下载视频中点击帮助程序...，接着在其行中点击使用其他程序...，并选择该文件。MDM 此后将使用该文件；您需要自行保持其更新。请参阅代理/SOCKS和使用您自己的副本。"
   },
   "b298f93960114202": {
    "source": ", with or without <x1/>;",
@@ -16646,6 +16666,10 @@
    "source": "Aqua",
    "text": "Aqua"
   },
+  "e1db1cbca152db19": {
+   "source": "With a proxy program (Clash, v2rayN and the like), enter its address and port in <g1>Options → Proxy / Socks</g1> (<g2>Manual proxy/socks configuration</g2>, often <x3/> and <x4/>), or choose <g5>Use system settings</g5> when the program sets Windows' proxy. Then click <g6>Install yt-dlp</g6> again: MDM's own downloads, its helpers included, go through it.",
+   "text": "使用代理程序（如 Clash、v2rayN 等），在<g1>选项 → 代理/SOCKS</g1>（<g2>手动代理/SOCKS 配置</g2>，通常是<x3/>和<x4/>）中输入其地址和端口，或者当代理程序设置了 Windows 代理时，选择<g5>使用系统设置</g5>。然后再次点击<g6>安装 yt-dlp</g6>：MDM 自己的下载（包括其帮助程序）都会通过代理进行。"
+  },
   "e1db876325f14b62": {
    "source": "Downloads still work, but some of the extension's features need a newer MDM. Update it with <g1>Help → Check for updates...</g1> in MDM.",
    "text": "下载仍可正常进行，但扩展程序的部分功能需要更新版 MDM。在 MDM 中选择<g1>帮助 → 检查更新...</g1>进行更新。"
@@ -18322,6 +18346,10 @@
    "source": "Check <g1>First file</g1>, <g2>Second file</g2> and <g3>Last file</g3>.",
    "text": "勾选<g1>第一个文件</g1>、<g2>第二个文件</g2>和<g3>最后一个文件</g3>。"
   },
+  "f893460826bf1425": {
+   "source": "Why does installing yt-dlp or another helper time out? — Mister Download Manager",
+   "text": "为什么安装 yt-dlp 或其他帮助程序会超时？— Mister Download Manager"
+  },
   "f89a410af1a10630": {
    "source": "The site isn't in <g1>Don't start downloading automatically from the following sites</g1>, nor the address in <g2>Don't start downloading automatically from the following addresses</g2>.",
    "text": "该网站不在<g1>不从以下网站自动开始下载</g1>中，地址也不在<g2>不从以下地址自动开始下载</g2>中。"
@@ -18497,6 +18525,10 @@
   "fa9795c4c18f5dc7": {
    "source": "Rules by site",
    "text": "站点规则"
+  },
+  "faa66b10495d59c3": {
+   "source": "Or download the program in your browser (yt-dlp's is on <g1>its release page</g1>), then in <g2>Download video from a page</g2> click <g3>Helpers...</g3>, then <g4>Use another program...</g4> in its row, and choose the file. MDM uses it from then on; keep it up to date yourself.",
+   "text": "或者在浏览器中下载程序（yt-dlp 的下载地址在<g1>其发布页面</g1>），然后在<g2>从页面下载视频</g2>中点击<g3>帮助程序...</g3>，接着在其行中点击<g4>使用其他程序...</g4>，并选择该文件。MDM 此后将使用该文件；您需要自行保持其更新。"
   },
   "fac6b9216d050977": {
    "source": "Grabbing the videos its browser extension finds on a page",

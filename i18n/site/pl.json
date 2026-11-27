@@ -1662,6 +1662,10 @@
    "source": "Yes. MDM accepts IDM's familiar command-line switches, comes with misterdownloadmanager-cli for downloads from a terminal, and has a local, token-protected…",
    "text": "Tak. MDM akceptuje znane przełączniki wiersza poleceń IDM, zawiera misterdownloadmanager-cli do pobierania z terminala oraz ma lokalne, chronione tokenem…"
   },
+  "15dfb8668baab702": {
+   "source": "See <g1>Proxy / Socks</g1> and <g2>Use your own copies</g2>.",
+   "text": "Zobacz <g1>Serwer proxy / Socks</g1> i <g2>Użyj własnych kopii</g2>."
+  },
   "15f41ea989aec521": {
    "source": "<g1>Base16 and pywal colour schemes as themes</g1>: a Base16 or Base24 scheme (<x2/>, the classic layout and tinted-theming's <x3/> one) or pywal's <x4/> (wallust's pywal-shaped one too), added with <g5>View → Theme → Add a theme file…</g5> or put in the themes folder, is a theme on the classic look: only the colours change. base00 and base01 are the backgrounds, base05 and base04 the text, base0D the focus, the selection and the progress bar (pywal: its background and foreground, color4); text is kept at 4.5:1 or more against every background and the accent at 3:1, moved a little where a scheme falls short. Once <x6/> has run, <g7>View → Theme</g7> lists <g8>pywal</g8>, read from where pywal writes it (<x9/>, <x10/> on Windows), and MDM follows each new wallpaper's colours within two seconds. A theme file can <x11/> a scheme to change more than its colours.",
    "text": "<g1>Schematy kolorów Base16 i pywal jako motywy</g1>: schemat Base16 lub Base24 (<x2/>, klasyczny układ i <x3/> z barwionym motywem) lub <x4/> pywal (również schemat wallust w kształcie pywal), dodany za pomocą <g5>Widok → Motyw → Dodaj plik motywu…</g5> lub umieszczony w folderze motywów, jest motywem o klasycznym wyglądzie: zmieniają się tylko kolory. base00 i base01 to tła, base05 i base04 to tekst, base0D to fokus, zaznaczenie i pasek postępu (pywal: jego tło i pierwszy plan, color4); tekst jest utrzymywany w proporcji 4,5:1 lub większej względem każdego tła, a akcent w proporcji 3:1, nieco przesunięty tam, gdzie schemat jest niewystarczający. Po uruchomieniu <x6/>, <g7>Widok → Motyw</g7> wyświetla <g8>pywal</g8>, odczytany z miejsca, gdzie pywal go zapisuje (<x9/>, <x10/> w systemie Windows), a MDM śledzi kolory każdej nowej tapety w ciągu dwóch sekund. Plik motywu może <x11/> schemat, aby zmienić więcej niż tylko jego kolory."
@@ -3141,6 +3145,10 @@
   "28eeaa8ad9bf85a3": {
    "source": "Requests",
    "text": "Żądania"
+  },
+  "291af5108373e0c4": {
+   "source": "MDM downloads yt-dlp, ffmpeg and gallery-dl from their official releases on GitHub. Where GitHub can't be reached or is very slow, as often in mainland…",
+   "text": "MDM pobiera yt-dlp, ffmpeg i gallery-dl z ich oficjalnych wydań na GitHubie. Tam, gdzie GitHub jest niedostępny lub bardzo wolny, jak często w kontynentalnych Chinach…"
   },
   "292621fe40d7beca": {
    "source": "Every video starts ticked. Untick the ones you don't want, or use <g1>Select all</g1> and <g2>Select none</g2>. Private and deleted videos are greyed out and can't be ticked.",
@@ -10350,6 +10358,10 @@
    "source": "MDM works with screen readers such as Narrator and NVDA, which hear what each control is and its state. Everything can be done from the keyboard, with the keys most Windows programs use.",
    "text": "MDM współpracuje z czytnikami ekranu, takimi jak Narrator i NVDA, które rozpoznają każdy element sterujący i jego stan. Wszystko można wykonać za pomocą klawiatury, używając klawiszy znanych z większości programów Windows."
   },
+  "8bf561be5473c2d1": {
+   "source": "MDM downloads yt-dlp, ffmpeg and gallery-dl from their official releases on GitHub. Where GitHub can't be reached or is very slow, as often in mainland China, the install stops with \"the server did not answer in time\". Two ways around it:",
+   "text": "MDM pobiera yt-dlp, ffmpeg i gallery-dl z ich oficjalnych wydań na GitHubie. Gdy GitHub jest niedostępny lub bardzo wolny, co często zdarza się w Chinach kontynentalnych, instalacja zatrzymuje się z komunikatem „serwer nie odpowiedział na czas”. Są dwa sposoby, aby to obejść:"
+  },
   "8bf5db6373827a5f": {
    "source": "Media on this page",
    "text": "Multimedia na tej stronie"
@@ -11769,6 +11781,10 @@
   "9e7ae999aa690d3f": {
    "source": "Start or stop a download queue in the running app (automation API). Starts or stops the main queue if omitted.",
    "text": "Uruchom lub zatrzymaj kolejkę pobierania w uruchomionej aplikacji (API automatyzacji). Uruchamia lub zatrzymuje główną kolejkę, jeśli pominięto nazwę."
+  },
+  "9e84ad8c276cf077": {
+   "source": "Why does installing yt-dlp or another helper time out?",
+   "text": "Dlaczego instalacja yt-dlp lub innego pomocnika przekracza limit czasu?"
   },
   "9ea4c71fa0f481c4": {
    "source": "MDM follows your system: when Windows (or your desktop's light/dark preference on Linux and macOS) is set to dark mode, so is MDM. To keep MDM light whatever the system does, turn off <g1>View → Dark Mode support</g1>. To keep it dark whatever the system does, for example on a desktop that reports no preference, turn on <g2>View → Always dark</g2>.",
@@ -13329,6 +13345,10 @@
   "b27995b1d5cff0b2": {
    "source": "A calendar's day or arrow pressed",
    "text": "Dzień lub strzałka kalendarza naciśnięta"
+  },
+  "b292a3f16372b154": {
+   "source": "MDM downloads yt-dlp, ffmpeg and gallery-dl from their official releases on GitHub. Where GitHub can't be reached or is very slow, as often in mainland China, the install stops with \"the server did not answer in time\". Two ways around it: With a proxy program (Clash, v2rayN and the like), enter its address and port in Options → Proxy / Socks (Manual proxy/socks configuration, often 127.0.0.1 and 7890), or choose Use system settings when the program sets Windows' proxy. Then click Install yt-dlp again: MDM's own downloads, its helpers included, go through it. Or download the program in your browser (yt-dlp's is on its release page), then in Download video from a page click Helpers..., then Use another program... in its row, and choose the file. MDM uses it from then on; keep it up to date yourself. See Proxy / Socks and Use your own copies.",
+   "text": "MDM pobiera yt-dlp, ffmpeg i gallery-dl z ich oficjalnych wydań na GitHubie. Gdy GitHub jest niedostępny lub bardzo wolny, co często zdarza się w Chinach kontynentalnych, instalacja zatrzymuje się z komunikatem „serwer nie odpowiedział na czas”. Dwa sposoby, aby to obejść: Z programem proxy (Clash, v2rayN i podobne), wprowadź jego adres i port w Opcje → Serwer proxy / Socks (Ręczna konfiguracja proxy/SOCKS, często 127.0.0.1 i 7890), lub wybierz Użyj ustawień systemowych, gdy program ustawia proxy systemu Windows. Następnie ponownie kliknij Zainstaluj yt-dlp: wszystkie pobierane pliki MDM, w tym jego pomocnicy, będą przechodzić przez to proxy. Lub pobierz program w przeglądarce (yt-dlp znajdziesz na stronie jego wydania), a następnie w Pobierz wideo ze strony kliknij Pomocnicy..., potem Użyj innego programu... w jego wierszu i wybierz plik. MDM będzie go odtąd używać; pamiętaj, aby samodzielnie go aktualizować. Zobacz Serwer proxy / Socks i Użyj własnych kopii."
   },
   "b298f93960114202": {
    "source": ", with or without <x1/>;",
@@ -16650,6 +16670,10 @@
    "source": "Aqua",
    "text": "Aqua"
   },
+  "e1db1cbca152db19": {
+   "source": "With a proxy program (Clash, v2rayN and the like), enter its address and port in <g1>Options → Proxy / Socks</g1> (<g2>Manual proxy/socks configuration</g2>, often <x3/> and <x4/>), or choose <g5>Use system settings</g5> when the program sets Windows' proxy. Then click <g6>Install yt-dlp</g6> again: MDM's own downloads, its helpers included, go through it.",
+   "text": "Jeśli używasz programu proxy (Clash, v2rayN itp.), wprowadź jego adres i port w <g1>Opcje → Serwer proxy / Socks</g1> (<g2>Ręczna konfiguracja proxy/SOCKS</g2>, często <x3/> i <x4/>), lub wybierz <g5>Użyj ustawień systemowych</g5>, jeśli program ustawia proxy systemu Windows. Następnie ponownie kliknij <g6>Zainstaluj yt-dlp</g6>: wszystkie pobierane pliki MDM, w tym jego pomocnicy, będą przechodzić przez to proxy."
+  },
   "e1db876325f14b62": {
    "source": "Downloads still work, but some of the extension's features need a newer MDM. Update it with <g1>Help → Check for updates...</g1> in MDM.",
    "text": "Pobieranie nadal działa, ale niektóre funkcje rozszerzenia wymagają nowszej wersji MDM. Zaktualizuj MDM, wybierając <g1>Pomoc → Sprawdź aktualizacje...</g1>."
@@ -18326,6 +18350,10 @@
    "source": "Check <g1>First file</g1>, <g2>Second file</g2> and <g3>Last file</g3>.",
    "text": "Zaznacz <g1>Pierwszy plik</g1>, <g2>Drugi plik</g2> i <g3>Ostatni plik</g3>."
   },
+  "f893460826bf1425": {
+   "source": "Why does installing yt-dlp or another helper time out? — Mister Download Manager",
+   "text": "Dlaczego instalacja yt-dlp lub innego pomocnika przekracza limit czasu? — Mister Download Manager"
+  },
   "f89a410af1a10630": {
    "source": "The site isn't in <g1>Don't start downloading automatically from the following sites</g1>, nor the address in <g2>Don't start downloading automatically from the following addresses</g2>.",
    "text": "Witryny nie ma na liście <g1>Nie rozpoczynaj automatycznego pobierania z następujących witryn</g1>, a adresu nie ma na liście <g2>Nie rozpoczynaj automatycznego pobierania z następujących adresów</g2>."
@@ -18501,6 +18529,10 @@
   "fa9795c4c18f5dc7": {
    "source": "Rules by site",
    "text": "Reguły dla witryn"
+  },
+  "faa66b10495d59c3": {
+   "source": "Or download the program in your browser (yt-dlp's is on <g1>its release page</g1>), then in <g2>Download video from a page</g2> click <g3>Helpers...</g3>, then <g4>Use another program...</g4> in its row, and choose the file. MDM uses it from then on; keep it up to date yourself.",
+   "text": "Możesz też pobrać program w przeglądarce (yt-dlp znajdziesz na <g1>stronie jego wydania</g1>), a następnie w <g2>Pobierz wideo ze strony</g2> kliknij <g3>Pomocnicy...</g3>, potem <g4>Użyj innego programu...</g4> w jego wierszu i wybierz plik. MDM będzie go odtąd używać; pamiętaj, aby samodzielnie go aktualizować."
   },
   "fac6b9216d050977": {
    "source": "Grabbing the videos its browser extension finds on a page",

@@ -1662,6 +1662,10 @@
    "source": "Yes. MDM accepts IDM's familiar command-line switches, comes with misterdownloadmanager-cli for downloads from a terminal, and has a local, token-protected…",
    "text": "Ya. MDM menerima perintah baris perintah IDM yang sudah dikenal, dilengkapi dengan misterdownloadmanager-cli untuk mengunduh dari terminal, dan memiliki API otomatisasi lokal yang dilindungi token…"
   },
+  "15dfb8668baab702": {
+   "source": "See <g1>Proxy / Socks</g1> and <g2>Use your own copies</g2>.",
+   "text": "Lihat <g1>Proksi / Socks</g1> dan <g2>Gunakan salinan Anda sendiri</g2>."
+  },
   "15f41ea989aec521": {
    "source": "<g1>Base16 and pywal colour schemes as themes</g1>: a Base16 or Base24 scheme (<x2/>, the classic layout and tinted-theming's <x3/> one) or pywal's <x4/> (wallust's pywal-shaped one too), added with <g5>View → Theme → Add a theme file…</g5> or put in the themes folder, is a theme on the classic look: only the colours change. base00 and base01 are the backgrounds, base05 and base04 the text, base0D the focus, the selection and the progress bar (pywal: its background and foreground, color4); text is kept at 4.5:1 or more against every background and the accent at 3:1, moved a little where a scheme falls short. Once <x6/> has run, <g7>View → Theme</g7> lists <g8>pywal</g8>, read from where pywal writes it (<x9/>, <x10/> on Windows), and MDM follows each new wallpaper's colours within two seconds. A theme file can <x11/> a scheme to change more than its colours.",
    "text": "<g1>Skema warna Base16 dan pywal sebagai tema</g1>: skema Base16 atau Base24 (<x2/>, tata letak klasik dan <x3/> bertema) atau <x4/> pywal (yang berbentuk pywal dari wallust juga), ditambahkan dengan <g5>Tampilan → Tema → Tambahkan file tema…</g5> atau diletakkan di folder tema, adalah tema pada tampilan klasik: hanya warnanya yang berubah. base00 dan base01 adalah latar belakang, base05 dan base04 adalah teks, base0D adalah fokus, pilihan, dan bilah progres (pywal: latar belakang dan latar depannya, color4); teks dijaga pada rasio 4.5:1 atau lebih terhadap setiap latar belakang dan aksen pada 3:1, sedikit digeser jika skema kurang. Setelah <x6/> berjalan, <g7>Tampilan → Tema</g7> mencantumkan <g8>pywal</g8>, dibaca dari tempat pywal menuliskannya (<x9/>, <x10/> di Windows), dan MDM mengikuti warna wallpaper baru dalam dua detik. File tema dapat <x11/> skema untuk mengubah lebih dari sekadar warnanya."
@@ -3137,6 +3141,10 @@
   "28eeaa8ad9bf85a3": {
    "source": "Requests",
    "text": "Permintaan"
+  },
+  "291af5108373e0c4": {
+   "source": "MDM downloads yt-dlp, ffmpeg and gallery-dl from their official releases on GitHub. Where GitHub can't be reached or is very slow, as often in mainland…",
+   "text": "MDM mengunduh yt-dlp, ffmpeg, dan gallery-dl dari rilis resminya di GitHub. Jika GitHub tidak dapat dijangkau atau sangat lambat, seperti yang sering terjadi di daratan..."
   },
   "292621fe40d7beca": {
    "source": "Every video starts ticked. Untick the ones you don't want, or use <g1>Select all</g1> and <g2>Select none</g2>. Private and deleted videos are greyed out and can't be ticked.",
@@ -10346,6 +10354,10 @@
    "source": "MDM works with screen readers such as Narrator and NVDA, which hear what each control is and its state. Everything can be done from the keyboard, with the keys most Windows programs use.",
    "text": "MDM bekerja dengan pembaca layar seperti Narrator dan NVDA, yang mengenali setiap kontrol dan statusnya. Semuanya dapat dilakukan dari keyboard, dengan tombol yang umum digunakan program Windows."
   },
+  "8bf561be5473c2d1": {
+   "source": "MDM downloads yt-dlp, ffmpeg and gallery-dl from their official releases on GitHub. Where GitHub can't be reached or is very slow, as often in mainland China, the install stops with \"the server did not answer in time\". Two ways around it:",
+   "text": "MDM mengunduh yt-dlp, ffmpeg, dan gallery-dl dari rilis resminya di GitHub. Jika GitHub tidak dapat dijangkau atau sangat lambat, seperti yang sering terjadi di Tiongkok daratan, instalasi akan berhenti dengan pesan \"server tidak merespons tepat waktu\". Ada dua cara untuk mengatasinya:"
+  },
   "8bf5db6373827a5f": {
    "source": "Media on this page",
    "text": "Media di halaman ini"
@@ -11765,6 +11777,10 @@
   "9e7ae999aa690d3f": {
    "source": "Start or stop a download queue in the running app (automation API). Starts or stops the main queue if omitted.",
    "text": "Memulai atau menghentikan antrean unduhan di aplikasi yang sedang berjalan (API otomatisasi). Memulai atau menghentikan antrean utama jika dihilangkan."
+  },
+  "9e84ad8c276cf077": {
+   "source": "Why does installing yt-dlp or another helper time out?",
+   "text": "Mengapa instalasi yt-dlp atau pembantu lain mengalami batas waktu?"
   },
   "9ea4c71fa0f481c4": {
    "source": "MDM follows your system: when Windows (or your desktop's light/dark preference on Linux and macOS) is set to dark mode, so is MDM. To keep MDM light whatever the system does, turn off <g1>View → Dark Mode support</g1>. To keep it dark whatever the system does, for example on a desktop that reports no preference, turn on <g2>View → Always dark</g2>.",
@@ -13325,6 +13341,10 @@
   "b27995b1d5cff0b2": {
    "source": "A calendar's day or arrow pressed",
    "text": "Hari atau panah kalender ditekan"
+  },
+  "b292a3f16372b154": {
+   "source": "MDM downloads yt-dlp, ffmpeg and gallery-dl from their official releases on GitHub. Where GitHub can't be reached or is very slow, as often in mainland China, the install stops with \"the server did not answer in time\". Two ways around it: With a proxy program (Clash, v2rayN and the like), enter its address and port in Options → Proxy / Socks (Manual proxy/socks configuration, often 127.0.0.1 and 7890), or choose Use system settings when the program sets Windows' proxy. Then click Install yt-dlp again: MDM's own downloads, its helpers included, go through it. Or download the program in your browser (yt-dlp's is on its release page), then in Download video from a page click Helpers..., then Use another program... in its row, and choose the file. MDM uses it from then on; keep it up to date yourself. See Proxy / Socks and Use your own copies.",
+   "text": "MDM mengunduh yt-dlp, ffmpeg, dan gallery-dl dari rilis resminya di GitHub. Jika GitHub tidak dapat dijangkau atau sangat lambat, seperti yang sering terjadi di Tiongkok daratan, instalasi akan berhenti dengan pesan \"server tidak merespons tepat waktu\". Ada dua cara untuk mengatasinya: Dengan program proksi (Clash, v2rayN, dan sejenisnya), masukkan alamat dan port-nya di Opsi → Proksi / Socks (Konfigurasi proxy/socks manual, seringkali 127.0.0.1 dan 7890), atau pilih Gunakan pengaturan sistem jika program tersebut mengatur proksi Windows. Kemudian klik Instal yt-dlp lagi: unduhan MDM sendiri, termasuk pembantunya, akan melalui proksi tersebut. Atau unduh program di peramban Anda (yt-dlp ada di halaman rilisnya), lalu di Unduh video dari halaman klik Pembantu..., lalu Gunakan program lain... di barisnya, dan pilih file tersebut. MDM akan menggunakannya mulai saat itu; Anda harus memperbaruinya sendiri. Lihat Proksi / Socks dan Gunakan salinan Anda sendiri."
   },
   "b298f93960114202": {
    "source": ", with or without <x1/>;",
@@ -16646,6 +16666,10 @@
    "source": "Aqua",
    "text": "Aqua"
   },
+  "e1db1cbca152db19": {
+   "source": "With a proxy program (Clash, v2rayN and the like), enter its address and port in <g1>Options → Proxy / Socks</g1> (<g2>Manual proxy/socks configuration</g2>, often <x3/> and <x4/>), or choose <g5>Use system settings</g5> when the program sets Windows' proxy. Then click <g6>Install yt-dlp</g6> again: MDM's own downloads, its helpers included, go through it.",
+   "text": "Dengan program proksi (Clash, v2rayN, dan sejenisnya), masukkan alamat dan port-nya di <g1>Opsi → Proksi / Socks</g1> (<g2>Konfigurasi proxy/socks manual</g2>, seringkali <x3/> dan <x4/>), atau pilih <g5>Gunakan pengaturan sistem</g5> jika program tersebut mengatur proksi Windows. Kemudian klik <g6>Instal yt-dlp</g6> lagi: unduhan MDM sendiri, termasuk pembantunya, akan melalui proksi tersebut."
+  },
   "e1db876325f14b62": {
    "source": "Downloads still work, but some of the extension's features need a newer MDM. Update it with <g1>Help → Check for updates...</g1> in MDM.",
    "text": "Unduhan tetap berfungsi, tetapi beberapa fitur ekstensi memerlukan MDM versi lebih baru. Perbarui MDM melalui <g1>Bantuan → Periksa pembaruan...</g1>."
@@ -18318,6 +18342,10 @@
    "source": "Check <g1>First file</g1>, <g2>Second file</g2> and <g3>Last file</g3>.",
    "text": "Centang <g1>File pertama</g1>, <g2>File kedua</g2>, dan <g3>File terakhir</g3>."
   },
+  "f893460826bf1425": {
+   "source": "Why does installing yt-dlp or another helper time out? — Mister Download Manager",
+   "text": "Mengapa instalasi yt-dlp atau pembantu lain mengalami batas waktu? — Mister Download Manager"
+  },
   "f89a410af1a10630": {
    "source": "The site isn't in <g1>Don't start downloading automatically from the following sites</g1>, nor the address in <g2>Don't start downloading automatically from the following addresses</g2>.",
    "text": "Situs tidak tercantum di <g1>Jangan mulai mengunduh secara otomatis dari situs berikut</g1>, dan alamatnya juga tidak tercantum di <g2>Jangan mulai mengunduh secara otomatis dari alamat berikut</g2>."
@@ -18493,6 +18521,10 @@
   "fa9795c4c18f5dc7": {
    "source": "Rules by site",
    "text": "Aturan berdasarkan situs"
+  },
+  "faa66b10495d59c3": {
+   "source": "Or download the program in your browser (yt-dlp's is on <g1>its release page</g1>), then in <g2>Download video from a page</g2> click <g3>Helpers...</g3>, then <g4>Use another program...</g4> in its row, and choose the file. MDM uses it from then on; keep it up to date yourself.",
+   "text": "Atau unduh program di peramban Anda (yt-dlp ada di <g1>halaman rilisnya</g1>), lalu di <g2>Unduh video dari halaman</g2> klik <g3>Pembantu...</g3>, lalu <g4>Gunakan program lain...</g4> di barisnya, dan pilih file tersebut. MDM akan menggunakannya mulai saat itu; Anda harus memperbaruinya sendiri."
   },
   "fac6b9216d050977": {
    "source": "Grabbing the videos its browser extension finds on a page",
