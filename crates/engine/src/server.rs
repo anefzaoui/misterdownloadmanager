@@ -54,6 +54,8 @@ struct Seen {
     tls: bool,
     /// An answer came: `server` and `tls` are its.
     answered: bool,
+    /// The last TLS certificate refused by the site verifier on this client (#1964).
+    refused_cert: Option<crate::tls::CertInfo>,
 }
 
 impl ServerSeen {
@@ -91,6 +93,14 @@ impl ServerSeen {
         if !s.answered {
             s.answer(head);
         }
+    }
+
+    pub(crate) fn record_refused_cert(&self, info: crate::tls::CertInfo) {
+        self.inner.lock().unwrap().refused_cert = Some(info);
+    }
+
+    pub(crate) fn take_refused_cert(&self) -> Option<crate::tls::CertInfo> {
+        self.inner.lock().unwrap().refused_cert.take()
     }
 }
 
