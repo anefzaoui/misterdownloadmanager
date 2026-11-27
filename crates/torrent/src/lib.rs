@@ -5656,4 +5656,263 @@ mod tests {
         leecher.stop().await;
         seeder.stop().await;
     }
+
+    /// Whether any handle of this process has `path` open (None: this system can't say).
+    /// Windows: an open that shares nothing fails while any other handle is open. Linux: an
+    /// entry of /proc/self/fd leads to it.
+    fn held(path: &Path) -> Option<bool> {
+        #[cfg(windows)]
+        {
+            use std::os::windows::fs::OpenOptionsExt;
+            Some(
+                std::fs::OpenOptions::new()
+                    .read(true)
+                    .share_mode(0)
+                    .open(path)
+                    .is_err(),
+            )
+        }
+        #[cfg(target_os = "linux")]
+        {
+            let want = std::fs::canonicalize(path).ok()?;
+            Some(
+                std::fs::read_dir("/proc/self/fd")
+                    .ok()?
+                    .filter_map(|e| std::fs::read_link(e.ok()?.path()).ok())
+                    .any(|p| p == want),
+            )
+        }
+        #[cfg(not(any(windows, target_os = "linux")))]
+        {
+            let _ = path;
+            None
+        }
+    }
+
+    /// A seeder on loopback of a torrent of two files (1 MiB, a few bytes), uploading slowly
+    /// enough for a download to be paused half-way; and the leecher's grant for them, as the
+    /// app gives it at Start (`prepare_storage`): handles opened without following a link,
+    /// opened again (never made) by `reopen`.
+    struct Swarm {
+        tmp: tempfile::TempDir,
+        seeder: Torrents,
+        torrent: Vec<u8>,
+        meta: Meta,
+        data: Vec<u8>,
+        out: PathBuf,
+        state: PathBuf,
+    }
+
+    impl Swarm {
+        async fn new() -> Swarm {
+            let tmp = tempfile::tempdir().unwrap();
+            let src = tmp.path().join("seed").join("set");
+            std::fs::create_dir_all(&src).unwrap();
+            let data: Vec<u8> = (0..1_048_576u32).map(|i| (i % 241) as u8).collect();
+            std::fs::write(src.join("data.bin"), &data).unwrap();
+            std::fs::write(src.join("notes.txt"), b"notes").unwrap();
+            let torrent = make_torrent(&src).await;
+            let seeder = Torrents::start(offline(&tmp.path().join("s1")))
+                .await
+                .unwrap();
+            let meta = seeder
+                .metadata(
+                    &Source::File(torrent.clone()),
+                    Duration::from_secs(10),
+                    None,
+                )
+                .await
+                .unwrap();
+            let hash = seeder
+                .add(&torrent, &src, None, Vec::new(), false)
+                .await
+                .unwrap();
+            wait_for(&seeder, &hash, "checked", 20, |s| {
+                s.phase == Phase::Finished
+            })
+            .await;
+            // 1 MiB at 256 KiB/s: about 4 s, paused well before the end.
+            seeder.set_upload_limit(Some(256 * 1024));
+            let out = meta.folder_in(&tmp.path().join("got"));
+            let state = tmp.path().join("s2");
+            Swarm {
+                tmp,
+                seeder,
+                torrent,
+                meta,
+                data,
+                out,
+                state,
+            }
+        }
+
+        fn path(&self, name: &str) -> PathBuf {
+            let i = self
+                .meta
+                .files
+                .iter()
+                .position(|f| f.path.ends_with(name))
+                .unwrap();
+            self.out.join(&self.meta.files[i].path)
+        }
+
+        /// What the app hands the engine at Start: every file, made if `create`.
+        fn prepared(&self, create: bool) -> std::io::Result<Vec<authorized_storage::PreparedFile>> {
+            let mut files = Vec::new();
+            for (index, f) in self.meta.files.iter().enumerate() {
+                let path = self.out.join(&f.path);
+                if create {
+                    std::fs::create_dir_all(path.parent().unwrap())?;
+                }
+                let file = std::fs::OpenOptions::new()
+                    .read(true)
+                    .write(true)
+                    .create(create)
+                    .truncate(false)
+                    .open(&path)?;
+                files.push(authorized_storage::PreparedFile { index, path, file });
+            }
+            Ok(files)
+        }
+
+        fn grant(&self, create: bool) {
+            let (out, meta) = (self.out.clone(), self.meta.clone());
+            let swarm_out = self.out.clone();
+            let reopen = Arc::new(move || {
+                // Opened again where they are, never made.
+                meta.files
+                    .iter()
+                    .enumerate()
+                    .map(|(index, f)| -> std::io::Result<_> {
+                        let path = swarm_out.join(&f.path);
+                        let file = std::fs::OpenOptions::new()
+                            .read(true)
+                            .write(true)
+                            .open(&path)?;
+                        Ok(authorized_storage::PreparedFile { index, path, file })
+                    })
+                    .collect::<std::io::Result<Vec<_>>>()
+            });
+            authorized_storage::authorize(
+                &self.state.join("session"),
+                &self.meta.info_hash,
+                &out,
+                self.prepared(create).unwrap(),
+                reopen,
+            );
+        }
+
+        async fn leecher(&self) -> Torrents {
+            let mut config = offline(&self.state);
+            config.require_authorization = true;
+            Torrents::start(config).await.unwrap()
+        }
+    }
+
+    /// ikatson/rqbit#369: a paused torrent holds none of its files, so another program can
+    /// rename, move or delete them (on Windows too); started again (granted again, as at
+    /// Start), it finishes where they are; finished and shared, it holds them read-only
+    /// (Windows: a program that keeps writers out reads it) and they can be renamed while
+    /// seeded.
+    #[tokio::test(flavor = "multi_thread", worker_threads = 4)]
+    async fn a_paused_torrent_lets_go_of_its_files() {
+        let swarm = Swarm::new().await;
+        let addr = swarm.seeder.listen_addr().expect("seeder listens");
+        let leecher = swarm.leecher().await;
+        swarm.grant(true);
+        let hash = leecher
+            .add(&swarm.torrent, &swarm.out, None, vec![addr], false)
+            .await
+            .unwrap();
+        let data = swarm.path("data.bin");
+        wait_for(&leecher, &hash, "half-way", 30, |s| {
+            s.done >= 256 * 1024 && s.phase == Phase::Downloading
+        })
+        .await;
+        assert_ne!(held(&data), Some(false), "open while it downloads");
+
+        leecher.pause(&hash).await.unwrap();
+        let paused = leecher.stats(&hash).unwrap();
+        assert_eq!(paused.phase, Phase::Paused);
+        assert!(paused.done < paused.total, "paused half-way: {paused:?}");
+        assert_ne!(held(&data), Some(true), "a paused torrent holds no handle");
+        assert_ne!(held(&swarm.path("notes.txt")), Some(true));
+        // Another program renames it (Explorer, a script) and puts it back.
+        let moved = swarm.tmp.path().join("moved.bin");
+        std::fs::rename(&data, &moved).expect("renaming the paused file");
+        std::fs::rename(&moved, &data).unwrap();
+
+        // Start: granted again, as the app does (`prepare_storage`), then resumed.
+        swarm.grant(false);
+        leecher.resume(&hash).await.unwrap();
+        wait_for(&leecher, &hash, "finished", 60, |s| {
+            s.phase == Phase::Finished
+        })
+        .await;
+        assert_eq!(std::fs::read(&data).unwrap(), swarm.data);
+        assert_eq!(std::fs::read(swarm.path("notes.txt")).unwrap(), b"notes");
+
+        // Finished and still shared (Keep sharing).
+        #[cfg(windows)]
+        {
+            use std::os::windows::fs::OpenOptionsExt;
+            let mut copy = Vec::new();
+            std::io::Read::read_to_end(
+                &mut std::fs::OpenOptions::new()
+                    .read(true)
+                    .share_mode(0x1) // FILE_SHARE_READ: refused while anyone can write it
+                    .open(&data)
+                    .expect("a reader that keeps writers out"),
+                &mut copy,
+            )
+            .unwrap();
+            assert_eq!(copy, swarm.data);
+        }
+        std::fs::rename(&data, &moved).expect("renaming the seeded file");
+        std::fs::rename(&moved, &data).unwrap();
+
+        leecher.remove(&hash, false).await.unwrap();
+        authorized_storage::forget(&swarm.state.join("session"), &hash);
+        leecher.stop().await;
+        swarm.seeder.stop().await;
+    }
+
+    /// A file deleted while its torrent was paused, made again empty by the next Start (as
+    /// `prepare_for` makes a missing file): it isn't the file the pieces are in, so nothing is
+    /// written into it as though it held them; the torrent stops saying a file changed while it
+    /// was paused. (The app takes such a torrent out and adds it again, which checks it.)
+    #[tokio::test(flavor = "multi_thread", worker_threads = 4)]
+    async fn a_file_made_again_while_paused_is_not_written_into() {
+        let swarm = Swarm::new().await;
+        let addr = swarm.seeder.listen_addr().expect("seeder listens");
+        let leecher = swarm.leecher().await;
+        swarm.grant(true);
+        let hash = leecher
+            .add(&swarm.torrent, &swarm.out, None, vec![addr], false)
+            .await
+            .unwrap();
+        wait_for(&leecher, &hash, "half-way", 30, |s| {
+            s.done >= 256 * 1024 && s.phase == Phase::Downloading
+        })
+        .await;
+        leecher.pause(&hash).await.unwrap();
+        let data = swarm.path("data.bin");
+        std::fs::remove_file(&data).expect("deleting the paused file");
+
+        swarm.grant(true);
+        leecher.resume(&hash).await.unwrap();
+        let s = wait_for(&leecher, &hash, "stopped", 30, |s| s.phase == Phase::Error).await;
+        let error = s.error.unwrap_or_default();
+        assert!(error.contains("moved, deleted or replaced"), "{error}");
+        assert_eq!(
+            std::fs::metadata(&data).unwrap().len(),
+            0,
+            "nothing written into the new file"
+        );
+
+        leecher.remove(&hash, false).await.unwrap();
+        authorized_storage::forget(&swarm.state.join("session"), &hash);
+        leecher.stop().await;
+        swarm.seeder.stop().await;
+    }
 }

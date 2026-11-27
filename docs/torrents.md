@@ -55,6 +55,8 @@ Double-click the torrent in the list to open its progress window. Besides the us
 
 The tabs stay once the torrent has finished, for as long as it is shared.
 
+A stopped torrent keeps none of its files open: you can move, rename or delete them, or open them in another program, while it waits. When you start it again, MDM opens them where they are; a file that was moved away or deleted meanwhile is made again and its pieces downloaded again. A finished torrent that is shared (**Keep sharing torrents after they finish**, in Torrent settings) keeps its files open only to read them: other programs can open, copy, run, move or rename them meanwhile.
+
 The **Speed Limiter** tab of a torrent's window has, besides its download limit, **Limit uploading** to a speed of your choice. That limit is kept with the torrent: it applies again whenever the torrent runs or shares. A torrent can't be held under 16 KBytes/sec either way.
 
 ## Torrent commands

@@ -672,6 +672,8 @@ Everything below ships together, in version 0.6.0, the next release.
 - ✅ Torrents: downloads pick up within seconds when the network comes back (Wi-Fi, sleep, VPN),
   instead of staying stalled: the peers that dropped with it are called again once, at once, and
   the trackers and the DHT asked again
+- ✅ Torrents: a paused torrent no longer keeps its files locked, and a finished one lets other
+  programs open, move or rename them (on Windows, held read-only while it is shared)
 - ✅ Torrents: a paused torrent's finished pieces are saved before MDM quits
 - ✅ Torrents: the engine checks what it's sent more carefully
 - ✅ Extracting: 7z and RAR archives are checked more carefully

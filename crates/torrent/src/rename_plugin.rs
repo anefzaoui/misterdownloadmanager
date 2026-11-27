@@ -283,11 +283,80 @@ impl TorrentStorage for RenameStorage {
             custom: self.custom.clone(),
         }))
     }
+
+    // librqbit gives these a default that does nothing: not forwarded, a paused torrent would
+    // keep its files open, and a finished one a handle that can write.
+    fn close_files(&self) -> anyhow::Result<()> {
+        self.inner.close_files()
+    }
+
+    fn on_file_completed(&self, file_id: usize) -> anyhow::Result<()> {
+        self.inner.on_file_completed(file_id)
+    }
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    /// What reached the storage the rename wrapper wraps.
+    #[derive(Default)]
+    struct Probe {
+        calls: std::sync::Arc<Mutex<Vec<String>>>,
+    }
+
+    impl TorrentStorage for Probe {
+        fn init(&mut self, _: &ManagedTorrentShared, _: &TorrentMetadata) -> anyhow::Result<()> {
+            Ok(())
+        }
+        fn pread_exact(&self, _: usize, _: u64, _: &mut [u8]) -> anyhow::Result<()> {
+            Ok(())
+        }
+        fn pwrite_all(&self, _: usize, _: u64, _: &[u8]) -> anyhow::Result<()> {
+            Ok(())
+        }
+        fn remove_file(&self, _: usize, _: &Path) -> anyhow::Result<()> {
+            Ok(())
+        }
+        fn remove_directory_if_empty(&self, _: &Path) -> anyhow::Result<()> {
+            Ok(())
+        }
+        fn ensure_file_length(&self, _: usize, _: u64) -> anyhow::Result<()> {
+            Ok(())
+        }
+        fn take(&self) -> anyhow::Result<Box<dyn TorrentStorage>> {
+            anyhow::bail!("not used")
+        }
+        fn close_files(&self) -> anyhow::Result<()> {
+            self.calls.lock().unwrap().push("close_files".into());
+            Ok(())
+        }
+        fn on_file_completed(&self, file_id: usize) -> anyhow::Result<()> {
+            self.calls
+                .lock()
+                .unwrap()
+                .push(format!("on_file_completed({file_id})"));
+            Ok(())
+        }
+    }
+
+    /// The hooks librqbit gives a default reach the storage underneath: a wrapper that ate
+    /// them would keep a paused torrent's files open.
+    #[test]
+    fn the_wrapper_passes_on_what_has_a_default() {
+        let probe = Probe::default();
+        let calls = probe.calls.clone();
+        let storage = RenameStorage {
+            inner: Box::new(probe),
+            custom: None,
+        };
+        storage.close_files().unwrap();
+        storage.on_file_completed(2).unwrap();
+        assert_eq!(
+            *calls.lock().unwrap(),
+            vec!["close_files".to_owned(), "on_file_completed(2)".to_owned()]
+        );
+    }
 
     #[test]
     fn rename_persistence_and_storage_type_id() {

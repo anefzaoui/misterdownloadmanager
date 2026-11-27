@@ -137,6 +137,15 @@ These changes come in version 0.6.0.
   the network coming back (a new address, a wake from sleep, the DHT answering again), calls each
   of those peers once at once and asks the trackers and the DHT again (a tracker never sooner
   than its minimum interval); a magnet link still looking for its file list asks its peers again.
+- Torrents: a paused torrent no longer keeps its files locked, and a finished one lets other
+  programs open, move or rename them. A paused torrent held every one of its files open for
+  writing, and a finished one kept doing so while it was shared: on Windows another program
+  couldn't open such a file without letting others write it (copying it, for one), nor run it,
+  until MDM let go. A pause now writes everything to disk and closes the files; starting the
+  torrent opens them again, where they are. A file that was moved or deleted meanwhile is made
+  again and its pieces downloaded again, as before, and never written into as though it still
+  held them. A finished file being shared is held read-only on Windows, so other programs can
+  read, copy, run, move, rename or delete it while it is shared.
 - Torrents: a paused torrent's finished pieces are saved before MDM quits. The pause saved them
   in the background, so quitting right after a pause (and quitting MDM, which pauses every
   torrent) could lose the pieces finished since the last save, and they were downloaded again.
