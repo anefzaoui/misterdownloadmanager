@@ -1097,6 +1097,9 @@ fn popup_all<C: Clone>(
     icon: &dyn Fn(&C) -> Option<winui::ItemIcon>,
 ) -> PopupResult<C> {
     let sub_key = egui::Id::unique(("popup-sub", id));
+    // The menu windows drawn this pass, kept fresh each pass for [`hide_menu_windows`]: only
+    // windows that are still there are ever hidden by it.
+    ctx.data_mut(|d| d.remove::<Vec<egui::ViewportId>>(menu_windows_key()));
     // The control that has the keys while the menu is open (a drop-down list, a text box): the
     // menu's windows never take them, so Escape reached its window, and egui let them go there
     // (Escape drops the focus). Escape closing the menu gives them back.
@@ -1518,6 +1521,24 @@ pub fn show_popup(ctx: &egui::Context, vid: egui::ViewportId) {
     ctx.request_repaint();
 }
 
+/// The menu windows drawn in the last pass ([`popup_level`]), for [`hide_menu_windows`].
+fn menu_windows_key() -> egui::Id {
+    egui::Id::unique("menu-windows-drawn")
+}
+
+/// Hide every open menu's window now, without a pass: the main window hid or minimized (app.rs),
+/// so no pass will draw a menu again and its windows would stay on the screen (always on top,
+/// windows of their own). The caller clears the menus' state; the windows are closed for good by
+/// the first frame that no longer draws them. Shown again by [`show_popup`] when a menu opens.
+pub fn hide_menu_windows(ctx: &egui::Context) {
+    let windows = ctx
+        .data_mut(|d| d.remove_temp::<Vec<egui::ViewportId>>(menu_windows_key()))
+        .unwrap_or_default();
+    for vid in windows {
+        ctx.send_viewport_cmd_to(vid, egui::ViewportCommand::Visible(false));
+    }
+}
+
 /// Place a menu of `size` at screen point `at`, flipped to stay inside the monitor's work area:
 /// up (or left) of the point, or for a submenu (`parent`: the parent menu's screen rect) to the
 /// parent's left side. In a right-to-left interface `at` is the menu's top-right: it opens to
@@ -1692,6 +1713,13 @@ fn popup_level<C: Clone>(
     let mut sub_at: Option<(usize, f32)> = None;
     let vid = menu_viewport(kind, id, depth, bar_shares_window());
     let parent_vid = ctx.viewport_id();
+    // Remembered for hide_menu_windows: the window this level is drawn in, this pass.
+    ctx.data_mut(|d| {
+        let list = d.get_temp_mut_or_default::<Vec<egui::ViewportId>>(menu_windows_key());
+        if !list.contains(&vid) {
+            list.push(vid);
+        }
+    });
     // Set when this pass made the new (hidden) window a menu window: shown below. (Elsewhere a
     // menu's window is created visible.)
     let mut styled = false;
@@ -3069,7 +3097,7 @@ fn chevron(p: &egui::Painter, ox: f32, top: f32, open: bool, bright: bool) {
 mod tests {
     use super::{
         FOCUS_GRACE, FocusVerdict, MenuBarEvent, MenuEntry, MenuFocus, MenuKind, heading_into,
-        item_at, menu_viewport, menubar_next,
+        item_at, menu_viewport, menu_windows_key, menubar_next,
     };
     #[cfg(target_os = "linux")]
     use egui::vec2;
@@ -3136,6 +3164,48 @@ mod tests {
                 egui::ViewportId::from_hash_of(("menu", "popup-1", 0usize))
             );
         }
+    }
+
+    /// The windows a pass drew the menus in are known and [`hide_menu_windows`] hides and
+    /// forgets them: with the main window hidden or minimized, the menus must not stay on the
+    /// screen (windows of their own, always on top).
+    #[test]
+    fn the_drawn_menu_windows_are_known_and_hidden() {
+        let ctx = egui::Context::default();
+        let [one, two] = ["one", "two"]; // not texts to translate (tools/i18n/extract.py)
+        let entries: Vec<MenuEntry<u8>> = vec![
+            MenuEntry::Item(one, 0, true, false),
+            MenuEntry::Sub("sub", true, vec![MenuEntry::Item(two, 1, true, false)]),
+        ];
+        super::open_sub_at(&ctx, "t-hide", 1); // the submenu open: both windows drawn
+        let mut out = ctx.run_ui(egui::RawInput::default(), |ui| {
+            super::popup(
+                ui.ctx(),
+                MenuKind::Bar,
+                "t-hide",
+                pos2(10.0, 10.0),
+                &entries,
+                &|_| None,
+            );
+        });
+        out.textures_delta.clear();
+        let drawn = ctx
+            .data(|d| d.get_temp::<Vec<egui::ViewportId>>(menu_windows_key()))
+            .expect("the pass recorded the menu's windows");
+        assert_eq!(drawn.len(), 2, "the menu and its submenu");
+        super::hide_menu_windows(&ctx);
+        assert!(
+            ctx.data(|d| d.get_temp::<Vec<egui::ViewportId>>(menu_windows_key()))
+                .is_none(),
+            "hidden windows are forgotten"
+        );
+        // The next pass records its windows again, none open: nothing hidden by mistake.
+        let mut out = ctx.run_ui(egui::RawInput::default(), |_| {});
+        out.textures_delta.clear();
+        assert!(
+            ctx.data(|d| d.get_temp::<Vec<egui::ViewportId>>(menu_windows_key()))
+                .is_none()
+        );
     }
 
     /// Runs `events` from no menu open; the open menu after each.

@@ -657,6 +657,9 @@ Everything below ships together, in version 0.6.0, the next release.
   MDM's); drawn check and cross marks in Test browser integration and beside "Installed" and
   "Connected", with the browser's logo on its line; file-type icons in the tray panel; the
   helpers' role icons in the Helpers window, a new one for gallery-dl
+- ✅ A menu left open no longer stays on the screen when the main window hides or minimizes:
+  the menu bar's menus and their submenus close with the window, hidden to the notification area
+  or minimized, instead of staying over other programs
 - 📋 Icons where they help recognition, the rest of
   [#2008](https://github.com/anefzaoui/misterdownloadmanager/issues/2008): icons in combo boxes
   (categories, queues, the cookies' browser), message lines, empty lists and the smaller touches
