@@ -678,6 +678,11 @@ Everything below ships together, in version 0.6.0, the next release.
 - ✅ Torrents: downloads pick up within seconds when the network comes back (Wi-Fi, sleep, VPN),
   instead of staying stalled: the peers that dropped with it are called again once, at once, and
   the trackers and the DHT asked again
+- ✅ Tests: the check that a torrent picks up when the network comes back no longer fails now and
+  then (seen on a Windows runner): it took the torrent's first check of its files for the
+  download, as both count up the same number, and cut the network before the peer was ever
+  reached; each stage now waits for the session's own word (downloading, the peer given up, its
+  retry refused) instead of the time that should have passed
 - ✅ Torrents: a paused torrent's finished pieces are saved before MDM quits
 - ✅ Torrents: the engine checks what it's sent more carefully
 - ✅ Extracting: 7z and RAR archives are checked more carefully
