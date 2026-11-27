@@ -424,9 +424,11 @@ pub struct Settings {
     /// that names a download's server gives its number (`mdm_ipc::siterules::for_url`). A site
     /// rule's number of connections is the exception under its pattern.
     pub conn_exceptions: Vec<(String, u32)>,
-    /// Connection → Site rules (#1778): a User-Agent, the browser-like connection and request
-    /// headers by site pattern, the first rule that matches and sets each giving it. Their
-    /// numbers of connections are in `conn_exceptions`, which older versions read.
+    /// Connection → Site rules (#1778): a User-Agent, the browser-like connection, request
+    /// headers and a proxy (#1960) by site pattern, the first rule that matches and sets each
+    /// giving it. Their numbers of connections are in `conn_exceptions`, which older versions
+    /// read. A rule's proxy password is kept as the other secrets are (`sealed_rules`).
+    #[serde(with = "sealed_rules")]
     pub site_rules: Vec<mdm_ipc::siterules::SiteRule>,
     /// Proxy / Socks: 0 none, 1 system, 2 automatic script, 3 manual.
     pub proxy_from_browser: bool,
@@ -894,6 +896,27 @@ impl Settings {
                 &a.secret,
             );
         }
+        // A site rule's proxy password (#1960), by its site and proxy user.
+        for (rule, d) in self.site_rules.iter().zip(&mut disk.site_rules) {
+            if rule.proxy_pass.is_empty() {
+                continue;
+            }
+            d.proxy_pass = kept(
+                format!(
+                    "siteproxy/{:016x}",
+                    fnv(&format!("{}\n{}", rule.site.trim(), rule.proxy_user))
+                ),
+                &|| {
+                    format!(
+                        "Mister Download Manager: {} {} ({})",
+                        crate::i18n::t("proxy server"),
+                        rule.proxy.as_deref().unwrap_or_default(),
+                        rule.site.trim()
+                    )
+                },
+                &rule.proxy_pass,
+            );
+        }
         for ((site, user, pw), d) in self.site_logins.iter().zip(&mut disk.site_logins) {
             d.2 = kept(
                 format!(
@@ -1200,8 +1223,15 @@ impl Settings {
     /// Why a download from the browser can't start (#42): its proxy asks for a login that the
     /// VPN or proxy extension gives, which MDM can't have. Going around it would show the
     /// user's own address, so the download stops and says so.
-    pub fn browser_proxy_refused(&self, context: &mdm_ipc::Command) -> Option<String> {
-        (self.proxy_from_browser && context.proxy_login).then(|| {
+    /// A site rule's proxy for the download's address (#1960) is the user's choice for that site:
+    /// nothing is refused then.
+    pub fn browser_proxy_refused(
+        &self,
+        url: &url::Url,
+        context: &mdm_ipc::Command,
+    ) -> Option<String> {
+        let rule_says = self.site_settings(url).proxy.is_some();
+        (self.proxy_from_browser && context.proxy_login && !rule_says).then(|| {
             // i18n: an error: the browser's VPN or proxy extension logs in to its proxy itself, and MDM can't; Options → Proxy / Socks → Network adapter is where an adapter can be chosen
             crate::i18n::t(
                 "the browser's proxy (a VPN or proxy extension) asks for a login only that extension has: use the VPN's own app, or choose its network adapter in Options → Proxy / Socks",
@@ -1249,6 +1279,17 @@ impl Settings {
     /// What the site rules and the exceptions give a download from `url` (#1778).
     pub fn site_settings(&self, url: &url::Url) -> mdm_ipc::siterules::Applied {
         mdm_ipc::siterules::for_url(&self.site_rules, &self.conn_exceptions, url)
+    }
+
+    /// The proxy for a download from `url` that came with `context`, before its own (its
+    /// Properties → Connection..., `requestedit::apply_own`): the first site rule that names it
+    /// and sets a proxy (#1960), else Options' ([`Self::proxy_for`]: the browser's, or Proxy /
+    /// Socks). Options' network adapter holds it all the same (`Options::route`).
+    pub fn download_proxy(&self, url: &url::Url, context: &mdm_ipc::Command) -> mdm_engine::Proxy {
+        match self.site_settings(url).proxy {
+            Some(rule) => mdm_tools::proc::rule_proxy(&rule),
+            None => self.proxy_for(context),
+        }
     }
 
     /// The Sites Logins entry for `url`: its site/path is a prefix of the address (without the
@@ -2416,6 +2457,7 @@ mod tests {
                 user_agent: "Rule/1".into(),
                 browser_like: true,
                 headers: vec![("X-A".into(), "1".into())],
+                ..Default::default()
             }],
             ..Settings::default()
         };
@@ -2430,6 +2472,93 @@ mod tests {
             serde_json::from_str(r#"{"conn_exceptions": [["ftp.slow.org", 1]]}"#).unwrap();
         assert!(old.site_rules.is_empty());
         assert_eq!(old.connections_for(&url("ftp://ftp.slow.org/a")), 1);
+    }
+
+    /// #1960: which proxy a download gets before its own: the first rule that names its site
+    /// and sets one (its own proxy with its login, or none), above Options' and the browser's;
+    /// Options' for every other site.
+    #[test]
+    fn a_site_rules_proxy_comes_before_options() {
+        use mdm_engine::Proxy;
+        use mdm_ipc::siterules::SiteRule;
+        let url = |u: &str| url::Url::parse(u).unwrap();
+        let s = Settings {
+            proxy_mode: 3,
+            proxy_host: "10.0.0.9".into(),
+            proxy_port: "3128".into(),
+            proxy_http: true,
+            proxy_https: true,
+            proxy_from_browser: true,
+            site_rules: vec![
+                SiteRule {
+                    site: "direct.example.test".into(),
+                    proxy: Some(String::new()),
+                    ..Default::default()
+                },
+                SiteRule {
+                    site: "*.example.test".into(),
+                    proxy: Some("socks5://127.0.0.1:1080".into()),
+                    proxy_user: "ann".into(),
+                    proxy_pass: "pw".into(),
+                    ..Default::default()
+                },
+                SiteRule {
+                    site: "agent.other.test".into(),
+                    user_agent: "A/1".into(),
+                    ..Default::default()
+                },
+            ],
+            ..Settings::default()
+        };
+        let none = mdm_ipc::Command::default();
+        let options = s.proxy();
+        assert!(matches!(options, Proxy::Manual { .. }));
+        assert_eq!(
+            s.download_proxy(&url("https://dl.example.test/f"), &none),
+            Proxy::Manual {
+                url: "socks5://127.0.0.1:1080".into(),
+                login: Some(("ann".into(), "pw".into())),
+                http: true,
+                https: true,
+            }
+        );
+        assert_eq!(
+            s.download_proxy(&url("http://direct.example.test/f"), &none),
+            Proxy::None,
+            "the first match wins: straight to the server"
+        );
+        assert_eq!(
+            s.download_proxy(&url("https://agent.other.test/f"), &none),
+            options,
+            "a rule without a proxy: Options'"
+        );
+        assert_eq!(
+            s.download_proxy(&url("https://elsewhere.test/f"), &none),
+            options
+        );
+        // The browser's proxy (a VPN extension's) is Options' choice: a rule's comes first, and
+        // one that needs the extension's login isn't refused for a site the rule sends elsewhere.
+        let browser = mdm_ipc::Command {
+            proxy: Some("http://127.0.0.1:9999".into()),
+            proxy_login: true,
+            ..Default::default()
+        };
+        assert_eq!(
+            s.download_proxy(&url("http://direct.example.test/f"), &browser),
+            Proxy::None
+        );
+        assert!(
+            s.browser_proxy_refused(&url("http://direct.example.test/f"), &browser)
+                .is_none()
+        );
+        assert!(
+            s.browser_proxy_refused(&url("https://elsewhere.test/f"), &browser)
+                .is_some()
+        );
+        assert_eq!(
+            s.download_proxy(&url("https://elsewhere.test/f"), &browser),
+            s.proxy_for(&browser)
+        );
     }
 
     #[test]
@@ -2478,6 +2607,39 @@ mod tests {
                 if url == "http://10.0.0.1:3128"
         ));
         assert!(!s.follows_system());
+    }
+}
+
+/// Site rules' proxy passwords on disk (#1960), as Sites Logins' are: in the system's keychain
+/// once it holds them (`Settings::for_disk`), else sealed as `sealed` seals them. A rule from
+/// before has none; a password that can't be opened reads as none.
+mod sealed_rules {
+    use mdm_ipc::siterules::SiteRule;
+    use serde::{Deserialize, Deserializer, Serialize, Serializer};
+
+    use super::sealed::{open, seal};
+
+    pub fn serialize<S: Serializer>(v: &[SiteRule], s: S) -> Result<S::Ok, S::Error> {
+        if crate::secrets::is_prepared() {
+            return v.serialize(s);
+        }
+        v.iter()
+            .map(|r| SiteRule {
+                proxy_pass: seal(&r.proxy_pass),
+                ..r.clone()
+            })
+            .collect::<Vec<_>>()
+            .serialize(s)
+    }
+
+    pub fn deserialize<'de, D: Deserializer<'de>>(d: D) -> Result<Vec<SiteRule>, D::Error> {
+        let v = Vec::<SiteRule>::deserialize(d)?;
+        Ok(v.into_iter()
+            .map(|r| SiteRule {
+                proxy_pass: open(&r.proxy_pass),
+                ..r
+            })
+            .collect())
     }
 }
 
@@ -2628,6 +2790,43 @@ pub(crate) mod sealed {
                 let s: crate::settings::Settings = serde_json::from_value(foreign).unwrap();
                 assert!(s.debrid_accounts[0].account().is_none());
             }
+        }
+
+        /// #1960: a site rule's proxy password is never in the file as it is (sealed on
+        /// Windows; in the owner-only data folder elsewhere, as the other secrets), and reads
+        /// back; a rule without one writes none.
+        #[test]
+        fn a_site_rules_proxy_password_is_sealed_on_disk() {
+            use mdm_ipc::siterules::SiteRule;
+            let s = crate::settings::Settings {
+                site_rules: vec![
+                    SiteRule {
+                        site: "*.example.test".into(),
+                        proxy: Some("127.0.0.1:3128".into()),
+                        proxy_user: "ann".into(),
+                        proxy_pass: "rule-s3cret".into(),
+                        ..Default::default()
+                    },
+                    SiteRule {
+                        site: "direct.test".into(),
+                        proxy: Some(String::new()),
+                        ..Default::default()
+                    },
+                ],
+                ..Default::default()
+            };
+            let json = serde_json::to_string(&s).unwrap();
+            if cfg!(windows) {
+                assert!(!json.contains("rule-s3cret") && json.contains("dpapi:"));
+            }
+            let back: crate::settings::Settings = serde_json::from_str(&json).unwrap();
+            assert_eq!(back.site_rules, s.site_rules);
+            let value: serde_json::Value = serde_json::from_str(&json).unwrap();
+            assert!(value["site_rules"][1].get("proxy_pass").is_none());
+            // A plain one (a hand-edited file) still reads.
+            let plain = serde_json::json!({ "site_rules": [{"site": "a.test", "proxy": "p.test:1", "proxy_user": "u", "proxy_pass": "pw"}] });
+            let old: crate::settings::Settings = serde_json::from_value(plain).unwrap();
+            assert_eq!(old.site_rules[0].proxy_pass, "pw");
         }
 
         #[test]
