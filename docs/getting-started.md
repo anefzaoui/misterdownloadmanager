@@ -16,8 +16,8 @@ Every version is on the [Releases](https://github.com/anefzaoui/misterdownloadma
 | `MisterDownloadManager-<version>-portable.zip` | A portable copy. The download list and settings stay in a `data` folder next to the program, and nothing is written to the registry. Browser integration needs the installer. See [Portable mode](portable.md). |
 | `MisterDownloadManager-<version>-x64.zip` | The same programs without an installer. It keeps its data in `%APPDATA%\misterdownloadmanager`, like an installed copy. |
 
-These three are for 64-bit Windows on an Intel or AMD processor (x64), the usual PC. From the
-version after 0.5.2, each comes for two more kinds of PC too, with the processor in its name:
+These three are for 64-bit Windows on an Intel or AMD processor (x64), the usual PC. From
+version 0.6.0, each comes for two more kinds of PC too, with the processor in its name:
 
 | Files | For |
 |---|---|
@@ -42,7 +42,7 @@ WinGet downloads the setup and installs MDM without the setup's questions.
 MDM runs on 64-bit Linux with a desktop session. It is tested on Ubuntu 24.04, Debian 12 and
 Fedora, with GNOME, KDE Plasma, Xfce and Cinnamon, on X11 and in Wayland sessions. Pick one
 of these files (up to version 0.2.4, their names end in `-experimental`, as in
-`...-linux-x86_64-experimental.deb`). From the version after 0.5.2, each also comes for 64-bit
+`...-linux-x86_64-experimental.deb`). From version 0.6.0, each also comes for 64-bit
 ARM computers, with `arm64` in place of `x86_64` (`...-linux-arm64.deb`); they are built and
 tested on GitHub's ARM machines. On ARM, MDM doesn't download gallery-dl itself (its author
 builds none for it): install it with your system's packages or pip.
