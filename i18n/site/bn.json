@@ -1662,6 +1662,10 @@
    "source": "Yes. MDM accepts IDM's familiar command-line switches, comes with misterdownloadmanager-cli for downloads from a terminal, and has a local, token-protected…",
    "text": "হ্যাঁ। MDM, IDM-এর পরিচিত কমান্ড-লাইন সুইচগুলি গ্রহণ করে, টার্মিনাল থেকে ডাউনলোডের জন্য misterdownloadmanager-cli সহ আসে এবং একটি স্থানীয়, টোকেন-সুরক্ষিত…"
   },
+  "15dfb8668baab702": {
+   "source": "See <g1>Proxy / Socks</g1> and <g2>Use your own copies</g2>.",
+   "text": "<g1>প্রক্সি / SOCKS</g1> এবং <g2>আপনার নিজস্ব কপি ব্যবহার করুন</g2> দেখুন।"
+  },
   "15f41ea989aec521": {
    "source": "<g1>Base16 and pywal colour schemes as themes</g1>: a Base16 or Base24 scheme (<x2/>, the classic layout and tinted-theming's <x3/> one) or pywal's <x4/> (wallust's pywal-shaped one too), added with <g5>View → Theme → Add a theme file…</g5> or put in the themes folder, is a theme on the classic look: only the colours change. base00 and base01 are the backgrounds, base05 and base04 the text, base0D the focus, the selection and the progress bar (pywal: its background and foreground, color4); text is kept at 4.5:1 or more against every background and the accent at 3:1, moved a little where a scheme falls short. Once <x6/> has run, <g7>View → Theme</g7> lists <g8>pywal</g8>, read from where pywal writes it (<x9/>, <x10/> on Windows), and MDM follows each new wallpaper's colours within two seconds. A theme file can <x11/> a scheme to change more than its colours.",
    "text": "<g1>Base16 এবং pywal কালার স্কিম থিম হিসাবে</g1>: একটি Base16 বা Base24 স্কিম (<x2/>, ক্লাসিক লেআউট এবং টিন্টেড-থিমিয়ের <x3/> একটি) অথবা pywal-এর <x4/> (wallust-এর pywal-আকৃতিরটিও), <g5>দেখুন → থিম → একটি থিম ফাইল যোগ করুন…</g5> দিয়ে যোগ করা হয়েছে অথবা থিম ফোল্ডারে রাখা হয়েছে, এটি ক্লাসিক চেহারার একটি থিম: শুধুমাত্র রঙগুলি পরিবর্তিত হয়। base00 এবং base01 হল ব্যাকগ্রাউন্ড, base05 এবং base04 হল টেক্সট, base0D হল ফোকাস, নির্বাচন এবং অগ্রগতি বার (pywal: এর ব্যাকগ্রাউন্ড এবং ফোরগ্রাউন্ড, color4); টেক্সট প্রতিটি ব্যাকগ্রাউন্ডের বিপরীতে 4.5:1 বা তার বেশি এবং অ্যাকসেন্ট 3:1 এ রাখা হয়, যেখানে একটি স্কিম কম পড়ে সেখানে সামান্য সরানো হয়। একবার <x6/> চললে, <g7>দেখুন → থিম</g7> <g8>pywal</g8> তালিকাভুক্ত করে, যা pywal যেখানে লেখে সেখান থেকে পড়া হয় (<x9/>, Windows-এ <x10/>), এবং MDM দুই সেকেন্ডের মধ্যে প্রতিটি নতুন ওয়ালপেপারের রঙ অনুসরণ করে। একটি থিম ফাইল একটি স্কিমকে <x11/> করতে পারে যাতে এর রঙের চেয়ে বেশি কিছু পরিবর্তন হয়।"
@@ -2125,10 +2129,6 @@
   "1be93bd020009908": {
    "source": "<g1>The keyboard focus got lost</g1> when a button greyed itself or Escape closed a drop-down: Tab started over at the top of the window. It now moves on, or comes back, as in Windows.",
    "text": "বোতাম নিষ্ক্রিয় হয়ে গেলে বা Escape চাপলে ড্রপ-ডাউন বন্ধ হয়ে <g1>কীবোর্ডের ফোকাস হারিয়ে যেত</g1>: Tab চাপলে উইন্ডোর একেবারে ওপর থেকে আবার শুরু হতো। এখন Windows-এর মতো ফোকাস পরের নিয়ন্ত্রণে যায় বা আগেরটিতে ফিরে আসে।"
-  },
-  "1c004ef83082f283": {
-   "source": "<g1>Site rules...</g1> — a User-Agent, request headers, a number of connections and <g2>Always connect the way a browser does</g2>, by site. See <g3>Site rules</g3>.",
-   "text": "<g1>সাইট নিয়ম...</g1> — একটি ইউজার-এজেন্ট, রিকোয়েস্ট হেডার, সংযোগের সংখ্যা এবং <g2>ব্রাউজারের মতো করে সবসময় সংযোগ করুন</g2>, সাইট অনুযায়ী। <g3>সাইট নিয়ম</g3> দেখুন।"
   },
   "1c0101659f1e2203": {
    "source": "<g1>Feeds</g1>: the feeds it watches; none ticked, all of them.",
@@ -3145,6 +3145,10 @@
   "28eeaa8ad9bf85a3": {
    "source": "Requests",
    "text": "অনুরোধ"
+  },
+  "291af5108373e0c4": {
+   "source": "MDM downloads yt-dlp, ffmpeg and gallery-dl from their official releases on GitHub. Where GitHub can't be reached or is very slow, as often in mainland…",
+   "text": "MDM, yt-dlp, ffmpeg এবং gallery-dl GitHub-এর অফিশিয়াল রিলিজ থেকে ডাউনলোড করে। যেখানে GitHub-এ পৌঁছানো যায় না বা খুব ধীরগতিতে কাজ করে, যেমনটা প্রায়শই মূল ভূখণ্ডে..."
   },
   "292621fe40d7beca": {
    "source": "Every video starts ticked. Untick the ones you don't want, or use <g1>Select all</g1> and <g2>Select none</g2>. Private and deleted videos are greyed out and can't be ticked.",
@@ -4890,6 +4894,10 @@
    "source": "Changes",
    "text": "পরিবর্তন"
   },
+  "41150cfc2e8c323a": {
+   "source": "Some sites want a particular User-Agent, an extra header or fewer connections, let only browsers through, or need a proxy (or none) when the others don't. <g1>Options → Connection → Site rules...</g1> sets these once for every download from a site:",
+   "text": "কিছু সাইট একটি নির্দিষ্ট ইউজার-এজেন্ট, একটি অতিরিক্ত হেডার বা কম সংযোগ চায়, শুধুমাত্র ব্রাউজারকে অনুমতি দেয়, অথবা অন্যদের যখন প্রয়োজন হয় না তখন একটি প্রক্সি (বা কোনোটিই নয়) প্রয়োজন হয়। <g1>বিকল্প → সংযোগ → সাইট নিয়ম...</g1> প্রতিটি সাইট থেকে ডাউনলোডের জন্য একবার এগুলো সেট করে:"
+  },
   "41333ec069d15e15": {
    "source": "A magnet link takes a long time",
    "text": "একটি ম্যাগনেট লিঙ্ক অনেক সময় নেয়"
@@ -5538,10 +5546,6 @@
    "source": "A key MDM doesn't know, or a value it can't read, is skipped and written to MDM's log (the <x1/> folder beside the themes folder), so a file made for a newer MDM still loads. The built-in themes are written the same way: <g2>read them on GitHub</g2>.",
    "text": "MDM যে কী জানে না, অথবা যে মান পড়তে পারে না, তা বাদ দেওয়া হয় এবং MDM-এর লগে (থিম ফোল্ডারের পাশে <x1/> ফোল্ডার) লেখা হয়, যাতে একটি নতুন MDM-এর জন্য তৈরি ফাইলও লোড হয়। বিল্ট-ইন থিমগুলি একই ভাবে লেখা হয়: <g2>GitHub-এ সেগুলি পড়ুন</g2>।"
   },
-  "4ac401467a9a37d2": {
-   "source": "The downloads join the <g1>Main download queue</g1>, ready to start (<g2>Start</g2> starts it too). <g3>Tasks → Import → From IDM export file</g3> reads an <x4/> file, with each download's referrer and cookies.",
-   "text": "ডাউনলোডগুলো <g1>প্রধান ডাউনলোড সারি</g1>-তে যোগ হয় এবং শুরু করার জন্য প্রস্তুত থাকে (<g2>শুরু করুন</g2> দিয়েও শুরু করা যায়)। <g3>কাজ → আমদানি → IDM রপ্তানি ফাইল থেকে</g3> একটি <x4/> ফাইল পড়ে, যাতে প্রতিটি ডাউনলোডের রেফারার ও কুকি থাকে।"
-  },
   "4ace27f6171583db": {
    "source": "A <x1/> and a Compose file come with MDM's source. For now you build the image yourself; a published image comes later. The first build is long, up to an hour on a small server, and the image is small, about 175 MB, with no desktop libraries.",
    "text": "MDM-এর সোর্সের সাথে একটি <x1/> এবং একটি কম্পোজ ফাইল আসে। আপাতত আপনাকে নিজেই ইমেজ তৈরি করতে হবে; একটি প্রকাশিত ইমেজ পরে আসবে। প্রথম বিল্ডটি দীর্ঘ, একটি ছোট সার্ভারে এক ঘন্টা পর্যন্ত সময় লাগতে পারে এবং ইমেজটি ছোট, প্রায় 175 MB, কোনো ডেস্কটপ লাইব্রেরি ছাড়া।"
@@ -6090,10 +6094,6 @@
    "source": "After a click it says what happened, in its own colour:",
    "text": "ক্লিক করার পর এটি তার নিজস্ব রঙে কী ঘটেছে তা বলে:"
   },
-  "529f7c22e85ee030": {
-   "source": "Download a file with up to 8 connections (<x1/>, 1 to 128), showing progress. <x2/> pauses it; <x3/> continues. <x4/> sets the referring page address (Referer header), <x5/> sets the request's User-Agent (then the only one sent; without it, MDM speaks as your default browser, and, when a site's bot check refuses that and the way a browser connects too, once more under its own name), <x6/> sets the Cookie header (a cookie on the command line ends up in the shell's history; <x7/> reads it from standard input instead). <x8/> checks the finished file: hex MD5, SHA-1, SHA-256, SHA-512 or CRC32, optionally named (<x9/>). <x10/> picks the DNS instead of Options': <x11/>; a service and how to ask it, <x12/>, <x13/>, <x14/>, <x15/>, <x16/>; DNS servers' addresses, <x17/>; or a DNS-over-HTTPS address. It never falls back to the system's DNS. <x18/> sends every connection through one network adapter instead of Options' (<x19/> for none), by its name (<x20/>, <x21/>) or one of its addresses; when it isn't connected, nothing is sent and the download fails. <x22/> takes the place of Options' proxy for this run (see above). The app's <g23>site rules</g23> for the address apply too (their headers, User-Agent, browser-like connection and number of connections), where the command line gives none of the same. A link from a file host that one of your debrid accounts (<g24>Options → Accounts</g24>) supports goes through that account, as in the app, and <x25/> says <x26/>; <x27/> downloads the address itself (<g28>Debrid service accounts</g28>).",
-   "text": "প্রগতি দেখিয়ে সর্বোচ্চ 8টি সংযোগ (<x1/>, 1 থেকে 128) ব্যবহার করে একটি ফাইল ডাউনলোড করুন। <x2/> এটিকে বিরতি দেয়; <x3/> চালিয়ে যায়। <x4/> রেফারার পেজের ঠিকানা সেট করে (Referer হেডার), <x5/> রিকোয়েস্টের ইউজার-এজেন্ট সেট করে (তখন শুধু এটিই পাঠানো হয়; এটি ছাড়া, MDM আপনার ডিফল্ট ব্রাউজার হিসেবে কথা বলে, এবং যখন কোনো সাইটের বট চেক এটিকে এবং ব্রাউজারের সংযোগ পদ্ধতিকেও প্রত্যাখ্যান করে, তখন এটি আবার নিজের নামে কথা বলে), <x6/> কুকি হেডার সেট করে (কমান্ড লাইনে থাকা কুকি শেল-এর ইতিহাসে চলে যায়; <x7/> এর পরিবর্তে স্ট্যান্ডার্ড ইনপুট থেকে এটি পড়ে)। <x8/> শেষ হওয়া ফাইলটি চেক করে: হেক্স MD5, SHA-1, SHA-256, SHA-512 অথবা CRC32, ঐচ্ছিকভাবে নাম দেওয়া হয় (<x9/>)। <x10/> বিকল্প-এর পরিবর্তে DNS বেছে নেয়: <x11/>; একটি পরিষেবা এবং কীভাবে এটি জিজ্ঞাসা করতে হয়, <x12/>, <x13/>, <x14/>, <x15/>, <x16/>; DNS সার্ভারের ঠিকানা, <x17/>; অথবা একটি DNS-ওভার-HTTPS ঠিকানা। এটি কখনোই সিস্টেমের DNS-এ ফিরে যায় না। <x18/> বিকল্প-এর পরিবর্তে (<x19/> কোনোটির জন্য নয়) প্রতিটি সংযোগ একটি নেটওয়ার্ক অ্যাডাপ্টারের মাধ্যমে পাঠায়, এর নাম (<x20/>, <x21/>) বা এর একটি ঠিকানা দ্বারা; যখন এটি সংযুক্ত থাকে না, তখন কিছুই পাঠানো হয় না এবং ডাউনলোড ব্যর্থ হয়। <x22/> এই রানের জন্য বিকল্প-এর প্রক্সির স্থান নেয় (উপরে দেখুন)। অ্যাপের <g23>সাইট নিয়ম</g23> ঠিকানার জন্যও প্রযোজ্য (তাদের হেডার, ইউজার-এজেন্ট, ব্রাউজার-সদৃশ সংযোগ এবং সংযোগের সংখ্যা), যেখানে কমান্ড লাইন একই রকম কিছু দেয় না। একটি ফাইল হোস্ট থেকে একটি লিংক যা আপনার ডিব্রিড অ্যাকাউন্টগুলোর (<g24>বিকল্প → অ্যাকাউন্ট</g24>) মধ্যে একটি সমর্থন করে, অ্যাপের মতোই সেই অ্যাকাউন্টের মাধ্যমে যায়, এবং <x25/> বলে <x26/>; <x27/> ঠিকানাটি নিজেই ডাউনলোড করে (<g28>ডিব্রিড পরিষেবা অ্যাকাউন্ট</g28>)।"
-  },
   "52ceae361fb11f6c": {
    "source": "A list's, a table's or a box's outline",
    "text": "একটি তালিকা, একটি টেবিল বা একটি বাক্সের আউটলাইন"
@@ -6145,10 +6145,6 @@
   "536df2f60bd48da6": {
    "source": "Success text (a matching checksum)",
    "text": "সফলতার টেক্সট (একটি মিলে যাওয়া চেকসাম)"
-  },
-  "538fe2ede1fc4d57": {
-   "source": "The single-instance channel (a token-protected local socket), the data folder, the capture rules shared by the app and the host, and the site rules (#1778: a User-Agent, headers, connections and the browser-like connection by site pattern) shared by the app and the command line",
-   "text": "একক-ইনস্ট্যান্স চ্যানেল (একটি টোকেন-সুরক্ষিত স্থানীয় সকেট), ডেটা ফোল্ডার, অ্যাপ এবং হোস্ট দ্বারা শেয়ার করা ক্যাপচার নিয়ম, এবং অ্যাপ ও কমান্ড লাইন দ্বারা শেয়ার করা সাইটের নিয়ম (#1778: একটি ইউজার-এজেন্ট, হেডার, সংযোগ এবং সাইট প্যাটার্ন অনুসারে ব্রাউজার-সদৃশ সংযোগ)"
   },
   "539160f92bae4422": {
    "source": "Being re-measured",
@@ -9054,14 +9050,6 @@
    "source": "Testing archives",
    "text": "আর্কাইভ পরীক্ষা করা"
   },
-  "7b65292951ac598b": {
-   "source": "Some sites want a particular User-Agent, an extra header or fewer connections, or let only browsers through. <g1>Options → Connection → Site rules...</g1> sets these once for every download from a site:",
-   "text": "কিছু সাইট একটি নির্দিষ্ট ইউজার-এজেন্ট, অতিরিক্ত হেডার বা কম সংযোগ চায়, অথবা শুধুমাত্র ব্রাউজারকে অনুমতি দেয়। <g1>বিকল্প → সংযোগ → সাইট নিয়ম...</g1> ব্যবহার করে একটি সাইট থেকে প্রতিটি ডাউনলোডের জন্য এই সেটিংস একবারেই সেট করা যায়:"
-  },
-  "7b655c3076cd7d8b": {
-   "source": "<g1>Tasks → Import → From text file</g1> and <g2>From IDM export file</g2>. An <x3/> file brings each download's referrer and cookies.",
-   "text": "<g1>কাজগুলি → আমদানি → টেক্সট ফাইল থেকে</g1> এবং <g2>IDM রপ্তানি ফাইল থেকে</g2>। একটি <x3/> ফাইল প্রতিটি ডাউনলোডের রেফারার ও কুকিজ সঙ্গে আনে।"
-  },
   "7b75149d61c4c0ff": {
    "source": "A download that is running isn't deleted. Stop it first.",
    "text": "চলমান ডাউনলোড মুছে ফেলা যায় না। আগে এটি বন্ধ করুন।"
@@ -9357,6 +9345,10 @@
   "7ee169488133ab57": {
    "source": "Link grabber gathers many links at once, sorts them into packages, and lets you tick the ones to download. MDM can then extract the archives it downloaded…",
    "text": "লিঙ্ক গ্র্যাবার একসঙ্গে অনেক লিঙ্ক সংগ্রহ করে, সেগুলোকে প্যাকেজে সাজায় এবং ডাউনলোডের জন্য লিঙ্ক বেছে নিতে দেয়। এরপর MDM ডাউনলোড করা আর্কাইভগুলো এক্সট্র্যাক্ট করতে পারে…"
+  },
+  "7ee305b094d7654d": {
+   "source": "The single-instance channel (a token-protected local socket), the data folder, the capture rules shared by the app and the host, and the site rules (#1778: a User-Agent, headers, connections, the browser-like connection and, #1960, a proxy by site pattern) shared by the app and the command line",
+   "text": "একক-ইনস্ট্যান্স চ্যানেল (একটি টোকেন-সুরক্ষিত লোকাল সকেট), ডেটা ফোল্ডার, অ্যাপ এবং হোস্টের মধ্যে শেয়ার করা ক্যাপচার নিয়মাবলি, এবং অ্যাপ ও কমান্ড লাইনের মধ্যে শেয়ার করা সাইট নিয়মাবলি (#1778: একটি ইউজার-এজেন্ট, হেডার, সংযোগ, ব্রাউজার-সদৃশ সংযোগ এবং #1960, সাইট প্যাটার্ন অনুযায়ী একটি প্রক্সি)"
   },
   "7ee9063b38514440": {
    "source": "Listed by",
@@ -9806,6 +9798,10 @@
    "source": "Every signed file is built from the public source code at <g1>github.com/anefzaoui/misterdownloadmanager</g1> by GitHub Actions, on GitHub's servers, never on a personal computer. Each one says it is Mister Download Manager and which version it is.",
    "text": "প্রতিটি সাইন করা ফাইল <g1>github.com/anefzaoui/misterdownloadmanager</g1>-এ থাকা পাবলিক সোর্স কোড থেকে GitHub-এর সার্ভারে GitHub Actions দ্বারা তৈরি করা হয়, কোনো ব্যক্তিগত কম্পিউটারে নয়। প্রতিটি ফাইলে Mister Download Manager এবং এর সংস্করণ উল্লেখ করা থাকে।"
   },
+  "8414d2ed3c86b744": {
+   "source": "Which proxy a download goes through: its own (below) first, then the first rule that names the site and sets a proxy, then <g1>Options → Proxy / Socks</g1> (and the browser's proxy, when <g2>Use proxy/socks from a browser's request</g2> is on). A rule's proxy also carries Download File Info's look-up and, for a video or gallery page the rule names, yt-dlp's and gallery-dl's look-up and the video's download, so the links they get are used from the same address. The <g3>Network adapter</g3> chosen in <g4>Options → Proxy / Socks</g4>, and its kill switch, still hold every connection: with an adapter chosen, nothing goes around it.",
+   "text": "একটি ডাউনলোড কোন প্রক্সির মাধ্যমে যাবে: প্রথমে তার নিজস্ব (নিচে), তারপর সাইটটির নাম ও প্রক্সি নির্ধারণ করা প্রথম নিয়মটি, তারপর <g1>বিকল্প → প্রক্সি / SOCKS</g1> (এবং ব্রাউজারের প্রক্সি, যখন <g2>ব্রাউজারের অনুরোধ থেকে প্রক্সি/SOCKS ব্যবহার করুন</g2> চালু থাকে)। একটি নিয়মের প্রক্সি “ডাউনলোড ফাইলের তথ্য”-এর লুক-আপও বহন করে এবং একটি ভিডিও বা গ্যালারি পেজের জন্য, নিয়মটি yt-dlp ও gallery-dl-এর লুক-আপ এবং ভিডিওর ডাউনলোডও বহন করে, যাতে তারা একই ঠিকানা থেকে প্রাপ্ত লিংকগুলো ব্যবহার করে। <g4>বিকল্প → প্রক্সি / SOCKS</g4>-এ বেছে নেওয়া <g3>নেটওয়ার্ক অ্যাডাপ্টার</g3> এবং এর কিল সুইচ, প্রতিটি সংযোগ ধরে রাখে: একটি অ্যাডাপ্টার বেছে নেওয়া হলে, কোনো কিছুই এটিকে এড়িয়ে যায় না।"
+  },
   "842fc0e6d2b7d24d": {
    "source": "At the start time the queue starts on its own. In the morning, the finished files are under <g1>Finished</g1> in the categories.",
    "text": "শুরুর সময়ে কিউ নিজে থেকেই শুরু হয়। সকালে, সম্পন্ন হওয়া ফাইলগুলি ক্যাটাগরির <g1>সম্পন্ন হয়েছে</g1>-এর নিচে থাকে।"
@@ -9933,6 +9929,10 @@
   "8581b3f6f6759cc7": {
    "source": "Proxy / Socks: no proxy, the system's, or your own.",
    "text": "প্রক্সি / SOCKS: কোনো প্রক্সি নেই, সিস্টেমের প্রক্সি, অথবা আপনার নিজস্ব।"
+  },
+  "8587f400d941af9d": {
+   "source": "<g1>Options → Connection → Site rules...</g1> gives every download from a site (<x2/>) its own User-Agent, extra request headers, number of connections, a browser's way of connecting from the first request, or a proxy: none, or one of its own, so only the sites that need a proxy go through one. A stopped download's <g3>Properties → Connection...</g3> changes its own headers, proxy and connections, and MDM still checks the file is the same one before it goes on.",
+   "text": "<g1>বিকল্প → সংযোগ → সাইট নিয়ম...</g1> ব্যবহার করে আপনি প্রতিটি সাইট (<x2/>) থেকে ডাউনলোডের জন্য আলাদা ইউজার-এজেন্ট, অতিরিক্ত রিকোয়েস্ট হেডার, সংযোগের সংখ্যা, প্রথম রিকোয়েস্ট থেকে ব্রাউজারের সংযোগের পদ্ধতি, অথবা একটি প্রক্সি সেট করতে পারবেন: কোনোটিই না, অথবা নিজস্ব একটি প্রক্সি, যাতে শুধুমাত্র যে সাইটগুলোর প্রক্সি প্রয়োজন সেগুলোই প্রক্সি ব্যবহার করে। একটি থামা ডাউনলোডের <g3>বৈশিষ্ট্য → সংযোগ...</g3> তার নিজস্ব হেডার, প্রক্সি এবং সংযোগ পরিবর্তন করে, এবং MDM ফাইলটি একই আছে কিনা তা যাচাই করে তারপর ডাউনলোড পুনরায় শুরু করে।"
   },
   "85ab2d681187a715": {
    "source": "Not sure yet? <g1>Show it in the discussions</g1> first. The <g2>contributing guide</g2> explains how pull requests work here.",
@@ -10357,6 +10357,10 @@
   "8bf1347e6970e3e9": {
    "source": "MDM works with screen readers such as Narrator and NVDA, which hear what each control is and its state. Everything can be done from the keyboard, with the keys most Windows programs use.",
    "text": "MDM Narrator এবং NVDA-এর মতো স্ক্রিন রিডারগুলির সাথে কাজ করে, যা প্রতিটি কন্ট্রোলের নাম এবং তার অবস্থা শুনতে পায়। Windows-এর বেশিরভাগ প্রোগ্রাম যে কীগুলি ব্যবহার করে, সেগুলি দিয়ে কিবোর্ড থেকে সবকিছু করা যায়।"
+  },
+  "8bf561be5473c2d1": {
+   "source": "MDM downloads yt-dlp, ffmpeg and gallery-dl from their official releases on GitHub. Where GitHub can't be reached or is very slow, as often in mainland China, the install stops with \"the server did not answer in time\". Two ways around it:",
+   "text": "MDM, yt-dlp, ffmpeg এবং gallery-dl GitHub-এর অফিশিয়াল রিলিজ থেকে ডাউনলোড করে। যেখানে GitHub-এ পৌঁছানো যায় না বা খুব ধীরগতিতে কাজ করে, যেমনটা প্রায়শই চীনের মূল ভূখণ্ডে হয়, সেখানে ইনস্টল করা বন্ধ হয়ে যায় এবং “সার্ভার সময়মতো উত্তর দেয়নি” এমন বার্তা দেখায়। এর দুটি সমাধান আছে:"
   },
   "8bf5db6373827a5f": {
    "source": "Media on this page",
@@ -11778,6 +11782,10 @@
    "source": "Start or stop a download queue in the running app (automation API). Starts or stops the main queue if omitted.",
    "text": "চলমান অ্যাপে একটি ডাউনলোড সারি শুরু বা থামান (অটোমেশন API)। বাদ দিলে প্রধান সারি শুরু বা থামায়।"
   },
+  "9e84ad8c276cf077": {
+   "source": "Why does installing yt-dlp or another helper time out?",
+   "text": "yt-dlp বা অন্য কোনো হেল্পার ইনস্টল করতে কেন সময় বেশি লাগে?"
+  },
   "9ea4c71fa0f481c4": {
    "source": "MDM follows your system: when Windows (or your desktop's light/dark preference on Linux and macOS) is set to dark mode, so is MDM. To keep MDM light whatever the system does, turn off <g1>View → Dark Mode support</g1>. To keep it dark whatever the system does, for example on a desktop that reports no preference, turn on <g2>View → Always dark</g2>.",
    "text": "MDM আপনার সিস্টেমের সেটিং অনুসরণ করে: Windows-এ (অথবা Linux ও macOS-এ ডেস্কটপের হালকা/ডার্ক মোডের পছন্দে) ডার্ক মোড চালু থাকলে MDM-ও ডার্ক মোডে থাকে। সিস্টেমের সেটিং যা-ই হোক, MDM-কে হালকা রাখতে <g1>দেখুন → ডার্ক মোড সমর্থন</g1> বন্ধ করুন। সিস্টেমের সেটিং যা-ই হোক, MDM-কে ডার্ক রাখতে—যেমন ডেস্কটপ কোনো পছন্দ না জানালে—<g2>দেখুন → সর্বদা ডার্ক</g2> চালু করুন।"
@@ -11861,6 +11869,10 @@
   "9f782f136a8bb467": {
    "source": "The built-in categories can now be renamed, given other file types, or deleted.",
    "text": "অন্তর্নির্মিত বিভাগগুলির এখন নাম পরিবর্তন করা, অন্যান্য ফাইলের ধরন দেওয়া বা মুছে ফেলা যেতে পারে।"
+  },
+  "9f7cefd031ac2a9a": {
+   "source": "Download a file with up to 8 connections (<x1/>, 1 to 128), showing progress. <x2/> pauses it; <x3/> continues. <x4/> sets the referring page address (Referer header), <x5/> sets the request's User-Agent (then the only one sent; without it, MDM speaks as your default browser, and, when a site's bot check refuses that and the way a browser connects too, once more under its own name), <x6/> sets the Cookie header (a cookie on the command line ends up in the shell's history; <x7/> reads it from standard input instead). <x8/> checks the finished file: hex MD5, SHA-1, SHA-256, SHA-512 or CRC32, optionally named (<x9/>). <x10/> picks the DNS instead of Options': <x11/>; a service and how to ask it, <x12/>, <x13/>, <x14/>, <x15/>, <x16/>; DNS servers' addresses, <x17/>; or a DNS-over-HTTPS address. It never falls back to the system's DNS. <x18/> sends every connection through one network adapter instead of Options' (<x19/> for none), by its name (<x20/>, <x21/>) or one of its addresses; when it isn't connected, nothing is sent and the download fails. <x22/> takes the place of Options' proxy for this run (see above). The app's <g23>site rules</g23> for the address apply too (their headers, User-Agent, browser-like connection, number of connections and proxy), where the command line gives none of the same: <x24/> goes before every rule's proxy. A link from a file host that one of your debrid accounts (<g25>Options → Accounts</g25>) supports goes through that account, as in the app, and <x26/> says <x27/>; <x28/> downloads the address itself (<g29>Debrid service accounts</g29>).",
+   "text": "প্রগতি দেখিয়ে সর্বোচ্চ 8টি সংযোগ (<x1/>, 1 থেকে 128) দিয়ে একটি ফাইল ডাউনলোড করুন। <x2/> এটিতে বিরতি দেয়; <x3/> চালিয়ে যায়। <x4/> রেফার করা পেজের ঠিকানা (Referer হেডার) সেট করে, <x5/> রিকোয়েস্টের ইউজার-এজেন্ট সেট করে (তখন শুধু এটিই পাঠানো হয়; এটি ছাড়া, MDM আপনার ডিফল্ট ব্রাউজার হিসেবে কথা বলে, এবং যখন কোনো সাইটের বট চেক এটি এবং ব্রাউজারের সংযোগের পদ্ধতিও প্রত্যাখ্যান করে, তখন এটি নিজের নামে আরও একবার কথা বলে), <x6/> কুকি হেডার সেট করে (কমান্ড লাইনে একটি কুকি শেল-এর ইতিহাসে শেষ হয়; <x7/> এর পরিবর্তে স্ট্যান্ডার্ড ইনপুট থেকে এটি পড়ে)। <x8/> শেষ হওয়া ফাইলটি যাচাই করে: হেক্স MD5, SHA-1, SHA-256, SHA-512 অথবা CRC32, ঐচ্ছিকভাবে নাম সহ (<x9/>)। <x10/> বিকল্প-এর পরিবর্তে DNS বেছে নেয়: <x11/>; একটি পরিষেবা এবং কীভাবে এটি জিজ্ঞাসা করতে হয়, <x12/>, <x13/>, <x14/>, <x15/>, <x16/>; DNS সার্ভারগুলোর ঠিকানা, <x17/>; অথবা একটি DNS-over-HTTPS ঠিকানা। এটি কখনোই সিস্টেমের DNS-এ ফিরে যায় না। <x18/> বিকল্প-এর পরিবর্তে এই রানের জন্য প্রতিটি সংযোগ একটি নেটওয়ার্ক অ্যাডাপ্টারের মাধ্যমে পাঠায় (<x19/> কোনোটির জন্য নয়), এর নাম দিয়ে (<x20/>, <x21/>) অথবা এর একটি ঠিকানা দিয়ে; যখন এটি সংযুক্ত থাকে না, তখন কিছুই পাঠানো হয় না এবং ডাউনলোড ব্যর্থ হয়। <x22/> এই রানের জন্য বিকল্প-এর প্রক্সির স্থান নেয় (উপরে দেখুন)। অ্যাপের <g23>সাইট নিয়মগুলো</g23> ঠিকানার জন্যও প্রযোজ্য (তাদের হেডার, ইউজার-এজেন্ট, ব্রাউজারের মতো সংযোগ, সংযোগের সংখ্যা এবং প্রক্সি), যেখানে কমান্ড লাইন একই রকম কিছু দেয় না: <x24/> প্রতিটি নিয়মের প্রক্সির আগে যায়। একটি ফাইল হোস্ট থেকে একটি লিংক যা আপনার ডিব্রিড অ্যাকাউন্টগুলোর (<g25>বিকল্প → অ্যাকাউন্ট</g25>) মধ্যে একটি সমর্থন করে, সেটি অ্যাপের মতো সেই অ্যাকাউন্টের মাধ্যমে যায়, এবং <x26/> বলে <x27/>; <x28/> ঠিকানাটি নিজেই ডাউনলোড করে (<g29>ডিব্রিড পরিষেবা অ্যাকাউন্ট</g29>)।"
   },
   "9f93bf61864af099": {
    "source": "Plainly: everyone sharing the same torrent sees your IP address. That is how BitTorrent works, and no setting changes it. To hide it, use a VPN for the whole computer. <g1>Torrents and your security</g1> says what others can see.",
@@ -13333,6 +13345,10 @@
   "b27995b1d5cff0b2": {
    "source": "A calendar's day or arrow pressed",
    "text": "একটি ক্যালেন্ডারের দিন বা তীর চাপা"
+  },
+  "b292a3f16372b154": {
+   "source": "MDM downloads yt-dlp, ffmpeg and gallery-dl from their official releases on GitHub. Where GitHub can't be reached or is very slow, as often in mainland China, the install stops with \"the server did not answer in time\". Two ways around it: With a proxy program (Clash, v2rayN and the like), enter its address and port in Options → Proxy / Socks (Manual proxy/socks configuration, often 127.0.0.1 and 7890), or choose Use system settings when the program sets Windows' proxy. Then click Install yt-dlp again: MDM's own downloads, its helpers included, go through it. Or download the program in your browser (yt-dlp's is on its release page), then in Download video from a page click Helpers..., then Use another program... in its row, and choose the file. MDM uses it from then on; keep it up to date yourself. See Proxy / Socks and Use your own copies.",
+   "text": "MDM, yt-dlp, ffmpeg এবং gallery-dl GitHub-এর অফিশিয়াল রিলিজ থেকে ডাউনলোড করে। যেখানে GitHub-এ পৌঁছানো যায় না বা খুব ধীরগতিতে কাজ করে, যেমনটা প্রায়শই চীনের মূল ভূখণ্ডে হয়, সেখানে ইনস্টল করা বন্ধ হয়ে যায় এবং “সার্ভার সময়মতো উত্তর দেয়নি” এমন বার্তা দেখায়। এর দুটি সমাধান আছে: একটি প্রক্সি প্রোগ্রাম (Clash, v2rayN এবং এ ধরনের অন্যান্য) ব্যবহার করে, এর ঠিকানা ও পোর্ট বিকল্প → প্রক্সি / SOCKS (ম্যানুয়াল প্রক্সি/SOCKS কনফিগারেশন, প্রায়শই 127.0.0.1 এবং 7890) এ লিখুন, অথবা প্রোগ্রামটি যখন Windows-এর প্রক্সি সেট করে তখন সিস্টেম সেটিংস ব্যবহার করুন বেছে নিন। এরপর আবার Install yt-dlp ক্লিক করুন: MDM-এর নিজস্ব ডাউনলোডগুলো, এর হেল্পারসহ, এর মাধ্যমে যাবে। অথবা আপনার ব্রাউজারে প্রোগ্রামটি ডাউনলোড করুন (yt-dlp-এরটি এর রিলিজ পেজে আছে), তারপর একটি পেজ থেকে ভিডিও ডাউনলোড করুন-এ হেল্পার... ক্লিক করুন, এরপর এর সারিতে অন্য প্রোগ্রাম ব্যবহার করুন... ক্লিক করুন এবং ফাইলটি বেছে নিন। MDM তখন থেকে এটি ব্যবহার করবে; এটি আপনাকে নিজেই আপ টু ডেট রাখতে হবে। প্রক্সি / SOCKS এবং আপনার নিজস্ব কপি ব্যবহার করুন দেখুন।"
   },
   "b298f93960114202": {
    "source": ", with or without <x1/>;",
@@ -16654,6 +16670,10 @@
    "source": "Aqua",
    "text": "Aqua"
   },
+  "e1db1cbca152db19": {
+   "source": "With a proxy program (Clash, v2rayN and the like), enter its address and port in <g1>Options → Proxy / Socks</g1> (<g2>Manual proxy/socks configuration</g2>, often <x3/> and <x4/>), or choose <g5>Use system settings</g5> when the program sets Windows' proxy. Then click <g6>Install yt-dlp</g6> again: MDM's own downloads, its helpers included, go through it.",
+   "text": "একটি প্রক্সি প্রোগ্রাম (Clash, v2rayN এবং এ ধরনের অন্যান্য) ব্যবহার করে, এর ঠিকানা ও পোর্ট <g1>বিকল্প → প্রক্সি / SOCKS</g1> (<g2>ম্যানুয়াল প্রক্সি/SOCKS কনফিগারেশন</g2>, প্রায়শই <x3/> এবং <x4/>) এ লিখুন, অথবা প্রোগ্রামটি যখন Windows-এর প্রক্সি সেট করে তখন <g5>সিস্টেম সেটিংস ব্যবহার করুন</g5> বেছে নিন। এরপর আবার <g6>yt-dlp ইনস্টল করুন</g6> ক্লিক করুন: MDM-এর নিজস্ব ডাউনলোডগুলো, এর হেল্পারসহ, এর মাধ্যমে যাবে।"
+  },
   "e1db876325f14b62": {
    "source": "Downloads still work, but some of the extension's features need a newer MDM. Update it with <g1>Help → Check for updates...</g1> in MDM.",
    "text": "ডাউনলোড এখনও কাজ করে, তবে এক্সটেনশনের কিছু ফিচারের জন্য MDM-এর নতুন সংস্করণ দরকার। MDM-এ <g1>সহায়তা → আপডেটের জন্য পরীক্ষা করুন...</g1> থেকে এটি আপডেট করুন।"
@@ -16745,6 +16765,10 @@
   "e355f6dfc0ceea1d": {
    "source": "How do I report a bug or ask for a feature? — Mister Download Manager",
    "text": "আমি কিভাবে একটি বাগ রিপোর্ট করব বা একটি বৈশিষ্ট্যের জন্য অনুরোধ করব? — Mister Download Manager"
+  },
+  "e356f60156d8a735": {
+   "source": "<g1>Site rules...</g1> — a User-Agent, request headers, a number of connections, <g2>Always connect the way a browser does</g2> and a proxy (none, or one of its own with its login), by site. See <g3>Site rules</g3>.",
+   "text": "<g1>সাইট নিয়ম...</g1> — ইউজার-এজেন্ট, রিকোয়েস্ট হেডার, সংযোগের সংখ্যা, <g2>ব্রাউজারের মতো করে সবসময় সংযোগ করুন</g2> এবং প্রক্সি (কোনোটি নয়, অথবা নিজস্ব লগইনসহ একটি), সাইট অনুযায়ী। <g3>সাইট নিয়ম</g3> দেখুন।"
   },
   "e3696cca91bc9263": {
    "source": "A browser fetches a file over one connection. MDM asks the server for several parts of the file at once, up to 32 connections (128 if you allow it), and keeps re-splitting: when a connection finishes its part, it takes over half of the biggest part still left, so no slow connection holds up the end. It also remembers servers that refuse extra connections and stops asking them. See <g1>Connections and speed</g1>.",
@@ -17826,10 +17850,6 @@
    "source": "More questions",
    "text": "আরও প্রশ্ন"
   },
-  "f0964936a9646338": {
-   "source": "<g1>Options → Connection → Site rules...</g1> gives every download from a site (<x2/>) its own User-Agent, extra request headers, number of connections, or a browser's way of connecting from the first request. A stopped download's <g3>Properties → Connection...</g3> changes its own headers, proxy and connections, and MDM still checks the file is the same one before it goes on.",
-   "text": "<g1>বিকল্প → সংযোগ → সাইট নিয়ম...</g1> ব্যবহার করে আপনি একটি সাইট থেকে (<x2/>) প্রতিটি ডাউনলোডের জন্য আলাদা ইউজার-এজেন্ট, অতিরিক্ত রিকোয়েস্ট হেডার, সংযোগের সংখ্যা অথবা প্রথম রিকোয়েস্ট থেকে ব্রাউজারের সংযোগের পদ্ধতি নির্ধারণ করতে পারবেন। একটি থামা ডাউনলোডের <g3>বৈশিষ্ট্য → সংযোগ...</g3> ব্যবহার করে এর নিজস্ব হেডার, প্রক্সি এবং সংযোগ পরিবর্তন করা যায়, এবং MDM চালিয়ে যাওয়ার আগে ফাইলটি একই আছে কিনা তা যাচাই করে নেয়।"
-  },
   "f09a7e7e0cc71c2e": {
    "source": "In the system's keychain, as are Sites Logins' passwords and the proxy's. MDM's settings keep only a reference to it. <g1>Options → Accounts</g1> says where they are on your computer.",
    "text": "সিস্টেমের কিচেইনে, যেমন সাইটের লগইন পাসওয়ার্ড এবং প্রক্সির পাসওয়ার্ড থাকে। MDM-এর সেটিংসে শুধু এর একটি রেফারেন্স থাকে। <g1>সেটিংস → অ্যাকাউন্ট</g1> দেখায় যে আপনার কম্পিউটারে সেগুলো কোথায় আছে।"
@@ -17849,6 +17869,10 @@
   "f0f10f730052f164": {
    "source": "<g1>Windows, Mac and Linux</g1><g2>Mister Download Manager</g2>",
    "text": "<g1>Windows, Mac এবং Linux</g1><g2>Mister Download Manager</g2>"
+  },
+  "f0ff5ae3081fa8a5": {
+   "source": "<g1>Proxy</g1> — <g2>As in Options</g2> (the default: <g3>Options → Proxy / Socks</g3> decides), <g4>No proxy</g4> (straight to the site, whatever Options says), or <g5>This proxy:</g5> one of its own, typed as a download's own proxy is, <x6/>, <x7/>, <x8/>, <x9/> (<x10/> to have the proxy look the site's name up). <g11>Proxy user</g11> and <g12>Password</g12> are its login, if it needs one; the password is kept with MDM's other passwords (in the system's keychain), never in the settings file as it is. This replaces switching Options back and forth, or writing a proxy auto-config script, when only some sites need a proxy.",
+   "text": "<g1>প্রক্সি</g1> — <g2>বিকল্প-এর মতো</g2> (ডিফল্ট: <g3>বিকল্প → প্রক্সি / SOCKS</g3> সিদ্ধান্ত নেয়), <g4>কোনো প্রক্সি নেই</g4> (সরাসরি সাইটে, বিকল্প যা বলে তা নির্বিশেষে), অথবা <g5>এই প্রক্সি:</g5> এর নিজস্ব একটি, যা একটি ডাউনলোডের নিজস্ব প্রক্সির মতো টাইপ করা হয়, <x6/>, <x7/>, <x8/>, <x9/> (প্রক্সি যাতে সাইটের নাম খুঁজে পায় তার জন্য <x10/>)। <g11>ব্যবহারকারী</g11> এবং <g12>পাসওয়ার্ড</g12> হলো এর লগইন, যদি এটির প্রয়োজন হয়; পাসওয়ার্ড MDM-এর অন্যান্য পাসওয়ার্ডের সাথে (সিস্টেমের কিচেইনে) রাখা হয়, সেটিংস ফাইলে এটি যেমন আছে তেমনভাবে কখনো রাখা হয় না। এটি বিকল্পগুলো বারবার পরিবর্তন করা বা একটি প্রক্সি অটো-কনফিগ স্ক্রিপ্ট লেখার প্রয়োজনীয়তা দূর করে, যখন শুধুমাত্র কিছু সাইটের প্রক্সি প্রয়োজন হয়।"
   },
   "f10113695e758efd": {
    "source": "A playlist's or channel's videos, one line each as they're listed: its place, length, title and address.",
@@ -18326,6 +18350,10 @@
    "source": "Check <g1>First file</g1>, <g2>Second file</g2> and <g3>Last file</g3>.",
    "text": "<g1>প্রথম ফাইল</g1>, <g2>দ্বিতীয় ফাইল</g2> এবং <g3>শেষ ফাইল</g3> বেছে নিন।"
   },
+  "f893460826bf1425": {
+   "source": "Why does installing yt-dlp or another helper time out? — Mister Download Manager",
+   "text": "yt-dlp বা অন্য কোনো হেল্পার ইনস্টল করতে কেন সময় বেশি লাগে? — Mister Download Manager"
+  },
   "f89a410af1a10630": {
    "source": "The site isn't in <g1>Don't start downloading automatically from the following sites</g1>, nor the address in <g2>Don't start downloading automatically from the following addresses</g2>.",
    "text": "সাইটটি <g1>নিম্নলিখিত সাইটগুলি থেকে স্বয়ংক্রিয়ভাবে ডাউনলোড শুরু করবেন না</g1> তালিকায় নেই, এবং ঠিকানাটি <g2>নিম্নলিখিত ঠিকানাগুলি থেকে স্বয়ংক্রিয়ভাবে ডাউনলোড শুরু করবেন না</g2> তালিকায় নেই।"
@@ -18501,6 +18529,10 @@
   "fa9795c4c18f5dc7": {
    "source": "Rules by site",
    "text": "সাইট অনুযায়ী নিয়ম"
+  },
+  "faa66b10495d59c3": {
+   "source": "Or download the program in your browser (yt-dlp's is on <g1>its release page</g1>), then in <g2>Download video from a page</g2> click <g3>Helpers...</g3>, then <g4>Use another program...</g4> in its row, and choose the file. MDM uses it from then on; keep it up to date yourself.",
+   "text": "অথবা আপনার ব্রাউজারে প্রোগ্রামটি ডাউনলোড করুন (yt-dlp-এরটি <g1>এর রিলিজ পেজে</g1> আছে), তারপর <g2>একটি পেজ থেকে ভিডিও ডাউনলোড করুন</g2>-এ <g3>হেল্পার...</g3> ক্লিক করুন, এরপর এর সারিতে <g4>অন্য প্রোগ্রাম ব্যবহার করুন...</g4> ক্লিক করুন এবং ফাইলটি বেছে নিন। MDM তখন থেকে এটি ব্যবহার করবে; এটি আপনাকে নিজেই আপ টু ডেট রাখতে হবে।"
   },
   "fac6b9216d050977": {
    "source": "Grabbing the videos its browser extension finds on a page",

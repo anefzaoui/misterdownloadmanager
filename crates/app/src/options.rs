@@ -1999,8 +1999,8 @@ impl OptionsDialog {
             false,
         );
         let about = crate::i18n::t(
-            // i18n: Options → Connection: beside the Site rules... button: what it sets
-            "User-Agent, headers and connections by site",
+            // i18n: Options → Connection: beside the Site rules... button: what it sets (a User-Agent, request headers, a number of connections, a proxy, each for the sites a rule names)
+            "Connection settings by site",
         );
         let (rect, cut) = winui::label_into(
             &p,
@@ -4118,7 +4118,7 @@ impl OptionsDialog {
             "opt-site-rules",
             // i18n: window title: per-site settings (User-Agent, headers, connections, the browser-like connection) by site pattern
             "Site rules",
-            [560.0, 316.0],
+            [640.0, 316.0],
             false,
             LIGHT_BG(),
             |ui, o| {
@@ -4132,10 +4132,11 @@ impl OptionsDialog {
                         "Downloads from these sites get these settings. Each one comes from the first rule in the list that names the site and sets it; * stands for any text: *.example.com",
                     ),
                     LIGHT_TEXT(),
-                    o.x + 546.0,
+                    o.x + 626.0,
                     14.0,
                 );
                 let yes = crate::i18n::t("Yes");
+                let direct = crate::i18n::t(crate::requestedit::PROXY_CHOICES[1]);
                 let rows: Vec<Vec<String>> = edit
                     .rows
                     .iter()
@@ -4161,6 +4162,12 @@ impl OptionsDialog {
                             } else {
                                 String::new()
                             },
+                            // Its proxy (#1960): empty as in Options, "No proxy", or its address.
+                            match r.rule.proxy.as_deref() {
+                                None => String::new(),
+                                Some("") => direct.to_owned(),
+                                Some(addr) => crate::i18n::ltr(addr),
+                            },
                         ]
                     })
                     .collect();
@@ -4168,8 +4175,8 @@ impl OptionsDialog {
                 // ending 8 px before them, its columns sharing its width as in English.
                 let labels = ["New", "Edit", "Delete", "Move up", "Move down"];
                 let bw = winui::button_width(&p, winui::widest_label(&p, &labels), 92.0).min(160.0);
-                let bx = 546.0 - bw;
-                let k = (bx - 8.0 - 14.0) / 432.0;
+                let bx = 626.0 - bw;
+                let k = (bx - 8.0 - 14.0) / 512.0;
                 let col = |right: f32| 14.0 + (right - 14.0) * k;
                 // i18n: Site rules window: the list's name for screen readers
                 edit.list.name = crate::i18n::t("Site rules");
@@ -4179,15 +4186,17 @@ impl OptionsDialog {
                     r(o, 14.0, 62.0, bx - 8.0 - 14.0, 196.0),
                     &[
                         // i18n: Site rules: column title: the site pattern
-                        (crate::i18n::mark("Site"), col(168.0)),
+                        (crate::i18n::mark("Site"), col(170.0)),
                         // i18n: Site rules: column title: the number of connections (empty: the default)
-                        (crate::i18n::mark("Connections"), col(248.0)),
+                        (crate::i18n::mark("Connections"), col(246.0)),
                         // i18n: Site rules: column title: the User-Agent the rule sends (the name a browser or program gives itself to sites)
-                        (crate::i18n::mark("User-Agent"), col(358.0)),
+                        (crate::i18n::mark("User-Agent"), col(346.0)),
                         // i18n: Site rules: column title: how many request headers the rule adds
-                        (crate::i18n::mark("Headers"), col(400.0)),
+                        (crate::i18n::mark("Headers"), col(392.0)),
                         // i18n: Site rules: column title: "Yes" when the rule asks the way a browser connects from the first request
-                        (crate::i18n::mark("Browser"), col(444.0)),
+                        (crate::i18n::mark("Browser"), col(440.0)),
+                        // i18n: Site rules: column title: the rule's proxy (empty: the one in Options → Proxy / Socks; "No proxy"; or its address)
+                        (crate::i18n::mark("Proxy"), col(526.0)),
                     ],
                     &rows,
                     &mut edit.list,
@@ -4205,7 +4214,7 @@ impl OptionsDialog {
                         crate::i18n::mark("No site rules yet"),
                         // i18n: Site rules window: in the empty list of rules, under its title
                         crate::i18n::mark(
-                            "A rule sets the connections, User-Agent or headers for one site.",
+                            "A rule sets the connections, User-Agent, headers or proxy for one site.",
                         ),
                         None,
                         "site-rules-empty",
@@ -4288,10 +4297,10 @@ impl OptionsDialog {
                 }
                 if editing {
                     // The rule's own window answers first; this one waits.
-                    let _ = ok_cancel(ui, o, 546.0 - 154.0, 274.0, false);
+                    let _ = ok_cancel(ui, o, 626.0 - 154.0, 274.0, false);
                     Outcome::Open
                 } else {
-                    ok_cancel(ui, o, 546.0 - 154.0, 274.0, true)
+                    ok_cancel(ui, o, 626.0 - 154.0, 274.0, true)
                 }
             },
         );
@@ -4309,7 +4318,7 @@ impl OptionsDialog {
                 ctx,
                 "opt-site-rule",
                 title,
-                [460.0, 326.0],
+                [460.0, 390.0],
                 false,
                 LIGHT_BG(),
                 |ui, o| {
@@ -4377,6 +4386,9 @@ impl OptionsDialog {
                                     user_agent: e.user_agent.unwrap_or_default(),
                                     browser_like: e.browser_like,
                                     headers: e.headers,
+                                    proxy: e.proxy,
+                                    proxy_user: e.proxy_login.0,
+                                    proxy_pass: e.proxy_login.1,
                                 },
                                 connections: e.connections,
                             };

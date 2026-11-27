@@ -263,13 +263,15 @@ pub(crate) async fn fetch_verified(
     net: &mdm_engine::Options,
     progress: Option<&update::Progress>,
 ) -> Result<(), Error> {
-    use mdm_engine::verify::{Algo, Hash};
+    use mdm_engine::verify::{Algo, Hash, Origin};
     let url = url::Url::parse(url).map_err(|e| Error::BadRelease(e.to_string()))?;
     let host = url.host_str().unwrap_or_default().to_owned();
     let opts = mdm_engine::Options {
+        // The release's signed checksum list's: a file that doesn't match fails.
         checksum: Some(Hash {
             algo: Algo::Sha256,
             value: expected.to_vec(),
+            origin: Origin::Published,
         }),
         ..net.clone()
     };

@@ -894,6 +894,7 @@ impl Fetch {
             server: None,
             finishing: None,
             kept: None,
+            checksum_warning: None,
         }));
         let cancel = CancellationToken::new();
         let limiter = Arc::new(Limiter::new(opts.speed_limit));

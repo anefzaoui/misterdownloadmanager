@@ -1662,6 +1662,10 @@
    "source": "Yes. MDM accepts IDM's familiar command-line switches, comes with misterdownloadmanager-cli for downloads from a terminal, and has a local, token-protected…",
    "text": "はい。MDMはIDMでおなじみのコマンドラインスイッチに対応しており、ターミナルからダウンロードするためのmisterdownloadmanager-cliが付属しています。また、トークンで保護されたローカルの自動化APIも備えており…"
   },
+  "15dfb8668baab702": {
+   "source": "See <g1>Proxy / Socks</g1> and <g2>Use your own copies</g2>.",
+   "text": "<g1>プロキシ / SOCKS</g1>と<g2>独自のコピーを使用する</g2>を参照してください。"
+  },
   "15f41ea989aec521": {
    "source": "<g1>Base16 and pywal colour schemes as themes</g1>: a Base16 or Base24 scheme (<x2/>, the classic layout and tinted-theming's <x3/> one) or pywal's <x4/> (wallust's pywal-shaped one too), added with <g5>View → Theme → Add a theme file…</g5> or put in the themes folder, is a theme on the classic look: only the colours change. base00 and base01 are the backgrounds, base05 and base04 the text, base0D the focus, the selection and the progress bar (pywal: its background and foreground, color4); text is kept at 4.5:1 or more against every background and the accent at 3:1, moved a little where a scheme falls short. Once <x6/> has run, <g7>View → Theme</g7> lists <g8>pywal</g8>, read from where pywal writes it (<x9/>, <x10/> on Windows), and MDM follows each new wallpaper's colours within two seconds. A theme file can <x11/> a scheme to change more than its colours.",
    "text": "<g1>Base16 および pywal カラースキームをテーマとして使用</g1>: Base16 または Base24 スキーム (<x2/>、クラシック レイアウトと色付きテーマの <x3/>) または pywal の <x4/> (wallust の pywal 形式も)、<g5>表示 → テーマ → テーマ ファイルを追加…</g5> で追加するか、テーマ フォルダーに配置すると、クラシックな外観のテーマになります。色のみが変更されます。base00 と base01 は背景、base05 と base04 はテキスト、base0D はフォーカス、選択、進行状況バー (pywal: その背景と前景、color4) です。テキストはすべての背景に対して 4.5:1 以上、アクセントは 3:1 に保たれ、スキームが不足している場合は少し移動されます。<x6/> が実行されると、<g7>表示 → テーマ</g7> に <g8>pywal</g8> が表示され、pywal が書き込む場所 (<x9/>、Windows では <x10/>) から読み取られ、MDM は 2 秒以内に新しい壁紙の色に従います。テーマ ファイルは <x11/> スキームで色以上のものを変更できます。"
@@ -2125,10 +2129,6 @@
   "1be93bd020009908": {
    "source": "<g1>The keyboard focus got lost</g1> when a button greyed itself or Escape closed a drop-down: Tab started over at the top of the window. It now moves on, or comes back, as in Windows.",
    "text": "<g1>キーボードフォーカスが失われる問題</g1>を修正しました。ボタンが無効になったり、Escape キーでドロップダウンを閉じたりすると、Tab キーを押したときにウィンドウの先頭に戻っていました。Windows と同様に、次の項目に移動するか、元の位置に戻るようになりました。"
-  },
-  "1c004ef83082f283": {
-   "source": "<g1>Site rules...</g1> — a User-Agent, request headers, a number of connections and <g2>Always connect the way a browser does</g2>, by site. See <g3>Site rules</g3>.",
-   "text": "<g1>サイト ルール...</g1>: サイトごとに、ユーザー エージェント、リクエスト ヘッダー、接続数、<g2>常にブラウザーと同じ方法で接続する</g2>を設定します。<g3>サイト ルール</g3>を参照してください。"
   },
   "1c0101659f1e2203": {
    "source": "<g1>Feeds</g1>: the feeds it watches; none ticked, all of them.",
@@ -3145,6 +3145,10 @@
   "28eeaa8ad9bf85a3": {
    "source": "Requests",
    "text": "リクエスト数"
+  },
+  "291af5108373e0c4": {
+   "source": "MDM downloads yt-dlp, ffmpeg and gallery-dl from their official releases on GitHub. Where GitHub can't be reached or is very slow, as often in mainland…",
+   "text": "MDM は yt-dlp、ffmpeg、gallery-dl を GitHub の公式リリースからダウンロードします。特に中国本土でよくあるように、GitHub にアクセスできない場合や非常に遅い場合、インストールは…"
   },
   "292621fe40d7beca": {
    "source": "Every video starts ticked. Untick the ones you don't want, or use <g1>Select all</g1> and <g2>Select none</g2>. Private and deleted videos are greyed out and can't be ticked.",
@@ -4890,6 +4894,10 @@
    "source": "Changes",
    "text": "変更"
   },
+  "41150cfc2e8c323a": {
+   "source": "Some sites want a particular User-Agent, an extra header or fewer connections, let only browsers through, or need a proxy (or none) when the others don't. <g1>Options → Connection → Site rules...</g1> sets these once for every download from a site:",
+   "text": "一部のサイトでは、特定のユーザー エージェント、追加のヘッダー、または少ない接続数を要求したり、ブラウザのみを許可したり、他のサイトでは不要なプロキシ (またはプロキシなし) を必要としたりする場合があります。<g1>オプション → 接続 → サイト ルール...</g1> で、サイトからのすべてのダウンロードに対してこれらの設定を一度に行います。"
+  },
   "41333ec069d15e15": {
    "source": "A magnet link takes a long time",
    "text": "マグネットリンクに時間がかかる"
@@ -5538,10 +5546,6 @@
    "source": "A key MDM doesn't know, or a value it can't read, is skipped and written to MDM's log (the <x1/> folder beside the themes folder), so a file made for a newer MDM still loads. The built-in themes are written the same way: <g2>read them on GitHub</g2>.",
    "text": "MDM が認識しないキー、または読み取れない値はスキップされ、MDM のログ (テーマ フォルダーの横にある <x1/> フォルダー) に書き込まれるため、新しい MDM 用に作成されたファイルでもロードされます。組み込みのテーマも同じ方法で記述されています。<g2>GitHub で参照してください</g2>。"
   },
-  "4ac401467a9a37d2": {
-   "source": "The downloads join the <g1>Main download queue</g1>, ready to start (<g2>Start</g2> starts it too). <g3>Tasks → Import → From IDM export file</g3> reads an <x4/> file, with each download's referrer and cookies.",
-   "text": "ダウンロードは<g1>メインダウンロードキュー</g1>に追加され、開始準備が整います（<g2>開始</g2>でも開始できます）。<g3>タスク → インポート → IDM エクスポート ファイルから</g3>は<x4/>ファイルを読み込み、各ダウンロードのリファラーとクッキーが含まれます。"
-  },
   "4ace27f6171583db": {
    "source": "A <x1/> and a Compose file come with MDM's source. For now you build the image yourself; a published image comes later. The first build is long, up to an hour on a small server, and the image is small, about 175 MB, with no desktop libraries.",
    "text": "MDM のソースには <x1/> と Compose ファイルが付属しています。現時点ではイメージを自分でビルドする必要がありますが、公開イメージは後で提供されます。最初のビルドは時間がかかり、小さなサーバーでは最大 1 時間かかりますが、イメージは小さく、デスクトップ ライブラリなしで約 175 MB です。"
@@ -6090,10 +6094,6 @@
    "source": "After a click it says what happened, in its own colour:",
    "text": "クリックすると、その結果が独自の色で表示されます。"
   },
-  "529f7c22e85ee030": {
-   "source": "Download a file with up to 8 connections (<x1/>, 1 to 128), showing progress. <x2/> pauses it; <x3/> continues. <x4/> sets the referring page address (Referer header), <x5/> sets the request's User-Agent (then the only one sent; without it, MDM speaks as your default browser, and, when a site's bot check refuses that and the way a browser connects too, once more under its own name), <x6/> sets the Cookie header (a cookie on the command line ends up in the shell's history; <x7/> reads it from standard input instead). <x8/> checks the finished file: hex MD5, SHA-1, SHA-256, SHA-512 or CRC32, optionally named (<x9/>). <x10/> picks the DNS instead of Options': <x11/>; a service and how to ask it, <x12/>, <x13/>, <x14/>, <x15/>, <x16/>; DNS servers' addresses, <x17/>; or a DNS-over-HTTPS address. It never falls back to the system's DNS. <x18/> sends every connection through one network adapter instead of Options' (<x19/> for none), by its name (<x20/>, <x21/>) or one of its addresses; when it isn't connected, nothing is sent and the download fails. <x22/> takes the place of Options' proxy for this run (see above). The app's <g23>site rules</g23> for the address apply too (their headers, User-Agent, browser-like connection and number of connections), where the command line gives none of the same. A link from a file host that one of your debrid accounts (<g24>Options → Accounts</g24>) supports goes through that account, as in the app, and <x25/> says <x26/>; <x27/> downloads the address itself (<g28>Debrid service accounts</g28>).",
-   "text": "最大 8 接続 (<x1/>、1〜128) でファイルをダウンロードし、進行状況を表示します。<x2/> で一時停止し、<x3/> で再開します。<x4/> は参照元ページのアドレス (Referer ヘッダー) を設定し、<x5/> はリクエストのユーザー エージェント (User-Agent) を設定します (設定した場合、それが唯一送信されます。設定しない場合、MDM は既定のブラウザーとして動作し、サイトのボットチェックがそれを拒否し、ブラウザーの接続方法も拒否した場合、MDM は自身の名前で再度接続します)。<x6/> は Cookie ヘッダーを設定します (コマンドラインの Cookie はシェルの履歴に残ります。<x7/> は代わりに標準入力から読み取ります)。<x8/> は完了したファイルをチェックします: 16 進数の MD5、SHA-1、SHA-256、SHA-512、または CRC32 で、オプションで名前を指定できます (<x9/>)。<x10/> は、［オプション］の DNS ではなく、次の DNS を選択します: <x11/>; サービスとその要求方法、<x12/>、<x13/>、<x14/>、<x15/>、<x16/>; DNS サーバーのアドレス、<x17/>; または DNS-over-HTTPS アドレス。システムの DNS にフォールバックすることはありません。<x18/> は、［オプション］の代わりに、すべての接続を 1 つのネットワーク アダプター経由で送信します (アダプターなしの場合は <x19/>)。アダプターの名前 (<x20/>、<x21/>) またはそのアドレスのいずれかを使用します。接続されていない場合、何も送信されず、ダウンロードは失敗します。<x22/> は、この実行のために［オプション］のプロキシの代わりに使用されます (上記を参照)。アドレスに対するアプリの <g23>サイト ルール</g23> も適用されます (それらのヘッダー、ユーザー エージェント、ブラウザーのような接続、接続数)。コマンドラインで同じものが指定されていない場合です。デブリットアカウント (<g24>オプション → アカウント</g24>) のいずれかがサポートするファイルホストからのリンクは、アプリと同様にそのアカウントを経由し、<x25/> は <x26/> を示します。<x27/> はアドレス自体をダウンロードします (<g28>デブリットサービスアカウント</g28>)。"
-  },
   "52ceae361fb11f6c": {
    "source": "A list's, a table's or a box's outline",
    "text": "リスト、テーブル、またはボックスの輪郭"
@@ -6145,10 +6145,6 @@
   "536df2f60bd48da6": {
    "source": "Success text (a matching checksum)",
    "text": "成功テキスト (一致するチェックサム)"
-  },
-  "538fe2ede1fc4d57": {
-   "source": "The single-instance channel (a token-protected local socket), the data folder, the capture rules shared by the app and the host, and the site rules (#1778: a User-Agent, headers, connections and the browser-like connection by site pattern) shared by the app and the command line",
-   "text": "シングル インスタンス チャネル (トークンで保護されたローカル ソケット)、データ フォルダー、アプリとホストで共有されるキャプチャ ルール、およびアプリとコマンド ラインで共有されるサイト ルール (#1778: ユーザー エージェント、ヘッダー、接続、サイト パターンごとのブラウザーのような接続)"
   },
   "539160f92bae4422": {
    "source": "Being re-measured",
@@ -9050,14 +9046,6 @@
    "source": "Testing archives",
    "text": "アーカイブのテスト"
   },
-  "7b65292951ac598b": {
-   "source": "Some sites want a particular User-Agent, an extra header or fewer connections, or let only browsers through. <g1>Options → Connection → Site rules...</g1> sets these once for every download from a site:",
-   "text": "一部のサイトでは、特定のユーザー エージェント、追加のヘッダー、または少ない接続数を要求したり、ブラウザーのみを許可したりする場合があります。<g1>オプション → 接続 → サイト ルール...</g1>で、サイトからのすべてのダウンロードに対してこれらの設定を一度に行います。"
-  },
-  "7b655c3076cd7d8b": {
-   "source": "<g1>Tasks → Import → From text file</g1> and <g2>From IDM export file</g2>. An <x3/> file brings each download's referrer and cookies.",
-   "text": "<g1>タスク → インポート → テキスト ファイルから</g1>、または<g2>IDM エクスポート ファイルから</g2>。<x3/>ファイルからインポートすると、各ダウンロードの参照元と Cookie も引き継がれます。"
-  },
   "7b75149d61c4c0ff": {
    "source": "A download that is running isn't deleted. Stop it first.",
    "text": "実行中のダウンロードは削除されません。まず停止してください。"
@@ -9353,6 +9341,10 @@
   "7ee169488133ab57": {
    "source": "Link grabber gathers many links at once, sorts them into packages, and lets you tick the ones to download. MDM can then extract the archives it downloaded…",
    "text": "リンク グラバーは、多くのリンクを一度に収集し、パッケージに分類し、ダウンロードするものを選択できるようにします。MDMは、ダウンロードしたアーカイブを展開できます…"
+  },
+  "7ee305b094d7654d": {
+   "source": "The single-instance channel (a token-protected local socket), the data folder, the capture rules shared by the app and the host, and the site rules (#1778: a User-Agent, headers, connections, the browser-like connection and, #1960, a proxy by site pattern) shared by the app and the command line",
+   "text": "シングル インスタンス チャネル (トークンで保護されたローカル ソケット)、データ フォルダー、アプリとホストで共有されるキャプチャ ルール、およびアプリとコマンド ラインで共有されるサイト ルール (サイト パターンごとのユーザー エージェント、ヘッダー、接続、ブラウザーのような接続、およびプロキシ (#1778、#1960))"
   },
   "7ee9063b38514440": {
    "source": "Listed by",
@@ -9802,6 +9794,10 @@
    "source": "Every signed file is built from the public source code at <g1>github.com/anefzaoui/misterdownloadmanager</g1> by GitHub Actions, on GitHub's servers, never on a personal computer. Each one says it is Mister Download Manager and which version it is.",
    "text": "署名されたすべてのファイルは、GitHub のサーバー上の GitHub Actions によって、<g1>github.com/anefzaoui/misterdownloadmanager</g1> の公開ソース コードからビルドされており、個人のコンピューターでビルドされることはありません。各ファイルには、Mister Download Manager であることと、そのバージョンが示されています。"
   },
+  "8414d2ed3c86b744": {
+   "source": "Which proxy a download goes through: its own (below) first, then the first rule that names the site and sets a proxy, then <g1>Options → Proxy / Socks</g1> (and the browser's proxy, when <g2>Use proxy/socks from a browser's request</g2> is on). A rule's proxy also carries Download File Info's look-up and, for a video or gallery page the rule names, yt-dlp's and gallery-dl's look-up and the video's download, so the links they get are used from the same address. The <g3>Network adapter</g3> chosen in <g4>Options → Proxy / Socks</g4>, and its kill switch, still hold every connection: with an adapter chosen, nothing goes around it.",
+   "text": "ダウンロードが経由するプロキシは、まずダウンロード独自のプロキシ (下記)、次にサイト名を指定してプロキシを設定する最初のルール、次に <g1>オプション → プロキシ / SOCKS</g1> (そして <g2>ブラウザのリクエストからプロキシ/SOCKSを使用する</g2> がオンの場合、ブラウザのプロキシ) です。ルールのプロキシは、ダウンロード ファイル情報の検索も行い、ルールが指定するビデオまたはギャラリー ページの場合、yt-dlp と gallery-dl の検索とビデオのダウンロードも行います。そのため、取得されるリンクは同じアドレスから使用されます。<g3>オプション → プロキシ / SOCKS</g3> で選択された<g4>ネットワーク アダプター</g4>とそのキル スイッチは、すべての接続を保持します。アダプターが選択されている場合、それを迂回するものは何もありません。"
+  },
   "842fc0e6d2b7d24d": {
    "source": "At the start time the queue starts on its own. In the morning, the finished files are under <g1>Finished</g1> in the categories.",
    "text": "開始時刻になるとキューが自動的に開始されます。朝には、カテゴリ内の<g1>完了</g1>にファイルが表示されます。"
@@ -9929,6 +9925,10 @@
   "8581b3f6f6759cc7": {
    "source": "Proxy / Socks: no proxy, the system's, or your own.",
    "text": "プロキシ / SOCKS: プロキシを使用しない、システムのプロキシ、または独自のプロキシ。"
+  },
+  "8587f400d941af9d": {
+   "source": "<g1>Options → Connection → Site rules...</g1> gives every download from a site (<x2/>) its own User-Agent, extra request headers, number of connections, a browser's way of connecting from the first request, or a proxy: none, or one of its own, so only the sites that need a proxy go through one. A stopped download's <g3>Properties → Connection...</g3> changes its own headers, proxy and connections, and MDM still checks the file is the same one before it goes on.",
+   "text": "<g1>オプション → 接続 → サイト ルール...</g1> を使用すると、サイト (<x2/>) からのすべてのダウンロードに、独自のユーザー エージェント、追加のリクエスト ヘッダー、接続数、最初の要求からのブラウザーの接続方法、またはプロキシを設定できます。プロキシは使用しないか、独自のプロキシを使用できるため、プロキシを必要とするサイトのみがプロキシを介して接続します。停止したダウンロードの <g3>プロパティ → 接続...</g3> では、独自のヘッダー、プロキシ、および接続を変更できます。MDM は、続行する前にファイルが同じであることを確認します。"
   },
   "85ab2d681187a715": {
    "source": "Not sure yet? <g1>Show it in the discussions</g1> first. The <g2>contributing guide</g2> explains how pull requests work here.",
@@ -10353,6 +10353,10 @@
   "8bf1347e6970e3e9": {
    "source": "MDM works with screen readers such as Narrator and NVDA, which hear what each control is and its state. Everything can be done from the keyboard, with the keys most Windows programs use.",
    "text": "MDM は Narrator や NVDA などのスクリーン リーダーに対応しており、各コントロールの種類と状態を認識します。すべての操作は、ほとんどの Windows プログラムで使用されるキーを使ってキーボードから実行できます。"
+  },
+  "8bf561be5473c2d1": {
+   "source": "MDM downloads yt-dlp, ffmpeg and gallery-dl from their official releases on GitHub. Where GitHub can't be reached or is very slow, as often in mainland China, the install stops with \"the server did not answer in time\". Two ways around it:",
+   "text": "MDM は yt-dlp、ffmpeg、gallery-dl を GitHub の公式リリースからダウンロードします。特に中国本土でよくあるように、GitHub にアクセスできない場合や非常に遅い場合、インストールは「サーバーが時間内に応答しませんでした」というメッセージで停止します。これを回避する方法は 2 つあります。"
   },
   "8bf5db6373827a5f": {
    "source": "Media on this page",
@@ -11774,6 +11778,10 @@
    "source": "Start or stop a download queue in the running app (automation API). Starts or stops the main queue if omitted.",
    "text": "実行中のアプリでダウンロード キューを開始または停止します (オートメーション API)。省略した場合、メイン キューを開始または停止します。"
   },
+  "9e84ad8c276cf077": {
+   "source": "Why does installing yt-dlp or another helper time out?",
+   "text": "yt-dlp やその他のヘルパーのインストールがタイムアウトするのはなぜですか?"
+  },
   "9ea4c71fa0f481c4": {
    "source": "MDM follows your system: when Windows (or your desktop's light/dark preference on Linux and macOS) is set to dark mode, so is MDM. To keep MDM light whatever the system does, turn off <g1>View → Dark Mode support</g1>. To keep it dark whatever the system does, for example on a desktop that reports no preference, turn on <g2>View → Always dark</g2>.",
    "text": "MDMはシステムの設定に従います。Windows（またはLinuxおよびmacOSのデスクトップのライト/ダーク設定）がダークモードに設定されている場合、MDMもダークモードになります。システムの設定に関わらずMDMをライトモードに保つには、<g1>表示 → ダーク モードのサポート</g1>をオフにします。システムの設定に関わらずMDMをダークモードに保つには（例えば、設定が報告されないデスクトップの場合）、<g2>表示 → 常にダーク</g2>をオンにします。"
@@ -11857,6 +11865,10 @@
   "9f782f136a8bb467": {
    "source": "The built-in categories can now be renamed, given other file types, or deleted.",
    "text": "組み込みのカテゴリは、名前の変更、他のファイル種類の割り当て、または削除ができるようになりました。"
+  },
+  "9f7cefd031ac2a9a": {
+   "source": "Download a file with up to 8 connections (<x1/>, 1 to 128), showing progress. <x2/> pauses it; <x3/> continues. <x4/> sets the referring page address (Referer header), <x5/> sets the request's User-Agent (then the only one sent; without it, MDM speaks as your default browser, and, when a site's bot check refuses that and the way a browser connects too, once more under its own name), <x6/> sets the Cookie header (a cookie on the command line ends up in the shell's history; <x7/> reads it from standard input instead). <x8/> checks the finished file: hex MD5, SHA-1, SHA-256, SHA-512 or CRC32, optionally named (<x9/>). <x10/> picks the DNS instead of Options': <x11/>; a service and how to ask it, <x12/>, <x13/>, <x14/>, <x15/>, <x16/>; DNS servers' addresses, <x17/>; or a DNS-over-HTTPS address. It never falls back to the system's DNS. <x18/> sends every connection through one network adapter instead of Options' (<x19/> for none), by its name (<x20/>, <x21/>) or one of its addresses; when it isn't connected, nothing is sent and the download fails. <x22/> takes the place of Options' proxy for this run (see above). The app's <g23>site rules</g23> for the address apply too (their headers, User-Agent, browser-like connection, number of connections and proxy), where the command line gives none of the same: <x24/> goes before every rule's proxy. A link from a file host that one of your debrid accounts (<g25>Options → Accounts</g25>) supports goes through that account, as in the app, and <x26/> says <x27/>; <x28/> downloads the address itself (<g29>Debrid service accounts</g29>).",
+   "text": "最大 8 接続 (<x1/>、1 ～ 128) でファイルをダウンロードし、進行状況を表示します。<x2/> で一時停止し、<x3/> で再開します。<x4/> で参照元ページのアドレス (Referer ヘッダー) を設定し、<x5/> でリクエストのユーザー エージェント (送信されるのはこれのみ。指定しない場合、MDM は既定のブラウザーとして動作し、サイトのボットチェックがそれを拒否し、ブラウザーの接続方法も拒否された場合は、MDM 自身の名前で再度動作します) を設定し、<x6/> で Cookie ヘッダーを設定します (コマンドラインの Cookie はシェルの履歴に残ります。<x7/> は代わりに標準入力から読み取ります)。<x8/> は完了したファイルをチェックします: 16 進数の MD5、SHA-1、SHA-256、SHA-512、または CRC32 で、オプションで名前を指定できます (<x9/>)。<x10/> は、オプションの DNS の代わりに DNS を選択します: <x11/>; サービスとその要求方法、<x12/>、<x13/>、<x14/>、<x15/>、<x16/>; DNS サーバーのアドレス、<x17/>; または DNS-over-HTTPS アドレス。システムの DNS にフォールバックすることはありません。<x18/> は、オプションの代わりにすべての接続を 1 つのネットワークアダプター経由で送信します (なしの場合は <x19/>)。アダプターの名前 (<x20/>、<x21/>) またはそのアドレスのいずれかを使用します。接続されていない場合、何も送信されず、ダウンロードは失敗します。<x22/> は、この実行でオプションのプロキシの代わりになります (上記を参照)。アドレスにはアプリの <g23>サイトルール</g23> も適用されます (ヘッダー、ユーザー エージェント、ブラウザーのような接続、接続数、プロキシ)。コマンドラインで同じものが指定されていない場合、<x24/> はすべてのルールのプロキシの前に置かれます。デブリットアカウント (<g25>オプション → アカウント</g25>) のいずれかがサポートするファイルホストからのリンクは、アプリと同様にそのアカウントを介して処理され、<x26/> は <x27/> を示します。<x28/> はアドレス自体をダウンロードします (<g29>デブリットサービスアカウント</g29>)。"
   },
   "9f93bf61864af099": {
    "source": "Plainly: everyone sharing the same torrent sees your IP address. That is how BitTorrent works, and no setting changes it. To hide it, use a VPN for the whole computer. <g1>Torrents and your security</g1> says what others can see.",
@@ -13329,6 +13341,10 @@
   "b27995b1d5cff0b2": {
    "source": "A calendar's day or arrow pressed",
    "text": "押されているカレンダーの日付または矢印"
+  },
+  "b292a3f16372b154": {
+   "source": "MDM downloads yt-dlp, ffmpeg and gallery-dl from their official releases on GitHub. Where GitHub can't be reached or is very slow, as often in mainland China, the install stops with \"the server did not answer in time\". Two ways around it: With a proxy program (Clash, v2rayN and the like), enter its address and port in Options → Proxy / Socks (Manual proxy/socks configuration, often 127.0.0.1 and 7890), or choose Use system settings when the program sets Windows' proxy. Then click Install yt-dlp again: MDM's own downloads, its helpers included, go through it. Or download the program in your browser (yt-dlp's is on its release page), then in Download video from a page click Helpers..., then Use another program... in its row, and choose the file. MDM uses it from then on; keep it up to date yourself. See Proxy / Socks and Use your own copies.",
+   "text": "MDM は yt-dlp、ffmpeg、gallery-dl を GitHub の公式リリースからダウンロードします。特に中国本土でよくあるように、GitHub にアクセスできない場合や非常に遅い場合、インストールは「サーバーが時間内に応答しませんでした」というメッセージで停止します。これを回避する方法は 2 つあります。プロキシ プログラム (Clash、v2rayN など) を使用している場合は、そのアドレスとポートをオプション → プロキシ / SOCKS (プロキシ/SOCKS の手動設定、多くの場合 127.0.0.1 と 7890) に入力するか、プログラムが Windows のプロキシを設定している場合はシステム設定を使用するを選択します。その後、もう一度yt-dlp をインストールをクリックしてください。MDM 自身のダウンロード (ヘルパーを含む) は、そのプロキシ経由で行われます。または、ブラウザーでプログラムをダウンロードし (yt-dlp はリリース ページにあります)、ダウンロードビデオからページでヘルパー...をクリックし、その行の別のプログラムを選択...をクリックしてファイルを選択します。MDM はそれ以降そのファイルを使用します。ご自身で最新の状態に保ってください。プロキシ / SOCKS と独自のコピーを使用するを参照してください。"
   },
   "b298f93960114202": {
    "source": ", with or without <x1/>;",
@@ -16650,6 +16666,10 @@
    "source": "Aqua",
    "text": "Aqua"
   },
+  "e1db1cbca152db19": {
+   "source": "With a proxy program (Clash, v2rayN and the like), enter its address and port in <g1>Options → Proxy / Socks</g1> (<g2>Manual proxy/socks configuration</g2>, often <x3/> and <x4/>), or choose <g5>Use system settings</g5> when the program sets Windows' proxy. Then click <g6>Install yt-dlp</g6> again: MDM's own downloads, its helpers included, go through it.",
+   "text": "プロキシ プログラム (Clash、v2rayN など) を使用している場合は、そのアドレスとポートを<g1>オプション → プロキシ / SOCKS</g1> (<g2>プロキシ/SOCKS の手動設定</g2>、多くの場合 <x3/> と <x4/>) に入力するか、プログラムが Windows のプロキシを設定している場合は<g5>システム設定を使用する</g5>を選択します。その後、もう一度<g6>yt-dlp をインストール</g6>をクリックしてください。MDM 自身のダウンロード (ヘルパーを含む) は、そのプロキシ経由で行われます。"
+  },
   "e1db876325f14b62": {
    "source": "Downloads still work, but some of the extension's features need a newer MDM. Update it with <g1>Help → Check for updates...</g1> in MDM.",
    "text": "ダウンロードは引き続き使えますが、拡張機能の一部の機能には新しいバージョンのMDMが必要です。MDMで<g1>ヘルプ → 更新プログラムの確認</g1>を選んで更新してください。"
@@ -16741,6 +16761,10 @@
   "e355f6dfc0ceea1d": {
    "source": "How do I report a bug or ask for a feature? — Mister Download Manager",
    "text": "バグの報告または機能のリクエスト方法 — Mister Download Manager"
+  },
+  "e356f60156d8a735": {
+   "source": "<g1>Site rules...</g1> — a User-Agent, request headers, a number of connections, <g2>Always connect the way a browser does</g2> and a proxy (none, or one of its own with its login), by site. See <g3>Site rules</g3>.",
+   "text": "<g1>サイト ルール...</g1> — サイトごとに、ユーザー エージェント、リクエスト ヘッダー、接続数、<g2>常にブラウザーと同じ方法で接続する</g2>、プロキシ (なし、またはログイン情報付きの独自のプロキシ) を設定します。<g3>サイト ルール</g3>を参照してください。"
   },
   "e3696cca91bc9263": {
    "source": "A browser fetches a file over one connection. MDM asks the server for several parts of the file at once, up to 32 connections (128 if you allow it), and keeps re-splitting: when a connection finishes its part, it takes over half of the biggest part still left, so no slow connection holds up the end. It also remembers servers that refuse extra connections and stops asking them. See <g1>Connections and speed</g1>.",
@@ -17822,10 +17846,6 @@
    "source": "More questions",
    "text": "その他の質問"
   },
-  "f0964936a9646338": {
-   "source": "<g1>Options → Connection → Site rules...</g1> gives every download from a site (<x2/>) its own User-Agent, extra request headers, number of connections, or a browser's way of connecting from the first request. A stopped download's <g3>Properties → Connection...</g3> changes its own headers, proxy and connections, and MDM still checks the file is the same one before it goes on.",
-   "text": "<g1>オプション → 接続 → サイト ルール...</g1> を使うと、特定のサイト (<x2/>) からのすべてのダウンロードに、独自のユーザー エージェント、追加のリクエスト ヘッダー、接続数、または最初の要求からのブラウザーの接続方法を設定できます。停止したダウンロードの <g3>プロパティ → 接続...</g3> で、そのダウンロード自身のヘッダー、プロキシ、接続を変更できます。MDM は、ダウンロードを続行する前に、ファイルが同じものであることを確認します。"
-  },
   "f09a7e7e0cc71c2e": {
    "source": "In the system's keychain, as are Sites Logins' passwords and the proxy's. MDM's settings keep only a reference to it. <g1>Options → Accounts</g1> says where they are on your computer.",
    "text": "サイトのログインのパスワードやプロキシのパスワードと同様に、システムのキーチェーンに保存されます。MDM の設定には、その参照のみが保持されます。<g1>オプション → アカウント</g1>で、コンピューター上の保存場所を確認できます。"
@@ -17845,6 +17865,10 @@
   "f0f10f730052f164": {
    "source": "<g1>Windows, Mac and Linux</g1><g2>Mister Download Manager</g2>",
    "text": "<g1>Windows、Mac、Linux</g1><g2>Mister Download Manager</g2>"
+  },
+  "f0ff5ae3081fa8a5": {
+   "source": "<g1>Proxy</g1> — <g2>As in Options</g2> (the default: <g3>Options → Proxy / Socks</g3> decides), <g4>No proxy</g4> (straight to the site, whatever Options says), or <g5>This proxy:</g5> one of its own, typed as a download's own proxy is, <x6/>, <x7/>, <x8/>, <x9/> (<x10/> to have the proxy look the site's name up). <g11>Proxy user</g11> and <g12>Password</g12> are its login, if it needs one; the password is kept with MDM's other passwords (in the system's keychain), never in the settings file as it is. This replaces switching Options back and forth, or writing a proxy auto-config script, when only some sites need a proxy.",
+   "text": "<g1>プロキシ</g1> — <g2>オプションの設定に従う</g2> (既定値: <g3>オプション → プロキシ / SOCKS</g3> で決定)、<g4>プロキシなし</g4> (オプションの設定に関係なくサイトに直接接続)、または <g5>このプロキシ:</g5> (ダウンロード独自のプロキシとして入力された独自のプロキシ。<x6/>、<x7/>、<x8/>、<x9/> (<x10/> を使用してプロキシにサイト名を検索させる))。 <g11>プロキシ ユーザー</g11>と<g12>パスワード</g12>は、プロキシにログインが必要な場合のログイン情報です。パスワードは MDM の他のパスワード (システムのキーチェーン) と一緒に保存され、設定ファイルにはそのまま保存されません。これにより、一部のサイトのみがプロキシを必要とする場合に、オプションを何度も切り替えたり、プロキシ自動設定スクリプトを作成したりする手間が省けます。"
   },
   "f10113695e758efd": {
    "source": "A playlist's or channel's videos, one line each as they're listed: its place, length, title and address.",
@@ -18322,6 +18346,10 @@
    "source": "Check <g1>First file</g1>, <g2>Second file</g2> and <g3>Last file</g3>.",
    "text": "<g1>最初のファイル</g1>、<g2>2 番目のファイル</g2>、<g3>最後のファイル</g3>を確認します。"
   },
+  "f893460826bf1425": {
+   "source": "Why does installing yt-dlp or another helper time out? — Mister Download Manager",
+   "text": "yt-dlp や他のヘルパーのインストールがタイムアウトするのはなぜですか？ — Mister Download Manager"
+  },
   "f89a410af1a10630": {
    "source": "The site isn't in <g1>Don't start downloading automatically from the following sites</g1>, nor the address in <g2>Don't start downloading automatically from the following addresses</g2>.",
    "text": "サイトが <g1>以下のサイトからのダウンロードを自動的に開始しない</g1> に含まれておらず、アドレスが <g2>以下のURLからのダウンロードを自動的に開始しない</g2> に含まれていないこと。"
@@ -18497,6 +18525,10 @@
   "fa9795c4c18f5dc7": {
    "source": "Rules by site",
    "text": "サイトごとのルール"
+  },
+  "faa66b10495d59c3": {
+   "source": "Or download the program in your browser (yt-dlp's is on <g1>its release page</g1>), then in <g2>Download video from a page</g2> click <g3>Helpers...</g3>, then <g4>Use another program...</g4> in its row, and choose the file. MDM uses it from then on; keep it up to date yourself.",
+   "text": "または、ブラウザーでプログラムをダウンロードし (yt-dlp は<g1>リリース ページ</g1>にあります)、<g2>ページからビデオをダウンロード</g2>で<g3>ヘルパー...</g3>をクリックし、その行の<g4>別のプログラムを選択...</g4>をクリックしてファイルを選択します。MDM はそれ以降そのファイルを使用します。ご自身で最新の状態に保ってください。"
   },
   "fac6b9216d050977": {
    "source": "Grabbing the videos its browser extension finds on a page",
