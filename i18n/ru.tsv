@@ -417,7 +417,7 @@
 	Added. MDM is reading the torrent: it joins the list in a moment.	Добавлено. MDM обрабатывает торрент: он скоро появится в списке.
 #. text in preview.rs
 #. label in the preview pane: when the download was added to the list
-	Added:	Добавлено:
+	Added:	Дата добавления:
 #. text in the Batch download window; text in a dialog box; label in the Options window; text in a download's progress window
 #. noun: the web address (URL)
 #. column title: the web address (URL)
@@ -979,7 +979,7 @@
 #. item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window; text in remote.rs
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): finished
-	Complete	Завершено
+	Complete	Завершённые
 #. text in the download list (sizes, speeds, status)
 #. category name: compressed archives (zip, rar, 7z)
 	Compressed	Архивы
@@ -1224,9 +1224,6 @@
 #. button in extension.rs
 #. button in the browser extension's window: stop offering it at each start
 	Don't ask again	Больше не спрашивать
-#. option (radio button) in the Options window
-#, machine
-	Don't show	Не показывать
 #. text in the Options window
 #. checkbox, Options → Downloads: Download complete and MDM's other windows that open by themselves wait while a full-screen game, app or video, a presentation or the locked screen is on, and show when the user is back
 	Don't show pop-ups while a full-screen app or presentation is running	Не показывать всплывающие окна при работе полноэкранного приложения или презентации
@@ -1618,7 +1615,7 @@
 	File managers show where the files marked this way came from. Unticked, no download is marked.	Файловые менеджеры показывают, откуда скачан файл с такой меткой. Если чекбокс снят, метка не ставится.
 #. text in a download's progress window; text in the Scheduler window
 #. Zip preview's column: the file's name (its path inside the ZIP)
-  	File Name	Имя файла
+	File Name	Имя файла
 #. text in the Download video window
 	File name	Имя файла
 #. checkbox in the Find window
@@ -1645,7 +1642,7 @@
 	Files at most	Максимум файлов
 #. text in the Add torrent window
 #. {folder} = the folder the torrent's files are saved in
-	Files go to: {folder}	Файлы сохраняются в: {folder}
+	Files go to: {folder}	Файлы сохранятся в: {folder}
 #. text in the Scheduler window; tab in the Scheduler window
 	Files in the queue	Файлы в очереди
 #. text in the download list (sizes, speeds, status)
@@ -1688,7 +1685,7 @@
 	Finished	Завершено
 #. text in preview.rs
 #. label in the preview pane: when the download finished
-	Finished:	Завершено:
+	Finished:	Дата завершения:
 #. text in a download's progress window
 #. a download's status: every byte is in, the file is being written out and given its name
 #. the trailing ... means it is still going on: keep it
@@ -1826,7 +1823,7 @@
 #. category name: files of no particular kind
 #. tab title: general settings
 #. tab title: general information
-	General	Общие
+	General	Главное
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Georgia	Грузия
@@ -2392,7 +2389,7 @@
 #. message or event log entry in the main window
 	Main download queue	Основная очередь загрузки
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
-	Make everything larger / smaller (View → Interface size)	Увеличить / уменьшить масштаб (Вид → Размер интерфейса)
+	Make everything larger / smaller (View → Interface size)	Увеличить / уменьшить масштаб (Вид → Масштаб интерфейса)
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 	Make the selection longer or shorter	Расширить или сузить выделение
 #. text in crashui.rs
@@ -2537,9 +2534,6 @@
 #. text in the Options window
 #. checkbox: the Minimize button hides MDM's windows to the notification area (system tray) instead of the taskbar
 	Minimize to the notification area	Сворачивать в область уведомлений
-#. text in the Options window
-#, machine
-	Minimized, the window waits on the taskbar and doesn't take the focus.	Свернутое окно ожидает на панели задач и не занимает фокус.
 #. text in rssdlg.rs; text in the Add torrent window
 #. RSS feeds window: the unit after the minutes box
 #. Torrent settings: the unit after the minutes box
@@ -2818,7 +2812,7 @@
 	No download selected	Загрузка не выбрана
 #. text in traypanel.rs
 #. the notification-area icon's panel (#1365) when no download is running
-	No downloads are running	Загрузки не выполняются
+	No downloads are running	Сейчас ничего не загружается
 #. message or event log entry in the main window
 #. title in the empty download list (this category or queue has no downloads)
 	No downloads here	Здесь нет загрузок
@@ -3302,7 +3296,6 @@
 #, machine
 	Password:	Пароль:
 #. text in the Add torrent window
-#. "Look up" is the button that reads the torrent: use its translation
 #, machine
 	Paste a magnet link or choose a .torrent file, then Look up.	Вставьте magnet-ссылку или выберите .torrent-файл, затем нажмите «Найти».
 #. text in the Link grabber window
@@ -3766,8 +3759,7 @@
 #, machine
 	Save To...	Сохранить в...
 #. text in preview.rs; text in a download's progress window; text in a download's Properties window
-#, machine
-	Save To:	Сохранить в:
+	Save To:	Путь:
 #. text in the Batch download window; text in the Link grabber window; text in rssdlg.rs
 #. Batch download: the folder every file goes to (a label before its box)
 #. Link grabber: the folder the package's files go to (a label before its box)
@@ -3982,9 +3974,8 @@
 #, machine
 	Show details >>	Показать подробности >>
 #. checkbox in the Options window; checkbox in a download's progress window
-#, machine
-	Show download complete dialog	Показать диалоговое окно завершения загрузки
-#. text in the Options window
+	Show download complete dialog	Показывать окно «Загрузка завершена»
+#. checkbox in the Options window
 #, machine
 	Show download progress dialog when a download starts	Показывать диалоговое окно хода загрузки при начале загрузки
 #. text in the Options window
@@ -3999,12 +3990,6 @@
 #. button in the browser extension's window: open the tutorial that adds the extension
 #, machine
 	Show me how	Показать, как
-#. option (radio button) in the Options window
-#, machine
-	Show minimized	Показывать свернутым
-#. option (radio button) in the Options window
-#, machine
-	Show normally	Показывать обычным образом
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Show or hide the preview pane	Показать или скрыть область предварительного просмотра
@@ -5062,7 +5047,7 @@
 	there isn't enough free space there ({needed} needed, {free} free)	недостаточно свободного места ({needed} требуется, {free} свободно)
 #. text in a download's progress window
 #, machine
-	These settings are unavailable when "Show download complete dialog" is turned on	Эти настройки недоступны, когда включен параметр «Показывать диалог завершения загрузки»
+	These settings are unavailable when "Show download complete dialog" is turned on	Эти настройки недоступны, когда включён чекбокс «Показывать окно „Загрузка завершена“»
 #. text in helpers.rs
 #, machine
 	They keep downloading if you close this window.	Они продолжат загружаться, если вы закроете это окно.
@@ -5307,8 +5292,7 @@
 #, machine
 	Ticked: {files}, {size}	Выбрано: {files}, {size}
 #. text in a download's progress window; text in the Scheduler window
-#, machine
-	Time left	Осталось времени
+	Time left	Осталось
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -5394,8 +5378,7 @@
 #, machine
 	Trackers to add to {name}, one address a line:	Трекеры для добавления к {name}, по одному адресу на строку:
 #. text in a download's progress window
-#, machine
-	Transfer rate	Скорость передачи
+	Transfer rate	Скорость загрузки
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -5563,8 +5546,7 @@
 #. item in the Categories tree in the main window; text in remote.rs
 #. adjective: the downloads that are not complete yet
 #. remote control page (on a phone): tab: downloads not finished yet
-#, machine
-	Unfinished	Незавершенные
+	Unfinished	Незаверёшенные
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -5884,8 +5866,7 @@
 	We	Ср
 #. value in a column's filter list in the download list
 #. where a download comes from: Web (web or FTP server) or Torrent (BitTorrent)
-#, machine
-	Web	Веб
+	Web	Интернет
 #. text in preview.rs
 #. label in the preview pane: the web page the download was found on
 #, machine
@@ -6295,8 +6276,7 @@
 	{month} {year}	{month} {year}
 #. text in the download list (sizes, speeds, status)
 #. {m} = minutes; {s} = seconds (keep the braces as they are)
-#, machine
-	{m} min {s} sec	{m} мин {s} сек
+	{m} min {s} sec	{m} мин {s} с
 #. text in the Add torrent window
 #. the torrent's name, then {files} = "3 files" and {size} = its total size
 #. {name} = a file name; {size} = a file size such as "4.2 MB" (keep the braces as they are)
@@ -6528,8 +6508,7 @@
 	{size} is too big for this {file_system} drive (files up to 4 GB)	{size} слишком велик для этого диска {file_system} (файлы до 4 ГБ)
 #. text in the download list (sizes, speeds, status)
 #. {s} = seconds (keep the braces as they are)
-#, machine
-	{s} sec	{s} сек
+	{s} sec	{s} с
 #. text in a dialog box
 #. the title of another window of a kind while the first is open (several Download File Info windows, one per link): {title} the window's own title, {n} its number, "Download File Info (2)"
 #. {n} = a number (keep the braces as they are)
@@ -6563,8 +6542,7 @@
 	{what} could not be installed: {error}	{what} не удалось установить: {error}
 #. column title in the download list in the download list
 #. past participle: when the download was added
-#, machine
-column	Added	Добавлено
+column	Added	Дата добавления
 #. column title in the download list in the download list
 #. noun: the download's description
 #, machine
@@ -6573,8 +6551,7 @@ column	Description	Описание
 #, machine
 column	File Name	Имя файла
 #. column title in the download list in the download list
-#, machine
-column	Last Try Date	Дата последней попытки
+column	Last Try Date	Последняя попытка загрузки
 #. column title in the download list in the download list
 #. column title: how many peers a torrent is connected to now (seeders and leechers)
 #, machine
@@ -6589,8 +6566,7 @@ column	Q	О
 column	Queue	Очередь
 #. column title in the download list in the download list
 #. column title: the folder the download is saved in
-#, machine
-column	Save To	Сохранить в
+column	Save To	Путь
 #. column title in the download list in the download list
 #. column title: what a torrent has sent to peers against what it took
 #, machine
@@ -6608,11 +6584,9 @@ column	Source	Источник
 #, machine
 column	Status	Состояние
 #. column title in the download list in the download list
-#, machine
-column	Time left	Осталось времени
+column	Time left	Осталось
 #. column title in the download list in the download list
-#, machine
-column	Transfer rate	Скорость передачи
+column	Transfer rate	Скорость загрузки
 #. column title in the download list in the download list
 #. column title: what a torrent sends to peers, bytes per second
 #, machine
@@ -7685,12 +7659,11 @@ menu	&Font	&Шрифт
 #. verb: load downloads from a file
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menu	&Import	&Импортировать
+menu	&Import	&Импорт
 #. menu command in the main window
 #. View menu: submenu choosing how large MDM draws its windows and text (100 % to 200 %), as a browser's zoom
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
-#, machine
-menu	&Interface size	Размер &интерфейса
+menu	&Interface size	Масштаб &интерфейса
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -7852,7 +7825,7 @@ menu	By &File Name	По &имени файла
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menu	By &Last Try Date	По дате &последней попытки
+menu	By &Last Try Date	По &последней попытке загрузки
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -7924,8 +7897,7 @@ menu	Create new queue	Создать новую очередь
 #, machine
 menu	Cu&t	Вы&резать
 #. menu command in the main window
-#, machine
-menu	Dark Mode support	Поддержка темного режима
+menu	Dark Mode support	Следовать тёмной теме
 #. menu command in the main window
 #. verb: deletes the category
 #. verb: deletes the queue
@@ -7973,8 +7945,7 @@ menu	E&xport	&Экспорт
 menu	Edit queue	Изменить очередь
 #. menu command in the main window
 #. View → Theme: a style theme's name (a white canvas, emerald fills, 6-point corners), a name: keep "Emerald" as written
-#, machine
-menu	Emerald	Изумрудный
+menu	Emerald	Emerald
 #. menu command in the main window
 #. verb: unpack the downloaded archive (zip, 7z, rar) into its folder
 #, machine
@@ -7998,7 +7969,7 @@ menu	First and last pieces first	Сначала первые и последни
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it
 #, machine
-menu	From &IDM export file...	Из файла &экспорта IDM...
+menu	From &IDM export file...	Из формата &IDM...
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it
@@ -8009,12 +7980,10 @@ menu	From &text file...	Из &текстового файла...
 #, machine
 menu	H&elp contents	&Содержание справки
 #. menu command in the main window
-#, machine
-menu	Hide drop target	Скрыть панель перетаскивания
+menu	Hide drop target	Скрыть плавающий значок
 #. menu command in the main window
 #. View → Theme: black and white with strong edges, for low vision
-#, machine
-menu	High contrast	Высокая контрастность
+menu	High contrast	Контрастная
 #. menu command in the main window
 #. View → Window system: a greyed note; MDM's windows are Wayland's now
 #, machine
@@ -8053,8 +8022,7 @@ menu	Metal didn't start here: OpenGL draws	Не удалось запустит�
 menu	Metal draws with a software renderer	Metal рисует с помощью программного модуля
 #. menu command in the main window
 #. View → Theme: a style theme's name (Windows 8's flat look); keep "Metro" unless your language writes it otherwise
-#, machine
-menu	Metro	Метро
+menu	Metro	Metro
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -8081,8 +8049,7 @@ menu	Open	Открыть
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it
-#, machine
-menu	Open &torrent file...	Открыть файл &торрента...
+menu	Open &torrent file...	Открыть .&torrent-файл...
 #. menu command in the main window
 #, machine
 menu	Open folder	Открыть папку
@@ -8191,7 +8158,7 @@ menu	Select &all	Выбрать &все
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menu	Show &drop target	Показать &панель перетаскивания
+menu	Show &drop target	Показать плавающий &значок
 #. menu command in the main window
 #, machine
 menu	Show Mister Download Manager	Показать Mister Download Manager
@@ -8242,7 +8209,7 @@ menu	Theme	Тема
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it
 #, machine
-menu	To &IDM export file...	В &IDM файл экспорта...
+menu	To &IDM export file...	В формат &IDM...
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it
