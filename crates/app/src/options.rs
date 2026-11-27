@@ -72,9 +72,9 @@ enum Sub {
     Panels(bool, PanelSize, u16, String, String),
     /// General → Keys...: (also take the files the browser would open).
     Keys(bool),
-    /// Downloads → Customize "Download progress" dialog → Edit... (#1041): (show it when a
-    /// download starts).
-    Progress(bool),
+    /// Downloads → Customize "Download progress" dialog → Edit... (#1041, #1966): (show it
+    /// when a download starts, starts it minimized).
+    Progress { show: bool, minimized: bool },
     /// General → Test browser integration...: the checks, read beside the window (#1218) when it
     /// opened, and again once a Set it up finished.
     Test(crate::extension::Tester),
@@ -439,7 +439,12 @@ impl OptionsDialog {
                 )))
             }
             "account" => self.sub = Some(Sub::Account(AccountEdit::default())),
-            "progress" => self.sub = Some(Sub::Progress(self.s.show_progress)),
+            "progress" => {
+                self.sub = Some(Sub::Progress {
+                    show: self.s.show_progress,
+                    minimized: self.s.show_progress_minimized,
+                })
+            }
             "keys" => self.sub = Some(Sub::Keys(self.s.capture_opened)),
             // Connection → Site rules... (#1778), and with its first rule (else a new one) open.
             "siterules" | "siterule" => {
@@ -1533,7 +1538,10 @@ impl OptionsDialog {
         )
         .clicked()
         {
-            self.sub = Some(Sub::Progress(self.s.show_progress));
+            self.sub = Some(Sub::Progress {
+                show: self.s.show_progress,
+                minimized: self.s.show_progress_minimized,
+            });
         }
         let s = &mut self.s;
         winui::checkbox_light(
@@ -4919,20 +4927,26 @@ impl OptionsDialog {
                     Outcome::Closed => {}
                 }
             }
-            Sub::Progress(mut shown) => {
+            Sub::Progress {
+                mut show,
+                mut minimized,
+            } => {
                 let out = window(
                     ctx,
                     "opt-progress",
                     // i18n: window title: Options → Downloads → Edit... (the progress window's settings)
                     "Download progress dialog",
-                    [400.0, 150.0],
+                    [400.0, 196.0],
                     false,
                     LIGHT_BG(),
-                    |ui, o| progress_dialog(ui, o, &mut shown),
+                    |ui, o| progress_dialog(ui, o, &mut show, &mut minimized),
                 );
                 match out {
-                    Outcome::Open => self.sub = Some(Sub::Progress(shown)),
-                    Outcome::Done(()) => self.s.show_progress = shown,
+                    Outcome::Open => self.sub = Some(Sub::Progress { show, minimized }),
+                    Outcome::Done(()) => {
+                        self.s.show_progress = show;
+                        self.s.show_progress_minimized = minimized;
+                    }
                     Outcome::Closed => {}
                 }
             }
@@ -5793,28 +5807,75 @@ fn read_sites_file(path: &std::path::Path) -> std::io::Result<String> {
 }
 
 /// Downloads → Customize "Download progress" dialog → Edit... (#1041): whether a download's
-/// progress window opens when it starts, and where to find it when it doesn't.
-fn progress_dialog(ui: &mut Ui, o: Pos2, shown: &mut bool) -> Outcome<()> {
+/// progress window opens when it starts, minimized or not (#1966), and where to find it when it
+/// doesn't.
+fn progress_dialog(ui: &mut Ui, o: Pos2, show: &mut bool, minimized: &mut bool) -> Outcome<()> {
     let p = ui.painter().clone();
-    winui::checkbox_light(
-        ui,
-        o + vec2(14.0, 16.0),
-        shown,
-        "Show download progress dialog when a download starts",
-        true,
-    );
+    let mut choice = match (*show, *minimized) {
+        (false, _) => 2,
+        (true, true) => 1,
+        (true, false) => 0,
+    };
     winui::paragraph(
         &p,
         o.x + 14.0,
-        o.y + 58.0,
-        crate::i18n::t(
-            "When it is off, downloads go on in the main window's list. Double-click one there to see its progress.",
-        ),
+        o.y + 16.0,
+        crate::i18n::t("Show download progress dialog when a download starts"),
         LIGHT_TEXT(),
         o.x + 386.0,
         14.0,
     );
-    ok_cancel(ui, o, 232.0, 117.0, true)
+    let normal = winui::radio_light(ui, o + vec2(28.0, 44.0), choice == 0, "Show normally", true);
+    let min = winui::radio_light(
+        ui,
+        o + vec2(28.0, 66.0),
+        choice == 1,
+        "Show minimized",
+        true,
+    );
+    let off = winui::radio_light(ui, o + vec2(28.0, 88.0), choice == 2, "Don't show", true);
+    if normal.clicked() {
+        choice = 0;
+    } else if min.clicked() {
+        choice = 1;
+    } else if off.clicked() {
+        choice = 2;
+    }
+    if let Some(i) = winui::radio_keys(ui, &[normal, min, off]) {
+        choice = i;
+    }
+    (*show, *minimized) = match choice {
+        0 => (true, false),
+        1 => (true, true),
+        _ => (false, false),
+    };
+    if choice == 1 {
+        // i18n: the progress window's setting: it starts minimized
+        winui::paragraph(
+            &p,
+            o.x + 14.0,
+            o.y + 120.0,
+            crate::i18n::t(
+                "Minimized, the window waits on the taskbar and doesn't take the focus.",
+            ),
+            LIGHT_TEXT(),
+            o.x + 386.0,
+            14.0,
+        );
+    } else if choice == 2 {
+        winui::paragraph(
+            &p,
+            o.x + 14.0,
+            o.y + 120.0,
+            crate::i18n::t(
+                "When it is off, downloads go on in the main window's list. Double-click one there to see its progress.",
+            ),
+            LIGHT_TEXT(),
+            o.x + 386.0,
+            14.0,
+        );
+    }
+    ok_cancel(ui, o, 232.0, 164.0, true)
 }
 
 pub(crate) fn ok_cancel(ui: &mut Ui, o: Pos2, x: f32, y: f32, valid: bool) -> Outcome<()> {
@@ -6712,27 +6773,55 @@ mod tests {
         });
         assert!(dlg.sub.is_none());
         click(&ctx, edit.center(), |ui| dlg.downloads(ui, Pos2::ZERO));
-        assert!(matches!(dlg.sub, Some(Sub::Progress(false))));
+        assert!(matches!(
+            dlg.sub,
+            Some(Sub::Progress {
+                show: false,
+                minimized: false
+            })
+        ));
     }
 
-    /// #1041: its check box turns the progress window off, and OK keeps it.
+    /// #1041: its radios turn the progress window off or start it minimized, and OK keeps it.
     #[test]
     fn the_download_progress_dialog_turns_the_window_off() {
         let ctx = context();
-        let mut shown = true;
+        let mut show = true;
+        let mut minimized = false;
         let mut out = Outcome::Open;
         frame(&ctx, Vec::new(), |ui| {
-            out = progress_dialog(ui, Pos2::ZERO, &mut shown)
+            out = progress_dialog(ui, Pos2::ZERO, &mut show, &mut minimized)
         });
-        click(&ctx, pos2(20.0, 22.0), |ui| {
-            out = progress_dialog(ui, Pos2::ZERO, &mut shown);
+        click(&ctx, pos2(34.0, 94.0), |ui| {
+            out = progress_dialog(ui, Pos2::ZERO, &mut show, &mut minimized);
         });
-        assert!(!shown);
+        assert!(!show);
         assert!(matches!(out, Outcome::Open));
-        click(&ctx, pos2(268.0, 127.0), |ui| {
-            out = progress_dialog(ui, Pos2::ZERO, &mut shown);
+        click(&ctx, pos2(268.0, 174.0), |ui| {
+            out = progress_dialog(ui, Pos2::ZERO, &mut show, &mut minimized);
         });
         assert!(matches!(out, Outcome::Done(())));
-        assert!(!shown);
+        assert!(!show);
+    }
+
+    /// #1966: "Show minimized" keeps the window opened, minimized.
+    #[test]
+    fn the_download_progress_dialog_starts_it_minimized() {
+        let ctx = context();
+        let mut show = true;
+        let mut minimized = false;
+        let mut out = Outcome::Open;
+        frame(&ctx, Vec::new(), |ui| {
+            out = progress_dialog(ui, Pos2::ZERO, &mut show, &mut minimized)
+        });
+        click(&ctx, pos2(34.0, 72.0), |ui| {
+            out = progress_dialog(ui, Pos2::ZERO, &mut show, &mut minimized);
+        });
+        assert!(show && minimized);
+        click(&ctx, pos2(268.0, 174.0), |ui| {
+            out = progress_dialog(ui, Pos2::ZERO, &mut show, &mut minimized);
+        });
+        assert!(matches!(out, Outcome::Done(())));
+        assert!(show && minimized);
     }
 }

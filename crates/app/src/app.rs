@@ -2195,6 +2195,12 @@ impl App {
             start,
         );
         app.zoom = zoom;
+        // The chosen network adapter (#35) before the first frame's commands, which run before
+        // the clock's `network_adapter_tick`: a torrent session a magnet link started then was
+        // held to no adapter.
+        let route = app.netwatch.route(&app.settings.net_adapter, ctx);
+        crate::settings::share_route(route.clone());
+        app.route = route;
         // The unfinished downloads' resume states: beside the window, which opens with the list
         // as saved (a folder that doesn't answer held its first frame for 21 s).
         let repaint = ctx.clone();
@@ -2226,6 +2232,11 @@ impl App {
         start: crate::Start,
     ) -> Self {
         let settings = loaded.settings;
+        // Torrent settings from the start: a command at the first frame (a magnet link Windows
+        // started MDM for) may start the session before the clock's first `torrent_tick`.
+        let torrent_host = crate::torrents::Host::new(
+            crate::torrents::state_dir().and_then(|d| settings.torrent_config(d)),
+        );
         let mut queues = loaded.queues;
         if queues.len() < 2 {
             // The built-in queues' names are saved in English and translated where shown
@@ -2394,7 +2405,7 @@ impl App {
             blocklist_busy: Default::default(),
             public_trackers: Default::default(),
             torrents_started: false,
-            torrent_host: crate::torrents::Host::new(),
+            torrent_host,
             remote: None,
             remote_torrents: Vec::new(),
             cnl,
@@ -4565,6 +4576,19 @@ impl App {
         })
     }
 
+    /// A download that starts opens its progress window, as Options → Downloads → Customize
+    /// "Download progress" dialog says (#1041), minimized when it says so (#1966).
+    fn progress_window(&mut self, id: u64) {
+        if self.progress.iter().any(|p| p.id == id) {
+            return;
+        }
+        let mut p = Progress::new(id, self.settings.show_complete);
+        if self.settings.show_progress_minimized {
+            p.start_minimized();
+        }
+        self.progress.push(p);
+    }
+
     /// Start or resume a download; `show` opens its progress dialog (IDM's default), unless
     /// Options → Downloads → Customize "Download progress" dialog turned it off (#1041).
     fn start(&mut self, id: u64, show: bool) {
@@ -4756,9 +4780,8 @@ impl App {
         item.error = None;
         item.last_try = Some(model::now_stamp());
         self.dirty = true;
-        if show && !self.progress.iter().any(|p| p.id == id) {
-            self.progress
-                .push(Progress::new(id, self.settings.show_complete));
+        if show {
+            self.progress_window(id);
         }
     }
 
@@ -6943,9 +6966,8 @@ impl App {
             self.started_with.insert(id, tool.version.clone());
         }
         self.dirty = true;
-        if show && !self.progress.iter().any(|p| p.id == id) {
-            self.progress
-                .push(Progress::new(id, self.settings.show_complete));
+        if show {
+            self.progress_window(id);
         }
     }
 
@@ -7056,9 +7078,8 @@ impl App {
             self.started_with.insert(id, tool.version.clone());
         }
         self.dirty = true;
-        if show && !self.progress.iter().any(|p| p.id == id) {
-            self.progress
-                .push(Progress::new(id, self.settings.show_complete));
+        if show {
+            self.progress_window(id);
         }
     }
 
@@ -7337,9 +7358,8 @@ impl App {
         item.error = None;
         item.last_try = Some(model::now_stamp());
         self.dirty = true;
-        if show && !self.progress.iter().any(|p| p.id == id) {
-            self.progress
-                .push(Progress::new(id, self.settings.show_complete));
+        if show {
+            self.progress_window(id);
         }
     }
 
@@ -7393,9 +7413,8 @@ impl App {
         item.error = None;
         item.last_try = Some(model::now_stamp());
         self.dirty = true;
-        if show && !self.progress.iter().any(|p| p.id == id) {
-            self.progress
-                .push(Progress::new(id, self.settings.show_complete));
+        if show {
+            self.progress_window(id);
         }
     }
     /// Add torrent → Download Now / Later. Through the debrid account when torrents go there
@@ -7649,9 +7668,8 @@ impl App {
         item.error = None;
         item.last_try = Some(model::now_stamp());
         self.dirty = true;
-        if show && !self.progress.iter().any(|p| p.id == id) {
-            self.progress
-                .push(Progress::new(id, self.settings.show_complete));
+        if show {
+            self.progress_window(id);
         }
     }
 

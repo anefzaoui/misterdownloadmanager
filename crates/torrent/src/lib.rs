@@ -866,6 +866,9 @@ fn log_network(session: &Session, saved_nodes: bool, utp: bool) {
                 "the bootstrap nodes"
             }
         );
+    } else {
+        // Said as plainly as "on": a log silent about it can't be told from an older one.
+        tracing::info!("torrents: DHT off (Torrent settings or a proxy)");
     }
 }
 

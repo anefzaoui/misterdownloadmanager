@@ -402,6 +402,10 @@ pub struct Settings {
     /// Downloads → Customize "Download progress" dialog → Edit... (#1041): a download's
     /// progress window opens when it starts. Off, it runs in the list (double-click opens it).
     pub show_progress: bool,
+    /// The same dialog's third choice (#1966): the progress window starts minimized, on the
+    /// taskbar, and doesn't take the focus. Only when `show_progress` is on; a list from before
+    /// has neither it nor the choice: it opens normally.
+    pub show_progress_minimized: bool,
     pub only_add_to_queue: bool,
     pub start_immediately: bool,
     pub queue_panel_later: bool,
@@ -721,6 +725,7 @@ impl Default for Settings {
             mark_downloads: true,
             show_start_dialog: true,
             show_progress: true,
+            show_progress_minimized: false,
             only_add_to_queue: false,
             start_immediately: true,
             queue_panel_later: true,
@@ -1541,6 +1546,14 @@ impl Settings {
                 (true, Some(p)) => mdm_cli::TorrentProxy::Through(p),
                 (true, None) => mdm_cli::TorrentProxy::Missing,
             },
+            // As the app's session takes them (`torrent_config`).
+            torrent_net: mdm_cli::TorrentNet {
+                dht: self.torrent_dht,
+                lsd: self.torrent_lsd,
+                upnp: self.torrent_upnp,
+                listen: self.torrent_incoming,
+                utp: self.torrent_utp,
+            },
             // The same switch, address and cache as the app's (#1776).
             public_trackers: self
                 .torrent_public_trackers
@@ -1616,6 +1629,24 @@ mod tests {
         net.public_list = "  ".into();
         net.apply(&mut s);
         assert_eq!(s.public_trackers_list(), DEFAULT_LIST);
+    }
+
+    /// #1966: a settings file from before has only the bool (shown normally, never minimized);
+    /// the choice of three is saved as it was made.
+    #[test]
+    fn the_progress_window_is_shown_normally_until_asked_to_start_minimized() {
+        use super::Settings;
+        let old: Settings =
+            serde_json::from_value(serde_json::json!({ "show_progress": false })).unwrap();
+        assert!(!old.show_progress);
+        assert!(!old.show_progress_minimized);
+        let s = Settings {
+            show_progress: true,
+            show_progress_minimized: true,
+            ..Settings::default()
+        };
+        let again: Settings = serde_json::from_value(serde_json::to_value(&s).unwrap()).unwrap();
+        assert!(again.show_progress && again.show_progress_minimized);
     }
 
     /// #668: the User-Agent for links added by hand is the default browser's unless one is set.
