@@ -1,6 +1,6 @@
 """The numbers the site shows that change on their own, read again at every build: the browser
-stores' users and ratings (Chrome Web Store, Firefox Add-ons), the app's downloads (GitHub's
-releases) and the site's own star ratings (the ratings Worker, website/ratings/).
+stores' users and ratings (Chrome Web Store, Firefox Add-ons), the downloads of every file of
+every GitHub release and the site's own star ratings (the ratings Worker, website/ratings/).
 
 Each is kept with the date it was read in a committed file under website/content/ (stores.json,
 downloads.json, ratings.json), the last known values. A build reads them fresh; when a source can't be read, or
@@ -34,11 +34,6 @@ CWS_PAGE = f"https://chromewebstore.google.com/detail/mister-download-manager/{C
 AMO_API = "https://addons.mozilla.org/api/v5/addons/addon/mister-download-manager/"
 UA = "misterdownloadmanager-site-build"
 RELEASES_API = "https://api.github.com/repos/anefzaoui/misterdownloadmanager/releases?per_page=100&page="
-# The app's own files, by name (MisterDownloadManager-<version>-<kind>.<ext>): what a person
-# installs or runs, not the checksums, symbols or the add-on's packages. The ratings Worker's
-# live figures count the same way (website/ratings/src/stats.js APP_FILE): change both together.
-APP_FILE = re.compile(r"^MisterDownloadManager-.+\.(?:exe|zip|dmg|AppImage|deb|rpm|tar\.gz)$")
-NOT_APP = re.compile(r"-(?:symbols|extension|chrome-web-store)[-.]")
 
 
 def _today() -> str:
@@ -182,19 +177,18 @@ def stores() -> dict:
     return out
 
 
-# ---- The app's downloads --------------------------------------------------------------------------
-
-def is_app_file(name: str) -> bool:
-    return bool(APP_FILE.match(name or "")) and not NOT_APP.search(name or "")
-
+# ---- The downloads ---------------------------------------------------------------------------------
 
 def count_downloads(releases: list) -> int:
-    return sum(a["download_count"] for r in releases for a in (r.get("assets") or [])
-               if is_app_file(a.get("name", "")) and isinstance(a.get("download_count"), int) and a["download_count"] > 0)
+    """Every file of every release counts, whatever it is (the owner's rule: GitHub's own total,
+    the README's badge). The ratings Worker's live figure counts the same way
+    (website/ratings/src/stats.js countDownloads): change both together."""
+    return sum(a["download_count"] for r in releases for a in ((r or {}).get("assets") or [])
+               if isinstance(a, dict) and isinstance(a.get("download_count"), int) and a["download_count"] > 0)
 
 
 def _read_downloads() -> int | None:
-    """Every release's app files' download_count, page after page (GITHUB_TOKEN when set); None
+    """Every release's files' download_count, page after page (GITHUB_TOKEN when set); None
     when a page can't be read."""
     total = 0
     try:
@@ -216,17 +210,17 @@ def _read_downloads() -> int | None:
 
 
 def downloads() -> dict:
-    """{"app": n, "checked": day}: the app's downloads, every version together, fresh when
+    """{"total": n, "checked": day}: every file of every release, downloaded n times, fresh when
     GitHub could be read, else the last known (DOWNLOADS_FILE). A count below half the last
     known (an answer that isn't the whole list) is not taken."""
     known = _load(DOWNLOADS_FILE)
     new = _read_downloads() if _fetch() else None
-    if new is not None and (new <= 0 or new < known.get("app", 0) // 2):
+    if new is not None and (new <= 0 or new < known.get("total", 0) // 2):
         _warn(f"GitHub's releases gave {new} downloads, which doesn't look right; the last known number is used")
         new = None
     if new is None:
         return known
-    fresh = {"app": new, "checked": _today()}
+    fresh = {"total": new, "checked": _today()}
     if _numbers(fresh) != _numbers(known):
         _save(DOWNLOADS_FILE, fresh)
     return fresh

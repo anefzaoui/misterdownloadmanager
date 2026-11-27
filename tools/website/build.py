@@ -68,7 +68,7 @@ RATINGS_API_LIVE = "https://ratings.misterdownloadmanager.com/api/ratings"
 TURNSTILE_SITEKEY_LIVE = "0x4AAAAAAGPdSmAxeZS1XKuZ"
 RATINGS_API = os.environ.get("MDM_RATINGS_API", RATINGS_API_LIVE)
 # The same Worker's live figures for the home page's tallies (website/ratings/src/stats.js: the
-# app's downloads, the add-on's users); MDM_STATS_API stands in for it (a local Worker), "" for none.
+# downloads from GitHub, the add-on's users); MDM_STATS_API stands in for it (a local Worker), "" for none.
 STATS_API_LIVE = "https://ratings.misterdownloadmanager.com/api/stats"
 STATS_API = os.environ.get("MDM_STATS_API", STATS_API_LIVE)
 TURNSTILE_SITEKEY = os.environ.get("MDM_TURNSTILE_SITEKEY", TURNSTILE_SITEKEY_LIVE)
@@ -304,13 +304,13 @@ def esc(s: str) -> str:
     return html.escape(s, quote=True)
 
 
-# The tallies under the crew: split-flap counters of the app's downloads and the browser add-on's
+# The tallies under the crew: split-flap counters of the downloads from GitHub and the browser add-on's
 # users (styles.css .tallies, main.js). The build bakes in the latest figures it could read
 # (tallies.py: DOWNLOADS, STORES), so without scripts, or with the Worker down, they show those;
 # main.js flips them up from zero once in view, to the Worker's live figures (STATS_API) when it
 # answers in time, else to these. Each figure: the source(s) it adds up (the Worker's names).
 TALLIES = [
-    ("downloads", ("downloads",), "App downloads"),
+    ("downloads", ("downloads",), "Downloads"),
     ("addon", ("chrome", "firefox"), "Browser add-on users"),
 ]
 
@@ -318,8 +318,8 @@ TALLIES = [
 def baked_figures() -> dict:
     """{source: {value, fetched}} as the Worker answers, from the figures this build read."""
     out = {}
-    if DOWNLOADS.get("app"):
-        out["downloads"] = {"value": DOWNLOADS["app"], "fetched": DOWNLOADS.get("checked", "")}
+    if DOWNLOADS.get("total"):
+        out["downloads"] = {"value": DOWNLOADS["total"], "fetched": DOWNLOADS.get("checked", "")}
     for key in ("chrome", "firefox"):
         s = STORES.get(key) or {}
         if s.get("users"):
@@ -351,7 +351,7 @@ def tallies_board() -> str:
     data = esc(json.dumps(baked, separators=(",", ":")))
     return (f'<div class="tallies-board" data-tallies data-api="{esc(STATS_API)}" data-baked="{data}">'
             f'<dl class="tallies">{"".join(rows)}</dl>'
-            f'<p class="tallies-fine">Every version from GitHub; the add-on in the Chrome Web Store and '
+            f'<p class="tallies-fine">Every file of every version on GitHub; the add-on in the Chrome Web Store and '
             f'Firefox Add-ons together. As of <time datetime="{day}" translate="no" dir="ltr" data-tally-day>{day}</time></p></div>')
 
 
@@ -511,7 +511,7 @@ def cws_button(extra_class: str = "") -> str:
 STORES: dict[str, dict] = {}
 # The site's own ratings (tallies.ratings()): {average, count, distribution, checked}.
 RATINGS: dict = {}
-# The app's downloads (tallies.downloads(), read at every build): {app, checked}.
+# GitHub's downloads (tallies.downloads(), read at every build): {total, checked}.
 DOWNLOADS: dict = {}
 
 
@@ -1327,17 +1327,16 @@ RELEASE_KEY = f"{REPO}/blob/main/crates/tools/keys/mdm-release.asc"
 # The figures the home page and /press.html show, read at every build and rounded down: the
 # stores' from tallies.stores() (the Chrome Web Store listing; the add-ons API's
 # average_daily_users and ratings), GitHub's from tallies.downloads() (the releases API, the
-# download_count of the app's own files in every release: installers, zips, .dmg, AppImage, .deb,
-# .rpm, .tar.gz, not the checksums, symbols or extensions). Trendshift's placements are with the
+# download_count of every file of every release, as GitHub's own total and the README's badge). Trendshift's placements are with the
 # awards (AWARDS). FIGURES_CHECKED: the day /press.html's links were last checked by hand.
 FIGURES_CHECKED = "2026-11-18"
 
 
 def downloads_figure() -> tuple[str, str, str, str] | None:
-    if not DOWNLOADS.get("app"):
+    if not DOWNLOADS.get("total"):
         return None
-    return ("GitHub Releases", f"{REPO}/releases", f'{num(floor_figure(DOWNLOADS["app"]), plus=True)} downloads',
-            "of the app, every version together")
+    return ("GitHub Releases", f"{REPO}/releases", f'{num(floor_figure(DOWNLOADS["total"]), plus=True)} downloads',
+            "every file of every version together")
 
 
 def store_figure(key: str) -> tuple[str, str, str, str] | None:

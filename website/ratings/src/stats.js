@@ -1,16 +1,16 @@
 // The live figures on misterdownloadmanager.com's home page (website/main.js, the tallies under
-// "Made possible by these amazing humans"): how many times the app was downloaded, and how many
-// people use the browser add-on. Read-only, nothing stored in D1.
+// "Made possible by these amazing humans"): how many times MDM's files were downloaded from
+// GitHub, and how many people use the browser add-on. Read-only, nothing stored in D1.
 //
 //   GET /api/stats -> {downloads, chrome, firefox, checked}
 //
 // Each figure is {value, fetched}: the number, and when it was read from its source (ISO 8601),
 // or both null when it was never read. `checked` is when the sources were last asked.
 //
-//   downloads  GitHub's releases API, every page: the download_count of the app's own files in
-//              every release (installers, zips, .dmg, AppImage, .deb, .rpm, .tar.gz; not the
-//              checksums, symbols or the add-on's packages). The site's build counts the same way
-//              (tools/website/tallies.py downloads(), APP_FILE): change both together.
+//   downloads  GitHub's releases API, every page: the download_count of every file of every
+//              release, all of them counted (the owner's rule, as GitHub's own total and the
+//              README's badge count). The site's build counts the same way (tools/website/
+//              tallies.py count_downloads): change both together.
 //   firefox    addons.mozilla.org's public API: average_daily_users.
 //   chrome     the Chrome Web Store has no public API: the users its public listing page shows,
 //              read from the data the page carries for its own script, else from its text (as
@@ -37,15 +37,6 @@ const AMO_API = "https://addons.mozilla.org/api/v5/addons/addon/mister-download-
 const CWS_PAGE = `https://chromewebstore.google.com/detail/mister-download-manager/${CWS_ID}?hl=en`;
 const UA = "misterdownloadmanager-stats";
 const SOURCES = ["downloads", "chrome", "firefox"];
-
-// The app's own files, by name: MisterDownloadManager-<version>-<kind>.<ext>, the kinds a person
-// installs or runs. The same rule as tallies.py APP_FILE.
-export const APP_FILE = /^MisterDownloadManager-.+\.(?:exe|zip|dmg|AppImage|deb|rpm|tar\.gz)$/;
-export const NOT_APP = /-(?:symbols|extension|chrome-web-store)[-.]/;
-
-export function isAppFile(name) {
-  return typeof name === "string" && APP_FILE.test(name) && !NOT_APP.test(name);
-}
 
 // This isolate's copy of the figures (the Cache API's is per location and outlives it).
 let memo = null;
@@ -140,7 +131,7 @@ async function get(url, accept) {
   return res;
 }
 
-// The app's downloads: every release, every page of them (a failed page fails the whole count).
+// The downloads: every release, every page of them (a failed page fails the whole count).
 export async function readDownloads() {
   let total = 0;
   for (let page = 1; page <= MAX_PAGES; page++) {
@@ -153,11 +144,12 @@ export async function readDownloads() {
   return null;
 }
 
+// Every file of every release counts, whatever it is (tallies.py count_downloads: the same rule).
 export function countDownloads(releases) {
   let n = 0;
   for (const r of releases) {
     for (const a of (r && r.assets) || []) {
-      if (isAppFile(a && a.name) && Number.isInteger(a.download_count) && a.download_count > 0) n += a.download_count;
+      if (a && Number.isInteger(a.download_count) && a.download_count > 0) n += a.download_count;
     }
   }
   return n;

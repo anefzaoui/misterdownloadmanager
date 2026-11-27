@@ -178,6 +178,10 @@
    "source": "Your rating is removed.",
    "text": "あなたの評価は削除されました。"
   },
+  "02b5060ed69a72ad": {
+   "source": "<g1>Live figures</g1>: the home page asks the same service on Cloudflare for how many times MDM's files were downloaded from GitHub and how many people use the browser add-on, to show them under the contributors. That request carries only what every request to a website does (your IP address and browser details, which Cloudflare sees); the service keeps nothing of it and writes no log. The figures themselves come from GitHub and the browser stores, read by the service, never by your browser.",
+   "text": "<g1>ライブの数値</g1>: ホームページでは、コントリビューターの下に表示するために、MDM のファイルが GitHub から何回ダウンロードされたか、ブラウザ アドオンを使用しているユーザーが何人いるかを Cloudflare の同じサービスに問い合わせます。このリクエストには、ウェブサイトへのすべてのリクエストと同様の情報 (IP アドレスとブラウザの詳細。これらは Cloudflare が確認します) のみが含まれます。サービスはこれらの情報を一切保持せず、ログも書き込みません。数値自体は GitHub とブラウザ ストアからサービスによって読み取られ、ユーザーのブラウザによって読み取られることはありません。"
+  },
   "02b5c8ba8b04167b": {
    "source": "AppImage",
    "text": "AppImage"
@@ -269,10 +273,6 @@
   "03660b1f49838403": {
    "source": "Contribute",
    "text": "貢献する"
-  },
-  "03d03dddf2309b1d": {
-   "source": "App downloads",
-   "text": "アプリのダウンロード数"
   },
   "03db33586ae11954": {
    "source": "<g1>A recording in several parts</g1> (a picture and a sound part yt-dlp left apart) is made one MP4 with all of them. If they can't be joined, the download says so and every part stays as it is.",
@@ -1241,10 +1241,6 @@
   "1058e8be7cc50b7e": {
    "source": "High contrast",
    "text": "ハイ コントラスト"
-  },
-  "105e2af4dcf1adc9": {
-   "source": "Last updated 2026-11-27",
-   "text": "最終更新日: 2026-11-27"
   },
   "10825ce1e4e377bf": {
    "source": "Tasks → Import → From IDM export file",
@@ -2421,6 +2417,10 @@
   "1f98be990d8acb5c": {
    "source": "A torrent's progress window on its Pieces tab: a square for each piece, filled once it's here.",
    "text": "トレントの進行状況ウィンドウの「ピース」タブ：各ピースが正方形で表示され、ダウンロードが完了すると塗りつぶされます。"
+  },
+  "1fa905d65f474793": {
+   "source": "Last updated 2026-11-28",
+   "text": "最終更新日: 2026-11-28"
   },
   "1fc4673dc3cdd511": {
    "source": "The list keeps the host's link. The direct link is never shown or copied: the services forbid sharing it. It lives only in the download's resume data, and when it expires MDM asks the service for a new one.",
@@ -5386,10 +5386,6 @@
    "source": "Compare it with the same file's line in that release's <x1/> (capital or small letters don't matter). To be sure the list itself is ours, check its signature, <x2/>, with MDM's release key: see <g3>Check your download</g3>.",
    "text": "そのリリースの <x1/> にある同じファイルの行と比較します (大文字と小文字は区別されません)。リスト自体が当社のものか確認するには、MDM のリリースキーでその署名 <x2/> を確認します。<g3>ダウンロードを確認する</g3>を参照してください。"
   },
-  "47dc0178565f7f38": {
-   "source": "<g1>The home page's live figures</g1>, at <x2/>, in the same <g3>OpenAPI</g3>: how many times the app was downloaded (every GitHub release's installers and packages) and how many people use the browser add-on (the Chrome Web Store's users, Firefox Add-ons' daily users), each with when it was read. Read again at most every 15 minutes; a source that can't be read keeps its last figure.",
-   "text": "<g1>ホームページのライブ数値</g1>は、<x2/>で、同じ<g3>OpenAPI</g3>で表示されます。アプリのダウンロード数（GitHub の各リリースに含まれるインストーラーとパッケージ）とブラウザー アドオンのユーザー数（Chrome Web Store のユーザー、Firefox Add-ons のデイリーユーザー）が、それぞれ読み取り日時とともに表示されます。読み取りは最大 15 分ごとに実行されます。読み取れないソースは、前回の数値を保持します。"
-  },
   "4809c370b5c131eb": {
    "source": "its picture: the one your file manager shows (Windows' thumbnail of a photo, a video, a PDF or a document, a program's own icon; on Linux your desktop's thumbnail, or one MDM makes of a photo or a video's frame), else its file type's large icon. Only a finished file has one;",
    "text": "画像: ファイル マネージャーに表示される画像 (Windows の写真、ビデオ、PDF、ドキュメントのサムネイル、プログラム独自のアイコン。Linux ではデスクトップのサムネイル、または MDM が作成する写真やビデオのフレーム)。それ以外の場合は、ファイルの種類を示す大きなアイコン。完了したファイルにのみ表示されます。"
@@ -7193,10 +7189,6 @@
   "60e4ea08eb29abeb": {
    "source": "<g1>Stop</g1> on a download in a running queue stays stopped, instead of the queue starting it again a moment later; <g2>Stop All</g2> too (<g3>#341</g3>).",
    "text": "実行中のキュー内のダウンロードで<g1>停止</g1>すると、キューがすぐに再開するのではなく、停止したままになります。<g2>すべて停止</g2>も同様です (<g3>#341</g3>)。"
-  },
-  "60f1159fcf53ce4a": {
-   "source": "Every version from GitHub; the add-on in the Chrome Web Store and Firefox Add-ons together. As of <x1/>",
-   "text": "GitHub のすべてのバージョン、Chrome Web Store と Firefox Add-ons のアドオンを合計したものです。<x1/> 時点"
   },
   "60f3c58ee8c2af81": {
    "source": "<g1>Options where you expect them</g1> Every setting where an IDM user looks first: connections, proxies, folders, sounds.",
@@ -9697,6 +9689,10 @@
   "821e4ece0c595969": {
    "source": "<g1>Keep some speed for everything else</g1> walks through the settings step by step.",
    "text": "<g1>他の作業のために速度を確保する</g1> で、設定を順を追って説明します。"
+  },
+  "821f8fc23327fd14": {
+   "source": "Every file of every version on GitHub; the add-on in the Chrome Web Store and Firefox Add-ons together. As of <x1/>",
+   "text": "GitHub にあるすべてのバージョンのファイル、Chrome Web Store と Firefox Add-ons にあるアドオンを合計したダウンロード数です。<x1/> 時点"
   },
   "82214b19e565baff": {
    "source": "Pick it in <g1>View → Theme</g1>, and look at both sides: <g2>View → Always dark</g2> on and off. Check that text is readable and the focus mark visible in both.",
@@ -12354,6 +12350,10 @@
    "source": "<g1>Version 0.2.0</g1> <g2>and later</g2>",
    "text": "<g1>バージョン 0.2.0</g1><g2>以降</g2>"
   },
+  "a50abc11975b25a7": {
+   "source": "Last updated 2026-11-28 · applies to the app, the browser extension and misterdownloadmanager.com",
+   "text": "最終更新日: 2026-11-28 · アプリ、ブラウザ拡張機能、misterdownloadmanager.com に適用されます"
+  },
   "a50c3c69c4e98ed6": {
    "source": "Put downloads in a queue and let the Scheduler start them when nobody needs the connection. When the queue is done, MDM can quit or turn the computer off.",
    "text": "ダウンロードをキューに入れて、接続が不要なときにスケジューラで開始できます。キューが完了したら、MDM を終了したり、コンピューターの電源を切ったりできます。"
@@ -14362,6 +14362,10 @@
    "source": "Your browsers hand it their downloads, and proven open-source tools do the specialist work. <g1>Set up the extension</g1>.",
    "text": "お使いのブラウザがダウンロードを渡し、実績のあるオープンソースツールが専門的な作業を行います。<g1>拡張機能をセットアップ</g1>。"
   },
+  "bfb6903b0d513363": {
+   "source": "<g1><x2/> downloads</g1><g3>every file of every version together</g3>",
+   "text": "<g1><x2/> ダウンロード</g1><g3>すべてのバージョンのファイルを合計</g3>"
+  },
   "bfd9e614f4714695": {
    "source": "The people who made Mister Download Manager possible: everyone who sent a pull request, opened an issue or joined a conversation on GitHub.",
    "text": "Mister Download Manager を可能にした人々: プルリクエストを送信したり、イシューを起票したり、GitHub で議論に参加したりしてくださったすべての人々。"
@@ -15289,6 +15293,10 @@
   "cc8e6434e304ae05": {
    "source": "<g1>Code signing policy</g1><g2>What is signed, who approves it, and privacy</g2>",
    "text": "<g1>コード署名ポリシー</g1><g2>署名されるもの、承認者、プライバシー</g2>"
+  },
+  "cc8f4e5b14712fff": {
+   "source": "<g1>The home page's live figures</g1>, at <x2/>, in the same <g3>OpenAPI</g3>: how many times MDM's files were downloaded from GitHub (every file of every release) and how many people use the browser add-on (the Chrome Web Store's users, Firefox Add-ons' daily users), each with when it was read. Read again at most every 15 minutes; a source that can't be read keeps its last figure.",
+   "text": "<g1>ホームページのリアルタイムの数値</g1>は、<x2/> の同じ <g3>OpenAPI</g3> で確認できます。GitHub から MDM のファイル (すべてのリリースのすべてのファイル) がダウンロードされた回数と、ブラウザー アドオン (Chrome Web Store のユーザー、Firefox アドオンのデイリー ユーザー) の利用者数を示し、それぞれ読み取り日時も表示されます。最大 15 分ごとに再読み込みされます。読み取れないソースは前回の数値を保持します。"
   },
   "cca215a39bfa83ba": {
    "source": "<g1>Less memory in the notification area</g1> (<g2>#72</g2>): closed to the tray, or minimized there (on by default), MDM gives the memory it isn't using back to Windows. Task Manager's <g3>Memory</g3> drops from about 50 MB to under 10 MB (with 500 downloads in the list, from 58 to about 14 MB). It gives it back again 2 minutes after hiding, when the clock's ticks and a one-time allocation have brought some back, then every 10 minutes while MDM stays there. After the language list (which needs a font for every script) closes, those fonts are let go: about 70 MB less than before. On Linux the heap's free memory goes back to the system the same way. <g4>MDM uses a lot of memory</g4> explains Task Manager's figures.",
@@ -16654,10 +16662,6 @@
    "source": "The site's <g1>robots.txt</g1> lets every crawler in, and says so for AI in <g2>Content Signals</g2>:",
    "text": "このサイトの <g1>robots.txt</g1> は、すべてのクローラーを許可しており、AI については <g2>Content Signals</g2> で次のように述べています。"
   },
-  "e0a07e732b511f78": {
-   "source": "<g1><x2/> downloads</g1><g3>of the app, every version together</g3>",
-   "text": "<g1><x2/> ダウンロード</g1><g3>アプリの全バージョン合計</g3>"
-  },
   "e0a6f19ecc901965": {
    "source": "For a <x1/> file: <g2>Open magnet links and .torrent files with Mister Download Manager</g2> is on in <g3>Tasks → Torrent settings</g3>.",
    "text": "<x1/> ファイルの場合: <g2>マグネットリンクと .torrent ファイルを Mister Download Manager で開く</g2> が <g3>タスク → トレント設定</g3> でオンになっています。"
@@ -16785,10 +16789,6 @@
   "e21e4c0c6fc923a2": {
    "source": "MDM's main window on Ubuntu 24.04's GNOME desktop: the categories and a list of downloads, each with the desktop's icon for its type",
    "text": "Ubuntu 24.04 の GNOME デスクトップ上の MDM のメイン ウィンドウ: カテゴリとダウンロードのリスト。それぞれにその種類のデスクトップ アイコンが表示されています。"
-  },
-  "e22a4ae089ee0db8": {
-   "source": "<g1>Live figures</g1>: the home page asks the same service on Cloudflare for how many times the app was downloaded and how many people use the browser add-on, to show them under the contributors. That request carries only what every request to a website does (your IP address and browser details, which Cloudflare sees); the service keeps nothing of it and writes no log. The figures themselves come from GitHub and the browser stores, read by the service, never by your browser.",
-   "text": "<g1>ライブの数値</g1>: ホームページでは、アプリのダウンロード数とブラウザー アドオンのユーザー数を Cloudflare の同じサービスに問い合わせ、貢献者の下に表示します。このリクエストには、ウェブサイトへのすべてのリクエストに含まれる情報 (IP アドレスとブラウザーの詳細。これらは Cloudflare が認識します) のみが含まれます。このサービスは何も保持せず、ログも作成しません。数値自体は GitHub とブラウザー ストアから取得され、サービスによって読み取られます。お使いのブラウザーが読み取ることはありません。"
   },
   "e22ae1bbb5224f5c": {
    "source": "Download manager",
@@ -18225,10 +18225,6 @@
   "f4594a89ecaca28a": {
    "source": "A greyed icon's ink (its end)",
    "text": "グレー表示されたアイコンのインク (終了)"
-  },
-  "f471814e3a16b4a2": {
-   "source": "Last updated 2026-11-27 · applies to the app, the browser extension and misterdownloadmanager.com",
-   "text": "最終更新日: 2026-11-27 · アプリ、ブラウザ拡張機能、misterdownloadmanager.com に適用されます"
   },
   "f47d19d2ae313a6b": {
    "source": "<g1>MDM as an IDM alternative</g1><g2>Spot something wrong? Tell us</g2>",

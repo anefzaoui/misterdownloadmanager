@@ -178,6 +178,10 @@
    "source": "Your rating is removed.",
    "text": "تمت إزالة تقييمك."
   },
+  "02b5060ed69a72ad": {
+   "source": "<g1>Live figures</g1>: the home page asks the same service on Cloudflare for how many times MDM's files were downloaded from GitHub and how many people use the browser add-on, to show them under the contributors. That request carries only what every request to a website does (your IP address and browser details, which Cloudflare sees); the service keeps nothing of it and writes no log. The figures themselves come from GitHub and the browser stores, read by the service, never by your browser.",
+   "text": "<g1>أرقام مباشرة</g1>: تطلب الصفحة الرئيسية من نفس الخدمة على Cloudflare عدد مرات تنزيل ملفات MDM من GitHub وعدد الأشخاص الذين يستخدمون الوظيفة الإضافية للمستعرض، لعرضها تحت المساهمين. يحمل هذا الطلب فقط ما يحمله أي طلب إلى موقع ويب (عنوان IP الخاص بك وتفاصيل المستعرض، والتي تراها Cloudflare)؛ لا تحتفظ الخدمة بأي شيء منه ولا تكتب أي سجل. تأتي الأرقام نفسها من GitHub ومتاجر المستعرضات، وتقرأها الخدمة، وليس مستعرضك أبدا."
+  },
   "02b5c8ba8b04167b": {
    "source": "AppImage",
    "text": "AppImage"
@@ -269,10 +273,6 @@
   "03660b1f49838403": {
    "source": "Contribute",
    "text": "ساهم"
-  },
-  "03d03dddf2309b1d": {
-   "source": "App downloads",
-   "text": "تنزيلات التطبيق"
   },
   "03db33586ae11954": {
    "source": "<g1>A recording in several parts</g1> (a picture and a sound part yt-dlp left apart) is made one MP4 with all of them. If they can't be joined, the download says so and every part stays as it is.",
@@ -1241,10 +1241,6 @@
   "1058e8be7cc50b7e": {
    "source": "High contrast",
    "text": "تباين عال"
-  },
-  "105e2af4dcf1adc9": {
-   "source": "Last updated 2026-11-27",
-   "text": "آخر تحديث 27-11-2026"
   },
   "10825ce1e4e377bf": {
    "source": "Tasks → Import → From IDM export file",
@@ -2421,6 +2417,10 @@
   "1f98be990d8acb5c": {
    "source": "A torrent's progress window on its Pieces tab: a square for each piece, filled once it's here.",
    "text": "نافذة تقدم التورنت في علامة تبويب الأجزاء: مربع لكل جزء، يمتلئ بمجرد وصوله."
+  },
+  "1fa905d65f474793": {
+   "source": "Last updated 2026-11-28",
+   "text": "آخر تحديث 28-11-2026"
   },
   "1fc4673dc3cdd511": {
    "source": "The list keeps the host's link. The direct link is never shown or copied: the services forbid sharing it. It lives only in the download's resume data, and when it expires MDM asks the service for a new one.",
@@ -5386,10 +5386,6 @@
    "source": "Compare it with the same file's line in that release's <x1/> (capital or small letters don't matter). To be sure the list itself is ours, check its signature, <x2/>, with MDM's release key: see <g3>Check your download</g3>.",
    "text": "قارنها بالسطر الخاص بنفس الملف في <x1/> الخاص بهذا الإصدار (الأحرف الكبيرة أو الصغيرة لا تهم). للتأكد من أن القائمة نفسها هي قائمتنا، تحقق من توقيعها، <x2/>، باستخدام مفتاح إصدار MDM: انظر <g3>التحقق من تنزيلك</g3>."
   },
-  "47dc0178565f7f38": {
-   "source": "<g1>The home page's live figures</g1>, at <x2/>, in the same <g3>OpenAPI</g3>: how many times the app was downloaded (every GitHub release's installers and packages) and how many people use the browser add-on (the Chrome Web Store's users, Firefox Add-ons' daily users), each with when it was read. Read again at most every 15 minutes; a source that can't be read keeps its last figure.",
-   "text": "<g1>الأرقام المباشرة للصفحة الرئيسية</g1>، في <x2/>، بنفس <g3>OpenAPI</g3>: عدد مرات تنزيل التطبيق (مثبتات وحزم كل إصدار GitHub) وعدد مستخدمي الإضافة في المستعرض (مستخدمو سوق Chrome الإلكتروني، والمستخدمون اليوميون لإضافات Firefox)، مع وقت قراءة كل منها. تقرأ مرة أخرى كل 15 دقيقة كحد أقصى؛ المصدر الذي لا يمكن قراءته يحتفظ بآخر رقم له."
-  },
   "4809c370b5c131eb": {
    "source": "its picture: the one your file manager shows (Windows' thumbnail of a photo, a video, a PDF or a document, a program's own icon; on Linux your desktop's thumbnail, or one MDM makes of a photo or a video's frame), else its file type's large icon. Only a finished file has one;",
    "text": "صورته: تلك التي يعرضها مدير الملفات لديك (صورة مصغرة من Windows لصورة أو فيديو أو ملف PDF أو مستند، أو أيقونة البرنامج نفسه؛ أو الصورة المصغرة لسطح المكتب في Linux، أو صورة مصغرة ينشئها MDM من صورة أو إطار فيديو)، وإلا فأيقونة كبيرة لنوع الملف. لا يمتلكها إلا الملف المكتمل؛"
@@ -7197,10 +7193,6 @@
   "60e4ea08eb29abeb": {
    "source": "<g1>Stop</g1> on a download in a running queue stays stopped, instead of the queue starting it again a moment later; <g2>Stop All</g2> too (<g3>#341</g3>).",
    "text": "يبقى <g1>إيقاف</g1> على تنزيل في قائمة انتظار قيد التشغيل متوقفا، بدلا من أن تبدأه قائمة الانتظار مرة أخرى بعد لحظة؛ وينطبق الأمر نفسه على <g2>إيقاف الكل</g2> (<g3>#341</g3>)."
-  },
-  "60f1159fcf53ce4a": {
-   "source": "Every version from GitHub; the add-on in the Chrome Web Store and Firefox Add-ons together. As of <x1/>",
-   "text": "كل إصدار من GitHub؛ والإضافة في سوق Chrome الإلكتروني وإضافات Firefox معا. اعتبارا من <x1/>"
   },
   "60f3c58ee8c2af81": {
    "source": "<g1>Options where you expect them</g1> Every setting where an IDM user looks first: connections, proxies, folders, sounds.",
@@ -9701,6 +9693,10 @@
   "821e4ece0c595969": {
    "source": "<g1>Keep some speed for everything else</g1> walks through the settings step by step.",
    "text": "<g1>احتفظ ببعض السرعة لكل شيء آخر</g1> يمر عبر الإعدادات خطوة بخطوة."
+  },
+  "821f8fc23327fd14": {
+   "source": "Every file of every version on GitHub; the add-on in the Chrome Web Store and Firefox Add-ons together. As of <x1/>",
+   "text": "كل ملف من كل إصدار على GitHub؛ والإضافة في سوق Chrome الإلكتروني وإضافات Firefox معا. اعتبارا من <x1/>"
   },
   "82214b19e565baff": {
    "source": "Pick it in <g1>View → Theme</g1>, and look at both sides: <g2>View → Always dark</g2> on and off. Check that text is readable and the focus mark visible in both.",
@@ -12358,6 +12354,10 @@
    "source": "<g1>Version 0.2.0</g1> <g2>and later</g2>",
    "text": "<g1>الإصدار 0.2.0</g1> <g2>والإصدارات الأحدث</g2>"
   },
+  "a50abc11975b25a7": {
+   "source": "Last updated 2026-11-28 · applies to the app, the browser extension and misterdownloadmanager.com",
+   "text": "آخر تحديث 2026-11-28 · ينطبق على التطبيق وملحق المستعرض وموقع misterdownloadmanager.com"
+  },
   "a50c3c69c4e98ed6": {
    "source": "Put downloads in a queue and let the Scheduler start them when nobody needs the connection. When the queue is done, MDM can quit or turn the computer off.",
    "text": "ضع التنزيلات في قائمة انتظار ودع المجدول يبدأها عندما لا يحتاج أحد للاتصال. عند الانتهاء من قائمة الانتظار، يمكن لـ MDM أن يغلق أو يوقف تشغيل الكمبيوتر."
@@ -14366,6 +14366,10 @@
    "source": "Your browsers hand it their downloads, and proven open-source tools do the specialist work. <g1>Set up the extension</g1>.",
    "text": "تسلمه متصفحاتك تنزيلاتها، وتقوم الأدوات مفتوحة المصدر المثبتة بالعمل المتخصص. <g1>إعداد الإضافة</g1>."
   },
+  "bfb6903b0d513363": {
+   "source": "<g1><x2/> downloads</g1><g3>every file of every version together</g3>",
+   "text": "<g1><x2/> تنزيلات</g1><g3>لكل ملف من كل إصدار معا</g3>"
+  },
   "bfd9e614f4714695": {
    "source": "The people who made Mister Download Manager possible: everyone who sent a pull request, opened an issue or joined a conversation on GitHub.",
    "text": "الأشخاص الذين جعلوا Mister Download Manager ممكنا: كل من أرسل طلب سحب، أو فتح مشكلة، أو انضم إلى محادثة على GitHub."
@@ -15293,6 +15297,10 @@
   "cc8e6434e304ae05": {
    "source": "<g1>Code signing policy</g1><g2>What is signed, who approves it, and privacy</g2>",
    "text": "<g1>سياسة توقيع الرمز</g1><g2>ما الذي يتم توقيعه، ومن يوافق عليه، والخصوصية</g2>"
+  },
+  "cc8f4e5b14712fff": {
+   "source": "<g1>The home page's live figures</g1>, at <x2/>, in the same <g3>OpenAPI</g3>: how many times MDM's files were downloaded from GitHub (every file of every release) and how many people use the browser add-on (the Chrome Web Store's users, Firefox Add-ons' daily users), each with when it was read. Read again at most every 15 minutes; a source that can't be read keeps its last figure.",
+   "text": "<g1>الأرقام المباشرة للصفحة الرئيسية</g1>، في <x2/>، بنفس <g3>OpenAPI</g3>: عدد مرات تنزيل ملفات MDM من GitHub (كل ملف من كل إصدار) وعدد الأشخاص الذين يستخدمون الوظيفة الإضافية للمستعرض (مستخدمو سوق Chrome الإلكتروني، والمستخدمون اليوميون لوظائف Firefox الإضافية)، مع تاريخ قراءة كل منها. تقرأ مرة أخرى كل 15 دقيقة على الأكثر؛ المصدر الذي لا يمكن قراءته يحتفظ بآخر رقم له."
   },
   "cca215a39bfa83ba": {
    "source": "<g1>Less memory in the notification area</g1> (<g2>#72</g2>): closed to the tray, or minimized there (on by default), MDM gives the memory it isn't using back to Windows. Task Manager's <g3>Memory</g3> drops from about 50 MB to under 10 MB (with 500 downloads in the list, from 58 to about 14 MB). It gives it back again 2 minutes after hiding, when the clock's ticks and a one-time allocation have brought some back, then every 10 minutes while MDM stays there. After the language list (which needs a font for every script) closes, those fonts are let go: about 70 MB less than before. On Linux the heap's free memory goes back to the system the same way. <g4>MDM uses a lot of memory</g4> explains Task Manager's figures.",
@@ -16658,10 +16666,6 @@
    "source": "The site's <g1>robots.txt</g1> lets every crawler in, and says so for AI in <g2>Content Signals</g2>:",
    "text": "يسمح ملف <g1>robots.txt</g1> الخاص بالموقع لكل برامج الزحف بالدخول، ويذكر ذلك للذكاء الاصطناعي في <g2>Content Signals</g2>:"
   },
-  "e0a07e732b511f78": {
-   "source": "<g1><x2/> downloads</g1><g3>of the app, every version together</g3>",
-   "text": "<g1><x2/> تنزيل</g1><g3>للتطبيق، كل الإصدارات معا</g3>"
-  },
   "e0a6f19ecc901965": {
    "source": "For a <x1/> file: <g2>Open magnet links and .torrent files with Mister Download Manager</g2> is on in <g3>Tasks → Torrent settings</g3>.",
    "text": "بالنسبة لملف <x1/>: <g2>فتح الروابط المغناطيسية وملفات .torrent باستخدام Mister Download Manager</g2> قيد التشغيل في <g3>المهام ← إعدادات التورنت</g3>."
@@ -16789,10 +16793,6 @@
   "e21e4c0c6fc923a2": {
    "source": "MDM's main window on Ubuntu 24.04's GNOME desktop: the categories and a list of downloads, each with the desktop's icon for its type",
    "text": "نافذة MDM الرئيسية على سطح مكتب GNOME في Ubuntu 24.04: الفئات وقائمة التنزيلات، كل منها مع أيقونة سطح المكتب لنوعها"
-  },
-  "e22a4ae089ee0db8": {
-   "source": "<g1>Live figures</g1>: the home page asks the same service on Cloudflare for how many times the app was downloaded and how many people use the browser add-on, to show them under the contributors. That request carries only what every request to a website does (your IP address and browser details, which Cloudflare sees); the service keeps nothing of it and writes no log. The figures themselves come from GitHub and the browser stores, read by the service, never by your browser.",
-   "text": "<g1>الأرقام المباشرة</g1>: تطلب الصفحة الرئيسية من نفس الخدمة على Cloudflare عدد مرات تنزيل التطبيق وعدد الأشخاص الذين يستخدمون الوظيفة الإضافية للمستعرض، لعرضها تحت المساهمين. يحمل هذا الطلب فقط ما يحمله أي طلب إلى موقع ويب (عنوان IP الخاص بك وتفاصيل المستعرض، والتي تراها Cloudflare)؛ لا تحتفظ الخدمة بأي شيء منه ولا تكتب أي سجل. تأتي الأرقام نفسها من GitHub ومتاجر المستعرض، وتقرأها الخدمة، وليس مستعرضك أبدا."
   },
   "e22ae1bbb5224f5c": {
    "source": "Download manager",
@@ -18229,10 +18229,6 @@
   "f4594a89ecaca28a": {
    "source": "A greyed icon's ink (its end)",
    "text": "حبر أيقونة باهتة (نهايتها)"
-  },
-  "f471814e3a16b4a2": {
-   "source": "Last updated 2026-11-27 · applies to the app, the browser extension and misterdownloadmanager.com",
-   "text": "آخر تحديث 2026-11-27 · ينطبق على التطبيق وإضافة المستعرض وموقع misterdownloadmanager.com"
   },
   "f47d19d2ae313a6b": {
    "source": "<g1>MDM as an IDM alternative</g1><g2>Spot something wrong? Tell us</g2>",

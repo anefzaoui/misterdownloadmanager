@@ -178,6 +178,10 @@
    "source": "Your rating is removed.",
    "text": "您的评分已移除。"
   },
+  "02b5060ed69a72ad": {
+   "source": "<g1>Live figures</g1>: the home page asks the same service on Cloudflare for how many times MDM's files were downloaded from GitHub and how many people use the browser add-on, to show them under the contributors. That request carries only what every request to a website does (your IP address and browser details, which Cloudflare sees); the service keeps nothing of it and writes no log. The figures themselves come from GitHub and the browser stores, read by the service, never by your browser.",
+   "text": "<g1>实时数据</g1>：主页向 Cloudflare 上的同一服务请求 MDM 文件从 GitHub 下载的次数以及有多少人使用浏览器附加组件，以便在贡献者下方显示这些数据。该请求仅包含访问网站的每个请求都会携带的信息（您的 IP 地址和浏览器详细信息，Cloudflare 会看到这些信息）；该服务不保留任何信息，也不写入任何日志。这些数据本身来自 GitHub 和浏览器商店，由服务读取，您的浏览器从不读取。"
+  },
   "02b5c8ba8b04167b": {
    "source": "AppImage",
    "text": "AppImage"
@@ -269,10 +273,6 @@
   "03660b1f49838403": {
    "source": "Contribute",
    "text": "贡献"
-  },
-  "03d03dddf2309b1d": {
-   "source": "App downloads",
-   "text": "应用下载量"
   },
   "03db33586ae11954": {
    "source": "<g1>A recording in several parts</g1> (a picture and a sound part yt-dlp left apart) is made one MP4 with all of them. If they can't be joined, the download says so and every part stays as it is.",
@@ -1241,10 +1241,6 @@
   "1058e8be7cc50b7e": {
    "source": "High contrast",
    "text": "高对比度"
-  },
-  "105e2af4dcf1adc9": {
-   "source": "Last updated 2026-11-27",
-   "text": "最后更新：2026年11月27日"
   },
   "10825ce1e4e377bf": {
    "source": "Tasks → Import → From IDM export file",
@@ -2421,6 +2417,10 @@
   "1f98be990d8acb5c": {
    "source": "A torrent's progress window on its Pieces tab: a square for each piece, filled once it's here.",
    "text": "种子的下载进度窗口，位于“分块”选项卡：每个分块对应一个方块，下载到本地后方块会填满。"
+  },
+  "1fa905d65f474793": {
+   "source": "Last updated 2026-11-28",
+   "text": "最后更新：2026年11月28日"
   },
   "1fc4673dc3cdd511": {
    "source": "The list keeps the host's link. The direct link is never shown or copied: the services forbid sharing it. It lives only in the download's resume data, and when it expires MDM asks the service for a new one.",
@@ -5386,10 +5386,6 @@
    "source": "Compare it with the same file's line in that release's <x1/> (capital or small letters don't matter). To be sure the list itself is ours, check its signature, <x2/>, with MDM's release key: see <g3>Check your download</g3>.",
    "text": "将其与该版本 <x1/> 中相同文件的行进行比较（大小写不重要）。为确保列表本身是我们的，请使用 MDM 的发布密钥检查其签名 <x2/>：请参阅<g3>检查您的下载</g3>。"
   },
-  "47dc0178565f7f38": {
-   "source": "<g1>The home page's live figures</g1>, at <x2/>, in the same <g3>OpenAPI</g3>: how many times the app was downloaded (every GitHub release's installers and packages) and how many people use the browser add-on (the Chrome Web Store's users, Firefox Add-ons' daily users), each with when it was read. Read again at most every 15 minutes; a source that can't be read keeps its last figure.",
-   "text": "<g1>主页上的实时数据</g1>，位于 <x2/>，采用相同的 <g3>OpenAPI</g3> 格式：应用程序的下载次数（每个 GitHub 版本的安装程序和软件包）和浏览器附加组件的用户数量（Chrome 网上应用店的用户、Firefox 附加组件的每日用户），每个数据都附带读取时间。最多每 15 分钟读取一次；无法读取的来源将保留其上次数据。"
-  },
   "4809c370b5c131eb": {
    "source": "its picture: the one your file manager shows (Windows' thumbnail of a photo, a video, a PDF or a document, a program's own icon; on Linux your desktop's thumbnail, or one MDM makes of a photo or a video's frame), else its file type's large icon. Only a finished file has one;",
    "text": "其图片：文件管理器显示的图片（Windows 中照片、视频、PDF 或文档的缩略图，程序的图标；Linux 中桌面环境的缩略图，或 MDM 为照片或视频帧生成的缩略图），否则显示其文件类型的大图标。只有已完成的文件才有图片；"
@@ -7197,10 +7193,6 @@
   "60e4ea08eb29abeb": {
    "source": "<g1>Stop</g1> on a download in a running queue stays stopped, instead of the queue starting it again a moment later; <g2>Stop All</g2> too (<g3>#341</g3>).",
    "text": "队列中正在运行的下载任务，点击<g1>停止</g1>后会保持停止状态，而不是稍后又被队列重新启动；<g2>停止所有</g2>也一样（<g3>#341</g3>）。"
-  },
-  "60f1159fcf53ce4a": {
-   "source": "Every version from GitHub; the add-on in the Chrome Web Store and Firefox Add-ons together. As of <x1/>",
-   "text": "来自 GitHub 的所有版本；Chrome 网上应用店和 Firefox 附加组件中的扩展总和。截至 <x1/>"
   },
   "60f3c58ee8c2af81": {
    "source": "<g1>Options where you expect them</g1> Every setting where an IDM user looks first: connections, proxies, folders, sounds.",
@@ -9701,6 +9693,10 @@
   "821e4ece0c595969": {
    "source": "<g1>Keep some speed for everything else</g1> walks through the settings step by step.",
    "text": "<g1>为其他活动保留一些速度</g1>将逐步引导您完成设置。"
+  },
+  "821f8fc23327fd14": {
+   "source": "Every file of every version on GitHub; the add-on in the Chrome Web Store and Firefox Add-ons together. As of <x1/>",
+   "text": "GitHub 上每个版本的所有文件；Chrome 网上应用店和 Firefox 附加组件中的扩展。截至 <x1/>"
   },
   "82214b19e565baff": {
    "source": "Pick it in <g1>View → Theme</g1>, and look at both sides: <g2>View → Always dark</g2> on and off. Check that text is readable and the focus mark visible in both.",
@@ -12358,6 +12354,10 @@
    "source": "<g1>Version 0.2.0</g1> <g2>and later</g2>",
    "text": "<g1>0.2.0</g1> <g2>及更高版本</g2>"
   },
+  "a50abc11975b25a7": {
+   "source": "Last updated 2026-11-28 · applies to the app, the browser extension and misterdownloadmanager.com",
+   "text": "最后更新日期：2026年11月28日 · 适用于应用程序、浏览器扩展和 misterdownloadmanager.com"
+  },
   "a50c3c69c4e98ed6": {
    "source": "Put downloads in a queue and let the Scheduler start them when nobody needs the connection. When the queue is done, MDM can quit or turn the computer off.",
    "text": "将下载任务放入队列，让计划程序在网络空闲时启动它们。队列完成后，MDM 可以退出或关闭计算机。"
@@ -14366,6 +14366,10 @@
    "source": "Your browsers hand it their downloads, and proven open-source tools do the specialist work. <g1>Set up the extension</g1>.",
    "text": "浏览器会将下载任务交给 MDM，专业工作则由成熟的开源工具完成。<g1>设置扩展</g1>。"
   },
+  "bfb6903b0d513363": {
+   "source": "<g1><x2/> downloads</g1><g3>every file of every version together</g3>",
+   "text": "<g1><x2/> 下载</g1><g3>每个版本的所有文件</g3>"
+  },
   "bfd9e614f4714695": {
    "source": "The people who made Mister Download Manager possible: everyone who sent a pull request, opened an issue or joined a conversation on GitHub.",
    "text": "感谢这些杰出人士让 Mister Download Manager 成为可能：每一位在 GitHub 上提交拉取请求、提出问题或参与讨论的朋友。"
@@ -15293,6 +15297,10 @@
   "cc8e6434e304ae05": {
    "source": "<g1>Code signing policy</g1><g2>What is signed, who approves it, and privacy</g2>",
    "text": "<g1>代码签名策略</g1><g2>签名内容、批准方和隐私</g2>"
+  },
+  "cc8f4e5b14712fff": {
+   "source": "<g1>The home page's live figures</g1>, at <x2/>, in the same <g3>OpenAPI</g3>: how many times MDM's files were downloaded from GitHub (every file of every release) and how many people use the browser add-on (the Chrome Web Store's users, Firefox Add-ons' daily users), each with when it was read. Read again at most every 15 minutes; a source that can't be read keeps its last figure.",
+   "text": "<g1>主页上的实时数据</g1>，位于 <x2/>，采用相同的 <g3>OpenAPI</g3> 格式：MDM 文件从 GitHub 的下载次数（每个版本的所有文件）以及浏览器扩展的用户数量（Chrome 网上应用店用户、Firefox 附加组件的每日用户），每次数据读取时都会记录时间。最多每 15 分钟读取一次；无法读取的来源将保留其上次数据。"
   },
   "cca215a39bfa83ba": {
    "source": "<g1>Less memory in the notification area</g1> (<g2>#72</g2>): closed to the tray, or minimized there (on by default), MDM gives the memory it isn't using back to Windows. Task Manager's <g3>Memory</g3> drops from about 50 MB to under 10 MB (with 500 downloads in the list, from 58 to about 14 MB). It gives it back again 2 minutes after hiding, when the clock's ticks and a one-time allocation have brought some back, then every 10 minutes while MDM stays there. After the language list (which needs a font for every script) closes, those fonts are let go: about 70 MB less than before. On Linux the heap's free memory goes back to the system the same way. <g4>MDM uses a lot of memory</g4> explains Task Manager's figures.",
@@ -16658,10 +16666,6 @@
    "source": "The site's <g1>robots.txt</g1> lets every crawler in, and says so for AI in <g2>Content Signals</g2>:",
    "text": "本网站的 <g1>robots.txt</g1> 允许所有爬虫访问，并在 <g2>Content Signals</g2> 中为 AI 明确说明："
   },
-  "e0a07e732b511f78": {
-   "source": "<g1><x2/> downloads</g1><g3>of the app, every version together</g3>",
-   "text": "<g1><x2/> 次下载</g1><g3>所有应用版本总计</g3>"
-  },
   "e0a6f19ecc901965": {
    "source": "For a <x1/> file: <g2>Open magnet links and .torrent files with Mister Download Manager</g2> is on in <g3>Tasks → Torrent settings</g3>.",
    "text": "对于 <x1/> 文件：在<g3>任务 → 种子设置</g3>中，<g2>使用 Mister Download Manager 打开磁力链接和 .torrent 文件</g2>已开启。"
@@ -16789,10 +16793,6 @@
   "e21e4c0c6fc923a2": {
    "source": "MDM's main window on Ubuntu 24.04's GNOME desktop: the categories and a list of downloads, each with the desktop's icon for its type",
    "text": "MDM 在 Ubuntu 24.04 GNOME 桌面上的主窗口：类别和下载列表，每个下载任务都带有桌面为其类型显示的图标"
-  },
-  "e22a4ae089ee0db8": {
-   "source": "<g1>Live figures</g1>: the home page asks the same service on Cloudflare for how many times the app was downloaded and how many people use the browser add-on, to show them under the contributors. That request carries only what every request to a website does (your IP address and browser details, which Cloudflare sees); the service keeps nothing of it and writes no log. The figures themselves come from GitHub and the browser stores, read by the service, never by your browser.",
-   "text": "<g1>实时数据</g1>：主页会向 Cloudflare 上的同一服务请求应用程序的下载次数和浏览器附加组件的用户数量，以在贡献者下方显示。该请求仅包含访问网站的每个请求都会携带的信息（您的 IP 地址和浏览器详细信息，Cloudflare 会看到这些信息）；该服务不会保留任何信息，也不会写入日志。这些数据本身来自 GitHub 和浏览器商店，由该服务读取，您的浏览器从不读取。"
   },
   "e22ae1bbb5224f5c": {
    "source": "Download manager",
@@ -18229,10 +18229,6 @@
   "f4594a89ecaca28a": {
    "source": "A greyed icon's ink (its end)",
    "text": "置灰图标的墨色（结束）"
-  },
-  "f471814e3a16b4a2": {
-   "source": "Last updated 2026-11-27 · applies to the app, the browser extension and misterdownloadmanager.com",
-   "text": "最后更新日期：2026年11月27日 · 适用于应用程序、浏览器扩展和 misterdownloadmanager.com"
   },
   "f47d19d2ae313a6b": {
    "source": "<g1>MDM as an IDM alternative</g1><g2>Spot something wrong? Tell us</g2>",

@@ -178,6 +178,10 @@
    "source": "Your rating is removed.",
    "text": "आपकी रेटिंग हटा दी गई है।"
   },
+  "02b5060ed69a72ad": {
+   "source": "<g1>Live figures</g1>: the home page asks the same service on Cloudflare for how many times MDM's files were downloaded from GitHub and how many people use the browser add-on, to show them under the contributors. That request carries only what every request to a website does (your IP address and browser details, which Cloudflare sees); the service keeps nothing of it and writes no log. The figures themselves come from GitHub and the browser stores, read by the service, never by your browser.",
+   "text": "<g1>लाइव आंकड़े</g1>: होम पेज Cloudflare पर उसी सेवा से पूछता है कि MDM की फ़ाइलें GitHub से कितनी बार डाउनलोड की गईं और कितने लोग ब्राउज़र ऐड-ऑन का उपयोग करते हैं, ताकि उन्हें योगदानकर्ताओं के तहत दिखाया जा सके। वह अनुरोध केवल वही जानकारी भेजता है जो किसी वेबसाइट पर हर अनुरोध भेजता है (आपका IP पता और ब्राउज़र विवरण, जिसे Cloudflare देखता है); सेवा इसमें से कुछ भी नहीं रखती और कोई लॉग नहीं लिखती। आंकड़े GitHub और ब्राउज़र स्टोर से आते हैं, जिन्हें सेवा द्वारा पढ़ा जाता है, आपके ब्राउज़र द्वारा कभी नहीं।"
+  },
   "02b5c8ba8b04167b": {
    "source": "AppImage",
    "text": "AppImage"
@@ -269,10 +273,6 @@
   "03660b1f49838403": {
    "source": "Contribute",
    "text": "योगदान करें"
-  },
-  "03d03dddf2309b1d": {
-   "source": "App downloads",
-   "text": "ऐप डाउनलोड"
   },
   "03db33586ae11954": {
    "source": "<g1>A recording in several parts</g1> (a picture and a sound part yt-dlp left apart) is made one MP4 with all of them. If they can't be joined, the download says so and every part stays as it is.",
@@ -1242,10 +1242,6 @@
    "source": "High contrast",
    "text": "उच्च कंट्रास्ट"
   },
-  "105e2af4dcf1adc9": {
-   "source": "Last updated 2026-11-27",
-   "text": "अंतिम अपडेट: 27-11-2026"
-  },
   "10825ce1e4e377bf": {
    "source": "Tasks → Import → From IDM export file",
    "text": "कार्य → आयात करें → IDM निर्यात फ़ाइल से"
@@ -1706,6 +1702,10 @@
    "source": "A menu item under the pointer",
    "text": "पॉइंटर के नीचे एक मेनू आइटम"
   },
+  "16521dc33af1932f": {
+   "source": "An answer with no size and no ranges goes on one connection, written in order (<x1/>), and may never end (an internet radio, a camera feed: <x2/>). <x3/> ends it where it is, and what arrived is finished as if the server had ended it there (#1780); only the progress window's Stop and keep calls it (<x4/>, <x5/>). Every other stop cancels it, as any download a server can't resume.",
+   "text": "बिना आकार और बिना रेंज वाला उत्तर एक कनेक्शन पर, क्रम से (<x1/>) लिखा जाता है, और यह कभी खत्म नहीं हो सकता (एक इंटरनेट रेडियो, एक कैमरा फ़ीड: <x2/>)। <x3/> इसे वहीं खत्म कर देता है जहाँ यह है, और जो कुछ भी आया वह पूरा हो जाता है जैसे कि सर्वर ने इसे वहीं खत्म कर दिया हो (#1780); केवल प्रगति विंडो का “रोकें और रखें” इसे कॉल करता है (<x4/>, <x5/>)। हर दूसरा स्टॉप इसे रद्द कर देता है, जैसे कोई भी डाउनलोड जिसे सर्वर फिर से शुरू नहीं कर सकता।"
+  },
   "1652b2b94896eefb": {
    "source": "MDM in Arabic",
    "text": "अरबी में MDM"
@@ -1997,6 +1997,10 @@
   "1a1c4d85605e18ae": {
    "source": "<g1>Alt+Enter</g1> always opens <g2>Properties</g2>.",
    "text": "<g1>Alt+Enter</g1> हमेशा <g2>गुण</g2> खोलता है।"
+  },
+  "1a1dff89e0e39768": {
+   "source": "The windows are drawn with OpenGL (eframe's glow) or with the system's own graphics API through eframe's wgpu, with that one backend only: Direct3D 12 on Windows (the default there), Vulkan on Linux, Metal on macOS (choices there; OpenGL stays their default until real graphics cards have tried them, #206). View → Draw with picks one, from the next start. One code path does it on every system (<x1/>): when the chosen one can't start, the other one is tried, so the windows always open. A watched start with the system's API leaves a marker until its first frame is drawn: a start that ends before it (a crash inside the driver), one whose first frame doesn't come within 10 seconds (MDM then starts again with OpenGL), or a graphics card lost twice in 10 minutes is remembered with its reason, which the menu shows. A way that can't start within 10 minutes of a lost card isn't remembered: its driver may still be resetting (#1974: Direct3D 12 then finds only WARP), so the next start tries it again. With OpenGL, a window eframe can't paint (its context can't be made current on it, its frame can't be shown) is skipped and painted again 100 ms later; one whose paints keep failing for seconds is a lost device too (MDM starts again; twice in 10 minutes, OpenGL is remembered as failing on Windows). On Windows, a freeze or a crash whose report shows the window's or the crashed thread inside OpenGL's driver is remembered too, by the crash report's window (<x2/>), from the stack's modules (#847, #1659). The fork's eframe tells MDM through its viewport hooks (<x3/>, #1448).",
+   "text": "विंडो OpenGL (eframe का ग्लो) या eframe के wgpu के माध्यम से सिस्टम के अपने ग्राफिक्स API के साथ, केवल उस एक बैकएंड के साथ खींची जाती हैं: Windows पर Direct3D 12 (वहाँ डिफ़ॉल्ट), Linux पर Vulkan, macOS पर Metal (वहाँ विकल्प; OpenGL उनका डिफ़ॉल्ट रहता है जब तक कि वास्तविक ग्राफिक्स कार्ड ने उन्हें आज़माया नहीं है, #206)। देखें → इसके साथ ड्रा करें एक को चुनता है, अगली शुरुआत से। एक कोड पाथ इसे हर सिस्टम पर करता है (<x1/>): जब चुना गया एक शुरू नहीं हो सकता, तो दूसरा आज़माया जाता है, इसलिए विंडो हमेशा खुलती हैं। सिस्टम के API के साथ एक देखी गई शुरुआत अपने पहले फ्रेम के खींचे जाने तक एक मार्कर छोड़ती है: एक शुरुआत जो इससे पहले समाप्त होती है (ड्राइवर के अंदर एक क्रैश), एक जिसका पहला फ्रेम 10 सेकंड के भीतर नहीं आता है (MDM फिर OpenGL के साथ फिर से शुरू होता है), या 10 मिनट में दो बार खोया हुआ ग्राफिक्स कार्ड उसके कारण के साथ याद किया जाता है, जिसे मेनू दिखाता है। एक तरीका जो खोए हुए कार्ड के 10 मिनट के भीतर शुरू नहीं हो सकता, उसे याद नहीं किया जाता है: उसका ड्राइवर अभी भी रीसेट हो रहा हो सकता है (#1974: Direct3D 12 तब केवल WARP पाता है), इसलिए अगली शुरुआत इसे फिर से आज़माती है। OpenGL के साथ, एक विंडो जिसे eframe पेंट नहीं कर सकता (उसका संदर्भ उस पर वर्तमान नहीं बनाया जा सकता, उसका फ्रेम नहीं दिखाया जा सकता) को छोड़ दिया जाता है और 100 ms बाद फिर से पेंट किया जाता है; एक जिसकी पेंटिंग सेकंडों तक विफल होती रहती है, वह भी एक खोया हुआ डिवाइस है (MDM फिर से शुरू होता है; 10 मिनट में दो बार, OpenGL को Windows पर विफल होने के रूप में याद किया जाता है)। Windows पर, एक फ्रीज या एक क्रैश जिसकी रिपोर्ट विंडो या क्रैश हुए थ्रेड को OpenGL के ड्राइवर के अंदर दिखाती है, उसे भी क्रैश रिपोर्ट की विंडो (<x2/>) द्वारा, स्टैक के मॉड्यूल से (#847, #1659) याद किया जाता है। फोर्क का eframe MDM को अपने व्यूपोर्ट हुक (<x3/>, #1448) के माध्यम से बताता है।"
   },
   "1a2a843c29753c86": {
    "source": "A greyed menu item",
@@ -2413,6 +2417,10 @@
   "1f98be990d8acb5c": {
    "source": "A torrent's progress window on its Pieces tab: a square for each piece, filled once it's here.",
    "text": "टोरेंट की प्रगति विंडो उसके भाग टैब पर: हर भाग के लिए एक वर्ग, जो यहाँ आने पर भर जाता है।"
+  },
+  "1fa905d65f474793": {
+   "source": "Last updated 2026-11-28",
+   "text": "अंतिम अपडेट: 28-11-2026"
   },
   "1fc4673dc3cdd511": {
    "source": "The list keeps the host's link. The direct link is never shown or copied: the services forbid sharing it. It lives only in the download's resume data, and when it expires MDM asks the service for a new one.",
@@ -3553,6 +3561,10 @@
   "2e3cb33a528c6b52": {
    "source": ", <x1/>, <x2/>, <x3/>, <x4/>, <x5/>, <x6/>, <x7/>, <x8/>,",
    "text": ", <x1/>, <x2/>, <x3/>, <x4/>, <x5/>, <x6/>, <x7/>, <x8/>,"
+  },
+  "2e62158daf22f3df": {
+   "source": "A folder given to Link grabber (#1774, <x1/>) is read with its subfolders, breadth first: an FTP folder by <x2/>, else <x3/> (<x4/>, one session for every folder), a web server's listing page (\"Index of\", recognized by its title) as <x5/> reads a page. An entry is a name in the folder, matched by name: a link elsewhere (another host, the folder above, a query, a deeper path) or a name that isn't plain is no entry, and FTP's symbolic links aren't followed. The depth asked (at most <x6/>), <x7/>, <x8/> and each listing's size bound it. The app makes each folder's files a package whose folder is the tree's under the download folder (<x9/>); the lab server serves made-up trees, a hostile one and a huge one (<x10/>) over HTTP and FTP for the end-to-end tests.",
+   "text": "लिंक ग्रैबर (#1774, <x1/>) को दिया गया एक फ़ोल्डर उसके सबफ़ोल्डर के साथ, चौड़ाई-पहले पढ़ा जाता है: <x2/> द्वारा एक FTP फ़ोल्डर, अन्यथा <x3/> (<x4/>, हर फ़ोल्डर के लिए एक सत्र), एक वेब सर्वर का लिस्टिंग पेज (“Index of”, उसके शीर्षक से पहचाना गया) जैसे <x5/> एक पेज पढ़ता है। एक एंट्री फ़ोल्डर में एक नाम है, जो नाम से मेल खाता है: कहीं और का लिंक (एक और होस्ट, ऊपर का फ़ोल्डर, एक क्वेरी, एक गहरा पाथ) या एक ऐसा नाम जो सादा नहीं है, वह एंट्री नहीं है, और FTP के सिंबॉलिक लिंक का पालन नहीं किया जाता है। पूछी गई गहराई (अधिकतम <x6/>), <x7/>, <x8/> और प्रत्येक लिस्टिंग का आकार इसे सीमित करता है। ऐप प्रत्येक फ़ोल्डर की फ़ाइलों को एक पैकेज बनाता है जिसका फ़ोल्डर डाउनलोड फ़ोल्डर के तहत ट्री का होता है (<x9/>); लैब सर्वर HTTP और FTP पर एंड-टू-एंड परीक्षणों के लिए बनाए गए ट्री, एक शत्रुतापूर्ण और एक विशाल (<x10/>) को परोसता है।"
   },
   "2e79c1a24688e446": {
    "source": "<g1>Download selected links</g1> and <g2>Download all links</g2> on the browser's right-click menu: the page's links go to Import, to tick there.",
@@ -5374,10 +5386,6 @@
    "source": "Compare it with the same file's line in that release's <x1/> (capital or small letters don't matter). To be sure the list itself is ours, check its signature, <x2/>, with MDM's release key: see <g3>Check your download</g3>.",
    "text": "इसकी तुलना उस रिलीज़ के <x1/> में उसी फ़ाइल की लाइन से करें (बड़े या छोटे अक्षरों से कोई फर्क नहीं पड़ता)। यह सुनिश्चित करने के लिए कि सूची स्वयं हमारी है, MDM की रिलीज़ कुंजी के साथ इसके हस्ताक्षर, <x2/> की जांच करें: <g3>अपने डाउनलोड की जांच करें</g3> देखें।"
   },
-  "47dc0178565f7f38": {
-   "source": "<g1>The home page's live figures</g1>, at <x2/>, in the same <g3>OpenAPI</g3>: how many times the app was downloaded (every GitHub release's installers and packages) and how many people use the browser add-on (the Chrome Web Store's users, Firefox Add-ons' daily users), each with when it was read. Read again at most every 15 minutes; a source that can't be read keeps its last figure.",
-   "text": "<g1>होम पेज के लाइव आंकड़े</g1>, <x2/> पर, उसी <g3>OpenAPI</g3> में: ऐप को कितनी बार डाउनलोड किया गया (हर GitHub रिलीज़ के इंस्टॉलर और पैकेज) और कितने लोग ब्राउज़र ऐड-ऑन का उपयोग करते हैं (Chrome वेब स्टोर के उपयोगकर्ता, Firefox ऐड-ऑन के दैनिक उपयोगकर्ता), प्रत्येक के साथ यह कब पढ़ा गया था। हर 15 मिनट में अधिकतम एक बार फिर से पढ़ें; जो स्रोत पढ़ा नहीं जा सकता वह अपना अंतिम आंकड़ा रखता है।"
-  },
   "4809c370b5c131eb": {
    "source": "its picture: the one your file manager shows (Windows' thumbnail of a photo, a video, a PDF or a document, a program's own icon; on Linux your desktop's thumbnail, or one MDM makes of a photo or a video's frame), else its file type's large icon. Only a finished file has one;",
    "text": "उसकी तस्वीर: जो आपका फ़ाइल प्रबंधक दिखाता है (फ़ोटो, वीडियो, PDF या दस्तावेज़ का Windows थंबनेल, किसी प्रोग्राम का अपना आइकन; Linux पर आपके डेस्कटॉप का थंबनेल, या MDM द्वारा बनाई गई फ़ोटो या वीडियो फ़्रेम की तस्वीर), अन्यथा उसके फ़ाइल प्रकार का बड़ा आइकन। केवल एक पूरी हुई फ़ाइल में ही यह होता है;"
@@ -7185,10 +7193,6 @@
   "60e4ea08eb29abeb": {
    "source": "<g1>Stop</g1> on a download in a running queue stays stopped, instead of the queue starting it again a moment later; <g2>Stop All</g2> too (<g3>#341</g3>).",
    "text": "चल रही कतार में एक डाउनलोड पर <g1>रोकें</g1> रुका रहता है, बजाय इसके कि कतार इसे थोड़ी देर बाद फिर से शुरू कर दे; <g2>सभी रोकें</g2> भी (<g3>#341</g3>)।"
-  },
-  "60f1159fcf53ce4a": {
-   "source": "Every version from GitHub; the add-on in the Chrome Web Store and Firefox Add-ons together. As of <x1/>",
-   "text": "GitHub से हर संस्करण; Chrome वेब स्टोर और Firefox ऐड-ऑन में ऐड-ऑन एक साथ। <x1/> तक"
   },
   "60f3c58ee8c2af81": {
    "source": "<g1>Options where you expect them</g1> Every setting where an IDM user looks first: connections, proxies, folders, sounds.",
@@ -9689,6 +9693,10 @@
   "821e4ece0c595969": {
    "source": "<g1>Keep some speed for everything else</g1> walks through the settings step by step.",
    "text": "<g1>बाकी सब के लिए कुछ गति रखें</g1> सेटिंग्स को चरण-दर-चरण बताता है।"
+  },
+  "821f8fc23327fd14": {
+   "source": "Every file of every version on GitHub; the add-on in the Chrome Web Store and Firefox Add-ons together. As of <x1/>",
+   "text": "GitHub पर हर संस्करण की हर फ़ाइल; Chrome वेब स्टोर और Firefox ऐड-ऑन में ऐड-ऑन एक साथ। <x1/> तक"
   },
   "82214b19e565baff": {
    "source": "Pick it in <g1>View → Theme</g1>, and look at both sides: <g2>View → Always dark</g2> on and off. Check that text is readable and the focus mark visible in both.",
@@ -12346,6 +12354,10 @@
    "source": "<g1>Version 0.2.0</g1> <g2>and later</g2>",
    "text": "<g1>संस्करण 0.2.0</g1> <g2>और बाद के</g2>"
   },
+  "a50abc11975b25a7": {
+   "source": "Last updated 2026-11-28 · applies to the app, the browser extension and misterdownloadmanager.com",
+   "text": "अंतिम अपडेट 2026-11-28 · ऐप, ब्राउज़र एक्सटेंशन और misterdownloadmanager.com पर लागू होता है"
+  },
   "a50c3c69c4e98ed6": {
    "source": "Put downloads in a queue and let the Scheduler start them when nobody needs the connection. When the queue is done, MDM can quit or turn the computer off.",
    "text": "डाउनलोड को कतार में डालें और शेड्यूलर को उन्हें तब शुरू करने दें जब किसी को कनेक्शन की आवश्यकता न हो। जब कतार पूरी हो जाए, तो MDM बंद हो सकता है या कंप्यूटर को बंद कर सकता है।"
@@ -14134,6 +14146,10 @@
    "source": "Start MDM yourself and try the download again.",
    "text": "MDM को खुद शुरू करें और डाउनलोड को फिर से आज़माएँ।"
   },
+  "bc82903fbfcf0b4d": {
+   "source": "Files inside a ZIP on a server (#1775, <x1/>) are read from its table of contents, at its end: Download File Info's one look (<x2/>: the last <x3/> bytes, which tell whether the server sends parts, and hold the table of most archives) enables Preview, and Zip preview (<x4/>) lists the table (<x5/>: the ZIP64 record and the table asked for where they aren't in the end). The parsers are pure functions over bytes, fuzzed (<x6/>): the table at most <x7/> bytes and <x8/> entries, each name at most <x9/>, ZIP64's fields read within their extra field, every entry's data before the table and apart from every other's (overlapping entries refuse the archive), names that aren't plain relative paths left out. The files picked are one download (<x10/>, <x11/>): <x12/> asks for the table again, then each file's local header and data in one range request (<x13/> with the archive's validator), unpacks stored and Deflate data, counts it and checks its CRC-32 against the table's, and hands the bytes to the extraction's writer (<x14/>: the same path checks and staging folder as every extracted entry). The lab server serves made-up ZIPs (<x15/>): ZIP64, a hostile one, overlapping entries, a table too large, and any of them without ranges.",
+   "text": "सर्वर पर एक ZIP के अंदर की फ़ाइलें (#1775, <x1/>) उसकी सामग्री तालिका से, उसके अंत में पढ़ी जाती हैं: डाउनलोड फ़ाइल जानकारी की एक नज़र (<x2/>: अंतिम <x3/> बाइट्स, जो बताती हैं कि सर्वर भाग भेजता है या नहीं, और अधिकांश अभिलेखागार की तालिका रखती हैं) पूर्वावलोकन को सक्षम करती है, और ZIP पूर्वावलोकन (<x4/>) तालिका को सूचीबद्ध करता है (<x5/>: ZIP64 रिकॉर्ड और तालिका जहाँ वे अंत में नहीं हैं, वहाँ के लिए पूछी गई)। पार्सर बाइट्स पर शुद्ध फ़ंक्शन हैं, फ़ज़्ड (<x6/>): तालिका अधिकतम <x7/> बाइट्स और <x8/> एंट्री, प्रत्येक नाम अधिकतम <x9/>, ZIP64 के फ़ील्ड उनके अतिरिक्त फ़ील्ड के भीतर पढ़े जाते हैं, प्रत्येक एंट्री का डेटा तालिका से पहले और हर दूसरे से अलग (ओवरलैपिंग एंट्री संग्रह को अस्वीकार करती हैं), सादे सापेक्ष पाथ नहीं होने वाले नाम छोड़ दिए जाते हैं। चुनी गई फ़ाइलें एक डाउनलोड हैं (<x10/>, <x11/>): <x12/> तालिका को फिर से पूछता है, फिर प्रत्येक फ़ाइल के स्थानीय हेडर और डेटा को एक रेंज अनुरोध में (<x13/> संग्रह के वैलिडेटर के साथ), संग्रहीत और डिफ्लेट डेटा को अनपैक करता है, उसे गिनता है और तालिका के CRC-32 के खिलाफ उसकी जाँच करता है, और बाइट्स को निष्कर्षण के लेखक को सौंपता है (<x14/>: वही पाथ जाँच और स्टेजिंग फ़ोल्डर जैसे हर निष्कर्षित एंट्री)। लैब सर्वर बनाए गए ZIPs (<x15/>) को परोसता है: ZIP64, एक शत्रुतापूर्ण, ओवरलैपिंग एंट्री, एक बहुत बड़ी तालिका, और उनमें से कोई भी बिना रेंज के।"
+  },
   "bc83548866edf95a": {
    "source": "For numbers, set <g1>Wildcard size</g1> to the number of digits. With 3, the files are <x2/>, <x3/> and so on.",
    "text": "संख्याओं के लिए, <g1>वाइल्डकार्ड का आकार</g1> अंकों की संख्या के बराबर रखें। 3 चुनने पर फ़ाइलें <x2/>, <x3/> और इसी तरह होंगी।"
@@ -14349,6 +14365,10 @@
   "bfb5be5f11fb070f": {
    "source": "Your browsers hand it their downloads, and proven open-source tools do the specialist work. <g1>Set up the extension</g1>.",
    "text": "आपके ब्राउज़र इसे अपने डाउनलोड देते हैं, और सिद्ध ओपन-सोर्स टूल विशेषज्ञ का काम करते हैं। <g1>एक्सटेंशन सेट करें</g1>।"
+  },
+  "bfb6903b0d513363": {
+   "source": "<g1><x2/> downloads</g1><g3>every file of every version together</g3>",
+   "text": "<g1><x2/> डाउनलोड</g1><g3>हर संस्करण की हर फ़ाइल एक साथ</g3>"
   },
   "bfd9e614f4714695": {
    "source": "The people who made Mister Download Manager possible: everyone who sent a pull request, opened an issue or joined a conversation on GitHub.",
@@ -15277,6 +15297,10 @@
   "cc8e6434e304ae05": {
    "source": "<g1>Code signing policy</g1><g2>What is signed, who approves it, and privacy</g2>",
    "text": "<g1>कोड साइनिंग नीति</g1><g2>क्या साइन किया गया है, कौन इसे मंज़ूरी देता है, और गोपनीयता</g2>"
+  },
+  "cc8f4e5b14712fff": {
+   "source": "<g1>The home page's live figures</g1>, at <x2/>, in the same <g3>OpenAPI</g3>: how many times MDM's files were downloaded from GitHub (every file of every release) and how many people use the browser add-on (the Chrome Web Store's users, Firefox Add-ons' daily users), each with when it was read. Read again at most every 15 minutes; a source that can't be read keeps its last figure.",
+   "text": "<g1>होम पेज के लाइव आंकड़े</g1>, <x2/> पर, उसी <g3>OpenAPI</g3> में: MDM की फ़ाइलें GitHub से कितनी बार डाउनलोड की गईं (हर रिलीज़ की हर फ़ाइल) और कितने लोग ब्राउज़र ऐड-ऑन का उपयोग करते हैं (Chrome वेब स्टोर के उपयोगकर्ता, Firefox ऐड-ऑन के दैनिक उपयोगकर्ता), प्रत्येक को पढ़ने के समय के साथ। हर 15 मिनट में अधिकतम एक बार फिर से पढ़ें; जो स्रोत पढ़ा नहीं जा सकता वह अपना अंतिम आंकड़ा रखता है।"
   },
   "cca215a39bfa83ba": {
    "source": "<g1>Less memory in the notification area</g1> (<g2>#72</g2>): closed to the tray, or minimized there (on by default), MDM gives the memory it isn't using back to Windows. Task Manager's <g3>Memory</g3> drops from about 50 MB to under 10 MB (with 500 downloads in the list, from 58 to about 14 MB). It gives it back again 2 minutes after hiding, when the clock's ticks and a one-time allocation have brought some back, then every 10 minutes while MDM stays there. After the language list (which needs a font for every script) closes, those fonts are let go: about 70 MB less than before. On Linux the heap's free memory goes back to the system the same way. <g4>MDM uses a lot of memory</g4> explains Task Manager's figures.",
@@ -16642,10 +16666,6 @@
    "source": "The site's <g1>robots.txt</g1> lets every crawler in, and says so for AI in <g2>Content Signals</g2>:",
    "text": "साइट की <g1>robots.txt</g1> हर क्रॉलर को अंदर आने देती है, और <g2>Content Signals</g2> में AI के लिए ऐसा कहती है:"
   },
-  "e0a07e732b511f78": {
-   "source": "<g1><x2/> downloads</g1><g3>of the app, every version together</g3>",
-   "text": "<g1><x2/> डाउनलोड</g1><g3>ऐप के, सभी संस्करण एक साथ</g3>"
-  },
   "e0a6f19ecc901965": {
    "source": "For a <x1/> file: <g2>Open magnet links and .torrent files with Mister Download Manager</g2> is on in <g3>Tasks → Torrent settings</g3>.",
    "text": "एक <x1/> फ़ाइल के लिए: <g2>Mister Download Manager के साथ मैग्नेट लिंक और .torrent फ़ाइलें खोलें</g2> <g3>कार्य → टॉरेंट सेटिंग्स</g3> में चालू है।"
@@ -16773,10 +16793,6 @@
   "e21e4c0c6fc923a2": {
    "source": "MDM's main window on Ubuntu 24.04's GNOME desktop: the categories and a list of downloads, each with the desktop's icon for its type",
    "text": "Ubuntu 24.04 के GNOME डेस्कटॉप पर MDM की मुख्य विंडो: श्रेणियाँ और डाउनलोड की सूची, प्रत्येक में उसके प्रकार के लिए डेस्कटॉप का आइकन है"
-  },
-  "e22a4ae089ee0db8": {
-   "source": "<g1>Live figures</g1>: the home page asks the same service on Cloudflare for how many times the app was downloaded and how many people use the browser add-on, to show them under the contributors. That request carries only what every request to a website does (your IP address and browser details, which Cloudflare sees); the service keeps nothing of it and writes no log. The figures themselves come from GitHub and the browser stores, read by the service, never by your browser.",
-   "text": "<g1>लाइव आंकड़े</g1>: होम पेज Cloudflare पर उसी सेवा से पूछता है कि ऐप को कितनी बार डाउनलोड किया गया और कितने लोग ब्राउज़र ऐड-ऑन का उपयोग करते हैं, ताकि उन्हें योगदानकर्ताओं के तहत दिखाया जा सके। उस अनुरोध में केवल वही जानकारी होती है जो किसी वेबसाइट के हर अनुरोध में होती है (आपका IP पता और ब्राउज़र विवरण, जिसे Cloudflare देखता है); सेवा इसमें से कुछ भी नहीं रखती और कोई लॉग नहीं लिखती। आंकड़े GitHub और ब्राउज़र स्टोर से आते हैं, जिन्हें सेवा पढ़ती है, आपका ब्राउज़र कभी नहीं।"
   },
   "e22ae1bbb5224f5c": {
    "source": "Download manager",
@@ -17030,6 +17046,10 @@
    "source": "Browser extension that sends downloads to a download manager",
    "text": "ब्राउज़र एक्सटेंशन जो डाउनलोड को डाउनलोड मैनेजर पर भेजता है"
   },
+  "e58c3a79f2c454b5": {
+   "source": "A Hugging Face model or dataset (or a folder of one, at a revision) and a GitHub release or tag given to Link grabber (#1772, <x1/>) are listed through the sites' public APIs: the revision is first made its commit, then the tree is read page by page (<x2/>, the same API's only), each entry's path taken only when it is a relative path of plain names inside the folder asked (<x3/>: no <x4/>, absolute path, drive or device name), matched by its names; a file's address is built from the repository, the commit and those names, never taken from the answer. Each file keeps its size and the SHA-256 the site publishes (an LFS file's, a release asset's <x5/>), which becomes the download's checksum. The app makes one package whose folder is the address's path under the download folder, each file in its own folders inside it (<x6/>), unticked; Sites Logins' password for <x7/> goes as an access token (<x8/>) to Hugging Face's own hosts only. The lab server plays both APIs (<x9/>): pages, a gated repository, hostile paths, a wrong digest and rate limits.",
+   "text": "लिंक ग्रैबर (#1772, <x1/>) को दिया गया एक Hugging Face मॉडल या डेटासेट (या उसका एक फ़ोल्डर, एक संशोधन पर) और एक GitHub रिलीज़ या टैग साइटों के सार्वजनिक API के माध्यम से सूचीबद्ध होते हैं: संशोधन को पहले उसकी कमिट बनाया जाता है, फिर ट्री को पेज दर पेज पढ़ा जाता है (<x2/>, वही API का एकमात्र), प्रत्येक एंट्री का पाथ तभी लिया जाता है जब वह पूछे गए फ़ोल्डर के अंदर सादे नामों का एक सापेक्ष पाथ हो (<x3/>: कोई <x4/>, निरपेक्ष पाथ, ड्राइव या डिवाइस नाम नहीं), उसके नामों से मेल खाता हो; एक फ़ाइल का पता रिपॉजिटरी, कमिट और उन नामों से बनाया जाता है, कभी भी उत्तर से नहीं लिया जाता है। प्रत्येक फ़ाइल अपना आकार और SHA-256 रखती है जिसे साइट प्रकाशित करती है (एक LFS फ़ाइल का, एक रिलीज़ एसेट का <x5/>), जो डाउनलोड का चेकसम बन जाता है। ऐप एक पैकेज बनाता है जिसका फ़ोल्डर डाउनलोड फ़ोल्डर के तहत पते का पाथ होता है, प्रत्येक फ़ाइल उसके अंदर अपने स्वयं के फ़ोल्डर में होती है (<x6/>), अनटिक की हुई; <x7/> के लिए साइट लॉगिन का पासवर्ड Hugging Face के अपने होस्ट को ही एक्सेस टोकन (<x8/>) के रूप में जाता है। लैब सर्वर दोनों API (<x9/>) चलाता है: पेज, एक गेटेड रिपॉजिटरी, शत्रुतापूर्ण पाथ, एक गलत डाइजेस्ट और दर सीमाएँ।"
+  },
   "e58fc606693e6852": {
    "source": "Website",
    "text": "वेबसाइट"
@@ -17209,6 +17229,10 @@
   "e7c1fe00134f85f4": {
    "source": "<g1>Download rules</g1> tab: a rule adds the torrents of new articles whose titles it matches, without asking.",
    "text": "<g1>नियम डाउनलोड करें</g1> टैब: नियम उन नए लेखों के टॉरेंट बिना पूछे जोड़ता है, जिनके शीर्षक नियम से मेल खाते हैं।"
+  },
+  "e7d0f38692cc71d5": {
+   "source": "View → Font (<x1/>, #1489) is separate: the font file the interface's text is drawn in (<x2/> in <x3/>; Segoe UI, the system's own, unless chosen) and <x4/>, the percent of the theme's sizes the text is drawn at. <x5/> is the one place the sizes come from, for egui's text styles and for the custom-drawn Win32 controls alike (<x6/>); the layout's own measurements don't change, so text can overflow where a window is tight, but nothing moves. On Windows the DirectWrite rasterizer (<x7/>) draws the chosen file too, and the glyph atlas is rebuilt when the font changes.",
+   "text": "देखें → फ़ॉन्ट (<x1/>, #1489) अलग है: फ़ॉन्ट फ़ाइल जिसमें इंटरफ़ेस का टेक्स्ट खींचा जाता है (<x2/> में <x3/>; Segoe UI, सिस्टम का अपना, जब तक चुना न जाए) और <x4/>, थीम के आकार का प्रतिशत जिस पर टेक्स्ट खींचा जाता है। <x5/> वह एक जगह है जहाँ से आकार आते हैं, egui की टेक्स्ट शैलियों और कस्टम-ड्रॉन Win32 नियंत्रणों दोनों के लिए (<x6/>); लेआउट के अपने माप नहीं बदलते हैं, इसलिए टेक्स्ट ओवरफ़्लो हो सकता है जहाँ एक विंडो तंग है, लेकिन कुछ भी नहीं हिलता है। Windows पर DirectWrite रास्टराइज़र (<x7/>) चुनी गई फ़ाइल को भी खींचता है, और जब फ़ॉन्ट बदलता है तो ग्लिफ़ एटलस का पुनर्निर्माण किया जाता है।"
   },
   "e7d58a9cc03da7fd": {
    "source": "Point at the video in your browser and click the Download video button that appears over it, or paste the page's address into Tasks → Download video from a…",
@@ -18205,10 +18229,6 @@
   "f4594a89ecaca28a": {
    "source": "A greyed icon's ink (its end)",
    "text": "एक ग्रे किए गए आइकन की स्याही (उसका अंत)"
-  },
-  "f471814e3a16b4a2": {
-   "source": "Last updated 2026-11-27 · applies to the app, the browser extension and misterdownloadmanager.com",
-   "text": "अंतिम अपडेट 27-11-2026 · ऐप, ब्राउज़र एक्सटेंशन और misterdownloadmanager.com पर लागू होता है"
   },
   "f47d19d2ae313a6b": {
    "source": "<g1>MDM as an IDM alternative</g1><g2>Spot something wrong? Tell us</g2>",

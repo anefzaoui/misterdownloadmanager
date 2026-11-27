@@ -5,7 +5,7 @@
 import assert from "node:assert/strict";
 import { afterEach, beforeEach, describe, it } from "node:test";
 
-import { CWS_ID, FRESH_S, STATS_PATH, abbrev, countDownloads, forget, isAppFile, parseChromeUsers } from "../src/stats.js";
+import { CWS_ID, FRESH_S, STATS_PATH, abbrev, countDownloads, forget, parseChromeUsers } from "../src/stats.js";
 import worker from "../src/worker.js";
 
 const SITE = "https://misterdownloadmanager.com";
@@ -13,27 +13,27 @@ const realFetch = globalThis.fetch;
 const realCaches = globalThis.caches;
 const realNow = Date.now;
 
-// The names a release really carries (0.5.x), and whether each is the app's own file.
-const NAMES = {
-  "MisterDownloadManager-0.5.3-setup.exe": true,
-  "MisterDownloadManager-0.5.3-portable.zip": true,
-  "MisterDownloadManager-0.5.3-x64.zip": true,
-  "MisterDownloadManager-0.5.3-macos-arm64-experimental.dmg": true,
-  "MisterDownloadManager-0.5.3-linux-x86_64.AppImage": true,
-  "MisterDownloadManager-0.5.3-linux-x86_64.deb": true,
-  "MisterDownloadManager-0.5.3-linux-x86_64.rpm": true,
-  "MisterDownloadManager-0.5.3-linux-x86_64.tar.gz": true,
-  "MisterDownloadManager-0.5.3-symbols-windows-x64.zip": false,
-  "MisterDownloadManager-0.5.3-symbols-linux-x86_64.zip": false,
-  "MisterDownloadManager-0.5.3-extension-chromium.zip": false,
-  "MisterDownloadManager-0.5.3-extension-firefox.xpi": false,
-  "MisterDownloadManager-0.5.3-chrome-web-store.zip": false,
-  "MisterDownloadManager-0.5.3-linux-x86_64.AppImage.zsync": false,
-  "SHA256SUMS.txt": false,
-  "SHA256SUMS.txt.sig": false,
-  "flags.png": false,
-  "ipcountry.bin.xz": false,
-};
+// The names releases really carry (0.5.x, and the data release's): every one of them counts.
+const NAMES = [
+  "MisterDownloadManager-0.5.3-setup.exe",
+  "MisterDownloadManager-0.5.3-portable.zip",
+  "MisterDownloadManager-0.5.3-x64.zip",
+  "MisterDownloadManager-0.5.3-macos-arm64-experimental.dmg",
+  "MisterDownloadManager-0.5.3-linux-x86_64.AppImage",
+  "MisterDownloadManager-0.5.3-linux-x86_64.deb",
+  "MisterDownloadManager-0.5.3-linux-x86_64.rpm",
+  "MisterDownloadManager-0.5.3-linux-x86_64.tar.gz",
+  "MisterDownloadManager-0.5.3-symbols-windows-x64.zip",
+  "MisterDownloadManager-0.5.3-symbols-linux-x86_64.zip",
+  "MisterDownloadManager-0.5.3-extension-chromium.zip",
+  "MisterDownloadManager-0.5.3-extension-firefox.xpi",
+  "MisterDownloadManager-0.5.3-chrome-web-store.zip",
+  "MisterDownloadManager-0.5.3-linux-x86_64.AppImage.zsync",
+  "SHA256SUMS.txt",
+  "SHA256SUMS.txt.sig",
+  "flags.png",
+  "ipcountry.bin.xz",
+];
 
 const cwsPage = (users) =>
   `<html><script>AF_initDataCallback({key: 'ds:0', hash: '2', data:[["${CWS_ID}","https://lh3/x","Mister Download Manager",4.94,72,"https://lh3/y","Hands downloads",null,null,null,null,null,null,null,${users},"extra"]], sideChannel: {}});</script>` +
@@ -114,7 +114,7 @@ describe("the live figures", () => {
     const t = "2026-11-27T12:00:00.000Z";
     assert.deepEqual(await res.json(), {
       checked: t,
-      downloads: { value: 1025, ...at(t) },
+      downloads: { value: 1825, ...at(t) },
       chrome: { value: 300000, ...at(t) },
       firefox: { value: 11286, ...at(t) },
     });
@@ -213,9 +213,11 @@ describe("the live figures", () => {
 });
 
 describe("reading the sources", () => {
-  it("counts only the app's own files", () => {
-    for (const [name, app] of Object.entries(NAMES)) assert.equal(isAppFile(name), app, name);
-    assert.equal(countDownloads([{ assets: Object.keys(NAMES).map((name) => ({ name, download_count: 1 })) }]), 8);
+  it("counts every file of every release", () => {
+    assert.equal(countDownloads([{ assets: NAMES.map((name) => ({ name, download_count: 1 })) }]), NAMES.length);
+    assert.equal(countDownloads([{ assets: [{ name: "a", download_count: 3 }] }, { assets: [{ name: "b", download_count: 4 }] }, {}]), 7);
+    // Nothing that isn't a count: a missing, negative or fractional download_count adds nothing.
+    assert.equal(countDownloads([{ assets: [{ name: "a" }, { name: "b", download_count: -2 }, { name: "c", download_count: 1.5 }, null] }]), 0);
   });
 
   it("reads the Chrome Web Store's users from the page's data, else from its text", () => {

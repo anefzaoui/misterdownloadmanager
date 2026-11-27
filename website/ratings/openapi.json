@@ -4,7 +4,7 @@
     "title": "Mister Download Manager website ratings and figures",
     "version": "1.1.0",
     "summary": "The star ratings visitors give Mister Download Manager on misterdownloadmanager.com, and the home page's live figures.",
-    "description": "Visitors of misterdownloadmanager.com rate Mister Download Manager from one to five stars on the home and download pages. Anyone may read the numbers, and the home page's live figures (the app's downloads, the browser add-on's users). Rating and removing a rating are for the website's own pages: they need the site's Origin and a Cloudflare Turnstile token from a person on the page. One rating per visitor, kept as a salted hash of the IP address, never the address. Source: https://github.com/anefzaoui/misterdownloadmanager/tree/main/website/ratings",
+    "description": "Visitors of misterdownloadmanager.com rate Mister Download Manager from one to five stars on the home and download pages. Anyone may read the numbers, and the home page's live figures (the downloads from GitHub, the browser add-on's users). Rating and removing a rating are for the website's own pages: they need the site's Origin and a Cloudflare Turnstile token from a person on the page. One rating per visitor, kept as a salted hash of the IP address, never the address. Source: https://github.com/anefzaoui/misterdownloadmanager/tree/main/website/ratings",
     "license": { "name": "GPL-3.0-or-later", "identifier": "GPL-3.0-or-later" },
     "contact": { "url": "https://github.com/anefzaoui/misterdownloadmanager/issues" }
   },
@@ -17,8 +17,8 @@
     "/api/stats": {
       "get": {
         "operationId": "getStats",
-        "summary": "The home page's live figures: the app's downloads, the browser add-on's users",
-        "description": "No Origin needed. `downloads`: the download_count of the app's own files (installers, zips, .dmg, AppImage, .deb, .rpm, .tar.gz) in every GitHub release. `chrome`: the users the Chrome Web Store's listing shows. `firefox`: addons.mozilla.org's average daily users. Each with when it was read; a source that can't be read keeps its last good figure and that figure's time, and a figure never read is null. The sources are read again at most every 15 minutes.",
+        "summary": "The home page's live figures: the downloads from GitHub, the browser add-on's users",
+        "description": "No Origin needed. `downloads`: the download_count of every file of every GitHub release, added up. `chrome`: the users the Chrome Web Store's listing shows. `firefox`: addons.mozilla.org's average daily users. Each with when it was read; a source that can't be read keeps its last good figure and that figure's time, and a figure never read is null. The sources are read again at most every 15 minutes.",
         "responses": {
           "200": {
             "description": "The figures",

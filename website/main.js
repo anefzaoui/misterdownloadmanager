@@ -34,7 +34,7 @@
   })();
 
   // ---- The tallies: split-flap counters under the crew -----------------------------------------
-  // The app's downloads and the add-on's users (build.py tallies_board): the build baked in the
+  // The downloads from GitHub and the add-on's users (build.py tallies_board): the build baked in the
   // figures it read; here they are asked again of the ratings Worker (GET /api/stats, each figure
   // with when it was read), and once the board is in view every tile flips up from zero and
   // settles, left to right, in about a second and a half: to the live figures when they came in

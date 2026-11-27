@@ -178,6 +178,10 @@
    "source": "Your rating is removed.",
    "text": "আপনার রেটিং মুছে ফেলা হয়েছে।"
   },
+  "02b5060ed69a72ad": {
+   "source": "<g1>Live figures</g1>: the home page asks the same service on Cloudflare for how many times MDM's files were downloaded from GitHub and how many people use the browser add-on, to show them under the contributors. That request carries only what every request to a website does (your IP address and browser details, which Cloudflare sees); the service keeps nothing of it and writes no log. The figures themselves come from GitHub and the browser stores, read by the service, never by your browser.",
+   "text": "<g1>লাইভ পরিসংখ্যান</g1>: হোম পেজ Cloudflare-এর একই সার্ভিসকে জিজ্ঞাসা করে যে GitHub থেকে MDM-এর ফাইল কতবার ডাউনলোড করা হয়েছে এবং কতজন ব্রাউজার অ্যাড-অন ব্যবহার করেন, যাতে অবদানকারীদের নিচে সেগুলো দেখানো যায়। এই অনুরোধে একটি ওয়েবসাইটে করা প্রতিটি অনুরোধের মতোই তথ্য থাকে (আপনার IP ঠিকানা এবং ব্রাউজারের বিস্তারিত, যা Cloudflare দেখতে পায়); সার্ভিসটি এর কিছুই রাখে না এবং কোনো লগও লেখে না। পরিসংখ্যানগুলো GitHub এবং ব্রাউজার স্টোর থেকে আসে, যা সার্ভিসটি পড়ে, আপনার ব্রাউজার নয়।"
+  },
   "02b5c8ba8b04167b": {
    "source": "AppImage",
    "text": "AppImage"
@@ -269,10 +273,6 @@
   "03660b1f49838403": {
    "source": "Contribute",
    "text": "অবদান রাখুন"
-  },
-  "03d03dddf2309b1d": {
-   "source": "App downloads",
-   "text": "অ্যাপ ডাউনলোড"
   },
   "03db33586ae11954": {
    "source": "<g1>A recording in several parts</g1> (a picture and a sound part yt-dlp left apart) is made one MP4 with all of them. If they can't be joined, the download says so and every part stays as it is.",
@@ -1241,10 +1241,6 @@
   "1058e8be7cc50b7e": {
    "source": "High contrast",
    "text": "উচ্চ বৈসাদৃশ্য"
-  },
-  "105e2af4dcf1adc9": {
-   "source": "Last updated 2026-11-27",
-   "text": "সর্বশেষ আপডেট করা হয়েছে 2026-11-27"
   },
   "10825ce1e4e377bf": {
    "source": "Tasks → Import → From IDM export file",
@@ -2421,6 +2417,10 @@
   "1f98be990d8acb5c": {
    "source": "A torrent's progress window on its Pieces tab: a square for each piece, filled once it's here.",
    "text": "একটি টরেন্টের অগ্রগতির উইন্ডো তার Pieces ট্যাবে: প্রতিটি অংশের জন্য একটি বর্গক্ষেত্র, এটি এখানে আসার সাথে সাথে পূরণ হয়।"
+  },
+  "1fa905d65f474793": {
+   "source": "Last updated 2026-11-28",
+   "text": "সর্বশেষ আপডেট করা হয়েছে 2026-11-28"
   },
   "1fc4673dc3cdd511": {
    "source": "The list keeps the host's link. The direct link is never shown or copied: the services forbid sharing it. It lives only in the download's resume data, and when it expires MDM asks the service for a new one.",
@@ -5386,10 +5386,6 @@
    "source": "Compare it with the same file's line in that release's <x1/> (capital or small letters don't matter). To be sure the list itself is ours, check its signature, <x2/>, with MDM's release key: see <g3>Check your download</g3>.",
    "text": "সেই রিলিজের <x1/>-এর একই ফাইলের লাইনের সাথে এটি তুলনা করুন (বড় বা ছোট অক্ষর কোনো ব্যাপার নয়)। তালিকাটি আমাদের কিনা তা নিশ্চিত হতে, MDM-এর রিলিজ কী দিয়ে এর স্বাক্ষর, <x2/>, যাচাই করুন: <g3>আপনার ডাউনলোড যাচাই করুন</g3> দেখুন।"
   },
-  "47dc0178565f7f38": {
-   "source": "<g1>The home page's live figures</g1>, at <x2/>, in the same <g3>OpenAPI</g3>: how many times the app was downloaded (every GitHub release's installers and packages) and how many people use the browser add-on (the Chrome Web Store's users, Firefox Add-ons' daily users), each with when it was read. Read again at most every 15 minutes; a source that can't be read keeps its last figure.",
-   "text": "<g1>হোম পেজের লাইভ সংখ্যা</g1>, <x2/>-এ, একই <g3>OpenAPI</g3>-তে: অ্যাপটি কতবার ডাউনলোড করা হয়েছে (প্রতিটি GitHub রিলিজের ইনস্টলার ও প্যাকেজ) এবং কতজন ব্রাউজার অ্যাড-অন ব্যবহার করেন (Chrome Web Store-এর ব্যবহারকারী, Firefox Add-ons-এর দৈনিক ব্যবহারকারী), প্রতিটি কখন পড়া হয়েছিল তা সহ। প্রতি 15 মিনিটে সর্বোচ্চ একবার আবার পড়া হয়; যে উৎস পড়া যায় না সেটি তার শেষ সংখ্যা ধরে রাখে।"
-  },
   "4809c370b5c131eb": {
    "source": "its picture: the one your file manager shows (Windows' thumbnail of a photo, a video, a PDF or a document, a program's own icon; on Linux your desktop's thumbnail, or one MDM makes of a photo or a video's frame), else its file type's large icon. Only a finished file has one;",
    "text": "এর ছবি: আপনার ফাইল ম্যানেজার যা দেখায় (একটি ছবি, ভিডিও, পিডিএফ বা ডকুমেন্টের Windows থাম্বনেইল, একটি প্রোগ্রামের নিজস্ব আইকন; Linux-এ আপনার ডেস্কটপের থাম্বনেইল, অথবা MDM একটি ছবি বা ভিডিওর ফ্রেম থেকে যা তৈরি করে), অন্যথায় এর ফাইলের ধরনের বড় আইকন। শুধুমাত্র একটি সম্পূর্ণ ফাইলেরই এটি থাকে;"
@@ -7197,10 +7193,6 @@
   "60e4ea08eb29abeb": {
    "source": "<g1>Stop</g1> on a download in a running queue stays stopped, instead of the queue starting it again a moment later; <g2>Stop All</g2> too (<g3>#341</g3>).",
    "text": "চলমান সারিতে থাকা একটি ডাউনলোডের উপর <g1>বন্ধ করুন</g1> বন্ধ থাকে, সারিটি কিছুক্ষণ পরে আবার শুরু করার পরিবর্তে; <g2>সব বন্ধ করুন</g2>-এর ক্ষেত্রেও তাই (<g3>#341</g3>)।"
-  },
-  "60f1159fcf53ce4a": {
-   "source": "Every version from GitHub; the add-on in the Chrome Web Store and Firefox Add-ons together. As of <x1/>",
-   "text": "GitHub-এর প্রতিটি সংস্করণ; Chrome Web Store এবং Firefox Add-ons-এর অ্যাড-অন একসাথে। <x1/> থেকে"
   },
   "60f3c58ee8c2af81": {
    "source": "<g1>Options where you expect them</g1> Every setting where an IDM user looks first: connections, proxies, folders, sounds.",
@@ -9701,6 +9693,10 @@
   "821e4ece0c595969": {
    "source": "<g1>Keep some speed for everything else</g1> walks through the settings step by step.",
    "text": "<g1>অন্য সবকিছুর জন্য কিছু গতি রাখুন</g1> সেটিংসগুলি ধাপে ধাপে দেখায়।"
+  },
+  "821f8fc23327fd14": {
+   "source": "Every file of every version on GitHub; the add-on in the Chrome Web Store and Firefox Add-ons together. As of <x1/>",
+   "text": "GitHub-এ প্রতিটি সংস্করণের প্রতিটি ফাইল; Chrome ওয়েব স্টোর এবং Firefox অ্যাড-অন-এর অ্যাড-অন একসাথে। <x1/> পর্যন্ত"
   },
   "82214b19e565baff": {
    "source": "Pick it in <g1>View → Theme</g1>, and look at both sides: <g2>View → Always dark</g2> on and off. Check that text is readable and the focus mark visible in both.",
@@ -12358,6 +12354,10 @@
    "source": "<g1>Version 0.2.0</g1> <g2>and later</g2>",
    "text": "<g1>সংস্করণ 0.2.0</g1> <g2>এবং পরবর্তী</g2>"
   },
+  "a50abc11975b25a7": {
+   "source": "Last updated 2026-11-28 · applies to the app, the browser extension and misterdownloadmanager.com",
+   "text": "সর্বশেষ আপডেট করা হয়েছে 2026-11-28 · অ্যাপ, ব্রাউজার এক্সটেনশন এবং misterdownloadmanager.com-এর জন্য প্রযোজ্য"
+  },
   "a50c3c69c4e98ed6": {
    "source": "Put downloads in a queue and let the Scheduler start them when nobody needs the connection. When the queue is done, MDM can quit or turn the computer off.",
    "text": "ডাউনলোডগুলি একটি সারিতে রাখুন এবং যখন সংযোগের প্রয়োজন হবে না, তখন শিডিউলারকে সেগুলি শুরু করতে দিন। সারি শেষ হলে, MDM বন্ধ হয়ে যেতে পারে বা কম্পিউটার বন্ধ করতে পারে।"
@@ -14366,6 +14366,10 @@
    "source": "Your browsers hand it their downloads, and proven open-source tools do the specialist work. <g1>Set up the extension</g1>.",
    "text": "আপনার ব্রাউজারগুলি তাদের ডাউনলোডগুলি MDM-কে দেয়, এবং প্রমাণিত ওপেন-সোর্স টুলগুলি বিশেষ কাজ করে। <g1>এক্সটেনশন সেট আপ করুন</g1>।"
   },
+  "bfb6903b0d513363": {
+   "source": "<g1><x2/> downloads</g1><g3>every file of every version together</g3>",
+   "text": "<g1><x2/> ডাউনলোড</g1><g3>প্রতিটি সংস্করণের প্রতিটি ফাইল একসাথে</g3>"
+  },
   "bfd9e614f4714695": {
    "source": "The people who made Mister Download Manager possible: everyone who sent a pull request, opened an issue or joined a conversation on GitHub.",
    "text": "যারা Mister Download Manager তৈরি করা সম্ভব করেছেন: যারা GitHub-এ পুল রিকোয়েস্ট পাঠিয়েছেন, কোনো সমস্যা তুলে ধরেছেন অথবা আলোচনায় অংশ নিয়েছেন।"
@@ -15293,6 +15297,10 @@
   "cc8e6434e304ae05": {
    "source": "<g1>Code signing policy</g1><g2>What is signed, who approves it, and privacy</g2>",
    "text": "<g1>কোড সাইনিং নীতি</g1><g2>কী সাইন করা হয়, কে অনুমোদন করে এবং গোপনীয়তা</g2>"
+  },
+  "cc8f4e5b14712fff": {
+   "source": "<g1>The home page's live figures</g1>, at <x2/>, in the same <g3>OpenAPI</g3>: how many times MDM's files were downloaded from GitHub (every file of every release) and how many people use the browser add-on (the Chrome Web Store's users, Firefox Add-ons' daily users), each with when it was read. Read again at most every 15 minutes; a source that can't be read keeps its last figure.",
+   "text": "<g1>হোম পেজের লাইভ পরিসংখ্যান</g1>, <x2/>-এ, একই <g3>OpenAPI</g3>-তে: GitHub থেকে MDM-এর ফাইলগুলো কতবার ডাউনলোড করা হয়েছে (প্রতিটি রিলিজের প্রতিটি ফাইল) এবং কতজন লোক ব্রাউজার অ্যাড-অন ব্যবহার করে (Chrome Web Store-এর ব্যবহারকারী, Firefox Add-ons-এর দৈনিক ব্যবহারকারী), প্রতিটি কখন পড়া হয়েছিল তা সহ। প্রতি 15 মিনিটে সর্বোচ্চ একবার আবার পড়া হয়; যে উৎস পড়া যায় না সেটি তার শেষ পরিসংখ্যান ধরে রাখে।"
   },
   "cca215a39bfa83ba": {
    "source": "<g1>Less memory in the notification area</g1> (<g2>#72</g2>): closed to the tray, or minimized there (on by default), MDM gives the memory it isn't using back to Windows. Task Manager's <g3>Memory</g3> drops from about 50 MB to under 10 MB (with 500 downloads in the list, from 58 to about 14 MB). It gives it back again 2 minutes after hiding, when the clock's ticks and a one-time allocation have brought some back, then every 10 minutes while MDM stays there. After the language list (which needs a font for every script) closes, those fonts are let go: about 70 MB less than before. On Linux the heap's free memory goes back to the system the same way. <g4>MDM uses a lot of memory</g4> explains Task Manager's figures.",
@@ -16657,10 +16665,6 @@
   "e07c144638064536": {
    "source": "The site's <g1>robots.txt</g1> lets every crawler in, and says so for AI in <g2>Content Signals</g2>:",
    "text": "সাইটের <g1>robots.txt</g1> প্রতিটি ক্রলারকে প্রবেশ করতে দেয়, এবং <g2>Content Signals</g2>-এ এআই-এর জন্য তা বলে:"
-  },
-  "e0a07e732b511f78": {
-   "source": "<g1><x2/> downloads</g1><g3>of the app, every version together</g3>",
-   "text": "<g1><x2/> ডাউনলোড</g1><g3>অ্যাপের, সব সংস্করণ একসাথে</g3>"
   },
   "e0a6f19ecc901965": {
    "source": "For a <x1/> file: <g2>Open magnet links and .torrent files with Mister Download Manager</g2> is on in <g3>Tasks → Torrent settings</g3>.",
@@ -18225,10 +18229,6 @@
   "f4594a89ecaca28a": {
    "source": "A greyed icon's ink (its end)",
    "text": "একটি ধূসর আইকনের কালি (এর শেষ)"
-  },
-  "f471814e3a16b4a2": {
-   "source": "Last updated 2026-11-27 · applies to the app, the browser extension and misterdownloadmanager.com",
-   "text": "সর্বশেষ আপডেট করা হয়েছে 2026-11-27 · অ্যাপ, ব্রাউজার এক্সটেনশন এবং misterdownloadmanager.com-এর জন্য প্রযোজ্য"
   },
   "f47d19d2ae313a6b": {
    "source": "<g1>MDM as an IDM alternative</g1><g2>Spot something wrong? Tell us</g2>",
