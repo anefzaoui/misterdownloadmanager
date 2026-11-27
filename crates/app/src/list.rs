@@ -86,7 +86,7 @@ const OLD_STATUS_WIDTH: f32 = 65.0;
 /// A cell's text starts 6 px in and ends 3 px before the column's separator, its last pixel.
 pub const CELL_PAD: f32 = 6.0 + 3.0 + 1.0;
 /// The Status cell's text starts after its status icon (#2008): 16 px more than a cell's.
-const STATUS_ICON: f32 = 16.0;
+pub const STATUS_ICON: f32 = 16.0;
 
 /// The Status column's default width (#736) in the interface language `code`, whose 100 % is
 /// written `full`: [`DEFAULT_WIDTHS`]'s, or wider where `measure` (the list's font) needs it
@@ -138,12 +138,13 @@ pub const SAVE_TO: usize = 13;
 /// IDM's default column widths (and ours for Added, room for a 12-hour clock's
 /// `Oct 28 9:05:01 AM 2026`, Source, Peers, Share ratio and Upload speed). Status is wider than
 /// IDM's 65 px (#736): one word and a percentage while a file is checked or a video joined
-/// ("Checking 45%", German's "Zusammenführen 100 %"). 132 px is the least it has: while nobody
+/// ("Checking 45%", German's "Zusammenführen 100 %") after its status icon (#2008). 148 px is
+/// the least it has (132 before the icon): while nobody
 /// resized it, it grows to what the list's font needs in the interface language
 /// ([`status_width`]). Linux draws with fontconfig's interface font, often DejaVu Sans, wider
 /// than Windows' Segoe UI.
 pub const DEFAULT_WIDTHS: [f32; COLS] = [
-    150.0, 20.0, 75.0, 132.0, 75.0, 95.0, 65.0, 200.0, 145.0, 62.0, 64.0, 92.0, 100.0, 220.0,
+    150.0, 20.0, 75.0, 148.0, 75.0, 95.0, 65.0, 200.0, 145.0, 62.0, 64.0, 92.0, 100.0, 220.0,
 ];
 /// Default display order: Source first, then IDM's, a torrent's three columns after its rate, and
 /// Added after Last Try Date.
@@ -2132,10 +2133,10 @@ mod tests {
         let mut st = ListState::default();
         st.apply(Layout {
             status_fits: Some(true),
-            ..saved(147.0)
+            ..saved(163.0)
         });
         assert!(st.status_fits);
-        assert_eq!(st.widths[STATUS], 147.0, "as fitted where it was saved");
+        assert_eq!(st.widths[STATUS], 163.0, "as fitted where it was saved");
         // A layout saved before #736 has no such field.
         let old: Layout = serde_json::from_str(
             r#"{"order":[0,1,2,3,4,5,6,7],"widths":[200,20,75,65,75,95,65,300],
@@ -2150,7 +2151,8 @@ mod tests {
         assert!(st.status_fits);
     }
 
-    /// #736: Status's default is 132 px, or what the font needs where that is more.
+    /// #736: Status's default is 148 px (#2008: 132 and its icon), or what the font needs
+    /// where that is more.
     #[test]
     fn status_width_grows_with_the_font() {
         let texts = finishing_texts("de", "100\u{a0}%");
