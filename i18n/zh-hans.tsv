@@ -27,7 +27,7 @@
 #. while a magnet link's file list is fetched; {n} = peers that answered
 #. {n} = a number (keep the braces as they are)
 #. the trailing ... means it is still going on: keep it
-@plural	Connected to {n} peer, getting the file list...|Connected to {n} peers, getting the file list...	已连接到 {n} 个节点，正在获取文件列表...
+@plural	Connected to {n} peer, getting the file list...|Connected to {n} peers, getting the file list...	已连接到 {n} 个节点，正在获取文件列表…
 #. count in the Add torrent window
 #. where a magnet's peers came from: the DHT; {n} = the computers it knows now; {peers} = "3 peers"
 #. {n} = a number (keep the braces as they are)
@@ -40,7 +40,7 @@
 #. while a magnet link's file list is fetched; {n} = peers found so far (none answered yet)
 #. {n} = a number (keep the braces as they are)
 #. the trailing ... means it is still going on: keep it
-@plural	Found {n} peer, connecting...|Found {n} peers, connecting...	已找到 {n} 个节点，正在连接...
+@plural	Found {n} peer, connecting...|Found {n} peers, connecting...	已找到 {n} 个节点，正在连接…
 #. count in rssdlg.rs
 #. RSS feeds window, Download rules: how many articles the feeds hold now that the rule matches (it adds only new ones)
 #. {n} = a number (keep the braces as they are)
@@ -148,7 +148,7 @@
 #. event log entry: trackers from the public tracker list (Torrent settings) were added to a torrent
 #. {n} = a number (keep the braces as they are)
 #, machine
-@plural	{n} tracker added from the public list|{n} trackers added from the public list	已从公共列表中添加 {n} 个跟踪器
+@plural	{n} tracker added from the public list|{n} trackers added from the public list	已从公共列表中添加 {n} 个 Tracker
 #. count in the Add torrent window
 #. where a magnet's peers came from: {n} = trackers asked; {peers} = "3 peers"
 #. {n} = a number (keep the braces as they are)
@@ -210,7 +210,7 @@
 	&Start now	立即开始(&S)
 #. text in the Options window
 #. under Download panels site exclusions list
-	(separate by spaces; * matches anything)	(用空格分隔；* 匹配任意内容)
+	(separate by spaces; * matches anything)	（用空格分隔；* 匹配任意内容）
 #. text in the Options window
 	(separate names by spaces)	（用空格分隔名称）
 #. text in rssdlg.rs
@@ -284,11 +284,11 @@
 	A playlist's videos are downloaded whole	播放列表中的视频将完整下载
 #. message or event log entry in the main window
 #, machine
-	A private torrent: the public tracker list isn't added	私有种子：未添加公共跟踪器列表
+	A private torrent: the public tracker list isn't added	私有种子：未添加公共 Tracker 列表
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites: the tooltip of the profile box
 #, machine
-	A profile's name or its folder. Empty: the profile used last. For a browser built on Chromium that isn't listed (Helium, Thorium...), choose Chromium and its profile's folder.	配置文件的名称或其文件夹。留空：使用上次的配置文件。对于未列出的基于 Chromium 的浏览器（Helium、Thorium...），选择 Chromium 及其配置文件文件夹。
+	A profile's name or its folder. Empty: the profile used last. For a browser built on Chromium that isn't listed (Helium, Thorium...), choose Chromium and its profile's folder.	配置文件的名称或其文件夹。留空：使用上次的配置文件。对于未列出的基于 Chromium 的浏览器（Helium、Thorium…），选择 Chromium 及其配置文件文件夹。
 #. text in whereis.rs
 #. the tooltip of where a download's server is, when a proxy carries the download
 	A proxy carries this download: the place and the time are the proxy's, not the server's.	此下载任务通过代理传输：显示的位置和时间来自代理，而非服务器。
@@ -378,7 +378,7 @@
 #. text in the Options window
 #. the trailing ... means it is still going on: keep it
 #, machine
-	Add browser...	添加浏览器...
+	Add browser...	添加浏览器…
 #. text in categories.rs; text in a dialog box
 	Add category	添加类别
 #. button in rssdlg.rs
@@ -413,7 +413,7 @@
 #. text in the Add torrent window
 #. Torrent settings: add the trackers of a public tracker list (its address in the box below) to torrents that aren't private, so they find more peers
 #, machine
-	Add the trackers of this public list to public torrents:	将此公共列表中的跟踪器添加到公共种子：
+	Add the trackers of this public list to public torrents:	将此公共列表中的 Tracker 添加到公共种子：
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: add the torrents to the list without starting them
 	Add them without starting them	添加但不启动
@@ -433,7 +433,7 @@
 #. button in the Options window
 #. button: add a debrid service account (opens the sign-in)
 #. the trailing ... means it opens a window: keep it
-	Add...	添加...
+	Add...	添加…
 #. message or event log entry in the main window
 #. event log entry: an RSS download rule added this torrent; {rule} is the rule's name, {feed} the feed's
 #, machine
@@ -450,7 +450,7 @@
 #. text in preview.rs
 #. label in the preview pane: when the download was added to the list
 #, machine
-	Added:	添加时间:
+	Added:	添加时间：
 #. text in the Batch download window; text in a dialog box; label in the Options window; text in a download's progress window
 #. noun: the web address (URL)
 #. column title: the web address (URL)
@@ -576,7 +576,7 @@
 #. text in the Options window
 #. Options → Connection → DNS: a DNS server the user types in
 #. the trailing ... means it is still going on: keep it
-	Another DNS...	其他 DNS...
+	Another DNS...	其他 DNS…
 #. text in torrent downloads
 #. starting a torrent whose destination another listed download claims
 #, machine
@@ -625,7 +625,7 @@
 #. button in the Options window
 #. Options → Archives: button: edit the list of passwords tried on encrypted archives
 #. the trailing ... means it opens a window: keep it
-	Archive passwords...	压缩包密码...
+	Archive passwords...	压缩包密码…
 #. group box title in the Options window; text in the Options window
 #. Options → Archives: group box title
 #. tab title: extracting downloaded archives, and Link grabber
@@ -663,12 +663,12 @@
 #. text in the Options window
 #. Options → Add an account: the sign-in is starting or being checked
 #. the trailing ... means it is still going on: keep it
-	Asking the service...	正在请求服务...
+	Asking the service...	正在请求服务…
 #. text in the Options window
 #. Options → Proxy / Socks: Test is running
 #. Options → DNS settings: the test is running
 #. the trailing ... means it is still going on: keep it
-	Asking...	正在查询...
+	Asking...	正在查询…
 #. text in the Download video window
 #. a choice in the Download video window: only the sound; {type} is MP3, M4A…
 #, machine
@@ -785,7 +785,7 @@
 #. button in categories.rs; button in the Options window
 #. the trailing ... means it opens a window: keep it
 #, machine
-	Browse...	浏览...
+	Browse...	浏览…
 #. text in the Options window
 #. Site rules: column title: "Yes" when the rule asks the way a browser connects from the first request
 #, machine
@@ -819,7 +819,7 @@
 #. text in the Options window
 #. Options → Download panels: the size of the download button over videos, chosen under it (Automatic / Full / Compact)
 #, machine
-	Button size:	按钮大小:
+	Button size:	按钮大小：
 #. message or event log entry in the main window
 #, machine
 	by batch download	通过批量下载
@@ -958,22 +958,22 @@
 #. Helpers: MDM is asking whether a newer version of a helper exists
 #. the trailing ... means it is still going on: keep it
 #, machine
-	Checking for updates...	正在检查更新...
+	Checking for updates...	正在检查更新…
 #. text in gallerydlg.rs
 #. in Download a gallery, while gallery-dl checks the address (offline)
 #. the trailing ... means it is still going on: keep it
 #, machine
-	Checking the address with gallery-dl...	正在使用 gallery-dl 检查地址...
+	Checking the address with gallery-dl...	正在使用 gallery-dl 检查地址…
 #. text in the Checksum window
 #. why Verify is greyed: the file is being checked
 #. the trailing ... means it is still going on: keep it
 #, machine
-	Checking the file...	正在检查文件...
+	Checking the file...	正在检查文件…
 #. text in helpers.rs
 #. Video helpers: a program just chosen is being checked
 #. the trailing ... means it is still going on: keep it
 #, machine
-	Checking the program...	正在检查程序...
+	Checking the program...	正在检查程序…
 #. text in the download list (sizes, speeds, status)
 #. the list's Status column while a torrent's files or a finished file are checked (against the torrent's hashes or a checksum); {percent} how much is checked, e.g. "42%". One short word: the column is narrow
 #, machine
@@ -982,7 +982,7 @@
 #. in the browser extension's window, while it reads whether the browsers can reach MDM (a moment, usually)
 #. Test browser integration, while it reads where browser integration stands (a moment, usually)
 #. the trailing ... means it is still going on: keep it
-	Checking...	正在检查...
+	Checking...	正在检查…
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Chile	智利
@@ -1125,7 +1125,7 @@
 	Connected: downloads from your browser now come here.	已连接：浏览器下载的文件现在会转到这里。
 #. text in a download's progress window
 #. the trailing ... means it is still going on: keep it
-	Connecting...	正在连接...
+	Connecting...	正在连接…
 #. text in the Options window
 #. tab title: connection settings
 	Connection	连接
@@ -1141,7 +1141,7 @@
 #. File Properties button: opens the download's own request settings (User-Agent, headers, connections, proxy)
 #. the trailing ... means it is still going on: keep it
 #, machine
-	Connection...	连接...
+	Connection...	连接…
 #. text in the Options window
 #. Site rules: column title: the number of connections (empty: the default)
 #, machine
@@ -1522,7 +1522,7 @@
 #. RSS feeds window: add the selected article's torrent (opens Add torrent)
 #. the trailing ... means it opens a window: keep it
 #, machine
-	Download...	下载...
+	Download...	下载…
 #. text in a download's progress window
 #. label before the amount received so far
 #. column title: bytes this connection received
@@ -1545,28 +1545,28 @@
 #. text in the Download video window
 #. the trailing ... means it is still going on: keep it
 #, machine
-	Downloading and verifying ffmpeg (about 80 MB)...	正在下载并验证 ffmpeg（约 80 MB）...
+	Downloading and verifying ffmpeg (about 80 MB)...	正在下载并验证 ffmpeg（约 80 MB）…
 #. text in gallerydlg.rs
 #. the trailing ... means it is still going on: keep it
 #, machine
-	Downloading and verifying gallery-dl...	正在下载并验证 gallery-dl...
+	Downloading and verifying gallery-dl...	正在下载并验证 gallery-dl…
 #. text in the Download video window
 #. the trailing ... means it is still going on: keep it
 #, machine
-	Downloading and verifying Node.js (40 to 60 MB)...	正在下载并验证 Node.js (40 到 60 MB)...
+	Downloading and verifying Node.js (40 to 60 MB)...	正在下载并验证 Node.js（40 到 60 MB）…
 #. text in the Download video window
 #. the trailing ... means it is still going on: keep it
 #, machine
-	Downloading and verifying yt-dlp...	正在下载并验证 yt-dlp...
+	Downloading and verifying yt-dlp...	正在下载并验证 yt-dlp…
 #. text in helpers.rs
 #. Video helpers: MDM's own yt-dlp is being downloaded
 #. the trailing ... means it is still going on: keep it
 #, machine
-	Downloading MDM's own copy...	正在下载 MDM 自带的 yt-dlp...
+	Downloading MDM's own copy...	正在下载 MDM 自带的 yt-dlp…
 #. text in helpers.rs
 #. Helpers: MDM's own copy of a helper is being downloaded (where there was none, or in place of the system's); {percent} = how far, a number
 #, machine
-	Downloading MDM's own copy... {percent}%	正在下载 MDM 自己的副本... {percent}%
+	Downloading MDM's own copy... {percent}%	正在下载 MDM 自己的副本… {percent}%
 #. text in archtest.rs
 #. in a download's log: after its archive test found damaged files, only their bytes are downloaded again from the same server; {size} like "1.20 MB"
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
@@ -1575,11 +1575,11 @@
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. Check for updates, while Update now downloads; {percent} like "42%"
 #, machine
-	Downloading the update... {percent}	正在下载更新... {percent}
+	Downloading the update... {percent}	正在下载更新… {percent}
 #. text in helpers.rs
 #. Helpers: a newer version of a helper is being downloaded; {percent} = how far, a number
 #, machine
-	Downloading the update... {percent}%	正在下载更新... {percent}%
+	Downloading the update... {percent}%	正在下载更新… {percent}%
 #. text in the download list; text in the Options window
 #. tab title: download settings
 #, machine
@@ -1670,7 +1670,7 @@
 #. button in the Options window
 #. the trailing ... means it opens a window: keep it
 #, machine
-	Edit list ...	编辑列表...
+	Edit list ...	编辑列表…
 #. text in the Options window
 #, machine
 	Edit login	编辑登录信息
@@ -1682,7 +1682,7 @@
 #. verb: edit the item
 #. the trailing ... means it opens a window: keep it
 #, machine
-	Edit...	编辑...
+	Edit...	编辑…
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Egypt	埃及
@@ -1812,7 +1812,7 @@
 #. button in the Options window
 #. the trailing ... means it opens a window: keep it
 #, machine
-	Export...	导出...
+	Export...	导出…
 #. text in the Options window
 #, machine
 	Extend the availability of Manifest 2 Chrome extensions	延长 Manifest 2 Chrome 扩展的可用期限
@@ -1830,7 +1830,7 @@
 #. text in the Options window
 #. Options → Archives check box, greyed: HatchZip (a program's name, hatchzip.dev its site) isn't installed
 #, machine
-	Extract in place with HatchZip (hatchzip.dev, not installed)	用 HatchZip (hatchzip.dev，未安装) 就地解压
+	Extract in place with HatchZip (hatchzip.dev, not installed)	用 HatchZip（hatchzip.dev，未安装）就地解压
 #. text in the Options window
 #. Options → Archives check box: HatchZip (a program's name) removes the archive while extracting it, so only the extracted files need disk space
 #, machine
@@ -1842,12 +1842,12 @@
 #. text in extracting archives (a download's log, the Archive password window)
 #. the trailing ... means it is still going on: keep it
 #, machine
-	Extracting the archive...	正在解压压缩包...
+	Extracting the archive...	正在解压压缩包…
 #. message or event log entry in the main window
 #. a download's status: its archive is being extracted (#37)
 #. the trailing ... means it is still going on: keep it
 #, machine
-	Extracting...	正在解压...
+	Extracting...	正在解压…
 #. text in a dialog box
 #. label over the list of the downloads of the group that failed
 #, machine
@@ -1933,7 +1933,7 @@
 #. text in preview.rs
 #. label in the preview pane: whether the downloaded file is still where it was saved
 #, machine
-	File:	文件:
+	File:	文件：
 #. text in a download's progress window; text in the Add torrent window
 #. tab title: the torrent's files
 #, machine
@@ -1960,7 +1960,7 @@
 #. File Properties button that opens the selected torrent's file list
 #. the trailing ... means it opens a window: keep it
 #, machine
-	Files...	文件...
+	Files...	文件…
 #. button in the Find window
 #. verb: button that starts the search
 #, machine
@@ -2005,12 +2005,12 @@
 #. text in preview.rs
 #. label in the preview pane: when the download finished
 #, machine
-	Finished:	完成时间:
+	Finished:	完成时间：
 #. text in a download's progress window
 #. a download's status: every byte is in, the file is being written out and given its name
 #. the trailing ... means it is still going on: keep it
 #, machine
-	Finishing...	正在完成...
+	Finishing...	正在完成…
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Finland	芬兰
@@ -2203,7 +2203,7 @@
 #. still going on; {n} = the seconds it has taken so far ("s" = seconds)
 #. {n} = a number (keep the braces as they are)
 #, machine
-	Getting the file list from peers...  {n} s	正在从节点获取文件列表... {n} 秒
+	Getting the file list from peers...  {n} s	正在从节点获取文件列表… {n} 秒
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Ghana	加纳
@@ -2291,7 +2291,7 @@
 #. button in Download video: where MDM takes yt-dlp and ffmpeg from
 #. the trailing ... means it opens a window: keep it
 #, machine
-	Helpers...	帮助程序...
+	Helpers...	帮助程序…
 #. text in the queues
 #. what the computer does when the queue is done (verb: hibernate it)
 #, machine
@@ -2388,7 +2388,7 @@
 #. button in the Options window
 #. the trailing ... means it opens a window: keep it
 #, machine
-	Import...	导入...
+	Import...	导入…
 #. value in a column's filter list in the download list
 #, machine
 	In a queue	在队列中
@@ -2453,7 +2453,7 @@
 #. text in extracting archives (a download's log, the Archive password window)
 #. in the "7-Zip needed" window, under why (Linux: 7-Zip comes from the distribution's packages, named 7zip or p7zip)
 #, machine
-	Install your system's 7zip (or p7zip) package, then right-click the download and choose Extract.	安装您系统的 7zip (或 p7zip) 软件包，然后右键单击下载并选择“解压”。
+	Install your system's 7zip (or p7zip) package, then right-click the download and choose Extract.	安装您系统的 7zip（或 p7zip）软件包，然后右键单击下载并选择“解压”。
 #. text in helpers.rs; text in the Download video window
 #. button: download and install the yt-dlp program
 #, machine
@@ -2466,7 +2466,7 @@
 #. Check for updates, after Update now downloaded it: unpacking and putting the new version in place
 #. the trailing ... means it is still going on: keep it
 #, machine
-	Installing the update...	正在安装更新...
+	Installing the update...	正在安装更新…
 #. text in the Options window
 #. Options → Archives: where extracted files go
 #, machine
@@ -2635,7 +2635,7 @@
 #. button in the Options window
 #. the trailing ... means it opens a window: keep it
 #, machine
-	Keys...	按键...
+	Keys...	按键…
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Kiribati	基里巴斯
@@ -2742,7 +2742,7 @@
 #. text in requestedit.rs
 #. Site rule / a download's Connection settings: a line of request headers isn't "Name: value"; {line} is its number
 #, machine
-	Line {line}: write a header as Name: value	第 {line} 行：请将标头写为“名称: 值”
+	Line {line}: write a header as Name: value	第 {line} 行：请将标头写为“名称： 值”
 #. message or event log entry in the main window; window title in the Link grabber window; group box title in the Options window
 #. Options → Archives: group box title
 #, machine
@@ -2822,12 +2822,12 @@
 #. Video helpers: MDM is asking the JavaScript runtimes on the computer (Node.js, Deno...) for their versions, to see which one yt-dlp can use
 #. the trailing ... means it is still going on: keep it
 #, machine
-	Looking for a JavaScript runtime on this computer...	正在此计算机上查找 JavaScript 运行时...
+	Looking for a JavaScript runtime on this computer...	正在此计算机上查找 JavaScript 运行时…
 #. text in the Add torrent window
 #. while a magnet link's file list is fetched, before any peer is found
 #. the trailing ... means it is still going on: keep it
 #, machine
-	Looking for peers...	正在查找节点...
+	Looking for peers...	正在查找节点…
 #. text in crashui.rs
 #. crash report window: looking on GitHub for an issue about the same problem
 #, machine
@@ -2835,21 +2835,21 @@
 #. text in the Options window
 #. the trailing ... means it is still going on: keep it
 #, machine
-	Looking for your default browser...	正在查找您的默认浏览器...
+	Looking for your default browser...	正在查找您的默认浏览器…
 #. text in a dialog box
 #. tooltip of Download File Info's greyed Preview button while MDM asks the server whether it can look inside the ZIP (#1775)
 #. the trailing ... means it is still going on: keep it
 #, machine
-	Looking inside the ZIP...	正在查看 ZIP 文件内部...
+	Looking inside the ZIP...	正在查看 ZIP 文件内部…
 #. text in the Download video window
 #. the trailing ... means it is still going on: keep it
 #, machine
-	Looking the page up...	正在查找页面...
+	Looking the page up...	正在查找页面…
 #. text in preview.rs
 #. the preview pane: still looking whether the file is there
 #. the trailing ... means it is still going on: keep it
 #, machine
-	Looking...	正在查找...
+	Looking...	正在查找…
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Luxembourg	卢森堡
@@ -2989,7 +2989,7 @@
 #. remote control page (on a phone): MDM can't be reached now; the page keeps trying by itself
 #. the trailing ... means it is still going on: keep it
 #, machine
-	MDM does not answer. Trying again...	MDM 没有响应。正在重试...
+	MDM does not answer. Trying again...	MDM 没有响应。正在重试…
 #. text in helpers.rs
 #. Video helpers: MDM can't download this helper on this Windows (ffmpeg on 32-bit Windows); "Use another program" is the button below
 #, machine
@@ -3035,11 +3035,11 @@
 #. a video's status while its picture and sound are joined into one file (ffmpeg)
 #. the trailing ... means it is still going on: keep it
 #, machine
-	Merging...	正在合并...
+	Merging...	正在合并…
 #. text in the download list (sizes, speeds, status)
 #. a video's status while its picture and sound are joined into one file (ffmpeg); {percent} how far, e.g. "45%"
 #, machine
-	Merging... ({percent})	正在合并... ({percent})
+	Merging... ({percent})	正在合并… ({percent})
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Mexico	墨西哥
@@ -3110,7 +3110,7 @@
 #. text in the Options window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
-	Mister Download Manager writes every connection straight into the final\nfile (a sparse part file next to it), so no temporary directory and no\nassembling step are needed.	Mister Download Manager 将每个连接的数据直接写入最终文件\n（旁边是稀疏分块文件），因此无需临时目录，\n也无需合并步骤。
+	Mister Download Manager writes every connection straight into the final\nfile (a sparse part file next to it), so no temporary directory and no\nassembling step are needed.	Mister Download Manager 将每个连接的数据直接写入最终文件\n（旁边是稀疏分块文件），因此无需临时文件夹，\n也无需合并步骤。
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. {version} = a version number (keep the braces as they are)
 #, machine
@@ -3217,7 +3217,7 @@
 #. message or event log entry in the main window
 #. the trailing ... means it is still going on: keep it
 #, machine
-	Moving the file...	正在移动文件...
+	Moving the file...	正在移动文件…
 #. message or event log entry in the main window
 #. event log: an unfinished download's part file is being moved to another folder; {folder} is that folder
 #, machine
@@ -3226,7 +3226,7 @@
 #. a download's status: its unfinished file is being moved to another folder
 #. the trailing ... means it is still going on: keep it
 #, machine
-	Moving...	正在移动...
+	Moving...	正在移动…
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Mozambique	莫桑比克
@@ -3807,7 +3807,7 @@
 #. button in a dialog box
 #. the trailing ... means it opens a window: keep it
 #, machine
-	Open with...	打开方式...
+	Open with...	打开方式…
 #. message or event log entry in the main window; text in the tray icon's menu
 #. plural noun: opens the Options window (settings)
 #, machine
@@ -3847,7 +3847,7 @@
 #. Options → Remote button: shows a code (and a QR code) that pairs a phone
 #. the trailing ... means it opens a window: keep it
 #, machine
-	Pair a device...	配对设备...
+	Pair a device...	配对设备…
 #. text in remote.rs
 #. remote control page (on a phone): title of the pairing screen
 #, machine
@@ -3992,7 +3992,7 @@
 #. text in the Options window
 #. Options → General: shown inside the shortcut recorder box while waiting for the user to press a 2-key or 3-key shortcut (#558)
 #. the trailing ... means it is still going on: keep it
-	Press keys...	请按下组合键...
+	Press keys...	请按下组合键…
 #. button in a dialog box; text in a dialog box
 #. verb: Download File Info's button; for a ZIP, it lists the files inside it to pick those to download (#1775)
 #, machine
@@ -4094,21 +4094,21 @@
 #. text in the Add torrent window
 #. the trailing ... means it is still going on: keep it
 #, machine
-	Reading the file list...	正在读取文件列表...
+	Reading the file list...	正在读取文件列表…
 #. text in the Add torrent window
 #. the trailing ... means it is still going on: keep it
 #, machine
-	Reading the torrent...	正在读取种子...
+	Reading the torrent...	正在读取种子…
 #. text in zippreview.rs
 #. Zip preview, while the ZIP's list of files is being read from its server
 #. the trailing ... means it is still going on: keep it
 #, machine
-	Reading the ZIP's list of files...	正在读取 ZIP 文件的文件列表...
+	Reading the ZIP's list of files...	正在读取 ZIP 文件的文件列表…
 #. message or event log entry in the main window
 #. the status strip while Tasks → Import reads a file; {file} is its name
 #. the trailing ... means it is still going on: keep it
 #, machine
-	Reading {file}...	正在读取 {file}...
+	Reading {file}...	正在读取 {file}…
 #. text in helpers.rs
 #, machine
 	Reads a page and lists every quality the site offers, up to 4K, from YouTube, Vimeo and over a thousand other sites.	读取页面并列出网站提供的所有画质，最高可达 4K，支持 YouTube、Vimeo 及一千多个其他网站。
@@ -4124,7 +4124,7 @@
 #. text in a download's progress window
 #. the trailing ... means it is still going on: keep it
 #, machine
-	Receiving data...	正在接收数据...
+	Receiving data...	正在接收数据…
 #. message or event log entry in the main window
 #. event log entry: Recheck failed, with the reason
 #. {error} = an error message (keep the braces as they are)
@@ -4134,7 +4134,7 @@
 #. a live stream's status: yt-dlp records it (it shows no progress, only the size so far)
 #. the trailing ... means it is still going on: keep it
 #, machine
-	Recording...	正在录制...
+	Recording...	正在录制…
 #. message or event log entry in the main window; text in archtest.rs
 #. window title, verb: download the file again from the start
 #, machine
@@ -4215,7 +4215,7 @@
 #. text in requestedit.rs
 #. Site rule / a download's Connection settings: label above the box of request headers, one a line ("X-Token: abc")
 #, machine
-	Request headers, one a line (Name: value):	请求标头，每行一个（名称: 值）：
+	Request headers, one a line (Name: value):	请求标头，每行一个（名称： 值）：
 #. text in a dialog box
 #. button in the Columns dialog: put the columns back as they first were (order, widths, all shown)
 #, machine
@@ -4333,7 +4333,7 @@
 #. group box title in the Options window
 #. the trailing ... means it is still going on: keep it
 #, machine
-	Save To...	保存到...
+	Save To...	保存到…
 #. text in preview.rs; text in a download's progress window; text in a download's Properties window
 #, machine
 	Save To:	保存到：
@@ -4356,7 +4356,7 @@
 #. a live stream's status: stopped, and what was recorded being made into the video file kept
 #. the trailing ... means it is still going on: keep it
 #, machine
-	Saving...	正在保存...
+	Saving...	正在保存…
 #. tab in the Scheduler window
 #. noun: tab title; when the queue starts and stops
 #, machine
@@ -4484,7 +4484,7 @@
 #. button: opens the DNS's details (how it's asked, its servers, a test)
 #. the trailing ... means it opens a window: keep it
 #, machine
-	Settings...	设置...
+	Settings...	设置…
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Seychelles	塞舌尔
@@ -4671,7 +4671,7 @@
 #. Options → Connection: button: opens the per-site settings (User-Agent, headers, connections)
 #. the trailing ... means it is still going on: keep it
 #, machine
-	Site rules...	站点规则...
+	Site rules...	站点规则…
 #. text in the Options window
 #. column title: the site (and path) a login is for
 #, machine
@@ -4785,23 +4785,23 @@
 #. text in the download list (sizes, speeds, status)
 #. tip of a download's Transfer rate in the list: {limit} is the most this download may take ("512 KB/sec"), set with the Speed Limiter
 #, machine
-	Speed Limiter: at most {limit} for this download	速度限制器：此下载最多 {limit}
+	Speed Limiter: at most {limit} for this download	限速器：此下载最多 {limit}
 #. text in the download list (sizes, speeds, status)
 #. the status bar and the tray icon's tip while the Speed Limiter's limit for all downloads together is on: {limit} is the most they may take together ("1024 KB/sec")
 #, machine
-	Speed Limiter: {limit} for all downloads	速度限制器：所有下载 {limit}
+	Speed Limiter: {limit} for all downloads	限速器：所有下载 {limit}
 #. text in the download list (sizes, speeds, status)
 #. tip of a download's Transfer rate in the list: {limit} is the most all downloads together may take ("1024 KB/sec"), set in the Speed Limiter's settings
 #, machine
-	Speed Limiter: {limit} for all downloads together	速度限制器：所有下载总计 {limit}
+	Speed Limiter: {limit} for all downloads together	限速器：所有下载总计 {limit}
 #. text in the download list (sizes, speeds, status)
 #. the status bar and the tray icon's tip while Downloads → Speed Limiter is turned on: {limit} is the most each download may take ("512 KB/sec")
 #, machine
-	Speed Limiter: {limit} per download	速度限制器：每个下载 {limit}
+	Speed Limiter: {limit} per download	限速器：每个下载 {limit}
 #. text in the download list (sizes, speeds, status)
 #. the status bar and the tray icon's tip while both Speed Limiter limits are on: {one} is the most each download may take ("512 KB/sec"), {all} the most all of them together may take ("1024 KB/sec")
 #, machine
-	Speed Limiter: {one} per download, {all} for all	速度限制器：每个下载 {one}，所有下载总计 {all}
+	Speed Limiter: {one} per download, {all} for all	限速器：每个下载 {one}，所有下载总计 {all}
 #. message or event log entry in the main window
 #. tooltip on the disabled Rename box when the file is one part of a split archive (.part1.rar, .7z.001…)
 #, machine
@@ -4877,7 +4877,7 @@
 #. the first start's video helpers: a helper's download has started, its size not known yet
 #. the trailing ... means it is still going on: keep it
 #, machine
-	Starting...	正在启动...
+	Starting...	正在启动…
 #. text in the Download video window
 #. tooltip of "Exact cut, encoded again" in Download video: what it does
 #, machine
@@ -5058,7 +5058,7 @@
 #. button in the Options window
 #. the trailing ... means it opens a window: keep it
 #, machine
-	Test browser integration...	测试浏览器集成...
+	Test browser integration...	测试浏览器集成…
 #. text in archtest.rs
 #. in a download's log: the archive's damaged parts were downloaded again, and its test now finds no error
 #, machine
@@ -5067,11 +5067,11 @@
 #. in a download's log: its archive is being tested (read back and checked) before the download counts as done
 #. the trailing ... means it is still going on: keep it
 #, machine
-	Testing the archive...	正在测试存档...
+	Testing the archive...	正在测试存档…
 #. text in the download list (sizes, speeds, status)
 #. a download's status while its archive (zip, 7z, rar) is read back and checked before the download counts as done; {percent} how far, e.g. "45%"
 #, machine
-	Testing the archive... ({percent})	正在测试存档... ({percent})
+	Testing the archive... ({percent})	正在测试存档… ({percent})
 #. text in the Scheduler window
 #. Thursday, as short as a calendar's column head (two letters in English)
 #, machine
@@ -5909,7 +5909,7 @@
 #. text in preview.rs
 #. label in the preview pane: the size of the selected downloads added up
 #, machine
-	Total size:	总大小:
+	Total size:	总大小：
 #. text in a download's progress window
 #. column title: a server that lists the peers
 #, machine
@@ -5945,7 +5945,7 @@
 #. text in extracting archives (a download's log, the Archive password window)
 #. the trailing ... means it is still going on: keep it
 #, machine
-	Trying the saved archive passwords...	正在尝试已保存的压缩包密码...
+	Trying the saved archive passwords...	正在尝试已保存的压缩包密码…
 #. text in the Scheduler window
 #. Tuesday, as short as a calendar's column head (two letters in English)
 #, machine
@@ -6002,7 +6002,7 @@
 #. text in the Add torrent window
 #. Torrent settings, under the public tracker list's address: turning the switch off doesn't take away the trackers it added to torrents
 #, machine
-	Turned off, the trackers already added stay.	关闭后，已添加的跟踪器将保留。
+	Turned off, the trackers already added stay.	关闭后，已添加的 Tracker 将保留。
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Tuvalu	图瓦卢
@@ -6164,19 +6164,19 @@
 #. Helpers: the "Use another program..." button's name for a screen reader, on the JavaScript runtime's row (Node.js, Deno, QuickJS or Bun)
 #. the trailing ... means it is still going on: keep it
 #, machine
-	Use another program as the JavaScript runtime...	使用其他程序作为 JavaScript 运行时...
+	Use another program as the JavaScript runtime...	使用其他程序作为 JavaScript 运行时…
 #. text in helpers.rs
 #. Helpers: the "Use another program..." button's name for a screen reader; {name} = the helper (yt-dlp, ffmpeg, gallery-dl)
 #. {name} = a file name (keep the braces as they are)
 #. the trailing ... means it is still going on: keep it
 #, machine
-	Use another program for {name}...	为 {name} 使用其他程序...
+	Use another program for {name}...	为 {name} 使用其他程序…
 #. text in errors.rs; button in helpers.rs; text in the Options window
 #. Video helpers: button: pick a program (yt-dlp or ffmpeg) already on the computer
 #. Options → Archives: button: pick the 7-Zip command line program to extract 7z and RAR archives with (PeaZip's own 7z.exe, a portable copy), instead of the one MDM finds
 #. the trailing ... means it opens a window: keep it
 #, machine
-	Use another program...	使用其他程序...
+	Use another program...	使用其他程序…
 #. text in the Batch download window; checkbox in the Batch download window; text in a dialog box; checkbox in a dialog box
 #, machine
 	Use authorization	使用身份验证
@@ -6260,7 +6260,7 @@
 #. text in requestedit.rs
 #. Site rule / a download's Connection settings: label before the User-Agent box (the name the browser or program gives itself to sites)
 #, machine
-	User-Agent:	用户代理:
+	User-Agent:	用户代理：
 #. text in the Options window
 #, machine
 	User:	用户：
@@ -6301,11 +6301,11 @@
 #. a download's status while the finished file is checked against its checksum
 #. the trailing ... means it is still going on: keep it
 #, machine
-	Verifying...	正在验证...
+	Verifying...	正在验证…
 #. text in the download list (sizes, speeds, status)
 #. a download's status while the finished file is checked against its checksum; {percent} how much is checked, e.g. "45%"
 #, machine
-	Verifying... ({percent})	正在验证... ({percent})
+	Verifying... ({percent})	正在验证… ({percent})
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. {version} = a version number (keep the braces as they are)
 #, machine
@@ -6408,7 +6408,7 @@
 #. text in preview.rs
 #. label in the preview pane: the web page the download was found on
 #, machine
-	Web page:	网页:
+	Web page:	网页：
 #. text in the Scheduler window
 	Wednesday	星期三
 #. text in setup.rs
@@ -6910,12 +6910,12 @@
 #. the progress window's Transfer rate row while the limit for all downloads together applies: {rate} is this download's speed now ("512.000 KB/sec"), {limit} the most all downloads together may take ("1024 KB/sec"). The row is narrow: keep it short
 #. {rate} = a speed such as "1.2 MB/sec" (keep the braces as they are)
 #, machine
-	{rate} (limit for all downloads: {limit})	{rate} (所有下载限制：{limit})
+	{rate} (limit for all downloads: {limit})	{rate}（所有下载限制：{limit}）
 #. text in the download list (sizes, speeds, status)
 #. the progress window's Transfer rate row while a speed limit applies: {rate} is the download's speed now ("512.000 KB/sec"), {limit} the most this download may take ("512 KB/sec"). The row is narrow: keep it short
 #. {rate} = a speed such as "1.2 MB/sec" (keep the braces as they are)
 #, machine
-	{rate} (limit: {limit})	{rate} (限制：{limit})
+	{rate} (limit: {limit})	{rate}（限制：{limit}）
 #. text in helpers.rs
 #. Video helpers: the Deno an earlier version of MDM installed, still used until MDM's own Node.js replaces it (by the next update, or Use MDM's own copy); {runtime} = "Deno" and its version
 #, machine
@@ -7161,7 +7161,7 @@ extension	All	所有
 #. command in the menu of the download button over a video: opens the app's Download video window, with every quality and the subtitles
 #. the trailing ... means it is still going on: keep it
 #, machine
-extension	All qualities and subtitles...	所有画质和字幕...
+extension	All qualities and subtitles...	所有画质和字幕…
 #. text in the browser extension
 #. choice under Send downloads to: an MDM running on another computer of the network, such as a home server; keep the name Mister Download Manager as it is
 #, machine
@@ -7190,7 +7190,7 @@ extension	Browser extension	浏览器扩展
 #. menu command of the download button over a video: opens its settings in Mister Download Manager
 #. the trailing ... means it is still going on: keep it
 #, machine
-extension	Button settings...	按钮设置...
+extension	Button settings...	按钮设置…
 #. text in the browser extension
 #. on the download button over a copy-protected video, after 'Protected video ·': it can't be downloaded; short, lower case
 #, machine
@@ -7273,7 +7273,7 @@ extension	Delete	删除
 #. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): takes the download off the list and deletes its file from the disk (it asks first)
 #. the trailing ... means it is still going on: keep it
 #, machine
-extension	Delete file...	删除文件...
+extension	Delete file...	删除文件…
 #. text in the browser extension
 #. title of the question in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) before a download's file is deleted
 #, machine
@@ -7291,7 +7291,7 @@ extension	Download	下载
 #. command in the menu of the download button over a video: opens the app's Download video window with Part ticked, From set to where the video is playing now, to download only a part of it
 #. the trailing ... means it is still going on: keep it
 #, machine
-extension	Download a part from here...	从此处下载部分...
+extension	Download a part from here...	从此处下载部分…
 #. text in the browser extension
 #. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): downloads the file again from the start
 #, machine
@@ -7506,7 +7506,7 @@ extension	Live	直播
 #. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads), while it asks the app for them
 #. the trailing ... means it is still going on: keep it
 #, machine
-extension	Looking for downloads...	正在查找下载...
+extension	Looking for downloads...	正在查找下载…
 #. text in the browser extension
 #. in the menu that opens from the download button over a video, while the app finds which qualities (resolutions, formats) the video can be downloaded in
 #, machine
@@ -7547,7 +7547,7 @@ extension	Mister Download Manager is busy with other videos	Mister Download Mana
 #. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app didn't answer in time; keep the name Mister Download Manager as it is
 #. the trailing ... means it is still going on: keep it
 #, machine
-extension	Mister Download Manager is busy. Trying again...	Mister Download Manager 正忙。正在重试...
+extension	Mister Download Manager is busy. Trying again...	Mister Download Manager 正忙。正在重试…
 #. text in the browser extension
 #. shown briefly on the download button when the app could not be reached; keep the name Mister Download Manager as it is
 #, machine
@@ -7682,7 +7682,7 @@ extension	Options in Mister Download Manager	在 Mister Download Manager 中设�
 #. button in the toolbar button's popup: open the app's Options
 #. the trailing ... means it is still going on: keep it
 #, machine
-extension	Options...	选项...
+extension	Options...	选项…
 #. text in the browser extension
 #. in the list under the download button over a video, after a sound-only line's bitrate: the sound as the site sends it, not converted (e.g. '128 kbps · original'); lower case; one word
 #, machine
@@ -7784,7 +7784,7 @@ extension	Send to Link grabber	发送到链接抓取器
 #. on the download button over a video right after it was clicked, while the download goes to the app; MDM is Mister Download Manager's short name, keep it as it is; short
 #. the trailing ... means it is still going on: keep it
 #, machine
-extension	Sending to MDM...	正在发送到 MDM...
+extension	Sending to MDM...	正在发送到 MDM…
 #. text in the browser extension
 #. under the extension's name in the toolbar button's popup: downloads go to another Mister Download Manager, a server, at this address; short
 #, machine
@@ -7809,7 +7809,7 @@ extension	Settings	设置
 #. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): opens the system's share sheet for the file
 #. the trailing ... means it is still going on: keep it
 #, machine
-extension	Share...	共享...
+extension	Share...	共享…
 #. text in the browser extension
 #. button on the download button over a video after a download was added: shows that download in the app's window; verb; very short
 #. name of the row of filters in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) (All, Running, Done, Failed), read by screen readers; verb
@@ -7857,7 +7857,7 @@ extension	Start Mister Download Manager	启动 Mister Download Manager
 #. a download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when it has just started and nothing has come yet
 #. the trailing ... means it is still going on: keep it
 #, machine
-extension	Starting...	正在启动...
+extension	Starting...	正在启动…
 #. text in the browser extension
 #. link at the foot of the toolbar button's popup to the creator's GitHub Sponsors page (MDM is free; this is an optional donation)
 #, machine
@@ -8141,7 +8141,7 @@ menu	&Add new download	添加新下载任务(&A)
 #. View → Window system: MDM chooses the window system itself at each start
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menu	&Automatic	&自动
+menu	&Automatic	自动(&A)
 #. menu command in the main window
 #. View → Text: letters drawn the classic way, hinted to whole pixels (crisp, coarse on a dense screen)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
@@ -8152,7 +8152,7 @@ menu	&Classic	经典(&C)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it
 #, machine
-menu	&Columns...	列(&C)...
+menu	&Columns...	列(&C)…
 #. menu command in standard windows
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -8196,13 +8196,13 @@ menu	&Keyboard shortcuts	键盘快捷键(&K)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it
 #, machine
-menu	&Language...	语言(&L)...
+menu	&Language...	语言(&L)…
 #. menu command in the main window
 #. Tasks menu: open Link grabber (links in packages, to tick before adding)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it
 #, machine
-menu	&Link grabber...	链接抓取器(&L)...
+menu	&Link grabber...	链接抓取器(&L)…
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -8234,7 +8234,7 @@ menu	&Reset columns	重置列(&R)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it
 #, machine
-menu	&RSS feeds...	RSS 源(&R)...
+menu	&RSS feeds...	RSS 源(&R)…
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -8282,7 +8282,7 @@ menu	&Video downloads	视频下载(&V)
 #. View menu: submenu choosing the window system MDM's windows use on Linux (X11 through XWayland, or Wayland)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menu	&Window system	&窗口系统
+menu	&Window system	窗口系统(&W)
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -8291,12 +8291,12 @@ menu	Add &batch download	添加批量下载任务(&B)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it
 #, machine
-menu	Add &magnet link...	添加磁力链接(&M)...
+menu	Add &magnet link...	添加磁力链接(&M)…
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it
 #, machine
-menu	Add &new download...	添加新下载(&N)...
+menu	Add &new download...	添加新下载(&N)…
 #. menu command in the main window
 #. View → Theme: picks a theme file or a Base16 or pywal colour scheme, copies it into the themes folder and uses it
 #, machine
@@ -8311,7 +8311,7 @@ menu	Add category	添加类别
 #. menu command in the main window
 #. the trailing ... means it opens a window: keep it
 #, machine
-menu	Add trackers...	添加 Tracker...
+menu	Add trackers...	添加 Tracker…
 #. menu command in the main window
 #. View → Theme: a style theme's name (GNOME's look, the Linux desktop), a name: keep "Adwaita" as written
 #, machine
@@ -8391,18 +8391,18 @@ menu	By Transfer &Rate	按传输速度(&R)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it
 #, machine
-menu	C&ustomize URL List...	自定义 URL 列表(&U)...
+menu	C&ustomize URL List...	自定义 URL 列表(&U)…
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it
 #, machine
-menu	Check for &updates...	检查更新(&U)...
+menu	Check for &updates...	检查更新(&U)…
 #. menu command in the main window
 #. View → Font: a TrueType or OpenType font file on disk to draw the interface's text in
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it
 #, machine
-menu	Choose a font &file...	选择字体文件...(&F)
+menu	Choose a font &file...	选择字体文件…(&F)
 #. menu command in the main window
 #. View → Theme: MDM's own look, the default (IDM's layout, Windows 11's controls)
 #, machine
@@ -8452,7 +8452,7 @@ menu	Direct3D draws with Windows' software renderer (WARP)	Direct3D 使用 Windo
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it
 #, machine
-menu	Download &video from a page...	从页面下载视频(&V)...
+menu	Download &video from a page...	从页面下载视频(&V)…
 #. menu command in the main window
 #. right-click → Torrent, a choice with a check mark: download the torrent's files from their start, to watch a video while it downloads
 #, machine
@@ -8481,7 +8481,7 @@ menu	Extract	解压
 #. right-click → Torrent submenu: open the selected torrent's file list
 #. the trailing ... means it opens a window: keep it
 #, machine
-menu	Files...	文件...
+menu	Files...	文件…
 #. menu command in the main window
 #, machine
 menu	Find (Ctrl-F)	查找 (Ctrl-F)
@@ -8496,12 +8496,12 @@ menu	First and last pieces first	先下载首尾分块
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it
 #, machine
-menu	From &IDM export file...	从 IDM 导出文件(&I)...
+menu	From &IDM export file...	从 IDM 导出文件(&I)…
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it
 #, machine
-menu	From &text file...	从文本文件(&T)...
+menu	From &text file...	从文本文件(&T)…
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -8578,7 +8578,7 @@ menu	Open	打开
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it
 #, machine
-menu	Open &torrent file...	打开种子文件(&T)...
+menu	Open &torrent file...	打开种子文件(&T)…
 #. menu command in the main window
 #, machine
 menu	Open folder	打开文件夹
@@ -8589,7 +8589,7 @@ menu	Open themes folder	打开主题文件夹
 #. menu command in the main window
 #. the trailing ... means it opens a window: keep it
 #, machine
-menu	Open with...	打开方式...
+menu	Open with...	打开方式…
 #. menu command in the main window
 #. View → Draw with: a graphics system's name, usually kept as is
 #, machine
@@ -8672,7 +8672,7 @@ menu	S&cheduler	计划任务(&C)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it
 #, machine
-menu	S&ettings...	设置(&E)...
+menu	S&ettings...	设置(&E)…
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -8729,11 +8729,11 @@ menu	Theme	主题
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it
 #, machine
-menu	To &IDM export file...	导出到 IDM 文件(&I)...
+menu	To &IDM export file...	导出到 IDM 文件(&I)…
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it
-menu	To &text file...	导出到文本文件(&T)...
+menu	To &text file...	导出到文本文件(&T)…
 #. menu command in the main window; menu command in the main window (menus, toolbar, Categories pane)
 #. noun: the toolbar (submenu of View with its settings)
 menu	Toolbar	工具栏
@@ -8744,7 +8744,7 @@ menu	Torrent	种子
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it
 #, machine
-menu	Torrent setti&ngs...	种子设置(&N)...
+menu	Torrent setti&ngs...	种子设置(&N)…
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -8756,7 +8756,7 @@ menu	Turn of&f	关闭(&F)
 #. menu command in the main window
 #. the trailing ... means it opens a window: keep it
 #, machine
-menu	Verify checksum...	验证校验和...
+menu	Verify checksum...	验证校验和…
 #. menu command in the main window
 #. View → Draw with: a graphics system's name (Khronos', used on Linux), usually kept as is
 #, machine
