@@ -1009,17 +1009,25 @@ mod tests {
         );
         let until = std::time::Instant::now() + std::time::Duration::from_secs(20);
         let mut out = Vec::new();
+        let mut zip_taken = false;
         while !q.looks.is_empty() {
             assert!(std::time::Instant::now() < until, "the looks never came");
+            let zip_looking = q.looks.iter().any(|l| l.id == 2);
             out.extend(q.poll(&mut items, &on(), &ctx));
+            // The poll that takes the ZIP's look starts its test (which can't have ended yet):
+            // it is checked now, never released.
+            if zip_looking && !q.looks.iter().any(|l| l.id == 2) {
+                assert!(items[1].testing, "the ZIP is tested");
+                assert!(!out.contains(&Done::Release(2)), "{out:?}");
+                zip_taken = true;
+            }
             std::thread::sleep(std::time::Duration::from_millis(5));
         }
+        assert!(zip_taken);
         assert!(
             out.contains(&Done::Release(1)),
             "{out:?}: not tested while a volume is to come"
         );
-        assert!(!out.contains(&Done::Release(2)), "{out:?}");
-        assert!(items[1].testing, "the ZIP is tested");
         q.stop();
     }
 
