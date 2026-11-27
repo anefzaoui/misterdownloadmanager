@@ -572,6 +572,10 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	American Samoa	Samoa americane
+#. text in extension.rs
+#. a check of Test browser integration (Windows), one short line: an older registry entry for MDM's helper is in the way of the right one; the entry and where it leads show on the line under it
+#, machine
+	An older registry entry is in the way:	È presente una voce del Registro di sistema precedente:
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Andorra	Andorra
@@ -4530,6 +4534,10 @@
 #. text in extension.rs
 #. a check of Test browser integration: the browsers find MDM's helper program
 	The browsers can find Mister Download Manager	I browser riescono a trovare Mister Download Manager
+#. text in extension.rs
+#. under "An older registry entry is in the way" (Test browser integration, Windows): the entry is in the part of the registry 32-bit programs use, which the browsers read before the right entry; it leads to another copy of MDM or to one that was deleted; then what the Set it up button does about it
+#, machine
+	The browsers read it before the right one, and it leads to another copy of Mister Download Manager or to one that is gone. Set it up gives your account an entry of its own, which the browsers read first.	I browser leggono la voce prima di quella corretta e questa rimanda a un'altra copia di Mister Download Manager o a una che non esiste più. Fai clic su Configura per aggiungere una voce per il tuo account, che i browser leggeranno per prima.
 #. text in the Options window
 #. Options → Remote → Status: the settings were changed; they apply on OK
 	The changes apply when you click OK.	Le modifiche verranno applicate quando fai clic su OK.

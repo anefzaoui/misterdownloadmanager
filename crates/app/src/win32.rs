@@ -8639,42 +8639,106 @@ pub fn rename_no_replace(from: &std::path::Path, to: &std::path::Path) -> std::i
     }
 }
 
-/// What each browser's registry entries for the native host lead to: the user's (HKCU) and the
-/// computer's (HKLM), for every key the browsers read (`mdm_ipc::browsers::WINDOWS_HOST_KEYS`).
-fn host_holders() -> Vec<(
-    Option<mdm_ipc::browsers::Holder>,
-    Option<mdm_ipc::browsers::Holder>,
-)> {
-    use mdm_ipc::browsers::{HOST_NAME, Holder, WINDOWS_HOST_KEYS, registered_manifest};
-    use windows_sys::Win32::System::Registry::{HKEY_CURRENT_USER, HKEY_LOCAL_MACHINE};
+/// The default value of the key at `place` (HKLM or HKCU, in its view: #1688), when it is a
+/// string.
+fn reg_string_at(place: &mdm_ipc::browsers::RegPlace) -> Option<String> {
+    use mdm_ipc::browsers::RegView;
+    use windows_sys::Win32::System::Registry::{
+        HKEY_CURRENT_USER, HKEY_LOCAL_MACHINE, RRF_RT_REG_SZ, RRF_SUBKEY_WOW6432KEY,
+        RRF_SUBKEY_WOW6464KEY, RegGetValueW,
+    };
+    let root = if place.machine {
+        HKEY_LOCAL_MACHINE
+    } else {
+        HKEY_CURRENT_USER
+    };
+    // The computer's 32-bit view is WOW6432Node's (32-bit Windows has one view: ignored there).
+    let view = match place.view {
+        Some(RegView::Machine32) => RRF_SUBKEY_WOW6432KEY,
+        Some(RegView::Machine64) => RRF_SUBKEY_WOW6464KEY,
+        _ => 0,
+    };
+    let key: Vec<u16> = place.key.encode_utf16().chain(Some(0)).collect();
+    let mut buf = vec![0u16; 1024];
+    let mut size = (buf.len() * 2) as u32;
+    // SAFETY: registry read into `buf`, whose size in bytes is passed in `size`; a null value
+    // name reads the key's default value.
+    let rc = unsafe {
+        RegGetValueW(
+            root,
+            key.as_ptr(),
+            std::ptr::null(),
+            RRF_RT_REG_SZ | view,
+            std::ptr::null_mut(),
+            buf.as_mut_ptr() as *mut c_void,
+            &mut size,
+        )
+    };
+    if rc != 0 {
+        return None;
+    }
+    let len = (size as usize / 2).saturating_sub(1).min(buf.len());
+    Some(String::from_utf16_lossy(&buf[..len]))
+}
+
+/// What each browser's registry entries for the native host lead to, for every key the browsers
+/// read (`mdm_ipc::browsers::WINDOWS_HOST_KEYS`): the user's (HKCU) and the computer's (HKLM)
+/// in both its views, 32-bit and 64-bit (#1688), each with its key. Off-screen test copies read
+/// a test registry instead (`mdm_ipc::browsers::test_registry`).
+fn host_holders() -> Vec<(&'static str, mdm_ipc::browsers::HostEntries)> {
+    use mdm_ipc::browsers::{
+        HOST_NAME, Holder, HostEntries, RegView, WINDOWS_HOST_KEYS, reg_place, registered_manifest,
+        test_registry,
+    };
+    let test = test_registry().filter(|_| crate::offscreen());
     WINDOWS_HOST_KEYS
         .iter()
         .map(|(key, _)| {
             let entry = format!(r"{key}\{HOST_NAME}");
-            let holder = |root| {
-                reg_string_in(root, &entry, "").map(|v| Holder::of(&registered_manifest(&v)))
+            let holder = |view| {
+                reg_string_at(&reg_place(view, &entry, test.as_deref()))
+                    .map(|v| Holder::of(&registered_manifest(&v)))
             };
-            (holder(HKEY_CURRENT_USER), holder(HKEY_LOCAL_MACHINE))
+            let entries = HostEntries {
+                user: holder(RegView::User),
+                machine32: holder(RegView::Machine32),
+                machine64: holder(RegView::Machine64),
+            };
+            (*key, entries)
         })
         .collect()
 }
 
 /// Where browser integration stands: what a browser looking for the native host finds, for
 /// every key the browsers read: the user's entry (HKCU), or without one the computer's (HKLM),
-/// as the browsers read them (Chromium's launch_context_win.cc). One naming a manifest that is
-/// gone (a copy run from inside a zip, #818) or a helper program that isn't there is the
-/// problem, whatever the others say (Options → General → Test browser integration).
+/// its 32-bit view's first, as the browsers read them (Chromium's launch_context_win.cc). One
+/// naming a manifest that is gone (a copy run from inside a zip, #818) or a helper program that
+/// isn't there is the problem, whatever the others say; a 32-bit entry read instead of the
+/// 64-bit one, when it leads nowhere or elsewhere, says so and where it is (#1688: the 64-bit
+/// one, the one people find, looked right). Options → General → Test browser integration.
 pub fn host_registration() -> crate::extension::Registration {
     use crate::extension::Registration;
-    use mdm_ipc::browsers::Holder;
+    use mdm_ipc::browsers::{HOST_NAME, Holder, RegView};
     let mut ready = false;
     let mut dead = None;
-    for (user, machine) in host_holders() {
-        match user.or(machine) {
+    let mut in_the_way = None;
+    for (key, entries) in host_holders() {
+        if let Some(read) = entries.in_the_way() {
+            let entry = RegView::Machine32.shown(&format!(r"{key}\{HOST_NAME}"));
+            tracing::warn!(
+                "browser integration: {entry} is read before {}: {read:?}",
+                RegView::Machine64.shown(key)
+            );
+            in_the_way = in_the_way.or(Some((entry, read.clone())));
+        }
+        match entries.read() {
             Some(Holder::Alive(_)) => ready = true,
-            Some(gone) => dead = dead.or(Some(gone)),
+            Some(gone) => dead = dead.or(Some(gone.clone())),
             None => {}
         }
+    }
+    if let Some((entry, read)) = in_the_way {
+        return Registration::InTheWay(entry, read);
     }
     match dead {
         Some(Holder::ManifestGone(manifest)) => Registration::Gone(manifest),
@@ -8686,16 +8750,17 @@ pub fn host_registration() -> crate::extension::Registration {
 
 /// At each start, on a thread of its own (#818): when a browser's registration leads nowhere
 /// (`mdm_ipc::browsers::windows_repair`: its manifest or helper gone, such as a copy run from
-/// inside a zip whose temporary folder was deleted), the native host's `--repair` points it at
-/// this copy, for this user. Nothing runs while every one works or there is none: one that works
-/// naming another copy is that copy's, and none is the setup's box unticked.
+/// inside a zip whose temporary folder was deleted; the computer's 32-bit entry too, which the
+/// browsers read first, #1688), the native host's `--repair` points it at this copy, for this
+/// user. Nothing runs while every one works or there is none: one that works naming another copy
+/// is that copy's, and none is the setup's box unticked.
 pub fn repair_browsers() {
     use mdm_ipc::browsers::{Repair, windows_repair};
     let started = std::thread::Builder::new()
         .name("repair-browsers".into())
         .spawn(|| {
-            let needed = host_holders().iter().any(|(user, machine)| {
-                windows_repair(user.as_ref(), machine.as_ref()) != Repair::Keep
+            let needed = host_holders().iter().any(|(_, entries)| {
+                windows_repair(entries.user.as_ref(), entries.machine()) != Repair::Keep
             });
             if !needed {
                 return;
