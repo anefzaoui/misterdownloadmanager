@@ -569,6 +569,10 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 Everything below ships together, in version 0.6.0, the next release.
 
+- ✅ Import: an `.ef2` list's `filename:` lines name its downloads (only a file name: folder parts
+  are left out), shown in Link grabber before they are added
+  ([#1963](https://github.com/anefzaoui/misterdownloadmanager/issues/1963); thanks to
+  [@abdul-karim-mia](https://github.com/abdul-karim-mia))
 - ✅ Each browser's logo before its name in the browser extension's window, the first start's
   browser step and Options → General's browser list, sharp at every display scale; a globe for a
   browser without one
