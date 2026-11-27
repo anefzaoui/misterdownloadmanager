@@ -1985,8 +1985,8 @@ impl OptionsDialog {
             false,
         );
         let about = crate::i18n::t(
-            // i18n: Options → Connection: beside the Site rules... button: what it sets
-            "User-Agent, headers, connections and proxy by site",
+            // i18n: Options → Connection: beside the Site rules... button: what it sets (a User-Agent, request headers, a number of connections, a proxy, each for the sites a rule names)
+            "Connection settings by site",
         );
         let (rect, cut) = winui::label_into(
             &p,
