@@ -1,7 +1,7 @@
-//! Request settings (#1778): a User-Agent, request headers and a number of connections, edited
-//! the same way for a site rule (Options → Connection → Site rules..., with "always the
-//! browser-like connection") and for one download (its Properties → Connection..., with a
-//! proxy), and applied to the engine's request.
+//! Request settings (#1778): a User-Agent, request headers, a number of connections and a proxy,
+//! edited the same way for a site rule (Options → Connection → Site rules..., with "always the
+//! browser-like connection" and the proxy's login, #1960) and for one download (its Properties →
+//! Connection...), and applied to the engine's request.
 
 use egui::{Pos2, Ui, vec2};
 use mdm_ipc::siterules::{self, HeaderError};
@@ -43,27 +43,8 @@ pub fn choose_agent(opts: &mut mdm_engine::Options, agent: String) {
     opts.own_agent = None;
 }
 
-/// A proxy's address as typed (`host:port`, `http://…`, `socks5://…`) with its scheme, or None
-/// when it isn't one the engine takes.
-pub fn proxy_url(typed: &str) -> Option<String> {
-    let typed = typed.trim().trim_end_matches('/');
-    if typed.is_empty() {
-        return None;
-    }
-    let full = if typed.contains("://") {
-        typed.to_owned()
-    } else {
-        format!("http://{typed}")
-    };
-    let url = url::Url::parse(&full).ok()?;
-    let schemes = ["http", "https", "socks5", "socks5h", "socks4", "socks4a"];
-    (schemes.contains(&url.scheme())
-        && url.host_str().is_some_and(|h| !h.is_empty())
-        && matches!(url.path(), "" | "/")
-        && url.query().is_none()
-        && url.username().is_empty())
-    .then(|| full.trim_end_matches('/').to_owned())
-}
+/// A proxy's address as typed, with its scheme (shared with the site rules and the command line).
+pub use mdm_ipc::siterules::proxy_url;
 
 /// A download's own settings (`Item::own`) on top of what Options and the site rules gave it.
 pub fn apply_own(
@@ -99,14 +80,14 @@ pub fn apply_own(
 /// What the fields are for.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum For {
-    /// A site rule: with "always the browser-like connection".
+    /// A site rule: with "always the browser-like connection" and the proxy's login.
     Rule,
-    /// One download: with its proxy.
+    /// One download.
     Download,
 }
 
-/// The proxy choices of a download's settings, in the list's order.
-const PROXY_CHOICES: [&str; 3] = [
+/// The proxy choices of a site rule's or a download's settings, in the list's order.
+pub const PROXY_CHOICES: [&str; 3] = [
     // i18n: a download's Connection settings → Proxy: the proxy set in Options → Proxy / Socks
     crate::i18n::mark("As in Options"),
     // i18n: a download's Connection settings → Proxy: straight to the server, no proxy
@@ -127,6 +108,9 @@ pub struct RequestEdit {
     /// [`PROXY_CHOICES`]'s index.
     pub proxy: usize,
     pub proxy_addr: String,
+    /// A site rule's proxy login (#1960).
+    pub proxy_user: String,
+    pub proxy_pass: String,
     /// Why OK can't take them, shown under the fields.
     pub error: Option<String>,
 }
@@ -138,13 +122,26 @@ pub struct Edited {
     pub headers: Vec<(String, String)>,
     pub connections: Option<u32>,
     pub browser_like: bool,
-    /// As `OwnRequest::proxy`.
+    /// As `OwnRequest::proxy` (and `SiteRule::proxy`).
     pub proxy: Option<String>,
+    /// A site rule's proxy login: user ("" none), password; empty without a proxy of its own.
+    pub proxy_login: (String, String),
+}
+
+/// `proxy` as the choice and the address box show it: None "As in Options", "" "No proxy",
+/// else "This proxy:" and its address.
+fn proxy_choice(proxy: Option<&str>) -> (usize, String) {
+    match proxy {
+        None => (0, String::new()),
+        Some("") => (1, String::new()),
+        Some(addr) => (2, addr.to_owned()),
+    }
 }
 
 impl RequestEdit {
     /// A site rule's fields: its own settings and its number of connections (its exception).
     pub fn rule(rule: &siterules::SiteRule, connections: Option<u32>, default: u32) -> Self {
+        let (proxy, proxy_addr) = proxy_choice(rule.proxy.as_deref());
         RequestEdit {
             what: For::Rule,
             agent: rule.user_agent.clone(),
@@ -152,8 +149,10 @@ impl RequestEdit {
             own_conns: connections.is_some(),
             conns: connections.unwrap_or(default).to_string(),
             browser_like: rule.browser_like,
-            proxy: 0,
-            proxy_addr: String::new(),
+            proxy,
+            proxy_addr,
+            proxy_user: rule.proxy_user.clone(),
+            proxy_pass: rule.proxy_pass.clone(),
             error: None,
         }
     }
@@ -161,11 +160,7 @@ impl RequestEdit {
     /// A download's fields, from its own settings; its connections box starts at what it gets
     /// now (`current`).
     pub fn download(own: &OwnRequest, current: u32) -> Self {
-        let (proxy, proxy_addr) = match own.proxy.as_deref() {
-            None => (0, String::new()),
-            Some("") => (1, String::new()),
-            Some(addr) => (2, addr.to_owned()),
-        };
+        let (proxy, proxy_addr) = proxy_choice(own.proxy.as_deref());
         RequestEdit {
             what: For::Download,
             agent: own.user_agent.clone().unwrap_or_default(),
@@ -175,6 +170,8 @@ impl RequestEdit {
             browser_like: false,
             proxy,
             proxy_addr,
+            proxy_user: String::new(),
+            proxy_pass: String::new(),
             error: None,
         }
     }
@@ -196,9 +193,9 @@ impl RequestEdit {
         } else {
             None
         };
-        let proxy = match (self.what, self.proxy) {
-            (For::Download, 1) => Some(String::new()),
-            (For::Download, 2) => match proxy_url(&self.proxy_addr) {
+        let proxy = match self.proxy {
+            1 => Some(String::new()),
+            2 => match proxy_url(&self.proxy_addr) {
                 Some(_) => Some(self.proxy_addr.trim().to_owned()),
                 None => {
                     return Err(crate::i18n::t(
@@ -210,6 +207,32 @@ impl RequestEdit {
             },
             _ => None,
         };
+        // A login only goes with a proxy of the rule's own; a password alone is a mistake.
+        let proxy_login = if self.what == For::Rule && self.proxy == 2 {
+            let user = self.proxy_user.trim();
+            if user.is_empty() && !self.proxy_pass.is_empty() {
+                return Err(crate::i18n::t(
+                    // i18n: Site rule: a password was typed for the proxy, but no user name
+                    "Type the proxy's user name too, or leave its password empty",
+                )
+                .to_owned());
+            }
+            if user.chars().any(char::is_control) || self.proxy_pass.chars().any(char::is_control) {
+                return Err(crate::i18n::t(
+                    // i18n: Site rule: the proxy's user name or password holds a control character (a line break, a tab)
+                    "The proxy's user name and password can't hold line breaks or tabs",
+                )
+                .to_owned());
+            }
+            let pass = if user.is_empty() {
+                String::new()
+            } else {
+                self.proxy_pass.clone()
+            };
+            (user.to_owned(), pass)
+        } else {
+            (String::new(), String::new())
+        };
         let agent = self.agent.trim();
         if agent.chars().any(char::is_control) {
             return Err(header_error(&HeaderError::BadValue(0)));
@@ -220,12 +243,13 @@ impl RequestEdit {
             connections,
             browser_like: self.what == For::Rule && self.browser_like,
             proxy,
+            proxy_login,
         })
     }
 
     /// The fields from English y `y0` down, in a window of English width `w`: User-Agent,
-    /// headers, connections, then the browser-like connection (a rule) or the proxy (a
-    /// download). Returns the English y under the last one. `enabled` false shows them read
+    /// headers, connections, the browser-like connection (a rule), the proxy, then its login (a
+    /// rule). Returns the English y under the last one. `enabled` false shows them read
     /// only (a running download). `limit`: the most connections Options allows.
     pub fn fields(
         &mut self,
@@ -247,8 +271,12 @@ impl RequestEdit {
             crate::i18n::mark("User-Agent:"),
             // i18n: Site rule / a download's Connection settings: label before the proxy choice
             crate::i18n::mark("Proxy:"),
+            // i18n: Site rule: label before the proxy's user name (its login), under the proxy's address
+            crate::i18n::mark("Proxy user:"),
         ];
-        let col = labels
+        // A download's window has no login row.
+        let shown = if self.what == For::Rule { 3 } else { 2 };
+        let col = labels[..shown]
             .iter()
             .map(|l| 14.0 + winui::text_width(&p, crate::i18n::t(l)).ceil() + 8.0)
             .fold(100.0_f32, f32::max)
@@ -340,58 +368,98 @@ impl RequestEdit {
         );
         winui::name(&spin, conns_caption);
         y += 31.0;
-        match self.what {
-            For::Rule => {
-                winui::checkbox_light_until(
-                    ui,
-                    o + vec2(14.0, y + 3.0),
-                    &mut self.browser_like,
-                    // i18n: Site rule: check box; on, MDM connects the way a browser does from the first request to these sites, instead of only after a site turned it away ("this site lets only browsers through")
-                    "Always connect the way a browser does",
-                    enabled,
-                    Some(o.x + right),
-                );
-                y += 24.0;
+        if self.what == For::Rule {
+            winui::checkbox_light_until(
+                ui,
+                o + vec2(14.0, y + 3.0),
+                &mut self.browser_like,
+                // i18n: Site rule: check box; on, MDM connects the way a browser does from the first request to these sites, instead of only after a site turned it away ("this site lets only browsers through")
+                "Always connect the way a browser does",
+                enabled,
+                Some(o.x + right),
+            );
+            y += 26.0;
+        }
+        winui::text_right(
+            &p,
+            o.x + col - 8.0,
+            o.y + y + 15.0,
+            crate::i18n::t(labels[1]),
+            ink,
+        );
+        let names: Vec<&str> = PROXY_CHOICES.iter().map(|c| crate::i18n::t(c)).collect();
+        let combo_w = names
+            .iter()
+            .map(|n| winui::text_width(&p, n).ceil() + 36.0)
+            .fold(120.0_f32, f32::max)
+            .min((right - col) * 0.55);
+        let combo = winui::combo_light(
+            ui,
+            r(o, col, y + 1.0, combo_w, 21.0),
+            &names,
+            self.proxy,
+            enabled,
+            &format!("request-proxy-{}", y0 as i32),
+        );
+        if let Some(i) = combo {
+            self.proxy = i;
+            self.error = None;
+        }
+        let addr_x = col + combo_w + 8.0;
+        let own_proxy = enabled && self.proxy == 2;
+        let addr = winui::edit_light(
+            ui,
+            r(o, addr_x, y, right - addr_x, 23.0),
+            &mut self.proxy_addr,
+            own_proxy,
+            false,
+        );
+        winui::name(&addr, crate::i18n::t(PROXY_CHOICES[2]));
+        if addr.changed() {
+            self.error = None;
+        }
+        y += 31.0;
+        if self.what == For::Rule {
+            // The proxy's login (#1960): kept with MDM's other secrets.
+            let user_label = crate::i18n::t(labels[2]);
+            let user_ink = if own_proxy {
+                LIGHT_TEXT()
+            } else {
+                LIGHT_DISABLED()
+            };
+            winui::text_right(&p, o.x + col - 8.0, o.y + y + 15.0, user_label, user_ink);
+            // i18n: Site rule: label before the proxy's password, beside its user name
+            let pass_label = crate::i18n::t("Password:");
+            let pass_w = winui::text_width(&p, pass_label).ceil();
+            let half = ((right - col) - 8.0 - pass_w - 8.0) / 2.0;
+            let user = winui::edit_light(
+                ui,
+                r(o, col, y, half, 23.0),
+                &mut self.proxy_user,
+                own_proxy,
+                false,
+            );
+            winui::name(&user, user_label);
+            let pass_x = col + half + 8.0;
+            winui::text_right(
+                &p,
+                o.x + pass_x + pass_w,
+                o.y + y + 15.0,
+                pass_label,
+                user_ink,
+            );
+            let field_x = pass_x + pass_w + 8.0;
+            let pass = winui::password_light(
+                ui,
+                r(o, field_x, y, right - field_x, 23.0),
+                &mut self.proxy_pass,
+                own_proxy,
+            );
+            winui::name(&pass, pass_label);
+            if user.changed() || pass.changed() {
+                self.error = None;
             }
-            For::Download => {
-                winui::text_right(
-                    &p,
-                    o.x + col - 8.0,
-                    o.y + y + 15.0,
-                    crate::i18n::t(labels[1]),
-                    ink,
-                );
-                let names: Vec<&str> = PROXY_CHOICES.iter().map(|c| crate::i18n::t(c)).collect();
-                let combo_w = names
-                    .iter()
-                    .map(|n| winui::text_width(&p, n).ceil() + 36.0)
-                    .fold(120.0_f32, f32::max)
-                    .min((right - col) * 0.55);
-                if let Some(i) = winui::combo_light(
-                    ui,
-                    r(o, col, y + 1.0, combo_w, 21.0),
-                    &names,
-                    self.proxy,
-                    enabled,
-                    &format!("request-proxy-{}", y0 as i32),
-                ) {
-                    self.proxy = i;
-                    self.error = None;
-                }
-                let addr_x = col + combo_w + 8.0;
-                let addr = winui::edit_light(
-                    ui,
-                    r(o, addr_x, y, right - addr_x, 23.0),
-                    &mut self.proxy_addr,
-                    enabled && self.proxy == 2,
-                    false,
-                );
-                winui::name(&addr, crate::i18n::t(PROXY_CHOICES[2]));
-                if addr.changed() {
-                    self.error = None;
-                }
-                y += 31.0;
-            }
+            y += 31.0;
         }
         if let Some(e) = &self.error {
             winui::fit(
@@ -449,31 +517,6 @@ fn header_error(e: &HeaderError) -> String {
 #[cfg(test)]
 mod tests {
     use super::*;
-
-    #[test]
-    fn a_proxy_is_read_with_its_scheme() {
-        assert_eq!(
-            proxy_url("10.0.0.1:3128").as_deref(),
-            Some("http://10.0.0.1:3128")
-        );
-        assert_eq!(
-            proxy_url(" socks5h://proxy.example.test:1080/ ").as_deref(),
-            Some("socks5h://proxy.example.test:1080")
-        );
-        assert_eq!(
-            proxy_url("https://p.example.test").as_deref(),
-            Some("https://p.example.test")
-        );
-        assert_eq!(proxy_url(""), None);
-        assert_eq!(proxy_url("ftp://p.example.test:21"), None);
-        assert_eq!(proxy_url("http://p.example.test/path"), None);
-        assert_eq!(
-            proxy_url("http://user@p.example.test:8080"),
-            None,
-            "logins: Options"
-        );
-        assert_eq!(proxy_url("not a proxy at all"), None);
-    }
 
     #[test]
     fn a_downloads_own_settings_come_last() {
@@ -563,6 +606,50 @@ mod tests {
         let read = edit.read(32).unwrap();
         assert!(read.browser_like);
         assert_eq!(read.connections, None, "unticked: the default");
-        assert_eq!(read.proxy, None, "a rule has no proxy");
+        assert_eq!(read.proxy, None, "As in Options");
+        assert_eq!(read.proxy_login, (String::new(), String::new()));
+    }
+
+    /// #1960: a rule's proxy and its login read back; "No proxy" is "", and a login without a
+    /// proxy of the rule's own isn't kept.
+    #[test]
+    fn a_rules_proxy_reads_back_with_its_login() {
+        let rule = mdm_ipc::siterules::SiteRule {
+            site: "*.example.test".into(),
+            proxy: Some("socks5://127.0.0.1:1080".into()),
+            proxy_user: "ann".into(),
+            proxy_pass: "s3cret".into(),
+            ..Default::default()
+        };
+        let edit = RequestEdit::rule(&rule, None, 8);
+        assert_eq!(
+            (edit.proxy, edit.proxy_addr.as_str()),
+            (2, "socks5://127.0.0.1:1080")
+        );
+        let read = edit.read(32).unwrap();
+        assert_eq!(read.proxy, rule.proxy);
+        assert_eq!(read.proxy_login, ("ann".into(), "s3cret".into()));
+        let mut direct = edit.clone();
+        direct.proxy = 1;
+        let read = direct.read(32).unwrap();
+        assert_eq!(read.proxy.as_deref(), Some(""));
+        assert_eq!(read.proxy_login, (String::new(), String::new()));
+        let mut options = edit.clone();
+        options.proxy = 0;
+        assert_eq!(options.read(32).unwrap().proxy, None);
+        let mut no_user = edit.clone();
+        no_user.proxy_user = " ".into();
+        assert!(no_user.read(32).is_err(), "a password alone");
+        no_user.proxy_pass.clear();
+        assert_eq!(
+            no_user.read(32).unwrap().proxy_login,
+            (String::new(), String::new())
+        );
+        let mut bad = edit.clone();
+        bad.proxy_addr = "ftp://127.0.0.1:21".into();
+        assert!(bad.read(32).is_err());
+        let mut tab = edit;
+        tab.proxy_pass = "a\tb".into();
+        assert!(tab.read(32).is_err());
     }
 }

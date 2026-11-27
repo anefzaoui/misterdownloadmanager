@@ -79,15 +79,18 @@ Each connection writes straight into the file's place on disk, in a part file na
 
 ## Site rules
 
-Some sites want a particular User-Agent, an extra header or fewer connections, or let only browsers through. **Options → Connection → Site rules...** sets these once for every download from a site:
+Some sites want a particular User-Agent, an extra header or fewer connections, let only browsers through, or need a proxy (or none) when the others don't. **Options → Connection → Site rules...** sets these once for every download from a site:
 
 - **Site** — the site's name, as for the exceptions: `example.com`, `*.example.com` (its subdomains), `files*.example.net`. A scheme in front (`https://example.com`) keeps the rule to that scheme.
 - **User-Agent** — the name MDM gives itself to that site, instead of your browser's or the one set in **Options → Downloads**. Empty: as usual.
 - **Request headers** — one a line, `Name: value` (`Accept-Language: de`, `X-Api-Key: ...`). A header the download already has, such as the browser's **Referer**, is replaced. Headers named **Cookie** and **Authorization** stay with the site when it sends the download elsewhere; others follow it, as in other download programs.
 - **Number of connections** — the site's own number. It is the same as its exception above: a rule's number shows under **Exceptions**, and an exception shows as a rule.
 - **Always connect the way a browser does** — MDM asks the site [the way a browser connects](troubleshooting.md) from the first request, instead of only after the site turned it away ("this site lets only browsers through").
+- **Proxy** — **As in Options** (the default: [Options → Proxy / Socks](options.md#proxy--socks) decides), **No proxy** (straight to the site, whatever Options says), or **This proxy:** one of its own, typed as a download's own proxy is, `host:port`, `http://host:port`, `https://host:port`, `socks5://host:port` (`socks5h://` to have the proxy look the site's name up). **Proxy user** and **Password** are its login, if it needs one; the password is kept with MDM's other passwords (in the system's keychain), never in the settings file as it is. This replaces switching Options back and forth, or writing a proxy auto-config script, when only some sites need a proxy.
 
 Each setting comes from the first rule in the list that names the site and sets it, so put a narrower rule (`dl.example.com`) above a wider one (`*.example.com`) with **Move up** and **Move down**. Rules apply to downloads MDM's engine makes, as they start or resume. The [command line](command-line.md)'s `get` and `resume` use them too, unless you give the same thing on the command line.
+
+Which proxy a download goes through: its own (below) first, then the first rule that names the site and sets a proxy, then **Options → Proxy / Socks** (and the browser's proxy, when **Use proxy/socks from a browser's request** is on). A rule's proxy also carries Download File Info's look-up and, for a video or gallery page the rule names, yt-dlp's and gallery-dl's look-up and the video's download, so the links they get are used from the same address. The **Network adapter** chosen in **Options → Proxy / Socks**, and its kill switch, still hold every connection: with an adapter chosen, nothing goes around it.
 
 ### One download's settings
 

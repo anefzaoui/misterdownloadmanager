@@ -569,6 +569,13 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 Everything below ships together, in version 0.6.0, the next release.
 
+- ✅ Site rules give a site a proxy: **No proxy** (straight to the site) or one of its own
+  (`host:port`, `socks5://…`) with its login, kept with MDM's other passwords; a download's own
+  proxy first, then the first rule that names the site and sets one, then Options. Video and
+  gallery look-ups for that site go through it too, and the network adapter still holds every
+  connection ([#1960](https://github.com/anefzaoui/misterdownloadmanager/issues/1960), from
+  [#1619](https://github.com/anefzaoui/misterdownloadmanager/discussions/1619); thanks to
+  [@MoeHero](https://github.com/MoeHero))
 - ✅ Import: an `.ef2` list's `filename:` lines name its downloads (only a file name: folder parts
   are left out), shown in Link grabber before they are added
   ([#1963](https://github.com/anefzaoui/misterdownloadmanager/issues/1963); thanks to
