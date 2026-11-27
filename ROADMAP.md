@@ -654,6 +654,10 @@ These ship in the next version.
   `path.utf-8`), the command line's torrents on Windows past a file another program has open,
   a file's progress past an empty file, and several torrents added at once without waiting for
   each other
+- ✅ Torrents: downloads pick up within seconds when the network comes back (Wi-Fi, sleep, VPN),
+  instead of staying stalled: the peers that dropped with it are called again once, at once, and
+  the trackers and the DHT asked again
+- ✅ Torrents: a paused torrent's finished pieces are saved before MDM quits
 - ✅ Torrents: the engine checks what it's sent more carefully
 - ✅ Extracting: 7z and RAR archives are checked more carefully
 - ✅ Archive test: archives are checked more carefully

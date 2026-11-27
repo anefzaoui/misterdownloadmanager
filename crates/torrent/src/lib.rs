@@ -1079,6 +1079,11 @@ impl Torrents {
             peer_filter: (!cfg.offline).then(|| {
                 Arc::new(|peer: SocketAddr| trackers::public(peer.ip())) as librqbit::PeerFilter
             }),
+            // librqbit notices the network coming back (a new address, a wake from sleep, the
+            // DHT answering again) and dials the peers that died with it at once. A test's
+            // session is on loopback and is told itself (`Session::network_changed`): the
+            // computer running the tests changing networks doesn't reach it.
+            disable_network_watch: cfg.offline,
             ..Default::default()
         };
         prepare_saved(&cfg.state_dir.join("session"), proxied);
@@ -5485,6 +5490,169 @@ mod tests {
             !kinds.is_empty() && kinds.iter().all(|k| k.as_deref() == Some("utp")),
             "{kinds:?}"
         );
+        leecher.stop().await;
+        seeder.stop().await;
+    }
+
+    /// A link to `to` on loopback that the test cuts and restores, as a network that drops
+    /// and comes back: cut, its connections are closed and new ones closed as soon as they are
+    /// accepted (a dial on a dead network fails at once). Every dial through it is counted.
+    struct Link {
+        addr: SocketAddr,
+        up: tokio::sync::watch::Sender<bool>,
+        dials: Arc<AtomicUsize>,
+    }
+
+    impl Link {
+        async fn to(to: SocketAddr) -> Link {
+            let listener = tokio::net::TcpListener::bind((Ipv4Addr::LOCALHOST, 0))
+                .await
+                .unwrap();
+            let addr = listener.local_addr().unwrap();
+            let up = tokio::sync::watch::Sender::new(true);
+            let dials = Arc::new(AtomicUsize::new(0));
+            let (state, counter) = (up.subscribe(), dials.clone());
+            tokio::spawn(async move {
+                while let Ok((mut down, _)) = listener.accept().await {
+                    counter.fetch_add(1, Ordering::SeqCst);
+                    if !*state.borrow() {
+                        continue;
+                    }
+                    let mut state = state.clone();
+                    tokio::spawn(async move {
+                        let Ok(mut peer) = tokio::net::TcpStream::connect(to).await else {
+                            return;
+                        };
+                        tokio::select! {
+                            _ = tokio::io::copy_bidirectional(&mut down, &mut peer) => {}
+                            _ = state.wait_for(|up| !*up) => {}
+                        }
+                    });
+                }
+            });
+            Link { addr, up, dials }
+        }
+
+        fn dials(&self) -> usize {
+            self.dials.load(Ordering::SeqCst)
+        }
+    }
+
+    /// `t`'s torrent `h` once `done` says so, polled; it fails after `secs`.
+    async fn wait_for(
+        t: &Torrents,
+        h: &str,
+        what: &str,
+        secs: u64,
+        done: impl Fn(&Stats) -> bool,
+    ) -> Stats {
+        let deadline = std::time::Instant::now() + Duration::from_secs(secs);
+        loop {
+            let s = t.stats(h).unwrap();
+            if done(&s) {
+                return s;
+            }
+            assert!(std::time::Instant::now() < deadline, "never {what}: {s:?}");
+            tokio::time::sleep(Duration::from_millis(20)).await;
+        }
+    }
+
+    /// ikatson/rqbit#363: a network that drops (Wi-Fi, sleep, a VPN switching) kills every peer
+    /// connection, and each dead peer waits out a backoff that climbs while the network is gone
+    /// (10-20 s, then 60-120 s, ... up to an hour): back on the network, the torrent stayed
+    /// stalled. Told the network came back (librqbit's watcher does it on a new address, a wake
+    /// or the DHT answering again; on loopback nothing changes, so the test tells it), the
+    /// session dials its dead peer at once, once: the download goes on within seconds, with no
+    /// burst of reconnects.
+    #[tokio::test(flavor = "multi_thread", worker_threads = 4)]
+    async fn a_torrent_picks_up_at_once_when_the_network_comes_back() {
+        let tmp = tempfile::tempdir().unwrap();
+        let src = tmp.path().join("seed").join("net");
+        std::fs::create_dir_all(&src).unwrap();
+        let data: Vec<u8> = (0..1_048_576u32).map(|i| (i % 233) as u8).collect();
+        std::fs::write(src.join("data.bin"), &data).unwrap();
+        let torrent = make_torrent(&src).await;
+        let seeder = Torrents::start(Config {
+            utp: false,
+            ..offline(&tmp.path().join("s1"))
+        })
+        .await
+        .unwrap();
+        let hash = seeder
+            .add(&torrent, &src, None, Vec::new(), false)
+            .await
+            .unwrap();
+        let deadline = std::time::Instant::now() + Duration::from_secs(20);
+        while seeder.stats(&hash).unwrap().phase != Phase::Finished {
+            assert!(std::time::Instant::now() < deadline, "seeder never checked");
+            tokio::time::sleep(Duration::from_millis(100)).await;
+        }
+        // 1 MiB at 64 KiB/s: the download lasts while the network drops and comes back.
+        seeder.set_upload_limit(Some(64 * 1024));
+        let link = Link::to(seeder.listen_addr().expect("seeder listens")).await;
+
+        // The leecher doesn't listen: the seeder can't reach it around the link.
+        let leecher = Torrents::start(Config {
+            listen: false,
+            utp: false,
+            ..offline(&tmp.path().join("s2"))
+        })
+        .await
+        .unwrap();
+        let out = tmp.path().join("got");
+        let h = leecher
+            .add(&torrent, &out, None, vec![link.addr], false)
+            .await
+            .unwrap();
+        wait_for(&leecher, &h, "downloading", 30, |s| s.done >= 64 * 1024).await;
+
+        // The network drops: the peer dies, and its retry (10-20 s later) fails, so the next
+        // one is a minute or more away.
+        link.up.send_replace(false);
+        let cut = wait_for(&leecher, &h, "without its peer", 10, |s| s.peers_live == 0).await;
+        let dials_at_cut = link.dials();
+        let deadline = std::time::Instant::now() + Duration::from_secs(40);
+        while link.dials() == dials_at_cut {
+            assert!(
+                std::time::Instant::now() < deadline,
+                "the peer was never dialed again during the cut"
+            );
+            tokio::time::sleep(Duration::from_millis(50)).await;
+        }
+        let stalled = leecher.stats(&h).unwrap();
+        assert_eq!(stalled.done, cut.done, "nothing came around the cut");
+
+        // Back: on its own the torrent stays stalled (the peer's backoff runs on).
+        link.up.send_replace(true);
+        let dials = link.dials();
+        tokio::time::sleep(Duration::from_secs(2)).await;
+        assert_eq!(
+            leecher.stats(&h).unwrap().done,
+            stalled.done,
+            "still stalled"
+        );
+        assert_eq!(link.dials(), dials, "no dial without the change");
+
+        // Told: the dead peer is dialed at once, and the download goes on.
+        let told = std::time::Instant::now();
+        assert!(leecher.session.network_changed(), "the change acted");
+        wait_for(&leecher, &h, "downloading again", 5, |s| {
+            s.done > stalled.done
+        })
+        .await;
+        let resumed = told.elapsed();
+        wait_for(&leecher, &h, "well on again", 15, |s| {
+            s.done >= stalled.done + 128 * 1024
+        })
+        .await;
+        eprintln!(
+            "resumed {:.2} s after the change; dials: {} before the cut, {} during it, {} after",
+            resumed.as_secs_f64(),
+            dials_at_cut,
+            dials - dials_at_cut,
+            link.dials() - dials
+        );
+        assert_eq!(link.dials() - dials, 1, "one dial for the change, no storm");
         leecher.stop().await;
         seeder.stop().await;
     }

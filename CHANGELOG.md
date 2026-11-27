@@ -126,6 +126,16 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 - Torrents: a torrent made from a folder (`torrent-create`) lists its files by name, so the same
   files make the same torrent on every computer. The order was the file system's, which differs
   between computers, and so did the torrent and which of its files share a piece.
+- Torrents: downloads pick up within seconds when the network comes back (Wi-Fi, sleep, VPN),
+  instead of staying stalled. A drop closed every peer's connection, and each peer was tried
+  again later and later while the network was gone (up to an hour apart), so a torrent with few
+  peers could sit at 0 KB/s for minutes or an hour after the network was back. MDM now notices
+  the network coming back (a new address, a wake from sleep, the DHT answering again), calls each
+  of those peers once at once and asks the trackers and the DHT again (a tracker never sooner
+  than its minimum interval); a magnet link still looking for its file list asks its peers again.
+- Torrents: a paused torrent's finished pieces are saved before MDM quits. The pause saved them
+  in the background, so quitting right after a pause (and quitting MDM, which pauses every
+  torrent) could lose the pieces finished since the last save, and they were downloaded again.
 - Torrents: fixes from the BitTorrent engine's (librqbit's) authors and contributors, ahead of
   its next release:
   - pieces are announced to peers as they finish, also to a peer that already has them (some
