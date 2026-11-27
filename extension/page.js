@@ -8,6 +8,8 @@
 //    instead of letting its script run; followed, the check runs in the tab and the download
 //    that comes after it stays the browser's. Firefox does nothing with that click (it saves
 //    the link only with browser.altClickSave set, off by default);
+//  - plain clicks on `magnet:?` links are held here when Torrent settings open torrents with MDM
+//    (message `magnet`); if MDM does not take it, the click goes on to the browser/OS (#2025);
 //  - Safari only: it has no downloads API, so background.js can't take a download from the
 //    browser. The click on a link to a file type Options lists is held here instead and offered
 //    to the app (message `link`); if the app doesn't take it, the click goes on as if never held.
@@ -28,13 +30,15 @@
     }
   };
 
-  // ---- Safari: the file types to hold links for (Options, as background.js keeps them) --------
+  // ---- stored rules: magnet links (#2025) and Safari's file types ---------------------------
 
   let patterns = [];
   // The app's Torrent settings leave .torrent files to the browser (#1058).
   let noTorrents = false;
+  let takesMagnets = false;
   const learn = (rules) => {
     noTorrents = Boolean(rules && rules.torrents === false);
+    takesMagnets = Boolean(rules && rules.capture && rules.torrents !== false);
     // As background.js typePatterns reads the list: names separated by spaces, `*` any run.
     patterns =
       rules && rules.capture
@@ -47,9 +51,9 @@
   const onStorage = (changes, area) => {
     if (area === "local" && changes.rules) learn(changes.rules.newValue);
   };
+  ext.storage.local.get({ rules: null }).then((v) => learn(v.rules), () => {});
+  ext.storage.onChanged.addListener(onStorage);
   if (SAFARI) {
-    ext.storage.local.get({ rules: null }).then((v) => learn(v.rules), () => {});
-    ext.storage.onChanged.addListener(onStorage);
     // Safari's background script sees no downloads, so nothing else would ask the app for
     // Options' rules once they are old: changed types, or capture turned back on, would never
     // reach the stored copy this reads. Asked here, it refreshes them when stale (onStorage).
@@ -96,6 +100,13 @@
     return a && /^https?:/i.test(a.href) ? a : null;
   };
 
+  // A magnet link a person's click is on, else null.
+  const magnetOf = (e) => {
+    if (!e.isTrusted || !(e.target instanceof Element)) return null;
+    const a = e.target.closest("a[href]");
+    return a && /^magnet:\?/i.test(a.href) ? a : null;
+  };
+
   // Alt held as the button goes down on a link: said before the click starts any download.
   const press = (e) => {
     if (!e.altKey || e.button > 1) return;
@@ -109,14 +120,30 @@
   // stopped, so it happens once. Alt with Ctrl, Cmd or Shift (a new tab or window), the middle
   // button: the browser's own, as they are. A `download` link is followed as such (the browser
   // downloads it, under its name).
+  // A plain click on a magnet:? link is offered to MDM while Torrent settings take torrents (#2025).
   const follow = (e) => {
-    if (!e.altKey || e.button !== 0 || e.ctrlKey || e.metaKey || e.shiftKey) return;
-    if (e.defaultPrevented) return;
-    const a = linkOf(e);
+    if (e.button !== 0 || e.defaultPrevented) return;
+    if (e.altKey) {
+      if (e.ctrlKey || e.metaKey || e.shiftKey) return;
+      const a = linkOf(e);
+      if (!a) return;
+      e.preventDefault();
+      // Not trusted: `note` and `follow` leave this click alone.
+      tell({ type: "bypass", url: a.href }).then(() => a.click());
+      return;
+    }
+    if (!takesMagnets || e.ctrlKey || e.metaKey || e.shiftKey) return;
+    const a = magnetOf(e);
     if (!a) return;
     e.preventDefault();
-    // Not trusted: `note` and `follow` leave this click alone.
-    tell({ type: "bypass", url: a.href }).then(() => a.click());
+    tell({ type: "magnet", url: a.href }).then((reply) => {
+      if (reply && reply.taken) return;
+      try {
+        a.dispatchEvent(new MouseEvent("click", { bubbles: true, cancelable: true, button: 0 }));
+      } catch {
+        a.click();
+      }
+    });
   };
 
   const note = (e) => {
@@ -145,7 +172,7 @@
       removeEventListener("click", note, true);
       removeEventListener("auxclick", note, true);
       removeEventListener("click", follow, false);
-      if (SAFARI) ext.storage.onChanged.removeListener(onStorage);
+      ext.storage.onChanged.removeListener(onStorage);
     },
   };
 })();

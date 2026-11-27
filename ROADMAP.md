@@ -569,6 +569,7 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 Everything below ships together, in version 0.6.0, the next release.
 
+- ✅ Magnet links clicked in the browser reach MDM's **Add torrent** window while Torrent settings take torrents, even without OS protocol association; right-click **Download with Mister Download Manager** sends a magnet link regardless of that setting ([#2025](https://github.com/anefzaoui/misterdownloadmanager/issues/2025))
 - ✅ Site rules give a site a proxy: **No proxy** (straight to the site) or one of its own
   (`host:port`, `socks5://…`) with its login, kept with MDM's other passwords; a download's own
   proxy first, then the first rule that names the site and sets one, then Options. Video and

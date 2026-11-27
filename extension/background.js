@@ -2763,6 +2763,17 @@ async function link(url, referrer, incognito, name) {
   return { taken: await offer(item, url, c.name).catch(() => false) };
 }
 
+async function magnet(url, page, incognito) {
+  if (!/^magnet:\?/i.test(url)) return { taken: false };
+  const { paused } = await ext.storage.local.get({ paused: false });
+  if (paused) return { taken: false };
+  const r = await refreshRules();
+  if (!r || !r.capture || r.torrents === false) return { taken: false };
+  if (page && pageListed(r, page)) return { taken: false };
+  const reply = await download("file", { url, explicit: true, ...(incognito ? { private: true } : {}) });
+  return { taken: Boolean(reply.ok) };
+}
+
 // Tabs opened in the last seconds: one the download was opened in (a link opened in a new tab
 // or window, Shift+click) is closed with it, as when the browser keeps the download.
 const newTabs = new Map();
@@ -3552,6 +3563,11 @@ async function menuClicked(info, tab) {
       if (!reply.ok && reply.why !== "options") explain(reply.why);
       return;
     }
+    if (url && /^magnet:\?/i.test(url)) {
+      const reply = await download("file", { url, explicit: true, ...(incognito ? { private: true } : {}) });
+      if (!reply.ok) explain(reply.why);
+      return;
+    }
     // ftp links too: browsers no longer download them, MDM does.
     if (!url || !/^(https?|ftps?|ftpes):/i.test(url)) return;
     const reply = await handOff({ url, referrer: info.pageUrl, page: info.pageUrl, incognito, storeId, explicit: true });
@@ -3972,6 +3988,9 @@ async function pageMessage(m, sender) {
   if (m.type === "link" && typeof m.url === "string") {
     const name = typeof m.name === "string" ? m.name.split(/[\\/]/).pop().slice(0, 255) : "";
     return link(m.url, page || "", Boolean(tab.incognito), name);
+  }
+  if (m.type === "magnet" && typeof m.url === "string") {
+    return magnet(m.url, page || "", Boolean(tab.incognito));
   }
   // Safari's page.js, at each page: the rules it holds links by, refreshed when old (see `link`).
   if (m.type === "rules") {

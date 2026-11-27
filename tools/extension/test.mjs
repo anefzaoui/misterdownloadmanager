@@ -846,7 +846,18 @@ const ok = (what) => {
   await failing.listeners.menu({ menuItemId: "mdm-link", linkUrl: "https://x/a.zip", pageUrl: "https://x/" }, {});
   await settle();
   assert.ok(failing.calls.some((c) => c[0] === "openTab" && c[1].endsWith("#not-running")));
-  ok("context menus: explicit links, a page's links, failures explained");
+  // #2025: right-click Download with MDM on a magnet link sends it explicitly even with torrents off.
+  const magnet = "magnet:?xt=urn:btih:0123456789abcdef0123456789abcdef01234567&dn=Show";
+  const offTorrents = fakeApi({ firefox: false, rules: { torrents: false } });
+  load(offTorrents.api, false);
+  await offTorrents.listeners.menu({ menuItemId: "mdm-link", linkUrl: magnet, pageUrl: "https://x/" }, { incognito: true });
+  await settle();
+  const [magMsg] = natives(offTorrents.calls).filter((x) => x.url);
+  assert.deepEqual([magMsg.url, magMsg.explicit, magMsg.private], [magnet, true, true]);
+  await failing.listeners.menu({ menuItemId: "mdm-link", linkUrl: magnet, pageUrl: "https://x/" }, {});
+  await settle();
+  assert.equal(failing.calls.filter((c) => c[0] === "openTab" && c[1].endsWith("#not-running")).length, 2);
+  ok("context menus: explicit links, magnet links, a page's links, failures explained");
 }
 
 // A page's links past what the host takes in one message (1 MB, crates/ipc MAX_MESSAGE): sent in
@@ -5334,7 +5345,7 @@ for (const here of [true, false]) {
 // and (when it isn't taken) clicks again; Alt and other types are never held.
 {
   const pageCode = readText("../../extension/page.js");
-  const run = async ({ safari, firefox, taken, types = "ZIP ISO R0*", capture = true }) => {
+  const run = async ({ safari, firefox, taken, types = "ZIP ISO R0*", capture = true, torrents = true, rules: customRules } = {}) => {
     const sent = [];
     const handlers = {};
     class Element {
@@ -5364,13 +5375,13 @@ for (const here of [true, false]) {
         Object.assign(this, { type }, init);
       }
     }
-    const stored = { rules: { types, capture } };
+    const stored = { rules: customRules === undefined ? { types, capture, torrents } : customRules };
     const api = {
       runtime: {
         id: "ours",
         getManifest: () => (safari ? { browser_specific_settings: { safari: {} } } : {}),
         getURL: (p) => (firefox ? "moz-extension://5d0c/" : safari ? "safari-web-extension://5d0c/" : "chrome-extension://ours/") + p,
-        sendMessage: async (m) => (sent.push(JSON.parse(JSON.stringify(m))), m.type === "link" ? { taken } : { ok: true }),
+        sendMessage: async (m) => (sent.push(JSON.parse(JSON.stringify(m))), m.type === "link" || m.type === "magnet" ? { taken } : { ok: true }),
       },
       storage: { local: { get: async () => stored }, onChanged: { addListener() {}, removeListener() {} } },
     };
@@ -5476,6 +5487,63 @@ for (const here of [true, false]) {
     assert.ok(!e.defaultPrevented && a.clicks === 0 && t.sent.length === said, `${who}: a plain click`);
   }
   ok("Safari: page.js holds a click on a listed file type, never Alt or other types; #332, #1494: Alt said at the press, the link followed in every browser");
+
+  // #2025: plain clicks on magnet:? links in every browser while rules take torrents; modifier
+  // clicks and pages that preventDefault stay the browser's; background `magnet` checks rules.
+  const magnetUrl = "magnet:?xt=urn:btih:0123456789abcdef0123456789abcdef01234567&dn=Show";
+  for (const [who, opts] of [["Chromium", { firefox: false }], ["Firefox", { firefox: true }], ["Safari", { safari: true }]]) {
+    t = await run({ ...opts, taken: true, torrents: true });
+    ({ a, e } = t.click(magnetUrl));
+    await t.settle();
+    assert.ok(e.defaultPrevented && a.clicks === 0, `${who}: magnet taken`);
+    assert.deepEqual(t.sent.at(-1), { type: "magnet", url: magnetUrl }, `${who}: sent magnet`);
+    for (const keys of [{ altKey: true }, { ctrlKey: true }, { metaKey: true }, { shiftKey: true }, { button: 1 }]) {
+      const beforeCount = t.sent.length;
+      ({ a, e } = t.click(magnetUrl, keys));
+      await t.settle();
+      assert.ok(!e.defaultPrevented && a.clicks === 0 && t.sent.length === beforeCount, `${who}: modifier ${JSON.stringify(keys)}`);
+    }
+    const beforePage = t.sent.length;
+    ({ a, e } = t.click(magnetUrl, {}, undefined, (ev) => ev.preventDefault()));
+    await t.settle();
+    assert.equal(t.sent.length, beforePage, `${who}: page prevented`);
+
+    t = await run({ ...opts, taken: false, torrents: true });
+    ({ a, e } = t.click(magnetUrl));
+    await t.settle();
+    assert.ok(e.defaultPrevented && a.clicks === 1 && a.again.isTrusted !== true, `${who}: magnet replay when not taken`);
+    assert.equal(t.sent.filter((m) => m.type === "magnet").length, 1, `${who}: replay not re-held`);
+
+    for (const off of [{ torrents: false }, { capture: false }, { rules: null }]) {
+      t = await run({ ...opts, taken: true, ...off });
+      ({ a, e } = t.click(magnetUrl));
+      await t.settle();
+      assert.ok(!e.defaultPrevented && a.clicks === 0, `${who}: off ${JSON.stringify(off)}`);
+      assert.equal(t.sent.filter((m) => m.type === "magnet").length, 0);
+    }
+  }
+  const sender = { id: "ours", frameId: 0, url: "https://page.test/", tab: { id: 4, url: "https://page.test/list", incognito: false } };
+  const askBg = (opts, m, s = sender) => {
+    const f = fakeApi({ firefox: false, ...opts });
+    if (opts.paused) f.store.paused = true;
+    load(f.api, false);
+    return new Promise((r) => f.listeners.message(m, s, (v) => r({ reply: JSON.parse(JSON.stringify(v)), calls: f.calls })));
+  };
+  let bg = await askBg({ rules: { torrents: true, capture: true } }, { type: "magnet", url: magnetUrl });
+  assert.deepEqual(bg.reply, { taken: true });
+  assert.deepEqual([natives(bg.calls).at(-1).url, natives(bg.calls).at(-1).explicit], [magnetUrl, true]);
+  for (const opts of [{ rules: { torrents: false } }, { rules: { capture: false } }, { paused: true }, { rules: { torrents: true, excludedSites: "page.test" } }]) {
+    bg = await askBg(opts, { type: "magnet", url: magnetUrl });
+    assert.deepEqual(bg.reply, { taken: false }, JSON.stringify(opts));
+    assert.deepEqual(natives(bg.calls).filter((x) => x.url), []);
+  }
+  for (const bad of ["https://x.test/a.zip", "magnet:noquery"]) {
+    bg = await askBg({ rules: { torrents: true } }, { type: "magnet", url: bad });
+    assert.deepEqual(bg.reply, { taken: false }, bad);
+  }
+  bg = await askBg({ reply: { ok: false, why: "not-running" } }, { type: "magnet", url: magnetUrl });
+  assert.deepEqual(bg.reply, { taken: false });
+  ok("#2025: magnet links clicked in page and handled in background according to Torrent settings");
 }
 
 // #1092: what the tab played, offered when the page's look-up finds nothing (a feed, a post

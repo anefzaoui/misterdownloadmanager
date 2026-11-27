@@ -510,3 +510,29 @@ fn a_start_takes_only_a_registration_that_leads_nowhere() {
     );
     let _ = std::fs::remove_dir_all(&home);
 }
+
+/// #2025: explicit magnet links from the browser reach the app even when Torrent settings leave
+/// torrents alone; non-explicit magnet messages are refused.
+#[test]
+fn explicit_magnet_reaches_app_and_implicit_is_refused() {
+    let dir = data_dir("magnet", serde_json::json!({ "torrent_handler": false }));
+    let app = fake_app(&dir, "ok");
+    let magnet = "magnet:?xt=urn:btih:0123456789abcdef0123456789abcdef01234567&dn=Show";
+    let (replies, ok) = run(
+        &dir,
+        CALLER,
+        &[
+            serde_json::json!({ "url": magnet, "userAgent": UA }),
+            serde_json::json!({ "url": magnet, "explicit": true, "userAgent": UA }),
+        ],
+    );
+    assert!(ok);
+    assert_ne!(replies[0]["ok"], true, "{:?}", replies[0]);
+    assert_eq!(replies[0]["why"], "refused");
+    assert_eq!(replies[1]["ok"], true, "{:?}", replies[1]);
+    let sent = app.recv_timeout(Duration::from_secs(5)).unwrap();
+    assert_eq!(sent["url"], magnet);
+    assert_ne!(sent["browser_handoff"], true);
+    assert!(app.try_recv().is_err());
+    let _ = std::fs::remove_dir_all(&dir);
+}

@@ -19,7 +19,8 @@
 // forwarded), startedfrom (the page a download was started from goes whole, where its Referer is
 // the site's address only; kept with the download for Refresh download address, #607), names
 // (Content-Disposition), torrents (a tracker's .torrent stays with the browser
-// while Torrent settings leave torrents alone, #1058), redirect, redirectNames (a link that only redirects to its file, named by
+// while Torrent settings leave torrents alone, #1058), magnet (magnet:? links clicked in a page
+// follow Torrent settings, and right-click always sends them, #2025), redirect, redirectNames (a link that only redirects to its file, named by
 // the file's own answer: filename*, a percent-encoded filename, relative and two redirects, #1427), leadon (a page going to the file by script, #374), form (POST, 303), alt (Alt+click leaves it
 // to the browser: a link, a redirect, a page's script, a bot check's page that runs its script first,
 // #1494; Firefox's own default too, #332), sites (a listed
@@ -2914,6 +2915,81 @@ const CASES = {
       await panelSettings({ torrent_handler: false });
     }
     return `off: the browser kept ${off}, MDM's log says why (${why.split(": ").slice(-1)[0].slice(0, 60)}...); on: Add torrent fetched it, the browser kept nothing`;
+  },
+
+  // #2025: a magnet:? link clicked in a page stays with the browser while Torrent settings leave
+  // torrents alone (right-click Download with MDM still sends it); with it on, a plain click
+  // reaches MDM's Add torrent without Windows' protocol association.
+  async magnet(t) {
+    const MAGNET = "magnet:?xt=urn:btih:0123456789abcdef0123456789abcdef01234567&dn=e2e-magnet";
+    const pageOf = (tag) => `${LAB}/page?title=${tag}&link=${encodeURIComponent(MAGNET)}`;
+    const offPage = pageOf("off");
+    const onPage = pageOf("on");
+    const clickTrusted = async (url, observeOnly = false) => {
+      await t.session.navigate(url);
+      await sleep(100);
+      if (observeOnly) {
+        await t.session.evaluate(`window.addEventListener("click", (e) => { window.__mdmPrevented = e.defaultPrevented; e.preventDefault(); }, false)`);
+      }
+      const a = await rect(t.session, "#link");
+      await t.session.mouse((a.l + a.r) / 2, (a.t + a.b) / 2, "click");
+    };
+    const closeStray = () => {
+      if (WIN && appWindows(appPid()).includes("Add torrent")) appWindows(appPid(), "Add torrent");
+    };
+    if (t.session.inExtension) await t.session.inExtension("refreshRules().then(() => true)");
+    try {
+      await clickTrusted(offPage, true);
+      if (await t.session.evaluate("window.__mdmPrevented !== false")) {
+        throw new Error("off: page.js prevented plain click on magnet link");
+      }
+      await sleep(2000);
+      if (WIN && appWindows(appPid()).includes("Add torrent")) throw new Error("off: Add torrent opened on plain click");
+      if (t.kind === "chromium") {
+        await t.session.inExtension(`(async () => {
+          const tab = (await chrome.tabs.query({})).find((x) => x.url === ${JSON.stringify(offPage)});
+          if (!tab) throw new Error("no tab");
+          await menuClicked({ menuItemId: "mdm-link", linkUrl: ${JSON.stringify(MAGNET)}, pageUrl: tab.url, frameId: 0 }, tab);
+          return true;
+        })()`);
+        if (WIN) {
+          const pid = appPid();
+          await until("Add torrent from menu", 15000, () => appWindows(pid).includes("Add torrent"));
+          appWindows(pid, "Add torrent");
+          await until("Add torrent closed", 5000, () => !appWindows(pid).includes("Add torrent"));
+        }
+      }
+      await panelSettings({ torrent_handler: true });
+      // The extension learns it at its next question for the rules (Chromium: asked now;
+      // Firefox: once its copy is a minute old, at the next download it sees, as in `torrents`),
+      // and page.js from the stored copy that question writes.
+      if (t.session.inExtension) await t.session.inExtension("refreshRules().then(() => true)");
+      else {
+        await sleep(61000);
+        const p = `/gen/16K/tracker-${t.name}/download.php`;
+        const primer = `e2e-magnet-primer-${t.name}.torrent`;
+        await clickLink(t, `${p}?id=42&cd=${encodeURIComponent(primer)}&type=${encodeURIComponent("application/x-bittorrent")}`);
+        await until(`${primer} in the browser's folder`, 20000, () => fs.existsSync(path.join(t.dl, primer)));
+        await sleep(2000);
+        fs.rmSync(path.join(t.dl, primer), { force: true });
+      }
+      await clickTrusted(onPage);
+      if (WIN) {
+        const pid = appPid();
+        await until("Add torrent on plain click", 15000, () => appWindows(pid).includes("Add torrent")).catch(async (e) => {
+          const rules = t.session.inExtension ? await t.session.inExtension("storedRules().then(r => JSON.stringify(r))").catch(() => "?") : "?";
+          e.message += ` (rules: ${rules}; windows: ${JSON.stringify(appWindows(pid))})`;
+          throw e;
+        });
+        appWindows(pid, "Add torrent");
+        await until("Add torrent closed", 5000, () => !appWindows(pid).includes("Add torrent"));
+      }
+    } finally {
+      closeStray();
+      await panelSettings({ torrent_handler: false });
+      if (t.session.inExtension) await t.session.inExtension("refreshRules().then(() => true)").catch(() => {});
+    }
+    return "off: plain click ignored, right-click opened Add torrent; on: plain click opened Add torrent";
   },
 
   // A redirect: MDM keeps the address clicked (it asks it again to renew the link).

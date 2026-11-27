@@ -555,7 +555,7 @@ fn answer(m: Message, rules: &mdm_ipc::capture::CaptureRules) -> Reply {
     if let Some(cmd) = panel_cmd {
         return delivered(&cmd);
     }
-    if !downloadable(&m.url) {
+    if !downloadable(&m.url) && !(m.explicit && is_magnet(&m.url)) {
         return Reply::failed("refused", "not an http(s) or ftp(s) URL");
     }
     if let Err(why) = verdict(&m, rules) {
@@ -1828,6 +1828,12 @@ fn downloadable(url: &str) -> bool {
         .any(|k| scheme.eq_ignore_ascii_case(k))
 }
 
+/// A magnet link (`magnet:?...`), accepted only on an explicit user request (#2025).
+fn is_magnet(url: &str) -> bool {
+    url.get(..8)
+        .is_some_and(|s| s.eq_ignore_ascii_case("magnet:?"))
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -1967,6 +1973,23 @@ mod tests {
         assert!(downloadable("https://x.org/a.zip") && downloadable("FTP://x.org/a.iso"));
         assert!(downloadable("ftps://x/a") && downloadable("ftpes://x/a"));
         assert!(!downloadable("file:///C:/a") && !downloadable("javascript:alert(1)"));
+    }
+
+    #[test]
+    fn magnet_links_require_explicit_request() {
+        let magnet = "magnet:?xt=urn:btih:0123456789abcdef0123456789abcdef01234567&dn=x";
+        assert!(is_magnet(magnet));
+        assert!(is_magnet("MAGNET:?xt=urn:btih:abc"));
+        assert!(!is_magnet("magnet:") && !is_magnet("magnet:abc"));
+        assert!(!is_magnet("https://x.org/a.torrent") && !is_magnet(""));
+        assert!(!downloadable(magnet));
+        let rules = mdm_ipc::capture::CaptureRules::default();
+        let implicit = Message {
+            url: magnet.into(),
+            ..Default::default()
+        };
+        let r = answer(implicit, &rules);
+        assert!(!r.ok && r.why == Some("refused"));
     }
 
     #[test]
