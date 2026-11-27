@@ -1768,8 +1768,8 @@ pub struct App {
     previews: Vec<(u64, PathBuf)>,
     /// Torrents Preview switched to Download in order: switched back once they finish.
     preview_order: Vec<u64>,
-    /// Preview's links, and part files a player kept from being renamed, still to remove: a
-    /// player holds them open (Windows), so they are tried again every few seconds.
+    /// What Preview made for downloads taken off the list (`Item::preview_made`), still to
+    /// remove: a player holds it open (Windows), so it is tried again every few seconds.
     preview_leftovers: Vec<PathBuf>,
     preview_sweep_at: Instant,
     /// The yt-dlp or gallery-dl version each video or gallery last started with.
@@ -2286,33 +2286,6 @@ impl App {
             .filter(|i| i.status == Status::Complete && i.rename_on_complete.is_some())
             .map(|i| i.id)
             .collect();
-        // Preview links a crash or a player holding them left behind (#1682): the next Preview
-        // makes a fresh one.
-        let folders: std::collections::HashSet<PathBuf> = items
-            .iter()
-            .flat_map(|i| [Some(i.dest.clone()), i.dest.parent().map(|p| p.to_owned())])
-            .flatten()
-            .collect();
-        // A finished download's part file that a player kept from being renamed: a second name
-        // of the file (or its copy), as its size says.
-        let parts: Vec<(PathBuf, PathBuf)> = items
-            .iter()
-            .filter(|i| i.status == Status::Complete)
-            .map(|i| (mdm_engine::naming::part_path(&i.dest), i.dest.clone()))
-            .collect();
-        std::thread::spawn(move || {
-            for f in folders {
-                dialogs::clear_preview_links(&f);
-            }
-            let len = |p: &PathBuf| std::fs::metadata(p).map(|m| m.len());
-            for (part, file) in parts {
-                if let (Ok(a), Ok(b)) = (len(&part), len(&file))
-                    && a == b
-                {
-                    let _ = std::fs::remove_file(&part);
-                }
-            }
-        });
         App {
             rt,
             items,
@@ -5128,6 +5101,10 @@ impl App {
                 later,
             ));
         }
+        // What Preview made for it still goes (#1682), the row gone.
+        if let Some(i) = self.items.iter_mut().find(|i| i.id == id) {
+            self.preview_leftovers.append(&mut i.preview_made);
+        }
         self.items.retain(|i| i.id != id);
         for q in &mut self.queues {
             q.items.retain(|i| *i != id);
@@ -6548,6 +6525,7 @@ impl App {
         if self.previews.is_empty()
             && self.preview_order.is_empty()
             && self.preview_leftovers.is_empty()
+            && self.items.iter().all(|i| i.preview_made.is_empty())
         {
             return;
         }
@@ -6558,25 +6536,42 @@ impl App {
                 .find(|i| i.id == id)
                 .filter(|i| i.status != Status::Complete)
         };
-        let leftovers = &mut self.preview_leftovers;
-        self.previews.retain(|(id, file)| {
-            if unfinished(*id).is_some_and(|i| preview_file(i) == *file) {
-                return true;
-            }
-            leftovers.extend(dialogs::preview_link_of(file));
+        let ended: Vec<(u64, PathBuf)> = self
+            .previews
+            .iter()
+            .filter(|(id, file)| !unfinished(*id).is_some_and(|i| preview_file(i) == *file))
+            .cloned()
+            .collect();
+        self.previews.retain(|p| !ended.contains(p));
+        for (id, file) in ended {
             // Finished while a player held its part file: the engine couldn't rename it, and
-            // left the file a second name of it (or a copy); the part goes once the player lets go.
-            if items
-                .iter()
-                .any(|i| i.id == *id && i.status == Status::Complete)
+            // left the file a second name of it (or a copy); that part is Preview's too, and
+            // goes once the player lets go.
+            let part = mdm_engine::naming::part_path(&file);
+            if let Some(i) = self.items.iter_mut().find(|i| i.id == id)
+                && i.status == Status::Complete
+                && !i.preview_made.contains(&part)
+                && part.exists()
             {
-                leftovers.push(mdm_engine::naming::part_path(file));
+                i.preview_made.push(part);
+                self.dirty = true;
             }
-            false
-        });
-        // What a player still holds open (Windows) goes once it lets go.
-        if !self.preview_leftovers.is_empty() && Instant::now() >= self.preview_sweep_at {
+        }
+        // What Preview made for a download whose preview is over (after a start: what a crash
+        // left) goes, by its exact name; what a player still holds open (Windows) goes once it
+        // lets go.
+        if Instant::now() >= self.preview_sweep_at {
             self.preview_sweep_at = Instant::now() + Duration::from_secs(5);
+            let active = &self.previews;
+            for i in &mut self.items {
+                if i.preview_made.is_empty() || active.iter().any(|(id, _)| *id == i.id) {
+                    continue;
+                }
+                let before = i.preview_made.len();
+                i.preview_made
+                    .retain(|f| dialogs::clear_preview_leftover(f));
+                self.dirty |= i.preview_made.len() != before;
+            }
             self.preview_leftovers
                 .retain(|f| dialogs::clear_preview_leftover(f));
         }
@@ -9531,11 +9526,22 @@ impl App {
                         self.preview_order.push(id);
                     }
                     dialogs::preview_torrent(&dest);
-                } else if let Some(i) = target.and_then(|id| self.items.iter().find(|i| i.id == id))
+                } else if let Some(i) =
+                    target.and_then(|id| self.items.iter_mut().find(|i| i.id == id))
                 {
                     let file = preview_file(i);
                     if let Some(l) = &i.live {
                         l.dl.set_sequential();
+                    }
+                    // The link's name is Preview's only when it made it before or it is free:
+                    // what it makes is recorded with the download, and only that is removed.
+                    let link = dialogs::preview_link_of(&file)
+                        .filter(|l| i.preview_made.contains(l) || !l.exists());
+                    if let Some(l) = &link
+                        && !i.preview_made.contains(l)
+                    {
+                        i.preview_made.push(l.clone());
+                        self.dirty = true;
                     }
                     if !self
                         .previews
@@ -9544,7 +9550,7 @@ impl App {
                     {
                         self.previews.push((i.id, file.clone()));
                     }
-                    dialogs::preview_download(&file);
+                    dialogs::preview_download(&file, link.is_some());
                 }
             }
             Cmd::OpenFolder => {

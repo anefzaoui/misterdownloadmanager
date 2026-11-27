@@ -4610,7 +4610,9 @@ pub const DUPLICATE_OVERWRITE: usize = 2;
 
 /// "Preview": open the unfinished download of `file` — its part file — with the program that
 /// opens `file`'s type (a video player for an .mkv), as qBittorrent's Preview does. Returns at once.
-pub fn preview_download(file: &Path) {
+/// `link`: the preview link's name is Preview's to use for this download (free, or made by it
+/// before: `Item::preview_made`); else the part file opens as it is.
+pub fn preview_download(file: &Path, link: bool) {
     let part = mdm_engine::naming::part_path(file);
     let ext = file
         .extension()
@@ -4625,7 +4627,7 @@ pub fn preview_download(file: &Path) {
                 crate::i18n::t("{file} isn't there: nothing of it is on the disk yet."),
                 &[("file", &name)],
             )
-        } else if let Some(link) = preview_link(&part, &file) {
+        } else if let Some(link) = link.then(|| preview_link(&part, &file)).flatten() {
             // The player shows the file's own name, and finds the program by its extension.
             match open_file_platform(&link) {
                 Ok(()) => return,
@@ -4687,18 +4689,14 @@ pub fn preview_torrent(dest: &Path) {
 
 /// A second name for the part file, the finished file's own (`<folder>\.mdm-preview\<name>`): the
 /// same data, growing with it, that a player shows by its real name. None where the drive has no
-/// hard links (FAT32, exFAT) or the name is taken by a link a player still holds. The app
-/// removes it as the download ends or goes ([`clear_preview_leftover`]), and at start-up.
+/// hard links (FAT32, exFAT) or the name is taken by a link a player still holds. Only made at
+/// a name Preview may use ([`preview_download`]); the app removes it, by its name, as the
+/// download ends or goes ([`clear_preview_leftover`]), and at start-up.
 fn preview_link(part: &Path, file: &Path) -> Option<PathBuf> {
-    let dir = part.parent()?.join(PREVIEW_DIR);
-    // Earlier previews' links (one a player still has open stays until the next time).
-    if let Ok(old) = std::fs::read_dir(&dir) {
-        for e in old.flatten() {
-            let _ = std::fs::remove_file(e.path());
-        }
-    }
-    std::fs::create_dir_all(&dir).ok()?;
-    let link = dir.join(file.file_name()?);
+    let link = preview_link_of(file)?;
+    std::fs::create_dir_all(link.parent()?).ok()?;
+    // This download's own link from an earlier Preview.
+    let _ = std::fs::remove_file(&link);
     std::fs::hard_link(part, &link).ok()?;
     Some(link)
 }
@@ -4712,8 +4710,8 @@ pub fn preview_link_of(file: &Path) -> Option<PathBuf> {
 }
 
 /// Remove `file`, a preview's leftover (its link, or a part file a player kept from being
-/// renamed), and the preview folder once it is empty. True while it is still there: a program
-/// holds it open (Windows), and it is tried again later.
+/// renamed), and the preview folder once it is empty (only an empty one goes). True while it
+/// is still there: a program holds it open (Windows), and it is tried again later.
 pub fn clear_preview_leftover(file: &Path) -> bool {
     let held = std::fs::remove_file(file).is_err_and(|e| e.kind() != std::io::ErrorKind::NotFound);
     if let Some(dir) = file
@@ -4723,11 +4721,6 @@ pub fn clear_preview_leftover(file: &Path) -> bool {
         let _ = std::fs::remove_dir(dir);
     }
     held
-}
-
-/// Remove every preview link in `folder` (start-up: what a crash left).
-pub fn clear_preview_links(folder: &Path) {
-    let _ = std::fs::remove_dir_all(folder.join(PREVIEW_DIR));
 }
 
 /// "Duplicate download link": the address is already in the list (Options → Downloads → "If a
@@ -5592,6 +5585,33 @@ pub fn ensure_replace_asked<T>(
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    /// #1682: Preview makes its link and removes it by its name; a file of the user's in a
+    /// `.mdm-preview` folder is never touched, and the folder goes only once empty.
+    #[test]
+    fn preview_removes_only_what_it_made() {
+        let d = tempfile::tempdir().unwrap();
+        let file = d.path().join("Film.mkv");
+        let part = mdm_engine::naming::part_path(&file);
+        std::fs::write(&part, b"part").unwrap();
+        let theirs = d.path().join(PREVIEW_DIR).join("Mine.txt");
+        std::fs::create_dir_all(theirs.parent().unwrap()).unwrap();
+        std::fs::write(&theirs, b"keep").unwrap();
+        let link = preview_link(&part, &file).unwrap();
+        assert_eq!(Some(link.clone()), preview_link_of(&file));
+        assert_eq!(std::fs::read(&link).unwrap(), b"part");
+        // Again (a second Preview): its own link made anew, the other file still there.
+        assert!(preview_link(&part, &file).is_some());
+        assert!(!clear_preview_leftover(&link));
+        assert!(!link.exists() && part.exists());
+        assert_eq!(std::fs::read(&theirs).unwrap(), b"keep");
+        std::fs::remove_file(&theirs).unwrap();
+        assert!(!clear_preview_leftover(&link));
+        assert!(
+            !d.path().join(PREVIEW_DIR).exists(),
+            "the empty folder goes"
+        );
+    }
 
     /// #2008: Download later's queue list shows each queue's icon, the Scheduler's: the linked
     /// folder for a synchronization queue.
