@@ -850,5 +850,78 @@
   },
   "popup_video_reset_done": {
     "message": "তার কোণায় ফিরে এসেছে, তার মেনু সবকিছু দেখাচ্ছে, প্রতিটি সাইটে"
+  },
+  "status_links_sent": {
+    "message": "লিংক পাঠানো হয়েছে: $count$",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "10"
+      }
+    }
+  },
+  "status_links_cut": {
+    "message": "লিংক পাঠানো হয়েছে: $sent$, $left$টি বাদ দেওয়া হয়েছে",
+    "placeholders": {
+      "sent": {
+        "content": "$1",
+        "example": "100"
+      },
+      "left": {
+        "content": "$2",
+        "example": "20"
+      }
+    }
+  },
+  "status_links_partial": {
+    "message": "লিংক পাঠানো হয়েছে: $sent$, প্রত্যাখ্যান করা হয়েছে: $refused$",
+    "placeholders": {
+      "sent": {
+        "content": "$1",
+        "example": "5"
+      },
+      "refused": {
+        "content": "$2",
+        "example": "2"
+      }
+    }
+  },
+  "status_links_partial_cut": {
+    "message": "লিংক পাঠানো হয়েছে: $sent$, প্রত্যাখ্যান করা হয়েছে: $refused$, $left$টি বাদ দেওয়া হয়েছে",
+    "placeholders": {
+      "sent": {
+        "content": "$1",
+        "example": "5"
+      },
+      "refused": {
+        "content": "$2",
+        "example": "2"
+      },
+      "left": {
+        "content": "$3",
+        "example": "1"
+      }
+    }
+  },
+  "status_links_refused": {
+    "message": "লিংক প্রত্যাখ্যান করা হয়েছে: $count$",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "status_links_none": {
+    "message": "ক্যাপচার করা যায় এমন কোনো লিংক নেই ($left$টি বাদ দেওয়া হয়েছে)",
+    "placeholders": {
+      "left": {
+        "content": "$1",
+        "example": "5"
+      }
+    }
+  },
+  "status_unreachable": {
+    "message": "সার্ভারে পৌঁছানো যায়নি"
   }
 }

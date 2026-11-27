@@ -31,10 +31,11 @@ Copyright © 2026 Ahmed Nefzaoui and contributors.
 | Component | By | Licence |
 |---|---|---|
 | The MDM logo and app icon | Ahmed Nefzaoui, made with ChatGPT image generation | Part of MDM |
-| Lucide icons 1.63 (toolbar, dialogs) | Lucide Icons and contributors | ISC |
+| Lucide icons 1.63 (toolbar, dialogs, status icons) | Lucide Icons and contributors | ISC |
 | Tango Icon Theme 0.8.90 (file icons where the system has none) | The Tango Desktop Project | Public domain |
 | flag-icons 7.6 (language flags, and the country flags where a download's server is) | Panayiotis Lipiridis and contributors | MIT |
 | Silk icons 1.3 (categories tree) | Mark James | CC BY 2.5 |
+| Browser logos (before each browser's name in the app) | [browser-logos](https://github.com/alrra/browser-logos) and each browser's makers | MIT and each source's own; the logos are trademarks of their respective owners, used only to identify the browsers |
 | System fonts (Segoe UI and others) | The operating system | Used at run time, not included |
 
 ## Data
@@ -56,7 +57,7 @@ They aren't included in MDM's downloads. MDM fetches them from their official re
 
 ## This website
 
-The site's charts use [Apache ECharts](https://echarts.apache.org) 5.6 (Apache License 2.0) and its text is set in [Archivo](https://github.com/Omnibus-Type/Archivo) by Omnibus-Type (SIL Open Font License 1.1), both served from this site. The language flags are the app's own, from [flag-icons](https://github.com/lipis/flag-icons) (MIT). The browser logos come from [browser-logos](https://github.com/alrra/browser-logos) (MIT); the logos themselves are trademarks of their owners and appear only to name the browsers MDM works with. Screenshots show freely available files, including the Blender Foundation's open movies (CC BY).
+The site's charts use [Apache ECharts](https://echarts.apache.org) 5.6 (Apache License 2.0) and its text is set in [Archivo](https://github.com/Omnibus-Type/Archivo) by Omnibus-Type (SIL Open Font License 1.1), both served from this site. The language flags are the app's own, from [flag-icons](https://github.com/lipis/flag-icons) (MIT). The browser logos are the app's own, from [browser-logos](https://github.com/alrra/browser-logos) (MIT). Screenshots show freely available files, including the Blender Foundation's open movies (CC BY).
 
 ## Rust libraries built into MDM
 

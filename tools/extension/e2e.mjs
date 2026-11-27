@@ -70,6 +70,8 @@
 // actions, the toolbar button's count, #1496),
 // remote (Send downloads to → Another MDM, #157: paired from the popup, a link downloaded by a
 // headless MDM; E2E_REMOTE_URL for one running elsewhere, such as the Docker image: remoteServer),
+// remotelinks (Download all links and Download selected links to that other MDM: the types MDM
+// takes, 100 at most, the toolbar button's tip, a server stopped ending the batch, #1596),
 // byhand (the copy loaded here by hand says so in its popup, with its browser's store, #1613),
 // part (the button's menu's "Download a part from here...": the Download video window, its part
 // starting where the player is, #1662), calm (the button round in a feed and whole over a big
@@ -1158,6 +1160,59 @@ async function remoteServer() {
   await until("the headless MDM", 20000, () => code().then(() => true, () => false));
   return remote;
 }
+// The popup `popup` (its Settings tab) paired with the other MDM `r` as a user pairs: Another MDM
+// chosen, its address and code typed, Pair. What the status says then (it names the server).
+async function pairRemote(popup, r) {
+  await until("the popup", 10000, () => popup.evaluate(`document.readyState === "complete" && Boolean(document.getElementById("to-remote"))`).catch(() => false));
+  await sleep(300);
+  // Another MDM chosen: its address and code boxes show (the popup's script may still be
+  // starting: chosen again until they do).
+  await until("the address and code boxes", 10000, () =>
+    popup.evaluate(`(document.getElementById("remote-form").hidden && document.getElementById("to-remote").click(), !document.getElementById("remote-form").hidden)`),
+  );
+  const code = await r.code();
+  await popup.evaluate(`(() => {
+    document.getElementById("remote-url").value = ${JSON.stringify(r.url)};
+    document.getElementById("remote-code").value = ${JSON.stringify(code)};
+    document.getElementById("remote-pair").click();
+    return true; })()`);
+  // Paired: the boxes close and the status names the server.
+  const host = new URL(r.url).host;
+  const said = await until("paired", 15000, () =>
+    popup.evaluate(`(() => {
+      const bad = document.getElementById("remote-said");
+      if (!bad.hidden && bad.textContent) return "refused: " + bad.textContent;
+      const text = document.getElementById("status-text").textContent;
+      const ok = document.getElementById("remote-form").hidden && document.getElementById("status").classList.contains("ok");
+      return ok && text.includes(${JSON.stringify(host)}) ? text : ""; })()`),
+  ).catch(async (e) => {
+    e.message += ` (the popup: ${await popup.evaluate(`document.getElementById("status-text").textContent`).catch(() => "?")})`;
+    throw e;
+  });
+  if (said.startsWith("refused")) throw new Error(`pairing ${said}`);
+  return said;
+}
+
+// The page's right-click menu's Download all links (`selected`: Download selected links) as a
+// user picks it: in Chromium its handler called as the menu's click calls it (headless Chromium
+// shows no menu), in Firefox's family the real menu, opened on the page's line without a link.
+async function linksMenu(t, page, selected = false) {
+  if (t.kind === "chromium") {
+    const id = selected ? "mdm-selected" : "mdm-all";
+    return t.session.inExtension(`(async () => {
+      const tab = (await chrome.tabs.query({})).find((x) => x.url === ${JSON.stringify(page)});
+      if (!tab) return "no tab";
+      await menuClicked({ menuItemId: ${JSON.stringify(id)}, pageUrl: tab.url, frameId: 0 }, tab);
+      return "called";
+    })()`);
+  }
+  if (selected) throw new Skip("Download selected links: Chromium only here");
+  const at = await t.session.evaluate(`(() => { const b = document.getElementById("blank").getBoundingClientRect(); return [b.left + 4, b.top + b.height / 2]; })()`);
+  const clicked = await t.session.menu(at[0], at[1], "Download all links with Mister Download Manager");
+  if (!String(clicked).startsWith("chosen")) throw new Error(`the menu: ${clicked}`);
+  return clicked;
+}
+
 async function stopRemote() {
   if (!remote || !remote.proc) return;
   await ipc({ exit: true }, remote.data).catch(() => {});
@@ -1838,6 +1893,52 @@ async function calmButton(session) {
     else near(b.r, v.r - 8, "back in its corner: its right edge");
     done.push("back in its corner from its menu");
 
+    // 5b. #1923: dropped in the middle of the player, it stays there (a free spot, no edge it
+    // snaps to), and there after a reload; its menu puts it back in its corner again.
+    {
+      const mx = (v.l + v.r) / 2, my = (v.t + v.b) / 2;
+      b = await drag(b, mx + (b.r - b.l) / 2 - 10, my);
+      if (!b) throw new Error("the button went with the drag to the middle");
+      const cx = (b.l + b.r) / 2, cy = (b.t + b.b) / 2;
+      if (Math.abs(cy - my) > 40 || b.t < v.t + 30 || b.b > v.b - 30 || b.l < v.l + 30 || b.r > v.r - 30) throw new Error(`dropped in the middle, it went to ${JSON.stringify(b)} (player ${JSON.stringify(v)})`);
+      await shoot("middle", { l: v.l - 16, t: v.t - 16, r: v.r + 16, b: v.b + 16 });
+      await draw("watch");
+      const kept = await hover(session, v);
+      if (!kept || Math.abs((kept.t + kept.b) / 2 - cy) > 6 || Math.abs((kept.l + kept.r) / 2 - cx) > 6) throw new Error(`after a reload the middle spot wasn't kept: ${JSON.stringify(kept)}`);
+      done.push(`dropped in the middle of the player: stays there (${Math.round(cx - v.l)}, ${Math.round(cy - v.t)} px in), and after a reload`);
+      await clickArrow(session);
+      const home2 = await until("Put the button back in its corner, in its menu", 5000, () => session.pill(MENU_ITEM_AT("home")));
+      await session.mouse(home2.x, home2.y, "click");
+      await sleep(300);
+      b = await hover(session, v);
+      near(b.t, v.t + 8, "back in its corner again: its top");
+    }
+    // 5c. #1923: the menu's "Hide the download button in full screen", the popup's same setting.
+    {
+      const stored = async () => {
+        const popup = await session.tab(`${session.base}popup.html`);
+        try {
+          return await until("the add-on's storage", 10000, () => popup.evaluate("(globalThis.browser ?? chrome).storage.local.get({ hideVideoFullscreen: null }).then((v) => String(v.hideVideoFullscreen))").catch(() => false));
+        } finally {
+          await popup.close();
+        }
+      };
+      const was = await stored();
+      await hover(session, v);
+      await clickArrow(session);
+      const fs1 = await until("Hide the download button in full screen, in its menu", 5000, () => session.pill(MENU_ITEM_AT("fullscreen")));
+      await session.mouse(fs1.x, fs1.y, "click");
+      await sleep(400);
+      const on = await stored();
+      await session.mouse(fs1.x, fs1.y, "click");
+      await sleep(400);
+      const off = await stored();
+      await session.mouse(5, 5);
+      if (on !== "true" || off !== "false") throw new Error(`the menu's full-screen item: ${was} -> ${on} -> ${off}`);
+      done.push(`the menu's "Hide the download button in full screen": ${was} -> ${on} -> ${off} (the popup's setting)`);
+      b = await hover(session, v);
+    }
+
     // 6. Outside again, then the popup's Reset: back in its corner in the open tab, no reload.
     b = await drag(b, corner, v.t - 30);
     near(b.b, v.t - 6, "outside again");
@@ -2093,6 +2194,25 @@ async function videoButtonFollowsOptions(session) {
     };
     const full = await size(false);
     await shoot("full");
+    // #1923: its scale beside Button size, 120% then 80%, in the open tab without a reload.
+    const scaled = async (scale, wider) =>
+      until(`the button at ${scale}%`, 15000, async () => {
+        await hover(session, v);
+        const p = await session.pill(PILL_COMPACT);
+        return p && !p.compact && (wider ? p.w > full.w * 1.1 : p.w < full.w * 0.9) ? p : null;
+      });
+    await panelSettings({ video_panel_scale: 120 });
+    await away();
+    const big = await scaled(120, true);
+    await shoot("scale-120");
+    await panelSettings({ video_panel_scale: 80 });
+    await away();
+    const little = await scaled(80, false);
+    await shoot("scale-80");
+    await panelSettings({ video_panel_scale: 100 });
+    await away();
+    await size(false);
+    done.push(`scale: ${Math.round(big.w)} px at 120%, ${Math.round(little.w)} px at 80%, ${Math.round(full.w)} px at 100%, in the open tab`);
     await panelSettings({ video_panel_compact: true });
     await away();
     const small = await size(true);
@@ -2125,7 +2245,7 @@ async function videoButtonFollowsOptions(session) {
     done.push("the site listed: gone in the open tab");
   } finally {
     await session.mouse(5, 5);
-    await panelSettings({ video_panel: true, video_panel_sites: "", video_panel_compact: false, video_panel_full: false });
+    await panelSettings({ video_panel: true, video_panel_sites: "", video_panel_compact: false, video_panel_full: false, video_panel_scale: 100 });
   }
   return done.join("; ");
 }
@@ -5314,33 +5434,7 @@ thumb.addEventListener("mouseleave", () => { preview.classList.add("off"); docum
     const popup = await s.tab(`${s.base}popup.html?tab=settings&keep=1`);
     if (popup.viewport) await popup.viewport(400, 548);
     try {
-      await until("the popup", 10000, () => popup.evaluate(`document.readyState === "complete" && Boolean(document.getElementById("to-remote"))`).catch(() => false));
-      await sleep(300);
-      // Another MDM chosen: its address and code boxes show (the popup's script may still be
-      // starting: chosen again until they do).
-      await until("the address and code boxes", 10000, () =>
-        popup.evaluate(`(document.getElementById("remote-form").hidden && document.getElementById("to-remote").click(), !document.getElementById("remote-form").hidden)`),
-      );
-      const code = await r.code();
-      await popup.evaluate(`(() => {
-        document.getElementById("remote-url").value = ${JSON.stringify(r.url)};
-        document.getElementById("remote-code").value = ${JSON.stringify(code)};
-        document.getElementById("remote-pair").click();
-        return true; })()`);
-      // Paired: the boxes close and the status names the server.
-      const host = new URL(r.url).host;
-      const said = await until("paired", 15000, () =>
-        popup.evaluate(`(() => {
-          const bad = document.getElementById("remote-said");
-          if (!bad.hidden && bad.textContent) return "refused: " + bad.textContent;
-          const text = document.getElementById("status-text").textContent;
-          const ok = document.getElementById("remote-form").hidden && document.getElementById("status").classList.contains("ok");
-          return ok && text.includes(${JSON.stringify(host)}) ? text : ""; })()`),
-      ).catch(async (e) => {
-        e.message += ` (the popup: ${await popup.evaluate(`document.getElementById("status-text").textContent`).catch(() => "?")})`;
-        throw e;
-      });
-      if (said.startsWith("refused")) throw new Error(`pairing ${said}`);
+      const said = await pairRemote(popup, r);
       await clickLink(t, `/gen/1M/${file}`);
       const at = await until(`${file} in the server's folder`, 45000, () => findFile(r.downloads, file, 1 << 20));
       // The server's requests (not the browser's own first one, which it cancels): none with the
@@ -5371,6 +5465,119 @@ thumb.addEventListener("mouseleave", () => { preview.classList.add("off"); docum
         await popup.shot(path.join(path.resolve(process.env.E2E_SHOTS), `${process.env.E2E_LANG || "en"}-${process.env.E2E_COLOR_SCHEME || "system"}-dl-remote.png`));
       }
       return `paired (${said}); ${file} downloaded by the server into ${path.relative(r.downloads, at)} (${theirs.length} request(s), no cookie), not by this computer; the popup lists it ("${listed.note}"), its menu [${listed.menu}]`;
+    } finally {
+      await popup.evaluate(`(document.getElementById("to-here").click(), true)`).catch(() => {});
+      await sleep(500);
+      await popup.close();
+    }
+  },
+
+  // #1596: with another MDM chosen, Download all links and Download selected links send the
+  // page's links there, never to this computer's: those of the file types MDM takes, 100 at most,
+  // each started there at once. The toolbar button's tip says how many went and how many were
+  // left out; with the other MDM stopped, the batch ends at its first link with the red "!" and
+  // "Server not reached", gone once this computer is chosen again. The selection's links in
+  // Chromium only (Firefox's menu is the real one: right-clicked on a link, it is that link's).
+  async remotelinks(t) {
+    const r = await remoteServer();
+    const s = t.session;
+    const popup = await s.tab(`${s.base}popup.html?tab=settings&keep=1`);
+    if (popup.viewport) await popup.viewport(400, 548);
+    // The toolbar button's badge and tip, and the other MDM's own state in the add-on's status.
+    const button = async () =>
+      JSON.parse(
+        await popup.evaluate(`(async () => {
+          const api = globalThis.browser ?? globalThis.chrome;
+          const act = api.action ?? api.browserAction;
+          const { status } = await api.storage.local.get("status");
+          return JSON.stringify({ badge: await act.getBadgeText({}), title: await act.getTitle({}), remoteWhy: (status && status.remoteWhy) || null });
+        })()`),
+      );
+    // The lab's 1 KB files the other MDM asked for (not the browser: its user agent), by path.
+    const served = async () =>
+      [...new Set((await (await fetch(`${LAB}/_log`)).json()).filter((e) => e.path.startsWith("/gen/1K/") && e.user_agent !== t.ua).map((e) => e.path))].sort();
+    // The page's links to its files (`#files`), and every link it has.
+    const linksOf = async () =>
+      JSON.parse(await s.evaluate(`JSON.stringify({ files: [...document.querySelectorAll("#files a")].map((a) => new URL(a.href).pathname), all: new Set([...document.querySelectorAll("a[href]")].map((a) => a.href)).size })`));
+    const here = async () => (await mdmList().catch(() => [])).filter((d) => d.url.includes("/gen/1K/")).length;
+    // A batch from `page` (`selected`: its first two lines selected first): the other MDM asked
+    // for exactly `want` of its files, the tip said `tip`, nothing came to this computer.
+    const batch = async (page, want, tip, selected = false) => {
+      await clearLog();
+      await s.navigate(page);
+      const links = await linksOf();
+      if (selected) {
+        await s.evaluate(`(() => { const li = document.querySelectorAll("#files li"); const g = document.createRange(); g.setStart(li[0], 0); g.setEnd(li[1], li[1].childNodes.length); getSelection().removeAllRanges(); getSelection().addRange(g); return true; })()`);
+      }
+      const mine = await here();
+      const tips = new Set();
+      await linksMenu(t, page, selected);
+      const expected = want(links);
+      const got = await until(`${page}: ${expected.length} files on the other MDM`, 60000, async () => {
+        tips.add((await button()).title);
+        const g = await served();
+        return g.length >= expected.length ? g : null;
+      }).catch(async (e) => {
+        throw new Error(`${e.message} (asked: ${(await served()).length}; tips: ${[...tips].join(" | ")})`);
+      });
+      await sleep(3000);
+      const all = await served();
+      if (JSON.stringify(all) !== JSON.stringify([...expected].sort())) throw new Error(`${page}: the other MDM asked for ${all.length} files, not the ${expected.length} expected: ${all.slice(0, 5).join(", ")}…`);
+      const said = await until(`${page}: the tip`, 5000, async () => {
+        const b = await button();
+        tips.add(b.title);
+        return [...tips].find((x) => x === tip(links));
+      }).catch(() => {
+        throw new Error(`${page}: the tip said ${[...tips].join(" | ")}, not "${tip(links)}"`);
+      });
+      const b = await button();
+      if (b.badge === "!") throw new Error(`${page}: the badge is "!" after a batch that went`);
+      if ((await here()) !== mine) throw new Error(`${page}: this computer's MDM got some too`);
+      await keptNothing(t.dl);
+      return `${all.length} asked, "${said}"`;
+    };
+    try {
+      const paired = await pairRemote(popup, r);
+      const done = [];
+      // Seven files and a page, which isn't a type MDM takes.
+      const a = `${LAB}/page?files=7&link=${encodeURIComponent("/gen/1K/notes.html")}&title=links-a`;
+      done.push(`7 files and a page: ${await batch(a, (l) => l.files, (l) => `Links sent: 7, ${l.all - 7} left out`)}`);
+      // Past the cap: the first 100 of 105.
+      const b = `${LAB}/page?files=105&pathlen=48&title=links-b`;
+      done.push(`105 files: ${await batch(b, (l) => l.files.slice(0, 100), (l) => `Links sent: 100, ${l.all - 100} left out`)}`);
+      // The selection's two (Chromium): from the first line's start to the second line's end, inside
+      // it (a range that ends where the third line starts touches it, and touching counts).
+      if (t.kind === "chromium") {
+        const c = `${LAB}/page?files=6&pathlen=56&title=links-c`;
+        done.push(`2 of 6 selected: ${await batch(c, (l) => l.files.slice(0, 2), () => "Links sent: 2", true)}`);
+      }
+      // The other MDM stopped: the batch ends at its first link, said in red, until this
+      // computer is chosen again.
+      if (remote && remote.proc) {
+        await stopRemote();
+        remote = null;
+        const d = `${LAB}/page?files=40&pathlen=64&title=links-d`;
+        await s.navigate(d);
+        const started = Date.now();
+        await linksMenu(t, d);
+        const down = await until("Server not reached", 30000, async () => {
+          const x = await button();
+          return x.badge === "!" && x.title === "Server not reached" && x.remoteWhy === "unreachable" ? x : null;
+        }).catch(async (e) => {
+          throw new Error(`${e.message} (the button: ${JSON.stringify(await button())})`);
+        });
+        const ms = Date.now() - started;
+        if (ms > 20000) throw new Error(`"Server not reached" after ${ms} ms: the batch tried more than its first link`);
+        await popup.evaluate(`(document.getElementById("to-here").click(), true)`);
+        const back = await until("this computer chosen, the red ! gone", 10000, async () => {
+          const x = await button();
+          return x.badge !== "!" && x.title !== "Server not reached" && !x.remoteWhy ? x : null;
+        }).catch(async (e) => {
+          throw new Error(`${e.message} (the button: ${JSON.stringify(await button())})`);
+        });
+        done.push(`the other MDM stopped: "${down.title}", badge "!" in ${ms} ms; this computer chosen again: "${back.title}", badge "${back.badge}"`);
+      }
+      return `paired (${paired}); ${done.join("; ")}`;
     } finally {
       await popup.evaluate(`(document.getElementById("to-here").click(), true)`).catch(() => {});
       await sleep(500);

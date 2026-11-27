@@ -251,10 +251,17 @@ impl GalleryDialog {
                     winui::ERROR(),
                 )
             };
-            let rc = winui::fit(
+            let x = winui::note_mark(
                 ui,
                 &p,
                 o.x + 11.0,
+                line_y,
+                crate::icons::Mark::of_ink(color),
+            );
+            let rc = winui::fit(
+                ui,
+                &p,
+                x,
                 line_y,
                 msg,
                 color,
@@ -264,10 +271,17 @@ impl GalleryDialog {
             winui::readable(ui, rc, "gallery-status", msg);
         }
         if let Some(e) = &self.error {
-            let rc = winui::fit(
+            let x = winui::note_mark(
                 ui,
                 &p,
                 o.x + 11.0,
+                o.y + 88.0,
+                Some(crate::icons::Mark::Fail),
+            );
+            let rc = winui::fit(
+                ui,
+                &p,
+                x,
                 o.y + 88.0,
                 e,
                 winui::ERROR(),

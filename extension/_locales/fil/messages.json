@@ -850,5 +850,78 @@
   },
   "popup_video_reset_done": {
     "message": "Bumalik sa sulok nito, ipinapakita ang lahat ng menu nito, sa bawat site"
+  },
+  "status_links_sent": {
+    "message": "Mga link na ipinadala: $count$",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "10"
+      }
+    }
+  },
+  "status_links_cut": {
+    "message": "Mga link na ipinadala: $sent$, $left$ ang naiwan",
+    "placeholders": {
+      "sent": {
+        "content": "$1",
+        "example": "100"
+      },
+      "left": {
+        "content": "$2",
+        "example": "20"
+      }
+    }
+  },
+  "status_links_partial": {
+    "message": "Mga link na ipinadala: $sent$, tinanggihan: $refused$",
+    "placeholders": {
+      "sent": {
+        "content": "$1",
+        "example": "5"
+      },
+      "refused": {
+        "content": "$2",
+        "example": "2"
+      }
+    }
+  },
+  "status_links_partial_cut": {
+    "message": "Mga link na ipinadala: $sent$, tinanggihan: $refused$, $left$ ang naiwan",
+    "placeholders": {
+      "sent": {
+        "content": "$1",
+        "example": "5"
+      },
+      "refused": {
+        "content": "$2",
+        "example": "2"
+      },
+      "left": {
+        "content": "$3",
+        "example": "1"
+      }
+    }
+  },
+  "status_links_refused": {
+    "message": "Mga link na tinanggihan: $count$",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "status_links_none": {
+    "message": "Walang makukuhang link ($left$ ang naiwan)",
+    "placeholders": {
+      "left": {
+        "content": "$1",
+        "example": "5"
+      }
+    }
+  },
+  "status_unreachable": {
+    "message": "Hindi maabot ang server"
   }
 }

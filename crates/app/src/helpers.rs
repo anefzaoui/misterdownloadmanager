@@ -1,9 +1,10 @@
-//! The first start's offer of the video helpers (user request 2026-11-01): yt-dlp finds a page's
-//! video, ffmpeg joins its picture and sound, and, only where the computer has no JavaScript
-//! runtime, Node.js solves YouTube's challenges (#1570; YairDies' idea, #1541). They are asked for
-//! once, explained, and downloaded on Yes (through MDM's own engine, checked against their
-//! publishers' signed checksums: see mdm_tools); Not now leaves them to Tasks → Download video
-//! from a page, which offers them again.
+//! The first start's offer of the video helpers (user request 2026-11-01), a step of the setup
+//! window since #1839 (setup.rs): yt-dlp finds a page's video, ffmpeg joins its picture and
+//! sound, and, only where the computer has no JavaScript runtime, Node.js solves YouTube's
+//! challenges (#1570; YairDies' idea, #1541). Each is explained, says whether it is there, and has
+//! its own Install button and progress; nothing is downloaded until one is pressed (through MDM's
+//! own engine, checked against its publisher's signed checksums: see mdm_tools). Next leaves them
+//! to Tasks → Download video from a page, which offers them again.
 
 use std::sync::Arc;
 use std::sync::Mutex;
@@ -14,38 +15,57 @@ use crate::dialogs::{Outcome, window};
 use crate::icons::Icon;
 use crate::winui::{self, ButtonKind, r};
 
-/// The helpers' download, one after the other (user decision 2026-11-01: one at a time, one
-/// progress bar for both).
-#[derive(Default)]
-struct State {
-    /// The helper downloading now: its name, its place (1-based) and how many there are.
-    current: Option<(&'static str, usize, usize)>,
-    /// The helpers done: name and version.
-    ready: Vec<(&'static str, String)>,
-    /// The helper that failed, why, and what to do about it (#816; the ones after it are not
-    /// tried).
-    error: Option<(&'static str, String, Option<String>)>,
-    done: bool,
-}
-
-struct Job {
-    /// The current helper's bytes.
-    progress: Arc<mdm_tools::update::Progress>,
-    state: Arc<Mutex<State>>,
-}
-
-pub struct Helpers {
+/// The setup's page of the video helpers.
+pub struct Offer {
     dir: Option<std::path::PathBuf>,
-    /// Once Yes was pressed.
-    job: Option<Job>,
+    /// Which helpers are there (yt-dlp, ffmpeg, Node.js): read when the page is made and again
+    /// after each install here, not every frame (it reads files).
+    have: Have,
     /// Node.js is offered too: the computer has no JavaScript runtime yt-dlp can use, and MDM
-    /// has a Node.js for it. What can be told without running anything when the window opens
+    /// has a Node.js for it. What can be told without running anything when the page is made
     /// (`jsruntime::current_now`); when a runtime on the computer must first be asked for its
-    /// version, that is done off the window's thread ([`RuntimeProbe`]) and the section comes
-    /// (or not) when it answers, before Yes.
+    /// version, that is done off the window's thread ([`RuntimeProbe`]) and the row comes (or not)
+    /// when it answers, unless an install already started.
     node: bool,
     /// The runtime lookup waiting for an answer.
     probe: RuntimeProbe,
+    /// The installs started here, one per helper, each with its answer once it ends.
+    installs: Vec<(Tool, Install)>,
+    /// The last install that failed: the helper, why, and what to do about it (#816).
+    failed: Option<(Tool, String, Option<String>)>,
+    /// An install started here ended well.
+    installed_here: bool,
+}
+
+/// An install's answer, once it ends: Err holds why, in words, and what to do about it.
+type Install = Arc<Mutex<Option<Result<(), (String, Option<String>)>>>>;
+
+/// Which helpers are there ([`Offer`]).
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
+struct Have {
+    ytdlp: bool,
+    ffmpeg: bool,
+    node: bool,
+}
+
+impl Have {
+    /// What the tools folder `dir` (and the system) has.
+    fn read(dir: &std::path::Path) -> Have {
+        Have {
+            ytdlp: mdm_tools::installed(dir).is_some(),
+            ffmpeg: mdm_tools::ffmpeg::installed(dir).is_some(),
+            node: mdm_tools::node::installed(dir).is_some(),
+        }
+    }
+
+    fn of(&self, t: Tool) -> bool {
+        match t {
+            Tool::YtDlp => self.ytdlp,
+            Tool::Ffmpeg => self.ffmpeg,
+            Tool::Node => self.node,
+            Tool::GalleryDl => false,
+        }
+    }
 }
 
 /// A look for the JavaScript runtime yt-dlp would use (`jsruntime::current`), which may run the
@@ -99,13 +119,18 @@ pub fn worth_asking() -> bool {
         || (cfg!(windows) && mdm_tools::ffmpeg::installed(&dir).is_none())
 }
 
-impl Helpers {
-    /// Runs no program: a runtime that must be asked is asked from `show`, off its thread.
+/// The first row of the page's rows: where they start under the window's banner and steps.
+const ROWS_TOP: f32 = 12.0;
+/// A row's least height (a name and three lines of what it does).
+const ROW: f32 = 72.0;
+
+impl Offer {
+    /// Runs no program: a runtime that must be asked is asked from `page`, off its thread.
     pub fn new() -> Self {
         Self::with_dir(mdm_tools::tools_dir())
     }
 
-    /// [`Helpers::new`] for the tools folder `dir`.
+    /// [`Offer::new`] for the tools folder `dir`.
     fn with_dir(dir: Option<std::path::PathBuf>) -> Self {
         let mut probe = RuntimeProbe::default();
         let node = mdm_tools::jsruntime::available()
@@ -120,191 +145,407 @@ impl Helpers {
                     }
                 }
             });
-        Helpers {
+        Offer {
+            have: dir.as_deref().map(Have::read).unwrap_or_default(),
             dir,
-            job: None,
             node,
             probe,
+            installs: Vec::new(),
+            failed: None,
+            installed_here: false,
         }
     }
 
-    /// Download the missing helpers one after the other, in the background: they go on when
-    /// the window is closed. Try again starts over with the ones still missing.
-    fn start(&mut self, rt: &tokio::runtime::Handle, ctx: &egui::Context) {
+    /// The helpers the page shows, in order: yt-dlp, ffmpeg, and Node.js where it is offered.
+    fn rows(&self) -> Vec<Tool> {
+        let mut rows = vec![Tool::YtDlp, Tool::Ffmpeg];
+        if self.node {
+            rows.push(Tool::Node);
+        }
+        rows
+    }
+
+    /// `t`'s install started here and hasn't ended.
+    fn installing(&self, t: Tool) -> bool {
+        self.installs
+            .iter()
+            .any(|(i, answer)| *i == t && answer.lock().unwrap().is_none())
+    }
+
+    /// Whether `t` can be installed from here now: missing, not under way, and MDM has a copy of
+    /// it for this system (ffmpeg only on Windows: elsewhere the system's is used).
+    fn installable(&self, t: Tool) -> bool {
+        self.dir.is_some()
+            && !self.have.of(t)
+            && !self.installing(t)
+            && (t != Tool::Ffmpeg || cfg!(windows))
+    }
+
+    /// Install MDM's own copy of `t` in the background (`mdm_tools::autoupdate::install_own`:
+    /// checked against its publisher's signed checksums, then kept up to date as Helpers' own
+    /// copies are). It goes on when the window closes.
+    fn install(&mut self, t: Tool, rt: &tokio::runtime::Handle, ctx: &egui::Context) {
         let Some(dir) = self.dir.clone() else {
             return;
         };
-        let mut list = Vec::new();
-        if mdm_tools::installed(&dir).is_none() {
-            list.push("yt-dlp");
-        }
-        // ffmpeg: MDM's own on Windows (it has no build elsewhere, where the system's is used).
-        if cfg!(windows) && mdm_tools::ffmpeg::installed(&dir).is_none() {
-            list.push("ffmpeg");
-        }
-        if self.node && mdm_tools::node::installed(&dir).is_none() {
-            list.push("Node.js");
-        }
-        let job = Job {
-            progress: Arc::default(),
-            state: Arc::default(),
-        };
-        let (progress, state, ctx) = (job.progress.clone(), job.state.clone(), ctx.clone());
+        let slot: Install = Arc::new(Mutex::new(None));
+        let (out, wake) = (slot.clone(), ctx.clone());
         let net = crate::settings::own_net();
         rt.spawn(async move {
-            let total = list.len();
-            for (k, name) in list.into_iter().enumerate() {
-                {
-                    use std::sync::atomic::Ordering::Relaxed;
-                    progress.got.store(0, Relaxed);
-                    progress.total.store(0, Relaxed);
-                }
-                state.lock().unwrap().current = Some((name, k + 1, total));
-                let res = if name == "ffmpeg" {
-                    mdm_tools::ffmpeg::install_latest(&dir, &net, Some(&progress)).await
-                } else if name == "Node.js" {
-                    mdm_tools::jsruntime::install_latest(&dir, &net, Some(&progress)).await
-                } else {
-                    mdm_tools::install_latest(&dir, &net, Some(&progress)).await
-                };
-                let mut s = state.lock().unwrap();
-                match res {
-                    Ok(installed) => s.ready.push((name, installed.version)),
-                    Err(e) => {
-                        tracing::warn!("helper download failed: {name}: {e}");
-                        s.error = Some((
-                            name,
-                            crate::errors::tools(&e),
-                            crate::errors::tools_advice(&e, name),
-                        ));
-                        break;
-                    }
-                }
+            let now = mdm_tools::autoupdate::unix_now();
+            let res = mdm_tools::autoupdate::install_own(&dir, t, &net, now).await;
+            if let Err(e) = &res {
+                tracing::warn!("helper download failed: {}: {e}", t.name());
             }
-            let mut s = state.lock().unwrap();
-            s.current = None;
-            s.done = true;
-            drop(s);
-            ctx.request_repaint();
+            *out.lock().unwrap() = Some(res.map(|_| ()).map_err(|e| {
+                (
+                    crate::errors::tools(&e),
+                    crate::errors::tools_advice(&e, display_name(t)),
+                )
+            }));
+            wake.request_repaint();
         });
-        self.job = Some(job);
+        self.installs.retain(|(i, _)| *i != t);
+        self.installs.push((t, slot));
+        if self.failed.as_ref().is_some_and(|(f, ..)| *f == t) {
+            self.failed = None;
+        }
     }
 
-    /// How much taller the sections are than with yt-dlp's and ffmpeg's alone (one more for
-    /// Node.js).
-    fn rows_extra(&self) -> f32 {
-        if self.node { 72.0 } else { 0.0 }
+    /// The installs that ended since the last frame: what is there read again, a failure kept to
+    /// be said.
+    fn follow(&mut self) {
+        let (ended, going): (Vec<_>, Vec<_>) = std::mem::take(&mut self.installs)
+            .into_iter()
+            .partition(|(_, answer)| answer.lock().unwrap().is_some());
+        self.installs = going;
+        if ended.is_empty() {
+            return;
+        }
+        for (t, answer) in ended {
+            match answer.lock().unwrap().take() {
+                Some(Ok(())) => self.installed_here = true,
+                Some(Err((why, advice))) => self.failed = Some((t, why, advice)),
+                None => {}
+            }
+        }
+        if let Some(dir) = self.dir.as_deref() {
+            self.have = Have::read(dir);
+        }
     }
 
-    /// Open while shown (after Yes too, with the downloads' progress); Closed on Not now, Close
-    /// or the window's X.
-    pub fn show(&mut self, ctx: &egui::Context, rt: &tokio::runtime::Handle) -> Outcome<()> {
+    /// The page's headline, for the setup window's banner.
+    pub fn headline(&self) -> &'static str {
+        // i18n: the headline of the first start's helpers window
+        crate::i18n::t("Download videos from YouTube and 1,000+ sites")
+    }
+
+    /// The page's subline, for the setup window's banner.
+    pub fn subline(&self) -> &'static str {
+        if self.node {
+            crate::i18n::t(
+                "Three free helpers make it work. Get them now, and saving a video is one click away when you find one.",
+            )
+        } else {
+            crate::i18n::t(
+                "Two free helpers make it work. Get them now, and saving a video is one click away when you find one.",
+            )
+        }
+    }
+
+    /// The page, `w` wide, under English origin `o`: a row per helper (what it does, and whether
+    /// it is there, its Install button or its progress), the promise that they are official and
+    /// checked, and how it stands. Its height.
+    pub fn page(&mut self, ui: &mut Ui, o: Pos2, w: f32, rt: &tokio::runtime::Handle) -> f32 {
         // The computer's runtime, asked off this thread: Node.js offered if none will do (only
-        // before Yes, so the downloads' list stays as it was shown).
+        // before an install starts, so the rows stay as they were when it was pressed).
         let ytdlp = self
             .dir
             .as_deref()
             .and_then(mdm_tools::installed)
             .map(|i| i.exe);
-        self.probe.start(self.dir.clone(), ytdlp, ctx);
+        self.probe.start(self.dir.clone(), ytdlp, ui.ctx());
         if let Some(found) = self.probe.answer()
-            && self.job.is_none()
+            && self.installs.is_empty()
         {
             self.node = mdm_tools::jsruntime::available() && found.is_none();
         }
-        let (running, failed) = match &self.job {
-            Some(job) => {
-                let s = job.state.lock().unwrap();
-                (!s.done, s.error.is_some())
-            }
-            None => (false, false),
-        };
+        self.follow();
+        let running = self.rows().into_iter().any(|t| self.installing(t));
         if running {
-            ctx.request_repaint_after(std::time::Duration::from_millis(150));
+            ui.ctx()
+                .request_repaint_after(std::time::Duration::from_millis(150));
         }
-        let mut answer = None;
-        // A long translation's subline makes the banner taller (winui::banner).
-        let extra = crate::dialogs::grow_extra(ctx, "helpers-banner")
-            + crate::dialogs::grow_extra(ctx, "helpers-error")
-            + crate::dialogs::grow_extra(ctx, "helpers-advice")
-            + self.rows_extra();
-        window(
-            ctx,
-            "helpers",
-            // i18n: title of the first start's window that offers yt-dlp and ffmpeg
-            "Get ready for video downloads",
-            // Taller once Yes is pressed: the progress under the last section.
-            [
-                520.0,
-                if self.job.is_some() { 418.0 } else { 382.0 } + extra,
-            ],
-            false,
-            winui::BG(),
-            |ui, o| {
-                self.body(ui, o, running, failed, &mut answer);
-                match answer.take() {
-                    Some(true) => {
-                        self.start(rt, ui.ctx());
-                        Outcome::Open
-                    }
-                    Some(false) => Outcome::Closed,
-                    None if winui::escape_pressed(ui) => Outcome::Closed,
-                    None => Outcome::Open,
-                }
-            },
-        )
-    }
-
-    fn body(
-        &mut self,
-        ui: &mut Ui,
-        o: Pos2,
-        running: bool,
-        failed: bool,
-        answer: &mut Option<bool>,
-    ) {
         let p = ui.painter().clone();
         let (ink, muted) = (winui::TEXT(), winui::MUTED());
-        let w = 520.0;
-        // Everything under the sections moves down by the ones added (Node.js).
-        let shift = self.rows_extra();
-        // The banner: MDM's own logo, what this is for, in one line, and why now.
-        let extra = winui::banner(
+        // The column of the rows' buttons and states, as wide as the widest Install in this
+        // language (#192).
+        let rows = self.rows();
+        let labels: Vec<&str> = rows.iter().map(|t| install_label(*t)).collect();
+        let trail = labels
+            .iter()
+            .map(|l| winui::button_fit_width(&p, l, 110.0, 200.0))
+            .fold(110.0, f32::max);
+        let trail_x = w - 18.0 - trail;
+        let mut pressed = None;
+        let mut y = ROWS_TOP;
+        for (k, t) in rows.iter().copied().enumerate() {
+            let (icon, name, what) = row_text(t, self.dir.as_deref());
+            icon.image(true)
+                .paint_at(ui, r(o, 22.0, y + 2.0, 32.0, 32.0));
+            let name_rc = winui::text_font(
+                &p,
+                winui::tahoma_bold(),
+                o.x + 68.0,
+                o.y + y + 11.0,
+                crate::i18n::t(name),
+                ink,
+            );
+            // Painted text a screen reader couldn't see before (#1407).
+            winui::readable(ui, name_rc, ("helpers-name", k), crate::i18n::t(name));
+            let lines = winui::readable_paragraph(
+                ui,
+                &p,
+                o.x + 68.0,
+                o.y + y + 29.0,
+                &what,
+                muted,
+                o.x + trail_x - 12.0,
+                14.0,
+                ("helpers-what", k),
+            );
+            // Its state, at the row's end: there, downloading, or its Install button.
+            if self.have.of(t) {
+                // i18n: the first start's video helpers: beside a helper that is there already (MDM's own copy or the system's)
+                let there = crate::i18n::t("Installed");
+                // A drawn check before it (#2008), the same on every system.
+                let rc = winui::marked_text_right(
+                    ui,
+                    &p,
+                    o.x + w - 18.0,
+                    o.y + y + 17.0,
+                    crate::icons::Mark::Ok,
+                    there,
+                    winui::SUCCESS(),
+                );
+                winui::readable(ui, rc, ("helpers-there", k), there);
+            } else if self.installing(t) {
+                let progress = self
+                    .dir
+                    .as_deref()
+                    .and_then(|d| mdm_tools::autoupdate::checking(d, t));
+                let f = progress.as_ref().and_then(|p| p.fraction());
+                winui::meter(&p, r(o, trail_x, y + 8.0, trail, 8.0), f.unwrap_or(0.0));
+                let line = match f {
+                    // The last byte is in: its signature and checksum are being checked.
+                    Some(f) if f >= 1.0 => crate::i18n::t("Checking...").to_owned(),
+                    Some(f) => format!("{}%", (f * 100.0).floor()),
+                    // i18n: the first start's video helpers: a helper's download has started, its size not known yet
+                    None => crate::i18n::t("Starting...").to_owned(),
+                };
+                let (rc, _) = winui::text_right(&p, o.x + w - 18.0, o.y + y + 34.0, &line, muted);
+                winui::readable(ui, rc, ("helpers-progress", k), &line);
+            } else if self.installable(t) {
+                let label = install_label(t);
+                let b = winui::button(
+                    ui,
+                    r(o, trail_x, y + 2.0, trail, 25.0),
+                    label,
+                    ButtonKind::Normal,
+                    false,
+                    None,
+                );
+                if b.clicked() {
+                    pressed = Some(vec![t]);
+                }
+            }
+            y += row_height(lines);
+        }
+        // The promise, across the whole width.
+        let (icon, name, what) = promise(self.node);
+        icon.image(true)
+            .paint_at(ui, r(o, 22.0, y + 2.0, 32.0, 32.0));
+        let name_rc = winui::text_font(
+            &p,
+            winui::tahoma_bold(),
+            o.x + 68.0,
+            o.y + y + 11.0,
+            crate::i18n::t(name),
+            ink,
+        );
+        winui::readable(
+            ui,
+            name_rc,
+            ("helpers-name", "promise"),
+            crate::i18n::t(name),
+        );
+        let lines = winui::readable_paragraph(
             ui,
             &p,
-            o,
-            w,
-            "helpers-banner",
-            // i18n: the headline of the first start's helpers window
-            crate::i18n::t("Download videos from YouTube and 1,000+ sites"),
-            if self.node {
-                crate::i18n::t(
-                    "Three free helpers make it work. Get them now, and saving a video is one click away when you find one.",
-                )
-            } else {
-                crate::i18n::t(
-                    "Two free helpers make it work. Get them now, and saving a video is one click away when you find one.",
-                )
-            },
+            o.x + 68.0,
+            o.y + y + 29.0,
+            what,
+            muted,
+            o.x + w - 18.0,
+            14.0,
+            ("helpers-what", "promise"),
         );
-        // Everything below it moves down with a taller banner.
-        let o = o + egui::vec2(0.0, extra);
+        y += row_height(lines) - 8.0;
 
-        let ffmpeg_here = self
-            .dir
-            .as_deref()
-            .and_then(mdm_tools::ffmpeg::installed)
-            .is_some();
-        let mut rows: Vec<(Icon, &str, String)> = vec![
+        // How it stands, and the one button that gets every missing helper (#1839: each has its
+        // own too), only while more than one is missing.
+        winui::etched_h(&p, o.x + 16.0, o.y + y, w - 32.0);
+        y += 12.0;
+        let missing: Vec<Tool> = rows
+            .iter()
+            .copied()
+            .filter(|t| self.installable(*t))
+            .collect();
+        let all_at = (missing.len() > 1).then(|| {
+            winui::buttons_to_right(
+                &p,
+                w - 18.0,
+                8.0,
+                &[("Yes, download them (recommended)", 212.0)],
+                300.0,
+            )[0]
+        });
+        let text_end = all_at.map_or(w - 18.0, |(x, _)| x - 12.0);
+        let (line, color) = if let Some((t, why, _)) = &self.failed {
             (
-                Icon::HelperVideo,
-                // i18n: helper name and what it does (yt-dlp is a program's name)
-                "yt-dlp: finds the video",
+                crate::i18n::fmt(
+                    // i18n: {name} = yt-dlp, ffmpeg or Node.js; {error} = why
+                    crate::i18n::t("{name} could not be downloaded: {error}"),
+                    &[("name", display_name(*t)), ("error", why)],
+                ),
+                winui::ERROR(),
+            )
+        } else if running {
+            (
+                crate::i18n::t("They keep downloading if you close this window.").to_owned(),
+                muted,
+            )
+        } else if self.installed_here && missing.is_empty() {
+            (
                 crate::i18n::t(
-                    "Reads a page and lists every quality the site offers, up to 4K, from YouTube, Vimeo and over a thousand other sites.",
+                    "All set: on a page with a video, use Tasks → Download video from a page.",
                 )
                 .to_owned(),
-            ),
+                winui::SUCCESS(),
+            )
+        } else {
+            (
+                crate::i18n::t("Not now? Get them later from Tasks → Download video from a page.")
+                    .to_owned(),
+                muted,
+            )
+        };
+        // A failure is a polite live region: a screen reader speaks it as it comes, without the
+        // focus; the other lines never are (#1407, #1978).
+        let at = (o.x + 18.0, o.y + y + 13.0, o.x + text_end);
+        // A failure's line starts with its mark (#2008).
+        let mark = self.failed.is_some().then_some(crate::icons::Mark::Fail);
+        let at = (winui::note_mark(ui, &p, at.0, at.1, mark), at.1, at.2);
+        let lines = if self.failed.is_some() {
+            winui::readable_paragraph_live(
+                ui,
+                &p,
+                at.0,
+                at.1,
+                &line,
+                color,
+                at.2,
+                16.0,
+                ("helpers", "status"),
+            )
+        } else {
+            winui::readable_paragraph(
+                ui,
+                &p,
+                at.0,
+                at.1,
+                &line,
+                color,
+                at.2,
+                16.0,
+                ("helpers", "status"),
+            )
+        };
+        // What to do about the failure (#816), under it.
+        let mut more = 16.0 * lines.saturating_sub(1) as f32;
+        if let Some((_, _, advice)) = &self.failed {
+            let advice = advice.as_deref().unwrap_or(crate::i18n::t(
+                "Check your connection, then try again, or get them later from the video window.",
+            ));
+            let n = winui::readable_paragraph(
+                ui,
+                &p,
+                o.x + 18.0,
+                o.y + y + 13.0 + more + 18.0,
+                advice,
+                muted,
+                o.x + text_end,
+                16.0,
+                ("helpers", "advice"),
+            );
+            more += 18.0 + 16.0 * n.saturating_sub(1) as f32;
+        }
+        if let Some((x, bw)) = all_at {
+            // i18n: the first start's helpers: download every missing helper (yt-dlp, ffmpeg, Node.js) at once (the recommended answer)
+            let all = winui::button(
+                ui,
+                r(o, x, y, bw, 25.0),
+                "Yes, download them (recommended)",
+                ButtonKind::Accent,
+                false,
+                None,
+            );
+            if all.clicked() {
+                pressed = Some(missing.clone());
+            }
+        }
+        if let Some(tools) = pressed {
+            for t in tools {
+                self.install(t, rt, ui.ctx());
+            }
+        }
+        y + 30.0 + more
+    }
+}
+
+/// A row's height for `lines` lines of what its helper does: at least [`ROW`].
+fn row_height(lines: usize) -> f32 {
+    (29.0 + 14.0 * lines.saturating_sub(1) as f32 + 22.0).max(ROW)
+}
+
+/// A helper's name as its messages say it.
+fn display_name(t: Tool) -> &'static str {
+    match t {
+        Tool::Node => "Node.js",
+        t => t.name(),
+    }
+}
+
+/// A helper's Install button: "Install yt-dlp" (each one's own, as in Helpers).
+fn install_label(t: Tool) -> &'static str {
+    OwnButton::Install { first: true }.label(t)
+}
+
+/// A helper row's icon, name (translated where shown) and what it does, in the interface
+/// language.
+fn row_text(t: Tool, dir: Option<&std::path::Path>) -> (Icon, &'static str, String) {
+    match t {
+        Tool::YtDlp => (
+            Icon::HelperVideo,
+            // i18n: helper name and what it does (yt-dlp is a program's name)
+            "yt-dlp: finds the video",
+            crate::i18n::t(
+                "Reads a page and lists every quality the site offers, up to 4K, from YouTube, Vimeo and over a thousand other sites.",
+            )
+            .to_owned(),
+        ),
+        Tool::Ffmpeg => {
+            let ffmpeg_here = dir.and_then(mdm_tools::ffmpeg::installed).is_some();
             (
                 Icon::HelperMerge,
                 // i18n: helper name and what it does (ffmpeg is a program's name)
@@ -320,295 +561,36 @@ impl Helpers {
                     )
                     .to_owned()
                 },
-            ),
-        ];
-        if self.node {
-            rows.push((
-                Icon::HelperScript,
-                // i18n: helper name and what it does (Node.js and YouTube are names)
-                "Node.js: unlocks YouTube's qualities",
-                crate::i18n::t(
-                    "YouTube makes yt-dlp run a piece of JavaScript before it lists its videos, and this computer has nothing to run it with. Node.js does.",
-                )
-                .to_owned(),
-            ));
+            )
         }
-        rows.push((
-            Icon::HelperChecked,
-            // i18n: a promise in the helpers window: the helpers are free, official and checked
-            "Free, official and checked",
-            (if self.node {
-                crate::i18n::t(
-                    "All three are open source. MDM gets them from their official releases with its own downloader and checks each file's signature before it runs. About 140 MB, once.",
-                )
-            } else {
-                crate::i18n::t(
-                    "Both are open source. MDM gets them from their official releases with its own downloader and checks each file's signature before it runs. About 100 MB, once.",
-                )
-            })
+        Tool::Node | Tool::GalleryDl => (
+            Icon::HelperScript,
+            // i18n: helper name and what it does (Node.js and YouTube are names)
+            "Node.js: unlocks YouTube's qualities",
+            crate::i18n::t(
+                "YouTube makes yt-dlp run a piece of JavaScript before it lists its videos, and this computer has nothing to run it with. Node.js does.",
+            )
             .to_owned(),
-        ));
-        for (k, (icon, name, what)) in rows.iter().enumerate() {
-            let y = 100.0 + k as f32 * 72.0;
-            icon.image(true)
-                .paint_at(ui, r(o, 22.0, y + 2.0, 32.0, 32.0));
-            let name_rc = winui::text_font(
-                &p,
-                winui::tahoma_bold(),
-                o.x + 68.0,
-                o.y + y + 11.0,
-                crate::i18n::t(name),
-                ink,
-            );
-            // Painted text a screen reader couldn't see before (#1407).
-            winui::readable(ui, name_rc, ("helpers-name", k), crate::i18n::t(name));
-            winui::readable_paragraph(
-                ui,
-                &p,
-                o.x + 68.0,
-                o.y + y + 29.0,
-                what,
-                muted,
-                o.x + w - 18.0,
-                14.0,
-                ("helpers-what", k),
-            );
-        }
-
-        // After Yes: one bar for all, centred under the last section, and what it is doing.
-        let mut y = 322.0 + shift;
-        if let Some(job) = &self.job {
-            let st = job.state.lock().unwrap();
-            let f = job.progress.fraction().unwrap_or(0.0);
-            let (fraction, line, color) = if let Some((name, error, _)) = &st.error {
-                (
-                    st.ready.len() as f32 / (st.ready.len() + 1) as f32,
-                    crate::i18n::fmt(
-                        // i18n: {name} = yt-dlp, ffmpeg or Node.js; {error} = why
-                        crate::i18n::t("{name} could not be downloaded: {error}"),
-                        &[("name", name), ("error", error)],
-                    ),
-                    winui::ERROR(),
-                )
-            } else if st.done {
-                let list = st
-                    .ready
-                    .iter()
-                    .map(|(n, v)| format!("{n} {v}"))
-                    .collect::<Vec<_>>()
-                    .join(", ");
-                (
-                    1.0,
-                    crate::i18n::fmt(
-                        // i18n: the helpers are downloaded, checked and ready; {list} = names and versions, e.g. "yt-dlp 2026.10.26, ffmpeg 9.0"
-                        crate::i18n::t("Ready: {list}"),
-                        &[("list", &list)],
-                    ),
-                    winui::SUCCESS(),
-                )
-            } else if let Some((name, k, total)) = st.current
-                && f >= 1.0
-            {
-                (
-                    k as f32 / total as f32,
-                    crate::i18n::fmt(
-                        // i18n: a downloaded helper's signature and checksum are being checked; {name} = yt-dlp or ffmpeg
-                        crate::i18n::t("Checking {name} ({n} of {total})..."),
-                        &[
-                            ("name", name),
-                            ("n", &crate::i18n::integer(k as u64)),
-                            ("total", &crate::i18n::integer(total as u64)),
-                        ],
-                    ),
-                    ink,
-                )
-            } else if let Some((name, k, total)) = st.current {
-                (
-                    ((k - 1) as f32 + f) / total as f32,
-                    crate::i18n::fmt(
-                        // i18n: {name} = yt-dlp, ffmpeg or Node.js; {n} of {total} = which helper of how many; {percent} = how far, e.g. 45%
-                        crate::i18n::t("Downloading {name} ({n} of {total})... {percent}"),
-                        &[
-                            ("name", name),
-                            ("n", &crate::i18n::integer(k as u64)),
-                            ("total", &crate::i18n::integer(total as u64)),
-                            ("percent", &format!("{}%", (f * 100.0).floor())),
-                        ],
-                    ),
-                    ink,
-                )
-            } else {
-                (0.0, crate::i18n::t("Starting...").to_owned(), ink)
-            };
-            drop(st);
-            let bar_w = 320.0;
-            winui::meter(
-                &p,
-                r(o, (w - bar_w) / 2.0, 312.0 + shift, bar_w, 8.0),
-                fraction,
-            );
-            let room = w - 40.0;
-            let mut more = 0.0;
-            if failed && winui::text_width(&p, &line) > room {
-                // A failure is read whole (#816): wrapped, the window growing by its lines past
-                // the first.
-                let n = winui::readable_paragraph(
-                    ui,
-                    &p,
-                    o.x + 20.0,
-                    o.y + 340.0 + shift,
-                    &line,
-                    color,
-                    o.x + w - 20.0,
-                    16.0,
-                    ("helpers", "status"),
-                );
-                more = 16.0 * n.saturating_sub(1) as f32;
-            } else {
-                // Centred on screen (the same place in both directions); cut to the window.
-                let shown = winui::ellipsize(&p, &winui::tahoma(), &line, room);
-                let tw = winui::text_width(&p, &shown);
-                let rc = winui::text_at(
-                    &p,
-                    winui::tahoma(),
-                    (o.x + (w - tw) / 2.0).round(),
-                    o.y + 340.0 + shift,
-                    &shown,
-                    color,
-                );
-                // Whole for a screen reader too, even when the window cut it (#1407).
-                winui::readable(ui, rc, ("helpers", "status"), &line);
-                if shown != line {
-                    winui::full_on_hover(ui, rc, "helpers-status", &line);
-                }
-            }
-            crate::dialogs::grow_px(ui.ctx(), "helpers-error", more);
-            y += 36.0 + more;
-        }
-
-        // The way back later, then the answer.
-        winui::etched_h(&p, o.x + 16.0, o.y + y, w - 32.0);
-        // What to do about the failure (#816), when it says.
-        let advice = self.job.as_ref().and_then(|job| {
-            let st = job.state.lock().unwrap();
-            st.error.as_ref().and_then(|(_, _, a)| a.clone())
-        });
-        let later = if self.job.is_some() && running {
-            crate::i18n::t("They keep downloading if you close this window.")
-        } else if self.job.is_some() && !failed {
-            crate::i18n::t(
-                "All set: on a page with a video, use Tasks → Download video from a page.",
-            )
-        } else if let Some(advice) = &advice {
-            advice.as_str()
-        } else if self.job.is_some() {
-            crate::i18n::t(
-                "Check your connection, then try again, or get them later from the video window.",
-            )
-        } else {
-            crate::i18n::t("Not now? Get them later from Tasks → Download video from a page.")
-        };
-        // Wrapped: the window grows by the lines past the first.
-        let lines = winui::readable_paragraph(
-            ui,
-            &p,
-            o.x + 16.0,
-            o.y + y + 20.0,
-            later,
-            muted,
-            o.x + w - 16.0,
-            16.0,
-            ("helpers", "later"),
-        );
-        crate::dialogs::grow_px(
-            ui.ctx(),
-            "helpers-advice",
-            16.0 * lines.saturating_sub(1) as f32,
-        );
-        let y = y + 28.0 + 16.0 * lines.saturating_sub(1) as f32;
-        if self.job.is_none() {
-            // As wide as their labels in this language (#192), the row ending where it ends in
-            // English.
-            let [not_now_at, yes_at] = winui::button_row(
-                &p,
-                &[
-                    ("Not now", 196.0, 90.0),
-                    ("Yes, download them (recommended)", 292.0, 212.0),
-                ],
-                6.0,
-                16.0,
-                360.0,
-            )[..] else {
-                unreachable!("two buttons")
-            };
-            let not_now = winui::button(
-                ui,
-                r(o, not_now_at.0, y, not_now_at.1, 25.0),
-                "Not now",
-                ButtonKind::Normal,
-                false,
-                None,
-            );
-            // i18n: the first start's helpers window: download yt-dlp and ffmpeg (the recommended answer)
-            let yes = winui::button(
-                ui,
-                r(o, yes_at.0, y, yes_at.1, 25.0),
-                "Yes, download them (recommended)",
-                ButtonKind::Accent,
-                false,
-                None,
-            );
-            // The window opens with the focus on its default button: a screen reader says it,
-            // not just the title (#1407).
-            if ui.memory(|m| m.focused().is_none()) {
-                yes.request_focus();
-            }
-            if yes.clicked() || winui::enter_pressed(ui) {
-                *answer = Some(true);
-            } else if not_now.clicked() {
-                *answer = Some(false);
-            }
-        } else {
-            let [again_at, close_at] = winui::button_row(
-                &p,
-                &[("Try again", 318.0, 90.0), ("Close", 414.0, 90.0)],
-                6.0,
-                16.0,
-                200.0,
-            )[..] else {
-                unreachable!("two buttons")
-            };
-            if failed && !running {
-                let again = winui::button(
-                    ui,
-                    r(o, again_at.0, y, again_at.1, 25.0),
-                    "Try again",
-                    ButtonKind::Normal,
-                    false,
-                    None,
-                );
-                if again.clicked() {
-                    *answer = Some(true);
-                }
-            }
-            let close = winui::button(
-                ui,
-                r(o, close_at.0, y, close_at.1, 25.0),
-                "Close",
-                ButtonKind::Default,
-                false,
-                None,
-            );
-            // When Yes goes away its focus goes with it: Close takes it, so the reader lands
-            // somewhere (#1407).
-            if ui.memory(|m| m.focused().is_none()) {
-                close.request_focus();
-            }
-            if close.clicked() || winui::enter_pressed(ui) {
-                *answer = Some(false);
-            }
-        }
+        ),
     }
+}
+
+/// The promise under the helpers: free, official and checked; three of them with Node.js.
+fn promise(node: bool) -> (Icon, &'static str, &'static str) {
+    (
+        Icon::HelperChecked,
+        // i18n: a promise in the helpers window: the helpers are free, official and checked
+        "Free, official and checked",
+        if node {
+            crate::i18n::t(
+                "All three are open source. MDM gets them from their official releases with its own downloader and checks each file's signature before it runs. About 140 MB, once.",
+            )
+        } else {
+            crate::i18n::t(
+                "Both are open source. MDM gets them from their official releases with its own downloader and checks each file's signature before it runs. About 100 MB, once.",
+            )
+        },
+    )
 }
 
 // ---- Video helpers: MDM's own copies or the person's (#51) ------------------------------------
@@ -664,6 +646,28 @@ struct Own {
 }
 
 const HELPERS: [Helper; 3] = [Helper::YtDlp, Helper::Ffmpeg, Helper::GalleryDl];
+
+/// Each row's role icon (#2008), the first start's own (a new one for gallery-dl), and where
+/// its texts and buttons start after it.
+const ROLE_ICON: f32 = 24.0;
+const INSET: f32 = 14.0 + ROLE_ICON + 8.0;
+
+/// A helper's role icon, as the first start's video helpers show it.
+fn role_icon(h: Helper) -> Icon {
+    match h {
+        Helper::YtDlp => Icon::HelperVideo,
+        Helper::Ffmpeg => Icon::HelperMerge,
+        Helper::GalleryDl => Icon::HelperGallery,
+    }
+}
+
+/// `icon` at a row's start, its top at window `y` (English), on whole pixels.
+fn paint_role(ui: &Ui, o: Pos2, y: f32, icon: Icon) {
+    use egui::emath::GuiRounding as _;
+    let rc = r(o, 14.0, y - o.y + 4.0, ROLE_ICON, ROLE_ICON)
+        .round_to_pixels(ui.ctx().pixels_per_point());
+    icon.image(true).paint_at(ui, rc);
+}
 
 /// The tool a helper row is.
 fn tool_of(h: Helper) -> Tool {
@@ -1091,10 +1095,11 @@ impl Programs {
         let p = ui.painter().clone();
         for (k, h) in HELPERS.into_iter().enumerate() {
             let y = o.y + 8.0 + k as f32 * 78.0;
+            paint_role(ui, o, y, role_icon(h));
             let name_rc = winui::text_font(
                 &p,
                 winui::tahoma_bold(),
-                o.x + 14.0,
+                o.x + INSET,
                 y + 16.0,
                 h.name(),
                 winui::TEXT(),
@@ -1175,7 +1180,7 @@ impl Programs {
             let status_rc = winui::fit(
                 ui,
                 &p,
-                o.x + 14.0,
+                o.x + INSET,
                 y + 36.0,
                 &status,
                 winui::MUTED(),
@@ -1185,7 +1190,7 @@ impl Programs {
             winui::readable(ui, status_rc, ("helper-status", k), &status);
             // Its updates: MDM's own copy's, or the person's to make (#1544).
             let name_end =
-                o.x + 14.0 + winui::text_width_font(&p, winui::tahoma_bold(), h.name()) + 10.0;
+                o.x + INSET + winui::text_width_font(&p, winui::tahoma_bold(), h.name()) + 10.0;
             let updates = if found.is_some_and(|i| mine || i.is_system()) {
                 // i18n: Helpers: a program the person chose, or the system's copy: MDM doesn't update it, the person (or their package manager) does
                 Some(crate::i18n::t("Updated by you").to_owned())
@@ -1199,8 +1204,8 @@ impl Programs {
             let [other_at, own_at] = winui::button_row_from_left(
                 &p,
                 &[
-                    ("Use another program...", 14.0, 180.0),
-                    (own_label, 202.0, 180.0),
+                    ("Use another program...", INSET, 180.0),
+                    (own_label, INSET + 188.0, 180.0),
                 ],
                 8.0,
                 486.0,
@@ -1326,10 +1331,17 @@ impl Programs {
         let y = 370.0;
         // What failed, left of the buttons.
         if let Some(e) = &self.error {
-            let rc = winui::fit(
+            let x = winui::note_mark(
                 ui,
                 &p,
                 o.x + 14.0,
+                o.y + y + 15.0,
+                Some(crate::icons::Mark::Fail),
+            );
+            let rc = winui::fit(
+                ui,
+                &p,
+                x,
                 o.y + y + 15.0,
                 e,
                 winui::ERROR(),
@@ -1519,10 +1531,11 @@ impl Programs {
         let y = o.y + 8.0 + k as f32 * 78.0;
         // i18n: Video helpers: the row of the JavaScript runtime (Node.js, Deno...) yt-dlp needs for YouTube's videos
         let title = crate::i18n::t("JavaScript runtime (for YouTube)");
+        paint_role(ui, o, y, Icon::HelperScript);
         let title_rc = winui::text_font(
             p,
             winui::tahoma_bold(),
-            o.x + 14.0,
+            o.x + INSET,
             y + 16.0,
             title,
             winui::TEXT(),
@@ -1540,14 +1553,14 @@ impl Programs {
         let after = winui::text_width_font(p, winui::tahoma_bold(), title) + 10.0;
         let updates = own_node.then(|| self.update_status(Tool::Node)).flatten();
         if own_node {
-            self.update_row(ui, p, o, y, o.x + 14.0 + after, Tool::Node, None, rt);
+            self.update_row(ui, p, o, y, o.x + INSET + after, Tool::Node, None, rt);
         } else {
             // i18n: Video helpers: what the JavaScript runtime is for, after its name (yt-dlp is a program's name)
             let what = crate::i18n::t("lets yt-dlp list all of YouTube's qualities");
             let what_rc = winui::fit(
                 ui,
                 p,
-                o.x + 14.0 + after,
+                o.x + INSET + after,
                 y + 16.0,
                 what,
                 winui::MUTED(),
@@ -1614,7 +1627,7 @@ impl Programs {
         let status_rc = winui::fit(
             ui,
             p,
-            o.x + 14.0,
+            o.x + INSET,
             y + 36.0,
             &status,
             winui::MUTED(),
@@ -1641,8 +1654,8 @@ impl Programs {
         let [other_at, own_at] = winui::button_row_from_left(
             p,
             &[
-                ("Use another program...", 14.0, 180.0),
-                (own_label, 202.0, 180.0),
+                ("Use another program...", INSET, 180.0),
+                (own_label, INSET + 188.0, 180.0),
             ],
             8.0,
             486.0,
@@ -1784,7 +1797,7 @@ impl Keeper {
 mod tests {
     use super::*;
 
-    /// Opening the first start's window or Helpers runs no program on the window's thread: a
+    /// Opening the first start's page or Helpers runs no program on the window's thread: a
     /// runtime on the computer that must be asked for its version is asked from `show`, on a
     /// thread of its own. (A runtime chosen in the tools folder, the one case told at once, is
     /// read from its file.)
@@ -1794,7 +1807,7 @@ mod tests {
         let tools = dir.path().join("tools");
         std::fs::create_dir_all(&tools).unwrap();
         let before = mdm_tools::jsruntime::probes();
-        let first = Helpers::with_dir(Some(tools.clone()));
+        let first = Offer::with_dir(Some(tools.clone()));
         let helpers = Programs::with_dir(Some(tools.clone()));
         assert_eq!(mdm_tools::jsruntime::probes(), before);
         // Whatever this computer has, it is either known now or left to the probe.
@@ -1836,6 +1849,46 @@ mod tests {
         for b in [Install { first: false }, Forget, Off] {
             assert_eq!(b.label(Tool::GalleryDl), "Use MDM's own copy");
         }
+    }
+
+    /// #1839: the page downloads nothing by itself: made and read, every missing helper only
+    /// offers its Install button, and an empty tools folder has yt-dlp to install (ffmpeg too on
+    /// Windows, where MDM has its own).
+    #[test]
+    fn the_helpers_page_downloads_nothing_unasked() {
+        let dir = tempfile::tempdir().unwrap();
+        let tools = dir.path().join("tools");
+        std::fs::create_dir_all(&tools).unwrap();
+        let mut offer = Offer::with_dir(Some(tools.clone()));
+        offer.follow();
+        assert!(offer.installs.is_empty());
+        for t in offer.rows() {
+            assert!(!offer.installing(t));
+        }
+        if !offer.have.ytdlp {
+            assert!(offer.installable(Tool::YtDlp));
+        }
+        assert_eq!(
+            offer.installable(Tool::Ffmpeg),
+            cfg!(windows) && !offer.have.ffmpeg
+        );
+        // Nothing was written in the tools folder.
+        assert_eq!(std::fs::read_dir(&tools).unwrap().count(), 0);
+    }
+
+    /// #1839: a helper that is there already (here a yt-dlp chosen in Helpers) says so and has no
+    /// Install button: only what is missing is offered.
+    #[test]
+    fn a_helper_already_there_is_not_offered_again() {
+        let dir = tempfile::tempdir().unwrap();
+        let tools = dir.path().join("tools");
+        std::fs::create_dir_all(&tools).unwrap();
+        let mut offer = Offer::with_dir(Some(tools));
+        offer.have.ytdlp = true;
+        assert!(!offer.installable(Tool::YtDlp));
+        // No tools folder (no data folder): nothing can be installed.
+        let none = Offer::with_dir(None);
+        assert!(none.rows().iter().all(|t| !none.installable(*t)));
     }
 
     /// Before its size is known (or with no install under way here), the download's line says

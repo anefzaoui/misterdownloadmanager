@@ -356,6 +356,10 @@
 #. RSS feeds window, Download rules: shown when there are no rules yet
 #, machine
 	A rule adds the new articles whose titles it matches, as they come.	ಶೀರ್ಷಿಕೆಗಳಿಗೆ ಹೊಂದಿಕೆಯಾಗುವ ಹೊಸ ಲೇಖನಗಳು ಬಂದಂತೆ ನಿಯಮವು ಅವುಗಳನ್ನು ಸೇರಿಸುತ್ತದೆ.
+#. text in the Options window
+#. Site rules window: in the empty list of rules, under its title
+#, machine
+	A rule sets the connections, User-Agent or headers for one site.	ಒಂದು ಸೈಟ್‌ಗೆ ಸಂಪರ್ಕಗಳು, ಬಳಕೆದಾರ-ಏಜೆಂಟ್ ಅಥವಾ ಹೆಡರ್‌ಗಳನ್ನು ನಿಯಮವು ಹೊಂದಿಸುತ್ತದೆ.
 #. text in errors.rs
 #. an error: a server on this computer redirected the download to the internet, which would not go through the chosen network adapter; {adapter} its name
 #, machine
@@ -464,6 +468,10 @@
 #, machine
 	Add new download	ಹೊಸ ಡೌನ್‌ಲೋಡ್ ಸೇರಿಸಿ
 #. text in the Options window
+#. Options → Accounts: in the empty list of accounts, under its title
+#, machine
+	Add one to download file-host links through it.	ಫೈಲ್-ಹೋಸ್ಟ್ ಲಿಂಕ್‌ಗಳನ್ನು ಅದರ ಮೂಲಕ ಡೌನ್‌ಲೋಡ್ ಮಾಡಲು ಒಂದನ್ನು ಸೇರಿಸಿ.
+#. text in the Options window
 #, machine
 	Add the duplicate and overwrite the existing file	ನಕಲನ್ನು ಸೇರಿಸಿ ಮತ್ತು ಅಸ್ತಿತ್ವದಲ್ಲಿರುವ ಫೈಲ್ ಅನ್ನು ಓವರ್‌ರೈಟ್ ಮಾಡಿ
 #. text in the Options window
@@ -545,7 +553,7 @@
 #, machine
 	Address or magnet link	ವಿಳಾಸ ಅಥವಾ ಮ್ಯಾಗ್ನೆಟ್ ಲಿಂಕ್
 #. message or event log entry in the main window
-#. Link grabber: where the links came from: the Add URL window (an address typed or pasted there)
+#. Link grabber: where the links came from: an address given on its own (typed or pasted in Add URL, given on the command line)
 #, machine
 	Address typed	ವಿಳಾಸವನ್ನು ಟೈಪ್ ಮಾಡಲಾಗಿದೆ
 #. text in the Options window; text in preview.rs; text in a download's Properties window
@@ -839,6 +847,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Azerbaijan	ಅಜೆರ್ಬೈಜಾನ್
+#. button in setup.rs
+#. button of the first start's setup window: the step before
+#, machine
+	Back	ಹಿಂದೆ
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -940,6 +952,10 @@
 #. Site rules: column title: "Yes" when the rule asks the way a browser connects from the first request
 #, machine
 	Browser	ಬ್ರೌಸರ್
+#. text in setup.rs
+#. a step of the first start's setup window: the extension that hands the browser's downloads to MDM
+#, machine
+	Browser extension	ಬ್ರೌಸರ್ ವಿಸ್ತರಣೆ
 #. text in extension.rs
 #, machine
 	Browser integration isn't set up on this computer, so no browser can reach Mister Download Manager yet.	ಈ ಕಂಪ್ಯೂಟರ್‌ನಲ್ಲಿ ಬ್ರೌಸರ್ ಏಕೀಕರಣವನ್ನು ಹೊಂದಿಸಲಾಗಿಲ್ಲ, ಆದ್ದರಿಂದ ಯಾವುದೇ ಬ್ರೌಸರ್ ಇನ್ನೂ Mister Download Manager ಅನ್ನು ತಲುಪಲು ಸಾಧ್ಯವಿಲ್ಲ.
@@ -1134,17 +1150,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Checking the program...	ಪ್ರೋಗ್ರಾಂ ಪರಿಶೀಲಿಸಲಾಗುತ್ತಿದೆ...
-#. text in helpers.rs
-#. a downloaded helper's signature and checksum are being checked; {name} = yt-dlp or ffmpeg
-#. {name} = a file name; {n} = a number (keep the braces as they are)
-#. the trailing ... means it is still going on: keep it
-#, machine
-	Checking {name} ({n} of {total})...	{name} ಅನ್ನು ಪರಿಶೀಲಿಸಲಾಗುತ್ತಿದೆ ({total} ರಲ್ಲಿ {n})...
 #. text in the download list (sizes, speeds, status)
 #. the list's Status column while a torrent's files or a finished file are checked (against the torrent's hashes or a checksum); {percent} how much is checked, e.g. "42%". One short word: the column is narrow
 #, machine
 	Checking {percent}	ಪರಿಶೀಲಿಸಲಾಗುತ್ತಿದೆ {percent}
-#. text in the Checksum window; text in extension.rs; text in the Link grabber window; text in the Options window
+#. text in the Checksum window; text in extension.rs; text in the Link grabber window; text in helpers.rs; text in the Options window
 #. in the browser extension's window, while it reads whether the browsers can reach MDM (a moment, usually)
 #. Test browser integration, while it reads where browser integration stands (a moment, usually)
 #. the trailing ... means it is still going on: keep it
@@ -1162,6 +1172,10 @@
 #. remote control page (on a phone): what the ".torrent file" button does (screen readers)
 #, machine
 	Choose a .torrent file	.torrent ಫೈಲ್ ಆಯ್ಕೆಮಾಡಿ
+#. text in rssdlg.rs
+#. RSS feeds window: in the empty list of articles, under its title
+#, machine
+	Choose a feed to see its articles.	ಅದರ ಲೇಖನಗಳನ್ನು ನೋಡಲು ಫೀಡ್ ಆಯ್ಕೆಮಾಡಿ.
 #. message or event log entry in the main window
 #. title of the file dialog of View → Font → Choose a font file
 #. title of the message when the font picked in View → Font can't be used
@@ -1171,7 +1185,7 @@
 #. file picker title: choose a JavaScript runtime's program (node.exe, deno.exe, qjs.exe, bun.exe)
 #, machine
 	Choose a JavaScript runtime (Node.js, Deno, QuickJS or Bun)	ಜಾವಾಸ್ಕ್ರಿಪ್ಟ್ ರನ್‌ಟೈಮ್ ಆಯ್ಕೆಮಾಡಿ (Node.js, Deno, QuickJS ಅಥವಾ Bun)
-#. text in langpick.rs
+#. text in langpick.rs; text in setup.rs
 #, machine
 	Choose a language	ಭಾಷೆಯನ್ನು ಆರಿಸಿ
 #. text in a dialog box
@@ -1224,7 +1238,7 @@
 #. text in the Options window
 #, machine
 	Clock:	ಗಡಿಯಾರ:
-#. text in archtest.rs; text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in a dialog box; button in extension.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list; button in the Options window; button in rssdlg.rs; button in torrentfiles.rs; text in traypanel.rs; text in standard windows
+#. text in archtest.rs; text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in a dialog box; button in extension.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list; button in the Options window; button in rssdlg.rs; button in setup.rs; button in torrentfiles.rs; text in traypanel.rs; text in standard windows
 #. both verbs: Verify = check the file now; Close = close the window
 #. tooltip of the × that closes the Categories pane
 #. verb: closes this window
@@ -1775,15 +1789,14 @@
 #. Helpers: a newer version of a helper is being downloaded; {percent} = how far, a number
 #, machine
 	Downloading the update... {percent}%	ನವೀಕರಣವನ್ನು ಡೌನ್‌ಲೋಡ್ ಮಾಡಲಾಗುತ್ತಿದೆ... {percent}%
-#. text in helpers.rs
-#. {name} = yt-dlp, ffmpeg or Node.js; {n} of {total} = which helper of how many; {percent} = how far, e.g. 45%
-#. {name} = a file name; {n} = a number (keep the braces as they are)
-#, machine
-	Downloading {name} ({n} of {total})... {percent}	{name} ಅನ್ನು ಡೌನ್‌ಲೋಡ್ ಮಾಡಲಾಗುತ್ತಿದೆ ({total} ರಲ್ಲಿ {n})... {percent}
 #. text in the download list; text in the Options window
 #. tab title: download settings
 #, machine
 	Downloads	ಡೌನ್‌ಲೋಡ್‌ಗಳು
+#. text in the Scheduler window
+#. Scheduler → Files in the queue: in the empty list, under its title
+#, machine
+	Downloads added to this queue show here.	ಈ ಕ್ಯೂಗೆ ಸೇರಿಸಿದ ಡೌನ್‌ಲೋಡ್‌ಗಳು ಇಲ್ಲಿ ತೋರಿಸುತ್ತವೆ.
 #. window title in a dialog box
 #. title of the window that sums up downloads added together (a playlist, a batch) once all are done
 #, machine
@@ -2202,6 +2215,10 @@
 #. text in the Find window
 #, machine
 	Find:	ಹುಡುಕಿ:
+#. text in setup.rs
+#. button of the first start's setup window, on its last step: the setup is done
+#, machine
+	Finish	ಮುಗಿಸಿ
 #. item in the Categories tree in the main window; text in remote.rs
 #. adjective: the downloads that are complete
 #. remote control page (on a phone): tab: downloads finished
@@ -2411,10 +2428,6 @@
 #. button: opens 7-Zip's website (7-Zip is a program's name)
 #, machine
 	Get 7-Zip	7-Zip ಪಡೆಯಿರಿ
-#. window title in helpers.rs
-#. title of the first start's window that offers yt-dlp and ffmpeg
-#, machine
-	Get ready for video downloads	ವೀಡಿಯೊ ಡೌನ್‌ಲೋಡ್‌ಗಳಿಗೆ ಸಿದ್ಧರಾಗಿ
 #. button in the Options window
 #, machine
 	Get System	ಸಿಸ್ಟಮ್ ಪಡೆಯಿರಿ
@@ -2701,6 +2714,10 @@
 #. button: download and install the yt-dlp program
 #, machine
 	Install yt-dlp	yt-dlp ಅನ್ನು ಸ್ಥಾಪಿಸಿ
+#. text in helpers.rs
+#. the first start's video helpers: beside a helper that is there already (MDM's own copy or the system's)
+#, machine
+	Installed	ಸ್ಥಾಪಿಸಲಾಗಿದೆ
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. Check for updates, after Update now downloaded it: unpacking and putting the new version in place
 #. the trailing ... means it is still going on: keep it
@@ -2783,6 +2800,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Italy	ಇಟಲಿ
+#. text in rssdlg.rs
+#. RSS feeds window: in the empty list of articles of a feed not read yet
+#, machine
+	Its articles show here once the feed is read.	ಫೀಡ್ ಓದಿದ ನಂತರ ಅದರ ಲೇಖನಗಳು ಇಲ್ಲಿ ತೋರಿಸುತ್ತವೆ.
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted in place (after "Couldn't extract {name}: "); HatchZip took its files out (the archive is gone), but moving them stopped: {to} holds those moved, {left} the others, {error} the system's reason
 #. {error} = an error message (keep the braces as they are)
@@ -2906,7 +2927,7 @@
 #. a country's name (where a download's server is)
 #, machine
 	Kyrgyzstan	ಕಿರ್ಗಿಸ್ತಾನ್
-#. text in langpick.rs
+#. text in langpick.rs; text in setup.rs
 #. window title (the interface language)
 #, machine
 	Language	ಭಾಷೆ
@@ -3372,6 +3393,10 @@
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
 #, machine
 	Mister Download Manager is running the queue "{queue}"	Mister Download Manager "{queue}" ಕ್ಯೂ ಅನ್ನು ಚಾಲನೆ ಮಾಡುತ್ತಿದೆ
+#. text in setup.rs
+#. the first start's setup window, under "Choose a language"
+#, machine
+	Mister Download Manager shows every window in it. View → Language changes it later.	Mister Download Manager ಎಲ್ಲ ವಿಂಡೋಗಳನ್ನು ಈ ಭಾಷೆಯಲ್ಲಿ ತೋರಿಸುತ್ತದೆ. ಇದನ್ನು ನಂತರ ವೀಕ್ಷಿಸಿ → ಭಾಷೆ ಮೂಲಕ ಬದಲಾಯಿಸಬಹುದು.
 #. text in crashui.rs
 #. crash report window heading: MDM's window doesn't answer (frozen)
 #, machine
@@ -3604,6 +3629,10 @@
 #, machine
 	New code	ಹೊಸ ಕೋಡ್
 #. text in the Options window
+#. tooltip of Options → Save to → "Save every download in "General" category's folder"
+#, machine
+	New downloads of every category go to this one folder; their categories still sort the list. A download's folder can still be changed in the window that starts it, and the downloads already in the list stay where they are.	ಪ್ರತಿ ವರ್ಗದ ಹೊಸ ಡೌನ್‌ಲೋಡ್‌ಗಳು ಈ ಒಂದು ಫೋಲ್ಡರ್‌ಗೆ ಹೋಗುತ್ತವೆ; ಅವುಗಳ ವರ್ಗಗಳು ಪಟ್ಟಿಯನ್ನು ವಿಂಗಡಿಸುತ್ತವೆ. ಡೌನ್‌ಲೋಡ್‌ನ ಫೋಲ್ಡರ್ ಅನ್ನು ಅದನ್ನು ಪ್ರಾರಂಭಿಸುವ ವಿಂಡೋದಲ್ಲಿ ಬದಲಾಯಿಸಬಹುದು, ಮತ್ತು ಈಗಾಗಲೇ ಪಟ್ಟಿಯಲ್ಲಿರುವ ಡೌನ್‌ಲೋಡ್‌ಗಳು ಅವು ಇರುವಲ್ಲಿಯೇ ಇರುತ್ತವೆ.
+#. text in the Options window
 #, machine
 	New exception	ಹೊಸ ವಿನಾಯಿತಿ
 #. text in the Options window
@@ -3622,6 +3651,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	New Zealand	ನ್ಯೂಜಿಲೆಂಡ್
+#. text in setup.rs
+#. button of the first start's setup window: the next step
+#, machine
+	Next	ಮುಂದೆ
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3641,6 +3674,10 @@
 #. button in a dialog box; text in a download's progress window
 #, machine
 	No	ಇಲ್ಲ
+#. text in the Options window
+#. Options → Accounts: the title in the empty list of debrid service accounts
+#, machine
+	No accounts yet	ಇನ್ನೂ ಯಾವುದೇ ಖಾತೆಗಳಿಲ್ಲ
 #. text in a dialog box
 #, machine
 	No addresses yet	ಇನ್ನೂ ಯಾವುದೇ ವಿಳಾಸಗಳಿಲ್ಲ
@@ -3648,6 +3685,10 @@
 #. Options → Proxy / Socks: Test got no answer in time
 #, machine
 	No answer within 20 seconds.	20 ಸೆಕೆಂಡುಗಳಲ್ಲಿ ಯಾವುದೇ ಉತ್ತರ ಸಿಗಲಿಲ್ಲ.
+#. text in rssdlg.rs
+#. RSS feeds window: the title in the empty list of articles of a feed that has none
+#, machine
+	No articles	ಯಾವುದೇ ಲೇಖನಗಳಿಲ್ಲ
 #. text in extension.rs
 #. a check of Test browser integration (Linux, macOS): MDM found no browser it can connect to (one installed as a Flatpak isn't found)
 #, machine
@@ -3695,6 +3736,18 @@
 #. title in the empty download list when there are no downloads at all
 #, machine
 	No downloads yet	ಇನ್ನೂ ಯಾವುದೇ ಡೌನ್‌ಲೋಡ್‌ಗಳಿಲ್ಲ
+#. text in rssdlg.rs
+#. RSS feeds window: the title in the empty list of articles, no feed chosen
+#, machine
+	No feed chosen	ಯಾವುದೇ ಫೀಡ್ ಆಯ್ಕೆ ಮಾಡಿಲ್ಲ
+#. text in rssdlg.rs
+#. RSS feeds window: the title in the empty list of feeds
+#, machine
+	No feeds yet	ಇನ್ನೂ ಯಾವುದೇ ಫೀಡ್‌ಗಳಿಲ್ಲ
+#. text in the Scheduler window
+#. Scheduler → Files in the queue: the title in the empty list
+#, machine
+	No files in this queue	ಈ ಕ್ಯೂನಲ್ಲಿ ಯಾವುದೇ ಫೈಲ್‌ಗಳಿಲ್ಲ
 #. text in a dialog box
 #, machine
 	No folders yet	ಇನ್ನೂ ಯಾವುದೇ ಫೋಲ್ಡರ್‌ಗಳಿಲ್ಲ
@@ -3708,6 +3761,10 @@
 #. text in langpick.rs
 #, machine
 	No language matches.	ಯಾವುದೇ ಭಾಷೆ ಹೊಂದಿಕೆಯಾಗುವುದಿಲ್ಲ.
+#. text in the Link grabber window
+#. Link grabber: the title in its empty list
+#, machine
+	No links yet	ಇನ್ನೂ ಯಾವುದೇ ಲಿಂಕ್‌ಗಳಿಲ್ಲ
 #. text in the Options window
 #. Options → Remote → Status: on, but the computer has no local network address now
 #, machine
@@ -3739,9 +3796,17 @@
 #, machine
 	No proxy/socks	ಯಾವುದೇ ಪ್ರಾಕ್ಸಿ/SOCKS ಇಲ್ಲ
 #. text in the Options window
+#. Site rules window: the title in the empty list of rules
+#, machine
+	No site rules yet	ಇನ್ನೂ ಯಾವುದೇ ಸೈಟ್ ನಿಯಮಗಳಿಲ್ಲ
+#. text in the Options window
 #. Options → Accounts: no system keyring/keychain answered (none runs, e.g. a desktop without one), so the sign-ins stay in MDM's settings folder, which only the user's account may read
 #, machine
 	No system keyring answered, so sign-ins and passwords are kept in MDM's settings, which only you can read.	ಯಾವುದೇ ಸಿಸ್ಟಮ್ ಕೀ ರಿಂಗ್ ಪ್ರತಿಕ್ರಿಯಿಸಲಿಲ್ಲ, ಆದ್ದರಿಂದ ಸೈನ್-ಇನ್‌ಗಳು ಮತ್ತು ಪಾಸ್‌ವರ್ಡ್‌ಗಳನ್ನು MDM ನ ಸೆಟ್ಟಿಂಗ್‌ಗಳಲ್ಲಿ ಇರಿಸಲಾಗುತ್ತದೆ, ಅದನ್ನು ನೀವು ಮಾತ್ರ ಓದಬಹುದು.
+#. text in the Add torrent window
+#. Add torrent: the title in the empty list of files, before a torrent is read
+#, machine
+	No torrent yet	ಇನ್ನೂ ಯಾವುದೇ ಟೊರೆಂಟ್ ಇಲ್ಲ
 #. message or event log entry in the main window
 #. event log entry: Add trackers changed nothing, the torrent had them all
 #, machine
@@ -3836,7 +3901,7 @@
 #. Link grabber, a link's status: a web page sent it (Click'n'Load), so it isn't looked up (name, size, online) before it is added
 #, machine
 	Not looked up	ಹುಡುಕಲಾಗಿಲ್ಲ
-#. text in cnl.rs; button in helpers.rs
+#. text in cnl.rs
 #. button in the Click'n'Load window: refuse these links, ask again next time
 #, machine
 	Not now	ಈಗ ಬೇಡ
@@ -4384,10 +4449,6 @@
 #. text in helpers.rs
 #, machine
 	Reads a page and lists every quality the site offers, up to 4K, from YouTube, Vimeo and over a thousand other sites.	ಒಂದು ಪುಟವನ್ನು ಓದುತ್ತದೆ ಮತ್ತು YouTube, Vimeo ಮತ್ತು ಸಾವಿರಕ್ಕೂ ಹೆಚ್ಚು ಇತರ ಸೈಟ್‌ಗಳಿಂದ 4K ವರೆಗೆ ಸೈಟ್ ನೀಡುವ ಪ್ರತಿ ಗುಣಮಟ್ಟವನ್ನು ಪಟ್ಟಿ ಮಾಡುತ್ತದೆ.
-#. text in helpers.rs
-#. the helpers are downloaded, checked and ready; {list} = names and versions, e.g. "yt-dlp 2026.10.26, ffmpeg 9.0"
-#, machine
-	Ready: {list}	ಸಿದ್ಧವಾಗಿದೆ: {list}
 #. message or event log entry in the main window
 #. event log entry: Reannounce failed, with the reason
 #. {error} = an error message (keep the braces as they are)
@@ -4613,6 +4674,11 @@
 #. text in a dialog box
 #, machine
 	Save As	ಹೀಗೆ ಉಳಿಸಿ
+#. text in the Options window
+#. Options → Save to, a check box: new downloads of every category go to General's folder; {category} is General's name
+#. {category} = a category name such as "Music" (keep the braces as they are)
+#, machine
+	Save every download in "{category}" category's folder	ಪ್ರತಿ ಡೌನ್‌ಲೋಡ್ ಅನ್ನು “{category}” ವರ್ಗದ ಫೋಲ್ಡರ್‌ನಲ್ಲಿ ಉಳಿಸಿ
 #. text in gallerydlg.rs; text in the Options window; text in the Add torrent window; text in the Download video window
 #. tab title: where downloads are saved
 #, machine
@@ -5174,6 +5240,7 @@
 #, machine
 	Started with yt-dlp {version} ({format})	yt-dlp {version} ({format}) ಬಳಸಿ ಪ್ರಾರಂಭಿಸಲಾಗಿದೆ
 #. text in helpers.rs
+#. the first start's video helpers: a helper's download has started, its size not known yet
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Starting...	ಪ್ರಾರಂಭಿಸಲಾಗುತ್ತಿದೆ...
@@ -5194,6 +5261,11 @@
 #. label before the download's state
 #, machine
 	Status:	ಸ್ಥಿತಿ:
+#. text in setup.rs
+#. what a screen reader says of the first start's setup window's steps; {n} = this step's number, {total} = how many, {name} = its name (Language, Video helpers, Browser extension)
+#. {n} = a number; {name} = a file name (keep the braces as they are)
+#, machine
+	Step {n} of {total}: {name}	ಹಂತ {n} ರಲ್ಲಿ {total}: {name}
 #. text in preview.rs
 #. the preview pane: a finished download's file is still where it was saved
 #, machine
@@ -5960,6 +6032,10 @@
 #. remote control page (on a phone): label of the box naming this phone (shown in MDM's list of paired devices)
 #, machine
 	This device's name	ಈ ಸಾಧನದ ಹೆಸರು
+#. text in rssdlg.rs
+#. RSS feeds window: in the empty list of articles of a feed that has none
+#, machine
+	This feed has no articles right now.	ಈ ಫೀಡ್‌ನಲ್ಲಿ ಸದ್ಯಕ್ಕೆ ಯಾವುದೇ ಲೇಖನಗಳಿಲ್ಲ.
 #. message or event log entry in the main window
 #. the message when a file picked in View → Font isn't a TrueType or OpenType font MDM can read
 #, machine
@@ -6242,9 +6318,6 @@
 #. a country's name (where a download's server is)
 #, machine
 	Trinidad and Tobago	ಟ್ರಿನಿಡಾಡ್ ಮತ್ತು ಟೊಬಾಗೋ
-#. button in helpers.rs
-#, machine
-	Try again	ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ
 #. text in errors.rs
 #. what to do when a helper couldn't be downloaded because its server limits requests; {name} = yt-dlp, ffmpeg or gallery-dl; {helpers} and {other} = the buttons Helpers and Use another program
 #. {name} = a file name (keep the braces as they are)
@@ -6657,6 +6730,10 @@
 #. category name: video files
 #, machine
 	Video	ವೀಡಿಯೊ
+#. text in setup.rs
+#. a step of the first start's setup window: yt-dlp, ffmpeg and Node.js, the programs that download videos
+#, machine
+	Video helpers	ವೀಡಿಯೊ ಸಹಾಯಕರು
 #. text in the Download video window
 #, machine
 	Video lookups use yt-dlp (about 23 MB, checked against its signature).	ವೀಡಿಯೊ ಹುಡುಕಾಟಗಳು yt-dlp ಅನ್ನು ಬಳಸುತ್ತವೆ (ಸುಮಾರು 23 MB, ಅದರ ಸಹಿಯ ವಿರುದ್ಧ ಪರಿಶೀಲಿಸಲಾಗಿದೆ).
@@ -6743,6 +6820,10 @@
 #. text in the Scheduler window
 #, machine
 	Wednesday	ಬುಧವಾರ
+#. text in setup.rs
+#. title of the first start's setup window (the language, the video helpers, the browser extension)
+#, machine
+	Welcome to Mister Download Manager	Mister Download Manager ಗೆ ಸ್ವಾಗತ
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -6845,7 +6926,7 @@
 #, machine
 	Yes	ಹೌದು
 #. button in helpers.rs
-#. the first start's helpers window: download yt-dlp and ffmpeg (the recommended answer)
+#. the first start's helpers: download every missing helper (yt-dlp, ffmpeg, Node.js) at once (the recommended answer)
 #, machine
 	Yes, download them (recommended)	ಹೌದು, ಅವುಗಳನ್ನು ಡೌನ್‌ಲೋಡ್ ಮಾಡಿ (ಶಿಫಾರಸು ಮಾಡಲಾಗಿದೆ)
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
@@ -7810,6 +7891,28 @@ extension	Left to the browser: {name}	ಬ್ರೌಸರ್‌ಗೆ ಬಿಡ�
 #, machine
 extension	Link copied	ಲಿಂಕ್ ನಕಲಿಸಲಾಗಿದೆ
 #. text in the browser extension
+#. the toolbar button's status: all links refused by another MDM
+#. {count} = a number (keep the braces as they are)
+#, machine
+extension	Links refused: {count}	ಲಿಂಕ್‌ಗಳನ್ನು ನಿರಾಕರಿಸಲಾಗಿದೆ: {count}
+#. text in the browser extension
+#. the toolbar button's status: links sent to another MDM
+#. {count} = a number (keep the braces as they are)
+#, machine
+extension	Links sent: {count}	ಲಿಂಕ್‌ಗಳನ್ನು ಕಳುಹಿಸಲಾಗಿದೆ: {count}
+#. text in the browser extension
+#. the toolbar button's status: some links refused by another MDM
+#, machine
+extension	Links sent: {sent}, refused: {refused}	ಲಿಂಕ್‌ಗಳನ್ನು ಕಳುಹಿಸಲಾಗಿದೆ: {sent}, ನಿರಾಕರಿಸಲಾಗಿದೆ: {refused}
+#. text in the browser extension
+#. the toolbar button's status: some links refused and some left out
+#, machine
+extension	Links sent: {sent}, refused: {refused}, {left} left out	ಲಿಂಕ್‌ಗಳನ್ನು ಕಳುಹಿಸಲಾಗಿದೆ: {sent}, ನಿರಾಕರಿಸಲಾಗಿದೆ: {refused}, {left} ಕೈಬಿಡಲಾಗಿದೆ
+#. text in the browser extension
+#. the toolbar button's status: links sent to another MDM, some left out by cap or filter
+#, machine
+extension	Links sent: {sent}, {left} left out	ಲಿಂಕ್‌ಗಳನ್ನು ಕಳುಹಿಸಲಾಗಿದೆ: {sent}, {left} ಕೈಬಿಡಲಾಗಿದೆ
+#. text in the browser extension
 #. beside a stream in the toolbar button's popup: it is a live broadcast (no fixed length); short
 #, machine
 extension	Live	ಲೈವ್
@@ -7913,6 +8016,10 @@ extension	Never on {site}	{site} ನಲ್ಲಿ ಎಂದಿಗೂ ಬೇಡ
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
 #, machine
 extension	Never take downloads from {site}	{site} ನಿಂದ ಡೌನ್‌ಲೋಡ್‌ಗಳನ್ನು ಎಂದಿಗೂ ತೆಗೆದುಕೊಳ್ಳಬೇಡಿ
+#. text in the browser extension
+#. the toolbar button's status: no links matched capturable file types
+#, machine
+extension	No capturable links ({left} left out)	ಸೆರೆಹಿಡಿಯಬಹುದಾದ ಲಿಂಕ್‌ಗಳಿಲ್ಲ ({left} ಕೈಬಿಡಲಾಗಿದೆ)
 #. text in the browser extension
 #. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when no download matches the search; the words searched for follow
 #, machine
@@ -8104,6 +8211,10 @@ extension	Sent to Link grabber: tick the ones to download there.	ಲಿಂಕ್
 #. shown briefly on the download button after it was clicked; keep the name Mister Download Manager as it is
 #, machine
 extension	Sent to Mister Download Manager	Mister Download Manager ಗೆ ಕಳುಹಿಸಲಾಗಿದೆ
+#. text in the browser extension
+#. the toolbar button's status when the paired server does not answer
+#, machine
+extension	Server not reached	ಸರ್ವರ್ ತಲುಪಿಲ್ಲ
 #. text in the browser extension
 #. tab in the toolbar button's popup: the extension's settings; noun, short
 #, machine

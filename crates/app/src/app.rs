@@ -1435,10 +1435,12 @@ pub struct App {
     updates: Option<crate::help::Updates>,
     shortcuts: Option<crate::help::Shortcuts>,
     tell_friend: Option<crate::help::TellFriend>,
-    /// The language picker (first start, View → Language...).
+    /// The language picker (View → Language...).
     lang_picker: Option<crate::langpick::Picker>,
-    /// The video helpers' offer (the first start's, after the language).
-    helpers: Option<crate::helpers::Helpers>,
+    /// The first start's setup (#1839): the language, the video helpers and the browser
+    /// extension in one window, and whether this run has weighed it.
+    setup: Option<crate::setup::Setup>,
+    setup_weighed: bool,
     /// "Files already there", opened on its own by `/show existing-files` (screenshots and the
     /// translations' fit check); Add torrent asks it itself.
     shown_existing: Option<crate::dialogs::ExistingFiles>,
@@ -2085,22 +2087,6 @@ fn sort_key(it: &Item, col: usize, queued: bool) -> (f64, String) {
     }
 }
 
-/// Silk icons standing in for IDM's XP-era category icons.
-/// A theme's icon set may replace them (`crate::themeicons`).
-fn category_icon(c: Category) -> IconKey {
-    let (need, silk) = match c {
-        Category::Compressed => ("cat-compressed", "page_white_zip"),
-        Category::Documents => ("cat-documents", "page_white"),
-        Category::Music => ("cat-music", "music"),
-        Category::Programs => ("cat-programs", "application_xp"),
-        Category::Video => ("cat-video", "film"),
-        Category::General => ("cat-documents", "page_white"),
-        Category::Torrents => ("cat-torrents", "folder_link"),
-        Category::Custom(_) => ("cat-folder", "folder"),
-    };
-    IconKey::Themed(need, silk)
-}
-
 impl App {
     /// For a run without a window (#157): downloads go to `downloads` when given (a server's
     /// share), and nothing waits for an answer from someone at the computer.
@@ -2166,7 +2152,6 @@ impl App {
             settings.language = (code != crate::i18n::system_code()).then_some(code);
             settings.language_asked = true;
         }
-        let ask_language = !settings.language_asked;
         crate::i18n::set_lang(settings.language.as_deref());
         crate::theme::language_fonts(ctx);
         crate::regional::set(&settings.regional);
@@ -2226,7 +2211,6 @@ impl App {
         );
         // Moves MDM's end cut short (#1739): settled by their files, beside the window.
         app.settle_moves();
-        app.lang_picker = ask_language.then(|| crate::langpick::Picker::new(true, None));
         app.remote = remote;
         // Click'n'Load (#37): off unless Options → Archives and Link grabber turned it on.
         if let Err(why) = app.cnl.listen(app.settings.cnl_on) {
@@ -2330,7 +2314,8 @@ impl App {
             shortcuts: None,
             tell_friend: None,
             lang_picker: None,
-            helpers: None,
+            setup: None,
+            setup_weighed: false,
             shown_existing: None,
             extension: None,
             extension_weighed: false,
@@ -2582,33 +2567,18 @@ impl App {
                 Cmd::AddUrl,
             )
         };
-        let (title, why) = (crate::i18n::t(title), crate::i18n::t(why));
-        let title_font = winui::tahoma_bold();
-        let tw = winui::text_width_font(p, title_font.clone(), title);
-        let ww = winui::text_width(p, why);
-        let aw = winui::text_width(p, crate::i18n::t(action));
-        // The block: icon 40, title, reason, link; in the middle, or under the header when
-        // the list is short.
-        let block_h = 40.0 + 14.0 + 16.0 + 8.0 + 13.0 + 14.0 + 13.0;
-        let top = (body.center().y - block_h / 2.0).max(body.top() + 16.0);
-        let cx = body.center().x;
-        // A download glyph in the muted ink (outlined, as the toolbar's icons are).
-        let ink = egui::Stroke::new(1.5, winui::MUTED());
-        let c = winui::rect(egui::Rect::from_center_size(
-            pos2(cx, top + 20.0),
-            egui::vec2(1.0, 1.0),
-        ))
-        .center();
-        p.circle_stroke(c, 19.0, ink);
-        p.line_segment([c + egui::vec2(0.0, -10.0), c + egui::vec2(0.0, 9.0)], ink);
-        p.line_segment([c + egui::vec2(-7.0, 2.0), c + egui::vec2(0.0, 9.0)], ink);
-        p.line_segment([c + egui::vec2(7.0, 2.0), c + egui::vec2(0.0, 9.0)], ink);
-        let y = top + 40.0 + 14.0 + 12.0;
-        winui::text_font(p, title_font, cx - tw / 2.0, y, title, winui::TEXT());
-        let y = y + 8.0 + 13.0;
-        winui::text(p, cx - ww / 2.0, y, why, winui::MUTED());
-        let y = y + 14.0 + 13.0;
-        winui::link(ui, p, cx - aw / 2.0, y, action, "empty-action").then_some(cmd)
+        // The shared block (#2008), in the list's rows (`body` is English).
+        winui::empty_state(
+            ui,
+            p,
+            winui::rect(body),
+            crate::icons::EmptyIcon::Downloads,
+            title,
+            why,
+            Some(action),
+            "empty-action",
+        )
+        .then_some(cmd)
     }
 
     /// The strip under the list: how many downloads are shown and selected, how many run and
@@ -2749,6 +2719,12 @@ impl App {
                 Status::Complete => "Complete",
                 // i18n: a download's status (state it is in, not a command): it failed
                 Status::Error => "Error",
+            },
+            // Extracting an archive is still under way, as checking it is.
+            status_icon: if self.extracts.extracting(it.id) {
+                crate::icons::StatusIcon::Checking
+            } else {
+                it.status_icon()
             },
             icon: file_icon(&it.file_name),
             queued: queued.contains(&it.id),
@@ -3132,8 +3108,12 @@ impl App {
             return;
         }
         if ask && self.queue_pick.is_none() {
-            let names = self.queues.iter().map(|q| q.name.clone()).collect();
-            self.queue_pick = Some((ids, dialogs::QueuePick::new(names)));
+            let queues = self
+                .queues
+                .iter()
+                .map(|q| (q.name.clone(), q.sync))
+                .collect();
+            self.queue_pick = Some((ids, dialogs::QueuePick::new(queues)));
         } else {
             self.queues[0].items.extend(ids);
         }
@@ -3581,7 +3561,15 @@ impl App {
             "batch-clipboard" => self.run(Cmd::BatchClipboard, None, ctx),
             "find" => self.run(Cmd::Find, None, ctx),
             "columns" => self.run(Cmd::ColumnsDialog, None, ctx),
-            "scheduler" => self.run(Cmd::Scheduler, None, ctx),
+            // scheduler:files opens it on its main queue's Files in the queue.
+            "scheduler" => {
+                self.run(Cmd::Scheduler, None, ctx);
+                if tab == "files"
+                    && let Some(s) = &mut self.scheduler
+                {
+                    s.show_queue(0, true);
+                }
+            }
             "about" => self.run(Cmd::About, None, ctx),
             // Update now's end-to-end tests (feature `test-update`, never in a release): Update
             // now pressed in the window `/show updates` opened (against MDM_UPDATE_FEED).
@@ -3645,7 +3633,45 @@ impl App {
             // starts again (renderer.rs).
             #[cfg(gpu)]
             "renderer-lost" if crate::offscreen() => crate::renderer::test_device_lost(),
-            "helpers" => self.helpers = Some(crate::helpers::Helpers::new()),
+            // The first start's setup, at its first step or at the one named (setup:helpers);
+            // `helpers` is its helpers' step (the window that offered them before #1839).
+            "setup" | "helpers" => {
+                let step = if window == "helpers" { "helpers" } else { tab };
+                self.setup = crate::setup::Setup::new(crate::setup::Need::ALL).map(|s| {
+                    match crate::setup::Step::named(step) {
+                        Some(step) => s.at(step),
+                        None => s,
+                    }
+                });
+                self.setup_weighed = true;
+            }
+            // Off-screen test copies: the drop-down `combo-open:<its id>` opens its list on its
+            // next draw (#2008's shots of the lists' icons; nothing is clicked).
+            "combo-open" if crate::offscreen() => {
+                winui::open_combo_for_shot(tab);
+                ctx.request_repaint();
+            }
+            // Add torrent with its magnet box empty, as the toolbar's Add magnet link opens it.
+            "add-magnet" => self.run(Cmd::AddMagnet, None, ctx),
+            // Off-screen test copies: Download later's queue selection panel for the first
+            // download, as Download Later opens it when Options asks for it (#2008's shots).
+            "queue-pick" if crate::offscreen() && first.is_some() => {
+                self.queue_later(first.into_iter().collect(), true);
+            }
+            // Off-screen test copies: Downloads complete's summary of the list's finished and
+            // failed downloads, as a batch's group shows it (#2008's shots of its failed lines).
+            "group-done" if crate::offscreen() => {
+                let of = |s: Status| -> Vec<u64> {
+                    self.items
+                        .iter()
+                        .filter(|i| i.status == s)
+                        .map(|i| i.id)
+                        .collect()
+                };
+                let (finished, failed) = (of(Status::Complete), of(Status::Error));
+                self.summaries
+                    .push(dialogs::GroupDone::new(0, &finished, &failed, &self.items));
+            }
             "torrent-settings" => self.run(Cmd::TorrentSettings, None, ctx),
             // The first download's: Add trackers (a torrent), its right-click menu.
             "add-trackers" if first.is_some() => self.run(Cmd::TorrentAddTrackers, first, ctx),
@@ -3948,9 +3974,12 @@ impl App {
                 }
             }
             // Link grabber with a page's links, looked up (the docs' screenshots, #37).
+            // grabber:empty opens it with nothing in it, as when the clipboard held no links.
             "grabber" => {
                 self.show_import(Vec::new(), String::new());
-                if let Some(g) = &mut self.grabber {
+                if tab != "empty"
+                    && let Some(g) = &mut self.grabber
+                {
                     g.sample();
                 }
             }
@@ -4220,7 +4249,7 @@ impl App {
                 .dir
                 .clone()
                 .map(PathBuf::from)
-                .unwrap_or_else(|| self.settings.category_dir(category, &self.downloads));
+                .unwrap_or_else(|| self.settings.save_dir(category, &self.downloads));
             // Its name as given, numbered on as it starts if it is taken then (#743): the window
             // doesn't wait for the folder, and a duplicate overwritten just before leaves its name
             // to it once its files are gone (`naming::clear`).
@@ -6587,9 +6616,9 @@ impl App {
     /// to is the Video category's folder, the Music category's while a sound-only choice is
     /// chosen (#611; not when the user deleted Music).
     fn video_dialog(&self, page: Option<(&str, mdm_ipc::Command)>) -> crate::videodlg::VideoDialog {
-        let dir = self.settings.category_dir(Category::Video, &self.downloads);
+        let dir = self.settings.save_dir(Category::Video, &self.downloads);
         let music = (!Category::Music.deleted())
-            .then(|| self.settings.category_dir(Category::Music, &self.downloads));
+            .then(|| self.settings.save_dir(Category::Music, &self.downloads));
         match page {
             Some((page, cmd)) => crate::videodlg::VideoDialog::for_page(dir, page, cmd),
             None => crate::videodlg::VideoDialog::new(dir),
@@ -6705,10 +6734,10 @@ impl App {
         let Some(pick) = &cmd.video_pick else {
             return VideoLookupAnswer::of(lookup::USE_WINDOW);
         };
-        let folder = self.settings.category_dir(Category::Video, &self.downloads);
+        let folder = self.settings.save_dir(Category::Video, &self.downloads);
         // A sound-only choice saves in Music, as in the Download video window (#611).
         let music = (!Category::Music.deleted())
-            .then(|| self.settings.category_dir(Category::Music, &self.downloads));
+            .then(|| self.settings.save_dir(Category::Music, &self.downloads));
         let start_now = !self.settings.only_add_to_queue;
         let add = self.lookups.pick(pick, cmd.private, now).and_then(|p| {
             crate::videolookup::video_add(
@@ -7165,9 +7194,7 @@ impl App {
                     mdm_torrent::Source::File(_) => None,
                 })
         {
-            let dir = self
-                .settings
-                .category_dir(Category::Torrents, &self.downloads);
+            let dir = self.settings.save_dir(Category::Torrents, &self.downloads);
             self.add_remote_torrent(magnet, dir, Category::Torrents, true, None, None, None);
             self.show_window(ctx);
             return;
@@ -7187,16 +7214,19 @@ impl App {
             }
             return;
         }
-        self.torrent_dlg = Some(crate::torrentdlg::TorrentDialog::new(
-            source,
-            remote,
-            self.torrent_host.clone(),
-            self.session_hashes(),
-            self.downloads.clone(),
-            self.settings.category_dirs.clone(),
-            &self.rt,
-            ctx,
-        ));
+        self.torrent_dlg = Some(
+            crate::torrentdlg::TorrentDialog::new(
+                source,
+                remote,
+                self.torrent_host.clone(),
+                self.session_hashes(),
+                self.downloads.clone(),
+                self.settings.category_dirs.clone(),
+                &self.rt,
+                ctx,
+            )
+            .with_one_folder(self.settings.one_folder),
+        );
     }
 
     /// The debrid account torrents go to (#44): Options → Accounts' "Torrents and magnet links
@@ -7816,8 +7846,7 @@ impl App {
             return;
         }
         let dir = if r.folder.trim().is_empty() {
-            self.settings
-                .category_dir(Category::Torrents, &self.downloads)
+            self.settings.save_dir(Category::Torrents, &self.downloads)
         } else {
             PathBuf::from(r.folder.trim())
         };
@@ -8069,7 +8098,10 @@ impl App {
                     p.address
                 );
                 if self.batch.is_none() {
-                    self.batch = Some(crate::batch::Batch::with_pattern(p));
+                    self.batch = Some(
+                        crate::batch::Batch::with_pattern(p)
+                            .with_one_folder(self.one_folder_shown()),
+                    );
                 }
                 dialogs::raise(ctx, dialogs::dialog_viewport("batch"));
                 return;
@@ -8089,6 +8121,16 @@ impl App {
         ));
     }
 
+    /// With one folder for every download (Options → Save to, #1973): General's folder as the
+    /// windows show a folder, for an empty Save to box to name.
+    fn one_folder_shown(&self) -> Option<String> {
+        self.settings.one_folder.then(|| {
+            crate::dialogs::display_path(
+                &self.settings.save_dir(Category::General, &self.downloads),
+            )
+        })
+    }
+
     /// Batch download → OK: every address goes to the main download queue (IDM's default; its
     /// queue selection panel is not built yet), into Save to's folder if one was given, else
     /// each into its category's folder.
@@ -8099,7 +8141,7 @@ impl App {
             let category = Category::of(&name);
             let dir = match &added.folder {
                 Some(folder) => folder.clone(),
-                None => self.settings.category_dir(category, &self.downloads),
+                None => self.settings.save_dir(category, &self.downloads),
             };
             // Numbered on as it starts if the name is taken then (#743): no disk here.
             let dest = mdm_engine::naming::guess(&dir, &name);
@@ -8534,7 +8576,7 @@ impl App {
         }
         let name = mdm_engine::naming::sanitize(&mdm_engine::naming::file_name(None, &url));
         let category = category.unwrap_or_else(|| Category::of(&name));
-        let dir = self.settings.category_dir(category, &self.downloads);
+        let dir = self.settings.save_dir(category, &self.downloads);
         // Numbered on as it starts if the name is taken then (#743): no disk here.
         let dest = mdm_engine::naming::guess(&dir, &name);
         cmd.remote = false;
@@ -8630,13 +8672,7 @@ impl App {
                 continue;
             }
             let category = category.unwrap_or_else(|| crate::torrentdlg::category_of(&meta));
-            let dir = dir.unwrap_or_else(|| {
-                crate::model::category_folder(
-                    category,
-                    &self.downloads,
-                    &self.settings.category_dirs,
-                )
-            });
+            let dir = dir.unwrap_or_else(|| self.settings.save_dir(category, &self.downloads));
             if !meta.existing_in(&dir).is_empty() {
                 tracing::warn!(
                     "remote control: {}: its files are already in {}",
@@ -9520,7 +9556,8 @@ impl App {
             }
             Cmd::Batch => {
                 if self.batch.is_none() {
-                    self.batch = Some(crate::batch::Batch::new());
+                    self.batch =
+                        Some(crate::batch::Batch::new().with_one_folder(self.one_folder_shown()));
                 }
             }
             // Read now, off the window's thread; what it holds opens a window when it comes
@@ -11235,7 +11272,7 @@ impl App {
                                 label: c.label(),
                                 expander: None,
                                 selected: v == cur,
-                                icon: category_icon(c),
+                                icon: c.icon(),
                                 badge: None,
                                 count: None,
                             },
@@ -12223,7 +12260,8 @@ impl App {
             self.settings.category_dirs.clone(),
             &self.rt,
             ctx,
-        );
+        )
+        .with_one_folder(self.settings.one_folder);
         fi.remember = self.settings.change_folder_on_last;
         fi.folders = self.settings.folder_history.clone();
         fi.nth = dialogs::Nth::free(self.file_infos.iter().map(|f| f.nth));
@@ -13057,6 +13095,7 @@ impl App {
                 s.extract_delete,
             )
         });
+        grabber.set_one_folder(s.one_folder);
         grabber.add(found, source, |u| known.contains(u.as_str()));
     }
 
@@ -13107,7 +13146,7 @@ impl App {
                 };
                 let category = Category::of(&name);
                 let dir = if pk.folder.as_os_str().is_empty() {
-                    self.settings.category_dir(category, &self.downloads)
+                    self.settings.save_dir(category, &self.downloads)
                 } else {
                     pk.folder.clone()
                 };
@@ -13574,6 +13613,51 @@ impl App {
         }
     }
 
+    /// The first start's setup (#1839, setup.rs): weighed once per run, shown while it is open.
+    /// It is due while the language or the helpers were never asked; its steps are what this
+    /// start needs. Whether it is finished or closed, the language and the helpers count as asked
+    /// from then on, and the browser extension's own window waits for a later start.
+    fn first_start_setup(&mut self, ctx: &egui::Context) {
+        if !self.setup_weighed {
+            self.setup_weighed = true;
+            if crate::setup::due(self.settings.language_asked, self.settings.helpers_asked) {
+                let need = crate::setup::Need {
+                    language: !self.settings.language_asked,
+                    helpers: !self.settings.helpers_asked && crate::helpers::worth_asking(),
+                    extension: !self.extension_weighed
+                        && crate::extension::worth_asking(&self.settings),
+                };
+                tracing::info!("first start's setup: {need:?}");
+                self.setup = crate::setup::Setup::new(need);
+                self.extension_weighed = true;
+                if self.setup.is_none() {
+                    self.setup_done();
+                }
+            }
+        }
+        let Some(setup) = &mut self.setup else {
+            return;
+        };
+        let out = setup.show(ctx, &self.rt);
+        // A language picked: every window in it at once, as View → Language does. Keeping the
+        // system's own language (preselected) follows the system from then on.
+        if let Some(code) = setup.take_language() {
+            let code = code.filter(|c| *c != crate::i18n::system_code());
+            self.run(Cmd::Language(code), None, ctx);
+        }
+        if !matches!(out, Outcome::Open) {
+            self.setup = None;
+            self.setup_done();
+        }
+    }
+
+    /// The setup is over (finished, closed, or nothing to ask): not asked again.
+    fn setup_done(&mut self) {
+        self.settings.language_asked = true;
+        self.settings.helpers_asked = true;
+        self.dirty = true;
+    }
+
     fn help_dialogs(&mut self, ctx: &egui::Context) {
         if let Some(d) = &mut self.lang_picker {
             let first = !self.settings.language_asked;
@@ -13598,31 +13682,18 @@ impl App {
                 }
             }
         }
-        // Once the language is settled: the video helpers, offered once (helpers.rs).
-        if self.lang_picker.is_none()
-            && self.settings.language_asked
-            && !self.settings.helpers_asked
-        {
-            self.settings.helpers_asked = true;
-            self.dirty = true;
-            if crate::helpers::worth_asking() {
-                self.helpers = Some(crate::helpers::Helpers::new());
-            }
-        }
-        if let Some(d) = &mut self.helpers
-            && !matches!(d.show(ctx, &self.rt), Outcome::Open)
-        {
-            self.helpers = None;
-        }
+        self.first_start_setup(ctx);
         if let Some(q) = &mut self.shown_existing
             && !matches!(q.show(ctx), Outcome::Open)
         {
             self.shown_existing = None;
         }
-        // Then the browser extension, once per start until a browser has it (extension.rs).
+        // Then the browser extension, once per start until a browser has it (extension.rs): at
+        // a start with no setup (the setup has it as a step).
         if self.lang_picker.is_none()
-            && self.helpers.is_none()
+            && self.setup.is_none()
             && self.settings.language_asked
+            && self.settings.helpers_asked
             && !self.extension_weighed
         {
             self.extension_weighed = true;
@@ -14302,7 +14373,7 @@ impl App {
                     if self.settings.change_folder_on_last
                         && self
                             .settings
-                            .keep_category_dir(add.category, &add.dir, &self.downloads)
+                            .keep_save_dir(add.category, &add.dir, &self.downloads)
                     {
                         self.dirty = true;
                     }
@@ -14336,7 +14407,7 @@ impl App {
                     // Download File Info follows through its box (#475): Music's for a
                     // sound-only choice (#611).
                     if self.settings.change_folder_on_last
-                        && self.settings.keep_category_dir(
+                        && self.settings.keep_save_dir(
                             v.category(),
                             &v.save_folder(),
                             &self.downloads,
@@ -15184,7 +15255,7 @@ impl App {
                 .unwrap_or_else(|| crate::model::browser_guess(&url, &context));
             let name = mdm_engine::naming::sanitize(&name);
             let category = Category::of(&name);
-            let dir = self.settings.category_dir(category, &self.downloads);
+            let dir = self.settings.save_dir(category, &self.downloads);
             // Numbered on as it starts if the name is taken then (#743): no disk here.
             let dest = mdm_engine::naming::guess(&dir, &name);
             let size = context.size;
@@ -16641,6 +16712,63 @@ mod add_batch_tests {
         let dests: Vec<_> = one.items.iter().map(|i| i.dest.clone()).collect();
         assert_eq!(dests, [folder.join("img01.jpg"), folder.join("part02.zip")]);
         assert!(!folder.exists(), "nothing made on the disk by OK");
+    }
+
+    /// #1973: with one folder for every download, a batch without a folder of its own, a
+    /// command line's download and a paired device's go to General's folder, each keeping its
+    /// category for the list; the downloads already in the list stay where they were.
+    #[test]
+    fn one_folder_takes_every_new_download() {
+        let mut a = app();
+        a.add_batch(added(None));
+        let before: Vec<_> = a.items.iter().map(|i| i.dest.clone()).collect();
+        assert_ne!(before[0].parent(), before[1].parent());
+
+        a.settings.one_folder = true;
+        let general = a.settings.category_dir(Category::General, &a.downloads);
+        a.add_batch(added(None));
+        let ctx = egui::Context::default();
+        a.handle_command(
+            ipc::Command {
+                url: Some("http://127.0.0.1:9/talk.mp3".into()),
+                later: true,
+                ..Default::default()
+            },
+            &ctx,
+        );
+        let mut remote = ipc::Command {
+            url: Some("http://127.0.0.1:9/movie.mkv".into()),
+            later: true,
+            ..Default::default()
+        };
+        remote.remote = true;
+        a.remote_add(remote);
+        assert_eq!(
+            a.items.len(),
+            6,
+            "{:?}",
+            a.items.iter().map(|i| &i.dest).collect::<Vec<_>>()
+        );
+        let new = &a.items[2..];
+        for i in new {
+            assert_eq!(i.dest.parent(), Some(general.as_path()), "{:?}", i.dest);
+        }
+        let cats: Vec<_> = new.iter().map(|i| i.category).collect();
+        assert_eq!(
+            cats,
+            [
+                Category::of("img01.jpg"),
+                Category::Compressed,
+                Category::Music,
+                Category::Video
+            ],
+            "the categories still sort the list"
+        );
+        let after: Vec<_> = a.items[..2].iter().map(|i| i.dest.clone()).collect();
+        assert_eq!(
+            after, before,
+            "the downloads already in the list stay where they were"
+        );
     }
 }
 

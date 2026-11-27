@@ -38,7 +38,7 @@ a number for a server yourself there too.
 
 ## Rules by site
 
-<!--@coming 0.5.3-->
+<!--@coming 0.6.0-->
 
 **Options → Connection → Site rules...** gives every download from a site (`*.example.com`) its
 own User-Agent, extra request headers, number of connections, or a browser's way of connecting

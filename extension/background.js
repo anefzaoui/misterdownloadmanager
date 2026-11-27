@@ -93,17 +93,120 @@ async function native(message, ms = HOST_WAIT) {
 //  - "file": a download handed over (`handOff`: the browser's own, a link page.js held, the
 //    right-click menu's link, a file in the popup's media list);
 //  - "video": Download video asked for (the button's click, the right-click menu over a player
-//    or on a stream's manifest, a stream in the popup's media list).
-const REMOTE_ADD = new Set(["file", "video"]);
+//    or on a stream's manifest, a stream in the popup's media list);
+//  - "links": Download all links / Download selected links from a page's right-click menu.
+const REMOTE_ADD = new Set(["file", "video", "links"]);
+const REMOTE_LINKS_CAP = 100;
+
+function formatLinksNotice(r) {
+  if (r.why === "unreachable") return t("status_unreachable");
+  if (r.sent > 0 && r.refused === 0 && r.leftOut === 0) return t("status_links_sent", String(r.sent));
+  if (r.sent > 0 && r.refused === 0 && r.leftOut > 0) return t("status_links_cut", String(r.sent), String(r.leftOut));
+  if (r.sent > 0 && r.refused > 0 && r.leftOut > 0) return t("status_links_partial_cut", String(r.sent), String(r.refused), String(r.leftOut));
+  if (r.sent > 0 && r.refused > 0 && r.leftOut === 0) return t("status_links_partial", String(r.sent), String(r.refused));
+  if (r.sent === 0 && r.refused > 0) return t("status_links_refused", String(r.refused));
+  if (r.sent === 0 && r.leftOut > 0) return t("status_links_none", String(r.leftOut));
+  return "";
+}
+
+async function noteRemoteStatus(why) {
+  const now = await readStatus();
+  const remoteWhy = why === "unreachable" ? "unreachable" : null;
+  if ((now.remoteWhy || null) === remoteWhy) return;
+  status = { ...now, remoteWhy, at: Date.now() };
+  await ext.storage.local.set({ status });
+  await showStatus();
+}
+
+async function noteLinksNotice(result) {
+  const notice = formatLinksNotice(result);
+  result.notice = notice;
+  const now = await readStatus();
+  const failed = result.why === "unreachable" || (result.sent === 0 && result.refused > 0);
+  const remoteWhy = result.why === "unreachable" ? "unreachable" : (result.sent > 0 ? null : now.remoteWhy);
+  status = { ...now, remoteWhy, notice, at: Date.now() };
+  await ext.storage.local.set({ status });
+  try {
+    if (failed) {
+      await action.setBadgeBackgroundColor({ color: "#C42B1C" });
+      if (action.setBadgeTextColor) await action.setBadgeTextColor({ color: "#FFFFFF" }).catch(() => {});
+      await action.setBadgeText({ text: "!" });
+    } else {
+      await action.setBadgeText({ text: "" });
+    }
+    if (notice) await action.setTitle({ title: notice });
+    setTimeout(() => {
+      showStatus().catch(() => {});
+    }, 10000);
+  } catch {
+    // No toolbar button in this environment
+  }
+}
 
 // A download (`kind`, one of REMOTE_ADD) for MDM: to the other MDM when one is chosen, else to
 // this computer's. Never throws.
 async function download(kind, message) {
-  if (REMOTE_ADD.has(kind) && typeof message.url === "string" && message.url) {
-    const target = await remoteTarget();
-    if (target) return remoteSend(target, message);
+  const prev = await readStatus();
+  if (prev && prev.notice) {
+    status = { ...prev, notice: "" };
+    await ext.storage.local.set({ status });
   }
-  const reply = await native(message);
+  const isSingle = (kind === "file" || kind === "video") && typeof message.url === "string" && Boolean(message.url);
+  const isLinks = kind === "links" && Array.isArray(message.links) && message.links.length > 0;
+  if (isSingle || isLinks) {
+    const target = await remoteTarget();
+    if (target) {
+      let toSend = [];
+      let leftOut = 0;
+      if (isSingle) {
+        toSend = [message.url];
+      } else {
+        const r = (await currentRules()) || { types: DEFAULT_TYPES };
+        const patterns = typePatterns(r.types || DEFAULT_TYPES);
+        const isCapturable = (u) => {
+          if (typeof u !== "string" || !u) return false;
+          let ext = "";
+          try {
+            ext = extensionOf(new URL(u).pathname);
+          } catch {
+            ext = extensionOf(u.split(/[?#]/)[0]);
+          }
+          return Boolean(ext && patterns.some((p) => p.test(ext)));
+        };
+        const matching = message.links.filter(isCapturable);
+        toSend = matching.slice(0, REMOTE_LINKS_CAP);
+        leftOut = message.links.length - toSend.length;
+        if (!toSend.length) {
+          const result = { ok: false, sent: 0, refused: 0, leftOut, why: "file-type" };
+          await noteLinksNotice(result);
+          return result;
+        }
+      }
+      let sent = 0;
+      let refused = 0;
+      let unreachable = false;
+      for (const url of toSend) {
+        const res = await remoteSend(target, { ...message, url });
+        if (isSingle) return res;
+        if (res.ok) {
+          sent++;
+        } else if (res.why === "unreachable") {
+          unreachable = true;
+          break;
+        } else if (res.why === "refused" && !(await remoteTarget())) {
+          refused++;
+          break;
+        } else {
+          refused++;
+        }
+      }
+      const why = unreachable ? "unreachable" : (sent > 0 ? null : "refused");
+      const result = { ok: sent > 0, sent, refused, leftOut, why };
+      await noteLinksNotice(result);
+      return result;
+    }
+  }
+  const reply = kind === "links" ? await sendLinks(message) : await native(message);
   // A download handed over: the toolbar button counts it while it runs (#1496).
   if (reply.ok) watchRecent();
   return reply;
@@ -160,7 +263,10 @@ async function remoteCall(base, path, body, token) {
 // A download handed to the other MDM: its address only (a site's sign-in stays in this browser).
 async function remoteSend(target, message) {
   const r = await remoteCall(target.url, "api/add", { url: message.url, start: true }, target.token);
-  if (r.status === 200 && r.body && !r.body.error) return { ok: true };
+  if (r.status === 200 && r.body && !r.body.error) {
+    await noteRemoteStatus(null);
+    return { ok: true };
+  }
   if (r.status === 401) {
     const list = await readRemotes();
     const updated = list.filter((item) => !(item.url === target.url && item.token === target.token));
@@ -168,7 +274,9 @@ async function remoteSend(target, message) {
     const nextRemote = remote && remote.url === target.url && remote.token === target.token ? null : remote;
     await ext.storage.local.set({ remotes: updated, remote: nextRemote });
   }
-  return { ok: false, why: "refused" };
+  const why = r.status === 0 ? "unreachable" : "refused";
+  if (why === "unreachable") await noteRemoteStatus("unreachable");
+  return { ok: false, why };
 }
 
 // The file types the app takes by default (mdm_ipc::capture::DEFAULT_AUTO_TYPES; a test keeps
@@ -207,6 +315,11 @@ async function remoteSelect(url) {
   const list = await readRemotes();
   const target = list.find((item) => item.url === url);
   if (target) {
+    const s = await readStatus();
+    if (s.remoteWhy) {
+      status = { ...s, remoteWhy: null };
+      await ext.storage.local.set({ status });
+    }
     await ext.storage.local.set({ remote: target });
     await refreshRules();
     await showStatus();
@@ -231,6 +344,11 @@ async function remoteForget(url) {
 
 // Back to this computer: active remote set to null without forgetting paired remotes.
 async function remoteOff() {
+  const s = await readStatus();
+  if (s.remoteWhy) {
+    status = { ...s, remoteWhy: null };
+    await ext.storage.local.set({ status });
+  }
   await ext.storage.local.set({ remote: null });
   await refreshRules();
   await showStatus();
@@ -572,14 +690,23 @@ async function noteLookup(on) {
 // this computer's MDM (#1496), in MDM's blue.
 async function showStatus() {
   const remote = await remoteTarget();
-  const why = remote ? null : (await readStatus()).why;
+  const s = await readStatus();
+  const NOTICE_TTL_MS = 10000;
+  const isFreshNotice = Boolean(s.notice && s.at && Date.now() - s.at < NOTICE_TTL_MS);
+  if (s.notice && !isFreshNotice) {
+    status = { ...s, notice: "" };
+    await ext.storage.local.set({ status });
+    s.notice = "";
+  }
+  const why = remote ? (s.remoteWhy === "unreachable" ? "unreachable" : null) : s.why;
   const { paused } = await ext.storage.local.get({ paused: false });
   const running = !remote && !why && !paused && runningNow > 0 ? (runningNow > 99 ? "99+" : String(runningNow)) : "";
   try {
     await action.setBadgeBackgroundColor({ color: why ? "#C42B1C" : running ? "#0078D4" : "#6B6B6B" });
     if (action.setBadgeTextColor) await action.setBadgeTextColor({ color: "#FFFFFF" }).catch(() => {});
     await action.setBadgeText({ text: why && why !== "update-app" ? "!" : paused ? "II" : running });
-    const title = why ? t(`status_${why.replace(/-/g, "_")}`) : paused ? t("status_paused") : t("status_connected");
+    const notice = isFreshNotice ? s.notice : "";
+    const title = why ? t(`status_${why.replace(/-/g, "_")}`) : paused ? t("status_paused") : (notice || (remote ? t("status_remote", remote.url) : t("status_connected")));
     await action.setTitle({ title: running ? `${title}\n${t("status_running", running)}` : title });
   } catch {
     // No toolbar button (a browser without one): the popup and the help page still say it.
@@ -1294,7 +1421,10 @@ if (ext.webRequest && ext.webRequest.onResponseStarted) {
     ["responseHeaders"],
   );
 }
-ext.tabs.onRemoved.addListener((id) => mediaBack.then(() => media.delete(id) && keepMedia()));
+ext.tabs.onRemoved.addListener((id) => {
+  tabFullscreen.delete(id);
+  mediaBack.then(() => media.delete(id) && keepMedia());
+});
 // Another page in the tab: what the last one loaded goes (not for a move within the page, #part).
 ext.tabs.onUpdated.addListener((id, change) => {
   if (!change.url) return;
@@ -1302,6 +1432,7 @@ ext.tabs.onUpdated.addListener((id, change) => {
     const page = change.url.split("#")[0];
     const tab = media.get(id);
     if (tab && tab.page === page) return;
+    tabFullscreen.delete(id);
     // #1092: the files a player fetched in ranges stay while the tab stays on the site: a feed
     // moves to another address as it shows its first video (Douyin's goes from /jingxuan to
     // /?recommend=1), after its player fetched it. Offered only for a video of their length.
@@ -3457,9 +3588,10 @@ async function menuClicked(info, tab) {
     const found = await tabImages(tab.id, info.menuItemId === "mdm-selected" ? info.frameId || 0 : null);
     const images = found.images.filter((i) => !i.link && !listed.has(i.url)).map((i) => i.url);
     if (!links.length && !images.length) return;
-    const reply = await sendLinks({ links: [...links, ...images], ...(images.length ? { pageImages: images } : {}), referrer: info.pageUrl, cookies: await cookieHeader(info.pageUrl, { incognito, storeId }), private: incognito });
+    const cookies = (await remoteTarget()) ? "" : await cookieHeader(info.pageUrl, { incognito, storeId });
+    const reply = await download("links", { links: [...links, ...images], ...(images.length ? { pageImages: images } : {}), referrer: info.pageUrl, cookies, private: incognito });
     // Sent, but a link longer than a whole message was left out: the help page says so.
-    if (!reply.ok || reply.left) explain(reply.ok ? "too-large" : reply.why);
+    if (!reply.notice && (!reply.ok || reply.left)) explain(reply.ok ? "too-large" : reply.why);
   }
 }
 ext.contextMenus.onClicked.addListener(menuClicked);
@@ -3541,6 +3673,7 @@ async function injectOpenTabs() {
 // Automatic (video.js sizeMode).
 const PANEL_KEEP_MS = 5000;
 const panelCache = new Map();
+const tabFullscreen = new Set();
 async function panelOn(page, top) {
   // The host name without a port: as video.js names the site, and as the app matches sites.
   const site = new URL(page).hostname;
@@ -3549,13 +3682,26 @@ async function panelOn(page, top) {
   forget(panelCache, PANEL_KEEP_MS);
   if (panelCache.get(site)?.hidden) return { on: false, compact: false };
   const kept = panelCache.get(key);
-  if (kept) return { on: kept.on, compact: kept.compact, ...(kept.full ? { full: true } : {}) };
+  if (kept) {
+    return {
+      on: kept.on,
+      compact: kept.compact,
+      ...(kept.full ? { full: true } : {}),
+      ...(kept.scale ? { scale: kept.scale } : {}),
+    };
+  }
   // Always this computer's MDM's Options: a question, never a download (`download`). With another
   // MDM chosen and none here to ask, the button shows, as Options have it at first: the other
   // MDM's remote control adds and lists downloads, it has no Options to ask.
   let reply = await native({ panel: true, url: page, ...(key !== site ? { referrer: top } : {}) });
   if (!reply.ok && reply.why && (await remoteTarget())) reply = { ok: true };
-  const answer = { on: Boolean(reply.ok), compact: Boolean(reply.ok && reply.compact), ...(reply.ok && reply.full === true ? { full: true } : {}) };
+  const scale = reply.ok && (reply.scale === 80 || reply.scale === 120) ? reply.scale : 0;
+  const answer = {
+    on: Boolean(reply.ok),
+    compact: Boolean(reply.ok && reply.compact),
+    ...(reply.ok && reply.full === true ? { full: true } : {}),
+    ...(scale ? { scale } : {}),
+  };
   if (reply.ok || !reply.why) panelCache.set(key, { ...answer, at: Date.now() });
   return answer;
 }
@@ -3805,9 +3951,23 @@ async function pageMessage(m, sender) {
     }
     return { ok: false };
   }
+  if (m.type === "top-fullscreen") {
+    if (Number.isInteger(tab.id) && sender.frameId === 0) {
+      const on = Boolean(m.on);
+      if (on) tabFullscreen.add(tab.id);
+      else tabFullscreen.delete(tab.id);
+      ext.tabs.sendMessage(tab.id, { type: "top-fullscreen", on }).catch(() => {});
+      return { ok: true };
+    }
+    return { ok: false };
+  }
   if (m.type === "panel") {
     const top = tab.url && /^https?:/i.test(tab.url) ? tab.url : "";
-    return page ? await panelOn(page, top) : { on: false, compact: false };
+    const ans = page ? await panelOn(page, top) : { on: false, compact: false };
+    if (sender.frameId && Number.isInteger(tab.id) && tabFullscreen.has(tab.id)) {
+      return { ...ans, topFullscreen: true };
+    }
+    return ans;
   }
   if (m.type === "link" && typeof m.url === "string") {
     const name = typeof m.name === "string" ? m.name.split(/[\\/]/).pop().slice(0, 255) : "";

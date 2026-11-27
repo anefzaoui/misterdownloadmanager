@@ -187,7 +187,9 @@ every system (`crates/app/src/renderer.rs`): when the chosen one can't start, th
 tried, so the windows always open. A watched start with the system's API leaves a marker until
 its first frame is drawn: a start that ends before it (a crash inside the driver), one whose
 first frame doesn't come within 10 seconds (MDM then starts again with OpenGL), or a graphics
-card lost twice in 10 minutes is remembered with its reason, which the menu shows. With OpenGL,
+card lost twice in 10 minutes is remembered with its reason, which the menu shows. A way that
+can't start within 10 minutes of a lost card isn't remembered: its driver may still be resetting
+(#1974: Direct3D 12 then finds only WARP), so the next start tries it again. With OpenGL,
 a window eframe can't paint (its context can't be made current on it, its frame can't be shown)
 is skipped and painted again 100 ms later; one whose paints keep failing for seconds is a lost
 device too (MDM starts again; twice in 10 minutes, OpenGL is remembered as failing on Windows).

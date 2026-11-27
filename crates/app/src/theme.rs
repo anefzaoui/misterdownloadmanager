@@ -3104,7 +3104,8 @@ mod status_width_tests {
     /// In the list's font as this system draws it: Segoe UI on Windows, the system font on
     /// macOS, fontconfig's interface font on Linux (DejaVu Sans on a bare Ubuntu, where German
     /// needs 147 px). The default grows with the font there ([`crate::list::status_width`]); on
-    /// Windows it stays 132 px, so the list's other columns keep their room.
+    /// Windows it stays 148 px (132 and the status icon, #2008), so the list's other columns keep
+    /// their room.
     #[test]
     fn finishing_fits_the_status_column() {
         let i18n = crate::i18n::i18n();
@@ -3132,7 +3133,8 @@ mod status_width_tests {
                     })
                 };
                 let column = crate::list::status_width(code, &full, measure);
-                let room = column - crate::list::CELL_PAD;
+                // After the status icon (#2008).
+                let room = column - crate::list::CELL_PAD - crate::list::STATUS_ICON;
                 println!("{code} at {zoom}: Status {column} px");
                 #[cfg(windows)]
                 assert_eq!(

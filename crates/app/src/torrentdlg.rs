@@ -58,6 +58,8 @@ pub struct TorrentDialog {
     create_subfolder: bool,
     downloads: PathBuf,
     category_dirs: Vec<(String, String)>,
+    /// Options → Save to → one folder for every download (#1973): General's folder.
+    one_folder: bool,
     /// The torrents the list already has (and the session must keep).
     known: HashSet<String>,
     host: Host,
@@ -222,6 +224,22 @@ impl TorrentDialog {
     /// `source`: a magnet link, a .torrent path or a .torrent's web address (`remote`: how to
     /// ask for it) to look up at once, or None (the clipboard's magnet, if any, is offered and
     /// looked up on the frame it comes: the clipboard is read off the window's thread).
+    /// Options → Save to → one folder for every download (#1973): the torrent's folder is
+    /// General's, whatever its category.
+    pub fn with_one_folder(mut self, on: bool) -> Self {
+        self.one_folder = on;
+        if !self.folder_edited {
+            let cat = self.meta.as_ref().map_or(Category::Torrents, category_of);
+            self.folder = self.folder_of(cat).display().to_string();
+        }
+        self
+    }
+
+    /// The folder a torrent of `cat` goes to (its category's, or General's with one folder).
+    fn folder_of(&self, cat: Category) -> PathBuf {
+        crate::model::save_folder(cat, self.one_folder, &self.downloads, &self.category_dirs)
+    }
+
     #[allow(clippy::too_many_arguments)]
     pub fn new(
         source: Option<String>,
@@ -247,6 +265,7 @@ impl TorrentDialog {
             create_subfolder: true,
             downloads,
             category_dirs,
+            one_folder: false,
             known,
             host,
             lookup: None,
@@ -402,12 +421,7 @@ impl TorrentDialog {
                     // Open the first two levels; deeper folders start closed.
                     self.open = self.tree.iter().map(|n| n.depth < 2).collect();
                     if !self.folder_edited {
-                        let dir = category_folder(
-                            category_of(&meta),
-                            &self.downloads,
-                            &self.category_dirs,
-                        );
-                        self.folder = dir.display().to_string();
+                        self.folder = self.folder_of(category_of(&meta)).display().to_string();
                     }
                     self.meta = Some(meta);
                 }
@@ -634,7 +648,8 @@ impl TorrentDialog {
             };
             text(&p, o.x + 31.0, line, &msg, winui::TEXT());
         } else if let Some(e) = shown_err {
-            let (rect, cut) = winui::text_fit(&p, o.x + 11.0, line, e, winui::ERROR(), o.x + 589.0);
+            let x = winui::note_mark(ui, &p, o.x + 11.0, line, Some(crate::icons::Mark::Fail));
+            let (rect, cut) = winui::text_fit(&p, x, line, e, winui::ERROR(), o.x + 589.0);
             if cut {
                 winui::full_on_hover(ui, rect, "torrent-error", e);
             }
@@ -963,15 +978,17 @@ impl TorrentDialog {
         }
         if self.meta.is_none() {
             // i18n: "Look up" is the button that reads the torrent: use its translation
-            let note =
-                crate::i18n::t("Paste a magnet link or choose a .torrent file, then Look up.");
-            let w = winui::text_width(&p, note);
-            text(
+            winui::empty_state(
+                ui,
                 &p,
-                body.center().x - w / 2.0,
-                body.center().y + 4.0,
-                note,
-                winui::MUTED(),
+                winui::rect(body),
+                crate::icons::EmptyIcon::Torrent,
+                // i18n: Add torrent: the title in the empty list of files, before a torrent is read
+                crate::i18n::mark("No torrent yet"),
+                // i18n: "Look up" is the button that reads the torrent: use its translation
+                crate::i18n::mark("Paste a magnet link or choose a .torrent file, then Look up."),
+                None,
+                "torrent-empty",
             );
             return;
         }
@@ -1719,7 +1736,9 @@ impl AddTrackers {
                     ),
                 };
                 // Two lines' room: a translated reason is long.
-                winui::paragraph(&p, o.x + 14.0, o.y + 190.0, &line, color, o.x + 446.0, 14.0);
+                let mark = crate::icons::Mark::of_ink(color);
+                let x = winui::note_mark(ui, &p, o.x + 14.0, o.y + 190.0, mark);
+                winui::paragraph(&p, x, o.y + 190.0, &line, color, o.x + 446.0, 14.0);
                 let ok = winui::button(
                     ui,
                     r(o, 288.0, 218.0, 77.0, 21.0),

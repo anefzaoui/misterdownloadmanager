@@ -7,13 +7,13 @@ MDM's interface comes in 87 languages: every display language Windows 11 offers,
 ## Choosing the language
 
 - **With the setup:** the setup asks for its language first, with Windows' display language selected. MDM starts in the language you choose there.
-- **Without the setup** (a zip copy): on the first start, MDM shows every language with its flag and its own name. Pick yours.
+- **Without the setup** (a zip copy, Linux, macOS): the first start's setup window opens at its **Language** step: every language with its flag and its own name. Click yours and the window switches to it at once.
 
 ![Choosing a language on first start](images/language-picker.webp)
 
 ## Changing it later
 
-Open **View → Language...**. The same window as on the first start opens: every language by its flag, its own name and its English name. Type in **Search** to narrow the list, then double-click a language or select it and click **OK**. The window switches at once; there is nothing to restart.
+Open **View → Language...**. The same list as on the first start opens: every language by its flag, its own name and its English name. Type in **Search** to narrow the list, then double-click a language or select it and click **OK**. The window switches at once; there is nothing to restart.
 
 **Windows' language**, at the top, follows Windows' display language. When Windows uses a language MDM doesn't have, MDM shows English.
 

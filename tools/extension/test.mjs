@@ -10,6 +10,7 @@ const readText = (url) => readFileSync(url instanceof URL ? url : new URL(url, i
 
 const code = readText("../../extension/background.js");
 const DEFAULT_TYPES = "3GP 7Z AAC EXE ISO MP3 MP4 MSI PDF R0* RAR ZIP";
+const enMessages = JSON.parse(readText("../../extension/_locales/en/messages.json"));
 
 // A fake extension API; `firefox` picks which download event exists. `reply` is the app's
 // answer to a download; `types` its Options -> File types when the rules are asked (`host: false`:
@@ -37,6 +38,7 @@ function fakeApi({
   // undefined: an older host, which doesn't say.
   panelCompact,
   panelFull,
+  panelScale,
   access = true,
   rules = {},
   rulesReply,
@@ -160,7 +162,13 @@ function fakeApi({
           const on = typeof panelOn === "function" ? panelOn(m) : panelOn !== false;
           const compact = typeof panelCompact === "function" ? panelCompact(m) : panelCompact;
           const full = typeof panelFull === "function" ? panelFull(m) : panelFull;
-          return { ok: on, ...(on && compact !== undefined ? { compact } : {}), ...(on && full !== undefined ? { full } : {}) };
+          const scale = typeof panelScale === "function" ? panelScale(m) : panelScale;
+          return {
+            ok: on,
+            ...(on && compact !== undefined ? { compact } : {}),
+            ...(on && full !== undefined ? { full } : {}),
+            ...(on && scale !== undefined ? { scale } : {}),
+          };
         }
         // A notice of a download left alone (#208): an older host, which knows none, takes it
         // for an address it can't download (`noticeReply`).
@@ -225,7 +233,7 @@ function fakeApi({
     action: {
       setBadgeText: async (b) => calls.push(["badge", b.text]),
       setBadgeBackgroundColor: async () => {},
-      setTitle: async () => {},
+      setTitle: async (t) => calls.push(["title", t.title]),
     },
     contextMenus: {
       create: (item, done) => {
@@ -236,7 +244,18 @@ function fakeApi({
       onClicked: event("menu"),
     },
     // The browser's language: German here.
-    i18n: { getMessage: (key) => ({ menu: "Mit Mister Download Manager herunterladen" })[key] ?? "" },
+    i18n: {
+      getMessage: (key, subs = []) => {
+        if (key === "menu") return "Mit Mister Download Manager herunterladen";
+        const m = enMessages[key];
+        if (!m) return "";
+        let text = m.message;
+        for (const [name, p] of Object.entries(m.placeholders || {})) {
+          text = text.replaceAll(`$${name}$`, subs[Number(p.content.slice(1)) - 1] ?? "");
+        }
+        return text;
+      },
+    },
   };
   if (nativePort) {
     api.runtime.connectNative = (name) => {
@@ -1133,6 +1152,30 @@ const ok = (what) => {
   assert.deepEqual(await askNewer(), { on: true, compact: false, full: true }, "kept a moment");
   clock.t += 6000;
   assert.deepEqual(await askNewer(), { on: true, compact: false }, "Automatic again");
+  // #1923: Options → Download panels → Button size's scale (80% or 120%) comes with the answer,
+  // stays cached for PANEL_KEEP_MS, and follows a change in Options; 100% and off omit `scale`.
+  let scale = 80;
+  let scaledOn = true;
+  const scaled = fakeApi({
+    firefox: false,
+    panelOn: () => scaledOn,
+    panelCompact: () => false,
+    panelScale: () => (scale === 100 ? undefined : scale),
+  });
+  load(scaled.api, false, { Date: FakeDate });
+  const askScaled = () => new Promise((r) => scaled.listeners.message({ type: "panel" }, page, (v) => r(JSON.parse(JSON.stringify(v)))));
+  assert.deepEqual(await askScaled(), { on: true, compact: false, scale: 80 });
+  scale = 120;
+  assert.deepEqual(await askScaled(), { on: true, compact: false, scale: 80 }, "scale kept a moment");
+  clock.t += 6000;
+  assert.deepEqual(await askScaled(), { on: true, compact: false, scale: 120 }, "120% in Options: next question has it");
+  scale = 100;
+  clock.t += 6000;
+  assert.deepEqual(await askScaled(), { on: true, compact: false }, "100% default omits scale");
+  scale = 80;
+  scaledOn = false;
+  clock.t += 6000;
+  assert.deepEqual(await askScaled(), { on: false, compact: false }, "off: never scaled");
   ok("#1278: the video button's size comes from Options with its answer, and follows a change");
 }
 {
@@ -2677,7 +2720,7 @@ function samplePage(html) {
 
 // #670: video.js's button against a fake DOM — whether it shows over a video while the page is
 // in full screen, with the popup's option off (as installed) or on.
-function videoButton({ stored = {}, location, iframes, videos, subframe = false } = {}) {
+function videoButton({ stored = {}, location, iframes, videos, subframe = false, fullscreenMedia = false, topFullscreen = false, fullScreenWindow = false, panelScale } = {}) {
   const source = readText("../../extension/video.js");
   const handlers = {};
   // The frames asked for, by id: one cancelled since (a tick after a hide) does not run.
@@ -2792,15 +2835,30 @@ function videoButton({ stored = {}, location, iframes, videos, subframe = false 
     },
     createTreeWalker: () => ({ nextNode: () => null }),
   };
-  // The storage listeners the script keeps, so a change can be fired at them as the browser does.
+  // The storage and runtime listeners the script keeps, so changes can be fired at them.
   const storageListeners = [];
+  const runtimeListeners = [];
+  let currentScale = panelScale;
   const api = {
     i18n: { getMessage: () => "" },
-    runtime: { id: "ours", sendMessage: async (m) => (m.type === "panel" ? { on: true } : { ok: false }) },
+    runtime: {
+      id: "ours",
+      sendMessage: async (m) =>
+        m.type === "panel"
+          ? { on: true, ...(topFullscreen ? { topFullscreen: true } : {}), ...(currentScale ? { scale: currentScale } : {}) }
+          : { ok: false },
+      onMessage: {
+        addListener: (f) => runtimeListeners.push(f),
+        removeListener: (f) => {
+          const i = runtimeListeners.indexOf(f);
+          if (i >= 0) runtimeListeners.splice(i, 1);
+        },
+      },
+    },
     storage: {
       local: {
         get: async (defaults) => ({ ...defaults, ...stored }),
-        set: async () => {},
+        set: async (patch) => Object.assign(stored, patch),
       },
       onChanged: { addListener: (f) => storageListeners.push(f) },
     },
@@ -2810,6 +2868,7 @@ function videoButton({ stored = {}, location, iframes, videos, subframe = false 
     top: null,
     location: loc,
     document: doc,
+    fullScreen: fullScreenWindow,
   };
   win.top = subframe ? {} : win;
   class HTMLAudioElement {}
@@ -2818,7 +2877,7 @@ function videoButton({ stored = {}, location, iframes, videos, subframe = false 
     location: loc,
     window: win,
     document: doc,
-    matchMedia: () => ({ matches: false, addEventListener() {} }),
+    matchMedia: (q) => ({ matches: Boolean(fullscreenMedia && String(q).includes("fullscreen")), addEventListener() {} }),
     getComputedStyle: () => ({ visibility: "visible", display: "block", opacity: "1" }),
     requestAnimationFrame: (f) => (frames.set(++frameId, f), frameId),
     cancelAnimationFrame: (id) => frames.delete(id),
@@ -2862,6 +2921,13 @@ function videoButton({ stored = {}, location, iframes, videos, subframe = false 
       stored.hideVideoFullscreen = value;
       for (const f of storageListeners) f({ hideVideoFullscreen: { newValue: value } }, "local");
       await settle();
+    },
+    topFullscreenChange: async (on) => {
+      for (const f of [...runtimeListeners]) f({ type: "top-fullscreen", on });
+      await settle();
+    },
+    setPanelScale: (next) => {
+      currentScale = next;
     },
     hasFramePointer: () => Boolean((handlers.pointermove || []).some((f) => f.name === "onFrameMove")),
   };
@@ -2913,6 +2979,47 @@ function videoButton({ stored = {}, location, iframes, videos, subframe = false 
   await b.move();
   assert.equal(b.display(), "block", "turned off in full screen: the button comes back");
   ok("#670: turning the option on and off while in full screen");
+}
+{
+  // #1923: cross-origin embedded player frame obeys real DOM full screen relayed from the top
+  // frame, without false positives from browser window F11 (`window.fullScreen` / `display-mode: fullscreen`).
+  const f11Only = videoButton({
+    stored: { hideVideoFullscreen: true },
+    subframe: true,
+    fullscreenMedia: true,
+    fullScreenWindow: true,
+  });
+  await f11Only.move();
+  assert.equal(f11Only.display(), "block", "F11 browser fullscreen alone does not hide embedded video button");
+  await f11Only.topFullscreenChange(true);
+  assert.equal(f11Only.display(), "none", "relayed top DOM fullscreen hides embedded button at once");
+  await f11Only.move();
+  assert.equal(f11Only.display(), "none", "stays hidden while top frame is in DOM fullscreen");
+  await f11Only.topFullscreenChange(false);
+  assert.equal(f11Only.display(), "block", "leaving top DOM fullscreen shows embedded button again");
+
+  // Also check background.js relays `top-fullscreen` only from frameId 0 and attaches `topFullscreen` to subframe `panel` replies.
+  const { api, calls, listeners } = fakeApi({ firefox: true });
+  load(api, true);
+  const frame0 = { id: "ours", tab: { id: 7, url: "https://site.test/watch" }, frameId: 0, url: "https://site.test/watch" };
+  const sub = { id: "ours", tab: { id: 7, url: "https://site.test/watch" }, frameId: 2, url: "https://embed.other/player" };
+  const spoof = await new Promise((r) => listeners.message({ type: "top-fullscreen", on: true }, sub, r));
+  assert.equal(spoof.ok, false, "subframe cannot spoof top-fullscreen");
+  const setFs = await new Promise((r) => listeners.message({ type: "top-fullscreen", on: true }, frame0, r));
+  assert.equal(setFs.ok, true);
+  assert.ok(calls.some((c) => c[0] === "tabMessage" && c[1] === 7 && c[2]?.type === "top-fullscreen" && c[2]?.on === true), "relayed to tab frames");
+  const subPanel = await new Promise((r) => listeners.message({ type: "panel" }, sub, r));
+  assert.equal(subPanel.topFullscreen, true, "subframe panel reply carries topFullscreen");
+  listeners.tabUpdated(7, { url: "https://site.test/next" });
+  await settle();
+  const afterNav = await new Promise((r) => listeners.message({ type: "panel" }, sub, r));
+  assert.equal(afterNav.topFullscreen, undefined, "navigation clears tabFullscreen");
+
+  // Dynamic check that video.js's ask() applies a non-default `scale` from `panel` without error.
+  const bScaled = videoButton({ panelScale: 80 });
+  await bScaled.move();
+  assert.equal(bScaled.display(), "block", "80% scaled button renders and shows");
+  ok("#1923: cross-origin iframe obeys real DOM fullscreen without F11 false positives");
 }
 {
   // #758: on docs.google.com / drive.google.com, non-video preview frames (Docs, Sheets) must not get the button.
@@ -3606,7 +3713,52 @@ function videoButton({ stored = {}, location, iframes, videos, subframe = false 
     assert.ok(source.includes("const CORNERS = rtl ? [{ x: 1, y: 0 }, { x: 1, y: 1 }, { x: 0, y: 1 }] : [{ x: 0, y: 0 }, { x: 0, y: 1 }, { x: 1, y: 1 }];"), "the other corners mirrored too");
     assert.ok(fn("look").includes('if (video && root.matches(":hover")) return;'), "on the button (outside its player, over the next post): it stays with its video");
     assert.ok(fn("openMenu").includes('item("home").hidden = !chosen;'), "Put the button back in its corner: once it was moved");
+    // #1923: pixel-aware free interior placement (> 20 px from edges) vs. 20 px edge snap.
+    const interior = plain(w.snap({ x: 0.94, y: 0.4 }, 1750, 1034)); // 105 px from right on 1080p (> 20 px)
+    assert.deepEqual(interior, { x: 0.94, y: 0.4, free: true }, "105 px from edge on 1080p stays free");
+    assert.deepEqual(plain(w.snap(interior)), { x: 0.94, y: 0.4, free: true }, "kept free spot survives reload");
+    assert.deepEqual(plain(w.snap({ x: 0.992, y: 0.4 }, 1750, 1034)), { x: 1, y: 0.4 }, "14 px from right edge snaps to edge");
+    assert.deepEqual(plain(w.snap({ x: 0.4, y: 0.015 }, 1750, 1034)), { x: 0.4, y: 0 }, "15.5 px from top edge snaps to top");
     ok("video.js: the button moves to a corner or outside the player, snapped, kept per site (#1735)");
+  }
+  // #1923: Options scale (80% / 100% / 120% from `panel`), menu full-screen toggle, and iframe full-screen check.
+  {
+    const w = make(["scaleFactor", "menuFit", "pageFullscreen"], "{ scaleFactor, menuFit, pageFullscreen }");
+    assert.deepEqual(
+      [{ scale: 80 }, { scale: 100 }, { scale: 120 }, {}, null, { scale: 999 }].map(w.scaleFactor),
+      [0.8, 1, 1.2, 1, 1, 1],
+    );
+    // menuFit respects the scaled button's gap (30 px at 80%, 36 px at 100%, 42 px at 120%).
+    assert.equal(w.menuFit(10, 200, 100, 100, 800, 30).top, 30);
+    assert.equal(w.menuFit(10, 200, 100, 100, 800).top, 36);
+    assert.equal(w.menuFit(10, 200, 100, 100, 800, 42).top, 42);
+    // Same-document, same-origin parent, and cross-origin relayed full screen.
+    assert.equal(w.pageFullscreen({ fullscreenElement: {} }, null, false), true);
+    assert.equal(w.pageFullscreen({ webkitFullscreenElement: {} }, null, false), true);
+    assert.equal(w.pageFullscreen({ mozFullScreenElement: {} }, null, false), true);
+    assert.equal(w.pageFullscreen({}, { top: null }, false), false);
+    assert.equal(w.pageFullscreen({}, { top: { document: { fullscreenElement: {} } } }, false), true);
+    const crossWin = {
+      fullScreen: true,
+      get top() {
+        return {
+          get document() {
+            throw new Error("cross-origin");
+          },
+        };
+      },
+    };
+    assert.equal(w.pageFullscreen({}, crossWin, false), false, "browser F11 alone is false");
+    assert.equal(w.pageFullscreen({}, crossWin, true), true, "relayed top DOM fullscreen is true");
+    // Wiring: scale comes from `panel` (no duplicate Size in menu or popup), menu has fullscreen checkbox, teardown cleans listeners.
+    const english = JSON.parse(readText("../../extension/_locales/en/messages.json"));
+    assert.ok(english.popup_video_hide_fullscreen, "en/messages.json has popup_video_hide_fullscreen");
+    assert.ok(source.includes(`popup_video_hide_fullscreen: ${JSON.stringify(english.popup_video_hide_fullscreen.message)}`), "video.js FALLBACK has popup_video_hide_fullscreen");
+    assert.ok(!english.video_size_label && !source.includes("scale-row") && !readText("../../extension/popup.html").includes("video-scale"), "no second Size control in popup or menu");
+    assert.ok(source.includes('role="menuitemcheckbox" aria-checked="false" data-act="fullscreen"'), "menu has fullscreen menuitemcheckbox");
+    assert.ok(fn("ask").includes("scale = scaleFactor(r);") && fn("ask").includes("pinned = null;"), "ask applies panel scale and resets pinned");
+    assert.ok(fn("teardown").includes("removeEventListener(ev, onFullscreenChange)") && fn("teardown").includes("removeListener(onTopFullscreen)"), "teardown cleans fullscreen listeners");
+    ok("video.js: Options scale from panel, pixel-aware free drag, menu fullscreen toggle, iframe fullscreen (#1923)");
   }
   // #1735: the menu's filters. What it lists (both kinds, the sound only), its file types and
   // codecs where they differ; a filter kept from another video never empties the list.
@@ -4922,6 +5074,8 @@ for (const here of [true, false]) {
     ["video", () => send({ type: "video", src: "https://cdn.test/v/clip.mp4", url: film, title: "A film" }, page), [["api/add", film]]],
     ["download", () => (listeners.determining({ id: 91, url: "https://dl.test/f.zip", filename: "f.zip" }, () => {}), settle()), [["api/add", "https://dl.test/f.zip"]]],
     ["menu link", () => listeners.menu({ menuItemId: "mdm-link", linkUrl: "https://dl.test/g.zip", pageUrl: film }, tab), [["api/add", "https://dl.test/g.zip"]]],
+    ["menu all links", () => listeners.menu({ menuItemId: "mdm-all", pageUrl: film }, tab), [["api/add", "https://x/1.zip"], ["api/add", "https://x/2.zip"]]],
+    ["menu selected links", () => listeners.menu({ menuItemId: "mdm-selected", pageUrl: film }, tab), [["api/add", "https://x/1.zip"], ["api/add", "https://x/2.zip"]]],
     ["menu player", () => listeners.menu({ menuItemId: "mdm-link", mediaType: "video", srcUrl: "blob:https://tube.test/1", frameId: 0, pageUrl: film }, tab), [["api/add", film]]],
     ["menu stream", () => listeners.menu({ menuItemId: "mdm-link", linkUrl: "https://cdn.test/s/a.m3u8", pageUrl: film }, tab), [["api/add", film]]],
   ];
@@ -4953,7 +5107,7 @@ for (const here of [true, false]) {
   }
   // Only the kinds a download is may become one there, and nothing else calls the remote's
   // api/add.
-  assert.ok(/const REMOTE_ADD = new Set\(\["file", "video"\]\);/.test(code), "the whitelist");
+  assert.ok(/const REMOTE_ADD = new Set\(\["file", "video", "links"\]\);/.test(code), "the whitelist");
   assert.equal((code.match(/"api\/add"/g) || []).length, 1, "api/add sent from one place");
   assert.equal((code.match(/remoteSend\(/g) || []).length, 2, "remoteSend called from `download` only");
   ok(`another MDM: only downloads reach its api/add, the button's question never (${here ? "an MDM here too" : "no MDM here"})`);
@@ -4972,13 +5126,158 @@ for (const here of [true, false]) {
   await send({ type: "video", src: "https://cdn.test/v/clip.mp4", url: film, title: "A film" });
   listeners.determining({ id: 92, url: "https://dl.test/f.zip", filename: "f.zip" }, () => {});
   await settle();
+  await listeners.menu({ menuItemId: "mdm-all", pageUrl: film }, tab);
+  await settle();
   const sent = natives(calls);
   assert.deepEqual(
-    sent.map((m) => [m.panel ? "panel" : m.video ? "video" : "file", m.url]),
-    [["panel", film], ["video", film], ["file", "https://dl.test/f.zip"]],
+    sent.map((m) => [m.panel ? "panel" : m.video ? "video" : m.links ? "links" : "file", m.url || m.links]),
+    [["panel", film], ["video", film], ["file", "https://dl.test/f.zip"], ["links", ["https://x/1.zip", "https://x/2.zip"]]],
   );
   assert.deepEqual(fetched.slice(from).filter(([u]) => /\/api\//.test(u)), [], "nothing to any remote control");
   ok("this computer: the button's question, Download video and a download go to its MDM");
+}
+// Another MDM: remote links capped, filtered, notice reported, early stop on unreachable, 401 unpair, and file without url.
+{
+  const film = "https://tube.test/watch?v=1";
+  const tab = { id: 5, index: 2, url: film, title: "A film - Tube", incognito: false };
+  const R = "https://server-test.test:8463/";
+
+  // 1. List over the cap: 105 capturable files + 5 non-matching links = 110 total.
+  // Exactly 100 links sent, 10 left out, and the notice reports the cut.
+  {
+    const manyLinks = [];
+    for (let i = 0; i < 105; i++) manyLinks.push(`https://x/file${i}.zip`);
+    manyLinks.push("https://x/page.html", "https://x/about", "https://x/contact", "https://x/home.php", "https://x/index");
+    const { api, calls, listeners, store } = fakeApi({ firefox: false, pageLinks: manyLinks, tabs: { 5: tab } });
+    load(api, false);
+    await settle();
+    store.remotes = [{ url: R, token: "token-test" }];
+    store.remote = { url: R, token: "token-test" };
+    served[`${R}api/add`] = { status: 200, body: JSON.stringify({ ok: true }) };
+    const from = fetched.length;
+    await listeners.menu({ menuItemId: "mdm-all", pageUrl: film }, tab);
+    await settle();
+    const adds = fetched.slice(from).filter(([u]) => u.includes("api/add"));
+    assert.equal(adds.length, 100, "capped at 100 remote links");
+    assert.equal(store.status.notice, "Links sent: 100, 10 left out");
+    assert.ok(calls.some((c) => c[0] === "badge" && c[1] === ""), "badge count left out on remote send");
+    assert.ok(calls.some((c) => c[0] === "title" && c[1] === "Links sent: 100, 10 left out"), "title shows notice");
+    // Nice to have: cookies not read for remote MDM
+    assert.equal(calls.filter((c) => c[0] === "cookies").length, 0, "cookies omitted for remote links");
+  }
+
+  // 2. Server that refuses some links: partial result.
+  {
+    const fourLinks = ["https://x/a.zip", "https://x/b.zip", "https://x/c.zip", "https://x/d.zip"];
+    const { api, calls, listeners, store } = fakeApi({ firefox: false, pageLinks: fourLinks, tabs: { 5: tab } });
+    load(api, false);
+    await settle();
+    store.remotes = [{ url: R, token: "token-test" }];
+    store.remote = { url: R, token: "token-test" };
+    served[`${R}api/add`] = (opts) => {
+      const b = JSON.parse(opts.body);
+      if (b.url.endsWith("b.zip") || b.url.endsWith("d.zip")) {
+        return { status: 400, body: JSON.stringify({ error: "duplicate" }) };
+      }
+      return { status: 200, body: JSON.stringify({ ok: true }) };
+    };
+    await listeners.menu({ menuItemId: "mdm-all", pageUrl: film }, tab);
+    await settle();
+    assert.equal(store.status.notice, "Links sent: 2, refused: 2");
+    assert.ok(calls.some((c) => c[0] === "badge" && c[1] === ""), "badge count left out on partial send");
+    assert.ok(calls.some((c) => c[0] === "title" && c[1] === "Links sent: 2, refused: 2"), "title shows notice");
+  }
+
+  // 3. Unreachable server (status 0): stops on the very first link and reports unreachable.
+  {
+    const tenLinks = [];
+    for (let i = 0; i < 10; i++) tenLinks.push(`https://x/item${i}.zip`);
+    const { api, calls, listeners, store } = fakeApi({ firefox: false, pageLinks: tenLinks, tabs: { 5: tab } });
+    const ctx = load(api, false);
+    await settle();
+    store.remotes = [{ url: R, token: "token-test" }];
+    store.remote = { url: R, token: "token-test" };
+    served[`${R}api/add`] = () => { throw new TypeError("Failed to fetch"); };
+    const from = fetched.length;
+    await listeners.menu({ menuItemId: "mdm-all", pageUrl: film }, tab);
+    await settle();
+    const adds = fetched.slice(from).filter(([u]) => u.includes("api/add"));
+    assert.equal(adds.length, 1, "stops immediately on first status 0");
+    assert.equal(store.status.remoteWhy, "unreachable");
+    assert.equal(store.status.notice, "Server not reached");
+    assert.ok(calls.some((c) => c[0] === "badge" && c[1] === "!"), "badge shows !");
+
+    // A later send that works (single or batch) clears "unreachable" and the "!" badge
+    served[`${R}api/add`] = { status: 200, body: JSON.stringify({ ok: true }) };
+    await listeners.menu({ menuItemId: "mdm-all", pageUrl: film }, tab);
+    await settle();
+    assert.equal(store.status.remoteWhy, null, "unreachable cleared by later successful send");
+    assert.ok(calls.some((c) => c[0] === "badge" && c[1] === ""), "badge ! cleared");
+
+    // Expired notice (after 10s) dropped by showStatus
+    await ctx.noteLinksNotice({ sent: 5, refused: 0, leftOut: 0 });
+    const s = await ctx.readStatus();
+    s.at = Date.now() - 11000;
+    store.status.at = Date.now() - 11000;
+    await ctx.showStatus();
+    await settle();
+    assert.equal(store.status.notice, "", "notice dropped after 10s");
+  }
+
+  // 4. 401 unpair halfway through list: stops loop and unpairs.
+  {
+    const fiveLinks = ["https://x/1.zip", "https://x/2.zip", "https://x/3.zip", "https://x/4.zip", "https://x/5.zip"];
+    const { api, listeners, store } = fakeApi({ firefox: false, pageLinks: fiveLinks, tabs: { 5: tab } });
+    load(api, false);
+    await settle();
+    store.remotes = [{ url: R, token: "token-test" }];
+    store.remote = { url: R, token: "token-test" };
+    let callsCount = 0;
+    served[`${R}api/add`] = () => {
+      callsCount++;
+      if (callsCount === 1) return { status: 200, body: JSON.stringify({ ok: true }) };
+      return { status: 401, body: JSON.stringify({ error: "unauthorized" }) };
+    };
+    await listeners.menu({ menuItemId: "mdm-all", pageUrl: film }, tab);
+    await settle();
+    assert.equal(callsCount, 2, "stops on 401 at second link");
+    assert.equal(store.remote, null, "active server cleared on 401");
+  }
+
+  // 5. File message without a url with a server chosen goes to this computer's MDM.
+  {
+    const { api, calls, store } = fakeApi({ firefox: false, tabs: { 5: tab } });
+    const ctx = load(api, false);
+    await settle();
+    store.remotes = [{ url: R, token: "token-test" }];
+    store.remote = { url: R, token: "token-test" };
+    const from = fetched.length;
+    await ctx.download("file", { file: true });
+    await settle();
+    assert.equal(fetched.slice(from).filter(([u]) => u.includes("api/add")).length, 0, "nothing to remote");
+    const nativeFiles = natives(calls).filter((m) => m.file);
+    assert.equal(nativeFiles.length, 1, "sent to this computer's MDM");
+
+    // Notice dropped at next download, singular for 1 link
+    await ctx.noteLinksNotice({ sent: 1, refused: 0, leftOut: 0 });
+    assert.equal(store.status.notice, "Links sent: 1", "holds for 1 link");
+    await ctx.noteLinksNotice({ sent: 10, refused: 0, leftOut: 0 });
+    assert.equal(store.status.notice, "Links sent: 10");
+    await ctx.download("file", { file: true });
+    await settle();
+    assert.equal(store.status.notice, "", "notice dropped at next download");
+
+    // Switching back to This computer clears remote unreachable and does not leak
+    await ctx.noteLinksNotice({ sent: 0, refused: 0, leftOut: 0, why: "unreachable" });
+    assert.equal(store.status.remoteWhy, "unreachable");
+    await ctx.remoteOff();
+    await settle();
+    assert.equal(store.status.remoteWhy, null, "remoteWhy cleared on remoteOff");
+    assert.equal(store.status.why, null, "this computer why untouched");
+  }
+
+  delete served[`${R}api/add`];
+  ok("another MDM: remote links capped, filtered, notice reported, early stop on unreachable, 401 unpair, and file without url");
 }
 // Safari has no downloads API: the extension still starts, and a link page.js holds (a file type
 // Options lists) is offered to the app as a browser's download is; the app taking it is told to

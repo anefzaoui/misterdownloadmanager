@@ -477,6 +477,35 @@ pub(crate) fn window<T>(
     )
 }
 
+/// A [`window`] that belongs to the main window, as a dialog to its program (the first start's
+/// setup, #1839): on Linux under X11 (XWayland too) it is the main window's transient
+/// (WM_TRANSIENT_FOR, a dialog's type), so the window manager keeps it over the main window,
+/// centred on it, out of the taskbar and the window switcher, as Windows does with the dialogs
+/// the main window owns (`owned_by_main`). KDE Plasma had shown the first start's windows as
+/// programs of their own, each with its taskbar button. Wayland gives a program no say (winit
+/// has no parent for a window there); macOS and Windows: [`window`].
+pub(crate) fn window_of_main<T>(
+    ctx: &egui::Context,
+    id: &str,
+    title: &str,
+    client: [f32; 2],
+    minimize: bool,
+    bg: egui::Color32,
+    body: impl FnMut(&mut Ui, Pos2) -> Outcome<T>,
+) -> Outcome<T> {
+    dialog_window(
+        ctx,
+        id,
+        title,
+        client,
+        minimize,
+        bg,
+        Kind::OfMain,
+        Nth::FIRST,
+        body,
+    )
+}
+
 /// [`window`] number `nth` of its kind (#1741): its id and title numbered, a cascade step
 /// further than the one before ([`Nth`]).
 #[allow(clippy::too_many_arguments)]
@@ -580,6 +609,8 @@ pub(crate) fn notice_seen(ctx: &egui::Context, id: &str) -> bool {
 #[derive(Clone, Copy, PartialEq, Eq)]
 enum Kind {
     Plain,
+    /// A plain window that belongs to the main window ([`window_of_main`]).
+    OfMain,
     /// Above the app's windows, taking the focus when it opens (`question`).
     Question,
     /// Never takes the focus by itself; above every program's windows while `on_top` (`notice`).
@@ -738,6 +769,35 @@ fn dialog_window<T>(
             }
         }
     }
+    // The main window's own (Linux, X11): said while the window is still hidden for its theme
+    // (keep_theme shows it on a later pass) when the main window is already shown, else as soon
+    // as it is (the first start's first passes come before it is mapped). Asked again on later
+    // passes until done, for a few seconds' worth of them at most (a main window in the
+    // notification area stays hidden).
+    #[cfg(target_os = "linux")]
+    if kind == Kind::OfMain && matches!(out, Outcome::Open) && !crate::offscreen() {
+        const TRIES: u32 = 120;
+        let told = key.with("of-main");
+        let tries = key.with("of-main-tries");
+        if ctx.data(|d| d.get_temp::<bool>(told)).is_none() {
+            let n = ctx.data(|d| d.get_temp::<u32>(tries).unwrap_or(0));
+            match crate::unix::belong_to_main(title) {
+                Some(done) => {
+                    ctx.data_mut(|d| d.insert_temp(told, done));
+                }
+                None if n + 1 >= TRIES => {
+                    tracing::info!(
+                        "window {title:?}: the main window isn't shown, left on its own"
+                    );
+                    ctx.data_mut(|d| d.insert_temp(told, false));
+                }
+                None => {
+                    ctx.data_mut(|d| d.insert_temp(tries, n + 1));
+                    ctx.request_repaint_after(std::time::Duration::from_millis(50));
+                }
+            }
+        }
+    }
     let activate = dialog_activates_on_open(kind);
     keep_theme(
         ctx,
@@ -768,6 +828,19 @@ fn dialog_window<T>(
         keep_on_screen(ctx, key, title);
     }
     if !matches!(out, Outcome::Open) {
+        // #1852: a dialog of the main window's, brought back from the taskbar's button, closes
+        // leaving the focus on the taskbar: Windows doesn't hand it to the owner there, and the
+        // main window behind it stays without the keyboard. Brought forward while the dialog
+        // still has the focus (Windows allows it then), the main window is where the person's
+        // click leaves them. Not while another program is in front, and never for a dialog
+        // opened over one (its own window, not the main window's).
+        #[cfg(windows)]
+        if !crate::offscreen()
+            && crate::win32::owned_by_main_window(title)
+            && crate::win32::main_should_come_back()
+        {
+            let _ = crate::win32::bring_own_forward(crate::MAIN_TITLE);
+        }
         forget_window(ctx, vid, key);
     }
     out
@@ -781,6 +854,8 @@ fn forget_window(ctx: &egui::Context, vid: ViewportId, key: egui::Id) {
         let n = d.get_temp::<u64>(opened).unwrap_or(0);
         d.insert_temp(opened, n + 1);
         d.remove::<bool>(key.with("focus-sent"));
+        d.remove::<bool>(key.with("of-main"));
+        d.remove::<u32>(key.with("of-main-tries"));
     });
     forget_place(ctx, key);
     #[cfg(windows)]
@@ -1380,6 +1455,9 @@ pub struct FileInfo {
     downloads: PathBuf,
     /// Options → Save to folders per category (label, folder).
     dirs: Vec<(String, String)>,
+    /// Options → Save to → one folder for every download (#1973): General's folder whatever
+    /// the category, and "Remember this path" is General's.
+    one_folder: bool,
     category_open: bool,
     /// Browser request context for the download this dialog adds.
     pub context: mdm_ipc::Command,
@@ -1538,6 +1616,7 @@ impl FileInfo {
             edited: false,
             downloads,
             dirs,
+            one_folder: false,
             category_open: false,
             context,
             asking: FolderGate::default(),
@@ -1611,8 +1690,7 @@ impl FileInfo {
                 if !self.edited {
                     let name = mdm_engine::naming::file_name(None, &url);
                     self.category = Category::of(&name);
-                    let dir =
-                        crate::model::category_folder(self.category, &self.downloads, &self.dirs);
+                    let dir = self.folder_of(self.category);
                     self.save_as = self.place.name_in(&dir, &name);
                 }
                 // Another address: the browser's name, size and form are not its own, and on
@@ -1694,7 +1772,7 @@ impl FileInfo {
                 .parent()
                 .map(|d| d.display().to_string())
                 .unwrap_or_default();
-            (self.category, dir)
+            (self.folder_category(), dir)
         })
     }
 
@@ -1859,9 +1937,31 @@ impl FileInfo {
             .file_name()
             .map(|n| n.to_string_lossy().into_owned())
             .unwrap_or_default();
-        let folder = crate::model::category_folder(c, &self.downloads, &self.dirs);
+        let folder = self.folder_of(c);
         self.save_as = self.place.name_in(&folder, &name);
         self.typed = false;
+    }
+
+    /// Options → Save to → one folder for every download (#1973): Save As starts in General's
+    /// folder, whatever the category.
+    pub fn with_one_folder(mut self, on: bool) -> Self {
+        if self.one_folder != on {
+            self.one_folder = on;
+            if !self.edited {
+                self.set_category(self.category);
+            }
+        }
+        self
+    }
+
+    /// The folder a download of `c` goes to (its category's, or General's with one folder).
+    fn folder_of(&self, c: Category) -> PathBuf {
+        crate::model::save_folder(c, self.one_folder, &self.downloads, &self.dirs)
+    }
+
+    /// The category whose folder Save As starts in and "Remember this path" changes.
+    fn folder_category(&self) -> Category {
+        crate::model::folder_category(self.category, self.one_folder)
     }
 
     /// Whether Save As's folder is there, as looked at off the window's thread for the name it
@@ -1958,7 +2058,7 @@ impl FileInfo {
             });
             if let (Ok(pi), false) = (&res, self.edited) {
                 self.category = Category::of(&pi.file_name);
-                let dir = crate::model::category_folder(self.category, &self.downloads, &self.dirs);
+                let dir = self.folder_of(self.category);
                 self.save_as = self.place.name_in(&dir, &pi.file_name);
             }
             if let Err(ProbeError::Cert(reason, info)) = &res {
@@ -2037,8 +2137,13 @@ impl FileInfo {
                 );
                 let cat_rect = r(o, 96.0, 36.0, 174.0, 21.0);
                 let shown = self.category.shown();
-                let cat = winui::combo(ui, cat_rect, &shown, "category");
-                if cat.clicked() || winui::combo_keys(ui, &cat) {
+                // Its icon, the Categories tree's (#2008).
+                let icon = winui::ItemIcon::Shell(self.category.icon());
+                let cat = winui::combo_icon(ui, cat_rect, &shown, Some(&icon), "category");
+                if cat.clicked()
+                    || winui::combo_keys(ui, &cat)
+                    || winui::take_open_for_shot("category")
+                {
                     self.category_open = !self.category_open;
                 }
                 let category_was_open = self.category_open;
@@ -2138,7 +2243,7 @@ impl FileInfo {
 
                 let caption = crate::i18n::fmt(
                     crate::i18n::t("Remember this path for \"{category}\" category"),
-                    &[("category", &self.category.shown())],
+                    &[("category", &self.folder_category().shown())],
                 );
                 let gap_end = o.x + 122.0 + winui::text_width(&p, &caption) + 5.0;
                 winui::group_box(
@@ -2155,12 +2260,7 @@ impl FileInfo {
                 );
                 let mut folder = format!(
                     "{}\\",
-                    display_path(&crate::model::category_folder(
-                        self.category,
-                        &self.downloads,
-                        &self.dirs
-                    ))
-                    .trim_end_matches('\\')
+                    display_path(&self.folder_of(self.category)).trim_end_matches('\\')
                 );
                 let folder_rc = r(o, 104.0, 112.0, 348.0, 23.0);
                 // Read-only, and not a password box: bool::default() for both flags.
@@ -2439,11 +2539,16 @@ impl FileInfo {
                 if self.category_open {
                     let all = Category::all();
                     let labels: Vec<String> = all.iter().map(|c| c.shown()).collect();
-                    if let Some(i) = winui::drop_list(
+                    let icons: Vec<winui::ItemIcon> = all
+                        .iter()
+                        .map(|c| winui::ItemIcon::Shell(c.icon()))
+                        .collect();
+                    if let Some(i) = winui::drop_list_icons(
                         ui,
                         &own("file-info-category"),
                         cat_rect,
                         &labels,
+                        &icons,
                         "",
                         &mut self.category_open,
                     ) && let Some(c) = all.get(i)
@@ -3232,11 +3337,19 @@ impl GroupDone {
                                 ],
                             )
                         };
-                        winui::fit(
+                        let baseline = o.y + 137.0 + 17.0 * k as f32;
+                        let x = winui::note_mark(
                             ui,
                             &p,
                             o.x + 24.0,
-                            o.y + 137.0 + 17.0 * k as f32,
+                            baseline,
+                            Some(crate::icons::Mark::Fail),
+                        );
+                        winui::fit(
+                            ui,
+                            &p,
+                            x,
+                            baseline,
                             &line,
                             winui::ERROR(),
                             o.x + 444.0,
@@ -4869,14 +4982,22 @@ impl Duplicate {
 /// whether it starts now. `Done((queue, start))`; Cancel leaves them in the list, in no queue.
 pub struct QueuePick {
     names: Vec<String>,
+    /// Each queue's icon, the Scheduler's (#2008).
+    icons: Vec<winui::ItemIcon>,
     chosen: usize,
     start: bool,
 }
 
 impl QueuePick {
-    pub fn new(names: Vec<String>) -> Self {
+    /// The queues: each one's name, and whether it is a synchronization queue.
+    pub fn new(queues: Vec<(String, bool)>) -> Self {
+        let icons = queues
+            .iter()
+            .map(|(_, sync)| winui::ItemIcon::Shell(crate::scheduler::queue_icon(*sync)))
+            .collect();
         QueuePick {
-            names,
+            names: queues.into_iter().map(|(name, _)| name).collect(),
+            icons,
             chosen: 0,
             start: false,
         }
@@ -4900,10 +5021,11 @@ impl QueuePick {
                     winui::LIGHT_TEXT(),
                 );
                 let names: Vec<&str> = self.names.iter().map(String::as_str).collect();
-                if let Some(i) = winui::combo_light(
+                if let Some(i) = winui::combo_light_icons(
                     ui,
                     r(o, 100.0, 12.0, 228.0, 21.0),
                     &names,
+                    &self.icons,
                     self.chosen,
                     true,
                     "queue-pick",
@@ -5591,6 +5713,16 @@ pub fn ensure_replace_asked<T>(
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    /// #2008: Download later's queue list shows each queue's icon, the Scheduler's: the linked
+    /// folder for a synchronization queue.
+    #[test]
+    fn each_queue_in_the_pick_has_the_schedulers_icon() {
+        let q = QueuePick::new(vec![("Main".into(), false), ("Sync".into(), true)]);
+        assert_eq!(q.names, ["Main", "Sync"]);
+        let silk = |name| winui::ItemIcon::Shell(crate::chrome::IconKey::Silk(name));
+        assert!(q.icons == [silk("folder"), silk("folder_link")]);
+    }
 
     /// #1741: the first Download File Info is the window it always was; the others are
     /// numbered (their ids and titles, which Windows finds them by), each a cascade step
@@ -6344,6 +6476,37 @@ mod tests {
             &egui::Context::default(),
         );
         (fi, rt)
+    }
+
+    /// #1973: with one folder for every download, Download File Info starts Save As in
+    /// General's folder whatever the category, keeps it there when the category is changed,
+    /// names General in "Remember this path" and remembers the folder as General's. A folder
+    /// typed for this one download stays as typed.
+    #[test]
+    fn one_folder_starts_save_as_in_generals_folder() {
+        let d = tempfile::tempdir().unwrap();
+        let (fi, _rt) = file_info(d.path(), "clip.mp4");
+        assert_eq!(fi.category, Category::Video);
+        assert_eq!(fi.dest().parent(), Some(d.path().join("Video").as_path()));
+
+        let (fi, _rt) = file_info(d.path(), "clip.mp4");
+        let mut fi = fi.with_one_folder(true);
+        assert_eq!(
+            fi.category,
+            Category::Video,
+            "its category still sorts the list"
+        );
+        assert_eq!(fi.dest(), d.path().join("clip.mp4"));
+        fi.set_category(Category::Music);
+        assert_eq!(fi.dest(), d.path().join("clip.mp4"));
+        fi.remember = true;
+        let kept = |fi: &FileInfo| fi.remembered().map(|(c, dir)| (c, resolve_path(&dir)));
+        assert_eq!(kept(&fi), Some((Category::General, d.path().to_owned())));
+        // Changed for this download only: Save As as typed.
+        let own = d.path().join("Talks").join("clip.mp4");
+        fi.save_as = own.display().to_string();
+        assert_eq!(fi.dest(), own);
+        assert_eq!(kept(&fi), Some((Category::General, d.path().join("Talks"))));
     }
 
     /// #1088: a file the Save dialog asked "Replace?" about, answered Yes, is the one the
