@@ -23,6 +23,7 @@ pub mod github;
 // Which JavaScript runtime yt-dlp uses for YouTube (#1570).
 pub mod jsruntime;
 pub mod manifest;
+pub mod mesa;
 // Node.js, the JavaScript runtime MDM installs when the computer has none (#1570).
 pub mod node;
 mod openpgp;
@@ -101,6 +102,9 @@ pub enum Error {
     /// MDM's list of the ffmpeg builds it checked let none in (`ffmpeg`).
     #[error("MDM's list of checked ffmpeg builds: {0}")]
     FfmpegList(ffmpeg::ListError),
+    /// The same list let no build of Mesa's software renderer in (`mesa`, #476).
+    #[error("MDM's list of checked software renderers: {0}")]
+    MesaList(ffmpeg::ListError),
 }
 
 impl Error {
@@ -115,7 +119,8 @@ impl Error {
                 Some((host.clone(), mdm_engine::fault::of_engine(error)?))
             }
             // ffmpeg's list of checked builds, which couldn't be fetched: that server, and why.
-            Error::FfmpegList(ffmpeg::ListError::Unavailable(e)) => e.network(),
+            Error::FfmpegList(ffmpeg::ListError::Unavailable(e))
+            | Error::MesaList(ffmpeg::ListError::Unavailable(e)) => e.network(),
             _ => None,
         }
     }

@@ -569,6 +569,12 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 Everything below ships together, in version 0.6.0, the next release.
 
+- ✅ Windows without a graphics card's driver (Windows Server, a virtual machine, Remote Desktop):
+  MDM offers once to download Mesa's software renderer (llvmpipe), with its size, and from
+  **View → Draw with**; nothing downloads without a click. Checked against MDM's signed list, it
+  draws from the next start before Windows' own software renderer (WARP), which keeps the
+  processor far busier; one that can't draw there is remembered, and WARP draws again
+  ([#476](https://github.com/anefzaoui/misterdownloadmanager/issues/476))
 - ✅ Site rules give a site a proxy: **No proxy** (straight to the site) or one of its own
   (`host:port`, `socks5://…`) with its login, kept with MDM's other passwords; a download's own
   proxy first, then the first rule that names the site and sets one, then Options. Video and
