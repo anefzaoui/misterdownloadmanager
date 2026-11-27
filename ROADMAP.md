@@ -703,6 +703,9 @@ Everything below ships together, in version 0.6.0, the next release.
   reached; each stage now waits for the session's own word (downloading, the peer given up, its
   retry refused) instead of the time that should have passed
 - ✅ Torrents: a paused torrent's finished pieces are saved before MDM quits
+- ✅ Torrents: a torrent added again with its pieces kept keeps its progress also when its numbers
+  were being read as it left the session
+  ([#1648](https://github.com/anefzaoui/misterdownloadmanager/issues/1648))
 - ✅ Torrents: the engine checks what it's sent more carefully
 - ✅ Extracting: 7z and RAR archives are checked more carefully
 - ✅ Archive test: archives are checked more carefully
