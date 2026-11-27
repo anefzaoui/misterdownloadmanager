@@ -619,11 +619,19 @@ pub fn run(job: Job, exe: PathBuf, rt: tokio::runtime::Handle) -> std::io::Resul
                 found: found.clone(),
                 info: info.clone(),
             };
-            // A stream's playlist MDM reads exactly as yt-dlp would (as Options' proxy and the
-            // browser's request for it); none for anything else.
+            // A stream's playlist MDM reads exactly as yt-dlp would (as Options' proxy, or a
+            // site rule's for its address, #1960, and the browser's request for it); none for
+            // anything else.
             let fast = {
                 let (address, browser) = (address.clone(), browser.clone());
-                let opts = crate::settings::own_net();
+                let mut opts = crate::settings::own_net();
+                if let Some(proxy) = url::Url::parse(&address)
+                    .ok()
+                    .as_ref()
+                    .and_then(mdm_tools::proc::site_proxy)
+                {
+                    opts.proxy = proxy;
+                }
                 async move { mdm_tools::manifest::fetch(&address, &browser, &opts).await }
             };
             // yt-dlp's look-up all the same (the click asked for the video): kept for the

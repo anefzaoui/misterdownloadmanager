@@ -12,7 +12,7 @@ use std::io::IoSlice;
 use std::path::{Path, PathBuf};
 use std::sync::{Mutex, OnceLock};
 
-use librqbit::storage::filesystem::FilesystemStorageFactory;
+use librqbit::storage::filesystem::{FilesystemStorageFactory, open_files::OpenFiles};
 use librqbit::storage::{BoxStorageFactory, StorageFactory, StorageFactoryExt, TorrentStorage};
 use librqbit::{ManagedTorrentShared, TorrentMetadata};
 
@@ -171,12 +171,19 @@ pub fn apply_from_memory(hash: &str, entries: &mut [crate::FileEntry]) {
 pub struct RenameStorageFactory {
     session_dir: PathBuf,
     guarded: bool,
+    open_files: &'static OpenFiles,
 }
 
-pub fn storage_factory(session_dir: PathBuf, guarded: bool) -> BoxStorageFactory {
+/// `open_files`: the budget of open file handles the torrents' files count in.
+pub fn storage_factory(
+    session_dir: PathBuf,
+    guarded: bool,
+    open_files: &'static OpenFiles,
+) -> BoxStorageFactory {
     RenameStorageFactory {
         session_dir,
         guarded,
+        open_files,
     }
     .boxed()
 }
@@ -195,9 +202,13 @@ impl StorageFactory for RenameStorageFactory {
             Box::new(crate::authorized_storage::Storage::new(
                 self.session_dir.clone(),
                 hash,
+                self.open_files,
             ))
         } else {
-            Box::new(FilesystemStorageFactory::default().create(shared, metadata)?)
+            Box::new(
+                FilesystemStorageFactory::with_open_files(self.open_files)
+                    .create(shared, metadata)?,
+            )
         };
         Ok(RenameStorage { inner, custom })
     }
@@ -376,7 +387,11 @@ mod tests {
         apply_to_entries(dir.path(), hash, &mut entries);
         assert_eq!(entries[0].path, PathBuf::from("RenamedVideo.mp4"));
 
-        let factory = storage_factory(dir.path().to_path_buf(), false);
+        let factory = storage_factory(
+            dir.path().to_path_buf(),
+            false,
+            librqbit::storage::filesystem::open_files::global(),
+        );
         assert!(factory.is_type_id(TypeId::of::<FilesystemStorageFactory>()));
 
         remove_renamed_file(dir.path(), hash);

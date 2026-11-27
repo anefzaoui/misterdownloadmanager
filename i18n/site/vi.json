@@ -1662,6 +1662,10 @@
    "source": "Yes. MDM accepts IDM's familiar command-line switches, comes with misterdownloadmanager-cli for downloads from a terminal, and has a local, token-protected…",
    "text": "Có. MDM chấp nhận các tùy chọn dòng lệnh quen thuộc của IDM, đi kèm với misterdownloadmanager-cli để tải xuống từ terminal, và có một API tự động hóa cục bộ, được bảo vệ bằng token…"
   },
+  "15dfb8668baab702": {
+   "source": "See <g1>Proxy / Socks</g1> and <g2>Use your own copies</g2>.",
+   "text": "Xem <g1>Proxy / Socks</g1> và <g2>Dùng bản sao của riêng bạn</g2>."
+  },
   "15f41ea989aec521": {
    "source": "<g1>Base16 and pywal colour schemes as themes</g1>: a Base16 or Base24 scheme (<x2/>, the classic layout and tinted-theming's <x3/> one) or pywal's <x4/> (wallust's pywal-shaped one too), added with <g5>View → Theme → Add a theme file…</g5> or put in the themes folder, is a theme on the classic look: only the colours change. base00 and base01 are the backgrounds, base05 and base04 the text, base0D the focus, the selection and the progress bar (pywal: its background and foreground, color4); text is kept at 4.5:1 or more against every background and the accent at 3:1, moved a little where a scheme falls short. Once <x6/> has run, <g7>View → Theme</g7> lists <g8>pywal</g8>, read from where pywal writes it (<x9/>, <x10/> on Windows), and MDM follows each new wallpaper's colours within two seconds. A theme file can <x11/> a scheme to change more than its colours.",
    "text": "<g1>Sơ đồ màu Base16 và pywal làm chủ đề</g1>: một sơ đồ Base16 hoặc Base24 (<x2/>, bố cục cổ điển và sơ đồ <x3/> của chủ đề có màu) hoặc <x4/> của pywal (cả sơ đồ dạng pywal của wallust), được thêm bằng <g5>Xem → Chủ đề → Thêm tệp chủ đề…</g5> hoặc đặt trong thư mục chủ đề, là một chủ đề trên giao diện cổ điển: chỉ màu sắc thay đổi. base00 và base01 là nền, base05 và base04 là chữ, base0D là tiêu điểm, vùng chọn và thanh tiến trình (pywal: nền và tiền cảnh của nó, color4); chữ được giữ ở tỷ lệ tương phản 4.5:1 trở lên so với mọi nền và màu nhấn ở 3:1, được điều chỉnh một chút khi sơ đồ không đạt. Sau khi <x6/> đã chạy, <g7>Xem → Chủ đề</g7> liệt kê <g8>pywal</g8>, đọc từ nơi pywal ghi nó (<x9/>, <x10/> trên Windows), và MDM tuân theo màu sắc của mỗi hình nền mới trong vòng hai giây. Một tệp chủ đề có thể <x11/> một sơ đồ để thay đổi nhiều hơn màu sắc của nó."
@@ -2125,10 +2129,6 @@
   "1be93bd020009908": {
    "source": "<g1>The keyboard focus got lost</g1> when a button greyed itself or Escape closed a drop-down: Tab started over at the top of the window. It now moves on, or comes back, as in Windows.",
    "text": "<g1>Tiêu điểm bàn phím bị mất</g1> khi nút chuyển sang màu xám hoặc khi nhấn Escape để đóng menu thả xuống: nhấn Tab sẽ quay lại đầu cửa sổ. Giờ đây, tiêu điểm chuyển tiếp hoặc quay lại đúng như trên Windows."
-  },
-  "1c004ef83082f283": {
-   "source": "<g1>Site rules...</g1> — a User-Agent, request headers, a number of connections and <g2>Always connect the way a browser does</g2>, by site. See <g3>Site rules</g3>.",
-   "text": "<g1>Quy tắc trang web...</g1> — User-Agent, tiêu đề yêu cầu, số lượng kết nối và <g2>Luôn kết nối như trình duyệt</g2>, theo từng trang web. Xem <g3>Quy tắc trang web</g3>."
   },
   "1c0101659f1e2203": {
    "source": "<g1>Feeds</g1>: the feeds it watches; none ticked, all of them.",
@@ -3145,6 +3145,10 @@
   "28eeaa8ad9bf85a3": {
    "source": "Requests",
    "text": "Yêu cầu"
+  },
+  "291af5108373e0c4": {
+   "source": "MDM downloads yt-dlp, ffmpeg and gallery-dl from their official releases on GitHub. Where GitHub can't be reached or is very slow, as often in mainland…",
+   "text": "MDM tải xuống yt-dlp, ffmpeg và gallery-dl từ các bản phát hành chính thức của chúng trên GitHub. Ở những nơi không thể truy cập GitHub hoặc tốc độ rất chậm, như thường thấy ở Trung Quốc đại lục…"
   },
   "292621fe40d7beca": {
    "source": "Every video starts ticked. Untick the ones you don't want, or use <g1>Select all</g1> and <g2>Select none</g2>. Private and deleted videos are greyed out and can't be ticked.",
@@ -4890,6 +4894,10 @@
    "source": "Changes",
    "text": "Thay đổi"
   },
+  "41150cfc2e8c323a": {
+   "source": "Some sites want a particular User-Agent, an extra header or fewer connections, let only browsers through, or need a proxy (or none) when the others don't. <g1>Options → Connection → Site rules...</g1> sets these once for every download from a site:",
+   "text": "Một số trang web yêu cầu User-Agent cụ thể, tiêu đề bổ sung hoặc ít kết nối hơn, chỉ cho phép trình duyệt truy cập, hoặc cần proxy (hoặc không cần) trong khi các trang khác thì không. <g1>Tùy chọn → Kết nối → Quy tắc trang web...</g1> đặt các cài đặt này một lần cho mọi lượt tải xuống từ một trang web:"
+  },
   "41333ec069d15e15": {
    "source": "A magnet link takes a long time",
    "text": "Liên kết magnet mất nhiều thời gian"
@@ -5538,10 +5546,6 @@
    "source": "A key MDM doesn't know, or a value it can't read, is skipped and written to MDM's log (the <x1/> folder beside the themes folder), so a file made for a newer MDM still loads. The built-in themes are written the same way: <g2>read them on GitHub</g2>.",
    "text": "Một khóa mà MDM không biết, hoặc một giá trị không thể đọc được, sẽ bị bỏ qua và ghi vào nhật ký của MDM (thư mục <x1/> bên cạnh thư mục giao diện), để một tệp được tạo cho MDM mới hơn vẫn có thể tải. Các giao diện tích hợp sẵn cũng được viết theo cách tương tự: <g2>đọc chúng trên GitHub</g2>."
   },
-  "4ac401467a9a37d2": {
-   "source": "The downloads join the <g1>Main download queue</g1>, ready to start (<g2>Start</g2> starts it too). <g3>Tasks → Import → From IDM export file</g3> reads an <x4/> file, with each download's referrer and cookies.",
-   "text": "Các lượt tải xuống sẽ được thêm vào <g1>Hàng đợi tải xuống chính</g1>, sẵn sàng để bắt đầu (<g2>Bắt đầu</g2> cũng khởi động hàng đợi). <g3>Tác vụ → Nhập → Từ tệp xuất IDM</g3> đọc tệp <x4/>, bao gồm cả địa chỉ giới thiệu và cookie của từng lượt tải xuống."
-  },
   "4ace27f6171583db": {
    "source": "A <x1/> and a Compose file come with MDM's source. For now you build the image yourself; a published image comes later. The first build is long, up to an hour on a small server, and the image is small, about 175 MB, with no desktop libraries.",
    "text": "Một <x1/> và một tệp Compose đi kèm với mã nguồn của MDM. Hiện tại bạn tự xây dựng ảnh; một ảnh đã phát hành sẽ có sau. Lần xây dựng đầu tiên khá lâu, có thể mất đến một giờ trên một máy chủ nhỏ, và ảnh có kích thước nhỏ, khoảng 175 MB, không có thư viện máy tính để bàn."
@@ -6090,10 +6094,6 @@
    "source": "After a click it says what happened, in its own colour:",
    "text": "Sau khi nhấp, nó sẽ cho biết điều gì đã xảy ra, với màu sắc riêng:"
   },
-  "529f7c22e85ee030": {
-   "source": "Download a file with up to 8 connections (<x1/>, 1 to 128), showing progress. <x2/> pauses it; <x3/> continues. <x4/> sets the referring page address (Referer header), <x5/> sets the request's User-Agent (then the only one sent; without it, MDM speaks as your default browser, and, when a site's bot check refuses that and the way a browser connects too, once more under its own name), <x6/> sets the Cookie header (a cookie on the command line ends up in the shell's history; <x7/> reads it from standard input instead). <x8/> checks the finished file: hex MD5, SHA-1, SHA-256, SHA-512 or CRC32, optionally named (<x9/>). <x10/> picks the DNS instead of Options': <x11/>; a service and how to ask it, <x12/>, <x13/>, <x14/>, <x15/>, <x16/>; DNS servers' addresses, <x17/>; or a DNS-over-HTTPS address. It never falls back to the system's DNS. <x18/> sends every connection through one network adapter instead of Options' (<x19/> for none), by its name (<x20/>, <x21/>) or one of its addresses; when it isn't connected, nothing is sent and the download fails. <x22/> takes the place of Options' proxy for this run (see above). The app's <g23>site rules</g23> for the address apply too (their headers, User-Agent, browser-like connection and number of connections), where the command line gives none of the same. A link from a file host that one of your debrid accounts (<g24>Options → Accounts</g24>) supports goes through that account, as in the app, and <x25/> says <x26/>; <x27/> downloads the address itself (<g28>Debrid service accounts</g28>).",
-   "text": "Tải xuống một tệp với tối đa 8 kết nối (<x1/>, từ 1 đến 128), hiển thị tiến độ. <x2/> tạm dừng; <x3/> tiếp tục. <x4/> đặt địa chỉ trang giới thiệu (tiêu đề Referer), <x5/> đặt User-Agent của yêu cầu (sau đó chỉ gửi một cái; nếu không có, MDM sẽ nói chuyện như trình duyệt mặc định của bạn, và, khi kiểm tra bot của một trang web từ chối điều đó và cách trình duyệt kết nối, một lần nữa dưới tên riêng của nó), <x6/> đặt tiêu đề Cookie (một cookie trên dòng lệnh sẽ nằm trong lịch sử shell; <x7/> đọc nó từ đầu vào chuẩn thay thế). <x8/> kiểm tra tệp đã hoàn tất: hex MD5, SHA-1, SHA-256, SHA-512 hoặc CRC32, tùy chọn đặt tên (<x9/>). <x10/> chọn DNS thay vì DNS trong Tùy chọn: <x11/>; một dịch vụ và cách hỏi nó, <x12/>, <x13/>, <x14/>, <x15/>, <x16/>; địa chỉ máy chủ DNS, <x17/>; hoặc địa chỉ DNS-over-HTTPS. Nó không bao giờ quay lại DNS của hệ thống. <x18/> gửi mọi kết nối qua một bộ điều hợp mạng thay vì bộ điều hợp trong Tùy chọn (<x19/> cho không có), bằng tên của nó (<x20/>, <x21/>) hoặc một trong các địa chỉ của nó; khi nó không được kết nối, không có gì được gửi và quá trình tải xuống thất bại. <x22/> thay thế proxy trong Tùy chọn cho lần chạy này (xem ở trên). <g23>Quy tắc trang web</g23> của ứng dụng cho địa chỉ cũng áp dụng (tiêu đề của chúng, User-Agent, kết nối giống trình duyệt và số lượng kết nối), nơi dòng lệnh không cung cấp bất kỳ điều gì tương tự. Một liên kết từ một máy chủ tệp mà một trong các tài khoản debrid của bạn (<g24>Tùy chọn → Tài khoản</g24>) hỗ trợ sẽ đi qua tài khoản đó, như trong ứng dụng, và <x25/> nói <x26/>; <x27/> tải xuống chính địa chỉ đó (<g28>Tài khoản dịch vụ debrid</g28>)."
-  },
   "52ceae361fb11f6c": {
    "source": "A list's, a table's or a box's outline",
    "text": "Đường viền của danh sách, bảng hoặc hộp"
@@ -6145,10 +6145,6 @@
   "536df2f60bd48da6": {
    "source": "Success text (a matching checksum)",
    "text": "Chữ thành công (tổng kiểm tra khớp)"
-  },
-  "538fe2ede1fc4d57": {
-   "source": "The single-instance channel (a token-protected local socket), the data folder, the capture rules shared by the app and the host, and the site rules (#1778: a User-Agent, headers, connections and the browser-like connection by site pattern) shared by the app and the command line",
-   "text": "Kênh một phiên bản (socket cục bộ được bảo vệ bằng token), thư mục dữ liệu, các quy tắc bắt liên kết được chia sẻ bởi ứng dụng và máy chủ, và các quy tắc trang web (#1778: User-Agent, tiêu đề, kết nối và kết nối giống trình duyệt theo mẫu trang web) được chia sẻ bởi ứng dụng và dòng lệnh"
   },
   "539160f92bae4422": {
    "source": "Being re-measured",
@@ -9054,14 +9050,6 @@
    "source": "Testing archives",
    "text": "Kiểm tra kho lưu trữ"
   },
-  "7b65292951ac598b": {
-   "source": "Some sites want a particular User-Agent, an extra header or fewer connections, or let only browsers through. <g1>Options → Connection → Site rules...</g1> sets these once for every download from a site:",
-   "text": "Một số trang web muốn có User-Agent cụ thể, tiêu đề bổ sung hoặc ít kết nối hơn, hoặc chỉ cho phép trình duyệt truy cập. <g1>Tùy chọn → Kết nối → Quy tắc trang web...</g1> đặt các cài đặt này một lần cho mọi lượt tải xuống từ một trang web:"
-  },
-  "7b655c3076cd7d8b": {
-   "source": "<g1>Tasks → Import → From text file</g1> and <g2>From IDM export file</g2>. An <x3/> file brings each download's referrer and cookies.",
-   "text": "<g1>Tác vụ → Nhập → Từ tệp văn bản</g1> và <g2>Từ tệp xuất IDM</g2>. Tệp <x3/> chứa referrer và cookie của mỗi lượt tải xuống."
-  },
   "7b75149d61c4c0ff": {
    "source": "A download that is running isn't deleted. Stop it first.",
    "text": "Bản tải xuống đang chạy sẽ không bị xóa. Hãy dừng tải xuống trước."
@@ -9357,6 +9345,10 @@
   "7ee169488133ab57": {
    "source": "Link grabber gathers many links at once, sorts them into packages, and lets you tick the ones to download. MDM can then extract the archives it downloaded…",
    "text": "Trình lấy liên kết thu thập nhiều liên kết cùng lúc, sắp xếp chúng thành các gói và cho phép bạn chọn những liên kết muốn tải xuống. MDM sau đó có thể giải nén các tệp lưu trữ đã tải xuống…"
+  },
+  "7ee305b094d7654d": {
+   "source": "The single-instance channel (a token-protected local socket), the data folder, the capture rules shared by the app and the host, and the site rules (#1778: a User-Agent, headers, connections, the browser-like connection and, #1960, a proxy by site pattern) shared by the app and the command line",
+   "text": "Kênh một phiên bản (một socket cục bộ được bảo vệ bằng token), thư mục dữ liệu, các quy tắc bắt liên kết được chia sẻ giữa ứng dụng và máy chủ, và các quy tắc trang web (#1778: User-Agent, tiêu đề, kết nối, kết nối giống trình duyệt và, #1960, một proxy theo mẫu trang web) được chia sẻ giữa ứng dụng và dòng lệnh"
   },
   "7ee9063b38514440": {
    "source": "Listed by",
@@ -9806,6 +9798,10 @@
    "source": "Every signed file is built from the public source code at <g1>github.com/anefzaoui/misterdownloadmanager</g1> by GitHub Actions, on GitHub's servers, never on a personal computer. Each one says it is Mister Download Manager and which version it is.",
    "text": "Mọi tệp đã ký đều được xây dựng từ mã nguồn công khai tại <g1>github.com/anefzaoui/misterdownloadmanager</g1> bởi GitHub Actions, trên máy chủ của GitHub, không bao giờ trên máy tính cá nhân. Mỗi tệp đều ghi rõ là Mister Download Manager và phiên bản nào."
   },
+  "8414d2ed3c86b744": {
+   "source": "Which proxy a download goes through: its own (below) first, then the first rule that names the site and sets a proxy, then <g1>Options → Proxy / Socks</g1> (and the browser's proxy, when <g2>Use proxy/socks from a browser's request</g2> is on). A rule's proxy also carries Download File Info's look-up and, for a video or gallery page the rule names, yt-dlp's and gallery-dl's look-up and the video's download, so the links they get are used from the same address. The <g3>Network adapter</g3> chosen in <g4>Options → Proxy / Socks</g4>, and its kill switch, still hold every connection: with an adapter chosen, nothing goes around it.",
+   "text": "Proxy mà một lượt tải xuống đi qua: đầu tiên là proxy riêng của nó (bên dưới), sau đó là quy tắc đầu tiên đặt tên trang web và thiết lập proxy, sau đó là <g1>Tùy chọn → Proxy / Socks</g1> (và proxy của trình duyệt, khi <g2>Sử dụng proxy/socks từ yêu cầu của trình duyệt</g2> được bật). Proxy của một quy tắc cũng thực hiện tra cứu Thông tin tệp tải xuống và, đối với trang video hoặc thư viện mà quy tắc đặt tên, tra cứu của yt-dlp và gallery-dl cũng như tải xuống video, để các liên kết chúng nhận được được sử dụng từ cùng một địa chỉ. <g3>Bộ điều hợp mạng</g3> được chọn trong <g4>Tùy chọn → Proxy / Socks</g4>, và công tắc ngắt kết nối của nó, vẫn giữ mọi kết nối: khi một bộ điều hợp được chọn, không có gì đi vòng qua nó."
+  },
   "842fc0e6d2b7d24d": {
    "source": "At the start time the queue starts on its own. In the morning, the finished files are under <g1>Finished</g1> in the categories.",
    "text": "Vào thời gian bắt đầu, hàng đợi sẽ tự động bắt đầu. Vào buổi sáng, các tệp đã hoàn tất nằm trong <g1>Đã hoàn tất</g1> trong các danh mục."
@@ -9933,6 +9929,10 @@
   "8581b3f6f6759cc7": {
    "source": "Proxy / Socks: no proxy, the system's, or your own.",
    "text": "Proxy / Socks: không proxy, của hệ thống, hoặc của riêng bạn."
+  },
+  "8587f400d941af9d": {
+   "source": "<g1>Options → Connection → Site rules...</g1> gives every download from a site (<x2/>) its own User-Agent, extra request headers, number of connections, a browser's way of connecting from the first request, or a proxy: none, or one of its own, so only the sites that need a proxy go through one. A stopped download's <g3>Properties → Connection...</g3> changes its own headers, proxy and connections, and MDM still checks the file is the same one before it goes on.",
+   "text": "<g1>Tùy chọn → Kết nối → Quy tắc trang web...</g1> cho phép mỗi lượt tải xuống từ một trang web (<x2/>) có User-Agent riêng, các tiêu đề yêu cầu bổ sung, số lượng kết nối, cách trình duyệt kết nối từ yêu cầu đầu tiên hoặc một proxy: không dùng proxy nào, hoặc dùng một proxy riêng, để chỉ những trang web cần proxy mới đi qua đó. <g3>Thuộc tính → Kết nối...</g3> của một lượt tải xuống đã dừng sẽ thay đổi tiêu đề, proxy và số lượng kết nối của riêng nó, và MDM vẫn kiểm tra tệp có phải là tệp đó không trước khi tiếp tục."
   },
   "85ab2d681187a715": {
    "source": "Not sure yet? <g1>Show it in the discussions</g1> first. The <g2>contributing guide</g2> explains how pull requests work here.",
@@ -10357,6 +10357,10 @@
   "8bf1347e6970e3e9": {
    "source": "MDM works with screen readers such as Narrator and NVDA, which hear what each control is and its state. Everything can be done from the keyboard, with the keys most Windows programs use.",
    "text": "MDM hoạt động với các trình đọc màn hình như Narrator và NVDA, chúng nhận biết từng điều khiển là gì và trạng thái của nó. Mọi thứ đều có thể thực hiện từ bàn phím, với các phím mà hầu hết các chương trình Windows sử dụng."
+  },
+  "8bf561be5473c2d1": {
+   "source": "MDM downloads yt-dlp, ffmpeg and gallery-dl from their official releases on GitHub. Where GitHub can't be reached or is very slow, as often in mainland China, the install stops with \"the server did not answer in time\". Two ways around it:",
+   "text": "MDM tải xuống yt-dlp, ffmpeg và gallery-dl từ các bản phát hành chính thức của chúng trên GitHub. Ở những nơi không thể truy cập GitHub hoặc tốc độ rất chậm, như thường thấy ở Trung Quốc đại lục, quá trình cài đặt sẽ dừng lại với thông báo “máy chủ không phản hồi kịp thời”. Có hai cách để khắc phục:"
   },
   "8bf5db6373827a5f": {
    "source": "Media on this page",
@@ -11778,6 +11782,10 @@
    "source": "Start or stop a download queue in the running app (automation API). Starts or stops the main queue if omitted.",
    "text": "Bắt đầu hoặc dừng một hàng đợi tải xuống trong ứng dụng đang chạy (API tự động hóa). Bắt đầu hoặc dừng hàng đợi chính nếu bỏ qua."
   },
+  "9e84ad8c276cf077": {
+   "source": "Why does installing yt-dlp or another helper time out?",
+   "text": "Tại sao cài đặt yt-dlp hoặc một công cụ hỗ trợ khác lại bị hết thời gian?"
+  },
   "9ea4c71fa0f481c4": {
    "source": "MDM follows your system: when Windows (or your desktop's light/dark preference on Linux and macOS) is set to dark mode, so is MDM. To keep MDM light whatever the system does, turn off <g1>View → Dark Mode support</g1>. To keep it dark whatever the system does, for example on a desktop that reports no preference, turn on <g2>View → Always dark</g2>.",
    "text": "MDM tuân theo hệ thống của bạn: khi Windows (hoặc tùy chọn sáng/tối của môi trường desktop trên Linux và macOS) được đặt ở chế độ tối, MDM cũng vậy. Để giữ MDM ở chế độ sáng bất kể hệ thống, hãy tắt <g1>Xem → Hỗ trợ Chế độ tối</g1>. Để giữ MDM ở chế độ tối bất kể hệ thống, ví dụ trên một desktop không báo cáo tùy chọn nào, hãy bật <g2>Xem → Luôn tối</g2>."
@@ -11861,6 +11869,10 @@
   "9f782f136a8bb467": {
    "source": "The built-in categories can now be renamed, given other file types, or deleted.",
    "text": "Các danh mục tích hợp sẵn giờ đây có thể được đổi tên, gán các loại tệp khác hoặc xóa."
+  },
+  "9f7cefd031ac2a9a": {
+   "source": "Download a file with up to 8 connections (<x1/>, 1 to 128), showing progress. <x2/> pauses it; <x3/> continues. <x4/> sets the referring page address (Referer header), <x5/> sets the request's User-Agent (then the only one sent; without it, MDM speaks as your default browser, and, when a site's bot check refuses that and the way a browser connects too, once more under its own name), <x6/> sets the Cookie header (a cookie on the command line ends up in the shell's history; <x7/> reads it from standard input instead). <x8/> checks the finished file: hex MD5, SHA-1, SHA-256, SHA-512 or CRC32, optionally named (<x9/>). <x10/> picks the DNS instead of Options': <x11/>; a service and how to ask it, <x12/>, <x13/>, <x14/>, <x15/>, <x16/>; DNS servers' addresses, <x17/>; or a DNS-over-HTTPS address. It never falls back to the system's DNS. <x18/> sends every connection through one network adapter instead of Options' (<x19/> for none), by its name (<x20/>, <x21/>) or one of its addresses; when it isn't connected, nothing is sent and the download fails. <x22/> takes the place of Options' proxy for this run (see above). The app's <g23>site rules</g23> for the address apply too (their headers, User-Agent, browser-like connection, number of connections and proxy), where the command line gives none of the same: <x24/> goes before every rule's proxy. A link from a file host that one of your debrid accounts (<g25>Options → Accounts</g25>) supports goes through that account, as in the app, and <x26/> says <x27/>; <x28/> downloads the address itself (<g29>Debrid service accounts</g29>).",
+   "text": "Tải xuống một tệp với tối đa 8 kết nối (<x1/>, 1 đến 128), hiển thị tiến độ. <x2/> tạm dừng; <x3/> tiếp tục. <x4/> đặt địa chỉ trang giới thiệu (tiêu đề Referer), <x5/> đặt User-Agent của yêu cầu (sau đó chỉ gửi một cái; nếu không có, MDM sẽ hoạt động như trình duyệt mặc định của bạn, và, khi kiểm tra bot của một trang web từ chối điều đó và cả cách trình duyệt kết nối, một lần nữa dưới tên riêng của nó), <x6/> đặt tiêu đề Cookie (một cookie trên dòng lệnh sẽ nằm trong lịch sử shell; <x7/> đọc nó từ đầu vào chuẩn thay thế). <x8/> kiểm tra tệp đã hoàn tất: hex MD5, SHA-1, SHA-256, SHA-512 hoặc CRC32, tùy chọn đặt tên (<x9/>). <x10/> chọn DNS thay vì DNS trong Tùy chọn: <x11/>; một dịch vụ và cách yêu cầu nó, <x12/>, <x13/>, <x14/>, <x15/>, <x16/>; địa chỉ máy chủ DNS, <x17/>; hoặc địa chỉ DNS-over-HTTPS. Nó không bao giờ quay lại DNS của hệ thống. <x18/> gửi mọi kết nối qua một bộ điều hợp mạng thay vì bộ điều hợp trong Tùy chọn (<x19/> cho không có), bằng tên của nó (<x20/>, <x21/>) hoặc một trong các địa chỉ của nó; khi nó không được kết nối, không có gì được gửi và quá trình tải xuống thất bại. <x22/> thay thế proxy trong Tùy chọn cho lần chạy này (xem ở trên). <g23>Quy tắc trang</g23> của ứng dụng cho địa chỉ cũng áp dụng (tiêu đề, User-Agent, kết nối giống trình duyệt, số lượng kết nối và proxy), nơi dòng lệnh không cung cấp bất kỳ thứ gì giống nhau: <x24/> đứng trước proxy của mọi quy tắc. Một liên kết từ máy chủ tệp mà một trong các tài khoản debrid của bạn (<g25>Tùy chọn → Tài khoản</g25>) hỗ trợ sẽ đi qua tài khoản đó, như trong ứng dụng, và <x26/> nói <x27/>; <x28/> tải xuống chính địa chỉ đó (<g29>Tài khoản dịch vụ debrid</g29>)."
   },
   "9f93bf61864af099": {
    "source": "Plainly: everyone sharing the same torrent sees your IP address. That is how BitTorrent works, and no setting changes it. To hide it, use a VPN for the whole computer. <g1>Torrents and your security</g1> says what others can see.",
@@ -13333,6 +13345,10 @@
   "b27995b1d5cff0b2": {
    "source": "A calendar's day or arrow pressed",
    "text": "Một ngày hoặc mũi tên của lịch được nhấn"
+  },
+  "b292a3f16372b154": {
+   "source": "MDM downloads yt-dlp, ffmpeg and gallery-dl from their official releases on GitHub. Where GitHub can't be reached or is very slow, as often in mainland China, the install stops with \"the server did not answer in time\". Two ways around it: With a proxy program (Clash, v2rayN and the like), enter its address and port in Options → Proxy / Socks (Manual proxy/socks configuration, often 127.0.0.1 and 7890), or choose Use system settings when the program sets Windows' proxy. Then click Install yt-dlp again: MDM's own downloads, its helpers included, go through it. Or download the program in your browser (yt-dlp's is on its release page), then in Download video from a page click Helpers..., then Use another program... in its row, and choose the file. MDM uses it from then on; keep it up to date yourself. See Proxy / Socks and Use your own copies.",
+   "text": "MDM tải xuống yt-dlp, ffmpeg và gallery-dl từ các bản phát hành chính thức của chúng trên GitHub. Ở những nơi không thể truy cập GitHub hoặc tốc độ rất chậm, như thường thấy ở Trung Quốc đại lục, quá trình cài đặt sẽ dừng lại với thông báo “máy chủ không phản hồi kịp thời”. Có hai cách để khắc phục: Với một chương trình proxy (Clash, v2rayN và các chương trình tương tự), hãy nhập địa chỉ và cổng của nó vào Tùy chọn → Proxy / Socks (Cấu hình proxy/socks thủ công, thường là 127.0.0.1 và 7890), hoặc chọn Sử dụng cài đặt hệ thống khi chương trình đặt proxy của Windows. Sau đó nhấp lại vào Cài đặt yt-dlp: các lượt tải xuống của MDM, bao gồm cả trình trợ giúp của nó, sẽ đi qua proxy đó. Hoặc tải xuống chương trình trong trình duyệt của bạn (yt-dlp có trên trang phát hành của nó), sau đó trong Tải xuống video từ một trang nhấp vào Trợ giúp..., sau đó Sử dụng chương trình khác... trong hàng của nó, và chọn tệp. MDM sẽ sử dụng nó từ đó trở đi; bạn tự cập nhật nó. Xem Proxy / Socks và Sử dụng bản sao của riêng bạn."
   },
   "b298f93960114202": {
    "source": ", with or without <x1/>;",
@@ -16654,6 +16670,10 @@
    "source": "Aqua",
    "text": "Aqua"
   },
+  "e1db1cbca152db19": {
+   "source": "With a proxy program (Clash, v2rayN and the like), enter its address and port in <g1>Options → Proxy / Socks</g1> (<g2>Manual proxy/socks configuration</g2>, often <x3/> and <x4/>), or choose <g5>Use system settings</g5> when the program sets Windows' proxy. Then click <g6>Install yt-dlp</g6> again: MDM's own downloads, its helpers included, go through it.",
+   "text": "Với một chương trình proxy (Clash, v2rayN và các chương trình tương tự), hãy nhập địa chỉ và cổng của nó vào <g1>Tùy chọn → Proxy / Socks</g1> (<g2>Cấu hình proxy/socks thủ công</g2>, thường là <x3/> và <x4/>), hoặc chọn <g5>Sử dụng cài đặt hệ thống</g5> khi chương trình đặt proxy của Windows. Sau đó nhấp lại vào <g6>Cài đặt yt-dlp</g6>: các lượt tải xuống của MDM, bao gồm cả trình trợ giúp của nó, sẽ đi qua proxy đó."
+  },
   "e1db876325f14b62": {
    "source": "Downloads still work, but some of the extension's features need a newer MDM. Update it with <g1>Help → Check for updates...</g1> in MDM.",
    "text": "Các lượt tải xuống vẫn hoạt động, nhưng một số tính năng của tiện ích mở rộng cần phiên bản MDM mới hơn. Cập nhật MDM bằng cách chọn <g1>Trợ giúp → Kiểm tra bản cập nhật...</g1>."
@@ -16745,6 +16765,10 @@
   "e355f6dfc0ceea1d": {
    "source": "How do I report a bug or ask for a feature? — Mister Download Manager",
    "text": "Làm thế nào để báo lỗi hoặc yêu cầu tính năng? — Mister Download Manager"
+  },
+  "e356f60156d8a735": {
+   "source": "<g1>Site rules...</g1> — a User-Agent, request headers, a number of connections, <g2>Always connect the way a browser does</g2> and a proxy (none, or one of its own with its login), by site. See <g3>Site rules</g3>.",
+   "text": "<g1>Quy tắc trang web...</g1> — User-Agent, tiêu đề yêu cầu, số lượng kết nối, <g2>Luôn kết nối như trình duyệt</g2> và proxy (không có, hoặc một proxy riêng với thông tin đăng nhập của nó), theo từng trang web. Xem <g3>Quy tắc trang web</g3>."
   },
   "e3696cca91bc9263": {
    "source": "A browser fetches a file over one connection. MDM asks the server for several parts of the file at once, up to 32 connections (128 if you allow it), and keeps re-splitting: when a connection finishes its part, it takes over half of the biggest part still left, so no slow connection holds up the end. It also remembers servers that refuse extra connections and stops asking them. See <g1>Connections and speed</g1>.",
@@ -17826,10 +17850,6 @@
    "source": "More questions",
    "text": "Câu hỏi khác"
   },
-  "f0964936a9646338": {
-   "source": "<g1>Options → Connection → Site rules...</g1> gives every download from a site (<x2/>) its own User-Agent, extra request headers, number of connections, or a browser's way of connecting from the first request. A stopped download's <g3>Properties → Connection...</g3> changes its own headers, proxy and connections, and MDM still checks the file is the same one before it goes on.",
-   "text": "<g1>Tùy chọn → Kết nối → Quy tắc trang web...</g1> cho phép mỗi lượt tải xuống từ một trang web (<x2/>) có User-Agent, tiêu đề yêu cầu bổ sung, số lượng kết nối riêng hoặc cách trình duyệt kết nối từ yêu cầu đầu tiên. <g3>Thuộc tính → Kết nối...</g3> của một lượt tải xuống đã dừng sẽ thay đổi tiêu đề, proxy và kết nối của riêng nó, và MDM vẫn kiểm tra xem tệp có phải là tệp cũ hay không trước khi tiếp tục."
-  },
   "f09a7e7e0cc71c2e": {
    "source": "In the system's keychain, as are Sites Logins' passwords and the proxy's. MDM's settings keep only a reference to it. <g1>Options → Accounts</g1> says where they are on your computer.",
    "text": "Trong chuỗi khóa của hệ thống, giống như mật khẩu của Đăng nhập trang web và proxy. Cài đặt của MDM chỉ giữ một tham chiếu đến nó. <g1>Tùy chọn → Tài khoản</g1> cho biết chúng nằm ở đâu trên máy tính của bạn."
@@ -17849,6 +17869,10 @@
   "f0f10f730052f164": {
    "source": "<g1>Windows, Mac and Linux</g1><g2>Mister Download Manager</g2>",
    "text": "<g1>Windows, Mac và Linux</g1><g2>Mister Download Manager</g2>"
+  },
+  "f0ff5ae3081fa8a5": {
+   "source": "<g1>Proxy</g1> — <g2>As in Options</g2> (the default: <g3>Options → Proxy / Socks</g3> decides), <g4>No proxy</g4> (straight to the site, whatever Options says), or <g5>This proxy:</g5> one of its own, typed as a download's own proxy is, <x6/>, <x7/>, <x8/>, <x9/> (<x10/> to have the proxy look the site's name up). <g11>Proxy user</g11> and <g12>Password</g12> are its login, if it needs one; the password is kept with MDM's other passwords (in the system's keychain), never in the settings file as it is. This replaces switching Options back and forth, or writing a proxy auto-config script, when only some sites need a proxy.",
+   "text": "<g1>Proxy</g1> — <g2>Như trong Tùy chọn</g2> (mặc định: <g3>Tùy chọn → Proxy / Socks</g3> quyết định), <g4>Không dùng proxy</g4> (truy cập trực tiếp trang web, bất kể Tùy chọn nói gì), hoặc <g5>Proxy này:</g5> một proxy riêng của nó, được nhập như proxy riêng của một lượt tải xuống, <x6/>, <x7/>, <x8/>, <x9/> (<x10/> để proxy tra cứu tên trang web). <g11>Người dùng proxy</g11> và <g12>Mật khẩu</g12> là thông tin đăng nhập của nó, nếu cần; mật khẩu được lưu cùng với các mật khẩu khác của MDM (trong chuỗi khóa của hệ thống), không bao giờ trong tệp cài đặt như nó vốn có. Điều này thay thế việc chuyển đổi Tùy chọn qua lại, hoặc viết tập lệnh cấu hình tự động proxy, khi chỉ một số trang web cần proxy."
   },
   "f10113695e758efd": {
    "source": "A playlist's or channel's videos, one line each as they're listed: its place, length, title and address.",
@@ -18326,6 +18350,10 @@
    "source": "Check <g1>First file</g1>, <g2>Second file</g2> and <g3>Last file</g3>.",
    "text": "Chọn <g1>Tệp đầu tiên</g1>, <g2>Tệp thứ hai</g2> và <g3>Tệp cuối cùng</g3>."
   },
+  "f893460826bf1425": {
+   "source": "Why does installing yt-dlp or another helper time out? — Mister Download Manager",
+   "text": "Tại sao cài đặt yt-dlp hoặc trình trợ giúp khác lại hết thời gian? — Mister Download Manager"
+  },
   "f89a410af1a10630": {
    "source": "The site isn't in <g1>Don't start downloading automatically from the following sites</g1>, nor the address in <g2>Don't start downloading automatically from the following addresses</g2>.",
    "text": "Trang web không nằm trong <g1>Không tự động bắt đầu tải xuống từ các trang web sau</g1> và địa chỉ cũng không nằm trong <g2>Không tự động bắt đầu tải xuống từ các địa chỉ sau</g2>."
@@ -18501,6 +18529,10 @@
   "fa9795c4c18f5dc7": {
    "source": "Rules by site",
    "text": "Quy tắc theo trang web"
+  },
+  "faa66b10495d59c3": {
+   "source": "Or download the program in your browser (yt-dlp's is on <g1>its release page</g1>), then in <g2>Download video from a page</g2> click <g3>Helpers...</g3>, then <g4>Use another program...</g4> in its row, and choose the file. MDM uses it from then on; keep it up to date yourself.",
+   "text": "Hoặc tải xuống chương trình trong trình duyệt của bạn (yt-dlp có trên <g1>trang phát hành của nó</g1>), sau đó trong <g2>Tải xuống video từ một trang</g2> nhấp vào <g3>Trợ giúp...</g3>, sau đó <g4>Sử dụng chương trình khác...</g4> trong hàng của nó, và chọn tệp. MDM sẽ sử dụng nó từ đó trở đi; bạn tự cập nhật nó."
   },
   "fac6b9216d050977": {
    "source": "Grabbing the videos its browser extension finds on a page",
