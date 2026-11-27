@@ -7,13 +7,15 @@
 //! (mdm-torrent), so a session still starts there: DHT, peers and plain HTTP trackers work,
 //! HTTPS trackers fail with [`NO_ROOTS`].
 
-use std::sync::Arc;
+use std::collections::HashMap;
 use std::sync::atomic::{AtomicBool, Ordering};
+use std::sync::{Arc, Mutex};
 
 use rustls::client::danger::{HandshakeSignatureValid, ServerCertVerified, ServerCertVerifier};
 use rustls::crypto::CryptoProvider;
 use rustls::pki_types::{CertificateDer, ServerName, UnixTime};
 use rustls::{DigitallySignedStruct, SignatureScheme};
+use sha2::{Digest, Sha256};
 
 /// Why a secure connection failed on a system without certificates: the error its handshake
 /// gives, in English (the command line and the event log); the interfaces word it themselves.
@@ -137,7 +139,8 @@ pub fn is_no_roots(e: &(dyn std::error::Error + 'static)) -> bool {
 
 /// Why a server's certificate was refused (`Error::Certificate`): what a browser warns about
 /// too. MDM has no way around it: the user is told what is wrong with it.
-#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
+#[serde(rename_all = "snake_case")]
 pub enum CertProblem {
     /// Its validity ended.
     Expired,
@@ -153,7 +156,23 @@ pub enum CertProblem {
     /// It isn't made for a website (its extended key usage leaves out TLS servers).
     NotForWebsites,
     /// Refused for another reason (a bad signature, an encoding).
+    #[default]
     Other,
+}
+
+impl CertProblem {
+    /// Whether the user may continue past this refusal (#1964): only untrusted/self-signed,
+    /// expired/not-yet-valid, and wrong-name certificates may be allowed. Revoked, non-website,
+    /// and other failures always stay refused.
+    pub fn can_allow(self) -> bool {
+        matches!(
+            self,
+            CertProblem::Expired
+                | CertProblem::NotYetValid
+                | CertProblem::Untrusted
+                | CertProblem::WrongName
+        )
+    }
 }
 
 impl std::fmt::Display for CertProblem {
@@ -169,6 +188,338 @@ impl std::fmt::Display for CertProblem {
             CertProblem::NotForWebsites => "the server's certificate isn't made for websites",
             CertProblem::Other => "the server's certificate was refused",
         })
+    }
+}
+
+/// A certificate the user chose to trust for one site (`host` and `port`, pinned to its
+/// SHA-256 fingerprint and the accepted `problem`, #1964). If the server later presents another
+/// certificate or fails for a different reason, MDM asks again.
+#[derive(Clone, Debug, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
+pub struct AllowedCert {
+    pub host: String,
+    pub port: u16,
+    /// Lowercase 64-character hex SHA-256 of the leaf certificate's DER bytes.
+    pub sha256: String,
+    /// The specific refusal reason the user accepted; if the certificate later fails for a
+    /// different reason (e.g. a self-signed certificate subsequently expires), it is asked again.
+    #[serde(default)]
+    pub problem: CertProblem,
+}
+
+impl AllowedCert {
+    /// Whether this entry matches `(host, port, sha256, problem)` (host and hex compared
+    /// case-insensitively), and the problem is one that may be allowed.
+    pub fn matches(&self, host: &str, port: u16, sha256: &str, problem: CertProblem) -> bool {
+        problem.can_allow()
+            && self.problem == problem
+            && self.port == port
+            && self.host.eq_ignore_ascii_case(host)
+            && self.sha256.eq_ignore_ascii_case(sha256)
+    }
+}
+
+/// Details of the leaf certificate a server presented when it was refused (#1964).
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub struct CertInfo {
+    pub host: String,
+    pub port: u16,
+    /// Lowercase 64-character hex SHA-256 of the leaf certificate's DER bytes.
+    pub sha256: String,
+    pub problem: CertProblem,
+    /// The certificate's `notAfter` date (`YYYY-MM-DD`) when it has expired.
+    pub expired_since: Option<String>,
+    /// Whether the certificate's issuer equals its subject.
+    pub self_signed: bool,
+}
+
+/// A refused server certificate (`Error::Certificate`): why it was refused and, when a TLS
+/// handshake's leaf certificate was seen, the site and certificate details for prompting (#1964).
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub struct CertRefusal {
+    pub problem: CertProblem,
+    pub info: Option<Box<CertInfo>>,
+}
+
+impl From<CertProblem> for CertRefusal {
+    fn from(problem: CertProblem) -> Self {
+        Self {
+            problem,
+            info: None,
+        }
+    }
+}
+
+impl std::fmt::Display for CertRefusal {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        if let Some(info) = &self.info {
+            match self.problem {
+                CertProblem::Expired => {
+                    if let Some(date) = &info.expired_since {
+                        return write!(f, "the server's certificate expired on {date}");
+                    }
+                }
+                CertProblem::Untrusted if info.self_signed => {
+                    return f.write_str("the server's certificate is self-signed");
+                }
+                _ => {}
+            }
+        }
+        self.problem.fmt(f)
+    }
+}
+
+/// Lowercase 64-character hex SHA-256 fingerprint of a DER-encoded certificate.
+pub fn sha256_hex(der: &[u8]) -> String {
+    let digest = Sha256::digest(der);
+    let mut out = String::with_capacity(64);
+    for b in digest {
+        use std::fmt::Write;
+        let _ = write!(out, "{b:02x}");
+    }
+    out
+}
+
+/// Inspect a DER-encoded X.509 certificate for `(self_signed, not_after_ymd)`.
+/// Pure-Rust minimal ASN.1 DER walk over `Certificate.tbsCertificate`.
+pub fn inspect_cert(der: &[u8]) -> (bool, Option<String>) {
+    fn read_tlv(data: &[u8]) -> Option<(u8, &[u8], &[u8])> {
+        let (&tag, rest) = data.split_first()?;
+        let (&len_byte, rest) = rest.split_first()?;
+        let (len, rest) = if len_byte < 0x80 {
+            (len_byte as usize, rest)
+        } else {
+            let n = (len_byte & 0x7f) as usize;
+            if n == 0 || n > 4 || rest.len() < n {
+                return None;
+            }
+            let mut len = 0usize;
+            for &b in &rest[..n] {
+                len = (len << 8) | (b as usize);
+            }
+            (len, &rest[n..])
+        };
+        if rest.len() < len {
+            return None;
+        }
+        let (val, tail) = rest.split_at(len);
+        Some((tag, val, tail))
+    }
+
+    fn parse_time(tag: u8, val: &[u8]) -> Option<String> {
+        let s = std::str::from_utf8(val).ok()?;
+        match tag {
+            // UTCTime: YYMMDD...
+            0x17 if s.len() >= 6 && s[..6].bytes().all(|b| b.is_ascii_digit()) => {
+                let yy: u16 = s[..2].parse().ok()?;
+                let year = if yy >= 50 { 1900 + yy } else { 2000 + yy };
+                Some(format!("{year:04}-{}-{}", &s[2..4], &s[4..6]))
+            }
+            // GeneralizedTime: YYYYMMDD...
+            0x18 if s.len() >= 8 && s[..8].bytes().all(|b| b.is_ascii_digit()) => {
+                Some(format!("{}-{}-{}", &s[..4], &s[4..6], &s[6..8]))
+            }
+            _ => None,
+        }
+    }
+
+    let Some((0x30, cert_val, _)) = read_tlv(der) else {
+        return (false, None);
+    };
+    let Some((0x30, mut tbs, _)) = read_tlv(cert_val) else {
+        return (false, None);
+    };
+    // Optional explicit [0] version.
+    if tbs.first() == Some(&0xa0) {
+        let Some((_, _, rest)) = read_tlv(tbs) else {
+            return (false, None);
+        };
+        tbs = rest;
+    }
+    // serialNumber, signature
+    let Some((_, _, tbs)) = read_tlv(tbs) else {
+        return (false, None);
+    };
+    let Some((_, _, tbs)) = read_tlv(tbs) else {
+        return (false, None);
+    };
+    // issuer (raw TLV slice)
+    let Some((_, issuer_val, tbs_after_issuer)) = read_tlv(tbs) else {
+        return (false, None);
+    };
+    // validity SEQUENCE { notBefore, notAfter }
+    let Some((0x30, validity_val, tbs_after_validity)) = read_tlv(tbs_after_issuer) else {
+        return (false, None);
+    };
+    let not_after = read_tlv(validity_val)
+        .and_then(|(_, _, rest)| read_tlv(rest))
+        .and_then(|(tag, val, _)| parse_time(tag, val));
+    // subject (raw TLV slice)
+    let self_signed = read_tlv(tbs_after_validity)
+        .map(|(_, subject_val, _)| !issuer_val.is_empty() && issuer_val == subject_val)
+        .unwrap_or(false);
+    (self_signed, not_after)
+}
+
+/// Configure `builder` for a download or probe, using the system verifier + Mozilla roots +
+/// `extra_roots`, while allowing `allowed_certs` for their pinned `(host, port, sha256)` and
+/// recording any refused certificate into `on_refusal`.
+/// Port(s) seen for a host on one `Client` (#1964): `Single(p)` when every request to that host
+/// on this client used `p`, or `Ambiguous { latest }` if a redirect hit the same host on a
+/// different port (in which case pins are never matched so a wrong port never slips through).
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub(crate) enum HostPort {
+    Single(u16),
+    Ambiguous { latest: u16 },
+}
+
+impl HostPort {
+    pub(crate) fn record(map: &mut HashMap<String, HostPort>, host: &str, port: u16) {
+        let key = host.to_ascii_lowercase();
+        match map.get(&key).copied() {
+            None => {
+                map.insert(key, HostPort::Single(port));
+            }
+            Some(HostPort::Single(p)) if p == port => {}
+            Some(_) => {
+                map.insert(key, HostPort::Ambiguous { latest: port });
+            }
+        }
+    }
+}
+
+pub(crate) fn configure_site(
+    builder: reqwest::ClientBuilder,
+    extra_roots: &[Vec<u8>],
+    allowed_certs: &[AllowedCert],
+    ports: Arc<Mutex<HashMap<String, HostPort>>>,
+    default_port: u16,
+    on_refusal: Arc<dyn Fn(CertInfo) + Send + Sync>,
+) -> reqwest::ClientBuilder {
+    if extra_roots.is_empty() && !system_has_roots() {
+        return builder.tls_backend_preconfigured(no_roots_config());
+    }
+    let provider = provider();
+    let Ok(inner) = crate::ftp::verifier(extra_roots, provider.clone()) else {
+        return configure(builder);
+    };
+    let verifier = Arc::new(SiteVerifier {
+        inner,
+        allowed: allowed_certs.to_vec(),
+        ports,
+        default_port,
+        on_refusal,
+    });
+    let config = rustls::ClientConfig::builder_with_provider(provider)
+        .with_safe_default_protocol_versions()
+        .expect("the default protocol versions are supported")
+        .dangerous()
+        .with_custom_certificate_verifier(verifier)
+        .with_no_client_auth();
+    builder.tls_backend_preconfigured(config)
+}
+
+struct SiteVerifier {
+    inner: Arc<dyn ServerCertVerifier>,
+    allowed: Vec<AllowedCert>,
+    ports: Arc<Mutex<HashMap<String, HostPort>>>,
+    default_port: u16,
+    on_refusal: Arc<dyn Fn(CertInfo) + Send + Sync>,
+}
+
+impl std::fmt::Debug for SiteVerifier {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.debug_struct("SiteVerifier")
+            .field("allowed", &self.allowed.len())
+            .field("default_port", &self.default_port)
+            .finish_non_exhaustive()
+    }
+}
+
+impl SiteVerifier {
+    /// Returns `(reported_port, unambiguous)` for `host`.
+    fn port_for(&self, host: &str) -> (u16, bool) {
+        match self
+            .ports
+            .lock()
+            .unwrap()
+            .get(&host.to_ascii_lowercase())
+            .copied()
+        {
+            Some(HostPort::Single(p)) => (p, true),
+            Some(HostPort::Ambiguous { latest }) => (latest, false),
+            None => (self.default_port, false),
+        }
+    }
+}
+
+impl ServerCertVerifier for SiteVerifier {
+    fn verify_server_cert(
+        &self,
+        end_entity: &CertificateDer<'_>,
+        intermediates: &[CertificateDer<'_>],
+        server_name: &ServerName<'_>,
+        ocsp_response: &[u8],
+        now: UnixTime,
+    ) -> Result<ServerCertVerified, rustls::Error> {
+        match self.inner.verify_server_cert(
+            end_entity,
+            intermediates,
+            server_name,
+            ocsp_response,
+            now,
+        ) {
+            Ok(v) => Ok(v),
+            Err(err) => {
+                let host = server_name.to_str().to_string();
+                let (port, unambiguous) = self.port_for(&host);
+                let sha256 = sha256_hex(end_entity.as_ref());
+                let problem = certificate_problem(&err).unwrap_or(CertProblem::Other);
+                if unambiguous
+                    && problem.can_allow()
+                    && self
+                        .allowed
+                        .iter()
+                        .any(|a| a.matches(&host, port, &sha256, problem))
+                {
+                    return Ok(ServerCertVerified::assertion());
+                }
+                let (self_signed, not_after) = inspect_cert(end_entity.as_ref());
+                let expired_since = (problem == CertProblem::Expired)
+                    .then_some(not_after)
+                    .flatten();
+                (self.on_refusal)(CertInfo {
+                    host,
+                    port,
+                    sha256,
+                    problem,
+                    expired_since,
+                    self_signed,
+                });
+                Err(err)
+            }
+        }
+    }
+
+    fn verify_tls12_signature(
+        &self,
+        message: &[u8],
+        cert: &CertificateDer<'_>,
+        dss: &DigitallySignedStruct,
+    ) -> Result<HandshakeSignatureValid, rustls::Error> {
+        self.inner.verify_tls12_signature(message, cert, dss)
+    }
+
+    fn verify_tls13_signature(
+        &self,
+        message: &[u8],
+        cert: &CertificateDer<'_>,
+        dss: &DigitallySignedStruct,
+    ) -> Result<HandshakeSignatureValid, rustls::Error> {
+        self.inner.verify_tls13_signature(message, cert, dss)
+    }
+
+    fn supported_verify_schemes(&self) -> Vec<SignatureScheme> {
+        self.inner.supported_verify_schemes()
     }
 }
 
@@ -354,7 +705,7 @@ mod tests {
             assert_eq!(certificate_problem(&e), Some(want), "{cert:?}: {e:?}");
             let e = crate::Error::from(e);
             assert!(
-                matches!(e, crate::Error::Certificate(p) if p == want),
+                matches!(e, crate::Error::Certificate(ref r) if r.problem == want),
                 "{cert:?}: {e:?}"
             );
         }
@@ -571,5 +922,299 @@ mod tests {
         ));
         assert!(!is_no_roots(&e));
         assert!(is_no_roots(&std::io::Error::other(refused())));
+    }
+
+    /// #1964: a refused certificate carries its site, SHA-256 fingerprint, self-signed flag, and
+    /// expiry date; pinning `(host, port, sha256)` lets that site's certificate through while a
+    /// different port or different certificate is still refused.
+    #[tokio::test]
+    async fn allowed_cert_pins_site_port_and_fingerprint() {
+        use mdm_labserver::Cert;
+        for (server, want_problem, want_self_signed, want_expired) in [
+            (Cert::SelfSigned, CertProblem::Untrusted, true, false),
+            (Cert::Expired, CertProblem::Expired, false, true),
+            (Cert::WrongName, CertProblem::WrongName, false, false),
+        ] {
+            let lab = LabServer::start(Config {
+                tls: true,
+                cert: server,
+                ..Config::default()
+            })
+            .await
+            .unwrap();
+            let port = lab.addr().port();
+            let url = url::Url::parse(&format!("https://localhost:{port}/gen/16K")).unwrap();
+            let base_opts = crate::Options {
+                extra_roots: vec![lab.ca_der().unwrap()],
+                ..Default::default()
+            };
+
+            let err = crate::probe(url.clone(), reqwest::header::HeaderMap::new(), &base_opts)
+                .await
+                .unwrap_err();
+            let crate::Error::Certificate(refusal) = err else {
+                panic!("{server:?}: expected Error::Certificate, got {err:?}");
+            };
+            assert_eq!(refusal.problem, want_problem, "{server:?}");
+            let info = refusal.info.expect("refused cert info must be recorded");
+            assert_eq!(info.host, "localhost");
+            assert_eq!(info.port, port);
+            assert_eq!(info.sha256.len(), 64);
+            assert_eq!(info.self_signed, want_self_signed, "{server:?}");
+            assert_eq!(info.expired_since.is_some(), want_expired, "{server:?}");
+
+            // Wrong port is still refused.
+            let mut wrong_port = base_opts.clone();
+            wrong_port.allowed_certs.push(AllowedCert {
+                host: info.host.clone(),
+                port: port + 1,
+                sha256: info.sha256.clone(),
+                problem: info.problem,
+            });
+            assert!(
+                matches!(
+                    crate::probe(url.clone(), reqwest::header::HeaderMap::new(), &wrong_port).await,
+                    Err(crate::Error::Certificate(_))
+                ),
+                "{server:?}: wrong port must still fail"
+            );
+
+            // Wrong fingerprint is still refused.
+            let mut wrong_fp = base_opts.clone();
+            wrong_fp.allowed_certs.push(AllowedCert {
+                host: info.host.clone(),
+                port,
+                sha256: "0".repeat(64),
+                problem: info.problem,
+            });
+            assert!(
+                matches!(
+                    crate::probe(url.clone(), reqwest::header::HeaderMap::new(), &wrong_fp).await,
+                    Err(crate::Error::Certificate(_))
+                ),
+                "{server:?}: wrong fingerprint must still fail"
+            );
+
+            // Different problem for the same cert is still refused.
+            let other_problem = if info.problem == CertProblem::Expired {
+                CertProblem::Untrusted
+            } else {
+                CertProblem::Expired
+            };
+            let mut wrong_reason = base_opts.clone();
+            wrong_reason.allowed_certs.push(AllowedCert {
+                host: info.host.clone(),
+                port,
+                sha256: info.sha256.clone(),
+                problem: other_problem,
+            });
+            assert!(
+                matches!(
+                    crate::probe(
+                        url.clone(),
+                        reqwest::header::HeaderMap::new(),
+                        &wrong_reason
+                    )
+                    .await,
+                    Err(crate::Error::Certificate(_))
+                ),
+                "{server:?}: different problem must still fail"
+            );
+
+            // Matching (host, port, sha256, problem) succeeds.
+            let mut allowed = base_opts.clone();
+            allowed.allowed_certs.push(AllowedCert {
+                host: info.host,
+                port,
+                sha256: info.sha256,
+                problem: info.problem,
+            });
+            let probed = crate::probe(url, reqwest::header::HeaderMap::new(), &allowed)
+                .await
+                .unwrap();
+            assert_eq!(probed.size, Some(16 * 1024));
+        }
+    }
+
+    /// #1964: only Untrusted, Expired, NotYetValid, and WrongName may be allowed; Revoked,
+    /// NotForWebsites, and Other always stay refused.
+    #[test]
+    fn only_allowable_problems_can_be_bypassed() {
+        for p in [
+            CertProblem::Expired,
+            CertProblem::NotYetValid,
+            CertProblem::Untrusted,
+            CertProblem::WrongName,
+        ] {
+            assert!(p.can_allow(), "{p:?}");
+            let a = AllowedCert {
+                host: "example.com".into(),
+                port: 443,
+                sha256: "aa".repeat(32),
+                problem: p,
+            };
+            assert!(a.matches("example.com", 443, &"aa".repeat(32), p));
+        }
+        for p in [
+            CertProblem::Revoked,
+            CertProblem::NotForWebsites,
+            CertProblem::Other,
+        ] {
+            assert!(!p.can_allow(), "{p:?}");
+            let a = AllowedCert {
+                host: "example.com".into(),
+                port: 443,
+                sha256: "aa".repeat(32),
+                problem: p,
+            };
+            assert!(!a.matches("example.com", 443, &"aa".repeat(32), p));
+        }
+    }
+
+    /// #1964: a pin for `localhost` must not allow `127.0.0.1`, and an allowed site redirecting
+    /// to another host with a bad certificate must still be refused, naming the second host.
+    #[tokio::test]
+    async fn pin_does_not_cross_hosts_or_redirects() {
+        use mdm_labserver::Cert;
+        let lab1 = LabServer::start(Config {
+            tls: true,
+            cert: Cert::SelfSigned,
+            ..Config::default()
+        })
+        .await
+        .unwrap();
+        let lab2 = LabServer::start(Config {
+            tls: true,
+            cert: Cert::SelfSigned,
+            ..Config::default()
+        })
+        .await
+        .unwrap();
+        let p1 = lab1.addr().port();
+        let p2 = lab2.addr().port();
+
+        let err = crate::probe(
+            url::Url::parse(&format!("https://localhost:{p1}/gen/16K")).unwrap(),
+            reqwest::header::HeaderMap::new(),
+            &crate::Options::default(),
+        )
+        .await
+        .unwrap_err();
+        let crate::Error::Certificate(refusal) = err else {
+            panic!("expected certificate error, got {err:?}");
+        };
+        let info1 = refusal.info.unwrap();
+
+        let opts = crate::Options {
+            allowed_certs: vec![AllowedCert {
+                host: "localhost".into(),
+                port: p1,
+                sha256: info1.sha256,
+                problem: info1.problem,
+            }],
+            ..Default::default()
+        };
+
+        // Pin for `localhost` must not let `127.0.0.1` through.
+        let ip_err = crate::probe(
+            url::Url::parse(&format!("https://127.0.0.1:{p1}/gen/16K")).unwrap(),
+            reqwest::header::HeaderMap::new(),
+            &opts,
+        )
+        .await
+        .unwrap_err();
+        let crate::Error::Certificate(ip_refusal) = ip_err else {
+            panic!("expected certificate error for 127.0.0.1, got {ip_err:?}");
+        };
+        assert_eq!(ip_refusal.info.unwrap().host, "127.0.0.1");
+
+        // Allowed `localhost:<p1>` redirecting to `127.0.0.1:<p2>` must still be refused,
+        // naming the second host and port.
+        let target = format!("https://127.0.0.1:{p2}/gen/16K");
+        let redir_url = url::Url::parse(&format!(
+            "https://localhost:{p1}/redirect?to={}",
+            url::form_urlencoded::byte_serialize(target.as_bytes()).collect::<String>()
+        ))
+        .unwrap();
+        let redir_err = crate::probe(redir_url, reqwest::header::HeaderMap::new(), &opts)
+            .await
+            .unwrap_err();
+        let crate::Error::Certificate(redir_refusal) = redir_err else {
+            panic!("expected certificate error after redirect, got {redir_err:?}");
+        };
+        let redir_info = redir_refusal.info.unwrap();
+        assert_eq!(redir_info.host, "127.0.0.1");
+        assert_eq!(redir_info.port, p2);
+    }
+
+    /// #1964: redirecting to the same host on a different port tracks the port per connection,
+    /// so the second port is refused with its own port and the first port stays allowed.
+    #[tokio::test]
+    async fn redirect_to_same_host_on_another_port_tracks_port_per_connection() {
+        use mdm_labserver::Cert;
+        let lab1 = LabServer::start(Config {
+            tls: true,
+            cert: Cert::SelfSigned,
+            ..Config::default()
+        })
+        .await
+        .unwrap();
+        let lab2 = LabServer::start(Config {
+            tls: true,
+            cert: Cert::SelfSigned,
+            ..Config::default()
+        })
+        .await
+        .unwrap();
+        let p1 = lab1.addr().port();
+        let p2 = lab2.addr().port();
+
+        let err = crate::probe(
+            url::Url::parse(&format!("https://localhost:{p1}/gen/16K")).unwrap(),
+            reqwest::header::HeaderMap::new(),
+            &crate::Options::default(),
+        )
+        .await
+        .unwrap_err();
+        let crate::Error::Certificate(r1) = err else {
+            panic!("expected certificate error, got {err:?}");
+        };
+        let info1 = r1.info.unwrap();
+
+        let opts = crate::Options {
+            allowed_certs: vec![AllowedCert {
+                host: "localhost".into(),
+                port: p1,
+                sha256: info1.sha256,
+                problem: info1.problem,
+            }],
+            ..Default::default()
+        };
+
+        let target = format!("https://localhost:{p2}/gen/16K");
+        let redir_url = url::Url::parse(&format!(
+            "https://localhost:{p1}/redirect?to={}",
+            url::form_urlencoded::byte_serialize(target.as_bytes()).collect::<String>()
+        ))
+        .unwrap();
+        let redir_err = crate::probe(redir_url, reqwest::header::HeaderMap::new(), &opts)
+            .await
+            .unwrap_err();
+        let crate::Error::Certificate(redir_refusal) = redir_err else {
+            panic!("expected certificate error on second port, got {redir_err:?}");
+        };
+        let redir_info = redir_refusal.info.unwrap();
+        assert_eq!(redir_info.host, "localhost");
+        assert_eq!(redir_info.port, p2);
+
+        // First port still succeeds.
+        let ok = crate::probe(
+            url::Url::parse(&format!("https://localhost:{p1}/gen/16K")).unwrap(),
+            reqwest::header::HeaderMap::new(),
+            &opts,
+        )
+        .await
+        .unwrap();
+        assert_eq!(ok.size, Some(16 * 1024));
     }
 }
