@@ -2110,8 +2110,13 @@ impl FileInfo {
                 );
                 let cat_rect = r(o, 96.0, 36.0, 174.0, 21.0);
                 let shown = self.category.shown();
-                let cat = winui::combo(ui, cat_rect, &shown, "category");
-                if cat.clicked() || winui::combo_keys(ui, &cat) {
+                // Its icon, the Categories tree's (#2008).
+                let icon = winui::ItemIcon::Shell(self.category.icon());
+                let cat = winui::combo_icon(ui, cat_rect, &shown, Some(&icon), "category");
+                if cat.clicked()
+                    || winui::combo_keys(ui, &cat)
+                    || winui::take_open_for_shot("category")
+                {
                     self.category_open = !self.category_open;
                 }
                 let category_was_open = self.category_open;
@@ -2503,11 +2508,16 @@ impl FileInfo {
                 if self.category_open {
                     let all = Category::all();
                     let labels: Vec<String> = all.iter().map(|c| c.shown()).collect();
-                    if let Some(i) = winui::drop_list(
+                    let icons: Vec<winui::ItemIcon> = all
+                        .iter()
+                        .map(|c| winui::ItemIcon::Shell(c.icon()))
+                        .collect();
+                    if let Some(i) = winui::drop_list_icons(
                         ui,
                         &own("file-info-category"),
                         cat_rect,
                         &labels,
+                        &icons,
                         "",
                         &mut self.category_open,
                     ) && let Some(c) = all.get(i)
@@ -3084,11 +3094,19 @@ impl GroupDone {
                                 ],
                             )
                         };
-                        winui::fit(
+                        let baseline = o.y + 137.0 + 17.0 * k as f32;
+                        let x = winui::note_mark(
                             ui,
                             &p,
                             o.x + 24.0,
-                            o.y + 137.0 + 17.0 * k as f32,
+                            baseline,
+                            Some(crate::icons::Mark::Fail),
+                        );
+                        winui::fit(
+                            ui,
+                            &p,
+                            x,
+                            baseline,
                             &line,
                             winui::ERROR(),
                             o.x + 444.0,
@@ -4721,14 +4739,22 @@ impl Duplicate {
 /// whether it starts now. `Done((queue, start))`; Cancel leaves them in the list, in no queue.
 pub struct QueuePick {
     names: Vec<String>,
+    /// Each queue's icon, the Scheduler's (#2008).
+    icons: Vec<winui::ItemIcon>,
     chosen: usize,
     start: bool,
 }
 
 impl QueuePick {
-    pub fn new(names: Vec<String>) -> Self {
+    /// The queues: each one's name, and whether it is a synchronization queue.
+    pub fn new(queues: Vec<(String, bool)>) -> Self {
+        let icons = queues
+            .iter()
+            .map(|(_, sync)| winui::ItemIcon::Shell(crate::scheduler::queue_icon(*sync)))
+            .collect();
         QueuePick {
-            names,
+            names: queues.into_iter().map(|(name, _)| name).collect(),
+            icons,
             chosen: 0,
             start: false,
         }
@@ -4752,10 +4778,11 @@ impl QueuePick {
                     winui::LIGHT_TEXT(),
                 );
                 let names: Vec<&str> = self.names.iter().map(String::as_str).collect();
-                if let Some(i) = winui::combo_light(
+                if let Some(i) = winui::combo_light_icons(
                     ui,
                     r(o, 100.0, 12.0, 228.0, 21.0),
                     &names,
+                    &self.icons,
                     self.chosen,
                     true,
                     "queue-pick",
@@ -5443,6 +5470,16 @@ pub fn ensure_replace_asked<T>(
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    /// #2008: Download later's queue list shows each queue's icon, the Scheduler's: the linked
+    /// folder for a synchronization queue.
+    #[test]
+    fn each_queue_in_the_pick_has_the_schedulers_icon() {
+        let q = QueuePick::new(vec![("Main".into(), false), ("Sync".into(), true)]);
+        assert_eq!(q.names, ["Main", "Sync"]);
+        let silk = |name| winui::ItemIcon::Shell(crate::chrome::IconKey::Silk(name));
+        assert!(q.icons == [silk("folder"), silk("folder_link")]);
+    }
 
     /// #1741: the first Download File Info is the window it always was; the others are
     /// numbered (their ids and titles, which Windows finds them by), each a cascade step

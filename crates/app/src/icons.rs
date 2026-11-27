@@ -416,8 +416,6 @@ const CIRCLE_ELLIPSIS: &str = r#"<circle cx="12" cy="12" r="10"/><path d="M17 12
 pub enum Mark {
     Ok,
     Fail,
-    /// For the warning lines to come (#2008's message lines); none draws it yet.
-    #[allow(dead_code)]
     Warn,
     Busy,
 }
@@ -433,6 +431,19 @@ impl Mark {
             Mark::Warn => c.warning,
             Mark::Busy => c.accent,
         }
+    }
+
+    /// The mark a message line in `ink` takes (`winui::note_mark`): the error colour's, the
+    /// warning colour's or the success colour's; none for any other (a plain or greyed line).
+    pub fn of_ink(ink: egui::Color32) -> Option<Mark> {
+        let c = crate::theme::colors();
+        [Mark::Fail, Mark::Warn, Mark::Ok]
+            .into_iter()
+            .find(|m| match m {
+                Mark::Fail => ink == c.error,
+                Mark::Warn => ink == c.warning,
+                _ => ink == c.success,
+            })
     }
 
     fn body(self) -> &'static str {
@@ -545,6 +556,114 @@ impl StatusIcon {
     }
 }
 
+/// An empty list's role icon (`winui::empty_state`, #2008): what the list holds, as a large
+/// Lucide outline in the muted ink. The main list's download, a feed, an account's key, a site,
+/// a queue's files, a torrent's magnet, a link.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
+pub enum EmptyIcon {
+    Downloads,
+    Feeds,
+    Accounts,
+    Sites,
+    Files,
+    Torrent,
+    Links,
+}
+
+impl EmptyIcon {
+    #[cfg(test)]
+    pub const ALL: [EmptyIcon; 7] = [
+        EmptyIcon::Downloads,
+        EmptyIcon::Feeds,
+        EmptyIcon::Accounts,
+        EmptyIcon::Sites,
+        EmptyIcon::Files,
+        EmptyIcon::Torrent,
+        EmptyIcon::Links,
+    ];
+
+    /// Lucide's circle-arrow-down, rss, key-round, globe, files and link (v1.63.0); the toolbar's
+    /// magnet (Add torrent's).
+    fn body(self) -> &'static str {
+        match self {
+            EmptyIcon::Downloads => {
+                r#"<circle cx="12" cy="12" r="10"/><path d="M12 8v8"/><path d="m8 12 4 4 4-4"/>"#
+            }
+            EmptyIcon::Feeds => concat!(
+                r#"<path d="M4 11a9 9 0 0 1 9 9"/><path d="M4 4a16 16 0 0 1 16 16"/>"#,
+                r#"<circle cx="5" cy="19" r="1"/>"#,
+            ),
+            EmptyIcon::Accounts => concat!(
+                r#"<path d="M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z"/>"#,
+                r#"<circle cx="16.5" cy="7.5" r=".5"/>"#,
+            ),
+            EmptyIcon::Sites => concat!(
+                r#"<circle cx="12" cy="12" r="10"/><path d="M2 12h20"/>"#,
+                r#"<path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/>"#,
+            ),
+            EmptyIcon::Files => concat!(
+                r#"<path d="M15 2h-4a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V8"/>"#,
+                r#"<path d="M16.706 2.706A2.4 2.4 0 0 0 15 2v5a1 1 0 0 0 1 1h5a2.4 2.4 0 0 0-.706-1.706z"/>"#,
+                r#"<path d="M5 7a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h8a2 2 0 0 0 1.732-1"/>"#,
+            ),
+            EmptyIcon::Torrent => Icon::AddTorrent.body(),
+            EmptyIcon::Links => concat!(
+                r#"<path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>"#,
+                r#"<path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>"#,
+            ),
+        }
+    }
+
+    fn name(self) -> &'static str {
+        match self {
+            EmptyIcon::Downloads => "empty-downloads",
+            EmptyIcon::Feeds => "empty-feeds",
+            EmptyIcon::Accounts => "empty-accounts",
+            EmptyIcon::Sites => "empty-sites",
+            EmptyIcon::Files => "empty-files",
+            EmptyIcon::Torrent => "empty-torrent",
+            EmptyIcon::Links => "empty-links",
+        }
+    }
+
+    /// The icon for `side` points square, in `ink`, its lines 1.5 points wide (as the main list's
+    /// hand-drawn glyph was) at any scale, made once per icon, side and ink.
+    pub fn source(self, side: u32, ink: egui::Color32) -> ImageSource<'static> {
+        use std::cell::RefCell;
+        use std::collections::HashMap;
+        type Made = HashMap<(EmptyIcon, u32, [u8; 4]), ImageSource<'static>>;
+        thread_local! {
+            static MADE: RefCell<Made> = RefCell::default();
+        }
+        MADE.with(|made| {
+            made.borrow_mut()
+                .entry((self, side, ink.to_array()))
+                .or_insert_with(|| {
+                    let hex = crate::palette::to_hex(ink);
+                    let uri: &'static str = Box::leak(
+                        format!(
+                            "bytes://mdm/empty/{}-{side}-{}.svg",
+                            self.name(),
+                            hex.trim_start_matches('#')
+                        )
+                        .into_boxed_str(),
+                    );
+                    // 1.5 points in the 24-unit box drawn `side` points wide.
+                    let stroke = 1.5 * 24.0 / side.max(1) as f32;
+                    let svg = format!(
+                        r#"<svg xmlns="http://www.w3.org/2000/svg" width="{side}" height="{side}" viewBox="0 0 24 24" fill="none" stroke="{hex}" stroke-width="{stroke:.3}" stroke-linecap="round" stroke-linejoin="round">{}</svg>"#,
+                        self.body()
+                    );
+                    ImageSource::Bytes {
+                        uri: uri.into(),
+                        bytes: egui::load::Bytes::Shared(svg.into_bytes().into()),
+                    }
+                })
+                .clone()
+        })
+    }
+}
+
 /// A Lucide outline `body` (24 × 24 user space) as a 16 × 16 SVG stroked in `ink` at Lucide's
 /// own weight, made once per name and ink (a theme's change makes new ones) and kept, as its
 /// texture is.
@@ -614,6 +733,52 @@ mod tests {
                     .filter(|c| c.a() > 128 && c.g() > c.r())
                     .count();
                 assert!(inked >= 2 * px as usize, "{uri} at {px}: {inked} pixels");
+            }
+        }
+    }
+
+    /// A message line's mark follows its colour: the error, warning and success colours', none
+    /// for a plain or greyed line.
+    #[test]
+    fn a_message_lines_mark_follows_its_colour() {
+        let c = crate::theme::colors();
+        assert_eq!(Mark::of_ink(c.error), Some(Mark::Fail));
+        assert_eq!(Mark::of_ink(c.warning), Some(Mark::Warn));
+        assert_eq!(Mark::of_ink(c.success), Some(Mark::Ok));
+        assert_eq!(Mark::of_ink(c.text), None);
+        assert_eq!(Mark::of_ink(c.muted), None);
+    }
+
+    /// Every empty list's icon draws at the sides it takes (24 and 40 points, 100 % to 200 %).
+    #[test]
+    fn every_empty_icon_draws() {
+        let ctx = egui::Context::default();
+        egui_extras::install_image_loaders(&ctx);
+        let ink = egui::Color32::from_rgb(0x0f, 0x7b, 0x0f);
+        for icon in EmptyIcon::ALL {
+            for side in [24u32, 40] {
+                let ImageSource::Bytes { uri, bytes } = icon.source(side, ink) else {
+                    panic!("not bytes")
+                };
+                ctx.include_bytes(uri.clone(), bytes);
+                for px in [side, side * 3 / 2, side * 2] {
+                    let hint = egui::load::SizeHint::Size {
+                        width: px,
+                        height: px,
+                        maintain_aspect_ratio: true,
+                    };
+                    let Ok(egui::load::ImagePoll::Ready { image }) = ctx.try_load_image(&uri, hint)
+                    else {
+                        panic!("{uri} at {px}: not drawn");
+                    };
+                    assert_eq!(image.size, [px as usize; 2], "{uri}");
+                    let inked = image
+                        .pixels
+                        .iter()
+                        .filter(|c| c.a() > 100 && c.g() > c.r())
+                        .count();
+                    assert!(inked >= px as usize, "{uri} at {px}: {inked} pixels");
+                }
             }
         }
     }

@@ -310,6 +310,10 @@
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: shown when there are no rules yet
 	A rule adds the new articles whose titles it matches, as they come.	Una regola aggiunge i nuovi articoli i cui titoli corrispondono, man mano che arrivano.
+#. text in the Options window
+#. Site rules window: in the empty list of rules, under its title
+#, machine
+	A rule sets the connections, User-Agent or headers for one site.	Una regola definisce le connessioni, lo User-Agent o le intestazioni di un sito.
 #. text in errors.rs
 #. an error: a server on this computer redirected the download to the internet, which would not go through the chosen network adapter; {adapter} its name
 	a server on this computer sent the download elsewhere, which would not go through {adapter}	un server su questo computer ha reindirizzato il download altrove, dove non passerebbe tramite {adapter}
@@ -398,6 +402,10 @@
 #. message or event log entry in the main window; text in the tray icon's menu
 #. link in the empty download list: opens Add URL
 	Add new download	Aggiungi nuovo download
+#. text in the Options window
+#. Options → Accounts: in the empty list of accounts, under its title
+#, machine
+	Add one to download file-host links through it.	Aggiungine uno per scaricare i collegamenti di file hosting tramite esso.
 #. text in the Options window
 	Add the duplicate and overwrite the existing file	Aggiungi il duplicato e sovrascrivi il file esistente
 #. text in the Options window
@@ -951,6 +959,10 @@
 #. text in remote.rs
 #. remote control page (on a phone): what the ".torrent file" button does (screen readers)
 	Choose a .torrent file	Scegli un file .torrent
+#. text in rssdlg.rs
+#. RSS feeds window: in the empty list of articles, under its title
+#, machine
+	Choose a feed to see its articles.	Scegli un feed per visualizzare i suoi articoli.
 #. message or event log entry in the main window
 #. title of the file dialog of View → Font → Choose a font file
 #. title of the message when the font picked in View → Font can't be used
@@ -1445,6 +1457,10 @@
 #. text in the download list; text in the Options window
 #. tab title: download settings
 	Downloads	Download
+#. text in the Scheduler window
+#. Scheduler → Files in the queue: in the empty list, under its title
+#, machine
+	Downloads added to this queue show here.	I download aggiunti a questa coda vengono visualizzati qui.
 #. window title in a dialog box
 #. title of the window that sums up downloads added together (a playlist, a batch) once all are done
 #, machine
@@ -2243,6 +2259,10 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Italy	Italia
+#. text in rssdlg.rs
+#. RSS feeds window: in the empty list of articles of a feed not read yet
+#, machine
+	Its articles show here once the feed is read.	I suoi articoli vengono visualizzati qui una volta letto il feed.
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted in place (after "Couldn't extract {name}: "); HatchZip took its files out (the archive is gone), but moving them stopped: {to} holds those moved, {left} the others, {error} the system's reason
 #. {error} = an error message (keep the braces as they are)
@@ -2943,12 +2963,20 @@
 	Niue	Niue
 #. button in a dialog box; text in a download's progress window
 	No	No
+#. text in the Options window
+#. Options → Accounts: the title in the empty list of debrid service accounts
+#, machine
+	No accounts yet	Ancora nessun account
 #. text in a dialog box
 	No addresses yet	Ancora nessun indirizzo
 #. text in the Options window
 #. Options → Proxy / Socks: Test got no answer in time
 #, machine
 	No answer within 20 seconds.	Nessuna risposta entro 20 secondi.
+#. text in rssdlg.rs
+#. RSS feeds window: the title in the empty list of articles of a feed that has none
+#, machine
+	No articles	Nessun articolo
 #. text in extension.rs
 #. a check of Test browser integration (Linux, macOS): MDM found no browser it can connect to (one installed as a Flatpak isn't found)
 	No browser MDM can connect to was found	Non è stato trovato nessun browser a cui MDM possa connettersi
@@ -2987,6 +3015,18 @@
 #. message or event log entry in the main window
 #. title in the empty download list when there are no downloads at all
 	No downloads yet	Ancora nessun download
+#. text in rssdlg.rs
+#. RSS feeds window: the title in the empty list of articles, no feed chosen
+#, machine
+	No feed chosen	Nessun feed selezionato
+#. text in rssdlg.rs
+#. RSS feeds window: the title in the empty list of feeds
+#, machine
+	No feeds yet	Ancora nessun feed
+#. text in the Scheduler window
+#. Scheduler → Files in the queue: the title in the empty list
+#, machine
+	No files in this queue	Nessun file in questa coda
 #. text in a dialog box
 	No folders yet	Ancora nessuna cartella
 #. text in a dialog box
@@ -2996,6 +3036,10 @@
 	No language matches the search	Nessuna lingua corrisponde alla ricerca
 #. text in langpick.rs
 	No language matches.	Nessuna lingua corrispondente.
+#. text in the Link grabber window
+#. Link grabber: the title in its empty list
+#, machine
+	No links yet	Ancora nessun collegamento
 #. text in the Options window
 #. Options → Remote → Status: on, but the computer has no local network address now
 	No local network now: it starts when the computer joins one.	Nessuna rete locale al momento: si avvierà quando il computer si connetterà a una rete.
@@ -3021,8 +3065,16 @@
 #. text in the Options window
 	No proxy/socks	Nessun proxy/socks
 #. text in the Options window
+#. Site rules window: the title in the empty list of rules
+#, machine
+	No site rules yet	Ancora nessuna regola del sito
+#. text in the Options window
 #. Options → Accounts: no system keyring/keychain answered (none runs, e.g. a desktop without one), so the sign-ins stay in MDM's settings folder, which only the user's account may read
 	No system keyring answered, so sign-ins and passwords are kept in MDM's settings, which only you can read.	Nessun portachiavi di sistema ha risposto, quindi gli accessi e le password sono conservati nelle impostazioni di MDM, che solo tu puoi leggere.
+#. text in the Add torrent window
+#. Add torrent: the title in the empty list of files, before a torrent is read
+#, machine
+	No torrent yet	Ancora nessun torrent
 #. message or event log entry in the main window
 #. event log entry: Add trackers changed nothing, the torrent had them all
 	No tracker added: it has them already	Nessun tracker aggiunto: li ha già tutti
@@ -4812,6 +4864,10 @@
 #. text in remote.rs
 #. remote control page (on a phone): label of the box naming this phone (shown in MDM's list of paired devices)
 	This device's name	Nome di questo dispositivo
+#. text in rssdlg.rs
+#. RSS feeds window: in the empty list of articles of a feed that has none
+#, machine
+	This feed has no articles right now.	Questo feed non ha articoli al momento.
 #. message or event log entry in the main window
 #. the message when a file picked in View → Font isn't a TrueType or OpenType font MDM can read
 #, machine

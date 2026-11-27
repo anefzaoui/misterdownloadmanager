@@ -572,6 +572,12 @@ Everything below ships together, in version 0.6.0, the next release.
 - ✅ Each browser's logo before its name in the browser extension's window, the first start's
   browser step and Options → General's browser list, sharp at every display scale; a globe for a
   browser without one
+- ✅ Icons where they help recognition, second part
+  ([#2008](https://github.com/anefzaoui/misterdownloadmanager/issues/2008)): drop-down lists with
+  icons (the categories' in Download File Info and Options → Save to, the queues' in Download
+  later, the browsers' logos in Sites Logins' cookies list); a drawn mark before error and warning
+  lines; one empty-list block (icon, title, what goes there) for RSS feeds, Accounts, Site rules,
+  the Scheduler's files, Add torrent and Link grabber
 - ✅ Icons where they help recognition, first part
   ([#2008](https://github.com/anefzaoui/misterdownloadmanager/issues/2008)): a status icon before
   each download's status in the list and the tray panel, in every theme (a theme's own, else

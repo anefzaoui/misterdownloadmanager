@@ -98,6 +98,23 @@ impl Browser {
         }
     }
 
+    /// The browser yt-dlp names `id` (`mdm_tools::proc::COOKIE_BROWSERS`: "edge", "chrome"...),
+    /// for Options → Sites Logins' "Cookies for video sites" (#2008). Whale, whose artwork MDM
+    /// has no source for, gets the globe.
+    pub fn of_cookie_id(id: &str) -> Browser {
+        match id {
+            "firefox" => Browser::Firefox,
+            "chrome" => Browser::Chrome,
+            "edge" => Browser::Edge,
+            "brave" => Browser::Brave,
+            "opera" => Browser::Opera,
+            "vivaldi" => Browser::Vivaldi,
+            "chromium" => Browser::Chromium,
+            "safari" => Browser::Safari,
+            _ => Browser::Other,
+        }
+    }
+
     /// Its SVG (assets/browsers/), none for Yandex (PNGs) and Other (the globe).
     fn svg(self) -> Option<(&'static str, &'static [u8])> {
         macro_rules! svg {
@@ -337,6 +354,21 @@ mod tests {
         ] {
             assert_eq!(Browser::named(name), Browser::Other, "{name:?}");
         }
+    }
+
+    /// Every browser yt-dlp reads cookies from has its logo in Sites Logins' list, Whale (no
+    /// artwork) excepted.
+    #[test]
+    fn every_cookie_browser_has_its_logo() {
+        for id in mdm_tools::proc::COOKIE_BROWSERS {
+            let got = Browser::of_cookie_id(id);
+            if id == "whale" {
+                assert_eq!(got, Browser::Other);
+            } else {
+                assert_ne!(got, Browser::Other, "{id}");
+            }
+        }
+        assert_eq!(Browser::of_cookie_id("unknown"), Browser::Other);
     }
 
     #[test]

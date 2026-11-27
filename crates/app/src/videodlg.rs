@@ -897,10 +897,11 @@ impl VideoDialog {
         } else if self.list.is_some() {
             // The list draws its own (PlaylistView::middle).
         } else if runtime_note {
+            let x = winui::note_mark(ui, &p, o.x + 11.0, line_y, Some(crate::icons::Mark::Fail));
             if winui::note_with_link(
                 ui,
                 &p,
-                o.x + 11.0,
+                x,
                 line_y,
                 16.0,
                 js_runtime_note(),
@@ -970,8 +971,14 @@ impl VideoDialog {
                 .as_ref()
                 .is_some_and(|e| winui::text_width(&p, e) > 478.0);
         if let Some(e) = self.error.as_ref().filter(|_| !error_in_list) {
-            let (rect, cut) =
-                winui::text_fit(&p, o.x + 11.0, o.y + 86.0, e, winui::ERROR(), o.x + 489.0);
+            let x = winui::note_mark(
+                ui,
+                &p,
+                o.x + 11.0,
+                o.y + 86.0,
+                Some(crate::icons::Mark::Fail),
+            );
+            let (rect, cut) = winui::text_fit(&p, x, o.y + 86.0, e, winui::ERROR(), o.x + 489.0);
             if cut {
                 winui::full_on_hover(ui, rect, "video-error", e);
             }
@@ -1057,9 +1064,17 @@ impl VideoDialog {
             }
             // Wrapped in the empty list (#317).
             if let Some(e) = self.error.as_ref().filter(|_| error_in_list) {
-                winui::paragraph(
-                    &p.with_clip_rect(list),
+                let clipped = p.with_clip_rect(list);
+                let x = winui::note_mark(
+                    ui,
+                    &clipped,
                     list.left() + 8.0,
+                    list.top() + 18.0,
+                    Some(crate::icons::Mark::Fail),
+                );
+                winui::paragraph(
+                    &clipped,
+                    x,
                     list.top() + 18.0,
                     e,
                     winui::ERROR(),

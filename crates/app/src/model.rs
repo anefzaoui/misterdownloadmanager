@@ -232,6 +232,23 @@ impl Category {
         crate::i18n::t(self.shipped_name()).to_owned()
     }
 
+    /// Its icon: the Categories tree's, and its choice's in the category drop-downs (#2008).
+    /// Silk icons standing in for IDM's XP-era category icons; a theme's icon set may replace
+    /// them (`crate::themeicons`).
+    pub fn icon(self) -> crate::chrome::IconKey {
+        let (need, silk) = match self {
+            Category::Compressed => ("cat-compressed", "page_white_zip"),
+            Category::Documents => ("cat-documents", "page_white"),
+            Category::Music => ("cat-music", "music"),
+            Category::Programs => ("cat-programs", "application_xp"),
+            Category::Video => ("cat-video", "film"),
+            Category::General => ("cat-documents", "page_white"),
+            Category::Torrents => ("cat-torrents", "folder_link"),
+            Category::Custom(_) => ("cat-folder", "folder"),
+        };
+        crate::chrome::IconKey::Themed(need, silk)
+    }
+
     /// Every category: General first.
     pub fn all() -> Vec<Category> {
         std::iter::once(Category::General)

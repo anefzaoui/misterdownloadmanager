@@ -1252,10 +1252,16 @@ impl OptionsDialog {
         self.category = self.category.min(cats.len() - 1);
         let names: Vec<String> = cats.iter().map(|c| c.label().into_owned()).collect();
         let labels: Vec<&str> = names.iter().map(String::as_str).collect();
-        if let Some(i) = winui::combo_light(
+        // Each with its icon, the Categories tree's (#2008).
+        let icons: Vec<winui::ItemIcon> = cats
+            .iter()
+            .map(|c| winui::ItemIcon::Shell(c.icon()))
+            .collect();
+        if let Some(i) = winui::combo_light_icons(
             ui,
             r(o, 30.0, 136.0, 212.0, 21.0),
             &labels,
+            &icons,
             self.category,
             true,
             "opt-category",
@@ -2506,6 +2512,21 @@ impl OptionsDialog {
             false,
             "opt-accounts",
         );
+        if rows.is_empty() {
+            let p = ui.painter().clone();
+            winui::empty_state(
+                ui,
+                &p,
+                report_body(r(o, 21.0, 93.0, 383.0, 124.0)),
+                crate::icons::EmptyIcon::Accounts,
+                // i18n: Options → Accounts: the title in the empty list of debrid service accounts
+                crate::i18n::mark("No accounts yet"),
+                // i18n: Options → Accounts: in the empty list of accounts, under its title
+                crate::i18n::mark("Add one to download file-host links through it."),
+                None,
+                "opt-accounts-empty",
+            );
+        }
         let sel = self.account_rows.selected.filter(|i| *i < rows.len());
         // i18n: button: add a debrid service account (opens the sign-in)
         let add = winui::button_light(
@@ -2572,9 +2593,16 @@ impl OptionsDialog {
             // i18n: Options → Accounts: a note that the debrid services' support (Real-Debrid, AllDebrid, Premiumize) is new and not yet tried with real paid accounts
             "Experimental: built from the services' public API documentation, not yet confirmed with real accounts.",
         );
-        winui::paragraph(
+        let x = winui::note_mark(
+            ui,
             &p,
             o.x + 21.0,
+            o.y + 256.0,
+            Some(crate::icons::Mark::Warn),
+        );
+        winui::paragraph(
+            &p,
+            x,
             o.y + 256.0,
             note,
             crate::theme::colors().warning,
@@ -2767,10 +2795,16 @@ impl OptionsDialog {
             .iter()
             .map(|b| crate::videodlg::browser_label(b))
             .collect();
-        if let Some(i) = winui::combo_light(
+        // Each browser's logo, as in General's list and the extension's window (#2008).
+        let logos: Vec<winui::ItemIcon> = browsers
+            .iter()
+            .map(|b| winui::ItemIcon::Browser(crate::browsericons::Browser::of_cookie_id(b)))
+            .collect();
+        if let Some(i) = winui::combo_light_icons(
             ui,
             r(o, 200.0, 311.0, 192.0, 21.0),
             &names,
+            &logos,
             at,
             on,
             "opt-cookie-browser",
@@ -2837,11 +2871,19 @@ impl OptionsDialog {
             )
         };
         // Three lines at most: the room above the check box below (a longer language's note is
-        // cut with "..." and shown whole on hover, never drawn over it).
-        winui::paragraph_until(
+        // cut with "..." and shown whole on hover, never drawn over it). The warning starts with
+        // its mark (#2008).
+        let x = winui::note_mark(
             ui,
             &p,
             o.x + 30.0,
+            o.y + 380.0,
+            crate::icons::Mark::of_ink(ink),
+        );
+        winui::paragraph_until(
+            ui,
+            &p,
+            x,
             o.y + 380.0,
             note,
             ink,
@@ -4108,6 +4150,23 @@ impl OptionsDialog {
                     true,
                     "opt-site-rules",
                 );
+                if rows.is_empty() {
+                    let p = ui.painter().clone();
+                    winui::empty_state(
+                        ui,
+                        &p,
+                        report_body(r(o, 14.0, 62.0, bx - 8.0 - 14.0, 196.0)),
+                        crate::icons::EmptyIcon::Sites,
+                        // i18n: Site rules window: the title in the empty list of rules
+                        crate::i18n::mark("No site rules yet"),
+                        // i18n: Site rules window: in the empty list of rules, under its title
+                        crate::i18n::mark(
+                            "A rule sets the connections, User-Agent or headers for one site.",
+                        ),
+                        None,
+                        "site-rules-empty",
+                    );
+                }
                 let sel = edit.list.selected.filter(|i| *i < edit.rows.len());
                 let free = !editing;
                 let on = |b: bool| {
@@ -6154,6 +6213,16 @@ pub(crate) fn list_frame(p: &egui::Painter, rc: Rect) {
     );
 }
 
+/// Where a [`report`] in the screen rect `rc` has its rows: under its header, inside its
+/// frame (on screen; an empty list's block goes there).
+fn report_body(rc: Rect) -> Rect {
+    let rc = winui::rect(rc);
+    winui::rect(Rect::from_min_max(
+        pos2(rc.left() + 1.0, rc.top() + 1.0 + 25.0),
+        pos2(rc.right() - 1.0, rc.bottom() - 1.0),
+    ))
+}
+
 /// A report list (header 25 px, rows 17 px): `cols` are (title, right edge in client x).
 /// Returns true on a double click of a row.
 #[allow(clippy::too_many_arguments)]
@@ -6196,10 +6265,7 @@ fn report(
         x0 = right;
     }
     // The rows: the shared row list under the header (its frame on the list's).
-    let body = Rect::from_min_max(
-        pos2(rc.left() + 1.0, head + 25.0),
-        pos2(rc.right() - 1.0, rc.bottom() - 1.0),
-    );
+    let body = winui::rect(report_body(winui::rect(rc)));
     let gridc = winui::GRID();
     let ev = winui::row_list(
         ui,
