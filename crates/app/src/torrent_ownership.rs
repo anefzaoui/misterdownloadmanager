@@ -1996,7 +1996,12 @@ mod tests {
             "{:?}",
             started.elapsed()
         );
-        assert_eq!(own.prepare(tmp.path(), &root, &root).unwrap().len(), 1500);
+        // Every one handed over: the first few open, the others closed, by identity.
+        let p = own
+            .prepare_for(tmp.path(), &root, &root, Vec::new(), None)
+            .unwrap();
+        assert_eq!(p.files.len(), KEEP_OPEN);
+        assert_eq!(p.files.len() + p.later.len(), 1500);
     }
 
     #[test]
