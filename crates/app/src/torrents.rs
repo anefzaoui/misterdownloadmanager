@@ -714,14 +714,15 @@ pub enum Done {
 }
 
 impl Host {
-    pub fn new() -> Self {
-        Host {
+    /// A host whose first session takes `wanted`: Torrent settings as the list was read
+    /// (`Settings::torrent_config`), never the engine's defaults. A magnet link Windows starts
+    /// MDM for is handled at the first frame, before the clock's first `set_config`: a session
+    /// started then took the defaults, the DHT, local discovery, UPnP and incoming connections
+    /// on whatever Torrent settings said, and kept them while it ran.
+    pub fn new(wanted: Option<Config>) -> Self {
+        let host = Host {
             cell: Arc::new(tokio::sync::Mutex::new(None)),
-            wanted: Arc::new(Mutex::new(state_dir().map(|dir| {
-                let mut cfg = Config::new(dir);
-                cfg.require_authorization = true;
-                cfg
-            }))),
+            wanted: Arc::new(Mutex::new(None)),
             running: Arc::new(Mutex::new(None)),
             cap: Arc::new(Mutex::new(None)),
             upload: Arc::new(Mutex::new(None)),
@@ -729,7 +730,9 @@ impl Host {
             outcomes: Arc::new(Mutex::new(Vec::new())),
             deleting: Arc::new(Mutex::new(HashMap::new())),
             initializing: Arc::new(Mutex::new(HashMap::new())),
-        }
+        };
+        host.set_config(wanted);
+        host
     }
 
     /// Do `act` on `spec`'s torrent, in the background; its outcome comes back through
@@ -2139,6 +2142,33 @@ pub fn remote_choice(
 mod tests {
     use super::*;
 
+    /// A session started before the clock's first `set_config` (a magnet link Windows started
+    /// MDM for, handled at the first frame) takes Torrent settings, not the engine's defaults:
+    /// the DHT switched off stays off, and so do local discovery, UPnP and incoming connections.
+    #[test]
+    fn the_first_session_takes_torrent_settings_not_the_engines_defaults() {
+        let mut s = crate::settings::Settings {
+            torrent_dht: false,
+            torrent_lsd: false,
+            torrent_upnp: false,
+            torrent_incoming: false,
+            ..Default::default()
+        };
+        let dir = tempfile::tempdir().unwrap();
+        let host = Host::new(s.torrent_config(dir.path().to_owned()));
+        let wanted = host.wanted.lock().unwrap().clone().unwrap();
+        assert_eq!(
+            (wanted.dht, wanted.lsd, wanted.upnp, wanted.listen),
+            (false, false, false, false)
+        );
+        assert!(wanted.require_authorization, "as set_config gives it");
+        // Torrent settings that can't be met (the proxy asked, none set): none, so no session
+        // starts around the proxy either.
+        s.torrent_proxy = true;
+        let host = Host::new(s.torrent_config(dir.path().to_owned()));
+        assert!(host.wanted.lock().unwrap().is_none());
+    }
+
     #[test]
     fn a_debrid_torrent_is_given_the_ticked_files_paths_and_size() {
         let file = |p: &str, size, padding| mdm_torrent::FileEntry {
@@ -2285,7 +2315,7 @@ mod tests {
     #[tokio::test]
     async fn direct_delete_reserves_hash_and_paths_until_old_metadata_cleanup_finishes() {
         let tmp = tempfile::tempdir().unwrap();
-        let host = Host::new();
+        let host = Host::new(state_dir().map(Config::new));
         let mut spec = a_spec();
         spec.folder = tmp.path().join("output");
         spec.ownership = Some(crate::torrent_ownership::Ownership {
@@ -2339,7 +2369,7 @@ mod tests {
         let tmp = tempfile::tempdir().unwrap();
         let file = tmp.path().join("keep.torrent");
         std::fs::write(&file, b"keep metadata").unwrap();
-        let host = Host::new();
+        let host = Host::new(state_dir().map(Config::new));
         let spec = a_spec();
         let name = format!("delete-error-{}", mdm_ipc::random_token());
         host.start_delete(

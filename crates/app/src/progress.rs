@@ -319,6 +319,12 @@ pub struct Progress {
     pub hidden: bool,
     /// A tray shows MDM's icon, so the window can be hidden there (set by the app each frame).
     pub tray: bool,
+    /// Options → Downloads → Customize "Download progress" dialog → **Show minimized**
+    /// (#1966): the window waits on the taskbar, and its minimize isn't a hide to the
+    /// notification area. Cleared once it is opened again.
+    pub minimized: bool,
+    /// The minimize asked for once the window is revealed; a platform without it never says.
+    minimized_sent: bool,
     /// Options → General → "Minimize to the notification area": Minimize hides it there too.
     pub minimize_to_tray: bool,
     /// MDM's main window is shown (set by the app each frame): the glide's frames draw it too.
@@ -415,6 +421,8 @@ impl Progress {
             host: None,
             hidden: false,
             tray: false,
+            minimized: false,
+            minimized_sent: false,
             minimize_to_tray: false,
             main_shown: true,
             limit: None,
@@ -436,6 +444,12 @@ impl Progress {
             live_stream: false,
             endless: false,
         }
+    }
+
+    /// Options → Downloads → Customize "Download progress" dialog → **Show minimized**
+    /// (#1966): the window waits, minimized, on the taskbar.
+    pub fn start_minimized(&mut self) {
+        self.minimized = true;
     }
 
     /// Updated by the clock too, while the main window is minimized and draws no UI.
@@ -609,7 +623,10 @@ impl Progress {
             winui::name_window(ui, &title_now);
             // Painted in the pass that closes it too (see dialogs::close_requested).
             let close = crate::dialogs::close_requested(ui);
-            if !close && minimize_hides && ui.ctx().input(|i| i.viewport().minimized == Some(true))
+            if !close
+                && !self.minimized
+                && minimize_hides
+                && ui.ctx().input(|i| i.viewport().minimized == Some(true))
             {
                 return Action::Hide;
             }
@@ -710,8 +727,24 @@ impl Progress {
             &title_now,
             crate::theme::dark_surface(),
             !closing,
-            true,
+            !self.minimized,
         );
+        if self.minimized && !self.minimized_sent {
+            // Asked for after the reveal, in the same frame: showing a hidden minimized window
+            // puts it back on the screen, so the minimize must have the last word.
+            let shown = ctx.data(|d| d.get_temp::<bool>(key.with("shown")).unwrap_or(false));
+            if shown {
+                ctx.send_viewport_cmd_to(vid, egui::ViewportCommand::Minimized(true));
+                self.minimized_sent = true;
+                ctx.request_repaint();
+            }
+        } else if self.minimized_sent
+            && ctx.input_for(vid, |i| i.viewport().minimized) == Some(false)
+        {
+            // Opened again: from now on, Minimize follows "Minimize to the notification area".
+            self.minimized = false;
+            self.minimized_sent = false;
+        }
         let action = match (action, self.pending_limit.take()) {
             (Action::None, Some((limit, remember))) => Action::Limit(limit, remember),
             (a, _) => a,
