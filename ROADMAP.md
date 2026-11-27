@@ -1,8 +1,8 @@
 # Roadmap
 
-What's done for version 0.5.2, what's being built, and what's planned. Each item links to its
-issue, where the details and the discussion are. Released changes are in
-[CHANGELOG.md](CHANGELOG.md). Bug reports are welcome in
+What's in version 0.5.2, what's done for version 0.6.0, what's being built, and what's
+planned. Each item links to its issue, where the details and the discussion are. Released
+changes are in [CHANGELOG.md](CHANGELOG.md). Bug reports are welcome in
 [Issues](https://github.com/anefzaoui/misterdownloadmanager/issues), ideas in
 [Discussions](https://github.com/anefzaoui/misterdownloadmanager/discussions/categories/ideas).
 
@@ -565,9 +565,9 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
   ([#311](https://github.com/anefzaoui/misterdownloadmanager/issues/311))
 - ✅ The Download video button on YouTube in Chrome, Edge, Brave, Opera and Vivaldi
 
-## Done since 0.5.2
+## Version 0.6.0
 
-These ship in the next version.
+Everything below ships together, in version 0.6.0, the next release.
 
 - ✅ The browser add-on's **Download video** button can be scaled (**80%**, **100%**, **120%**) beside **Button size** in **Options → General → Download panels**, keeps free interior positions when dragged anywhere over the player, offers **Hide the download button in full screen** directly in its menu, and respects DOM full-screen hiding inside embedded frames
   ([#1923](https://github.com/anefzaoui/misterdownloadmanager/issues/1923))

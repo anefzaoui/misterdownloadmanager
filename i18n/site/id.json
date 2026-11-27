@@ -870,6 +870,10 @@
    "source": "<g1>On Linux</g1>, Chrome-family browsers keep the key to their cookies in the system's keyring (GNOME Keyring, KWallet); yt-dlp asks it, so it must be unlocked.",
    "text": "<g1>Di Linux</g1>, browser keluarga Chrome menyimpan kunci cookie mereka di keyring sistem (GNOME Keyring, KWallet); yt-dlp memintanya, jadi harus dibuka kuncinya."
   },
+  "0b208bcb1380dcda": {
+   "source": "MDM runs on 64-bit Linux with a desktop session. It is tested on Ubuntu 24.04, Debian 12 and Fedora, with GNOME, KDE Plasma, Xfce and Cinnamon, on X11 and in Wayland sessions. Pick one of these files (up to version 0.2.4, their names end in <x1/>, as in <x2/>). From version 0.6.0, each also comes for 64-bit ARM computers, with <x3/> in place of <x4/> (<x5/>); they are built and tested on GitHub's ARM machines. On ARM, MDM doesn't download gallery-dl itself (its author builds none for it): install it with your system's packages or pip.",
+   "text": "MDM berjalan di Linux 64-bit dengan sesi desktop. Telah diuji di Ubuntu 24.04, Debian 12, dan Fedora, dengan GNOME, KDE Plasma, Xfce, dan Cinnamon, pada sesi X11 dan Wayland. Pilih salah satu dari file-file ini (hingga versi 0.2.4, namanya diakhiri dengan <x1/>, seperti pada <x2/>). Mulai versi 0.6.0, setiap file juga tersedia untuk komputer ARM 64-bit, dengan <x3/> menggantikan <x4/> (<x5/>); file-file ini dibuat dan diuji pada mesin ARM GitHub. Pada ARM, MDM tidak mengunduh gallery-dl sendiri (pembuatnya tidak membuat untuk ARM): instal dengan paket sistem Anda atau pip."
+  },
   "0b2740fc08d56719": {
    "source": "A <x1/> from an issue:",
    "text": "<x1/> dari suatu masalah:"
@@ -941,6 +945,10 @@
   "0bf05d42ffbd0dfa": {
    "source": "<g1>The DNS you choose.</g1> With a DNS other than the system's in <g2>Options → Connection → DNS</g2> (Cloudflare, Google, Quad9, AdGuard, NextDNS or your own), MDM asks it, over HTTPS, TLS or TCP, for the addresses of the servers it downloads from. That service sees those names and your IP address, under its own privacy terms.",
    "text": "<g1>DNS yang Anda pilih.</g1> Dengan DNS selain DNS sistem di <g2>Opsi → Koneksi → DNS</g2> (Cloudflare, Google, Quad9, AdGuard, NextDNS, atau milik Anda sendiri), MDM memintanya, melalui HTTPS, TLS, atau TCP, untuk alamat server tempat ia mengunduh. Layanan tersebut melihat nama-nama itu dan alamat IP Anda, di bawah ketentuan privasinya sendiri."
+  },
+  "0bfe58d5a6061e7d": {
+   "source": "Open <g1>View → Language...</g1>. The same list as on the first start opens: every language by its flag, its own name and its English name. Type in <g2>Search</g2> to narrow the list, then double-click a language or select it and click <g3>OK</g3>. The window switches at once; there is nothing to restart.",
+   "text": "Buka <g1>Tampilan → Bahasa...</g1>. Daftar yang sama seperti saat pertama kali dibuka akan muncul: setiap bahasa dengan benderanya, namanya sendiri, dan nama Inggrisnya. Ketik di <g2>Cari</g2> untuk mempersempit daftar, lalu klik dua kali bahasa atau pilih dan klik <g3>OK</g3>. Jendela akan langsung beralih; tidak perlu memulai ulang."
   },
   "0c04a7480c3b5e9c": {
    "source": "The remote control is off until you turn it on. It answers only the devices you paired, each removable at once in Options, and listens only on the computer's private network addresses, never on one the internet can reach. Everything goes over HTTPS, and web pages can't use it.",
@@ -1057,6 +1065,10 @@
   "0dac0eca06d7747e": {
    "source": "<g1>pywal's <x2/></g1>, or any program's file in pywal's shape (wallust's pywal template).",
    "text": "<g1>pywal's <x2/></g1>, atau file program apa pun dalam bentuk pywal (template pywal wallust)."
+  },
+  "0dacc2e40c7f2886": {
+   "source": "<g1>Remember this path for \"…\" category</g1> — tick it to make the folder you typed the category's folder from now on. With <g2>Save every download in \"General\" category's folder</g2> ticked in <g3>Options → Save to</g3>, every download starts in General's folder, and this box names General: the folder you typed becomes the one for every download.",
+   "text": "<g1>Ingat jalur ini untuk kategori \"…\"</g1> — centang ini untuk menjadikan folder yang Anda ketik sebagai folder kategori mulai sekarang. Dengan <g2>Simpan setiap unduhan di folder kategori \"Umum\"</g2> dicentang di <g3>Opsi → Simpan ke</g3>, setiap unduhan dimulai di folder Umum, dan kotak ini menamai Umum: folder yang Anda ketik menjadi folder untuk setiap unduhan."
   },
   "0db8fa73ad59b887": {
    "source": "macOS <g1>11 and later</g1>",
@@ -1209,6 +1221,10 @@
   "1058e8be7cc50b7e": {
    "source": "High contrast",
    "text": "Kontras tinggi"
+  },
+  "105e2af4dcf1adc9": {
+   "source": "Last updated 2026-11-27",
+   "text": "Terakhir diperbarui 2026-11-27"
   },
   "10825ce1e4e377bf": {
    "source": "Tasks → Import → From IDM export file",
@@ -1405,6 +1421,10 @@
   "12d5cecab885caa3": {
    "source": "a live stream still being recorded (<g1>Recording a live stream</g1>);",
    "text": "siaran langsung yang masih direkam (<g1>Merekam siaran langsung</g1>);"
+  },
+  "12dd621d59ebfd7e": {
+   "source": "MDM asks the site's public API for the list of files and opens Link grabber with all of them in one package: each file with its size and the folder it is in, <g1>unticked</g1>, so you tick only what you need (the package's box ticks them all). Its <g2>Save to</g2> is the address's path under your download folder (<g3>Options → Save to</g3>), and each file keeps its folder inside it: <x4/> of <x5/> goes to <x6/>, a dataset's files under <x7/>, a release's under <x8/>. A folder of a repository keeps its place in it (<x9/>), so files you take later from another folder land beside it. <g10>Start</g10> or <g11>Add to queue</g11> adds them as one group, with one summary when the last is done.",
+   "text": "MDM meminta API publik situs untuk daftar file dan membuka Link grabber dengan semuanya dalam satu paket: setiap file dengan ukuran dan folder tempatnya berada, <g1>tidak dicentang</g1>, sehingga Anda hanya mencentang yang Anda butuhkan (kotak paket mencentang semuanya). <g2>Simpan ke</g2>-nya adalah jalur alamat di bawah folder unduhan Anda (<g3>Opsi → Simpan ke</g3>), dan setiap file mempertahankan foldernya di dalamnya: <x4/> dari <x5/> masuk ke <x6/>, file dataset di bawah <x7/>, file rilis di bawah <x8/>. Folder repositori mempertahankan tempatnya di dalamnya (<x9/>), sehingga file yang Anda ambil nanti dari folder lain akan berada di sampingnya. <g10>Mulai</g10> atau <g11>Tambahkan ke antrean</g11> menambahkannya sebagai satu grup, dengan satu ringkasan saat yang terakhir selesai."
   },
   "12ed54fb5407aa89": {
    "source": "The website has <x1/> and <x2/>, and every help page as Markdown, for AI tools.",
@@ -1866,6 +1886,10 @@
    "source": "Ctrl+Space",
    "text": "Ctrl+Spasi"
   },
+  "18ed20e992d45d9d": {
+   "source": "<g1>Coming with version 0.6.0</g1> <g2>It's in the source code now, not yet in the download (version 0.5.2).</g2>",
+   "text": "<g1>Hadir di versi 0.6.0</g1> <g2>Sudah ada di kode sumber, tetapi belum di unduhan (versi 0.5.2).</g2>"
+  },
   "1909586657a6c8d0": {
    "source": "Flag",
    "text": "Bendera"
@@ -1889,6 +1913,10 @@
   "19686779e1123d73": {
    "source": "To open the page by the server's name (<x1/>), give MDM that name: <x2/> (several: separated by commas). Other names are refused, so that no web page can reach MDM through a name of its own.",
    "text": "Untuk membuka halaman dengan nama server (<x1/>), berikan nama tersebut kepada MDM: <x2/> (beberapa: dipisahkan koma). Nama lain ditolak, agar tidak ada halaman web yang dapat menjangkau MDM melalui namanya sendiri."
+  },
+  "196da1f2253e1052": {
+   "source": "<g1>Straight from the sites.</g1> Files come from Hugging Face's and GitHub's own servers, never through a mirror, through MDM's own connections, speed limits and proxy, like any download.",
+   "text": "<g1>Langsung dari situs.</g1> File berasal dari server Hugging Face dan GitHub sendiri, tidak pernah melalui cermin, melalui koneksi, batas kecepatan, dan proxy MDM sendiri, seperti unduhan lainnya."
   },
   "197a78fedd5b9b66": {
    "source": "It isn't offered with <g1>Only a part</g1>: a part has no chapters.",
@@ -1917,6 +1945,10 @@
   "19a937e6e7254a1d": {
    "source": "What the stores count, and what people wrote in their own words and languages. Every quote is exact and links to where it was written.",
    "text": "Apa yang dihitung toko, dan apa yang ditulis orang dengan kata-kata dan bahasa mereka sendiri. Setiap kutipan adalah persis dan tertaut ke tempat asalnya ditulis."
+  },
+  "19ab8e362b37c9c3": {
+   "source": "Install one, or download them all at once; Next leaves them for later.",
+   "text": "Instal satu, atau unduh semuanya sekaligus; Berikutnya akan menunda untuk nanti."
   },
   "19af82a4564bc92c": {
    "source": "Downloads no longer fail with \"part file still in use\" on a busy computer.",
@@ -2410,6 +2442,10 @@
    "source": "— implicit FTPS, port 990 unless the address gives another.",
    "text": "— FTPS implisit, menggunakan port 990 kecuali alamatnya mencantumkan port lain."
   },
+  "2082e4251623ff9a": {
+   "source": "Coming with version 0.6.0",
+   "text": "Hadir dengan versi 0.6.0"
+  },
   "20901417c69e606b": {
    "source": "Issues",
    "text": "Masalah"
@@ -2810,6 +2846,10 @@
    "source": "<g1>1</g1> of 10",
    "text": "<g1>1</g1> dari 10"
   },
+  "2562f2727d097aa3": {
+   "source": "Or one folder for all of them",
+   "text": "Atau satu folder untuk semuanya"
+  },
   "257acee667e62714": {
    "source": "Which sites",
    "text": "Situs mana saja"
@@ -2913,6 +2953,10 @@
   "26ae5fbaf85f0fa2": {
    "source": "The portable copy of MDM runs from any folder, including a USB stick, without installing anything.",
    "text": "Salinan MDM portabel berjalan dari folder mana pun, termasuk stik USB, tanpa menginstal apa pun."
+  },
+  "26b88fbdb888bcea": {
+   "source": "If the graphics card is reset while MDM runs (a driver update), MDM starts again by itself. Lost twice in 10 minutes, it goes back to OpenGL, and <g1>View → Draw with</g1> says why. If the card isn't back yet when MDM starts again, that start draws another way (OpenGL, or WARP), and the next start tries the card again.",
+   "text": "Jika kartu grafis direset saat MDM berjalan (pembaruan driver), MDM akan memulai ulang dengan sendirinya. Jika hilang dua kali dalam 10 menit, MDM akan kembali ke OpenGL, dan <g1>Tampilan → Render dengan</g1> akan menjelaskan alasannya. Jika kartu belum kembali saat MDM memulai ulang, awal tersebut akan merender dengan cara lain (OpenGL, atau WARP), dan awal berikutnya akan mencoba kartu lagi."
   },
   "26e744828e520145": {
    "source": "The main window in the Breeze theme",
@@ -3022,10 +3066,6 @@
    "source": "Up to 128 connections per file, re-split as they go",
    "text": "Sampai 128 koneksi per berkas, dibagi ulang saat berjalan"
   },
-  "2826420ef85a1bcf": {
-   "source": "Open <g1>View → Language...</g1>. The same window as on the first start opens: every language by its flag, its own name and its English name. Type in <g2>Search</g2> to narrow the list, then double-click a language or select it and click <g3>OK</g3>. The window switches at once; there is nothing to restart.",
-   "text": "Buka <g1>Tampilan → Bahasa...</g1>. Jendela yang sama seperti saat pertama kali dijalankan akan terbuka: setiap bahasa dengan benderanya, nama aslinya, dan nama Inggrisnya. Ketik di <g2>Cari</g2> untuk mempersempit daftar, lalu klik dua kali bahasa atau pilih dan klik <g3>OK</g3>. Jendela akan langsung berubah; tidak perlu memulai ulang apa pun."
-  },
   "282685fe5e7ae3c6": {
    "source": "<g1>Click'n'Load</g1> buttons on link sites, once you turn it on. See <g2>Click'n'Load</g2>.",
    "text": "Tombol <g1>Click'n'Load</g1> di situs tautan, setelah Anda mengaktifkannya. Lihat <g2>Click'n'Load</g2>."
@@ -3102,10 +3142,6 @@
    "source": "Requests",
    "text": "Permintaan"
   },
-  "2909bef12c6c1a15": {
-   "source": "Left empty, <g1>Save to</g1> puts each file in its category's folder (<g2>Options → Save to</g2>). To put every file of the batch in one folder, type it there or choose it with <g3>...</g3>. Then click <g4>OK</g4>.",
-   "text": "Jika dikosongkan, <g1>Simpan ke</g1> akan menempatkan setiap file di folder kategorinya (<g2>Opsi → Simpan ke</g2>). Untuk menempatkan semua file batch dalam satu folder, ketikkan di sana atau pilih dengan <g3>...</g3>. Lalu klik <g4>OK</g4>."
-  },
   "292621fe40d7beca": {
    "source": "Every video starts ticked. Untick the ones you don't want, or use <g1>Select all</g1> and <g2>Select none</g2>. Private and deleted videos are greyed out and can't be ticked.",
    "text": "Setiap video dimulai dengan tanda centang. Hapus centang pada video yang tidak Anda inginkan, atau gunakan <g1>Pilih semua</g1> dan <g2>Jangan pilih apa pun</g2>. Video pribadi dan yang dihapus berwarna abu-abu dan tidak dapat dicentang."
@@ -3149,6 +3185,10 @@
   "2a014824bb4f981c": {
    "source": "Disabled text, the one grey of every greyed control and label",
    "text": "Teks dinonaktifkan, satu-satunya warna abu-abu dari setiap kontrol dan label yang berwarna abu-abu"
+  },
+  "2a0f36d71bedb1bb": {
+   "source": "<g1>A GitHub release</g1>: <x2/>, or <x3/> for the newest one. A tag without a release lists its source code.",
+   "text": "<g1>Rilis GitHub</g1>: <x2/>, atau <x3/> untuk yang terbaru. Tag tanpa rilis mencantumkan kode sumbernya."
   },
   "2a1c06f26ea84eee": {
    "source": "<g1>pywal itself:</g1> once <x2/> has run, <g3>View → Theme</g3> lists <g4>pywal</g4>, read straight from where pywal writes its colours: <x5/> (on Windows <x6/>, where winwal and pywal write it; <x7/> or <x8/> when you set them). Pick it and MDM follows your wallpaper: each time <x9/> writes new colours, MDM takes them within two seconds. It looks only at the file's date and size, every two seconds, and only while pywal is the theme. A copy added with <g10>Add a theme file…</g10> keeps the colours it had.",
@@ -3245,10 +3285,6 @@
   "2b1f05dd303b4a14": {
    "source": "<g1>Resume capability</g1> — <g2>Yes</g2> if the server lets MDM continue the download later, <g3>No</g3> if it doesn't.",
    "text": "<g1>Kemampuan melanjutkan</g1> — <g2>Ya</g2> jika server mengizinkan MDM melanjutkan unduhan nanti, <g3>Tidak</g3> jika tidak."
-  },
-  "2b32b47b6f8a0433": {
-   "source": "<g1>Remember this path for \"…\" category</g1> — tick it to make the folder you typed the category's folder from now on.",
-   "text": "<g1>Ingat jalur ini untuk kategori \"…\"</g1> — centang opsi ini untuk menjadikan folder yang Anda masukkan sebagai folder kategori tersebut mulai sekarang."
   },
   "2b3813b1923fc5e3": {
    "source": "The list covers every display language of Windows 11, including both Chinese scripts, Spanish for Spain and Mexico, French for France and Canada, Portuguese for Portugal and Brazil, and Serbian in Cyrillic and Latin. The <g1>languages page</g1> lists them all.",
@@ -3701,6 +3737,10 @@
   "3119a32ef52a6c93": {
    "source": "A window's headline (Tahoma Bold): the browser extension's, the helpers'",
    "text": "Judul utama jendela (Tahoma Bold): ekstensi browser, pembantu"
+  },
+  "311b27709d4b92f5": {
+   "source": "<g1>A model's, a dataset's or a release's files</g1> form one package, whose <g2>Save to</g2> keeps their folders (see <g3>Models, datasets and releases</g3>).",
+   "text": "<g1>File model, dataset, atau rilis</g1> membentuk satu paket, yang <g2>Simpan ke</g2>-nya mempertahankan foldernya (lihat <g3>Model, dataset, dan rilis</g3>)."
   },
   "313a2ae6414b54cf": {
    "source": "Give Link grabber a folder's address, the way you give it a page's: paste it with <g1>Ctrl+V</g1>, copy it for <g2>Tasks → Add batch download from clipboard</g2>, put it in a list for <g3>Tasks → Import</g3>, or drop it on the download list.",
@@ -4174,6 +4214,10 @@
    "source": "Save To",
    "text": "Simpan Ke"
   },
+  "3846da69167664ac": {
+   "source": "<g1>Checked against the site's digest.</g1> Hugging Face publishes a SHA-256 for each large file, GitHub for each release file. MDM checks the finished file against it, as <g2>Verify checksum</g2> does; a file that doesn't match stays unfinished and says so (<g3>the file's SHA-256 checksum doesn't match</g3>), and <g4>Redownload</g4> fetches it again. Small files kept in the repository itself, and a release's source code, have no digest of their own to check.",
+   "text": "<g1>Diperiksa terhadap ringkasan situs.</g1> Hugging Face menerbitkan SHA-256 untuk setiap file besar, GitHub untuk setiap file rilis. MDM memeriksa file yang sudah selesai terhadapnya, seperti yang dilakukan <g2>Verifikasi checksum</g2>; file yang tidak cocok tetap tidak selesai dan menyatakan demikian (<g3>checksum SHA-256 file tidak cocok</g3>), dan <g4>Unduh ulang</g4> mengambilnya lagi. File kecil yang disimpan di repositori itu sendiri, dan kode sumber rilis, tidak memiliki ringkasan sendiri untuk diperiksa."
+  },
   "385890444f5eb85e": {
    "source": "Decide exactly how MDM reaches the internet, and see where your files come from.",
    "text": "Tentukan dengan tepat bagaimana MDM mencapai internet, dan lihat dari mana file Anda berasal."
@@ -4534,6 +4578,10 @@
    "source": "<g1>Available on</g1><g2>The official places first</g2>",
    "text": "<g1>Tersedia di</g1><g2>Tempat resmi terlebih dahulu</g2>"
   },
+  "3d219d727371d3f9": {
+   "source": "Windows 10 and 11 is the main platform, on 64-bit PCs (x64); from version 0.6.0, on Windows on ARM PCs and 32-bit Windows 10 too, each with files of its own. Linux is supported too, with an AppImage, a .deb, an .rpm and a .tar.gz in every release: since version 0.5.0 it isn't experimental any more, and it is checked on GNOME, KDE Plasma, Xfce and Cinnamon, in Wayland sessions too, and its packages in clean Ubuntu, Debian and Fedora systems. Still to come there: the Flatpak Firefox isn't checked yet, and screen readers (Orca) don't read MDM's windows yet. macOS builds (.dmg) come with every release too, and stay experimental. See <g1>Windows, Mac and Linux</g1> and <g2>Download</g2>.",
+   "text": "Windows 10 dan 11 adalah platform utama, pada PC 64-bit (x64); mulai versi 0.6.0, juga pada PC Windows di ARM dan Windows 10 32-bit, masing-masing dengan file tersendiri. Linux juga didukung, dengan AppImage, .deb, .rpm, dan .tar.gz di setiap rilis: sejak versi 0.5.0 tidak lagi eksperimental, dan telah diperiksa di GNOME, KDE Plasma, Xfce, dan Cinnamon, juga dalam sesi Wayland, serta paketnya di sistem Ubuntu, Debian, dan Fedora yang bersih. Yang masih akan datang: Flatpak Firefox belum diperiksa, dan pembaca layar (Orca) belum membaca jendela MDM. Build macOS (.dmg) juga disertakan di setiap rilis, dan tetap eksperimental. Lihat <g1>Windows, Mac, dan Linux</g1> serta <g2>Unduh</g2>."
+  },
   "3d4a4f2d1b19754e": {
    "source": "Can I move my downloads over from IDM?",
    "text": "Bisakah saya memindahkan unduhan saya dari IDM?"
@@ -4622,6 +4670,10 @@
    "source": "Yes. When a video has subtitles, the Subtitles list in the video window offers them: the uploader's languages and the site's automatic captions. They're saved beside the video as an .srt file, or put inside it with Put them into the video. See Subtitles.",
    "text": "Ya. Jika sebuah video memiliki subtitel, daftar Subtitel di jendela video akan menawarkannya: bahasa dari pengunggah dan teks otomatis dari situs. Subtitel tersebut disimpan di samping video sebagai file .srt, atau dimasukkan ke dalamnya dengan Masukkan ke dalam video. Lihat Subtitel."
   },
+  "3e63a6af144ff571": {
+   "source": "From version 0.6.0, the three files come for two more kinds of PC, with the processor in their names: <g1>Windows on ARM</g1> (<x2/>, <x3/>, <x4/>), for PCs with a Snapdragon or another ARM processor, which then run MDM without Windows translating it; and <g5>32-bit Windows 10</g5> (<x6/>, <x7/>, <x8/>). <g9>Update now</g9> keeps each copy on its own processor's files. MDM downloads yt-dlp's own build for each, and ffmpeg's for Windows on ARM; no ffmpeg is built for 32-bit Windows that MDM can check, so there you choose your own in <g10>Helpers...</g10> for the best video qualities. Linux gets its four files for 64-bit ARM computers too (<x11/>).",
+   "text": "Mulai versi 0.6.0, ketiga file tersedia untuk dua jenis PC lagi, dengan nama prosesornya: <g1>Windows di ARM</g1> (<x2/>, <x3/>, <x4/>), untuk PC dengan prosesor Snapdragon atau ARM lainnya, yang kemudian menjalankan MDM tanpa Windows menerjemahkannya; dan <g5>Windows 10 32-bit</g5> (<x6/>, <x7/>, <x8/>). <g9>Perbarui sekarang</g9> menjaga setiap salinan pada file prosesornya sendiri. MDM mengunduh build yt-dlp sendiri untuk masing-masing, dan ffmpeg untuk Windows di ARM; tidak ada ffmpeg yang dibuat untuk Windows 32-bit yang dapat diperiksa MDM, jadi di sana Anda memilih sendiri di <g10>Pembantu...</g10> untuk kualitas video terbaik. Linux juga mendapatkan empat filenya untuk komputer ARM 64-bit (<x11/>)."
+  },
   "3e6e10c300b6b5ce": {
    "source": "For all downloads together",
    "text": "Untuk semua unduhan bersama-sama"
@@ -4669,6 +4721,10 @@
   "3ee3f6088b3f3e5a": {
    "source": "<g1>Breeze</g1>, after KDE Plasma's look: rounded corners, buttons and boxes whose edge takes the accent under the pointer or when focused, KDE's check boxes and radio buttons (the accent's edge, a tick in the text's colour), a focus frame, KDE's Breeze icons (LGPL-3.0-or-later) and a title bar in KDE's style: the title centred, round buttons that fill under the pointer (Close in red).",
    "text": "<g1>Breeze</g1>, mengikuti tampilan KDE Plasma: sudut membulat, tombol dan kotak yang tepinya mengambil aksen di bawah penunjuk atau saat difokuskan, kotak centang dan tombol radio KDE (tepi aksen, tanda centang dalam warna teks), bingkai fokus, ikon Breeze KDE (LGPL-3.0-or-later) dan bilah judul dalam gaya KDE: judul di tengah, tombol bulat yang terisi di bawah penunjuk (Tutup berwarna merah)."
+  },
+  "3f11ebeb619b7f7f": {
+   "source": "ARM64",
+   "text": "ARM64"
   },
   "3f2b96cbf359bd4a": {
    "source": "The volumes of one split archive (<x1/>, <x2/> and so on) form one package, the other links of a page another, and the rest go into <g3>Various files</g3>. Tick a package to take all its links. Each package has its own folder, an archive password, and <g4>Extract when done</g4>.",
@@ -4970,10 +5026,6 @@
    "source": "Links that work only once no longer fail with \"403 Forbidden\".",
    "text": "Tautan yang hanya berfungsi sekali tidak lagi gagal dengan \"403 Forbidden\"."
   },
-  "436b61c80c90a696": {
-   "source": "Windows 10 and 11 is the main platform, on 64-bit PCs (x64); from the version after 0.5.2, on Windows on ARM PCs and 32-bit Windows 10 too, each with files of its own. Linux is supported too, with an AppImage, a .deb, an .rpm and a .tar.gz in every release: since version 0.5.0 it isn't experimental any more, and it is checked on GNOME, KDE Plasma, Xfce and Cinnamon, in Wayland sessions too, and its packages in clean Ubuntu, Debian and Fedora systems. Still to come there: the Flatpak Firefox isn't checked yet, and screen readers (Orca) don't read MDM's windows yet. macOS builds (.dmg) come with every release too, and stay experimental. See Windows, Mac and Linux and Download.",
-   "text": "Windows 10 dan 11 adalah platform utama, pada PC 64-bit (x64); mulai versi setelah 0.5.2, juga pada PC Windows on ARM dan Windows 10 32-bit, masing-masing dengan file tersendiri. Linux juga didukung, dengan AppImage, .deb, .rpm, dan .tar.gz di setiap rilis: sejak versi 0.5.0 tidak lagi eksperimental, dan telah diperiksa di GNOME, KDE Plasma, Xfce, dan Cinnamon, juga di sesi Wayland, serta paketnya di sistem Ubuntu, Debian, dan Fedora yang bersih. Yang masih akan datang: Flatpak Firefox belum diperiksa, dan pembaca layar (Orca) belum membaca jendela MDM. Build macOS (.dmg) juga disertakan di setiap rilis, dan tetap eksperimental. Lihat Windows, Mac dan Linux dan Unduh."
-  },
   "436bac2c4f3d3f4c": {
    "source": "<g1>Downloads → Start queue</g1> and <g2>Downloads → Stop queue</g2> list them too.",
    "text": "<g1>Unduhan → Mulai antrean</g1> dan <g2>Unduhan → Hentikan antrean</g2> juga mencantumkannya."
@@ -5013,6 +5065,10 @@
   "43ff6b9c3376c383": {
    "source": "Firefox, Chrome, Edge, Brave, Opera, Vivaldi",
    "text": "Firefox, Chrome, Edge, Brave, Opera, Vivaldi"
+  },
+  "44106fa39bd5cfcd": {
+   "source": "Paste the address of a <g1>Hugging Face</g1> model or dataset, or of a folder in one, or of a <g2>GitHub release</g2>, and Link grabber lists every file in it with its size and folder, unticked. Tick what you need: it downloads as one group into a folder named after the address, with the repository's folders kept, and each file is checked against the SHA-256 the site publishes. Gated models work with your Hugging Face access token, saved in <g3>Options → Sites Logins</g3>. See <g4>Models, datasets and releases</g4>.",
+   "text": "Tempel alamat model atau dataset <g1>Hugging Face</g1>, atau folder di dalamnya, atau <g2>rilis GitHub</g2>, dan Link grabber akan mencantumkan setiap file di dalamnya dengan ukuran dan foldernya, tanpa dicentang. Centang apa yang Anda butuhkan: file akan diunduh sebagai satu grup ke dalam folder yang dinamai sesuai alamat, dengan folder repositori tetap dipertahankan, dan setiap file diperiksa terhadap SHA-256 yang diterbitkan situs tersebut. Model yang digerbang berfungsi dengan token akses Hugging Face Anda, yang disimpan di <g3>Opsi → Login Situs</g3>. Lihat <g4>Model, dataset, dan rilis</g4>."
   },
   "441473c88f5bb354": {
    "source": "Not listed",
@@ -5186,10 +5242,6 @@
    "source": "<g1>Numbers</g1> (counts, sizes, speeds, percentages and the list's columns) are written the way the interface language writes them, whatever the Windows region: German <x2/> and <x3/>, French <x4/>, Hindi <x5/>. When your system's region is in that same language, its own way wins (Swiss German <x6/>, or a separator you set in Windows). In English, MDM writes plain digits, as IDM does (<x7/>, <x8/>).",
    "text": "<g1>Angka</g1> (jumlah, ukuran, kecepatan, persentase, dan kolom daftar) ditulis sesuai cara penulisan bahasa antarmuka, apa pun wilayah Windows: Jerman <x2/> dan <x3/>, Prancis <x4/>, Hindi <x5/>. Jika wilayah sistem Anda dalam bahasa yang sama, cara penulisan wilayah tersebut yang berlaku (Jerman Swiss <x6/>, atau pemisah yang Anda atur di Windows). Dalam bahasa Inggris, MDM menulis angka biasa, seperti IDM (<x7/>, <x8/>)."
   },
-  "468922e83389883b": {
-   "source": "Windows 10 and 11 is the main platform, on 64-bit PCs (x64); from the version after 0.5.2, on Windows on ARM PCs and 32-bit Windows 10 too, each with files…",
-   "text": "Windows 10 dan 11 adalah platform utama, pada PC 64-bit (x64); mulai versi setelah 0.5.2, juga pada PC Windows di ARM dan Windows 10 32-bit, masing-masing dengan file…"
-  },
   "4693601d27da4c66": {
    "source": "<g1>DNS over HTTPS</g1> (the default) or <g2>DNS over TLS</g2>: encrypted, so nobody on the way sees or changes the names you look up.",
    "text": "<g1>DNS melalui HTTPS</g1> (bawaan) atau <g2>DNS melalui TLS</g2>: terenkripsi, sehingga tidak ada seorang pun di tengah jalan yang melihat atau mengubah nama yang Anda cari."
@@ -5209,6 +5261,10 @@
   "46d294d41c0bd102": {
    "source": "MDM's interface comes in 87 languages: every display language Windows 11 offers, from Afrikaans to Vietnamese, including both Chinese scripts, Spanish for…",
    "text": "Antarmuka MDM tersedia dalam 87 bahasa: semua bahasa tampilan yang ditawarkan Windows 11, dari Afrikaans hingga Vietnam, termasuk kedua aksara Tionghoa, Spanyol untuk…"
+  },
+  "46dd41ea58cb0958": {
+   "source": "From version 0.6.0, pull the published image from GitHub Container Registry (x86-64 only for now):",
+   "text": "Mulai versi 0.6.0, tarik image yang dipublikasikan dari GitHub Container Registry (saat ini hanya untuk x86-64):"
   },
   "46e5d950086d130d": {
    "source": "<g1>Extract in place with HatchZip</g1> (off by default; greyed out when HatchZip isn't installed) — the archive is removed while its files come out, so only they need room. See <g2>Extracting archives</g2>.",
@@ -5245,6 +5301,10 @@
   "476a78eca0326f04": {
    "source": "keeps the list, the settings, the certificate and the paired devices.",
    "text": "menyimpan daftar, pengaturan, sertifikat, dan perangkat yang dipasangkan."
+  },
+  "477e14355df77d93": {
+   "source": "Downloads the extension catches, <g1>Download with Mister Download Manager</g1> on a link, and <g2>Download all links</g2> / <g3>Download selected links</g3>, then go to the server instead of this computer. On the server, links are added and started right away (rather than opened in Link grabber). Only links matching the file types MDM catches (or its default types) are sent, capped at 100 links per batch; links beyond the cap or of other types are left out, and the toolbar button's badge and status notice report how many links were sent, refused, or left out. The browser's cookies are not sent to the server: a download that needs you to be signed in to a site stays with this computer.",
+   "text": "Unduhan yang ditangkap ekstensi, <g1>Unduh dengan Mister Download Manager</g1> pada tautan, dan <g2>Unduh semua tautan</g2> / <g3>Unduh tautan terpilih</g3>, lalu buka server alih-alih komputer ini. Di server, tautan ditambahkan dan langsung dimulai (alih-alih dibuka di Link grabber). Hanya tautan yang cocok dengan jenis file yang ditangkap MDM (atau jenis default-nya) yang dikirim, dibatasi 100 tautan per batch; tautan di luar batas atau jenis lain diabaikan, dan lencana tombol bilah alat serta pemberitahuan status melaporkan berapa banyak tautan yang dikirim, ditolak, atau diabaikan. Cookie browser tidak dikirim ke server: unduhan yang mengharuskan Anda masuk ke situs tetap di komputer ini."
   },
   "478b98971f744119": {
    "source": "Deleting a queue asks first; a running queue stops when deleted; the toolbar's Start / Stop Queue arrows always work.",
@@ -5426,6 +5486,10 @@
    "source": "The download list in detail →",
    "text": "Daftar unduhan secara detail →"
   },
+  "4a0f34047feec52c": {
+   "source": "For Linux on x86-64 (and ARM64 from version 0.6.0): an AppImage for most distributions, a <x1/> for Ubuntu, Debian, Mint and Pop!_OS, an <x2/> for Fedora, openSUSE and RHEL, and a <x3/> of the plain programs. For macOS 11 and later, on Apple Silicon or Intel, <x4/> files still marked <x5/>. Please <g6>tell us how it went</g6>, good or bad.",
+   "text": "Untuk Linux di x86-64 (dan ARM64 mulai versi 0.6.0): AppImage untuk sebagian besar distribusi, <x1/> untuk Ubuntu, Debian, Mint, dan Pop!_OS, <x2/> untuk Fedora, openSUSE, dan RHEL, serta <x3/> dari program biasa. Untuk macOS 11 dan yang lebih baru, di Apple Silicon atau Intel, file <x4/> masih ditandai <x5/>. Mohon <g6>beritahu kami bagaimana hasilnya</g6>, baik atau buruk."
+  },
   "4a31bb3dd19b1839": {
    "source": "<g1></g1>87, built in",
    "text": "<g1></g1>87, bawaan"
@@ -5505,6 +5569,10 @@
   "4b59c6336533a5c6": {
    "source": "Downloads → Scheduler",
    "text": "Unduhan → Penjadwal"
+  },
+  "4b73f3d89de7c4e1": {
+   "source": "Rather have every download in one place? Tick <g1>Options → Save to → Save every download in \"General\" category's folder</g1>, and every new download goes to General's folder, whatever its type: from the browser, <g2>Add URL</g2>, a batch, Link grabber, a queue or the command line. The categories stay, to sort and filter the list. One download can still go elsewhere: change its folder in <g3>Download File Info</g3>. Downloads already in the list stay where they are.",
+   "text": "Lebih suka semua unduhan di satu tempat? Centang <g1>Opsi → Simpan ke → Simpan setiap unduhan di folder kategori \"Umum\"</g1>, dan setiap unduhan baru akan masuk ke folder Umum, apa pun jenisnya: dari browser, <g2>Tambah URL</g2>, batch, Link grabber, antrean, atau baris perintah. Kategori tetap ada, untuk mengurutkan dan memfilter daftar. Satu unduhan masih bisa pergi ke tempat lain: ubah foldernya di <g3>Info file unduhan</g3>. Unduhan yang sudah ada dalam daftar tetap di tempatnya."
   },
   "4b8a2274de78ad9c": {
    "source": "egui's body text: tooltips, multi-line boxes",
@@ -5613,6 +5681,10 @@
   "4cf5674fd62fa773": {
    "source": "A meter's edge",
    "text": "Tepi meteran"
+  },
+  "4cf7f48056de0a54": {
+   "source": "<g1>Coming with version 0.6.0</g1> <g2>This part isn't in the download (version 0.5.2) yet.</g2>",
+   "text": "<g1>Hadir di versi 0.6.0</g1> <g2>Bagian ini belum ada di unduhan (versi 0.5.2).</g2>"
   },
   "4d0868248400f576": {
    "source": "<g1>No video this can download on that page</g1> means yt-dlp found nothing on the page. Check that the address is the video's own page.",
@@ -5837,10 +5909,6 @@
   "5095a187528ef523": {
    "source": "Closed to the notification area, MDM gives its memory back to Windows: <g1>Memory</g1> drops to under 10 MB within seconds and stays low while it waits. Downloads, queues and the scheduler go on as before. The list of every language (<g2>View → Language</g2>) loads fonts for every script while it's open; MDM lets them go when it closes.",
    "text": "Saat ditutup ke area notifikasi, MDM mengembalikan memorinya ke Windows: <g1>Memori</g1> turun hingga di bawah 10 MB dalam hitungan detik dan tetap rendah saat menunggu. Unduhan, antrean, dan penjadwal tetap berjalan seperti biasa. Daftar semua bahasa (<g2>Tampilan → Bahasa</g2>) memuat font untuk setiap aksara saat terbuka; MDM melepaskan font tersebut saat daftar ditutup."
-  },
-  "50a2d01abfd3fd4a": {
-   "source": "From the version after 0.5.2, the three files come for two more kinds of PC, with the processor in their names: <g1>Windows on ARM</g1> (<x2/>, <x3/>, <x4/>), for PCs with a Snapdragon or another ARM processor, which then run MDM without Windows translating it; and <g5>32-bit Windows 10</g5> (<x6/>, <x7/>, <x8/>). <g9>Update now</g9> keeps each copy on its own processor's files. MDM downloads yt-dlp's own build for each, and ffmpeg's for Windows on ARM; no ffmpeg is built for 32-bit Windows that MDM can check, so there you choose your own in <g10>Helpers...</g10> for the best video qualities. Linux gets its four files for 64-bit ARM computers too (<x11/>).",
-   "text": "Mulai versi setelah 0.5.2, ketiga file tersedia untuk dua jenis PC lagi, dengan nama prosesornya: <g1>Windows di ARM</g1> (<x2/>, <x3/>, <x4/>), untuk PC dengan prosesor Snapdragon atau ARM lainnya, yang kemudian menjalankan MDM tanpa Windows menerjemahkannya; dan <g5>Windows 10 32-bit</g5> (<x6/>, <x7/>, <x8/>). <g9>Perbarui sekarang</g9> menjaga setiap salinan pada file prosesornya sendiri. MDM mengunduh build yt-dlp sendiri untuk masing-masing, dan ffmpeg untuk Windows di ARM; tidak ada ffmpeg yang dibuat untuk Windows 32-bit yang dapat diperiksa MDM, jadi di sana Anda memilih sendiri di <g10>Pembantu...</g10> untuk kualitas video terbaik. Linux juga mendapatkan empat filenya untuk komputer ARM 64-bit (<x11/>)."
   },
   "50a8864f971c1689": {
    "source": "Right-click → <g1>Add category</g1> makes one for what you collect, say <g2>Books</g2> for <x3/>: a name, the file types separated by spaces (<x4/> allowed) and a folder. Change it later with <g5>Properties</g5>, or remove it with <g6>Delete</g6>. The files stay where they are.",
@@ -6073,6 +6141,10 @@
   "536df2f60bd48da6": {
    "source": "Success text (a matching checksum)",
    "text": "Teks berhasil (checksum yang cocok)"
+  },
+  "538fe2ede1fc4d57": {
+   "source": "The single-instance channel (a token-protected local socket), the data folder, the capture rules shared by the app and the host, and the site rules (#1778: a User-Agent, headers, connections and the browser-like connection by site pattern) shared by the app and the command line",
+   "text": "Saluran instans tunggal (soket lokal yang dilindungi token), folder data, aturan tangkapan yang dibagikan oleh aplikasi dan host, serta aturan situs (#1778: Agen Pengguna, header, koneksi, dan koneksi mirip browser berdasarkan pola situs) yang dibagikan oleh aplikasi dan baris perintah"
   },
   "539160f92bae4422": {
    "source": "Being re-measured",
@@ -6770,6 +6842,10 @@
    "source": "One click hides a download's window",
    "text": "Satu klik menyembunyikan jendela unduhan"
   },
+  "5d3af05ef67f6e44": {
+   "source": "What a site's list says is checked before it is used: a file whose path would lead out of its folder (<x1/>, an absolute path, a drive letter, a device name such as <x2/>) is left out, and the Source line counts them. At most 10,000 files are listed for one address. As folders are, they are read only with <g3>Look links up when they arrive</g3> on (the default).",
+   "text": "Apa yang dikatakan daftar situs diperiksa sebelum digunakan: file yang jalurnya akan keluar dari foldernya (<x1/>, jalur absolut, huruf drive, nama perangkat seperti <x2/>) akan ditinggalkan, dan baris Sumber menghitungnya. Paling banyak 10.000 file dicantumkan untuk satu alamat. Seperti halnya folder, file hanya dibaca dengan <g3>Cari tautan saat tiba</g3> diaktifkan (default)."
+  },
   "5d3b0743b7418c7e": {
    "source": "Choose <g1>Help → Report a problem</g1>. It opens the bug report form on GitHub with your MDM version, your system and its version, how MDM was installed and its interface language already filled in. Describe what happened, what you expected and the steps that make it happen. For a download, include the address if you can share it, and the reason shown under <g2>Status</g2>.",
    "text": "Pilih <g1>Bantuan → Laporkan masalah</g1>. Tindakan ini akan membuka formulir laporan bug di GitHub yang sudah diisi dengan versi MDM, sistem dan versinya, cara MDM diinstal, serta bahasa antarmukanya. Jelaskan apa yang terjadi, apa yang Anda harapkan, dan langkah-langkah untuk membuatnya terjadi. Untuk masalah unduhan, sertakan alamatnya jika dapat Anda bagikan, serta alasan yang ditampilkan di bawah <g2>Status</g2>."
@@ -7110,10 +7186,6 @@
    "source": "With Docker",
    "text": "Dengan Docker"
   },
-  "615e187e2caacd27": {
-   "source": "<g1>Otherwise:</g1> MDM shows the list of languages, each with its flag and its own name. Pick yours.",
-   "text": "<g1>Jika tidak:</g1> MDM menampilkan daftar bahasa, masing-masing dengan bendera dan namanya sendiri. Pilih bahasa Anda."
-  },
   "617b3af69a12514a": {
    "source": "works the same way, and follows <x1/> too.",
    "text": "bekerja dengan cara yang sama, dan mengikuti <x1/> juga."
@@ -7229,6 +7301,10 @@
   "630073ab1db9fa7e": {
    "source": "Questions",
    "text": "Pertanyaan"
+  },
+  "631d909be61240f2": {
+   "source": "<g1>Language.</g1> - <g2>Installed with the setup:</g2> MDM starts in the language you chose in the setup, and this step is left out. - <g3>Otherwise:</g3> the list of languages, each with its flag and its own name. Click yours: the window switches to it at once, right to left for Arabic, Hebrew, Persian and Urdu.",
+   "text": "<g1>Bahasa.</g1> - <g2>Terinstal dengan pengaturan:</g2> MDM dimulai dalam bahasa yang Anda pilih saat pengaturan, dan langkah ini dilewati. - <g3>Jika tidak:</g3> daftar bahasa, masing-masing dengan benderanya dan namanya sendiri. Klik bahasa Anda: jendela akan langsung beralih ke bahasa tersebut, dari kanan ke kiri untuk bahasa Arab, Ibrani, Persia, dan Urdu."
   },
   "634ba66c06a04968": {
    "source": "Your download list, settings, logins you save in <g1>Sites Logins</g1>, the history of each download and the files you download are stored only on your computer: in <x2/> on Windows (or the <x3/> folder of the portable copy), and in the usual application-data folder on macOS and Linux. Nothing is uploaded anywhere. Uninstalling offers to delete them. From version 0.5.0, the passwords of Sites Logins, the proxy and debrid accounts go into the system's keychain instead (Windows Credential Manager, the keyring on Linux, the macOS keychain), still on your computer, when one is there and unlocked.",
@@ -7482,6 +7558,10 @@
    "source": "Two helpers, checked before use",
    "text": "Dua pembantu, diperiksa sebelum digunakan"
   },
+  "66fc2cbe47fa6280": {
+   "source": "User names and passwords for sites that ask for them. <g1>New</g1> adds a row: the site (with a path if the login is only for part of it), the user name and the password. <g2>Edit</g2> and <g3>Remove</g3> change or delete the selected row. MDM uses the login for every download from that site. A login typed in <g4>Add URL</g4> (<g5>Use authorization</g5>) takes priority for that one download. For <x6/>, the password is your Hugging Face access token, for gated models and datasets: MDM sends it as a token, to Hugging Face only (the user name can be anything; see <g7>Models, datasets and releases</g7>).",
+   "text": "Nama pengguna dan kata sandi untuk situs yang memintanya. <g1>Baru</g1> menambahkan baris: situs (dengan jalur jika login hanya untuk sebagian darinya), nama pengguna, dan kata sandi. <g2>Edit</g2> dan <g3>Hapus</g3> mengubah atau menghapus baris yang dipilih. MDM menggunakan login untuk setiap unduhan dari situs tersebut. Login yang diketik di <g4>Tambah URL</g4> (<g5>Gunakan otorisasi</g5>) diutamakan untuk unduhan tersebut. Untuk <x6/>, kata sandi adalah token akses Hugging Face Anda, untuk model dan dataset yang dibatasi: MDM mengirimkannya sebagai token, hanya ke Hugging Face (nama pengguna bisa apa saja; lihat <g7>Model, dataset, dan rilis</g7>)."
+  },
   "670bb10cde757ad1": {
    "source": "MDM never writes the token to its event log, crash reports, the automation API or the command line's output.",
    "text": "MDM tidak pernah menulis token ke log peristiwa, laporan kerusakan, API otomatisasi, atau keluaran baris perintah."
@@ -7513,14 +7593,6 @@
   "676c0b5817404515": {
    "source": "To route <g1>everything</g1> through another network, use a VPN for the whole computer.",
    "text": "Untuk merutekan <g1>semua lalu lintas</g1> melalui jaringan lain, gunakan VPN untuk seluruh komputer."
-  },
-  "678b5f7a1583e7d1": {
-   "source": "<g1>Its menu</g1> (the arrow next to it, or <g2>↓</g2> when the button has the keyboard's focus): the video's title, length and site; its filters, when the qualities differ: <g3>All</g3>, <g4>Video</g4> (the picture with its sound) or <g5>Audio only</g5>, and the file type (MP4, WEBM, M4A, MP3...) or the picture's codec (AV1, VP9, H.264), kept for the site; <g6>Download best</g6> first (the best of what the filters keep), then one numbered line per quality under <g7>VIDEO</g7> and <g8>AUDIO</g8>, with its file type, codec, frame rate or bitrate and size (<x9/> <x10/>, as the Download video window says it), the best one marked, and <g11>Most compatible (H.264 + AAC)</g11> beside the resolution of the one that plays everywhere (<g12>Choose the quality</g12>); <g13>All qualities and subtitles...</g13>, which opens the <g14>Download video from a page</g14> window; then <g15>Put the button back in its corner</g15> (once you moved it on the site), <g16>Hide on this video</g16> (<g17>Esc</g17>), <g18>Never on</g18> the site (MDM remembers the site), and <g19>Button settings...</g19>, which opens MDM's Options. The arrow keys move through it, <g20>Enter</g20> picks, <g21>Esc</g21> closes it.",
-   "text": "<g1>Menunya</g1> (panah di sebelahnya, atau <g2>↓</g2> saat tombol memiliki fokus keyboard): judul, durasi, dan situs video; filternya, ketika kualitasnya berbeda: <g3>Semua</g3>, <g4>Video</g4> (gambar dengan suaranya) atau <g5>Audio saja</g5>, dan jenis file (MP4, WEBM, M4A, MP3...) atau codec gambar (AV1, VP9, H.264), disimpan untuk situs; <g6>Unduh terbaik</g6> terlebih dahulu (yang terbaik dari apa yang disimpan filter), lalu satu baris bernomor per kualitas di bawah <g7>VIDEO</g7> dan <g8>AUDIO</g8>, dengan jenis file, codec, kecepatan bingkai atau bitrate dan ukuran (<x9/> <x10/>, seperti yang tertera di jendela Unduh video), yang terbaik ditandai, dan <g11>Paling kompatibel (H.264 + AAC)</g11> di samping resolusi yang diputar di mana saja (<g12>Pilih kualitas</g12>); <g13>Semua kualitas dan subtitel...</g13>, yang membuka jendela <g14>Unduh video dari halaman</g14>; lalu <g15>Kembalikan tombol ke sudut semula</g15> (setelah Anda memindahkannya di situs), <g16>Sembunyikan di video ini</g16> (<g17>Esc</g17>), <g18>Jangan pernah di</g18> situs (MDM mengingat situs), dan <g19>Pengaturan tombol...</g19>, yang membuka Opsi MDM. Tombol panah bergerak melaluinya, <g20>Enter</g20> memilih, <g21>Esc</g21> menutupnya."
-  },
-  "67b09013b9c7d05d": {
-   "source": "Yes downloads both helpers in the background, once.",
-   "text": "Ya akan mengunduh kedua alat bantu di latar belakang, satu kali saja."
   },
   "67b7e3e016904e39": {
    "source": "Install MDM with the setup and keep Set up browser integration ticked. In Firefox, then open the add-on's page on addons.mozilla.org and click Add to…",
@@ -8114,10 +8186,6 @@
    "source": "<g1>Drop-down lists for screen readers</g1>: a screen reader or UI Automation can now set a drop-down list's choice by its text, and open or close the list.",
    "text": "<g1>Daftar drop-down untuk pembaca layar</g1>: pembaca layar atau UI Automation sekarang dapat mengatur pilihan daftar drop-down berdasarkan teksnya, dan membuka atau menutup daftar."
   },
-  "6f4768be9e305804": {
-   "source": "From the release after 0.5.2, pull the published image from GitHub Container Registry (x86-64 only for now):",
-   "text": "Dari rilis setelah 0.5.2, tarik citra yang diterbitkan dari GitHub Container Registry (hanya x86-64 untuk saat ini):"
-  },
   "6f5dd71f3ee9ec81": {
    "source": "Start here",
    "text": "Mulai di sini"
@@ -8570,6 +8638,10 @@
    "source": "Save it in this folder (else the category's folder from <g1>Options → Save to</g1>).",
    "text": "Simpan di folder ini (jika tidak, gunakan folder kategori dari <g1>Opsi → Simpan ke</g1>)."
   },
+  "757bdf6ec707e08a": {
+   "source": "The setup's Video helpers step: yt-dlp and ffmpeg, each with its Install button, and Yes, download them (recommended)",
+   "text": "Langkah Pembantu video pada pengaturan: yt-dlp dan ffmpeg, masing-masing dengan tombol Instal, dan Ya, unduh semuanya (disarankan)"
+  },
   "758225940a5eba45": {
    "source": "IDM itself is closed source. Mister Download Manager is an open-source download manager (GPL-3.0) laid out the way IDM users expect, written from scratch and unrelated to IDM's maker.",
    "text": "IDM sendiri adalah sumber tertutup. Mister Download Manager adalah pengelola unduhan sumber terbuka (GPL-3.0) yang tampilannya seperti yang diharapkan pengguna IDM, ditulis dari awal dan tidak terkait dengan pembuat IDM."
@@ -8730,10 +8802,6 @@
    "source": "Browsers built on Firefox or Chromium, such as Zen, LibreWolf, Floorp, Waterfox and Helium, reach MDM. Flatpak browsers on Linux can't start MDM's helper.",
    "text": "Browser yang dibangun di atas Firefox atau Chromium, seperti Zen, LibreWolf, Floorp, Waterfox, dan Helium, mencapai MDM. Browser Flatpak di Linux tidak dapat memulai pembantu MDM."
   },
-  "77bd0523361e1992": {
-   "source": "Next, MDM offers its two free video helpers: <g1>yt-dlp</g1>, which finds the video on a page, and <g2>ffmpeg</g2>, which joins its picture and sound. Click <g3>Yes, download them (recommended)</g3> and they download in the background, about 100 MB, once. <g4>Not now</g4> leaves them for later: the video window offers them when you first need them. More in <g5>Videos</g5>.",
-   "text": "Selanjutnya, MDM menawarkan 2 alat bantu video gratis: <g1>yt-dlp</g1>, yang menemukan video di halaman, dan <g2>ffmpeg</g2>, yang menggabungkan gambar dan suaranya. Klik <g3>Ya, unduh semuanya (disarankan)</g3> untuk mengunduh keduanya sekali saja di latar belakang. Ukurannya sekitar 100 MB. Pilih <g4>Nanti saja</g4> untuk mengunduhnya nanti: jendela video akan menawarkan alat bantu tersebut saat Anda membutuhkannya untuk pertama kali. Lihat <g5>Video</g5> untuk informasi selengkapnya."
-  },
   "77c9a0380245b26d": {
    "source": "In MDM, click <g1>Add URL</g1> (or press <g2>Ctrl+N</g2>) and click <g3>OK</g3>. MDM sees that the address is a video's page and opens <g4>Download video from a page</g4>. (You can also open it with <g5>Tasks → Download video from a page...</g5>, paste the address and click <g6>Look up</g6>.)",
    "text": "Di MDM, klik <g1>Tambah URL</g1> (atau tekan <g2>Ctrl+N</g2>) dan klik <g3>OK</g3>. MDM mengenali bahwa alamat tersebut adalah halaman video dan membuka <g4>Unduh video dari halaman</g4>. (Anda juga bisa membukanya dengan <g5>Tugas → Unduh video dari halaman...</g5>, tempel alamatnya, dan klik <g6>Cari</g6>.)"
@@ -8857,6 +8925,10 @@
   "79c3966deb868963": {
    "source": "When the link has expired",
    "text": "Saat tautan kedaluwarsa"
+  },
+  "79d1afa0e65a1570": {
+   "source": "<g1>Video helpers</g1> (below).",
+   "text": "<g1>Pembantu video</g1> (di bawah)."
   },
   "79d241b850b4c52e": {
    "source": "<g1>A public tracker list for torrents</g1>, if you turn it on in <g2>Tasks → Torrent settings</g2>: MDM fetches it from GitHub (ngosang/trackerslist), or the address you entered, once a day (an hour later when a fetch failed). Its trackers then see which public torrents you have, as a torrent's own trackers do.",
@@ -9053,10 +9125,6 @@
   "7c5fbe4cad8057a6": {
    "source": "Download a torrent, or only some of its files. If some of its files are already in the folder, it stops and names them; <x1/> uses them instead (what matches is kept, the rest downloaded). With Torrent settings' <g2>Add the trackers of this public list to public torrents</g2> on, a public torrent gets the list's trackers too, as in the app.",
    "text": "Mengunduh torrent, atau hanya beberapa filenya. Jika beberapa filenya sudah ada di folder, ia berhenti dan menamainya; <x1/> menggunakannya sebagai gantinya (yang cocok disimpan, sisanya diunduh). Dengan <g2>Tambahkan pelacak dari daftar publik ini ke torrent publik</g2> di Pengaturan torrent aktif, torrent publik juga mendapatkan pelacak daftar, seperti di aplikasi."
-  },
-  "7c7b3102adfeeb16": {
-   "source": "For Linux on x86-64 (and ARM64 from the version after 0.5.2): an AppImage for most distributions, a <x1/> for Ubuntu, Debian, Mint and Pop!_OS, an <x2/> for Fedora, openSUSE and RHEL, and a <x3/> of the plain programs. For macOS 11 and later, on Apple Silicon or Intel, <x4/> files still marked <x5/>. Please <g6>tell us how it went</g6>, good or bad.",
-   "text": "Untuk Linux di x86-64 (dan ARM64 mulai versi setelah 0.5.2): AppImage untuk sebagian besar distribusi, <x1/> untuk Ubuntu, Debian, Mint, dan Pop!_OS, <x2/> untuk Fedora, openSUSE, dan RHEL, serta <x3/> dari program biasa. Untuk macOS 11 dan yang lebih baru, di Apple Silicon atau Intel, file <x4/> masih ditandai <x5/>. Mohon <g6>beritahu kami bagaimana hasilnya</g6>, baik atau buruk."
   },
   "7c949f90bb503dc8": {
    "source": "Vivaldi",
@@ -9806,6 +9874,10 @@
    "source": "A text box's or a list's inside",
    "text": "Bagian dalam kotak teks atau daftar"
   },
+  "84d72ad2898a481c": {
+   "source": "Make a <x1/> of a file or folder, a folder's files listed by name (peers find it through the DHT).",
+   "text": "Buat <x1/> dari file atau folder, file dalam folder yang terdaftar berdasarkan nama (rekan menemukan melalui DHT)."
+  },
   "84de272d8a1575cb": {
    "source": "Add to Chrome",
    "text": "Tambahkan ke Chrome"
@@ -10318,6 +10390,10 @@
    "source": "Can it download a video's subtitles?",
    "text": "Bisakah MDM mengunduh subtitel video?"
   },
+  "8c8becaa84996a37": {
+   "source": "<g1>A folder of one</g1>, at a branch, a tag or a commit: the address of the folder's page, <x2/>.",
+   "text": "<g1>Folder dari salah satunya</g1>, pada cabang, tag, atau commit: alamat halaman folder, <x2/>."
+  },
   "8c9a12e93a193e44": {
    "source": "In Firefox",
    "text": "Di Firefox"
@@ -10349,10 +10425,6 @@
   "8cfa4742e8d4318b": {
    "source": "The harness",
    "text": "Harness"
-  },
-  "8d0ba2eee06a5511": {
-   "source": "<g1>Move it</g1>: drag it by its dots to another corner or along the video's edge, or outside the player, above, under or beside it (for a site that covers its player or draws its own controls where the button would be); while you drag, the edge and the spots it snaps to (the corners and the middle) show. Outside the player it stays inside on that edge when the window has no room there (a player at the top of the window, full screen). It stays where you put it on that site; the menu's <g2>Put the button back in its corner</g2> brings it back, and the add-on's popup has <g3>Settings → Download button over videos → Reset</g3> for every site (its filters too).",
-   "text": "<g1>Pindahkan</g1>: seret dengan titik-titiknya ke sudut lain atau di sepanjang tepi video, atau di luar pemutar, di atas, di bawah, atau di sampingnya (untuk situs yang menutupi pemutarnya atau menggambar kontrolnya sendiri di tempat tombol seharusnya berada); saat Anda menyeret, tepi dan titik-titik tempat tombol menempel (sudut dan tengah) akan terlihat. Di luar pemutar, tombol tetap berada di dalam pada tepi itu ketika jendela tidak memiliki ruang di sana (pemutar di bagian atas jendela, layar penuh). Tombol tetap di tempat Anda meletakkannya di situs itu; <g2>Kembalikan tombol ke sudut semula</g2> di menu mengembalikannya, dan popup add-on memiliki <g3>Pengaturan → Tombol unduh di atas video → Atur ulang</g3> untuk setiap situs (filternya juga)."
   },
   "8d2bf24dd985e649": {
    "source": "When downloads go to another MDM (a server), the list is that server's: <g1>Pause</g1>, <g2>Resume</g2>, <g3>Remove from list</g3> and <g4>Copy link</g4> work, and the buttons that need the file on this computer (open it, its folder, copy, share, delete) aren't shown; a line at the top says so.",
@@ -10786,6 +10858,10 @@
    "source": "<g1>Fix causes, not cases</g1>, and keep producers and consumers of shared data (the download list, the browser extension's messages, the catalogs) in step.",
    "text": "<g1>Perbaiki penyebab, bukan kasus</g1>, dan jaga agar produsen dan konsumen data bersama (daftar unduhan, pesan ekstensi browser, katalog) tetap sinkron."
   },
+  "933b61bdff1bc033": {
+   "source": "A crash report whose crashed thread is inside the graphics driver while MDM drew with OpenGL is the same: the driver's names above, or <x1/> alone with nothing of MDM's on the thread (NVIDIA's driver on a laptop with two graphics chips shows OpenGL's frames through Direct3D 11). On Windows, MDM remembers it and draws with Direct3D 12 from the next start, on WARP if the card can't; updating the graphics driver is still the real fix.",
+   "text": "Laporan kerusakan yang utasnya mogok di dalam driver grafis saat MDM merender dengan OpenGL adalah sama: nama driver di atas, atau <x1/> saja tanpa ada bagian MDM pada utas tersebut (driver NVIDIA pada laptop dengan dua chip grafis menampilkan bingkai OpenGL melalui Direct3D 11). Di Windows, MDM mengingatnya dan merender dengan Direct3D 12 mulai dari awal berikutnya, pada WARP jika kartu tidak bisa; memperbarui driver grafis tetap merupakan perbaikan yang sebenarnya."
+  },
   "93536c27185c18ed": {
    "source": "Download a video from a page — Mister Download Manager help",
    "text": "Unduh video dari halaman — Bantuan Mister Download Manager"
@@ -10918,10 +10994,6 @@
    "source": "Link grabber and archive extraction — Mister Download Manager",
    "text": "Link grabber dan ekstraksi arsip — Mister Download Manager"
   },
-  "94f64ef46efdc4dd": {
-   "source": "Last updated 2026-11-25",
-   "text": "Terakhir diperbarui 25-11-2026"
-  },
   "950c43d71bd73d95": {
    "source": "You can change it at any time in <g1>View → Language</g1>. More in <g2>Languages</g2>.",
    "text": "Anda dapat mengubahnya kapan saja di <g1>Tampilan → Bahasa</g1>. Lihat <g2>Bahasa</g2> untuk informasi selengkapnya."
@@ -10950,6 +11022,10 @@
    "source": "Is it a copy or a crack of Internet Download Manager? — Mister Download Manager",
    "text": "Apakah ini salinan atau crack dari Internet Download Manager? — Mister Download Manager"
   },
+  "95820383a2972f1f": {
+   "source": "<g1>Gated models.</g1> A repository whose files need its terms accepted downloads with your Hugging Face access token: accept the terms on its page, make a token in your Hugging Face settings, and add it in <g2>Options → Sites Logins</g2> with the site <x3/>, any user name and the token as the password. It is kept with your other passwords, in the system's keychain, and sent only to <x4/>, never on to the servers it sends the files from. The Source line says when a gated repository has no token yet.",
+   "text": "<g1>Model berpagar.</g1> Repositori yang file-nya memerlukan persetujuan persyaratan akan diunduh dengan token akses Hugging Face Anda: terima persyaratannya di halamannya, buat token di pengaturan Hugging Face Anda, dan tambahkan di <g2>Opsi → Login Situs</g2> dengan situs <x3/>, nama pengguna apa pun, dan token sebagai kata sandi. Token tersebut disimpan bersama kata sandi Anda yang lain, di rantai kunci sistem, dan hanya dikirim ke <x4/>, tidak pernah ke server tempat file dikirim. Baris Sumber menyatakan kapan repositori berpagar belum memiliki token."
+  },
   "958664bb01cc22af": {
    "source": "A torrent comes from other people's computers, not from one website. That changes what you can trust and what others can see. This page says plainly what…",
    "text": "Torrent berasal dari komputer orang lain, bukan dari satu situs web. Ini mengubah apa yang dapat Anda percaya dan apa yang dapat dilihat orang lain. Halaman ini menjelaskan dengan jelas apa..."
@@ -10965,6 +11041,10 @@
   "95b8e4a4ea276d5d": {
    "source": "Downloads",
    "text": "Unduhan"
+  },
+  "95b9321339f49458": {
+   "source": "Windows 10 and 11 is the main platform, on 64-bit PCs (x64); from version 0.6.0, on Windows on ARM PCs and 32-bit Windows 10 too, each with files of its…",
+   "text": "Windows 10 dan 11 adalah platform utama, pada PC 64-bit (x64); mulai versi 0.6.0, juga pada PC Windows on ARM dan Windows 10 32-bit, masing-masing dengan file…"
   },
   "95c10421608930fc": {
    "source": "The proxy's password moves to the system's keychain: Windows Credential Manager, the keyring on Linux, the macOS keychain.",
@@ -11025,10 +11105,6 @@
   "9632de50273e0f02": {
    "source": "<g1>The site's star ratings</g1>, at <x2/>, described in <g3>OpenAPI</g3>. Anyone may read the numbers; rating is for this site's pages (below).",
    "text": "<g1>Peringkat bintang situs</g1>, di <x2/>, dijelaskan dalam <g3>OpenAPI</g3>. Siapa pun dapat membaca angka-angkanya; pemberian peringkat adalah untuk halaman situs ini (di bawah)."
-  },
-  "963552ab075ccbdb": {
-   "source": "MDM offers yt-dlp and ffmpeg on its first start, with Yes, download them (recommended) and Not now",
-   "text": "MDM menawarkan yt-dlp dan ffmpeg pada awal pertamanya, dengan Ya, unduh (disarankan) dan Nanti saja"
   },
   "9641498adf0c3309": {
    "source": "<g1>A Base16 scheme</g1>, the <x2/> file the <g3>Base16 and Base24 schemes</g3> come in: both the classic layout (<x4/> and <x5/> to <x6/> at the top) and the newer one (<x7/> and a <x8/> block). A Base24 scheme reads as its first 16 colours.",
@@ -11302,10 +11378,6 @@
    "source": "A greyed text box's inside",
    "text": "Bagian dalam kotak teks berwarna abu-abu"
   },
-  "98fcb27645bb56dd": {
-   "source": "<g1>Without the setup</g1> (a zip copy): on the first start, MDM shows every language with its flag and its own name. Pick yours.",
-   "text": "<g1>Tanpa program penginstalan</g1> (salinan zip): saat pertama kali dijalankan, MDM menampilkan semua bahasa beserta bendera dan nama bahasa masing-masing. Pilih bahasa Anda."
-  },
   "990d8b16ea032009": {
    "source": "<g1>Image galleries</g1> (<g2>#58</g2>): a gallery's address in Add URL (a Wikimedia Commons category, a Flickr album, a DeviantArt or Imgur gallery and more) opens <g3>Download a gallery</g3>, which downloads its pictures with gallery-dl into a folder of their own, all of them or the first N. Started again, a gallery fetches only its new pictures. gallery-dl is an optional helper like yt-dlp: installed from its releases only when signed by its author's key, or your own copy (Helpers). On the command line: <x4/> and <x5/>.",
    "text": "<g1>Galeri gambar</g1> (<g2>#58</g2>): alamat galeri di Tambah URL (kategori Wikimedia Commons, album Flickr, galeri DeviantArt atau Imgur, dan lainnya) membuka <g3>Unduh galeri</g3>, yang mengunduh gambarnya dengan gallery-dl ke folder sendiri, semuanya atau N pertama. Dimulai lagi, galeri hanya mengambil gambar barunya. gallery-dl adalah pembantu opsional seperti yt-dlp: diinstal dari rilisnya hanya jika ditandatangani oleh kunci penulisnya, atau salinan Anda sendiri (Pembantu). Di baris perintah: <x4/> dan <x5/>."
@@ -11425,6 +11497,10 @@
   "9a946958fe91d2d6": {
    "source": "Right-click and choose <g1>Add to queue → Main download queue</g1>.",
    "text": "Klik kanan dan pilih <g1>Tambahkan ke antrean → Antrean unduhan utama</g1>."
+  },
+  "9a9da334e19653c6": {
+   "source": "The first start's setup at its Language step: every language with its flag, its own name and its English name",
+   "text": "Pengaturan awal pada langkah Bahasa: setiap bahasa dengan benderanya, nama aslinya, dan nama Inggrisnya"
   },
   "9ad6d79bda135a68": {
    "source": "Download acceleration and crash-safe resume",
@@ -11558,6 +11634,10 @@
    "source": "Point at the video in your browser and click the Download video button that appears over it, or paste the page's address into Tasks → Download video from a page. MDM lists every quality the site offers, with sizes; pick one and it downloads like any file. It uses yt-dlp, which supports thousands of sites. Download only videos you have the right to. See Download a video from a page.",
    "text": "Arahkan kursor ke video di peramban Anda dan klik tombol Unduh video yang muncul di atasnya, atau tempel alamat halaman ke Tugas → Unduh video dari halaman. MDM akan menampilkan semua kualitas yang ditawarkan situs, beserta ukurannya; pilih salah satu dan video akan terunduh seperti berkas lainnya. Ini menggunakan yt-dlp, yang mendukung ribuan situs. Unduh hanya video yang Anda miliki haknya. Lihat Unduh video dari halaman."
   },
+  "9ce28ea273676ee8": {
+   "source": "<g1>One version.</g1> A repository's files are asked at the commit its branch or tag pointed to when it was listed, so a branch that moves on while they download never mixes two versions.",
+   "text": "<g1>Satu versi.</g1> File repositori diminta pada commit yang ditunjuk oleh cabang atau tag-nya saat dicantumkan, sehingga cabang yang bergerak maju saat diunduh tidak pernah mencampur dua versi."
+  },
   "9d1326816ebdec07": {
    "source": "Firefox forgets the extension after a restart",
    "text": "Firefox melupakan ekstensi setelah dimulai ulang"
@@ -11582,6 +11662,10 @@
    "source": "Latest",
    "text": "Terbaru"
   },
+  "9d68b46f0b3fadeb": {
+   "source": "<g1>Move it</g1>: drag it by its dots to any spot over the video, to another corner or edge, or outside the player, above, under or beside it (for a site that covers its player or draws its own controls where the button would be); near an edge or outside, the edge and the spots it snaps to (the corners and the middle) show. Outside the player it stays inside on that edge when the window has no room there (a player at the top of the window, full screen). It stays where you put it on that site; the menu's <g2>Put the button back in its corner</g2> brings it back, and the add-on's popup has <g3>Settings → Download button over videos → Reset</g3> for every site (its filters too).",
+   "text": "<g1>Pindahkan</g1>: seret dengan titik-titiknya ke titik mana pun di atas video, ke sudut atau tepi lain, atau di luar pemutar, di atas, di bawah, atau di sampingnya (untuk situs yang menutupi pemutarnya atau menggambar kontrolnya sendiri di tempat tombol seharusnya); di dekat tepi atau di luar, tepi dan titik-titik yang menempel padanya (sudut dan tengah) akan terlihat. Di luar pemutar, tombol tetap berada di dalam pada tepi itu saat jendela tidak memiliki ruang di sana (pemutar di bagian atas jendela, layar penuh). Tombol tetap di tempat Anda meletakkannya di situs itu; <g2>Kembalikan tombol ke sudut semula</g2> di menu mengembalikannya, dan pop-up add-on memiliki <g3>Pengaturan → Tombol unduh di atas video → Atur Ulang</g3> untuk setiap situs (filternya juga)."
+  },
   "9d98aff073986aca": {
    "source": "Options → Archives",
    "text": "Opsi → Arsip"
@@ -11593,10 +11677,6 @@
   "9da027e1258a39d3": {
    "source": "Other programs can ask the running app what it is downloading, and pause, start, remove or delete downloads. The API is <g1>off by default</g1>; turn it on with <x2/> (and off with <x3/>).",
    "text": "Program lain dapat menanyakan apa yang sedang diunduh oleh aplikasi yang berjalan, serta menjeda, memulai, menghapus dari daftar, atau menghapus unduhan. API <g1>nonaktif secara default</g1>; aktifkan dengan <x2/> (dan nonaktifkan dengan <x3/>)."
-  },
-  "9da7ff11fa220d0e": {
-   "source": "MDM runs on 64-bit Linux with a desktop session. It is tested on Ubuntu 24.04, Debian 12 and Fedora, with GNOME, KDE Plasma, Xfce and Cinnamon, on X11 and in Wayland sessions. Pick one of these files (up to version 0.2.4, their names end in <x1/>, as in <x2/>). From the version after 0.5.2, each also comes for 64-bit ARM computers, with <x3/> in place of <x4/> (<x5/>); they are built and tested on GitHub's ARM machines. On ARM, MDM doesn't download gallery-dl itself (its author builds none for it): install it with your system's packages or pip.",
-   "text": "MDM berjalan di Linux 64-bit dengan sesi desktop. Ini diuji di Ubuntu 24.04, Debian 12, dan Fedora, dengan GNOME, KDE Plasma, Xfce, dan Cinnamon, di X11 dan di sesi Wayland. Pilih salah satu file ini (hingga versi 0.2.4, namanya diakhiri dengan <x1/>, seperti pada <x2/>). Mulai versi setelah 0.5.2, setiap file juga tersedia untuk komputer ARM 64-bit, dengan <x3/> menggantikan <x4/> (<x5/>); ini dibuat dan diuji di mesin ARM GitHub. Di ARM, MDM tidak mengunduh gallery-dl sendiri (pembuatnya tidak membuatnya untuk itu): instal dengan paket sistem Anda atau pip."
   },
   "9dab30f85bf98356": {
    "source": "Check four things: the extension is installed and turned on; Options → General → Use advanced browser integration is on and your browser is ticked; the file's type is in Options → File types; and the site isn't in the list of sites MDM leaves alone. Right-click a link and choose Download with Mister Download Manager to send any file whatever its type. More in Troubleshooting.",
@@ -11834,6 +11914,10 @@
    "source": "<g1>Sign-ins in the system's keychain</g1> (<g2>#44</g2>): debrid accounts, Sites Logins' passwords and the proxy's password are kept in Windows Credential Manager, in the system keyring on Linux (Secret Service: GNOME Keyring, KeePassXC and others) and in the macOS keychain, and the settings keep only a reference. Those already saved move there on the next start. A locked keyring is never unlocked and no keyring is ever asked for a password: without one, they stay in MDM's settings as before, sealed for your Windows account on Windows (the proxy's password now too, like Sites Logins' passwords). <g3>Options → Accounts</g3> says where they are. A portable copy keeps them in its own folder, and uninstalling with <g4>remove the download list and settings</g4> removes them from Credential Manager too.",
    "text": "<g1>Login di rantai kunci sistem</g1> (<g2>#44</g2>): akun debrid, kata sandi Login Situs, dan kata sandi proxy disimpan di Windows Credential Manager, di keyring sistem di Linux (Secret Service: GNOME Keyring, KeePassXC, dan lainnya) dan di rantai kunci macOS, dan pengaturan hanya menyimpan referensi. Yang sudah disimpan akan berpindah ke sana pada saat MDM dimulai berikutnya. Keyring yang terkunci tidak pernah dibuka dan tidak ada keyring yang pernah diminta kata sandi: tanpa kata sandi, mereka tetap di pengaturan MDM seperti sebelumnya, disegel untuk akun Windows Anda di Windows (kata sandi proxy sekarang juga, seperti kata sandi Login Situs). <g3>Opsi → Akun</g3> menunjukkan di mana mereka berada. Salinan portabel menyimpannya di foldernya sendiri, dan mencopot pemasangan dengan <g4>hapus daftar unduhan dan pengaturan</g4> juga menghapusnya dari Credential Manager."
   },
+  "a03eece63d9b5347": {
+   "source": "The setup's second step offers MDM's free video helpers: <g1>yt-dlp</g1>, which finds the video on a page, <g2>ffmpeg</g2>, which joins its picture and sound (on Windows; elsewhere MDM uses your system's), and <g3>Node.js</g3>, which YouTube needs, when your computer has no JavaScript runtime. Each says whether it is already there; one that isn't has its own <g4>Install</g4> button, and <g5>Yes, download them (recommended)</g5> gets every one that is missing. They download in the background, about 100 MB, once, each with its progress in its row, and go on if you close the window. Nothing is downloaded until you press one. <g6>Next</g6> leaves them for later: the video window offers them when you first need them. The step is left out when they are all there. More in <g7>Videos</g7>.",
+   "text": "Langkah kedua pengaturan menawarkan pembantu video gratis MDM: <g1>yt-dlp</g1>, yang menemukan video di halaman, <g2>ffmpeg</g2>, yang menggabungkan gambar dan suara (di Windows; di tempat lain MDM menggunakan sistem Anda), dan <g3>Node.js</g3>, yang dibutuhkan YouTube, jika komputer Anda tidak memiliki runtime JavaScript. Masing-masing menunjukkan apakah sudah ada; yang belum ada memiliki tombol <g4>Instal</g4> sendiri, dan <g5>Ya, unduh semuanya (disarankan)</g5> akan mengunduh semua yang hilang. Mereka mengunduh di latar belakang, sekitar 100 MB, sekali, masing-masing dengan progresnya di barisnya, dan akan terus berjalan jika Anda menutup jendela. Tidak ada yang diunduh sampai Anda menekan salah satunya. <g6>Berikutnya</g6> akan menunda pengunduhan untuk nanti: jendela video akan menawarkannya saat Anda pertama kali membutuhkannya. Langkah ini dilewati jika semuanya sudah ada. Lebih lanjut di <g7>Video</g7>."
+  },
   "a04886db62535b92": {
    "source": "A translation longer than the English ends in <g1>...</g1> where it doesn't fit; point at it to read it whole.",
    "text": "Terjemahan yang lebih panjang daripada teks bahasa Inggris akan diakhiri dengan <g1>...</g1> jika tidak muat. Arahkan kursor ke teks tersebut untuk membaca seluruhnya."
@@ -11929,10 +12013,6 @@
   "a186c2ecb83c1705": {
    "source": "Keep some speed for everything else",
    "text": "Sisakan kecepatan untuk keperluan lain"
-  },
-  "a18e9003d93b63fb": {
-   "source": "<g1>Installed with the setup:</g1> MDM starts in the language you chose in the setup.",
-   "text": "<g1>Diinstal dengan file instalasi:</g1> MDM dimulai dalam bahasa yang Anda pilih saat menjalankan file instalasi."
   },
   "a1929a4367eebbb2": {
    "source": "Turn it on",
@@ -12041,10 +12121,6 @@
   "a30bd98d3fe7b728": {
    "source": "Learn the download list →",
    "text": "Pelajari daftar unduhan →"
-  },
-  "a332d36c2ada2664": {
-   "source": "User names and passwords for sites that ask for them. <g1>New</g1> adds a row: the site (with a path if the login is only for part of it), the user name and the password. <g2>Edit</g2> and <g3>Remove</g3> change or delete the selected row. MDM uses the login for every download from that site. A login typed in <g4>Add URL</g4> (<g5>Use authorization</g5>) takes priority for that one download.",
-   "text": "Nama pengguna dan kata sandi untuk situs yang memintanya. <g1>Baru</g1> menambahkan baris: situs (dengan jalur jika login hanya untuk sebagian darinya), nama pengguna, dan kata sandi. <g2>Edit</g2> dan <g3>Hapus</g3> mengubah atau menghapus baris yang dipilih. MDM menggunakan login untuk setiap unduhan dari situs tersebut. Login yang diketik di <g4>Tambah URL</g4> (<g5>Gunakan otorisasi</g5>) memiliki prioritas untuk unduhan tersebut."
   },
   "a343897a0df86275": {
    "source": "Sounds",
@@ -12254,6 +12330,10 @@
    "source": "Get your file's checksum: on Windows with <x1/>, on macOS and Linux with <x2/>. It must match the file's line in SHA256SUMS.txt.",
    "text": "Dapatkan checksum file Anda: di Windows dengan <x1/>, di macOS dan Linux dengan <x2/>. Ini harus cocok dengan baris file di SHA256SUMS.txt."
   },
+  "a5a0a7f38aabd80f": {
+   "source": "<g1>Its menu</g1> (the arrow next to it, or <g2>↓</g2> when the button has the keyboard's focus): the video's title, length and site; its filters, when the qualities differ: <g3>All</g3>, <g4>Video</g4> (the picture with its sound) or <g5>Audio only</g5>, and the file type (MP4, WEBM, M4A, MP3...) or the picture's codec (AV1, VP9, H.264), kept for the site; <g6>Download best</g6> first (the best of what the filters keep), then one numbered line per quality under <g7>VIDEO</g7> and <g8>AUDIO</g8>, with its file type, codec, frame rate or bitrate and size (<x9/> <x10/>, as the Download video window says it), the best one marked, and <g11>Most compatible (H.264 + AAC)</g11> beside the resolution of the one that plays everywhere (<g12>Choose the quality</g12>); <g13>All qualities and subtitles...</g13>, which opens the <g14>Download video from a page</g14> window; then <g15>Put the button back in its corner</g15> (once you moved it on the site), <g16>Hide on this video</g16> (<g17>Esc</g17>), <g18>Hide the download button in full screen</g18>, <g19>Never on</g19> the site (MDM remembers the site), and <g20>Button settings...</g20>, which opens MDM's Options. The arrow keys move through it, <g21>Enter</g21> picks, <g22>Esc</g22> closes it.",
+   "text": "<g1>Menunya</g1> (panah di sebelahnya, atau <g2>↓</g2> saat tombol memiliki fokus keyboard): judul, durasi, dan situs video; filternya, saat kualitasnya berbeda: <g3>Semua</g3>, <g4>Video</g4> (gambar dengan suaranya) atau <g5>Audio saja</g5>, dan jenis file (MP4, WEBM, M4A, MP3...) atau codec gambar (AV1, VP9, H.264), disimpan untuk situs; <g6>Unduh terbaik</g6> terlebih dahulu (yang terbaik dari apa yang disimpan filter), lalu satu baris bernomor per kualitas di bawah <g7>VIDEO</g7> dan <g8>AUDIO</g8>, dengan jenis file, codec, kecepatan bingkai atau bitrate dan ukuran (<x9/> <x10/>, seperti yang dikatakan jendela Unduh video), yang terbaik ditandai, dan <g11>Paling kompatibel (H.264 + AAC)</g11> di samping resolusi yang diputar di mana saja (<g12>Pilih kualitas</g12>); <g13>Semua kualitas dan subtitel...</g13>, yang membuka jendela <g14>Unduh video dari halaman</g14>; lalu <g15>Kembalikan tombol ke sudut semula</g15> (setelah Anda memindahkannya di situs), <g16>Sembunyikan di video ini</g16> (<g17>Esc</g17>), <g18>Sembunyikan tombol unduh dalam layar penuh</g18>, <g19>Jangan pernah di</g19> situs (MDM mengingat situs), dan <g20>Pengaturan tombol...</g20>, yang membuka Opsi MDM. Tombol panah bergerak melaluinya, <g21>Enter</g21> memilih, <g22>Esc</g22> menutupnya."
+  },
   "a5afb35a23f4a21e": {
    "source": "Speed limiter",
    "text": "Pembatas kecepatan"
@@ -12317,6 +12397,10 @@
   "a67499fbcf74e61d": {
    "source": "A 256 KiB file",
    "text": "File 256 KiB"
+  },
+  "a683bb3b8ec14507": {
+   "source": "<g1>A Hugging Face model or dataset, a GitHub release.</g1> Paste the address of a model or dataset on Hugging Face, of a folder in one, or of a release on GitHub, in <g2>Add URL</g2> or here, and MDM lists every file in it, with its size and folder. See <g3>Models, datasets and releases</g3>.",
+   "text": "<g1>Model atau dataset Hugging Face, rilis GitHub.</g1> Tempel alamat model atau dataset di Hugging Face, atau folder di dalamnya, atau rilis di GitHub, di <g2>Tambah URL</g2> atau di sini, dan MDM akan mencantumkan setiap file di dalamnya, beserta ukuran dan foldernya. Lihat <g3>Model, dataset, dan rilis</g3>."
   },
   "a69373ac180f98a4": {
    "source": "The first build is long (up to an hour on a small server: the whole program is optimised as one). The image is small, about 175 MB: Debian's slim base, MDM's two programs and the certificates downloads are checked against. It needs no desktop libraries: MDM loads those only to open a window, which a server never does.",
@@ -12734,6 +12818,10 @@
    "source": ", <x1/>, <x2/>, <x3/>, <x4/> and <x5/> exit with code 1 when the app answers with an error (the API is off, an unknown action), as they do when the app isn't running.",
    "text": ", <x1/>, <x2/>, <x3/>, <x4/> dan <x5/> keluar dengan kode 1 ketika aplikasi menjawab dengan kesalahan (API mati, tindakan tidak dikenal), seperti yang terjadi ketika aplikasi tidak berjalan."
   },
+  "ac1cbe46f9402970": {
+   "source": "Windows 10 and 11 is the main platform, on 64-bit PCs (x64); from version 0.6.0, on Windows on ARM PCs and 32-bit Windows 10 too, each with files of its own. Linux is supported too, with an AppImage, a .deb, an .rpm and a .tar.gz in every release: since version 0.5.0 it isn't experimental any more, and it is checked on GNOME, KDE Plasma, Xfce and Cinnamon, in Wayland sessions too, and its packages in clean Ubuntu, Debian and Fedora systems. Still to come there: the Flatpak Firefox isn't checked yet, and screen readers (Orca) don't read MDM's windows yet. macOS builds (.dmg) come with every release too, and stay experimental. See Windows, Mac and Linux and Download.",
+   "text": "Windows 10 dan 11 adalah platform utama, pada PC 64-bit (x64); mulai versi 0.6.0, juga pada PC Windows on ARM dan Windows 10 32-bit, masing-masing dengan file tersendiri. Linux juga didukung, dengan AppImage, .deb, .rpm, dan .tar.gz di setiap rilis: sejak versi 0.5.0 tidak lagi eksperimental, dan telah diuji pada GNOME, KDE Plasma, Xfce, dan Cinnamon, juga dalam sesi Wayland, serta paketnya di sistem Ubuntu, Debian, dan Fedora yang bersih. Yang masih akan datang: Flatpak Firefox belum diuji, dan pembaca layar (Orca) belum dapat membaca jendela MDM. Build macOS (.dmg) juga disertakan di setiap rilis, dan tetap eksperimental. Lihat Windows, Mac dan Linux dan Unduh."
+  },
   "ac4b27cd07db9df5": {
    "source": "shows every option. A command that fails (the app isn't running, it answers with an error, a download breaks) exits with code 1. For example:",
    "text": "menampilkan semua opsi. Perintah yang gagal (aplikasi tidak berjalan, aplikasi memberikan jawaban berupa kesalahan, unduhan gagal) keluar dengan kode 1. Contoh:"
@@ -12777,10 +12865,6 @@
   "acda1dd9909e3d30": {
    "source": "Find a download in a long list — Mister Download Manager help",
    "text": "Mencari unduhan dalam daftar panjang — Bantuan Mister Download Manager"
-  },
-  "ace5b63f6d5b0c3c": {
-   "source": "Last updated 2026-11-25 · applies to the app, the browser extension and misterdownloadmanager.com",
-   "text": "Terakhir diperbarui 2026-11-25 · berlaku untuk aplikasi, ekstensi peramban, dan misterdownloadmanager.com"
   },
   "ace85960abd75e71": {
    "source": "The help pages' pictures (<x1/>) come from one list, <x2/>: <x3/> opens each window through MDM's own <x4/> command line in a test instance off the screen, crops and annotates it from the window's accessibility tree, and writes lossless WebP; <x5/> (CI) keeps the list, the pages and the files in step. The published ones are taken on GitHub's Windows runner (<x6/>).",
@@ -13010,9 +13094,9 @@
    "source": "If Mister Download Manager closes unexpectedly or stops responding, a <g1>crash report</g1> window opens. It shows what happened, lets you read the whole report, and can send it to the developers on GitHub. Each report helps fix the problem for everyone.",
    "text": "Jika Mister Download Manager ditutup secara tidak terduga atau berhenti merespons, jendela <g1>laporan crash</g1> akan terbuka. Jendela ini menunjukkan apa yang terjadi, menampilkan laporan lengkap, dan memungkinkan Anda mengirimkannya kepada pengembang melalui GitHub. Setiap laporan membantu memperbaiki masalah ini untuk semua orang."
   },
-  "afb4eff929c487fb": {
-   "source": "The quickest way is MDM's own copy of Node.js: click <g1>Install Node.js</g1> beside that message, or, in <g2>Helpers...</g2>, <g3>Install Node.js</g3> in the <g4>JavaScript runtime (for YouTube)</g4> row. The first start's helpers window offers it too, when your computer has no runtime. MDM downloads Node.js's newest long-term support (LTS) build for your system and processor from <g5>nodejs.org</g5> with its own downloader (about 40 MB on Windows, 60 MB on Linux and macOS; Windows x64, ARM64 and 32-bit, Linux x64 and ARM64, macOS), checks the release's checksum list against the signing keys of Node.js's releasers and the download against that list before it uses it, keeps only the <x6/> program in the <x7/> folder beside yt-dlp and ffmpeg, and from then on tells yt-dlp to use it. It keeps it up to date the way it keeps yt-dlp's (<g8>Keeping them up to date</g8>), never with an older version. 32-bit Windows gets the newest LTS line Node.js still builds for it, 22, which Node.js supports until April 2027; after that MDM has no Node.js for 32-bit Windows, and a runtime of your own (<g9>Use another program...</g9>) is needed there. MDM never installs a Node.js older than the LTS line current when that MDM was made, whatever nodejs.org's list says. The video is looked up again by itself once Node.js is in.",
-   "text": "Cara tercepat adalah menggunakan salinan Node.js milik MDM: klik <g1>Instal Node.js</g1> di samping pesan tersebut, atau, di <g2>Pembantu...</g2>, <g3>Instal Node.js</g3> di baris <g4>Runtime JavaScript (untuk YouTube)</g4>. Jendela pembantu saat pertama kali dimulai juga menawarkannya, jika komputer Anda tidak memiliki runtime. MDM mengunduh build dukungan jangka panjang (LTS) terbaru Node.js untuk sistem dan prosesor Anda dari <g5>nodejs.org</g5> dengan pengunduh sendiri (sekitar 40 MB di Windows, 60 MB di Linux dan macOS; Windows x64, ARM64 dan 32-bit, Linux x64 dan ARM64, macOS), memeriksa daftar checksum rilis terhadap kunci penandatanganan perilis Node.js dan unduhan terhadap daftar tersebut sebelum menggunakannya, hanya menyimpan program <x6/> di folder <x7/> di samping yt-dlp dan ffmpeg, dan sejak saat itu memberi tahu yt-dlp untuk menggunakannya. MDM terus memperbaruinya seperti memperbarui yt-dlp (<g8>Memperbarui</g8>), tidak pernah dengan versi yang lebih lama. Windows 32-bit mendapatkan Node.js jalur LTS terbaru yang masih dibuat untuknya, versi 22, yang didukung Node.js hingga April 2027; setelah itu MDM tidak memiliki Node.js untuk Windows 32-bit, dan runtime Anda sendiri (<g9>Gunakan program lain...</g9>) diperlukan di sana. MDM tidak pernah menginstal Node.js yang lebih lama dari jalur LTS yang berlaku saat MDM tersebut dibuat, apa pun yang dikatakan daftar nodejs.org. Video akan dicari lagi secara otomatis setelah Node.js terinstal."
+  "afb62db9dee045cd": {
+   "source": "Left empty, <g1>Save to</g1> puts each file in its category's folder (<g2>Options → Save to</g2>), or in General's folder when every download goes to one folder there. To put every file of the batch in one folder, type it there or choose it with <g3>...</g3>. Then click <g4>OK</g4>.",
+   "text": "Jika dibiarkan kosong, <g1>Simpan ke</g1> menempatkan setiap file di folder kategorinya (<g2>Opsi → Simpan ke</g2>), atau di folder Umum ketika setiap unduhan masuk ke satu folder di sana. Untuk menempatkan setiap file dari batch dalam satu folder, ketik di sana atau pilih dengan <g3>...</g3>. Lalu klik <g4>OK</g4>."
   },
   "afb8fb4785d0361e": {
    "source": "Delete the selected downloads from the list (asks first, unless you turned the question off; their files stay unless you tick the box)",
@@ -13098,9 +13182,9 @@
    "source": "Keyboard shortcuts",
    "text": "Pintasan keyboard"
   },
-  "b1286285f8338dd7": {
-   "source": "Make a <x1/> of a file or folder (peers find it through the DHT).",
-   "text": "Membuat <x1/> dari file atau folder (peer dapat menemukannya melalui DHT)."
+  "b12be233c03e6c85": {
+   "source": "On its first start MDM opens one <g1>Welcome to Mister Download Manager</g1> window that walks you through what it needs, a step at a time: the steps are named on top, <g2>Back</g2> and <g3>Next</g3> move between them, and <g4>Finish</g4> on the last one closes it. Each step can be passed with <g5>Next</g5> without doing anything, <g6>Close</g6> or the window's × ends the setup at any step, and once it is finished or closed it doesn't come back: everything in it stays in the menus. Steps that aren't needed are left out.",
+   "text": "Pada saat pertama kali dijalankan, MDM membuka jendela <g1>Selamat datang di Mister Download Manager</g1> yang memandu Anda melalui apa yang dibutuhkan, langkah demi langkah: langkah-langkah diberi nama di bagian atas, <g2>Kembali</g2> dan <g3>Berikutnya</g3> untuk berpindah antar langkah, dan <g4>Selesai</g4> pada langkah terakhir untuk menutupnya. Setiap langkah dapat dilewati dengan <g5>Berikutnya</g5> tanpa melakukan apa pun, <g6>Tutup</g6> atau tombol × pada jendela akan mengakhiri pengaturan pada langkah apa pun, dan setelah selesai atau ditutup, jendela ini tidak akan muncul lagi: semua pengaturannya tetap ada di menu. Langkah-langkah yang tidak diperlukan akan dilewati."
   },
   "b131e9b7540e88e0": {
    "source": "The browser can't find the small helper program it talks to. It is registered when MDM is installed.",
@@ -13193,10 +13277,6 @@
   "b2181eccf65e86be": {
    "source": "This <g1>website</g1> counts visits with <g2>Statcounter</g2>, which sets a cookie and sees your IP address; it runs only on the website, never in the app.",
    "text": "Situs <g1>web</g1> ini menghitung kunjungan dengan <g2>Statcounter</g2>, yang mengatur cookie dan melihat alamat IP Anda; ini hanya berjalan di situs web, tidak pernah di aplikasi."
-  },
-  "b21b0cc3853450de": {
-   "source": "On Windows, when OpenGL fails on a card without Direct3D 12, MDM draws with Direct3D on Microsoft's software renderer (WARP) from the next start, and <g1>View → Draw with</g1> says why: OpenGL couldn't start, it is too old to draw MDM (older than 3.0, such as Intel's first HD Graphics, whose OpenGL 2.1 drew MDM's windows as garbage), its first window didn't show within 10 seconds, or MDM froze inside the graphics driver while OpenGL showed a frame (the older Intel HD Graphics and AMD Radeon cards' drivers did). Choosing <g2>OpenGL</g2> there tries it again.",
-   "text": "Di Windows, ketika OpenGL gagal pada kartu tanpa Direct3D 12, MDM akan merender dengan Direct3D pada perender perangkat lunak Microsoft (WARP) mulai dari awal berikutnya, dan <g1>Tampilan → Render dengan</g1> akan menyatakan alasannya: OpenGL tidak dapat dimulai, terlalu lama untuk merender MDM (lebih lama dari 3.0, seperti Intel HD Graphics pertama, yang OpenGL 2.1-nya merender jendela MDM sebagai sampah), jendela pertamanya tidak muncul dalam 10 detik, atau MDM macet di dalam driver grafis saat OpenGL menampilkan bingkai (driver kartu Intel HD Graphics dan AMD Radeon yang lebih lama melakukannya). Memilih <g2>OpenGL</g2> di sana akan mencobanya lagi."
   },
   "b23baab9a4561a1d": {
    "source": "Pauses running downloads.",
@@ -13373,6 +13453,10 @@
   "b41b3b1523ec47c0": {
    "source": "With a debrid account, torrents and magnet links can go to the service instead of to peers, and MDM downloads the files from it over HTTP: see <g1>Torrents through the service</g1>.",
    "text": "Dengan akun debrid, torrent dan tautan magnet dapat diarahkan ke layanan tersebut alih-alih ke rekan, dan MDM mengunduh file dari sana melalui HTTP: lihat <g1>Torrent melalui layanan</g1>."
+  },
+  "b434b184493a9dcf": {
+   "source": "Add the extension to each browser you use, as below: Firefox from its add-ons store, the others from the Chrome Web Store. On the first start this is a step of the setup window. Until a browser's extension has reached MDM, MDM's <g1>Add Mister Download Manager to your browser</g1> window opens at each later start: it lists the browsers it found, and <g2>Add the extension</g2> opens the store's page in that browser. <g3>Install it by hand</g3> opens the steps for loading it without the store; <g4>Don't ask again</g4> stops the window.",
+   "text": "Tambahkan ekstensi ke setiap peramban yang Anda gunakan, seperti di bawah ini: Firefox dari toko add-on-nya, yang lain dari Chrome Web Store. Pada permulaan pertama, ini adalah langkah dari jendela pengaturan. Sampai ekstensi peramban mencapai MDM, jendela <g1>Tambahkan Mister Download Manager ke browser Anda</g1> MDM akan terbuka setiap kali dimulai: ini mencantumkan peramban yang ditemukan, dan <g2>Tambahkan ekstensi</g2> membuka halaman toko di peramban tersebut. <g3>Instalasi manual</g3> membuka langkah-langkah untuk memuatnya tanpa toko; <g4>Jangan tanya lagi</g4> menghentikan jendela."
   },
   "b43709818a581c9e": {
    "source": "Mister Download Manager keeps the layout IDM users know, brings your IDM list over, and costs nothing: free and open source, with no trial, no ads and no sign-up. Below it, nine other free download managers people use instead of IDM, compared honestly.",
@@ -13766,6 +13850,10 @@
    "source": "AI assistants (MCP) — Mister Download Manager help",
    "text": "Asisten AI (MCP) — Bantuan Mister Download Manager"
   },
+  "b96343aebc14f95f": {
+   "source": "<g1>Customize MDM Download panels in browsers → Edit...</g1> — the download button over videos on web pages: turn it off, choose its <g2>Button size</g2> (<g3>80%</g3>, <g4>100%</g4> or <g5>120%</g5>, and <g6>Automatic</g6>, as installed: only the logo, the arrow and ✕ in a feed and over a small player, its words over a big one; <g7>Full</g7>, its words wherever they fit; or <g8>Compact</g8>, only the logo, the arrow and ✕ on every video), or list the sites it never shows on (separate them by spaces; wildcards like <x9/>, <x10/> or <x11/> work). See <g12>Browser integration</g12>.",
+   "text": "<g1>Sesuaikan panel Unduhan MDM di peramban → Edit...</g1> — tombol unduh di atas video pada halaman web: matikan, pilih <g2>Ukuran tombol</g2> (<g3>80%</g3>, <g4>100%</g4> atau <g5>120%</g5>, dan <g6>Otomatis</g6>, seperti yang terinstal: hanya logo, panah, dan ✕ di feed dan di atas pemutar kecil, kata-katanya di atas pemutar besar; <g7>Penuh</g7>, kata-katanya di mana pun muat; atau <g8>Ringkas</g8>, hanya logo, panah, dan ✕ di setiap video), atau daftar situs yang tidak pernah menampilkannya (pisahkan dengan spasi; wildcard seperti <x9/>, <x10/> atau <x11/> berfungsi). Lihat <g12>Integrasi browser</g12>."
+  },
   "b96597d534e090d4": {
    "source": "100 MiB, 150 ms latency, 4 MB/s per connection",
    "text": "100 MiB, latensi 150 md, 4 MB/dtk per koneksi"
@@ -13798,6 +13886,10 @@
    "source": "All the ways to add a download →",
    "text": "Semua cara untuk menambahkan unduhan →"
   },
+  "ba396576420ac8b0": {
+   "source": "<g1>A Hugging Face model or dataset</g1>: <x2/> or <x3/>, the whole repository.",
+   "text": "<g1>Model atau dataset Hugging Face</g1>: <x2/> atau <x3/>, seluruh repositori."
+  },
   "ba46e50250a22768": {
    "source": "Within two seconds it shows in <g1>View → Theme</g1>, under the built-in themes, by the <x2/> it gives itself. Pick it and the whole window changes at once. After you edit the file, pick it again in <g3>View → Theme</g3> to see the change. <g4>View → Dark Mode support</g4> and <g5>Always dark</g5> switch between its light and dark side.",
    "text": "Dalam dua detik, itu akan muncul di <g1>Tampilan → Tema</g1>, di bawah tema bawaan, dengan <x2/> yang diberikannya sendiri. Pilih dan seluruh jendela akan berubah sekaligus. Setelah Anda mengedit file, pilih lagi di <g3>Tampilan → Tema</g3> untuk melihat perubahannya. <g4>Tampilan → Dukungan Mode Gelap</g4> dan <g5>Selalu gelap</g5> beralih antara sisi terang dan gelapnya."
@@ -13821,6 +13913,10 @@
   "ba7398fafefc4533": {
    "source": "Peak memory",
    "text": "Memori puncak"
+  },
+  "ba81ef3a5c14665b": {
+   "source": "<g1>Browser extension</g1>: each browser MDM found, with <g2>Add the extension</g2> for it, as in <g3>Browser integration</g3>. Left out when a browser's extension already reached MDM, or in a portable copy.",
+   "text": "<g1>Ekstensi browser</g1>: setiap browser yang ditemukan MDM, dengan <g2>Tambahkan ekstensi</g2> untuknya, seperti pada <g3>Integrasi browser</g3>. Dilewati jika ekstensi browser sudah terhubung ke MDM, atau dalam salinan portabel."
   },
   "ba959f6ef5cd85fd": {
    "source": "Remote control",
@@ -13873,10 +13969,6 @@
   "bb66b5a231ef607c": {
    "source": "<g1>The time</g1> is measured from the download's own connections, as each one opens: MDM sends nothing extra to the server. It is an estimate (the time to open a connection, divided by its round trips: one for http, two for https), so it says <g2>about</g2>. The quickest connection counts.",
    "text": "<g1>Waktu</g1> diukur dari koneksi unduhan itu sendiri, saat masing-masing terbuka: MDM tidak mengirim apa pun tambahan ke server. Ini adalah perkiraan (waktu untuk membuka koneksi, dibagi dengan perjalanan pulang-perginya: satu untuk http, dua untuk https), jadi dikatakan <g2>sekitar</g2>. Koneksi tercepat yang dihitung."
-  },
-  "bb6e18e2b1d6d99a": {
-   "source": "Downloads the extension catches, and <g1>Download with Mister Download Manager</g1> on a link, then go to the server instead of this computer. The browser's cookies are not sent to the server: a download that needs you to be signed in to a site stays with this computer.",
-   "text": "Unduhan yang ditangkap ekstensi, dan <g1>Unduh dengan Mister Download Manager</g1> pada tautan, kemudian akan masuk ke server, bukan ke komputer ini. Cookie peramban tidak dikirim ke server: unduhan yang mengharuskan Anda masuk ke situs akan tetap di komputer ini."
   },
   "bb7ddff510dd3161": {
    "source": "If your network gives a proxy auto-config (PAC) script, type its address, or pick the file, under <g1>Use automatic configuration script</g1>. MDM fetches it and asks it which way each download goes (<x2/>, <x3/> or <x4/>), as browsers do. Until it has been fetched, or if it can't be, MDM uses the system's settings.",
@@ -14137,10 +14229,6 @@
   "bf124e15a5fd6568": {
    "source": "Open the first menu (<g1>Tasks</g1>); on a Mac <g2>Ctrl+F2</g2>",
    "text": "Buka menu pertama (<g1>Tugas</g1>); di Mac <g2>Ctrl+F2</g2>"
-  },
-  "bf1c4ba30d7b2674": {
-   "source": "<g1>Customize MDM Download panels in browsers → Edit...</g1> — the download button over videos on web pages: turn it off, choose its <g2>Button size</g2> (<g3>Automatic</g3>, as installed: only the logo, the arrow and ✕ in a feed and over a small player, its words over a big one; <g4>Full</g4>, its words wherever they fit; or <g5>Compact</g5>, only the logo, the arrow and ✕ on every video), or list the sites it never shows on (separate them by spaces; wildcards like <x6/>, <x7/> or <x8/> work). See <g9>Browser integration</g9>.",
-   "text": "<g1>Sesuaikan panel Unduhan MDM di peramban → Edit...</g1> — tombol unduh di atas video pada halaman web: matikan, pilih <g2>Ukuran tombol</g2> (<g3>Otomatis</g3>, seperti saat diinstal: hanya logo, panah, dan ✕ di feed dan di atas pemutar kecil, kata-katanya di atas pemutar besar; <g4>Penuh</g4>, kata-katanya di mana pun muat; atau <g5>Ringkas</g5>, hanya logo, panah, dan ✕ di setiap video), atau daftar situs tempat tombol tidak pernah muncul (pisahkan dengan spasi; wildcard seperti <x6/>, <x7/>, atau <x8/> berfungsi). Lihat <g9>Integrasi peramban</g9>."
   },
   "bf34a44f6d2c1b84": {
    "source": "For Ubuntu, Debian, Mint and Pop!_OS: <x1/>. It brings the libraries MDM needs.",
@@ -14481,10 +14569,6 @@
   "c454f486bae227dd": {
    "source": "A 180 GB download that unpacks to 200 GB normally needs 380 GB: the archive and its files at once. With <g1>HatchZip</g1>, a free extractor, installed, tick <g2>Extract in place with HatchZip</g2> in <g3>Options → Archives</g3>: the archive shrinks as its files come out, so a little over 200 GB is enough. HatchZip checks that everything fits and that the password is right before it changes anything. If it stops partway, the files so far stay beside the archive and <g4>Extract</g4> continues.",
    "text": "Unduhan 180 GB yang membongkar menjadi 200 GB biasanya memerlukan 380 GB: arsip dan file-nya sekaligus. Dengan <g1>HatchZip</g1>, sebuah ekstraktor gratis, terinstal, centang <g2>Ekstrak di tempat dengan HatchZip</g2> di <g3>Opsi → Arsip</g3>: arsip akan menyusut saat file-nya keluar, sehingga sedikit di atas 200 GB sudah cukup. HatchZip memeriksa apakah semuanya muat dan kata sandi sudah benar sebelum mengubah apa pun. Jika berhenti di tengah jalan, file-file yang sudah ada tetap berada di samping arsip dan <g4>Ekstrak</g4> akan melanjutkan."
-  },
-  "c45503a700d34859": {
-   "source": "<g1>Turn it off, make it smaller, or see the sites it stays off</g1>: <g2>Options → General → Customize MDM Download panels in browsers → Edit...</g2>. <g3>Button size</g3> is <g4>Automatic</g4> as installed (round in a feed and over a small player, its words over a big one), <g5>Full</g5> (its words wherever they fit) or <g6>Compact</g6> (only MDM's logo, the arrow and <g7>✕</g7>, on every video, as on a small one); after a click it still says what happened in words. Pages already open follow a change within a few seconds, without a reload.",
-   "text": "<g1>Matikan, perkecil, atau lihat situs tempat tombol tidak muncul</g1>: <g2>Opsi → Umum → Sesuaikan panel Unduhan MDM di peramban → Edit...</g2>. <g3>Ukuran tombol</g3> adalah <g4>Otomatis</g4> saat diinstal (bulat di feed dan di atas pemutar kecil, dengan tulisannya di atas pemutar besar), <g5>Penuh</g5> (tulisannya di mana pun tulisan itu muat) atau <g6>Ringkas</g6> (hanya logo MDM, panah dan <g7>✕</g7>, di setiap video, seperti pada video kecil); setelah diklik, tombol masih mengatakan apa yang terjadi dalam kata-kata. Halaman yang sudah terbuka akan mengikuti perubahan dalam beberapa detik, tanpa memuat ulang."
   },
   "c45a317f4447914b": {
    "source": "WinGet downloads the setup and installs MDM without the setup's questions.",
@@ -14906,10 +14990,6 @@
    "source": "In IDM, choose <g1>Tasks → Export → To IDM export file</g1>. In MDM, choose <g2>Tasks → Import → From IDM export file</g2> and pick that <x3/> file. Each download comes over with its address, the page it came from (its referrer) and its cookies. The downloads join the <g4>Main download queue</g4>, ready to start.",
    "text": "Di IDM, pilih <g1>Tugas → Ekspor → Ke file ekspor IDM</g1>. Di MDM, pilih <g2>Tugas → Impor → Dari file ekspor IDM</g2> dan pilih file <x3/> tersebut. Setiap unduhan akan berpindah dengan alamatnya, halaman asalnya (perujuknya), dan cookie-nya. Unduhan akan bergabung ke <g4>Antrean unduhan utama</g4>, siap untuk dimulai."
   },
-  "c9f7c3a70c225d2f": {
-   "source": "Windows 10 and 11 is the main platform, on 64-bit PCs (x64); from the version after 0.5.2, on Windows on ARM PCs and 32-bit Windows 10 too, each with files of its own. Linux is supported too, with an AppImage, a .deb, an .rpm and a .tar.gz in every release: since version 0.5.0 it isn't experimental any more, and it is checked on GNOME, KDE Plasma, Xfce and Cinnamon, in Wayland sessions too, and its packages in clean Ubuntu, Debian and Fedora systems. Still to come there: the Flatpak Firefox isn't checked yet, and screen readers (Orca) don't read MDM's windows yet. macOS builds (.dmg) come with every release too, and stay experimental. See <g1>Windows, Mac and Linux</g1> and <g2>Download</g2>.",
-   "text": "Windows 10 dan 11 adalah platform utama, pada PC 64-bit (x64); mulai versi setelah 0.5.2, juga pada PC Windows di ARM dan Windows 10 32-bit, masing-masing dengan file tersendiri. Linux juga didukung, dengan AppImage, .deb, .rpm, dan .tar.gz di setiap rilis: sejak versi 0.5.0 tidak lagi eksperimental, dan telah diperiksa di GNOME, KDE Plasma, Xfce, dan Cinnamon, juga di sesi Wayland, serta paketnya di sistem Ubuntu, Debian, dan Fedora yang bersih. Yang masih akan datang: Flatpak Firefox belum diperiksa, dan pembaca layar (Orca) belum membaca jendela MDM. Build macOS (.dmg) juga disertakan di setiap rilis, dan tetap eksperimental. Lihat <g1>Windows, Mac, dan Linux</g1> serta <g2>Unduh</g2>."
-  },
   "ca0e326ce66aa589": {
    "source": "<g1>Aero</g1>: Windows 7's look: glossy buttons that turn light blue under the pointer, quiet check boxes, a glossy green progress bar, a glassy title bar with the title on a soft glow (on Windows), and glossy icons drawn for MDM in that manner.",
    "text": "<g1>Aero</g1>: Tampilan Windows 7: tombol mengilap yang berubah menjadi biru muda di bawah penunjuk, kotak centang yang tenang, bilah progres hijau mengilap, bilah judul berkaca dengan judul pada cahaya lembut (di Windows), dan ikon mengilap yang digambar untuk MDM dengan gaya tersebut."
@@ -15170,6 +15250,10 @@
    "source": "The help names Windows' screen readers, Narrator and NVDA. If you use a screen reader on Linux or macOS, please <g1>tell us how it goes</g1>.",
    "text": "Bantuan menyebutkan pembaca layar Windows, Narrator dan NVDA. Jika Anda menggunakan pembaca layar di Linux atau macOS, mohon <g1>beritahu kami bagaimana hasilnya</g1>."
   },
+  "cd6525d4afc20d70": {
+   "source": "<g1>Turn it off, make it smaller, or see the sites it stays off</g1>: <g2>Options → General → Customize MDM Download panels in browsers → Edit...</g2>. <g3>Button size</g3> has a <g4>80%</g4>, <g5>100%</g5> or <g6>120%</g6> scale beside it, and is <g7>Automatic</g7> as installed (round in a feed and over a small player, its words over a big one), <g8>Full</g8> (its words wherever they fit) or <g9>Compact</g9> (only MDM's logo, the arrow and <g10>✕</g10>, on every video, as on a small one); after a click it still says what happened in words. Pages already open follow a change within a few seconds, without a reload.",
+   "text": "<g1>Matikan, perkecil, atau lihat situs tempat tombol tetap mati</g1>: <g2>Opsi → Umum → Sesuaikan panel Unduhan MDM di peramban → Edit...</g2>. <g3>Ukuran tombol</g3> memiliki skala <g4>80%</g4>, <g5>100%</g5> atau <g6>120%</g6> di sampingnya, dan <g7>Otomatis</g7> seperti yang diinstal (bulat di umpan dan di atas pemutar kecil, kata-katanya di atas yang besar), <g8>Penuh</g8> (kata-katanya di mana pun cocok) atau <g9>Ringkas</g9> (hanya logo MDM, panah dan <g10>✕</g10>, di setiap video, seperti pada yang kecil); setelah diklik, tombol masih mengatakan apa yang terjadi dalam kata-kata. Halaman yang sudah terbuka mengikuti perubahan dalam beberapa detik, tanpa memuat ulang."
+  },
   "cd673e3701cb16c6": {
    "source": "<g1>Allow more than 32 connections</g1> — raises the most to 128, for the number above and for the exceptions. Most servers allow far fewer from one address; MDM notices and asks those for fewer. Turned off again, any higher number comes back to 32.",
    "text": "<g1>Izinkan lebih dari 32 koneksi</g1> — menaikkan batas maksimum menjadi 128 untuk jumlah di atas dan untuk pengecualian. Kebanyakan server mengizinkan jauh lebih sedikit koneksi dari satu alamat; MDM mendeteksinya dan meminta jumlah yang lebih sedikit. Jika opsi ini dinonaktifkan kembali, jumlah yang lebih tinggi akan dikembalikan ke 32."
@@ -15329,10 +15413,6 @@
   "cff4eab6a41db11c": {
    "source": "How do I download a video from YouTube or another site? — Mister Download Manager",
    "text": "Bagaimana cara mengunduh video dari YouTube atau situs lain? — Mister Download Manager"
-  },
-  "cff5ebbbf76816bf": {
-   "source": "The windows are drawn with OpenGL (eframe's glow) or with the system's own graphics API through eframe's wgpu, with that one backend only: Direct3D 12 on Windows (the default there), Vulkan on Linux, Metal on macOS (choices there; OpenGL stays their default until real graphics cards have tried them, #206). View → Draw with picks one, from the next start. One code path does it on every system (<x1/>): when the chosen one can't start, the other one is tried, so the windows always open. A watched start with the system's API leaves a marker until its first frame is drawn: a start that ends before it (a crash inside the driver), one whose first frame doesn't come within 10 seconds (MDM then starts again with OpenGL), or a graphics card lost twice in 10 minutes is remembered with its reason, which the menu shows. With OpenGL, a window eframe can't paint (its context can't be made current on it, its frame can't be shown) is skipped and painted again 100 ms later; one whose paints keep failing for seconds is a lost device too (MDM starts again; twice in 10 minutes, OpenGL is remembered as failing on Windows). The fork's eframe tells MDM through its viewport hooks (<x2/>, #1448).",
-   "text": "Jendela digambar dengan OpenGL (glow eframe) atau dengan API grafis sistem itu sendiri melalui wgpu eframe, hanya dengan satu backend itu: Direct3D 12 di Windows (default di sana), Vulkan di Linux, Metal di macOS (pilihan di sana; OpenGL tetap menjadi default hingga kartu grafis sungguhan telah mencobanya, #206). Tampilan → Render dengan memilih salah satu, dari mulai berikutnya. Satu jalur kode melakukannya di setiap sistem (<x1/>): ketika yang dipilih tidak dapat dimulai, yang lain dicoba, sehingga jendela selalu terbuka. Mulai yang diawasi dengan API sistem meninggalkan penanda hingga bingkai pertamanya digambar: mulai yang berakhir sebelumnya (crash di dalam driver), yang bingkai pertamanya tidak datang dalam 10 detik (MDM kemudian mulai lagi dengan OpenGL), atau kartu grafis yang hilang dua kali dalam 10 menit diingat dengan alasannya, yang ditampilkan menu. Dengan OpenGL, jendela yang tidak dapat digambar eframe (konteksnya tidak dapat dibuat saat ini di atasnya, bingkainya tidak dapat ditampilkan) dilewati dan digambar lagi 100 ms kemudian; yang gambarnya terus gagal selama beberapa detik juga merupakan perangkat yang hilang (MDM mulai lagi; dua kali dalam 10 menit, OpenGL diingat sebagai gagal di Windows). Eframe fork memberi tahu MDM melalui hook viewport-nya (<x2/>, #1448)."
   },
   "d00db779505eaf02": {
    "source": "<g1>Don't show pop-ups while a full-screen app or presentation is running</g1> — on by default. While a full-screen game, app or video, a presentation or the locked screen is on, <g2>Download complete</g2> and the other windows MDM opens by itself wait, and show when you're back, one after the other in the order they came: <g3>Downloads complete</g3>, a new version found by the weekly check, the download limit's warning, an archive's test result, its password question or its call for 7-Zip, the browser extension's offer, a link copied to the clipboard, and the crash report. The downloads carry on as usual, and the tray icon's tip says how many windows wait. The windows you open yourself, links you click in the browser and the <g4>Turn off computer</g4> countdown (so you can still cancel it) show at once. On Windows MDM goes by the state Windows holds its own notifications by (games, presentation mode, full-screen apps and videos), by a frameless window that fills its whole screen in front (on any of your screens), and by the screen's lock; on Linux by the session's lock, and by a full-screen window under X11 or XWayland (on Wayland, a native program's full screen can't be seen). On macOS a full-screen app has a Space of its own, which MDM's windows never open over. Untick it and the windows show at once, as before.",
@@ -15590,6 +15670,10 @@
    "source": "on Windows), and MDM follows each new wallpaper's colours within two seconds. <g1>The guide</g1> shows which colour goes where.",
    "text": "di Windows), dan MDM akan mengikuti warna setiap wallpaper baru dalam waktu dua detik. <g1>Panduan</g1> menunjukkan warna mana yang ditempatkan di mana."
   },
+  "d3922793116d61af": {
+   "source": "<g1>Limits.</g1> Both sites let only so many requests through from a computer without an account (GitHub 60 an hour). When the limit is reached, the address's row says <g2>Try again later</g2>, and its tip says for how long.",
+   "text": "<g1>Batas.</g1> Kedua situs hanya mengizinkan begitu banyak permintaan dari komputer tanpa akun (GitHub 60 per jam). Ketika batas tercapai, baris alamat akan mengatakan <g2>Coba lagi nanti</g2>, dan tipnya akan mengatakan berapa lama."
+  },
   "d394340a01c7d63d": {
    "source": "Gopeed",
    "text": "Gopeed"
@@ -15801,6 +15885,10 @@
   "d5eaf42248247319": {
    "source": "<g1>The queues</g1>: start and stop each one.",
    "text": "<g1>Antrean</g1>: mulai dan hentikan setiap antrean."
+  },
+  "d5f27029858206e6": {
+   "source": "Paste one of these addresses in <g1>Add URL</g1> (<g2>Ctrl+N</g2>), or in Link grabber with <g3>Ctrl+V</g3> (copied, imported or dropped works too):",
+   "text": "Tempel salah satu alamat ini di <g1>Tambah URL</g1> (<g2>Ctrl+N</g2>), atau di Link grabber dengan <g3>Ctrl+V</g3> (disalin, diimpor, atau dijatuhkan juga berfungsi):"
   },
   "d5f572f1d13e144c": {
    "source": "Fair",
@@ -16022,6 +16110,10 @@
    "source": "<g1>Credentials stay with their site.</g1> Logins and cookies are sent only to the host they belong to, even across redirects.",
    "text": "<g1>Kredensial tetap di situsnya.</g1> Login dan cookie hanya dikirim ke host tempat mereka berada, bahkan saat pengalihan."
   },
+  "d9665014ce0669b0": {
+   "source": "On Windows, when OpenGL fails on a card without Direct3D 12, MDM draws with Direct3D on Microsoft's software renderer (WARP) from the next start, and <g1>View → Draw with</g1> says why: OpenGL couldn't start, it is too old to draw MDM (older than 3.0, such as Intel's first HD Graphics, whose OpenGL 2.1 drew MDM's windows as garbage), its first window didn't show within 10 seconds, MDM froze inside the graphics driver while OpenGL showed a frame (the older Intel HD Graphics and AMD Radeon cards' drivers did), or MDM crashed inside it (<g2>OpenGL crashed inside its driver here</g2>). Choosing <g3>OpenGL</g3> there tries it again; so does a graphics driver update.",
+   "text": "Di Windows, saat OpenGL gagal pada kartu tanpa Direct3D 12, MDM akan merender dengan Direct3D pada perender perangkat lunak Microsoft (WARP) mulai dari awal berikutnya, dan <g1>Tampilan → Render dengan</g1> akan menjelaskan alasannya: OpenGL tidak dapat dimulai, terlalu lama untuk merender MDM (lebih lama dari 3.0, seperti Intel HD Graphics generasi pertama, yang OpenGL 2.1-nya merender jendela MDM sebagai sampah), jendela pertamanya tidak muncul dalam 10 detik, MDM membeku di dalam driver grafis saat OpenGL menampilkan bingkai (driver Intel HD Graphics dan kartu AMD Radeon yang lebih lama melakukannya), atau MDM mogok di dalamnya (<g2>OpenGL mogok di dalam drivernya di sini</g2>). Memilih <g3>OpenGL</g3> di sana akan mencobanya lagi; begitu pula pembaruan driver grafis."
+  },
   "d9686c3ea1ff4f0a": {
    "source": "Install the extension from its page in the Chrome Web Store, <g1>Mister Download Manager</g1>: click <g2>Add to Chrome</g2>. In Edge the button is <g3>Get</g3>: Edge first asks to <g4>Allow extensions from other stores</g4> (click <g5>Allow</g5>), then <g6>Add extension</g6>. The browser keeps it updated. MDM's <g7>Add Mister Download Manager to your browser</g7> window opens that page in each browser for you, and Chrome may offer it by itself at its next start once MDM is installed.",
    "text": "Instal ekstensi dari halamannya di Chrome Web Store, <g1>Mister Download Manager</g1>: klik <g2>Tambahkan ke Chrome</g2>. Di Edge, tombolnya bernama <g3>Dapatkan</g3>. Edge akan meminta Anda <g4>Izinkan ekstensi dari toko lain</g4> terlebih dahulu (klik <g5>Izinkan</g5>), lalu klik <g6>Tambahkan ekstensi</g6>. Browser akan memperbaruinya secara otomatis. Jendela MDM <g7>Tambahkan Mister Download Manager ke browser Anda</g7> akan membuka halaman tersebut di setiap browser. Setelah MDM terinstal, Chrome mungkin menawarkan ekstensi ini saat berikutnya dimulai."
@@ -16057,10 +16149,6 @@
   "da1944611f1b4a60": {
    "source": "<g1>Off by default</g1>, and nothing listens while it is off.",
    "text": "<g1>Mati secara default</g1>, dan tidak ada yang mendengarkan saat mati."
-  },
-  "da1ff3527672bb25": {
-   "source": "These three are for 64-bit Windows on an Intel or AMD processor (x64), the usual PC. From the version after 0.5.2, each comes for two more kinds of PC too, with the processor in its name:",
-   "text": "Ketiga file ini untuk Windows 64-bit pada prosesor Intel atau AMD (x64), yaitu PC pada umumnya. Mulai versi setelah 0.5.2, setiap file juga tersedia untuk dua jenis PC lainnya, dengan nama prosesor di namanya:"
   },
   "da24d37fd1911825": {
    "source": "<g1>The .deb and .rpm bring what MDM's window needs</g1> (part of <g2>#164</g2>): on a system without libxkbcommon-x11 (a minimal install, a container), MDM installed from them stopped at start under X11 and XWayland, and without the CA certificates (Debian's minimal install) no download started. They now require both, and EGL for Wayland windows. They also require the glibc the programs were built against, read from the programs themselves, instead of a fixed version: a package built on a newer system no longer installs on an older one where it can't start.",
@@ -16229,6 +16317,10 @@
   "dc31d8975851fca3": {
    "source": "Windows: no more crash when a screen is unplugged, turned off or rearranged while MDM runs (<g1>#335</g1>).",
    "text": "Windows: tidak ada lagi crash saat layar dicabut, dimatikan, atau diatur ulang saat MDM berjalan (<g1>#335</g1>)."
+  },
+  "dc4198e428ea091f": {
+   "source": "Windows on ARM · 32-bit Windows",
+   "text": "Windows di ARM · Windows 32-bit"
   },
   "dc773cbdc650469f": {
    "source": "Site rules",
@@ -16490,10 +16582,6 @@
    "source": "<g1><g2></g2>0.03 s</g1><g3></g3>",
    "text": "<g1><g2></g2>0,03 dtk</g1><g3></g3>"
   },
-  "e12c33d490b22dd0": {
-   "source": "The single-instance channel (a token-protected local socket), the data folder, and the capture rules shared by the app and the host",
-   "text": "Saluran satu instans (soket lokal yang dilindungi token), folder data, dan aturan penangkapan yang dibagikan oleh aplikasi dan host"
-  },
   "e1369e1deca0e4ec": {
    "source": "The passwords (these, the proxy's and the debrid accounts') are kept in the system's keychain: Windows Credential Manager, the keyring on Linux (Secret Service: GNOME Keyring, KeePassXC and others) or the macOS keychain; MDM's settings keep only a reference. A locked keyring is never unlocked for MDM: without one, they stay in MDM's settings, sealed for your Windows account on Windows. <g1>Options → Accounts</g1> says where they are. A <g2>portable copy</g2> keeps them in its own folder.",
    "text": "Kata sandi (ini, kata sandi proxy, dan akun debrid) disimpan di rantai kunci sistem: Windows Credential Manager, keyring di Linux (Layanan Rahasia: GNOME Keyring, KeePassXC, dan lainnya) atau rantai kunci macOS; pengaturan MDM hanya menyimpan referensi. Keyring yang terkunci tidak pernah dibuka untuk MDM: tanpa keyring, kata sandi tetap ada di pengaturan MDM, disegel untuk akun Windows Anda di Windows. <g1>Opsi → Akun</g1> menyatakan di mana kata sandi tersebut berada. <g2>Salinan portabel</g2> menyimpannya di foldernya sendiri."
@@ -16637,6 +16725,10 @@
   "e3189b0a3f2c9f86": {
    "source": "Video downloads",
    "text": "Unduhan video"
+  },
+  "e3201638dbf3d7bf": {
+   "source": "<g1>Without the setup</g1> (a zip copy, Linux, macOS): the first start's setup window opens at its <g2>Language</g2> step: every language with its flag and its own name. Click yours and the window switches to it at once.",
+   "text": "<g1>Tanpa program pemasangan</g1> (salinan zip, Linux, macOS): jendela pengaturan saat pertama kali dibuka akan menampilkan langkah <g2>Bahasa</g2>: setiap bahasa dengan benderanya dan namanya sendiri. Klik bahasa Anda dan jendela akan langsung beralih ke bahasa tersebut."
   },
   "e34726ffae8c3bba": {
    "source": "What's new — Mister Download Manager version history",
@@ -17934,6 +18026,10 @@
    "source": "The list shows the order they will run in. Use the arrow buttons under it to move a download up or down.",
    "text": "Daftar menunjukkan urutan unduhan akan berjalan. Gunakan tombol panah di bawahnya untuk memindahkan unduhan ke atas atau ke bawah."
   },
+  "f3a2e46b32aaef2c": {
+   "source": "The quickest way is MDM's own copy of Node.js: click <g1>Install Node.js</g1> beside that message, or, in <g2>Helpers...</g2>, <g3>Install Node.js</g3> in the <g4>JavaScript runtime (for YouTube)</g4> row. The first start's setup offers it too, in its <g5>Video helpers</g5> step, when your computer has no runtime. MDM downloads Node.js's newest long-term support (LTS) build for your system and processor from <g6>nodejs.org</g6> with its own downloader (about 40 MB on Windows, 60 MB on Linux and macOS; Windows x64, ARM64 and 32-bit, Linux x64 and ARM64, macOS), checks the release's checksum list against the signing keys of Node.js's releasers and the download against that list before it uses it, keeps only the <x7/> program in the <x8/> folder beside yt-dlp and ffmpeg, and from then on tells yt-dlp to use it. It keeps it up to date the way it keeps yt-dlp's (<g9>Keeping them up to date</g9>), never with an older version. 32-bit Windows gets the newest LTS line Node.js still builds for it, 22, which Node.js supports until April 2027; after that MDM has no Node.js for 32-bit Windows, and a runtime of your own (<g10>Use another program...</g10>) is needed there. MDM never installs a Node.js older than the LTS line current when that MDM was made, whatever nodejs.org's list says. The video is looked up again by itself once Node.js is in.",
+   "text": "Cara tercepat adalah dengan salinan Node.js milik MDM sendiri: klik <g1>Instal Node.js</g1> di samping pesan itu, atau, di <g2>Pembantu...</g2>, <g3>Instal Node.js</g3> di baris <g4>Runtime JavaScript (untuk YouTube)</g4>. Penyiapan awal pertama juga menawarkannya, di langkah <g5>Pembantu video</g5>, saat komputer Anda tidak memiliki runtime. MDM mengunduh build dukungan jangka panjang (LTS) terbaru Node.js untuk sistem dan prosesor Anda dari <g6>nodejs.org</g6> dengan pengunduh sendiri (sekitar 40 MB di Windows, 60 MB di Linux dan macOS; Windows x64, ARM64 dan 32-bit, Linux x64 dan ARM64, macOS), memeriksa daftar checksum rilis terhadap kunci penandatanganan perilis Node.js dan unduhan terhadap daftar itu sebelum menggunakannya, hanya menyimpan program <x7/> di folder <x8/> di samping yt-dlp dan ffmpeg, dan sejak saat itu memberi tahu yt-dlp untuk menggunakannya. MDM menjaganya tetap mutakhir seperti menjaga yt-dlp (<g9>Menjaganya tetap mutakhir</g9>), tidak pernah dengan versi yang lebih lama. Windows 32-bit mendapatkan Node.js lini LTS terbaru yang masih dibuat untuknya, versi 22, yang didukung Node.js hingga April 2027; setelah itu MDM tidak memiliki Node.js untuk Windows 32-bit, dan runtime Anda sendiri (<g10>Gunakan program lain...</g10>) diperlukan di sana. MDM tidak pernah menginstal Node.js yang lebih lama dari lini LTS yang berlaku saat MDM itu dibuat, apa pun yang dikatakan daftar nodejs.org. Video akan dicari lagi secara otomatis setelah Node.js terinstal."
+  },
   "f3a43b64feb190bf": {
    "source": "Only one program can listen on port 9666. If JDownloader is running, MDM says so: close it, then turn the option off and on again.",
    "text": "Hanya satu program yang dapat mendengarkan di port 9666. Jika JDownloader sedang berjalan, MDM akan mengatakannya: tutup, lalu matikan dan hidupkan lagi opsi tersebut."
@@ -17990,6 +18086,10 @@
    "source": "A greyed icon's ink (its end)",
    "text": "Tinta ikon abu-abu (akhir)"
   },
+  "f471814e3a16b4a2": {
+   "source": "Last updated 2026-11-27 · applies to the app, the browser extension and misterdownloadmanager.com",
+   "text": "Terakhir diperbarui 2026-11-27 · berlaku untuk aplikasi, ekstensi peramban, dan misterdownloadmanager.com"
+  },
   "f47d19d2ae313a6b": {
    "source": "<g1>MDM as an IDM alternative</g1><g2>Spot something wrong? Tell us</g2>",
    "text": "<g1>MDM sebagai alternatif IDM</g1><g2>Ada yang salah? Beri tahu kami</g2>"
@@ -18026,6 +18126,10 @@
    "source": "What's new in version 0.2.3 <g1>2026-11-01</g1>",
    "text": "Yang baru di versi 0.2.3 <g1>2026-11-01</g1>"
   },
+  "f511bff33b320d10": {
+   "source": "These three are for 64-bit Windows on an Intel or AMD processor (x64), the usual PC. From version 0.6.0, each comes for two more kinds of PC too, with the processor in its name:",
+   "text": "Ketiga file ini untuk Windows 64-bit pada prosesor Intel atau AMD (x64), yaitu PC pada umumnya. Mulai versi 0.6.0, setiap file juga tersedia untuk dua jenis PC lainnya, dengan nama prosesornya:"
+  },
   "f54ce429a109d5fe": {
    "source": "<g1>Metro</g1>, after Windows 8's flat look: square corners, flat buttons, boxes that take an accent border when focused, check boxes with a tick, a bordered progress bar, scroll bars with their arrows always shown, one-colour icons (Microsoft's Fluent UI System Icons, MIT) and a title bar in the theme's colour with the title centred.",
    "text": "<g1>Metro</g1>, mengikuti tampilan datar Windows 8: sudut persegi, tombol datar, kotak yang mengambil batas aksen saat fokus, kotak centang dengan tanda centang, bilah progres berbatas, bilah gulir dengan panah yang selalu ditampilkan, ikon satu warna (Microsoft Fluent UI System Icons, MIT) dan bilah judul dalam warna tema dengan judul di tengah."
@@ -18061,10 +18165,6 @@
   "f5d0db4c9a23ece3": {
    "source": "<g1><g2>Adding downloads</g2></g1> — Add URL, the clipboard, the drop target, batch downloads and lists of links, and Start Download versus Download Later.",
    "text": "<g1><g2>Menambahkan unduhan</g2></g1> — Tambah URL, papan klip, target lepas, unduhan massal dan daftar tautan, serta Mulai Unduhan versus Unduh Nanti."
-  },
-  "f5e911e1675285c5": {
-   "source": "Add the extension to each browser you use, as below: Firefox from its add-ons store, the others from the Chrome Web Store. Until a browser's extension has reached MDM, MDM's <g1>Add Mister Download Manager to your browser</g1> window opens at each start: it lists the browsers it found, and <g2>Add the extension</g2> opens the store's page in that browser. <g3>Install it by hand</g3> opens the steps for loading it without the store; <g4>Don't ask again</g4> stops the window.",
-   "text": "Tambahkan ekstensi ke setiap browser yang Anda gunakan, seperti di bawah ini: Firefox dari toko add-on-nya, yang lain dari Chrome Web Store. Sampai ekstensi browser terhubung ke MDM, jendela <g1>Tambahkan Mister Download Manager ke browser Anda</g1> MDM akan terbuka setiap kali dimulai: ini mencantumkan browser yang ditemukan, dan <g2>Tambahkan ekstensi</g2> akan membuka halaman toko di browser tersebut. <g3>Instalasi manual</g3> akan membuka langkah-langkah untuk memuatnya tanpa toko; <g4>Jangan tanya lagi</g4> akan menutup jendela tersebut."
   },
   "f6014e24fd45ae66": {
    "source": "What is signed",
@@ -18214,10 +18314,6 @@
    "source": "The site isn't in <g1>Don't start downloading automatically from the following sites</g1>, nor the address in <g2>Don't start downloading automatically from the following addresses</g2>.",
    "text": "Situs tidak tercantum di <g1>Jangan mulai mengunduh secara otomatis dari situs berikut</g1>, dan alamatnya juga tidak tercantum di <g2>Jangan mulai mengunduh secara otomatis dari alamat berikut</g2>."
   },
-  "f89c54d71eb189a4": {
-   "source": "If the graphics card is reset while MDM runs (a driver update), MDM starts again by itself. Lost twice in 10 minutes, it goes back to OpenGL, and <g1>View → Draw with</g1> says why.",
-   "text": "Jika kartu grafis diatur ulang saat MDM berjalan (pembaruan driver), MDM akan memulai lagi dengan sendirinya. Jika hilang dua kali dalam 10 menit, MDM akan kembali ke OpenGL, dan <g1>Tampilan → Render dengan</g1> akan menyatakan alasannya."
-  },
   "f8b52274ed125d5f": {
    "source": "Tick <g1>Wake the computer to run this queue</g1> and a sleeping computer is woken a minute before the start time, so the network is back when the queue begins. It stays awake while the queue runs; afterwards its own sleep settings apply again. The line under the option says when the next wake is, or why there can't be one.",
    "text": "Centang <g1>Bangunkan komputer untuk menjalankan antrean ini</g1> dan komputer yang tidur akan dibangunkan satu menit sebelum waktu mulai, sehingga jaringan kembali aktif saat antrean dimulai. Komputer tetap terjaga saat antrean berjalan; setelah itu pengaturan tidur komputer sendiri berlaku lagi. Baris di bawah opsi menunjukkan kapan bangun berikutnya, atau mengapa tidak bisa ada."
@@ -18253,6 +18349,10 @@
   "f941e5b8a498c4f3": {
    "source": "Keeping them up to date",
    "text": "Memperbarui pembantu"
+  },
+  "f968baf33894961a": {
+   "source": "Models, datasets and releases",
+   "text": "Model, dataset, dan rilis"
   },
   "f972a60cffbd9bed": {
    "source": "In <g1>Default download directory for \"General\" category</g1>, click <g2>Browse</g2> and choose a folder on the stick, for example <x3/>.",
@@ -18373,6 +18473,10 @@
   "fa92082584a3b68a": {
    "source": "What IDM still does that MDM doesn't",
    "text": "Apa yang masih dilakukan IDM yang tidak dilakukan MDM"
+  },
+  "fa920a8ffcc67161": {
+   "source": "<g1>Save every download in \"General\" category's folder</g1> — off by default. Ticked, every new download goes to General's folder, whatever its category: from the browser, <g2>Add URL</g2>, <g3>Batch download</g3>, Link grabber, queues, the command line, videos and torrents alike. The categories still sort the list. General's folder is the one to set (choose <g4>General</g4> above); the other categories keep their own folders for when it is off again, shown greyed meanwhile. A single download can still go elsewhere: change its folder in the window that starts it (<g5>Remember this path</g5> then changes General's folder). Downloads already in the list stay where they are.",
+   "text": "<g1>Simpan setiap unduhan di folder kategori \"Umum\"</g1> — nonaktif secara default. Jika dicentang, setiap unduhan baru masuk ke folder Umum, apa pun kategorinya: dari browser, <g2>Tambah URL</g2>, <g3>Unduh batch</g3>, Link grabber, antrean, baris perintah, video, dan torrent. Kategori-kategori tersebut masih mengurutkan daftar. Folder Umum adalah folder yang harus diatur (pilih <g4>Umum</g4> di atas); kategori lain mempertahankan folder mereka sendiri untuk saat dimatikan lagi, ditampilkan abu-abu sementara. Satu unduhan masih bisa pergi ke tempat lain: ubah foldernya di jendela yang memulainya (<g5>Ingat jalur ini</g5> kemudian mengubah folder Umum). Unduhan yang sudah ada dalam daftar tetap di tempatnya."
   },
   "fa9730d3b67e9b77": {
    "source": "<g1>View → Language...</g1> opens the same list. Type in <g2>Search</g2> to narrow it, then double-click a language. The window switches at once. <g3>Windows' language</g3>, at the top, follows Windows' display language, and falls back to English when MDM doesn't have it.",

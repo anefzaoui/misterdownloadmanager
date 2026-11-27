@@ -5,6 +5,8 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ## [Unreleased]
 
+These changes come in version 0.6.0.
+
 ### Added
 
 - **Customizable Download video button scale, free placement, and full-screen menu toggle** ([#1923](https://github.com/anefzaoui/misterdownloadmanager/issues/1923)): **Options → General → Download panels → Edit...** now has a **80%**, **100%** or **120%** scale beside **Button size** (opened from the video button's **More options** `▼` menu via **Button settings...** too), scaling the button in pages already open within a few seconds without a reload. Dragging the button inside the player keeps any interior spot more than 20 pixels from an edge instead of snapping back to an edge (edges, corners, and outside-the-player spots still snap when dragged close to them). **Hide the download button in full screen** is also available directly in the button's **More options** menu alongside the popup setting, and full-screen hiding now reaches embedded cross-origin video frames when the page enters full screen without triggering on browser F11.

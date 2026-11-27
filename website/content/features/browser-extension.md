@@ -44,7 +44,7 @@ site, or turn it off in **Options**.
 
 ## All the images on a page
 
-<!--@coming 0.5.3-->
+<!--@coming 0.6.0-->
 
 To save a whole gallery, open the toolbar button's **This page** tab and click **Find images**.
 The extension finds each picture the page shows at the largest size the page lists for it, the

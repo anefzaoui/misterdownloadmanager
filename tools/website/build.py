@@ -73,7 +73,7 @@ NAME = "Mister Download Manager"
 # says "Coming with version <this>" (coming_banner(): the feature pages, the Themes page, the
 # features' tiles), shown for a feature whose `since` is this version or later. At that release
 # set it to "" and every banner goes at once; a published release at or past it hides them too.
-UPCOMING = "0.5.2"
+UPCOMING = "0.6.0"
 CARGO_VERSION = re.search(r'(?m)^version\s*=\s*"([^"]+)"', (ROOT / "Cargo.toml").read_text("utf-8")).group(1)
 
 
@@ -127,7 +127,7 @@ def setup_size() -> str:
 
 def published(tail: str) -> bool:
     """Whether the latest published release has MisterDownloadManager-<version>-<tail> (the
-    Windows on ARM, 32-bit Windows and Linux on ARM files come with the release after 0.5.1)."""
+    Windows on ARM, 32-bit Windows and Linux on ARM files come from version 0.6.0)."""
     name = f"MisterDownloadManager-{VERSION}-{tail}"
     return any(a.get("name") == name for a in LATEST.get("assets", []))
 
