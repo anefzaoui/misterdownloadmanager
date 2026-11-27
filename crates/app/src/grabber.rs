@@ -1041,17 +1041,19 @@ impl Grabber {
         );
         let body = Rect::from_min_max(pos2(inner.left(), head.bottom()), inner.max);
         if self.links.is_empty() {
-            // i18n: Link grabber, while it is empty
-            let note = crate::i18n::t(
-                "Paste links here (Ctrl+V), or send a page's links from the browser.",
-            );
-            let w = winui::text_width(&p, note);
-            text(
+            winui::empty_state(
+                ui,
                 &p,
-                body.center().x - w / 2.0,
-                body.center().y + 4.0,
-                note,
-                winui::MUTED(),
+                winui::rect(body),
+                crate::icons::EmptyIcon::Links,
+                // i18n: Link grabber: the title in its empty list
+                crate::i18n::mark("No links yet"),
+                // i18n: Link grabber, while it is empty
+                crate::i18n::mark(
+                    "Paste links here (Ctrl+V), or send a page's links from the browser.",
+                ),
+                None,
+                "grabber-empty",
             );
             return;
         }

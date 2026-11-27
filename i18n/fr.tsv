@@ -354,6 +354,10 @@
 #. RSS feeds window, Download rules: shown when there are no rules yet
 #, machine
 	A rule adds the new articles whose titles it matches, as they come.	Une règle ajoute les nouveaux articles dont le titre correspond, au fur et à mesure de leur publication.
+#. text in the Options window
+#. Site rules window: in the empty list of rules, under its title
+#, machine
+	A rule sets the connections, User-Agent or headers for one site.	Une règle définit les connexions, l’agent utilisateur ou les en-têtes pour un site.
 #. text in errors.rs
 #. an error: a server on this computer redirected the download to the internet, which would not go through the chosen network adapter; {adapter} its name
 #, machine
@@ -460,6 +464,10 @@
 #. link in the empty download list: opens Add URL
 #, machine
 	Add new download	Ajouter un nouveau téléchargement
+#. text in the Options window
+#. Options → Accounts: in the empty list of accounts, under its title
+#, machine
+	Add one to download file-host links through it.	Ajoutez un compte pour télécharger des liens vers des hébergeurs de fichiers par son intermédiaire.
 #. text in the Options window
 #, machine
 	Add the duplicate and overwrite the existing file	Ajouter le doublon et écraser le fichier existant
@@ -1159,6 +1167,10 @@
 #. remote control page (on a phone): what the ".torrent file" button does (screen readers)
 #, machine
 	Choose a .torrent file	Choisir un fichier .torrent
+#. text in rssdlg.rs
+#. RSS feeds window: in the empty list of articles, under its title
+#, machine
+	Choose a feed to see its articles.	Choisir un flux pour afficher ses articles.
 #. message or event log entry in the main window
 #. title of the file dialog of View → Font → Choose a font file
 #. title of the message when the font picked in View → Font can't be used
@@ -1776,6 +1788,10 @@
 #. tab title: download settings
 #, machine
 	Downloads	Téléchargements
+#. text in the Scheduler window
+#. Scheduler → Files in the queue: in the empty list, under its title
+#, machine
+	Downloads added to this queue show here.	Les téléchargements ajoutés à cette file d’attente s’affichent ici.
 #. window title in a dialog box
 #. title of the window that sums up downloads added together (a playlist, a batch) once all are done
 #, machine
@@ -2778,6 +2794,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Italy	Italie
+#. text in rssdlg.rs
+#. RSS feeds window: in the empty list of articles of a feed not read yet
+#, machine
+	Its articles show here once the feed is read.	Ses articles s’affichent ici une fois le flux lu.
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted in place (after "Couldn't extract {name}: "); HatchZip took its files out (the archive is gone), but moving them stopped: {to} holds those moved, {left} the others, {error} the system's reason
 #. {error} = an error message (keep the braces as they are)
@@ -3646,6 +3666,10 @@
 #. button in a dialog box; text in a download's progress window
 #, machine
 	No	Non
+#. text in the Options window
+#. Options → Accounts: the title in the empty list of debrid service accounts
+#, machine
+	No accounts yet	Aucun compte pour l’instant
 #. text in a dialog box
 #, machine
 	No addresses yet	Aucune adresse pour l’instant
@@ -3653,6 +3677,10 @@
 #. Options → Proxy / Socks: Test got no answer in time
 #, machine
 	No answer within 20 seconds.	Aucune réponse dans les 20 secondes.
+#. text in rssdlg.rs
+#. RSS feeds window: the title in the empty list of articles of a feed that has none
+#, machine
+	No articles	Aucun article
 #. text in extension.rs
 #. a check of Test browser integration (Linux, macOS): MDM found no browser it can connect to (one installed as a Flatpak isn't found)
 #, machine
@@ -3700,6 +3728,18 @@
 #. title in the empty download list when there are no downloads at all
 #, machine
 	No downloads yet	Aucun téléchargement pour l’instant
+#. text in rssdlg.rs
+#. RSS feeds window: the title in the empty list of articles, no feed chosen
+#, machine
+	No feed chosen	Aucun flux choisi
+#. text in rssdlg.rs
+#. RSS feeds window: the title in the empty list of feeds
+#, machine
+	No feeds yet	Aucun flux pour l’instant
+#. text in the Scheduler window
+#. Scheduler → Files in the queue: the title in the empty list
+#, machine
+	No files in this queue	Aucun fichier dans cette file d’attente
 #. text in a dialog box
 #, machine
 	No folders yet	Aucun dossier pour l’instant
@@ -3713,6 +3753,10 @@
 #. text in langpick.rs
 #, machine
 	No language matches.	Aucune langue ne correspond.
+#. text in the Link grabber window
+#. Link grabber: the title in its empty list
+#, machine
+	No links yet	Aucun lien pour l’instant
 #. text in the Options window
 #. Options → Remote → Status: on, but the computer has no local network address now
 #, machine
@@ -3744,9 +3788,17 @@
 #, machine
 	No proxy/socks	Aucun proxy/SOCKS
 #. text in the Options window
+#. Site rules window: the title in the empty list of rules
+#, machine
+	No site rules yet	Aucune règle de site pour l’instant
+#. text in the Options window
 #. Options → Accounts: no system keyring/keychain answered (none runs, e.g. a desktop without one), so the sign-ins stay in MDM's settings folder, which only the user's account may read
 #, machine
 	No system keyring answered, so sign-ins and passwords are kept in MDM's settings, which only you can read.	Aucun trousseau système n’a répondu. Les identifiants et mots de passe sont donc conservés dans les paramètres de MDM, que vous seul pouvez lire.
+#. text in the Add torrent window
+#. Add torrent: the title in the empty list of files, before a torrent is read
+#, machine
+	No torrent yet	Aucun torrent pour l’instant
 #. message or event log entry in the main window
 #. event log entry: Add trackers changed nothing, the torrent had them all
 	No tracker added: it has them already	Aucun tracker ajouté : il les a déjà
@@ -5967,6 +6019,10 @@
 #. remote control page (on a phone): label of the box naming this phone (shown in MDM's list of paired devices)
 #, machine
 	This device's name	Nom de cet appareil
+#. text in rssdlg.rs
+#. RSS feeds window: in the empty list of articles of a feed that has none
+#, machine
+	This feed has no articles right now.	Ce flux n’a aucun article pour l’instant.
 #. message or event log entry in the main window
 #. the message when a file picked in View → Font isn't a TrueType or OpenType font MDM can read
 #, machine

@@ -311,6 +311,10 @@
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: shown when there are no rules yet
 	A rule adds the new articles whose titles it matches, as they come.	تضيف القاعدة المقالات الجديدة التي تطابق عناوينها، فور ورودها.
+#. text in the Options window
+#. Site rules window: in the empty list of rules, under its title
+#, machine
+	A rule sets the connections, User-Agent or headers for one site.	تحدد القاعدة الاتصالات أو User-Agent أو الرؤوس لموقع واحد.
 #. text in errors.rs
 #. an error: a server on this computer redirected the download to the internet, which would not go through the chosen network adapter; {adapter} its name
 	a server on this computer sent the download elsewhere, which would not go through {adapter}	أرسل خادم على هذا الكمبيوتر التنزيل إلى مكان آخر، ولن يمر عبر {adapter}
@@ -401,6 +405,10 @@
 #. message or event log entry in the main window; text in the tray icon's menu
 #. link in the empty download list: opens Add URL
 	Add new download	إضافة تنزيل جديد
+#. text in the Options window
+#. Options → Accounts: in the empty list of accounts, under its title
+#, machine
+	Add one to download file-host links through it.	أضف واحدا لتنزيل روابط مواقع الاستضافة من خلاله.
 #. text in the Options window
 	Add the duplicate and overwrite the existing file	إضافة النسخة المكررة والكتابة فوق الملف الموجود
 #. text in the Options window
@@ -960,6 +968,10 @@
 #. remote control page (on a phone): what the ".torrent file" button does (screen readers)
 #, machine
 	Choose a .torrent file	اختر ملف .torrent
+#. text in rssdlg.rs
+#. RSS feeds window: in the empty list of articles, under its title
+#, machine
+	Choose a feed to see its articles.	اختر موجزا لمشاهدة مقالاته.
 #. message or event log entry in the main window
 #. title of the file dialog of View → Font → Choose a font file
 #. title of the message when the font picked in View → Font can't be used
@@ -1451,6 +1463,10 @@
 #. text in the download list; text in the Options window
 #. tab title: download settings
 	Downloads	التنزيلات
+#. text in the Scheduler window
+#. Scheduler → Files in the queue: in the empty list, under its title
+#, machine
+	Downloads added to this queue show here.	تظهر التنزيلات المضافة إلى قائمة الانتظار هذه هنا.
 #. window title in a dialog box
 #. title of the window that sums up downloads added together (a playlist, a batch) once all are done
 #, machine
@@ -2256,6 +2272,10 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Italy	إيطاليا
+#. text in rssdlg.rs
+#. RSS feeds window: in the empty list of articles of a feed not read yet
+#, machine
+	Its articles show here once the feed is read.	تظهر مقالاته هنا بمجرد قراءة الموجز.
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted in place (after "Couldn't extract {name}: "); HatchZip took its files out (the archive is gone), but moving them stopped: {to} holds those moved, {left} the others, {error} the system's reason
 #. {error} = an error message (keep the braces as they are)
@@ -2971,12 +2991,20 @@
 	Niue	نيوي
 #. button in a dialog box; text in a download's progress window
 	No	لا
+#. text in the Options window
+#. Options → Accounts: the title in the empty list of debrid service accounts
+#, machine
+	No accounts yet	لا توجد حسابات بعد
 #. text in a dialog box
 	No addresses yet	لا توجد عناوين بعد
 #. text in the Options window
 #. Options → Proxy / Socks: Test got no answer in time
 #, machine
 	No answer within 20 seconds.	لا يوجد رد خلال 20 ثانية.
+#. text in rssdlg.rs
+#. RSS feeds window: the title in the empty list of articles of a feed that has none
+#, machine
+	No articles	لا توجد مقالات
 #. text in extension.rs
 #. a check of Test browser integration (Linux, macOS): MDM found no browser it can connect to (one installed as a Flatpak isn't found)
 #, machine
@@ -3017,6 +3045,18 @@
 #. message or event log entry in the main window
 #. title in the empty download list when there are no downloads at all
 	No downloads yet	لا توجد تنزيلات بعد
+#. text in rssdlg.rs
+#. RSS feeds window: the title in the empty list of articles, no feed chosen
+#, machine
+	No feed chosen	لم يتم اختيار موجز
+#. text in rssdlg.rs
+#. RSS feeds window: the title in the empty list of feeds
+#, machine
+	No feeds yet	لا توجد موجزات بعد
+#. text in the Scheduler window
+#. Scheduler → Files in the queue: the title in the empty list
+#, machine
+	No files in this queue	لا توجد ملفات في قائمة الانتظار هذه
 #. text in a dialog box
 	No folders yet	لا توجد مجلدات بعد
 #. text in a dialog box
@@ -3026,6 +3066,10 @@
 	No language matches the search	لا توجد لغة تطابق البحث
 #. text in langpick.rs
 	No language matches.	لا توجد لغة مطابقة.
+#. text in the Link grabber window
+#. Link grabber: the title in its empty list
+#, machine
+	No links yet	لا توجد روابط بعد
 #. text in the Options window
 #. Options → Remote → Status: on, but the computer has no local network address now
 #, machine
@@ -3052,8 +3096,16 @@
 #. text in the Options window
 	No proxy/socks	لا يوجد وكيل/SOCKS
 #. text in the Options window
+#. Site rules window: the title in the empty list of rules
+#, machine
+	No site rules yet	لا توجد قواعد للمواقع بعد
+#. text in the Options window
 #. Options → Accounts: no system keyring/keychain answered (none runs, e.g. a desktop without one), so the sign-ins stay in MDM's settings folder, which only the user's account may read
 	No system keyring answered, so sign-ins and passwords are kept in MDM's settings, which only you can read.	لم تستجب سلسلة مفاتيح النظام، لذلك يتم حفظ بيانات تسجيل الدخول وكلمات المرور في إعدادات MDM، ولا يقرؤها غيرك.
+#. text in the Add torrent window
+#. Add torrent: the title in the empty list of files, before a torrent is read
+#, machine
+	No torrent yet	لا يوجد تورنت بعد
 #. message or event log entry in the main window
 #. event log entry: Add trackers changed nothing, the torrent had them all
 	No tracker added: it has them already	لم تتم إضافة أي متتبع: لديه متتبعات بالفعل
@@ -4868,6 +4920,10 @@
 #. remote control page (on a phone): label of the box naming this phone (shown in MDM's list of paired devices)
 #, machine
 	This device's name	اسم هذا الجهاز
+#. text in rssdlg.rs
+#. RSS feeds window: in the empty list of articles of a feed that has none
+#, machine
+	This feed has no articles right now.	لا يحتوي هذا الموجز على مقالات في الوقت الحالي.
 #. message or event log entry in the main window
 #. the message when a file picked in View → Font isn't a TrueType or OpenType font MDM can read
 #, machine

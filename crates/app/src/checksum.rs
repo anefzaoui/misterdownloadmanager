@@ -135,10 +135,18 @@ impl ChecksumDialog {
                         LIGHT_TEXT(),
                     ),
                 };
-                winui::fit(
+                // A result's mark before it: matches, does not match, can't be read (#2008).
+                let x = winui::note_mark(
                     ui,
                     &p,
                     o.x + 11.0,
+                    o.y + 72.0,
+                    crate::icons::Mark::of_ink(color),
+                );
+                winui::fit(
+                    ui,
+                    &p,
+                    x,
                     o.y + 72.0,
                     &line,
                     color,

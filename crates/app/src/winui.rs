@@ -3453,8 +3453,16 @@ pub fn combo_frame(p: &Painter, rc: Rect, focused: bool) {
     combo_chevron(p, rc);
 }
 
-/// Drop-list combo showing `value`; returns the click response.
-pub fn combo(ui: &mut Ui, rc: Rect, value: &str, id: &str) -> Response {
+/// Drop-list combo showing `value` (its list a [`drop_list`] of the caller's), with `icon` before
+/// it when given (#2008: Download File Info's category, the one its [`drop_list_icons`] has for
+/// it); returns the click response.
+pub fn combo_icon(
+    ui: &mut Ui,
+    rc: Rect,
+    value: &str,
+    icon: Option<&ItemIcon>,
+    id: &str,
+) -> Response {
     let resp = ui.interact(rc, widget_id(ui, ("combo", id)), Sense::click());
     let resp = opener_click(ui, resp);
     expose_value(&resp, egui::Role::ComboBox, value, true);
@@ -3463,12 +3471,23 @@ pub fn combo(ui: &mut Ui, rc: Rect, value: &str, id: &str) -> Response {
     dropdown_frame_light(ui.painter(), rc, State::of(&resp, true));
     combo_chevron(ui.painter(), rc);
     show_focus(ui, &resp, rc.shrink(2.0));
+    let room = if let Some(icon) = icon {
+        item_icon(ui, ui.painter(), icon, face_icon_rect(rc), TEXT(), true);
+        ITEM_ICON_ROOM
+    } else {
+        0.0
+    };
     // Short of the arrow zone: a longer value ends in "..." and shows whole on hover.
-    let shown = ellipsize(ui.painter(), &tahoma(), value, rc.width() - 5.0 - 22.0);
+    let shown = ellipsize(
+        ui.painter(),
+        &tahoma(),
+        value,
+        rc.width() - 5.0 - 22.0 - room,
+    );
     text_start(
         ui.painter(),
         tahoma(),
-        lead(rc) + 5.0 * fwd(),
+        lead(rc) + (5.0 + room) * fwd(),
         rc.top() + 13.0,
         &shown,
         TEXT(),
@@ -3581,6 +3600,20 @@ pub fn drop_list(
     empty: &str,
     open: &mut bool,
 ) -> Option<usize> {
+    drop_list_icons(ui, id, anchor, items, &[], empty, open)
+}
+
+/// [`drop_list`] whose items start with `icons` (one per item, by index; none past its end):
+/// Download File Info's categories (#2008).
+pub fn drop_list_icons(
+    ui: &mut Ui,
+    id: &str,
+    anchor: Rect,
+    items: &[String],
+    icons: &[ItemIcon],
+    empty: &str,
+    open: &mut bool,
+) -> Option<usize> {
     use crate::chrome::{MenuEntry, PopupResult, label};
     // A menu label: long addresses shortened in the middle, "&" kept as text (not an access key).
     let shown = |t: &str| {
@@ -3613,13 +3646,13 @@ pub fn drop_list(
     } else {
         anchor.left_bottom()
     };
-    let menu = crate::chrome::popup(
+    let menu = crate::chrome::popup_icons(
         ui.ctx(),
         crate::chrome::MenuKind::List,
         &format!("drop-{id}"),
         at,
         &entries,
-        &|_| None,
+        &|i| icons.get(*i).cloned(),
     );
     match menu {
         PopupResult::Chosen(i) => {
@@ -5614,6 +5647,68 @@ pub fn browser_icon(
 /// file-type icons.
 pub const MARK: f32 = 16.0;
 
+/// The icon before a drop-down list's item (#2008: [`combo_light_icons`], [`combo_icon`],
+/// [`drop_list_icons`]): the same icon the thing has elsewhere in MDM.
+#[derive(Clone, PartialEq)]
+pub enum ItemIcon {
+    /// A small icon by key: a category's or a queue's, as the Categories tree and the
+    /// Scheduler draw them (Silk, or the theme set's own).
+    Shell(crate::chrome::IconKey),
+    /// A browser's own logo (browsericons.rs).
+    Browser(crate::browsericons::Browser),
+}
+
+/// Draws `icon` in the screen rect `rc` ([`MARK`] points square) on whole pixels; `ink` colours a
+/// one-colour icon (a browser MDM has no logo for). Greyed when not `enabled`, as its label is.
+pub fn item_icon(ui: &Ui, p: &Painter, icon: &ItemIcon, rc: Rect, ink: Color32, enabled: bool) {
+    use egui::emath::GuiRounding as _;
+    let rc = rc.round_to_pixels(ui.ctx().pixels_per_point());
+    let mut p = p.clone();
+    if !enabled {
+        p.multiply_opacity(0.4);
+    }
+    match icon {
+        ItemIcon::Shell(key) => crate::chrome::ShellIcons::paint_rect(ui, &p, key, rc),
+        ItemIcon::Browser(b) => crate::browsericons::paint(ui, &p, *b, rc, ink),
+    }
+}
+
+/// The drop-down an off-screen test copy opens on its next draw (`/show combo-open:<id>`, for
+/// screenshots of a list: nothing is clicked).
+static OPEN_FOR_SHOT: std::sync::Mutex<Option<String>> = std::sync::Mutex::new(None);
+
+/// Opens the drop-down whose id is `id` when it is next drawn (off-screen test copies only).
+pub fn open_combo_for_shot(id: &str) {
+    if crate::offscreen() {
+        *OPEN_FOR_SHOT.lock().unwrap_or_else(|e| e.into_inner()) = Some(id.to_owned());
+    }
+}
+
+/// Whether the drop-down `id` is the one [`open_combo_for_shot`] asked for (once).
+pub fn take_open_for_shot(id: &str) -> bool {
+    let mut want = OPEN_FOR_SHOT.lock().unwrap_or_else(|e| e.into_inner());
+    if want.as_deref() == Some(id) {
+        *want = None;
+        true
+    } else {
+        false
+    }
+}
+
+/// Where a drop-down's face draws its item's icon: [`MARK`] points square, 5 points in from the
+/// leading edge, centred in the box's height on a whole point. Its label starts
+/// [`ITEM_ICON_ROOM`] further in.
+fn face_icon_rect(rc: Rect) -> Rect {
+    let top = rc.top() + ((rc.height() - MARK) / 2.0).floor();
+    let start = lead(rc) + 5.0 * fwd();
+    let left = if rtl() { start - MARK } else { start };
+    Rect::from_min_size(pos2(left, top), vec2(MARK, MARK))
+}
+
+/// The room an item's icon takes on a drop-down's face before its label: the icon and a gap of
+/// 5 (the list's own icon column: chrome.rs).
+const ITEM_ICON_ROOM: f32 = MARK + 5.0;
+
 /// A result's mark before its line or word (#2008): it holds, it failed, a warning, or under way
 /// (`crate::icons::Mark`), [`MARK`] points square at English `min` (mirrored in a right-to-left
 /// interface), in the theme's colour for it. Drawn, never a font's check or cross, so it looks
@@ -5622,6 +5717,97 @@ pub const MARK: f32 = 16.0;
 pub fn state_mark(ui: &Ui, p: &Painter, min: Pos2, mark: crate::icons::Mark) {
     let rc = rect(Rect::from_min_size(min, vec2(MARK, MARK)));
     paint_icon(ui, p, mark.source(mark.ink()), rc);
+}
+
+/// The room a message line's mark takes before its text ([`note_mark`]): the mark and a gap of 4.
+pub const NOTE_INDENT: f32 = MARK + 4.0;
+
+/// A message line's mark (#2008): an error's, a warning's or a result's [`state_mark`] before a
+/// red, orange or green line, so its meaning doesn't rest on colour alone (a Windows 11 InfoBar's
+/// icon, without the bar). Drawn at English `x` with its top 12 points above `baseline`, the
+/// line's (or a paragraph's first line's); returns the English x its text starts at, so a wrapped
+/// paragraph hangs after the mark. With no `mark`, nothing is drawn and the text keeps `x`.
+pub fn note_mark(
+    ui: &Ui,
+    p: &Painter,
+    x: f32,
+    baseline: f32,
+    mark: Option<crate::icons::Mark>,
+) -> f32 {
+    match mark {
+        Some(mark) => {
+            state_mark(ui, p, pos2(x, baseline - 12.0), mark);
+            x + NOTE_INDENT
+        }
+        None => x,
+    }
+}
+
+/// An empty list's block (#2008), in the screen rect `body` (the list's inside): its role
+/// `icon` in the muted ink, a bold `title`, `why` under it (wrapped to the list's width) and,
+/// when given, an `action` link (the main list's Add new download). The texts are English,
+/// translated here. In the middle of the list, or near its top when it is short; a list too short
+/// for the large icon gets a smaller one. True when the link is clicked.
+#[allow(clippy::too_many_arguments)]
+pub fn empty_state(
+    ui: &Ui,
+    p: &Painter,
+    body: Rect,
+    icon: crate::icons::EmptyIcon,
+    title: &str,
+    why: &str,
+    action: Option<&str>,
+    id: &str,
+) -> bool {
+    let p = p.with_clip_rect(p.clip_rect().intersect(body));
+    let (title, why) = (crate::i18n::t(title), crate::i18n::t(why));
+    let title_font = tahoma_bold();
+    // The reason wrapped to the list, 12 points in from each side.
+    let lines = wrap_lines_font(&p, tahoma(), why, (body.width() - 24.0).max(40.0));
+    let extra = 16.0 * lines.len().saturating_sub(1) as f32;
+    let link_h = if action.is_some() { 14.0 + 13.0 } else { 0.0 };
+    // The main list's block: icon 40, 26 to the title's baseline, 21 to the reason's, 27 to the
+    // link's; a short list's: icon 24, a little closer.
+    let large = 40.0 + 26.0 + 21.0 + extra + link_h + 3.0 + 32.0;
+    let (side, gap) = if body.height() >= large {
+        (40.0, 26.0)
+    } else {
+        (24.0, 22.0)
+    };
+    let block_h = side + gap + 21.0 + extra + link_h + 3.0;
+    let top =
+        (body.center().y - block_h / 2.0).max(body.top() + if side > 30.0 { 16.0 } else { 8.0 });
+    let cx = body.center().x;
+    // Drawn at the screen's pixel size (paint_icon), its lines 1.5 points wide.
+    let src = icon.source(side as u32, MUTED());
+    paint_icon(
+        ui,
+        &p,
+        src,
+        Rect::from_center_size(pos2(cx, top + side / 2.0), vec2(side, side)),
+    );
+    let tw = text_width_font(&p, title_font.clone(), title);
+    let mut y = top + side + gap;
+    text_at(&p, title_font, (cx - tw / 2.0).round(), y, title, TEXT());
+    y += 21.0;
+    for line in &lines {
+        let w = text_width(&p, line);
+        text_at(&p, tahoma(), (cx - w / 2.0).round(), y, line, MUTED());
+        y += 16.0;
+    }
+    match action {
+        Some(action) => {
+            let aw = text_width(&p, crate::i18n::t(action));
+            // On screen already: the link is placed in English (mirrored back in RTL).
+            let x = if rtl() {
+                mx(cx + aw / 2.0)
+            } else {
+                cx - aw / 2.0
+            };
+            link(ui, &p, x, y - 16.0 + 27.0, action, id)
+        }
+        None => false,
+    }
 }
 
 /// `s` in `color`, ending at English `right` on `baseline`, with its `mark` before it (a helper's
@@ -6804,6 +6990,21 @@ pub fn combo_light(
     enabled: bool,
     id: &str,
 ) -> Option<usize> {
+    combo_light_icons(ui, rc, items, &[], selected, enabled, id)
+}
+
+/// [`combo_light`] whose items start with `icons` (one per item, by index; none past its end),
+/// on its face and in its list (#2008): Options' category, Download Later's queue, Sites Logins'
+/// browser. The same icon each thing has elsewhere in MDM.
+pub fn combo_light_icons(
+    ui: &mut Ui,
+    rc: Rect,
+    items: &[&str],
+    icons: &[ItemIcon],
+    selected: usize,
+    enabled: bool,
+    id: &str,
+) -> Option<usize> {
     let key = widget_id(ui, ("combo-light", id));
     let sense = if enabled {
         Sense::click()
@@ -6816,6 +7017,9 @@ pub fn combo_light(
     focus_on_press(&resp);
     keep_keys(ui, &resp, false, true, false);
     let mut open = ui.data(|d| d.get_temp::<bool>(key).unwrap_or(false)) && enabled;
+    if enabled && take_open_for_shot(id) {
+        open = true;
+    }
     let popup_id = format!("combo-light-{}", key.short_debug_format());
     let mut chosen = None;
     let last = items.len().saturating_sub(1);
@@ -6868,12 +7072,19 @@ pub fn combo_light(
     if enabled && let Some(i) = assistive_choice(&resp, items, &mut open) {
         chosen = Some(i).filter(|i| *i != selected);
     }
+    // The chosen item's icon before its label.
+    let room = if let Some(icon) = icons.get(selected) {
+        item_icon(ui, &p, icon, face_icon_rect(rc), color, enabled);
+        ITEM_ICON_ROOM
+    } else {
+        0.0
+    };
     // Cut with "..." before the chevron when too long (a translation), whole on hover.
-    let label = ellipsize(&p, &tahoma(), full, rc.width() - 5.0 - 19.0);
+    let label = ellipsize(&p, &tahoma(), full, rc.width() - 5.0 - 19.0 - room);
     let drawn = text_start(
         &p,
         tahoma(),
-        lead(rc) + 5.0 * fwd(),
+        lead(rc) + (5.0 + room) * fwd(),
         rc.top() + 13.0,
         &label,
         color,
@@ -6907,13 +7118,13 @@ pub fn combo_light(
         } else {
             rc.left_bottom()
         };
-        match crate::chrome::popup(
+        match crate::chrome::popup_icons(
             ui.ctx(),
             crate::chrome::MenuKind::List,
             &popup_id,
             at,
             &entries,
-            &|_| None,
+            &|i| icons.get(*i).cloned(),
         ) {
             PopupResult::Chosen(i) => {
                 open = false;
@@ -8051,6 +8262,40 @@ pub mod caption {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    /// #2008: a drop-down's item icon sits 5 points in from its leading edge, centred in its
+    /// height on a whole point, the label after it; at the right in a right-to-left interface.
+    #[test]
+    fn a_drop_downs_icon_leads_its_label() {
+        let rc = Rect::from_min_size(pos2(100.0, 40.0), vec2(200.0, 21.0));
+        let ltr = face_icon_rect(rc);
+        assert_eq!(
+            ltr,
+            Rect::from_min_size(pos2(105.0, 42.0), vec2(MARK, MARK))
+        );
+        let _rtl = Surface::enter_if(true, 0.0, 400.0);
+        let rtl = face_icon_rect(rc);
+        assert_eq!(
+            rtl,
+            Rect::from_min_size(pos2(279.0, 42.0), vec2(MARK, MARK))
+        );
+        assert_eq!(ITEM_ICON_ROOM, MARK + 5.0);
+    }
+
+    /// #2008: a message line's mark goes at its x, its text after it; no mark, no room taken.
+    #[test]
+    fn a_message_lines_text_hangs_after_its_mark() {
+        let ctx = egui::Context::default();
+        let mut out = ctx.run_ui(egui::RawInput::default(), |ui| {
+            let p = ui.painter().clone();
+            assert_eq!(note_mark(ui, &p, 11.0, 30.0, None), 11.0);
+            assert_eq!(
+                note_mark(ui, &p, 11.0, 30.0, Some(crate::icons::Mark::Fail)),
+                11.0 + NOTE_INDENT
+            );
+        });
+        out.textures_delta.clear();
+    }
 
     /// #1192: every system dialog `start_pick` shows is counted open while it runs (the freeze
     /// watchdog doesn't take macOS's window thread in it for a frozen window), and closed once

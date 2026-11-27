@@ -356,6 +356,10 @@
 #. RSS feeds window, Download rules: shown when there are no rules yet
 #, machine
 	A rule adds the new articles whose titles it matches, as they come.	Pravilo dodaje nove članke čije naslove podudara, kako dolaze.
+#. text in the Options window
+#. Site rules window: in the empty list of rules, under its title
+#, machine
+	A rule sets the connections, User-Agent or headers for one site.	Pravilo postavlja veze, korisničkog agenta ili zaglavlja za jednu lokaciju.
 #. text in errors.rs
 #. an error: a server on this computer redirected the download to the internet, which would not go through the chosen network adapter; {adapter} its name
 #, machine
@@ -463,6 +467,10 @@
 #. link in the empty download list: opens Add URL
 #, machine
 	Add new download	Dodaj novo preuzimanje
+#. text in the Options window
+#. Options → Accounts: in the empty list of accounts, under its title
+#, machine
+	Add one to download file-host links through it.	Dodajte račun da biste putem njega preuzimali veze za hosting datoteka.
 #. text in the Options window
 #, machine
 	Add the duplicate and overwrite the existing file	Dodaj duplikat i prepiši postojeću datoteku
@@ -1164,6 +1172,10 @@
 #. remote control page (on a phone): what the ".torrent file" button does (screen readers)
 #, machine
 	Choose a .torrent file	Odaberite .torrent datoteku
+#. text in rssdlg.rs
+#. RSS feeds window: in the empty list of articles, under its title
+#, machine
+	Choose a feed to see its articles.	Odaberite feed da biste vidjeli njegove članke.
 #. message or event log entry in the main window
 #. title of the file dialog of View → Font → Choose a font file
 #. title of the message when the font picked in View → Font can't be used
@@ -1781,6 +1793,10 @@
 #. tab title: download settings
 #, machine
 	Downloads	Preuzimanja
+#. text in the Scheduler window
+#. Scheduler → Files in the queue: in the empty list, under its title
+#, machine
+	Downloads added to this queue show here.	Preuzimanja dodana u ovaj red čekanja prikazuju se ovdje.
 #. window title in a dialog box
 #. title of the window that sums up downloads added together (a playlist, a batch) once all are done
 #, machine
@@ -2784,6 +2800,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Italy	Italija
+#. text in rssdlg.rs
+#. RSS feeds window: in the empty list of articles of a feed not read yet
+#, machine
+	Its articles show here once the feed is read.	Njegovi članci se prikazuju ovdje nakon što se feed pročita.
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted in place (after "Couldn't extract {name}: "); HatchZip took its files out (the archive is gone), but moving them stopped: {to} holds those moved, {left} the others, {error} the system's reason
 #. {error} = an error message (keep the braces as they are)
@@ -3654,6 +3674,10 @@
 #. button in a dialog box; text in a download's progress window
 #, machine
 	No	Ne
+#. text in the Options window
+#. Options → Accounts: the title in the empty list of debrid service accounts
+#, machine
+	No accounts yet	Još nema računa
 #. text in a dialog box
 #, machine
 	No addresses yet	Još nema adresa
@@ -3661,6 +3685,10 @@
 #. Options → Proxy / Socks: Test got no answer in time
 #, machine
 	No answer within 20 seconds.	Nema odgovora u roku od 20 sekundi.
+#. text in rssdlg.rs
+#. RSS feeds window: the title in the empty list of articles of a feed that has none
+#, machine
+	No articles	Nema članaka
 #. text in extension.rs
 #. a check of Test browser integration (Linux, macOS): MDM found no browser it can connect to (one installed as a Flatpak isn't found)
 #, machine
@@ -3708,6 +3736,18 @@
 #. title in the empty download list when there are no downloads at all
 #, machine
 	No downloads yet	Još nema preuzimanja
+#. text in rssdlg.rs
+#. RSS feeds window: the title in the empty list of articles, no feed chosen
+#, machine
+	No feed chosen	Nije odabran feed
+#. text in rssdlg.rs
+#. RSS feeds window: the title in the empty list of feeds
+#, machine
+	No feeds yet	Još nema feedova
+#. text in the Scheduler window
+#. Scheduler → Files in the queue: the title in the empty list
+#, machine
+	No files in this queue	Nema datoteka u ovom redu čekanja
 #. text in a dialog box
 #, machine
 	No folders yet	Još nema fascikli
@@ -3721,6 +3761,10 @@
 #. text in langpick.rs
 #, machine
 	No language matches.	Nijedan jezik se ne podudara.
+#. text in the Link grabber window
+#. Link grabber: the title in its empty list
+#, machine
+	No links yet	Još nema veza
 #. text in the Options window
 #. Options → Remote → Status: on, but the computer has no local network address now
 #, machine
@@ -3752,9 +3796,17 @@
 #, machine
 	No proxy/socks	Bez proxyja/socksa
 #. text in the Options window
+#. Site rules window: the title in the empty list of rules
+#, machine
+	No site rules yet	Još nema pravila za lokacije
+#. text in the Options window
 #. Options → Accounts: no system keyring/keychain answered (none runs, e.g. a desktop without one), so the sign-ins stay in MDM's settings folder, which only the user's account may read
 #, machine
 	No system keyring answered, so sign-ins and passwords are kept in MDM's settings, which only you can read.	Nijedan sistemski privjesak za ključeve nije odgovorio, tako da se prijave i lozinke čuvaju u MDM postavkama, koje samo vi možete čitati.
+#. text in the Add torrent window
+#. Add torrent: the title in the empty list of files, before a torrent is read
+#, machine
+	No torrent yet	Još nema torrenta
 #. message or event log entry in the main window
 #. event log entry: Add trackers changed nothing, the torrent had them all
 #, machine
@@ -5980,6 +6032,10 @@
 #. remote control page (on a phone): label of the box naming this phone (shown in MDM's list of paired devices)
 #, machine
 	This device's name	Naziv ovog uređaja
+#. text in rssdlg.rs
+#. RSS feeds window: in the empty list of articles of a feed that has none
+#, machine
+	This feed has no articles right now.	Ovaj feed trenutno nema članaka.
 #. message or event log entry in the main window
 #. the message when a file picked in View → Font isn't a TrueType or OpenType font MDM can read
 #, machine

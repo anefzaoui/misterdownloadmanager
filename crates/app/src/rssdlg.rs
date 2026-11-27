@@ -220,6 +220,20 @@ impl RssWindow {
                 );
             },
         );
+        if names.is_empty() {
+            let p = ui.painter().clone();
+            winui::empty_state(
+                ui,
+                &p,
+                r(o, 22.0, 76.0, 230.0, 330.0).shrink(1.0),
+                crate::icons::EmptyIcon::Feeds,
+                // i18n: RSS feeds window: the title in the empty list of feeds
+                crate::i18n::mark("No feeds yet"),
+                crate::i18n::mark("Type a feed's address above and click Add feed."),
+                None,
+                "rss-feeds-empty",
+            );
+        }
         if ev.picked.is_some() {
             self.articles = Default::default();
         }
@@ -308,6 +322,38 @@ impl RssWindow {
                 );
             },
         );
+        if articles.is_empty() {
+            let (title, why) = match sel.map(|i| &store.feeds[i]) {
+                None => (
+                    // i18n: RSS feeds window: the title in the empty list of articles, no feed chosen
+                    crate::i18n::mark("No feed chosen"),
+                    // i18n: RSS feeds window: in the empty list of articles, under its title
+                    crate::i18n::mark("Choose a feed to see its articles."),
+                ),
+                Some(f) if f.fetched.is_none() => (
+                    crate::i18n::mark("Not fetched yet"),
+                    // i18n: RSS feeds window: in the empty list of articles of a feed not read yet
+                    crate::i18n::mark("Its articles show here once the feed is read."),
+                ),
+                Some(_) => (
+                    // i18n: RSS feeds window: the title in the empty list of articles of a feed that has none
+                    crate::i18n::mark("No articles"),
+                    // i18n: RSS feeds window: in the empty list of articles of a feed that has none
+                    crate::i18n::mark("This feed has no articles right now."),
+                ),
+            };
+            let p = ui.painter().clone();
+            winui::empty_state(
+                ui,
+                &p,
+                r(o, 264.0, 76.0, 476.0, 330.0).shrink(1.0),
+                crate::icons::EmptyIcon::Feeds,
+                title,
+                why,
+                None,
+                "rss-articles-empty",
+            );
+        }
         let picked = self.articles.selected.and_then(|i| articles.get(i));
         let can = picked.is_some_and(|a| !a.torrent.is_empty());
         let download = winui::button(

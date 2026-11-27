@@ -648,7 +648,8 @@ impl TorrentDialog {
             };
             text(&p, o.x + 31.0, line, &msg, winui::TEXT());
         } else if let Some(e) = shown_err {
-            let (rect, cut) = winui::text_fit(&p, o.x + 11.0, line, e, winui::ERROR(), o.x + 589.0);
+            let x = winui::note_mark(ui, &p, o.x + 11.0, line, Some(crate::icons::Mark::Fail));
+            let (rect, cut) = winui::text_fit(&p, x, line, e, winui::ERROR(), o.x + 589.0);
             if cut {
                 winui::full_on_hover(ui, rect, "torrent-error", e);
             }
@@ -977,15 +978,17 @@ impl TorrentDialog {
         }
         if self.meta.is_none() {
             // i18n: "Look up" is the button that reads the torrent: use its translation
-            let note =
-                crate::i18n::t("Paste a magnet link or choose a .torrent file, then Look up.");
-            let w = winui::text_width(&p, note);
-            text(
+            winui::empty_state(
+                ui,
                 &p,
-                body.center().x - w / 2.0,
-                body.center().y + 4.0,
-                note,
-                winui::MUTED(),
+                winui::rect(body),
+                crate::icons::EmptyIcon::Torrent,
+                // i18n: Add torrent: the title in the empty list of files, before a torrent is read
+                crate::i18n::mark("No torrent yet"),
+                // i18n: "Look up" is the button that reads the torrent: use its translation
+                crate::i18n::mark("Paste a magnet link or choose a .torrent file, then Look up."),
+                None,
+                "torrent-empty",
             );
             return;
         }
@@ -1733,7 +1736,9 @@ impl AddTrackers {
                     ),
                 };
                 // Two lines' room: a translated reason is long.
-                winui::paragraph(&p, o.x + 14.0, o.y + 190.0, &line, color, o.x + 446.0, 14.0);
+                let mark = crate::icons::Mark::of_ink(color);
+                let x = winui::note_mark(ui, &p, o.x + 14.0, o.y + 190.0, mark);
+                winui::paragraph(&p, x, o.y + 190.0, &line, color, o.x + 446.0, 14.0);
                 let ok = winui::button(
                     ui,
                     r(o, 288.0, 218.0, 77.0, 21.0),

@@ -443,6 +443,9 @@ impl Offer {
         // A failure is a polite live region: a screen reader speaks it as it comes, without the
         // focus; the other lines never are (#1407, #1978).
         let at = (o.x + 18.0, o.y + y + 13.0, o.x + text_end);
+        // A failure's line starts with its mark (#2008).
+        let mark = self.failed.is_some().then_some(crate::icons::Mark::Fail);
+        let at = (winui::note_mark(ui, &p, at.0, at.1, mark), at.1, at.2);
         let lines = if self.failed.is_some() {
             winui::readable_paragraph_live(
                 ui,
@@ -1328,10 +1331,17 @@ impl Programs {
         let y = 370.0;
         // What failed, left of the buttons.
         if let Some(e) = &self.error {
-            let rc = winui::fit(
+            let x = winui::note_mark(
                 ui,
                 &p,
                 o.x + 14.0,
+                o.y + y + 15.0,
+                Some(crate::icons::Mark::Fail),
+            );
+            let rc = winui::fit(
+                ui,
+                &p,
+                x,
                 o.y + y + 15.0,
                 e,
                 winui::ERROR(),
