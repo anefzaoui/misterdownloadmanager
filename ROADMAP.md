@@ -569,6 +569,9 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 Everything below ships together, in version 0.6.0, the next release.
 
+- ✅ **No proxy/socks** chosen in Options → Proxy / Socks keeps yt-dlp and gallery-dl direct too, off Windows'
+  proxy and the proxy variables; the untouched default still follows them, and so does a list saved before
+  ([#1616](https://github.com/anefzaoui/misterdownloadmanager/issues/1616))
 - ✅ A download's progress window can start minimized: **Options → Downloads → Customize
   "Download progress" dialog → Edit...** offers **Show normally**, **Show minimized** and
   **Don't show** ([#1966](https://github.com/anefzaoui/misterdownloadmanager/issues/1966); thanks to

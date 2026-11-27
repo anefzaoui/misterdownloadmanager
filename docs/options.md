@@ -91,7 +91,7 @@ More in [Connections and speed](connections-and-speed.md).
 ![Options on its Proxy / Socks page](images/help/options-proxy.webp)
 *Proxy / Socks: no proxy, the system's, or your own.*
 
-- **No proxy/socks** — connect directly. This is the default.
+- **No proxy/socks** — connect directly. This is the default. Chosen here (clicked, or with **Use proxy/socks from a browser's request…** unticked while it's on), video pages and image galleries connect directly too: yt-dlp and gallery-dl are kept off Windows' proxy and the `HTTPS_PROXY` / `HTTP_PROXY` / `ALL_PROXY` variables. Left at the default, they still follow those, as they always did.
 - **Use system settings** — use the system's proxy: Windows' or macOS' settings, or on Linux the `https_proxy`, `http_proxy` and `all_proxy` variables of your session.
 - **Use automatic configuration script** — the proxy auto-config (PAC) script your network gives: type its address (`http://…/proxy.pac`, or a file). MDM fetches it and asks it which proxy each download goes through (`PROXY`, `HTTPS`, `SOCKS`, `SOCKS5`, `SOCKS4` or `DIRECT`), as browsers do. Through a `SOCKS` or `SOCKS5` answer, the proxy looks the site's name up, as in browsers. Until the script has been fetched, or if it can't be, MDM uses the system's settings.
 - **Manual proxy/socks configuration** — your own proxy:
