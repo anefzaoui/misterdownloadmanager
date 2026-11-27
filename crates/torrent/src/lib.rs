@@ -4008,10 +4008,9 @@ mod tests {
         };
 
         // The window's readings, 2 ms apart, from just before the re-add until its own numbers
-        // are back. The re-add's add is held (`adding`: one add at a time) until the watch has
-        // read the torrent out of the session: left to itself it is back in about 2 ms, between
-        // two of the watch's readings (#2002).
-        let turn = leecher.adding.lock().await;
+        // are back. The re-add is run a step at a time and left where the torrent is out of the
+        // session until the watch has read it there: left to itself it is back in about 2 ms,
+        // between two of the watch's readings (#2002).
         let deadline = std::time::Instant::now() + Duration::from_secs(60);
         let pause = || tokio::time::sleep(Duration::from_millis(2));
         let mut seen = Vec::new();
@@ -4032,34 +4031,36 @@ mod tests {
         let unread = |last: &Option<Arc<watch::Seen>>| {
             leecher.watch.get(&h2).as_ref().map(Arc::as_ptr) == last.as_ref().map(Arc::as_ptr)
         };
-        let window = async {
-            // Out of the session, its add waiting.
-            while leecher.has(&h2) {
-                look("out of the session");
+        let mut readd = std::pin::pin!(leecher.readd(&h2, &torrent, false));
+        // Out of the session: the re-add stays there while it isn't run. It holds librqbit's
+        // persistence lock, so nothing else is added or removed in this session meanwhile.
+        while leecher.has(&h2) {
+            look("out of the session");
+            let step =
+                std::future::poll_fn(|cx| std::task::Poll::Ready(readd.as_mut().poll(cx))).await;
+            assert!(step.is_pending(), "over before it was out: {step:?}");
+            pause().await;
+        }
+        // Two readings of the watch's there: the first may have begun before the delete.
+        for _ in 0..2 {
+            let last = leecher.watch.get(&h2);
+            while unread(&last) {
+                look("read out of the session");
                 pause().await;
             }
-            // Two readings of the watch's there: the first may have begun before the delete.
-            for _ in 0..2 {
-                let last = leecher.watch.get(&h2);
-                while unread(&last) {
-                    look("read out of the session");
-                    pause().await;
-                }
-            }
-            look("read out of the session");
-            assert!(!leecher.has(&h2), "back before the watch read it");
-            drop(turn);
-            // Back and checked: the reading that finds it so ends the re-add.
+        }
+        look("read out of the session");
+        assert!(!leecher.has(&h2), "back before the watch read it");
+        // Run to its end. Back and checked: the reading that finds it so ends the re-add.
+        let (readded, ()) = tokio::join!(readd, async {
             while !matches!(
                 look("its own numbers again"),
                 Phase::Downloading | Phase::Finished
             ) {
                 pause().await;
             }
-        };
-        tokio::join!(window, async {
-            leecher.readd(&h2, &torrent, false).await.unwrap()
         });
+        readded.unwrap();
         // And a reading of the watch's own after that.
         let had = leecher.watch.get(&h2);
         while unread(&had) {
