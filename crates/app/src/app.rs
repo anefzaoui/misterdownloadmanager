@@ -6529,17 +6529,14 @@ impl App {
         {
             return;
         }
-        let items = &self.items;
-        let unfinished = |id: u64| {
-            items
-                .iter()
-                .find(|i| i.id == id)
-                .filter(|i| i.status != Status::Complete)
-        };
         let ended: Vec<(u64, PathBuf)> = self
             .previews
             .iter()
-            .filter(|(id, file)| !unfinished(*id).is_some_and(|i| preview_file(i) == *file))
+            .filter(|(id, file)| {
+                !self.items.iter().any(|i| {
+                    i.id == *id && i.status != Status::Complete && preview_file(i) == *file
+                })
+            })
             .cloned()
             .collect();
         self.previews.retain(|p| !ended.contains(p));
@@ -6575,6 +6572,13 @@ impl App {
             self.preview_leftovers
                 .retain(|f| dialogs::clear_preview_leftover(f));
         }
+        let items = &self.items;
+        let unfinished = |id: u64| {
+            items
+                .iter()
+                .find(|i| i.id == id)
+                .filter(|i| i.status != Status::Complete)
+        };
         let mut finished = Vec::new();
         self.preview_order.retain(|id| {
             if unfinished(*id).is_some() {
