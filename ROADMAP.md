@@ -569,6 +569,10 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 Everything below ships together, in version 0.6.0, the next release.
 
+- ✅ The command line's `torrent-info` and `torrent-get` hold their torrent session to the network
+  adapter chosen in Options → Connection, and don't start while it isn't connected
+  ([#2050](https://github.com/anefzaoui/misterdownloadmanager/issues/2050); thanks to
+  [@abdul-karim-mia](https://github.com/abdul-karim-mia))
 - ✅ A download's progress window can start minimized: **Options → Downloads → Customize
   "Download progress" dialog → Edit...** offers **Show normally**, **Show minimized** and
   **Don't show** ([#1966](https://github.com/anefzaoui/misterdownloadmanager/issues/1966); thanks to
