@@ -2027,6 +2027,26 @@ mod tests {
         assert!(verdict(&page, &rules).is_ok());
         rules.advanced_integration = false;
         assert!(verdict(&page, &rules).is_ok());
+        // #1958: Save .torrent links as a normal download hands browser .torrent links to MDM
+        // even when Torrent settings' file/magnet handler switch is off.
+        let mut torrent_rules = mdm_ipc::capture::CaptureRules {
+            torrent_handler: Some(false),
+            ..Default::default()
+        };
+        let tmsg = msg("https://x.org/f/ubuntu.torrent", "ubuntu.torrent");
+        let hello = || Message {
+            hello: true,
+            user_agent: tmsg.user_agent.clone(),
+            ..Default::default()
+        };
+        assert_eq!(
+            verdict(&tmsg, &torrent_rules),
+            Err(mdm_ipc::capture::Declined::Torrents)
+        );
+        assert_eq!(answer(hello(), &torrent_rules).torrents, Some(false));
+        torrent_rules.torrent_save_file = true;
+        assert!(verdict(&tmsg, &torrent_rules).is_ok());
+        assert_eq!(answer(hello(), &torrent_rules).torrents, Some(true));
     }
 
     #[test]

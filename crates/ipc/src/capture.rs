@@ -77,6 +77,10 @@ pub struct CaptureRules {
     /// own torrent client (#1058), though TORRENT is in File types. None (not decided yet: an
     /// app that hasn't started since its update): taken, as before (`takes_torrents`).
     pub torrent_handler: Option<bool>,
+    /// Torrent settings → "Save .torrent links as a normal download" (#1958). On, the browser
+    /// still hands `.torrent` downloads over even when `torrent_handler` is off, and the app
+    /// downloads only the `.torrent` file.
+    pub torrent_save_file: bool,
 }
 
 /// Options → Download panels → Button size's scale steps (#1923), in percent.
@@ -107,6 +111,7 @@ impl Default for CaptureRules {
             capture_opened: true,
             capture_min_kb: 0,
             torrent_handler: None,
+            torrent_save_file: false,
         }
     }
 }
@@ -203,9 +208,10 @@ impl CaptureRules {
         self
     }
 
-    /// Does the browser hand a .torrent over (Torrent settings' switch on, or not decided yet)?
+    /// Does the browser hand a .torrent over (Torrent settings' switch on or undecided, or saving
+    /// `.torrent` links as a normal download)?
     pub fn takes_torrents(&self) -> bool {
-        self.torrent_handler != Some(false)
+        self.torrent_handler != Some(false) || self.torrent_save_file
     }
 
     /// Is a file of `size` bytes (the browser's figure, when it has one) too small to take?
@@ -952,6 +958,13 @@ mod tests {
         // undecided until the app settles it: taken.
         let saved: CaptureRules = serde_json::from_str(r#"{"torrent_handler":false}"#).unwrap();
         assert!(!saved.takes_torrents());
+        let save_file: CaptureRules =
+            serde_json::from_str(r#"{"torrent_handler":false,"torrent_save_file":true}"#).unwrap();
+        assert!(save_file.takes_torrents());
+        assert_eq!(
+            save_file.accepts("https://x.test/a.torrent", "a.torrent", CHROME, None),
+            Ok(())
+        );
         let saved: CaptureRules = serde_json::from_str(r#"{"torrent_handler":true}"#).unwrap();
         assert!(saved.takes_torrents());
         let before: CaptureRules =

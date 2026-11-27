@@ -569,6 +569,12 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 Everything below ships together, in version 0.6.0, the next release.
 
+- ✅ **Tasks → Torrent settings... → Save .torrent links as a normal download**
+  ([#1958](https://github.com/anefzaoui/misterdownloadmanager/issues/1958)): off by default; when
+  enabled, `http` and `https` `.torrent` links from the browser or **Add URL** save as regular
+  `.torrent` downloads (including when **Open magnet links and .torrent files with Mister Download
+  Manager** is off for another torrent program), while magnet links and local `.torrent` files
+  keep opening **Add torrent**
 - ✅ Each browser's logo before its name in the browser extension's window, the first start's
   browser step and Options → General's browser list, sharp at every display scale; a globe for a
   browser without one

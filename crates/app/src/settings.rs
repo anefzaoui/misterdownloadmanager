@@ -510,6 +510,11 @@ pub struct Settings {
     /// says nothing (`settle_torrent_handler`).
     #[serde(rename = "torrent_associations", skip_serializing)]
     pub torrent_associations_before: bool,
+    /// Torrent settings → "Save .torrent links as a normal download" (#1958): off by default.
+    /// On, `http` and `https` links to `.torrent` files from the browser or Add URL download as
+    /// normal files instead of opening Add torrent; magnet links and local `.torrent` files stay
+    /// in Add torrent.
+    pub torrent_save_file: bool,
     /// Torrent settings → Network (#40, `torrent_config`): accept incoming connections, map
     /// the port with the router's UPnP, a fixed port (0: any, picked at each start), the DHT,
     /// finding peers on the local network.
@@ -764,6 +769,7 @@ impl Default for Settings {
             torrent_keep_sharing: false,
             torrent_associations: None,
             torrent_associations_before: false,
+            torrent_save_file: false,
             torrent_incoming: true,
             torrent_upnp: true,
             torrent_port: 0,
@@ -1974,6 +1980,15 @@ mod tests {
             assert_eq!(r.takes_torrents(), on);
             assert_eq!(r.capture_min_kb, 7);
         }
+        let save_file = Settings {
+            torrent_associations: Some(false),
+            torrent_save_file: true,
+            ..Settings::default()
+        };
+        let r = read(&save_file);
+        assert_eq!(r.torrent_handler, Some(false));
+        assert!(r.torrent_save_file);
+        assert!(r.takes_torrents());
     }
 
     /// #1581: private-window downloads are kept in the list by default, for a new list and for

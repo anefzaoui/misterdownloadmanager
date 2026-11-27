@@ -4176,7 +4176,10 @@ impl App {
         let torrent = |u: &url::Url| {
             crate::torrents::is_torrent_url(u, cmd.name.as_deref(), cmd.mime.as_deref())
         };
-        if !cmd.silent && (torrent(&url) || final_url.as_ref().is_some_and(torrent)) {
+        if !self.settings.torrent_save_file
+            && !cmd.silent
+            && (torrent(&url) || final_url.as_ref().is_some_and(torrent))
+        {
             let parts = self.request_parts(&url, None, &cmd, crate::debrid::browser_started(&cmd));
             self.show_for_dialog(ctx);
             self.open_torrent_dialog_with(
@@ -13943,8 +13946,12 @@ impl App {
                     self.add_url = None;
                     self.open_torrent_dialog(Some(new.url.to_string()), ctx);
                 }
-                // A .torrent's address (#39): Add torrent fetches it and shows what it holds.
-                Outcome::Done(new) if crate::torrents::is_torrent_url(&new.url, None, None) => {
+                // A .torrent's address (#39): Add torrent fetches it and shows what it holds,
+                // unless Torrent settings say to save `.torrent` links as normal downloads (#1958).
+                Outcome::Done(new)
+                    if !self.settings.torrent_save_file
+                        && crate::torrents::is_torrent_url(&new.url, None, None) =>
+                {
                     self.add_url = None;
                     let parts = self.request_parts(
                         &new.url,
@@ -14181,11 +14188,13 @@ impl App {
                 Outcome::Done(crate::torrentdlg::TorrentChoice {
                     share,
                     assoc,
+                    save_torrent_file,
                     net,
                     upload,
                     seeding,
                 }) => {
                     self.torrent_settings = None;
+                    self.settings.torrent_save_file = save_torrent_file;
                     // The network: the next torrent session takes it (torrent_tick).
                     net.apply(&mut self.settings);
                     // The upload limit: at once (torrent_tick sets it on the session).
@@ -19958,5 +19967,166 @@ mod stop_and_keep_tests {
             .len();
         assert!(kept > 0);
         assert_eq!(row.size, Some(kept));
+    }
+}
+
+/// #1958: Torrent settings → "Save .torrent links as a normal download" saves http/https `.torrent`
+/// links as regular downloads while leaving magnet links and local `.torrent` files in Add torrent.
+#[cfg(test)]
+mod torrent_save_file_tests {
+    use super::*;
+
+    fn runtime() -> &'static tokio::runtime::Runtime {
+        Box::leak(Box::new(
+            tokio::runtime::Builder::new_multi_thread()
+                .worker_threads(2)
+                .enable_all()
+                .build()
+                .unwrap(),
+        ))
+    }
+
+    fn test_app(rt: &tokio::runtime::Runtime, settings: Settings) -> std::mem::ManuallyDrop<App> {
+        let dir = tempfile::tempdir().unwrap();
+        let downloads = dir.path().to_path_buf();
+        std::mem::forget(dir);
+        let loaded = store::Loaded {
+            next_id: 100,
+            items: Vec::new(),
+            columns: None,
+            settings: Settings {
+                show_progress: false,
+                show_complete: false,
+                ..settings
+            },
+            queues: Vec::new(),
+        };
+        let (_, commands) = std::sync::mpsc::channel();
+        let mut app = std::mem::ManuallyDrop::new(App::assemble(
+            &egui::Context::default(),
+            rt.handle().clone(),
+            commands,
+            loaded,
+            crate::Start::Shown,
+        ));
+        app.downloads = downloads;
+        app
+    }
+
+    fn torrent_cmd(url: &str, later: bool) -> ipc::Command {
+        ipc::Command {
+            url: Some(url.into()),
+            name: Some("distro.torrent".into()),
+            later,
+            ..Default::default()
+        }
+    }
+
+    #[test]
+    fn default_still_opens_add_torrent_for_torrent_links() {
+        let rt = runtime();
+        let ctx = egui::Context::default();
+        let mut app = test_app(rt, Settings::default());
+        assert!(!app.settings.torrent_save_file);
+        app.handle_command(
+            torrent_cmd("https://example.test/distro.torrent", false),
+            &ctx,
+        );
+        assert!(app.torrent_dlg.is_some());
+        assert!(app.file_infos.is_empty());
+        assert!(app.items.is_empty());
+        app.torrent_dlg = None;
+    }
+
+    #[test]
+    fn save_torrent_file_uses_file_info_or_category_folder_and_duplicate_gate() {
+        let rt = runtime();
+        let ctx = egui::Context::default();
+
+        // Show start download dialog ON -> opens Download File Info, not Add torrent.
+        let mut app = test_app(
+            rt,
+            Settings {
+                torrent_save_file: true,
+                show_start_dialog: true,
+                ..Settings::default()
+            },
+        );
+        app.handle_command(
+            torrent_cmd("https://example.test/distro.torrent", false),
+            &ctx,
+        );
+        assert!(app.torrent_dlg.is_none());
+        assert_eq!(app.file_infos.len(), 1);
+        assert!(app.items.is_empty());
+        app.file_infos.clear();
+
+        // Show start download dialog OFF -> goes straight to its category folder; a second copy
+        // triggers the duplicate prompt when duplicate_action asks (0).
+        let mut app = test_app(
+            rt,
+            Settings {
+                torrent_save_file: true,
+                show_start_dialog: false,
+                duplicate_action: 0,
+                ..Settings::default()
+            },
+        );
+        app.handle_command(
+            torrent_cmd("https://example.test/distro.torrent", true),
+            &ctx,
+        );
+        assert!(app.torrent_dlg.is_none());
+        assert_eq!(app.items.len(), 1);
+        let row = &app.items[0];
+        assert!(row.torrent.is_none());
+        assert_eq!(row.category, Category::General);
+        let expected_dir = app.settings.save_dir(Category::General, &app.downloads);
+        assert_eq!(row.dest, expected_dir.join("distro.torrent"));
+
+        app.handle_command(
+            torrent_cmd("https://example.test/distro.torrent", true),
+            &ctx,
+        );
+        assert!(app.duplicate.is_some());
+        assert_eq!(app.items.len(), 1);
+    }
+
+    #[test]
+    fn save_torrent_file_keeps_magnets_and_local_torrent_files_in_add_torrent() {
+        let rt = runtime();
+        let ctx = egui::Context::default();
+        let mut app = test_app(
+            rt,
+            Settings {
+                torrent_save_file: true,
+                ..Settings::default()
+            },
+        );
+
+        app.handle_command(
+            ipc::Command {
+                url: Some("magnet:?xt=urn:btih:0123456789abcdef0123456789abcdef01234567".into()),
+                ..Default::default()
+            },
+            &ctx,
+        );
+        assert!(app.torrent_dlg.is_some());
+        assert!(app.file_infos.is_empty());
+        app.torrent_dlg = None;
+
+        let dir = tempfile::tempdir().unwrap();
+        let local = dir.path().join("local.torrent");
+        std::fs::write(&local, b"d4:infoe").unwrap();
+        app.handle_command(
+            ipc::Command {
+                url: Some(local.display().to_string()),
+                ..Default::default()
+            },
+            &ctx,
+        );
+        assert!(app.torrent_dlg.is_some());
+        assert!(app.file_infos.is_empty());
+        app.torrent_dlg = None;
     }
 }
