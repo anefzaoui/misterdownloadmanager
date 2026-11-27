@@ -50,7 +50,7 @@
 #. in a download's log: the archive test found files in it that don't read back whole; {n} how many, {files} their names
 #. {n} = a number (keep the braces as they are)
 #, machine
-@plural	The archive test found {n} damaged file: {files}|The archive test found {n} damaged files: {files}	存档测试发现 {n} 个损坏文件：{files}
+@plural	The archive test found {n} damaged file: {files}|The archive test found {n} damaged files: {files}	压缩包测试发现 {n} 个损坏文件：{files}
 #. count in a dialog box
 #. Cancel in Download File Info with downloads waiting behind it
 #. {n} = a number (keep the braces as they are)
@@ -96,7 +96,7 @@
 #. in a download's log, after extracting: entries of the archive not written (links, names that would leave the folder, entries under a file of the archive where a folder should be)
 #. {n} = a number (keep the braces as they are)
 #, machine
-@plural	{n} entry was left out (a link, a name leading outside the folder, or a file in its way)|{n} entries were left out (links, names leading outside the folder, or files in their way)	已忽略 {n} 个条目（链接、指向文件夹外部的名称或其路径中的文件）
+@plural	{n} entry was left out (a link, a name leading outside the folder, or a file in its way)|{n} entries were left out (links, names leading outside the folder, or files in their way)	已忽略 {n} 个条目（链接、指向文件夹外部的名称，或有文件挡住了它的路径）
 #. count in a dialog box
 #. the summary of downloads added together; after "12 downloads finished": {n} of them failed
 #. {n} = a number (keep the braces as they are)
@@ -157,7 +157,7 @@
 #. the tip of MDM's notification area (tray) icon: {n} windows of MDM (Download complete...) wait while a full-screen game, app or presentation is on, and show when the user is back
 #. {n} = a number (keep the braces as they are)
 #, machine
-@plural	{n} window waits until you're back|{n} windows wait until you're back	{n} 个窗口正在等待，直到您返回
+@plural	{n} window waits until you're back|{n} windows wait until you're back	有 {n} 个窗口等您回来后显示
 #. count in the Link grabber window
 #. Link grabber's Source line: a Hugging Face repository's or GitHub release's ({package}: its name, "owner/name") files whose names would lead out of its folder (`../`, a drive, a device's name) are left out; {n} how many
 #. {n} = a number (keep the braces as they are)
@@ -229,7 +229,7 @@
 #. why an archive wasn't tested (after "Couldn't test {name}: "); 7-Zip is a program's name, {error} its words, in English
 #. {error} = an error message (keep the braces as they are)
 #, machine
-	7-Zip couldn't test it ({error})	7-Zip 无法测试 ({error})
+	7-Zip couldn't test it ({error})	7-Zip 无法测试（{error}）
 #. window title in extracting archives (a download's log, the Archive password window)
 #. window title: 7-Zip (a program's name) must be installed
 	7-Zip needed	需要 7-Zip
@@ -240,7 +240,7 @@
 	7z and RAR archives are extracted by 7-Zip ({path}).	7z 和 RAR 压缩包由 7-Zip（{path}）解压。
 #. text in the Options window
 #. Options → Archives, when Extract in place with HatchZip (a program's name) is on: {path} is where its program is
-	7z and RAR archives are extracted by HatchZip ({path}).	7z 和 RAR 压缩包由 HatchZip ({path}) 解压。
+	7z and RAR archives are extracted by HatchZip ({path}).	7z 和 RAR 压缩包由 HatchZip（{path}）解压。
 #. text in the Options window
 #. Options → Archives, when 7-Zip isn't installed
 	7z and RAR archives need 7-Zip (7-zip.org), which isn't installed.	7z 和 RAR 压缩包需要 7-Zip（7-zip.org），但尚未安装。
@@ -309,11 +309,11 @@
 #. message or event log entry in the main window
 #. tooltip on the disabled Rename box for a single-file torrent
 #, machine
-	A single-file torrent keeps its name	单文件种子需保留原文件名
+	A single-file torrent keeps its name	单文件种子保留原文件名
 #. text in the download list (sizes, speeds, status)
 #. why a torrent that isn't finished can't be moved or renamed: the torrent engine writes its pieces into the files where they are
 #, machine
-	A torrent can be moved once it's finished: until then the torrent engine writes its pieces where they are	种子下载完成后才能移动：在此之前，种子引擎会将其片段写入当前位置的文件
+	A torrent can be moved once it's finished: until then the torrent engine writes its pieces where they are	种子完成后才能移动：在此之前，种子引擎会就地写入其分片
 #. text in torrent_ownership.rs
 #. a torrent's folder is a link or junction leading outside its destination
 #, machine
@@ -328,7 +328,7 @@
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 #, machine
-	a volume of it is missing	缺少其中一个卷
+	a volume of it is missing	缺少其中一个分卷
 #. text in archtest.rs
 #. why a split archive (in several files, its volumes) isn't tested yet, in "{name} isn't complete ({why})": one of its files isn't downloaded yet
 #, machine
@@ -396,7 +396,7 @@
 #. text in the Options window
 #. Options → Accounts: in the empty list of accounts, under its title
 #, machine
-	Add one to download file-host links through it.	添加一个帐户，通过它下载文件托管链接。
+	Add one to download file-host links through it.	添加账户，通过它下载文件托管站的链接。
 #. text in the Options window
 #, machine
 	Add the duplicate and overwrite the existing file	添加重复项并覆盖现有文件
@@ -482,7 +482,7 @@
 	Afghanistan	阿富汗
 #. text in the Options window
 #. Options → Add an account: a note under the user name and password fields (Mega-Debrid bans the address for some minutes after a few wrong passwords)
-	After a few wrong passwords the service blocks this connection for some minutes.	若连续输错多次密码，服务器可能会暂时屏蔽此连接数分钟。
+	After a few wrong passwords the service blocks this connection for some minutes.	连续输错几次密码后，服务会暂停此连接几分钟。
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Aland Islands	奥兰群岛
@@ -506,7 +506,7 @@
 #, machine
 	All the uploader's	上传者提供的所有字幕
 #. text in helpers.rs
-	All three are open source. MDM gets them from their official releases with its own downloader and checks each file's signature before it runs. About 140 MB, once.	这三款软件都是开源的。MDM通过自带的下载器从官方发布版本中获取它们，并在运行前检查每个文件的签名。大约140 MB，一次性下载。
+	All three are open source. MDM gets them from their official releases with its own downloader and checks each file's signature before it runs. About 140 MB, once.	这三款软件都是开源的。MDM 通过自带的下载器从官方发布版本中获取它们，并在运行前检查每个文件的签名。约 140 MB，一次性下载。
 #. text in cnl.rs
 #. button in the Click'n'Load window: let this site send links (remembered)
 	Allow	允许
@@ -521,7 +521,7 @@
 	Allow only sites you use. Nothing is looked up or downloaded before you add it in Link grabber.	仅允许您使用的网站。在您将链接添加到链接抓取器之前，不会查询或下载任何内容。
 #. text in errors.rs
 #, machine
-	already being downloaded: {path}	正在下载：{path}
+	already being downloaded: {path}	已在下载：{path}
 #. text in the Link grabber window
 #. Link grabber: the package of links the download list has already
 	Already in the list	已在列表中
@@ -553,7 +553,7 @@
 #. Options → Archives: where extracted files go
 	Always into a folder named after it	始终解压到同名文件夹
 #. checkbox in a dialog box
-	Always turn on Speed Limiter on Mister Download Manager startup	在 Mister Download Manager 启动时始终开启限速器
+	Always turn on Speed Limiter on Mister Download Manager startup	Mister Download Manager 启动时始终开启限速器
 #. text in regional.rs; text in the Scheduler window
 #. before noon, after a time of day (12-hour clock). Its pair is "PM": write both the same way (this language's own short marks, or both kept as AM and PM)
 	AM	上午
@@ -600,7 +600,7 @@
 #. text in the Options window
 #. Options → DNS settings: the test's answer; {ms} milliseconds, {ip} the address found
 #, machine
-	Answered in {ms} ms: {ip}	在 {ms} 毫秒内应答：{ip}
+	Answered in {ms} ms: {ip}	在 {ms} 毫秒内响应：{ip}
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Antarctica	南极洲
@@ -941,7 +941,7 @@
 #. text in the Options window
 #. tooltip of the close-setting: checked keeps MDM running when the window closes, in the notification area when available or else the taskbar; downloads continue; unchecked closing quits
 #, machine
-	Checked, closing the window keeps MDM running: it hides in the notification area when available, or minimizes to the taskbar otherwise, and downloads continue; unchecked, closing quits MDM	选中后，关闭窗口时 MDM 继续运行：可用时隐藏到通知区域，否则最小化到任务栏，下载继续；未选中时，关闭窗口即退出 MDM。
+	Checked, closing the window keeps MDM running: it hides in the notification area when available, or minimizes to the taskbar otherwise, and downloads continue; unchecked, closing quits MDM	选中后，关闭窗口时 MDM 继续运行：可用时隐藏到通知区域，否则最小化到任务栏，下载继续；未选中时，关闭窗口即退出 MDM
 #. text in the Options window
 #. tooltip of "Keep private-window downloads in the list": checked, downloads from a browser's private (incognito) window are saved in the list and survive MDM closing or restarting; unchecked, they are kept in memory only and are gone when MDM closes. Their cookies are never saved.
 #, machine
@@ -1115,7 +1115,7 @@
 #. text in the Add torrent window
 #. Torrent settings: uTP, BitTorrent over UDP, which many peers use (more peers, often faster)
 #, machine
-	Connect over uTP too (UDP)	也通过 uTP 连接 (UDP)
+	Connect over uTP too (UDP)	也通过 uTP 连接（UDP）
 #. text in extension.rs
 #. in the browser extension's window, beside a browser whose extension reached MDM
 #, machine
@@ -1193,7 +1193,7 @@
 #. a helper (yt-dlp, ffmpeg) couldn't be downloaded: its server ({host}) couldn't be reached, for the system's reason {cause}
 #. {host} = a server name such as "example.com" (keep the braces as they are)
 #, machine
-	could not reach {host} ({cause})	无法访问 {host} ({cause})
+	could not reach {host} ({cause})	无法访问 {host}（{cause}）
 #. text in helpers.rs
 #. Helpers: the last update check failed (no network...); MDM checks again later by itself
 #, machine
@@ -1261,11 +1261,11 @@
 #. window title in archtest.rs
 #. window title: an archive (zip, 7z, rar) that was downloaded is damaged
 #, machine
-	Damaged archive	损坏的存档
+	Damaged archive	损坏的压缩包
 #. text in the download list (sizes, speeds, status)
 #. a download's status, whole (the Status cell's tip): its archive's test found it damaged; "Redownload" is the right-click command
 #, machine
-	Damaged: its archive test found errors. Right-click → Redownload downloads it again	已损坏：存档测试发现错误。右键单击 → 重新下载可再次下载
+	Damaged: its archive test found errors. Right-click → Redownload downloads it again	已损坏：压缩包测试发现错误。右键单击 → 重新下载可再次下载
 #. text in the Options window
 #, machine
 	Date order:	日期顺序：
@@ -1416,7 +1416,7 @@
 	Don't start downloading automatically from the following sites:	不从以下站点自动开始下载：
 #. text in the Options window
 #, machine
-	Don't take files smaller than (KB, 0 = any size):	不下载小于（KB，0 = 任意大小）的文件：
+	Don't take files smaller than (KB, 0 = any size):	不下载小于以下大小的文件（KB，0 = 任意大小）：
 #. text in the Options window; text in a download's progress window
 #. button: close the window (the device is paired)
 #, machine
@@ -1566,12 +1566,12 @@
 #. text in helpers.rs
 #. Helpers: MDM's own copy of a helper is being downloaded (where there was none, or in place of the system's); {percent} = how far, a number
 #, machine
-	Downloading MDM's own copy... {percent}%	正在下载 MDM 自己的副本… {percent}%
+	Downloading MDM's own copy... {percent}%	正在下载 MDM 自带的副本… {percent}%
 #. text in archtest.rs
 #. in a download's log: after its archive test found damaged files, only their bytes are downloaded again from the same server; {size} like "1.20 MB"
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
-	Downloading the damaged parts again ({size})	正在重新下载损坏的部分 ({size})
+	Downloading the damaged parts again ({size})	正在重新下载损坏的部分（{size}）
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. Check for updates, while Update now downloads; {percent} like "42%"
 #, machine
@@ -1865,7 +1865,7 @@
 #. text in the Download video window
 #. tooltip of "Quick cut, at keyframes" in Download video: what it does
 #, machine
-	Fast: the streams are copied as they are, so the part may start a little before From	快速：流按原样复制，因此部分可能在“从”时间之前一点开始
+	Fast: the streams are copied as they are, so the part may start a little before From	快速：流按原样复制，因此截取的部分可能比“从”稍早开始
 #. text in the Scheduler window
 	February	二月
 #. text in rssdlg.rs
@@ -2023,7 +2023,7 @@
 #. text in the Download video window
 #. a note in Download video while FLAC is chosen: FLAC keeps the site's (already lossy) sound exactly, it can't make it better, the file is only bigger
 #, machine
-	FLAC keeps the sound exactly, but it can't add quality the site's sound doesn't have: the file is only bigger.	FLAC 会原样保留网站的音频，无法提升其原本没有的音质：文件只会更大。
+	FLAC keeps the sound exactly, but it can't add quality the site's sound doesn't have: the file is only bigger.	FLAC 会原样保留声音，但无法提升网站音频本就没有的音质：文件只会更大。
 #. text in categories.rs
 #, machine
 	Folder:	文件夹：
@@ -2079,7 +2079,7 @@
 #. text in debrid.rs
 #. Options → Accounts: a debrid account without premium (it can't unlock links)
 #, machine
-	free account: links need premium	免费账户：解锁链接需要高级账户
+	free account: links need premium	免费账户：链接需要高级账户
 #. text in helpers.rs
 #. a promise in the helpers window: the helpers are free, official and checked
 #, machine
@@ -2214,12 +2214,12 @@
 #. Helpers: button: use the previous version of a helper again (if the new one misbehaves); {version} = that version
 #. {version} = a version number (keep the braces as they are)
 #, machine
-	Go back to {version}	恢复到 {version}
+	Go back to {version}	回退到 {version}
 #. text in helpers.rs
 #. Helpers: the "Go back" button's name for a screen reader; {version} = the earlier version, {name} = the helper (yt-dlp, ffmpeg, gallery-dl, Node.js)
 #. {version} = a version number; {name} = a file name (keep the braces as they are)
 #, machine
-	Go back to {version} of {name}	返回 {name} 的 {version} 版本
+	Go back to {version} of {name}	回退 {name} 的 {version} 版本
 #. text in a download's progress window
 #. a torrent's sharing, when Torrent settings keep it on
 #, machine
@@ -2563,12 +2563,12 @@
 #. why a video download failed: ffmpeg couldn't join its picture and sound into one file; {error} = ffmpeg's reason, in English
 #. {error} = an error message (keep the braces as they are)
 #, machine
-	its picture and sound couldn't be joined into one file ({error})	其画面和声音无法合并为一个文件 ({error})
+	its picture and sound couldn't be joined into one file ({error})	其画面和声音无法合并为一个文件（{error}）
 #. text in the download list (sizes, speeds, status)
 #. why a video download failed: ffmpeg couldn't join its picture and sound into one file; {error} = ffmpeg's reason, in English; {files} = the downloaded parts' file names, kept in the download folder; "Also delete the file from disk" is the Delete box's choice
 #. {error} = an error message (keep the braces as they are)
 #, machine
-	its picture and sound couldn't be joined into one file ({error}). What was downloaded stays in the folder for Resume to join again ({files}); deleting the download with "Also delete the file from disk" removes it	其画面和声音无法合并为一个文件 ({error})。已下载的内容保留在文件夹中，以便“恢复”再次合并 ({files})；使用“同时从磁盘删除文件”删除下载会将其移除
+	its picture and sound couldn't be joined into one file ({error}). What was downloaded stays in the folder for Resume to join again ({files}); deleting the download with "Also delete the file from disk" removes it	其画面和声音无法合并为一个文件（{error}）。已下载的内容保留在文件夹中，以便“续传”再次合并（{files}）；使用“同时从磁盘中删除文件”删除下载会将其移除
 #. text in errors.rs
 #, machine
 	its release information is not as expected: {detail}	其发布信息与预期不符：{detail}
@@ -2606,7 +2606,7 @@
 #. text in helpers.rs
 #. Helpers: checkbox: MDM checks for and installs newer versions of its own yt-dlp, ffmpeg, gallery-dl and Node.js by itself
 #, machine
-	Keep MDM's helpers up to date automatically	自动保持 MDM 辅助程序为最新版本
+	Keep MDM's helpers up to date automatically	自动保持 MDM 帮助程序为最新版本
 #. message or event log entry in the main window; text in the Options window
 #. checkbox: downloads started from a browser's private (incognito) window are saved in MDM's download list like any other, so they are still there after MDM restarts
 #, machine
@@ -2742,7 +2742,7 @@
 #. text in requestedit.rs
 #. Site rule / a download's Connection settings: a line of request headers isn't "Name: value"; {line} is its number
 #, machine
-	Line {line}: write a header as Name: value	第 {line} 行：请将标头写为“名称： 值”
+	Line {line}: write a header as Name: value	第 {line} 行：请将标头写为 Name: value
 #. message or event log entry in the main window; window title in the Link grabber window; group box title in the Options window
 #. Options → Archives: group box title
 #, machine
@@ -2909,7 +2909,7 @@
 #. text in the Add torrent window
 #. Torrent settings: the hover text of "Connect over uTP too (UDP)"
 #, machine
-	Many peers take only uTP. Without it, MDM can't reach them.	许多对等点只接受 uTP。没有它，MDM 无法连接到它们。
+	Many peers take only uTP. Without it, MDM can't reach them.	许多节点只接受 uTP。没有它，MDM 无法连接到它们。
 #. checkbox in the Add torrent window
 #. Torrent settings: ask the router (UPnP) to forward the port
 #, machine
@@ -3005,7 +3005,7 @@
 #. text in errors.rs
 #. error installing ffmpeg: the list of builds MDM accepts couldn't be read; {detail} = the technical detail, in English
 #, machine
-	MDM's list of checked ffmpeg builds can't be read ({detail})	MDM 检查过的 ffmpeg 构建列表无法读取 ({detail})
+	MDM's list of checked ffmpeg builds can't be read ({detail})	MDM 检查过的 ffmpeg 构建列表无法读取（{detail}）
 #. text in errors.rs
 #. error installing ffmpeg: MDM installs only builds named in a list it publishes, signed with its key, and that list couldn't be downloaded; {error} = why
 #. {error} = an error message (keep the braces as they are)
@@ -3039,7 +3039,7 @@
 #. text in the download list (sizes, speeds, status)
 #. a video's status while its picture and sound are joined into one file (ffmpeg); {percent} how far, e.g. "45%"
 #, machine
-	Merging... ({percent})	正在合并… ({percent})
+	Merging... ({percent})	正在合并…（{percent}）
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Mexico	墨西哥
@@ -3163,11 +3163,11 @@
 #. text in playlistdlg.rs
 #. a quality in Download video for a whole playlist: each video's best H.264 video with AAC sound, an MP4 that every video editor, TV and phone plays; keep "(H.264 + AAC)" as it is
 #, machine
-	Most compatible (H.264 + AAC)	最兼容 (H.264 + AAC)
+	Most compatible (H.264 + AAC)	最兼容（H.264 + AAC）
 #. text in the Download video window
 #. a choice in the Download video window: the best H.264 video with AAC sound, an MP4 that every video editor, TV and phone plays; keep "(H.264 + AAC)" as it is; {height} is the resolution (1080p)
 #, machine
-	Most compatible (H.264 + AAC) · {height}	最兼容 (H.264 + AAC) · {height}
+	Most compatible (H.264 + AAC) · {height}	最兼容（H.264 + AAC）· {height}
 #. button in a download's Properties window
 #. verb: move the file to another folder
 #, machine
@@ -3309,7 +3309,7 @@
 #. event log: the browser's new download of the same file gave a download that waited for a new address (its link had expired) its address, and it goes on from there; {host} = the new address's server
 #. {host} = a server name such as "example.com" (keep the braces as they are)
 #, machine
-	New address from the browser ({host}): going on from it	来自浏览器的新地址 ({host})：正在从该地址继续
+	New address from the browser ({host}): going on from it	来自浏览器的新地址（{host}）：正在从该地址继续
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	New Caledonia	新喀里多尼亚
@@ -3361,7 +3361,7 @@
 #. text in the Options window
 #. Options → Accounts: the title in the empty list of debrid service accounts
 #, machine
-	No accounts yet	暂无帐户
+	No accounts yet	暂无账户
 #. text in a dialog box
 #, machine
 	No addresses yet	尚无地址
@@ -3598,18 +3598,18 @@
 #. in a download's log and the Test archive message: a split archive is tested only once every volume is downloaded; {name} is its file name, {why} which volume is missing
 #. {name} = a file name (keep the braces as they are)
 #, machine
-	Not tested yet: {name} isn't complete ({why})	尚未测试：{name} 不完整 ({why})
+	Not tested yet: {name} isn't complete ({why})	尚未测试：{name} 不完整（{why}）
 #. text in archtest.rs
 #. in a download's log: an archive larger than Options → Archives' limit for its test wasn't tested; {limit} like "4.00 GB"; "Test archive" is the right-click command
 #, machine
-	Not tested: it is larger than {limit} (Options → Archives). Right-click → Test archive tests it	未测试：它大于 {limit}（选项 → 存档）。右键单击 → 测试存档可测试它
+	Not tested: it is larger than {limit} (Options → Archives). Right-click → Test archive tests it	未测试：它大于 {limit}（选项 → 压缩包）。右键单击 → 测试压缩包可测试它
 #. text in the Options window
 #, machine
 	Not used: file parts are written next to the file	未使用：文件分块直接写在文件旁边
 #. text in a dialog box
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
-	Note: Internet servers may break connection when the speed is too limited! Thus it's not\nrecommended to use Speed Limiter to download from servers that do not support\n"resume" feature.	注意：速度限制过低时，Internet 服务器可能会断开连接！\n因此，不建议使用限速器从不支持“续传”功能的\n服务器下载。
+	Note: Internet servers may break connection when the speed is too limited! Thus it's not\nrecommended to use Speed Limiter to download from servers that do not support\n"resume" feature.	注意：速度限制过低时，互联网上的服务器可能会断开连接！\n因此，不建议使用限速器从不支持“续传”功能的\n服务器下载。
 #. text in the Options window
 #, machine
 	Note: These settings don't relate to queue processing	注意：这些设置与队列处理无关
@@ -3694,7 +3694,7 @@
 	On. On the phone, open this address:	已开启。在手机上，打开此地址：
 #. text in the Scheduler window; option (radio button) in the Scheduler window
 #, machine
-	Once at	仅运行一次：
+	Once at	仅运行一次，时间：
 #. text in extension.rs
 #, machine
 	Once it is added, this window says so. Chrome may also ask by itself at its next start.	添加后，此窗口会显示提示。Chrome 也可能在下次启动时自行询问。
@@ -3984,11 +3984,11 @@
 #. text in debrid.rs
 #. Options → Accounts: a debrid account with premium (no end date given)
 #, machine
-	premium	高级版
+	premium	高级账户
 #. text in debrid.rs
 #. Options → Accounts: a debrid account's state; {days} the days of premium left
 #, machine
-	premium, {days} days left	高级版，剩余 {days} 天
+	premium, {days} days left	高级账户，剩余 {days} 天
 #. text in the Options window
 #. Options → General: shown inside the shortcut recorder box while waiting for the user to press a 2-key or 3-key shortcut (#558)
 #. the trailing ... means it is still going on: keep it
@@ -4142,7 +4142,7 @@
 #. text in archtest.rs
 #. in the "Damaged archive" window, under what was found; "Redownload" is the button beside
 #, machine
-	Redownload downloads every volume again from the start.	重新下载会从头开始再次下载所有卷。
+	Redownload downloads every volume again from the start.	重新下载会从头开始再次下载所有分卷。
 #. text in archtest.rs
 #. in the "Damaged archive" window, under what was found; "Redownload" is the button beside
 #, machine
@@ -4215,7 +4215,7 @@
 #. text in requestedit.rs
 #. Site rule / a download's Connection settings: label above the box of request headers, one a line ("X-Token: abc")
 #, machine
-	Request headers, one a line (Name: value):	请求标头，每行一个（名称： 值）：
+	Request headers, one a line (Name: value):	请求标头，每行一个（Name: value）：
 #. text in a dialog box
 #. button in the Columns dialog: put the columns back as they first were (order, widths, all shown)
 #, machine
@@ -4458,7 +4458,7 @@
 #. tooltip (why a control is greyed) in the Add torrent window
 #. why "Use the proxy" is greyed in Torrent settings
 #, machine
-	Set a SOCKS5 proxy in Options → Proxy / Socks (Manual, Type SOCKS5) first	请先在“选项”>“代理/SOCKS”（手动，类型 SOCKS5）中设置 SOCKS5 代理
+	Set a SOCKS5 proxy in Options → Proxy / Socks (Manual, Type SOCKS5) first	请先在“选项”→“代理/SOCKS”（手动，类型 SOCKS5）中设置 SOCKS5 代理
 #. checkbox in the Options window
 #, machine
 	Set file creation date as provided by the server	将文件创建日期设为服务器提供的日期
@@ -4512,7 +4512,7 @@
 #. message or event log entry in the main window
 #. event log entry on a finished torrent when re-attaching it to keep sharing failed; {error} = why
 #. {error} = an error message (keep the braces as they are)
-	Sharing stopped: {error}	做种停止：{error}
+	Sharing stopped: {error}	已停止做种：{error}
 #. text in the Options window
 #. Options → General: label for the global keyboard shortcut that shows or hides MDM's main window (#558)
 	Shortcut to show or hide window:	显示或隐藏窗口的快捷键：
@@ -4620,7 +4620,7 @@
 #. text in the Options window
 #. Options → Add an account: signed in, the service gives no account name; {state} premium or not
 #, machine
-	Signed in ({state})	已登录 ({state})
+	Signed in ({state})	已登录（{state}）
 #. text in the Options window
 #. Options → Add an account: signed in; {user} the account's name, {state} premium or not
 #, machine
@@ -4805,7 +4805,7 @@
 #. message or event log entry in the main window
 #. tooltip on the disabled Rename box when the file is one part of a split archive (.part1.rar, .7z.001…)
 #, machine
-	Split archive volumes keep their names for extraction	分卷压缩包需保留原文件名以便解压
+	Split archive volumes keep their names for extraction	分卷压缩包保留原文件名以便解压
 #. text in the Download video window
 #. checkbox in Download video: split the video into one file per chapter (the whole video is kept too)
 #, machine
@@ -4950,7 +4950,7 @@
 #. message or event log entry in the main window
 #. event log entry: the download stopped to start again through the network adapter as it is now (a VPN reconnected, another adapter chosen)
 #, machine
-	Stopped: the network adapter changed; starting again	已停止：网络适配器变更；正在重新下载
+	Stopped: the network adapter changed; starting again	已停止：网络适配器已变更；正在重新开始
 #. message or event log entry in the main window
 #. event log entry: a video or gallery download stopped to start again at the new speed limit (its helper program takes a limit only as it starts)
 #, machine
@@ -5046,11 +5046,11 @@
 	Test	测试
 #. message or event log entry in the main window
 #, machine
-	Test archive	测试存档
+	Test archive	测试压缩包
 #. text in the Options window
 #. Options → Archives check box with a number box in it: {gb} is the box (a size in gigabytes, 4 at first); the words before it are the check box's caption, those after it follow the box, on one line. A test reads the archive back whole and checks it before its download counts as done
 #, machine
-	Test archives when their download completes, up to {gb} GB	下载完成后测试存档，最大 {gb} GB
+	Test archives when their download completes, up to {gb} GB	下载完成后测试压缩包，最大 {gb} GB
 #. window title in the Options window
 #. window title: Options → General → Test browser integration
 #, machine
@@ -5062,16 +5062,16 @@
 #. text in archtest.rs
 #. in a download's log: the archive's damaged parts were downloaded again, and its test now finds no error
 #, machine
-	Tested again: the archive has no errors now	再次测试：存档现在没有错误
+	Tested again: the archive has no errors now	再次测试：压缩包现在没有错误
 #. text in archtest.rs; text in the download list (sizes, speeds, status)
 #. in a download's log: its archive is being tested (read back and checked) before the download counts as done
 #. the trailing ... means it is still going on: keep it
 #, machine
-	Testing the archive...	正在测试存档…
+	Testing the archive...	正在测试压缩包…
 #. text in the download list (sizes, speeds, status)
 #. a download's status while its archive (zip, 7z, rar) is read back and checked before the download counts as done; {percent} how far, e.g. "45%"
 #, machine
-	Testing the archive... ({percent})	正在测试存档… ({percent})
+	Testing the archive... ({percent})	正在测试压缩包…（{percent}）
 #. text in the Scheduler window
 #. Thursday, as short as a calendar's column head (two letters in English)
 #, machine
@@ -5086,7 +5086,7 @@
 #. text in the Options window
 #. Options → Archives, in red: the program chosen with "Use another program..." isn't 7-Zip's command line program (an archiver's window was picked instead); 7z.exe is that program's file name
 #, machine
-	That isn't 7-Zip's command line program (7z.exe).	这不是 7-Zip 的命令行程序 (7z.exe)。
+	That isn't 7-Zip's command line program (7z.exe).	这不是 7-Zip 的命令行程序（7z.exe）。
 #. text in the Download video window
 #. why Download Now is greyed in Download video: Part's times are the whole video's (untick Only a part to download it whole)
 #, machine
@@ -5097,7 +5097,7 @@
 	the .torrent file kept for it is gone	为其保留的 .torrent 文件已丢失
 #. text in a download's Properties window
 #, machine
-	The address must be an http(s) or ftp(s) address	地址必须为 http(s) 或 ftp(s)
+	The address must be an http(s) or ftp(s) address	地址必须是 http(s) 或 ftp(s) 地址
 #. text in extracting archives (a download's log, the Archive password window)
 #, machine
 	The archive could not be moved to the Recycle Bin: it was kept	无法将压缩包移至回收站：已保留
@@ -5107,11 +5107,11 @@
 #. text in archtest.rs
 #. in a download's log: the archive's own structure doesn't read back (its headers, its end), or it isn't the archive its name says
 #, machine
-	The archive test failed: it is damaged, or not the archive its name says	存档测试失败：它已损坏，或者与名称不符
+	The archive test failed: it is damaged, or not the archive its name says	压缩包测试失败：它已损坏，或者与名称不符
 #. text in archtest.rs
 #. in a download's log: the archive was read back whole and checked
 #, machine
-	The archive test found no errors	存档测试未发现错误
+	The archive test found no errors	压缩包测试未发现错误
 #. text in extracting archives (a download's log, the Archive password window)
 #. in a download's log: the downloaded archive, after it was extracted
 #, machine
@@ -5290,11 +5290,11 @@
 #. text in errors.rs
 #. why a download failed on Linux or macOS (#1102): the file name is longer than the system allows ({limit} bytes, 255; a letter can take several bytes), counting the temporary files saved beside the file while it downloads. {path} = the path
 #, machine
-	the file name is too long: at most {limit} bytes with the files saved while it downloads. Choose a shorter name ({path})	文件名过长：下载时保存的文件最多 {limit} 字节。请选择较短的名称 ({path})
+	the file name is too long: at most {limit} bytes with the files saved while it downloads. Choose a shorter name ({path})	文件名过长：下载时保存的文件最多 {limit} 字节。请选择较短的名称（{path}）
 #. text in errors.rs
 #. why a download failed (#1102): the file name is longer than Windows allows ({limit} characters, 255), counting the temporary files saved beside the file while it downloads. {path} = the path
 #, machine
-	the file name is too long: at most {limit} characters with the files saved while it downloads. Choose a shorter name ({path})	文件名过长：下载时保存的文件最多 {limit} 个字符。请选择较短的名称 ({path})
+	the file name is too long: at most {limit} characters with the files saved while it downloads. Choose a shorter name ({path})	文件名过长：下载时保存的文件最多 {limit} 个字符。请选择较短的名称（{path}）
 #. text in a dialog box
 #, machine
 	The file saved as	文件保存为
@@ -5366,7 +5366,7 @@
 #. text in errors.rs
 #. why a download failed (#1102): the folder and file name together are longer than Windows allows ({limit} characters, 259), counting the temporary files saved beside the file while it downloads (their names are longer). {path} = the path
 #, machine
-	the path is too long for Windows: at most {limit} characters with the files saved while it downloads. Choose a shorter file name or folder ({path})	Windows 路径过长：下载时保存的文件最多 {limit} 个字符。请选择较短的文件名或文件夹 ({path})
+	the path is too long for Windows: at most {limit} characters with the files saved while it downloads. Choose a shorter file name or folder ({path})	Windows 路径过长：下载时保存的文件最多 {limit} 个字符。请选择较短的文件名或文件夹（{path}）
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. why updates could not be checked: the newest release on the site has no number
 #, machine
@@ -5674,7 +5674,7 @@
 #. text in errors.rs
 #. why a file can't be taken out of a ZIP on its server (#1775): it is compressed with a method MDM doesn't unpack there; {method} is the method's name (BZIP2, LZMA, Deflate64…)
 #, machine
-	this file is packed in a way MDM can't unpack from the server ({method}): download the whole archive	此文件以 MDM 无法从服务器解压的方式打包 ({method})：请下载整个压缩包
+	this file is packed in a way MDM can't unpack from the server ({method}): download the whole archive	此文件以 MDM 无法从服务器解压的方式打包（{method}）：请下载整个压缩包
 #. text in remote.rs
 #. remote control page (on a phone): the file chosen is too large for a .torrent file
 #, machine
@@ -5689,7 +5689,7 @@
 #. message or event log entry in the main window
 #. tooltip on the disabled Rename box when the folder holds another download or is a save/category folder
 #, machine
-	This folder is shared with another download or save folder	此文件夹正与其他下载项或保存目录共用
+	This folder is shared with another download or save folder	此文件夹正与其他下载项或保存文件夹共用
 #. text in errors.rs
 #. a download's error: a Google Drive file that isn't shared with everyone
 #, machine
@@ -5796,7 +5796,7 @@
 #. text in errors.rs
 #. Zip preview (#1775): a ZIP split over several files (volumes): its files can't be fetched one by one
 #, machine
-	this ZIP is split over several files, so its files can't be downloaded one by one: download every part	此 ZIP 文件已拆分为多个文件，因此无法逐个下载其中的文件：请下载所有部分
+	this ZIP is split over several files, so its files can't be downloaded one by one: download every part	此 ZIP 文件已拆分为多个文件，因此无法逐个下载其中的文件：请下载所有分卷
 #. text in errors.rs
 #. Zip preview (#1775): the ZIP's list of files (its table of contents) doesn't add up
 #, machine
@@ -6008,7 +6008,7 @@
 	Tuvalu	图瓦卢
 #. text in helpers.rs
 #, machine
-	Two free helpers make it work. Get them now, and saving a video is one click away when you find one.	两个免费辅助工具即可让它工作。立即获取，找到视频后一键保存。
+	Two free helpers make it work. Get them now, and saving a video is one click away when you find one.	两个免费辅助程序即可让它工作。立即获取，找到视频后一键保存。
 #. label in the Options window; text in the Options window
 #. Options → Proxy / Socks → Manual: label before the kind of proxy (HTTP, HTTPS, SOCKS5, SOCKS4)
 #, machine
@@ -6249,10 +6249,10 @@
 #. text in the Options window
 #. Site rules: column title: the User-Agent the rule sends (the name a browser or program gives itself to sites)
 #, machine
-	User-Agent	用户代理
+	User-Agent	User-Agent
 #. text in the Options window
 #, machine
-	User-Agent for manually added downloads:	手动添加下载任务的用户代理：
+	User-Agent for manually added downloads:	手动添加下载任务的 User-Agent：
 #. text in the Options window
 #. Options → Connection: beside the Site rules... button: what it sets
 #, machine
@@ -6260,7 +6260,7 @@
 #. text in requestedit.rs
 #. Site rule / a download's Connection settings: label before the User-Agent box (the name the browser or program gives itself to sites)
 #, machine
-	User-Agent:	用户代理：
+	User-Agent:	User-Agent：
 #. text in the Options window
 #, machine
 	User:	用户：
@@ -6305,7 +6305,7 @@
 #. text in the download list (sizes, speeds, status)
 #. a download's status while the finished file is checked against its checksum; {percent} how much is checked, e.g. "45%"
 #, machine
-	Verifying... ({percent})	正在验证… ({percent})
+	Verifying... ({percent})	正在验证…（{percent}）
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. {version} = a version number (keep the braces as they are)
 #, machine
@@ -6358,7 +6358,7 @@
 #. why an archive wasn't extracted (after "Couldn't extract {name}: "); {n} is the volume's number
 #. {n} = a number (keep the braces as they are)
 #, machine
-	volume {n} of it is missing	缺少第 {n} 卷
+	volume {n} of it is missing	缺少第 {n} 个分卷
 #. text in remote.rs
 #. remote control page (on a phone): codes were tried too fast
 #, machine
@@ -6728,7 +6728,7 @@
 #. Import refused a file; {size} = its size and {limit} = the largest Import reads, like "4.50 GB" and "64.00 MB"
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
-	{file} is too large to be a list of addresses ({size}). Import reads text files, web pages and .ef2 exports of up to {limit}.	{file} ({size}) 过大，无法作为地址列表。导入功能可读取大小不超过 {limit} 的文本文件、网页和 .ef2 导出文件。
+	{file} is too large to be a list of addresses ({size}). Import reads text files, web pages and .ef2 exports of up to {limit}.	{file}（{size}）过大，无法作为地址列表。导入功能可读取大小不超过 {limit} 的文本文件、网页和 .ef2 导出文件。
 #. text in a dialog box
 #, machine
 	{file} was moved elsewhere by dragging it out of MDM, and MDM couldn't learn where. Look for it where you dropped it.	{file} 已通过拖出 MDM 移动到其他位置，MDM 无法得知具体位置。请在您放置它的位置查找。
@@ -6787,7 +6787,7 @@
 #. text in errors.rs
 #. {host} = a server name such as "example.com" (keep the braces as they are)
 #, machine
-	{host} refused the request ({status}): too many requests from your network for now	{host} 拒绝请求 ({status})：您的网络请求过多
+	{host} refused the request ({status}): too many requests from your network for now	{host} 拒绝请求（{status}）：您的网络请求过多
 #. text in the download list (sizes, speeds, status)
 #. {h} = hours; {m} = minutes (keep the braces as they are)
 #, machine
@@ -6841,7 +6841,7 @@
 #. in the "Damaged archive" window: {name} is the archive's first volume's file name
 #. {name} = a file name (keep the braces as they are)
 #, machine
-	{name} is damaged: its test found errors in one of its volumes.	{name} 已损坏：其测试发现其中一个卷有错误。
+	{name} is damaged: its test found errors in one of its volumes.	{name} 已损坏：其测试发现其中一个分卷有错误。
 #. text in extracting archives (a download's log, the Archive password window)
 #. in Archive password: {name} is the archive's file name
 #. {name} = a file name (keep the braces as they are)
@@ -6871,7 +6871,7 @@
 #. one failed download in the summary of a group of downloads: {name} its file name, {error} why it failed
 #. {name} = a file name; {error} = an error message (keep the braces as they are)
 #, machine
-	{name}: {error}	{name}: {error}
+	{name}: {error}	{name}：{error}
 #. text in the Options window
 #. a number of connections the app learned by itself for a server
 #. {n} = a number (keep the braces as they are)
@@ -6905,7 +6905,7 @@
 #. text in errors.rs
 #. why a helper couldn't be downloaded ({problem}), then what to do about it ({advice}, whole sentences)
 #, machine
-	{problem}. {advice}	{problem}. {advice}
+	{problem}. {advice}	{problem}。{advice}
 #. text in the download list (sizes, speeds, status)
 #. the progress window's Transfer rate row while the limit for all downloads together applies: {rate} is this download's speed now ("512.000 KB/sec"), {limit} the most all downloads together may take ("1024 KB/sec"). The row is narrow: keep it short
 #. {rate} = a speed such as "1.2 MB/sec" (keep the braces as they are)
@@ -7007,17 +7007,17 @@
 #. Link grabber, a Hugging Face repository's or GitHub release's status (the cell's hover tip): the site ({site}: "Hugging Face", "GitHub") lets only so many requests through from a computer without an account; {n} minutes to wait
 #. {site} = a web site's name such as "example.com"; {n} = a number (keep the braces as they are)
 #, machine
-	{site} lets only so many requests through without an account: try again in {n} minute.	{site} 在未登录帐户的情况下只允许这么多请求：请在 {n} 分钟后重试。
+	{site} lets only so many requests through without an account: try again in {n} minute.	{site} 在未登录账户的情况下只允许这么多请求：请在 {n} 分钟后重试。
 #. text in the Link grabber window
 #. Link grabber, a Hugging Face repository's or GitHub release's status (the cell's hover tip): the site ({site}) lets only so many requests through without an account, and didn't say for how long
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
 #, machine
-	{site} lets only so many requests through without an account: try again later.	{site} 在未登录帐户的情况下只允许这么多请求：请稍后重试。
+	{site} lets only so many requests through without an account: try again later.	{site} 在未登录账户的情况下只允许这么多请求：请稍后重试。
 #. text in the Link grabber window
 #. Link grabber, a Hugging Face repository's or GitHub release's status: the site ({site}) refused to list its files; {status} is the HTTP code (403)
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
 #, machine
-	{site} refused to list its files ({status}).	{site} 拒绝列出其文件 ({status})。
+	{site} refused to list its files ({status}).	{site} 拒绝列出其文件（{status}）。
 #. text in the Link grabber window
 #. Link grabber, a Hugging Face repository's or GitHub release's status: the site's ({site}) answer wasn't what it sends (changed, cut, or not its own)
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
@@ -7049,7 +7049,7 @@
 #. the title of another window of a kind while the first is open (several Download File Info windows, one per link): {title} the window's own title, {n} its number, "Download File Info (2)"
 #. {n} = a number (keep the braces as they are)
 #, machine
-	{title} ({n})	{title} ({n})
+	{title} ({n})	{title}（{n}）
 #. message or event log entry in the main window
 #. RSS feeds window, under the rules: {title} was added by the rule {rule}
 #, machine
@@ -7438,7 +7438,7 @@ extension	It shows no code now: click Pair a device there first.	MDM 未显示�
 #. text in the browser extension
 #. why a download stayed with the browser: it is a .torrent file and the app's Torrent settings don't open torrents with Mister Download Manager, so the browser keeps it for the user's own torrent program; keep the setting's name as the app shows it
 #, machine
-extension	It's a torrent, and Open magnet links and .torrent files with Mister Download Manager is off in Torrent settings.	这是一个种子文件，并且“在 Torrent 设置中用 Mister Download Manager 打开磁力链接和 .torrent 文件”已关闭。
+extension	It's a torrent, and Open magnet links and .torrent files with Mister Download Manager is off in Torrent settings.	这是一个种子文件，并且“种子设置”中的“使用 Mister Download Manager 打开磁力链接和 .torrent 文件”已关闭。
 #. text in the browser extension
 #. why a download stayed with the browser: the file is smaller than the app's minimum size setting
 #, machine
@@ -7751,11 +7751,11 @@ extension	Reset	重置
 #. text in the browser extension
 #. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): goes on with a paused, waiting or failed download; verb
 #, machine
-extension	Resume	恢复
+extension	Resume	续传
 #. text in the browser extension
 #. screen readers' name of a download's Resume button in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads)
 #, machine
-extension	Resume {file}	恢复 {file}
+extension	Resume {file}	续传 {file}
 #. text in the browser extension
 #. button on the download button over a video when the app didn't answer: try again; verb; very short
 #, machine
@@ -7987,7 +7987,7 @@ extension	What you download with Mister Download Manager shows up here.	您使�
 #. text in the browser extension
 #. toolbar button's popup, Settings: second line under 'Download button over videos', saying what Reset puts back: the places the user dragged the button to, and the filters chosen in its menu, remembered per web site
 #, machine
-extension	Where you moved it, and its menu's filters, on each site	您移动它的位置，以及其菜单的筛选器，在每个网站上
+extension	Where you moved it, and its menu's filters, on each site	每个网站上您把它移到的位置，以及其菜单的筛选器
 #. text in the browser extension
 #. Tooltip of the Hide the download button in full screen option in the toolbar button's popup; Download video is the name of the button over videos
 #, machine
@@ -8402,7 +8402,7 @@ menu	Check for &updates...	检查更新(&U)…
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it
 #, machine
-menu	Choose a font &file...	选择字体文件…(&F)
+menu	Choose a font &file...	选择字体文件(&F)…
 #. menu command in the main window
 #. View → Theme: MDM's own look, the default (IDM's layout, Windows 11's controls)
 #, machine
@@ -8597,7 +8597,7 @@ menu	OpenGL	OpenGL
 #. menu command in the main window
 #. View → Draw with: a greyed note; why MDM no longer draws with OpenGL: MDM crashed inside the graphics card's driver while OpenGL drew ("its": OpenGL's)
 #, machine
-menu	OpenGL crashed inside its driver here	OpenGL 在此处其驱动程序内崩溃
+menu	OpenGL crashed inside its driver here	OpenGL 在此处的驱动程序内部崩溃
 #. menu command in the main window
 #. View → Draw with: a greyed note; why MDM no longer draws with OpenGL: it couldn't start on this computer
 #, machine
@@ -8605,7 +8605,7 @@ menu	OpenGL didn't start here	OpenGL 未在此处启动
 #. menu command in the main window
 #. View → Draw with: a greyed note; why MDM no longer draws with OpenGL: its window froze inside the graphics card's driver while OpenGL drew
 #, machine
-menu	OpenGL froze inside the graphics driver here	OpenGL 在此处的图形驱动程序中冻结
+menu	OpenGL froze inside the graphics driver here	OpenGL 在此处的图形驱动程序内部卡死
 #. menu command in the main window
 #. View → Draw with: a greyed note; this computer's OpenGL (its graphics driver) is too old, so MDM doesn't draw with it
 #, machine
@@ -8718,7 +8718,7 @@ menu	Tell a &friend	推荐给朋友(&F)
 #. menu command in the main window
 #. verb: read the downloaded archive (zip, 7z, rar) back and check that none of its files is damaged
 #, machine
-menu	Test archive	测试存档
+menu	Test archive	测试压缩包
 #. menu command in the main window
 #. View → Draw with: a greyed note under "… didn't start here"; why: the graphics card stopped working twice (a driver update or reset)
 menu	The graphics card was lost twice in 10 minutes	10 分钟内显卡失效两次
