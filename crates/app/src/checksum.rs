@@ -43,11 +43,22 @@ impl ChecksumDialog {
         let check = self.check.as_ref()?.lock().unwrap();
         match &*check {
             Some(Ok(got)) if *got != want.value => Some(Hash {
-                algo: want.algo,
                 value: got.clone(),
+                ..want
             }),
             _ => None,
         }
+    }
+
+    /// The check of the finished file found it has the checksum typed (#2064: a warning about
+    /// its server's checksum then goes).
+    pub fn matched(&self) -> bool {
+        let Some(want) = Hash::parse(&self.text) else {
+            return false;
+        };
+        self.check
+            .as_ref()
+            .is_some_and(|c| matches!(&*c.lock().unwrap(), Some(Ok(got)) if *got == want.value))
     }
 
     /// `Done(hash)`: keep it with the download. Close and the window's × both keep a hash that

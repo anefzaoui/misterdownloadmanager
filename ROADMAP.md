@@ -569,6 +569,12 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 Everything below ships together, in version 0.6.0, the next release.
 
+- ✅ A checksum the server announces that doesn't match no longer fails the download: the file is
+  kept, with a warning in the list, its log, Properties and Download complete; a checksum you
+  enter, or one the site publishes, still must match. A `Content-MD5` beside a body the server
+  says it transformed (PikPak's storage, a compressed answer) isn't checked
+  ([#2064](https://github.com/anefzaoui/misterdownloadmanager/issues/2064); thanks to
+  [@asasass](https://github.com/asasass))
 - ✅ A download's progress window can start minimized: **Options → Downloads → Customize
   "Download progress" dialog → Edit...** offers **Show normally**, **Show minimized** and
   **Don't show** ([#1966](https://github.com/anefzaoui/misterdownloadmanager/issues/1966); thanks to

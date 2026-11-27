@@ -233,7 +233,156 @@ fn sha256_of(seed: u64, size: usize) -> mdm_engine::verify::Hash {
     mdm_engine::verify::Hash {
         algo,
         value: mdm_engine::verify::digest(&p, algo).unwrap(),
+        origin: mdm_engine::verify::Origin::User,
     }
+}
+
+/// The real MD5 of generated content `seed` of `size` bytes, as a `Content-MD5` value
+/// (base64), %-encoded for a query.
+fn content_md5_of(seed: u64, size: usize) -> String {
+    use base64::Engine as _;
+    let dir = tempfile::tempdir().unwrap();
+    let p = dir.path().join("want");
+    let mut want = vec![0; size];
+    content::fill(seed, 0, &mut want);
+    std::fs::write(&p, &want).unwrap();
+    let md5 = mdm_engine::verify::digest(&p, mdm_engine::verify::Algo::Md5).unwrap();
+    base64::engine::general_purpose::STANDARD
+        .encode(md5)
+        .replace('+', "%2B")
+        .replace('/', "%2F")
+        .replace('=', "%3D")
+}
+
+/// Downloads `path` from `s` into a temp dir with `opts` to its end: the outcome, the events
+/// and the folder.
+async fn to_its_end(
+    s: &LabServer,
+    path: &str,
+    opts: Options,
+) -> (
+    Result<mdm_engine::Outcome, mdm_engine::Error>,
+    mdm_engine::Snapshot,
+    tempfile::TempDir,
+) {
+    let dir = tempfile::tempdir().unwrap();
+    let req = Request {
+        url: s.url(path).parse().unwrap(),
+        headers: Default::default(),
+        dest: Destination::Dir(dir.path().to_owned()),
+    };
+    let dl = Download::start(req, opts);
+    let deadline = std::time::Instant::now() + std::time::Duration::from_secs(60);
+    let snap = loop {
+        let snap = dl.snapshot();
+        if matches!(
+            snap.state,
+            mdm_engine::download::State::Done | mdm_engine::download::State::Failed
+        ) {
+            break snap;
+        }
+        assert!(std::time::Instant::now() < deadline, "never ended");
+        tokio::time::sleep(std::time::Duration::from_millis(20)).await;
+    };
+    (dl.wait().await, snap, dir)
+}
+
+fn said(snap: &mdm_engine::Snapshot, part: &str) -> bool {
+    snap.events.iter().any(|e| e.text.contains(part))
+}
+
+/// #2064: a server that announces a Content-MD5 its file doesn't have (the object as it stores
+/// it) no longer fails the download: it completes, the file kept whole, with a warning.
+#[tokio::test]
+async fn a_servers_wrong_checksum_completes_with_a_warning() {
+    let s = server("content_md5=wrong").await;
+    let (out, snap, dir) = to_its_end(&s, "/gen/1M/served.bin?seed=31", fast_opts()).await;
+    let out = out.expect("completes");
+    assert_eq!(
+        out.checksum_warning,
+        Some(mdm_engine::verify::Algo::Md5),
+        "with a warning"
+    );
+    assert_eq!(snap.checksum_warning, Some(mdm_engine::verify::Algo::Md5));
+    assert_eq!(content_len(&out.path, 31), Some(1 << 20), "the file whole");
+    assert_eq!(out.path, dir.path().join("served.bin"));
+    assert!(!dir.path().join("served.bin.mdm.part").exists());
+    assert!(
+        said(&snap, "the server's MD5 checksum didn't match"),
+        "{:?}",
+        snap.events
+    );
+    assert!(!said(&snap, "Checksum verified"));
+}
+
+/// The server's right Content-MD5 is still checked, and says so; no warning.
+#[tokio::test]
+async fn a_servers_right_checksum_is_verified() {
+    let s = server("").await;
+    let md5 = content_md5_of(32, 1 << 20);
+    let (out, snap, _dir) = to_its_end(
+        &s,
+        &format!("/gen/1M/right.bin?seed=32&content_md5={md5}"),
+        fast_opts(),
+    )
+    .await;
+    assert_eq!(out.expect("completes").checksum_warning, None);
+    assert!(said(&snap, "Checksum verified (MD5)"), "{:?}", snap.events);
+}
+
+/// A checksum the user gave still must match, whatever the server announces: a wrong one fails
+/// (the data kept), a right one wins over the server's wrong one.
+#[tokio::test]
+async fn a_users_checksum_still_must_match() {
+    let s = server("content_md5=wrong").await;
+    let wrong = Options {
+        checksum: Some(sha256_of(99, 1 << 20)),
+        ..fast_opts()
+    };
+    let (out, _, dir) = to_its_end(&s, "/gen/1M/typed.bin?seed=33", wrong).await;
+    let err = out.unwrap_err();
+    assert!(
+        matches!(err, mdm_engine::Error::ChecksumMismatch("SHA-256")),
+        "{err}"
+    );
+    assert!(dir.path().join("typed.bin.mdm.part").exists(), "kept");
+    assert!(!dir.path().join("typed.bin").exists());
+    // A published one (a hub's digest) binds as the user's does.
+    let published = Options {
+        checksum: Some(sha256_of(99, 1 << 20).published()),
+        ..fast_opts()
+    };
+    let (out, _, _dir) = to_its_end(&s, "/gen/1M/hub.bin?seed=34", published).await;
+    assert!(matches!(
+        out.unwrap_err(),
+        mdm_engine::Error::ChecksumMismatch("SHA-256")
+    ));
+    let right = Options {
+        checksum: Some(sha256_of(35, 1 << 20)),
+        ..fast_opts()
+    };
+    let (out, snap, _dir) = to_its_end(&s, "/gen/1M/ok.bin?seed=35", right).await;
+    assert_eq!(out.expect("completes").checksum_warning, None);
+    assert!(said(&snap, "Checksum verified (SHA-256)"));
+}
+
+/// #2064, PikPak's answer: a Content-MD5 beside `x-oss-meta-encode: 1` (an object stored
+/// encoded, decoded as it is served) is no promise about the bytes sent: not checked at all.
+#[tokio::test]
+async fn an_object_stored_encoded_is_not_checked() {
+    let s = server("content_md5=wrong&oss_encode=1").await;
+    let (out, snap, _dir) = to_its_end(&s, "/gen/1M/pikpak.bin?seed=36", fast_opts()).await;
+    let out = out.expect("completes");
+    assert_eq!(out.checksum_warning, None);
+    assert_eq!(content_len(&out.path, 36), Some(1 << 20));
+    assert!(
+        !snap
+            .events
+            .iter()
+            .any(|e| e.text.to_ascii_lowercase().contains("checksum")),
+        "{:?}",
+        snap.events
+    );
 }
 
 #[tokio::test]
