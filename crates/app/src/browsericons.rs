@@ -305,10 +305,10 @@ mod tests {
 
     #[test]
     fn every_browser_mdm_names_has_its_logo() {
-        // The extension window's rows (Arc excepted: no artwork to show, the globe).
+        // The extension window's rows (Arc and Cra excepted: no artwork to show, the globe).
         for b in mdm_ipc::browsers::BROWSERS {
             let got = Browser::named(b.name);
-            if b.name == "Arc" {
+            if matches!(b.name, "Arc" | "Cra") {
                 assert_eq!(got, Browser::Other);
             } else {
                 assert_ne!(got, Browser::Other, "{}", b.name);
@@ -341,6 +341,7 @@ mod tests {
             "",
             "Your browser",
             "Arc",
+            "Cra",
             "Google Chrome Beta",
             "Google Chrome Canary",
             "Microsoft Edge Dev",

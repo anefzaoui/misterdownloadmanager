@@ -94,13 +94,13 @@ impl Status {
 }
 
 /// Whether `row` (a browser as the window lists it) is among the browsers seen (as Options
-/// names them). Vivaldi, Chromium, Helium, Thorium and Arc say they are Chrome (no brand of
+/// names them). Vivaldi, Chromium, Helium, Thorium, Arc and Cra say they are Chrome (no brand of
 /// their own, or Chrome's on purpose): they share Chrome's status. Firefox's forks give their
 /// own name (`capture::browser_named`).
 fn is_seen(seen: &[String], row: &str) -> bool {
     let named = match row {
         "Brave" => "Brave Browser",
-        "Vivaldi" | "Chromium" | "Helium" | "Thorium" | "Arc" => "Google Chrome",
+        "Vivaldi" | "Chromium" | "Helium" | "Thorium" | "Arc" | "Cra" => "Google Chrome",
         other => other,
     };
     seen.iter().any(|b| b == named)
@@ -1264,6 +1264,7 @@ mod tests {
     fn rows_match_the_names_browsers_report() {
         let seen = vec!["Google Chrome".to_owned(), "Zen Browser".to_owned()];
         assert!(is_seen(&seen, "Helium") && is_seen(&seen, "Google Chrome"));
+        assert!(is_seen(&seen, "Cra"));
         assert!(is_seen(&seen, "Zen Browser"));
         assert!(!is_seen(&seen, "Mozilla Firefox") && !is_seen(&seen, "Brave"));
         assert!(is_seen(&["Brave Browser".to_owned()], "Brave"));
