@@ -4936,7 +4936,7 @@ impl OptionsDialog {
                     "opt-progress",
                     // i18n: window title: Options → Downloads → Edit... (the progress window's settings)
                     "Download progress dialog",
-                    [400.0, 182.0],
+                    [400.0, 196.0],
                     false,
                     LIGHT_BG(),
                     |ui, o| progress_dialog(ui, o, &mut show, &mut minimized),
@@ -5819,21 +5819,21 @@ fn progress_dialog(ui: &mut Ui, o: Pos2, show: &mut bool, minimized: &mut bool) 
     winui::paragraph(
         &p,
         o.x + 14.0,
-        o.y + 12.0,
+        o.y + 16.0,
         crate::i18n::t("Show download progress dialog when a download starts"),
         LIGHT_TEXT(),
         o.x + 386.0,
         14.0,
     );
-    let normal = winui::radio_light(ui, o + vec2(28.0, 38.0), choice == 0, "Show normally", true);
+    let normal = winui::radio_light(ui, o + vec2(28.0, 44.0), choice == 0, "Show normally", true);
     let min = winui::radio_light(
         ui,
-        o + vec2(28.0, 60.0),
+        o + vec2(28.0, 66.0),
         choice == 1,
         "Show minimized",
         true,
     );
-    let off = winui::radio_light(ui, o + vec2(28.0, 82.0), choice == 2, "Don't show", true);
+    let off = winui::radio_light(ui, o + vec2(28.0, 88.0), choice == 2, "Don't show", true);
     if normal.clicked() {
         choice = 0;
     } else if min.clicked() {
@@ -5854,7 +5854,7 @@ fn progress_dialog(ui: &mut Ui, o: Pos2, show: &mut bool, minimized: &mut bool) 
         winui::paragraph(
             &p,
             o.x + 14.0,
-            o.y + 106.0,
+            o.y + 120.0,
             crate::i18n::t(
                 "Minimized, the window waits on the taskbar and doesn't take the focus.",
             ),
@@ -5866,7 +5866,7 @@ fn progress_dialog(ui: &mut Ui, o: Pos2, show: &mut bool, minimized: &mut bool) 
         winui::paragraph(
             &p,
             o.x + 14.0,
-            o.y + 106.0,
+            o.y + 120.0,
             crate::i18n::t(
                 "When it is off, downloads go on in the main window's list. Double-click one there to see its progress.",
             ),
@@ -5875,7 +5875,7 @@ fn progress_dialog(ui: &mut Ui, o: Pos2, show: &mut bool, minimized: &mut bool) 
             14.0,
         );
     }
-    ok_cancel(ui, o, 232.0, 152.0, true)
+    ok_cancel(ui, o, 232.0, 164.0, true)
 }
 
 pub(crate) fn ok_cancel(ui: &mut Ui, o: Pos2, x: f32, y: f32, valid: bool) -> Outcome<()> {
@@ -6792,12 +6792,12 @@ mod tests {
         frame(&ctx, Vec::new(), |ui| {
             out = progress_dialog(ui, Pos2::ZERO, &mut show, &mut minimized)
         });
-        click(&ctx, pos2(34.0, 88.0), |ui| {
+        click(&ctx, pos2(34.0, 94.0), |ui| {
             out = progress_dialog(ui, Pos2::ZERO, &mut show, &mut minimized);
         });
         assert!(!show);
         assert!(matches!(out, Outcome::Open));
-        click(&ctx, pos2(268.0, 162.0), |ui| {
+        click(&ctx, pos2(268.0, 174.0), |ui| {
             out = progress_dialog(ui, Pos2::ZERO, &mut show, &mut minimized);
         });
         assert!(matches!(out, Outcome::Done(())));
@@ -6814,11 +6814,11 @@ mod tests {
         frame(&ctx, Vec::new(), |ui| {
             out = progress_dialog(ui, Pos2::ZERO, &mut show, &mut minimized)
         });
-        click(&ctx, pos2(34.0, 66.0), |ui| {
+        click(&ctx, pos2(34.0, 72.0), |ui| {
             out = progress_dialog(ui, Pos2::ZERO, &mut show, &mut minimized);
         });
         assert!(show && minimized);
-        click(&ctx, pos2(268.0, 162.0), |ui| {
+        click(&ctx, pos2(268.0, 174.0), |ui| {
             out = progress_dialog(ui, Pos2::ZERO, &mut show, &mut minimized);
         });
         assert!(matches!(out, Outcome::Done(())));

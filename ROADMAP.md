@@ -569,6 +569,10 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 Everything below ships together, in version 0.6.0, the next release.
 
+- ✅ A download's progress window can start minimized: **Options → Downloads → Customize
+  "Download progress" dialog → Edit...** offers **Show normally**, **Show minimized** and
+  **Don't show** ([#1966](https://github.com/anefzaoui/misterdownloadmanager/issues/1966); thanks to
+  [@Raghav2012Code](https://github.com/Raghav2012Code))
 - ✅ Each browser's logo before its name in the browser extension's window, the first start's
   browser step and Options → General's browser list, sharp at every display scale; a globe for a
   browser without one
