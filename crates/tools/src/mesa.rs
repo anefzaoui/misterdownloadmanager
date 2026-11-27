@@ -27,8 +27,10 @@ pub const FOLDER: &str = "mesa";
 /// beside it (pal1000's `libgallium_wgl.dll`, which it loads from its own folder).
 pub const OPENGL: &str = "opengl32.dll";
 
-/// One build the list names (a `mesa` line).
+/// One build the list names (a `mesa` line). Its archive's checksum and address, and its files,
+/// are read by the install, Windows' only; the list reads the same on every system.
 #[derive(Clone, Debug, PartialEq, Eq)]
+#[cfg_attr(not(windows), allow(dead_code))]
 pub struct Build {
     /// The system and the processor, as Rust names them (`windows`, `x86_64`).
     pub(crate) os: String,
@@ -293,6 +295,7 @@ fn unpack(archive: &Path, root: &Path, build: &Build) -> Result<PathBuf, Error> 
 mod tests {
     use super::*;
 
+    #[cfg(windows)]
     fn sum(data: &[u8]) -> [u8; 32] {
         <sha2::Sha256 as sha2::Digest>::digest(data).into()
     }
