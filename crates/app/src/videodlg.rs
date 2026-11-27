@@ -41,8 +41,8 @@ pub struct VideoAdd {
     /// The Subtitles choice to remember for the next video (settings.video_subs); none when
     /// the page had no subtitles to choose from (the last real choice stays).
     pub remember: Option<Subs>,
-    /// The browser's quality menu's look-up the choice was made from, for the download's first
-    /// run (videolookup.rs); none from this window, whose download looks the page up itself.
+    /// A lookup from the browser's quality menu or this window, for the download's first run
+    /// (videolookup.rs and the dialog's Helpers refresh).
     pub preloaded: Option<mdm_tools::video::Preloaded>,
     /// The user typed the file name (#1102): kept as typed; else it is the page's title, which
     /// is shortened to fit the path limits.
@@ -60,6 +60,31 @@ pub fn whole_seconds(length: Option<f64>) -> Option<u32> {
     length
         .filter(|s| s.is_finite() && *s >= 1.0 && *s < f64::from(u32::MAX))
         .map(|s| s.round() as u32)
+}
+
+/// A helper change can alter only a selector's fallback after its exact format ID. Keep that
+/// exact choice when the ID and the visible stream it describes are still the same.
+fn same_refreshed_choice(old: &Choice, new: &Choice) -> bool {
+    old.selector == new.selector
+        || (old.selector.split('/').next() == new.selector.split('/').next()
+            && old.height == new.height
+            && old.fps == new.fps
+            && old.codec == new.codec
+            && old.range == new.range
+            && mdm_tools::resolve::is_compatible(old) == mdm_tools::resolve::is_compatible(new)
+            && mdm_tools::resolve::is_audio(old) == mdm_tools::resolve::is_audio(new)
+            && (!mdm_tools::resolve::is_audio(old) || old.ext == new.ext))
+}
+
+fn refreshed_choice_index(old: &Choice, choices: &[Choice]) -> Option<usize> {
+    choices
+        .iter()
+        .position(|choice| choice.selector == old.selector)
+        .or_else(|| {
+            choices
+                .iter()
+                .position(|choice| same_refreshed_choice(old, choice))
+        })
 }
 
 /// Which helper is being installed.
@@ -113,7 +138,10 @@ pub struct VideoDialog {
     /// The address the choices were looked up for (an edited one needs Look up again).
     looked_up: String,
     video: Option<(Video, Vec<Choice>)>,
+    preloaded: Option<mdm_tools::video::Preloaded>,
     chosen: usize,
+    /// The user picked a quality; automatic defaults may move when helpers change.
+    quality_explicit: bool,
     /// First choice shown (the list scrolls by whole rows).
     /// The choices list's scroll and selection.
     rows: winui::RowList,
@@ -226,7 +254,9 @@ impl VideoDialog {
             tools: None,
             looked_up: String::new(),
             video: None,
+            preloaded: None,
             chosen: 0,
+            quality_explicit: false,
             rows: Default::default(),
             error: None,
             focused: false,
@@ -277,6 +307,11 @@ impl VideoDialog {
         self
     }
 
+    #[cfg(test)]
+    pub(crate) fn test_page(&self) -> &str {
+        &self.page
+    }
+
     /// Opened for `page` (Add URL was given a video's page, or the browser's button was
     /// clicked with `context`): looks it up at once.
     pub fn for_page(folder: PathBuf, page: &str, mut context: mdm_ipc::Command) -> Self {
@@ -309,14 +344,100 @@ impl VideoDialog {
     }
 
     /// The choices for a looked-up video: merged qualities when ffmpeg is there.
-    fn set_video(&mut self, mut v: Video) {
+    fn set_video(&mut self, v: Video) {
+        let merge = self.tools.get_or_insert_with(tools).2.is_some();
+        self.set_video_with_merge(v, merge);
+    }
+
+    /// Refresh an existing lookup after helper state changes, retaining the user's choice and
+    /// edits. A choice which disappeared is left unselected and cannot be added.
+    fn refresh_video(&mut self) {
+        let Some((v, old_choices)) = self.video.take() else {
+            return;
+        };
+        let selected = self
+            .quality_explicit
+            .then(|| old_choices.get(self.chosen).cloned())
+            .flatten();
+        let name = self.name.clone();
+        let auto_name = self.auto_name.clone();
+        let name_is_auto = !auto_name.is_empty() && name == auto_name;
+        let folder = self.folder.clone();
+        let sound = self.sound;
+        let part_on = self.part_on;
+        let part_from = self.part_from.clone();
+        let part_to = self.part_to.clone();
+        let part_exact = self.part_exact;
+        let selected_subs = self.chosen_subs();
+        self.set_video(v);
+        if !name_is_auto {
+            self.name = name;
+            self.auto_name = auto_name;
+        }
+        self.folder = folder;
+        self.sound = sound;
+        self.part_on = part_on;
+        self.part_from = part_from;
+        self.part_to = part_to;
+        self.part_exact = part_exact;
+        self.sub_pick = pick_for(&self.subs, &selected_subs);
+        self.embed = selected_subs.embed;
+
+        let offered = selected.as_ref().and_then(|selected| {
+            self.video
+                .as_ref()
+                .and_then(|(_, choices)| refreshed_choice_index(selected, choices))
+        });
+        let merge = self.tools.as_ref().is_some_and(|t| t.2.is_some());
+        if let Some(index) = offered {
+            self.chosen = index;
+            self.rows.selected = Some(index);
+            self.rows.show_row(index, 8);
+            // The cache is valid only for the same page and exact selector. A helper refresh
+            // may change the available qualities, but cannot make a different cached stream safe.
+            let selected_selector = self
+                .video
+                .as_ref()
+                .and_then(|(_, choices)| choices.get(index))
+                .map(|choice| choice.selector.as_str());
+            if self
+                .preloaded
+                .as_ref()
+                .is_some_and(|p| Some(p.selector.as_str()) != selected_selector || p.merge != merge)
+            {
+                self.preloaded = None;
+            }
+        } else if self.quality_explicit {
+            self.chosen = self.video.as_ref().map_or(0, |(_, choices)| choices.len());
+            self.rows.selected = None;
+            self.preloaded = None;
+            self.error = Some(
+                crate::i18n::t(
+                    "The selected quality is no longer available. Choose another quality.",
+                )
+                .into(),
+            );
+        } else {
+            self.rows.selected = Some(self.chosen);
+            self.preloaded = None;
+        }
+        if name_is_auto
+            && self
+                .video
+                .as_ref()
+                .is_some_and(|(_, choices)| choices.get(self.chosen).is_some())
+        {
+            self.name_from_choice();
+        }
+    }
+
+    fn set_video_with_merge(&mut self, mut v: Video, merge: bool) {
         // No page reader for this site: the page's own title rather than a hash (#345).
         if self.page.trim() == self.from_browser
             && let Some(title) = page_title(&self.context, &v, &self.page)
         {
             v.title = title.to_owned();
         }
-        let merge = self.tools.get_or_insert_with(tools).2.is_some();
         let choices = mdm_tools::resolve::choices(&v, merge);
         // The best, as `video-get` takes it by default (#1240).
         self.chosen = mdm_tools::resolve::pick(&choices, None).map_or(0, |p| p.index);
@@ -338,6 +459,32 @@ impl VideoDialog {
         }
         self.video = Some((v, choices));
         self.name_from_choice();
+    }
+
+    /// Seed the configured dialog with a browser choice already resolved by its lookup.
+    /// The cached lookup remains attached only while its original page and selector are chosen.
+    pub fn with_lookup(mut self, add: VideoAdd, video: Video) -> Option<Self> {
+        let preloaded = add.preloaded?;
+        if add.selector != preloaded.selector {
+            return None;
+        }
+        self.page = add.page.to_string();
+        self.looked_up = self.page.clone();
+        self.from_browser = self.page.clone();
+        self.context = add.context;
+        self.auto_look = false;
+        self.quality_explicit = true;
+        self.set_video_with_merge(video, preloaded.merge);
+        let (_, choices) = self.video.as_ref()?;
+        self.chosen = choices
+            .iter()
+            .position(|choice| choice.selector == add.selector)?;
+        self.rows.selected = Some(self.chosen);
+        self.rows.show_row(self.chosen, 8);
+        self.name_from_choice();
+        self.folder = add.dest.parent()?.display().to_string();
+        self.preloaded = Some(preloaded);
+        Some(self)
     }
 
     /// The part as typed (#1662): none while Part isn't ticked; why it can't be, else.
@@ -433,6 +580,7 @@ impl VideoDialog {
         });
         if let Some(i) = found {
             self.chosen = i;
+            self.quality_explicit = true;
             // The list shows 8 rows.
             self.rows.show_row(i, 8);
             self.name_from_choice();
@@ -501,9 +649,7 @@ impl VideoDialog {
                 Ok(_) if tool == Tool::JsRuntime => self.auto_look = true,
                 // With ffmpeg the qualities that need merging appear.
                 Ok(_) if tool == Tool::Ffmpeg => {
-                    if let Some((v, _)) = self.video.take() {
-                        self.set_video(v);
-                    }
+                    self.refresh_video();
                 }
                 Ok(_) => {}
             }
@@ -533,9 +679,7 @@ impl VideoDialog {
         {
             self.helpers = None;
             self.tools = None;
-            if let Some((v, _)) = self.video.take() {
-                self.set_video(v);
-            }
+            self.refresh_video();
         }
         let folder = crate::dialogs::resolve_path(&self.folder);
         let out = crate::dialogs::ensure_folder(ctx, &mut self.asking, out, &folder);
@@ -565,7 +709,7 @@ impl VideoDialog {
         else {
             return None;
         };
-        let c = choices.get(self.chosen.min(choices.len().checked_sub(1)?))?;
+        let c = choices.get(self.chosen)?;
         let name = mdm_engine::naming::sanitize(self.name.trim());
         let part = self.part().ok()?;
         // Not the name the choice gave it (the page's title, with the part's words): the user's
@@ -606,7 +750,16 @@ impl VideoDialog {
                 subs_for_choice(c, &chosen)
             },
             remember: (!self.subs.is_empty()).then_some(chosen),
-            preloaded: None,
+            preloaded: self.preloaded.as_ref().and_then(|preloaded| {
+                (self.page.trim() == self.looked_up && preloaded.selector == c.selector).then(
+                    || mdm_tools::video::Preloaded {
+                        slot: preloaded.slot.clone(),
+                        selector: preloaded.selector.clone(),
+                        label: preloaded.label.clone(),
+                        merge: preloaded.merge,
+                    },
+                )
+            }),
             named,
             duration: whole_seconds(duration),
             part,
@@ -668,6 +821,13 @@ impl VideoDialog {
             && let Some(c) = choices.get(self.chosen)
         {
             self.name = file_name(&v.title, c);
+            if self.error.as_deref()
+                == Some(crate::i18n::t(
+                    "The selected quality is no longer available. Choose another quality.",
+                ))
+            {
+                self.error = None;
+            }
             self.auto_name.clear();
             self.name_for_part();
         }
@@ -787,6 +947,8 @@ impl VideoDialog {
             });
             self.lookup = Some(slot);
             self.looked_up = self.page.trim().to_owned();
+            self.quality_explicit = false;
+            self.preloaded = None;
             self.video = None;
             // A list being listed stops (dropped).
             self.list = None;
@@ -1060,6 +1222,7 @@ impl VideoDialog {
             }
             if let Some(i) = picked {
                 self.chosen = i;
+                self.quality_explicit = true;
                 self.name_from_choice();
             }
             // Wrapped in the empty list (#317).
@@ -1179,7 +1342,9 @@ impl VideoDialog {
         let chosen = match &self.list {
             Some(l) => l.chosen() > 0 && !listing,
             None => {
-                self.video.as_ref().is_some_and(|(_, c)| !c.is_empty())
+                self.video
+                    .as_ref()
+                    .is_some_and(|(_, choices)| choices.get(self.chosen).is_some())
                     && !self.name.trim().is_empty()
             }
         };
@@ -2581,6 +2746,374 @@ mod tests {
         assert_eq!(page_title(&context, &known, frame), None);
     }
 
+    #[test]
+    fn a_browser_lookup_seeds_the_matching_choice_and_keeps_its_cache() {
+        const TALK: &str = r#"{"title":"A talk","formats":[
+            {"format_id":"140","ext":"m4a","vcodec":"none","acodec":"mp4a"},
+            {"format_id":"18","ext":"mp4","height":360,"vcodec":"avc1","acodec":"mp4a"},
+            {"format_id":"22","ext":"mp4","height":720,"vcodec":"avc1","acodec":"mp4a"}],
+            "subtitles":{"pt-PT":[{"name":"Portuguese"}]}}"#;
+        let video = mdm_tools::resolve::parse(TALK.as_bytes()).unwrap();
+        let page = url::Url::parse("https://video.example/talk").unwrap();
+        let context = mdm_ipc::Command {
+            referer: Some("https://browser.test/".into()),
+            ..Default::default()
+        };
+        let choices = mdm_tools::resolve::choices(&video, false);
+        for choice in [
+            choices.iter().find(|c| c.height == Some(360)).unwrap(),
+            choices
+                .iter()
+                .find(|c| mdm_tools::resolve::is_audio(c))
+                .unwrap(),
+        ] {
+            let folder = std::env::temp_dir().join("mdm-browser-video");
+            let slot = mdm_tools::video::InfoSlot::new(std::time::Instant::now());
+            let add = VideoAdd {
+                page: page.clone(),
+                selector: choice.selector.clone(),
+                dest: folder.join("custom.mp4"),
+                category: if mdm_tools::resolve::is_audio(choice) {
+                    Category::Music
+                } else {
+                    Category::Video
+                },
+                size: choice.size,
+                start_now: false,
+                context: context.clone(),
+                subs: Subs::default(),
+                remember: None,
+                preloaded: Some(mdm_tools::video::Preloaded {
+                    slot,
+                    selector: choice.selector.clone(),
+                    label: choice.label.clone(),
+                    merge: false,
+                }),
+                named: true,
+                duration: None,
+                part: None,
+            };
+            let (video_dir, music_dir) = dirs();
+            let saved = Subs {
+                langs: vec!["pt".into()],
+                automatic: false,
+                embed: true,
+            };
+            let d = VideoDialog::blank(video_dir)
+                .with_subs(saved.clone())
+                .with_music_folder(Some(music_dir))
+                .with_lookup(add, video.clone())
+                .unwrap();
+            assert_eq!(
+                d.video.as_ref().unwrap().1[d.chosen].selector,
+                choice.selector
+            );
+            if choice.height == Some(360) {
+                assert!(d.chosen > 0);
+            }
+            assert_eq!(d.page, page.as_str());
+            assert_eq!(d.context().referer, context.referer);
+            assert_eq!(d.folder, folder.display().to_string());
+            assert_eq!(d.pref, saved);
+            assert!(d.embed);
+            assert_eq!(d.chosen_subs().langs, vec!["pt-PT"]);
+            assert!(!d.auto_look);
+            assert!(d.lookup.is_none());
+            assert!(d.start_now.is_none());
+            assert_eq!(d.name, file_name(&video.title, choice));
+            let mut d = d;
+            d.name = "edited-name".into();
+            d.folder = std::env::temp_dir()
+                .join("edited-folder")
+                .display()
+                .to_string();
+            d.tools = Some((None, None, None));
+            d.refresh_video();
+            assert_eq!(
+                d.video.as_ref().unwrap().1[d.chosen].selector,
+                choice.selector
+            );
+            assert_eq!(d.name, "edited-name");
+            assert_eq!(
+                d.folder,
+                std::env::temp_dir()
+                    .join("edited-folder")
+                    .display()
+                    .to_string()
+            );
+            assert_eq!(d.pref, saved);
+            assert!(d.embed);
+            assert_eq!(d.chosen_subs().langs, vec!["pt-PT"]);
+            let VideoOut::One(out) = d.added().unwrap() else {
+                panic!("one video")
+            };
+            assert_eq!(out.dest.file_name().unwrap(), "edited-name");
+            assert_eq!(
+                out.dest.parent().unwrap(),
+                std::env::temp_dir().join("edited-folder")
+            );
+            assert!(out.preloaded.is_some());
+            if mdm_tools::resolve::is_audio(choice) {
+                assert!(out.subs.langs.is_empty());
+                assert!(!out.subs.embed);
+            } else {
+                assert_eq!(out.subs.langs, vec!["pt-PT"]);
+                assert!(out.subs.embed);
+            }
+            if mdm_tools::resolve::is_audio(choice) {
+                assert!(subs_for_choice(choice, &d.chosen_subs()).langs.is_empty());
+                let video_pick = d
+                    .video
+                    .as_ref()
+                    .unwrap()
+                    .1
+                    .iter()
+                    .position(|c| c.height == Some(360))
+                    .unwrap();
+                d.chosen = video_pick;
+                d.name_from_choice();
+                let VideoOut::One(switched) = d.added().unwrap() else {
+                    panic!("one video")
+                };
+                assert_eq!(switched.subs.langs, vec!["pt-PT"]);
+                assert!(switched.subs.embed);
+            }
+        }
+    }
+
+    #[test]
+    fn helper_refresh_disables_add_when_the_selected_selector_disappears() {
+        const WITH_720: &str = r#"{"title":"A talk","formats":[
+            {"format_id":"18","ext":"mp4","height":360,"vcodec":"avc1","acodec":"mp4a"},
+            {"format_id":"22","ext":"mp4","height":720,"vcodec":"avc1","acodec":"mp4a"}]}"#;
+        const WITHOUT_720: &str = r#"{"title":"A talk","formats":[
+            {"format_id":"18","ext":"mp4","height":360,"vcodec":"avc1","acodec":"mp4a"}]}"#;
+        let video = mdm_tools::resolve::parse(WITH_720.as_bytes()).unwrap();
+        let refreshed = mdm_tools::resolve::parse(WITHOUT_720.as_bytes()).unwrap();
+        let mut d = VideoDialog::blank(PathBuf::from("."));
+        d.tools = Some((None, None, None));
+        d.set_video_with_merge(video, false);
+        let selected = d
+            .video
+            .as_ref()
+            .unwrap()
+            .1
+            .iter()
+            .position(|c| c.height == Some(720))
+            .unwrap();
+        d.chosen = selected;
+        d.quality_explicit = true;
+        d.name = "edited-name".into();
+        d.folder = "edited-folder".into();
+        let old_choices = d.video.as_ref().unwrap().1.clone();
+        d.video = Some((refreshed, old_choices));
+        d.refresh_video();
+        assert_eq!(d.chosen, d.video.as_ref().unwrap().1.len());
+        assert!(d.rows.selected.is_none());
+        assert!(
+            d.video
+                .as_ref()
+                .unwrap()
+                .1
+                .iter()
+                .any(|c| c.height == Some(360))
+        );
+        assert_eq!(d.name, "edited-name");
+        assert_eq!(d.folder, "edited-folder");
+        assert!(d.added().is_none());
+    }
+
+    #[test]
+    fn helper_refresh_promotes_the_automatic_default_and_renames_it() {
+        const SPLIT: &str = r#"{"title":"A talk","formats":[
+            {"format_id":"18","ext":"mp4","height":360,"vcodec":"avc1","acodec":"mp4a"},
+            {"format_id":"v720","ext":"mp4","height":720,"vcodec":"avc1","acodec":"none"},
+            {"format_id":"a","ext":"m4a","vcodec":"none","acodec":"mp4a"}]}"#;
+        let video = mdm_tools::resolve::parse(SPLIT.as_bytes()).unwrap();
+        let mut d = VideoDialog::blank(PathBuf::from("."));
+        d.tools = Some((None, None, None));
+        d.set_video_with_merge(video, false);
+        let old = d.video.as_ref().unwrap().1[d.chosen].selector.clone();
+        assert!(!d.quality_explicit);
+        d.tools = Some((
+            None,
+            None,
+            Some(mdm_tools::Installed {
+                version: "test".into(),
+                exe: PathBuf::from("ffmpeg"),
+            }),
+        ));
+        d.refresh_video();
+        let (video, choices) = d.video.as_ref().unwrap();
+        assert_ne!(choices[d.chosen].selector, old);
+        assert_eq!(choices[d.chosen].height, Some(720));
+        assert_eq!(d.name, file_name(&video.title, &choices[d.chosen]));
+    }
+
+    #[test]
+    fn helper_refresh_keeps_an_explicit_quality_and_edited_name() {
+        const SPLIT: &str = r#"{"title":"A talk","formats":[
+            {"format_id":"18","ext":"mp4","height":360,"vcodec":"avc1","acodec":"mp4a"},
+            {"format_id":"v720","ext":"mp4","height":720,"vcodec":"avc1","acodec":"none"},
+            {"format_id":"a","ext":"m4a","vcodec":"none","acodec":"mp4a"}]}"#;
+        let video = mdm_tools::resolve::parse(SPLIT.as_bytes()).unwrap();
+        let mut d = VideoDialog::blank(PathBuf::from("."));
+        d.tools = Some((None, None, None));
+        d.set_video_with_merge(video, false);
+        let selected = d
+            .video
+            .as_ref()
+            .unwrap()
+            .1
+            .iter()
+            .position(|c| c.height == Some(360))
+            .unwrap();
+        assert_eq!(d.chosen, selected, "the default is 360p before ffmpeg");
+        d.pick("360p");
+        assert!(
+            d.quality_explicit,
+            "selecting the default row is explicit too"
+        );
+        d.name = "mine.mp4".into();
+        d.tools = Some((
+            None,
+            None,
+            Some(mdm_tools::Installed {
+                version: "test".into(),
+                exe: PathBuf::from("ffmpeg"),
+            }),
+        ));
+        d.refresh_video();
+        let choices = &d.video.as_ref().unwrap().1;
+        assert_eq!(choices[d.chosen].height, Some(360));
+        assert_eq!(d.name, "mine.mp4");
+    }
+
+    #[test]
+    fn helper_refresh_prefers_exact_selector_over_earlier_compatible_row() {
+        let old = Choice {
+            selector: "18/old-fallback".into(),
+            label: String::from("360p MP4 · H.264"),
+            ext: "mp4".into(),
+            height: Some(360),
+            codec: Some("H.264".into()),
+            ..Default::default()
+        };
+        let compatible = Choice {
+            selector: "18/compatible-fallback".into(),
+            label: format!("{} · 360p MP4 · H.264", mdm_tools::resolve::COMPATIBLE),
+            ..old.clone()
+        };
+        let refreshed = vec![compatible, old.clone()];
+        assert_eq!(refreshed_choice_index(&old, &refreshed), Some(1));
+    }
+
+    #[test]
+    fn helper_refresh_keeps_the_automatic_filename_for_an_explicit_audio_choice() {
+        const SPLIT: &str = r#"{"title":"A talk","duration":100,"formats":[
+            {"format_id":"18","ext":"mp4","height":360,"vcodec":"avc1","acodec":"mp4a"},
+            {"format_id":"v720","ext":"mp4","height":720,"vcodec":"avc1","acodec":"none"},
+            {"format_id":"a","ext":"m4a","vcodec":"none","acodec":"mp4a"}]}"#;
+        let video = mdm_tools::resolve::parse(SPLIT.as_bytes()).unwrap();
+        let mut d = VideoDialog::blank(PathBuf::from("."));
+        d.tools = Some((None, None, None));
+        d.set_video_with_merge(video, false);
+        let audio = d
+            .video
+            .as_ref()
+            .unwrap()
+            .1
+            .iter()
+            .position(mdm_tools::resolve::is_audio)
+            .unwrap();
+        d.chosen = audio;
+        d.quality_explicit = true;
+        d.name_from_choice();
+        let selected_name = d.name.clone();
+        d.tools = Some((
+            None,
+            None,
+            Some(mdm_tools::Installed {
+                version: "test".into(),
+                exe: PathBuf::from("ffmpeg"),
+            }),
+        ));
+        d.refresh_video();
+        let (video, choices) = d.video.as_ref().unwrap();
+        assert!(mdm_tools::resolve::is_audio(&choices[d.chosen]));
+        assert_eq!(d.name, selected_name);
+        assert_eq!(d.name, file_name(&video.title, &choices[d.chosen]));
+        let best_video = choices
+            .iter()
+            .find(|choice| choice.height == Some(720))
+            .unwrap();
+        assert_ne!(d.name, file_name(&video.title, best_video));
+    }
+
+    #[test]
+    fn helper_refresh_reapplies_part_times_to_its_automatic_filename() {
+        const SPLIT: &str = r#"{"title":"A talk","duration":100,"formats":[
+            {"format_id":"18","ext":"mp4","height":360,"vcodec":"avc1","acodec":"mp4a"},
+            {"format_id":"v720","ext":"mp4","height":720,"vcodec":"avc1","acodec":"none"},
+            {"format_id":"a","ext":"m4a","vcodec":"none","acodec":"mp4a"}]}"#;
+        let video = mdm_tools::resolve::parse(SPLIT.as_bytes()).unwrap();
+        let mut d = VideoDialog::blank(PathBuf::from("."));
+        d.tools = Some((None, None, None));
+        d.set_video_with_merge(video, false);
+        d.quality_explicit = true;
+        d.part_on = true;
+        d.part_from = "0:15".into();
+        d.part_to = "0:45".into();
+        d.name_from_choice();
+        assert!(d.name.contains("15s-45s"));
+        d.tools = Some((
+            None,
+            None,
+            Some(mdm_tools::Installed {
+                version: "test".into(),
+                exe: PathBuf::from("ffmpeg"),
+            }),
+        ));
+        d.refresh_video();
+        let (video, choices) = d.video.as_ref().unwrap();
+        let expected = mdm_tools::part::named(
+            &file_name(&video.title, &choices[d.chosen]),
+            &d.part().unwrap().unwrap(),
+        );
+        assert_eq!(d.name, expected);
+    }
+
+    #[test]
+    fn browser_lookup_rejects_a_selector_absent_from_its_metadata() {
+        const TALK: &str = r#"{"title":"A talk","formats":[{"format_id":"18","ext":"mp4","height":360,"vcodec":"avc1","acodec":"mp4a"}]}"#;
+        let video = mdm_tools::resolve::parse(TALK.as_bytes()).unwrap();
+        let add = VideoAdd {
+            page: url::Url::parse("https://video.example/talk").unwrap(),
+            selector: "missing".into(),
+            dest: PathBuf::from("/tmp/talk.mp4"),
+            category: Category::Video,
+            size: None,
+            start_now: false,
+            context: Default::default(),
+            subs: Subs::default(),
+            remember: None,
+            preloaded: Some(mdm_tools::video::Preloaded {
+                slot: mdm_tools::video::InfoSlot::new(std::time::Instant::now()),
+                selector: "missing".into(),
+                label: String::new(),
+                merge: false,
+            }),
+            named: false,
+            duration: None,
+            part: None,
+        };
+        assert!(
+            VideoDialog::blank(PathBuf::from("."))
+                .with_lookup(add, video)
+                .is_none()
+        );
+    }
+
     /// #622: a Dropbox page is titled with the file's name, extension and all; the video named
     /// by it got the choice's extension once more (`Episode 31.mp4.mp4`).
     #[test]
@@ -2687,6 +3220,183 @@ mod tests {
         d.looked_up = d.page.clone();
         d.set_video(mdm_tools::resolve::parse(SAMPLE.as_bytes()).unwrap());
         d
+    }
+
+    /// Run the dialog body in an in-memory egui frame; no native window or app queue is involved.
+    fn body_frame(
+        ctx: &egui::Context,
+        d: &mut VideoDialog,
+        rt: &tokio::runtime::Handle,
+        input: egui::RawInput,
+    ) -> Outcome<()> {
+        let mut outcome = Outcome::Open;
+        let mut out = ctx.run_ui(input, |ui| {
+            outcome = d.body(ui, Pos2::ZERO, rt);
+        });
+        out.textures_delta.clear();
+        outcome
+    }
+
+    /// Cancel and Escape close a real looked-up dialog through its body action path.
+    #[test]
+    fn browser_dialog_cancel_and_escape_close_the_video_dialog_body() {
+        let rt = tokio::runtime::Builder::new_current_thread()
+            .build()
+            .unwrap();
+        for escape in [false, true] {
+            let ctx = egui::Context::default();
+            let mut fonts = egui::FontDefinitions::default();
+            winui::install_fonts(&mut fonts, None);
+            ctx.set_fonts(fonts);
+            let mut d = looked_up(false);
+            body_frame(
+                &ctx,
+                &mut d,
+                rt.handle(),
+                egui::RawInput {
+                    screen_rect: Some(egui::Rect::from_min_size(
+                        Pos2::ZERO,
+                        egui::vec2(600.0, BUTTONS_Y + 60.0),
+                    )),
+                    ..Default::default()
+                },
+            );
+            let input = if escape {
+                egui::RawInput {
+                    screen_rect: Some(egui::Rect::from_min_size(
+                        Pos2::ZERO,
+                        egui::vec2(600.0, BUTTONS_Y + 60.0),
+                    )),
+                    events: vec![egui::Event::Key {
+                        key: egui::Key::Escape,
+                        physical_key: None,
+                        pressed: true,
+                        repeat: false,
+                        modifiers: egui::Modifiers::default(),
+                    }],
+                    ..Default::default()
+                }
+            } else {
+                egui::RawInput::default()
+            };
+            let open = body_frame(&ctx, &mut d, rt.handle(), input);
+            if escape {
+                assert!(matches!(open, Outcome::Closed));
+            } else {
+                // Cancel occupies the rightmost button at x=416..489, at BUTTONS_Y.
+                let press = egui::RawInput {
+                    screen_rect: Some(egui::Rect::from_min_size(
+                        Pos2::ZERO,
+                        egui::vec2(600.0, BUTTONS_Y + 60.0),
+                    )),
+                    events: vec![
+                        egui::Event::PointerMoved(egui::pos2(450.0, BUTTONS_Y + 10.0)),
+                        egui::Event::PointerButton {
+                            pos: egui::pos2(450.0, BUTTONS_Y + 10.0),
+                            button: egui::PointerButton::Primary,
+                            pressed: true,
+                            modifiers: egui::Modifiers::default(),
+                        },
+                    ],
+                    ..Default::default()
+                };
+                body_frame(&ctx, &mut d, rt.handle(), press);
+                let release = egui::RawInput {
+                    screen_rect: Some(egui::Rect::from_min_size(
+                        Pos2::ZERO,
+                        egui::vec2(600.0, BUTTONS_Y + 60.0),
+                    )),
+                    events: vec![egui::Event::PointerButton {
+                        pos: egui::pos2(450.0, BUTTONS_Y + 10.0),
+                        button: egui::PointerButton::Primary,
+                        pressed: false,
+                        modifiers: egui::Modifiers::default(),
+                    }],
+                    ..Default::default()
+                };
+                assert!(matches!(
+                    body_frame(&ctx, &mut d, rt.handle(), release),
+                    Outcome::Closed
+                ));
+            }
+        }
+    }
+
+    /// Later follows the button path and preserves the chosen quality and edited destination.
+    #[test]
+    fn browser_dialog_later_keeps_quality_name_and_folder_and_sets_start_now_false() {
+        let rt = tokio::runtime::Builder::new_current_thread()
+            .build()
+            .unwrap();
+        let ctx = egui::Context::default();
+        let mut fonts = egui::FontDefinitions::default();
+        winui::install_fonts(&mut fonts, None);
+        ctx.set_fonts(fonts);
+        let mut d = looked_up(false);
+        let (_, video) = rows(&d);
+        choose(&mut d, video);
+        d.name = "edited title".into();
+        d.folder = std::env::temp_dir()
+            .join("video-dialog-later")
+            .display()
+            .to_string();
+        let selector = d.video.as_ref().unwrap().1[d.chosen].selector.clone();
+        body_frame(
+            &ctx,
+            &mut d,
+            rt.handle(),
+            egui::RawInput {
+                screen_rect: Some(egui::Rect::from_min_size(
+                    Pos2::ZERO,
+                    egui::vec2(600.0, BUTTONS_Y + 60.0),
+                )),
+                ..Default::default()
+            },
+        );
+        let press = egui::RawInput {
+            screen_rect: Some(egui::Rect::from_min_size(
+                Pos2::ZERO,
+                egui::vec2(600.0, BUTTONS_Y + 60.0),
+            )),
+            events: vec![
+                egui::Event::PointerMoved(egui::pos2(370.0, BUTTONS_Y + 10.0)),
+                egui::Event::PointerButton {
+                    pos: egui::pos2(370.0, BUTTONS_Y + 10.0),
+                    button: egui::PointerButton::Primary,
+                    pressed: true,
+                    modifiers: egui::Modifiers::default(),
+                },
+            ],
+            ..Default::default()
+        };
+        body_frame(&ctx, &mut d, rt.handle(), press);
+        let release = egui::RawInput {
+            screen_rect: Some(egui::Rect::from_min_size(
+                Pos2::ZERO,
+                egui::vec2(600.0, BUTTONS_Y + 60.0),
+            )),
+            events: vec![egui::Event::PointerButton {
+                pos: egui::pos2(370.0, BUTTONS_Y + 10.0),
+                button: egui::PointerButton::Primary,
+                pressed: false,
+                modifiers: egui::Modifiers::default(),
+            }],
+            ..Default::default()
+        };
+        assert!(matches!(
+            body_frame(&ctx, &mut d, rt.handle(), release),
+            Outcome::Done(())
+        ));
+        assert_eq!(d.video.as_ref().unwrap().1[d.chosen].selector, selector);
+        assert_eq!(d.name, "edited title");
+        assert_eq!(
+            d.folder,
+            std::env::temp_dir()
+                .join("video-dialog-later")
+                .display()
+                .to_string()
+        );
+        assert_eq!(d.start_now, Some(false));
     }
 
     /// The choices' rows: (a sound-only one, a video one).
@@ -2923,5 +3633,80 @@ mod tests {
         assert_eq!(d.chosen, 1);
         assert_eq!(choices[1].label, "Most compatible (H.264 + AAC) · 1080p");
         assert!(choices[1].selector.starts_with("299+140/"));
+    }
+
+    #[test]
+    fn browser_lookup_keeps_the_most_compatible_choice_through_helper_refresh() {
+        const TALK: &str = r#"{"title":"A talk","formats":[
+            {"format_id":"140","ext":"m4a","vcodec":"none","acodec":"mp4a.40.2"},
+            {"format_id":"701","ext":"mp4","height":2160,"vcodec":"av01.0.13M.10","acodec":"none"},
+            {"format_id":"299","ext":"mp4","height":1080,"vcodec":"avc1.64002A","acodec":"none"}]}"#;
+        let video = mdm_tools::resolve::parse(TALK.as_bytes()).unwrap();
+        let choices = mdm_tools::resolve::choices(&video, true);
+        let choice = choices
+            .iter()
+            .find(|choice| mdm_tools::resolve::is_compatible(choice))
+            .unwrap();
+        assert_eq!(choices[0].height, Some(2160));
+        assert_ne!(choices[0].selector, choice.selector);
+        assert!(choice.selector.starts_with("299+140/"));
+
+        let page = url::Url::parse("https://video.example/talk").unwrap();
+        let folder = std::env::temp_dir().join("mdm-browser-video");
+        let slot = mdm_tools::video::InfoSlot::new(std::time::Instant::now());
+        let add = VideoAdd {
+            page: page.clone(),
+            selector: choice.selector.clone(),
+            dest: folder.join("talk.mp4"),
+            category: Category::Video,
+            size: choice.size,
+            start_now: false,
+            context: Default::default(),
+            subs: Subs::default(),
+            remember: None,
+            preloaded: Some(mdm_tools::video::Preloaded {
+                slot,
+                selector: choice.selector.clone(),
+                label: choice.label.clone(),
+                merge: true,
+            }),
+            named: false,
+            duration: None,
+            part: None,
+        };
+        let ffmpeg = mdm_tools::Installed {
+            version: "test".into(),
+            exe: PathBuf::from("ffmpeg"),
+        };
+        let mut dialog = VideoDialog::blank(folder.clone());
+        dialog.tools = Some((None, None, Some(ffmpeg)));
+        let mut dialog = dialog.with_lookup(add, video).unwrap();
+
+        let selected = &dialog.video.as_ref().unwrap().1[dialog.chosen];
+        assert_eq!(selected.selector, choice.selector);
+        assert_eq!(dialog.preloaded.as_ref().unwrap().selector, choice.selector);
+        assert!(dialog.preloaded.as_ref().unwrap().merge);
+
+        dialog.show_part("0:15", "0:45", true);
+        dialog.name = "My edited clip.mp4".into();
+        dialog.refresh_video();
+        let selected = &dialog.video.as_ref().unwrap().1[dialog.chosen];
+        assert_eq!(selected.selector, choice.selector);
+        assert_eq!(dialog.preloaded.as_ref().unwrap().selector, choice.selector);
+        assert!(dialog.preloaded.as_ref().unwrap().merge);
+        assert!(dialog.part_on);
+        assert_eq!(dialog.part_from, "0:15");
+        assert_eq!(dialog.part_to, "0:45");
+        assert!(dialog.part_exact);
+        assert_eq!(dialog.name, "My edited clip.mp4");
+
+        let VideoOut::One(out) = dialog.added().unwrap() else {
+            panic!("one video")
+        };
+        assert_eq!(out.selector, choice.selector);
+        let cache = out.preloaded.unwrap();
+        assert_eq!(cache.selector, choice.selector);
+        assert_eq!(cache.label, choice.label);
+        assert!(cache.merge);
     }
 }

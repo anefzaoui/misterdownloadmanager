@@ -6738,10 +6738,13 @@ impl App {
 
     /// The browser's quality menu over a video (crates/nmhost, videolookup.rs): a look-up
     /// started (answered at once, yt-dlp on a thread of its own), a question about one, or the
-    /// choice made there, added as Download video's Download Now adds it: MDM's window stays
-    /// where it is, the download's progress window opens (Options' "only add to the queue":
-    /// into the main queue instead, with no queue panel either).
-    fn quality_menu(&mut self, cmd: &ipc::Command) -> ipc::api::VideoLookupAnswer {
+    /// choice made there. With "Show start download dialog", the choice opens Download video's
+    /// native dialog; otherwise it is added according to Options.
+    fn quality_menu(
+        &mut self,
+        cmd: &ipc::Command,
+        ctx: &egui::Context,
+    ) -> ipc::api::VideoLookupAnswer {
         use ipc::api::{VideoLookupAnswer, lookup};
         if menu_needs_window(cmd, self.headless) {
             return VideoLookupAnswer::of(lookup::USE_WINDOW);
@@ -6762,12 +6765,20 @@ impl App {
         let Some(pick) = &cmd.video_pick else {
             return VideoLookupAnswer::of(lookup::USE_WINDOW);
         };
+        // Leave an already-open dialog (and any edits in it) alone. Do this before taking the
+        // browser's one-use lookup so it can retry once the dialog is closed.
+        if self.settings.show_start_dialog && self.video_dlg.is_some() {
+            dialogs::raise(ctx, dialogs::dialog_viewport("video-page"));
+            return VideoLookupAnswer::of(lookup::BUSY);
+        }
         let folder = self.settings.save_dir(Category::Video, &self.downloads);
         // A sound-only choice saves in Music, as in the Download video window (#611).
         let music = (!Category::Music.deleted())
             .then(|| self.settings.save_dir(Category::Music, &self.downloads));
         let start_now = !self.settings.only_add_to_queue;
-        let add = self.lookups.pick(pick, cmd.private, now).and_then(|p| {
+        let picked = self.lookups.pick(pick, cmd.private, now);
+        let add = picked.and_then(|p| {
+            let video = p.video.clone();
             crate::videolookup::video_add(
                 p,
                 &folder,
@@ -6775,12 +6786,26 @@ impl App {
                 start_now,
                 &self.settings.video_subs,
             )
+            .map(|add| (add, video))
         });
-        let Some(add) = add else {
+        let Some((add, video)) = add else {
             return VideoLookupAnswer::of(lookup::USE_WINDOW);
         };
-        // Its category's folder, made when it isn't there yet (the window asks first; the
-        // choice was made in the browser): beside the window, as its start makes it too.
+        if self.settings.show_start_dialog {
+            let dialog = self.video_dialog(None).with_lookup(add, video);
+            let Some(dialog) = dialog else {
+                return VideoLookupAnswer::of(lookup::USE_WINDOW);
+            };
+            self.show_for_dialog(ctx);
+            self.video_dlg = Some(dialog);
+            // Quality picks expect a reply, so tick's ordinary-command unhide does not run.
+            #[cfg(all(target_os = "macos", not(test)))]
+            if !crate::offscreen() {
+                crate::unix::macos_unhide_app();
+            }
+            return VideoLookupAnswer::of(lookup::SENT);
+        }
+        // The direct path creates its folder off the window thread, as download startup does.
         if let Some(dir) = add.dest.parent().map(std::path::Path::to_path_buf) {
             crate::launch::spawn("video folder", move || {
                 let _ = std::fs::create_dir_all(dir);
@@ -8200,7 +8225,7 @@ impl App {
         if !cmd.remote
             && (cmd.video_lookup.is_some() || cmd.video_poll.is_some() || cmd.video_pick.is_some())
         {
-            return line(&self.quality_menu(cmd));
+            return line(&self.quality_menu(cmd, ctx));
         }
         // The browser popup's list and its buttons (#1496, its native host asks): whatever the
         // automation API's switch, and never for a paired device.
@@ -16734,6 +16759,163 @@ mod add_batch_tests {
             loaded,
             crate::Start::Shown,
         ))
+    }
+
+    /// Seed a real completed browser lookup without starting yt-dlp.
+    fn seed_video_lookup(app: &mut App) -> (String, usize, String) {
+        let ask = ipc::VideoLookup {
+            address: "https://videos.test/watch?v=1".into(),
+            title: Some("A test film".into()),
+            store_id: None,
+        };
+        let cmd = ipc::Command {
+            page_url: Some("https://videos.test/watch?v=1".into()),
+            ..Default::default()
+        };
+        let now = std::time::Instant::now();
+        let job = app.lookups.begin(&ask, &cmd, false, now).unwrap();
+        let video = mdm_tools::resolve::parse(
+            br#"{"title":"A test film","formats":[
+            {"format_id":"v720","ext":"mp4","height":720,"vcodec":"avc1","acodec":"mp4a"},
+            {"format_id":"v360","ext":"mp4","height":360,"vcodec":"avc1","acodec":"mp4a"}]}"#,
+        )
+        .unwrap();
+        let choices = mdm_tools::resolve::choices(&video, false);
+        let index = choices.iter().position(|c| c.height == Some(360)).unwrap();
+        let selector = choices[index].selector.clone();
+        *job.found.lock().unwrap() = crate::videolookup::Found::Video(video, choices);
+        let token = job.token.clone();
+        drop(job);
+        (token, index, selector)
+    }
+
+    #[test]
+    fn browser_pick_opens_native_dialog_and_preserves_token_while_busy() {
+        let mut app = app();
+        let root =
+            std::env::temp_dir().join(format!("mdm-browser-pick-{}", mdm_ipc::random_token()));
+        app.downloads = root.clone();
+        app.settings.category_dirs = vec![
+            (
+                Category::Video.key().into_owned(),
+                root.join("video").display().to_string(),
+            ),
+            (
+                Category::Music.key().into_owned(),
+                root.join("music").display().to_string(),
+            ),
+        ];
+        app.settings.show_start_dialog = true;
+        app.hidden = true;
+        let (token, choice, _) = seed_video_lookup(&mut app);
+        let before = app.items.len();
+        let ctx = egui::Context::default();
+        let pick = ipc::VideoPick {
+            token: token.clone(),
+            choice,
+            store_id: None,
+        };
+        let first = app.quality_menu(
+            &ipc::Command {
+                video_pick: Some(pick.clone()),
+                ..Default::default()
+            },
+            &ctx,
+        );
+        assert_eq!(first.state, ipc::api::lookup::SENT);
+        assert!(app.video_dlg.is_some());
+        assert_eq!(app.items.len(), before);
+        assert!(!root.exists());
+
+        app.handle_command(
+            ipc::Command {
+                video_page: Some("https://videos.test/watch?v=another".into()),
+                ..Default::default()
+            },
+            &ctx,
+        );
+        assert_eq!(
+            app.video_dlg.as_ref().unwrap().test_page(),
+            "https://videos.test/watch?v=another",
+            "an ordinary page button opens the page it requested"
+        );
+
+        let (retry_token, retry_choice, _) = seed_video_lookup(&mut app);
+        let second = app.quality_menu(
+            &ipc::Command {
+                video_pick: Some(ipc::VideoPick {
+                    token: retry_token.clone(),
+                    choice: retry_choice,
+                    store_id: None,
+                }),
+                ..Default::default()
+            },
+            &ctx,
+        );
+        assert_eq!(second.state, ipc::api::lookup::BUSY);
+        assert_eq!(
+            app.video_dlg.as_ref().unwrap().test_page(),
+            "https://videos.test/watch?v=another",
+            "a busy quality-menu pick leaves the dialog alone"
+        );
+        let retry = app.lookups.poll(&retry_token, std::time::Instant::now());
+        assert_eq!(retry.state, ipc::api::lookup::READY);
+        assert_eq!(app.items.len(), before);
+        assert!(!root.exists());
+    }
+
+    #[test]
+    fn browser_pick_without_dialog_adds_selected_quality_to_main_queue() {
+        let mut app = app();
+        let root = tempfile::tempdir().unwrap();
+        app.downloads = root.path().to_path_buf();
+        app.settings.category_dirs = vec![
+            (
+                Category::Video.key().into_owned(),
+                root.path().join("video").display().to_string(),
+            ),
+            (
+                Category::Music.key().into_owned(),
+                root.path().join("music").display().to_string(),
+            ),
+        ];
+        app.settings.show_start_dialog = false;
+        app.settings.only_add_to_queue = true;
+        app.settings.queue_panel_later = true;
+        app.queues = vec![Queue::new("Main download queue", false)];
+
+        let (token, choice, selector) = seed_video_lookup(&mut app);
+        let answer = app.quality_menu(
+            &ipc::Command {
+                video_pick: Some(ipc::VideoPick {
+                    token,
+                    choice,
+                    store_id: None,
+                }),
+                ..Default::default()
+            },
+            &egui::Context::default(),
+        );
+
+        assert_eq!(answer.state, ipc::api::lookup::QUEUED);
+        assert!(
+            app.video_dlg.is_none(),
+            "the silent browser pick opens no dialog"
+        );
+        assert_eq!(app.items.len(), 1);
+        let item = &app.items[0];
+        assert_eq!(item.status, Status::Queued);
+        assert_eq!(item.category, Category::Video);
+        assert_eq!(
+            item.video.as_ref().map(|video| video.selector.as_str()),
+            Some(selector.as_str()),
+            "the selected 360p format must be kept"
+        );
+        assert_eq!(app.queues[0].items, [item.id]);
+        assert!(
+            app.queue_pick.is_none(),
+            "the browser pick asks no queue panel"
+        );
     }
 
     fn added(folder: Option<&std::path::Path>) -> crate::batch::Added {

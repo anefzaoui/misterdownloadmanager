@@ -1335,6 +1335,10 @@ const ok = (what) => {
       [{ token: "t1", choice: 0, storeId: "firefox-private" }, true, undefined, undefined],
       "the tab's window and container, not the page's say",
     );
+    // Browser picks contain only the lookup token and selected row; settings control confirmation in MDM.
+    await ask(listeners, { type: "video-pick", token: "t1", choice: 0, startNow: false }, sender);
+    const directPick = natives(calls).filter((x) => x.videoPick).at(-1).videoPick;
+    assert.deepEqual(directPick, { token: "t1", choice: 0, storeId: "firefox-container-2" });
     // An answer without `lookup`: the lookup is gone; a pick gets the window.
     answers.videoPoll = { ok: true };
     answers.videoPick = { ok: true };
@@ -3121,6 +3125,119 @@ function videoButton({ stored = {}, location, iframes, videos, subframe = false,
     throw new Error(`${name}: no end`);
   };
   const make = (names, value) => new Function(`${names.map(fn).join("\n")}\nreturn ${value};`)();
+  // A selected quality is sent directly; SENT stays neutral, BUSY leaves it retryable, and stale choices fail closed.
+  {
+    const messages = [];
+    const statuses = [];
+    const windows = [];
+    const context = {
+      LOOKUP_MS: 60000, t: (key) => key, endStatus() {},
+      within: (promise) => promise,
+      setStatus: (status) => statuses.push(status),
+      showFlash: (action) => statuses.push(action),
+      useWindow: (...args) => { windows.push(args); },
+      send: async (message) => { messages.push({ ...message }); return { lookup: { state: "sent" } }; },
+    };
+    vm.createContext(context);
+    vm.runInContext(["qualityName", "replyState", "lookupAction", "playedJob", "pick"].map(fn).join("\n"), context);
+    const look = { token: "lookup-one", picked: false, choices: [{ label: "720p MP4" }] };
+    await context.pick({}, look, 0);
+    assert.deepEqual(messages, [{ type: "video-pick", token: "lookup-one", choice: 0 }]);
+    assert.equal(statuses.at(-1).text, "video_sent");
+    const busyLook = { token: "lookup-two", picked: false, choices: [{}] };
+    context.send = async () => ({ lookup: { state: "busy" } });
+    await context.pick({}, busyLook, 0);
+    assert.equal(busyLook.picked, false, "BUSY permits retry");
+    assert.equal(statuses.at(-1).text, "video_busy");
+    const windowLook = { token: "lookup-three", picked: false, played: "https://video.test/played.mp4", file: true, choices: [{}] };
+    const windowJob = { asked: { src: "https://video.test/original" } };
+    context.send = async () => ({ lookup: { state: "use-window" } });
+    await context.pick(windowJob, windowLook, 0);
+    assert.equal(windows.length, 1, "app USE_WINDOW calls the native window once");
+    assert.equal(windows[0][0].asked.src, windowLook.played, "window fallback uses the tab's played file");
+    assert.equal(windows[0][0].asked.played, windowLook.played);
+    const goneLook = { token: "lookup-four", picked: false, played: "https://video.test/gone.mp4", file: true, choices: [{}] };
+    context.send = async () => ({ lookup: { state: "gone" } });
+    await context.pick({ asked: { src: "old" } }, goneLook, 0);
+    assert.equal(windows.length, 2, "a forgotten lookup calls the native window once");
+    assert.equal(windows[1][0].asked.src, goneLook.played);
+    const fallbackLook = { token: "lookup-five", picked: false, played: "https://video.test/fallback.mp4", file: true, choices: [{}] };
+    context.send = async () => ({ fallback: true });
+    await context.pick({ asked: { src: "old" } }, fallbackLook, 0);
+    assert.equal(windows.length, 3, "an unavailable native reply calls the native window once");
+    assert.equal(windows[2][0].asked.src, fallbackLook.played);
+    assert.ok(!fn("pick").includes("startNow"));
+    ok("video pick: direct selection, neutral SENT, BUSY retry, and app fallback window");
+  }
+  // Execute download() itself with only its page and app dependencies stubbed. A menu row is
+  // valid only for the ready look-up it came from; an expired row must never fall back to a
+  // fresh look-up or the Download video window.
+  {
+    const statuses = [];
+    const calls = [];
+    let activeLook;
+    const context = {
+      busy: false,
+      video: { currentSrc: "", getBoundingClientRect: () => ({}) },
+      held: { d: { src: "", url: "https://video.test/watch", at: null, drm: false } },
+      location: { href: "https://video.test/watch" },
+      landedAt: "https://video.test/watch",
+      document: { title: "A video", querySelector: () => null },
+      closeMenu() {}, tipOff() {}, render() {},
+      lookKey: () => "video-key",
+      lookOf: () => activeLook,
+      usable: (l) => Boolean(l),
+      startLook: (...args) => { calls.push(["startLook", ...args]); return activeLook; },
+      lookupAction: () => ({ act: "offer" }),
+      bestOf: (l) => l.choices[0],
+      qualityName: () => "720p",
+      t: (key) => key,
+      setStatus: (status) => statuses.push(status),
+      within: (p) => p,
+      useWindow: (...args) => { calls.push(["useWindow", ...args]); },
+      send: (...args) => { calls.push(["send", ...args]); },
+      LOOKUP_MS: 60000,
+    };
+    vm.createContext(context);
+    vm.runInContext(`${fn("download")}\nglobalThis.runDownload = download; globalThis.isBusy = () => busy;`, context);
+    const ready = (overrides = {}) => ({ token: "live-token", state: "ready", picked: false, choices: [{}, {}, {}], ...overrides });
+    const rejected = [
+      ["stale token", ready(), { token: "expired-token", choice: 1 }],
+      ["missing look-up", null, { token: "live-token", choice: 1 }],
+      ["already picked", ready({ picked: true }), { token: "live-token", choice: 1 }],
+      ["non-ready look-up", ready({ state: "pending" }), { token: "live-token", choice: 1 }],
+      ["mismatched token", ready({ token: "other-token" }), { token: "live-token", choice: 1 }],
+    ];
+    for (const [label, look, row] of rejected) {
+      activeLook = look;
+      calls.length = 0;
+      statuses.length = 0;
+      await context.runDownload(row);
+      assert.deepEqual(calls.map(([name]) => name), [], `${label}: no lookup, window, pick, or send`);
+      assert.equal(statuses.at(-1)?.text, "video_choice_expired", `${label}: expired warning`);
+      assert.equal(context.isBusy(), false, `${label}: busy released`);
+    }
+
+    activeLook = ready();
+    calls.length = 0;
+    statuses.length = 0;
+    let release;
+    context.pick = (...args) => {
+      calls.push(["pick", ...args]);
+      return new Promise((resolve) => { release = resolve; });
+    };
+    const first = context.runDownload({ token: "live-token", choice: 2 });
+    const second = context.runDownload({ token: "live-token", choice: 2 });
+    await second;
+    assert.deepEqual(calls.map(([name]) => name), ["pick"], "a repeated in-flight click submits once, without lookup or window fallback");
+    assert.equal(calls[0][2].token, "live-token");
+    assert.equal(calls[0][3], 2, "the selected non-first choice reaches pick unchanged");
+    assert.equal(context.isBusy(), true, "busy remains held for the pending pick");
+    release();
+    await first;
+    assert.equal(context.isBusy(), false, "busy released after pick completes");
+    ok("video download: stale rows fail closed; exact choice sent once while busy");
+  }
   // 100 ms before the first question, then the old backoff's target (1 s x 1.25^n, 2 s at most)
   // less what the last answer took (50 ms at least): an older app (60 ms) is asked as seldom as
   // before, a newer one (holding the answer ~1.5 s) is asked again almost at once early on.
@@ -3280,7 +3397,7 @@ function videoButton({ stored = {}, location, iframes, videos, subframe = false,
   // A choice: downloading, or handed to the app ("sent", which didn't say in time what became of
   // it: it will download it, so no window), or queued; anything else, the window.
   assert.deepEqual(act({ lookup: { state: "started" } }, true), { act: "flash", kind: "ok", text: "video_added" });
-  assert.deepEqual(act({ lookup: { state: "sent" } }, true), { act: "flash", kind: "ok", text: "video_added" });
+  assert.deepEqual(act({ lookup: { state: "sent" } }, true), { act: "flash", kind: "ok", text: "video_sent" });
   assert.deepEqual(act({ lookup: { state: "queued" } }, true), { act: "flash", kind: "ok", text: "video_queued" });
   for (const s of ["use-window", "gone", "pending", "ready", "busy", "off", "failed", "list", "late"]) {
     assert.deepEqual(act({ lookup: { state: s, token: "t1", choices: ready.choices } }, true), { act: "window" }, `a choice answered ${s}`);
@@ -3395,11 +3512,11 @@ function videoButton({ stored = {}, location, iframes, videos, subframe = false,
   // The page's own controls: a key the open menu used doesn't reach the page, and the button (and
   // so its menu) stays where it is while the menu is open.
   const keys = source.slice(source.indexOf('shadow.addEventListener("keydown"'), source.indexOf("// The main part: a click downloads"));
-  assert.equal(keys.match(/e\.stopPropagation\(\)/g).length, 5, "Escape (the menu, the button), Enter and Space, the arrows, ↓ on the button: not the page's too");
+  assert.equal(keys.match(/e\.stopPropagation\(\)/g).length, 5, "Escape, Enter and Space, arrows: not the page's too");
   assert.ok(fn("spot").includes("if (menuOpen && auto.v === video && auto.at) return auto.at;"), "spot: still while its menu is open");
   assert.equal(source.match(/innerHTML/g).length, 1, "markup only for the fixed parts");
   assert.ok(!/insertAdjacentHTML|outerHTML|setInterval/.test(source));
-  assert.ok(/send\(\{ type: "video-pick", token: l\.token, choice: i \}\)/.test(fn("pick")), "a pick: the token and the row's number");
+  assert.ok(/send\(\{ type: "video-pick", token: l\.token, choice: i \}\)/.test(fn("pick")), "a pick: only token and row");
   assert.equal(source.split('"video-lookup"').length, 2, "one lookup message");
   // #703: asked as the button shows, once it stayed a moment over the same video (previews the
   // pointer only crosses aren't), one per video for the page's life; a plain file never.
@@ -3506,6 +3623,23 @@ function videoButton({ stored = {}, location, iframes, videos, subframe = false,
     const clicked = w.startLook(c2, true);
     assert.notEqual(clicked, early, "the click asks again");
     assert.equal(asked.length, 3);
+    // A delayed hover can fire after the native dialog has taken this lookup's choice.
+    const c3 = { ...c, key: "https://videos.test/watch?v=3 ", d: { ...c.d, url: "https://videos.test/watch?v=3" } };
+    answer = { lookup: { state: "ready", token: "t3", choices: [{}] } };
+    const picked = w.startLook(c3, true);
+    await picked.done;
+    picked.picked = true;
+    const lookupCount = () => asked.filter((m) => m.type === "video-lookup").length;
+    const beforePickedHover = lookupCount();
+    const afterPick = w.restWait(w.REST_MS, () => w.startLook(c3), set, clear);
+    afterPick.rest(v);
+    to(now + w.REST_MS);
+    assert.equal(lookupCount(), beforePickedHover, "a delayed hover after a pick must not request another lookup");
+    assert.equal(w.startLook(c3), picked, "automatic lookups leave the consumed choice alone");
+    const explicit = w.startLook(c3, true);
+    await explicit.done;
+    assert.notEqual(explicit, picked, "a later explicit click can request a fresh token");
+    assert.equal(lookupCount(), beforePickedHover + 1);
     // A private window: neither the button showing nor resting on it asks; the click and the menu do.
     assert.ok(source.includes("const PRIVATE = Boolean(ext.extension?.inIncognitoContext);"), "PRIVATE: the browser's word");
     assert.ok(fn("show").includes("if (!PRIVATE && !usable(looks.get(c.key))) scheduleLook(v);"), "show: not in a private window");
@@ -3522,8 +3656,8 @@ function videoButton({ stored = {}, location, iframes, videos, subframe = false,
   // Its texts: English's, kept as the fallback too.
   const english = JSON.parse(readText("../../extension/_locales/en/messages.json"));
   for (const key of ["video_looking", "video_all_qualities", "video_part", "video_no_choices", "video_playlist", "video_no_ytdlp", "video_too_long", "video_busy", "video_queued", "video_failed_lookup",
-    "video_off", "video_drm", "video_cant_save", "video_open_post", "video_open_post_button", "video_drag_dots", "video_tip_best", "video_sending", "video_added", "video_show",
-    "video_no_answer", "video_get_mdm", "video_retry", "video_turn_on", "video_download_best", "video_best", "video_original", "video_compatible"]) {
+    "video_off", "video_drm", "video_cant_save", "video_open_post", "video_open_post_button", "video_drag_dots", "video_tip_best", "video_sending", "video_added", "video_sent", "video_show",
+    "video_no_answer", "video_get_mdm", "video_retry", "video_turn_on", "video_download_best", "video_best", "video_original", "video_compatible", "video_choice_expired"]) {
     assert.ok(english[key], key);
     assert.ok(source.includes(`${key}: ${JSON.stringify(english[key].message)}`), `video.js FALLBACK: ${key}`);
     assert.ok(source.includes(`t("${key}")`), `video.js uses ${key}`);
@@ -3840,8 +3974,8 @@ function videoButton({ stored = {}, location, iframes, videos, subframe = false,
   ok("nothing of IDM's in the extension");
 }
 
-// The right-click command in the browser's language, and every locale complete: the same keys
-// as English, which both manifests' __MSG_…__ names exist in.
+// The right-click command in the browser's language. Every locale carries every English key;
+// untranslated catalog rows use the English message until a translation is available.
 {
   const { api, calls, listeners } = fakeApi({ firefox: false });
   load(api, false);
@@ -3852,10 +3986,13 @@ function videoButton({ stored = {}, location, iframes, videos, subframe = false,
   const english = JSON.parse(readText(new URL("en/messages.json", dir)));
   for (const locale of readdirSync(dir)) {
     const m = JSON.parse(readText(new URL(`${locale}/messages.json`, dir)));
-    assert.deepEqual(Object.keys(m).sort(), Object.keys(english).sort(), `${locale} has every text`);
+    for (const key of Object.keys(m)) assert.ok(english[key], `${locale}: known message ${key}`);
+    assert.deepEqual(Object.keys(m).sort(), Object.keys(english).sort(), `${locale}: every English key`);
+    for (const key of Object.keys(english)) assert.ok(m[key].message, `${locale}: ${key}`);
   }
   for (const name of ["manifest.json", "manifest.firefox.json"]) {
     const text = readText(`../../extension/${name}`);
+    assert.equal(JSON.parse(text).default_locale, "en", `${name}: missing translations fall back to English`);
     for (const [, key] of text.matchAll(/__MSG_(\w+)__/g)) assert.ok(english[key], `${name}: ${key}`);
   }
   // Every key the scripts use exists in English.
@@ -3874,7 +4011,7 @@ function videoButton({ stored = {}, location, iframes, videos, subframe = false,
   for (const why of ["not_installed", "forbidden", "not_running", "host_failed", "too_large", "update_app"]) {
     assert.ok(english[`status_${why}`], `status_${why}`);
   }
-  ok("translations complete");
+  ok("translations and their default-locale fallback");
 }
 
 // #42: the browser's proxy goes with the download, so the app uses the same one: an opt-in, the

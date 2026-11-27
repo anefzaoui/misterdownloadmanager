@@ -649,6 +649,21 @@ mod tests {
     use super::*;
     use mdm_ipc::{Command, VideoLookup, VideoPick};
 
+    #[test]
+    fn browser_menu_notice_is_reserved_for_a_missing_javascript_runtime() {
+        let mut video = mdm_tools::resolve::parse(
+            br#"{"title":"A film","formats":[
+            {"format_id":"video","ext":"mp4","height":720,"vcodec":"avc1","acodec":"none"},
+            {"format_id":"audio","ext":"m4a","vcodec":"none","acodec":"mp4a"}] }"#,
+        )
+        .unwrap();
+        assert!(notice(&video).is_none());
+        video.needs_js_runtime = true;
+        let notice = notice(&video).unwrap();
+        assert!(notice.text.contains("JavaScript runtime"));
+        assert!(!notice.text.contains("ffmpeg"));
+    }
+
     /// A stream's manifest as yt-dlp sees it (named after its address) with two variants and
     /// German subtitles.
     const STREAM: &str = r#"{"title": "master", "duration": 60, "formats": [
