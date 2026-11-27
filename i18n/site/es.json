@@ -778,6 +778,10 @@
    "source": "Too many tries from your connection. Please try again in a few minutes.",
    "text": "Demasiados intentos desde tu conexión. Vuelve a intentarlo en unos minutos."
   },
+  "0a07d4f9fc7fb519": {
+   "source": "When the network comes back after a drop (Wi-Fi reconnecting, the computer waking from sleep, a VPN connecting or switching), MDM notices within a few seconds and calls the torrents' peers again at once, and asks their trackers and the DHT again, so a download picks up where it was instead of waiting minutes for each peer's next try. Each peer is called once for it; a tracker is still never asked sooner than its minimum interval. Behind a SOCKS5 proxy, a drop the computer itself doesn't see (the router losing its line while Wi-Fi stays up) is noticed only through the DHT, which is off there, so those torrents come back on their own, as before.",
+   "text": "Cuando la red se recupera después de una caída (reconexión de Wi-Fi, el ordenador sale del modo de suspensión, una VPN se conecta o cambia), MDM lo detecta en pocos segundos y vuelve a llamar a los pares de los torrents de inmediato, y vuelve a preguntar a sus rastreadores y a la DHT, de modo que una descarga se reanuda donde estaba en lugar de esperar minutos para el siguiente intento de cada par. Cada par es llamado una vez; a un rastreador nunca se le pregunta antes de su intervalo mínimo. Detrás de un proxy SOCKS5, una caída que el propio ordenador no ve (el router pierde su línea mientras el Wi-Fi sigue activo) solo se detecta a través de la DHT, que está desactivada allí, por lo que esos torrents se recuperan por sí solos, como antes."
+  },
   "0a15fc764eba9ef6": {
    "source": "Some servers drop the connection when the speed is very low. Avoid a tight limit for a server that can't resume: the progress window shows <g1>Resume capability: No</g1> for those.",
    "text": "Algunos servidores cortan la conexión cuando la velocidad es muy baja. Evita un límite estricto para un servidor que no pueda reanudar: la ventana de progreso muestra <g1>Capacidad de reanudación: No</g1> para esos casos."
@@ -1114,6 +1118,10 @@
    "source": "Read the site",
    "text": "Leer el sitio"
   },
+  "0e9fede041092f7d": {
+   "source": "A file is made when its first byte is downloaded, and only a ticked one is made in the folder: what an unticked file shares with a ticked one waits in MDM's own torrent data. A running torrent keeps only the files it is reading or writing open, a few hundred at most for all of MDM's torrents together (fewer where the system allows fewer, as macOS does), so a torrent of thousands of files runs where it used to fail with \"Too many open files\".",
+   "text": "Se crea un archivo cuando se descarga su primer byte, y solo se crea en la carpeta uno marcado: lo que un archivo sin marcar comparte con uno marcado espera en los propios datos de torrent de MDM. Un torrent en ejecución mantiene abiertos solo los archivos que está leyendo o escribiendo, unos pocos cientos como máximo para todos los torrents de MDM juntos (menos donde el sistema permite menos, como macOS), por lo que un torrent de miles de archivos se ejecuta donde antes fallaba con «Demasiados archivos abiertos»."
+  },
   "0ea74b188ec2ca88": {
    "source": "If it says <g1>the site sent a web page instead of the file</g1>, the link led to the site's own page: a file host's countdown, a captcha, a <g2>Download</g2> button to press, or a sign-in. MDM never saves that page as your file. Click <g3>Open in browser</g3> in the download's progress window (or open the link yourself), finish there, and when the browser starts the real download, MDM's extension hands it to MDM. Without the extension, let the browser download it.",
    "text": "Si dice <g1>el sitio envió una página web en lugar del archivo</g1>, el vínculo llevaba a una página del propio sitio: una cuenta atrás de un servidor de archivos, un captcha, un botón de <g2>Descargar</g2> que hay que pulsar o un inicio de sesión. MDM nunca guarda esa página como si fuera tu archivo. Haz clic en <g3>Abrir en el navegador</g3> en la ventana de progreso de la descarga (o abre el vínculo tú mismo), termina allí y, cuando el navegador inicie la descarga real, la extensión de MDM la pasará a MDM. Sin la extensión, deja que el navegador la descargue."
@@ -1393,6 +1401,10 @@
   "1294135f300139c9": {
    "source": "The benchmark data could not be loaded.",
    "text": "No se pudieron cargar los datos de la comparativa."
+  },
+  "12947e2a74bc1b46": {
+   "source": "Each running download has its own progress window. It opens when the download starts (unless you turned that off, or chose <g1>Show minimized</g1>, in <g2>Options → Downloads → Customize \"Download progress\" dialog → Edit...</g2>); to open it again, double-click the download in the list.",
+   "text": "Cada descarga en curso tiene su propia ventana de progreso. Se abre al iniciar la descarga (a menos que lo hayas desactivado o hayas elegido <g1>Mostrar minimizada</g1> en <g2>Opciones → Descargas → Personalizar el cuadro de diálogo \"Progreso de la descarga\" → Editar...</g2>); para volver a abrirla, haz doble clic en la descarga de la lista."
   },
   "12a228101626f4bc": {
    "source": "How MDM uses connections",
@@ -4558,6 +4570,10 @@
    "source": "Steps",
    "text": "Pasos"
   },
+  "3ccaf5a331b1edd2": {
+   "source": "A stopped torrent keeps none of its files open: you can move, rename or delete them, or open them in another program, while it waits. When you start it again, MDM opens them where they are; a file that was moved away or deleted meanwhile is made again and its pieces downloaded again. A finished torrent that is shared (<g1>Keep sharing torrents after they finish</g1>, in Torrent settings) keeps its files open only to read them: other programs can open, copy, run, move or rename them meanwhile.",
+   "text": "Un torrent detenido no mantiene abiertos ninguno de sus archivos: puedes moverlos, renombrarlos o eliminarlos, o abrirlos en otro programa, mientras espera. Cuando lo inicias de nuevo, MDM los abre donde están; un archivo que fue movido o eliminado mientras tanto se vuelve a crear y sus piezas se descargan de nuevo. Un torrent terminado que se comparte (<g1>Seguir compartiendo torrents después de que terminen</g1>, en Configuración de torrents) mantiene sus archivos abiertos solo para leerlos: otros programas pueden abrirlos, copiarlos, ejecutarlos, moverlos o renombrarlos mientras tanto."
+  },
   "3cd4e5cff6113414": {
    "source": "<g1>Then move the archives to the Recycle Bin</g1> has nothing to move afterwards: the archive is already gone.",
    "text": "<g1>Luego mover los archivos comprimidos a la Papelera de reciclaje</g1> no tiene nada que mover después: el archivo comprimido ya no existe."
@@ -4897,10 +4913,6 @@
   "413ea94686ccd93b": {
    "source": "When an address is already in the list, MDM asks what to do, or follows the answer you chose in <g1>Options → Downloads → If a duplicate download link is added</g1>.",
    "text": "Cuando una dirección ya está en la lista, MDM pregunta qué hacer, o sigue la respuesta que elegiste en <g1>Opciones → Descargas → Si se añade un enlace de descarga duplicado</g1>."
-  },
-  "415322c0b133befd": {
-   "source": "Each running download has its own progress window. It opens when the download starts (unless you turned that off in Options → Downloads → Customize…",
-   "text": "Cada descarga en curso tiene su propia ventana de progreso. Se abre al iniciar la descarga (a menos que lo hayas desactivado en Opciones → Descargas → Personalizar..."
   },
   "4160d55635d3e362": {
    "source": "Freeze reports that tell the kind of freeze",
@@ -5814,6 +5826,10 @@
    "source": "<g1>A minimized MDM keeps working</g1>: with the main window minimized (not to the notification area), queues didn't start their next file, the Scheduler's starts and stops didn't fire, download limits, the network adapter's kill switch, the clipboard monitor, the update check, the taskbar's progress and saving the list all waited until the window was restored. They run in every window state now, and their windows (Download complete, a limit's notice) open at once.",
    "text": "<g1>Un MDM minimizado sigue funcionando</g1>: con la ventana principal minimizada (no al área de notificación), las colas no iniciaban su siguiente archivo, los inicios y paradas del Programador no se activaban, los límites de descarga, el interruptor de red, el monitor del portapapeles, la comprobación de actualizaciones, el progreso de la barra de tareas y el guardado de la lista esperaban hasta que se restauraba la ventana. Ahora se ejecutan en cualquier estado de ventana, y sus ventanas (Descarga completa, un aviso de límite) se abren de inmediato."
   },
+  "4e60a529980083e7": {
+   "source": "The downloads join the <g1>Main download queue</g1>, ready to start (<g2>Start</g2> starts it too). <g3>Tasks → Import → From IDM export file</g3> reads an <x4/> file, with each download's referrer and cookies, and the file name a list gives it in a <x5/> line.",
+   "text": "Las descargas se unen a la <g1>Cola de descarga principal</g1>, listas para iniciar (el botón <g2>Iniciar</g2> también la inicia). <g3>Tareas → Importar → Desde archivo de exportación de IDM</g3> lee un archivo <x4/>, con el referente y las cookies de cada descarga, y el nombre de archivo que le da una lista en una línea <x5/>."
+  },
   "4e96b700836944de": {
    "source": "<g1>Password</g1>: the archives' password, if they have one. It is kept in memory only and is never saved by itself: to keep one for other packages, add it to your <g2>archive passwords</g2>.",
    "text": "<g1>Contraseña</g1>: la contraseña de los archivos comprimidos, si tienen una. Se guarda solo en la memoria y nunca se almacena por sí misma: para guardar una para otros paquetes, añádela a tus <g2>contraseñas de archivos comprimidos</g2>."
@@ -6533,6 +6549,10 @@
   "58f22a0b1aeea2b4": {
    "source": "Watch it work.",
    "text": "Verlo en acción"
+  },
+  "58f7b730058089bc": {
+   "source": "Everyone who takes part follows the <g1>Code of conduct</g1>. Who reviews and merges changes, and how decisions are made, is in <g2>GOVERNANCE.md</g2>.",
+   "text": "Todas las personas que participan siguen el <g1>código de conducta</g1>. Quién revisa y fusiona los cambios, y cómo se toman las decisiones, se explica en <g2>GOVERNANCE.md</g2>."
   },
   "59130ab4ecc47c65": {
    "source": "<g1>Hide to the notification area</g1> (a short dash with an arrow down to the corner; on Windows in the title bar, left of Minimize) puts the window in the notification area; <g2>Downloads in progress</g2> in the tray icon's menu brings it back. See <g3>The tray icon</g3>.",
@@ -8245,6 +8265,10 @@
   "700b58886e17c427": {
    "source": "<g1><g2>Options</g2></g1> — every page of the Options window.",
    "text": "<g1><g2>Opciones</g2></g1> — cada página de la ventana de Opciones."
+  },
+  "702b1d80d041e97d": {
+   "source": "<g1>Tasks → Import → From text file</g1> and <g2>From IDM export file</g2>. An <x3/> file brings each download's referrer and cookies, and its file name when the list gives one (a <x4/> line; only the name, never a folder).",
+   "text": "<g1>Tareas → Importar → Desde archivo de texto</g1> y <g2>Desde archivo de exportación de IDM</g2>. Un archivo <x3/> trae el referente y las cookies de cada descarga, y su nombre de archivo cuando la lista lo proporciona (una línea <x4/>; solo el nombre, nunca una carpeta)."
   },
   "70304346a925831b": {
    "source": "MDM opens <g1>Download File Info</g1> instead of the browser downloading the file. Click <g2>Start Download</g2>.",
@@ -10522,10 +10546,6 @@
    "source": "Check that the Speed Limiter is off: <g1>Downloads → Speed Limiter → Turn off</g1>. Also look at <g2>Downloads → Speed Limiter → Settings... → Limit all downloads together to</g2>, which applies even with the limiter off.",
    "text": "Comprueba que el Limitador de velocidad esté desactivado: <g1>Descargas → Limitador de velocidad → Desactivar</g1>. Comprueba también <g2>Descargas → Limitador de velocidad → Configuración... → Limitar todas las descargas juntas a</g2>, que se aplica incluso cuando el limitador está desactivado."
   },
-  "8e9db9ede7b54a27": {
-   "source": "<g1>Customize \"Download progress\" dialog → Edit...</g1> — <g2>Show download progress dialog when a download starts</g2>: on by default. Untick it and a download no longer opens its progress window when it starts, from the browser, a link you add, a video or a queue; it goes on in the main window's list, where a double-click opens its progress window. <g3>Download complete</g3> still shows when it finishes, as <g4>Show download complete dialog</g4> below says.",
-   "text": "<g1>Personalizar el cuadro de diálogo \"Progreso de la descarga\" → Editar...</g1>: <g2>Mostrar el cuadro de diálogo de progreso de descarga cuando se inicia una descarga</g2>: activado de forma predeterminada. Desmárcalo y una descarga ya no abrirá su ventana de progreso cuando se inicie, desde el navegador, un enlace que añadas, un vídeo o una cola; continuará en la lista de la ventana principal, donde un doble clic abrirá su ventana de progreso. <g3>Descarga completa</g3> seguirá mostrándose cuando finalice, como indica <g4>Mostrar cuadro de diálogo de descarga completa</g4> a continuación."
-  },
   "8e9f9863589b4bd6": {
    "source": "Fuzzing",
    "text": "Fuzzing"
@@ -10741,6 +10761,10 @@
   "91921dfcf2686194": {
    "source": "MDM's interface comes in 87 languages: every display language Windows 11 offers, from Afrikaans to Vietnamese, including both Chinese scripts, Spanish for Spain and Mexico, French for France and Canada, Portuguese for Portugal and Brazil, and Serbian in Cyrillic and Latin.",
    "text": "La interfaz de MDM está disponible en 87 idiomas: todos los idiomas de visualización que ofrece Windows 11, desde el afrikáans hasta el vietnamita, incluidos los dos sistemas de escritura del chino, el español de España y México, el francés de Francia y Canadá, el portugués de Portugal y Brasil, y el serbio en cirílico y latín."
+  },
+  "91c08dd2d3fe7d4a": {
+   "source": "<g1>Add category</g1> — make your own, for example <g2>Books</g2> for <x3/> (they then go to Books, not Documents). Give it a name, the file types (separated by spaces, <x4/> allowed) and a folder.",
+   "text": "<g1>Añadir categoría</g1>: crea la tuya propia, por ejemplo, <g2>Libros</g2> para <x3/> (irán a Libros, no a Documentos). Asígnale un nombre, los tipos de archivo (separados por espacios, se permite <x4/>) y una carpeta."
   },
   "91cefe80b7f00fac": {
    "source": "<g1><g2>Download a file</g2></g1> — copy a link, add it, open the file.",
@@ -11854,6 +11878,10 @@
    "source": "The built-in categories can now be renamed, given other file types, or deleted.",
    "text": "Las categorías integradas ahora se pueden renombrar, asignarles otros tipos de archivo o eliminarlas."
   },
+  "9f7cefd031ac2a9a": {
+   "source": "Download a file with up to 8 connections (<x1/>, 1 to 128), showing progress. <x2/> pauses it; <x3/> continues. <x4/> sets the referring page address (Referer header), <x5/> sets the request's User-Agent (then the only one sent; without it, MDM speaks as your default browser, and, when a site's bot check refuses that and the way a browser connects too, once more under its own name), <x6/> sets the Cookie header (a cookie on the command line ends up in the shell's history; <x7/> reads it from standard input instead). <x8/> checks the finished file: hex MD5, SHA-1, SHA-256, SHA-512 or CRC32, optionally named (<x9/>). <x10/> picks the DNS instead of Options': <x11/>; a service and how to ask it, <x12/>, <x13/>, <x14/>, <x15/>, <x16/>; DNS servers' addresses, <x17/>; or a DNS-over-HTTPS address. It never falls back to the system's DNS. <x18/> sends every connection through one network adapter instead of Options' (<x19/> for none), by its name (<x20/>, <x21/>) or one of its addresses; when it isn't connected, nothing is sent and the download fails. <x22/> takes the place of Options' proxy for this run (see above). The app's <g23>site rules</g23> for the address apply too (their headers, User-Agent, browser-like connection, number of connections and proxy), where the command line gives none of the same: <x24/> goes before every rule's proxy. A link from a file host that one of your debrid accounts (<g25>Options → Accounts</g25>) supports goes through that account, as in the app, and <x26/> says <x27/>; <x28/> downloads the address itself (<g29>Debrid service accounts</g29>).",
+   "text": "Descarga un archivo con hasta 8 conexiones (<x1/>, de 1 a 128), mostrando el progreso. <x2/> la pausa; <x3/> la continúa. <x4/> establece la dirección de la página de referencia (encabezado Referer), <x5/> establece el User-Agent de la solicitud (entonces es el único que se envía; sin él, MDM se identifica como tu navegador predeterminado y, si la comprobación de bots de un sitio lo rechaza junto con la forma en que se conecta un navegador, una vez más con su propio nombre), <x6/> establece el encabezado Cookie (una cookie en la línea de comandos termina en el historial del shell; <x7/> la lee de la entrada estándar en su lugar). <x8/> comprueba el archivo terminado: hex MD5, SHA-1, SHA-256, SHA-512 o CRC32, opcionalmente con nombre (<x9/>). <x10/> elige el DNS en lugar del de Opciones: <x11/>; un servicio y cómo solicitarlo, <x12/>, <x13/>, <x14/>, <x15/>, <x16/>; direcciones de servidores DNS, <x17/>; o una dirección DNS-over-HTTPS. Nunca recurre al DNS del sistema. <x18/> envía cada conexión a través de un adaptador de red en lugar del de Opciones (<x19/> para ninguno), por su nombre (<x20/>, <x21/>) o una de sus direcciones; cuando no está conectado, no se envía nada y la descarga falla. <x22/> sustituye al proxy de Opciones para esta ejecución (ver arriba). También se aplican las <g23>reglas del sitio</g23> de la aplicación para la dirección (sus encabezados, User-Agent, conexión tipo navegador, número de conexiones y proxy), donde la línea de comandos no proporciona ninguno de los mismos: <x24/> va antes del proxy de cada regla. Un vínculo de un alojamiento de archivos que una de tus cuentas de descarga premium (<g25>Opciones → Cuentas</g25>) admite pasa por esa cuenta, como en la aplicación, y <x26/> dice <x27/>; <x28/> descarga la dirección misma (<g29>Cuentas de servicios de descarga premium</g29>)."
+  },
   "9f93bf61864af099": {
    "source": "Plainly: everyone sharing the same torrent sees your IP address. That is how BitTorrent works, and no setting changes it. To hide it, use a VPN for the whole computer. <g1>Torrents and your security</g1> says what others can see.",
    "text": "Claramente: todos los que comparten el mismo torrent ven tu dirección IP. Así es como funciona BitTorrent, y ninguna configuración lo cambia. Para ocultarla, usa una VPN para todo el ordenador. <g1>Los torrents y tu seguridad</g1> explica lo que otros pueden ver."
@@ -12050,10 +12078,6 @@
    "source": "A live stream saved by a queue's stop counts as complete, so a daily queue doesn't start it again the next day.",
    "text": "Una transmisión en directo guardada por la detención de una cola se cuenta como completa, por lo que una cola diaria no la inicia de nuevo al día siguiente."
   },
-  "a21a2e8b8e4dad43": {
-   "source": "<g1>#1 in Rust</g1><g2>repository of the day on <x3/></g2>",
-   "text": "<g1>N.º 1 en Rust</g1><g2>repositorio del día en <x3/></g2>"
-  },
   "a21dffa69dd07677": {
    "source": "Every row, and easier to read",
    "text": "Todas las filas, y más fácil de leer"
@@ -12245,10 +12269,6 @@
   "a4b01563b82565da": {
    "source": "<g1>Sharper text on Windows</g1> (<g2>#262</g2>): Segoe UI and Tahoma are grid-fitted across as well as up and down, and each letter starts on a whole pixel, as Windows draws its own grey text: upright strokes were two grey pixels wide at 100 % and 125 %, which read as blurred.",
    "text": "<g1>Texto más nítido en Windows</g1> (<g2>#262</g2>): Segoe UI y Tahoma se ajustan a la cuadrícula tanto horizontal como verticalmente, y cada letra comienza en un píxel completo, como Windows dibuja su propio texto gris: los trazos verticales tenían dos píxeles grises de ancho al 100 % y 125 %, lo que se leía como borroso."
-  },
-  "a4b04f29f56fdc42": {
-   "source": "<g1>Add category</g1> — make your own, for example <g2>Books</g2> for <x3/>. Give it a name, the file types (separated by spaces, <x4/> allowed) and a folder.",
-   "text": "<g1>Añadir categoría</g1> — crear una categoría propia, por ejemplo <g2>Libros</g2> para <x3/>. Asígnale un nombre, los tipos de archivo (separados por espacios; se permite <x4/>) y una carpeta."
   },
   "a4b1f9a84345ac5d": {
    "source": "<g1>yt-dlp</g1> (about 23 MB) looks the page up and finds where the video and its sound come from; MDM downloads them (<g2>How a video comes down</g2>). The first time, click <g3>Install yt-dlp</g3>. MDM checks the download against the signature yt-dlp's developers publish before it uses it.",
@@ -13101,6 +13121,10 @@
   "afc32cfba2a08d06": {
    "source": "Choose a download",
    "text": "Elegir una descarga"
+  },
+  "afd25bc6979c1269": {
+   "source": "<g1>Customize \"Download progress\" dialog → Edit...</g1> — <g2>Show download progress dialog when a download starts</g2>: <g3>Show normally</g3>, on by default; <g4>Show minimized</g4>, which starts the download's progress window minimized on the taskbar, without taking the focus from the program you are in; or <g5>Don't show</g5>, where a download no longer opens its progress window when it starts, from the browser, a link you add, a video or a queue, and it goes on in the main window's list, where a double-click opens its progress window. <g6>Download complete</g6> still shows when it finishes, as <g7>Show download complete dialog</g7> below says.",
+   "text": "<g1>Personalizar el cuadro de diálogo \"Progreso de la descarga\" → Editar…</g1>: <g2>Mostrar el cuadro de diálogo de progreso de descarga cuando se inicia una descarga</g2>: <g3>Mostrar normalmente</g3>, activado por defecto; <g4>Mostrar minimizada</g4>, que inicia la ventana de progreso de la descarga minimizada en la barra de tareas, sin quitar el foco del programa en el que te encuentras; o <g5>No mostrar</g5>, donde una descarga ya no abre su ventana de progreso cuando se inicia, desde el navegador, un vínculo que añades, un vídeo o una cola, y continúa en la lista de la ventana principal, donde un doble clic abre su ventana de progreso. <g6>Descarga completa</g6> sigue mostrándose cuando termina, como indica <g7>Mostrar cuadro de diálogo de descarga completa</g7> a continuación."
   },
   "aff376e66e9d2870": {
    "source": "Queues",
@@ -14034,10 +14058,6 @@
    "source": "The next tab of a focused tab strip; the next choice of a radio group",
    "text": "La pestaña siguiente de una tira de pestañas enfocada; la opción siguiente de un grupo de radio"
   },
-  "bc713e862e9b84d3": {
-   "source": "Each download falls into a category by its file type: <g1>General</g1>, <g2>Compressed</g2>, <g3>Documents</g3>, <g4>Music</g4>, <g5>Programs</g5> or <g6>Video</g6>. Torrents have their own <g7>Torrents</g7> category. Each category has its own folder, by default inside your Downloads folder (<x8/>, <x9/> and so on; General uses <x10/> itself).",
-   "text": "Cada descarga se clasifica en una categoría según su tipo de archivo: <g1>General</g1>, <g2>Comprimido</g2>, <g3>Documentos</g3>, <g4>Música</g4>, <g5>Programas</g5> o <g6>Vídeo</g6>. Los torrents tienen su propia categoría, <g7>Torrents</g7>. Cada categoría tiene su propia carpeta, que por defecto está dentro de la carpeta Descargas (<x8/>, <x9/>, etc.; General usa <x10/>)."
-  },
   "bc7153d0bcfdacbb": {
    "source": "Themes — Mister Download Manager",
    "text": "Temas — Mister Download Manager"
@@ -14789,6 +14809,10 @@
   "c763f3aa0f51a5a2": {
    "source": "<g1>Server mode</g1><g2>Mister Download Manager</g2>",
    "text": "<g1>Modo servidor</g1><g2>Mister Download Manager</g2>"
+  },
+  "c76c7692d362ad5a": {
+   "source": "Each running download has its own progress window. It opens when the download starts (unless you turned that off, or chose Show minimized, in Options →…",
+   "text": "Cada descarga en curso tiene su propia ventana de progreso. Se abre al iniciar la descarga (a menos que lo hayas desactivado o hayas elegido Mostrar minimizada en Opciones →…"
   },
   "c7853bd84d0526f0": {
    "source": "Options → Archives →",
@@ -16030,10 +16054,6 @@
    "source": "<g1><g2>Languages</g2></g1> — the 87 interface languages, numbers and dates, right-to-left layouts, and how to help translate.",
    "text": "<g1><g2>Idiomas</g2></g1> — los 87 idiomas de la interfaz, los números y las fechas, los diseños de derecha a izquierda y cómo ayudar a traducir."
   },
-  "d7df5f97a90fd99c": {
-   "source": "Each running download has its own progress window. It opens when the download starts (unless you turned that off in <g1>Options → Downloads → Customize \"Download progress\" dialog → Edit...</g1>); to open it again, double-click the download in the list.",
-   "text": "Cada descarga en curso tiene su propia ventana de progreso. Se abre al iniciar la descarga (a menos que lo hayas desactivado en <g1>Opciones → Descargas → Personalizar el cuadro de diálogo \"Progreso de la descarga\" → Editar...</g1>); para volver a abrirla, haz doble clic en la descarga de la lista."
-  },
   "d7e47d8cb056d141": {
    "source": "<g1>Download in order</g1>, to watch a video while it downloads, with each file's first and last pieces early. Other torrents fetch the rarest pieces first.",
    "text": "<g1>Descargar en orden</g1>, para ver un vídeo mientras se descarga, con las primeras y últimas piezas de cada archivo al principio. Otros torrents buscan primero las piezas más raras."
@@ -17010,9 +17030,17 @@
    "source": "No, if it came from this site or GitHub Releases. Some antivirus programs judge a program they don't know by an educated guess, not by a known virus…",
    "text": "No, si procede de este sitio o de GitHub Releases. Algunos programas antivirus juzgan un programa que no conocen por una suposición, no por un virus conocido…"
   },
+  "e6d677c76529ac72": {
+   "source": "<g1>#1</g1><g2>Rust</g2>",
+   "text": "<g1>#1</g1><g2>Rust</g2>"
+  },
   "e6e9f590b183bea4": {
    "source": "Link grabber: paste many links, MDM groups them, checks which are online, and extracts archives when they arrive.",
    "text": "Capturador de enlaces: pega muchos enlaces, MDM los agrupa, comprueba cuáles están en línea y extrae archivos cuando llegan."
+  },
+  "e6f2d5c5287999ae": {
+   "source": "Some programs (BitComet, for one) write a torrent's names in another encoding and add a UTF-8 copy of them (<x1/>, <x2/>); MDM shows and saves the files under the UTF-8 names. A torrent like that which was downloading in an earlier version starts those files again under their correct names, and leaves the files with the old names in the folder.",
+   "text": "Algunos programas (BitComet, por ejemplo) escriben los nombres de los torrents con otra codificación y añaden una copia de ellos en UTF-8 (<x1/>, <x2/>); MDM muestra y guarda los archivos con los nombres UTF-8. Un torrent así que se estaba descargando en una versión anterior vuelve a iniciar esos archivos con sus nombres correctos y deja los archivos con los nombres antiguos en la carpeta."
   },
   "e700b8b592a5b4c0": {
    "source": "Free forever: no trial, no ads, no key",
@@ -17129,6 +17157,10 @@
   "e8482108fc49e0e0": {
    "source": "Can it download overnight or on a schedule?",
    "text": "¿Puede descargar durante la noche o según un horario?"
+  },
+  "e852a2ae2ea94c2d": {
+   "source": "<g1>Automatically put in \"…\" category the following file types</g1> — the file types that go to this category. A built-in category whose list you never changed gains the types a new version adds; one you edited stays as it is.",
+   "text": "<g1>Poner automáticamente en la categoría «…» los siguientes tipos de archivo</g1>: los tipos de archivo que van a esta categoría. Una categoría integrada cuya lista nunca cambiaste obtiene los tipos que añade una nueva versión; una que editaste se mantiene como está."
   },
   "e8592a334f7cb4df": {
    "source": "In <g1>Download File Info</g1>, click <g2>Download Later</g2> and pick the queue.",
@@ -17725,6 +17757,10 @@
   "ef6e5d90b67f8e4e": {
    "source": "<g1>\"Hide tab\" was cut in longer languages</g1> (German \"Registerkarte au...\"): the button grows to fit its label where there is room, through a shared helper other buttons can use.",
    "text": "<g1>«Ocultar pestaña» se cortaba en idiomas más largos</g1> (alemán «Registerkarte au...»): el botón crece para ajustarse a su etiqueta donde hay espacio, a través de un ayudante compartido que otros botones pueden usar."
+  },
+  "ef7238dc374b9e0e": {
+   "source": "Each download falls into a category by its file type: <g1>General</g1>, <g2>Compressed</g2>, <g3>Documents</g3>, <g4>Music</g4>, <g5>Programs</g5> or <g6>Video</g6>. Torrents have their own <g7>Torrents</g7> category. <g8>Programs</g8> takes programs, installers and app packages (EXE, MSI, APK, IPA, DMG, PKG, DEB, RPM, AppImage, MSIX…), <g9>Compressed</g9> archives and disc images (ZIP, RAR, 7Z, TAR, XZ, ISO, IMG, VHD…), <g10>Documents</g10> text documents, spreadsheets and e-books (PDF, DOCX, XLSX, ODT, EPUB, MOBI…), <g11>Music</g11> audio (MP3, FLAC, OPUS, M4A…) and <g12>Video</g12> videos (MP4, MKV, WEBM…); every other file goes to General. Your own categories come before the built-in ones. Each category has its own folder, by default inside your Downloads folder (<x13/>, <x14/> and so on; General uses <x15/> itself).",
+   "text": "Cada descarga se clasifica en una categoría según su tipo de archivo: <g1>General</g1>, <g2>Comprimido</g2>, <g3>Documentos</g3>, <g4>Música</g4>, <g5>Programas</g5> o <g6>Vídeo</g6>. Los torrents tienen su propia categoría de <g7>Torrents</g7>. <g8>Programas</g8> incluye programas, instaladores y paquetes de aplicaciones (EXE, MSI, APK, IPA, DMG, PKG, DEB, RPM, AppImage, MSIX…), <g9>Comprimido</g9> incluye archivos y imágenes de disco (ZIP, RAR, 7Z, TAR, XZ, ISO, IMG, VHD…), <g10>Documentos</g10> incluye documentos de texto, hojas de cálculo y libros electrónicos (PDF, DOCX, XLSX, ODT, EPUB, MOBI…), <g11>Música</g11> incluye audio (MP3, FLAC, OPUS, M4A…) y <g12>Vídeo</g12> incluye vídeos (MP4, MKV, WEBM…); cualquier otro archivo va a General. Tus propias categorías aparecen antes que las predefinidas. Cada categoría tiene su propia carpeta, por defecto dentro de tu carpeta de Descargas (<x13/>, <x14/>, etc.; General usa <x15/>)."
   },
   "ef8cedcbdccdaf85": {
    "source": "The code is filled in when you scanned the QR code; otherwise type it. Give the phone a name, and tap <g1>Pair</g1>. The window on the computer says so, and closes with <g2>Done</g2>.",
@@ -18333,10 +18369,6 @@
   "f8c444517ab946e2": {
    "source": "From the plain zip",
    "text": "Desde el zip simple"
-  },
-  "f8c71a9fb2bd8bde": {
-   "source": "<g1>Automatically put in \"…\" category the following file types</g1> — the file types that go to this category.",
-   "text": "<g1>Añadir automáticamente los siguientes tipos de archivo a la categoría «…»</g1> — tipos de archivo que se asignan a esta categoría."
   },
   "f8e0a9e7ee529ff0": {
    "source": "Select <g1>Main download queue</g1> on the left. The <g2>Schedule</g2> tab opens.",

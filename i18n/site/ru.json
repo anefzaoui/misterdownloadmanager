@@ -778,6 +778,10 @@
    "source": "Too many tries from your connection. Please try again in a few minutes.",
    "text": "Слишком много попыток с вашего соединения. Пожалуйста, попробуйте снова через несколько минут."
   },
+  "0a07d4f9fc7fb519": {
+   "source": "When the network comes back after a drop (Wi-Fi reconnecting, the computer waking from sleep, a VPN connecting or switching), MDM notices within a few seconds and calls the torrents' peers again at once, and asks their trackers and the DHT again, so a download picks up where it was instead of waiting minutes for each peer's next try. Each peer is called once for it; a tracker is still never asked sooner than its minimum interval. Behind a SOCKS5 proxy, a drop the computer itself doesn't see (the router losing its line while Wi-Fi stays up) is noticed only through the DHT, which is off there, so those torrents come back on their own, as before.",
+   "text": "Когда сеть восстанавливается после сбоя (переподключение Wi-Fi, выход компьютера из спящего режима, подключение или переключение VPN), MDM замечает это в течение нескольких секунд и немедленно снова вызывает пиры торрентов, а также снова запрашивает их трекеры и DHT, поэтому загрузка возобновляется с того места, где она была, вместо того чтобы ждать минуты для каждой следующей попытки пира. Каждый пир вызывается один раз; трекер по-прежнему никогда не запрашивается раньше своего минимального интервала. За прокси SOCKS5 сбой, который сам компьютер не видит (маршрутизатор теряет связь, пока Wi-Fi остаётся активным), замечается только через DHT, который там отключён, поэтому эти торренты восстанавливаются сами по себе, как и раньше."
+  },
   "0a15fc764eba9ef6": {
    "source": "Some servers drop the connection when the speed is very low. Avoid a tight limit for a server that can't resume: the progress window shows <g1>Resume capability: No</g1> for those.",
    "text": "Некоторые серверы разрывают соединение при очень низкой скорости. Избегайте жесткого ограничения для сервера, который не может возобновить загрузку: в окне прогресса для таких файлов отображается <g1>Возможность возобновления: Нет</g1>."
@@ -1114,6 +1118,10 @@
    "source": "Read the site",
    "text": "Чтение сайта"
   },
+  "0e9fede041092f7d": {
+   "source": "A file is made when its first byte is downloaded, and only a ticked one is made in the folder: what an unticked file shares with a ticked one waits in MDM's own torrent data. A running torrent keeps only the files it is reading or writing open, a few hundred at most for all of MDM's torrents together (fewer where the system allows fewer, as macOS does), so a torrent of thousands of files runs where it used to fail with \"Too many open files\".",
+   "text": "Файл создаётся при загрузке его первого байта, и в папке создаётся только отмеченный файл: то, что неотмеченный файл разделяет с отмеченным, хранится в собственных торрент-данных MDM. Запущенный торрент держит открытыми только те файлы, которые он читает или записывает, максимум несколько сотен для всех торрентов MDM вместе (меньше, если система позволяет меньше, как macOS), поэтому торрент из тысяч файлов работает там, где раньше он завершался с ошибкой «Слишком много открытых файлов»."
+  },
   "0ea74b188ec2ca88": {
    "source": "If it says <g1>the site sent a web page instead of the file</g1>, the link led to the site's own page: a file host's countdown, a captcha, a <g2>Download</g2> button to press, or a sign-in. MDM never saves that page as your file. Click <g3>Open in browser</g3> in the download's progress window (or open the link yourself), finish there, and when the browser starts the real download, MDM's extension hands it to MDM. Without the extension, let the browser download it.",
    "text": "Если появляется сообщение <g1>сайт отправил веб-страницу вместо файла</g1>, значит, ссылка вела на страницу самого сайта: отсчёт времени файлового хостинга, капчу, кнопку <g2>Загрузить</g2>, которую нужно нажать, или страницу входа. MDM никогда не сохраняет такую страницу как ваш файл. Нажмите <g3>Открыть в браузере</g3> в окне хода загрузки (или откройте ссылку самостоятельно), завершите действия там, и когда браузер начнёт реальную загрузку, расширение MDM передаст её MDM. Без расширения позвольте браузеру загрузить файл."
@@ -1393,6 +1401,10 @@
   "1294135f300139c9": {
    "source": "The benchmark data could not be loaded.",
    "text": "Не удалось загрузить данные бенчмарка."
+  },
+  "12947e2a74bc1b46": {
+   "source": "Each running download has its own progress window. It opens when the download starts (unless you turned that off, or chose <g1>Show minimized</g1>, in <g2>Options → Downloads → Customize \"Download progress\" dialog → Edit...</g2>); to open it again, double-click the download in the list.",
+   "text": "Каждая активная загрузка имеет собственное окно хода выполнения. Оно открывается при начале загрузки (если вы не отключили эту функцию или не выбрали <g1>Показывать свернутым</g1> в <g2>Параметры → Загрузки → Настроить диалоговое окно «Ход загрузки» → Изменить...</g2>); чтобы открыть его снова, дважды щелкните загрузку в списке."
   },
   "12a228101626f4bc": {
    "source": "How MDM uses connections",
@@ -4558,6 +4570,10 @@
    "source": "Steps",
    "text": "Шаги"
   },
+  "3ccaf5a331b1edd2": {
+   "source": "A stopped torrent keeps none of its files open: you can move, rename or delete them, or open them in another program, while it waits. When you start it again, MDM opens them where they are; a file that was moved away or deleted meanwhile is made again and its pieces downloaded again. A finished torrent that is shared (<g1>Keep sharing torrents after they finish</g1>, in Torrent settings) keeps its files open only to read them: other programs can open, copy, run, move or rename them meanwhile.",
+   "text": "Остановленный торрент не держит открытыми ни один из своих файлов: вы можете перемещать, переименовывать или удалять их, или открывать их в другой программе, пока он ждёт. Когда вы запускаете его снова, MDM открывает их там, где они находятся; файл, который был перемещён или удалён тем временем, создаётся снова, и его части загружаются заново. Завершённый торрент, который раздаётся (<g1>Продолжать раздачу торрентов после завершения</g1> в Настройки торрента), держит свои файлы открытыми только для чтения: другие программы могут открывать, копировать, запускать, перемещать или переименовывать их тем временем."
+  },
   "3cd4e5cff6113414": {
    "source": "<g1>Then move the archives to the Recycle Bin</g1> has nothing to move afterwards: the archive is already gone.",
    "text": "<g1>Затем переместить архивы в корзину</g1> нечего перемещать после: архив уже удалён."
@@ -4897,10 +4913,6 @@
   "413ea94686ccd93b": {
    "source": "When an address is already in the list, MDM asks what to do, or follows the answer you chose in <g1>Options → Downloads → If a duplicate download link is added</g1>.",
    "text": "Когда адрес уже есть в списке, MDM спрашивает, что делать, или следует ответу, который вы выбрали в <g1>Параметры → Загрузки → Если добавлена дублирующаяся ссылка для загрузки</g1>."
-  },
-  "415322c0b133befd": {
-   "source": "Each running download has its own progress window. It opens when the download starts (unless you turned that off in Options → Downloads → Customize…",
-   "text": "Каждая активная загрузка имеет собственное окно хода выполнения. Оно открывается при запуске загрузки (если вы не отключили это в Параметры → Загрузки → Настроить…"
   },
   "4160d55635d3e362": {
    "source": "Freeze reports that tell the kind of freeze",
@@ -5814,6 +5826,10 @@
    "source": "<g1>A minimized MDM keeps working</g1>: with the main window minimized (not to the notification area), queues didn't start their next file, the Scheduler's starts and stops didn't fire, download limits, the network adapter's kill switch, the clipboard monitor, the update check, the taskbar's progress and saving the list all waited until the window was restored. They run in every window state now, and their windows (Download complete, a limit's notice) open at once.",
    "text": "<g1>Свёрнутый MDM продолжает работать</g1>: когда главное окно было свёрнуто (не в область уведомлений), очереди не начинали следующий файл, запуски и остановки планировщика не срабатывали, ограничения загрузки, аварийный выключатель сетевого адаптера, монитор буфера обмена, проверка обновлений, прогресс на панели задач и сохранение списка — всё это ждало, пока окно не будет восстановлено. Теперь они работают в любом состоянии окна, и их окна («Загрузка завершена», уведомление об ограничении) открываются сразу."
   },
+  "4e60a529980083e7": {
+   "source": "The downloads join the <g1>Main download queue</g1>, ready to start (<g2>Start</g2> starts it too). <g3>Tasks → Import → From IDM export file</g3> reads an <x4/> file, with each download's referrer and cookies, and the file name a list gives it in a <x5/> line.",
+   "text": "Загрузки добавляются в <g1>Основную очередь загрузки</g1> и готовы к запуску (<g2>Начать</g2> также запускает её). <g3>Задачи → Импорт → Из файла экспорта IDM</g3> считывает файл <x4/>, содержащий реферер и файлы cookie для каждой загрузки, а также имя файла, указанное в строке <x5/> списка."
+  },
   "4e96b700836944de": {
    "source": "<g1>Password</g1>: the archives' password, if they have one. It is kept in memory only and is never saved by itself: to keep one for other packages, add it to your <g2>archive passwords</g2>.",
    "text": "<g1>Пароль</g1>: пароль архива, если он есть. Он хранится только в памяти и никогда не сохраняется сам по себе: чтобы сохранить его для других пакетов, добавьте его в <g2>пароли архивов</g2>."
@@ -6533,6 +6549,10 @@
   "58f22a0b1aeea2b4": {
    "source": "Watch it work.",
    "text": "Посмотрите, как это работает."
+  },
+  "58f7b730058089bc": {
+   "source": "Everyone who takes part follows the <g1>Code of conduct</g1>. Who reviews and merges changes, and how decisions are made, is in <g2>GOVERNANCE.md</g2>.",
+   "text": "Все участники соблюдают <g1>Кодекс поведения</g1>. Кто проверяет и объединяет изменения, а также как принимаются решения, описано в <g2>GOVERNANCE.md</g2>."
   },
   "59130ab4ecc47c65": {
    "source": "<g1>Hide to the notification area</g1> (a short dash with an arrow down to the corner; on Windows in the title bar, left of Minimize) puts the window in the notification area; <g2>Downloads in progress</g2> in the tray icon's menu brings it back. See <g3>The tray icon</g3>.",
@@ -8245,6 +8265,10 @@
   "700b58886e17c427": {
    "source": "<g1><g2>Options</g2></g1> — every page of the Options window.",
    "text": "<g1><g2>Параметры</g2></g1> — каждая страница окна «Параметры»."
+  },
+  "702b1d80d041e97d": {
+   "source": "<g1>Tasks → Import → From text file</g1> and <g2>From IDM export file</g2>. An <x3/> file brings each download's referrer and cookies, and its file name when the list gives one (a <x4/> line; only the name, never a folder).",
+   "text": "<g1>Задачи → Импорт → Из текстового файла</g1> и <g2>Из файла экспорта IDM</g2>. Файл <x3/> содержит реферер и файлы cookie для каждой загрузки, а также имя файла, если оно указано в списке (строка <x4/>; только имя, без папки)."
   },
   "70304346a925831b": {
    "source": "MDM opens <g1>Download File Info</g1> instead of the browser downloading the file. Click <g2>Start Download</g2>.",
@@ -10522,10 +10546,6 @@
    "source": "Check that the Speed Limiter is off: <g1>Downloads → Speed Limiter → Turn off</g1>. Also look at <g2>Downloads → Speed Limiter → Settings... → Limit all downloads together to</g2>, which applies even with the limiter off.",
    "text": "Убедитесь, что ограничитель скорости выключен: <g1>Загрузки → Ограничитель скорости → Выключить</g1>. Также посмотрите <g2>Загрузки → Ограничитель скорости → Настройки... → Ограничить все загрузки вместе до</g2>, что применяется даже при выключенном ограничителе."
   },
-  "8e9db9ede7b54a27": {
-   "source": "<g1>Customize \"Download progress\" dialog → Edit...</g1> — <g2>Show download progress dialog when a download starts</g2>: on by default. Untick it and a download no longer opens its progress window when it starts, from the browser, a link you add, a video or a queue; it goes on in the main window's list, where a double-click opens its progress window. <g3>Download complete</g3> still shows when it finishes, as <g4>Show download complete dialog</g4> below says.",
-   "text": "<g1>Настроить диалоговое окно «Ход загрузки» → Изменить...</g1> — <g2>Показывать диалоговое окно хода загрузки при начале загрузки</g2>: включено по умолчанию. Снимите флажок, и загрузка больше не будет открывать окно хода выполнения при запуске из браузера, по добавленной вами ссылке, из видео или очереди; она будет продолжаться в списке главного окна, где двойной щелчок открывает окно хода выполнения. <g3>Загрузка завершена</g3> по-прежнему отображается по окончании, как указано в <g4>Показать диалоговое окно завершения загрузки</g4> ниже."
-  },
   "8e9f9863589b4bd6": {
    "source": "Fuzzing",
    "text": "Фаззинг"
@@ -10741,6 +10761,10 @@
   "91921dfcf2686194": {
    "source": "MDM's interface comes in 87 languages: every display language Windows 11 offers, from Afrikaans to Vietnamese, including both Chinese scripts, Spanish for Spain and Mexico, French for France and Canada, Portuguese for Portugal and Brazil, and Serbian in Cyrillic and Latin.",
    "text": "Интерфейс MDM доступен на 87 языках: все языки отображения, предлагаемые Windows 11, от африкаанс до вьетнамского, включая оба китайских письма, испанский для Испании и Мексики, французский для Франции и Канады, португальский для Португалии и Бразилии, а также сербский на кириллице и латинице."
+  },
+  "91c08dd2d3fe7d4a": {
+   "source": "<g1>Add category</g1> — make your own, for example <g2>Books</g2> for <x3/> (they then go to Books, not Documents). Give it a name, the file types (separated by spaces, <x4/> allowed) and a folder.",
+   "text": "<g1>Добавить категорию</g1> — создайте свою, например <g2>Книги</g2> для <x3/> (они будут попадать в категорию «Книги», а не «Документы»). Укажите название, типы файлов (через пробел, допускается <x4/>) и папку."
   },
   "91cefe80b7f00fac": {
    "source": "<g1><g2>Download a file</g2></g1> — copy a link, add it, open the file.",
@@ -12054,10 +12078,6 @@
    "source": "A live stream saved by a queue's stop counts as complete, so a daily queue doesn't start it again the next day.",
    "text": "Прямая трансляция, сохранённая остановкой очереди, считается завершённой, поэтому ежедневная очередь не запускает её снова на следующий день."
   },
-  "a21a2e8b8e4dad43": {
-   "source": "<g1>#1 in Rust</g1><g2>repository of the day on <x3/></g2>",
-   "text": "<g1>#1 в Rust</g1><g2>репозиторий дня на <x3/></g2>"
-  },
   "a21dffa69dd07677": {
    "source": "Every row, and easier to read",
    "text": "Каждая строка, и легче читать"
@@ -12249,10 +12269,6 @@
   "a4b01563b82565da": {
    "source": "<g1>Sharper text on Windows</g1> (<g2>#262</g2>): Segoe UI and Tahoma are grid-fitted across as well as up and down, and each letter starts on a whole pixel, as Windows draws its own grey text: upright strokes were two grey pixels wide at 100 % and 125 %, which read as blurred.",
    "text": "<g1>Более чёткий текст в Windows</g1> (<g2>#262</g2>): Segoe UI и Tahoma выравниваются по сетке как по горизонтали, так и по вертикали, и каждая буква начинается с целого пикселя, как Windows рисует свой собственный серый текст: вертикальные штрихи были шириной в два серых пикселя при 100 % и 125 %, что выглядело размытым."
-  },
-  "a4b04f29f56fdc42": {
-   "source": "<g1>Add category</g1> — make your own, for example <g2>Books</g2> for <x3/>. Give it a name, the file types (separated by spaces, <x4/> allowed) and a folder.",
-   "text": "<g1>Добавить категорию</g1> — создать свою собственную, например <g2>Книги</g2> для <x3/>. Дайте ей имя, типы файлов (разделенные пробелами, <x4/> разрешены) и папку."
   },
   "a4b1f9a84345ac5d": {
    "source": "<g1>yt-dlp</g1> (about 23 MB) looks the page up and finds where the video and its sound come from; MDM downloads them (<g2>How a video comes down</g2>). The first time, click <g3>Install yt-dlp</g3>. MDM checks the download against the signature yt-dlp's developers publish before it uses it.",
@@ -13105,6 +13121,10 @@
   "afc32cfba2a08d06": {
    "source": "Choose a download",
    "text": "Выберите загрузку"
+  },
+  "afd25bc6979c1269": {
+   "source": "<g1>Customize \"Download progress\" dialog → Edit...</g1> — <g2>Show download progress dialog when a download starts</g2>: <g3>Show normally</g3>, on by default; <g4>Show minimized</g4>, which starts the download's progress window minimized on the taskbar, without taking the focus from the program you are in; or <g5>Don't show</g5>, where a download no longer opens its progress window when it starts, from the browser, a link you add, a video or a queue, and it goes on in the main window's list, where a double-click opens its progress window. <g6>Download complete</g6> still shows when it finishes, as <g7>Show download complete dialog</g7> below says.",
+   "text": "<g1>Настроить диалоговое окно «Ход загрузки» → Изменить…</g1> — <g2>Показывать диалоговое окно хода загрузки при начале загрузки</g2>: <g3>Показывать обычным образом</g3> (включено по умолчанию); <g4>Показывать свернутым</g4> (окно хода загрузки начинается свернутым на панели задач, не отвлекая от текущей программы); или <g5>Не показывать</g5> (загрузка больше не открывает окно хода выполнения при запуске из браузера, по добавленной ссылке, из видео или очереди, и продолжается в списке главного окна, где двойной щелчок открывает окно хода выполнения). <g6>Загрузка завершена</g6> по-прежнему отображается по окончании, как указано в <g7>Показать диалоговое окно завершения загрузки</g7> ниже."
   },
   "aff376e66e9d2870": {
    "source": "Queues",
@@ -14038,10 +14058,6 @@
    "source": "The next tab of a focused tab strip; the next choice of a radio group",
    "text": "Следующая вкладка сфокусированной панели вкладок; следующий вариант в группе переключателей"
   },
-  "bc713e862e9b84d3": {
-   "source": "Each download falls into a category by its file type: <g1>General</g1>, <g2>Compressed</g2>, <g3>Documents</g3>, <g4>Music</g4>, <g5>Programs</g5> or <g6>Video</g6>. Torrents have their own <g7>Torrents</g7> category. Each category has its own folder, by default inside your Downloads folder (<x8/>, <x9/> and so on; General uses <x10/> itself).",
-   "text": "Каждая загрузка попадает в категорию по типу файла: <g1>Общие</g1>, <g2>Сжатые</g2>, <g3>Документы</g3>, <g4>Музыка</g4>, <g5>Программы</g5> или <g6>Видео</g6>. Торренты имеют свою собственную категорию <g7>Торренты</g7>. Каждая категория имеет свою собственную папку, по умолчанию внутри вашей папки Загрузки (<x8/>, <x9/> и так далее; Общие используют саму <x10/>)."
-  },
   "bc7153d0bcfdacbb": {
    "source": "Themes — Mister Download Manager",
    "text": "Темы — Mister Download Manager"
@@ -14793,6 +14809,10 @@
   "c763f3aa0f51a5a2": {
    "source": "<g1>Server mode</g1><g2>Mister Download Manager</g2>",
    "text": "<g1>Серверный режим</g1><g2>Mister Download Manager</g2>"
+  },
+  "c76c7692d362ad5a": {
+   "source": "Each running download has its own progress window. It opens when the download starts (unless you turned that off, or chose Show minimized, in Options →…",
+   "text": "Каждая активная загрузка имеет собственное окно хода выполнения. Оно открывается при начале загрузки (если вы не отключили эту функцию или не выбрали Показать свернутым в Параметры →…"
   },
   "c7853bd84d0526f0": {
    "source": "Options → Archives →",
@@ -16034,10 +16054,6 @@
    "source": "<g1><g2>Languages</g2></g1> — the 87 interface languages, numbers and dates, right-to-left layouts, and how to help translate.",
    "text": "<g1><g2>Языки</g2></g1> — 87 языков интерфейса, форматы чисел и дат, макеты с письмом справа налево и как помочь с переводом."
   },
-  "d7df5f97a90fd99c": {
-   "source": "Each running download has its own progress window. It opens when the download starts (unless you turned that off in <g1>Options → Downloads → Customize \"Download progress\" dialog → Edit...</g1>); to open it again, double-click the download in the list.",
-   "text": "Каждая активная загрузка имеет собственное окно хода выполнения. Оно открывается при запуске загрузки (если вы не отключили это в <g1>Параметры → Загрузки → Настроить диалоговое окно «Ход загрузки» → Изменить...</g1>); чтобы открыть его снова, дважды щёлкните загрузку в списке."
-  },
   "d7e47d8cb056d141": {
    "source": "<g1>Download in order</g1>, to watch a video while it downloads, with each file's first and last pieces early. Other torrents fetch the rarest pieces first.",
    "text": "<g1>Скачивать по порядку</g1>, чтобы смотреть видео во время загрузки, с первыми и последними частями каждого файла в начале. Другие торренты сначала получают самые редкие части."
@@ -17014,9 +17030,17 @@
    "source": "No, if it came from this site or GitHub Releases. Some antivirus programs judge a program they don't know by an educated guess, not by a known virus…",
    "text": "Нет, если он был загружен с этого сайта или из GitHub Releases. Некоторые антивирусные программы оценивают неизвестную программу по предположению, а не по известному вирусу…"
   },
+  "e6d677c76529ac72": {
+   "source": "<g1>#1</g1><g2>Rust</g2>",
+   "text": "<g1>#1</g1><g2>Rust</g2>"
+  },
   "e6e9f590b183bea4": {
    "source": "Link grabber: paste many links, MDM groups them, checks which are online, and extracts archives when they arrive.",
    "text": "Перехват ссылок: вставьте много ссылок, MDM сгруппирует их, проверит, какие из них онлайн, и извлечет архивы по прибытии."
+  },
+  "e6f2d5c5287999ae": {
+   "source": "Some programs (BitComet, for one) write a torrent's names in another encoding and add a UTF-8 copy of them (<x1/>, <x2/>); MDM shows and saves the files under the UTF-8 names. A torrent like that which was downloading in an earlier version starts those files again under their correct names, and leaves the files with the old names in the folder.",
+   "text": "Некоторые программы (например, BitComet) записывают имена торрентов в другой кодировке и добавляют их UTF-8 копию (<x1/>, <x2/>); MDM отображает и сохраняет файлы под UTF-8 именами. Такой торрент, который загружался в более ранней версии, начинает загружать эти файлы снова под их правильными именами и оставляет файлы со старыми именами в папке."
   },
   "e700b8b592a5b4c0": {
    "source": "Free forever: no trial, no ads, no key",
@@ -17133,6 +17157,10 @@
   "e8482108fc49e0e0": {
    "source": "Can it download overnight or on a schedule?",
    "text": "Может ли он загружать ночью или по расписанию?"
+  },
+  "e852a2ae2ea94c2d": {
+   "source": "<g1>Automatically put in \"…\" category the following file types</g1> — the file types that go to this category. A built-in category whose list you never changed gains the types a new version adds; one you edited stays as it is.",
+   "text": "<g1>Автоматически помещать в категорию «…» следующие типы файлов</g1> — типы файлов, которые попадают в эту категорию. Встроенная категория, список которой вы никогда не меняли, получает типы, добавленные новой версией; измененная вами остается без изменений."
   },
   "e8592a334f7cb4df": {
    "source": "In <g1>Download File Info</g1>, click <g2>Download Later</g2> and pick the queue.",
@@ -17729,6 +17757,10 @@
   "ef6e5d90b67f8e4e": {
    "source": "<g1>\"Hide tab\" was cut in longer languages</g1> (German \"Registerkarte au...\"): the button grows to fit its label where there is room, through a shared helper other buttons can use.",
    "text": "<g1>«Скрыть вкладку» обрезалось в более длинных языках</g1> (немецкий «Registerkarte au...»): кнопка увеличивается, чтобы соответствовать своей метке, если есть место, с помощью общего вспомогательного элемента, который могут использовать другие кнопки."
+  },
+  "ef7238dc374b9e0e": {
+   "source": "Each download falls into a category by its file type: <g1>General</g1>, <g2>Compressed</g2>, <g3>Documents</g3>, <g4>Music</g4>, <g5>Programs</g5> or <g6>Video</g6>. Torrents have their own <g7>Torrents</g7> category. <g8>Programs</g8> takes programs, installers and app packages (EXE, MSI, APK, IPA, DMG, PKG, DEB, RPM, AppImage, MSIX…), <g9>Compressed</g9> archives and disc images (ZIP, RAR, 7Z, TAR, XZ, ISO, IMG, VHD…), <g10>Documents</g10> text documents, spreadsheets and e-books (PDF, DOCX, XLSX, ODT, EPUB, MOBI…), <g11>Music</g11> audio (MP3, FLAC, OPUS, M4A…) and <g12>Video</g12> videos (MP4, MKV, WEBM…); every other file goes to General. Your own categories come before the built-in ones. Each category has its own folder, by default inside your Downloads folder (<x13/>, <x14/> and so on; General uses <x15/> itself).",
+   "text": "Каждая загрузка попадает в категорию по типу файла: <g1>Общие</g1>, <g2>Сжатые</g2>, <g3>Документы</g3>, <g4>Музыка</g4>, <g5>Программы</g5> или <g6>Видео</g6>. Торренты имеют собственную категорию <g7>Торренты</g7>. В категорию <g8>Программы</g8> попадают программы, установщики и пакеты приложений (EXE, MSI, APK, IPA, DMG, PKG, DEB, RPM, AppImage, MSIX…), в <g9>Сжатые</g9> — архивы и образы дисков (ZIP, RAR, 7Z, TAR, XZ, ISO, IMG, VHD…), в <g10>Документы</g10> — текстовые документы, электронные таблицы и электронные книги (PDF, DOCX, XLSX, ODT, EPUB, MOBI…), в <g11>Музыка</g11> — аудиофайлы (MP3, FLAC, OPUS, M4A…), а в <g12>Видео</g12> — видеофайлы (MP4, MKV, WEBM…); все остальные файлы попадают в категорию Общие. Ваши собственные категории отображаются перед встроенными. Каждая категория имеет свою папку, по умолчанию внутри папки «Загрузки» (<x13/>, <x14/> и так далее; для Общих используется сама папка <x15/>)."
   },
   "ef8cedcbdccdaf85": {
    "source": "The code is filled in when you scanned the QR code; otherwise type it. Give the phone a name, and tap <g1>Pair</g1>. The window on the computer says so, and closes with <g2>Done</g2>.",
@@ -18337,10 +18369,6 @@
   "f8c444517ab946e2": {
    "source": "From the plain zip",
    "text": "Из обычного zip-архива"
-  },
-  "f8c71a9fb2bd8bde": {
-   "source": "<g1>Automatically put in \"…\" category the following file types</g1> — the file types that go to this category.",
-   "text": "<g1>Автоматически помещать в категорию «…» следующие типы файлов</g1> — типы файлов, которые попадают в эту категорию."
   },
   "f8e0a9e7ee529ff0": {
    "source": "Select <g1>Main download queue</g1> on the left. The <g2>Schedule</g2> tab opens.",

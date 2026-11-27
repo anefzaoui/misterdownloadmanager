@@ -778,6 +778,10 @@
    "source": "Too many tries from your connection. Please try again in a few minutes.",
    "text": "您的连接尝试次数过多。请在几分钟后重试。"
   },
+  "0a07d4f9fc7fb519": {
+   "source": "When the network comes back after a drop (Wi-Fi reconnecting, the computer waking from sleep, a VPN connecting or switching), MDM notices within a few seconds and calls the torrents' peers again at once, and asks their trackers and the DHT again, so a download picks up where it was instead of waiting minutes for each peer's next try. Each peer is called once for it; a tracker is still never asked sooner than its minimum interval. Behind a SOCKS5 proxy, a drop the computer itself doesn't see (the router losing its line while Wi-Fi stays up) is noticed only through the DHT, which is off there, so those torrents come back on their own, as before.",
+   "text": "当网络中断后恢复时（Wi-Fi 重新连接、计算机从睡眠中唤醒、VPN 连接或切换），MDM 会在几秒钟内注意到并立即再次调用种子的对等点，并再次请求它们的追踪器和 DHT，因此下载会从中断处恢复，而不是等待几分钟才进行每个对等点的下一次尝试。每个对等点只会被调用一次；追踪器仍然不会早于其最小间隔被请求。在 SOCKS5 代理后面，计算机本身未察觉的网络中断（路由器失去连接而 Wi-Fi 保持连接）只能通过 DHT 发现，而 DHT 在那里是关闭的，因此这些种子会像以前一样自行恢复。"
+  },
   "0a15fc764eba9ef6": {
    "source": "Some servers drop the connection when the speed is very low. Avoid a tight limit for a server that can't resume: the progress window shows <g1>Resume capability: No</g1> for those.",
    "text": "某些服务器在速度非常低时会断开连接。对于无法恢复的服务器，请避免设置过低的限制：进度窗口会显示<g1>恢复功能：否</g1>。"
@@ -1114,6 +1118,10 @@
    "source": "Read the site",
    "text": "读取网站"
   },
+  "0e9fede041092f7d": {
+   "source": "A file is made when its first byte is downloaded, and only a ticked one is made in the folder: what an unticked file shares with a ticked one waits in MDM's own torrent data. A running torrent keeps only the files it is reading or writing open, a few hundred at most for all of MDM's torrents together (fewer where the system allows fewer, as macOS does), so a torrent of thousands of files runs where it used to fail with \"Too many open files\".",
+   "text": "文件在下载第一个字节时创建，并且只有勾选的文件才会在文件夹中创建：未勾选文件与勾选文件共享的部分会保存在 MDM 自己的种子数据中。一个正在运行的种子只保持它正在读取或写入的文件处于打开状态，所有 MDM 种子加起来最多几百个（在系统允许更少文件打开时会更少，例如 macOS），因此一个包含数千个文件的种子现在可以运行，而以前则会因“打开文件过多”而失败。"
+  },
   "0ea74b188ec2ca88": {
    "source": "If it says <g1>the site sent a web page instead of the file</g1>, the link led to the site's own page: a file host's countdown, a captcha, a <g2>Download</g2> button to press, or a sign-in. MDM never saves that page as your file. Click <g3>Open in browser</g3> in the download's progress window (or open the link yourself), finish there, and when the browser starts the real download, MDM's extension hands it to MDM. Without the extension, let the browser download it.",
    "text": "如果提示<g1>网站发送的是网页而非文件</g1>，则说明链接指向的是网站自身的页面：文件托管服务的倒计时、验证码、需要点击的<g2>下载</g2>按钮，或登录页面。MDM 绝不会将此类页面保存为您的文件。请在下载进度窗口中点击<g3>在浏览器中打开</g3>（或自行打开链接），完成相应操作，当浏览器开始实际下载时，MDM 扩展程序会将其交给 MDM。如果没有安装扩展程序，请让浏览器自行下载。"
@@ -1393,6 +1401,10 @@
   "1294135f300139c9": {
    "source": "The benchmark data could not be loaded.",
    "text": "无法加载基准数据。"
+  },
+  "12947e2a74bc1b46": {
+   "source": "Each running download has its own progress window. It opens when the download starts (unless you turned that off, or chose <g1>Show minimized</g1>, in <g2>Options → Downloads → Customize \"Download progress\" dialog → Edit...</g2>); to open it again, double-click the download in the list.",
+   "text": "每个正在进行的下载都有自己的进度窗口。它会在下载开始时打开（除非您在<g2>选项 → 下载 → 自定义“下载进度”对话框 → 编辑...</g2>中关闭了此功能，或选择了<g1>最小化显示</g1>）；要再次打开它，请双击列表中的下载任务。"
   },
   "12a228101626f4bc": {
    "source": "How MDM uses connections",
@@ -4558,6 +4570,10 @@
    "source": "Steps",
    "text": "步骤"
   },
+  "3ccaf5a331b1edd2": {
+   "source": "A stopped torrent keeps none of its files open: you can move, rename or delete them, or open them in another program, while it waits. When you start it again, MDM opens them where they are; a file that was moved away or deleted meanwhile is made again and its pieces downloaded again. A finished torrent that is shared (<g1>Keep sharing torrents after they finish</g1>, in Torrent settings) keeps its files open only to read them: other programs can open, copy, run, move or rename them meanwhile.",
+   "text": "已停止的种子不会保持任何文件打开：您可以在它等待时移动、重命名或删除它们，或在其他程序中打开它们。当您再次启动它时，MDM 会在它们所在的位置打开它们；如果文件在此期间被移动或删除，它会重新创建并重新下载其片段。已完成并正在共享的种子（在“种子设置”中，<g1>下载完成后继续做种</g1>）只保持其文件打开以供读取：其他程序可以在此期间打开、复制、运行、移动或重命名它们。"
+  },
   "3cd4e5cff6113414": {
    "source": "<g1>Then move the archives to the Recycle Bin</g1> has nothing to move afterwards: the archive is already gone.",
    "text": "<g1>然后将压缩包移至回收站</g1>之后没有要移动的内容：压缩包已经消失。"
@@ -4897,10 +4913,6 @@
   "413ea94686ccd93b": {
    "source": "When an address is already in the list, MDM asks what to do, or follows the answer you chose in <g1>Options → Downloads → If a duplicate download link is added</g1>.",
    "text": "当地址已在列表中时，MDM 会询问如何处理，或者遵循您在<g1>选项 → 下载 → 如果添加了重复的下载链接</g1>中选择的答案。"
-  },
-  "415322c0b133befd": {
-   "source": "Each running download has its own progress window. It opens when the download starts (unless you turned that off in Options → Downloads → Customize…",
-   "text": "每个正在进行的下载都有自己的进度窗口。它会在下载开始时打开（除非您在选项 → 下载 → 自定义..."
   },
   "4160d55635d3e362": {
    "source": "Freeze reports that tell the kind of freeze",
@@ -5814,6 +5826,10 @@
    "source": "<g1>A minimized MDM keeps working</g1>: with the main window minimized (not to the notification area), queues didn't start their next file, the Scheduler's starts and stops didn't fire, download limits, the network adapter's kill switch, the clipboard monitor, the update check, the taskbar's progress and saving the list all waited until the window was restored. They run in every window state now, and their windows (Download complete, a limit's notice) open at once.",
    "text": "<g1>最小化后的 MDM 仍可正常工作</g1>：当主窗口最小化（未最小化到通知区域）时，队列不会启动下一个文件，“计划程序”的启动和停止不会触发，下载限制、网络适配器的断路开关、剪贴板监视器、更新检查、任务栏进度和保存列表都会等待，直到窗口恢复。它们现在在所有窗口状态下运行，并且它们的窗口（下载完成、限制通知）会立即打开。"
   },
+  "4e60a529980083e7": {
+   "source": "The downloads join the <g1>Main download queue</g1>, ready to start (<g2>Start</g2> starts it too). <g3>Tasks → Import → From IDM export file</g3> reads an <x4/> file, with each download's referrer and cookies, and the file name a list gives it in a <x5/> line.",
+   "text": "下载任务会加入<g1>主下载队列</g1>，等待开始（点击<g2>开始</g2>也可启动）。<g3>任务 → 导入 → 从 IDM 导出文件</g3>可以读取<x4/>文件，其中包含每个下载的引用页和 Cookie，以及<x5/>行中给出的文件名。"
+  },
   "4e96b700836944de": {
    "source": "<g1>Password</g1>: the archives' password, if they have one. It is kept in memory only and is never saved by itself: to keep one for other packages, add it to your <g2>archive passwords</g2>.",
    "text": "<g1>密码</g1>：压缩包的密码（如果有）。密码仅保存在内存中，不会自动保存：若要为其他压缩包保留此密码，请将其添加到<g2>压缩包密码</g2>。"
@@ -6533,6 +6549,10 @@
   "58f22a0b1aeea2b4": {
    "source": "Watch it work.",
    "text": "观看演示。"
+  },
+  "58f7b730058089bc": {
+   "source": "Everyone who takes part follows the <g1>Code of conduct</g1>. Who reviews and merges changes, and how decisions are made, is in <g2>GOVERNANCE.md</g2>.",
+   "text": "所有参与者都应遵守<g1>行为准则</g1>。关于谁来审查和合并更改以及如何做出决策，请参阅<g2>GOVERNANCE.md</g2>。"
   },
   "59130ab4ecc47c65": {
    "source": "<g1>Hide to the notification area</g1> (a short dash with an arrow down to the corner; on Windows in the title bar, left of Minimize) puts the window in the notification area; <g2>Downloads in progress</g2> in the tray icon's menu brings it back. See <g3>The tray icon</g3>.",
@@ -8245,6 +8265,10 @@
   "700b58886e17c427": {
    "source": "<g1><g2>Options</g2></g1> — every page of the Options window.",
    "text": "<g1><g2>选项</g2></g1> — “选项”窗口的每个页面。"
+  },
+  "702b1d80d041e97d": {
+   "source": "<g1>Tasks → Import → From text file</g1> and <g2>From IDM export file</g2>. An <x3/> file brings each download's referrer and cookies, and its file name when the list gives one (a <x4/> line; only the name, never a folder).",
+   "text": "<g1>任务 → 导入 → 从文本文件</g1> 和 <g2>从 IDM 导出文件</g2>。 <x3/> 文件会导入每个下载的引用页和 Cookie，以及列表指定的文件名（<x4/> 行；仅文件名，不含文件夹）。"
   },
   "70304346a925831b": {
    "source": "MDM opens <g1>Download File Info</g1> instead of the browser downloading the file. Click <g2>Start Download</g2>.",
@@ -10518,10 +10542,6 @@
    "source": "Check that the Speed Limiter is off: <g1>Downloads → Speed Limiter → Turn off</g1>. Also look at <g2>Downloads → Speed Limiter → Settings... → Limit all downloads together to</g2>, which applies even with the limiter off.",
    "text": "检查速度限制器是否已关闭：<g1>下载 → 速度限制器 → 关闭</g1>。还要查看<g2>下载 → 速度限制器 → 设置... → 将所有下载总计限制为</g2>；即使关闭速度限制器，此设置仍然生效。"
   },
-  "8e9db9ede7b54a27": {
-   "source": "<g1>Customize \"Download progress\" dialog → Edit...</g1> — <g2>Show download progress dialog when a download starts</g2>: on by default. Untick it and a download no longer opens its progress window when it starts, from the browser, a link you add, a video or a queue; it goes on in the main window's list, where a double-click opens its progress window. <g3>Download complete</g3> still shows when it finishes, as <g4>Show download complete dialog</g4> below says.",
-   "text": "<g1>自定义“下载进度”对话框 → 编辑...</g1> — <g2>下载开始时显示下载进度对话框</g2>：默认开启。取消勾选后，从浏览器、您添加的链接、视频或队列开始的下载任务将不再在开始时打开其进度窗口；它会在主窗口的列表中继续进行，双击即可打开其进度窗口。下载完成后，<g3>下载完成</g3>仍会显示，如以下<g4>显示下载完成对话框</g4>所述。"
-  },
   "8e9f9863589b4bd6": {
    "source": "Fuzzing",
    "text": "模糊测试"
@@ -10737,6 +10757,10 @@
   "91921dfcf2686194": {
    "source": "MDM's interface comes in 87 languages: every display language Windows 11 offers, from Afrikaans to Vietnamese, including both Chinese scripts, Spanish for Spain and Mexico, French for France and Canada, Portuguese for Portugal and Brazil, and Serbian in Cyrillic and Latin.",
    "text": "MDM 界面支持 87 种语言：Windows 11 提供的所有显示语言，从南非荷兰语到越南语，包括简体中文和繁体中文、西班牙语（西班牙和墨西哥）、法语（法国和加拿大）、葡萄牙语（葡萄牙和巴西），以及使用西里尔字母和拉丁字母的塞尔维亚语。"
+  },
+  "91c08dd2d3fe7d4a": {
+   "source": "<g1>Add category</g1> — make your own, for example <g2>Books</g2> for <x3/> (they then go to Books, not Documents). Give it a name, the file types (separated by spaces, <x4/> allowed) and a folder.",
+   "text": "<g1>添加类别</g1> — 创建您自己的类别，例如为 <x3/> 创建 <g2>书籍</g2> 类别（它们将归入“书籍”而非“文档”）。为其命名，指定文件类型（用空格分隔，允许使用 <x4/>）和文件夹。"
   },
   "91cefe80b7f00fac": {
    "source": "<g1><g2>Download a file</g2></g1> — copy a link, add it, open the file.",
@@ -12050,10 +12074,6 @@
    "source": "A live stream saved by a queue's stop counts as complete, so a daily queue doesn't start it again the next day.",
    "text": "队列停止保存的直播流被视为已完成，因此每日队列不会在第二天再次启动它。"
   },
-  "a21a2e8b8e4dad43": {
-   "source": "<g1>#1 in Rust</g1><g2>repository of the day on <x3/></g2>",
-   "text": "<g1>Rust 榜单 #1</g1><g2><x3/> 每日仓库榜首</g2>"
-  },
   "a21dffa69dd07677": {
    "source": "Every row, and easier to read",
    "text": "每行均可读，更易阅读"
@@ -12245,10 +12265,6 @@
   "a4b01563b82565da": {
    "source": "<g1>Sharper text on Windows</g1> (<g2>#262</g2>): Segoe UI and Tahoma are grid-fitted across as well as up and down, and each letter starts on a whole pixel, as Windows draws its own grey text: upright strokes were two grey pixels wide at 100 % and 125 %, which read as blurred.",
    "text": "<g1>Windows 上的文本更清晰</g1>（<g2>#262</g2>）：Segoe UI 和 Tahoma 字体在水平和垂直方向上都进行了网格对齐，每个字母都从一个完整的像素开始，就像 Windows 绘制其自己的灰色文本一样：在 100% 和 125% 缩放下，竖直笔画是两个灰色像素宽，看起来模糊不清。"
-  },
-  "a4b04f29f56fdc42": {
-   "source": "<g1>Add category</g1> — make your own, for example <g2>Books</g2> for <x3/>. Give it a name, the file types (separated by spaces, <x4/> allowed) and a folder.",
-   "text": "<g1>添加类别</g1> — 创建自定义类别，例如为<x3/>创建<g2>图书</g2>类别。设置类别名称、文件类型（用空格分隔，可使用<x4/>）和文件夹。"
   },
   "a4b1f9a84345ac5d": {
    "source": "<g1>yt-dlp</g1> (about 23 MB) looks the page up and finds where the video and its sound come from; MDM downloads them (<g2>How a video comes down</g2>). The first time, click <g3>Install yt-dlp</g3>. MDM checks the download against the signature yt-dlp's developers publish before it uses it.",
@@ -13101,6 +13117,10 @@
   "afc32cfba2a08d06": {
    "source": "Choose a download",
    "text": "选择下载文件"
+  },
+  "afd25bc6979c1269": {
+   "source": "<g1>Customize \"Download progress\" dialog → Edit...</g1> — <g2>Show download progress dialog when a download starts</g2>: <g3>Show normally</g3>, on by default; <g4>Show minimized</g4>, which starts the download's progress window minimized on the taskbar, without taking the focus from the program you are in; or <g5>Don't show</g5>, where a download no longer opens its progress window when it starts, from the browser, a link you add, a video or a queue, and it goes on in the main window's list, where a double-click opens its progress window. <g6>Download complete</g6> still shows when it finishes, as <g7>Show download complete dialog</g7> below says.",
+   "text": "<g1>自定义“下载进度”对话框 → 编辑...</g1> — <g2>下载开始时显示下载进度对话框</g2>：<g3>正常显示</g3>（默认开启）；<g4>最小化显示</g4>（下载进度窗口在任务栏最小化启动，不抢占当前程序焦点）；或<g5>不显示</g5>（从浏览器、添加的链接、视频或队列开始下载时，不再打开进度窗口，下载在主窗口列表中进行，双击可打开其进度窗口）。下载完成时仍会显示<g6>下载完成</g6>对话框，如以下<g7>显示下载完成对话框</g7>所述。"
   },
   "aff376e66e9d2870": {
    "source": "Queues",
@@ -14034,10 +14054,6 @@
    "source": "The next tab of a focused tab strip; the next choice of a radio group",
    "text": "在当前聚焦的选项卡栏中切换到下一个选项卡；在单选按钮组中选择下一个选项"
   },
-  "bc713e862e9b84d3": {
-   "source": "Each download falls into a category by its file type: <g1>General</g1>, <g2>Compressed</g2>, <g3>Documents</g3>, <g4>Music</g4>, <g5>Programs</g5> or <g6>Video</g6>. Torrents have their own <g7>Torrents</g7> category. Each category has its own folder, by default inside your Downloads folder (<x8/>, <x9/> and so on; General uses <x10/> itself).",
-   "text": "每个下载都会根据文件类型归入一个类别：<g1>常规</g1>、<g2>压缩文件</g2>、<g3>文档</g3>、<g4>音乐</g4>、<g5>程序</g5>或<g6>视频</g6>。种子文件有自己的<g7>种子</g7>类别。每个类别都有自己的文件夹，默认位于“下载”文件夹中（<x8/>、<x9/>等；常规类别直接使用<x10/>）。"
-  },
   "bc7153d0bcfdacbb": {
    "source": "Themes — Mister Download Manager",
    "text": "主题 — Mister Download Manager"
@@ -14789,6 +14805,10 @@
   "c763f3aa0f51a5a2": {
    "source": "<g1>Server mode</g1><g2>Mister Download Manager</g2>",
    "text": "<g1>服务器模式</g1><g2>Mister Download Manager</g2>"
+  },
+  "c76c7692d362ad5a": {
+   "source": "Each running download has its own progress window. It opens when the download starts (unless you turned that off, or chose Show minimized, in Options →…",
+   "text": "每个正在进行的下载都有自己的进度窗口。它会在下载开始时打开（除非您关闭了此功能，或在选项 →… 中选择了最小化显示）。"
   },
   "c7853bd84d0526f0": {
    "source": "Options → Archives →",
@@ -16030,10 +16050,6 @@
    "source": "<g1><g2>Languages</g2></g1> — the 87 interface languages, numbers and dates, right-to-left layouts, and how to help translate.",
    "text": "<g1><g2>语言</g2></g1> — 87 种界面语言、数字和日期格式、从右到左的布局，以及如何协助翻译。"
   },
-  "d7df5f97a90fd99c": {
-   "source": "Each running download has its own progress window. It opens when the download starts (unless you turned that off in <g1>Options → Downloads → Customize \"Download progress\" dialog → Edit...</g1>); to open it again, double-click the download in the list.",
-   "text": "每个正在进行的下载都有自己的进度窗口。它会在下载开始时打开（除非您在<g1>选项 → 下载 → 自定义“下载进度”对话框 → 编辑...</g1>中关闭了此功能）；要再次打开它，请双击列表中的下载任务。"
-  },
   "d7e47d8cb056d141": {
    "source": "<g1>Download in order</g1>, to watch a video while it downloads, with each file's first and last pieces early. Other torrents fetch the rarest pieces first.",
    "text": "<g1>按顺序下载</g1>，以便在视频下载时观看，每个文件的开头和结尾分块会优先下载。其他种子则优先获取最稀有的分块。"
@@ -17010,9 +17026,17 @@
    "source": "No, if it came from this site or GitHub Releases. Some antivirus programs judge a program they don't know by an educated guess, not by a known virus…",
    "text": "不，如果它来自本网站或 GitHub Releases。部分杀毒软件会根据推测而非已知病毒来判断不熟悉的程序……"
   },
+  "e6d677c76529ac72": {
+   "source": "<g1>#1</g1><g2>Rust</g2>",
+   "text": "<g1>#1</g1><g2>Rust</g2>"
+  },
   "e6e9f590b183bea4": {
    "source": "Link grabber: paste many links, MDM groups them, checks which are online, and extracts archives when they arrive.",
    "text": "链接抓取器：粘贴多个链接，MDM 会将它们分组，检查哪些在线，并在文件到达时解压归档。"
+  },
+  "e6f2d5c5287999ae": {
+   "source": "Some programs (BitComet, for one) write a torrent's names in another encoding and add a UTF-8 copy of them (<x1/>, <x2/>); MDM shows and saves the files under the UTF-8 names. A torrent like that which was downloading in an earlier version starts those files again under their correct names, and leaves the files with the old names in the folder.",
+   "text": "有些程序（例如 BitComet）会以其他编码写入种子的文件名，并添加一份 UTF-8 编码的副本（<x1/>、<x2/>）；MDM 会显示并保存 UTF-8 编码的文件名。如果某个此类种子在旧版本中正在下载，它会以正确的名称重新开始这些文件的下载，并将旧名称的文件留在文件夹中。"
   },
   "e700b8b592a5b4c0": {
    "source": "Free forever: no trial, no ads, no key",
@@ -17129,6 +17153,10 @@
   "e8482108fc49e0e0": {
    "source": "Can it download overnight or on a schedule?",
    "text": "它能通宵下载或按计划下载吗？"
+  },
+  "e852a2ae2ea94c2d": {
+   "source": "<g1>Automatically put in \"…\" category the following file types</g1> — the file types that go to this category. A built-in category whose list you never changed gains the types a new version adds; one you edited stays as it is.",
+   "text": "<g1>自动将以下文件类型放入“…”类别</g1> — 属于此类别的文件类型。内置类别如果从未修改其列表，则会获得新版本添加的类型；如果已编辑，则保持不变。"
   },
   "e8592a334f7cb4df": {
    "source": "In <g1>Download File Info</g1>, click <g2>Download Later</g2> and pick the queue.",
@@ -17725,6 +17753,10 @@
   "ef6e5d90b67f8e4e": {
    "source": "<g1>\"Hide tab\" was cut in longer languages</g1> (German \"Registerkarte au...\"): the button grows to fit its label where there is room, through a shared helper other buttons can use.",
    "text": "<g1>“隐藏选项卡”在较长的语言中被截断</g1>（德语“Registerkarte au...”）：按钮会根据标签的长度自动扩展，只要有空间，通过一个共享的辅助功能，其他按钮也可以使用此功能。"
+  },
+  "ef7238dc374b9e0e": {
+   "source": "Each download falls into a category by its file type: <g1>General</g1>, <g2>Compressed</g2>, <g3>Documents</g3>, <g4>Music</g4>, <g5>Programs</g5> or <g6>Video</g6>. Torrents have their own <g7>Torrents</g7> category. <g8>Programs</g8> takes programs, installers and app packages (EXE, MSI, APK, IPA, DMG, PKG, DEB, RPM, AppImage, MSIX…), <g9>Compressed</g9> archives and disc images (ZIP, RAR, 7Z, TAR, XZ, ISO, IMG, VHD…), <g10>Documents</g10> text documents, spreadsheets and e-books (PDF, DOCX, XLSX, ODT, EPUB, MOBI…), <g11>Music</g11> audio (MP3, FLAC, OPUS, M4A…) and <g12>Video</g12> videos (MP4, MKV, WEBM…); every other file goes to General. Your own categories come before the built-in ones. Each category has its own folder, by default inside your Downloads folder (<x13/>, <x14/> and so on; General uses <x15/> itself).",
+   "text": "每个下载都根据其文件类型归入一个类别：<g1>常规</g1>、<g2>压缩包</g2>、<g3>文档</g3>、<g4>音乐</g4>、<g5>程序</g5> 或 <g6>视频</g6>。种子文件有其专属的<g7>种子</g7>类别。<g8>程序</g8>类别包含程序、安装包和应用包（EXE、MSI、APK、IPA、DMG、PKG、DEB、RPM、AppImage、MSIX 等），<g9>压缩包</g9>类别包含压缩文件和光盘镜像（ZIP、RAR、7Z、TAR、XZ、ISO、IMG、VHD 等），<g10>文档</g10>类别包含文本文档、电子表格和电子书（PDF、DOCX、XLSX、ODT、EPUB、MOBI 等），<g11>音乐</g11>类别包含音频文件（MP3、FLAC、OPUS、M4A 等），<g12>视频</g12>类别包含视频文件（MP4、MKV、WEBM 等）；其他所有文件都归入常规类别。您自定义的类别会排在内置类别之前。每个类别都有自己的文件夹，默认位于您的“下载”文件夹内（<x13/>、<x14/> 等；常规类别使用 <x15/> 文件夹本身）。"
   },
   "ef8cedcbdccdaf85": {
    "source": "The code is filled in when you scanned the QR code; otherwise type it. Give the phone a name, and tap <g1>Pair</g1>. The window on the computer says so, and closes with <g2>Done</g2>.",
@@ -18333,10 +18365,6 @@
   "f8c444517ab946e2": {
    "source": "From the plain zip",
    "text": "从普通 zip 文件安装"
-  },
-  "f8c71a9fb2bd8bde": {
-   "source": "<g1>Automatically put in \"…\" category the following file types</g1> — the file types that go to this category.",
-   "text": "<g1>自动将以下文件类型放入“…”类别</g1> — 属于此类别的文件类型。"
   },
   "f8e0a9e7ee529ff0": {
    "source": "Select <g1>Main download queue</g1> on the left. The <g2>Schedule</g2> tab opens.",

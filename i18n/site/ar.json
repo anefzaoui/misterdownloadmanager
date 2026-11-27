@@ -778,6 +778,10 @@
    "source": "Too many tries from your connection. Please try again in a few minutes.",
    "text": "عدد كبير جدا من المحاولات من اتصالك. يرجى المحاولة مرة أخرى بعد بضع دقائق."
   },
+  "0a07d4f9fc7fb519": {
+   "source": "When the network comes back after a drop (Wi-Fi reconnecting, the computer waking from sleep, a VPN connecting or switching), MDM notices within a few seconds and calls the torrents' peers again at once, and asks their trackers and the DHT again, so a download picks up where it was instead of waiting minutes for each peer's next try. Each peer is called once for it; a tracker is still never asked sooner than its minimum interval. Behind a SOCKS5 proxy, a drop the computer itself doesn't see (the router losing its line while Wi-Fi stays up) is noticed only through the DHT, which is off there, so those torrents come back on their own, as before.",
+   "text": "عندما تعود الشبكة بعد إفلات (إعادة اتصال Wi-Fi، استيقاظ الكمبيوتر من السكون، اتصال VPN أو تبديله)، يلاحظ MDM ذلك في غضون ثوان قليلة ويعاود الاتصال بقرناء التورنت مرة واحدة، ويطلب من متتبعاتهم وDHT مرة أخرى، لذلك يستأنف التنزيل من حيث توقف بدلا من الانتظار دقائق لكل محاولة تالية من القرناء. يتم استدعاء كل قرين مرة واحدة؛ لا يطلب من المتتبع أبدا قبل الحد الأدنى لفاصل زمني. خلف وكيل SOCKS5، لا يلاحظ الإفلات الذي لا يراه الكمبيوتر نفسه (فقدان الموجه لخطه بينما يبقى Wi-Fi قيد التشغيل) إلا عبر DHT، وهو متوقف هناك، لذلك تعود تلك التورنتات من تلقاء نفسها، كما كان من قبل."
+  },
   "0a15fc764eba9ef6": {
    "source": "Some servers drop the connection when the speed is very low. Avoid a tight limit for a server that can't resume: the progress window shows <g1>Resume capability: No</g1> for those.",
    "text": "تسقط بعض الخوادم الاتصال عندما تكون السرعة منخفضة جدا. تجنب وضع حد صارم لخادم لا يمكنه المتابعة: تعرض نافذة التقدم <g1>إمكانية المتابعة: لا</g1> لتلك الخوادم."
@@ -1114,6 +1118,10 @@
    "source": "Read the site",
    "text": "قراءة الموقع"
   },
+  "0e9fede041092f7d": {
+   "source": "A file is made when its first byte is downloaded, and only a ticked one is made in the folder: what an unticked file shares with a ticked one waits in MDM's own torrent data. A running torrent keeps only the files it is reading or writing open, a few hundred at most for all of MDM's torrents together (fewer where the system allows fewer, as macOS does), so a torrent of thousands of files runs where it used to fail with \"Too many open files\".",
+   "text": "ينشأ الملف عند تنزيل أول بايت منه، وينشأ في المجلد الملفات المحددة فقط: ما تشاركه الملفات غير المحددة مع الملفات المحددة ينتظر في بيانات التورنت الخاصة بـ MDM. يحتفظ التورنت قيد التشغيل بالملفات التي يقرأها أو يكتبها فقط مفتوحة، بضع مئات على الأكثر لجميع تورنتات MDM معا (أقل حيث يسمح النظام بعدد أقل، كما هو الحال في macOS)، لذلك يعمل التورنت الذي يحتوي على آلاف الملفات حيث كان يفشل سابقا برسالة \"عدد كبير جدا من الملفات المفتوحة\"."
+  },
   "0ea74b188ec2ca88": {
    "source": "If it says <g1>the site sent a web page instead of the file</g1>, the link led to the site's own page: a file host's countdown, a captcha, a <g2>Download</g2> button to press, or a sign-in. MDM never saves that page as your file. Click <g3>Open in browser</g3> in the download's progress window (or open the link yourself), finish there, and when the browser starts the real download, MDM's extension hands it to MDM. Without the extension, let the browser download it.",
    "text": "إذا ظهرت رسالة <g1>أرسل الموقع صفحة ويب بدلا من الملف</g1>، فهذا يعني أن الرابط أدى إلى صفحة الموقع نفسه: عد تنازلي لموقع استضافة، أو اختبار CAPTCHA، أو زر <g2>تنزيل</g2> للضغط عليه، أو صفحة تسجيل دخول. لا يحفظ MDM هذه الصفحة كملفك أبدا. انقر على <g3>فتح في المستعرض</g3> في نافذة تقدم التنزيل (أو افتح الرابط بنفسك)، وأكمل هناك، وعندما يبدأ المستعرض التنزيل الحقيقي، تسلمه إضافة MDM إلى MDM. بدون الإضافة، دع المستعرض ينزله."
@@ -1393,6 +1401,10 @@
   "1294135f300139c9": {
    "source": "The benchmark data could not be loaded.",
    "text": "تعذر تحميل بيانات المعيار."
+  },
+  "12947e2a74bc1b46": {
+   "source": "Each running download has its own progress window. It opens when the download starts (unless you turned that off, or chose <g1>Show minimized</g1>, in <g2>Options → Downloads → Customize \"Download progress\" dialog → Edit...</g2>); to open it again, double-click the download in the list.",
+   "text": "لكل تنزيل قيد التشغيل نافذة تقدم خاصة به. تفتح هذه النافذة عند بدء التنزيل (إلا إذا أوقفت ذلك، أو اخترت <g1>إظهار مصغرة</g1>، في <g2>الخيارات ← التنزيلات ← تخصيص مربع حوار \"تقدم التنزيل\" ← تحرير...</g2>)؛ لإعادة فتحها، انقر نقرا مزدوجا على التنزيل في القائمة."
   },
   "12a228101626f4bc": {
    "source": "How MDM uses connections",
@@ -4558,6 +4570,10 @@
    "source": "Steps",
    "text": "الخطوات"
   },
+  "3ccaf5a331b1edd2": {
+   "source": "A stopped torrent keeps none of its files open: you can move, rename or delete them, or open them in another program, while it waits. When you start it again, MDM opens them where they are; a file that was moved away or deleted meanwhile is made again and its pieces downloaded again. A finished torrent that is shared (<g1>Keep sharing torrents after they finish</g1>, in Torrent settings) keeps its files open only to read them: other programs can open, copy, run, move or rename them meanwhile.",
+   "text": "لا يحتفظ التورنت المتوقف بأي من ملفاته مفتوحة: يمكنك نقلها أو إعادة تسميتها أو حذفها، أو فتحها في برنامج آخر، بينما تنتظر. عندما تبدأ تشغيله مرة أخرى، يفتحها MDM حيث توجد؛ الملف الذي تم نقله أو حذفه في هذه الأثناء ينشأ مرة أخرى ويتم تنزيل قطعه مرة أخرى. التورنت المكتمل الذي يتم بذره (<g1>متابعة بذر التورنت بعد اكتماله</g1>، في إعدادات التورنت) يحتفظ بملفاته مفتوحة للقراءة فقط: يمكن للبرامج الأخرى فتحها أو نسخها أو تشغيلها أو نقلها أو إعادة تسميتها في هذه الأثناء."
+  },
   "3cd4e5cff6113414": {
    "source": "<g1>Then move the archives to the Recycle Bin</g1> has nothing to move afterwards: the archive is already gone.",
    "text": "<g1>ثم انقل الأرشيفات إلى سلة المحذوفات</g1> لا يوجد شيء لنقله بعد ذلك: الأرشيف قد اختفى بالفعل."
@@ -4897,10 +4913,6 @@
   "413ea94686ccd93b": {
    "source": "When an address is already in the list, MDM asks what to do, or follows the answer you chose in <g1>Options → Downloads → If a duplicate download link is added</g1>.",
    "text": "عندما يكون العنوان موجودا بالفعل في القائمة، يسأل MDM عما يجب فعله، أو يتبع الإجابة التي اخترتها في <g1>الخيارات → التنزيلات → إذا تمت إضافة رابط تنزيل مكرر</g1>."
-  },
-  "415322c0b133befd": {
-   "source": "Each running download has its own progress window. It opens when the download starts (unless you turned that off in Options → Downloads → Customize…",
-   "text": "لكل تنزيل قيد التشغيل نافذة تقدم خاصة به. تفتح هذه النافذة عند بدء التنزيل (إلا إذا أوقفت ذلك في الخيارات → التنزيلات → تخصيص..."
   },
   "4160d55635d3e362": {
    "source": "Freeze reports that tell the kind of freeze",
@@ -5814,6 +5826,10 @@
    "source": "<g1>A minimized MDM keeps working</g1>: with the main window minimized (not to the notification area), queues didn't start their next file, the Scheduler's starts and stops didn't fire, download limits, the network adapter's kill switch, the clipboard monitor, the update check, the taskbar's progress and saving the list all waited until the window was restored. They run in every window state now, and their windows (Download complete, a limit's notice) open at once.",
    "text": "<g1>يستمر MDM المصغر في العمل</g1>: مع تصغير النافذة الرئيسية (وليس إلى منطقة الإشعارات)، لم تبدأ قوائم الانتظار ملفها التالي، ولم يتم تشغيل عمليات بدء وإيقاف المجدول، وانتظرت حدود التنزيل، ومفتاح إيقاف محول الشبكة، ومراقب الحافظة، والتحقق من التحديث، وتقدم شريط المهام، وحفظ القائمة، حتى تم استعادة النافذة. تعمل الآن في كل حالات النافذة، وتفتح نوافذها (اكتمل التنزيل، إشعار الحد) على الفور."
   },
+  "4e60a529980083e7": {
+   "source": "The downloads join the <g1>Main download queue</g1>, ready to start (<g2>Start</g2> starts it too). <g3>Tasks → Import → From IDM export file</g3> reads an <x4/> file, with each download's referrer and cookies, and the file name a list gives it in a <x5/> line.",
+   "text": "تنضم التنزيلات إلى <g1>قائمة انتظار التنزيل الرئيسية</g1>، لتكون جاهزة للبدء (يؤدي <g2>بدء</g2> إلى تشغيلها أيضا). يقرأ <g3>المهام ← استيراد ← من ملف تصدير IDM</g3> ملف <x4/>، مع محيل كل تنزيل وملفات تعريف الارتباط الخاصة به، واسم الملف الذي تمنحه قائمة في سطر <x5/>."
+  },
   "4e96b700836944de": {
    "source": "<g1>Password</g1>: the archives' password, if they have one. It is kept in memory only and is never saved by itself: to keep one for other packages, add it to your <g2>archive passwords</g2>.",
    "text": "<g1>كلمة المرور</g1>: كلمة مرور الأرشيفات، إن وجدت. تبقى في الذاكرة فقط ولا تحفظ تلقائيا: للاحتفاظ بها لحزم أخرى، أضفها إلى <g2>كلمات مرور الأرشيفات</g2>."
@@ -6533,6 +6549,10 @@
   "58f22a0b1aeea2b4": {
    "source": "Watch it work.",
    "text": "شاهد كيف يعمل."
+  },
+  "58f7b730058089bc": {
+   "source": "Everyone who takes part follows the <g1>Code of conduct</g1>. Who reviews and merges changes, and how decisions are made, is in <g2>GOVERNANCE.md</g2>.",
+   "text": "يتبع كل مشارك <g1>مدونة قواعد السلوك</g1>. وتوجد معلومات حول من يراجع التغييرات ويدمجها، وكيفية اتخاذ القرارات، في <g2>GOVERNANCE.md</g2>."
   },
   "59130ab4ecc47c65": {
    "source": "<g1>Hide to the notification area</g1> (a short dash with an arrow down to the corner; on Windows in the title bar, left of Minimize) puts the window in the notification area; <g2>Downloads in progress</g2> in the tray icon's menu brings it back. See <g3>The tray icon</g3>.",
@@ -8245,6 +8265,10 @@
   "700b58886e17c427": {
    "source": "<g1><g2>Options</g2></g1> — every page of the Options window.",
    "text": "<g1><g2>الخيارات</g2></g1> — كل صفحة من نافذة الخيارات."
+  },
+  "702b1d80d041e97d": {
+   "source": "<g1>Tasks → Import → From text file</g1> and <g2>From IDM export file</g2>. An <x3/> file brings each download's referrer and cookies, and its file name when the list gives one (a <x4/> line; only the name, never a folder).",
+   "text": "<g1>المهام ← استيراد ← من ملف نصي</g1> و<g2>من ملف تصدير IDM</g2>. يجلب ملف <x3/> مرجع كل تنزيل وملفات تعريف الارتباط الخاصة به، واسم ملفه عندما تقدم القائمة واحدا (سطر <x4/>؛ الاسم فقط، وليس مجلدا أبدا)."
   },
   "70304346a925831b": {
    "source": "MDM opens <g1>Download File Info</g1> instead of the browser downloading the file. Click <g2>Start Download</g2>.",
@@ -10522,10 +10546,6 @@
    "source": "Check that the Speed Limiter is off: <g1>Downloads → Speed Limiter → Turn off</g1>. Also look at <g2>Downloads → Speed Limiter → Settings... → Limit all downloads together to</g2>, which applies even with the limiter off.",
    "text": "تأكد من إيقاف تشغيل محدد السرعة: <g1>التنزيلات ← محدد السرعة ← إيقاف التشغيل</g1>. انظر أيضا إلى <g2>التنزيلات ← محدد السرعة ← الإعدادات... ← تحديد جميع التنزيلات معا إلى</g2>، والذي ينطبق حتى مع إيقاف تشغيل المحدد."
   },
-  "8e9db9ede7b54a27": {
-   "source": "<g1>Customize \"Download progress\" dialog → Edit...</g1> — <g2>Show download progress dialog when a download starts</g2>: on by default. Untick it and a download no longer opens its progress window when it starts, from the browser, a link you add, a video or a queue; it goes on in the main window's list, where a double-click opens its progress window. <g3>Download complete</g3> still shows when it finishes, as <g4>Show download complete dialog</g4> below says.",
-   "text": "<g1>تخصيص مربع حوار \"تقدم التنزيل\" ← تحرير...</g1> — <g2>إظهار مربع حوار تقدم التنزيل عند بدء التنزيل</g2>: قيد التشغيل افتراضيا. ألغ تحديدها ولن يفتح التنزيل نافذة تقدمه عند البدء، سواء من المستعرض، أو رابط تضيفه، أو فيديو، أو قائمة انتظار؛ يستمر في قائمة النافذة الرئيسية، حيث يفتح النقر المزدوج نافذة تقدمه. لا يزال <g3>اكتمل التنزيل</g3> يظهر عند الانتهاء، كما هو موضح في <g4>إظهار مربع حوار اكتمال التنزيل</g4> أدناه."
-  },
   "8e9f9863589b4bd6": {
    "source": "Fuzzing",
    "text": "اختبار الضبابية"
@@ -10741,6 +10761,10 @@
   "91921dfcf2686194": {
    "source": "MDM's interface comes in 87 languages: every display language Windows 11 offers, from Afrikaans to Vietnamese, including both Chinese scripts, Spanish for Spain and Mexico, French for France and Canada, Portuguese for Portugal and Brazil, and Serbian in Cyrillic and Latin.",
    "text": "تتوفر واجهة MDM بـ 87 لغة: جميع لغات العرض التي يوفرها Windows 11، من الأفريكانية إلى الفيتنامية، بما في ذلك نظاما الكتابة الصينيان، والإسبانية لإسبانيا والمكسيك، والفرنسية لفرنسا وكندا، والبرتغالية للبرتغال والبرازيل، والصربية بالسيريلية واللاتينية."
+  },
+  "91c08dd2d3fe7d4a": {
+   "source": "<g1>Add category</g1> — make your own, for example <g2>Books</g2> for <x3/> (they then go to Books, not Documents). Give it a name, the file types (separated by spaces, <x4/> allowed) and a folder.",
+   "text": "<g1>إضافة فئة</g1> — أنشئ فئتك الخاصة، على سبيل المثال <g2>الكتب</g2> لـ <x3/> (تذهب حينها إلى الكتب، وليس المستندات). أعطها اسما، وأنواع الملفات (مفصولة بمسافات، <x4/> مسموح بها) ومجلدا."
   },
   "91cefe80b7f00fac": {
    "source": "<g1><g2>Download a file</g2></g1> — copy a link, add it, open the file.",
@@ -12054,10 +12078,6 @@
    "source": "A live stream saved by a queue's stop counts as complete, so a daily queue doesn't start it again the next day.",
    "text": "يعتبر البث المباشر الذي تم حفظه بإيقاف قائمة الانتظار مكتملا، لذلك لا تبدأه قائمة الانتظار اليومية مرة أخرى في اليوم التالي."
   },
-  "a21a2e8b8e4dad43": {
-   "source": "<g1>#1 in Rust</g1><g2>repository of the day on <x3/></g2>",
-   "text": "<g1>الأول في Rust</g1><g2>مستودع اليوم على <x3/></g2>"
-  },
   "a21dffa69dd07677": {
    "source": "Every row, and easier to read",
    "text": "كل صف، وأسهل للقراءة"
@@ -12249,10 +12269,6 @@
   "a4b01563b82565da": {
    "source": "<g1>Sharper text on Windows</g1> (<g2>#262</g2>): Segoe UI and Tahoma are grid-fitted across as well as up and down, and each letter starts on a whole pixel, as Windows draws its own grey text: upright strokes were two grey pixels wide at 100 % and 125 %, which read as blurred.",
    "text": "<g1>نص أكثر وضوحا على Windows</g1> (<g2>#262</g2>): يتم ضبط Segoe UI وTahoma على الشبكة عرضيا وكذلك رأسيا، وتبدأ كل حرف على بكسل كامل، كما يرسم Windows نصه الرمادي الخاص به: كانت الخطوط العمودية بعرض بكسلين رماديين عند 100% و125%، مما كان يقرأ كضبابي."
-  },
-  "a4b04f29f56fdc42": {
-   "source": "<g1>Add category</g1> — make your own, for example <g2>Books</g2> for <x3/>. Give it a name, the file types (separated by spaces, <x4/> allowed) and a folder.",
-   "text": "<g1>إضافة فئة</g1> — أنشئ فئتك الخاصة، على سبيل المثال <g2>كتب</g2> لـ <x3/>. أعطها اسما، وأنواع الملفات (مفصولة بمسافات، <x4/> مسموح بها) ومجلدا."
   },
   "a4b1f9a84345ac5d": {
    "source": "<g1>yt-dlp</g1> (about 23 MB) looks the page up and finds where the video and its sound come from; MDM downloads them (<g2>How a video comes down</g2>). The first time, click <g3>Install yt-dlp</g3>. MDM checks the download against the signature yt-dlp's developers publish before it uses it.",
@@ -13105,6 +13121,10 @@
   "afc32cfba2a08d06": {
    "source": "Choose a download",
    "text": "اختيار تنزيل"
+  },
+  "afd25bc6979c1269": {
+   "source": "<g1>Customize \"Download progress\" dialog → Edit...</g1> — <g2>Show download progress dialog when a download starts</g2>: <g3>Show normally</g3>, on by default; <g4>Show minimized</g4>, which starts the download's progress window minimized on the taskbar, without taking the focus from the program you are in; or <g5>Don't show</g5>, where a download no longer opens its progress window when it starts, from the browser, a link you add, a video or a queue, and it goes on in the main window's list, where a double-click opens its progress window. <g6>Download complete</g6> still shows when it finishes, as <g7>Show download complete dialog</g7> below says.",
+   "text": "<g1>تخصيص مربع حوار \"تقدم التنزيل\" → تحرير...</g1> — <g2>إظهار مربع حوار تقدم التنزيل عند بدء التنزيل</g2>: <g3>إظهار عادية</g3>، مفعلة افتراضيا؛ <g4>إظهار مصغرة</g4>، التي تبدأ نافذة تقدم التنزيل مصغرة في شريط المهام، دون أخذ التركيز من البرنامج الذي تستخدمه؛ أو <g5>عدم الإظهار</g5>، حيث لا يفتح التنزيل نافذة تقدمه عند البدء، سواء من المستعرض أو رابط تضيفه أو فيديو أو قائمة انتظار، ويستمر في قائمة النافذة الرئيسية، حيث يفتح النقر المزدوج نافذة تقدمه. <g6>اكتمل التنزيل</g6> لا يزال يظهر عند الانتهاء، كما هو مذكور في <g7>إظهار مربع حوار اكتمال التنزيل</g7> أدناه."
   },
   "aff376e66e9d2870": {
    "source": "Queues",
@@ -14038,10 +14058,6 @@
    "source": "The next tab of a focused tab strip; the next choice of a radio group",
    "text": "علامة التبويب التالية لشريط علامات التبويب الذي عليه التركيز؛ الخيار التالي لمجموعة أزرار الاختيار"
   },
-  "bc713e862e9b84d3": {
-   "source": "Each download falls into a category by its file type: <g1>General</g1>, <g2>Compressed</g2>, <g3>Documents</g3>, <g4>Music</g4>, <g5>Programs</g5> or <g6>Video</g6>. Torrents have their own <g7>Torrents</g7> category. Each category has its own folder, by default inside your Downloads folder (<x8/>, <x9/> and so on; General uses <x10/> itself).",
-   "text": "يقع كل تنزيل ضمن فئة حسب نوع ملفه: <g1>عام</g1>، <g2>مضغوط</g2>، <g3>مستندات</g3>، <g4>موسيقى</g4>، <g5>برامج</g5> أو <g6>فيديو</g6>. للتورنت فئة خاصة بها هي <g7>تورنت</g7>. لكل فئة مجلدها الخاص، افتراضيا داخل مجلد التنزيلات الخاص بك (<x8/>، <x9/> وهكذا؛ يستخدم عام <x10/> نفسه)."
-  },
   "bc7153d0bcfdacbb": {
    "source": "Themes — Mister Download Manager",
    "text": "السمات — Mister Download Manager"
@@ -14793,6 +14809,10 @@
   "c763f3aa0f51a5a2": {
    "source": "<g1>Server mode</g1><g2>Mister Download Manager</g2>",
    "text": "<g1>وضع الخادم</g1><g2>Mister Download Manager</g2>"
+  },
+  "c76c7692d362ad5a": {
+   "source": "Each running download has its own progress window. It opens when the download starts (unless you turned that off, or chose Show minimized, in Options →…",
+   "text": "لكل تنزيل قيد التشغيل نافذة تقدم خاصة به. تفتح هذه النافذة عند بدء التنزيل (إلا إذا أوقفت ذلك، أو اخترت إظهار مصغرة، في الخيارات ←…"
   },
   "c7853bd84d0526f0": {
    "source": "Options → Archives →",
@@ -16034,10 +16054,6 @@
    "source": "<g1><g2>Languages</g2></g1> — the 87 interface languages, numbers and dates, right-to-left layouts, and how to help translate.",
    "text": "<g1><g2>اللغات</g2></g1> — لغات الواجهة الـ 87، والأرقام والتواريخ، والتخطيطات من اليمين إلى اليسار، وكيفية المساعدة في الترجمة."
   },
-  "d7df5f97a90fd99c": {
-   "source": "Each running download has its own progress window. It opens when the download starts (unless you turned that off in <g1>Options → Downloads → Customize \"Download progress\" dialog → Edit...</g1>); to open it again, double-click the download in the list.",
-   "text": "لكل تنزيل قيد التشغيل نافذة تقدم خاصة به. تفتح هذه النافذة عند بدء التنزيل (إلا إذا أوقفت ذلك في <g1>الخيارات → التنزيلات → تخصيص مربع حوار \"تقدم التنزيل\" → تحرير...</g1>)؛ ولإعادة فتحها، انقر نقرا مزدوجا على التنزيل في القائمة."
-  },
   "d7e47d8cb056d141": {
    "source": "<g1>Download in order</g1>, to watch a video while it downloads, with each file's first and last pieces early. Other torrents fetch the rarest pieces first.",
    "text": "<g1>تنزيل بالترتيب</g1>، لمشاهدة فيديو أثناء تنزيله، مع القطع الأولى والأخيرة لكل ملف مبكرا. تجلب التورنتات الأخرى القطع الأندر أولا."
@@ -17014,9 +17030,17 @@
    "source": "No, if it came from this site or GitHub Releases. Some antivirus programs judge a program they don't know by an educated guess, not by a known virus…",
    "text": "لا، إذا كان من هذا الموقع أو إصدارات GitHub. تحكم بعض برامج مكافحة الفيروسات على برنامج لا تعرفه بتخمين مدروس، وليس بفيروس معروف..."
   },
+  "e6d677c76529ac72": {
+   "source": "<g1>#1</g1><g2>Rust</g2>",
+   "text": "<g1>#1</g1><g2>Rust</g2>"
+  },
   "e6e9f590b183bea4": {
    "source": "Link grabber: paste many links, MDM groups them, checks which are online, and extracts archives when they arrive.",
    "text": "ملتقط الروابط: الصق العديد من الروابط، يقوم MDM بتجميعها، ويتحقق من المتصل منها، ويستخرج الأرشيفات عند وصولها."
+  },
+  "e6f2d5c5287999ae": {
+   "source": "Some programs (BitComet, for one) write a torrent's names in another encoding and add a UTF-8 copy of them (<x1/>, <x2/>); MDM shows and saves the files under the UTF-8 names. A torrent like that which was downloading in an earlier version starts those files again under their correct names, and leaves the files with the old names in the folder.",
+   "text": "تكتب بعض البرامج (مثل BitComet) أسماء ملفات التورنت بتشفير آخر، وتضيف نسخة UTF-8 منها (<x1/>، <x2/>)؛ يعرض MDM الملفات ويحفظها بالأسماء المشفرة بـ UTF-8. التورنت الذي كان قيد التنزيل في إصدار سابق سيبدأ تنزيل هذه الملفات مرة أخرى بأسمائها الصحيحة، ويترك الملفات ذات الأسماء القديمة في المجلد."
   },
   "e700b8b592a5b4c0": {
    "source": "Free forever: no trial, no ads, no key",
@@ -17133,6 +17157,10 @@
   "e8482108fc49e0e0": {
    "source": "Can it download overnight or on a schedule?",
    "text": "هل يمكنه التنزيل طوال الليل أو بجدول زمني؟"
+  },
+  "e852a2ae2ea94c2d": {
+   "source": "<g1>Automatically put in \"…\" category the following file types</g1> — the file types that go to this category. A built-in category whose list you never changed gains the types a new version adds; one you edited stays as it is.",
+   "text": "<g1>ضع تلقائيا أنواع الملفات التالية في فئة «…»</g1> — أنواع الملفات التي تذهب إلى هذه الفئة. الفئة المضمنة التي لم تغير قائمتها أبدا تكتسب الأنواع التي يضيفها الإصدار الجديد؛ أما الفئة التي عدلتها فتبقى كما هي."
   },
   "e8592a334f7cb4df": {
    "source": "In <g1>Download File Info</g1>, click <g2>Download Later</g2> and pick the queue.",
@@ -17729,6 +17757,10 @@
   "ef6e5d90b67f8e4e": {
    "source": "<g1>\"Hide tab\" was cut in longer languages</g1> (German \"Registerkarte au...\"): the button grows to fit its label where there is room, through a shared helper other buttons can use.",
    "text": "<g1>تم قطع \"إخفاء علامة التبويب\" في اللغات الأطول</g1> (الألمانية \"Registerkarte au...\"): يتسع الزر ليتناسب مع تسميته حيث توجد مساحة، عبر مساعد مشترك يمكن للأزرار الأخرى استخدامه."
+  },
+  "ef7238dc374b9e0e": {
+   "source": "Each download falls into a category by its file type: <g1>General</g1>, <g2>Compressed</g2>, <g3>Documents</g3>, <g4>Music</g4>, <g5>Programs</g5> or <g6>Video</g6>. Torrents have their own <g7>Torrents</g7> category. <g8>Programs</g8> takes programs, installers and app packages (EXE, MSI, APK, IPA, DMG, PKG, DEB, RPM, AppImage, MSIX…), <g9>Compressed</g9> archives and disc images (ZIP, RAR, 7Z, TAR, XZ, ISO, IMG, VHD…), <g10>Documents</g10> text documents, spreadsheets and e-books (PDF, DOCX, XLSX, ODT, EPUB, MOBI…), <g11>Music</g11> audio (MP3, FLAC, OPUS, M4A…) and <g12>Video</g12> videos (MP4, MKV, WEBM…); every other file goes to General. Your own categories come before the built-in ones. Each category has its own folder, by default inside your Downloads folder (<x13/>, <x14/> and so on; General uses <x15/> itself).",
+   "text": "يصنف كل تنزيل ضمن فئة حسب نوع ملفه: <g1>عام</g1>، <g2>المضغوطة</g2>، <g3>المستندات</g3>، <g4>موسيقى</g4>، <g5>البرامج</g5> أو <g6>فيديو</g6>. وللتورنت فئة <g7>التورنت</g7> الخاصة بها. تضم <g8>البرامج</g8> البرامج والمثبتات وحزم التطبيقات (EXE، MSI، APK، IPA، DMG، PKG، DEB، RPM، AppImage، MSIX...)، وتضم <g9>المضغوطة</g9> الأرشيفات وصور الأقراص (ZIP، RAR، 7Z، TAR، XZ، ISO، IMG، VHD...)، وتضم <g10>المستندات</g10> المستندات النصية وجداول البيانات والكتب الإلكترونية (PDF، DOCX، XLSX، ODT، EPUB، MOBI...)، وتضم <g11>موسيقى</g11> الصوتيات (MP3، FLAC، OPUS، M4A...)، وتضم <g12>فيديو</g12> مقاطع الفيديو (MP4، MKV، WEBM...)؛ وكل ملف آخر يذهب إلى عام. تأتي فئاتك الخاصة قبل الفئات المدمجة. لكل فئة مجلدها الخاص، يكون افتراضيا داخل مجلد التنزيلات الخاص بك (<x13/>، <x14/> وهكذا؛ تستخدم عام <x15/> نفسها)."
   },
   "ef8cedcbdccdaf85": {
    "source": "The code is filled in when you scanned the QR code; otherwise type it. Give the phone a name, and tap <g1>Pair</g1>. The window on the computer says so, and closes with <g2>Done</g2>.",
@@ -18337,10 +18369,6 @@
   "f8c444517ab946e2": {
    "source": "From the plain zip",
    "text": "من ملف zip عادي"
-  },
-  "f8c71a9fb2bd8bde": {
-   "source": "<g1>Automatically put in \"…\" category the following file types</g1> — the file types that go to this category.",
-   "text": "<g1>وضع أنواع الملفات التالية تلقائيا في فئة \"…\"</g1> — أنواع الملفات التي تذهب إلى هذه الفئة."
   },
   "f8e0a9e7ee529ff0": {
    "source": "Select <g1>Main download queue</g1> on the left. The <g2>Schedule</g2> tab opens.",

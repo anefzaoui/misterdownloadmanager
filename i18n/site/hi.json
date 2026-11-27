@@ -778,6 +778,10 @@
    "source": "Too many tries from your connection. Please try again in a few minutes.",
    "text": "आपके कनेक्शन से बहुत अधिक प्रयास किए गए हैं। कृपया कुछ मिनटों में पुनः प्रयास करें।"
   },
+  "0a07d4f9fc7fb519": {
+   "source": "When the network comes back after a drop (Wi-Fi reconnecting, the computer waking from sleep, a VPN connecting or switching), MDM notices within a few seconds and calls the torrents' peers again at once, and asks their trackers and the DHT again, so a download picks up where it was instead of waiting minutes for each peer's next try. Each peer is called once for it; a tracker is still never asked sooner than its minimum interval. Behind a SOCKS5 proxy, a drop the computer itself doesn't see (the router losing its line while Wi-Fi stays up) is noticed only through the DHT, which is off there, so those torrents come back on their own, as before.",
+   "text": "नेटवर्क ड्रॉप के बाद वापस आने पर (Wi-Fi का फिर से कनेक्ट होना, कंप्यूटर का नींद से जागना, VPN का कनेक्ट होना या स्विच करना), MDM कुछ ही सेकंड में इसे नोटिस करता है और तुरंत टॉरेंट के साथियों को फिर से कॉल करता है, और उनके ट्रैकर्स और DHT को फिर से पूछता है, ताकि डाउनलोड प्रत्येक साथी के अगले प्रयास के लिए मिनटों तक प्रतीक्षा करने के बजाय वहीं से शुरू हो जहाँ वह था। प्रत्येक साथी को इसके लिए एक बार कॉल किया जाता है; एक ट्रैकर को अभी भी उसके न्यूनतम अंतराल से पहले कभी नहीं पूछा जाता है। SOCKS5 प्रॉक्सी के पीछे, एक ड्रॉप जिसे कंप्यूटर स्वयं नहीं देखता है (राउटर का अपनी लाइन खोना जबकि Wi-Fi चालू रहता है) केवल DHT के माध्यम से नोटिस किया जाता है, जो वहाँ बंद होता है, इसलिए वे टॉरेंट पहले की तरह अपने आप वापस आ जाते हैं।"
+  },
   "0a15fc764eba9ef6": {
    "source": "Some servers drop the connection when the speed is very low. Avoid a tight limit for a server that can't resume: the progress window shows <g1>Resume capability: No</g1> for those.",
    "text": "कुछ सर्वर बहुत कम गति होने पर कनेक्शन छोड़ देते हैं। ऐसे सर्वर के लिए कड़ी सीमा से बचें जो फिर से शुरू नहीं हो सकता है: प्रगति विंडो उन लोगों के लिए <g1>फिर से शुरू करने की क्षमता: नहीं</g1> दिखाती है।"
@@ -1114,6 +1118,10 @@
    "source": "Read the site",
    "text": "साइट पढ़ें"
   },
+  "0e9fede041092f7d": {
+   "source": "A file is made when its first byte is downloaded, and only a ticked one is made in the folder: what an unticked file shares with a ticked one waits in MDM's own torrent data. A running torrent keeps only the files it is reading or writing open, a few hundred at most for all of MDM's torrents together (fewer where the system allows fewer, as macOS does), so a torrent of thousands of files runs where it used to fail with \"Too many open files\".",
+   "text": "एक फ़ाइल तब बनती है जब उसका पहला बाइट डाउनलोड होता है, और फ़ोल्डर में केवल टिक की गई फ़ाइल ही बनती है: जो अनटिक की गई फ़ाइल टिक की गई फ़ाइल के साथ साझा करती है, वह MDM के अपने टॉरेंट डेटा में प्रतीक्षा करती है। एक चल रहा टॉरेंट केवल उन फ़ाइलों को खुला रखता है जिन्हें वह पढ़ या लिख रहा है, MDM के सभी टॉरेंट के लिए कुल मिलाकर कुछ सौ से ज़्यादा नहीं (जहाँ सिस्टम कम की अनुमति देता है, जैसे macOS करता है, वहाँ कम), इसलिए हज़ारों फ़ाइलों वाला टॉरेंट वहाँ भी चलता है जहाँ वह पहले \"बहुत ज़्यादा खुली फ़ाइलें\" की त्रुटि के साथ विफल हो जाता था।"
+  },
   "0ea74b188ec2ca88": {
    "source": "If it says <g1>the site sent a web page instead of the file</g1>, the link led to the site's own page: a file host's countdown, a captcha, a <g2>Download</g2> button to press, or a sign-in. MDM never saves that page as your file. Click <g3>Open in browser</g3> in the download's progress window (or open the link yourself), finish there, and when the browser starts the real download, MDM's extension hands it to MDM. Without the extension, let the browser download it.",
    "text": "यदि यह कहता है कि <g1>साइट ने फ़ाइल के बजाय एक वेब पेज भेजा</g1> है, तो लिंक साइट के अपने पेज पर ले गया: एक फ़ाइल होस्ट का काउंटडाउन, एक कैप्चा, दबाने के लिए एक <g2>डाउनलोड</g2> बटन, या साइन-इन। MDM उस पेज को आपकी फ़ाइल के रूप में कभी सहेजता नहीं है। डाउनलोड की प्रगति विंडो में <g3>ब्राउज़र में खोलें</g3> पर क्लिक करें (या लिंक को स्वयं खोलें), वहां पूरा करें, और जब ब्राउज़र वास्तविक डाउनलोड शुरू करता है, तो MDM का एक्सटेंशन इसे MDM को सौंप देता है। एक्सटेंशन के बिना, ब्राउज़र को इसे डाउनलोड करने दें।"
@@ -1393,6 +1401,10 @@
   "1294135f300139c9": {
    "source": "The benchmark data could not be loaded.",
    "text": "बेंचमार्क डेटा लोड नहीं किया जा सका।"
+  },
+  "12947e2a74bc1b46": {
+   "source": "Each running download has its own progress window. It opens when the download starts (unless you turned that off, or chose <g1>Show minimized</g1>, in <g2>Options → Downloads → Customize \"Download progress\" dialog → Edit...</g2>); to open it again, double-click the download in the list.",
+   "text": "प्रत्येक चल रहे डाउनलोड की अपनी प्रगति विंडो होती है। यह डाउनलोड शुरू होने पर खुलती है (जब तक कि आपने इसे बंद न कर दिया हो, या <g1>छोटा करके दिखाएँ</g1> न चुना हो, <g2>विकल्प → डाउनलोड → \"डाउनलोड प्रगति\" डायलॉग को अनुकूलित करें → संपादित करें...</g2> में); इसे फिर से खोलने के लिए, सूची में डाउनलोड पर डबल-क्लिक करें।"
   },
   "12a228101626f4bc": {
    "source": "How MDM uses connections",
@@ -1677,6 +1689,10 @@
   "164fab887258d3b5": {
    "source": "A menu item under the pointer",
    "text": "पॉइंटर के नीचे एक मेनू आइटम"
+  },
+  "16521dc33af1932f": {
+   "source": "An answer with no size and no ranges goes on one connection, written in order (<x1/>), and may never end (an internet radio, a camera feed: <x2/>). <x3/> ends it where it is, and what arrived is finished as if the server had ended it there (#1780); only the progress window's Stop and keep calls it (<x4/>, <x5/>). Every other stop cancels it, as any download a server can't resume.",
+   "text": "बिना आकार और बिना रेंज वाला उत्तर एक कनेक्शन पर, क्रम में (<x1/>) लिखा जाता है, और कभी खत्म नहीं हो सकता (एक इंटरनेट रेडियो, एक कैमरा फ़ीड: <x2/>)। <x3/> इसे वहीं खत्म कर देता है जहाँ यह है, और जो आया वह ऐसे समाप्त हो जाता है जैसे सर्वर ने इसे वहीं समाप्त कर दिया हो (#1780); केवल प्रगति विंडो का “रोकें और रखें” इसे कॉल करता है (<x4/>, <x5/>)। हर दूसरा स्टॉप इसे रद्द कर देता है, जैसे कोई भी डाउनलोड जिसे सर्वर फिर से शुरू नहीं कर सकता।"
   },
   "1652b2b94896eefb": {
    "source": "MDM in Arabic",
@@ -1969,6 +1985,10 @@
   "1a1c4d85605e18ae": {
    "source": "<g1>Alt+Enter</g1> always opens <g2>Properties</g2>.",
    "text": "<g1>Alt+Enter</g1> हमेशा <g2>गुण</g2> खोलता है।"
+  },
+  "1a1dff89e0e39768": {
+   "source": "The windows are drawn with OpenGL (eframe's glow) or with the system's own graphics API through eframe's wgpu, with that one backend only: Direct3D 12 on Windows (the default there), Vulkan on Linux, Metal on macOS (choices there; OpenGL stays their default until real graphics cards have tried them, #206). View → Draw with picks one, from the next start. One code path does it on every system (<x1/>): when the chosen one can't start, the other one is tried, so the windows always open. A watched start with the system's API leaves a marker until its first frame is drawn: a start that ends before it (a crash inside the driver), one whose first frame doesn't come within 10 seconds (MDM then starts again with OpenGL), or a graphics card lost twice in 10 minutes is remembered with its reason, which the menu shows. A way that can't start within 10 minutes of a lost card isn't remembered: its driver may still be resetting (#1974: Direct3D 12 then finds only WARP), so the next start tries it again. With OpenGL, a window eframe can't paint (its context can't be made current on it, its frame can't be shown) is skipped and painted again 100 ms later; one whose paints keep failing for seconds is a lost device too (MDM starts again; twice in 10 minutes, OpenGL is remembered as failing on Windows). On Windows, a freeze or a crash whose report shows the window's or the crashed thread inside OpenGL's driver is remembered too, by the crash report's window (<x2/>), from the stack's modules (#847, #1659). The fork's eframe tells MDM through its viewport hooks (<x3/>, #1448).",
+   "text": "विंडो OpenGL (eframe का ग्लो) या eframe के wgpu के माध्यम से सिस्टम के अपने ग्राफिक्स API के साथ, केवल उस एक बैकएंड के साथ खींची जाती हैं: Windows पर Direct3D 12 (वहाँ डिफ़ॉल्ट), Linux पर Vulkan, macOS पर Metal (वहाँ विकल्प; OpenGL उनका डिफ़ॉल्ट रहता है जब तक कि वास्तविक ग्राफिक्स कार्ड उन्हें आज़मा नहीं लेते, #206)। “देखें” → “इसके साथ ड्रा करें” एक को चुनता है, अगली शुरुआत से। एक कोड पाथ इसे हर सिस्टम पर करता है (<x1/>): जब चुना गया एक शुरू नहीं हो सकता, तो दूसरा आज़माया जाता है, ताकि विंडो हमेशा खुलें। सिस्टम के API के साथ एक देखी गई शुरुआत एक मार्कर छोड़ती है जब तक कि उसका पहला फ्रेम खींचा नहीं जाता: एक शुरुआत जो इससे पहले समाप्त होती है (ड्राइवर के अंदर एक क्रैश), एक जिसका पहला फ्रेम 10 सेकंड के भीतर नहीं आता (MDM फिर OpenGL के साथ फिर से शुरू होता है), या 10 मिनट में दो बार खोया हुआ ग्राफिक्स कार्ड उसके कारण के साथ याद रखा जाता है, जिसे मेनू दिखाता है। एक तरीका जो खोए हुए कार्ड के 10 मिनट के भीतर शुरू नहीं हो सकता, उसे याद नहीं रखा जाता है: उसका ड्राइवर अभी भी रीसेट हो रहा हो सकता है (#1974: Direct3D 12 तब केवल WARP पाता है), इसलिए अगली शुरुआत इसे फिर से आज़माती है। OpenGL के साथ, एक विंडो जिसे eframe पेंट नहीं कर सकता (उसका संदर्भ उस पर वर्तमान नहीं बनाया जा सकता, उसका फ्रेम नहीं दिखाया जा सकता) को छोड़ दिया जाता है और 100 ms बाद फिर से पेंट किया जाता है; एक जिसकी पेंटिंग सेकंडों तक विफल होती रहती है, वह भी एक खोया हुआ डिवाइस है (MDM फिर से शुरू होता है; 10 मिनट में दो बार, OpenGL को Windows पर विफल होने के रूप में याद रखा जाता है)। Windows पर, एक फ्रीज़ या एक क्रैश जिसकी रिपोर्ट विंडो या क्रैश हुए थ्रेड को OpenGL के ड्राइवर के अंदर दिखाती है, उसे भी क्रैश रिपोर्ट की विंडो (<x2/>) द्वारा, स्टैक के मॉड्यूल से (#847, #1659) याद रखा जाता है। फोर्क का eframe MDM को अपने व्यूपोर्ट हुक (<x3/>, #1448) के माध्यम से बताता है।"
   },
   "1a2a843c29753c86": {
    "source": "A greyed menu item",
@@ -3522,6 +3542,10 @@
    "source": ", <x1/>, <x2/>, <x3/>, <x4/>, <x5/>, <x6/>, <x7/>, <x8/>,",
    "text": ", <x1/>, <x2/>, <x3/>, <x4/>, <x5/>, <x6/>, <x7/>, <x8/>,"
   },
+  "2e62158daf22f3df": {
+   "source": "A folder given to Link grabber (#1774, <x1/>) is read with its subfolders, breadth first: an FTP folder by <x2/>, else <x3/> (<x4/>, one session for every folder), a web server's listing page (\"Index of\", recognized by its title) as <x5/> reads a page. An entry is a name in the folder, matched by name: a link elsewhere (another host, the folder above, a query, a deeper path) or a name that isn't plain is no entry, and FTP's symbolic links aren't followed. The depth asked (at most <x6/>), <x7/>, <x8/> and each listing's size bound it. The app makes each folder's files a package whose folder is the tree's under the download folder (<x9/>); the lab server serves made-up trees, a hostile one and a huge one (<x10/>) over HTTP and FTP for the end-to-end tests.",
+   "text": "लिंक ग्रैबर (#1774, <x1/>) को दिया गया फ़ोल्डर उसके सबफ़ोल्डर के साथ, चौड़ाई-पहले पढ़ा जाता है: एक FTP फ़ोल्डर <x2/> द्वारा, अन्यथा <x3/> (<x4/>, हर फ़ोल्डर के लिए एक सत्र), एक वेब सर्वर का लिस्टिंग पेज (“Index of”, उसके शीर्षक से पहचाना जाता है) जैसे <x5/> एक पेज पढ़ता है। एक एंट्री फ़ोल्डर में एक नाम है, जो नाम से मेल खाता है: कहीं और का लिंक (कोई और होस्ट, ऊपर का फ़ोल्डर, एक क्वेरी, एक गहरा पाथ) या एक ऐसा नाम जो सादा नहीं है, वह एंट्री नहीं है, और FTP के सिंबॉलिक लिंक का पालन नहीं किया जाता है। मांगी गई गहराई (अधिकतम <x6/>), <x7/>, <x8/> और प्रत्येक लिस्टिंग का आकार इसे सीमित करता है। ऐप प्रत्येक फ़ोल्डर की फ़ाइलों को एक पैकेज बनाता है जिसका फ़ोल्डर डाउनलोड फ़ोल्डर के तहत ट्री का होता है (<x9/>); लैब सर्वर HTTP और FTP पर एंड-टू-एंड परीक्षणों के लिए बनाए गए ट्री, एक शत्रुतापूर्ण और एक विशाल (<x10/>) प्रदान करता है।"
+  },
   "2e79c1a24688e446": {
    "source": "<g1>Download selected links</g1> and <g2>Download all links</g2> on the browser's right-click menu: the page's links go to Import, to tick there.",
    "text": "ब्राउज़र के राइट-क्लिक मेनू पर <g1>चयनित लिंक डाउनलोड करें</g1> और <g2>सभी लिंक डाउनलोड करें</g2>: पृष्ठ के लिंक आयात में जाते हैं, वहाँ टिक करने के लिए।"
@@ -4546,6 +4570,10 @@
    "source": "Steps",
    "text": "चरण"
   },
+  "3ccaf5a331b1edd2": {
+   "source": "A stopped torrent keeps none of its files open: you can move, rename or delete them, or open them in another program, while it waits. When you start it again, MDM opens them where they are; a file that was moved away or deleted meanwhile is made again and its pieces downloaded again. A finished torrent that is shared (<g1>Keep sharing torrents after they finish</g1>, in Torrent settings) keeps its files open only to read them: other programs can open, copy, run, move or rename them meanwhile.",
+   "text": "एक रुका हुआ टॉरेंट अपनी कोई भी फ़ाइल खुली नहीं रखता है: आप उन्हें स्थानांतरित कर सकते हैं, नाम बदल सकते हैं या हटा सकते हैं, या उन्हें किसी अन्य प्रोग्राम में खोल सकते हैं, जबकि वह प्रतीक्षा कर रहा है। जब आप इसे फिर से शुरू करते हैं, तो MDM उन्हें वहीं खोलता है जहाँ वे हैं; जो फ़ाइल इस बीच स्थानांतरित या हटाई गई थी, उसे फिर से बनाया जाता है और उसके टुकड़े फिर से डाउनलोड किए जाते हैं। एक समाप्त टॉरेंट जिसे साझा किया जा रहा है (<g1>टॉरेंट समाप्त होने के बाद भी उन्हें साझा करते रहें</g1>, टॉरेंट सेटिंग्स में) अपनी फ़ाइलों को केवल पढ़ने के लिए खुला रखता है: अन्य प्रोग्राम इस बीच उन्हें खोल सकते हैं, कॉपी कर सकते हैं, चला सकते हैं, स्थानांतरित कर सकते हैं या नाम बदल सकते हैं।"
+  },
   "3cd4e5cff6113414": {
    "source": "<g1>Then move the archives to the Recycle Bin</g1> has nothing to move afterwards: the archive is already gone.",
    "text": "<g1>फिर आर्काइव को रीसायकल बिन में ले जाएं</g1> के पास बाद में ले जाने के लिए कुछ भी नहीं है: आर्काइव पहले ही चला गया है।"
@@ -4885,10 +4913,6 @@
   "413ea94686ccd93b": {
    "source": "When an address is already in the list, MDM asks what to do, or follows the answer you chose in <g1>Options → Downloads → If a duplicate download link is added</g1>.",
    "text": "जब कोई पता पहले से ही सूची में होता है, तो MDM पूछता है कि क्या करना है, या आपके द्वारा <g1>विकल्प → डाउनलोड → यदि कोई डुप्लिकेट डाउनलोड लिंक जोड़ा जाता है</g1> में चुने गए उत्तर का पालन करता है।"
-  },
-  "415322c0b133befd": {
-   "source": "Each running download has its own progress window. It opens when the download starts (unless you turned that off in Options → Downloads → Customize…",
-   "text": "प्रत्येक चल रहे डाउनलोड की अपनी प्रगति विंडो होती है। यह डाउनलोड शुरू होने पर खुलती है (जब तक कि आपने इसे विकल्प → डाउनलोड → अनुकूलित करें... में बंद न किया हो)"
   },
   "4160d55635d3e362": {
    "source": "Freeze reports that tell the kind of freeze",
@@ -5802,6 +5826,10 @@
    "source": "<g1>A minimized MDM keeps working</g1>: with the main window minimized (not to the notification area), queues didn't start their next file, the Scheduler's starts and stops didn't fire, download limits, the network adapter's kill switch, the clipboard monitor, the update check, the taskbar's progress and saving the list all waited until the window was restored. They run in every window state now, and their windows (Download complete, a limit's notice) open at once.",
    "text": "<g1>एक छोटा किया गया MDM काम करता रहता है</g1>: मुख्य विंडो को छोटा करने पर (सूचना क्षेत्र में नहीं), कतारें अपनी अगली फ़ाइल शुरू नहीं करती थीं, शेड्यूलर के शुरू और बंद नहीं होते थे, डाउनलोड सीमाएँ, नेटवर्क एडेप्टर का किल स्विच, क्लिपबोर्ड मॉनिटर, अपडेट जाँच, टास्कबार की प्रगति और सूची को सहेजना सभी तब तक इंतजार करते थे जब तक विंडो को बहाल नहीं किया जाता था। अब वे हर विंडो स्थिति में चलते हैं, और उनकी विंडो (डाउनलोड पूरा, एक सीमा की सूचना) तुरंत खुल जाती हैं।"
   },
+  "4e60a529980083e7": {
+   "source": "The downloads join the <g1>Main download queue</g1>, ready to start (<g2>Start</g2> starts it too). <g3>Tasks → Import → From IDM export file</g3> reads an <x4/> file, with each download's referrer and cookies, and the file name a list gives it in a <x5/> line.",
+   "text": "डाउनलोड <g1>मुख्य डाउनलोड कतार</g1> में जुड़ जाते हैं, शुरू होने के लिए तैयार (<g2>शुरू करें</g2> इसे भी शुरू करता है)। <g3>कार्य → आयात → IDM निर्यात फ़ाइल से</g3> एक <x4/> फ़ाइल पढ़ता है, जिसमें प्रत्येक डाउनलोड का रेफ़रर और कुकीज़ होते हैं, और फ़ाइल का नाम एक सूची इसे <x5/> लाइन में देती है।"
+  },
   "4e96b700836944de": {
    "source": "<g1>Password</g1>: the archives' password, if they have one. It is kept in memory only and is never saved by itself: to keep one for other packages, add it to your <g2>archive passwords</g2>.",
    "text": "<g1>पासवर्ड</g1>: यदि आर्काइव का कोई पासवर्ड है, तो वह यहाँ दर्ज करें। इसे केवल मेमोरी में रखा जाता है और यह अपने आप कभी सहेजा नहीं जाता है: अन्य पैकेजों के लिए इसे रखने के लिए, इसे अपने <g2>आर्काइव पासवर्ड</g2> में जोड़ें।"
@@ -6521,6 +6549,10 @@
   "58f22a0b1aeea2b4": {
    "source": "Watch it work.",
    "text": "इसे काम करते हुए देखें।"
+  },
+  "58f7b730058089bc": {
+   "source": "Everyone who takes part follows the <g1>Code of conduct</g1>. Who reviews and merges changes, and how decisions are made, is in <g2>GOVERNANCE.md</g2>.",
+   "text": "जो भी भाग लेता है, वह <g1>आचार संहिता</g1> का पालन करता है। परिवर्तनों की समीक्षा और उन्हें मर्ज कौन करता है, और निर्णय कैसे लिए जाते हैं, यह <g2>GOVERNANCE.md</g2> में है।"
   },
   "59130ab4ecc47c65": {
    "source": "<g1>Hide to the notification area</g1> (a short dash with an arrow down to the corner; on Windows in the title bar, left of Minimize) puts the window in the notification area; <g2>Downloads in progress</g2> in the tray icon's menu brings it back. See <g3>The tray icon</g3>.",
@@ -8233,6 +8265,10 @@
   "700b58886e17c427": {
    "source": "<g1><g2>Options</g2></g1> — every page of the Options window.",
    "text": "<g1><g2>विकल्प</g2></g1> — विकल्प विंडो का हर पृष्ठ।"
+  },
+  "702b1d80d041e97d": {
+   "source": "<g1>Tasks → Import → From text file</g1> and <g2>From IDM export file</g2>. An <x3/> file brings each download's referrer and cookies, and its file name when the list gives one (a <x4/> line; only the name, never a folder).",
+   "text": "<g1>कार्य → आयात → टेक्स्ट फ़ाइल से</g1> और <g2>IDM निर्यात फ़ाइल से</g2>। एक <x3/> फ़ाइल प्रत्येक डाउनलोड का रेफ़रर और कुकीज़ लाती है, और उसका फ़ाइल नाम जब सूची में दिया गया हो (एक <x4/> लाइन; केवल नाम, फ़ोल्डर कभी नहीं)।"
   },
   "70304346a925831b": {
    "source": "MDM opens <g1>Download File Info</g1> instead of the browser downloading the file. Click <g2>Start Download</g2>.",
@@ -10510,10 +10546,6 @@
    "source": "Check that the Speed Limiter is off: <g1>Downloads → Speed Limiter → Turn off</g1>. Also look at <g2>Downloads → Speed Limiter → Settings... → Limit all downloads together to</g2>, which applies even with the limiter off.",
    "text": "जांचें कि गति सीमित करने वाला बंद है: <g1>डाउनलोड → गति सीमित करने वाला → बंद करें</g1>। <g2>डाउनलोड → गति सीमित करने वाला → सेटिंग्स... → सभी डाउनलोड को एक साथ सीमित करें</g2> भी देखें, जो सीमित करने वाले के बंद होने पर भी लागू होता है।"
   },
-  "8e9db9ede7b54a27": {
-   "source": "<g1>Customize \"Download progress\" dialog → Edit...</g1> — <g2>Show download progress dialog when a download starts</g2>: on by default. Untick it and a download no longer opens its progress window when it starts, from the browser, a link you add, a video or a queue; it goes on in the main window's list, where a double-click opens its progress window. <g3>Download complete</g3> still shows when it finishes, as <g4>Show download complete dialog</g4> below says.",
-   "text": "<g1>\"डाउनलोड प्रगति\" डायलॉग को अनुकूलित करें → संपादित करें...</g1> — <g2>डाउनलोड शुरू होने पर डाउनलोड प्रगति डायलॉग दिखाएँ</g2>: डिफ़ॉल्ट रूप से चालू। इसे अनटिक करने पर, ब्राउज़र से, आपके द्वारा जोड़े गए लिंक से, वीडियो से या कतार से डाउनलोड शुरू होने पर उसकी प्रगति विंडो नहीं खुलती है; यह मुख्य विंडो की सूची में जारी रहता है, जहाँ डबल-क्लिक करने पर उसकी प्रगति विंडो खुलती है। <g3>डाउनलोड पूरा</g3> होने पर भी यह दिखाता है, जैसा कि नीचे <g4>डाउनलोड पूर्ण संवाद दिखाएँ</g4> कहता है।"
-  },
   "8e9f9863589b4bd6": {
    "source": "Fuzzing",
    "text": "फ़ज़िंग"
@@ -10729,6 +10761,10 @@
   "91921dfcf2686194": {
    "source": "MDM's interface comes in 87 languages: every display language Windows 11 offers, from Afrikaans to Vietnamese, including both Chinese scripts, Spanish for Spain and Mexico, French for France and Canada, Portuguese for Portugal and Brazil, and Serbian in Cyrillic and Latin.",
    "text": "MDM का इंटरफ़ेस 87 भाषाओं में आता है: Windows 11 की हर डिस्प्ले भाषा, अफ्रीकी से वियतनामी तक, जिसमें दोनों चीनी लिपियाँ, स्पेन के लिए स्पेनिश और मेक्सिको के लिए स्पेनिश, फ्रांस के लिए फ्रेंच और कनाडा के लिए फ्रेंच, पुर्तगाल के लिए पुर्तगाली और ब्राजील के लिए पुर्तगाली, और सिरिलिक और लैटिन में सर्बियाई शामिल हैं।"
+  },
+  "91c08dd2d3fe7d4a": {
+   "source": "<g1>Add category</g1> — make your own, for example <g2>Books</g2> for <x3/> (they then go to Books, not Documents). Give it a name, the file types (separated by spaces, <x4/> allowed) and a folder.",
+   "text": "<g1>श्रेणी जोड़ें</g1> — अपनी खुद की श्रेणी बनाएँ, उदाहरण के लिए <g2>किताबें</g2> के लिए <x3/> (वे फिर किताबों में जाती हैं, दस्तावेज़ों में नहीं)। इसे एक नाम, फ़ाइल प्रकार (स्थानों से अलग किए गए, <x4/> की अनुमति है) और एक फ़ोल्डर दें।"
   },
   "91cefe80b7f00fac": {
    "source": "<g1><g2>Download a file</g2></g1> — copy a link, add it, open the file.",
@@ -12042,10 +12078,6 @@
    "source": "A live stream saved by a queue's stop counts as complete, so a daily queue doesn't start it again the next day.",
    "text": "एक कतार के स्टॉप द्वारा सहेजी गई एक लाइव स्ट्रीम को पूर्ण माना जाता है, इसलिए एक दैनिक कतार अगले दिन इसे फिर से शुरू नहीं करती है।"
   },
-  "a21a2e8b8e4dad43": {
-   "source": "<g1>#1 in Rust</g1><g2>repository of the day on <x3/></g2>",
-   "text": "<g1>Rust में #1</g1><g2><x3/> पर दिन का रिपॉजिटरी</g2>"
-  },
   "a21dffa69dd07677": {
    "source": "Every row, and easier to read",
    "text": "हर पंक्ति, और पढ़ने में आसान"
@@ -12237,10 +12269,6 @@
   "a4b01563b82565da": {
    "source": "<g1>Sharper text on Windows</g1> (<g2>#262</g2>): Segoe UI and Tahoma are grid-fitted across as well as up and down, and each letter starts on a whole pixel, as Windows draws its own grey text: upright strokes were two grey pixels wide at 100 % and 125 %, which read as blurred.",
    "text": "<g1>Windows पर तीखा टेक्स्ट</g1> (<g2>#262</g2>): Segoe UI और Tahoma को ऊपर और नीचे के साथ-साथ ग्रिड-फिट किया जाता है, और हर अक्षर एक पूरे पिक्सेल पर शुरू होता है, जैसे Windows अपना ग्रे टेक्स्ट ड्रॉ करता है: 100% और 125% पर सीधी स्ट्रोक दो ग्रे पिक्सेल चौड़ी थीं, जो धुंधली लगती थीं।"
-  },
-  "a4b04f29f56fdc42": {
-   "source": "<g1>Add category</g1> — make your own, for example <g2>Books</g2> for <x3/>. Give it a name, the file types (separated by spaces, <x4/> allowed) and a folder.",
-   "text": "<g1>श्रेणी जोड़ें</g1> — अपनी खुद की श्रेणी बनाएँ, उदाहरण के लिए <x3/> के लिए <g2>पुस्तकें</g2>। इसे एक नाम, फ़ाइल प्रकार (स्थानों से अलग किए गए, <x4/> की अनुमति है) और एक फ़ोल्डर दें।"
   },
   "a4b1f9a84345ac5d": {
    "source": "<g1>yt-dlp</g1> (about 23 MB) looks the page up and finds where the video and its sound come from; MDM downloads them (<g2>How a video comes down</g2>). The first time, click <g3>Install yt-dlp</g3>. MDM checks the download against the signature yt-dlp's developers publish before it uses it.",
@@ -13093,6 +13121,10 @@
   "afc32cfba2a08d06": {
    "source": "Choose a download",
    "text": "डाउनलोड चुनें"
+  },
+  "afd25bc6979c1269": {
+   "source": "<g1>Customize \"Download progress\" dialog → Edit...</g1> — <g2>Show download progress dialog when a download starts</g2>: <g3>Show normally</g3>, on by default; <g4>Show minimized</g4>, which starts the download's progress window minimized on the taskbar, without taking the focus from the program you are in; or <g5>Don't show</g5>, where a download no longer opens its progress window when it starts, from the browser, a link you add, a video or a queue, and it goes on in the main window's list, where a double-click opens its progress window. <g6>Download complete</g6> still shows when it finishes, as <g7>Show download complete dialog</g7> below says.",
+   "text": "<g1>\"डाउनलोड प्रगति\" डायलॉग को अनुकूलित करें → संपादित करें...</g1> — <g2>डाउनलोड शुरू होने पर डाउनलोड प्रगति डायलॉग दिखाएँ</g2>: <g3>सामान्य रूप से दिखाएँ</g3>, डिफ़ॉल्ट रूप से चालू; <g4>छोटा करके दिखाएँ</g4>, जो डाउनलोड की प्रगति विंडो को टास्कबार पर छोटा करके शुरू करता है, आपके वर्तमान प्रोग्राम से फ़ोकस हटाए बिना; या <g5>न दिखाएँ</g5>, जहाँ डाउनलोड शुरू होने पर उसकी प्रगति विंडो नहीं खुलती है, चाहे वह ब्राउज़र से हो, आपके द्वारा जोड़े गए लिंक से हो, वीडियो से हो या कतार से हो, और यह मुख्य विंडो की सूची में चलता रहता है, जहाँ डबल-क्लिक करने पर उसकी प्रगति विंडो खुलती है। <g6>डाउनलोड पूरा</g6> होने पर भी यह दिखाता है, जैसा कि नीचे <g7>डाउनलोड पूर्ण संवाद दिखाएँ</g7> कहता है।"
   },
   "aff376e66e9d2870": {
    "source": "Queues",
@@ -14026,10 +14058,6 @@
    "source": "The next tab of a focused tab strip; the next choice of a radio group",
    "text": "एक फ़ोकस किए गए टैब स्ट्रिप का अगला टैब; एक रेडियो समूह का अगला विकल्प"
   },
-  "bc713e862e9b84d3": {
-   "source": "Each download falls into a category by its file type: <g1>General</g1>, <g2>Compressed</g2>, <g3>Documents</g3>, <g4>Music</g4>, <g5>Programs</g5> or <g6>Video</g6>. Torrents have their own <g7>Torrents</g7> category. Each category has its own folder, by default inside your Downloads folder (<x8/>, <x9/> and so on; General uses <x10/> itself).",
-   "text": "प्रत्येक डाउनलोड अपनी फ़ाइल प्रकार के अनुसार एक श्रेणी में आता है: <g1>सामान्य</g1>, <g2>संपीड़ित</g2>, <g3>दस्तावेज़</g3>, <g4>संगीत</g4>, <g5>प्रोग्राम</g5> या <g6>वीडियो</g6>। टॉरेंट की अपनी <g7>टॉरेंट</g7> श्रेणी होती है। प्रत्येक श्रेणी का अपना फ़ोल्डर होता है, डिफ़ॉल्ट रूप से आपके डाउनलोड फ़ोल्डर के अंदर (<x8/>, <x9/> और इसी तरह; सामान्य <x10/> का उपयोग करता है)।"
-  },
   "bc7153d0bcfdacbb": {
    "source": "Themes — Mister Download Manager",
    "text": "थीम — Mister Download Manager"
@@ -14037,6 +14065,10 @@
   "bc81c47e31837501": {
    "source": "Start MDM yourself and try the download again.",
    "text": "MDM को खुद शुरू करें और डाउनलोड को फिर से आज़माएँ।"
+  },
+  "bc82903fbfcf0b4d": {
+   "source": "Files inside a ZIP on a server (#1775, <x1/>) are read from its table of contents, at its end: Download File Info's one look (<x2/>: the last <x3/> bytes, which tell whether the server sends parts, and hold the table of most archives) enables Preview, and Zip preview (<x4/>) lists the table (<x5/>: the ZIP64 record and the table asked for where they aren't in the end). The parsers are pure functions over bytes, fuzzed (<x6/>): the table at most <x7/> bytes and <x8/> entries, each name at most <x9/>, ZIP64's fields read within their extra field, every entry's data before the table and apart from every other's (overlapping entries refuse the archive), names that aren't plain relative paths left out. The files picked are one download (<x10/>, <x11/>): <x12/> asks for the table again, then each file's local header and data in one range request (<x13/> with the archive's validator), unpacks stored and Deflate data, counts it and checks its CRC-32 against the table's, and hands the bytes to the extraction's writer (<x14/>: the same path checks and staging folder as every extracted entry). The lab server serves made-up ZIPs (<x15/>): ZIP64, a hostile one, overlapping entries, a table too large, and any of them without ranges.",
+   "text": "सर्वर पर एक ZIP के अंदर की फ़ाइलें (#1775, <x1/>) उसकी सामग्री तालिका से, उसके अंत में पढ़ी जाती हैं: “फ़ाइल जानकारी डाउनलोड करें” की एक नज़र (<x2/>: अंतिम <x3/> बाइट्स, जो बताती हैं कि सर्वर भाग भेजता है या नहीं, और अधिकांश अभिलेखागार की तालिका रखती हैं) “पूर्वावलोकन” को सक्षम करती है, और “ZIP पूर्वावलोकन” (<x4/>) तालिका को सूचीबद्ध करता है (<x5/>: ZIP64 रिकॉर्ड और तालिका जहाँ वे अंत में नहीं हैं, वहाँ के लिए पूछी जाती हैं)। पार्सर बाइट्स पर शुद्ध फ़ंक्शन हैं, फ़ज़्ड (<x6/>): तालिका अधिकतम <x7/> बाइट्स और <x8/> एंट्री, प्रत्येक नाम अधिकतम <x9/>, ZIP64 के फ़ील्ड उनके अतिरिक्त फ़ील्ड के भीतर पढ़े जाते हैं, प्रत्येक एंट्री का डेटा तालिका से पहले और हर दूसरे से अलग (ओवरलैपिंग एंट्री संग्रह को अस्वीकार करती हैं), सादे सापेक्ष पाथ नहीं होने वाले नाम छोड़ दिए जाते हैं। चुनी गई फ़ाइलें एक डाउनलोड हैं (<x10/>, <x11/>): <x12/> तालिका को फिर से पूछता है, फिर प्रत्येक फ़ाइल का स्थानीय हेडर और डेटा एक रेंज अनुरोध में (<x13/> संग्रह के वैलिडेटर के साथ), संग्रहीत और डिफ्लेट डेटा को अनपैक करता है, उसे गिनता है और तालिका के CRC-32 के खिलाफ उसकी जाँच करता है, और बाइट्स को निष्कर्षण के राइटर को सौंपता है (<x14/>: वही पाथ जाँच और स्टेजिंग फ़ोल्डर जैसा हर निष्कर्षित एंट्री)। लैब सर्वर बनाए गए ZIPs (<x15/>) प्रदान करता है: ZIP64, एक शत्रुतापूर्ण, ओवरलैपिंग एंट्री, एक बहुत बड़ी तालिका, और उनमें से कोई भी बिना रेंज के।"
   },
   "bc83548866edf95a": {
    "source": "For numbers, set <g1>Wildcard size</g1> to the number of digits. With 3, the files are <x2/>, <x3/> and so on.",
@@ -14777,6 +14809,10 @@
   "c763f3aa0f51a5a2": {
    "source": "<g1>Server mode</g1><g2>Mister Download Manager</g2>",
    "text": "<g1>सर्वर मोड</g1><g2>Mister Download Manager</g2>"
+  },
+  "c76c7692d362ad5a": {
+   "source": "Each running download has its own progress window. It opens when the download starts (unless you turned that off, or chose Show minimized, in Options →…",
+   "text": "प्रत्येक चल रहे डाउनलोड की अपनी प्रगति विंडो होती है। यह डाउनलोड शुरू होने पर खुलती है (जब तक कि आपने इसे बंद न कर दिया हो, या छोटा करके दिखाएँ न चुना हो, विकल्प →…"
   },
   "c7853bd84d0526f0": {
    "source": "Options → Archives →",
@@ -16018,10 +16054,6 @@
    "source": "<g1><g2>Languages</g2></g1> — the 87 interface languages, numbers and dates, right-to-left layouts, and how to help translate.",
    "text": "<g1><g2>भाषाएँ</g2></g1> — 87 इंटरफ़ेस भाषाएँ, संख्याएँ और तिथियाँ, दाएँ से बाएँ लेआउट, और अनुवाद में मदद कैसे करें।"
   },
-  "d7df5f97a90fd99c": {
-   "source": "Each running download has its own progress window. It opens when the download starts (unless you turned that off in <g1>Options → Downloads → Customize \"Download progress\" dialog → Edit...</g1>); to open it again, double-click the download in the list.",
-   "text": "प्रत्येक चल रहे डाउनलोड की अपनी प्रगति विंडो होती है। यह डाउनलोड शुरू होने पर खुलती है (जब तक कि आपने इसे <g1>विकल्प → डाउनलोड → \"डाउनलोड प्रगति\" डायलॉग को अनुकूलित करें → संपादित करें...</g1> में बंद न किया हो); इसे फिर से खोलने के लिए, सूची में डाउनलोड पर डबल-क्लिक करें।"
-  },
   "d7e47d8cb056d141": {
    "source": "<g1>Download in order</g1>, to watch a video while it downloads, with each file's first and last pieces early. Other torrents fetch the rarest pieces first.",
    "text": "<g1>क्रम में डाउनलोड करें</g1>, डाउनलोड होते समय वीडियो देखने के लिए, प्रत्येक फ़ाइल के पहले और अंतिम भाग जल्दी। अन्य टॉरेंट सबसे दुर्लभ भाग पहले प्राप्त करते हैं।"
@@ -16914,6 +16946,10 @@
    "source": "Browser extension that sends downloads to a download manager",
    "text": "ब्राउज़र एक्सटेंशन जो डाउनलोड को डाउनलोड मैनेजर पर भेजता है"
   },
+  "e58c3a79f2c454b5": {
+   "source": "A Hugging Face model or dataset (or a folder of one, at a revision) and a GitHub release or tag given to Link grabber (#1772, <x1/>) are listed through the sites' public APIs: the revision is first made its commit, then the tree is read page by page (<x2/>, the same API's only), each entry's path taken only when it is a relative path of plain names inside the folder asked (<x3/>: no <x4/>, absolute path, drive or device name), matched by its names; a file's address is built from the repository, the commit and those names, never taken from the answer. Each file keeps its size and the SHA-256 the site publishes (an LFS file's, a release asset's <x5/>), which becomes the download's checksum. The app makes one package whose folder is the address's path under the download folder, each file in its own folders inside it (<x6/>), unticked; Sites Logins' password for <x7/> goes as an access token (<x8/>) to Hugging Face's own hosts only. The lab server plays both APIs (<x9/>): pages, a gated repository, hostile paths, a wrong digest and rate limits.",
+   "text": "लिंक ग्रैबर (#1772, <x1/>) को दिया गया एक Hugging Face मॉडल या डेटासेट (या एक फ़ोल्डर, एक संशोधन पर) और एक GitHub रिलीज़ या टैग साइटों के सार्वजनिक API के माध्यम से सूचीबद्ध किए जाते हैं: संशोधन को पहले उसकी कमिट बनाया जाता है, फिर ट्री को पेज-दर-पेज पढ़ा जाता है (<x2/>, वही API का एकमात्र), प्रत्येक एंट्री का पाथ तभी लिया जाता है जब वह मांगे गए फ़ोल्डर के अंदर सादे नामों का एक सापेक्ष पाथ हो (<x3/>: कोई <x4/>, पूर्ण पाथ, ड्राइव या डिवाइस नाम नहीं), उसके नामों से मेल खाता हो; एक फ़ाइल का पता रिपॉजिटरी, कमिट और उन नामों से बनाया जाता है, कभी भी उत्तर से नहीं लिया जाता है। प्रत्येक फ़ाइल अपना आकार और SHA-256 रखती है जिसे साइट प्रकाशित करती है (एक LFS फ़ाइल का, एक रिलीज़ एसेट का <x5/>), जो डाउनलोड का चेकसम बन जाता है। ऐप एक पैकेज बनाता है जिसका फ़ोल्डर डाउनलोड फ़ोल्डर के तहत पते का पाथ होता है, प्रत्येक फ़ाइल उसके अंदर अपने स्वयं के फ़ोल्डर में होती है (<x6/>), अनटिक की हुई; Hugging Face के अपने होस्ट के लिए साइट लॉगिन का पासवर्ड <x7/> एक एक्सेस टोकन (<x8/>) के रूप में जाता है। लैब सर्वर दोनों API चलाता है (<x9/>): पेज, एक गेटेड रिपॉजिटरी, शत्रुतापूर्ण पाथ, एक गलत डाइजेस्ट और दर सीमाएँ।"
+  },
   "e58fc606693e6852": {
    "source": "Website",
    "text": "वेबसाइट"
@@ -16994,9 +17030,17 @@
    "source": "No, if it came from this site or GitHub Releases. Some antivirus programs judge a program they don't know by an educated guess, not by a known virus…",
    "text": "नहीं, अगर यह इस साइट या GitHub रिलीज़ से आया है। कुछ एंटीवायरस प्रोग्राम किसी अज्ञात प्रोग्राम को ज्ञात वायरस के बजाय अनुमान के आधार पर आँकते हैं…"
   },
+  "e6d677c76529ac72": {
+   "source": "<g1>#1</g1><g2>Rust</g2>",
+   "text": "<g1>#1</g1><g2>Rust</g2>"
+  },
   "e6e9f590b183bea4": {
    "source": "Link grabber: paste many links, MDM groups them, checks which are online, and extracts archives when they arrive.",
    "text": "लिंक ग्रैबर: कई लिंक पेस्ट करें, MDM उन्हें समूहित करता है, जांचता है कि कौन से ऑनलाइन हैं, और जब वे आते हैं तो अभिलेखागार निकालता है।"
+  },
+  "e6f2d5c5287999ae": {
+   "source": "Some programs (BitComet, for one) write a torrent's names in another encoding and add a UTF-8 copy of them (<x1/>, <x2/>); MDM shows and saves the files under the UTF-8 names. A torrent like that which was downloading in an earlier version starts those files again under their correct names, and leaves the files with the old names in the folder.",
+   "text": "कुछ प्रोग्राम (जैसे BitComet) टॉरेंट के नाम किसी और एन्कोडिंग में लिखते हैं और उनकी UTF-8 कॉपी जोड़ते हैं (<x1/>, <x2/>); MDM फ़ाइलों को UTF-8 नामों के तहत दिखाता और सहेजता है। ऐसा टॉरेंट जो पहले के संस्करण में डाउनलोड हो रहा था, उन फ़ाइलों को उनके सही नामों के तहत फिर से शुरू करता है, और पुरानी नामों वाली फ़ाइलों को फ़ोल्डर में छोड़ देता है।"
   },
   "e700b8b592a5b4c0": {
    "source": "Free forever: no trial, no ads, no key",
@@ -17082,6 +17126,10 @@
    "source": "<g1>Download rules</g1> tab: a rule adds the torrents of new articles whose titles it matches, without asking.",
    "text": "<g1>नियम डाउनलोड करें</g1> टैब: नियम उन नए लेखों के टॉरेंट बिना पूछे जोड़ता है, जिनके शीर्षक नियम से मेल खाते हैं।"
   },
+  "e7d0f38692cc71d5": {
+   "source": "View → Font (<x1/>, #1489) is separate: the font file the interface's text is drawn in (<x2/> in <x3/>; Segoe UI, the system's own, unless chosen) and <x4/>, the percent of the theme's sizes the text is drawn at. <x5/> is the one place the sizes come from, for egui's text styles and for the custom-drawn Win32 controls alike (<x6/>); the layout's own measurements don't change, so text can overflow where a window is tight, but nothing moves. On Windows the DirectWrite rasterizer (<x7/>) draws the chosen file too, and the glyph atlas is rebuilt when the font changes.",
+   "text": "“देखें” → “फ़ॉन्ट” (<x1/>, #1489) अलग है: फ़ॉन्ट फ़ाइल जिसमें इंटरफ़ेस का टेक्स्ट खींचा जाता है (<x2/> में <x3/>; Segoe UI, सिस्टम का अपना, जब तक चुना न जाए) और <x4/>, थीम के आकार का प्रतिशत जिस पर टेक्स्ट खींचा जाता है। <x5/> वह एक जगह है जहाँ से आकार आते हैं, egui की टेक्स्ट शैलियों और कस्टम-खींचे गए Win32 नियंत्रणों दोनों के लिए (<x6/>); लेआउट के अपने माप नहीं बदलते हैं, इसलिए टेक्स्ट वहाँ ओवरफ़्लो हो सकता है जहाँ एक विंडो तंग है, लेकिन कुछ भी नहीं हिलता है। Windows पर DirectWrite रास्टराइज़र (<x7/>) चुनी गई फ़ाइल को भी खींचता है, और जब फ़ॉन्ट बदलता है तो ग्लिफ़ एटलस का पुनर्निर्माण किया जाता है।"
+  },
   "e7d58a9cc03da7fd": {
    "source": "Point at the video in your browser and click the Download video button that appears over it, or paste the page's address into Tasks → Download video from a…",
    "text": "अपने ब्राउज़र में वीडियो पर पॉइंट करें और उस पर दिखने वाले वीडियो डाउनलोड करें बटन पर क्लिक करें, या पृष्ठ का पता कार्य → एक पृष्ठ से वीडियो डाउनलोड करें… में पेस्ट करें।"
@@ -17109,6 +17157,10 @@
   "e8482108fc49e0e0": {
    "source": "Can it download overnight or on a schedule?",
    "text": "क्या यह रात भर या एक शेड्यूल पर डाउनलोड कर सकता है?"
+  },
+  "e852a2ae2ea94c2d": {
+   "source": "<g1>Automatically put in \"…\" category the following file types</g1> — the file types that go to this category. A built-in category whose list you never changed gains the types a new version adds; one you edited stays as it is.",
+   "text": "<g1>निम्नलिखित फ़ाइल प्रकारों को \"…\" श्रेणी में स्वचालित रूप से डालें</g1> — वे फ़ाइल प्रकार जो इस श्रेणी में जाते हैं। एक अंतर्निहित श्रेणी जिसकी सूची आपने कभी नहीं बदली है, उसमें नए संस्करण द्वारा जोड़े गए प्रकार शामिल होते हैं; जिसे आपने संपादित किया है वह वैसा ही रहता है।"
   },
   "e8592a334f7cb4df": {
    "source": "In <g1>Download File Info</g1>, click <g2>Download Later</g2> and pick the queue.",
@@ -17705,6 +17757,10 @@
   "ef6e5d90b67f8e4e": {
    "source": "<g1>\"Hide tab\" was cut in longer languages</g1> (German \"Registerkarte au...\"): the button grows to fit its label where there is room, through a shared helper other buttons can use.",
    "text": "<g1>\"टैब छुपाएँ\" लंबी भाषाओं में कट जाता था</g1> (जर्मन \"Registerkarte au...\"): बटन अपनी लेबल में फिट होने के लिए बढ़ता है जहाँ जगह होती है, एक साझा सहायक के माध्यम से जिसका उपयोग अन्य बटन कर सकते हैं।"
+  },
+  "ef7238dc374b9e0e": {
+   "source": "Each download falls into a category by its file type: <g1>General</g1>, <g2>Compressed</g2>, <g3>Documents</g3>, <g4>Music</g4>, <g5>Programs</g5> or <g6>Video</g6>. Torrents have their own <g7>Torrents</g7> category. <g8>Programs</g8> takes programs, installers and app packages (EXE, MSI, APK, IPA, DMG, PKG, DEB, RPM, AppImage, MSIX…), <g9>Compressed</g9> archives and disc images (ZIP, RAR, 7Z, TAR, XZ, ISO, IMG, VHD…), <g10>Documents</g10> text documents, spreadsheets and e-books (PDF, DOCX, XLSX, ODT, EPUB, MOBI…), <g11>Music</g11> audio (MP3, FLAC, OPUS, M4A…) and <g12>Video</g12> videos (MP4, MKV, WEBM…); every other file goes to General. Your own categories come before the built-in ones. Each category has its own folder, by default inside your Downloads folder (<x13/>, <x14/> and so on; General uses <x15/> itself).",
+   "text": "प्रत्येक डाउनलोड अपनी फ़ाइल प्रकार के अनुसार एक श्रेणी में आता है: <g1>सामान्य</g1>, <g2>संपीड़ित</g2>, <g3>दस्तावेज़</g3>, <g4>संगीत</g4>, <g5>प्रोग्राम</g5> या <g6>वीडियो</g6>। टॉरेंट की अपनी <g7>टॉरेंट</g7> श्रेणी होती है। <g8>प्रोग्राम</g8> में प्रोग्राम, इंस्टॉलर और ऐप पैकेज (EXE, MSI, APK, IPA, DMG, PKG, DEB, RPM, AppImage, MSIX…) आते हैं, <g9>संपीड़ित</g9> में आर्काइव और डिस्क इमेज (ZIP, RAR, 7Z, TAR, XZ, ISO, IMG, VHD…), <g10>दस्तावेज़</g10> में टेक्स्ट दस्तावेज़, स्प्रेडशीट और ई-बुक्स (PDF, DOCX, XLSX, ODT, EPUB, MOBI…), <g11>संगीत</g11> में ऑडियो (MP3, FLAC, OPUS, M4A…) और <g12>वीडियो</g12> में वीडियो (MP4, MKV, WEBM…) आते हैं; बाकी सभी फ़ाइलें सामान्य में जाती हैं। आपकी अपनी श्रेणियाँ अंतर्निहित श्रेणियों से पहले आती हैं। प्रत्येक श्रेणी का अपना फ़ोल्डर होता है, जो डिफ़ॉल्ट रूप से आपके डाउनलोड फ़ोल्डर के अंदर होता है (<x13/>, <x14/> और इसी तरह; सामान्य स्वयं <x15/> का उपयोग करता है)।"
   },
   "ef8cedcbdccdaf85": {
    "source": "The code is filled in when you scanned the QR code; otherwise type it. Give the phone a name, and tap <g1>Pair</g1>. The window on the computer says so, and closes with <g2>Done</g2>.",
@@ -18313,10 +18369,6 @@
   "f8c444517ab946e2": {
    "source": "From the plain zip",
    "text": "सादे ज़िप से"
-  },
-  "f8c71a9fb2bd8bde": {
-   "source": "<g1>Automatically put in \"…\" category the following file types</g1> — the file types that go to this category.",
-   "text": "<g1>निम्नलिखित फ़ाइल प्रकारों को “…” श्रेणी में स्वचालित रूप से डालें</g1> — वे फ़ाइल प्रकार जो इस श्रेणी में जाते हैं।"
   },
   "f8e0a9e7ee529ff0": {
    "source": "Select <g1>Main download queue</g1> on the left. The <g2>Schedule</g2> tab opens.",

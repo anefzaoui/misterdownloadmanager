@@ -778,6 +778,10 @@
    "source": "Too many tries from your connection. Please try again in a few minutes.",
    "text": "تعداد تلاش‌ها از اتصال شما زیاد است. لطفا چند دقیقه دیگر دوباره امتحان کنید."
   },
+  "0a07d4f9fc7fb519": {
+   "source": "When the network comes back after a drop (Wi-Fi reconnecting, the computer waking from sleep, a VPN connecting or switching), MDM notices within a few seconds and calls the torrents' peers again at once, and asks their trackers and the DHT again, so a download picks up where it was instead of waiting minutes for each peer's next try. Each peer is called once for it; a tracker is still never asked sooner than its minimum interval. Behind a SOCKS5 proxy, a drop the computer itself doesn't see (the router losing its line while Wi-Fi stays up) is noticed only through the DHT, which is off there, so those torrents come back on their own, as before.",
+   "text": "هنگامی که شبکه پس از قطعی (اتصال مجدد Wi-Fi، بیدار شدن رایانه از حالت خواب، اتصال یا تغییر VPN) بازمی‌گردد، MDM ظرف چند ثانیه متوجه می‌شود و بلافاصله همتایان تورنت‌ها را دوباره فراخوانی می‌کند و دوباره از ردیاب‌ها و DHT آن‌ها درخواست می‌کند، بنابراین بارگیری از همان جایی که متوقف شده بود ادامه می‌یابد به جای اینکه دقایق طولانی برای تلاش بعدی هر همتا منتظر بماند. هر همتا یک بار برای آن فراخوانی می‌شود؛ از یک ردیاب هرگز زودتر از حداقل فاصله زمانی آن درخواست نمی‌شود. پشت یک پروکسی SOCKS5، قطعی‌ای که خود رایانه آن را نمی‌بیند (روتر خط خود را از دست می‌دهد در حالی که Wi-Fi فعال می‌ماند) فقط از طریق DHT شناسایی می‌شود، که در آنجا خاموش است، بنابراین آن تورنت‌ها مانند قبل به خودی خود بازمی‌گردند."
+  },
   "0a15fc764eba9ef6": {
    "source": "Some servers drop the connection when the speed is very low. Avoid a tight limit for a server that can't resume: the progress window shows <g1>Resume capability: No</g1> for those.",
    "text": "برخی سرورها وقتی سرعت بسیار پایین است، اتصال را قطع می‌کنند. از محدودیت شدید برای سروری که نمی‌تواند ادامه دهد، خودداری کنید: پنجره پیشرفت برای این موارد <g1>قابلیت ادامه: خیر</g1> را نشان می‌دهد."
@@ -1114,6 +1118,10 @@
    "source": "Read the site",
    "text": "خواندن سایت"
   },
+  "0e9fede041092f7d": {
+   "source": "A file is made when its first byte is downloaded, and only a ticked one is made in the folder: what an unticked file shares with a ticked one waits in MDM's own torrent data. A running torrent keeps only the files it is reading or writing open, a few hundred at most for all of MDM's torrents together (fewer where the system allows fewer, as macOS does), so a torrent of thousands of files runs where it used to fail with \"Too many open files\".",
+   "text": "یک فایل زمانی ساخته می‌شود که اولین بایت آن بارگیری شود، و فقط فایل‌های علامت‌خورده در پوشه ساخته می‌شوند: آنچه یک فایل علامت‌نخورده با یک فایل علامت‌خورده مشترک دارد، در داده‌های تورنت خود MDM منتظر می‌ماند. یک تورنت در حال اجرا فقط فایل‌هایی را که در حال خواندن یا نوشتن آن‌هاست باز نگه می‌دارد، حداکثر چند صد فایل برای همه تورنت‌های MDM با هم (در سیستم‌هایی که تعداد کمتری اجازه می‌دهند، مانند macOS، این تعداد کمتر است)، بنابراین یک تورنت با هزاران فایل اجرا می‌شود در حالی که قبلا با خطای «فایل‌های باز زیاد» از کار می‌افتاد."
+  },
   "0ea74b188ec2ca88": {
    "source": "If it says <g1>the site sent a web page instead of the file</g1>, the link led to the site's own page: a file host's countdown, a captcha, a <g2>Download</g2> button to press, or a sign-in. MDM never saves that page as your file. Click <g3>Open in browser</g3> in the download's progress window (or open the link yourself), finish there, and when the browser starts the real download, MDM's extension hands it to MDM. Without the extension, let the browser download it.",
    "text": "اگر پیام <g1>سایت به جای فایل، یک صفحه وب فرستاد</g1> را مشاهده کردید، پیوند به صفحه خود سایت منتهی شده است: شمارش معکوس یک میزبان فایل، یک کپچا، دکمه <g2>بارگیری</g2> که باید فشار دهید، یا صفحه ورود. MDM هرگز آن صفحه را به عنوان فایل شما ذخیره نمی‌کند. در پنجره پیشرفت بارگیری روی <g3>باز کردن در مرورگر</g3> کلیک کنید (یا خودتان پیوند را باز کنید)، کار را در آنجا به پایان برسانید، و وقتی مرورگر بارگیری واقعی را آغاز کرد، افزونه MDM آن را به MDM منتقل می‌کند. بدون افزونه، اجازه دهید مرورگر آن را بارگیری کند."
@@ -1393,6 +1401,10 @@
   "1294135f300139c9": {
    "source": "The benchmark data could not be loaded.",
    "text": "داده‌های بنچمارک بارگیری نشد."
+  },
+  "12947e2a74bc1b46": {
+   "source": "Each running download has its own progress window. It opens when the download starts (unless you turned that off, or chose <g1>Show minimized</g1>, in <g2>Options → Downloads → Customize \"Download progress\" dialog → Edit...</g2>); to open it again, double-click the download in the list.",
+   "text": "هر بارگیری در حال اجرا پنجره پیشرفت مخصوص به خود را دارد. این پنجره با شروع بارگیری باز می‌شود (مگر اینکه آن را غیرفعال کرده باشید یا گزینه <g1>کوچک‌شده نمایش بده</g1> را در <g2>گزینه‌ها ← بارگیری‌ها ← سفارشی‌سازی کادر محاوره‌ای «پیشرفت دانلود» ← ویرایش…</g2> انتخاب کرده باشید)؛ برای باز کردن دوباره آن، روی بارگیری در فهرست دوبار کلیک کنید."
   },
   "12a228101626f4bc": {
    "source": "How MDM uses connections",
@@ -4558,6 +4570,10 @@
    "source": "Steps",
    "text": "مراحل"
   },
+  "3ccaf5a331b1edd2": {
+   "source": "A stopped torrent keeps none of its files open: you can move, rename or delete them, or open them in another program, while it waits. When you start it again, MDM opens them where they are; a file that was moved away or deleted meanwhile is made again and its pieces downloaded again. A finished torrent that is shared (<g1>Keep sharing torrents after they finish</g1>, in Torrent settings) keeps its files open only to read them: other programs can open, copy, run, move or rename them meanwhile.",
+   "text": "یک تورنت متوقف‌شده هیچ‌یک از فایل‌هایش را باز نگه نمی‌دارد: می‌توانید آن‌ها را جابه‌جا، تغییر نام یا حذف کنید، یا در برنامه دیگری باز کنید، در حالی که منتظر است. وقتی دوباره آن را شروع می‌کنید، MDM آن‌ها را در همان جایی که هستند باز می‌کند؛ فایلی که در این مدت جابه‌جا یا حذف شده بود، دوباره ساخته می‌شود و قطعات آن دوباره بارگیری می‌شوند. یک تورنت تکمیل‌شده که به اشتراک گذاشته می‌شود (<g1>پس از اتمام، تورنت‌ها را به اشتراک‌گذاری ادامه بده</g1>، در تنظیمات تورنت) فایل‌هایش را فقط برای خواندن باز نگه می‌دارد: برنامه‌های دیگر می‌توانند در این مدت آن‌ها را باز، کپی، اجرا، جابه‌جا یا تغییر نام دهند."
+  },
   "3cd4e5cff6113414": {
    "source": "<g1>Then move the archives to the Recycle Bin</g1> has nothing to move afterwards: the archive is already gone.",
    "text": "<g1>سپس بایگانی‌ها را به سطل بازیافت منتقل کنید</g1> چیزی برای انتقال پس از آن ندارد: بایگانی قبلا حذف شده است."
@@ -4897,10 +4913,6 @@
   "413ea94686ccd93b": {
    "source": "When an address is already in the list, MDM asks what to do, or follows the answer you chose in <g1>Options → Downloads → If a duplicate download link is added</g1>.",
    "text": "هنگامی که یک آدرس از قبل در فهرست باشد، MDM می‌پرسد چه کاری انجام دهد، یا از پاسخی که در <g1>گزینه‌ها → بارگیری‌ها → اگر پیوند بارگیری تکراری اضافه شود</g1> انتخاب کرده‌اید پیروی می‌کند."
-  },
-  "415322c0b133befd": {
-   "source": "Each running download has its own progress window. It opens when the download starts (unless you turned that off in Options → Downloads → Customize…",
-   "text": "هر بارگیری در حال اجرا پنجره پیشرفت مخصوص به خود را دارد. این پنجره با شروع بارگیری باز می‌شود (مگر اینکه این گزینه را در گزینه‌ها ← بارگیری‌ها ← سفارشی‌سازی… غیرفعال کرده باشید)."
   },
   "4160d55635d3e362": {
    "source": "Freeze reports that tell the kind of freeze",
@@ -5814,6 +5826,10 @@
    "source": "<g1>A minimized MDM keeps working</g1>: with the main window minimized (not to the notification area), queues didn't start their next file, the Scheduler's starts and stops didn't fire, download limits, the network adapter's kill switch, the clipboard monitor, the update check, the taskbar's progress and saving the list all waited until the window was restored. They run in every window state now, and their windows (Download complete, a limit's notice) open at once.",
    "text": "<g1>MDM کوچک‌شده به کار خود ادامه می‌دهد</g1>: با کوچک شدن پنجره اصلی (نه به ناحیه اعلان)، صف‌ها فایل بعدی خود را شروع نمی‌کردند، شروع و توقف‌های زمان‌بند فعال نمی‌شدند، محدودیت‌های بارگیری، سوئیچ قطع شبکه آداپتور، مانیتور کلیپ‌بورد، بررسی به‌روزرسانی، پیشرفت نوار وظیفه و ذخیره لیست همگی منتظر می‌ماندند تا پنجره بازیابی شود. اکنون آنها در هر وضعیت پنجره اجرا می‌شوند و پنجره‌های آنها (بارگیری کامل شد، اعلان محدودیت) بلافاصله باز می‌شوند."
   },
+  "4e60a529980083e7": {
+   "source": "The downloads join the <g1>Main download queue</g1>, ready to start (<g2>Start</g2> starts it too). <g3>Tasks → Import → From IDM export file</g3> reads an <x4/> file, with each download's referrer and cookies, and the file name a list gives it in a <x5/> line.",
+   "text": "بارگیری‌ها به <g1>صف اصلی دانلود</g1> اضافه می‌شوند و آماده شروع هستند (<g2>شروع</g2> نیز آن را آغاز می‌کند). <g3>وظایف → وارد کردن → از فایل خروجی IDM</g3> یک فایل <x4/> را می‌خواند که شامل ارجاع‌دهنده و کوکی‌های هر بارگیری و نام فایلی است که در خط <x5/> مشخص شده است."
+  },
   "4e96b700836944de": {
    "source": "<g1>Password</g1>: the archives' password, if they have one. It is kept in memory only and is never saved by itself: to keep one for other packages, add it to your <g2>archive passwords</g2>.",
    "text": "<g1>گذرواژه</g1>: گذرواژه بایگانی‌ها، اگر داشته باشند. این گذرواژه فقط در حافظه نگهداری می‌شود و هرگز به‌تنهایی ذخیره نمی‌شود: برای نگهداری آن برای بسته‌های دیگر، آن را به <g2>گذرواژه‌های بایگانی</g2> خود اضافه کنید."
@@ -6533,6 +6549,10 @@
   "58f22a0b1aeea2b4": {
    "source": "Watch it work.",
    "text": "نحوه کار را ببینید."
+  },
+  "58f7b730058089bc": {
+   "source": "Everyone who takes part follows the <g1>Code of conduct</g1>. Who reviews and merges changes, and how decisions are made, is in <g2>GOVERNANCE.md</g2>.",
+   "text": "همه مشارکت‌کنندگان از <g1>آیین‌نامه رفتار</g1> پیروی می‌کنند. اینکه چه کسی تغییرات را بازبینی و ادغام می‌کند و تصمیم‌ها چگونه گرفته می‌شوند، در <g2>GOVERNANCE.md</g2> آمده است."
   },
   "59130ab4ecc47c65": {
    "source": "<g1>Hide to the notification area</g1> (a short dash with an arrow down to the corner; on Windows in the title bar, left of Minimize) puts the window in the notification area; <g2>Downloads in progress</g2> in the tray icon's menu brings it back. See <g3>The tray icon</g3>.",
@@ -8246,6 +8266,10 @@
    "source": "<g1><g2>Options</g2></g1> — every page of the Options window.",
    "text": "<g1><g2>گزینه‌ها</g2></g1> — هر صفحه از پنجره گزینه‌ها."
   },
+  "702b1d80d041e97d": {
+   "source": "<g1>Tasks → Import → From text file</g1> and <g2>From IDM export file</g2>. An <x3/> file brings each download's referrer and cookies, and its file name when the list gives one (a <x4/> line; only the name, never a folder).",
+   "text": "<g1>وظایف → وارد کردن → از فایل متنی</g1> و <g2>از فایل خروجی IDM</g2>. یک فایل <x3/> ارجاع‌دهنده و کوکی‌های هر بارگیری و نام فایل آن را در صورت وجود در فهرست (یک خط <x4/>؛ فقط نام، نه پوشه) می‌آورد."
+  },
   "70304346a925831b": {
    "source": "MDM opens <g1>Download File Info</g1> instead of the browser downloading the file. Click <g2>Start Download</g2>.",
    "text": "MDM به‌جای اینکه مرورگر فایل را بارگیری کند، پنجره <g1>اطلاعات فایل بارگیری‌شده</g1> را باز می‌کند. روی <g2>شروع دانلود</g2> کلیک کنید."
@@ -8409,6 +8433,10 @@
   "72769bded1d786a9": {
    "source": "Paste a Google Drive link as it is, the one <g1>Share → Copy link</g1> gives:",
    "text": "پیوند Google Drive را همان‌طور که هست بچسبانید؛ همان پیوندی که با <g1>اشتراک‌گذاری → کپی پیوند</g1> دریافت می‌کنید:"
+  },
+  "7297ca101de5145e": {
+   "source": "The list couldn't be read from GitHub when this page was built. Everyone is on GitHub meanwhile, in the project's <g1>pull requests</g1> and <g2>issues</g2>.",
+   "text": "هنگام ساخت این صفحه، فهرست از GitHub خوانده نشد. در همین حال، همه در GitHub، در <g1>درخواست‌های پول</g1> و <g2>مسائل</g2> پروژه هستند."
   },
   "729a19fc6ce418f9": {
    "source": "Reporting problems",
@@ -9101,6 +9129,10 @@
   "7c5a4c12e8dbea2f": {
    "source": "Apple Silicon",
    "text": "اپل سیلیکون"
+  },
+  "7c5fbe4cad8057a6": {
+   "source": "Download a torrent, or only some of its files. If some of its files are already in the folder, it stops and names them; <x1/> uses them instead (what matches is kept, the rest downloaded). With Torrent settings' <g2>Add the trackers of this public list to public torrents</g2> on, a public torrent gets the list's trackers too, as in the app.",
+   "text": "یک تورنت، یا فقط برخی از فایل‌های آن را بارگیری کنید. اگر برخی از فایل‌های آن از قبل در پوشه موجود باشند، متوقف می‌شود و نام آنها را می‌آورد؛ <x1/> به جای آنها از آنها استفاده می‌کند (آنچه مطابقت دارد حفظ می‌شود، بقیه بارگیری می‌شوند). با روشن بودن <g2>ردیاب‌های این لیست عمومی را به تورنت‌های عمومی اضافه کن</g2> در «تنظیمات تورنت»، یک تورنت عمومی نیز ردیاب‌های لیست را دریافت می‌کند، همانند برنامه."
   },
   "7c949f90bb503dc8": {
    "source": "Vivaldi",
@@ -10514,10 +10546,6 @@
    "source": "Check that the Speed Limiter is off: <g1>Downloads → Speed Limiter → Turn off</g1>. Also look at <g2>Downloads → Speed Limiter → Settings... → Limit all downloads together to</g2>, which applies even with the limiter off.",
    "text": "بررسی کنید که محدودکننده سرعت خاموش باشد: <g1>بارگیری‌ها → محدودکننده سرعت → خاموش کردن</g1>. همچنین <g2>بارگیری‌ها → محدودکننده سرعت → تنظیمات... → محدود کردن همه بارگیری‌ها با هم به</g2> را بررسی کنید؛ این محدودیت حتی وقتی محدودکننده خاموش است نیز اعمال می‌شود."
   },
-  "8e9db9ede7b54a27": {
-   "source": "<g1>Customize \"Download progress\" dialog → Edit...</g1> — <g2>Show download progress dialog when a download starts</g2>: on by default. Untick it and a download no longer opens its progress window when it starts, from the browser, a link you add, a video or a queue; it goes on in the main window's list, where a double-click opens its progress window. <g3>Download complete</g3> still shows when it finishes, as <g4>Show download complete dialog</g4> below says.",
-   "text": "<g1>سفارشی‌سازی کادر محاوره‌ای «پیشرفت دانلود» → ویرایش...</g1> — <g2>نمایش گفتگوی پیشرفت بارگیری هنگام شروع بارگیری</g2>: به‌طور پیش‌فرض فعال است. آن را غیرفعال کنید تا بارگیری هنگام شروع، از مرورگر، پیوندی که اضافه می‌کنید، یک ویدیو یا یک صف، پنجره پیشرفت خود را باز نکند؛ در فهرست پنجره اصلی ادامه می‌یابد، جایی که با دوبار کلیک پنجره پیشرفت آن باز می‌شود. <g3>بارگیری کامل شد</g3> همچنان هنگام پایان نمایش داده می‌شود، همان‌طور که <g4>نمایش کادر محاوره‌ای تکمیل دانلود</g4> در پایین می‌گوید."
-  },
   "8e9f9863589b4bd6": {
    "source": "Fuzzing",
    "text": "فازینگ"
@@ -10733,6 +10761,10 @@
   "91921dfcf2686194": {
    "source": "MDM's interface comes in 87 languages: every display language Windows 11 offers, from Afrikaans to Vietnamese, including both Chinese scripts, Spanish for Spain and Mexico, French for France and Canada, Portuguese for Portugal and Brazil, and Serbian in Cyrillic and Latin.",
    "text": "رابط کاربری MDM به 87 زبان ارائه می‌شود: همه زبان‌های نمایشی Windows 11، از آفریکانس تا ویتنامی، از جمله هر دو خط نوشتاری چینی، اسپانیایی برای اسپانیا و مکزیک، فرانسوی برای فرانسه و کانادا، پرتغالی برای پرتغال و برزیل، و صربی با خط سیریلیک و لاتین."
+  },
+  "91c08dd2d3fe7d4a": {
+   "source": "<g1>Add category</g1> — make your own, for example <g2>Books</g2> for <x3/> (they then go to Books, not Documents). Give it a name, the file types (separated by spaces, <x4/> allowed) and a folder.",
+   "text": "<g1>افزودن دسته</g1> — دسته خود را بسازید، مثلا <g2>کتاب‌ها</g2> برای <x3/> (آن‌ها سپس به کتاب‌ها می‌روند، نه اسناد). یک نام، انواع فایل‌ها (با فاصله از هم جدا شوند، <x4/> مجاز است) و یک پوشه به آن بدهید."
   },
   "91cefe80b7f00fac": {
    "source": "<g1><g2>Download a file</g2></g1> — copy a link, add it, open the file.",
@@ -12046,10 +12078,6 @@
    "source": "A live stream saved by a queue's stop counts as complete, so a daily queue doesn't start it again the next day.",
    "text": "یک پخش زنده که توسط توقف یک صف ذخیره شده باشد، کامل محسوب می‌شود، بنابراین یک صف روزانه آن را روز بعد دوباره شروع نمی‌کند."
   },
-  "a21a2e8b8e4dad43": {
-   "source": "<g1>#1 in Rust</g1><g2>repository of the day on <x3/></g2>",
-   "text": "<g1>شماره 1 در Rust</g1><g2>مخزن روز در <x3/></g2>"
-  },
   "a21dffa69dd07677": {
    "source": "Every row, and easier to read",
    "text": "هر ردیف، و خواناتر"
@@ -12241,10 +12269,6 @@
   "a4b01563b82565da": {
    "source": "<g1>Sharper text on Windows</g1> (<g2>#262</g2>): Segoe UI and Tahoma are grid-fitted across as well as up and down, and each letter starts on a whole pixel, as Windows draws its own grey text: upright strokes were two grey pixels wide at 100 % and 125 %, which read as blurred.",
    "text": "<g1>متن واضح‌تر در Windows</g1> (<g2>#262</g2>): Segoe UI و Tahoma هم به صورت افقی و هم عمودی به شبکه متصل می‌شوند، و هر حرف روی یک پیکسل کامل شروع می‌شود، همانطور که Windows متن خاکستری خود را ترسیم می‌کند: خطوط عمودی در 100% و 125% دو پیکسل خاکستری عرض داشتند که به صورت تار خوانده می‌شدند."
-  },
-  "a4b04f29f56fdc42": {
-   "source": "<g1>Add category</g1> — make your own, for example <g2>Books</g2> for <x3/>. Give it a name, the file types (separated by spaces, <x4/> allowed) and a folder.",
-   "text": "<g1>افزودن دسته</g1> — دسته خود را بسازید، برای مثال <g2>کتاب‌ها</g2> برای <x3/>. به آن یک نام، انواع فایل (با فاصله جدا شده، <x4/> مجاز است) و یک پوشه بدهید."
   },
   "a4b1f9a84345ac5d": {
    "source": "<g1>yt-dlp</g1> (about 23 MB) looks the page up and finds where the video and its sound come from; MDM downloads them (<g2>How a video comes down</g2>). The first time, click <g3>Install yt-dlp</g3>. MDM checks the download against the signature yt-dlp's developers publish before it uses it.",
@@ -13097,6 +13121,10 @@
   "afc32cfba2a08d06": {
    "source": "Choose a download",
    "text": "یک بارگیری انتخاب کنید"
+  },
+  "afd25bc6979c1269": {
+   "source": "<g1>Customize \"Download progress\" dialog → Edit...</g1> — <g2>Show download progress dialog when a download starts</g2>: <g3>Show normally</g3>, on by default; <g4>Show minimized</g4>, which starts the download's progress window minimized on the taskbar, without taking the focus from the program you are in; or <g5>Don't show</g5>, where a download no longer opens its progress window when it starts, from the browser, a link you add, a video or a queue, and it goes on in the main window's list, where a double-click opens its progress window. <g6>Download complete</g6> still shows when it finishes, as <g7>Show download complete dialog</g7> below says.",
+   "text": "<g1>سفارشی‌سازی کادر محاوره‌ای «پیشرفت دانلود» → ویرایش…</g1> — <g2>نمایش گفتگوی پیشرفت بارگیری هنگام شروع بارگیری</g2>: <g3>به‌طور عادی نمایش بده</g3>، که به‌طور پیش‌فرض فعال است؛ <g4>کوچک‌شده نمایش بده</g4>، که پنجره پیشرفت بارگیری را در نوار وظیفه به صورت کوچک‌شده باز می‌کند، بدون اینکه تمرکز را از برنامه فعلی شما بگیرد؛ یا <g5>نمایش نده</g5>، که در این حالت بارگیری‌ها دیگر پنجره پیشرفت خود را هنگام شروع باز نمی‌کنند (چه از مرورگر، چه از پیوندی که اضافه می‌کنید، چه از یک ویدئو یا صف)، و در فهرست پنجره اصلی ادامه می‌یابند، جایی که با دوبار کلیک پنجره پیشرفت آن باز می‌شود. <g6>بارگیری کامل شد</g6> همچنان پس از پایان نمایش داده می‌شود، همان‌طور که <g7>نمایش کادر محاوره‌ای تکمیل دانلود</g7> در پایین توضیح می‌دهد."
   },
   "aff376e66e9d2870": {
    "source": "Queues",
@@ -14030,10 +14058,6 @@
    "source": "The next tab of a focused tab strip; the next choice of a radio group",
    "text": "برگه بعدی یک نوار برگه متمرکز؛ انتخاب بعدی یک گروه رادیویی"
   },
-  "bc713e862e9b84d3": {
-   "source": "Each download falls into a category by its file type: <g1>General</g1>, <g2>Compressed</g2>, <g3>Documents</g3>, <g4>Music</g4>, <g5>Programs</g5> or <g6>Video</g6>. Torrents have their own <g7>Torrents</g7> category. Each category has its own folder, by default inside your Downloads folder (<x8/>, <x9/> and so on; General uses <x10/> itself).",
-   "text": "هر دانلود بر اساس نوع فایل خود در یک دسته قرار می‌گیرد: <g1>عمومی</g1>، <g2>فشرده</g2>، <g3>اسناد</g3>، <g4>موسیقی</g4>، <g5>برنامه‌ها</g5> یا <g6>ویدئو</g6>. تورنت‌ها دسته <g7>تورنت‌ها</g7> خود را دارند. هر دسته پوشه مخصوص به خود را دارد، به طور پیش‌فرض در پوشه دانلودهای شما (<x8/>، <x9/> و غیره؛ عمومی از خود <x10/> استفاده می‌کند)."
-  },
   "bc7153d0bcfdacbb": {
    "source": "Themes — Mister Download Manager",
    "text": "پوسته‌ها — Mister Download Manager"
@@ -14786,6 +14810,10 @@
    "source": "<g1>Server mode</g1><g2>Mister Download Manager</g2>",
    "text": "<g1>حالت سرور</g1><g2>Mister Download Manager</g2>"
   },
+  "c76c7692d362ad5a": {
+   "source": "Each running download has its own progress window. It opens when the download starts (unless you turned that off, or chose Show minimized, in Options →…",
+   "text": "هر بارگیری در حال اجرا پنجره پیشرفت مخصوص به خود را دارد. این پنجره با شروع بارگیری باز می‌شود (مگر اینکه آن را غیرفعال کرده باشید یا گزینه کوچک‌شده نمایش بده را در گزینه‌ها ←…"
+  },
   "c7853bd84d0526f0": {
    "source": "Options → Archives →",
    "text": "گزینه‌ها → بایگانی‌ها →"
@@ -15233,6 +15261,10 @@
   "cd480bdd28328d28": {
    "source": "Files named photo001.jpg to photo150.jpg don't need 150 clicks. Write the address once with an asterisk where the number changes, and MDM queues every file. A list of links in a text file goes in just as easily.",
    "text": "فایل‌هایی با نام photo001.jpg تا photo150.jpg نیازی به 150 کلیک ندارند. آدرس را یک بار با یک ستاره در جایی که شماره تغییر می‌کند بنویسید، و MDM هر فایل را در صف قرار می‌دهد. یک فهرست از پیوندها در یک فایل متنی نیز به همین راحتی وارد می‌شود."
+  },
+  "cd505aa9d732174d": {
+   "source": "Download a video. Without <x1/> or <x2/>, the best quality, the one the Download video window starts on: with ffmpeg the best picture with the best sound joined to it (a site whose pictures and sounds come apart, such as Bilibili, needs ffmpeg for a video), else the best file with both. <x3/> (or <x4/>) takes that height, or the nearest below it the page offers (else the nearest above), and says so. <x5/> takes the most compatible quality, as the window's <g6>Most compatible (H.264 + AAC)</g6>: the best H.264 picture with AAC sound, in an MP4 that plays in every editor, TV and phone; a page without one says so (nothing is converted). <x7/> takes a quality's selector from <x8/> (<x9/> = the best single file; <x10/> = the sound alone as the site has it, not converted; <x11/>, <x12/>, <x13/> or <x14/> = the sound as an MP3 at that bitrate, <x15/> at its best variable one; <x16/> = as Opus; <x17/> = as FLAC, lossless but no better than the site's sound; conversions need ffmpeg). <x18/>: MDM's own downloader brings each stream yt-dlp finds over this many connections (8 by default, 1 to 128), a stream in pieces (HLS, DASH) this many pieces at once. <x19/> saves subtitles beside it: language codes from <x20/> (<x21/>), or <x22/> for every one the uploader gave; <x23/> takes the site's automatic captions instead; <x24/> puts them into the video (needs ffmpeg, MP4 or MKV). With ffmpeg, the video's chapters go into the file too, as Download video's <g25>Embed chapters</g25> does. <x26/> splits the video into numbered chapter files without re-encoding, beside the main video. <x27/> sends the downloads' connections, and yt-dlp's (and ffmpeg's), through one network adapter, as for <x28/>; when it isn't connected, nothing starts. When no format of the page matches, the error lists the ones it offers, as <x29/> does.",
+   "text": "یک ویدیو را بارگیری کنید. بدون <x1/> یا <x2/>، بهترین کیفیت، همان کیفیتی که پنجره «دانلود ویدیو» با آن شروع می‌شود: با ffmpeg بهترین تصویر با بهترین صدا به هم پیوسته (سایتی که تصاویر و صداهایش جداگانه هستند، مانند Bilibili، برای ویدیو به ffmpeg نیاز دارد)، در غیر این صورت بهترین فایل با هر دو. <x3/> (یا <x4/>) آن ارتفاع را می‌گیرد، یا نزدیک‌ترین ارتفاع پایین‌تر که صفحه ارائه می‌دهد (در غیر این صورت نزدیک‌ترین ارتفاع بالاتر)، و آن را اعلام می‌کند. <x5/> سازگارترین کیفیت را می‌گیرد، مانند <g6>سازگارترین (H.264 + AAC)</g6> در پنجره: بهترین تصویر H.264 با صدای AAC، در یک MP4 که در هر ویرایشگر، تلویزیون و تلفن پخش می‌شود؛ صفحه‌ای که چنین کیفیتی ندارد، آن را اعلام می‌کند (چیزی تبدیل نمی‌شود). <x7/> انتخابگر کیفیت را از <x8/> می‌گیرد (<x9/> = بهترین فایل تکی؛ <x10/> = فقط صدا همان‌طور که سایت دارد، تبدیل‌نشده؛ <x11/>، <x12/>، <x13/> یا <x14/> = صدا به صورت MP3 با آن بیت‌ریت، <x15/> با بهترین بیت‌ریت متغیر آن؛ <x16/> = به صورت Opus؛ <x17/> = به صورت FLAC، بدون افت کیفیت اما بهتر از صدای سایت نیست؛ تبدیل‌ها به ffmpeg نیاز دارند). <x18/>: بارگیر خود MDM هر جریانی را که yt-dlp پیدا می‌کند، از طریق این تعداد اتصال (8 به صورت پیش‌فرض، 1 تا 128) می‌آورد، یک جریان تکه‌تکه (HLS, DASH) این تعداد تکه را همزمان. <x19/> زیرنویس‌ها را در کنار آن ذخیره می‌کند: کدهای زبان از <x20/> (<x21/>)، یا <x22/> برای هر کدام که آپلودکننده داده است؛ <x23/> به جای آن زیرنویس‌های خودکار سایت را می‌گیرد؛ <x24/> آنها را در ویدیو قرار می‌دهد (به ffmpeg، MP4 یا MKV نیاز دارد). با ffmpeg، فصل‌های ویدیو نیز مانند <g25>تعبیه فصل‌ها</g25> در «دانلود ویدیو» به فایل اضافه می‌شوند. <x26/> ویدیو را بدون بازرمزگذاری، به فایل‌های فصل شماره‌گذاری شده، در کنار ویدیوی اصلی تقسیم می‌کند. <x27/> اتصالات بارگیری‌ها، و yt-dlp (و ffmpeg) را از طریق یک آداپتور شبکه می‌فرستد، مانند <x28/>؛ وقتی متصل نیست، چیزی شروع نمی‌شود. وقتی هیچ فرمتی از صفحه مطابقت ندارد، خطا فرمت‌های ارائه شده را لیست می‌کند، همان‌طور که <x29/> انجام می‌دهد."
   },
   "cd5d07eb9607e523": {
    "source": "The help names Windows' screen readers, Narrator and NVDA. If you use a screen reader on Linux or macOS, please <g1>tell us how it goes</g1>.",
@@ -16021,10 +16053,6 @@
   "d7d939199fe34589": {
    "source": "<g1><g2>Languages</g2></g1> — the 87 interface languages, numbers and dates, right-to-left layouts, and how to help translate.",
    "text": "<g1><g2>زبان‌ها</g2></g1> — 87 زبان رابط کاربری، اعداد و تاریخ‌ها، چیدمان‌های راست به چپ و نحوه کمک به ترجمه."
-  },
-  "d7df5f97a90fd99c": {
-   "source": "Each running download has its own progress window. It opens when the download starts (unless you turned that off in <g1>Options → Downloads → Customize \"Download progress\" dialog → Edit...</g1>); to open it again, double-click the download in the list.",
-   "text": "هر بارگیری در حال اجرا پنجره پیشرفت مخصوص به خود را دارد. این پنجره با شروع بارگیری باز می‌شود (مگر اینکه این گزینه را در <g1>گزینه‌ها ← بارگیری‌ها ← سفارشی‌سازی کادر محاوره‌ای «پیشرفت دانلود» ← ویرایش…</g1> غیرفعال کرده باشید)؛ برای باز کردن دوباره آن، روی بارگیری در فهرست دوبار کلیک کنید."
   },
   "d7e47d8cb056d141": {
    "source": "<g1>Download in order</g1>, to watch a video while it downloads, with each file's first and last pieces early. Other torrents fetch the rarest pieces first.",
@@ -17002,9 +17030,17 @@
    "source": "No, if it came from this site or GitHub Releases. Some antivirus programs judge a program they don't know by an educated guess, not by a known virus…",
    "text": "خیر، اگر از این سایت یا انتشارات GitHub دریافت شده باشد. برخی از برنامه‌های آنتی‌ویروس، برنامه‌ای را که نمی‌شناسند، با حدس و گمان ارزیابی می‌کنند، نه بر اساس ویروس‌های شناخته‌شده…"
   },
+  "e6d677c76529ac72": {
+   "source": "<g1>#1</g1><g2>Rust</g2>",
+   "text": "<g1>#1</g1><g2>Rust</g2>"
+  },
   "e6e9f590b183bea4": {
    "source": "Link grabber: paste many links, MDM groups them, checks which are online, and extracts archives when they arrive.",
    "text": "رباینده پیوند: چندین پیوند را بچسبانید، MDM آن‌ها را گروه‌بندی می‌کند، بررسی می‌کند کدام یک آنلاین هستند و پس از رسیدن، آرشیوها را استخراج می‌کند."
+  },
+  "e6f2d5c5287999ae": {
+   "source": "Some programs (BitComet, for one) write a torrent's names in another encoding and add a UTF-8 copy of them (<x1/>, <x2/>); MDM shows and saves the files under the UTF-8 names. A torrent like that which was downloading in an earlier version starts those files again under their correct names, and leaves the files with the old names in the folder.",
+   "text": "برخی برنامه‌ها (مثلا BitComet) نام تورنت‌ها را با رمزگذاری دیگری می‌نویسند و یک کپی UTF-8 از آن‌ها اضافه می‌کنند (<x1/>، <x2/>)؛ MDM فایل‌ها را با نام‌های UTF-8 نمایش می‌دهد و ذخیره می‌کند. تورنتی که در نسخه قبلی در حال بارگیری بوده، این فایل‌ها را با نام‌های صحیحشان دوباره شروع می‌کند و فایل‌های با نام‌های قدیمی را در پوشه باقی می‌گذارد."
   },
   "e700b8b592a5b4c0": {
    "source": "Free forever: no trial, no ads, no key",
@@ -17121,6 +17157,10 @@
   "e8482108fc49e0e0": {
    "source": "Can it download overnight or on a schedule?",
    "text": "آیا می‌تواند شبانه یا طبق برنامه بارگیری کند؟"
+  },
+  "e852a2ae2ea94c2d": {
+   "source": "<g1>Automatically put in \"…\" category the following file types</g1> — the file types that go to this category. A built-in category whose list you never changed gains the types a new version adds; one you edited stays as it is.",
+   "text": "<g1>انتقال خودکار انواع فایل زیر به دسته «…»</g1> — انواع فایل‌هایی که به این دسته منتقل می‌شوند. دسته‌های پیش‌فرض که فهرست آن‌ها را تغییر نداده‌اید، انواع فایل‌های اضافه شده در نسخه‌های جدید را دریافت می‌کنند؛ دسته‌های ویرایش‌شده بدون تغییر می‌مانند."
   },
   "e8592a334f7cb4df": {
    "source": "In <g1>Download File Info</g1>, click <g2>Download Later</g2> and pick the queue.",
@@ -17717,6 +17757,10 @@
   "ef6e5d90b67f8e4e": {
    "source": "<g1>\"Hide tab\" was cut in longer languages</g1> (German \"Registerkarte au...\"): the button grows to fit its label where there is room, through a shared helper other buttons can use.",
    "text": "<g1>«پنهان کردن برگه» در زبان‌های طولانی‌تر قطع می‌شد</g1> (آلمانی «Registerkarte au...»): دکمه به اندازه‌ای رشد می‌کند که برچسب خود را در جایی که فضا وجود دارد، از طریق یک کمک‌کننده مشترک که دکمه‌های دیگر می‌توانند از آن استفاده کنند، جا دهد."
+  },
+  "ef7238dc374b9e0e": {
+   "source": "Each download falls into a category by its file type: <g1>General</g1>, <g2>Compressed</g2>, <g3>Documents</g3>, <g4>Music</g4>, <g5>Programs</g5> or <g6>Video</g6>. Torrents have their own <g7>Torrents</g7> category. <g8>Programs</g8> takes programs, installers and app packages (EXE, MSI, APK, IPA, DMG, PKG, DEB, RPM, AppImage, MSIX…), <g9>Compressed</g9> archives and disc images (ZIP, RAR, 7Z, TAR, XZ, ISO, IMG, VHD…), <g10>Documents</g10> text documents, spreadsheets and e-books (PDF, DOCX, XLSX, ODT, EPUB, MOBI…), <g11>Music</g11> audio (MP3, FLAC, OPUS, M4A…) and <g12>Video</g12> videos (MP4, MKV, WEBM…); every other file goes to General. Your own categories come before the built-in ones. Each category has its own folder, by default inside your Downloads folder (<x13/>, <x14/> and so on; General uses <x15/> itself).",
+   "text": "هر بارگیری بر اساس نوع فایل خود در یک دسته قرار می‌گیرد: <g1>عمومی</g1>، <g2>فشرده</g2>، <g3>اسناد</g3>، <g4>موسیقی</g4>، <g5>برنامه‌ها</g5> یا <g6>ویدئو</g6>. تورنت‌ها دسته <g7>تورنت‌ها</g7>ی خود را دارند. <g8>برنامه‌ها</g8> شامل برنامه‌ها، نصب‌کننده‌ها و بسته‌های برنامه (EXE, MSI, APK, IPA, DMG, PKG, DEB, RPM, AppImage, MSIX و غیره)، <g9>فشرده</g9> شامل آرشیوها و ایمیج‌های دیسک (ZIP, RAR, 7Z, TAR, XZ, ISO, IMG, VHD و غیره)، <g10>اسناد</g10> شامل اسناد متنی، صفحات گسترده و کتاب‌های الکترونیکی (PDF, DOCX, XLSX, ODT, EPUB, MOBI و غیره)، <g11>موسیقی</g11> شامل فایل‌های صوتی (MP3, FLAC, OPUS, M4A و غیره) و <g12>ویدئو</g12> شامل ویدئوها (MP4, MKV, WEBM و غیره) می‌شود؛ هر فایل دیگری به دسته عمومی می‌رود. دسته‌های شما پیش از دسته‌های داخلی قرار می‌گیرند. هر دسته پوشه مخصوص به خود را دارد که به‌طور پیش‌فرض در پوشه بارگیری‌های شما قرار می‌گیرد (<x13/>، <x14/> و غیره؛ عمومی از <x15/> استفاده می‌کند)."
   },
   "ef8cedcbdccdaf85": {
    "source": "The code is filled in when you scanned the QR code; otherwise type it. Give the phone a name, and tap <g1>Pair</g1>. The window on the computer says so, and closes with <g2>Done</g2>.",
@@ -18325,10 +18369,6 @@
   "f8c444517ab946e2": {
    "source": "From the plain zip",
    "text": "از فایل ZIP ساده"
-  },
-  "f8c71a9fb2bd8bde": {
-   "source": "<g1>Automatically put in \"…\" category the following file types</g1> — the file types that go to this category.",
-   "text": "<g1>انواع فایل‌های زیر را به طور خودکار در دسته \"...\" قرار دهید</g1> — انواع فایل‌هایی که به این دسته می‌روند."
   },
   "f8e0a9e7ee529ff0": {
    "source": "Select <g1>Main download queue</g1> on the left. The <g2>Schedule</g2> tab opens.",

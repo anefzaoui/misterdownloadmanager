@@ -778,6 +778,10 @@
    "source": "Too many tries from your connection. Please try again in a few minutes.",
    "text": "Bağlantınızdan çok fazla deneme yapıldı. Lütfen birkaç dakika sonra tekrar deneyin."
   },
+  "0a07d4f9fc7fb519": {
+   "source": "When the network comes back after a drop (Wi-Fi reconnecting, the computer waking from sleep, a VPN connecting or switching), MDM notices within a few seconds and calls the torrents' peers again at once, and asks their trackers and the DHT again, so a download picks up where it was instead of waiting minutes for each peer's next try. Each peer is called once for it; a tracker is still never asked sooner than its minimum interval. Behind a SOCKS5 proxy, a drop the computer itself doesn't see (the router losing its line while Wi-Fi stays up) is noticed only through the DHT, which is off there, so those torrents come back on their own, as before.",
+   "text": "Bir kesintiden sonra ağ geri geldiğinde (Wi-Fi yeniden bağlanması, bilgisayarın uykudan uyanması, bir VPN'in bağlanması veya geçiş yapması), MDM birkaç saniye içinde fark eder ve torrentlerin eşlerini hemen tekrar çağırır, izleyicilerine ve DHT'ye tekrar sorar, böylece bir indirme her eşin bir sonraki denemesi için dakikalarca beklemek yerine kaldığı yerden devam eder. Her eş için bir kez çağrı yapılır; bir izleyiciye minimum aralığından daha erken asla sorulmaz. Bir SOCKS5 proxy'sinin arkasında, bilgisayarın kendisinin görmediği bir kesinti (Wi-Fi açık kalırken yönlendiricinin hattını kaybetmesi) yalnızca kapalı olan DHT aracılığıyla fark edilir, bu nedenle bu torrentler eskisi gibi kendi başlarına geri gelir."
+  },
   "0a15fc764eba9ef6": {
    "source": "Some servers drop the connection when the speed is very low. Avoid a tight limit for a server that can't resume: the progress window shows <g1>Resume capability: No</g1> for those.",
    "text": "Bazı sunucular hız çok düşük olduğunda bağlantıyı keser. Sürdürülemeyen bir sunucu için sıkı bir sınırdan kaçının: ilerleme penceresi bunlar için <g1>Sürdürme özelliği: Yok</g1> gösterir."
@@ -1114,6 +1118,10 @@
    "source": "Read the site",
    "text": "Siteyi oku"
   },
+  "0e9fede041092f7d": {
+   "source": "A file is made when its first byte is downloaded, and only a ticked one is made in the folder: what an unticked file shares with a ticked one waits in MDM's own torrent data. A running torrent keeps only the files it is reading or writing open, a few hundred at most for all of MDM's torrents together (fewer where the system allows fewer, as macOS does), so a torrent of thousands of files runs where it used to fail with \"Too many open files\".",
+   "text": "Bir dosya, ilk baytı indirildiğinde oluşturulur ve klasörde yalnızca işaretli olanlar oluşturulur: işaretlenmemiş bir dosyanın işaretli bir dosyayla paylaştığı veriler MDM'nin kendi torrent verilerinde bekler. Çalışan bir torrent, yalnızca okuduğu veya yazdığı dosyaları açık tutar, MDM'nin tüm torrentleri için en fazla birkaç yüz tane (macOS gibi sistemin daha azına izin verdiği yerlerde daha az), bu nedenle binlerce dosyadan oluşan bir torrent, eskiden \"Çok fazla açık dosya\" hatasıyla başarısız olduğu yerlerde çalışır."
+  },
   "0ea74b188ec2ca88": {
    "source": "If it says <g1>the site sent a web page instead of the file</g1>, the link led to the site's own page: a file host's countdown, a captcha, a <g2>Download</g2> button to press, or a sign-in. MDM never saves that page as your file. Click <g3>Open in browser</g3> in the download's progress window (or open the link yourself), finish there, and when the browser starts the real download, MDM's extension hands it to MDM. Without the extension, let the browser download it.",
    "text": "Eğer <g1>site dosya yerine bir web sayfası gönderdi</g1> diyorsa, bağlantı sitenin kendi sayfasına yönlendirmiştir: bir dosya barındırıcının geri sayımı, bir CAPTCHA, basılması gereken bir <g2>İndir</g2> düğmesi veya bir oturum açma sayfası. MDM bu sayfayı asla dosyanız olarak kaydetmez. İndirme ilerleme penceresinde <g3>Tarayıcıda aç</g3> seçeneğine tıklayın (veya bağlantıyı kendiniz açın), işlemi orada tamamlayın ve tarayıcı gerçek indirmeyi başlattığında, MDM'nin uzantısı bunu MDM'ye aktarır. Uzantı olmadan, tarayıcının indirmesine izin verin."
@@ -1393,6 +1401,10 @@
   "1294135f300139c9": {
    "source": "The benchmark data could not be loaded.",
    "text": "Kıyaslama verileri yüklenemedi."
+  },
+  "12947e2a74bc1b46": {
+   "source": "Each running download has its own progress window. It opens when the download starts (unless you turned that off, or chose <g1>Show minimized</g1>, in <g2>Options → Downloads → Customize \"Download progress\" dialog → Edit...</g2>); to open it again, double-click the download in the list.",
+   "text": "Her çalışan indirme işleminin kendi ilerleme penceresi vardır. İndirme başladığında açılır (eğer <g2>Seçenekler → İndirilenler → \"İndirme ilerlemesi\" iletişim kutusunu özelleştir → Düzenle...</g2> bölümünde bu özelliği kapatmadıysanız veya <g1>Küçültülmüş olarak göster</g1> seçeneğini belirlemediyseniz); tekrar açmak için listedeki indirme işlemine çift tıklayın."
   },
   "12a228101626f4bc": {
    "source": "How MDM uses connections",
@@ -4558,6 +4570,10 @@
    "source": "Steps",
    "text": "Adımlar"
   },
+  "3ccaf5a331b1edd2": {
+   "source": "A stopped torrent keeps none of its files open: you can move, rename or delete them, or open them in another program, while it waits. When you start it again, MDM opens them where they are; a file that was moved away or deleted meanwhile is made again and its pieces downloaded again. A finished torrent that is shared (<g1>Keep sharing torrents after they finish</g1>, in Torrent settings) keeps its files open only to read them: other programs can open, copy, run, move or rename them meanwhile.",
+   "text": "Durdurulmuş bir torrent, beklerken dosyalarının hiçbirini açık tutmaz: onları taşıyabilir, yeniden adlandırabilir, silebilir veya başka bir programda açabilirsiniz. Tekrar başlattığınızda, MDM onları bulundukları yerde açar; bu arada taşınan veya silinen bir dosya yeniden oluşturulur ve parçaları tekrar indirilir. Paylaşılan tamamlanmış bir torrent (Torrent ayarlarında <g1>Torrentleri tamamlandıktan sonra paylaşmaya devam et</g1> seçeneği), dosyalarını yalnızca okumak için açık tutar: bu arada diğer programlar onları açabilir, kopyalayabilir, çalıştırabilir, taşıyabilir veya yeniden adlandırabilir."
+  },
   "3cd4e5cff6113414": {
    "source": "<g1>Then move the archives to the Recycle Bin</g1> has nothing to move afterwards: the archive is already gone.",
    "text": "<g1>Ardından arşivleri Geri Dönüşüm Kutusu'na taşı</g1> seçeneğinin sonrasında taşınacak hiçbir şeyi yoktur: arşiv zaten gitmiştir."
@@ -4897,10 +4913,6 @@
   "413ea94686ccd93b": {
    "source": "When an address is already in the list, MDM asks what to do, or follows the answer you chose in <g1>Options → Downloads → If a duplicate download link is added</g1>.",
    "text": "Bir adres zaten listedeyse, MDM ne yapacağını sorar veya <g1>Seçenekler → İndirilenler → Yinelenen indirme bağlantısı eklenirse</g1> bölümünde seçtiğiniz yanıtı uygular."
-  },
-  "415322c0b133befd": {
-   "source": "Each running download has its own progress window. It opens when the download starts (unless you turned that off in Options → Downloads → Customize…",
-   "text": "Her çalışan indirme işleminin kendi ilerleme penceresi vardır. İndirme başladığında açılır (bunu Seçenekler → İndirilenler → Özelleştir… bölümünde kapatmadıysanız)."
   },
   "4160d55635d3e362": {
    "source": "Freeze reports that tell the kind of freeze",
@@ -5814,6 +5826,10 @@
    "source": "<g1>A minimized MDM keeps working</g1>: with the main window minimized (not to the notification area), queues didn't start their next file, the Scheduler's starts and stops didn't fire, download limits, the network adapter's kill switch, the clipboard monitor, the update check, the taskbar's progress and saving the list all waited until the window was restored. They run in every window state now, and their windows (Download complete, a limit's notice) open at once.",
    "text": "<g1>Küçültülmüş bir MDM çalışmaya devam eder</g1>: ana pencere küçültüldüğünde (bildirim alanına değil), kuyruklar bir sonraki dosyalarını başlatmadı, Zamanlayıcı'nın başlatmaları ve durdurmaları tetiklenmedi, indirme limitleri, ağ bağdaştırıcısının kapatma anahtarı, pano monitörü, güncelleme kontrolü, görev çubuğunun ilerlemesi ve listenin kaydedilmesi, pencere geri yüklenene kadar bekledi. Artık her pencere durumunda çalışırlar ve pencereleri (İndirme tamamlandı, bir limit bildirimi) hemen açılır."
   },
+  "4e60a529980083e7": {
+   "source": "The downloads join the <g1>Main download queue</g1>, ready to start (<g2>Start</g2> starts it too). <g3>Tasks → Import → From IDM export file</g3> reads an <x4/> file, with each download's referrer and cookies, and the file name a list gives it in a <x5/> line.",
+   "text": "İndirmeler <g1>Ana indirme kuyruğu</g1>'na eklenir ve başlamaya hazır olur (<g2>Başlat</g2> da başlatır). <g3>Görevler → İçe aktar → IDM dışa aktarma dosyasından</g3> seçeneği, her indirmenin yönlendirenini ve çerezlerini içeren bir <x4/> dosyasını ve bir listede <x5/> satırında verilen dosya adını okur."
+  },
   "4e96b700836944de": {
    "source": "<g1>Password</g1>: the archives' password, if they have one. It is kept in memory only and is never saved by itself: to keep one for other packages, add it to your <g2>archive passwords</g2>.",
    "text": "<g1>Parola</g1>: arşivlerin parolası, varsa. Yalnızca bellekte tutulur ve asla kendi kendine kaydedilmez: diğer paketler için bir tane saklamak isterseniz, <g2>arşiv parolalarınıza</g2> ekleyin."
@@ -6533,6 +6549,10 @@
   "58f22a0b1aeea2b4": {
    "source": "Watch it work.",
    "text": "Çalışırken izleyin."
+  },
+  "58f7b730058089bc": {
+   "source": "Everyone who takes part follows the <g1>Code of conduct</g1>. Who reviews and merges changes, and how decisions are made, is in <g2>GOVERNANCE.md</g2>.",
+   "text": "Katılan herkes <g1>Davranış Kuralları</g1>'na uyar. Değişiklikleri kimin incelediği ve birleştirdiği, kararların nasıl alındığı <g2>GOVERNANCE.md</g2> belgesinde yer almaktadır."
   },
   "59130ab4ecc47c65": {
    "source": "<g1>Hide to the notification area</g1> (a short dash with an arrow down to the corner; on Windows in the title bar, left of Minimize) puts the window in the notification area; <g2>Downloads in progress</g2> in the tray icon's menu brings it back. See <g3>The tray icon</g3>.",
@@ -8245,6 +8265,10 @@
   "700b58886e17c427": {
    "source": "<g1><g2>Options</g2></g1> — every page of the Options window.",
    "text": "<g1><g2>Seçenekler</g2></g1> — Seçenekler penceresinin her sayfası."
+  },
+  "702b1d80d041e97d": {
+   "source": "<g1>Tasks → Import → From text file</g1> and <g2>From IDM export file</g2>. An <x3/> file brings each download's referrer and cookies, and its file name when the list gives one (a <x4/> line; only the name, never a folder).",
+   "text": "<g1>Görevler → İçe aktar → Metin dosyasından</g1> ve <g2>IDM dışa aktarma dosyasından</g2>. Bir <x3/> dosyası, her indirmenin yönlendirenini ve çerezlerini, ayrıca listede belirtilmişse dosya adını (bir <x4/> satırı; yalnızca ad, asla klasör değil) getirir."
   },
   "70304346a925831b": {
    "source": "MDM opens <g1>Download File Info</g1> instead of the browser downloading the file. Click <g2>Start Download</g2>.",
@@ -10522,10 +10546,6 @@
    "source": "Check that the Speed Limiter is off: <g1>Downloads → Speed Limiter → Turn off</g1>. Also look at <g2>Downloads → Speed Limiter → Settings... → Limit all downloads together to</g2>, which applies even with the limiter off.",
    "text": "Hız Sınırlayıcı'nın kapalı olduğundan emin olun: <g1>İndirilenler → Hız Sınırlayıcı → Kapat</g1>. Ayrıca <g2>İndirilenler → Hız Sınırlayıcı → Ayarlar... → Tüm indirmeleri birlikte şuna sınırla</g2> seçeneğine de bakın, bu sınırlayıcı kapalı olsa bile geçerlidir."
   },
-  "8e9db9ede7b54a27": {
-   "source": "<g1>Customize \"Download progress\" dialog → Edit...</g1> — <g2>Show download progress dialog when a download starts</g2>: on by default. Untick it and a download no longer opens its progress window when it starts, from the browser, a link you add, a video or a queue; it goes on in the main window's list, where a double-click opens its progress window. <g3>Download complete</g3> still shows when it finishes, as <g4>Show download complete dialog</g4> below says.",
-   "text": "<g1>\"İndirme ilerlemesi\" iletişim kutusunu özelleştir → Düzenle...</g1> — <g2>Bir indirme başladığında indirme ilerleme iletişim kutusunu göster</g2>: varsayılan olarak açık. İşaretini kaldırırsanız, bir indirme başladığında tarayıcıdan, eklediğiniz bir bağlantıdan, bir videodan veya bir kuyruktan ilerleme penceresini artık açmaz; ana pencerenin listesinde devam eder, burada çift tıklama ilerleme penceresini açar. <g3>İndirme tamamlandı</g3> yine de bittiğinde görünür, aşağıdaki <g4>İndirme tamamlandığında iletişim kutusunu göster</g4> dediği gibi."
-  },
   "8e9f9863589b4bd6": {
    "source": "Fuzzing",
    "text": "Fuzzing"
@@ -10741,6 +10761,10 @@
   "91921dfcf2686194": {
    "source": "MDM's interface comes in 87 languages: every display language Windows 11 offers, from Afrikaans to Vietnamese, including both Chinese scripts, Spanish for Spain and Mexico, French for France and Canada, Portuguese for Portugal and Brazil, and Serbian in Cyrillic and Latin.",
    "text": "MDM arayüzü 87 dilde mevcuttur: Windows 11'in sunduğu Afrikaans'tan Vietnamca'ya kadar tüm görüntüleme dilleri, her iki Çince yazı tipi, İspanya ve Meksika için İspanyolca, Fransa ve Kanada için Fransızca, Portekiz ve Brezilya için Portekizce ve Kiril ve Latin harfleriyle Sırpça dahil."
+  },
+  "91c08dd2d3fe7d4a": {
+   "source": "<g1>Add category</g1> — make your own, for example <g2>Books</g2> for <x3/> (they then go to Books, not Documents). Give it a name, the file types (separated by spaces, <x4/> allowed) and a folder.",
+   "text": "<g1>Kategori ekle</g1> — kendi kategorinizi oluşturun, örneğin <g2>Kitaplar</g2> için <x3/> (bu durumda Kitaplar'a gider, Belgeler'e değil). Bir ad, dosya türleri (boşluklarla ayrılmış, <x4/> izin verilir) ve bir klasör belirtin."
   },
   "91cefe80b7f00fac": {
    "source": "<g1><g2>Download a file</g2></g1> — copy a link, add it, open the file.",
@@ -12054,10 +12078,6 @@
    "source": "A live stream saved by a queue's stop counts as complete, so a daily queue doesn't start it again the next day.",
    "text": "Bir sıranın durdurulmasıyla kaydedilen bir canlı yayın tamamlanmış sayılır, bu nedenle günlük bir sıra ertesi gün onu yeniden başlatmaz."
   },
-  "a21a2e8b8e4dad43": {
-   "source": "<g1>#1 in Rust</g1><g2>repository of the day on <x3/></g2>",
-   "text": "<g1>Rust'ta #1</g1><g2><x3/> üzerinde günün deposu</g2>"
-  },
   "a21dffa69dd07677": {
    "source": "Every row, and easier to read",
    "text": "Her satır ve daha kolay okunur"
@@ -12249,10 +12269,6 @@
   "a4b01563b82565da": {
    "source": "<g1>Sharper text on Windows</g1> (<g2>#262</g2>): Segoe UI and Tahoma are grid-fitted across as well as up and down, and each letter starts on a whole pixel, as Windows draws its own grey text: upright strokes were two grey pixels wide at 100 % and 125 %, which read as blurred.",
    "text": "<g1>Windows'ta daha keskin metin</g1> (<g2>#262</g2>): Segoe UI ve Tahoma, Windows'un kendi gri metnini çizdiği gibi, hem yatay hem de dikey olarak ızgaraya oturtulur ve her harf tam bir pikselde başlar: dik vuruşlar %100 ve %125'te iki gri piksel genişliğindeydi, bu da bulanık okunuyordu."
-  },
-  "a4b04f29f56fdc42": {
-   "source": "<g1>Add category</g1> — make your own, for example <g2>Books</g2> for <x3/>. Give it a name, the file types (separated by spaces, <x4/> allowed) and a folder.",
-   "text": "<g1>Kategori ekle</g1> — örneğin <x3/> dosyaları için <g2>Kitaplar</g2> gibi kendi kategorinizi oluşturun. Bir ad, dosya türleri (boşlukla ayırın; <x4/> kullanılabilir) ve bir klasör belirleyin."
   },
   "a4b1f9a84345ac5d": {
    "source": "<g1>yt-dlp</g1> (about 23 MB) looks the page up and finds where the video and its sound come from; MDM downloads them (<g2>How a video comes down</g2>). The first time, click <g3>Install yt-dlp</g3>. MDM checks the download against the signature yt-dlp's developers publish before it uses it.",
@@ -13105,6 +13121,10 @@
   "afc32cfba2a08d06": {
    "source": "Choose a download",
    "text": "Bir indirme seçin"
+  },
+  "afd25bc6979c1269": {
+   "source": "<g1>Customize \"Download progress\" dialog → Edit...</g1> — <g2>Show download progress dialog when a download starts</g2>: <g3>Show normally</g3>, on by default; <g4>Show minimized</g4>, which starts the download's progress window minimized on the taskbar, without taking the focus from the program you are in; or <g5>Don't show</g5>, where a download no longer opens its progress window when it starts, from the browser, a link you add, a video or a queue, and it goes on in the main window's list, where a double-click opens its progress window. <g6>Download complete</g6> still shows when it finishes, as <g7>Show download complete dialog</g7> below says.",
+   "text": "<g1>\"İndirme ilerlemesi\" iletişim kutusunu özelleştir → Düzenle...</g1> — <g2>Bir indirme başladığında indirme ilerleme iletişim kutusunu göster</g2>: Varsayılan olarak açık olan <g3>Normal olarak göster</g3>; içinde bulunduğunuz programdan odağı almadan indirme ilerleme penceresini görev çubuğunda küçültülmüş olarak başlatan <g4>Küçültülmüş olarak göster</g4>; veya bir indirme başladığında, tarayıcıdan, eklediğiniz bir bağlantıdan, bir videodan veya bir kuyruktan ilerleme penceresini artık açmayan ve ana pencerenin listesinde devam eden <g5>Gösterme</g5> seçeneği. Ana pencerede çift tıklama ile ilerleme penceresi açılır. Aşağıdaki <g7>İndirme tamamlandığında iletişim kutusunu göster</g7> seçeneğinde belirtildiği gibi, bittiğinde <g6>İndirme tamamlandı</g6> hala gösterilir."
   },
   "aff376e66e9d2870": {
    "source": "Queues",
@@ -14038,10 +14058,6 @@
    "source": "The next tab of a focused tab strip; the next choice of a radio group",
    "text": "Odaklanmış bir sekme şeridinin sonraki sekmesi; bir radyo grubunun sonraki seçeneği"
   },
-  "bc713e862e9b84d3": {
-   "source": "Each download falls into a category by its file type: <g1>General</g1>, <g2>Compressed</g2>, <g3>Documents</g3>, <g4>Music</g4>, <g5>Programs</g5> or <g6>Video</g6>. Torrents have their own <g7>Torrents</g7> category. Each category has its own folder, by default inside your Downloads folder (<x8/>, <x9/> and so on; General uses <x10/> itself).",
-   "text": "Her indirme, dosya türüne göre bir kategoriye ayrılır: <g1>Genel</g1>, <g2>Sıkıştırılmış</g2>, <g3>Belgeler</g3>, <g4>Müzik</g4>, <g5>Programlar</g5> veya <g6>Video</g6>. Torrentlerin kendi <g7>Torrentler</g7> kategorisi vardır. Her kategorinin kendine ait bir klasörü bulunur; varsayılan olarak bu klasör İndirilenler klasörünüzün içindedir (<x8/>, <x9/> vb.). Genel kategorisi doğrudan <x10/> klasörünü kullanır."
-  },
   "bc7153d0bcfdacbb": {
    "source": "Themes — Mister Download Manager",
    "text": "Temalar — Mister Download Manager"
@@ -14793,6 +14809,10 @@
   "c763f3aa0f51a5a2": {
    "source": "<g1>Server mode</g1><g2>Mister Download Manager</g2>",
    "text": "<g1>Sunucu modu</g1><g2>Mister Download Manager</g2>"
+  },
+  "c76c7692d362ad5a": {
+   "source": "Each running download has its own progress window. It opens when the download starts (unless you turned that off, or chose Show minimized, in Options →…",
+   "text": "Her çalışan indirme işleminin kendi ilerleme penceresi vardır. İndirme başladığında açılır (eğer kapatmadıysanız veya Seçenekler →… bölümünde Küçültülmüş olarak göster seçeneğini belirlemediyseniz)."
   },
   "c7853bd84d0526f0": {
    "source": "Options → Archives →",
@@ -16034,10 +16054,6 @@
    "source": "<g1><g2>Languages</g2></g1> — the 87 interface languages, numbers and dates, right-to-left layouts, and how to help translate.",
    "text": "<g1><g2>Diller</g2></g1> — 87 arayüz dili, sayılar ve tarihler, sağdan sola düzenler ve çeviriye nasıl yardımcı olacağınız."
   },
-  "d7df5f97a90fd99c": {
-   "source": "Each running download has its own progress window. It opens when the download starts (unless you turned that off in <g1>Options → Downloads → Customize \"Download progress\" dialog → Edit...</g1>); to open it again, double-click the download in the list.",
-   "text": "Her çalışan indirme işleminin kendi ilerleme penceresi vardır. İndirme başladığında açılır (bunu <g1>Seçenekler → İndirilenler → \"İndirme ilerlemesi\" iletişim kutusunu özelleştir → Düzenle...</g1> bölümünde kapatmadıysanız); tekrar açmak için listedeki indirme işlemine çift tıklayın."
-  },
   "d7e47d8cb056d141": {
    "source": "<g1>Download in order</g1>, to watch a video while it downloads, with each file's first and last pieces early. Other torrents fetch the rarest pieces first.",
    "text": "İndirilirken bir videoyu izlemek için <g1>Sırayla indir</g1>, her dosyanın ilk ve son parçaları erken gelir. Diğer torrentler önce en nadir parçaları getirir."
@@ -17014,9 +17030,17 @@
    "source": "No, if it came from this site or GitHub Releases. Some antivirus programs judge a program they don't know by an educated guess, not by a known virus…",
    "text": "Hayır, eğer bu siteden veya GitHub Sürümlerinden indirdiyseniz. Bazı antivirüs programları, bilmedikleri bir programı bilinen bir virüse göre değil, tahmini bir sonuca göre değerlendirir…"
   },
+  "e6d677c76529ac72": {
+   "source": "<g1>#1</g1><g2>Rust</g2>",
+   "text": "<g1>#1</g1><g2>Rust</g2>"
+  },
   "e6e9f590b183bea4": {
    "source": "Link grabber: paste many links, MDM groups them, checks which are online, and extracts archives when they arrive.",
    "text": "Bağlantı yakalayıcı: birçok bağlantıyı yapıştırın, MDM bunları gruplandırır, hangilerinin çevrimiçi olduğunu kontrol eder ve geldiklerinde arşivleri çıkarır."
+  },
+  "e6f2d5c5287999ae": {
+   "source": "Some programs (BitComet, for one) write a torrent's names in another encoding and add a UTF-8 copy of them (<x1/>, <x2/>); MDM shows and saves the files under the UTF-8 names. A torrent like that which was downloading in an earlier version starts those files again under their correct names, and leaves the files with the old names in the folder.",
+   "text": "Bazı programlar (örneğin BitComet) torrent adlarını başka bir kodlamada yazar ve bunların UTF-8 kopyasını ekler (<x1/>, <x2/>); MDM dosyaları UTF-8 adlarıyla gösterir ve kaydeder. Daha önceki bir sürümde indirilmekte olan böyle bir torrent, bu dosyaları doğru adlarıyla yeniden başlatır ve eski adlara sahip dosyaları klasörde bırakır."
   },
   "e700b8b592a5b4c0": {
    "source": "Free forever: no trial, no ads, no key",
@@ -17133,6 +17157,10 @@
   "e8482108fc49e0e0": {
    "source": "Can it download overnight or on a schedule?",
    "text": "Gece boyunca veya belirli bir programa göre indirebilir mi?"
+  },
+  "e852a2ae2ea94c2d": {
+   "source": "<g1>Automatically put in \"…\" category the following file types</g1> — the file types that go to this category. A built-in category whose list you never changed gains the types a new version adds; one you edited stays as it is.",
+   "text": "<g1>Aşağıdaki dosya türlerini otomatik olarak \"…\" kategorisine koy</g1> — bu kategoriye giden dosya türleri. Hiç değiştirmediğiniz yerleşik bir kategori, yeni bir sürümün eklediği türleri alır; düzenlediğiniz bir kategori olduğu gibi kalır."
   },
   "e8592a334f7cb4df": {
    "source": "In <g1>Download File Info</g1>, click <g2>Download Later</g2> and pick the queue.",
@@ -17729,6 +17757,10 @@
   "ef6e5d90b67f8e4e": {
    "source": "<g1>\"Hide tab\" was cut in longer languages</g1> (German \"Registerkarte au...\"): the button grows to fit its label where there is room, through a shared helper other buttons can use.",
    "text": "<g1>\"Sekmeyi gizle\" daha uzun dillerde kesiliyordu</g1> (Almanca \"Registerkarte au...\"): düğme, diğer düğmelerin kullanabileceği ortak bir yardımcı aracılığıyla, yer olduğunda etiketine sığacak şekilde büyür."
+  },
+  "ef7238dc374b9e0e": {
+   "source": "Each download falls into a category by its file type: <g1>General</g1>, <g2>Compressed</g2>, <g3>Documents</g3>, <g4>Music</g4>, <g5>Programs</g5> or <g6>Video</g6>. Torrents have their own <g7>Torrents</g7> category. <g8>Programs</g8> takes programs, installers and app packages (EXE, MSI, APK, IPA, DMG, PKG, DEB, RPM, AppImage, MSIX…), <g9>Compressed</g9> archives and disc images (ZIP, RAR, 7Z, TAR, XZ, ISO, IMG, VHD…), <g10>Documents</g10> text documents, spreadsheets and e-books (PDF, DOCX, XLSX, ODT, EPUB, MOBI…), <g11>Music</g11> audio (MP3, FLAC, OPUS, M4A…) and <g12>Video</g12> videos (MP4, MKV, WEBM…); every other file goes to General. Your own categories come before the built-in ones. Each category has its own folder, by default inside your Downloads folder (<x13/>, <x14/> and so on; General uses <x15/> itself).",
+   "text": "Her indirme, dosya türüne göre bir kategoriye ayrılır: <g1>Genel</g1>, <g2>Sıkıştırılmış</g2>, <g3>Belgeler</g3>, <g4>Müzik</g4>, <g5>Programlar</g5> veya <g6>Video</g6>. Torrentlerin kendi <g7>Torrentler</g7> kategorisi vardır. <g8>Programlar</g8> programları, yükleyicileri ve uygulama paketlerini (EXE, MSI, APK, IPA, DMG, PKG, DEB, RPM, AppImage, MSIX…), <g9>Sıkıştırılmış</g9> arşivleri ve disk kalıplarını (ZIP, RAR, 7Z, TAR, XZ, ISO, IMG, VHD…), <g10>Belgeler</g10> metin belgelerini, elektronik tabloları ve e-kitapları (PDF, DOCX, XLSX, ODT, EPUB, MOBI…), <g11>Müzik</g11> ses dosyalarını (MP3, FLAC, OPUS, M4A…) ve <g12>Video</g12> videoları (MP4, MKV, WEBM…) alır; diğer tüm dosyalar Genel'e gider. Kendi kategorileriniz yerleşik olanlardan önce gelir. Her kategorinin kendi klasörü vardır, varsayılan olarak İndirilenler klasörünüzün içindedir (<x13/>, <x14/> vb.; Genel, <x15/> klasörünü kullanır)."
   },
   "ef8cedcbdccdaf85": {
    "source": "The code is filled in when you scanned the QR code; otherwise type it. Give the phone a name, and tap <g1>Pair</g1>. The window on the computer says so, and closes with <g2>Done</g2>.",
@@ -18337,10 +18369,6 @@
   "f8c444517ab946e2": {
    "source": "From the plain zip",
    "text": "Sıkıştırılmamış zip dosyasından"
-  },
-  "f8c71a9fb2bd8bde": {
-   "source": "<g1>Automatically put in \"…\" category the following file types</g1> — the file types that go to this category.",
-   "text": "<g1>Aşağıdaki dosya türlerini otomatik olarak \"…\" kategorisine koy</g1> — bu kategoriye giden dosya türleri."
   },
   "f8e0a9e7ee529ff0": {
    "source": "Select <g1>Main download queue</g1> on the left. The <g2>Schedule</g2> tab opens.",

@@ -778,6 +778,10 @@
    "source": "Too many tries from your connection. Please try again in a few minutes.",
    "text": "接続からの試行回数が多すぎます。数分後にもう一度お試しください。"
   },
+  "0a07d4f9fc7fb519": {
+   "source": "When the network comes back after a drop (Wi-Fi reconnecting, the computer waking from sleep, a VPN connecting or switching), MDM notices within a few seconds and calls the torrents' peers again at once, and asks their trackers and the DHT again, so a download picks up where it was instead of waiting minutes for each peer's next try. Each peer is called once for it; a tracker is still never asked sooner than its minimum interval. Behind a SOCKS5 proxy, a drop the computer itself doesn't see (the router losing its line while Wi-Fi stays up) is noticed only through the DHT, which is off there, so those torrents come back on their own, as before.",
+   "text": "ネットワークが切断後に復旧すると (Wi-Fi の再接続、コンピューターのスリープからの復帰、VPN の接続または切り替え)、MDM は数秒以内にそれを検出し、すぐにトレントのピアを再度呼び出し、トラッカーと DHT に再度問い合わせます。これにより、ダウンロードは各ピアの次の試行を数分待つのではなく、中断した場所から再開されます。各ピアは一度だけ呼び出されます。トラッカーは、最小間隔よりも早く問い合わせられることはありません。SOCKS5 プロキシの背後では、コンピューター自体が認識しない切断 (Wi-Fi は接続されたままでルーターが回線を失うなど) は、DHT を介してのみ認識されますが、DHT はオフになっているため、これらのトレントは以前と同様に自動的に復旧します。"
+  },
   "0a15fc764eba9ef6": {
    "source": "Some servers drop the connection when the speed is very low. Avoid a tight limit for a server that can't resume: the progress window shows <g1>Resume capability: No</g1> for those.",
    "text": "一部のサーバーは、速度が非常に低いと接続を切断します。再開できないサーバーに対しては、厳しい制限を避けてください。進行状況ウィンドウには、そのようなサーバーの場合 <g1>再開機能: なし</g1> と表示されます。"
@@ -1114,6 +1118,10 @@
    "source": "Read the site",
    "text": "サイトを読む"
   },
+  "0e9fede041092f7d": {
+   "source": "A file is made when its first byte is downloaded, and only a ticked one is made in the folder: what an unticked file shares with a ticked one waits in MDM's own torrent data. A running torrent keeps only the files it is reading or writing open, a few hundred at most for all of MDM's torrents together (fewer where the system allows fewer, as macOS does), so a torrent of thousands of files runs where it used to fail with \"Too many open files\".",
+   "text": "ファイルの最初のバイトがダウンロードされるとファイルが作成され、チェックされたファイルのみがフォルダーに作成されます。チェックされていないファイルがチェックされたファイルと共有するものは、MDM 独自のトレント データで待機します。実行中のトレントは、読み書きしているファイルのみを開いたままにし、MDM のすべてのトレントを合わせても最大数百個です (macOS のようにシステムが許可する数が少ない場合はさらに少なくなります)。そのため、数千個のファイルを持つトレントは、「開いているファイルが多すぎます」というエラーで失敗していた場所でも実行されます。"
+  },
   "0ea74b188ec2ca88": {
    "source": "If it says <g1>the site sent a web page instead of the file</g1>, the link led to the site's own page: a file host's countdown, a captcha, a <g2>Download</g2> button to press, or a sign-in. MDM never saves that page as your file. Click <g3>Open in browser</g3> in the download's progress window (or open the link yourself), finish there, and when the browser starts the real download, MDM's extension hands it to MDM. Without the extension, let the browser download it.",
    "text": "「<g1>サイトがファイルの代わりにウェブページを送信しました</g1>」と表示される場合、リンクはサイト自身のページにつながっています。ファイルホストのカウントダウン、CAPTCHA、押すべき<g2>ダウンロード</g2>ボタン、またはサインインページなどです。MDM はそのページをファイルとして保存することはありません。ダウンロードの進行状況ウィンドウで<g3>ブラウザーで開く</g3>をクリックするか（または自分でリンクを開くか）、そこで操作を完了してください。ブラウザーが実際のダウンロードを開始すると、MDM の拡張機能がそれを MDM に渡します。拡張機能がない場合は、ブラウザーでダウンロードさせてください。"
@@ -1393,6 +1401,10 @@
   "1294135f300139c9": {
    "source": "The benchmark data could not be loaded.",
    "text": "ベンチマークデータを読み込めませんでした。"
+  },
+  "12947e2a74bc1b46": {
+   "source": "Each running download has its own progress window. It opens when the download starts (unless you turned that off, or chose <g1>Show minimized</g1>, in <g2>Options → Downloads → Customize \"Download progress\" dialog → Edit...</g2>); to open it again, double-click the download in the list.",
+   "text": "実行中のダウンロードにはそれぞれ進行状況ウィンドウがあります。これはダウンロードの開始時に開きます（<g2>オプション → ダウンロード → 「ダウンロードの進行状況」ダイアログをカスタマイズ → 編集...</g2> でこの機能をオフにした場合、または <g1>最小化して表示</g1> を選択した場合は除きます）。再度開くには、リスト内のダウンロードをダブルクリックします。"
   },
   "12a228101626f4bc": {
    "source": "How MDM uses connections",
@@ -4558,6 +4570,10 @@
    "source": "Steps",
    "text": "手順"
   },
+  "3ccaf5a331b1edd2": {
+   "source": "A stopped torrent keeps none of its files open: you can move, rename or delete them, or open them in another program, while it waits. When you start it again, MDM opens them where they are; a file that was moved away or deleted meanwhile is made again and its pieces downloaded again. A finished torrent that is shared (<g1>Keep sharing torrents after they finish</g1>, in Torrent settings) keeps its files open only to read them: other programs can open, copy, run, move or rename them meanwhile.",
+   "text": "停止したトレントは、どのファイルも開いたままにしません。待機中に、ファイルを移動、名前変更、削除したり、別のプログラムで開いたりできます。再度開始すると、MDM はそれらを現在の場所で開きます。その間に移動または削除されたファイルは、再度作成され、そのピースが再度ダウンロードされます。共有されている完了したトレント (トレント設定の<g1>完了後もトレントを共有し続ける</g1>) は、読み取り専用でファイルを開いたままにします。その間に、他のプログラムはファイルを開いたり、コピーしたり、実行したり、移動したり、名前を変更したりできます。"
+  },
   "3cd4e5cff6113414": {
    "source": "<g1>Then move the archives to the Recycle Bin</g1> has nothing to move afterwards: the archive is already gone.",
    "text": "<g1>次にアーカイブをゴミ箱に移動する</g1>は、後で移動するものがありません。アーカイブはすでに削除されています。"
@@ -4897,10 +4913,6 @@
   "413ea94686ccd93b": {
    "source": "When an address is already in the list, MDM asks what to do, or follows the answer you chose in <g1>Options → Downloads → If a duplicate download link is added</g1>.",
    "text": "アドレスがすでにリストにある場合、MDM はどうするかを尋ねるか、<g1>オプション → ダウンロード → 重複するダウンロード リンクが追加された場合</g1> で選択した回答に従います。"
-  },
-  "415322c0b133befd": {
-   "source": "Each running download has its own progress window. It opens when the download starts (unless you turned that off in Options → Downloads → Customize…",
-   "text": "実行中のダウンロードごとに進行状況ウィンドウがあります。ダウンロードが開始されると開きます（オプション → ダウンロード → カスタマイズ…でオフにしていない場合）。"
   },
   "4160d55635d3e362": {
    "source": "Freeze reports that tell the kind of freeze",
@@ -5814,6 +5826,10 @@
    "source": "<g1>A minimized MDM keeps working</g1>: with the main window minimized (not to the notification area), queues didn't start their next file, the Scheduler's starts and stops didn't fire, download limits, the network adapter's kill switch, the clipboard monitor, the update check, the taskbar's progress and saving the list all waited until the window was restored. They run in every window state now, and their windows (Download complete, a limit's notice) open at once.",
    "text": "<g1>最小化された MDM は動作し続けます</g1>: メイン ウィンドウが最小化されている (通知領域ではない) 場合、キューは次のファイルを起動せず、スケジューラの起動と停止は実行されず、ダウンロード制限、ネットワーク アダプターのキル スイッチ、クリップボード モニター、更新チェック、タスクバーの進行状況、リストの保存はすべてウィンドウが復元されるまで待機していました。これらはすべてのウィンドウ状態で実行されるようになり、それらのウィンドウ (ダウンロード完了、制限の通知) はすぐに開きます。"
   },
+  "4e60a529980083e7": {
+   "source": "The downloads join the <g1>Main download queue</g1>, ready to start (<g2>Start</g2> starts it too). <g3>Tasks → Import → From IDM export file</g3> reads an <x4/> file, with each download's referrer and cookies, and the file name a list gives it in a <x5/> line.",
+   "text": "ダウンロードは<g1>メインのダウンロード キュー</g1>に追加され、開始する準備ができます（<g2>開始</g2>でも開始できます）。<g3>タスク → インポート → IDM エクスポート ファイルから</g3>は、各ダウンロードのリファラーと Cookie、および<x5/>行でリストが指定するファイル名を含む<x4/>ファイルを読み取ります。"
+  },
   "4e96b700836944de": {
    "source": "<g1>Password</g1>: the archives' password, if they have one. It is kept in memory only and is never saved by itself: to keep one for other packages, add it to your <g2>archive passwords</g2>.",
    "text": "<g1>パスワード</g1>: アーカイブにパスワードがある場合、そのパスワードです。これはメモリにのみ保持され、それ自体で保存されることはありません。他のパッケージのためにパスワードを保持するには、<g2>アーカイブのパスワード</g2>に追加してください。"
@@ -6533,6 +6549,14 @@
   "58f22a0b1aeea2b4": {
    "source": "Watch it work.",
    "text": "動作を見る"
+  },
+  "58f7b730058089bc": {
+   "source": "Everyone who takes part follows the <g1>Code of conduct</g1>. Who reviews and merges changes, and how decisions are made, is in <g2>GOVERNANCE.md</g2>.",
+   "text": "<g1>行動規範</g1>に全員が従います。変更のレビューとマージを行う人、および決定がどのように行われるかについては、<g2>GOVERNANCE.md</g2> に記載されています。"
+  },
+  "59130ab4ecc47c65": {
+   "source": "<g1>Hide to the notification area</g1> (a short dash with an arrow down to the corner; on Windows in the title bar, left of Minimize) puts the window in the notification area; <g2>Downloads in progress</g2> in the tray icon's menu brings it back. See <g3>The tray icon</g3>.",
+   "text": "<g1>通知領域に隠す</g1>（タイトル バーの最小化ボタンの左にある、角を下向きの短いダッシュと矢印のアイコン。Windows の場合）をクリックすると、ウィンドウが通知領域に格納されます。トレイ アイコンのメニューにある <g2>進行中のダウンロード</g2> をクリックすると、元に戻ります。<g3>トレイ アイコン</g3> を参照してください。"
   },
   "591498dd46bd5859": {
    "source": "<g1>A copy from elsewhere?</g1> Remove it and add the extension as MDM's <g2>Add Mister Download Manager to your browser</g2> window shows (see <g3>Browser integration</g3>).",
@@ -8241,6 +8265,10 @@
   "700b58886e17c427": {
    "source": "<g1><g2>Options</g2></g1> — every page of the Options window.",
    "text": "<g1><g2>オプション</g2></g1> — ［オプション］ウィンドウの各ページ。"
+  },
+  "702b1d80d041e97d": {
+   "source": "<g1>Tasks → Import → From text file</g1> and <g2>From IDM export file</g2>. An <x3/> file brings each download's referrer and cookies, and its file name when the list gives one (a <x4/> line; only the name, never a folder).",
+   "text": "<g1>タスク → インポート → テキスト ファイルから</g1>、または<g2>IDM エクスポート ファイルから</g2>。 <x3/>ファイルには、各ダウンロードのリファラーと Cookie、およびリストにファイル名がある場合はそのファイル名（<x4/>行。名前のみでフォルダーは含まれません）が含まれます。"
   },
   "70304346a925831b": {
    "source": "MDM opens <g1>Download File Info</g1> instead of the browser downloading the file. Click <g2>Start Download</g2>.",
@@ -10518,10 +10546,6 @@
    "source": "Check that the Speed Limiter is off: <g1>Downloads → Speed Limiter → Turn off</g1>. Also look at <g2>Downloads → Speed Limiter → Settings... → Limit all downloads together to</g2>, which applies even with the limiter off.",
    "text": "速度制限がオフになっていることを確認してください。<g1>ダウンロード → 速度制限 → オフにする</g1>。また、<g2>ダウンロード → 速度制限 → 設定... → すべてのダウンロードを合計で制限する</g2>も確認してください。これは、制限がオフの場合でも適用されます。"
   },
-  "8e9db9ede7b54a27": {
-   "source": "<g1>Customize \"Download progress\" dialog → Edit...</g1> — <g2>Show download progress dialog when a download starts</g2>: on by default. Untick it and a download no longer opens its progress window when it starts, from the browser, a link you add, a video or a queue; it goes on in the main window's list, where a double-click opens its progress window. <g3>Download complete</g3> still shows when it finishes, as <g4>Show download complete dialog</g4> below says.",
-   "text": "<g1>「ダウンロードの進行状況」ダイアログをカスタマイズ → 編集...</g1> — <g2>ダウンロード開始時にダウンロードの進行状況ダイアログを表示する</g2>: 既定でオンになっています。これをオフにすると、ブラウザー、追加したリンク、動画、またはキューからダウンロードが開始されても、進行状況ウィンドウは開かなくなります。メイン ウィンドウのリストで続行され、ダブルクリックすると進行状況ウィンドウが開きます。下の <g4>ダウンロード完了ダイアログを表示</g4> の説明どおり、完了すると <g3>ダウンロード完了</g3> は引き続き表示されます。"
-  },
   "8e9f9863589b4bd6": {
    "source": "Fuzzing",
    "text": "ファジング"
@@ -10737,6 +10761,10 @@
   "91921dfcf2686194": {
    "source": "MDM's interface comes in 87 languages: every display language Windows 11 offers, from Afrikaans to Vietnamese, including both Chinese scripts, Spanish for Spain and Mexico, French for France and Canada, Portuguese for Portugal and Brazil, and Serbian in Cyrillic and Latin.",
    "text": "MDMのインターフェースは87言語に対応しています。Windows 11で選べるアフリカーンス語からベトナム語までのすべての表示言語に対応しており、2種類の中国語の文字体系、スペイン語（スペイン、メキシコ）、フランス語（フランス、カナダ）、ポルトガル語（ポルトガル、ブラジル）、キリル文字とラテン文字のセルビア語も含まれます。"
+  },
+  "91c08dd2d3fe7d4a": {
+   "source": "<g1>Add category</g1> — make your own, for example <g2>Books</g2> for <x3/> (they then go to Books, not Documents). Give it a name, the file types (separated by spaces, <x4/> allowed) and a folder.",
+   "text": "<g1>カテゴリの追加</g1> — 独自のカテゴリを作成します。たとえば、<x3/>用に<g2>書籍</g2>を作成します (その場合、ドキュメントではなく書籍に分類されます)。名前、ファイルの種類 (スペースで区切ります。<x4/>も使用可能)、およびフォルダーを指定します。"
   },
   "91cefe80b7f00fac": {
    "source": "<g1><g2>Download a file</g2></g1> — copy a link, add it, open the file.",
@@ -12050,10 +12078,6 @@
    "source": "A live stream saved by a queue's stop counts as complete, so a daily queue doesn't start it again the next day.",
    "text": "キューの停止によって保存されたライブ ストリームは完了と見なされるため、日次キューは翌日には再開されません。"
   },
-  "a21a2e8b8e4dad43": {
-   "source": "<g1>#1 in Rust</g1><g2>repository of the day on <x3/></g2>",
-   "text": "<g1>Rust で #1</g1><g2><x3/> でその日のリポジトリ</g2>"
-  },
   "a21dffa69dd07677": {
    "source": "Every row, and easier to read",
    "text": "すべての行、より読みやすく"
@@ -12245,10 +12269,6 @@
   "a4b01563b82565da": {
    "source": "<g1>Sharper text on Windows</g1> (<g2>#262</g2>): Segoe UI and Tahoma are grid-fitted across as well as up and down, and each letter starts on a whole pixel, as Windows draws its own grey text: upright strokes were two grey pixels wide at 100 % and 125 %, which read as blurred.",
    "text": "<g1>Windows でテキストがより鮮明になりました</g1> (<g2>#262</g2>): Segoe UI と Tahoma は、Windows が独自のグレー テキストを描画するように、縦方向だけでなく横方向にもグリッドにフィットするようになり、各文字が完全なピクセルで開始されるようになりました。以前は、垂直ストロークが 100% および 125% で 2 ピクセルのグレー幅になり、ぼやけて見えました。"
-  },
-  "a4b04f29f56fdc42": {
-   "source": "<g1>Add category</g1> — make your own, for example <g2>Books</g2> for <x3/>. Give it a name, the file types (separated by spaces, <x4/> allowed) and a folder.",
-   "text": "<g1>カテゴリの追加</g1> — 独自のカテゴリを作成します。たとえば、<x3/>用に<g2>書籍</g2>を作成できます。名前、ファイルの種類（スペースで区切ります。<x4/>も使用できます）、フォルダーを指定します。"
   },
   "a4b1f9a84345ac5d": {
    "source": "<g1>yt-dlp</g1> (about 23 MB) looks the page up and finds where the video and its sound come from; MDM downloads them (<g2>How a video comes down</g2>). The first time, click <g3>Install yt-dlp</g3>. MDM checks the download against the signature yt-dlp's developers publish before it uses it.",
@@ -13101,6 +13121,10 @@
   "afc32cfba2a08d06": {
    "source": "Choose a download",
    "text": "ダウンロードの選択"
+  },
+  "afd25bc6979c1269": {
+   "source": "<g1>Customize \"Download progress\" dialog → Edit...</g1> — <g2>Show download progress dialog when a download starts</g2>: <g3>Show normally</g3>, on by default; <g4>Show minimized</g4>, which starts the download's progress window minimized on the taskbar, without taking the focus from the program you are in; or <g5>Don't show</g5>, where a download no longer opens its progress window when it starts, from the browser, a link you add, a video or a queue, and it goes on in the main window's list, where a double-click opens its progress window. <g6>Download complete</g6> still shows when it finishes, as <g7>Show download complete dialog</g7> below says.",
+   "text": "<g1>「ダウンロードの進行状況」ダイアログをカスタマイズ → 編集...</g1> — <g2>ダウンロード開始時にダウンロードの進行状況ダイアログを表示する</g2>: デフォルトでオンになっている<g3>通常表示</g3>、現在使用しているプログラムからフォーカスを奪わずにタスクバーにダウンロードの進行状況ウィンドウを最小化して表示する<g4>最小化して表示</g4>、またはブラウザ、追加したリンク、動画、キューからのダウンロード開始時に進行状況ウィンドウを開かず、メインウィンドウのリストで進行し、ダブルクリックで進行状況ウィンドウを開く<g5>表示しない</g5>があります。<g6>ダウンロード完了</g6>は、以下の<g7>ダウンロード完了ダイアログを表示</g7>の設定に従って、完了時に表示されます。"
   },
   "aff376e66e9d2870": {
    "source": "Queues",
@@ -14034,10 +14058,6 @@
    "source": "The next tab of a focused tab strip; the next choice of a radio group",
    "text": "フォーカスされたタブストリップの次のタブ。ラジオグループの次の選択肢"
   },
-  "bc713e862e9b84d3": {
-   "source": "Each download falls into a category by its file type: <g1>General</g1>, <g2>Compressed</g2>, <g3>Documents</g3>, <g4>Music</g4>, <g5>Programs</g5> or <g6>Video</g6>. Torrents have their own <g7>Torrents</g7> category. Each category has its own folder, by default inside your Downloads folder (<x8/>, <x9/> and so on; General uses <x10/> itself).",
-   "text": "ダウンロードはファイルの種類に応じて、<g1>一般</g1>、<g2>圧縮</g2>、<g3>ドキュメント</g3>、<g4>音楽</g4>、<g5>プログラム</g5>、<g6>ビデオ</g6>のいずれかのカテゴリに分類されます。トレントには専用の<g7>トレント</g7>カテゴリがあります。各カテゴリには専用のフォルダーがあり、既定では「ダウンロード」フォルダー内にあります（<x8/>、<x9/>など。「一般」カテゴリは<x10/>自体を使用します）。"
-  },
   "bc7153d0bcfdacbb": {
    "source": "Themes — Mister Download Manager",
    "text": "テーマ — Mister Download Manager"
@@ -14789,6 +14809,10 @@
   "c763f3aa0f51a5a2": {
    "source": "<g1>Server mode</g1><g2>Mister Download Manager</g2>",
    "text": "<g1>サーバー モード</g1><g2>Mister Download Manager</g2>"
+  },
+  "c76c7692d362ad5a": {
+   "source": "Each running download has its own progress window. It opens when the download starts (unless you turned that off, or chose Show minimized, in Options →…",
+   "text": "実行中のダウンロードにはそれぞれ進行状況ウィンドウがあります。これはダウンロードの開始時に開きます（この機能をオフにした場合、または最小化して表示を選択した場合、オプション →…"
   },
   "c7853bd84d0526f0": {
    "source": "Options → Archives →",
@@ -16030,10 +16054,6 @@
    "source": "<g1><g2>Languages</g2></g1> — the 87 interface languages, numbers and dates, right-to-left layouts, and how to help translate.",
    "text": "<g1><g2>言語</g2></g1> — 87 のインターフェース言語、数字と日付、右から左へのレイアウト、翻訳への協力方法。"
   },
-  "d7df5f97a90fd99c": {
-   "source": "Each running download has its own progress window. It opens when the download starts (unless you turned that off in <g1>Options → Downloads → Customize \"Download progress\" dialog → Edit...</g1>); to open it again, double-click the download in the list.",
-   "text": "実行中のダウンロードごとに進行状況ウィンドウがあります。ダウンロードが開始されると開きます（<g1>オプション → ダウンロード → 「ダウンロードの進行状況」ダイアログをカスタマイズ → 編集...</g1> でオフにしていない場合）。再度開くには、リスト内のダウンロードをダブルクリックします。"
-  },
   "d7e47d8cb056d141": {
    "source": "<g1>Download in order</g1>, to watch a video while it downloads, with each file's first and last pieces early. Other torrents fetch the rarest pieces first.",
    "text": "<g1>順番にダウンロード</g1>すると、ダウンロード中にビデオを視聴でき、各ファイルの最初のピースと最後のピースが早く取得されます。他のトレントは、最も希少なピースを最初に取得します。"
@@ -17010,9 +17030,17 @@
    "source": "No, if it came from this site or GitHub Releases. Some antivirus programs judge a program they don't know by an educated guess, not by a known virus…",
    "text": "いいえ、このサイトまたは GitHub Releases から入手したものであれば、ウイルスではありません。一部のウイルス対策プログラムは、未知のプログラムを既知のウイルスではなく、推測に基づいて判断します…"
   },
+  "e6d677c76529ac72": {
+   "source": "<g1>#1</g1><g2>Rust</g2>",
+   "text": "<g1>#1</g1><g2>Rust</g2>"
+  },
   "e6e9f590b183bea4": {
    "source": "Link grabber: paste many links, MDM groups them, checks which are online, and extracts archives when they arrive.",
    "text": "リンク グラバー: 複数のリンクを貼り付けると、MDM がそれらをグループ化し、オンラインかどうかを確認し、到着時にアーカイブを抽出します。"
+  },
+  "e6f2d5c5287999ae": {
+   "source": "Some programs (BitComet, for one) write a torrent's names in another encoding and add a UTF-8 copy of them (<x1/>, <x2/>); MDM shows and saves the files under the UTF-8 names. A torrent like that which was downloading in an earlier version starts those files again under their correct names, and leaves the files with the old names in the folder.",
+   "text": "一部のプログラム (BitComet など) は、トレント名を別のエンコードで書き込み、その UTF-8 コピーを追加します (<x1/>、<x2/>)。MDM はファイルを UTF-8 名で表示および保存します。以前のバージョンでダウンロード中だったそのようなトレントは、正しい名前でそれらのファイルを再度開始し、古い名前のファイルをフォルダーに残します。"
   },
   "e700b8b592a5b4c0": {
    "source": "Free forever: no trial, no ads, no key",
@@ -17129,6 +17157,10 @@
   "e8482108fc49e0e0": {
    "source": "Can it download overnight or on a schedule?",
    "text": "夜間やスケジュールでダウンロードできますか？"
+  },
+  "e852a2ae2ea94c2d": {
+   "source": "<g1>Automatically put in \"…\" category the following file types</g1> — the file types that go to this category. A built-in category whose list you never changed gains the types a new version adds; one you edited stays as it is.",
+   "text": "<g1>以下のファイルの種類を「…」カテゴリに自動的に分類する</g1> — このカテゴリに分類されるファイルの種類です。変更していない組み込みカテゴリには、新しいバージョンで追加された種類が適用されます。編集したカテゴリはそのまま維持されます。"
   },
   "e8592a334f7cb4df": {
    "source": "In <g1>Download File Info</g1>, click <g2>Download Later</g2> and pick the queue.",
@@ -17725,6 +17757,10 @@
   "ef6e5d90b67f8e4e": {
    "source": "<g1>\"Hide tab\" was cut in longer languages</g1> (German \"Registerkarte au...\"): the button grows to fit its label where there is room, through a shared helper other buttons can use.",
    "text": "<g1>「タブを非表示」が長い言語で途切れていた</g1> (ドイツ語「Registerkarte au...」): ボタンは、他のボタンが使用できる共有ヘルパーを介して、スペースがある場所でラベルに収まるように大きくなります。"
+  },
+  "ef7238dc374b9e0e": {
+   "source": "Each download falls into a category by its file type: <g1>General</g1>, <g2>Compressed</g2>, <g3>Documents</g3>, <g4>Music</g4>, <g5>Programs</g5> or <g6>Video</g6>. Torrents have their own <g7>Torrents</g7> category. <g8>Programs</g8> takes programs, installers and app packages (EXE, MSI, APK, IPA, DMG, PKG, DEB, RPM, AppImage, MSIX…), <g9>Compressed</g9> archives and disc images (ZIP, RAR, 7Z, TAR, XZ, ISO, IMG, VHD…), <g10>Documents</g10> text documents, spreadsheets and e-books (PDF, DOCX, XLSX, ODT, EPUB, MOBI…), <g11>Music</g11> audio (MP3, FLAC, OPUS, M4A…) and <g12>Video</g12> videos (MP4, MKV, WEBM…); every other file goes to General. Your own categories come before the built-in ones. Each category has its own folder, by default inside your Downloads folder (<x13/>, <x14/> and so on; General uses <x15/> itself).",
+   "text": "各ダウンロードは、ファイルの種類によって、<g1>一般</g1>、<g2>圧縮</g2>、<g3>ドキュメント</g3>、<g4>音楽</g4>、<g5>プログラム</g5>、<g6>ビデオ</g6>のいずれかのカテゴリに分類されます。トレントには独自の<g7>トレント</g7>カテゴリがあります。<g8>プログラム</g8>にはプログラム、インストーラー、アプリパッケージ (EXE、MSI、APK、IPA、DMG、PKG、DEB、RPM、AppImage、MSIXなど) が、<g9>圧縮</g9>にはアーカイブとディスクイメージ (ZIP、RAR、7Z、TAR、XZ、ISO、IMG、VHDなど) が、<g10>ドキュメント</g10>にはテキストドキュメント、スプレッドシート、電子書籍 (PDF、DOCX、XLSX、ODT、EPUB、MOBIなど) が、<g11>音楽</g11>にはオーディオ (MP3、FLAC、OPUS、M4Aなど) が、<g12>ビデオ</g12>にはビデオ (MP4、MKV、WEBMなど) が含まれます。その他のファイルはすべて一般に分類されます。ユーザーが作成したカテゴリは、組み込みのカテゴリよりも優先されます。各カテゴリには独自のフォルダーがあり、デフォルトではダウンロードフォルダー内にあります (<x13/>、<x14/>など。一般は<x15/>自体を使用します)。"
   },
   "ef8cedcbdccdaf85": {
    "source": "The code is filled in when you scanned the QR code; otherwise type it. Give the phone a name, and tap <g1>Pair</g1>. The window on the computer says so, and closes with <g2>Done</g2>.",
@@ -18333,10 +18369,6 @@
   "f8c444517ab946e2": {
    "source": "From the plain zip",
    "text": "zip ファイルから"
-  },
-  "f8c71a9fb2bd8bde": {
-   "source": "<g1>Automatically put in \"…\" category the following file types</g1> — the file types that go to this category.",
-   "text": "<g1>以下のファイルの種類を「…」カテゴリに自動的に振り分ける</g1> — このカテゴリに振り分けるファイルの種類です。"
   },
   "f8e0a9e7ee529ff0": {
    "source": "Select <g1>Main download queue</g1> on the left. The <g2>Schedule</g2> tab opens.",

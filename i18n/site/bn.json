@@ -778,6 +778,10 @@
    "source": "Too many tries from your connection. Please try again in a few minutes.",
    "text": "আপনার সংযোগ থেকে অনেক বেশি চেষ্টা করা হয়েছে। অনুগ্রহ করে কয়েক মিনিট পর আবার চেষ্টা করুন।"
   },
+  "0a07d4f9fc7fb519": {
+   "source": "When the network comes back after a drop (Wi-Fi reconnecting, the computer waking from sleep, a VPN connecting or switching), MDM notices within a few seconds and calls the torrents' peers again at once, and asks their trackers and the DHT again, so a download picks up where it was instead of waiting minutes for each peer's next try. Each peer is called once for it; a tracker is still never asked sooner than its minimum interval. Behind a SOCKS5 proxy, a drop the computer itself doesn't see (the router losing its line while Wi-Fi stays up) is noticed only through the DHT, which is off there, so those torrents come back on their own, as before.",
+   "text": "নেটওয়ার্ক সংযোগ বিচ্ছিন্ন হওয়ার পর (Wi-Fi পুনরায় সংযোগ করা হচ্ছে, কম্পিউটার স্লিপ থেকে জাগছে, একটি VPN সংযোগ করা হচ্ছে বা পরিবর্তন হচ্ছে) ফিরে এলে, MDM কয়েক সেকেন্ডের মধ্যে তা বুঝতে পারে এবং সাথে সাথে টরেন্টের পিয়ারগুলোকে আবার ডাকে, এবং তাদের ট্র্যাকার ও DHT-কে আবার জিজ্ঞাসা করে, ফলে প্রতিটি পিয়ারের পরবর্তী চেষ্টার জন্য মিনিট ধরে অপেক্ষা না করে ডাউনলোড যেখানে ছিল সেখান থেকেই শুরু হয়। প্রতিটি পিয়ারকে একবার করে ডাকা হয়; একটি ট্র্যাকারকে তার সর্বনিম্ন ব্যবধানের আগে কখনোই জিজ্ঞাসা করা হয় না। একটি SOCKS5 প্রক্সির পেছনে, কম্পিউটার নিজে যে সংযোগ বিচ্ছিন্ন হওয়া দেখতে পায় না (Wi-Fi চালু থাকা অবস্থায় রাউটার তার লাইন হারালে) তা শুধুমাত্র DHT-এর মাধ্যমে বোঝা যায়, যা সেখানে বন্ধ থাকে, তাই সেই টরেন্টগুলো আগের মতোই নিজে নিজেই ফিরে আসে।"
+  },
   "0a15fc764eba9ef6": {
    "source": "Some servers drop the connection when the speed is very low. Avoid a tight limit for a server that can't resume: the progress window shows <g1>Resume capability: No</g1> for those.",
    "text": "কিছু সার্ভার গতি খুব কম হলে সংযোগ বিচ্ছিন্ন করে দেয়। এমন সার্ভারের জন্য কঠোর সীমা এড়িয়ে চলুন যা পুনরায় শুরু করতে পারে না: অগ্রগতি উইন্ডো সেগুলির জন্য <g1>পুনরায় শুরু করার ক্ষমতা: না</g1> দেখায়।"
@@ -1114,6 +1118,10 @@
    "source": "Read the site",
    "text": "সাইটটি পড়ুন"
   },
+  "0e9fede041092f7d": {
+   "source": "A file is made when its first byte is downloaded, and only a ticked one is made in the folder: what an unticked file shares with a ticked one waits in MDM's own torrent data. A running torrent keeps only the files it is reading or writing open, a few hundred at most for all of MDM's torrents together (fewer where the system allows fewer, as macOS does), so a torrent of thousands of files runs where it used to fail with \"Too many open files\".",
+   "text": "একটি ফাইলের প্রথম বাইট ডাউনলোড হলে সেটি তৈরি হয়, এবং ফোল্ডারে শুধুমাত্র টিক দেওয়া ফাইলটি তৈরি হয়: টিক না দেওয়া ফাইলটি টিক দেওয়া ফাইলের সাথে যা শেয়ার করে তা MDM-এর নিজস্ব টরেন্ট ডেটাতে অপেক্ষা করে। একটি চলমান টরেন্ট শুধুমাত্র সেই ফাইলগুলো খোলা রাখে যা এটি পড়ছে বা লিখছে, MDM-এর সব টরেন্টের জন্য সর্বোচ্চ কয়েকশ (যেখানে সিস্টেম কম অনুমতি দেয়, যেমন macOS-এ, সেখানে আরও কম), তাই হাজার হাজার ফাইলের একটি টরেন্ট যেখানে আগে “Too many open files” ত্রুটির কারণে ব্যর্থ হতো, সেখানেও চলে।"
+  },
   "0ea74b188ec2ca88": {
    "source": "If it says <g1>the site sent a web page instead of the file</g1>, the link led to the site's own page: a file host's countdown, a captcha, a <g2>Download</g2> button to press, or a sign-in. MDM never saves that page as your file. Click <g3>Open in browser</g3> in the download's progress window (or open the link yourself), finish there, and when the browser starts the real download, MDM's extension hands it to MDM. Without the extension, let the browser download it.",
    "text": "যদি লেখা থাকে <g1>সাইটটি ফাইলের পরিবর্তে একটি ওয়েব পেজ পাঠিয়েছে</g1>, তাহলে লিঙ্কটি সাইটের নিজস্ব পেজে নিয়ে গেছে: একটি ফাইল হোস্টের কাউন্টডাউন, একটি ক্যাপচা, চাপার জন্য একটি <g2>ডাউনলোড</g2> বোতাম, অথবা সাইন-ইন। MDM কখনোই সেই পেজটিকে আপনার ফাইল হিসেবে সংরক্ষণ করে না। ডাউনলোডের অগ্রগতি উইন্ডোতে <g3>ব্রাউজারে খুলুন</g3> ক্লিক করুন (অথবা লিঙ্কটি নিজে খুলুন), সেখানে কাজ শেষ করুন, এবং যখন ব্রাউজার আসল ডাউনলোড শুরু করবে, তখন MDM-এর এক্সটেনশন এটি MDM-এর কাছে হস্তান্তর করবে। এক্সটেনশন ছাড়া, ব্রাউজারকে এটি ডাউনলোড করতে দিন।"
@@ -1393,6 +1401,10 @@
   "1294135f300139c9": {
    "source": "The benchmark data could not be loaded.",
    "text": "বেঞ্চমার্ক ডেটা লোড করা যায়নি।"
+  },
+  "12947e2a74bc1b46": {
+   "source": "Each running download has its own progress window. It opens when the download starts (unless you turned that off, or chose <g1>Show minimized</g1>, in <g2>Options → Downloads → Customize \"Download progress\" dialog → Edit...</g2>); to open it again, double-click the download in the list.",
+   "text": "চলমান প্রতিটি ডাউনলোডের নিজস্ব অগ্রগতি উইন্ডো থাকে। ডাউনলোড শুরু হলে এটি খোলে (যদি না আপনি এটি বন্ধ করে থাকেন, অথবা <g1>ছোট করে দেখান</g1> বেছে নিয়ে থাকেন, <g2>বিকল্প → ডাউনলোড → “ডাউনলোড অগ্রগতি” ডায়ালগ কাস্টমাইজ করুন → সম্পাদনা করুন...</g2>-এ); এটি আবার খুলতে, তালিকার ডাউনলোডটিতে ডাবল-ক্লিক করুন।"
   },
   "12a228101626f4bc": {
    "source": "How MDM uses connections",
@@ -4558,6 +4570,10 @@
    "source": "Steps",
    "text": "ধাপসমূহ"
   },
+  "3ccaf5a331b1edd2": {
+   "source": "A stopped torrent keeps none of its files open: you can move, rename or delete them, or open them in another program, while it waits. When you start it again, MDM opens them where they are; a file that was moved away or deleted meanwhile is made again and its pieces downloaded again. A finished torrent that is shared (<g1>Keep sharing torrents after they finish</g1>, in Torrent settings) keeps its files open only to read them: other programs can open, copy, run, move or rename them meanwhile.",
+   "text": "একটি থামানো টরেন্ট তার কোনো ফাইল খোলা রাখে না: আপনি সেগুলোকে সরাতে, নাম পরিবর্তন করতে বা মুছতে পারবেন, অথবা অন্য কোনো প্রোগ্রামে খুলতে পারবেন, যখন এটি অপেক্ষা করছে। যখন আপনি এটি আবার শুরু করবেন, MDM সেগুলোকে যেখানে আছে সেখানেই খুলবে; যে ফাইলটি এর মধ্যে সরানো হয়েছে বা মুছে ফেলা হয়েছে সেটি আবার তৈরি হবে এবং এর খণ্ডগুলো আবার ডাউনলোড হবে। একটি সম্পূর্ণ হওয়া টরেন্ট যা শেয়ার করা হচ্ছে (<g1>টরেন্ট শেষ হওয়ার পরেও শেয়ার করা চালিয়ে যান</g1>, টরেন্ট সেটিংসে) তার ফাইলগুলো শুধুমাত্র পড়ার জন্য খোলা রাখে: এর মধ্যে অন্য প্রোগ্রাম সেগুলোকে খুলতে, কপি করতে, চালাতে, সরাতে বা নাম পরিবর্তন করতে পারবে।"
+  },
   "3cd4e5cff6113414": {
    "source": "<g1>Then move the archives to the Recycle Bin</g1> has nothing to move afterwards: the archive is already gone.",
    "text": "<g1>তারপর আর্কাইভগুলো রিসাইকেল বিনে সরান</g1>-এর পরে সরানোর মতো কিছুই থাকে না: আর্কাইভটি ইতিমধ্যেই চলে গেছে।"
@@ -4897,10 +4913,6 @@
   "413ea94686ccd93b": {
    "source": "When an address is already in the list, MDM asks what to do, or follows the answer you chose in <g1>Options → Downloads → If a duplicate download link is added</g1>.",
    "text": "যখন একটি ঠিকানা ইতিমধ্যেই তালিকায় থাকে, MDM জিজ্ঞাসা করে কী করতে হবে, অথবা <g1>সেটিংস → ডাউনলোডগুলি → যদি একটি সদৃশ ডাউনলোড লিঙ্ক যোগ করা হয়</g1> এ আপনি যে উত্তরটি বেছে নিয়েছেন তা অনুসরণ করে।"
-  },
-  "415322c0b133befd": {
-   "source": "Each running download has its own progress window. It opens when the download starts (unless you turned that off in Options → Downloads → Customize…",
-   "text": "প্রতিটি চলমান ডাউনলোডের নিজস্ব অগ্রগতি উইন্ডো আছে। ডাউনলোড শুরু হলে এটি খোলে (যদি না আপনি বিকল্প → ডাউনলোড → কাস্টমাইজ করুন...-এ এটি বন্ধ করে থাকেন)।"
   },
   "4160d55635d3e362": {
    "source": "Freeze reports that tell the kind of freeze",
@@ -5814,6 +5826,10 @@
    "source": "<g1>A minimized MDM keeps working</g1>: with the main window minimized (not to the notification area), queues didn't start their next file, the Scheduler's starts and stops didn't fire, download limits, the network adapter's kill switch, the clipboard monitor, the update check, the taskbar's progress and saving the list all waited until the window was restored. They run in every window state now, and their windows (Download complete, a limit's notice) open at once.",
    "text": "<g1>একটি মিনিমাইজড MDM কাজ করতে থাকে</g1>: প্রধান উইন্ডো মিনিমাইজ করা থাকলে (নোটিফিকেশন এরিয়াতে নয়), কিউগুলি তাদের পরবর্তী ফাইল শুরু করত না, সময়সূচী-এর শুরু এবং বন্ধ কাজ করত না, ডাউনলোড সীমা, নেটওয়ার্ক অ্যাডাপ্টারের কিল সুইচ, ক্লিপবোর্ড মনিটর, আপডেট চেক, টাস্কবারের অগ্রগতি এবং তালিকা সংরক্ষণ সবই উইন্ডো পুনরুদ্ধার না হওয়া পর্যন্ত অপেক্ষা করত। তারা এখন প্রতিটি উইন্ডো অবস্থায় চলে, এবং তাদের উইন্ডো (ডাউনলোড সম্পূর্ণ, একটি সীমার বিজ্ঞপ্তি) অবিলম্বে খোলে।"
   },
+  "4e60a529980083e7": {
+   "source": "The downloads join the <g1>Main download queue</g1>, ready to start (<g2>Start</g2> starts it too). <g3>Tasks → Import → From IDM export file</g3> reads an <x4/> file, with each download's referrer and cookies, and the file name a list gives it in a <x5/> line.",
+   "text": "ডাউনলোডগুলো <g1>প্রধান ডাউনলোড সারি</g1>-তে যোগ হয়, শুরু করার জন্য প্রস্তুত থাকে (<g2>শুরু করুন</g2> চাপলেও এটি শুরু হয়)। <g3>কাজ → ইম্পোর্ট → IDM-এর এক্সপোর্ট ফাইল থেকে</g3> একটি <x4/> ফাইল পড়ে, যেখানে প্রতিটি ডাউনলোডের রেফারার ও কুকিজ থাকে এবং একটি <x5/> লাইনে ফাইলের নাম দেওয়া থাকে।"
+  },
   "4e96b700836944de": {
    "source": "<g1>Password</g1>: the archives' password, if they have one. It is kept in memory only and is never saved by itself: to keep one for other packages, add it to your <g2>archive passwords</g2>.",
    "text": "<g1>পাসওয়ার্ড</g1>: আর্কাইভগুলোর পাসওয়ার্ড, যদি থাকে। এটি শুধুমাত্র মেমরিতে রাখা হয় এবং নিজে থেকে কখনো সেভ হয় না: অন্যান্য প্যাকেজের জন্য একটি রাখতে চাইলে, আপনার <g2>আর্কাইভ পাসওয়ার্ডে</g2> যোগ করুন।"
@@ -6533,6 +6549,10 @@
   "58f22a0b1aeea2b4": {
    "source": "Watch it work.",
    "text": "এটি কীভাবে কাজ করে দেখুন।"
+  },
+  "58f7b730058089bc": {
+   "source": "Everyone who takes part follows the <g1>Code of conduct</g1>. Who reviews and merges changes, and how decisions are made, is in <g2>GOVERNANCE.md</g2>.",
+   "text": "যারা অংশ নেন, তাদের সবাইকে <g1>আচরণবিধি</g1> মেনে চলতে হয়। কে পরিবর্তনগুলো পর্যালোচনা ও একত্র করেন এবং কীভাবে সিদ্ধান্ত নেওয়া হয়, তা <g2>GOVERNANCE.md</g2>-তে আছে।"
   },
   "59130ab4ecc47c65": {
    "source": "<g1>Hide to the notification area</g1> (a short dash with an arrow down to the corner; on Windows in the title bar, left of Minimize) puts the window in the notification area; <g2>Downloads in progress</g2> in the tray icon's menu brings it back. See <g3>The tray icon</g3>.",
@@ -8245,6 +8265,10 @@
   "700b58886e17c427": {
    "source": "<g1><g2>Options</g2></g1> — every page of the Options window.",
    "text": "<g1><g2>বিকল্প</g2></g1> — বিকল্প উইন্ডোর প্রতিটি পৃষ্ঠা।"
+  },
+  "702b1d80d041e97d": {
+   "source": "<g1>Tasks → Import → From text file</g1> and <g2>From IDM export file</g2>. An <x3/> file brings each download's referrer and cookies, and its file name when the list gives one (a <x4/> line; only the name, never a folder).",
+   "text": "<g1>কাজ → ইম্পোর্ট → টেক্সট ফাইল থেকে</g1> এবং <g2>IDM-এর এক্সপোর্ট ফাইল থেকে</g2>। একটি <x3/> ফাইল প্রতিটি ডাউনলোডের রেফারার ও কুকিজ নিয়ে আসে, এবং তালিকায় ফাইলের নাম দেওয়া থাকলে সেটিও (একটি <x4/> লাইন; শুধু নাম, ফোল্ডার নয়)।"
   },
   "70304346a925831b": {
    "source": "MDM opens <g1>Download File Info</g1> instead of the browser downloading the file. Click <g2>Start Download</g2>.",
@@ -10522,10 +10546,6 @@
    "source": "Check that the Speed Limiter is off: <g1>Downloads → Speed Limiter → Turn off</g1>. Also look at <g2>Downloads → Speed Limiter → Settings... → Limit all downloads together to</g2>, which applies even with the limiter off.",
    "text": "স্পিড লিমিটার বন্ধ আছে কিনা তা পরীক্ষা করুন: <g1>ডাউনলোডগুলি → স্পিড লিমিটার → বন্ধ করুন</g1>। এছাড়াও <g2>ডাউনলোডগুলি → স্পিড লিমিটার → সেটিংস... → একসাথে সব ডাউনলোড সীমিত করুন</g2> দেখুন, যা লিমিটার বন্ধ থাকলেও প্রযোজ্য হয়।"
   },
-  "8e9db9ede7b54a27": {
-   "source": "<g1>Customize \"Download progress\" dialog → Edit...</g1> — <g2>Show download progress dialog when a download starts</g2>: on by default. Untick it and a download no longer opens its progress window when it starts, from the browser, a link you add, a video or a queue; it goes on in the main window's list, where a double-click opens its progress window. <g3>Download complete</g3> still shows when it finishes, as <g4>Show download complete dialog</g4> below says.",
-   "text": "<g1>“ডাউনলোড অগ্রগতি” ডায়ালগ কাস্টমাইজ করুন → সম্পাদনা করুন...</g1> — <g2>ডাউনলোড শুরু হলে ডাউনলোড প্রোগ্রেস ডায়ালগ দেখান</g2>: ডিফল্টভাবে চালু থাকে। এটি আনটিক করলে ব্রাউজার থেকে, আপনার যোগ করা একটি লিংক থেকে, একটি ভিডিও থেকে বা একটি সারি থেকে ডাউনলোড শুরু হলে তার অগ্রগতি উইন্ডো আর খোলে না; এটি মূল উইন্ডোর তালিকায় চলতে থাকে, যেখানে ডাবল-ক্লিক করলে এর অগ্রগতি উইন্ডো খোলে। <g3>ডাউনলোড সম্পূর্ণ</g3> হলে এটি শেষ হলে এখনো দেখায়, যেমন নিচের <g4>ডাউনলোড সম্পূর্ণ হলে ডায়ালগ দেখান</g4> বলে।"
-  },
   "8e9f9863589b4bd6": {
    "source": "Fuzzing",
    "text": "ফাজিং"
@@ -10741,6 +10761,10 @@
   "91921dfcf2686194": {
    "source": "MDM's interface comes in 87 languages: every display language Windows 11 offers, from Afrikaans to Vietnamese, including both Chinese scripts, Spanish for Spain and Mexico, French for France and Canada, Portuguese for Portugal and Brazil, and Serbian in Cyrillic and Latin.",
    "text": "MDM-এর ইন্টারফেস 87টি ভাষায় পাওয়া যায়: Windows 11-এর সব ডিসপ্লে ভাষা, আফ্রিকান থেকে ভিয়েতনামি পর্যন্ত, যার মধ্যে আছে দুটি চীনা স্ক্রিপ্ট, স্পেন ও মেক্সিকোর জন্য স্প্যানিশ, ফ্রান্স ও কানাডার জন্য ফরাসি, পর্তুগাল ও ব্রাজিলের জন্য পর্তুগিজ এবং সিরিলিক ও ল্যাটিন উভয় লিপিতে সার্বীয়।"
+  },
+  "91c08dd2d3fe7d4a": {
+   "source": "<g1>Add category</g1> — make your own, for example <g2>Books</g2> for <x3/> (they then go to Books, not Documents). Give it a name, the file types (separated by spaces, <x4/> allowed) and a folder.",
+   "text": "<g1>শ্রেণি যোগ করুন</g1> — আপনার নিজস্ব শ্রেণি তৈরি করুন, যেমন <g2>বই</g2> <x3/>-এর জন্য (সেগুলো তখন ডকুমেন্ট-এ না গিয়ে বই-এ যাবে)। এটিকে একটি নাম, ফাইলের ধরন (স্পেস দিয়ে আলাদা করা, <x4/> অনুমোদিত) এবং একটি ফোল্ডার দিন।"
   },
   "91cefe80b7f00fac": {
    "source": "<g1><g2>Download a file</g2></g1> — copy a link, add it, open the file.",
@@ -12054,10 +12078,6 @@
    "source": "A live stream saved by a queue's stop counts as complete, so a daily queue doesn't start it again the next day.",
    "text": "একটি সারির থামানো দ্বারা সংরক্ষিত একটি লাইভ স্ট্রিম সম্পূর্ণ হিসাবে গণ্য হয়, তাই একটি দৈনিক সারি পরের দিন এটি আবার শুরু করে না।"
   },
-  "a21a2e8b8e4dad43": {
-   "source": "<g1>#1 in Rust</g1><g2>repository of the day on <x3/></g2>",
-   "text": "<g1>Rust-এ #1</g1><g2><x3/>-এ দিনের রিপোজিটরি</g2>"
-  },
   "a21dffa69dd07677": {
    "source": "Every row, and easier to read",
    "text": "প্রতিটি সারি, এবং পড়া সহজ"
@@ -12249,10 +12269,6 @@
   "a4b01563b82565da": {
    "source": "<g1>Sharper text on Windows</g1> (<g2>#262</g2>): Segoe UI and Tahoma are grid-fitted across as well as up and down, and each letter starts on a whole pixel, as Windows draws its own grey text: upright strokes were two grey pixels wide at 100 % and 125 %, which read as blurred.",
    "text": "<g1>Windows-এ তীক্ষ্ণ লেখা</g1> (<g2>#262</g2>): Segoe UI এবং Tahoma গ্রিড-ফিট করা হয় পাশাপাশি উপরে এবং নিচে, এবং প্রতিটি অক্ষর একটি সম্পূর্ণ পিক্সেল থেকে শুরু হয়, যেমন Windows তার নিজস্ব ধূসর লেখা আঁকে: খাড়া স্ট্রোকগুলি 100% এবং 125% এ দুটি ধূসর পিক্সেল চওড়া ছিল, যা ঝাপসা হিসাবে পড়া হত।"
-  },
-  "a4b04f29f56fdc42": {
-   "source": "<g1>Add category</g1> — make your own, for example <g2>Books</g2> for <x3/>. Give it a name, the file types (separated by spaces, <x4/> allowed) and a folder.",
-   "text": "<g1>ক্যাটাগরি যোগ করুন</g1> — নিজের শ্রেণী তৈরি করুন, যেমন <x3/>-এর জন্য <g2>বই</g2>। একটি নাম, ফাইলের ধরন (স্পেস দিয়ে আলাদা করে, <x4/> ব্যবহার করা যাবে) এবং একটি ফোল্ডার দিন।"
   },
   "a4b1f9a84345ac5d": {
    "source": "<g1>yt-dlp</g1> (about 23 MB) looks the page up and finds where the video and its sound come from; MDM downloads them (<g2>How a video comes down</g2>). The first time, click <g3>Install yt-dlp</g3>. MDM checks the download against the signature yt-dlp's developers publish before it uses it.",
@@ -13105,6 +13121,10 @@
   "afc32cfba2a08d06": {
    "source": "Choose a download",
    "text": "ডাউনলোড বেছে নিন"
+  },
+  "afd25bc6979c1269": {
+   "source": "<g1>Customize \"Download progress\" dialog → Edit...</g1> — <g2>Show download progress dialog when a download starts</g2>: <g3>Show normally</g3>, on by default; <g4>Show minimized</g4>, which starts the download's progress window minimized on the taskbar, without taking the focus from the program you are in; or <g5>Don't show</g5>, where a download no longer opens its progress window when it starts, from the browser, a link you add, a video or a queue, and it goes on in the main window's list, where a double-click opens its progress window. <g6>Download complete</g6> still shows when it finishes, as <g7>Show download complete dialog</g7> below says.",
+   "text": "<g1>“ডাউনলোড অগ্রগতি” ডায়ালগ কাস্টমাইজ করুন → সম্পাদনা করুন...</g1> — <g2>ডাউনলোড শুরু হলে ডাউনলোড প্রোগ্রেস ডায়ালগ দেখান</g2>: <g3>সাধারণভাবে দেখান</g3>, এটি ডিফল্টরূপে চালু থাকে; <g4>ছোট করে দেখান</g4>, যা ডাউনলোডের অগ্রগতি উইন্ডোকে টাস্কবারে ছোট করে শুরু করে, আপনি যে প্রোগ্রামে আছেন সেখান থেকে ফোকাস না সরিয়ে; অথবা <g5>দেখান যাবে না</g5>, যেখানে ডাউনলোড শুরু হলে ব্রাউজার থেকে, আপনার যোগ করা কোনো লিংক থেকে, কোনো ভিডিও থেকে বা সারি থেকে এর অগ্রগতি উইন্ডো আর খোলে না, এবং এটি প্রধান উইন্ডোর তালিকায় চলতে থাকে, যেখানে ডাবল-ক্লিক করলে এর অগ্রগতি উইন্ডো খোলে। <g6>ডাউনলোড সম্পূর্ণ</g6> হলে এটি এখনো দেখায়, যেমনটি নিচে <g7>ডাউনলোড সম্পূর্ণ হলে ডায়ালগ দেখান</g7> বলছে।"
   },
   "aff376e66e9d2870": {
    "source": "Queues",
@@ -14038,10 +14058,6 @@
    "source": "The next tab of a focused tab strip; the next choice of a radio group",
    "text": "একটি ফোকাস করা ট্যাব স্ট্রিপের পরবর্তী ট্যাব; একটি রেডিও গ্রুপের পরবর্তী পছন্দ"
   },
-  "bc713e862e9b84d3": {
-   "source": "Each download falls into a category by its file type: <g1>General</g1>, <g2>Compressed</g2>, <g3>Documents</g3>, <g4>Music</g4>, <g5>Programs</g5> or <g6>Video</g6>. Torrents have their own <g7>Torrents</g7> category. Each category has its own folder, by default inside your Downloads folder (<x8/>, <x9/> and so on; General uses <x10/> itself).",
-   "text": "ফাইলের ধরন অনুযায়ী প্রতিটি ডাউনলোড একটি শ্রেণীতে পড়ে: <g1>সাধারণ</g1>, <g2>সংকুচিত</g2>, <g3>ডকুমেন্টস</g3>, <g4>সঙ্গীত</g4>, <g5>প্রোগ্রাম</g5> অথবা <g6>ভিডিও</g6>। টরেন্টের জন্য আলাদা <g7>টরেন্ট</g7> শ্রেণী আছে। প্রতিটি শ্রেণীর জন্য আলাদা ফোল্ডার থাকে, যা ডিফল্টভাবে আপনার ডাউনলোড ফোল্ডারের ভেতরে থাকে (<x8/>, <x9/> ইত্যাদি; সাধারণ শ্রেণীর জন্য <x10/> ফোল্ডারটিই ব্যবহৃত হয়)।"
-  },
   "bc7153d0bcfdacbb": {
    "source": "Themes — Mister Download Manager",
    "text": "থিম — Mister Download Manager"
@@ -14793,6 +14809,10 @@
   "c763f3aa0f51a5a2": {
    "source": "<g1>Server mode</g1><g2>Mister Download Manager</g2>",
    "text": "<g1>সার্ভার মোড</g1><g2>Mister Download Manager</g2>"
+  },
+  "c76c7692d362ad5a": {
+   "source": "Each running download has its own progress window. It opens when the download starts (unless you turned that off, or chose Show minimized, in Options →…",
+   "text": "চলমান প্রতিটি ডাউনলোডের নিজস্ব অগ্রগতি উইন্ডো থাকে। ডাউনলোড শুরু হলে এটি খোলে (যদি না আপনি এটি বন্ধ করে থাকেন, অথবা ছোট করে দেখান বেছে নিয়ে থাকেন, বিকল্প →…)"
   },
   "c7853bd84d0526f0": {
    "source": "Options → Archives →",
@@ -16034,10 +16054,6 @@
    "source": "<g1><g2>Languages</g2></g1> — the 87 interface languages, numbers and dates, right-to-left layouts, and how to help translate.",
    "text": "<g1><g2>ভাষা</g2></g1> — 87টি ইন্টারফেস ভাষা, সংখ্যা ও তারিখ, ডান থেকে বাম লেআউট এবং অনুবাদে কীভাবে সাহায্য করবেন।"
   },
-  "d7df5f97a90fd99c": {
-   "source": "Each running download has its own progress window. It opens when the download starts (unless you turned that off in <g1>Options → Downloads → Customize \"Download progress\" dialog → Edit...</g1>); to open it again, double-click the download in the list.",
-   "text": "প্রতিটি চলমান ডাউনলোডের নিজস্ব অগ্রগতি উইন্ডো আছে। ডাউনলোড শুরু হলে এটি খোলে (যদি না আপনি <g1>বিকল্প → ডাউনলোড → “ডাউনলোড অগ্রগতি” ডায়ালগ কাস্টমাইজ করুন → সম্পাদনা করুন...</g1>-এ এটি বন্ধ করে থাকেন); এটি আবার খুলতে, তালিকার ডাউনলোডটিতে ডাবল-ক্লিক করুন।"
-  },
   "d7e47d8cb056d141": {
    "source": "<g1>Download in order</g1>, to watch a video while it downloads, with each file's first and last pieces early. Other torrents fetch the rarest pieces first.",
    "text": "<g1>ক্রমানুসারে ডাউনলোড করুন</g1>, ডাউনলোড হওয়ার সময় একটি ভিডিও দেখতে, প্রতিটি ফাইলের প্রথম এবং শেষ পিসগুলি আগে আসে। অন্যান্য টরেন্টগুলি প্রথমে বিরল পিসগুলি নিয়ে আসে।"
@@ -17014,9 +17030,17 @@
    "source": "No, if it came from this site or GitHub Releases. Some antivirus programs judge a program they don't know by an educated guess, not by a known virus…",
    "text": "না, যদি এটি এই সাইট বা GitHub রিলিজ থেকে এসে থাকে। কিছু অ্যান্টিভাইরাস প্রোগ্রাম অজানা প্রোগ্রামকে পরিচিত ভাইরাস দিয়ে নয়, বরং অনুমান করে বিচার করে..."
   },
+  "e6d677c76529ac72": {
+   "source": "<g1>#1</g1><g2>Rust</g2>",
+   "text": "<g1>#1</g1><g2>Rust</g2>"
+  },
   "e6e9f590b183bea4": {
    "source": "Link grabber: paste many links, MDM groups them, checks which are online, and extracts archives when they arrive.",
    "text": "লিঙ্ক গ্র্যাবার: অনেক লিঙ্ক পেস্ট করুন, MDM সেগুলিকে গ্রুপ করে, কোনটি অনলাইন আছে তা পরীক্ষা করে এবং আর্কাইভগুলি আসার পর সেগুলিকে এক্সট্র্যাক্ট করে।"
+  },
+  "e6f2d5c5287999ae": {
+   "source": "Some programs (BitComet, for one) write a torrent's names in another encoding and add a UTF-8 copy of them (<x1/>, <x2/>); MDM shows and saves the files under the UTF-8 names. A torrent like that which was downloading in an earlier version starts those files again under their correct names, and leaves the files with the old names in the folder.",
+   "text": "কিছু প্রোগ্রাম (যেমন BitComet) টরেন্টের নাম অন্য এনকোডিং-এ লেখে এবং সেগুলোর একটি UTF-8 কপি যোগ করে (<x1/>, <x2/>); MDM UTF-8 নামগুলো দেখায় এবং সেভ করে। আগের সংস্করণে ডাউনলোড হওয়া এমন একটি টরেন্ট সঠিক নামে ফাইলগুলো আবার শুরু করে এবং পুরোনো নামের ফাইলগুলো ফোল্ডারে রেখে দেয়।"
   },
   "e700b8b592a5b4c0": {
    "source": "Free forever: no trial, no ads, no key",
@@ -17133,6 +17157,10 @@
   "e8482108fc49e0e0": {
    "source": "Can it download overnight or on a schedule?",
    "text": "এটি কি রাতারাতি বা সময়সূচী অনুযায়ী ডাউনলোড করতে পারে?"
+  },
+  "e852a2ae2ea94c2d": {
+   "source": "<g1>Automatically put in \"…\" category the following file types</g1> — the file types that go to this category. A built-in category whose list you never changed gains the types a new version adds; one you edited stays as it is.",
+   "text": "<g1>নিম্নলিখিত ফাইলের ধরনগুলো স্বয়ংক্রিয়ভাবে “…” শ্রেণিতে রাখুন</g1> — এই শ্রেণিতে যে ফাইলের ধরনগুলো যায়। একটি বিল্ট-ইন শ্রেণি যার তালিকা আপনি কখনো পরিবর্তন করেননি, নতুন সংস্করণে যোগ হওয়া ধরনগুলো পাবে; আপনি যা সম্পাদনা করেছেন তা যেমন আছে তেমনই থাকবে।"
   },
   "e8592a334f7cb4df": {
    "source": "In <g1>Download File Info</g1>, click <g2>Download Later</g2> and pick the queue.",
@@ -17729,6 +17757,10 @@
   "ef6e5d90b67f8e4e": {
    "source": "<g1>\"Hide tab\" was cut in longer languages</g1> (German \"Registerkarte au...\"): the button grows to fit its label where there is room, through a shared helper other buttons can use.",
    "text": "<g1>\"ট্যাব লুকান\" দীর্ঘ ভাষাগুলিতে কাটা পড়েছিল</g1> (জার্মান \"Registerkarte au...\"): বোতামটি তার লেবেলের সাথে মানানসই হওয়ার জন্য বড় হয় যেখানে জায়গা আছে, একটি শেয়ার্ড হেল্পারের মাধ্যমে যা অন্য বোতামগুলি ব্যবহার করতে পারে।"
+  },
+  "ef7238dc374b9e0e": {
+   "source": "Each download falls into a category by its file type: <g1>General</g1>, <g2>Compressed</g2>, <g3>Documents</g3>, <g4>Music</g4>, <g5>Programs</g5> or <g6>Video</g6>. Torrents have their own <g7>Torrents</g7> category. <g8>Programs</g8> takes programs, installers and app packages (EXE, MSI, APK, IPA, DMG, PKG, DEB, RPM, AppImage, MSIX…), <g9>Compressed</g9> archives and disc images (ZIP, RAR, 7Z, TAR, XZ, ISO, IMG, VHD…), <g10>Documents</g10> text documents, spreadsheets and e-books (PDF, DOCX, XLSX, ODT, EPUB, MOBI…), <g11>Music</g11> audio (MP3, FLAC, OPUS, M4A…) and <g12>Video</g12> videos (MP4, MKV, WEBM…); every other file goes to General. Your own categories come before the built-in ones. Each category has its own folder, by default inside your Downloads folder (<x13/>, <x14/> and so on; General uses <x15/> itself).",
+   "text": "প্রতিটি ডাউনলোড তার ফাইলের ধরন অনুযায়ী একটি শ্রেণিতে পড়ে: <g1>সাধারণ</g1>, <g2>সংকুচিত</g2>, <g3>ডকুমেন্ট</g3>, <g4>সংগীত</g4>, <g5>প্রোগ্রাম</g5> অথবা <g6>ভিডিও</g6>। টরেন্টের নিজস্ব <g7>টরেন্ট</g7> শ্রেণি আছে। <g8>প্রোগ্রাম</g8>-এ প্রোগ্রাম, ইনস্টলার এবং অ্যাপ প্যাকেজ (EXE, MSI, APK, IPA, DMG, PKG, DEB, RPM, AppImage, MSIX…) থাকে, <g9>সংকুচিত</g9>-এ আর্কাইভ এবং ডিস্ক ইমেজ (ZIP, RAR, 7Z, TAR, XZ, ISO, IMG, VHD…), <g10>ডকুমেন্ট</g10>-এ টেক্সট ডকুমেন্ট, স্প্রেডশিট এবং ই-বুক (PDF, DOCX, XLSX, ODT, EPUB, MOBI…), <g11>সংগীত</g11>-এ অডিও (MP3, FLAC, OPUS, M4A…) এবং <g12>ভিডিও</g12>-তে ভিডিও (MP4, MKV, WEBM…); অন্য সব ফাইল সাধারণ-এ যায়। আপনার নিজস্ব শ্রেণিগুলো বিল্ট-ইন শ্রেণিগুলোর আগে আসে। প্রতিটি শ্রেণির নিজস্ব ফোল্ডার আছে, যা ডিফল্টরূপে আপনার ডাউনলোড ফোল্ডারের ভেতরে থাকে (<x13/>, <x14/> ইত্যাদি; সাধারণ নিজেই <x15/> ব্যবহার করে)।"
   },
   "ef8cedcbdccdaf85": {
    "source": "The code is filled in when you scanned the QR code; otherwise type it. Give the phone a name, and tap <g1>Pair</g1>. The window on the computer says so, and closes with <g2>Done</g2>.",
@@ -18337,10 +18369,6 @@
   "f8c444517ab946e2": {
    "source": "From the plain zip",
    "text": "সাধারণ জিপ থেকে"
-  },
-  "f8c71a9fb2bd8bde": {
-   "source": "<g1>Automatically put in \"…\" category the following file types</g1> — the file types that go to this category.",
-   "text": "<g1>নিম্নলিখিত ফাইলের প্রকারগুলি স্বয়ংক্রিয়ভাবে \"…\" শ্রেণীতে রাখুন</g1> — যে ফাইলের প্রকারগুলি এই শ্রেণীতে যায়।"
   },
   "f8e0a9e7ee529ff0": {
    "source": "Select <g1>Main download queue</g1> on the left. The <g2>Schedule</g2> tab opens.",
