@@ -104,6 +104,46 @@ async fn segmented_download_uses_many_connections() {
     assert!(max_concurrent(&log) >= 4, "connections ran in parallel");
 }
 
+/// How far into the file data lies once `at_least` bytes have arrived, the order on or off.
+async fn furthest_data(sequential: bool, at_least: u64) -> u64 {
+    let s = server("rate=2M").await;
+    let dir = tempfile::tempdir().unwrap();
+    let req = Request {
+        url: s.url("/gen/128M/v.bin?seed=7").parse().unwrap(),
+        headers: Default::default(),
+        dest: Destination::Dir(dir.path().to_owned()),
+    };
+    let dl = Download::start(req, fast_opts());
+    // Before the planner exists: the order must still reach it.
+    dl.set_sequential(sequential);
+    loop {
+        let snap = dl.snapshot();
+        if snap.downloaded >= at_least {
+            dl.cancel();
+            return snap
+                .segments
+                .iter()
+                .filter(|g| g.cursor > g.start)
+                .map(|g| g.cursor)
+                .max()
+                .unwrap_or(0);
+        }
+        assert!(snap.error.is_none(), "{:?}", snap.error);
+        tokio::time::sleep(std::time::Duration::from_millis(20)).await;
+    }
+}
+
+#[tokio::test]
+async fn preview_order_downloads_from_the_start() {
+    const MB: u64 = 1 << 20;
+    // Usual order: the connections spread over the whole file.
+    let spread = furthest_data(false, 16 * MB).await;
+    assert!(spread > 64 * MB, "usual order reached only {spread}");
+    // Sequential: everything is in the front, within the connections' 4 MB chunks.
+    let front = furthest_data(true, 16 * MB).await;
+    assert!(front <= 56 * MB, "sequential order reached {front}");
+}
+
 #[tokio::test]
 async fn connections_skip_a_dead_address() {
     let s = server("").await;

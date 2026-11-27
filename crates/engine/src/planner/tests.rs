@@ -22,6 +22,172 @@ fn check_invariants(p: &Planner) {
 }
 
 #[test]
+fn sequential_takes_the_next_chunk_from_the_front() {
+    let mut p = Planner::new(64 * MB, 16 * 1024);
+    p.set_sequential(true);
+    assert_eq!(
+        p.assign(0, None).map(|a| (a.from, a.to)),
+        Some((0, 64 * MB))
+    );
+    assert_eq!(
+        p.assign(1, None).map(|a| (a.from, a.to)),
+        Some((4 * MB, 64 * MB))
+    );
+    assert_eq!(
+        p.assign(2, None).map(|a| (a.from, a.to)),
+        Some((8 * MB, 64 * MB))
+    );
+    check_invariants(&p);
+    // Every connection gets work until the file is done, as without the order.
+    let mut w = 3;
+    while p.assign(w, None).is_some() {
+        check_invariants(&p);
+        w += 1;
+    }
+    assert!(w > 10);
+}
+
+/// #1682: in sequential order every connection keeps working until the last chunks, and a new
+/// request is needed about once per chunk: Preview costs little speed.
+#[test]
+fn sequential_keeps_every_connection_busy() {
+    let size = 256 * MB;
+    let n = 8u32;
+    let mut p = Planner::new(size, 16 * 1024);
+    p.set_sequential(true);
+    // Where each connection is (None: no work).
+    let mut at: Vec<Option<u64>> = (0..n).map(|w| p.assign(w, None).map(|a| a.from)).collect();
+    assert!(at.iter().all(Option::is_some), "every connection starts");
+    let mut requests = u64::from(n);
+    // Each round, every connection with work brings 1 MB.
+    while !p.is_complete() {
+        let left = size - p.downloaded();
+        let busy = at.iter().filter(|a| a.is_some()).count();
+        if left > u64::from(n) * 8 * MB {
+            assert_eq!(
+                busy,
+                n as usize,
+                "a connection idle with {} MB left",
+                left / MB
+            );
+        }
+        assert!(busy > 0, "nobody works with {} MB left", left / MB);
+        for w in 0..n {
+            let Some(pos) = at[w as usize] else {
+                continue;
+            };
+            let Claim::Granted(k) = p.claim(w, pos, MB) else {
+                // Near the end the usual rules take a slow start's place: it asks again, as the
+                // engine's connections do.
+                assert!(
+                    left <= u64::from(n) * 8 * MB,
+                    "{w} lost its place with {} MB left",
+                    left / MB
+                );
+                at[w as usize] = p.assign(w, None).map(|a| a.from);
+                continue;
+            };
+            at[w as usize] = if p.commit(w, pos + k).is_some() {
+                let next = p.assign(w, Some(pos + k)).map(|a| a.from);
+                // The requests while the order chooses (the end goes as without it).
+                if left > u64::from(n) * 8 * MB {
+                    requests += u64::from(next.is_some());
+                }
+                next
+            } else {
+                Some(pos + k)
+            };
+            check_invariants(&p);
+        }
+    }
+    // One request per 4 MB chunk, give or take the connections' first ones.
+    let ordered = size - u64::from(n) * 8 * MB;
+    assert!(
+        requests <= ordered / (4 * MB) + 2 * u64::from(n),
+        "{requests} requests"
+    );
+}
+
+/// #1682: a fast connection fetches a longer chunk (4 s of its speed, up to 64 MB), so it asks
+/// the server again every few seconds rather than every 4 MB.
+#[test]
+fn sequential_chunks_grow_with_the_connections_speed() {
+    let mut p = Planner::new(512 * MB, 16 * 1024);
+    p.set_sequential(true);
+    p.assign(0, None).unwrap();
+    assert_eq!(p.claim(0, 0, 40 * MB), Claim::Granted(40 * MB));
+    p.commit(0, 40 * MB);
+    // Its 40 MB came in 2 s: 20 MB/s, of which 4 s is 80 MB, held to 64 MB.
+    let Some(two_s_ago) = std::time::Instant::now().checked_sub(std::time::Duration::from_secs(2))
+    else {
+        return;
+    };
+    p.segs[0].given_at = Some(two_s_ago);
+    assert_eq!(p.assign(1, None).map(|a| a.from), Some(104 * MB));
+    // Connection 1 just started (its speed unknown): the next one takes over 4 MB later.
+    assert_eq!(p.assign(2, None).map(|a| a.from), Some(108 * MB));
+    check_invariants(&p);
+}
+
+/// #1682: Preview asked once 8 connections each own an eighth of the file and are halfway
+/// through it. The ones past the front stop at their next block, and every free connection
+/// then works at the start, before any byte past it.
+#[test]
+fn sequential_mid_download_moves_connections_to_the_front() {
+    let mut p = Planner::new(128 * MB, 16 * 1024);
+    for w in 0..8 {
+        p.assign(w, None).unwrap();
+    }
+    for w in 0..8 {
+        let at = p
+            .segments()
+            .iter()
+            .find(|s| s.worker == Some(w))
+            .unwrap()
+            .start;
+        assert_eq!(p.claim(w, at, 8 * MB), Claim::Granted(8 * MB));
+        p.commit(w, at + 8 * MB);
+    }
+    p.set_sequential(true);
+    check_invariants(&p);
+    // The front window: 8 connections' 4 MB chunks past the first missing byte (8 MB).
+    let window = 8 * MB + 8 * 4 * MB;
+    for s in p.segments() {
+        if s.worker.is_some() && s.reserved > window {
+            assert!(s.end - s.reserved <= 4096, "{s:?} keeps going");
+        }
+    }
+    // Each cut connection, done with its block, takes the earliest work left: first chunks
+    // split off at the front, then the earliest unassigned rest.
+    let cut: Vec<_> = p
+        .segments()
+        .iter()
+        .filter(|s| s.worker.is_some() && s.reserved > window)
+        .map(|s| (s.worker.unwrap(), s.reserved, s.end))
+        .collect();
+    assert!(cut.len() >= 4);
+    let mut froms = Vec::new();
+    for (w, at, end) in cut {
+        // Its last block arrives, and it ends there.
+        assert_eq!(p.claim(w, at, MB), Claim::Granted(end - at));
+        assert_eq!(p.commit(w, end), Some(end));
+        let a = p.assign(w, Some(end)).unwrap();
+        assert!(
+            !p.segments()
+                .iter()
+                .any(|s| s.worker.is_none() && s.cursor < s.end && s.cursor < a.from),
+            "{w} sent to {} MB past work left before it: {:?}",
+            a.from / MB,
+            p.segments()
+        );
+        froms.push(a.from);
+        check_invariants(&p);
+    }
+    // Not where it was (past 48 MB): the first ones work inside the front.
+    assert!(froms[0] < window && froms[1] < window, "{froms:?}");
+}
+
+#[test]
 fn first_worker_gets_whole_file_second_splits_in_half() {
     let mut p = Planner::new(100 * MB, MB);
     assert_eq!(

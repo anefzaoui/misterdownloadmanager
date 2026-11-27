@@ -4851,6 +4851,121 @@ pub const DUPLICATE_NUMBERED: usize = 1;
 /// [`Duplicate`]'s answer "Add the duplicate and overwrite the existing file".
 pub const DUPLICATE_OVERWRITE: usize = 2;
 
+/// "Preview": open the unfinished download of `file` — its part file — with the program that
+/// opens `file`'s type (a video player for an .mkv), as qBittorrent's Preview does. Returns at once.
+/// `link`: the preview link's name is Preview's to use for this download (free, or made by it
+/// before: `Item::preview_made`); else the part file opens as it is.
+pub fn preview_download(file: &Path, link: bool) {
+    let part = mdm_engine::naming::part_path(file);
+    let ext = file
+        .extension()
+        .map(|e| format!(".{}", e.to_string_lossy()))
+        .unwrap_or_default();
+    let file = file.to_owned();
+    crate::launch::spawn("preview", move || {
+        let name = crate::i18n::isolate(&part.file_name().unwrap_or_default().to_string_lossy());
+        let failed = if !part.exists() {
+            crate::i18n::fmt(
+                // i18n: Preview of a download with no data on the disk yet (or already finished)
+                crate::i18n::t("{file} isn't there: nothing of it is on the disk yet."),
+                &[("file", &name)],
+            )
+        } else if let Some(link) = link.then(|| preview_link(&part, &file)).flatten() {
+            // The player shows the file's own name, and finds the program by its extension.
+            match open_file_platform(&link) {
+                Ok(()) => return,
+                Err(e) => crate::i18n::fmt(
+                    crate::i18n::t("{file} could not be opened: {error}"),
+                    &[("file", &name), ("error", &e.to_string())],
+                ),
+            }
+        } else {
+            #[cfg(windows)]
+            let opened = crate::win32::open_file_as(&part, &ext);
+            // Linux and macOS: no program can be asked for by type; the desktop's opener looks
+            // at the file's contents (a video's header) to choose one.
+            #[cfg(not(windows))]
+            let opened = {
+                let _ = &ext;
+                open::that_detached(&part)
+            };
+            match opened {
+                Ok(()) => return,
+                Err(e) => crate::i18n::fmt(
+                    crate::i18n::t("{file} could not be opened: {error}"),
+                    &[("file", &name), ("error", &e.to_string())],
+                ),
+            }
+        };
+        // i18n: title of the message when an unfinished download can't be previewed
+        tell(crate::i18n::mark("Preview"), failed);
+    });
+}
+
+/// "Preview" of a torrent: its file (a multi-file torrent's folder: its largest file, the
+/// video) opens with its program. Returns at once.
+pub fn preview_torrent(dest: &Path) {
+    fn largest(dir: &Path) -> Option<(u64, PathBuf)> {
+        std::fs::read_dir(dir)
+            .ok()?
+            .flatten()
+            .filter_map(|e| {
+                let p = e.path();
+                if p.is_dir() {
+                    largest(&p)
+                } else {
+                    Some((e.metadata().ok()?.len(), p))
+                }
+            })
+            .max()
+    }
+    let dest = dest.to_owned();
+    crate::launch::spawn("preview", move || {
+        let file = if dest.is_dir() {
+            largest(&dest).map_or(dest, |(_, p)| p)
+        } else {
+            dest
+        };
+        open_download_now(&file, false);
+    });
+}
+
+/// A second name for the part file, the finished file's own (`<folder>\.mdm-preview\<name>`): the
+/// same data, growing with it, that a player shows by its real name. None where the drive has no
+/// hard links (FAT32, exFAT) or the name is taken by a link a player still holds. Only made at
+/// a name Preview may use ([`preview_download`]); the app removes it, by its name, as the
+/// download ends or goes ([`clear_preview_leftover`]), and at start-up.
+fn preview_link(part: &Path, file: &Path) -> Option<PathBuf> {
+    let link = preview_link_of(file)?;
+    std::fs::create_dir_all(link.parent()?).ok()?;
+    // This download's own link from an earlier Preview.
+    let _ = std::fs::remove_file(&link);
+    std::fs::hard_link(part, &link).ok()?;
+    Some(link)
+}
+
+/// The hidden folder of Preview's links, beside the downloads.
+const PREVIEW_DIR: &str = ".mdm-preview";
+
+/// The preview link made for `file`: `<folder>\.mdm-preview\<name>`.
+pub fn preview_link_of(file: &Path) -> Option<PathBuf> {
+    Some(file.parent()?.join(PREVIEW_DIR).join(file.file_name()?))
+}
+
+/// Remove `file`, a preview's leftover (its link, or a part file a player kept from being
+/// renamed), and the preview folder once it is empty (only an empty one goes). True while it
+/// is still there: a program holds it open (Windows), and it is tried again later.
+pub fn clear_preview_leftover(file: &Path) -> bool {
+    let held = std::fs::remove_file(file).is_err_and(|e| e.kind() != std::io::ErrorKind::NotFound);
+    if let Some(dir) = file
+        .parent()
+        .filter(|d| d.file_name().is_some_and(|n| n == PREVIEW_DIR))
+    {
+        let _ = std::fs::remove_dir(dir);
+    }
+    held
+}
+
 /// "Duplicate download link": the address is already in the list (Options → Downloads → "If a
 /// duplicate download link is added: Show a dialog and ask what to do"). `Done` with the
 /// choice, numbered as Options lists them (1 numbered name, 2 overwrite, 3 open or resume).
@@ -5713,6 +5828,33 @@ pub fn ensure_replace_asked<T>(
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    /// #1682: Preview makes its link and removes it by its name; a file of the user's in a
+    /// `.mdm-preview` folder is never touched, and the folder goes only once empty.
+    #[test]
+    fn preview_removes_only_what_it_made() {
+        let d = tempfile::tempdir().unwrap();
+        let file = d.path().join("Film.mkv");
+        let part = mdm_engine::naming::part_path(&file);
+        std::fs::write(&part, b"part").unwrap();
+        let theirs = d.path().join(PREVIEW_DIR).join("Mine.txt");
+        std::fs::create_dir_all(theirs.parent().unwrap()).unwrap();
+        std::fs::write(&theirs, b"keep").unwrap();
+        let link = preview_link(&part, &file).unwrap();
+        assert_eq!(Some(link.clone()), preview_link_of(&file));
+        assert_eq!(std::fs::read(&link).unwrap(), b"part");
+        // Again (a second Preview): its own link made anew, the other file still there.
+        assert!(preview_link(&part, &file).is_some());
+        assert!(!clear_preview_leftover(&link));
+        assert!(!link.exists() && part.exists());
+        assert_eq!(std::fs::read(&theirs).unwrap(), b"keep");
+        std::fs::remove_file(&theirs).unwrap();
+        assert!(!clear_preview_leftover(&link));
+        assert!(
+            !d.path().join(PREVIEW_DIR).exists(),
+            "the empty folder goes"
+        );
+    }
 
     /// #2008: Download later's queue list shows each queue's icon, the Scheduler's: the linked
     /// folder for a synchronization queue.

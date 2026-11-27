@@ -601,6 +601,11 @@ pub struct Item {
     /// download reaches `Status::Complete`.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub rename_on_complete: Option<String>,
+    /// What Preview made for it (#1682), by exact path: its preview link, and a part file a
+    /// player kept from being renamed as it finished. Kept with the list, so what a crash left
+    /// is removed at the next start; nothing else is ever removed for Preview.
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub preview_made: Vec<PathBuf>,
     /// True when a folder download's destination already held files before MDM added it, so
     /// folder-level deferred rename refuses to sweep untracked files along.
     #[serde(default, skip_serializing_if = "std::ops::Not::not")]
@@ -1037,6 +1042,14 @@ impl Job {
         }
     }
 
+    /// Preview: a file's download goes on from its start onward. Only the engine's own file
+    /// downloads take it (a torrent, a video's helper or a remote job go on as they were).
+    pub fn set_sequential(&self) {
+        if let Job::File(d) = self {
+            d.set_sequential(true);
+        }
+    }
+
     pub fn speed_limit(&self) -> Option<u64> {
         match self {
             Job::File(d) => d.speed_limit(),
@@ -1469,6 +1482,7 @@ impl Item {
             direct: false,
             remote: None,
             rename_on_complete: None,
+            preview_made: Vec::new(),
             preexisting_folder: false,
             moved_away: false,
             referer: None,
