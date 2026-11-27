@@ -6598,6 +6598,7 @@ impl App {
         .with_subs(self.settings.video_subs.clone())
         .with_chapters(self.settings.video_chapters)
         .with_split_chapters(self.settings.video_split_chapters)
+        .with_audio_cover(self.settings.video_audio_cover)
         .with_music_folder(music)
     }
 
@@ -6634,6 +6635,7 @@ impl App {
         let goes = video_goes(add.start_now, from_menu, self.settings.queue_panel_later);
         if let Some(item) = self.item(id) {
             item.video = Some(model::VideoSpec {
+                audio_cover: add.audio_cover,
                 selector: add.selector,
                 subs: add.subs,
                 parts: Vec::new(),
@@ -6771,6 +6773,7 @@ impl App {
             // push_item adds at the end: no search through the list for each one.
             if let Some(item) = self.items.last_mut() {
                 item.video = Some(model::VideoSpec {
+                    audio_cover: add.audio_cover,
                     selector: add.selector.clone(),
                     subs: Default::default(),
                     parts: Vec::new(),
@@ -6897,6 +6900,7 @@ impl App {
             engine,
             Some(mark_hook(&item.url, item.context.referer.as_deref())),
             spec.part,
+            spec.audio_cover,
         );
         match started {
             Ok(job) => {
@@ -14355,7 +14359,12 @@ impl App {
             }
         }
         if let Some(v) = &mut self.video_dlg {
-            match v.show(ctx, &self.rt) {
+            let outcome = v.show(ctx, &self.rt);
+            if self.settings.video_audio_cover != v.audio_cover() {
+                self.settings.video_audio_cover = v.audio_cover();
+                self.dirty = true;
+            }
+            match outcome {
                 Outcome::Open => {}
                 Outcome::Closed => self.video_dlg = None,
                 Outcome::Done(out) => {
@@ -15671,6 +15680,7 @@ mod same_name_tests {
         let d = dir.path();
         let mut video = row(2, &d.join("master.mp4"), Status::Queued, 0);
         video.video = Some(crate::model::VideoSpec {
+            audio_cover: false,
             selector: "b".into(),
             subs: Default::default(),
             parts: Vec::new(),
@@ -15951,6 +15961,7 @@ mod duplicate_tests {
     /// A choice from the quality menu, holding (a clone of) `slot`, the menu's look-up.
     fn choice(slot: &InfoSlot) -> crate::videodlg::VideoAdd {
         crate::videodlg::VideoAdd {
+            audio_cover: false,
             page: page(),
             selector: SELECTOR.into(),
             dest: PathBuf::from("Clip.mp4"),
@@ -16012,6 +16023,7 @@ mod duplicate_tests {
             "not a video"
         );
         item.video = Some(model::VideoSpec {
+            audio_cover: false,
             selector: SELECTOR.into(),
             subs: Default::default(),
             parts: Vec::new(),
@@ -16042,6 +16054,7 @@ mod duplicate_tests {
         let first = stream("https://cdn-1.videos.test/hls/123/master.m3u8?hash=a&expires=1");
         let mut item = Item::new(1, first.clone(), PathBuf::from("Clip.mp4"), Category::Video);
         item.video = Some(model::VideoSpec {
+            audio_cover: false,
             selector: SELECTOR.into(),
             subs: Default::default(),
             parts: Vec::new(),
@@ -16161,6 +16174,7 @@ mod duplicate_tests {
             Category::Video,
         );
         item.video = Some(model::VideoSpec {
+            audio_cover: false,
             selector: SELECTOR.into(),
             subs: Default::default(),
             parts: Vec::new(),
@@ -16239,6 +16253,7 @@ mod duplicate_tests {
             Category::Video,
         );
         item.video = Some(model::VideoSpec {
+            audio_cover: false,
             selector: SELECTOR.into(),
             subs: Default::default(),
             parts: Vec::new(),
@@ -16410,6 +16425,7 @@ mod duplicate_tests {
         let mut i = Item::new(id, page(), dir.join(name), Category::Video);
         i.status = status;
         i.video = Some(model::VideoSpec {
+            audio_cover: false,
             selector: SELECTOR.into(),
             subs: Default::default(),
             parts: Vec::new(),
@@ -17869,6 +17885,7 @@ mod start_disk_tests {
         b.size = Some(5);
         let mut video = row(5, dir.path().join("v.mp4"), Status::Stopped);
         video.video = Some(model::VideoSpec {
+            audio_cover: false,
             selector: "b".into(),
             subs: Default::default(),
             parts: Vec::new(),
@@ -17952,6 +17969,7 @@ mod start_disk_tests {
 
     fn add(dir: &Path, name: &str) -> crate::videodlg::VideoAdd {
         crate::videodlg::VideoAdd {
+            audio_cover: false,
             page: address("watch"),
             selector: "b".into(),
             dest: dir.join(name),
@@ -17985,6 +18003,7 @@ mod start_disk_tests {
         gone.url = url::Url::parse("https://hls.cdn.test/one/v/ab/hls.m3u8").unwrap();
         gone.page = Some(PAGE.into());
         gone.video = Some(model::VideoSpec {
+            audio_cover: false,
             selector: pick("x").selector,
             subs: Default::default(),
             parts: Vec::new(),
@@ -18362,6 +18381,7 @@ mod start_disk_tests {
         std::fs::write(dir.path().join("Talk.mp4"), b"someone's").unwrap();
         let mut app = app_with(Vec::new());
         app.add_playlist(crate::playlistdlg::PlaylistAdd {
+            audio_cover: false,
             entries: vec![
                 (address("watch?v=1"), "Talk".into()),
                 (address("watch?v=2"), "Talk".into()),
@@ -19604,6 +19624,7 @@ mod delete_tests {
         let mut item = Item::new(1, url, main_video.clone(), Category::General);
         item.status = Status::Complete;
         item.video = Some(crate::model::VideoSpec {
+            audio_cover: false,
             selector: "best".into(),
             subs: Default::default(),
             parts: Vec::new(),
@@ -19740,6 +19761,7 @@ mod move_unfinished_tests {
         let dir = tempfile::tempdir().unwrap();
         let mut video = stopped(1, &dir.path().join("v.mp4"));
         video.video = Some(model::VideoSpec {
+            audio_cover: false,
             selector: "b".into(),
             subs: Default::default(),
             parts: Vec::new(),

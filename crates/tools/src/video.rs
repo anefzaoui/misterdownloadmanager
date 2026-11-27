@@ -1853,6 +1853,7 @@ fn supervise(
     saved: Option<&mdm_engine::FileHook>,
     recorder: &Recorder,
     part: Option<&PartRun>,
+    audio_cover: bool,
 ) {
     // The first run only: a run after it looks the page up afresh (links expire).
     let mut preloaded = preloaded;
@@ -1938,6 +1939,19 @@ fn supervise(
                     Some(run) => finished_live(run, f, quality.as_deref(), recorder, progress),
                     None => f,
                 };
+                let stopped = progress.lock().unwrap().state == State::Stopped;
+                if audio_cover
+                    && !stopped
+                    && let Err(why) = add_audio_cover(
+                        exe,
+                        url,
+                        &cookies.args(browser),
+                        recorder.ffmpeg.as_deref(),
+                        &f,
+                    )
+                {
+                    note(progress, format!("Audio cover not added: {why}"));
+                }
                 done(progress, saved, f, problems, chapter_files);
                 return;
             }
@@ -2053,6 +2067,145 @@ fn supervise(
         p.speed = 0.0;
         p.state = State::Failed(last);
     }
+}
+
+fn add_audio_cover(
+    exe: &Path,
+    page: &str,
+    browser: &[String],
+    ffmpeg: Option<&Path>,
+    audio: &Path,
+) -> Result<(), String> {
+    use base64::Engine as _;
+
+    let ffmpeg = ffmpeg.ok_or("ffmpeg is not installed")?;
+    let ext = audio
+        .extension()
+        .and_then(|e| e.to_str())
+        .unwrap_or_default();
+    let ext = ext.to_ascii_lowercase();
+    if !matches!(ext.as_str(), "mp3" | "m4a" | "flac" | "opus") {
+        return Err(format!("the {ext} file format is not supported"));
+    }
+    let (info, _) = look_up(exe, page, browser)?;
+    let thumbnail = info["thumbnail"]
+        .as_str()
+        .filter(|url| !url.is_empty())
+        .ok_or("the site gave no thumbnail")?;
+    let (picture, extension) = cover_picture(thumbnail)
+        .map_err(|error| format!("could not fetch the thumbnail: {error}"))?;
+    let folder = audio.parent().ok_or("the audio file has no folder")?;
+    let work = tempfile::tempdir_in(folder).map_err(|e| e.to_string())?;
+    let image = work.path().join(format!("thumbnail.{extension}"));
+    std::fs::write(&image, picture).map_err(|e| e.to_string())?;
+    let output = work.path().join(format!("audio.{ext}"));
+    let mut cmd = proc::program(ffmpeg);
+    cmd.args(["-nostdin", "-v", "error", "-i"])
+        .arg(ff_file(audio));
+    if ext == "opus" {
+        let jpeg = work.path().join("cover.jpg");
+        let mut convert = proc::program(ffmpeg);
+        convert
+            .args(["-nostdin", "-v", "error", "-f", "image2", "-i"])
+            .arg(ff_file(&image))
+            .args(["-frames:v", "1", "-update", "1"])
+            .arg(ff_file(&jpeg));
+        proc::output(convert, "ffmpeg", Duration::from_secs(30)).map_err(|e| e.to_string())?;
+        let jpeg = std::fs::read(jpeg).map_err(|e| e.to_string())?;
+        let mut block = Vec::new();
+        block.extend(3_u32.to_be_bytes());
+        block.extend(10_u32.to_be_bytes());
+        block.extend(b"image/jpeg");
+        block.extend([0; 20]);
+        block.extend(
+            u32::try_from(jpeg.len())
+                .map_err(|e| e.to_string())?
+                .to_be_bytes(),
+        );
+        block.extend(jpeg);
+        let cover = base64::engine::general_purpose::STANDARD.encode(block);
+        let tags = work.path().join("cover.ffmetadata");
+        std::fs::write(
+            &tags,
+            format!(";FFMETADATA1\nMETADATA_BLOCK_PICTURE={cover}\n"),
+        )
+        .map_err(|e| e.to_string())?;
+        cmd.args(["-f", "ffmetadata", "-i"]).arg(ff_file(&tags));
+        cmd.args([
+            "-map",
+            "0:a",
+            "-map_metadata",
+            "0",
+            "-map_metadata:s:a",
+            "0:s:a",
+            "-map_metadata:s:a",
+            "1",
+            "-c:a",
+            "copy",
+        ]);
+    } else {
+        cmd.args(["-f", "image2", "-i"]).arg(ff_file(&image));
+        cmd.args([
+            "-map",
+            "0:a",
+            "-map",
+            "1:v:0",
+            "-c:a",
+            "copy",
+            "-c:v",
+            "mjpeg",
+            "-frames:v",
+            "1",
+            "-disposition:v:0",
+            "attached_pic",
+            "-metadata:s:v:0",
+            "comment=Cover (front)",
+        ]);
+    }
+    cmd.arg(ff_file(&output));
+    proc::output(cmd, "ffmpeg", Duration::from_secs(120)).map_err(|e| e.to_string())?;
+    std::fs::rename(output, audio).map_err(|e| e.to_string())
+}
+
+fn cover_picture(address: &str) -> Result<(Vec<u8>, &'static str), String> {
+    let address = url::Url::parse(address).map_err(|e| e.to_string())?;
+    if !matches!(address.scheme(), "http" | "https")
+        || !address.username().is_empty()
+        || address.password().is_some()
+    {
+        return Err("the site gave an unsupported thumbnail address".into());
+    }
+    let rt = tokio::runtime::Builder::new_current_thread()
+        .enable_all()
+        .build()
+        .map_err(|e| e.to_string())?;
+    let picture = rt
+        .block_on(async {
+            let client = reqwest::Client::builder()
+                .timeout(Duration::from_secs(30))
+                .build()?;
+            let mut response = client.get(address).send().await?.error_for_status()?;
+            let mut picture = Vec::new();
+            while let Some(chunk) = response.chunk().await? {
+                if picture.len() + chunk.len() > 8 * 1024 * 1024 {
+                    return Ok::<_, reqwest::Error>(None);
+                }
+                picture.extend_from_slice(&chunk);
+            }
+            Ok(Some(picture))
+        })
+        .map_err(|e| e.to_string())?
+        .ok_or("the thumbnail is too large")?;
+    let ext = if picture.starts_with(&[0xff, 0xd8, 0xff]) {
+        "jpg"
+    } else if picture.starts_with(b"\x89PNG\r\n\x1a\n") {
+        "png"
+    } else if picture.starts_with(b"RIFF") && picture.get(8..12) == Some(b"WEBP") {
+        "webp"
+    } else {
+        return Err("the thumbnail is not a supported image".into());
+    };
+    Ok((picture, ext))
 }
 
 /// The download done, saved as `f` (`problems`: the subtitles that didn't come with it): named
@@ -3638,7 +3791,7 @@ impl VideoJob {
     ) -> Result<VideoJob, ProcError> {
         Self::start_with(
             exe, url, selector, dir, stem, rate, ffmpeg, expected, browser, subs, None, engine,
-            None, None,
+            None, None, false,
         )
     }
 
@@ -3665,6 +3818,7 @@ impl VideoJob {
         engine: Option<crate::streams::Engine>,
         saved: Option<mdm_engine::FileHook>,
         part: Option<crate::part::Part>,
+        audio_cover: bool,
     ) -> Result<VideoJob, ProcError> {
         proc::safe(url)?;
         let preloaded = preloaded.filter(|p| p.selector == selector);
@@ -3893,6 +4047,7 @@ impl VideoJob {
                         saved.as_ref(),
                         &recorder,
                         part.as_ref(),
+                        audio_cover,
                     )
                 });
                 if std::panic::catch_unwind(run).is_err() {

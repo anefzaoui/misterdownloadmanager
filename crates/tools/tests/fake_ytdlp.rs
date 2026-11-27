@@ -922,6 +922,7 @@ fn part_checks(me: &Path) {
             engine,
             None,
             Some(part),
+            false,
         )
         .expect("started")
     };
@@ -1710,6 +1711,7 @@ fn saved_checks(me: &Path) {
         None,
         Some(hook),
         None,
+        false,
     )
     .expect("started");
     let end = Instant::now() + Duration::from_secs(120);
@@ -1939,6 +1941,7 @@ fn preloaded_checks(me: &Path) {
             None,
             None,
             None,
+            false,
         )
         .expect("started");
         let end = Instant::now() + Duration::from_secs(120);

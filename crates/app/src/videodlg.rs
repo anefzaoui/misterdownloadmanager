@@ -26,6 +26,7 @@ pub enum VideoOut {
 
 /// What OK adds.
 pub struct VideoAdd {
+    pub audio_cover: bool,
     pub page: url::Url,
     pub selector: String,
     pub dest: PathBuf,
@@ -137,6 +138,7 @@ pub struct VideoDialog {
     chapters: bool,
     /// Split into chapters (settings.video_split_chapters).
     split_chapters: bool,
+    audio_cover: bool,
     /// Split into chapters has a row of its own under Embed chapters (its caption doesn't fit
     /// beside it in this language): measured as the row is drawn.
     split_wraps: bool,
@@ -239,6 +241,7 @@ impl VideoDialog {
             embed: false,
             chapters: true,
             split_chapters: false,
+            audio_cover: false,
             split_wraps: false,
             pref: Subs::default(),
             clip: Default::default(),
@@ -515,7 +518,7 @@ impl VideoDialog {
             self.confirmed = Some(now);
             ctx.request_repaint();
         }
-        let height = 422.0 + PART_ROWS + self.split_row();
+        let height = 422.0 + PART_ROWS + self.split_row() + self.audio_cover_row();
         let out = window(
             ctx,
             "video-page",
@@ -553,13 +556,9 @@ impl VideoDialog {
         let start_now = self.start_now.unwrap_or(true);
         if let Some(list) = &self.list {
             let merge = self.tools.as_ref().is_some_and(|t| t.2.is_some());
-            return Some(VideoOut::Many(Box::new(list.add(
-                &folder,
-                merge,
-                start_now,
-                &self.context(),
-                self.category(),
-            ))));
+            let mut add = list.add(&folder, merge, start_now, &self.context(), self.category());
+            add.audio_cover = self.audio_cover && list.sound_only();
+            return Some(VideoOut::Many(Box::new(add)));
         }
         let (Some((_, choices)), Ok(page)) = (&self.video, url::Url::parse(self.page.trim()))
         else {
@@ -589,6 +588,7 @@ impl VideoDialog {
             None => (page, self.context()),
         };
         Some(VideoOut::One(Box::new(VideoAdd {
+            audio_cover: self.audio_cover && mdm_tools::resolve::is_audio(c),
             page,
             selector: c.selector.clone(),
             dest: folder.join(name),
@@ -1184,7 +1184,19 @@ impl VideoDialog {
             }
         };
         // Under Embed chapters, and under Split into chapters when it has a row of its own.
-        let buttons_y = BUTTONS_Y + self.split_row();
+        let cover_row = self.audio_cover_row();
+        if cover_row > 0.0 {
+            let y = o.y + 350.0 + PART_ROWS + self.split_row() + cover_row;
+            winui::checkbox_until(
+                ui,
+                pos2(o.x + bx, y),
+                &mut self.audio_cover,
+                "Use video thumbnail as cover art",
+                true,
+                Some(o.x + 489.0),
+            );
+        }
+        let buttons_y = BUTTONS_Y + self.split_row() + cover_row;
         // A part whose times can't be (#1662): said on Download Now.
         let part_problem = self.part().err();
         let ready = chosen && !busy && !stale && part_problem.is_none();
@@ -1563,6 +1575,23 @@ impl VideoDialog {
     /// Split into chapters' tick, for the settings (`video_split_chapters`).
     pub fn split_chapters(&self) -> bool {
         self.split_chapters
+    }
+
+    pub fn with_audio_cover(mut self, on: bool) -> Self {
+        self.audio_cover = on;
+        self
+    }
+
+    pub fn audio_cover(&self) -> bool {
+        self.audio_cover
+    }
+
+    fn audio_cover_row(&self) -> f32 {
+        if self.sound_only() == Some(true) {
+            SPLIT_ROW
+        } else {
+            0.0
+        }
     }
 
     /// Subtitles (#68): a language the video has, from the uploader or the site's automatic
@@ -2139,6 +2168,7 @@ mod tests {
                 Category::Video,
             );
             item.video = Some(crate::model::VideoSpec {
+                audio_cover: false,
                 selector: "best".into(),
                 subs: Default::default(),
                 parts: vec![],

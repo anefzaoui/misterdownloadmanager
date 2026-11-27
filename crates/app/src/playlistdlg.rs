@@ -21,6 +21,7 @@ pub const CONFIRM_ABOVE: usize = 500;
 
 /// What Download adds: one video download per chosen entry, all alike.
 pub struct PlaylistAdd {
+    pub audio_cover: bool,
     /// Each video's page and title, in the list's order.
     pub entries: Vec<(url::Url, String)>,
     /// yt-dlp's `-f` for every one of them.
@@ -680,6 +681,7 @@ impl PlaylistView {
             .filter_map(|(e, _)| Some((url::Url::parse(&e.url).ok()?, e.title.clone())))
             .collect();
         PlaylistAdd {
+            audio_cover: false,
             entries,
             selector: pick.selector.clone(),
             ext: pick.ext,

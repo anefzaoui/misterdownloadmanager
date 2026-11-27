@@ -509,6 +509,7 @@ pub fn video_add(
         _ => (crate::model::Category::Video, folder),
     };
     Some(VideoAdd {
+        audio_cover: false,
         page,
         selector: p.choice.selector.clone(),
         dest: folder.join(mdm_engine::naming::sanitize(name.trim())),

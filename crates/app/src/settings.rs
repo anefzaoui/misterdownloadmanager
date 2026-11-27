@@ -567,6 +567,7 @@ pub struct Settings {
     /// Download video from a page → Split into chapters: split video into multiple files based on
     /// chapters (with ffmpeg). Off; a settings file from before has none: off.
     pub video_split_chapters: bool,
+    pub video_audio_cover: bool,
     /// Options → Sites Logins → Cookies for video sites (#229): the browser whose cookies
     /// yt-dlp reads on this computer when the extension passed none (yt-dlp's name: `firefox`,
     /// `chrome`...; empty: off, the default), and its profile (a name or a folder; empty: the
@@ -790,6 +791,7 @@ impl Default for Settings {
             video_subs: Default::default(),
             video_chapters: true,
             video_split_chapters: false,
+            video_audio_cover: false,
             video_cookies: String::new(),
             video_cookies_profile: String::new(),
             ytdlp_config: false,

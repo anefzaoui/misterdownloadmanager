@@ -1078,6 +1078,8 @@ pub fn sub_notice(p: &mdm_tools::video::SubProblem, site: &str) -> String {
 /// format selector.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct VideoSpec {
+    #[serde(default, skip_serializing_if = "std::ops::Not::not")]
+    pub audio_cover: bool,
     pub selector: String,
     /// The subtitles saved with it (#68; none in a list saved before them).
     #[serde(default)]
@@ -2580,6 +2582,7 @@ mod file_address_tests {
             Category::Video,
         );
         i.video = Some(VideoSpec {
+            audio_cover: false,
             selector: "best".into(),
             subs: Default::default(),
             parts: Vec::new(),
@@ -2846,6 +2849,7 @@ mod tests {
         it.downloaded = downloaded;
         it.status = status;
         it.video = Some(VideoSpec {
+            audio_cover: false,
             selector: "18".into(),
             subs: Default::default(),
             parts: Vec::new(),

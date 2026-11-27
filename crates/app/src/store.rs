@@ -600,6 +600,7 @@ mod tests {
                 let mut i = Item::new(id, url, dest, crate::model::Category::Video);
                 i.note("Added from a playlist (yt-dlp)");
                 i.video = Some(crate::model::VideoSpec {
+                    audio_cover: false,
                     selector: "bv*[height<=1080]+ba/b[height<=1080]".into(),
                     subs: Default::default(),
                     parts: Vec::new(),

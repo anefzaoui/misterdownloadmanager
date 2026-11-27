@@ -22,6 +22,7 @@ serde.workspace = true
 serde_json.workspace = true
 sha2.workspace = true
 socket2.workspace = true
+tempfile.workspace = true
 thiserror.workspace = true
 tokio.workspace = true
 tokio-util.workspace = true
@@ -35,7 +36,6 @@ flate2.workspace = true
 
 [dev-dependencies]
 mdm-labserver.workspace = true
-tempfile.workspace = true
 # The manifest's budget is tested on Tokio's paused clock (src/manifest.rs).
 tokio = { workspace = true, features = ["test-util"] }
 
