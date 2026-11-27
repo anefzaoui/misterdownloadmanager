@@ -591,6 +591,9 @@ Everything below ships together, in version 0.6.0, the next release.
 - ✅ CodeQL no longer reads the windows' control names as salts or passwords: the shared drawing
   helpers call a control's name `id` and a box that hides its text `masked`; nothing changes on
   screen
+- ✅ Windows: the tiny window MDM's window toolkit keeps for its own messages is made far off the
+  screens, not at the top left of the main screen. It was never drawn, but programs that list
+  windows saw it there, and MDM's off-screen test runs left it on the screen
 - ✅ Windows: a graphics driver reset no longer keeps MDM off Direct3D 12 for a month: a start
   just after it that finds no graphics card yet isn't remembered, and the next start draws on the
   card again ([#1974](https://github.com/anefzaoui/misterdownloadmanager/issues/1974))

@@ -389,6 +389,228 @@ pub fn set_main_window(cc: &eframe::CreationContext<'_>) {
     }
 }
 
+// ---- winit's own window, made off the screens -------------------------------------------------
+
+/// The class of the window winit makes with its event loop, one per loop: posted wake-ups,
+/// device and display changes, and the WM_PAINT it runs a resize's frames from. winit makes it
+/// at 0,0 and then gives it `WS_VISIBLE | WS_POPUP` (it has to be visible to get WM_PAINT): never
+/// drawn (layered, with nothing given to draw) and clicks go through it, but a shown window, 6×6
+/// px at the top left of the main screen, for every program that lists windows (an agent's or a
+/// screen reader's, a recorder's window picker). An off-screen test copy (MDM_OFFSCREEN) showed it
+/// there, on the screen of the person at the computer, while its own windows were far off.
+const EVENT_TARGET_CLASS: &str = "Winit Thread Event Target";
+
+/// Where that window is made instead ([`EventTargetOffScreen`]): far off every screen, in normal
+/// runs as in off-screen ones (no program of MDM's ever needs it on a screen).
+const EVENT_TARGET_AT: [i32; 2] = [-32000, -32000];
+
+thread_local! {
+    /// The CBT hook of [`EventTargetOffScreen`] on this thread, while it is installed.
+    static CBT_HOOK: std::cell::Cell<windows_sys::Win32::UI::WindowsAndMessaging::HHOOK> =
+        const { std::cell::Cell::new(std::ptr::null_mut()) };
+}
+
+/// While it lives, the window winit makes for its event loop on this thread
+/// ([`EVENT_TARGET_CLASS`]) is made at [`EVENT_TARGET_AT`], off the screens, before it exists
+/// anywhere: a CBT hook on this thread only changes its place in its CREATESTRUCT, and goes as
+/// soon as that window is made (or with the guard). Held around eframe's start
+/// (renderer::run), which makes the event loop on this thread; every other window is left as it
+/// is made.
+pub struct EventTargetOffScreen(());
+
+impl EventTargetOffScreen {
+    pub fn install() -> Self {
+        use windows_sys::Win32::System::Threading::GetCurrentThreadId;
+        use windows_sys::Win32::UI::WindowsAndMessaging::{SetWindowsHookExW, WH_CBT};
+        unhook_cbt();
+        // SAFETY: a hook on this thread only (no module: our own procedure, in this process),
+        // whose procedure lives as long as the program; removed by `unhook_cbt`.
+        let hook = unsafe {
+            SetWindowsHookExW(
+                WH_CBT,
+                Some(event_target_cbt),
+                std::ptr::null_mut(),
+                GetCurrentThreadId(),
+            )
+        };
+        if hook.is_null() {
+            tracing::warn!(
+                "winit's event loop window may be made on the screen: {}",
+                std::io::Error::last_os_error()
+            );
+        }
+        CBT_HOOK.with(|h| h.set(hook));
+        EventTargetOffScreen(())
+    }
+}
+
+impl Drop for EventTargetOffScreen {
+    fn drop(&mut self) {
+        unhook_cbt();
+    }
+}
+
+fn unhook_cbt() {
+    use windows_sys::Win32::UI::WindowsAndMessaging::UnhookWindowsHookEx;
+    let hook = CBT_HOOK.with(|h| h.replace(std::ptr::null_mut()));
+    if !hook.is_null() {
+        // SAFETY: the hook this thread installed and hasn't removed yet (taken out above).
+        unsafe { UnhookWindowsHookEx(hook) };
+    }
+}
+
+/// Whether `class` (a window's class as CreateWindowExW was given it: a string, or an atom in
+/// its low 16 bits) is [`EVENT_TARGET_CLASS`].
+///
+/// # Safety
+/// `class` is an atom, or a NUL-terminated UTF-16 string.
+unsafe fn is_event_target_class(class: *const u16) -> bool {
+    if (class as usize) >> 16 == 0 {
+        return false;
+    }
+    // Read no further than the name and its NUL: a shorter string ends at its own NUL first.
+    for (i, w) in EVENT_TARGET_CLASS.encode_utf16().chain([0]).enumerate() {
+        // SAFETY: (the caller's) a NUL-terminated string, read up to its NUL at most.
+        if unsafe { *class.add(i) } != w {
+            return false;
+        }
+    }
+    true
+}
+
+/// [`EventTargetOffScreen`]'s hook: winit's window made at [`EVENT_TARGET_AT`], then the hook
+/// removed. Everything else goes on as it came.
+unsafe extern "system" fn event_target_cbt(code: i32, wparam: WPARAM, lparam: LPARAM) -> LRESULT {
+    use windows_sys::Win32::UI::WindowsAndMessaging::{
+        CBT_CREATEWNDW, CallNextHookEx, HCBT_CREATEWND,
+    };
+    let mut made = false;
+    if code == HCBT_CREATEWND as i32 {
+        // SAFETY: for HCBT_CREATEWND, lparam is the CBT_CREATEWNDW of the window being made, and
+        // its CREATESTRUCTW may be changed by the hook (the system makes the window from it).
+        unsafe {
+            let cw = lparam as *const CBT_CREATEWNDW;
+            if let Some(cs) = cw.as_ref().and_then(|cw| cw.lpcs.as_mut())
+                && is_event_target_class(cs.lpszClass)
+            {
+                cs.x = EVENT_TARGET_AT[0];
+                cs.y = EVENT_TARGET_AT[1];
+                made = true;
+            }
+        }
+    }
+    // SAFETY: the hook chain's own arguments, passed on (the first is ignored).
+    let next = unsafe { CallNextHookEx(std::ptr::null_mut(), code, wparam, lparam) };
+    if made {
+        unhook_cbt();
+    }
+    next
+}
+
+#[cfg(test)]
+mod event_target_tests {
+    use super::*;
+
+    fn wide(s: &str) -> Vec<u16> {
+        s.encode_utf16().chain([0]).collect()
+    }
+
+    #[test]
+    fn only_winit_s_class_is_matched() {
+        // SAFETY: NUL-terminated strings, and an atom.
+        unsafe {
+            assert!(is_event_target_class(wide(EVENT_TARGET_CLASS).as_ptr()));
+            assert!(!is_event_target_class(wide("Window Class").as_ptr()));
+            assert!(!is_event_target_class(wide("Winit Thread Event").as_ptr()));
+            assert!(!is_event_target_class(
+                wide("Winit Thread Event Target 2").as_ptr()
+            ));
+            assert!(!is_event_target_class(wide("").as_ptr()));
+            assert!(!is_event_target_class(0xC123 as *const u16));
+        }
+    }
+
+    unsafe extern "system" fn find_class(hwnd: HWND, lparam: LPARAM) -> windows_sys::core::BOOL {
+        use windows_sys::Win32::UI::WindowsAndMessaging::GetClassNameW;
+        // SAFETY: lparam is the test's `target`, alive for the enumeration.
+        let found = unsafe { &mut *(lparam as *mut HWND) };
+        let mut buf = [0u16; 64];
+        // SAFETY: at most buf.len() units written, the NUL included.
+        let n = unsafe { GetClassNameW(hwnd, buf.as_mut_ptr(), buf.len() as i32) };
+        if n > 0 && String::from_utf16_lossy(&buf[..n as usize]) == EVENT_TARGET_CLASS {
+            *found = hwnd;
+            return 0;
+        }
+        1
+    }
+
+    /// winit's real event loop, made as eframe makes it inside the guard: its window is made off
+    /// every screen, the hook is gone once it is, and the window still gets the WM_PAINT winit
+    /// runs a resize's frames from (it stays visible, only elsewhere).
+    #[test]
+    fn winit_s_event_loop_window_is_made_off_the_screens() {
+        use egui_winit::winit::event_loop::EventLoop;
+        use egui_winit::winit::platform::windows::EventLoopBuilderExtWindows;
+        use windows_sys::Win32::Graphics::Gdi::{
+            MONITOR_DEFAULTTONULL, MonitorFromRect, RDW_INTERNALPAINT, RedrawWindow,
+        };
+        use windows_sys::Win32::System::Threading::GetCurrentThreadId;
+        use windows_sys::Win32::UI::WindowsAndMessaging::{
+            EnumThreadWindows, GetWindowRect, IsWindowVisible, MSG, PM_NOREMOVE, PeekMessageW,
+            WM_PAINT,
+        };
+        let guard = EventTargetOffScreen::install();
+        assert!(
+            !CBT_HOOK.with(|h| h.get()).is_null(),
+            "the hook is installed"
+        );
+        // The only event loop of this test program (winit makes one per process).
+        let event_loop = EventLoop::builder().with_any_thread(true).build().unwrap();
+        assert!(
+            CBT_HOOK.with(|h| h.get()).is_null(),
+            "the hook goes once winit's window is made"
+        );
+        drop(guard);
+        let mut target: HWND = std::ptr::null_mut();
+        // SAFETY: plain queries about this thread's windows; `target` outlives the enumeration;
+        // a message looked at, not taken.
+        unsafe {
+            EnumThreadWindows(
+                GetCurrentThreadId(),
+                Some(find_class),
+                &mut target as *mut HWND as LPARAM,
+            );
+            assert!(!target.is_null(), "winit's window, found by its class");
+            let mut r: RECT = zeroed();
+            GetWindowRect(target, &mut r);
+            assert_eq!([r.left, r.top], EVENT_TARGET_AT);
+            // On no screen, not even at its corner.
+            let corner = RECT {
+                left: r.left,
+                top: r.top,
+                right: r.left + 1,
+                bottom: r.top + 1,
+            };
+            assert!(MonitorFromRect(&r, MONITOR_DEFAULTTONULL).is_null());
+            assert!(MonitorFromRect(&corner, MONITOR_DEFAULTTONULL).is_null());
+            assert_eq!(IsWindowVisible(target), 1, "winit's style is kept");
+            RedrawWindow(
+                target,
+                std::ptr::null(),
+                std::ptr::null_mut(),
+                RDW_INTERNALPAINT,
+            );
+            let mut msg: MSG = zeroed();
+            assert_ne!(
+                PeekMessageW(&mut msg, target, WM_PAINT, WM_PAINT, PM_NOREMOVE),
+                0,
+                "still painted where it is"
+            );
+        }
+        drop(event_loop);
+    }
+}
+
 // ---- The session's end (shut down, restart, sign out; an installer closing MDM) ---------------
 
 /// Why the session ends, as WM_QUERYENDSESSION and WM_ENDSESSION say (their lParam).
