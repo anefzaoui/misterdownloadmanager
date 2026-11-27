@@ -1816,6 +1816,7 @@ pub fn frame_done(ctx: &egui::Context) {
         return;
     }
     DRAWN.store(true, Ordering::Relaxed);
+    crate::diskwatch::first_frame();
     let api = clock_counted().map_or(String::new(), |d| {
         format!(" ({} ms of it counted for the API)", d.as_millis())
     });
