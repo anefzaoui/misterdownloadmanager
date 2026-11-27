@@ -1811,7 +1811,7 @@ impl Item {
                 if status == Status::Complete {
                     self.checksum_warning = s.checksum_warning;
                     if let Some(warning) = self.checksum_warning_text(false) {
-                        notices.push(warning);
+                        self.note(warning);
                     }
                 }
                 for n in &notices {
