@@ -85,16 +85,19 @@ pub const RATE: usize = 5;
 const OLD_STATUS_WIDTH: f32 = 65.0;
 /// A cell's text starts 6 px in and ends 3 px before the column's separator, its last pixel.
 pub const CELL_PAD: f32 = 6.0 + 3.0 + 1.0;
+/// The Status cell's text starts after its status icon (#2008): 16 px more than a cell's.
+const STATUS_ICON: f32 = 16.0;
 
 /// The Status column's default width (#736) in the interface language `code`, whose 100 % is
 /// written `full`: [`DEFAULT_WIDTHS`]'s, or wider where `measure` (the list's font) needs it
-/// for the widest of what the cell says while a file is checked or a video joined.
+/// for the widest of what the cell says while a file is checked or a video joined, after its
+/// status icon.
 pub fn status_width(code: &str, full: &str, measure: impl Fn(&str) -> f32) -> f32 {
     let need = finishing_texts(code, full)
         .iter()
         .map(|s| measure(s))
         .fold(0.0, f32::max);
-    DEFAULT_WIDTHS[STATUS].max((need + CELL_PAD).ceil())
+    DEFAULT_WIDTHS[STATUS].max((need + CELL_PAD + STATUS_ICON).ceil())
 }
 
 /// What the Status cell says at its widest while a file is checked or a video joined, in
@@ -420,6 +423,8 @@ impl ListState {
 pub struct Row {
     /// What the Status filter sees: Downloading, Stopped, Waiting, Complete or Error.
     pub status_group: &'static str,
+    /// The icon before the Status text (#2008): the theme's own, or MDM's.
+    pub status_icon: crate::icons::StatusIcon,
     pub icon: IconKey,
     /// In a queue: the Q column shows a queue icon (IDM: stacked files).
     pub queued: bool,
@@ -1093,21 +1098,25 @@ pub fn show(
                 let tx = if *c == 0 {
                     icons.paint_in(ui, &bp, row.icon.clone(), pos2(x0 + 4.0, top));
                     x0 + 22.0
-                } else if *c == STATUS && row.private.is_some() {
+                } else if *c == STATUS {
+                    let cell = Rect::from_min_max(pos2(*x0, top), pos2(*x1 - 1.0, top + row_h()));
+                    let clip = bp.with_clip_rect(screen(cell.intersect(body)));
+                    let mut x = x0 + 4.0;
                     // A private window's download (#1581): a mask before its status, in the
                     // row's text colour, kept to the cell.
-                    let ink = if sel { winui::SELECTION_TEXT() } else { TEXT() };
-                    let cell = Rect::from_min_max(pos2(*x0, top), pos2(*x1 - 1.0, top + row_h()));
-                    crate::chrome::paint_image(
-                        ui,
-                        &bp.with_clip_rect(screen(cell.intersect(body))),
-                        crate::icons::private_mark(ink),
-                        screen(Rect::from_min_size(
-                            pos2(x0 + 4.0, top),
-                            egui::vec2(16.0, 16.0),
-                        )),
-                    );
-                    x0 + 22.0
+                    if row.private.is_some() {
+                        let ink = if sel { winui::SELECTION_TEXT() } else { TEXT() };
+                        crate::chrome::paint_image(
+                            ui,
+                            &clip,
+                            crate::icons::private_mark(ink),
+                            screen(Rect::from_min_size(pos2(x, top), egui::vec2(16.0, 16.0))),
+                        );
+                        x += 18.0;
+                    }
+                    // Its status icon before the text (#2008), in every theme.
+                    winui::status_icon(ui, &clip, row.status_icon, pos2(x, top), sel);
+                    x + 18.0
                 } else {
                     x0 + 6.0
                 };
@@ -1968,6 +1977,7 @@ mod tests {
         cells[SOURCE] = source.into();
         Row {
             status_group: status,
+            status_icon: crate::icons::StatusIcon::Complete,
             icon: IconKey::Silk("page_white"),
             queued,
             cells,
@@ -2151,9 +2161,10 @@ mod tests {
         // A wide font: the widest text, its padding, whole pixels.
         let wide = |s: &str| s.chars().count() as f32 * 7.3;
         let widest = texts.iter().map(|t| wide(t)).fold(0.0, f32::max);
+        // After the status icon (#2008).
         assert_eq!(
             status_width("de", "100\u{a0}%", wide),
-            (widest + CELL_PAD).ceil()
+            (widest + CELL_PAD + STATUS_ICON).ceil()
         );
     }
 
@@ -2249,6 +2260,7 @@ mod tests {
         let rows: Vec<Row> = (0..3)
             .map(|i| Row {
                 status_group: "Complete",
+                status_icon: crate::icons::StatusIcon::Complete,
                 icon: IconKey::Silk("page_white"),
                 queued: false,
                 cells: std::array::from_fn(|c| match c {

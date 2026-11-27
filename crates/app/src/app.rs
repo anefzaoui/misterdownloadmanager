@@ -2738,6 +2738,12 @@ impl App {
                 // i18n: a download's status (state it is in, not a command): it failed
                 Status::Error => "Error",
             },
+            // Extracting an archive is still under way, as checking it is.
+            status_icon: if self.extracts.extracting(it.id) {
+                crate::icons::StatusIcon::Checking
+            } else {
+                it.status_icon()
+            },
             icon: file_icon(&it.file_name),
             queued: queued.contains(&it.id),
             // A progress bar only while the download is in flight: a finished file is whole, and

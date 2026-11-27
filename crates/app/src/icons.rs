@@ -42,6 +42,9 @@ pub enum Icon {
     HelperChecked,
     /// Node.js runs YouTube's JavaScript (#1570).
     HelperScript,
+    /// gallery-dl saves a gallery's pictures (#58): Lucide "images" (gallery-dl has no logo of
+    /// its own).
+    HelperGallery,
     /// The toolbar's preview pane toggle (#1368): Lucide "panel-right", the pane at the window's
     /// right; in a right-to-left interface "panel-left", where the pane is there.
     PreviewPane,
@@ -170,6 +173,12 @@ impl Icon {
                 r#"<path d="M8 3H7a2 2 0 0 0-2 2v5a2 2 0 0 1-2 2 2 2 0 0 1 2 2v5c0 1.1.9 2 2 2h1"/>"#,
                 r#"<path d="M16 21h1a2 2 0 0 0 2-2v-5c0-1.1.9-2 2-2a2 2 0 0 1-2-2V5a2 2 0 0 0-2-2h-1"/>"#,
             ),
+            // Lucide "images": a stack of pictures.
+            Icon::HelperGallery => concat!(
+                r#"<path d="m22 11-1.296-1.296a2.4 2.4 0 0 0-3.408 0L11 16"/>"#,
+                r#"<path d="M4 8a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2"/>"#,
+                r#"<circle cx="13" cy="7" r="1"/><rect x="8" y="2" width="14" height="14" rx="2"/>"#,
+            ),
             Icon::PreviewPane => {
                 r#"<rect width="18" height="18" x="3" y="3" rx="2"/><path d="M15 3v18"/><path d="M17.5 8h1"/><path d="M17.5 11h1"/>"#
             }
@@ -210,6 +219,7 @@ impl Icon {
             Icon::HelperMerge => ("#3d8ee6", "#2bb3a3"),
             Icon::HelperChecked => ("#3fa864", "#2f7fcf"),
             Icon::HelperScript => ("#e6a817", "#3fa864"),
+            Icon::HelperGallery => ("#e6a817", "#df6a9c"),
             // The Options and Scheduler buttons' blues and violets, its neighbours on the band.
             Icon::PreviewPane | Icon::PreviewPaneLeft => ("#93b6f2", "#9b84d0"),
         }
@@ -244,6 +254,7 @@ impl Icon {
             Icon::HelperMerge => "helper-merge",
             Icon::HelperChecked => "helper-checked",
             Icon::HelperScript => "helper-script",
+            Icon::HelperGallery => "helper-gallery",
             Icon::PreviewPane => "preview-pane",
             Icon::PreviewPaneLeft => "preview-pane-left",
         }
@@ -388,4 +399,234 @@ pub fn private_mark(ink: egui::Color32) -> ImageSource<'static> {
             })
             .clone()
     })
+}
+
+/// Lucide's "circle-check", "circle-x" and "circle-ellipsis" (v1.63.0, ISC,
+/// assets/icons/lucide/): the state marks and a download's status icons share them.
+const CIRCLE_CHECK: &str = r#"<circle cx="12" cy="12" r="10"/><path d="m16 9-5.5 5.5L8 12"/>"#;
+const CIRCLE_X: &str =
+    r#"<circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/>"#;
+const CIRCLE_ELLIPSIS: &str = r#"<circle cx="12" cy="12" r="10"/><path d="M17 12h.01"/><path d="M12 12h.01"/><path d="M7 12h.01"/>"#;
+
+/// A result's mark before its line or word (`winui::state_mark`): it holds, it failed, a
+/// warning, or still under way. Drawn from Lucide's outlines (circle-check, circle-x,
+/// triangle-alert, circle-ellipsis) in the theme's colour for it, so it looks the same with every
+/// font and on every system, as a font's check and cross symbols don't (#2008).
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
+pub enum Mark {
+    Ok,
+    Fail,
+    /// For the warning lines to come (#2008's message lines); none draws it yet.
+    #[allow(dead_code)]
+    Warn,
+    Busy,
+}
+
+impl Mark {
+    /// Its colour in the active theme: the success, error and warning texts' colours, or the
+    /// accent while under way.
+    pub fn ink(self) -> egui::Color32 {
+        let c = crate::theme::colors();
+        match self {
+            Mark::Ok => c.success,
+            Mark::Fail => c.error,
+            Mark::Warn => c.warning,
+            Mark::Busy => c.accent,
+        }
+    }
+
+    fn body(self) -> &'static str {
+        match self {
+            Mark::Ok => CIRCLE_CHECK,
+            Mark::Fail => CIRCLE_X,
+            Mark::Warn => concat!(
+                r#"<path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/>"#,
+                r#"<path d="M12 9v4"/><path d="M12 17h.01"/>"#,
+            ),
+            Mark::Busy => CIRCLE_ELLIPSIS,
+        }
+    }
+
+    fn name(self) -> &'static str {
+        match self {
+            Mark::Ok => "mark-ok",
+            Mark::Fail => "mark-fail",
+            Mark::Warn => "mark-warn",
+            Mark::Busy => "mark-busy",
+        }
+    }
+
+    /// The mark inked in `ink` (made once per mark and ink).
+    pub fn source(self, ink: egui::Color32) -> ImageSource<'static> {
+        outline(self.name(), self.body(), ink)
+    }
+}
+
+/// A download's state, for the small icon before its Status text (the download list, the
+/// notification area's panel, the Scheduler's files): a theme's own `st-*` icon where its set
+/// has one, else MDM's own, a Lucide outline in the state's colour (`winui::status_icon`).
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
+pub enum StatusIcon {
+    Complete,
+    Downloading,
+    /// Stopped part way (the list's "Stopped").
+    Paused,
+    /// Waiting in a queue, or added for later.
+    Queued,
+    /// Failed, or an archive its test found damaged.
+    Error,
+    /// A finished torrent shared with peers.
+    Seeding,
+    /// Every byte in, and being checked, joined, extracted or moved.
+    Checking,
+}
+
+impl StatusIcon {
+    #[cfg(test)]
+    pub const ALL: [StatusIcon; 7] = [
+        StatusIcon::Complete,
+        StatusIcon::Downloading,
+        StatusIcon::Paused,
+        StatusIcon::Queued,
+        StatusIcon::Error,
+        StatusIcon::Seeding,
+        StatusIcon::Checking,
+    ];
+
+    /// The theme icon set's name for it (`crate::themeicons::NEEDS`).
+    pub fn need(self) -> &'static str {
+        match self {
+            StatusIcon::Complete => "st-complete",
+            StatusIcon::Downloading => "st-downloading",
+            StatusIcon::Paused => "st-paused",
+            StatusIcon::Queued => "st-queued",
+            StatusIcon::Error => "st-error",
+            StatusIcon::Seeding => "st-seeding",
+            StatusIcon::Checking => "st-checking",
+        }
+    }
+
+    /// MDM's own icon's colour in the active theme: done in the success colour, failed in the
+    /// error colour (as the failed row's text), under way in the accent, stopped and waiting in
+    /// the secondary text's grey.
+    pub fn ink(self) -> egui::Color32 {
+        let c = crate::theme::colors();
+        match self {
+            StatusIcon::Complete | StatusIcon::Seeding => c.success,
+            StatusIcon::Error => c.error,
+            StatusIcon::Downloading | StatusIcon::Checking => c.accent,
+            StatusIcon::Paused | StatusIcon::Queued => c.muted,
+        }
+    }
+
+    /// Lucide's circle-check, circle-arrow-down, circle-pause, clock, circle-x, circle-arrow-up
+    /// and circle-ellipsis: one family, a circle with what happens inside.
+    fn body(self) -> &'static str {
+        match self {
+            StatusIcon::Complete => CIRCLE_CHECK,
+            StatusIcon::Downloading => {
+                r#"<circle cx="12" cy="12" r="10"/><path d="M12 8v8"/><path d="m8 12 4 4 4-4"/>"#
+            }
+            StatusIcon::Paused => {
+                r#"<circle cx="12" cy="12" r="10"/><path d="M10 15V9"/><path d="M14 15V9"/>"#
+            }
+            StatusIcon::Queued => r#"<circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>"#,
+            StatusIcon::Error => CIRCLE_X,
+            StatusIcon::Seeding => {
+                r#"<circle cx="12" cy="12" r="10"/><path d="m16 12-4-4-4 4"/><path d="M12 16V8"/>"#
+            }
+            StatusIcon::Checking => CIRCLE_ELLIPSIS,
+        }
+    }
+
+    /// MDM's own icon inked in `ink` (made once per state and ink).
+    pub fn source(self, ink: egui::Color32) -> ImageSource<'static> {
+        outline(self.need(), self.body(), ink)
+    }
+}
+
+/// A Lucide outline `body` (24 × 24 user space) as a 16 × 16 SVG stroked in `ink` at Lucide's
+/// own weight, made once per name and ink (a theme's change makes new ones) and kept, as its
+/// texture is.
+fn outline(name: &'static str, body: &'static str, ink: egui::Color32) -> ImageSource<'static> {
+    use std::cell::RefCell;
+    use std::collections::HashMap;
+    type Made = HashMap<(&'static str, [u8; 4]), ImageSource<'static>>;
+    thread_local! {
+        static MADE: RefCell<Made> = RefCell::default();
+    }
+    MADE.with(|made| {
+        made.borrow_mut()
+            .entry((name, ink.to_array()))
+            .or_insert_with(|| {
+                let hex = crate::palette::to_hex(ink);
+                let uri: &'static str = Box::leak(
+                    format!("bytes://mdm/mark/{name}-{}.svg", hex.trim_start_matches('#'))
+                        .into_boxed_str(),
+                );
+                let svg = format!(
+                    r#"<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="{hex}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">{body}</svg>"#
+                );
+                ImageSource::Bytes {
+                    uri: uri.into(),
+                    bytes: egui::load::Bytes::Shared(svg.into_bytes().into()),
+                }
+            })
+            .clone()
+    })
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    /// Every mark and status icon is drawn by the loaders the app installs, at each size a
+    /// 16-point icon takes (100 % to 300 %), square, with its ink to see.
+    #[test]
+    fn every_mark_and_status_icon_draws_at_every_scale() {
+        let ctx = egui::Context::default();
+        egui_extras::install_image_loaders(&ctx);
+        let ink = egui::Color32::from_rgb(0x0f, 0x7b, 0x0f);
+        let sources = [Mark::Ok, Mark::Fail, Mark::Warn, Mark::Busy]
+            .map(|m| m.source(ink))
+            .into_iter()
+            .chain(StatusIcon::ALL.map(|s| s.source(ink)));
+        for src in sources {
+            let ImageSource::Bytes { uri, bytes } = src else {
+                panic!("not bytes")
+            };
+            ctx.include_bytes(uri.clone(), bytes);
+            for px in [16u32, 20, 24, 32, 48] {
+                let hint = egui::load::SizeHint::Size {
+                    width: px,
+                    height: px,
+                    maintain_aspect_ratio: true,
+                };
+                let Ok(egui::load::ImagePoll::Ready { image }) = ctx.try_load_image(&uri, hint)
+                else {
+                    panic!("{uri} at {px}: not drawn");
+                };
+                assert_eq!(image.size, [px as usize; 2], "{uri}");
+                // Its ink, green here: enough of it to see.
+                let inked = image
+                    .pixels
+                    .iter()
+                    .filter(|c| c.a() > 128 && c.g() > c.r())
+                    .count();
+                assert!(inked >= 2 * px as usize, "{uri} at {px}: {inked} pixels");
+            }
+        }
+    }
+
+    /// Each status names a need theme authors can draw (themeicons::NEEDS lists it).
+    #[test]
+    fn every_status_icon_is_a_theme_need() {
+        for s in StatusIcon::ALL {
+            assert!(
+                crate::themeicons::NEEDS.iter().any(|(n, _)| *n == s.need()),
+                "{}",
+                s.need()
+            );
+        }
+    }
 }

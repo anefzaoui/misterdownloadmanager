@@ -5610,6 +5610,83 @@ pub fn browser_icon(
     crate::browsericons::paint(ui, p, browser, rect(rc), ink);
 }
 
+/// The side of a [`state_mark`] and a [`status_icon`], in points: a 16-point icon, as a list's
+/// file-type icons.
+pub const MARK: f32 = 16.0;
+
+/// A result's mark before its line or word (#2008): it holds, it failed, a warning, or under way
+/// (`crate::icons::Mark`), [`MARK`] points square at English `min` (mirrored in a right-to-left
+/// interface), in the theme's colour for it. Drawn, never a font's check or cross, so it looks
+/// the same with every font and on every system. Its top sits 12 points above the baseline of
+/// the text it leads.
+pub fn state_mark(ui: &Ui, p: &Painter, min: Pos2, mark: crate::icons::Mark) {
+    let rc = rect(Rect::from_min_size(min, vec2(MARK, MARK)));
+    paint_icon(ui, p, mark.source(mark.ink()), rc);
+}
+
+/// `s` in `color`, ending at English `right` on `baseline`, with its `mark` before it (a helper's
+/// "Installed", a browser's "Connected"); cut with "..." past the window's near edge, as
+/// [`text_right`]. The text's rect on screen.
+pub fn marked_text_right(
+    ui: &Ui,
+    p: &Painter,
+    right: f32,
+    baseline: f32,
+    mark: crate::icons::Mark,
+    s: &str,
+    color: Color32,
+) -> Rect {
+    let near = window_edges(p).0 + MARK + 4.0;
+    let (rc, _) = text_right_within(p, right, baseline, s, color, near);
+    // The text's start in English: its screen rect's leading edge, mirrored back.
+    let start = if rtl() { mx(rc.right()) } else { rc.left() };
+    state_mark(ui, p, pos2(start - 4.0 - MARK, baseline - 12.0), mark);
+    rc
+}
+
+/// A download's status icon before its status (#2008: the download list's Status column, the
+/// notification area's panel, the Scheduler's files), [`MARK`] points square at English `min`:
+/// the active theme's own `st-*` icon where its set has one, else MDM's
+/// (`crate::icons::StatusIcon`, in the state's colour). `on_selection`: drawn on a selected
+/// row's accent fill, where a one-colour icon takes the selection's text colour.
+pub fn status_icon(
+    ui: &Ui,
+    p: &Painter,
+    kind: crate::icons::StatusIcon,
+    min: Pos2,
+    on_selection: bool,
+) {
+    let rc = rect(Rect::from_min_size(min, vec2(MARK, MARK)));
+    let theme_ink = if on_selection {
+        SELECTION_TEXT()
+    } else {
+        crate::themeicons::ink(true)
+    };
+    if crate::themeicons::paint_inked(ui, p, kind.need(), rc, theme_ink, true) {
+        return;
+    }
+    let ink = if on_selection {
+        SELECTION_TEXT()
+    } else {
+        kind.ink()
+    };
+    paint_icon(ui, p, kind.source(ink), rc);
+}
+
+/// An SVG icon in `rc` (on screen) through `p` (so it keeps to a list's clip), rasterized at the
+/// screen's pixel size on whole pixels, so it stays sharp at every scale.
+fn paint_icon(ui: &Ui, p: &Painter, src: egui::ImageSource<'static>, rc: Rect) {
+    use egui::emath::GuiRounding as _;
+    let rc = rc.round_to_pixels(ui.ctx().pixels_per_point());
+    let img = egui::Image::new(src)
+        .fit_to_exact_size(rc.size())
+        .texture_options(egui::TextureOptions::LINEAR);
+    if let Ok(egui::load::TexturePoll::Ready { texture }) = img.load_for_size(ui.ctx(), rc.size()) {
+        let uv = Rect::from_min_max(pos2(0.0, 0.0), pos2(1.0, 1.0));
+        p.image(texture.id, rc, uv, Color32::WHITE);
+    }
+}
+
 /// What a control is for screen readers (Narrator, NVDA through AccessKit): its role, its name
 /// (the full translated label, "&" taken out), whether it can be used, and for a check box,
 /// radio button, tab or list row whether it is on. Our controls are painted by hand, so egui

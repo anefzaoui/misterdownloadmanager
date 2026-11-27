@@ -4904,7 +4904,11 @@ impl OptionsDialog {
                         let p = ui.painter().clone();
                         let mut y = o.y + 22.0;
                         let mut how_h = 0.0;
+                        // Each line's mark (#2008): drawn, the same on every system, as the
+                        // text's start is.
+                        let mark_at = |y: f32| egui::pos2(o.x + 14.0, y - 12.0);
                         if checking {
+                            winui::state_mark(ui, &p, mark_at(y), crate::icons::Mark::Busy);
                             winui::text_in_window(
                                 ui,
                                 &p,
@@ -4916,13 +4920,29 @@ impl OptionsDialog {
                             );
                         }
                         for (k, c) in checks.iter().enumerate() {
-                            let (mark, color) = if c.ok {
-                                ("\u{2714}", winui::SUCCESS())
+                            let mark = if c.ok {
+                                crate::icons::Mark::Ok
                             } else {
-                                ("\u{2716}", winui::ERROR())
+                                crate::icons::Mark::Fail
                             };
-                            winui::text_in_window(ui, &p, o.x + 14.0, y, mark, color);
-                            winui::text_in_window(ui, &p, o.x + 34.0, y, &c.text, LIGHT_TEXT());
+                            winui::state_mark(ui, &p, mark_at(y), mark);
+                            // A browser's line: its logo after the mark, then the text.
+                            let mut text_x = o.x + 34.0;
+                            if let Some(browser) = &c.browser {
+                                winui::browser_icon(
+                                    ui,
+                                    &p,
+                                    browser,
+                                    None,
+                                    egui::Rect::from_min_size(
+                                        egui::pos2(text_x, y - 12.0),
+                                        egui::vec2(winui::MARK, winui::MARK),
+                                    ),
+                                    LIGHT_TEXT(),
+                                );
+                                text_x += winui::MARK + 4.0;
+                            }
+                            winui::text_in_window(ui, &p, text_x, y, &c.text, LIGHT_TEXT());
                             if let Some(path) = &c.detail {
                                 y += DETAIL_H;
                                 // A path reads left to right in a right-to-left language too.

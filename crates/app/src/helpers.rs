@@ -316,14 +316,19 @@ impl Offer {
             );
             // Its state, at the row's end: there, downloading, or its Install button.
             if self.have.of(t) {
-                let there = format!(
-                    "\u{2714} {}",
-                    // i18n: the first start's video helpers: beside a helper that is there already (MDM's own copy or the system's)
-                    crate::i18n::t("Installed")
+                // i18n: the first start's video helpers: beside a helper that is there already (MDM's own copy or the system's)
+                let there = crate::i18n::t("Installed");
+                // A drawn check before it (#2008), the same on every system.
+                let rc = winui::marked_text_right(
+                    ui,
+                    &p,
+                    o.x + w - 18.0,
+                    o.y + y + 17.0,
+                    crate::icons::Mark::Ok,
+                    there,
+                    winui::SUCCESS(),
                 );
-                let (rc, _) =
-                    winui::text_right(&p, o.x + w - 18.0, o.y + y + 17.0, &there, winui::SUCCESS());
-                winui::readable(ui, rc, ("helpers-there", k), &there);
+                winui::readable(ui, rc, ("helpers-there", k), there);
             } else if self.installing(t) {
                 let progress = self
                     .dir
@@ -638,6 +643,28 @@ struct Own {
 }
 
 const HELPERS: [Helper; 3] = [Helper::YtDlp, Helper::Ffmpeg, Helper::GalleryDl];
+
+/// Each row's role icon (#2008), the first start's own (a new one for gallery-dl), and where
+/// its texts and buttons start after it.
+const ROLE_ICON: f32 = 24.0;
+const INSET: f32 = 14.0 + ROLE_ICON + 8.0;
+
+/// A helper's role icon, as the first start's video helpers show it.
+fn role_icon(h: Helper) -> Icon {
+    match h {
+        Helper::YtDlp => Icon::HelperVideo,
+        Helper::Ffmpeg => Icon::HelperMerge,
+        Helper::GalleryDl => Icon::HelperGallery,
+    }
+}
+
+/// `icon` at a row's start, its top at window `y` (English), on whole pixels.
+fn paint_role(ui: &Ui, o: Pos2, y: f32, icon: Icon) {
+    use egui::emath::GuiRounding as _;
+    let rc = r(o, 14.0, y - o.y + 4.0, ROLE_ICON, ROLE_ICON)
+        .round_to_pixels(ui.ctx().pixels_per_point());
+    icon.image(true).paint_at(ui, rc);
+}
 
 /// The tool a helper row is.
 fn tool_of(h: Helper) -> Tool {
@@ -1065,10 +1092,11 @@ impl Programs {
         let p = ui.painter().clone();
         for (k, h) in HELPERS.into_iter().enumerate() {
             let y = o.y + 8.0 + k as f32 * 78.0;
+            paint_role(ui, o, y, role_icon(h));
             let name_rc = winui::text_font(
                 &p,
                 winui::tahoma_bold(),
-                o.x + 14.0,
+                o.x + INSET,
                 y + 16.0,
                 h.name(),
                 winui::TEXT(),
@@ -1149,7 +1177,7 @@ impl Programs {
             let status_rc = winui::fit(
                 ui,
                 &p,
-                o.x + 14.0,
+                o.x + INSET,
                 y + 36.0,
                 &status,
                 winui::MUTED(),
@@ -1159,7 +1187,7 @@ impl Programs {
             winui::readable(ui, status_rc, ("helper-status", k), &status);
             // Its updates: MDM's own copy's, or the person's to make (#1544).
             let name_end =
-                o.x + 14.0 + winui::text_width_font(&p, winui::tahoma_bold(), h.name()) + 10.0;
+                o.x + INSET + winui::text_width_font(&p, winui::tahoma_bold(), h.name()) + 10.0;
             let updates = if found.is_some_and(|i| mine || i.is_system()) {
                 // i18n: Helpers: a program the person chose, or the system's copy: MDM doesn't update it, the person (or their package manager) does
                 Some(crate::i18n::t("Updated by you").to_owned())
@@ -1173,8 +1201,8 @@ impl Programs {
             let [other_at, own_at] = winui::button_row_from_left(
                 &p,
                 &[
-                    ("Use another program...", 14.0, 180.0),
-                    (own_label, 202.0, 180.0),
+                    ("Use another program...", INSET, 180.0),
+                    (own_label, INSET + 188.0, 180.0),
                 ],
                 8.0,
                 486.0,
@@ -1493,10 +1521,11 @@ impl Programs {
         let y = o.y + 8.0 + k as f32 * 78.0;
         // i18n: Video helpers: the row of the JavaScript runtime (Node.js, Deno...) yt-dlp needs for YouTube's videos
         let title = crate::i18n::t("JavaScript runtime (for YouTube)");
+        paint_role(ui, o, y, Icon::HelperScript);
         let title_rc = winui::text_font(
             p,
             winui::tahoma_bold(),
-            o.x + 14.0,
+            o.x + INSET,
             y + 16.0,
             title,
             winui::TEXT(),
@@ -1514,14 +1543,14 @@ impl Programs {
         let after = winui::text_width_font(p, winui::tahoma_bold(), title) + 10.0;
         let updates = own_node.then(|| self.update_status(Tool::Node)).flatten();
         if own_node {
-            self.update_row(ui, p, o, y, o.x + 14.0 + after, Tool::Node, None, rt);
+            self.update_row(ui, p, o, y, o.x + INSET + after, Tool::Node, None, rt);
         } else {
             // i18n: Video helpers: what the JavaScript runtime is for, after its name (yt-dlp is a program's name)
             let what = crate::i18n::t("lets yt-dlp list all of YouTube's qualities");
             let what_rc = winui::fit(
                 ui,
                 p,
-                o.x + 14.0 + after,
+                o.x + INSET + after,
                 y + 16.0,
                 what,
                 winui::MUTED(),
@@ -1588,7 +1617,7 @@ impl Programs {
         let status_rc = winui::fit(
             ui,
             p,
-            o.x + 14.0,
+            o.x + INSET,
             y + 36.0,
             &status,
             winui::MUTED(),
@@ -1615,8 +1644,8 @@ impl Programs {
         let [other_at, own_at] = winui::button_row_from_left(
             p,
             &[
-                ("Use another program...", 14.0, 180.0),
-                (own_label, 202.0, 180.0),
+                ("Use another program...", INSET, 180.0),
+                (own_label, INSET + 188.0, 180.0),
             ],
             8.0,
             486.0,

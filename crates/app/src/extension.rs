@@ -384,19 +384,19 @@ impl Extension {
                 winui::buttons_to_right(&p, w - 18.0, 8.0, &[(label, 150.0)], 220.0)[0];
             // This browser's extension is there already: said, before its button.
             if is_seen(&seen, name) {
-                let conn = format!(
-                    "\u{2714} {}",
-                    // i18n: in the browser extension's window, beside a browser whose extension reached MDM
-                    crate::i18n::t("Connected")
-                );
-                let (conn_rc, _) = winui::text_right(
+                // i18n: in the browser extension's window, beside a browser whose extension reached MDM
+                let conn = crate::i18n::t("Connected");
+                // A drawn check before it (#2008), the same on every system.
+                let conn_rc = winui::marked_text_right(
+                    ui,
                     &p,
                     o.x + add_x - 10.0,
                     o.y + y + 16.0,
-                    &conn,
+                    crate::icons::Mark::Ok,
+                    conn,
                     winui::SUCCESS(),
                 );
-                winui::readable(ui, conn_rc, ("extension", "connected", k), &conn);
+                winui::readable(ui, conn_rc, ("extension", "connected", k), conn);
             }
             let add = winui::button(
                 ui,
@@ -1027,6 +1027,9 @@ pub struct Check {
     pub detail: Option<String>,
     /// What to do about it, a paragraph under it (macOS's refusal, #1218).
     pub how: Option<String>,
+    /// The browser whose extension connected, as it named itself: its logo before the line
+    /// (#2008). None for the other checks, and for an extension that gave no name.
+    pub browser: Option<String>,
 }
 
 /// Test browser integration's checks, read beside the window (#1218): the browsers' folders can
@@ -1073,6 +1076,7 @@ pub fn checks(advanced: bool) -> Vec<Check> {
         why: (!ok).then_some(why).flatten(),
         detail: None,
         how: None,
+        browser: None,
     };
     let mut out = vec![
         check(
@@ -1129,6 +1133,7 @@ pub fn checks(advanced: bool) -> Vec<Check> {
                 why: Some("not-installed"),
                 detail: Some(folder.display().to_string()),
                 how: None,
+                browser: None,
             }
         }
         Registration::Refused(folder) => {
@@ -1162,6 +1167,7 @@ pub fn checks(advanced: bool) -> Vec<Check> {
             why: Some("not-installed"),
             detail: None,
             how: None,
+            browser: None,
         });
     }
     let seen = mdm_ipc::extension::seen_browsers();
@@ -1174,6 +1180,9 @@ pub fn checks(advanced: bool) -> Vec<Check> {
         ));
     }
     for (browser, version) in seen {
+        // Its logo before the line (a globe for one that gave no name, or one MDM has no logo
+        // for).
+        let logo = Some(browser.clone());
         let name = if browser.is_empty() {
             crate::i18n::t("Your browser").to_owned()
         } else {
@@ -1198,6 +1207,7 @@ pub fn checks(advanced: bool) -> Vec<Check> {
             why: None,
             detail: None,
             how: None,
+            browser: logo,
         });
     }
     out
@@ -1212,6 +1222,7 @@ fn refused_check(refused: &Refused) -> Check {
         why: Some("not-installed"),
         detail: Some(refused.folder.display().to_string()),
         how: Some(refused_how().to_owned()),
+        browser: None,
     }
 }
 
@@ -1325,6 +1336,7 @@ mod tests {
             why: None,
             detail: None,
             how: None,
+            browser: None,
         }]
     }
 

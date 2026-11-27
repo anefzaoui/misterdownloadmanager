@@ -89,6 +89,8 @@ pub struct Row {
     pub live: Option<LiveState>,
     /// A live stream: its button may read "Stop and save" (`progress::pause_labels`).
     pub live_stream: bool,
+    /// The icon before the line under its bar (#2008), as the list's Status column has it.
+    pub status_icon: crate::icons::StatusIcon,
 }
 
 impl Panel {
@@ -273,6 +275,7 @@ fn row(item: &Item) -> Row {
         live,
         live_stream: live.is_some()
             || matches!(item.video_helper(), Some(mdm_tools::streams::Helper::Live)),
+        status_icon: item.status_icon(),
     }
 }
 
@@ -356,9 +359,10 @@ fn draw(ui: &mut egui::Ui, p: &egui::Painter, o: Pos2, rows: &[Row], events: &mu
     }
 }
 
-/// One download's row, from `y` down: its name, its bar with the progress window's Pause (or
-/// Resume, Stop and save) and Cancel beside it at `buttons` (English x, width), and how far it is
-/// under them; read to screen readers as one line.
+/// One download's row, from `y` down: its file type's icon and its name, its bar with the
+/// progress window's Pause (or Resume, Stop and save) and Cancel beside it at `buttons` (English
+/// x, width), and how far it is under them after its status icon; read to screen readers as one
+/// line.
 fn draw_row(
     ui: &mut egui::Ui,
     p: &egui::Painter,
@@ -371,10 +375,18 @@ fn draw_row(
     let [(pause_x, pause_w), (cancel_x, cancel_w)] = buttons[..] else {
         return;
     };
+    // Its file type's icon before its name (#2008), as every other list of downloads has it.
+    crate::fileicons::paint_at(
+        ui,
+        p,
+        crate::fileicons::Kind::File(&row.name),
+        pos2(o.x + 12.0, o.y + y + 4.0),
+        16.0,
+    );
     winui::fit(
         ui,
         p,
-        o.x + 12.0,
+        o.x + 12.0 + crate::fileicons::INDENT,
         o.y + y + 16.0,
         &crate::i18n::isolate(&row.name),
         winui::TEXT(),
@@ -399,10 +411,18 @@ fn draw_row(
             events.push(Event::Cancel(row.id));
         }
     });
+    // Its status icon before how far it is (#2008), as the list's Status column has it.
+    winui::status_icon(
+        ui,
+        p,
+        row.status_icon,
+        pos2(o.x + 12.0, o.y + y + 41.0),
+        false,
+    );
     winui::fit(
         ui,
         p,
-        o.x + 12.0,
+        o.x + 12.0 + crate::fileicons::INDENT,
         o.y + y + 54.0,
         &row.line,
         winui::MUTED(),
@@ -523,6 +543,7 @@ mod tests {
         assert_eq!(known.fraction, Some(0.25));
         assert_eq!(known.line, "1.000 MB of 4.000 MB");
         assert_eq!(known.status, Status::Stopped);
+        assert_eq!(known.status_icon, crate::icons::StatusIcon::Paused);
         assert!(known.live.is_none() && !known.live_stream);
         let unknown = row(&item(2, None, 3 * 1024, Status::Stopped));
         assert_eq!(unknown.fraction, None);

@@ -572,6 +572,15 @@ Everything below ships together, in version 0.6.0, the next release.
 - ✅ Each browser's logo before its name in the browser extension's window, the first start's
   browser step and Options → General's browser list, sharp at every display scale; a globe for a
   browser without one
+- ✅ Icons where they help recognition, first part
+  ([#2008](https://github.com/anefzaoui/misterdownloadmanager/issues/2008)): a status icon before
+  each download's status in the list and the tray panel, in every theme (a theme's own, else
+  MDM's); drawn check and cross marks in Test browser integration and beside "Installed" and
+  "Connected", with the browser's logo on its line; file-type icons in the tray panel; the
+  helpers' role icons in the Helpers window, a new one for gallery-dl
+- 📋 Icons where they help recognition, the rest of
+  [#2008](https://github.com/anefzaoui/misterdownloadmanager/issues/2008): icons in combo boxes
+  (categories, queues, the cookies' browser), message lines, empty lists and the smaller touches
 - ✅ The browser add-on's **Download video** button can be scaled (**80%**, **100%**, **120%**) beside **Button size** in **Options → General → Download panels**, keeps free interior positions when dragged anywhere over the player, offers **Hide the download button in full screen** directly in its menu, and respects DOM full-screen hiding inside embedded frames
   ([#1923](https://github.com/anefzaoui/misterdownloadmanager/issues/1923))
 - ✅ The first start's setup in one window: the language, the video helpers (each with its own
