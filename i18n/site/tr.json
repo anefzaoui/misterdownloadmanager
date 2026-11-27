@@ -2126,10 +2126,6 @@
    "source": "<g1>The keyboard focus got lost</g1> when a button greyed itself or Escape closed a drop-down: Tab started over at the top of the window. It now moves on, or comes back, as in Windows.",
    "text": "<g1>Klavye odağı kayboluyordu</g1>: bir düğme devre dışı kaldığında veya Escape açılır menüyü kapattığında Tab pencerenin en başından başlıyordu. Artık Windows'taki gibi sonraki denetime geçiyor veya önceki denetime dönüyor."
   },
-  "1c004ef83082f283": {
-   "source": "<g1>Site rules...</g1> — a User-Agent, request headers, a number of connections and <g2>Always connect the way a browser does</g2>, by site. See <g3>Site rules</g3>.",
-   "text": "<g1>Site kuralları...</g1> — siteye göre Kullanıcı Aracısı, istek başlıkları, bağlantı sayısı ve <g2>Her zaman bir tarayıcı gibi bağlan</g2>. Bkz. <g3>Site kuralları</g3>."
-  },
   "1c0101659f1e2203": {
    "source": "<g1>Feeds</g1>: the feeds it watches; none ticked, all of them.",
    "text": "<g1>Akışlar</g1>: İzlenecek akışlar. Hiçbiri işaretlenmezse tüm akışlar izlenir."
@@ -4890,6 +4886,10 @@
    "source": "Changes",
    "text": "Değişiklikler"
   },
+  "41150cfc2e8c323a": {
+   "source": "Some sites want a particular User-Agent, an extra header or fewer connections, let only browsers through, or need a proxy (or none) when the others don't. <g1>Options → Connection → Site rules...</g1> sets these once for every download from a site:",
+   "text": "Bazı siteler belirli bir Kullanıcı Aracısı, ek bir başlık veya daha az bağlantı isteyebilir, yalnızca tarayıcılara izin verebilir veya diğerleri istemezken bir proxy'ye (veya hiçbire) ihtiyaç duyabilir. <g1>Seçenekler → Bağlantı → Site kuralları...</g1> bir siteden yapılan her indirme için bunları bir kez ayarlar:"
+  },
   "41333ec069d15e15": {
    "source": "A magnet link takes a long time",
    "text": "Magnet bağlantısının açılması uzun sürüyor"
@@ -5538,10 +5538,6 @@
    "source": "A key MDM doesn't know, or a value it can't read, is skipped and written to MDM's log (the <x1/> folder beside the themes folder), so a file made for a newer MDM still loads. The built-in themes are written the same way: <g2>read them on GitHub</g2>.",
    "text": "MDM'nin bilmediği bir anahtar veya okuyamadığı bir değer atlanır ve MDM'nin günlüğüne (temalar klasörünün yanındaki <x1/> klasörü) yazılır, böylece daha yeni bir MDM için yapılmış bir dosya yine de yüklenir. Yerleşik temalar da aynı şekilde yazılmıştır: <g2>GitHub'da okuyun</g2>."
   },
-  "4ac401467a9a37d2": {
-   "source": "The downloads join the <g1>Main download queue</g1>, ready to start (<g2>Start</g2> starts it too). <g3>Tasks → Import → From IDM export file</g3> reads an <x4/> file, with each download's referrer and cookies.",
-   "text": "İndirmeler, başlatılmaya hazır şekilde <g1>Ana indirme kuyruğu</g1>na eklenir (<g2>Başlat</g2> düğmesi de kuyruğu başlatır). <g3>Görevler → İçeri Aktar → IDM dışa aktarma dosyasından</g3> seçeneği, her indirmenin yönlendiren adresini ve çerezlerini içeren bir <x4/> dosyasını okur."
-  },
   "4ace27f6171583db": {
    "source": "A <x1/> and a Compose file come with MDM's source. For now you build the image yourself; a published image comes later. The first build is long, up to an hour on a small server, and the image is small, about 175 MB, with no desktop libraries.",
    "text": "MDM'nin kaynak koduyla birlikte bir <x1/> ve bir Compose dosyası gelir. Şimdilik görüntüyü kendiniz oluşturursunuz; yayınlanmış bir görüntü daha sonra gelir. İlk derleme uzun sürer, küçük bir sunucuda bir saate kadar çıkabilir ve görüntü küçüktür, masaüstü kitaplıkları olmadan yaklaşık 175 MB'tır."
@@ -6090,10 +6086,6 @@
    "source": "After a click it says what happened, in its own colour:",
    "text": "Tıkladıktan sonra, kendi renginde ne olduğunu söyler:"
   },
-  "529f7c22e85ee030": {
-   "source": "Download a file with up to 8 connections (<x1/>, 1 to 128), showing progress. <x2/> pauses it; <x3/> continues. <x4/> sets the referring page address (Referer header), <x5/> sets the request's User-Agent (then the only one sent; without it, MDM speaks as your default browser, and, when a site's bot check refuses that and the way a browser connects too, once more under its own name), <x6/> sets the Cookie header (a cookie on the command line ends up in the shell's history; <x7/> reads it from standard input instead). <x8/> checks the finished file: hex MD5, SHA-1, SHA-256, SHA-512 or CRC32, optionally named (<x9/>). <x10/> picks the DNS instead of Options': <x11/>; a service and how to ask it, <x12/>, <x13/>, <x14/>, <x15/>, <x16/>; DNS servers' addresses, <x17/>; or a DNS-over-HTTPS address. It never falls back to the system's DNS. <x18/> sends every connection through one network adapter instead of Options' (<x19/> for none), by its name (<x20/>, <x21/>) or one of its addresses; when it isn't connected, nothing is sent and the download fails. <x22/> takes the place of Options' proxy for this run (see above). The app's <g23>site rules</g23> for the address apply too (their headers, User-Agent, browser-like connection and number of connections), where the command line gives none of the same. A link from a file host that one of your debrid accounts (<g24>Options → Accounts</g24>) supports goes through that account, as in the app, and <x25/> says <x26/>; <x27/> downloads the address itself (<g28>Debrid service accounts</g28>).",
-   "text": "8 bağlantıyla (<x1/>, 1 ila 128) bir dosya indirir, ilerlemeyi gösterir. <x2/> duraklatır; <x3/> devam ettirir. <x4/> yönlendiren sayfa adresini (Referer başlığı) ayarlar, <x5/> isteğin Kullanıcı Aracısını ayarlar (o zaman gönderilen tek User-Agent; yoksa MDM varsayılan tarayıcınız olarak konuşur ve bir sitenin bot kontrolü bunu ve tarayıcının bağlanma şeklini reddettiğinde, bir kez daha kendi adıyla konuşur), <x6/> Çerez başlığını ayarlar (komut satırındaki bir çerez kabuğun geçmişine gider; <x7/> bunun yerine standart girdiden okur). <x8/> bitmiş dosyayı kontrol eder: onaltılık MD5, SHA-1, SHA-256, SHA-512 veya CRC32, isteğe bağlı olarak adlandırılmış (<x9/>). <x10/> Seçenekler'in DNS'i yerine şunu seçer: <x11/>; bir hizmet ve ona nasıl sorulacağı, <x12/>, <x13/>, <x14/>, <x15/>, <x16/>; DNS sunucularının adresleri, <x17/>; veya bir DNS-over-HTTPS adresi. Asla sistemin DNS'ine geri dönmez. <x18/> her bağlantıyı Seçenekler'in yerine tek bir ağ bağdaştırıcısı üzerinden gönderir (<x19/> hiçbiri için), adıyla (<x20/>, <x21/>) veya adreslerinden biriyle; bağlı değilse hiçbir şey gönderilmez ve indirme başarısız olur. <x22/> bu çalıştırma için Seçenekler'in proxy'sinin yerini alır (yukarıya bakın). Uygulamanın <g23>site kuralları</g23> da adres için geçerlidir (başlıkları, Kullanıcı Aracısı, tarayıcı benzeri bağlantı ve bağlantı sayısı), komut satırı aynılarından hiçbirini vermediğinde. Debrid hesaplarınızdan birinin (<g24>Seçenekler → Hesaplar</g24>) desteklediği bir dosya barındırıcısından gelen bir bağlantı, uygulamadaki gibi o hesap üzerinden gider ve <x25/> <x26/> der; <x27/> adresin kendisini indirir (<g28>Debrid hizmeti hesapları</g28>)."
-  },
   "52ceae361fb11f6c": {
    "source": "A list's, a table's or a box's outline",
    "text": "Bir listenin, bir tablonun veya bir kutunun dış çizgisi"
@@ -6145,10 +6137,6 @@
   "536df2f60bd48da6": {
    "source": "Success text (a matching checksum)",
    "text": "Başarı metni (eşleşen bir sağlama toplamı)"
-  },
-  "538fe2ede1fc4d57": {
-   "source": "The single-instance channel (a token-protected local socket), the data folder, the capture rules shared by the app and the host, and the site rules (#1778: a User-Agent, headers, connections and the browser-like connection by site pattern) shared by the app and the command line",
-   "text": "Uygulama ve ana bilgisayar tarafından paylaşılan yakalama kuralları, uygulama ve komut satırı tarafından paylaşılan site kuralları (#1778: bir Kullanıcı Aracısı, başlıklar, bağlantılar ve site desenine göre tarayıcı benzeri bağlantı), veri klasörü ve tek örnekli kanal (belirteç korumalı yerel soket)"
   },
   "539160f92bae4422": {
    "source": "Being re-measured",
@@ -9054,14 +9042,6 @@
    "source": "Testing archives",
    "text": "Arşivleri test etme"
   },
-  "7b65292951ac598b": {
-   "source": "Some sites want a particular User-Agent, an extra header or fewer connections, or let only browsers through. <g1>Options → Connection → Site rules...</g1> sets these once for every download from a site:",
-   "text": "Bazı siteler belirli bir Kullanıcı Aracısı, ek bir üstbilgi veya daha az bağlantı ister ya da yalnızca tarayıcılara izin verir. <g1>Seçenekler → Bağlantı → Site kuralları...</g1> seçeneği, bir siteden yapılan her indirme için bunları bir kez ayarlar:"
-  },
-  "7b655c3076cd7d8b": {
-   "source": "<g1>Tasks → Import → From text file</g1> and <g2>From IDM export file</g2>. An <x3/> file brings each download's referrer and cookies.",
-   "text": "<g1>Görevler → İçeri Aktar → Metin dosyasından</g1> ve <g2>IDM dışa aktarma dosyasından</g2>. Bir <x3/> dosyası, her indirmenin yönlendiren bilgisini ve çerezlerini de içerir."
-  },
   "7b75149d61c4c0ff": {
    "source": "A download that is running isn't deleted. Stop it first.",
    "text": "İndirme devam ederken silinemez. Önce durdurun."
@@ -9357,6 +9337,10 @@
   "7ee169488133ab57": {
    "source": "Link grabber gathers many links at once, sorts them into packages, and lets you tick the ones to download. MDM can then extract the archives it downloaded…",
    "text": "Bağlantı yakalayıcı birçok bağlantıyı aynı anda toplar, bunları paketlere ayırır ve indirmek istediklerinizi işaretlemenizi sağlar. MDM daha sonra indirdiği arşivleri ayıklayabilir…"
+  },
+  "7ee305b094d7654d": {
+   "source": "The single-instance channel (a token-protected local socket), the data folder, the capture rules shared by the app and the host, and the site rules (#1778: a User-Agent, headers, connections, the browser-like connection and, #1960, a proxy by site pattern) shared by the app and the command line",
+   "text": "Tek örnekli kanal (belirteç korumalı yerel soket), veri klasörü, uygulama ve ana bilgisayar tarafından paylaşılan yakalama kuralları ve uygulama ile komut satırı tarafından paylaşılan site kuralları (#1778: Kullanıcı Aracısı, üstbilgiler, bağlantılar, tarayıcı benzeri bağlantı ve #1960, site desenine göre bir proxy)"
   },
   "7ee9063b38514440": {
    "source": "Listed by",
@@ -9806,6 +9790,10 @@
    "source": "Every signed file is built from the public source code at <g1>github.com/anefzaoui/misterdownloadmanager</g1> by GitHub Actions, on GitHub's servers, never on a personal computer. Each one says it is Mister Download Manager and which version it is.",
    "text": "İmzalanan her dosya, <g1>github.com/anefzaoui/misterdownloadmanager</g1> adresindeki herkese açık kaynak kodundan, GitHub'ın sunucularında, asla kişisel bir bilgisayarda değil, GitHub Actions tarafından oluşturulur. Her biri Mister Download Manager olduğunu ve hangi sürüm olduğunu belirtir."
   },
+  "8414d2ed3c86b744": {
+   "source": "Which proxy a download goes through: its own (below) first, then the first rule that names the site and sets a proxy, then <g1>Options → Proxy / Socks</g1> (and the browser's proxy, when <g2>Use proxy/socks from a browser's request</g2> is on). A rule's proxy also carries Download File Info's look-up and, for a video or gallery page the rule names, yt-dlp's and gallery-dl's look-up and the video's download, so the links they get are used from the same address. The <g3>Network adapter</g3> chosen in <g4>Options → Proxy / Socks</g4>, and its kill switch, still hold every connection: with an adapter chosen, nothing goes around it.",
+   "text": "Bir indirme hangi proxy üzerinden gider: önce kendi proxy'si (aşağıda), sonra siteyi adlandıran ve bir proxy belirleyen ilk kural, ardından <g1>Seçenekler → Proxy / SOCKS</g1> (ve <g2>Tarayıcı isteğinden proxy/SOCKS kullan</g2> açıksa tarayıcının proxy'si). Bir kuralın proxy'si ayrıca Dosya Bilgilerini İndir'in aramasını ve kuralın adlandırdığı bir video veya galeri sayfası için yt-dlp'nin ve gallery-dl'nin aramasını ve videonun indirilmesini de taşır, böylece aldıkları bağlantılar aynı adresten kullanılır. <g4>Seçenekler → Proxy / SOCKS</g4> içinde seçilen <g3>Ağ bağdaştırıcısı</g3> ve onun bağlantı kesme anahtarı, her bağlantıyı hala tutar: bir bağdaştırıcı seçildiğinde, hiçbir şey onun etrafından dolaşmaz."
+  },
   "842fc0e6d2b7d24d": {
    "source": "At the start time the queue starts on its own. In the morning, the finished files are under <g1>Finished</g1> in the categories.",
    "text": "Başlangıç saatinde sıra kendiliğinden başlar. Sabah, tamamlanan dosyalar kategorilerdeki <g1>Tamamlandı</g1> altında yer alır."
@@ -9933,6 +9921,10 @@
   "8581b3f6f6759cc7": {
    "source": "Proxy / Socks: no proxy, the system's, or your own.",
    "text": "Ara Sunucu / Socks: proxy kullanmayın, sistemin proxy'sini veya kendi proxy'nizi kullanın."
+  },
+  "8587f400d941af9d": {
+   "source": "<g1>Options → Connection → Site rules...</g1> gives every download from a site (<x2/>) its own User-Agent, extra request headers, number of connections, a browser's way of connecting from the first request, or a proxy: none, or one of its own, so only the sites that need a proxy go through one. A stopped download's <g3>Properties → Connection...</g3> changes its own headers, proxy and connections, and MDM still checks the file is the same one before it goes on.",
+   "text": "<g1>Seçenekler → Bağlantı → Site kuralları...</g1> her siteye (<x2/>) özel Kullanıcı Aracısı, ek istek başlıkları, bağlantı sayısı, ilk isteğin tarayıcıdan bağlanma şekli veya bir proxy (hiçbiri veya kendine ait bir tane) atamanızı sağlar, böylece yalnızca proxy'ye ihtiyaç duyan siteler onu kullanır. Duraklatılmış bir indirmenin <g3>Özellikler → Bağlantı...</g3> ayarları kendi başlıklarını, proxy'sini ve bağlantılarını değiştirir ve MDM devam etmeden önce dosyanın aynı olup olmadığını yine de kontrol eder."
   },
   "85ab2d681187a715": {
    "source": "Not sure yet? <g1>Show it in the discussions</g1> first. The <g2>contributing guide</g2> explains how pull requests work here.",
@@ -11861,6 +11853,10 @@
   "9f782f136a8bb467": {
    "source": "The built-in categories can now be renamed, given other file types, or deleted.",
    "text": "Yerleşik kategoriler artık yeniden adlandırılabilir, farklı dosya türleri atanabilir veya silinebilir."
+  },
+  "9f7cefd031ac2a9a": {
+   "source": "Download a file with up to 8 connections (<x1/>, 1 to 128), showing progress. <x2/> pauses it; <x3/> continues. <x4/> sets the referring page address (Referer header), <x5/> sets the request's User-Agent (then the only one sent; without it, MDM speaks as your default browser, and, when a site's bot check refuses that and the way a browser connects too, once more under its own name), <x6/> sets the Cookie header (a cookie on the command line ends up in the shell's history; <x7/> reads it from standard input instead). <x8/> checks the finished file: hex MD5, SHA-1, SHA-256, SHA-512 or CRC32, optionally named (<x9/>). <x10/> picks the DNS instead of Options': <x11/>; a service and how to ask it, <x12/>, <x13/>, <x14/>, <x15/>, <x16/>; DNS servers' addresses, <x17/>; or a DNS-over-HTTPS address. It never falls back to the system's DNS. <x18/> sends every connection through one network adapter instead of Options' (<x19/> for none), by its name (<x20/>, <x21/>) or one of its addresses; when it isn't connected, nothing is sent and the download fails. <x22/> takes the place of Options' proxy for this run (see above). The app's <g23>site rules</g23> for the address apply too (their headers, User-Agent, browser-like connection, number of connections and proxy), where the command line gives none of the same: <x24/> goes before every rule's proxy. A link from a file host that one of your debrid accounts (<g25>Options → Accounts</g25>) supports goes through that account, as in the app, and <x26/> says <x27/>; <x28/> downloads the address itself (<g29>Debrid service accounts</g29>).",
+   "text": "Bir dosyayı en fazla 8 bağlantıyla (<x1/>, 1 ila 128) indirir, ilerlemeyi gösterir. <x2/> duraklatır; <x3/> devam ettirir. <x4/> yönlendiren sayfa adresini (Referer başlığı) ayarlar, <x5/> isteğin Kullanıcı Aracısı'nı ayarlar (bu durumda yalnızca bu gönderilir; bu olmadan MDM varsayılan tarayıcınız gibi konuşur ve bir sitenin bot kontrolü bunu ve tarayıcının bağlanma şeklini reddettiğinde bir kez daha kendi adıyla konuşur), <x6/> Çerez başlığını ayarlar (komut satırındaki bir çerez kabuğun geçmişine düşer; <x7/> bunun yerine standart girdiden okur). <x8/> bitmiş dosyayı denetler: onaltılık MD5, SHA-1, SHA-256, SHA-512 veya CRC32, isteğe bağlı olarak adlandırılır (<x9/>). <x10/> Seçenekler'in DNS'i yerine şunu seçer: <x11/>; bir hizmet ve ona nasıl sorulacağı, <x12/>, <x13/>, <x14/>, <x15/>, <x16/>; DNS sunucularının adresleri, <x17/>; veya bir DNS-over-HTTPS adresi. Asla sistemin DNS'ine geri dönmez. <x18/> Seçenekler'in yerine (<x19/> hiçbiri için) her bağlantıyı bir ağ bağdaştırıcısı üzerinden, adıyla (<x20/>, <x21/>) veya adreslerinden biriyle gönderir; bağlı değilse hiçbir şey gönderilmez ve indirme başarısız olur. <x22/> bu çalıştırma için Seçenekler'in proxy'sinin yerini alır (yukarıya bakın). Uygulamanın adres için <g23>site kuralları</g23> da geçerlidir (başlıkları, Kullanıcı Aracısı, tarayıcı benzeri bağlantı, bağlantı sayısı ve proxy), komut satırı aynılarından hiçbirini vermediğinde: <x24/> her kuralın proxy'sinden önce gelir. Debrid hesaplarınızdan birinin (<g25>Seçenekler → Hesaplar</g25>) desteklediği bir dosya barındırıcısından gelen bir bağlantı, uygulamadaki gibi o hesap üzerinden gider ve <x26/> <x27/> der; <x28/> adresin kendisini indirir (<g29>Debrid hizmeti hesapları</g29>)."
   },
   "9f93bf61864af099": {
    "source": "Plainly: everyone sharing the same torrent sees your IP address. That is how BitTorrent works, and no setting changes it. To hide it, use a VPN for the whole computer. <g1>Torrents and your security</g1> says what others can see.",
@@ -16742,6 +16738,10 @@
    "source": "How do I report a bug or ask for a feature? — Mister Download Manager",
    "text": "Nasıl hata bildirir veya özellik öneririm? — Mister Download Manager"
   },
+  "e356f60156d8a735": {
+   "source": "<g1>Site rules...</g1> — a User-Agent, request headers, a number of connections, <g2>Always connect the way a browser does</g2> and a proxy (none, or one of its own with its login), by site. See <g3>Site rules</g3>.",
+   "text": "<g1>Site kuralları...</g1> — siteye özel Kullanıcı Aracısı, istek başlıkları, bağlantı sayısı, <g2>Her zaman bir tarayıcı gibi bağlan</g2> ayarı ve bir proxy (yok veya kendi giriş bilgileriyle), siteye göre. Bkz. <g3>Site kuralları</g3>."
+  },
   "e3696cca91bc9263": {
    "source": "A browser fetches a file over one connection. MDM asks the server for several parts of the file at once, up to 32 connections (128 if you allow it), and keeps re-splitting: when a connection finishes its part, it takes over half of the biggest part still left, so no slow connection holds up the end. It also remembers servers that refuse extra connections and stops asking them. See <g1>Connections and speed</g1>.",
    "text": "Tarayıcı, bir dosyayı tek bağlantı üzerinden indirir. MDM ise sunucudan dosyanın birden fazla parçasını aynı anda, en fazla 32 bağlantıyla (izin verirseniz 128 bağlantıyla) ister ve dosyayı yeniden parçalara böler: Bir bağlantı kendi parçasını bitirdiğinde, kalan en büyük parçanın yarısını devralır. Böylece yavaş bir bağlantı indirme işleminin sonunu geciktirmez. MDM ayrıca ek bağlantıları reddeden sunucuları hatırlar ve bu sunuculardan ek bağlantı istemeyi bırakır. <g1>Bağlantılar ve hız</g1> sayfasına bakın."
@@ -17818,10 +17818,6 @@
    "source": "More questions",
    "text": "Daha fazla soru"
   },
-  "f0964936a9646338": {
-   "source": "<g1>Options → Connection → Site rules...</g1> gives every download from a site (<x2/>) its own User-Agent, extra request headers, number of connections, or a browser's way of connecting from the first request. A stopped download's <g3>Properties → Connection...</g3> changes its own headers, proxy and connections, and MDM still checks the file is the same one before it goes on.",
-   "text": "<g1>Seçenekler → Bağlantı → Site kuralları...</g1> bir siteden (<x2/>) yapılan her indirmeye kendi Kullanıcı Aracısı'nı, ek istek başlıklarını, bağlantı sayısını veya bir tarayıcının ilk istekle bağlanma şeklini verir. Durdurulmuş bir indirmenin <g3>Özellikler → Bağlantı...</g3> seçeneği kendi başlıklarını, proxy'sini ve bağlantılarını değiştirir ve MDM devam etmeden önce dosyanın aynı olup olmadığını yine de kontrol eder."
-  },
   "f09a7e7e0cc71c2e": {
    "source": "In the system's keychain, as are Sites Logins' passwords and the proxy's. MDM's settings keep only a reference to it. <g1>Options → Accounts</g1> says where they are on your computer.",
    "text": "Site oturum açma bilgileri ve proxy parolaları gibi, sistemin anahtar zincirinde saklanır. MDM'nin ayarları yalnızca bir referans tutar. <g1>Seçenekler → Hesaplar</g1> bilgisayarınızda nerede olduklarını gösterir."
@@ -17841,6 +17837,10 @@
   "f0f10f730052f164": {
    "source": "<g1>Windows, Mac and Linux</g1><g2>Mister Download Manager</g2>",
    "text": "<g1>Windows, Mac ve Linux</g1><g2>Mister Download Manager</g2>"
+  },
+  "f0ff5ae3081fa8a5": {
+   "source": "<g1>Proxy</g1> — <g2>As in Options</g2> (the default: <g3>Options → Proxy / Socks</g3> decides), <g4>No proxy</g4> (straight to the site, whatever Options says), or <g5>This proxy:</g5> one of its own, typed as a download's own proxy is, <x6/>, <x7/>, <x8/>, <x9/> (<x10/> to have the proxy look the site's name up). <g11>Proxy user</g11> and <g12>Password</g12> are its login, if it needs one; the password is kept with MDM's other passwords (in the system's keychain), never in the settings file as it is. This replaces switching Options back and forth, or writing a proxy auto-config script, when only some sites need a proxy.",
+   "text": "<g1>Proxy</g1> — <g2>Seçeneklerdeki gibi</g2> (varsayılan: <g3>Seçenekler → Proxy / SOCKS</g3> karar verir), <g4>Proxy yok</g4> (Seçenekler ne derse desin doğrudan siteye) veya <g5>Bu proxy:</g5> indirme proxy'si gibi yazılmış kendi proxy'lerinden biri, <x6/>, <x7/>, <x8/>, <x9/> (proxy'nin sitenin adını araması için <x10/>). <g11>Proxy kullanıcı</g11> ve <g12>Parola</g12> gerekiyorsa oturum açma bilgileridir; parola MDM'nin diğer parolalarıyla birlikte (sistemin anahtar zincirinde) saklanır, asla ayarlar dosyasında olduğu gibi tutulmaz. Bu, yalnızca bazı siteler bir proxy'ye ihtiyaç duyduğunda Seçenekleri sürekli değiştirmeyi veya bir proxy otomatik yapılandırma betiği yazmayı ortadan kaldırır."
   },
   "f10113695e758efd": {
    "source": "A playlist's or channel's videos, one line each as they're listed: its place, length, title and address.",
