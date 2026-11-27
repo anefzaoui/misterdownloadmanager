@@ -2682,12 +2682,17 @@ pub(crate) mod sealed {
             use crate::settings::Settings;
             use mdm_engine::CertProblem;
             let mut live = Settings::default();
-            live.allow_cert("nas.local".into(), 8443, "ab".repeat(32), CertProblem::Untrusted);
+            live.allow_cert(
+                "nas.local".into(),
+                8443,
+                "ab".repeat(32),
+                CertProblem::Untrusted,
+            );
             let from = live.clone();
             let mut to = from.clone();
             to.allowed_certs.clear();
             let merged = Settings::merge_changes(&live, &from, &to);
-            assert!(merged.allowed_certs.is_empty(), "{:?}", merged.allowed_certs);
+            assert!(merged.allowed_certs.is_empty());
         }
     }
 }

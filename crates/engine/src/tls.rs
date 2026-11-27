@@ -930,14 +930,14 @@ mod tests {
     #[tokio::test]
     async fn allowed_cert_pins_site_port_and_fingerprint() {
         use mdm_labserver::Cert;
-        for (cert, want_problem, want_self_signed, want_expired) in [
+        for (server, want_problem, want_self_signed, want_expired) in [
             (Cert::SelfSigned, CertProblem::Untrusted, true, false),
             (Cert::Expired, CertProblem::Expired, false, true),
             (Cert::WrongName, CertProblem::WrongName, false, false),
         ] {
             let lab = LabServer::start(Config {
                 tls: true,
-                cert,
+                cert: server,
                 ..Config::default()
             })
             .await
@@ -953,15 +953,15 @@ mod tests {
                 .await
                 .unwrap_err();
             let crate::Error::Certificate(refusal) = err else {
-                panic!("{cert:?}: expected Error::Certificate, got {err:?}");
+                panic!("{server:?}: expected Error::Certificate, got {err:?}");
             };
-            assert_eq!(refusal.problem, want_problem, "{cert:?}");
+            assert_eq!(refusal.problem, want_problem, "{server:?}");
             let info = refusal.info.expect("refused cert info must be recorded");
             assert_eq!(info.host, "localhost");
             assert_eq!(info.port, port);
             assert_eq!(info.sha256.len(), 64);
-            assert_eq!(info.self_signed, want_self_signed, "{cert:?}");
-            assert_eq!(info.expired_since.is_some(), want_expired, "{cert:?}");
+            assert_eq!(info.self_signed, want_self_signed, "{server:?}");
+            assert_eq!(info.expired_since.is_some(), want_expired, "{server:?}");
 
             // Wrong port is still refused.
             let mut wrong_port = base_opts.clone();
@@ -976,7 +976,7 @@ mod tests {
                     crate::probe(url.clone(), reqwest::header::HeaderMap::new(), &wrong_port).await,
                     Err(crate::Error::Certificate(_))
                 ),
-                "{cert:?}: wrong port must still fail"
+                "{server:?}: wrong port must still fail"
             );
 
             // Wrong fingerprint is still refused.
@@ -992,7 +992,7 @@ mod tests {
                     crate::probe(url.clone(), reqwest::header::HeaderMap::new(), &wrong_fp).await,
                     Err(crate::Error::Certificate(_))
                 ),
-                "{cert:?}: wrong fingerprint must still fail"
+                "{server:?}: wrong fingerprint must still fail"
             );
 
             // Different problem for the same cert is still refused.
@@ -1018,7 +1018,7 @@ mod tests {
                     .await,
                     Err(crate::Error::Certificate(_))
                 ),
-                "{cert:?}: different problem must still fail"
+                "{server:?}: different problem must still fail"
             );
 
             // Matching (host, port, sha256, problem) succeeds.

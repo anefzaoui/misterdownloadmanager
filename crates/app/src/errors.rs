@@ -753,7 +753,7 @@ mod tests {
                 self_signed: false,
             })),
         }));
-        assert!(expired.contains("2021-05-25"), "{expired}");
+        assert!(expired.contains("2021-05-25"));
 
         let self_signed = describe(&Error::Certificate(CertRefusal {
             problem: P::Untrusted,
@@ -766,7 +766,7 @@ mod tests {
                 self_signed: true,
             })),
         }));
-        assert!(self_signed.contains("self-signed"), "{self_signed}");
+        assert!(self_signed.contains("self-signed"));
     }
 
     /// #816: a helper that couldn't be downloaded names the server and why, and says what to do.
