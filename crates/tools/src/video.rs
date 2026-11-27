@@ -2154,8 +2154,6 @@ fn add_audio_cover(
             "copy",
             "-c:v",
             "mjpeg",
-            "-frames:v",
-            "1",
             "-disposition:v:0",
             "attached_pic",
             "-metadata:s:v:0",
