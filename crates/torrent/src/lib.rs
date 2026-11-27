@@ -3,6 +3,7 @@
 //! person chose, then watch it (stats, peers, trackers, pieces), pause, resume and remove it.
 //! Torrents are named by their info hash (40 hex digits), which the app keeps in its own list.
 
+use librqbit::storage::filesystem::open_files::OpenFiles;
 use std::collections::HashSet;
 use std::net::{Ipv4Addr, SocketAddr};
 use std::num::NonZeroU32;
@@ -564,6 +565,9 @@ pub struct Swarm {
 pub struct Config {
     /// App storage must use ownership-checked handles, including restored sessions.
     pub require_authorization: bool,
+    /// How many of the torrents' files may be open at once, in a budget of this session's
+    /// own; None (the app): the process's budget, sized from the system's limit.
+    pub open_files: Option<usize>,
     /// Where librqbit keeps its resume data and DHT nodes (in our data folder, portable-aware).
     pub state_dir: PathBuf,
     /// Accept connections from peers (better speed; Windows may ask about the firewall once).
@@ -634,6 +638,7 @@ impl Config {
             // Storage opens only the files MDM hands over; a session that has no grant to give
             // (the command line's throwaway one, the examples) turns this off itself.
             require_authorization: true,
+            open_files: None,
             state_dir,
             listen: true,
             upnp: true,
@@ -724,6 +729,8 @@ pub struct Torrents {
     /// Torrents being added again with their pieces kept ([`Torrents::readd`]): they read as
     /// before until the session has them back. Shared with `watch`'s thread.
     readding: Arc<Readding>,
+    /// The open files of the torrents count in this ([`Config::open_files`]).
+    budget: &'static OpenFiles,
 }
 
 pub(crate) type Handle = Arc<librqbit::ManagedTorrent>;
@@ -983,6 +990,12 @@ impl Torrents {
         // (`seen_files`, `files_from_bytes`) before a torrent's storage first asks for them.
         rename_plugin::load_into_memory(&cfg.state_dir.join("session"));
         let proxied = cfg.proxy.is_some();
+        // The torrents' files are opened when used, at most so many at once (#484, #525).
+        let budget: &'static OpenFiles = match cfg.open_files {
+            // Tests: a budget of the session's own, kept for the process's life.
+            Some(max) => Box::leak(Box::new(OpenFiles::new(max))),
+            None => librqbit::storage::filesystem::open_files::global(),
+        };
         let v4_only = cfg.bind.as_ref().is_some_and(Bind::v4_only);
         let bind_ip = match &cfg.bind {
             Some(Bind::Address(ip)) => Some(*ip),
@@ -1047,6 +1060,7 @@ impl Torrents {
             default_storage_factory: Some(rename_plugin::storage_factory(
                 cfg.state_dir.join("session"),
                 cfg.require_authorization,
+                budget,
             )),
             persistence: Some(SessionPersistenceConfig::Json {
                 folder: Some(cfg.state_dir.join("session")),
@@ -1175,7 +1189,13 @@ impl Torrents {
             watch,
             pause_after_check: Default::default(),
             readding,
+            budget,
         })
+    }
+
+    /// How many of the torrents' files are open now (its budget's count).
+    pub fn open_files(&self) -> usize {
+        self.budget.open_count()
     }
 
     /// The file list, without downloading. A magnet asks the swarm, for at most `wait`; how
@@ -3648,6 +3668,7 @@ mod tests {
             authorized_storage::Prepared {
                 files: vec![make(ib)],
                 parted: vec![ia, ic],
+                ..Default::default()
             },
             Arc::new(|| Err(std::io::ErrorKind::PermissionDenied.into())),
         );
@@ -3684,6 +3705,7 @@ mod tests {
             authorized_storage::Prepared {
                 files: vec![make(ib), make(ic)],
                 parted: vec![ia],
+                ..Default::default()
             },
             Arc::new(|| Err(std::io::ErrorKind::PermissionDenied.into())),
         );
@@ -3712,6 +3734,189 @@ mod tests {
         authorized_storage::forget(&session, &h2);
         seeder.stop().await;
         leecher.stop().await;
+    }
+
+    /// A torrent of 2,000 small files (up to 1000 bytes), all ticked, handed over as the app does (a few open, the
+    /// others checked and closed, given again one by one by `open_one`), in a session whose
+    /// budget is 24 open files: never more than 24 open (Linux: the process's descriptors into
+    /// the folder agree), nothing open while it is paused, and every file whole at the end.
+    #[tokio::test(flavor = "multi_thread", worker_threads = 4)]
+    async fn a_torrent_of_many_files_keeps_few_open() {
+        const MAX: usize = 24;
+        let tmp = tempfile::tempdir().unwrap();
+        let src = tmp.path().join("seed").join("set");
+        let files: Vec<(PathBuf, Vec<u8>)> = (0..2000usize)
+            .map(|i| {
+                (
+                    PathBuf::from(format!("d{:02}", i % 40)).join(format!("f{i:04}.bin")),
+                    (0..1 + (i * 37) % 1000).map(|j| (i + j) as u8).collect(),
+                )
+            })
+            .collect();
+        for (p, b) in &files {
+            let p = src.join(p);
+            std::fs::create_dir_all(p.parent().unwrap()).unwrap();
+            std::fs::write(p, b).unwrap();
+        }
+        let torrent = make_torrent(&src).await;
+        let mut seeding = offline(&tmp.path().join("s1"));
+        seeding.open_files = Some(MAX);
+        let seeder = Torrents::start(seeding).await.unwrap();
+        let meta = seeder
+            .metadata(
+                &Source::File(torrent.clone()),
+                Duration::from_secs(10),
+                None,
+            )
+            .await
+            .unwrap();
+        let hash = seeder
+            .add(&torrent, &src, None, Vec::new(), false)
+            .await
+            .unwrap();
+        wait_for(&seeder, &hash, "checked", 60, |s| {
+            s.phase == Phase::Finished
+        })
+        .await;
+        assert!(seeder.open_files() <= MAX, "{}", seeder.open_files());
+        // About 1 MB at 128 KiB/s, some 8 s: paused a third of the way, well before the end
+        // even if the limit lets a second's worth through at once.
+        seeder.set_upload_limit(Some(128 * 1024));
+        let addr = seeder.listen_addr().expect("seeder listens");
+
+        let mut config = offline(&tmp.path().join("s2"));
+        config.require_authorization = true;
+        config.open_files = Some(MAX);
+        let session = config.state_dir.join("session");
+        let leecher = Torrents::start(config).await.unwrap();
+        let out = meta.folder_in(&tmp.path().join("got"));
+        // As `prepare_for`: every ticked file made, the first few handed over open.
+        let mut prepared = authorized_storage::Prepared::default();
+        for (index, f) in meta.files.iter().enumerate() {
+            let path = out.join(&f.path);
+            std::fs::create_dir_all(path.parent().unwrap()).unwrap();
+            let file = std::fs::OpenOptions::new()
+                .read(true)
+                .write(true)
+                .create_new(true)
+                .open(&path)
+                .unwrap();
+            if index < 8 {
+                prepared
+                    .files
+                    .push(authorized_storage::PreparedFile { index, path, file });
+            } else {
+                prepared.later.push(authorized_storage::LaterFile {
+                    index,
+                    path,
+                    identity: [0; 5],
+                });
+            }
+        }
+        let (out2, meta2) = (out.clone(), meta.clone());
+        let given = Arc::new(AtomicUsize::new(0));
+        let given2 = given.clone();
+        let open_one: authorized_storage::OpenOne = Arc::new(move |index| {
+            // Opened again where it is, never made.
+            given2.fetch_add(1, Ordering::Relaxed);
+            let path = out2.join(&meta2.files[index].path);
+            let file = std::fs::OpenOptions::new()
+                .read(true)
+                .write(true)
+                .open(&path)?;
+            Ok(authorized_storage::PreparedFile { index, path, file })
+        });
+        authorized_storage::authorize_lazily(
+            &session,
+            &meta.info_hash,
+            &out,
+            prepared,
+            Arc::new(|| Err(std::io::ErrorKind::PermissionDenied.into())),
+            open_one,
+        );
+        let h2 = leecher
+            .add(&torrent, &out, None, vec![addr], false)
+            .await
+            .unwrap();
+        let (mut most, mut most_fds) = (0, 0);
+        let sample = |most: &mut usize, most_fds: &mut usize| {
+            *most = (*most).max(leecher.open_files());
+            *most_fds = (*most_fds).max(fds_under(&out).unwrap_or(0));
+        };
+        let deadline = std::time::Instant::now() + Duration::from_secs(60);
+        loop {
+            sample(&mut most, &mut most_fds);
+            let s = leecher.stats(&h2).unwrap();
+            if s.done * 3 >= s.total && s.phase == Phase::Downloading {
+                break;
+            }
+            assert!(
+                s.phase != Phase::Finished,
+                "finished before the pause: {s:?}"
+            );
+            assert!(std::time::Instant::now() < deadline, "no transfer: {s:?}");
+            tokio::time::sleep(Duration::from_millis(5)).await;
+        }
+        leecher.pause(&h2).await.unwrap();
+        assert_eq!(leecher.open_files(), 0, "a paused torrent holds no file");
+        assert_eq!(fds_under(&out).unwrap_or(0), 0);
+
+        // Started again with no new grant (a Start that found nothing changed): each file is
+        // given again when it is first used.
+        leecher.resume(&h2).await.unwrap();
+        let deadline = std::time::Instant::now() + Duration::from_secs(120);
+        loop {
+            sample(&mut most, &mut most_fds);
+            let s = leecher.stats(&h2).unwrap();
+            if s.phase == Phase::Finished {
+                break;
+            }
+            assert!(std::time::Instant::now() < deadline, "not finished: {s:?}");
+            tokio::time::sleep(Duration::from_millis(5)).await;
+        }
+        assert!(most > 0 && most <= MAX, "at most {MAX} open, saw {most}");
+        assert!(most_fds <= MAX, "descriptors into the folder: {most_fds}");
+        assert!(
+            given.load(Ordering::Relaxed) >= files.len() - 8,
+            "every file handed over closed was given again"
+        );
+        for (p, b) in &files {
+            assert_eq!(&std::fs::read(out.join(p)).unwrap(), b, "{p:?}");
+        }
+        leecher.remove(&h2, false).await.unwrap();
+        authorized_storage::forget(&session, &h2);
+        seeder.stop().await;
+        leecher.stop().await;
+    }
+
+    /// Linux: how many of the process's descriptors are files under `dir`. Only those in two
+    /// listings of `/proc/self/fd` in a row: one listing isn't taken at one instant, and counts
+    /// a file closed and another opened while it is read.
+    fn fds_under(dir: &Path) -> Option<usize> {
+        #[cfg(target_os = "linux")]
+        {
+            let dir = std::fs::canonicalize(dir).ok()?;
+            let listing = || -> Option<std::collections::HashSet<(std::ffi::OsString, std::path::PathBuf)>> {
+                Some(
+                    std::fs::read_dir("/proc/self/fd")
+                        .ok()?
+                        .filter_map(|e| {
+                            let e = e.ok()?;
+                            let to = std::fs::read_link(e.path()).ok()?;
+                            to.starts_with(&dir).then(|| (e.file_name(), to))
+                        })
+                        .collect(),
+                )
+            };
+            let first = listing()?;
+            let second = listing()?;
+            Some(first.intersection(&second).count())
+        }
+        #[cfg(not(target_os = "linux"))]
+        {
+            let _ = dir;
+            None
+        }
     }
 
     /// Ticking and unticking while it downloads (the app's Files tab: the ticked file is made,
@@ -3794,6 +3999,7 @@ mod tests {
             authorized_storage::Prepared {
                 files: vec![make(ib), make(id)],
                 parted: vec![ia, ic],
+                ..Default::default()
             },
             no_reopen(),
         );
@@ -3824,6 +4030,7 @@ mod tests {
             authorized_storage::Prepared {
                 files: vec![make(ib), make(ic), make(id)],
                 parted: vec![ia],
+                ..Default::default()
             },
             no_reopen(),
         );
@@ -4202,6 +4409,7 @@ mod tests {
             authorized_storage::Prepared {
                 files: vec![make(ib)],
                 parted: vec![ia, ic],
+                ..Default::default()
             },
             Arc::new(|| Err(std::io::ErrorKind::PermissionDenied.into())),
         );
@@ -4233,6 +4441,7 @@ mod tests {
             authorized_storage::Prepared {
                 files: vec![make(ib), make(ic)],
                 parted: vec![ia],
+                ..Default::default()
             },
             Arc::new(|| Err(std::io::ErrorKind::PermissionDenied.into())),
         );

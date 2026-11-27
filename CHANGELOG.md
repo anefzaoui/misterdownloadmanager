@@ -154,6 +154,17 @@ These changes come in version 0.6.0.
   again and its pieces downloaded again, as before, and never written into as though it still
   held them. A finished file being shared is held read-only on Windows, so other programs can
   read, copy, run, move, rename or delete it while it is shared.
+- Torrents: files you didn't tick are no longer created on disk; big torrents keep fewer files
+  open. The BitTorrent engine made every file of a torrent, ticked or not, as soon as it was
+  added (`misterdownloadmanager-cli torrent-get --files` left the unticked ones in the folder,
+  empty), and held every file open for as long as the torrent ran: thousands of handles for a
+  torrent of thousands of files, and on macOS, whose limit is 256 by default, such a torrent
+  failed with "Too many open files". A file is now made when its first byte is written (an
+  unticked file only for the bytes of a piece it shares with a ticked one; in the app those go to
+  MDM's own torrent data, as before), and the torrents' files are opened when they are read or
+  written, a few hundred at most for the whole of MDM (fewer where the system allows fewer); the
+  one used least recently is written to disk and closed to open another. The app checks a file
+  it opens again this way as it does at Start: it must be the very file MDM handed the engine.
 - Torrents: a paused torrent's finished pieces are saved before MDM quits. The pause saved them
   in the background, so quitting right after a pause (and quitting MDM, which pauses every
   torrent) could lose the pieces finished since the last save, and they were downloaded again.

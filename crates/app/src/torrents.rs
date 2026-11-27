@@ -1610,14 +1610,31 @@ async fn prepare_storage_as(
                     data.clone(),
                     spec.files.clone(),
                 );
-                let now = crate::torrent_ownership::identities(&prepared.files);
+                let now = crate::torrent_ownership::identities_of(&prepared);
                 let swapped = held()
                     .lock()
                     .unwrap()
                     .insert(spec.hash.clone(), now.clone())
                     .is_some_and(|was| crate::torrent_ownership::swapped(&was, &now));
                 let hash = spec.hash.clone();
-                mdm_torrent::authorized_storage::authorize_parted(
+                // A file the engine closed to stay within its budget of open files (or was
+                // handed closed) is given again as at Start, and only if it is the very object
+                // it was handed (`held`).
+                let open_one: mdm_torrent::authorized_storage::OpenOne = {
+                    let (owner, folder, dest, hash) = (
+                        owner.clone(),
+                        spec.folder.clone(),
+                        dest.to_owned(),
+                        spec.hash.clone(),
+                    );
+                    Arc::new(move |index| {
+                        let want = held().lock().unwrap().get(&hash).and_then(|ids| {
+                            ids.iter().find(|(i, _)| *i == index).map(|(_, id)| *id)
+                        });
+                        owner.open_one(&folder, &dest, index, want)
+                    })
+                };
+                mdm_torrent::authorized_storage::authorize_lazily(
                     &data.join("session"),
                     &spec.hash,
                     &spec.folder,
@@ -1635,10 +1652,11 @@ async fn prepare_storage_as(
                         )?;
                         held().lock().unwrap().insert(
                             hash.clone(),
-                            crate::torrent_ownership::identities(&prepared.files),
+                            crate::torrent_ownership::identities_of(&prepared),
                         );
                         Ok(prepared)
                     }),
+                    open_one,
                 );
                 return Ok(swapped);
             }
