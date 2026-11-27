@@ -1000,13 +1000,17 @@ pub fn show(
             egui::vec2(rr - cl, row_h()),
         ));
         rows_ui.interact(bounds, row_id(idx), egui::Sense::hover());
+        // The Size column pads its unit for the columns' looks ("200.00  MB"); said, the size
+        // has one space — and the status can be a size too (a download with no known total)
+        // (#1407). The name is the user's and is never touched.
         let spoken = [0usize, 3, 2]
             .iter()
             .map(|c| match &row.status_whole {
-                Some(whole) if *c == 3 => whole.as_str(),
-                _ => row.cells[*c].as_str(),
+                Some(whole) if *c == 3 => whole.clone(),
+                _ if *c == 3 || *c == 2 => row.cells[*c].replacen("  ", " ", 1),
+                _ => row.cells[*c].clone(),
             })
-            .chain(row.private.as_deref())
+            .chain(row.private.clone())
             .filter(|t| !t.is_empty())
             .collect::<Vec<_>>()
             .join(", ");
@@ -2267,7 +2271,8 @@ mod tests {
                 queued: false,
                 cells: std::array::from_fn(|c| match c {
                     0 => format!("file-{i}.zip"),
-                    2 => "1.00 MB".to_owned(),
+                    2 => "1.00  MB".to_owned(),
+                    STATUS if i == 2 => "1.25  MB".to_owned(),
                     STATUS => "Complete".to_owned(),
                     _ => String::new(),
                 }),
@@ -2327,7 +2332,8 @@ mod tests {
         };
         let row_id = |i: usize| egui::Id::unique(("download-row", i)).accesskit_id();
         let mut st = ListState::default();
-        // The list has the keys from the start: its focused row is said.
+        // The list has the keys from the start: its focused row is said. The Size column's
+        // unit padding is the columns' looks; said, the size has one space (#1407).
         let (_, u) = pass(&mut st, Some(1), vec![]);
         assert_eq!(
             said(&u),
@@ -2336,6 +2342,9 @@ mod tests {
                 "file-1.zip, Complete, 1.00 MB".to_owned()
             )
         );
+        // A download with no known total carries its size in the status: one space there too.
+        let (_, u) = pass(&mut st, Some(2), vec![]);
+        assert_eq!(said(&u).1, "file-2.zip, 1.25 MB, 1.00 MB".to_owned());
         let focusable = |role| {
             u.nodes
                 .iter()
