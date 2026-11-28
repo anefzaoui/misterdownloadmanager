@@ -71,7 +71,7 @@ pub(crate) struct Browser {
     /// The download's cookie jar (#1540, `Options::cookie_jar`): each request's cookies come
     /// from it, and each answer's go into it, as on MDM's own connection.
     #[cfg_attr(not(feature = "browser-connection"), allow(dead_code))]
-    jar: Option<Arc<crate::cookies::CookieJar>>,
+    jar: Option<std::sync::Arc<crate::cookies::CookieJar>>,
 }
 
 /// One connection of a [`Browser`], taken for one request and its answer: the lowest number no
