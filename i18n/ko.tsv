@@ -191,6 +191,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{package}: {n} file left out, its name would lead out of its folder|{package}: {n} files left out, their names would lead out of its folder	{package}: 파일 이름이 폴더 밖을 가리키는 파일 {n}개 제외
+#. count in the Link grabber window
+#. Link grabber's Source line: a Google Drive folder's ({package}: its name) items that aren't files to download (Google Forms, shortcuts, Google Sites) are left out; {n} how many
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{package}: {n} item left out, a Google Form, shortcut or Site isn't a file|{package}: {n} items left out, Google Forms, shortcuts and Sites aren't files	{package}: 파일이 아닌 Google Forms, 바로가기, Google 사이트 등의 항목 {n}개가 제외되었습니다.
 #. count in cnl.rs
 #. Click'n'Load window: {site} is a web site's name such as "example.com"
 #. {site} = a web site's name such as "example.com"; {n} = a number (keep the braces as they are)
@@ -392,6 +397,10 @@
 #. why a split archive (in several files, its volumes) isn't tested yet, in "{name} isn't complete ({why})": one of its files isn't downloaded yet
 #, machine
 	a volume of it isn't there yet	볼륨이 아직 없습니다.
+#. text in the Download video window
+#. why the thumbnail-as-cover checkbox is greyed in Download video: the choice is the site's sound in a WebM file, which can't hold a picture
+#, machine
+	A WebM file can't hold a cover: choose M4A, MP3, Opus or FLAC	WebM 파일은 표지를 포함할 수 없습니다. M4A, MP3, Opus 또는 FLAC을 선택하세요.
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	About Mister Download Manager	Mister Download Manager 정보
@@ -680,6 +689,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	American Samoa	아메리칸사모아
+#. text in extension.rs
+#. a check of Test browser integration (Windows), one short line: an older registry entry for MDM's helper is in the way of the right one; the entry and where it leads show on the line under it
+#, machine
+	An older registry entry is in the way:	이전 레지스트리 항목이 올바른 항목을 방해합니다:
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -1143,6 +1156,11 @@
 #. event log entry after Recheck: {have} and {total} are sizes ("1.2 GB of 4 GB there")
 #, machine
 	Checked: {have} of {total} there	확인됨: {total} 중 {have} 있음
+#. text in softgl.rs
+#. the software renderer's window: the download is done, and its files are being checked and unpacked
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Checking and unpacking Mesa's software renderer...	Mesa 소프트웨어 렌더러 확인 및 압축 해제 중...
 #. message or event log entry in the main window
 #. event log entry: a torrent's files are being read and checked again (Recheck)
 #, machine
@@ -1177,6 +1195,10 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Checking...	확인 중...
+#. text in the download list (sizes, speeds, status)
+#. a download's status: it finished, but the checksum its server announced didn't match its file (the file is kept). Short: the list's Status column is narrow
+#, machine
+	Checksum warning	체크섬 경고
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -1775,6 +1797,11 @@
 #. {size} = a file size such as "4.2 MB"; {bytes} = a number of bytes (keep the braces as they are)
 #, machine
 	Downloaded {size} ({bytes} Bytes)	{size} ({bytes}바이트) 다운로드됨
+#. text in the download list (sizes, speeds, status)
+#. a download's status, whole (the Status cell's tip, Properties, the log, Download complete): it finished, but the checksum its server announced didn't match the file, which is kept. "Check it": the user can verify the file against a checksum they trust (right-click → Verify checksum...)
+#. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
+#, machine
+	Downloaded, but the server's {algorithm} checksum didn't match; the file may still be fine. Check it if it matters	다운로드는 완료되었지만 서버에서 알린 {algorithm} 체크섬과 일치하지 않습니다. 파일은 정상일 수도 있습니다. 중요한 파일이라면 확인하세요.
 #. item in the Categories tree in the download list; value in a column's filter list in the download list; text in remote.rs
 #. a download's status (state it is in, not a command)
 #, machine
@@ -1807,6 +1834,11 @@
 #. Helpers: MDM's own copy of a helper is being downloaded (where there was none, or in place of the system's); {percent} = how far, a number
 #, machine
 	Downloading MDM's own copy... {percent}%	MDM 자체 복사본 다운로드 중... {percent}%
+#. text in softgl.rs
+#. the software renderer's window, while it downloads; {done} and {size} = sizes (12.0 MB of 66.3 MB)
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	Downloading Mesa's software renderer: {done} of {size}	Mesa 소프트웨어 렌더러 다운로드 중: {size} 중 {done}
 #. text in archtest.rs
 #. in a download's log: after its archive test found damaged files, only their bytes are downloaded again from the same server; {size} like "1.20 MB"
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
@@ -1898,6 +1930,10 @@
 #. Link grabber, in the empty "Save to" box: each file goes to its category's folder (Options → Save to)
 #, machine
 	Each file's category folder	각 파일의 범주 폴더
+#. text in the Options window
+#. Options → Regional → Videos' sound: the first choice, each video's own sound (the language it was made in), the default
+#, machine
+	Each video's original	각 비디오의 원본
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2308,6 +2344,10 @@
 #. {address} = an example web address with a * in the file name
 #, machine
 	For example:  {address}	예: {address}
+#. text in the Options window
+#. Options → Regional → Videos' sound: a note under the language list
+#, machine
+	For videos whose sound comes in several languages (dubbed ones), and playlists. A video without it keeps its original sound.	여러 언어의 음성이 제공되는 더빙 동영상과 재생 목록에 적용됩니다. 해당 음성이 없는 동영상은 원본 음성을 유지합니다.
 #. text in the Add torrent window
 #. Torrent settings, under the switch that makes MDM open magnet links and .torrent files (macOS, Linux)
 #, machine
@@ -3158,6 +3198,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Looking the page up...	페이지를 찾는 중...
+#. text in softgl.rs
+#. the software renderer's window: while MDM reads its signed list of the software renderers it may download (Mesa's llvmpipe: it draws MDM's windows where there is no graphics card)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Looking up Mesa's software renderer...	Mesa 소프트웨어 렌더러 조회 중...
 #. text in preview.rs
 #. the preview pane: still looking whether the file is there
 #. the trailing ... means it is still going on: keep it
@@ -3326,6 +3371,9 @@
 #. Video helpers: MDM can't download Node.js on this system (an unusual processor); Node.js and Deno are program names; "Use another program" is the button below
 #, machine
 	MDM has no copy for this system: install Node.js or Deno, or use another program	MDM에 이 시스템용 복사본이 없습니다: Node.js 또는 Deno를 설치하거나 다른 프로그램을 사용하세요.
+#. text in softgl.rs
+#, machine
+	MDM has no data folder	MDM에 데이터 폴더가 없습니다.
 #. text in remote.rs
 #. remote control page (on a phone): no pairing code is shown in MDM; "Pair a device" is MDM's button
 #, machine
@@ -3351,6 +3399,27 @@
 #. error installing ffmpeg: the list of builds MDM accepts doesn't carry MDM's own signature
 #, machine
 	MDM's list of checked ffmpeg builds isn't signed by MDM's key, so ffmpeg wasn't installed	MDM의 확인된 ffmpeg 빌드 목록이 MDM 키로 서명되지 않아 ffmpeg를 설치하지 않았습니다.
+#. text in errors.rs
+#. error installing Mesa's software renderer: the list of builds MDM accepts couldn't be read; {detail} = the technical detail, in English
+#, machine
+	MDM's list of checked software renderers can't be read ({detail})	MDM에서 확인한 소프트웨어 렌더러 목록을 읽을 수 없습니다({detail}).
+#. text in errors.rs
+#. error installing Mesa's software renderer (it draws MDM's windows where there is no graphics card): MDM installs only builds named in a list it publishes, signed with its key, and that list couldn't be downloaded; {error} = why
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	MDM's list of checked software renderers could not be downloaded: {error}	MDM에서 확인한 소프트웨어 렌더러 목록을 다운로드할 수 없습니다: {error}
+#. text in errors.rs
+#. error installing Mesa's software renderer: the list of builds MDM accepts has none for this computer's system and processor
+#, machine
+	MDM's list of checked software renderers has none for this computer	MDM에서 확인한 소프트웨어 렌더러 목록에 이 컴퓨터에 맞는 항목이 없습니다.
+#. text in errors.rs
+#. error installing Mesa's software renderer: the list of builds MDM accepts is older than one this copy of MDM already used (it never goes back to an older list)
+#, machine
+	MDM's list of checked software renderers is older than one already used, so nothing was installed	MDM에서 확인한 소프트웨어 렌더러 목록이 이미 사용된 목록보다 오래되어 아무것도 설치되지 않았습니다.
+#. text in errors.rs
+#. error installing Mesa's software renderer: the list of builds MDM accepts doesn't carry MDM's own signature
+#, machine
+	MDM's list of checked software renderers isn't signed by MDM's key, so nothing was installed	MDM에서 확인한 소프트웨어 렌더러 목록이 MDM 키로 서명되지 않아 아무것도 설치되지 않았습니다.
 #. text in whereis.rs
 #. how far a download's server is, by its round trip (60 to 150 ms)
 #, machine
@@ -3368,6 +3437,14 @@
 #. a video's status while its picture and sound are joined into one file (ffmpeg); {percent} how far, e.g. "45%"
 #, machine
 	Merging... ({percent})	병합 중... ({percent})
+#. text in softgl.rs
+#. the software renderer's window: the download or its check failed; {reason} = why, a sentence's part
+#, machine
+	Mesa's software renderer couldn't be installed: {reason}	Mesa 소프트웨어 렌더러를 설치할 수 없습니다: {reason}
+#. text in softgl.rs
+#. the software renderer's window, once Mesa's llvmpipe is downloaded and checked
+#, machine
+	Mesa's software renderer is installed. MDM draws with it from its next start.	Mesa 소프트웨어 렌더러가 설치되었습니다. 다음 시작부터 MDM이 이를 사용하여 그립니다.
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3627,6 +3704,10 @@
 #. Link grabber, a link's status: the server wants a login (401, 403)
 #, machine
 	Needs a login	로그인이 필요합니다.
+#. text in the Link grabber window
+#. Link grabber, a link's status: a Google Drive folder that isn't shared with everyone needs the browser's Google sign-in. The sentence is the cell's hover tip
+#, machine
+	Needs a sign-in	로그인 필요
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3787,6 +3868,11 @@
 #. text in a dialog box
 #, machine
 	No goes back, to choose another folder.	아니요를 선택하면 이전으로 돌아가 다른 폴더를 선택합니다.
+#. text in softgl.rs
+#. the software renderer's window, offered once at a start where Windows' own software renderer (WARP, keep the name) draws MDM because no graphics card has a driver for it; llvmpipe (keep the name) is Mesa's software renderer; {size} = its download's size (e.g. 66.3 MB)
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	No graphics card here has a driver MDM can draw with, so Windows' software renderer (WARP) draws its windows and keeps the processor busy. Mesa's software renderer (llvmpipe) draws them with far less. Download it once ({size}, from Mesa's builds on GitHub)? MDM draws with it from its next start.	여기에 MDM이 그릴 수 있는 드라이버가 있는 그래픽 카드가 없어 Windows 소프트웨어 렌더러(WARP)가 창을 그리고 프로세서를 계속 사용합니다. Mesa 소프트웨어 렌더러(llvmpipe)는 훨씬 적은 리소스로 창을 그립니다. 한 번 다운로드하시겠습니까({size}, GitHub의 Mesa 빌드에서)? MDM은 다음 시작부터 이를 사용하여 그립니다.
 #. tooltip (why a control is greyed) in langpick.rs
 #. tooltip of the greyed OK button in the language picker
 #, machine
@@ -4089,6 +4175,10 @@
 #. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer's wake alarm can be set by an administrator only
 #, machine
 	Only an administrator can allow this	관리자만 허용할 수 있습니다.
+#. text in the Download video window
+#. why the thumbnail-as-cover checkbox is greyed in Download video: the choice is a video, which is saved as it is
+#, machine
+	Only an audio file gets a cover: a video is saved as it is	오디오 파일만 표지를 가질 수 있습니다. 비디오는 있는 그대로 저장됩니다.
 #. tooltip (why a control is greyed) in the Download video window
 #. why "Put them into the video" is greyed: the chosen file type can't hold subtitles
 #, machine
@@ -4438,6 +4528,10 @@
 #. why Batch download's OK is greyed
 #, machine
 	Put a * in the address where the numbers or letters go	숫자나 문자가 들어갈 주소에 *를 넣으세요.
+#. text in the Download video window
+#. checkbox in Download video: the picture the site shows for the video (its thumbnail) goes into an audio-only download (MP3, M4A, Opus, FLAC) as its cover, which music players show
+#, machine
+	Put the video's thumbnail in the audio file as its cover	비디오 썸네일을 오디오 파일에 표지로 넣기
 #. checkbox in the Download video window
 #. checkbox in Download video: subtitles go inside the video file instead of a separate .srt file beside it
 #, machine
@@ -5164,6 +5258,10 @@
 #. button in the Download complete window: opens a menu of how long no Download complete window shows (30 minutes, 1 hour...)
 #, machine
 	Snooze	다시 알림
+#. text in softgl.rs
+#. the window's title: Mesa's software renderer, offered where no graphics card draws MDM's windows
+#, machine
+	Software renderer	소프트웨어 렌더러
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -5183,9 +5281,17 @@
 #. text in a dialog box
 #, machine
 	Some of the torrent's files are already in this folder:	일부 토렌트 파일이 이미 이 폴더에 있습니다:
+#. text in the Download video window
+#. label in Download video before the list of the languages a video's sound comes in (its original and the dubbed ones)
+#, machine
+	Sound	사운드
 #. text in the Options window
 #, machine
 	Sound file	사운드 파일
+#. text in the Options window
+#. Options → Regional → Videos' sound: label before the list of languages
+#, machine
+	Sound language:	사운드 언어:
 #. page title in the Options window
 #, machine
 	Sound settings	사운드 설정
@@ -5603,6 +5709,10 @@
 #. a check of Test browser integration: the browsers find MDM's helper program
 #, machine
 	The browsers can find Mister Download Manager	브라우저가 Mister Download Manager을(를) 찾을 수 있습니다.
+#. text in extension.rs
+#. under "An older registry entry is in the way" (Test browser integration, Windows): the entry is in the part of the registry 32-bit programs use, which the browsers read before the right entry; it leads to another copy of MDM or to one that was deleted; then what the Set it up button does about it
+#, machine
+	The browsers read it before the right one, and it leads to another copy of Mister Download Manager or to one that is gone. Set it up gives your account an entry of its own, which the browsers read first.	브라우저가 올바른 항목보다 먼저 이 항목을 읽으며, 이 항목은 다른 Mister Download Manager 복사본 또는 사라진 복사본으로 연결됩니다. 설정 버튼을 누르면 브라우저가 먼저 읽는 사용자 계정의 자체 항목이 생성됩니다.
 #. text in the Options window
 #. Options → Remote → Status: the settings were changed; they apply on OK
 #, machine
@@ -5711,6 +5821,10 @@
 #. text in errors.rs
 #, machine
 	the downloaded program doesn't match its signed checksum	다운로드한 프로그램이 서명된 체크섬과 일치하지 않습니다.
+#. text in errors.rs
+#. error installing Mesa's software renderer: a file downloaded isn't the one named in the list of builds MDM accepts (its checksum differs), so it was thrown away
+#, machine
+	the downloaded software renderer isn't the build MDM's list of checked builds names, so it wasn't installed	다운로드한 소프트웨어 렌더러가 MDM의 확인된 빌드 목록에 있는 빌드가 아니므로 설치되지 않았습니다.
 #. message or event log entry in the main window
 #. in the empty download list, under its title
 #, machine
@@ -6169,6 +6283,10 @@
 #. a download's error: a Google Drive file that isn't shared with everyone
 #, machine
 	this Google Drive file needs you to sign in: sign in to Google in your browser, then download it from there	이 Google Drive 파일에 로그인해야 합니다. 브라우저에서 Google에 로그인한 다음 거기에서 다운로드하세요.
+#. text in the Link grabber window
+#. Link grabber, the hover tip of a Google Drive folder's status: the folder isn't shared with everyone; how to send it with the browser's sign-in (the browser's right-click command, keep its name as the browser extension shows it)
+#, machine
+	This Google Drive folder needs you to sign in: sign in to Google in your browser, then right-click the folder's link there and choose Download with Mister Download Manager.	이 Google Drive 폴더는 로그인이 필요합니다. 브라우저에서 Google에 로그인한 다음, 폴더 링크를 마우스 오른쪽 버튼으로 클릭하고 Mister Download Manager으로(으로) 다운로드를 선택하세요.
 #. text in errors.rs
 #. a download's error: the address is a Google Drive folder, which isn't one file
 #, machine
@@ -6834,6 +6952,10 @@
 #. what a screen reader calls the list of a playlist's videos
 #, machine
 	Videos	동영상
+#. group box title in the Options window
+#. Options → Regional: group box title: the language of a video's sound, for videos that come with several (dubbed ones)
+#, machine
+	Videos' sound	비디오 사운드
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -7255,6 +7377,11 @@
 #. said after Delete with files when some files stayed on the disk; {file} is the download's name; the files' paths follow it
 #, machine
 	{file}: these files stayed on the disk, because MDM didn't create them or another download uses them:	{file}: MDM이 만들지 않았거나 다른 다운로드에서 사용 중이므로 다음 파일이 디스크에 남아 있습니다:
+#. text in the Link grabber window
+#. Link grabber's Source line: a Google Drive folder ({folder}: its name) in which a folder showed the most items Drive's page lists ({n}: 50), so it may hold more than are listed; what gets them all (Drive's own Download button, which makes a zip)
+#. {n} = a number (keep the braces as they are)
+#, machine
+	{folder}: Google Drive's page lists only the first {n} items of a folder, so some may be missing; Drive's own Download gets the whole folder as a zip	{folder}: Google Drive 페이지에는 폴더의 처음 {n}개 항목만 표시되므로 일부 항목이 누락될 수 있습니다. Drive의 다운로드 기능을 사용하면 전체 폴더를 zip 파일로 다운로드할 수 있습니다.
 #. message or event log entry in the main window; text in the Link grabber window
 #. Link grabber's Source line, after where the links came from: a folder (an FTP folder, a web server's "Index of" page) held more files or subfolders than Link grabber lists; {folder} is its name, {n} how many of its files are listed (10,000)
 #. {n} = a number (keep the braces as they are)
@@ -7308,9 +7435,17 @@
 #, machine
 	{ip} can't be reached through {adapter}: it has no address of that kind (IPv4 or IPv6)	{adapter}에 해당 종류의 주소(IPv4 또는 IPv6)가 없어 {ip}에 연결할 수 없습니다.
 #. text in the Download video window
+#. in Download video's Sound list: a language's sound track that describes the picture for people who can't see it; {language} is the language's name
+#, machine
+	{language}, audio description	{language}, 오디오 설명
+#. text in the Download video window
 #. in the Subtitles list of Download video: {language} = a language's name; the site made these subtitles automatically (speech recognition)
 #, machine
 	{language}, automatic	{language}, 자동
+#. text in the Download video window
+#. in Download video's Sound list and the browser's video menu: the video's own sound, the language it was made in (the others are dubbed); {language} is the language's name
+#, machine
+	{language}, original	{language}, 원본
 #. text in a download's progress window
 #. {live} = peers connected now; {known} = peers heard of
 #, machine
@@ -7510,10 +7645,20 @@
 #, machine
 	{site} didn't give the file this time: try again in a moment	{site}에서 이번에는 파일을 제공하지 않았습니다. 잠시 후 다시 시도하세요.
 #. text in the Link grabber window
+#. Link grabber, the hover tip of a Google Drive folder's status ({site}: "Google Drive"): no folder at this link, or one the signed-in account may not open
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+	{site} has no such folder, or it isn't shared with you.	{site}에 해당 폴더가 없거나 로그인한 계정에 공유되지 않았습니다.
+#. text in the Link grabber window
 #. Link grabber, the hover tip of a Hugging Face repository's or GitHub release's status; {site} is "Hugging Face" or "GitHub"
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
 #, machine
 	{site} has no such repository, folder, release or tag, or it is private.	{site}에 해당 리포지토리, 폴더, 릴리스 또는 태그가 없거나 비공개입니다.
+#. text in the Link grabber window
+#. Link grabber, a Google Drive folder's status (the cell's hover tip): Drive ({site}: "Google Drive") answered that it gets too many requests from this computer
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+	{site} is getting too many requests from this computer: try again later.	{site}에서 이 컴퓨터의 요청이 너무 많습니다. 나중에 다시 시도하세요.
 #. text in the Link grabber window
 #. Link grabber, a Hugging Face repository's or GitHub release's status (the cell's hover tip): the site ({site}: "Hugging Face", "GitHub") lets only so many requests through from a computer without an account; {n} minutes to wait
 #. {site} = a web site's name such as "example.com"; {n} = a number (keep the braces as they are)
@@ -8987,6 +9132,11 @@ menu	Download &video from a page...	페이지에서 &비디오 다운로드...
 #, machine
 menu	Download in order	순서대로 다운로드
 #. menu command in the main window
+#. View → Draw with: opens a window offering to download Mesa's software renderer (llvmpipe, keep the name), which draws MDM's windows with far less of the processor than Windows' own (WARP)
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Download Mesa's software renderer (llvmpipe)...	Mesa 소프트웨어 렌더러(llvmpipe) 다운로드...
+#. menu command in the main window
 #. View menu: submenu choosing what draws MDM's windows: OpenGL, or Direct3D, Vulkan or Metal (graphics systems)
 #, machine
 menu	Draw with	다음으로 그리기
@@ -9223,6 +9373,18 @@ menu	Show &drop target	끌어 놓기 대상 표시(&D)
 #. menu command in the main window
 #, machine
 menu	Show Mister Download Manager	Mister Download Manager 표시
+#. menu command in the main window
+#. View → Draw with: a greyed note; Mesa's software renderer (llvmpipe, keep the name) failed on this computer, so Windows' own software renderer (WARP, keep the name) draws
+#, machine
+menu	Software (llvmpipe) didn't start here: WARP draws	소프트웨어(llvmpipe)가 여기에서 시작되지 않았습니다: WARP가 그립니다.
+#. menu command in the main window
+#. View → Draw with: a greyed note; Mesa's software renderer (llvmpipe, keep the name) is downloaded and draws the windows from MDM's next start
+#, machine
+menu	Software (llvmpipe) draws from the next start	소프트웨어(llvmpipe)는 다음 시작부터 그립니다.
+#. menu command in the main window
+#. View → Draw with: a greyed note; what draws the windows: Mesa's software renderer, llvmpipe (keep the name), because no graphics card here has a driver MDM can draw with
+#, machine
+menu	Software (llvmpipe): no graphics card here has a driver for MDM	소프트웨어(llvmpipe): 여기에 MDM용 드라이버가 있는 그래픽 카드가 없습니다.
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine

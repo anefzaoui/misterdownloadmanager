@@ -186,6 +186,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{package}: {n} file left out, its name would lead out of its folder|{package}: {n} files left out, their names would lead out of its folder	{package}: {n} ᏗᎪᏪᎵ ᎤᎾᏓᏅᏒᎢ, ᏚᏙᎥ ᎤᏓᏅᏒᎢ ᎤᏩᏒ ᎤᏤᎵ ᏗᎪᏪᎵ ᏗᏟᏍᏙᏗ ᎨᏒᎢ|{package}: {n} ᏗᎪᏪᎵ ᎤᎾᏓᏅᏒᎢ, ᏚᏙᎥ ᎤᎾᏓᏅᏒᎢ ᎤᏩᏒ ᎤᏤᎵ ᏗᎪᏪᎵ ᏗᏟᏍᏙᏗ ᎨᏒᎢ
+#. count in the Link grabber window
+#. Link grabber's Source line: a Google Drive folder's ({package}: its name) items that aren't files to download (Google Forms, shortcuts, Google Sites) are left out; {n} how many
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{package}: {n} item left out, a Google Form, shortcut or Site isn't a file|{package}: {n} items left out, Google Forms, shortcuts and Sites aren't files	{package}: {n} ᎢᏗᏓᏍᏗ ᎤᎾᏓᎴᏅᏓ, Google Form, ᎤᏍᏆᏂᎪᏗ ᎠᎴ Site ᎥᏝ ᎢᏗᏓᏍᏗ ᏱᎩ|{package}: {n} ᎢᏗᏓᏍᏗ ᎤᎾᏓᎴᏅᏓ, Google Forms, ᎤᏍᏆᏂᎪᏗ ᎠᎴ Sites ᎥᏝ ᎢᏗᏓᏍᏗ ᏱᎩ
 #. count in cnl.rs
 #. Click'n'Load window: {site} is a web site's name such as "example.com"
 #. {site} = a web site's name such as "example.com"; {n} = a number (keep the braces as they are)
@@ -5351,6 +5356,10 @@
 #. a check of Test browser integration: the browsers find MDM's helper program
 #, machine
 	The browsers can find Mister Download Manager	ᏗᏓᏂᏴᏗ ᏗᏕᎬᏔᏅᎢ ᏗᏓᏂᏴᏗ ᏗᏕᎬᏔᏅᎢ Mister Download Manager
+#. text in extension.rs
+#. under "An older registry entry is in the way" (Test browser integration, Windows): the entry is in the part of the registry 32-bit programs use, which the browsers read before the right entry; it leads to another copy of MDM or to one that was deleted; then what the Set it up button does about it
+#, machine
+	The browsers read it before the right one, and it leads to another copy of Mister Download Manager or to one that is gone. Set it up gives your account an entry of its own, which the browsers read first.	ᎾᎿ ᏗᎦᏁᏟᏴᏍᏗ ᎨᏒᎢ ᎾᎿ ᏗᎦᏁᏟᏴᏍᏗ ᎨᏒᎢ ᎾᎿ ᏗᎦᏁᏟᏴᏍᏗ ᎨᏒᎢ, ᎠᎴ ᎾᎿ ᏗᎦᏁᏟᏴᏍᏗ ᎨᏒᎢ ᎾᎿ ᏗᎦᏁᏟᏴᏍᏗ ᎨᏒᎢ ᎾᎿ Mister Download Manager ᎠᎴ ᎾᎿ ᏗᎦᏁᏟᏴᏍᏗ ᎨᏒᎢ. ᎾᎿ Set it up ᎾᎿ ᏗᎦᏁᏟᏴᏍᏗ ᎨᏒᎢ ᎾᎿ ᏗᎦᏁᏟᏴᏍᏗ ᎨᏒᎢ, ᎾᎿ ᏗᎦᏁᏟᏴᏍᏗ ᎨᏒᎢ ᎾᎿ ᏗᎦᏁᏟᏴᏍᏗ ᎨᏒᎢ.
 #. text in the Options window
 #. Options → Remote → Status: the settings were changed; they apply on OK
 #, machine

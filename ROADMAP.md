@@ -569,6 +569,81 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 Everything below ships together, in version 0.6.0, the next release.
 
+- ✅ Download video: choose the language of a video's sound when it comes in several (YouTube's
+  dubbed tracks), the original first and marked; every quality, Audio only and MP3, Opus and
+  FLAC take that language's sound, and the button over a video says each line's language.
+  Options → Regional chooses one for every video and playlist, the original when a video lacks
+  it ([#1961](https://github.com/anefzaoui/misterdownloadmanager/issues/1961); thanks to
+  [@toji2002](https://github.com/toji2002), [@Hanif-afzal](https://github.com/Hanif-afzal) and
+  [@twistedwolfyt00](https://github.com/twistedwolfyt00))
+- ✅ Audio only downloads: the video's thumbnail as the cover of an MP3, M4A, Opus or FLAC file,
+  put in by ffmpeg without encoding the sound again; a box in Download video, kept as you leave
+  it ([#1962](https://github.com/anefzaoui/misterdownloadmanager/issues/1962); thanks to
+  [@twistedwolfyt00](https://github.com/twistedwolfyt00))
+- ✅ MDM's window toolkit (egui) on the same copy as the Craft suite's libraries (storytold's
+  `next`), MDM's own fixes rebased on it: every window, menus included, connected to screen
+  readers before it first shows, and accessibility stays on while any window is read
+- ✅ The shared Craft libraries for saving files and for translations brought up to date: the
+  temporary files a save cut short by a crash leaves in the data folder are removed at the next
+  start, and a file saved over keeps more of the original (its attributes, its group)
+- ✅ The shared Craft libraries for saving files and for translations brought up to date: the
+  temporary files a save cut short by a crash leaves in the data folder are removed at the next
+  start, and a file saved over keeps more of the original (its attributes, its group)
+- ✅ Google Drive shared folders: a folder's link in Add URL, Link grabber or the browser's
+  right-click command opens its files and its subfolders' in Link grabber, ticked, named and
+  sized as Drive lists them, downloaded into the same folders on disk; Docs, Sheets and Slides
+  as Office files; a folder shared with your account only, with the browser's sign-in; Drive's
+  refusals said per file as for single files, and a folder of more than 50 items said as listed
+  in part ([#2032](https://github.com/anefzaoui/misterdownloadmanager/issues/2032))
+- ✅ **No proxy/socks** chosen in Options → Proxy / Socks keeps yt-dlp and gallery-dl direct too, off Windows'
+  proxy and the proxy variables; the untouched default still follows them, and so does a list saved before
+  ([#1616](https://github.com/anefzaoui/misterdownloadmanager/issues/1616))
+- ✅ The window no longer freezes while an antivirus scans a file MDM opens
+  ([#1292](https://github.com/anefzaoui/misterdownloadmanager/issues/1292); thanks to
+  [@seifmoustafa](https://github.com/seifmoustafa) and
+  [@fernandopeguero](https://github.com/fernandopeguero)): fonts, archive tests, Options' look
+  for 7-Zip, theme files and sounds are read beside the window, and test builds log any file
+  the window's thread opens
+- ✅ The command line's `torrent-info` and `torrent-get` hold their torrent session to the network
+  adapter chosen in Options → Connection, and don't start while it isn't connected
+  ([#2050](https://github.com/anefzaoui/misterdownloadmanager/issues/2050); thanks to
+  [@abdul-karim-mia](https://github.com/abdul-karim-mia))
+- ✅ Every pull request and every change to main is scanned for signs of a tampered commit: code
+  hidden at the end of long lines, scripts that run on install or when a folder opens, files that
+  aren't what their name says and known indicators; main's whole history once a week
+  (`tools/security/scan_suspicious.py`)
+- ✅ More file types in the built-in categories: apps and installers (APK, IPA, AppImage, DEB,
+  RPM, Flatpak, Snap, MSIX, DMG, PKG…) in Programs, disc and disk images (ISO, IMG, VHD, VMDK…)
+  and more archives in Compressed, e-books, OpenDocument files and spreadsheets in Documents,
+  OPUS, FLAC, M4B and AIFF in Music, M2TS and MTS in Video; a list you edited stays yours
+  ([#1725](https://github.com/anefzaoui/misterdownloadmanager/issues/1725); thanks to
+  [@twistedwolfyt00](https://github.com/twistedwolfyt00))
+- ✅ Website: live counters under the home page's contributors, the downloads from GitHub (every
+  file of every release) and the browser add-on's users (the Chrome Web Store and Firefox Add-ons), on
+  split-flap tiles that flip up from zero when the page opens; read at most every 15 minutes, the
+  build's figures when they can't be; the site's download figure is now GitHub's real count of every
+  file of every release, read at every build
+- ✅ Windows without a graphics card's driver (Windows Server, a virtual machine, Remote Desktop):
+  MDM offers once to download Mesa's software renderer (llvmpipe), with its size, and from
+  **View → Draw with**; nothing downloads without a click. Checked against MDM's signed list, it
+  draws from the next start before Windows' own software renderer (WARP), which keeps the
+  processor far busier; one that can't draw there is remembered, and WARP draws again
+  ([#476](https://github.com/anefzaoui/misterdownloadmanager/issues/476))
+- ✅ Browser integration on Windows reads the registry as the browsers do, its 32-bit part first: an older entry
+  there that leads nowhere no longer hides MDM's from Edge, Test browser integration says when one is in the way,
+  and MDM's start and its setup for everyone fix it
+  ([#1688](https://github.com/anefzaoui/misterdownloadmanager/issues/1688); thanks to
+  [@Priest6969](https://github.com/Priest6969))
+- ✅ A checksum the server announces that doesn't match no longer fails the download: the file is
+  kept, with a warning in the list, its log, Properties and Download complete; a checksum you
+  enter, or one the site publishes, still must match. A `Content-MD5` beside a body the server
+  says it transformed (PikPak's storage, a compressed answer) isn't checked
+  ([#2064](https://github.com/anefzaoui/misterdownloadmanager/issues/2064); thanks to
+  [@asasass](https://github.com/asasass))
+- ✅ Website FAQ: why installing yt-dlp or another helper times out where GitHub can't be reached, and what to do
+  (a proxy in Options → Proxy / Socks, or Helpers → Use another program)
+  ([#1926](https://github.com/anefzaoui/misterdownloadmanager/issues/1926); thanks to
+  [@HandSome507](https://github.com/HandSome507))
 - ✅ Site rules give a site a proxy: **No proxy** (straight to the site) or one of its own
   (`host:port`, `socks5://…`) with its login, kept with MDM's other passwords; a download's own
   proxy first, then the first rule that names the site and sets one, then Options. Video and
@@ -1754,6 +1829,11 @@ Everything below ships together, in version 0.6.0, the next release.
   speed limits (a change applies at once), pause and resume like a file, after a restart too,
   and a fresh address from yt-dlp when one expires (part of
   [#769](https://github.com/anefzaoui/misterdownloadmanager/issues/769))
+- ✅ Videos in pieces (HLS) tested stopped and continued, after a restart, with expiring and failing
+  pieces, AES-128, byte ranges, discontinuities and several sounds and pictures (AC-3, MP2, HEVC,
+  MPEG-2), each checked for its length and a clean decode: the pieces on disk count only for the same
+  stream and list, a sound an MP4 can't hold (LATM) is saved as MPEG-TS instead of failing, parts of
+  one file a server sends whole are cut from it, a piece cut off without a length is asked again
 - ✅ Videos sent in pieces (HLS, DASH) through MDM's own downloader too, several pieces at once
   (as many as a file's connections), AES-128 pieces decrypted, expired pieces' addresses asked of
   yt-dlp again ([#531](https://github.com/anefzaoui/misterdownloadmanager/issues/531), part of

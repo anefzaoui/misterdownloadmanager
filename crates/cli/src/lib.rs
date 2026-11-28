@@ -1088,7 +1088,8 @@ fn parse_proxy(s: &str) -> Result<Proxy, String> {
 fn proxy_arg(s: &str, password: Option<String>) -> Result<Proxy, String> {
     let s = s.trim();
     match s.to_ascii_lowercase().as_str() {
-        "none" | "direct" => return Ok(Proxy::None),
+        // Direct, yt-dlp and gallery-dl too (#1616): asked for, not left at a default.
+        "none" | "direct" => return Ok(Proxy::Direct),
         "system" => return Ok(Proxy::System),
         _ => {}
     }
@@ -2513,16 +2514,29 @@ async fn watch(dl: Download, json: bool) -> anyhow::Result<()> {
     match dl.wait().await {
         Ok(out) => {
             let secs = started.elapsed().as_secs_f64();
+            // The server's own checksum didn't match (#2064): kept, and said.
+            let warning = out.checksum_warning.map(|algo| {
+                format!(
+                    "the server's {} checksum didn't match; the file may still be fine (check it if it matters)",
+                    algo.name()
+                )
+            });
             if json {
-                emit(
-                    json!({ "event": "done", "path": out.path, "size": out.size, "seconds": secs }),
-                );
+                let mut done =
+                    json!({ "event": "done", "path": out.path, "size": out.size, "seconds": secs });
+                if let Some(w) = &warning {
+                    done["warning"] = json!(w);
+                }
+                emit(done);
             } else {
                 println!(
                     "saved {} ({}) in {secs:.1}s",
                     out.path.display(),
                     mb(out.size)
                 );
+                if let Some(w) = &warning {
+                    eprintln!("warning: {w}");
+                }
             }
             Ok(())
         }
@@ -2555,7 +2569,9 @@ async fn torrents() -> anyhow::Result<(mdm_torrent::Torrents, tempfile::TempDir)
 }
 
 /// The command line's torrent session in `dir`: Torrent settings' network switches (the DHT off
-/// there is off here) and their SOCKS5 proxy when they say to use it (#1556), as the app's.
+/// there is off here), their SOCKS5 proxy when they say to use it (#1556), and Options →
+/// Connection's network adapter (#2050), as the app's (bailing when the adapter is gone so no
+/// torrent traffic leaves another way).
 fn session_config(c: &Conn, dir: std::path::PathBuf) -> anyhow::Result<mdm_torrent::Config> {
     let proxy = match &c.torrent_proxy {
         TorrentProxy::Off => None,
@@ -2564,11 +2580,14 @@ fn session_config(c: &Conn, dir: std::path::PathBuf) -> anyhow::Result<mdm_torre
             "Torrent settings say to use the proxy, and Options → Proxy / Socks has no SOCKS5 proxy: set one, or turn Use the proxy off"
         ),
     };
+    let bind = mdm_torrent::Bind::for_route(&c.route)
+        .map_err(|adapter| anyhow::anyhow!("the network adapter {adapter} is not connected"))?;
     let n = &c.torrent_net;
     Ok(mdm_torrent::Config {
         // Its own folder, nothing of the person's is there: the engine may open what it makes.
         require_authorization: false,
         proxy,
+        bind,
         dht: n.dht,
         lsd: n.lsd,
         upnp: n.upnp,
@@ -2647,7 +2666,8 @@ mod tests {
             http: true,
             https: true,
         };
-        assert_eq!(proxy_arg("none", None), Ok(Proxy::None));
+        assert_eq!(proxy_arg("none", None), Ok(Proxy::Direct));
+        assert_eq!(proxy_arg("direct", None), Ok(Proxy::Direct));
         assert_eq!(proxy_arg(" System ", None), Ok(Proxy::System));
         assert_eq!(
             proxy_arg("127.0.0.1:7890", None),
@@ -2912,6 +2932,71 @@ mod tests {
         );
     }
 
+    /// #2050: `torrent-info` and `torrent-get` bind their session to Options → Connection's
+    /// chosen network adapter, and refuse to start when that adapter is gone (kill switch).
+    #[test]
+    fn the_torrent_commands_bind_to_the_chosen_adapter() {
+        let dir = std::path::PathBuf::from("state");
+        let cmd = |args: &[&str]| {
+            Cli::try_parse_from(std::iter::once(NAME).chain(args.iter().copied()))
+                .unwrap()
+                .cmd
+        };
+
+        // No adapter chosen: no bind restriction.
+        let c = session_config(
+            &Conn::of(&cmd(&["torrent-info", "x.torrent"]), &Net::default()),
+            dir.clone(),
+        )
+        .unwrap();
+        assert_eq!(c.bind, None);
+
+        // A connected adapter: session binds to it as the app does.
+        let binding = std::sync::Arc::new(mdm_engine::net::Binding {
+            label: "WireGuard".into(),
+            name: "wg0".into(),
+            index: 7,
+            v4: Some(std::net::Ipv4Addr::new(10, 8, 0, 2)),
+            v6: None,
+            loopback_too: false,
+        });
+        let bound_conn = Conn {
+            route: mdm_engine::Route::Bound(binding),
+            ..Conn::default()
+        };
+        let bound_cfg = session_config(&bound_conn, dir.clone()).unwrap();
+        #[cfg(windows)]
+        assert_eq!(
+            bound_cfg.bind,
+            Some(mdm_torrent::Bind::Address(std::net::IpAddr::V4(
+                std::net::Ipv4Addr::new(10, 8, 0, 2)
+            )))
+        );
+        #[cfg(not(windows))]
+        assert_eq!(
+            bound_cfg.bind,
+            Some(mdm_torrent::Bind::Device {
+                name: "wg0".into(),
+                v4_only: true
+            })
+        );
+
+        // Disconnected / missing adapter: kill switch fails closed before starting a session.
+        let net_down = Net {
+            adapter: "no-such-adapter-2050".into(),
+            ..Net::default()
+        };
+        for args in [
+            ["torrent-info", "x.torrent"].as_slice(),
+            ["torrent-get", "x.torrent"].as_slice(),
+        ] {
+            let err = session_config(&Conn::of(&cmd(args), &net_down), dir.clone()).unwrap_err();
+            let msg = err.to_string();
+            assert!(msg.contains("no-such-adapter-2050"), "{msg}");
+            assert!(msg.contains("not connected"), "{msg}");
+        }
+    }
+
     /// #1556: a command goes through the app's network settings, its own switches over them.
     #[test]
     fn a_command_takes_the_apps_network_and_its_own_switches() {
@@ -2947,7 +3032,7 @@ mod tests {
         );
         assert_eq!(
             (c.proxy, c.dns),
-            (Proxy::None, mdm_engine::DnsChoice::default())
+            (Proxy::Direct, mdm_engine::DnsChoice::default())
         );
         let c = Conn::of(&cmd(&["install-ytdlp", "--proxy", "socks5h://h:1"]), &net);
         assert!(matches!(c.proxy, Proxy::Manual { ref url, .. } if url == "socks5h://h:1"));
@@ -2990,7 +3075,7 @@ mod tests {
         );
         assert_eq!(
             (c.proxy, c.dns),
-            (Proxy::None, mdm_engine::DnsChoice::default())
+            (Proxy::Direct, mdm_engine::DnsChoice::default())
         );
         let c = Conn::of(
             &cmd(&[

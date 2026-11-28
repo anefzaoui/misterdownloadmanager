@@ -365,6 +365,18 @@ pub struct Info {
 type Row = (&'static str, &'static str, &'static str, &'static [u8]);
 static TABLE: &[Row] = include!(concat!(env!("OUT_DIR"), "/languages.rs"));
 
+/// The table's row for language `base` (`zh`, `pt`; #1961: a video's sound): its own row,
+/// else its first with a region or script (`zh-hans`).
+pub fn info_of_language(base: &str) -> Option<Info> {
+    info(base).or_else(|| {
+        let prefix = format!("{}-", base.to_ascii_lowercase());
+        TABLE
+            .iter()
+            .find(|r| r.0.to_ascii_lowercase().starts_with(&prefix))
+            .and_then(|r| info(r.0))
+    })
+}
+
 /// The table's row for `code` (a catalog's locale, any case).
 pub fn info(code: &str) -> Option<Info> {
     TABLE

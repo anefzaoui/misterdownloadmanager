@@ -52,7 +52,14 @@ pub struct Extension {
     read: fn() -> Status,
     /// The steps that add Safari's extension, while that window is open.
     steps: Option<SafariSteps>,
+    /// The browsers installed, looked for beside the window's thread (#1292: each is a program
+    /// on the disk), when they didn't come within [`FIRST_WAIT`]: one row for the system's
+    /// browser until then.
+    finding: Option<std::sync::mpsc::Receiver<Browsers>>,
 }
+
+/// The browsers installed: name and program (none for Safari, which comes with macOS).
+type Browsers = Vec<(String, Option<PathBuf>)>;
 
 /// How often the window reads where it stands again: the host marks the extension seen when a
 /// browser starts it.
@@ -114,11 +121,47 @@ fn is_gecko(row: &str) -> bool {
 
 impl Extension {
     pub fn new() -> Self {
+        let (tx, rx) = std::sync::mpsc::channel();
+        crate::launch::spawn("browsers", move || {
+            let _ = tx.send(Self::installed());
+        });
+        match rx.recv_timeout(FIRST_WAIT) {
+            Ok(browsers) => Self::with_reader(browsers, Status::read),
+            Err(_) => {
+                let mut window = Self::with_reader(vec![(String::new(), None)], Status::read);
+                window.finding = Some(rx);
+                window
+            }
+        }
+    }
+
+    /// The browsers looked for beside the window's thread, once they are in ([`Extension::new`]).
+    fn found(&mut self, repaint: Option<&egui::Context>) {
+        use std::sync::mpsc::TryRecvError;
+        match self.finding.as_ref().map(|rx| rx.try_recv()) {
+            Some(Ok(browsers)) => {
+                self.finding = None;
+                self.browsers = browsers;
+            }
+            Some(Err(TryRecvError::Disconnected)) => self.finding = None,
+            Some(Err(TryRecvError::Empty)) => {
+                if let Some(ctx) = repaint {
+                    ctx.request_repaint_after(Duration::from_millis(50));
+                }
+            }
+            None => {}
+        }
+    }
+
+    /// The browsers installed, name and program, in the table's order: each one's program is
+    /// looked for on the disk.
+    fn installed() -> Browsers {
         #[cfg(windows)]
         let found = crate::win32::browsers();
         #[cfg(unix)]
         let found = crate::unix::browsers();
         let mut browsers: Vec<_> = found.into_iter().map(|(n, p)| (n, Some(p))).collect();
+
         // The table's order (Chrome first, its button the accent one), others after.
         browsers.sort_by_key(|(n, _)| {
             mdm_ipc::browsers::BROWSERS
@@ -133,7 +176,7 @@ impl Extension {
         if browsers.is_empty() {
             browsers.push((String::new(), None));
         }
-        Self::with_reader(browsers, Status::read)
+        browsers
     }
 
     /// The window for `browsers`, where it stands read by `read`.
@@ -144,6 +187,7 @@ impl Extension {
             shown: None,
             read,
             steps: None,
+            finding: None,
         }
     }
 
@@ -151,6 +195,7 @@ impl Extension {
     /// [`FIRST_WAIT`]): the last read's answer while the next is under way, one at a time, and
     /// None before the first. `repaint` is woken when an answer that differs comes.
     fn follow(&mut self, repaint: Option<&egui::Context>) -> Option<&Status> {
+        self.found(repaint);
         let read = self.read;
         if let Some(status) =
             self.status
@@ -739,6 +784,11 @@ pub enum Registration {
     /// that wrote it: one run from inside a zip, whose temporary folder was deleted (#818).
     #[cfg_attr(unix, allow(dead_code))]
     Gone(PathBuf),
+    /// Windows (#1688): the computer's entry in the registry's 32-bit view (this key, under
+    /// WOW6432Node), which the browsers read before the 64-bit one, leads nowhere or elsewhere
+    /// than it (what it leads to): the right entry is never read.
+    #[cfg_attr(unix, allow(dead_code))]
+    InTheWay(String, mdm_ipc::browsers::Holder),
     /// macOS refused to let MDM read this browser folder ("Operation not permitted", #1218):
     /// its protection of other apps' data. Other systems never say it (their folders don't
     /// refuse that way); an off-screen test copy can, for its screenshots (MDM_TEST_REFUSED).
@@ -948,7 +998,11 @@ pub fn temporary_copy() -> bool {
 /// (#818). Linux and macOS, which have no installer step, also register with a browser that has
 /// none yet.
 pub fn repair_at_start() {
-    if mdm_ipc::portable_dir().is_some() || crate::offscreen() {
+    // An off-screen test copy repairs nothing, unless a test registry stands in for the real
+    // one (#1688, `mdm_ipc::browsers::test_registry`: Windows only).
+    let test_copy =
+        crate::offscreen() && !(cfg!(windows) && mdm_ipc::browsers::test_registry().is_some());
+    if mdm_ipc::portable_dir().is_some() || test_copy {
         return;
     }
     if temporary_copy() {
@@ -1133,6 +1187,26 @@ pub fn checks(advanced: bool) -> Vec<Check> {
                 why: Some("not-installed"),
                 detail: Some(folder.display().to_string()),
                 how: None,
+                browser: None,
+            }
+        }
+        Registration::InTheWay(entry, read) => {
+            use mdm_ipc::browsers::Holder;
+            let (Holder::Alive(leads) | Holder::ManifestGone(leads) | Holder::ProgramGone(leads)) =
+                read;
+            Check {
+                ok: false,
+                // i18n: a check of Test browser integration (Windows), one short line: an older registry entry for MDM's helper is in the way of the right one; the entry and where it leads show on the line under it
+                text: crate::i18n::t("An older registry entry is in the way:").to_owned(),
+                why: Some("not-installed"),
+                detail: Some(format!("{entry} → {}", leads.display())),
+                how: Some(
+                    // i18n: under "An older registry entry is in the way" (Test browser integration, Windows): the entry is in the part of the registry 32-bit programs use, which the browsers read before the right entry; it leads to another copy of MDM or to one that was deleted; then what the Set it up button does about it
+                    crate::i18n::t(
+                        "The browsers read it before the right one, and it leads to another copy of Mister Download Manager or to one that is gone. Set it up gives your account an entry of its own, which the browsers read first.",
+                    )
+                    .to_owned(),
+                ),
                 browser: None,
             }
         }

@@ -795,7 +795,7 @@ impl Socks {
                 crate::pac::Route::Proxy(p) => Socks::parse(p, None),
                 crate::pac::Route::Direct => None,
             },
-            Proxy::None | Proxy::System => None,
+            Proxy::None | Proxy::Direct | Proxy::System => None,
         }
     }
 

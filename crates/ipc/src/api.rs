@@ -526,6 +526,11 @@ pub struct VideoChoice {
     /// an app older than the field.
     #[serde(skip_serializing_if = "std::ops::Not::not")]
     pub compatible: bool,
+    /// The language of its sound, in MDM's words (#1961: "Deutsch · German", "English,
+    /// original"), when the video's sound comes in several; none for one language, and from an
+    /// app older than the field.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub language: Option<String>,
 }
 
 /// [`VideoLookupAnswer::state`]'s values, and [`VideoLookupAnswer::reason`]'s.

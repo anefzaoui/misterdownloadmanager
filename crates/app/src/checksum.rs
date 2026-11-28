@@ -43,11 +43,22 @@ impl ChecksumDialog {
         let check = self.check.as_ref()?.lock().unwrap();
         match &*check {
             Some(Ok(got)) if *got != want.value => Some(Hash {
-                algo: want.algo,
                 value: got.clone(),
+                ..want
             }),
             _ => None,
         }
+    }
+
+    /// The check of the finished file found it has the checksum typed (#2064: a warning about
+    /// its server's checksum then goes).
+    pub fn matched(&self) -> bool {
+        let Some(want) = Hash::parse(&self.text) else {
+            return false;
+        };
+        self.check
+            .as_ref()
+            .is_some_and(|c| matches!(&*c.lock().unwrap(), Some(Ok(got)) if *got == want.value))
     }
 
     /// `Done(hash)`: keep it with the download. Close and the window's × both keep a hash that
@@ -290,5 +301,30 @@ impl ChecksumDialog {
             (Outcome::Closed, Some(h), Some(_)) => Outcome::Done(h),
             (out, ..) => out,
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    /// #2064: only a finished check that found the typed checksum clears a server's warning.
+    #[test]
+    fn matched_only_when_the_check_found_the_typed_checksum() {
+        let md5 = "9e107d9d372bb6826bd81d3542a419d6";
+        let typed = Hash::parse(md5).unwrap();
+        let mut d = ChecksumDialog::new(1, Some(&typed), Some(PathBuf::from("fox.txt")));
+        assert!(!d.matched(), "not checked yet");
+        let check: Check = Arc::new(Mutex::new(None));
+        d.check = Some(check.clone());
+        assert!(!d.matched(), "still checking");
+        *check.lock().unwrap() = Some(Ok(vec![0; 16]));
+        assert!(!d.matched(), "another checksum");
+        *check.lock().unwrap() = Some(Ok(typed.value.clone()));
+        assert!(d.matched());
+        *check.lock().unwrap() = Some(Err("gone".into()));
+        assert!(!d.matched(), "unreadable");
+        d.text = "not a hash".into();
+        assert!(!d.matched());
     }
 }

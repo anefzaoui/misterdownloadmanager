@@ -687,6 +687,135 @@ pub const WINDOWS_HOST_KEYS: [(&str, Family); 5] = [
     (r"Software\Mozilla\NativeMessagingHosts", Family::Gecko),
 ];
 
+/// Windows: where a browser reads a registry entry for the native host (#1688). The user's
+/// `HKCU\Software` is one key for 32-bit and 64-bit programs alike; the computer's
+/// `HKLM\Software` has two views, the 32-bit programs' under `WOW6432Node`.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum RegView {
+    User,
+    Machine32,
+    Machine64,
+}
+
+impl RegView {
+    /// The order the browsers read them in, the first entry found winning even when it leads
+    /// nowhere: the user's, then the computer's 32-bit view, then its 64-bit one (Chromium's
+    /// `native_process_launcher_win.cc`; Microsoft Edge's and Firefox's documentation, Firefox
+    /// from 64 on).
+    pub const ORDER: [RegView; 3] = [RegView::User, RegView::Machine32, RegView::Machine64];
+
+    /// `key` (under `Software\`) in this view, as `reg query` and regedit show it.
+    pub fn shown(self, key: &str) -> String {
+        match self {
+            RegView::User => format!(r"HKCU\{key}"),
+            RegView::Machine64 => format!(r"HKLM\{key}"),
+            RegView::Machine32 => match key.split_once('\\') {
+                Some((software, rest)) => format!(r"HKLM\{software}\WOW6432Node\{rest}"),
+                None => format!(r"HKLM\WOW6432Node\{key}"),
+            },
+        }
+    }
+}
+
+/// Windows: what one browser key's entries for the native host lead to, in each view (#1688).
+#[derive(Clone, Debug, Default, PartialEq, Eq)]
+pub struct HostEntries {
+    pub user: Option<Holder>,
+    pub machine32: Option<Holder>,
+    pub machine64: Option<Holder>,
+}
+
+impl HostEntries {
+    /// The computer's entry the browsers read: the 32-bit view's when there is one.
+    pub fn machine(&self) -> Option<&Holder> {
+        self.machine32.as_ref().or(self.machine64.as_ref())
+    }
+
+    /// The entry the browsers read.
+    pub fn read(&self) -> Option<&Holder> {
+        self.user.as_ref().or(self.machine())
+    }
+
+    /// The computer's 32-bit entry when it is the one read and it gets in the way (#1688): it
+    /// leads nowhere, or somewhere else than the 64-bit one, which is never read while it is
+    /// there. An old copy's registration, or a 32-bit program's, can leave one behind; the
+    /// browser then says "Specified native messaging host not found" although the 64-bit entry
+    /// (the one regedit shows first) is right.
+    pub fn in_the_way(&self) -> Option<&Holder> {
+        if self.user.is_some() {
+            return None;
+        }
+        let read = self.machine32.as_ref()?;
+        match &self.machine64 {
+            Some(other) => (other != read).then_some(read),
+            None => read.dead().then_some(read),
+        }
+    }
+}
+
+/// Windows: whether the entry `value` names `manifest` (Windows' paths are the same in any
+/// case).
+pub fn names_manifest(value: &str, manifest: &Path) -> bool {
+    registered_manifest(value)
+        .to_string_lossy()
+        .eq_ignore_ascii_case(&manifest.to_string_lossy())
+}
+
+/// Off-screen tests only (#1688): `MDM_TEST_REGISTRY`, a key under HKCU starting with this,
+/// stands in for every registry entry of the native host. Each view's entries go under its
+/// `user`, `machine32` and `machine64` subkeys there, so the registration, its repair and Test
+/// browser integration run against them, and never against the browsers' real keys or the
+/// computer's (which needs no administrator either).
+pub const TEST_REGISTRY_PREFIX: &str = r"Software\MisterDownloadManager-tests\";
+
+/// [`TEST_REGISTRY_PREFIX`]'s key from `MDM_TEST_REGISTRY`, when it is one under it.
+pub fn test_registry() -> Option<String> {
+    let key = std::env::var("MDM_TEST_REGISTRY").ok()?;
+    test_registry_key(key.trim())
+}
+
+fn test_registry_key(key: &str) -> Option<String> {
+    let key = key.trim_matches('\\');
+    let under = key
+        .get(..TEST_REGISTRY_PREFIX.len())
+        .is_some_and(|p| p.eq_ignore_ascii_case(TEST_REGISTRY_PREFIX));
+    let named = key.len() > TEST_REGISTRY_PREFIX.len()
+        && !key.split('\\').any(|part| part.is_empty() || part == "..");
+    (under && named).then(|| key.to_owned())
+}
+
+/// Where `view`'s `key` is: under HKLM (`machine`) or HKCU, and the view to open it in (a test
+/// registry's are all plain HKCU keys).
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub struct RegPlace {
+    pub machine: bool,
+    pub key: String,
+    /// The computer's 32-bit view (`KEY_WOW64_32KEY`, `reg /reg:32`), its 64-bit one, or the
+    /// one key there is.
+    pub view: Option<RegView>,
+}
+
+/// [`RegPlace`] of `key` in `view`, in the test registry `test` when there is one.
+pub fn reg_place(view: RegView, key: &str, test: Option<&str>) -> RegPlace {
+    if let Some(test) = test {
+        let sub = match view {
+            RegView::User => "user",
+            RegView::Machine32 => "machine32",
+            RegView::Machine64 => "machine64",
+        };
+        return RegPlace {
+            machine: false,
+            key: format!(r"{test}\{sub}\{key}"),
+            view: None,
+        };
+    }
+    RegPlace {
+        machine: view != RegView::User,
+        key: key.to_owned(),
+        view: (view != RegView::User).then_some(view),
+    }
+}
+
 /// Windows: the manifest a registry entry's value names (quotes and spaces around it dropped).
 pub fn registered_manifest(value: &str) -> PathBuf {
     PathBuf::from(value.trim().trim_matches('"'))
@@ -747,9 +876,11 @@ pub enum Repair {
     Clear,
 }
 
-/// The [`Repair`] for one browser's entries, the user's (HKCU) and the computer's (HKLM). The
-/// browsers read the user's first, and the computer's only when there is no user's: a user's
-/// that leads nowhere hides a computer's that works (Chromium's `launch_context_win.cc`).
+/// The [`Repair`] for one browser's entries, the user's (HKCU) and the computer's (HKLM) that
+/// the browsers read ([`HostEntries::machine`]: its 32-bit view's first, #1688). The browsers
+/// read the user's first, and the computer's only when there is no user's: a user's that leads
+/// nowhere hides a computer's that works (Chromium's `launch_context_win.cc`), and a computer's
+/// 32-bit one that leads nowhere hides its 64-bit one, so the user gets an entry of their own.
 pub fn windows_repair(user: Option<&Holder>, machine: Option<&Holder>) -> Repair {
     match (user, machine) {
         (Some(Holder::Alive(_)), _) => Repair::Keep,
@@ -1493,6 +1624,115 @@ mod tests {
                 "{user:?} {machine:?}"
             );
         }
+    }
+
+    /// #1688: Windows' views, in the browsers' order: the user's, then the computer's 32-bit
+    /// one, then its 64-bit one. A 32-bit entry that leads nowhere, or elsewhere than the 64-bit
+    /// one, is in the way (the browser reads it and never the right one) unless the user's comes
+    /// first; at a start it gets the user an entry of their own.
+    #[test]
+    fn a_32_bit_entry_read_first_is_found_in_the_way() {
+        let ours = Holder::Alive(PathBuf::from(r"I:\MDM\misterdownloadmanager-nmhost.exe"));
+        let other = Holder::Alive(PathBuf::from(r"C:\Old\misterdownloadmanager-nmhost.exe"));
+        let gone = Holder::ManifestGone(PathBuf::from(
+            r"C:\Gone\com.misterdownloadmanager.host.json",
+        ));
+        let entries =
+            |user: Option<&Holder>, m32: Option<&Holder>, m64: Option<&Holder>| HostEntries {
+                user: user.cloned(),
+                machine32: m32.cloned(),
+                machine64: m64.cloned(),
+            };
+        // The reporter's: none for the user, a dead 32-bit one over the right 64-bit one.
+        let e = entries(None, Some(&gone), Some(&ours));
+        assert_eq!(e.machine(), Some(&gone));
+        assert_eq!(e.read(), Some(&gone));
+        assert_eq!(e.in_the_way(), Some(&gone));
+        assert_eq!(windows_repair(e.user.as_ref(), e.machine()), Repair::Take);
+        // Another copy's 32-bit one, working: in the way of ours, but it works, so kept.
+        let e = entries(None, Some(&other), Some(&ours));
+        assert_eq!(e.in_the_way(), Some(&other));
+        assert_eq!(windows_repair(e.user.as_ref(), e.machine()), Repair::Keep);
+        // Only a 32-bit one, leading nowhere; only a working one; the same as the 64-bit one.
+        assert_eq!(entries(None, Some(&gone), None).in_the_way(), Some(&gone));
+        assert_eq!(entries(None, Some(&ours), None).in_the_way(), None);
+        assert_eq!(entries(None, Some(&ours), Some(&ours)).in_the_way(), None);
+        assert_eq!(entries(None, Some(&gone), Some(&gone)).in_the_way(), None);
+        // No 32-bit one: the 64-bit one is read; the user's first: nothing else matters.
+        let e = entries(None, None, Some(&ours));
+        assert_eq!((e.read(), e.in_the_way()), (Some(&ours), None));
+        let e = entries(Some(&ours), Some(&gone), Some(&ours));
+        assert_eq!((e.read(), e.in_the_way()), (Some(&ours), None));
+        // How each is shown (reg query's way).
+        let key = r"Software\Microsoft\Edge\NativeMessagingHosts";
+        assert_eq!(
+            RegView::Machine32.shown(key),
+            r"HKLM\Software\WOW6432Node\Microsoft\Edge\NativeMessagingHosts"
+        );
+        assert_eq!(RegView::Machine64.shown(key), format!(r"HKLM\{key}"));
+        assert_eq!(RegView::User.shown(key), format!(r"HKCU\{key}"));
+        assert!(names_manifest(
+            r#" "i:\mdm\COM.misterdownloadmanager.host.json" "#,
+            Path::new(r"I:\MDM\com.misterdownloadmanager.host.json")
+        ));
+        assert!(!names_manifest(
+            r"C:\Gone\com.misterdownloadmanager.host.json",
+            Path::new(r"I:\MDM\com.misterdownloadmanager.host.json")
+        ));
+    }
+
+    /// #1688: a test registry stands in for every view only under its own key in HKCU; anything
+    /// else (the browsers' keys, a way out with `..`) is refused, and without one each view is
+    /// its own place.
+    #[test]
+    fn only_a_test_key_stands_in_for_the_registry() {
+        let key = r"Software\Microsoft\Edge\NativeMessagingHosts";
+        let test = r"Software\MisterDownloadManager-tests\run1";
+        assert_eq!(test_registry_key(test).as_deref(), Some(test));
+        assert_eq!(
+            test_registry_key(r"software\misterdownloadmanager-TESTS\run1\").as_deref(),
+            Some(r"software\misterdownloadmanager-TESTS\run1")
+        );
+        for refused in [
+            r"Software\MisterDownloadManager-tests",
+            r"Software\MisterDownloadManager-tests\",
+            r"Software\MisterDownloadManager-tests\..\..\Microsoft",
+            r"Software\MisterDownloadManager-tests\a\\b",
+            r"Software\Microsoft\Edge\NativeMessagingHosts",
+            "",
+        ] {
+            assert_eq!(test_registry_key(refused), None, "{refused}");
+        }
+        for (view, sub) in [
+            (RegView::User, "user"),
+            (RegView::Machine32, "machine32"),
+            (RegView::Machine64, "machine64"),
+        ] {
+            assert_eq!(
+                reg_place(view, key, Some(test)),
+                RegPlace {
+                    machine: false,
+                    key: format!(r"{test}\{sub}\{key}"),
+                    view: None
+                }
+            );
+        }
+        assert_eq!(
+            reg_place(RegView::User, key, None),
+            RegPlace {
+                machine: false,
+                key: key.into(),
+                view: None
+            }
+        );
+        assert_eq!(
+            reg_place(RegView::Machine32, key, None),
+            RegPlace {
+                machine: true,
+                key: key.into(),
+                view: Some(RegView::Machine32)
+            }
+        );
     }
 
     /// #818: Linux and macOS, at a start: a manifest that works naming another copy stays; this

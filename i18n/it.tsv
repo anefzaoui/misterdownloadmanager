@@ -171,6 +171,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{package}: {n} file left out, its name would lead out of its folder|{package}: {n} files left out, their names would lead out of its folder	{package}: escluso {n} file il cui nome porterebbe fuori dalla cartella|{package}: esclusi {n} file i cui nomi porterebbero fuori dalla cartella
+#. count in the Link grabber window
+#. Link grabber's Source line: a Google Drive folder's ({package}: its name) items that aren't files to download (Google Forms, shortcuts, Google Sites) are left out; {n} how many
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{package}: {n} item left out, a Google Form, shortcut or Site isn't a file|{package}: {n} items left out, Google Forms, shortcuts and Sites aren't files	{package}: {n} elemento escluso, un modulo Google, un collegamento o un sito non è un file|{package}: {n} elementi esclusi, i moduli Google, i collegamenti e i siti non sono file
 #. count in cnl.rs
 #. Click'n'Load window: {site} is a web site's name such as "example.com"
 #. {site} = a web site's name such as "example.com"; {n} = a number (keep the braces as they are)
@@ -343,6 +348,10 @@
 #. why a split archive (in several files, its volumes) isn't tested yet, in "{name} isn't complete ({why})": one of its files isn't downloaded yet
 #, machine
 	a volume of it isn't there yet	un suo volume non è ancora presente
+#. text in the Download video window
+#. why the thumbnail-as-cover checkbox is greyed in Download video: the choice is the site's sound in a WebM file, which can't hold a picture
+#, machine
+	A WebM file can't hold a cover: choose M4A, MP3, Opus or FLAC	Un file WebM non può contenere una copertina: scegli M4A, MP3, Opus o FLAC
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 	About Mister Download Manager	Informazioni su Mister Download Manager
 #. text in whereis.rs
@@ -572,6 +581,10 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	American Samoa	Samoa americane
+#. text in extension.rs
+#. a check of Test browser integration (Windows), one short line: an older registry entry for MDM's helper is in the way of the right one; the entry and where it leads show on the line under it
+#, machine
+	An older registry entry is in the way:	È presente una voce del Registro di sistema precedente:
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Andorra	Andorra
@@ -939,6 +952,11 @@
 #. message or event log entry in the main window
 #. event log entry after Recheck: {have} and {total} are sizes ("1.2 GB of 4 GB there")
 	Checked: {have} of {total} there	Verifica completata: presenti {have} di {total}
+#. text in softgl.rs
+#. the software renderer's window: the download is done, and its files are being checked and unpacked
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Checking and unpacking Mesa's software renderer...	Verifica e decompressione del renderer software di Mesa in corso...
 #. message or event log entry in the main window
 #. event log entry: a torrent's files are being read and checked again (Recheck)
 	Checking every piece again	Nuova verifica di tutte le parti
@@ -967,6 +985,10 @@
 #. Test browser integration, while it reads where browser integration stands (a moment, usually)
 #. the trailing ... means it is still going on: keep it
 	Checking...	Verifica in corso...
+#. text in the download list (sizes, speeds, status)
+#. a download's status: it finished, but the checksum its server announced didn't match its file (the file is kept). Short: the list's Status column is narrow
+#, machine
+	Checksum warning	Avviso checksum
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Chile	Cile
@@ -1446,6 +1468,11 @@
 #. text in a dialog box
 #. {size} = a file size such as "4.2 MB"; {bytes} = a number of bytes (keep the braces as they are)
 	Downloaded {size} ({bytes} Bytes)	Scaricati {size} ({bytes} byte)
+#. text in the download list (sizes, speeds, status)
+#. a download's status, whole (the Status cell's tip, Properties, the log, Download complete): it finished, but the checksum its server announced didn't match the file, which is kept. "Check it": the user can verify the file against a checksum they trust (right-click → Verify checksum...)
+#. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
+#, machine
+	Downloaded, but the server's {algorithm} checksum didn't match; the file may still be fine. Check it if it matters	Download completato, ma il checksum {algorithm} del server non corrisponde; il file potrebbe comunque essere integro. Verificalo se è importante
 #. item in the Categories tree in the download list; value in a column's filter list in the download list; text in remote.rs
 #. a download's status (state it is in, not a command)
 	Downloading	Download in corso
@@ -1473,6 +1500,11 @@
 #. Helpers: MDM's own copy of a helper is being downloaded (where there was none, or in place of the system's); {percent} = how far, a number
 #, machine
 	Downloading MDM's own copy... {percent}%	Download della copia di MDM in corso... {percent}%
+#. text in softgl.rs
+#. the software renderer's window, while it downloads; {done} and {size} = sizes (12.0 MB of 66.3 MB)
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	Downloading Mesa's software renderer: {done} of {size}	Download del renderer software di Mesa in corso: {done} di {size}
 #. text in archtest.rs
 #. in a download's log: after its archive test found damaged files, only their bytes are downloaded again from the same server; {size} like "1.20 MB"
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
@@ -1552,6 +1584,10 @@
 #. text in the Batch download window; text in the Link grabber window
 #. Link grabber, in the empty "Save to" box: each file goes to its category's folder (Options → Save to)
 	Each file's category folder	Cartella della categoria di ogni file
+#. text in the Options window
+#. Options → Regional → Videos' sound: the first choice, each video's own sound (the language it was made in), the default
+#, machine
+	Each video's original	L'audio originale di ogni video
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Ecuador	Ecuador
@@ -1880,6 +1916,10 @@
 #. text in the Batch download window
 #. {address} = an example web address with a * in the file name
 	For example:  {address}	Ad esempio:  {address}
+#. text in the Options window
+#. Options → Regional → Videos' sound: a note under the language list
+#, machine
+	For videos whose sound comes in several languages (dubbed ones), and playlists. A video without it keeps its original sound.	Per i video doppiati, il cui audio è disponibile in più lingue, e per le playlist. Un video senza audio in più lingue mantiene l'audio originale.
 #. text in the Add torrent window
 #. Torrent settings, under the switch that makes MDM open magnet links and .torrent files (macOS, Linux)
 	For your account only. Another app set as the default stays first.	Solo per il tuo account. Se un'altra app è impostata come predefinita, resta la prima scelta.
@@ -2555,6 +2595,11 @@
 #. text in the Download video window
 #. the trailing ... means it is still going on: keep it
 	Looking the page up...	Analisi della pagina...
+#. text in softgl.rs
+#. the software renderer's window: while MDM reads its signed list of the software renderers it may download (Mesa's llvmpipe: it draws MDM's windows where there is no graphics card)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Looking up Mesa's software renderer...	Ricerca del renderer software di Mesa in corso...
 #. text in preview.rs
 #. the preview pane: still looking whether the file is there
 #. the trailing ... means it is still going on: keep it
@@ -2689,6 +2734,9 @@
 #. Video helpers: MDM can't download Node.js on this system (an unusual processor); Node.js and Deno are program names; "Use another program" is the button below
 #, machine
 	MDM has no copy for this system: install Node.js or Deno, or use another program	MDM non ha una copia per questo sistema: installa Node.js o Deno, oppure usa un altro programma
+#. text in softgl.rs
+#, machine
+	MDM has no data folder	MDM non ha una cartella dati
 #. text in remote.rs
 #. remote control page (on a phone): no pairing code is shown in MDM; "Pair a device" is MDM's button
 	MDM shows no code now. Click Pair a device there first.	MDM non mostra nessun codice al momento. Fai prima clic su Associa un dispositivo nel programma.
@@ -2713,6 +2761,27 @@
 #. error installing ffmpeg: the list of builds MDM accepts doesn't carry MDM's own signature
 #, machine
 	MDM's list of checked ffmpeg builds isn't signed by MDM's key, so ffmpeg wasn't installed	L'elenco delle build di ffmpeg verificate da MDM non è firmato dalla chiave di MDM, quindi ffmpeg non è stato installato
+#. text in errors.rs
+#. error installing Mesa's software renderer: the list of builds MDM accepts couldn't be read; {detail} = the technical detail, in English
+#, machine
+	MDM's list of checked software renderers can't be read ({detail})	Impossibile leggere l'elenco dei renderer software verificati da MDM ({detail})
+#. text in errors.rs
+#. error installing Mesa's software renderer (it draws MDM's windows where there is no graphics card): MDM installs only builds named in a list it publishes, signed with its key, and that list couldn't be downloaded; {error} = why
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	MDM's list of checked software renderers could not be downloaded: {error}	Impossibile scaricare l'elenco dei renderer software verificati da MDM: {error}
+#. text in errors.rs
+#. error installing Mesa's software renderer: the list of builds MDM accepts has none for this computer's system and processor
+#, machine
+	MDM's list of checked software renderers has none for this computer	L'elenco dei renderer software verificati da MDM non ne contiene nessuno per questo computer
+#. text in errors.rs
+#. error installing Mesa's software renderer: the list of builds MDM accepts is older than one this copy of MDM already used (it never goes back to an older list)
+#, machine
+	MDM's list of checked software renderers is older than one already used, so nothing was installed	L'elenco dei renderer software verificati da MDM è più vecchio di uno già usato, quindi non è stato installato nulla
+#. text in errors.rs
+#. error installing Mesa's software renderer: the list of builds MDM accepts doesn't carry MDM's own signature
+#, machine
+	MDM's list of checked software renderers isn't signed by MDM's key, so nothing was installed	L'elenco dei renderer software verificati da MDM non è firmato dalla chiave di MDM, quindi non è stato installato nulla
 #. text in whereis.rs
 #. how far a download's server is, by its round trip (60 to 150 ms)
 	medium	intermedio
@@ -2729,6 +2798,14 @@
 #. a video's status while its picture and sound are joined into one file (ffmpeg); {percent} how far, e.g. "45%"
 #, machine
 	Merging... ({percent})	Unione in corso... ({percent})
+#. text in softgl.rs
+#. the software renderer's window: the download or its check failed; {reason} = why, a sentence's part
+#, machine
+	Mesa's software renderer couldn't be installed: {reason}	Impossibile installare il renderer software di Mesa: {reason}
+#. text in softgl.rs
+#. the software renderer's window, once Mesa's llvmpipe is downloaded and checked
+#, machine
+	Mesa's software renderer is installed. MDM draws with it from its next start.	Il renderer software di Mesa è installato. MDM lo userà per il rendering dal prossimo avvio.
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Mexico	Messico
@@ -2933,6 +3010,10 @@
 #. text in the Link grabber window
 #. Link grabber, a link's status: the server wants a login (401, 403)
 	Needs a login	Richiede un accesso
+#. text in the Link grabber window
+#. Link grabber, a link's status: a Google Drive folder that isn't shared with everyone needs the browser's Google sign-in. The sentence is the cell's hover tip
+#, machine
+	Needs a sign-in	Richiede un accesso
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Nepal	Nepal
@@ -3064,6 +3145,11 @@
 	No folders yet	Ancora nessuna cartella
 #. text in a dialog box
 	No goes back, to choose another folder.	Con No torni indietro per scegliere un'altra cartella.
+#. text in softgl.rs
+#. the software renderer's window, offered once at a start where Windows' own software renderer (WARP, keep the name) draws MDM because no graphics card has a driver for it; llvmpipe (keep the name) is Mesa's software renderer; {size} = its download's size (e.g. 66.3 MB)
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	No graphics card here has a driver MDM can draw with, so Windows' software renderer (WARP) draws its windows and keeps the processor busy. Mesa's software renderer (llvmpipe) draws them with far less. Download it once ({size}, from Mesa's builds on GitHub)? MDM draws with it from its next start.	Nessuna scheda grafica ha un driver che MDM possa usare per il rendering, quindi il renderer software di Windows (WARP) disegna le sue finestre e tiene occupato il processore. Il renderer software di Mesa (llvmpipe) le disegna con molto meno. Vuoi scaricarlo una sola volta ({size}, dalle build di Mesa su GitHub)? MDM lo userà per il rendering dal prossimo avvio.
 #. tooltip (why a control is greyed) in langpick.rs
 #. tooltip of the greyed OK button in the language picker
 	No language matches the search	Nessuna lingua corrisponde alla ricerca
@@ -3303,6 +3389,10 @@
 #. text in the Scheduler window
 #. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer's wake alarm can be set by an administrator only
 	Only an administrator can allow this	Solo un amministratore può consentirlo
+#. text in the Download video window
+#. why the thumbnail-as-cover checkbox is greyed in Download video: the choice is a video, which is saved as it is
+#, machine
+	Only an audio file gets a cover: a video is saved as it is	Solo un file audio può avere una copertina: un video viene salvato così com'è
 #. tooltip (why a control is greyed) in the Download video window
 #. why "Put them into the video" is greyed: the chosen file type can't hold subtitles
 	Only MP4 and MKV videos can hold subtitles	Solo i video MP4 e MKV possono contenere sottotitoli
@@ -3580,6 +3670,10 @@
 #. text in the Batch download window
 #. why Batch download's OK is greyed
 	Put a * in the address where the numbers or letters go	Inserisci un * nell'indirizzo al posto dei numeri o delle lettere
+#. text in the Download video window
+#. checkbox in Download video: the picture the site shows for the video (its thumbnail) goes into an audio-only download (MP3, M4A, Opus, FLAC) as its cover, which music players show
+#, machine
+	Put the video's thumbnail in the audio file as its cover	Inserisci la miniatura del video nel file audio come copertina
 #. checkbox in the Download video window
 #. checkbox in Download video: subtitles go inside the video file instead of a separate .srt file beside it
 	Put them into the video	Incorporali nel video
@@ -4166,6 +4260,10 @@
 #. button in the Download complete window: opens a menu of how long no Download complete window shows (30 minutes, 1 hour...)
 #, machine
 	Snooze	Sospendi
+#. text in softgl.rs
+#. the window's title: Mesa's software renderer, offered where no graphics card draws MDM's windows
+#, machine
+	Software renderer	Renderer software
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Solomon Islands	Isole Salomone
@@ -4181,8 +4279,16 @@
 	some of its volumes are still downloading	alcuni dei suoi volumi sono ancora in download
 #. text in a dialog box
 	Some of the torrent's files are already in this folder:	Alcuni file del torrent sono già presenti in questa cartella:
+#. text in the Download video window
+#. label in Download video before the list of the languages a video's sound comes in (its original and the dubbed ones)
+#, machine
+	Sound	Audio
 #. text in the Options window
 	Sound file	File audio
+#. text in the Options window
+#. Options → Regional → Videos' sound: label before the list of languages
+#, machine
+	Sound language:	Lingua audio:
 #. page title in the Options window
 	Sound settings	Impostazioni audio
 #. text in the Options window
@@ -4521,6 +4627,10 @@
 #. text in extension.rs
 #. a check of Test browser integration: the browsers find MDM's helper program
 	The browsers can find Mister Download Manager	I browser riescono a trovare Mister Download Manager
+#. text in extension.rs
+#. under "An older registry entry is in the way" (Test browser integration, Windows): the entry is in the part of the registry 32-bit programs use, which the browsers read before the right entry; it leads to another copy of MDM or to one that was deleted; then what the Set it up button does about it
+#, machine
+	The browsers read it before the right one, and it leads to another copy of Mister Download Manager or to one that is gone. Set it up gives your account an entry of its own, which the browsers read first.	I browser leggono la voce prima di quella corretta e questa rimanda a un'altra copia di Mister Download Manager o a una che non esiste più. Fai clic su Configura per aggiungere una voce per il tuo account, che i browser leggeranno per prima.
 #. text in the Options window
 #. Options → Remote → Status: the settings were changed; they apply on OK
 	The changes apply when you click OK.	Le modifiche verranno applicate quando fai clic su OK.
@@ -4608,6 +4718,10 @@
 	the downloaded ffmpeg isn't the build MDM's list of checked builds names, so it wasn't installed	L'ffmpeg scaricato non è la build indicata nell'elenco delle build verificate da MDM, quindi non è stato installato
 #. text in errors.rs
 	the downloaded program doesn't match its signed checksum	il programma scaricato non corrisponde al checksum firmato
+#. text in errors.rs
+#. error installing Mesa's software renderer: a file downloaded isn't the one named in the list of builds MDM accepts (its checksum differs), so it was thrown away
+#, machine
+	the downloaded software renderer isn't the build MDM's list of checked builds names, so it wasn't installed	Impossibile installare il renderer software scaricato: non corrisponde alla build indicata nell'elenco delle build verificate di MDM
 #. message or event log entry in the main window
 #. in the empty download list, under its title
 	The downloads you add, or drop on this window, show here.	I download che aggiungi o trascini su questa finestra compaiono qui.
@@ -4997,6 +5111,10 @@
 #. text in errors.rs
 #. a download's error: a Google Drive file that isn't shared with everyone
 	this Google Drive file needs you to sign in: sign in to Google in your browser, then download it from there	questo file di Google Drive richiede l'accesso: accedi a Google nel browser, quindi scaricalo da lì
+#. text in the Link grabber window
+#. Link grabber, the hover tip of a Google Drive folder's status: the folder isn't shared with everyone; how to send it with the browser's sign-in (the browser's right-click command, keep its name as the browser extension shows it)
+#, machine
+	This Google Drive folder needs you to sign in: sign in to Google in your browser, then right-click the folder's link there and choose Download with Mister Download Manager.	Questa cartella di Google Drive richiede l'accesso: accedi a Google nel tuo browser, poi fai clic destro sul collegamento della cartella e scegli Scarica con Mister Download Manager.
 #. text in errors.rs
 #. a download's error: the address is a Google Drive folder, which isn't one file
 	this is a Google Drive folder, not a file	questa è una cartella di Google Drive, non un file
@@ -5545,6 +5663,10 @@
 #. text in playlistdlg.rs
 #. what a screen reader calls the list of a playlist's videos
 	Videos	Video
+#. group box title in the Options window
+#. Options → Regional: group box title: the language of a video's sound, for videos that come with several (dubbed ones)
+#, machine
+	Videos' sound	Audio dei video
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Vietnam	Vietnam
@@ -5888,6 +6010,11 @@
 #. said after Delete with files when some files stayed on the disk; {file} is the download's name; the files' paths follow it
 #, machine
 	{file}: these files stayed on the disk, because MDM didn't create them or another download uses them:	{file}: questi file sono rimasti sul disco, perché MDM non li ha creati o un altro download li usa:
+#. text in the Link grabber window
+#. Link grabber's Source line: a Google Drive folder ({folder}: its name) in which a folder showed the most items Drive's page lists ({n}: 50), so it may hold more than are listed; what gets them all (Drive's own Download button, which makes a zip)
+#. {n} = a number (keep the braces as they are)
+#, machine
+	{folder}: Google Drive's page lists only the first {n} items of a folder, so some may be missing; Drive's own Download gets the whole folder as a zip	{folder}: la pagina di Google Drive elenca solo i primi {n} elementi di una cartella, quindi alcuni potrebbero mancare; il download di Drive ottiene l'intera cartella come file zip
 #. message or event log entry in the main window; text in the Link grabber window
 #. Link grabber's Source line, after where the links came from: a folder (an FTP folder, a web server's "Index of" page) held more files or subfolders than Link grabber lists; {folder} is its name, {n} how many of its files are listed (10,000)
 #. {n} = a number (keep the braces as they are)
@@ -5937,8 +6064,16 @@
 #. an error: the server's address is IPv6 (or IPv4) and the chosen network adapter has none of that kind; {ip} the address, {adapter} the adapter's name
 	{ip} can't be reached through {adapter}: it has no address of that kind (IPv4 or IPv6)	{ip} non è raggiungibile tramite {adapter}: la scheda non ha un indirizzo di quel tipo (IPv4 o IPv6)
 #. text in the Download video window
+#. in Download video's Sound list: a language's sound track that describes the picture for people who can't see it; {language} is the language's name
+#, machine
+	{language}, audio description	{language}, descrizione audio
+#. text in the Download video window
 #. in the Subtitles list of Download video: {language} = a language's name; the site made these subtitles automatically (speech recognition)
 	{language}, automatic	{language}, automatici
+#. text in the Download video window
+#. in Download video's Sound list and the browser's video menu: the video's own sound, the language it was made in (the others are dubbed); {language} is the language's name
+#, machine
+	{language}, original	{language}, originale
 #. text in a download's progress window
 #. {live} = peers connected now; {known} = peers heard of
 	{live} connected, {known} known	{live} connessi, {known} noti
@@ -6109,10 +6244,20 @@
 #, machine
 	{site} didn't give the file this time: try again in a moment	{site} non ha fornito il file questa volta: riprova tra un momento
 #. text in the Link grabber window
+#. Link grabber, the hover tip of a Google Drive folder's status ({site}: "Google Drive"): no folder at this link, or one the signed-in account may not open
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+	{site} has no such folder, or it isn't shared with you.	{site} non ha una cartella simile, oppure non è condivisa con te.
+#. text in the Link grabber window
 #. Link grabber, the hover tip of a Hugging Face repository's or GitHub release's status; {site} is "Hugging Face" or "GitHub"
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
 #, machine
 	{site} has no such repository, folder, release or tag, or it is private.	{site} non ha questo repository, cartella, release o tag, oppure è privato.
+#. text in the Link grabber window
+#. Link grabber, a Google Drive folder's status (the cell's hover tip): Drive ({site}: "Google Drive") answered that it gets too many requests from this computer
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+	{site} is getting too many requests from this computer: try again later.	{site} sta ricevendo troppe richieste da questo computer: riprova più tardi.
 #. text in the Link grabber window
 #. Link grabber, a Hugging Face repository's or GitHub release's status (the cell's hover tip): the site ({site}: "Hugging Face", "GitHub") lets only so many requests through from a computer without an account; {n} minutes to wait
 #. {site} = a web site's name such as "example.com"; {n} = a number (keep the braces as they are)
@@ -7420,6 +7565,11 @@ menu	Download &video from a page...	Scarica &video da una pagina...
 #. right-click → Torrent, a choice with a check mark: download the torrent's files from their start, to watch a video while it downloads
 menu	Download in order	Scarica in sequenza
 #. menu command in the main window
+#. View → Draw with: opens a window offering to download Mesa's software renderer (llvmpipe, keep the name), which draws MDM's windows with far less of the processor than Windows' own (WARP)
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Download Mesa's software renderer (llvmpipe)...	Scarica il renderer software di Mesa (llvmpipe)...
+#. menu command in the main window
 #. View menu: submenu choosing what draws MDM's windows: OpenGL, or Direct3D, Vulkan or Metal (graphics systems)
 menu	Draw with	Rendering con
 #. menu command in the main window
@@ -7608,6 +7758,18 @@ menu	Select &all	Seleziona &tutto
 menu	Show &drop target	Mostra area di &rilascio
 #. menu command in the main window
 menu	Show Mister Download Manager	Mostra Mister Download Manager
+#. menu command in the main window
+#. View → Draw with: a greyed note; Mesa's software renderer (llvmpipe, keep the name) failed on this computer, so Windows' own software renderer (WARP, keep the name) draws
+#, machine
+menu	Software (llvmpipe) didn't start here: WARP draws	Software (llvmpipe) non si avvia su questo computer: si usa WARP
+#. menu command in the main window
+#. View → Draw with: a greyed note; Mesa's software renderer (llvmpipe, keep the name) is downloaded and draws the windows from MDM's next start
+#, machine
+menu	Software (llvmpipe) draws from the next start	Software (llvmpipe) si avvia dal prossimo avvio
+#. menu command in the main window
+#. View → Draw with: a greyed note; what draws the windows: Mesa's software renderer, llvmpipe (keep the name), because no graphics card here has a driver MDM can draw with
+#, machine
+menu	Software (llvmpipe): no graphics card here has a driver for MDM	Software (llvmpipe): nessuna scheda grafica ha un driver per MDM
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 menu	Speed &Limiter	&Limitatore di velocità

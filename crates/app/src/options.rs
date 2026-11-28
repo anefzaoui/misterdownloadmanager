@@ -243,6 +243,35 @@ impl DnsEdit {
     }
 }
 
+/// What Options looks for on the disk as it opens (#1292: beside the window's thread).
+struct Found {
+    seven_zip: Option<std::path::PathBuf>,
+    hatch_zip: Option<std::path::PathBuf>,
+    cookie_browser: usize,
+}
+
+/// Look for what Options names on the disk ([`Found`]) on a thread of its own.
+fn look_for_tools(s: &Settings) -> std::sync::mpsc::Receiver<Found> {
+    let (tx, rx) = std::sync::mpsc::channel();
+    let (chosen, s) = (s.seven_zip_path.clone(), s.clone());
+    crate::launch::spawn("options: tools", move || {
+        let _ = tx.send(Found {
+            seven_zip: crate::extractq::seven_zip_for(&chosen),
+            hatch_zip: crate::extractq::hatch_zip(),
+            cookie_browser: cookie_browser_at(&s),
+        });
+    });
+    rx
+}
+
+/// [`cookie_browser_at`] without the disk: the browser chosen, else the first.
+fn cookie_browser_chosen(s: &Settings) -> usize {
+    mdm_tools::proc::cookie_browsers()
+        .iter()
+        .position(|b| *b == s.video_cookies)
+        .unwrap_or(0)
+}
+
 /// Sites Logins → Cookies for video sites' browser at first (#229): the one chosen, else the
 /// first browser whose extension reached MDM when yt-dlp reads it (MDM doesn't know the
 /// system's default browser), else Firefox, which yt-dlp reads on every system.
@@ -351,6 +380,16 @@ pub struct OptionsDialog {
     not_7zip: bool,
     /// HatchZip's command line program (Archives: extract in place), looked for with 7-Zip.
     hatch_zip: Option<std::path::PathBuf>,
+    /// What the window looks for on the disk as it opens (7-Zip and HatchZip along the PATH,
+    /// the browsers whose extension reached MDM), beside the window's thread (#1292): until it
+    /// is in, 7-Zip and HatchZip aren't named and the cookies' browser is the one chosen.
+    found: Option<std::sync::mpsc::Receiver<Found>>,
+    /// Archives → Use MDM's own 7-Zip again: the one looked for beside the window's thread.
+    own_7zip: Option<std::sync::mpsc::Receiver<Option<std::path::PathBuf>>>,
+    /// 7-Zip was chosen in the window since it opened: what was found then doesn't replace it.
+    seven_zip_chosen: bool,
+    /// The cookies' browser was chosen in the window since it opened.
+    cookie_browser_chosen: bool,
     /// Proxy / Socks → Network adapter (#35): the computer's adapters, read again every 2 s.
     adapters: Option<(std::time::Instant, Vec<mdm_engine::net::Adapter>)>,
     /// Proxy / Socks → Test (#1558): the answer, shared with its thread (None while it runs).
@@ -401,6 +440,17 @@ impl OptionsDialog {
     /// 6 Sites Logins, 7 Accounts, 8 Sounds, 9 Regional, 10 Archives); for `/show options:<tab>`.
     pub fn on_page(mut self, page: usize) -> Self {
         self.page = page;
+        self
+    }
+
+    /// With Save to's category `key` chosen (its settings name, `Programs`; a user's by its
+    /// name), for `/show options:saveto:<category>`: screenshots of a category's file types.
+    pub fn with_category(mut self, key: &str, downloads: &std::path::Path) -> Self {
+        let cats = Category::all();
+        if let Some(i) = cats.iter().position(|c| c.key().eq_ignore_ascii_case(key)) {
+            self.category = i;
+            self.cat_dir = display_dir(&self.s.category_dir(cats[i], downloads));
+        }
         self
     }
 
@@ -517,10 +567,14 @@ impl OptionsDialog {
             cat_edit: None,
             restore_ask: None,
             learned,
-            seven_zip: crate::extractq::seven_zip_for(&settings.seven_zip_path),
+            seven_zip: None,
             checking_7zip: None,
             not_7zip: false,
-            hatch_zip: crate::extractq::hatch_zip(),
+            hatch_zip: None,
+            found: Some(look_for_tools(settings)),
+            own_7zip: None,
+            seven_zip_chosen: false,
+            cookie_browser_chosen: false,
             adapters: None,
             proxy_test: None,
             remote: None,
@@ -528,7 +582,7 @@ impl OptionsDialog {
             test_gb: settings.test_archives_gb.to_string(),
             folder_depth: settings.grabber_depth.to_string(),
             device_rows: Default::default(),
-            cookie_browser: cookie_browser_at(settings),
+            cookie_browser: cookie_browser_chosen(settings),
             recording_hotkey: false,
             hotkey_taken: false,
             ua_auto: settings.own_user_agent().is_none(),
@@ -537,8 +591,40 @@ impl OptionsDialog {
         }
     }
 
+    /// What was looked for beside the window's thread, once it is in ([`Found`]); until then the
+    /// window looks again shortly.
+    fn take_found(&mut self, ctx: &egui::Context) {
+        use std::sync::mpsc::TryRecvError;
+        match self.found.as_ref().map(|rx| rx.try_recv()) {
+            Some(Ok(found)) => {
+                self.found = None;
+                if !self.seven_zip_chosen {
+                    self.seven_zip = found.seven_zip;
+                }
+                self.hatch_zip = found.hatch_zip;
+                if !self.cookie_browser_chosen {
+                    self.cookie_browser = found.cookie_browser;
+                }
+            }
+            Some(Err(TryRecvError::Disconnected)) => self.found = None,
+            Some(Err(TryRecvError::Empty)) | None => {}
+        }
+        match self.own_7zip.as_ref().map(|rx| rx.try_recv()) {
+            Some(Ok(exe)) => {
+                self.own_7zip = None;
+                self.seven_zip = exe;
+            }
+            Some(Err(TryRecvError::Disconnected)) => self.own_7zip = None,
+            Some(Err(TryRecvError::Empty)) | None => {}
+        }
+        if self.found.is_some() || self.own_7zip.is_some() {
+            ctx.request_repaint_after(std::time::Duration::from_millis(50));
+        }
+    }
+
     /// `Done(settings)` on OK.
     pub fn show(&mut self, ctx: &egui::Context, downloads: &std::path::Path) -> Outcome<Settings> {
+        self.take_found(ctx);
         let modal = self.sub.is_some() || self.cat_edit.is_some() || self.restore_ask.is_some();
         if modal || self.page != 0 {
             self.recording_hotkey = false;
@@ -1334,7 +1420,13 @@ impl OptionsDialog {
         ));
         winui::text_in_window(ui, &p, o.x + 31.0, o.y + 178.0, &line, LIGHT_TEXT());
         let types = cat.types_text();
-        readonly(ui, r(o, 31.0, 185.0, 362.0, 23.0), &types);
+        // A list of file types (`EXE MSI APK...`) reads left to right in every language, cut
+        // with its "..." at its end; General's and Torrents' sentence follows the interface.
+        if matches!(cat, Category::General | Category::Torrents) {
+            readonly(ui, r(o, 31.0, 185.0, 362.0, 23.0), &types);
+        } else {
+            readonly_ltr(ui, r(o, 31.0, 185.0, 362.0, 23.0), &types);
+        }
         let dir_line = with_category(crate::i18n::t(
             "Default download directory for \"{category}\" category",
         ));
@@ -2056,6 +2148,8 @@ impl OptionsDialog {
             page_title_ending(&p, font, o.x + get_x - 8.0, o.y + 69.0, &lines);
         }
         let s = &mut self.s;
+        let (mode_was, box_was) = (s.proxy_mode, s.proxy_from_browser);
+        let mut clicked = false;
         if winui::button_light(
             ui,
             r(o, get_x, 61.0, get_w, 21.0),
@@ -2126,15 +2220,18 @@ impl OptionsDialog {
             );
             if resp.clicked() {
                 s.proxy_mode = i as u8;
+                clicked = true;
             }
             group.push(resp);
         }
         if let Some(i) = winui::radio_keys(ui, &group) {
             s.proxy_mode = i as u8;
+            clicked = true;
         }
         if s.proxy_mode != was {
             tick_manual_protocols(s);
         }
+        note_proxy_choice(s, mode_was, box_was, clicked);
         winui::etched_h(&p, o.x + 22.0, o.y + 159.0, 380.0);
         winui::etched_h(&p, o.x + 21.0, o.y + 187.0, 380.0);
         winui::etched_h(&p, o.x + 21.0, o.y + 242.0, 380.0);
@@ -2824,6 +2921,7 @@ impl OptionsDialog {
             "opt-cookie-browser",
         ) {
             self.cookie_browser = i;
+            self.cookie_browser_chosen = true;
             choose(&mut self.s, i);
         }
         // The profile: a name (Firefox's, "Profile 1") or a folder; empty, the last one used.
@@ -3042,6 +3140,8 @@ impl OptionsDialog {
             if is_7zip {
                 s.seven_zip_path = exe.display().to_string();
                 self.seven_zip = Some(exe);
+                self.seven_zip_chosen = true;
+                self.own_7zip = None;
             }
         }
         let (rar, ink) = match (hatch, &self.seven_zip) {
@@ -3149,7 +3249,13 @@ impl OptionsDialog {
             self.not_7zip = false;
             if own {
                 s.seven_zip_path.clear();
-                self.seven_zip = crate::extractq::seven_zip_for("");
+                self.seven_zip_chosen = true;
+                // Looked for along the PATH beside the window's thread (#1292).
+                let (tx, rx) = std::sync::mpsc::channel();
+                crate::launch::spawn("options: 7-Zip", move || {
+                    let _ = tx.send(crate::extractq::seven_zip_for(""));
+                });
+                self.own_7zip = Some(rx);
             } else {
                 // i18n: file picker title; {name} = the program to choose (yt-dlp, ffmpeg, 7-Zip)
                 let title = crate::i18n::fmt(crate::i18n::t("Choose {name}"), &[("name", "7-Zip")]);
@@ -3453,6 +3559,72 @@ impl OptionsDialog {
             o.y + 320.0,
             crate::i18n::t("Used by the list of downloads and the Scheduler."),
             LIGHT_DISABLED(),
+        );
+        self.sound_language(ui, o);
+    }
+
+    /// Regional → the language videos' sound comes in when they have several (#1961: YouTube's
+    /// dubbed tracks): each video's original (the default) or a language, for every video
+    /// looked up and every playlist; a video without that language comes with its original.
+    fn sound_language(&mut self, ui: &mut Ui, o: Pos2) {
+        let p = ui.painter().clone();
+        // i18n: Options → Regional: group box title: the language of a video's sound, for videos that come with several (dubbed ones)
+        group(ui, o, 16.0, 354.0, 392.0, 110.0, "Videos' sound");
+        let codes = crate::videodlg::sound_language_choices(&self.s.video_sound_language);
+        let names: Vec<String> = std::iter::once(
+            // i18n: Options → Regional → Videos' sound: the first choice, each video's own sound (the language it was made in), the default
+            crate::i18n::t("Each video's original").to_owned(),
+        )
+        .chain(
+            codes
+                .iter()
+                .map(|c| crate::videodlg::sound_language_name(c, false)),
+        )
+        .collect();
+        let items: Vec<&str> = names.iter().map(String::as_str).collect();
+        let at = codes
+            .iter()
+            .position(|c| c.eq_ignore_ascii_case(self.s.video_sound_language.trim()))
+            .map_or(0, |i| i + 1);
+        // i18n: Options → Regional → Videos' sound: label before the list of languages
+        let label = crate::i18n::t("Sound language:");
+        let (rect, cut) = winui::text_right_within(
+            &p,
+            o.x + 186.0,
+            o.y + 389.0,
+            label,
+            LIGHT_TEXT(),
+            o.x + 30.0,
+        );
+        if cut {
+            winui::full_on_hover(ui, rect, "sound-language-label", label);
+        }
+        if let Some(i) = winui::combo_light(
+            ui,
+            r(o, 192.0, 374.0, 200.0, 21.0),
+            &items,
+            at,
+            true,
+            "opt-sound-language",
+        ) {
+            self.s.video_sound_language = match i {
+                0 => String::new(),
+                i => codes[i - 1].clone(),
+            };
+        }
+        winui::paragraph_until(
+            ui,
+            &p,
+            o.x + 30.0,
+            o.y + 418.0,
+            // i18n: Options → Regional → Videos' sound: a note under the language list
+            crate::i18n::t(
+                "For videos whose sound comes in several languages (dubbed ones), and playlists. A video without it keeps its original sound.",
+            ),
+            LIGHT_DISABLED(),
+            o.x + 400.0,
+            o.y + 458.0,
+            13.0,
         );
     }
 
@@ -5271,6 +5443,16 @@ impl OptionsDialog {
 
 // ---- pieces -----------------------------------------------------------------------------
 
+/// Proxy / Socks this frame (#1616): "No proxy/socks" is chosen when it was clicked (or picked
+/// with the keys), even while already on, or when the browser box changed while it is on; any
+/// other mode, chosen or brought by Get System, ends the choice. A page only looked at changes
+/// nothing, so the untouched default stays the default.
+fn note_proxy_choice(s: &mut Settings, mode_was: u8, box_was: bool, clicked: bool) {
+    if clicked || s.proxy_mode != mode_was || s.proxy_from_browser != box_was {
+        s.proxy_none_chosen = s.proxy_mode == 0;
+    }
+}
+
 /// Proxy / Socks → Manual proxy/socks configuration with no protocol ticked uses the proxy for
 /// nothing, and the boxes start unticked (#1448: yt-dlp went straight to YouTube): chosen, or
 /// found so when Options opens, it is ticked for http and https, as Get System ticks it.
@@ -5376,8 +5558,13 @@ pub fn play_sound(file: &str) {
     if crate::offscreen() {
         return;
     }
+    // Windows opens and reads the sound's file as it starts playing it (#1292: never on the
+    // window's thread). Linux and macOS hand it to a program of their own (unix.rs).
     #[cfg(windows)]
-    crate::win32::play_sound(file);
+    {
+        let file = file.to_owned();
+        crate::launch::spawn("sound", move || crate::win32::play_sound(&file));
+    }
     #[cfg(unix)]
     crate::unix::play_sound(file);
 }
@@ -6747,6 +6934,32 @@ mod tests {
             !other.proxy_http && !other.proxy_https,
             "not Manual: as it is"
         );
+    }
+
+    /// #1616: "No proxy/socks" counts as chosen only from the page: a click on it (also when it
+    /// was already on) or a change of the browser box while it's on; looking changes nothing,
+    /// and another mode ends the choice.
+    #[test]
+    fn no_proxy_is_chosen_by_a_click_not_by_looking() {
+        let mut s = Settings::default();
+        note_proxy_choice(&mut s, 0, true, false);
+        assert!(!s.proxy_none_chosen, "only looked at");
+        note_proxy_choice(&mut s, 0, true, true);
+        assert!(s.proxy_none_chosen, "clicked while on");
+        s.proxy_mode = 1;
+        note_proxy_choice(&mut s, 0, true, true);
+        assert!(!s.proxy_none_chosen, "another mode");
+        s.proxy_mode = 0;
+        s.proxy_from_browser = false;
+        note_proxy_choice(&mut s, 0, true, false);
+        assert!(
+            s.proxy_none_chosen,
+            "the browser box unticked while it's on"
+        );
+        assert_eq!(s.proxy(), mdm_engine::Proxy::Direct);
+        s.proxy_mode = 3;
+        note_proxy_choice(&mut s, 0, false, false);
+        assert!(!s.proxy_none_chosen, "Get System's Manual");
     }
 
     /// #1558: an address typed the old way (`socks5://host`) opens as Type SOCKS5 with the host

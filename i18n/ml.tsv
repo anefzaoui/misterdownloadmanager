@@ -191,6 +191,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{package}: {n} file left out, its name would lead out of its folder|{package}: {n} files left out, their names would lead out of its folder	{package}: ഫോൾഡറിന് പുറത്തേക്ക് നയിക്കുന്ന പേരുള്ള {n} ഫയൽ ഒഴിവാക്കി|{package}: ഫോൾഡറിന് പുറത്തേക്ക് നയിക്കുന്ന പേരുകളുള്ള {n} ഫയലുകൾ ഒഴിവാക്കി
+#. count in the Link grabber window
+#. Link grabber's Source line: a Google Drive folder's ({package}: its name) items that aren't files to download (Google Forms, shortcuts, Google Sites) are left out; {n} how many
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{package}: {n} item left out, a Google Form, shortcut or Site isn't a file|{package}: {n} items left out, Google Forms, shortcuts and Sites aren't files	{package}: {n} ഇനം ഒഴിവാക്കി; Google ഫോം, കുറുക്കുവഴി അല്ലെങ്കിൽ സൈറ്റ് ഡൗൺലോഡ് ചെയ്യാനുള്ള ഫയലല്ല|{package}: {n} ഇനങ്ങൾ ഒഴിവാക്കി; Google ഫോമുകൾ, കുറുക്കുവഴികൾ, സൈറ്റുകൾ എന്നിവ ഡൗൺലോഡ് ചെയ്യാനുള്ള ഫയലുകളല്ല
 #. count in cnl.rs
 #. Click'n'Load window: {site} is a web site's name such as "example.com"
 #. {site} = a web site's name such as "example.com"; {n} = a number (keep the braces as they are)
@@ -392,6 +397,10 @@
 #. why a split archive (in several files, its volumes) isn't tested yet, in "{name} isn't complete ({why})": one of its files isn't downloaded yet
 #, machine
 	a volume of it isn't there yet	അതിന്റെ ഒരു വോളിയം ഇതുവരെ ലഭ്യമല്ല
+#. text in the Download video window
+#. why the thumbnail-as-cover checkbox is greyed in Download video: the choice is the site's sound in a WebM file, which can't hold a picture
+#, machine
+	A WebM file can't hold a cover: choose M4A, MP3, Opus or FLAC	ഒരു WebM ഫയലിന് കവർ ഉൾക്കൊള്ളാൻ കഴിയില്ല: M4A, MP3, Opus അല്ലെങ്കിൽ FLAC തിരഞ്ഞെടുക്കുക
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	About Mister Download Manager	Mister Download Manager-നെക്കുറിച്ച്
@@ -680,6 +689,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	American Samoa	അമേരിക്കൻ സമോവ
+#. text in extension.rs
+#. a check of Test browser integration (Windows), one short line: an older registry entry for MDM's helper is in the way of the right one; the entry and where it leads show on the line under it
+#, machine
+	An older registry entry is in the way:	ഒരു പഴയ രജിസ്ട്രി എൻട്രി തടസ്സമായി നിൽക്കുന്നു:
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -1143,6 +1156,11 @@
 #. event log entry after Recheck: {have} and {total} are sizes ("1.2 GB of 4 GB there")
 #, machine
 	Checked: {have} of {total} there	പരിശോധിച്ചു: {total} ഉള്ളതിൽ {have} ഉണ്ട്
+#. text in softgl.rs
+#. the software renderer's window: the download is done, and its files are being checked and unpacked
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Checking and unpacking Mesa's software renderer...	Mesa-യുടെ സോഫ്റ്റ്‌വെയർ റെൻഡറർ പരിശോധിക്കുകയും അൺപാക്ക് ചെയ്യുകയും ചെയ്യുന്നു...
 #. message or event log entry in the main window
 #. event log entry: a torrent's files are being read and checked again (Recheck)
 #, machine
@@ -1177,6 +1195,10 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Checking...	പരിശോധിക്കുന്നു...
+#. text in the download list (sizes, speeds, status)
+#. a download's status: it finished, but the checksum its server announced didn't match its file (the file is kept). Short: the list's Status column is narrow
+#, machine
+	Checksum warning	ചെക്ക്സം മുന്നറിയിപ്പ്
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -1770,6 +1792,11 @@
 #. {size} = a file size such as "4.2 MB"; {bytes} = a number of bytes (keep the braces as they are)
 #, machine
 	Downloaded {size} ({bytes} Bytes)	{size} ({bytes} ബൈറ്റുകൾ) ഡൗൺലോഡ് ചെയ്തു
+#. text in the download list (sizes, speeds, status)
+#. a download's status, whole (the Status cell's tip, Properties, the log, Download complete): it finished, but the checksum its server announced didn't match the file, which is kept. "Check it": the user can verify the file against a checksum they trust (right-click → Verify checksum...)
+#. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
+#, machine
+	Downloaded, but the server's {algorithm} checksum didn't match; the file may still be fine. Check it if it matters	ഡൗൺലോഡ് ചെയ്തു, പക്ഷേ സെർവറിന്റെ {algorithm} ചെക്ക്സം പൊരുത്തപ്പെട്ടില്ല; ഫയൽ ഇപ്പോഴും ശരിയായിരിക്കാം. പ്രധാനമാണെങ്കിൽ പരിശോധിക്കുക
 #. item in the Categories tree in the download list; value in a column's filter list in the download list; text in remote.rs
 #. a download's status (state it is in, not a command)
 #, machine
@@ -1802,6 +1829,11 @@
 #. Helpers: MDM's own copy of a helper is being downloaded (where there was none, or in place of the system's); {percent} = how far, a number
 #, machine
 	Downloading MDM's own copy... {percent}%	MDM-ന്റെ സ്വന്തം പകർപ്പ് ഡൗൺലോഡ് ചെയ്യുന്നു... {percent}%
+#. text in softgl.rs
+#. the software renderer's window, while it downloads; {done} and {size} = sizes (12.0 MB of 66.3 MB)
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	Downloading Mesa's software renderer: {done} of {size}	മേസയുടെ സോഫ്റ്റ്‌വെയർ റെൻഡറർ ഡൗൺലോഡ് ചെയ്യുന്നു: {size} -ൽ {done}
 #. text in archtest.rs
 #. in a download's log: after its archive test found damaged files, only their bytes are downloaded again from the same server; {size} like "1.20 MB"
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
@@ -1893,6 +1925,10 @@
 #. Link grabber, in the empty "Save to" box: each file goes to its category's folder (Options → Save to)
 #, machine
 	Each file's category folder	ഓരോ ഫയലിന്റെയും വിഭാഗം ഫോൾഡർ
+#. text in the Options window
+#. Options → Regional → Videos' sound: the first choice, each video's own sound (the language it was made in), the default
+#, machine
+	Each video's original	ഓരോ വീഡിയോയുടെയും ഒറിജിനൽ
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2303,6 +2339,10 @@
 #. {address} = an example web address with a * in the file name
 #, machine
 	For example:  {address}	ഉദാഹരണത്തിന്: {address}
+#. text in the Options window
+#. Options → Regional → Videos' sound: a note under the language list
+#, machine
+	For videos whose sound comes in several languages (dubbed ones), and playlists. A video without it keeps its original sound.	ഒന്നിലധികം ഭാഷകളിൽ ശബ്ദമുള്ള വീഡിയോകൾക്കും (ഡബ്ബ് ചെയ്തവ) പ്ലേലിസ്റ്റുകൾക്കും. ശബ്ദമില്ലാത്ത വീഡിയോകൾക്ക് അവയുടെ യഥാർത്ഥ ശബ്ദം നിലനിർത്തും.
 #. text in the Add torrent window
 #. Torrent settings, under the switch that makes MDM open magnet links and .torrent files (macOS, Linux)
 #, machine
@@ -3153,6 +3193,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Looking the page up...	പേജ് തിരയുന്നു...
+#. text in softgl.rs
+#. the software renderer's window: while MDM reads its signed list of the software renderers it may download (Mesa's llvmpipe: it draws MDM's windows where there is no graphics card)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Looking up Mesa's software renderer...	Mesa-യുടെ സോഫ്റ്റ്‌വെയർ റെൻഡറർ തിരയുന്നു...
 #. text in preview.rs
 #. the preview pane: still looking whether the file is there
 #. the trailing ... means it is still going on: keep it
@@ -3321,6 +3366,9 @@
 #. Video helpers: MDM can't download Node.js on this system (an unusual processor); Node.js and Deno are program names; "Use another program" is the button below
 #, machine
 	MDM has no copy for this system: install Node.js or Deno, or use another program	ഈ സിസ്റ്റത്തിനുള്ള പകർപ്പ് MDM-ന്റെ പക്കലില്ല: Node.js അല്ലെങ്കിൽ Deno ഇൻസ്റ്റാൾ ചെയ്യുക, അല്ലെങ്കിൽ മറ്റൊരു പ്രോഗ്രാം ഉപയോഗിക്കുക
+#. text in softgl.rs
+#, machine
+	MDM has no data folder	MDM-ന് ഡാറ്റാ ഫോൾഡറില്ല
 #. text in remote.rs
 #. remote control page (on a phone): no pairing code is shown in MDM; "Pair a device" is MDM's button
 #, machine
@@ -3346,6 +3394,27 @@
 #. error installing ffmpeg: the list of builds MDM accepts doesn't carry MDM's own signature
 #, machine
 	MDM's list of checked ffmpeg builds isn't signed by MDM's key, so ffmpeg wasn't installed	MDM-ൻ്റെ പരിശോധിച്ച ffmpeg ബിൽഡുകളുടെ ലിസ്റ്റിൽ MDM-ൻ്റെ സ്വന്തം ഒപ്പ് ഇല്ല, അതിനാൽ ffmpeg ഇൻസ്റ്റാൾ ചെയ്തില്ല
+#. text in errors.rs
+#. error installing Mesa's software renderer: the list of builds MDM accepts couldn't be read; {detail} = the technical detail, in English
+#, machine
+	MDM's list of checked software renderers can't be read ({detail})	MDM-ന്റെ അംഗീകരിച്ച സോഫ്റ്റ്‌വെയർ റെൻഡററുകളുടെ ലിസ്റ്റ് വായിക്കാനായില്ല ({detail})
+#. text in errors.rs
+#. error installing Mesa's software renderer (it draws MDM's windows where there is no graphics card): MDM installs only builds named in a list it publishes, signed with its key, and that list couldn't be downloaded; {error} = why
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	MDM's list of checked software renderers could not be downloaded: {error}	MDM-ന്റെ അംഗീകരിച്ച സോഫ്റ്റ്‌വെയർ റെൻഡററുകളുടെ ലിസ്റ്റ് ഡൗൺലോഡ് ചെയ്യാനായില്ല: {error}
+#. text in errors.rs
+#. error installing Mesa's software renderer: the list of builds MDM accepts has none for this computer's system and processor
+#, machine
+	MDM's list of checked software renderers has none for this computer	MDM-ന്റെ അംഗീകരിച്ച സോഫ്റ്റ്‌വെയർ റെൻഡററുകളുടെ ലിസ്റ്റിൽ ഈ കമ്പ്യൂട്ടറിന് അനുയോജ്യമായ ബിൽഡുകളില്ല
+#. text in errors.rs
+#. error installing Mesa's software renderer: the list of builds MDM accepts is older than one this copy of MDM already used (it never goes back to an older list)
+#, machine
+	MDM's list of checked software renderers is older than one already used, so nothing was installed	MDM-ന്റെ അംഗീകരിച്ച സോഫ്റ്റ്‌വെയർ റെൻഡററുകളുടെ ലിസ്റ്റ് ഇതിനകം ഉപയോഗിച്ച ലിസ്റ്റിനേക്കാൾ പഴയതാണ്, അതിനാൽ ഒന്നും ഇൻസ്റ്റാൾ ചെയ്തില്ല
+#. text in errors.rs
+#. error installing Mesa's software renderer: the list of builds MDM accepts doesn't carry MDM's own signature
+#, machine
+	MDM's list of checked software renderers isn't signed by MDM's key, so nothing was installed	MDM-ന്റെ അംഗീകരിച്ച സോഫ്റ്റ്‌വെയർ റെൻഡററുകളുടെ ലിസ്റ്റിൽ MDM-ന്റെ കീ ഉപയോഗിച്ചുള്ള ഒപ്പില്ല, അതിനാൽ ഒന്നും ഇൻസ്റ്റാൾ ചെയ്തില്ല
 #. text in whereis.rs
 #. how far a download's server is, by its round trip (60 to 150 ms)
 #, machine
@@ -3363,6 +3432,14 @@
 #. a video's status while its picture and sound are joined into one file (ffmpeg); {percent} how far, e.g. "45%"
 #, machine
 	Merging... ({percent})	ലയിപ്പിക്കുന്നു... ({percent})
+#. text in softgl.rs
+#. the software renderer's window: the download or its check failed; {reason} = why, a sentence's part
+#, machine
+	Mesa's software renderer couldn't be installed: {reason}	Mesa-യുടെ സോഫ്റ്റ്‌വെയർ റെൻഡറർ ഇൻസ്റ്റാൾ ചെയ്യാനായില്ല: {reason}
+#. text in softgl.rs
+#. the software renderer's window, once Mesa's llvmpipe is downloaded and checked
+#, machine
+	Mesa's software renderer is installed. MDM draws with it from its next start.	Mesa-യുടെ സോഫ്റ്റ്‌വെയർ റെൻഡറർ ഇൻസ്റ്റാൾ ചെയ്തു. അടുത്ത തവണ MDM ആരംഭിക്കുമ്പോൾ മുതൽ അത് ഉപയോഗിച്ച് വരയ്ക്കും.
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3622,6 +3699,10 @@
 #. Link grabber, a link's status: the server wants a login (401, 403)
 #, machine
 	Needs a login	ലോഗിൻ ആവശ്യമാണ്
+#. text in the Link grabber window
+#. Link grabber, a link's status: a Google Drive folder that isn't shared with everyone needs the browser's Google sign-in. The sentence is the cell's hover tip
+#, machine
+	Needs a sign-in	സൈൻ ഇൻ ആവശ്യമാണ്
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3782,6 +3863,11 @@
 #. text in a dialog box
 #, machine
 	No goes back, to choose another folder.	മറ്റൊരു ഫോൾഡർ തിരഞ്ഞെടുക്കാൻ 'വേണ്ട' എന്നതിൽ ക്ലിക്ക് ചെയ്യുക.
+#. text in softgl.rs
+#. the software renderer's window, offered once at a start where Windows' own software renderer (WARP, keep the name) draws MDM because no graphics card has a driver for it; llvmpipe (keep the name) is Mesa's software renderer; {size} = its download's size (e.g. 66.3 MB)
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	No graphics card here has a driver MDM can draw with, so Windows' software renderer (WARP) draws its windows and keeps the processor busy. Mesa's software renderer (llvmpipe) draws them with far less. Download it once ({size}, from Mesa's builds on GitHub)? MDM draws with it from its next start.	ഇവിടെയുള്ള ഒരു ഗ്രാഫിക്സ് കാർഡിനും MDM-ന് ഉപയോഗിക്കാനാകുന്ന ഡ്രൈവറില്ല, അതിനാൽ Windows-ന്റെ സോഫ്റ്റ്‌വെയർ റെൻഡറർ (WARP) അതിന്റെ വിൻഡോകൾ വരയ്ക്കുകയും പ്രോസസറിനെ തിരക്കിലാക്കുകയും ചെയ്യുന്നു. Mesa-യുടെ സോഫ്റ്റ്‌വെയർ റെൻഡറർ (llvmpipe) വളരെ കുറച്ച് പ്രോസസർ ഉപയോഗിച്ച് അവ വരയ്ക്കുന്നു. ഇത് ഒരിക്കൽ ഡൗൺലോഡ് ചെയ്യണോ ({size}, GitHub-ലെ Mesa-യുടെ ബിൽഡുകളിൽ നിന്ന്)? അടുത്ത തവണ MDM ആരംഭിക്കുമ്പോൾ മുതൽ അത് ഉപയോഗിച്ച് വരയ്ക്കും.
 #. tooltip (why a control is greyed) in langpick.rs
 #. tooltip of the greyed OK button in the language picker
 #, machine
@@ -4084,6 +4170,10 @@
 #. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer's wake alarm can be set by an administrator only
 #, machine
 	Only an administrator can allow this	ഒരു അഡ്‌മിനിസ്ട്രേറ്റർക്ക് മാത്രമേ ഇത് അനുവദിക്കാൻ കഴിയൂ
+#. text in the Download video window
+#. why the thumbnail-as-cover checkbox is greyed in Download video: the choice is a video, which is saved as it is
+#, machine
+	Only an audio file gets a cover: a video is saved as it is	ഒരു ഓഡിയോ ഫയലിന് മാത്രമേ കവർ ലഭിക്കൂ: ഒരു വീഡിയോ അതുപോലെ സംരക്ഷിക്കപ്പെടുന്നു
 #. tooltip (why a control is greyed) in the Download video window
 #. why "Put them into the video" is greyed: the chosen file type can't hold subtitles
 #, machine
@@ -4433,6 +4523,10 @@
 #. why Batch download's OK is greyed
 #, machine
 	Put a * in the address where the numbers or letters go	നമ്പറുകളോ അക്ഷരങ്ങളോ വരുന്ന വിലാസത്തിൽ ഒരു * ഇടുക
+#. text in the Download video window
+#. checkbox in Download video: the picture the site shows for the video (its thumbnail) goes into an audio-only download (MP3, M4A, Opus, FLAC) as its cover, which music players show
+#, machine
+	Put the video's thumbnail in the audio file as its cover	വീഡിയോയുടെ തംബ്നെയിൽ ഓഡിയോ ഫയലിൽ കവറായി ചേർക്കുക
 #. checkbox in the Download video window
 #. checkbox in Download video: subtitles go inside the video file instead of a separate .srt file beside it
 #, machine
@@ -5159,6 +5253,10 @@
 #. button in the Download complete window: opens a menu of how long no Download complete window shows (30 minutes, 1 hour...)
 #, machine
 	Snooze	താൽക്കാലികമായി നിർത്തുക
+#. text in softgl.rs
+#. the window's title: Mesa's software renderer, offered where no graphics card draws MDM's windows
+#, machine
+	Software renderer	സോഫ്റ്റ്‌വെയർ റെൻഡറർ
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -5178,9 +5276,17 @@
 #. text in a dialog box
 #, machine
 	Some of the torrent's files are already in this folder:	ഈ ടോറൻ്റിൻ്റെ ചില ഫയലുകൾ ഇതിനകം ഈ ഫോൾഡറിലുണ്ട്:
+#. text in the Download video window
+#. label in Download video before the list of the languages a video's sound comes in (its original and the dubbed ones)
+#, machine
+	Sound	ശബ്ദം
 #. text in the Options window
 #, machine
 	Sound file	ശബ്ദ ഫയൽ
+#. text in the Options window
+#. Options → Regional → Videos' sound: label before the list of languages
+#, machine
+	Sound language:	ശബ്ദ ഭാഷ:
 #. page title in the Options window
 #, machine
 	Sound settings	ശബ്ദ ക്രമീകരണങ്ങൾ
@@ -5598,6 +5704,10 @@
 #. a check of Test browser integration: the browsers find MDM's helper program
 #, machine
 	The browsers can find Mister Download Manager	ബ്രൗസറുകൾക്ക് Mister Download Manager കണ്ടെത്താനാകും
+#. text in extension.rs
+#. under "An older registry entry is in the way" (Test browser integration, Windows): the entry is in the part of the registry 32-bit programs use, which the browsers read before the right entry; it leads to another copy of MDM or to one that was deleted; then what the Set it up button does about it
+#, machine
+	The browsers read it before the right one, and it leads to another copy of Mister Download Manager or to one that is gone. Set it up gives your account an entry of its own, which the browsers read first.	ബ്രൗസറുകൾ ശരിയായ എൻട്രിക്ക് മുമ്പ് ഇത് വായിക്കുന്നു, ഇത് Mister Download Manager-ന്റെ മറ്റൊരു പകർപ്പിലേക്കോ നീക്കം ചെയ്ത ഒരു പകർപ്പിലേക്കോ നയിക്കുന്നു. സജ്ജീകരിക്കുക നിങ്ങളുടെ അക്കൗണ്ടിന് സ്വന്തമായൊരു എൻട്രി നൽകുന്നു; ബ്രൗസറുകൾ ആദ്യം വായിക്കുന്നത് അതാണ്.
 #. text in the Options window
 #. Options → Remote → Status: the settings were changed; they apply on OK
 #, machine
@@ -5706,6 +5816,10 @@
 #. text in errors.rs
 #, machine
 	the downloaded program doesn't match its signed checksum	ഡൗൺലോഡ് ചെയ്ത പ്രോഗ്രാം അതിൻ്റെ ഒപ്പിട്ട ചെക്ക്സമുമായി പൊരുത്തപ്പെടുന്നില്ല
+#. text in errors.rs
+#. error installing Mesa's software renderer: a file downloaded isn't the one named in the list of builds MDM accepts (its checksum differs), so it was thrown away
+#, machine
+	the downloaded software renderer isn't the build MDM's list of checked builds names, so it wasn't installed	ഡൗൺലോഡ് ചെയ്ത സോഫ്റ്റ്‌വെയർ റെൻഡറർ MDM-ന്റെ അംഗീകരിച്ച ബിൽഡുകളുടെ ലിസ്റ്റിൽ പേരുള്ള ബിൽഡല്ല, അതിനാൽ അത് ഇൻസ്റ്റാൾ ചെയ്തില്ല
 #. message or event log entry in the main window
 #. in the empty download list, under its title
 #, machine
@@ -6164,6 +6278,10 @@
 #. a download's error: a Google Drive file that isn't shared with everyone
 #, machine
 	this Google Drive file needs you to sign in: sign in to Google in your browser, then download it from there	ഈ Google Drive ഫയലിന് നിങ്ങൾ സൈൻ ഇൻ ചെയ്യേണ്ടതുണ്ട്: നിങ്ങളുടെ ബ്രൗസറിൽ Google-ലേക്ക് സൈൻ ഇൻ ചെയ്യുക, തുടർന്ന് അവിടെ നിന്ന് ഡൗൺലോഡ് ചെയ്യുക
+#. text in the Link grabber window
+#. Link grabber, the hover tip of a Google Drive folder's status: the folder isn't shared with everyone; how to send it with the browser's sign-in (the browser's right-click command, keep its name as the browser extension shows it)
+#, machine
+	This Google Drive folder needs you to sign in: sign in to Google in your browser, then right-click the folder's link there and choose Download with Mister Download Manager.	ഈ Google Drive ഫോൾഡറിന് നിങ്ങൾ സൈൻ ഇൻ ചെയ്യേണ്ടതുണ്ട്: നിങ്ങളുടെ ബ്രൗസറിൽ Google-ലേക്ക് സൈൻ ഇൻ ചെയ്യുക, തുടർന്ന് അവിടെയുള്ള ഫോൾഡറിന്റെ ലിങ്കിൽ റൈറ്റ്-ക്ലിക്ക് ചെയ്ത് Mister Download Manager ഉപയോഗിച്ച് ഡൗൺലോഡ് ചെയ്യുക തിരഞ്ഞെടുക്കുക.
 #. text in errors.rs
 #. a download's error: the address is a Google Drive folder, which isn't one file
 #, machine
@@ -6829,6 +6947,10 @@
 #. what a screen reader calls the list of a playlist's videos
 #, machine
 	Videos	വീഡിയോകൾ
+#. group box title in the Options window
+#. Options → Regional: group box title: the language of a video's sound, for videos that come with several (dubbed ones)
+#, machine
+	Videos' sound	വീഡിയോകളുടെ ശബ്ദം
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -7246,6 +7368,11 @@
 #. said after Delete with files when some files stayed on the disk; {file} is the download's name; the files' paths follow it
 #, machine
 	{file}: these files stayed on the disk, because MDM didn't create them or another download uses them:	{file}: MDM സൃഷ്ടിക്കാത്തതിനാലോ മറ്റൊരു ഡൗൺലോഡ് ഉപയോഗിക്കുന്നതിനാലോ ഈ ഫയലുകൾ ഡിസ്കിൽ തുടർന്നു:
+#. text in the Link grabber window
+#. Link grabber's Source line: a Google Drive folder ({folder}: its name) in which a folder showed the most items Drive's page lists ({n}: 50), so it may hold more than are listed; what gets them all (Drive's own Download button, which makes a zip)
+#. {n} = a number (keep the braces as they are)
+#, machine
+	{folder}: Google Drive's page lists only the first {n} items of a folder, so some may be missing; Drive's own Download gets the whole folder as a zip	{folder}: Google Drive-ന്റെ പേജ് ഒരു ഫോൾഡറിലെ ആദ്യത്തെ {n} ഇനങ്ങൾ മാത്രമേ ലിസ്റ്റ് ചെയ്യുന്നുള്ളൂ, അതിനാൽ ചിലത് നഷ്ടപ്പെട്ടേക്കാം; Drive-ന്റെ സ്വന്തം ഡൗൺലോഡ് ബട്ടൺ ഉപയോഗിച്ചാൽ മുഴുവൻ ഫോൾഡറും zip ഫയലായി ലഭിക്കും
 #. message or event log entry in the main window; text in the Link grabber window
 #. Link grabber's Source line, after where the links came from: a folder (an FTP folder, a web server's "Index of" page) held more files or subfolders than Link grabber lists; {folder} is its name, {n} how many of its files are listed (10,000)
 #. {n} = a number (keep the braces as they are)
@@ -7299,9 +7426,17 @@
 #, machine
 	{ip} can't be reached through {adapter}: it has no address of that kind (IPv4 or IPv6)	{adapter} വഴി {ip} ലേക്ക് എത്താനാകില്ല: ആ തരത്തിലുള്ള വിലാസം അതിനില്ല (IPv4 അല്ലെങ്കിൽ IPv6)
 #. text in the Download video window
+#. in Download video's Sound list: a language's sound track that describes the picture for people who can't see it; {language} is the language's name
+#, machine
+	{language}, audio description	{language}, ഓഡിയോ വിവരണം
+#. text in the Download video window
 #. in the Subtitles list of Download video: {language} = a language's name; the site made these subtitles automatically (speech recognition)
 #, machine
 	{language}, automatic	{language}, സ്വയമേവ സൃഷ്ടിച്ചത്
+#. text in the Download video window
+#. in Download video's Sound list and the browser's video menu: the video's own sound, the language it was made in (the others are dubbed); {language} is the language's name
+#, machine
+	{language}, original	{language}, ഒറിജിനൽ
 #. text in a download's progress window
 #. {live} = peers connected now; {known} = peers heard of
 #, machine
@@ -7501,10 +7636,20 @@
 #, machine
 	{site} didn't give the file this time: try again in a moment	{site} ഇത്തവണ ഫയൽ നൽകിയില്ല: കുറച്ചുകഴിഞ്ഞ് വീണ്ടും ശ്രമിക്കുക
 #. text in the Link grabber window
+#. Link grabber, the hover tip of a Google Drive folder's status ({site}: "Google Drive"): no folder at this link, or one the signed-in account may not open
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+	{site} has no such folder, or it isn't shared with you.	{site} എന്നതിൽ അങ്ങനെയൊരു ഫോൾഡറില്ല, അല്ലെങ്കിൽ അത് നിങ്ങളുമായി പങ്കിട്ടിട്ടില്ല.
+#. text in the Link grabber window
 #. Link grabber, the hover tip of a Hugging Face repository's or GitHub release's status; {site} is "Hugging Face" or "GitHub"
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
 #, machine
 	{site} has no such repository, folder, release or tag, or it is private.	{site}-ന് അങ്ങനെയൊരു ശേഖരം, ഫോൾഡർ, റിലീസ് അല്ലെങ്കിൽ ടാഗ് ഇല്ല, അല്ലെങ്കിൽ അത് സ്വകാര്യമാണ്.
+#. text in the Link grabber window
+#. Link grabber, a Google Drive folder's status (the cell's hover tip): Drive ({site}: "Google Drive") answered that it gets too many requests from this computer
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+	{site} is getting too many requests from this computer: try again later.	{site} ഈ കമ്പ്യൂട്ടറിൽ നിന്ന് വളരെയധികം അഭ്യർത്ഥനകൾ സ്വീകരിക്കുന്നു: പിന്നീട് വീണ്ടും ശ്രമിക്കുക.
 #. text in the Link grabber window
 #. Link grabber, a Hugging Face repository's or GitHub release's status (the cell's hover tip): the site ({site}: "Hugging Face", "GitHub") lets only so many requests through from a computer without an account; {n} minutes to wait
 #. {site} = a web site's name such as "example.com"; {n} = a number (keep the braces as they are)
@@ -8988,6 +9133,11 @@ menu	Download &video from a page...	ഒരു പേജിൽ നിന്ന്
 #, machine
 menu	Download in order	ക്രമത്തിൽ ഡൗൺലോഡ് ചെയ്യുക
 #. menu command in the main window
+#. View → Draw with: opens a window offering to download Mesa's software renderer (llvmpipe, keep the name), which draws MDM's windows with far less of the processor than Windows' own (WARP)
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Download Mesa's software renderer (llvmpipe)...	Mesa-യുടെ സോഫ്റ്റ്‌വെയർ റെൻഡറർ (llvmpipe) ഡൗൺലോഡ് ചെയ്യുക...
+#. menu command in the main window
 #. View menu: submenu choosing what draws MDM's windows: OpenGL, or Direct3D, Vulkan or Metal (graphics systems)
 #, machine
 menu	Draw with	ഇതുപയോഗിച്ച് വരയ്ക്കുക
@@ -9224,6 +9374,18 @@ menu	Show &drop target	ഡ്രോപ്പ് ടാർഗറ്റ് കാ�
 #. menu command in the main window
 #, machine
 menu	Show Mister Download Manager	Mister Download Manager കാണിക്കുക
+#. menu command in the main window
+#. View → Draw with: a greyed note; Mesa's software renderer (llvmpipe, keep the name) failed on this computer, so Windows' own software renderer (WARP, keep the name) draws
+#, machine
+menu	Software (llvmpipe) didn't start here: WARP draws	സോഫ്റ്റ്‌വെയർ (llvmpipe) ഇവിടെ ആരംഭിച്ചില്ല: WARP വരയ്ക്കുന്നു
+#. menu command in the main window
+#. View → Draw with: a greyed note; Mesa's software renderer (llvmpipe, keep the name) is downloaded and draws the windows from MDM's next start
+#, machine
+menu	Software (llvmpipe) draws from the next start	സോഫ്റ്റ്‌വെയർ (llvmpipe) അടുത്ത തവണ MDM ആരംഭിക്കുമ്പോൾ മുതൽ വരയ്ക്കും
+#. menu command in the main window
+#. View → Draw with: a greyed note; what draws the windows: Mesa's software renderer, llvmpipe (keep the name), because no graphics card here has a driver MDM can draw with
+#, machine
+menu	Software (llvmpipe): no graphics card here has a driver for MDM	സോഫ്റ്റ്‌വെയർ (llvmpipe): ഇവിടെയുള്ള ഒരു ഗ്രാഫിക്സ് കാർഡിനും MDM-ന് ഉപയോഗിക്കാനാകുന്ന ഡ്രൈവറില്ല
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine

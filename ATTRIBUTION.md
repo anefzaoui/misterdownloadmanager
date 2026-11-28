@@ -33,13 +33,28 @@ The libraries Link grabber's archive extraction is built on (all compatible with
 | Library | Licence | For |
 |---|---|---|
 | [zip](https://crates.io/crates/zip) 9.1 | MIT | .zip, with [deflate64](https://crates.io/crates/deflate64) (MIT) and WinZip AES ([RustCrypto](https://github.com/RustCrypto) aes, hmac, pbkdf2: MIT OR Apache-2.0) |
-| [lzma-rust2](https://crates.io/crates/lzma-rust2) 0.23 | Apache-2.0 | .xz |
+| [lzma-rust2](https://crates.io/crates/lzma-rust2) 0.26 | Apache-2.0 | .xz |
 | [tar](https://crates.io/crates/tar) 0.4 | MIT OR Apache-2.0 | .tar |
 
 7z and RAR archives are extracted by [7-Zip](https://www.7-zip.org/) (GNU LGPL, with the
 unRAR restriction for its RAR code), run as a separate program when the user has it installed.
 It is neither bundled nor linked: UnRAR's licence doesn't allow its code in a GPL program, and a
-built-in 7z decoder made MDM about 1 MB larger.
+built-in 7z decoder with all of 7z's methods made MDM about 1 MB larger. (The one 7z archive MDM
+reads itself is Mesa's software renderer's, below, with only the methods it uses.)
+
+## Mesa's software renderer (Windows, downloaded on request)
+
+Where no graphics card draws MDM's windows on Windows, MDM offers to download Mesa's software
+OpenGL, llvmpipe (#476). It is **not** shipped with MDM: it is downloaded only when you press
+**Download**, from the Windows builds of [pal1000/mesa-dist-win](https://github.com/pal1000/mesa-dist-win)
+(MIT), checked against MDM's signed list, and kept in MDM's data folder (`tools\mesa`).
+
+| Software | Author | Licence | For |
+|---|---|---|---|
+| [Mesa](https://mesa3d.org) (its `opengl32.dll` and `libgallium_wgl.dll`, with llvmpipe) | The Mesa 3D authors, <https://gitlab.freedesktop.org/mesa/mesa> | MIT, <https://docs.mesa3d.org/license.html> | drawing MDM's windows on the processor |
+| [LLVM](https://llvm.org), built into Mesa's `libgallium_wgl.dll` (llvmpipe's code generator) | The LLVM project | Apache-2.0 WITH LLVM-exception | the same |
+| mesa-dist-win, the Windows build of the two above | pal1000 and contributors | MIT, <https://github.com/pal1000/mesa-dist-win/blob/master/LICENSE> | the same |
+| [sevenz-rust2](https://crates.io/crates/sevenz-rust2) 0.27, built into MDM | its authors, <https://github.com/hasenbanck/sevenz-rust2> (a fork of sevenz-rust) | Apache-2.0 | unpacking that build's `.7z` archive (its LZMA, LZMA2 and BCJ2 only) |
 
 ## Torrents (mdm-torrent)
 

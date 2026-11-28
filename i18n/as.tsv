@@ -191,6 +191,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{package}: {n} file left out, its name would lead out of its folder|{package}: {n} files left out, their names would lead out of its folder	{package}: {n}টা ফাইল বাদ দিয়া হৈছে, ইয়াৰ নাম ইয়াৰ ফোল্ডাৰৰ বাহিৰলৈ যাব|{package}: {n}টা ফাইল বাদ দিয়া হৈছে, ইহঁতৰ নাম ইহঁতৰ ফোল্ডাৰৰ বাহিৰলৈ যাব
+#. count in the Link grabber window
+#. Link grabber's Source line: a Google Drive folder's ({package}: its name) items that aren't files to download (Google Forms, shortcuts, Google Sites) are left out; {n} how many
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{package}: {n} item left out, a Google Form, shortcut or Site isn't a file|{package}: {n} items left out, Google Forms, shortcuts and Sites aren't files	{package}: {n}টা আইটেম বাদ পৰিছে, এটা Google Form, শ্বৰ্টকাট বা ছাইট ফাইল নহয়|{package}: {n}টা আইটেম বাদ পৰিছে, Google Form, শ্বৰ্টকাট আৰু ছাইট ফাইল নহয়
 #. count in cnl.rs
 #. Click'n'Load window: {site} is a web site's name such as "example.com"
 #. {site} = a web site's name such as "example.com"; {n} = a number (keep the braces as they are)
@@ -392,6 +397,10 @@
 #. why a split archive (in several files, its volumes) isn't tested yet, in "{name} isn't complete ({why})": one of its files isn't downloaded yet
 #, machine
 	a volume of it isn't there yet	ইয়াৰ এটা ভলিউম এতিয়াও নাই
+#. text in the Download video window
+#. why the thumbnail-as-cover checkbox is greyed in Download video: the choice is the site's sound in a WebM file, which can't hold a picture
+#, machine
+	A WebM file can't hold a cover: choose M4A, MP3, Opus or FLAC	এটা WebM ফাইলত কভাৰ থাকিব নোৱাৰে: M4A, MP3, Opus বা FLAC বাছনি কৰক
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	About Mister Download Manager	Mister Download Manager ৰ বিষয়ে
@@ -680,6 +689,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	American Samoa	আমেৰিকান ছামোৱা
+#. text in extension.rs
+#. a check of Test browser integration (Windows), one short line: an older registry entry for MDM's helper is in the way of the right one; the entry and where it leads show on the line under it
+#, machine
+	An older registry entry is in the way:	এটা পুৰণি ৰেজিষ্ট্ৰী এণ্ট্ৰি বাধা হৈ আছে:
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -1143,6 +1156,11 @@
 #. event log entry after Recheck: {have} and {total} are sizes ("1.2 GB of 4 GB there")
 #, machine
 	Checked: {have} of {total} there	পৰীক্ষা কৰা হৈছে: {total}ৰ ভিতৰত {have} আছে
+#. text in softgl.rs
+#. the software renderer's window: the download is done, and its files are being checked and unpacked
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Checking and unpacking Mesa's software renderer...	মেছাৰ ছফ্টৱেৰ ৰেণ্ডাৰাৰ পৰীক্ষা কৰি আনপেক কৰি আছে...
 #. message or event log entry in the main window
 #. event log entry: a torrent's files are being read and checked again (Recheck)
 #, machine
@@ -1177,6 +1195,10 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Checking...	পৰীক্ষা কৰি আছে...
+#. text in the download list (sizes, speeds, status)
+#. a download's status: it finished, but the checksum its server announced didn't match its file (the file is kept). Short: the list's Status column is narrow
+#, machine
+	Checksum warning	চেকছাম সতৰ্কবাণী
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -1770,6 +1792,11 @@
 #. {size} = a file size such as "4.2 MB"; {bytes} = a number of bytes (keep the braces as they are)
 #, machine
 	Downloaded {size} ({bytes} Bytes)	ডাউনল'ড কৰা হ'ল {size} ({bytes} বাইট)
+#. text in the download list (sizes, speeds, status)
+#. a download's status, whole (the Status cell's tip, Properties, the log, Download complete): it finished, but the checksum its server announced didn't match the file, which is kept. "Check it": the user can verify the file against a checksum they trust (right-click → Verify checksum...)
+#. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
+#, machine
+	Downloaded, but the server's {algorithm} checksum didn't match; the file may still be fine. Check it if it matters	ডাউনলোড কৰা হ’ল, কিন্তু চাৰ্ভাৰে দিয়া {algorithm} চেকছামৰ সৈতে ফাইলটোৰ মিল নাখালে; ফাইলটো এতিয়াও ঠিক থাকিব পাৰে। গুৰুত্বপূৰ্ণ হ’লে পৰীক্ষা কৰক
 #. item in the Categories tree in the download list; value in a column's filter list in the download list; text in remote.rs
 #. a download's status (state it is in, not a command)
 #, machine
@@ -1802,6 +1829,11 @@
 #. Helpers: MDM's own copy of a helper is being downloaded (where there was none, or in place of the system's); {percent} = how far, a number
 #, machine
 	Downloading MDM's own copy... {percent}%	MDM-ৰ নিজা কপি ডাউনলোড হৈ আছে... {percent}%
+#. text in softgl.rs
+#. the software renderer's window, while it downloads; {done} and {size} = sizes (12.0 MB of 66.3 MB)
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	Downloading Mesa's software renderer: {done} of {size}	মেছাৰ ছফ্টৱেৰ ৰেণ্ডাৰাৰ ডাউনলোড কৰি আছে: {size}ৰ ভিতৰত {done}
 #. text in archtest.rs
 #. in a download's log: after its archive test found damaged files, only their bytes are downloaded again from the same server; {size} like "1.20 MB"
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
@@ -1893,6 +1925,10 @@
 #. Link grabber, in the empty "Save to" box: each file goes to its category's folder (Options → Save to)
 #, machine
 	Each file's category folder	প্ৰতিটো ফাইলৰ শ্ৰেণী ফোল্ডাৰ
+#. text in the Options window
+#. Options → Regional → Videos' sound: the first choice, each video's own sound (the language it was made in), the default
+#, machine
+	Each video's original	প্ৰতিটো ভিডিঅ'ৰ মূল
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2303,6 +2339,10 @@
 #. {address} = an example web address with a * in the file name
 #, machine
 	For example:  {address}	উদাহৰণস্বৰূপে: {address}
+#. text in the Options window
+#. Options → Regional → Videos' sound: a note under the language list
+#, machine
+	For videos whose sound comes in several languages (dubbed ones), and playlists. A video without it keeps its original sound.	যিবোৰ ভিডিঅ'ৰ শব্দ কেইবাটাও ভাষাত আহে (ডাব কৰা), আৰু প্লেলিষ্টৰ বাবে। ইয়াৰ অবিহনে এটা ভিডিঅ'ই ইয়াৰ মূল শব্দ ৰাখে।
 #. text in the Add torrent window
 #. Torrent settings, under the switch that makes MDM open magnet links and .torrent files (macOS, Linux)
 #, machine
@@ -3153,6 +3193,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Looking the page up...	পৃষ্ঠাখন চাই আছে...
+#. text in softgl.rs
+#. the software renderer's window: while MDM reads its signed list of the software renderers it may download (Mesa's llvmpipe: it draws MDM's windows where there is no graphics card)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Looking up Mesa's software renderer...	মেছাৰ ছফ্টৱেৰ ৰেণ্ডাৰাৰ বিচাৰি আছে...
 #. text in preview.rs
 #. the preview pane: still looking whether the file is there
 #. the trailing ... means it is still going on: keep it
@@ -3321,6 +3366,9 @@
 #. Video helpers: MDM can't download Node.js on this system (an unusual processor); Node.js and Deno are program names; "Use another program" is the button below
 #, machine
 	MDM has no copy for this system: install Node.js or Deno, or use another program	এই ছিষ্টেমৰ বাবে MDM-ৰ কোনো কপি নাই: Node.js বা Deno ইনষ্টল কৰক, অথবা আন এটা প্ৰগ্ৰাম ব্যৱহাৰ কৰক
+#. text in softgl.rs
+#, machine
+	MDM has no data folder	MDM-ৰ কোনো ডেটা ফোল্ডাৰ নাই
 #. text in remote.rs
 #. remote control page (on a phone): no pairing code is shown in MDM; "Pair a device" is MDM's button
 #, machine
@@ -3346,6 +3394,27 @@
 #. error installing ffmpeg: the list of builds MDM accepts doesn't carry MDM's own signature
 #, machine
 	MDM's list of checked ffmpeg builds isn't signed by MDM's key, so ffmpeg wasn't installed	MDM-ৰ পৰীক্ষা কৰা ffmpeg বিল্ডৰ তালিকাত MDM-ৰ নিজা স্বাক্ষৰ নাই, সেয়েহে ffmpeg ইনষ্টল কৰা নহ'ল
+#. text in errors.rs
+#. error installing Mesa's software renderer: the list of builds MDM accepts couldn't be read; {detail} = the technical detail, in English
+#, machine
+	MDM's list of checked software renderers can't be read ({detail})	MDM-ৰ পৰীক্ষিত ছফ্টৱেৰ ৰেণ্ডাৰাৰৰ তালিকা পঢ়িব পৰা নগ’ল ({detail})
+#. text in errors.rs
+#. error installing Mesa's software renderer (it draws MDM's windows where there is no graphics card): MDM installs only builds named in a list it publishes, signed with its key, and that list couldn't be downloaded; {error} = why
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	MDM's list of checked software renderers could not be downloaded: {error}	MDM-ৰ পৰীক্ষিত ছফ্টৱেৰ ৰেণ্ডাৰাৰৰ তালিকা ডাউনলোড কৰিব পৰা নগ'ল: {error}
+#. text in errors.rs
+#. error installing Mesa's software renderer: the list of builds MDM accepts has none for this computer's system and processor
+#, machine
+	MDM's list of checked software renderers has none for this computer	MDM-ৰ পৰীক্ষিত ছফ্টৱেৰ ৰেণ্ডাৰাৰৰ তালিকাত এই কম্পিউটাৰৰ চিষ্টেম আৰু প্ৰচেছৰৰ বাবে কোনো বিল্ড নাই
+#. text in errors.rs
+#. error installing Mesa's software renderer: the list of builds MDM accepts is older than one this copy of MDM already used (it never goes back to an older list)
+#, machine
+	MDM's list of checked software renderers is older than one already used, so nothing was installed	MDM-ৰ পৰীক্ষিত ছফ্টৱেৰ ৰেণ্ডাৰাৰৰ তালিকা ইতিমধ্যে ব্যৱহৃত তালিকাতকৈ পুৰণি, সেয়েহে একো ইনষ্টল কৰা নহ'ল
+#. text in errors.rs
+#. error installing Mesa's software renderer: the list of builds MDM accepts doesn't carry MDM's own signature
+#, machine
+	MDM's list of checked software renderers isn't signed by MDM's key, so nothing was installed	MDM-ৰ পৰীক্ষিত ছফ্টৱেৰ ৰেণ্ডাৰাৰৰ তালিকাত MDM-ৰ নিজা স্বাক্ষৰ নাই, সেয়েহে একো ইনষ্টল কৰা নহ'ল
 #. text in whereis.rs
 #. how far a download's server is, by its round trip (60 to 150 ms)
 #, machine
@@ -3363,6 +3432,14 @@
 #. a video's status while its picture and sound are joined into one file (ffmpeg); {percent} how far, e.g. "45%"
 #, machine
 	Merging... ({percent})	একত্ৰিত কৰি আছে... ({percent})
+#. text in softgl.rs
+#. the software renderer's window: the download or its check failed; {reason} = why, a sentence's part
+#, machine
+	Mesa's software renderer couldn't be installed: {reason}	মেছাৰ ছফ্টৱেৰ ৰেণ্ডাৰাৰ ইনষ্টল কৰিব পৰা নগ’ল: {reason}
+#. text in softgl.rs
+#. the software renderer's window, once Mesa's llvmpipe is downloaded and checked
+#, machine
+	Mesa's software renderer is installed. MDM draws with it from its next start.	মেছাৰ ছফ্টৱেৰ ৰেণ্ডাৰাৰ ইনষ্টল কৰা হ’ল। MDM-এ পৰৱৰ্তীবাৰ আৰম্ভ হোৱাৰ পৰা ইয়াৰ সৈতে ড্ৰ কৰিব।
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3622,6 +3699,10 @@
 #. Link grabber, a link's status: the server wants a login (401, 403)
 #, machine
 	Needs a login	লগইন লাগে
+#. text in the Link grabber window
+#. Link grabber, a link's status: a Google Drive folder that isn't shared with everyone needs the browser's Google sign-in. The sentence is the cell's hover tip
+#, machine
+	Needs a sign-in	ছাইন-ইন কৰিব লাগিব
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3782,6 +3863,11 @@
 #. text in a dialog box
 #, machine
 	No goes back, to choose another folder.	নাই বাটনটোৱে আন এটা ফোল্ডাৰ বাছনি কৰিবলৈ উভতি যায়।
+#. text in softgl.rs
+#. the software renderer's window, offered once at a start where Windows' own software renderer (WARP, keep the name) draws MDM because no graphics card has a driver for it; llvmpipe (keep the name) is Mesa's software renderer; {size} = its download's size (e.g. 66.3 MB)
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	No graphics card here has a driver MDM can draw with, so Windows' software renderer (WARP) draws its windows and keeps the processor busy. Mesa's software renderer (llvmpipe) draws them with far less. Download it once ({size}, from Mesa's builds on GitHub)? MDM draws with it from its next start.	ইয়াত কোনো গ্ৰাফিক্স কাৰ্ডত MDM-এ ড্ৰ কৰিব পৰা ড্ৰাইভাৰ নাই, সেয়েহে Windows-ৰ ছফ্টৱেৰ ৰেণ্ডাৰাৰ (WARP)-এ ইয়াৰ উইণ্ডো ড্ৰ কৰে আৰু প্ৰচেছৰক ব্যস্ত ৰাখে। মেছাৰ ছফ্টৱেৰ ৰেণ্ডাৰাৰ (llvmpipe)-এ বহু কম প্ৰচেছৰ ব্যৱহাৰ কৰি সেইবোৰ ড্ৰ কৰে। এবাৰ ইয়াক ডাউনলোড কৰিবনে ({size}, GitHub-ত মেছাৰ বিল্ডৰ পৰা)? MDM-এ পৰৱৰ্তীবাৰ আৰম্ভ হোৱাৰ পৰা ইয়াৰ সৈতে ড্ৰ কৰিব।
 #. tooltip (why a control is greyed) in langpick.rs
 #. tooltip of the greyed OK button in the language picker
 #, machine
@@ -4084,6 +4170,10 @@
 #. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer's wake alarm can be set by an administrator only
 #, machine
 	Only an administrator can allow this	কেৱল এজন প্ৰশাসকেহে ইয়াক অনুমতি দিব পাৰে
+#. text in the Download video window
+#. why the thumbnail-as-cover checkbox is greyed in Download video: the choice is a video, which is saved as it is
+#, machine
+	Only an audio file gets a cover: a video is saved as it is	কেৱল এটা অডিঅ' ফাইলত কভাৰ থাকে: এটা ভিডিঅ' যেনেকৈ আছে তেনেকৈ সংৰক্ষণ কৰা হয়
 #. tooltip (why a control is greyed) in the Download video window
 #. why "Put them into the video" is greyed: the chosen file type can't hold subtitles
 #, machine
@@ -4433,6 +4523,10 @@
 #. why Batch download's OK is greyed
 #, machine
 	Put a * in the address where the numbers or letters go	ঠিকনাত এটা * ৰাখক য'ত নম্বৰ বা আখৰসমূহ থাকিব
+#. text in the Download video window
+#. checkbox in Download video: the picture the site shows for the video (its thumbnail) goes into an audio-only download (MP3, M4A, Opus, FLAC) as its cover, which music players show
+#, machine
+	Put the video's thumbnail in the audio file as its cover	ভিডিঅ'ৰ থাম্বনেইল অডিঅ' ফাইলত কভাৰ হিচাপে ৰাখক
 #. checkbox in the Download video window
 #. checkbox in Download video: subtitles go inside the video file instead of a separate .srt file beside it
 #, machine
@@ -5159,6 +5253,10 @@
 #. button in the Download complete window: opens a menu of how long no Download complete window shows (30 minutes, 1 hour...)
 #, machine
 	Snooze	স্থগিত কৰক
+#. text in softgl.rs
+#. the window's title: Mesa's software renderer, offered where no graphics card draws MDM's windows
+#, machine
+	Software renderer	ছফ্টৱেৰ ৰেণ্ডাৰাৰ
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -5178,9 +5276,17 @@
 #. text in a dialog box
 #, machine
 	Some of the torrent's files are already in this folder:	টৰেণ্টৰ কিছুমান ফাইল ইতিমধ্যে এই ফোল্ডাৰত আছে:
+#. text in the Download video window
+#. label in Download video before the list of the languages a video's sound comes in (its original and the dubbed ones)
+#, machine
+	Sound	শব্দ
 #. text in the Options window
 #, machine
 	Sound file	শব্দৰ ফাইল
+#. text in the Options window
+#. Options → Regional → Videos' sound: label before the list of languages
+#, machine
+	Sound language:	শব্দৰ ভাষা:
 #. page title in the Options window
 #, machine
 	Sound settings	শব্দৰ ছেটিংছ
@@ -5598,6 +5704,10 @@
 #. a check of Test browser integration: the browsers find MDM's helper program
 #, machine
 	The browsers can find Mister Download Manager	ব্ৰাউজাৰসমূহে Mister Download Manager বিচাৰি পাব পাৰে
+#. text in extension.rs
+#. under "An older registry entry is in the way" (Test browser integration, Windows): the entry is in the part of the registry 32-bit programs use, which the browsers read before the right entry; it leads to another copy of MDM or to one that was deleted; then what the Set it up button does about it
+#, machine
+	The browsers read it before the right one, and it leads to another copy of Mister Download Manager or to one that is gone. Set it up gives your account an entry of its own, which the browsers read first.	ব্ৰাউজাৰবোৰে সঠিক এণ্ট্ৰিটোৰ আগতে ইয়াক পঢ়ে, আৰু ই Mister Download Manager-ৰ আন এটা কপিত বা নোহোৱা হোৱা কপিত লৈ যায়। Set it up-এ আপোনাৰ একাউণ্টক নিজা এটা এণ্ট্ৰি দিয়ে, যিটো ব্ৰাউজাৰবোৰে প্ৰথমে পঢ়ে।
 #. text in the Options window
 #. Options → Remote → Status: the settings were changed; they apply on OK
 #, machine
@@ -5706,6 +5816,10 @@
 #. text in errors.rs
 #, machine
 	the downloaded program doesn't match its signed checksum	ডাউনলোড কৰা প্ৰ'গ্ৰামটো ইয়াৰ স্বাক্ষৰিত চেকছামৰ সৈতে মিল খোৱা নাই
+#. text in errors.rs
+#. error installing Mesa's software renderer: a file downloaded isn't the one named in the list of builds MDM accepts (its checksum differs), so it was thrown away
+#, machine
+	the downloaded software renderer isn't the build MDM's list of checked builds names, so it wasn't installed	ডাউনলোড কৰা ছফ্টৱেৰ ৰেণ্ডাৰাৰটো MDM-ৰ পৰীক্ষিত বিল্ডৰ তালিকাত উল্লেখ কৰা বিল্ডটো নহয়, সেয়েহে ইয়াক ইনষ্টল কৰা নহ’ল
 #. message or event log entry in the main window
 #. in the empty download list, under its title
 #, machine
@@ -6164,6 +6278,10 @@
 #. a download's error: a Google Drive file that isn't shared with everyone
 #, machine
 	this Google Drive file needs you to sign in: sign in to Google in your browser, then download it from there	এই Google Drive ফাইলটোৰ বাবে আপুনি ছাইন ইন কৰিব লাগিব: আপোনাৰ ব্ৰাউজাৰত Google-লৈ ছাইন ইন কৰক, তাৰ পিছত তাৰ পৰা ডাউনলোড কৰক
+#. text in the Link grabber window
+#. Link grabber, the hover tip of a Google Drive folder's status: the folder isn't shared with everyone; how to send it with the browser's sign-in (the browser's right-click command, keep its name as the browser extension shows it)
+#, machine
+	This Google Drive folder needs you to sign in: sign in to Google in your browser, then right-click the folder's link there and choose Download with Mister Download Manager.	এই Google Drive ফোল্ডাৰটোৰ বাবে আপুনি ছাইন ইন কৰিব লাগিব: আপোনাৰ ব্ৰাউজাৰত Google-লৈ ছাইন ইন কৰক, তাৰ পিছত ফোল্ডাৰটোৰ লিংকত ৰাইট-ক্লিক কৰি Download with Mister Download Manager বাছনি কৰক।
 #. text in errors.rs
 #. a download's error: the address is a Google Drive folder, which isn't one file
 #, machine
@@ -6829,6 +6947,10 @@
 #. what a screen reader calls the list of a playlist's videos
 #, machine
 	Videos	ভিডিঅ’সমূহ
+#. group box title in the Options window
+#. Options → Regional: group box title: the language of a video's sound, for videos that come with several (dubbed ones)
+#, machine
+	Videos' sound	ভিডিঅ'ৰ শব্দ
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -7250,6 +7372,11 @@
 #. said after Delete with files when some files stayed on the disk; {file} is the download's name; the files' paths follow it
 #, machine
 	{file}: these files stayed on the disk, because MDM didn't create them or another download uses them:	{file}: এই ফাইলসমূহ ডিস্কত ৰখা হৈছিল, কাৰণ MDM-এ সেইবোৰ সৃষ্টি কৰা নাছিল বা আন এটা ডাউনলোডে সেইবোৰ ব্যৱহাৰ কৰে:
+#. text in the Link grabber window
+#. Link grabber's Source line: a Google Drive folder ({folder}: its name) in which a folder showed the most items Drive's page lists ({n}: 50), so it may hold more than are listed; what gets them all (Drive's own Download button, which makes a zip)
+#. {n} = a number (keep the braces as they are)
+#, machine
+	{folder}: Google Drive's page lists only the first {n} items of a folder, so some may be missing; Drive's own Download gets the whole folder as a zip	{folder}: Google Drive-ৰ পৃষ্ঠাত এটা ফোল্ডাৰৰ কেৱল প্ৰথম {n}টা আইটেম তালিকাভুক্ত কৰা হৈছে, সেয়েহে কিছুমান নেদেখুওৱা হ’ব পাৰে; Drive-ৰ নিজা Download-এ গোটেই ফোল্ডাৰটো এটা জিপ হিচাপে ডাউনলোড কৰে
 #. message or event log entry in the main window; text in the Link grabber window
 #. Link grabber's Source line, after where the links came from: a folder (an FTP folder, a web server's "Index of" page) held more files or subfolders than Link grabber lists; {folder} is its name, {n} how many of its files are listed (10,000)
 #. {n} = a number (keep the braces as they are)
@@ -7303,9 +7430,17 @@
 #, machine
 	{ip} can't be reached through {adapter}: it has no address of that kind (IPv4 or IPv6)	{ip}ক {adapter}ৰ মাজেৰে পাব নোৱাৰি: ইয়াৰ সেই ধৰণৰ (IPv4 বা IPv6) কোনো ঠিকনা নাই
 #. text in the Download video window
+#. in Download video's Sound list: a language's sound track that describes the picture for people who can't see it; {language} is the language's name
+#, machine
+	{language}, audio description	{language}, অডিঅ' বৰ্ণনা
+#. text in the Download video window
 #. in the Subtitles list of Download video: {language} = a language's name; the site made these subtitles automatically (speech recognition)
 #, machine
 	{language}, automatic	{language}, স্বয়ংক্ৰিয়
+#. text in the Download video window
+#. in Download video's Sound list and the browser's video menu: the video's own sound, the language it was made in (the others are dubbed); {language} is the language's name
+#, machine
+	{language}, original	{language}, মূল
 #. text in a download's progress window
 #. {live} = peers connected now; {known} = peers heard of
 #, machine
@@ -7505,10 +7640,20 @@
 #, machine
 	{site} didn't give the file this time: try again in a moment	{site}-এ এইবাৰ ফাইলটো নিদিলে: অলপ পিছত পুনৰ চেষ্টা কৰক
 #. text in the Link grabber window
+#. Link grabber, the hover tip of a Google Drive folder's status ({site}: "Google Drive"): no folder at this link, or one the signed-in account may not open
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+	{site} has no such folder, or it isn't shared with you.	{site}-ত এনে কোনো ফোল্ডাৰ নাই, বা ই আপোনাৰ সৈতে শ্বেয়াৰ কৰা হোৱা নাই।
+#. text in the Link grabber window
 #. Link grabber, the hover tip of a Hugging Face repository's or GitHub release's status; {site} is "Hugging Face" or "GitHub"
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
 #, machine
 	{site} has no such repository, folder, release or tag, or it is private.	{site}-ত এনে কোনো ৰিপোজিটৰী, ফোল্ডাৰ, ৰিলিজ বা টেগ নাই, অথবা ই ব্যক্তিগত।
+#. text in the Link grabber window
+#. Link grabber, a Google Drive folder's status (the cell's hover tip): Drive ({site}: "Google Drive") answered that it gets too many requests from this computer
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+	{site} is getting too many requests from this computer: try again later.	{site}-এ এই কম্পিউটাৰৰ পৰা বৰ বেছি অনুৰোধ পাইছে: পিছত পুনৰ চেষ্টা কৰক।
 #. text in the Link grabber window
 #. Link grabber, a Hugging Face repository's or GitHub release's status (the cell's hover tip): the site ({site}: "Hugging Face", "GitHub") lets only so many requests through from a computer without an account; {n} minutes to wait
 #. {site} = a web site's name such as "example.com"; {n} = a number (keep the braces as they are)
@@ -8992,6 +9137,11 @@ menu	Download &video from a page...	এটা পৃষ্ঠাৰ পৰা �
 #, machine
 menu	Download in order	ক্ৰমানুসৰি ডাউনল'ড কৰক
 #. menu command in the main window
+#. View → Draw with: opens a window offering to download Mesa's software renderer (llvmpipe, keep the name), which draws MDM's windows with far less of the processor than Windows' own (WARP)
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Download Mesa's software renderer (llvmpipe)...	মেছাৰ ছফ্টৱেৰ ৰেণ্ডাৰাৰ (llvmpipe) ডাউনলোড কৰক...
+#. menu command in the main window
 #. View menu: submenu choosing what draws MDM's windows: OpenGL, or Direct3D, Vulkan or Metal (graphics systems)
 #, machine
 menu	Draw with	যাৰ সহায়ত আঁকিব
@@ -9228,6 +9378,18 @@ menu	Show &drop target	&ড্ৰপ লক্ষ্য দেখুৱাওক
 #. menu command in the main window
 #, machine
 menu	Show Mister Download Manager	Mister Download Manager দেখুৱাওক
+#. menu command in the main window
+#. View → Draw with: a greyed note; Mesa's software renderer (llvmpipe, keep the name) failed on this computer, so Windows' own software renderer (WARP, keep the name) draws
+#, machine
+menu	Software (llvmpipe) didn't start here: WARP draws	ছফ্টৱেৰ (llvmpipe) ইয়াত আৰম্ভ নহ’ল: WARP-এ ড্ৰ কৰে
+#. menu command in the main window
+#. View → Draw with: a greyed note; Mesa's software renderer (llvmpipe, keep the name) is downloaded and draws the windows from MDM's next start
+#, machine
+menu	Software (llvmpipe) draws from the next start	ছফ্টৱেৰ (llvmpipe) পৰৱৰ্তী আৰম্ভণিৰ পৰা ড্ৰ কৰে
+#. menu command in the main window
+#. View → Draw with: a greyed note; what draws the windows: Mesa's software renderer, llvmpipe (keep the name), because no graphics card here has a driver MDM can draw with
+#, machine
+menu	Software (llvmpipe): no graphics card here has a driver for MDM	ছফ্টৱেৰ (llvmpipe): ইয়াত কোনো গ্ৰাফিক্স কাৰ্ডত MDM-ৰ বাবে ড্ৰাইভাৰ নাই
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine

@@ -115,6 +115,15 @@ Yes: HTTP and SOCKS proxies, and proxy auto-config (PAC) scripts, in **Options �
 
 Point at the video in your browser and click the **Download video** button that appears over it, or paste the page's address into **Tasks → Download video from a page**. MDM lists every quality the site offers, with sizes; pick one and it downloads like any file. It uses yt-dlp, which supports thousands of sites. Download only videos you have the right to. See [Download a video from a page](/help/guide-video-from-page.html).
 
+### Why does installing yt-dlp or another helper time out? {#helper-install-timeout}
+
+MDM downloads yt-dlp, ffmpeg and gallery-dl from their official releases on GitHub. Where GitHub can't be reached or is very slow, as often in mainland China, the install stops with "the server did not answer in time". Two ways around it:
+
+- With a proxy program (Clash, v2rayN and the like), enter its address and port in **Options → Proxy / Socks** (**Manual proxy/socks configuration**, often `127.0.0.1` and `7890`), or choose **Use system settings** when the program sets Windows' proxy. Then click **Install yt-dlp** again: MDM's own downloads, its helpers included, go through it.
+- Or download the program in your browser (yt-dlp's is on [its release page](https://github.com/yt-dlp/yt-dlp/releases/latest)), then in **Download video from a page** click **Helpers...**, then **Use another program...** in its row, and choose the file. MDM uses it from then on; keep it up to date yourself.
+
+See [Proxy / Socks](/help/options.html#proxy--socks) and [Use your own copies](/help/video.html#use-your-own-copies).
+
 ### Can it download a video's subtitles? {#subtitles}
 
 Yes. When a video has subtitles, the **Subtitles** list in the video window offers them: the uploader's languages and the site's automatic captions. They're saved beside the video as an `.srt` file, or put inside it with **Put them into the video**. See [Subtitles](/help/video.html#subtitles).

@@ -623,6 +623,29 @@ pub enum Bind {
 }
 
 impl Bind {
+    /// How a session binds to `route` (#35, #143): `Ok(None)` for [`mdm_engine::Route::Any`],
+    /// or `Err(adapter_label)` when the chosen adapter is gone or has no usable address.
+    pub fn for_route(route: &mdm_engine::Route) -> Result<Option<Bind>, String> {
+        match route {
+            mdm_engine::Route::Any => Ok(None),
+            mdm_engine::Route::Down { label } => Err(label.clone()),
+            // Windows: its address (strong host model, see mdm_engine::net); IPv4 when it has one.
+            #[cfg(windows)]
+            mdm_engine::Route::Bound(b) => {
+                b.v4.map(std::net::IpAddr::V4)
+                    .or(b.v6.map(std::net::IpAddr::V6))
+                    .map(|ip| Some(Bind::Address(ip)))
+                    .ok_or_else(|| b.label.clone())
+            }
+            // Linux and macOS: its device.
+            #[cfg(not(windows))]
+            mdm_engine::Route::Bound(b) => Ok(Some(Bind::Device {
+                name: b.name.clone(),
+                v4_only: b.v6.is_none(),
+            })),
+        }
+    }
+
     fn v4_only(&self) -> bool {
         match self {
             Bind::Device { v4_only, .. } => *v4_only,

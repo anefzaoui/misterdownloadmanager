@@ -538,6 +538,9 @@ enum Cmd {
     /// View → Draw with → OpenGL / Direct3D, Vulkan or Metal (#89, #206), from the next start.
     #[cfg(gpu)]
     DrawWith(crate::renderer::Api),
+    /// View → Draw with → Download Mesa's software renderer (Windows, #476): its offer.
+    #[cfg(windows)]
+    SoftwareRenderer,
     /// View → Window system → Automatic (`None`), X11 (XWayland) or Wayland (Linux, #624), from
     /// the next start.
     #[cfg(target_os = "linux")]
@@ -1447,6 +1450,14 @@ pub struct App {
     /// The browser extension's offer (extension.rs), and whether this run has weighed it.
     extension: Option<crate::extension::Extension>,
     extension_weighed: bool,
+    /// Mesa's software renderer's offer (softgl.rs, #476: Windows, where WARP draws), the list
+    /// read for the start's offer, and whether this run has weighed it.
+    #[cfg(windows)]
+    soft_gl: Option<crate::softgl::Offer>,
+    #[cfg(windows)]
+    soft_gl_lookup: Option<crate::softgl::Lookup>,
+    #[cfg(windows)]
+    soft_gl_weighed: bool,
     /// The weekly update check, while it runs.
     auto_update: Option<crate::help::Slot>,
     /// The automatic check found a new version: its window comes to the front once shown.
@@ -1881,6 +1892,21 @@ pub(crate) fn mark_hook(url: &url::Url, referrer: Option<&str>) -> mdm_engine::F
     mdm_engine::FileHook::new(move |path: &std::path::Path| {
         crate::webmark::mark(path, &url, referrer.as_deref());
     })
+}
+
+/// Whether `s` names a .torrent file on this computer (a path, as a file association or a drop
+/// hands it over), not one on the web: by its form, without asking the disk on the window's
+/// thread (#1292). Add torrent reads it beside the window, and says so when it isn't there.
+fn torrent_file_path(s: &str) -> bool {
+    let s = s.trim().trim_matches('"');
+    if !s.to_ascii_lowercase().ends_with(".torrent") {
+        return false;
+    }
+    // `C:\x.torrent` reads as an address whose scheme is the drive letter.
+    match url::Url::parse(s) {
+        Ok(u) => u.scheme().len() == 1,
+        Err(_) => true,
+    }
 }
 
 /// The Google Drive file whose player the browser's video button was clicked over (#34, #758):
@@ -2332,6 +2358,12 @@ impl App {
             shown_existing: None,
             extension: None,
             extension_weighed: false,
+            #[cfg(windows)]
+            soft_gl: None,
+            #[cfg(windows)]
+            soft_gl_lookup: None,
+            #[cfg(windows)]
+            soft_gl_weighed: false,
             auto_update: None,
             raise_updates: false,
             raise_options: false,
@@ -2740,6 +2772,8 @@ impl App {
             } else {
                 it.status_icon()
             },
+            // Its server's checksum didn't match the file kept (#2064).
+            warned: !self.extracts.extracting(it.id) && it.checksum_warning_text(true).is_some(),
             icon: file_icon(&it.file_name),
             queued: queued.contains(&it.id),
             // A progress bar only while the download is in flight: a finished file is whole, and
@@ -2792,7 +2826,11 @@ impl App {
             // A short word and a percentage in the cell while checked or joined (#736): the
             // whole words in its tip and for a screen reader.
             status_whole: (!self.extracts.extracting(it.id))
-                .then(|| it.finishing(false).or_else(|| it.damaged_text(false)))
+                .then(|| {
+                    it.finishing(false)
+                        .or_else(|| it.damaged_text(false))
+                        .or_else(|| it.checksum_warning_text(false))
+                })
                 .flatten(),
             // The limit holding it back (#1191), in the Transfer rate cell's tip.
             rate_tip: receiving
@@ -3585,6 +3623,9 @@ impl App {
                 }
             }
             "about" => self.run(Cmd::About, None, ctx),
+            // Mesa's software renderer's window (#476), as View → Draw with opens it.
+            #[cfg(windows)]
+            "software-renderer" => self.run(Cmd::SoftwareRenderer, None, ctx),
             // Update now's end-to-end tests (feature `test-update`, never in a release): Update
             // now pressed in the window `/show updates` opened (against MDM_UPDATE_FEED).
             #[cfg(feature = "test-update")]
@@ -3788,6 +3829,21 @@ impl App {
                         "backwards" => v.show_part("4:10", "1:30", false),
                         "exact" => v.show_part("1:30", "4:10", true),
                         _ => v.show_part("1:30", "4:10", false),
+                    }
+                }
+            }
+            // A sample video whose sound comes in four languages (#1961): `video-dubbed:de` with
+            // that language chosen, `video-dubbed:de:audio only, original m4a` and a choice.
+            "video-dubbed" => {
+                self.run(Cmd::VideoPage, None, ctx);
+                if let Some(v) = &mut self.video_dlg {
+                    v.show_sample_dubbed();
+                    let (lang, choice) = tab.split_once(':').unwrap_or((tab, ""));
+                    if !lang.is_empty() {
+                        v.pick_sound(lang);
+                    }
+                    if !choice.is_empty() {
+                        v.pick(choice);
                     }
                 }
             }
@@ -3998,6 +4054,8 @@ impl App {
                 }
             }
             "options" => {
+                // options:saveto:Programs: Save to with that category chosen (screenshots).
+                let (tab, category) = tab.split_once(':').unwrap_or((tab, ""));
                 let page = match tab {
                     "types" => 1,
                     "saveto" => 2,
@@ -4016,6 +4074,13 @@ impl App {
                 };
                 self.run(Cmd::Options, None, ctx);
                 self.options = self.options.take().map(|o| o.on_page(page));
+                if !category.is_empty() {
+                    let downloads = self.downloads.clone();
+                    self.options = self
+                        .options
+                        .take()
+                        .map(|o| o.with_category(category, &downloads));
+                }
                 self.raise_options = true;
                 // General → Download panels → Edit... (the video button's settings).
                 if tab == "panels" {
@@ -4177,11 +4242,11 @@ impl App {
         }
         // A magnet link or a .torrent file (browser, command line, file association): Add
         // torrent shows what it holds.
-        if let Some(m) = cmd.url.as_deref().filter(|u| {
-            mdm_torrent::Source::magnet(u).is_some()
-                || (u.to_ascii_lowercase().ends_with(".torrent")
-                    && std::path::Path::new(u.trim_matches('"')).is_file())
-        }) {
+        if let Some(m) = cmd
+            .url
+            .as_deref()
+            .filter(|u| mdm_torrent::Source::magnet(u).is_some() || torrent_file_path(u))
+        {
             let m = m.trim().to_owned();
             self.show_for_dialog(ctx);
             self.open_torrent_dialog(Some(m), ctx);
@@ -4219,16 +4284,26 @@ impl App {
             );
             return;
         }
-        // A Hugging Face repository or folder, a GitHub release or tag (#1772), given on the
-        // command line (`/d`) or dropped alone: its files in Link grabber, as from Add URL. Silent
-        // (`/n`, a script's command line) asks nothing: the address is downloaded as it is.
+        // A Hugging Face repository or folder, a GitHub release or tag (#1772), a Google Drive
+        // folder (#2032), given on the command line (`/d`), dropped alone or sent by the browser
+        // (its right-click command, with its sign-in): its files in Link grabber, as from Add
+        // URL. Silent (`/n`, a script's command line) asks nothing: the address is downloaded as
+        // it is.
         if !cmd.silent
             && cmd.name.is_none()
             && cmd.post.is_none()
             && mdm_engine::hub::Source::of(&url).is_some()
         {
             self.show_for_dialog(ctx);
-            self.grab_package(&url, ctx);
+            let found = crate::transfer::Imported {
+                url: url.to_string(),
+                referer: cmd.referer.clone(),
+                cookies: cmd.cookies.clone(),
+                user_agent: cmd.user_agent.clone(),
+                private: cmd.private,
+                ..Default::default()
+            };
+            self.grab_package(found, ctx);
             return;
         }
         // A fresh address for a download waiting for one (its link expired): that download goes
@@ -6654,6 +6729,7 @@ impl App {
         .with_subs(self.settings.video_subs.clone())
         .with_chapters(self.settings.video_chapters)
         .with_split_chapters(self.settings.video_split_chapters)
+        .with_cover(self.settings.video_cover)
         .with_music_folder(music)
     }
 
@@ -9308,15 +9384,18 @@ impl App {
             }
             Cmd::Theme(id) => {
                 self.settings.theme = id.to_owned();
-                crate::theme::select(id, ctx);
-                // Live: egui's own visuals, the glyph rendering and the captions follow at once;
-                // every painter reads the new theme from its next frame.
-                crate::theme::apply_theme(ctx);
-                crate::theme::apply_mode(ctx);
-                self.caption_set = false;
-                self.theme_checked = None;
+                // A theme file is read beside the window's thread (#1292), and applied as it is
+                // in (`paint_frame`, `theme::poll_pick`); a built-in at once.
+                if crate::theme::pick(id, ctx) {
+                    // Live: egui's own visuals, the glyph rendering and the captions follow at
+                    // once; every painter reads the new theme from its next frame.
+                    crate::theme::apply_theme(ctx);
+                    crate::theme::apply_mode(ctx);
+                    self.caption_set = false;
+                    self.theme_checked = None;
+                    ctx.request_repaint();
+                }
                 self.dirty = true;
-                ctx.request_repaint();
             }
             Cmd::OpenThemesFolder => {
                 if let Some(dir) = crate::themefile::dir() {
@@ -9393,6 +9472,12 @@ impl App {
                 tracing::info!("draw with {api:?} from the next start");
                 self.settings.renderer = Some(api);
                 self.dirty = true;
+            }
+            #[cfg(windows)]
+            Cmd::SoftwareRenderer => {
+                if self.soft_gl.is_none() {
+                    self.soft_gl = Some(crate::softgl::Offer::looking(&self.rt, ctx));
+                }
             }
             #[cfg(target_os = "linux")]
             Cmd::WindowSystem(pick) => {
@@ -9922,13 +10007,15 @@ impl App {
             self.tests_resumed = true;
             self.tests.resume(&mut self.items, &self.settings);
         }
+        // Whether an archive is complete is looked at beside the window's thread (#1292).
+        self.tests.look_beside(ctx);
         let (tests, items, settings) = (&mut self.tests, &mut self.items, &self.settings);
         let before = finished.len();
         finished.retain(|id| !tests.hold(*id, items, settings));
         if finished.len() != before {
             self.dirty = true;
         }
-        for done in self.tests.poll(&mut self.items, ctx) {
+        for done in self.tests.poll(&mut self.items, &self.settings, ctx) {
             self.dirty = true;
             match done {
                 crate::archtest::Done::Release(id) => finished.push(id),
@@ -10749,12 +10836,20 @@ impl App {
         // The system's API on a software renderer (WARP): said, with why below (no card for
         // it, an OpenGL that can't draw MDM).
         let software = active == Some(gpu) && renderer::software();
+        // Mesa's llvmpipe draws (#476, Windows): said in place of what OpenGL's notes would say.
+        let llvmpipe = renderer::llvmpipe();
         // OpenGL can't draw MDM here (#835, #847): said, and why, where it changed what draws.
         let unfit = renderer::gl_failed().filter(|_| active == Some(gpu) && (software || !on));
         // The software renderer draws because no card here has a driver for the system's API:
         // one line says both (Windows, #847).
         let no_driver = no_driver_note.filter(|_| software && failed == Some(Why::NoAdapter));
-        if active.is_some_and(|a| a != chosen) || software {
+        if llvmpipe {
+            items.push(Sep);
+            // i18n: View → Draw with: a greyed note; what draws the windows: Mesa's software renderer, llvmpipe (keep the name), because no graphics card here has a driver MDM can draw with
+            items.push(off(
+                "Software (llvmpipe): no graphics card here has a driver for MDM",
+            ));
+        } else if active.is_some_and(|a| a != chosen) || software {
             items.push(Sep);
             let mut notes = Vec::new();
             // Since when, and when MDM tries it again (#1205).
@@ -10807,9 +10902,44 @@ impl App {
                 notes.extend(again(renderer::gl_again()));
             }
             items.extend(notes);
+            if software {
+                items.extend(Self::software_renderer_items());
+            }
         }
         // i18n: View menu: submenu choosing what draws MDM's windows: OpenGL, or Direct3D, Vulkan or Metal (graphics systems)
         Sub("Draw with", true, items)
+    }
+
+    /// View → Draw with's lines about Mesa's software renderer (#476, Windows), where Windows'
+    /// software renderer (WARP) draws: its offer while it isn't downloaded, else whether it draws
+    /// from the next start or didn't start here.
+    #[cfg(gpu)]
+    fn software_renderer_items() -> Vec<MenuEntry<Cmd>> {
+        #[cfg(windows)]
+        {
+            use crate::renderer;
+            use MenuEntry::{Item as I, Sep};
+            let off = |label| I(label, Cmd::None, false, false);
+            let mut items = vec![Sep];
+            if renderer::mesa_dll().is_none() {
+                // i18n: View → Draw with: opens a window offering to download Mesa's software renderer (llvmpipe, keep the name), which draws MDM's windows with far less of the processor than Windows' own (WARP)
+                items.push(I(
+                    "Download Mesa's software renderer (llvmpipe)...",
+                    Cmd::SoftwareRenderer,
+                    true,
+                    false,
+                ));
+            } else if renderer::llvmpipe_failed().is_some() {
+                // i18n: View → Draw with: a greyed note; Mesa's software renderer (llvmpipe, keep the name) failed on this computer, so Windows' own software renderer (WARP, keep the name) draws
+                items.push(off("Software (llvmpipe) didn't start here: WARP draws"));
+            } else {
+                // i18n: View → Draw with: a greyed note; Mesa's software renderer (llvmpipe, keep the name) is downloaded and draws the windows from MDM's next start
+                items.push(off("Software (llvmpipe) draws from the next start"));
+            }
+            items
+        }
+        #[cfg(not(windows))]
+        Vec::new()
     }
 
     /// View → Draw with's note under a way that failed here: since when it is passed over, and
@@ -12929,9 +13059,7 @@ impl App {
             }
         }
         for s in other {
-            let torrent = mdm_torrent::Source::magnet(&s).is_some()
-                || (s.to_ascii_lowercase().ends_with(".torrent")
-                    && std::path::Path::new(&s).is_file());
+            let torrent = mdm_torrent::Source::magnet(&s).is_some() || torrent_file_path(&s);
             if torrent {
                 self.handle_command(
                     ipc::Command {
@@ -13155,13 +13283,11 @@ impl App {
         grabber.add(found, source, |u| known.contains(u.as_str()));
     }
 
-    /// A Hugging Face repository's or a GitHub release's address (#1772) into Link grabber, which
-    /// lists its files through the site's API, and the window to the front.
-    fn grab_package(&mut self, url: &url::Url, ctx: &egui::Context) {
-        let found = vec![crate::transfer::Imported {
-            url: url.to_string(),
-            ..Default::default()
-        }];
+    /// A Hugging Face repository's or a GitHub release's address (#1772), a Google Drive
+    /// folder's (#2032, with the browser's sign-in when it sent it), into Link grabber, which
+    /// lists its files through the site's API or pages, and the window to the front.
+    fn grab_package(&mut self, found: crate::transfer::Imported, ctx: &egui::Context) {
+        let found = vec![found];
         // i18n: Link grabber: where the links came from: an address given on its own (typed or pasted in Add URL, given on the command line)
         let source = crate::i18n::t("Address typed").to_owned();
         self.show_import(found, source);
@@ -13475,6 +13601,8 @@ impl App {
         item.testing = false;
         item.damaged = false;
         item.refetched = false;
+        // So is what its server's checksum said of it (#2064).
+        item.checksum_warning = None;
         item.note(crate::i18n::t("Downloading again from the start"));
         self.tests.forget(&[id]);
         self.dirty = true;
@@ -13716,6 +13844,46 @@ impl App {
         self.dirty = true;
     }
 
+    /// Mesa's software renderer (#476, softgl.rs): offered once, at a start drawn with Windows'
+    /// WARP for want of a graphics card's driver, once MDM's signed list said its size (read in
+    /// the background, only while the automatic update check is on); and its window, from View
+    /// → Draw with too. After the first start's questions, and never on a server.
+    #[cfg(windows)]
+    fn software_renderer_offer(&mut self, ctx: &egui::Context) {
+        if !self.soft_gl_weighed
+            && !self.headless
+            && self.lang_picker.is_none()
+            && self.setup.is_none()
+            && self.settings.language_asked
+            && self.settings.helpers_asked
+        {
+            self.soft_gl_weighed = true;
+            if crate::softgl::worth_offering(&self.settings) {
+                self.soft_gl_lookup = Some(crate::softgl::look_up(&self.rt, ctx));
+            }
+        }
+        let looked = self
+            .soft_gl_lookup
+            .as_ref()
+            .and_then(|s| s.lock().ok().and_then(|mut s| s.take()));
+        if let Some(got) = looked {
+            self.soft_gl_lookup = None;
+            // None for this computer, or the list couldn't be read: no offer at this start.
+            if let Ok(offered) = got
+                && self.soft_gl.is_none()
+            {
+                self.soft_gl = Some(crate::softgl::Offer::offered(&self.rt, offered));
+                self.settings.software_renderer_asked = true;
+                self.dirty = true;
+            }
+        }
+        if let Some(d) = &mut self.soft_gl
+            && !matches!(d.show(ctx), Outcome::Open)
+        {
+            self.soft_gl = None;
+        }
+    }
+
     fn help_dialogs(&mut self, ctx: &egui::Context) {
         if let Some(d) = &mut self.lang_picker {
             let first = !self.settings.language_asked;
@@ -13776,6 +13944,8 @@ impl App {
                 Outcome::Closed => self.extension = None,
             }
         }
+        #[cfg(windows)]
+        self.software_renderer_offer(ctx);
         if let Some(d) = &mut self.about
             && !matches!(d.show(ctx), Outcome::Open)
         {
@@ -14064,7 +14234,11 @@ impl App {
                 // in Link grabber, to tick those wanted.
                 Outcome::Done(new) if mdm_engine::hub::Source::of(&new.url).is_some() => {
                     self.add_url = None;
-                    self.grab_package(&new.url, ctx);
+                    let found = crate::transfer::Imported {
+                        url: new.url.to_string(),
+                        ..Default::default()
+                    };
+                    self.grab_package(found, ctx);
                 }
                 // A video's page, not a file (YouTube, Vimeo…): the video window looks it up.
                 Outcome::Done(new) if mdm_tools::pages::is_video_page(&new.url) => {
@@ -14183,17 +14357,22 @@ impl App {
             Outcome::Open => true,
             Outcome::Closed => false,
             Outcome::Done(h) => {
-                hashes.push((c.id, h));
+                hashes.push((c.id, h, c.matched()));
                 false
             }
         });
-        for (id, h) in hashes {
+        for (id, h, matched) in hashes {
             if let Some(item) = self.item(id) {
                 item.note(crate::i18n::fmt(
                     // i18n: event log entry: the user gave the checksum the file must have
                     crate::i18n::t("Expected checksum set ({algorithm})"),
                     &[("algorithm", h.algo.name())],
                 ));
+                // The user's own check found the file matches: its server's checksum that
+                // didn't is no longer a warning (#2064).
+                if matched {
+                    item.checksum_warning = None;
+                }
                 item.checksum = Some(h);
                 self.dirty = true;
             }
@@ -14482,6 +14661,12 @@ impl App {
                     }
                     if self.settings.video_split_chapters != v.split_chapters() {
                         self.settings.video_split_chapters = v.split_chapters();
+                        crate::settings::share_video_settings(&self.settings);
+                        self.dirty = true;
+                    }
+                    // So is the cover box (#1962).
+                    if self.settings.video_cover != v.cover() {
+                        self.settings.video_cover = v.cover();
                         crate::settings::share_video_settings(&self.settings);
                         self.dirty = true;
                     }
@@ -15194,6 +15379,14 @@ impl App {
         // Mode support is off. Switches live (IDM asks to restart). On Linux the desktop's own
         // change wakes a frame, and the check runs in it rather than at its next 2 s (#156).
         crate::crash::step(crate::crash::Step::Theme);
+        // A theme file picked in View → Theme, read beside the window's thread (#1292).
+        if crate::theme::poll_pick() {
+            crate::theme::apply_theme(&ctx);
+            crate::theme::apply_mode(&ctx);
+            self.caption_set = false;
+            self.theme_checked = None;
+            ctx.request_repaint();
+        }
         let desktop_changed = crate::theme::system_changed();
         if desktop_changed
             || self
@@ -19007,6 +19200,7 @@ mod redownload_tests {
         row.checksum = Some(mdm_engine::verify::Hash {
             algo: mdm_engine::verify::Algo::Sha256,
             value: vec![0; 32],
+            origin: mdm_engine::verify::Origin::User,
         });
         let mut app = app_with(rt, vec![row]);
         app.redownload(1);
@@ -20220,5 +20414,29 @@ mod stop_and_keep_tests {
             .len();
         assert!(kept > 0);
         assert_eq!(row.size, Some(kept));
+    }
+}
+
+#[cfg(test)]
+mod torrent_path_tests {
+    /// #1292: a .torrent named by its path, told from one on the web by its form alone.
+    #[test]
+    fn a_torrent_file_is_told_by_its_form() {
+        for path in [
+            r"C:\Users\x\Downloads\ubuntu.torrent",
+            r#""D:\a b\linux.TORRENT""#,
+            "/home/x/Downloads/debian.torrent",
+            "debian.torrent",
+        ] {
+            assert!(super::torrent_file_path(path), "{path}");
+        }
+        for not in [
+            "https://example.org/ubuntu.torrent",
+            "ftp://example.org/a.torrent",
+            r"C:\x\ubuntu.iso",
+            "magnet:?xt=urn:btih:0123456789abcdef0123456789abcdef01234567",
+        ] {
+            assert!(!super::torrent_file_path(not), "{not}");
+        }
     }
 }
