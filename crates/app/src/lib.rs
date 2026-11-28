@@ -20,6 +20,7 @@ mod deferred_rename;
 mod deleter;
 mod derive;
 mod dialogs;
+mod diskwatch;
 mod droptarget;
 mod errors;
 mod extension;
@@ -557,6 +558,15 @@ fn app() -> eframe::Result {
             help::VERSION,
             help::COMMIT
         );
+        // A save cut short by a crash or a power cut leaves its staging file beside the file
+        // it was writing (craft-atomic's `.<name>.<pid>-<n>.craft_tmp`); the file itself is
+        // whole. Those in the data folder go once they are an hour old: no save into it takes
+        // that long, this instance's or a command line's, so one still being written stays.
+        match craft_atomic::sweep_temp_files(&data, std::time::Duration::from_secs(3600)) {
+            Ok(0) => {}
+            Ok(n) => tracing::info!("removed {n} staging file(s) an interrupted save left"),
+            Err(e) => tracing::warn!("staging files not swept: {e}"),
+        }
     }
     // View → Font (#1489): the interface's own font and text size, apart from that zoom.
     theme::init_smooth_text(loaded.settings.smooth_text);
@@ -575,6 +585,9 @@ fn app() -> eframe::Result {
             at_login,
         );
     }
+    // This thread is the window's: from its first frame on, it makes no file call (#1292,
+    // diskwatch.rs; debug builds log any it makes).
+    diskwatch::start();
     // Linux: the session's end (logind's SIGTERM at logout or shutdown) is heard from now on,
     // and run at the window's next frame (`Shared::logic`).
     #[cfg(target_os = "linux")]

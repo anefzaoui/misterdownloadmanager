@@ -260,9 +260,13 @@ impl std::fmt::Debug for FileHook {
 /// Which proxy downloads go through (Options → Proxy / Socks).
 #[derive(Clone, Debug, Default, PartialEq, Eq)]
 pub enum Proxy {
-    /// "No proxy/socks" (IDM's default): direct connections.
+    /// "No proxy/socks" (IDM's default): direct connections. yt-dlp and gallery-dl are given no
+    /// proxy setting, so they keep the system's and the environment's (#1616).
     #[default]
     None,
+    /// "No proxy/socks" chosen on purpose (#1616): direct connections as [`Proxy::None`], and
+    /// yt-dlp and gallery-dl are kept off the system's and the environment's proxy too.
+    Direct,
     /// "Use system settings": Windows' proxy (and the environment's).
     System,
     /// "Manual proxy/socks configuration": `http://host:port` (or `socks5://…`), with an
@@ -2143,7 +2147,7 @@ fn client_with(
     // proxy's): known here for each kind of setting.
     let mut proxied = false;
     let builder = match (&opts.proxy, system) {
-        (Proxy::None, _) => builder.no_proxy(),
+        (Proxy::None | Proxy::Direct, _) => builder.no_proxy(),
         (Proxy::System, Some(Some(proxy))) => {
             check_proxy(&proxy, true)?;
             proxied = true;
