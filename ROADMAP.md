@@ -569,6 +569,11 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 Everything below ships together, in version 0.6.0, the next release.
 
+- ✅ The browser add-on's Download video button checked on about 30 video sites and player types in
+  Chrome and Firefox, and shown where it was missing: YouTube embedded in other sites before it plays,
+  a player in a lightbox (a modal dialog or a popover), a player with a closed shadow root, one written
+  into a frame of the page's own, a page that keeps the pointer's moves, and an Instagram reel on its
+  own page (muted and looping at first); a pre-roll ad's player no longer gets the button
 - ✅ Downloads that redirect through other sites keep the cookies each site needs: the browser
   add-on hands over the cookies of every address the download went through (partitioned ones
   included), MDM keeps those a server sets along the way, and each site gets only its own
