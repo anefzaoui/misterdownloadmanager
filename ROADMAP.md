@@ -574,7 +574,26 @@ Everything below ships together, in version 0.6.0, the next release.
   a player in a lightbox (a modal dialog or a popover), a player with a closed shadow root, one written
   into a frame of the page's own, and a page that keeps the pointer's moves; a pre-roll ad's player no
   longer gets the button
-
+- ✅ The window no longer freezes while an antivirus scans a file MDM opens
+  ([#1292](https://github.com/anefzaoui/misterdownloadmanager/issues/1292); thanks to
+  [@seifmoustafa](https://github.com/seifmoustafa) and
+  [@fernandopeguero](https://github.com/fernandopeguero)): fonts, archive tests, Options' look
+  for 7-Zip, theme files and sounds are read beside the window, and test builds log any file
+  the window's thread opens
+- ✅ The command line's `torrent-info` and `torrent-get` hold their torrent session to the network
+  adapter chosen in Options → Connection, and don't start while it isn't connected
+  ([#2050](https://github.com/anefzaoui/misterdownloadmanager/issues/2050); thanks to
+  [@abdul-karim-mia](https://github.com/abdul-karim-mia))
+- ✅ Every pull request and every change to main is scanned for signs of a tampered commit: code
+  hidden at the end of long lines, scripts that run on install or when a folder opens, files that
+  aren't what their name says and known indicators; main's whole history once a week
+  (`tools/security/scan_suspicious.py`)
+- ✅ More file types in the built-in categories: apps and installers (APK, IPA, AppImage, DEB,
+  RPM, Flatpak, Snap, MSIX, DMG, PKG…) in Programs, disc and disk images (ISO, IMG, VHD, VMDK…)
+  and more archives in Compressed, e-books, OpenDocument files and spreadsheets in Documents,
+  OPUS, FLAC, M4B and AIFF in Music, M2TS and MTS in Video; a list you edited stays yours
+  ([#1725](https://github.com/anefzaoui/misterdownloadmanager/issues/1725); thanks to
+  [@twistedwolfyt00](https://github.com/twistedwolfyt00))
 - ✅ Website: live counters under the home page's contributors, the downloads from GitHub (every
   file of every release) and the browser add-on's users (the Chrome Web Store and Firefox Add-ons), on
   split-flap tiles that flip up from zero when the page opens; read at most every 15 minutes, the

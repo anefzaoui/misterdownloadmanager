@@ -1,0 +1,17 @@
+# Findings of tools/security/scan_suspicious.py that a reviewer read and found safe.
+#
+#     <rule> <path> <fingerprint> <why it is safe>
+#
+# The scanner prints each finding's rule, path and fingerprint. A fingerprint covers that exact
+# line (or file): when the line changes, the scan asks again. `*` covers a whole file, for long
+# lines only: a vendored, minified library, updated from its upstream release.
+# A pull request that adds a line here is asking its reviewer to read what the line lets through.
+
+# Vendored, minified libraries.
+long-line  .claude/skills/impeccable/scripts/modern-screenshot.umd.js  *  modern-screenshot's UMD build, vendored by the Impeccable skill
+long-line  website/vendor/echarts.min.js  *  Apache ECharts' release build (website/vendor/echarts-LICENSE.txt)
+
+# Long lines written by hand.
+long-line  extension/background.js  d97792caa5abcc4d  the add-on's default list of file types to catch, one string
+long-line  extension/video.js  1d743e5db4fad274  MDM's logo as a PNG data address for the video button
+long-line  funding.json  c10de5656197cabc  the project description in the FLOSS/fund manifest
