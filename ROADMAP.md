@@ -569,6 +569,8 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 Everything below ships together, in version 0.6.0, the next release.
 
+- ✅ Torrents: a torrent of many files stays within its budget of open files when a file is
+  opened again and at a pause (a follow-up to #2060)
 - ✅ The browser add-on's Download video button checked on about 30 video sites and player types in
   Chrome and Firefox, and shown where it was missing: YouTube embedded in other sites before it plays,
   a player in a lightbox (a modal dialog or a popover), a player with a closed shadow root, one written
