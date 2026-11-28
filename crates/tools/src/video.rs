@@ -261,6 +261,56 @@ pub fn split_chapters() -> bool {
     SPLIT_CHAPTERS.load(std::sync::atomic::Ordering::Relaxed)
 }
 
+/// Download video's cover box (#1962): off unless the app turns it on ([`set_cover`]).
+static COVER: std::sync::atomic::AtomicBool = std::sync::atomic::AtomicBool::new(false);
+
+/// Whether the sounds started from now on get the video's thumbnail as their cover (the app's
+/// setting, shared as it changes; the command line keeps the default, off).
+pub fn set_cover(on: bool) {
+    COVER.store(on, std::sync::atomic::Ordering::Relaxed);
+}
+
+/// The video's thumbnail put into `f`, the sound alone saved (#1962): the picture the site gives
+/// for the video (`thumbs`, best first, from the run's look-up), brought in through the
+/// download's own network settings (`engine`), put in by MDM's `ffmpeg` without encoding the
+/// sound again ([`crate::cover`]). Whatever stands in the way, the file stays as it was saved,
+/// and the log says why.
+fn add_cover(
+    f: &Path,
+    thumbs: &[String],
+    ffmpeg: Option<&Path>,
+    engine: Option<&ByEngine>,
+    progress: &Mutex<Progress>,
+) {
+    let ext = f
+        .extension()
+        .map(|e| e.to_string_lossy().to_ascii_lowercase())
+        .unwrap_or_default();
+    let without = |why: &str| note(progress, format!("Saved without a cover: {why}"));
+    if !crate::cover::holds_cover(&ext) {
+        return without(&format!(
+            "a .{ext} file can't hold one (MP3, M4A, Opus and FLAC can)"
+        ));
+    }
+    let Some(ffmpeg) = ffmpeg else {
+        return without("putting the video's picture into the file needs ffmpeg");
+    };
+    let Some(by) = engine else {
+        return without("there is no connection to bring the picture in");
+    };
+    if thumbs.is_empty() {
+        return without("the site gives no picture of the video");
+    }
+    let fetched = by
+        .engine
+        .handle
+        .block_on(crate::cover::fetch(thumbs, &by.engine.opts));
+    match fetched.and_then(|picture| crate::cover::embed(f, &picture, ffmpeg)) {
+        Ok(()) => note(progress, "The video's thumbnail is the file's cover".into()),
+        Err(why) => without(&why),
+    }
+}
+
 /// The chapters a video's page lists, put into the file (#827): `--embed-chapters` on yt-dlp's
 /// last run, the one that merges and fixes the file up (after MDM's engine too). Only with ffmpeg,
 /// which writes them, and for a video or the sound as the site has it, not a conversion to MP3,
@@ -602,14 +652,19 @@ pub fn check_servers_with(alive: fn(&str) -> bool, serves: fn(&str) -> bool) {
 }
 
 /// yt-dlp's look-up `json` as a run's page, when it offers `selector` under `label` among its
-/// choices (`resolve::choices` with `merge`): the menu offered that very choice from it.
+/// choices (`resolve::choices` with `merge`, or those in one of its sound's languages, #1961):
+/// the menu offered that very choice from it.
 fn offered(json: &[u8], selector: &str, label: &str, merge: bool) -> Option<serde_json::Value> {
     let video = crate::resolve::parse(json)?;
-    crate::resolve::choices(&video, merge)
-        .iter()
-        .any(|c| c.selector == selector && c.label == label)
-        .then(|| serde_json::from_slice(json).ok())
-        .flatten()
+    let same = |c: &crate::resolve::Choice| c.selector == selector && c.label == label;
+    let languages = crate::resolve::sound_languages(&video);
+    let found = crate::resolve::choices(&video, merge).iter().any(same)
+        || languages.iter().any(|l| {
+            crate::resolve::choices_in(&video, merge, Some(&l.code))
+                .iter()
+                .any(same)
+        });
+    found.then(|| serde_json::from_slice(json).ok()).flatten()
 }
 
 /// The containers and sounds yt-dlp saves (`%(ext)s`), merged, converted or as the site has them.
@@ -1816,6 +1871,8 @@ enum Attempt {
         Option<String>,
         Option<LiveRun>,
         Vec<PathBuf>,
+        // The site's pictures of the video, best first, for a sound's cover (#1962).
+        Vec<String>,
     ),
     Stopped,
     /// `rerouted`: links were moved to other servers for this run.
@@ -1903,6 +1960,7 @@ fn supervise(
     saved: Option<&mdm_engine::FileHook>,
     recorder: &Recorder,
     part: Option<&PartRun>,
+    cover: bool,
 ) {
     // The first run only: a run after it looks the page up afresh (links expire).
     let mut preloaded = preloaded;
@@ -1958,7 +2016,7 @@ fn supervise(
         let _over = Finishing(recorder);
         match ended {
             Attempt::Stopped => return,
-            Attempt::Done(f, problems, quality, live, chapter_files) => {
+            Attempt::Done(f, problems, quality, live, chapter_files, thumbs) => {
                 if live.is_some() {
                     // As `save` does, before yt-dlp is ended: nothing starts again, a Stop or a
                     // Save is nothing more, and the job is being saved until it is done. A Stop
@@ -1988,6 +2046,11 @@ fn supervise(
                     Some(run) => finished_live(run, f, quality.as_deref(), recorder, progress),
                     None => f,
                 };
+                // A sound alone gets the video's thumbnail as its cover (#1962); a live
+                // stream's recording is left as it is.
+                if cover && live.is_none() {
+                    add_cover(&f, &thumbs, recorder.ffmpeg.as_deref(), engine, progress);
+                }
                 done(progress, saved, f, problems, chapter_files);
                 return;
             }
@@ -2858,6 +2921,8 @@ fn attempt(
     if chapters_count < 2 {
         strip_split_chapters(&mut ours);
     }
+    // The site's pictures of the video, for a sound's cover once it is saved (#1962).
+    let thumbs = crate::cover::candidates(&info);
     let (ours, browser) = (&ours[..], &browser[..]);
     let changed = moved(&mut info, dead, reroute);
     for (gone, alt) in &changed.swaps {
@@ -3064,6 +3129,7 @@ fn attempt(
             quality,
             live.clone(),
             chapter_files.clone(),
+            thumbs,
         );
     }
     for (code, why) in &refused {
@@ -3091,6 +3157,7 @@ fn attempt(
                 quality,
                 live.clone(),
                 chapter_files.clone(),
+                thumbs.clone(),
             );
         }
         let codes: Vec<String> = refused.iter().map(|(c, _)| c.clone()).collect();
@@ -3116,6 +3183,7 @@ fn attempt(
                     quality.clone(),
                     live.clone(),
                     chapter_files.clone(),
+                    thumbs.clone(),
                 );
             }
             _ => {}
@@ -3148,7 +3216,14 @@ fn attempt(
             }
         }
     }
-    Attempt::Done(video, problems, quality, live.clone(), chapter_files)
+    Attempt::Done(
+        video,
+        problems,
+        quality,
+        live.clone(),
+        chapter_files,
+        thumbs,
+    )
 }
 
 /// Move `info`'s links off servers that can't be reached (and off `dead`, the ones an earlier run
@@ -3762,10 +3837,11 @@ impl VideoJob {
             return Err(ProcError::PathTooLong(folder.join(stem)));
         }
         let output = folder.join(format!("{}.%(ext)s", template_text(stem)));
-        // An MP3, Opus or FLAC choice (#32, #70): the best sound, converted by ffmpeg.
+        // An MP3, Opus or FLAC choice (#32, #70): the best sound (in its language, #1961),
+        // converted by ffmpeg.
         let convert = crate::resolve::audio_conversion(selector);
-        let format = if convert.is_some() {
-            "ba/b".to_owned()
+        let format = if let Some(a) = &convert {
+            a.sound.clone()
         } else if ffmpeg.is_none() {
             // A format that comes as a file first (#569): without ffmpeg an HLS stream stays
             // its raw pieces.
@@ -3818,6 +3894,10 @@ impl VideoJob {
             "--no-playlist".into(),
         ];
         let converted = convert.is_some();
+        // The video's thumbnail as the cover of a sound alone (#1962), once it is saved; a
+        // video is left as it is.
+        let cover = COVER.load(std::sync::atomic::Ordering::Relaxed)
+            && crate::resolve::sound_only(selector, "");
         match convert {
             Some(a) => {
                 let x = ["-x".into(), "--audio-format".into(), a.format.into()];
@@ -3979,6 +4059,7 @@ impl VideoJob {
                         saved.as_ref(),
                         &recorder,
                         part.as_ref(),
+                        cover,
                     )
                 });
                 if std::panic::catch_unwind(run).is_err() {

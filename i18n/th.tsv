@@ -397,6 +397,10 @@
 #. why a split archive (in several files, its volumes) isn't tested yet, in "{name} isn't complete ({why})": one of its files isn't downloaded yet
 #, machine
 	a volume of it isn't there yet	ยังขาดวอลุ่มหนึ่ง
+#. text in the Download video window
+#. why the thumbnail-as-cover checkbox is greyed in Download video: the choice is the site's sound in a WebM file, which can't hold a picture
+#, machine
+	A WebM file can't hold a cover: choose M4A, MP3, Opus or FLAC	ไฟล์ WebM ไม่สามารถมีปกได้: เลือก M4A, MP3, Opus หรือ FLAC
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	About Mister Download Manager	เกี่ยวกับ Mister Download Manager
@@ -1921,6 +1925,10 @@
 #. Link grabber, in the empty "Save to" box: each file goes to its category's folder (Options → Save to)
 #, machine
 	Each file's category folder	โฟลเดอร์หมวดหมู่ของแต่ละไฟล์
+#. text in the Options window
+#. Options → Regional → Videos' sound: the first choice, each video's own sound (the language it was made in), the default
+#, machine
+	Each video's original	เสียงต้นฉบับของแต่ละวิดีโอ
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2331,6 +2339,10 @@
 #. {address} = an example web address with a * in the file name
 #, machine
 	For example:  {address}	ตัวอย่าง: {address}
+#. text in the Options window
+#. Options → Regional → Videos' sound: a note under the language list
+#, machine
+	For videos whose sound comes in several languages (dubbed ones), and playlists. A video without it keeps its original sound.	สำหรับวิดีโอที่มีเสียงหลายภาษา (แบบพากย์) และเพลย์ลิสต์ วิดีโอที่ไม่มีเสียงพากย์จะใช้เสียงต้นฉบับ
 #. text in the Add torrent window
 #. Torrent settings, under the switch that makes MDM open magnet links and .torrent files (macOS, Linux)
 #, machine
@@ -4158,6 +4170,10 @@
 #. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer's wake alarm can be set by an administrator only
 #, machine
 	Only an administrator can allow this	เฉพาะผู้ดูแลระบบเท่านั้นที่อนุญาตได้
+#. text in the Download video window
+#. why the thumbnail-as-cover checkbox is greyed in Download video: the choice is a video, which is saved as it is
+#, machine
+	Only an audio file gets a cover: a video is saved as it is	เฉพาะไฟล์เสียงเท่านั้นที่มีปก: วิดีโอจะถูกบันทึกตามเดิม
 #. tooltip (why a control is greyed) in the Download video window
 #. why "Put them into the video" is greyed: the chosen file type can't hold subtitles
 #, machine
@@ -4507,6 +4523,10 @@
 #. why Batch download's OK is greyed
 #, machine
 	Put a * in the address where the numbers or letters go	ใส่ * ในที่อยู่ตรงตำแหน่งที่ตัวเลขหรือตัวอักษรจะปรากฏ
+#. text in the Download video window
+#. checkbox in Download video: the picture the site shows for the video (its thumbnail) goes into an audio-only download (MP3, M4A, Opus, FLAC) as its cover, which music players show
+#, machine
+	Put the video's thumbnail in the audio file as its cover	ใส่ภาพขนาดย่อของวิดีโอในไฟล์เสียงเป็นปก
 #. checkbox in the Download video window
 #. checkbox in Download video: subtitles go inside the video file instead of a separate .srt file beside it
 #, machine
@@ -5256,9 +5276,17 @@
 #. text in a dialog box
 #, machine
 	Some of the torrent's files are already in this folder:	ไฟล์บางไฟล์ของทอร์เรนต์อยู่ในโฟลเดอร์นี้แล้ว:
+#. text in the Download video window
+#. label in Download video before the list of the languages a video's sound comes in (its original and the dubbed ones)
+#, machine
+	Sound	เสียง
 #. text in the Options window
 #, machine
 	Sound file	ไฟล์เสียง
+#. text in the Options window
+#. Options → Regional → Videos' sound: label before the list of languages
+#, machine
+	Sound language:	ภาษาของเสียง:
 #. page title in the Options window
 #, machine
 	Sound settings	การตั้งค่าเสียง
@@ -6911,6 +6939,10 @@
 #. what a screen reader calls the list of a playlist's videos
 #, machine
 	Videos	วิดีโอ
+#. group box title in the Options window
+#. Options → Regional: group box title: the language of a video's sound, for videos that come with several (dubbed ones)
+#, machine
+	Videos' sound	เสียงของวิดีโอ
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -7390,9 +7422,17 @@
 #, machine
 	{ip} can't be reached through {adapter}: it has no address of that kind (IPv4 or IPv6)	ไม่สามารถเข้าถึง {ip} ผ่าน {adapter} ได้: ไม่มีที่อยู่ประเภทนั้น (IPv4 หรือ IPv6)
 #. text in the Download video window
+#. in Download video's Sound list: a language's sound track that describes the picture for people who can't see it; {language} is the language's name
+#, machine
+	{language}, audio description	{language}, เสียงบรรยายภาพ
+#. text in the Download video window
 #. in the Subtitles list of Download video: {language} = a language's name; the site made these subtitles automatically (speech recognition)
 #, machine
 	{language}, automatic	{language} อัตโนมัติ
+#. text in the Download video window
+#. in Download video's Sound list and the browser's video menu: the video's own sound, the language it was made in (the others are dubbed); {language} is the language's name
+#, machine
+	{language}, original	{language}, เสียงต้นฉบับ
 #. text in a download's progress window
 #. {live} = peers connected now; {known} = peers heard of
 #, machine
