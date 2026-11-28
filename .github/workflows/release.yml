@@ -11,14 +11,30 @@
 #   system leaves its files out.
 # - Run by hand (Actions -> Release -> Run workflow) it only builds and keeps them as artifacts:
 #   nothing is published, and nothing is sent to addons.mozilla.org or the Chrome Web Store.
+# - Windows, when the SIGNPATH_API_TOKEN secret is set: code-signed through SignPath (signpath.io)
+#   before anything is published. Job `windows` builds and tests each processor's programs;
+#   `windows-to-sign` puts all of them, with Inno Setup's uninstaller for each, in one artifact;
+#   `sign-windows` sends it to SignPath as one signing request and waits for it; `windows-installers`
+#   makes the installers and zips from the signed files; `sign-windows-installers` sends the
+#   installers as a second request; `publish` checks every program is signed, then makes
+#   SHA256SUMS.txt (of the signed files) and signs it. Two requests per release, because each
+#   installer contains the signed programs. A pushed tag uses SignPath's release-signing policy,
+#   each request waiting (hours if need be) for the maintainer's approval in SignPath; a run by
+#   hand uses its test-signing. Without the token (a fork), or run by hand with "unsigned", the
+#   Windows files are built as before: a PFX certificate if one is set, else unsigned.
 name: Release
 
 on:
   push:
     tags: ["v*"]
   workflow_dispatch:
+    inputs:
+      unsigned:
+        description: Build Windows without SignPath (as a fork does)
+        type: boolean
+        default: false
 
-# Read-only for every job; a job that needs more says so in its own block (publish).
+# Read-only for every job; a job that needs more says so in its own block.
 permissions:
   contents: read
 
@@ -44,11 +60,70 @@ jobs:
           path: crates/geo/data/*
           retention-days: 7
 
+
+  signing:
+    # Whether, and with which of SignPath's signing policies, the Windows files are signed
+    # (signpath.io; .signpath/artifact-configuration.xml says what it signs and checks):
+    # - release-signing (the release certificate; each request waits for the maintainer's
+    #   approval in SignPath) only for a pushed tag v* on this repository;
+    # - test-signing (SignPath's test certificate, no approval) for a run by hand;
+    # - none without the SIGNPATH_API_TOKEN secret (a fork, a copy of the repository) or when the
+    #   run by hand asks for an unsigned build: then the Windows files are built as before (the
+    #   PFX certificate below if there is one, else unsigned).
+    runs-on: ubuntu-latest
+    outputs:
+      policy: ${{ steps.policy.outputs.policy }}
+      version: ${{ steps.policy.outputs.version }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          persist-credentials: false
+
+      - name: Signing policy
+        id: policy
+        env:
+          TOKEN: ${{ secrets.SIGNPATH_API_TOKEN }}
+          UNSIGNED: ${{ inputs.unsigned }}
+        run: |
+          v=$(sed -n 's/^version *= *"\([^"]*\)".*/\1/p' Cargo.toml | head -n 1)
+          [ -n "$v" ] || { echo "no version in Cargo.toml" >&2; exit 1; }
+          echo "version=$v" >> "$GITHUB_OUTPUT"
+          if [ "$GITHUB_REPOSITORY" != "anefzaoui/misterdownloadmanager" ]; then
+            echo "::warning::Not MDM's own repository: the Windows files are built without SignPath."
+            exit 0
+          fi
+          if [ "$UNSIGNED" = "true" ]; then
+            echo "::warning::Asked for an unsigned build: the Windows files are built without SignPath."
+            exit 0
+          fi
+          if [ -z "$TOKEN" ]; then
+            echo "::warning::SIGNPATH_API_TOKEN isn't set: the Windows files are built without SignPath (unsigned, unless a PFX certificate is set)."
+            exit 0
+          fi
+          # Every signed file must say it is this version (the artifact configuration's
+          # product-version): the programs (tools/build/version_info.rs) and the installer and its
+          # uninstaller (mdm.iss) take it from Cargo.toml. The installer and its uninstaller carry
+          # it padded to Inno Setup's fixed width, which the configuration spells out for a
+          # 5-character version.
+          if [ "${#v}" -ne 5 ]; then
+            echo "version $v is not 5 characters: update the padding in .signpath/artifact-configuration.xml (and SignPath's copy) first" >&2
+            exit 1
+          fi
+          if [ "$GITHUB_EVENT_NAME" = "push" ] && [[ "$GITHUB_REF" == refs/tags/v* ]]; then
+            echo "policy=release-signing" >> "$GITHUB_OUTPUT"
+            echo "Release build $GITHUB_REF at $GITHUB_SHA: SignPath's release-signing, approved in SignPath."
+          else
+            echo "policy=test-signing" >> "$GITHUB_OUTPUT"
+            echo "Not a release ($GITHUB_EVENT_NAME, $GITHUB_REF): SignPath's test-signing."
+          fi
+
   windows:
     # One build per processor, each on a runner of its own: x64 and 32-bit on GitHub's x64 Windows
     # (32-bit programs run there too, for the tests), ARM64 on its Windows on ARM.
+    # With SignPath, this job only builds and tests the programs (and their symbols); the jobs
+    # after it get them signed and make the installers and zips from the signed ones.
     name: windows-${{ matrix.arch }}
-    needs: geo
+    needs: [geo, signing]
     # A cold build with its tests takes about 45 minutes; a stuck or long-queued runner (the ARM
     # ones) is cut off instead of holding the release for GitHub's 6 hours.
     timeout-minutes: 90
@@ -135,14 +210,17 @@ jobs:
         run: cargo test --workspace --target ${{ matrix.target }}
 
       - name: Inno Setup
+        if: needs.signing.outputs.policy == ''
         shell: pwsh
         run: |
           if (-not (Test-Path "${env:ProgramFiles(x86)}\Inno Setup 6\ISCC.exe")) {
             choco install innosetup --no-progress -y
           }
 
+      # A certificate of our own (a PFX), used when SignPath isn't.
       - name: Code-signing certificate
         id: cert
+        if: needs.signing.outputs.policy == ''
         shell: pwsh
         env:
           PFX: ${{ secrets.CODESIGN_PFX_BASE64 }}
@@ -156,17 +234,24 @@ jobs:
           "command=`"$($signtool.FullName)`" sign /fd sha256 /tr http://timestamp.digicert.com /td sha256 /f `"$pfx`" /p `"$env:PASSWORD`" `$f" >> $env:GITHUB_OUTPUT
 
       - name: Installer and portable zip
+        if: needs.signing.outputs.policy == ''
         shell: pwsh
         env:
           MDM_SIGN_COMMAND: ${{ steps.cert.outputs.command }}
         run: ./tools/installer/build.ps1 -Arch ${{ matrix.arch }}
+
+      - name: Programs
+        if: needs.signing.outputs.policy != ''
+        shell: pwsh
+        run: ./tools/installer/build.ps1 -Arch ${{ matrix.arch }} -BuildOnly
 
       # The programs on the machine that built them: for this processor, and a download works.
       - name: Smoke test
         run: python tools/installer/smoke.py target/${{ matrix.target }}/release ${{ matrix.arch }}
 
       # Crash reports: the release's symbols (dump_syms reads each program's .pdb beside it; no
-      # download includes the .pdb files themselves).
+      # download includes the .pdb files themselves). Signing doesn't change the debug ids crash
+      # reports match.
       - name: Symbols
         shell: pwsh
         env:
@@ -179,10 +264,253 @@ jobs:
           if ($LASTEXITCODE) { throw "symbols failed" }
 
       # x64's under the name it always had ("windows"), the others' with their processor.
-      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+      - if: needs.signing.outputs.policy == ''
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: ${{ matrix.arch == 'x64' && 'windows' || format('windows-{0}', matrix.arch) }}
           path: target/dist/*
+
+      # With SignPath: the symbols for the release, and the unsigned programs for the next job
+      # only ("signing-*": deleted once used; publish refuses to go on while one is left).
+      - if: needs.signing.outputs.policy != ''
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: windows-${{ matrix.arch }}-symbols
+          path: target/dist/MisterDownloadManager-${{ needs.signing.outputs.version }}-symbols-windows-${{ matrix.arch }}.zip
+          if-no-files-found: error
+
+      - if: needs.signing.outputs.policy != ''
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: signing-windows-${{ matrix.arch }}-programs
+          path: |
+            target/${{ matrix.target }}/release/misterdownloadmanager.exe
+            target/${{ matrix.target }}/release/misterdownloadmanager-nmhost.exe
+            target/${{ matrix.target }}/release/misterdownloadmanager-cli.exe
+            target/${{ matrix.target }}/release/misterdownloadmanager-mcp.exe
+          if-no-files-found: error
+          retention-days: 1
+
+  windows-to-sign:
+    # With SignPath: every processor's programs and Inno Setup's uninstaller for each, in ONE
+    # artifact (x64/, arm64/, x86/), so a release asks SignPath for one signing request (one
+    # approval) for all of them. The uninstaller is made here, on the same kind of runner as the
+    # installers later (windows-installers), so both use the same Inno Setup. x64 must be there;
+    # a processor whose build failed is left out, as from the release.
+    needs: [signing, windows]
+    if: >-
+      ${{ !cancelled() && needs.signing.result == 'success' && needs.signing.outputs.policy != '' &&
+      needs.windows.result != 'cancelled' }}
+    runs-on: windows-latest
+    timeout-minutes: 30
+    permissions:
+      contents: read
+      actions: write # deletes the programs' artifacts once gathered
+    outputs:
+      artifact-id: ${{ steps.upload.outputs.artifact-id }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          persist-credentials: false
+
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          pattern: signing-windows-*-programs
+          path: ${{ runner.temp }}/built
+
+      - name: Inno Setup
+        shell: pwsh
+        run: |
+          if (-not (Test-Path "${env:ProgramFiles(x86)}\Inno Setup 6\ISCC.exe")) {
+            choco install innosetup --no-progress -y
+          }
+
+      - name: The files to sign
+        shell: pwsh
+        run: |
+          $targets = [ordered]@{ x64 = "x86_64-pc-windows-msvc"; arm64 = "aarch64-pc-windows-msvc"; x86 = "i686-pc-windows-msvc" }
+          if (-not (Test-Path "$env:RUNNER_TEMP/built/signing-windows-x64-programs")) { throw "x64 Windows' programs aren't there: nothing to sign" }
+          foreach ($arch in $targets.Keys) {
+            $built = "$env:RUNNER_TEMP/built/signing-windows-$arch-programs"
+            if (-not (Test-Path $built)) { "::warning::$arch Windows' programs aren't there (its build failed): left out"; continue }
+            $bin = "target/$($targets[$arch])/release"
+            New-Item -ItemType Directory -Force $bin | Out-Null
+            Copy-Item "$built/*.exe" $bin
+            ./tools/installer/build.ps1 -Arch $arch -NoBuild -ToSign "$env:RUNNER_TEMP/to-sign/$arch"
+          }
+
+      - name: Upload the files to sign
+        id: upload
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: signing-windows-programs
+          path: ${{ runner.temp }}/to-sign/
+          if-no-files-found: error
+          retention-days: 1
+
+      - name: The programs' artifacts deleted
+        if: always()
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $names = "signing-windows-x64-programs", "signing-windows-arm64-programs", "signing-windows-x86-programs"
+          $all = gh api "repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/artifacts?per_page=100" --jq '.artifacts[] | "\(.id) \(.name)"'
+          foreach ($line in $all) {
+            $id, $name = $line -split " ", 2
+            if ($names -contains $name) { gh api -X DELETE "repos/${{ github.repository }}/actions/artifacts/$id"; if ($LASTEXITCODE) { throw "$name couldn't be deleted" } }
+          }
+
+  sign-windows:
+    # The one signing request for the programs and uninstallers (request 1 of 2 per release): see
+    # .github/actions/signpath. A release-signing request waits for the maintainer's approval, up
+    # to five and a half hours; denied, failed or not approved in time, the run stops here and
+    # nothing is published.
+    needs: [signing, windows-to-sign]
+    if: ${{ !cancelled() && needs.windows-to-sign.result == 'success' }}
+    runs-on: windows-latest
+    timeout-minutes: 345
+    permissions:
+      contents: read
+      actions: write # SignPath fetches the artifact with this job's token; deleted once signed
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          persist-credentials: false
+
+      - name: Sign the programs and uninstallers
+        uses: ./.github/actions/signpath
+        with:
+          api-token: ${{ secrets.SIGNPATH_API_TOKEN }}
+          organization-id: f210c38b-b4a8-4639-8fe0-f40c7225c8a7
+          project-slug: misterdownloadmanager
+          signing-policy-slug: ${{ needs.signing.outputs.policy }}
+          artifact-name: signing-windows-programs
+          artifact-id: ${{ needs.windows-to-sign.outputs.artifact-id }}
+          version: ${{ needs.signing.outputs.version }}
+          what: the Windows programs and uninstallers
+          output-directory: ${{ runner.temp }}/signed
+
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: signing-windows-programs-signed
+          path: ${{ runner.temp }}/signed/
+          if-no-files-found: error
+          retention-days: 1
+
+      - name: The unsigned files' artifact deleted
+        if: always()
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh api -X DELETE "repos/${{ github.repository }}/actions/artifacts/${{ needs.windows-to-sign.outputs.artifact-id }}"
+          if ($LASTEXITCODE) { throw "the unsigned files' artifact couldn't be deleted" }
+
+  windows-installers:
+    # The installers and zips of every processor signed above, from the signed programs (no
+    # build): Inno Setup embeds the signed uninstaller. The zips are done; the installers go to
+    # SignPath next.
+    needs: [signing, sign-windows]
+    if: ${{ !cancelled() && needs.sign-windows.result == 'success' }}
+    runs-on: windows-latest
+    timeout-minutes: 30
+    permissions:
+      contents: read
+      actions: write # deletes the signed programs' artifact once used
+    outputs:
+      artifact-id: ${{ steps.upload.outputs.artifact-id }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          persist-credentials: false
+
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: signing-windows-programs-signed
+          path: ${{ runner.temp }}/signed
+
+      - name: Inno Setup
+        shell: pwsh
+        run: |
+          if (-not (Test-Path "${env:ProgramFiles(x86)}\Inno Setup 6\ISCC.exe")) {
+            choco install innosetup --no-progress -y
+          }
+
+      - name: Installers and zips, from the signed programs
+        shell: pwsh
+        run: |
+          foreach ($arch in "x64", "arm64", "x86") {
+            $signed = "$env:RUNNER_TEMP/signed/$arch"
+            if (-not (Test-Path $signed)) { continue }
+            ./tools/installer/build.ps1 -Arch $arch -Signed $signed
+          }
+
+      - name: Upload the installers to sign
+        id: upload
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: signing-windows-installers
+          path: target/dist/MisterDownloadManager-${{ needs.signing.outputs.version }}-setup*.exe
+          if-no-files-found: error
+          retention-days: 1
+
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: windows-zips
+          path: target/dist/MisterDownloadManager-${{ needs.signing.outputs.version }}-*.zip
+          if-no-files-found: error
+
+      - name: The signed programs' artifact deleted
+        if: always()
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $id = gh api "repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/artifacts?name=signing-windows-programs-signed" --jq '.artifacts[0].id // empty'
+          if ($id) { gh api -X DELETE "repos/${{ github.repository }}/actions/artifacts/$id"; if ($LASTEXITCODE) { throw "the signed programs' artifact couldn't be deleted" } }
+
+  sign-windows-installers:
+    # The one signing request for the installers (request 2 of 2 per release), as sign-windows.
+    needs: [signing, windows-installers]
+    if: ${{ !cancelled() && needs.windows-installers.result == 'success' }}
+    runs-on: windows-latest
+    timeout-minutes: 345
+    permissions:
+      contents: read
+      actions: write # SignPath fetches the artifact with this job's token; deleted once signed
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          persist-credentials: false
+
+      - name: Sign the installers
+        uses: ./.github/actions/signpath
+        with:
+          api-token: ${{ secrets.SIGNPATH_API_TOKEN }}
+          organization-id: f210c38b-b4a8-4639-8fe0-f40c7225c8a7
+          project-slug: misterdownloadmanager
+          signing-policy-slug: ${{ needs.signing.outputs.policy }}
+          artifact-name: signing-windows-installers
+          artifact-id: ${{ needs.windows-installers.outputs.artifact-id }}
+          version: ${{ needs.signing.outputs.version }}
+          what: the Windows installers
+          output-directory: ${{ runner.temp }}/signed
+
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: windows-installers
+          path: ${{ runner.temp }}/signed/
+          if-no-files-found: error
+
+      - name: The unsigned installers' artifact deleted
+        if: always()
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh api -X DELETE "repos/${{ github.repository }}/actions/artifacts/${{ needs.windows-installers.outputs.artifact-id }}"
+          if ($LASTEXITCODE) { throw "the unsigned installers' artifact couldn't be deleted" }
 
   extension:
     # The extension as its own download for the Chromium browsers that can't use the Chrome Web
@@ -404,21 +732,37 @@ jobs:
       id-token: write # build provenance: signs the attestation (Sigstore, keyless)
       attestations: write # build provenance: stores it on the repository
     # x64 Windows is checked below by its files: the Windows job's result says failure when any
-    # processor's build failed, and only x64's must be there.
+    # processor's build failed, and only x64's must be there. With SignPath, nothing is published
+    # unless the installers' signing request (the last one) succeeded.
     if: >-
       always() && startsWith(github.ref, 'refs/tags/') && needs.windows.result != 'cancelled' &&
-      needs.extension.result == 'success'
-    needs: [windows, extension, linux, macos]
+      needs.extension.result == 'success' && needs.signing.result == 'success' &&
+      (needs.signing.outputs.policy == '' || needs.sign-windows-installers.result == 'success')
+    needs: [signing, windows, sign-windows-installers, extension, linux, macos]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
         with:
           persist-credentials: false
 
+      # Every artifact of the run goes into the release: none of the signing jobs' own may be left
+      # (unsigned files among them), which their jobs delete once used.
+      - name: No signing artifact left
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          left=$(gh api "repos/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID/artifacts?per_page=100" --jq '.artifacts[] | select(.name | startswith("signing-")) | .name')
+          if [ -n "$left" ]; then echo "signing artifacts left in the run: $left" >&2; exit 1; fi
+
       - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
         with:
           path: dist
           merge-multiple: true
+
+      # SignPath's jobs checked their files; this checks the ones being published.
+      - name: Every Windows program signed
+        if: needs.signing.outputs.policy != ''
+        run: python3 tools/release/check_signed.py dist
 
       # Build provenance: a signed record that each file was built here, by this workflow, from
       # this tag. Anyone can check a download with
