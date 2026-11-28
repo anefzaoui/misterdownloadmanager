@@ -3856,6 +3856,21 @@ impl App {
                     }
                 }
             }
+            // A sample video whose sound comes in four languages (#1961): `video-dubbed:de` with
+            // that language chosen, `video-dubbed:de:audio only, original m4a` and a choice.
+            "video-dubbed" => {
+                self.run(Cmd::VideoPage, None, ctx);
+                if let Some(v) = &mut self.video_dlg {
+                    v.show_sample_dubbed();
+                    let (lang, choice) = tab.split_once(':').unwrap_or((tab, ""));
+                    if !lang.is_empty() {
+                        v.pick_sound(lang);
+                    }
+                    if !choice.is_empty() {
+                        v.pick(choice);
+                    }
+                }
+            }
             // A page whose videos need ffmpeg (#351): without it the list has only the sound.
             // `video-adaptive:runtime`: yt-dlp said it had no JavaScript runtime (#852).
             "video-adaptive" => {
@@ -6741,6 +6756,7 @@ impl App {
         .with_subs(self.settings.video_subs.clone())
         .with_chapters(self.settings.video_chapters)
         .with_split_chapters(self.settings.video_split_chapters)
+        .with_cover(self.settings.video_cover)
         .with_music_folder(music)
     }
 
@@ -14672,6 +14688,12 @@ impl App {
                     }
                     if self.settings.video_split_chapters != v.split_chapters() {
                         self.settings.video_split_chapters = v.split_chapters();
+                        crate::settings::share_video_settings(&self.settings);
+                        self.dirty = true;
+                    }
+                    // So is the cover box (#1962).
+                    if self.settings.video_cover != v.cover() {
+                        self.settings.video_cover = v.cover();
                         crate::settings::share_video_settings(&self.settings);
                         self.dirty = true;
                     }

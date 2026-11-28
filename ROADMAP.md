@@ -574,6 +574,17 @@ Everything below ships together, in version 0.6.0, the next release.
   included), MDM keeps those a server sets along the way, and each site gets only its own
   ([#1540](https://github.com/anefzaoui/misterdownloadmanager/issues/1540); thanks to
   [@solovyov-jenya2004](https://github.com/solovyov-jenya2004))
+- ✅ Download video: choose the language of a video's sound when it comes in several (YouTube's
+  dubbed tracks), the original first and marked; every quality, Audio only and MP3, Opus and
+  FLAC take that language's sound, and the button over a video says each line's language.
+  Options → Regional chooses one for every video and playlist, the original when a video lacks
+  it ([#1961](https://github.com/anefzaoui/misterdownloadmanager/issues/1961); thanks to
+  [@toji2002](https://github.com/toji2002), [@Hanif-afzal](https://github.com/Hanif-afzal) and
+  [@twistedwolfyt00](https://github.com/twistedwolfyt00))
+- ✅ Audio only downloads: the video's thumbnail as the cover of an MP3, M4A, Opus or FLAC file,
+  put in by ffmpeg without encoding the sound again; a box in Download video, kept as you leave
+  it ([#1962](https://github.com/anefzaoui/misterdownloadmanager/issues/1962); thanks to
+  [@twistedwolfyt00](https://github.com/twistedwolfyt00))
 - ✅ MDM's window toolkit (egui) on the same copy as the Craft suite's libraries (storytold's
   `next`), MDM's own fixes rebased on it: every window, menus included, connected to screen
   readers before it first shows, and accessibility stays on while any window is read

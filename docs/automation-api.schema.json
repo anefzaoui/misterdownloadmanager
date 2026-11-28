@@ -1017,6 +1017,13 @@
           "description": "What the menu shows (\"720p mp4\"), in MDM's language.",
           "type": "string"
         },
+        "language": {
+          "description": "The language of its sound, in MDM's words (#1961: \"Deutsch · German\", \"English,\noriginal\"), when the video's sound comes in several; none for one language, and from an\napp older than the field.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
         "original": {
           "description": "The sound as the site sends it (not converted): the button's list says \"original\".",
           "type": "boolean"

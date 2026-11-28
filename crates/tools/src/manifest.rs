@@ -302,6 +302,7 @@ impl Master {
             direct: false,
             needs_js_runtime: false,
             page_titled: false,
+            picked: Vec::new(),
         })
     }
 }

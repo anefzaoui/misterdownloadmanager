@@ -55,11 +55,15 @@ pub enum Found {
 
 impl Found {
     /// What yt-dlp's look-up found, with the choices the Download video window offers for it
-    /// (merged qualities when `merge`: ffmpeg is there).
+    /// (merged qualities when `merge`: ffmpeg is there): in Options' sound language when the
+    /// video's sound comes in several, else its original, then each other language's sound
+    /// (#1961).
     pub fn of(res: Result<Looked, String>, merge: bool) -> Found {
         match res {
             Ok(Looked::Video(v)) => {
-                let choices = mdm_tools::resolve::choices(&v, merge);
+                let preferred = crate::settings::sound_language();
+                let choices =
+                    mdm_tools::resolve::choices_by_language(&v, merge, preferred.as_deref());
                 Found::Video(v, choices)
             }
             Ok(Looked::List(_)) => Found::List,
@@ -430,11 +434,19 @@ fn title_of<'a>(v: &'a Video, address: &str, context: &'a mdm_ipc::Command) -> &
     crate::videodlg::page_title(context, v, address).unwrap_or(&v.title)
 }
 
-/// Choice `c` as the browser's quality menu shows it: its label in MDM's language, and what the
-/// menu's line says beside it (#755: height, codec, frame rate, range; #801: an about size;
-/// #1439: the most compatible one).
-fn menu_choice(c: &Choice) -> VideoChoice {
+/// Choice `c` of video `v` as the browser's quality menu shows it: its label in MDM's language,
+/// and what the menu's line says beside it (#755: height, codec, frame rate, range; #801: an
+/// about size; #1439: the most compatible one; #1961: its sound's language, the original
+/// marked, when the video's comes in several).
+fn menu_choice(v: &Video, c: &Choice) -> VideoChoice {
+    let language = c.language.as_deref().map(|code| {
+        let original = mdm_tools::resolve::sound_languages(v)
+            .iter()
+            .any(|l| l.original && l.code == code);
+        crate::videodlg::sound_language_name(code, original)
+    });
     VideoChoice {
+        language,
         label: crate::videodlg::choice_label(&c.label),
         ext: c.ext.clone(),
         size: c.size,
@@ -473,7 +485,11 @@ fn answer(token: &str, s: &Search) -> VideoLookupAnswer {
         Found::Video(v, choices) => VideoLookupAnswer {
             token: Some(token.to_owned()),
             title: Some(cut(title_of(v, &s.address, &s.context), TITLE_MAX)),
-            choices: choices.iter().take(CHOICES).map(menu_choice).collect(),
+            choices: choices
+                .iter()
+                .take(CHOICES)
+                .map(|c| menu_choice(v, c))
+                .collect(),
             notice: notice(v),
             ..VideoLookupAnswer::of(lookup::READY)
         },
@@ -1424,7 +1440,7 @@ mod tests {
         let v = mdm_tools::resolve::parse(V.as_bytes()).unwrap();
         let a: Vec<VideoChoice> = mdm_tools::resolve::choices(&v, true)
             .iter()
-            .map(menu_choice)
+            .map(|c| menu_choice(&v, c))
             .collect();
         let of = |i: usize| {
             let c = &a[i];

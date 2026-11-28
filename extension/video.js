@@ -898,22 +898,28 @@
   // and its range (#755, #1465: "MP4 · VP9 · 60 fps · HDR", as the app's window says it), its
   // sound's bitrate. Both the type and the codec: every merged video is an MP4, whatever its
   // picture. An older app's choice (no height) says it all in its label: nothing more. `brief`:
-  // the type and the codec only.
+  // the type and the codec only. A video whose sound comes in several languages (#1961) says
+  // each row's, in the app's words ("Deutsch · German", "English, original").
   function qualityMeta(c, t, brief = false) {
     if (!c || typeof c !== "object") return "";
+    const language = !brief && typeof c.language === "string" ? c.language.trim().slice(0, 60) : "";
     // The sound's rows say what they are in their label; their bitrate when the app says it.
     // (fps, kbps, codecs and HDR are the same in every language.)
-    if (c.audio === true) return Number(c.kbps) > 0 ? `${Math.round(c.kbps)} kbps` : "";
+    if (c.audio === true) {
+      const kbps = Number(c.kbps) > 0 ? `${Math.round(c.kbps)} kbps` : "";
+      return [kbps, language].filter(Boolean).join(" · ");
+    }
     if (!c.height && !c.file) return "";
     // #1439: the H.264 picture with AAC sound, in an MP4 that plays everywhere, says so instead
     // (the app's whole name for it, "Most compatible (H.264 + AAC) · 1080p", is the line's tip).
-    if (c.compatible === true) return t("video_compatible");
+    if (c.compatible === true) return [t("video_compatible"), language].filter(Boolean).join(" · ");
     const word = (x) => (typeof x === "string" ? x.trim().slice(0, 24) : "");
     const codec = word(c.codec);
     const ext = String(c.ext || "").toUpperCase();
     const parts = [ext, codec];
     if (!brief && Number(c.fps) > 0) parts.push(`${Math.round(c.fps)} fps`);
     if (!brief) parts.push(word(c.range));
+    parts.push(language);
     return parts.filter(Boolean).join(" · ");
   }
 

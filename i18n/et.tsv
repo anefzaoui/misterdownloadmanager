@@ -397,6 +397,10 @@
 #. why a split archive (in several files, its volumes) isn't tested yet, in "{name} isn't complete ({why})": one of its files isn't downloaded yet
 #, machine
 	a volume of it isn't there yet	üks selle köidetest on veel puudu
+#. text in the Download video window
+#. why the thumbnail-as-cover checkbox is greyed in Download video: the choice is the site's sound in a WebM file, which can't hold a picture
+#, machine
+	A WebM file can't hold a cover: choose M4A, MP3, Opus or FLAC	WebM-fail ei saa sisaldada kaanepilti: vali M4A, MP3, Opus või FLAC
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	About Mister Download Manager	Teave Mister Download Manageri kohta
@@ -1926,6 +1930,10 @@
 #. Link grabber, in the empty "Save to" box: each file goes to its category's folder (Options → Save to)
 #, machine
 	Each file's category folder	Iga faili kategooria kaust
+#. text in the Options window
+#. Options → Regional → Videos' sound: the first choice, each video's own sound (the language it was made in), the default
+#, machine
+	Each video's original	Iga video originaalheli
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2336,6 +2344,10 @@
 #. {address} = an example web address with a * in the file name
 #, machine
 	For example:  {address}	Näiteks: {address}
+#. text in the Options window
+#. Options → Regional → Videos' sound: a note under the language list
+#, machine
+	For videos whose sound comes in several languages (dubbed ones), and playlists. A video without it keeps its original sound.	Videote ja esitusloendite jaoks, mille heli on mitmes keeles (dubleeritud). Video ilma selleta säilitab oma algse heli.
 #. text in the Add torrent window
 #. Torrent settings, under the switch that makes MDM open magnet links and .torrent files (macOS, Linux)
 #, machine
@@ -4163,6 +4175,10 @@
 #. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer's wake alarm can be set by an administrator only
 #, machine
 	Only an administrator can allow this	Ainult administraator saab seda lubada
+#. text in the Download video window
+#. why the thumbnail-as-cover checkbox is greyed in Download video: the choice is a video, which is saved as it is
+#, machine
+	Only an audio file gets a cover: a video is saved as it is	Kaanepildi saab lisada ainult helifailile: video salvestatakse muutmata kujul
 #. tooltip (why a control is greyed) in the Download video window
 #. why "Put them into the video" is greyed: the chosen file type can't hold subtitles
 #, machine
@@ -4512,6 +4528,10 @@
 #. why Batch download's OK is greyed
 #, machine
 	Put a * in the address where the numbers or letters go	Pange aadressi tärn (*), kuhu numbrid või tähed lähevad
+#. text in the Download video window
+#. checkbox in Download video: the picture the site shows for the video (its thumbnail) goes into an audio-only download (MP3, M4A, Opus, FLAC) as its cover, which music players show
+#, machine
+	Put the video's thumbnail in the audio file as its cover	Lisa video pisipilt helifailile kaanepildiks
 #. checkbox in the Download video window
 #. checkbox in Download video: subtitles go inside the video file instead of a separate .srt file beside it
 #, machine
@@ -5261,9 +5281,17 @@
 #. text in a dialog box
 #, machine
 	Some of the torrent's files are already in this folder:	Mõned torrenti failid on juba selles kaustas:
+#. text in the Download video window
+#. label in Download video before the list of the languages a video's sound comes in (its original and the dubbed ones)
+#, machine
+	Sound	Heli
 #. text in the Options window
 #, machine
 	Sound file	Helifail
+#. text in the Options window
+#. Options → Regional → Videos' sound: label before the list of languages
+#, machine
+	Sound language:	Heli keel:
 #. page title in the Options window
 #, machine
 	Sound settings	Helisätted
@@ -6924,6 +6952,10 @@
 #. what a screen reader calls the list of a playlist's videos
 #, machine
 	Videos	Videod
+#. group box title in the Options window
+#. Options → Regional: group box title: the language of a video's sound, for videos that come with several (dubbed ones)
+#, machine
+	Videos' sound	Videote heli
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -7403,9 +7435,17 @@
 #, machine
 	{ip} can't be reached through {adapter}: it has no address of that kind (IPv4 or IPv6)	{ip} pole {adapter} kaudu kättesaadav: sellel pole seda tüüpi (IPv4 või IPv6) aadressi
 #. text in the Download video window
+#. in Download video's Sound list: a language's sound track that describes the picture for people who can't see it; {language} is the language's name
+#, machine
+	{language}, audio description	{language}, helikirjeldus
+#. text in the Download video window
 #. in the Subtitles list of Download video: {language} = a language's name; the site made these subtitles automatically (speech recognition)
 #, machine
 	{language}, automatic	{language}, automaatne
+#. text in the Download video window
+#. in Download video's Sound list and the browser's video menu: the video's own sound, the language it was made in (the others are dubbed); {language} is the language's name
+#, machine
+	{language}, original	{language}, originaal
 #. text in a download's progress window
 #. {live} = peers connected now; {known} = peers heard of
 #, machine
