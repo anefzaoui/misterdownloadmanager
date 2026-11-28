@@ -71,8 +71,12 @@ mod scrollbar;
 mod secrets;
 mod selection;
 mod settings;
+// The offer of Mesa's software renderer (#476): Windows only, where WARP draws without a card;
+// Linux and macOS have their own software OpenGL.
 mod setup;
 mod sitewait;
+#[cfg(windows)]
+mod softgl;
 mod store;
 mod sysprogress;
 mod theme;

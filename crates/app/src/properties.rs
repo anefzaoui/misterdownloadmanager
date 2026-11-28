@@ -237,6 +237,10 @@ impl Properties {
         });
         // The values' column: IDM's 87, or after the widest label when a translation is longer
         // (the boxes keep their right edges).
+        // Complete with a warning (#2064): the warning whole.
+        let status = item
+            .checksum_warning_text(false)
+            .unwrap_or_else(|| item.status_text());
         let col = [
             "Type:",
             "Status:",
@@ -258,7 +262,7 @@ impl Properties {
                 file_type(&item.file_name, &ext),
             ),
             // i18n: label before the download's state
-            (crate::i18n::mark("Status:"), 88.0, item.status_text()),
+            (crate::i18n::mark("Status:"), 88.0, status),
             (crate::i18n::mark("Size:"), 108.0, size),
         ] {
             text(

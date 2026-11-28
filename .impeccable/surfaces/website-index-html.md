@@ -54,6 +54,6 @@ edge with a gentler tilt, the caption under it, then the contributors' row.
 FORM: grounded candidate 5 of 7 (courier waybill and parcel label); seed:d1b9f806aa0c2dc4.
 Signature interaction: the tracking race, two shipments scanned event by event to the real
 benchmark times, replayable. Motion grammar: the label feeds out once like a thermal printer;
-progress moves damped; nothing else animates on entry.
+progress moves damped; the tallies under the crew flip up once from zero, split-flap (the owner's choice, 2026-11-27); nothing else animates on entry.
 
 FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, DESIGN.md, and every shipping raster carrying its provenance

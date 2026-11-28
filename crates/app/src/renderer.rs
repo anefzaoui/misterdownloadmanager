@@ -37,11 +37,22 @@
 //! stack; the cards of #847 froze or crashed there while showing a frame, #1659's crashed).
 //! WARP draws right on those cards, but keeps the processor busier, so OpenGL comes
 //! first. WARP failing too is remembered apart (`direct3d-software-failed.txt`), and OpenGL draws.
+//!
+//! Windows without a graphics card's driver (#476: Windows Server, a virtual machine, Remote
+//! Desktop): WARP draws, and costs many times the processor Mesa's software OpenGL (llvmpipe)
+//! does for the same windows. MDM offers to download llvmpipe then (never by itself:
+//! `mdm_tools::mesa`, the offer in `softgl.rs`); once it is in the data folder, it draws before WARP
+//! ([`Attempt::Llvmpipe`]: Mesa's `opengl32.dll` loaded in place of Windows' own, win32.rs
+//! `load_mesa`), wherever Windows' own OpenGL hasn't started first in that start (it can't be
+//! replaced once loaded). Its starts are watched like the others, and its failure is remembered
+//! (`llvmpipe-failed.txt`, tried again when another Mesa is installed or as [`wait`] says): a
+//! llvmpipe that can't draw here leaves WARP to draw.
 //! Linux and macOS remember no OpenGL failure ([`WATCH_GL`]): their OpenGL is their default, and
 //! their way out is Vulkan or Metal, chosen in View → Draw with.
 //!
 //! Testing overrides, in this order: `/renderer <name>` on the command line, then
-//! `MDM_RENDERER=<name>`. Names: `opengl` (`gl`); `direct3d` (`d3d`) on Windows, `vulkan` (`vk`)
+//! `MDM_RENDERER=<name>`. Names: `opengl` (`gl`); `llvmpipe` (`mesa`, Windows, once it is
+//! downloaded: then WARP, then OpenGL); `direct3d` (`d3d`) on Windows, `vulkan` (`vk`)
 //! on Linux, `metal` on macOS, or `gpu` for whichever this system has; `warp` (Windows),
 //! `vulkan-software` (`lavapipe`, Linux) or `software`: the system's API drawn by a software
 //! renderer (Microsoft's WARP, Mesa's lavapipe), as on a computer without a graphics driver.
@@ -50,8 +61,8 @@
 //! card's driver; debug builds only, `after-loss`: none in a start just after a lost card, as
 //! while its driver resets: [`reset_testing`]), `MDM_TEST_NO_SOFTWARE=1` (no software renderer
 //! either),
-//! `MDM_TEST_NO_FIRST_FRAME=opengl` (only OpenGL's first frame never comes; `direct3d`,
-//! `vulkan`, `metal`: only that API's, on any adapter) and
+//! `MDM_TEST_NO_FIRST_FRAME=opengl` (only OpenGL's first frame never comes; `llvmpipe`: only
+//! Mesa's llvmpipe's; `direct3d`, `vulkan`, `metal`: only that API's, on any adapter) and
 //! `MDM_TEST_GL_STALL=1` (the window stalls once while OpenGL draws, as in a driver's present);
 //! debug builds only, `MDM_TEST_GL_CRASH=1` (MDM crashes once while OpenGL draws, as inside its
 //! driver: [`gl_crash_testing`]).
@@ -162,18 +173,36 @@ pub enum Attempt {
     OpenGl,
     /// The system's API ([`GPU`]).
     Gpu(Adapters),
+    /// OpenGL through Mesa's software renderer, llvmpipe, downloaded into the data folder (#476,
+    /// Windows): loaded before OpenGL starts, in place of Windows' own.
+    Llvmpipe,
 }
+
+/// [`Attempt::Llvmpipe`]'s name in the log and the crash reports, which the crash report's window
+/// reads back ([`drew_with_llvmpipe`]).
+pub const LLVMPIPE_NAME: &str = "OpenGL (Mesa's llvmpipe)";
+
+/// Was a session drawn with Mesa's llvmpipe, by what its crash report says drew it (`renderer`:
+/// its first words, as [`started`] gives them to the crash reports)?
+pub fn drew_with_llvmpipe(renderer: &str) -> bool {
+    renderer.starts_with(LLVMPIPE_NAME)
+}
+
+/// Where Mesa's llvmpipe can draw: Windows (Linux and macOS have their own software OpenGL, and
+/// their OpenGL is their default).
+pub const LLVMPIPE_HERE: bool = cfg!(windows);
 
 impl Attempt {
     pub fn api(self) -> Api {
         match self {
-            Attempt::OpenGl => Api::OpenGl,
+            Attempt::OpenGl | Attempt::Llvmpipe => Api::OpenGl,
             Attempt::Gpu(_) => GPU.unwrap_or(Api::OpenGl),
         }
     }
 
     fn name(self) -> &'static str {
         match (self, GPU) {
+            (Attempt::Llvmpipe, _) => LLVMPIPE_NAME,
             (Attempt::OpenGl, _) | (_, None) => "OpenGL",
             (Attempt::Gpu(Adapters::Software), Some(Api::Direct3D)) => "Direct3D 12 (WARP)",
             (Attempt::Gpu(Adapters::Software), Some(Api::Vulkan)) => "Vulkan (software)",
@@ -195,6 +224,7 @@ fn parse(name: &str) -> Option<Attempt> {
     }
     let (api, adapters) = match name.as_str() {
         "opengl" | "gl" | "glow" => return Some(Attempt::OpenGl),
+        "llvmpipe" | "mesa" => return LLVMPIPE_HERE.then_some(Attempt::Llvmpipe),
         "direct3d" | "d3d" | "d3d12" | "dx12" => (Some(Api::Direct3D), Adapters::Hardware),
         "warp" => (Some(Api::Direct3D), Adapters::Software),
         "vulkan" | "vk" => (Some(Api::Vulkan), Adapters::Hardware),
@@ -217,6 +247,10 @@ pub struct Known {
     /// OpenGL can't draw MDM here (`opengl-unfit.txt`): it failed to start, is too old
     /// ([`gl_unfit`]), drew no first frame, or froze inside its driver (Windows, #835, #847).
     pub gl_failed: bool,
+    /// Mesa's llvmpipe is in the data folder (#476, Windows: `tools/mesa/`).
+    pub llvmpipe: bool,
+    /// ... and failed here (`llvmpipe-failed.txt`).
+    pub llvmpipe_failed: bool,
 }
 
 impl Known {
@@ -224,10 +258,13 @@ impl Known {
     /// and is remembered as that; a failure whose time to be passed over is up, or from before a
     /// driver update, isn't counted: that way is tried again ([`verdict`], #1205).
     pub fn read() -> Known {
+        let llvmpipe = mesa_dll().is_some();
         Known {
             card_failed: failed_before(Way::Card),
             software_failed: failed_before(Way::Software),
             gl_failed: failed_before(Way::OpenGl),
+            llvmpipe,
+            llvmpipe_failed: llvmpipe && failed_before(Way::Llvmpipe),
         }
     }
 
@@ -242,6 +279,8 @@ impl Known {
             card_failed: any(Way::Card),
             software_failed: any(Way::Software),
             gl_failed: any(Way::OpenGl),
+            llvmpipe: mesa_dll().is_some(),
+            llvmpipe_failed: any(Way::Llvmpipe),
         }
     }
 }
@@ -322,6 +361,12 @@ impl Because {
 /// on its software renderer (unless that failed too: then OpenGL first, nothing else drew),
 /// whatever the setting; an override still gets it. A card without Direct3D 12 on Windows:
 /// `[OpenGL, any]`, then `[WARP, OpenGL]` once OpenGL failed there.
+///
+/// `known.llvmpipe` (Mesa's llvmpipe downloaded here, Windows, #476): it comes just before the
+/// system's API on its software renderer (WARP), unless OpenGL comes before that (Windows' own
+/// OpenGL, once started, can't be replaced in that start) or llvmpipe failed here. On a computer
+/// without a graphics card's driver, once OpenGL is known not to draw MDM: `[llvmpipe, WARP,
+/// OpenGL]`.
 pub fn plan(setting: Option<Api>, overridden: Option<&str>, known: Known) -> Plan {
     let forced = overridden.and_then(|o| {
         let a = parse(o);
@@ -338,6 +383,7 @@ pub fn plan(setting: Option<Api>, overridden: Option<&str>, known: Known) -> Pla
         card_failed,
         software_failed,
         gl_failed,
+        ..
     } = known;
     let (card, soft, gl, any) = (
         Attempt::Gpu(Adapters::Hardware),
@@ -354,9 +400,11 @@ pub fn plan(setting: Option<Api>, overridden: Option<&str>, known: Known) -> Pla
     } else {
         Because::Default
     };
-    let (attempts, because) = match forced {
+    let (mut attempts, because) = match forced {
         // OpenGL last, even one that can't draw MDM: the windows always open.
         Some(a @ Attempt::Gpu(_)) => (vec![a, gl], Because::Override),
+        // llvmpipe, then what draws where it can't: WARP, OpenGL.
+        Some(Attempt::Llvmpipe) => (vec![Attempt::Llvmpipe, soft, gl], Because::Override),
         Some(_) => (vec![gl, any], Because::Override),
         None if wants_gpu => {
             let mut ways = Vec::new();
@@ -388,6 +436,16 @@ pub fn plan(setting: Option<Api>, overridden: Option<&str>, known: Known) -> Pla
         ),
         None => (vec![gl, any], as_set),
     };
+    // Mesa's llvmpipe before WARP, where no OpenGL starts before it (see above).
+    if forced.is_none()
+        && LLVMPIPE_HERE
+        && known.llvmpipe
+        && !known.llvmpipe_failed
+        && let Some(i) = attempts.iter().position(|&a| a == soft)
+        && !attempts[..i].contains(&gl)
+    {
+        attempts.insert(i, Attempt::Llvmpipe);
+    }
     let attempts: Vec<Attempt> = attempts
         .into_iter()
         .filter(|a| GPU.is_some() || *a == Attempt::OpenGl)
@@ -418,6 +476,10 @@ pub fn plan(setting: Option<Api>, overridden: Option<&str>, known: Known) -> Pla
 /// Never "any adapter" nor a way after OpenGL: OpenGL would come first again.
 fn watchable(attempts: &[Attempt], a: Attempt, known: Known) -> bool {
     let at = |w: Attempt| attempts.iter().position(|&x| x == w);
+    // Mesa's llvmpipe, with WARP after it: its failure leaves WARP to draw.
+    if a == Attempt::Llvmpipe {
+        return at(a).is_some_and(|i| attempts[i..].contains(&Attempt::Gpu(Adapters::Software)));
+    }
     let Some((i, gl)) = at(a).zip(at(Attempt::OpenGl)) else {
         return false;
     };
@@ -461,6 +523,9 @@ const SOFTWARE_FAILED: &str = "software-failed.txt";
 /// the last way (#835, #847).
 const GL_STARTING: &str = "opengl-starting";
 const GL_FAILED: &str = "opengl-unfit.txt";
+/// The same two for Mesa's llvmpipe (#476): why it can't draw here.
+const LLVMPIPE_STARTING: &str = "llvmpipe-starting";
+const LLVMPIPE_FAILED: &str = "llvmpipe-failed.txt";
 
 /// A way whose failure is remembered in the data folder.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
@@ -471,6 +536,8 @@ enum Way {
     Software,
     /// OpenGL.
     OpenGl,
+    /// OpenGL through Mesa's llvmpipe (#476).
+    Llvmpipe,
 }
 
 impl Way {
@@ -480,6 +547,7 @@ impl Way {
             Attempt::Gpu(Adapters::Hardware) => Some(Way::Card),
             Attempt::Gpu(Adapters::Software) => Some(Way::Software),
             Attempt::OpenGl => Some(Way::OpenGl),
+            Attempt::Llvmpipe => Some(Way::Llvmpipe),
             Attempt::Gpu(Adapters::Any | Adapters::Nothing) => None,
         }
     }
@@ -491,6 +559,9 @@ impl Way {
             Way::Card => file(STARTING).zip(file(FAILED)),
             Way::Software => file(SOFTWARE_STARTING).zip(file(SOFTWARE_FAILED)),
             Way::OpenGl => mdm_ipc::data_dir().map(|d| (d.join(GL_STARTING), d.join(GL_FAILED))),
+            Way::Llvmpipe => {
+                mdm_ipc::data_dir().map(|d| (d.join(LLVMPIPE_STARTING), d.join(LLVMPIPE_FAILED)))
+            }
         }
     }
 
@@ -500,6 +571,7 @@ impl Way {
             Way::Card => Attempt::Gpu(Adapters::Hardware).name(),
             Way::Software => Attempt::Gpu(Adapters::Software).name(),
             Way::OpenGl => "OpenGL",
+            Way::Llvmpipe => LLVMPIPE_NAME,
         }
     }
 
@@ -509,6 +581,7 @@ impl Way {
             Way::Card => &CARD_RECORD,
             Way::Software => &SOFTWARE_RECORD,
             Way::OpenGl => &GL_RECORD,
+            Way::Llvmpipe => &LLVMPIPE_RECORD,
         }
     }
 
@@ -517,6 +590,7 @@ impl Way {
             Way::Card => 0,
             Way::Software => 1,
             Way::OpenGl => 2,
+            Way::Llvmpipe => 3,
         }
     }
 }
@@ -587,11 +661,14 @@ static GPU_FAILED: Mutex<Option<Why>> = Mutex::new(None);
 /// OpenGL can't draw MDM here (remembered, or found in this start) and wasn't chosen again since:
 /// why.
 static GL_FAILED_WHY: Mutex<Option<Why>> = Mutex::new(None);
+/// Mesa's llvmpipe can't draw here (remembered, or found in this start): why.
+static LLVMPIPE_FAILED_WHY: Mutex<Option<Why>> = Mutex::new(None);
 
 /// Each way's failure, as its file has it (for the log, the crash reports and View → Draw with).
 static CARD_RECORD: Mutex<Option<Failure>> = Mutex::new(None);
 static SOFTWARE_RECORD: Mutex<Option<Failure>> = Mutex::new(None);
 static GL_RECORD: Mutex<Option<Failure>> = Mutex::new(None);
+static LLVMPIPE_RECORD: Mutex<Option<Failure>> = Mutex::new(None);
 
 /// A way's failure, known in this process: the system API's first one is kept (the card's, the
 /// one View → Draw with explains), OpenGL's as it comes.
@@ -599,6 +676,11 @@ fn set_failed(way: Option<Way>, why: Why, record: Option<Failure>) {
     match way {
         Some(Way::OpenGl) => {
             if let Ok(mut f) = GL_FAILED_WHY.lock() {
+                *f = Some(why);
+            }
+        }
+        Some(Way::Llvmpipe) => {
+            if let Ok(mut f) = LLVMPIPE_FAILED_WHY.lock() {
                 *f = Some(why);
             }
         }
@@ -625,6 +707,31 @@ pub fn gpu_failed() -> Option<Why> {
 #[cfg(gpu)]
 pub fn gl_failed() -> Option<Why> {
     GL_FAILED_WHY.lock().ok().and_then(|f| *f)
+}
+
+/// For View → Draw with's note: why Mesa's llvmpipe can't draw here, if it can't (#476; Windows,
+/// where it draws).
+#[cfg(windows)]
+pub fn llvmpipe_failed() -> Option<Why> {
+    LLVMPIPE_FAILED_WHY.lock().ok().and_then(|f| *f)
+}
+
+/// Mesa's `opengl32.dll` in the data folder, once downloaded (`mdm_tools::mesa`, #476): None
+/// elsewhere than Windows, and before.
+pub fn mesa_dll() -> Option<PathBuf> {
+    if !LLVMPIPE_HERE {
+        return None;
+    }
+    mdm_tools::tools_dir()
+        .and_then(|d| mdm_tools::mesa::installed(&d))
+        .map(|i| i.exe)
+}
+
+/// The installed Mesa's version, for its failure's "drivers" (another Mesa installed tries it
+/// again, as a driver update does a card's way).
+fn mesa_version() -> Option<String> {
+    let dir = mdm_tools::tools_dir()?;
+    mdm_tools::mesa::installed(&dir).map(|i| format!("Mesa {}", i.version))
 }
 
 /// The system's API's file `name` in the data folder (`direct3d-failed.txt`,
@@ -763,7 +870,7 @@ fn remember(way: Way, mut f: Failure) {
     if let Some((_, file)) = way.files() {
         let _ = std::fs::write(file, f.text());
     }
-    if way == Way::OpenGl {
+    if matches!(way, Way::OpenGl | Way::Llvmpipe) {
         set_failed(Some(way), f.why, Some(f));
     } else if let Ok(mut r) = way.record().lock() {
         *r = Some(f);
@@ -794,7 +901,7 @@ fn forget(ways: &[Way]) {
 
 /// The ways tried again this start though they failed here before ([`failed_before`]), by
 /// [`Way::index`]: one that draws its first frame is forgotten ([`frame_done`]).
-static RETRIED: Mutex<[bool; 3]> = Mutex::new([false; 3]);
+static RETRIED: Mutex<[bool; 4]> = Mutex::new([false; 4]);
 
 /// The watched way this try draws with (see [`run`]), for its marker and its first frame.
 static TRYING: Mutex<Option<Way>> = Mutex::new(None);
@@ -1195,6 +1302,10 @@ fn read_drivers_soon() {
 /// (a card's driver brings its OpenGL), the software renderers' for the software renderer. Waits
 /// 2 s at most for them (a driver stuck elsewhere doesn't hold MDM here); None when unknown.
 fn drivers(way: Way) -> Option<String> {
+    // Mesa's llvmpipe draws with no driver of the computer's: its own version stands for one.
+    if way == Way::Llvmpipe {
+        return mesa_version();
+    }
     read_drivers_soon();
     let until = std::time::Instant::now() + std::time::Duration::from_secs(2);
     let all = loop {
@@ -1260,13 +1371,26 @@ pub fn gl_unfit(v: GlVersion, windows: bool) -> Option<String> {
     None
 }
 
-/// OpenGL chosen again (View → Draw with): its next start is tried, and checked again.
+/// OpenGL chosen again (View → Draw with): its next start is tried, and checked again; Mesa's
+/// llvmpipe too (it is OpenGL).
 #[cfg(gpu)]
 pub fn forget_gl_failure() {
-    if let Ok(mut f) = GL_FAILED_WHY.lock() {
+    for why in [&GL_FAILED_WHY, &LLVMPIPE_FAILED_WHY] {
+        if let Ok(mut f) = why.lock() {
+            *f = None;
+        }
+    }
+    forget(&[Way::OpenGl, Way::Llvmpipe]);
+}
+
+/// Mesa's llvmpipe was just installed (#476; Windows, where it draws): a failure of another
+/// one's is forgotten, and the next start tries it.
+#[cfg(windows)]
+pub fn forget_llvmpipe_failure() {
+    if let Ok(mut f) = LLVMPIPE_FAILED_WHY.lock() {
         *f = None;
     }
-    forget(&[Way::OpenGl]);
+    forget(&[Way::Llvmpipe]);
 }
 
 /// Where a frozen window thread's stack (its frames' modules, top first) shows it stuck inside
@@ -1284,6 +1408,8 @@ pub fn gl_driver_frame<'a>(
     let driver = |m: &str| {
         let m = m.to_ascii_lowercase();
         m == "opengl32.dll"
+            // Mesa's (#476: llvmpipe; pal1000's build keeps its drivers here).
+            || m == "libgallium_wgl.dll"
             || (m.starts_with("ig") && m.contains("icd") && m.ends_with(".dll"))
             || m.starts_with("nvoglv")
             || m.starts_with("atio6axx")
@@ -1327,26 +1453,40 @@ pub fn gl_crash_frame<'a>(
 
 /// MDM crashed inside OpenGL's driver (the crash report's window read it from the crash's stack,
 /// [`gl_crash_frame`]): remembered, so the next starts draw with the system's API on its software
-/// renderer when the card has none (#1659). Windows only ([`WATCH_GL`]).
-pub fn remember_gl_crashed(module: &str) {
+/// renderer when the card has none (#1659). Windows only ([`WATCH_GL`]). `llvmpipe`: the session
+/// drew with Mesa's llvmpipe ([`drew_with_llvmpipe`]), whose failure is remembered instead (WARP
+/// draws next, #476).
+pub fn remember_gl_crashed(module: &str, llvmpipe: bool) {
     if !WATCH_GL {
         return;
     }
-    let details = format!("MDM crashed inside {module} as OpenGL drew");
-    tracing::warn!("OpenGL can't draw MDM here: {details}; passed over from the next start");
-    remember_failure(Way::OpenGl, Why::CrashedInDriver, &details);
+    let (way, name) = gl_way(llvmpipe);
+    let details = format!("MDM crashed inside {module} as {name} drew");
+    tracing::warn!("{name} can't draw MDM here: {details}; passed over from the next start");
+    remember_failure(way, Why::CrashedInDriver, &details);
 }
 
 /// The window froze inside OpenGL's driver (the crash report's window read it from the freeze's
 /// stack, [`gl_driver_frame`]): remembered, so the next starts draw with the system's API on its
-/// software renderer when the card has none (#847). Windows only ([`WATCH_GL`]).
-pub fn remember_gl_froze(module: &str, seconds: u64) {
+/// software renderer when the card has none (#847). Windows only ([`WATCH_GL`]). `llvmpipe` as
+/// for [`remember_gl_crashed`].
+pub fn remember_gl_froze(module: &str, seconds: u64, llvmpipe: bool) {
     if !WATCH_GL {
         return;
     }
-    let details = format!("the window froze for {seconds} s inside {module} as OpenGL drew");
-    tracing::warn!("OpenGL can't draw MDM here: {details}; passed over from the next start");
-    remember_failure(Way::OpenGl, Why::FrozeInDriver, &details);
+    let (way, name) = gl_way(llvmpipe);
+    let details = format!("the window froze for {seconds} s inside {module} as {name} drew");
+    tracing::warn!("{name} can't draw MDM here: {details}; passed over from the next start");
+    remember_failure(way, Why::FrozeInDriver, &details);
+}
+
+/// The way an OpenGL session's failure is remembered for, and its name.
+fn gl_way(llvmpipe: bool) -> (Way, &'static str) {
+    if llvmpipe {
+        (Way::Llvmpipe, LLVMPIPE_NAME)
+    } else {
+        (Way::OpenGl, "OpenGL")
+    }
 }
 
 /// `MDM_TEST_GL_STALL=1` (off-screen test copies): once, a few seconds after the first frame
@@ -1690,6 +1830,15 @@ fn gl_paint_failed(main: bool, error: &str, in_a_row: u32, failing_for: std::tim
         // Elsewhere OpenGL stays the next start's way; and OpenGL that already draws as the last
         // way (known to fail here, nothing else started) would draw again: no start again.
         let known = GL_FAILED_WHY.lock().is_ok_and(|u| u.is_some());
+        // Mesa's llvmpipe drew (#476): its own failure, and WARP draws next.
+        if llvmpipe() {
+            tracing::warn!(
+                "{LLVMPIPE_NAME} can't draw MDM here: {details}; passed over from the next start"
+            );
+            remember_failure(Way::Llvmpipe, Why::LostTwice, &details);
+            start_again(&why);
+            return;
+        }
         if !WATCH_GL || known {
             tracing::error!("{details}: not started again (it would draw with OpenGL again)");
             return;
@@ -1810,9 +1959,11 @@ pub fn frame_done(ctx: &egui::Context) {
     let never = std::env::var("MDM_TEST_NO_FIRST_FRAME")
         .ok()
         .filter(|_| crate::offscreen());
-    if never.as_deref() == Some("1")
-        || never.is_some_and(|n| ACTIVE.get().is_some_and(|a| a.key() == n.trim()))
-    {
+    let drawing = |n: &str| match n.trim() {
+        "llvmpipe" => llvmpipe(),
+        n => !llvmpipe() && ACTIVE.get().is_some_and(|a| a.key() == n),
+    };
+    if never.as_deref() == Some("1") || never.as_deref().is_some_and(drawing) {
         return;
     }
     DRAWN.store(true, Ordering::Relaxed);
@@ -1820,7 +1971,7 @@ pub fn frame_done(ctx: &egui::Context) {
         format!(" ({} ms of it counted for the API)", d.as_millis())
     });
     tracing::info!("first frame drawn, {} ms after start{api}", since_start());
-    for (starting, _) in [Way::Card, Way::Software, Way::OpenGl]
+    for (starting, _) in [Way::Card, Way::Software, Way::OpenGl, Way::Llvmpipe]
         .into_iter()
         .filter_map(Way::files)
     {
@@ -1955,6 +2106,13 @@ pub fn software() -> bool {
     SOFTWARE.load(Ordering::Relaxed)
 }
 
+/// Mesa's llvmpipe draws now (#476), for View → Draw with.
+static LLVMPIPE: AtomicBool = AtomicBool::new(false);
+
+pub fn llvmpipe() -> bool {
+    LLVMPIPE.load(Ordering::Relaxed)
+}
+
 /// Run eframe's window with each way of the plan until one starts. `options` makes the window's
 /// options (each try needs its own); `creator` makes the app, once (a try that fails before
 /// that leaves it for the next). Returns the last try's result.
@@ -1994,6 +2152,22 @@ pub fn run<A: eframe::App + 'static>(
             if let Some(way) = watched {
                 gpu::watch_first_frame(way, this_try);
             }
+        }
+        // Mesa's llvmpipe: its OpenGL loaded in place of Windows' own, before eframe looks for
+        // one; one that can't be is this way's failure, and the next way draws (#476).
+        if attempt == Attempt::Llvmpipe
+            && let Err(e) = load_llvmpipe()
+        {
+            let why = format!("{} didn't start: {e}", attempt.name());
+            tracing::warn!("{why}");
+            if let Some(way) = watched {
+                remember_failure(way, Why::NoAdapter, &e);
+                if let Some((starting, _)) = way.files() {
+                    let _ = std::fs::remove_file(starting);
+                }
+            }
+            instead = Some(why);
+            continue;
         }
         let mut opts = options();
         configure(&mut opts, attempt);
@@ -2035,7 +2209,7 @@ pub fn run<A: eframe::App + 'static>(
                 attempt.name()
             );
         }
-        if attempt != Attempt::OpenGl && !passing {
+        if matches!(attempt, Attempt::Gpu(_)) && !passing {
             set_failed(None, reason, None);
         }
         if let Some(way) = watched {
@@ -2051,9 +2225,29 @@ pub fn run<A: eframe::App + 'static>(
     result
 }
 
+/// Mesa's llvmpipe loaded (#476): Windows only, where [`plan`] asks for it.
+fn load_llvmpipe() -> Result<(), String> {
+    let dll = mesa_dll().ok_or("Mesa's llvmpipe isn't in the data folder")?;
+    #[cfg(windows)]
+    {
+        crate::win32::load_mesa(&dll)?;
+        tracing::info!("Mesa's OpenGL loaded from {}", dll.display());
+        Ok(())
+    }
+    // LLVMPIPE_HERE is Windows' only: mesa_dll() is None elsewhere.
+    #[cfg(not(windows))]
+    {
+        let _ = dll;
+        Err("Mesa's llvmpipe is Windows' only".into())
+    }
+}
+
 /// The window's options for one way of drawing.
 fn configure(opts: &mut eframe::NativeOptions, attempt: Attempt) {
     match attempt {
+        // Mesa's OpenGL is loaded already (`run`); the test copies' OpenGL that fails is Windows'
+        // own, not this one.
+        Attempt::Llvmpipe => opts.renderer = eframe::Renderer::Glow,
         Attempt::OpenGl => {
             opts.renderer = eframe::Renderer::Glow;
             // MDM_TEST_NO_OPENGL=1 (off-screen test copies): a pixel format no OpenGL has, as on
@@ -2076,11 +2270,12 @@ fn configure(opts: &mut eframe::NativeOptions, attempt: Attempt) {
     }
     PACED.store(false, Ordering::Relaxed);
     let swaps = swaps();
-    let hooked = attempt == Attempt::OpenGl && swaps != Swaps::Own;
+    let gl = matches!(attempt, Attempt::OpenGl | Attempt::Llvmpipe);
+    let hooked = gl && swaps != Swaps::Own;
     GL_HOOKED.store(hooked, Ordering::Relaxed);
     // Every OpenGL start: its paints that fail are watched (#1448); with Swaps::Own, the swaps
     // are eframe's own (swap_waits gives back what eframe gives).
-    if attempt == Attempt::OpenGl {
+    if gl {
         opts.viewport_hooks = Some(std::sync::Arc::new(GlHooks(swaps)));
     }
 }
@@ -2137,6 +2332,7 @@ fn started(cc: &eframe::CreationContext<'_>, attempt: Attempt, why: String, gl_c
         let cpu = rs.adapter.get_info().device_type == eframe::wgpu::DeviceType::Cpu;
         SOFTWARE.store(cpu, Ordering::Relaxed);
     }
+    LLVMPIPE.store(attempt == Attempt::Llvmpipe, Ordering::Relaxed);
     // The crash reports say it, and why ("OpenGL on Intel(R) UHD Graphics 620 (4.6.0 - Build …)
     // — Direct3D 12 failed here before: …").
     crate::crash::renderer(&format!("{detail} — {why}"));
@@ -2635,6 +2831,8 @@ mod tests {
         card_failed: false,
         software_failed: false,
         gl_failed: false,
+        llvmpipe: false,
+        llvmpipe_failed: false,
     };
 
     /// What the data folder remembers: the card failed, its software renderer failed, OpenGL
@@ -2644,6 +2842,7 @@ mod tests {
             card_failed,
             software_failed,
             gl_failed,
+            ..NONE
         }
     }
 
@@ -2715,6 +2914,88 @@ mod tests {
             assert!(failed.ends_with("opengl-unfit.txt"));
         }
         assert_eq!(warp.name(), "Direct3D 12 (WARP)");
+    }
+
+    /// Windows, Mesa's llvmpipe downloaded (#476): it draws before WARP, watched, wherever
+    /// Windows' own OpenGL doesn't start before it in the same start; once it failed here, WARP
+    /// draws as before. Overrides as asked.
+    #[cfg(all(gpu, windows))]
+    #[test]
+    fn windows_draws_with_llvmpipe_before_warp() {
+        let (d3d, warp, gl, any, mesa) = (
+            Attempt::Gpu(Adapters::Hardware),
+            Attempt::Gpu(Adapters::Software),
+            Attempt::OpenGl,
+            Attempt::Gpu(Adapters::Any),
+            Attempt::Llvmpipe,
+        );
+        let with = |card, soft, opengl| Known {
+            llvmpipe: true,
+            ..k(card, soft, opengl)
+        };
+        // No graphics card's driver, OpenGL known not to draw MDM (Windows' own 1.1): llvmpipe,
+        // watched, then WARP, then OpenGL.
+        let p = plan(Some(Api::Direct3D), None, with(true, false, true));
+        assert_eq!(p.attempts, [mesa, warp, gl]);
+        assert_eq!(p.watch, [mesa, warp]);
+        // OpenGL chosen, the same computer: the same.
+        let p = plan(Some(Api::OpenGl), None, with(true, false, true));
+        assert_eq!(p.attempts, [mesa, warp, gl]);
+        // A card with Direct3D 12 whose OpenGL can't draw MDM: the card first, still.
+        let p = plan(Some(Api::Direct3D), None, with(false, false, true));
+        assert_eq!(p.attempts, [d3d, mesa, warp, gl]);
+        // Windows' own OpenGL tried before WARP (nothing known yet, or after its time to be passed
+        // over): not llvmpipe, which can't take its place in that start.
+        for known in [with(false, false, false), with(true, false, false)] {
+            let p = plan(Some(Api::Direct3D), None, known);
+            assert!(!p.attempts.contains(&mesa), "{:?}", p.attempts);
+        }
+        // llvmpipe failed here: WARP as before.
+        let failed = Known {
+            llvmpipe_failed: true,
+            ..with(true, false, true)
+        };
+        let p = plan(Some(Api::Direct3D), None, failed);
+        assert_eq!(p.attempts, [warp, gl]);
+        // Not downloaded: as before.
+        assert_eq!(
+            plan(Some(Api::Direct3D), None, k(true, false, true)).attempts,
+            [warp, gl]
+        );
+        // The override: llvmpipe, then WARP and OpenGL, never watched; another one leaves it out.
+        let p = plan(None, Some("llvmpipe"), with(true, false, true));
+        assert_eq!(p.attempts, [mesa, warp, gl]);
+        assert!(!p.watched());
+        assert_eq!(
+            plan(None, Some("warp"), with(true, false, true)).attempts,
+            [warp, gl]
+        );
+        assert_eq!(
+            plan(None, Some("gl"), with(true, false, true)).attempts,
+            [gl, any]
+        );
+        // Its name, its files, and what the crash report's window reads back.
+        assert_eq!(mesa.name(), LLVMPIPE_NAME);
+        assert_eq!(mesa.api(), Api::OpenGl);
+        assert!(drew_with_llvmpipe(&format!(
+            "{LLVMPIPE_NAME} on llvmpipe (LLVM 23.1.6, 256 bits) (4.6 Mesa 26.3.1) — the default here"
+        )));
+        assert!(!drew_with_llvmpipe(
+            "OpenGL on NVIDIA GeForce RTX 4060/PCIe/SSE2 (4.6.0)"
+        ));
+        if let Some((starting, failed)) = Way::Llvmpipe.files() {
+            assert!(starting.ends_with("llvmpipe-starting"));
+            assert!(failed.ends_with("llvmpipe-failed.txt"));
+        }
+        // Mesa's own DLLs count as OpenGL's driver in a freeze's or a crash's stack.
+        let stack = [
+            Some("libgallium_wgl.dll"),
+            Some("misterdownloadmanager.exe"),
+        ];
+        assert_eq!(
+            gl_driver_frame(stack, None).as_deref(),
+            Some("libgallium_wgl.dll")
+        );
     }
 
     /// Linux and macOS: no OpenGL start watched, no OpenGL failure remembered (#847 is Windows').

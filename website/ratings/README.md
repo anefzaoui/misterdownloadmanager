@@ -10,6 +10,16 @@ home and download pages. This folder is the service that keeps those ratings: a 
   own rating, or `null`).
 - `POST /api/ratings` with `{stars, turnstileToken}` rates (or changes the visitor's rating).
 - `DELETE /api/ratings` removes the visitor's rating.
+- `GET /api/stats` gives the home page's live figures (`src/stats.js`): `{downloads, chrome,
+  firefox, checked}`, each figure `{value, fetched}`: the downloads from GitHub (every file of every
+  release, counted as `tools/website/tallies.py` counts them), the Chrome Web
+  Store's users (read from its public listing page: it has no API) and Firefox Add-ons' daily
+  users, each with when it was read. Nothing of it touches D1: the figures are kept in
+  Cloudflare's cache, read again at most every 15 minutes (a stale answer is served while they
+  are), and a source that can't be read, or answers with something that doesn't look like its
+  number, keeps its last good figure and that figure's time; a figure never read is `null`. It
+  needs no secret (GitHub is asked without a token, a few times an hour). Same CORS as the
+  ratings; reading it needs no Origin.
 
 One rating per visitor: a visitor is an HMAC-SHA256 of their IP address with a secret salt (an
 IPv6 address by its /64). The address itself is never stored or logged, and the Worker turns

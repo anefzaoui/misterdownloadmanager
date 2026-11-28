@@ -680,6 +680,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	American Samoa	Amerikaanse Samoa
+#. text in extension.rs
+#. a check of Test browser integration (Windows), one short line: an older registry entry for MDM's helper is in the way of the right one; the entry and where it leads show on the line under it
+#, machine
+	An older registry entry is in the way:	’n Ouer registerinskrywing staan in die pad:
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -1143,6 +1147,11 @@
 #. event log entry after Recheck: {have} and {total} are sizes ("1.2 GB of 4 GB there")
 #, machine
 	Checked: {have} of {total} there	Gekontroleer: {have} van {total} daar
+#. text in softgl.rs
+#. the software renderer's window: the download is done, and its files are being checked and unpacked
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Checking and unpacking Mesa's software renderer...	Kontroleer en pak Mesa se sagteware-weergawe uit...
 #. message or event log entry in the main window
 #. event log entry: a torrent's files are being read and checked again (Recheck)
 #, machine
@@ -1177,6 +1186,10 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Checking...	Kontroleer tans...
+#. text in the download list (sizes, speeds, status)
+#. a download's status: it finished, but the checksum its server announced didn't match its file (the file is kept). Short: the list's Status column is narrow
+#, machine
+	Checksum warning	Kontrolesomwaarskuwing
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -1775,6 +1788,11 @@
 #. {size} = a file size such as "4.2 MB"; {bytes} = a number of bytes (keep the braces as they are)
 #, machine
 	Downloaded {size} ({bytes} Bytes)	Afgelaai {size} ({bytes} grepe)
+#. text in the download list (sizes, speeds, status)
+#. a download's status, whole (the Status cell's tip, Properties, the log, Download complete): it finished, but the checksum its server announced didn't match the file, which is kept. "Check it": the user can verify the file against a checksum they trust (right-click → Verify checksum...)
+#. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
+#, machine
+	Downloaded, but the server's {algorithm} checksum didn't match; the file may still be fine. Check it if it matters	Afgelaai, maar die bediener se {algorithm}-kontrolesom het nie met die lêer ooreengestem nie; die lêer is dalk steeds in orde. Kontroleer dit as dit saak maak
 #. item in the Categories tree in the download list; value in a column's filter list in the download list; text in remote.rs
 #. a download's status (state it is in, not a command)
 #, machine
@@ -1807,6 +1825,11 @@
 #. Helpers: MDM's own copy of a helper is being downloaded (where there was none, or in place of the system's); {percent} = how far, a number
 #, machine
 	Downloading MDM's own copy... {percent}%	Laai MDM se eie kopie af... {percent}%
+#. text in softgl.rs
+#. the software renderer's window, while it downloads; {done} and {size} = sizes (12.0 MB of 66.3 MB)
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	Downloading Mesa's software renderer: {done} of {size}	Laai Mesa se sagteware-weergawe af: {done} van {size}
 #. text in archtest.rs
 #. in a download's log: after its archive test found damaged files, only their bytes are downloaded again from the same server; {size} like "1.20 MB"
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
@@ -3158,6 +3181,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Looking the page up...	Soek die bladsy op...
+#. text in softgl.rs
+#. the software renderer's window: while MDM reads its signed list of the software renderers it may download (Mesa's llvmpipe: it draws MDM's windows where there is no graphics card)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Looking up Mesa's software renderer...	Soek Mesa se sagteware-weergawe op...
 #. text in preview.rs
 #. the preview pane: still looking whether the file is there
 #. the trailing ... means it is still going on: keep it
@@ -3326,6 +3354,9 @@
 #. Video helpers: MDM can't download Node.js on this system (an unusual processor); Node.js and Deno are program names; "Use another program" is the button below
 #, machine
 	MDM has no copy for this system: install Node.js or Deno, or use another program	MDM het geen kopie vir hierdie stelsel nie: installeer Node.js of Deno, of gebruik 'n ander program
+#. text in softgl.rs
+#, machine
+	MDM has no data folder	MDM het geen datavouer nie
 #. text in remote.rs
 #. remote control page (on a phone): no pairing code is shown in MDM; "Pair a device" is MDM's button
 #, machine
@@ -3351,6 +3382,27 @@
 #. error installing ffmpeg: the list of builds MDM accepts doesn't carry MDM's own signature
 #, machine
 	MDM's list of checked ffmpeg builds isn't signed by MDM's key, so ffmpeg wasn't installed	MDM se lys van gekontroleerde ffmpeg-boue is nie deur MDM se sleutel onderteken nie, so ffmpeg is nie geïnstalleer nie
+#. text in errors.rs
+#. error installing Mesa's software renderer: the list of builds MDM accepts couldn't be read; {detail} = the technical detail, in English
+#, machine
+	MDM's list of checked software renderers can't be read ({detail})	MDM se lys van gekontroleerde sagteware-weergawes kan nie gelees word nie ({detail})
+#. text in errors.rs
+#. error installing Mesa's software renderer (it draws MDM's windows where there is no graphics card): MDM installs only builds named in a list it publishes, signed with its key, and that list couldn't be downloaded; {error} = why
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	MDM's list of checked software renderers could not be downloaded: {error}	MDM se lys van gekontroleerde sagteware-weergawes kon nie afgelaai word nie: {error}
+#. text in errors.rs
+#. error installing Mesa's software renderer: the list of builds MDM accepts has none for this computer's system and processor
+#, machine
+	MDM's list of checked software renderers has none for this computer	MDM se lys van gekontroleerde sagteware-weergawes het geen vir hierdie rekenaar nie
+#. text in errors.rs
+#. error installing Mesa's software renderer: the list of builds MDM accepts is older than one this copy of MDM already used (it never goes back to an older list)
+#, machine
+	MDM's list of checked software renderers is older than one already used, so nothing was installed	MDM se lys van gekontroleerde sagteware-weergawes is ouer as een wat reeds gebruik is, so niks is geïnstalleer nie
+#. text in errors.rs
+#. error installing Mesa's software renderer: the list of builds MDM accepts doesn't carry MDM's own signature
+#, machine
+	MDM's list of checked software renderers isn't signed by MDM's key, so nothing was installed	MDM se lys van gekontroleerde sagteware-weergawes is nie deur MDM se sleutel onderteken nie, so niks is geïnstalleer nie
 #. text in whereis.rs
 #. how far a download's server is, by its round trip (60 to 150 ms)
 #, machine
@@ -3368,6 +3420,14 @@
 #. a video's status while its picture and sound are joined into one file (ffmpeg); {percent} how far, e.g. "45%"
 #, machine
 	Merging... ({percent})	Besig om saam te voeg... ({percent})
+#. text in softgl.rs
+#. the software renderer's window: the download or its check failed; {reason} = why, a sentence's part
+#, machine
+	Mesa's software renderer couldn't be installed: {reason}	Mesa se sagteware-weergawe kon nie geïnstalleer word nie: {reason}
+#. text in softgl.rs
+#. the software renderer's window, once Mesa's llvmpipe is downloaded and checked
+#, machine
+	Mesa's software renderer is installed. MDM draws with it from its next start.	Mesa se sagteware-weergawe is geïnstalleer. MDM teken daarmee vanaf sy volgende begin.
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3787,6 +3847,11 @@
 #. text in a dialog box
 #, machine
 	No goes back, to choose another folder.	Nee gaan terug om 'n ander vouer te kies.
+#. text in softgl.rs
+#. the software renderer's window, offered once at a start where Windows' own software renderer (WARP, keep the name) draws MDM because no graphics card has a driver for it; llvmpipe (keep the name) is Mesa's software renderer; {size} = its download's size (e.g. 66.3 MB)
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	No graphics card here has a driver MDM can draw with, so Windows' software renderer (WARP) draws its windows and keeps the processor busy. Mesa's software renderer (llvmpipe) draws them with far less. Download it once ({size}, from Mesa's builds on GitHub)? MDM draws with it from its next start.	Geen grafiese kaart hier het 'n drywer waarmee MDM kan teken nie, so Windows se sagteware-weergawe (WARP) teken sy vensters en hou die verwerker besig. Mesa se sagteware-weergawe (llvmpipe) teken dit met veel minder. Laai dit een keer af ({size}, vanaf Mesa se bouwerk op GitHub)? MDM teken daarmee vanaf sy volgende begin.
 #. tooltip (why a control is greyed) in langpick.rs
 #. tooltip of the greyed OK button in the language picker
 #, machine
@@ -5164,6 +5229,10 @@
 #. button in the Download complete window: opens a menu of how long no Download complete window shows (30 minutes, 1 hour...)
 #, machine
 	Snooze	Sluimer
+#. text in softgl.rs
+#. the window's title: Mesa's software renderer, offered where no graphics card draws MDM's windows
+#, machine
+	Software renderer	Sagteware-weergawe
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -5603,6 +5672,10 @@
 #. a check of Test browser integration: the browsers find MDM's helper program
 #, machine
 	The browsers can find Mister Download Manager	Die blaaiers kan Mister Download Manager vind
+#. text in extension.rs
+#. under "An older registry entry is in the way" (Test browser integration, Windows): the entry is in the part of the registry 32-bit programs use, which the browsers read before the right entry; it leads to another copy of MDM or to one that was deleted; then what the Set it up button does about it
+#, machine
+	The browsers read it before the right one, and it leads to another copy of Mister Download Manager or to one that is gone. Set it up gives your account an entry of its own, which the browsers read first.	Die blaaiers lees dit voor die regte een, en dit lei na ’n ander kopie van Mister Download Manager of na een wat weg is. Stel dit op gee jou rekening sy eie inskrywing, wat die blaaiers eerste lees.
 #. text in the Options window
 #. Options → Remote → Status: the settings were changed; they apply on OK
 #, machine
@@ -5711,6 +5784,10 @@
 #. text in errors.rs
 #, machine
 	the downloaded program doesn't match its signed checksum	die afgelaaide program stem nie ooreen met sy getekende kontrolesom nie
+#. text in errors.rs
+#. error installing Mesa's software renderer: a file downloaded isn't the one named in the list of builds MDM accepts (its checksum differs), so it was thrown away
+#, machine
+	the downloaded software renderer isn't the build MDM's list of checked builds names, so it wasn't installed	die afgelaaide sagteware-weergawe is nie die bouwerk wat MDM se lys van gekontroleerde bouwerk noem nie, so dit is nie geïnstalleer nie
 #. message or event log entry in the main window
 #. in the empty download list, under its title
 #, machine
@@ -8997,6 +9074,11 @@ menu	Download &video from a page...	Laai &video van 'n bladsy af...
 #, machine
 menu	Download in order	Laai in volgorde af
 #. menu command in the main window
+#. View → Draw with: opens a window offering to download Mesa's software renderer (llvmpipe, keep the name), which draws MDM's windows with far less of the processor than Windows' own (WARP)
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Download Mesa's software renderer (llvmpipe)...	Laai Mesa se sagteware-weergawe (llvmpipe) af...
+#. menu command in the main window
 #. View menu: submenu choosing what draws MDM's windows: OpenGL, or Direct3D, Vulkan or Metal (graphics systems)
 #, machine
 menu	Draw with	Teken met
@@ -9233,6 +9315,18 @@ menu	Show &drop target	Wys &aflaaiteiken
 #. menu command in the main window
 #, machine
 menu	Show Mister Download Manager	Wys Mister Download Manager
+#. menu command in the main window
+#. View → Draw with: a greyed note; Mesa's software renderer (llvmpipe, keep the name) failed on this computer, so Windows' own software renderer (WARP, keep the name) draws
+#, machine
+menu	Software (llvmpipe) didn't start here: WARP draws	Sagteware (llvmpipe) het nie hier begin nie: WARP teken
+#. menu command in the main window
+#. View → Draw with: a greyed note; Mesa's software renderer (llvmpipe, keep the name) is downloaded and draws the windows from MDM's next start
+#, machine
+menu	Software (llvmpipe) draws from the next start	Sagteware (llvmpipe) teken vanaf die volgende begin
+#. menu command in the main window
+#. View → Draw with: a greyed note; what draws the windows: Mesa's software renderer, llvmpipe (keep the name), because no graphics card here has a driver MDM can draw with
+#, machine
+menu	Software (llvmpipe): no graphics card here has a driver for MDM	Sagteware (llvmpipe): geen grafiese kaart hier het 'n drywer vir MDM nie
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine

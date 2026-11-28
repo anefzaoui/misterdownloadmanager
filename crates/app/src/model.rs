@@ -699,6 +699,12 @@ pub struct Item {
     /// downloaded again or a test finds it whole.
     #[serde(default, skip_serializing_if = "std::ops::Not::not")]
     pub damaged: bool,
+    /// Its last run completed, though the file doesn't match the checksum its server announced
+    /// (#2064): the hash's kind. The file is kept (a server's hash may be of the object as it
+    /// stores it, not of what it sent): the row says "Checksum warning" until it is downloaded
+    /// again, or Verify checksum... finds it matches.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub checksum_warning: Option<mdm_engine::verify::Algo>,
     /// Its archive's damaged parts were just downloaded again (#1661): the test that follows is
     /// the last, never a second re-fetch. Memory only.
     #[serde(skip)]
@@ -953,6 +959,7 @@ fn tool_snapshot(p: mdm_tools::video::Progress, url: &Url) -> mdm_engine::Snapsh
         at_service: None,
         finishing: p.merging.flatten(),
         kept: None,
+        checksum_warning: None,
     }
 }
 
@@ -1492,6 +1499,7 @@ impl Item {
             testing: false,
             test_progress: None,
             damaged: false,
+            checksum_warning: None,
             refetched: false,
             move_from: None,
             list_bytes: 0,
@@ -1797,6 +1805,14 @@ impl Item {
                     }
                     let saved = r.saved_files();
                     add_written(self.written_files.get_or_insert_with(Vec::new), saved);
+                }
+                // Complete though its server's own checksum didn't match (#2064): kept, and said
+                // in its row, its log and Download complete. Each completion says it anew.
+                if status == Status::Complete {
+                    self.checksum_warning = s.checksum_warning;
+                    if let Some(warning) = self.checksum_warning_text(false) {
+                        self.note(warning);
+                    }
                 }
                 for n in &notices {
                     self.note(n.clone());
@@ -2116,6 +2132,28 @@ impl Item {
         })
     }
 
+    /// It completed though the file doesn't match the checksum its server announced (#2064):
+    /// "Checksum warning" in the list's Status column (`short`), whole for its tip, Properties,
+    /// its log and Download complete.
+    pub fn checksum_warning_text(&self, short: bool) -> Option<String> {
+        let algo = self.checksum_warning?;
+        if self.status != Status::Complete || self.testing || self.damaged {
+            return None;
+        }
+        Some(if short {
+            // i18n: a download's status: it finished, but the checksum its server announced didn't match its file (the file is kept). Short: the list's Status column is narrow
+            crate::i18n::t("Checksum warning").to_owned()
+        } else {
+            crate::i18n::fmt(
+                crate::i18n::t(
+                    // i18n: a download's status, whole (the Status cell's tip, Properties, the log, Download complete): it finished, but the checksum its server announced didn't match the file, which is kept. "Check it": the user can verify the file against a checksum they trust (right-click → Verify checksum...)
+                    "Downloaded, but the server's {algorithm} checksum didn't match; the file may still be fine. Check it if it matters",
+                ),
+                &[("algorithm", algo.name())],
+            )
+        })
+    }
+
     /// Every byte is in (#736): no rate and no time left, as once it is complete.
     pub fn past_last_byte(&self) -> bool {
         self.torrent.is_none() && self.snap.as_ref().is_some_and(every_byte_in)
@@ -2123,7 +2161,8 @@ impl Item {
 
     /// The icon before its status (#2008), for what [`Item::status_text`] says: being moved,
     /// checked or joined is still under way; an archive found damaged is a failure; a finished
-    /// torrent connected to peers is seeding.
+    /// torrent connected to peers is seeding. (A file kept though its server's checksum didn't
+    /// match is complete: the list draws the warning mark in its place, #2064.)
     pub fn status_icon(&self) -> crate::icons::StatusIcon {
         use crate::icons::StatusIcon as S;
         if self.move_from.is_some()
@@ -2168,6 +2207,9 @@ impl Item {
         }
         if let Some(damaged) = self.damaged_text(true) {
             return damaged;
+        }
+        if let Some(warning) = self.checksum_warning_text(true) {
+            return warning;
         }
         match self.status {
             // i18n: a download's status (state it is in, not a command): finished
@@ -2964,6 +3006,27 @@ mod tests {
         assert_eq!(it.status_text(), "Damaged");
         assert_eq!(it.status_icon(), S::Error);
         it.damaged = false;
+        // #2064: complete though its server's checksum didn't match: a warning, still complete.
+        it.checksum_warning = Some(mdm_engine::verify::Algo::Md5);
+        assert_eq!(it.status_text(), "Checksum warning");
+        assert_eq!(it.status_icon(), S::Complete);
+        let whole = it.checksum_warning_text(false).unwrap();
+        assert!(
+            whole.starts_with("Downloaded, but the server's MD5 checksum didn't match"),
+            "{whole}"
+        );
+        it.status = Status::Downloading;
+        assert_eq!(it.checksum_warning_text(true), None, "only once complete");
+        it.status = Status::Complete;
+        it.damaged = true;
+        assert_eq!(
+            it.status_text(),
+            "Damaged",
+            "a damaged archive says so first"
+        );
+        it.damaged = false;
+        it.checksum_warning = None;
+        assert_eq!(it.status_text(), "Complete");
         it.move_from = Some(PathBuf::from("old"));
         assert_eq!(it.status_icon(), S::Checking);
         it.move_from = None;
