@@ -113,6 +113,77 @@ pub(crate) fn read_page(at: &Url, page: &str) -> PageSays {
         .map_or(PageSays::Nothing, PageSays::Next)
 }
 
+/// A file page's key: `/file/<key>[/<name>[/file]]`, `/file_premium/<key>…`, `/download/<key>…`
+/// on MediaFire's pages' host.
+fn page_key(url: &Url) -> Option<&str> {
+    if !is_site(url) || is_file_host(url) {
+        return None;
+    }
+    let mut parts = url.path_segments()?;
+    let kind = parts.next()?;
+    let key = parts.next()?;
+    (matches!(kind, "file" | "file_premium" | "download") && is_key(key)).then_some(key)
+}
+
+/// The file's name a file page's address carries (`/file/<key>/<name>/file`,
+/// `/file_premium/<key>/<name>`), decoded: what its row is called before any look-up, and when one
+/// fails, instead of the address's last part (`file`). None for any other address.
+pub(crate) fn name_in_address(url: &Url) -> Option<String> {
+    page_key(url)?;
+    let mut parts = url.path_segments()?;
+    let kind = parts.next()?;
+    let name = parts.nth(1)?;
+    let name = percent_encoding::percent_decode_str(name).decode_utf8_lossy();
+    let name = name.trim();
+    (matches!(kind, "file" | "file_premium") && !name.is_empty() && name != "file")
+        .then(|| name.to_owned())
+}
+
+/// MediaFire's public API (`api/1.5/file/get_info.php`, documented at
+/// <https://www.mediafire.com/developers/core_api/1.5/>) for a file page's name and size: one
+/// small JSON answer instead of the page, which is what the site's bot check watches
+/// (JDownloader's MediaFire plugin looks links up the same way). None for any other address.
+pub(crate) fn info_api(url: &Url) -> Option<Url> {
+    let key = page_key(url)?;
+    let mut api = url.clone();
+    api.set_host(Some(WWW)).ok()?;
+    api.set_path("/api/1.5/file/get_info.php");
+    api.set_query(Some(&format!("quick_key={key}&response_format=json")));
+    api.set_fragment(None);
+    Some(api)
+}
+
+/// What the API says of the file: Some((name, size)) when it has it, Err(()) when MediaFire
+/// says there is no such file, None when the answer isn't understood (the page is asked then).
+pub(crate) fn read_info(answer: &[u8]) -> Option<Result<(String, Option<u64>), ()>> {
+    let v: serde_json::Value = serde_json::from_slice(answer).ok()?;
+    let r = v.get("response")?;
+    let info = r
+        .get("file_info")
+        .or_else(|| r.get("file_infos").and_then(|l| l.get(0)))
+        .filter(|i| i.is_object());
+    match info {
+        Some(i) => {
+            let name = i.get("filename")?.as_str()?.trim();
+            if name.is_empty() || name.contains(['/', '\\']) {
+                return None;
+            }
+            let size = i.get("size").and_then(|s| {
+                s.as_u64()
+                    .or_else(|| s.as_str().and_then(|s| s.parse().ok()))
+            });
+            Some(Ok((name.to_owned(), size)))
+        }
+        // "Unknown or invalid QuickKey" (error 110), or success with nothing for the key.
+        None if r.get("error").and_then(|e| e.as_u64()) == Some(110)
+            || r.get("result").and_then(|e| e.as_str()) == Some("Success") =>
+        {
+            Some(Err(()))
+        }
+        None => None,
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -243,6 +314,65 @@ mod tests {
             "https://example.com/file/k4makp2pk726bmb",
         ] {
             assert!(!expects_file(&url(at)), "{at}");
+        }
+    }
+
+    #[test]
+    fn file_pages_are_looked_up_through_the_api() {
+        assert_eq!(
+            info_api(&url(
+                "https://www.mediafire.com/file/bh3c2xcde57eqpf/a.part01.rar/file"
+            )),
+            Some(url(
+                "https://www.mediafire.com/api/1.5/file/get_info.php?quick_key=bh3c2xcde57eqpf&response_format=json"
+            ))
+        );
+        for other in [
+            FILE,
+            "https://www.mediafire.com/folder/abc123/x",
+            "https://example.com/file/bh3c2xcde57eqpf/a",
+        ] {
+            assert_eq!(info_api(&url(other)), None, "{other}");
+        }
+        let one = br#"{"response":{"action":"file/get_info","file_info":{"quickkey":"k","filename":"a.part01.rar","size":"5315022028"},"result":"Success"}}"#;
+        assert_eq!(
+            read_info(one),
+            Some(Ok(("a.part01.rar".into(), Some(5315022028))))
+        );
+        let list = br#"{"response":{"file_infos":[{"quickkey":"k","filename":"b.rar","size":"12"}],"result":"Success"}}"#;
+        assert_eq!(read_info(list), Some(Ok(("b.rar".into(), Some(12)))));
+        let gone = br#"{"response":{"action":"file/get_info","message":"Unknown or invalid QuickKey","error":110,"result":"Error"}}"#;
+        assert_eq!(read_info(gone), Some(Err(())));
+        for odd in [
+            &b"<html>"[..],
+            br#"{"response":{"result":"Error","error":1}}"#,
+            br#"{"response":{"file_info":{"filename":"../x"}}}"#,
+        ] {
+            assert_eq!(read_info(odd), None);
+        }
+    }
+
+    /// A file page's address names its file: the row's name before (and without) a look-up.
+    #[test]
+    fn a_file_pages_address_names_its_file() {
+        let name = |u: &str| name_in_address(&url(u));
+        assert_eq!(
+            name("https://www.mediafire.com/file/k4makp2pk726bmb/Fonts%20and%20more.zip/file")
+                .as_deref(),
+            Some("Fonts and more.zip")
+        );
+        assert_eq!(
+            name("https://www.mediafire.com/file_premium/k4makp2pk726bmb/a.part1.rar").as_deref(),
+            Some("a.part1.rar")
+        );
+        for none in [
+            "https://www.mediafire.com/file/k4makp2pk726bmb",
+            "https://www.mediafire.com/file/k4makp2pk726bmb/file",
+            "https://www.mediafire.com/download/k4makp2pk726bmb",
+            FILE,
+            "https://example.com/file/k4makp2pk726bmb/a.zip/file",
+        ] {
+            assert_eq!(name(none), None, "{none}");
         }
     }
 }

@@ -2352,6 +2352,10 @@ These ship in a later version, when they're ready.
   that site starts, and none is retried, for 2 minutes, then 5, 15 and 30 after each refusal in a
   row; a queue no longer runs through a site's files as fast as they are refused
   ([#2024](https://github.com/anefzaoui/misterdownloadmanager/issues/2024)): in review
+- 🔄 MediaFire: a file is looked up through MediaFire's public API (its name and size) instead of
+  its page, which the site's bot check watches; a file the API doesn't know shows as not found,
+  and a MediaFire link's row is named after its file, not `file`
+  ([#2029](https://github.com/anefzaoui/misterdownloadmanager/issues/2029)): in review
 - 🔄 **The tray icon's downloads panel**: a click on the icon shows what is downloading, with the progress window's Pause/Resume (Stop and save for a recording) and Cancel for each download and a button for the main window; a double click opens the window; **Options → General → Show downloads when the notification area icon is clicked** (ticked in a new copy, unticked in one set up before it) ([#1365](https://github.com/anefzaoui/misterdownloadmanager/issues/1365)): draft, in review
 - 🔄 **Add torrent**: choose whether a multi-file torrent gets an outer folder, with shared-destination ownership and deletion safeguards ([discussion #965](https://github.com/anefzaoui/misterdownloadmanager/discussions/965), [PR #1121](https://github.com/anefzaoui/misterdownloadmanager/pull/1121)): in review
 - 🔄 **Add torrent**: a **Rename** row (main name and extension) to rename a single-file torrent or a multi-file torrent's folder before the download starts ([#517](https://github.com/anefzaoui/misterdownloadmanager/issues/517)): in review

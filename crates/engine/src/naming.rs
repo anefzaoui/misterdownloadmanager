@@ -117,6 +117,10 @@ pub fn single_file_name(raw: &str) -> Option<String> {
 /// when it names a file of a known type (`stream.php?file=FL262-1E01-4.mp4` →
 /// `FL262-1E01-4.mp4`, #695), else its last path part.
 pub fn address_name(url: &Url) -> String {
+    // A site's link whose last part isn't the file's name (MediaFire's `/file/<key>/<name>/file`).
+    if let Some(name) = crate::sites::name_in_address(url) {
+        return name;
+    }
     let last = last_segment(url);
     query_file_name(url)
         .filter(|_| names_nothing(&last))

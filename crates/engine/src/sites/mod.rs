@@ -85,6 +85,24 @@ pub(crate) enum PageSays {
     Nothing,
 }
 
+/// The file's name a site's link carries in its address where its last part doesn't name it
+/// (MediaFire's `/file/<key>/<name>/file`), for `naming::address_name`.
+pub(crate) fn name_in_address(url: &Url) -> Option<String> {
+    mediafire::name_in_address(url)
+}
+
+/// A site's API that tells a link's file name and size without its web page (MediaFire's):
+/// where to ask, and how to read the answer (`mediafire::read_info`).
+pub(crate) fn info_api(url: &Url) -> Option<Url> {
+    mediafire::info_api(url)
+}
+
+/// The answer of [`info_api`]: Some(Ok((name, size))), Some(Err(())) for no such file, None
+/// when it isn't understood.
+pub(crate) fn read_info(answer: &[u8]) -> Option<Result<(String, Option<u64>), ()>> {
+    mediafire::read_info(answer)
+}
+
 /// A link that names something that isn't a file (a Drive folder): refused before asking.
 pub(crate) fn not_a_file(url: &Url) -> Option<Refusal> {
     gdrive::not_a_file(url).or_else(|| gofile::not_a_file(url))

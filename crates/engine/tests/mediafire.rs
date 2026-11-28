@@ -227,3 +227,62 @@ async fn a_download_resumed_after_its_address_expired_goes_on() {
         );
     }
 }
+
+/// #2029: a file page is looked up through MediaFire's public API (`file/get_info.php`), not by
+/// loading the page its bot check watches: the name and size come from the API's answer, and the
+/// page isn't asked.
+#[tokio::test]
+async fn a_look_up_asks_the_api_not_the_page() {
+    let s = server("").await;
+    let key = mediafire::key("2M", 600_000);
+    let url: Url = format!(
+        "http://{}:{}/file/{key}/Lab%20file.zip/file",
+        mediafire::WWW,
+        s.addr().port()
+    )
+    .parse()
+    .unwrap();
+    let info = mdm_engine::probe(url, Default::default(), &opts())
+        .await
+        .unwrap();
+    assert_eq!(info.file_name, mediafire::FILE_NAME);
+    assert_eq!(info.size, Some(2 << 20));
+    assert!(!info.web_page);
+    let log = log(&s).await;
+    assert!(
+        log.iter()
+            .any(|e| on(e, mediafire::WWW) && e.path == "/api/1.5/file/get_info.php"),
+        "the API asked"
+    );
+    assert!(
+        !log.iter().any(|e| e.path.starts_with("/file/")),
+        "the page not asked: {:?}",
+        log.iter().map(|e| &e.path).collect::<Vec<_>>()
+    );
+}
+
+/// #2029: a key the API doesn't know (its 404 with error 110, as MediaFire answers) is a file that
+/// doesn't exist: the look-up says so (404), without loading the page either.
+#[tokio::test]
+async fn a_file_the_api_doesnt_know_is_not_found() {
+    let s = server("").await;
+    let url: Url = format!(
+        "http://{}:{}/file/zzzzzzzzzzzzzzz/Gone.zip/file",
+        mediafire::WWW,
+        s.addr().port()
+    )
+    .parse()
+    .unwrap();
+    let err = mdm_engine::probe(url, Default::default(), &opts())
+        .await
+        .unwrap_err();
+    assert!(
+        matches!(&err, mdm_engine::Error::Status(st) if st.as_u16() == 404),
+        "{err}"
+    );
+    let log = log(&s).await;
+    assert!(
+        !log.iter().any(|e| e.path.starts_with("/file/")),
+        "the page not asked"
+    );
+}

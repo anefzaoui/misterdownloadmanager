@@ -990,6 +990,25 @@ pub async fn probe(url: Url, headers: HeaderMap, opts: &Options) -> Result<Probe
     probe_kept(url, headers, opts).await.map(|(info, _)| info)
 }
 
+/// A site's API asked for a file's name and size (`sites::info_api`); None when it doesn't
+/// answer, or answers something `sites::read_info` doesn't understand.
+async fn api_info(client: &Client, api: Url) -> Option<Result<(String, Option<u64>), ()>> {
+    let resp = client
+        .get(api)
+        .timeout(Duration::from_secs(20))
+        .send()
+        .await
+        .ok()?;
+    // MediaFire answers a key it doesn't know with 404 and its error in the body (110).
+    if !(resp.status().is_success() || resp.status() == StatusCode::NOT_FOUND) {
+        return None;
+    }
+    let body = resp.bytes().await.ok()?;
+    (body.len() <= 64 * 1024)
+        .then(|| sites::read_info(&body))
+        .flatten()
+}
+
 /// The open answer of a look (`probe_kept`), for the download that follows it to read (#28): a
 /// one-time link, or a host that allows one download at a time, refuses the download asking
 /// again. Dropping it closes the connection.
@@ -1077,6 +1096,28 @@ pub async fn probe_kept(
     );
     // Where the look asked, and with what: asked again there if the site refuses (#668).
     let (asked_at, asked_with) = (target.clone(), headers.clone());
+    // A site's API tells the file's name and size without the web page its bot check watches
+    // (MediaFire's, #2029): asked first; an answer it can't read goes on to the page.
+    if unlocked.is_none()
+        && opts.post.is_none()
+        && let Some(api) = sites::info_api(&target)
+        && let Some(said) = api_info(&client, api).await
+    {
+        return match said {
+            Ok((file_name, size)) => Ok((
+                ProbeInfo {
+                    final_url: url,
+                    size,
+                    file_name,
+                    server: None,
+                    web_page: false,
+                },
+                None,
+            )),
+            // No such file, as the site says it: the look's 404, not a page named `file`.
+            Err(()) => Err(Error::Status(StatusCode::NOT_FOUND)),
+        };
+    }
     // #1778: a site rule asks the way a browser connects from the first request.
     let early = match unlocked.is_none() {
         true => {

@@ -80,6 +80,48 @@ pub(crate) async fn handle(
             }
             None => page(StatusCode::NOT_FOUND, NOT_FOUND, shared, entry),
         },
+        // The public API's look-up (`api/1.5/file/get_info.php?quick_key=K[,K…]`), as MediaFire
+        // answers it: each known key's name and size (`file_info`, or `file_infos` for several);
+        // 404 with its error 110 when it knows none of them.
+        (WWW, ["api", "1.5", "file", "get_info.php"]) => {
+            let keys: Vec<String> = uri
+                .query()
+                .and_then(|q| serde_urlencoded::from_str::<Vec<(String, String)>>(q).ok())
+                .and_then(|q| q.into_iter().find(|(k, _)| k == "quick_key"))
+                .map(|(_, v)| v.split(',').map(str::to_owned).collect())
+                .unwrap_or_default();
+            let infos: Vec<String> = keys
+                .iter()
+                .filter_map(|k| parse(k).map(|(size, _)| (k, size)))
+                .map(|(k, size)| {
+                    let bytes = crate::content::parse_size(&size).unwrap_or(0);
+                    format!(
+                        r#"{{"quickkey":"{k}","filename":"{FILE_NAME}","ready":"yes","size":"{bytes}","privacy":"public"}}"#
+                    )
+                })
+                .collect();
+            let (status, body) = match infos.len() {
+                0 => (
+                    StatusCode::NOT_FOUND,
+                    r#"{"response":{"action":"file\/get_info","message":"Unknown or Invalid QuickKey","error":110,"result":"Error","current_api_version":"1.5"}}"#.to_owned(),
+                ),
+                1 => (
+                    StatusCode::OK,
+                    format!(
+                        r#"{{"response":{{"action":"file\/get_info","file_info":{},"result":"Success","current_api_version":"1.5"}}}}"#,
+                        infos[0]
+                    ),
+                ),
+                _ => (
+                    StatusCode::OK,
+                    format!(
+                        r#"{{"response":{{"action":"file\/get_info","file_infos":[{}],"result":"Success","current_api_version":"1.5"}}}}"#,
+                        infos.join(",")
+                    ),
+                ),
+            };
+            json(status, &body, shared, entry)
+        }
         // An expired ticket's page: back to the file's page.
         (WWW, ["download_repair.php"]) => {
             let key = uri
@@ -147,6 +189,19 @@ fn page(status: StatusCode, html: &str, shared: Arc<Shared>, mut entry: LogEntry
     entry.bytes_sent = len;
     shared.record(entry, status.as_u16(), "page");
     resp
+}
+
+fn json(status: StatusCode, body: &str, shared: Arc<Shared>, mut entry: LogEntry) -> Response {
+    let len = body.len() as u64;
+    entry.body_len = len;
+    entry.bytes_sent = len;
+    shared.record(entry, status.as_u16(), "api");
+    (
+        status,
+        [(header::CONTENT_TYPE, "application/json")],
+        body.to_owned(),
+    )
+        .into_response()
 }
 
 fn redirect(to: &str, shared: Arc<Shared>, entry: LogEntry) -> Response {
