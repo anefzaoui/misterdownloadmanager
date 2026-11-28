@@ -569,6 +569,9 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 Everything below ships together, in version 0.6.0, the next release.
 
+- ✅ Torrents: names a disk can't hold as they are (a `/` or `\` inside a name, control characters,
+  Windows' reserved characters and device names) are downloaded under plain names instead of
+  refusing the torrent ([#2077](https://github.com/anefzaoui/misterdownloadmanager/issues/2077))
 - ✅ Torrents: with files unticked, the list counts the ticked files only (downloaded and size),
   as Properties does ([#2080](https://github.com/anefzaoui/misterdownloadmanager/issues/2080))
 - ✅ Torrents: a torrent of many files stays within its budget of open files when a file is
