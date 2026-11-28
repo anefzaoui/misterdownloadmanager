@@ -4507,6 +4507,74 @@ unsafe fn activate_nsapp(app: *mut objc2::runtime::AnyObject, all_windows: bool)
     }
 }
 
+/// SAFETY: called on the main UI thread with valid `NSApplication` and `NSWindow` pointers.
+///
+/// macOS: MDM activated for `window` alone. Activating an app brings its other windows forward
+/// with it, so the main window came up in front of the browser too, behind the Download File Info
+/// the browser asked for. MDM's other windows that were behind another program's window before
+/// are put back behind it once MDM is active; `window` stays in front and takes the keyboard.
+#[cfg(target_os = "macos")]
+#[allow(unsafe_code)]
+unsafe fn activate_for_window(
+    app: *mut objc2::runtime::AnyObject,
+    window: *mut objc2::runtime::AnyObject,
+) {
+    use objc2::msg_send;
+    use objc2::runtime::{AnyClass, AnyObject};
+    // SAFETY: main UI thread; `window` is one of `[NSApp windows]`; the window numbers are
+    // AppKit's own, read and passed back to it.
+    unsafe {
+        let mine = |n: isize| -> *mut AnyObject { msg_send![app, windowWithWindowNumber: n] };
+        // Every application's windows on screen, front to back (NSWindowNumberListAllApplications).
+        let numbers = |cls: &AnyClass| -> Vec<isize> {
+            let list: *mut AnyObject = msg_send![cls, windowNumbersWithOptions: 1usize];
+            if list.is_null() {
+                return Vec::new();
+            }
+            let count: usize = msg_send![list, count];
+            (0..count)
+                .map(|i| {
+                    let n: *mut AnyObject = msg_send![list, objectAtIndex: i];
+                    if n.is_null() {
+                        0
+                    } else {
+                        msg_send![n, integerValue]
+                    }
+                })
+                .collect()
+        };
+        let behind = AnyClass::get(c"NSWindow").map(|cls| {
+            let order = numbers(cls);
+            let front = order.iter().position(|&n| mine(n).is_null());
+            let keep: Vec<isize> = match front {
+                Some(f) => order[f + 1..]
+                    .iter()
+                    .copied()
+                    .filter(|&n| {
+                        let w = mine(n);
+                        !w.is_null() && w != window
+                    })
+                    .collect(),
+                None => Vec::new(),
+            };
+            (front.map(|f| order[f]), keep)
+        });
+        activate_nsapp(app, false);
+        let null_obj: *mut AnyObject = std::ptr::null_mut();
+        let _: () = msg_send![window, makeKeyAndOrderFront: null_obj];
+        let _: () = msg_send![window, orderFrontRegardless];
+        if let Some((Some(other), keep)) = behind {
+            // NSWindowBelow (-1), front to back: each one under the other program's window.
+            for n in keep.into_iter().rev() {
+                let w = mine(n);
+                if !w.is_null() {
+                    let _: () = msg_send![w, orderWindow: -1isize, relativeTo: other];
+                }
+            }
+        }
+    }
+}
+
 /// macOS: activates MDM without pulling up minimized or tray-hidden windows (for `dialogs::raise`).
 #[cfg(target_os = "macos")]
 #[allow(unsafe_code)]
@@ -4573,10 +4641,7 @@ pub fn macos_bring_window_forward(title: &str) -> Option<bool> {
         let key: Bool = msg_send![target, isKeyWindow];
         let lift = macos_window_needs_lift(active.as_bool(), hidden.as_bool(), key.as_bool());
         if lift {
-            let null_obj: *mut AnyObject = std::ptr::null_mut();
-            activate_nsapp(app, false);
-            let _: () = msg_send![target, makeKeyAndOrderFront: null_obj];
-            let _: () = msg_send![target, orderFrontRegardless];
+            activate_for_window(app, target);
         }
         Some(lift)
     }
