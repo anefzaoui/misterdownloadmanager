@@ -1,7 +1,9 @@
-//! Whether a torrent's file names are safe to write (#40). MDM checks every name itself, before a
-//! torrent is listed or added, so only plain names reach the disk. librqbit writes the files under
-//! the torrent's own names, so MDM can't rename them: an unsafe name refuses the torrent, saying
-//! which.
+//! Whether a torrent's file names are safe to write (#40). The engine makes each name a plain name
+//! for this system as it reads it (#2077: a separator, a control character, and on Windows a
+//! reserved character, a trailing dot or space or a device name, become `_` or go; see
+//! `librqbit_core::torrent_metainfo::sanitize_component`), so what reaches this check is already
+//! plain. It stays as the last check before anything is written: a name that isn't refuses the
+//! torrent, saying which.
 //!
 //! Everywhere: no empty part, `.`, `..`, separator or control character. On Windows also none of
 //! `:<>"|?*`, no trailing dot or space (Windows drops them, so two names become one), and no device name

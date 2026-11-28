@@ -569,6 +569,9 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 Everything below ships together, in version 0.6.0, the next release.
 
+- ✅ Torrents: names a disk can't hold as they are (a `/` or `\` inside a name, control characters,
+  Windows' reserved characters and device names) are downloaded under plain names instead of
+  refusing the torrent ([#2077](https://github.com/anefzaoui/misterdownloadmanager/issues/2077))
 - ✅ Downloads that redirect through other sites keep the cookies each site needs: the browser
   add-on hands over the cookies of every address the download went through (partitioned ones
   included), MDM keeps those a server sets along the way, and each site gets only its own

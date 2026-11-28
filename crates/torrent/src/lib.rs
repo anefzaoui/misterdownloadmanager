@@ -2850,47 +2850,170 @@ mod tests {
         t
     }
 
-    /// #40: a name the system can't write safely refuses the torrent, listed or added, and
-    /// nothing is written.
+    /// #2077 (and #40): a name a disk can't hold as it is no longer refuses the torrent: it is
+    /// listed, and added, under a plain name for this system. Two names that become one are
+    /// still refused, and nothing is written for them.
     #[tokio::test(flavor = "multi_thread", worker_threads = 2)]
-    async fn unsafe_names_refuse_the_torrent() {
+    async fn names_a_disk_cant_hold_are_made_plain() {
         let tmp = tempfile::tempdir().unwrap();
         let t = Torrents::start(offline(&tmp.path().join("state")))
             .await
             .unwrap();
-        let out = tmp.path().join("out");
-        let bad = if cfg!(windows) {
-            ["Q:mdm-test.bin", "x.bin:hidden", "NUL.txt"].as_slice()
+        let mut cases = vec![
+            ("a\\b.bin", "a_b.bin"),
+            ("x/y.bin", "x_y.bin"),
+            ("tab\there.bin", "tab_here.bin"),
+        ];
+        if cfg!(windows) {
+            cases.extend([
+                ("Q:mdm-test.bin", "Q_mdm-test.bin"),
+                ("x.bin:hidden", "x.bin_hidden"),
+                ("NUL.txt", "_NUL.txt"),
+                ("trailing. ", "trailing"),
+            ]);
         } else {
-            ["tab\there.bin"].as_slice()
-        };
-        for name in bad {
-            let bytes = torrent_naming(name);
+            cases.extend([("Movie: Part 2?.mkv", "Movie: Part 2?.mkv")]);
+        }
+        for (raw, plain) in cases {
+            let bytes = torrent_naming(raw);
             let listed = t
                 .metadata(&Source::File(bytes.clone()), Duration::from_secs(5), None)
-                .await;
-            assert!(
-                matches!(listed, Err(TorrentError::UnsafeName(ref u)) if u.path == format!("folder/{name}")),
-                "{name}: {listed:?}"
+                .await
+                .unwrap_or_else(|e| panic!("{raw:?}: {e:?}"));
+            assert_eq!(
+                listed.files[0].path,
+                Path::new("folder").join(plain),
+                "{raw:?}"
             );
-            let added = t.add(&bytes, &out, None, Vec::new(), false).await;
-            assert!(
-                matches!(added, Err(TorrentError::UnsafeName(_))),
-                "{name}: {added:?}"
+            assert_eq!(
+                files_from_bytes(&bytes).unwrap()[0].path,
+                Path::new("folder").join(plain)
             );
         }
+        // `a/b.bin` and `a_b.bin` would be one file: refused, listed or added.
+        let mut twins = b"d4:infod5:filesl".to_vec();
+        for name in ["a/b.bin", "a_b.bin"] {
+            twins.extend(format!("d6:lengthi5e4:pathl{}:{name}ee", name.len()).bytes());
+        }
+        twins.extend(b"e4:name4:test12:piece lengthi16384e6:pieces20:");
+        twins.extend([0u8; 20]);
+        twins.extend(b"ee");
+        let out = tmp.path().join("out");
+        assert!(
+            t.metadata(&Source::File(twins.clone()), Duration::from_secs(5), None)
+                .await
+                .is_err()
+        );
+        assert!(t.add(&twins, &out, None, Vec::new(), false).await.is_err());
         assert!(!out.exists(), "nothing was written");
-        // A plain name still lists.
-        let fine = t
-            .metadata(
-                &Source::File(torrent_naming("fine.bin")),
+        // A `..` is still refused: never a path out of the folder.
+        assert!(
+            t.metadata(
+                &Source::File(torrent_naming("..")),
                 Duration::from_secs(5),
-                None,
+                None
             )
             .await
-            .unwrap();
-        assert_eq!(fine.files.len(), 1);
+            .is_err()
+        );
         t.stop().await;
+    }
+
+    /// #2077: a torrent whose names hold a separator inside one name (`a\b.mkv`, a folder `x/y`),
+    /// a control character and, on Windows, a reserved character is downloaded whole from a
+    /// seeder, under plain names, all inside its folder.
+    #[tokio::test(flavor = "multi_thread", worker_threads = 4)]
+    async fn a_torrent_with_separators_in_its_names_downloads_under_plain_names() {
+        let tmp = tempfile::tempdir().unwrap();
+        // The seeder's files are where it looks for them: at the plain names.
+        let src = tmp.path().join("seed").join("set");
+        let mut files: Vec<(PathBuf, Vec<u8>)> = vec![
+            (
+                PathBuf::from("a_b.mkv"),
+                (0..40_000u32).map(|i| (i % 251) as u8).collect(),
+            ),
+            (
+                ["dir", "x_y", "f.bin"].iter().collect(),
+                (0..30_001u32).map(|i| (i % 13) as u8).collect(),
+            ),
+            (PathBuf::from("tab_x.txt"), b"a tab in its name".to_vec()),
+        ];
+        if cfg!(windows) {
+            files.push((PathBuf::from("What_ Why_.txt"), b"two questions".to_vec()));
+        }
+        for (path, bytes) in &files {
+            let path = src.join(path);
+            std::fs::create_dir_all(path.parent().unwrap()).unwrap();
+            std::fs::write(path, bytes).unwrap();
+        }
+        // The names as a tool may write them: the same lengths, so only the names change.
+        let mut torrent = make_torrent(&src).await;
+        let mut rename = |from: &[u8], to: &[u8]| {
+            assert_eq!(from.len(), to.len());
+            let at = torrent
+                .windows(from.len())
+                .position(|w| w == from)
+                .expect("name in the torrent");
+            torrent[at..at + from.len()].copy_from_slice(to);
+        };
+        rename(b"7:a_b.mkv", b"7:a\\b.mkv");
+        rename(b"3:x_y", b"3:x/y");
+        rename(b"9:tab_x.txt", b"9:tab\tx.txt");
+        if cfg!(windows) {
+            rename(b"14:What_ Why_.txt", b"14:What? Why:.txt");
+        }
+
+        let seeder = Torrents::start(offline(&tmp.path().join("s1")))
+            .await
+            .unwrap();
+        let hash = seeder
+            .add(&torrent, &src, None, Vec::new(), false)
+            .await
+            .unwrap();
+        wait_for(&seeder, &hash, "seeder checked", 20, |s| {
+            s.phase == Phase::Finished
+        })
+        .await;
+        let addr = seeder.listen_addr().expect("seeder listens");
+
+        let leecher = Torrents::start(offline(&tmp.path().join("s2")))
+            .await
+            .unwrap();
+        let meta = leecher
+            .metadata(&Source::File(torrent.clone()), Duration::from_secs(10), None)
+            .await
+            .unwrap();
+        let got = tmp.path().join("got");
+        let out = meta.folder_in(&got);
+        let h2 = leecher
+            .add(&torrent, &out, None, vec![addr], false)
+            .await
+            .unwrap();
+        wait_for(&leecher, &h2, "downloaded", 30, |s| s.phase == Phase::Finished).await;
+        for (path, bytes) in &files {
+            assert_eq!(&std::fs::read(out.join(path)).unwrap(), bytes, "{path:?}");
+        }
+        // Nothing beside the torrent's own folder, and in it only its files.
+        let beside: Vec<_> = std::fs::read_dir(&got).unwrap().collect();
+        assert_eq!(beside.len(), 1, "{beside:?}");
+        let mut written = Vec::new();
+        let mut dirs = vec![out.clone()];
+        while let Some(d) = dirs.pop() {
+            for e in std::fs::read_dir(&d).unwrap() {
+                let p = e.unwrap().path();
+                if p.is_dir() {
+                    dirs.push(p);
+                } else {
+                    written.push(p.strip_prefix(&out).unwrap().to_owned());
+                }
+            }
+        }
+        written.sort();
+        let mut want: Vec<PathBuf> = files.iter().map(|(p, _)| p.clone()).collect();
+        want.sort();
+        assert_eq!(written, want);
+        leecher.stop().await;
+        seeder.stop().await;
     }
 
     /// A single-file .torrent of `length` bytes in pieces of `piece` bytes, with `hashes` bytes
