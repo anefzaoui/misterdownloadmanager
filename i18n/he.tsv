@@ -3601,6 +3601,10 @@
 #. Link grabber, a link's status: the server wants a login (401, 403)
 #, machine
 	Needs a login	דורש התחברות
+#. text in the Link grabber window
+#. Link grabber, a link's status: a Google Drive folder that isn't shared with everyone needs the browser's Google sign-in. The sentence is the cell's hover tip
+#, machine
+	Needs a sign-in	נדרשת כניסה
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -6160,6 +6164,10 @@
 #. a download's error: a Google Drive file that isn't shared with everyone
 #, machine
 	this Google Drive file needs you to sign in: sign in to Google in your browser, then download it from there	קובץ Google Drive זה דורש ממך להיכנס: היכנס ל-Google בדפדפן שלך, ולאחר מכן הורד אותו משם
+#. text in the Link grabber window
+#. Link grabber, the hover tip of a Google Drive folder's status: the folder isn't shared with everyone; how to send it with the browser's sign-in (the browser's right-click command, keep its name as the browser extension shows it)
+#, machine
+	This Google Drive folder needs you to sign in: sign in to Google in your browser, then right-click the folder's link there and choose Download with Mister Download Manager.	תיקיית Google Drive זו דורשת ממך להיכנס: היכנס ל־Google בדפדפן שלך, לאחר מכן לחץ לחיצה ימנית על קישור התיקייה שם ובחר הורד באמצעות Mister Download Manager.
 #. text in errors.rs
 #. a download's error: the address is a Google Drive folder, which isn't one file
 #, machine
@@ -7238,6 +7246,11 @@
 #. said after Delete with files when some files stayed on the disk; {file} is the download's name; the files' paths follow it
 #, machine
 	{file}: these files stayed on the disk, because MDM didn't create them or another download uses them:	{file}: קבצים אלה נשארו בדיסק, מכיוון ש-MDM לא יצר אותם או שהורדה אחרת משתמשת בהם:
+#. text in the Link grabber window
+#. Link grabber's Source line: a Google Drive folder ({folder}: its name) in which a folder showed the most items Drive's page lists ({n}: 50), so it may hold more than are listed; what gets them all (Drive's own Download button, which makes a zip)
+#. {n} = a number (keep the braces as they are)
+#, machine
+	{folder}: Google Drive's page lists only the first {n} items of a folder, so some may be missing; Drive's own Download gets the whole folder as a zip	{folder}: דף Google Drive מציג רק את {n} הפריטים הראשונים של תיקייה, כך שייתכן שחלקם חסרים; ההורדה של Drive עצמה מורידה את כל התיקייה כקובץ zip
 #. message or event log entry in the main window; text in the Link grabber window
 #. Link grabber's Source line, after where the links came from: a folder (an FTP folder, a web server's "Index of" page) held more files or subfolders than Link grabber lists; {folder} is its name, {n} how many of its files are listed (10,000)
 #. {n} = a number (keep the braces as they are)
@@ -7493,10 +7506,20 @@
 #, machine
 	{site} didn't give the file this time: try again in a moment	{site} לא סיפק את הקובץ הפעם: נסה שוב בעוד רגע
 #. text in the Link grabber window
+#. Link grabber, the hover tip of a Google Drive folder's status ({site}: "Google Drive"): no folder at this link, or one the signed-in account may not open
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+	{site} has no such folder, or it isn't shared with you.	ל־{site} אין תיקייה כזו, או שהיא אינה משותפת איתך.
+#. text in the Link grabber window
 #. Link grabber, the hover tip of a Hugging Face repository's or GitHub release's status; {site} is "Hugging Face" or "GitHub"
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
 #, machine
 	{site} has no such repository, folder, release or tag, or it is private.	ל־{site} אין מאגר, תיקייה, מהדורה או תג כאלה, או שהוא פרטי.
+#. text in the Link grabber window
+#. Link grabber, a Google Drive folder's status (the cell's hover tip): Drive ({site}: "Google Drive") answered that it gets too many requests from this computer
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+	{site} is getting too many requests from this computer: try again later.	{site} מקבל יותר מדי בקשות ממחשב זה: נסה שוב מאוחר יותר.
 #. text in the Link grabber window
 #. Link grabber, a Hugging Face repository's or GitHub release's status (the cell's hover tip): the site ({site}: "Hugging Face", "GitHub") lets only so many requests through from a computer without an account; {n} minutes to wait
 #. {site} = a web site's name such as "example.com"; {n} = a number (keep the braces as they are)

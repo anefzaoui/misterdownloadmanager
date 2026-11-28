@@ -1894,6 +1894,21 @@ pub(crate) fn mark_hook(url: &url::Url, referrer: Option<&str>) -> mdm_engine::F
     })
 }
 
+/// Whether `s` names a .torrent file on this computer (a path, as a file association or a drop
+/// hands it over), not one on the web: by its form, without asking the disk on the window's
+/// thread (#1292). Add torrent reads it beside the window, and says so when it isn't there.
+fn torrent_file_path(s: &str) -> bool {
+    let s = s.trim().trim_matches('"');
+    if !s.to_ascii_lowercase().ends_with(".torrent") {
+        return false;
+    }
+    // `C:\x.torrent` reads as an address whose scheme is the drive letter.
+    match url::Url::parse(s) {
+        Ok(u) => u.scheme().len() == 1,
+        Err(_) => true,
+    }
+}
+
 /// The Google Drive file whose player the browser's video button was clicked over (#34, #758):
 /// the page itself when it is a Drive file's (`video_page`), or, when the button sent the player's
 /// own stream (on Google's hosts), the file identified by `driveid` / `docid` or the page it came from
@@ -4212,11 +4227,11 @@ impl App {
         }
         // A magnet link or a .torrent file (browser, command line, file association): Add
         // torrent shows what it holds.
-        if let Some(m) = cmd.url.as_deref().filter(|u| {
-            mdm_torrent::Source::magnet(u).is_some()
-                || (u.to_ascii_lowercase().ends_with(".torrent")
-                    && std::path::Path::new(u.trim_matches('"')).is_file())
-        }) {
+        if let Some(m) = cmd
+            .url
+            .as_deref()
+            .filter(|u| mdm_torrent::Source::magnet(u).is_some() || torrent_file_path(u))
+        {
             let m = m.trim().to_owned();
             self.show_for_dialog(ctx);
             self.open_torrent_dialog(Some(m), ctx);
@@ -4254,16 +4269,26 @@ impl App {
             );
             return;
         }
-        // A Hugging Face repository or folder, a GitHub release or tag (#1772), given on the
-        // command line (`/d`) or dropped alone: its files in Link grabber, as from Add URL. Silent
-        // (`/n`, a script's command line) asks nothing: the address is downloaded as it is.
+        // A Hugging Face repository or folder, a GitHub release or tag (#1772), a Google Drive
+        // folder (#2032), given on the command line (`/d`), dropped alone or sent by the browser
+        // (its right-click command, with its sign-in): its files in Link grabber, as from Add
+        // URL. Silent (`/n`, a script's command line) asks nothing: the address is downloaded as
+        // it is.
         if !cmd.silent
             && cmd.name.is_none()
             && cmd.post.is_none()
             && mdm_engine::hub::Source::of(&url).is_some()
         {
             self.show_for_dialog(ctx);
-            self.grab_package(&url, ctx);
+            let found = crate::transfer::Imported {
+                url: url.to_string(),
+                referer: cmd.referer.clone(),
+                cookies: cmd.cookies.clone(),
+                user_agent: cmd.user_agent.clone(),
+                private: cmd.private,
+                ..Default::default()
+            };
+            self.grab_package(found, ctx);
             return;
         }
         // A fresh address for a download waiting for one (its link expired): that download goes
@@ -9343,15 +9368,18 @@ impl App {
             }
             Cmd::Theme(id) => {
                 self.settings.theme = id.to_owned();
-                crate::theme::select(id, ctx);
-                // Live: egui's own visuals, the glyph rendering and the captions follow at once;
-                // every painter reads the new theme from its next frame.
-                crate::theme::apply_theme(ctx);
-                crate::theme::apply_mode(ctx);
-                self.caption_set = false;
-                self.theme_checked = None;
+                // A theme file is read beside the window's thread (#1292), and applied as it is
+                // in (`paint_frame`, `theme::poll_pick`); a built-in at once.
+                if crate::theme::pick(id, ctx) {
+                    // Live: egui's own visuals, the glyph rendering and the captions follow at
+                    // once; every painter reads the new theme from its next frame.
+                    crate::theme::apply_theme(ctx);
+                    crate::theme::apply_mode(ctx);
+                    self.caption_set = false;
+                    self.theme_checked = None;
+                    ctx.request_repaint();
+                }
                 self.dirty = true;
-                ctx.request_repaint();
             }
             Cmd::OpenThemesFolder => {
                 if let Some(dir) = crate::themefile::dir() {
@@ -9963,13 +9991,15 @@ impl App {
             self.tests_resumed = true;
             self.tests.resume(&mut self.items, &self.settings);
         }
+        // Whether an archive is complete is looked at beside the window's thread (#1292).
+        self.tests.look_beside(ctx);
         let (tests, items, settings) = (&mut self.tests, &mut self.items, &self.settings);
         let before = finished.len();
         finished.retain(|id| !tests.hold(*id, items, settings));
         if finished.len() != before {
             self.dirty = true;
         }
-        for done in self.tests.poll(&mut self.items, ctx) {
+        for done in self.tests.poll(&mut self.items, &self.settings, ctx) {
             self.dirty = true;
             match done {
                 crate::archtest::Done::Release(id) => finished.push(id),
@@ -13013,9 +13043,7 @@ impl App {
             }
         }
         for s in other {
-            let torrent = mdm_torrent::Source::magnet(&s).is_some()
-                || (s.to_ascii_lowercase().ends_with(".torrent")
-                    && std::path::Path::new(&s).is_file());
+            let torrent = mdm_torrent::Source::magnet(&s).is_some() || torrent_file_path(&s);
             if torrent {
                 self.handle_command(
                     ipc::Command {
@@ -13239,13 +13267,11 @@ impl App {
         grabber.add(found, source, |u| known.contains(u.as_str()));
     }
 
-    /// A Hugging Face repository's or a GitHub release's address (#1772) into Link grabber, which
-    /// lists its files through the site's API, and the window to the front.
-    fn grab_package(&mut self, url: &url::Url, ctx: &egui::Context) {
-        let found = vec![crate::transfer::Imported {
-            url: url.to_string(),
-            ..Default::default()
-        }];
+    /// A Hugging Face repository's or a GitHub release's address (#1772), a Google Drive
+    /// folder's (#2032, with the browser's sign-in when it sent it), into Link grabber, which
+    /// lists its files through the site's API or pages, and the window to the front.
+    fn grab_package(&mut self, found: crate::transfer::Imported, ctx: &egui::Context) {
+        let found = vec![found];
         // i18n: Link grabber: where the links came from: an address given on its own (typed or pasted in Add URL, given on the command line)
         let source = crate::i18n::t("Address typed").to_owned();
         self.show_import(found, source);
@@ -14192,7 +14218,11 @@ impl App {
                 // in Link grabber, to tick those wanted.
                 Outcome::Done(new) if mdm_engine::hub::Source::of(&new.url).is_some() => {
                     self.add_url = None;
-                    self.grab_package(&new.url, ctx);
+                    let found = crate::transfer::Imported {
+                        url: new.url.to_string(),
+                        ..Default::default()
+                    };
+                    self.grab_package(found, ctx);
                 }
                 // A video's page, not a file (YouTube, Vimeo…): the video window looks it up.
                 Outcome::Done(new) if mdm_tools::pages::is_video_page(&new.url) => {
@@ -15327,6 +15357,14 @@ impl App {
         // Mode support is off. Switches live (IDM asks to restart). On Linux the desktop's own
         // change wakes a frame, and the check runs in it rather than at its next 2 s (#156).
         crate::crash::step(crate::crash::Step::Theme);
+        // A theme file picked in View → Theme, read beside the window's thread (#1292).
+        if crate::theme::poll_pick() {
+            crate::theme::apply_theme(&ctx);
+            crate::theme::apply_mode(&ctx);
+            self.caption_set = false;
+            self.theme_checked = None;
+            ctx.request_repaint();
+        }
         let desktop_changed = crate::theme::system_changed();
         if desktop_changed
             || self
@@ -20354,5 +20392,29 @@ mod stop_and_keep_tests {
             .len();
         assert!(kept > 0);
         assert_eq!(row.size, Some(kept));
+    }
+}
+
+#[cfg(test)]
+mod torrent_path_tests {
+    /// #1292: a .torrent named by its path, told from one on the web by its form alone.
+    #[test]
+    fn a_torrent_file_is_told_by_its_form() {
+        for path in [
+            r"C:\Users\x\Downloads\ubuntu.torrent",
+            r#""D:\a b\linux.TORRENT""#,
+            "/home/x/Downloads/debian.torrent",
+            "debian.torrent",
+        ] {
+            assert!(super::torrent_file_path(path), "{path}");
+        }
+        for not in [
+            "https://example.org/ubuntu.torrent",
+            "ftp://example.org/a.torrent",
+            r"C:\x\ubuntu.iso",
+            "magnet:?xt=urn:btih:0123456789abcdef0123456789abcdef01234567",
+        ] {
+            assert!(!super::torrent_file_path(not), "{not}");
+        }
     }
 }

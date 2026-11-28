@@ -1110,6 +1110,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "calendrical_calculations"
+version = "0.2.4"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "5abbd6eeda6885048d357edc66748eea6e0268e3dd11f326fff5bd248d779c26"
+dependencies = [
+ "core_maths",
+ "displaydoc",
+]
+
+[[package]]
 name = "calloop"
 version = "0.13.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1512,6 +1522,15 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "7f8f80099a98041a3d1622845c271458a2d73e688351bf3cb999266764b81d48"
 
 [[package]]
+name = "core_maths"
+version = "0.1.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "77745e017f5edba1a9c1d854f6f3a52dac8a12dd5af5d2f54aecf61e43d80d30"
+dependencies = [
+ "libm",
+]
+
+[[package]]
 name = "cpp_demangle"
 version = "0.4.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1538,7 +1557,7 @@ dependencies = [
 [[package]]
 name = "craft-atomic"
 version = "0.1.0"
-source = "git+https://github.com/storytold/craft-libs?rev=1a11a4897865f7410c40d25ca6e452ce399a1a2c#1a11a4897865f7410c40d25ca6e452ce399a1a2c"
+source = "git+https://github.com/storytold/craft-libs?rev=3eb5b528b08211844bc5c95c5a4fd169894d52ff#3eb5b528b08211844bc5c95c5a4fd169894d52ff"
 dependencies = [
  "rustix 1.1.6",
 ]
@@ -1546,9 +1565,12 @@ dependencies = [
 [[package]]
 name = "craft-i18n"
 version = "0.1.0"
-source = "git+https://github.com/storytold/craft-libs?rev=1a11a4897865f7410c40d25ca6e452ce399a1a2c#1a11a4897865f7410c40d25ca6e452ce399a1a2c"
+source = "git+https://github.com/storytold/craft-libs?rev=3eb5b528b08211844bc5c95c5a4fd169894d52ff#3eb5b528b08211844bc5c95c5a4fd169894d52ff"
 dependencies = [
+ "chrono",
  "fixed_decimal",
+ "icu_calendar",
+ "icu_datetime",
  "icu_decimal",
  "icu_locale_core",
  "icu_locale_fallback",
@@ -1558,6 +1580,7 @@ dependencies = [
  "icu_provider",
  "icu_provider_adapters",
  "icu_provider_blob",
+ "icu_time",
  "log",
  "objc2-foundation 0.3.2",
  "sys-locale",
@@ -1987,7 +2010,7 @@ checksum = "d0881ea181b1df73ff77ffaaf9c7544ecc11e82fba9b5f27b262a3c73a332555"
 [[package]]
 name = "ecolor"
 version = "0.37.0"
-source = "git+https://github.com/anefzaoui/egui.git?rev=82ba93539645f29f39835a5691b5d4b79433b88e#82ba93539645f29f39835a5691b5d4b79433b88e"
+source = "git+https://github.com/anefzaoui/egui.git?rev=249819b7e9b37c515f1d13e15a92f1961ed7d886#249819b7e9b37c515f1d13e15a92f1961ed7d886"
 dependencies = [
  "bytemuck",
  "emath",
@@ -1996,7 +2019,7 @@ dependencies = [
 [[package]]
 name = "eframe"
 version = "0.37.0"
-source = "git+https://github.com/anefzaoui/egui.git?rev=82ba93539645f29f39835a5691b5d4b79433b88e#82ba93539645f29f39835a5691b5d4b79433b88e"
+source = "git+https://github.com/anefzaoui/egui.git?rev=249819b7e9b37c515f1d13e15a92f1961ed7d886#249819b7e9b37c515f1d13e15a92f1961ed7d886"
 dependencies = [
  "ahash",
  "bytemuck",
@@ -2032,7 +2055,7 @@ dependencies = [
 [[package]]
 name = "egui"
 version = "0.37.0"
-source = "git+https://github.com/anefzaoui/egui.git?rev=82ba93539645f29f39835a5691b5d4b79433b88e#82ba93539645f29f39835a5691b5d4b79433b88e"
+source = "git+https://github.com/anefzaoui/egui.git?rev=249819b7e9b37c515f1d13e15a92f1961ed7d886#249819b7e9b37c515f1d13e15a92f1961ed7d886"
 dependencies = [
  "accesskit",
  "ahash",
@@ -2051,7 +2074,7 @@ dependencies = [
 [[package]]
 name = "egui-wgpu"
 version = "0.37.0"
-source = "git+https://github.com/anefzaoui/egui.git?rev=82ba93539645f29f39835a5691b5d4b79433b88e#82ba93539645f29f39835a5691b5d4b79433b88e"
+source = "git+https://github.com/anefzaoui/egui.git?rev=249819b7e9b37c515f1d13e15a92f1961ed7d886#249819b7e9b37c515f1d13e15a92f1961ed7d886"
 dependencies = [
  "ahash",
  "bytemuck",
@@ -2070,7 +2093,7 @@ dependencies = [
 [[package]]
 name = "egui-winit"
 version = "0.37.0"
-source = "git+https://github.com/anefzaoui/egui.git?rev=82ba93539645f29f39835a5691b5d4b79433b88e#82ba93539645f29f39835a5691b5d4b79433b88e"
+source = "git+https://github.com/anefzaoui/egui.git?rev=249819b7e9b37c515f1d13e15a92f1961ed7d886#249819b7e9b37c515f1d13e15a92f1961ed7d886"
 dependencies = [
  "accesskit_winit",
  "arboard",
@@ -2095,7 +2118,7 @@ dependencies = [
 [[package]]
 name = "egui_extras"
 version = "0.37.0"
-source = "git+https://github.com/anefzaoui/egui.git?rev=82ba93539645f29f39835a5691b5d4b79433b88e#82ba93539645f29f39835a5691b5d4b79433b88e"
+source = "git+https://github.com/anefzaoui/egui.git?rev=249819b7e9b37c515f1d13e15a92f1961ed7d886#249819b7e9b37c515f1d13e15a92f1961ed7d886"
 dependencies = [
  "ahash",
  "egui",
@@ -2111,7 +2134,7 @@ dependencies = [
 [[package]]
 name = "egui_glow"
 version = "0.37.0"
-source = "git+https://github.com/anefzaoui/egui.git?rev=82ba93539645f29f39835a5691b5d4b79433b88e#82ba93539645f29f39835a5691b5d4b79433b88e"
+source = "git+https://github.com/anefzaoui/egui.git?rev=249819b7e9b37c515f1d13e15a92f1961ed7d886#249819b7e9b37c515f1d13e15a92f1961ed7d886"
 dependencies = [
  "bytemuck",
  "egui",
@@ -2124,7 +2147,7 @@ dependencies = [
 [[package]]
 name = "egui_system_font_provider"
 version = "0.37.0"
-source = "git+https://github.com/anefzaoui/egui.git?rev=82ba93539645f29f39835a5691b5d4b79433b88e#82ba93539645f29f39835a5691b5d4b79433b88e"
+source = "git+https://github.com/anefzaoui/egui.git?rev=249819b7e9b37c515f1d13e15a92f1961ed7d886#249819b7e9b37c515f1d13e15a92f1961ed7d886"
 dependencies = [
  "epaint",
  "fontique",
@@ -2153,7 +2176,7 @@ dependencies = [
 [[package]]
 name = "emath"
 version = "0.37.0"
-source = "git+https://github.com/anefzaoui/egui.git?rev=82ba93539645f29f39835a5691b5d4b79433b88e#82ba93539645f29f39835a5691b5d4b79433b88e"
+source = "git+https://github.com/anefzaoui/egui.git?rev=249819b7e9b37c515f1d13e15a92f1961ed7d886#249819b7e9b37c515f1d13e15a92f1961ed7d886"
 dependencies = [
  "bytemuck",
 ]
@@ -2222,7 +2245,7 @@ dependencies = [
 [[package]]
 name = "epaint"
 version = "0.37.0"
-source = "git+https://github.com/anefzaoui/egui.git?rev=82ba93539645f29f39835a5691b5d4b79433b88e#82ba93539645f29f39835a5691b5d4b79433b88e"
+source = "git+https://github.com/anefzaoui/egui.git?rev=249819b7e9b37c515f1d13e15a92f1961ed7d886#249819b7e9b37c515f1d13e15a92f1961ed7d886"
 dependencies = [
  "ahash",
  "bytemuck",
@@ -2248,7 +2271,7 @@ dependencies = [
 [[package]]
 name = "epaint_default_fonts"
 version = "0.37.0"
-source = "git+https://github.com/anefzaoui/egui.git?rev=82ba93539645f29f39835a5691b5d4b79433b88e#82ba93539645f29f39835a5691b5d4b79433b88e"
+source = "git+https://github.com/anefzaoui/egui.git?rev=249819b7e9b37c515f1d13e15a92f1961ed7d886#249819b7e9b37c515f1d13e15a92f1961ed7d886"
 
 [[package]]
 name = "equivalent"
@@ -3477,6 +3500,21 @@ dependencies = [
 ]
 
 [[package]]
+name = "icu_calendar"
+version = "2.3.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "58655df2f728e46e4eee80bddebefacf52ec3e77cdb925014b47c5a5905eb55c"
+dependencies = [
+ "calendrical_calculations",
+ "displaydoc",
+ "icu_locale_core",
+ "icu_provider",
+ "serde",
+ "tinystr",
+ "zerovec",
+]
+
+[[package]]
 name = "icu_collections"
 version = "2.3.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -3487,6 +3525,30 @@ dependencies = [
  "utf8_iter",
  "yoke",
  "zerofrom",
+ "zerovec",
+]
+
+[[package]]
+name = "icu_datetime"
+version = "2.3.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "c44df99c4c5297b05653d1a1629f13bdc9fd4044acfbbaf30b15194a1eed4cd6"
+dependencies = [
+ "displaydoc",
+ "fixed_decimal",
+ "icu_calendar",
+ "icu_decimal",
+ "icu_locale_core",
+ "icu_pattern",
+ "icu_plurals",
+ "icu_provider",
+ "icu_time",
+ "potential_utf",
+ "serde",
+ "smallvec",
+ "tinystr",
+ "writeable",
+ "zerotrie",
  "zerovec",
 ]
 
@@ -3649,6 +3711,22 @@ dependencies = [
  "postcard",
  "serde",
  "writeable",
+ "zerotrie",
+ "zerovec",
+]
+
+[[package]]
+name = "icu_time"
+version = "2.3.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "af37e1c3b9f3ab564b619fdf4b22de169f6381eb0f7048e3ca454290c438126b"
+dependencies = [
+ "calendrical_calculations",
+ "displaydoc",
+ "icu_calendar",
+ "icu_locale_core",
+ "icu_provider",
+ "serde",
  "zerotrie",
  "zerovec",
 ]
@@ -7989,6 +8067,9 @@ name = "smallvec"
 version = "1.16.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "d0d5d4b1981b8bbbb7aed204cae5726d683d5d6ac7e74ec54122ea28f315e7c8"
+dependencies = [
+ "serde",
+]
 
 [[package]]
 name = "smart-default"
