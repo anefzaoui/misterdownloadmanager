@@ -171,6 +171,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{package}: {n} file left out, its name would lead out of its folder|{package}: {n} files left out, their names would lead out of its folder	{package}: تم تخطي {n} ملف، اسمه سيؤدي إلى خارج مجلده|{package}: تم تخطي {n} ملف، اسمه سيؤدي إلى خارج مجلده|{package}: تم تخطي {n} ملفين، اسماهما سيؤديان إلى خارج مجلدهما|{package}: تم تخطي {n} ملفات، أسماؤها ستؤدي إلى خارج مجلدها|{package}: تم تخطي {n} ملفا، أسماؤها ستؤدي إلى خارج مجلدها|{package}: تم تخطي {n} ملف، أسماؤها ستؤدي إلى خارج مجلدها
+#. count in the Link grabber window
+#. Link grabber's Source line: a Google Drive folder's ({package}: its name) items that aren't files to download (Google Forms, shortcuts, Google Sites) are left out; {n} how many
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{package}: {n} item left out, a Google Form, shortcut or Site isn't a file|{package}: {n} items left out, Google Forms, shortcuts and Sites aren't files	{package}: تم استبعاد {n} عنصر، لأن نموذج Google أو الاختصار أو الموقع ليس ملفا|{package}: تم استبعاد {n} عنصر، لأن نماذج Google والاختصارات والمواقع ليست ملفات|{package}: تم استبعاد {n} عنصرين، لأن نموذجي Google والاختصارين والموقعين ليست ملفات|{package}: تم استبعاد {n} عناصر، لأن نماذج Google والاختصارات والمواقع ليست ملفات|{package}: تم استبعاد {n} عنصرا، لأن نماذج Google والاختصارات والمواقع ليست ملفات|{package}: تم استبعاد {n} عنصر، لأن نماذج Google والاختصارات والمواقع ليست ملفات
 #. count in cnl.rs
 #. Click'n'Load window: {site} is a web site's name such as "example.com"
 #. {site} = a web site's name such as "example.com"; {n} = a number (keep the braces as they are)
@@ -3020,6 +3025,10 @@
 #. text in the Link grabber window
 #. Link grabber, a link's status: the server wants a login (401, 403)
 	Needs a login	يحتاج إلى تسجيل دخول
+#. text in the Link grabber window
+#. Link grabber, a link's status: a Google Drive folder that isn't shared with everyone needs the browser's Google sign-in. The sentence is the cell's hover tip
+#, machine
+	Needs a sign-in	يتطلب تسجيل الدخول
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Nepal	نيبال
@@ -5132,6 +5141,10 @@
 #. text in errors.rs
 #. a download's error: a Google Drive file that isn't shared with everyone
 	this Google Drive file needs you to sign in: sign in to Google in your browser, then download it from there	يتطلب ملف Google Drive هذا تسجيل الدخول: سجل الدخول إلى Google في مستعرضك، ثم نزله من هناك
+#. text in the Link grabber window
+#. Link grabber, the hover tip of a Google Drive folder's status: the folder isn't shared with everyone; how to send it with the browser's sign-in (the browser's right-click command, keep its name as the browser extension shows it)
+#, machine
+	This Google Drive folder needs you to sign in: sign in to Google in your browser, then right-click the folder's link there and choose Download with Mister Download Manager.	يتطلب مجلد Google Drive هذا تسجيل دخولك: سجل الدخول إلى Google في مستعرضك، ثم انقر بزر الماوس الأيمن فوق رابط المجلد هناك واختر «تنزيل باستخدام Mister Download Manager».
 #. text in errors.rs
 #. a download's error: the address is a Google Drive folder, which isn't one file
 	this is a Google Drive folder, not a file	هذا مجلد Google Drive، وليس ملفا
@@ -6026,6 +6039,11 @@
 #. said after Delete with files when some files stayed on the disk; {file} is the download's name; the files' paths follow it
 #, machine
 	{file}: these files stayed on the disk, because MDM didn't create them or another download uses them:	{file}: بقيت هذه الملفات على القرص، لأن MDM لم ينشئها أو لأن تنزيلا آخر يستخدمها:
+#. text in the Link grabber window
+#. Link grabber's Source line: a Google Drive folder ({folder}: its name) in which a folder showed the most items Drive's page lists ({n}: 50), so it may hold more than are listed; what gets them all (Drive's own Download button, which makes a zip)
+#. {n} = a number (keep the braces as they are)
+#, machine
+	{folder}: Google Drive's page lists only the first {n} items of a folder, so some may be missing; Drive's own Download gets the whole folder as a zip	{folder}: لا تسرد صفحة Google Drive سوى أول {n} عنصر من المجلد، لذلك قد تكون بعض العناصر مفقودة؛ ينزل زر التنزيل في Drive المجلد بأكمله كملف مضغوط
 #. message or event log entry in the main window; text in the Link grabber window
 #. Link grabber's Source line, after where the links came from: a folder (an FTP folder, a web server's "Index of" page) held more files or subfolders than Link grabber lists; {folder} is its name, {n} how many of its files are listed (10,000)
 #. {n} = a number (keep the braces as they are)
@@ -6248,10 +6266,20 @@
 #, machine
 	{site} didn't give the file this time: try again in a moment	لم يمنحك {site} الملف هذه المرة: حاول مرة أخرى بعد قليل
 #. text in the Link grabber window
+#. Link grabber, the hover tip of a Google Drive folder's status ({site}: "Google Drive"): no folder at this link, or one the signed-in account may not open
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+	{site} has no such folder, or it isn't shared with you.	لا يوجد في {site} مجلد كهذا، أو أنه غير مشترك معك.
+#. text in the Link grabber window
 #. Link grabber, the hover tip of a Hugging Face repository's or GitHub release's status; {site} is "Hugging Face" or "GitHub"
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
 #, machine
 	{site} has no such repository, folder, release or tag, or it is private.	لا يحتوي {site} على مستودع أو مجلد أو إصدار أو علامة كهذه، أو أنه خاص.
+#. text in the Link grabber window
+#. Link grabber, a Google Drive folder's status (the cell's hover tip): Drive ({site}: "Google Drive") answered that it gets too many requests from this computer
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+	{site} is getting too many requests from this computer: try again later.	يتلقى {site} الكثير من الطلبات من هذا الكمبيوتر: حاول مرة أخرى لاحقا.
 #. text in the Link grabber window
 #. Link grabber, a Hugging Face repository's or GitHub release's status (the cell's hover tip): the site ({site}: "Hugging Face", "GitHub") lets only so many requests through from a computer without an account; {n} minutes to wait
 #. {site} = a web site's name such as "example.com"; {n} = a number (keep the braces as they are)
