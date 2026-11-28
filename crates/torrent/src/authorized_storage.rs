@@ -504,12 +504,31 @@ impl FileSlot {
     }
 
     /// The handle becomes this one's (none was there), counted in the budget if it may be
-    /// closed early.
+    /// closed early. For a handle opened already (handed over at Start); one about to be opened
+    /// takes its place first ([`Self::reserve`]) and is then [`Self::install_reserved`].
     fn install(self: &Arc<Self>, file: File) {
+        self.reserve();
+        self.install_reserved(file);
+    }
+
+    /// Its place in the budget, taken (room made: the least recently used handle closed) before
+    /// the app opens the file again, as librqbit's own files and the parts files are counted in
+    /// before they are opened: opened first, the process held one handle more than its budget
+    /// until room was made. Given back with [`Self::unreserve`] if no handle comes.
+    fn reserve(self: &Arc<Self>) {
         if self.evictable {
-            // Counted in (room made) before it is held: never past the budget.
             self.entry.admit(self);
         }
+    }
+
+    fn unreserve(&self) {
+        if self.evictable {
+            self.entry.closed();
+        }
+    }
+
+    /// The handle becomes this one's, its place in the budget taken already.
+    fn install_reserved(&self, file: File) {
         let mut slot = self.file.write().unwrap_or_else(|e| e.into_inner());
         *slot = Some(file);
         self.read_only.store(false, Ordering::Release);
@@ -802,23 +821,35 @@ impl Storage {
         {
             return Ok(());
         }
-        let given = open_one(slot.index)?;
-        if given.path != slot.path {
-            return Err(io::Error::new(
-                io::ErrorKind::PermissionDenied,
-                "a file was given again at another path",
-            )
-            .into());
-        }
-        let len = given.file.metadata()?.len();
-        let was = *slot
-            .closed_len
-            .lock()
-            .map_err(|_| io::Error::other("lock"))?;
-        if was.is_some_and(|was| was != len) {
-            return Err(changed_while_paused().into());
-        }
-        slot.install(given.file);
+        // Room in the budget first: the app opens the file now.
+        slot.reserve();
+        let given = (|| -> anyhow::Result<PreparedFile> {
+            let given = open_one(slot.index)?;
+            if given.path != slot.path {
+                return Err(io::Error::new(
+                    io::ErrorKind::PermissionDenied,
+                    "a file was given again at another path",
+                )
+                .into());
+            }
+            let len = given.file.metadata()?.len();
+            let was = *slot
+                .closed_len
+                .lock()
+                .map_err(|_| io::Error::other("lock"))?;
+            if was.is_some_and(|was| was != len) {
+                return Err(changed_while_paused().into());
+            }
+            Ok(given)
+        })();
+        let given = match given {
+            Ok(given) => given,
+            Err(e) => {
+                slot.unreserve();
+                return Err(e);
+            }
+        };
+        slot.install_reserved(given.file);
         drop(_opening);
         if slot.finished.load(Ordering::Acquire)
             && let Err(e) = slot.hold_read_only()
@@ -949,13 +980,26 @@ impl TorrentStorage for Storage {
                     }
                     let slot = FileSlot::new(index, file.path, None, true, self.budget);
                     if parts.is_file() {
-                        // Ticked since it was kept in a parts file: opened now for what it held.
-                        let given = (grant.open_one.as_ref().expect("lazy"))(index)?;
-                        if given.path != slot.path {
-                            return Err(io::Error::from(io::ErrorKind::PermissionDenied).into());
+                        // Ticked since it was kept in a parts file: opened now for what it
+                        // held, its room in the budget taken first.
+                        slot.reserve();
+                        let given = (|| -> anyhow::Result<PreparedFile> {
+                            let given = (grant.open_one.as_ref().expect("lazy"))(index)?;
+                            if given.path != slot.path {
+                                return Err(
+                                    io::Error::from(io::ErrorKind::PermissionDenied).into()
+                                );
+                            }
+                            move_parts_into(&parts, &given.file, info.len, piece)?;
+                            Ok(given)
+                        })();
+                        match given {
+                            Ok(given) => slot.install_reserved(given.file),
+                            Err(e) => {
+                                slot.unreserve();
+                                return Err(e);
+                            }
                         }
-                        move_parts_into(&parts, &given.file, info.len, piece)?;
-                        slot.install(given.file);
                     }
                     opened.push(Slot::File(slot));
                 }
