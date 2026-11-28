@@ -2803,7 +2803,14 @@ async function surveySite(t, site, shots, index) {
   }
   const v = target.v;
   const at = target.f.at;
-  const vr = { l: v.l + at.x, t: v.t + at.y, r: v.r + at.x, b: v.b + at.y };
+  let vr = { l: v.l + at.x, t: v.t + at.y, r: v.r + at.x, b: v.b + at.y };
+  // A video waiting out of its frame's sight (YouTube's embed before it plays): the frame is
+  // what a person points at.
+  if ((at.x || at.y) && (v.b <= 0 || v.r <= 0)) {
+    const top = await surveyFrames(s).then((f) => f[0].run(SURVEY_FIND)).catch(() => null);
+    const frame = top && top.frames.find((f) => Math.abs(f.r.l + f.cl - at.x) < 2 && Math.abs(f.r.t + f.ct - at.y) < 2);
+    if (frame) vr = { l: frame.r.l, t: frame.r.t, r: frame.r.r, b: frame.r.b };
+  }
   rec.video = `${Math.round(v.w)}x${Math.round(v.h)}${v.shadowed ? " shadow" : ""}${at.x || at.y ? " frame" : ""}${v.muted ? " muted" : ""}${v.loop ? " loop" : ""}${v.controls ? " controls" : ""} ${v.src || "no src"}${v.duration !== null ? ` ${v.duration}s` : ""} [${v.style}] of ${target.videos}`;
   // The pointer over the part of it in the window (a page may scroll it partly away again).
   const view = (await s.evaluate("[innerWidth, innerHeight]").catch(() => null)) || [1280, 800];
