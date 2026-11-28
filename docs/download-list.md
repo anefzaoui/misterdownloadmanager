@@ -70,13 +70,13 @@ The pane on the left has four branches:
 - **Finished** — complete downloads, by category.
 - **Queues** — each queue; select one to see only its downloads.
 
-Each download falls into a category by its file type: **General**, **Compressed**, **Documents**, **Music**, **Programs** or **Video**. Torrents have their own **Torrents** category. Each category has its own folder, by default inside your Downloads folder (`Downloads\Compressed`, `Downloads\Video` and so on; General uses `Downloads` itself).
+Each download falls into a category by its file type: **General**, **Compressed**, **Documents**, **Music**, **Programs** or **Video**. Torrents have their own **Torrents** category. **Programs** takes programs, installers and app packages (EXE, MSI, APK, IPA, DMG, PKG, DEB, RPM, AppImage, MSIX…), **Compressed** archives and disc images (ZIP, RAR, 7Z, TAR, XZ, ISO, IMG, VHD…), **Documents** text documents, spreadsheets and e-books (PDF, DOCX, XLSX, ODT, EPUB, MOBI…), **Music** audio (MP3, FLAC, OPUS, M4A…) and **Video** videos (MP4, MKV, WEBM…); every other file goes to General. Your own categories come before the built-in ones. Each category has its own folder, by default inside your Downloads folder (`Downloads\Compressed`, `Downloads\Video` and so on; General uses `Downloads` itself).
 
 Right-click a category for:
 
 - **Browse** — open its folder in Explorer.
 - **Properties** — change its name, its file types and its folder. General and Torrents only change their folder. A renamed category keeps its folder; a built-in one keeps its name in your language until you rename it.
-- **Add category** — make your own, for example **Books** for `EPUB MOBI`. Give it a name, the file types (separated by spaces, `*` allowed) and a folder.
+- **Add category** — make your own, for example **Books** for `EPUB MOBI` (they then go to Books, not Documents). Give it a name, the file types (separated by spaces, `*` allowed) and a folder.
 - **Delete** — remove a category, your own or a built-in one (not General or Torrents). MDM asks what happens to its downloads: **Move its downloads to General**, or **Remove its downloads from the list** (a download that is running moves to General instead). Their files stay where they are either way. From then on, files of its types go to another category that has them, or to General.
 
 ![A category's properties: its name, file types and folder](images/help/category-properties.webp)
@@ -165,6 +165,10 @@ The right-click menu has everything you can do with a download: **Open**, **Open
 ## Verify checksum
 
 Many sites publish a checksum next to the download. Right-click the download, choose **Verify checksum...** and paste it. MDM reads MD5, SHA-1, SHA-256, SHA-512 and CRC32. A finished file is checked at once; an unfinished one is checked when its download ends. MDM then says **The file matches** or **The file does NOT match**.
+
+A checksum you give this way (or with the command line's `--checksum`), or one the site publishes and MDM reads itself (Hugging Face's and GitHub's, in [Link grabber](link-grabber.md)), must match: a file that doesn't stays unfinished, says **the file's SHA-256 checksum doesn't match**, and **Redownload** fetches it again.
+
+Without one, MDM checks the file against the checksum its server sends with it, if any (`Content-MD5`, `Digest`, `Repr-Digest`, Google Cloud Storage's `x-goog-hash`). Servers sometimes send the checksum of the file as they store it rather than of what they send, so a file that doesn't match is still kept: its status says **Checksum warning**, and its tip, its log, **Properties** and **Download complete** say *Downloaded, but the server's MD5 checksum didn't match; the file may still be fine*. If it matters, check it with **Verify checksum...** and the checksum its site publishes: when it matches, the warning goes. A server's checksum isn't used at all when the server says it changed the file on the way (a compressed answer, or a file stored encoded, as PikPak's are).
 
 ## Selecting several downloads
 

@@ -2,8 +2,12 @@
 # downloaded and hashed by tools/release/ffmpeg_list.py. MDM installs one only when this
 # list carries MDM's release key's signature (ffmpeg-builds.txt.sig) and the zip's
 # SHA-256 is the one below, and never takes a list older than one it has seen.
+# The `mesa` lines: Mesa's software renderer (llvmpipe), which MDM offers where no graphics
+# card draws, checked the same way, archive and files (ffmpeg_list.py mesa).
 # From BtbN/FFmpeg-Builds, release autobuild-2026-10-31-12-59.
+# Mesa from pal1000/mesa-dist-win, release 26.3.1.
 mdm-ffmpeg-builds 1
-sequence 202611251452
+sequence 202611272050
 build windows x86_64 9.0.20261031 e907b01fa4783913151237e37df2a10fa97d99a1598a021bf59d4ae62ffed4c0 https://github.com/FFmpeg-Builds/FFmpeg-Builds/releases/download/autobuild-2026-10-31-12-59/ffmpeg-n9.0.2-39-g7adfbe40dc-win64-lgpl-shared-9.0.zip
 build windows aarch64 9.0.20261031 68664c6af3dc41384f983d5f6d33eb8cc7540eaced8c8d02fb0dd34ffbcdbbf6 https://github.com/FFmpeg-Builds/FFmpeg-Builds/releases/download/autobuild-2026-10-31-12-59/ffmpeg-n9.0.2-39-g7adfbe40dc-winarm64-lgpl-shared-9.0.zip
+mesa windows x86_64 26.3.1 64e84cf13d67dd354640bf443ed0445e6a83afd06a5729f0750b3744d633b3f1 66270373 https://github.com/pal1000/mesa-dist-win/releases/download/26.3.1/mesa3d-26.3.1-release-msvc.7z x64/opengl32.dll=2ae2472a335b400bbc0d16b99981feacb3a7653eb4add6f694ac0e6d6351bbb3 x64/libgallium_wgl.dll=8f6a0670aaf73604ea0ad8241af583a4ebc21d8a0c112102fafe2bf7695ef6c4

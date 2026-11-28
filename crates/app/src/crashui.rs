@@ -344,11 +344,17 @@ fn note_gl_failure(made: &Made) -> bool {
     let stall =
         crate::offscreen() && std::env::var_os("MDM_TEST_GL_STALL").is_some_and(|v| v == "1");
     let crash = crate::renderer::gl_crash_testing();
+    // A session drawn with Mesa's llvmpipe (#476): its failure, not Windows' OpenGL's.
+    let llvmpipe = made
+        .notes
+        .session
+        .as_ref()
+        .is_some_and(|s| crate::renderer::drew_with_llvmpipe(&s.renderer));
     match gl_failure(made, stall, crash) {
         Some(GlFailure::Froze(module, seconds)) => {
-            crate::renderer::remember_gl_froze(&module, seconds)
+            crate::renderer::remember_gl_froze(&module, seconds, llvmpipe)
         }
-        Some(GlFailure::Crashed(module)) => crate::renderer::remember_gl_crashed(&module),
+        Some(GlFailure::Crashed(module)) => crate::renderer::remember_gl_crashed(&module, llvmpipe),
         None => return false,
     }
     true

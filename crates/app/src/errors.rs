@@ -407,7 +407,7 @@ pub fn adapter(e: &mdm_engine::NetError) -> String {
 pub fn tools(e: &mdm_tools::Error) -> String {
     use mdm_tools::Error as E;
     // ffmpeg's list says it is the list that couldn't be fetched, then the server and why.
-    if !matches!(e, E::FfmpegList(_))
+    if !matches!(e, E::FfmpegList(_) | E::MesaList(_))
         && let Some((host, fault)) = e.network()
     {
         return reach(&host, fault, cause_of(e).as_deref());
@@ -449,6 +449,45 @@ pub fn tools(e: &mdm_tools::Error) -> String {
             &[("name", name)],
         ),
         E::FfmpegList(why) => ffmpeg_list(why),
+        E::MesaList(why) => mesa_list(why),
+    }
+}
+
+/// Why MDM's list of the software renderers it checked (Mesa's llvmpipe, #476) let none in, in
+/// the interface language.
+fn mesa_list(why: &mdm_tools::ffmpeg::ListError) -> String {
+    use mdm_tools::ffmpeg::ListError as L;
+    match why {
+        L::Unavailable(e) => fmt(
+            // i18n: error installing Mesa's software renderer (it draws MDM's windows where there is no graphics card): MDM installs only builds named in a list it publishes, signed with its key, and that list couldn't be downloaded; {error} = why
+            t("MDM's list of checked software renderers could not be downloaded: {error}"),
+            &[("error", &tools(e))],
+        ),
+        L::Unsigned => t(
+            // i18n: error installing Mesa's software renderer: the list of builds MDM accepts doesn't carry MDM's own signature
+            "MDM's list of checked software renderers isn't signed by MDM's key, so nothing was installed",
+        )
+        .to_owned(),
+        L::Older { .. } => t(
+            // i18n: error installing Mesa's software renderer: the list of builds MDM accepts is older than one this copy of MDM already used (it never goes back to an older list)
+            "MDM's list of checked software renderers is older than one already used, so nothing was installed",
+        )
+        .to_owned(),
+        L::Unreadable(detail) => fmt(
+            // i18n: error installing Mesa's software renderer: the list of builds MDM accepts couldn't be read; {detail} = the technical detail, in English
+            t("MDM's list of checked software renderers can't be read ({detail})"),
+            &[("detail", detail)],
+        ),
+        L::NoBuild(_) => t(
+            // i18n: error installing Mesa's software renderer: the list of builds MDM accepts has none for this computer's system and processor
+            "MDM's list of checked software renderers has none for this computer",
+        )
+        .to_owned(),
+        L::NotListed => t(
+            // i18n: error installing Mesa's software renderer: a file downloaded isn't the one named in the list of builds MDM accepts (its checksum differs), so it was thrown away
+            "the downloaded software renderer isn't the build MDM's list of checked builds names, so it wasn't installed",
+        )
+        .to_owned(),
     }
 }
 
@@ -595,8 +634,9 @@ pub fn tools_advice(e: &mdm_tools::Error, name: &str) -> Option<String> {
     let fault = match e {
         mdm_tools::Error::BadChecksum => F::CutShort,
         // ffmpeg's list: what the failure to fetch it calls for, else another try later.
-        mdm_tools::Error::FfmpegList(ListError::Unavailable(e)) => return tools_advice(e, name),
-        mdm_tools::Error::FfmpegList(_) => F::CutShort,
+        mdm_tools::Error::FfmpegList(ListError::Unavailable(e))
+        | mdm_tools::Error::MesaList(ListError::Unavailable(e)) => return tools_advice(e, name),
+        mdm_tools::Error::FfmpegList(_) | mdm_tools::Error::MesaList(_) => F::CutShort,
         _ => e.network()?.1,
     };
     let text = match fault {

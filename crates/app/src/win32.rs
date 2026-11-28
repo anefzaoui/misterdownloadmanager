@@ -8115,6 +8115,80 @@ pub fn gl_driver(gl: &eframe::glow::Context) -> String {
     format!("{renderer} ({version})")
 }
 
+/// Mesa's OpenGL (`opengl32.dll`, llvmpipe, in MDM's tools folder: #476) loaded in place of
+/// Windows' own, before OpenGL starts (renderer.rs). MDM's program imports Windows' OpenGL
+/// delay-loaded (build.rs, `/DELAYLOAD:opengl32.dll`): nothing has loaded an `opengl32.dll` before
+/// OpenGL's first start, and once this one is loaded by its full path, every later load by name
+/// (eframe's, GDI's pixel formats, the delay-loaded imports) is answered with it, as Windows does
+/// for a DLL of that name loaded already. Its own DLLs (pal1000's `libgallium_wgl.dll`) come from
+/// its folder, the rest from System32 only. It stays loaded for the process's life.
+///
+/// Refused when an `opengl32.dll` is loaded already (Windows' own: a start with OpenGL before
+/// this one): MDM draws the next way then.
+pub fn load_mesa(dll: &std::path::Path) -> Result<(), String> {
+    use std::os::windows::ffi::OsStrExt as _;
+    use windows_sys::Win32::Foundation::{ERROR_INVALID_PARAMETER, GetLastError, HMODULE};
+    use windows_sys::Win32::System::LibraryLoader::{
+        GetModuleFileNameW, GetModuleHandleW, LOAD_LIBRARY_SEARCH_DLL_LOAD_DIR,
+        LOAD_LIBRARY_SEARCH_SYSTEM32, LOAD_WITH_ALTERED_SEARCH_PATH, LoadLibraryExW,
+    };
+    let path_of = |m: HMODULE| {
+        let mut buf = [0u16; 1024];
+        // SAFETY: a loaded module's handle and a buffer of the length given.
+        let n = unsafe { GetModuleFileNameW(m, buf.as_mut_ptr(), buf.len() as u32) } as usize;
+        String::from_utf16_lossy(&buf[..n.min(buf.len())])
+    };
+    let name: Vec<u16> = "opengl32.dll\0".encode_utf16().collect();
+    // SAFETY: a NUL-terminated name; only looked up, nothing loaded.
+    let before = unsafe { GetModuleHandleW(name.as_ptr()) };
+    if !before.is_null() {
+        return Err(format!(
+            "an OpenGL is loaded already ({}): Mesa's can't take its place",
+            path_of(before)
+        ));
+    }
+    // pal1000's gallium has Mesa's Direct3D 12 driver too, which would draw on WARP again:
+    // llvmpipe only. Set before Mesa is loaded (its C runtime takes the environment then); MDM
+    // itself reads no GALLIUM_ variable.
+    // SAFETY: Windows' environment is the process's own block, written through Rust's lock.
+    unsafe { std::env::set_var("GALLIUM_DRIVER", "llvmpipe") };
+    let path: Vec<u16> = dll.as_os_str().encode_wide().chain(Some(0)).collect();
+    // SAFETY: a NUL-terminated full path; the flags keep its imports to its own folder and
+    // System32.
+    let mut module = unsafe {
+        LoadLibraryExW(
+            path.as_ptr(),
+            std::ptr::null_mut(),
+            LOAD_LIBRARY_SEARCH_DLL_LOAD_DIR | LOAD_LIBRARY_SEARCH_SYSTEM32,
+        )
+    };
+    // Windows 7 without KB2533623 has no LOAD_LIBRARY_SEARCH_ flags: the DLL's own folder first
+    // for its imports, as the older flag says.
+    // SAFETY: reads this thread's last error, then the same load as above.
+    if module.is_null() && unsafe { GetLastError() } == ERROR_INVALID_PARAMETER {
+        module = unsafe {
+            LoadLibraryExW(
+                path.as_ptr(),
+                std::ptr::null_mut(),
+                LOAD_WITH_ALTERED_SEARCH_PATH,
+            )
+        };
+    }
+    if module.is_null() {
+        let e = std::io::Error::last_os_error();
+        return Err(format!("{} couldn't be loaded: {e}", dll.display()));
+    }
+    // SAFETY: as above.
+    let by_name = unsafe { GetModuleHandleW(name.as_ptr()) };
+    if by_name != module {
+        return Err(format!(
+            "opengl32.dll by name is {}, not Mesa's",
+            path_of(by_name)
+        ));
+    }
+    Ok(())
+}
+
 /// The graphics adapters and their drivers' versions, as Direct3D 12 sees them (DXGI; the
 /// version as wgpu writes it, "32.0.15.6224"), and whether each is a software renderer (WARP):
 /// a remembered failure is tried again once they change (renderer.rs, #1205). Read without
@@ -8639,42 +8713,106 @@ pub fn rename_no_replace(from: &std::path::Path, to: &std::path::Path) -> std::i
     }
 }
 
-/// What each browser's registry entries for the native host lead to: the user's (HKCU) and the
-/// computer's (HKLM), for every key the browsers read (`mdm_ipc::browsers::WINDOWS_HOST_KEYS`).
-fn host_holders() -> Vec<(
-    Option<mdm_ipc::browsers::Holder>,
-    Option<mdm_ipc::browsers::Holder>,
-)> {
-    use mdm_ipc::browsers::{HOST_NAME, Holder, WINDOWS_HOST_KEYS, registered_manifest};
-    use windows_sys::Win32::System::Registry::{HKEY_CURRENT_USER, HKEY_LOCAL_MACHINE};
+/// The default value of the key at `place` (HKLM or HKCU, in its view: #1688), when it is a
+/// string.
+fn reg_string_at(place: &mdm_ipc::browsers::RegPlace) -> Option<String> {
+    use mdm_ipc::browsers::RegView;
+    use windows_sys::Win32::System::Registry::{
+        HKEY_CURRENT_USER, HKEY_LOCAL_MACHINE, RRF_RT_REG_SZ, RRF_SUBKEY_WOW6432KEY,
+        RRF_SUBKEY_WOW6464KEY, RegGetValueW,
+    };
+    let root = if place.machine {
+        HKEY_LOCAL_MACHINE
+    } else {
+        HKEY_CURRENT_USER
+    };
+    // The computer's 32-bit view is WOW6432Node's (32-bit Windows has one view: ignored there).
+    let view = match place.view {
+        Some(RegView::Machine32) => RRF_SUBKEY_WOW6432KEY,
+        Some(RegView::Machine64) => RRF_SUBKEY_WOW6464KEY,
+        _ => 0,
+    };
+    let key: Vec<u16> = place.key.encode_utf16().chain(Some(0)).collect();
+    let mut buf = vec![0u16; 1024];
+    let mut size = (buf.len() * 2) as u32;
+    // SAFETY: registry read into `buf`, whose size in bytes is passed in `size`; a null value
+    // name reads the key's default value.
+    let rc = unsafe {
+        RegGetValueW(
+            root,
+            key.as_ptr(),
+            std::ptr::null(),
+            RRF_RT_REG_SZ | view,
+            std::ptr::null_mut(),
+            buf.as_mut_ptr() as *mut c_void,
+            &mut size,
+        )
+    };
+    if rc != 0 {
+        return None;
+    }
+    let len = (size as usize / 2).saturating_sub(1).min(buf.len());
+    Some(String::from_utf16_lossy(&buf[..len]))
+}
+
+/// What each browser's registry entries for the native host lead to, for every key the browsers
+/// read (`mdm_ipc::browsers::WINDOWS_HOST_KEYS`): the user's (HKCU) and the computer's (HKLM)
+/// in both its views, 32-bit and 64-bit (#1688), each with its key. Off-screen test copies read
+/// a test registry instead (`mdm_ipc::browsers::test_registry`).
+fn host_holders() -> Vec<(&'static str, mdm_ipc::browsers::HostEntries)> {
+    use mdm_ipc::browsers::{
+        HOST_NAME, Holder, HostEntries, RegView, WINDOWS_HOST_KEYS, reg_place, registered_manifest,
+        test_registry,
+    };
+    let test = test_registry().filter(|_| crate::offscreen());
     WINDOWS_HOST_KEYS
         .iter()
         .map(|(key, _)| {
             let entry = format!(r"{key}\{HOST_NAME}");
-            let holder = |root| {
-                reg_string_in(root, &entry, "").map(|v| Holder::of(&registered_manifest(&v)))
+            let holder = |view| {
+                reg_string_at(&reg_place(view, &entry, test.as_deref()))
+                    .map(|v| Holder::of(&registered_manifest(&v)))
             };
-            (holder(HKEY_CURRENT_USER), holder(HKEY_LOCAL_MACHINE))
+            let entries = HostEntries {
+                user: holder(RegView::User),
+                machine32: holder(RegView::Machine32),
+                machine64: holder(RegView::Machine64),
+            };
+            (*key, entries)
         })
         .collect()
 }
 
 /// Where browser integration stands: what a browser looking for the native host finds, for
 /// every key the browsers read: the user's entry (HKCU), or without one the computer's (HKLM),
-/// as the browsers read them (Chromium's launch_context_win.cc). One naming a manifest that is
-/// gone (a copy run from inside a zip, #818) or a helper program that isn't there is the
-/// problem, whatever the others say (Options → General → Test browser integration).
+/// its 32-bit view's first, as the browsers read them (Chromium's launch_context_win.cc). One
+/// naming a manifest that is gone (a copy run from inside a zip, #818) or a helper program that
+/// isn't there is the problem, whatever the others say; a 32-bit entry read instead of the
+/// 64-bit one, when it leads nowhere or elsewhere, says so and where it is (#1688: the 64-bit
+/// one, the one people find, looked right). Options → General → Test browser integration.
 pub fn host_registration() -> crate::extension::Registration {
     use crate::extension::Registration;
-    use mdm_ipc::browsers::Holder;
+    use mdm_ipc::browsers::{HOST_NAME, Holder, RegView};
     let mut ready = false;
     let mut dead = None;
-    for (user, machine) in host_holders() {
-        match user.or(machine) {
+    let mut in_the_way = None;
+    for (key, entries) in host_holders() {
+        if let Some(read) = entries.in_the_way() {
+            let entry = RegView::Machine32.shown(&format!(r"{key}\{HOST_NAME}"));
+            tracing::warn!(
+                "browser integration: {entry} is read before {}: {read:?}",
+                RegView::Machine64.shown(key)
+            );
+            in_the_way = in_the_way.or(Some((entry, read.clone())));
+        }
+        match entries.read() {
             Some(Holder::Alive(_)) => ready = true,
-            Some(gone) => dead = dead.or(Some(gone)),
+            Some(gone) => dead = dead.or(Some(gone.clone())),
             None => {}
         }
+    }
+    if let Some((entry, read)) = in_the_way {
+        return Registration::InTheWay(entry, read);
     }
     match dead {
         Some(Holder::ManifestGone(manifest)) => Registration::Gone(manifest),
@@ -8686,16 +8824,17 @@ pub fn host_registration() -> crate::extension::Registration {
 
 /// At each start, on a thread of its own (#818): when a browser's registration leads nowhere
 /// (`mdm_ipc::browsers::windows_repair`: its manifest or helper gone, such as a copy run from
-/// inside a zip whose temporary folder was deleted), the native host's `--repair` points it at
-/// this copy, for this user. Nothing runs while every one works or there is none: one that works
-/// naming another copy is that copy's, and none is the setup's box unticked.
+/// inside a zip whose temporary folder was deleted; the computer's 32-bit entry too, which the
+/// browsers read first, #1688), the native host's `--repair` points it at this copy, for this
+/// user. Nothing runs while every one works or there is none: one that works naming another copy
+/// is that copy's, and none is the setup's box unticked.
 pub fn repair_browsers() {
     use mdm_ipc::browsers::{Repair, windows_repair};
     let started = std::thread::Builder::new()
         .name("repair-browsers".into())
         .spawn(|| {
-            let needed = host_holders().iter().any(|(user, machine)| {
-                windows_repair(user.as_ref(), machine.as_ref()) != Repair::Keep
+            let needed = host_holders().iter().any(|(_, entries)| {
+                windows_repair(entries.user.as_ref(), entries.machine()) != Repair::Keep
             });
             if !needed {
                 return;
