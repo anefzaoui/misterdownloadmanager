@@ -1121,10 +1121,19 @@ impl TorrentStorage for Storage {
         for slot in &self.files {
             let closed = match slot {
                 Slot::Padding => Ok(()),
-                Slot::File(slot) => slot.close().and_then(|()| Self::sync_closed(slot, &grant)),
+                Slot::File(slot) => slot.close(),
                 Slot::Parts(p) => p.close(),
             };
             if let Err(e) = closed {
+                first_error.get_or_insert(e);
+            }
+        }
+        // Then the files the budget closed after they were written, given again one at a time
+        // to be written to disk: with every other handle closed first, never past the budget.
+        for slot in &self.files {
+            if let Slot::File(slot) = slot
+                && let Err(e) = Self::sync_closed(slot, &grant)
+            {
                 first_error.get_or_insert(e);
             }
         }
