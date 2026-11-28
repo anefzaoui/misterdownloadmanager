@@ -6414,6 +6414,44 @@ mod tests {
         assert!(!out.join(&meta.files[ib].path).exists());
         assert!(!out.join(&meta.files[ic].path).exists());
 
+        // The piece map is what the next start goes by, not a check of every piece: with one
+        // piece in the middle of a.bin left out of it (one a sample check never reads, as the
+        // map doesn't claim it), that piece reads as missing though it is on the disk. A full
+        // check would find it there.
+        let hole = 10;
+        let mut holed = map.clone();
+        holed[hole / 8] &= !(0x80 >> (hole % 8));
+        std::fs::write(&map_path, &holed).unwrap();
+        let peek = Torrents::start(guarded()).await.unwrap();
+        authorized_storage::authorize_parted(
+            &session,
+            &meta.info_hash,
+            &out,
+            authorized_storage::Prepared {
+                files: vec![make(ia), make(ic)],
+                parted: vec![ib],
+                ..Default::default()
+            },
+            Arc::new(|| Err(std::io::ErrorKind::PermissionDenied.into())),
+        );
+        let hp = peek
+            .add(&torrent, &out, Some(vec![ia, ic]), Vec::new(), true)
+            .await
+            .unwrap();
+        let s = wait_for(&peek, &hp, "checked from the map", 30, |s| {
+            s.phase == Phase::Paused
+        })
+        .await;
+        assert_eq!(
+            s.file_done[ia],
+            a.len() as u64 - 16 * 1024,
+            "the start went by the piece map, not a check of every piece: {s:?}"
+        );
+        peek.release(&hp).await.unwrap();
+        peek.stop().await;
+        authorized_storage::forget(&session, &hp);
+        std::fs::write(&map_path, &map).unwrap();
+
         // Start a new session and tick c.bin: fastresumes a.bin and fetches only c.bin.
         let again = Torrents::start(guarded()).await.unwrap();
         authorized_storage::authorize_parted(
