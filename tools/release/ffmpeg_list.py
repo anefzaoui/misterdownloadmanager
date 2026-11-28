@@ -1,10 +1,14 @@
-"""MDM's list of the ffmpeg builds it installs (crates/tools/src/ffmpeg.rs).
+"""MDM's list of the ffmpeg builds it installs (crates/tools/src/ffmpeg.rs), and of Mesa's
+software renderer it offers where no graphics card draws (crates/tools/src/mesa.rs, #476).
 
 MDM downloads ffmpeg from BtbN's builds (github.com/BtbN/FFmpeg-Builds) but installs one only
 when its SHA-256 is in this list, signed with MDM's release key. Nothing BtbN's release says is
-trusted on its own: the list is made from builds downloaded and hashed here.
+trusted on its own: the list is made from builds downloaded and hashed here. Mesa's llvmpipe the
+same way, from pal1000's builds (github.com/pal1000/mesa-dist-win, MIT): the archive's SHA-256
+and size, and the SHA-256 of each file MDM takes from it.
 
     python tools/release/ffmpeg_list.py make autobuild-2026-10-31-12-59
+    python tools/release/ffmpeg_list.py mesa 26.3.1
     python tools/release/ffmpeg_list.py sign        # the maintainer, with MDM's release key
     python tools/release/ffmpeg_list.py verify
 
@@ -15,7 +19,14 @@ make TAG   Downloads, for each processor MDM installs ffmpeg on, the LGPL shared
            YYYYMMDDHHMM; --sequence to choose one). Take a month's last build
            (autobuild-YYYY-MM-DD-… on the month's last day): BtbN keeps those for about two years
            and its daily builds for about two weeks, and the list names the build's own address.
-           GH_TOKEN (or GITHUB_TOKEN), when set, is sent to GitHub's API.
+           GH_TOKEN (or GITHUB_TOKEN), when set, is sent to GitHub's API. The list's Mesa line
+           is kept as it is.
+mesa TAG   Downloads pal1000's release TAG (a Mesa version, 26.3.1), its MSVC archive
+           (mesa3d-TAG-release-msvc.7z), checks it against GitHub's own digest of it (any
+           difference, or no digest, stops here), takes its x64 OpenGL files out with 7-Zip
+           (7z on PATH, or 7-Zip's own folder), hashes them, and writes the list's Mesa line with
+           a new sequence number (its ffmpeg lines kept). MDM offers what this line names: a
+           new Mesa is a new list, nothing in MDM itself.
 sign       Signs the list with gpg as MDM's release key (--local-user, its fingerprint by
            default), from the keyring of whoever runs it, into ffmpeg-builds.txt.sig; then
            verify. This script never reads a key file.
@@ -56,6 +67,46 @@ FORMAT = "mdm-ffmpeg-builds 1"
 # (system, processor) as Rust names them, and BtbN's name for that build.
 BUILDS = [("windows", "x86_64", "win64"), ("windows", "aarch64", "winarm64")]
 AGENT = "mdm-ffmpeg-list"
+MESA_REPO = "pal1000/mesa-dist-win"
+# (system, processor) as Rust names them, and the files MDM takes from pal1000's archive for it,
+# opengl32.dll first (the one MDM loads; the other sits beside it). pal1000 builds no ARM64, and
+# its 32-bit archive has no llvmpipe OpenGL files.
+MESA_BUILDS = [("windows", "x86_64", ["x64/opengl32.dll", "x64/libgallium_wgl.dll"])]
+HEADER = (
+    "# The ffmpeg builds Mister Download Manager installs: BtbN's LGPL shared builds, each\n"
+    "# downloaded and hashed by tools/release/ffmpeg_list.py. MDM installs one only when this\n"
+    "# list carries MDM's release key's signature (ffmpeg-builds.txt.sig) and the zip's\n"
+    "# SHA-256 is the one below, and never takes a list older than one it has seen.\n"
+    "# The `mesa` lines: Mesa's software renderer (llvmpipe), which MDM offers where no graphics\n"
+    "# card draws, checked the same way, archive and files (ffmpeg_list.py mesa).\n"
+)
+
+
+def existing(path):
+    """The list at `path`'s lines by kind (`build`, `mesa`) and its "From" notes, if it exists."""
+    kinds = {"build": [], "mesa": [], "from-ffmpeg": [], "from-mesa": []}
+    if not path.is_file():
+        return kinds
+    for line in path.read_text(encoding="ascii").splitlines():
+        line = line.strip()
+        if line.startswith("# From "):
+            kinds["from-ffmpeg"].append(line)
+        elif line.startswith("# Mesa from "):
+            kinds["from-mesa"].append(line)
+        elif line.split(" ", 1)[0] in ("build", "mesa"):
+            kinds[line.split(" ", 1)[0]].append(line)
+    return kinds
+
+
+def write_list(out, kinds, sequence):
+    text = (
+        HEADER
+        + "".join(n + "\n" for n in kinds["from-ffmpeg"] + kinds["from-mesa"])
+        + f"{FORMAT}\n"
+        + f"sequence {sequence}\n"
+        + "".join(line + "\n" for line in kinds["build"] + kinds["mesa"])
+    )
+    out.write_text(text, encoding="ascii", newline="\n")
 
 
 def stable_line(name, build):
@@ -145,16 +196,81 @@ def make(args):
             shutil.rmtree(work, ignore_errors=True)
     sequence = args.sequence or int(datetime.datetime.now(datetime.UTC).strftime("%Y%m%d%H%M"))
     out = Path(args.out) if args.out else LIST
-    text = (
-        "# The ffmpeg builds Mister Download Manager installs: BtbN's LGPL shared builds, each\n"
-        "# downloaded and hashed by tools/release/ffmpeg_list.py. MDM installs one only when this\n"
-        "# list carries MDM's release key's signature (ffmpeg-builds.txt.sig) and the zip's\n"
-        "# SHA-256 is the one below, and never takes a list older than one it has seen.\n"
-        f"# From {REPO}, release {tag}.\n"
-        f"{FORMAT}\n"
-        f"sequence {sequence}\n" + "".join(line + "\n" for line in lines)
-    )
-    out.write_text(text, encoding="ascii", newline="\n")
+    # The Mesa line stays as it was.
+    kinds = existing(out)
+    kinds["build"] = lines
+    kinds["from-ffmpeg"] = [f"# From {REPO}, release {tag}."]
+    write_list(out, kinds, sequence)
+    print(f"wrote {out} (sequence {sequence}); review it, then sign it: ffmpeg_list.py sign")
+
+
+def seven_zip():
+    """7-Zip's command-line program: on PATH, or in 7-Zip's own folder."""
+    for name in ("7z", "7za"):
+        found = shutil.which(name)
+        if found:
+            return found
+    for base in (os.environ.get("ProgramFiles"), os.environ.get("ProgramFiles(x86)")):
+        if base and (Path(base) / "7-Zip" / "7z.exe").is_file():
+            return str(Path(base) / "7-Zip" / "7z.exe")
+    sys.exit("7-Zip isn't installed (7z on PATH, or 7-Zip's folder): it unpacks Mesa's archive")
+
+
+def mesa(args):
+    tag = args.tag
+    if not re.fullmatch(r"\d+(\.\d+)+", tag):
+        sys.exit(f"{tag}: not a Mesa release of pal1000's (a version: 26.3.1; never a release candidate)")
+    token = os.environ.get("GH_TOKEN") or os.environ.get("GITHUB_TOKEN")
+    with get(f"https://api.github.com/repos/{MESA_REPO}/releases/tags/{tag}", token) as resp:
+        release = json.load(resp)
+    name = f"mesa3d-{tag}-release-msvc.7z"
+    asset = next((a for a in release["assets"] if a["name"] == name), None)
+    if asset is None:
+        sys.exit(f"{MESA_REPO} {tag} has no {name}")
+    digest = (asset.get("digest") or "").removeprefix("sha256:")
+    if not re.fullmatch(r"[0-9a-f]{64}", digest):
+        sys.exit(f"{name}: GitHub gives no SHA-256 digest for it, nothing to check it against")
+    work = Path(args.work) if args.work else Path(tempfile.mkdtemp(prefix="mesa-list-"))
+    work.mkdir(parents=True, exist_ok=True)
+    lines = []
+    try:
+        url = asset["browser_download_url"]
+        print(f"{name} ({asset['size'] / 1e6:.0f} MB)")
+        archive = work / name
+        sha = download(url, archive)
+        if sha != digest:
+            sys.exit(f"{name}: SHA-256 {sha}, GitHub's digest says {digest}")
+        size = archive.stat().st_size
+        if size != asset["size"]:
+            sys.exit(f"{name}: {size} bytes, GitHub says {asset['size']}")
+        for os_name, arch, files in MESA_BUILDS:
+            out_dir = work / f"{os_name}-{arch}"
+            out_dir.mkdir(exist_ok=True)
+            members = [f.replace("/", "\\") for f in files]
+            subprocess.run(
+                [seven_zip(), "e", "-y", f"-o{out_dir}", str(archive), *members],
+                check=True,
+                stdout=subprocess.DEVNULL,
+            )
+            sums = []
+            for f in files:
+                got = out_dir / f.rsplit("/", 1)[-1]
+                if not got.is_file():
+                    sys.exit(f"{name} has no {f}")
+                sums.append(f"{f}={hashlib.sha256(got.read_bytes()).hexdigest()}")
+                print(f"  {f}: {got.stat().st_size / 1e6:.1f} MB")
+            lines.append(f"mesa {os_name} {arch} {tag} {sha} {size} {url} " + " ".join(sums))
+    finally:
+        if not args.work:
+            shutil.rmtree(work, ignore_errors=True)
+    sequence = args.sequence or int(datetime.datetime.now(datetime.UTC).strftime("%Y%m%d%H%M"))
+    out = Path(args.out) if args.out else LIST
+    kinds = existing(out)
+    if not kinds["build"]:
+        sys.exit(f"{out} has no ffmpeg builds: make it first (ffmpeg_list.py make)")
+    kinds["mesa"] = lines
+    kinds["from-mesa"] = [f"# Mesa from {MESA_REPO}, release {tag}."]
+    write_list(out, kinds, sequence)
     print(f"wrote {out} (sequence {sequence}); review it, then sign it: ffmpeg_list.py sign")
 
 
@@ -211,6 +327,12 @@ def main():
     m.add_argument("--out", help=f"where to write it (default: {LIST.relative_to(ROOT)})")
     m.add_argument("--work", help="keep the downloaded builds in this folder")
     m.set_defaults(run=make)
+    me = sub.add_parser("mesa", help="the list's Mesa line from one of pal1000's releases")
+    me.add_argument("tag", help="pal1000's release, a Mesa version (26.3.1)")
+    me.add_argument("--sequence", type=int, help="its sequence number (default: now, UTC)")
+    me.add_argument("--out", help=f"the list to write it in (default: {LIST.relative_to(ROOT)})")
+    me.add_argument("--work", help="keep the downloaded archive and files in this folder")
+    me.set_defaults(run=mesa)
     for name, run in (("sign", sign), ("verify", verify)):
         s = sub.add_parser(name)
         s.add_argument("--list", default=str(LIST))

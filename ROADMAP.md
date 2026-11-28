@@ -575,6 +575,22 @@ Everything below ships together, in version 0.6.0, the next release.
   OPUS, FLAC, M4B and AIFF in Music, M2TS and MTS in Video; a list you edited stays yours
   ([#1725](https://github.com/anefzaoui/misterdownloadmanager/issues/1725); thanks to
   [@twistedwolfyt00](https://github.com/twistedwolfyt00))
+- ✅ Website: live counters under the home page's contributors, the downloads from GitHub (every
+  file of every release) and the browser add-on's users (the Chrome Web Store and Firefox Add-ons), on
+  split-flap tiles that flip up from zero when the page opens; read at most every 15 minutes, the
+  build's figures when they can't be; the site's download figure is now GitHub's real count of every
+  file of every release, read at every build
+- ✅ Windows without a graphics card's driver (Windows Server, a virtual machine, Remote Desktop):
+  MDM offers once to download Mesa's software renderer (llvmpipe), with its size, and from
+  **View → Draw with**; nothing downloads without a click. Checked against MDM's signed list, it
+  draws from the next start before Windows' own software renderer (WARP), which keeps the
+  processor far busier; one that can't draw there is remembered, and WARP draws again
+  ([#476](https://github.com/anefzaoui/misterdownloadmanager/issues/476))
+- ✅ Browser integration on Windows reads the registry as the browsers do, its 32-bit part first: an older entry
+  there that leads nowhere no longer hides MDM's from Edge, Test browser integration says when one is in the way,
+  and MDM's start and its setup for everyone fix it
+  ([#1688](https://github.com/anefzaoui/misterdownloadmanager/issues/1688); thanks to
+  [@Priest6969](https://github.com/Priest6969))
 - ✅ A checksum the server announces that doesn't match no longer fails the download: the file is
   kept, with a warning in the list, its log, Properties and Download complete; a checksum you
   enter, or one the site publishes, still must match. A `Content-MD5` beside a body the server
