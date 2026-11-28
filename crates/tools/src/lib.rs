@@ -12,6 +12,7 @@ pub mod android;
 pub mod autoupdate;
 pub mod bgutil;
 pub mod chosen;
+pub mod cover;
 pub mod declared;
 // The Deno earlier versions of MDM installed for YouTube (#1448, #1470), until its Node.js is in
 // place (#1570).

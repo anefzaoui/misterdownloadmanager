@@ -31,6 +31,10 @@ pub struct Video {
     /// the page's own, the frame's for a player embedded in another site's page (#1351), not one
     /// a site's reader knows the video by.
     pub page_titled: bool,
+    /// The formats yt-dlp itself picks for the page by default (its `format_id` beside them:
+    /// `401+251-7`), when it says: whose sound is the one a page that doesn't say which
+    /// language is its original comes with (#1961).
+    pub picked: Vec<String>,
 }
 
 impl Video {
@@ -87,6 +91,10 @@ pub struct Format {
     pub channels: Option<f64>,
     /// yt-dlp's `preference`: the site's own ranking, weighed before anything else.
     pub preference: Option<f64>,
+    /// The language its sound is in, when the site says (`en`, `de`, `pt-BR`; #1961): YouTube's
+    /// dubbed tracks are each their own format. None for one a selector can't name
+    /// ([`language_code`]).
+    pub language: Option<String>,
 }
 
 /// One line of the choice list: what to show and what to ask yt-dlp for.
@@ -114,6 +122,9 @@ pub struct Choice {
     pub range: Option<String>,
     /// The sound's bitrate in kbit/s (the sound as the site has it, an MP3 at a constant one).
     pub kbps: Option<u32>,
+    /// The language of the sound it downloads (#1961), when the page has several
+    /// ([`sound_languages`]); none for a page with one.
+    pub language: Option<String>,
 }
 
 #[derive(Deserialize)]
@@ -132,6 +143,9 @@ struct RawVideo {
     #[serde(default)]
     automatic_captions: Option<std::collections::BTreeMap<String, Vec<RawSub>>>,
     language: Option<String>,
+    /// The formats yt-dlp picked by default (`401+251-7`).
+    #[serde(default)]
+    format_id: Option<String>,
     /// `null` from some extractors (Wikimedia Commons'): not a plain file.
     #[serde(default)]
     direct: Option<bool>,
@@ -206,6 +220,7 @@ struct RawFormat {
     quality: Option<f64>,
     audio_channels: Option<f64>,
     preference: Option<f64>,
+    language: Option<String>,
     /// yt-dlp leaves out DRM formats when it chooses (unless asked to allow them).
     #[serde(default)]
     has_drm: Option<serde_json::Value>,
@@ -377,6 +392,7 @@ pub fn parse(json: &[u8]) -> Option<Video> {
                 quality: f.quality,
                 channels: f.audio_channels,
                 preference: f.preference,
+                language: f.language.as_deref().and_then(language_code),
             })
             .collect(),
         subtitles: tracks(raw.subtitles),
@@ -385,6 +401,11 @@ pub fn parse(json: &[u8]) -> Option<Video> {
         direct: raw.direct == Some(true),
         needs_js_runtime: false,
         page_titled: raw.extractor_key.as_deref().is_some_and(page_reader),
+        picked: raw
+            .format_id
+            .as_deref()
+            .map(|ids| ids.split('+').map(|i| i.trim().to_owned()).collect())
+            .unwrap_or_default(),
     })
 }
 
@@ -539,33 +560,142 @@ pub const AUDIO_ORIGINAL: &str = "Audio only original";
 pub const OPUS: &str = "opus:";
 pub const FLAC: &str = "flac:";
 
-/// What an audio choice converts to: the file type and yt-dlp's `--audio-quality`, if any.
+/// What an audio choice converts to: the file type, yt-dlp's `--audio-quality` if any, and the
+/// sound it is made from (yt-dlp's `-f`: the best, or the best in a language, #1961).
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub struct AudioOut {
     pub format: &'static str,
     pub quality: Option<String>,
+    /// `ba/b`, or `ba[language=de]/ba/b`: that language's best sound, else the best (the
+    /// original's).
+    pub sound: String,
 }
 
-/// The conversion an audio choice's selector asks for (MP3 #32, Opus and FLAC #70); none for a
-/// video or the original sound.
+/// The conversion an audio choice's selector asks for (MP3 #32, Opus and FLAC #70), its sound's
+/// language after it when the page has several (`mp3:320[language=de]`, #1961); none for a video
+/// or the original sound.
 pub fn audio_conversion(selector: &str) -> Option<AudioOut> {
-    if let Some(q) = mp3_quality(selector) {
+    let (base, language) = conversion_parts(selector)?;
+    let sound = match language {
+        Some(filter) => format!("ba{filter}/ba/b"),
+        None => "ba/b".to_owned(),
+    };
+    if let Some(q) = mp3_quality(base) {
         return Some(AudioOut {
             format: "mp3",
             quality: Some(q),
+            sound,
         });
     }
-    match selector {
-        OPUS => Some(AudioOut {
-            format: "opus",
-            quality: None,
-        }),
-        FLAC => Some(AudioOut {
-            format: "flac",
-            quality: None,
-        }),
-        _ => None,
+    let format = match base {
+        OPUS => "opus",
+        FLAC => "flac",
+        _ => return None,
+    };
+    Some(AudioOut {
+        format,
+        quality: None,
+        sound,
+    })
+}
+
+/// A conversion's selector cut into its own (`mp3:320`, `opus:`) and its language's filter
+/// (`[language=de]`, `[language^=de]`), when that is the only thing after it. None for a selector
+/// that is neither.
+fn conversion_parts(selector: &str) -> Option<(&str, Option<&str>)> {
+    let (base, filter) = match selector.find('[') {
+        Some(i) => (&selector[..i], Some(&selector[i..])),
+        None => (selector, None),
+    };
+    if !(base.starts_with(MP3) || base == OPUS || base == FLAC) {
+        return None;
     }
+    match filter {
+        None => Some((base, None)),
+        Some(f) if filter_language(f).is_some() => Some((base, Some(f))),
+        Some(_) => None,
+    }
+}
+
+/// The language a filter names: `[language=de]` (that very track) or `[language^=de]` (any of
+/// that language, `de-DE` too); none for anything else.
+fn filter_language(filter: &str) -> Option<&str> {
+    let code = filter
+        .strip_prefix("[language^=")
+        .or_else(|| filter.strip_prefix("[language="))?
+        .strip_suffix(']')?;
+    language_code(code).map(|_| code)
+}
+
+/// A sound's language as a format selector can name it (#1961): letters, digits and `-`, as
+/// yt-dlp's codes are (`en`, `pt-BR`, `en-desc`); none for anything else (`und`, an empty one,
+/// one with selector syntax in it).
+pub fn language_code(code: &str) -> Option<String> {
+    let code = code.trim();
+    (!code.is_empty()
+        && code.len() <= 24
+        && !code.eq_ignore_ascii_case("und")
+        && !code.eq_ignore_ascii_case("none")
+        && code.starts_with(|c: char| c.is_ascii_alphabetic())
+        && code
+            .chars()
+            .all(|c| c.is_ascii_alphanumeric() || c == '-' || c == '_'))
+    .then(|| code.to_owned())
+}
+
+/// The filter that picks a sound in `code` (#1961): that very track (`[language=pt-BR]`), or,
+/// `loose`, any of its language (`[language^=pt]`: a preference in Options, `pt-BR` and `pt-PT`
+/// alike). None when `code` is no language ([`language_code`]).
+pub fn language_filter(code: &str, loose: bool) -> Option<String> {
+    let code = language_code(code)?;
+    Some(match loose {
+        true => format!("[language^={}]", base_language(&code)),
+        false => format!("[language={code}]"),
+    })
+}
+
+/// A language's code without its region or script (`pt` of `pt-BR`), lower case.
+pub fn base_language(code: &str) -> String {
+    code.split(['-', '_'])
+        .next()
+        .unwrap_or(code)
+        .to_ascii_lowercase()
+}
+
+/// `selector` taking its sound in the language `filter` names first (#1961), as it was
+/// otherwise: each alternative that takes the best sound (`bv*+ba`, `ba`) is tried with the
+/// filter first (`bv*+ba[language=de]/bv*+ba`), and a conversion gets it after it
+/// (`mp3:320[language=de]`). A page without that language comes with the sound it had before,
+/// the original's. Formats named by their ID, and the best files of both, are left as they are.
+pub fn with_language(selector: &str, filter: &str) -> String {
+    if filter_language(filter).is_none() {
+        return selector.to_owned();
+    }
+    if let Some((base, _)) = conversion_parts(selector) {
+        return format!("{base}{filter}");
+    }
+    let mut out: Vec<String> = Vec::new();
+    for alt in selector.split('/') {
+        let filtered = alt
+            .split('+')
+            .map(|part| {
+                let (base, rest) = part.find('[').map_or((part, ""), |i| part.split_at(i));
+                let best_sound = matches!(base.trim(), "ba" | "ba*" | "bestaudio" | "bestaudio*");
+                if best_sound && !rest.contains("[language") {
+                    format!("{base}{filter}{rest}")
+                } else {
+                    part.to_owned()
+                }
+            })
+            .collect::<Vec<_>>()
+            .join("+");
+        for a in [filtered, alt.to_owned()] {
+            if !out.contains(&a) {
+                out.push(a);
+            }
+        }
+    }
+    out.join("/")
 }
 
 /// An MP3 choice's selector: `mp3:<kbps>`, the best sound converted to MP3 by ffmpeg at that
@@ -989,6 +1119,7 @@ fn videos(v: &Video, can_merge: bool, audio: Option<&Format>) -> Vec<Choice> {
                 codec: l.codec.map(str::to_owned),
                 range: range.map(str::to_owned),
                 kbps: None,
+                language: None,
             }
         })
         .collect()
@@ -1105,6 +1236,7 @@ fn compatible(v: &Video, can_merge: bool, sounds: &[&Format]) -> Option<Choice> 
         codec: Some("H.264".into()),
         range: None,
         kbps: None,
+        language: None,
     })
 }
 
@@ -1232,6 +1364,164 @@ pub fn choices(v: &Video, can_merge: bool) -> Vec<Choice> {
             ..Default::default()
         });
     }
+    out
+}
+
+/// One of the languages a video's sound comes in (#1961).
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub struct SoundLanguage {
+    /// yt-dlp's code (`en`, `de`, `pt-BR`, `en-desc` for an audio description).
+    pub code: String,
+    /// The video's own sound, the one it was made with; the others are dubbed.
+    pub original: bool,
+}
+
+/// The languages video `v`'s sound comes in, the original first, then the others by code; none
+/// when the page names fewer than two (a video in one language looks as before). The original is
+/// the language the page says the video is in, when one of its sounds is; else the one a site
+/// ranks above the others (`language_preference`: YouTube's original above its dubs); else the
+/// sound yt-dlp picks by default (an HLS stream's `DEFAULT=YES`). A page that tells none of these
+/// has no original marked, and comes with its first.
+pub fn sound_languages(v: &Video) -> Vec<SoundLanguage> {
+    let mut codes: Vec<&str> = Vec::new();
+    let ranked = sounds(v, true);
+    let with_picture = v.formats.iter().filter(|f| f.audio && f.video);
+    for f in ranked.iter().copied().chain(with_picture) {
+        if let Some(code) = f.language.as_deref()
+            && !codes.contains(&code)
+        {
+            codes.push(code);
+        }
+    }
+    if codes.len() < 2 {
+        return Vec::new();
+    }
+    let spoken = v.language.as_deref();
+    let with_sound = |f: &&Format| f.audio && f.language.is_some();
+    // The one sound a site ranks above every other language's.
+    let ranked_first = || {
+        let top = v
+            .formats
+            .iter()
+            .filter(with_sound)
+            .filter_map(|f| f.language_preference)
+            .fold(None, |m: Option<f64>, p| Some(m.map_or(p, |m| m.max(p))))?;
+        let mut langs = v
+            .formats
+            .iter()
+            .filter(with_sound)
+            .filter(|f| f.language_preference == Some(top))
+            .filter_map(|f| f.language.as_deref());
+        let first = langs.next()?;
+        let others =
+            v.formats.iter().filter(with_sound).any(|f| {
+                f.language.as_deref() != Some(first) && f.language_preference != Some(top)
+            });
+        (langs.all(|l| l == first) && others).then_some(first)
+    };
+    // The sound of yt-dlp's own pick.
+    let picked = || {
+        v.formats
+            .iter()
+            .filter(with_sound)
+            .find(|f| v.picked.contains(&f.id))
+            .and_then(|f| f.language.as_deref())
+    };
+    let original = spoken
+        .and_then(|s| codes.iter().copied().find(|c| c.eq_ignore_ascii_case(s)))
+        .or_else(|| {
+            let s = base_language(spoken?);
+            codes.iter().copied().find(|c| base_language(c) == s)
+        })
+        .or_else(ranked_first)
+        .or_else(picked)
+        .map(str::to_owned);
+    let mut out: Vec<SoundLanguage> = codes
+        .into_iter()
+        .map(|code| SoundLanguage {
+            original: original.as_deref() == Some(code),
+            code: code.to_owned(),
+        })
+        .collect();
+    out.sort_by(|a, b| b.original.cmp(&a.original).then(a.code.cmp(&b.code)));
+    out
+}
+
+/// The language among `languages` that `wanted` asks for (#1961: Options' preferred one): that
+/// very code, else one of its language (`pt` for `pt-BR`, `pt-BR` for `pt`), the first listed.
+pub fn pick_language<'a>(
+    languages: &'a [SoundLanguage],
+    wanted: &str,
+) -> Option<&'a SoundLanguage> {
+    let wanted = wanted.trim();
+    if wanted.is_empty() {
+        return None;
+    }
+    languages
+        .iter()
+        .find(|l| l.code.eq_ignore_ascii_case(wanted))
+        .or_else(|| {
+            let base = base_language(wanted);
+            languages.iter().find(|l| base_language(&l.code) == base)
+        })
+}
+
+/// [`choices`] with the sound in `language` (#1961), one of [`sound_languages`] (the original
+/// when none, or one the page doesn't have): each line sized with that language's sound and
+/// downloading it, merged with the picture; a video carrying a sound of another language is left
+/// out. Each says its language ([`Choice::language`]). A page with one language: its [`choices`].
+pub fn choices_in(v: &Video, can_merge: bool, language: Option<&str>) -> Vec<Choice> {
+    let languages = sound_languages(v);
+    let Some(lang) = language
+        .and_then(|l| languages.iter().find(|s| s.code == l))
+        .or_else(|| languages.first())
+        .map(|l| l.code.clone())
+    else {
+        return choices(v, can_merge);
+    };
+    let Some(filter) = language_filter(&lang, false) else {
+        return choices(v, can_merge);
+    };
+    let mut only = v.clone();
+    only.formats
+        .retain(|f| !f.audio || f.language.as_deref() == Some(lang.as_str()));
+    choices(&only, can_merge)
+        .into_iter()
+        .map(|mut c| {
+            c.selector = with_language(&c.selector, &filter);
+            c.language = Some(lang.clone());
+            c
+        })
+        .collect()
+}
+
+/// The choices of one list for every language (#1961: the browser's quality menu): those in
+/// `preferred` when the page has it (Options' sound language, [`pick_language`]), else the
+/// original's; then, after that language's sounds as the site has them, each other language's
+/// best such sound. A page with one language: its [`choices`].
+pub fn choices_by_language(v: &Video, can_merge: bool, preferred: Option<&str>) -> Vec<Choice> {
+    let languages = sound_languages(v);
+    let Some(first) = preferred
+        .and_then(|p| pick_language(&languages, p))
+        .or_else(|| languages.first())
+    else {
+        return choices(v, can_merge);
+    };
+    let mut out = choices_in(v, can_merge, Some(&first.code));
+    let after = out
+        .iter()
+        .rposition(|c| original_sound(&c.selector))
+        .map_or(out.len(), |i| i + 1);
+    let others: Vec<Choice> = languages
+        .iter()
+        .filter(|l| l.code != first.code)
+        .filter_map(|l| {
+            choices_in(v, can_merge, Some(&l.code))
+                .into_iter()
+                .find(|c| original_sound(&c.selector))
+        })
+        .collect();
+    out.splice(after..after, others);
     out
 }
 
@@ -1627,6 +1917,7 @@ mod tests {
             direct: false,
             needs_js_runtime: false,
             page_titled: false,
+            picked: Vec::new(),
         };
         let labels: Vec<String> = choices(&v, true)
             .into_iter()
@@ -2355,5 +2646,212 @@ mod tests {
         );
         // A choice that names no exact height isn't moved to another one (video.rs, #94).
         assert!(!compatible_selector(true, Some(1080)).contains("[height="));
+    }
+    /// #1961: a YouTube video with dubbed tracks (yt-dlp 2026.08: each sound format once per
+    /// language, `251-0`…, the original's `language_preference` 10), cut down.
+    const DUBBED: &str = r#"{"title": "T", "duration": 272, "language": "en", "formats": [
+        {"format_id": "251-0", "ext": "webm", "vcodec": "none", "acodec": "opus", "language": "fr", "language_preference": -1, "filesize": 4537616, "tbr": 133},
+        {"format_id": "251-1", "ext": "webm", "vcodec": "none", "acodec": "opus", "language": "de", "language_preference": -1, "filesize": 4674698, "tbr": 137},
+        {"format_id": "251-7", "ext": "webm", "vcodec": "none", "acodec": "opus", "language": "en", "language_preference": 10, "filesize": 4235275, "tbr": 124},
+        {"format_id": "140-0", "ext": "m4a", "vcodec": "none", "acodec": "mp4a.40.2", "language": "de", "language_preference": -1, "filesize": 4406590},
+        {"format_id": "140-2", "ext": "m4a", "vcodec": "none", "acodec": "mp4a.40.2", "language": "fr", "language_preference": -1, "filesize": 4406590},
+        {"format_id": "140-7", "ext": "m4a", "vcodec": "none", "acodec": "mp4a.40.2", "language": "en", "language_preference": 10, "filesize": 4406215},
+        {"format_id": "233-1", "ext": "mp4", "vcodec": "none", "acodec": null, "language": "de\"]/b", "protocol": "m3u8_native"},
+        {"format_id": "18", "ext": "mp4", "height": 360, "vcodec": "avc1.42001E", "acodec": "mp4a.40.2", "language": "en", "filesize": 9000000},
+        {"format_id": "399", "ext": "mp4", "height": 1080, "fps": 30, "vcodec": "av01.0.08M.08", "acodec": "none", "filesize": 40000000},
+        {"format_id": "137", "ext": "mp4", "height": 1080, "fps": 30, "vcodec": "avc1.640028", "acodec": "none", "filesize": 60000000}]}"#;
+
+    #[test]
+    fn a_videos_sound_languages_the_original_first() {
+        let v = parse(DUBBED.as_bytes()).unwrap();
+        let langs = sound_languages(&v);
+        let codes: Vec<(&str, bool)> = langs
+            .iter()
+            .map(|l| (l.code.as_str(), l.original))
+            .collect();
+        // A language a selector can't name is none (the HLS one's here).
+        assert_eq!(codes, [("en", true), ("de", false), ("fr", false)]);
+        assert_eq!(pick_language(&langs, "DE").map(|l| &*l.code), Some("de"));
+        assert_eq!(pick_language(&langs, "fr-CA").map(|l| &*l.code), Some("fr"));
+        assert_eq!(pick_language(&langs, "ja"), None);
+        // One language: nothing to choose, the choices as before.
+        let one = parse(PORTRAIT.as_bytes()).unwrap();
+        assert!(sound_languages(&one).is_empty());
+        assert_eq!(choices_in(&one, true, Some("de")), choices(&one, true));
+        assert!(choices(&one, true).iter().all(|c| c.language.is_none()));
+    }
+
+    /// #1961: a page that doesn't say its language (an HLS stream's sounds, as yt-dlp's generic
+    /// reader lists them): the original is the one yt-dlp picks by default (`DEFAULT=YES`).
+    #[test]
+    fn the_original_of_a_stream_is_yt_dlps_pick() {
+        let page = |picked: &str| {
+            format!(
+                r#"{{"title": "T", "duration": 20, "format_id": "{picked}", "formats": [
+                {{"format_id": "hls-group_aud-audio_2", "ext": "mp4", "vcodec": "none", "language": "de", "protocol": "m3u8_native"}},
+                {{"format_id": "hls-group_aud-audio_1", "ext": "mp4", "vcodec": "none", "language": "en", "protocol": "m3u8_native"}},
+                {{"format_id": "hls-764", "ext": "mp4", "height": 360, "vcodec": "avc1.64001e", "acodec": "none", "protocol": "m3u8_native"}}]}}"#
+            )
+        };
+        let langs = |picked: &str| -> Vec<(String, bool)> {
+            sound_languages(&parse(page(picked).as_bytes()).unwrap())
+                .into_iter()
+                .map(|l| (l.code, l.original))
+                .collect()
+        };
+        assert_eq!(
+            langs("hls-764+hls-group_aud-audio_1"),
+            [("en".to_owned(), true), ("de".to_owned(), false)]
+        );
+        assert_eq!(
+            langs("hls-764+hls-group_aud-audio_2"),
+            [("de".to_owned(), true), ("en".to_owned(), false)]
+        );
+        // Nothing says which: none marked, by code.
+        assert_eq!(
+            langs("hls-764"),
+            [("de".to_owned(), false), ("en".to_owned(), false)]
+        );
+    }
+
+    #[test]
+    fn the_choices_in_a_dubbed_language_take_its_sound() {
+        let v = parse(DUBBED.as_bytes()).unwrap();
+        let de = choices_in(&v, true, Some("de"));
+        assert!(de.iter().all(|c| c.language.as_deref() == Some("de")));
+        let by = |label: &str| {
+            de.iter()
+                .find(|c| c.label == label)
+                .unwrap_or_else(|| panic!("{label}"))
+        };
+        // The picture with that language's best sound, sized with it; should the page no longer
+        // offer them, the nearest in that language, else the original's.
+        let av1 = by("1080p MP4 · AV1 · 30 fps");
+        assert_eq!(
+            av1.selector,
+            "399+251-1/bv*[height=1080][vcodec^=av01]+ba[language=de]/bv*[height=1080][vcodec^=av01]+ba/bv*[height=1080]+ba[language=de]/bv*[height=1080]+ba/b[height=1080]"
+        );
+        assert_eq!(av1.size, Some(40000000 + 4674698));
+        // The 360p that carries the English sound isn't a German line.
+        assert!(!de.iter().any(|c| c.height == Some(360)));
+        let compatible = de.iter().find(|c| is_compatible(c)).unwrap();
+        assert!(
+            compatible.selector.starts_with(
+                "137+140-0/bv[vcodec^=avc][height<=1080]+ba[language=de][acodec^=mp4a]/"
+            ),
+            "{}",
+            compatible.selector
+        );
+        assert_eq!(
+            by("Audio only original WEBM").selector,
+            "251-1/ba[language=de]/ba"
+        );
+        assert_eq!(
+            by("Audio only original M4A").selector,
+            "140-0/ba[language=de]/ba"
+        );
+        let mp3 = by("Audio only MP3 320 kbps");
+        assert_eq!(mp3.selector, "mp3:320[language=de]");
+        assert!(original_sound(&by("Audio only original M4A").selector));
+        // Converted from that language's sound, else the original's.
+        assert_eq!(
+            audio_conversion(&mp3.selector),
+            Some(AudioOut {
+                format: "mp3",
+                quality: Some("320K".into()),
+                sound: "ba[language=de]/ba/b".into(),
+            })
+        );
+        assert_eq!(
+            audio_conversion("opus:[language^=pt]").map(|a| a.sound),
+            Some("ba[language^=pt]/ba/b".into())
+        );
+        // Without a language, as before; anything else after it isn't a conversion.
+        assert_eq!(
+            audio_conversion("flac:").map(|a| a.sound),
+            Some("ba/b".into())
+        );
+        assert_eq!(audio_conversion("mp3:320[height=1]"), None);
+        assert_eq!(audio_conversion("mp3:320[language=de]/b"), None);
+        // The original is the default, and a language the page doesn't have is it too.
+        assert_eq!(choices_in(&v, true, None), choices_in(&v, true, Some("en")));
+        assert_eq!(
+            choices_in(&v, true, Some("ja")),
+            choices_in(&v, true, Some("en"))
+        );
+        let en = choices_in(&v, true, None);
+        assert!(en.iter().any(|c| c.height == Some(360)));
+    }
+
+    #[test]
+    fn one_list_for_every_language() {
+        let v = parse(DUBBED.as_bytes()).unwrap();
+        let all = choices_by_language(&v, true, Some("de"));
+        let sounds: Vec<(&str, &str)> = all
+            .iter()
+            .filter(|c| original_sound(&c.selector))
+            .map(|c| (c.selector.as_str(), c.language.as_deref().unwrap()))
+            .collect();
+        // Options' language's first, then each other's best sound as the site has it.
+        assert_eq!(
+            sounds,
+            [
+                ("251-1/ba[language=de]/ba", "de"),
+                ("140-0/ba[language=de]/ba", "de"),
+                ("251-7/ba[language=en]/ba", "en"),
+                ("251-0/ba[language=fr]/ba", "fr"),
+            ]
+        );
+        assert!(all[0].selector.starts_with("399+251-1/"));
+        // The conversions after them, in Options' language.
+        assert_eq!(all.last().unwrap().selector, "flac:[language=de]");
+        // No language in Options (or one the video doesn't have): the original's first.
+        assert!(
+            choices_by_language(&v, true, None)[0]
+                .selector
+                .starts_with("399+251-7/")
+        );
+        assert!(
+            choices_by_language(&v, true, Some("ja"))[0]
+                .selector
+                .starts_with("399+251-7/")
+        );
+    }
+
+    #[test]
+    fn a_selector_prefers_a_language_its_sound_falls_back_from() {
+        let de = language_filter("de", true).unwrap();
+        assert_eq!(de, "[language^=de]");
+        assert_eq!(language_filter("pt-BR", false).unwrap(), "[language=pt-BR]");
+        assert_eq!(language_filter("pt-BR", true).unwrap(), "[language^=pt]");
+        for bad in ["", "und", "de]/b", "de\"", "-x", "a b"] {
+            assert_eq!(language_filter(bad, true), None, "{bad}");
+        }
+        // A playlist's qualities (#69): each takes the best sound in that language, else the
+        // one it took before.
+        assert_eq!(
+            with_language("bv*+ba/b", &de),
+            "bv*+ba[language^=de]/bv*+ba/b"
+        );
+        assert_eq!(
+            with_language("bv*[height<=1080]+ba/b[height<=1080]", &de),
+            "bv*[height<=1080]+ba[language^=de]/bv*[height<=1080]+ba/b[height<=1080]"
+        );
+        assert_eq!(
+            with_language(&compatible_selector(true, None), &de),
+            "bv[vcodec^=avc]+ba[language^=de][acodec^=mp4a]/bv[vcodec^=avc]+ba[acodec^=mp4a]/b[vcodec^=avc][acodec^=mp4a]"
+        );
+        assert_eq!(with_language("ba", &de), "ba[language^=de]/ba");
+        assert_eq!(with_language("b", &de), "b");
+        assert_eq!(with_language("mp3:320", &de), "mp3:320[language^=de]");
+        assert_eq!(with_language("opus:", &de), "opus:[language^=de]");
+        // Once only, and never with a filter that isn't a language's.
+        assert_eq!(
+            with_language("ba[language^=de]/ba", &de),
+            "ba[language^=de]/ba"
+        );
+        assert_eq!(with_language("bv*+ba", "[height=1]"), "bv*+ba");
+        assert!(sound_only(&with_language("ba", &de), ""));
+        assert!(sound_only(&with_language("flac:", &de), ""));
     }
 }
