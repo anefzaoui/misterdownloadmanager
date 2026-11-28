@@ -312,6 +312,11 @@ impl PlaylistView {
         self.sound
     }
 
+    /// The file type the quality chosen is named with (`m4a`, `mp3`; yt-dlp may save another).
+    pub fn sound_ext(&self) -> &'static str {
+        self.ext
+    }
+
     /// The quality chosen converts the sound (MP3, Opus, FLAC), which keeps no chapters (#827).
     pub fn converts(&self) -> bool {
         let picks = picks(true);
@@ -679,9 +684,16 @@ impl PlaylistView {
             .filter(|(_, on)| **on)
             .filter_map(|(e, _)| Some((url::Url::parse(&e.url).ok()?, e.title.clone())))
             .collect();
+        // Every video's sound in Options' language when it has it, else its original (#1961).
+        let selector = crate::settings::sound_language()
+            .and_then(|l| mdm_tools::resolve::language_filter(&l, true))
+            .map_or_else(
+                || pick.selector.clone(),
+                |f| mdm_tools::resolve::with_language(&pick.selector, &f),
+            );
         PlaylistAdd {
             entries,
-            selector: pick.selector.clone(),
+            selector,
             ext: pick.ext,
             folder: folder.join(mdm_engine::naming::sanitize(&self.title)),
             category,

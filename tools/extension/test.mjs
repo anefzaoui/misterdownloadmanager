@@ -3556,6 +3556,14 @@ function videoButton({ stored = {}, location, iframes, videos, subframe = false,
     assert.equal(w.qualityWords(av1, tt, true), "4K MP4 · AV1", "Download best's line: the name, type and codec");
     assert.equal(w.qualityMeta(av1, tt, true), "MP4 · AV1");
     assert.equal(w.qualityWords({ height: 720, ext: "mp4" }, tt), "720p MP4", "no codec said: none guessed");
+    // #1961: a video whose sound comes in several languages says each row's, as the app names it;
+    // Download best's brief line doesn't.
+    const dubbed = { ...fhd, language: "English, original" };
+    assert.equal(w.qualityMeta(dubbed, tt), "MP4 · AV1 · 30 fps · English, original");
+    assert.equal(w.qualityMeta(dubbed, tt, true), "MP4 · AV1");
+    assert.equal(w.qualityMeta({ ...sound, language: "Deutsch · German" }, tt), "128 kbps · Deutsch · German");
+    assert.equal(w.qualityMeta({ ...mp3, language: "Deutsch · German" }, tt), "Deutsch · German");
+    assert.equal(w.qualityMeta({ ...sound, language: 7 }, tt), "128 kbps", "only the app's words");
     assert.equal(w.qualityWords(sound, tt), "video_tab_audio");
     assert.equal(w.qualityWords(older, tt), "720p MP4", "an older app's label as it is");
     assert.equal(w.qualityWords({ file: true, ext: "webm" }, tt), "WEBM", "a plain file's type once");

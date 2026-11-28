@@ -569,6 +569,22 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 Everything below ships together, in version 0.6.0, the next release.
 
+- ✅ Large videos with chapters: after the streams are in, the MP4's index is moved to the front
+  of the file by the last of yt-dlp's passes only, not by each one (a full rewrite of the file
+  each time); the finished file is the same, byte for byte, and a 3 GB video with chapters writes
+  about a quarter less after its download (a third less with its subtitles in the file)
+  ([#2098](https://github.com/anefzaoui/misterdownloadmanager/issues/2098))
+- ✅ Download video: choose the language of a video's sound when it comes in several (YouTube's
+  dubbed tracks), the original first and marked; every quality, Audio only and MP3, Opus and
+  FLAC take that language's sound, and the button over a video says each line's language.
+  Options → Regional chooses one for every video and playlist, the original when a video lacks
+  it ([#1961](https://github.com/anefzaoui/misterdownloadmanager/issues/1961); thanks to
+  [@toji2002](https://github.com/toji2002), [@Hanif-afzal](https://github.com/Hanif-afzal) and
+  [@twistedwolfyt00](https://github.com/twistedwolfyt00))
+- ✅ Audio only downloads: the video's thumbnail as the cover of an MP3, M4A, Opus or FLAC file,
+  put in by ffmpeg without encoding the sound again; a box in Download video, kept as you leave
+  it ([#1962](https://github.com/anefzaoui/misterdownloadmanager/issues/1962); thanks to
+  [@twistedwolfyt00](https://github.com/twistedwolfyt00))
 - ✅ MDM's window toolkit (egui) on the same copy as the Craft suite's libraries (storytold's
   `next`), MDM's own fixes rebased on it: every window, menus included, connected to screen
   readers before it first shows, and accessibility stays on while any window is read
@@ -769,6 +785,9 @@ Everything below ships together, in version 0.6.0, the next release.
   reached; each stage now waits for the session's own word (downloading, the peer given up, its
   retry refused) instead of the time that should have passed
 - ✅ Torrents: a paused torrent's finished pieces are saved before MDM quits
+- ✅ Torrents: a torrent added again with its pieces kept keeps its progress also when its numbers
+  were being read as it left the session
+  ([#1648](https://github.com/anefzaoui/misterdownloadmanager/issues/1648))
 - ✅ Torrents: the engine checks what it's sent more carefully
 - ✅ Extracting: 7z and RAR archives are checked more carefully
 - ✅ Archive test: archives are checked more carefully
