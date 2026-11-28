@@ -9429,62 +9429,97 @@ mod classic_text {
     pub struct Glyphs {
         factory: IDWriteFactory2,
         dir: PathBuf,
-        /// The font files opened so far; `None` for one DirectWrite can't use.
-        faces: HashMap<PathBuf, Option<IDWriteFontFace>>,
     }
 
     // SAFETY: DirectWrite's shared factory and the objects it makes are free-threaded
     // (documented thread-safe); `Glyphs` is only used behind a Mutex.
     unsafe impl Send for Glyphs {}
 
+    /// A font file opened by DirectWrite; `None` for one it can't use.
+    struct Face(Option<IDWriteFontFace>);
+
+    // SAFETY: DirectWrite's objects are free-threaded (documented thread-safe).
+    unsafe impl Send for Face {}
+
+    /// The font files opened so far, for every rasterizer made (one is made again with each
+    /// change of the text's look): each file is opened once.
+    static FACES: std::sync::Mutex<Option<HashMap<PathBuf, Face>>> = std::sync::Mutex::new(None);
+
+    /// Open `full` as a DirectWrite face (this reads the file).
+    fn open_face(factory: &IDWriteFactory2, full: &std::path::Path) -> Option<IDWriteFontFace> {
+        // A .ttc holds a collection: the face egui draws with too (#1483).
+        let collection = full
+            .extension()
+            .is_some_and(|e| e.eq_ignore_ascii_case("ttc"));
+        let index = if collection {
+            crate::theme::font_face_index(full)
+        } else {
+            0
+        };
+        let path: Vec<u16> = full.as_os_str().encode_wide().chain([0]).collect();
+        // SAFETY: `path` is NUL-terminated and outlives the calls; plain COM calls.
+        unsafe {
+            let font = factory
+                .CreateFontFileReference(windows::core::PCWSTR(path.as_ptr()), None)
+                .ok()?;
+            factory
+                .CreateFontFace(
+                    if collection {
+                        DWRITE_FONT_FACE_TYPE_TRUETYPE_COLLECTION
+                    } else {
+                        DWRITE_FONT_FACE_TYPE_TRUETYPE
+                    },
+                    &[Some(font)],
+                    index,
+                    DWRITE_FONT_SIMULATIONS_NONE,
+                )
+                .ok()
+        }
+    }
+
+    /// Keep `file`'s face (the first one kept, when two were opened at once).
+    fn keep_face(file: PathBuf, face: Option<IDWriteFontFace>) -> Option<IDWriteFontFace> {
+        FACES
+            .lock()
+            .unwrap_or_else(|e| e.into_inner())
+            .get_or_insert_with(HashMap::new)
+            .entry(file)
+            .or_insert(Face(face))
+            .0
+            .clone()
+    }
+
     impl Glyphs {
         pub fn new(dir: PathBuf) -> windows::core::Result<Glyphs> {
             // SAFETY: a plain COM call.
             let factory: IDWriteFactory2 =
                 unsafe { DWriteCreateFactory(DWRITE_FACTORY_TYPE_SHARED)? };
-            Ok(Glyphs {
-                factory,
-                dir,
-                faces: HashMap::new(),
-            })
+            Ok(Glyphs { factory, dir })
         }
 
+        /// `file`'s face, once opened. Once the window draws, a file not opened yet is opened
+        /// beside its thread (#1292, `theme::beside`), and egui draws its letters until then.
         fn face(&mut self, file: &std::path::Path) -> Option<IDWriteFontFace> {
-            let factory = self.factory.clone();
-            let full = file.to_path_buf();
-            self.faces
-                .entry(full.clone())
-                .or_insert_with(|| {
-                    // A .ttc holds a collection: the face egui draws with too (#1483).
-                    let collection = full
-                        .extension()
-                        .is_some_and(|e| e.eq_ignore_ascii_case("ttc"));
-                    let index = if collection {
-                        crate::theme::font_face_index(&full)
-                    } else {
-                        0
-                    };
-                    let path: Vec<u16> = full.as_os_str().encode_wide().chain([0]).collect();
-                    // SAFETY: `path` is NUL-terminated and outlives the calls; plain COM calls.
-                    unsafe {
-                        let font = factory
-                            .CreateFontFileReference(windows::core::PCWSTR(path.as_ptr()), None)
-                            .ok()?;
-                        factory
-                            .CreateFontFace(
-                                if collection {
-                                    DWRITE_FONT_FACE_TYPE_TRUETYPE_COLLECTION
-                                } else {
-                                    DWRITE_FONT_FACE_TYPE_TRUETYPE
-                                },
-                                &[Some(font)],
-                                index,
-                                DWRITE_FONT_SIMULATIONS_NONE,
-                            )
-                            .ok()
-                    }
-                })
-                .clone()
+            if let Some(known) = FACES
+                .lock()
+                .unwrap_or_else(|e| e.into_inner())
+                .as_ref()
+                .and_then(|faces| faces.get(file))
+            {
+                return known.0.clone();
+            }
+            if crate::theme::beside::started() {
+                let file = file.to_path_buf();
+                crate::theme::beside::run(format!("face {}", file.display()), move || {
+                    // SAFETY: a plain COM call (the process's shared factory).
+                    let factory: Option<IDWriteFactory2> =
+                        unsafe { DWriteCreateFactory(DWRITE_FACTORY_TYPE_SHARED).ok() };
+                    let face = factory.and_then(|f| open_face(&f, &file));
+                    keep_face(file, face);
+                });
+                return None;
+            }
+            keep_face(file.to_path_buf(), open_face(&self.factory, file))
         }
 
         /// The face and glyph id for `ch`: the family's own face first (the chosen file, for the
@@ -10910,4 +10945,182 @@ pub fn open_file_in_front(path: &std::path::Path) -> Result<(), std::io::Error> 
     }
     tracing::info!("open: no window named {name:?} came within 8 s");
     Ok(())
+}
+
+/// The file calls MDM's program makes, watched (#1292, diskwatch.rs): their entries in the
+/// program's import table point at a watch of ours, which hands each call to
+/// [`crate::diskwatch::call`] and then makes it. Rust's own file functions (`File::open`,
+/// `metadata`, `exists`, `read_dir`, `rename`, `remove_file`, `create_dir`) and every crate built
+/// into the program reach the system through these; the system's own libraries (the shell,
+/// DirectWrite) have tables of their own, not watched. False when the table couldn't be read.
+pub fn watch_disk() -> bool {
+    watch::install()
+}
+
+mod watch {
+    use std::ffi::c_void;
+    use std::sync::atomic::{AtomicUsize, Ordering};
+    use windows_sys::Win32::Foundation::HANDLE;
+    use windows_sys::Win32::System::LibraryLoader::GetModuleHandleW;
+    use windows_sys::Win32::System::Memory::{PAGE_READWRITE, VirtualProtect};
+    use windows_sys::core::BOOL;
+
+    /// A path the system was handed (UTF-16, ended by a 0), as text.
+    fn text(p: *const u16) -> String {
+        if p.is_null() {
+            return String::new();
+        }
+        // SAFETY: the caller handed the system a 0-ended string; it is read up to its 0, at
+        // most 32 767 units (the longest path Windows takes).
+        unsafe {
+            let mut n = 0;
+            while n < 32_767 && *p.add(n) != 0 {
+                n += 1;
+            }
+            String::from_utf16_lossy(std::slice::from_raw_parts(p, n))
+        }
+    }
+
+    /// Each watched function: its name in the import table, where the system's own one is
+    /// (saved as the table is changed), and our watch.
+    macro_rules! watched {
+        ($( $name:literal $orig:ident fn $hook:ident($($a:ident: $t:ty),*) -> $r:ty
+            => $what:literal, $path:expr; )*) => {
+            $(
+                static $orig: AtomicUsize = AtomicUsize::new(0);
+                unsafe extern "system" fn $hook($($a: $t),*) -> $r {
+                    // Never unwinds into the system's caller: a panic in the watch is dropped.
+                    let _ = std::panic::catch_unwind(|| {
+                        crate::diskwatch::call($what, &|| $path)
+                    });
+                    // SAFETY: the system's own function, saved from the table before it was
+                    // changed (the watch is only in the table once it is saved), called as it
+                    // was called.
+                    unsafe {
+                        let f: unsafe extern "system" fn($($t),*) -> $r =
+                            std::mem::transmute($orig.load(Ordering::Acquire));
+                        f($($a),*)
+                    }
+                }
+            )*
+            /// The watched functions' names, where their own are kept, and their watches.
+            fn hooks() -> Vec<(&'static [u8], &'static AtomicUsize, usize)> {
+                vec![$(($name, &$orig, $hook as *const () as usize)),*]
+            }
+        };
+    }
+
+    watched! {
+        b"CreateFileW" CREATE_FILE fn create_file(name: *const u16, access: u32, share: u32,
+            security: *const c_void, disposition: u32, flags: u32, template: HANDLE) -> HANDLE
+            => "open", text(name);
+        b"FindFirstFileExW" FIND_FIRST fn find_first(name: *const u16, level: i32,
+            data: *mut c_void, op: i32, filter: *const c_void, extra: u32) -> HANDLE
+            => "list", text(name);
+        b"GetFileAttributesW" ATTRIBUTES fn attributes(name: *const u16) -> u32
+            => "look at", text(name);
+        b"GetFileAttributesExW" ATTRIBUTES_EX fn attributes_ex(name: *const u16, level: i32,
+            data: *mut c_void) -> BOOL
+            => "look at", text(name);
+        b"MoveFileExW" MOVE_FILE fn move_file(from: *const u16, to: *const u16, flags: u32) -> BOOL
+            => "rename", format!("{} -> {}", text(from), text(to));
+        b"DeleteFileW" DELETE_FILE fn delete_file(name: *const u16) -> BOOL
+            => "delete", text(name);
+        b"CreateDirectoryW" CREATE_DIR fn create_dir(name: *const u16, security: *const c_void) -> BOOL
+            => "make the folder", text(name);
+        b"RemoveDirectoryW" REMOVE_DIR fn remove_dir(name: *const u16) -> BOOL
+            => "remove the folder", text(name);
+    }
+
+    /// Points the program's import table at the watches: every entry of a watched function,
+    /// whichever library it is imported from. True when at least one was changed.
+    pub fn install() -> bool {
+        static DONE: std::sync::OnceLock<bool> = std::sync::OnceLock::new();
+        *DONE.get_or_init(patch)
+    }
+
+    fn patch() -> bool {
+        // SAFETY: the program's own image, mapped by the system: its headers and import table
+        // are read where the PE format puts them (each offset checked against the image's
+        // size), and a table entry is changed only with its page made writable first, the
+        // system's function saved before the watch is written.
+        unsafe {
+            let base = GetModuleHandleW(std::ptr::null()) as *const u8;
+            if base.is_null() {
+                return false;
+            }
+            let u16_at = |off: usize| std::ptr::read_unaligned(base.add(off) as *const u16);
+            let u32_at = |off: usize| std::ptr::read_unaligned(base.add(off) as *const u32);
+            if u16_at(0) != 0x5A4D {
+                return false;
+            }
+            let nt = u32_at(0x3C) as usize;
+            if u32_at(nt) != 0x4550 {
+                return false;
+            }
+            let optional = nt + 4 + 20;
+            let size_of_image = u32_at(optional + 56) as usize;
+            // The import table's place: data directory 1, after PE32's 96 or PE32+'s 112 bytes.
+            let dirs = match u16_at(optional) {
+                0x10B => optional + 96,
+                0x20B => optional + 112,
+                _ => return false,
+            };
+            let imports = u32_at(dirs + 8) as usize;
+            if imports == 0 || imports >= size_of_image {
+                return false;
+            }
+            let ptr = std::mem::size_of::<usize>();
+            let ordinal_flag: usize = 1 << (ptr * 8 - 1);
+            let hooks = hooks();
+            let mut changed = 0;
+            let mut d = imports;
+            while d + 20 <= size_of_image {
+                let (names, dll, slots) = (u32_at(d) as usize, u32_at(d + 12), u32_at(d + 16));
+                if dll == 0 && slots == 0 {
+                    break;
+                }
+                d += 20;
+                // A table bound without its names (no lookup table) is left alone.
+                if names == 0 {
+                    continue;
+                }
+                let mut i = 0;
+                loop {
+                    let entry = names + i * ptr;
+                    if entry + ptr > size_of_image {
+                        break;
+                    }
+                    let name_rva = std::ptr::read_unaligned(base.add(entry) as *const usize);
+                    if name_rva == 0 {
+                        break;
+                    }
+                    let slot = base.add(slots as usize + i * ptr) as *mut usize;
+                    i += 1;
+                    if name_rva & ordinal_flag != 0 || name_rva + 2 >= size_of_image {
+                        continue;
+                    }
+                    let name = std::ffi::CStr::from_ptr(base.add(name_rva + 2).cast());
+                    let Some((_, orig, hook)) =
+                        hooks.iter().find(|(n, _, _)| *n == name.to_bytes())
+                    else {
+                        continue;
+                    };
+                    let mut old = 0;
+                    if VirtualProtect(slot as *const c_void, ptr, PAGE_READWRITE, &mut old) == 0 {
+                        continue;
+                    }
+                    // The system's own first: a watch in the table always has it to call.
+                    let _ = orig.compare_exchange(0, *slot, Ordering::AcqRel, Ordering::Acquire);
+                    std::ptr::write_volatile(slot, *hook);
+                    VirtualProtect(slot as *const c_void, ptr, old, &mut old);
+                    changed += 1;
+                }
+            }
+            if changed > 0 {
+                tracing::info!("disk watch: {changed} entries of the import table watched");
+            }
+            changed > 0
+        }
+    }
 }

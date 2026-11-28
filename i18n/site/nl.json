@@ -7074,6 +7074,10 @@
    "source": "What Update now does",
    "text": "Wat Nu bijwerken doet"
   },
+  "5f818384bb56aff6": {
+   "source": "<g1>Edge (or another browser) says \"Specified native messaging host not found\", though the registry entry looks right?</g1> On 64-bit Windows the browsers read the registry's 32-bit part (<x2/>) before the entry you find under <x3/>, and take the first one there, even one that leads to a copy that is gone. <g4>Test browser integration</g4> says <g5>An older registry entry is in the way</g5>, with that entry: click <g6>Set it up</g6> to give your account an entry of its own, which the browsers read before it. MDM also does that by itself at its start when that entry leads nowhere, and its setup for everyone removes it.",
+   "text": "<g1>Edge (of een andere browser) meldt 'Specified native messaging host not found', hoewel de registervermelding correct lijkt?</g1> Op 64-bit Windows lezen browsers het 32-bit deel van het register (<x2/>) vóór de vermelding die u vindt onder <x3/>, en nemen de eerste die ze daar tegenkomen, zelfs als die naar een verdwenen kopie leidt. <g4>Browserintegratie testen</g4> meldt <g5>Een oudere registervermelding zit in de weg</g5>, met die vermelding: klik op <g6>Instellen</g6> om uw account een eigen vermelding te geven, die de browsers eerder lezen. MDM doet dit ook zelf bij het opstarten als die vermelding nergens heen leidt, en de installatie voor iedereen verwijdert deze."
+  },
   "5f8f976d1dd62e61": {
    "source": "A group box's frame",
    "text": "Het kader van een groepsbox"
@@ -10818,6 +10822,10 @@
    "source": "MDM's interface comes in 87 languages: every display language Windows 11 offers, from Afrikaans to Vietnamese, including both Chinese scripts, Spanish for Spain and Mexico, French for France and Canada, Portuguese for Portugal and Brazil, and Serbian in Cyrillic and Latin.",
    "text": "De interface van MDM is beschikbaar in 87 talen: elke weergavetaal die Windows 11 biedt, van Afrikaans tot Vietnamees, inclusief beide Chinese schriften, Spaans voor Spanje en Mexico, Frans voor Frankrijk en Canada, Portugees voor Portugal en Brazilië, en Servisch in Cyrillisch en Latijn."
   },
+  "91c08dd2d3fe7d4a": {
+   "source": "<g1>Add category</g1> — make your own, for example <g2>Books</g2> for <x3/> (they then go to Books, not Documents). Give it a name, the file types (separated by spaces, <x4/> allowed) and a folder.",
+   "text": "<g1>Categorie toevoegen</g1> — maak uw eigen categorie, bijvoorbeeld <g2>Boeken</g2> voor <x3/> (deze gaan dan naar Boeken, niet naar Documenten). Geef de categorie een naam, de bestandstypen (gescheiden door spaties, <x4/> toegestaan) en een map."
+  },
   "91cefe80b7f00fac": {
    "source": "<g1><g2>Download a file</g2></g1> — copy a link, add it, open the file.",
    "text": "<g1><g2>Een bestand downloaden</g2></g1> — een link kopiëren, toevoegen, het bestand openen."
@@ -12329,10 +12337,6 @@
   "a4b01563b82565da": {
    "source": "<g1>Sharper text on Windows</g1> (<g2>#262</g2>): Segoe UI and Tahoma are grid-fitted across as well as up and down, and each letter starts on a whole pixel, as Windows draws its own grey text: upright strokes were two grey pixels wide at 100 % and 125 %, which read as blurred.",
    "text": "<g1>Scherpere tekst op Windows</g1> (<g2>#262</g2>): Segoe UI en Tahoma zijn zowel horizontaal als verticaal rasteruitgelijnd, en elke letter begint op een hele pixel, zoals Windows zijn eigen grijze tekst tekent: verticale streken waren twee grijze pixels breed bij 100% en 125%, wat als wazig werd gelezen."
-  },
-  "a4b04f29f56fdc42": {
-   "source": "<g1>Add category</g1> — make your own, for example <g2>Books</g2> for <x3/>. Give it a name, the file types (separated by spaces, <x4/> allowed) and a folder.",
-   "text": "<g1>Categorie toevoegen</g1> — maak uw eigen categorie, bijvoorbeeld <g2>Boeken</g2> voor <x3/>. Geef het een naam, de bestandstypen (gescheiden door spaties, <x4/> toegestaan) en een map."
   },
   "a4b1f9a84345ac5d": {
    "source": "<g1>yt-dlp</g1> (about 23 MB) looks the page up and finds where the video and its sound come from; MDM downloads them (<g2>How a video comes down</g2>). The first time, click <g3>Install yt-dlp</g3>. MDM checks the download against the signature yt-dlp's developers publish before it uses it.",
@@ -14141,10 +14145,6 @@
   "bc606bb991071128": {
    "source": "The next tab of a focused tab strip; the next choice of a radio group",
    "text": "Het volgende tabblad van een tabbladstrip met focus; de volgende keuze van een radiogroep"
-  },
-  "bc713e862e9b84d3": {
-   "source": "Each download falls into a category by its file type: <g1>General</g1>, <g2>Compressed</g2>, <g3>Documents</g3>, <g4>Music</g4>, <g5>Programs</g5> or <g6>Video</g6>. Torrents have their own <g7>Torrents</g7> category. Each category has its own folder, by default inside your Downloads folder (<x8/>, <x9/> and so on; General uses <x10/> itself).",
-   "text": "Elke download wordt op basis van het bestandstype in een categorie geplaatst: <g1>Algemeen</g1>, <g2>Gecomprimeerd</g2>, <g3>Documenten</g3>, <g4>Muziek</g4>, <g5>Programma's</g5> of <g6>Video</g6>. Torrents hebben hun eigen categorie: <g7>Torrents</g7>. Elke categorie heeft een eigen map, standaard in uw map Downloads (<x8/>, <x9/> enzovoort; Algemeen gebruikt <x10/> zelf)."
   },
   "bc7153d0bcfdacbb": {
    "source": "Themes — Mister Download Manager",
@@ -17258,6 +17258,10 @@
    "source": "Can it download overnight or on a schedule?",
    "text": "Kan het 's nachts of volgens een schema downloaden?"
   },
+  "e852a2ae2ea94c2d": {
+   "source": "<g1>Automatically put in \"…\" category the following file types</g1> — the file types that go to this category. A built-in category whose list you never changed gains the types a new version adds; one you edited stays as it is.",
+   "text": "<g1>Plaats de volgende bestandstypen automatisch in de categorie \"…\"</g1> — de bestandstypen die naar deze categorie gaan. Een ingebouwde categorie waarvan u de lijst nooit hebt gewijzigd, krijgt de typen die een nieuwe versie toevoegt; een categorie die u hebt bewerkt, blijft zoals deze is."
+  },
   "e8592a334f7cb4df": {
    "source": "In <g1>Download File Info</g1>, click <g2>Download Later</g2> and pick the queue.",
    "text": "Klik in <g1>Bestandsinfo downloaden</g1> op <g2>Later downloaden</g2> en kies de wachtrij."
@@ -17853,6 +17857,10 @@
   "ef6e5d90b67f8e4e": {
    "source": "<g1>\"Hide tab\" was cut in longer languages</g1> (German \"Registerkarte au...\"): the button grows to fit its label where there is room, through a shared helper other buttons can use.",
    "text": "<g1>\"Tabblad verbergen\" werd afgesneden in langere talen</g1> (Duits \"Registerkarte au...\"): de knop groeit om zijn label te passen waar ruimte is, via een gedeelde helper die andere knoppen kunnen gebruiken."
+  },
+  "ef7238dc374b9e0e": {
+   "source": "Each download falls into a category by its file type: <g1>General</g1>, <g2>Compressed</g2>, <g3>Documents</g3>, <g4>Music</g4>, <g5>Programs</g5> or <g6>Video</g6>. Torrents have their own <g7>Torrents</g7> category. <g8>Programs</g8> takes programs, installers and app packages (EXE, MSI, APK, IPA, DMG, PKG, DEB, RPM, AppImage, MSIX…), <g9>Compressed</g9> archives and disc images (ZIP, RAR, 7Z, TAR, XZ, ISO, IMG, VHD…), <g10>Documents</g10> text documents, spreadsheets and e-books (PDF, DOCX, XLSX, ODT, EPUB, MOBI…), <g11>Music</g11> audio (MP3, FLAC, OPUS, M4A…) and <g12>Video</g12> videos (MP4, MKV, WEBM…); every other file goes to General. Your own categories come before the built-in ones. Each category has its own folder, by default inside your Downloads folder (<x13/>, <x14/> and so on; General uses <x15/> itself).",
+   "text": "Elke download valt in een categorie op basis van het bestandstype: <g1>Algemeen</g1>, <g2>Gecomprimeerd</g2>, <g3>Documenten</g3>, <g4>Muziek</g4>, <g5>Programma's</g5> of <g6>Video</g6>. Torrents hebben hun eigen categorie <g7>Torrents</g7>. <g8>Programma's</g8> omvat programma's, installatiebestanden en app-pakketten (EXE, MSI, APK, IPA, DMG, PKG, DEB, RPM, AppImage, MSIX…), <g9>Gecomprimeerd</g9> omvat archieven en schijfimages (ZIP, RAR, 7Z, TAR, XZ, ISO, IMG, VHD…), <g10>Documenten</g10> omvat tekstdocumenten, spreadsheets en e-boeken (PDF, DOCX, XLSX, ODT, EPUB, MOBI…), <g11>Muziek</g11> omvat audio (MP3, FLAC, OPUS, M4A…) en <g12>Video</g12> omvat video's (MP4, MKV, WEBM…); elk ander bestand gaat naar Algemeen. Uw eigen categorieën staan vóór de ingebouwde. Elke categorie heeft een eigen map, standaard in uw map Downloads (<x13/>, <x14/> enzovoort; Algemeen gebruikt <x15/> zelf)."
   },
   "ef8cedcbdccdaf85": {
    "source": "The code is filled in when you scanned the QR code; otherwise type it. Give the phone a name, and tap <g1>Pair</g1>. The window on the computer says so, and closes with <g2>Done</g2>.",
@@ -18465,10 +18473,6 @@
   "f8c444517ab946e2": {
    "source": "From the plain zip",
    "text": "Vanuit het zipbestand"
-  },
-  "f8c71a9fb2bd8bde": {
-   "source": "<g1>Automatically put in \"…\" category the following file types</g1> — the file types that go to this category.",
-   "text": "<g1>De volgende bestandstypen automatisch in de categorie \"...\" plaatsen</g1> — de bestandstypen die naar deze categorie gaan."
   },
   "f8e0a9e7ee529ff0": {
    "source": "Select <g1>Main download queue</g1> on the left. The <g2>Schedule</g2> tab opens.",

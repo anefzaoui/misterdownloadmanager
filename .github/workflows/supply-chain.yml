@@ -1,0 +1,102 @@
+# Supply-chain scan (tools/security/scan_suspicious.py): the marks a poisoned commit leaves, such
+# as code hidden after a long run of blanks, a loader in a test bootstrap file or a font, a
+# changed install script, an editor task that runs when the folder opens, a workflow that hands
+# secrets to pull requests, and known indicators.
+#
+# A pull request is scanned by the BASE branch's scanner: its commits are fetched as git objects
+# and read as data, never checked out or run, so a pull request can't change the scan that
+# judges it. Its findings fail the job; a reviewed false positive goes in
+# tools/security/allowlist.txt, which the scan reads from the pull request and prints whatever
+# the pull request adds to it, for the reviewer to read.
+# Main is scanned on every push, and weekly with its whole history: every object of every
+# branch and tag, for the known indicators. Nothing is opened or posted: a finding fails the run.
+name: Supply chain
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  schedule:
+    - cron: "41 5 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: supply-chain-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  pull-request:
+    name: scan the pull request
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Base branch, whose scanner runs
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          ref: ${{ github.event.pull_request.base.sha }}
+          persist-credentials: false
+          fetch-depth: 0
+
+      - name: The pull request's commits, as data
+        env:
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          git fetch --no-tags --quiet origin "$HEAD_SHA"
+          git cat-file -e "$HEAD_SHA^{commit}"
+
+      - name: Scan
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          scanner=tools/security/scan_suspicious.py
+          if [ ! -f "$scanner" ]; then
+            # A base branch older than the scanner: main's copy; the pull request's own only
+            # while main has none (the pull request that adds it).
+            git fetch --no-tags --quiet origin main
+            if git cat-file -e "FETCH_HEAD:$scanner" 2>/dev/null; then
+              git checkout FETCH_HEAD -- tools/security
+            else
+              echo "::warning::main has no scanner yet: this run uses the pull request's own copy."
+              git checkout "$HEAD_SHA" -- tools/security
+            fi
+          fi
+          python3 -I "$scanner" --diff "$BASE_SHA...$HEAD_SHA"
+
+  # The scanner's own tests run the pull request's copy, like the rest of CI: a job of its own,
+  # with the same read-only token and no secrets, apart from the scan above.
+  scanner-tests:
+    name: scanner tests
+    if: github.event_name != 'schedule'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          persist-credentials: false
+      - name: Tests
+        run: python3 -I -m unittest discover -s tools/security/tests -v
+
+  main:
+    name: scan main
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+
+      - name: Every file
+        run: python3 -I tools/security/scan_suspicious.py --tree HEAD
+
+      # Every object of every branch and tag: a loader written into old commits (their author,
+      # message and date kept) shows here even when the files of today are clean.
+      - name: Whole history
+        if: always() && github.event_name != 'push'
+        run: python3 -I tools/security/scan_suspicious.py --history

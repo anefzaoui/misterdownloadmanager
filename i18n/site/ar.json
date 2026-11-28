@@ -7074,6 +7074,10 @@
    "source": "What Update now does",
    "text": "ما يفعله تحديث الآن"
   },
+  "5f818384bb56aff6": {
+   "source": "<g1>Edge (or another browser) says \"Specified native messaging host not found\", though the registry entry looks right?</g1> On 64-bit Windows the browsers read the registry's 32-bit part (<x2/>) before the entry you find under <x3/>, and take the first one there, even one that leads to a copy that is gone. <g4>Test browser integration</g4> says <g5>An older registry entry is in the way</g5>, with that entry: click <g6>Set it up</g6> to give your account an entry of its own, which the browsers read before it. MDM also does that by itself at its start when that entry leads nowhere, and its setup for everyone removes it.",
+   "text": "<g1>يقول Edge (أو مستعرض آخر) «لم يتم العثور على مضيف المراسلة الأصلي المحدد»، رغم أن إدخال السجل يبدو صحيحا؟</g1> في Windows 64 بت، تقرأ المستعرضات الجزء 32 بت من السجل (<x2/>) قبل الإدخال الذي تجده ضمن <x3/>، وتأخذ أول إدخال هناك، حتى لو كان يؤدي إلى نسخة غير موجودة. تقول <g4>اختبار الربط بالمستعرض</g4> <g5>يوجد إدخال سجل قديم يعيق العملية</g5>، مع هذا الإدخال: انقر على <g6>إعداده</g6> لإعطاء حسابك إدخالا خاصا به، تقرأه المستعرضات قبله. يقوم MDM بذلك أيضا تلقائيا عند بدء تشغيله عندما لا يؤدي هذا الإدخال إلى أي مكان، ويزيله إعداده للجميع."
+  },
   "5f8f976d1dd62e61": {
    "source": "A group box's frame",
    "text": "إطار مربع المجموعة"
@@ -10818,6 +10822,10 @@
    "source": "MDM's interface comes in 87 languages: every display language Windows 11 offers, from Afrikaans to Vietnamese, including both Chinese scripts, Spanish for Spain and Mexico, French for France and Canada, Portuguese for Portugal and Brazil, and Serbian in Cyrillic and Latin.",
    "text": "تتوفر واجهة MDM بـ 87 لغة: جميع لغات العرض التي يوفرها Windows 11، من الأفريكانية إلى الفيتنامية، بما في ذلك نظاما الكتابة الصينيان، والإسبانية لإسبانيا والمكسيك، والفرنسية لفرنسا وكندا، والبرتغالية للبرتغال والبرازيل، والصربية بالسيريلية واللاتينية."
   },
+  "91c08dd2d3fe7d4a": {
+   "source": "<g1>Add category</g1> — make your own, for example <g2>Books</g2> for <x3/> (they then go to Books, not Documents). Give it a name, the file types (separated by spaces, <x4/> allowed) and a folder.",
+   "text": "<g1>إضافة فئة</g1> — أنشئ فئتك الخاصة، على سبيل المثال <g2>الكتب</g2> لـ <x3/> (ثم تذهب إلى الكتب، وليس المستندات). أعطها اسما، وأنواع الملفات (مفصولة بمسافات، <x4/> مسموح بها) ومجلدا."
+  },
   "91cefe80b7f00fac": {
    "source": "<g1><g2>Download a file</g2></g1> — copy a link, add it, open the file.",
    "text": "<g1><g2>تنزيل ملف</g2></g1> — انسخ رابطا، أضفه، افتح الملف."
@@ -12329,10 +12337,6 @@
   "a4b01563b82565da": {
    "source": "<g1>Sharper text on Windows</g1> (<g2>#262</g2>): Segoe UI and Tahoma are grid-fitted across as well as up and down, and each letter starts on a whole pixel, as Windows draws its own grey text: upright strokes were two grey pixels wide at 100 % and 125 %, which read as blurred.",
    "text": "<g1>نص أكثر وضوحا على Windows</g1> (<g2>#262</g2>): يتم ضبط Segoe UI وTahoma على الشبكة عرضيا وكذلك رأسيا، وتبدأ كل حرف على بكسل كامل، كما يرسم Windows نصه الرمادي الخاص به: كانت الخطوط العمودية بعرض بكسلين رماديين عند 100% و125%، مما كان يقرأ كضبابي."
-  },
-  "a4b04f29f56fdc42": {
-   "source": "<g1>Add category</g1> — make your own, for example <g2>Books</g2> for <x3/>. Give it a name, the file types (separated by spaces, <x4/> allowed) and a folder.",
-   "text": "<g1>إضافة فئة</g1> — أنشئ فئتك الخاصة، على سبيل المثال <g2>كتب</g2> لـ <x3/>. أعطها اسما، وأنواع الملفات (مفصولة بمسافات، <x4/> مسموح بها) ومجلدا."
   },
   "a4b1f9a84345ac5d": {
    "source": "<g1>yt-dlp</g1> (about 23 MB) looks the page up and finds where the video and its sound come from; MDM downloads them (<g2>How a video comes down</g2>). The first time, click <g3>Install yt-dlp</g3>. MDM checks the download against the signature yt-dlp's developers publish before it uses it.",
@@ -14141,10 +14145,6 @@
   "bc606bb991071128": {
    "source": "The next tab of a focused tab strip; the next choice of a radio group",
    "text": "علامة التبويب التالية لشريط علامات التبويب الذي عليه التركيز؛ الخيار التالي لمجموعة أزرار الاختيار"
-  },
-  "bc713e862e9b84d3": {
-   "source": "Each download falls into a category by its file type: <g1>General</g1>, <g2>Compressed</g2>, <g3>Documents</g3>, <g4>Music</g4>, <g5>Programs</g5> or <g6>Video</g6>. Torrents have their own <g7>Torrents</g7> category. Each category has its own folder, by default inside your Downloads folder (<x8/>, <x9/> and so on; General uses <x10/> itself).",
-   "text": "يقع كل تنزيل ضمن فئة حسب نوع ملفه: <g1>عام</g1>، <g2>مضغوط</g2>، <g3>مستندات</g3>، <g4>موسيقى</g4>، <g5>برامج</g5> أو <g6>فيديو</g6>. للتورنت فئة خاصة بها هي <g7>تورنت</g7>. لكل فئة مجلدها الخاص، افتراضيا داخل مجلد التنزيلات الخاص بك (<x8/>، <x9/> وهكذا؛ يستخدم عام <x10/> نفسه)."
   },
   "bc7153d0bcfdacbb": {
    "source": "Themes — Mister Download Manager",
@@ -17262,6 +17262,10 @@
    "source": "Can it download overnight or on a schedule?",
    "text": "هل يمكنه التنزيل طوال الليل أو بجدول زمني؟"
   },
+  "e852a2ae2ea94c2d": {
+   "source": "<g1>Automatically put in \"…\" category the following file types</g1> — the file types that go to this category. A built-in category whose list you never changed gains the types a new version adds; one you edited stays as it is.",
+   "text": "<g1>ضع تلقائيا في فئة «...» أنواع الملفات التالية</g1> — أنواع الملفات التي تذهب إلى هذه الفئة. الفئة المضمنة التي لم تغير قائمتها أبدا تكتسب الأنواع التي يضيفها الإصدار الجديد؛ أما الفئة التي عدلتها فتبقى كما هي."
+  },
   "e8592a334f7cb4df": {
    "source": "In <g1>Download File Info</g1>, click <g2>Download Later</g2> and pick the queue.",
    "text": "في <g1>معلومات ملف التنزيل</g1>، انقر على <g2>تنزيل لاحقا</g2> واختر قائمة الانتظار."
@@ -17857,6 +17861,10 @@
   "ef6e5d90b67f8e4e": {
    "source": "<g1>\"Hide tab\" was cut in longer languages</g1> (German \"Registerkarte au...\"): the button grows to fit its label where there is room, through a shared helper other buttons can use.",
    "text": "<g1>تم قطع \"إخفاء علامة التبويب\" في اللغات الأطول</g1> (الألمانية \"Registerkarte au...\"): يتسع الزر ليتناسب مع تسميته حيث توجد مساحة، عبر مساعد مشترك يمكن للأزرار الأخرى استخدامه."
+  },
+  "ef7238dc374b9e0e": {
+   "source": "Each download falls into a category by its file type: <g1>General</g1>, <g2>Compressed</g2>, <g3>Documents</g3>, <g4>Music</g4>, <g5>Programs</g5> or <g6>Video</g6>. Torrents have their own <g7>Torrents</g7> category. <g8>Programs</g8> takes programs, installers and app packages (EXE, MSI, APK, IPA, DMG, PKG, DEB, RPM, AppImage, MSIX…), <g9>Compressed</g9> archives and disc images (ZIP, RAR, 7Z, TAR, XZ, ISO, IMG, VHD…), <g10>Documents</g10> text documents, spreadsheets and e-books (PDF, DOCX, XLSX, ODT, EPUB, MOBI…), <g11>Music</g11> audio (MP3, FLAC, OPUS, M4A…) and <g12>Video</g12> videos (MP4, MKV, WEBM…); every other file goes to General. Your own categories come before the built-in ones. Each category has its own folder, by default inside your Downloads folder (<x13/>, <x14/> and so on; General uses <x15/> itself).",
+   "text": "يصنف كل تنزيل ضمن فئة حسب نوع ملفه: <g1>عام</g1>، <g2>المضغوطة</g2>، <g3>المستندات</g3>، <g4>موسيقى</g4>، <g5>البرامج</g5> أو <g6>فيديو</g6>. وللتورنت فئة <g7>التورنت</g7> الخاصة بها. تستقبل فئة <g8>البرامج</g8> البرامج والمثبتات وحزم التطبيقات (EXE، MSI، APK، IPA، DMG، PKG، DEB، RPM، AppImage، MSIX...)، وتستقبل فئة <g9>المضغوطة</g9> الأرشيفات وصور الأقراص (ZIP، RAR، 7Z، TAR، XZ، ISO، IMG، VHD...)، وتستقبل فئة <g10>المستندات</g10> المستندات النصية وجداول البيانات والكتب الإلكترونية (PDF، DOCX، XLSX، ODT، EPUB، MOBI...)، وتستقبل فئة <g11>موسيقى</g11> الملفات الصوتية (MP3، FLAC، OPUS، M4A...)، وتستقبل فئة <g12>فيديو</g12> مقاطع الفيديو (MP4، MKV، WEBM...)؛ أما أي ملف آخر فيذهب إلى فئة عام. تأتي فئاتك الخاصة قبل الفئات المدمجة. لكل فئة مجلدها الخاص، ويكون افتراضيا داخل مجلد التنزيلات الخاص بك (<x13/>، <x14/> وهكذا؛ وتستخدم فئة عام <x15/> نفسها)."
   },
   "ef8cedcbdccdaf85": {
    "source": "The code is filled in when you scanned the QR code; otherwise type it. Give the phone a name, and tap <g1>Pair</g1>. The window on the computer says so, and closes with <g2>Done</g2>.",
@@ -18469,10 +18477,6 @@
   "f8c444517ab946e2": {
    "source": "From the plain zip",
    "text": "من ملف zip عادي"
-  },
-  "f8c71a9fb2bd8bde": {
-   "source": "<g1>Automatically put in \"…\" category the following file types</g1> — the file types that go to this category.",
-   "text": "<g1>وضع أنواع الملفات التالية تلقائيا في فئة \"…\"</g1> — أنواع الملفات التي تذهب إلى هذه الفئة."
   },
   "f8e0a9e7ee529ff0": {
    "source": "Select <g1>Main download queue</g1> on the left. The <g2>Schedule</g2> tab opens.",

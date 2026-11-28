@@ -614,31 +614,13 @@ impl PublicTrackers {
 /// How the torrent session is held to the network adapter as it is (#35, #143): None without
 /// one chosen; else why torrents can't start (it isn't connected).
 pub fn route_bind(route: &mdm_engine::Route) -> Result<Option<mdm_torrent::Bind>, String> {
-    let down = |label: &str| {
+    mdm_torrent::Bind::for_route(route).map_err(|adapter| {
         crate::i18n::fmt(
             // i18n: an error: the network adapter chosen in Options (a VPN's, usually) is off or gone; {adapter} its name
             crate::i18n::t("the network adapter {adapter} is not connected"),
-            &[("adapter", label)],
+            &[("adapter", &adapter)],
         )
-    };
-    match route {
-        mdm_engine::Route::Any => Ok(None),
-        mdm_engine::Route::Down { label } => Err(down(label)),
-        // Windows: its address (strong host model, see mdm_engine::net); IPv4 when it has one.
-        #[cfg(windows)]
-        mdm_engine::Route::Bound(b) => {
-            b.v4.map(std::net::IpAddr::V4)
-                .or(b.v6.map(std::net::IpAddr::V6))
-                .map(|ip| Some(mdm_torrent::Bind::Address(ip)))
-                .ok_or_else(|| down(&b.label))
-        }
-        // Linux and macOS: its device.
-        #[cfg(not(windows))]
-        mdm_engine::Route::Bound(b) => Ok(Some(mdm_torrent::Bind::Device {
-            name: b.name.clone(),
-            v4_only: b.v6.is_none(),
-        })),
-    }
+    })
 }
 
 /// The app's one session, started on first use, as Torrent settings say (`set_config`); it

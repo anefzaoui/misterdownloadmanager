@@ -2,7 +2,9 @@
 //! one folder of it, at a branch, tag or commit) and a GitHub release (or a tag without one),
 //! listed through the sites' public APIs, each file with its size, the folders it is in and the
 //! digest the site publishes for it (Hugging Face's SHA-256 of a large file, GitHub's of a
-//! release file), which the finished download is checked against.
+//! release file), which the finished download is checked against. A shared Google Drive folder
+//! (#2032), with its subfolders, listed from the folders' own pages (`sites::gdrive`), each file
+//! with its size and folders (Drive's pages publish no digest).
 //!
 //! What an API sends is the site's word, read defensively: a file's path must be a relative path
 //! of plain names (no `..`, `.`, empty names, `\`, drive letters or device names such as `CON`),
@@ -19,6 +21,7 @@ use serde::Deserialize;
 use url::Url;
 
 use crate::download::{Error, Options, http_client};
+use crate::sites::gdrive;
 use crate::verify::{Algo, Hash};
 
 /// The most files a package lists.
@@ -36,6 +39,7 @@ const MAX_PATH: usize = 4096;
 pub enum Site {
     HuggingFace,
     GitHub,
+    GoogleDrive,
 }
 
 impl Site {
@@ -44,6 +48,7 @@ impl Site {
         match self {
             Site::HuggingFace => "Hugging Face",
             Site::GitHub => "GitHub",
+            Site::GoogleDrive => "Google Drive",
         }
     }
 }
@@ -72,6 +77,15 @@ pub enum Source {
         owner: String,
         repo: String,
         tag: Option<String>,
+    },
+    /// A shared Google Drive folder (#2032): its ID, the resource key and the account its link
+    /// carried, and its page's address (`sites::gdrive::folder_address`, on the link's scheme
+    /// and port).
+    GoogleDrive {
+        id: String,
+        resource_key: Option<String>,
+        authuser: Option<String>,
+        page: Url,
     },
 }
 
@@ -109,9 +123,27 @@ impl Source {
     /// What `url` names: a Hugging Face model's or dataset's page (`huggingface.co/<owner>/
     /// <name>`, `…/datasets/<owner>/<name>`), or a folder's (`…/tree/<revision>/<path>`), a
     /// GitHub release's or tag's page (`github.com/<owner>/<repo>/releases/tag/<tag>`,
-    /// `…/releases/latest`); None for anything else (a file's own address among them: it is
-    /// downloaded as any file).
+    /// `…/releases/latest`), a Google Drive folder's link (`drive.google.com/drive/folders/
+    /// <id>`, `…/folderview?id=`, as `sites::gdrive` reads them); None for anything else (a
+    /// file's own address among them: it is downloaded as any file).
     pub fn of(url: &Url) -> Option<Source> {
+        if let Some(link) = gdrive::parse(url).filter(|l| l.kind == gdrive::Kind::Folder) {
+            if !url.username().is_empty() || url.password().is_some() {
+                return None;
+            }
+            let page = gdrive::folder_address(
+                url,
+                &link.id,
+                link.resource_key.as_deref(),
+                link.authuser.as_deref(),
+            )?;
+            return Some(Source::GoogleDrive {
+                id: link.id,
+                resource_key: link.resource_key,
+                authuser: link.authuser,
+                page,
+            });
+        }
         if !matches!(url.scheme(), "https" | "http")
             || !url.username().is_empty()
             || url.password().is_some()
@@ -138,6 +170,7 @@ impl Source {
         match self {
             Source::HuggingFace { .. } => Site::HuggingFace,
             Source::GitHub { .. } => Site::GitHub,
+            Source::GoogleDrive { .. } => Site::GoogleDrive,
         }
     }
 }
@@ -300,6 +333,8 @@ pub struct Package {
     pub refused: usize,
     /// A Hugging Face repository whose files need its terms accepted, and an access token.
     pub gated: bool,
+    /// Google Drive items left out that aren't files to download: Forms, shortcuts, Sites.
+    pub not_files: usize,
 }
 
 /// Why a package couldn't be listed.
@@ -318,6 +353,10 @@ pub enum HubError {
     /// An answer that isn't what the API sends.
     #[error("{}'s answer couldn't be read", .0.name())]
     Unreadable(Site),
+    /// The site sent its sign-in page: a Google Drive folder that isn't shared with everyone,
+    /// asked without the browser's sign-in.
+    #[error("{} wants a sign-in", .0.name())]
+    SignIn(Site),
     #[error(transparent)]
     Net(#[from] Error),
 }
@@ -371,6 +410,26 @@ pub async fn list_from(
                 HeaderValue::from_static("2022-11-28"),
             );
             list_gh(apis, owner, repo, tag.as_deref(), &h, opts).await
+        }
+        Source::GoogleDrive {
+            id,
+            resource_key,
+            authuser,
+            page,
+        } => {
+            // The browser's Google sign-in (a folder shared with the account only), to Drive's
+            // own host only (a redirect elsewhere drops it).
+            let mut h = HeaderMap::new();
+            if let Some(cookie) = headers.get(header::COOKIE) {
+                h.insert(header::COOKIE, cookie.clone());
+            }
+            let folder = DriveFolder {
+                id,
+                resource_key: resource_key.as_deref(),
+                authuser: authuser.as_deref(),
+                page,
+            };
+            list_drive(&folder, &h, opts).await
         }
     }
 }
@@ -692,6 +751,7 @@ async fn list_hf(
         capped,
         refused,
         gated,
+        not_files: 0,
     })
 }
 
@@ -824,6 +884,178 @@ async fn list_gh(
         capped: false,
         refused,
         gated: false,
+        not_files: 0,
+    })
+}
+
+/// The most folders of one Google Drive folder read (itself and its subfolders, each a request
+/// to Drive, one after the other).
+const DRIVE_FOLDERS: usize = 200;
+
+/// A Google Drive folder to list (`Source::GoogleDrive`).
+struct DriveFolder<'a> {
+    id: &'a str,
+    resource_key: Option<&'a str>,
+    authuser: Option<&'a str>,
+    page: &'a Url,
+}
+
+/// A Drive item's name as a file's or a folder's name: Drive allows any (`a/b`, `x:y`, `CON`),
+/// so it is made a plain one as any download's name is (`naming::sanitize`: `a_b`, `x_y`,
+/// `_CON`), a name that is only dots or spaces (`..`) left out (None).
+fn drive_name(name: &str) -> Option<String> {
+    if name
+        .trim_matches(|c: char| c == '.' || c.is_whitespace())
+        .is_empty()
+    {
+        return None;
+    }
+    let clean = crate::naming::sanitize(name);
+    plain_component(&clean).then_some(clean)
+}
+
+/// A Google Doc's name with the extension of the file it is exported as (`Notes` → `Notes.docx`).
+fn exported_name(name: String, doc: gdrive::DocKind) -> String {
+    let ext = doc.format();
+    let lower = name.to_ascii_lowercase();
+    if lower.len() > ext.len()
+        && lower.ends_with(ext)
+        && lower[..lower.len() - ext.len()].ends_with('.')
+    {
+        name
+    } else {
+        format!("{name}.{ext}")
+    }
+}
+
+/// A folder's page asked as a download's look asks (the user's proxy, adapter, DNS; Drive's
+/// browser agent unless the browser's own or one the user set), read up to `ANSWER_MAX`. Drive's
+/// sign-in page is [`HubError::SignIn`]; an answer from anywhere but Drive is no answer.
+async fn ask_drive(url: &Url, headers: &HeaderMap, opts: &Options) -> Result<Answer, HubError> {
+    let site = Site::GoogleDrive;
+    let client = http_client(opts, url)?;
+    let mut resp = crate::download::build(&client, url.clone(), None, headers, opts.site_agent())
+        .send()
+        .await
+        .map_err(Error::from)?;
+    if gdrive::is_sign_in(resp.url()) {
+        return Err(HubError::SignIn(site));
+    }
+    if !gdrive::is_drive_host(resp.url()) {
+        return Err(HubError::Unreadable(site));
+    }
+    let status = resp.status().as_u16();
+    let headers = resp.headers().clone();
+    let mut body = Vec::new();
+    while let Some(chunk) = resp.chunk().await.map_err(Error::from)? {
+        if body.len() + chunk.len() > ANSWER_MAX {
+            return Err(HubError::Unreadable(site));
+        }
+        body.extend_from_slice(&chunk);
+    }
+    Ok(Answer {
+        status,
+        headers,
+        body,
+    })
+}
+
+/// A Google Drive folder's files, its subfolders' too (#2032), from the folders' pages, one
+/// after the other: each file with its folders under the folder (their names made plain,
+/// `drive_name`), its size, and its link built from its ID (`gdrive::item_address`); a Google
+/// Doc as its Office file. A subfolder seen before (Drive lets one folder be in two) is read
+/// once. At most `DRIVE_FOLDERS` folders, `MAX_COMPONENTS` deep and `MAX_FILES` files; a folder
+/// whose page lists `gdrive::FOLDER_PAGE` items may hold more, which the page doesn't show:
+/// `capped`. A refusal anywhere (a sign-in, Drive's limit) is the listing's: a folder listed
+/// without one of its subfolders would look whole.
+async fn list_drive(
+    folder: &DriveFolder<'_>,
+    headers: &HeaderMap,
+    opts: &Options,
+) -> Result<Package, HubError> {
+    let site = Site::GoogleDrive;
+    let mut queue =
+        std::collections::VecDeque::from([(folder.id.to_owned(), Vec::<String>::new())]);
+    let mut seen = std::collections::HashSet::from([folder.id.to_owned()]);
+    let mut files = Vec::new();
+    let (mut refused, mut not_files, mut capped) = (0, 0, false);
+    let mut title = None;
+    let mut reads = 0;
+    'folders: while let Some((id, path)) = queue.pop_front() {
+        if reads == DRIVE_FOLDERS {
+            capped = true;
+            break;
+        }
+        reads += 1;
+        // The resource key is the link's, for its own folder.
+        let key = (id == folder.id).then_some(folder.resource_key).flatten();
+        let url = gdrive::folder_address(folder.page, &id, key, folder.authuser)
+            .ok_or(HubError::Unreadable(site))?;
+        let a = ask_drive(&url, headers, opts).await?;
+        if a.status != 200 {
+            return Err(refusal(site, &a));
+        }
+        let page = String::from_utf8_lossy(&a.body);
+        let list = gdrive::read_folder(&page, &id).ok_or(HubError::Unreadable(site))?;
+        if path.is_empty() {
+            title = list.title.clone();
+        }
+        capped |= list.items.len() >= gdrive::FOLDER_PAGE;
+        refused += list.odd;
+        for item in list.items {
+            let Some(name) = drive_name(&item.name) else {
+                refused += 1;
+                continue;
+            };
+            match item.kind {
+                gdrive::ItemKind::Folder => {
+                    if path.len() + 1 >= MAX_COMPONENTS {
+                        capped = true;
+                    } else if seen.insert(item.id.clone()) {
+                        let mut inner = path.clone();
+                        inner.push(name);
+                        queue.push_back((item.id, inner));
+                    }
+                }
+                gdrive::ItemKind::Other => not_files += 1,
+                gdrive::ItemKind::File | gdrive::ItemKind::Doc(_) => {
+                    if files.len() == MAX_FILES {
+                        capped = true;
+                        break 'folders;
+                    }
+                    let Some(url) = gdrive::item_address(folder.page, &item, folder.authuser)
+                    else {
+                        refused += 1;
+                        continue;
+                    };
+                    let name = match item.kind {
+                        gdrive::ItemKind::Doc(doc) => exported_name(name, doc),
+                        _ => name,
+                    };
+                    files.push(File {
+                        url,
+                        folders: path.clone(),
+                        name,
+                        size: item.size,
+                        digest: None,
+                    });
+                }
+            }
+        }
+    }
+    let name = title.unwrap_or_else(|| folder.id.to_owned());
+    let root = drive_name(&name).unwrap_or_else(|| folder.id.to_owned());
+    Ok(Package {
+        site,
+        name,
+        page: gdrive::folder_address(folder.page, folder.id, folder.resource_key, folder.authuser)
+            .ok_or(HubError::Unreadable(site))?,
+        folder: vec![root],
+        files,
+        capped,
+        refused,
+        gated: false,
+        not_files,
     })
 }
 
@@ -1168,6 +1400,100 @@ mod tests {
             refusal(Site::HuggingFace, &a),
             HubError::NotFound(_)
         ));
+    }
+
+    #[test]
+    fn google_drive_folders() {
+        const ID: &str = "1KpLl_1tcK0eeehzN980zbG-3M2nhbVks";
+        let of = |s: &str| Source::of(&url(&s.replace("ID", ID)));
+        let page = |s: &str| match of(s) {
+            Some(Source::GoogleDrive { id, page, .. }) => {
+                assert_eq!(id, ID);
+                Some(page.to_string().replace(ID, "ID"))
+            }
+            other => panic!("{s}: {other:?}"),
+        };
+        assert_eq!(
+            page("https://drive.google.com/drive/folders/ID?usp=sharing").as_deref(),
+            Some("https://drive.google.com/drive/folders/ID")
+        );
+        assert_eq!(
+            page("https://drive.google.com/drive/u/1/folders/ID?resourcekey=0-K").as_deref(),
+            Some("https://drive.google.com/drive/folders/ID?resourcekey=0-K&authuser=1")
+        );
+        assert_eq!(
+            page("https://drive.google.com/folderview?id=ID").as_deref(),
+            Some("https://drive.google.com/drive/folders/ID")
+        );
+        // The lab's: its scheme and port kept.
+        assert_eq!(
+            page("http://drive.google.com:8080/drive/folders/ID").as_deref(),
+            Some("http://drive.google.com:8080/drive/folders/ID")
+        );
+        assert_eq!(
+            of("https://drive.google.com/drive/folders/ID").map(|s| s.site()),
+            Some(Site::GoogleDrive)
+        );
+        // A file's link is downloaded as a file; another host, or a login in the address, is
+        // no folder of Drive's.
+        for s in [
+            "https://drive.google.com/file/d/ID/view",
+            "https://drive.google.com.evil.example/drive/folders/ID",
+            "https://user:pw@drive.google.com/drive/folders/ID",
+            "https://drive.google.com/drive/folders/short",
+        ] {
+            assert_eq!(of(s), None, "{s}");
+        }
+    }
+
+    /// Drive's names are anyone's: made plain names, never a way out of the folder.
+    #[test]
+    fn drive_names_stay_inside() {
+        assert_eq!(drive_name("photo 1.jpg").as_deref(), Some("photo 1.jpg"));
+        assert_eq!(
+            drive_name("2024/25 report.pdf").as_deref(),
+            Some("2024_25 report.pdf")
+        );
+        assert_eq!(
+            drive_name("..\\..\\evil.exe").as_deref(),
+            Some(".._.._evil.exe")
+        );
+        assert_eq!(drive_name("../evil").as_deref(), Some(".._evil"));
+        assert_eq!(drive_name("C:\\Windows").as_deref(), Some("C__Windows"));
+        assert_eq!(drive_name("CON").as_deref(), Some("_CON"));
+        assert_eq!(drive_name("nul.txt").as_deref(), Some("_nul.txt"));
+        assert_eq!(drive_name("a:stream").as_deref(), Some("a_stream"));
+        assert_eq!(drive_name("trailing. ").as_deref(), Some("trailing"));
+        assert_eq!(
+            drive_name("invoice\u{202E}fdp.exe").as_deref(),
+            Some("invoicefdp.exe")
+        );
+        for hostile in ["", ".", "..", "...", " . ", "  "] {
+            assert_eq!(drive_name(hostile), None, "{hostile:?}");
+        }
+        for name in [
+            "photo 1.jpg",
+            "2024/25 report.pdf",
+            "..\\..\\evil.exe",
+            "a\u{0}b",
+            "COM1.log",
+        ] {
+            let n = drive_name(name).unwrap();
+            assert!(plain_component(&n), "{name:?} → {n:?}");
+            assert_eq!(relative_path(&n), Some(vec![n.clone()]));
+        }
+        use gdrive::DocKind::*;
+        assert_eq!(exported_name("Notes".into(), Document), "Notes.docx");
+        assert_eq!(
+            exported_name("Budget.XLSX".into(), Spreadsheet),
+            "Budget.XLSX"
+        );
+        assert_eq!(
+            exported_name("report.v2".into(), Presentation),
+            "report.v2.pptx"
+        );
+        assert_eq!(exported_name("pptx".into(), Presentation), "pptx.pptx");
+        assert_eq!(exported_name("Plan".into(), Drawing), "Plan.png");
     }
 
     #[test]
