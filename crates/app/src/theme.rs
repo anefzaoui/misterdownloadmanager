@@ -80,6 +80,7 @@ pub fn set(theme: Theme) {
 /// that can't be read leaves the classic look, logged. Returns what was skipped or went wrong.
 pub fn select(id: &str, ctx: &egui::Context) -> Vec<String> {
     let id = id.to_owned();
+    *PICKING.lock().unwrap_or_else(|e| e.into_inner()) = None;
     // pywal's file is followed again only if this theme is made from it (`themefile::load_in`).
     crate::themefile::forget_pywal();
     *SELECTED.lock().unwrap_or_else(|e| e.into_inner()) = id.clone();
@@ -93,8 +94,20 @@ pub fn select(id: &str, ctx: &egui::Context) -> Vec<String> {
         set(crate::native::theme(&system));
         return Vec::new();
     }
-    match load(&id) {
+    let (loaded, followed) = crate::themefile::read(&id);
+    take(&id, loaded, followed)
+}
+
+/// A theme file's theme, read (`themefile::read`), made the active one; pywal's file followed
+/// from now on when the theme is made from it. One that can't be read leaves the classic look.
+fn take(
+    id: &str,
+    loaded: Result<crate::themefile::Loaded, String>,
+    followed: Option<crate::themefile::Followed>,
+) -> Vec<String> {
+    match loaded {
         Ok(loaded) => {
+            crate::themefile::follow_pywal(followed);
             for w in &loaded.warnings {
                 tracing::warn!("theme {id}: {w}");
             }
@@ -109,14 +122,68 @@ pub fn select(id: &str, ctx: &egui::Context) -> Vec<String> {
     }
 }
 
-/// A theme file's theme, by its id or its path; pywal's file followed from now on when the
-/// theme is made from it.
-fn load(id: &str) -> Result<crate::themefile::Loaded, String> {
-    let (loaded, followed) = crate::themefile::read(id);
-    if loaded.is_ok() {
-        crate::themefile::follow_pywal(followed);
+/// Whether [`select`] reads nothing from the disk for `id`: the classic look, Native, a
+/// built-in.
+fn built_in(id: &str) -> bool {
+    id.is_empty()
+        || id == CLASSIC.id
+        || id == "native"
+        || crate::palette::builtins().iter().any(|t| t.id == id)
+}
+
+/// A theme picked in View → Theme, read beside the window's thread (#1292): a theme file and its
+/// icons (up to some hundred small files) are read on a thread of their own, and the theme in
+/// use stays until [`poll_pick`] makes the new one active. A built-in is selected at once. True
+/// when it was ([`select`]).
+pub fn pick(id: &str, ctx: &egui::Context) -> bool {
+    if built_in(id) {
+        select(id, ctx);
+        return true;
     }
-    loaded
+    let id = id.to_owned();
+    *PICKING.lock().unwrap_or_else(|e| e.into_inner()) = Some(id.clone());
+    let ctx = ctx.clone();
+    crate::launch::spawn("theme", move || {
+        let (loaded, followed) = crate::themefile::read(&id);
+        // Kept only while it is still the pick: a later pick's read isn't replaced by it.
+        let picking = PICKING.lock().unwrap_or_else(|e| e.into_inner());
+        if picking.as_deref() == Some(id.as_str()) {
+            *PICKED.lock().unwrap_or_else(|e| e.into_inner()) = Some((id, loaded, followed));
+        }
+        drop(picking);
+        ctx.request_repaint();
+    });
+    false
+}
+
+/// A theme file read for [`pick`]: its id, what was read, pywal's file to follow.
+type Picked = (
+    String,
+    Result<crate::themefile::Loaded, String>,
+    Option<crate::themefile::Followed>,
+);
+
+/// The theme [`pick`] reads now (the newest asked).
+static PICKING: std::sync::Mutex<Option<String>> = std::sync::Mutex::new(None);
+static PICKED: std::sync::Mutex<Option<Picked>> = std::sync::Mutex::new(None);
+
+/// The theme [`pick`] read, made the active one, if it is still the one picked last (a later
+/// pick wins): true when it was (the caller applies it: `apply_theme`, `apply_mode`).
+pub fn poll_pick() -> bool {
+    let Some((id, loaded, followed)) = PICKED.lock().unwrap_or_else(|e| e.into_inner()).take()
+    else {
+        return false;
+    };
+    let mut picking = PICKING.lock().unwrap_or_else(|e| e.into_inner());
+    if picking.as_deref() != Some(id.as_str()) {
+        return false;
+    }
+    *picking = None;
+    drop(picking);
+    crate::themefile::forget_pywal();
+    *SELECTED.lock().unwrap_or_else(|e| e.into_inner()) = id.clone();
+    take(&id, loaded, followed);
+    true
 }
 
 /// The id (or path) [`select`] was last given.
@@ -883,7 +950,31 @@ fn font_path(dir: &std::path::Path, rel: &str) -> std::path::PathBuf {
 struct ScriptFallback {
     dir: Option<std::path::PathBuf>,
     code: Option<String>,
+    reading: Reading,
 }
+
+/// Where a font found on demand is read (#1292).
+#[derive(Clone, Copy, Default, PartialEq, Eq, Debug)]
+enum Reading {
+    /// Where egui asks for it, in a text's layout: the tests', which have no window.
+    #[default]
+    Here,
+    /// Beside the window's thread, once its first frame is drawn ([`beside`]): egui gets what
+    /// is in memory already, the rest is read on the `fonts` thread, and egui asks again once it
+    /// is in; the letter is drawn as a box meanwhile. Before the first frame, as [`Reading::Here`]:
+    /// the start's text has its fonts from its first frame on.
+    Beside,
+}
+
+impl Reading {
+    /// Whether a file not read yet waits for the `fonts` thread ([`beside`]).
+    fn later(self) -> bool {
+        self == Reading::Beside && beside::started()
+    }
+}
+
+/// A font file isn't in memory yet: it is read beside the window's thread ([`beside`]).
+struct Later;
 
 /// One script's fonts on demand: a key, its code points, the files to try (in order).
 #[cfg_attr(not(any(windows, target_os = "macos")), allow(dead_code))]
@@ -1152,39 +1243,64 @@ pub(crate) fn cjk_font_files_for(c: char, code: &str) -> Vec<&'static str> {
 /// `fallback:<file>`; so a character one file lacks comes from the next (#1605: MS Gothic, the
 /// last of the Han list, was the one font of the Han characters on a Windows without the first
 /// ones, and lacks the Simplified-only ones). None when no file of the list has it: the system's
-/// own choice is asked next ([`SystemFallback`]).
-fn fallback_font(c: char, dir: &std::path::Path, code: &str) -> Option<(String, egui::FontData)> {
+/// own choice is asked next ([`SystemFallback`]). With `read`, a file not read yet is read now;
+/// without, [`Later`] says the first one needed (#1292: the window's thread never reads one).
+fn fallback_font(
+    c: char,
+    dir: &std::path::Path,
+    code: &str,
+    read: bool,
+) -> Result<Option<(String, egui::FontData)>, Later> {
     use std::collections::HashMap;
     use std::sync::Mutex;
     static LOADED: Mutex<Option<HashMap<std::path::PathBuf, Option<egui::FontData>>>> =
         Mutex::new(None);
-    let mut loaded = LOADED.lock().unwrap_or_else(|e| e.into_inner());
-    let loaded = loaded.get_or_insert_with(HashMap::new);
-    let mut load = |path: &std::path::Path| {
-        loaded
+    // The lock is never held while a file is read: the window's thread takes it to look.
+    let load = |path: &std::path::Path| -> Result<Option<egui::FontData>, Later> {
+        let known = LOADED
+            .lock()
+            .unwrap_or_else(|e| e.into_inner())
+            .as_ref()
+            .and_then(|loaded| loaded.get(path).cloned());
+        if let Some(known) = known {
+            return Ok(known);
+        }
+        if !read {
+            return Err(Later);
+        }
+        let data = read_font(path).map(|bytes| {
+            let data = font_data(bytes).tweak(on_demand_tweak());
+            tracing::info!(
+                "fonts: {} face {} loaded on demand (U+{:04X})",
+                path.display(),
+                data.index,
+                c as u32
+            );
+            data
+        });
+        Ok(LOADED
+            .lock()
+            .unwrap_or_else(|e| e.into_inner())
+            .get_or_insert_with(HashMap::new)
             .entry(path.to_owned())
-            .or_insert_with(|| {
-                let bytes = read_font(path)?;
-                let data = font_data(bytes).tweak(on_demand_tweak());
-                tracing::info!(
-                    "fonts: {} face {} loaded on demand (U+{:04X})",
-                    path.display(),
-                    data.index,
-                    c as u32
-                );
-                Some(data)
-            })
-            .clone()
+            .or_insert(data)
+            .clone())
     };
 
     #[cfg(any(windows, target_os = "macos"))]
     {
-        let font = fallback_entry(FALLBACK_FONTS, c)?;
+        let Some(font) = fallback_entry(FALLBACK_FONTS, c) else {
+            return Ok(None);
+        };
         let text = c.to_string();
-        fallback_files(font, code).into_iter().find_map(|file| {
-            let data = load(&font_path(dir, file))?;
-            covers(data.bytes(), data.index, &text).then(|| (format!("fallback:{file}"), data))
-        })
+        for file in fallback_files(font, code) {
+            if let Some(data) = load(&font_path(dir, file))?
+                && covers(data.bytes(), data.index, &text)
+            {
+                return Ok(Some((format!("fallback:{file}"), data)));
+            }
+        }
+        Ok(None)
     }
     // Linux: one font per Unicode block, the first file fontconfig names for its first
     // character asked (a script's letters don't each need a font of their own), kept under the
@@ -1194,22 +1310,36 @@ fn fallback_font(c: char, dir: &std::path::Path, code: &str) -> Option<(String, 
         static BLOCKS: Mutex<Option<HashMap<u32, Option<std::path::PathBuf>>>> = Mutex::new(None);
         let _ = (dir, code);
         let block = (c as u32) >> 8;
-        let mut blocks = BLOCKS.lock().unwrap_or_else(|e| e.into_inner());
-        let file = blocks
-            .get_or_insert_with(HashMap::new)
-            .entry(block)
-            .or_insert_with(|| {
-                fc_lookup(&format!(":charset={:x}", c as u32))
+        let known = BLOCKS
+            .lock()
+            .unwrap_or_else(|e| e.into_inner())
+            .as_ref()
+            .and_then(|blocks| blocks.get(&block).cloned());
+        let file = match known {
+            Some(file) => file,
+            None if !read => return Err(Later),
+            None => {
+                let found = fc_lookup(&format!(":charset={:x}", c as u32))
                     .into_iter()
-                    .find(|f| load(f).is_some())
-            })
-            .clone()?;
-        Some((format!("fallback:{block:x}"), load(&file)?))
+                    .find(|f| matches!(load(f), Ok(Some(_))));
+                BLOCKS
+                    .lock()
+                    .unwrap_or_else(|e| e.into_inner())
+                    .get_or_insert_with(HashMap::new)
+                    .entry(block)
+                    .or_insert(found)
+                    .clone()
+            }
+        };
+        let Some(file) = file else {
+            return Ok(None);
+        };
+        Ok(load(&file)?.map(|data| (format!("fallback:{block:x}"), data)))
     }
 }
 
 /// How a font found on demand draws: on the baseline of the family's first font (as the script
-/// fonts loaded up front, [`fonts`]), and on Windows hinted as [`sharp_text`] hints those.
+/// fonts loaded up front, [`font_definitions`]), and on Windows hinted as [`sharp_text`] hints those.
 fn on_demand_tweak() -> egui::FontTweak {
     let mut tweak = egui::FontTweak::default();
     tweak.set_baseline_fallback(true);
@@ -1297,8 +1427,20 @@ impl egui::FontProvider for ScriptFallback {
         let system = std::path::PathBuf::new();
         let dir = self.dir.as_deref().unwrap_or(&system);
         let code = self.code.as_deref().unwrap_or_else(|| crate::i18n::code());
-        let (key, data) = fallback_font(c, dir, code)?;
-        Some(egui::FontInsert::new(&key, data, Vec::new()))
+        match fallback_font(c, dir, code, !self.reading.later()) {
+            Ok(found) => {
+                let (key, data) = found?;
+                Some(egui::FontInsert::new(&key, data, Vec::new()))
+            }
+            // Read beside the window's thread; egui asks again once it is in.
+            Err(Later) => {
+                let (dir, code) = (dir.to_owned(), code.to_owned());
+                beside::run(format!("list U+{:04X} {code}", c as u32), move || {
+                    let _ = fallback_font(c, &dir, &code, true);
+                });
+                None
+            }
+        }
     }
 }
 
@@ -1313,52 +1455,209 @@ impl egui::FontProvider for ScriptFallback {
 /// spends. Linux has no need: fontconfig is asked for any letter ([`fallback_font`]).
 #[cfg(any(windows, target_os = "macos"))]
 #[derive(Default)]
-struct SystemFallback(std::sync::OnceLock<egui_system_font_provider::SystemFontProvider>);
+struct SystemFallback {
+    reading: Reading,
+}
+
+/// The system's fonts, listed the first time a letter needs them ([`SystemFallback`]).
+#[cfg(any(windows, target_os = "macos"))]
+static SYSTEM_FONTS: std::sync::OnceLock<egui_system_font_provider::SystemFontProvider> =
+    std::sync::OnceLock::new();
+
+/// What the system answered for a letter in the regular families or the monospace one
+/// ([`SystemFallback`] beside the window's thread), kept: egui asks again after each font found.
+#[cfg(any(windows, target_os = "macos"))]
+type SystemAnswers = std::collections::HashMap<(char, bool), Option<egui::FontInsert>>;
+
+#[cfg(any(windows, target_os = "macos"))]
+static SYSTEM_FOUND: std::sync::Mutex<Option<SystemAnswers>> = std::sync::Mutex::new(None);
+
+/// The system's font for `request`'s letter, asked now (it lists the system's fonts the first
+/// time, and maps the font's file).
+#[cfg(any(windows, target_os = "macos"))]
+fn system_font(request: &egui::FallbackRequest<'_>) -> Option<egui::FontInsert> {
+    let c = request.cluster.chars().next()?;
+    let started = std::time::Instant::now();
+    let system = SYSTEM_FONTS.get_or_init(|| {
+        // The interface language picks among a script's fonts (Chinese or Japanese faces).
+        egui_system_font_provider::SystemFontProvider::new().with_locale(Some(crate::i18n::code()))
+    });
+    let found = egui::FontProvider::font_for(system, request);
+    let ms = started.elapsed().as_millis();
+    match &found {
+        Some(font) => tracing::info!(
+            "fonts: U+{:04X} from the system's {} ({ms} ms)",
+            c as u32,
+            font.name
+        ),
+        None => tracing::info!("fonts: no font on this system has U+{:04X}", c as u32),
+    }
+    let mut font = found?;
+    font.data.tweak = on_demand_tweak();
+    Some(font)
+}
 
 #[cfg(any(windows, target_os = "macos"))]
 impl egui::FontProvider for SystemFallback {
     fn font_for(&self, request: &egui::FallbackRequest<'_>) -> Option<egui::FontInsert> {
-        let c = request.cluster.chars().next()?;
-        let started = std::time::Instant::now();
-        let system = self.0.get_or_init(|| {
-            // The interface language picks among a script's fonts (Chinese or Japanese faces).
-            egui_system_font_provider::SystemFontProvider::new()
-                .with_locale(Some(crate::i18n::code()))
-        });
-        let found = system.font_for(request);
-        let ms = started.elapsed().as_millis();
-        match &found {
-            Some(font) => tracing::info!(
-                "fonts: U+{:04X} from the system's {} ({ms} ms)",
-                c as u32,
-                font.name
-            ),
-            None => tracing::info!("fonts: no font on this system has U+{:04X}", c as u32),
+        if !self.reading.later() {
+            return system_font(request);
         }
-        let mut font = found?;
-        font.data.tweak = on_demand_tweak();
-        Some(font)
+        let c = request.cluster.chars().next()?;
+        let mono = *request.family == egui::FontFamily::Monospace;
+        let answered = SYSTEM_FOUND
+            .lock()
+            .unwrap_or_else(|e| e.into_inner())
+            .as_ref()
+            .and_then(|found| found.get(&(c, mono)).cloned());
+        if let Some(answer) = answered {
+            return answer;
+        }
+        // Asked only once MDM's lists are known to have no font for it: while a list's file is
+        // still being read, egui asks again after it, and the lists come first.
+        if fallback_font(c, &font_dir(), crate::i18n::code(), false).is_err() {
+            return None;
+        }
+        beside::run(format!("system U+{:04X} {mono}", c as u32), move || {
+            let cluster = c.to_string();
+            let family = if mono {
+                egui::FontFamily::Monospace
+            } else {
+                egui::FontFamily::Proportional
+            };
+            let found = system_font(&egui::FallbackRequest {
+                cluster: &cluster,
+                family: &family,
+            });
+            SYSTEM_FOUND
+                .lock()
+                .unwrap_or_else(|e| e.into_inner())
+                .get_or_insert_with(Default::default)
+                .insert((c, mono), found);
+        });
+        None
     }
 }
 
 /// The fonts for text outside the interface language, in the order they are asked: MDM's lists
 /// ([`ScriptFallback`]), then the system's choice ([`SystemFallback`]).
-fn on_demand_fonts() -> Vec<std::sync::Arc<dyn egui::FontProvider>> {
+fn on_demand_fonts(reading: Reading) -> Vec<std::sync::Arc<dyn egui::FontProvider>> {
     vec![
-        std::sync::Arc::new(ScriptFallback::default()),
+        std::sync::Arc::new(ScriptFallback {
+            reading,
+            ..Default::default()
+        }),
         #[cfg(any(windows, target_os = "macos"))]
-        std::sync::Arc::new(SystemFallback::default()),
+        std::sync::Arc::new(SystemFallback { reading }),
     ]
 }
 
-/// Tell the text system where the scripts outside the interface language come from, once.
+/// Tell the text system where the scripts outside the interface language come from, once: read
+/// beside the window's thread once its first frame is drawn ([`beside`]).
 fn add_script_fallback(ctx: &egui::Context) {
     static ADDED: std::sync::Once = std::sync::Once::new();
     ADDED.call_once(|| {
-        for provider in on_demand_fonts() {
+        let providers = on_demand_fonts(Reading::Beside);
+        beside::providers(providers.clone());
+        for provider in providers {
             ctx.add_font_provider(provider);
         }
     });
+}
+
+/// The fonts' files read beside the window's thread once its first frame is drawn (#1292): the
+/// fonts found on demand for text in other scripts (their files, fontconfig's answers, the
+/// system's list of fonts), DirectWrite's faces (win32.rs), and every font file when the
+/// language, View → Font or the language list asks for other fonts. An antivirus that checks
+/// each file opened (Bitdefender's) held such an open for 8 s on the window's thread, and the
+/// window froze meanwhile. Here the window draws with what it has (a box for a letter whose
+/// font isn't in yet, the fonts it had for a change), and is told to look again once the files
+/// are in. Before the first frame the start reads them where they are needed, as it always did.
+pub(crate) mod beside {
+    use std::collections::HashSet;
+    use std::sync::atomic::{AtomicBool, Ordering};
+    use std::sync::{Arc, Mutex, OnceLock, mpsc};
+    use std::time::Duration;
+
+    type Job = Box<dyn FnOnce() + Send>;
+
+    static STARTED: AtomicBool = AtomicBool::new(false);
+    static CTX: OnceLock<egui::Context> = OnceLock::new();
+    static PROVIDERS: OnceLock<Vec<Arc<dyn egui::FontProvider>>> = OnceLock::new();
+    static QUEUE: Mutex<Option<mpsc::Sender<(String, Job)>>> = Mutex::new(None);
+    /// The jobs on their way, by what they read: one asked again meanwhile isn't queued twice.
+    static PENDING: Mutex<Option<HashSet<String>>> = Mutex::new(None);
+
+    /// How long the thread waits for more after a job, to tell the window once for them all.
+    const GATHER: Duration = Duration::from_millis(40);
+
+    /// The window drew its first frame (app.rs): from now on its fonts are read here.
+    pub fn start(ctx: &egui::Context) {
+        let _ = CTX.set(ctx.clone());
+        STARTED.store(true, Ordering::Release);
+    }
+
+    /// Whether the window's fonts are read here ([`start`]).
+    pub fn started() -> bool {
+        STARTED.load(Ordering::Acquire)
+    }
+
+    /// The window's font providers ([`super::add_script_fallback`]): set again once a font is
+    /// in, so egui asks them again for the letters they had no font for yet.
+    pub(super) fn providers(p: Vec<Arc<dyn egui::FontProvider>>) {
+        let _ = PROVIDERS.set(p);
+    }
+
+    /// Run `job` on the `fonts` thread, once for `key` while it is on its way; the window is told
+    /// to look again afterwards.
+    pub fn run(key: String, job: impl FnOnce() + Send + 'static) {
+        let new = PENDING
+            .lock()
+            .unwrap_or_else(|e| e.into_inner())
+            .get_or_insert_with(HashSet::new)
+            .insert(key.clone());
+        if !new {
+            return;
+        }
+        let mut queue = QUEUE.lock().unwrap_or_else(|e| e.into_inner());
+        if queue.is_none() {
+            let (tx, rx) = mpsc::channel::<(String, Job)>();
+            let started = std::thread::Builder::new()
+                .name("fonts".into())
+                .spawn(move || work(rx));
+            if let Err(e) = started {
+                tracing::warn!("fonts: no thread to read them on: {e}");
+                return;
+            }
+            *queue = Some(tx);
+        }
+        if let Some(tx) = queue.as_ref() {
+            let _ = tx.send((key, Box::new(job)));
+        }
+    }
+
+    fn work(rx: mpsc::Receiver<(String, Job)>) {
+        while let Ok(first) = rx.recv() {
+            let mut batch = vec![first];
+            while let Ok(more) = rx.recv_timeout(GATHER) {
+                batch.push(more);
+            }
+            for (key, job) in batch {
+                if std::panic::catch_unwind(std::panic::AssertUnwindSafe(job)).is_err() {
+                    tracing::warn!("fonts: reading {key} failed");
+                }
+                if let Some(pending) = PENDING.lock().unwrap_or_else(|e| e.into_inner()).as_mut() {
+                    pending.remove(&key);
+                }
+            }
+            // egui asks the providers again (it forgets which letters they had nothing for)
+            // and draws the text again, with the fonts now in.
+            if let (Some(ctx), Some(providers)) = (CTX.get(), PROVIDERS.get()) {
+                ctx.set_font_providers(providers.clone());
+                ctx.request_repaint();
+            }
+        }
+    }
 }
 
 /// View → Font (#1489): the sizes the menu offers, in percent of the theme's own sizes. The list
@@ -1710,7 +2009,23 @@ fn load_fonts(ctx: &egui::Context, all: bool) {
         *loaded = Some((code, all));
         return;
     }
-    fonts(ctx, &code, all);
+    // Every font file is read again (a CJK font alone is 13-20 MB): beside the window's thread
+    // once it draws (#1292), with the fonts it has until they are in; the newest asked wins.
+    if beside::started() {
+        static ASKED: AtomicU64 = AtomicU64::new(0);
+        let asked = ASKED.fetch_add(1, Ordering::AcqRel) + 1;
+        let (ctx, code_now) = (ctx.clone(), code.clone());
+        beside::run(format!("fonts {asked}"), move || {
+            let defs = font_definitions(&code_now, all);
+            if ASKED.load(Ordering::Acquire) == asked {
+                ctx.set_fonts(defs);
+                text_styles(&ctx);
+            }
+        });
+    } else {
+        ctx.set_fonts(font_definitions(&code, all));
+    }
+    text_styles(ctx);
     *loaded = Some((code, all));
 }
 
@@ -1719,7 +2034,7 @@ fn load_fonts(ctx: &egui::Context, all: bool) {
 /// Font's file, when one is chosen, leads every family in its place. Every family falls back to
 /// the system's font (Tahoma has no Armenian or Georgian), then to the script fonts for `code`
 /// (all with `all`).
-fn fonts(ctx: &egui::Context, code: &str, all: bool) {
+fn font_definitions(code: &str, all: bool) -> egui::FontDefinitions {
     let mut defs = egui::FontDefinitions::default();
     // View → Font (#1489): the chosen file leads the regular families (a theme's own font,
     // Tahoma's, stays behind it); the computer's own font follows as a fallback, then the
@@ -1811,11 +2126,10 @@ fn fonts(ctx: &egui::Context, code: &str, all: bool) {
     #[cfg(windows)]
     sharp_text(&mut defs);
     only_loadable_fonts(&mut defs);
-    ctx.set_fonts(defs);
-    text_styles(ctx);
+    defs
 }
 
-/// Whether View → Font's chosen file takes `family`'s place ([`fonts`]): the regular families
+/// Whether View → Font's chosen file takes `family`'s place ([`font_definitions`]): the regular families
 /// (the interface's, the theme's, Tahoma's), not the bold ones, which have faces of their own,
 /// or `system-ui`, which stays the computer's own font.
 fn replaced_by_chosen(family: &egui::FontFamily) -> bool {
@@ -2034,6 +2348,31 @@ mod mode_tests {
     use super::{font_size_at, font_size_for, scaled, snap_text_size, wanted};
 
     /// #60: Always dark wins whatever the system says; otherwise Dark Mode support follows it.
+    /// #1292: a theme file picked in View → Theme is read beside the window's thread, and the
+    /// last one picked is the one made active; one that can't be read leaves the classic look.
+    /// (Files that aren't there: the classic look stays, as the other tests expect it.)
+    #[test]
+    fn a_theme_file_picked_is_read_beside_the_window_thread() {
+        let ctx = egui::Context::default();
+        let dir = tempfile::tempdir().unwrap();
+        let first = dir.path().join("first.toml").display().to_string();
+        let last = dir.path().join("last.toml").display().to_string();
+        assert!(
+            !super::pick(&first, &ctx),
+            "a file is read beside the window's thread"
+        );
+        assert!(!super::pick(&last, &ctx));
+        let until = std::time::Instant::now() + std::time::Duration::from_secs(20);
+        while !super::poll_pick() {
+            assert!(std::time::Instant::now() < until, "the pick never came in");
+            std::thread::sleep(std::time::Duration::from_millis(5));
+        }
+        assert_eq!(super::selected(), last, "the last pick wins");
+        assert_eq!(super::current().id, super::CLASSIC.id);
+        assert!(!super::poll_pick(), "taken once");
+        assert!(super::built_in("metro") && super::built_in("") && !super::built_in(&first));
+    }
+
     #[test]
     fn always_dark_wins_else_the_system_decides() {
         for system in [false, true] {
@@ -2590,6 +2929,7 @@ mod glyph_tests {
         let provider = super::ScriptFallback {
             dir: Some(dir.path().to_owned()),
             code: Some("zh-hans".into()),
+            reading: super::Reading::Here,
         };
         let mut fonts = Fonts::new(TextOptions::default(), egui::FontDefinitions::default())
             .with_font_providers(vec![std::sync::Arc::new(provider)]);
@@ -2689,7 +3029,7 @@ mod glyph_tests {
         use egui::epaint::text::{Fonts, TextOptions};
         use egui::{FontFamily, FontId};
         let mut fonts = Fonts::new(TextOptions::default(), egui::FontDefinitions::default())
-            .with_font_providers(super::on_demand_fonts());
+            .with_font_providers(super::on_demand_fonts(super::Reading::Here));
         let id = FontId::new(13.0, FontFamily::Proportional);
         for text in [
             "\u{09AC}\u{09BE}\u{0982}\u{09B2}\u{09BE}", // Bangla
@@ -2745,7 +3085,7 @@ mod glyph_tests {
         use egui::epaint::text::{Fonts, TextOptions};
         use egui::{FontFamily, FontId};
         let mut fonts = Fonts::new(TextOptions::default(), egui::FontDefinitions::default())
-            .with_font_providers(super::on_demand_fonts());
+            .with_font_providers(super::on_demand_fonts(super::Reading::Here));
         for family in [FontFamily::Proportional, FontFamily::Monospace] {
             let id = FontId::new(13.0, family);
             for (script, text) in NAMES {
@@ -2763,7 +3103,7 @@ mod glyph_tests {
         use egui::epaint::text::{Fonts, TextOptions};
         use egui::{FontFamily, FontId};
         let mut fonts = Fonts::new(TextOptions::default(), egui::FontDefinitions::default())
-            .with_font_providers(super::on_demand_fonts());
+            .with_font_providers(super::on_demand_fonts(super::Reading::Here));
         let id = FontId::new(13.0, FontFamily::Proportional);
         let found = |fonts: &Fonts| -> Vec<String> {
             fonts
@@ -2797,7 +3137,7 @@ mod glyph_tests {
         use egui::epaint::text::{Fonts, TextOptions};
         use egui::{FontFamily, FontId};
         let mut fonts = Fonts::new(TextOptions::default(), egui::FontDefinitions::default())
-            .with_font_providers(super::on_demand_fonts());
+            .with_font_providers(super::on_demand_fonts(super::Reading::Here));
         let id = FontId::new(13.0, FontFamily::Proportional);
         for (script, text) in [
             (
@@ -3016,7 +3356,8 @@ mod glyph_tests {
             let mut needed = code_marks.clone();
             marks(&text, &mut needed);
             let ctx = egui::Context::default();
-            super::fonts(&ctx, &code, false);
+            ctx.set_fonts(super::font_definitions(&code, false));
+            super::text_styles(&ctx);
             let mut out = ctx.run_ui(Default::default(), |_| {});
             out.textures_delta.clear();
             // A computer without the language's script font draws none of it (a CI image without
@@ -3121,7 +3462,8 @@ mod status_width_tests {
             for zoom in [1.0, 1.5] {
                 let ctx = egui::Context::default();
                 ctx.set_pixels_per_point(zoom);
-                super::fonts(&ctx, code, false);
+                ctx.set_fonts(super::font_definitions(code, false));
+                super::text_styles(&ctx);
                 let mut out = ctx.run_ui(Default::default(), |_| {});
                 out.textures_delta.clear();
                 let font = crate::winui::tahoma();
