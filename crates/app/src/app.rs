@@ -538,6 +538,9 @@ enum Cmd {
     /// View → Draw with → OpenGL / Direct3D, Vulkan or Metal (#89, #206), from the next start.
     #[cfg(gpu)]
     DrawWith(crate::renderer::Api),
+    /// View → Draw with → Download Mesa's software renderer (Windows, #476): its offer.
+    #[cfg(windows)]
+    SoftwareRenderer,
     /// View → Window system → Automatic (`None`), X11 (XWayland) or Wayland (Linux, #624), from
     /// the next start.
     #[cfg(target_os = "linux")]
@@ -1447,6 +1450,14 @@ pub struct App {
     /// The browser extension's offer (extension.rs), and whether this run has weighed it.
     extension: Option<crate::extension::Extension>,
     extension_weighed: bool,
+    /// Mesa's software renderer's offer (softgl.rs, #476: Windows, where WARP draws), the list
+    /// read for the start's offer, and whether this run has weighed it.
+    #[cfg(windows)]
+    soft_gl: Option<crate::softgl::Offer>,
+    #[cfg(windows)]
+    soft_gl_lookup: Option<crate::softgl::Lookup>,
+    #[cfg(windows)]
+    soft_gl_weighed: bool,
     /// The weekly update check, while it runs.
     auto_update: Option<crate::help::Slot>,
     /// The automatic check found a new version: its window comes to the front once shown.
@@ -2332,6 +2343,12 @@ impl App {
             shown_existing: None,
             extension: None,
             extension_weighed: false,
+            #[cfg(windows)]
+            soft_gl: None,
+            #[cfg(windows)]
+            soft_gl_lookup: None,
+            #[cfg(windows)]
+            soft_gl_weighed: false,
             auto_update: None,
             raise_updates: false,
             raise_options: false,
@@ -3591,6 +3608,9 @@ impl App {
                 }
             }
             "about" => self.run(Cmd::About, None, ctx),
+            // Mesa's software renderer's window (#476), as View → Draw with opens it.
+            #[cfg(windows)]
+            "software-renderer" => self.run(Cmd::SoftwareRenderer, None, ctx),
             // Update now's end-to-end tests (feature `test-update`, never in a release): Update
             // now pressed in the window `/show updates` opened (against MDM_UPDATE_FEED).
             #[cfg(feature = "test-update")]
@@ -9400,6 +9420,12 @@ impl App {
                 self.settings.renderer = Some(api);
                 self.dirty = true;
             }
+            #[cfg(windows)]
+            Cmd::SoftwareRenderer => {
+                if self.soft_gl.is_none() {
+                    self.soft_gl = Some(crate::softgl::Offer::looking(&self.rt, ctx));
+                }
+            }
             #[cfg(target_os = "linux")]
             Cmd::WindowSystem(pick) => {
                 tracing::info!("windows through {pick:?} from the next start (None: automatic)");
@@ -10755,12 +10781,20 @@ impl App {
         // The system's API on a software renderer (WARP): said, with why below (no card for
         // it, an OpenGL that can't draw MDM).
         let software = active == Some(gpu) && renderer::software();
+        // Mesa's llvmpipe draws (#476, Windows): said in place of what OpenGL's notes would say.
+        let llvmpipe = renderer::llvmpipe();
         // OpenGL can't draw MDM here (#835, #847): said, and why, where it changed what draws.
         let unfit = renderer::gl_failed().filter(|_| active == Some(gpu) && (software || !on));
         // The software renderer draws because no card here has a driver for the system's API:
         // one line says both (Windows, #847).
         let no_driver = no_driver_note.filter(|_| software && failed == Some(Why::NoAdapter));
-        if active.is_some_and(|a| a != chosen) || software {
+        if llvmpipe {
+            items.push(Sep);
+            // i18n: View → Draw with: a greyed note; what draws the windows: Mesa's software renderer, llvmpipe (keep the name), because no graphics card here has a driver MDM can draw with
+            items.push(off(
+                "Software (llvmpipe): no graphics card here has a driver for MDM",
+            ));
+        } else if active.is_some_and(|a| a != chosen) || software {
             items.push(Sep);
             let mut notes = Vec::new();
             // Since when, and when MDM tries it again (#1205).
@@ -10813,9 +10847,44 @@ impl App {
                 notes.extend(again(renderer::gl_again()));
             }
             items.extend(notes);
+            if software {
+                items.extend(Self::software_renderer_items());
+            }
         }
         // i18n: View menu: submenu choosing what draws MDM's windows: OpenGL, or Direct3D, Vulkan or Metal (graphics systems)
         Sub("Draw with", true, items)
+    }
+
+    /// View → Draw with's lines about Mesa's software renderer (#476, Windows), where Windows'
+    /// software renderer (WARP) draws: its offer while it isn't downloaded, else whether it draws
+    /// from the next start or didn't start here.
+    #[cfg(gpu)]
+    fn software_renderer_items() -> Vec<MenuEntry<Cmd>> {
+        #[cfg(windows)]
+        {
+            use crate::renderer;
+            use MenuEntry::{Item as I, Sep};
+            let off = |label| I(label, Cmd::None, false, false);
+            let mut items = vec![Sep];
+            if renderer::mesa_dll().is_none() {
+                // i18n: View → Draw with: opens a window offering to download Mesa's software renderer (llvmpipe, keep the name), which draws MDM's windows with far less of the processor than Windows' own (WARP)
+                items.push(I(
+                    "Download Mesa's software renderer (llvmpipe)...",
+                    Cmd::SoftwareRenderer,
+                    true,
+                    false,
+                ));
+            } else if renderer::llvmpipe_failed().is_some() {
+                // i18n: View → Draw with: a greyed note; Mesa's software renderer (llvmpipe, keep the name) failed on this computer, so Windows' own software renderer (WARP, keep the name) draws
+                items.push(off("Software (llvmpipe) didn't start here: WARP draws"));
+            } else {
+                // i18n: View → Draw with: a greyed note; Mesa's software renderer (llvmpipe, keep the name) is downloaded and draws the windows from MDM's next start
+                items.push(off("Software (llvmpipe) draws from the next start"));
+            }
+            items
+        }
+        #[cfg(not(windows))]
+        Vec::new()
     }
 
     /// View → Draw with's note under a way that failed here: since when it is passed over, and
@@ -13724,6 +13793,46 @@ impl App {
         self.dirty = true;
     }
 
+    /// Mesa's software renderer (#476, softgl.rs): offered once, at a start drawn with Windows'
+    /// WARP for want of a graphics card's driver, once MDM's signed list said its size (read in
+    /// the background, only while the automatic update check is on); and its window, from View
+    /// → Draw with too. After the first start's questions, and never on a server.
+    #[cfg(windows)]
+    fn software_renderer_offer(&mut self, ctx: &egui::Context) {
+        if !self.soft_gl_weighed
+            && !self.headless
+            && self.lang_picker.is_none()
+            && self.setup.is_none()
+            && self.settings.language_asked
+            && self.settings.helpers_asked
+        {
+            self.soft_gl_weighed = true;
+            if crate::softgl::worth_offering(&self.settings) {
+                self.soft_gl_lookup = Some(crate::softgl::look_up(&self.rt, ctx));
+            }
+        }
+        let looked = self
+            .soft_gl_lookup
+            .as_ref()
+            .and_then(|s| s.lock().ok().and_then(|mut s| s.take()));
+        if let Some(got) = looked {
+            self.soft_gl_lookup = None;
+            // None for this computer, or the list couldn't be read: no offer at this start.
+            if let Ok(offered) = got
+                && self.soft_gl.is_none()
+            {
+                self.soft_gl = Some(crate::softgl::Offer::offered(&self.rt, offered));
+                self.settings.software_renderer_asked = true;
+                self.dirty = true;
+            }
+        }
+        if let Some(d) = &mut self.soft_gl
+            && !matches!(d.show(ctx), Outcome::Open)
+        {
+            self.soft_gl = None;
+        }
+    }
+
     fn help_dialogs(&mut self, ctx: &egui::Context) {
         if let Some(d) = &mut self.lang_picker {
             let first = !self.settings.language_asked;
@@ -13784,6 +13893,8 @@ impl App {
                 Outcome::Closed => self.extension = None,
             }
         }
+        #[cfg(windows)]
+        self.software_renderer_offer(ctx);
         if let Some(d) = &mut self.about
             && !matches!(d.show(ctx), Outcome::Open)
         {
