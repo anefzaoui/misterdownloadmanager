@@ -79,6 +79,14 @@ pub struct Faults {
     /// stores and their CDNs send it with any range (#1577).
     #[serde(deserialize_with = "flag_opt")]
     pub digest: Option<bool>,
+    /// A whole file's answer (200) carries this `Content-MD5`: `wrong` (an MD5 of other bytes),
+    /// else the base64 value as given (#2064: a server announcing the hash of the object as it
+    /// stores it, not of what it sends).
+    pub content_md5: Option<String>,
+    /// Every answer carries Alibaba Cloud OSS's `x-oss-meta-encode: 1`: the object is stored
+    /// encoded and decoded as it is served (PikPak's, #2064).
+    #[serde(deserialize_with = "flag_opt")]
+    pub oss_encode: Option<bool>,
     /// Delay before sending response headers, ms.
     pub latency_ms: Option<u64>,
     /// Delay before answering a request that asks for a range, ms (on top of `latency_ms`): the
@@ -180,6 +188,8 @@ impl Faults {
             node: over.node.or(self.node),
             nodes: over.nodes.or(self.nodes),
             digest: over.digest.or(self.digest),
+            content_md5: over.content_md5.clone().or(self.content_md5.clone()),
+            oss_encode: over.oss_encode.or(self.oss_encode),
             latency_ms: over.latency_ms.or(self.latency_ms),
             range_latency_ms: over.range_latency_ms.or(self.range_latency_ms),
             range_rate: over.range_rate.or(self.range_rate),
@@ -304,6 +314,14 @@ mod tests {
         assert!(!has_cookie(Some("sid=11"), "sid=1"));
         assert!(!has_cookie(Some("xsid=1"), "sid=1"));
         assert!(!has_cookie(None, "sid"));
+        let md5 = Faults::parse("content_md5=wrong&oss_encode=1").unwrap();
+        assert_eq!(md5.content_md5.as_deref(), Some("wrong"));
+        assert_eq!(md5.oss_encode, Some(true));
+        let given = Faults::parse("content_md5=nhB9nTcrtoJr2B01QqQZ1g%3D%3D").unwrap();
+        assert_eq!(
+            given.content_md5.as_deref(),
+            Some("nhB9nTcrtoJr2B01QqQZ1g==")
+        );
         let js = Faults::parse("js_challenge=2500").unwrap();
         assert_eq!(js.js_challenge, Some(2500));
         assert!(challenge_page(2500).contains("2500"));

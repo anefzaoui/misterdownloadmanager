@@ -36,8 +36,10 @@ pub struct ResumeState {
     /// HTML is a sign-in wall, not data).
     #[serde(default)]
     pub content_type: Option<String>,
-    /// The hash the finished file must have (the user's or the server's), if known.
-    #[serde(default)]
+    /// The hash the finished file is checked against (the user's, a published one, or the
+    /// server's, which only warns: `Hash::origin`), if known. One saved without its origin is
+    /// the server's (`verify::state_hash`).
+    #[serde(default, deserialize_with = "crate::verify::state_hash::deserialize")]
     pub checksum: Option<crate::verify::Hash>,
     /// The first run got past a refusal by asking with `Options::agent_fallback` instead of the
     /// browser's User-Agent (#372): a resume asks the same way.

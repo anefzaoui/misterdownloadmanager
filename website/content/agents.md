@@ -28,6 +28,7 @@ Search engines may index it, AI tools may use it to answer questions, and it may
 [`/.well-known/api-catalog`](/.well-known/api-catalog) lists them (RFC 9727):
 
 - **The site's star ratings**, at `https://ratings.misterdownloadmanager.com/api/ratings`, described in [OpenAPI](/ratings-openapi.json). Anyone may read the numbers; rating is for this site's pages (below).
+- **The home page's live figures**, at `https://ratings.misterdownloadmanager.com/api/stats`, in the same [OpenAPI](/ratings-openapi.json): how many times MDM was downloaded from GitHub, every version together and how many people use the browser add-on (the Chrome Web Store's users, Firefox Add-ons' daily users), each with when it was read. Read again at most every 15 minutes; a source that can't be read keeps its last figure.
 - **MDM's automation API**, which isn't on this site at all: it runs inside the app, on the user's own computer, off until they turn it on, and answers only there, with a secret token. Its [documentation](/help/command-line.html#the-automation-api) and its [JSON Schema](/automation-api.schema.json).
 
 ## MDM's MCP server

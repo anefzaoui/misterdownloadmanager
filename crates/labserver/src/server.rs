@@ -839,6 +839,10 @@ GET|HEAD /gen/{size}[/{name}]?seed=N&<file params>&<faults>   size: 12345, 64K, 
     nodes=N        a CDN in front of N copies (as node=): request n gets copy (n-1) mod N
     digest=1       x-oss-hash-crc64ecma on every answer: the file's version, the same on every
                    copy (a stand-in value, not the bytes' CRC; etag_change_every changes it)
+    content_md5=wrong|BASE64  a whole file's answer (200) carries that Content-MD5: wrong is the
+                   MD5 of other bytes (a server announcing the object as it stores it, #2064)
+    oss_encode=1   x-oss-meta-encode: 1 on every answer (an OSS object stored encoded, decoded as
+                   it is served: PikPak's)
     etag=weak|per-request|none latency_ms=N range_latency_ms=N (only requests with a Range)
     range_rate=SIZE  the rate of answers to requests with a Range (instead of rate)
     burst=SIZE     with a rate, a link: a response the client stopped reading catches up with
@@ -2060,6 +2064,23 @@ pub(crate) async fn serve(
     if f.digest == Some(true) {
         let crc = seed.rotate_left(17) ^ size.wrapping_mul(0x9E37_79B9_7F4A_7C15) ^ generation;
         builder = builder.header("x-oss-hash-crc64ecma", crc.to_string());
+    }
+    // A hash the server announces for the whole file (#2064): `wrong` is the MD5 of other
+    // bytes (the object as stored, encoded), else the value given.
+    if status == StatusCode::OK
+        && let Some(md5) = f.content_md5.as_deref()
+    {
+        let value = match md5 {
+            // A fixed MD5 (base64), of no file the generator makes.
+            "wrong" => "d4Mu0ofvrrT4+mPzWSq1Ow==",
+            given => given,
+        };
+        if let Ok(v) = HeaderValue::from_str(value) {
+            builder = builder.header("content-md5", v);
+        }
+    }
+    if f.oss_encode == Some(true) {
+        builder = builder.header("x-oss-meta-encode", "1");
     }
     if status == StatusCode::PARTIAL_CONTENT {
         builder = builder.header(

@@ -2513,16 +2513,29 @@ async fn watch(dl: Download, json: bool) -> anyhow::Result<()> {
     match dl.wait().await {
         Ok(out) => {
             let secs = started.elapsed().as_secs_f64();
+            // The server's own checksum didn't match (#2064): kept, and said.
+            let warning = out.checksum_warning.map(|algo| {
+                format!(
+                    "the server's {} checksum didn't match; the file may still be fine (check it if it matters)",
+                    algo.name()
+                )
+            });
             if json {
-                emit(
-                    json!({ "event": "done", "path": out.path, "size": out.size, "seconds": secs }),
-                );
+                let mut done =
+                    json!({ "event": "done", "path": out.path, "size": out.size, "seconds": secs });
+                if let Some(w) = &warning {
+                    done["warning"] = json!(w);
+                }
+                emit(done);
             } else {
                 println!(
                     "saved {} ({}) in {secs:.1}s",
                     out.path.display(),
                     mb(out.size)
                 );
+                if let Some(w) = &warning {
+                    eprintln!("warning: {w}");
+                }
             }
             Ok(())
         }
