@@ -569,6 +569,8 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 Everything below ships together, in version 0.6.0, the next release.
 
+- ✅ Torrents: with files unticked, the list counts the ticked files only (downloaded and size),
+  as Properties does ([#2080](https://github.com/anefzaoui/misterdownloadmanager/issues/2080))
 - ✅ MDM's window toolkit (egui) on the same copy as the Craft suite's libraries (storytold's
   `next`), MDM's own fixes rebased on it: every window, menus included, connected to screen
   readers before it first shows, and accessibility stays on while any window is read

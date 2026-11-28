@@ -1815,19 +1815,41 @@ fn check_halted(checks: &Checks, hash: &str, checked: u64) -> bool {
     now.duration_since(seen.1) >= CHECK_HALTED_AFTER
 }
 
-/// Bytes verified and bytes total across the files chosen in `only_files` (None if every
-/// file is chosen or metadata hasn't arrived yet). Padding files are excluded.
-fn chosen_counts(h: &librqbit::ManagedTorrent, file_done: &[u64]) -> Option<(u64, u64)> {
+/// The bytes there and the size of the files chosen (#2080), what the list and Properties count:
+/// librqbit counts whole pieces, so an unticked file inside a piece it shares with a ticked one
+/// counts as chosen, and a torrent whose unticked files are small reads as its whole size. None
+/// when every file is chosen. Padding files left out; one pass over the files, whatever their
+/// number. While it is checked there are no per-file numbers yet (`file_done` empty): the check's
+/// count (`checked` of `checking`, every piece of the torrent) is given in the same proportion of
+/// the chosen size, so its progress still shows and the size stays the chosen one.
+fn chosen_counts(
+    h: &librqbit::ManagedTorrent,
+    file_done: &[u64],
+    checked: u64,
+    checking: u64,
+) -> Option<(u64, u64)> {
     let chosen = h.only_files()?;
-    let (files, _) = files_of(h)?;
-    let (mut done, mut total) = (0u64, 0u64);
-    for (i, f) in files.iter().enumerate() {
-        if !f.padding && chosen.contains(&i) {
-            total += f.size;
-            done += file_done.get(i).copied().unwrap_or(0).min(f.size);
+    h.with_metadata(|m| {
+        let mut ticked = vec![false; m.file_infos.len()];
+        for i in &chosen {
+            if let Some(t) = ticked.get_mut(*i) {
+                *t = true;
+            }
         }
-    }
-    Some((done, total))
+        let (mut done, mut total) = (0u64, 0u64);
+        for (i, f) in m.file_infos.iter().enumerate() {
+            if ticked[i] && !f.attrs.padding {
+                total += f.len;
+                done += file_done.get(i).copied().unwrap_or(0).min(f.len);
+            }
+        }
+        if file_done.is_empty() && checking > 0 {
+            let part = u128::from(checked.min(checking)) * u128::from(total) / u128::from(checking);
+            done = u64::try_from(part).unwrap_or(total);
+        }
+        (done, total)
+    })
+    .ok()
 }
 
 /// A torrent's numbers now: waits while librqbit holds its state (#693).
@@ -1853,7 +1875,8 @@ fn stats_of(h: &librqbit::ManagedTorrent, hash: &str, checks: &Checks) -> Stats 
         checks.lock().unwrap().remove(hash);
     }
     let (done, total) =
-        chosen_counts(h, &s.file_progress).unwrap_or((s.progress_bytes, s.total_bytes));
+        chosen_counts(h, &s.file_progress, s.progress_bytes, s.total_bytes)
+            .unwrap_or((s.progress_bytes, s.total_bytes));
     Stats {
         phase,
         checked: (phase == Phase::Checking).then_some(done),
