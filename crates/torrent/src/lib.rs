@@ -3924,9 +3924,14 @@ mod tests {
         let (out2, meta2) = (out.clone(), meta.clone());
         let given = Arc::new(AtomicUsize::new(0));
         let given2 = given.clone();
+        // Linux: the descriptors into the folder each time the app is asked for a file, before
+        // it opens it. Room is made in the budget first, so there is always one free for it.
+        let before_open = Arc::new(AtomicUsize::new(0));
+        let before_open2 = before_open.clone();
         let open_one: authorized_storage::OpenOne = Arc::new(move |index| {
             // Opened again where it is, never made.
             given2.fetch_add(1, Ordering::Relaxed);
+            before_open2.fetch_max(fds_under(&out2).unwrap_or(0), Ordering::Relaxed);
             let path = out2.join(&meta2.files[index].path);
             let file = std::fs::OpenOptions::new()
                 .read(true)
@@ -3984,6 +3989,11 @@ mod tests {
         }
         assert!(most > 0 && most <= MAX, "at most {MAX} open, saw {most}");
         assert!(most_fds <= MAX, "descriptors into the folder: {most_fds}");
+        let before_open = before_open.load(Ordering::Relaxed);
+        assert!(
+            before_open < MAX,
+            "a file was opened with no room made for it: {before_open} open before"
+        );
         assert!(
             given.load(Ordering::Relaxed) >= files.len() - 8,
             "every file handed over closed was given again"
