@@ -227,6 +227,9 @@ fn stretch_begin(part: u8) {
 fn stretch_end() {
     let start = FRAME_START.swap(0, Ordering::AcqRel);
     let took = now_ms().saturating_sub(start.saturating_sub(1));
+    if start != 0 {
+        crate::diskwatch::stretch(took);
+    }
     if start != 0 && took >= SLOW_FRAME.as_millis() as u64 {
         let part = if PART.load(Ordering::Relaxed) == LOGIC {
             "logic"

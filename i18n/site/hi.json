@@ -7074,6 +7074,10 @@
    "source": "What Update now does",
    "text": "अभी अपडेट करें क्या करता है"
   },
+  "5f818384bb56aff6": {
+   "source": "<g1>Edge (or another browser) says \"Specified native messaging host not found\", though the registry entry looks right?</g1> On 64-bit Windows the browsers read the registry's 32-bit part (<x2/>) before the entry you find under <x3/>, and take the first one there, even one that leads to a copy that is gone. <g4>Test browser integration</g4> says <g5>An older registry entry is in the way</g5>, with that entry: click <g6>Set it up</g6> to give your account an entry of its own, which the browsers read before it. MDM also does that by itself at its start when that entry leads nowhere, and its setup for everyone removes it.",
+   "text": "<g1>Edge (या कोई अन्य ब्राउज़र) कहता है \"निर्दिष्ट नेटिव मैसेजिंग होस्ट नहीं मिला\", हालांकि रजिस्ट्री एंट्री सही दिखती है?</g1> 64-बिट Windows पर ब्राउज़र रजिस्ट्री के 32-बिट भाग (<x2/>) को <x3/> के तहत मिलने वाली एंट्री से पहले पढ़ते हैं, और वहां पहली एंट्री लेते हैं, भले ही वह किसी ऐसी कॉपी की ओर ले जाए जो अब नहीं है। <g4>ब्राउज़र एकीकरण का परीक्षण करें</g4> कहता है <g5>एक पुरानी रजिस्ट्री एंट्री रास्ते में है</g5>, उस एंट्री के साथ: अपने खाते को अपनी खुद की एंट्री देने के लिए <g6>इसे सेट अप करें</g6> पर क्लिक करें, जिसे ब्राउज़र उससे पहले पढ़ते हैं। MDM भी अपने आप ऐसा तब करता है जब वह एंट्री कहीं नहीं ले जाती, और सभी के लिए इसका सेटअप इसे हटा देता है।"
+  },
   "5f8f976d1dd62e61": {
    "source": "A group box's frame",
    "text": "एक ग्रुप बॉक्स का फ़्रेम"
@@ -10818,6 +10822,10 @@
    "source": "MDM's interface comes in 87 languages: every display language Windows 11 offers, from Afrikaans to Vietnamese, including both Chinese scripts, Spanish for Spain and Mexico, French for France and Canada, Portuguese for Portugal and Brazil, and Serbian in Cyrillic and Latin.",
    "text": "MDM का इंटरफ़ेस 87 भाषाओं में आता है: Windows 11 की हर डिस्प्ले भाषा, अफ्रीकी से वियतनामी तक, जिसमें दोनों चीनी लिपियाँ, स्पेन के लिए स्पेनिश और मेक्सिको के लिए स्पेनिश, फ्रांस के लिए फ्रेंच और कनाडा के लिए फ्रेंच, पुर्तगाल के लिए पुर्तगाली और ब्राजील के लिए पुर्तगाली, और सिरिलिक और लैटिन में सर्बियाई शामिल हैं।"
   },
+  "91c08dd2d3fe7d4a": {
+   "source": "<g1>Add category</g1> — make your own, for example <g2>Books</g2> for <x3/> (they then go to Books, not Documents). Give it a name, the file types (separated by spaces, <x4/> allowed) and a folder.",
+   "text": "<g1>श्रेणी जोड़ें</g1> — अपनी खुद की श्रेणी बनाएं, उदाहरण के लिए <g2>किताबें</g2> के लिए <x3/> (वे फिर दस्तावेज़ों में नहीं, बल्कि किताबों में जाती हैं)। इसे एक नाम, फ़ाइल प्रकार (स्थानों से अलग किए गए, <x4/> की अनुमति है) और एक फ़ोल्डर दें।"
+  },
   "91cefe80b7f00fac": {
    "source": "<g1><g2>Download a file</g2></g1> — copy a link, add it, open the file.",
    "text": "<g1><g2>एक फ़ाइल डाउनलोड करें</g2></g1> — एक लिंक कॉपी करें, उसे जोड़ें, फ़ाइल खोलें।"
@@ -12329,10 +12337,6 @@
   "a4b01563b82565da": {
    "source": "<g1>Sharper text on Windows</g1> (<g2>#262</g2>): Segoe UI and Tahoma are grid-fitted across as well as up and down, and each letter starts on a whole pixel, as Windows draws its own grey text: upright strokes were two grey pixels wide at 100 % and 125 %, which read as blurred.",
    "text": "<g1>Windows पर तीखा टेक्स्ट</g1> (<g2>#262</g2>): Segoe UI और Tahoma को ऊपर और नीचे के साथ-साथ ग्रिड-फिट किया जाता है, और हर अक्षर एक पूरे पिक्सेल पर शुरू होता है, जैसे Windows अपना ग्रे टेक्स्ट ड्रॉ करता है: 100% और 125% पर सीधी स्ट्रोक दो ग्रे पिक्सेल चौड़ी थीं, जो धुंधली लगती थीं।"
-  },
-  "a4b04f29f56fdc42": {
-   "source": "<g1>Add category</g1> — make your own, for example <g2>Books</g2> for <x3/>. Give it a name, the file types (separated by spaces, <x4/> allowed) and a folder.",
-   "text": "<g1>श्रेणी जोड़ें</g1> — अपनी खुद की श्रेणी बनाएँ, उदाहरण के लिए <x3/> के लिए <g2>पुस्तकें</g2>। इसे एक नाम, फ़ाइल प्रकार (स्थानों से अलग किए गए, <x4/> की अनुमति है) और एक फ़ोल्डर दें।"
   },
   "a4b1f9a84345ac5d": {
    "source": "<g1>yt-dlp</g1> (about 23 MB) looks the page up and finds where the video and its sound come from; MDM downloads them (<g2>How a video comes down</g2>). The first time, click <g3>Install yt-dlp</g3>. MDM checks the download against the signature yt-dlp's developers publish before it uses it.",
@@ -14141,10 +14145,6 @@
   "bc606bb991071128": {
    "source": "The next tab of a focused tab strip; the next choice of a radio group",
    "text": "एक फ़ोकस किए गए टैब स्ट्रिप का अगला टैब; एक रेडियो समूह का अगला विकल्प"
-  },
-  "bc713e862e9b84d3": {
-   "source": "Each download falls into a category by its file type: <g1>General</g1>, <g2>Compressed</g2>, <g3>Documents</g3>, <g4>Music</g4>, <g5>Programs</g5> or <g6>Video</g6>. Torrents have their own <g7>Torrents</g7> category. Each category has its own folder, by default inside your Downloads folder (<x8/>, <x9/> and so on; General uses <x10/> itself).",
-   "text": "प्रत्येक डाउनलोड अपनी फ़ाइल प्रकार के अनुसार एक श्रेणी में आता है: <g1>सामान्य</g1>, <g2>संपीड़ित</g2>, <g3>दस्तावेज़</g3>, <g4>संगीत</g4>, <g5>प्रोग्राम</g5> या <g6>वीडियो</g6>। टॉरेंट की अपनी <g7>टॉरेंट</g7> श्रेणी होती है। प्रत्येक श्रेणी का अपना फ़ोल्डर होता है, डिफ़ॉल्ट रूप से आपके डाउनलोड फ़ोल्डर के अंदर (<x8/>, <x9/> और इसी तरह; सामान्य <x10/> का उपयोग करता है)।"
   },
   "bc7153d0bcfdacbb": {
    "source": "Themes — Mister Download Manager",
@@ -17262,6 +17262,10 @@
    "source": "Can it download overnight or on a schedule?",
    "text": "क्या यह रात भर या एक शेड्यूल पर डाउनलोड कर सकता है?"
   },
+  "e852a2ae2ea94c2d": {
+   "source": "<g1>Automatically put in \"…\" category the following file types</g1> — the file types that go to this category. A built-in category whose list you never changed gains the types a new version adds; one you edited stays as it is.",
+   "text": "<g1>निम्नलिखित फ़ाइल प्रकारों को स्वचालित रूप से \"...\" श्रेणी में डालें</g1> — वे फ़ाइल प्रकार जो इस श्रेणी में जाते हैं। एक अंतर्निहित श्रेणी जिसकी सूची आपने कभी नहीं बदली, उसमें नए संस्करण द्वारा जोड़े गए प्रकार शामिल हो जाते हैं; जो आपने संपादित की है वह वैसी ही रहती है।"
+  },
   "e8592a334f7cb4df": {
    "source": "In <g1>Download File Info</g1>, click <g2>Download Later</g2> and pick the queue.",
    "text": "<g1>फ़ाइल जानकारी डाउनलोड करें</g1> में, <g2>बाद में डाउनलोड करें</g2> पर क्लिक करें और कतार चुनें।"
@@ -17857,6 +17861,10 @@
   "ef6e5d90b67f8e4e": {
    "source": "<g1>\"Hide tab\" was cut in longer languages</g1> (German \"Registerkarte au...\"): the button grows to fit its label where there is room, through a shared helper other buttons can use.",
    "text": "<g1>\"टैब छुपाएँ\" लंबी भाषाओं में कट जाता था</g1> (जर्मन \"Registerkarte au...\"): बटन अपनी लेबल में फिट होने के लिए बढ़ता है जहाँ जगह होती है, एक साझा सहायक के माध्यम से जिसका उपयोग अन्य बटन कर सकते हैं।"
+  },
+  "ef7238dc374b9e0e": {
+   "source": "Each download falls into a category by its file type: <g1>General</g1>, <g2>Compressed</g2>, <g3>Documents</g3>, <g4>Music</g4>, <g5>Programs</g5> or <g6>Video</g6>. Torrents have their own <g7>Torrents</g7> category. <g8>Programs</g8> takes programs, installers and app packages (EXE, MSI, APK, IPA, DMG, PKG, DEB, RPM, AppImage, MSIX…), <g9>Compressed</g9> archives and disc images (ZIP, RAR, 7Z, TAR, XZ, ISO, IMG, VHD…), <g10>Documents</g10> text documents, spreadsheets and e-books (PDF, DOCX, XLSX, ODT, EPUB, MOBI…), <g11>Music</g11> audio (MP3, FLAC, OPUS, M4A…) and <g12>Video</g12> videos (MP4, MKV, WEBM…); every other file goes to General. Your own categories come before the built-in ones. Each category has its own folder, by default inside your Downloads folder (<x13/>, <x14/> and so on; General uses <x15/> itself).",
+   "text": "प्रत्येक डाउनलोड अपनी फ़ाइल प्रकार के अनुसार एक श्रेणी में आता है: <g1>सामान्य</g1>, <g2>संपीड़ित</g2>, <g3>दस्तावेज़</g3>, <g4>संगीत</g4>, <g5>प्रोग्राम</g5> या <g6>वीडियो</g6>। टॉरेंट की अपनी <g7>टॉरेंट</g7> श्रेणी होती है। <g8>प्रोग्राम</g8> में प्रोग्राम, इंस्टालर और ऐप पैकेज (EXE, MSI, APK, IPA, DMG, PKG, DEB, RPM, AppImage, MSIX…) आते हैं, <g9>संपीड़ित</g9> में आर्काइव और डिस्क इमेज (ZIP, RAR, 7Z, TAR, XZ, ISO, IMG, VHD…), <g10>दस्तावेज़</g10> में टेक्स्ट दस्तावेज़, स्प्रेडशीट और ई-बुक्स (PDF, DOCX, XLSX, ODT, EPUB, MOBI…), <g11>संगीत</g11> में ऑडियो (MP3, FLAC, OPUS, M4A…) और <g12>वीडियो</g12> में वीडियो (MP4, MKV, WEBM…) आते हैं; बाकी सभी फ़ाइलें सामान्य में जाती हैं। आपकी अपनी श्रेणियां अंतर्निहित श्रेणियों से पहले आती हैं। प्रत्येक श्रेणी का अपना फ़ोल्डर होता है, जो डिफ़ॉल्ट रूप से आपके डाउनलोड फ़ोल्डर के अंदर होता है (<x13/>, <x14/> और इसी तरह; सामान्य स्वयं <x15/> का उपयोग करता है)।"
   },
   "ef8cedcbdccdaf85": {
    "source": "The code is filled in when you scanned the QR code; otherwise type it. Give the phone a name, and tap <g1>Pair</g1>. The window on the computer says so, and closes with <g2>Done</g2>.",
@@ -18469,10 +18477,6 @@
   "f8c444517ab946e2": {
    "source": "From the plain zip",
    "text": "सादे ज़िप से"
-  },
-  "f8c71a9fb2bd8bde": {
-   "source": "<g1>Automatically put in \"…\" category the following file types</g1> — the file types that go to this category.",
-   "text": "<g1>निम्नलिखित फ़ाइल प्रकारों को “…” श्रेणी में स्वचालित रूप से डालें</g1> — वे फ़ाइल प्रकार जो इस श्रेणी में जाते हैं।"
   },
   "f8e0a9e7ee529ff0": {
    "source": "Select <g1>Main download queue</g1> on the left. The <g2>Schedule</g2> tab opens.",

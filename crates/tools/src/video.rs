@@ -1215,6 +1215,29 @@ fn probed(ffprobe: &Path, file: &Path) -> Option<Probed> {
     })
 }
 
+/// The codecs of `file`'s audio and video streams, as ffprobe names them (`h264`, `aac_latm`).
+fn codecs_of(ffprobe: &Path, file: &Path) -> Option<Vec<String>> {
+    let mut cmd = crate::proc::program(ffprobe);
+    cmd.args([
+        "-v",
+        "error",
+        "-show_entries",
+        "stream=codec_type,codec_name",
+        "-of",
+        "json",
+    ])
+    .arg(ff_file(file));
+    let out = proc::output(cmd, "ffprobe", Duration::from_secs(60)).ok()?;
+    let v: serde_json::Value = serde_json::from_slice(&out).ok()?;
+    let codecs: Vec<String> = v["streams"]
+        .as_array()?
+        .iter()
+        .filter(|s| matches!(s["codec_type"].as_str(), Some("audio" | "video")))
+        .filter_map(|s| s["codec_name"].as_str().map(str::to_owned))
+        .collect();
+    (!codecs.is_empty()).then_some(codecs)
+}
+
 /// How much shorter than the recording an MP4 made of it may play and still hold all of it:
 /// timestamps' rounding, a last frame. Not a share of it, which grows with a long recording.
 const SLACK: f64 = 1.0;
@@ -2967,6 +2990,33 @@ fn attempt(
                 .map(|ids| ids.split('+').map(str::to_owned).collect())
                 .unwrap_or_default();
             return Attempt::MergeFailed(ran.failure, ids);
+        }
+        // The engine's one stream, joined whole, that yt-dlp's fix-up couldn't make an MP4:
+        // one of its streams can't go into an MP4 as it is (AAC in LATM, as DVB carries it).
+        // The MPEG-TS it came as plays as it is: it is the video (`done` names it `.ts`), and
+        // what the fix-up left half made (`<stem>.temp.mp4`) goes. A Resume would only fail
+        // the same way again.
+        _ if by_engine
+            && live.is_none()
+            && ran.failure.contains("Postprocessing:")
+            && let Some(f) = saved_by_name(ours).filter(|f| ts_in_mp4(f)) =>
+        {
+            let _ = std::fs::remove_file(merge_file(&f));
+            let streams = recorder
+                .ffmpeg
+                .as_deref()
+                .and_then(ffprobe_of)
+                .and_then(|probe| codecs_of(&probe, &f))
+                .map(|c| format!(" (its streams: {})", c.join(", ")))
+                .unwrap_or_default();
+            let why = ran.failure.trim_start_matches("yt-dlp failed: ");
+            note(
+                progress,
+                format!(
+                    "An MP4 can't hold one of its streams as it is{streams}, yt-dlp said ({why}): kept as the MPEG-TS it came as, which players open as it is"
+                ),
+            );
+            f
         }
         _ => return failed(ran.failure, rerouted),
     };

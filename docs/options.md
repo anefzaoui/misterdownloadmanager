@@ -40,7 +40,7 @@ See [Browser integration](browser-integration.md).
 - **Category** — choose a category to see and change its settings below.
 - **New** — make your own category. **Edit...** changes the selected one: its name, file types and folder. The built-in categories (Compressed, Documents, Music, Programs, Video) can be renamed, given other file types and deleted like your own; a renamed one keeps its folder. General and Torrents change only their folder.
 - **Restore the built-in categories** — brings the built-in categories back as they came, after you renamed, retyped or deleted them.
-- **Automatically put in "…" category the following file types** — the file types that go to this category.
+- **Automatically put in "…" category the following file types** — the file types that go to this category. A built-in category whose list you never changed gains the types a new version adds; one you edited stays as it is.
 - **Default download directory for "…" category** — the category's folder. Type a path or click **Browse**.
 - **Change folder for "…" category on last selected** — when you pick another folder in **Download File Info**, it becomes the category's folder from then on. On by default. (It sets the first state of **Remember this path** in that window.)
 - **Save every download in "General" category's folder** — off by default. Ticked, every new download goes to General's folder, whatever its category: from the browser, **Add URL**, **Batch download**, Link grabber, queues, the command line, videos and torrents alike. The categories still sort the list. General's folder is the one to set (choose **General** above); the other categories keep their own folders for when it is off again, shown greyed meanwhile. A single download can still go elsewhere: change its folder in the window that starts it (**Remember this path** then changes General's folder). Downloads already in the list stay where they are.
@@ -91,7 +91,7 @@ More in [Connections and speed](connections-and-speed.md).
 ![Options on its Proxy / Socks page](images/help/options-proxy.webp)
 *Proxy / Socks: no proxy, the system's, or your own.*
 
-- **No proxy/socks** — connect directly. This is the default.
+- **No proxy/socks** — connect directly. This is the default. Chosen here (clicked, or with **Use proxy/socks from a browser's request…** unticked while it's on), video pages and image galleries connect directly too: yt-dlp and gallery-dl are kept off Windows' proxy and the `HTTPS_PROXY` / `HTTP_PROXY` / `ALL_PROXY` variables. Left at the default, they still follow those, as they always did.
 - **Use system settings** — use the system's proxy: Windows' or macOS' settings, or on Linux the `https_proxy`, `http_proxy` and `all_proxy` variables of your session.
 - **Use automatic configuration script** — the proxy auto-config (PAC) script your network gives: type its address (`http://…/proxy.pac`, or a file). MDM fetches it and asks it which proxy each download goes through (`PROXY`, `HTTPS`, `SOCKS`, `SOCKS5`, `SOCKS4` or `DIRECT`), as browsers do. Through a `SOCKS` or `SOCKS5` answer, the proxy looks the site's name up, as in browsers. Until the script has been fetched, or if it can't be, MDM uses the system's settings.
 - **Manual proxy/socks configuration** — your own proxy:
