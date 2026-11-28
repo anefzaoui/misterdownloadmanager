@@ -162,6 +162,7 @@ pub(crate) async fn handle(
             ask.at(USERCONTENT, &format!("/download?{}", ask.query)),
         ),
         (DRIVE, ["open"]) => open(&ask),
+        (DRIVE, ["drive", "folders", id]) => folder_page(&ask, id),
         (USERCONTENT, ["download"]) => {
             return download(shared, entry, &method, &ask).await;
         }
@@ -394,6 +395,193 @@ fn quota_page() -> String {
      downloaded this file recently. Please try accessing the file again later.</p></div>\
      </body></html>"
         .to_owned()
+}
+
+// ---- Folders (#2032) --------------------------------------------------------------------------
+
+/// Google's types, as a folder's page lists them.
+const FOLDER_TYPE: &str = "application/vnd.google-apps.folder";
+const DOC_TYPE: &str = "application/vnd.google-apps.document";
+const FORM_TYPE: &str = "application/vnd.google-apps.form";
+const FILE_TYPE: &str = "application/octet-stream";
+
+/// The most items a folder's page lists, as Drive's does.
+pub const FOLDER_PAGE: usize = 50;
+
+/// A fake folder's ID: `folder-0-<name>`, padded as the files' are.
+pub fn folder_id(name: &str) -> String {
+    id("folder", "0", &[name])
+}
+
+/// One item of a fake folder: its ID, its parent's, its name, its type.
+type Item = (String, String, String, &'static str);
+
+/// The fake Drive's folders: `root` ("Lab folder") holds two files, a Google Doc, a Form, a
+/// subfolder, itself again (a loop) and what a hostile listing could hold (names that lead out
+/// of the folder, a device's name, an ID that isn't one, an item of another folder); `sub`
+/// ("Sub folder") a file and `empty`, which holds nothing; `full` the 50 files a folder's page
+/// lists at most (of more); `private` a file, only with the signed-in cookie (else Google's
+/// sign-in); `busy` 429.
+fn folder_items(id: &str) -> Option<(&'static str, Vec<Item>)> {
+    let root = folder_id("root");
+    let sub = folder_id("sub");
+    let item = |id: String, parent: &str, name: &str, mime: &'static str| -> Item {
+        (id, parent.to_owned(), name.to_owned(), mime)
+    };
+    if id == root {
+        let r = root.as_str();
+        return Some((
+            "Lab folder",
+            vec![
+                item(
+                    self::id("small", "64K", &["one"]),
+                    r,
+                    "small.bin",
+                    FILE_TYPE,
+                ),
+                item(self::id("uni", "8K", &[]), r, "naïve résumé.bin", FILE_TYPE),
+                item(self::id("doc", "4K", &["notes"]), r, "Lab doc", DOC_TYPE),
+                item(self::id("form", "0", &["poll"]), r, "Poll", FORM_TYPE),
+                item(sub.clone(), r, "Sub folder", FOLDER_TYPE),
+                item(root.clone(), r, "Loop", FOLDER_TYPE),
+                item(self::id("small", "1K", &["dots"]), r, "..", FILE_TYPE),
+                item(
+                    self::id("small", "2K", &["out"]),
+                    r,
+                    "../../evil.bin",
+                    FILE_TYPE,
+                ),
+                item(self::id("small", "3K", &["con"]), r, "CON", FILE_TYPE),
+                item("../../x".to_owned(), r, "bad id", FILE_TYPE),
+                item(
+                    self::id("small", "5K", &["other"]),
+                    &folder_id("other"),
+                    "another folder's",
+                    FILE_TYPE,
+                ),
+            ],
+        ));
+    }
+    if id == sub {
+        return Some((
+            "Sub folder",
+            vec![
+                item(
+                    self::id("small", "16K", &["two"]),
+                    &sub,
+                    "small.bin",
+                    FILE_TYPE,
+                ),
+                item(folder_id("empty"), &sub, "Empty", FOLDER_TYPE),
+            ],
+        ));
+    }
+    if id == folder_id("empty") {
+        return Some(("Empty", Vec::new()));
+    }
+    if id == folder_id("full") {
+        let full = folder_id("full");
+        let items = (0..FOLDER_PAGE)
+            .map(|n| {
+                let name = format!("part{n:02}.bin");
+                item(
+                    self::id("small", "1K", &[&format!("n{n}")]),
+                    &full,
+                    &name,
+                    FILE_TYPE,
+                )
+            })
+            .collect();
+        return Some(("Full", items));
+    }
+    if id == folder_id("private") {
+        let private = folder_id("private");
+        return Some((
+            "Private",
+            vec![item(
+                self::id("private", "64K", &[]),
+                &private,
+                "private.bin",
+                FILE_TYPE,
+            )],
+        ));
+    }
+    None
+}
+
+/// `/drive/folders/ID`: the folder's page, its items in `window['_DRIVE_ivd']` as Drive's page
+/// carries them (a JavaScript string of JSON, `\x22` for `"`); an empty folder's listing is
+/// `null`. The page is written here, its shape learned from Drive's.
+fn folder_page(ask: &Ask, id: &str) -> Answer {
+    if id == folder_id("busy") {
+        return Answer::Page(
+            StatusCode::TOO_MANY_REQUESTS,
+            "<!doctype html><title>Sorry...</title><p>Too many requests</p>".to_owned(),
+        );
+    }
+    if id == folder_id("private") && !ask.signed_in() {
+        let back = ask.at(DRIVE, &format!("/drive/folders/{id}"));
+        return redirect(
+            StatusCode::FOUND,
+            ask.at(
+                ACCOUNTS,
+                &format!(
+                    "/ServiceLogin?continue={}",
+                    utf8_percent_encode(&back, NON_ALPHANUMERIC)
+                ),
+            ),
+        );
+    }
+    let Some((title, items)) = folder_items(id) else {
+        return Answer::Page(StatusCode::NOT_FOUND, not_found());
+    };
+    let listing: Vec<serde_json::Value> = items
+        .iter()
+        .map(|(id, parent, name, mime)| {
+            let size = (*mime == FILE_TYPE)
+                .then(|| Lab::parse(id).and_then(|l| content::parse_size(&l.size)))
+                .flatten();
+            // The places Drive's own items have: ID, parents, name, type, …, size (13th).
+            let mut e = vec![
+                serde_json::json!(id),
+                serde_json::json!([parent]),
+                serde_json::json!(name),
+                serde_json::json!(mime),
+            ];
+            e.extend(std::iter::repeat_n(serde_json::Value::Null, 9));
+            e.push(size.map_or(serde_json::Value::Null, |s| serde_json::json!(s)));
+            e.push(serde_json::json!("DriveSdkV2"));
+            serde_json::Value::Array(e)
+        })
+        .collect();
+    let first = if listing.is_empty() {
+        serde_json::Value::Null
+    } else {
+        serde_json::Value::Array(listing)
+    };
+    let data = serde_json::json!([first, null, null, null, [[1, 2]]]).to_string();
+    let mut js = String::with_capacity(data.len() * 2);
+    for c in data.chars() {
+        match c {
+            '"' => js.push_str("\\x22"),
+            '[' => js.push_str("\\x5b"),
+            ']' => js.push_str("\\x5d"),
+            '\'' => js.push_str("\\x27"),
+            '\\' => js.push_str("\\\\"),
+            '/' => js.push_str("\\/"),
+            '<' => js.push_str("\\x3c"),
+            c => js.push(c),
+        }
+    }
+    Answer::Page(
+        StatusCode::OK,
+        format!(
+            "<!doctype html><html><head><title>{title} - Google Drive</title>\
+             <meta property=\"og:site_name\" content=\"Google Drive\"></head><body>\
+             <div id=drive></div><script nonce=\"lab\">window['_DRIVE_ivd'] = '{js}';\
+             if (window['_DRIVE_ivdc']) {{window['_DRIVE_ivdc']();}}</script></body></html>"
+        ),
+    )
 }
 
 /// A Google Doc's export: made on the fly, so chunked, without a length, ranges ignored.

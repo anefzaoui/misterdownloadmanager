@@ -481,13 +481,15 @@ enum ProxyGiven {
     /// `HTTP_PROXY` and the like: the address with its login.
     Environment(String),
     /// Straight to the site, whatever the system or the environment says (a site rule's "No
-    /// proxy", #1960): yt-dlp's `--proxy ""`, and no proxy in the environment for anything.
+    /// proxy", #1960; "No proxy/socks" chosen on purpose, #1616): yt-dlp's `--proxy ""`,
+    /// gallery-dl's `proxy-env` off, and no proxy in the environment for anything.
     Direct,
 }
 
 /// The proxy for `url` under `proxy`, as a helper takes it. `None` proxy and an address the
 /// setting doesn't cover (Manual with its scheme unticked; a script that says DIRECT): nothing,
-/// so the helper does what it did before. A script that gives no usable answer leaves it to the
+/// so the helper does what it did before. `Direct` ("No proxy/socks" chosen on purpose, #1616):
+/// direct, around the system's proxy too. A script that gives no usable answer leaves it to the
 /// system's settings, as for a download.
 fn proxy_given(proxy: &mdm_engine::Proxy, url: Option<&url::Url>) -> ProxyGiven {
     use mdm_engine::{Proxy, pac};
@@ -499,6 +501,7 @@ fn proxy_given(proxy: &mdm_engine::Proxy, url: Option<&url::Url>) -> ProxyGiven 
     let plain = |p: Option<String>| p.map_or(ProxyGiven::Nothing, ProxyGiven::Argument);
     match proxy {
         Proxy::None => ProxyGiven::Nothing,
+        Proxy::Direct => ProxyGiven::Direct,
         Proxy::System => plain(system(url)),
         Proxy::Pac { script } => {
             let first = url.and_then(|u| {
@@ -609,17 +612,21 @@ fn give_proxy(cmd: &mut Command, helper: Helper, given: ProxyGiven) -> Vec<Strin
             cmd.env_remove("NO_PROXY").env_remove("no_proxy");
             Vec::new()
         }
+        // No proxy variable gets through, and `NO_PROXY=*` takes every host around a proxy still
+        // found: the system's, which Python reads from Windows' settings when the variables are
+        // empty (gallery-dl's requests; one older than 1.28.0 has no `proxy-env`), and the
+        // variables of what yt-dlp starts (ffmpeg, curl, aria2c).
         ProxyGiven::Direct => {
             for var in PROXY_VARS {
                 cmd.env_remove(var);
             }
-            // Python's own look-ups (gallery-dl's requests, the system's settings on Windows)
-            // go around every proxy for every host.
             cmd.env("NO_PROXY", "*").env("no_proxy", "*");
             match helper {
-                // yt-dlp's documented "direct connection".
+                // yt-dlp's documented "direct connection" ("Pass in an empty string").
                 Helper::YtDlp => vec!["--proxy".into(), String::new()],
-                Helper::GalleryDl => Vec::new(),
+                // Its `--proxy ""` sets nothing: the system's proxy is read unless `proxy-env`
+                // is off (#1616; 1.28.0, an older one leaves the option unread).
+                Helper::GalleryDl => vec!["-o".into(), "proxy-env=false".into()],
             }
         }
     }
@@ -670,14 +677,7 @@ fn through_adapter(
         mdm_engine::Route::Down { label } => Err(mdm_engine::NetError::Down { label }.into()),
         mdm_engine::Route::Bound(_) => {
             let url = relay()?.url();
-            for var in [
-                "HTTP_PROXY",
-                "HTTPS_PROXY",
-                "ALL_PROXY",
-                "http_proxy",
-                "https_proxy",
-                "all_proxy",
-            ] {
+            for var in PROXY_VARS {
                 cmd.env(var, &url);
             }
             cmd.env_remove("NO_PROXY").env_remove("no_proxy");
@@ -2212,6 +2212,13 @@ mod tests {
             proxy_given(&Proxy::None, Some(&youtube)),
             ProxyGiven::Nothing
         );
+        // #1616: chosen on purpose, it's direct, around the system's proxy too.
+        assert_eq!(
+            proxy_given(&Proxy::Direct, Some(&youtube)),
+            ProxyGiven::Direct
+        );
+        assert_eq!(proxy_given(&Proxy::Direct, None), ProxyGiven::Direct);
+        assert_eq!(manual_skips(&Proxy::Direct, Some(&youtube)), None);
         assert_eq!(
             proxy_given(&manual(None, true, true), Some(&youtube)),
             ProxyGiven::Argument("http://127.0.0.1:10808".into())
@@ -2317,6 +2324,95 @@ mod tests {
         set_proxy(Proxy::None);
         let none = args_of(&ytdlp(exe, &[], &["-J".into()], url).unwrap());
         assert!(!none.iter().any(|a| a == "--proxy"));
+    }
+
+    /// #1616: "No proxy/socks" chosen on purpose (`Proxy::Direct`) keeps both helpers off the
+    /// system's and the environment's proxy: yt-dlp's `--proxy ""` (after the person's own
+    /// arguments, so it wins), gallery-dl's `proxy-env` off, every proxy variable taken away and
+    /// `NO_PROXY=*`. The untouched default (`Proxy::None`) still adds nothing.
+    #[test]
+    fn no_proxy_chosen_keeps_the_helpers_off_the_systems_proxy() {
+        let _proxy = GLOBAL_PROXY
+            .lock()
+            .unwrap_or_else(std::sync::PoisonError::into_inner);
+        use mdm_engine::Proxy;
+        let url = "https://www.youtube.com/watch?v=x";
+        let exe = std::path::Path::new("yt-dlp");
+        let tool = crate::Installed {
+            version: "1.32.0".into(),
+            exe: "gallery-dl".into(),
+        };
+        // A variable's name: any case on Windows, where `http_proxy` is `HTTP_PROXY`.
+        let env = |cmd: &Command, var: &str| {
+            cmd.get_envs()
+                .find(|(k, _)| {
+                    let k = k.to_string_lossy();
+                    if cfg!(windows) {
+                        k.eq_ignore_ascii_case(var)
+                    } else {
+                        k == var
+                    }
+                })
+                .map(|(_, v)| v.map(|v| v.to_string_lossy().into_owned()))
+        };
+        // Back to none however this ends: the other tests assume it.
+        struct NoneAgain;
+        impl Drop for NoneAgain {
+            fn drop(&mut self) {
+                set_proxy(mdm_engine::Proxy::None);
+            }
+        }
+        let _none_again = NoneAgain;
+        set_proxy(Proxy::Direct);
+        let yt = ytdlp(
+            exe,
+            &["--proxy".into(), "http://10.0.0.1:1".into()],
+            &[],
+            url,
+        )
+        .unwrap();
+        let gallery = gallery_dl(&tool, &[], "https://x.test/g").unwrap();
+        for cmd in [&yt, &gallery] {
+            for var in PROXY_VARS {
+                assert_eq!(env(cmd, var), Some(None), "{var} taken away");
+            }
+            assert_eq!(env(cmd, "NO_PROXY"), Some(Some("*".into())));
+        }
+        let args = args_of(&yt);
+        let at = args.iter().rposition(|a| a == "--proxy").expect("--proxy");
+        assert_eq!(args[at + 1], "", "an empty --proxy: direct");
+        let theirs = args.iter().position(|a| a == "--proxy").unwrap();
+        assert!(
+            theirs < at,
+            "after the person's own --proxy, which it outweighs"
+        );
+        assert!(at < args.iter().position(|a| a == "--").unwrap());
+        let args = args_of(&gallery);
+        let at = args
+            .iter()
+            .position(|a| a == "proxy-env=false")
+            .expect("proxy-env");
+        assert_eq!(args[at - 1], "-o");
+        assert!(at < args.iter().position(|a| a == "--").unwrap());
+        assert!(!args.iter().any(|a| a == "--proxy"));
+        set_proxy(Proxy::None);
+        for cmd in [
+            ytdlp(exe, &[], &[], url).unwrap(),
+            gallery_dl(&tool, &[], "https://x.test/g").unwrap(),
+        ] {
+            let args = args_of(&cmd);
+            assert!(
+                !args
+                    .iter()
+                    .any(|a| a == "--proxy" || a == "proxy-env=false")
+            );
+            assert_eq!(
+                env(&cmd, "NO_PROXY"),
+                None,
+                "the environment's own, untouched"
+            );
+            assert_eq!(env(&cmd, "HTTPS_PROXY"), None);
+        }
     }
 
     /// #1960: a site rule's proxy reaches the helpers for the pages it names, above Options':

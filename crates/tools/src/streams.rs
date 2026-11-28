@@ -842,7 +842,7 @@ fn fetch_pieces(
     let shared = Arc::new(crate::pieces::Shared::default());
     let task = engine.handle.spawn(crate::pieces::download(
         list,
-        crate::pieces::Target::Join(s.path.clone()),
+        crate::pieces::Target::Join(s.path.clone(), s.format_id.clone()),
         header_map(&s.headers),
         engine.opts.clone(),
         current.limiter.clone(),

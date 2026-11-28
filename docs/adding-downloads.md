@@ -92,8 +92,10 @@ can't open, gets **no access**.
 **The video button over a Drive video** downloads the original file, not one of the player's
 smaller copies.
 
-**Folders** aren't downloaded yet: a folder's link gets **this is a Google Drive folder, not a
-file**. Open the folder in the browser and download its files from there.
+**Folders:** paste a shared folder's link (`https://drive.google.com/drive/folders/…`) in **Add
+URL**, or right-click it in the browser and choose **Download with Mister Download Manager**, and
+Link grabber lists its files and its subfolders' to download into the same folders. See
+[Google Drive folders](link-grabber.md#google-drive-folders).
 
 ## Download File Info
 

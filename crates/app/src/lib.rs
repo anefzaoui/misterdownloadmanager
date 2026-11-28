@@ -558,6 +558,15 @@ fn app() -> eframe::Result {
             help::VERSION,
             help::COMMIT
         );
+        // A save cut short by a crash or a power cut leaves its staging file beside the file
+        // it was writing (craft-atomic's `.<name>.<pid>-<n>.craft_tmp`); the file itself is
+        // whole. Those in the data folder go once they are an hour old: no save into it takes
+        // that long, this instance's or a command line's, so one still being written stays.
+        match craft_atomic::sweep_temp_files(&data, std::time::Duration::from_secs(3600)) {
+            Ok(0) => {}
+            Ok(n) => tracing::info!("removed {n} staging file(s) an interrupted save left"),
+            Err(e) => tracing::warn!("staging files not swept: {e}"),
+        }
     }
     // View → Font (#1489): the interface's own font and text size, apart from that zoom.
     theme::init_smooth_text(loaded.settings.smooth_text);

@@ -4269,16 +4269,26 @@ impl App {
             );
             return;
         }
-        // A Hugging Face repository or folder, a GitHub release or tag (#1772), given on the
-        // command line (`/d`) or dropped alone: its files in Link grabber, as from Add URL. Silent
-        // (`/n`, a script's command line) asks nothing: the address is downloaded as it is.
+        // A Hugging Face repository or folder, a GitHub release or tag (#1772), a Google Drive
+        // folder (#2032), given on the command line (`/d`), dropped alone or sent by the browser
+        // (its right-click command, with its sign-in): its files in Link grabber, as from Add
+        // URL. Silent (`/n`, a script's command line) asks nothing: the address is downloaded as
+        // it is.
         if !cmd.silent
             && cmd.name.is_none()
             && cmd.post.is_none()
             && mdm_engine::hub::Source::of(&url).is_some()
         {
             self.show_for_dialog(ctx);
-            self.grab_package(&url, ctx);
+            let found = crate::transfer::Imported {
+                url: url.to_string(),
+                referer: cmd.referer.clone(),
+                cookies: cmd.cookies.clone(),
+                user_agent: cmd.user_agent.clone(),
+                private: cmd.private,
+                ..Default::default()
+            };
+            self.grab_package(found, ctx);
             return;
         }
         // A fresh address for a download waiting for one (its link expired): that download goes
@@ -13257,13 +13267,11 @@ impl App {
         grabber.add(found, source, |u| known.contains(u.as_str()));
     }
 
-    /// A Hugging Face repository's or a GitHub release's address (#1772) into Link grabber, which
-    /// lists its files through the site's API, and the window to the front.
-    fn grab_package(&mut self, url: &url::Url, ctx: &egui::Context) {
-        let found = vec![crate::transfer::Imported {
-            url: url.to_string(),
-            ..Default::default()
-        }];
+    /// A Hugging Face repository's or a GitHub release's address (#1772), a Google Drive
+    /// folder's (#2032, with the browser's sign-in when it sent it), into Link grabber, which
+    /// lists its files through the site's API or pages, and the window to the front.
+    fn grab_package(&mut self, found: crate::transfer::Imported, ctx: &egui::Context) {
+        let found = vec![found];
         // i18n: Link grabber: where the links came from: an address given on its own (typed or pasted in Add URL, given on the command line)
         let source = crate::i18n::t("Address typed").to_owned();
         self.show_import(found, source);
@@ -14210,7 +14218,11 @@ impl App {
                 // in Link grabber, to tick those wanted.
                 Outcome::Done(new) if mdm_engine::hub::Source::of(&new.url).is_some() => {
                     self.add_url = None;
-                    self.grab_package(&new.url, ctx);
+                    let found = crate::transfer::Imported {
+                        url: new.url.to_string(),
+                        ..Default::default()
+                    };
+                    self.grab_package(found, ctx);
                 }
                 // A video's page, not a file (YouTube, Vimeo…): the video window looks it up.
                 Outcome::Done(new) if mdm_tools::pages::is_video_page(&new.url) => {

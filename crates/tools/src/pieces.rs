@@ -23,7 +23,7 @@
 
 use std::collections::HashMap;
 use std::path::{Path, PathBuf};
-use std::sync::atomic::{AtomicU64, AtomicUsize, Ordering};
+use std::sync::atomic::{AtomicBool, AtomicU64, AtomicUsize, Ordering};
 use std::sync::{Arc, Mutex};
 use std::time::{Duration, Instant};
 
@@ -298,10 +298,11 @@ const PIECE_RESERVE: u64 = 1 << 20;
 /// Many Requests to more (measured: 8 at once, 2 of them refused, again and again).
 pub const GALLERY_AT_ONCE: u32 = 4;
 
-/// Where the pieces go: joined into one file (a stream's), or each a file of its own (a gallery's).
+/// Where the pieces go: joined into one file (a stream's, with its name for the pieces: yt-dlp's
+/// format id), or each a file of its own (a gallery's).
 #[derive(Clone, Debug)]
 pub enum Target {
-    Join(PathBuf),
+    Join(PathBuf, String),
     Files(Vec<PathBuf>),
 }
 
@@ -315,6 +316,49 @@ pub fn folder(path: &Path) -> PathBuf {
 /// A piece's file in the folder: `<index>` once whole.
 fn piece_file(dir: &Path, i: usize) -> PathBuf {
     dir.join(format!("{i:06}"))
+}
+
+/// What the pieces in their folder are, as the run that downloaded them listed them: a line for
+/// the stream, then one for each piece ([`identity`]).
+const LIST: &str = "list";
+
+/// What piece `p` is, for a later run to tell it's the same one: its file's name (the address's
+/// last part: a new signature changes the query, or a folder of the path, a CDN the server) and
+/// its part of that file.
+fn identity(p: &Piece) -> String {
+    let name = p
+        .url
+        .path_segments()
+        .and_then(|mut s| s.next_back())
+        .filter(|n| !n.is_empty())
+        .unwrap_or(p.url.path());
+    match p.range {
+        Some((start, len)) => format!("{name} {start}+{len}"),
+        None => name.to_owned(),
+    }
+}
+
+/// The pieces an earlier run left in `dir` that aren't this list's (`pieces` of stream `tag`):
+/// another stream's (yt-dlp chose another quality: the site offers a new one, #769), or another
+/// piece at the same place (the playlist changed). They are removed, and this list is written
+/// for the next run; how many went. A folder an earlier MDM left without a list is taken as it is.
+fn forget_others(dir: &Path, tag: &str, pieces: &[Piece]) -> usize {
+    let now: Vec<String> = std::iter::once(format!("stream {tag}"))
+        .chain(pieces.iter().map(identity))
+        .collect();
+    let mut gone = 0;
+    if let Ok(was) = std::fs::read_to_string(dir.join(LIST)) {
+        let was: Vec<&str> = was.lines().collect();
+        let stream = was.first().copied() == now.first().map(String::as_str);
+        for i in 0..pieces.len().max(was.len().saturating_sub(1)) {
+            let same = stream && i < pieces.len() && was.get(i + 1).copied() == Some(&*now[i + 1]);
+            if !same && std::fs::remove_file(piece_file(dir, i)).is_ok() {
+                gone += 1;
+            }
+        }
+    }
+    let _ = std::fs::write(dir.join(LIST), now.join("\n"));
+    gone
 }
 
 impl Run {
@@ -459,6 +503,8 @@ struct Run {
     retry_delay: Duration,
     relist: Relist,
     relisted: tokio::sync::Mutex<(u32, Option<Instant>)>,
+    /// A part was answered with the whole file (the log says so once).
+    whole_for_parts: AtomicBool,
 }
 
 /// Download `pieces` (a piece already whole is kept), `connections` at once, with `headers`,
@@ -478,9 +524,9 @@ pub async fn download(
     relist: Relist,
     browser: Option<Connection>,
 ) -> Ended {
-    let (path, files) = match target {
-        Target::Join(p) => (Some(p), None),
-        Target::Files(f) => (None, Some(f)),
+    let (path, tag, files) = match target {
+        Target::Join(p, tag) => (Some(p), tag, None),
+        Target::Files(f) => (None, String::new(), Some(f)),
     };
     let dir = match (&path, &files) {
         (Some(p), _) => folder(p),
@@ -505,6 +551,15 @@ pub async fn download(
         Err(e) => return Ended::Failed(e.to_string()),
     };
     let n = pieces.len();
+    // An earlier run's pieces count only for the same stream and the same pieces.
+    if files.is_none() {
+        let gone = forget_others(&dir, &tag, &pieces);
+        if gone > 0 {
+            shared.note(format!(
+                "{gone} pieces on disk were of another list (another quality, or the playlist changed): downloaded again"
+            ));
+        }
+    }
     // The pieces already whole (an earlier run's).
     {
         let mut each = shared.each.lock().unwrap();
@@ -571,6 +626,7 @@ pub async fn download(
         retry_delay: opts.retry_delay,
         relist,
         relisted: Default::default(),
+        whole_for_parts: AtomicBool::new(false),
     });
     let mut set = tokio::task::JoinSet::new();
     for c in 0..connections {
@@ -658,7 +714,8 @@ async fn connection(run: Arc<Run>, c: usize) -> Result<(), PieceError> {
             let generation = run.generation.load(Ordering::SeqCst);
             let piece = run.pieces.lock().unwrap()[i].clone();
             set_conn(&run, c, |v| v.status = ConnStatus::Connecting);
-            match fetch_piece(&run, c, i, &piece).await {
+            let last_try = failures >= run.max_retries;
+            match fetch_piece(&run, c, i, &piece, last_try).await {
                 Ok(()) => break,
                 Err(PieceError::Stopped) => return Err(PieceError::Stopped),
                 // A gallery's file that can't be had is left for gallery-dl.
@@ -973,8 +1030,27 @@ async fn ask(
     Ok(Answer::Browser(answer))
 }
 
-/// Piece `i` on connection `c`: downloaded under the limits, decrypted, saved whole.
-async fn fetch_piece(run: &Run, c: usize, i: usize, piece: &Piece) -> Result<(), PieceError> {
+/// Whether `body`, a piece that came without a length (a connection closed early ends it as if
+/// whole), came short as far as it can tell: encrypted, not whole AES blocks; MPEG-TS, not whole
+/// 188-byte packets.
+fn short_without_length(body: &[u8], encrypted: bool) -> bool {
+    if encrypted {
+        !body.len().is_multiple_of(16)
+    } else {
+        body.first() == Some(&0x47) && !body.len().is_multiple_of(188)
+    }
+}
+
+/// Piece `i` on connection `c`: downloaded under the limits, decrypted, saved whole. `last_try`:
+/// a piece without a length that looks short is taken as it is ([`short_without_length`]: it
+/// may be a server's odd one).
+async fn fetch_piece(
+    run: &Run,
+    c: usize,
+    i: usize,
+    piece: &Piece,
+    last_try: bool,
+) -> Result<(), PieceError> {
     let mut resp = ask(run, &piece.url, piece.range, run.one()).await?;
     let status = resp.status();
     if !(200..300).contains(&status) {
@@ -984,13 +1060,27 @@ async fn fetch_piece(run: &Run, c: usize, i: usize, piece: &Piece) -> Result<(),
             retry_after(resp.headers()),
         ));
     }
-    let len = resp.content_length();
+    // A part asked and the whole file answered (a server that ignores `Range`): only the part is
+    // the piece, cut from the file as it comes; the rest isn't read.
+    let cut = piece.range.filter(|_| status == 200);
+    if cut.is_some() && !run.whole_for_parts.swap(true, Ordering::Relaxed) {
+        run.shared.note(format!(
+            "{} sends the whole file for each part asked: each piece is cut from it",
+            piece.url.host_str().unwrap_or("?")
+        ));
+    }
+    let len = match cut {
+        Some((_, part)) => Some(part),
+        None => resp.content_length(),
+    };
     // The announced length is a hint for the reservation only.
     let mut body = Vec::with_capacity(len.unwrap_or(0).min(PIECE_RESERVE) as usize);
     run.shared.each.lock().unwrap()[i] = (0, len);
     set_conn(run, c, |v| v.status = ConnStatus::Receiving);
     let started = Instant::now();
     let mut got = 0u64;
+    // How far into the answer (the whole file's, when cut).
+    let mut at = 0u64;
     let undo = |got: u64| {
         run.shared.downloaded.fetch_sub(got, Ordering::Relaxed);
         run.shared.each.lock().unwrap()[i] = (0, None);
@@ -1025,19 +1115,48 @@ async fn fetch_piece(run: &Run, c: usize, i: usize, piece: &Piece) -> Result<(),
             }
             _ = paid => {}
         }
-        body.extend_from_slice(&chunk);
-        got += n;
-        run.shared.downloaded.fetch_add(n, Ordering::Relaxed);
+        // The part's bytes of this chunk (all of it, unless cut). Within a u64: every piece's
+        // part is made so ([`part`]).
+        let kept = match cut {
+            Some((start, part)) => {
+                let from = start.saturating_sub(at).min(n) as usize;
+                let to = (start + part).saturating_sub(at).min(n) as usize;
+                &chunk[from..to]
+            }
+            None => &chunk[..],
+        };
+        at += n;
+        let k = kept.len() as u64;
+        body.extend_from_slice(kept);
+        got += k;
+        run.shared.downloaded.fetch_add(k, Ordering::Relaxed);
         run.shared.each.lock().unwrap()[i].0 = got;
         let secs = started.elapsed().as_secs_f64().max(0.001);
         set_conn(run, c, |v| {
-            v.downloaded += n;
+            v.downloaded += k;
             v.speed = (got as f64 / secs) as u64;
         });
+        if cut.is_some_and(|(start, part)| at >= start + part) {
+            break;
+        }
     }
     if len.is_some_and(|l| l != got) {
         undo(got);
         return Err(PieceError::Again(format!("{} came short", run.one())));
+    }
+    // No length said: a connection closed early looks like the end. A gallery's file is
+    // gallery-dl's to check.
+    if len.is_none()
+        && run.files.is_none()
+        && !last_try
+        && short_without_length(&body, piece.key.is_some())
+    {
+        undo(got);
+        return Err(PieceError::Again(format!(
+            "{} came short ({} bytes, no length said)",
+            run.one(),
+            got
+        )));
     }
     set_conn(run, c, |v| v.speed = 0);
     let data = match &piece.key {
@@ -1386,7 +1505,7 @@ mod tests {
         };
         let ended = rt.block_on(download(
             list,
-            Target::Join(dir.join("v.ts")),
+            Target::Join(dir.join("v.ts"), "test".into()),
             HeaderMap::new(),
             opts,
             Arc::new(Limiter::new(None)),
@@ -1453,6 +1572,162 @@ mod tests {
             .max()
             .unwrap();
         assert!(at_once >= 2, "{log:?}");
+    }
+
+    /// Byte-range pieces (`#EXT-X-BYTERANGE`, one file in parts) from a server that ignores
+    /// `Range` and answers each with the whole file (200): each piece is only its own part, so
+    /// the file joins into the stream once, not the whole file once per piece.
+    #[test]
+    fn byte_ranges_a_server_ignores_are_cut_from_the_whole_file() {
+        let rt = tokio::runtime::Runtime::new().unwrap();
+        let lab = rt
+            .block_on(mdm_labserver::LabServer::start(Default::default()))
+            .unwrap();
+        let len = 300 * 1024u64;
+        let mut whole = vec![0; len as usize];
+        mdm_labserver::content::fill(7, 0, &mut whole);
+        let mut text = "#EXTM3U\n#EXT-X-TARGETDURATION:4\n".to_owned();
+        for (at, n) in [
+            (0, 100 * 1024),
+            (100 * 1024, 120 * 1024),
+            (220 * 1024, 80 * 1024),
+        ] {
+            text.push_str(&format!(
+                "#EXT-X-BYTERANGE:{n}@{at}\n#EXTINF:4.0,\n/gen/300K/all.ts?seed=7&no_range=1\n"
+            ));
+        }
+        text.push_str("#EXT-X-ENDLIST\n");
+        let base = Url::parse(&lab.url("/hls/v/index.m3u8")).unwrap();
+        let list = hls(&text, &base, None, None).unwrap();
+        let dir = tempfile::tempdir().unwrap();
+        let (ended, notes, _) = pieces_of(list, dir.path(), 2, None);
+        assert!(
+            matches!(ended, Ended::Done(n) if n == len),
+            "{ended:?} {notes:?}"
+        );
+        assert!(std::fs::read(dir.path().join("v.ts")).unwrap() == whole);
+    }
+
+    /// A piece sent without a length (the connection's close ends it, HTTP/1.0's way) that the
+    /// server cuts short the first time: MPEG-TS that isn't whole packets is asked again, not
+    /// joined with a hole in it (a picture that breaks up, a frame lost).
+    #[test]
+    fn a_piece_without_a_length_cut_short_is_asked_again() {
+        use tokio::io::{AsyncReadExt, AsyncWriteExt};
+        let rt = tokio::runtime::Runtime::new().unwrap();
+        // 300 MPEG-TS packets; the first answer ends half-way through packet 150.
+        let mut piece = vec![0u8; 188 * 300];
+        for (k, p) in piece.chunks_mut(188).enumerate() {
+            p.fill(k as u8);
+            p[0] = 0x47;
+        }
+        let served = Arc::new(AtomicUsize::new(0));
+        let listener = rt
+            .block_on(tokio::net::TcpListener::bind("127.0.0.1:0"))
+            .unwrap();
+        let addr = listener.local_addr().unwrap();
+        {
+            let (piece, served) = (piece.clone(), served.clone());
+            rt.spawn(async move {
+                loop {
+                    let Ok((mut s, _)) = listener.accept().await else {
+                        return;
+                    };
+                    let mut req = [0u8; 4096];
+                    let _ = s.read(&mut req).await;
+                    let first = served.fetch_add(1, Ordering::SeqCst) == 0;
+                    let body = if first {
+                        &piece[..188 * 150 + 94]
+                    } else {
+                        &piece[..]
+                    };
+                    let head =
+                        "HTTP/1.1 200 OK\r\nContent-Type: video/mp2t\r\nConnection: close\r\n\r\n";
+                    let _ = s.write_all(head.as_bytes()).await;
+                    let _ = s.write_all(body).await;
+                    let _ = s.shutdown().await;
+                }
+            });
+        }
+        let list = vec![Piece {
+            url: Url::parse(&format!("http://{addr}/s0.ts")).unwrap(),
+            range: None,
+            key: None,
+        }];
+        let dir = tempfile::tempdir().unwrap();
+        let (ended, notes, _) = pieces_of(list, dir.path(), 1, None);
+        assert!(matches!(ended, Ended::Done(_)), "{ended:?} {notes:?}");
+        assert!(std::fs::read(dir.path().join("v.ts")).unwrap() == piece);
+        assert_eq!(served.load(Ordering::SeqCst), 2, "{notes:?}");
+        assert!(
+            notes
+                .iter()
+                .any(|n| n.contains("came short (28294 bytes, no length said)")),
+            "{notes:?}"
+        );
+        // What can be told of a body without a length.
+        assert!(!short_without_length(&piece, false));
+        assert!(short_without_length(&piece[..1000], false));
+        assert!(!short_without_length(b"not MPEG-TS, any length", false));
+        assert!(short_without_length(&[0; 17], true));
+        assert!(!short_without_length(&[0; 32], true));
+    }
+
+    /// The pieces an earlier run left are kept only for the pieces they are: started again with
+    /// another list (yt-dlp chose another quality, the playlist changed), a piece of the old one
+    /// at the same place is downloaded again rather than joined into the new stream; with the
+    /// same list under new signatures (only the query changed), every piece on disk is kept.
+    #[test]
+    fn pieces_on_disk_are_kept_only_for_the_same_list() {
+        let rt = tokio::runtime::Runtime::new().unwrap();
+        let lab = rt
+            .block_on(mdm_labserver::LabServer::start(Default::default()))
+            .unwrap();
+        let list = |name: &str, seed: u64, faults: &[&str]| -> (Vec<Piece>, Vec<u8>) {
+            let mut text = "#EXTM3U\n#EXT-X-TARGETDURATION:4\n".to_owned();
+            let mut whole = Vec::new();
+            for (i, f) in faults.iter().enumerate() {
+                text.push_str(&format!(
+                    "#EXTINF:4.0,\n/gen/96K/{name}{i}.ts?seed={}&{f}\n",
+                    seed + i as u64
+                ));
+                let mut piece = vec![0; 96 * 1024];
+                mdm_labserver::content::fill(seed + i as u64, 0, &mut piece);
+                whole.extend_from_slice(&piece);
+            }
+            text.push_str("#EXT-X-ENDLIST\n");
+            let base = Url::parse(&lab.url("/hls/v/index.m3u8")).unwrap();
+            (hls(&text, &base, None, None).unwrap(), whole)
+        };
+        let dir = tempfile::tempdir().unwrap();
+        // The first run: three pieces whole, the fourth refused (it stops there).
+        let (first, _) = list("lo", 100, &["rate=4M", "rate=4M", "rate=4M", "refuse=404"]);
+        let (ended, notes, _) = pieces_of(first, dir.path(), 1, None);
+        assert!(matches!(ended, Ended::Failed(_)), "{ended:?} {notes:?}");
+        // Another quality's pieces: none of the old ones is joined into it.
+        let (other, whole) = list("hi", 200, &["rate=5M"; 4]);
+        let (ended, notes, _) = pieces_of(other, dir.path(), 2, None);
+        assert!(matches!(ended, Ended::Done(_)), "{ended:?} {notes:?}");
+        assert!(
+            std::fs::read(dir.path().join("v.ts")).unwrap() == whole,
+            "{notes:?}"
+        );
+        std::fs::remove_file(dir.path().join("v.ts")).unwrap();
+        // The same list again, signed anew: what is on disk stays, only the rest comes.
+        let (first, _) = list("lo", 100, &["rate=4M", "rate=4M", "rate=4M", "refuse=404"]);
+        let _ = pieces_of(first, dir.path(), 1, None);
+        rt.block_on(lab.settled());
+        let before = lab.log().len();
+        let (again, whole) = list("lo", 100, &["rate=6M"; 4]);
+        let (ended, notes, _) = pieces_of(again, dir.path(), 2, None);
+        assert!(matches!(ended, Ended::Done(_)), "{ended:?} {notes:?}");
+        assert!(std::fs::read(dir.path().join("v.ts")).unwrap() == whole);
+        assert!(
+            notes.iter().any(|n| n == "Resuming: 3 of 4 pieces on disk"),
+            "{notes:?}"
+        );
+        rt.block_on(lab.settled());
+        assert_eq!(lab.log().len() - before, 1, "{:?}", lab.log());
     }
 
     /// A piece refused without a bot check (a plain 403: its signed address expired) still has

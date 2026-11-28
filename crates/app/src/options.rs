@@ -2148,6 +2148,8 @@ impl OptionsDialog {
             page_title_ending(&p, font, o.x + get_x - 8.0, o.y + 69.0, &lines);
         }
         let s = &mut self.s;
+        let (mode_was, box_was) = (s.proxy_mode, s.proxy_from_browser);
+        let mut clicked = false;
         if winui::button_light(
             ui,
             r(o, get_x, 61.0, get_w, 21.0),
@@ -2218,15 +2220,18 @@ impl OptionsDialog {
             );
             if resp.clicked() {
                 s.proxy_mode = i as u8;
+                clicked = true;
             }
             group.push(resp);
         }
         if let Some(i) = winui::radio_keys(ui, &group) {
             s.proxy_mode = i as u8;
+            clicked = true;
         }
         if s.proxy_mode != was {
             tick_manual_protocols(s);
         }
+        note_proxy_choice(s, mode_was, box_was, clicked);
         winui::etched_h(&p, o.x + 22.0, o.y + 159.0, 380.0);
         winui::etched_h(&p, o.x + 21.0, o.y + 187.0, 380.0);
         winui::etched_h(&p, o.x + 21.0, o.y + 242.0, 380.0);
@@ -5372,6 +5377,16 @@ impl OptionsDialog {
 
 // ---- pieces -----------------------------------------------------------------------------
 
+/// Proxy / Socks this frame (#1616): "No proxy/socks" is chosen when it was clicked (or picked
+/// with the keys), even while already on, or when the browser box changed while it is on; any
+/// other mode, chosen or brought by Get System, ends the choice. A page only looked at changes
+/// nothing, so the untouched default stays the default.
+fn note_proxy_choice(s: &mut Settings, mode_was: u8, box_was: bool, clicked: bool) {
+    if clicked || s.proxy_mode != mode_was || s.proxy_from_browser != box_was {
+        s.proxy_none_chosen = s.proxy_mode == 0;
+    }
+}
+
 /// Proxy / Socks → Manual proxy/socks configuration with no protocol ticked uses the proxy for
 /// nothing, and the boxes start unticked (#1448: yt-dlp went straight to YouTube): chosen, or
 /// found so when Options opens, it is ticked for http and https, as Get System ticks it.
@@ -6853,6 +6868,32 @@ mod tests {
             !other.proxy_http && !other.proxy_https,
             "not Manual: as it is"
         );
+    }
+
+    /// #1616: "No proxy/socks" counts as chosen only from the page: a click on it (also when it
+    /// was already on) or a change of the browser box while it's on; looking changes nothing,
+    /// and another mode ends the choice.
+    #[test]
+    fn no_proxy_is_chosen_by_a_click_not_by_looking() {
+        let mut s = Settings::default();
+        note_proxy_choice(&mut s, 0, true, false);
+        assert!(!s.proxy_none_chosen, "only looked at");
+        note_proxy_choice(&mut s, 0, true, true);
+        assert!(s.proxy_none_chosen, "clicked while on");
+        s.proxy_mode = 1;
+        note_proxy_choice(&mut s, 0, true, true);
+        assert!(!s.proxy_none_chosen, "another mode");
+        s.proxy_mode = 0;
+        s.proxy_from_browser = false;
+        note_proxy_choice(&mut s, 0, true, false);
+        assert!(
+            s.proxy_none_chosen,
+            "the browser box unticked while it's on"
+        );
+        assert_eq!(s.proxy(), mdm_engine::Proxy::Direct);
+        s.proxy_mode = 3;
+        note_proxy_choice(&mut s, 0, false, false);
+        assert!(!s.proxy_none_chosen, "Get System's Manual");
     }
 
     /// #1558: an address typed the old way (`socks5://host`) opens as Type SOCKS5 with the host

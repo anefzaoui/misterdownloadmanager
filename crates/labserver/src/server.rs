@@ -1017,6 +1017,10 @@ GOOGLE DRIVE  a fake one for the engine's tests, on Google's host names (resolve
     noaccess 403   rk 404 unless resourcekey=0-lab   gone 404
   drive.google.com          /file/d/ID/view (a 150 KB viewer page), /uc?id= (303 to the file
                             host), /open?id= (307 to the viewer, or a doc's editor)
+                            /drive/folders/FOLDER: a folder's page, its items in _DRIVE_ivd;
+                            FOLDER folder-0-NAME padded: root (files, a doc, a form, sub, a
+                            loop, hostile names and IDs), sub, empty, full (the 50 a page lists),
+                            private (302 to the sign-in unless SID=lab), busy 429
   drive.usercontent.google.com  /download?id=&export=download[&confirm=&uuid=]   /uc (303)
   docs.google.com           /document|spreadsheets|presentation/d/ID/edit, .../export?format=
                             (307 to doc-0.docs.googleusercontent.com/export/tok/ID: chunked, no

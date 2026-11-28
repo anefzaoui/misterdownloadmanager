@@ -73,8 +73,9 @@ impl DocKind {
         })
     }
 
-    /// The export format asked for: the Office one (a format picker can come later).
-    fn format(self) -> &'static str {
+    /// The export format asked for: the Office one (a format picker can come later), which is
+    /// also the exported file's extension.
+    pub(crate) fn format(self) -> &'static str {
         match self {
             DocKind::Document => "docx",
             DocKind::Spreadsheet => "xlsx",
@@ -217,7 +218,7 @@ fn locate(url: &Url) -> Option<(String, Kind, Option<String>)> {
     None
 }
 
-/// A folder link: refused, it isn't a file (listing folders is a separate step).
+/// A folder link: refused, it isn't a file (Link grabber lists a folder's files, `hub`).
 pub(crate) fn not_a_file(url: &Url) -> Option<Refusal> {
     parse(url)
         .filter(|l| l.kind == Kind::Folder)
@@ -460,6 +461,253 @@ pub(crate) fn user_agent(url: &Url) -> Option<&'static str> {
 /// party with them: their cookies cause redirect loops there, and nothing needs them.
 pub(crate) fn same_party(a: &Url, b: &Url) -> bool {
     is_drive_host(a) && is_drive_host(b) && a.port_or_known_default() == b.port_or_known_default()
+}
+
+// ---- Folders (#2032) --------------------------------------------------------------------------
+//
+// A shared folder is listed from its own page, `drive.google.com/drive/folders/ID` (the page a
+// browser opens, which Drive's robots.txt lets through): the page carries the folder's items in
+// its `window['_DRIVE_ivd']` data, a JavaScript string holding a JSON array. That array isn't a
+// documented format, so it is read defensively, by the few places known in it (learned from
+// Google's answers and the open-source gdown, read, not copied): each item is an array whose
+// 0th place is its ID, 1st its parents' IDs, 2nd its name, 3rd its type (a MIME type, Google's
+// own `application/vnd.google-apps.*` for folders and Docs), 13th its size in bytes. Anything
+// else in an item is ignored; an item that doesn't have these is left out and counted. The page
+// lists a folder's first `FOLDER_PAGE` items only.
+
+/// The most items a folder's page lists (Drive's own limit: a folder of 100 files lists 50).
+pub const FOLDER_PAGE: usize = 50;
+/// The beginning of Google's own types (folders, Docs, Forms, shortcuts, Sites…).
+const GOOGLE_TYPES: &str = "application/vnd.google-apps.";
+/// A folder page's title ends with this, after the folder's name.
+const TITLE_END: &str = " - Google Drive";
+
+/// What a folder's item is, by its type.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum ItemKind {
+    Folder,
+    /// An uploaded file.
+    File,
+    /// A Google Docs, Sheets, Slides or Drawings file: exported (`DocKind::format`).
+    Doc(DocKind),
+    /// One of Google's own items that isn't a file to download: a Form, a shortcut, a Site, a
+    /// map, a script.
+    Other,
+}
+
+impl ItemKind {
+    pub fn of(mime: &str) -> ItemKind {
+        let Some(google) = mime.strip_prefix(GOOGLE_TYPES) else {
+            return ItemKind::File;
+        };
+        match google {
+            "folder" => ItemKind::Folder,
+            "document" => ItemKind::Doc(DocKind::Document),
+            "spreadsheet" => ItemKind::Doc(DocKind::Spreadsheet),
+            "presentation" => ItemKind::Doc(DocKind::Presentation),
+            "drawing" => ItemKind::Doc(DocKind::Drawing),
+            _ => ItemKind::Other,
+        }
+    }
+}
+
+/// One item of a folder, as its page lists it: its ID (a Drive ID, `is_id`), its name as Drive
+/// has it (not yet a safe file name), its type and its size.
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub struct FolderItem {
+    pub id: String,
+    pub name: String,
+    pub kind: ItemKind,
+    pub size: Option<u64>,
+}
+
+/// A folder's page, read.
+#[derive(Clone, Debug, Default, PartialEq, Eq)]
+pub struct FolderList {
+    /// The folder's name, from the page's title.
+    pub title: Option<String>,
+    pub items: Vec<FolderItem>,
+    /// Items left out: not in this folder (another parent), or without an ID, a name or a type.
+    pub odd: usize,
+}
+
+/// The address of the folder `id`'s page on `at`'s scheme and port (production is https on
+/// 443; the lab's tests are http on their own port), with its resource key and account. None
+/// for an `id` that isn't a Drive ID.
+pub fn folder_address(
+    at: &Url,
+    id: &str,
+    resource_key: Option<&str>,
+    authuser: Option<&str>,
+) -> Option<Url> {
+    if !is_id(id) {
+        return None;
+    }
+    let mut pairs = Vec::new();
+    pairs.extend(resource_key.map(|k| ("resourcekey", k)));
+    pairs.extend(authuser.map(|u| ("authuser", u)));
+    on(at, DRIVE, &format!("/drive/folders/{id}"), &pairs)
+}
+
+/// The link a folder's item downloads from, on `at`'s scheme and port, built from its ID (never
+/// taken from the page): a file's viewer link, a Doc's editor link, each then downloaded as any
+/// Drive link is (the virus-scan page, the quota page and the sign-in said per file). None for
+/// a folder, an item that isn't a file, or an ID that isn't one.
+pub fn item_address(at: &Url, item: &FolderItem, authuser: Option<&str>) -> Option<Url> {
+    if !is_id(&item.id) {
+        return None;
+    }
+    let pairs: Vec<_> = authuser.map(|u| ("authuser", u)).into_iter().collect();
+    match item.kind {
+        ItemKind::File => on(at, DRIVE, &format!("/file/d/{}/view", item.id), &pairs),
+        ItemKind::Doc(doc) => on(
+            at,
+            DOCS,
+            &format!("/{}/d/{}/edit", doc.path(), item.id),
+            &pairs,
+        ),
+        ItemKind::Folder | ItemKind::Other => None,
+    }
+}
+
+/// Did a request to Drive end at Google's sign-in page (a folder or file not shared with
+/// everyone, asked without the browser's sign-in)?
+pub fn is_sign_in(at: &Url) -> bool {
+    host_is(at, SIGN_IN)
+}
+
+/// The folder `folder`'s items as its page `page` lists them; None when the page has no listing
+/// (not a folder's page, or one Drive changed).
+pub fn read_folder(page: &str, folder: &str) -> Option<FolderList> {
+    let data = ivd(page)?;
+    let value: serde_json::Value = serde_json::from_str(&data).ok()?;
+    let top = value.as_array()?;
+    let mut list = FolderList {
+        title: title(page),
+        ..FolderList::default()
+    };
+    // An empty folder: no items (`null`).
+    let Some(items) = top.first().and_then(|v| v.as_array()) else {
+        return top.first().is_some_and(|v| v.is_null()).then_some(list);
+    };
+    for entry in items {
+        match item(entry, folder) {
+            Some(i) => list.items.push(i),
+            None => list.odd += 1,
+        }
+    }
+    Some(list)
+}
+
+/// One item of the listing, when it is one of `folder`'s.
+fn item(entry: &serde_json::Value, folder: &str) -> Option<FolderItem> {
+    let e = entry.as_array()?;
+    let id = e.first()?.as_str().filter(|id| is_id(id))?;
+    let parents = e.get(1)?.as_array()?;
+    if !parents.iter().any(|p| p.as_str() == Some(folder)) {
+        return None;
+    }
+    let name = e.get(2)?.as_str()?;
+    let mime = e.get(3)?.as_str()?;
+    let kind = ItemKind::of(mime);
+    // The size of an uploaded file only: a Doc's is the space it takes, not its export's.
+    let size = match kind {
+        ItemKind::File => e.get(13).and_then(serde_json::Value::as_u64),
+        _ => None,
+    };
+    Some(FolderItem {
+        id: id.to_owned(),
+        name: name.to_owned(),
+        kind,
+        size,
+    })
+}
+
+/// The folder's name: the page's title without Drive's ` - Google Drive`.
+fn title(page: &str) -> Option<String> {
+    let t = html::element_text(page, "title")?;
+    let t = t.trim();
+    let t = t.strip_suffix(TITLE_END).unwrap_or(t).trim();
+    (!t.is_empty()).then(|| t.to_owned())
+}
+
+/// The text of the page's `window['_DRIVE_ivd'] = '…'`, its JavaScript escapes decoded.
+fn ivd(page: &str) -> Option<String> {
+    const KEY: &str = "['_DRIVE_ivd']";
+    let mut rest = page;
+    while let Some(i) = rest.find(KEY) {
+        rest = &rest[i + KEY.len()..];
+        let after = rest.trim_start();
+        let Some(value) = after.strip_prefix('=') else {
+            continue;
+        };
+        let value = value.trim_start();
+        let quote = value.chars().next()?;
+        if quote != '\'' && quote != '"' {
+            continue;
+        }
+        return js_string(&value[1..], quote);
+    }
+    None
+}
+
+/// A JavaScript string's text up to its closing `quote`, its escapes decoded (`\xHH`, `\uHHHH`
+/// and its surrogate pairs, `\n` and the other letters, any other character as itself). None
+/// when it isn't closed.
+fn js_string(s: &str, quote: char) -> Option<String> {
+    let mut out = String::with_capacity(s.len());
+    let mut chars = s.chars();
+    let hex = |chars: &mut std::str::Chars, n: usize| -> Option<u32> {
+        let digits: String = chars.by_ref().take(n).collect();
+        (digits.len() == n)
+            .then(|| u32::from_str_radix(&digits, 16).ok())
+            .flatten()
+    };
+    while let Some(c) = chars.next() {
+        if c == quote {
+            return Some(out);
+        }
+        if c != '\\' {
+            out.push(c);
+            continue;
+        }
+        let e = chars.next()?;
+        match e {
+            'x' => out.push(char::from_u32(hex(&mut chars, 2)?)?),
+            'u' => {
+                let high = hex(&mut chars, 4)?;
+                let code = if (0xD800..0xDC00).contains(&high) {
+                    // A surrogate pair: `😀`.
+                    let mut ahead = chars.clone();
+                    let low = (ahead.next() == Some('\\') && ahead.next() == Some('u'))
+                        .then(|| hex(&mut ahead, 4))
+                        .flatten()
+                        .filter(|l| (0xDC00..0xE000).contains(l));
+                    match low {
+                        Some(low) => {
+                            chars = ahead;
+                            0x10000 + ((high - 0xD800) << 10) + (low - 0xDC00)
+                        }
+                        None => 0xFFFD,
+                    }
+                } else {
+                    high
+                };
+                out.push(char::from_u32(code).unwrap_or('\u{FFFD}'));
+            }
+            'n' => out.push('\n'),
+            'r' => out.push('\r'),
+            't' => out.push('\t'),
+            'b' => out.push('\u{8}'),
+            'f' => out.push('\u{C}'),
+            'v' => out.push('\u{B}'),
+            '0' => out.push('\0'),
+            // A line continuation.
+            '\n' => {}
+            other => out.push(other),
+        }
+    }
+    None
 }
 
 #[cfg(test)]
@@ -785,5 +1033,163 @@ mod tests {
             &drive,
             &url("https://drive.google.com.evil.test/x")
         ));
+    }
+
+    /// gdown's public test folder's page, as Drive answered it without a sign-in (its title and
+    /// listing kept, the rest of the page cut): two subfolders and three files, in Drive's order.
+    #[test]
+    fn a_folders_page_lists_its_items() {
+        const ROOT: &str = "1KpLl_1tcK0eeehzN980zbG-3M2nhbVks";
+        let list = read_folder(&page("drive-folder.html"), ROOT).unwrap();
+        assert_eq!(list.title.as_deref(), Some("gdown_folder_test"));
+        assert_eq!(list.odd, 0);
+        let got: Vec<(&str, ItemKind, Option<u64>)> = list
+            .items
+            .iter()
+            .map(|i| (i.name.as_str(), i.kind, i.size))
+            .collect();
+        assert_eq!(
+            got,
+            [
+                ("directory-0", ItemKind::Folder, None),
+                ("directory-1", ItemKind::Folder, None),
+                ("fractal.jpg", ItemKind::File, Some(128_292)),
+                ("this is a file.txt", ItemKind::File, Some(8222)),
+                ("tux.jpg", ItemKind::File, Some(9859)),
+            ]
+        );
+        assert_eq!(list.items[2].id, "1Z2VYnXb01h-3uvEptoQ48Fo__eAn0wc1");
+        // The same page asked for another folder: none of its items are that folder's.
+        let other = read_folder(&page("drive-folder.html"), ID).unwrap();
+        assert!(other.items.is_empty());
+        assert_eq!(other.odd, 5);
+        // An empty folder's listing is `null`.
+        let empty = read_folder(
+            &page("drive-folder-empty.html"),
+            "1aMZqPaU03E7XOQNXtjSCdguRHBaIQ82m",
+        )
+        .unwrap();
+        assert_eq!(empty.title.as_deref(), Some("directory-0"));
+        assert!(empty.items.is_empty());
+        // A Slides file: exported, its listed size (the space it takes) not its export's.
+        let slides = read_folder(
+            &page("drive-folder-slides.html"),
+            "12zxlvJtuHFV6awc3AINaNHnfvRttPv0i",
+        )
+        .unwrap();
+        assert_eq!(slides.items.len(), 1);
+        assert_eq!(
+            (slides.items[0].kind, slides.items[0].size),
+            (ItemKind::Doc(DocKind::Presentation), None)
+        );
+        // Not a folder's page.
+        assert_eq!(read_folder(&page("drive-quota.html"), ROOT), None);
+        assert_eq!(read_folder("<title>x</title>", ROOT), None);
+    }
+
+    /// A listing written by hand, in the page's own form: a JavaScript string of JSON.
+    fn listing(items: &str) -> String {
+        let json = format!("[{items},null,null,null,[]]");
+        let mut js = String::new();
+        for c in json.chars() {
+            match c {
+                '"' => js.push_str("\\x22"),
+                '\'' => js.push_str("\\x27"),
+                '[' => js.push_str("\\x5b"),
+                ']' => js.push_str("\\x5d"),
+                '\\' => js.push_str("\\\\"),
+                '/' => js.push_str("\\/"),
+                c => js.push(c),
+            }
+        }
+        format!(
+            "<html><head><title>Lab &amp; co - Google Drive</title></head><body><script>\
+             window['_DRIVE_ivd'] = '{js}';</script></body></html>"
+        )
+    }
+
+    #[test]
+    fn hostile_or_odd_items_are_left_out() {
+        let page = listing(&format!(
+            r#"[["{ID}",["{ID}"],"ok.bin","application/octet-stream",0,0,0,0,0,0,0,0,0,7],
+               ["../../etc",["{ID}"],"bad id","text/plain"],
+               ["{ID}x",["other-folder-id-0000000000"],"another's","text/plain"],
+               ["{ID}y",["{ID}"],null,"text/plain"],
+               ["{ID}z",["{ID}"],"no type"],
+               "not an item",
+               ["{ID}w",["{ID}"],"form","application/vnd.google-apps.form"],
+               ["{ID}v",["{ID}"],"quote \" and \\ slash","application/vnd.google-apps.document",0,0,0,0,0,0,0,0,0,99]]"#
+        ));
+        let list = read_folder(&page, ID).unwrap();
+        assert_eq!(list.title.as_deref(), Some("Lab & co"));
+        let names: Vec<&str> = list.items.iter().map(|i| i.name.as_str()).collect();
+        assert_eq!(names, ["ok.bin", "form", "quote \" and \\ slash"]);
+        assert_eq!(list.items[0].size, Some(7));
+        assert_eq!(list.items[1].kind, ItemKind::Other);
+        assert_eq!(
+            (list.items[2].kind, list.items[2].size),
+            (ItemKind::Doc(DocKind::Document), None)
+        );
+        assert_eq!(list.odd, 5);
+    }
+
+    #[test]
+    fn javascript_strings_are_decoded() {
+        let s = |js: &str| js_string(js, '\'');
+        assert_eq!(s(r"a\x22b\/c\\d\'e' rest").as_deref(), Some("a\"b/c\\d'e"));
+        assert_eq!(s(r"é😀\n'").as_deref(), Some("é😀\n"));
+        // A lone surrogate is a replacement character, not a failure.
+        assert_eq!(s(r"\ud83dx'").as_deref(), Some("\u{FFFD}x"));
+        // Not closed, or cut inside an escape.
+        assert_eq!(s("abc"), None);
+        assert_eq!(s(r"\x2"), None);
+        assert_eq!(s(r"\xZZ'"), None);
+    }
+
+    #[test]
+    fn a_folders_and_its_items_addresses() {
+        let at = url("http://drive.google.com:8080/drive/folders/ID?usp=sharing");
+        assert_eq!(
+            folder_address(&at, ID, Some("0-K"), Some("1"))
+                .unwrap()
+                .as_str(),
+            format!("http://drive.google.com:8080/drive/folders/{ID}?resourcekey=0-K&authuser=1")
+        );
+        assert_eq!(folder_address(&at, "../../x", None, None), None);
+        let item = |id: &str, kind| FolderItem {
+            id: id.to_owned(),
+            name: "n".into(),
+            kind,
+            size: None,
+        };
+        let https = url("https://drive.google.com/drive/folders/ID");
+        assert_eq!(
+            item_address(&https, &item(ID, ItemKind::File), None)
+                .unwrap()
+                .as_str(),
+            format!("https://drive.google.com/file/d/{ID}/view")
+        );
+        assert_eq!(
+            item_address(
+                &https,
+                &item(ID, ItemKind::Doc(DocKind::Spreadsheet)),
+                Some("2")
+            )
+            .unwrap()
+            .as_str(),
+            format!("https://docs.google.com/spreadsheets/d/{ID}/edit?authuser=2")
+        );
+        for none in [
+            item(ID, ItemKind::Folder),
+            item(ID, ItemKind::Other),
+            item("a/../../b-000000000000000000000", ItemKind::File),
+        ] {
+            assert_eq!(item_address(&https, &none, None), None, "{none:?}");
+        }
+        // Every item's address is a link the downloads take as Drive's.
+        let file = item_address(&https, &item(ID, ItemKind::File), None).unwrap();
+        assert_eq!(parse(&file).map(|l| l.kind), Some(Kind::File));
+        assert!(is_sign_in(&url("https://accounts.google.com/ServiceLogin")));
+        assert!(!is_sign_in(&https));
     }
 }

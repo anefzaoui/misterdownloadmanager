@@ -191,6 +191,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{package}: {n} file left out, its name would lead out of its folder|{package}: {n} files left out, their names would lead out of its folder	{package}: {n} फाइल छोडियो, यसको नाम यसको फोल्डरबाट बाहिर जान्छ|{package}: {n} फाइलहरू छोडियो, तिनीहरूको नाम तिनीहरूको फोल्डरबाट बाहिर जान्छ
+#. count in the Link grabber window
+#. Link grabber's Source line: a Google Drive folder's ({package}: its name) items that aren't files to download (Google Forms, shortcuts, Google Sites) are left out; {n} how many
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{package}: {n} item left out, a Google Form, shortcut or Site isn't a file|{package}: {n} items left out, Google Forms, shortcuts and Sites aren't files	{package}: {n} वटा वस्तु छोडियो, Google फारम, सर्टकट वा साइट फाइल होइन|{package}: {n} वटा वस्तु छोडिए, Google फारम, सर्टकट र साइटहरू फाइल होइनन्
 #. count in cnl.rs
 #. Click'n'Load window: {site} is a web site's name such as "example.com"
 #. {site} = a web site's name such as "example.com"; {n} = a number (keep the braces as they are)
@@ -3687,6 +3692,10 @@
 #. Link grabber, a link's status: the server wants a login (401, 403)
 #, machine
 	Needs a login	लगइन चाहिन्छ
+#. text in the Link grabber window
+#. Link grabber, a link's status: a Google Drive folder that isn't shared with everyone needs the browser's Google sign-in. The sentence is the cell's hover tip
+#, machine
+	Needs a sign-in	साइन-इन आवश्यक छ
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -6241,6 +6250,10 @@
 #. a download's error: a Google Drive file that isn't shared with everyone
 #, machine
 	this Google Drive file needs you to sign in: sign in to Google in your browser, then download it from there	यो Google Drive फाइललाई तपाईंले साइन इन गर्न आवश्यक छ: तपाईंको ब्राउजरमा Google मा साइन इन गर्नुहोस्, त्यसपछि त्यहाँबाट डाउनलोड गर्नुहोस्
+#. text in the Link grabber window
+#. Link grabber, the hover tip of a Google Drive folder's status: the folder isn't shared with everyone; how to send it with the browser's sign-in (the browser's right-click command, keep its name as the browser extension shows it)
+#, machine
+	This Google Drive folder needs you to sign in: sign in to Google in your browser, then right-click the folder's link there and choose Download with Mister Download Manager.	यो Google Drive फोल्डरलाई तपाईंले साइन इन गर्न आवश्यक छ: आफ्नो ब्राउजरमा Google मा साइन इन गर्नुहोस्, त्यसपछि त्यहाँ फोल्डरको लिङ्कमा दायाँ क्लिक गर्नुहोस् र Mister Download Manager सँग डाउनलोड गर्नुहोस् छान्नुहोस्।
 #. text in errors.rs
 #. a download's error: the address is a Google Drive folder, which isn't one file
 #, machine
@@ -7327,6 +7340,11 @@
 #. said after Delete with files when some files stayed on the disk; {file} is the download's name; the files' paths follow it
 #, machine
 	{file}: these files stayed on the disk, because MDM didn't create them or another download uses them:	{file}: MDM ले यी फाइलहरू सिर्जना नगरेको वा अर्को डाउनलोडले प्रयोग गरिरहेको हुनाले यी फाइलहरू डिस्कमै रहे:
+#. text in the Link grabber window
+#. Link grabber's Source line: a Google Drive folder ({folder}: its name) in which a folder showed the most items Drive's page lists ({n}: 50), so it may hold more than are listed; what gets them all (Drive's own Download button, which makes a zip)
+#. {n} = a number (keep the braces as they are)
+#, machine
+	{folder}: Google Drive's page lists only the first {n} items of a folder, so some may be missing; Drive's own Download gets the whole folder as a zip	{folder}: Google Drive को पृष्ठले फोल्डरका पहिलो {n} वटा वस्तु मात्र सूचीबद्ध गर्छ, त्यसैले केही छुटेका हुन सक्छन्; Drive को आफ्नै डाउनलोड विकल्पले पूरै फोल्डरलाई zip फाइलका रूपमा डाउनलोड गर्छ
 #. message or event log entry in the main window; text in the Link grabber window
 #. Link grabber's Source line, after where the links came from: a folder (an FTP folder, a web server's "Index of" page) held more files or subfolders than Link grabber lists; {folder} is its name, {n} how many of its files are listed (10,000)
 #. {n} = a number (keep the braces as they are)
@@ -7582,10 +7600,20 @@
 #, machine
 	{site} didn't give the file this time: try again in a moment	{site} ले यस पटक फाइल दिएन: एकछिन पछि फेरि प्रयास गर्नुहोस्
 #. text in the Link grabber window
+#. Link grabber, the hover tip of a Google Drive folder's status ({site}: "Google Drive"): no folder at this link, or one the signed-in account may not open
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+	{site} has no such folder, or it isn't shared with you.	{site} मा त्यस्तो कुनै फोल्डर छैन, वा यो तपाईंसँग साझा गरिएको छैन।
+#. text in the Link grabber window
 #. Link grabber, the hover tip of a Hugging Face repository's or GitHub release's status; {site} is "Hugging Face" or "GitHub"
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
 #, machine
 	{site} has no such repository, folder, release or tag, or it is private.	{site} मा त्यस्तो भण्डार, फोल्डर, रिलीज वा ट्याग छैन, वा यो निजी हो।
+#. text in the Link grabber window
+#. Link grabber, a Google Drive folder's status (the cell's hover tip): Drive ({site}: "Google Drive") answered that it gets too many requests from this computer
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+	{site} is getting too many requests from this computer: try again later.	{site} ले यो कम्प्युटरबाट धेरै अनुरोधहरू प्राप्त गरिरहेको छ: पछि फेरि प्रयास गर्नुहोस्।
 #. text in the Link grabber window
 #. Link grabber, a Hugging Face repository's or GitHub release's status (the cell's hover tip): the site ({site}: "Hugging Face", "GitHub") lets only so many requests through from a computer without an account; {n} minutes to wait
 #. {site} = a web site's name such as "example.com"; {n} = a number (keep the braces as they are)
