@@ -455,7 +455,7 @@ mod imp {
     /// way; and whether it is on this computer (its connections then aren't bound).
     fn proxy_for(opts: &Options, url: &Url) -> Result<(Option<wreq::Proxy>, bool), Error> {
         let (address, login) = match &opts.proxy {
-            Proxy::None => (None, None),
+            Proxy::None | Proxy::Direct => (None, None),
             Proxy::System => (net::system_proxy(url), None),
             Proxy::Manual {
                 url: proxy,

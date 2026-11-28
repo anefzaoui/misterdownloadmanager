@@ -569,6 +569,9 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 Everything below ships together, in version 0.6.0, the next release.
 
+- ✅ **No proxy/socks** chosen in Options → Proxy / Socks keeps yt-dlp and gallery-dl direct too, off Windows'
+  proxy and the proxy variables; the untouched default still follows them, and so does a list saved before
+  ([#1616](https://github.com/anefzaoui/misterdownloadmanager/issues/1616))
 - ✅ The window no longer freezes while an antivirus scans a file MDM opens
   ([#1292](https://github.com/anefzaoui/misterdownloadmanager/issues/1292); thanks to
   [@seifmoustafa](https://github.com/seifmoustafa) and
