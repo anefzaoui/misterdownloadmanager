@@ -986,9 +986,7 @@ impl TorrentStorage for Storage {
                         let given = (|| -> anyhow::Result<PreparedFile> {
                             let given = (grant.open_one.as_ref().expect("lazy"))(index)?;
                             if given.path != slot.path {
-                                return Err(
-                                    io::Error::from(io::ErrorKind::PermissionDenied).into()
-                                );
+                                return Err(io::Error::from(io::ErrorKind::PermissionDenied).into());
                             }
                             move_parts_into(&parts, &given.file, info.len, piece)?;
                             Ok(given)
