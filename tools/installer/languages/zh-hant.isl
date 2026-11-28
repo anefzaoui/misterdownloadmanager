@@ -290,6 +290,7 @@ ShutdownBlockReasonInstallingApp=正在安裝 %1。
 ShutdownBlockReasonUninstallingApp=正在解除安裝 %1。
 
 [CustomMessages]
+CreateDesktopIcon=建立桌面捷徑(&D)
 TaskBrowser=設定瀏覽器整合(&B) (Chrome、Edge、Brave、Firefox)
 TaskTorrents=使用 Mister Download Manager 開啟 .&torrent 檔案和磁力連結
 TaskStartup=當 &Windows 啟動時啟動 Mister Download Manager

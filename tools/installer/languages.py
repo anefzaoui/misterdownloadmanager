@@ -5,9 +5,10 @@ mdm.iss includes, from i18n/languages.tsv.
     python tools/installer/languages.py --dry-run  # only count
 
 - A language with an official Inno Setup translation (languages.tsv `inno` column) uses it.
-- Any other gets tools/installer/languages/<code>.isl: Inno's Default.isl messages translated by
-  the same model, rules and checks as the app's catalogs (tools/i18n/translate.py), its
-  LanguageID from Windows' tag, RightToLeft for right-to-left scripts.
+- Any other gets tools/installer/languages/<code>.isl: Inno's Default.isl messages and custom
+  messages ({cm:...}, e.g. the desktop shortcut task) translated by the same model, rules and
+  checks as the app's catalogs (tools/i18n/translate.py), its LanguageID from Windows' tag,
+  RightToLeft for right-to-left scripts.
 - mdm.iss's own messages ([CustomMessages] `en.*`) are translated for every language.
 Rows already translated are kept; a re-run only sends what is new. Inno's `%1`, `%n` and `[name]`
 go to the model as `{1}`, a line break and `{name}`, and come back.
@@ -95,6 +96,7 @@ def main():
 
     inno = inno_dir()
     default = read_messages(inno / "Default.isl")
+    default_custom = read_messages(inno / "Default.isl", "CustomMessages")
     english = inno_name("en") + "."
     custom = {k[len(english):]: v for k, v in read_messages(HERE / "mdm.iss", "CustomMessages").items()
               if k.startswith(english)}
@@ -111,11 +113,13 @@ def main():
         if lang["inno"] == "-":
             # Messages empty in English (BeveledLabel, TranslatorNote...) stay empty.
             want.update({("m", k): v for k, v in default.items() if v.strip()})
+            want.update({("dc", k): v for k, v in default_custom.items() if v.strip()})
         path = OUT / f"{code}.isl"
         have = {}
         if path.exists():
             have.update({("m", k): v for k, v in read_messages(path).items()})
-            have.update({("c", k): v for k, v in read_messages(path, "CustomMessages").items()})
+            for k, v in read_messages(path, "CustomMessages").items():
+                have[("dc" if k in default_custom else "c", k)] = v
         forms = T.plural_forms(code)
         done = {}
         todo = []
@@ -205,6 +209,9 @@ def main():
             for k, en in default.items():
                 lines.append(f"{k}={st['done'].get(('m', k), from_model(to_model(en)))}")
         lines += ["", "[CustomMessages]"]
+        if lang["inno"] == "-":
+            for k, en in default_custom.items():
+                lines.append(f"{k}={st['done'].get(('dc', k), from_model(to_model(en)))}")
         for k, en in custom.items():
             lines.append(f"{k}={st['done'].get(('c', k), from_model(to_model(en)))}")
         (OUT / f"{code}.isl").write_text("\n".join(lines) + "\n", encoding="utf-8-sig", newline="\r\n")
