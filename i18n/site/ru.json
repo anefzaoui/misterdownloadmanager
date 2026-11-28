@@ -7074,6 +7074,10 @@
    "source": "What Update now does",
    "text": "Что делает команда «Обновить сейчас»"
   },
+  "5f818384bb56aff6": {
+   "source": "<g1>Edge (or another browser) says \"Specified native messaging host not found\", though the registry entry looks right?</g1> On 64-bit Windows the browsers read the registry's 32-bit part (<x2/>) before the entry you find under <x3/>, and take the first one there, even one that leads to a copy that is gone. <g4>Test browser integration</g4> says <g5>An older registry entry is in the way</g5>, with that entry: click <g6>Set it up</g6> to give your account an entry of its own, which the browsers read before it. MDM also does that by itself at its start when that entry leads nowhere, and its setup for everyone removes it.",
+   "text": "<g1>Edge (или другой браузер) сообщает «Указанный хост нативного обмена сообщениями не найден», хотя запись в реестре выглядит правильно?</g1> В 64-разрядной Windows браузеры считывают 32-разрядную часть реестра (<x2/>) перед записью, которую вы найдете в <x3/>, и берут первую из них, даже ту, которая ведет к удаленной копии. <g4>Проверка интеграции с браузером</g4> сообщает <g5>Мешает более старая запись в реестре</g5>, с указанием этой записи: нажмите <g6>Настроить</g6>, чтобы создать собственную запись для вашей учетной записи, которую браузеры прочитают раньше. MDM также делает это самостоятельно при запуске, если эта запись никуда не ведет, а его установка для всех пользователей удаляет ее."
+  },
   "5f8f976d1dd62e61": {
    "source": "A group box's frame",
    "text": "Рамка группового поля"
@@ -10818,6 +10822,10 @@
    "source": "MDM's interface comes in 87 languages: every display language Windows 11 offers, from Afrikaans to Vietnamese, including both Chinese scripts, Spanish for Spain and Mexico, French for France and Canada, Portuguese for Portugal and Brazil, and Serbian in Cyrillic and Latin.",
    "text": "Интерфейс MDM доступен на 87 языках: все языки отображения, предлагаемые Windows 11, от африкаанс до вьетнамского, включая оба китайских письма, испанский для Испании и Мексики, французский для Франции и Канады, португальский для Португалии и Бразилии, а также сербский на кириллице и латинице."
   },
+  "91c08dd2d3fe7d4a": {
+   "source": "<g1>Add category</g1> — make your own, for example <g2>Books</g2> for <x3/> (they then go to Books, not Documents). Give it a name, the file types (separated by spaces, <x4/> allowed) and a folder.",
+   "text": "<g1>Добавить категорию</g1> — создайте свою, например, <g2>Книги</g2> для <x3/> (они затем попадут в Книги, а не в Документы). Укажите имя, типы файлов (разделенные пробелами, <x4/> разрешены) и папку."
+  },
   "91cefe80b7f00fac": {
    "source": "<g1><g2>Download a file</g2></g1> — copy a link, add it, open the file.",
    "text": "<g1><g2>Загрузить файл</g2></g1> — скопировать ссылку, добавить ее, открыть файл."
@@ -12329,10 +12337,6 @@
   "a4b01563b82565da": {
    "source": "<g1>Sharper text on Windows</g1> (<g2>#262</g2>): Segoe UI and Tahoma are grid-fitted across as well as up and down, and each letter starts on a whole pixel, as Windows draws its own grey text: upright strokes were two grey pixels wide at 100 % and 125 %, which read as blurred.",
    "text": "<g1>Более чёткий текст в Windows</g1> (<g2>#262</g2>): Segoe UI и Tahoma выравниваются по сетке как по горизонтали, так и по вертикали, и каждая буква начинается с целого пикселя, как Windows рисует свой собственный серый текст: вертикальные штрихи были шириной в два серых пикселя при 100 % и 125 %, что выглядело размытым."
-  },
-  "a4b04f29f56fdc42": {
-   "source": "<g1>Add category</g1> — make your own, for example <g2>Books</g2> for <x3/>. Give it a name, the file types (separated by spaces, <x4/> allowed) and a folder.",
-   "text": "<g1>Добавить категорию</g1> — создать свою собственную, например <g2>Книги</g2> для <x3/>. Дайте ей имя, типы файлов (разделенные пробелами, <x4/> разрешены) и папку."
   },
   "a4b1f9a84345ac5d": {
    "source": "<g1>yt-dlp</g1> (about 23 MB) looks the page up and finds where the video and its sound come from; MDM downloads them (<g2>How a video comes down</g2>). The first time, click <g3>Install yt-dlp</g3>. MDM checks the download against the signature yt-dlp's developers publish before it uses it.",
@@ -14141,10 +14145,6 @@
   "bc606bb991071128": {
    "source": "The next tab of a focused tab strip; the next choice of a radio group",
    "text": "Следующая вкладка сфокусированной панели вкладок; следующий вариант в группе переключателей"
-  },
-  "bc713e862e9b84d3": {
-   "source": "Each download falls into a category by its file type: <g1>General</g1>, <g2>Compressed</g2>, <g3>Documents</g3>, <g4>Music</g4>, <g5>Programs</g5> or <g6>Video</g6>. Torrents have their own <g7>Torrents</g7> category. Each category has its own folder, by default inside your Downloads folder (<x8/>, <x9/> and so on; General uses <x10/> itself).",
-   "text": "Каждая загрузка попадает в категорию по типу файла: <g1>Общие</g1>, <g2>Сжатые</g2>, <g3>Документы</g3>, <g4>Музыка</g4>, <g5>Программы</g5> или <g6>Видео</g6>. Торренты имеют свою собственную категорию <g7>Торренты</g7>. Каждая категория имеет свою собственную папку, по умолчанию внутри вашей папки Загрузки (<x8/>, <x9/> и так далее; Общие используют саму <x10/>)."
   },
   "bc7153d0bcfdacbb": {
    "source": "Themes — Mister Download Manager",
@@ -17262,6 +17262,10 @@
    "source": "Can it download overnight or on a schedule?",
    "text": "Может ли он загружать ночью или по расписанию?"
   },
+  "e852a2ae2ea94c2d": {
+   "source": "<g1>Automatically put in \"…\" category the following file types</g1> — the file types that go to this category. A built-in category whose list you never changed gains the types a new version adds; one you edited stays as it is.",
+   "text": "<g1>Автоматически помещать в категорию «…» следующие типы файлов</g1> — типы файлов, которые попадают в эту категорию. Встроенная категория, список которой вы никогда не меняли, получает типы, добавленные в новой версии; изменённая вами остаётся без изменений."
+  },
   "e8592a334f7cb4df": {
    "source": "In <g1>Download File Info</g1>, click <g2>Download Later</g2> and pick the queue.",
    "text": "В окне <g1>Информация о загружаемом файле</g1> нажмите <g2>Загрузить позже</g2> и выберите очередь."
@@ -17857,6 +17861,10 @@
   "ef6e5d90b67f8e4e": {
    "source": "<g1>\"Hide tab\" was cut in longer languages</g1> (German \"Registerkarte au...\"): the button grows to fit its label where there is room, through a shared helper other buttons can use.",
    "text": "<g1>«Скрыть вкладку» обрезалось в более длинных языках</g1> (немецкий «Registerkarte au...»): кнопка увеличивается, чтобы соответствовать своей метке, если есть место, с помощью общего вспомогательного элемента, который могут использовать другие кнопки."
+  },
+  "ef7238dc374b9e0e": {
+   "source": "Each download falls into a category by its file type: <g1>General</g1>, <g2>Compressed</g2>, <g3>Documents</g3>, <g4>Music</g4>, <g5>Programs</g5> or <g6>Video</g6>. Torrents have their own <g7>Torrents</g7> category. <g8>Programs</g8> takes programs, installers and app packages (EXE, MSI, APK, IPA, DMG, PKG, DEB, RPM, AppImage, MSIX…), <g9>Compressed</g9> archives and disc images (ZIP, RAR, 7Z, TAR, XZ, ISO, IMG, VHD…), <g10>Documents</g10> text documents, spreadsheets and e-books (PDF, DOCX, XLSX, ODT, EPUB, MOBI…), <g11>Music</g11> audio (MP3, FLAC, OPUS, M4A…) and <g12>Video</g12> videos (MP4, MKV, WEBM…); every other file goes to General. Your own categories come before the built-in ones. Each category has its own folder, by default inside your Downloads folder (<x13/>, <x14/> and so on; General uses <x15/> itself).",
+   "text": "Каждая загрузка попадает в категорию по типу файла: <g1>Общие</g1>, <g2>Сжатые</g2>, <g3>Документы</g3>, <g4>Музыка</g4>, <g5>Программы</g5> или <g6>Видео</g6>. Торренты имеют собственную категорию <g7>Торренты</g7>. В <g8>Программы</g8> попадают программы, установщики и пакеты приложений (EXE, MSI, APK, IPA, DMG, PKG, DEB, RPM, AppImage, MSIX…), в <g9>Сжатые</g9> — архивы и образы дисков (ZIP, RAR, 7Z, TAR, XZ, ISO, IMG, VHD…), в <g10>Документы</g10> — текстовые документы, электронные таблицы и электронные книги (PDF, DOCX, XLSX, ODT, EPUB, MOBI…), в <g11>Музыка</g11> — аудиофайлы (MP3, FLAC, OPUS, M4A…), а в <g12>Видео</g12> — видеофайлы (MP4, MKV, WEBM…); все остальные файлы попадают в Общие. Ваши собственные категории отображаются перед встроенными. Каждая категория имеет свою папку, по умолчанию внутри папки «Загрузки» (<x13/>, <x14/> и так далее; Общие используют саму папку <x15/>)."
   },
   "ef8cedcbdccdaf85": {
    "source": "The code is filled in when you scanned the QR code; otherwise type it. Give the phone a name, and tap <g1>Pair</g1>. The window on the computer says so, and closes with <g2>Done</g2>.",
@@ -18470,10 +18478,6 @@
    "source": "From the plain zip",
    "text": "Из обычного zip-архива"
   },
-  "f8c71a9fb2bd8bde": {
-   "source": "<g1>Automatically put in \"…\" category the following file types</g1> — the file types that go to this category.",
-   "text": "<g1>Автоматически помещать в категорию «…» следующие типы файлов</g1> — типы файлов, которые попадают в эту категорию."
-  },
   "f8e0a9e7ee529ff0": {
    "source": "Select <g1>Main download queue</g1> on the left. The <g2>Schedule</g2> tab opens.",
    "text": "Выберите <g1>Основная очередь загрузки</g1> слева. Откроется вкладка <g2>Расписание</g2>."
@@ -19065,6 +19069,10 @@
   "ffa29022fa7a00bc": {
    "source": "Where theme files go",
    "text": "Расположение файлов тем"
+  },
+  "ffb19e8a15974427": {
+   "source": "On Windows, Microsoft's software renderer (WARP) keeps the processor much busier than Mesa's (llvmpipe), the more so the larger the window. Where WARP draws for want of a graphics driver, MDM offers once to download llvmpipe (about 66 MB, from Mesa's Windows builds on GitHub), and <g1>View → Draw with → Download Mesa's software renderer (llvmpipe)...</g1> offers it at any time. Nothing downloads until you press <g2>Download</g2>; it is checked against MDM's signed list of checked builds, as ffmpeg is, and kept in MDM's data folder (<x3/>). MDM draws with it from its next start, and <g4>View → Draw with</g4> says <g5>Software (llvmpipe)</g5>. If it can't start or draw there, MDM remembers that and draws with WARP again (<g6>Software (llvmpipe) didn't start here: WARP draws</g6>); a newer llvmpipe is tried again. To stop using it, quit MDM and delete the <x7/> folder.",
+   "text": "В Windows программное средство рендеринга Microsoft (WARP) загружает процессор гораздо сильнее, чем Mesa (llvmpipe), особенно при большом размере окна. Если WARP используется из-за отсутствия графического драйвера, MDM один раз предлагает загрузить llvmpipe (около 66 МБ, из сборок Mesa для Windows на GitHub), а пункт <g1>Вид → Отрисовка с помощью → Загрузить программное средство рендеринга Mesa (llvmpipe)...</g1> позволяет сделать это в любое время. Загрузка не начнется, пока вы не нажмете <g2>Загрузить</g2>; файл проверяется по подписанному списку проверенных сборок MDM, как и ffmpeg, и сохраняется в папке данных MDM (<x3/>). MDM будет использовать его со следующего запуска, а в меню <g4>Вид → Отрисовка с помощью</g4> будет указано <g5>Программное средство (llvmpipe)</g5>. Если оно не может запуститься или отрисовать изображение, MDM запоминает это и снова использует WARP (<g6>Программное средство (llvmpipe) здесь не запустилось: используется WARP</g6>); будет предпринята попытка использовать более новую версию llvmpipe. Чтобы прекратить его использование, закройте MDM и удалите папку <x7/>."
   },
   "ffbc009bfa4aa85a": {
    "source": "Drag a link from your browser onto it. MDM adds it as if you had used <g1>Add URL</g1>.",

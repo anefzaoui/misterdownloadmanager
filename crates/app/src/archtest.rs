@@ -108,6 +108,11 @@ pub enum Done {
 pub struct Tests {
     queue: VecDeque<Job>,
     running: Option<Running>,
+    /// Downloads whose archive is being looked at beside the window's thread ([`look_at`]).
+    looks: Vec<Look>,
+    /// The window to wake once a look is done ([`Tests::look_beside`]); None: the disk is looked
+    /// at where it is asked (the tests).
+    wake: Option<egui::Context>,
     /// A damaged archive, offered to download again: one window at a time (the others are said
     /// in their logs).
     pub damaged: Option<DamagedDialog>,
@@ -116,10 +121,36 @@ pub struct Tests {
 }
 
 impl Tests {
+    /// From now on the disk is looked at beside the window's thread (#1292), and `ctx` woken
+    /// when it was: whether an archive is complete opens it (its end record), and an antivirus
+    /// checking a file just downloaded can hold that open for seconds.
+    pub fn look_beside(&mut self, ctx: &egui::Context) {
+        if self.wake.is_none() {
+            self.wake = Some(ctx.clone());
+        }
+    }
+
+    /// Look at `id`'s archive on the disk for `why`: beside the window's thread once
+    /// [`Tests::look_beside`] said so (what it found comes to [`Tests::poll`]), else now.
+    fn look(&mut self, id: u64, dest: &Path, why: Why) -> Option<Looked> {
+        let Some(ctx) = self.wake.clone() else {
+            return Some(look_at(dest));
+        };
+        let (tx, rx) = std::sync::mpsc::channel();
+        let dest = dest.to_path_buf();
+        crate::launch::spawn("archive look", move || {
+            let _ = tx.send(look_at(&dest));
+            ctx.request_repaint();
+        });
+        self.looks.push(Look { id, why, rx });
+        None
+    }
+
     /// Download `id` just finished: whether it waits for its archive's test (true: its finishing
     /// comes with [`Done::Release`]). Tested when Options says so and it is no larger than its
     /// limit, a split archive once every volume of it is in ([`ready`]); always when its damaged
-    /// parts were just downloaded again.
+    /// parts were just downloaded again. While its archive is looked at beside the window's
+    /// thread it waits too, and is released by [`Tests::poll`] if it isn't tested.
     pub fn hold(&mut self, id: u64, items: &mut [Item], settings: &Settings) -> bool {
         let Some(item) = items.iter().find(|i| i.id == id) else {
             return false;
@@ -131,9 +162,32 @@ impl Tests {
         if !settings.test_archives && !again {
             return false;
         }
+        // Already looked at: it waits for that look.
+        if self.looks.iter().any(|l| l.id == id) {
+            return true;
+        }
+        let dest = item.dest.clone();
+        match self.look(id, &dest, Why::Hold) {
+            Some(looked) => self.hold_looked(id, items, settings, looked),
+            None => true,
+        }
+    }
+
+    /// [`Tests::hold`], with what the disk says of its archive.
+    fn hold_looked(
+        &mut self,
+        id: u64,
+        items: &mut [Item],
+        settings: &Settings,
+        looked: Looked,
+    ) -> bool {
+        let Some(item) = items.iter().find(|i| i.id == id) else {
+            return false;
+        };
+        let again = item.refetched;
         // A split archive once every volume is in (#1661): before, its end is missing, which
         // a test reads as damage. Its last volume to finish tests it.
-        let (archive, files, ids) = match ready(item, items) {
+        let (archive, files, ids) = match ready_from(item, items, looked.disk) {
             Ready::Yes {
                 archive,
                 files,
@@ -151,11 +205,9 @@ impl Tests {
         // doesn't say).
         let size: u64 = files
             .iter()
-            .filter_map(|f| {
-                std::fs::metadata(f)
-                    .map(|m| m.len())
-                    .ok()
-                    .or_else(|| items.iter().find(|i| &i.dest == f)?.size)
+            .zip(looked.sizes.iter().copied().chain(std::iter::repeat(None)))
+            .filter_map(|(f, on_disk)| {
+                on_disk.or_else(|| items.iter().find(|i| &i.dest == f)?.size)
             })
             .sum();
         let limit = settings.test_limit();
@@ -193,10 +245,21 @@ impl Tests {
         let Some(item) = items.iter().find(|i| i.id == id) else {
             return;
         };
-        if !testable(item) || item.testing {
+        if !testable(item) || item.testing || self.looks.iter().any(|l| l.id == id) {
             return;
         }
-        let (archive, files, ids) = match ready(item, items) {
+        let dest = item.dest.clone();
+        if let Some(looked) = self.look(id, &dest, Why::ByHand) {
+            self.by_hand_looked(id, items, looked);
+        }
+    }
+
+    /// [`Tests::by_hand`], with what the disk says of its archive.
+    fn by_hand_looked(&mut self, id: u64, items: &mut [Item], looked: Looked) {
+        let Some(item) = items.iter().find(|i| i.id == id) else {
+            return;
+        };
+        let (archive, files, ids) = match ready_from(item, items, looked.disk) {
             Ready::Yes {
                 archive,
                 files,
@@ -242,29 +305,44 @@ impl Tests {
             let Some(item) = items.iter().find(|i| i.id == id) else {
                 continue;
             };
-            let set = (settings.test_archives && testable(item))
-                .then(|| match ready(item, items) {
-                    Ready::Yes { archive, ids, .. } => Some((archive, ids)),
-                    _ => None,
-                })
-                .flatten();
-            let Some((archive, ids)) = set.filter(|(a, _)| !self.waiting(a)) else {
+            if !(settings.test_archives && testable(item)) {
                 if let Some(i) = items.iter_mut().find(|i| i.id == id) {
                     i.testing = false;
                 }
                 continue;
-            };
-            let job = Job {
-                held: None,
-                shown: id,
-                ids,
-                archive,
-                by_hand: false,
-                again: false,
-                kept: None,
-            };
-            self.push(job, items);
+            }
+            let dest = item.dest.clone();
+            if let Some(looked) = self.look(id, &dest, Why::Resume) {
+                self.resume_looked(id, items, looked);
+            }
         }
+    }
+
+    /// [`Tests::resume`] for `id`, with what the disk says of its archive.
+    fn resume_looked(&mut self, id: u64, items: &mut [Item], looked: Looked) {
+        let Some(item) = items.iter().find(|i| i.id == id) else {
+            return;
+        };
+        let set = match ready_from(item, items, looked.disk) {
+            Ready::Yes { archive, ids, .. } => Some((archive, ids)),
+            _ => None,
+        };
+        let Some((archive, ids)) = set.filter(|(a, _)| !self.waiting(a)) else {
+            if let Some(i) = items.iter_mut().find(|i| i.id == id) {
+                i.testing = false;
+            }
+            return;
+        };
+        let job = Job {
+            held: None,
+            shown: id,
+            ids,
+            archive,
+            by_hand: false,
+            again: false,
+            kept: None,
+        };
+        self.push(job, items);
     }
 
     fn push(&mut self, job: Job, items: &mut [Item]) {
@@ -287,6 +365,7 @@ impl Tests {
     /// Stop testing the archive of any of `ids` (they are being deleted, or downloaded again),
     /// and forget the ones queued.
     pub fn forget(&mut self, ids: &[u64]) {
+        self.looks.retain(|l| !ids.contains(&l.id));
         if let Some(r) = &self.running
             && r.job.ids.iter().any(|i| ids.contains(i))
         {
@@ -309,12 +388,49 @@ impl Tests {
             r.cancel.store(true, Ordering::Relaxed);
         }
         self.queue.clear();
+        self.looks.clear();
+    }
+
+    /// The looks at the disk done beside the window's thread, taken where they were asked:
+    /// a download held for one is tested, or released (`out`).
+    fn looked(&mut self, items: &mut [Item], settings: &Settings, out: &mut Vec<Done>) {
+        let mut done = Vec::new();
+        self.looks.retain(|l| match l.rx.try_recv() {
+            Ok(looked) => {
+                done.push((l.id, l.why, looked));
+                false
+            }
+            Err(std::sync::mpsc::TryRecvError::Empty) => true,
+            Err(std::sync::mpsc::TryRecvError::Disconnected) => {
+                done.push((l.id, l.why, Looked::unread()));
+                false
+            }
+        });
+        for (id, why, looked) in done {
+            match why {
+                Why::Hold => {
+                    if items.iter().any(|i| i.id == id)
+                        && !self.hold_looked(id, items, settings, looked)
+                    {
+                        out.push(Done::Release(id));
+                    }
+                }
+                Why::ByHand => self.by_hand_looked(id, items, looked),
+                Why::Resume => self.resume_looked(id, items, looked),
+            }
+        }
     }
 
     /// A test done: its outcome into the logs, and what the app does next; the next one
     /// started.
-    pub fn poll(&mut self, items: &mut [Item], ctx: &egui::Context) -> Vec<Done> {
+    pub fn poll(
+        &mut self,
+        items: &mut [Item],
+        settings: &Settings,
+        ctx: &egui::Context,
+    ) -> Vec<Done> {
         let mut out = Vec::new();
+        self.looked(items, settings, &mut out);
         let done = self
             .running
             .as_ref()
@@ -488,6 +604,56 @@ impl Tests {
     }
 }
 
+/// Why an archive is looked at on the disk ([`Tests::look`]).
+#[derive(Clone, Copy, Debug)]
+enum Why {
+    /// Its download just finished ([`Tests::hold`]).
+    Hold,
+    /// Right-click → Test archive ([`Tests::by_hand`]).
+    ByHand,
+    /// Its test stopped when MDM closed ([`Tests::resume`]).
+    Resume,
+}
+
+/// A look at the disk on its way ([`Tests::look`]).
+struct Look {
+    id: u64,
+    why: Why,
+    rx: std::sync::mpsc::Receiver<Looked>,
+}
+
+/// What the disk says of an archive: whether every volume is there ([`mdm_extract::on_disk`])
+/// and, when it is, each volume's size (None where it didn't say).
+struct Looked {
+    disk: std::io::Result<mdm_extract::OnDisk>,
+    sizes: Vec<Option<u64>>,
+}
+
+impl Looked {
+    /// A look whose thread ended without an answer.
+    fn unread() -> Looked {
+        Looked {
+            disk: Err(std::io::Error::other(
+                "the look at the disk ended without an answer",
+            )),
+            sizes: Vec::new(),
+        }
+    }
+}
+
+/// Look at the archive at `dest` (it opens the file: its end record, a split one's volumes).
+fn look_at(dest: &Path) -> Looked {
+    let disk = mdm_extract::on_disk(dest);
+    let sizes = match &disk {
+        Ok(mdm_extract::OnDisk::Complete { files, .. }) => files
+            .iter()
+            .map(|f| std::fs::metadata(f).map(|m| m.len()).ok())
+            .collect(),
+        _ => Vec::new(),
+    };
+    Looked { disk, sizes }
+}
+
 /// Whether `item`'s archive (every volume of a split one) can be tested now (#1661).
 #[derive(Debug)]
 enum Ready {
@@ -511,7 +677,13 @@ enum Ready {
 /// saying it is the last (`mdm_extract::on_disk`). A split archive's volumes finish one after
 /// another (a queue taking one at a time, a host's wait between them, some added later): the
 /// volumes finished so far are no complete archive, whatever the list holds yet.
+#[cfg(test)]
 fn ready(item: &Item, items: &[Item]) -> Ready {
+    ready_from(item, items, mdm_extract::on_disk(&item.dest))
+}
+
+/// [`ready`], with what the disk says of `item`'s archive (`mdm_extract::on_disk`).
+fn ready_from(item: &Item, items: &[Item], disk: std::io::Result<mdm_extract::OnDisk>) -> Ready {
     let dir = item.dest.parent();
     let set: Vec<&Item> = match mdm_extract::set_key(&item.file_name) {
         Some(key) => items
@@ -530,7 +702,6 @@ fn ready(item: &Item, items: &[Item]) -> Ready {
                 Status::Downloading | Status::Queued | Status::Stopped
             )
     };
-    let disk = mdm_extract::on_disk(&item.dest);
     // A ZIP in one file is its own whole set: another download of the same name still to come
     // (the same file again, to be numbered) is none of its volumes.
     let one_zip = volume_key(&item.file_name).is_none()
@@ -808,6 +979,56 @@ mod tests {
         ] {
             assert!(!tested_name(n), "{n}");
         }
+    }
+
+    /// #1292: in the app the disk is looked at beside the window's thread (whether an archive is
+    /// complete opens it). Its download waits meanwhile, not yet "Checking"; once looked at, one
+    /// whose archive can't be tested yet is released and one that can is tested.
+    #[test]
+    fn the_disk_is_looked_at_beside_the_window_thread() {
+        let dir = tempfile::tempdir().unwrap();
+        let mut items = vec![
+            item(1, "x.7z.001", 100),
+            item(2, "a.zip", 100),
+            item(3, "x.7z.002", 100),
+        ];
+        for i in &mut items {
+            i.dest = dir.path().join(&i.file_name);
+            std::fs::write(&i.dest, b"not an archive").unwrap();
+        }
+        // Its second volume is still to download.
+        items[2].status = Status::Queued;
+        let ctx = egui::Context::default();
+        let mut q = Tests::default();
+        q.look_beside(&ctx);
+        assert!(q.hold(1, &mut items, &on()), "waits while it is looked at");
+        assert!(q.hold(2, &mut items, &on()));
+        assert!(
+            !items[0].testing && !items[1].testing,
+            "looked at, not checked yet"
+        );
+        let until = std::time::Instant::now() + std::time::Duration::from_secs(20);
+        let mut out = Vec::new();
+        let mut zip_taken = false;
+        while !q.looks.is_empty() {
+            assert!(std::time::Instant::now() < until, "the looks never came");
+            let zip_looking = q.looks.iter().any(|l| l.id == 2);
+            out.extend(q.poll(&mut items, &on(), &ctx));
+            // The poll that takes the ZIP's look starts its test (which can't have ended yet):
+            // it is checked now, never released.
+            if zip_looking && !q.looks.iter().any(|l| l.id == 2) {
+                assert!(items[1].testing, "the ZIP is tested");
+                assert!(!out.contains(&Done::Release(2)), "{out:?}");
+                zip_taken = true;
+            }
+            std::thread::sleep(std::time::Duration::from_millis(5));
+        }
+        assert!(zip_taken);
+        assert!(
+            out.contains(&Done::Release(1)),
+            "{out:?}: not tested while a volume is to come"
+        );
+        q.stop();
     }
 
     #[test]

@@ -7070,6 +7070,10 @@
    "source": "What Update now does",
    "text": "今すぐ更新の動作"
   },
+  "5f818384bb56aff6": {
+   "source": "<g1>Edge (or another browser) says \"Specified native messaging host not found\", though the registry entry looks right?</g1> On 64-bit Windows the browsers read the registry's 32-bit part (<x2/>) before the entry you find under <x3/>, and take the first one there, even one that leads to a copy that is gone. <g4>Test browser integration</g4> says <g5>An older registry entry is in the way</g5>, with that entry: click <g6>Set it up</g6> to give your account an entry of its own, which the browsers read before it. MDM also does that by itself at its start when that entry leads nowhere, and its setup for everyone removes it.",
+   "text": "<g1>Edge (または他のブラウザー) で「指定されたネイティブ メッセージング ホストが見つかりません」と表示されるが、レジストリ エントリは正しいように見える場合</g1>: 64 ビット版 Windows では、ブラウザーは <x3/> の下にあるエントリよりも前に、レジストリの 32 ビット部分 (<x2/>) を読み取り、そこにある最初のエントリ (たとえ存在しないコピーを指すものであっても) を採用します。<g4>ブラウザー統合のテスト</g4> で <g5>古いレジストリ エントリが邪魔をしています</g5> と表示され、そのエントリが示されている場合は、<g6>セットアップ</g6> をクリックして、ブラウザーがそれを読み取る前に、あなたのアカウント専用のエントリを作成してください。MDM は、そのエントリがどこにもつながっていない場合、起動時に自動的にそれを行い、すべてのユーザー向けのセットアップでそれを削除します。"
+  },
   "5f8f976d1dd62e61": {
    "source": "A group box's frame",
    "text": "グループ ボックスのフレーム"
@@ -10814,6 +10818,10 @@
    "source": "MDM's interface comes in 87 languages: every display language Windows 11 offers, from Afrikaans to Vietnamese, including both Chinese scripts, Spanish for Spain and Mexico, French for France and Canada, Portuguese for Portugal and Brazil, and Serbian in Cyrillic and Latin.",
    "text": "MDMのインターフェースは87言語に対応しています。Windows 11で選べるアフリカーンス語からベトナム語までのすべての表示言語に対応しており、2種類の中国語の文字体系、スペイン語（スペイン、メキシコ）、フランス語（フランス、カナダ）、ポルトガル語（ポルトガル、ブラジル）、キリル文字とラテン文字のセルビア語も含まれます。"
   },
+  "91c08dd2d3fe7d4a": {
+   "source": "<g1>Add category</g1> — make your own, for example <g2>Books</g2> for <x3/> (they then go to Books, not Documents). Give it a name, the file types (separated by spaces, <x4/> allowed) and a folder.",
+   "text": "<g1>カテゴリの追加</g1> — 独自のカテゴリを作成します。たとえば、<x3/> 用に<g2>書籍</g2>カテゴリを作成すると、それらのファイルはドキュメントではなく書籍に分類されます。カテゴリ名、ファイルの種類 (スペースで区切ります。<x4/>も使用できます)、フォルダーを指定します。"
+  },
   "91cefe80b7f00fac": {
    "source": "<g1><g2>Download a file</g2></g1> — copy a link, add it, open the file.",
    "text": "<g1><g2>ファイルをダウンロード</g2></g1> — リンクをコピーして追加し、ファイルを開く方法。"
@@ -12325,10 +12333,6 @@
   "a4b01563b82565da": {
    "source": "<g1>Sharper text on Windows</g1> (<g2>#262</g2>): Segoe UI and Tahoma are grid-fitted across as well as up and down, and each letter starts on a whole pixel, as Windows draws its own grey text: upright strokes were two grey pixels wide at 100 % and 125 %, which read as blurred.",
    "text": "<g1>Windows でテキストがより鮮明になりました</g1> (<g2>#262</g2>): Segoe UI と Tahoma は、Windows が独自のグレー テキストを描画するように、縦方向だけでなく横方向にもグリッドにフィットするようになり、各文字が完全なピクセルで開始されるようになりました。以前は、垂直ストロークが 100% および 125% で 2 ピクセルのグレー幅になり、ぼやけて見えました。"
-  },
-  "a4b04f29f56fdc42": {
-   "source": "<g1>Add category</g1> — make your own, for example <g2>Books</g2> for <x3/>. Give it a name, the file types (separated by spaces, <x4/> allowed) and a folder.",
-   "text": "<g1>カテゴリの追加</g1> — 独自のカテゴリを作成します。たとえば、<x3/>用に<g2>書籍</g2>を作成できます。名前、ファイルの種類（スペースで区切ります。<x4/>も使用できます）、フォルダーを指定します。"
   },
   "a4b1f9a84345ac5d": {
    "source": "<g1>yt-dlp</g1> (about 23 MB) looks the page up and finds where the video and its sound come from; MDM downloads them (<g2>How a video comes down</g2>). The first time, click <g3>Install yt-dlp</g3>. MDM checks the download against the signature yt-dlp's developers publish before it uses it.",
@@ -14137,10 +14141,6 @@
   "bc606bb991071128": {
    "source": "The next tab of a focused tab strip; the next choice of a radio group",
    "text": "フォーカスされたタブストリップの次のタブ。ラジオグループの次の選択肢"
-  },
-  "bc713e862e9b84d3": {
-   "source": "Each download falls into a category by its file type: <g1>General</g1>, <g2>Compressed</g2>, <g3>Documents</g3>, <g4>Music</g4>, <g5>Programs</g5> or <g6>Video</g6>. Torrents have their own <g7>Torrents</g7> category. Each category has its own folder, by default inside your Downloads folder (<x8/>, <x9/> and so on; General uses <x10/> itself).",
-   "text": "ダウンロードはファイルの種類に応じて、<g1>一般</g1>、<g2>圧縮</g2>、<g3>ドキュメント</g3>、<g4>音楽</g4>、<g5>プログラム</g5>、<g6>ビデオ</g6>のいずれかのカテゴリに分類されます。トレントには専用の<g7>トレント</g7>カテゴリがあります。各カテゴリには専用のフォルダーがあり、既定では「ダウンロード」フォルダー内にあります（<x8/>、<x9/>など。「一般」カテゴリは<x10/>自体を使用します）。"
   },
   "bc7153d0bcfdacbb": {
    "source": "Themes — Mister Download Manager",
@@ -17258,6 +17258,10 @@
    "source": "Can it download overnight or on a schedule?",
    "text": "夜間やスケジュールでダウンロードできますか？"
   },
+  "e852a2ae2ea94c2d": {
+   "source": "<g1>Automatically put in \"…\" category the following file types</g1> — the file types that go to this category. A built-in category whose list you never changed gains the types a new version adds; one you edited stays as it is.",
+   "text": "<g1>以下のファイルの種類を「…」カテゴリに自動的に分類する</g1> — このカテゴリに分類されるファイルの種類。リストを変更していない組み込みカテゴリには、新しいバージョンで追加された種類が適用されます。編集したカテゴリはそのまま維持されます。"
+  },
   "e8592a334f7cb4df": {
    "source": "In <g1>Download File Info</g1>, click <g2>Download Later</g2> and pick the queue.",
    "text": "<g1>ダウンロード ファイル情報</g1>で、<g2>後でダウンロード</g2>をクリックし、キューを選択します。"
@@ -17853,6 +17857,10 @@
   "ef6e5d90b67f8e4e": {
    "source": "<g1>\"Hide tab\" was cut in longer languages</g1> (German \"Registerkarte au...\"): the button grows to fit its label where there is room, through a shared helper other buttons can use.",
    "text": "<g1>「タブを非表示」が長い言語で途切れていた</g1> (ドイツ語「Registerkarte au...」): ボタンは、他のボタンが使用できる共有ヘルパーを介して、スペースがある場所でラベルに収まるように大きくなります。"
+  },
+  "ef7238dc374b9e0e": {
+   "source": "Each download falls into a category by its file type: <g1>General</g1>, <g2>Compressed</g2>, <g3>Documents</g3>, <g4>Music</g4>, <g5>Programs</g5> or <g6>Video</g6>. Torrents have their own <g7>Torrents</g7> category. <g8>Programs</g8> takes programs, installers and app packages (EXE, MSI, APK, IPA, DMG, PKG, DEB, RPM, AppImage, MSIX…), <g9>Compressed</g9> archives and disc images (ZIP, RAR, 7Z, TAR, XZ, ISO, IMG, VHD…), <g10>Documents</g10> text documents, spreadsheets and e-books (PDF, DOCX, XLSX, ODT, EPUB, MOBI…), <g11>Music</g11> audio (MP3, FLAC, OPUS, M4A…) and <g12>Video</g12> videos (MP4, MKV, WEBM…); every other file goes to General. Your own categories come before the built-in ones. Each category has its own folder, by default inside your Downloads folder (<x13/>, <x14/> and so on; General uses <x15/> itself).",
+   "text": "各ダウンロードは、ファイルの種類によってカテゴリに分類されます。<g1>一般</g1>、<g2>圧縮</g2>、<g3>ドキュメント</g3>、<g4>音楽</g4>、<g5>プログラム</g5>、<g6>ビデオ</g6>です。トレントには独自の<g7>トレント</g7>カテゴリがあります。<g8>プログラム</g8>にはプログラム、インストーラー、アプリ パッケージ (EXE、MSI、APK、IPA、DMG、PKG、DEB、RPM、AppImage、MSIX など) が含まれ、<g9>圧縮</g9>にはアーカイブとディスク イメージ (ZIP、RAR、7Z、TAR、XZ、ISO、IMG、VHD など) が含まれ、<g10>ドキュメント</g10>にはテキスト ドキュメント、スプレッドシート、電子書籍 (PDF、DOCX、XLSX、ODT、EPUB、MOBI など) が含まれ、<g11>音楽</g11>にはオーディオ (MP3、FLAC、OPUS、M4A など) が含まれ、<g12>ビデオ</g12>にはビデオ (MP4、MKV、WEBM など) が含まれます。その他のファイルはすべて一般に分類されます。ユーザーが作成したカテゴリは、組み込みのカテゴリよりも優先されます。各カテゴリには独自のフォルダーがあり、既定ではダウンロード フォルダー内に作成されます (<x13/>、<x14/> など。一般は<x15/>を使用します)。"
   },
   "ef8cedcbdccdaf85": {
    "source": "The code is filled in when you scanned the QR code; otherwise type it. Give the phone a name, and tap <g1>Pair</g1>. The window on the computer says so, and closes with <g2>Done</g2>.",
@@ -18465,10 +18473,6 @@
   "f8c444517ab946e2": {
    "source": "From the plain zip",
    "text": "zip ファイルから"
-  },
-  "f8c71a9fb2bd8bde": {
-   "source": "<g1>Automatically put in \"…\" category the following file types</g1> — the file types that go to this category.",
-   "text": "<g1>以下のファイルの種類を「…」カテゴリに自動的に振り分ける</g1> — このカテゴリに振り分けるファイルの種類です。"
   },
   "f8e0a9e7ee529ff0": {
    "source": "Select <g1>Main download queue</g1> on the left. The <g2>Schedule</g2> tab opens.",

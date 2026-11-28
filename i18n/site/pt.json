@@ -7074,6 +7074,10 @@
    "source": "What Update now does",
    "text": "O que Atualizar agora faz"
   },
+  "5f818384bb56aff6": {
+   "source": "<g1>Edge (or another browser) says \"Specified native messaging host not found\", though the registry entry looks right?</g1> On 64-bit Windows the browsers read the registry's 32-bit part (<x2/>) before the entry you find under <x3/>, and take the first one there, even one that leads to a copy that is gone. <g4>Test browser integration</g4> says <g5>An older registry entry is in the way</g5>, with that entry: click <g6>Set it up</g6> to give your account an entry of its own, which the browsers read before it. MDM also does that by itself at its start when that entry leads nowhere, and its setup for everyone removes it.",
+   "text": "<g1>O Edge (ou outro navegador) diz «Specified native messaging host not found», embora a entrada de registo pareça correta?</g1> No Windows de 64 bits, os navegadores leem a parte de 32 bits do registo (<x2/>) antes da entrada que encontra em <x3/>, e usam a primeira que lá está, mesmo que leve a uma cópia que já não existe. <g4>Testar integração do navegador</g4> diz <g5>Uma entrada de registo mais antiga está a impedir</g5>, com essa entrada: clique em <g6>Configurar</g6> para dar à sua conta uma entrada própria, que os navegadores leem antes. O MDM também faz isso sozinho ao iniciar quando essa entrada não leva a lado nenhum, e a sua configuração para todos remove-a."
+  },
   "5f8f976d1dd62e61": {
    "source": "A group box's frame",
    "text": "A moldura de uma caixa de grupo"
@@ -10818,6 +10822,10 @@
    "source": "MDM's interface comes in 87 languages: every display language Windows 11 offers, from Afrikaans to Vietnamese, including both Chinese scripts, Spanish for Spain and Mexico, French for France and Canada, Portuguese for Portugal and Brazil, and Serbian in Cyrillic and Latin.",
    "text": "A interface do MDM está disponível em 87 idiomas: todos os idiomas de apresentação que o Windows 11 oferece, do africâner ao vietnamita, incluindo os dois sistemas de escrita chineses, espanhol para Espanha e México, francês para França e Canadá, português para Portugal e Brasil e sérvio em cirílico e latino."
   },
+  "91c08dd2d3fe7d4a": {
+   "source": "<g1>Add category</g1> — make your own, for example <g2>Books</g2> for <x3/> (they then go to Books, not Documents). Give it a name, the file types (separated by spaces, <x4/> allowed) and a folder.",
+   "text": "<g1>Adicionar categoria</g1> — crie a sua própria, por exemplo <g2>Livros</g2> para <x3/> (irão então para Livros, não para Documentos). Dê-lhe um nome, os tipos de ficheiro (separados por espaços, <x4/> permitido) e uma pasta."
+  },
   "91cefe80b7f00fac": {
    "source": "<g1><g2>Download a file</g2></g1> — copy a link, add it, open the file.",
    "text": "<g1><g2>Transferir um ficheiro</g2></g1> — copiar um link, adicioná-lo, abrir o ficheiro."
@@ -12329,10 +12337,6 @@
   "a4b01563b82565da": {
    "source": "<g1>Sharper text on Windows</g1> (<g2>#262</g2>): Segoe UI and Tahoma are grid-fitted across as well as up and down, and each letter starts on a whole pixel, as Windows draws its own grey text: upright strokes were two grey pixels wide at 100 % and 125 %, which read as blurred.",
    "text": "<g1>Texto mais nítido no Windows</g1> (<g2>#262</g2>): Segoe UI e Tahoma são ajustados à grelha tanto na horizontal como na vertical, e cada letra começa num pixel inteiro, como o Windows desenha o seu próprio texto cinzento: os traços verticais tinham dois pixels cinzentos de largura a 100 % e 125 %, o que parecia desfocado."
-  },
-  "a4b04f29f56fdc42": {
-   "source": "<g1>Add category</g1> — make your own, for example <g2>Books</g2> for <x3/>. Give it a name, the file types (separated by spaces, <x4/> allowed) and a folder.",
-   "text": "<g1>Adicionar categoria</g1> — criar uma categoria própria, por exemplo <g2>Livros</g2> para <x3/>. Indique um nome, os tipos de ficheiro (separados por espaços; é permitido usar <x4/>) e uma pasta."
   },
   "a4b1f9a84345ac5d": {
    "source": "<g1>yt-dlp</g1> (about 23 MB) looks the page up and finds where the video and its sound come from; MDM downloads them (<g2>How a video comes down</g2>). The first time, click <g3>Install yt-dlp</g3>. MDM checks the download against the signature yt-dlp's developers publish before it uses it.",
@@ -14141,10 +14145,6 @@
   "bc606bb991071128": {
    "source": "The next tab of a focused tab strip; the next choice of a radio group",
    "text": "O separador seguinte de uma tira de separadores focada; a escolha seguinte de um grupo de rádio"
-  },
-  "bc713e862e9b84d3": {
-   "source": "Each download falls into a category by its file type: <g1>General</g1>, <g2>Compressed</g2>, <g3>Documents</g3>, <g4>Music</g4>, <g5>Programs</g5> or <g6>Video</g6>. Torrents have their own <g7>Torrents</g7> category. Each category has its own folder, by default inside your Downloads folder (<x8/>, <x9/> and so on; General uses <x10/> itself).",
-   "text": "Cada transferência é atribuída a uma categoria pelo tipo de ficheiro: <g1>Geral</g1>, <g2>Comprimidos</g2>, <g3>Documentos</g3>, <g4>Música</g4>, <g5>Programas</g5> ou <g6>Vídeo</g6>. Os torrents têm uma categoria própria, <g7>Torrents</g7>. Cada categoria tem a sua própria pasta, por predefinição dentro da pasta Transferências (<x8/>, <x9/> e assim por diante; a categoria Geral utiliza a própria pasta <x10/>)."
   },
   "bc7153d0bcfdacbb": {
    "source": "Themes — Mister Download Manager",
@@ -17262,6 +17262,10 @@
    "source": "Can it download overnight or on a schedule?",
    "text": "Consegue transferir durante a noite ou com um agendamento?"
   },
+  "e852a2ae2ea94c2d": {
+   "source": "<g1>Automatically put in \"…\" category the following file types</g1> — the file types that go to this category. A built-in category whose list you never changed gains the types a new version adds; one you edited stays as it is.",
+   "text": "<g1>Colocar automaticamente na categoria «…» os seguintes tipos de ficheiro</g1> — os tipos de ficheiro que vão para esta categoria. Uma categoria incorporada cuja lista nunca alterou ganha os tipos que uma nova versão adiciona; uma que editou permanece como está."
+  },
   "e8592a334f7cb4df": {
    "source": "In <g1>Download File Info</g1>, click <g2>Download Later</g2> and pick the queue.",
    "text": "Em <g1>Informações do Ficheiro de Transferência</g1>, clique em <g2>Transferir Mais Tarde</g2> e escolha a fila."
@@ -17857,6 +17861,10 @@
   "ef6e5d90b67f8e4e": {
    "source": "<g1>\"Hide tab\" was cut in longer languages</g1> (German \"Registerkarte au...\"): the button grows to fit its label where there is room, through a shared helper other buttons can use.",
    "text": "<g1>«Ocultar separador» estava cortado em idiomas mais longos</g1> (alemão «Registerkarte au...»): o botão cresce para se ajustar ao seu rótulo onde há espaço, através de um auxiliar partilhado que outros botões podem usar."
+  },
+  "ef7238dc374b9e0e": {
+   "source": "Each download falls into a category by its file type: <g1>General</g1>, <g2>Compressed</g2>, <g3>Documents</g3>, <g4>Music</g4>, <g5>Programs</g5> or <g6>Video</g6>. Torrents have their own <g7>Torrents</g7> category. <g8>Programs</g8> takes programs, installers and app packages (EXE, MSI, APK, IPA, DMG, PKG, DEB, RPM, AppImage, MSIX…), <g9>Compressed</g9> archives and disc images (ZIP, RAR, 7Z, TAR, XZ, ISO, IMG, VHD…), <g10>Documents</g10> text documents, spreadsheets and e-books (PDF, DOCX, XLSX, ODT, EPUB, MOBI…), <g11>Music</g11> audio (MP3, FLAC, OPUS, M4A…) and <g12>Video</g12> videos (MP4, MKV, WEBM…); every other file goes to General. Your own categories come before the built-in ones. Each category has its own folder, by default inside your Downloads folder (<x13/>, <x14/> and so on; General uses <x15/> itself).",
+   "text": "Cada transferência pertence a uma categoria de acordo com o seu tipo de ficheiro: <g1>Geral</g1>, <g2>Comprimidos</g2>, <g3>Documentos</g3>, <g4>Música</g4>, <g5>Programas</g5> ou <g6>Vídeo</g6>. Os Torrents têm a sua própria categoria <g7>Torrents</g7>. A categoria <g8>Programas</g8> inclui programas, instaladores e pacotes de aplicações (EXE, MSI, APK, IPA, DMG, PKG, DEB, RPM, AppImage, MSIX…), <g9>Comprimidos</g9> inclui arquivos e imagens de disco (ZIP, RAR, 7Z, TAR, XZ, ISO, IMG, VHD…), <g10>Documentos</g10> inclui documentos de texto, folhas de cálculo e e-books (PDF, DOCX, XLSX, ODT, EPUB, MOBI…), <g11>Música</g11> inclui áudio (MP3, FLAC, OPUS, M4A…) e <g12>Vídeo</g12> inclui vídeos (MP4, MKV, WEBM…); todos os outros ficheiros vão para Geral. As suas próprias categorias aparecem antes das categorias predefinidas. Cada categoria tem a sua própria pasta, por predefinição dentro da sua pasta Transferências (<x13/>, <x14/> e assim por diante; Geral usa <x15/>)."
   },
   "ef8cedcbdccdaf85": {
    "source": "The code is filled in when you scanned the QR code; otherwise type it. Give the phone a name, and tap <g1>Pair</g1>. The window on the computer says so, and closes with <g2>Done</g2>.",
@@ -18469,10 +18477,6 @@
   "f8c444517ab946e2": {
    "source": "From the plain zip",
    "text": "Do zip simples"
-  },
-  "f8c71a9fb2bd8bde": {
-   "source": "<g1>Automatically put in \"…\" category the following file types</g1> — the file types that go to this category.",
-   "text": "<g1>Colocar automaticamente na categoria \"…\" os seguintes tipos de ficheiro</g1> — os tipos de ficheiro que vão para esta categoria."
   },
   "f8e0a9e7ee529ff0": {
    "source": "Select <g1>Main download queue</g1> on the left. The <g2>Schedule</g2> tab opens.",

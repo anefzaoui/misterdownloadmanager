@@ -1967,18 +1967,24 @@ pub fn frame_done(ctx: &egui::Context) {
         return;
     }
     DRAWN.store(true, Ordering::Relaxed);
+    // From now on the window's thread reads no file (#1292): fonts are read beside it.
+    crate::diskwatch::first_frame();
+    crate::theme::beside::start(ctx);
     let api = clock_counted().map_or(String::new(), |d| {
         format!(" ({} ms of it counted for the API)", d.as_millis())
     });
     tracing::info!("first frame drawn, {} ms after start{api}", since_start());
-    for (starting, _) in [Way::Card, Way::Software, Way::OpenGl, Way::Llvmpipe]
-        .into_iter()
-        .filter_map(Way::files)
-    {
-        let _ = std::fs::remove_file(starting);
-    }
-    // A way tried again after it failed here, which drew (#1205).
-    drew_again();
+    // The start's markers, and the failure of a way tried again that drew (#1205): files,
+    // written beside the window's thread (#1292).
+    crate::launch::spawn("renderer files", || {
+        for (starting, _) in [Way::Card, Way::Software, Way::OpenGl, Way::Llvmpipe]
+            .into_iter()
+            .filter_map(Way::files)
+        {
+            let _ = std::fs::remove_file(starting);
+        }
+        drew_again();
+    });
 }
 
 // ---- The first frame's clock ----------------------------------------------------------------

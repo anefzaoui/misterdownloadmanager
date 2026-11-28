@@ -7074,6 +7074,10 @@
    "source": "What Update now does",
    "text": "Những gì Cập nhật ngay thực hiện"
   },
+  "5f818384bb56aff6": {
+   "source": "<g1>Edge (or another browser) says \"Specified native messaging host not found\", though the registry entry looks right?</g1> On 64-bit Windows the browsers read the registry's 32-bit part (<x2/>) before the entry you find under <x3/>, and take the first one there, even one that leads to a copy that is gone. <g4>Test browser integration</g4> says <g5>An older registry entry is in the way</g5>, with that entry: click <g6>Set it up</g6> to give your account an entry of its own, which the browsers read before it. MDM also does that by itself at its start when that entry leads nowhere, and its setup for everyone removes it.",
+   "text": "<g1>Edge (hoặc trình duyệt khác) báo lỗi “Specified native messaging host not found” dù mục đăng ký có vẻ đúng?</g1> Trên Windows 64-bit, các trình duyệt đọc phần 32-bit của sổ đăng ký (<x2/>) trước mục bạn tìm thấy dưới <x3/>, và lấy mục đầu tiên ở đó, ngay cả khi nó dẫn đến một bản sao đã bị xóa. <g4>Kiểm tra tích hợp trình duyệt</g4> báo <g5>Một mục đăng ký cũ đang cản trở</g5>, cùng với mục đó: nhấp <g6>Thiết lập</g6> để tạo một mục riêng cho tài khoản của bạn, mà các trình duyệt sẽ đọc trước. MDM cũng tự làm điều đó khi khởi động nếu mục đó không dẫn đến đâu, và quá trình thiết lập cho mọi người sẽ xóa nó."
+  },
   "5f8f976d1dd62e61": {
    "source": "A group box's frame",
    "text": "Khung của hộp nhóm"
@@ -10818,6 +10822,10 @@
    "source": "MDM's interface comes in 87 languages: every display language Windows 11 offers, from Afrikaans to Vietnamese, including both Chinese scripts, Spanish for Spain and Mexico, French for France and Canada, Portuguese for Portugal and Brazil, and Serbian in Cyrillic and Latin.",
    "text": "Giao diện MDM có 87 ngôn ngữ: tất cả ngôn ngữ hiển thị mà Windows 11 cung cấp, từ tiếng Afrikaans đến tiếng Việt, bao gồm cả hai hệ chữ Trung Quốc, tiếng Tây Ban Nha ở Tây Ban Nha và Mexico, tiếng Pháp ở Pháp và Canada, tiếng Bồ Đào Nha ở Bồ Đào Nha và Brazil, cùng tiếng Serbia viết bằng chữ Kirin và chữ Latinh."
   },
+  "91c08dd2d3fe7d4a": {
+   "source": "<g1>Add category</g1> — make your own, for example <g2>Books</g2> for <x3/> (they then go to Books, not Documents). Give it a name, the file types (separated by spaces, <x4/> allowed) and a folder.",
+   "text": "<g1>Thêm danh mục</g1> — tạo danh mục của riêng bạn, ví dụ <g2>Sách</g2> cho <x3/> (chúng sẽ vào Sách, không phải Tài liệu). Đặt tên, loại tệp (cách nhau bằng dấu cách, cho phép <x4/>) và thư mục cho nó."
+  },
   "91cefe80b7f00fac": {
    "source": "<g1><g2>Download a file</g2></g1> — copy a link, add it, open the file.",
    "text": "<g1><g2>Tải xuống một tệp</g2></g1> — sao chép liên kết, thêm liên kết rồi mở tệp."
@@ -12329,10 +12337,6 @@
   "a4b01563b82565da": {
    "source": "<g1>Sharper text on Windows</g1> (<g2>#262</g2>): Segoe UI and Tahoma are grid-fitted across as well as up and down, and each letter starts on a whole pixel, as Windows draws its own grey text: upright strokes were two grey pixels wide at 100 % and 125 %, which read as blurred.",
    "text": "<g1>Văn bản sắc nét hơn trên Windows</g1> (<g2>#262</g2>): Segoe UI và Tahoma được căn chỉnh theo lưới cả chiều ngang và chiều dọc, và mỗi chữ cái bắt đầu trên một pixel nguyên, giống như Windows vẽ văn bản màu xám của riêng nó: các nét thẳng đứng rộng hai pixel màu xám ở 100% và 125%, đọc như bị mờ."
-  },
-  "a4b04f29f56fdc42": {
-   "source": "<g1>Add category</g1> — make your own, for example <g2>Books</g2> for <x3/>. Give it a name, the file types (separated by spaces, <x4/> allowed) and a folder.",
-   "text": "<g1>Thêm danh mục</g1> — tạo danh mục riêng, chẳng hạn <g2>Sách</g2> cho <x3/>. Nhập tên, loại tệp (cách nhau bằng dấu cách, cho phép <x4/>) và thư mục."
   },
   "a4b1f9a84345ac5d": {
    "source": "<g1>yt-dlp</g1> (about 23 MB) looks the page up and finds where the video and its sound come from; MDM downloads them (<g2>How a video comes down</g2>). The first time, click <g3>Install yt-dlp</g3>. MDM checks the download against the signature yt-dlp's developers publish before it uses it.",
@@ -14141,10 +14145,6 @@
   "bc606bb991071128": {
    "source": "The next tab of a focused tab strip; the next choice of a radio group",
    "text": "Tab tiếp theo trong dải tab đang được chọn; lựa chọn tiếp theo trong nhóm nút radio"
-  },
-  "bc713e862e9b84d3": {
-   "source": "Each download falls into a category by its file type: <g1>General</g1>, <g2>Compressed</g2>, <g3>Documents</g3>, <g4>Music</g4>, <g5>Programs</g5> or <g6>Video</g6>. Torrents have their own <g7>Torrents</g7> category. Each category has its own folder, by default inside your Downloads folder (<x8/>, <x9/> and so on; General uses <x10/> itself).",
-   "text": "Mỗi bản tải xuống được xếp vào danh mục theo loại tệp: <g1>Chung</g1>, <g2>Đã nén</g2>, <g3>Tài liệu</g3>, <g4>Nhạc</g4>, <g5>Chương trình</g5> hoặc <g6>Video</g6>. Torrent có danh mục <g7>Torrent</g7> riêng. Mỗi danh mục có thư mục riêng, mặc định nằm trong thư mục Tải xuống của bạn (<x8/>, <x9/> và các thư mục khác; danh mục Chung dùng chính <x10/>)."
   },
   "bc7153d0bcfdacbb": {
    "source": "Themes — Mister Download Manager",
@@ -17262,6 +17262,10 @@
    "source": "Can it download overnight or on a schedule?",
    "text": "MDM có thể tải xuống qua đêm hoặc theo lịch không?"
   },
+  "e852a2ae2ea94c2d": {
+   "source": "<g1>Automatically put in \"…\" category the following file types</g1> — the file types that go to this category. A built-in category whose list you never changed gains the types a new version adds; one you edited stays as it is.",
+   "text": "<g1>Tự động đưa các loại tệp sau vào danh mục “…”</g1> — các loại tệp sẽ được chuyển vào danh mục này. Một danh mục tích hợp sẵn mà bạn chưa từng thay đổi danh sách sẽ nhận thêm các loại tệp mà phiên bản mới bổ sung; danh mục bạn đã chỉnh sửa sẽ giữ nguyên."
+  },
   "e8592a334f7cb4df": {
    "source": "In <g1>Download File Info</g1>, click <g2>Download Later</g2> and pick the queue.",
    "text": "Trong <g1>Thông tin tệp tải xuống</g1>, nhấp vào <g2>Tải xuống sau</g2> và chọn hàng đợi."
@@ -17857,6 +17861,10 @@
   "ef6e5d90b67f8e4e": {
    "source": "<g1>\"Hide tab\" was cut in longer languages</g1> (German \"Registerkarte au...\"): the button grows to fit its label where there is room, through a shared helper other buttons can use.",
    "text": "<g1>\"Ẩn tab\" bị cắt trong các ngôn ngữ dài hơn</g1> (tiếng Đức \"Registerkarte au...\"): nút mở rộng để vừa với nhãn của nó ở nơi có chỗ, thông qua một trợ giúp chung mà các nút khác có thể sử dụng."
+  },
+  "ef7238dc374b9e0e": {
+   "source": "Each download falls into a category by its file type: <g1>General</g1>, <g2>Compressed</g2>, <g3>Documents</g3>, <g4>Music</g4>, <g5>Programs</g5> or <g6>Video</g6>. Torrents have their own <g7>Torrents</g7> category. <g8>Programs</g8> takes programs, installers and app packages (EXE, MSI, APK, IPA, DMG, PKG, DEB, RPM, AppImage, MSIX…), <g9>Compressed</g9> archives and disc images (ZIP, RAR, 7Z, TAR, XZ, ISO, IMG, VHD…), <g10>Documents</g10> text documents, spreadsheets and e-books (PDF, DOCX, XLSX, ODT, EPUB, MOBI…), <g11>Music</g11> audio (MP3, FLAC, OPUS, M4A…) and <g12>Video</g12> videos (MP4, MKV, WEBM…); every other file goes to General. Your own categories come before the built-in ones. Each category has its own folder, by default inside your Downloads folder (<x13/>, <x14/> and so on; General uses <x15/> itself).",
+   "text": "Mỗi lượt tải xuống thuộc về một danh mục theo loại tệp của nó: <g1>Chung</g1>, <g2>Đã nén</g2>, <g3>Tài liệu</g3>, <g4>Nhạc</g4>, <g5>Chương trình</g5> hoặc <g6>Video</g6>. Torrent có danh mục <g7>Torrent</g7> riêng. <g8>Chương trình</g8> chứa các chương trình, trình cài đặt và gói ứng dụng (EXE, MSI, APK, IPA, DMG, PKG, DEB, RPM, AppImage, MSIX…), <g9>Đã nén</g9> chứa các kho lưu trữ và ảnh đĩa (ZIP, RAR, 7Z, TAR, XZ, ISO, IMG, VHD…), <g10>Tài liệu</g10> chứa tài liệu văn bản, bảng tính và sách điện tử (PDF, DOCX, XLSX, ODT, EPUB, MOBI…), <g11>Nhạc</g11> chứa âm thanh (MP3, FLAC, OPUS, M4A…) và <g12>Video</g12> chứa video (MP4, MKV, WEBM…); mọi tệp khác sẽ vào Chung. Các danh mục của bạn sẽ đứng trước các danh mục có sẵn. Mỗi danh mục có thư mục riêng, mặc định nằm trong thư mục Tải xuống của bạn (<x13/>, <x14/>, v.v.; Chung sử dụng <x15/>)."
   },
   "ef8cedcbdccdaf85": {
    "source": "The code is filled in when you scanned the QR code; otherwise type it. Give the phone a name, and tap <g1>Pair</g1>. The window on the computer says so, and closes with <g2>Done</g2>.",
@@ -18469,10 +18477,6 @@
   "f8c444517ab946e2": {
    "source": "From the plain zip",
    "text": "Từ tệp zip thông thường"
-  },
-  "f8c71a9fb2bd8bde": {
-   "source": "<g1>Automatically put in \"…\" category the following file types</g1> — the file types that go to this category.",
-   "text": "<g1>Tự động đưa các loại tệp sau vào danh mục “…”</g1> — các loại tệp được đưa vào danh mục này."
   },
   "f8e0a9e7ee529ff0": {
    "source": "Select <g1>Main download queue</g1> on the left. The <g2>Schedule</g2> tab opens.",
