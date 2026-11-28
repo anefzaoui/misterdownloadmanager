@@ -64,8 +64,8 @@
 // listed; #532, #1278), videoFocus (mouse idle/fullscreen and keyboard focus, #480), fullscreen (one
 // button over a video in full screen, the page's or the player's, and after the extension was
 // updated while it showed, #336), panels (the button over a player in a modal dialog, in a
-// popover, a closed shadow root, an about:srcdoc or about:blank frame, under a pre-roll ad, on a
-// page that keeps the pointer's moves: shown, uncovered, its click handing MDM the file), reels (a
+// popover, a closed shadow root, an about:srcdoc or about:blank frame, under a pre-roll ad, painted
+// on a canvas over a transparent video (TikTok's), on a page that keeps the pointer's moves: shown, uncovered, its click handing MDM the file), reels (a
 // reel on Instagram's own page for it, muted, looping, without controls, under the site's layer:
 // the button, muted and unmuted; a shop's decorative muted loop: none), survey (E2E_SURVEY: the button over
 // real sites' players, tools/extension/panel-survey.json; off by default), reconnect (a tab opened while
@@ -5623,6 +5623,9 @@ thumb.addEventListener("mouseleave", () => { preview.classList.add("off"); docum
       // A pre-roll ad laid over the player, from Google's ad server (answered here, never the
       // network's): the button is the page's video's, and hands MDM its file, not the ad.
       ["a pre-roll ad over the player", `(() => { const v = document.querySelector("#video"); const w = document.createElement("div"); w.style.cssText = "position:relative;width:640px;height:360px"; v.before(w); w.append(v); const ad = document.createElement("video"); ad.preload = "none"; ad.muted = true; ad.src = "https://redirector.gvt1.com/videoplayback/id/lab/itag/22/source/dclk_video_ads/ad.mp4"; ad.style.cssText = "position:absolute;left:1px;top:1px;width:638px;height:358px;z-index:2"; w.append(ad); return /gvt1/.test(ad.currentSrc || ad.src); })()`],
+      // A player that paints its video on a canvas over it, the <video> kept transparent
+      // (TikTok's in Chromium: its frames drawn on a canvas in a sibling element).
+      ["a player that paints its video on a canvas", `(() => { const v = document.querySelector("#video"); const w = document.createElement("div"); w.style.cssText = "position:relative;width:640px;height:360px"; v.before(w); w.append(v); v.style.cssText = "position:absolute;left:0;top:0;width:100%;height:100%;opacity:0"; const sr = document.createElement("tt-vod-sr-wrap"); sr.style.cssText = "position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none"; const c = document.createElement("canvas"); c.width = 640; c.height = 360; c.style.cssText = "display:block;width:100%;height:100%"; const g = c.getContext("2d"); g.fillStyle = "#34506b"; g.fillRect(0, 0, 640, 360); sr.append(c); w.append(sr); return getComputedStyle(v).opacity === "0"; })()`],
       // A player page whose own script, run before anything else, keeps the pointer's moves to
       // itself (YouTube's embedded player does): the button still follows them.
       ["a player that stops the pointer's moves", "true", "http://player.example.test/embed"],

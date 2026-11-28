@@ -2198,6 +2198,33 @@ const videoPageOn = (() => {
   ok("video.js: a pre-roll ad's player gets no button, the page's own video does");
 }
 
+// video.js paintedOver: a transparent <video> whose player paints its picture on a canvas over the
+// same box (TikTok's in Chromium) is shown; one with no such canvas, a canvas elsewhere, of another
+// size or hidden, isn't.
+{
+  const source = readText("../../extension/video.js");
+  const start = source.indexOf("  // ---- painted: from here");
+  const end = source.indexOf("  // ---- painted: end.");
+  assert.ok(start > 0 && end > start, "video.js has paintedOver and its end mark");
+  assert.ok(source.includes("(Number(s.opacity) > 0.05 || paintedOver(v, r))"), "eligible() asks paintedOver for a transparent video");
+  const rect = (left, top, width, height) => ({ left, top, width, height });
+  const canvas = (r, style = {}) => ({ getBoundingClientRect: () => r, style: { visibility: "visible", display: "inline", opacity: "1", ...style } });
+  const painted = (canvases, parent = true) => {
+    const getComputedStyle = (e) => e.style;
+    const fn = new Function("getComputedStyle", `${source.slice(start, end)}; return paintedOver;`)(getComputedStyle);
+    const v = { parentElement: parent ? { querySelectorAll: (sel) => (sel === "canvas" ? canvases : []) } : null };
+    return fn(v, rect(300, 16, 435, 773));
+  };
+  assert.ok(painted([canvas(rect(300, 16, 435, 773))]), "TikTok's: a canvas over the same box");
+  assert.ok(painted([canvas(rect(10, 10, 433, 773)), canvas(rect(301, 17, 434, 772))]), "the one over the video counts, a placeholder elsewhere doesn't");
+  assert.ok(!painted([]), "a transparent video with nothing painted: hidden");
+  assert.ok(!painted([canvas(rect(300, 16, 200, 100))]), "a small canvas (a logo, a chart) isn't its picture");
+  assert.ok(!painted([canvas(rect(300, 16, 435, 773), { opacity: "0" })]), "a transparent canvas paints nothing");
+  assert.ok(!painted([canvas(rect(300, 16, 435, 773), { visibility: "hidden" })]), "a hidden canvas paints nothing");
+  assert.ok(!painted([], false), "a video out of the page");
+  ok("video.js: a transparent video its player paints on a canvas gets the button; a hidden one doesn't");
+}
+
 // background.js senderPage: a frame its page wrote itself (about:srcdoc, about:blank) is its tab's
 // page; any other frame its own address; the top frame its tab's (which follows the page).
 {

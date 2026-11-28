@@ -569,6 +569,9 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 Everything below ships together, in version 0.6.0, the next release.
 
+- ✅ The browser add-on's Download video button over TikTok's videos in Chromium browsers (a player
+  that paints its picture on a canvas over a transparent video), checked logged out on a video's own
+  page and its feed at Facebook, X, LinkedIn, Reddit, TikTok and Dailymotion
 - ✅ Torrents: a torrent of many files stays within its budget of open files when a file is
   opened again and at a pause (a follow-up to #2060)
 - ✅ The browser add-on's Download video button checked on about 30 video sites and player types in

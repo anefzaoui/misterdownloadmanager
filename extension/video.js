@@ -2013,6 +2013,28 @@ button:focus-visible { outline: none; }
   }
   // ---- ads: end.
 
+  // ---- painted: from here to its end mark, run as is by tools/extension/test.mjs. A player
+  // that paints its video's picture on a canvas of its own over the <video>, kept transparent:
+  // TikTok's in Chromium (its frames drawn, sharpened, on a canvas beside the video, the video at
+  // opacity 0) showed no button over a video that plays. A transparent video counts as shown when a
+  // visible canvas in its own player covers the same box. `r`: the video's rectangle.
+  function paintedOver(v, r) {
+    const near = (a, b) => Math.abs(a - b) <= 4;
+    try {
+      const box = v.parentElement;
+      for (const c of box ? box.querySelectorAll("canvas") : []) {
+        const q = c.getBoundingClientRect();
+        if (!near(q.left, r.left) || !near(q.top, r.top) || !near(q.width, r.width) || !near(q.height, r.height)) continue;
+        const s = getComputedStyle(c);
+        if (s.visibility !== "hidden" && s.display !== "none" && Number(s.opacity) > 0.05) return true;
+      }
+    } catch {
+      // Nothing painted over it.
+    }
+    return false;
+  }
+  // ---- painted: end.
+
   function eligible(v) {
     if (!v.isConnected || isDismissed(v)) return false;
     if (adVideo(v, location.href)) return false;
@@ -2024,7 +2046,7 @@ button:focus-visible { outline: none; }
     // A short muted loop without controls, that its site doesn't name (decorative).
     if (decorative(v)) return false;
     const s = getComputedStyle(v);
-    return s.visibility !== "hidden" && s.display !== "none" && Number(s.opacity) > 0.05;
+    return s.visibility !== "hidden" && s.display !== "none" && (Number(s.opacity) > 0.05 || paintedOver(v, r));
   }
 
   function siteVideos() {
