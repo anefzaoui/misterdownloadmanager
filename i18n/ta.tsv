@@ -172,6 +172,11 @@
 #, machine
 @plural	{n} tracker added|{n} trackers added	{n} டிராக்கர் சேர்க்கப்பட்டது|{n} டிராக்கர்கள் சேர்க்கப்பட்டன
 #. count in the main window
+#. event log entry: user's own trackers (Torrent settings) were added to a new torrent
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} tracker added from Torrent settings|{n} trackers added from Torrent settings	Torrent அமைப்புகளிலிருந்து {n} டிராக்கர் சேர்க்கப்பட்டது|Torrent அமைப்புகளிலிருந்து {n} டிராக்கர்கள் சேர்க்கப்பட்டன
+#. count in the main window
 #. event log entry: trackers from the public tracker list (Torrent settings) were added to a torrent
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -340,6 +345,9 @@
 #. message or event log entry in the main window
 #, machine
 	A private torrent: the public tracker list isn't added	ஒரு தனிப்பட்ட டோரண்ட்: பொது டிராக்கர் பட்டியல் சேர்க்கப்படவில்லை
+#. message or event log entry in the main window
+#, machine
+	A private torrent: your own trackers aren't added	தனிப்பட்ட டோரண்ட்: சொந்த டிராக்கர்கள் சேர்க்கப்படவில்லை
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites: the tooltip of the profile box
 #, machine
@@ -3701,6 +3709,10 @@
 #. text in errors.rs
 #, machine
 	network error	நெட்வொர்க் பிழை
+#. text in the Add torrent window
+#. Own trackers: under the box
+#, machine
+	Never added to private torrents. Existing torrents stay as they are.	தனிப்பட்ட டோரண்டுகளில் ஒருபோதும் சேர்க்கப்படாது. ஏற்கனவே உள்ள டோரண்டுகள் அப்படியே இருக்கும்.
 #. text in the Options window
 #, machine
 	Never show it on these sites:	இந்தத் தளங்களில் ஒருபோதும் காட்ட வேண்டாம்:
@@ -4257,6 +4269,15 @@
 #. text in the Options window
 #, machine
 	Other	மற்றவை
+#. text in the Add torrent window
+#. Own trackers window title
+#, machine
+	Own trackers	சொந்த டிராக்கர்கள்
+#. button in the Add torrent window
+#. Torrent settings: button opening the Own trackers window
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Own trackers...	சொந்த டிராக்கர்கள்...
 #. text in the Link grabber window
 #. Link grabber: the box that edits the selected package
 #, machine
@@ -7145,6 +7166,10 @@
 #. {version} = a version number (keep the braces as they are)
 #, machine
 	Your own program: {path} ({version})	உங்கள் சொந்த நிரல்: {path} ({version})
+#. text in the Add torrent window
+#. Own trackers: above the multi-line box
+#, machine
+	Your own trackers for new public torrents, one address a line:	புதிய பொது டோரண்டுகளுக்கான உங்கள் சொந்த டிராக்கர்கள், ஒரு வரிக்கு ஒரு முகவரி:
 #. text in helpers.rs
 #. Video helpers: {path} = the system's yt-dlp, ffmpeg or gallery-dl
 #, machine

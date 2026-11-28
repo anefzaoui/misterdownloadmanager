@@ -171,6 +171,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} tracker added|{n} trackers added	{n} ᏗᎦᏙᎯ ᏚᎾᏓᏟᏌᏅ|{n} ᏗᎦᏙᎯ ᏚᎾᏓᏟᏌᏅ
+#. count in the main window
+#. event log entry: user's own trackers (Torrent settings) were added to a new torrent
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} tracker added from Torrent settings|{n} trackers added from Torrent settings	{n} ᏗᏕᎪᏢᏔᏅᎯ ᏚᏓᏢᏔᏅᎢ ᏗᏓᎴᏂᏍᎬᎢ|{n} ᏗᏕᎪᏢᏔᏅᎯ ᏚᏓᏢᏔᏅᎢ ᏗᏓᎴᏂᏍᎬᎢ
 #. count in the Add torrent window
 #. where a magnet's peers came from: {n} = trackers asked; {peers} = "3 peers"
 #. {n} = a number (keep the braces as they are)
@@ -3445,6 +3450,10 @@
 #. text in errors.rs
 #, machine
 	network error	ᎢᎬᎾᏕᏏᏗ ᎤᎵᏓᏍᏔᏅ
+#. text in the Add torrent window
+#. Own trackers: under the box
+#, machine
+	Never added to private torrents. Existing torrents stay as they are.	ᎾᎿ ᏥᏕᎦᏕᎶᏆᏍᎦ ᎾᎿ ᏥᏕᎦᏕᎶᏆᏍᎦ ᎾᎿ ᏥᏕᎦᏕᎶᏆᏍᎦ. ᎾᎿ ᏥᏕᎦᏕᎶᏆᏍᎦ ᎾᎿ ᏥᏕᎦᏕᎶᏆᏍᎦ ᎾᎿ ᏥᏕᎦᏕᎶᏆᏍᎦ.
 #. text in the Options window
 #, machine
 	Never show it on these sites:	ᏞᏍᏗ ᎯᎠ ᎾᎿ ᏚᏓᏂᎸᏨᎢ ᎬᏂᎨᏒ ᎢᎬᏁᎸᎩ:
@@ -3977,6 +3986,15 @@
 #. Options → Add an account: label before the field for the service's API token (the other way to sign in)
 #, machine
 	Or paste your API token:	ᎠᎴ ᎯᏴᏔᏅᎭ ᎯᎠ ᎯᎠ ᏗᎪᏪᎶᏗ ᏗᎪᏪᎶᏗ:
+#. text in the Add torrent window
+#. Own trackers window title
+#, machine
+	Own trackers	ᎾᎿ ᏥᏕᎦᏕᎶᏆᏍᎦ ᎾᎿ ᏥᏕᎦᏕᎶᏆᏍᎦ
+#. button in the Add torrent window
+#. Torrent settings: button opening the Own trackers window
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Own trackers...	ᎾᎿ ᏥᏕᎦᏕᎶᏆᏍᎦ ᎾᎿ ᏥᏕᎦᏕᎶᏆᏍᎦ...
 #. text in the Link grabber window
 #. Link grabber: the box that edits the selected package
 #, machine
@@ -6797,6 +6815,10 @@
 #. {version} = a version number (keep the braces as they are)
 #, machine
 	Your own program: {path} ({version})	ᏂᎯ ᎢᎬᎾᎯᏍᏗᏍᎩ: {path} ({version})
+#. text in the Add torrent window
+#. Own trackers: above the multi-line box
+#, machine
+	Your own trackers for new public torrents, one address a line:	ᎾᎿ ᏥᏕᎦᏕᎶᏆᏍᎦ ᎾᎿ ᏥᏕᎦᏕᎶᏆᏍᎦ ᎾᎿ ᏥᏕᎦᏕᎶᏆᏍᎦ, ᎾᎿ ᏥᏕᎦᏕᎶᏆᏍᎦ ᎾᎿ ᏥᏕᎦᏕᎶᏆᏍᎦ:
 #. text in helpers.rs
 #. Video helpers: {path} = the system's yt-dlp, ffmpeg or gallery-dl
 #, machine

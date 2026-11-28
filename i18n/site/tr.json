@@ -2170,6 +2170,10 @@
    "source": "Open (GPL-3.0)",
    "text": "Açık kaynaklı (GPL-3.0)"
   },
+  "1c33e6d58d65ebb6": {
+   "source": "<g1>Tasks → Torrent settings... → Own trackers...</g1> follows the same rules: every address is checked so none on your computer or local network is contacted, and private torrents never get them.",
+   "text": "<g1>Görevler → Torrent ayarları... → Kendi izleyicileriniz...</g1> aynı kurallara uyar: bilgisayarınızdaki veya yerel ağınızdaki hiçbir adresle iletişime geçilmemesi için her adres denetlenir ve özel torrent'ler bunları asla almaz."
+  },
   "1c41a815ee54b7d7": {
    "source": "MDM has <g1>no analytics, no automatic crash reporting, no telemetry and no advertising</g1> (a crash report goes only where you send it yourself). It never sends us your download list, the addresses you download, or anything else.",
    "text": "MDM'de <g1>analiz, otomatik çökme raporlama, telemetri ve reklam yoktur</g1> (çökme raporu yalnızca sizin gönderdiğiniz yere gider). Bize asla indirme listenizi, indirdiğiniz adresleri veya başka hiçbir şeyi göndermez."
@@ -3210,6 +3214,10 @@
    "source": "MDM runs on Windows 10 and Windows 11 (x64, ARM64 and 32-bit), and on 64-bit Linux (x86-64 and ARM64): see <g1>On Linux</g1>. Builds for macOS are new and still experimental: see <g2>On a Mac</g2>.",
    "text": "MDM, Windows 10 ve Windows 11'de (x64, ARM64 ve 32-bit) ve 64-bit Linux'ta (x86-64 ve ARM64) çalışır: bkz. <g1>Linux'ta</g1>. macOS için derlemeler yenidir ve hâlâ deneyseldir: bkz. <g2>Mac'te</g2>."
   },
+  "29f37397c338f4c4": {
+   "source": "Download a torrent, or only some of its files. If some of its files are already in the folder, it stops and names them; <x1/> uses them instead (what matches is kept, the rest downloaded). With Torrent settings' <g2>Add the trackers of this public list to public torrents</g2> on, a public torrent gets the list's trackers too, as in the app. Any trackers you listed in Torrent settings' <g3>Own trackers...</g3> window are added to new public torrents the same way.",
+   "text": "Bir torrenti veya yalnızca bazı dosyalarını indirin. Dosyalarından bazıları zaten klasördeyse, durur ve adlarını verir; <x1/> bunun yerine onları kullanır (eşleşenler korunur, geri kalanı indirilir). Torrent ayarları'ndaki <g2>Bu genel listedeki izleyicileri genel torrentlere ekle</g2> seçeneği açıkken, genel bir torrent de uygulamadaki gibi listenin izleyicilerini alır. Torrent ayarları'ndaki <g3>Kendi izleyicileriniz...</g3> penceresinde listelediğiniz tüm izleyiciler, yeni genel torrentlere aynı şekilde eklenir."
+  },
   "2a014824bb4f981c": {
    "source": "Disabled text, the one grey of every greyed control and label",
    "text": "Devre dışı metin, her grileşmiş kontrol ve etiketin tek grisi"
@@ -3997,6 +4005,10 @@
   "34ee8ac31c366dc9": {
    "source": "Some file hosts count a look-up as a download: turn the look-ups off in <g1>Options → Archives</g1>.",
    "text": "Bazı dosya barındırıcıları bir aramayı indirme olarak sayar: <g1>Seçenekler → Arşivler</g1> bölümünden aramaları kapatın."
+  },
+  "34f9c0c492a55ca2": {
+   "source": "<g1>Your own trackers in Torrent settings</g1>, if you list any: every new public torrent contacts those trackers too, and they see which public torrents you add.",
+   "text": "<g1>Torrent ayarlarındaki kendi izleyicileriniz</g1>, eğer listelerseniz: her yeni genel torrent bu izleyicilerle de iletişim kurar ve hangi genel torrentleri eklediğinizi görürler."
   },
   "35092e177f7efaa5": {
    "source": "Download complete with Open and Open folder",
@@ -6165,6 +6177,10 @@
   "53220733cbddcf56": {
    "source": "On Windows, MDM draws its windows with Direct3D 12; on Linux and macOS, with OpenGL, or with Vulkan (Linux) or Metal (macOS) when you choose them. A graphics driver can still misbehave: a window that holds still for seconds, flickers, or shows wrong colours or blocks. Try the other one: choose <g1>View → Draw with → OpenGL</g1> (or <g2>Direct3D</g2>, <g3>Vulkan</g3>, <g4>Metal</g4>), then quit MDM (<g5>Tasks → Exit</g5>) and start it again. Choosing the first one goes back the same way.",
    "text": "Windows'ta MDM, pencerelerini Direct3D 12 ile çizer. Linux ve macOS'ta OpenGL'i, seçildiğinde ise Linux'ta Vulkan'ı veya macOS'ta Metal'i kullanır. Grafik sürücüsü yine de sorun çıkarabilir: pencere saniyelerce hareketsiz kalabilir, titreyebilir ya da yanlış renkler veya bloklar gösterebilir. Diğer çizim yöntemini deneyin: <g1>Görünüm → Şununla çiz → OpenGL</g1> (veya <g2>Direct3D</g2>, <g3>Vulkan</g3>, <g4>Metal</g4>) seçeneğini belirleyin, ardından MDM'den çıkın (<g5>Görevler → Çıkış</g5>) ve yeniden başlatın. İlk yönteme dönmek için de aynı adımları uygulayın."
+  },
+  "534625c2933b25c5": {
+   "source": "You can also list your own trackers under <g1>Tasks → Torrent settings... → Own trackers...</g1>, one address a line (<x2/>, <x3/>, or <x4/>). Every new public torrent asks them after its own trackers, private torrents never get them, and <x5/> uses the same list.",
+   "text": "Kendi izleyicilerinizi <g1>Görevler → Torrent ayarları... → Kendi izleyicileriniz...</g1> altında listeleyebilirsiniz, her satıra bir adres (<x2/>, <x3/> veya <x4/>). Her yeni genel torrent, kendi izleyicilerinden sonra bunları ister, özel torrent'ler asla almaz ve <x5/> aynı listeyi kullanır."
   },
   "53463dc2311b18e1": {
    "source": "when <g1>Options → Archives → Extract archives when their download completes</g1> is on (off by default), for any other download,",
@@ -8486,6 +8502,10 @@
    "source": "Paste a Google Drive link as it is, the one <g1>Share → Copy link</g1> gives:",
    "text": "Google Drive bağlantısını olduğu gibi yapıştırın. <g1>Paylaş → Bağlantıyı kopyala</g1> seçeneği şu bağlantıyı verir:"
   },
+  "7297ca101de5145e": {
+   "source": "The list couldn't be read from GitHub when this page was built. Everyone is on GitHub meanwhile, in the project's <g1>pull requests</g1> and <g2>issues</g2>.",
+   "text": "Bu sayfa oluşturulurken liste GitHub'dan okunamadı. Bu arada herkes projenin <g1>çekme istekleri</g1> ve <g2>sorunları</g2> bölümünde GitHub'da."
+  },
   "729a19fc6ce418f9": {
    "source": "Reporting problems",
    "text": "Sorun Bildirme"
@@ -8617,6 +8637,10 @@
   "74147234c5be454d": {
    "source": "A 256 KiB file. MDM is done in 30 ms; IDM is still starting.",
    "text": "256 KiB'lik bir dosya. MDM 30 ms'de tamamlar; IDM hala başlıyor."
+  },
+  "7416633f0aac387c": {
+   "source": "<g1>Own trackers...:</g1> opens a window for your own trackers, one address a line (<x2/>, <x3/>, or <x4/>), empty by default. Every public torrent you add from then on also asks these trackers, right after its own trackers and before the public tracker list if both are used (duplicates are added once). Addresses on your computer or local network are refused, private torrents never get them, and torrents already in your list keep their trackers (use <g5>Add trackers...</g5> in the right-click menu for those). <x6/> follows this setting too.",
+   "text": "<g1>Kendi izleyicileriniz...:</g1> kendi izleyicileriniz için bir pencere açar, her satıra bir adres (<x2/>, <x3/> veya <x4/>), varsayılan olarak boştur. Bundan sonra eklediğiniz her genel torrent, kendi izleyicilerinden hemen sonra ve her ikisi de kullanılıyorsa genel izleyici listesinden önce bu izleyicilere de sorar (yinelenenler bir kez eklenir). Bilgisayarınızdaki veya yerel ağınızdaki adresler reddedilir, özel torrent'ler bunları asla almaz ve listenizdeki torrent'ler izleyicilerini korur (bunlar için sağ tıklama menüsündeki <g5>İzleyici ekle...</g5> seçeneğini kullanın). <x6/> bu ayarı da takip eder."
   },
   "741be1a1c9d6ba43": {
    "source": "What to do",
@@ -12338,6 +12362,10 @@
    "source": "<g1>Sharper text on Windows</g1> (<g2>#262</g2>): Segoe UI and Tahoma are grid-fitted across as well as up and down, and each letter starts on a whole pixel, as Windows draws its own grey text: upright strokes were two grey pixels wide at 100 % and 125 %, which read as blurred.",
    "text": "<g1>Windows'ta daha keskin metin</g1> (<g2>#262</g2>): Segoe UI ve Tahoma, Windows'un kendi gri metnini çizdiği gibi, hem yatay hem de dikey olarak ızgaraya oturtulur ve her harf tam bir pikselde başlar: dik vuruşlar %100 ve %125'te iki gri piksel genişliğindeydi, bu da bulanık okunuyordu."
   },
+  "a4b04f29f56fdc42": {
+   "source": "<g1>Add category</g1> — make your own, for example <g2>Books</g2> for <x3/>. Give it a name, the file types (separated by spaces, <x4/> allowed) and a folder.",
+   "text": "<g1>Kategori ekle</g1> — örneğin <x3/> dosyaları için <g2>Kitaplar</g2> gibi kendi kategorinizi oluşturun. Bir ad, dosya türleri (boşlukla ayırın; <x4/> kullanılabilir) ve bir klasör belirleyin."
+  },
   "a4b1f9a84345ac5d": {
    "source": "<g1>yt-dlp</g1> (about 23 MB) looks the page up and finds where the video and its sound come from; MDM downloads them (<g2>How a video comes down</g2>). The first time, click <g3>Install yt-dlp</g3>. MDM checks the download against the signature yt-dlp's developers publish before it uses it.",
    "text": "<g1>yt-dlp</g1> (yaklaşık 23 MB) sayfayı kontrol eder ve videonun ve sesinin nereden geldiğini bulur; MDM bunları indirir (<g2>Video nasıl indirilir</g2>). İlk kez kullanırken <g3>yt-dlp'yi yükle</g3> seçeneğine tıklayın. MDM, kullanmadan önce indirmeyi yt-dlp geliştiricilerinin yayınladığı imzayla karşılaştırır."
@@ -14145,6 +14173,10 @@
   "bc606bb991071128": {
    "source": "The next tab of a focused tab strip; the next choice of a radio group",
    "text": "Odaklanmış bir sekme şeridinin sonraki sekmesi; bir radyo grubunun sonraki seçeneği"
+  },
+  "bc713e862e9b84d3": {
+   "source": "Each download falls into a category by its file type: <g1>General</g1>, <g2>Compressed</g2>, <g3>Documents</g3>, <g4>Music</g4>, <g5>Programs</g5> or <g6>Video</g6>. Torrents have their own <g7>Torrents</g7> category. Each category has its own folder, by default inside your Downloads folder (<x8/>, <x9/> and so on; General uses <x10/> itself).",
+   "text": "Her indirme, dosya türüne göre bir kategoriye ayrılır: <g1>Genel</g1>, <g2>Sıkıştırılmış</g2>, <g3>Belgeler</g3>, <g4>Müzik</g4>, <g5>Programlar</g5> veya <g6>Video</g6>. Torrentlerin kendi <g7>Torrentler</g7> kategorisi vardır. Her kategorinin kendine ait bir klasörü bulunur; varsayılan olarak bu klasör İndirilenler klasörünüzün içindedir (<x8/>, <x9/> vb.). Genel kategorisi doğrudan <x10/> klasörünü kullanır."
   },
   "bc7153d0bcfdacbb": {
    "source": "Themes — Mister Download Manager",
@@ -18477,6 +18509,10 @@
   "f8c444517ab946e2": {
    "source": "From the plain zip",
    "text": "Sıkıştırılmamış zip dosyasından"
+  },
+  "f8c71a9fb2bd8bde": {
+   "source": "<g1>Automatically put in \"…\" category the following file types</g1> — the file types that go to this category.",
+   "text": "<g1>Aşağıdaki dosya türlerini otomatik olarak \"…\" kategorisine koy</g1> — bu kategoriye giden dosya türleri."
   },
   "f8e0a9e7ee529ff0": {
    "source": "Select <g1>Main download queue</g1> on the left. The <g2>Schedule</g2> tab opens.",

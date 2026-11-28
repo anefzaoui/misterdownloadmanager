@@ -172,6 +172,11 @@
 #, machine
 @plural	{n} tracker added|{n} trackers added	{n} spoorsnyer bygevoeg|{n} spoorsnyers bygevoeg
 #. count in the main window
+#. event log entry: user's own trackers (Torrent settings) were added to a new torrent
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} tracker added from Torrent settings|{n} trackers added from Torrent settings	{n} spoorsnyer bygevoeg vanaf Torrent-instellings|{n} spoorsnyers bygevoeg vanaf Torrent-instellings
+#. count in the main window
 #. event log entry: trackers from the public tracker list (Torrent settings) were added to a torrent
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -340,6 +345,9 @@
 #. message or event log entry in the main window
 #, machine
 	A private torrent: the public tracker list isn't added	’n Privaat torrent: die openbare spoorsnyerlys is nie bygevoeg nie
+#. message or event log entry in the main window
+#, machine
+	A private torrent: your own trackers aren't added	’n Privaat torrent: jou eie spoorsnyers word nie bygevoeg nie
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites: the tooltip of the profile box
 #, machine
@@ -3701,6 +3709,10 @@
 #. text in errors.rs
 #, machine
 	network error	netwerkfout
+#. text in the Add torrent window
+#. Own trackers: under the box
+#, machine
+	Never added to private torrents. Existing torrents stay as they are.	Nooit by private torrente gevoeg nie. Bestaande torrente bly soos dit is.
 #. text in the Options window
 #, machine
 	Never show it on these sites:	Moet dit nooit op hierdie werwe wys nie:
@@ -4257,6 +4269,15 @@
 #. text in the Options window
 #, machine
 	Other	Ander
+#. text in the Add torrent window
+#. Own trackers window title
+#, machine
+	Own trackers	Eie spoorsnyers
+#. button in the Add torrent window
+#. Torrent settings: button opening the Own trackers window
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Own trackers...	Eie spoorsnyers...
 #. text in the Link grabber window
 #. Link grabber: the box that edits the selected package
 #, machine
@@ -7145,6 +7166,10 @@
 #. {version} = a version number (keep the braces as they are)
 #, machine
 	Your own program: {path} ({version})	Jou eie program: {path} ({version})
+#. text in the Add torrent window
+#. Own trackers: above the multi-line box
+#, machine
+	Your own trackers for new public torrents, one address a line:	Jou eie spoorsnyers vir nuwe publieke torrente, een adres per reël:
 #. text in helpers.rs
 #. Video helpers: {path} = the system's yt-dlp, ffmpeg or gallery-dl
 #, machine

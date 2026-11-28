@@ -147,6 +147,11 @@
 #. {n} = a number (keep the braces as they are)
 @plural	{n} tracker added|{n} trackers added	{n} pelacak ditambahkan
 #. count in the main window
+#. event log entry: user's own trackers (Torrent settings) were added to a new torrent
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} tracker added from Torrent settings|{n} trackers added from Torrent settings	{n} pelacak ditambahkan dari pengaturan Torrent
+#. count in the main window
 #. event log entry: trackers from the public tracker list (Torrent settings) were added to a torrent
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -289,6 +294,9 @@
 #. message or event log entry in the main window
 #, machine
 	A private torrent: the public tracker list isn't added	Torrent privat: daftar pelacak publik tidak ditambahkan
+#. message or event log entry in the main window
+#, machine
+	A private torrent: your own trackers aren't added	Torrent pribadi: pelacak Anda sendiri tidak ditambahkan
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites: the tooltip of the profile box
 	A profile's name or its folder. Empty: the profile used last. For a browser built on Chromium that isn't listed (Helium, Thorium...), choose Chromium and its profile's folder.	Nama profil atau foldernya. Kosong: profil yang terakhir digunakan. Untuk browser berbasis Chromium yang tidak terdaftar (Helium, Thorium...), pilih Chromium dan folder profilnya.
@@ -2950,6 +2958,10 @@
 	Network adapter:	Adaptor jaringan:
 #. text in errors.rs
 	network error	kesalahan jaringan
+#. text in the Add torrent window
+#. Own trackers: under the box
+#, machine
+	Never added to private torrents. Existing torrents stay as they are.	Tidak pernah ditambahkan ke torrent pribadi. Torrent yang sudah ada tetap seperti semula.
 #. text in the Options window
 	Never show it on these sites:	Jangan pernah tampilkan di situs ini:
 #. button in the Options window
@@ -3395,6 +3407,15 @@
 #. text in the Options window
 #, machine
 	Other	Lainnya
+#. text in the Add torrent window
+#. Own trackers window title
+#, machine
+	Own trackers	Pelacak sendiri
+#. button in the Add torrent window
+#. Torrent settings: button opening the Own trackers window
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Own trackers...	Pelacak sendiri...
 #. text in the Link grabber window
 #. Link grabber: the box that edits the selected package
 	Package	Paket
@@ -5711,6 +5732,10 @@
 #. Video helpers: {path} = the program the person chose, {version} = its version
 #. {version} = a version number (keep the braces as they are)
 	Your own program: {path} ({version})	Program Anda sendiri: {path} ({version})
+#. text in the Add torrent window
+#. Own trackers: above the multi-line box
+#, machine
+	Your own trackers for new public torrents, one address a line:	Pelacak Anda sendiri untuk torrent publik baru, satu alamat per baris:
 #. text in helpers.rs
 #. Video helpers: {path} = the system's yt-dlp, ffmpeg or gallery-dl
 	Your system's: {path}	Sistem Anda: {path}

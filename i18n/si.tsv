@@ -172,6 +172,11 @@
 #, machine
 @plural	{n} tracker added|{n} trackers added	ට්‍රැකර් {n}ක් එක් කරන ලදී|ට්‍රැකර් {n}ක් එක් කරන ලදී
 #. count in the main window
+#. event log entry: user's own trackers (Torrent settings) were added to a new torrent
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} tracker added from Torrent settings|{n} trackers added from Torrent settings	{n} ට්‍රැකර් ටොරන්ට් සැකසුම් වලින් එකතු කරන ලදී|{n} ට්‍රැකර් ටොරන්ට් සැකසුම් වලින් එකතු කරන ලදී
+#. count in the main window
 #. event log entry: trackers from the public tracker list (Torrent settings) were added to a torrent
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -340,6 +345,9 @@
 #. message or event log entry in the main window
 #, machine
 	A private torrent: the public tracker list isn't added	පුද්ගලික ටොරන්ටයකි: පොදු ට්‍රැකර් ලැයිස්තුව එක් නොකෙරේ
+#. message or event log entry in the main window
+#, machine
+	A private torrent: your own trackers aren't added	පුද්ගලික ටොරන්ට් එකක්: ඔබේම ට්‍රැකර් එකතු කර නැත
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites: the tooltip of the profile box
 #, machine
@@ -3705,6 +3713,10 @@
 #. text in errors.rs
 #, machine
 	network error	ජාල දෝෂයකි
+#. text in the Add torrent window
+#. Own trackers: under the box
+#, machine
+	Never added to private torrents. Existing torrents stay as they are.	පුද්ගලික ටොරන්ට් වලට කිසි විටෙක එකතු නොවේ. පවතින ටොරන්ට් එලෙසම පවතී.
 #. text in the Options window
 #, machine
 	Never show it on these sites:	මෙම අඩවි වල එය කිසි විටෙකත් නොපෙන්වන්න:
@@ -4261,6 +4273,15 @@
 #. text in the Options window
 #, machine
 	Other	වෙනත්
+#. text in the Add torrent window
+#. Own trackers window title
+#, machine
+	Own trackers	තමන්ගේම ට්‍රැකර්
+#. button in the Add torrent window
+#. Torrent settings: button opening the Own trackers window
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Own trackers...	තමන්ගේම ට්‍රැකර්...
 #. text in the Link grabber window
 #. Link grabber: the box that edits the selected package
 #, machine
@@ -7149,6 +7170,10 @@
 #. {version} = a version number (keep the braces as they are)
 #, machine
 	Your own program: {path} ({version})	ඔබගේ වැඩසටහන: {path} ({version})
+#. text in the Add torrent window
+#. Own trackers: above the multi-line box
+#, machine
+	Your own trackers for new public torrents, one address a line:	නව පොදු ටොරන්ට් සඳහා ඔබේම ට්‍රැකර්, එක් ලිපිනයක් එක් පේළියක:
 #. text in helpers.rs
 #. Video helpers: {path} = the system's yt-dlp, ffmpeg or gallery-dl
 #, machine

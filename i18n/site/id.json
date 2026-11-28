@@ -2170,6 +2170,10 @@
    "source": "Open (GPL-3.0)",
    "text": "Terbuka (GPL-3.0)"
   },
+  "1c33e6d58d65ebb6": {
+   "source": "<g1>Tasks → Torrent settings... → Own trackers...</g1> follows the same rules: every address is checked so none on your computer or local network is contacted, and private torrents never get them.",
+   "text": "<g1>Tugas → Pengaturan torrent... → Pelacak sendiri...</g1> mengikuti aturan yang sama: setiap alamat diperiksa sehingga tidak ada yang ada di komputer atau jaringan lokal Anda yang dihubungi, dan torrent pribadi tidak pernah mendapatkannya."
+  },
   "1c41a815ee54b7d7": {
    "source": "MDM has <g1>no analytics, no automatic crash reporting, no telemetry and no advertising</g1> (a crash report goes only where you send it yourself). It never sends us your download list, the addresses you download, or anything else.",
    "text": "MDM <g1>tidak memiliki analitik, pelaporan kerusakan otomatis, telemetri, dan iklan</g1> (laporan kerusakan hanya akan dikirim ke tempat yang Anda tuju sendiri). MDM tidak pernah mengirimkan daftar unduhan Anda, alamat yang Anda unduh, atau hal lainnya kepada kami."
@@ -3210,6 +3214,10 @@
    "source": "MDM runs on Windows 10 and Windows 11 (x64, ARM64 and 32-bit), and on 64-bit Linux (x86-64 and ARM64): see <g1>On Linux</g1>. Builds for macOS are new and still experimental: see <g2>On a Mac</g2>.",
    "text": "MDM berjalan di Windows 10 dan Windows 11 (x64, ARM64, dan 32-bit), serta di Linux 64-bit (x86-64 dan ARM64): lihat <g1>Di Linux</g1>. Versi untuk macOS masih baru dan eksperimental: lihat <g2>Di Mac</g2>."
   },
+  "29f37397c338f4c4": {
+   "source": "Download a torrent, or only some of its files. If some of its files are already in the folder, it stops and names them; <x1/> uses them instead (what matches is kept, the rest downloaded). With Torrent settings' <g2>Add the trackers of this public list to public torrents</g2> on, a public torrent gets the list's trackers too, as in the app. Any trackers you listed in Torrent settings' <g3>Own trackers...</g3> window are added to new public torrents the same way.",
+   "text": "Mengunduh torrent, atau hanya beberapa filenya. Jika beberapa filenya sudah ada di folder, ia berhenti dan menamainya; <x1/> menggunakannya sebagai gantinya (yang cocok dipertahankan, sisanya diunduh). Dengan <g2>Tambahkan pelacak dari daftar publik ini ke torrent publik</g2> di Pengaturan torrent aktif, torrent publik juga mendapatkan pelacak dari daftar tersebut, seperti di aplikasi. Pelacak apa pun yang Anda cantumkan di jendela <g3>Pelacak sendiri...</g3> Pengaturan torrent ditambahkan ke torrent publik baru dengan cara yang sama."
+  },
   "2a014824bb4f981c": {
    "source": "Disabled text, the one grey of every greyed control and label",
    "text": "Teks dinonaktifkan, satu-satunya warna abu-abu dari setiap kontrol dan label yang berwarna abu-abu"
@@ -3997,6 +4005,10 @@
   "34ee8ac31c366dc9": {
    "source": "Some file hosts count a look-up as a download: turn the look-ups off in <g1>Options → Archives</g1>.",
    "text": "Beberapa host file menghitung pencarian sebagai unduhan: matikan pencarian di <g1>Opsi → Arsip</g1>."
+  },
+  "34f9c0c492a55ca2": {
+   "source": "<g1>Your own trackers in Torrent settings</g1>, if you list any: every new public torrent contacts those trackers too, and they see which public torrents you add.",
+   "text": "<g1>Pelacak Anda sendiri di Pengaturan torrent</g1>, jika Anda mencantumkan apa pun: setiap torrent publik baru juga menghubungi pelacak tersebut, dan mereka melihat torrent publik mana yang Anda tambahkan."
   },
   "35092e177f7efaa5": {
    "source": "Download complete with Open and Open folder",
@@ -6165,6 +6177,10 @@
   "53220733cbddcf56": {
    "source": "On Windows, MDM draws its windows with Direct3D 12; on Linux and macOS, with OpenGL, or with Vulkan (Linux) or Metal (macOS) when you choose them. A graphics driver can still misbehave: a window that holds still for seconds, flickers, or shows wrong colours or blocks. Try the other one: choose <g1>View → Draw with → OpenGL</g1> (or <g2>Direct3D</g2>, <g3>Vulkan</g3>, <g4>Metal</g4>), then quit MDM (<g5>Tasks → Exit</g5>) and start it again. Choosing the first one goes back the same way.",
    "text": "Di Windows, MDM merender jendelanya dengan Direct3D 12; di Linux dan macOS, dengan OpenGL, atau dengan Vulkan (Linux) maupun Metal (macOS) jika Anda memilihnya. Driver grafis masih bisa bermasalah: jendela bisa tidak merespons selama beberapa detik, berkedip, atau menampilkan warna yang salah maupun blok. Coba pilihan lain: pilih <g1>Tampilan → Render dengan → OpenGL</g1> (atau <g2>Direct3D</g2>, <g3>Vulkan</g3>, <g4>Metal</g4>), lalu keluar dari MDM (<g5>Tugas → Keluar</g5>) dan jalankan lagi. Untuk kembali ke pilihan awal, lakukan hal yang sama."
+  },
+  "534625c2933b25c5": {
+   "source": "You can also list your own trackers under <g1>Tasks → Torrent settings... → Own trackers...</g1>, one address a line (<x2/>, <x3/>, or <x4/>). Every new public torrent asks them after its own trackers, private torrents never get them, and <x5/> uses the same list.",
+   "text": "Anda juga dapat mencantumkan pelacak Anda sendiri di <g1>Tugas → Pengaturan torrent... → Pelacak sendiri...</g1>, satu alamat per baris (<x2/>, <x3/>, atau <x4/>). Setiap torrent publik baru akan menanyakan pelacak ini setelah pelacaknya sendiri, torrent pribadi tidak pernah menggunakannya, dan <x5/> menggunakan daftar yang sama."
   },
   "53463dc2311b18e1": {
    "source": "when <g1>Options → Archives → Extract archives when their download completes</g1> is on (off by default), for any other download,",
@@ -8486,6 +8502,10 @@
    "source": "Paste a Google Drive link as it is, the one <g1>Share → Copy link</g1> gives:",
    "text": "Tempel tautan Google Drive apa adanya, seperti tautan yang diberikan melalui <g1>Bagikan → Salin tautan</g1>:"
   },
+  "7297ca101de5145e": {
+   "source": "The list couldn't be read from GitHub when this page was built. Everyone is on GitHub meanwhile, in the project's <g1>pull requests</g1> and <g2>issues</g2>.",
+   "text": "Daftar tidak dapat dibaca dari GitHub saat halaman ini dibuat. Sementara itu, semua orang ada di GitHub, di <g1>permintaan tarik</g1> dan <g2>masalah</g2> proyek."
+  },
   "729a19fc6ce418f9": {
    "source": "Reporting problems",
    "text": "Melaporkan masalah"
@@ -8617,6 +8637,10 @@
   "74147234c5be454d": {
    "source": "A 256 KiB file. MDM is done in 30 ms; IDM is still starting.",
    "text": "File berukuran 256 KiB. MDM selesai dalam 30 ms; IDM masih memulai."
+  },
+  "7416633f0aac387c": {
+   "source": "<g1>Own trackers...:</g1> opens a window for your own trackers, one address a line (<x2/>, <x3/>, or <x4/>), empty by default. Every public torrent you add from then on also asks these trackers, right after its own trackers and before the public tracker list if both are used (duplicates are added once). Addresses on your computer or local network are refused, private torrents never get them, and torrents already in your list keep their trackers (use <g5>Add trackers...</g5> in the right-click menu for those). <x6/> follows this setting too.",
+   "text": "<g1>Pelacak sendiri...:</g1> membuka jendela untuk pelacak Anda sendiri, satu alamat per baris (<x2/>, <x3/>, atau <x4/>), kosong secara default. Setiap torrent publik yang Anda tambahkan setelah itu juga akan menanyakan pelacak ini, tepat setelah pelacaknya sendiri dan sebelum daftar pelacak publik jika keduanya digunakan (duplikat ditambahkan sekali). Alamat di komputer atau jaringan lokal Anda ditolak, torrent pribadi tidak pernah mendapatkannya, dan torrent yang sudah ada dalam daftar Anda mempertahankan pelacaknya (gunakan <g5>Tambahkan pelacak...</g5> di menu klik kanan untuk itu). <x6/> juga mengikuti pengaturan ini."
   },
   "741be1a1c9d6ba43": {
    "source": "What to do",
@@ -12338,6 +12362,10 @@
    "source": "<g1>Sharper text on Windows</g1> (<g2>#262</g2>): Segoe UI and Tahoma are grid-fitted across as well as up and down, and each letter starts on a whole pixel, as Windows draws its own grey text: upright strokes were two grey pixels wide at 100 % and 125 %, which read as blurred.",
    "text": "<g1>Teks lebih tajam di Windows</g1> (<g2>#262</g2>): Segoe UI dan Tahoma disesuaikan dengan kisi secara horizontal maupun vertikal, dan setiap huruf dimulai pada piksel penuh, seperti Windows menggambar teks abu-abunya sendiri: goresan tegak lurus selebar dua piksel abu-abu pada 100 % dan 125 %, yang terbaca buram."
   },
+  "a4b04f29f56fdc42": {
+   "source": "<g1>Add category</g1> — make your own, for example <g2>Books</g2> for <x3/>. Give it a name, the file types (separated by spaces, <x4/> allowed) and a folder.",
+   "text": "<g1>Tambahkan kategori</g1> — buat kategori sendiri, misalnya <g2>Buku</g2> untuk <x3/>. Beri kategori itu nama, jenis file (pisahkan dengan spasi; <x4/> juga boleh digunakan), dan folder."
+  },
   "a4b1f9a84345ac5d": {
    "source": "<g1>yt-dlp</g1> (about 23 MB) looks the page up and finds where the video and its sound come from; MDM downloads them (<g2>How a video comes down</g2>). The first time, click <g3>Install yt-dlp</g3>. MDM checks the download against the signature yt-dlp's developers publish before it uses it.",
    "text": "<g1>yt-dlp</g1> (sekitar 23 MB) mencari halaman dan menemukan sumber video serta suaranya; MDM mengunduhnya (<g2>Cara video diunduh</g2>). Untuk pertama kali, klik <g3>Instal yt-dlp</g3>. MDM memeriksa unduhan terhadap tanda tangan yang diterbitkan pengembang yt-dlp sebelum menggunakannya."
@@ -14145,6 +14173,10 @@
   "bc606bb991071128": {
    "source": "The next tab of a focused tab strip; the next choice of a radio group",
    "text": "Tab berikutnya dari strip tab yang difokuskan; pilihan berikutnya dari grup radio"
+  },
+  "bc713e862e9b84d3": {
+   "source": "Each download falls into a category by its file type: <g1>General</g1>, <g2>Compressed</g2>, <g3>Documents</g3>, <g4>Music</g4>, <g5>Programs</g5> or <g6>Video</g6>. Torrents have their own <g7>Torrents</g7> category. Each category has its own folder, by default inside your Downloads folder (<x8/>, <x9/> and so on; General uses <x10/> itself).",
+   "text": "Setiap unduhan masuk ke kategori berdasarkan jenis file: <g1>Umum</g1>, <g2>Terkompresi</g2>, <g3>Dokumen</g3>, <g4>Musik</g4>, <g5>Program</g5>, atau <g6>Video</g6>. Torrent memiliki kategori <g7>Torrent</g7> sendiri. Setiap kategori memiliki folder sendiri, yang secara default berada di dalam folder Unduhan (<x8/>, <x9/>, dan seterusnya; kategori Umum menggunakan folder <x10/> itu sendiri)."
   },
   "bc7153d0bcfdacbb": {
    "source": "Themes — Mister Download Manager",
@@ -18477,6 +18509,10 @@
   "f8c444517ab946e2": {
    "source": "From the plain zip",
    "text": "Dari file zip biasa"
+  },
+  "f8c71a9fb2bd8bde": {
+   "source": "<g1>Automatically put in \"…\" category the following file types</g1> — the file types that go to this category.",
+   "text": "<g1>Secara otomatis masukkan ke kategori \"...\" jenis file berikut</g1> — jenis file yang masuk ke kategori ini."
   },
   "f8e0a9e7ee529ff0": {
    "source": "Select <g1>Main download queue</g1> on the left. The <g2>Schedule</g2> tab opens.",

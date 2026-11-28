@@ -367,6 +367,25 @@ pub fn private(bytes: &[u8]) -> bool {
     })
 }
 
+/// `bytes` with `list`'s public trackers after its own (each a tier, those it has skipped), its
+/// info dictionary byte for byte. None when `bytes` is private ([`private`]), can't be read, or
+/// `list` adds nothing. Every tracker goes through [`allowed`] (as without a proxy).
+pub fn add_if_public(bytes: &[u8], list: &[String]) -> Option<Vec<u8>> {
+    if private(bytes) {
+        return None;
+    }
+    let kept: Vec<String> = list
+        .iter()
+        .map(|t| t.trim())
+        .filter(|t| allowed(t, false))
+        .map(str::to_owned)
+        .collect();
+    if kept.is_empty() {
+        return None;
+    }
+    add(bytes, &kept).filter(|out| out != bytes)
+}
+
 fn push_string(out: &mut Vec<u8>, s: &[u8]) {
     out.extend_from_slice(s.len().to_string().as_bytes());
     out.push(b':');
@@ -1013,5 +1032,40 @@ mod tests {
                 }
             }
         }
+    }
+
+    /// `add_if_public` appends allowed trackers to public torrents only, skipping private/invalid
+    /// torrents, local/non-tracker addresses, and duplicates while leaving the info dict untouched.
+    #[test]
+    fn add_if_public_skips_private_local_and_duplicates() {
+        let info = |priv_flag: &str| {
+            format!(
+                "d6:lengthi5e4:name1:a12:piece lengthi16384e6:pieces20:aaaaaaaaaaaaaaaaaaaa{priv_flag}e"
+            )
+        };
+        let torrent = |priv_flag: &str| {
+            let own = "http://own.example/announce";
+            format!("d8:announce{}:{own}4:info{}e", own.len(), info(priv_flag)).into_bytes()
+        };
+        let list = [
+            " http://own.example/announce ".to_owned(),
+            "http://127.0.0.1:6969/announce".to_owned(),
+            "udp://tracker.example.org:1337/announce".to_owned(),
+            "https://tracker2.example.org/announce".to_owned(),
+            "udp://tracker.example.org:1337/announce".to_owned(),
+        ];
+        let public = torrent("");
+        let out = add_if_public(&public, &list).unwrap();
+        assert_eq!(
+            listed(&out),
+            [
+                "http://own.example/announce",
+                "udp://tracker.example.org:1337/announce",
+                "https://tracker2.example.org/announce",
+            ]
+        );
+        assert_eq!(add_if_public(&out, &list), None);
+        assert_eq!(add_if_public(&torrent("7:privatei1e"), &list), None);
+        assert_eq!(add_if_public(b"not a torrent", &list), None);
     }
 }

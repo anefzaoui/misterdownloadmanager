@@ -2170,6 +2170,10 @@
    "source": "Open (GPL-3.0)",
    "text": "Открытый код (GPL-3.0)"
   },
+  "1c33e6d58d65ebb6": {
+   "source": "<g1>Tasks → Torrent settings... → Own trackers...</g1> follows the same rules: every address is checked so none on your computer or local network is contacted, and private torrents never get them.",
+   "text": "<g1>Задачи → Настройки торрента... → Собственные трекеры...</g1> подчиняется тем же правилам: каждый адрес проверяется, чтобы не было обращений к вашему компьютеру или локальной сети, а приватные торренты никогда их не получают."
+  },
   "1c41a815ee54b7d7": {
    "source": "MDM has <g1>no analytics, no automatic crash reporting, no telemetry and no advertising</g1> (a crash report goes only where you send it yourself). It never sends us your download list, the addresses you download, or anything else.",
    "text": "В MDM <g1>нет аналитики, автоматической отправки отчетов о сбоях, телеметрии и рекламы</g1> (отчет о сбое отправляется только туда, куда вы его отправите сами). Он никогда не отправляет нам ваш список загрузок, адреса, с которых вы загружаете, или что-либо еще."
@@ -3210,6 +3214,10 @@
    "source": "MDM runs on Windows 10 and Windows 11 (x64, ARM64 and 32-bit), and on 64-bit Linux (x86-64 and ARM64): see <g1>On Linux</g1>. Builds for macOS are new and still experimental: see <g2>On a Mac</g2>.",
    "text": "MDM работает на Windows 10 и Windows 11 (x64, ARM64 и 32-бит), а также на 64-битном Linux (x86-64 и ARM64): см. <g1>В Linux</g1>. Сборки для macOS новые и пока экспериментальные: см. <g2>На Mac</g2>."
   },
+  "29f37397c338f4c4": {
+   "source": "Download a torrent, or only some of its files. If some of its files are already in the folder, it stops and names them; <x1/> uses them instead (what matches is kept, the rest downloaded). With Torrent settings' <g2>Add the trackers of this public list to public torrents</g2> on, a public torrent gets the list's trackers too, as in the app. Any trackers you listed in Torrent settings' <g3>Own trackers...</g3> window are added to new public torrents the same way.",
+   "text": "Загрузить торрент или только некоторые из его файлов. Если некоторые из его файлов уже находятся в папке, загрузка останавливается и отображает их имена; <x1/> вместо этого использует их (совпадающие файлы сохраняются, остальные загружаются). Если в <g2>Добавлять трекеры из этого публичного списка к публичным торрентам</g2> в разделе «Настройки торрента» включено, публичный торрент также получает трекеры из списка, как и в приложении. Любые трекеры, которые вы указали в окне <g3>Собственные трекеры...</g3> в разделе «Настройки торрента», добавляются к новым публичным торрентам таким же образом."
+  },
   "2a014824bb4f981c": {
    "source": "Disabled text, the one grey of every greyed control and label",
    "text": "Отключенный текст, единственный серый цвет каждого неактивного элемента управления и метки"
@@ -3997,6 +4005,10 @@
   "34ee8ac31c366dc9": {
    "source": "Some file hosts count a look-up as a download: turn the look-ups off in <g1>Options → Archives</g1>.",
    "text": "Некоторые файловые хостинги считают просмотр как загрузку: отключите просмотры в <g1>Параметры → Архивы</g1>."
+  },
+  "34f9c0c492a55ca2": {
+   "source": "<g1>Your own trackers in Torrent settings</g1>, if you list any: every new public torrent contacts those trackers too, and they see which public torrents you add.",
+   "text": "<g1>Ваши собственные трекеры в настройках торрента</g1>, если вы их указали: каждый новый публичный торрент также связывается с этими трекерами, и они видят, какие публичные торренты вы добавляете."
   },
   "35092e177f7efaa5": {
    "source": "Download complete with Open and Open folder",
@@ -6165,6 +6177,10 @@
   "53220733cbddcf56": {
    "source": "On Windows, MDM draws its windows with Direct3D 12; on Linux and macOS, with OpenGL, or with Vulkan (Linux) or Metal (macOS) when you choose them. A graphics driver can still misbehave: a window that holds still for seconds, flickers, or shows wrong colours or blocks. Try the other one: choose <g1>View → Draw with → OpenGL</g1> (or <g2>Direct3D</g2>, <g3>Vulkan</g3>, <g4>Metal</g4>), then quit MDM (<g5>Tasks → Exit</g5>) and start it again. Choosing the first one goes back the same way.",
    "text": "В Windows MDM отрисовывает свои окна с помощью Direct3D 12; в Linux и macOS — с помощью OpenGL, или с помощью Vulkan (Linux) или Metal (macOS), если вы их выберете. Графический драйвер всё ещё может работать некорректно: окно зависает на несколько секунд, мерцает или отображает неправильные цвета или блоки. Попробуйте другой вариант: выберите <g1>Вид → Отрисовка с помощью → OpenGL</g1> (или <g2>Direct3D</g2>, <g3>Vulkan</g3>, <g4>Metal</g4>), затем закройте MDM (<g5>Задачи → Выход</g5>) и запустите его снова. Выбор первого варианта возвращает всё обратно тем же способом."
+  },
+  "534625c2933b25c5": {
+   "source": "You can also list your own trackers under <g1>Tasks → Torrent settings... → Own trackers...</g1>, one address a line (<x2/>, <x3/>, or <x4/>). Every new public torrent asks them after its own trackers, private torrents never get them, and <x5/> uses the same list.",
+   "text": "Вы также можете указать свои собственные трекеры в разделе <g1>Задачи → Настройки торрента… → Собственные трекеры…</g1>, по одному адресу на строку (<x2/>, <x3/> или <x4/>). Каждый новый публичный торрент будет запрашивать их после своих собственных трекеров, приватные торренты никогда не будут их использовать, а <x5/> использует тот же список."
   },
   "53463dc2311b18e1": {
    "source": "when <g1>Options → Archives → Extract archives when their download completes</g1> is on (off by default), for any other download,",
@@ -8486,6 +8502,10 @@
    "source": "Paste a Google Drive link as it is, the one <g1>Share → Copy link</g1> gives:",
    "text": "Вставьте ссылку Google Диска как есть, ту, что даёт <g1>Поделиться → Копировать ссылку</g1>:"
   },
+  "7297ca101de5145e": {
+   "source": "The list couldn't be read from GitHub when this page was built. Everyone is on GitHub meanwhile, in the project's <g1>pull requests</g1> and <g2>issues</g2>.",
+   "text": "Список не удалось прочитать из GitHub при создании этой страницы. Все участники пока находятся на GitHub, в <g1>запросах на слияние</g1> и <g2>задачах</g2> проекта."
+  },
   "729a19fc6ce418f9": {
    "source": "Reporting problems",
    "text": "Сообщение о проблемах"
@@ -8617,6 +8637,10 @@
   "74147234c5be454d": {
    "source": "A 256 KiB file. MDM is done in 30 ms; IDM is still starting.",
    "text": "Файл размером 256 КиБ. MDM завершает работу за 30 мс; IDM всё ещё запускается."
+  },
+  "7416633f0aac387c": {
+   "source": "<g1>Own trackers...:</g1> opens a window for your own trackers, one address a line (<x2/>, <x3/>, or <x4/>), empty by default. Every public torrent you add from then on also asks these trackers, right after its own trackers and before the public tracker list if both are used (duplicates are added once). Addresses on your computer or local network are refused, private torrents never get them, and torrents already in your list keep their trackers (use <g5>Add trackers...</g5> in the right-click menu for those). <x6/> follows this setting too.",
+   "text": "<g1>Собственные трекеры...:</g1> открывает окно для ваших собственных трекеров, по одному адресу на строку (<x2/>, <x3/> или <x4/>), по умолчанию пусто. Каждый публичный торрент, который вы добавляете после этого, также запрашивает эти трекеры, сразу после своих собственных трекеров и перед списком публичных трекеров, если используются оба (дубликаты добавляются один раз). Адреса на вашем компьютере или в локальной сети отклоняются, приватные торренты никогда их не получают, а торренты, уже находящиеся в вашем списке, сохраняют свои трекеры (используйте <g5>Добавить трекеры...</g5> в контекстном меню для них). <x6/> также следует этому параметру."
   },
   "741be1a1c9d6ba43": {
    "source": "What to do",
@@ -12338,6 +12362,10 @@
    "source": "<g1>Sharper text on Windows</g1> (<g2>#262</g2>): Segoe UI and Tahoma are grid-fitted across as well as up and down, and each letter starts on a whole pixel, as Windows draws its own grey text: upright strokes were two grey pixels wide at 100 % and 125 %, which read as blurred.",
    "text": "<g1>Более чёткий текст в Windows</g1> (<g2>#262</g2>): Segoe UI и Tahoma выравниваются по сетке как по горизонтали, так и по вертикали, и каждая буква начинается с целого пикселя, как Windows рисует свой собственный серый текст: вертикальные штрихи были шириной в два серых пикселя при 100 % и 125 %, что выглядело размытым."
   },
+  "a4b04f29f56fdc42": {
+   "source": "<g1>Add category</g1> — make your own, for example <g2>Books</g2> for <x3/>. Give it a name, the file types (separated by spaces, <x4/> allowed) and a folder.",
+   "text": "<g1>Добавить категорию</g1> — создать свою собственную, например <g2>Книги</g2> для <x3/>. Дайте ей имя, типы файлов (разделенные пробелами, <x4/> разрешены) и папку."
+  },
   "a4b1f9a84345ac5d": {
    "source": "<g1>yt-dlp</g1> (about 23 MB) looks the page up and finds where the video and its sound come from; MDM downloads them (<g2>How a video comes down</g2>). The first time, click <g3>Install yt-dlp</g3>. MDM checks the download against the signature yt-dlp's developers publish before it uses it.",
    "text": "<g1>yt-dlp</g1> (около 23 МБ) просматривает страницу и определяет, откуда поступают видео и звук; MDM загружает их (<g2>Как загружается видео</g2>). При первом использовании нажмите <g3>Установить yt-dlp</g3>. MDM проверяет загрузку по подписи, опубликованной разработчиками yt-dlp, прежде чем использовать её."
@@ -14145,6 +14173,10 @@
   "bc606bb991071128": {
    "source": "The next tab of a focused tab strip; the next choice of a radio group",
    "text": "Следующая вкладка сфокусированной панели вкладок; следующий вариант в группе переключателей"
+  },
+  "bc713e862e9b84d3": {
+   "source": "Each download falls into a category by its file type: <g1>General</g1>, <g2>Compressed</g2>, <g3>Documents</g3>, <g4>Music</g4>, <g5>Programs</g5> or <g6>Video</g6>. Torrents have their own <g7>Torrents</g7> category. Each category has its own folder, by default inside your Downloads folder (<x8/>, <x9/> and so on; General uses <x10/> itself).",
+   "text": "Каждая загрузка попадает в категорию по типу файла: <g1>Общие</g1>, <g2>Сжатые</g2>, <g3>Документы</g3>, <g4>Музыка</g4>, <g5>Программы</g5> или <g6>Видео</g6>. Торренты имеют свою собственную категорию <g7>Торренты</g7>. Каждая категория имеет свою собственную папку, по умолчанию внутри вашей папки Загрузки (<x8/>, <x9/> и так далее; Общие используют саму <x10/>)."
   },
   "bc7153d0bcfdacbb": {
    "source": "Themes — Mister Download Manager",
@@ -18477,6 +18509,10 @@
   "f8c444517ab946e2": {
    "source": "From the plain zip",
    "text": "Из обычного zip-архива"
+  },
+  "f8c71a9fb2bd8bde": {
+   "source": "<g1>Automatically put in \"…\" category the following file types</g1> — the file types that go to this category.",
+   "text": "<g1>Автоматически помещать в категорию «…» следующие типы файлов</g1> — типы файлов, которые попадают в эту категорию."
   },
   "f8e0a9e7ee529ff0": {
    "source": "Select <g1>Main download queue</g1> on the left. The <g2>Schedule</g2> tab opens.",

@@ -511,16 +511,14 @@ fn unix_now() -> u64 {
         .map_or(0, |d| d.as_secs())
 }
 
-/// A torrent's kept bytes with the public list added (#1776): the one code for a torrent being
-/// added and one already in the list. None when it is private (BEP 27): it never gets them.
-/// Otherwise the bytes (as they were when the list adds nothing) and how many trackers were new.
-/// Each tracker goes through `trackers::allowed` and is added by `trackers::add`
-/// (`mdm_torrent::public_trackers::add_to`): the info dictionary stays byte for byte.
-pub fn with_public_list(torrent: &[u8], list: &[String]) -> Option<(Vec<u8>, usize)> {
+fn with_added(
+    torrent: &[u8],
+    add: impl FnOnce(&[u8]) -> Option<Vec<u8>>,
+) -> Option<(Vec<u8>, usize)> {
     if mdm_torrent::trackers::private(torrent) {
         return None;
     }
-    Some(match mdm_torrent::public_trackers::add_to(torrent, list) {
+    Some(match add(torrent) {
         Some(with) => {
             let added = mdm_torrent::trackers::listed(&with)
                 .len()
@@ -529,6 +527,22 @@ pub fn with_public_list(torrent: &[u8], list: &[String]) -> Option<(Vec<u8>, usi
         }
         None => (torrent.to_vec(), 0),
     })
+}
+
+/// A torrent's kept bytes with the public list added (#1776): the one code for a torrent being
+/// added and one already in the list. None when it is private (BEP 27): it never gets them.
+/// Otherwise the bytes (as they were when the list adds nothing) and how many trackers were new.
+/// Each tracker goes through `trackers::allowed` and is added by `trackers::add`
+/// (`mdm_torrent::public_trackers::add_to`): the info dictionary stays byte for byte.
+pub fn with_public_list(torrent: &[u8], list: &[String]) -> Option<(Vec<u8>, usize)> {
+    with_added(torrent, |t| mdm_torrent::public_trackers::add_to(t, list))
+}
+
+/// A torrent's kept bytes with the user's own trackers added (#1959): new public torrents only.
+/// None when it is private (BEP 27): it never gets them. Otherwise the bytes (as they were when
+/// nothing was new) and how many trackers were added.
+pub fn with_extra_trackers(torrent: &[u8], list: &[String]) -> Option<(Vec<u8>, usize)> {
+    with_added(torrent, |t| mdm_torrent::trackers::add_if_public(t, list))
 }
 
 impl PublicTrackers {
@@ -2275,6 +2289,28 @@ mod tests {
         // Private: never.
         assert_eq!(with_public_list(&torrent(true), &list), None);
         assert_eq!(with_public_list(b"not a torrent", &list), None);
+        // User's own trackers (#1959): public only, ordered own -> extra -> public, deduped.
+        let extra = [
+            "https://own-extra.example/announce".to_owned(),
+            "https://tracker.example.org/announce".to_owned(),
+            "http://127.0.0.1:6969/announce".to_owned(),
+        ];
+        let (with_own, n_own) = with_extra_trackers(&public, &extra).unwrap();
+        assert_eq!(n_own, 2);
+        let (with_both, n_pub) = with_public_list(&with_own, &list).unwrap();
+        assert_eq!(n_pub, 1);
+        assert_eq!(
+            mdm_torrent::trackers::listed(&with_both),
+            [
+                "http://own.example/announce",
+                "https://own-extra.example/announce",
+                "https://tracker.example.org/announce",
+                "udp://tracker.opentrackr.org:1337/announce",
+            ]
+        );
+        assert_eq!(hash(&with_both), hash(&public));
+        assert_eq!(with_extra_trackers(&torrent(true), &extra), None);
+        assert_eq!(with_extra_trackers(b"not a torrent", &extra), None);
         // A spec saved before #1776 has no list yet.
         let mut saved = serde_json::to_value(a_spec()).unwrap();
         saved.as_object_mut().unwrap().remove("public_list");

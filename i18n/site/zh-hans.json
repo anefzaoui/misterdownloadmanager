@@ -2170,6 +2170,10 @@
    "source": "Open (GPL-3.0)",
    "text": "开源 (GPL-3.0)"
   },
+  "1c33e6d58d65ebb6": {
+   "source": "<g1>Tasks → Torrent settings... → Own trackers...</g1> follows the same rules: every address is checked so none on your computer or local network is contacted, and private torrents never get them.",
+   "text": "<g1>任务 → 种子设置... → 自己的跟踪器...</g1> 遵循相同的规则：每个地址都会被检查，以确保不会联系您计算机或本地网络上的任何地址，并且私有种子永远不会获取它们。"
+  },
   "1c41a815ee54b7d7": {
    "source": "MDM has <g1>no analytics, no automatic crash reporting, no telemetry and no advertising</g1> (a crash report goes only where you send it yourself). It never sends us your download list, the addresses you download, or anything else.",
    "text": "MDM <g1>没有分析、没有自动崩溃报告、没有遥测、没有广告</g1>（崩溃报告只发送到您自己发送的地方）。它绝不会向我们发送您的下载列表、您下载的地址或任何其他信息。"
@@ -3210,6 +3214,10 @@
    "source": "MDM runs on Windows 10 and Windows 11 (x64, ARM64 and 32-bit), and on 64-bit Linux (x86-64 and ARM64): see <g1>On Linux</g1>. Builds for macOS are new and still experimental: see <g2>On a Mac</g2>.",
    "text": "MDM 运行于 Windows 10 和 Windows 11（x64、ARM64 和 32 位），以及 64 位 Linux（x86-64 和 ARM64）：请参阅<g1>在 Linux 上</g1>。macOS 版本是新推出的，仍在实验中：请参阅<g2>在 Mac 上</g2>。"
   },
+  "29f37397c338f4c4": {
+   "source": "Download a torrent, or only some of its files. If some of its files are already in the folder, it stops and names them; <x1/> uses them instead (what matches is kept, the rest downloaded). With Torrent settings' <g2>Add the trackers of this public list to public torrents</g2> on, a public torrent gets the list's trackers too, as in the app. Any trackers you listed in Torrent settings' <g3>Own trackers...</g3> window are added to new public torrents the same way.",
+   "text": "下载一个种子，或仅下载其部分文件。如果部分文件已存在于文件夹中，它会停止并列出这些文件；<x1/> 会使用这些现有文件（匹配的部分保留，其余部分下载）。如果“种子设置”中的<g2>将此公共列表的跟踪器添加到公共种子</g2>选项已开启，公共种子也会获得列表中的跟踪器，与应用内行为一致。您在“种子设置”的<g3>自己的跟踪器...</g3>窗口中列出的任何跟踪器，也会以相同方式添加到新的公共种子中。"
+  },
   "2a014824bb4f981c": {
    "source": "Disabled text, the one grey of every greyed control and label",
    "text": "禁用文本，所有灰色控件和标签的灰色"
@@ -3997,6 +4005,10 @@
   "34ee8ac31c366dc9": {
    "source": "Some file hosts count a look-up as a download: turn the look-ups off in <g1>Options → Archives</g1>.",
    "text": "一些文件主机将查找计为下载：请在<g1>选项 → 压缩包</g1>中关闭查找功能。"
+  },
+  "34f9c0c492a55ca2": {
+   "source": "<g1>Your own trackers in Torrent settings</g1>, if you list any: every new public torrent contacts those trackers too, and they see which public torrents you add.",
+   "text": "<g1>种子设置</g1>中您自己的跟踪器（如果您有列出）：每个新的公共种子也会联系这些跟踪器，它们会看到您添加了哪些公共种子。"
   },
   "35092e177f7efaa5": {
    "source": "Download complete with Open and Open folder",
@@ -6165,6 +6177,10 @@
   "53220733cbddcf56": {
    "source": "On Windows, MDM draws its windows with Direct3D 12; on Linux and macOS, with OpenGL, or with Vulkan (Linux) or Metal (macOS) when you choose them. A graphics driver can still misbehave: a window that holds still for seconds, flickers, or shows wrong colours or blocks. Try the other one: choose <g1>View → Draw with → OpenGL</g1> (or <g2>Direct3D</g2>, <g3>Vulkan</g3>, <g4>Metal</g4>), then quit MDM (<g5>Tasks → Exit</g5>) and start it again. Choosing the first one goes back the same way.",
    "text": "在 Windows 上，MDM 使用 Direct3D 12 绘制窗口；在 Linux 和 macOS 上使用 OpenGL，也可选择 Vulkan（Linux）或 Metal（macOS）。图形驱动程序仍可能出现问题：窗口卡住几秒、闪烁，或显示错误的颜色或方块。可以尝试另一种绘制方式：选择<g1>视图 → 绘制方式 → OpenGL</g1>（或<g2>Direct3D</g2>、<g3>Vulkan</g3>、<g4>Metal</g4>），然后退出 MDM（<g5>任务 → 退出</g5>）并重新启动。要切回原来的绘制方式，也按相同步骤操作。"
+  },
+  "534625c2933b25c5": {
+   "source": "You can also list your own trackers under <g1>Tasks → Torrent settings... → Own trackers...</g1>, one address a line (<x2/>, <x3/>, or <x4/>). Every new public torrent asks them after its own trackers, private torrents never get them, and <x5/> uses the same list.",
+   "text": "您还可以在<g1>任务 → 种子设置... → 自己的跟踪器...</g1>下添加自己的跟踪器，每行一个地址（<x2/>、<x3/> 或 <x4/>）。每个新的公共种子都会在自己的跟踪器之后询问这些跟踪器，私有种子则不会，<x5/> 使用相同的列表。"
   },
   "53463dc2311b18e1": {
    "source": "when <g1>Options → Archives → Extract archives when their download completes</g1> is on (off by default), for any other download,",
@@ -8617,6 +8633,10 @@
   "74147234c5be454d": {
    "source": "A 256 KiB file. MDM is done in 30 ms; IDM is still starting.",
    "text": "一个 256 KiB 的文件。MDM 在 30 毫秒内完成；IDM 仍在启动。"
+  },
+  "7416633f0aac387c": {
+   "source": "<g1>Own trackers...:</g1> opens a window for your own trackers, one address a line (<x2/>, <x3/>, or <x4/>), empty by default. Every public torrent you add from then on also asks these trackers, right after its own trackers and before the public tracker list if both are used (duplicates are added once). Addresses on your computer or local network are refused, private torrents never get them, and torrents already in your list keep their trackers (use <g5>Add trackers...</g5> in the right-click menu for those). <x6/> follows this setting too.",
+   "text": "<g1>自己的跟踪器…：</g1> 打开一个窗口，用于添加您自己的跟踪器，每行一个地址（<x2/>、<x3/> 或 <x4/>），默认为空。此后您添加的每个公共种子都会向这些跟踪器发送请求，紧随其自身的跟踪器之后，如果两者都使用，则在公共跟踪器列表之前（重复项只添加一次）。您计算机或本地网络上的地址将被拒绝，私有种子永远不会获取这些跟踪器，并且已在列表中的种子会保留其跟踪器（对于这些种子，请使用右键菜单中的<g5>添加 Tracker…</g5>）。<x6/> 也遵循此设置。"
   },
   "741be1a1c9d6ba43": {
    "source": "What to do",
@@ -12338,6 +12358,10 @@
    "source": "<g1>Sharper text on Windows</g1> (<g2>#262</g2>): Segoe UI and Tahoma are grid-fitted across as well as up and down, and each letter starts on a whole pixel, as Windows draws its own grey text: upright strokes were two grey pixels wide at 100 % and 125 %, which read as blurred.",
    "text": "<g1>Windows 上的文本更清晰</g1>（<g2>#262</g2>）：Segoe UI 和 Tahoma 字体在水平和垂直方向上都进行了网格对齐，每个字母都从一个完整的像素开始，就像 Windows 绘制其自己的灰色文本一样：在 100% 和 125% 缩放下，竖直笔画是两个灰色像素宽，看起来模糊不清。"
   },
+  "a4b04f29f56fdc42": {
+   "source": "<g1>Add category</g1> — make your own, for example <g2>Books</g2> for <x3/>. Give it a name, the file types (separated by spaces, <x4/> allowed) and a folder.",
+   "text": "<g1>添加类别</g1> — 创建自定义类别，例如为<x3/>创建<g2>图书</g2>类别。设置类别名称、文件类型（用空格分隔，可使用<x4/>）和文件夹。"
+  },
   "a4b1f9a84345ac5d": {
    "source": "<g1>yt-dlp</g1> (about 23 MB) looks the page up and finds where the video and its sound come from; MDM downloads them (<g2>How a video comes down</g2>). The first time, click <g3>Install yt-dlp</g3>. MDM checks the download against the signature yt-dlp's developers publish before it uses it.",
    "text": "<g1>yt-dlp</g1>（约 23 MB）负责查找页面并找到视频及其音频的来源；MDM 则负责下载它们（<g2>视频下载方式</g2>）。首次使用时，请点击<g3>安装 yt-dlp</g3>。MDM 会在使用前对照 yt-dlp 开发者发布的签名来检查下载文件。"
@@ -14145,6 +14169,10 @@
   "bc606bb991071128": {
    "source": "The next tab of a focused tab strip; the next choice of a radio group",
    "text": "在当前聚焦的选项卡栏中切换到下一个选项卡；在单选按钮组中选择下一个选项"
+  },
+  "bc713e862e9b84d3": {
+   "source": "Each download falls into a category by its file type: <g1>General</g1>, <g2>Compressed</g2>, <g3>Documents</g3>, <g4>Music</g4>, <g5>Programs</g5> or <g6>Video</g6>. Torrents have their own <g7>Torrents</g7> category. Each category has its own folder, by default inside your Downloads folder (<x8/>, <x9/> and so on; General uses <x10/> itself).",
+   "text": "每个下载都会根据文件类型归入一个类别：<g1>常规</g1>、<g2>压缩文件</g2>、<g3>文档</g3>、<g4>音乐</g4>、<g5>程序</g5>或<g6>视频</g6>。种子文件有自己的<g7>种子</g7>类别。每个类别都有自己的文件夹，默认位于“下载”文件夹中（<x8/>、<x9/>等；常规类别直接使用<x10/>）。"
   },
   "bc7153d0bcfdacbb": {
    "source": "Themes — Mister Download Manager",
@@ -18477,6 +18505,10 @@
   "f8c444517ab946e2": {
    "source": "From the plain zip",
    "text": "从普通 zip 文件安装"
+  },
+  "f8c71a9fb2bd8bde": {
+   "source": "<g1>Automatically put in \"…\" category the following file types</g1> — the file types that go to this category.",
+   "text": "<g1>自动将以下文件类型放入“…”类别</g1> — 属于此类别的文件类型。"
   },
   "f8e0a9e7ee529ff0": {
    "source": "Select <g1>Main download queue</g1> on the left. The <g2>Schedule</g2> tab opens.",

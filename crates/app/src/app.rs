@@ -1844,6 +1844,23 @@ fn public_list_note(added: Option<usize>) -> Option<String> {
     }
 }
 
+/// Event log line for user's own trackers from Torrent settings (#1959) on a new torrent.
+fn extra_trackers_note(added: Option<usize>) -> Option<String> {
+    match added {
+        Some(0) => None,
+        Some(n) => Some(crate::i18n::tn(
+            n as u64,
+            // i18n: event log entry: user's own trackers (Torrent settings) were added to a new torrent
+            "{n} tracker added from Torrent settings",
+            "{n} trackers added from Torrent settings",
+        )),
+        // i18n: event log entry: the torrent is private (only its own trackers may be asked), so user's own trackers weren't added
+        None => {
+            Some(crate::i18n::t("A private torrent: your own trackers aren't added").to_owned())
+        }
+    }
+}
+
 /// The Referer a browser would send for `url` from page `referrer` (its default policy,
 /// strict-origin-when-cross-origin): the whole address on the same site, only the site's origin
 /// to another, nothing from https to http.
@@ -3712,7 +3729,14 @@ impl App {
                 self.summaries
                     .push(dialogs::GroupDone::new(0, &finished, &failed, &self.items));
             }
-            "torrent-settings" => self.run(Cmd::TorrentSettings, None, ctx),
+            "torrent-settings" => {
+                self.run(Cmd::TorrentSettings, None, ctx);
+                if tab == "trackers"
+                    && let Some(t) = &mut self.torrent_settings
+                {
+                    t.open_own_trackers();
+                }
+            }
             // The first download's: Add trackers (a torrent), its right-click menu.
             "add-trackers" if first.is_some() => self.run(Cmd::TorrentAddTrackers, first, ctx),
             // The first download's Torrent → Files... (a torrent).
@@ -7545,9 +7569,20 @@ impl App {
             );
             return None;
         }
-        // The public tracker list's trackers (#1776), as last fetched (it isn't waited for), in
-        // the .torrent kept for it: never in a private torrent's (BEP 27). With no list yet, it
-        // gets the list once one comes (`public_list_to_torrents`).
+        // User's own trackers from Torrent settings (#1959), then the public tracker list (#1776),
+        // both only for public torrents (never private, BEP 27): tracker order is torrent's own ->
+        // user's own -> public list, with duplicates skipped.
+        let (after_extra, extra_added) = if self.settings.torrent_extra_trackers.is_empty() {
+            (meta.torrent.clone(), Some(0))
+        } else {
+            match crate::torrents::with_extra_trackers(
+                &meta.torrent,
+                &self.settings.torrent_extra_trackers,
+            ) {
+                Some((with, added)) => (with, Some(added)),
+                None => (meta.torrent.clone(), None),
+            }
+        };
         let (kept, public, public_list) = match self
             .settings
             .torrent_public_trackers
@@ -7557,11 +7592,11 @@ impl App {
             })
             .flatten()
         {
-            Some((stamp, list)) => match crate::torrents::with_public_list(&meta.torrent, &list) {
+            Some((stamp, list)) => match crate::torrents::with_public_list(&after_extra, &list) {
                 Some((with, added)) => (with, Some(added), stamp),
-                None => (meta.torrent.clone(), None, stamp),
+                None => (after_extra, None, stamp),
             },
-            None => (meta.torrent.clone(), Some(0), 0),
+            None => (after_extra, Some(0), 0),
         };
         if after {
             let (hash, bytes, wake) = (meta.info_hash.clone(), kept, self.ui_ctx.clone());
@@ -7630,6 +7665,9 @@ impl App {
         );
         if let Some(item) = self.item(id) {
             item.preexisting_folder = preexisting;
+            if let Some(note) = extra_trackers_note(extra_added) {
+                item.note(note);
+            }
             if let Some(note) = public_list_note(public) {
                 item.note(note);
             }

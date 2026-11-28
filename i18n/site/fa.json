@@ -2170,6 +2170,10 @@
    "source": "Open (GPL-3.0)",
    "text": "باز (GPL-3.0)"
   },
+  "1c33e6d58d65ebb6": {
+   "source": "<g1>Tasks → Torrent settings... → Own trackers...</g1> follows the same rules: every address is checked so none on your computer or local network is contacted, and private torrents never get them.",
+   "text": "<g1>وظایف ← تنظیمات تورنت… ← ردیاب‌های شما…</g1> از همین قوانین پیروی می‌کند: هر آدرس بررسی می‌شود تا هیچ‌یک از آدرس‌های روی رایانه یا شبکه محلی شما تماس نگیرد و تورنت‌های خصوصی هرگز آن‌ها را دریافت نمی‌کنند."
+  },
   "1c41a815ee54b7d7": {
    "source": "MDM has <g1>no analytics, no automatic crash reporting, no telemetry and no advertising</g1> (a crash report goes only where you send it yourself). It never sends us your download list, the addresses you download, or anything else.",
    "text": "MDM <g1>فاقد هرگونه تحلیل، گزارش خودکار خرابی، تله‌متری و تبلیغات</g1> است (گزارش خرابی فقط به جایی می‌رود که خودتان آن را ارسال کنید). هرگز لیست دانلودهای شما، آدرس‌هایی که دانلود می‌کنید یا هر چیز دیگری را برای ما ارسال نمی‌کند."
@@ -3210,6 +3214,10 @@
    "source": "MDM runs on Windows 10 and Windows 11 (x64, ARM64 and 32-bit), and on 64-bit Linux (x86-64 and ARM64): see <g1>On Linux</g1>. Builds for macOS are new and still experimental: see <g2>On a Mac</g2>.",
    "text": "MDM روی Windows 10 و Windows 11 (x64، ARM64 و 32-بیت) و روی Linux 64-بیت (x86-64 و ARM64) اجرا می‌شود: به <g1>روی Linux</g1> مراجعه کنید. نسخه‌های macOS جدید و هنوز آزمایشی هستند: به <g2>روی مک</g2> مراجعه کنید."
   },
+  "29f37397c338f4c4": {
+   "source": "Download a torrent, or only some of its files. If some of its files are already in the folder, it stops and names them; <x1/> uses them instead (what matches is kept, the rest downloaded). With Torrent settings' <g2>Add the trackers of this public list to public torrents</g2> on, a public torrent gets the list's trackers too, as in the app. Any trackers you listed in Torrent settings' <g3>Own trackers...</g3> window are added to new public torrents the same way.",
+   "text": "یک تورنت یا فقط برخی از فایل‌های آن را بارگیری کنید. اگر بعضی از فایل‌های آن از قبل در پوشه موجود باشند، متوقف می‌شود و نام آن‌ها را می‌آورد؛ <x1/> به جای آن‌ها از فایل‌های موجود استفاده می‌کند (آنچه مطابقت دارد حفظ می‌شود، بقیه بارگیری می‌شوند). با فعال بودن <g2>ردیاب‌های این فهرست عمومی را به تورنت‌های عمومی اضافه کن</g2> در تنظیمات تورنت، یک تورنت عمومی نیز ردیاب‌های فهرست را دریافت می‌کند، همان‌طور که در برنامه اتفاق می‌افتد. هر ردیابی که در پنجره <g3>ردیاب‌های شما...</g3> در تنظیمات تورنت فهرست کرده‌اید، به همین ترتیب به تورنت‌های عمومی جدید اضافه می‌شود."
+  },
   "2a014824bb4f981c": {
    "source": "Disabled text, the one grey of every greyed control and label",
    "text": "متن غیرفعال، تنها رنگ خاکستری هر کنترل و برچسب خاکستری‌شده"
@@ -3997,6 +4005,10 @@
   "34ee8ac31c366dc9": {
    "source": "Some file hosts count a look-up as a download: turn the look-ups off in <g1>Options → Archives</g1>.",
    "text": "برخی از میزبان‌های فایل، هر جستجو را به عنوان یک بارگیری حساب می‌کنند: جستجوها را در <g1>گزینه‌ها → بایگانی‌ها</g1> خاموش کنید."
+  },
+  "34f9c0c492a55ca2": {
+   "source": "<g1>Your own trackers in Torrent settings</g1>, if you list any: every new public torrent contacts those trackers too, and they see which public torrents you add.",
+   "text": "<g1>ردیاب‌های شما در تنظیمات تورنت</g1>، اگر موردی را فهرست کرده باشید: هر تورنت عمومی جدید نیز با آن ردیاب‌ها تماس می‌گیرد و آن‌ها می‌بینند که شما کدام تورنت‌های عمومی را اضافه می‌کنید."
   },
   "35092e177f7efaa5": {
    "source": "Download complete with Open and Open folder",
@@ -6165,6 +6177,10 @@
   "53220733cbddcf56": {
    "source": "On Windows, MDM draws its windows with Direct3D 12; on Linux and macOS, with OpenGL, or with Vulkan (Linux) or Metal (macOS) when you choose them. A graphics driver can still misbehave: a window that holds still for seconds, flickers, or shows wrong colours or blocks. Try the other one: choose <g1>View → Draw with → OpenGL</g1> (or <g2>Direct3D</g2>, <g3>Vulkan</g3>, <g4>Metal</g4>), then quit MDM (<g5>Tasks → Exit</g5>) and start it again. Choosing the first one goes back the same way.",
    "text": "در Windows، MDM پنجره‌هایش را با Direct3D 12 ترسیم می‌کند؛ در Linux و macOS با OpenGL، یا با Vulkan (Linux) یا Metal (macOS) در صورت انتخاب این گزینه‌ها. ممکن است درایور گرافیک درست کار نکند و پنجره برای چند ثانیه ثابت بماند، سوسو بزند یا رنگ‌ها یا بلوک‌ها را نادرست نشان دهد. روش دیگر را امتحان کنید: <g1>نما → ترسیم با → OpenGL</g1> (یا <g2>Direct3D</g2>، <g3>Vulkan</g3>، <g4>Metal</g4>) را انتخاب کنید، سپس MDM را ببندید (<g5>وظایف → خروج</g5>) و دوباره اجرا کنید. برای بازگشت به روش قبلی، همان گزینه را انتخاب کنید."
+  },
+  "534625c2933b25c5": {
+   "source": "You can also list your own trackers under <g1>Tasks → Torrent settings... → Own trackers...</g1>, one address a line (<x2/>, <x3/>, or <x4/>). Every new public torrent asks them after its own trackers, private torrents never get them, and <x5/> uses the same list.",
+   "text": "همچنین می‌توانید ردیاب‌های خود را در <g1>وظایف ← تنظیمات تورنت… ← ردیاب‌های شما…</g1> فهرست کنید؛ هر آدرس در یک خط (<x2/>، <x3/> یا <x4/>). هر تورنت عمومی جدید، پس از ردیاب‌های خودش، از این ردیاب‌ها سؤال می‌کند. تورنت‌های خصوصی هرگز از آن‌ها استفاده نمی‌کنند و <x5/> نیز از همین فهرست استفاده می‌کند."
   },
   "53463dc2311b18e1": {
    "source": "when <g1>Options → Archives → Extract archives when their download completes</g1> is on (off by default), for any other download,",
@@ -8486,6 +8502,10 @@
    "source": "Paste a Google Drive link as it is, the one <g1>Share → Copy link</g1> gives:",
    "text": "پیوند Google Drive را همان‌طور که هست بچسبانید؛ همان پیوندی که با <g1>اشتراک‌گذاری → کپی پیوند</g1> دریافت می‌کنید:"
   },
+  "7297ca101de5145e": {
+   "source": "The list couldn't be read from GitHub when this page was built. Everyone is on GitHub meanwhile, in the project's <g1>pull requests</g1> and <g2>issues</g2>.",
+   "text": "هنگام ساخت این صفحه، فهرست مشارکت‌کنندگان از GitHub خوانده نشد. در این مدت، همه در GitHub، در <g1>درخواست‌های پول</g1> و <g2>مسائل</g2> پروژه حضور دارند."
+  },
   "729a19fc6ce418f9": {
    "source": "Reporting problems",
    "text": "گزارش مشکلات"
@@ -8617,6 +8637,10 @@
   "74147234c5be454d": {
    "source": "A 256 KiB file. MDM is done in 30 ms; IDM is still starting.",
    "text": "یک فایل 256 کیلوبایتی. MDM در 30 میلی‌ثانیه کارش تمام می‌شود؛ IDM هنوز در حال شروع است."
+  },
+  "7416633f0aac387c": {
+   "source": "<g1>Own trackers...:</g1> opens a window for your own trackers, one address a line (<x2/>, <x3/>, or <x4/>), empty by default. Every public torrent you add from then on also asks these trackers, right after its own trackers and before the public tracker list if both are used (duplicates are added once). Addresses on your computer or local network are refused, private torrents never get them, and torrents already in your list keep their trackers (use <g5>Add trackers...</g5> in the right-click menu for those). <x6/> follows this setting too.",
+   "text": "<g1>ردیاب‌های شما...:</g1> پنجره‌ای را برای ردیاب‌های شما باز می‌کند که هر آدرس در یک خط قرار می‌گیرد (<x2/>، <x3/> یا <x4/>) و به‌طور پیش‌فرض خالی است. هر تورنت عمومی که از آن به بعد اضافه می‌کنید، بلافاصله پس از ردیاب‌های خودش و قبل از فهرست ردیاب‌های عمومی (در صورت استفاده از هر دو)، این ردیاب‌ها را نیز درخواست می‌کند (موارد تکراری فقط یک بار اضافه می‌شوند). آدرس‌های موجود در رایانه یا شبکه محلی شما پذیرفته نمی‌شوند، تورنت‌های خصوصی هرگز آن‌ها را دریافت نمی‌کنند و تورنت‌هایی که از قبل در فهرست شما هستند، ردیاب‌های خود را حفظ می‌کنند (برای این موارد از <g5>افزودن ردیاب‌ها...</g5> در منوی راست‌کلیک استفاده کنید). <x6/> نیز از این تنظیم پیروی می‌کند."
   },
   "741be1a1c9d6ba43": {
    "source": "What to do",
@@ -12338,6 +12362,10 @@
    "source": "<g1>Sharper text on Windows</g1> (<g2>#262</g2>): Segoe UI and Tahoma are grid-fitted across as well as up and down, and each letter starts on a whole pixel, as Windows draws its own grey text: upright strokes were two grey pixels wide at 100 % and 125 %, which read as blurred.",
    "text": "<g1>متن واضح‌تر در Windows</g1> (<g2>#262</g2>): Segoe UI و Tahoma هم به صورت افقی و هم عمودی به شبکه متصل می‌شوند، و هر حرف روی یک پیکسل کامل شروع می‌شود، همانطور که Windows متن خاکستری خود را ترسیم می‌کند: خطوط عمودی در 100% و 125% دو پیکسل خاکستری عرض داشتند که به صورت تار خوانده می‌شدند."
   },
+  "a4b04f29f56fdc42": {
+   "source": "<g1>Add category</g1> — make your own, for example <g2>Books</g2> for <x3/>. Give it a name, the file types (separated by spaces, <x4/> allowed) and a folder.",
+   "text": "<g1>افزودن دسته</g1> — دسته خود را بسازید، برای مثال <g2>کتاب‌ها</g2> برای <x3/>. به آن یک نام، انواع فایل (با فاصله جدا شده، <x4/> مجاز است) و یک پوشه بدهید."
+  },
   "a4b1f9a84345ac5d": {
    "source": "<g1>yt-dlp</g1> (about 23 MB) looks the page up and finds where the video and its sound come from; MDM downloads them (<g2>How a video comes down</g2>). The first time, click <g3>Install yt-dlp</g3>. MDM checks the download against the signature yt-dlp's developers publish before it uses it.",
    "text": "<g1>yt-dlp</g1> (حدود 23 مگابایت) صفحه را بررسی می‌کند و منبع ویدیو و صدای آن را پیدا می‌کند؛ MDM آن‌ها را بارگیری می‌کند (<g2>نحوه بارگیری ویدیو</g2>). برای اولین بار، روی <g3>نصب yt-dlp</g3> کلیک کنید. MDM قبل از استفاده، بارگیری را با امضای منتشرشده توسط توسعه‌دهندگان yt-dlp بررسی می‌کند."
@@ -14145,6 +14173,10 @@
   "bc606bb991071128": {
    "source": "The next tab of a focused tab strip; the next choice of a radio group",
    "text": "برگه بعدی یک نوار برگه متمرکز؛ انتخاب بعدی یک گروه رادیویی"
+  },
+  "bc713e862e9b84d3": {
+   "source": "Each download falls into a category by its file type: <g1>General</g1>, <g2>Compressed</g2>, <g3>Documents</g3>, <g4>Music</g4>, <g5>Programs</g5> or <g6>Video</g6>. Torrents have their own <g7>Torrents</g7> category. Each category has its own folder, by default inside your Downloads folder (<x8/>, <x9/> and so on; General uses <x10/> itself).",
+   "text": "هر دانلود بر اساس نوع فایل خود در یک دسته قرار می‌گیرد: <g1>عمومی</g1>، <g2>فشرده</g2>، <g3>اسناد</g3>، <g4>موسیقی</g4>، <g5>برنامه‌ها</g5> یا <g6>ویدئو</g6>. تورنت‌ها دسته <g7>تورنت‌ها</g7> خود را دارند. هر دسته پوشه مخصوص به خود را دارد، به طور پیش‌فرض در پوشه دانلودهای شما (<x8/>، <x9/> و غیره؛ عمومی از خود <x10/> استفاده می‌کند)."
   },
   "bc7153d0bcfdacbb": {
    "source": "Themes — Mister Download Manager",
@@ -18477,6 +18509,10 @@
   "f8c444517ab946e2": {
    "source": "From the plain zip",
    "text": "از فایل ZIP ساده"
+  },
+  "f8c71a9fb2bd8bde": {
+   "source": "<g1>Automatically put in \"…\" category the following file types</g1> — the file types that go to this category.",
+   "text": "<g1>انواع فایل‌های زیر را به طور خودکار در دسته \"...\" قرار دهید</g1> — انواع فایل‌هایی که به این دسته می‌روند."
   },
   "f8e0a9e7ee529ff0": {
    "source": "Select <g1>Main download queue</g1> on the left. The <g2>Schedule</g2> tab opens.",

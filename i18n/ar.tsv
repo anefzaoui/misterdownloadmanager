@@ -153,6 +153,11 @@
 #. {n} = a number (keep the braces as they are)
 @plural	{n} tracker added|{n} trackers added	{n} متتبع تمت إضافته|{n} متتبع تمت إضافته|{n} متتبعان تمت إضافتهما|{n} متتبعات تمت إضافتها|{n} متتبعا تمت إضافته|{n} متتبع تمت إضافته
 #. count in the main window
+#. event log entry: user's own trackers (Torrent settings) were added to a new torrent
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} tracker added from Torrent settings|{n} trackers added from Torrent settings	أضيف {n} متتبع من إعدادات التورنت|أضيف {n} متتبع من إعدادات التورنت|أضيف {n} متتبعين من إعدادات التورنت|أضيفت {n} متتبعات من إعدادات التورنت|أضيف {n} متتبعا من إعدادات التورنت|أضيف {n} متتبع من إعدادات التورنت
+#. count in the main window
 #. event log entry: trackers from the public tracker list (Torrent settings) were added to a torrent
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -299,6 +304,9 @@
 #. message or event log entry in the main window
 #, machine
 	A private torrent: the public tracker list isn't added	تورنت خاص: لم تضف قائمة المتتبعات العامة
+#. message or event log entry in the main window
+#, machine
+	A private torrent: your own trackers aren't added	تورنت خاص: لم تضف متتبعاتك الخاصة
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites: the tooltip of the profile box
 	A profile's name or its folder. Empty: the profile used last. For a browser built on Chromium that isn't listed (Helium, Thorium...), choose Chromium and its profile's folder.	اسم ملف تعريف أو مجلده. اتركه فارغا لاستخدام آخر ملف تعريف. إذا كان المستعرض مبنيا على Chromium وغير مدرج (Helium، Thorium...)، فاختر Chromium ثم مجلد ملف التعريف الخاص به.
@@ -3030,6 +3038,10 @@
 	Network adapter:	محول الشبكة:
 #. text in errors.rs
 	network error	خطأ في الشبكة
+#. text in the Add torrent window
+#. Own trackers: under the box
+#, machine
+	Never added to private torrents. Existing torrents stay as they are.	لا تضاف أبدا إلى التورنتات الخاصة. تبقى التورنتات الموجودة كما هي.
 #. text in the Options window
 	Never show it on these sites:	عدم إظهاره مطلقا في هذه المواقع:
 #. button in the Options window
@@ -3488,6 +3500,15 @@
 #. text in the Options window
 #, machine
 	Other	أخرى
+#. text in the Add torrent window
+#. Own trackers window title
+#, machine
+	Own trackers	المتتبعات الخاصة
+#. button in the Add torrent window
+#. Torrent settings: button opening the Own trackers window
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Own trackers...	المتتبعات الخاصة...
 #. text in the Link grabber window
 #. Link grabber: the box that edits the selected package
 	Package	الحزمة
@@ -5867,6 +5888,10 @@
 #. Video helpers: {path} = the program the person chose, {version} = its version
 #. {version} = a version number (keep the braces as they are)
 	Your own program: {path} ({version})	البرنامج الخاص بك: {path} ({version})
+#. text in the Add torrent window
+#. Own trackers: above the multi-line box
+#, machine
+	Your own trackers for new public torrents, one address a line:	متتبعاتك الخاصة للتورنتات العامة الجديدة، عنوان واحد لكل سطر:
 #. text in helpers.rs
 #. Video helpers: {path} = the system's yt-dlp, ffmpeg or gallery-dl
 	Your system's: {path}	نسخة نظامك: {path}

@@ -58,6 +58,10 @@ and keeps the last good copy, so adding a torrent never waits for it. Private to
 them: they may only ask their own trackers. The command line's `torrent-get` follows the same
 switch.
 
+You can also list your own trackers under **Tasks → Torrent settings... → Own trackers...**, one address a line (`http`,
+`https`, or `udp`). Every new public torrent asks them after its own trackers, private torrents never
+get them, and `torrent-get` uses the same list.
+
 ## More control in version 0.5.0
 
 <!--@coming 0.5-->

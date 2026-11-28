@@ -153,6 +153,11 @@
 #. {n} = a number (keep the braces as they are)
 @plural	{n} tracker added|{n} trackers added	{n} tracker aggiunto|{n} tracker aggiunti
 #. count in the main window
+#. event log entry: user's own trackers (Torrent settings) were added to a new torrent
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} tracker added from Torrent settings|{n} trackers added from Torrent settings	{n} tracker aggiunto dalle impostazioni Torrent|{n} tracker aggiunti dalle impostazioni Torrent
+#. count in the main window
 #. event log entry: trackers from the public tracker list (Torrent settings) were added to a torrent
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -298,6 +303,9 @@
 #. message or event log entry in the main window
 #, machine
 	A private torrent: the public tracker list isn't added	Un torrent privato: l'elenco pubblico dei tracker non viene aggiunto
+#. message or event log entry in the main window
+#, machine
+	A private torrent: your own trackers aren't added	Torrent privato: i tuoi tracker non vengono aggiunti
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites: the tooltip of the profile box
 	A profile's name or its folder. Empty: the profile used last. For a browser built on Chromium that isn't listed (Helium, Thorium...), choose Chromium and its profile's folder.	Il nome di un profilo o la sua cartella. Vuoto: l'ultimo profilo usato. Per un browser basato su Chromium non elencato (Helium, Thorium...), scegli Chromium e la cartella del suo profilo.
@@ -3003,6 +3011,10 @@
 	Network adapter:	Scheda di rete:
 #. text in errors.rs
 	network error	errore di rete
+#. text in the Add torrent window
+#. Own trackers: under the box
+#, machine
+	Never added to private torrents. Existing torrents stay as they are.	Mai aggiunti ai torrent privati. I torrent esistenti restano invariati.
 #. text in the Options window
 	Never show it on these sites:	Non mostrarlo mai su questi siti:
 #. button in the Options window
@@ -3452,6 +3464,15 @@
 #. text in the Options window
 #, machine
 	Other	Altro
+#. text in the Add torrent window
+#. Own trackers window title
+#, machine
+	Own trackers	Tracker personali
+#. button in the Add torrent window
+#. Torrent settings: button opening the Own trackers window
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Own trackers...	Tracker personali...
 #. text in the Link grabber window
 #. Link grabber: the box that edits the selected package
 	Package	Pacchetto
@@ -5808,6 +5829,10 @@
 #. Video helpers: {path} = the program the person chose, {version} = its version
 #. {version} = a version number (keep the braces as they are)
 	Your own program: {path} ({version})	Il tuo programma: {path} ({version})
+#. text in the Add torrent window
+#. Own trackers: above the multi-line box
+#, machine
+	Your own trackers for new public torrents, one address a line:	I tuoi tracker per i nuovi torrent pubblici, un indirizzo per riga:
 #. text in helpers.rs
 #. Video helpers: {path} = the system's yt-dlp, ffmpeg or gallery-dl
 	Your system's: {path}	Quello del sistema: {path}

@@ -172,6 +172,11 @@
 #, machine
 @plural	{n} tracker added|{n} trackers added	{n} ട്രാക്കർ ചേർത്തു|{n} ട്രാക്കറുകൾ ചേർത്തു
 #. count in the main window
+#. event log entry: user's own trackers (Torrent settings) were added to a new torrent
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} tracker added from Torrent settings|{n} trackers added from Torrent settings	ടോറന്റ് ക്രമീകരണങ്ങളിൽ നിന്ന് {n} ട്രാക്കർ ചേർത്തു|ടോറന്റ് ക്രമീകരണങ്ങളിൽ നിന്ന് {n} ട്രാക്കറുകൾ ചേർത്തു
+#. count in the main window
 #. event log entry: trackers from the public tracker list (Torrent settings) were added to a torrent
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -340,6 +345,9 @@
 #. message or event log entry in the main window
 #, machine
 	A private torrent: the public tracker list isn't added	ഒരു സ്വകാര്യ ടോറന്റ്: പൊതു ട്രാക്കർ ലിസ്റ്റ് ചേർത്തിട്ടില്ല
+#. message or event log entry in the main window
+#, machine
+	A private torrent: your own trackers aren't added	ഒരു സ്വകാര്യ ടോറന്റ്: നിങ്ങളുടെ സ്വന്തം ട്രാക്കറുകൾ ചേർത്തിട്ടില്ല
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites: the tooltip of the profile box
 #, machine
@@ -3696,6 +3704,10 @@
 #. text in errors.rs
 #, machine
 	network error	നെറ്റ്‌വർക്ക് പിശക്
+#. text in the Add torrent window
+#. Own trackers: under the box
+#, machine
+	Never added to private torrents. Existing torrents stay as they are.	സ്വകാര്യ ടോറന്റുകളിലേക്ക് ഒരിക്കലും ചേർക്കില്ല. നിലവിലുള്ള ടോറന്റുകൾ അതുപോലെ നിലനിൽക്കും.
 #. text in the Options window
 #, machine
 	Never show it on these sites:	ഈ സൈറ്റുകളിൽ ഇത് ഒരിക്കലും കാണിക്കരുത്:
@@ -4252,6 +4264,15 @@
 #. text in the Options window
 #, machine
 	Other	മറ്റുള്ളവ
+#. text in the Add torrent window
+#. Own trackers window title
+#, machine
+	Own trackers	സ്വന്തം ട്രാക്കറുകൾ
+#. button in the Add torrent window
+#. Torrent settings: button opening the Own trackers window
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Own trackers...	സ്വന്തം ട്രാക്കറുകൾ...
 #. text in the Link grabber window
 #. Link grabber: the box that edits the selected package
 #, machine
@@ -7136,6 +7157,10 @@
 #. {version} = a version number (keep the braces as they are)
 #, machine
 	Your own program: {path} ({version})	നിങ്ങളുടെ സ്വന്തം പ്രോഗ്രാം: {path} ({version})
+#. text in the Add torrent window
+#. Own trackers: above the multi-line box
+#, machine
+	Your own trackers for new public torrents, one address a line:	പുതിയ പൊതു ടോറന്റുകൾക്കായുള്ള നിങ്ങളുടെ സ്വന്തം ട്രാക്കറുകൾ, ഒരു വരിയിൽ ഒരു വിലാസം:
 #. text in helpers.rs
 #. Video helpers: {path} = the system's yt-dlp, ffmpeg or gallery-dl
 #, machine

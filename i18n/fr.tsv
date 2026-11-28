@@ -171,6 +171,11 @@
 #. {n} = a number (keep the braces as they are)
 @plural	{n} tracker added|{n} trackers added	{n} tracker ajouté|{n} trackers ajoutés
 #. count in the main window
+#. event log entry: user's own trackers (Torrent settings) were added to a new torrent
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} tracker added from Torrent settings|{n} trackers added from Torrent settings	{n} tracker ajouté depuis les paramètres Torrent|{n} trackers ajoutés depuis les paramètres Torrent
+#. count in the main window
 #. event log entry: trackers from the public tracker list (Torrent settings) were added to a torrent
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -338,6 +343,9 @@
 #. message or event log entry in the main window
 #, machine
 	A private torrent: the public tracker list isn't added	Torrent privé : la liste publique de trackers n’est pas ajoutée
+#. message or event log entry in the main window
+#, machine
+	A private torrent: your own trackers aren't added	Torrent privé : vos propres trackers ne sont pas ajoutés
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites: the tooltip of the profile box
 #, machine
@@ -3693,6 +3701,10 @@
 #. text in errors.rs
 #, machine
 	network error	erreur réseau
+#. text in the Add torrent window
+#. Own trackers: under the box
+#, machine
+	Never added to private torrents. Existing torrents stay as they are.	Jamais ajoutés aux torrents privés. Les torrents existants restent tels quels.
 #. text in the Options window
 #, machine
 	Never show it on these sites:	Ne jamais l’afficher sur ces sites :
@@ -4246,6 +4258,15 @@
 #. text in the Options window
 #, machine
 	Other	Autre
+#. text in the Add torrent window
+#. Own trackers window title
+#, machine
+	Own trackers	Vos propres trackers
+#. button in the Add torrent window
+#. Torrent settings: button opening the Own trackers window
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Own trackers...	Vos propres trackers...
 #. text in the Link grabber window
 #. Link grabber: the box that edits the selected package
 #, machine
@@ -7131,6 +7152,10 @@
 #. {version} = a version number (keep the braces as they are)
 #, machine
 	Your own program: {path} ({version})	Votre programme : {path} ({version})
+#. text in the Add torrent window
+#. Own trackers: above the multi-line box
+#, machine
+	Your own trackers for new public torrents, one address a line:	Vos propres trackers pour les nouveaux torrents publics, une adresse par ligne :
 #. text in helpers.rs
 #. Video helpers: {path} = the system's yt-dlp, ffmpeg or gallery-dl
 #, machine

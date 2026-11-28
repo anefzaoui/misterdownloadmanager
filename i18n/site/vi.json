@@ -2170,6 +2170,10 @@
    "source": "Open (GPL-3.0)",
    "text": "Mã nguồn mở (GPL-3.0)"
   },
+  "1c33e6d58d65ebb6": {
+   "source": "<g1>Tasks → Torrent settings... → Own trackers...</g1> follows the same rules: every address is checked so none on your computer or local network is contacted, and private torrents never get them.",
+   "text": "<g1>Tác vụ → Cài đặt torrent... → Tracker của bạn...</g1> tuân theo các quy tắc tương tự: mọi địa chỉ đều được kiểm tra để không có địa chỉ nào trên máy tính hoặc mạng cục bộ của bạn bị liên hệ, và torrent riêng tư không bao giờ nhận chúng."
+  },
   "1c41a815ee54b7d7": {
    "source": "MDM has <g1>no analytics, no automatic crash reporting, no telemetry and no advertising</g1> (a crash report goes only where you send it yourself). It never sends us your download list, the addresses you download, or anything else.",
    "text": "MDM <g1>không có tính năng phân tích, báo cáo sự cố tự động, đo từ xa hay quảng cáo</g1> (báo cáo sự cố chỉ được gửi đến nơi bạn tự gửi). MDM không bao giờ gửi cho chúng tôi danh sách tải xuống, địa chỉ bạn tải xuống hoặc bất kỳ thông tin nào khác."
@@ -3210,6 +3214,10 @@
    "source": "MDM runs on Windows 10 and Windows 11 (x64, ARM64 and 32-bit), and on 64-bit Linux (x86-64 and ARM64): see <g1>On Linux</g1>. Builds for macOS are new and still experimental: see <g2>On a Mac</g2>.",
    "text": "MDM chạy trên Windows 10 và Windows 11 (x64, ARM64 và 32-bit), và trên Linux 64-bit (x86-64 và ARM64): xem <g1>Trên Linux</g1>. Các bản dựng cho macOS còn mới và đang thử nghiệm: xem <g2>Trên máy Mac</g2>."
   },
+  "29f37397c338f4c4": {
+   "source": "Download a torrent, or only some of its files. If some of its files are already in the folder, it stops and names them; <x1/> uses them instead (what matches is kept, the rest downloaded). With Torrent settings' <g2>Add the trackers of this public list to public torrents</g2> on, a public torrent gets the list's trackers too, as in the app. Any trackers you listed in Torrent settings' <g3>Own trackers...</g3> window are added to new public torrents the same way.",
+   "text": "Tải xuống một torrent, hoặc chỉ một số tệp của nó. Nếu một số tệp đã có trong thư mục, nó sẽ dừng và đặt tên cho chúng; <x1/> sử dụng chúng thay thế (những gì khớp sẽ được giữ lại, phần còn lại được tải xuống). Với tùy chọn <g2>Thêm các tracker từ danh sách công khai này vào các torrent công khai</g2> trong Cài đặt torrent được bật, một torrent công khai cũng sẽ nhận được các tracker từ danh sách, giống như trong ứng dụng. Bất kỳ tracker nào bạn đã liệt kê trong cửa sổ <g3>Tracker của bạn...</g3> của Cài đặt torrent cũng sẽ được thêm vào các torrent công khai mới theo cách tương tự."
+  },
   "2a014824bb4f981c": {
    "source": "Disabled text, the one grey of every greyed control and label",
    "text": "Chữ bị vô hiệu hóa, màu xám duy nhất của mọi điều khiển và nhãn bị làm mờ"
@@ -3997,6 +4005,10 @@
   "34ee8ac31c366dc9": {
    "source": "Some file hosts count a look-up as a download: turn the look-ups off in <g1>Options → Archives</g1>.",
    "text": "Một số máy chủ tệp tính mỗi lần tra cứu là một lượt tải xuống: tắt tra cứu trong <g1>Tùy chọn → Lưu trữ</g1>."
+  },
+  "34f9c0c492a55ca2": {
+   "source": "<g1>Your own trackers in Torrent settings</g1>, if you list any: every new public torrent contacts those trackers too, and they see which public torrents you add.",
+   "text": "<g1>Trình theo dõi riêng của bạn trong Cài đặt torrent</g1>, nếu bạn liệt kê bất kỳ trình nào: mọi torrent công khai mới cũng liên hệ với các trình theo dõi đó và họ sẽ thấy những torrent công khai nào bạn thêm vào."
   },
   "35092e177f7efaa5": {
    "source": "Download complete with Open and Open folder",
@@ -6165,6 +6177,10 @@
   "53220733cbddcf56": {
    "source": "On Windows, MDM draws its windows with Direct3D 12; on Linux and macOS, with OpenGL, or with Vulkan (Linux) or Metal (macOS) when you choose them. A graphics driver can still misbehave: a window that holds still for seconds, flickers, or shows wrong colours or blocks. Try the other one: choose <g1>View → Draw with → OpenGL</g1> (or <g2>Direct3D</g2>, <g3>Vulkan</g3>, <g4>Metal</g4>), then quit MDM (<g5>Tasks → Exit</g5>) and start it again. Choosing the first one goes back the same way.",
    "text": "Trên Windows, MDM vẽ các cửa sổ của nó bằng Direct3D 12; trên Linux và macOS, bằng OpenGL, hoặc bằng Vulkan (Linux) hoặc Metal (macOS) khi bạn chọn chúng. Trình điều khiển đồ họa vẫn có thể hoạt động sai: một cửa sổ đứng yên trong vài giây, nhấp nháy, hoặc hiển thị màu sắc hoặc khối sai. Hãy thử cái khác: chọn <g1>Xem → Vẽ bằng → OpenGL</g1> (hoặc <g2>Direct3D</g2>, <g3>Vulkan</g3>, <g4>Metal</g4>), sau đó thoát MDM (<g5>Tác vụ → Thoát</g5>) và khởi động lại. Chọn cái đầu tiên sẽ quay lại theo cùng một cách."
+  },
+  "534625c2933b25c5": {
+   "source": "You can also list your own trackers under <g1>Tasks → Torrent settings... → Own trackers...</g1>, one address a line (<x2/>, <x3/>, or <x4/>). Every new public torrent asks them after its own trackers, private torrents never get them, and <x5/> uses the same list.",
+   "text": "Bạn cũng có thể liệt kê các tracker của riêng mình trong <g1>Tác vụ → Cài đặt torrent... → Tracker của bạn...</g1>, mỗi địa chỉ một dòng (<x2/>, <x3/> hoặc <x4/>). Mọi torrent công khai mới sẽ hỏi các tracker này sau các tracker riêng của nó, torrent riêng tư không bao giờ sử dụng chúng và <x5/> dùng cùng danh sách này."
   },
   "53463dc2311b18e1": {
    "source": "when <g1>Options → Archives → Extract archives when their download completes</g1> is on (off by default), for any other download,",
@@ -8486,6 +8502,10 @@
    "source": "Paste a Google Drive link as it is, the one <g1>Share → Copy link</g1> gives:",
    "text": "Dán nguyên liên kết Google Drive mà bạn nhận được khi chọn <g1>Chia sẻ → Sao chép liên kết</g1>:"
   },
+  "7297ca101de5145e": {
+   "source": "The list couldn't be read from GitHub when this page was built. Everyone is on GitHub meanwhile, in the project's <g1>pull requests</g1> and <g2>issues</g2>.",
+   "text": "Không thể đọc danh sách từ GitHub khi trang này được tạo. Trong thời gian chờ đợi, mọi người đều có mặt trên GitHub, trong <g1>yêu cầu kéo</g1> và <g2>vấn đề</g2> của dự án."
+  },
   "729a19fc6ce418f9": {
    "source": "Reporting problems",
    "text": "Báo cáo sự cố"
@@ -8617,6 +8637,10 @@
   "74147234c5be454d": {
    "source": "A 256 KiB file. MDM is done in 30 ms; IDM is still starting.",
    "text": "Một tệp 256 KiB. MDM hoàn tất trong 30 ms; IDM vẫn đang khởi động."
+  },
+  "7416633f0aac387c": {
+   "source": "<g1>Own trackers...:</g1> opens a window for your own trackers, one address a line (<x2/>, <x3/>, or <x4/>), empty by default. Every public torrent you add from then on also asks these trackers, right after its own trackers and before the public tracker list if both are used (duplicates are added once). Addresses on your computer or local network are refused, private torrents never get them, and torrents already in your list keep their trackers (use <g5>Add trackers...</g5> in the right-click menu for those). <x6/> follows this setting too.",
+   "text": "<g1>Tracker của bạn...:</g1> mở một cửa sổ cho các trình theo dõi của riêng bạn, mỗi địa chỉ một dòng (<x2/>, <x3/> hoặc <x4/>), mặc định là trống. Mọi torrent công khai bạn thêm vào từ đó trở đi cũng sẽ hỏi các trình theo dõi này, ngay sau các trình theo dõi riêng của nó và trước danh sách trình theo dõi công khai nếu cả hai đều được sử dụng (các bản trùng lặp chỉ được thêm một lần). Các địa chỉ trên máy tính hoặc mạng cục bộ của bạn sẽ bị từ chối, các torrent riêng tư không bao giờ nhận được chúng và các torrent đã có trong danh sách của bạn sẽ giữ nguyên trình theo dõi của chúng (sử dụng <g5>Thêm trình theo dõi...</g5> trong menu chuột phải cho các torrent đó). <x6/> cũng tuân theo cài đặt này."
   },
   "741be1a1c9d6ba43": {
    "source": "What to do",
@@ -12338,6 +12362,10 @@
    "source": "<g1>Sharper text on Windows</g1> (<g2>#262</g2>): Segoe UI and Tahoma are grid-fitted across as well as up and down, and each letter starts on a whole pixel, as Windows draws its own grey text: upright strokes were two grey pixels wide at 100 % and 125 %, which read as blurred.",
    "text": "<g1>Văn bản sắc nét hơn trên Windows</g1> (<g2>#262</g2>): Segoe UI và Tahoma được căn chỉnh theo lưới cả chiều ngang và chiều dọc, và mỗi chữ cái bắt đầu trên một pixel nguyên, giống như Windows vẽ văn bản màu xám của riêng nó: các nét thẳng đứng rộng hai pixel màu xám ở 100% và 125%, đọc như bị mờ."
   },
+  "a4b04f29f56fdc42": {
+   "source": "<g1>Add category</g1> — make your own, for example <g2>Books</g2> for <x3/>. Give it a name, the file types (separated by spaces, <x4/> allowed) and a folder.",
+   "text": "<g1>Thêm danh mục</g1> — tạo danh mục riêng, chẳng hạn <g2>Sách</g2> cho <x3/>. Nhập tên, loại tệp (cách nhau bằng dấu cách, cho phép <x4/>) và thư mục."
+  },
   "a4b1f9a84345ac5d": {
    "source": "<g1>yt-dlp</g1> (about 23 MB) looks the page up and finds where the video and its sound come from; MDM downloads them (<g2>How a video comes down</g2>). The first time, click <g3>Install yt-dlp</g3>. MDM checks the download against the signature yt-dlp's developers publish before it uses it.",
    "text": "<g1>yt-dlp</g1> (khoảng 23 MB) tra cứu trang và tìm nguồn video và âm thanh; MDM tải chúng về (<g2>Video được tải xuống như thế nào</g2>). Lần đầu tiên, nhấp vào <g3>Cài đặt yt-dlp</g3>. MDM kiểm tra bản tải xuống với chữ ký mà nhà phát triển yt-dlp công bố trước khi sử dụng."
@@ -14145,6 +14173,10 @@
   "bc606bb991071128": {
    "source": "The next tab of a focused tab strip; the next choice of a radio group",
    "text": "Tab tiếp theo trong dải tab đang được chọn; lựa chọn tiếp theo trong nhóm nút radio"
+  },
+  "bc713e862e9b84d3": {
+   "source": "Each download falls into a category by its file type: <g1>General</g1>, <g2>Compressed</g2>, <g3>Documents</g3>, <g4>Music</g4>, <g5>Programs</g5> or <g6>Video</g6>. Torrents have their own <g7>Torrents</g7> category. Each category has its own folder, by default inside your Downloads folder (<x8/>, <x9/> and so on; General uses <x10/> itself).",
+   "text": "Mỗi bản tải xuống được xếp vào danh mục theo loại tệp: <g1>Chung</g1>, <g2>Đã nén</g2>, <g3>Tài liệu</g3>, <g4>Nhạc</g4>, <g5>Chương trình</g5> hoặc <g6>Video</g6>. Torrent có danh mục <g7>Torrent</g7> riêng. Mỗi danh mục có thư mục riêng, mặc định nằm trong thư mục Tải xuống của bạn (<x8/>, <x9/> và các thư mục khác; danh mục Chung dùng chính <x10/>)."
   },
   "bc7153d0bcfdacbb": {
    "source": "Themes — Mister Download Manager",
@@ -18477,6 +18509,10 @@
   "f8c444517ab946e2": {
    "source": "From the plain zip",
    "text": "Từ tệp zip thông thường"
+  },
+  "f8c71a9fb2bd8bde": {
+   "source": "<g1>Automatically put in \"…\" category the following file types</g1> — the file types that go to this category.",
+   "text": "<g1>Tự động đưa các loại tệp sau vào danh mục “…”</g1> — các loại tệp được đưa vào danh mục này."
   },
   "f8e0a9e7ee529ff0": {
    "source": "Select <g1>Main download queue</g1> on the left. The <g2>Schedule</g2> tab opens.",

@@ -62,19 +62,13 @@ pub fn parse(body: &[u8]) -> Vec<String> {
 /// dictionary byte for byte. None, to leave it as it is: it is private ([`trackers::private`]),
 /// it can't be read, or the list adds nothing to it.
 pub fn add_to(torrent: &[u8], list: &[String]) -> Option<Vec<u8>> {
-    if trackers::private(torrent) {
-        return None;
-    }
     let kept: Vec<String> = list
         .iter()
         .map(|t| t.trim())
-        .filter(|t| t.len() <= MAX_LINE && trackers::allowed(t, false))
+        .filter(|t| t.len() <= MAX_LINE)
         .map(str::to_owned)
         .collect();
-    if kept.is_empty() {
-        return None;
-    }
-    trackers::add(torrent, &kept).filter(|out| out != torrent)
+    trackers::add_if_public(torrent, &kept)
 }
 
 /// The list as last fetched, and when: what the app keeps in the torrent data folder

@@ -172,6 +172,11 @@
 #, machine
 @plural	{n} tracker added|{n} trackers added	{n} ឧបករណ៍​តាមដាន​ត្រូវ​បាន​បន្ថែម
 #. count in the main window
+#. event log entry: user's own trackers (Torrent settings) were added to a new torrent
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} tracker added from Torrent settings|{n} trackers added from Torrent settings	បានបន្ថែមកម្មវិធីតាមដាន {n} ពីការកំណត់ Torrent
+#. count in the main window
 #. event log entry: trackers from the public tracker list (Torrent settings) were added to a torrent
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -335,6 +340,9 @@
 #. message or event log entry in the main window
 #, machine
 	A private torrent: the public tracker list isn't added	Torrent ឯកជន៖ បញ្ជីកម្មវិធីតាមដានសាធារណៈមិនត្រូវបានបន្ថែមទេ
+#. message or event log entry in the main window
+#, machine
+	A private torrent: your own trackers aren't added	Torrent ឯកជន៖ កម្មវិធីតាមដានរបស់អ្នកមិនត្រូវបានបន្ថែមទេ
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites: the tooltip of the profile box
 #, machine
@@ -3691,6 +3699,10 @@
 #. text in errors.rs
 #, machine
 	network error	កំហុសបណ្តាញ
+#. text in the Add torrent window
+#. Own trackers: under the box
+#, machine
+	Never added to private torrents. Existing torrents stay as they are.	មិនដែលបានបន្ថែមទៅ torrent ឯកជនទេ។ torrent ដែលមានស្រាប់នៅតែដដែល។
 #. text in the Options window
 #, machine
 	Never show it on these sites:	កុំបង្ហាញវានៅលើគេហទំព័រទាំងនេះ៖
@@ -4247,6 +4259,15 @@
 #. text in the Options window
 #, machine
 	Other	ផ្សេងទៀត
+#. text in the Add torrent window
+#. Own trackers window title
+#, machine
+	Own trackers	កម្មវិធីតាមដានផ្ទាល់ខ្លួន
+#. button in the Add torrent window
+#. Torrent settings: button opening the Own trackers window
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Own trackers...	កម្មវិធីតាមដានផ្ទាល់ខ្លួន...
 #. text in the Link grabber window
 #. Link grabber: the box that edits the selected package
 #, machine
@@ -7127,6 +7148,10 @@
 #. {version} = a version number (keep the braces as they are)
 #, machine
 	Your own program: {path} ({version})	កម្មវិធីផ្ទាល់ខ្លួនរបស់អ្នក៖ {path} ({version})
+#. text in the Add torrent window
+#. Own trackers: above the multi-line box
+#, machine
+	Your own trackers for new public torrents, one address a line:	កម្មវិធីតាមដានផ្ទាល់ខ្លួនរបស់អ្នកសម្រាប់ torrent សាធារណៈថ្មី មួយអាសយដ្ឋានក្នុងមួយជួរ៖
 #. text in helpers.rs
 #. Video helpers: {path} = the system's yt-dlp, ffmpeg or gallery-dl
 #, machine

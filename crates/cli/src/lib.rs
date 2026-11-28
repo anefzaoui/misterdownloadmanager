@@ -912,6 +912,8 @@ pub struct Net {
     /// Torrent settings' public tracker list (#1776), when it is on: `torrent-get` adds it to a
     /// public torrent as the app does.
     pub public_trackers: Option<PublicTrackers>,
+    /// User's own trackers from Torrent settings (#1959), added to new public torrents.
+    pub extra_trackers: Vec<String>,
     /// Options → Connection's site rules and exceptions (#1778): `get` and `resume` ask a site
     /// as the app does, where the command line doesn't say otherwise; a rule's proxy (#1960)
     /// for downloads and the helpers' runs, unless the command gives its own `--proxy`.
@@ -979,6 +981,7 @@ struct Conn {
     torrent_proxy: TorrentProxy,
     torrent_net: TorrentNet,
     public_trackers: Option<PublicTrackers>,
+    extra_trackers: Vec<String>,
     sites: SiteRules,
 }
 
@@ -1042,6 +1045,7 @@ impl Conn {
             torrent_proxy: net.torrent_proxy.clone(),
             torrent_net: net.torrent_net.clone(),
             public_trackers: net.public_trackers.clone(),
+            extra_trackers: net.extra_trackers.clone(),
             sites,
         }
     }
@@ -1687,7 +1691,8 @@ async fn run(cmd: Cmd, json: bool, accounts: Option<&dyn Accounts>) -> anyhow::R
                 );
             }
             let folder = m.folder_in(&output);
-            let torrent = with_public_list(&m.torrent).await;
+            let torrent = with_extra_trackers(&m.torrent);
+            let torrent = with_public_list(&torrent).await;
             let hash = t
                 .add(&torrent, &folder, files, m.peers.clone(), false)
                 .await?;
@@ -2614,23 +2619,60 @@ async fn with_public_list(torrent: &[u8]) -> Vec<u8> {
     out
 }
 
+/// `torrent` with user's own trackers from Torrent settings (#1959), never to a private torrent.
+/// Said on stderr.
+fn with_extra_trackers(torrent: &[u8]) -> Vec<u8> {
+    let extra = conn().extra_trackers;
+    let (out, said) = extra_trackers_added(torrent, &extra);
+    if let Some(said) = said {
+        eprintln!("{said}");
+    }
+    out
+}
+
+/// [`with_extra_trackers`] once the list is in hand: the bytes, and what to say (nothing when
+/// nothing is added).
+fn extra_trackers_added(torrent: &[u8], list: &[String]) -> (Vec<u8>, Option<String>) {
+    trackers_added(
+        torrent,
+        list,
+        "a private torrent: your own trackers aren't added",
+        "from Torrent settings",
+        mdm_torrent::trackers::add_if_public,
+    )
+}
+
 /// [`with_public_list`] once the list is in hand: the bytes, and what to say (nothing when the
 /// list added nothing).
 fn public_list_added(torrent: &[u8], list: &[String]) -> (Vec<u8>, Option<String>) {
-    if mdm_torrent::trackers::private(torrent) {
-        let said = "a private torrent: the public tracker list isn't added";
-        return (
-            torrent.to_vec(),
-            (!list.is_empty()).then(|| said.to_owned()),
-        );
+    trackers_added(
+        torrent,
+        list,
+        "a private torrent: the public tracker list isn't added",
+        "from the public list",
+        mdm_torrent::public_trackers::add_to,
+    )
+}
+
+fn trackers_added(
+    torrent: &[u8],
+    list: &[String],
+    private_msg: &str,
+    from_label: &str,
+    add: impl FnOnce(&[u8], &[String]) -> Option<Vec<u8>>,
+) -> (Vec<u8>, Option<String>) {
+    if list.is_empty() {
+        return (torrent.to_vec(), None);
     }
-    match mdm_torrent::public_trackers::add_to(torrent, list) {
+    if mdm_torrent::trackers::private(torrent) {
+        return (torrent.to_vec(), Some(private_msg.to_owned()));
+    }
+    match add(torrent, list) {
         Some(with) => {
             let n = mdm_torrent::trackers::listed(&with)
                 .len()
                 .saturating_sub(mdm_torrent::trackers::listed(torrent).len());
-            let said = format!("{n} tracker(s) added from the public list");
-            (with, Some(said))
+            (with, Some(format!("{n} tracker(s) added {from_label}")))
         }
         None => (torrent.to_vec(), None),
     }
@@ -2892,6 +2934,67 @@ mod tests {
         assert_eq!(public_list_added(&private, &[]), (private, None));
     }
 
+    /// #1959: `torrent-get` adds user's own trackers to public torrents only, before the public
+    /// list, deduplicated across both, preserving the info hash and filtering local trackers.
+    #[test]
+    fn torrent_get_adds_own_trackers_to_public_torrents_only() {
+        let info = |private: bool| {
+            format!(
+                "d6:lengthi5e4:name1:a12:piece lengthi16384e6:pieces20:aaaaaaaaaaaaaaaaaaaa{}e",
+                if private { "7:privatei1e" } else { "" }
+            )
+        };
+        let torrent = |private: bool| {
+            let own = "http://own.example/announce";
+            format!("d8:announce{}:{own}4:info{}e", own.len(), info(private)).into_bytes()
+        };
+        let hash = |t: &[u8]| {
+            mdm_torrent::librqbit::torrent_from_bytes(t)
+                .unwrap()
+                .info_hash
+        };
+        let extra = [
+            "https://extra.example/announce".to_owned(),
+            "udp://shared.example:1337/announce".to_owned(),
+            "http://192.168.1.1/announce".to_owned(),
+        ];
+        let public_list = [
+            "udp://shared.example:1337/announce".to_owned(),
+            "https://pub.example/announce".to_owned(),
+        ];
+        let public = torrent(false);
+        let (after_extra, said) = extra_trackers_added(&public, &extra);
+        assert_eq!(
+            said.as_deref(),
+            Some("2 tracker(s) added from Torrent settings")
+        );
+        let (after_both, said_pub) = public_list_added(&after_extra, &public_list);
+        assert_eq!(
+            said_pub.as_deref(),
+            Some("1 tracker(s) added from the public list")
+        );
+        assert_eq!(
+            mdm_torrent::trackers::listed(&after_both),
+            [
+                "http://own.example/announce",
+                "https://extra.example/announce",
+                "udp://shared.example:1337/announce",
+                "https://pub.example/announce",
+            ]
+        );
+        assert_eq!(hash(&after_both), hash(&public));
+
+        // Private: untouched, note emitted.
+        let private = torrent(true);
+        let (out, said) = extra_trackers_added(&private, &extra);
+        assert_eq!(out, private);
+        assert!(said.unwrap().contains("private"));
+
+        // Empty list: untouched, nothing said.
+        assert_eq!(extra_trackers_added(&public, &[]), (public.clone(), None));
+        assert_eq!(extra_trackers_added(&private, &[]), (private, None));
+    }
+
     /// `torrent-info` and `torrent-get` take Torrent settings' network switches: the DHT turned
     /// off there isn't started here, nor local discovery, UPnP, incoming connections or uTP.
     #[test]
@@ -2935,6 +3038,7 @@ mod tests {
             torrent_proxy: TorrentProxy::Through("socks5://127.0.0.1:1080".into()),
             torrent_net: TorrentNet::default(),
             public_trackers: None,
+            extra_trackers: vec!["https://extra.example/announce".into()],
             sites: SiteRules::default(),
         };
         let cmd = |args: &[&str]| {
@@ -2944,8 +3048,13 @@ mod tests {
         };
         let c = Conn::of(&cmd(&["get", "http://a.test/f"]), &net);
         assert_eq!(
-            (c.proxy, c.dns, c.route),
-            (net.proxy.clone(), net.dns.clone(), mdm_engine::Route::Any)
+            (c.proxy, c.dns, c.route, c.extra_trackers),
+            (
+                net.proxy.clone(),
+                net.dns.clone(),
+                mdm_engine::Route::Any,
+                net.extra_trackers.clone(),
+            )
         );
         let c = Conn::of(
             &cmd(&[

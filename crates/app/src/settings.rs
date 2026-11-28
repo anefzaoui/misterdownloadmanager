@@ -546,6 +546,9 @@ pub struct Settings {
     pub torrent_public_trackers: bool,
     /// That list's address (empty: `mdm_torrent::public_trackers::DEFAULT_LIST`).
     pub torrent_public_trackers_url: String,
+    /// Torrent settings → user's own trackers (#1959): empty by default, added to every new
+    /// public torrent (never to private torrents).
+    pub torrent_extra_trackers: Vec<String>,
     /// Stop the torrent engine when no torrent runs (it stops listening; new settings apply).
     pub torrent_stop_idle: bool,
     /// Torrent settings → "Limit uploading to [n] KBytes/sec" for all torrents together (#39;
@@ -791,6 +794,7 @@ impl Default for Settings {
             torrent_blocklist: String::new(),
             torrent_public_trackers: false,
             torrent_public_trackers_url: String::new(),
+            torrent_extra_trackers: Vec::new(),
             torrent_stop_idle: true,
             torrent_upload_on: false,
             torrent_upload_kb: 100,
@@ -1614,6 +1618,8 @@ impl Settings {
                     url: self.public_trackers_list().to_owned(),
                     dir,
                 }),
+            // User's own trackers for new public torrents (#1959).
+            extra_trackers: self.torrent_extra_trackers.clone(),
             // Site rules and exceptions (#1778): the command line asks a site as the app does.
             sites: mdm_cli::SiteRules {
                 rules: self.site_rules.clone(),
@@ -1707,6 +1713,29 @@ mod tests {
         net.public_list = "  ".into();
         net.apply(&mut s);
         assert_eq!(s.public_trackers_list(), DEFAULT_LIST);
+    }
+
+    /// #1959: user's own trackers are empty by default and round-trip through Net and JSON.
+    #[test]
+    fn own_trackers_are_empty_by_default_and_round_trip() {
+        use super::Settings;
+        use crate::torrentdlg::Net;
+        let old: Settings = serde_json::from_value(serde_json::json!({})).unwrap();
+        let mut s = Settings::default();
+        assert!(old.torrent_extra_trackers.is_empty());
+        assert!(s.torrent_extra_trackers.is_empty());
+        let mut net = Net::of(&s);
+        assert!(net.extra_trackers.is_empty());
+        let want = vec![
+            "http://t.example/announce".to_owned(),
+            "udp://t.example:1337/announce".to_owned(),
+        ];
+        net.extra_trackers = want.clone();
+        net.apply(&mut s);
+        assert_eq!(s.torrent_extra_trackers, want);
+        let again: Settings = serde_json::from_value(serde_json::to_value(&s).unwrap()).unwrap();
+        assert_eq!(again.torrent_extra_trackers, want);
+        assert_eq!(again.cli_net().extra_trackers, want);
     }
 
     /// #1966: a settings file from before has only the bool (shown normally, never minimized);

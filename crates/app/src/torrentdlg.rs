@@ -1137,6 +1137,8 @@ pub struct TorrentSettings {
     stop_ratio: String,
     stop_min_on: bool,
     stop_min: String,
+    /// The open Own trackers sub-window (#1959), when the user clicks Own trackers...
+    own_trackers: Option<TrackerBox>,
 }
 
 /// Torrent settings' seeding limits as OK gives them (`Settings::torrent_stop_*`).
@@ -1172,6 +1174,8 @@ pub struct Net {
     /// given).
     pub public_trackers: bool,
     pub public_list: String,
+    /// User's own trackers (#1959), added to every new public torrent.
+    pub extra_trackers: Vec<String>,
 }
 
 impl Net {
@@ -1188,6 +1192,7 @@ impl Net {
             stop_idle: s.torrent_stop_idle,
             public_trackers: s.torrent_public_trackers,
             public_list: s.public_trackers_list().to_owned(),
+            extra_trackers: s.torrent_extra_trackers.clone(),
         }
     }
 
@@ -1209,6 +1214,7 @@ impl Net {
         } else {
             list.to_owned()
         };
+        s.torrent_extra_trackers = self.extra_trackers;
     }
 }
 
@@ -1232,6 +1238,7 @@ impl TorrentSettings {
             } else {
                 net.port.to_string()
             },
+            own_trackers: None,
             net,
             socks: s.socks5_proxy().is_some(),
             upload_on: s.torrent_upload_on,
@@ -1243,8 +1250,16 @@ impl TorrentSettings {
         }
     }
 
+    pub fn open_own_trackers(&mut self) {
+        if self.own_trackers.is_none() {
+            self.own_trackers = Some(TrackerBox::new(self.net.extra_trackers.join("\n")));
+        }
+    }
+
     pub fn show(&mut self, ctx: &egui::Context) -> Outcome<TorrentChoice> {
-        window(
+        let mut open_own = false;
+        let modal = self.own_trackers.is_some();
+        let out = window(
             ctx,
             "torrent-settings",
             "Torrent settings",
@@ -1586,12 +1601,27 @@ impl TorrentSettings {
                     o.x + 456.0,
                     ("torrent-settings", 10),
                 );
+                // Leave at least an 8 px gap before OK at x = 298.
+                let own_w = winui::button_fit_width(&p, "Own trackers...", 105.0, 276.0);
+                let own_btn = winui::button(
+                    ui,
+                    r(o, 14.0, 578.0, own_w, 21.0),
+                    // i18n: Torrent settings: button opening the Own trackers window
+                    "Own trackers...",
+                    ButtonKind::Normal,
+                    modal,
+                    None,
+                )
+                .clicked();
+                if own_btn && !modal {
+                    open_own = true;
+                }
                 let ok = winui::button(
                     ui,
                     r(o, 298.0, 578.0, 77.0, 21.0),
                     "OK",
                     ButtonKind::Default,
-                    false,
+                    modal,
                     None,
                 )
                 .clicked();
@@ -1600,11 +1630,13 @@ impl TorrentSettings {
                     r(o, 381.0, 578.0, 77.0, 21.0),
                     "Cancel",
                     ButtonKind::Normal,
-                    false,
+                    modal,
                     None,
                 )
                 .clicked();
-                if cancel || winui::escape_pressed(ui) {
+                if modal {
+                    Outcome::Open
+                } else if cancel || winui::escape_pressed(ui) {
                     Outcome::Closed
                 } else if ok || winui::enter_pressed(ui) {
                     let mut net = self.net.clone();
@@ -1626,73 +1658,112 @@ impl TorrentSettings {
                     Outcome::Open
                 }
             },
-        )
+        );
+        if open_own {
+            self.open_own_trackers();
+        }
+        if let Some(box_) = &mut self.own_trackers {
+            match box_.show(
+                ctx,
+                "own-trackers",
+                // i18n: Own trackers window title
+                crate::i18n::t("Own trackers"),
+                // i18n: Own trackers: above the multi-line box
+                crate::i18n::t("Your own trackers for new public torrents, one address a line:"),
+                // i18n: Own trackers: under the box
+                crate::i18n::t(
+                    "Never added to private torrents. Existing torrents stay as they are.",
+                ),
+                "torrent-extra-trackers",
+                true,
+            ) {
+                Outcome::Open => {}
+                Outcome::Closed => self.own_trackers = None,
+                Outcome::Done(list) => {
+                    self.net.extra_trackers = list;
+                    self.own_trackers = None;
+                }
+            }
+        }
+        out
     }
 }
 
-/// Right-click → Torrent → Add trackers… (#39): tracker addresses, one a line, for download `id`.
-/// OK gives them once each is one MDM may contact (`mdm_torrent::trackers::allowed`).
-pub struct AddTrackers {
-    pub id: u64,
-    name: String,
+/// Tracker addresses typed one a line (`http`, `https` or `udp`), deduplicated, checked with
+/// `mdm_torrent::trackers::allowed` (#39, #40, #1959). Blank lines are skipped; empty returns `Ok(vec![])`.
+fn parse_tracker_lines(text: &str) -> Result<Vec<String>, String> {
+    let mut out: Vec<String> = Vec::new();
+    for line in text.lines().map(str::trim).filter(|l| !l.is_empty()) {
+        let tracker = url::Url::parse(line)
+            .ok()
+            .filter(|u| matches!(u.scheme(), "http" | "https" | "udp") && u.host().is_some());
+        if tracker.is_none() {
+            return Err(crate::i18n::fmt(
+                // i18n: Add trackers: a line that isn't a tracker's address (http, https or udp)
+                crate::i18n::t("Not a tracker address: {line}"),
+                &[("line", &crate::i18n::ltr(line))],
+            ));
+        }
+        // The rule every torrent's trackers follow (#40), told here rather than dropped
+        // out of sight.
+        if !mdm_torrent::trackers::allowed(line, false) {
+            return Err(crate::i18n::fmt(
+                // i18n: Add trackers: MDM never contacts a tracker on this computer or the local network
+                crate::i18n::t(
+                    "A tracker on this computer or the local network is never contacted: {line}",
+                ),
+                &[("line", &crate::i18n::ltr(line))],
+            ));
+        }
+        if !out.iter().any(|o| o == line) {
+            out.push(line.to_owned());
+        }
+    }
+    Ok(out)
+}
+
+/// Multi-line tracker list editor shared by **Add trackers…** (#39) and **Own trackers…** (#1959).
+struct TrackerBox {
     text: String,
     error: Option<String>,
     /// The box has had the focus (it takes it once, when the window opens).
     focused: bool,
 }
 
-impl AddTrackers {
-    pub fn new(id: u64, name: &str) -> Self {
-        AddTrackers {
-            id,
-            name: name.to_owned(),
-            text: String::new(),
+impl TrackerBox {
+    fn new(text: String) -> Self {
+        TrackerBox {
+            text,
             error: None,
             focused: false,
         }
     }
 
     /// The addresses typed, each once, or why one can't be added.
-    fn addresses(&self) -> Result<Vec<String>, String> {
-        let mut out: Vec<String> = Vec::new();
-        for line in self.text.lines().map(str::trim).filter(|l| !l.is_empty()) {
-            let tracker = url::Url::parse(line)
-                .ok()
-                .filter(|u| matches!(u.scheme(), "http" | "https" | "udp") && u.host().is_some());
-            if tracker.is_none() {
-                return Err(crate::i18n::fmt(
-                    // i18n: Add trackers: a line that isn't a tracker's address (http, https or udp)
-                    crate::i18n::t("Not a tracker address: {line}"),
-                    &[("line", &crate::i18n::ltr(line))],
-                ));
-            }
-            // The rule every torrent's trackers follow (#40), told here rather than dropped
-            // out of sight.
-            if !mdm_torrent::trackers::allowed(line, false) {
-                return Err(crate::i18n::fmt(
-                    // i18n: Add trackers: MDM never contacts a tracker on this computer or the local network
-                    crate::i18n::t(
-                        "A tracker on this computer or the local network is never contacted: {line}",
-                    ),
-                    &[("line", &crate::i18n::ltr(line))],
-                ));
-            }
-            if !out.iter().any(|o| o == line) {
-                out.push(line.to_owned());
-            }
-        }
-        if out.is_empty() {
+    fn addresses(&self, allow_empty: bool) -> Result<Vec<String>, String> {
+        let out = parse_tracker_lines(&self.text)?;
+        if !allow_empty && out.is_empty() {
             // i18n: Add trackers: OK with an empty box
             return Err(crate::i18n::t("Enter a tracker's address, one a line").to_owned());
         }
         Ok(out)
     }
 
-    pub fn show(&mut self, ctx: &egui::Context) -> Outcome<Vec<String>> {
+    #[allow(clippy::too_many_arguments)]
+    fn show(
+        &mut self,
+        ctx: &egui::Context,
+        window_id: &str,
+        title: &str,
+        prompt: &str,
+        hint: &str,
+        field_id: &str,
+        allow_empty: bool,
+    ) -> Outcome<Vec<String>> {
         window(
             ctx,
-            "add-trackers",
-            "Add trackers",
+            window_id,
+            title,
             [460.0, 250.0],
             false,
             winui::BG(),
@@ -1703,21 +1774,17 @@ impl AddTrackers {
                     &p,
                     o.x + 14.0,
                     o.y + 24.0,
-                    &crate::i18n::fmt(
-                        // i18n: Add trackers: above the box; {name} is the torrent's name
-                        crate::i18n::t("Trackers to add to {name}, one address a line:"),
-                        &[("name", &crate::i18n::isolate(&self.name))],
-                    ),
+                    prompt,
                     winui::TEXT(),
                     o.x + 446.0,
-                    ("add-trackers", 1),
+                    (window_id, 1),
                 );
                 let before = self.text.clone();
                 let field = winui::multiline_light(
                     ui,
                     r(o, 14.0, 32.0, 432.0, 140.0),
                     &mut self.text,
-                    "add-trackers",
+                    field_id,
                     true,
                 );
                 if !std::mem::replace(&mut self.focused, true) {
@@ -1728,12 +1795,7 @@ impl AddTrackers {
                 }
                 let (line, color) = match &self.error {
                     Some(e) => (e.clone(), winui::ERROR()),
-                    None => (
-                        // i18n: Add trackers: under the box
-                        crate::i18n::t("Kept with the torrent, after the trackers it has.")
-                            .to_owned(),
-                        winui::MUTED(),
-                    ),
+                    None => (hint.to_owned(), winui::MUTED()),
                 };
                 // Two lines' room: a translated reason is long.
                 let mark = crate::icons::Mark::of_ink(color);
@@ -1761,7 +1823,7 @@ impl AddTrackers {
                 if cancel || winui::escape_pressed(ui) {
                     Outcome::Closed
                 } else if ok {
-                    match self.addresses() {
+                    match self.addresses(allow_empty) {
                         Ok(list) => Outcome::Done(list),
                         Err(e) => {
                             self.error = Some(e);
@@ -1772,6 +1834,49 @@ impl AddTrackers {
                     Outcome::Open
                 }
             },
+        )
+    }
+}
+
+/// Right-click → Torrent → Add trackers… (#39): tracker addresses, one a line, for download `id`.
+/// OK gives them once each is one MDM may contact (`mdm_torrent::trackers::allowed`).
+pub struct AddTrackers {
+    pub id: u64,
+    name: String,
+    box_: TrackerBox,
+}
+
+impl AddTrackers {
+    pub fn new(id: u64, name: &str) -> Self {
+        AddTrackers {
+            id,
+            name: name.to_owned(),
+            box_: TrackerBox::new(String::new()),
+        }
+    }
+
+    /// The addresses typed, each once, or why one can't be added.
+    #[cfg(test)]
+    fn addresses(&self) -> Result<Vec<String>, String> {
+        self.box_.addresses(false)
+    }
+
+    pub fn show(&mut self, ctx: &egui::Context) -> Outcome<Vec<String>> {
+        let prompt = crate::i18n::fmt(
+            // i18n: Add trackers: above the box; {name} is the torrent's name
+            crate::i18n::t("Trackers to add to {name}, one address a line:"),
+            &[("name", &crate::i18n::isolate(&self.name))],
+        );
+        self.box_.show(
+            ctx,
+            "add-trackers",
+            // i18n: Add trackers window title
+            crate::i18n::t("Add trackers"),
+            &prompt,
+            // i18n: Add trackers: under the box
+            crate::i18n::t("Kept with the torrent, after the trackers it has."),
+            "add-trackers",
+            false,
         )
     }
 }
@@ -1966,12 +2071,32 @@ mod tests {
         assert_eq!(hint, None, "it is getting there");
     }
 
-    /// Add trackers (#39): one address a line, each once; anything else, or a tracker on this
-    /// computer or the local network, is refused.
+    /// Add trackers (#39) and Torrent settings' own trackers (#1959): one address a line, each
+    /// once; anything else, or a tracker on this computer or the local network, is refused.
     #[test]
     fn typed_tracker_addresses() {
+        assert_eq!(parse_tracker_lines(" \n\n ").unwrap(), Vec::<String>::new());
+        assert_eq!(
+            parse_tracker_lines(
+                " http://t.example/announce \n\nudp://t.example:1337\nhttp://t.example/announce"
+            )
+            .unwrap(),
+            ["http://t.example/announce", "udp://t.example:1337"]
+        );
+        for bad in [
+            "udp://",
+            "wss://t.example/a",
+            "not a url",
+            "http://192.168.1.1/a",
+            "http://10.0.0.1/a",
+            "http://127.0.0.1/a",
+            "http://[::1]/a",
+            "http://localhost/a",
+        ] {
+            assert!(parse_tracker_lines(bad).is_err(), "{bad:?}");
+        }
         let mut d = AddTrackers::new(1, "x");
-        d.text =
+        d.box_.text =
             " http://t.example/announce \n\nudp://t.example:1337\nhttp://t.example/announce".into();
         assert_eq!(
             d.addresses().unwrap(),
@@ -1985,9 +2110,15 @@ mod tests {
             "http://localhost/a",
             " ",
         ] {
-            d.text = bad.into();
+            d.box_.text = bad.into();
             assert!(d.addresses().is_err(), "{bad:?}");
         }
+        // Own trackers can be cleared back to empty, unlike Add trackers.
+        let mut own = TrackerBox::new(" \n".into());
+        assert!(own.addresses(true).unwrap().is_empty());
+        assert!(own.addresses(false).is_err());
+        own.text = "http://127.0.0.1/announce".into();
+        assert!(own.addresses(true).is_err());
     }
 
     /// Torrent settings' share ratio box: a comma or a point, kept in hundredths.

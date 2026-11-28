@@ -172,6 +172,11 @@
 #, machine
 @plural	{n} tracker added|{n} trackers added	{n} թրեքեր է ավելացվել|{n} թրեքեր է ավելացվել
 #. count in the main window
+#. event log entry: user's own trackers (Torrent settings) were added to a new torrent
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} tracker added from Torrent settings|{n} trackers added from Torrent settings	Ավելացվել է {n} թրեքեր Տորենտի կարգավորումներից|Ավելացվել է {n} թրեքեր Տորենտի կարգավորումներից
+#. count in the main window
 #. event log entry: trackers from the public tracker list (Torrent settings) were added to a torrent
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -340,6 +345,9 @@
 #. message or event log entry in the main window
 #, machine
 	A private torrent: the public tracker list isn't added	Մասնավոր տորենտ է․ հանրային թրեքերների ցուցակը չի ավելացվում
+#. message or event log entry in the main window
+#, machine
+	A private torrent: your own trackers aren't added	Մասնավոր տորենտ. ձեր թրեքերն ավելացված չեն
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites: the tooltip of the profile box
 #, machine
@@ -3692,6 +3700,10 @@
 #. text in errors.rs
 #, machine
 	network error	ցանցի սխալ
+#. text in the Add torrent window
+#. Own trackers: under the box
+#, machine
+	Never added to private torrents. Existing torrents stay as they are.	Երբեք չի ավելացվում մասնավոր տորենտներին։ Գոյություն ունեցող տորենտները մնում են անփոփոխ։
 #. text in the Options window
 #, machine
 	Never show it on these sites:	Երբեք մի՛ ցուցադրել այս կայքերում:
@@ -4248,6 +4260,15 @@
 #. text in the Options window
 #, machine
 	Other	Այլ
+#. text in the Add torrent window
+#. Own trackers window title
+#, machine
+	Own trackers	Սեփական թրեքերներ
+#. button in the Add torrent window
+#. Torrent settings: button opening the Own trackers window
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Own trackers...	Սեփական թրեքերներ...
 #. text in the Link grabber window
 #. Link grabber: the box that edits the selected package
 #, machine
@@ -7136,6 +7157,10 @@
 #. {version} = a version number (keep the braces as they are)
 #, machine
 	Your own program: {path} ({version})	Ձեր սեփական ծրագիրը՝ {path} ({version})
+#. text in the Add torrent window
+#. Own trackers: above the multi-line box
+#, machine
+	Your own trackers for new public torrents, one address a line:	Ձեր սեփական թրեքերները նոր հանրային տորենտների համար, մեկ հասցե մեկ տողում:
 #. text in helpers.rs
 #. Video helpers: {path} = the system's yt-dlp, ffmpeg or gallery-dl
 #, machine

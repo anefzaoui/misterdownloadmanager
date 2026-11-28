@@ -172,6 +172,11 @@
 #, machine
 @plural	{n} tracker added|{n} trackers added	{n} tracker přidán|{n} trackery přidány|{n} trackerů přidáno
 #. count in the main window
+#. event log entry: user's own trackers (Torrent settings) were added to a new torrent
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} tracker added from Torrent settings|{n} trackers added from Torrent settings	Byl přidán {n} tracker z nastavení torrentu|Byly přidány {n} trackery z nastavení torrentu|Bylo přidáno {n} trackerů z nastavení torrentu
+#. count in the main window
 #. event log entry: trackers from the public tracker list (Torrent settings) were added to a torrent
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -340,6 +345,9 @@
 #. message or event log entry in the main window
 #, machine
 	A private torrent: the public tracker list isn't added	Soukromý torrent: veřejný seznam trackerů nebyl přidán
+#. message or event log entry in the main window
+#, machine
+	A private torrent: your own trackers aren't added	Soukromý torrent: vaše vlastní trackery nebyly přidány
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites: the tooltip of the profile box
 #, machine
@@ -3696,6 +3704,10 @@
 #. text in errors.rs
 #, machine
 	network error	chyba sítě
+#. text in the Add torrent window
+#. Own trackers: under the box
+#, machine
+	Never added to private torrents. Existing torrents stay as they are.	Nikdy se nepřidávají k soukromým torrentům. Stávající torrenty zůstanou beze změny.
 #. text in the Options window
 #, machine
 	Never show it on these sites:	Nikdy nezobrazovat na těchto webech:
@@ -4252,6 +4264,15 @@
 #. text in the Options window
 #, machine
 	Other	Jiné
+#. text in the Add torrent window
+#. Own trackers window title
+#, machine
+	Own trackers	Vlastní trackery
+#. button in the Add torrent window
+#. Torrent settings: button opening the Own trackers window
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Own trackers...	Vlastní trackery...
 #. text in the Link grabber window
 #. Link grabber: the box that edits the selected package
 #, machine
@@ -7135,6 +7156,10 @@
 #. {version} = a version number (keep the braces as they are)
 #, machine
 	Your own program: {path} ({version})	Váš vlastní program: {path} ({version})
+#. text in the Add torrent window
+#. Own trackers: above the multi-line box
+#, machine
+	Your own trackers for new public torrents, one address a line:	Vaše vlastní trackery pro nové veřejné torrenty, jedna adresa na řádek:
 #. text in helpers.rs
 #. Video helpers: {path} = the system's yt-dlp, ffmpeg or gallery-dl
 #, machine

@@ -569,6 +569,12 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 Everything below ships together, in version 0.6.0, the next release.
 
+- ✅ **Tasks → Torrent settings... → Own trackers...** opens a window for your own trackers (one address a line, `http`,
+  `https`, or `udp`), added after a new public torrent's own trackers (never to private torrents,
+  and local-network trackers are refused). Existing torrents keep their trackers, it works beside
+  the public tracker list without duplicates, and `misterdownloadmanager-cli torrent-get` follows it
+  ([#1959](https://github.com/anefzaoui/misterdownloadmanager/issues/1959), from
+  [#1507](https://github.com/anefzaoui/misterdownloadmanager/discussions/1507))
 - ✅ More file types in the built-in categories: apps and installers (APK, IPA, AppImage, DEB,
   RPM, Flatpak, Snap, MSIX, DMG, PKG…) in Programs, disc and disk images (ISO, IMG, VHD, VMDK…)
   and more archives in Compressed, e-books, OpenDocument files and spreadsheets in Documents,

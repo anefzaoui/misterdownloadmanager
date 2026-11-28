@@ -2170,6 +2170,10 @@
    "source": "Open (GPL-3.0)",
    "text": "Open source (GPL-3.0)"
   },
+  "1c33e6d58d65ebb6": {
+   "source": "<g1>Tasks → Torrent settings... → Own trackers...</g1> follows the same rules: every address is checked so none on your computer or local network is contacted, and private torrents never get them.",
+   "text": "<g1>Tâches → Paramètres du torrent... → Vos propres trackers...</g1> suit les mêmes règles : chaque adresse est vérifiée afin qu'aucune adresse sur votre ordinateur ou réseau local ne soit contactée, et les torrents privés ne les reçoivent jamais."
+  },
   "1c41a815ee54b7d7": {
    "source": "MDM has <g1>no analytics, no automatic crash reporting, no telemetry and no advertising</g1> (a crash report goes only where you send it yourself). It never sends us your download list, the addresses you download, or anything else.",
    "text": "MDM n'a <g1>pas d'analyse, pas de rapport d'erreur automatique, pas de télémétrie et pas de publicité</g1> (un rapport d'erreur ne va que là où vous l'envoyez vous-même). Il ne nous envoie jamais votre liste de téléchargements, les adresses que vous téléchargez, ou quoi que ce soit d'autre."
@@ -3993,6 +3997,10 @@
   "34ee8ac31c366dc9": {
    "source": "Some file hosts count a look-up as a download: turn the look-ups off in <g1>Options → Archives</g1>.",
    "text": "Certains hébergeurs de fichiers comptent une consultation comme un téléchargement : désactivez les consultations dans <g1>Options → Archives</g1>."
+  },
+  "34f9c0c492a55ca2": {
+   "source": "<g1>Your own trackers in Torrent settings</g1>, if you list any: every new public torrent contacts those trackers too, and they see which public torrents you add.",
+   "text": "<g1>Vos propres traqueurs dans les Paramètres du torrent</g1>, si vous en listez : chaque nouveau torrent public contacte également ces traqueurs, et ils voient quels torrents publics vous ajoutez."
   },
   "35092e177f7efaa5": {
    "source": "Download complete with Open and Open folder",
@@ -6161,6 +6169,10 @@
   "53220733cbddcf56": {
    "source": "On Windows, MDM draws its windows with Direct3D 12; on Linux and macOS, with OpenGL, or with Vulkan (Linux) or Metal (macOS) when you choose them. A graphics driver can still misbehave: a window that holds still for seconds, flickers, or shows wrong colours or blocks. Try the other one: choose <g1>View → Draw with → OpenGL</g1> (or <g2>Direct3D</g2>, <g3>Vulkan</g3>, <g4>Metal</g4>), then quit MDM (<g5>Tasks → Exit</g5>) and start it again. Choosing the first one goes back the same way.",
    "text": "Sous Windows, MDM dessine ses fenêtres avec Direct3D 12 ; sous Linux et macOS, avec OpenGL, ou avec Vulkan (Linux) ou Metal (macOS) si vous les choisissez. Un pilote graphique peut toujours mal se comporter : une fenêtre qui reste figée pendant des secondes, scintille, ou affiche des couleurs ou des blocs incorrects. Essayez l'autre : choisissez <g1>Affichage → Dessiner avec → OpenGL</g1> (ou <g2>Direct3D</g2>, <g3>Vulkan</g3>, <g4>Metal</g4>), puis quittez MDM (<g5>Tâches → Quitter</g5>) et redémarrez-le. Choisir le premier revient au même."
+  },
+  "534625c2933b25c5": {
+   "source": "You can also list your own trackers under <g1>Tasks → Torrent settings... → Own trackers...</g1>, one address a line (<x2/>, <x3/>, or <x4/>). Every new public torrent asks them after its own trackers, private torrents never get them, and <x5/> uses the same list.",
+   "text": "Vous pouvez également lister vos propres trackers sous <g1>Tâches → Paramètres du torrent… → Vos propres trackers…</g1>, une adresse par ligne (<x2/>, <x3/> ou <x4/>). Chaque nouveau torrent public les interroge après ses propres trackers, les torrents privés ne les obtiennent jamais, et <x5/> utilise la même liste."
   },
   "53463dc2311b18e1": {
    "source": "when <g1>Options → Archives → Extract archives when their download completes</g1> is on (off by default), for any other download,",
@@ -8482,6 +8494,10 @@
    "source": "Paste a Google Drive link as it is, the one <g1>Share → Copy link</g1> gives:",
    "text": "Collez un lien Google Drive tel quel, celui que <g1>Partager → Copier le lien</g1> donne :"
   },
+  "7297ca101de5145e": {
+   "source": "The list couldn't be read from GitHub when this page was built. Everyone is on GitHub meanwhile, in the project's <g1>pull requests</g1> and <g2>issues</g2>.",
+   "text": "La liste n’a pas pu être lue depuis GitHub lors de la création de cette page. En attendant, tout le monde est sur GitHub, dans les <g1>pull requests</g1> et les <g2>issues</g2> du projet."
+  },
   "729a19fc6ce418f9": {
    "source": "Reporting problems",
    "text": "Signaler des problèmes"
@@ -8613,6 +8629,10 @@
   "74147234c5be454d": {
    "source": "A 256 KiB file. MDM is done in 30 ms; IDM is still starting.",
    "text": "Un fichier de 256 Kio. MDM termine en 30 ms ; IDM est encore en démarrage."
+  },
+  "7416633f0aac387c": {
+   "source": "<g1>Own trackers...:</g1> opens a window for your own trackers, one address a line (<x2/>, <x3/>, or <x4/>), empty by default. Every public torrent you add from then on also asks these trackers, right after its own trackers and before the public tracker list if both are used (duplicates are added once). Addresses on your computer or local network are refused, private torrents never get them, and torrents already in your list keep their trackers (use <g5>Add trackers...</g5> in the right-click menu for those). <x6/> follows this setting too.",
+   "text": "<g1>Vos propres trackers…</g1> : ouvre une fenêtre pour vos propres trackers, une adresse par ligne (<x2/>, <x3/> ou <x4/>), vide par défaut. Chaque torrent public que vous ajoutez à partir de ce moment interroge également ces trackers, juste après ses propres trackers et avant la liste des trackers publics si les deux sont utilisés (les doublons sont ajoutés une seule fois). Les adresses sur votre ordinateur ou votre réseau local sont refusées, les torrents privés ne les reçoivent jamais, et les torrents déjà dans votre liste conservent leurs trackers (utilisez <g5>Ajouter des trackers…</g5> dans le menu contextuel pour ceux-là). <x6/> suit également ce paramètre."
   },
   "741be1a1c9d6ba43": {
    "source": "What to do",
@@ -12334,6 +12354,10 @@
    "source": "<g1>Sharper text on Windows</g1> (<g2>#262</g2>): Segoe UI and Tahoma are grid-fitted across as well as up and down, and each letter starts on a whole pixel, as Windows draws its own grey text: upright strokes were two grey pixels wide at 100 % and 125 %, which read as blurred.",
    "text": "<g1>Texte plus net sur Windows</g1> (<g2>#262</g2>) : Segoe UI et Tahoma sont alignés sur la grille horizontalement et verticalement, et chaque lettre commence sur un pixel entier, comme Windows dessine son propre texte gris : les traits verticaux étaient larges de deux pixels gris à 100 % et 125 %, ce qui était flou."
   },
+  "a4b04f29f56fdc42": {
+   "source": "<g1>Add category</g1> — make your own, for example <g2>Books</g2> for <x3/>. Give it a name, the file types (separated by spaces, <x4/> allowed) and a folder.",
+   "text": "<g1>Ajouter une catégorie</g1> — créer votre propre catégorie, par exemple <g2>Livres</g2> pour <x3/>. Donnez-lui un nom, indiquez les types de fichiers (séparés par des espaces, <x4/> autorisé) et choisissez un dossier."
+  },
   "a4b1f9a84345ac5d": {
    "source": "<g1>yt-dlp</g1> (about 23 MB) looks the page up and finds where the video and its sound come from; MDM downloads them (<g2>How a video comes down</g2>). The first time, click <g3>Install yt-dlp</g3>. MDM checks the download against the signature yt-dlp's developers publish before it uses it.",
    "text": "<g1>yt-dlp</g1> (environ 23 Mo) consulte la page et trouve l’origine de la vidéo et de son son ; MDM les télécharge (<g2>Comment une vidéo est téléchargée</g2>). La première fois, cliquez sur <g3>Installer yt-dlp</g3>. MDM vérifie le téléchargement par rapport à la signature publiée par les développeurs de yt-dlp avant de l’utiliser."
@@ -14137,6 +14161,10 @@
   "bc606bb991071128": {
    "source": "The next tab of a focused tab strip; the next choice of a radio group",
    "text": "L'onglet suivant d'une bande d'onglets sélectionnée ; le choix suivant d'un groupe de boutons radio"
+  },
+  "bc713e862e9b84d3": {
+   "source": "Each download falls into a category by its file type: <g1>General</g1>, <g2>Compressed</g2>, <g3>Documents</g3>, <g4>Music</g4>, <g5>Programs</g5> or <g6>Video</g6>. Torrents have their own <g7>Torrents</g7> category. Each category has its own folder, by default inside your Downloads folder (<x8/>, <x9/> and so on; General uses <x10/> itself).",
+   "text": "Chaque téléchargement est classé dans une catégorie selon son type de fichier : <g1>Général</g1>, <g2>Compressé</g2>, <g3>Documents</g3>, <g4>Musique</g4>, <g5>Programmes</g5> ou <g6>Vidéo</g6>. Les torrents ont leur propre catégorie <g7>Torrents</g7>. Chaque catégorie a son propre dossier, situé par défaut dans votre dossier Téléchargements (<x8/>, <x9/>, etc. ; le dossier Général est lui-même <x10/>)."
   },
   "bc7153d0bcfdacbb": {
    "source": "Themes — Mister Download Manager",
@@ -18469,6 +18497,10 @@
   "f8c444517ab946e2": {
    "source": "From the plain zip",
    "text": "À partir du fichier zip simple"
+  },
+  "f8c71a9fb2bd8bde": {
+   "source": "<g1>Automatically put in \"…\" category the following file types</g1> — the file types that go to this category.",
+   "text": "<g1>Placer automatiquement dans la catégorie « … » les types de fichiers suivants</g1> — les types de fichiers qui vont dans cette catégorie."
   },
   "f8e0a9e7ee529ff0": {
    "source": "Select <g1>Main download queue</g1> on the left. The <g2>Schedule</g2> tab opens.",

@@ -137,6 +137,10 @@
 #. {n} = a number (keep the braces as they are)
 @plural	{n} tracker added|{n} trackers added	{n} tracker added|{n} trackers added
 #. count in the main window
+#. event log entry: user's own trackers (Torrent settings) were added to a new torrent
+#. {n} = a number (keep the braces as they are)
+@plural	{n} tracker added from Torrent settings|{n} trackers added from Torrent settings	{n} tracker added from Torrent settings|{n} trackers added from Torrent settings
+#. count in the main window
 #. event log entry: trackers from the public tracker list (Torrent settings) were added to a torrent
 #. {n} = a number (keep the braces as they are)
 @plural	{n} tracker added from the public list|{n} trackers added from the public list	{n} tracker added from the public list|{n} trackers added from the public list
@@ -265,6 +269,8 @@
 	A playlist's videos are downloaded whole	A playlist's videos are downloaded whole
 #. message or event log entry in the main window
 	A private torrent: the public tracker list isn't added	A private torrent: the public tracker list isn't added
+#. message or event log entry in the main window
+	A private torrent: your own trackers aren't added	A private torrent: your own trackers aren't added
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites: the tooltip of the profile box
 	A profile's name or its folder. Empty: the profile used last. For a browser built on Chromium that isn't listed (Helium, Thorium...), choose Chromium and its profile's folder.	A profile's name or its folder. Empty: the profile used last. For a browser built on Chromium that isn't listed (Helium, Thorium...), choose Chromium and its profile's folder.
@@ -392,7 +398,8 @@
 	Add to queue:	Add to queue:
 #. message or event log entry in the main window; window title in the Add torrent window
 	Add torrent	Add torrent
-#. window title in the Add torrent window
+#. text in the Add torrent window
+#. Add trackers window title
 	Add trackers	Add trackers
 #. text in playlistdlg.rs
 #. asked before a playlist adds many downloads at once; {n} is how many
@@ -2773,6 +2780,9 @@
 	Network adapter:	Network adapter:
 #. text in errors.rs
 	network error	network error
+#. text in the Add torrent window
+#. Own trackers: under the box
+	Never added to private torrents. Existing torrents stay as they are.	Never added to private torrents. Existing torrents stay as they are.
 #. text in the Options window
 	Never show it on these sites:	Never show it on these sites:
 #. button in the Options window
@@ -3182,6 +3192,13 @@
 	Or paste your API token:	Or paste your API token:
 #. text in the Options window
 	Other	Other
+#. text in the Add torrent window
+#. Own trackers window title
+	Own trackers	Own trackers
+#. button in the Add torrent window
+#. Torrent settings: button opening the Own trackers window
+#. the trailing ... means it opens a window: keep it
+	Own trackers...	Own trackers...
 #. text in the Link grabber window
 #. Link grabber: the box that edits the selected package
 	Package	Package
@@ -5336,6 +5353,9 @@
 #. Video helpers: {path} = the program the person chose, {version} = its version
 #. {version} = a version number (keep the braces as they are)
 	Your own program: {path} ({version})	Your own program: {path} ({version})
+#. text in the Add torrent window
+#. Own trackers: above the multi-line box
+	Your own trackers for new public torrents, one address a line:	Your own trackers for new public torrents, one address a line:
 #. text in helpers.rs
 #. Video helpers: {path} = the system's yt-dlp, ffmpeg or gallery-dl
 	Your system's: {path}	Your system's: {path}

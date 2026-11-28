@@ -172,6 +172,11 @@
 #, machine
 @plural	{n} tracker added|{n} trackers added	{n} ಟ್ರ್ಯಾಕರ್ ಸೇರಿಸಲಾಗಿದೆ|{n} ಟ್ರ್ಯಾಕರ್‌ಗಳನ್ನು ಸೇರಿಸಲಾಗಿದೆ
 #. count in the main window
+#. event log entry: user's own trackers (Torrent settings) were added to a new torrent
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} tracker added from Torrent settings|{n} trackers added from Torrent settings	ಟೊರೆಂಟ್ ಸೆಟ್ಟಿಂಗ್‌ಗಳಿಂದ {n} ಟ್ರ್ಯಾಕರ್ ಸೇರಿಸಲಾಗಿದೆ|ಟೊರೆಂಟ್ ಸೆಟ್ಟಿಂಗ್‌ಗಳಿಂದ {n} ಟ್ರ್ಯಾಕರ್‌ಗಳು ಸೇರಿಸಲಾಗಿದೆ
+#. count in the main window
 #. event log entry: trackers from the public tracker list (Torrent settings) were added to a torrent
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -340,6 +345,9 @@
 #. message or event log entry in the main window
 #, machine
 	A private torrent: the public tracker list isn't added	ಖಾಸಗಿ ಟೊರೆಂಟ್: ಸಾರ್ವಜನಿಕ ಟ್ರ್ಯಾಕರ್ ಪಟ್ಟಿಯನ್ನು ಸೇರಿಸಲಾಗಿಲ್ಲ
+#. message or event log entry in the main window
+#, machine
+	A private torrent: your own trackers aren't added	ಒಂದು ಖಾಸಗಿ ಟೊರೆಂಟ್: ನಿಮ್ಮದೇ ಆದ ಟ್ರ್ಯಾಕರ್‌ಗಳನ್ನು ಸೇರಿಸಲಾಗಿಲ್ಲ
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites: the tooltip of the profile box
 #, machine
@@ -3701,6 +3709,10 @@
 #. text in errors.rs
 #, machine
 	network error	ನೆಟ್‌ವರ್ಕ್ ದೋಷ
+#. text in the Add torrent window
+#. Own trackers: under the box
+#, machine
+	Never added to private torrents. Existing torrents stay as they are.	ಖಾಸಗಿ ಟೊರೆಂಟ್‌ಗಳಿಗೆ ಎಂದಿಗೂ ಸೇರಿಸಲಾಗುವುದಿಲ್ಲ. ಅಸ್ತಿತ್ವದಲ್ಲಿರುವ ಟೊರೆಂಟ್‌ಗಳು ಹಾಗೆಯೇ ಇರುತ್ತವೆ.
 #. text in the Options window
 #, machine
 	Never show it on these sites:	ಈ ಸೈಟ್‌ಗಳಲ್ಲಿ ಎಂದಿಗೂ ತೋರಿಸಬೇಡಿ:
@@ -4257,6 +4269,15 @@
 #. text in the Options window
 #, machine
 	Other	ಇತರೆ
+#. text in the Add torrent window
+#. Own trackers window title
+#, machine
+	Own trackers	ಸ್ವಂತ ಟ್ರ್ಯಾಕರ್‌ಗಳು
+#. button in the Add torrent window
+#. Torrent settings: button opening the Own trackers window
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Own trackers...	ಸ್ವಂತ ಟ್ರ್ಯಾಕರ್‌ಗಳು...
 #. text in the Link grabber window
 #. Link grabber: the box that edits the selected package
 #, machine
@@ -7145,6 +7166,10 @@
 #. {version} = a version number (keep the braces as they are)
 #, machine
 	Your own program: {path} ({version})	ನಿಮ್ಮ ಸ್ವಂತ ಪ್ರೋಗ್ರಾಂ: {path} ({version})
+#. text in the Add torrent window
+#. Own trackers: above the multi-line box
+#, machine
+	Your own trackers for new public torrents, one address a line:	ಹೊಸ ಸಾರ್ವಜನಿಕ ಟೊರೆಂಟ್‌ಗಳಿಗಾಗಿ ನಿಮ್ಮದೇ ಆದ ಟ್ರ್ಯಾಕರ್‌ಗಳು, ಒಂದು ಸಾಲಿಗೆ ಒಂದು ವಿಳಾಸ:
 #. text in helpers.rs
 #. Video helpers: {path} = the system's yt-dlp, ffmpeg or gallery-dl
 #, machine

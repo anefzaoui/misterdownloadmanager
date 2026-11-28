@@ -2170,6 +2170,10 @@
    "source": "Open (GPL-3.0)",
    "text": "오픈 (GPL-3.0)"
   },
+  "1c33e6d58d65ebb6": {
+   "source": "<g1>Tasks → Torrent settings... → Own trackers...</g1> follows the same rules: every address is checked so none on your computer or local network is contacted, and private torrents never get them.",
+   "text": "<g1>작업 → 토렌트 설정... → 사용자 트래커...</g1>도 동일한 규칙을 따릅니다. 모든 주소를 확인하여 컴퓨터나 로컬 네트워크의 주소에는 연결하지 않으며, 비공개 토렌트에는 이 주소를 사용하지 않습니다."
+  },
   "1c41a815ee54b7d7": {
    "source": "MDM has <g1>no analytics, no automatic crash reporting, no telemetry and no advertising</g1> (a crash report goes only where you send it yourself). It never sends us your download list, the addresses you download, or anything else.",
    "text": "MDM에는 <g1>분석 기능, 자동 오류 보고, 원격 측정 또는 광고가 없습니다</g1>(오류 보고서는 직접 보내는 경우에만 전송됩니다). 다운로드 목록, 다운로드 주소 또는 그 밖의 어떤 정보도 당사에 보내지 않습니다."
@@ -3210,6 +3214,10 @@
    "source": "MDM runs on Windows 10 and Windows 11 (x64, ARM64 and 32-bit), and on 64-bit Linux (x86-64 and ARM64): see <g1>On Linux</g1>. Builds for macOS are new and still experimental: see <g2>On a Mac</g2>.",
    "text": "MDM은 Windows 10 및 Windows 11(x64, ARM64, 32비트)과 64비트 Linux(x86-64, ARM64)에서 실행됩니다. 자세한 내용은 <g1>Linux에서</g1>를 참조하세요. macOS용 빌드는 새로 추가되었으며 아직 실험 단계입니다. 자세한 내용은 <g2>Mac에서</g2>를 참조하세요."
   },
+  "29f37397c338f4c4": {
+   "source": "Download a torrent, or only some of its files. If some of its files are already in the folder, it stops and names them; <x1/> uses them instead (what matches is kept, the rest downloaded). With Torrent settings' <g2>Add the trackers of this public list to public torrents</g2> on, a public torrent gets the list's trackers too, as in the app. Any trackers you listed in Torrent settings' <g3>Own trackers...</g3> window are added to new public torrents the same way.",
+   "text": "토렌트 또는 토렌트의 일부 파일만 다운로드합니다. 일부 파일이 이미 폴더에 있으면 다운로드를 중지하고 파일 이름을 지정합니다. <x1/> 대신 해당 파일을 사용합니다(일치하는 파일은 유지되고 나머지는 다운로드됩니다). 토렌트 설정의 <g2>이 공개 목록의 트래커를 공개 토렌트에 추가</g2>가 켜져 있으면 앱에서와 같이 공개 토렌트에도 목록의 트래커가 추가됩니다. 토렌트 설정의 <g3>사용자 트래커...</g3> 창에 나열된 모든 트래커는 새 공개 토렌트에 동일한 방식으로 추가됩니다."
+  },
   "2a014824bb4f981c": {
    "source": "Disabled text, the one grey of every greyed control and label",
    "text": "비활성화된 텍스트, 모든 회색 컨트롤 및 레이블의 회색"
@@ -3997,6 +4005,10 @@
   "34ee8ac31c366dc9": {
    "source": "Some file hosts count a look-up as a download: turn the look-ups off in <g1>Options → Archives</g1>.",
    "text": "일부 파일 호스트는 조회수를 다운로드로 계산합니다. <g1>옵션 → 압축 파일</g1>에서 조회 기능을 끄세요."
+  },
+  "34f9c0c492a55ca2": {
+   "source": "<g1>Your own trackers in Torrent settings</g1>, if you list any: every new public torrent contacts those trackers too, and they see which public torrents you add.",
+   "text": "<g1>토렌트 설정</g1>에 직접 추가한 트래커가 있다면: 새로 추가하는 모든 공개 토렌트는 해당 트래커에도 연결되며, 트래커는 사용자가 어떤 공개 토렌트를 추가하는지 알 수 있습니다."
   },
   "35092e177f7efaa5": {
    "source": "Download complete with Open and Open folder",
@@ -6165,6 +6177,10 @@
   "53220733cbddcf56": {
    "source": "On Windows, MDM draws its windows with Direct3D 12; on Linux and macOS, with OpenGL, or with Vulkan (Linux) or Metal (macOS) when you choose them. A graphics driver can still misbehave: a window that holds still for seconds, flickers, or shows wrong colours or blocks. Try the other one: choose <g1>View → Draw with → OpenGL</g1> (or <g2>Direct3D</g2>, <g3>Vulkan</g3>, <g4>Metal</g4>), then quit MDM (<g5>Tasks → Exit</g5>) and start it again. Choosing the first one goes back the same way.",
    "text": "Windows에서 MDM은 Direct3D 12로 창을 그립니다. Linux와 macOS에서는 OpenGL로 그리며, Vulkan(Linux) 또는 Metal(macOS)을 선택하면 해당 방식으로 그립니다. 그래픽 드라이버가 제대로 작동하지 않을 수도 있습니다. 창이 몇 초 동안 멈추거나 깜박이고, 색상이나 블록이 잘못 표시될 수 있습니다. 다른 방식을 사용해 보세요. <g1>보기 → 다음으로 그리기 → OpenGL</g1>(또는 <g2>Direct3D</g2>, <g3>Vulkan</g3>, <g4>Metal</g4>)을 선택한 다음 MDM을 종료(<g5>작업 → 끝내기</g5>)하고 다시 시작하세요. 처음 사용하던 방식을 선택하면 같은 방법으로 되돌릴 수 있습니다."
+  },
+  "534625c2933b25c5": {
+   "source": "You can also list your own trackers under <g1>Tasks → Torrent settings... → Own trackers...</g1>, one address a line (<x2/>, <x3/>, or <x4/>). Every new public torrent asks them after its own trackers, private torrents never get them, and <x5/> uses the same list.",
+   "text": "<g1>작업 → 토렌트 설정... → 사용자 트래커...</g1>에서 사용자 트래커를 한 줄에 하나씩 (<x2/>, <x3/> 또는 <x4/>) 나열할 수도 있습니다. 모든 새 공개 토렌트는 자체 트래커 다음에 이 트래커를 요청하며, 비공개 토렌트는 이 트래커를 사용하지 않습니다. <x5/>도 동일한 목록을 사용합니다."
   },
   "53463dc2311b18e1": {
    "source": "when <g1>Options → Archives → Extract archives when their download completes</g1> is on (off by default), for any other download,",
@@ -8486,6 +8502,10 @@
    "source": "Paste a Google Drive link as it is, the one <g1>Share → Copy link</g1> gives:",
    "text": "Google Drive 링크를 <g1>공유 → 링크 복사</g1>에서 제공하는 그대로 붙여넣으세요."
   },
+  "7297ca101de5145e": {
+   "source": "The list couldn't be read from GitHub when this page was built. Everyone is on GitHub meanwhile, in the project's <g1>pull requests</g1> and <g2>issues</g2>.",
+   "text": "이 페이지를 만들 때 GitHub에서 목록을 읽을 수 없었습니다. 모든 기여자는 프로젝트의 <g1>풀 리퀘스트</g1> 및 <g2>이슈</g2>에서 GitHub에 있습니다."
+  },
   "729a19fc6ce418f9": {
    "source": "Reporting problems",
    "text": "문제 보고"
@@ -8617,6 +8637,10 @@
   "74147234c5be454d": {
    "source": "A 256 KiB file. MDM is done in 30 ms; IDM is still starting.",
    "text": "256KiB 파일. MDM은 30ms 만에 완료되지만, IDM은 여전히 시작 중입니다."
+  },
+  "7416633f0aac387c": {
+   "source": "<g1>Own trackers...:</g1> opens a window for your own trackers, one address a line (<x2/>, <x3/>, or <x4/>), empty by default. Every public torrent you add from then on also asks these trackers, right after its own trackers and before the public tracker list if both are used (duplicates are added once). Addresses on your computer or local network are refused, private torrents never get them, and torrents already in your list keep their trackers (use <g5>Add trackers...</g5> in the right-click menu for those). <x6/> follows this setting too.",
+   "text": "<g1>사용자 트래커...:</g1> 사용자 트래커를 위한 창을 엽니다. 한 줄에 하나의 주소(<x2/>, <x3/> 또는 <x4/>)를 입력하며, 기본적으로 비어 있습니다. 이후 추가하는 모든 공개 토렌트는 자체 트래커 다음, 그리고 공개 트래커 목록(둘 다 사용되는 경우) 앞에 이 트래커에도 요청합니다(중복은 한 번만 추가됩니다). 컴퓨터나 로컬 네트워크의 주소는 거부되며, 비공개 토렌트에는 적용되지 않고, 목록에 이미 있는 토렌트는 기존 트래커를 유지합니다(해당 토렌트에는 마우스 오른쪽 버튼 메뉴에서 <g5>트래커 추가...</g5>를 사용하세요). <x6/>도 이 설정을 따릅니다."
   },
   "741be1a1c9d6ba43": {
    "source": "What to do",
@@ -12338,6 +12362,10 @@
    "source": "<g1>Sharper text on Windows</g1> (<g2>#262</g2>): Segoe UI and Tahoma are grid-fitted across as well as up and down, and each letter starts on a whole pixel, as Windows draws its own grey text: upright strokes were two grey pixels wide at 100 % and 125 %, which read as blurred.",
    "text": "<g1>Windows에서 더 선명한 텍스트</g1> (<g2>#262</g2>): Segoe UI 및 Tahoma는 위아래뿐만 아니라 가로로도 그리드에 맞춰지며, 각 글자는 Windows가 자체 회색 텍스트를 그리는 방식과 같이 전체 픽셀에서 시작합니다. 이전에는 100% 및 125%에서 수직 획이 두 개의 회색 픽셀 너비로 표시되어 흐릿하게 읽혔습니다."
   },
+  "a4b04f29f56fdc42": {
+   "source": "<g1>Add category</g1> — make your own, for example <g2>Books</g2> for <x3/>. Give it a name, the file types (separated by spaces, <x4/> allowed) and a folder.",
+   "text": "<g1>범주 추가</g1> — 예를 들어 <x3/>에 대한 <g2>도서</g2>와 같이 자신만의 범주를 만듭니다. 이름, 파일 형식(공백으로 구분, <x4/> 허용) 및 폴더를 지정합니다."
+  },
   "a4b1f9a84345ac5d": {
    "source": "<g1>yt-dlp</g1> (about 23 MB) looks the page up and finds where the video and its sound come from; MDM downloads them (<g2>How a video comes down</g2>). The first time, click <g3>Install yt-dlp</g3>. MDM checks the download against the signature yt-dlp's developers publish before it uses it.",
    "text": "<g1>yt-dlp</g1>(약 23MB)는 페이지를 조회하여 동영상과 사운드의 출처를 찾습니다. MDM은 이를 다운로드합니다(<g2>동영상 다운로드 방식</g2>). 처음 사용할 때는 <g3>yt-dlp 설치</g3>를 클릭하세요. MDM은 yt-dlp 개발자가 게시한 서명과 다운로드를 비교하여 확인한 후에 사용합니다."
@@ -14145,6 +14173,10 @@
   "bc606bb991071128": {
    "source": "The next tab of a focused tab strip; the next choice of a radio group",
    "text": "포커스된 탭 스트립의 다음 탭; 라디오 그룹의 다음 선택"
+  },
+  "bc713e862e9b84d3": {
+   "source": "Each download falls into a category by its file type: <g1>General</g1>, <g2>Compressed</g2>, <g3>Documents</g3>, <g4>Music</g4>, <g5>Programs</g5> or <g6>Video</g6>. Torrents have their own <g7>Torrents</g7> category. Each category has its own folder, by default inside your Downloads folder (<x8/>, <x9/> and so on; General uses <x10/> itself).",
+   "text": "각 다운로드는 파일 형식에 따라 <g1>일반</g1>, <g2>압축됨</g2>, <g3>문서</g3>, <g4>음악</g4>, <g5>프로그램</g5> 또는 <g6>비디오</g6> 범주에 속합니다. 토렌트는 자체 <g7>토렌트</g7> 범주를 가집니다. 각 범주는 기본적으로 다운로드 폴더 안에 자체 폴더를 가집니다(<x8/>, <x9/> 등; 일반은 <x10/> 자체를 사용합니다)."
   },
   "bc7153d0bcfdacbb": {
    "source": "Themes — Mister Download Manager",
@@ -18477,6 +18509,10 @@
   "f8c444517ab946e2": {
    "source": "From the plain zip",
    "text": "일반 zip 파일에서"
+  },
+  "f8c71a9fb2bd8bde": {
+   "source": "<g1>Automatically put in \"…\" category the following file types</g1> — the file types that go to this category.",
+   "text": "<g1>다음 파일 형식을 \"…\" 범주에 자동으로 넣기</g1> — 이 범주로 이동하는 파일 형식입니다."
   },
   "f8e0a9e7ee529ff0": {
    "source": "Select <g1>Main download queue</g1> on the left. The <g2>Schedule</g2> tab opens.",
