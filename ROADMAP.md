@@ -575,6 +575,10 @@ Everything below ships together, in version 0.6.0, the next release.
   [@fernandopeguero](https://github.com/fernandopeguero)): fonts, archive tests, Options' look
   for 7-Zip, theme files and sounds are read beside the window, and test builds log any file
   the window's thread opens
+- ✅ The command line's `torrent-info` and `torrent-get` hold their torrent session to the network
+  adapter chosen in Options → Connection, and don't start while it isn't connected
+  ([#2050](https://github.com/anefzaoui/misterdownloadmanager/issues/2050); thanks to
+  [@abdul-karim-mia](https://github.com/abdul-karim-mia))
 - ✅ Every pull request and every change to main is scanned for signs of a tampered commit: code
   hidden at the end of long lines, scripts that run on install or when a folder opens, files that
   aren't what their name says and known indicators; main's whole history once a week
