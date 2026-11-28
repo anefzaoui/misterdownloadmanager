@@ -5372,6 +5372,18 @@ impl App {
         (total > 0).then(|| done as f64 / total as f64)
     }
 
+    /// Close every open menu (the bar's or a context menu) and hide its windows: the main
+    /// window is going where no pass will draw them again (hidden to the tray, minimized), and
+    /// their windows are the app's, always on top — they would stay on the screen.
+    fn close_menus(&mut self, ctx: &egui::Context) {
+        if self.open_menu.is_none() && self.popup.is_none() {
+            return;
+        }
+        self.open_menu = None;
+        self.popup = None;
+        crate::chrome::hide_menu_windows(ctx);
+    }
+
     /// The main window into the tray: downloads, queues and schedules go on. Wayland can't hide a
     /// window, so there it goes to the dock / task list instead.
     fn hide_to_tray(&mut self, ctx: &egui::Context) {
@@ -5380,6 +5392,8 @@ impl App {
         #[cfg(not(target_os = "linux"))]
         let wayland = false;
         if wayland {
+            // No window state says "minimized" on Wayland, so the menus close here.
+            self.close_menus(ctx);
             ctx.send_viewport_cmd(egui::ViewportCommand::Minimized(true));
             return;
         }
@@ -15168,6 +15182,14 @@ impl App {
         // The freeze watchdog times this as it times `ui` (crash.rs): a command or the clock
         // that hangs is reported too, minimized or not (#202).
         crate::crash::logic_begin();
+        // A menu open while the main window hides (to the tray) or minimizes would stay on the
+        // screen: its windows are the app's, not the window's (chrome::popup), and no pass
+        // draws or closes them once the window is hidden. Closed here, as Windows' menus close
+        // with their window. `ui` doesn't run minimized, and a hidden window runs no pass that
+        // draws; tick does, so the menus close at once whichever way the window went.
+        if self.hidden || main_minimized(ctx) {
+            self.close_menus(ctx);
+        }
         // Whether a stall now could be seen: every window of MDM's out of sight (the main window
         // in the notification area or minimized to the taskbar, no other window open) is felt by
         // nobody (#1126, #1481).
