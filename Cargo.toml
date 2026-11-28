@@ -46,7 +46,7 @@ skrifa = { version = "0.44.0", default-features = false, features = ["std"] }
 # A font from the system for a script MDM's own font lists don't name (theme.rs, #1125): the
 # system's own choice (DirectWrite, CoreText) through fontique, in the same egui fork; the font
 # files are mapped, not read into memory.
-egui_system_font_provider = { git = "https://github.com/anefzaoui/egui.git", rev = "82ba93539645f29f39835a5691b5d4b79433b88e" }
+egui_system_font_provider = { git = "https://github.com/anefzaoui/egui.git", rev = "249819b7e9b37c515f1d13e15a92f1961ed7d886" }
 image = { version = "0.25.10", default-features = false, features = ["png"] }
 dirs = "7.0.0"
 # Gzipped IP blocklists, read to convert them for librqbit (crates/torrent blocklist.rs).
@@ -221,30 +221,30 @@ overflow-checks = false
 [profile.dev.package.framehop]
 overflow-checks = false
 
-# storytold's egui fork (as storytold/craft-libs, D-003) plus MDM's commits on anefzaoui/egui
-# (branch mdm-start-hidden, on mdm-wgpu, on mdm-accesskit-windows): every window created hidden
-# gets an AccessKit adapter, with OpenGL (glow) and with Direct3D (wgpu, #89), so screen readers
-# read the dialogs and menus; a dialog opened while the main window is minimized no longer panics
-# (emilk/egui#8470); and a window's first accessibility request is answered with its last tree
-# (#131); Direct3D keeps only the graphics adapter in use (a laptop's other GPU sleeps) and, on
-# Intel Iris Xe, uploads no all-zero texel blocks (gfx-rs/wgpu#10651, #89); a hidden viewport
-# can ask for a pass (Context::request_ui_pass: a dialog opened while minimized, #162); OpenGL
-# without a usable configuration is an error, not a panic, so the next renderer is tried; a main
-# window built hidden stays hidden after its first frame (a start with the session waits in the
-# notification area, #226); a monitor that has just gone away has no size instead of a panic (#335); the clipboard used
-# by one thread at a time, egui's copy and paste and MDM's own reads (`egui_winit::clipboard::
-# lock_system_clipboard`, #629); a dialog that changes its size is drawn at the window's new size
-# (its size applied before the pass, the Direct3D surface matched to the window before painting,
-# #471, by aniyow07); an OpenGL window's swap interval is chosen per window, before each swap
-# (`ViewportHooks::swap_waits_for_vsync`, branch mdm-swap-interval: Linux, renderer.rs, #347);
+# storytold's egui fork at the commit craft-libs pins (storytold/egui `next`, 932a73b2, D-003)
+# plus MDM's commits on anefzaoui/egui (branch mdm/next-2026-11-27; the earlier stack on 6d518fc7,
+# branches mdm-accesskit-windows to mdm-shared-texture-deltas, stays as it was). storytold's own
+# now give every window its AccessKit adapter before it is first shown, so screen readers read
+# the dialogs and menus (#89), and keep every window's texture changes in one queue for whichever
+# window paints first (#1639); MDM's: a dialog opened while the main window is minimized no
+# longer panics (emilk/egui#8470); a window's first accessibility request is answered with its
+# last tree (#131); Direct3D keeps only the graphics adapter in use (a laptop's other GPU sleeps)
+# and, on Intel Iris Xe, uploads no all-zero texel blocks (gfx-rs/wgpu#10651, #89); a hidden
+# viewport can ask for a pass (Context::request_ui_pass: a dialog opened while minimized, #162);
+# OpenGL without a usable configuration is an error, not a panic, so the next renderer is tried;
+# a main window built hidden stays hidden after its first frame (a start with the session waits
+# in the notification area, #226); a monitor that has just gone away has no size instead of a
+# panic (#335); the clipboard used by one thread at a time, egui's copy and paste and MDM's own
+# reads (`egui_winit::clipboard::lock_system_clipboard`, #629); a dialog that changes its size is
+# drawn at the window's new size (its size applied before the pass, the Direct3D surface matched
+# to the window before painting, #471, by aniyow07); an OpenGL window's swap interval is chosen
+# per window, before each swap (`ViewportHooks::swap_waits_for_vsync`: Linux, renderer.rs, #347);
 # an OpenGL window's context is made current again when it is no longer the thread's own (macOS),
-# and a texture OpenGL can't create is kept for a later frame instead of a panic (branch
-# mdm/glow-texture-no-panic, #1173); a window OpenGL can't paint for a moment (its context can't
-# be made current on it, a frame that can't be shown) is painted again 100 ms later instead of a
-# panic, the context kept, and the app is told (`ViewportHooks::gl_paint_failed`, branch
-# mdm-gl-context-errors, #1448); every window's texture changes wait in one queue and reach the
-# painter whichever window paints first, so a dialog draws the pictures the main window loaded
-# while it was minimized (branch mdm-shared-texture-deltas, #1639).
+# and a texture OpenGL can't create is kept for a later frame instead of a panic (#1173); a
+# window OpenGL can't paint for a moment (its context can't be made current on it, a frame that
+# can't be shown) is painted again 100 ms later instead of a panic, the context kept, and the app
+# is told (`ViewportHooks::gl_paint_failed`, #1448); and a texture let go during a frame is freed
+# after the frame's last paint, not at a dialog's paint inside it (#1639).
 # craft-libs can take the same commits to share one egui again.
 [patch.crates-io]
 # librqbit 9.1.0 with per-torrent rate limits that change while a torrent runs (#39), and a
@@ -278,16 +278,16 @@ librqbit-upnp = { git = "https://github.com/anefzaoui/rqbit.git", rev = "ee59e8a
 # (ikatson/librqbit-utp#3, #4): on Windows, one packet sent to a closed port (or one oversized
 # datagram) no longer stops uTP for the whole session, and ringbuf 0.5.
 librqbit-utp = { git = "https://github.com/ikatson/librqbit-utp.git", rev = "06e1c53c8df6edb2830d6aab64a6d4bed8479908" }
-ecolor = { git = "https://github.com/anefzaoui/egui.git", rev = "82ba93539645f29f39835a5691b5d4b79433b88e" }
-emath = { git = "https://github.com/anefzaoui/egui.git", rev = "82ba93539645f29f39835a5691b5d4b79433b88e" }
-epaint = { git = "https://github.com/anefzaoui/egui.git", rev = "82ba93539645f29f39835a5691b5d4b79433b88e" }
-epaint_default_fonts = { git = "https://github.com/anefzaoui/egui.git", rev = "82ba93539645f29f39835a5691b5d4b79433b88e" }
-egui = { git = "https://github.com/anefzaoui/egui.git", rev = "82ba93539645f29f39835a5691b5d4b79433b88e" }
-egui-winit = { git = "https://github.com/anefzaoui/egui.git", rev = "82ba93539645f29f39835a5691b5d4b79433b88e" }
-egui_glow = { git = "https://github.com/anefzaoui/egui.git", rev = "82ba93539645f29f39835a5691b5d4b79433b88e" }
-egui-wgpu = { git = "https://github.com/anefzaoui/egui.git", rev = "82ba93539645f29f39835a5691b5d4b79433b88e" }
-egui_extras = { git = "https://github.com/anefzaoui/egui.git", rev = "82ba93539645f29f39835a5691b5d4b79433b88e" }
-eframe = { git = "https://github.com/anefzaoui/egui.git", rev = "82ba93539645f29f39835a5691b5d4b79433b88e" }
+ecolor = { git = "https://github.com/anefzaoui/egui.git", rev = "249819b7e9b37c515f1d13e15a92f1961ed7d886" }
+emath = { git = "https://github.com/anefzaoui/egui.git", rev = "249819b7e9b37c515f1d13e15a92f1961ed7d886" }
+epaint = { git = "https://github.com/anefzaoui/egui.git", rev = "249819b7e9b37c515f1d13e15a92f1961ed7d886" }
+epaint_default_fonts = { git = "https://github.com/anefzaoui/egui.git", rev = "249819b7e9b37c515f1d13e15a92f1961ed7d886" }
+egui = { git = "https://github.com/anefzaoui/egui.git", rev = "249819b7e9b37c515f1d13e15a92f1961ed7d886" }
+egui-winit = { git = "https://github.com/anefzaoui/egui.git", rev = "249819b7e9b37c515f1d13e15a92f1961ed7d886" }
+egui_glow = { git = "https://github.com/anefzaoui/egui.git", rev = "249819b7e9b37c515f1d13e15a92f1961ed7d886" }
+egui-wgpu = { git = "https://github.com/anefzaoui/egui.git", rev = "249819b7e9b37c515f1d13e15a92f1961ed7d886" }
+egui_extras = { git = "https://github.com/anefzaoui/egui.git", rev = "249819b7e9b37c515f1d13e15a92f1961ed7d886" }
+eframe = { git = "https://github.com/anefzaoui/egui.git", rev = "249819b7e9b37c515f1d13e15a92f1961ed7d886" }
 winit = { git = "https://github.com/storytold/winit.git", rev = "a517b3846ee8457d84ee4975110bfda6797c44dc" }
 # wgpu-hal 30.0.1 (the v30.0.1 release commit) with one change: a window's Direct3D 12 swap chain
 # is made with DXGI_SCALING_NONE instead of STRETCH, so while a dialog resizes, Windows shows the
