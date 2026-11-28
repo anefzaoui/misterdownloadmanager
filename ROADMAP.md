@@ -1777,6 +1777,11 @@ Everything below ships together, in version 0.6.0, the next release.
   speed limits (a change applies at once), pause and resume like a file, after a restart too,
   and a fresh address from yt-dlp when one expires (part of
   [#769](https://github.com/anefzaoui/misterdownloadmanager/issues/769))
+- ✅ Videos in pieces (HLS) tested stopped and continued, after a restart, with expiring and failing
+  pieces, AES-128, byte ranges, discontinuities and several sounds and pictures (AC-3, MP2, HEVC,
+  MPEG-2), each checked for its length and a clean decode: the pieces on disk count only for the same
+  stream and list, a sound an MP4 can't hold (LATM) is saved as MPEG-TS instead of failing, parts of
+  one file a server sends whole are cut from it, a piece cut off without a length is asked again
 - ✅ Videos sent in pieces (HLS, DASH) through MDM's own downloader too, several pieces at once
   (as many as a file's connections), AES-128 pieces decrypted, expired pieces' addresses asked of
   yt-dlp again ([#531](https://github.com/anefzaoui/misterdownloadmanager/issues/531), part of
