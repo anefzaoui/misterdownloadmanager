@@ -1023,17 +1023,28 @@ function postOf(url) {
 
 // Where page loads' redirects started, by where they ended (two minutes): Firefox names a
 // download by its last address only, and the app keeps the first (an expired signed link is
-// renewed from it).
+// renewed from it). With the addresses in between (`hops`, the last HOPS_MAX), whose hosts'
+// cookies go to the app with the download (#1540, `fileCookies`).
 const redirected = new Map();
+const HOPS_MAX = 10;
 if (ext.webRequest && ext.webRequest.onBeforeRedirect) {
   ext.webRequest.onBeforeRedirect.addListener(
     (d) => {
       forget(redirected, 120000);
-      const first = (redirected.get(d.url) || {}).from || d.url;
-      redirected.set(d.redirectUrl, { from: first, at: Date.now() });
+      const before = redirected.get(d.url) || {};
+      const first = before.from || d.url;
+      const hops = before.from ? [...(before.hops || []), d.url].slice(-HOPS_MAX) : [];
+      redirected.set(d.redirectUrl, { from: first, hops, at: Date.now() });
     },
     { urls: ["<all_urls>"], types: PAGE_LOADS },
   );
+}
+
+// The addresses the browser's redirects went through to `final` (two minutes), between the
+// first and `final` (#1540).
+function hopsTo(final) {
+  const r = final && redirected.get(final);
+  return r && Date.now() - r.at < 120000 ? r.hops || [] : [];
 }
 
 // Pages the browser loaded in a tab or frame (two minutes), by address (the listener below).
@@ -1393,6 +1404,54 @@ if (ext.webRequest && ext.webRequest.onSendHeaders) {
     // A browser without extraHeaders: streams go with their page as the Referer, as before.
   }
 }
+// #1540: the Cookie header the browser sent with each page load and download request, by
+// address (two minutes, the last SENT_TO_MAX): a download's own request isn't linked to the
+// download (it has no request id), but its address is. What the browser sent the address a
+// download ended at goes to the app with it, cookies no store lists among them (a partition
+// `partitionedFor` doesn't pick). In memory only.
+const sentTo = new Map();
+const SENT_TO_MAX = 64;
+if (ext.webRequest && ext.webRequest.onSendHeaders) {
+  try {
+    ext.webRequest.onSendHeaders.addListener(
+      (d) => {
+        const h = (d.requestHeaders || []).find((x) => String(x.name).toLowerCase() === "cookie");
+        sentTo.delete(d.url);
+        if (!h || typeof h.value !== "string" || !h.value) return;
+        forget(sentTo, 120000);
+        sentTo.set(d.url, { cookie: h.value, at: Date.now() });
+        while (sentTo.size > SENT_TO_MAX) sentTo.delete(sentTo.keys().next().value);
+      },
+      { urls: ["<all_urls>"], types: ["main_frame", "sub_frame", "other"] },
+      FIREFOX ? ["requestHeaders"] : ["requestHeaders", "extraHeaders"],
+    );
+  } catch {
+    // A browser without extraHeaders: the stores' cookies only.
+  }
+}
+
+// The cookies the browser sent `url` itself (`sentTo`), as host-only cookies of its host, but
+// for the names in `known` (the store's own, with their domains and paths).
+function sentCookies(url, known) {
+  const sent = sentTo.get(url);
+  if (!sent || Date.now() - sent.at > 120000) return [];
+  let u;
+  try {
+    u = new URL(url);
+  } catch {
+    return [];
+  }
+  const out = [];
+  for (const pair of sent.cookie.split(/;\s*/)) {
+    const at = pair.indexOf("=");
+    const name = at > 0 ? pair.slice(0, at).trim() : "";
+    if (!name || known.has(name)) continue;
+    known.add(name);
+    out.push({ name, value: pair.slice(at + 1), domain: u.hostname, hostOnly: true, path: "/", secure: u.protocol === "https:" });
+  }
+  return out;
+}
+
 const takeSent = (requestId) => {
   const sent = sentWith.get(requestId);
   sentWith.delete(requestId);
@@ -2268,6 +2327,96 @@ function header(list) {
   return list.map((c) => `${c.name}=${c.value}`).join("; ");
 }
 
+// A cookie as the app keeps it (`mdm_ipc::BrowserCookie`): with its domain, path and flags, so
+// MDM sends it to the hosts it belongs to only.
+function jarCookie(c) {
+  return {
+    name: c.name,
+    value: c.value,
+    domain: c.domain,
+    hostOnly: Boolean(c.hostOnly),
+    path: c.path || "/",
+    secure: Boolean(c.secure),
+    ...(typeof c.expirationDate === "number" ? { expirationDate: c.expirationDate } : {}),
+  };
+}
+
+// `address` is on the site `site` ("https://example.com", a partition's `topLevelSite`): the
+// same scheme, and its host or one under it.
+function onSite(address, site) {
+  try {
+    const a = new URL(address);
+    const s = new URL(site);
+    const host = a.hostname.toLowerCase();
+    const top = s.hostname.toLowerCase();
+    return Boolean(top) && a.protocol === s.protocol && (host === top || host.endsWith(`.${top}`));
+  } catch {
+    return false;
+  }
+}
+
+// The partitioned cookies (CHIPS) of `url` the browser sends it from one of `pages` (the page the
+// download started on, or the address itself when the browser goes there): `cookies.getAll`
+// without a partition key lists none of them. All partitions are asked (`partitionKey: {}`),
+// and only those pages' kept: another site's partition is that site's. A browser that keeps no
+// partitioned cookies (Safari, Chromium before 119) refuses the key: none.
+async function partitionedFor(url, ctx, pages) {
+  const { incognito, storeId } = ctx;
+  const store = storeId ? { storeId } : incognito ? { storeId: "1" } : {};
+  let all;
+  try {
+    all = (await ext.cookies.getAll({ url, ...store, partitionKey: {} })) || [];
+  } catch {
+    return [];
+  }
+  return all.filter((c) => {
+    const site = c.partitionKey && c.partitionKey.topLevelSite;
+    return typeof site === "string" && site && pages.some((p) => onSite(p, site));
+  });
+}
+
+// Most cookies a download hands over (#1540), and most hosts asked for theirs: a long redirect
+// chain's stay well within a message.
+const JAR_MAX = 400;
+const JAR_HOSTS_MAX = 12;
+
+// A file's cookies (#1540): the header for its address (`cookies`, as before), and every cookie
+// of each host its download went through in the browser (`urls`: its address, the redirects,
+// where it ended), partitioned ones of its page included and those the browser sent each of
+// these addresses (`cookieJar`), each with its domain: the app sends each to the hosts it
+// belongs to, never one host's to another. Each cookie once.
+async function fileCookies(urls, ctx, pages) {
+  const web = [...new Set(urls.filter((u) => typeof u === "string" && /^https?:\/\//i.test(u)))];
+  const hosts = new Set();
+  const asked = web.filter((u) => {
+    let host = "";
+    try {
+      host = new URL(u).host;
+    } catch {
+      return false;
+    }
+    if (hosts.has(host) || hosts.size >= JAR_HOSTS_MAX) return false;
+    hosts.add(host);
+    return true;
+  });
+  const sites = pages.filter((p) => typeof p === "string" && /^https?:\/\//i.test(p));
+  const seen = new Set();
+  const cookieJar = [];
+  for (const url of asked) {
+    const listed = [...(await cookiesFor(url, ctx)), ...(await partitionedFor(url, ctx, [...sites, url]))];
+    // And what the browser sent this very address, which no store may list.
+    const found = [...listed, ...sentCookies(url, new Set(listed.map((c) => c.name)))];
+    for (const c of found) {
+      const key = `${c.name}\u0000${c.domain}\u0000${c.path}`;
+      if (seen.has(key) || cookieJar.length >= JAR_MAX) continue;
+      seen.add(key);
+      cookieJar.push(jarCookie(c));
+    }
+  }
+  const cookies = web.length ? await cookieHeader(web[0], ctx) : "";
+  return cookieJar.length ? { cookies, cookieJar } : { cookies };
+}
+
 async function cookieHeader(url, ctx) {
   return header(await cookiesFor(url, ctx));
 }
@@ -2613,7 +2762,8 @@ async function handOff(d) {
     finalUrl: d.finalUrl && d.finalUrl !== d.url ? d.finalUrl : "",
     referrer: d.referrer || "",
     ...(d.page && /^https?:\/\//i.test(d.page) && d.page.length <= URL_MAX ? { pageUrl: d.page } : {}),
-    cookies: await cookieHeader(d.url, d),
+    // Its address's cookies, and every host's its download went through (#1540).
+    ...(await fileCookies([d.url, ...(d.hops || []), d.finalUrl], d, [d.page, d.referrer])),
     filename: d.filename || "",
     // The browser's name is only its address's guess (#948, `addressNamed`): the host checks
     // Options' file types by it, and MDM names the file from the server's own answer.
@@ -2710,6 +2860,8 @@ async function offer(item, url, name, nameGuessed = false) {
   const reply = await handOff({
     url: first,
     finalUrl: url,
+    // The addresses the browser's redirects went through to it (#1540: their cookies go too).
+    hops: hopsTo(url),
     referrer: item.referrer,
     page: item.page || (await pageOf(item, [first, url, item.url].filter(Boolean))),
     filename: name,

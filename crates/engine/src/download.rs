@@ -239,6 +239,11 @@ pub struct Options {
     pub browser_first: bool,
     /// Certificates the user chose to trust for their `(host, port, sha256)` (#1964).
     pub allowed_certs: Vec<crate::tls::AllowedCert>,
+    /// The download's cookies (#1540, `crate::cookies`): the browser's for each host it
+    /// belongs to (the address's, its redirects', where they ended), and the ones servers set on
+    /// the way. Shared by everything one download asks, its look included; none: a jar of its
+    /// own is made as it starts. Never two downloads' (each start makes or is given its own).
+    pub cookie_jar: Option<Arc<crate::cookies::CookieJar>>,
 }
 
 /// A callback given the path of a file the engine created (`Options::on_file_created`).
@@ -331,6 +336,7 @@ impl Default for Options {
             keep_state: false,
             browser_first: false,
             allowed_certs: Vec::new(),
+            cookie_jar: None,
         }
     }
 }
@@ -352,6 +358,24 @@ impl Options {
     /// `1..=MAX_CONNECTIONS_UNLOCKED` (a hand-edited setting can hold anything).
     pub fn connections(&self) -> u32 {
         self.max_connections.clamp(1, MAX_CONNECTIONS_UNLOCKED)
+    }
+
+    /// These options with a cookie jar: the one they have, else a new one (`cookie_jar`).
+    fn with_jar(&self) -> Options {
+        let mut o = self.clone();
+        if o.cookie_jar.is_none() {
+            o.cookie_jar = Some(Arc::new(crate::cookies::CookieJar::new()));
+        }
+        o
+    }
+
+    /// The same options without their cookie jar: for clients whose callers decide each
+    /// request's cookies themselves (`http_client`, `hop_client`).
+    fn without_jar(&self) -> Options {
+        Options {
+            cookie_jar: None,
+            ..self.clone()
+        }
     }
 
     /// `request_cap`, when it applies: some bytes, without a form's POST.
@@ -805,8 +829,15 @@ pub(crate) fn build(
     post: Option<&Bytes>,
     headers: &HeaderMap,
     site_agent: bool,
+    jar: Option<&crate::cookies::CookieJar>,
 ) -> RequestBuilder {
     let mut headers = headers.clone();
+    // With the download's cookie jar (#1540), the Cookie these headers carry for `url` is given
+    // to it, and the jar's go instead (`client_with`: the client asks it): a cookie a server set
+    // since, on this request's host or on its redirects', goes too.
+    if let Some(jar) = jar {
+        jar.ready(&url, &mut headers, false);
+    }
     if let Some(site) = request_agent(site_agent, &url)
         && !headers.contains_key(header::USER_AGENT)
     {
@@ -997,6 +1028,8 @@ pub struct KeptAnswer {
     /// The address asked: only a download of the same address takes it.
     url: Url,
     client: Client,
+    /// The look's cookie jar, its client's (#1540): the download goes on with it.
+    jar: Option<Arc<crate::cookies::CookieJar>>,
     as_get: AsGet,
     head: Head,
     body: Body,
@@ -1053,6 +1086,8 @@ pub async fn probe_kept(
             None,
         ));
     }
+    // A cookie jar of its own (#1540), which the download takes on with the kept answer.
+    let opts = &opts.with_jar();
     let as_get = AsGet::default();
     // Through a service account (#44): its direct link is looked at instead, without the host's
     // cookies or logins.
@@ -1099,6 +1134,7 @@ pub async fn probe_kept(
             opts.post.as_ref(),
             first_opts.site_agent(),
             expects,
+            opts.cookie_jar.as_deref(),
             &CancellationToken::new(),
         ))
         .await;
@@ -1128,6 +1164,7 @@ pub async fn probe_kept(
                     opts.post.as_ref(),
                     plain.site_agent(),
                     expects,
+                    plain.cookie_jar.as_deref(),
                     &CancellationToken::new(),
                 ))
                 .await;
@@ -1167,6 +1204,7 @@ pub async fn probe_kept(
                                 None,
                                 o.site_agent(),
                                 expects,
+                                o.cookie_jar.as_deref(),
                                 &cancel,
                             )
                             .await
@@ -1229,6 +1267,7 @@ pub async fn probe_kept(
     let kept = from_zero.then(|| KeptAnswer {
         url,
         client,
+        jar: opts.cookie_jar.clone(),
         seen,
         family,
         as_get,
@@ -1247,7 +1286,12 @@ pub async fn probe_kept(
 /// A client for requests to `url`'s server that aren't downloads (a debrid service's API, #44):
 /// the same proxy, DNS and network adapter as `opts`' downloads.
 pub fn http_client(opts: &Options, url: &Url) -> Result<Client, Error> {
-    client(opts, url, &AsGet::default(), &Default::default())
+    client(
+        &opts.without_jar(),
+        url,
+        &AsGet::default(),
+        &Default::default(),
+    )
 }
 
 /// A client for one request to `url`'s server, as [`http_client`]'s, that follows no redirect
@@ -1256,7 +1300,13 @@ pub fn http_client(opts: &Options, url: &Url) -> Result<Client, Error> {
 /// headers go there (the browser's quality menu reading a stream's manifest, mdm-tools'
 /// `manifest`: the browser's cookie never reaches another server).
 pub fn hop_client(opts: &Options, url: &Url) -> Result<Client, Error> {
-    client_with(opts, url, &AsGet::default(), &Default::default(), false)
+    client_with(
+        &opts.without_jar(),
+        url,
+        &AsGet::default(),
+        &Default::default(),
+        false,
+    )
 }
 
 /// The file's name: the server's (Content-Disposition), else the service's (#44), else the
@@ -2027,6 +2077,7 @@ impl Ctx {
             &self.cancel,
             self.opts.unlocker.as_ref(),
             &self.shared,
+            self.opts.cookie_jar.as_deref(),
         )
         .await
         .filter(|(u, _)| *u != self.target.lock().unwrap().url) else {
@@ -2240,6 +2291,22 @@ fn client_with(
         Some(_) => as_get.policy(),
         None => get_policy(),
     };
+    // The download's cookie jar (#1540) answers every request that carries no Cookie of its
+    // own (each one `build` makes, each redirect) and keeps what each answer sets; it hears of
+    // every address a redirect left, for its rule that nothing goes from https down to http.
+    let (builder, inner) = match opts.cookie_jar.clone() {
+        Some(jar) => {
+            let builder = builder.cookie_provider(jar.clone());
+            let policy = reqwest::redirect::Policy::custom(move |attempt| {
+                for at in attempt.previous() {
+                    jar.note(at);
+                }
+                inner.redirect(attempt)
+            });
+            (builder, policy)
+        }
+        None => (builder, inner),
+    };
     let builder = if !follow {
         builder
             .redirect(reqwest::redirect::Policy::none())
@@ -2381,7 +2448,14 @@ async fn run_fresh(
     cancel: CancellationToken,
     kept: Option<KeptAnswer>,
 ) -> Result<Outcome, Error> {
-    let mut opts = opts;
+    // The cookie jar of the look whose answer it goes on with (#1540), else its own.
+    let mut opts = match kept.as_ref().and_then(|k| k.jar.clone()) {
+        Some(jar) => Options {
+            cookie_jar: Some(jar),
+            ..opts
+        },
+        None => opts.with_jar(),
+    };
     // The first request had to give up the browser's User-Agent (#372).
     let mut asked_as_mdm = false;
     // It went under MDM's own name, the only one the site's bot check let through (#1422).
@@ -2764,6 +2838,7 @@ async fn run_fresh(
                             post.as_ref(),
                             agent,
                             expects,
+                            opts.cookie_jar.as_deref(),
                             cancel,
                         )
                         .await?;
@@ -3007,7 +3082,7 @@ async fn run_resume(
     shared: Arc<Shared>,
     cancel: CancellationToken,
 ) -> Result<Outcome, Error> {
-    let mut opts = opts;
+    let mut opts = opts.with_jar();
     if saved.asked_as_mdm
         && let Some(agent) = opts.agent_fallback.take()
     {
@@ -3101,6 +3176,7 @@ async fn run_resume(
                 &cancel,
                 opts.unlocker.as_ref(),
                 &shared,
+                opts.cookie_jar.as_deref(),
             )
             .await
         } else {
@@ -3247,6 +3323,7 @@ async fn refresh_final_url(
     cancel: &CancellationToken,
     unlocker: Option<&Arc<dyn crate::unlock::Unlocker>>,
     shared: &Shared,
+    jar: Option<&crate::cookies::CookieJar>,
 ) -> Option<(Url, HeaderMap)> {
     // Through a service account (#44): the service gives today's direct link (the host's link
     // itself leads to its web page); the host's cookies and logins stay with the host.
@@ -3262,7 +3339,7 @@ async fn refresh_final_url(
         None => (origin.clone(), headers.clone()),
     };
     asked.insert(header::RANGE, HeaderValue::from_static("bytes=0-0"));
-    let (resp, mut headers, _) = get(client, target, asked, post, site_agent, false, cancel)
+    let (resp, mut headers, _) = get(client, target, asked, post, site_agent, false, jar, cancel)
         .await
         .ok()?;
     headers.remove(header::RANGE);
@@ -3870,7 +3947,16 @@ async fn get_over_other_family(
             let (post, agent) = (kept.post.as_ref(), kept.site_agent());
             cancellable(
                 cancel,
-                get(&client, url, headers, post, agent, expects, cancel),
+                get(
+                    &client,
+                    url,
+                    headers,
+                    post,
+                    agent,
+                    expects,
+                    kept.cookie_jar.as_deref(),
+                    cancel,
+                ),
             )
             .await
             .map(|answer| (client, answer))
@@ -4266,6 +4352,7 @@ async fn get(
     post: Option<&Bytes>,
     site_agent: bool,
     expects: bool,
+    jar: Option<&crate::cookies::CookieJar>,
     cancel: &CancellationToken,
 ) -> Result<(Response, HeaderMap, Duration), Error> {
     let (mut url, mut headers) = (url, headers);
@@ -4303,9 +4390,16 @@ async fn get(
                     header::CONTENT_TYPE,
                     HeaderValue::from_static("application/x-www-form-urlencoded"),
                 );
-                build(client, url.clone(), Some(&body), &with_type, site_agent)
+                build(
+                    client,
+                    url.clone(),
+                    Some(&body),
+                    &with_type,
+                    site_agent,
+                    jar,
+                )
             }
-            None => build(client, url.clone(), post, &headers, site_agent),
+            None => build(client, url.clone(), post, &headers, site_agent, jar),
         };
         let asked = std::time::Instant::now();
         let resp = cancellable(cancel, async { Ok(req.send().await?) }).await?;
@@ -4536,6 +4630,7 @@ pub(crate) async fn web_page(
         None,
         opts.site_agent(),
         false,
+        None,
         &cancel,
     )
     .await?;
@@ -4678,6 +4773,7 @@ async fn first_get(
             opts.post.as_ref(),
             opts.site_agent(),
             expects,
+            opts.cookie_jar.as_deref(),
             cancel,
         )
     })
@@ -5156,6 +5252,7 @@ async fn request(ctx: &Ctx, target: &Target, from: u64, to: u64) -> Result<Body,
                 target.post.as_ref(),
                 &target.headers,
                 ctx.opts.site_agent(),
+                ctx.opts.cookie_jar.as_deref(),
             )
             .header(header::RANGE, range);
             if let Some(v) = &if_range {
