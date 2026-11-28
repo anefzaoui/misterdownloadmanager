@@ -359,7 +359,7 @@
 #. text in the Options window
 #. Site rules window: in the empty list of rules, under its title
 #, machine
-	A rule sets the connections, User-Agent or headers for one site.	ஒரு தளத்திற்கான இணைப்புகள், பயனர் முகவர் அல்லது தலைப்புகளை ஒரு விதி அமைக்கிறது.
+	A rule sets the connections, User-Agent, headers or proxy for one site.	ஒரு விதி ஒரு தளத்திற்கான இணைப்புகள், பயனர்-முகவர், தலைப்புகள் அல்லது ப்ராக்ஸியை அமைக்கிறது.
 #. text in errors.rs
 #. an error: a server on this computer redirected the download to the internet, which would not go through the chosen network adapter; {adapter} its name
 #, machine
@@ -684,6 +684,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	American Samoa	அமெரிக்க சமோவா
+#. text in extension.rs
+#. a check of Test browser integration (Windows), one short line: an older registry entry for MDM's helper is in the way of the right one; the entry and where it leads show on the line under it
+#, machine
+	An older registry entry is in the way:	பழைய பதிவேட்டில் உள்ளீடு குறுக்கிடுகிறது:
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -1147,6 +1151,11 @@
 #. event log entry after Recheck: {have} and {total} are sizes ("1.2 GB of 4 GB there")
 #, machine
 	Checked: {have} of {total} there	சரிபார்க்கப்பட்டது: {total} இல் {have} உள்ளது
+#. text in softgl.rs
+#. the software renderer's window: the download is done, and its files are being checked and unpacked
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Checking and unpacking Mesa's software renderer...	மேசாவின் மென்பொருள் ரெண்டரரைச் சரிபார்த்து, அவிழ்க்கிறது...
 #. message or event log entry in the main window
 #. event log entry: a torrent's files are being read and checked again (Recheck)
 #, machine
@@ -1181,6 +1190,10 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Checking...	சரிபார்க்கிறது...
+#. text in the download list (sizes, speeds, status)
+#. a download's status: it finished, but the checksum its server announced didn't match its file (the file is kept). Short: the list's Status column is narrow
+#, machine
+	Checksum warning	சரிபார்ப்பு எச்சரிக்கை
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -1349,6 +1362,10 @@
 #. window title: a download's own request settings (User-Agent, headers, connections, proxy), from File Properties → Connection...
 #, machine
 	Connection settings	இணைப்பு அமைப்புகள்
+#. text in the Options window
+#. Options → Connection: beside the Site rules... button: what it sets (a User-Agent, request headers, a number of connections, a proxy, each for the sites a rule names)
+#, machine
+	Connection settings by site	தளத்தின்படி இணைப்பு அமைப்புகள்
 #. message or event log entry in the main window
 #. event log: File Properties → Connection settings changed the download's own User-Agent, headers, proxy or connections
 #, machine
@@ -1775,6 +1792,11 @@
 #. {size} = a file size such as "4.2 MB"; {bytes} = a number of bytes (keep the braces as they are)
 #, machine
 	Downloaded {size} ({bytes} Bytes)	{size} ({bytes} பைட்டுகள்) பதிவிறக்கப்பட்டது
+#. text in the download list (sizes, speeds, status)
+#. a download's status, whole (the Status cell's tip, Properties, the log, Download complete): it finished, but the checksum its server announced didn't match the file, which is kept. "Check it": the user can verify the file against a checksum they trust (right-click → Verify checksum...)
+#. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
+#, machine
+	Downloaded, but the server's {algorithm} checksum didn't match; the file may still be fine. Check it if it matters	பதிவிறக்கப்பட்டது, ஆனால் சேவையகத்தின் {algorithm} சரிபார்ப்பு பொருந்தவில்லை; கோப்பு இன்னும் சரியாக இருக்கலாம். இது முக்கியமென்றால் சரிபார்க்கவும்
 #. item in the Categories tree in the download list; value in a column's filter list in the download list; text in remote.rs
 #. a download's status (state it is in, not a command)
 #, machine
@@ -1807,6 +1829,11 @@
 #. Helpers: MDM's own copy of a helper is being downloaded (where there was none, or in place of the system's); {percent} = how far, a number
 #, machine
 	Downloading MDM's own copy... {percent}%	MDM இன் சொந்த நகலைப் பதிவிறக்குகிறது... {percent}%
+#. text in softgl.rs
+#. the software renderer's window, while it downloads; {done} and {size} = sizes (12.0 MB of 66.3 MB)
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	Downloading Mesa's software renderer: {done} of {size}	மேசாவின் மென்பொருள் ரெண்டரரைப் பதிவிறக்குகிறது: {done} / {size}
 #. text in archtest.rs
 #. in a download's log: after its archive test found damaged files, only their bytes are downloaded again from the same server; {size} like "1.20 MB"
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
@@ -3166,6 +3193,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Looking the page up...	பக்கத்தைத் தேடுகிறது...
+#. text in softgl.rs
+#. the software renderer's window: while MDM reads its signed list of the software renderers it may download (Mesa's llvmpipe: it draws MDM's windows where there is no graphics card)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Looking up Mesa's software renderer...	மேசாவின் மென்பொருள் ரெண்டரரைத் தேடுகிறது...
 #. text in preview.rs
 #. the preview pane: still looking whether the file is there
 #. the trailing ... means it is still going on: keep it
@@ -3334,6 +3366,9 @@
 #. Video helpers: MDM can't download Node.js on this system (an unusual processor); Node.js and Deno are program names; "Use another program" is the button below
 #, machine
 	MDM has no copy for this system: install Node.js or Deno, or use another program	இந்த அமைப்புக்கான நகல் MDM இல் இல்லை: Node.js அல்லது Deno ஐ நிறுவவும், அல்லது வேறு நிரலைப் பயன்படுத்தவும்
+#. text in softgl.rs
+#, machine
+	MDM has no data folder	MDM க்கு தரவு கோப்புறை இல்லை
 #. text in remote.rs
 #. remote control page (on a phone): no pairing code is shown in MDM; "Pair a device" is MDM's button
 #, machine
@@ -3359,6 +3394,27 @@
 #. error installing ffmpeg: the list of builds MDM accepts doesn't carry MDM's own signature
 #, machine
 	MDM's list of checked ffmpeg builds isn't signed by MDM's key, so ffmpeg wasn't installed	MDM இன் சரிபார்க்கப்பட்ட ffmpeg உருவாக்கங்களின் பட்டியலில் MDM இன் சொந்த கையொப்பம் இல்லை, எனவே ffmpeg நிறுவப்படவில்லை
+#. text in errors.rs
+#. error installing Mesa's software renderer: the list of builds MDM accepts couldn't be read; {detail} = the technical detail, in English
+#, machine
+	MDM's list of checked software renderers can't be read ({detail})	MDM இன் சரிபார்க்கப்பட்ட மென்பொருள் ரெண்டரர்களின் பட்டியலைப் படிக்க முடியவில்லை ({detail})
+#. text in errors.rs
+#. error installing Mesa's software renderer (it draws MDM's windows where there is no graphics card): MDM installs only builds named in a list it publishes, signed with its key, and that list couldn't be downloaded; {error} = why
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	MDM's list of checked software renderers could not be downloaded: {error}	MDM இன் சரிபார்க்கப்பட்ட மென்பொருள் ரெண்டரர்களின் பட்டியலைப் பதிவிறக்க முடியவில்லை: {error}
+#. text in errors.rs
+#. error installing Mesa's software renderer: the list of builds MDM accepts has none for this computer's system and processor
+#, machine
+	MDM's list of checked software renderers has none for this computer	MDM இன் சரிபார்க்கப்பட்ட மென்பொருள் ரெண்டரர்களின் பட்டியலில் இந்தக் கணினிக்கான ரெண்டரர் எதுவும் இல்லை
+#. text in errors.rs
+#. error installing Mesa's software renderer: the list of builds MDM accepts is older than one this copy of MDM already used (it never goes back to an older list)
+#, machine
+	MDM's list of checked software renderers is older than one already used, so nothing was installed	MDM இன் சரிபார்க்கப்பட்ட மென்பொருள் ரெண்டரர்களின் பட்டியல் ஏற்கனவே பயன்படுத்தப்பட்டதை விட பழையது, எனவே எதுவும் நிறுவப்படவில்லை
+#. text in errors.rs
+#. error installing Mesa's software renderer: the list of builds MDM accepts doesn't carry MDM's own signature
+#, machine
+	MDM's list of checked software renderers isn't signed by MDM's key, so nothing was installed	MDM இன் சரிபார்க்கப்பட்ட மென்பொருள் ரெண்டரர்களின் பட்டியலில் MDM இன் சொந்த கையொப்பம் இல்லை, எனவே எதுவும் நிறுவப்படவில்லை
 #. text in whereis.rs
 #. how far a download's server is, by its round trip (60 to 150 ms)
 #, machine
@@ -3376,6 +3432,14 @@
 #. a video's status while its picture and sound are joined into one file (ffmpeg); {percent} how far, e.g. "45%"
 #, machine
 	Merging... ({percent})	இணைக்கிறது... ({percent})
+#. text in softgl.rs
+#. the software renderer's window: the download or its check failed; {reason} = why, a sentence's part
+#, machine
+	Mesa's software renderer couldn't be installed: {reason}	மேசாவின் மென்பொருள் ரெண்டரரை நிறுவ முடியவில்லை: {reason}
+#. text in softgl.rs
+#. the software renderer's window, once Mesa's llvmpipe is downloaded and checked
+#, machine
+	Mesa's software renderer is installed. MDM draws with it from its next start.	மேசாவின் மென்பொருள் ரெண்டரர் நிறுவப்பட்டது. MDM அடுத்த முறை தொடங்கும்போது அதைப் பயன்படுத்தி வரையும்.
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3795,6 +3859,11 @@
 #. text in a dialog box
 #, machine
 	No goes back, to choose another folder.	வேறொரு கோப்புறையைத் தேர்ந்தெடுக்க, “வேண்டாம்” என்பதைத் தட்டவும்.
+#. text in softgl.rs
+#. the software renderer's window, offered once at a start where Windows' own software renderer (WARP, keep the name) draws MDM because no graphics card has a driver for it; llvmpipe (keep the name) is Mesa's software renderer; {size} = its download's size (e.g. 66.3 MB)
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	No graphics card here has a driver MDM can draw with, so Windows' software renderer (WARP) draws its windows and keeps the processor busy. Mesa's software renderer (llvmpipe) draws them with far less. Download it once ({size}, from Mesa's builds on GitHub)? MDM draws with it from its next start.	இங்குள்ள எந்த கிராபிக்ஸ் கார்டிலும் MDM வரையக்கூடிய இயக்கி இல்லை, எனவே Windows இன் மென்பொருள் ரெண்டரர் (WARP) அதன் சாளரங்களை வரைகிறது, மேலும் செயலியை அதிகம் பயன்படுத்துகிறது. மேசாவின் மென்பொருள் ரெண்டரர் (llvmpipe) அவற்றை மிகக் குறைந்த செயலி வளத்துடன் வரைகிறது. அதை ஒருமுறை பதிவிறக்க வேண்டுமா ({size}, GitHub இல் உள்ள மேசாவின் உருவாக்கங்களிலிருந்து)? MDM அடுத்த முறை தொடங்கும்போது அதைப் பயன்படுத்தி வரையும்.
 #. tooltip (why a control is greyed) in langpick.rs
 #. tooltip of the greyed OK button in the language picker
 #, machine
@@ -4271,9 +4340,10 @@
 #. text in the Batch download window; text in a dialog box; label in the Options window; text in the Options window; text in a download's Properties window
 #, machine
 	Password	கடவுச்சொல்
-#. text in the Link grabber window; text in the Options window
+#. text in the Link grabber window; text in the Options window; text in requestedit.rs
 #. Link grabber: the package's archives' password (a label before its box)
 #. Options → Add an account: label before the field for the password at the debrid service
+#. Site rule: label before the proxy's password, beside its user name
 #, machine
 	Password:	கடவுச்சொல்:
 #. text in the Add torrent window
@@ -4415,6 +4485,10 @@
 #. text in a download's progress window
 #, machine
 	Property	பண்பு
+#. text in the Options window
+#. Site rules: column title: the rule's proxy (empty: the one in Options → Proxy / Socks; "No proxy"; or its address)
+#, machine
+	Proxy	ப்ராக்ஸி
 #. text in errors.rs; text in the Options window
 #. tab title
 #, machine
@@ -4429,6 +4503,10 @@
 #. label in the Options window
 #, machine
 	Proxy server address	ப்ராக்ஸி சேவையக முகவரி
+#. text in requestedit.rs
+#. Site rule: label before the proxy's user name (its login), under the proxy's address
+#, machine
+	Proxy user:	ப்ராக்ஸி பயனர்:
 #. text in requestedit.rs
 #. Site rule / a download's Connection settings: label before the proxy choice
 #, machine
@@ -5171,6 +5249,10 @@
 #. button in the Download complete window: opens a menu of how long no Download complete window shows (30 minutes, 1 hour...)
 #, machine
 	Snooze	ஒத்திவை
+#. text in softgl.rs
+#. the window's title: Mesa's software renderer, offered where no graphics card draws MDM's windows
+#, machine
+	Software renderer	மென்பொருள் ரெண்டரர்
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -5618,6 +5700,10 @@
 #. a check of Test browser integration: the browsers find MDM's helper program
 #, machine
 	The browsers can find Mister Download Manager	உலாவிகளால் Mister Download Managerஐக் கண்டறிய முடியும்
+#. text in extension.rs
+#. under "An older registry entry is in the way" (Test browser integration, Windows): the entry is in the part of the registry 32-bit programs use, which the browsers read before the right entry; it leads to another copy of MDM or to one that was deleted; then what the Set it up button does about it
+#, machine
+	The browsers read it before the right one, and it leads to another copy of Mister Download Manager or to one that is gone. Set it up gives your account an entry of its own, which the browsers read first.	உலாவி சரியான உள்ளீட்டிற்கு முன் அதைப் படிக்கிறது, மேலும் அது Mister Download Manager இன் மற்றொரு நகலுக்கு அல்லது நீக்கப்பட்ட நகலுக்கு இட்டுச் செல்கிறது. அமை என்பதைச் செயல்படுத்துவதன் மூலம் உங்கள் கணக்கிற்குச் சொந்தமான உள்ளீட்டைப் பெறலாம், அதை உலாவி முதலில் படிக்கும்.
 #. text in the Options window
 #. Options → Remote → Status: the settings were changed; they apply on OK
 #, machine
@@ -5726,6 +5812,10 @@
 #. text in errors.rs
 #, machine
 	the downloaded program doesn't match its signed checksum	பதிவிறக்கிய நிரல் அதன் கையொப்பமிடப்பட்ட சரிபார்ப்புத் தொகையுடன் பொருந்தவில்லை
+#. text in errors.rs
+#. error installing Mesa's software renderer: a file downloaded isn't the one named in the list of builds MDM accepts (its checksum differs), so it was thrown away
+#, machine
+	the downloaded software renderer isn't the build MDM's list of checked builds names, so it wasn't installed	பதிவிறக்கப்பட்ட மென்பொருள் ரெண்டரர் MDM இன் சரிபார்க்கப்பட்ட உருவாக்கங்களின் பட்டியலில் உள்ள உருவாக்கத்தின் பெயர் இல்லை, எனவே அது நிறுவப்படவில்லை
 #. message or event log entry in the main window
 #. in the empty download list, under its title
 #, machine
@@ -5846,6 +5936,10 @@
 #. why a download failed (#1102): the folder and file name together are longer than Windows allows ({limit} characters, 259), counting the temporary files saved beside the file while it downloads (their names are longer). {path} = the path
 #, machine
 	the path is too long for Windows: at most {limit} characters with the files saved while it downloads. Choose a shorter file name or folder ({path})	Windows-க்கான பாதை மிக நீளமானது: பதிவிறக்கத்தின்போது சேமிக்கப்படும் கோப்புகளுடன் சேர்த்து அதிகபட்சம் {limit} எழுத்துகள். குறுகிய கோப்புப் பெயர் அல்லது கோப்புறையைத் தேர்ந்தெடுக்கவும் ({path})
+#. text in requestedit.rs
+#. Site rule: the proxy's user name or password holds a control character (a line break, a tab)
+#, machine
+	The proxy's user name and password can't hold line breaks or tabs	ப்ராக்ஸியின் பயனர் பெயர் மற்றும் கடவுச்சொல்லில் வரி முறிவுகள் அல்லது தாவல்கள் இருக்கக் கூடாது
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. why updates could not be checked: the newest release on the site has no number
 #, machine
@@ -6547,6 +6641,10 @@
 #. a download's Connection settings: the proxy typed isn't an address MDM takes; the examples stay as they are
 #, machine
 	Type the proxy as host:port, http://host:port or socks5://host:port	ப்ராக்ஸியை ஹோஸ்ட்:போர்ட், http://ஹோஸ்ட்:போர்ட் அல்லது socks5://ஹோஸ்ட்:போர்ட் என உள்ளிடவும்
+#. text in requestedit.rs
+#. Site rule: a password was typed for the proxy, but no user name
+#, machine
+	Type the proxy's user name too, or leave its password empty	ப்ராக்ஸியின் பயனர் பெயரையும் உள்ளிடவும் அல்லது அதன் கடவுச்சொல்லை காலியாக விடவும்
 #. text in the Scheduler window
 #. why OK is greyed when naming a new queue
 #, machine
@@ -6759,10 +6857,6 @@
 #. text in the Options window
 #, machine
 	User-Agent for manually added downloads:	கைமுறையாகச் சேர்க்கப்பட்ட பதிவிறக்கங்களுக்கான பயனர்-முகவர்:
-#. text in the Options window
-#. Options → Connection: beside the Site rules... button: what it sets
-#, machine
-	User-Agent, headers and connections by site	தளத்தின்படி பயனர் முகவர், தலைப்புகள் மற்றும் இணைப்புகள்
 #. text in requestedit.rs
 #. Site rule / a download's Connection settings: label before the User-Agent box (the name the browser or program gives itself to sites)
 #, machine
@@ -9020,6 +9114,11 @@ menu	Download &video from a page...	ஒரு பக்கத்திலிர�
 #, machine
 menu	Download in order	வரிசைப்படி பதிவிறக்கவும்
 #. menu command in the main window
+#. View → Draw with: opens a window offering to download Mesa's software renderer (llvmpipe, keep the name), which draws MDM's windows with far less of the processor than Windows' own (WARP)
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Download Mesa's software renderer (llvmpipe)...	மேசாவின் மென்பொருள் ரெண்டரரை (llvmpipe) பதிவிறக்கவும்...
+#. menu command in the main window
 #. View menu: submenu choosing what draws MDM's windows: OpenGL, or Direct3D, Vulkan or Metal (graphics systems)
 #, machine
 menu	Draw with	வரைவதற்கு
@@ -9256,6 +9355,18 @@ menu	Show &drop target	&இலக்கைக் காட்டு
 #. menu command in the main window
 #, machine
 menu	Show Mister Download Manager	Mister Download Managerஐக் காட்டு
+#. menu command in the main window
+#. View → Draw with: a greyed note; Mesa's software renderer (llvmpipe, keep the name) failed on this computer, so Windows' own software renderer (WARP, keep the name) draws
+#, machine
+menu	Software (llvmpipe) didn't start here: WARP draws	மென்பொருள் (llvmpipe) இங்கு தொடங்கவில்லை: WARP வரைகிறது
+#. menu command in the main window
+#. View → Draw with: a greyed note; Mesa's software renderer (llvmpipe, keep the name) is downloaded and draws the windows from MDM's next start
+#, machine
+menu	Software (llvmpipe) draws from the next start	மென்பொருள் (llvmpipe) அடுத்த முறை தொடங்கும்போது வரையும்
+#. menu command in the main window
+#. View → Draw with: a greyed note; what draws the windows: Mesa's software renderer, llvmpipe (keep the name), because no graphics card here has a driver MDM can draw with
+#, machine
+menu	Software (llvmpipe): no graphics card here has a driver for MDM	மென்பொருள் (llvmpipe): இங்குள்ள எந்த கிராபிக்ஸ் கார்டிலும் MDM க்கு இயக்கி இல்லை
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine

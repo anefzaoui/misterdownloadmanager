@@ -538,6 +538,9 @@ enum Cmd {
     /// View → Draw with → OpenGL / Direct3D, Vulkan or Metal (#89, #206), from the next start.
     #[cfg(gpu)]
     DrawWith(crate::renderer::Api),
+    /// View → Draw with → Download Mesa's software renderer (Windows, #476): its offer.
+    #[cfg(windows)]
+    SoftwareRenderer,
     /// View → Window system → Automatic (`None`), X11 (XWayland) or Wayland (Linux, #624), from
     /// the next start.
     #[cfg(target_os = "linux")]
@@ -1447,6 +1450,14 @@ pub struct App {
     /// The browser extension's offer (extension.rs), and whether this run has weighed it.
     extension: Option<crate::extension::Extension>,
     extension_weighed: bool,
+    /// Mesa's software renderer's offer (softgl.rs, #476: Windows, where WARP draws), the list
+    /// read for the start's offer, and whether this run has weighed it.
+    #[cfg(windows)]
+    soft_gl: Option<crate::softgl::Offer>,
+    #[cfg(windows)]
+    soft_gl_lookup: Option<crate::softgl::Lookup>,
+    #[cfg(windows)]
+    soft_gl_weighed: bool,
     /// The weekly update check, while it runs.
     auto_update: Option<crate::help::Slot>,
     /// The automatic check found a new version: its window comes to the front once shown.
@@ -2332,6 +2343,12 @@ impl App {
             shown_existing: None,
             extension: None,
             extension_weighed: false,
+            #[cfg(windows)]
+            soft_gl: None,
+            #[cfg(windows)]
+            soft_gl_lookup: None,
+            #[cfg(windows)]
+            soft_gl_weighed: false,
             auto_update: None,
             raise_updates: false,
             raise_options: false,
@@ -2740,6 +2757,8 @@ impl App {
             } else {
                 it.status_icon()
             },
+            // Its server's checksum didn't match the file kept (#2064).
+            warned: !self.extracts.extracting(it.id) && it.checksum_warning_text(true).is_some(),
             icon: file_icon(&it.file_name),
             queued: queued.contains(&it.id),
             // A progress bar only while the download is in flight: a finished file is whole, and
@@ -2792,7 +2811,11 @@ impl App {
             // A short word and a percentage in the cell while checked or joined (#736): the
             // whole words in its tip and for a screen reader.
             status_whole: (!self.extracts.extracting(it.id))
-                .then(|| it.finishing(false).or_else(|| it.damaged_text(false)))
+                .then(|| {
+                    it.finishing(false)
+                        .or_else(|| it.damaged_text(false))
+                        .or_else(|| it.checksum_warning_text(false))
+                })
                 .flatten(),
             // The limit holding it back (#1191), in the Transfer rate cell's tip.
             rate_tip: receiving
@@ -3585,6 +3608,9 @@ impl App {
                 }
             }
             "about" => self.run(Cmd::About, None, ctx),
+            // Mesa's software renderer's window (#476), as View → Draw with opens it.
+            #[cfg(windows)]
+            "software-renderer" => self.run(Cmd::SoftwareRenderer, None, ctx),
             // Update now's end-to-end tests (feature `test-update`, never in a release): Update
             // now pressed in the window `/show updates` opened (against MDM_UPDATE_FEED).
             #[cfg(feature = "test-update")]
@@ -4013,6 +4039,8 @@ impl App {
                 }
             }
             "options" => {
+                // options:saveto:Programs: Save to with that category chosen (screenshots).
+                let (tab, category) = tab.split_once(':').unwrap_or((tab, ""));
                 let page = match tab {
                     "types" => 1,
                     "saveto" => 2,
@@ -4031,6 +4059,13 @@ impl App {
                 };
                 self.run(Cmd::Options, None, ctx);
                 self.options = self.options.take().map(|o| o.on_page(page));
+                if !category.is_empty() {
+                    let downloads = self.downloads.clone();
+                    self.options = self
+                        .options
+                        .take()
+                        .map(|o| o.with_category(category, &downloads));
+                }
                 self.raise_options = true;
                 // General → Download panels → Edit... (the video button's settings).
                 if tab == "panels" {
@@ -4357,7 +4392,9 @@ impl App {
         let given = context.user_agent.as_deref().or(own);
         let mut opts = Options {
             max_connections: self.settings.connections_for(url),
-            proxy: self.settings.proxy_for(context),
+            // A site rule's proxy, else Options' (#1960); the download's own comes after
+            // (`apply_own`). The network adapter holds it either way.
+            proxy: self.settings.download_proxy(url, context),
             dns: self.settings.dns(),
             route: self.route.clone(),
             // Through a debrid account when one takes this host (#44).
@@ -4692,7 +4729,7 @@ impl App {
             return;
         };
         // The browser's proxy needs its VPN extension's own login (#42): said, never bypassed.
-        if let Some(why) = self.settings.browser_proxy_refused(&context) {
+        if let Some(why) = self.settings.browser_proxy_refused(&url, &context) {
             if let Some(item) = self.item(id) {
                 item.status = Status::Error;
                 item.error = Some(why);
@@ -9408,6 +9445,12 @@ impl App {
                 self.settings.renderer = Some(api);
                 self.dirty = true;
             }
+            #[cfg(windows)]
+            Cmd::SoftwareRenderer => {
+                if self.soft_gl.is_none() {
+                    self.soft_gl = Some(crate::softgl::Offer::looking(&self.rt, ctx));
+                }
+            }
             #[cfg(target_os = "linux")]
             Cmd::WindowSystem(pick) => {
                 tracing::info!("windows through {pick:?} from the next start (None: automatic)");
@@ -10763,12 +10806,20 @@ impl App {
         // The system's API on a software renderer (WARP): said, with why below (no card for
         // it, an OpenGL that can't draw MDM).
         let software = active == Some(gpu) && renderer::software();
+        // Mesa's llvmpipe draws (#476, Windows): said in place of what OpenGL's notes would say.
+        let llvmpipe = renderer::llvmpipe();
         // OpenGL can't draw MDM here (#835, #847): said, and why, where it changed what draws.
         let unfit = renderer::gl_failed().filter(|_| active == Some(gpu) && (software || !on));
         // The software renderer draws because no card here has a driver for the system's API:
         // one line says both (Windows, #847).
         let no_driver = no_driver_note.filter(|_| software && failed == Some(Why::NoAdapter));
-        if active.is_some_and(|a| a != chosen) || software {
+        if llvmpipe {
+            items.push(Sep);
+            // i18n: View → Draw with: a greyed note; what draws the windows: Mesa's software renderer, llvmpipe (keep the name), because no graphics card here has a driver MDM can draw with
+            items.push(off(
+                "Software (llvmpipe): no graphics card here has a driver for MDM",
+            ));
+        } else if active.is_some_and(|a| a != chosen) || software {
             items.push(Sep);
             let mut notes = Vec::new();
             // Since when, and when MDM tries it again (#1205).
@@ -10821,9 +10872,44 @@ impl App {
                 notes.extend(again(renderer::gl_again()));
             }
             items.extend(notes);
+            if software {
+                items.extend(Self::software_renderer_items());
+            }
         }
         // i18n: View menu: submenu choosing what draws MDM's windows: OpenGL, or Direct3D, Vulkan or Metal (graphics systems)
         Sub("Draw with", true, items)
+    }
+
+    /// View → Draw with's lines about Mesa's software renderer (#476, Windows), where Windows'
+    /// software renderer (WARP) draws: its offer while it isn't downloaded, else whether it draws
+    /// from the next start or didn't start here.
+    #[cfg(gpu)]
+    fn software_renderer_items() -> Vec<MenuEntry<Cmd>> {
+        #[cfg(windows)]
+        {
+            use crate::renderer;
+            use MenuEntry::{Item as I, Sep};
+            let off = |label| I(label, Cmd::None, false, false);
+            let mut items = vec![Sep];
+            if renderer::mesa_dll().is_none() {
+                // i18n: View → Draw with: opens a window offering to download Mesa's software renderer (llvmpipe, keep the name), which draws MDM's windows with far less of the processor than Windows' own (WARP)
+                items.push(I(
+                    "Download Mesa's software renderer (llvmpipe)...",
+                    Cmd::SoftwareRenderer,
+                    true,
+                    false,
+                ));
+            } else if renderer::llvmpipe_failed().is_some() {
+                // i18n: View → Draw with: a greyed note; Mesa's software renderer (llvmpipe, keep the name) failed on this computer, so Windows' own software renderer (WARP, keep the name) draws
+                items.push(off("Software (llvmpipe) didn't start here: WARP draws"));
+            } else {
+                // i18n: View → Draw with: a greyed note; Mesa's software renderer (llvmpipe, keep the name) is downloaded and draws the windows from MDM's next start
+                items.push(off("Software (llvmpipe) draws from the next start"));
+            }
+            items
+        }
+        #[cfg(not(windows))]
+        Vec::new()
     }
 
     /// View → Draw with's note under a way that failed here: since when it is passed over, and
@@ -13489,6 +13575,8 @@ impl App {
         item.testing = false;
         item.damaged = false;
         item.refetched = false;
+        // So is what its server's checksum said of it (#2064).
+        item.checksum_warning = None;
         item.note(crate::i18n::t("Downloading again from the start"));
         self.tests.forget(&[id]);
         self.dirty = true;
@@ -13730,6 +13818,46 @@ impl App {
         self.dirty = true;
     }
 
+    /// Mesa's software renderer (#476, softgl.rs): offered once, at a start drawn with Windows'
+    /// WARP for want of a graphics card's driver, once MDM's signed list said its size (read in
+    /// the background, only while the automatic update check is on); and its window, from View
+    /// → Draw with too. After the first start's questions, and never on a server.
+    #[cfg(windows)]
+    fn software_renderer_offer(&mut self, ctx: &egui::Context) {
+        if !self.soft_gl_weighed
+            && !self.headless
+            && self.lang_picker.is_none()
+            && self.setup.is_none()
+            && self.settings.language_asked
+            && self.settings.helpers_asked
+        {
+            self.soft_gl_weighed = true;
+            if crate::softgl::worth_offering(&self.settings) {
+                self.soft_gl_lookup = Some(crate::softgl::look_up(&self.rt, ctx));
+            }
+        }
+        let looked = self
+            .soft_gl_lookup
+            .as_ref()
+            .and_then(|s| s.lock().ok().and_then(|mut s| s.take()));
+        if let Some(got) = looked {
+            self.soft_gl_lookup = None;
+            // None for this computer, or the list couldn't be read: no offer at this start.
+            if let Ok(offered) = got
+                && self.soft_gl.is_none()
+            {
+                self.soft_gl = Some(crate::softgl::Offer::offered(&self.rt, offered));
+                self.settings.software_renderer_asked = true;
+                self.dirty = true;
+            }
+        }
+        if let Some(d) = &mut self.soft_gl
+            && !matches!(d.show(ctx), Outcome::Open)
+        {
+            self.soft_gl = None;
+        }
+    }
+
     fn help_dialogs(&mut self, ctx: &egui::Context) {
         if let Some(d) = &mut self.lang_picker {
             let first = !self.settings.language_asked;
@@ -13790,6 +13918,8 @@ impl App {
                 Outcome::Closed => self.extension = None,
             }
         }
+        #[cfg(windows)]
+        self.software_renderer_offer(ctx);
         if let Some(d) = &mut self.about
             && !matches!(d.show(ctx), Outcome::Open)
         {
@@ -14197,17 +14327,22 @@ impl App {
             Outcome::Open => true,
             Outcome::Closed => false,
             Outcome::Done(h) => {
-                hashes.push((c.id, h));
+                hashes.push((c.id, h, c.matched()));
                 false
             }
         });
-        for (id, h) in hashes {
+        for (id, h, matched) in hashes {
             if let Some(item) = self.item(id) {
                 item.note(crate::i18n::fmt(
                     // i18n: event log entry: the user gave the checksum the file must have
                     crate::i18n::t("Expected checksum set ({algorithm})"),
                     &[("algorithm", h.algo.name())],
                 ));
+                // The user's own check found the file matches: its server's checksum that
+                // didn't is no longer a warning (#2064).
+                if matched {
+                    item.checksum_warning = None;
+                }
                 item.checksum = Some(h);
                 self.dirty = true;
             }
@@ -15089,6 +15224,8 @@ impl App {
             crate::pacfetch::watch_system(&self.rt);
         }
         crate::settings::share_proxy(self.settings.proxy());
+        // The site rules' proxies for the helpers' runs (#1960), as the pages' downloads get them.
+        mdm_tools::proc::set_site_rules(&self.settings.site_rules);
         crate::settings::share_dns(self.settings.dns());
         crate::settings::share_video_settings(&self.settings);
         crate::extractq::share_chosen_7zip(&self.settings.seven_zip_path);
@@ -19025,6 +19162,7 @@ mod redownload_tests {
         row.checksum = Some(mdm_engine::verify::Hash {
             algo: mdm_engine::verify::Algo::Sha256,
             value: vec![0; 32],
+            origin: mdm_engine::verify::Origin::User,
         });
         let mut app = app_with(rt, vec![row]);
         app.redownload(1);

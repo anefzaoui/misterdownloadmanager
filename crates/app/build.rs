@@ -18,6 +18,12 @@ fn main() {
     }
     if windows && std::env::var("CARGO_CFG_TARGET_ENV").as_deref() == Ok("msvc") {
         println!("cargo:rustc-link-arg-bins=/SUBSYSTEM:WINDOWS,5.02");
+        // OpenGL's DLL is loaded at its first use, not as the program starts (#476): where there
+        // is no graphics card, MDM can load Mesa's software OpenGL (llvmpipe) from its data
+        // folder first, and every OpenGL call goes to it (win32.rs `load_mesa`). Loaded at
+        // start, Windows' own would be the one in use, whatever MDM loaded after.
+        println!("cargo:rustc-link-arg-bins=/DELAYLOAD:opengl32.dll");
+        println!("cargo:rustc-link-arg-bins=delayimp.lib");
     }
     // The icon and version info are for a Windows program only (not one built on Windows for
     // Linux or macOS); winresource builds on Windows only.

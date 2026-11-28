@@ -326,8 +326,9 @@ right-to-left window.
 - **Speeds up every download** by fetching parts of the file at the same time, and keeps
   re-balancing until the last byte.
 - **Resumes** after a crash, a restart or a dropped connection, without starting over.
-- **Site rules**: a User-Agent, extra request headers, a number of connections and "connect the
-  way a browser does" for every download from a site (`*.example.com`). A stopped download's
+- **Site rules**: a User-Agent, extra request headers, a number of connections, "connect the
+  way a browser does" and a proxy (none, or one of its own) for every download from a site
+  (`*.example.com`): only the sites that need a proxy go through one. A stopped download's
   Properties change its own headers, proxy and connections, and MDM checks it is still the same
   file before it goes on ([how](docs/connections-and-speed.md#site-rules)).
 - **Catches downloads from Firefox, Chrome, Edge, Brave, Opera, Vivaldi and Helium** (the
@@ -358,7 +359,9 @@ right-to-left window.
 - **Through your VPN only**, if you want: hold every download to one network adapter, with a kill
   switch, and choose an encrypted DNS. Each download shows its server's country.
 - **From your phone, or on a server**: control MDM from a phone on your home network, or run it
-  without a window on a NAS (Docker, Unraid) ([how](docs/server.md)).
+  without a window on a NAS (Docker, Unraid) ([how](docs/server.md)). On a Windows Server or a
+  virtual machine with no graphics card, it offers a lighter software renderer (Mesa's llvmpipe),
+  downloaded only if you say yes ([how](docs/troubleshooting.md#the-window-freezes-or-draws-wrongly)).
 - **Works from scripts too**: IDM's command-line switches, a command-line tool, and a local API for other programs ([how](docs/command-line.md)).
 - **Works with your AI assistant**: an MCP server lets Claude, Cursor or VS Code list, add, pause and remove your downloads ([set it up](docs/ai-assistants.md)).
 - **Leaves you some speed**: limit one download or all of them, only while you're at the computer.

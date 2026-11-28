@@ -60,6 +60,9 @@ workspace = true
 
 [target."cfg(windows)".dependencies]
 win32job = "2.0.3"
+# Mesa's software renderer comes as pal1000's 7z archive (mesa.rs, #476): its decoder alone, LZMA,
+# LZMA2 and the BCJ2 filter (no compressing, no encryption, no other codec). Windows only.
+sevenz-rust2 = { version = "0.27.0", default-features = false }
 
 # A helper's process group killed whole (#1301), safely.
 [target."cfg(unix)".dependencies]
