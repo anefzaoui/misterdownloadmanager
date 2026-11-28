@@ -199,6 +199,10 @@
 #. text in the Scheduler window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 	&Start now	&Start now
+#. text in a dialog box
+#. Certificate warning: appended to truncated SAN list; {n} = remaining names count
+#. {n} = a number (keep the braces as they are)
+	(+{n} more)	(+{n} more)
 #. text in the Options window
 #. under Download panels site exclusions list
 	(separate by spaces; * matches anything)	(separate by spaces; * matches anything)
@@ -976,6 +980,9 @@
 	Close	Close
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 	Close a menu or dialog	Close a menu or dialog
+#. text in a dialog box
+#. Certificate warning: the certificate's subject Common Name (CN)
+	CN: {cn}	CN: {cn}
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Cocos (Keeling) Islands	Cocos (Keeling) Islands
@@ -2110,6 +2117,9 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Israel	Israel
+#. text in a dialog box
+#. Certificate warning: the certificate's issuer (CA or signer)
+	Issuer: {issuer}	Issuer: {issuer}
 #. text in the Options window
 #. Options → Remote → Status: it could not start; {error} = the system's reason
 #. {error} = an error message (keep the braces as they are)
@@ -3584,6 +3594,9 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	San Marino	San Marino
+#. text in a dialog box
+#. Certificate warning: Subject Alternative Names (SAN) on the certificate
+	SAN: {san}	SAN: {san}
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Sao Tome and Principe	Sao Tome and Principe
@@ -5123,6 +5136,15 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Uzbekistan	Uzbekistan
+#. text in a dialog box
+#. Certificate warning: certificate start date when end date is unavailable; {from} is YYYY-MM-DD
+	Validity: from {from}	Validity: from {from}
+#. text in a dialog box
+#. Certificate warning: certificate expiry date when start date is unavailable; {to} is YYYY-MM-DD
+	Validity: until {to}	Validity: until {to}
+#. text in a dialog box
+#. Certificate warning: certificate validity date range; {from} and {to} are YYYY-MM-DD
+	Validity: {from} – {to}	Validity: {from} – {to}
 #. text in a download's progress window
 	Value	Value
 #. text in countries.rs

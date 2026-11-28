@@ -791,6 +791,11 @@ mod tests {
                 problem: P::Expired,
                 expired_since: Some("2021-05-25".into()),
                 self_signed: false,
+                issuer: None,
+                subject_cn: None,
+                san: Vec::new(),
+                not_before: None,
+                not_after: Some("2021-05-25".into()),
             })),
         }));
         assert!(expired.contains("2021-05-25"));
@@ -804,6 +809,11 @@ mod tests {
                 problem: P::Untrusted,
                 expired_since: None,
                 self_signed: true,
+                issuer: None,
+                subject_cn: None,
+                san: Vec::new(),
+                not_before: None,
+                not_after: None,
             })),
         }));
         assert!(self_signed.contains("self-signed"));
