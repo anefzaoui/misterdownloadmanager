@@ -575,7 +575,7 @@
           ]
         },
         "cookie_jar": {
-          "description": "From the browser: the same cookies, each with the domain, path and flags the browser\nkeeps for it, for yt-dlp's cookie file. yt-dlp may ask another host than the page's (a\nYouTube Music page is looked up on www.youtube.com), and a cookie of `.youtube.com` goes\nthere too. An older extension sends `cookies` only.",
+          "description": "From the browser: its cookies, each with the domain, path and flags the browser keeps\nfor it. For a video, yt-dlp's cookie file: yt-dlp may ask another host than the page's (a\nYouTube Music page is looked up on www.youtube.com), and a cookie of `.youtube.com` goes\nthere too. For a file (#1540), those of every host its download went through in the\nbrowser (its address, its redirects, `final_url`), partitioned (CHIPS) ones of its page\nincluded: the download's cookie jar sends each to the hosts it belongs to, never to\nanother. An older extension sends `cookies` only.",
           "items": {
             "$ref": "#/$defs/BrowserCookie"
           },
@@ -1016,6 +1016,13 @@
           "default": "",
           "description": "What the menu shows (\"720p mp4\"), in MDM's language.",
           "type": "string"
+        },
+        "language": {
+          "description": "The language of its sound, in MDM's words (#1961: \"Deutsch · German\", \"English,\noriginal\"), when the video's sound comes in several; none for one language, and from an\napp older than the field.",
+          "type": [
+            "string",
+            "null"
+          ]
         },
         "original": {
           "description": "The sound as the site sends it (not converted): the button's list says \"original\".",

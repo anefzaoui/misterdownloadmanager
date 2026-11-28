@@ -163,6 +163,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{package}: {n} file left out, its name would lead out of its folder|{package}: {n} files left out, their names would lead out of its folder	{package}：已排除 {n} 个文件，因为其文件名会使路径超出所在文件夹
+#. count in the Link grabber window
+#. Link grabber's Source line: a Google Drive folder's ({package}: its name) items that aren't files to download (Google Forms, shortcuts, Google Sites) are left out; {n} how many
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{package}: {n} item left out, a Google Form, shortcut or Site isn't a file|{package}: {n} items left out, Google Forms, shortcuts and Sites aren't files	{package}：已排除 {n} 个项目（Google 表单、快捷方式和 Google 协作平台不是可下载文件）
 #. count in cnl.rs
 #. Click'n'Load window: {site} is a web site's name such as "example.com"
 #. {site} = a web site's name such as "example.com"; {n} = a number (keep the braces as they are)
@@ -333,6 +338,10 @@
 #. why a split archive (in several files, its volumes) isn't tested yet, in "{name} isn't complete ({why})": one of its files isn't downloaded yet
 #, machine
 	a volume of it isn't there yet	其中一个分卷尚未下载
+#. text in the Download video window
+#. why the thumbnail-as-cover checkbox is greyed in Download video: the choice is the site's sound in a WebM file, which can't hold a picture
+#, machine
+	A WebM file can't hold a cover: choose M4A, MP3, Opus or FLAC	WebM 文件无法包含封面：请选择 M4A、MP3、Opus 或 FLAC
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 	About Mister Download Manager	关于 Mister Download Manager
 #. text in whereis.rs
@@ -1708,6 +1717,10 @@
 #. Link grabber, in the empty "Save to" box: each file goes to its category's folder (Options → Save to)
 #, machine
 	Each file's category folder	每个文件所属类别的文件夹
+#. text in the Options window
+#. Options → Regional → Videos' sound: the first choice, each video's own sound (the language it was made in), the default
+#, machine
+	Each video's original	每个视频的原始音轨
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Ecuador	厄瓜多尔
@@ -2105,6 +2118,10 @@
 #. {address} = an example web address with a * in the file name
 #, machine
 	For example:  {address}	例如：{address}
+#. text in the Options window
+#. Options → Regional → Videos' sound: a note under the language list
+#, machine
+	For videos whose sound comes in several languages (dubbed ones), and playlists. A video without it keeps its original sound.	适用于包含多种语言音轨（配音）的视频和播放列表。没有多种语言音轨的视频将保留原始音频。
 #. text in the Add torrent window
 #. Torrent settings, under the switch that makes MDM open magnet links and .torrent files (macOS, Linux)
 #, machine
@@ -3377,6 +3394,10 @@
 #. Link grabber, a link's status: the server wants a login (401, 403)
 #, machine
 	Needs a login	需要登录
+#. text in the Link grabber window
+#. Link grabber, a link's status: a Google Drive folder that isn't shared with everyone needs the browser's Google sign-in. The sentence is the cell's hover tip
+#, machine
+	Needs a sign-in	需要登录
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Nepal	尼泊尔
@@ -3828,6 +3849,10 @@
 #. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer's wake alarm can be set by an administrator only
 #, machine
 	Only an administrator can allow this	只有管理员才能允许此操作
+#. text in the Download video window
+#. why the thumbnail-as-cover checkbox is greyed in Download video: the choice is a video, which is saved as it is
+#, machine
+	Only an audio file gets a cover: a video is saved as it is	只有音频文件才能添加封面：视频将按原样保存
 #. tooltip (why a control is greyed) in the Download video window
 #. why "Put them into the video" is greyed: the chosen file type can't hold subtitles
 #, machine
@@ -4164,6 +4189,10 @@
 #. why Batch download's OK is greyed
 #, machine
 	Put a * in the address where the numbers or letters go	在地址中数字或字母的位置填入 *
+#. text in the Download video window
+#. checkbox in Download video: the picture the site shows for the video (its thumbnail) goes into an audio-only download (MP3, M4A, Opus, FLAC) as its cover, which music players show
+#, machine
+	Put the video's thumbnail in the audio file as its cover	将视频缩略图作为封面放入音频文件
 #. checkbox in the Download video window
 #. checkbox in Download video: subtitles go inside the video file instead of a separate .srt file beside it
 #, machine
@@ -4883,9 +4912,17 @@
 #. text in a dialog box
 #, machine
 	Some of the torrent's files are already in this folder:	此文件夹中已存在种子的部分文件：
+#. text in the Download video window
+#. label in Download video before the list of the languages a video's sound comes in (its original and the dubbed ones)
+#, machine
+	Sound	音轨
 #. text in the Options window
 #, machine
 	Sound file	声音文件
+#. text in the Options window
+#. Options → Regional → Videos' sound: label before the list of languages
+#, machine
+	Sound language:	声音语言:
 #. page title in the Options window
 #, machine
 	Sound settings	声音设置
@@ -5855,6 +5892,10 @@
 #. a download's error: a Google Drive file that isn't shared with everyone
 #, machine
 	this Google Drive file needs you to sign in: sign in to Google in your browser, then download it from there	此 Google 云端硬盘文件需要登录：请在浏览器中登录 Google，然后从浏览器下载
+#. text in the Link grabber window
+#. Link grabber, the hover tip of a Google Drive folder's status: the folder isn't shared with everyone; how to send it with the browser's sign-in (the browser's right-click command, keep its name as the browser extension shows it)
+#, machine
+	This Google Drive folder needs you to sign in: sign in to Google in your browser, then right-click the folder's link there and choose Download with Mister Download Manager.	此 Google 云端硬盘文件夹需要您登录：请在浏览器中登录 Google，然后右键单击该文件夹的链接并选择“使用 Mister Download Manager 下载”。
 #. text in errors.rs
 #. a download's error: the address is a Google Drive folder, which isn't one file
 #, machine
@@ -6496,6 +6537,10 @@
 #. what a screen reader calls the list of a playlist's videos
 #, machine
 	Videos	视频
+#. group box title in the Options window
+#. Options → Regional: group box title: the language of a video's sound, for videos that come with several (dubbed ones)
+#, machine
+	Videos' sound	视频音轨
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Vietnam	越南
@@ -6909,6 +6954,11 @@
 #. said after Delete with files when some files stayed on the disk; {file} is the download's name; the files' paths follow it
 #, machine
 	{file}: these files stayed on the disk, because MDM didn't create them or another download uses them:	{file}：这些文件保留在磁盘上，因为 MDM 未创建它们或另一个下载正在使用它们：
+#. text in the Link grabber window
+#. Link grabber's Source line: a Google Drive folder ({folder}: its name) in which a folder showed the most items Drive's page lists ({n}: 50), so it may hold more than are listed; what gets them all (Drive's own Download button, which makes a zip)
+#. {n} = a number (keep the braces as they are)
+#, machine
+	{folder}: Google Drive's page lists only the first {n} items of a folder, so some may be missing; Drive's own Download gets the whole folder as a zip	{folder}：Google 云端硬盘页面仅列出文件夹中的前 {n} 个项目，因此可能会遗漏一些项目；使用云端硬盘自带的“下载”功能可将整个文件夹下载为 zip 文件
 #. message or event log entry in the main window; text in the Link grabber window
 #. Link grabber's Source line, after where the links came from: a folder (an FTP folder, a web server's "Index of" page) held more files or subfolders than Link grabber lists; {folder} is its name, {n} how many of its files are listed (10,000)
 #. {n} = a number (keep the braces as they are)
@@ -6962,9 +7012,17 @@
 #, machine
 	{ip} can't be reached through {adapter}: it has no address of that kind (IPv4 or IPv6)	无法通过 {adapter} 访问 {ip}：该适配器没有此类地址（IPv4 或 IPv6）
 #. text in the Download video window
+#. in Download video's Sound list: a language's sound track that describes the picture for people who can't see it; {language} is the language's name
+#, machine
+	{language}, audio description	{language}，音频描述
+#. text in the Download video window
 #. in the Subtitles list of Download video: {language} = a language's name; the site made these subtitles automatically (speech recognition)
 #, machine
 	{language}, automatic	{language}，自动生成
+#. text in the Download video window
+#. in Download video's Sound list and the browser's video menu: the video's own sound, the language it was made in (the others are dubbed); {language} is the language's name
+#, machine
+	{language}, original	{language}，原声
 #. text in a download's progress window
 #. {live} = peers connected now; {known} = peers heard of
 #, machine
@@ -7164,10 +7222,20 @@
 #, machine
 	{site} didn't give the file this time: try again in a moment	{site} 这次没有提供文件：请稍后再试
 #. text in the Link grabber window
+#. Link grabber, the hover tip of a Google Drive folder's status ({site}: "Google Drive"): no folder at this link, or one the signed-in account may not open
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+	{site} has no such folder, or it isn't shared with you.	{site} 中没有此文件夹，或者您无权访问。
+#. text in the Link grabber window
 #. Link grabber, the hover tip of a Hugging Face repository's or GitHub release's status; {site} is "Hugging Face" or "GitHub"
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
 #, machine
 	{site} has no such repository, folder, release or tag, or it is private.	{site} 没有此存储库、文件夹、发布或标签，或者它是私有的。
+#. text in the Link grabber window
+#. Link grabber, a Google Drive folder's status (the cell's hover tip): Drive ({site}: "Google Drive") answered that it gets too many requests from this computer
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+	{site} is getting too many requests from this computer: try again later.	{site} 收到来自此计算机的请求过多：请稍后重试。
 #. text in the Link grabber window
 #. Link grabber, a Hugging Face repository's or GitHub release's status (the cell's hover tip): the site ({site}: "Hugging Face", "GitHub") lets only so many requests through from a computer without an account; {n} minutes to wait
 #. {site} = a web site's name such as "example.com"; {n} = a number (keep the braces as they are)

@@ -1088,7 +1088,8 @@ fn parse_proxy(s: &str) -> Result<Proxy, String> {
 fn proxy_arg(s: &str, password: Option<String>) -> Result<Proxy, String> {
     let s = s.trim();
     match s.to_ascii_lowercase().as_str() {
-        "none" | "direct" => return Ok(Proxy::None),
+        // Direct, yt-dlp and gallery-dl too (#1616): asked for, not left at a default.
+        "none" | "direct" => return Ok(Proxy::Direct),
         "system" => return Ok(Proxy::System),
         _ => {}
     }
@@ -2665,7 +2666,8 @@ mod tests {
             http: true,
             https: true,
         };
-        assert_eq!(proxy_arg("none", None), Ok(Proxy::None));
+        assert_eq!(proxy_arg("none", None), Ok(Proxy::Direct));
+        assert_eq!(proxy_arg("direct", None), Ok(Proxy::Direct));
         assert_eq!(proxy_arg(" System ", None), Ok(Proxy::System));
         assert_eq!(
             proxy_arg("127.0.0.1:7890", None),
@@ -3030,7 +3032,7 @@ mod tests {
         );
         assert_eq!(
             (c.proxy, c.dns),
-            (Proxy::None, mdm_engine::DnsChoice::default())
+            (Proxy::Direct, mdm_engine::DnsChoice::default())
         );
         let c = Conn::of(&cmd(&["install-ytdlp", "--proxy", "socks5h://h:1"]), &net);
         assert!(matches!(c.proxy, Proxy::Manual { ref url, .. } if url == "socks5h://h:1"));
@@ -3073,7 +3075,7 @@ mod tests {
         );
         assert_eq!(
             (c.proxy, c.dns),
-            (Proxy::None, mdm_engine::DnsChoice::default())
+            (Proxy::Direct, mdm_engine::DnsChoice::default())
         );
         let c = Conn::of(
             &cmd(&[

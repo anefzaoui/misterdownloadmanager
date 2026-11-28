@@ -436,6 +436,11 @@ pub struct Settings {
     /// Proxy / Socks: 0 none, 1 system, 2 automatic script, 3 manual.
     pub proxy_from_browser: bool,
     pub proxy_mode: u8,
+    /// "No proxy/socks" was chosen on the Proxy / Socks page (#1616): clicked, or the browser
+    /// box unticked while it was on. yt-dlp and gallery-dl then go direct too (`Proxy::Direct`).
+    /// The untouched default, and a list saved before this setting (`proxy_mode: 0` says
+    /// nothing about who set it), keep them on the system's proxy, as before.
+    pub proxy_none_chosen: bool,
     pub proxy_script: String,
     pub proxy_host: String,
     pub proxy_port: String,
@@ -581,6 +586,13 @@ pub struct Settings {
     /// Download video from a page → Split into chapters: split video into multiple files based on
     /// chapters (with ffmpeg). Off; a settings file from before has none: off.
     pub video_split_chapters: bool,
+    /// Download video from a page → the video's thumbnail as an audio file's cover (#1962, with
+    /// ffmpeg). On; a settings file from before has none: on.
+    pub video_cover: bool,
+    /// Options → Regional → the sound language videos come in when they have several (#1961:
+    /// dubbed ones), for every video and playlist: a language's code (`de`, `pt-BR`); empty, the
+    /// default, for each video's original.
+    pub video_sound_language: String,
     /// Options → Sites Logins → Cookies for video sites (#229): the browser whose cookies
     /// yt-dlp reads on this computer when the extension passed none (yt-dlp's name: `firefox`,
     /// `chrome`...; empty: off, the default), and its profile (a name or a folder; empty: the
@@ -748,6 +760,7 @@ impl Default for Settings {
             site_rules: Vec::new(),
             proxy_from_browser: true,
             proxy_mode: 0,
+            proxy_none_chosen: false,
             proxy_script: String::new(),
             proxy_host: String::new(),
             proxy_port: String::new(),
@@ -807,6 +820,8 @@ impl Default for Settings {
             video_subs: Default::default(),
             video_chapters: true,
             video_split_chapters: false,
+            video_cover: true,
+            video_sound_language: String::new(),
             video_cookies: String::new(),
             video_cookies_profile: String::new(),
             ytdlp_config: false,
@@ -1185,6 +1200,9 @@ impl Settings {
             // "Use proxy/socks from a browser's request": browsers use Windows' proxy settings,
             // so with no proxy of our own so do we (none set there: direct, as before).
             _ if self.proxy_from_browser => system(),
+            // #1616: chosen on purpose, the helpers go direct too; the untouched default leaves
+            // them on the system's proxy.
+            0 if self.proxy_none_chosen => Proxy::Direct,
             _ => Proxy::None,
         }
     }
@@ -1552,12 +1570,28 @@ impl Settings {
 }
 
 /// Keep every yt-dlp run on Options' cookies for video sites (cheap when they didn't change)
-/// and on Use my yt-dlp config file, and every video started on Embed chapters (#827).
+/// and on Use my yt-dlp config file, every video started on Embed chapters (#827) and every
+/// sound on its cover (#1962), and the sound language chosen in Options (#1961).
 pub fn share_video_settings(s: &Settings) {
     mdm_tools::proc::set_browser_cookies(s.video_cookies());
     mdm_tools::proc::set_user_config(s.ytdlp_config);
     mdm_tools::video::set_chapters(s.video_chapters);
     mdm_tools::video::set_split_chapters(s.video_split_chapters);
+    mdm_tools::video::set_cover(s.video_cover);
+    // Shared at every frame: written only when it changed.
+    if *SOUND_LANGUAGE.read().unwrap_or_else(|e| e.into_inner()) != s.video_sound_language {
+        *SOUND_LANGUAGE.write().unwrap_or_else(|e| e.into_inner()) = s.video_sound_language.clone();
+    }
+}
+
+/// Options' sound language for videos (#1961), as `share_video_settings` last shared it.
+static SOUND_LANGUAGE: std::sync::RwLock<String> = std::sync::RwLock::new(String::new());
+
+/// The sound language videos come in when they have several (#1961, Options → Regional): a
+/// language's code, or none for each video's original.
+pub fn sound_language() -> Option<String> {
+    let l = SOUND_LANGUAGE.read().unwrap_or_else(|e| e.into_inner());
+    mdm_tools::resolve::language_code(&l)
 }
 
 /// The network adapter MDM's connections go through now (#35).
@@ -2083,6 +2117,41 @@ mod tests {
             assert_eq!(r.takes_torrents(), on);
             assert_eq!(r.capture_min_kb, 7);
         }
+    }
+
+    /// #1616: "No proxy/socks" chosen on purpose is told apart from the untouched default: only
+    /// the choice keeps yt-dlp and gallery-dl direct (`Proxy::Direct`). A list from before (no
+    /// such key) reads as before, and the choice is kept across a save.
+    #[test]
+    fn no_proxy_chosen_is_told_apart_from_the_default() {
+        use mdm_engine::Proxy;
+        let read = |json: serde_json::Value| serde_json::from_value::<Settings>(json).unwrap();
+        // The untouched default: the browser box ticked, so the system's settings, as before.
+        assert_eq!(Settings::default().proxy(), Proxy::System);
+        // A list saved before #1616 with the box unticked: no proxy, the helpers as before.
+        let old = read(serde_json::json!({"proxy_mode": 0, "proxy_from_browser": false}));
+        assert!(!old.proxy_none_chosen);
+        assert_eq!(old.proxy(), Proxy::None);
+        let chosen = read(serde_json::json!({
+            "proxy_mode": 0,
+            "proxy_from_browser": false,
+            "proxy_none_chosen": true,
+        }));
+        assert_eq!(chosen.proxy(), Proxy::Direct);
+        assert!(!chosen.follows_system());
+        let saved = serde_json::to_value(&chosen).unwrap();
+        assert_eq!(saved["proxy_none_chosen"], true);
+        assert_eq!(read(saved).proxy(), Proxy::Direct);
+        // The browser box ticked: the browser's (Windows') proxy, as before, chosen or not.
+        let mut s = chosen.clone();
+        s.proxy_from_browser = true;
+        assert_eq!(s.proxy(), Proxy::System);
+        // Another mode: that mode's proxy; a manual one with no address typed: none, as before.
+        s.proxy_from_browser = false;
+        s.proxy_mode = 1;
+        assert_eq!(s.proxy(), Proxy::System);
+        s.proxy_mode = 3;
+        assert_eq!(s.proxy(), Proxy::None);
     }
 
     /// #1581: private-window downloads are kept in the list by default, for a new list and for

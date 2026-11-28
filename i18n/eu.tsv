@@ -191,6 +191,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{package}: {n} file left out, its name would lead out of its folder|{package}: {n} files left out, their names would lead out of its folder	{package}: {n} fitxategi baztertuta, izenak karpetatik kanpora eramango lukeelako|{package}: {n} fitxategi baztertuta, izenek karpetatik kanpora eramango luketelako
+#. count in the Link grabber window
+#. Link grabber's Source line: a Google Drive folder's ({package}: its name) items that aren't files to download (Google Forms, shortcuts, Google Sites) are left out; {n} how many
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{package}: {n} item left out, a Google Form, shortcut or Site isn't a file|{package}: {n} items left out, Google Forms, shortcuts and Sites aren't files	{package}: {n} elementu baztertuta, Google Form, lasterbide edo Site bat ez baita deskargatu beharreko fitxategia|{package}: {n} elementu baztertuta, Google Forms, lasterbideak eta Sites ez baitira deskargatu beharreko fitxategiak
 #. count in cnl.rs
 #. Click'n'Load window: {site} is a web site's name such as "example.com"
 #. {site} = a web site's name such as "example.com"; {n} = a number (keep the braces as they are)
@@ -392,6 +397,10 @@
 #. why a split archive (in several files, its volumes) isn't tested yet, in "{name} isn't complete ({why})": one of its files isn't downloaded yet
 #, machine
 	a volume of it isn't there yet	bolumen bat falta da oraindik
+#. text in the Download video window
+#. why the thumbnail-as-cover checkbox is greyed in Download video: the choice is the site's sound in a WebM file, which can't hold a picture
+#, machine
+	A WebM file can't hold a cover: choose M4A, MP3, Opus or FLAC	WebM fitxategi batek ezin du azalik izan: aukeratu M4A, MP3, Opus edo FLAC
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	About Mister Download Manager	Mister Download Manager-ri buruz
@@ -1921,6 +1930,10 @@
 #. Link grabber, in the empty "Save to" box: each file goes to its category's folder (Options → Save to)
 #, machine
 	Each file's category folder	Fitxategi bakoitzaren kategoria-karpeta
+#. text in the Options window
+#. Options → Regional → Videos' sound: the first choice, each video's own sound (the language it was made in), the default
+#, machine
+	Each video's original	Bideo bakoitzaren jatorrizko soinua
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2331,6 +2344,10 @@
 #. {address} = an example web address with a * in the file name
 #, machine
 	For example:  {address}	Adibidez: {address}
+#. text in the Options window
+#. Options → Regional → Videos' sound: a note under the language list
+#, machine
+	For videos whose sound comes in several languages (dubbed ones), and playlists. A video without it keeps its original sound.	Hainbat hizkuntzatako audioa duten bideoetarako (bikoiztuetarako) eta erreprodukzio-zerrendetarako. Audio hori ez duen bideoak jatorrizko soinua mantentzen du.
 #. text in the Add torrent window
 #. Torrent settings, under the switch that makes MDM open magnet links and .torrent files (macOS, Linux)
 #, machine
@@ -3687,6 +3704,10 @@
 #. Link grabber, a link's status: the server wants a login (401, 403)
 #, machine
 	Needs a login	Saioa hasi behar da
+#. text in the Link grabber window
+#. Link grabber, a link's status: a Google Drive folder that isn't shared with everyone needs the browser's Google sign-in. The sentence is the cell's hover tip
+#, machine
+	Needs a sign-in	Saioa hasi behar da
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -4154,6 +4175,10 @@
 #. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer's wake alarm can be set by an administrator only
 #, machine
 	Only an administrator can allow this	Administratzaile batek bakarrik baimendu dezake hau
+#. text in the Download video window
+#. why the thumbnail-as-cover checkbox is greyed in Download video: the choice is a video, which is saved as it is
+#, machine
+	Only an audio file gets a cover: a video is saved as it is	Audio-fitxategi batek bakarrik du azala: bideo bat bere horretan gordetzen da
 #. tooltip (why a control is greyed) in the Download video window
 #. why "Put them into the video" is greyed: the chosen file type can't hold subtitles
 #, machine
@@ -4503,6 +4528,10 @@
 #. why Batch download's OK is greyed
 #, machine
 	Put a * in the address where the numbers or letters go	Jarri * bat zenbakiak edo letrak doazen helbidean
+#. text in the Download video window
+#. checkbox in Download video: the picture the site shows for the video (its thumbnail) goes into an audio-only download (MP3, M4A, Opus, FLAC) as its cover, which music players show
+#, machine
+	Put the video's thumbnail in the audio file as its cover	Jarri bideoaren miniatura audio-fitxategian azala gisa
 #. checkbox in the Download video window
 #. checkbox in Download video: subtitles go inside the video file instead of a separate .srt file beside it
 #, machine
@@ -5252,9 +5281,17 @@
 #. text in a dialog box
 #, machine
 	Some of the torrent's files are already in this folder:	Torrentaren fitxategi batzuk karpeta honetan daude dagoeneko:
+#. text in the Download video window
+#. label in Download video before the list of the languages a video's sound comes in (its original and the dubbed ones)
+#, machine
+	Sound	Soinua
 #. text in the Options window
 #, machine
 	Sound file	Soinu-fitxategia
+#. text in the Options window
+#. Options → Regional → Videos' sound: label before the list of languages
+#, machine
+	Sound language:	Soinuaren hizkuntza:
 #. page title in the Options window
 #, machine
 	Sound settings	Soinu-ezarpenak
@@ -6246,6 +6283,10 @@
 #. a download's error: a Google Drive file that isn't shared with everyone
 #, machine
 	this Google Drive file needs you to sign in: sign in to Google in your browser, then download it from there	Google Driveko fitxategi honek saioa hastea eskatzen dizu: hasi saioa Google-n zure arakatzailean, eta deskargatu handik
+#. text in the Link grabber window
+#. Link grabber, the hover tip of a Google Drive folder's status: the folder isn't shared with everyone; how to send it with the browser's sign-in (the browser's right-click command, keep its name as the browser extension shows it)
+#, machine
+	This Google Drive folder needs you to sign in: sign in to Google in your browser, then right-click the folder's link there and choose Download with Mister Download Manager.	Google Drive karpeta honek saioa hastea eskatzen du: hasi saioa Google-n zure arakatzailean, eta gero egin eskuin-klika karpetaren estekan eta aukeratu Deskargatu Mister Download Manager bidez.
 #. text in errors.rs
 #. a download's error: the address is a Google Drive folder, which isn't one file
 #, machine
@@ -6911,6 +6952,10 @@
 #. what a screen reader calls the list of a playlist's videos
 #, machine
 	Videos	Bideoak
+#. group box title in the Options window
+#. Options → Regional: group box title: the language of a video's sound, for videos that come with several (dubbed ones)
+#, machine
+	Videos' sound	Bideoen soinua
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -7332,6 +7377,11 @@
 #. said after Delete with files when some files stayed on the disk; {file} is the download's name; the files' paths follow it
 #, machine
 	{file}: these files stayed on the disk, because MDM didn't create them or another download uses them:	{file}: fitxategi hauek diskoan geratu dira, MDM-k ez zituelako sortu edo beste deskarga batek erabiltzen dituelako:
+#. text in the Link grabber window
+#. Link grabber's Source line: a Google Drive folder ({folder}: its name) in which a folder showed the most items Drive's page lists ({n}: 50), so it may hold more than are listed; what gets them all (Drive's own Download button, which makes a zip)
+#. {n} = a number (keep the braces as they are)
+#, machine
+	{folder}: Google Drive's page lists only the first {n} items of a folder, so some may be missing; Drive's own Download gets the whole folder as a zip	{folder}: Google Drive-ren orriak karpeta bateko lehen {n} elementuak soilik zerrendatzen ditu; beraz, batzuk falta izan daitezke. Drive-ko Deskargatu aukerak karpeta osoa ZIP fitxategi gisa deskargatzen du
 #. message or event log entry in the main window; text in the Link grabber window
 #. Link grabber's Source line, after where the links came from: a folder (an FTP folder, a web server's "Index of" page) held more files or subfolders than Link grabber lists; {folder} is its name, {n} how many of its files are listed (10,000)
 #. {n} = a number (keep the braces as they are)
@@ -7385,9 +7435,17 @@
 #, machine
 	{ip} can't be reached through {adapter}: it has no address of that kind (IPv4 or IPv6)	Ezin da {ip} helbidera iritsi {adapter} bidez: ez du mota horretako helbiderik (IPv4 edo IPv6)
 #. text in the Download video window
+#. in Download video's Sound list: a language's sound track that describes the picture for people who can't see it; {language} is the language's name
+#, machine
+	{language}, audio description	{language}, audio-deskribapena
+#. text in the Download video window
 #. in the Subtitles list of Download video: {language} = a language's name; the site made these subtitles automatically (speech recognition)
 #, machine
 	{language}, automatic	{language}, automatikoak
+#. text in the Download video window
+#. in Download video's Sound list and the browser's video menu: the video's own sound, the language it was made in (the others are dubbed); {language} is the language's name
+#, machine
+	{language}, original	{language}, jatorrizkoa
 #. text in a download's progress window
 #. {live} = peers connected now; {known} = peers heard of
 #, machine
@@ -7587,10 +7645,20 @@
 #, machine
 	{site} didn't give the file this time: try again in a moment	{site} guneak ez du fitxategia eman oraingoan: saiatu berriro pixka bat barru
 #. text in the Link grabber window
+#. Link grabber, the hover tip of a Google Drive folder's status ({site}: "Google Drive"): no folder at this link, or one the signed-in account may not open
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+	{site} has no such folder, or it isn't shared with you.	{site} gunean ez dago horrelako karpetarik, edo karpeta ez dago zurekin partekatuta.
+#. text in the Link grabber window
 #. Link grabber, the hover tip of a Hugging Face repository's or GitHub release's status; {site} is "Hugging Face" or "GitHub"
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
 #, machine
 	{site} has no such repository, folder, release or tag, or it is private.	{site} guneak ez du horrelako biltegirik, karpetarik, bertsiorik edo etiketarik, edo pribatua da.
+#. text in the Link grabber window
+#. Link grabber, a Google Drive folder's status (the cell's hover tip): Drive ({site}: "Google Drive") answered that it gets too many requests from this computer
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+	{site} is getting too many requests from this computer: try again later.	{site} guneak ordenagailu honetatik eskaera gehiegi jasotzen ari da: saiatu berriro geroago.
 #. text in the Link grabber window
 #. Link grabber, a Hugging Face repository's or GitHub release's status (the cell's hover tip): the site ({site}: "Hugging Face", "GitHub") lets only so many requests through from a computer without an account; {n} minutes to wait
 #. {site} = a web site's name such as "example.com"; {n} = a number (keep the braces as they are)

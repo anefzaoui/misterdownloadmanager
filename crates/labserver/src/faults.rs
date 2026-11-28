@@ -98,7 +98,8 @@ pub struct Faults {
     #[serde(deserialize_with = "size_opt")]
     pub range_rate: Option<u64>,
     /// 403 unless the request's `Cookie` holds this pair (`sid=1`), or a cookie of this name
-    /// (`sid`): a file behind a session.
+    /// (`sid`): a file behind a session. Several, comma-separated (`gate=1,tok=2`): each of them
+    /// (#1540: a CDN that wants its own cookie and the one its sign-in step set).
     pub require_cookie: Option<String>,
     /// 403 unless the request's `Referer` starts with this (hotlink protection).
     pub require_referer: Option<String>,
@@ -255,8 +256,13 @@ pub fn challenge_page(wait_ms: u64) -> String {
     )
 }
 
-/// True when the `Cookie` header `cookie` satisfies `require_cookie` (`name=value` or `name`).
+/// True when the `Cookie` header `cookie` satisfies `require_cookie` (`name=value` or `name`,
+/// several comma-separated: each of them).
 pub fn has_cookie(cookie: Option<&str>, want: &str) -> bool {
+    want.split(',').all(|one| has_one_cookie(cookie, one))
+}
+
+fn has_one_cookie(cookie: Option<&str>, want: &str) -> bool {
     let (name, value) = match want.split_once('=') {
         Some((n, v)) => (n.trim(), Some(v.trim())),
         None => (want.trim(), None),
@@ -314,6 +320,9 @@ mod tests {
         assert!(!has_cookie(Some("sid=11"), "sid=1"));
         assert!(!has_cookie(Some("xsid=1"), "sid=1"));
         assert!(!has_cookie(None, "sid"));
+        // Several: each of them.
+        assert!(has_cookie(Some("gate=1; tok=2"), "gate=1,tok=2"));
+        assert!(!has_cookie(Some("gate=1"), "gate=1,tok=2"));
         let md5 = Faults::parse("content_md5=wrong&oss_encode=1").unwrap();
         assert_eq!(md5.content_md5.as_deref(), Some("wrong"));
         assert_eq!(md5.oss_encode, Some(true));

@@ -2148,6 +2148,8 @@ impl OptionsDialog {
             page_title_ending(&p, font, o.x + get_x - 8.0, o.y + 69.0, &lines);
         }
         let s = &mut self.s;
+        let (mode_was, box_was) = (s.proxy_mode, s.proxy_from_browser);
+        let mut clicked = false;
         if winui::button_light(
             ui,
             r(o, get_x, 61.0, get_w, 21.0),
@@ -2218,15 +2220,18 @@ impl OptionsDialog {
             );
             if resp.clicked() {
                 s.proxy_mode = i as u8;
+                clicked = true;
             }
             group.push(resp);
         }
         if let Some(i) = winui::radio_keys(ui, &group) {
             s.proxy_mode = i as u8;
+            clicked = true;
         }
         if s.proxy_mode != was {
             tick_manual_protocols(s);
         }
+        note_proxy_choice(s, mode_was, box_was, clicked);
         winui::etched_h(&p, o.x + 22.0, o.y + 159.0, 380.0);
         winui::etched_h(&p, o.x + 21.0, o.y + 187.0, 380.0);
         winui::etched_h(&p, o.x + 21.0, o.y + 242.0, 380.0);
@@ -3554,6 +3559,72 @@ impl OptionsDialog {
             o.y + 320.0,
             crate::i18n::t("Used by the list of downloads and the Scheduler."),
             LIGHT_DISABLED(),
+        );
+        self.sound_language(ui, o);
+    }
+
+    /// Regional → the language videos' sound comes in when they have several (#1961: YouTube's
+    /// dubbed tracks): each video's original (the default) or a language, for every video
+    /// looked up and every playlist; a video without that language comes with its original.
+    fn sound_language(&mut self, ui: &mut Ui, o: Pos2) {
+        let p = ui.painter().clone();
+        // i18n: Options → Regional: group box title: the language of a video's sound, for videos that come with several (dubbed ones)
+        group(ui, o, 16.0, 354.0, 392.0, 110.0, "Videos' sound");
+        let codes = crate::videodlg::sound_language_choices(&self.s.video_sound_language);
+        let names: Vec<String> = std::iter::once(
+            // i18n: Options → Regional → Videos' sound: the first choice, each video's own sound (the language it was made in), the default
+            crate::i18n::t("Each video's original").to_owned(),
+        )
+        .chain(
+            codes
+                .iter()
+                .map(|c| crate::videodlg::sound_language_name(c, false)),
+        )
+        .collect();
+        let items: Vec<&str> = names.iter().map(String::as_str).collect();
+        let at = codes
+            .iter()
+            .position(|c| c.eq_ignore_ascii_case(self.s.video_sound_language.trim()))
+            .map_or(0, |i| i + 1);
+        // i18n: Options → Regional → Videos' sound: label before the list of languages
+        let label = crate::i18n::t("Sound language:");
+        let (rect, cut) = winui::text_right_within(
+            &p,
+            o.x + 186.0,
+            o.y + 389.0,
+            label,
+            LIGHT_TEXT(),
+            o.x + 30.0,
+        );
+        if cut {
+            winui::full_on_hover(ui, rect, "sound-language-label", label);
+        }
+        if let Some(i) = winui::combo_light(
+            ui,
+            r(o, 192.0, 374.0, 200.0, 21.0),
+            &items,
+            at,
+            true,
+            "opt-sound-language",
+        ) {
+            self.s.video_sound_language = match i {
+                0 => String::new(),
+                i => codes[i - 1].clone(),
+            };
+        }
+        winui::paragraph_until(
+            ui,
+            &p,
+            o.x + 30.0,
+            o.y + 418.0,
+            // i18n: Options → Regional → Videos' sound: a note under the language list
+            crate::i18n::t(
+                "For videos whose sound comes in several languages (dubbed ones), and playlists. A video without it keeps its original sound.",
+            ),
+            LIGHT_DISABLED(),
+            o.x + 400.0,
+            o.y + 458.0,
+            13.0,
         );
     }
 
@@ -5372,6 +5443,16 @@ impl OptionsDialog {
 
 // ---- pieces -----------------------------------------------------------------------------
 
+/// Proxy / Socks this frame (#1616): "No proxy/socks" is chosen when it was clicked (or picked
+/// with the keys), even while already on, or when the browser box changed while it is on; any
+/// other mode, chosen or brought by Get System, ends the choice. A page only looked at changes
+/// nothing, so the untouched default stays the default.
+fn note_proxy_choice(s: &mut Settings, mode_was: u8, box_was: bool, clicked: bool) {
+    if clicked || s.proxy_mode != mode_was || s.proxy_from_browser != box_was {
+        s.proxy_none_chosen = s.proxy_mode == 0;
+    }
+}
+
 /// Proxy / Socks → Manual proxy/socks configuration with no protocol ticked uses the proxy for
 /// nothing, and the boxes start unticked (#1448: yt-dlp went straight to YouTube): chosen, or
 /// found so when Options opens, it is ticked for http and https, as Get System ticks it.
@@ -6853,6 +6934,32 @@ mod tests {
             !other.proxy_http && !other.proxy_https,
             "not Manual: as it is"
         );
+    }
+
+    /// #1616: "No proxy/socks" counts as chosen only from the page: a click on it (also when it
+    /// was already on) or a change of the browser box while it's on; looking changes nothing,
+    /// and another mode ends the choice.
+    #[test]
+    fn no_proxy_is_chosen_by_a_click_not_by_looking() {
+        let mut s = Settings::default();
+        note_proxy_choice(&mut s, 0, true, false);
+        assert!(!s.proxy_none_chosen, "only looked at");
+        note_proxy_choice(&mut s, 0, true, true);
+        assert!(s.proxy_none_chosen, "clicked while on");
+        s.proxy_mode = 1;
+        note_proxy_choice(&mut s, 0, true, true);
+        assert!(!s.proxy_none_chosen, "another mode");
+        s.proxy_mode = 0;
+        s.proxy_from_browser = false;
+        note_proxy_choice(&mut s, 0, true, false);
+        assert!(
+            s.proxy_none_chosen,
+            "the browser box unticked while it's on"
+        );
+        assert_eq!(s.proxy(), mdm_engine::Proxy::Direct);
+        s.proxy_mode = 3;
+        note_proxy_choice(&mut s, 0, false, false);
+        assert!(!s.proxy_none_chosen, "Get System's Manual");
     }
 
     /// #1558: an address typed the old way (`socks5://host`) opens as Type SOCKS5 with the host

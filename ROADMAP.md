@@ -574,6 +574,45 @@ Everything below ships together, in version 0.6.0, the next release.
   a player in a lightbox (a modal dialog or a popover), a player with a closed shadow root, one written
   into a frame of the page's own, a page that keeps the pointer's moves, and an Instagram reel on its
   own page (muted and looping at first); a pre-roll ad's player no longer gets the button
+- ✅ Downloads that redirect through other sites keep the cookies each site needs: the browser
+  add-on hands over the cookies of every address the download went through (partitioned ones
+  included), MDM keeps those a server sets along the way, and each site gets only its own
+  ([#1540](https://github.com/anefzaoui/misterdownloadmanager/issues/1540); thanks to
+  [@solovyov-jenya2004](https://github.com/solovyov-jenya2004))
+- ✅ Large videos with chapters: after the streams are in, the MP4's index is moved to the front
+  of the file by the last of yt-dlp's passes only, not by each one (a full rewrite of the file
+  each time); the finished file is the same, byte for byte, and a 3 GB video with chapters writes
+  about a quarter less after its download (a third less with its subtitles in the file)
+  ([#2098](https://github.com/anefzaoui/misterdownloadmanager/issues/2098))
+- ✅ Download video: choose the language of a video's sound when it comes in several (YouTube's
+  dubbed tracks), the original first and marked; every quality, Audio only and MP3, Opus and
+  FLAC take that language's sound, and the button over a video says each line's language.
+  Options → Regional chooses one for every video and playlist, the original when a video lacks
+  it ([#1961](https://github.com/anefzaoui/misterdownloadmanager/issues/1961); thanks to
+  [@toji2002](https://github.com/toji2002), [@Hanif-afzal](https://github.com/Hanif-afzal) and
+  [@twistedwolfyt00](https://github.com/twistedwolfyt00))
+- ✅ Audio only downloads: the video's thumbnail as the cover of an MP3, M4A, Opus or FLAC file,
+  put in by ffmpeg without encoding the sound again; a box in Download video, kept as you leave
+  it ([#1962](https://github.com/anefzaoui/misterdownloadmanager/issues/1962); thanks to
+  [@twistedwolfyt00](https://github.com/twistedwolfyt00))
+- ✅ MDM's window toolkit (egui) on the same copy as the Craft suite's libraries (storytold's
+  `next`), MDM's own fixes rebased on it: every window, menus included, connected to screen
+  readers before it first shows, and accessibility stays on while any window is read
+- ✅ The shared Craft libraries for saving files and for translations brought up to date: the
+  temporary files a save cut short by a crash leaves in the data folder are removed at the next
+  start, and a file saved over keeps more of the original (its attributes, its group)
+- ✅ The shared Craft libraries for saving files and for translations brought up to date: the
+  temporary files a save cut short by a crash leaves in the data folder are removed at the next
+  start, and a file saved over keeps more of the original (its attributes, its group)
+- ✅ Google Drive shared folders: a folder's link in Add URL, Link grabber or the browser's
+  right-click command opens its files and its subfolders' in Link grabber, ticked, named and
+  sized as Drive lists them, downloaded into the same folders on disk; Docs, Sheets and Slides
+  as Office files; a folder shared with your account only, with the browser's sign-in; Drive's
+  refusals said per file as for single files, and a folder of more than 50 items said as listed
+  in part ([#2032](https://github.com/anefzaoui/misterdownloadmanager/issues/2032))
+- ✅ **No proxy/socks** chosen in Options → Proxy / Socks keeps yt-dlp and gallery-dl direct too, off Windows'
+  proxy and the proxy variables; the untouched default still follows them, and so does a list saved before
+  ([#1616](https://github.com/anefzaoui/misterdownloadmanager/issues/1616))
 - ✅ The window no longer freezes while an antivirus scans a file MDM opens
   ([#1292](https://github.com/anefzaoui/misterdownloadmanager/issues/1292); thanks to
   [@seifmoustafa](https://github.com/seifmoustafa) and
@@ -754,6 +793,9 @@ Everything below ships together, in version 0.6.0, the next release.
   reached; each stage now waits for the session's own word (downloading, the peer given up, its
   retry refused) instead of the time that should have passed
 - ✅ Torrents: a paused torrent's finished pieces are saved before MDM quits
+- ✅ Torrents: a torrent added again with its pieces kept keeps its progress also when its numbers
+  were being read as it left the session
+  ([#1648](https://github.com/anefzaoui/misterdownloadmanager/issues/1648))
 - ✅ Torrents: the engine checks what it's sent more carefully
 - ✅ Extracting: 7z and RAR archives are checked more carefully
 - ✅ Archive test: archives are checked more carefully
@@ -1802,6 +1844,11 @@ Everything below ships together, in version 0.6.0, the next release.
   speed limits (a change applies at once), pause and resume like a file, after a restart too,
   and a fresh address from yt-dlp when one expires (part of
   [#769](https://github.com/anefzaoui/misterdownloadmanager/issues/769))
+- ✅ Videos in pieces (HLS) tested stopped and continued, after a restart, with expiring and failing
+  pieces, AES-128, byte ranges, discontinuities and several sounds and pictures (AC-3, MP2, HEVC,
+  MPEG-2), each checked for its length and a clean decode: the pieces on disk count only for the same
+  stream and list, a sound an MP4 can't hold (LATM) is saved as MPEG-TS instead of failing, parts of
+  one file a server sends whole are cut from it, a piece cut off without a length is asked again
 - ✅ Videos sent in pieces (HLS, DASH) through MDM's own downloader too, several pieces at once
   (as many as a file's connections), AES-128 pieces decrypted, expired pieces' addresses asked of
   yt-dlp again ([#531](https://github.com/anefzaoui/misterdownloadmanager/issues/531), part of

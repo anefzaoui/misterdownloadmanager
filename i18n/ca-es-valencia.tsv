@@ -186,6 +186,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} window waits until you're back|{n} windows wait until you're back	{n} finestra espera fins que tornes|{n} finestres esperen fins que tornes
+#. count in the Link grabber window
+#. Link grabber's Source line: a Google Drive folder's ({package}: its name) items that aren't files to download (Google Forms, shortcuts, Google Sites) are left out; {n} how many
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{package}: {n} item left out, a Google Form, shortcut or Site isn't a file|{package}: {n} items left out, Google Forms, shortcuts and Sites aren't files	{package}: s'ha omés {n} element perquè un formulari de Google, una drecera o un lloc de Google no és un fitxer|{package}: s'han omés {n} elements perquè els formularis de Google, les dreceres i els llocs de Google no són fitxers
 #. count in cnl.rs
 #. Click'n'Load window: {site} is a web site's name such as "example.com"
 #. {site} = a web site's name such as "example.com"; {n} = a number (keep the braces as they are)
@@ -387,6 +392,10 @@
 #. why a split archive (in several files, its volumes) isn't tested yet, in "{name} isn't complete ({why})": one of its files isn't downloaded yet
 #, machine
 	a volume of it isn't there yet	un dels seus volums encara no hi és
+#. text in the Download video window
+#. why the thumbnail-as-cover checkbox is greyed in Download video: the choice is the site's sound in a WebM file, which can't hold a picture
+#, machine
+	A WebM file can't hold a cover: choose M4A, MP3, Opus or FLAC	Un fitxer WebM no pot contindre una portada: tria M4A, MP3, Opus o FLAC
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	About Mister Download Manager	Quant a Mister Download Manager
@@ -1916,6 +1925,10 @@
 #. Link grabber, in the empty "Save to" box: each file goes to its category's folder (Options → Save to)
 #, machine
 	Each file's category folder	Carpeta de categoria de cada fitxer
+#. text in the Options window
+#. Options → Regional → Videos' sound: the first choice, each video's own sound (the language it was made in), the default
+#, machine
+	Each video's original	Original de cada vídeo
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2326,6 +2339,10 @@
 #. {address} = an example web address with a * in the file name
 #, machine
 	For example:  {address}	Per exemple: {address}
+#. text in the Options window
+#. Options → Regional → Videos' sound: a note under the language list
+#, machine
+	For videos whose sound comes in several languages (dubbed ones), and playlists. A video without it keeps its original sound.	Per als vídeos amb doblatge en diversos idiomes i les llistes de reproducció. Un vídeo sense doblatge manté el so original.
 #. text in the Add torrent window
 #. Torrent settings, under the switch that makes MDM open magnet links and .torrent files (macOS, Linux)
 #, machine
@@ -3682,6 +3699,10 @@
 #. Link grabber, a link's status: the server wants a login (401, 403)
 #, machine
 	Needs a login	Necessita un inici de sessió
+#. text in the Link grabber window
+#. Link grabber, a link's status: a Google Drive folder that isn't shared with everyone needs the browser's Google sign-in. The sentence is the cell's hover tip
+#, machine
+	Needs a sign-in	Cal iniciar la sessió
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -4149,6 +4170,10 @@
 #. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer's wake alarm can be set by an administrator only
 #, machine
 	Only an administrator can allow this	Només un administrador pot permetre-ho
+#. text in the Download video window
+#. why the thumbnail-as-cover checkbox is greyed in Download video: the choice is a video, which is saved as it is
+#, machine
+	Only an audio file gets a cover: a video is saved as it is	Només un fitxer d'àudio pot tindre una portada: un vídeo es desa tal qual
 #. tooltip (why a control is greyed) in the Download video window
 #. why "Put them into the video" is greyed: the chosen file type can't hold subtitles
 #, machine
@@ -4498,6 +4523,10 @@
 #. why Batch download's OK is greyed
 #, machine
 	Put a * in the address where the numbers or letters go	Posa un * en l'adreça on van els números o les lletres
+#. text in the Download video window
+#. checkbox in Download video: the picture the site shows for the video (its thumbnail) goes into an audio-only download (MP3, M4A, Opus, FLAC) as its cover, which music players show
+#, machine
+	Put the video's thumbnail in the audio file as its cover	Posa la miniatura del vídeo en el fitxer d'àudio com a portada
 #. checkbox in the Download video window
 #. checkbox in Download video: subtitles go inside the video file instead of a separate .srt file beside it
 #, machine
@@ -5247,9 +5276,17 @@
 #. text in a dialog box
 #, machine
 	Some of the torrent's files are already in this folder:	Alguns dels fitxers del torrent ja es troben en aquesta carpeta:
+#. text in the Download video window
+#. label in Download video before the list of the languages a video's sound comes in (its original and the dubbed ones)
+#, machine
+	Sound	So
 #. text in the Options window
 #, machine
 	Sound file	Fitxer de so
+#. text in the Options window
+#. Options → Regional → Videos' sound: label before the list of languages
+#, machine
+	Sound language:	Idioma del so:
 #. page title in the Options window
 #, machine
 	Sound settings	Configuració de so
@@ -6241,6 +6278,10 @@
 #. a download's error: a Google Drive file that isn't shared with everyone
 #, machine
 	this Google Drive file needs you to sign in: sign in to Google in your browser, then download it from there	aquest fitxer de Google Drive requereix que inicieu la sessió: inicieu la sessió a Google en el navegador i, a continuació, descarregueu-lo des d'allí
+#. text in the Link grabber window
+#. Link grabber, the hover tip of a Google Drive folder's status: the folder isn't shared with everyone; how to send it with the browser's sign-in (the browser's right-click command, keep its name as the browser extension shows it)
+#, machine
+	This Google Drive folder needs you to sign in: sign in to Google in your browser, then right-click the folder's link there and choose Download with Mister Download Manager.	Esta carpeta de Google Drive necessita que inicies la sessió: inicia la sessió a Google en el navegador i, després, fes clic dret en l'enllaç de la carpeta i tria Baixa amb Mister Download Manager.
 #. text in errors.rs
 #. a download's error: the address is a Google Drive folder, which isn't one file
 #, machine
@@ -6906,6 +6947,10 @@
 #. what a screen reader calls the list of a playlist's videos
 #, machine
 	Videos	Vídeos
+#. group box title in the Options window
+#. Options → Regional: group box title: the language of a video's sound, for videos that come with several (dubbed ones)
+#, machine
+	Videos' sound	So dels vídeos
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -7327,6 +7372,11 @@
 #. said after Delete with files when some files stayed on the disk; {file} is the download's name; the files' paths follow it
 #, machine
 	{file}: these files stayed on the disk, because MDM didn't create them or another download uses them:	{file}: estos fitxers s’han mantingut en el disc, perquè MDM no els ha creat o una altra baixada els usa:
+#. text in the Link grabber window
+#. Link grabber's Source line: a Google Drive folder ({folder}: its name) in which a folder showed the most items Drive's page lists ({n}: 50), so it may hold more than are listed; what gets them all (Drive's own Download button, which makes a zip)
+#. {n} = a number (keep the braces as they are)
+#, machine
+	{folder}: Google Drive's page lists only the first {n} items of a folder, so some may be missing; Drive's own Download gets the whole folder as a zip	{folder}: la pàgina de Google Drive només mostra els primers {n} elements d'una carpeta, per la qual cosa en podrien faltar; el botó Baixa de Drive descarrega tota la carpeta en un fitxer zip
 #. message or event log entry in the main window; text in the Link grabber window
 #. Link grabber's Source line, after where the links came from: a folder (an FTP folder, a web server's "Index of" page) held more files or subfolders than Link grabber lists; {folder} is its name, {n} how many of its files are listed (10,000)
 #. {n} = a number (keep the braces as they are)
@@ -7380,9 +7430,17 @@
 #, machine
 	{ip} can't be reached through {adapter}: it has no address of that kind (IPv4 or IPv6)	No es pot accedir a {ip} a través de {adapter}: no té cap adreça d’este tipus (IPv4 o IPv6)
 #. text in the Download video window
+#. in Download video's Sound list: a language's sound track that describes the picture for people who can't see it; {language} is the language's name
+#, machine
+	{language}, audio description	{language}, audiodescripció
+#. text in the Download video window
 #. in the Subtitles list of Download video: {language} = a language's name; the site made these subtitles automatically (speech recognition)
 #, machine
 	{language}, automatic	{language}, automàtics
+#. text in the Download video window
+#. in Download video's Sound list and the browser's video menu: the video's own sound, the language it was made in (the others are dubbed); {language} is the language's name
+#, machine
+	{language}, original	{language}, original
 #. text in a download's progress window
 #. {live} = peers connected now; {known} = peers heard of
 #, machine
@@ -7582,10 +7640,20 @@
 #, machine
 	{site} didn't give the file this time: try again in a moment	{site} no ha donat el fitxer esta vegada: torna a intentar-ho d’ací a un moment
 #. text in the Link grabber window
+#. Link grabber, the hover tip of a Google Drive folder's status ({site}: "Google Drive"): no folder at this link, or one the signed-in account may not open
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+	{site} has no such folder, or it isn't shared with you.	{site} no té esta carpeta, o no està compartida amb tu.
+#. text in the Link grabber window
 #. Link grabber, the hover tip of a Hugging Face repository's or GitHub release's status; {site} is "Hugging Face" or "GitHub"
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
 #, machine
 	{site} has no such repository, folder, release or tag, or it is private.	{site} no té este repositori, carpeta, versió o etiqueta, o és privat.
+#. text in the Link grabber window
+#. Link grabber, a Google Drive folder's status (the cell's hover tip): Drive ({site}: "Google Drive") answered that it gets too many requests from this computer
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+	{site} is getting too many requests from this computer: try again later.	{site} està rebent massa sol·licituds d'este ordinador: torna a intentar-ho més tard.
 #. text in the Link grabber window
 #. Link grabber, a Hugging Face repository's or GitHub release's status (the cell's hover tip): the site ({site}: "Hugging Face", "GitHub") lets only so many requests through from a computer without an account; {n} minutes to wait
 #. {site} = a web site's name such as "example.com"; {n} = a number (keep the braces as they are)

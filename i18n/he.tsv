@@ -311,6 +311,10 @@
 #. why a split archive (in several files, its volumes) isn't tested yet, in "{name} isn't complete ({why})": one of its files isn't downloaded yet
 #, machine
 	a volume of it isn't there yet	אחד הכרכים שלו עדיין חסר
+#. text in the Download video window
+#. why the thumbnail-as-cover checkbox is greyed in Download video: the choice is the site's sound in a WebM file, which can't hold a picture
+#, machine
+	A WebM file can't hold a cover: choose M4A, MP3, Opus or FLAC	קובץ WebM אינו יכול להכיל עטיפה: בחר M4A, MP3, Opus או FLAC
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	About Mister Download Manager	אודות Mister Download Manager
@@ -1835,6 +1839,10 @@
 #. Link grabber, in the empty "Save to" box: each file goes to its category's folder (Options → Save to)
 #, machine
 	Each file's category folder	תיקיית הקטגוריה של כל קובץ
+#. text in the Options window
+#. Options → Regional → Videos' sound: the first choice, each video's own sound (the language it was made in), the default
+#, machine
+	Each video's original	המקור של כל סרטון
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2245,6 +2253,10 @@
 #. {address} = an example web address with a * in the file name
 #, machine
 	For example:  {address}	לדוגמה: {address}
+#. text in the Options window
+#. Options → Regional → Videos' sound: a note under the language list
+#, machine
+	For videos whose sound comes in several languages (dubbed ones), and playlists. A video without it keeps its original sound.	לסרטונים שבהם השמע זמין בכמה שפות (סרטונים מדובבים) ולרשימות השמעה. סרטון שאין בו כמה שפות שומר על השמע המקורי.
 #. text in the Add torrent window
 #. Torrent settings, under the switch that makes MDM open magnet links and .torrent files (macOS, Linux)
 #, machine
@@ -3601,6 +3613,10 @@
 #. Link grabber, a link's status: the server wants a login (401, 403)
 #, machine
 	Needs a login	דורש התחברות
+#. text in the Link grabber window
+#. Link grabber, a link's status: a Google Drive folder that isn't shared with everyone needs the browser's Google sign-in. The sentence is the cell's hover tip
+#, machine
+	Needs a sign-in	נדרשת כניסה
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -4068,6 +4084,10 @@
 #. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer's wake alarm can be set by an administrator only
 #, machine
 	Only an administrator can allow this	רק מנהל מערכת יכול לאפשר זאת
+#. text in the Download video window
+#. why the thumbnail-as-cover checkbox is greyed in Download video: the choice is a video, which is saved as it is
+#, machine
+	Only an audio file gets a cover: a video is saved as it is	רק קובץ שמע מקבל עטיפה: סרטון נשמר כפי שהוא
 #. tooltip (why a control is greyed) in the Download video window
 #. why "Put them into the video" is greyed: the chosen file type can't hold subtitles
 #, machine
@@ -4417,6 +4437,10 @@
 #. why Batch download's OK is greyed
 #, machine
 	Put a * in the address where the numbers or letters go	הצב כוכבית בכתובת שבה מופיעים המספרים או האותיות
+#. text in the Download video window
+#. checkbox in Download video: the picture the site shows for the video (its thumbnail) goes into an audio-only download (MP3, M4A, Opus, FLAC) as its cover, which music players show
+#, machine
+	Put the video's thumbnail in the audio file as its cover	הכנס את התמונה הממוזערת של הסרטון לקובץ השמע כעטיפה שלו
 #. checkbox in the Download video window
 #. checkbox in Download video: subtitles go inside the video file instead of a separate .srt file beside it
 #, machine
@@ -5166,9 +5190,17 @@
 #. text in a dialog box
 #, machine
 	Some of the torrent's files are already in this folder:	חלק מקובצי הטורנט כבר נמצאים בתיקייה זו:
+#. text in the Download video window
+#. label in Download video before the list of the languages a video's sound comes in (its original and the dubbed ones)
+#, machine
+	Sound	קול
 #. text in the Options window
 #, machine
 	Sound file	קובץ צליל
+#. text in the Options window
+#. Options → Regional → Videos' sound: label before the list of languages
+#, machine
+	Sound language:	שפת קול:
 #. page title in the Options window
 #, machine
 	Sound settings	הגדרות צליל
@@ -6160,6 +6192,10 @@
 #. a download's error: a Google Drive file that isn't shared with everyone
 #, machine
 	this Google Drive file needs you to sign in: sign in to Google in your browser, then download it from there	קובץ Google Drive זה דורש ממך להיכנס: היכנס ל-Google בדפדפן שלך, ולאחר מכן הורד אותו משם
+#. text in the Link grabber window
+#. Link grabber, the hover tip of a Google Drive folder's status: the folder isn't shared with everyone; how to send it with the browser's sign-in (the browser's right-click command, keep its name as the browser extension shows it)
+#, machine
+	This Google Drive folder needs you to sign in: sign in to Google in your browser, then right-click the folder's link there and choose Download with Mister Download Manager.	תיקיית Google Drive זו דורשת ממך להיכנס: היכנס ל־Google בדפדפן שלך, לאחר מכן לחץ לחיצה ימנית על קישור התיקייה שם ובחר הורד באמצעות Mister Download Manager.
 #. text in errors.rs
 #. a download's error: the address is a Google Drive folder, which isn't one file
 #, machine
@@ -6817,6 +6853,10 @@
 #. what a screen reader calls the list of a playlist's videos
 #, machine
 	Videos	סרטונים
+#. group box title in the Options window
+#. Options → Regional: group box title: the language of a video's sound, for videos that come with several (dubbed ones)
+#, machine
+	Videos' sound	קול סרטונים
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -7238,6 +7278,11 @@
 #. said after Delete with files when some files stayed on the disk; {file} is the download's name; the files' paths follow it
 #, machine
 	{file}: these files stayed on the disk, because MDM didn't create them or another download uses them:	{file}: קבצים אלה נשארו בדיסק, מכיוון ש-MDM לא יצר אותם או שהורדה אחרת משתמשת בהם:
+#. text in the Link grabber window
+#. Link grabber's Source line: a Google Drive folder ({folder}: its name) in which a folder showed the most items Drive's page lists ({n}: 50), so it may hold more than are listed; what gets them all (Drive's own Download button, which makes a zip)
+#. {n} = a number (keep the braces as they are)
+#, machine
+	{folder}: Google Drive's page lists only the first {n} items of a folder, so some may be missing; Drive's own Download gets the whole folder as a zip	{folder}: דף Google Drive מציג רק את {n} הפריטים הראשונים של תיקייה, כך שייתכן שחלקם חסרים; ההורדה של Drive עצמה מורידה את כל התיקייה כקובץ zip
 #. message or event log entry in the main window; text in the Link grabber window
 #. Link grabber's Source line, after where the links came from: a folder (an FTP folder, a web server's "Index of" page) held more files or subfolders than Link grabber lists; {folder} is its name, {n} how many of its files are listed (10,000)
 #. {n} = a number (keep the braces as they are)
@@ -7291,9 +7336,17 @@
 #, machine
 	{ip} can't be reached through {adapter}: it has no address of that kind (IPv4 or IPv6)	לא ניתן להגיע ל-{ip} דרך {adapter}: למתאם אין כתובת מסוג זה (IPv4 או IPv6)
 #. text in the Download video window
+#. in Download video's Sound list: a language's sound track that describes the picture for people who can't see it; {language} is the language's name
+#, machine
+	{language}, audio description	{language}, תיאור שמע
+#. text in the Download video window
 #. in the Subtitles list of Download video: {language} = a language's name; the site made these subtitles automatically (speech recognition)
 #, machine
 	{language}, automatic	{language}, אוטומניות
+#. text in the Download video window
+#. in Download video's Sound list and the browser's video menu: the video's own sound, the language it was made in (the others are dubbed); {language} is the language's name
+#, machine
+	{language}, original	{language}, מקורי
 #. text in a download's progress window
 #. {live} = peers connected now; {known} = peers heard of
 #, machine
@@ -7493,10 +7546,20 @@
 #, machine
 	{site} didn't give the file this time: try again in a moment	{site} לא סיפק את הקובץ הפעם: נסה שוב בעוד רגע
 #. text in the Link grabber window
+#. Link grabber, the hover tip of a Google Drive folder's status ({site}: "Google Drive"): no folder at this link, or one the signed-in account may not open
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+	{site} has no such folder, or it isn't shared with you.	ל־{site} אין תיקייה כזו, או שהיא אינה משותפת איתך.
+#. text in the Link grabber window
 #. Link grabber, the hover tip of a Hugging Face repository's or GitHub release's status; {site} is "Hugging Face" or "GitHub"
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
 #, machine
 	{site} has no such repository, folder, release or tag, or it is private.	ל־{site} אין מאגר, תיקייה, מהדורה או תג כאלה, או שהוא פרטי.
+#. text in the Link grabber window
+#. Link grabber, a Google Drive folder's status (the cell's hover tip): Drive ({site}: "Google Drive") answered that it gets too many requests from this computer
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+	{site} is getting too many requests from this computer: try again later.	{site} מקבל יותר מדי בקשות ממחשב זה: נסה שוב מאוחר יותר.
 #. text in the Link grabber window
 #. Link grabber, a Hugging Face repository's or GitHub release's status (the cell's hover tip): the site ({site}: "Hugging Face", "GitHub") lets only so many requests through from a computer without an account; {n} minutes to wait
 #. {site} = a web site's name such as "example.com"; {n} = a number (keep the braces as they are)

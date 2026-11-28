@@ -91,7 +91,7 @@ More in [Connections and speed](connections-and-speed.md).
 ![Options on its Proxy / Socks page](images/help/options-proxy.webp)
 *Proxy / Socks: no proxy, the system's, or your own.*
 
-- **No proxy/socks** — connect directly. This is the default.
+- **No proxy/socks** — connect directly. This is the default. Chosen here (clicked, or with **Use proxy/socks from a browser's request…** unticked while it's on), video pages and image galleries connect directly too: yt-dlp and gallery-dl are kept off Windows' proxy and the `HTTPS_PROXY` / `HTTP_PROXY` / `ALL_PROXY` variables. Left at the default, they still follow those, as they always did.
 - **Use system settings** — use the system's proxy: Windows' or macOS' settings, or on Linux the `https_proxy`, `http_proxy` and `all_proxy` variables of your session.
 - **Use automatic configuration script** — the proxy auto-config (PAC) script your network gives: type its address (`http://…/proxy.pac`, or a file). MDM fetches it and asks it which proxy each download goes through (`PROXY`, `HTTPS`, `SOCKS`, `SOCKS5`, `SOCKS4` or `DIRECT`), as browsers do. Through a `SOCKS` or `SOCKS5` answer, the proxy looks the site's name up, as in browsers. Until the script has been fetched, or if it can't be, MDM uses the system's settings.
 - **Manual proxy/socks configuration** — your own proxy:
@@ -164,6 +164,8 @@ How dates and times are written in the list of downloads and the Scheduler.
 
 - **As the system's region writes them** (the default) — Windows' region settings (Settings → Time & language → Region); on macOS and Linux, your language's usual way. In English the list keeps IDM's own date text.
 - **My own way** — choose the **date order** (day, month, year; month, day, year; or year, month, day), a **12- or 24-hour clock**, and the **first day of the week** in the Scheduler's calendar. **Example** shows the result.
+
+**Videos' sound** — the language a video's sound comes in when the site has it in several (dubbed videos): **Each video's original** (the default), or a language, which every video looked up and every playlist downloads with when it has it. A video without it comes with its original sound, and **Download video** can choose another for one video ([The sound's language](video.md#sound-language)).
 
 ## Archives
 

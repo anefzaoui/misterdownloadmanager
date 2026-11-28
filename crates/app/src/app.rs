@@ -2025,6 +2025,30 @@ fn video_goes(start_now: bool, from_menu: bool, queue_panel: bool) -> VideoGoes 
     }
 }
 
+/// A download's cookie jar holding the browser's cookies the extension handed over with it
+/// (#1540), each with the domain and path the browser keeps for it; none when it sent none (the
+/// engine makes an empty one, for the cookies servers set on the way).
+fn browser_jar(
+    cookies: &[ipc::BrowserCookie],
+) -> Option<std::sync::Arc<mdm_engine::cookies::CookieJar>> {
+    if cookies.is_empty() {
+        return None;
+    }
+    let jar = mdm_engine::cookies::CookieJar::new();
+    for c in cookies {
+        jar.add_browser(
+            &c.name,
+            &c.value,
+            &c.domain,
+            c.host_only,
+            &c.path,
+            c.secure,
+            c.expires,
+        );
+    }
+    Some(std::sync::Arc::new(jar))
+}
+
 pub fn auth_headers(login: Option<&(String, String)>) -> HeaderMap {
     let mut h = HeaderMap::new();
     if let Some((user, pass)) = login {
@@ -3832,6 +3856,21 @@ impl App {
                     }
                 }
             }
+            // A sample video whose sound comes in four languages (#1961): `video-dubbed:de` with
+            // that language chosen, `video-dubbed:de:audio only, original m4a` and a choice.
+            "video-dubbed" => {
+                self.run(Cmd::VideoPage, None, ctx);
+                if let Some(v) = &mut self.video_dlg {
+                    v.show_sample_dubbed();
+                    let (lang, choice) = tab.split_once(':').unwrap_or((tab, ""));
+                    if !lang.is_empty() {
+                        v.pick_sound(lang);
+                    }
+                    if !choice.is_empty() {
+                        v.pick(choice);
+                    }
+                }
+            }
             // A page whose videos need ffmpeg (#351): without it the list has only the sound.
             // `video-adaptive:runtime`: yt-dlp said it had no JavaScript runtime (#852).
             "video-adaptive" => {
@@ -4269,16 +4308,26 @@ impl App {
             );
             return;
         }
-        // A Hugging Face repository or folder, a GitHub release or tag (#1772), given on the
-        // command line (`/d`) or dropped alone: its files in Link grabber, as from Add URL. Silent
-        // (`/n`, a script's command line) asks nothing: the address is downloaded as it is.
+        // A Hugging Face repository or folder, a GitHub release or tag (#1772), a Google Drive
+        // folder (#2032), given on the command line (`/d`), dropped alone or sent by the browser
+        // (its right-click command, with its sign-in): its files in Link grabber, as from Add
+        // URL. Silent (`/n`, a script's command line) asks nothing: the address is downloaded as
+        // it is.
         if !cmd.silent
             && cmd.name.is_none()
             && cmd.post.is_none()
             && mdm_engine::hub::Source::of(&url).is_some()
         {
             self.show_for_dialog(ctx);
-            self.grab_package(&url, ctx);
+            let found = crate::transfer::Imported {
+                url: url.to_string(),
+                referer: cmd.referer.clone(),
+                cookies: cmd.cookies.clone(),
+                user_agent: cmd.user_agent.clone(),
+                private: cmd.private,
+                ..Default::default()
+            };
+            self.grab_package(found, ctx);
             return;
         }
         // A fresh address for a download waiting for one (its link expired): that download goes
@@ -4450,6 +4499,9 @@ impl App {
             // A site rule: the way a browser connects from the first request (#1778).
             browser_first: site.browser_like,
             allowed_certs: self.settings.allowed_certs.clone(),
+            // The browser's cookies for each host the download goes through (#1540): the
+            // address's, its redirects', where they ended; each to its own hosts only.
+            cookie_jar: browser_jar(&context.cookie_jar),
             ..Options::default()
         };
         // A site rule's User-Agent is the user's choice for that site, above the browser's and
@@ -6704,6 +6756,7 @@ impl App {
         .with_subs(self.settings.video_subs.clone())
         .with_chapters(self.settings.video_chapters)
         .with_split_chapters(self.settings.video_split_chapters)
+        .with_cover(self.settings.video_cover)
         .with_music_folder(music)
     }
 
@@ -13257,13 +13310,11 @@ impl App {
         grabber.add(found, source, |u| known.contains(u.as_str()));
     }
 
-    /// A Hugging Face repository's or a GitHub release's address (#1772) into Link grabber, which
-    /// lists its files through the site's API, and the window to the front.
-    fn grab_package(&mut self, url: &url::Url, ctx: &egui::Context) {
-        let found = vec![crate::transfer::Imported {
-            url: url.to_string(),
-            ..Default::default()
-        }];
+    /// A Hugging Face repository's or a GitHub release's address (#1772), a Google Drive
+    /// folder's (#2032, with the browser's sign-in when it sent it), into Link grabber, which
+    /// lists its files through the site's API or pages, and the window to the front.
+    fn grab_package(&mut self, found: crate::transfer::Imported, ctx: &egui::Context) {
+        let found = vec![found];
         // i18n: Link grabber: where the links came from: an address given on its own (typed or pasted in Add URL, given on the command line)
         let source = crate::i18n::t("Address typed").to_owned();
         self.show_import(found, source);
@@ -14210,7 +14261,11 @@ impl App {
                 // in Link grabber, to tick those wanted.
                 Outcome::Done(new) if mdm_engine::hub::Source::of(&new.url).is_some() => {
                     self.add_url = None;
-                    self.grab_package(&new.url, ctx);
+                    let found = crate::transfer::Imported {
+                        url: new.url.to_string(),
+                        ..Default::default()
+                    };
+                    self.grab_package(found, ctx);
                 }
                 // A video's page, not a file (YouTube, Vimeo…): the video window looks it up.
                 Outcome::Done(new) if mdm_tools::pages::is_video_page(&new.url) => {
@@ -14633,6 +14688,12 @@ impl App {
                     }
                     if self.settings.video_split_chapters != v.split_chapters() {
                         self.settings.video_split_chapters = v.split_chapters();
+                        crate::settings::share_video_settings(&self.settings);
+                        self.dirty = true;
+                    }
+                    // So is the cover box (#1962).
+                    if self.settings.video_cover != v.cover() {
+                        self.settings.video_cover = v.cover();
                         crate::settings::share_video_settings(&self.settings);
                         self.dirty = true;
                     }
