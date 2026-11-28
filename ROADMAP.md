@@ -574,6 +574,11 @@ Everything below ships together, in version 0.6.0, the next release.
   included), MDM keeps those a server sets along the way, and each site gets only its own
   ([#1540](https://github.com/anefzaoui/misterdownloadmanager/issues/1540); thanks to
   [@solovyov-jenya2004](https://github.com/solovyov-jenya2004))
+- ✅ Large videos with chapters: after the streams are in, the MP4's index is moved to the front
+  of the file by the last of yt-dlp's passes only, not by each one (a full rewrite of the file
+  each time); the finished file is the same, byte for byte, and a 3 GB video with chapters writes
+  about a quarter less after its download (a third less with its subtitles in the file)
+  ([#2098](https://github.com/anefzaoui/misterdownloadmanager/issues/2098))
 - ✅ Download video: choose the language of a video's sound when it comes in several (YouTube's
   dubbed tracks), the original first and marked; every quality, Audio only and MP3, Opus and
   FLAC take that language's sound, and the button over a video says each line's language.
