@@ -4543,16 +4543,25 @@ unsafe fn activate_for_window(
                 })
                 .collect()
         };
+        // Only normal windows (level 0) take part: the list holds every level, menu bar items
+        // (another program's, and MDM's own) among them.
+        let levels = window_levels();
+        let normal = |n: isize| levels.get(&n).copied() == Some(0);
         let behind = AnyClass::get(c"NSWindow").map(|cls| {
             let order = numbers(cls);
-            let front = order.iter().position(|&n| mine(n).is_null());
+            // The other program's frontmost normal window (the browser's).
+            let front = order.iter().position(|&n| mine(n).is_null() && normal(n));
             let keep: Vec<isize> = match front {
                 Some(f) => order[f + 1..]
                     .iter()
                     .copied()
                     .filter(|&n| {
                         let w = mine(n);
-                        !w.is_null() && w != window
+                        if w.is_null() || w == window {
+                            return false;
+                        }
+                        let level: isize = msg_send![w, level];
+                        level == 0
                     })
                     .collect(),
                 None => Vec::new(),
@@ -4573,6 +4582,48 @@ unsafe fn activate_for_window(
             }
         }
     }
+}
+
+/// macOS: every window on screen and its level (`kCGWindowLayer`: 0 for normal windows), by
+/// window number, from the window server (AppKit tells the level of MDM's own windows only).
+#[cfg(target_os = "macos")]
+#[allow(unsafe_code)]
+fn window_levels() -> std::collections::HashMap<isize, isize> {
+    use objc2::msg_send;
+    use objc2::runtime::AnyObject;
+    #[link(name = "CoreGraphics", kind = "framework")]
+    unsafe extern "C" {
+        fn CGWindowListCopyWindowInfo(option: u32, relative_to: u32) -> *mut AnyObject;
+    }
+    let mut out = std::collections::HashMap::new();
+    let number = objc2_foundation::NSString::from_str("kCGWindowNumber");
+    let layer = objc2_foundation::NSString::from_str("kCGWindowLayer");
+    // SAFETY: kCGWindowListOptionOnScreenOnly (1) with no relative window; the CFArray of
+    // CFDictionary it returns is toll-free bridged to NSArray / NSDictionary, read here and then
+    // released (the caller owns a Copy function's result).
+    unsafe {
+        let list = CGWindowListCopyWindowInfo(1, 0);
+        if list.is_null() {
+            return out;
+        }
+        let count: usize = msg_send![list, count];
+        for i in 0..count {
+            let info: *mut AnyObject = msg_send![list, objectAtIndex: i];
+            if info.is_null() {
+                continue;
+            }
+            let n: *mut AnyObject = msg_send![info, objectForKey: &*number];
+            let l: *mut AnyObject = msg_send![info, objectForKey: &*layer];
+            if n.is_null() || l.is_null() {
+                continue;
+            }
+            let n: isize = msg_send![n, integerValue];
+            let l: isize = msg_send![l, integerValue];
+            out.insert(n, l);
+        }
+        let _: () = msg_send![list, release];
+    }
+    out
 }
 
 /// macOS: activates MDM without pulling up minimized or tray-hidden windows (for `dialogs::raise`).
