@@ -7074,6 +7074,10 @@
    "source": "What Update now does",
    "text": "지금 업데이트 기능"
   },
+  "5f818384bb56aff6": {
+   "source": "<g1>Edge (or another browser) says \"Specified native messaging host not found\", though the registry entry looks right?</g1> On 64-bit Windows the browsers read the registry's 32-bit part (<x2/>) before the entry you find under <x3/>, and take the first one there, even one that leads to a copy that is gone. <g4>Test browser integration</g4> says <g5>An older registry entry is in the way</g5>, with that entry: click <g6>Set it up</g6> to give your account an entry of its own, which the browsers read before it. MDM also does that by itself at its start when that entry leads nowhere, and its setup for everyone removes it.",
+   "text": "<g1>Edge(또는 다른 브라우저)에서 레지스트리 항목이 올바른데도 \"지정된 네이티브 메시징 호스트를 찾을 수 없습니다\"라고 표시되나요?</g1> 64비트 Windows에서는 브라우저가 <x3/> 아래에서 찾은 항목보다 레지스트리의 32비트 부분(<x2/>)을 먼저 읽고, 사라진 복사본으로 연결되는 항목이라도 가장 먼저 나오는 항목을 사용합니다. <g4>브라우저 통합 테스트</g4>에서 <g5>이전 레지스트리 항목이 방해하고 있습니다</g5>라고 표시되면, <g6>설정</g6>을 클릭하여 브라우저가 먼저 읽을 수 있도록 사용자 계정의 항목을 만드세요. MDM은 해당 항목이 아무데도 연결되지 않을 때 시작 시 자동으로 이 작업을 수행하며, 모든 사용자를 위한 설정은 이 항목을 제거합니다."
+  },
   "5f8f976d1dd62e61": {
    "source": "A group box's frame",
    "text": "그룹 상자 프레임"
@@ -10818,6 +10822,10 @@
    "source": "MDM's interface comes in 87 languages: every display language Windows 11 offers, from Afrikaans to Vietnamese, including both Chinese scripts, Spanish for Spain and Mexico, French for France and Canada, Portuguese for Portugal and Brazil, and Serbian in Cyrillic and Latin.",
    "text": "MDM 인터페이스는 87개 언어로 제공됩니다. 아프리칸스어부터 베트남어까지 Windows 11이 제공하는 모든 표시 언어를 포함하며, 중국어 간체 및 번체, 스페인(스페인) 및 스페인(멕시코), 프랑스어(프랑스) 및 프랑스어(캐나다), 포르투갈어(포르투갈) 및 포르투갈어(브라질), 세르비아어(키릴 문자 및 라틴 문자)가 포함됩니다."
   },
+  "91c08dd2d3fe7d4a": {
+   "source": "<g1>Add category</g1> — make your own, for example <g2>Books</g2> for <x3/> (they then go to Books, not Documents). Give it a name, the file types (separated by spaces, <x4/> allowed) and a folder.",
+   "text": "<g1>범주 추가</g1> — 예를 들어 <x3/>용 <g2>책</g2>과 같이 사용자 지정 범주를 만듭니다(그러면 문서가 아닌 책으로 이동합니다). 이름을 지정하고, 파일 형식(공백으로 구분, <x4/> 허용) 및 폴더를 지정합니다."
+  },
   "91cefe80b7f00fac": {
    "source": "<g1><g2>Download a file</g2></g1> — copy a link, add it, open the file.",
    "text": "<g1><g2>파일 다운로드</g2></g1> — 링크를 복사하고 추가한 뒤 파일을 엽니다."
@@ -12329,10 +12337,6 @@
   "a4b01563b82565da": {
    "source": "<g1>Sharper text on Windows</g1> (<g2>#262</g2>): Segoe UI and Tahoma are grid-fitted across as well as up and down, and each letter starts on a whole pixel, as Windows draws its own grey text: upright strokes were two grey pixels wide at 100 % and 125 %, which read as blurred.",
    "text": "<g1>Windows에서 더 선명한 텍스트</g1> (<g2>#262</g2>): Segoe UI 및 Tahoma는 위아래뿐만 아니라 가로로도 그리드에 맞춰지며, 각 글자는 Windows가 자체 회색 텍스트를 그리는 방식과 같이 전체 픽셀에서 시작합니다. 이전에는 100% 및 125%에서 수직 획이 두 개의 회색 픽셀 너비로 표시되어 흐릿하게 읽혔습니다."
-  },
-  "a4b04f29f56fdc42": {
-   "source": "<g1>Add category</g1> — make your own, for example <g2>Books</g2> for <x3/>. Give it a name, the file types (separated by spaces, <x4/> allowed) and a folder.",
-   "text": "<g1>범주 추가</g1> — 예를 들어 <x3/>에 대한 <g2>도서</g2>와 같이 자신만의 범주를 만듭니다. 이름, 파일 형식(공백으로 구분, <x4/> 허용) 및 폴더를 지정합니다."
   },
   "a4b1f9a84345ac5d": {
    "source": "<g1>yt-dlp</g1> (about 23 MB) looks the page up and finds where the video and its sound come from; MDM downloads them (<g2>How a video comes down</g2>). The first time, click <g3>Install yt-dlp</g3>. MDM checks the download against the signature yt-dlp's developers publish before it uses it.",
@@ -14141,10 +14145,6 @@
   "bc606bb991071128": {
    "source": "The next tab of a focused tab strip; the next choice of a radio group",
    "text": "포커스된 탭 스트립의 다음 탭; 라디오 그룹의 다음 선택"
-  },
-  "bc713e862e9b84d3": {
-   "source": "Each download falls into a category by its file type: <g1>General</g1>, <g2>Compressed</g2>, <g3>Documents</g3>, <g4>Music</g4>, <g5>Programs</g5> or <g6>Video</g6>. Torrents have their own <g7>Torrents</g7> category. Each category has its own folder, by default inside your Downloads folder (<x8/>, <x9/> and so on; General uses <x10/> itself).",
-   "text": "각 다운로드는 파일 형식에 따라 <g1>일반</g1>, <g2>압축됨</g2>, <g3>문서</g3>, <g4>음악</g4>, <g5>프로그램</g5> 또는 <g6>비디오</g6> 범주에 속합니다. 토렌트는 자체 <g7>토렌트</g7> 범주를 가집니다. 각 범주는 기본적으로 다운로드 폴더 안에 자체 폴더를 가집니다(<x8/>, <x9/> 등; 일반은 <x10/> 자체를 사용합니다)."
   },
   "bc7153d0bcfdacbb": {
    "source": "Themes — Mister Download Manager",
@@ -17262,6 +17262,10 @@
    "source": "Can it download overnight or on a schedule?",
    "text": "밤새도록 또는 예약된 시간에 다운로드할 수 있나요?"
   },
+  "e852a2ae2ea94c2d": {
+   "source": "<g1>Automatically put in \"…\" category the following file types</g1> — the file types that go to this category. A built-in category whose list you never changed gains the types a new version adds; one you edited stays as it is.",
+   "text": "<g1>다음 파일 형식을 \"...\" 범주에 자동으로 넣기</g1> — 이 범주에 속하는 파일 형식입니다. 변경하지 않은 기본 제공 범주에는 새 버전이 추가하는 형식이 포함되고, 편집한 범주는 그대로 유지됩니다."
+  },
   "e8592a334f7cb4df": {
    "source": "In <g1>Download File Info</g1>, click <g2>Download Later</g2> and pick the queue.",
    "text": "<g1>파일 정보 다운로드</g1>에서 <g2>나중에 다운로드</g2>를 클릭하고 대기열을 선택합니다."
@@ -17857,6 +17861,10 @@
   "ef6e5d90b67f8e4e": {
    "source": "<g1>\"Hide tab\" was cut in longer languages</g1> (German \"Registerkarte au...\"): the button grows to fit its label where there is room, through a shared helper other buttons can use.",
    "text": "<g1>\"탭 숨기기\"가 더 긴 언어에서 잘렸습니다</g1>(독일어 \"Registerkarte au...\"): 단추는 공유 도우미를 통해 다른 단추가 사용할 수 있는 공간이 있는 곳에서 레이블에 맞게 커집니다."
+  },
+  "ef7238dc374b9e0e": {
+   "source": "Each download falls into a category by its file type: <g1>General</g1>, <g2>Compressed</g2>, <g3>Documents</g3>, <g4>Music</g4>, <g5>Programs</g5> or <g6>Video</g6>. Torrents have their own <g7>Torrents</g7> category. <g8>Programs</g8> takes programs, installers and app packages (EXE, MSI, APK, IPA, DMG, PKG, DEB, RPM, AppImage, MSIX…), <g9>Compressed</g9> archives and disc images (ZIP, RAR, 7Z, TAR, XZ, ISO, IMG, VHD…), <g10>Documents</g10> text documents, spreadsheets and e-books (PDF, DOCX, XLSX, ODT, EPUB, MOBI…), <g11>Music</g11> audio (MP3, FLAC, OPUS, M4A…) and <g12>Video</g12> videos (MP4, MKV, WEBM…); every other file goes to General. Your own categories come before the built-in ones. Each category has its own folder, by default inside your Downloads folder (<x13/>, <x14/> and so on; General uses <x15/> itself).",
+   "text": "각 다운로드는 파일 형식에 따라 <g1>일반</g1>, <g2>압축됨</g2>, <g3>문서</g3>, <g4>음악</g4>, <g5>프로그램</g5> 또는 <g6>비디오</g6> 범주로 분류됩니다. 토렌트는 자체 <g7>토렌트</g7> 범주를 가집니다. <g8>프로그램</g8>은 프로그램, 설치 관리자 및 앱 패키지(EXE, MSI, APK, IPA, DMG, PKG, DEB, RPM, AppImage, MSIX 등)를, <g9>압축됨</g9>은 아카이브 및 디스크 이미지(ZIP, RAR, 7Z, TAR, XZ, ISO, IMG, VHD 등)를, <g10>문서</g10>는 텍스트 문서, 스프레드시트 및 전자책(PDF, DOCX, XLSX, ODT, EPUB, MOBI 등)을, <g11>음악</g11>은 오디오(MP3, FLAC, OPUS, M4A 등)를, <g12>비디오</g12>는 비디오(MP4, MKV, WEBM 등)를 포함하며, 다른 모든 파일은 일반으로 이동합니다. 사용자 지정 범주는 기본 제공 범주보다 먼저 표시됩니다. 각 범주는 기본적으로 다운로드 폴더 안에 자체 폴더를 가집니다(<x13/>, <x14/> 등; 일반은 <x15/> 자체를 사용합니다)."
   },
   "ef8cedcbdccdaf85": {
    "source": "The code is filled in when you scanned the QR code; otherwise type it. Give the phone a name, and tap <g1>Pair</g1>. The window on the computer says so, and closes with <g2>Done</g2>.",
@@ -18469,10 +18477,6 @@
   "f8c444517ab946e2": {
    "source": "From the plain zip",
    "text": "일반 zip 파일에서"
-  },
-  "f8c71a9fb2bd8bde": {
-   "source": "<g1>Automatically put in \"…\" category the following file types</g1> — the file types that go to this category.",
-   "text": "<g1>다음 파일 형식을 \"…\" 범주에 자동으로 넣기</g1> — 이 범주로 이동하는 파일 형식입니다."
   },
   "f8e0a9e7ee529ff0": {
    "source": "Select <g1>Main download queue</g1> on the left. The <g2>Schedule</g2> tab opens.",

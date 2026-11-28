@@ -7074,6 +7074,10 @@
    "source": "What Update now does",
    "text": "Apa yang dilakukan Perbarui sekarang"
   },
+  "5f818384bb56aff6": {
+   "source": "<g1>Edge (or another browser) says \"Specified native messaging host not found\", though the registry entry looks right?</g1> On 64-bit Windows the browsers read the registry's 32-bit part (<x2/>) before the entry you find under <x3/>, and take the first one there, even one that leads to a copy that is gone. <g4>Test browser integration</g4> says <g5>An older registry entry is in the way</g5>, with that entry: click <g6>Set it up</g6> to give your account an entry of its own, which the browsers read before it. MDM also does that by itself at its start when that entry leads nowhere, and its setup for everyone removes it.",
+   "text": "<g1>Edge (atau browser lain) menampilkan \"Specified native messaging host not found\", meskipun entri registri terlihat benar?</g1> Di Windows 64-bit, browser membaca bagian registri 32-bit (<x2/>) sebelum entri yang Anda temukan di bawah <x3/>, dan mengambil yang pertama di sana, bahkan yang mengarah ke salinan yang sudah tidak ada. <g4>Uji integrasi browser</g4> menampilkan <g5>Entri registri lama menghalangi</g5>, dengan entri tersebut: klik <g6>Siapkan</g6> untuk memberikan akun Anda entri sendiri, yang dibaca browser sebelumnya. MDM juga melakukannya sendiri saat dimulai ketika entri tersebut tidak mengarah ke mana pun, dan pengaturannya untuk semua orang akan menghapusnya."
+  },
   "5f8f976d1dd62e61": {
    "source": "A group box's frame",
    "text": "Bingkai kotak grup"
@@ -10818,6 +10822,10 @@
    "source": "MDM's interface comes in 87 languages: every display language Windows 11 offers, from Afrikaans to Vietnamese, including both Chinese scripts, Spanish for Spain and Mexico, French for France and Canada, Portuguese for Portugal and Brazil, and Serbian in Cyrillic and Latin.",
    "text": "Antarmuka MDM tersedia dalam 87 bahasa: semua bahasa tampilan yang ditawarkan Windows 11, dari Afrikaans hingga Vietnam. Termasuk kedua aksara Tionghoa, bahasa Spanyol untuk Spanyol dan Meksiko, bahasa Prancis untuk Prancis dan Kanada, bahasa Portugis untuk Portugal dan Brasil, serta bahasa Serbia dalam aksara Kiril dan Latin."
   },
+  "91c08dd2d3fe7d4a": {
+   "source": "<g1>Add category</g1> — make your own, for example <g2>Books</g2> for <x3/> (they then go to Books, not Documents). Give it a name, the file types (separated by spaces, <x4/> allowed) and a folder.",
+   "text": "<g1>Tambahkan kategori</g1> — buat kategori Anda sendiri, misalnya <g2>Buku</g2> untuk <x3/> (file tersebut kemudian akan masuk ke Buku, bukan Dokumen). Beri nama, jenis file (dipisahkan oleh spasi, <x4/> diizinkan), dan folder."
+  },
   "91cefe80b7f00fac": {
    "source": "<g1><g2>Download a file</g2></g1> — copy a link, add it, open the file.",
    "text": "<g1><g2>Unduh file</g2></g1> — salin tautan, tambahkan, buka file."
@@ -12329,10 +12337,6 @@
   "a4b01563b82565da": {
    "source": "<g1>Sharper text on Windows</g1> (<g2>#262</g2>): Segoe UI and Tahoma are grid-fitted across as well as up and down, and each letter starts on a whole pixel, as Windows draws its own grey text: upright strokes were two grey pixels wide at 100 % and 125 %, which read as blurred.",
    "text": "<g1>Teks lebih tajam di Windows</g1> (<g2>#262</g2>): Segoe UI dan Tahoma disesuaikan dengan kisi secara horizontal maupun vertikal, dan setiap huruf dimulai pada piksel penuh, seperti Windows menggambar teks abu-abunya sendiri: goresan tegak lurus selebar dua piksel abu-abu pada 100 % dan 125 %, yang terbaca buram."
-  },
-  "a4b04f29f56fdc42": {
-   "source": "<g1>Add category</g1> — make your own, for example <g2>Books</g2> for <x3/>. Give it a name, the file types (separated by spaces, <x4/> allowed) and a folder.",
-   "text": "<g1>Tambahkan kategori</g1> — buat kategori sendiri, misalnya <g2>Buku</g2> untuk <x3/>. Beri kategori itu nama, jenis file (pisahkan dengan spasi; <x4/> juga boleh digunakan), dan folder."
   },
   "a4b1f9a84345ac5d": {
    "source": "<g1>yt-dlp</g1> (about 23 MB) looks the page up and finds where the video and its sound come from; MDM downloads them (<g2>How a video comes down</g2>). The first time, click <g3>Install yt-dlp</g3>. MDM checks the download against the signature yt-dlp's developers publish before it uses it.",
@@ -14141,10 +14145,6 @@
   "bc606bb991071128": {
    "source": "The next tab of a focused tab strip; the next choice of a radio group",
    "text": "Tab berikutnya dari strip tab yang difokuskan; pilihan berikutnya dari grup radio"
-  },
-  "bc713e862e9b84d3": {
-   "source": "Each download falls into a category by its file type: <g1>General</g1>, <g2>Compressed</g2>, <g3>Documents</g3>, <g4>Music</g4>, <g5>Programs</g5> or <g6>Video</g6>. Torrents have their own <g7>Torrents</g7> category. Each category has its own folder, by default inside your Downloads folder (<x8/>, <x9/> and so on; General uses <x10/> itself).",
-   "text": "Setiap unduhan masuk ke kategori berdasarkan jenis file: <g1>Umum</g1>, <g2>Terkompresi</g2>, <g3>Dokumen</g3>, <g4>Musik</g4>, <g5>Program</g5>, atau <g6>Video</g6>. Torrent memiliki kategori <g7>Torrent</g7> sendiri. Setiap kategori memiliki folder sendiri, yang secara default berada di dalam folder Unduhan (<x8/>, <x9/>, dan seterusnya; kategori Umum menggunakan folder <x10/> itu sendiri)."
   },
   "bc7153d0bcfdacbb": {
    "source": "Themes — Mister Download Manager",
@@ -17262,6 +17262,10 @@
    "source": "Can it download overnight or on a schedule?",
    "text": "Bisakah mengunduh semalaman atau sesuai jadwal?"
   },
+  "e852a2ae2ea94c2d": {
+   "source": "<g1>Automatically put in \"…\" category the following file types</g1> — the file types that go to this category. A built-in category whose list you never changed gains the types a new version adds; one you edited stays as it is.",
+   "text": "<g1>Secara otomatis masukkan jenis file berikut ke kategori \"…\"</g1> — jenis file yang masuk ke kategori ini. Kategori bawaan yang daftarnya tidak pernah Anda ubah akan mendapatkan jenis file yang ditambahkan oleh versi baru; kategori yang Anda edit akan tetap seperti semula."
+  },
   "e8592a334f7cb4df": {
    "source": "In <g1>Download File Info</g1>, click <g2>Download Later</g2> and pick the queue.",
    "text": "Di <g1>Info File Unduhan</g1>, klik <g2>Unduh Nanti</g2> dan pilih antrean."
@@ -17857,6 +17861,10 @@
   "ef6e5d90b67f8e4e": {
    "source": "<g1>\"Hide tab\" was cut in longer languages</g1> (German \"Registerkarte au...\"): the button grows to fit its label where there is room, through a shared helper other buttons can use.",
    "text": "<g1>\"Sembunyikan tab\" terpotong dalam bahasa yang lebih panjang</g1> (Jerman \"Registerkarte au...\"): tombol membesar agar sesuai dengan labelnya di mana ada ruang, melalui pembantu bersama yang dapat digunakan tombol lain."
+  },
+  "ef7238dc374b9e0e": {
+   "source": "Each download falls into a category by its file type: <g1>General</g1>, <g2>Compressed</g2>, <g3>Documents</g3>, <g4>Music</g4>, <g5>Programs</g5> or <g6>Video</g6>. Torrents have their own <g7>Torrents</g7> category. <g8>Programs</g8> takes programs, installers and app packages (EXE, MSI, APK, IPA, DMG, PKG, DEB, RPM, AppImage, MSIX…), <g9>Compressed</g9> archives and disc images (ZIP, RAR, 7Z, TAR, XZ, ISO, IMG, VHD…), <g10>Documents</g10> text documents, spreadsheets and e-books (PDF, DOCX, XLSX, ODT, EPUB, MOBI…), <g11>Music</g11> audio (MP3, FLAC, OPUS, M4A…) and <g12>Video</g12> videos (MP4, MKV, WEBM…); every other file goes to General. Your own categories come before the built-in ones. Each category has its own folder, by default inside your Downloads folder (<x13/>, <x14/> and so on; General uses <x15/> itself).",
+   "text": "Setiap unduhan masuk ke dalam kategori berdasarkan jenis filenya: <g1>Umum</g1>, <g2>Terkompresi</g2>, <g3>Dokumen</g3>, <g4>Musik</g4>, <g5>Program</g5>, atau <g6>Video</g6>. Torrent memiliki kategori <g7>Torrent</g7> sendiri. Kategori <g8>Program</g8> berisi program, penginstal, dan paket aplikasi (EXE, MSI, APK, IPA, DMG, PKG, DEB, RPM, AppImage, MSIX…), <g9>Terkompresi</g9> berisi arsip dan citra disk (ZIP, RAR, 7Z, TAR, XZ, ISO, IMG, VHD…), <g10>Dokumen</g10> berisi dokumen teks, lembar kerja, dan e-book (PDF, DOCX, XLSX, ODT, EPUB, MOBI…), <g11>Musik</g11> berisi audio (MP3, FLAC, OPUS, M4A…), dan <g12>Video</g12> berisi video (MP4, MKV, WEBM…); setiap file lainnya masuk ke Umum. Kategori buatan Anda sendiri akan muncul sebelum kategori bawaan. Setiap kategori memiliki foldernya sendiri, secara default di dalam folder Unduhan Anda (<x13/>, <x14/>, dan seterusnya; Umum menggunakan <x15/> itu sendiri)."
   },
   "ef8cedcbdccdaf85": {
    "source": "The code is filled in when you scanned the QR code; otherwise type it. Give the phone a name, and tap <g1>Pair</g1>. The window on the computer says so, and closes with <g2>Done</g2>.",
@@ -18469,10 +18477,6 @@
   "f8c444517ab946e2": {
    "source": "From the plain zip",
    "text": "Dari file zip biasa"
-  },
-  "f8c71a9fb2bd8bde": {
-   "source": "<g1>Automatically put in \"…\" category the following file types</g1> — the file types that go to this category.",
-   "text": "<g1>Secara otomatis masukkan ke kategori \"...\" jenis file berikut</g1> — jenis file yang masuk ke kategori ini."
   },
   "f8e0a9e7ee529ff0": {
    "source": "Select <g1>Main download queue</g1> on the left. The <g2>Schedule</g2> tab opens.",
