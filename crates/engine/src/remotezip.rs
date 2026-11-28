@@ -618,6 +618,8 @@ impl<'a> Server<'a> {
                 None,
                 &asked,
                 self.opts.site_agent(),
+                // `http_client`'s: no download's cookie jar, the headers' own cookies.
+                None,
             )
             .send()
             .await?)

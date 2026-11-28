@@ -51,10 +51,13 @@ pub struct Command {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub origin: Option<String>,
     pub cookies: Option<String>,
-    /// From the browser: the same cookies, each with the domain, path and flags the browser
-    /// keeps for it, for yt-dlp's cookie file. yt-dlp may ask another host than the page's (a
+    /// From the browser: its cookies, each with the domain, path and flags the browser keeps
+    /// for it. For a video, yt-dlp's cookie file: yt-dlp may ask another host than the page's (a
     /// YouTube Music page is looked up on www.youtube.com), and a cookie of `.youtube.com` goes
-    /// there too. An older extension sends `cookies` only.
+    /// there too. For a file (#1540), those of every host its download went through in the
+    /// browser (its address, its redirects, `final_url`), partitioned (CHIPS) ones of its page
+    /// included: the download's cookie jar sends each to the hosts it belongs to, never to
+    /// another. An older extension sends `cookies` only.
     #[serde(skip_serializing_if = "Vec::is_empty")]
     pub cookie_jar: Vec<BrowserCookie>,
     pub user_agent: Option<String>,

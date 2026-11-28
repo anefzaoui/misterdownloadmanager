@@ -16,7 +16,8 @@
 // The cases (per browser): folders (another extension's download in a folder of its own keeps
 // it, #578), link (a .zip link, throttled and not), ask (Firefox set to ask what to
 // do with each new type, as Waterfox is: caught before its dialog, #208), cookie (cookies and referrer
-// forwarded), startedfrom (the page a download was started from goes whole, where its Referer is
+// forwarded), chaincookie (a link that redirects to another host: the browser's cookie for that
+// host goes to MDM, which sends each host its own cookies only, #1540), startedfrom (the page a download was started from goes whole, where its Referer is
 // the site's address only; kept with the download for Refresh download address, #607), names
 // (Content-Disposition), torrents (a tracker's .torrent stays with the browser
 // while Torrent settings leave torrents alone, #1058), redirect, redirectNames (a link that only redirects to its file, named by
@@ -2779,6 +2780,42 @@ const CASES = {
     }
     await keptNothing(t.dl);
     return `${mdm.length} request(s) with sid=1, the page as referrer, the browser's User-Agent`;
+  },
+
+  // #1540: a link whose redirect leads to another host (a file host's CDN) that wants its own
+  // cookie: the browser's cookie for that host goes to MDM with the download, and MDM sends each
+  // host its own only (the link's cookie to the link's host, the CDN's to the CDN). Before #1540
+  // the CDN was asked without any cookie and refused. The link is on `localhost` and the file on
+  // 127.0.0.1: IDM, when it runs, leaves 127.0.0.1 alone but would take a file from localhost.
+  async chaincookie(t) {
+    await localhostListed(t, false);
+    const link = LAB.replace("127.0.0.1", "localhost");
+    const tok = `cdn${t.name.replace(/\W/g, "")}`;
+    await t.session.navigate(`${link}/cookie?set=${encodeURIComponent(`lnk=${tok}`)}`);
+    await t.session.navigate(`${LAB}/cookie?set=${encodeURIComponent(`tok=${tok}`)}`);
+    const file = `e2e-chain-${t.name}.zip`;
+    const target = `${LAB}/gen/1M/${file}?require_cookie=${encodeURIComponent(`tok=${tok}`)}`;
+    await clickLink(t, `${link}/jump?to=${encodeURIComponent(target)}&f=${encodeURIComponent(file)}`);
+    await arrived(file, 1 << 20);
+    const mdm = await mdmRequests(`/gen/1M/${file}`);
+    const has = (e, name) => (e.cookie || "").split(/;\s*/).some((p) => p.split("=")[0] === name);
+    // What a request carried, by the cookies' names only (never their values).
+    const names = (e) => `${brief(e)} ${e.path}, cookies: ${(e.cookie || "").split(/;\s*/).map((p) => p.split("=")[0]).filter(Boolean).join(", ") || "none"}`;
+    for (const e of mdm) {
+      if (!has(e, "tok")) throw new Error(`MDM asked the CDN without its cookie: ${names(e)}`);
+      if (has(e, "lnk")) throw new Error(`the link's cookie reached the CDN: ${names(e)}`);
+      if (e.status >= 400) throw new Error(`MDM's request refused: ${names(e)}`);
+    }
+    // The link's own host: its cookie, never the CDN's (the browser's first ask, then MDM's).
+    const log = await (await fetch(`${LAB}/_log`)).json();
+    const jumps = log.filter((e) => e.path === "/jump" && (e.query || "").includes(encodeURIComponent(file)));
+    if (jumps.length < 2) throw new Error(`the link's host asked ${jumps.length} time(s), not by the browser and MDM`);
+    for (const e of jumps) {
+      if (has(e, "tok")) throw new Error(`the CDN's cookie reached the link's host: ${names(e)}`);
+      if (!has(e, "lnk")) throw new Error(`the link's host asked without its own cookie: ${names(e)}`);
+    }
+    await keptNothing(t.dl);
+    return `${mdm.length} request(s) to the CDN with its own cookie only; ${jumps.length} to the link's host with its own only`;
   },
 
   // #607: a page whose referrer policy is `origin` (as a link to another site's file gets by

@@ -569,6 +569,11 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 Everything below ships together, in version 0.6.0, the next release.
 
+- ✅ Downloads that redirect through other sites keep the cookies each site needs: the browser
+  add-on hands over the cookies of every address the download went through (partitioned ones
+  included), MDM keeps those a server sets along the way, and each site gets only its own
+  ([#1540](https://github.com/anefzaoui/misterdownloadmanager/issues/1540); thanks to
+  [@solovyov-jenya2004](https://github.com/solovyov-jenya2004))
 - ✅ Large videos with chapters: after the streams are in, the MP4's index is moved to the front
   of the file by the last of yt-dlp's passes only, not by each one (a full rewrite of the file
   each time); the finished file is the same, byte for byte, and a 3 GB video with chapters writes
