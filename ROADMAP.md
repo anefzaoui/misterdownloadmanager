@@ -574,6 +574,12 @@ Everything below ships together, in version 0.6.0, the next release.
   included), MDM keeps those a server sets along the way, and each site gets only its own
   ([#1540](https://github.com/anefzaoui/misterdownloadmanager/issues/1540); thanks to
   [@solovyov-jenya2004](https://github.com/solovyov-jenya2004))
+- ✅ MDM's window toolkit (egui) on the same copy as the Craft suite's libraries (storytold's
+  `next`), MDM's own fixes rebased on it: every window, menus included, connected to screen
+  readers before it first shows, and accessibility stays on while any window is read
+- ✅ The shared Craft libraries for saving files and for translations brought up to date: the
+  temporary files a save cut short by a crash leaves in the data folder are removed at the next
+  start, and a file saved over keeps more of the original (its attributes, its group)
 - ✅ The shared Craft libraries for saving files and for translations brought up to date: the
   temporary files a save cut short by a crash leaves in the data folder are removed at the next
   start, and a file saved over keeps more of the original (its attributes, its group)
