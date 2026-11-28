@@ -569,6 +569,11 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 Everything below ships together, in version 0.6.0, the next release.
 
+- ✅ Large videos with chapters: after the streams are in, the MP4's index is moved to the front
+  of the file by the last of yt-dlp's passes only, not by each one (a full rewrite of the file
+  each time); the finished file is the same, byte for byte, and a 3 GB video with chapters writes
+  about a quarter less after its download (a third less with its subtitles in the file)
+  ([#2098](https://github.com/anefzaoui/misterdownloadmanager/issues/2098))
 - ✅ Website: live counters under the home page's contributors, the downloads from GitHub (every
   file of every release) and the browser add-on's users (the Chrome Web Store and Firefox Add-ons), on
   split-flap tiles that flip up from zero when the page opens; read at most every 15 minutes, the
