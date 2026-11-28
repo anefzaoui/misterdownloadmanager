@@ -2185,20 +2185,32 @@ button:focus-visible { outline: none; }
 
   // Snap a free spot (after a drag, or as kept for the site) to its edge when close to one
   // (within 20 px during a drag), else keep free interior placement anywhere over the player
-  // (#1923). Outside the player, snap along its side. Anything else kept counts as 0.
+  // (#1923). Outside the player, snap along its side; along the edge, into its corner or middle
+  // only within SNAP_PX when the room is known (a drop), else within a share of it (a spot kept
+  // before these). A drop's spot is marked `exact`: read back (this tab's own write, a reload) it
+  // stays where it was dropped instead of being snapped again by the share. Anything else kept
+  // counts as 0.
   function snap(at, roomX, roomY) {
     const n = (v) => Math.min(1, Math.max(0, Number.isFinite(Number(v)) ? Number(v) : 0));
     const free = { x: n(at && at.x), y: n(at && at.y), out: Boolean(at && at.out), side: at && at.side };
+    const hasRoom = Number.isFinite(roomX) && Number.isFinite(roomY) && roomX > 0 && roomY > 0;
+    const exact = hasRoom || Boolean(at && at.exact);
     if (!free.out) {
-      const hasRoom = Number.isFinite(roomX) && Number.isFinite(roomY) && roomX > 0 && roomY > 0;
       const interior =
         Boolean(at && at.free) ||
         (hasRoom && Math.min(free.x * roomX, (1 - free.x) * roomX, free.y * roomY, (1 - free.y) * roomY) > 20);
       if (interior) return { x: free.x, y: free.y, free: true };
     }
     const edge = edgeOf(free);
-    const c = (v) => (v < 0.08 ? 0 : v > 0.92 ? 1 : Math.abs(v - 0.5) < 0.06 ? 0.5 : v);
-    const out = free.out && edge === free.side ? { out: true, side: edge } : {};
+    // Into the corner or the middle from this close, in pixels: a share of the player's width
+    // was over 100 px on a wide one, so a short drag along its edge went back where it started.
+    const SNAP_PX = 12;
+    const within = (room, share) => (Number.isFinite(room) && room > 0 ? Math.min(share, SNAP_PX / room) : share);
+    const along = edge === "left" || edge === "right" ? roomY : roomX;
+    const end = within(along, 0.08);
+    const mid = within(along, 0.06);
+    const c = (v) => (at && at.exact ? v : v < end ? 0 : v > 1 - end ? 1 : Math.abs(v - 0.5) < mid ? 0.5 : v);
+    const out = { ...(free.out && edge === free.side ? { out: true, side: edge } : {}), ...(exact ? { exact: true } : {}) };
     if (edge === "left") return { x: 0, y: c(free.y), ...out };
     if (edge === "right") return { x: 1, y: c(free.y), ...out };
     if (edge === "top") return { x: c(free.x), y: 0, ...out };
@@ -3000,6 +3012,16 @@ button:focus-visible { outline: none; }
     go.setPointerCapture(e.pointerId);
     e.preventDefault();
   });
+  // The button under the pointer at `e` (where the pointer is, less where in the button it was
+  // taken).
+  const follow = (e) => {
+    const { r, w, h } = rects();
+    dragging.at = dragAt(r, w, h, e.clientX - dragging.dx, e.clientY - dragging.dy, INSET);
+    position();
+  };
+  // At most one move per frame, the pointer's last: a pointer sends more moves than frames, and
+  // each one measured the page again (slow on a page as big as YouTube's), so the button fell
+  // behind the pointer.
   go.addEventListener("pointermove", (e) => {
     if (!dragging || e.pointerId !== dragging.id) return;
     if (!dragging.moved && Math.hypot(e.clientX - dragging.startX, e.clientY - dragging.startY) < DRAG_PX) return;
@@ -3008,12 +3030,20 @@ button:focus-visible { outline: none; }
       closeMenu();
       pill.classList.add("dragging");
     }
-    const { r, w, h } = rects();
-    dragging.at = dragAt(r, w, h, e.clientX - dragging.dx, e.clientY - dragging.dy, INSET);
-    position();
+    dragging.last = { clientX: e.clientX, clientY: e.clientY };
+    if (!dragging.frame) {
+      dragging.frame = requestAnimationFrame(() => {
+        if (!dragging || !dragging.last) return;
+        dragging.frame = 0;
+        follow(dragging.last);
+      });
+    }
   });
   const endDrag = (e) => {
     if (!dragging || e.pointerId !== dragging.id) return;
+    if (dragging.frame) cancelAnimationFrame(dragging.frame);
+    // Dropped where the pointer let go, not where the last frame had it.
+    if (dragging.moved && e.type === "pointerup") follow(e);
     const d = dragging;
     dragging = null;
     pill.classList.remove("dragging");
