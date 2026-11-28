@@ -1888,6 +1888,7 @@ impl Run {
             at_service: None,
             finishing: None,
             kept: None,
+            checksum_warning: None,
         };
         if *self.stopped.lock().unwrap() {
             s.state = State::Cancelled;

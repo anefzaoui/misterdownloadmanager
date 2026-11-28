@@ -426,6 +426,9 @@ pub struct Row {
     pub status_group: &'static str,
     /// The icon before the Status text (#2008): the theme's own, or MDM's.
     pub status_icon: crate::icons::StatusIcon,
+    /// Complete with a warning (#2064: its server's checksum didn't match the file kept): the
+    /// warning mark stands in for its status icon, in every theme.
+    pub warned: bool,
     pub icon: IconKey,
     /// In a queue: the Q column shows a queue icon (IDM: stacked files).
     pub queued: bool,
@@ -1119,8 +1122,13 @@ pub fn show(
                         );
                         x += 18.0;
                     }
-                    // Its status icon before the text (#2008), in every theme.
-                    winui::status_icon(ui, &clip, row.status_icon, pos2(x, top), sel);
+                    // Its status icon before the text (#2008), in every theme; a warning's
+                    // mark where it completed with one (#2064).
+                    if row.warned {
+                        winui::status_mark(ui, &clip, crate::icons::Mark::Warn, pos2(x, top), sel);
+                    } else {
+                        winui::status_icon(ui, &clip, row.status_icon, pos2(x, top), sel);
+                    }
                     x + 18.0
                 } else {
                     x0 + 6.0
@@ -1983,6 +1991,7 @@ mod tests {
         Row {
             status_group: status,
             status_icon: crate::icons::StatusIcon::Complete,
+            warned: false,
             icon: IconKey::Silk("page_white"),
             queued,
             cells,
@@ -2267,6 +2276,7 @@ mod tests {
             .map(|i| Row {
                 status_group: "Complete",
                 status_icon: crate::icons::StatusIcon::Complete,
+                warned: false,
                 icon: IconKey::Silk("page_white"),
                 queued: false,
                 cells: std::array::from_fn(|c| match c {

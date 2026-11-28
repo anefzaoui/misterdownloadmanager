@@ -573,6 +573,49 @@ Everything below ships together, in version 0.6.0, the next release.
   adapter chosen in Options → Connection, and don't start while it isn't connected
   ([#2050](https://github.com/anefzaoui/misterdownloadmanager/issues/2050); thanks to
   [@abdul-karim-mia](https://github.com/abdul-karim-mia))
+- ✅ Every pull request and every change to main is scanned for signs of a tampered commit: code
+  hidden at the end of long lines, scripts that run on install or when a folder opens, files that
+  aren't what their name says and known indicators; main's whole history once a week
+  (`tools/security/scan_suspicious.py`)
+- ✅ More file types in the built-in categories: apps and installers (APK, IPA, AppImage, DEB,
+  RPM, Flatpak, Snap, MSIX, DMG, PKG…) in Programs, disc and disk images (ISO, IMG, VHD, VMDK…)
+  and more archives in Compressed, e-books, OpenDocument files and spreadsheets in Documents,
+  OPUS, FLAC, M4B and AIFF in Music, M2TS and MTS in Video; a list you edited stays yours
+  ([#1725](https://github.com/anefzaoui/misterdownloadmanager/issues/1725); thanks to
+  [@twistedwolfyt00](https://github.com/twistedwolfyt00))
+- ✅ Website: live counters under the home page's contributors, the downloads from GitHub (every
+  file of every release) and the browser add-on's users (the Chrome Web Store and Firefox Add-ons), on
+  split-flap tiles that flip up from zero when the page opens; read at most every 15 minutes, the
+  build's figures when they can't be; the site's download figure is now GitHub's real count of every
+  file of every release, read at every build
+- ✅ Windows without a graphics card's driver (Windows Server, a virtual machine, Remote Desktop):
+  MDM offers once to download Mesa's software renderer (llvmpipe), with its size, and from
+  **View → Draw with**; nothing downloads without a click. Checked against MDM's signed list, it
+  draws from the next start before Windows' own software renderer (WARP), which keeps the
+  processor far busier; one that can't draw there is remembered, and WARP draws again
+  ([#476](https://github.com/anefzaoui/misterdownloadmanager/issues/476))
+- ✅ Browser integration on Windows reads the registry as the browsers do, its 32-bit part first: an older entry
+  there that leads nowhere no longer hides MDM's from Edge, Test browser integration says when one is in the way,
+  and MDM's start and its setup for everyone fix it
+  ([#1688](https://github.com/anefzaoui/misterdownloadmanager/issues/1688); thanks to
+  [@Priest6969](https://github.com/Priest6969))
+- ✅ A checksum the server announces that doesn't match no longer fails the download: the file is
+  kept, with a warning in the list, its log, Properties and Download complete; a checksum you
+  enter, or one the site publishes, still must match. A `Content-MD5` beside a body the server
+  says it transformed (PikPak's storage, a compressed answer) isn't checked
+  ([#2064](https://github.com/anefzaoui/misterdownloadmanager/issues/2064); thanks to
+  [@asasass](https://github.com/asasass))
+- ✅ Website FAQ: why installing yt-dlp or another helper times out where GitHub can't be reached, and what to do
+  (a proxy in Options → Proxy / Socks, or Helpers → Use another program)
+  ([#1926](https://github.com/anefzaoui/misterdownloadmanager/issues/1926); thanks to
+  [@HandSome507](https://github.com/HandSome507))
+- ✅ Site rules give a site a proxy: **No proxy** (straight to the site) or one of its own
+  (`host:port`, `socks5://…`) with its login, kept with MDM's other passwords; a download's own
+  proxy first, then the first rule that names the site and sets one, then Options. Video and
+  gallery look-ups for that site go through it too, and the network adapter still holds every
+  connection ([#1960](https://github.com/anefzaoui/misterdownloadmanager/issues/1960), from
+  [#1619](https://github.com/anefzaoui/misterdownloadmanager/discussions/1619); thanks to
+  [@MoeHero](https://github.com/MoeHero))
 - ✅ A download's progress window can start minimized: **Options → Downloads → Customize
   "Download progress" dialog → Edit...** offers **Show normally**, **Show minimized** and
   **Don't show** ([#1966](https://github.com/anefzaoui/misterdownloadmanager/issues/1966); thanks to

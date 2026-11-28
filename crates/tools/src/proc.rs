@@ -426,6 +426,50 @@ pub fn set_proxy(proxy: mdm_engine::Proxy) {
     }
 }
 
+/// The site rules that set a proxy (#1960, Options → Connection → Site rules): a helper's run for
+/// a page they name goes through the rule's proxy (or straight to the site) instead of
+/// [`PROXY`], as that page's downloads do.
+static SITE_PROXIES: std::sync::RwLock<Vec<mdm_ipc::siterules::SiteRule>> =
+    std::sync::RwLock::new(Vec::new());
+
+/// Keep the helpers on the site rules' proxies (cheap when they didn't change). The command
+/// line gives none when its own `--proxy` was given: that one for everything then.
+pub fn set_site_rules(rules: &[mdm_ipc::siterules::SiteRule]) {
+    let wanted: Vec<_> = rules
+        .iter()
+        .filter(|r| r.proxy.is_some())
+        .cloned()
+        .collect();
+    if *SITE_PROXIES.read().unwrap() != wanted {
+        *SITE_PROXIES.write().unwrap() = wanted;
+    }
+}
+
+/// A site rule's proxy for the engine (#1960): straight to the server, or through its proxy for
+/// every scheme (a download's own proxy is given the same way), with its login.
+pub fn rule_proxy(proxy: &mdm_ipc::siterules::SiteProxy) -> mdm_engine::Proxy {
+    use mdm_ipc::siterules::SiteProxy;
+    match proxy {
+        SiteProxy::Direct => mdm_engine::Proxy::None,
+        SiteProxy::Through { url, login } => mdm_engine::Proxy::Manual {
+            url: url.clone(),
+            login: login.clone(),
+            http: true,
+            https: true,
+        },
+    }
+}
+
+/// The proxy the site rules give `url` (the first that names it and sets one), as the helpers
+/// have them ([`set_site_rules`]); None: Options'.
+pub fn site_proxy(url: &url::Url) -> Option<mdm_engine::Proxy> {
+    let rules = SITE_PROXIES.read().unwrap();
+    mdm_ipc::siterules::for_url(&rules, &[], url)
+        .proxy
+        .as_ref()
+        .map(rule_proxy)
+}
+
 /// How the proxy for a helper's run is given to it. A login is never put on the command line,
 /// where other programs can read it (the cookies neither): only in the environment.
 #[derive(Debug, PartialEq, Eq)]
@@ -436,6 +480,9 @@ enum ProxyGiven {
     Argument(String),
     /// `HTTP_PROXY` and the like: the address with its login.
     Environment(String),
+    /// Straight to the site, whatever the system or the environment says (a site rule's "No
+    /// proxy", #1960): yt-dlp's `--proxy ""`, and no proxy in the environment for anything.
+    Direct,
 }
 
 /// The proxy for `url` under `proxy`, as a helper takes it. `None` proxy and an address the
@@ -512,9 +559,17 @@ fn manual_skips(proxy: &mdm_engine::Proxy, url: Option<&url::Url>) -> Option<&'s
     (!ticked && !address.trim().is_empty()).then_some(if https_page { "https" } else { "http" })
 }
 
-/// Give `helper` the proxy for `url`: returns the arguments to pass (before `--`).
-fn through_proxy(cmd: &mut Command, url: Option<&str>) -> Vec<String> {
+/// Give `helper` the proxy for `url`: returns the arguments to pass (before `--`). A site rule
+/// that names the page gives its own (#1960).
+fn through_proxy(cmd: &mut Command, helper: Helper, url: Option<&str>) -> Vec<String> {
     let page = url.and_then(|u| url::Url::parse(u).ok());
+    if let Some(proxy) = page.as_ref().and_then(site_proxy) {
+        let given = match proxy {
+            mdm_engine::Proxy::None => ProxyGiven::Direct,
+            _ => proxy_given(&proxy, page.as_ref()),
+        };
+        return give_proxy(cmd, helper, given);
+    }
     let proxy = PROXY.read().unwrap().clone();
     // Said in MDM's log once for each setting (#1448: it went straight to YouTube unsaid).
     if let Some(scheme) = manual_skips(&proxy, page.as_ref()) {
@@ -529,22 +584,43 @@ fn through_proxy(cmd: &mut Command, url: Option<&str>) -> Vec<String> {
             *said = Some(proxy.clone());
         }
     }
-    match proxy_given(&proxy, page.as_ref()) {
+    give_proxy(cmd, helper, proxy_given(&proxy, page.as_ref()))
+}
+
+/// The environment variables a helper (and what it starts) reads a proxy from.
+const PROXY_VARS: [&str; 6] = [
+    "HTTP_PROXY",
+    "HTTPS_PROXY",
+    "ALL_PROXY",
+    "http_proxy",
+    "https_proxy",
+    "all_proxy",
+];
+
+/// `given` on `cmd`: the arguments to pass (before `--`), the environment set.
+fn give_proxy(cmd: &mut Command, helper: Helper, given: ProxyGiven) -> Vec<String> {
+    match given {
         ProxyGiven::Nothing => Vec::new(),
         ProxyGiven::Argument(p) => vec!["--proxy".into(), p],
         ProxyGiven::Environment(p) => {
-            for var in [
-                "HTTP_PROXY",
-                "HTTPS_PROXY",
-                "ALL_PROXY",
-                "http_proxy",
-                "https_proxy",
-                "all_proxy",
-            ] {
+            for var in PROXY_VARS {
                 cmd.env(var, &p);
             }
             cmd.env_remove("NO_PROXY").env_remove("no_proxy");
             Vec::new()
+        }
+        ProxyGiven::Direct => {
+            for var in PROXY_VARS {
+                cmd.env_remove(var);
+            }
+            // Python's own look-ups (gallery-dl's requests, the system's settings on Windows)
+            // go around every proxy for every host.
+            cmd.env("NO_PROXY", "*").env("no_proxy", "*");
+            match helper {
+                // yt-dlp's documented "direct connection".
+                Helper::YtDlp => vec!["--proxy".into(), String::new()],
+                Helper::GalleryDl => Vec::new(),
+            }
         }
     }
 }
@@ -590,7 +666,7 @@ fn through_adapter(
 ) -> Result<Vec<String>, ProcError> {
     match route() {
         // No adapter: Options -> Proxy / Socks (#363).
-        mdm_engine::Route::Any => Ok(through_proxy(cmd, url)),
+        mdm_engine::Route::Any => Ok(through_proxy(cmd, helper, url)),
         mdm_engine::Route::Down { label } => Err(mdm_engine::NetError::Down { label }.into()),
         mdm_engine::Route::Bound(_) => {
             let url = relay()?.url();
@@ -2241,6 +2317,83 @@ mod tests {
         set_proxy(Proxy::None);
         let none = args_of(&ytdlp(exe, &[], &["-J".into()], url).unwrap());
         assert!(!none.iter().any(|a| a == "--proxy"));
+    }
+
+    /// #1960: a site rule's proxy reaches the helpers for the pages it names, above Options':
+    /// its own proxy (its login in the environment only), or straight to the site ("No proxy":
+    /// yt-dlp's `--proxy ""`, no proxy in the environment); other pages keep Options'.
+    #[test]
+    fn a_site_rules_proxy_reaches_the_helpers() {
+        let _proxy = GLOBAL_PROXY
+            .lock()
+            .unwrap_or_else(std::sync::PoisonError::into_inner);
+        use mdm_engine::Proxy;
+        use mdm_ipc::siterules::SiteRule;
+        let exe = std::path::Path::new("yt-dlp");
+        let options = "http://127.0.0.1:10808";
+        set_proxy(Proxy::Manual {
+            url: options.into(),
+            login: None,
+            http: true,
+            https: true,
+        });
+        set_site_rules(&[
+            SiteRule {
+                site: "direct.rule.test".into(),
+                proxy: Some(String::new()),
+                ..SiteRule::default()
+            },
+            SiteRule {
+                site: "*.rule.test".into(),
+                proxy: Some("socks5h://127.0.0.1:1080".into()),
+                proxy_user: "ann".into(),
+                proxy_pass: "s3cret".into(),
+                ..SiteRule::default()
+            },
+            SiteRule {
+                site: "agent.only.test".into(),
+                user_agent: "A/1".into(),
+                ..SiteRule::default()
+            },
+        ]);
+        let value_of = |args: &[String]| {
+            let at = args.iter().position(|a| a == "--proxy")?;
+            Some(args[at + 1].clone())
+        };
+        // Its own proxy, the login in the environment only.
+        let cmd = ytdlp(exe, &[], &["-J".into()], "https://v.rule.test/watch").unwrap();
+        assert!(!args_of(&cmd).iter().any(|a| a.contains("s3cret")));
+        assert_eq!(value_of(&args_of(&cmd)), None);
+        assert_eq!(
+            proxied(&cmd).as_deref(),
+            Some("socks5h://ann:s3cret@127.0.0.1:1080")
+        );
+        // Straight to the site.
+        let cmd = ytdlp(exe, &[], &["-J".into()], "https://direct.rule.test/watch").unwrap();
+        assert_eq!(value_of(&args_of(&cmd)).as_deref(), Some(""));
+        let env = |cmd: &Command, var: &str| {
+            cmd.get_envs()
+                .find(|(k, _)| k.to_string_lossy() == var)
+                .map(|(_, v)| v.map(|v| v.to_string_lossy().into_owned()))
+        };
+        assert_eq!(env(&cmd, "HTTPS_PROXY"), Some(None), "taken away");
+        assert_eq!(env(&cmd, "NO_PROXY"), Some(Some("*".into())));
+        let tool = crate::Installed {
+            version: "1.32.0".into(),
+            exe: "gallery-dl".into(),
+        };
+        let g = gallery_dl(&tool, &[], "https://direct.rule.test/g").unwrap();
+        assert!(!args_of(&g).iter().any(|a| a == "--proxy"));
+        assert_eq!(env(&g, "NO_PROXY"), Some(Some("*".into())));
+        // A rule that sets no proxy, and a page no rule names: Options'.
+        for page in ["https://agent.only.test/v", "https://other.test/v"] {
+            let args = args_of(&ytdlp(exe, &[], &["-J".into()], page).unwrap());
+            assert_eq!(value_of(&args).as_deref(), Some(options), "{page}");
+        }
+        set_site_rules(&[]);
+        let args = args_of(&ytdlp(exe, &[], &["-J".into()], "https://v.rule.test/w").unwrap());
+        assert_eq!(value_of(&args).as_deref(), Some(options));
+        set_proxy(Proxy::None);
     }
 
     fn yt(chosen: Option<&BrowserCookies>, ours: &[&str]) -> Vec<String> {

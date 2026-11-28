@@ -1,9 +1,9 @@
 """The numbers the site shows that change on their own, read again at every build: the browser
-stores' users and ratings (Chrome Web Store, Firefox Add-ons) and the site's own star ratings
-(the ratings Worker, website/ratings/).
+stores' users and ratings (Chrome Web Store, Firefox Add-ons), the downloads of every file of
+every GitHub release and the site's own star ratings (the ratings Worker, website/ratings/).
 
 Each is kept with the date it was read in a committed file under website/content/ (stores.json,
-ratings.json), the last known values. A build reads them fresh; when a source can't be read, or
+downloads.json, ratings.json), the last known values. A build reads them fresh; when a source can't be read, or
 answers with something that doesn't look like its numbers (a changed page, a sudden drop), the
 build keeps the last known values, says so on stderr, and goes on. A file is written only when
 its numbers changed, so a build doesn't touch it for nothing; the date the page shows is the
@@ -27,11 +27,13 @@ ROOT = Path(__file__).resolve().parents[2]
 CONTENT = ROOT / "website" / "content"
 STORES_FILE = CONTENT / "stores.json"
 RATINGS_FILE = CONTENT / "ratings.json"
+DOWNLOADS_FILE = CONTENT / "downloads.json"
 
 CWS_ID = "ejoleppdfgjdndddcjoehopknmlglojp"
 CWS_PAGE = f"https://chromewebstore.google.com/detail/mister-download-manager/{CWS_ID}?hl=en"
 AMO_API = "https://addons.mozilla.org/api/v5/addons/addon/mister-download-manager/"
 UA = "misterdownloadmanager-site-build"
+RELEASES_API = "https://api.github.com/repos/anefzaoui/misterdownloadmanager/releases?per_page=100&page="
 
 
 def _today() -> str:
@@ -175,6 +177,55 @@ def stores() -> dict:
     return out
 
 
+# ---- The downloads ---------------------------------------------------------------------------------
+
+def count_downloads(releases: list) -> int:
+    """Every file of every release counts, whatever it is (the owner's rule: GitHub's own total,
+    the README's badge). The ratings Worker's live figure counts the same way
+    (website/ratings/src/stats.js countDownloads): change both together."""
+    return sum(a["download_count"] for r in releases for a in ((r or {}).get("assets") or [])
+               if isinstance(a, dict) and isinstance(a.get("download_count"), int) and a["download_count"] > 0)
+
+
+def _read_downloads() -> int | None:
+    """Every release's files' download_count, page after page (GITHUB_TOKEN when set); None
+    when a page can't be read."""
+    total = 0
+    try:
+        for page in range(1, 11):
+            req = urllib.request.Request(RELEASES_API + str(page), headers={
+                "User-Agent": UA, "Accept": "application/vnd.github+json"})
+            if os.environ.get("GITHUB_TOKEN"):
+                req.add_header("Authorization", f"Bearer {os.environ['GITHUB_TOKEN']}")
+            with urllib.request.urlopen(req, timeout=20) as r:
+                releases = json.load(r)
+            if not isinstance(releases, list):
+                return None
+            total += count_downloads(releases)
+            if len(releases) < 100:
+                return total
+    except Exception as e:  # noqa: BLE001 - the site builds with the last known number
+        _warn(f"GitHub's releases couldn't be read ({e}); the last known downloads are used")
+    return None
+
+
+def downloads() -> dict:
+    """{"total": n, "checked": day}: every file of every release, downloaded n times, fresh when
+    GitHub could be read, else the last known (DOWNLOADS_FILE). A count below half the last
+    known (an answer that isn't the whole list) is not taken."""
+    known = _load(DOWNLOADS_FILE)
+    new = _read_downloads() if _fetch() else None
+    if new is not None and (new <= 0 or new < known.get("total", 0) // 2):
+        _warn(f"GitHub's releases gave {new} downloads, which doesn't look right; the last known number is used")
+        new = None
+    if new is None:
+        return known
+    fresh = {"total": new, "checked": _today()}
+    if _numbers(fresh) != _numbers(known):
+        _save(DOWNLOADS_FILE, fresh)
+    return fresh
+
+
 # ---- Our own ratings -------------------------------------------------------------------------------
 
 def _valid_ratings(d: dict) -> bool:
@@ -213,4 +264,4 @@ def ratings(api: str, save: bool = True) -> dict:
 
 
 if __name__ == "__main__":
-    print(json.dumps({"stores": stores()}, indent=2))
+    print(json.dumps({"stores": stores(), "downloads": downloads()}, indent=2))

@@ -2893,6 +2893,9 @@ pub struct Complete {
     /// What went wrong besides, in the interface language (a video's subtitles, #68): one line
     /// under the size.
     pub notices: Vec<String>,
+    /// Kept though its server's checksum didn't match (#2064), whole: one line under the size,
+    /// in the warning colour with its mark.
+    pub warning: Option<String>,
     /// Clicked (or activated) once: from then on a window like any other, no longer above every
     /// program's (it shows above them until then, as IDM's does: #77).
     pub seen: bool,
@@ -2917,6 +2920,7 @@ impl Complete {
             size: i.size.unwrap_or(i.downloaded),
             dont_show: false,
             notices: i.notices.clone(),
+            warning: i.checksum_warning_text(false),
             seen: false,
             opening: None,
             snooze: None,
@@ -2962,7 +2966,20 @@ impl Complete {
                 winui::text(&p, o.x + 51.0, o.y + 34.0, &line, winui::TEXT());
                 // What didn't come with it (a video's subtitles the site refused), shortened to
                 // the window and whole on hover.
-                if !self.notices.is_empty() {
+                if let Some(warning) = &self.warning {
+                    let mark = crate::icons::Mark::Warn;
+                    let x = winui::note_mark(ui, &p, o.x + 51.0, o.y + 52.0, Some(mark));
+                    winui::fit(
+                        ui,
+                        &p,
+                        x,
+                        o.y + 52.0,
+                        warning,
+                        mark.ink(),
+                        o.x + 444.0,
+                        ("complete-warning", self.id),
+                    );
+                } else if !self.notices.is_empty() {
                     winui::fit(
                         ui,
                         &p,

@@ -10,7 +10,7 @@ publish.workspace = true
 
 [dependencies]
 # The table's xz (already in the tree for archives, mdm-extract).
-lzma-rust2 = { version = "0.23", default-features = false, features = ["std", "xz"] }
+lzma-rust2 = { version = "0.26", default-features = false, features = ["std", "xz"] }
 
 [dev-dependencies]
 # examples/flag_atlas.rs: the flags drawn into one picture (both already in the tree).

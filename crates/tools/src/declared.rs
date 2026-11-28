@@ -122,6 +122,21 @@ pub fn look_up(
     if !read_generically(&first) {
         return first.map(|(l, o)| (l, o, None));
     }
+    // The page is read through a site rule's proxy for it (#1960), as yt-dlp's look-up was.
+    let ruled;
+    let reader = match crate::proc::site_proxy(&url) {
+        Some(proxy) => {
+            ruled = crate::streams::Engine {
+                handle: reader.handle.clone(),
+                opts: mdm_engine::Options {
+                    proxy,
+                    ..reader.opts.clone()
+                },
+            };
+            &ruled
+        }
+        None => reader,
+    };
     let Some(declared) = read(&url, browser, reader) else {
         return first.map(|(l, o)| (l, o, None));
     };
