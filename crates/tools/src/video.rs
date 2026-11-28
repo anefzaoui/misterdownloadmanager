@@ -323,6 +323,33 @@ fn chapter_args(chapters: bool, ffmpeg: bool, converted: bool) -> Vec<String> {
     }
 }
 
+/// yt-dlp's post-processors that rewrite the whole video before its `Metadata` one puts the
+/// chapters in: the merge of the streams, the subtitles put into it, and the fix-ups the engine's
+/// streams get (`--fixup force`: HLS pieces' MPEG-TS in an MP4, a DASH M4A sound).
+const BEFORE_CHAPTERS: [&str; 4] = ["Merger", "EmbedSubtitle", "FixupM3u8", "FixupM4a"];
+
+/// Each of yt-dlp's ffmpeg passes over a video writes it whole, then moves its index to the
+/// front (`-movflags +faststart`, so a player can start before the end), which ffmpeg does by
+/// writing the whole file once more. When the chapters go in (`--embed-chapters` on a page that
+/// lists `chapters`: yt-dlp's `Metadata` pass then always runs, after the others), only that
+/// last pass needs to: the passes before it ([`BEFORE_CHAPTERS`]) skip the move (the last
+/// `-movflags` given counts), and the finished file comes out as before, its index in front.
+/// A large video with chapters is written a quarter less after its streams are in (#2098).
+fn faststart_once_args(ours: &[String], chapters: usize) -> Vec<String> {
+    if chapters == 0 || !ours.iter().any(|a| a == "--embed-chapters") {
+        return Vec::new();
+    }
+    BEFORE_CHAPTERS
+        .iter()
+        .flat_map(|pp| {
+            [
+                "--ppa".into(),
+                format!("{pp}+ffmpeg_o:-movflags -faststart"),
+            ]
+        })
+        .collect()
+}
+
 /// The bytes a chapter's title may take in its file's name (`.{room}B` in the template): what
 /// the system's limits (a name's, a whole path's: `Limits::here`, as #1107) leave after the
 /// folder, the stem, the number (` - 000`: a hundred chapters or more), the extension (up to
@@ -2978,6 +3005,15 @@ fn attempt(
         LiveRun { args }
     });
     let ours: &[String] = live.as_ref().map_or(ours, |r| &r.args);
+    // The index moved to the front once, by the last pass (a live run puts no chapters in).
+    let once = faststart_once_args(ours, chapters_count);
+    let with_once: Vec<String>;
+    let ours: &[String] = if once.is_empty() {
+        ours
+    } else {
+        with_once = [ours, &once[..]].concat();
+        &with_once
+    };
     let mut meter = Meter::new(expected);
     // The streams are in place: what yt-dlp says of them isn't the download's progress. Nor is
     // it a part's: its ffmpeg says nothing until the end, what it reads is the progress.
@@ -4859,6 +4895,33 @@ mod tests {
         assert!(chapter_args(false, true, false).is_empty());
         assert!(chapter_args(true, false, false).is_empty());
         assert!(chapter_args(true, true, true).is_empty());
+    }
+
+    /// The index moved to the front once (faststart, #2098): with chapters to put in, the passes
+    /// before yt-dlp's `Metadata` one skip it, each its own `--ppa`, the last one (`Metadata`)
+    /// keeps it. Without chapters, or without `--embed-chapters` (a live run, a conversion, the
+    /// option off), every pass stays as yt-dlp runs it.
+    #[test]
+    fn the_index_moves_once_when_chapters_go_in() {
+        let ours: Vec<String> = ["-f", "137+140", "--embed-chapters", "--embed-subs"]
+            .map(String::from)
+            .to_vec();
+        let args = faststart_once_args(&ours, 6);
+        assert_eq!(args.len(), 2 * BEFORE_CHAPTERS.len());
+        for pair in args.chunks(2) {
+            assert_eq!(pair[0], "--ppa");
+            assert!(
+                pair[1].ends_with("+ffmpeg_o:-movflags -faststart"),
+                "{pair:?}"
+            );
+        }
+        assert!(args.contains(&"Merger+ffmpeg_o:-movflags -faststart".to_owned()));
+        assert!(args.contains(&"EmbedSubtitle+ffmpeg_o:-movflags -faststart".to_owned()));
+        assert!(!args.iter().any(|a| a.starts_with("Metadata")));
+        assert!(faststart_once_args(&ours, 0).is_empty());
+        let (live, _) = live_args(&ours);
+        assert!(faststart_once_args(&live, 6).is_empty());
+        assert!(faststart_once_args(&ours[..2], 6).is_empty());
     }
 
     /// Split into chapters: `--split-chapters` and `-o chapter:...` with ffmpeg;
