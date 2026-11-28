@@ -569,6 +569,9 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 Everything below ships together, in version 0.6.0, the next release.
 
+- ✅ The shared Craft libraries for saving files and for translations brought up to date: the
+  temporary files a save cut short by a crash leaves in the data folder are removed at the next
+  start, and a file saved over keeps more of the original (its attributes, its group)
 - ✅ Website FAQ: why installing yt-dlp or another helper times out where GitHub can't be reached, and what to do
   (a proxy in Options → Proxy / Socks, or Helpers → Use another program)
   ([#1926](https://github.com/anefzaoui/misterdownloadmanager/issues/1926); thanks to
