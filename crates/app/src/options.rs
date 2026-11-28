@@ -3560,6 +3560,72 @@ impl OptionsDialog {
             crate::i18n::t("Used by the list of downloads and the Scheduler."),
             LIGHT_DISABLED(),
         );
+        self.sound_language(ui, o);
+    }
+
+    /// Regional → the language videos' sound comes in when they have several (#1961: YouTube's
+    /// dubbed tracks): each video's original (the default) or a language, for every video
+    /// looked up and every playlist; a video without that language comes with its original.
+    fn sound_language(&mut self, ui: &mut Ui, o: Pos2) {
+        let p = ui.painter().clone();
+        // i18n: Options → Regional: group box title: the language of a video's sound, for videos that come with several (dubbed ones)
+        group(ui, o, 16.0, 354.0, 392.0, 110.0, "Videos' sound");
+        let codes = crate::videodlg::sound_language_choices(&self.s.video_sound_language);
+        let names: Vec<String> = std::iter::once(
+            // i18n: Options → Regional → Videos' sound: the first choice, each video's own sound (the language it was made in), the default
+            crate::i18n::t("Each video's original").to_owned(),
+        )
+        .chain(
+            codes
+                .iter()
+                .map(|c| crate::videodlg::sound_language_name(c, false)),
+        )
+        .collect();
+        let items: Vec<&str> = names.iter().map(String::as_str).collect();
+        let at = codes
+            .iter()
+            .position(|c| c.eq_ignore_ascii_case(self.s.video_sound_language.trim()))
+            .map_or(0, |i| i + 1);
+        // i18n: Options → Regional → Videos' sound: label before the list of languages
+        let label = crate::i18n::t("Sound language:");
+        let (rect, cut) = winui::text_right_within(
+            &p,
+            o.x + 186.0,
+            o.y + 389.0,
+            label,
+            LIGHT_TEXT(),
+            o.x + 30.0,
+        );
+        if cut {
+            winui::full_on_hover(ui, rect, "sound-language-label", label);
+        }
+        if let Some(i) = winui::combo_light(
+            ui,
+            r(o, 192.0, 374.0, 200.0, 21.0),
+            &items,
+            at,
+            true,
+            "opt-sound-language",
+        ) {
+            self.s.video_sound_language = match i {
+                0 => String::new(),
+                i => codes[i - 1].clone(),
+            };
+        }
+        winui::paragraph_until(
+            ui,
+            &p,
+            o.x + 30.0,
+            o.y + 418.0,
+            // i18n: Options → Regional → Videos' sound: a note under the language list
+            crate::i18n::t(
+                "For videos whose sound comes in several languages (dubbed ones), and playlists. A video without it keeps its original sound.",
+            ),
+            LIGHT_DISABLED(),
+            o.x + 400.0,
+            o.y + 458.0,
+            13.0,
+        );
     }
 
     fn sounds(&mut self, ui: &mut Ui, o: Pos2) {

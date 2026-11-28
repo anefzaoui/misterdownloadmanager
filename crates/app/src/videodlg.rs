@@ -8,7 +8,7 @@ use std::sync::{Arc, Mutex};
 
 use egui::{Pos2, Ui, pos2};
 use mdm_tools::declared::Declared;
-use mdm_tools::resolve::{Choice, Looked, SubChoice, Video};
+use mdm_tools::resolve::{Choice, Looked, SoundLanguage, SubChoice, Video};
 use mdm_tools::video::{ALL_UPLOADERS, Subs};
 
 use crate::dialogs::{Outcome, window};
@@ -140,6 +140,12 @@ pub struct VideoDialog {
     /// Split into chapters has a row of its own under Embed chapters (its caption doesn't fit
     /// beside it in this language): measured as the row is drawn.
     split_wraps: bool,
+    /// The video's thumbnail as the cover of a sound alone (#1962; settings.video_cover).
+    cover: bool,
+    /// The languages the looked-up video's sound comes in (#1961; none for one language) and
+    /// the one its choices are in.
+    sound_langs: Vec<SoundLanguage>,
+    sound_pick: usize,
     /// The last video's choice (settings.video_subs), applied to each video looked up.
     pref: Subs,
     /// The clipboard's page address, read off the window's thread (#661).
@@ -169,6 +175,13 @@ const BUTTONS_Y: f32 = 389.0 + PART_ROWS;
 /// The row Split into chapters takes under Embed chapters when the two captions don't fit
 /// side by side in the interface's language: the window grows by it.
 const SPLIT_ROW: f32 = 19.0;
+
+/// The cover's row (#1962), under Embed chapters (and Split into chapters).
+const COVER_ROW: f32 = 19.0;
+
+/// The Sound row (#1961) under File name, for a video whose sound comes in several languages:
+/// the rows under it go that much lower, and the window grows by it.
+const SOUND_ROW: f32 = 31.0;
 
 /// What is installed in the tools folder: (folder, yt-dlp, ffmpeg).
 type Tools = (
@@ -240,6 +253,9 @@ impl VideoDialog {
             chapters: true,
             split_chapters: false,
             split_wraps: false,
+            cover: true,
+            sound_langs: Vec::new(),
+            sound_pick: 0,
             pref: Subs::default(),
             clip: Default::default(),
             part_on: false,
@@ -260,6 +276,12 @@ impl VideoDialog {
     /// Split into chapters ticked or not (settings.video_split_chapters).
     pub fn with_split_chapters(mut self, on: bool) -> Self {
         self.split_chapters = on;
+        self
+    }
+
+    /// The video's thumbnail as a sound's cover ticked or not (settings.video_cover, #1962).
+    pub fn with_cover(mut self, on: bool) -> Self {
+        self.cover = on;
         self
     }
 
@@ -317,7 +339,19 @@ impl VideoDialog {
             v.title = title.to_owned();
         }
         let merge = self.tools.get_or_insert_with(tools).2.is_some();
-        let choices = mdm_tools::resolve::choices(&v, merge);
+        // Its sound's languages (#1961): the one Options prefers when it has it, else the
+        // original; a language chosen here for an earlier look-up of it stays.
+        let langs = mdm_tools::resolve::sound_languages(&v);
+        let kept = self
+            .sound_langs
+            .get(self.sound_pick)
+            .and_then(|l| langs.iter().position(|n| n.code == l.code));
+        let preferred = crate::settings::sound_language()
+            .and_then(|p| mdm_tools::resolve::pick_language(&langs, &p))
+            .and_then(|l| langs.iter().position(|n| n.code == l.code));
+        self.sound_pick = kept.or(preferred).unwrap_or(0);
+        self.sound_langs = langs;
+        let choices = mdm_tools::resolve::choices_in(&v, merge, self.sound_code());
         // The best, as `video-get` takes it by default (#1240).
         self.chosen = mdm_tools::resolve::pick(&choices, None).map_or(0, |p| p.index);
         self.rows = Default::default();
@@ -338,6 +372,45 @@ impl VideoDialog {
         }
         self.video = Some((v, choices));
         self.name_from_choice();
+    }
+
+    /// The sound language chosen (#1961), when the video has several.
+    fn sound_code(&self) -> Option<&str> {
+        self.sound_langs
+            .get(self.sound_pick)
+            .map(|l| l.code.as_str())
+    }
+
+    /// Another sound language chosen (#1961): the choices again in it, the same line chosen
+    /// (its label, `1080p MP4 · AV1`) when it has one, else the best.
+    fn choose_sound(&mut self, pick: usize) {
+        if pick == self.sound_pick || pick >= self.sound_langs.len() {
+            return;
+        }
+        self.sound_pick = pick;
+        let merge = self.tools.as_ref().is_some_and(|t| t.2.is_some());
+        let Some((v, choices)) = self.video.take() else {
+            return;
+        };
+        let was = choices.get(self.chosen).map(|c| c.label.clone());
+        let again = mdm_tools::resolve::choices_in(&v, merge, self.sound_code());
+        self.chosen = was
+            .and_then(|l| again.iter().position(|c| c.label == l))
+            .or_else(|| mdm_tools::resolve::pick(&again, None).map(|p| p.index))
+            .unwrap_or(0);
+        self.rows.show_row(self.chosen, 8);
+        self.video = Some((v, again));
+        self.name_from_choice();
+    }
+
+    /// How much lower the rows under File name are, and how much taller the window: the Sound
+    /// row's (#1961) while the video's sound comes in several languages.
+    fn sound_row(&self) -> f32 {
+        if self.list.is_none() && self.video.is_some() && self.sound_langs.len() > 1 {
+            SOUND_ROW
+        } else {
+            0.0
+        }
     }
 
     /// The part as typed (#1662): none while Part isn't ticked; why it can't be, else.
@@ -387,6 +460,41 @@ impl VideoDialog {
             self.looked_up = self.page.clone();
             self.auto_look = false;
             self.set_video(v);
+        }
+    }
+
+    /// A looked-up video whose sound comes in four languages (#1961: YouTube's dubbed tracks),
+    /// without yt-dlp or the network (`/show video-dubbed`, its screenshots; `:<choice>` picks a
+    /// choice as `/show video-subs:<choice>` does).
+    pub fn show_sample_dubbed(&mut self) {
+        const SAMPLE: &str = r#"{"title": "A conference talk about download managers, recorded in Lisbon",
+            "duration": 1830, "language": "en", "formats": [
+            {"format_id": "251-0", "ext": "webm", "vcodec": "none", "acodec": "opus", "language": "en", "language_preference": 10, "tbr": 121.8, "filesize": 27900000},
+            {"format_id": "251-1", "ext": "webm", "vcodec": "none", "acodec": "opus", "language": "de", "language_preference": -1, "tbr": 124.1, "filesize": 28400000},
+            {"format_id": "251-2", "ext": "webm", "vcodec": "none", "acodec": "opus", "language": "ar", "language_preference": -1, "tbr": 122.6, "filesize": 28100000},
+            {"format_id": "251-3", "ext": "webm", "vcodec": "none", "acodec": "opus", "language": "es", "language_preference": -1, "tbr": 125.0, "filesize": 28600000},
+            {"format_id": "140-0", "ext": "m4a", "vcodec": "none", "acodec": "mp4a.40.2", "language": "en", "language_preference": 10, "tbr": 129.5, "filesize": 29600000},
+            {"format_id": "140-1", "ext": "m4a", "vcodec": "none", "acodec": "mp4a.40.2", "language": "de", "language_preference": -1, "tbr": 129.5, "filesize": 29600000},
+            {"format_id": "140-2", "ext": "m4a", "vcodec": "none", "acodec": "mp4a.40.2", "language": "ar", "language_preference": -1, "tbr": 129.5, "filesize": 29600000},
+            {"format_id": "140-3", "ext": "m4a", "vcodec": "none", "acodec": "mp4a.40.2", "language": "es", "language_preference": -1, "tbr": 129.5, "filesize": 29600000},
+            {"format_id": "18", "ext": "mp4", "height": 360, "fps": 30, "vcodec": "avc1.42001E", "acodec": "mp4a.40.2", "language": "en", "filesize": 61000000},
+            {"format_id": "134", "ext": "mp4", "height": 360, "fps": 30, "vcodec": "avc1.4D401E", "acodec": "none", "filesize": 31000000},
+            {"format_id": "701", "ext": "mp4", "height": 2160, "fps": 60, "vcodec": "av01.0.13M.10", "acodec": "none", "dynamic_range": "HDR10", "filesize": 1951000000},
+            {"format_id": "299", "ext": "mp4", "height": 1080, "fps": 60, "vcodec": "avc1.64002A", "acodec": "none", "filesize": 412000000},
+            {"format_id": "136", "ext": "mp4", "height": 720, "fps": 30, "vcodec": "avc1.4D401F", "acodec": "none", "filesize": 201000000}],
+            "subtitles": {"de": [{"name": "German"}]}}"#;
+        if let Some(v) = mdm_tools::resolve::parse(SAMPLE.as_bytes()) {
+            self.page = "https://video.example/talk".into();
+            self.looked_up = self.page.clone();
+            self.auto_look = false;
+            self.set_video(v);
+        }
+    }
+
+    /// The sound language at `code` chosen (`/show video-dubbed:de`), as its list does.
+    pub fn pick_sound(&mut self, code: &str) {
+        if let Some(i) = self.sound_langs.iter().position(|l| l.code == code) {
+            self.choose_sound(i);
         }
     }
 
@@ -515,7 +623,7 @@ impl VideoDialog {
             self.confirmed = Some(now);
             ctx.request_repaint();
         }
-        let height = 422.0 + PART_ROWS + self.split_row();
+        let height = 422.0 + PART_ROWS + self.split_row() + self.sound_row() + COVER_ROW;
         let out = window(
             ctx,
             "video-page",
@@ -1099,8 +1207,12 @@ impl VideoDialog {
             crate::i18n::t("Subtitles"),
             // i18n: label in Download video before the choice to download only a part of the video or sound (from one time to another)
             crate::i18n::t("Part"),
+            // i18n: label in Download video before the list of the languages a video's sound comes in (its original and the dubbed ones)
+            crate::i18n::t("Sound"),
         ];
-        let widest = labels
+        // Sound only while its row is shown (#1961): a video in one language looks as before.
+        let shown = if self.sound_row() > 0.0 { 5 } else { 4 };
+        let widest = labels[..shown]
             .iter()
             .map(|l| winui::text_width(&p, l))
             .fold(0.0, f32::max);
@@ -1155,21 +1267,31 @@ impl VideoDialog {
                 true,
                 false,
             );
-            let on = self.subtitles_row(ui, o, bx, ffmpeg.is_some());
+            // The Sound row (#1961), for a video whose sound comes in several languages; the
+            // rows under it go lower.
+            if self.sound_row() > 0.0 {
+                label(ui, 328.0, labels[4], winui::TEXT());
+                self.sound_language_row(ui, o, bx);
+            }
+            let low = pos2(o.x, o.y + self.sound_row());
+            let on = self.subtitles_row(ui, low, bx, ffmpeg.is_some());
             let shade = if on {
                 winui::TEXT()
             } else {
                 winui::TEXT_DISABLED()
             };
-            label(ui, 328.0, labels[2], shade);
+            label(ui, 328.0 + self.sound_row(), labels[2], shade);
         }
-        let part_shade = if self.part_row(ui, o, bx, ffmpeg.is_some()) {
+        let dy = self.sound_row();
+        let low = pos2(o.x, o.y + dy);
+        let part_shade = if self.part_row(ui, low, bx, ffmpeg.is_some()) {
             winui::TEXT()
         } else {
             winui::TEXT_DISABLED()
         };
-        label(ui, 359.0, labels[3], part_shade);
-        self.chapters_row(ui, o, bx, ffmpeg.is_some());
+        label(ui, 359.0 + dy, labels[3], part_shade);
+        self.chapters_row(ui, low, bx, ffmpeg.is_some());
+        self.cover_row(ui, low, bx, ffmpeg.is_some());
 
         // The choices belong to the address looked up: an edited address is looked up first
         // (it downloaded the new page with the old one's format and name).
@@ -1184,7 +1306,7 @@ impl VideoDialog {
             }
         };
         // Under Embed chapters, and under Split into chapters when it has a row of its own.
-        let buttons_y = BUTTONS_Y + self.split_row();
+        let buttons_y = BUTTONS_Y + self.split_row() + dy + COVER_ROW;
         // A part whose times can't be (#1662): said on Download Now.
         let part_problem = self.part().err();
         let ready = chosen && !busy && !stale && part_problem.is_none();
@@ -1553,6 +1675,90 @@ impl VideoDialog {
         // File name says the part while it holds the name MDM gave.
         self.name_for_part();
         can
+    }
+
+    /// Sound (#1961), under File name, for a video whose sound comes in several languages:
+    /// each by its name, the original first and marked. The choices above are in the one
+    /// chosen, each video line with that sound.
+    fn sound_language_row(&mut self, ui: &mut Ui, o: Pos2, bx: f32) {
+        let items: Vec<String> = self
+            .sound_langs
+            .iter()
+            .map(|l| sound_language_name(&l.code, l.original))
+            .collect();
+        let shown: Vec<&str> = items.iter().map(String::as_str).collect();
+        let w = winui::combo_fit_width(ui.painter(), &shown, 200.0, 489.0 - bx);
+        let pick = self.sound_pick.min(shown.len().saturating_sub(1));
+        if let Some(i) = winui::combo_light(
+            ui,
+            r(o, bx, 315.0, w, 21.0),
+            &shown,
+            pick,
+            true,
+            "video-sound",
+        ) {
+            self.choose_sound(i);
+        }
+    }
+
+    /// The video's thumbnail as the cover (#1962), under Embed chapters: put into a sound alone
+    /// (an MP3, M4A, Opus or FLAC, a playlist's too) by ffmpeg once it is saved. Greyed for a
+    /// video, without ffmpeg and for a WebM; its tick stays as it was then.
+    fn cover_row(&mut self, ui: &mut Ui, o: Pos2, bx: f32, ffmpeg: bool) {
+        let (sound, holds) = match &self.list {
+            Some(list) => (
+                list.sound_only(),
+                mdm_tools::cover::holds_cover(list.sound_ext()),
+            ),
+            None => self
+                .video
+                .as_ref()
+                .and_then(|(_, c)| c.get(self.chosen))
+                .map_or((false, false), |c| {
+                    (
+                        mdm_tools::resolve::is_audio(c),
+                        mdm_tools::cover::holds_cover(&c.ext),
+                    )
+                }),
+        };
+        let can = ffmpeg && sound && holds;
+        let mut on = self.cover && can;
+        let y = 350.0 + PART_ROWS + self.split_row() + COVER_ROW;
+        let resp = winui::checkbox_until(
+            ui,
+            pos2(o.x + bx, o.y + y),
+            &mut on,
+            // i18n: checkbox in Download video: the picture the site shows for the video (its thumbnail) goes into an audio-only download (MP3, M4A, Opus, FLAC) as its cover, which music players show
+            "Put the video's thumbnail in the audio file as its cover",
+            can,
+            Some(o.x + 489.0),
+        );
+        let resp = winui::why_disabled(
+            resp,
+            !ffmpeg,
+            // i18n: why the thumbnail-as-cover checkbox is greyed: ffmpeg (a helper program) is not installed
+            "This needs ffmpeg",
+        );
+        let resp = winui::why_disabled(
+            resp,
+            ffmpeg && !sound,
+            // i18n: why the thumbnail-as-cover checkbox is greyed in Download video: the choice is a video, which is saved as it is
+            "Only an audio file gets a cover: a video is saved as it is",
+        );
+        winui::why_disabled(
+            resp,
+            ffmpeg && sound && !holds,
+            // i18n: why the thumbnail-as-cover checkbox is greyed in Download video: the choice is the site's sound in a WebM file, which can't hold a picture
+            "A WebM file can't hold a cover: choose M4A, MP3, Opus or FLAC",
+        );
+        if can {
+            self.cover = on;
+        }
+    }
+
+    /// The cover's tick, for the settings (`video_cover`, #1962).
+    pub fn cover(&self) -> bool {
+        self.cover
     }
 
     /// Embed chapters' tick, for the settings (`video_chapters`).
@@ -2094,6 +2300,92 @@ pub(crate) fn choice_size(c: &Choice) -> (String, String) {
     )
 }
 
+/// A sound language's name (#1961): in its own words, then in English when they differ and the
+/// interface isn't in that language ("Deutsch · German", "हिन्दी · Hindi", "English"); the
+/// original marked, and an audio description said. A code MDM's table of languages doesn't know
+/// is shown as it is.
+pub(crate) fn sound_language_name(code: &str, original: bool) -> String {
+    let lower = code.trim().to_ascii_lowercase();
+    // YouTube's audio description is its language's code with `-desc`.
+    let (lang, described) = match lower.strip_suffix("-desc") {
+        Some(l) => (l.to_owned(), true),
+        None => (lower.clone(), false),
+    };
+    // The old codes some sites still send.
+    let lang = match lang.as_str() {
+        "iw" => "he".to_owned(),
+        "in" => "id".to_owned(),
+        "jw" => "jv".to_owned(),
+        _ => lang,
+    };
+    let base = mdm_tools::resolve::base_language(&lang);
+    // A region the table names when the code has it (`pt-br`), else the language alone, its
+    // region left out (the table's `es` is Spain's; a site's `es` may be Latin America's).
+    let alone = |s: &str| s.split(" (").next().unwrap_or(s).trim().to_owned();
+    let named = crate::i18n::info(&lang)
+        .filter(|_| lang.contains('-'))
+        .map(|i| (i.native.to_owned(), alone(i.english)))
+        .or_else(|| {
+            crate::i18n::info_of_language(&base).map(|i| (alone(i.native), alone(i.english)))
+        });
+    let name = match named {
+        Some((native, english))
+            if english != alone(&native)
+                && mdm_tools::resolve::base_language(crate::i18n::code()) != base =>
+        {
+            format!("{native} · {english}")
+        }
+        Some((native, _)) => native,
+        None => code.trim().to_owned(),
+    };
+    let name = if described {
+        crate::i18n::fmt(
+            // i18n: in Download video's Sound list: a language's sound track that describes the picture for people who can't see it; {language} is the language's name
+            crate::i18n::t("{language}, audio description"),
+            &[("language", &name)],
+        )
+    } else {
+        name
+    };
+    if original {
+        crate::i18n::fmt(
+            // i18n: in Download video's Sound list and the browser's video menu: the video's own sound, the language it was made in (the others are dubbed); {language} is the language's name
+            crate::i18n::t("{language}, original"),
+            &[("language", &name)],
+        )
+    } else {
+        name
+    }
+}
+
+/// The languages Options offers for videos' sound (#1961): the ones sites dub into most
+/// (YouTube's dubbed tracks), the interface's own and the one chosen (`chosen`, a code), each
+/// once, by their English names.
+pub(crate) fn sound_language_choices(chosen: &str) -> Vec<String> {
+    const DUBBED: [&str; 31] = [
+        "ar", "bn", "zh", "nl", "en", "fil", "fr", "de", "el", "he", "hi", "id", "it", "ja", "ko",
+        "ml", "ms", "fa", "pl", "pt", "ro", "ru", "es", "sv", "ta", "te", "th", "tr", "uk", "ur",
+        "vi",
+    ];
+    let mut codes: Vec<String> = DUBBED.iter().map(|c| (*c).to_owned()).collect();
+    for extra in [
+        mdm_tools::resolve::base_language(crate::i18n::code()),
+        chosen.trim().to_owned(),
+    ] {
+        if mdm_tools::resolve::language_code(&extra).is_some()
+            && !codes.iter().any(|c| c.eq_ignore_ascii_case(&extra))
+        {
+            codes.push(extra);
+        }
+    }
+    let english = |c: &str| {
+        crate::i18n::info_of_language(&mdm_tools::resolve::base_language(c))
+            .map_or_else(|| c.to_owned(), |i| i.english.to_owned())
+    };
+    codes.sort_by_key(|c| english(c));
+    codes
+}
+
 /// A choice's label in the user's language: the audio choice's words translated, the rest (a
 /// resolution, a type) as they are, kept left to right.
 pub(crate) fn choice_label(label: &str) -> String {
@@ -2596,6 +2888,7 @@ mod tests {
             direct: false,
             needs_js_runtime: false,
             page_titled: false,
+            picked: Vec::new(),
         };
         let mp4 = Choice {
             ext: "mp4".into(),
@@ -2923,5 +3216,75 @@ mod tests {
         assert_eq!(d.chosen, 1);
         assert_eq!(choices[1].label, "Most compatible (H.264 + AAC) · 1080p");
         assert!(choices[1].selector.starts_with("299+140/"));
+    }
+
+    /// #1961: a sound language by its own name, and English's when they differ; the original
+    /// marked, an audio description said.
+    #[test]
+    fn a_sound_language_by_its_names() {
+        assert_eq!(sound_language_name("de", false), "Deutsch · German");
+        assert_eq!(sound_language_name("en", true), "English, original");
+        // A language's code alone isn't the table's region (Spain's, Portugal's).
+        assert_eq!(sound_language_name("es", false), "Español · Spanish");
+        assert_eq!(sound_language_name("pt", false), "Português · Portuguese");
+        assert_eq!(
+            sound_language_name("pt-BR", false),
+            "Português (Brasil) · Portuguese"
+        );
+        assert_eq!(
+            sound_language_name("en-desc", false),
+            "English, audio description"
+        );
+        assert_eq!(sound_language_name("iw", false), "עברית · Hebrew");
+        assert_eq!(sound_language_name("zh", false), "简体中文 · Chinese");
+        assert_eq!(sound_language_name("xx-yy", false), "xx-yy");
+        // Every language Options offers has a name.
+        let offered = sound_language_choices("");
+        assert!(offered.len() >= 31);
+        for c in &offered {
+            assert_ne!(&sound_language_name(c, false), c, "{c}");
+        }
+        // The one chosen is offered, once.
+        assert!(sound_language_choices("pt-BR").iter().any(|c| c == "pt-BR"));
+        assert_eq!(
+            sound_language_choices("de")
+                .iter()
+                .filter(|c| *c == "de")
+                .count(),
+            1
+        );
+    }
+
+    /// #1961: a video whose sound comes in several languages has a Sound row, Options' language
+    /// chosen when it has it; another language chosen keeps the line chosen, in that language.
+    #[test]
+    fn a_dubbed_video_offers_its_languages() {
+        let mut d = VideoDialog::blank(PathBuf::from("."));
+        let ffmpeg = mdm_tools::Installed {
+            version: "test".into(),
+            exe: PathBuf::from("ffmpeg"),
+        };
+        d.tools = Some((None, None, Some(ffmpeg)));
+        d.show_sample_dubbed();
+        let codes: Vec<&str> = d.sound_langs.iter().map(|l| l.code.as_str()).collect();
+        assert_eq!(codes, ["en", "ar", "de", "es"]);
+        assert_eq!(d.sound_row(), SOUND_ROW);
+        assert_eq!(d.sound_code(), Some("en"));
+        d.pick("audio only original m4a");
+        d.pick_sound("de");
+        let (_, choices) = d.video.as_ref().unwrap();
+        let c = &choices[d.chosen];
+        assert_eq!(c.label, "Audio only original M4A");
+        assert_eq!(c.selector, "140-1/ba[language=de]/ba");
+        assert_eq!(c.language.as_deref(), Some("de"));
+        // What Download Now adds takes that language's sound.
+        let Some(VideoOut::One(add)) = d.added() else {
+            panic!("one video")
+        };
+        assert_eq!(add.selector, "140-1/ba[language=de]/ba");
+        // A video in one language: no Sound row, as before.
+        d.show_sample();
+        assert!(d.sound_langs.is_empty());
+        assert_eq!(d.sound_row(), 0.0);
     }
 }

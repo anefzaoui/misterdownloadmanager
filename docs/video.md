@@ -91,7 +91,7 @@ A distribution's yt-dlp can also be too old for YouTube: if the list stays short
    - **Audio only FLAC**: a lossless `.flac` file, for a library or a program that wants FLAC. It can't add quality: the site's sound is already compressed with losses, and FLAC keeps it exactly as it came, in a file several times bigger. The window says so when you choose it.
 2. Pick one. Without ffmpeg, only the qualities that come with their sound are listed, and no MP3, Opus or FLAC (ffmpeg makes them).
 3. Check **Save to** (the Video category's folder by default) and **File name**, which comes from the video's title. A long title is shortened, at the end of a word, so that the files saved beside the video while it downloads fit the system's limit on a path's length; a name you type is kept as you typed it.
-4. Choose **Subtitles** if you want them (see below). **Embed chapters** is ticked: see [Chapters](#chapters). To keep only a stretch of it, tick **Only a part**: see [Download only a part](#part).
+4. When the video's sound comes in several languages, choose one in **Sound** (see [The sound's language](#sound-language)). Choose **Subtitles** if you want them (see below). **Embed chapters** is ticked: see [Chapters](#chapters). To keep only a stretch of it, tick **Only a part**: see [Download only a part](#part). For a sound alone, **Put the video's thumbnail in the audio file as its cover** is ticked: see [A cover for the sound](#cover).
 5. Click **Download Now**, or **Later** to add it to the list without starting.
 
 The video then downloads like any other file, with its own row in the list and its progress window.
@@ -136,6 +136,25 @@ A live stream, a broadcast still going on, is recorded by yt-dlp with ffmpeg int
 - These kept recordings aren't the download's own files: **Delete** with its files leaves them.
 - Closing MDM while a live stream records, or while it saves one, stops it without saving: the recording stays in its unfinished file (a half-made MP4 is left as `<name>.temp.mp4`, which **Delete** with its files removes), and it is set aside when the download starts again. The command line (`misterdownloadmanager-cli`) doesn't save a live stream this way.
 - A live stream saved by a queue's stop counts as complete, so a daily queue doesn't start it again the next day.
+
+## The sound's language {#sound-language}
+
+More and more videos come with their sound in several languages: the one they were made in, the original, and others dubbed (YouTube's dubbed and automatically dubbed tracks, for one). When the site names each track's language, **Download video** has a **Sound** list under **File name**, the original first and marked: `English, original`, then `Deutsch · German`, `Español · Spanish`... (each language in its own words, and in English when that differs). A video in one language has no such list and looks as before.
+
+- **The qualities follow it.** Every line in the list is then in that language: a video line joins its picture with that language's sound and its size is theirs, and **Audio only** (as the site has it), **MP3**, **Opus** and **FLAC** take that language's sound. A video line whose file carries another language's sound (YouTube's 360p in one file) isn't offered for a dubbed language; without ffmpeg, which joins a picture and a sound, only the sound in that language is.
+- **One sound track per file.** The file has the language chosen, never two.
+- **For every video and playlist**: **Options → Regional → Videos' sound** chooses one language, which every video looked up starts on when it has it (in **Download video**, where you can still choose another, and in the button over a video) and which every video of a playlist downloads with. A video without that language comes with its original sound. **Each video's original**, the default, keeps every video in the language it was made in.
+- **The button over a video** says the language of each line's sound in its menu, and its **Audio** tab has each other language's sound as the site has it too.
+- If the site no longer offers that language when the download starts, the video comes with its original sound.
+
+## A cover for the sound {#cover}
+
+A sound saved alone has no picture, so music players show an empty square. With **Put the video's thumbnail in the audio file as its cover** ticked in **Download video** (under **Embed chapters**), the picture the site shows for that video becomes the file's cover once it is saved.
+
+- It is ticked to begin with, and stays as you leave it for the next video. It applies to a playlist's sound too.
+- **Which files**: an M4A as the site has it (**Audio only, original M4A**), and an MP3, Opus or FLAC. A WebM (**Audio only, original WEBM**, YouTube's Opus as it comes) can't hold a cover: choose M4A or Opus instead. Videos are saved as they are.
+- **How**: MDM brings the picture in with its own connections (your proxy and network adapter, as every download), from where the site says that video's picture is, nothing from anywhere else. ffmpeg puts it into the file as its cover (Opus files as the picture comment music players read in them), copying the sound as it is: nothing is encoded again. A WebP picture is made a JPEG first.
+- **It needs ffmpeg.** Without it, or when the picture can't be had, the file is saved as before, without a cover, and the download's log says why.
 
 ## Subtitles
 
@@ -199,6 +218,7 @@ Paste the address of a playlist (`youtube.com/playlist?list=…`) or a channel's
 - A playlist is listed whole, as its videos come in: the line above the list says how far it is ("Listing the videos: 1,200 of 6,000"). **Stop listing** keeps the ones listed so far, and **List the rest** carries on from there. If the site stops answering part-way (YouTube may, when it's asked too often), the window says after how many videos and why, and **List the rest** tries again from there.
 - A channel is listed 50 videos at a time, newest first. **Load more** lists the next 50.
 - Every video starts ticked. Untick the ones you don't want, or use **Select all** and **Select none**. Private and deleted videos are greyed out and can't be ticked.
+- **The sound's language**: every video of the list downloads with **Options → Regional → Videos' sound**'s language when it has it, else its original ([The sound's language](#sound-language)).
 - **Quality** applies to every video: **Best quality**, **Most compatible (H.264 + AAC)** (each video's best H.264 picture with AAC sound; a video that has none isn't downloaded), **Up to** a height (each video at that height, or the nearest below it), **Audio only, original**, **Audio only MP3**, **Audio only OPUS** or **Audio only FLAC**. Without ffmpeg, only the qualities that come with their sound are offered, and no MP3, Opus or FLAC.
 - The videos go into a folder named after the list, inside **Save to**, each under its own title.
 
