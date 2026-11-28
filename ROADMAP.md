@@ -569,6 +569,10 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 Everything below ships together, in version 0.6.0, the next release.
 
+- ✅ Every pull request and every change to main is scanned for signs of a tampered commit: code
+  hidden at the end of long lines, scripts that run on install or when a folder opens, files that
+  aren't what their name says and known indicators; main's whole history once a week
+  (`tools/security/scan_suspicious.py`)
 - ✅ More file types in the built-in categories: apps and installers (APK, IPA, AppImage, DEB,
   RPM, Flatpak, Snap, MSIX, DMG, PKG…) in Programs, disc and disk images (ISO, IMG, VHD, VMDK…)
   and more archives in Compressed, e-books, OpenDocument files and spreadsheets in Documents,
