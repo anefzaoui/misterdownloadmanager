@@ -754,6 +754,9 @@ pub struct Torrents {
     readding: Arc<Readding>,
     /// The open files of the torrents count in this ([`Config::open_files`]).
     budget: &'static OpenFiles,
+    /// Serializes lifecycle operations per info hash so background releases and user actions
+    /// cannot race on `<hash>.bitv`.
+    ops: std::sync::Mutex<std::collections::HashMap<String, Arc<tokio::sync::Mutex<()>>>>,
 }
 
 pub(crate) type Handle = Arc<librqbit::ManagedTorrent>;
@@ -1212,7 +1215,17 @@ impl Torrents {
             pause_after_check: Default::default(),
             readding,
             budget,
+            ops: Default::default(),
         })
+    }
+
+    fn op_lock(&self, hash: &str) -> Arc<tokio::sync::Mutex<()>> {
+        self.ops
+            .lock()
+            .unwrap()
+            .entry(hash.to_ascii_lowercase())
+            .or_default()
+            .clone()
     }
 
     /// How many of the torrents' files are open now (its budget's count).
@@ -1308,11 +1321,22 @@ impl Torrents {
         paused: bool,
     ) -> Result<String, TorrentError> {
         // Checked here too, whatever the caller (the app, the command line, a saved torrent).
-        check_bytes(torrent)?;
-        let wanted = librqbit::torrent_from_bytes(torrent)
-            .map_err(|_| TorrentError::NotATorrent)?
-            .info_hash
-            .as_string();
+        let wanted = torrent_hash(torrent)?;
+        let lock = self.op_lock(&wanted);
+        let _guard = lock.lock().await;
+        self.add_unlocked(torrent, folder, files, peers, paused)
+            .await
+    }
+
+    async fn add_unlocked(
+        &self,
+        torrent: &[u8],
+        folder: &Path,
+        files: Option<Vec<usize>>,
+        peers: Vec<SocketAddr>,
+        paused: bool,
+    ) -> Result<String, TorrentError> {
+        let wanted = torrent_hash(torrent)?;
         // One whose trackers can't be read to be checked isn't started.
         let torrent =
             trackers::filter_torrent(torrent, self.proxied).ok_or(TorrentError::NotATorrent)?;
@@ -1531,6 +1555,8 @@ impl Torrents {
         torrent: &[u8],
         recheck: bool,
     ) -> Result<(), TorrentError> {
+        let lock = self.op_lock(hash);
+        let _guard = lock.lock().await;
         let res = self.readd_now(hash, torrent, recheck).await;
         if res.is_err() {
             // Not back (or never out): it reads as librqbit says.
@@ -1595,16 +1621,13 @@ impl Torrents {
         // removed only once unmapped, so it is waited for: a recheck that found it would check
         // only a sample.
         if recheck {
-            for _ in 0..50 {
-                if std::fs::remove_file(&map).is_ok() || !map.exists() {
-                    break;
-                }
-                tokio::time::sleep(Duration::from_millis(100)).await;
-            }
+            remove_piece_map(&map).await;
         } else if let Some(bits) = kept {
             put_piece_map(&map, &bits).await;
         }
-        self.add(torrent, &folder, files, peers, paused).await?;
+        // The op lock for this torrent is held (`readd`): added without taking it again.
+        self.add_unlocked(torrent, &folder, files, peers, paused)
+            .await?;
         if let Some((down, up)) = limits {
             let _ = self.set_torrent_limits(hash, down, up);
         }
@@ -1629,6 +1652,8 @@ impl Torrents {
 
     /// Take it out of the session; the files stay unless `delete_files`.
     pub async fn remove(&self, hash: &str, delete_files: bool) -> Result<(), TorrentError> {
+        let lock = self.op_lock(hash);
+        let _guard = lock.lock().await;
         self.readding
             .lock()
             .unwrap()
@@ -1642,10 +1667,40 @@ impl Torrents {
         res
     }
 
+    /// Take a finished torrent out of the session while keeping its piece map (`.bitv`), so
+    /// ticking another file later fastresumes verified pieces instead of hashing everything again.
+    pub async fn release(&self, hash: &str) -> Result<(), TorrentError> {
+        let lock = self.op_lock(hash);
+        let _guard = lock.lock().await;
+        let tid = id(hash)?;
+        let h = self.session.get(tid).ok_or(TorrentError::Unknown)?;
+        let kept = self.piece_map_now(hash, &h).await;
+        drop(h);
+        self.readding
+            .lock()
+            .unwrap()
+            .remove(&hash.to_ascii_lowercase());
+        self.session.delete(tid, false).await.map_err(engine)?;
+        if let Some(bits) = kept {
+            put_piece_map(&self.piece_map_path(hash), &bits).await;
+        }
+        self.refresh(hash);
+        Ok(())
+    }
+
+    /// Delete any saved piece map (`.bitv`) for `hash` so the next add runs a full piece check.
+    pub async fn clear_piece_map(&self, hash: &str) {
+        let lock = self.op_lock(hash);
+        let _guard = lock.lock().await;
+        remove_piece_map(&self.piece_map_path(hash)).await;
+    }
+
     /// Detach a torrent from the session before renaming its folder on disk, preserving its
     /// saved piece bitmap, chosen files, pause state, rate limits and piece order so [`Self::attach`]
     /// can restore sharing at the new folder (or back at the old folder if the rename fails).
     pub async fn detach(&self, hash: &str) -> Result<Option<DetachedTorrent>, TorrentError> {
+        let lock = self.op_lock(hash);
+        let _guard = lock.lock().await;
         let tid = id(hash)?;
         let Some(h) = self.session.get(tid) else {
             return Ok(None);
@@ -1675,6 +1730,8 @@ impl Torrents {
         fallback_files: Option<Vec<usize>>,
         detached: Option<DetachedTorrent>,
     ) -> Result<(), TorrentError> {
+        let lock = self.op_lock(hash);
+        let _guard = lock.lock().await;
         let (files, paused, limits, order, piece_map) = match detached {
             Some(d) => (d.files, d.paused, d.limits, Some(d.order), d.piece_map),
             None => (fallback_files, false, None, None, None),
@@ -1682,7 +1739,8 @@ impl Torrents {
         if let Some(bits) = piece_map {
             put_piece_map(&self.piece_map_path(hash), &bits).await;
         }
-        self.add(torrent, folder, files, Vec::new(), paused).await?;
+        self.add_unlocked(torrent, folder, files, Vec::new(), paused)
+            .await?;
         if let Some((down, up)) = limits {
             let _ = self.set_torrent_limits(hash, down, up);
         }
@@ -1788,6 +1846,18 @@ impl Torrents {
     }
 
     pub async fn stop(&self) {
+        let mut entries: Vec<_> = self
+            .ops
+            .lock()
+            .unwrap()
+            .iter()
+            .map(|(h, l)| (h.clone(), l.clone()))
+            .collect();
+        entries.sort_by(|a, b| a.0.cmp(&b.0));
+        let mut guards = Vec::with_capacity(entries.len());
+        for (_, lock) in entries {
+            guards.push(lock.lock_owned().await);
+        }
         self.watch.close();
         self.session.stop().await;
     }
@@ -1885,6 +1955,29 @@ fn peers_of(api: &Api, i: TorrentIdOrHash) -> Vec<Peer> {
     out
 }
 
+fn torrent_hash(torrent: &[u8]) -> Result<String, TorrentError> {
+    check_bytes(torrent)?;
+    Ok(librqbit::torrent_from_bytes(torrent)
+        .map_err(|_| TorrentError::NotATorrent)?
+        .info_hash
+        .as_string())
+}
+
+async fn remove_piece_map(map: &Path) {
+    for i in 0..50 {
+        if std::fs::remove_file(map).is_ok() || !map.exists() {
+            return;
+        }
+        if i + 1 < 50 {
+            tokio::time::sleep(Duration::from_millis(100)).await;
+        }
+    }
+    tracing::warn!(
+        "torrents: could not remove old piece map at {}",
+        map.display()
+    );
+}
+
 /// Write a piece map back where librqbit has just removed it, for the torrent added again to
 /// find. On Windows the old file can stay, delete-pending, until librqbit's writer lets go of
 /// it, and the name can't be made again until then: it is tried for up to five seconds. Given
@@ -1894,9 +1987,10 @@ async fn put_piece_map(map: &Path, bits: &[u8]) {
 }
 
 async fn put_piece_map_tries(map: &Path, bits: &[u8], tries: u32, apart: Duration) -> bool {
+    let tmp = map.with_extension("bitv.mdm-tmp");
     let mut last = None;
     for i in 0..tries {
-        match std::fs::write(map, bits) {
+        match replace_file(map, &tmp, bits) {
             Ok(()) => return true,
             Err(e) => last = Some(e),
         }
@@ -1904,6 +1998,7 @@ async fn put_piece_map_tries(map: &Path, bits: &[u8], tries: u32, apart: Duratio
             tokio::time::sleep(apart).await;
         }
     }
+    let _ = std::fs::remove_file(&tmp);
     tracing::warn!(
         "torrents: can't write the piece map back to {} ({}); its pieces will be fetched again",
         map.display(),
@@ -6269,5 +6364,310 @@ mod tests {
         authorized_storage::forget(&swarm.state.join("session"), &hash);
         leecher.stop().await;
         swarm.seeder.stop().await;
+    }
+
+    /// #2079: releasing a finished torrent keeps its `.bitv` piece map so ticking another file
+    /// after the session stopped fastresumes instead of hashing or fetching the torrent again.
+    #[tokio::test(flavor = "multi_thread", worker_threads = 4)]
+    async fn ticking_a_file_after_release_fastresumes_without_refetching() {
+        let tmp = tempfile::tempdir().unwrap();
+        let src = tmp.path().join("seed").join("set");
+        std::fs::create_dir_all(&src).unwrap();
+        let a: Vec<u8> = (0..1_050_000u32).map(|i| (i % 251) as u8).collect();
+        let b: Vec<u8> = (0..40_000u32).map(|i| (i % 13) as u8).collect();
+        let c: Vec<u8> = (0..32_000u32).map(|i| (i % 7) as u8).collect();
+        std::fs::write(src.join("a.bin"), &a).unwrap();
+        std::fs::write(src.join("b.bin"), &b).unwrap();
+        std::fs::write(src.join("c.bin"), &c).unwrap();
+        let torrent = make_torrent(&src).await;
+
+        let seeder = Torrents::start(offline(&tmp.path().join("s1")))
+            .await
+            .unwrap();
+        let meta = seeder
+            .metadata(
+                &Source::File(torrent.clone()),
+                Duration::from_secs(10),
+                None,
+            )
+            .await
+            .unwrap();
+        let hash = seeder
+            .add(&torrent, &src, None, Vec::new(), false)
+            .await
+            .unwrap();
+        wait_for(&seeder, &hash, "seeder checked", 20, |s| {
+            s.phase == Phase::Finished
+        })
+        .await;
+        let addr = seeder.listen_addr().expect("seeder listens");
+        let index = |name: &str| {
+            meta.files
+                .iter()
+                .position(|f| f.path.ends_with(name))
+                .unwrap()
+        };
+        let (ia, ib, ic) = (index("a.bin"), index("b.bin"), index("c.bin"));
+        assert!(ia < ib && ib < ic, "b.bin separates a.bin and c.bin");
+
+        let state = tmp.path().join("s2");
+        let session = state.join("session");
+        let out = meta.folder_in(&tmp.path().join("got"));
+        std::fs::create_dir_all(&out).unwrap();
+        let make = |i: usize| {
+            let path = out.join(&meta.files[i].path);
+            authorized_storage::PreparedFile {
+                index: i,
+                file: std::fs::OpenOptions::new()
+                    .read(true)
+                    .write(true)
+                    .create(true)
+                    .truncate(false)
+                    .open(&path)
+                    .unwrap(),
+                path,
+            }
+        };
+        let guarded = || {
+            let mut config = offline(&state);
+            config.require_authorization = true;
+            config.open_files = Some(16);
+            config
+        };
+
+        // Download only a.bin, then release (as MDM does on finish) and stop the idle session.
+        let leecher = Torrents::start(guarded()).await.unwrap();
+        authorized_storage::authorize_parted(
+            &session,
+            &meta.info_hash,
+            &out,
+            authorized_storage::Prepared {
+                files: vec![make(ia)],
+                parted: vec![ib, ic],
+                ..Default::default()
+            },
+            Arc::new(|| Err(std::io::ErrorKind::PermissionDenied.into())),
+        );
+        let h2 = leecher
+            .add(&torrent, &out, Some(vec![ia]), vec![addr], false)
+            .await
+            .unwrap();
+        wait_for(&leecher, &h2, "a.bin finished", 30, |s| {
+            s.phase == Phase::Finished
+        })
+        .await;
+        leecher.release(&h2).await.unwrap();
+        assert!(!leecher.has(&h2));
+        assert_eq!(leecher.open_files(), 0);
+        leecher.stop().await;
+        authorized_storage::forget(&session, &h2);
+
+        let map_path = piece_map_file(&session, &h2);
+        let map = std::fs::read(&map_path).expect(".bitv preserved after release");
+        let done = file_done_from_map(&torrent, &map).unwrap();
+        assert_eq!(done[ia], a.len() as u64);
+        assert!(done[ib] > 0 && done[ib] < b.len() as u64);
+        assert_eq!(done[ic], 0);
+        assert!(!out.join(&meta.files[ib].path).exists());
+        assert!(!out.join(&meta.files[ic].path).exists());
+
+        // The piece map is what the next start goes by, not a check of every piece: with one
+        // piece in the middle of a.bin left out of it (one a sample check never reads, as the
+        // map doesn't claim it), that piece reads as missing though it is on the disk. A full
+        // check would find it there.
+        let hole = 10;
+        let mut holed = map.clone();
+        holed[hole / 8] &= !(0x80 >> (hole % 8));
+        std::fs::write(&map_path, &holed).unwrap();
+        let peek = Torrents::start(guarded()).await.unwrap();
+        authorized_storage::authorize_parted(
+            &session,
+            &meta.info_hash,
+            &out,
+            authorized_storage::Prepared {
+                files: vec![make(ia), make(ic)],
+                parted: vec![ib],
+                ..Default::default()
+            },
+            Arc::new(|| Err(std::io::ErrorKind::PermissionDenied.into())),
+        );
+        let hp = peek
+            .add(&torrent, &out, Some(vec![ia, ic]), Vec::new(), true)
+            .await
+            .unwrap();
+        let s = wait_for(&peek, &hp, "checked from the map", 30, |s| {
+            s.phase == Phase::Paused
+        })
+        .await;
+        assert_eq!(
+            s.file_done[ia],
+            a.len() as u64 - 16 * 1024,
+            "the start went by the piece map, not a check of every piece: {s:?}"
+        );
+        peek.release(&hp).await.unwrap();
+        peek.stop().await;
+        authorized_storage::forget(&session, &hp);
+        std::fs::write(&map_path, &map).unwrap();
+
+        // Start a new session and tick c.bin: fastresumes a.bin and fetches only c.bin.
+        let again = Torrents::start(guarded()).await.unwrap();
+        authorized_storage::authorize_parted(
+            &session,
+            &meta.info_hash,
+            &out,
+            authorized_storage::Prepared {
+                files: vec![make(ia), make(ic)],
+                parted: vec![ib],
+                ..Default::default()
+            },
+            Arc::new(|| Err(std::io::ErrorKind::PermissionDenied.into())),
+        );
+        let h3 = again
+            .add(&torrent, &out, Some(vec![ia, ic]), vec![addr], false)
+            .await
+            .unwrap();
+        let s = wait_for(&again, &h3, "c.bin finished", 30, |s| {
+            s.phase == Phase::Finished
+        })
+        .await;
+        assert!(
+            s.fetched <= (c.len() as u64) + 32 * 1024,
+            "fetched only the newly ticked file, not a.bin: {s:?}"
+        );
+        assert_eq!(std::fs::read(out.join(&meta.files[ia].path)).unwrap(), a);
+        assert_eq!(std::fs::read(out.join(&meta.files[ic].path)).unwrap(), c);
+        assert!(!out.join(&meta.files[ib].path).exists());
+        assert!(map_path.is_file());
+
+        // Release again, stop session, then tick b.bin (which has head + tail bytes in .parts).
+        again.release(&h3).await.unwrap();
+        again.stop().await;
+        authorized_storage::forget(&session, &h3);
+        assert!(authorized_storage::has_parts(&session, &h3, ib));
+
+        let third = Torrents::start(guarded()).await.unwrap();
+        authorized_storage::authorize_parted(
+            &session,
+            &meta.info_hash,
+            &out,
+            authorized_storage::Prepared {
+                files: vec![make(ia), make(ib), make(ic)],
+                parted: Vec::new(),
+                ..Default::default()
+            },
+            Arc::new(|| Err(std::io::ErrorKind::PermissionDenied.into())),
+        );
+        let h4 = third
+            .add(&torrent, &out, Some(vec![ia, ib, ic]), vec![addr], false)
+            .await
+            .unwrap();
+        let s = wait_for(&third, &h4, "b.bin finished", 30, |s| {
+            s.phase == Phase::Finished
+        })
+        .await;
+        assert!(
+            s.fetched <= (b.len() as u64) + 32 * 1024,
+            "fetched only b.bin's missing middle, not a.bin or c.bin: {s:?}"
+        );
+        assert_eq!(std::fs::read(out.join(&meta.files[ia].path)).unwrap(), a);
+        assert_eq!(std::fs::read(out.join(&meta.files[ib].path)).unwrap(), b);
+        assert_eq!(std::fs::read(out.join(&meta.files[ic].path)).unwrap(), c);
+        assert!(!authorized_storage::has_parts(&session, &h4, ib));
+
+        third.remove(&h4, false).await.unwrap();
+        assert!(!map_path.exists());
+        authorized_storage::remove_parts(&session, &h4).unwrap();
+        authorized_storage::forget(&session, &h4);
+        third.stop().await;
+        seeder.stop().await;
+    }
+
+    /// #2079: concurrency, invalidation, and missing-file fastresume safety around `release`
+    /// and `clear_piece_map`.
+    #[tokio::test(flavor = "multi_thread", worker_threads = 4)]
+    async fn release_serializes_ops_and_rejects_corrupt_or_cleared_fastresume() {
+        let tmp = tempfile::tempdir().unwrap();
+        let src = tmp.path().join("seed").join("set");
+        std::fs::create_dir_all(&src).unwrap();
+        // 8 pieces of 16 KiB = 128 KiB so piece 2 is separate from piece 0 checked by take(1).
+        let a: Vec<u8> = (0..128 * 1024u32).map(|i| (i % 251) as u8).collect();
+        std::fs::write(src.join("a.bin"), &a).unwrap();
+        let torrent = make_torrent(&src).await;
+
+        let state = tmp.path().join("state");
+        let session = state.join("session");
+        let t = Torrents::start(offline(&state)).await.unwrap();
+        let hash = t
+            .add(&torrent, &src, None, Vec::new(), false)
+            .await
+            .unwrap();
+        wait_for(&t, &hash, "checked", 20, |s| s.phase == Phase::Finished).await;
+
+        // Concurrent release calls on the same hash serialize cleanly: one succeeds, one sees Unknown.
+        let (r1, r2) = tokio::join!(t.release(&hash), t.release(&hash));
+        assert!(
+            matches!(
+                (&r1, &r2),
+                (Ok(()), Err(TorrentError::Unknown)) | (Err(TorrentError::Unknown), Ok(()))
+            ),
+            "expected one Ok and one Unknown, got ({r1:?}, {r2:?})"
+        );
+        let map_path = piece_map_file(&session, &hash);
+        assert!(map_path.is_file());
+
+        // Concurrent release + add after re-adding: op_lock serializes both without losing .bitv.
+        t.add(&torrent, &src, None, Vec::new(), true).await.unwrap();
+        wait_for(&t, &hash, "paused", 20, |s| s.phase == Phase::Paused).await;
+        let (rel_res, add_res) = tokio::join!(
+            t.release(&hash),
+            t.add(&torrent, &src, None, Vec::new(), true)
+        );
+        assert!(rel_res.is_ok(), "release failed: {rel_res:?}");
+        // Depending on lock acquisition order, either add ran first (duplicate error) or after release (Ok).
+        if add_res.is_ok() {
+            wait_for(&t, &hash, "re-added paused", 20, |s| {
+                s.phase == Phase::Paused
+            })
+            .await;
+            t.release(&hash).await.unwrap();
+        }
+        assert!(map_path.is_file());
+
+        // Corrupt piece 2 on disk: clear_piece_map forces a full recheck that catches it.
+        let mut damaged = a.clone();
+        damaged[2 * 16 * 1024 + 10] ^= 0xff;
+        std::fs::write(src.join("a.bin"), &damaged).unwrap();
+        t.clear_piece_map(&hash).await;
+        assert!(!map_path.exists());
+        t.add(&torrent, &src, None, Vec::new(), true).await.unwrap();
+        let s = wait_for(&t, &hash, "rechecked damaged", 20, |s| {
+            s.phase == Phase::Paused
+        })
+        .await;
+        assert!(
+            s.done < a.len() as u64,
+            "damaged piece must be detected: {s:?}"
+        );
+
+        // Restore valid file, finish, release, then truncate on disk: validate_fastresume rejects
+        // stale .bitv instead of trusting missing data.
+        t.remove(&hash, false).await.unwrap();
+        std::fs::write(src.join("a.bin"), &a).unwrap();
+        t.add(&torrent, &src, None, Vec::new(), false)
+            .await
+            .unwrap();
+        wait_for(&t, &hash, "restored", 20, |s| s.phase == Phase::Finished).await;
+        t.release(&hash).await.unwrap();
+        assert!(map_path.is_file());
+        std::fs::write(src.join("a.bin"), b"").unwrap();
+        t.add(&torrent, &src, None, Vec::new(), true).await.unwrap();
+        let s = wait_for(&t, &hash, "truncated check", 20, |s| {
+            s.phase == Phase::Paused
+        })
+        .await;
+        assert_eq!(s.done, 0, "empty file must invalidate fastresume: {s:?}");
+
+        t.remove(&hash, false).await.unwrap();
+        t.stop().await;
     }
 }

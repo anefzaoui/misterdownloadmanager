@@ -790,9 +790,11 @@ impl Host {
                 if t.has(hash) {
                     t.readd(hash, &bytes, true).await.map_err(err)?;
                 } else {
-                    // Not in the session: added paused, which checks what is there. The engine
-                    // opens (and sizes) every file at its paths when it checks, so they are
-                    // checked and handed over first, as at Start.
+                    // Not in the session: drop any preserved piece map so Recheck hashes all pieces.
+                    t.clear_piece_map(hash).await;
+                    // Added paused, which checks what is there. The engine opens (and sizes) every
+                    // file at its paths when it checks, so they are checked and handed over first,
+                    // as at Start.
                     prepare_storage(self, spec, dest, protected).await?;
                     t.add(&bytes, &spec.folder, spec.files.clone(), Vec::new(), true)
                         .await
@@ -858,7 +860,7 @@ impl Host {
                     }
                     if pause {
                         if t.stats(hash).is_ok_and(|s| s.phase == Phase::Finished) {
-                            t.remove(hash, false).await.map_err(err)?;
+                            t.release(hash).await.map_err(err)?;
                         } else {
                             t.pause(hash).await.map_err(err)?;
                         }
@@ -1177,7 +1179,7 @@ impl Host {
             for job in jobs {
                 let h = job.spec.hash.clone();
                 if !on {
-                    let _ = t.remove(&h, false).await;
+                    let _ = t.release(&h).await;
                 } else if t.has(&h) {
                     let _ = t.resume(&h).await;
                 } else if host.hold(&h) {
@@ -1336,15 +1338,14 @@ async fn forget_torrent(
     protected: Vec<PathBuf>,
     data: PathBuf,
 ) -> Result<Vec<PathBuf>, String> {
-    if let Some(t) = session
-        && t.has(&spec.hash)
-    {
-        // Release Windows file handles before touching the files ourselves.
-        if let Err(e) = t.remove(&spec.hash, false).await
+    if let Some(t) = session {
+        if t.has(&spec.hash)
+            && let Err(e) = t.remove(&spec.hash, false).await
             && t.has(&spec.hash)
         {
             return Err(e.to_string());
         }
+        t.clear_piece_map(&spec.hash).await;
     }
     // Nothing of this torrent may be opened by the engine on an old grant from now on.
     revoke_grant(&spec.hash);
@@ -1404,10 +1405,15 @@ async fn forget_torrent(
             }
         }
         // The parts of the pieces its unticked files shared: MDM's own, gone with it.
-        if let Err(e) =
-            mdm_torrent::authorized_storage::remove_parts(&data.join("session"), &spec.hash)
-        {
+        let session_dir = data.join("session");
+        if let Err(e) = mdm_torrent::authorized_storage::remove_parts(&session_dir, &spec.hash) {
             tracing::warn!("torrent {}: its parts files stayed: {e}", spec.hash);
+        }
+        let map = mdm_torrent::piece_map_file(&session_dir, &spec.hash);
+        if let Err(e) = std::fs::remove_file(&map)
+            && e.kind() != std::io::ErrorKind::NotFound
+        {
+            tracing::warn!("torrent {}: its piece map stayed: {e}", spec.hash);
         }
         // Keep the metadata and rename mapping if deletion failed, for recovery.
         if let Some(file) = file {
@@ -1720,6 +1726,7 @@ pub struct Run {
     /// checking, with the bytes last seen (`last`: done, total), not as gone or stopped.
     busy: Arc<Mutex<HashSet<String>>>,
     last: Mutex<(u64, Option<u64>)>,
+    releasing: Arc<std::sync::atomic::AtomicBool>,
 }
 
 /// The origin a torrent's files are marked with: not one website, and never the magnet link
@@ -1776,13 +1783,17 @@ impl Run {
             let res = async {
                 let swapped = prepare_storage(&host, &spec2, &dest, protected).await?;
                 let t = host.session(known).await?;
-                if swapped && t.has(&spec2.hash) {
-                    // A file was replaced while it was stopped: the engine still writes to
-                    // the old one. Take it out of the session, and add it again below on the
-                    // handles just checked.
-                    t.remove(&spec2.hash, false)
-                        .await
-                        .map_err(|e| crate::errors::torrent(&e))?;
+                if swapped {
+                    if t.has(&spec2.hash) {
+                        // A file was replaced while it was stopped: the engine still writes to
+                        // the old one. Take it out of the session, and add it again below on the
+                        // handles just checked.
+                        t.remove(&spec2.hash, false)
+                            .await
+                            .map_err(|e| crate::errors::torrent(&e))?;
+                    } else {
+                        t.clear_piece_map(&spec2.hash).await;
+                    }
                 }
                 if t.has(&spec2.hash) {
                     // Its order before it asks any peer for a piece.
@@ -1837,6 +1848,7 @@ impl Run {
             order,
             busy,
             last: Mutex::new((0, None)),
+            releasing: Arc::new(std::sync::atomic::AtomicBool::new(false)),
         }
     }
 
@@ -1940,7 +1952,7 @@ impl Run {
         // Done: it stops sharing (a download manager finishes downloads; D-018), unless the
         // person chose to keep sharing.
         if s.state == State::Done && !self.keep_sharing {
-            self.remove_in_background(&t);
+            self.release_in_background(&t);
         }
         s
     }
@@ -1952,10 +1964,16 @@ impl Run {
         });
     }
 
-    fn remove_in_background(&self, t: &Arc<Torrents>) {
+    fn release_in_background(&self, t: &Arc<Torrents>) {
+        if self
+            .releasing
+            .swap(true, std::sync::atomic::Ordering::AcqRel)
+        {
+            return;
+        }
         let (t, hash) = (t.clone(), self.hash.clone());
         self.rt.spawn(async move {
-            let _ = t.remove(&hash, false).await;
+            let _ = t.release(&hash).await;
         });
     }
 
@@ -1966,7 +1984,7 @@ impl Run {
             if t.seen(&self.hash)
                 .is_some_and(|s| s.phase == Phase::Finished)
             {
-                self.remove_in_background(&t);
+                self.release_in_background(&t);
             } else {
                 self.pause_in_background(&t);
             }
@@ -2566,6 +2584,35 @@ mod tests {
         assert!(!chosen_with_parts(Some(&session), &hash, &[0, 1]));
         assert!(!chosen_with_parts(Some(&session), &"cd".repeat(20), &[3]));
         assert!(!chosen_with_parts(None, &hash, &[3]));
+    }
+
+    #[tokio::test]
+    async fn forget_torrent_clears_preserved_piece_map_when_out_of_session() {
+        let tmp = tempfile::tempdir().unwrap();
+        let data = tmp.path().join("data");
+        let session_dir = data.join("session");
+        std::fs::create_dir_all(&session_dir).unwrap();
+        let hash = "ab".repeat(20);
+        let map = mdm_torrent::piece_map_file(&session_dir, &hash);
+        std::fs::write(&map, [0xff]).unwrap();
+        let mut spec = a_spec();
+        spec.hash = hash.clone();
+
+        forget_torrent(
+            None,
+            None,
+            spec,
+            tmp.path().join("dest"),
+            false,
+            Vec::new(),
+            data,
+        )
+        .await
+        .unwrap();
+        assert!(
+            !map.exists(),
+            "Delete removes preserved .bitv even when out of session"
+        );
     }
 
     /// #357: the ratio the list and the General tab share, and the seeding limit's.

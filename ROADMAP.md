@@ -569,6 +569,10 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 Everything below ships together, in version 0.6.0, the next release.
 
+- ✅ Torrents: ticking another file on a finished torrent no longer re-checks every piece already on
+  disk: MDM keeps the piece map when a finished torrent leaves the session (when sharing is off or
+  a seeding limit is reached) and removes it on delete, Recheck, or file replacement
+  ([#2079](https://github.com/anefzaoui/misterdownloadmanager/issues/2079))
 - ✅ Torrents: a torrent of many files stays within its budget of open files when a file is
   opened again and at a pause (a follow-up to #2060)
 - ✅ The browser add-on's Download video button checked on about 30 video sites and player types in

@@ -3486,7 +3486,7 @@ impl App {
             {
                 let (t2, hash) = (t.clone(), spec.hash.clone());
                 self.rt.spawn(async move {
-                    let _ = t2.remove(&hash, false).await;
+                    let _ = t2.release(&hash).await;
                 });
                 stopped = Some(why);
                 changed = true;
@@ -3527,7 +3527,7 @@ impl App {
                         if report && i.live.is_none() && stop_after_recheck {
                             let t2 = t.clone();
                             self.rt.spawn(async move {
-                                let _ = t2.remove(&hash, false).await;
+                                let _ = t2.release(&hash).await;
                             });
                         }
                     } else if i.status == Status::Complete {
