@@ -63,6 +63,17 @@ from a diff. Items that stop earning their place are removed.
   - [ ] It doesn't pass by luck: no fixed sleeps, a margin that holds on a slow CI runner, and it
         was run several times. A flaky test is fixed or removed with the reason, never retried.
 
+## Supply chain
+
+- **Triggered by:** a diff that touches build or tool configs (`*.config.*`, `package.json`
+  scripts), test bootstrap files (`conftest.py`), fonts, pictures or other binary assets, editor
+  task files (`.vscode/`), CI workflows, or `tools/security/` (the scan, its indicators and its
+  allowlist).
+  - [ ] Each such file was read whole, including the ends of long lines: nothing runs on install,
+        when a folder opens or from an encoded string, and an asset is the format its name says.
+  - [ ] The supply-chain scan passed, and each line the PR adds to `tools/security/allowlist.txt`
+        says why it is safe, and was checked to be.
+
 ## Outside contributions
 
 - **Triggered by:** a PR from outside the maintainers that touches `.github/`, build scripts,

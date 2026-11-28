@@ -575,6 +575,23 @@ Everything below ships together, in version 0.6.0, the next release.
   as Office files; a folder shared with your account only, with the browser's sign-in; Drive's
   refusals said per file as for single files, and a folder of more than 50 items said as listed
   in part ([#2032](https://github.com/anefzaoui/misterdownloadmanager/issues/2032))
+- ✅ **No proxy/socks** chosen in Options → Proxy / Socks keeps yt-dlp and gallery-dl direct too, off Windows'
+  proxy and the proxy variables; the untouched default still follows them, and so does a list saved before
+  ([#1616](https://github.com/anefzaoui/misterdownloadmanager/issues/1616))
+- ✅ The window no longer freezes while an antivirus scans a file MDM opens
+  ([#1292](https://github.com/anefzaoui/misterdownloadmanager/issues/1292); thanks to
+  [@seifmoustafa](https://github.com/seifmoustafa) and
+  [@fernandopeguero](https://github.com/fernandopeguero)): fonts, archive tests, Options' look
+  for 7-Zip, theme files and sounds are read beside the window, and test builds log any file
+  the window's thread opens
+- ✅ The command line's `torrent-info` and `torrent-get` hold their torrent session to the network
+  adapter chosen in Options → Connection, and don't start while it isn't connected
+  ([#2050](https://github.com/anefzaoui/misterdownloadmanager/issues/2050); thanks to
+  [@abdul-karim-mia](https://github.com/abdul-karim-mia))
+- ✅ Every pull request and every change to main is scanned for signs of a tampered commit: code
+  hidden at the end of long lines, scripts that run on install or when a folder opens, files that
+  aren't what their name says and known indicators; main's whole history once a week
+  (`tools/security/scan_suspicious.py`)
 - ✅ More file types in the built-in categories: apps and installers (APK, IPA, AppImage, DEB,
   RPM, Flatpak, Snap, MSIX, DMG, PKG…) in Programs, disc and disk images (ISO, IMG, VHD, VMDK…)
   and more archives in Compressed, e-books, OpenDocument files and spreadsheets in Documents,
