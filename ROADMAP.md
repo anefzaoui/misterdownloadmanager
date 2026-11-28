@@ -569,6 +569,8 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 Everything below ships together, in version 0.6.0, the next release.
 
+- ✅ Torrents: a torrent of many files stays within its budget of open files when a file is
+  opened again and at a pause (a follow-up to #2060)
 - ✅ Download video: choose the language of a video's sound when it comes in several (YouTube's
   dubbed tracks), the original first and marked; every quality, Audio only and MP3, Opus and
   FLAC take that language's sound, and the button over a video says each line's language.
