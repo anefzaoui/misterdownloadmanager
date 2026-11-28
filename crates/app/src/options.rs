@@ -404,6 +404,17 @@ impl OptionsDialog {
         self
     }
 
+    /// With Save to's category `key` chosen (its settings name, `Programs`; a user's by its
+    /// name), for `/show options:saveto:<category>`: screenshots of a category's file types.
+    pub fn with_category(mut self, key: &str, downloads: &std::path::Path) -> Self {
+        let cats = Category::all();
+        if let Some(i) = cats.iter().position(|c| c.key().eq_ignore_ascii_case(key)) {
+            self.category = i;
+            self.cat_dir = display_dir(&self.s.category_dir(cats[i], downloads));
+        }
+        self
+    }
+
     /// With the app's remote control (Remote: its state, devices and pairing).
     pub fn with_remote(mut self, remote: Option<mdm_remote::Remote>) -> Self {
         self.remote = remote;
@@ -1334,7 +1345,13 @@ impl OptionsDialog {
         ));
         winui::text_in_window(ui, &p, o.x + 31.0, o.y + 178.0, &line, LIGHT_TEXT());
         let types = cat.types_text();
-        readonly(ui, r(o, 31.0, 185.0, 362.0, 23.0), &types);
+        // A list of file types (`EXE MSI APK...`) reads left to right in every language, cut
+        // with its "..." at its end; General's and Torrents' sentence follows the interface.
+        if matches!(cat, Category::General | Category::Torrents) {
+            readonly(ui, r(o, 31.0, 185.0, 362.0, 23.0), &types);
+        } else {
+            readonly_ltr(ui, r(o, 31.0, 185.0, 362.0, 23.0), &types);
+        }
         let dir_line = with_category(crate::i18n::t(
             "Default download directory for \"{category}\" category",
         ));

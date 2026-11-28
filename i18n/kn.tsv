@@ -1147,6 +1147,11 @@
 #. event log entry after Recheck: {have} and {total} are sizes ("1.2 GB of 4 GB there")
 #, machine
 	Checked: {have} of {total} there	ಪರಿಶೀಲಿಸಲಾಗಿದೆ: {total} ರಲ್ಲಿ {have} ಇದೆ
+#. text in softgl.rs
+#. the software renderer's window: the download is done, and its files are being checked and unpacked
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Checking and unpacking Mesa's software renderer...	ಮೆಸಾದ ಸಾಫ್ಟ್‌ವೇರ್ ರೆಂಡರರ್ ಅನ್ನು ಪರಿಶೀಲಿಸಲಾಗುತ್ತಿದೆ ಮತ್ತು ಅನ್‌ಪ್ಯಾಕ್ ಮಾಡಲಾಗುತ್ತಿದೆ...
 #. message or event log entry in the main window
 #. event log entry: a torrent's files are being read and checked again (Recheck)
 #, machine
@@ -1820,6 +1825,11 @@
 #. Helpers: MDM's own copy of a helper is being downloaded (where there was none, or in place of the system's); {percent} = how far, a number
 #, machine
 	Downloading MDM's own copy... {percent}%	MDM ನ ಸ್ವಂತ ನಕಲನ್ನು ಡೌನ್‌ಲೋಡ್ ಮಾಡಲಾಗುತ್ತಿದೆ... {percent}%
+#. text in softgl.rs
+#. the software renderer's window, while it downloads; {done} and {size} = sizes (12.0 MB of 66.3 MB)
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	Downloading Mesa's software renderer: {done} of {size}	ಮೆಸಾದ ಸಾಫ್ಟ್‌ವೇರ್ ರೆಂಡರರ್ ಅನ್ನು ಡೌನ್‌ಲೋಡ್ ಮಾಡಲಾಗುತ್ತಿದೆ: {size} ರಲ್ಲಿ {done}
 #. text in archtest.rs
 #. in a download's log: after its archive test found damaged files, only their bytes are downloaded again from the same server; {size} like "1.20 MB"
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
@@ -3171,6 +3181,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Looking the page up...	ಪುಟವನ್ನು ಹುಡುಕಲಾಗುತ್ತಿದೆ...
+#. text in softgl.rs
+#. the software renderer's window: while MDM reads its signed list of the software renderers it may download (Mesa's llvmpipe: it draws MDM's windows where there is no graphics card)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Looking up Mesa's software renderer...	ಮೆಸಾದ ಸಾಫ್ಟ್‌ವೇರ್ ರೆಂಡರರ್ ಅನ್ನು ಹುಡುಕಲಾಗುತ್ತಿದೆ...
 #. text in preview.rs
 #. the preview pane: still looking whether the file is there
 #. the trailing ... means it is still going on: keep it
@@ -3339,6 +3354,9 @@
 #. Video helpers: MDM can't download Node.js on this system (an unusual processor); Node.js and Deno are program names; "Use another program" is the button below
 #, machine
 	MDM has no copy for this system: install Node.js or Deno, or use another program	MDM ಈ ಸಿಸ್ಟಮ್‌ಗೆ ಯಾವುದೇ ನಕಲನ್ನು ಹೊಂದಿಲ್ಲ: Node.js ಅಥವಾ Deno ಅನ್ನು ಸ್ಥಾಪಿಸಿ, ಅಥವಾ ಇನ್ನೊಂದು ಪ್ರೋಗ್ರಾಂ ಬಳಸಿ
+#. text in softgl.rs
+#, machine
+	MDM has no data folder	MDM ಗೆ ಯಾವುದೇ ಡೇಟಾ ಫೋಲ್ಡರ್ ಇಲ್ಲ
 #. text in remote.rs
 #. remote control page (on a phone): no pairing code is shown in MDM; "Pair a device" is MDM's button
 #, machine
@@ -3364,6 +3382,27 @@
 #. error installing ffmpeg: the list of builds MDM accepts doesn't carry MDM's own signature
 #, machine
 	MDM's list of checked ffmpeg builds isn't signed by MDM's key, so ffmpeg wasn't installed	MDM ನ ಪರಿಶೀಲಿಸಿದ ffmpeg ಬಿಲ್ಡ್‌ಗಳ ಪಟ್ಟಿಗೆ MDM ನ ಕೀಲಿಯಿಂದ ಸಹಿ ಮಾಡಲಾಗಿಲ್ಲ, ಆದ್ದರಿಂದ ffmpeg ಅನ್ನು ಸ್ಥಾಪಿಸಲಾಗಿಲ್ಲ
+#. text in errors.rs
+#. error installing Mesa's software renderer: the list of builds MDM accepts couldn't be read; {detail} = the technical detail, in English
+#, machine
+	MDM's list of checked software renderers can't be read ({detail})	MDM ನ ಪರಿಶೀಲಿಸಿದ ಸಾಫ್ಟ್‌ವೇರ್ ರೆಂಡರರ್‌ಗಳ ಪಟ್ಟಿಯನ್ನು ಓದಲು ಸಾಧ್ಯವಿಲ್ಲ ({detail})
+#. text in errors.rs
+#. error installing Mesa's software renderer (it draws MDM's windows where there is no graphics card): MDM installs only builds named in a list it publishes, signed with its key, and that list couldn't be downloaded; {error} = why
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	MDM's list of checked software renderers could not be downloaded: {error}	MDM ನ ಪರಿಶೀಲಿಸಿದ ಸಾಫ್ಟ್‌ವೇರ್ ರೆಂಡರರ್‌ಗಳ ಪಟ್ಟಿಯನ್ನು ಡೌನ್‌ಲೋಡ್ ಮಾಡಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ: {error}
+#. text in errors.rs
+#. error installing Mesa's software renderer: the list of builds MDM accepts has none for this computer's system and processor
+#, machine
+	MDM's list of checked software renderers has none for this computer	MDM ನ ಪರಿಶೀಲಿತ ಸಾಫ್ಟ್‌ವೇರ್ ರೆಂಡರರ್‌ಗಳ ಪಟ್ಟಿಯಲ್ಲಿ ಈ ಕಂಪ್ಯೂಟರ್‌ಗೆ ಹೊಂದುವ ಯಾವುದೂ ಇಲ್ಲ
+#. text in errors.rs
+#. error installing Mesa's software renderer: the list of builds MDM accepts is older than one this copy of MDM already used (it never goes back to an older list)
+#, machine
+	MDM's list of checked software renderers is older than one already used, so nothing was installed	MDM ನ ಪರಿಶೀಲಿಸಿದ ಸಾಫ್ಟ್‌ವೇರ್ ರೆಂಡರರ್‌ಗಳ ಪಟ್ಟಿಯು ಈಗಾಗಲೇ ಬಳಸಿದ ಒಂದಕ್ಕಿಂತ ಹಳೆಯದಾಗಿದೆ, ಆದ್ದರಿಂದ ಏನನ್ನೂ ಸ್ಥಾಪಿಸಲಾಗಿಲ್ಲ
+#. text in errors.rs
+#. error installing Mesa's software renderer: the list of builds MDM accepts doesn't carry MDM's own signature
+#, machine
+	MDM's list of checked software renderers isn't signed by MDM's key, so nothing was installed	MDM ನ ಪರಿಶೀಲಿಸಿದ ಸಾಫ್ಟ್‌ವೇರ್ ರೆಂಡರರ್‌ಗಳ ಪಟ್ಟಿಯು MDM ನ ಕೀಲಿಯಿಂದ ಸಹಿ ಮಾಡಲ್ಪಟ್ಟಿಲ್ಲ, ಆದ್ದರಿಂದ ಏನನ್ನೂ ಸ್ಥಾಪಿಸಲಾಗಿಲ್ಲ
 #. text in whereis.rs
 #. how far a download's server is, by its round trip (60 to 150 ms)
 #, machine
@@ -3381,6 +3420,14 @@
 #. a video's status while its picture and sound are joined into one file (ffmpeg); {percent} how far, e.g. "45%"
 #, machine
 	Merging... ({percent})	ವಿಲೀನಗೊಳಿಸಲಾಗುತ್ತಿದೆ... ({percent})
+#. text in softgl.rs
+#. the software renderer's window: the download or its check failed; {reason} = why, a sentence's part
+#, machine
+	Mesa's software renderer couldn't be installed: {reason}	ಮೆಸಾದ ಸಾಫ್ಟ್‌ವೇರ್ ರೆಂಡರರ್ ಅನ್ನು ಸ್ಥಾಪಿಸಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ: {reason}
+#. text in softgl.rs
+#. the software renderer's window, once Mesa's llvmpipe is downloaded and checked
+#, machine
+	Mesa's software renderer is installed. MDM draws with it from its next start.	ಮೆಸಾದ ಸಾಫ್ಟ್‌ವೇರ್ ರೆಂಡರರ್ ಅನ್ನು ಸ್ಥಾಪಿಸಲಾಗಿದೆ. MDM ತನ್ನ ಮುಂದಿನ ಪ್ರಾರಂಭದಿಂದ ಅದರೊಂದಿಗೆ ಚಿತ್ರಿಸುತ್ತದೆ.
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3800,6 +3847,11 @@
 #. text in a dialog box
 #, machine
 	No goes back, to choose another folder.	ಇಲ್ಲ ಎಂದರೆ ಹಿಂತಿರುಗಿ, ಇನ್ನೊಂದು ಫೋಲ್ಡರ್ ಆಯ್ಕೆ ಮಾಡಲು.
+#. text in softgl.rs
+#. the software renderer's window, offered once at a start where Windows' own software renderer (WARP, keep the name) draws MDM because no graphics card has a driver for it; llvmpipe (keep the name) is Mesa's software renderer; {size} = its download's size (e.g. 66.3 MB)
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	No graphics card here has a driver MDM can draw with, so Windows' software renderer (WARP) draws its windows and keeps the processor busy. Mesa's software renderer (llvmpipe) draws them with far less. Download it once ({size}, from Mesa's builds on GitHub)? MDM draws with it from its next start.	ಇಲ್ಲಿರುವ ಯಾವುದೇ ಗ್ರಾಫಿಕ್ಸ್ ಕಾರ್ಡ್‌ಗೆ MDM ಬಳಸಬಹುದಾದ ಡ್ರೈವರ್ ಇಲ್ಲ, ಆದ್ದರಿಂದ Windows ನ ಸಾಫ್ಟ್‌ವೇರ್ ರೆಂಡರರ್ (WARP) ಅದರ ವಿಂಡೋಗಳನ್ನು ಡ್ರಾ ಮಾಡುತ್ತದೆ ಮತ್ತು ಪ್ರೊಸೆಸರ್ ಅನ್ನು ಕಾರ್ಯನಿರತವಾಗಿರಿಸುತ್ತದೆ. Mesa ನ ಸಾಫ್ಟ್‌ವೇರ್ ರೆಂಡರರ್ (llvmpipe) ಅವುಗಳನ್ನು ಕಡಿಮೆ ಶಕ್ತಿಯಲ್ಲಿ ಡ್ರಾ ಮಾಡುತ್ತದೆ. ಅದನ್ನು ಒಮ್ಮೆ ಡೌನ್‌ಲೋಡ್ ಮಾಡಬೇಕೇ ({size}, GitHub ನಲ್ಲಿ Mesa ನ ಬಿಲ್ಡ್‌ಗಳಿಂದ)? MDM ಮುಂದಿನ ಪ್ರಾರಂಭದಿಂದ ಅದನ್ನು ಬಳಸಿಕೊಂಡು ಡ್ರಾ ಮಾಡುತ್ತದೆ.
 #. tooltip (why a control is greyed) in langpick.rs
 #. tooltip of the greyed OK button in the language picker
 #, machine
@@ -5177,6 +5229,10 @@
 #. button in the Download complete window: opens a menu of how long no Download complete window shows (30 minutes, 1 hour...)
 #, machine
 	Snooze	ಸ್ನೂಜ್
+#. text in softgl.rs
+#. the window's title: Mesa's software renderer, offered where no graphics card draws MDM's windows
+#, machine
+	Software renderer	ಸಾಫ್ಟ್‌ವೇರ್ ರೆಂಡರರ್
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -5728,6 +5784,10 @@
 #. text in errors.rs
 #, machine
 	the downloaded program doesn't match its signed checksum	ಡೌನ್‌ಲೋಡ್ ಮಾಡಿದ ಪ್ರೋಗ್ರಾಂ ಅದರ ಸಹಿ ಮಾಡಿದ ಚೆಕ್‌ಸಮ್‌ಗೆ ಹೊಂದಿಕೆಯಾಗುವುದಿಲ್ಲ
+#. text in errors.rs
+#. error installing Mesa's software renderer: a file downloaded isn't the one named in the list of builds MDM accepts (its checksum differs), so it was thrown away
+#, machine
+	the downloaded software renderer isn't the build MDM's list of checked builds names, so it wasn't installed	ಡೌನ್‌ಲೋಡ್ ಮಾಡಿದ ಸಾಫ್ಟ್‌ವೇರ್ ರೆಂಡರರ್ MDM ನ ಪರಿಶೀಲಿಸಿದ ಬಿಲ್ಡ್‌ಗಳ ಪಟ್ಟಿಯಲ್ಲಿ ಹೆಸರಿಸಿದ ಬಿಲ್ಡ್ ಅಲ್ಲ, ಆದ್ದರಿಂದ ಅದನ್ನು ಸ್ಥಾಪಿಸಲಾಗಿಲ್ಲ
 #. message or event log entry in the main window
 #. in the empty download list, under its title
 #, machine
@@ -9009,6 +9069,11 @@ menu	Download &video from a page...	ಪುಟದಿಂದ ವೀಡಿಯೊ ಡ
 #, machine
 menu	Download in order	ಕ್ರಮವಾಗಿ ಡೌನ್‌ಲೋಡ್ ಮಾಡಿ
 #. menu command in the main window
+#. View → Draw with: opens a window offering to download Mesa's software renderer (llvmpipe, keep the name), which draws MDM's windows with far less of the processor than Windows' own (WARP)
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Download Mesa's software renderer (llvmpipe)...	ಮೆಸಾದ ಸಾಫ್ಟ್‌ವೇರ್ ರೆಂಡರರ್ (llvmpipe) ಅನ್ನು ಡೌನ್‌ಲೋಡ್ ಮಾಡಿ...
+#. menu command in the main window
 #. View menu: submenu choosing what draws MDM's windows: OpenGL, or Direct3D, Vulkan or Metal (graphics systems)
 #, machine
 menu	Draw with	ಇದರೊಂದಿಗೆ ಡ್ರಾ ಮಾಡಿ
@@ -9245,6 +9310,18 @@ menu	Show &drop target	ಡ್ರಾಪ್ ಟಾರ್ಗೆಟ್ ತೋರಿ�
 #. menu command in the main window
 #, machine
 menu	Show Mister Download Manager	Mister Download Manager ತೋರಿಸಿ
+#. menu command in the main window
+#. View → Draw with: a greyed note; Mesa's software renderer (llvmpipe, keep the name) failed on this computer, so Windows' own software renderer (WARP, keep the name) draws
+#, machine
+menu	Software (llvmpipe) didn't start here: WARP draws	ಸಾಫ್ಟ್‌ವೇರ್ (llvmpipe) ಇಲ್ಲಿ ಪ್ರಾರಂಭವಾಗಲಿಲ್ಲ: WARP ಚಿತ್ರಿಸುತ್ತದೆ
+#. menu command in the main window
+#. View → Draw with: a greyed note; Mesa's software renderer (llvmpipe, keep the name) is downloaded and draws the windows from MDM's next start
+#, machine
+menu	Software (llvmpipe) draws from the next start	ಸಾಫ್ಟ್‌ವೇರ್ (llvmpipe) ಮುಂದಿನ ಪ್ರಾರಂಭದಿಂದ ಚಿತ್ರಿಸುತ್ತದೆ
+#. menu command in the main window
+#. View → Draw with: a greyed note; what draws the windows: Mesa's software renderer, llvmpipe (keep the name), because no graphics card here has a driver MDM can draw with
+#, machine
+menu	Software (llvmpipe): no graphics card here has a driver for MDM	ಸಾಫ್ಟ್‌ವೇರ್ (llvmpipe): ಇಲ್ಲಿ ಯಾವುದೇ ಗ್ರಾಫಿಕ್ಸ್ ಕಾರ್ಡ್ MDM ಗೆ ಡ್ರೈವರ್ ಹೊಂದಿಲ್ಲ
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine

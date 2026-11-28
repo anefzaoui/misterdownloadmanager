@@ -8115,6 +8115,80 @@ pub fn gl_driver(gl: &eframe::glow::Context) -> String {
     format!("{renderer} ({version})")
 }
 
+/// Mesa's OpenGL (`opengl32.dll`, llvmpipe, in MDM's tools folder: #476) loaded in place of
+/// Windows' own, before OpenGL starts (renderer.rs). MDM's program imports Windows' OpenGL
+/// delay-loaded (build.rs, `/DELAYLOAD:opengl32.dll`): nothing has loaded an `opengl32.dll` before
+/// OpenGL's first start, and once this one is loaded by its full path, every later load by name
+/// (eframe's, GDI's pixel formats, the delay-loaded imports) is answered with it, as Windows does
+/// for a DLL of that name loaded already. Its own DLLs (pal1000's `libgallium_wgl.dll`) come from
+/// its folder, the rest from System32 only. It stays loaded for the process's life.
+///
+/// Refused when an `opengl32.dll` is loaded already (Windows' own: a start with OpenGL before
+/// this one): MDM draws the next way then.
+pub fn load_mesa(dll: &std::path::Path) -> Result<(), String> {
+    use std::os::windows::ffi::OsStrExt as _;
+    use windows_sys::Win32::Foundation::{ERROR_INVALID_PARAMETER, GetLastError, HMODULE};
+    use windows_sys::Win32::System::LibraryLoader::{
+        GetModuleFileNameW, GetModuleHandleW, LOAD_LIBRARY_SEARCH_DLL_LOAD_DIR,
+        LOAD_LIBRARY_SEARCH_SYSTEM32, LOAD_WITH_ALTERED_SEARCH_PATH, LoadLibraryExW,
+    };
+    let path_of = |m: HMODULE| {
+        let mut buf = [0u16; 1024];
+        // SAFETY: a loaded module's handle and a buffer of the length given.
+        let n = unsafe { GetModuleFileNameW(m, buf.as_mut_ptr(), buf.len() as u32) } as usize;
+        String::from_utf16_lossy(&buf[..n.min(buf.len())])
+    };
+    let name: Vec<u16> = "opengl32.dll\0".encode_utf16().collect();
+    // SAFETY: a NUL-terminated name; only looked up, nothing loaded.
+    let before = unsafe { GetModuleHandleW(name.as_ptr()) };
+    if !before.is_null() {
+        return Err(format!(
+            "an OpenGL is loaded already ({}): Mesa's can't take its place",
+            path_of(before)
+        ));
+    }
+    // pal1000's gallium has Mesa's Direct3D 12 driver too, which would draw on WARP again:
+    // llvmpipe only. Set before Mesa is loaded (its C runtime takes the environment then); MDM
+    // itself reads no GALLIUM_ variable.
+    // SAFETY: Windows' environment is the process's own block, written through Rust's lock.
+    unsafe { std::env::set_var("GALLIUM_DRIVER", "llvmpipe") };
+    let path: Vec<u16> = dll.as_os_str().encode_wide().chain(Some(0)).collect();
+    // SAFETY: a NUL-terminated full path; the flags keep its imports to its own folder and
+    // System32.
+    let mut module = unsafe {
+        LoadLibraryExW(
+            path.as_ptr(),
+            std::ptr::null_mut(),
+            LOAD_LIBRARY_SEARCH_DLL_LOAD_DIR | LOAD_LIBRARY_SEARCH_SYSTEM32,
+        )
+    };
+    // Windows 7 without KB2533623 has no LOAD_LIBRARY_SEARCH_ flags: the DLL's own folder first
+    // for its imports, as the older flag says.
+    // SAFETY: reads this thread's last error, then the same load as above.
+    if module.is_null() && unsafe { GetLastError() } == ERROR_INVALID_PARAMETER {
+        module = unsafe {
+            LoadLibraryExW(
+                path.as_ptr(),
+                std::ptr::null_mut(),
+                LOAD_WITH_ALTERED_SEARCH_PATH,
+            )
+        };
+    }
+    if module.is_null() {
+        let e = std::io::Error::last_os_error();
+        return Err(format!("{} couldn't be loaded: {e}", dll.display()));
+    }
+    // SAFETY: as above.
+    let by_name = unsafe { GetModuleHandleW(name.as_ptr()) };
+    if by_name != module {
+        return Err(format!(
+            "opengl32.dll by name is {}, not Mesa's",
+            path_of(by_name)
+        ));
+    }
+    Ok(())
+}
+
 /// The graphics adapters and their drivers' versions, as Direct3D 12 sees them (DXGI; the
 /// version as wgpu writes it, "32.0.15.6224"), and whether each is a software renderer (WARP):
 /// a remembered failure is tried again once they change (renderer.rs, #1205). Read without

@@ -1147,6 +1147,11 @@
 #. event log entry after Recheck: {have} and {total} are sizes ("1.2 GB of 4 GB there")
 #, machine
 	Checked: {have} of {total} there	Tarkistettu: {have} / {total} on olemassa
+#. text in softgl.rs
+#. the software renderer's window: the download is done, and its files are being checked and unpacked
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Checking and unpacking Mesa's software renderer...	Tarkistetaan ja puretaan Mesan ohjelmistopohjaista renderöijää...
 #. message or event log entry in the main window
 #. event log entry: a torrent's files are being read and checked again (Recheck)
 #, machine
@@ -1820,6 +1825,11 @@
 #. Helpers: MDM's own copy of a helper is being downloaded (where there was none, or in place of the system's); {percent} = how far, a number
 #, machine
 	Downloading MDM's own copy... {percent}%	Ladataan MDM:n omaa kopiota... {percent}%
+#. text in softgl.rs
+#. the software renderer's window, while it downloads; {done} and {size} = sizes (12.0 MB of 66.3 MB)
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	Downloading Mesa's software renderer: {done} of {size}	Ladataan Mesan ohjelmistopohjaista renderöijää: {done}/{size}
 #. text in archtest.rs
 #. in a download's log: after its archive test found damaged files, only their bytes are downloaded again from the same server; {size} like "1.20 MB"
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
@@ -3171,6 +3181,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Looking the page up...	Haetaan sivua...
+#. text in softgl.rs
+#. the software renderer's window: while MDM reads its signed list of the software renderers it may download (Mesa's llvmpipe: it draws MDM's windows where there is no graphics card)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Looking up Mesa's software renderer...	Haetaan Mesan ohjelmistopohjaista renderöijää...
 #. text in preview.rs
 #. the preview pane: still looking whether the file is there
 #. the trailing ... means it is still going on: keep it
@@ -3339,6 +3354,9 @@
 #. Video helpers: MDM can't download Node.js on this system (an unusual processor); Node.js and Deno are program names; "Use another program" is the button below
 #, machine
 	MDM has no copy for this system: install Node.js or Deno, or use another program	MDM:llä ei ole kopiota tälle järjestelmälle: asenna Node.js tai Deno tai käytä toista ohjelmaa
+#. text in softgl.rs
+#, machine
+	MDM has no data folder	MDM:llä ei ole datakansiota
 #. text in remote.rs
 #. remote control page (on a phone): no pairing code is shown in MDM; "Pair a device" is MDM's button
 #, machine
@@ -3364,6 +3382,27 @@
 #. error installing ffmpeg: the list of builds MDM accepts doesn't carry MDM's own signature
 #, machine
 	MDM's list of checked ffmpeg builds isn't signed by MDM's key, so ffmpeg wasn't installed	MDM:n tarkistettujen ffmpeg-koontiversioiden luetteloa ei ole allekirjoitettu MDM:n avaimella, joten ffmpegia ei asennettu
+#. text in errors.rs
+#. error installing Mesa's software renderer: the list of builds MDM accepts couldn't be read; {detail} = the technical detail, in English
+#, machine
+	MDM's list of checked software renderers can't be read ({detail})	MDM:n tarkistettujen ohjelmistopohjaisten renderöijien luetteloa ei voi lukea ({detail})
+#. text in errors.rs
+#. error installing Mesa's software renderer (it draws MDM's windows where there is no graphics card): MDM installs only builds named in a list it publishes, signed with its key, and that list couldn't be downloaded; {error} = why
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	MDM's list of checked software renderers could not be downloaded: {error}	MDM:n tarkistettujen ohjelmistopohjaisten renderöijien luetteloa ei voitu ladata: {error}
+#. text in errors.rs
+#. error installing Mesa's software renderer: the list of builds MDM accepts has none for this computer's system and processor
+#, machine
+	MDM's list of checked software renderers has none for this computer	MDM:n tarkistettujen ohjelmistopohjaisten renderöijien luettelossa ei ole tälle tietokoneelle sopivaa versiota
+#. text in errors.rs
+#. error installing Mesa's software renderer: the list of builds MDM accepts is older than one this copy of MDM already used (it never goes back to an older list)
+#, machine
+	MDM's list of checked software renderers is older than one already used, so nothing was installed	MDM:n tarkistettujen ohjelmistopohjaisten renderöijien luettelo on vanhempi kuin jo käytetty, joten mitään ei asennettu
+#. text in errors.rs
+#. error installing Mesa's software renderer: the list of builds MDM accepts doesn't carry MDM's own signature
+#, machine
+	MDM's list of checked software renderers isn't signed by MDM's key, so nothing was installed	MDM:n tarkistettujen ohjelmistopohjaisten renderöijien luetteloa ei ole allekirjoitettu MDM:n avaimella, joten mitään ei asennettu
 #. text in whereis.rs
 #. how far a download's server is, by its round trip (60 to 150 ms)
 #, machine
@@ -3381,6 +3420,14 @@
 #. a video's status while its picture and sound are joined into one file (ffmpeg); {percent} how far, e.g. "45%"
 #, machine
 	Merging... ({percent})	Yhdistetään... ({percent})
+#. text in softgl.rs
+#. the software renderer's window: the download or its check failed; {reason} = why, a sentence's part
+#, machine
+	Mesa's software renderer couldn't be installed: {reason}	Mesan ohjelmistopohjaista renderöijää ei voitu asentaa: {reason}
+#. text in softgl.rs
+#. the software renderer's window, once Mesa's llvmpipe is downloaded and checked
+#, machine
+	Mesa's software renderer is installed. MDM draws with it from its next start.	Mesan ohjelmistopohjainen renderöijä on asennettu. MDM piirtää sillä seuraavasta käynnistyksestä alkaen.
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3800,6 +3847,11 @@
 #. text in a dialog box
 #, machine
 	No goes back, to choose another folder.	Valitsemalla Ei palaat takaisin, jotta voit valita toisen kansion.
+#. text in softgl.rs
+#. the software renderer's window, offered once at a start where Windows' own software renderer (WARP, keep the name) draws MDM because no graphics card has a driver for it; llvmpipe (keep the name) is Mesa's software renderer; {size} = its download's size (e.g. 66.3 MB)
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	No graphics card here has a driver MDM can draw with, so Windows' software renderer (WARP) draws its windows and keeps the processor busy. Mesa's software renderer (llvmpipe) draws them with far less. Download it once ({size}, from Mesa's builds on GitHub)? MDM draws with it from its next start.	Tässä ei ole näytönohjainta, jonka ajurilla MDM voisi piirtää, joten Windowsin ohjelmistopohjainen renderöijä (WARP) piirtää MDM:n ikkunat ja pitää suorittimen kiireisenä. Mesan ohjelmistopohjainen renderöijä (llvmpipe) piirtää ne paljon pienemmällä suoritinkuormalla. Ladataanko se kerran ({size}, Mesan GitHubissa olevista koontiversioista)? MDM piirtää sillä seuraavasta käynnistyksestä alkaen.
 #. tooltip (why a control is greyed) in langpick.rs
 #. tooltip of the greyed OK button in the language picker
 #, machine
@@ -5177,6 +5229,10 @@
 #. button in the Download complete window: opens a menu of how long no Download complete window shows (30 minutes, 1 hour...)
 #, machine
 	Snooze	Torkuta
+#. text in softgl.rs
+#. the window's title: Mesa's software renderer, offered where no graphics card draws MDM's windows
+#, machine
+	Software renderer	Ohjelmistopohjainen renderöijä
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -5728,6 +5784,10 @@
 #. text in errors.rs
 #, machine
 	the downloaded program doesn't match its signed checksum	ladattu ohjelma ei vastaa allekirjoitettua tarkistussummaansa
+#. text in errors.rs
+#. error installing Mesa's software renderer: a file downloaded isn't the one named in the list of builds MDM accepts (its checksum differs), so it was thrown away
+#, machine
+	the downloaded software renderer isn't the build MDM's list of checked builds names, so it wasn't installed	Ladattu ohjelmistopohjainen renderöijä ei vastaa MDM:n tarkistettujen koontiversioiden luettelossa mainittua versiota, joten sitä ei asennettu
 #. message or event log entry in the main window
 #. in the empty download list, under its title
 #, machine
@@ -9014,6 +9074,11 @@ menu	Download &video from a page...	Lataa video sivulta(&V)...
 #, machine
 menu	Download in order	Lataa järjestyksessä
 #. menu command in the main window
+#. View → Draw with: opens a window offering to download Mesa's software renderer (llvmpipe, keep the name), which draws MDM's windows with far less of the processor than Windows' own (WARP)
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Download Mesa's software renderer (llvmpipe)...	Lataa Mesan ohjelmistopohjainen renderöijä (llvmpipe)...
+#. menu command in the main window
 #. View menu: submenu choosing what draws MDM's windows: OpenGL, or Direct3D, Vulkan or Metal (graphics systems)
 #, machine
 menu	Draw with	Piirtotapa
@@ -9250,6 +9315,18 @@ menu	Show &drop target	Näytä &vetokohde
 #. menu command in the main window
 #, machine
 menu	Show Mister Download Manager	Näytä Mister Download Manager
+#. menu command in the main window
+#. View → Draw with: a greyed note; Mesa's software renderer (llvmpipe, keep the name) failed on this computer, so Windows' own software renderer (WARP, keep the name) draws
+#, machine
+menu	Software (llvmpipe) didn't start here: WARP draws	Ohjelmistopohjainen renderöijä (llvmpipe) ei käynnistynyt: WARP piirtää
+#. menu command in the main window
+#. View → Draw with: a greyed note; Mesa's software renderer (llvmpipe, keep the name) is downloaded and draws the windows from MDM's next start
+#, machine
+menu	Software (llvmpipe) draws from the next start	Ohjelmistopohjainen renderöijä (llvmpipe) piirtää seuraavasta käynnistyksestä alkaen
+#. menu command in the main window
+#. View → Draw with: a greyed note; what draws the windows: Mesa's software renderer, llvmpipe (keep the name), because no graphics card here has a driver MDM can draw with
+#, machine
+menu	Software (llvmpipe): no graphics card here has a driver for MDM	Ohjelmistopohjainen renderöijä (llvmpipe): täällä ei ole näytönohjainta, jonka ajurilla MDM voisi piirtää
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine

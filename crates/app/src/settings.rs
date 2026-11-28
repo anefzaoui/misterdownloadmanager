@@ -316,6 +316,9 @@ pub struct Settings {
     /// The browser extension is offered at each start until a browser has it, unless "Don't ask
     /// again" was pressed (extension.rs).
     pub extension_never_ask: bool,
+    /// Mesa's software renderer was offered once, at a start drawn with Windows' WARP (#476,
+    /// softgl.rs); View → Draw with offers it from then on.
+    pub software_renderer_asked: bool,
     /// General: offer to download (Download File Info) links of the listed file types copied
     /// to the clipboard. On by default: without the browser extension, copying a link is the
     /// quickest way in.
@@ -702,6 +705,7 @@ impl Default for Settings {
             language_asked: false,
             helpers_asked: false,
             extension_never_ask: false,
+            software_renderer_asked: false,
             clipboard_autostart: true,
             minimize_to_tray: true,
             tray_panel: true,

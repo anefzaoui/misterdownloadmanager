@@ -359,7 +359,9 @@ right-to-left window.
 - **Through your VPN only**, if you want: hold every download to one network adapter, with a kill
   switch, and choose an encrypted DNS. Each download shows its server's country.
 - **From your phone, or on a server**: control MDM from a phone on your home network, or run it
-  without a window on a NAS (Docker, Unraid) ([how](docs/server.md)).
+  without a window on a NAS (Docker, Unraid) ([how](docs/server.md)). On a Windows Server or a
+  virtual machine with no graphics card, it offers a lighter software renderer (Mesa's llvmpipe),
+  downloaded only if you say yes ([how](docs/troubleshooting.md#the-window-freezes-or-draws-wrongly)).
 - **Works from scripts too**: IDM's command-line switches, a command-line tool, and a local API for other programs ([how](docs/command-line.md)).
 - **Works with your AI assistant**: an MCP server lets Claude, Cursor or VS Code list, add, pause and remove your downloads ([set it up](docs/ai-assistants.md)).
 - **Leaves you some speed**: limit one download or all of them, only while you're at the computer.

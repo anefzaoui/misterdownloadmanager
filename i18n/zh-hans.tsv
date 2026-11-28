@@ -971,6 +971,11 @@
 #. event log entry after Recheck: {have} and {total} are sizes ("1.2 GB of 4 GB there")
 #, machine
 	Checked: {have} of {total} there	已检查：{total} 中已有 {have}
+#. text in softgl.rs
+#. the software renderer's window: the download is done, and its files are being checked and unpacked
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Checking and unpacking Mesa's software renderer...	正在检查并解压 Mesa 软件渲染器...
 #. message or event log entry in the main window
 #. event log entry: a torrent's files are being read and checked again (Recheck)
 #, machine
@@ -1608,6 +1613,11 @@
 #. Helpers: MDM's own copy of a helper is being downloaded (where there was none, or in place of the system's); {percent} = how far, a number
 #, machine
 	Downloading MDM's own copy... {percent}%	正在下载 MDM 自己的副本... {percent}%
+#. text in softgl.rs
+#. the software renderer's window, while it downloads; {done} and {size} = sizes (12.0 MB of 66.3 MB)
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	Downloading Mesa's software renderer: {done} of {size}	正在下载 Mesa 软件渲染器：{done} / {size}
 #. text in archtest.rs
 #. in a download's log: after its archive test found damaged files, only their bytes are downloaded again from the same server; {size} like "1.20 MB"
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
@@ -2889,6 +2899,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Looking the page up...	正在查找页面...
+#. text in softgl.rs
+#. the software renderer's window: while MDM reads its signed list of the software renderers it may download (Mesa's llvmpipe: it draws MDM's windows where there is no graphics card)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Looking up Mesa's software renderer...	正在查找 Mesa 软件渲染器...
 #. text in preview.rs
 #. the preview pane: still looking whether the file is there
 #. the trailing ... means it is still going on: keep it
@@ -3042,6 +3057,9 @@
 #. Video helpers: MDM can't download Node.js on this system (an unusual processor); Node.js and Deno are program names; "Use another program" is the button below
 #, machine
 	MDM has no copy for this system: install Node.js or Deno, or use another program	MDM 没有适用于此系统的副本：请安装 Node.js 或 Deno，或使用其他程序
+#. text in softgl.rs
+#, machine
+	MDM has no data folder	MDM 没有数据文件夹
 #. text in remote.rs
 #. remote control page (on a phone): no pairing code is shown in MDM; "Pair a device" is MDM's button
 #, machine
@@ -3067,6 +3085,27 @@
 #. error installing ffmpeg: the list of builds MDM accepts doesn't carry MDM's own signature
 #, machine
 	MDM's list of checked ffmpeg builds isn't signed by MDM's key, so ffmpeg wasn't installed	MDM 检查过的 ffmpeg 构建列表未由 MDM 的密钥签名，因此未安装 ffmpeg
+#. text in errors.rs
+#. error installing Mesa's software renderer: the list of builds MDM accepts couldn't be read; {detail} = the technical detail, in English
+#, machine
+	MDM's list of checked software renderers can't be read ({detail})	无法读取 MDM 检查过的软件渲染器列表：{detail}
+#. text in errors.rs
+#. error installing Mesa's software renderer (it draws MDM's windows where there is no graphics card): MDM installs only builds named in a list it publishes, signed with its key, and that list couldn't be downloaded; {error} = why
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	MDM's list of checked software renderers could not be downloaded: {error}	无法下载 MDM 检查过的软件渲染器列表：{error}
+#. text in errors.rs
+#. error installing Mesa's software renderer: the list of builds MDM accepts has none for this computer's system and processor
+#, machine
+	MDM's list of checked software renderers has none for this computer	MDM 检查过的软件渲染器列表中没有适用于此计算机的系统和处理器的版本
+#. text in errors.rs
+#. error installing Mesa's software renderer: the list of builds MDM accepts is older than one this copy of MDM already used (it never goes back to an older list)
+#, machine
+	MDM's list of checked software renderers is older than one already used, so nothing was installed	MDM 检查过的软件渲染器列表版本低于已使用的版本，因此未安装任何内容
+#. text in errors.rs
+#. error installing Mesa's software renderer: the list of builds MDM accepts doesn't carry MDM's own signature
+#, machine
+	MDM's list of checked software renderers isn't signed by MDM's key, so nothing was installed	MDM 检查过的软件渲染器列表未由 MDM 密钥签名，因此未安装任何内容
 #. text in whereis.rs
 #. how far a download's server is, by its round trip (60 to 150 ms)
 #, machine
@@ -3084,6 +3123,14 @@
 #. a video's status while its picture and sound are joined into one file (ffmpeg); {percent} how far, e.g. "45%"
 #, machine
 	Merging... ({percent})	正在合并... ({percent})
+#. text in softgl.rs
+#. the software renderer's window: the download or its check failed; {reason} = why, a sentence's part
+#, machine
+	Mesa's software renderer couldn't be installed: {reason}	无法安装 Mesa 软件渲染器：{reason}
+#. text in softgl.rs
+#. the software renderer's window, once Mesa's llvmpipe is downloaded and checked
+#, machine
+	Mesa's software renderer is installed. MDM draws with it from its next start.	Mesa 软件渲染器已安装。MDM 将在下次启动时使用它进行绘制。
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Mexico	墨西哥
@@ -3482,6 +3529,11 @@
 #. text in a dialog box
 #, machine
 	No goes back, to choose another folder.	点击“否”可返回选择其他文件夹。
+#. text in softgl.rs
+#. the software renderer's window, offered once at a start where Windows' own software renderer (WARP, keep the name) draws MDM because no graphics card has a driver for it; llvmpipe (keep the name) is Mesa's software renderer; {size} = its download's size (e.g. 66.3 MB)
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	No graphics card here has a driver MDM can draw with, so Windows' software renderer (WARP) draws its windows and keeps the processor busy. Mesa's software renderer (llvmpipe) draws them with far less. Download it once ({size}, from Mesa's builds on GitHub)? MDM draws with it from its next start.	此计算机没有 MDM 可用于绘制的显卡驱动程序，因此 Windows 软件渲染器 (WARP) 绘制其窗口并占用处理器。Mesa 软件渲染器 (llvmpipe) 绘制窗口时占用资源少得多。要下载它吗（{size}，来自 GitHub 上的 Mesa 版本）？MDM 将在下次启动时使用它进行绘制。
 #. tooltip (why a control is greyed) in langpick.rs
 #. tooltip of the greyed OK button in the language picker
 #, machine
@@ -4810,6 +4862,10 @@
 #. button in the Download complete window: opens a menu of how long no Download complete window shows (30 minutes, 1 hour...)
 #, machine
 	Snooze	暂停通知
+#. text in softgl.rs
+#. the window's title: Mesa's software renderer, offered where no graphics card draws MDM's windows
+#, machine
+	Software renderer	软件渲染器
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Solomon Islands	所罗门群岛
@@ -5337,6 +5393,10 @@
 #. text in errors.rs
 #, machine
 	the downloaded program doesn't match its signed checksum	下载的程序与其签名校验和不匹配
+#. text in errors.rs
+#. error installing Mesa's software renderer: a file downloaded isn't the one named in the list of builds MDM accepts (its checksum differs), so it was thrown away
+#, machine
+	the downloaded software renderer isn't the build MDM's list of checked builds names, so it wasn't installed	下载的软件渲染器与 MDM 检查过的版本列表中指定的版本不符，因此未安装
 #. message or event log entry in the main window
 #. in the empty download list, under its title
 #, machine
@@ -8563,6 +8623,11 @@ menu	Download &video from a page...	从页面下载视频(&V)...
 #, machine
 menu	Download in order	按顺序下载
 #. menu command in the main window
+#. View → Draw with: opens a window offering to download Mesa's software renderer (llvmpipe, keep the name), which draws MDM's windows with far less of the processor than Windows' own (WARP)
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Download Mesa's software renderer (llvmpipe)...	下载 Mesa 软件渲染器 (llvmpipe)...
+#. menu command in the main window
 #. View menu: submenu choosing what draws MDM's windows: OpenGL, or Direct3D, Vulkan or Metal (graphics systems)
 #, machine
 menu	Draw with	绘制方式
@@ -8797,6 +8862,18 @@ menu	Show &drop target	显示拖放目标(&D)
 #. menu command in the main window
 #, machine
 menu	Show Mister Download Manager	显示 Mister Download Manager
+#. menu command in the main window
+#. View → Draw with: a greyed note; Mesa's software renderer (llvmpipe, keep the name) failed on this computer, so Windows' own software renderer (WARP, keep the name) draws
+#, machine
+menu	Software (llvmpipe) didn't start here: WARP draws	软件 (llvmpipe) 未在此处启动：WARP 正在绘制
+#. menu command in the main window
+#. View → Draw with: a greyed note; Mesa's software renderer (llvmpipe, keep the name) is downloaded and draws the windows from MDM's next start
+#, machine
+menu	Software (llvmpipe) draws from the next start	软件 (llvmpipe) 将从下次启动起绘制
+#. menu command in the main window
+#. View → Draw with: a greyed note; what draws the windows: Mesa's software renderer, llvmpipe (keep the name), because no graphics card here has a driver MDM can draw with
+#, machine
+menu	Software (llvmpipe): no graphics card here has a driver for MDM	软件 (llvmpipe)：此计算机没有适用于 MDM 的显卡驱动程序
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 menu	Speed &Limiter	限速器(&L)

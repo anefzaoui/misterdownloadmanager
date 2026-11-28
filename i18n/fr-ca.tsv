@@ -1820,6 +1820,11 @@
 #. Helpers: MDM's own copy of a helper is being downloaded (where there was none, or in place of the system's); {percent} = how far, a number
 #, machine
 	Downloading MDM's own copy... {percent}%	Téléchargement de la copie de MDM en cours... {percent}%
+#. text in softgl.rs
+#. the software renderer's window, while it downloads; {done} and {size} = sizes (12.0 MB of 66.3 MB)
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	Downloading Mesa's software renderer: {done} of {size}	Téléchargement du moteur de rendu logiciel de Mesa : {done} sur {size}
 #. text in archtest.rs
 #. in a download's log: after its archive test found damaged files, only their bytes are downloaded again from the same server; {size} like "1.20 MB"
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
@@ -3339,6 +3344,9 @@
 #. Video helpers: MDM can't download Node.js on this system (an unusual processor); Node.js and Deno are program names; "Use another program" is the button below
 #, machine
 	MDM has no copy for this system: install Node.js or Deno, or use another program	MDM n’a pas de copie pour ce système : installez Node.js ou Deno, ou utilisez un autre programme
+#. text in softgl.rs
+#, machine
+	MDM has no data folder	MDM n’a pas de dossier de données
 #. text in remote.rs
 #. remote control page (on a phone): no pairing code is shown in MDM; "Pair a device" is MDM's button
 #, machine
@@ -3364,6 +3372,27 @@
 #. error installing ffmpeg: the list of builds MDM accepts doesn't carry MDM's own signature
 #, machine
 	MDM's list of checked ffmpeg builds isn't signed by MDM's key, so ffmpeg wasn't installed	La liste des versions de ffmpeg vérifiées par MDM n’est pas signée par la clé de MDM, donc ffmpeg n’a pas été installé
+#. text in errors.rs
+#. error installing Mesa's software renderer: the list of builds MDM accepts couldn't be read; {detail} = the technical detail, in English
+#, machine
+	MDM's list of checked software renderers can't be read ({detail})	La liste des moteurs de rendu logiciel vérifiés de MDM ne peut pas être lue ({detail})
+#. text in errors.rs
+#. error installing Mesa's software renderer (it draws MDM's windows where there is no graphics card): MDM installs only builds named in a list it publishes, signed with its key, and that list couldn't be downloaded; {error} = why
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	MDM's list of checked software renderers could not be downloaded: {error}	La liste des moteurs de rendu logiciel vérifiés de MDM n’a pas pu être téléchargée : {error}
+#. text in errors.rs
+#. error installing Mesa's software renderer: the list of builds MDM accepts has none for this computer's system and processor
+#, machine
+	MDM's list of checked software renderers has none for this computer	La liste des moteurs de rendu logiciel vérifiés de MDM n’en contient aucun pour cet ordinateur
+#. text in errors.rs
+#. error installing Mesa's software renderer: the list of builds MDM accepts is older than one this copy of MDM already used (it never goes back to an older list)
+#, machine
+	MDM's list of checked software renderers is older than one already used, so nothing was installed	La liste des moteurs de rendu logiciel vérifiés de MDM est plus ancienne qu’une liste déjà utilisée, donc rien n’a été installé
+#. text in errors.rs
+#. error installing Mesa's software renderer: the list of builds MDM accepts doesn't carry MDM's own signature
+#, machine
+	MDM's list of checked software renderers isn't signed by MDM's key, so nothing was installed	La liste des moteurs de rendu logiciel vérifiés de MDM n’est pas signée par la clé de MDM, donc rien n’a été installé
 #. text in whereis.rs
 #. how far a download's server is, by its round trip (60 to 150 ms)
 #, machine
@@ -3381,6 +3410,14 @@
 #. a video's status while its picture and sound are joined into one file (ffmpeg); {percent} how far, e.g. "45%"
 #, machine
 	Merging... ({percent})	Fusion en cours ({percent})
+#. text in softgl.rs
+#. the software renderer's window: the download or its check failed; {reason} = why, a sentence's part
+#, machine
+	Mesa's software renderer couldn't be installed: {reason}	Le moteur de rendu logiciel de Mesa n’a pas pu être installé : {reason}
+#. text in softgl.rs
+#. the software renderer's window, once Mesa's llvmpipe is downloaded and checked
+#, machine
+	Mesa's software renderer is installed. MDM draws with it from its next start.	Le moteur de rendu logiciel de Mesa est installé. MDM l’utilisera à son prochain démarrage.
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3800,6 +3837,11 @@
 #. text in a dialog box
 #, machine
 	No goes back, to choose another folder.	Non, pour revenir en arrière et choisir un autre dossier.
+#. text in softgl.rs
+#. the software renderer's window, offered once at a start where Windows' own software renderer (WARP, keep the name) draws MDM because no graphics card has a driver for it; llvmpipe (keep the name) is Mesa's software renderer; {size} = its download's size (e.g. 66.3 MB)
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	No graphics card here has a driver MDM can draw with, so Windows' software renderer (WARP) draws its windows and keeps the processor busy. Mesa's software renderer (llvmpipe) draws them with far less. Download it once ({size}, from Mesa's builds on GitHub)? MDM draws with it from its next start.	Aucune carte graphique ici n’a de pilote compatible avec MDM, donc le moteur de rendu logiciel de Windows (WARP) dessine ses fenêtres et occupe le processeur. Le moteur de rendu logiciel de Mesa (llvmpipe) les dessine avec beaucoup moins de ressources. Le télécharger une fois ({size}, depuis les versions de Mesa sur GitHub) ? MDM l’utilisera à son prochain démarrage.
 #. tooltip (why a control is greyed) in langpick.rs
 #. tooltip of the greyed OK button in the language picker
 #, machine
@@ -5177,6 +5219,10 @@
 #. button in the Download complete window: opens a menu of how long no Download complete window shows (30 minutes, 1 hour...)
 #, machine
 	Snooze	Mettre en veille
+#. text in softgl.rs
+#. the window's title: Mesa's software renderer, offered where no graphics card draws MDM's windows
+#, machine
+	Software renderer	Moteur de rendu logiciel
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -5728,6 +5774,10 @@
 #. text in errors.rs
 #, machine
 	the downloaded program doesn't match its signed checksum	le programme téléchargé ne correspond pas à sa somme de contrôle signée
+#. text in errors.rs
+#. error installing Mesa's software renderer: a file downloaded isn't the one named in the list of builds MDM accepts (its checksum differs), so it was thrown away
+#, machine
+	the downloaded software renderer isn't the build MDM's list of checked builds names, so it wasn't installed	Le moteur de rendu logiciel téléchargé n’est pas la version indiquée dans la liste des versions vérifiées par MDM, il n’a donc pas été installé
 #. message or event log entry in the main window
 #. in the empty download list, under its title
 #, machine
@@ -9250,6 +9300,18 @@ menu	Show &drop target	Afficher la &cible de dépôt
 #. menu command in the main window
 #, machine
 menu	Show Mister Download Manager	Afficher Mister Download Manager
+#. menu command in the main window
+#. View → Draw with: a greyed note; Mesa's software renderer (llvmpipe, keep the name) failed on this computer, so Windows' own software renderer (WARP, keep the name) draws
+#, machine
+menu	Software (llvmpipe) didn't start here: WARP draws	Rendu logiciel (llvmpipe) n’a pas démarré ici : WARP dessine
+#. menu command in the main window
+#. View → Draw with: a greyed note; Mesa's software renderer (llvmpipe, keep the name) is downloaded and draws the windows from MDM's next start
+#, machine
+menu	Software (llvmpipe) draws from the next start	Rendu logiciel (llvmpipe) dessine à partir du prochain démarrage
+#. menu command in the main window
+#. View → Draw with: a greyed note; what draws the windows: Mesa's software renderer, llvmpipe (keep the name), because no graphics card here has a driver MDM can draw with
+#, machine
+menu	Software (llvmpipe): no graphics card here has a driver for MDM	Rendu logiciel (llvmpipe) : aucune carte graphique ici n’a de pilote pour MDM
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine

@@ -103,19 +103,24 @@ struct Build {
     name: String,
 }
 
-/// MDM's list of the ffmpeg builds it installs.
+/// MDM's list of the ffmpeg builds it installs, and of Mesa's software renderer (`mesa` lines,
+/// [`crate::mesa`], #476): one list, signed once.
 #[derive(Debug, PartialEq, Eq)]
-struct List {
+pub(crate) struct List {
     /// Each new list's is higher than the one before.
-    sequence: u64,
+    pub(crate) sequence: u64,
     builds: Vec<Build>,
+    pub(crate) mesa: Vec<crate::mesa::Build>,
 }
 
 /// The list in `text`: [`FORMAT`] first, then `sequence <number>` and a line
-/// `build <os> <arch> <version> <sha256> <address>` for each system. Blank lines and `#` comments
-/// are skipped, and lines of another kind left for a later MDM; a line of these kinds that isn't
-/// as it should be makes the whole list unreadable.
-fn parse(text: &str) -> Result<List, ListError> {
+/// `build <os> <arch> <version> <sha256> <address>` for each system, and a line
+/// `mesa <os> <arch> <version> <sha256> <size> <address> <file>=<sha256>…` for each system Mesa's
+/// software renderer is offered on ([`crate::mesa::Build`]). Blank lines and `#` comments are
+/// skipped, and lines of another kind left for a later MDM (an MDM from before the `mesa` lines
+/// passes over them); a line of these kinds that isn't as it should be makes the whole list
+/// unreadable.
+pub(crate) fn parse(text: &str) -> Result<List, ListError> {
     let bad = |what: String| ListError::Unreadable(what);
     let mut lines = text
         .lines()
@@ -127,9 +132,23 @@ fn parse(text: &str) -> Result<List, ListError> {
     }
     let mut sequence = None;
     let mut builds: Vec<Build> = Vec::new();
+    let mut mesa: Vec<crate::mesa::Build> = Vec::new();
     for line in lines {
         let words: Vec<&str> = line.split_whitespace().collect();
         match words[..] {
+            ["mesa", ..] => {
+                let build = crate::mesa::Build::parse(&words[1..]).map_err(bad)?;
+                if mesa
+                    .iter()
+                    .any(|m| m.os == build.os && m.arch == build.arch)
+                {
+                    return Err(bad(format!(
+                        "two Mesa builds for {} {}",
+                        build.os, build.arch
+                    )));
+                }
+                mesa.push(build);
+            }
             ["sequence", n] => {
                 let n = n
                     .parse::<u64>()
@@ -172,7 +191,11 @@ fn parse(text: &str) -> Result<List, ListError> {
         }
     }
     let sequence = sequence.ok_or_else(|| bad("no sequence number".into()))?;
-    Ok(List { sequence, builds })
+    Ok(List {
+        sequence,
+        builds,
+        mesa,
+    })
 }
 
 impl List {
@@ -222,8 +245,9 @@ fn seen(root: &Path) -> u64 {
 }
 
 /// The list from `source`, accepted only with its signature and when it is no older than the
-/// newest one seen in `root`, which it then becomes.
-async fn checked_list(
+/// newest one seen in `root`, which it then becomes (`tools/ffmpeg/`, and `tools/mesa/` for
+/// Mesa's lines: each keeps its own).
+pub(crate) async fn checked_list(
     root: &Path,
     net: &mdm_engine::Options,
     source: &Source<'_>,
@@ -264,7 +288,7 @@ async fn checked_list(
 }
 
 /// The list's address: MDM's latest release's.
-fn list_url() -> String {
+pub(crate) fn list_url() -> String {
     // The real app's tests only (feature `test-update`, never in a release): a list on a lab
     // server, signed with the test key MDM_TEST_UPDATE_KEY names (`signed_by_mdm`).
     #[cfg(feature = "test-update")]
