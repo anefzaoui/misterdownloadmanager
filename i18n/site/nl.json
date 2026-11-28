@@ -70,6 +70,10 @@
    "source": "A code signature lets Windows show who published a program and check that it wasn't changed after it was built. When a release of Mister Download Manager (\"MDM\") is signed, its signature covers the Windows files that come from this project:",
    "text": "Een codeondertekening laat Windows zien wie een programma heeft gepubliceerd en controleert of het niet is gewijzigd nadat het is gebouwd. Wanneer een release van Mister Download Manager (\"MDM\") is ondertekend, omvat de handtekening de Windows-bestanden die afkomstig zijn van dit project:"
   },
+  "01579d403b821195": {
+   "source": "<x1/> pull requests",
+   "text": "<x1/> pullrequests"
+  },
   "015f73be8184c2cb": {
    "source": "Yes. MDM writes its progress as it goes, so after a lost connection, a crash or a restart it carries on where it stopped. Before resuming it checks that the file on the server hasn't changed. When a download address has expired, <g1>Refresh download address</g1> lets you give it a fresh one and keep the data. See <g2>Resume a broken download</g2>.",
    "text": "Ja. MDM slaat de voortgang tijdens het downloaden op. Na een verbroken verbinding, een crash of een herstart gaat het dus verder waar het was gebleven. Voordat het downloaden wordt hervat, controleert MDM of het bestand op de server niet is gewijzigd. Is een downloadadres verlopen, dan kunt u met <g1>Downloadadres vernieuwen</g1> een nieuw adres opgeven en de gedownloade gegevens behouden. Zie <g2>Een afgebroken download hervatten</g2>."
@@ -225,6 +229,10 @@
   "03069bf346ba733c": {
    "source": "<g1>Help → About Mister Download Manager</g1> shows the version you have.",
    "text": "<g1>Help → Over Mister Download Manager</g1> toont de versie die u heeft."
+  },
+  "030e42728ee6a418": {
+   "source": "<g1>Pull requests</g1><g2><x3/> people</g2>",
+   "text": "<g1>Pullrequests</g1><g2><x3/> personen</g2>"
   },
   "031da5c20d1881e4": {
    "source": "Everything the Scheduler can do →",
@@ -778,6 +786,10 @@
    "source": "Too many tries from your connection. Please try again in a few minutes.",
    "text": "Te veel pogingen vanaf uw verbinding. Probeer het over een paar minuten opnieuw."
   },
+  "0a07d4f9fc7fb519": {
+   "source": "When the network comes back after a drop (Wi-Fi reconnecting, the computer waking from sleep, a VPN connecting or switching), MDM notices within a few seconds and calls the torrents' peers again at once, and asks their trackers and the DHT again, so a download picks up where it was instead of waiting minutes for each peer's next try. Each peer is called once for it; a tracker is still never asked sooner than its minimum interval. Behind a SOCKS5 proxy, a drop the computer itself doesn't see (the router losing its line while Wi-Fi stays up) is noticed only through the DHT, which is off there, so those torrents come back on their own, as before.",
+   "text": "Wanneer het netwerk terugkomt na een onderbreking (Wi-Fi-herverbinding, de computer die uit de slaapstand komt, een VPN dat verbinding maakt of wisselt), merkt MDM dit binnen enkele seconden op en roept de peers van de torrents onmiddellijk opnieuw aan, en vraagt hun trackers en de DHT opnieuw, zodat een download verdergaat waar het was in plaats van minuten te wachten op de volgende poging van elke peer. Elke peer wordt hiervoor één keer aangeroepen; een tracker wordt nog steeds nooit eerder gevraagd dan zijn minimale interval. Achter een SOCKS5-proxy wordt een onderbreking die de computer zelf niet ziet (de router die zijn lijn verliest terwijl Wi-Fi actief blijft) alleen opgemerkt via de DHT, die daar is uitgeschakeld, dus die torrents komen vanzelf terug, zoals voorheen."
+  },
   "0a15fc764eba9ef6": {
    "source": "Some servers drop the connection when the speed is very low. Avoid a tight limit for a server that can't resume: the progress window shows <g1>Resume capability: No</g1> for those.",
    "text": "Sommige servers verbreken de verbinding wanneer de snelheid erg laag is. Vermijd een te strakke limiet voor een server die niet kan hervatten: het voortgangsvenster toont <g1>Hervatbaarheid: Nee</g1> voor dergelijke servers."
@@ -1114,6 +1126,10 @@
    "source": "Read the site",
    "text": "De site lezen"
   },
+  "0e9fede041092f7d": {
+   "source": "A file is made when its first byte is downloaded, and only a ticked one is made in the folder: what an unticked file shares with a ticked one waits in MDM's own torrent data. A running torrent keeps only the files it is reading or writing open, a few hundred at most for all of MDM's torrents together (fewer where the system allows fewer, as macOS does), so a torrent of thousands of files runs where it used to fail with \"Too many open files\".",
+   "text": "Een bestand wordt aangemaakt zodra de eerste byte is gedownload, en alleen een aangevinkt bestand wordt in de map aangemaakt: wat een niet-aangevinkt bestand deelt met een aangevinkt bestand, wacht in de eigen torrentgegevens van MDM. Een actieve torrent houdt alleen de bestanden open die het leest of schrijft, maximaal een paar honderd voor alle torrents van MDM samen (minder waar het systeem minder toestaat, zoals macOS), zodat een torrent van duizenden bestanden werkt waar het voorheen mislukte met \"Te veel open bestanden\"."
+  },
   "0ea74b188ec2ca88": {
    "source": "If it says <g1>the site sent a web page instead of the file</g1>, the link led to the site's own page: a file host's countdown, a captcha, a <g2>Download</g2> button to press, or a sign-in. MDM never saves that page as your file. Click <g3>Open in browser</g3> in the download's progress window (or open the link yourself), finish there, and when the browser starts the real download, MDM's extension hands it to MDM. Without the extension, let the browser download it.",
    "text": "Als er staat <g1>de site heeft een webpagina gestuurd in plaats van het bestand</g1>, leidde de link naar een eigen pagina van de site: een aftelling van een bestandshost, een captcha, een <g2>Downloaden</g2>-knop om op te drukken, of een aanmelding. MDM slaat die pagina nooit op als uw bestand. Klik op <g3>Openen in de browser</g3> in het voortgangsvenster van de download (of open de link zelf), voltooi daar de actie, en wanneer de browser de echte download start, geeft de MDM-extensie deze door aan MDM. Zonder de extensie laat u de browser het bestand downloaden."
@@ -1221,10 +1237,6 @@
   "1058e8be7cc50b7e": {
    "source": "High contrast",
    "text": "Hoog contrast"
-  },
-  "105e2af4dcf1adc9": {
-   "source": "Last updated 2026-11-27",
-   "text": "Laatst bijgewerkt op 27-11-2026"
   },
   "10825ce1e4e377bf": {
    "source": "Tasks → Import → From IDM export file",
@@ -1393,6 +1405,10 @@
   "1294135f300139c9": {
    "source": "The benchmark data could not be loaded.",
    "text": "De benchmarkgegevens konden niet worden geladen."
+  },
+  "12947e2a74bc1b46": {
+   "source": "Each running download has its own progress window. It opens when the download starts (unless you turned that off, or chose <g1>Show minimized</g1>, in <g2>Options → Downloads → Customize \"Download progress\" dialog → Edit...</g2>); to open it again, double-click the download in the list.",
+   "text": "Elke actieve download heeft een eigen voortgangsvenster. Dit venster wordt geopend wanneer de download start (tenzij u dit hebt uitgeschakeld, of <g1>Geminimaliseerd weergeven</g1> hebt gekozen, in <g2>Opties → Downloads → Dialoogvenster \"Downloadvoortgang\" aanpassen → Bewerken...</g2>); om het opnieuw te openen, dubbelklikt u op de download in de lijst."
   },
   "12a228101626f4bc": {
    "source": "How MDM uses connections",
@@ -1661,6 +1677,10 @@
   "15ce0de13b8b0839": {
    "source": "Yes. MDM accepts IDM's familiar command-line switches, comes with misterdownloadmanager-cli for downloads from a terminal, and has a local, token-protected…",
    "text": "Ja. MDM accepteert de bekende opdrachtregelschakelaars van IDM, wordt geleverd met misterdownloadmanager-cli voor downloads vanaf een terminal, en heeft een lokale, met tokens beveiligde…"
+  },
+  "15dfb8668baab702": {
+   "source": "See <g1>Proxy / Socks</g1> and <g2>Use your own copies</g2>.",
+   "text": "Zie <g1>Proxy/Socks</g1> en <g2>Uw eigen kopieën gebruiken</g2>."
   },
   "15f41ea989aec521": {
    "source": "<g1>Base16 and pywal colour schemes as themes</g1>: a Base16 or Base24 scheme (<x2/>, the classic layout and tinted-theming's <x3/> one) or pywal's <x4/> (wallust's pywal-shaped one too), added with <g5>View → Theme → Add a theme file…</g5> or put in the themes folder, is a theme on the classic look: only the colours change. base00 and base01 are the backgrounds, base05 and base04 the text, base0D the focus, the selection and the progress bar (pywal: its background and foreground, color4); text is kept at 4.5:1 or more against every background and the accent at 3:1, moved a little where a scheme falls short. Once <x6/> has run, <g7>View → Theme</g7> lists <g8>pywal</g8>, read from where pywal writes it (<x9/>, <x10/> on Windows), and MDM follows each new wallpaper's colours within two seconds. A theme file can <x11/> a scheme to change more than its colours.",
@@ -2126,10 +2146,6 @@
    "source": "<g1>The keyboard focus got lost</g1> when a button greyed itself or Escape closed a drop-down: Tab started over at the top of the window. It now moves on, or comes back, as in Windows.",
    "text": "<g1>De toetsenbordfocus ging verloren</g1> wanneer een knop zichzelf grijs maakte of Escape een vervolgkeuzelijst sloot: met Tab begon u weer bovenaan het venster. Nu gaat de focus verder of keert die terug, zoals in Windows."
   },
-  "1c004ef83082f283": {
-   "source": "<g1>Site rules...</g1> — a User-Agent, request headers, a number of connections and <g2>Always connect the way a browser does</g2>, by site. See <g3>Site rules</g3>.",
-   "text": "<g1>Siteregels…</g1> — een User-Agent, aanvraagheaders, het aantal verbindingen en <g2>Altijd verbinding maken zoals een browser dat doet</g2>, per site. Zie <g3>Siteregels</g3>."
-  },
   "1c0101659f1e2203": {
    "source": "<g1>Feeds</g1>: the feeds it watches; none ticked, all of them.",
    "text": "<g1>Feeds</g1>: de feeds die de regel controleert. Als geen enkele feed is aangevinkt, worden alle feeds gecontroleerd."
@@ -2398,6 +2414,10 @@
    "source": "A torrent's progress window on its Pieces tab: a square for each piece, filled once it's here.",
    "text": "Het voortgangsvenster van een torrent op het tabblad Delen: een vierkantje voor elk deel, gevuld zodra het binnen is."
   },
+  "1fa905d65f474793": {
+   "source": "Last updated 2026-11-28",
+   "text": "Laatst bijgewerkt op 28-11-2026"
+  },
   "1fc4673dc3cdd511": {
    "source": "The list keeps the host's link. The direct link is never shown or copied: the services forbid sharing it. It lives only in the download's resume data, and when it expires MDM asks the service for a new one.",
    "text": "De lijst bewaart de link van de host. De directe link wordt nooit getoond of gekopieerd: de services staan delen ervan niet toe. De link wordt alleen bewaard in de hervattingsgegevens van de download. Als de link verloopt, vraagt MDM de service om een nieuwe."
@@ -2525,6 +2545,10 @@
   "216583d42da33e52": {
    "source": "On macOS only an administrator can schedule a wake, so the option is greyed. MDM doesn't ask for an administrator's password. An administrator can have the Mac wake every day a minute before the queue starts, for example at 10:59 PM for a queue that starts at 11:00 PM:",
    "text": "Op macOS kan alleen een beheerder een wekactie plannen. Daarom is de optie grijs. MDM vraagt niet om het wachtwoord van een beheerder. Een beheerder kan de Mac elke dag een minuut voor de start van de wachtrij laten wekken, bijvoorbeeld om 22:59 uur voor een wachtrij die om 23:00 uur start:"
+  },
+  "216eae12c95fa610": {
+   "source": "Everyone who sent a pull request, opened an issue or commented on GitHub since version <x1/>.",
+   "text": "Iedereen die een pull-aanvraag heeft ingediend, een probleem heeft gemeld of een opmerking heeft geplaatst op GitHub sinds versie <x1/>."
   },
   "2171be975f40efe2": {
    "source": "<g1>Moving from IDM</g1><g2>Your IDM list comes over in one file, each download with its address, referrer and cookies.</g2>",
@@ -2778,10 +2802,6 @@
    "source": "<g1>File</g1> — the selected download: <g2>Stop Download</g2>, <g3>Remove</g3>, <g4>Download Now</g4>, <g5>Redownload</g5>.",
    "text": "<g1>Bestand</g1> — de geselecteerde download: <g2>Download stoppen</g2>, <g3>Verwijderen</g3>, <g4>Nu downloaden</g4>, <g5>Opnieuw downloaden</g5>."
   },
-  "246d9835d86f1864": {
-   "source": "<g1>280,000+ downloads</g1><g2>of the app, every version together</g2>",
-   "text": "<g1>280.000+ downloads</g1><g2>van de app, alle versies samen</g2>"
-  },
   "247f85e9dde5fa21": {
    "source": "Privacy policy",
    "text": "Privacybeleid"
@@ -2970,6 +2990,10 @@
    "source": "If an error message quotes something you typed, that text is in the report, so read it before sending.",
    "text": "Als een foutmelding iets citeert dat u hebt getypt, staat die tekst in het rapport, dus lees het voordat u het verzendt."
   },
+  "270083ee32a0f734": {
+   "source": "Browser add-on users",
+   "text": "Gebruikers van browserextensies"
+  },
   "2703f69d017d87af": {
    "source": "Close a menu or dialog (an open drop-down list first)",
    "text": "Een menu of dialoogvenster sluiten (eerst een open vervolgkeuzelijst)"
@@ -3094,10 +3118,6 @@
    "source": "The browser extension, from the browsers' own stores: the Chrome Web Store's is for Edge, Brave, Opera and Vivaldi too. It also comes with the app and as <g1>its own download</g1>, to add by hand. Every file is built from the public source by GitHub Actions and listed with its SHA-256 checksum.",
    "text": "De browser-extensie, vanuit de eigen stores van de browsers: die van de Chrome Web Store is ook voor Edge, Brave, Opera en Vivaldi. Hij wordt ook meegeleverd met de app en als <g1>aparte download</g1>, om handmatig toe te voegen. Elk bestand is gebouwd vanuit de openbare bron door GitHub Actions en vermeld met zijn SHA-256-checksum."
   },
-  "2853aef8c3261b3e": {
-   "source": "misterdownloadmanager.com is a static site. Three companies take part in showing it to you (Cloudflare also keeps its star ratings), and a fourth if you play the home page's film:",
-   "text": "misterdownloadmanager.com is een statische site. Drie bedrijven zijn betrokken bij het tonen ervan (Cloudflare bewaart ook de sterbeoordelingen), en een vierde als u de film op de startpagina afspeelt:"
-  },
   "285bca50f6f03a0a": {
    "source": "Start Download: the progress window shows it coming in.",
    "text": "Download starten: het voortgangsvenster toont de binnenkomende download."
@@ -3145,6 +3165,10 @@
   "28eeaa8ad9bf85a3": {
    "source": "Requests",
    "text": "Verzoeken"
+  },
+  "291af5108373e0c4": {
+   "source": "MDM downloads yt-dlp, ffmpeg and gallery-dl from their official releases on GitHub. Where GitHub can't be reached or is very slow, as often in mainland…",
+   "text": "MDM downloadt yt-dlp, ffmpeg en gallery-dl van hun officiële releases op GitHub. Als GitHub niet bereikbaar is of erg traag, zoals vaak in het vasteland van…"
   },
   "292621fe40d7beca": {
    "source": "Every video starts ticked. Untick the ones you don't want, or use <g1>Select all</g1> and <g2>Select none</g2>. Private and deleted videos are greyed out and can't be ticked.",
@@ -4346,6 +4370,10 @@
    "source": "<g1>Connection...</g1> — for a stopped download: its own User-Agent, request headers, proxy and number of connections, for when it goes on. MDM still checks it is the same file before it writes anything. See <g2>One download's settings</g2>.",
    "text": "<g1>Verbinding...</g1> — voor een gestopte download: de eigen User-Agent, request headers, proxy en aantal verbindingen, voor wanneer deze verdergaat. MDM controleert nog steeds of het hetzelfde bestand is voordat er iets wordt geschreven. Zie <g2>Instellingen van één download</g2>."
   },
+  "39f69afa6e85f9d1": {
+   "source": "<g1>Issues</g1><g2><x3/> people</g2>",
+   "text": "<g1>Problemen</g1><g2><x3/> personen</g2>"
+  },
   "3a14e0e8b14737d7": {
    "source": "Choose <g1>Downloads → Speed Limiter → Turn on</g1>.",
    "text": "Kies <g1>Downloads → Snelheidsbegrenzer → Inschakelen</g1>."
@@ -4561,6 +4589,10 @@
   "3cc4f48aaeb666b9": {
    "source": "Steps",
    "text": "Stappen"
+  },
+  "3ccaf5a331b1edd2": {
+   "source": "A stopped torrent keeps none of its files open: you can move, rename or delete them, or open them in another program, while it waits. When you start it again, MDM opens them where they are; a file that was moved away or deleted meanwhile is made again and its pieces downloaded again. A finished torrent that is shared (<g1>Keep sharing torrents after they finish</g1>, in Torrent settings) keeps its files open only to read them: other programs can open, copy, run, move or rename them meanwhile.",
+   "text": "Een gestopte torrent houdt geen van zijn bestanden open: u kunt ze verplaatsen, hernoemen of verwijderen, of ze in een ander programma openen, terwijl de torrent wacht. Wanneer u de torrent opnieuw start, opent MDM ze waar ze zijn; een bestand dat ondertussen is verplaatst of verwijderd, wordt opnieuw aangemaakt en de stukken ervan worden opnieuw gedownload. Een voltooide torrent die wordt gedeeld (<g1>Torrents blijven delen nadat ze zijn voltooid</g1>, in Torrent-instellingen) houdt zijn bestanden alleen open om ze te lezen: andere programma's kunnen ze ondertussen openen, kopiëren, uitvoeren, verplaatsen of hernoemen."
   },
   "3cd4e5cff6113414": {
    "source": "<g1>Then move the archives to the Recycle Bin</g1> has nothing to move afterwards: the archive is already gone.",
@@ -4890,6 +4922,10 @@
    "source": "Changes",
    "text": "Wijzigingen"
   },
+  "41150cfc2e8c323a": {
+   "source": "Some sites want a particular User-Agent, an extra header or fewer connections, let only browsers through, or need a proxy (or none) when the others don't. <g1>Options → Connection → Site rules...</g1> sets these once for every download from a site:",
+   "text": "Sommige sites willen een bepaalde User-Agent, een extra header of minder verbindingen, laten alleen browsers toe, of hebben een proxy nodig (of geen) wanneer andere dat niet doen. <g1>Opties → Verbinding → Siteregels...</g1> stelt deze eenmalig in voor elke download van een site:"
+  },
   "41333ec069d15e15": {
    "source": "A magnet link takes a long time",
    "text": "Een magneetlink duurt lang"
@@ -4897,10 +4933,6 @@
   "413ea94686ccd93b": {
    "source": "When an address is already in the list, MDM asks what to do, or follows the answer you chose in <g1>Options → Downloads → If a duplicate download link is added</g1>.",
    "text": "Wanneer een adres al in de lijst staat, vraagt MDM wat te doen, of volgt het het antwoord dat u hebt gekozen in <g1>Opties → Downloads → Als een dubbele downloadlink wordt toegevoegd</g1>."
-  },
-  "415322c0b133befd": {
-   "source": "Each running download has its own progress window. It opens when the download starts (unless you turned that off in Options → Downloads → Customize…",
-   "text": "Elke actieve download heeft een eigen voortgangsvenster. Dit wordt geopend wanneer de download start (tenzij u dit hebt uitgeschakeld via Opties → Downloads → Aanpassen…"
   },
   "4160d55635d3e362": {
    "source": "Freeze reports that tell the kind of freeze",
@@ -5201,6 +5233,10 @@
   "45ce55f4ec4843d8": {
    "source": "<g1>Start now</g1> and <g2>Stop</g2> run or halt the selected queue straight away.",
    "text": "<g1>Nu starten</g1> en <g2>Stoppen</g2> starten of stoppen de geselecteerde wachtrij onmiddellijk."
+  },
+  "45fa036667aca21e": {
+   "source": "A checksum you give this way (or with the command line's <x1/>), or one the site publishes and MDM reads itself (Hugging Face's and GitHub's, in <g2>Link grabber</g2>), must match: a file that doesn't stays unfinished, says <g3>the file's SHA-256 checksum doesn't match</g3>, and <g4>Redownload</g4> fetches it again.",
+   "text": "Een checksum die u op deze manier opgeeft (of met de opdrachtregeloptie <x1/>), of een die de site publiceert en MDM zelf leest (die van Hugging Face en GitHub, in de <g2>Link grabber</g2>), moet overeenkomen: een bestand dat niet overeenkomt, blijft onvoltooid, meldt <g3>de SHA-256-checksum van het bestand komt niet overeen</g3>, en <g4>Opnieuw downloaden</g4> haalt het opnieuw op."
   },
   "460c28c064c58629": {
    "source": "To remove it, open the same window and untick <g1>Limit all downloads together to</g1>.",
@@ -5522,6 +5558,10 @@
    "source": "system, tahoma",
    "text": "system, tahoma"
   },
+  "4a9972769bfc01f5": {
+   "source": "<g1><x2/> downloads</g1><g3>on GitHub, every version together</g3>",
+   "text": "<g1><x2/> downloads</g1><g3>op GitHub, alle versies samen</g3>"
+  },
   "4aa48dc3c710de33": {
    "source": "Torrent settings: sharing, limits and what others can see",
    "text": "Torrent-instellingen: delen, limieten en wat anderen kunnen zien"
@@ -5537,10 +5577,6 @@
   "4ac1b63a563a7d9c": {
    "source": "A key MDM doesn't know, or a value it can't read, is skipped and written to MDM's log (the <x1/> folder beside the themes folder), so a file made for a newer MDM still loads. The built-in themes are written the same way: <g2>read them on GitHub</g2>.",
    "text": "Een sleutel die MDM niet kent, of een waarde die het niet kan lezen, wordt overgeslagen en naar het logboek van MDM geschreven (de map <x1/> naast de themamap), zodat een bestand dat voor een nieuwere MDM is gemaakt, nog steeds wordt geladen. De ingebouwde thema's zijn op dezelfde manier geschreven: <g2>lees ze op GitHub</g2>."
-  },
-  "4ac401467a9a37d2": {
-   "source": "The downloads join the <g1>Main download queue</g1>, ready to start (<g2>Start</g2> starts it too). <g3>Tasks → Import → From IDM export file</g3> reads an <x4/> file, with each download's referrer and cookies.",
-   "text": "De downloads worden toegevoegd aan de <g1>Hoofd-downloadwachtrij</g1> en zijn klaar om te starten (<g2>Starten</g2> start de wachtrij ook). <g3>Taken → Importeren → Uit IDM-exportbestand</g3> leest een <x4/>-bestand, inclusief de verwijzende URL en cookies van elke download."
   },
   "4ace27f6171583db": {
    "source": "A <x1/> and a Compose file come with MDM's source. For now you build the image yourself; a published image comes later. The first build is long, up to an hour on a small server, and the image is small, about 175 MB, with no desktop libraries.",
@@ -5637,6 +5673,10 @@
   "4c5fe1c0a5f7ac2d": {
    "source": "<g1>Linux</g1>: install the <g2>.deb</g2> with <x3/> (Debian, Ubuntu, Mint) or the <g4>.rpm</g4> with <x5/> (Fedora), and the packages bring what MDM needs. Or make the <g6>AppImage</g6> executable (<x7/>) and run it. MDM connects itself to your browsers at each start; then add the extension from your browser's store, above. <g8>More in the help</g8>.",
    "text": "<g1>Linux</g1>: installeer het <g2>.deb</g2>-bestand met <x3/> (Debian, Ubuntu, Mint) of het <g4>.rpm</g4>-bestand met <x5/> (Fedora). De pakketten bevatten alles wat MDM nodig heeft. Of maak de <g6>AppImage</g6> uitvoerbaar (<x7/>) en voer deze uit. MDM maakt bij elke start verbinding met uw browsers; voeg daarna de extensie toe vanuit de store van uw browser, zoals hierboven beschreven. <g8>Meer in de help</g8>."
+  },
+  "4c5ff93f41d1a8f9": {
+   "source": "Without one, MDM checks the file against the checksum its server sends with it, if any (<x1/>, <x2/>, <x3/>, Google Cloud Storage's <x4/>). Servers sometimes send the checksum of the file as they store it rather than of what they send, so a file that doesn't match is still kept: its status says <g5>Checksum warning</g5>, and its tip, its log, <g6>Properties</g6> and <g7>Download complete</g7> say <g8>Downloaded, but the server's MD5 checksum didn't match; the file may still be fine</g8>. If it matters, check it with <g9>Verify checksum...</g9> and the checksum its site publishes: when it matches, the warning goes. A server's checksum isn't used at all when the server says it changed the file on the way (a compressed answer, or a file stored encoded, as PikPak's are).",
+   "text": "Zonder een opgegeven checksum controleert MDM het bestand aan de hand van de checksum die de server meestuurt, indien aanwezig (<x1/>, <x2/>, <x3/>, Google Cloud Storage's <x4/>). Servers sturen soms de checksum van het bestand zoals zij het opslaan, in plaats van die van wat zij verzenden. Een bestand dat niet overeenkomt, wordt dan toch behouden: de status ervan is <g5>Checksumwaarschuwing</g5>, en de tooltip, het logboek, <g6>Eigenschappen</g6> en <g7>Download voltooid</g7> vermelden <g8>Gedownload, maar de MD5-checksum van de server kwam niet overeen; het bestand kan nog steeds in orde zijn</g8>. Als het belangrijk is, controleer het dan met <g9>Checksum verifiëren...</g9> en de checksum die de site publiceert: als deze overeenkomt, verdwijnt de waarschuwing. De checksum van een server wordt helemaal niet gebruikt wanneer de server aangeeft dat het bestand onderweg is gewijzigd (een gecomprimeerd antwoord, of een gecodeerd opgeslagen bestand, zoals die van PikPak)."
   },
   "4c75f1e3123da2b1": {
    "source": "— plain FTP.",
@@ -5817,6 +5857,10 @@
   "4e56d054c4ea1845": {
    "source": "<g1>A minimized MDM keeps working</g1>: with the main window minimized (not to the notification area), queues didn't start their next file, the Scheduler's starts and stops didn't fire, download limits, the network adapter's kill switch, the clipboard monitor, the update check, the taskbar's progress and saving the list all waited until the window was restored. They run in every window state now, and their windows (Download complete, a limit's notice) open at once.",
    "text": "<g1>Een geminimaliseerde MDM blijft werken</g1>: met het hoofdvenster geminimaliseerd (niet naar het systeemvak), startten wachtrijen hun volgende bestand niet, de starts en stops van de Planner werden niet geactiveerd, downloadlimieten, de kill switch van de netwerkadapter, de klembordmonitor, de updatecontrole, de voortgang van de taakbalk en het opslaan van de lijst wachtten allemaal totdat het venster werd hersteld. Ze worden nu in elke vensterstatus uitgevoerd, en hun vensters (Download voltooid, een melding van een limiet) openen onmiddellijk."
+  },
+  "4e60a529980083e7": {
+   "source": "The downloads join the <g1>Main download queue</g1>, ready to start (<g2>Start</g2> starts it too). <g3>Tasks → Import → From IDM export file</g3> reads an <x4/> file, with each download's referrer and cookies, and the file name a list gives it in a <x5/> line.",
+   "text": "De downloads komen in de <g1>Hoofd-downloadwachtrij</g1> te staan, klaar om te starten (<g2>Starten</g2> start deze ook). <g3>Taken → Importeren → Uit IDM-exportbestand</g3> leest een <x4/>-bestand, met de verwijzer en cookies van elke download, en de bestandsnaam die een lijst eraan geeft in een <x5/>-regel."
   },
   "4e96b700836944de": {
    "source": "<g1>Password</g1>: the archives' password, if they have one. It is kept in memory only and is never saved by itself: to keep one for other packages, add it to your <g2>archive passwords</g2>.",
@@ -6090,10 +6134,6 @@
    "source": "After a click it says what happened, in its own colour:",
    "text": "Na een klik geeft het aan wat er is gebeurd, in zijn eigen kleur:"
   },
-  "529f7c22e85ee030": {
-   "source": "Download a file with up to 8 connections (<x1/>, 1 to 128), showing progress. <x2/> pauses it; <x3/> continues. <x4/> sets the referring page address (Referer header), <x5/> sets the request's User-Agent (then the only one sent; without it, MDM speaks as your default browser, and, when a site's bot check refuses that and the way a browser connects too, once more under its own name), <x6/> sets the Cookie header (a cookie on the command line ends up in the shell's history; <x7/> reads it from standard input instead). <x8/> checks the finished file: hex MD5, SHA-1, SHA-256, SHA-512 or CRC32, optionally named (<x9/>). <x10/> picks the DNS instead of Options': <x11/>; a service and how to ask it, <x12/>, <x13/>, <x14/>, <x15/>, <x16/>; DNS servers' addresses, <x17/>; or a DNS-over-HTTPS address. It never falls back to the system's DNS. <x18/> sends every connection through one network adapter instead of Options' (<x19/> for none), by its name (<x20/>, <x21/>) or one of its addresses; when it isn't connected, nothing is sent and the download fails. <x22/> takes the place of Options' proxy for this run (see above). The app's <g23>site rules</g23> for the address apply too (their headers, User-Agent, browser-like connection and number of connections), where the command line gives none of the same. A link from a file host that one of your debrid accounts (<g24>Options → Accounts</g24>) supports goes through that account, as in the app, and <x25/> says <x26/>; <x27/> downloads the address itself (<g28>Debrid service accounts</g28>).",
-   "text": "Download een bestand met maximaal 8 verbindingen (<x1/>, 1 tot 128), met voortgangsweergave. <x2/> pauzeert de download; <x3/> gaat verder. <x4/> stelt het verwijzende paginadres in (Referer-header), <x5/> stelt de User-Agent van het verzoek in (dan wordt alleen deze verzonden; zonder dit spreekt MDM als uw standaardbrowser, en, wanneer een botcontrole van een site dat en de manier waarop een browser verbinding maakt weigert, nogmaals onder zijn eigen naam), <x6/> stelt de Cookie-header in (een cookie op de opdrachtregel komt in de geschiedenis van de shell terecht; <x7/> leest deze in plaats daarvan van de standaardinvoer). <x8/> controleert het voltooide bestand: hex MD5, SHA-1, SHA-256, SHA-512 of CRC32, optioneel benoemd (<x9/>). <x10/> kiest de DNS in plaats van die van Opties: <x11/>; een service en hoe deze te bevragen, <x12/>, <x13/>, <x14/>, <x15/>, <x16/>; adressen van DNS-servers, <x17/>; of een DNS-over-HTTPS-adres. Het valt nooit terug op de DNS van het systeem. <x18/> stuurt elke verbinding via één netwerkadapter in plaats van die van Opties (<x19/> voor geen), op naam (<x20/>, <x21/>) of een van de adressen; wanneer deze niet is verbonden, wordt er niets verzonden en mislukt de download. <x22/> neemt de plaats in van de proxy van Opties voor deze uitvoering (zie hierboven). De <g23>siteregels</g23> van de app voor het adres zijn ook van toepassing (hun headers, User-Agent, browserachtige verbinding en aantal verbindingen), waar de opdrachtregel geen van dezelfde geeft. Een link van een bestandshost die een van uw debrid-accounts (<g24>Opties → Accounts</g24>) ondersteunt, gaat via dat account, zoals in de app, en <x25/> zegt <x26/>; <x27/> downloadt het adres zelf (<g28>Debrid-serviceaccounts</g28>)."
-  },
   "52ceae361fb11f6c": {
    "source": "A list's, a table's or a box's outline",
    "text": "Omtrek van een lijst, tabel of vak"
@@ -6145,10 +6185,6 @@
   "536df2f60bd48da6": {
    "source": "Success text (a matching checksum)",
    "text": "Succestekst (een overeenkomende checksum)"
-  },
-  "538fe2ede1fc4d57": {
-   "source": "The single-instance channel (a token-protected local socket), the data folder, the capture rules shared by the app and the host, and the site rules (#1778: a User-Agent, headers, connections and the browser-like connection by site pattern) shared by the app and the command line",
-   "text": "Het single-instance-kanaal (een met token beveiligde lokale socket), de datafolder, de vastlegregels die door de app en de host worden gedeeld, en de siteregels (#1778: een User-Agent, headers, verbindingen en de browserachtige verbinding per sitepatroon) die door de app en de commandoregel worden gedeeld"
   },
   "539160f92bae4422": {
    "source": "Being re-measured",
@@ -6322,6 +6358,10 @@
    "source": "A small file",
    "text": "Een klein bestand"
   },
+  "55a523d7ca4b905f": {
+   "source": "Thanks to",
+   "text": "Met dank aan"
+  },
   "55ecea9df3d3ed23": {
    "source": "Paste the address of a playlist (<x1/>) or a channel's videos (<x2/>) and click <g3>Look up</g3>. Instead of one video's qualities, the window lists the list's videos, each with its length.",
    "text": "Plak het adres van een afspeellijst (<x1/>) of de video's van een kanaal (<x2/>) en klik op <g3>Zoeken</g3>. In plaats van de kwaliteitsopties voor één video toont het venster de video's in de lijst, elk met de speelduur."
@@ -6454,6 +6494,10 @@
    "source": "Windows 10/11 and Linux; macOS to try",
    "text": "Windows 10/11 en Linux; macOS (experimenteel)"
   },
+  "57df30288a29fe94": {
+   "source": "Made possible by these amazing humans",
+   "text": "Mogelijk gemaakt door deze geweldige mensen"
+  },
   "57e101e4403fd046": {
    "source": "Command",
    "text": "Opdracht"
@@ -6545,6 +6589,10 @@
   "58f22a0b1aeea2b4": {
    "source": "Watch it work.",
    "text": "Bekijk MDM in actie"
+  },
+  "58f7b730058089bc": {
+   "source": "Everyone who takes part follows the <g1>Code of conduct</g1>. Who reviews and merges changes, and how decisions are made, is in <g2>GOVERNANCE.md</g2>.",
+   "text": "Iedereen die meedoet, volgt de <g1>gedragscode</g1>. Wie wijzigingen beoordeelt en samenvoegt, en hoe beslissingen worden genomen, staat in <g2>GOVERNANCE.md</g2>."
   },
   "59130ab4ecc47c65": {
    "source": "<g1>Hide to the notification area</g1> (a short dash with an arrow down to the corner; on Windows in the title bar, left of Minimize) puts the window in the notification area; <g2>Downloads in progress</g2> in the tray icon's menu brings it back. See <g3>The tray icon</g3>.",
@@ -7026,6 +7074,10 @@
    "source": "What Update now does",
    "text": "Wat Nu bijwerken doet"
   },
+  "5f818384bb56aff6": {
+   "source": "<g1>Edge (or another browser) says \"Specified native messaging host not found\", though the registry entry looks right?</g1> On 64-bit Windows the browsers read the registry's 32-bit part (<x2/>) before the entry you find under <x3/>, and take the first one there, even one that leads to a copy that is gone. <g4>Test browser integration</g4> says <g5>An older registry entry is in the way</g5>, with that entry: click <g6>Set it up</g6> to give your account an entry of its own, which the browsers read before it. MDM also does that by itself at its start when that entry leads nowhere, and its setup for everyone removes it.",
+   "text": "<g1>Edge (of een andere browser) meldt 'Specified native messaging host not found', hoewel de registervermelding correct lijkt?</g1> Op 64-bit Windows lezen browsers het 32-bit deel van het register (<x2/>) vóór de vermelding die u vindt onder <x3/>, en nemen de eerste die ze daar tegenkomen, zelfs als die naar een verdwenen kopie leidt. <g4>Browserintegratie testen</g4> meldt <g5>Een oudere registervermelding zit in de weg</g5>, met die vermelding: klik op <g6>Instellen</g6> om uw account een eigen vermelding te geven, die de browsers eerder lezen. MDM doet dit ook zelf bij het opstarten als die vermelding nergens heen leidt, en de installatie voor iedereen verwijdert deze."
+  },
   "5f8f976d1dd62e61": {
    "source": "A group box's frame",
    "text": "Het kader van een groepsbox"
@@ -7161,6 +7213,10 @@
   "6111bd2651de0090": {
    "source": "<g1>The download engine</g1>: up to 32 connections per file, re-splitting the slowest part until the last byte, and crash-safe resume after a restart or a dropped connection. HTTP, HTTPS, <g2>FTP and FTPS</g2> (<x3/>, <x4/> explicit TLS, <x5/> implicit TLS), proxies, SOCKS and <g6>proxy auto-config (PAC)</g6> scripts.",
    "text": "<g1>De downloadengine</g1>: tot 32 verbindingen per bestand. Het langzaamste deel wordt opnieuw opgesplitst tot de laatste byte is binnengehaald. Na een crash of verbroken verbinding kan de download veilig worden hervat. HTTP, HTTPS, <g2>FTP en FTPS</g2> (<x3/>, <x4/> expliciete TLS, <x5/> impliciete TLS), proxy's, SOCKS en <g6>scripts voor automatische proxyconfiguratie (PAC)</g6>."
+  },
+  "611a1e12da3b7aef": {
+   "source": "<g1>Live figures</g1>: the home page asks the same service on Cloudflare for how many times MDM was downloaded from GitHub and how many people use the browser add-on, to show them under the contributors. That request carries only what every request to a website does (your IP address and browser details, which Cloudflare sees); the service keeps nothing of it and writes no log. The figures themselves come from GitHub and the browser stores, read by the service, never by your browser.",
+   "text": "<g1>Live cijfers</g1>: de startpagina vraagt aan dezelfde dienst op Cloudflare hoe vaak MDM is gedownload van GitHub en hoeveel mensen de browser-add-on gebruiken, om deze onder de bijdragers te tonen. Dat verzoek bevat alleen wat elk verzoek aan een website bevat (uw IP-adres en browsergegevens, die Cloudflare ziet); de dienst bewaart er niets van en schrijft geen logboek. De cijfers zelf komen van GitHub en de browserwinkels, gelezen door de dienst, nooit door uw browser."
   },
   "611ef764b31d8702": {
    "source": "Android",
@@ -8038,6 +8094,10 @@
    "source": "<g1>32-bit Windows 10.</g1> Not sure which you have? <g2>Settings → System → About → System type</g2> says it. MDM can't download ffmpeg for you there (none is built for 32-bit Windows that MDM can check): to get the best video qualities, choose an ffmpeg of your own in <g3>Helpers...</g3> (<g4>Video</g4>).",
    "text": "<g1>32-bit Windows 10.</g1> Weet u niet zeker welke u heeft? <g2>Instellingen → Systeem → Info → Type systeem</g2> geeft dit aan. MDM kan ffmpeg daar niet voor u downloaden (er is geen build voor 32-bit Windows die MDM kan controleren): om de beste videokwaliteit te krijgen, kiest u uw eigen ffmpeg in <g3>Hulpprogramma's...</g3> (<g4>Video</g4>)."
   },
+  "6d9da62489a6a428": {
+   "source": "misterdownloadmanager.com is a static site. Three companies take part in showing it to you (Cloudflare also keeps its star ratings and serves its live figures), and a fourth if you play the home page's film:",
+   "text": "Misterdownloadmanager.com is een statische website. Drie bedrijven helpen om deze aan u te tonen (Cloudflare beheert ook de sterbeoordelingen en levert de live cijfers), en een vierde als u de video op de startpagina afspeelt:"
+  },
   "6da2e37f647df28e": {
    "source": "Select every download up to this one",
    "text": "Alle downloads tot deze selecteren"
@@ -8258,6 +8318,10 @@
    "source": "<g1><g2>Options</g2></g1> — every page of the Options window.",
    "text": "<g1><g2>Opties</g2></g1> — elke pagina van het Opties-venster."
   },
+  "702b1d80d041e97d": {
+   "source": "<g1>Tasks → Import → From text file</g1> and <g2>From IDM export file</g2>. An <x3/> file brings each download's referrer and cookies, and its file name when the list gives one (a <x4/> line; only the name, never a folder).",
+   "text": "<g1>Taken → Importeren → Uit tekstbestand</g1> en <g2>Uit IDM-exportbestand</g2>. Een <x3/>-bestand importeert de verwijzer en cookies van elke download, en de bestandsnaam als die in de lijst staat (een <x4/>-regel; alleen de naam, nooit een map)."
+  },
   "70304346a925831b": {
    "source": "MDM opens <g1>Download File Info</g1> instead of the browser downloading the file. Click <g2>Start Download</g2>.",
    "text": "MDM opent <g1>Bestandsinfo downloaden</g1> in plaats van dat de browser het bestand downloadt. Klik op <g2>Download starten</g2>."
@@ -8421,10 +8485,6 @@
   "72769bded1d786a9": {
    "source": "Paste a Google Drive link as it is, the one <g1>Share → Copy link</g1> gives:",
    "text": "Plak een Google Drive-link zoals die is, zoals de link die u krijgt via <g1>Delen → Link kopiëren</g1>:"
-  },
-  "7297ca101de5145e": {
-   "source": "The list couldn't be read from GitHub when this page was built. Everyone is on GitHub meanwhile, in the project's <g1>pull requests</g1> and <g2>issues</g2>.",
-   "text": "De lijst kon niet van GitHub worden gelezen toen deze pagina werd gemaakt. Iedereen staat inmiddels op GitHub, in de <g1>pull requests</g1> en <g2>issues</g2> van het project."
   },
   "729a19fc6ce418f9": {
    "source": "Reporting problems",
@@ -8894,6 +8954,10 @@
    "source": "You need your own paid account with one of these services: MDM doesn't sell or include one. Sharing an account or its links breaks the services' terms and can get the account suspended.",
    "text": "U heeft een eigen betaald account nodig bij een van deze diensten: MDM verkoopt of levert er geen. Het delen van een account of de links ervan is in strijd met de voorwaarden van de diensten en kan leiden tot opschorting van het account."
   },
+  "7931468b8d7d517a": {
+   "source": "<x1/> <g2>Everyone who helped</g2>",
+   "text": "<x1/> <g2>Iedereen die heeft geholpen</g2>"
+  },
   "7957b18548166390": {
    "source": "Questions and answers — Mister Download Manager",
    "text": "Vragen en antwoorden — Mister Download Manager"
@@ -9053,14 +9117,6 @@
   "7b51945e72d7d774": {
    "source": "Testing archives",
    "text": "Archieven testen"
-  },
-  "7b65292951ac598b": {
-   "source": "Some sites want a particular User-Agent, an extra header or fewer connections, or let only browsers through. <g1>Options → Connection → Site rules...</g1> sets these once for every download from a site:",
-   "text": "Sommige sites willen een specifieke User-Agent, een extra header of minder verbindingen, of laten alleen browsers toe. <g1>Opties → Verbinding → Siteregels...</g1> stelt deze eenmalig in voor elke download van een site:"
-  },
-  "7b655c3076cd7d8b": {
-   "source": "<g1>Tasks → Import → From text file</g1> and <g2>From IDM export file</g2>. An <x3/> file brings each download's referrer and cookies.",
-   "text": "<g1>Taken → Importeren → Uit tekstbestand</g1> en <g2>Uit IDM-exportbestand</g2>. Een <x3/>-bestand bevat de verwijzende pagina en cookies van elke download."
   },
   "7b75149d61c4c0ff": {
    "source": "A download that is running isn't deleted. Stop it first.",
@@ -9357,6 +9413,10 @@
   "7ee169488133ab57": {
    "source": "Link grabber gathers many links at once, sorts them into packages, and lets you tick the ones to download. MDM can then extract the archives it downloaded…",
    "text": "De Linkgrabber verzamelt veel links tegelijk, sorteert ze in pakketten en laat u de links aanvinken die u wilt downloaden. MDM kan vervolgens de gedownloade archieven uitpakken…"
+  },
+  "7ee305b094d7654d": {
+   "source": "The single-instance channel (a token-protected local socket), the data folder, the capture rules shared by the app and the host, and the site rules (#1778: a User-Agent, headers, connections, the browser-like connection and, #1960, a proxy by site pattern) shared by the app and the command line",
+   "text": "Het single-instance-kanaal (een met token beveiligde lokale socket), de gegevensmap, de vastlegregels die worden gedeeld door de app en de host, en de siteregels (#1778: een User-Agent, headers, verbindingen, de browserachtige verbinding en, #1960, een proxy per sitepatroon) die worden gedeeld door de app en de opdrachtregel"
   },
   "7ee9063b38514440": {
    "source": "Listed by",
@@ -9806,6 +9866,10 @@
    "source": "Every signed file is built from the public source code at <g1>github.com/anefzaoui/misterdownloadmanager</g1> by GitHub Actions, on GitHub's servers, never on a personal computer. Each one says it is Mister Download Manager and which version it is.",
    "text": "Elk ondertekend bestand wordt gebouwd vanuit de openbare broncode op <g1>github.com/anefzaoui/misterdownloadmanager</g1> door GitHub Actions, op de servers van GitHub, nooit op een persoonlijke computer. Elk bestand vermeldt dat het Mister Download Manager is en welke versie het betreft."
   },
+  "8414d2ed3c86b744": {
+   "source": "Which proxy a download goes through: its own (below) first, then the first rule that names the site and sets a proxy, then <g1>Options → Proxy / Socks</g1> (and the browser's proxy, when <g2>Use proxy/socks from a browser's request</g2> is on). A rule's proxy also carries Download File Info's look-up and, for a video or gallery page the rule names, yt-dlp's and gallery-dl's look-up and the video's download, so the links they get are used from the same address. The <g3>Network adapter</g3> chosen in <g4>Options → Proxy / Socks</g4>, and its kill switch, still hold every connection: with an adapter chosen, nothing goes around it.",
+   "text": "Welke proxy een download gebruikt: eerst zijn eigen (hieronder), dan de eerste regel die de site benoemt en een proxy instelt, dan <g1>Opties → Proxy/Socks</g1> (en de proxy van de browser, wanneer <g2>Gebruik proxy/socks van een browserverzoek</g2> is ingeschakeld). De proxy van een regel voert ook de opzoeking van Bestandsinfo downloaden uit, en voor een video- of galerijpagina die de regel benoemt, de opzoeking van yt-dlp en gallery-dl en de download van de video, zodat de links die ze krijgen vanaf hetzelfde adres worden gebruikt. De <g3>Netwerkadapter</g3> gekozen in <g4>Opties → Proxy/Socks</g4>, en de kill switch ervan, houden nog steeds elke verbinding vast: met een gekozen adapter gaat er niets omheen."
+  },
   "842fc0e6d2b7d24d": {
    "source": "At the start time the queue starts on its own. In the morning, the finished files are under <g1>Finished</g1> in the categories.",
    "text": "Op de starttijd wordt de wachtrij automatisch gestart. ’s Ochtends staan de voltooide bestanden onder <g1>Voltooid</g1> in de categorieën."
@@ -9933,6 +9997,10 @@
   "8581b3f6f6759cc7": {
    "source": "Proxy / Socks: no proxy, the system's, or your own.",
    "text": "Proxy / SOCKS: geen proxy, de proxy van het systeem of uw eigen proxy."
+  },
+  "8587f400d941af9d": {
+   "source": "<g1>Options → Connection → Site rules...</g1> gives every download from a site (<x2/>) its own User-Agent, extra request headers, number of connections, a browser's way of connecting from the first request, or a proxy: none, or one of its own, so only the sites that need a proxy go through one. A stopped download's <g3>Properties → Connection...</g3> changes its own headers, proxy and connections, and MDM still checks the file is the same one before it goes on.",
+   "text": "<g1>Opties → Verbinding → Siteregels…</g1> geeft elke download van een site (<x2/>) zijn eigen User-Agent, extra aanvraagheaders, aantal verbindingen, een browser-manier van verbinden vanaf de eerste aanvraag, of een proxy: geen, of een eigen proxy, zodat alleen de sites die een proxy nodig hebben er een gebruiken. De <g3>Eigenschappen → Verbinding…</g3> van een gestopte download wijzigt zijn eigen headers, proxy en verbindingen, en MDM controleert nog steeds of het bestand hetzelfde is voordat het verdergaat."
   },
   "85ab2d681187a715": {
    "source": "Not sure yet? <g1>Show it in the discussions</g1> first. The <g2>contributing guide</g2> explains how pull requests work here.",
@@ -10358,6 +10426,10 @@
    "source": "MDM works with screen readers such as Narrator and NVDA, which hear what each control is and its state. Everything can be done from the keyboard, with the keys most Windows programs use.",
    "text": "MDM werkt met schermlezers zoals Narrator en NVDA, die horen wat elke besturing is en wat de status ervan is. Alles kan vanaf het toetsenbord worden gedaan, met de toetsen die de meeste Windows-programma's gebruiken."
   },
+  "8bf561be5473c2d1": {
+   "source": "MDM downloads yt-dlp, ffmpeg and gallery-dl from their official releases on GitHub. Where GitHub can't be reached or is very slow, as often in mainland China, the install stops with \"the server did not answer in time\". Two ways around it:",
+   "text": "MDM downloadt yt-dlp, ffmpeg en gallery-dl van hun officiële releases op GitHub. Als GitHub niet bereikbaar is of erg traag, zoals vaak in het vasteland van China, stopt de installatie met de melding \"de server heeft niet op tijd geantwoord\". Er zijn twee manieren om dit te omzeilen:"
+  },
   "8bf5db6373827a5f": {
    "source": "Media on this page",
    "text": "Media op deze pagina"
@@ -10494,6 +10566,10 @@
    "source": "On 64-bit Windows 10 and 11, MDM is the stable, recommended build. The <g1>download page</g1> offers three files:",
    "text": "Op 64-bit Windows 10 en 11 is MDM de stabiele, aanbevolen versie. De <g1>downloadpagina</g1> biedt drie bestanden:"
   },
+  "8dda4226f9b32e88": {
+   "source": "<g1>The home page's live figures</g1>, at <x2/>, in the same <g3>OpenAPI</g3>: how many times MDM was downloaded from GitHub, every version together and how many people use the browser add-on (the Chrome Web Store's users, Firefox Add-ons' daily users), each with when it was read. Read again at most every 15 minutes; a source that can't be read keeps its last figure.",
+   "text": "<g1>De live cijfers van de startpagina</g1>, op <x2/>, in dezelfde <g3>OpenAPI</g3>: hoe vaak MDM is gedownload van GitHub, alle versies samen en hoeveel mensen de browser-add-on gebruiken (gebruikers van de Chrome Web Store, dagelijkse gebruikers van Firefox Add-ons), elk met de datum waarop het is gelezen. Maximaal elke 15 minuten opnieuw lezen; een bron die niet kan worden gelezen, behoudt het laatste cijfer."
+  },
   "8de593350090e7e8": {
    "source": "If MDM never opens, see <g1>The setup or MDM won't start</g1>.",
    "text": "Als MDM nooit opent, zie <g1>De installatie of MDM start niet</g1>."
@@ -10529,10 +10605,6 @@
   "8e4c4a984da7391d": {
    "source": "Check that the Speed Limiter is off: <g1>Downloads → Speed Limiter → Turn off</g1>. Also look at <g2>Downloads → Speed Limiter → Settings... → Limit all downloads together to</g2>, which applies even with the limiter off.",
    "text": "Controleer of de Snelheidsbegrenzer is uitgeschakeld: <g1>Downloads → Snelheidsbegrenzer → Uitschakelen</g1>. Kijk ook naar <g2>Downloads → Snelheidsbegrenzer → Instellingen... → Alle downloads samen beperken tot</g2>, wat zelfs van toepassing is als de begrenzer is uitgeschakeld."
-  },
-  "8e9db9ede7b54a27": {
-   "source": "<g1>Customize \"Download progress\" dialog → Edit...</g1> — <g2>Show download progress dialog when a download starts</g2>: on by default. Untick it and a download no longer opens its progress window when it starts, from the browser, a link you add, a video or a queue; it goes on in the main window's list, where a double-click opens its progress window. <g3>Download complete</g3> still shows when it finishes, as <g4>Show download complete dialog</g4> below says.",
-   "text": "<g1>Dialoogvenster \"Downloadvoortgang\" aanpassen → Bewerken...</g1> — <g2>Dialoogvenster downloadvoortgang weergeven wanneer een download start</g2>: standaard ingeschakeld. Schakel dit uit en een download opent niet langer zijn voortgangsvenster wanneer het start, vanuit de browser, een link die u toevoegt, een video of een wachtrij; het gaat door in de lijst van het hoofdvenster, waar een dubbelklik het voortgangsvenster opent. <g3>Download voltooid</g3> wordt nog steeds weergegeven wanneer het klaar is, zoals <g4>Dialoogvenster 'Download voltooid' weergeven</g4> hieronder aangeeft."
   },
   "8e9f9863589b4bd6": {
    "source": "Fuzzing",
@@ -10750,6 +10822,10 @@
    "source": "MDM's interface comes in 87 languages: every display language Windows 11 offers, from Afrikaans to Vietnamese, including both Chinese scripts, Spanish for Spain and Mexico, French for France and Canada, Portuguese for Portugal and Brazil, and Serbian in Cyrillic and Latin.",
    "text": "De interface van MDM is beschikbaar in 87 talen: elke weergavetaal die Windows 11 biedt, van Afrikaans tot Vietnamees, inclusief beide Chinese schriften, Spaans voor Spanje en Mexico, Frans voor Frankrijk en Canada, Portugees voor Portugal en Brazilië, en Servisch in Cyrillisch en Latijn."
   },
+  "91c08dd2d3fe7d4a": {
+   "source": "<g1>Add category</g1> — make your own, for example <g2>Books</g2> for <x3/> (they then go to Books, not Documents). Give it a name, the file types (separated by spaces, <x4/> allowed) and a folder.",
+   "text": "<g1>Categorie toevoegen</g1> — maak uw eigen categorie, bijvoorbeeld <g2>Boeken</g2> voor <x3/> (deze gaan dan naar Boeken, niet naar Documenten). Geef de categorie een naam, de bestandstypen (gescheiden door spaties, <x4/> toegestaan) en een map."
+  },
   "91cefe80b7f00fac": {
    "source": "<g1><g2>Download a file</g2></g1> — copy a link, add it, open the file.",
    "text": "<g1><g2>Een bestand downloaden</g2></g1> — een link kopiëren, toevoegen, het bestand openen."
@@ -10757,6 +10833,10 @@
   "91f7b61e72ddf0bc": {
    "source": "<g1>Acceleration and resume</g1><g2>A file split over up to 32 connections, re-split until the last byte, and resumed after any crash.</g2>",
    "text": "<g1>Versnellen en hervatten</g1><g2>Een bestand wordt verdeeld over maximaal 32 verbindingen, opnieuw verdeeld tot de laatste byte en hervat na elke crash.</g2>"
+  },
+  "92055d4da1d101c5": {
+   "source": "<x1/> people who sent a pull request, reported a problem or joined a conversation on GitHub. <g2>Meet them all</g2>",
+   "text": "<x1/> mensen die een pull-aanvraag hebben ingediend, een probleem hebben gemeld of hebben deelgenomen aan een gesprek op GitHub. <g2>Ontmoet ze allemaal</g2>"
   },
   "92078a4a178bf949": {
    "source": "A title bar MDM draws, while its window isn't the active one (transparent: as when active)",
@@ -11730,6 +11810,10 @@
    "source": "Send downloads from your browser",
    "text": "Downloads vanuit uw browser verzenden"
   },
+  "9e23173a22cf615a": {
+   "source": "<x1/> comment",
+   "text": "<x1/> opmerking"
+  },
   "9e2414e7eb93b062": {
    "source": "Windows 7's feel: glossy buttons, a glassy title bar and a glossy green progress bar.",
    "text": "Het gevoel van Windows 7: glanzende knoppen, een glazen titelbalk en een glanzende groene voortgangsbalk."
@@ -11777,6 +11861,10 @@
   "9e7ae999aa690d3f": {
    "source": "Start or stop a download queue in the running app (automation API). Starts or stops the main queue if omitted.",
    "text": "Een downloadwachtrij starten of stoppen in de actieve app (automatiserings-API). Start of stopt de hoofdwachtrij indien weggelaten."
+  },
+  "9e84ad8c276cf077": {
+   "source": "Why does installing yt-dlp or another helper time out?",
+   "text": "Waarom mislukt de installatie van yt-dlp of een andere helper met een time-out?"
   },
   "9ea4c71fa0f481c4": {
    "source": "MDM follows your system: when Windows (or your desktop's light/dark preference on Linux and macOS) is set to dark mode, so is MDM. To keep MDM light whatever the system does, turn off <g1>View → Dark Mode support</g1>. To keep it dark whatever the system does, for example on a desktop that reports no preference, turn on <g2>View → Always dark</g2>.",
@@ -12058,10 +12146,6 @@
    "source": "A live stream saved by a queue's stop counts as complete, so a daily queue doesn't start it again the next day.",
    "text": "Een livestream die is opgeslagen door het stoppen van een wachtrij, telt als voltooid, dus een dagelijkse wachtrij start deze de volgende dag niet opnieuw."
   },
-  "a21a2e8b8e4dad43": {
-   "source": "<g1>#1 in Rust</g1><g2>repository of the day on <x3/></g2>",
-   "text": "<g1>#1 in Rust</g1><g2>repository van de dag op <x3/></g2>"
-  },
   "a21dffa69dd07677": {
    "source": "Every row, and easier to read",
    "text": "Elke rij, en gemakkelijker te lezen"
@@ -12254,10 +12338,6 @@
    "source": "<g1>Sharper text on Windows</g1> (<g2>#262</g2>): Segoe UI and Tahoma are grid-fitted across as well as up and down, and each letter starts on a whole pixel, as Windows draws its own grey text: upright strokes were two grey pixels wide at 100 % and 125 %, which read as blurred.",
    "text": "<g1>Scherpere tekst op Windows</g1> (<g2>#262</g2>): Segoe UI en Tahoma zijn zowel horizontaal als verticaal rasteruitgelijnd, en elke letter begint op een hele pixel, zoals Windows zijn eigen grijze tekst tekent: verticale streken waren twee grijze pixels breed bij 100% en 125%, wat als wazig werd gelezen."
   },
-  "a4b04f29f56fdc42": {
-   "source": "<g1>Add category</g1> — make your own, for example <g2>Books</g2> for <x3/>. Give it a name, the file types (separated by spaces, <x4/> allowed) and a folder.",
-   "text": "<g1>Categorie toevoegen</g1> — maak uw eigen categorie, bijvoorbeeld <g2>Boeken</g2> voor <x3/>. Geef het een naam, de bestandstypen (gescheiden door spaties, <x4/> toegestaan) en een map."
-  },
   "a4b1f9a84345ac5d": {
    "source": "<g1>yt-dlp</g1> (about 23 MB) looks the page up and finds where the video and its sound come from; MDM downloads them (<g2>How a video comes down</g2>). The first time, click <g3>Install yt-dlp</g3>. MDM checks the download against the signature yt-dlp's developers publish before it uses it.",
    "text": "<g1>yt-dlp</g1> (ongeveer 23 MB) zoekt de pagina op en vindt waar de video en het geluid vandaan komen; MDM downloadt ze (<g2>Hoe een video wordt gedownload</g2>). Klik de eerste keer op <g3>yt-dlp installeren</g3>. MDM controleert de download aan de hand van de handtekening die de ontwikkelaars van yt-dlp publiceren voordat het programma deze gebruikt."
@@ -12281,6 +12361,10 @@
   "a50148252cc8a544": {
    "source": "<g1>Version 0.2.0</g1> <g2>and later</g2>",
    "text": "<g1>Versie 0.2.0</g1> <g2>en later</g2>"
+  },
+  "a50abc11975b25a7": {
+   "source": "Last updated 2026-11-28 · applies to the app, the browser extension and misterdownloadmanager.com",
+   "text": "Laatst bijgewerkt op 28-11-2026 · geldt voor de app, de browserextensie en misterdownloadmanager.com"
   },
   "a50c3c69c4e98ed6": {
    "source": "Put downloads in a queue and let the Scheduler start them when nobody needs the connection. When the queue is done, MDM can quit or turn the computer off.",
@@ -13018,6 +13102,10 @@
    "source": "About Mister Download Manager",
    "text": "Over Mister Download Manager"
   },
+  "aee6606bd3b4de07": {
+   "source": "<g1>Proof of delivery</g1><g2>Figures as of <x3/> · quotes exact, linked to their source</g2>",
+   "text": "<g1>Bewijs van levering</g1><g2>Cijfers per <x3/> · citaten exact, gekoppeld aan hun bron</g2>"
+  },
   "aeea31ff4889dbde": {
    "source": "<g1>Address</g1> (Add URL) and <g2>Save As</g2> (Download File Info) list the last 20 addresses and folders from their arrows; <g3>...</g3> beside Save As chooses a folder, <g4>+</g4> beside Category makes one.",
    "text": "<g1>Adres</g1> (URL toevoegen) en <g2>Opslaan als</g2> (Bestandsinfo downloaden) tonen via de pijlen de laatste 20 adressen en mappen; met <g3>...</g3> naast Opslaan als kiest u een map, met <g4>+</g4> naast Categorie maakt u er een aan."
@@ -13086,6 +13174,10 @@
    "source": "Why doesn't MDM take over my download?",
    "text": "Waarom neemt MDM mijn download niet over?"
   },
+  "af9888f01857da47": {
+   "source": "From GitHub, the Chrome Web Store and Firefox Add-ons. As of <x1/>",
+   "text": "Via GitHub, de Chrome Web Store en Firefox Add-ons. Sinds <x1/>"
+  },
   "afa015658a79d608": {
    "source": "<g1>URL</g1> — the address.",
    "text": "<g1>URL</g1> — het adres."
@@ -13110,6 +13202,10 @@
    "source": "Choose a download",
    "text": "Een download kiezen"
   },
+  "afd25bc6979c1269": {
+   "source": "<g1>Customize \"Download progress\" dialog → Edit...</g1> — <g2>Show download progress dialog when a download starts</g2>: <g3>Show normally</g3>, on by default; <g4>Show minimized</g4>, which starts the download's progress window minimized on the taskbar, without taking the focus from the program you are in; or <g5>Don't show</g5>, where a download no longer opens its progress window when it starts, from the browser, a link you add, a video or a queue, and it goes on in the main window's list, where a double-click opens its progress window. <g6>Download complete</g6> still shows when it finishes, as <g7>Show download complete dialog</g7> below says.",
+   "text": "<g1>Dialoogvenster \"Downloadvoortgang\" aanpassen → Bewerken...</g1> — <g2>Dialoogvenster downloadvoortgang weergeven wanneer een download start</g2>: <g3>Normaal weergeven</g3>, standaard ingeschakeld; <g4>Geminimaliseerd weergeven</g4>, waarbij het voortgangsvenster van de download geminimaliseerd op de taakbalk verschijnt, zonder de focus weg te nemen van het programma waarin u werkt; of <g5>Niet weergeven</g5>, waarbij een download niet langer zijn voortgangsvenster opent wanneer deze start, vanuit de browser, een link die u toevoegt, een video of een wachtrij, en deze doorgaat in de lijst van het hoofdvenster, waar een dubbelklik het voortgangsvenster opent. <g6>Download voltooid</g6> wordt nog steeds weergegeven wanneer deze is voltooid, zoals <g7>Dialoogvenster 'Download voltooid' weergeven</g7> hieronder aangeeft."
+  },
   "aff376e66e9d2870": {
    "source": "Queues",
    "text": "Wachtrijen"
@@ -13133,6 +13229,10 @@
   "b08e516b19471d83": {
    "source": "<g1>All files and checksums</g1><g2>Version 0.5.2 on GitHub Releases, with SHA256SUMS.txt</g2>",
    "text": "<g1>Alle bestanden en checksums</g1><g2>Versie 0.5.2 op GitHub Releases, met SHA256SUMS.txt</g2>"
+  },
+  "b0911cd9d54fd304": {
+   "source": "<g1>In figures</g1><g2>Figures as of <x3/>, rounded down</g2>",
+   "text": "<g1>In cijfers</g1><g2>Cijfers per <x3/>, naar beneden afgerond</g2>"
   },
   "b0912015dbe6e3fb": {
    "source": "<g1>Crash reports:</g1> after a crash, the report window may fetch that version's debugging symbols from MDM's GitHub release and ask GitHub whether the same problem was reported already. The report itself opens in your browser, on GitHub, only if you choose to send it.",
@@ -13333,6 +13433,10 @@
   "b27995b1d5cff0b2": {
    "source": "A calendar's day or arrow pressed",
    "text": "Een dag of pijl van een kalender ingedrukt"
+  },
+  "b292a3f16372b154": {
+   "source": "MDM downloads yt-dlp, ffmpeg and gallery-dl from their official releases on GitHub. Where GitHub can't be reached or is very slow, as often in mainland China, the install stops with \"the server did not answer in time\". Two ways around it: With a proxy program (Clash, v2rayN and the like), enter its address and port in Options → Proxy / Socks (Manual proxy/socks configuration, often 127.0.0.1 and 7890), or choose Use system settings when the program sets Windows' proxy. Then click Install yt-dlp again: MDM's own downloads, its helpers included, go through it. Or download the program in your browser (yt-dlp's is on its release page), then in Download video from a page click Helpers..., then Use another program... in its row, and choose the file. MDM uses it from then on; keep it up to date yourself. See Proxy / Socks and Use your own copies.",
+   "text": "MDM downloadt yt-dlp, ffmpeg en gallery-dl van hun officiële releases op GitHub. Als GitHub niet bereikbaar is of erg traag, zoals vaak in het vasteland van China, stopt de installatie met de melding \"de server heeft niet op tijd geantwoord\". Er zijn twee manieren om dit te omzeilen: Voer met een proxyprogramma (Clash, v2rayN en dergelijke) het adres en de poort in bij Opties → Proxy/Socks (Handmatige proxy/SOCKS-configuratie, vaak 127.0.0.1 en 7890), of kies Systeeminstellingen gebruiken als het programma de Windows-proxy instelt. Klik vervolgens opnieuw op yt-dlp installeren: MDM's eigen downloads, inclusief de hulpprogramma's, gaan hierdoorheen. Of download het programma in uw browser (dat van yt-dlp staat op de releasepagina), klik vervolgens in Video downloaden van een pagina op Hulpprogramma's..., daarna op Ander programma gebruiken... in de betreffende rij, en kies het bestand. MDM gebruikt het vanaf dan; u moet het zelf up-to-date houden. Zie Proxy/Socks en Uw eigen kopieën gebruiken."
   },
   "b298f93960114202": {
    "source": ", with or without <x1/>;",
@@ -14042,10 +14146,6 @@
    "source": "The next tab of a focused tab strip; the next choice of a radio group",
    "text": "Het volgende tabblad van een tabbladstrip met focus; de volgende keuze van een radiogroep"
   },
-  "bc713e862e9b84d3": {
-   "source": "Each download falls into a category by its file type: <g1>General</g1>, <g2>Compressed</g2>, <g3>Documents</g3>, <g4>Music</g4>, <g5>Programs</g5> or <g6>Video</g6>. Torrents have their own <g7>Torrents</g7> category. Each category has its own folder, by default inside your Downloads folder (<x8/>, <x9/> and so on; General uses <x10/> itself).",
-   "text": "Elke download wordt op basis van het bestandstype in een categorie geplaatst: <g1>Algemeen</g1>, <g2>Gecomprimeerd</g2>, <g3>Documenten</g3>, <g4>Muziek</g4>, <g5>Programma's</g5> of <g6>Video</g6>. Torrents hebben hun eigen categorie: <g7>Torrents</g7>. Elke categorie heeft een eigen map, standaard in uw map Downloads (<x8/>, <x9/> enzovoort; Algemeen gebruikt <x10/> zelf)."
-  },
   "bc7153d0bcfdacbb": {
    "source": "Themes — Mister Download Manager",
    "text": "Thema's — Mister Download Manager"
@@ -14542,6 +14642,10 @@
    "source": "Options on its Sounds page: a sound for each event",
    "text": "Opties op de pagina Geluiden: een geluid voor elke gebeurtenis"
   },
+  "c3cdbcead710be30": {
+   "source": "first when the download goes through a debrid account, then a <x1/> line every half second, then <x2/> (with <x3/> when the file didn't match the checksum its server sent, and was kept), or <x4/> after <x5/> (<x6/> is the file <x7/> takes).",
+   "text": "eerst wanneer de download via een debrid-account gaat, dan elke halve seconde een <x1/>-regel, dan <x2/> (met <x3/> wanneer het bestand niet overeenkwam met de checksum die de server verzond, en werd bewaard), of <x4/> na <x5/> (<x6/> is het bestand dat <x7/> neemt)."
+  },
   "c3d39f291e3ad7b6": {
    "source": "View → Draw with open: OpenGL and Direct3D",
    "text": "Beeld → Tekenen met geopend: OpenGL en Direct3D"
@@ -14797,6 +14901,10 @@
   "c763f3aa0f51a5a2": {
    "source": "<g1>Server mode</g1><g2>Mister Download Manager</g2>",
    "text": "<g1>Servermodus</g1><g2>Mister Download Manager</g2>"
+  },
+  "c76c7692d362ad5a": {
+   "source": "Each running download has its own progress window. It opens when the download starts (unless you turned that off, or chose Show minimized, in Options →…",
+   "text": "Elke actieve download heeft een eigen voortgangsvenster. Dit venster wordt geopend wanneer de download start (tenzij u dit hebt uitgeschakeld, of Geminimaliseerd weergeven hebt gekozen, in Opties →…"
   },
   "c7853bd84d0526f0": {
    "source": "Options → Archives →",
@@ -15318,6 +15426,10 @@
    "source": "Link grabber and archives — Mister Download Manager help",
    "text": "Link grabber en archieven — Help bij Mister Download Manager"
   },
+  "ce5bf471e6fccfb8": {
+   "source": "<g1>Comments</g1><g2><x3/> people</g2>",
+   "text": "<g1>Opmerkingen</g1><g2><x3/> personen</g2>"
+  },
   "ce6720d5953dad4f": {
    "source": "The previous / next button (greyed ones too: a screen reader says they are unavailable)",
    "text": "De vorige / volgende knop (ook de grijze: een schermlezer zegt dat ze niet beschikbaar zijn)"
@@ -15577,10 +15689,6 @@
   "d276ebf66aa4bbaa": {
    "source": "No. MDM needs Windows 10 or 11. The Rust toolchain it is built with no longer supports Windows 7 and 8, and neither does Microsoft.",
    "text": "Nee. MDM vereist Windows 10 of 11. De Rust-toolchain waarmee het is gebouwd, ondersteunt Windows 7 en 8 niet langer, en Microsoft ook niet."
-  },
-  "d29a7b052989ea0c": {
-   "source": "<g1>In figures</g1><g2>Store figures as of <x3/>, the others checked on <x4/>, rounded down</g2>",
-   "text": "<g1>In cijfers</g1><g2>Cijfers van de stores per <x3/>, de overige gecontroleerd op <x4/>, naar beneden afgerond</g2>"
   },
   "d2a15d4e9d4e0387": {
    "source": "To add every link in a text file:",
@@ -15922,6 +16030,10 @@
    "source": "Mister Download Manager and IDM, side by side.",
    "text": "Mister Download Manager en IDM, naast elkaar."
   },
+  "d65efc937a364b03": {
+   "source": "<x1/> issue",
+   "text": "<x1/> probleem"
+  },
   "d663f408764b1150": {
    "source": "Replay",
    "text": "Opnieuw afspelen"
@@ -16033,10 +16145,6 @@
   "d7d939199fe34589": {
    "source": "<g1><g2>Languages</g2></g1> — the 87 interface languages, numbers and dates, right-to-left layouts, and how to help translate.",
    "text": "<g1><g2>Talen</g2></g1> — de 87 interfacestalen, getallen en datums, rechts-naar-links-indelingen en hoe u kunt helpen met vertalen."
-  },
-  "d7df5f97a90fd99c": {
-   "source": "Each running download has its own progress window. It opens when the download starts (unless you turned that off in <g1>Options → Downloads → Customize \"Download progress\" dialog → Edit...</g1>); to open it again, double-click the download in the list.",
-   "text": "Elke actieve download heeft een eigen voortgangsvenster. Dit wordt geopend wanneer de download start (tenzij u dit hebt uitgeschakeld via <g1>Opties → Downloads → Dialoogvenster \"Downloadvoortgang\" aanpassen → Bewerken...</g1>); om het opnieuw te openen, dubbelklikt u op de download in de lijst."
   },
   "d7e47d8cb056d141": {
    "source": "<g1>Download in order</g1>, to watch a video while it downloads, with each file's first and last pieces early. Other torrents fetch the rarest pieces first.",
@@ -16650,6 +16758,10 @@
    "source": "Aqua",
    "text": "Aqua"
   },
+  "e1db1cbca152db19": {
+   "source": "With a proxy program (Clash, v2rayN and the like), enter its address and port in <g1>Options → Proxy / Socks</g1> (<g2>Manual proxy/socks configuration</g2>, often <x3/> and <x4/>), or choose <g5>Use system settings</g5> when the program sets Windows' proxy. Then click <g6>Install yt-dlp</g6> again: MDM's own downloads, its helpers included, go through it.",
+   "text": "Voer met een proxyprogramma (Clash, v2rayN en dergelijke) het adres en de poort in bij <g1>Opties → Proxy/Socks</g1> (<g2>Handmatige proxy/SOCKS-configuratie</g2>, vaak <x3/> en <x4/>), of kies <g5>Systeeminstellingen gebruiken</g5> als het programma de Windows-proxy instelt. Klik vervolgens opnieuw op <g6>yt-dlp installeren</g6>: MDM's eigen downloads, inclusief de hulpprogramma's, gaan hierdoorheen."
+  },
   "e1db876325f14b62": {
    "source": "Downloads still work, but some of the extension's features need a newer MDM. Update it with <g1>Help → Check for updates...</g1> in MDM.",
    "text": "Downloads werken nog steeds, maar sommige functies van de extensie vereisen een nieuwere MDM. Update deze met <g1>Help → Controleren op updates...</g1> in MDM."
@@ -16741,6 +16853,10 @@
   "e355f6dfc0ceea1d": {
    "source": "How do I report a bug or ask for a feature? — Mister Download Manager",
    "text": "Hoe meld ik een bug of vraag ik een functie aan? — Mister Download Manager"
+  },
+  "e356f60156d8a735": {
+   "source": "<g1>Site rules...</g1> — a User-Agent, request headers, a number of connections, <g2>Always connect the way a browser does</g2> and a proxy (none, or one of its own with its login), by site. See <g3>Site rules</g3>.",
+   "text": "<g1>Siteregels...</g1> — een User-Agent, verzoekheaders, een aantal verbindingen, <g2>Altijd verbinding maken zoals een browser dat doet</g2> en een proxy (geen, of een eigen met login), per site. Zie <g3>Siteregels</g3>."
   },
   "e3696cca91bc9263": {
    "source": "A browser fetches a file over one connection. MDM asks the server for several parts of the file at once, up to 32 connections (128 if you allow it), and keeps re-splitting: when a connection finishes its part, it takes over half of the biggest part still left, so no slow connection holds up the end. It also remembers servers that refuse extra connections and stops asking them. See <g1>Connections and speed</g1>.",
@@ -17010,9 +17126,21 @@
    "source": "No, if it came from this site or GitHub Releases. Some antivirus programs judge a program they don't know by an educated guess, not by a known virus…",
    "text": "Nee, als het van deze site of GitHub Releases komt. Sommige antivirusprogramma's beoordelen een programma dat ze niet kennen op basis van een onderbouwde gok, niet op basis van een bekend virus…"
   },
+  "e6d677c76529ac72": {
+   "source": "<g1>#1</g1><g2>Rust</g2>",
+   "text": "<g1>#1</g1><g2>Rust</g2>"
+  },
+  "e6e4ffbd1a17c7e8": {
+   "source": "<x1/> pull request",
+   "text": "<x1/> pullrequest"
+  },
   "e6e9f590b183bea4": {
    "source": "Link grabber: paste many links, MDM groups them, checks which are online, and extracts archives when they arrive.",
    "text": "Link grabber: plak veel links, MDM groepeert ze, controleert welke online zijn en pakt archieven uit wanneer ze aankomen."
+  },
+  "e6f2d5c5287999ae": {
+   "source": "Some programs (BitComet, for one) write a torrent's names in another encoding and add a UTF-8 copy of them (<x1/>, <x2/>); MDM shows and saves the files under the UTF-8 names. A torrent like that which was downloading in an earlier version starts those files again under their correct names, and leaves the files with the old names in the folder.",
+   "text": "Sommige programma's (zoals BitComet) schrijven torrentnamen in een andere codering en voegen er een UTF-8-kopie van toe (<x1/>, <x2/>); MDM toont en bewaart de bestanden onder de UTF-8-namen. Een dergelijke torrent die in een eerdere versie werd gedownload, start die bestanden opnieuw onder hun correcte namen en laat de bestanden met de oude namen in de map staan."
   },
   "e700b8b592a5b4c0": {
    "source": "Free forever: no trial, no ads, no key",
@@ -17129,6 +17257,10 @@
   "e8482108fc49e0e0": {
    "source": "Can it download overnight or on a schedule?",
    "text": "Kan het 's nachts of volgens een schema downloaden?"
+  },
+  "e852a2ae2ea94c2d": {
+   "source": "<g1>Automatically put in \"…\" category the following file types</g1> — the file types that go to this category. A built-in category whose list you never changed gains the types a new version adds; one you edited stays as it is.",
+   "text": "<g1>Plaats de volgende bestandstypen automatisch in de categorie \"…\"</g1> — de bestandstypen die naar deze categorie gaan. Een ingebouwde categorie waarvan u de lijst nooit hebt gewijzigd, krijgt de typen die een nieuwe versie toevoegt; een categorie die u hebt bewerkt, blijft zoals deze is."
   },
   "e8592a334f7cb4df": {
    "source": "In <g1>Download File Info</g1>, click <g2>Download Later</g2> and pick the queue.",
@@ -17726,6 +17858,10 @@
    "source": "<g1>\"Hide tab\" was cut in longer languages</g1> (German \"Registerkarte au...\"): the button grows to fit its label where there is room, through a shared helper other buttons can use.",
    "text": "<g1>\"Tabblad verbergen\" werd afgesneden in langere talen</g1> (Duits \"Registerkarte au...\"): de knop groeit om zijn label te passen waar ruimte is, via een gedeelde helper die andere knoppen kunnen gebruiken."
   },
+  "ef7238dc374b9e0e": {
+   "source": "Each download falls into a category by its file type: <g1>General</g1>, <g2>Compressed</g2>, <g3>Documents</g3>, <g4>Music</g4>, <g5>Programs</g5> or <g6>Video</g6>. Torrents have their own <g7>Torrents</g7> category. <g8>Programs</g8> takes programs, installers and app packages (EXE, MSI, APK, IPA, DMG, PKG, DEB, RPM, AppImage, MSIX…), <g9>Compressed</g9> archives and disc images (ZIP, RAR, 7Z, TAR, XZ, ISO, IMG, VHD…), <g10>Documents</g10> text documents, spreadsheets and e-books (PDF, DOCX, XLSX, ODT, EPUB, MOBI…), <g11>Music</g11> audio (MP3, FLAC, OPUS, M4A…) and <g12>Video</g12> videos (MP4, MKV, WEBM…); every other file goes to General. Your own categories come before the built-in ones. Each category has its own folder, by default inside your Downloads folder (<x13/>, <x14/> and so on; General uses <x15/> itself).",
+   "text": "Elke download valt in een categorie op basis van het bestandstype: <g1>Algemeen</g1>, <g2>Gecomprimeerd</g2>, <g3>Documenten</g3>, <g4>Muziek</g4>, <g5>Programma's</g5> of <g6>Video</g6>. Torrents hebben hun eigen categorie <g7>Torrents</g7>. <g8>Programma's</g8> omvat programma's, installatiebestanden en app-pakketten (EXE, MSI, APK, IPA, DMG, PKG, DEB, RPM, AppImage, MSIX…), <g9>Gecomprimeerd</g9> omvat archieven en schijfimages (ZIP, RAR, 7Z, TAR, XZ, ISO, IMG, VHD…), <g10>Documenten</g10> omvat tekstdocumenten, spreadsheets en e-boeken (PDF, DOCX, XLSX, ODT, EPUB, MOBI…), <g11>Muziek</g11> omvat audio (MP3, FLAC, OPUS, M4A…) en <g12>Video</g12> omvat video's (MP4, MKV, WEBM…); elk ander bestand gaat naar Algemeen. Uw eigen categorieën staan vóór de ingebouwde. Elke categorie heeft een eigen map, standaard in uw map Downloads (<x13/>, <x14/> enzovoort; Algemeen gebruikt <x15/> zelf)."
+  },
   "ef8cedcbdccdaf85": {
    "source": "The code is filled in when you scanned the QR code; otherwise type it. Give the phone a name, and tap <g1>Pair</g1>. The window on the computer says so, and closes with <g2>Done</g2>.",
    "text": "De code wordt ingevuld wanneer u de QR-code hebt gescand; typ deze anders. Geef de telefoon een naam en tik op <g1>Koppelen</g1>. Het venster op de computer bevestigt dit en sluit met <g2>Gereed</g2>."
@@ -17822,10 +17958,6 @@
    "source": "More questions",
    "text": "Meer vragen"
   },
-  "f0964936a9646338": {
-   "source": "<g1>Options → Connection → Site rules...</g1> gives every download from a site (<x2/>) its own User-Agent, extra request headers, number of connections, or a browser's way of connecting from the first request. A stopped download's <g3>Properties → Connection...</g3> changes its own headers, proxy and connections, and MDM still checks the file is the same one before it goes on.",
-   "text": "Via <g1>Opties → Verbinding → Siteregels…</g1> kunt u voor elke download van een site (<x2/>) een eigen User-Agent, extra aanvraagheaders, het aantal verbindingen of de verbindingsmethode van een browser vanaf de eerste aanvraag instellen. Via <g3>Eigenschappen → Verbinding…</g3> van een gestopte download kunt u de headers, proxy en verbindingen wijzigen. MDM controleert nog steeds of het bestand hetzelfde is voordat het verdergaat."
-  },
   "f09a7e7e0cc71c2e": {
    "source": "In the system's keychain, as are Sites Logins' passwords and the proxy's. MDM's settings keep only a reference to it. <g1>Options → Accounts</g1> says where they are on your computer.",
    "text": "In de sleutelhanger van het systeem, net als de wachtwoorden van siteaanmeldingen en de proxy. De instellingen van MDM bewaren er alleen een verwijzing naar. <g1>Opties → Accounts</g1> geeft aan waar ze op uw computer staan."
@@ -17845,6 +17977,10 @@
   "f0f10f730052f164": {
    "source": "<g1>Windows, Mac and Linux</g1><g2>Mister Download Manager</g2>",
    "text": "<g1>Windows, Mac en Linux</g1><g2>Mister Download Manager</g2>"
+  },
+  "f0ff5ae3081fa8a5": {
+   "source": "<g1>Proxy</g1> — <g2>As in Options</g2> (the default: <g3>Options → Proxy / Socks</g3> decides), <g4>No proxy</g4> (straight to the site, whatever Options says), or <g5>This proxy:</g5> one of its own, typed as a download's own proxy is, <x6/>, <x7/>, <x8/>, <x9/> (<x10/> to have the proxy look the site's name up). <g11>Proxy user</g11> and <g12>Password</g12> are its login, if it needs one; the password is kept with MDM's other passwords (in the system's keychain), never in the settings file as it is. This replaces switching Options back and forth, or writing a proxy auto-config script, when only some sites need a proxy.",
+   "text": "<g1>Proxy</g1> — <g2>Zoals in Opties</g2> (de standaard: <g3>Opties → Proxy/Socks</g3> beslist), <g4>Geen proxy</g4> (rechtstreeks naar de site, wat Opties ook zegt), of <g5>Deze proxy:</g5> een eigen proxy, ingevoerd zoals de eigen proxy van een download, <x6/>, <x7/>, <x8/>, <x9/> (<x10/> om de proxy de naam van de site te laten opzoeken). <g11>Proxy gebruiker</g11> en <g12>Wachtwoord</g12> zijn de inloggegevens, indien nodig; het wachtwoord wordt bewaard met de andere wachtwoorden van MDM (in de sleutelhanger van het systeem), nooit als zodanig in het instellingenbestand. Dit vervangt het heen en weer schakelen van Opties, of het schrijven van een proxy auto-config script, wanneer slechts enkele sites een proxy nodig hebben."
   },
   "f10113695e758efd": {
    "source": "A playlist's or channel's videos, one line each as they're listed: its place, length, title and address.",
@@ -18098,10 +18234,6 @@
    "source": "A greyed icon's ink (its end)",
    "text": "De inkt van een grijs pictogram (het einde)"
   },
-  "f471814e3a16b4a2": {
-   "source": "Last updated 2026-11-27 · applies to the app, the browser extension and misterdownloadmanager.com",
-   "text": "Laatst bijgewerkt op 27-11-2026 · geldt voor de app, de browserextensie en misterdownloadmanager.com"
-  },
   "f47d19d2ae313a6b": {
    "source": "<g1>MDM as an IDM alternative</g1><g2>Spot something wrong? Tell us</g2>",
    "text": "<g1>MDM als IDM-alternatief</g1><g2>Iets verkeerd gezien? Laat het ons weten</g2>"
@@ -18290,6 +18422,10 @@
    "source": "<g1>Stop sharing after sharing for … minutes</g1> — or once it has been shared that long, over all its runs. Off by default.",
    "text": "<g1>Delen stoppen na delen voor … minuten</g1> — of zodra de torrent in totaal zo lang is gedeeld, over al zijn sessies. Standaard uitgeschakeld."
   },
+  "f821c9c149c3e050": {
+   "source": "<x1/> comments",
+   "text": "<x1/> opmerkingen"
+  },
   "f82dc8051d1faab0": {
    "source": "names besides its addresses the page may be opened by",
    "text": "namen naast de adressen waarmee de pagina kan worden geopend"
@@ -18322,6 +18458,10 @@
    "source": "Check <g1>First file</g1>, <g2>Second file</g2> and <g3>Last file</g3>.",
    "text": "Vink <g1>Eerste bestand</g1>, <g2>Tweede bestand</g2> en <g3>Laatste bestand</g3> aan."
   },
+  "f893460826bf1425": {
+   "source": "Why does installing yt-dlp or another helper time out? — Mister Download Manager",
+   "text": "Waarom mislukt de installatie van yt-dlp of een ander hulpprogramma door een time-out? — Mister Download Manager"
+  },
   "f89a410af1a10630": {
    "source": "The site isn't in <g1>Don't start downloading automatically from the following sites</g1>, nor the address in <g2>Don't start downloading automatically from the following addresses</g2>.",
    "text": "De site staat niet in <g1>Niet automatisch downloaden van de volgende sites</g1> en het adres staat niet in <g2>Niet automatisch downloaden van de volgende adressen</g2>."
@@ -18333,10 +18473,6 @@
   "f8c444517ab946e2": {
    "source": "From the plain zip",
    "text": "Vanuit het zipbestand"
-  },
-  "f8c71a9fb2bd8bde": {
-   "source": "<g1>Automatically put in \"…\" category the following file types</g1> — the file types that go to this category.",
-   "text": "<g1>De volgende bestandstypen automatisch in de categorie \"...\" plaatsen</g1> — de bestandstypen die naar deze categorie gaan."
   },
   "f8e0a9e7ee529ff0": {
    "source": "Select <g1>Main download queue</g1> on the left. The <g2>Schedule</g2> tab opens.",
@@ -18390,6 +18526,10 @@
    "source": "What's new in version 0.5.0 <g1>2026-11-08</g1>",
    "text": "Nieuw in versie 0.5.0 <g1>2026-11-08</g1>"
   },
+  "f9a8db1326e07676": {
+   "source": "<x1/> issues",
+   "text": "<x1/> problemen"
+  },
   "f9b1393934105e30": {
    "source": "Yes. The portable download is a zip: unzip it anywhere, a USB stick included, and run it. Your downloads list and settings stay in its own <x1/> folder, so nothing is written to the computer. See <g2>Portable mode</g2>.",
    "text": "Ja. De draagbare download is een zip-bestand: pak het overal uit, inclusief een USB-stick, en voer het uit. Uw downloadlijst en instellingen blijven in de eigen <x1/> map, zodat er niets naar de computer wordt geschreven. Zie <g2>Draagbare modus</g2>."
@@ -18401,6 +18541,10 @@
   "f9c366e9c3fc0557": {
    "source": "Check <g1>Options → Connection</g1>. A low <g2>Default max. conn. number</g2>, or an exception for the server, means fewer connections. Rows marked <g3>(auto)</g3> are servers that refused more connections; MDM can't do more there.",
    "text": "Controleer <g1>Opties → Verbinding</g1>. Een laag <g2>Standaard max. aantal verb</g2>, of een uitzondering voor de server, betekent minder verbindingen. Rijen gemarkeerd met <g3>(auto)</g3> zijn servers die meer verbindingen weigerden; MDM kan daar niet meer doen."
+  },
+  "f9cf9c317bb4b9cf": {
+   "source": "Download a file with up to 8 connections (<x1/>, 1 to 128), showing progress. <x2/> pauses it; <x3/> continues. <x4/> sets the referring page address (Referer header), <x5/> sets the request's User-Agent (then the only one sent; without it, MDM speaks as your default browser, and, when a site's bot check refuses that and the way a browser connects too, once more under its own name), <x6/> sets the Cookie header (a cookie on the command line ends up in the shell's history; <x7/> reads it from standard input instead). <x8/> checks the finished file: hex MD5, SHA-1, SHA-256, SHA-512 or CRC32, optionally named (<x9/>); a file that doesn't match fails. Without it, a checksum the server sends is checked, and a file that doesn't match it is kept with a <x10/> line (see <g11>Verify checksum</g11>). <x12/> picks the DNS instead of Options': <x13/>; a service and how to ask it, <x14/>, <x15/>, <x16/>, <x17/>, <x18/>; DNS servers' addresses, <x19/>; or a DNS-over-HTTPS address. It never falls back to the system's DNS. <x20/> sends every connection through one network adapter instead of Options' (<x21/> for none), by its name (<x22/>, <x23/>) or one of its addresses; when it isn't connected, nothing is sent and the download fails. <x24/> takes the place of Options' proxy for this run (see above). The app's <g25>site rules</g25> for the address apply too (their headers, User-Agent, browser-like connection, number of connections and proxy), where the command line gives none of the same: <x26/> goes before every rule's proxy. A link from a file host that one of your debrid accounts (<g27>Options → Accounts</g27>) supports goes through that account, as in the app, and <x28/> says <x29/>; <x30/> downloads the address itself (<g31>Debrid service accounts</g31>).",
+   "text": "Download een bestand met maximaal 8 verbindingen (<x1/>, 1 tot 128), met voortgangsweergave. <x2/> pauzeert de download; <x3/> hervat deze. <x4/> stelt het verwijzende paginadres in (Referer-header), <x5/> stelt de User-Agent van het verzoek in (dan de enige die wordt verzonden; zonder dit spreekt MDM als uw standaardbrowser, en, wanneer de botcontrole van een site dit en de manier waarop een browser verbinding maakt weigert, nogmaals onder zijn eigen naam), <x6/> stelt de Cookie-header in (een cookie op de opdrachtregel komt in de geschiedenis van de shell terecht; <x7/> leest deze in plaats daarvan van de standaardinvoer). <x8/> controleert het voltooide bestand: hex MD5, SHA-1, SHA-256, SHA-512 of CRC32, optioneel benoemd (<x9/>); een bestand dat niet overeenkomt, mislukt. Zonder dit wordt een checksum gecontroleerd die de server verzendt, en een bestand dat hiermee niet overeenkomt, wordt bewaard met een <x10/>-regel (zie <g11>Checksum verifiëren</g11>). <x12/> kiest de DNS in plaats van die van de Opties: <x13/>; een service en hoe deze te bevragen, <x14/>, <x15/>, <x16/>, <x17/>, <x18/>; adressen van DNS-servers, <x19/>; of een DNS-over-HTTPS-adres. Het valt nooit terug op de DNS van het systeem. <x20/> stuurt elke verbinding via één netwerkadapter in plaats van die van de Opties (<x21/> voor geen), op naam (<x22/>, <x23/>) of een van de adressen; wanneer deze niet is verbonden, wordt er niets verzonden en mislukt de download. <x24/> vervangt de proxy van de Opties voor deze uitvoering (zie hierboven). De <g25>siteregels</g25> van de app voor het adres zijn ook van toepassing (hun headers, User-Agent, browserachtige verbinding, aantal verbindingen en proxy), waar de opdrachtregel geen van dezelfde geeft: <x26/> gaat vóór de proxy van elke regel. Een link van een bestandshost die een van uw debrid-accounts (<g27>Opties → Accounts</g27>) ondersteunt, gaat via dat account, zoals in de app, en <x28/> zegt <x29/>; <x30/> downloadt het adres zelf (<g31>Debrid-serviceaccounts</g31>)."
   },
   "f9d1377f746da798": {
    "source": "No features were removed, only an old label and some bulky files.",
@@ -18450,10 +18594,6 @@
    "source": "<g1>macOS</g1>: open the <g2>.dmg</g2> and drag Mister Download Manager to Applications, then right-click it and choose <g3>Open</g3> the first time.",
    "text": "<g1>macOS</g1>: open het <g2>.dmg</g2>-bestand en sleep Mister Download Manager naar Programma's. Klik er vervolgens met de rechtermuisknop op en kies de eerste keer <g3>Openen</g3>."
   },
-  "fa5f14a1aee829e9": {
-   "source": "first when the download goes through a debrid account, then a <x1/> line every half second, then <x2/>, or <x3/> after <x4/> (<x5/> is the file <x6/> takes).",
-   "text": "eerst wanneer de download via een debrid-account gaat, dan elke halve seconde een <x1/>-regel, dan <x2/>, of <x3/> na <x4/> (<x5/> is het bestand dat <x6/> neemt)."
-  },
   "fa642946eaf6222a": {
    "source": "Point at a download (or reach it with the keyboard) for <g1>Show in folder</g1> and <g2>Pause</g2> or <g3>Resume</g3>. Click a finished file's name to open it. Its <g4>⋯</g4> menu has the rest:",
    "text": "Wijs naar een download (of bereik deze met het toetsenbord) voor <g1>Weergeven in map</g1> en <g2>Pauzeren</g2> of <g3>Hervatten</g3>. Klik op de naam van een voltooid bestand om het te openen. Het <g4>⋯</g4>-menu bevat de rest:"
@@ -18497,6 +18637,10 @@
   "fa9795c4c18f5dc7": {
    "source": "Rules by site",
    "text": "Regels per site"
+  },
+  "faa66b10495d59c3": {
+   "source": "Or download the program in your browser (yt-dlp's is on <g1>its release page</g1>), then in <g2>Download video from a page</g2> click <g3>Helpers...</g3>, then <g4>Use another program...</g4> in its row, and choose the file. MDM uses it from then on; keep it up to date yourself.",
+   "text": "Of download het programma in uw browser (dat van yt-dlp staat op <g1>de releasepagina</g1>), klik vervolgens in <g2>Video downloaden van een pagina</g2> op <g3>Hulpprogramma's...</g3>, daarna op <g4>Ander programma gebruiken...</g4> in de betreffende rij, en kies het bestand. MDM gebruikt het vanaf dan; u moet het zelf up-to-date houden."
   },
   "fac6b9216d050977": {
    "source": "Grabbing the videos its browser extension finds on a page",
@@ -18898,10 +19042,6 @@
    "source": "Check MDM's own helpers (yt-dlp, ffmpeg, gallery-dl, Node.js) for newer versions now, install them (each checked as its first install was), and print their versions. A helper a download is using switches to its new version once that download ends. Programs you chose in Helpers, and your system's, are yours to update.",
    "text": "Controleer MDM's eigen hulpprogramma's (yt-dlp, ffmpeg, gallery-dl, Node.js) nu op nieuwere versies, installeer ze (elk gecontroleerd zoals bij de eerste installatie), en toon hun versies. Een hulpprogramma dat door een download wordt gebruikt, schakelt over naar de nieuwe versie zodra die download is voltooid. Programma's die u in Hulpprogramma's hebt gekozen, en die van uw systeem, zijn uw verantwoordelijkheid om bij te werken."
   },
-  "ff442f775d7b9907": {
-   "source": "<g1>Proof of delivery</g1><g2>Store figures as of <x3/>, the others checked on <x4/> · quotes exact, linked to their source</g2>",
-   "text": "<g1>Bewijs van levering</g1><g2>Cijfers van <x3/>, de andere gecontroleerd op <x4/> · citaten exact, gekoppeld aan hun bron</g2>"
-  },
   "ff71942d9ac7e304": {
    "source": "<g1>Your AI assistant, only if you connect one.</g1> MDM's MCP server (<x2/>) talks only to the MDM on your computer. But if you add it to an AI assistant (Claude, Cursor, VS Code…) and turn on the automation API, the assistant can read your download list, and what it reads (file names, addresses, folders) goes to that assistant's AI service, under its privacy terms. Nothing of this happens unless you set it up; see <g3>AI assistants</g3>.",
    "text": "<g1>Uw AI-assistent, alleen als u er een koppelt.</g1> De MCP-server van MDM (<x2/>) communiceert alleen met MDM op uw computer. Maar als u de server toevoegt aan een AI-assistent (Claude, Cursor, VS Code…) en de automatiserings-API inschakelt, kan de assistent uw downloadlijst lezen. De gegevens die de assistent leest (bestandsnamen, adressen, mappen) worden naar de AI-service van die assistent gestuurd, onder de privacyvoorwaarden daarvan. Dit gebeurt alleen als u dit zelf instelt. Zie <g3>AI-assistenten</g3>."
@@ -18925,6 +19065,10 @@
   "ffa29022fa7a00bc": {
    "source": "Where theme files go",
    "text": "Waar themabestanden staan"
+  },
+  "ffb19e8a15974427": {
+   "source": "On Windows, Microsoft's software renderer (WARP) keeps the processor much busier than Mesa's (llvmpipe), the more so the larger the window. Where WARP draws for want of a graphics driver, MDM offers once to download llvmpipe (about 66 MB, from Mesa's Windows builds on GitHub), and <g1>View → Draw with → Download Mesa's software renderer (llvmpipe)...</g1> offers it at any time. Nothing downloads until you press <g2>Download</g2>; it is checked against MDM's signed list of checked builds, as ffmpeg is, and kept in MDM's data folder (<x3/>). MDM draws with it from its next start, and <g4>View → Draw with</g4> says <g5>Software (llvmpipe)</g5>. If it can't start or draw there, MDM remembers that and draws with WARP again (<g6>Software (llvmpipe) didn't start here: WARP draws</g6>); a newer llvmpipe is tried again. To stop using it, quit MDM and delete the <x7/> folder.",
+   "text": "Op Windows houdt Microsofts softwarerenderer (WARP) de processor veel drukker bezig dan die van Mesa (llvmpipe), en dat des te meer naarmate het venster groter is. Waar WARP tekent bij gebrek aan een grafische driver, biedt MDM eenmalig aan om llvmpipe te downloaden (ongeveer 66 MB, van Mesa's Windows-builds op GitHub), en <g1>Beeld → Tekenen met → Mesa's softwarerenderer (llvmpipe) downloaden…</g1> biedt dit op elk moment aan. Er wordt niets gedownload totdat u op <g2>Downloaden</g2> drukt; het wordt gecontroleerd aan de hand van MDM's ondertekende lijst met gecontroleerde builds, net als ffmpeg, en bewaard in de MDM-datafolder (<x3/>). MDM tekent ermee vanaf de volgende start, en <g4>Beeld → Tekenen met</g4> zegt <g5>Software (llvmpipe)</g5>. Als het daar niet kan starten of tekenen, onthoudt MDM dat en tekent het weer met WARP (<g6>Software (llvmpipe) is hier niet gestart: WARP tekent</g6>); een nieuwere llvmpipe wordt opnieuw geprobeerd. Om het gebruik ervan te stoppen, sluit u MDM af en verwijdert u de <x7/>-map."
   },
   "ffbc009bfa4aa85a": {
    "source": "Drag a link from your browser onto it. MDM adds it as if you had used <g1>Add URL</g1>.",

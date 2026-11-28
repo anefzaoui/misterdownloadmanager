@@ -37,7 +37,9 @@
 //! - `misterdownloadmanager-nmhost --register` / `--unregister`: writes / removes the host
 //!   manifests (Chromium's names the extension's origin, Firefox's its add-on ID). Windows: beside
 //!   this exe, with the per-user (HKCU) registry entries the browsers look up; with `--all-users`
-//!   (the installer, installing for everyone, elevated) under HKLM instead. Linux and macOS: in
+//!   (the installer, installing for everyone, elevated) under HKLM instead, where an entry in
+//!   its 32-bit view naming another manifest, which the browsers would read first, is removed
+//!   (#1688). Linux and macOS: in
 //!   each installed browser's own host folder (the app does it at every start, as there is no
 //!   installer step), or the system-wide ones with `--all-users`. A browser that reads a
 //!   system-wide manifest naming this same program (the .deb's or .rpm's) gets none in the home
@@ -66,7 +68,9 @@ mod win32;
 
 use mdm_ipc::browsers::HOST_NAME;
 #[cfg(windows)]
-use mdm_ipc::browsers::{Family, Holder, Repair, WINDOWS_HOST_KEYS};
+use mdm_ipc::browsers::{
+    Family, Holder, HostEntries, RegView, Repair, WINDOWS_HOST_KEYS, test_registry,
+};
 use mdm_ipc::extension::{FIREFOX_ID, STORE_ID, chromium_ids, store_id};
 
 /// Chrome's external extensions: an entry naming the store's extension makes Chrome offer it at
@@ -1479,36 +1483,106 @@ fn own_manifest(family: Family) -> Result<PathBuf, String> {
     Ok(path)
 }
 
-/// Windows: point `root`'s (HKCU or HKLM) entry under `key` at `manifest`.
+/// Windows: a registry entry's path as reg.exe takes it (`HKCU\…`, `HKLM\…`) in `view`, and the
+/// switch that picks the computer's 32-bit view (#1688; the 64-bit one is reg.exe's own). In a
+/// test registry (`mdm_ipc::browsers::test_registry`), that test's keys under HKCU instead.
 #[cfg(windows)]
-fn reg_point(root: &str, key: &str, manifest: &std::path::Path) -> Result<(), String> {
-    reg(&[
-        "add",
-        &format!(r"{root}\{key}\{HOST_NAME}"),
-        "/ve",
-        "/t",
-        "REG_SZ",
-        "/d",
-        &manifest.display().to_string(),
-        "/f",
-    ])
+fn reg_path(view: RegView, key: &str) -> (String, Option<&'static str>) {
+    let place = mdm_ipc::browsers::reg_place(view, key, test_registry().as_deref());
+    let root = if place.machine { "HKLM" } else { "HKCU" };
+    let switch = (place.view == Some(RegView::Machine32)).then_some("/reg:32");
+    (format!(r"{root}\{}", place.key), switch)
+}
+
+/// Windows: what `view`'s entry under `key` (`<key>\HOST_NAME`) says, when there is one.
+#[cfg(windows)]
+fn reg_value(view: RegView, key: &str) -> Option<String> {
+    let entry = format!(r"{key}\{HOST_NAME}");
+    win32::reg_string(&mdm_ipc::browsers::reg_place(
+        view,
+        &entry,
+        test_registry().as_deref(),
+    ))
+}
+
+/// Windows: reg.exe's `args` (its command first) with `path` after the command, and its view's
+/// switch last.
+#[cfg(windows)]
+fn reg_at(args: &[&str], (path, switch): &(String, Option<&'static str>)) -> Result<(), String> {
+    let mut all = vec![args[0], path.as_str()];
+    all.extend_from_slice(&args[1..]);
+    all.extend(*switch);
+    reg(&all)
+}
+
+/// Windows: point `view`'s (HKCU, or HKLM's) entry under `key` at `manifest`.
+#[cfg(windows)]
+fn reg_point(view: RegView, key: &str, manifest: &std::path::Path) -> Result<(), String> {
+    reg_at(
+        &[
+            "add",
+            "/ve",
+            "/t",
+            "REG_SZ",
+            "/d",
+            &manifest.display().to_string(),
+            "/f",
+        ],
+        &reg_path(view, &format!(r"{key}\{HOST_NAME}")),
+    )
+}
+
+/// Windows, registering for everyone (#1688): the browsers read the computer's 32-bit view
+/// before its 64-bit one, so an entry there naming another manifest (an older copy's, or a
+/// 32-bit program's) would be read instead of the one just written. It is removed; only MDM's
+/// own host name is ever touched.
+#[cfg(windows)]
+fn clear_32_bit(key: &str, manifest: &std::path::Path) -> Result<(), String> {
+    let Some(value) = reg_value(RegView::Machine32, key) else {
+        return Ok(());
+    };
+    if mdm_ipc::browsers::names_manifest(&value, manifest) {
+        return Ok(());
+    }
+    let entry = format!(r"{key}\{HOST_NAME}");
+    reg_at(&["delete", "/f"], &reg_path(RegView::Machine32, &entry))?;
+    println!(
+        r"{}: {value}, removed (the browsers read it before {})",
+        RegView::Machine32.shown(&entry),
+        RegView::Machine64.shown(&entry)
+    );
+    Ok(())
 }
 
 /// Windows: the manifests beside this exe, and the registry entries naming them, per user
-/// (HKCU) or for everyone (HKLM).
+/// (HKCU) or for everyone (HKLM, where a 32-bit entry that would be read first is cleared).
 #[cfg(windows)]
 fn register(all_users: bool) -> Result<(), String> {
     portable_refused()?;
     temporary_refused()?;
-    let root = if all_users { "HKLM" } else { "HKCU" };
+    let view = if all_users {
+        RegView::Machine64
+    } else {
+        RegView::User
+    };
     for (key, family) in WINDOWS_HOST_KEYS {
-        reg_point(root, key, &own_manifest(family)?)?;
+        let manifest = own_manifest(family)?;
+        reg_point(view, key, &manifest)?;
+        if all_users {
+            clear_32_bit(key, &manifest)?;
+        }
     }
     // Chrome offers the store's extension once it is listed (never a placeholder ID).
     if let Some(id) = store_id() {
+        let view = if all_users {
+            RegView::Machine32
+        } else {
+            RegView::User
+        };
+        let (path, _) = reg_path(view, &format!(r"{CHROME_EXTERNAL_KEY}\{id}"));
         reg(&[
             "add",
-            &format!(r"{root}\{CHROME_EXTERNAL_KEY}\{id}"),
+            &path,
             "/v",
             "update_url",
             "/t",
@@ -1531,28 +1605,40 @@ fn register(all_users: bool) -> Result<(), String> {
 /// Windows, at the app's start (#818): each browser's registration that leads nowhere (a copy
 /// run from inside a zip, whose temporary folder is gone; a copy moved or deleted) is pointed at
 /// this copy, for this user. One that works is left alone, whichever copy it names, and none is
-/// added where there was none (`mdm_ipc::browsers::windows_repair`).
+/// added where there was none (`mdm_ipc::browsers::windows_repair`). The computer's entry is the
+/// one the browsers read: its 32-bit view's first (#1688).
 #[cfg(windows)]
 fn repair() -> Result<(), String> {
     portable_refused()?;
     temporary_refused()?;
-    let holder = |machine: bool, entry: &str| {
-        win32::reg_string(machine, entry)
-            .map(|v| Holder::of(&mdm_ipc::browsers::registered_manifest(&v)))
+    let holder = |view, key: &str| {
+        reg_value(view, key).map(|v| Holder::of(&mdm_ipc::browsers::registered_manifest(&v)))
     };
     let mut repaired = 0;
     for (key, family) in WINDOWS_HOST_KEYS {
+        let entries = HostEntries {
+            user: holder(RegView::User, key),
+            machine32: holder(RegView::Machine32, key),
+            machine64: holder(RegView::Machine64, key),
+        };
         let entry = format!(r"{key}\{HOST_NAME}");
-        let user = holder(false, &entry);
-        match mdm_ipc::browsers::windows_repair(user.as_ref(), holder(true, &entry).as_ref()) {
+        let user = &entries.user;
+        match mdm_ipc::browsers::windows_repair(user.as_ref(), entries.machine()) {
             Repair::Keep => continue,
             Repair::Take => {
                 let manifest = own_manifest(family)?;
-                reg_point("HKCU", key, &manifest)?;
-                println!(r"HKCU\{entry}: {user:?}, now {}", manifest.display());
+                reg_point(RegView::User, key, &manifest)?;
+                match (user, entries.in_the_way()) {
+                    (None, Some(read)) => println!(
+                        r"HKCU\{entry}: none, and {} is {read:?}; now {}",
+                        RegView::Machine32.shown(&entry),
+                        manifest.display()
+                    ),
+                    _ => println!(r"HKCU\{entry}: {user:?}, now {}", manifest.display()),
+                }
             }
             Repair::Clear => {
-                reg(&["delete", &format!(r"HKCU\{entry}"), "/f"])?;
+                reg_at(&["delete", "/f"], &reg_path(RegView::User, &entry))?;
                 println!(r"HKCU\{entry}: {user:?}, removed (the computer's works)");
             }
         }
@@ -1566,18 +1652,36 @@ fn repair() -> Result<(), String> {
 
 #[cfg(windows)]
 fn unregister(all_users: bool) -> Result<(), String> {
-    let root = if all_users { "HKLM" } else { "HKCU" };
-    for (key, _) in WINDOWS_HOST_KEYS {
-        let _ = reg(&["delete", &format!(r"{root}\{key}\{HOST_NAME}"), "/f"]);
+    let view = if all_users {
+        RegView::Machine64
+    } else {
+        RegView::User
+    };
+    let dir = exe_dir()?;
+    for (key, family) in WINDOWS_HOST_KEYS {
+        let entry = format!(r"{key}\{HOST_NAME}");
+        let _ = reg_at(&["delete", "/f"], &reg_path(view, &entry));
+        // #1688: and the computer's 32-bit one, when it names this copy's manifest.
+        let manifest = dir.join(match family {
+            Family::Chromium => format!("{HOST_NAME}.json"),
+            Family::Gecko => format!("{HOST_NAME}.firefox.json"),
+        });
+        if all_users
+            && reg_value(RegView::Machine32, key)
+                .is_some_and(|v| mdm_ipc::browsers::names_manifest(&v, &manifest))
+        {
+            let _ = reg_at(&["delete", "/f"], &reg_path(RegView::Machine32, &entry));
+        }
     }
-    let _ = reg(&[
-        "delete",
-        &format!(r"{root}\{CHROME_EXTERNAL_KEY}\{STORE_ID}"),
-        "/f",
-        "/reg:32",
-    ]);
-    let _ = std::fs::remove_file(exe_dir()?.join(format!("{HOST_NAME}.json")));
-    let _ = std::fs::remove_file(exe_dir()?.join(format!("{HOST_NAME}.firefox.json")));
+    let external = if all_users {
+        RegView::Machine32
+    } else {
+        RegView::User
+    };
+    let (path, _) = reg_path(external, &format!(r"{CHROME_EXTERNAL_KEY}\{STORE_ID}"));
+    let _ = reg(&["delete", &path, "/f", "/reg:32"]);
+    let _ = std::fs::remove_file(dir.join(format!("{HOST_NAME}.json")));
+    let _ = std::fs::remove_file(dir.join(format!("{HOST_NAME}.firefox.json")));
     println!("unregistered {HOST_NAME}");
     Ok(())
 }

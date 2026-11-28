@@ -364,7 +364,7 @@
 #. text in the Options window
 #. Site rules window: in the empty list of rules, under its title
 #, machine
-	A rule sets the connections, User-Agent or headers for one site.	Reegel määrab ühe saidi ühendused, User-Agenti või päised.
+	A rule sets the connections, User-Agent, headers or proxy for one site.	Reegel määrab ühendused, User-Agenti, päised või puhverserveri ühele saidile.
 #. text in errors.rs
 #. an error: a server on this computer redirected the download to the internet, which would not go through the chosen network adapter; {adapter} its name
 #, machine
@@ -685,6 +685,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	American Samoa	Ameerika Samoa
+#. text in extension.rs
+#. a check of Test browser integration (Windows), one short line: an older registry entry for MDM's helper is in the way of the right one; the entry and where it leads show on the line under it
+#, machine
+	An older registry entry is in the way:	Vanem registrikirje segab:
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -1148,6 +1152,11 @@
 #. event log entry after Recheck: {have} and {total} are sizes ("1.2 GB of 4 GB there")
 #, machine
 	Checked: {have} of {total} there	Kontrollitud: {have} {total}st on olemas
+#. text in softgl.rs
+#. the software renderer's window: the download is done, and its files are being checked and unpacked
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Checking and unpacking Mesa's software renderer...	Mesa tarkvaralise renderdaja kontrollimine ja lahtipakkimine...
 #. message or event log entry in the main window
 #. event log entry: a torrent's files are being read and checked again (Recheck)
 #, machine
@@ -1182,6 +1191,10 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Checking...	Kontrollin...
+#. text in the download list (sizes, speeds, status)
+#. a download's status: it finished, but the checksum its server announced didn't match its file (the file is kept). Short: the list's Status column is narrow
+#, machine
+	Checksum warning	Kontrollsumma ei klapi
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -1350,6 +1363,10 @@
 #. window title: a download's own request settings (User-Agent, headers, connections, proxy), from File Properties → Connection...
 #, machine
 	Connection settings	Ühenduse sätted
+#. text in the Options window
+#. Options → Connection: beside the Site rules... button: what it sets (a User-Agent, request headers, a number of connections, a proxy, each for the sites a rule names)
+#, machine
+	Connection settings by site	Saidipõhised ühenduse sätted
 #. message or event log entry in the main window
 #. event log: File Properties → Connection settings changed the download's own User-Agent, headers, proxy or connections
 #, machine
@@ -1776,6 +1793,11 @@
 #. {size} = a file size such as "4.2 MB"; {bytes} = a number of bytes (keep the braces as they are)
 #, machine
 	Downloaded {size} ({bytes} Bytes)	Allalaaditud {size} ({bytes} baiti)
+#. text in the download list (sizes, speeds, status)
+#. a download's status, whole (the Status cell's tip, Properties, the log, Download complete): it finished, but the checksum its server announced didn't match the file, which is kept. "Check it": the user can verify the file against a checksum they trust (right-click → Verify checksum...)
+#. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
+#, machine
+	Downloaded, but the server's {algorithm} checksum didn't match; the file may still be fine. Check it if it matters	Alla laaditud, kuid serveri {algorithm} kontrollsumma ei ühtinud; fail võib siiski korras olla. Kontrolli, kui see on oluline
 #. item in the Categories tree in the download list; value in a column's filter list in the download list; text in remote.rs
 #. a download's status (state it is in, not a command)
 #, machine
@@ -1808,6 +1830,11 @@
 #. Helpers: MDM's own copy of a helper is being downloaded (where there was none, or in place of the system's); {percent} = how far, a number
 #, machine
 	Downloading MDM's own copy... {percent}%	Laadin alla MDM-i enda koopiat... {percent}%
+#. text in softgl.rs
+#. the software renderer's window, while it downloads; {done} and {size} = sizes (12.0 MB of 66.3 MB)
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	Downloading Mesa's software renderer: {done} of {size}	Laadin alla Mesa tarkvaralist renderdajat: {done}/{size}
 #. text in archtest.rs
 #. in a download's log: after its archive test found damaged files, only their bytes are downloaded again from the same server; {size} like "1.20 MB"
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
@@ -2659,10 +2686,6 @@
 #. Options → DNS settings: checkbox: when the chosen DNS can't be reached, use the system's instead
 #, machine
 	If it can't be reached, use the system's DNS	Kui see pole kättesaadav, kasuta süsteemi DNS-i
-#. text in extension.rs
-#. under "macOS keeps Mister Download Manager out of …'s folder" (Test browser integration, the browser extension's window): how to allow it. The quoted words and System Settings → Privacy & Security → Full Disk Access are macOS's own: use Apple's words in this language, or keep the English ones when unsure
-#, machine
-	If macOS asks whether it may access data from other apps, allow it. Or turn on Mister Download Manager in System Settings → Privacy & Security → Full Disk Access. Then press Set it up.	Kui macOS küsib, kas see tohib teiste rakenduste andmetele juurde pääseda, siis luba see. Või lülita Mister Download Manager sisse jaotises Süsteemisätted → Privaatsus ja turvalisus → Kogu ketta juurdepääs. Seejärel vajuta &Seadista.
 #. text in errors.rs
 #. what to do when a helper's server couldn't be reached; {proxy} = the Options tab Proxy / Socks; {name} = yt-dlp, ffmpeg or gallery-dl; {helpers} and {other} = the buttons Helpers and Use another program
 #. {name} = a file name (keep the braces as they are)
@@ -3163,6 +3186,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Looking the page up...	Lehte otsitakse...
+#. text in softgl.rs
+#. the software renderer's window: while MDM reads its signed list of the software renderers it may download (Mesa's llvmpipe: it draws MDM's windows where there is no graphics card)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Looking up Mesa's software renderer...	Mesa tarkvaralise renderdaja otsimine...
 #. text in preview.rs
 #. the preview pane: still looking whether the file is there
 #. the trailing ... means it is still going on: keep it
@@ -3331,6 +3359,9 @@
 #. Video helpers: MDM can't download Node.js on this system (an unusual processor); Node.js and Deno are program names; "Use another program" is the button below
 #, machine
 	MDM has no copy for this system: install Node.js or Deno, or use another program	MDM-il pole selle süsteemi jaoks koopiat: installi Node.js või Deno või kasuta teist programmi
+#. text in softgl.rs
+#, machine
+	MDM has no data folder	MDM-il pole andmekausta
 #. text in remote.rs
 #. remote control page (on a phone): no pairing code is shown in MDM; "Pair a device" is MDM's button
 #, machine
@@ -3356,6 +3387,27 @@
 #. error installing ffmpeg: the list of builds MDM accepts doesn't carry MDM's own signature
 #, machine
 	MDM's list of checked ffmpeg builds isn't signed by MDM's key, so ffmpeg wasn't installed	MDM-i kontrollitud ffmpeg-i versioonide loend pole MDM-i võtmega allkirjastatud, seega ffmpeg-i ei installitud
+#. text in errors.rs
+#. error installing Mesa's software renderer: the list of builds MDM accepts couldn't be read; {detail} = the technical detail, in English
+#, machine
+	MDM's list of checked software renderers can't be read ({detail})	MDM-i kontrollitud tarkvaraliste renderdajate loendit ei saa lugeda ({detail})
+#. text in errors.rs
+#. error installing Mesa's software renderer (it draws MDM's windows where there is no graphics card): MDM installs only builds named in a list it publishes, signed with its key, and that list couldn't be downloaded; {error} = why
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	MDM's list of checked software renderers could not be downloaded: {error}	MDM-i kontrollitud tarkvaraliste renderdajate loendit ei saanud alla laadida: {error}
+#. text in errors.rs
+#. error installing Mesa's software renderer: the list of builds MDM accepts has none for this computer's system and processor
+#, machine
+	MDM's list of checked software renderers has none for this computer	MDM-i kontrollitud tarkvaraliste renderdajate loendis pole selle arvuti jaoks sobivat versiooni
+#. text in errors.rs
+#. error installing Mesa's software renderer: the list of builds MDM accepts is older than one this copy of MDM already used (it never goes back to an older list)
+#, machine
+	MDM's list of checked software renderers is older than one already used, so nothing was installed	MDM-i kontrollitud tarkvaraliste renderdajate loend on vanem kui juba kasutatud loend, seega ei installitud midagi
+#. text in errors.rs
+#. error installing Mesa's software renderer: the list of builds MDM accepts doesn't carry MDM's own signature
+#, machine
+	MDM's list of checked software renderers isn't signed by MDM's key, so nothing was installed	MDM-i kontrollitud tarkvaraliste renderdajate loend pole MDM-i võtmega allkirjastatud, seega ei installitud midagi
 #. text in whereis.rs
 #. how far a download's server is, by its round trip (60 to 150 ms)
 #, machine
@@ -3373,6 +3425,14 @@
 #. a video's status while its picture and sound are joined into one file (ffmpeg); {percent} how far, e.g. "45%"
 #, machine
 	Merging... ({percent})	Ühendamine... ({percent})
+#. text in softgl.rs
+#. the software renderer's window: the download or its check failed; {reason} = why, a sentence's part
+#, machine
+	Mesa's software renderer couldn't be installed: {reason}	Mesa tarkvaralist renderdajat ei saanud installida: {reason}
+#. text in softgl.rs
+#. the software renderer's window, once Mesa's llvmpipe is downloaded and checked
+#, machine
+	Mesa's software renderer is installed. MDM draws with it from its next start.	Mesa tarkvaraline renderdaja on installitud. MDM kasutab seda järgmisest käivitamisest alates.
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3796,6 +3856,11 @@
 #. text in a dialog box
 #, machine
 	No goes back, to choose another folder.	Valides „Ei”, saate tagasi minna ja valida teise kausta.
+#. text in softgl.rs
+#. the software renderer's window, offered once at a start where Windows' own software renderer (WARP, keep the name) draws MDM because no graphics card has a driver for it; llvmpipe (keep the name) is Mesa's software renderer; {size} = its download's size (e.g. 66.3 MB)
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	No graphics card here has a driver MDM can draw with, so Windows' software renderer (WARP) draws its windows and keeps the processor busy. Mesa's software renderer (llvmpipe) draws them with far less. Download it once ({size}, from Mesa's builds on GitHub)? MDM draws with it from its next start.	Ühelgi siinsel graafikakaardil pole draiverit, millega MDM saaks joonistada, seega joonistab Windowsi tarkvaraline renderdaja (WARP) MDM-i aknad ja koormab protsessorit. Mesa tarkvaraline renderdaja (llvmpipe) joonistab need palju väiksema koormusega. Kas soovite selle ühe korra alla laadida ({size}, Mesa versioonide hulgast GitHubis)? MDM kasutab seda järgmisest käivitamisest alates.
 #. tooltip (why a control is greyed) in langpick.rs
 #. tooltip of the greyed OK button in the language picker
 #, machine
@@ -4268,9 +4333,10 @@
 #. text in the Batch download window; text in a dialog box; label in the Options window; text in the Options window; text in a download's Properties window
 #, machine
 	Password	Parool
-#. text in the Link grabber window; text in the Options window
+#. text in the Link grabber window; text in the Options window; text in requestedit.rs
 #. Link grabber: the package's archives' password (a label before its box)
 #. Options → Add an account: label before the field for the password at the debrid service
+#. Site rule: label before the proxy's password, beside its user name
 #, machine
 	Password:	Parool:
 #. text in the Add torrent window
@@ -4412,6 +4478,10 @@
 #. text in a download's progress window
 #, machine
 	Property	Atribuut
+#. text in the Options window
+#. Site rules: column title: the rule's proxy (empty: the one in Options → Proxy / Socks; "No proxy"; or its address)
+#, machine
+	Proxy	Puhverserver
 #. text in errors.rs; text in the Options window
 #. tab title
 #, machine
@@ -4426,6 +4496,10 @@
 #. label in the Options window
 #, machine
 	Proxy server address	Puhverserveri aadress
+#. text in requestedit.rs
+#. Site rule: label before the proxy's user name (its login), under the proxy's address
+#, machine
+	Proxy user:	Puhverserveri kasutaja:
 #. text in requestedit.rs
 #. Site rule / a download's Connection settings: label before the proxy choice
 #, machine
@@ -5164,6 +5238,10 @@
 #. button in the Download complete window: opens a menu of how long no Download complete window shows (30 minutes, 1 hour...)
 #, machine
 	Snooze	Lükka edasi
+#. text in softgl.rs
+#. the window's title: Mesa's software renderer, offered where no graphics card draws MDM's windows
+#, machine
+	Software renderer	Tarkvaraline renderdaja
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -5603,6 +5681,10 @@
 #. a check of Test browser integration: the browsers find MDM's helper program
 #, machine
 	The browsers can find Mister Download Manager	Brauserid leiavad rakenduse Mister Download Manager
+#. text in extension.rs
+#. under "An older registry entry is in the way" (Test browser integration, Windows): the entry is in the part of the registry 32-bit programs use, which the browsers read before the right entry; it leads to another copy of MDM or to one that was deleted; then what the Set it up button does about it
+#, machine
+	The browsers read it before the right one, and it leads to another copy of Mister Download Manager or to one that is gone. Set it up gives your account an entry of its own, which the browsers read first.	Brauserid loevad seda enne õiget kirjet ja see viitab teisele Mister Download Manager koopiale või koopiale, mida enam pole. Seadista lisab sinu kontole eraldi kirje, mida brauserid loevad esimesena.
 #. text in the Options window
 #. Options → Remote → Status: the settings were changed; they apply on OK
 #, machine
@@ -5711,6 +5793,10 @@
 #. text in errors.rs
 #, machine
 	the downloaded program doesn't match its signed checksum	allalaaditud programm ei vasta selle allkirjastatud kontrollsummale
+#. text in errors.rs
+#. error installing Mesa's software renderer: a file downloaded isn't the one named in the list of builds MDM accepts (its checksum differs), so it was thrown away
+#, machine
+	the downloaded software renderer isn't the build MDM's list of checked builds names, so it wasn't installed	allalaaditud tarkvaraline renderdaja ei ole MDM-i kontrollitud versioonide loendis nimetatud versioon, seega seda ei installitud
 #. message or event log entry in the main window
 #. in the empty download list, under its title
 #, machine
@@ -5831,6 +5917,10 @@
 #. why a download failed (#1102): the folder and file name together are longer than Windows allows ({limit} characters, 259), counting the temporary files saved beside the file while it downloads (their names are longer). {path} = the path
 #, machine
 	the path is too long for Windows: at most {limit} characters with the files saved while it downloads. Choose a shorter file name or folder ({path})	tee on Windowsi jaoks liiga pikk: maksimaalselt {limit} märki koos allalaadimise ajal salvestatud failidega. Valige lühem failinimi või kaust ({path})
+#. text in requestedit.rs
+#. Site rule: the proxy's user name or password holds a control character (a line break, a tab)
+#, machine
+	The proxy's user name and password can't hold line breaks or tabs	Puhverserveri kasutajanimi ja parool ei tohi sisaldada reavahetusi ega tabulaatoreid
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. why updates could not be checked: the newest release on the site has no number
 #, machine
@@ -6536,6 +6626,10 @@
 #. a download's Connection settings: the proxy typed isn't an address MDM takes; the examples stay as they are
 #, machine
 	Type the proxy as host:port, http://host:port or socks5://host:port	Sisestage proxy kujul host:port, http://host:port või socks5://host:port
+#. text in requestedit.rs
+#. Site rule: a password was typed for the proxy, but no user name
+#, machine
+	Type the proxy's user name too, or leave its password empty	Sisesta ka puhverserveri kasutajanimi või jäta parool tühjaks
 #. text in the Scheduler window
 #. why OK is greyed when naming a new queue
 #, machine
@@ -6748,10 +6842,6 @@
 #. text in the Options window
 #, machine
 	User-Agent for manually added downloads:	Kasutaja-agent käsitsi lisatud allalaadimiste jaoks:
-#. text in the Options window
-#. Options → Connection: beside the Site rules... button: what it sets
-#, machine
-	User-Agent, headers and connections by site	Kasutajaagendid, päised ja ühendused saidi kohta
 #. text in requestedit.rs
 #. Site rule / a download's Connection settings: label before the User-Agent box (the name the browser or program gives itself to sites)
 #, machine
@@ -9012,6 +9102,11 @@ menu	Download &video from a page...	Laadi &video lehelt alla...
 #, machine
 menu	Download in order	Laadi järjestuses alla
 #. menu command in the main window
+#. View → Draw with: opens a window offering to download Mesa's software renderer (llvmpipe, keep the name), which draws MDM's windows with far less of the processor than Windows' own (WARP)
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Download Mesa's software renderer (llvmpipe)...	Laadi alla Mesa tarkvaraline renderdaja (llvmpipe)...
+#. menu command in the main window
 #. View menu: submenu choosing what draws MDM's windows: OpenGL, or Direct3D, Vulkan or Metal (graphics systems)
 #, machine
 menu	Draw with	Joonista kasutades
@@ -9248,6 +9343,18 @@ menu	Show &drop target	Kuva &sihtkoht
 #. menu command in the main window
 #, machine
 menu	Show Mister Download Manager	Kuva Mister Download Manager
+#. menu command in the main window
+#. View → Draw with: a greyed note; Mesa's software renderer (llvmpipe, keep the name) failed on this computer, so Windows' own software renderer (WARP, keep the name) draws
+#, machine
+menu	Software (llvmpipe) didn't start here: WARP draws	Tarkvaraline renderdaja (llvmpipe) ei käivitunud siin: joonistab WARP
+#. menu command in the main window
+#. View → Draw with: a greyed note; Mesa's software renderer (llvmpipe, keep the name) is downloaded and draws the windows from MDM's next start
+#, machine
+menu	Software (llvmpipe) draws from the next start	Tarkvaraline renderdaja (llvmpipe) joonistab alates järgmisest käivitamisest
+#. menu command in the main window
+#. View → Draw with: a greyed note; what draws the windows: Mesa's software renderer, llvmpipe (keep the name), because no graphics card here has a driver MDM can draw with
+#, machine
+menu	Software (llvmpipe): no graphics card here has a driver for MDM	Tarkvaraline renderdaja (llvmpipe): ühelgi siinsel graafikakaardil pole MDM-i jaoks sobivat draiverit
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine

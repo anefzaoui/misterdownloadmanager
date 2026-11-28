@@ -5859,6 +5859,19 @@ pub fn status_icon(
     paint_icon(ui, p, kind.source(ink), rc);
 }
 
+/// A result's `mark` in a download's status icon's place (#2064: a download complete with a
+/// warning), [`MARK`] points square at English `min`, in the mark's colour; on a selected row's
+/// accent fill (`on_selection`) in the selection's text colour, as a one-colour status icon is.
+pub fn status_mark(ui: &Ui, p: &Painter, mark: crate::icons::Mark, min: Pos2, on_selection: bool) {
+    let rc = rect(Rect::from_min_size(min, vec2(MARK, MARK)));
+    let ink = if on_selection {
+        SELECTION_TEXT()
+    } else {
+        mark.ink()
+    };
+    paint_icon(ui, p, mark.source(ink), rc);
+}
+
 /// An SVG icon in `rc` (on screen) through `p` (so it keeps to a list's clip), rasterized at the
 /// screen's pixel size on whole pixels, so it stays sharp at every scale.
 fn paint_icon(ui: &Ui, p: &Painter, src: egui::ImageSource<'static>, rc: Rect) {

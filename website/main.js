@@ -33,6 +33,260 @@
     });
   })();
 
+  // ---- The tallies: split-flap counters under the crew -----------------------------------------
+  // The downloads from GitHub and the add-on's users (build.py tallies_board): the build baked in the
+  // figures it read; here they are asked again of the ratings Worker (GET /api/stats, each figure
+  // with when it was read), and once the board is in view every tile flips up from zero and
+  // settles, left to right, in about a second and a half: to the live figures when they came in
+  // time, else to the build's. A source the Worker couldn't read keeps the build's figure. Figures
+  // that come later flip just the tiles that change. Reduced motion: the final figures at once.
+  // The real number is in the text for screen readers (not a live region); the tiles are hidden.
+  (function () {
+    var board = document.querySelector("[data-tallies]");
+    if (!board) return;
+    var lang = root.getAttribute("lang") || "en";
+    var fmt = null;
+    try { fmt = new Intl.NumberFormat(lang, { maximumFractionDigits: 0, numberingSystem: "latn" }); } catch (e) { /* English below */ }
+    var baked = {};
+    try { baked = JSON.parse(board.getAttribute("data-baked") || "{}"); } catch (e) { /* none */ }
+    var figures = baked;
+    var tallies = [];
+    each("[data-sum]", function (el) {
+      tallies.push({ el: el, sources: el.getAttribute("data-sum").split(" "), text: el.querySelector("[data-tally-text]"), flaps: el.querySelector(".flaps"), tiles: [], shown: null });
+    });
+    var animate = !reduce && !!Element.prototype.animate;
+
+    function good(f) { return f && typeof f.value === "number" && f.value > 0 && Math.floor(f.value) === f.value; }
+    function total(t) {
+      var n = 0;
+      for (var i = 0; i < t.sources.length; i++) {
+        var f = figures[t.sources[i]];
+        if (!good(f)) return null;
+        n += f.value;
+      }
+      return n;
+    }
+    // The figure as the page's language writes it: [{d: digit} | {s: separator}].
+    function parts(n) {
+      var out = [];
+      var text = fmt ? fmt.format(n) : String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      for (var i = 0; i < text.length; i++) out.push(/\d/.test(text[i]) ? { d: +text[i] } : { s: text[i] });
+      return out;
+    }
+    function el(cls, html) {
+      var e = document.createElement("span");
+      e.className = cls;
+      if (html != null) e.innerHTML = "<span></span>";
+      return e;
+    }
+    // A tile: the static upper and lower halves, and the two leaves that turn between them.
+    function tile(d) {
+      var t = el("flap");
+      var up = el("flap-half flap-up", 1), down = el("flap-half flap-down", 1);
+      var leafUp = el("flap-half flap-up flap-leaf", 1), leafDown = el("flap-half flap-down flap-leaf", 1);
+      t.appendChild(up); t.appendChild(down); t.appendChild(leafUp); t.appendChild(leafDown);
+      var o = { el: t, up: up.firstChild, down: down.firstChild, leafUp: leafUp, leafDown: leafDown, d: d, runs: [] };
+      set(o, d);
+      return o;
+    }
+    function face(d) { return d == null ? "" : String(d); }
+    function set(o, d) {
+      o.d = d;
+      o.up.textContent = o.down.textContent = face(d);
+      o.leafUp.style.visibility = o.leafDown.style.visibility = "hidden";
+    }
+    // One flip, from what the tile shows to `d`: the upper leaf falls, the lower one lands.
+    // `last`: the settling flip, slower, the leaf bouncing once as it lands.
+    function flip(o, d, ms, last) {
+      for (var i = 0; i < o.runs.length; i++) o.runs[i].cancel();
+      var from = o.d;
+      o.d = d;
+      o.up.textContent = face(d);
+      o.down.textContent = face(from);
+      o.leafUp.firstChild.textContent = face(from);
+      o.leafDown.firstChild.textContent = face(d);
+      o.leafUp.style.visibility = o.leafDown.style.visibility = "visible";
+      var half = ms / 2;
+      var fall = o.leafUp.animate([{ transform: "rotateX(0deg)", filter: "brightness(1)" }, { transform: "rotateX(-90deg)", filter: "brightness(.7)" }],
+        { duration: half, easing: "cubic-bezier(.55, 0, .9, .45)", fill: "forwards" });
+      var land = o.leafDown.animate(
+        last ? [{ transform: "rotateX(90deg)", filter: "brightness(.7)" }, { transform: "rotateX(-12deg)", filter: "brightness(1)", offset: .72 }, { transform: "rotateX(0deg)", filter: "brightness(1)" }]
+          : [{ transform: "rotateX(90deg)", filter: "brightness(.7)" }, { transform: "rotateX(0deg)", filter: "brightness(1)" }],
+        { duration: last ? half * 1.6 : half, delay: half, easing: "cubic-bezier(.2, .7, .3, 1)", fill: "both" });
+      o.runs = [fall, land];
+      land.onfinish = function () { if (o.d === d) set(o, d); };
+    }
+    // The tiles for `n`, built anew (as many as it has digits; the separators between them).
+    function build(t, n, blank) {
+      var ps = parts(n);
+      t.flaps.textContent = "";
+      t.tiles = [];
+      for (var i = 0; i < ps.length; i++) {
+        if (ps[i].s != null) {
+          var sep = document.createElement("span");
+          sep.className = "flap-sep";
+          sep.textContent = ps[i].s;
+          t.flaps.appendChild(sep);
+        } else {
+          var o = tile(blank ? null : ps[i].d);
+          o.target = ps[i].d;
+          t.tiles.push(o);
+          t.flaps.appendChild(o.el);
+        }
+      }
+    }
+    function speak(t, n) { if (t.text) t.text.textContent = fmt ? fmt.format(n) : String(n); }
+    function day() {
+      var days = [];
+      for (var k = 0; k < tallies.length; k++) {
+        for (var i = 0; i < tallies[k].sources.length; i++) {
+          var f = figures[tallies[k].sources[i]];
+          if (good(f) && f.fetched) days.push(String(f.fetched).slice(0, 10));
+        }
+      }
+      days.sort();
+      var time = board.querySelector("[data-tally-day]");
+      if (time && days.length && /^\d{4}-\d\d-\d\d$/.test(days[0])) {
+        time.setAttribute("datetime", days[0]);
+        time.textContent = days[0];
+      }
+    }
+
+    // Every tile counts up from zero (blank first, as a board does) through its digits, whole
+    // turns where it has time for them, and lands on its own digit: the first at about 0.55 s,
+    // the last at `end` ms, the others in between, left to right.
+    function run(t, n, delay, end) {
+      // Figures that come while the tiles still turn wait for them to land.
+      if (t.running) { t.pending = true; return; }
+      t.running = true;
+      if (t.tiles.length !== parts(n).filter(function (p) { return p.d != null; }).length || t.shown == null) build(t, n, t.shown == null);
+      else {
+        var ps = parts(n), j = 0;
+        for (var p = 0; p < ps.length; p++) if (ps[p].d != null) t.tiles[j++].target = ps[p].d;
+      }
+      t.shown = n;
+      speak(t, n);
+      var count = t.tiles.length, plans = [];
+      for (var i = 0; i < count; i++) {
+        var o = t.tiles[i], target = o.target;
+        var finish = count > 1 ? 550 + (end - 550) * i / (count - 1) : end;
+        var steps = [];
+        if (o.d == null) {
+          var turns = Math.max(0, Math.round((finish / 72 - target - 1) / 10));
+          for (var k = 0; k <= target + 10 * turns; k++) steps.push(k % 10);
+        } else {
+          // Already showing a figure: on from it to the new digit (no whole turns).
+          for (var d = o.d; d !== target; d = (d + 1) % 10) steps.push((d + 1) % 10);
+        }
+        plans.push({ o: o, steps: steps, every: steps.length ? finish / steps.length : 0, done: 0 });
+      }
+      var start = performance.now() + delay;
+      function frame(now) {
+        var busy = false;
+        for (var i = 0; i < plans.length; i++) {
+          var pl = plans[i];
+          if (pl.done >= pl.steps.length) continue;
+          busy = true;
+          var due = Math.min(pl.steps.length, Math.floor((now - start) / pl.every) + 1);
+          if (now < start) due = 0;
+          if (due > pl.done) {
+            pl.done = due;
+            var lastOne = due === pl.steps.length;
+            flip(pl.o, pl.steps[due - 1], lastOne ? Math.max(260, Math.min(pl.every, 300)) : Math.max(40, Math.min(pl.every * 0.92, 180)), lastOne);
+          }
+        }
+        if (busy) return requestAnimationFrame(frame);
+        t.running = false;
+        if (t.pending) {
+          t.pending = false;
+          var m = total(t);
+          if (m != null && m !== t.shown) run(t, m, 350, 700);
+        }
+      }
+      requestAnimationFrame(frame);
+    }
+
+    function show(n, t) {
+      // At once: reduced motion, or no animation in this browser.
+      if (t.tiles.length !== parts(n).filter(function (p) { return p.d != null; }).length || t.shown == null) build(t, n, false);
+      else {
+        var ps = parts(n), j = 0;
+        for (var p = 0; p < ps.length; p++) if (ps[p].d != null) set(t.tiles[j++], ps[p].d);
+      }
+      t.shown = n;
+      speak(t, n);
+    }
+
+    var started = false, live = null, waited = false, seen = false;
+    function update(first) {
+      for (var i = 0; i < tallies.length; i++) {
+        var t = tallies[i], n = total(t);
+        if (n == null || n === t.shown) continue;
+        if (animate) run(t, n, first ? i * 140 : 0, first ? 1350 : 700);
+        else show(n, t);
+      }
+      day();
+    }
+    function begin() {
+      if (started || !seen || !(live || waited)) return;
+      started = true;
+      board.setAttribute("data-run", "");
+      update(true);
+    }
+    // Merges the Worker's answer: each figure it has replaces the build's, unless the build read
+    // its own on a later day (the Worker's last good one can be older, when a source failed).
+    function merge(body) {
+      var next = {};
+      for (var k in baked) next[k] = baked[k];
+      for (var key in body) {
+        var f = body[key], had = baked[key];
+        if (!good(f)) continue;
+        if (had && had.fetched && String(f.fetched || "").slice(0, 10) < String(had.fetched).slice(0, 10)) continue;
+        next[key] = f;
+      }
+      figures = next;
+    }
+
+    if (!animate) {
+      board.setAttribute("data-run", "");
+      update(false);
+    } else {
+      // The board before it runs: blank tiles, the size the figures will have.
+      for (var i = 0; i < tallies.length; i++) {
+        var n = total(tallies[i]);
+        if (n != null) build(tallies[i], n, true);
+      }
+      board.setAttribute("data-run", "");
+      setTimeout(function () { waited = true; begin(); }, 700);
+      if ("IntersectionObserver" in window) {
+        var io = new IntersectionObserver(function (entries) {
+          for (var e = 0; e < entries.length; e++) {
+            if (entries[e].isIntersecting) { seen = true; io.disconnect(); begin(); }
+          }
+        }, { threshold: 0.6 });
+        io.observe(board);
+      } else {
+        seen = true;
+      }
+    }
+
+    var api = board.getAttribute("data-api");
+    if (api && window.fetch) {
+      var ctl = window.AbortController ? new AbortController() : null;
+      if (ctl) setTimeout(function () { ctl.abort(); }, 8000);
+      fetch(api, { credentials: "omit", signal: ctl ? ctl.signal : undefined })
+        .then(function (res) { if (!res.ok) throw new Error(String(res.status)); return res.json(); })
+        .then(function (body) {
+          if (!body || typeof body !== "object") return;
+          merge(body);
+          live = body;
+          if (!animate || started) update(false);
+          else begin();
+        })
+        .catch(function () { /* the build's figures stay */ });
+    }
+  })();
+
   // ---- The crew's names ------------------------------------------------------------------------
   // A contributor's login shows over their photo on hover and focus (styles.css .face-name); at
   // the start or end of a row it slides back inside the list rather than run out of the sheet.

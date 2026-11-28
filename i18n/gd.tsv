@@ -364,7 +364,7 @@
 #. text in the Options window
 #. Site rules window: in the empty list of rules, under its title
 #, machine
-	A rule sets the connections, User-Agent or headers for one site.	Bidh riaghailt a’ suidheachadh nan ceanglaichean, User-Agent no cinn-cinn airson aon làrach.
+	A rule sets the connections, User-Agent, headers or proxy for one site.	Bidh riaghailt a’ suidheachadh nan ceanglaichean, User-Agent, cinn-cinn no progsaidh airson aon làrach.
 #. text in errors.rs
 #. an error: a server on this computer redirected the download to the internet, which would not go through the chosen network adapter; {adapter} its name
 #, machine
@@ -685,6 +685,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	American Samoa	Samotha na h-Aimeireaga
+#. text in extension.rs
+#. a check of Test browser integration (Windows), one short line: an older registry entry for MDM's helper is in the way of the right one; the entry and where it leads show on the line under it
+#, machine
+	An older registry entry is in the way:	Tha inntrigeadh clàraidh nas sine a’ cur bacadh air an fhear cheart:
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -1148,6 +1152,11 @@
 #. event log entry after Recheck: {have} and {total} are sizes ("1.2 GB of 4 GB there")
 #, machine
 	Checked: {have} of {total} there	Air a sgrùdadh: {have} de {total} ann
+#. text in softgl.rs
+#. the software renderer's window: the download is done, and its files are being checked and unpacked
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Checking and unpacking Mesa's software renderer...	A’ sgrùdadh is a’ dì-phacaigeadh rindrear bathar-bog Mesa...
 #. message or event log entry in the main window
 #. event log entry: a torrent's files are being read and checked again (Recheck)
 #, machine
@@ -1182,6 +1191,10 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Checking...	A' sgrùdadh...
+#. text in the download list (sizes, speeds, status)
+#. a download's status: it finished, but the checksum its server announced didn't match its file (the file is kept). Short: the list's Status column is narrow
+#, machine
+	Checksum warning	Rabhadh mun t-suim-seic
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -1350,6 +1363,10 @@
 #. window title: a download's own request settings (User-Agent, headers, connections, proxy), from File Properties → Connection...
 #, machine
 	Connection settings	Roghainnean a’ cheangail
+#. text in the Options window
+#. Options → Connection: beside the Site rules... button: what it sets (a User-Agent, request headers, a number of connections, a proxy, each for the sites a rule names)
+#, machine
+	Connection settings by site	Roghainnean ceangail a rèir làraich
 #. message or event log entry in the main window
 #. event log: File Properties → Connection settings changed the download's own User-Agent, headers, proxy or connections
 #, machine
@@ -1776,6 +1793,11 @@
 #. {size} = a file size such as "4.2 MB"; {bytes} = a number of bytes (keep the braces as they are)
 #, machine
 	Downloaded {size} ({bytes} Bytes)	Air a luchdadh a-nuas {size} ({bytes} Bytes)
+#. text in the download list (sizes, speeds, status)
+#. a download's status, whole (the Status cell's tip, Properties, the log, Download complete): it finished, but the checksum its server announced didn't match the file, which is kept. "Check it": the user can verify the file against a checksum they trust (right-click → Verify checksum...)
+#. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
+#, machine
+	Downloaded, but the server's {algorithm} checksum didn't match; the file may still be fine. Check it if it matters	Chaidh a luchdadh a-nuas, ach cha robh suim-seic {algorithm} an fhrithealaiche a’ freagairt ris an fhaidhle; dh’fhaodadh gum bi am faidhle ceart fhathast. Dearbhaich e ma tha e cudromach
 #. item in the Categories tree in the download list; value in a column's filter list in the download list; text in remote.rs
 #. a download's status (state it is in, not a command)
 #, machine
@@ -1808,6 +1830,11 @@
 #. Helpers: MDM's own copy of a helper is being downloaded (where there was none, or in place of the system's); {percent} = how far, a number
 #, machine
 	Downloading MDM's own copy... {percent}%	A’ luchdadh a-nuas lethbhreac MDM fhèin... {percent}%
+#. text in softgl.rs
+#. the software renderer's window, while it downloads; {done} and {size} = sizes (12.0 MB of 66.3 MB)
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	Downloading Mesa's software renderer: {done} of {size}	A’ luchdadh a-nuas rindrear bathar-bog Mesa: {done} de {size}
 #. text in archtest.rs
 #. in a download's log: after its archive test found damaged files, only their bytes are downloaded again from the same server; {size} like "1.20 MB"
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
@@ -3159,6 +3186,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Looking the page up...	A’ lorg na duilleige...
+#. text in softgl.rs
+#. the software renderer's window: while MDM reads its signed list of the software renderers it may download (Mesa's llvmpipe: it draws MDM's windows where there is no graphics card)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Looking up Mesa's software renderer...	A’ lorg rindrear bathar-bog Mesa...
 #. text in preview.rs
 #. the preview pane: still looking whether the file is there
 #. the trailing ... means it is still going on: keep it
@@ -3327,6 +3359,9 @@
 #. Video helpers: MDM can't download Node.js on this system (an unusual processor); Node.js and Deno are program names; "Use another program" is the button below
 #, machine
 	MDM has no copy for this system: install Node.js or Deno, or use another program	Chan eil lethbhreac aig MDM airson an t-siostaim seo: stàlaich Node.js no Deno, no cleachd prògram eile
+#. text in softgl.rs
+#, machine
+	MDM has no data folder	Chan eil pasgan dàta aig MDM
 #. text in remote.rs
 #. remote control page (on a phone): no pairing code is shown in MDM; "Pair a device" is MDM's button
 #, machine
@@ -3352,6 +3387,27 @@
 #. error installing ffmpeg: the list of builds MDM accepts doesn't carry MDM's own signature
 #, machine
 	MDM's list of checked ffmpeg builds isn't signed by MDM's key, so ffmpeg wasn't installed	Chan eil liosta MDM de thogalaichean ffmpeg sgrùdaichte air a shoidhnigeadh le iuchair MDM, agus mar sin cha deach ffmpeg a stàladh
+#. text in errors.rs
+#. error installing Mesa's software renderer: the list of builds MDM accepts couldn't be read; {detail} = the technical detail, in English
+#, machine
+	MDM's list of checked software renderers can't be read ({detail})	Cha ghabh liosta nan rindrearan bathar-bog sgrùdaichte aig MDM a leughadh ({detail})
+#. text in errors.rs
+#. error installing Mesa's software renderer (it draws MDM's windows where there is no graphics card): MDM installs only builds named in a list it publishes, signed with its key, and that list couldn't be downloaded; {error} = why
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	MDM's list of checked software renderers could not be downloaded: {error}	Cha b’ urrainn liosta nan rindrearan bathar-bog sgrùdaichte aig MDM a luchdadh a-nuas: {error}
+#. text in errors.rs
+#. error installing Mesa's software renderer: the list of builds MDM accepts has none for this computer's system and processor
+#, machine
+	MDM's list of checked software renderers has none for this computer	Chan eil togail ann an liosta nan rindrearan bathar-bog sgrùdaichte aig MDM airson a’ choimpiutair seo
+#. text in errors.rs
+#. error installing Mesa's software renderer: the list of builds MDM accepts is older than one this copy of MDM already used (it never goes back to an older list)
+#, machine
+	MDM's list of checked software renderers is older than one already used, so nothing was installed	Tha liosta nan rindrearan bathar-bog sgrùdaichte aig MDM nas sine na liosta a chaidh a chleachdadh mu thràth, agus mar sin cha deach dad a stàladh
+#. text in errors.rs
+#. error installing Mesa's software renderer: the list of builds MDM accepts doesn't carry MDM's own signature
+#, machine
+	MDM's list of checked software renderers isn't signed by MDM's key, so nothing was installed	Chan eil liosta nan rindrearan bathar-bog sgrùdaichte aig MDM air a soidhnigeadh le iuchair MDM, agus mar sin cha deach dad a stàladh
 #. text in whereis.rs
 #. how far a download's server is, by its round trip (60 to 150 ms)
 #, machine
@@ -3369,6 +3425,14 @@
 #. a video's status while its picture and sound are joined into one file (ffmpeg); {percent} how far, e.g. "45%"
 #, machine
 	Merging... ({percent})	A’ tighinn còmhla... ({percent})
+#. text in softgl.rs
+#. the software renderer's window: the download or its check failed; {reason} = why, a sentence's part
+#, machine
+	Mesa's software renderer couldn't be installed: {reason}	Cha b’ urrainn rindrear bathar-bog Mesa a stàladh: {reason}
+#. text in softgl.rs
+#. the software renderer's window, once Mesa's llvmpipe is downloaded and checked
+#, machine
+	Mesa's software renderer is installed. MDM draws with it from its next start.	Tha rindrear bathar-bog Mesa air a stàladh. Tarraingidh MDM leis bhon ath thòiseachadh aige.
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3792,6 +3856,11 @@
 #. text in a dialog box
 #, machine
 	No goes back, to choose another folder.	Ma thaghas tu Chan eil, thèid thu air ais gus pasgan eile a thaghadh.
+#. text in softgl.rs
+#. the software renderer's window, offered once at a start where Windows' own software renderer (WARP, keep the name) draws MDM because no graphics card has a driver for it; llvmpipe (keep the name) is Mesa's software renderer; {size} = its download's size (e.g. 66.3 MB)
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	No graphics card here has a driver MDM can draw with, so Windows' software renderer (WARP) draws its windows and keeps the processor busy. Mesa's software renderer (llvmpipe) draws them with far less. Download it once ({size}, from Mesa's builds on GitHub)? MDM draws with it from its next start.	Chan eil draibhear aig cairt grafaigeachd sam bith an seo as urrainn do MDM a chleachdadh, agus mar sin bidh rindrear bathar-bog Windows (WARP) a’ tarraing nan uinneagan aige agus a’ cumail a’ phròiseasair trang. Bidh rindrear bathar-bog Mesa (llvmpipe) gan tarraing le mòran nas lugha. Luchdaich a-nuas e aon uair ({size}, bho thogalaichean Mesa air GitHub)? Tarraingidh MDM leis bhon ath thòiseachadh aige.
 #. tooltip (why a control is greyed) in langpick.rs
 #. tooltip of the greyed OK button in the language picker
 #, machine
@@ -4264,9 +4333,10 @@
 #. text in the Batch download window; text in a dialog box; label in the Options window; text in the Options window; text in a download's Properties window
 #, machine
 	Password	Facal-faire
-#. text in the Link grabber window; text in the Options window
+#. text in the Link grabber window; text in the Options window; text in requestedit.rs
 #. Link grabber: the package's archives' password (a label before its box)
 #. Options → Add an account: label before the field for the password at the debrid service
+#. Site rule: label before the proxy's password, beside its user name
 #, machine
 	Password:	Facal-faire:
 #. text in the Add torrent window
@@ -4408,6 +4478,10 @@
 #. text in a download's progress window
 #, machine
 	Property	Feart
+#. text in the Options window
+#. Site rules: column title: the rule's proxy (empty: the one in Options → Proxy / Socks; "No proxy"; or its address)
+#, machine
+	Proxy	Progsaidh
 #. text in errors.rs; text in the Options window
 #. tab title
 #, machine
@@ -4422,6 +4496,10 @@
 #. label in the Options window
 #, machine
 	Proxy server address	Seòladh frithealaiche progsaidh
+#. text in requestedit.rs
+#. Site rule: label before the proxy's user name (its login), under the proxy's address
+#, machine
+	Proxy user:	Ainm-cleachdaiche a’ phrogsaidh:
 #. text in requestedit.rs
 #. Site rule / a download's Connection settings: label before the proxy choice
 #, machine
@@ -5160,6 +5238,10 @@
 #. button in the Download complete window: opens a menu of how long no Download complete window shows (30 minutes, 1 hour...)
 #, machine
 	Snooze	Snìomh
+#. text in softgl.rs
+#. the window's title: Mesa's software renderer, offered where no graphics card draws MDM's windows
+#, machine
+	Software renderer	Rindrear bathar-bog
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -5599,6 +5681,10 @@
 #. a check of Test browser integration: the browsers find MDM's helper program
 #, machine
 	The browsers can find Mister Download Manager	’S urrainn dha na brabhsairean Mister Download Manager a lorg
+#. text in extension.rs
+#. under "An older registry entry is in the way" (Test browser integration, Windows): the entry is in the part of the registry 32-bit programs use, which the browsers read before the right entry; it leads to another copy of MDM or to one that was deleted; then what the Set it up button does about it
+#, machine
+	The browsers read it before the right one, and it leads to another copy of Mister Download Manager or to one that is gone. Set it up gives your account an entry of its own, which the browsers read first.	Bidh na brobhsairean ga leughadh ron fhear cheart, agus tha e a’ stiùireadh gu lethbhreac eile de Mister Download Manager no gu fear nach eil ann tuilleadh. Bheir “Suidhich e” inntrigeadh dha fhèin don chunntas agad, a leughas na brobhsairean an toiseach.
 #. text in the Options window
 #. Options → Remote → Status: the settings were changed; they apply on OK
 #, machine
@@ -5707,6 +5793,10 @@
 #. text in errors.rs
 #, machine
 	the downloaded program doesn't match its signed checksum	chan eil am prògram a chaidh a luchdachadh a-nuas a' freagairt ris an t-seic-suim shoidhnichte aige
+#. text in errors.rs
+#. error installing Mesa's software renderer: a file downloaded isn't the one named in the list of builds MDM accepts (its checksum differs), so it was thrown away
+#, machine
+	the downloaded software renderer isn't the build MDM's list of checked builds names, so it wasn't installed	Chan e an rindrear bathar-bog a chaidh a luchdadh a-nuas an togail a tha air ainmeachadh ann an liosta nan togalaichean sgrùdaichte aig MDM, agus mar sin cha deach a stàladh
 #. message or event log entry in the main window
 #. in the empty download list, under its title
 #, machine
@@ -5827,6 +5917,10 @@
 #. why a download failed (#1102): the folder and file name together are longer than Windows allows ({limit} characters, 259), counting the temporary files saved beside the file while it downloads (their names are longer). {path} = the path
 #, machine
 	the path is too long for Windows: at most {limit} characters with the files saved while it downloads. Choose a shorter file name or folder ({path})	tha an t-slighe ro fhada airson Windows: aig a’ char as motha {limit} caractar leis na faidhlichean a chaidh a shàbhaladh fhad ‘s a tha e a’ luchdadh a-nuas. Tagh ainm faidhle no pasgan nas giorra ({path})
+#. text in requestedit.rs
+#. Site rule: the proxy's user name or password holds a control character (a line break, a tab)
+#, machine
+	The proxy's user name and password can't hold line breaks or tabs	Chan fhaod ainm-cleachdaiche is facal-faire a’ phrogsaidh briseadh-loidhne no tabaichean a bhith ann
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. why updates could not be checked: the newest release on the site has no number
 #, machine
@@ -6532,6 +6626,10 @@
 #. a download's Connection settings: the proxy typed isn't an address MDM takes; the examples stay as they are
 #, machine
 	Type the proxy as host:port, http://host:port or socks5://host:port	Taidhp am proxy mar host:port, http://host:port no socks5://host:port
+#. text in requestedit.rs
+#. Site rule: a password was typed for the proxy, but no user name
+#, machine
+	Type the proxy's user name too, or leave its password empty	Cuir a-steach ainm-cleachdaiche a’ phrogsaidh cuideachd, no fàg am facal-faire falamh
 #. text in the Scheduler window
 #. why OK is greyed when naming a new queue
 #, machine
@@ -6744,10 +6842,6 @@
 #. text in the Options window
 #, machine
 	User-Agent for manually added downloads:	Àidseant-cleachdaiche airson luchdaich sìos a chaidh a chur ris le làimh:
-#. text in the Options window
-#. Options → Connection: beside the Site rules... button: what it sets
-#, machine
-	User-Agent, headers and connections by site	User-Agent, cinn-cinn is ceanglaichean a rèir làraich
 #. text in requestedit.rs
 #. Site rule / a download's Connection settings: label before the User-Agent box (the name the browser or program gives itself to sites)
 #, machine
@@ -9008,6 +9102,11 @@ menu	Download &video from a page...	Luchdaich sìos &bhidio bho dhuilleag...
 #, machine
 menu	Download in order	Luchdaich sìos ann an òrdugh
 #. menu command in the main window
+#. View → Draw with: opens a window offering to download Mesa's software renderer (llvmpipe, keep the name), which draws MDM's windows with far less of the processor than Windows' own (WARP)
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Download Mesa's software renderer (llvmpipe)...	Luchdaich a-nuas rindrear bathar-bog Mesa (llvmpipe)...
+#. menu command in the main window
 #. View menu: submenu choosing what draws MDM's windows: OpenGL, or Direct3D, Vulkan or Metal (graphics systems)
 #, machine
 menu	Draw with	Tarraing le
@@ -9244,6 +9343,18 @@ menu	Show &drop target	Seall &targaid leigeil sìos
 #. menu command in the main window
 #, machine
 menu	Show Mister Download Manager	Seall Mister Download Manager
+#. menu command in the main window
+#. View → Draw with: a greyed note; Mesa's software renderer (llvmpipe, keep the name) failed on this computer, so Windows' own software renderer (WARP, keep the name) draws
+#, machine
+menu	Software (llvmpipe) didn't start here: WARP draws	Cha do thòisich rindrear bathar-bog (llvmpipe) an seo: tha WARP a’ tarraing
+#. menu command in the main window
+#. View → Draw with: a greyed note; Mesa's software renderer (llvmpipe, keep the name) is downloaded and draws the windows from MDM's next start
+#, machine
+menu	Software (llvmpipe) draws from the next start	Bidh rindrear bathar-bog (llvmpipe) a’ tarraing bhon ath thòiseachadh
+#. menu command in the main window
+#. View → Draw with: a greyed note; what draws the windows: Mesa's software renderer, llvmpipe (keep the name), because no graphics card here has a driver MDM can draw with
+#, machine
+menu	Software (llvmpipe): no graphics card here has a driver for MDM	Rindrear bathar-bog (llvmpipe): chan eil draibhear aig cairt grafaigeachd sam bith an seo airson MDM
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
