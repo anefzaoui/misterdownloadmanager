@@ -314,6 +314,7 @@ pub const BROWSERS: &[Browser] = &[
         &["thorium"],
     ),
     chromium("Arc", &["Arc.app"], &[], &["Arc/User Data"], &[]),
+    chromium("Cra", &["Cra.app"], &[], &["Cra"], &[]),
     gecko(
         "Mozilla Firefox",
         &["Firefox.app"],
