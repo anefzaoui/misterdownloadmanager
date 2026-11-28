@@ -572,8 +572,8 @@ Everything below ships together, in version 0.6.0, the next release.
 - ✅ The browser add-on's Download video button checked on about 30 video sites and player types in
   Chrome and Firefox, and shown where it was missing: YouTube embedded in other sites before it plays,
   a player in a lightbox (a modal dialog or a popover), a player with a closed shadow root, one written
-  into a frame of the page's own, and a page that keeps the pointer's moves; a pre-roll ad's player no
-  longer gets the button
+  into a frame of the page's own, a page that keeps the pointer's moves, and an Instagram reel on its
+  own page (muted and looping at first); a pre-roll ad's player no longer gets the button
 - ✅ The window no longer freezes while an antivirus scans a file MDM opens
   ([#1292](https://github.com/anefzaoui/misterdownloadmanager/issues/1292); thanks to
   [@seifmoustafa](https://github.com/seifmoustafa) and

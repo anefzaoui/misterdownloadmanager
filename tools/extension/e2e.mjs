@@ -64,7 +64,9 @@
 // button over a video in full screen, the page's or the player's, and after the extension was
 // updated while it showed, #336), panels (the button over a player in a modal dialog, in a
 // popover, a closed shadow root, an about:srcdoc or about:blank frame, under a pre-roll ad, on a
-// page that keeps the pointer's moves: shown, uncovered, its click handing MDM the file), survey (E2E_SURVEY: the button over
+// page that keeps the pointer's moves: shown, uncovered, its click handing MDM the file), reels (a
+// reel on Instagram's own page for it, muted, looping, without controls, under the site's layer:
+// the button, muted and unmuted; a shop's decorative muted loop: none), survey (E2E_SURVEY: the button over
 // real sites' players, tools/extension/panel-survey.json; off by default), reconnect (a tab opened while
 // the host couldn't start gets the button once it can, no reload; then MDM started by a click, and
 // reached after it quits and starts again, #474), start (MDM not running: the host starts it),
@@ -5692,6 +5694,103 @@ thumb.addEventListener("mouseleave", () => { preview.classList.add("off"); docum
     }
     await s.mouse(2, 2);
     if (failed.length) throw new Error(`${failed.join("; ")} (passed: ${done.join("; ") || "none"})`);
+    return done.join("; ");
+  },
+
+  // A reel on Instagram's own page for it (instagram.com/reels/<code>/): its <video> plays a
+  // MediaSource (blob:), muted at first, looping, without controls, under a layer that takes the
+  // pointer and the sound's button, as the site lays it out (our own sample: no real account or
+  // text; served here, never the network's). Short, muted and looping, it looked like a moving
+  // picture and got no button. It does now, muted and after its sound's button unmuted it. A
+  // shop's decorative loop (a background behind its heading, the same kind of <video>) still gets
+  // none, once the button showed over the same page's product video (the app's answer is in).
+  async reels(t) {
+    const s = t.session;
+    const reel = (id, next) => `<div class="reel" id="${id}"><div class="box"><div class="ratio"></div>
+<video class="x1lliihq x5yr21d xh8yej3" playsinline="" preload="none" style="display: block;"></video>
+<div class="layer" role="presentation"></div><div class="sound" role="button" aria-label="Toggle audio" tabindex="0"></div></div>
+<div class="side"><a href="/sample.account.${id}/">sample.account.${id}</a> <a href="/reels/audio/1234567890123456/">Original audio</a>${next ? ` <a href="/reels/${next}/">next</a>` : ""}</div></div>`;
+    // What the page's own script does: each reel's MediaSource, muted and looping (the site
+    // loops its reels), the pointer's moves kept by the layer, the sound's button.
+    const script = `<script>
+for (const v of document.querySelectorAll("video")) { v.muted = true; v.loop = true; v.src = URL.createObjectURL(new MediaSource()); }
+for (const l of document.querySelectorAll(".layer")) { l.addEventListener("pointermove", (e) => e.stopPropagation()); l.addEventListener("click", (e) => e.preventDefault()); }
+for (const b of document.querySelectorAll(".sound")) b.addEventListener("click", () => { const v = b.parentElement.querySelector("video"); v.muted = !v.muted; });
+</script>`;
+    const reelsPage = `<!doctype html><html><head><meta charset="utf-8"><title>Instagram</title><style>
+body{margin:0;background:#000;color:#fff;font:14px system-ui}
+.reel{height:100vh;display:flex;justify-content:center;align-items:center;gap:12px}
+.box{position:relative;width:340px}.ratio{padding-bottom:177.778%}
+.box video{position:absolute;left:0;top:0;width:100%;height:100%;object-fit:cover}
+.layer{position:absolute;inset:0}
+.sound{position:absolute;right:12px;bottom:12px;width:28px;height:28px;border-radius:50%;background:#333;cursor:pointer}
+.side a{color:#fff;display:block}
+</style></head><body><main role="main">${reel("a", "DSampleReel2")}${reel("b", "")}</main>${script}</body></html>`;
+    const clip = `${LAB}/gen/1M/clip.mp4`;
+    const shopPage = `<!doctype html><html><head><meta charset="utf-8"><title>A shop</title><style>
+body{margin:0;font:16px system-ui}
+.hero{position:relative;height:260px;overflow:hidden}
+.hero video{position:absolute;left:0;top:0;width:100%;height:100%;object-fit:cover;z-index:-1}
+.hero h1{margin:0;padding:100px 40px;color:#fff}
+.product{margin:40px}
+</style></head><body><div class="hero"><video id="loop" playsinline="" autoplay=""></video><h1>Spring collection</h1></div>
+<div class="product"><video id="product" src="${clip}" controls width="480" height="270"></video></div>
+<script>const v = document.querySelector("#loop"); v.muted = true; v.loop = true; v.src = URL.createObjectURL(new MediaSource());</script></body></html>`;
+    await s.serve(["www.instagram.com", "shop.example.test"], (url) => {
+      const u = new URL(url);
+      if (u.hostname === "www.instagram.com" && u.pathname.startsWith("/reels/DSampleReel")) return { status: 200, type: "text/html; charset=utf-8", body: reelsPage };
+      if (u.hostname === "shop.example.test" && u.pathname === "/") return { status: 200, type: "text/html; charset=utf-8", body: shopPage };
+      return { status: 404, type: "text/plain", body: "not a sample page" };
+    });
+    const box = (sel) => s.evaluate(`(() => { const r = document.querySelector(${JSON.stringify(sel)}).getBoundingClientRect(); return { l: r.left, t: r.top, r: r.right, b: r.bottom }; })()`);
+    // The pointer moved over `v` until the button shows (30 s at most: the app's first answer
+    // starts its host anew), or for `ms` when none is wanted; the button seen, or null.
+    const pointAt = async (v, ms = 30000) => {
+      const from = Date.now();
+      for (let i = 0; Date.now() - from < ms; i++) {
+        await s.mouse((v.l + v.r) / 2 + (i % 3) * 5, (v.t + v.b) / 2 + (i % 2) * 5);
+        await sleep(200);
+        const shown = await surveyButton(s);
+        if (shown) return { ...shown, after: Date.now() - from };
+      }
+      return null;
+    };
+    const done = [];
+    await s.navigate("https://www.instagram.com/reels/DSampleReel1/");
+    const state = await s.evaluate(`(() => { const v = document.querySelector("#a video"); return { muted: v.muted, loop: v.loop, controls: v.controls, blob: /^blob:/.test(v.currentSrc || v.src), videos: document.querySelectorAll("video").length }; })()`);
+    if (!state.muted || !state.loop || state.controls || !state.blob) throw new Error(`the reel isn't laid out as the site does: ${JSON.stringify(state)}`);
+    const v = await box("#a video");
+    for (const step of ["muted", "unmuted"]) {
+      if (step === "unmuted") {
+        await s.mouse(2, 2);
+        const sound = await box("#a .sound");
+        await s.mouse((sound.l + sound.r) / 2, (sound.t + sound.b) / 2, "click");
+        const muted = await s.evaluate(`document.querySelector("#a video").muted`);
+        if (muted !== false) throw new Error("the reel's sound button didn't unmute it");
+      }
+      const shown = await pointAt(v);
+      if (!shown) throw new Error(`a reel on its own page, ${step}: no button over it`);
+      if (shown.b.covered) throw new Error(`a reel on its own page, ${step}: the button is covered by <${shown.b.covered}>`);
+      const where = surveyWhere(shown.b, v);
+      if (!where.startsWith("inside")) throw new Error(`a reel on its own page, ${step}: the button is ${where}`);
+      done.push(`a reel on its own page, ${step}: ${where} after ${shown.after} ms`);
+    }
+    await s.mouse(2, 2);
+    await s.navigate("http://shop.example.test/");
+    const product = await box("#product");
+    const first = await pointAt(product);
+    if (!first) throw new Error("a shop's product video: no button over it");
+    const hero = await box("#loop");
+    const over = (b) => b && (b.l + b.r) / 2 >= hero.l && (b.l + b.r) / 2 <= hero.r && (b.t + b.b) / 2 >= hero.t && (b.t + b.b) / 2 <= hero.b;
+    const from = Date.now();
+    while (Date.now() - from < 4000) {
+      await s.mouse((hero.l + hero.r) / 2 + ((Date.now() / 200) % 3) * 5, (hero.t + hero.b) / 2);
+      await sleep(200);
+      const shown = await surveyButton(s);
+      if (shown && over(shown.b)) throw new Error("a shop's decorative loop (muted, looping, no controls) got the button");
+    }
+    done.push("a shop's decorative loop: none, 4 s after its product video's showed");
+    await s.mouse(2, 2);
     return done.join("; ");
   },
 

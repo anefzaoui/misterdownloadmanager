@@ -884,6 +884,29 @@
         (/^\/(?:u\/\d+\/)?(?:uc|open)$/.test(u.pathname) && /^[\w-]{25,}$/.test(u.searchParams.get("id") || "")),
     },
   ];
+
+  // A short muted loop without controls (CLIP_S): a moving picture, an animated picture or a
+  // page's background, not something to save. Not where the page's site names the video: as the
+  // page's own (a reel on its own page: Instagram plays it muted at first and looping, often
+  // under CLIP_S, and its button was missing there), or as a post's (the post around it in a
+  // feed). Kept a moment per video: the pointer asks it every frame.
+  const namedSeen = new WeakMap();
+  function decorative(v) {
+    if (!v.muted || !v.loop || v.controls || v.duration > CLIP_S) return false;
+    const seen = namedSeen.get(v);
+    if (seen && seen.href === location.href && Date.now() - seen.t < 1000) return !seen.named;
+    let named = false;
+    try {
+      const url = new URL(location.href);
+      const name = siteName(url.hostname);
+      if (/^(?:youtube\.com|youtube-nocookie\.com|youtu\.be)$/.test(name)) named = !feedVideo(v);
+      else if (SITES.some((s) => s.hosts.test(name))) named = Boolean(ownAddress(v, url));
+    } catch {
+      named = false;
+    }
+    namedSeen.set(v, { href: location.href, t: Date.now(), named });
+    return !named;
+  }
   // ---- the video's own address: end.
 
   // ---- the button's words (its chip, its tip, the menu's rows): plain functions, run as they are
@@ -1992,8 +2015,8 @@ button:focus-visible { outline: none; }
     if (audio ? !v.controls || r.width < MIN_W || r.height < MIN_AUDIO_H : r.width < MIN_W || r.height < MIN_H) {
       return false;
     }
-    // A short muted loop without controls: a moving picture, not something to save.
-    if (v.muted && v.loop && !v.controls && !(v.duration > CLIP_S)) return false;
+    // A short muted loop without controls, that its site doesn't name (decorative).
+    if (decorative(v)) return false;
     const s = getComputedStyle(v);
     return s.visibility !== "hidden" && s.display !== "none" && Number(s.opacity) > 0.05;
   }

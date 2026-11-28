@@ -3918,6 +3918,47 @@ function videoButton({ stored = {}, location, iframes, videos, subframe = false,
     assert.equal(feedOf("https://news.example/article/1", { videos: 3 }), false, "an article's players");
     ok("video.js: a feed's videos get the round button by default (feedback 2026-11-23)");
   }
+  // A short muted loop without controls is a moving picture (no button), unless the page's site
+  // names it: a reel on its own page (Instagram's plays muted at first, looping, often under
+  // 15 s, from a MediaSource: its button was missing), a post's clip in a feed, a YouTube Short.
+  {
+    const source = readText("../../extension/video.js");
+    const start = source.indexOf("function videoPage(v) {");
+    const end = source.indexOf("// ---- the video's own address: end.");
+    assert.ok(source.slice(start, end).includes("function decorative(v) {"), "decorative is in the video's own address part");
+    assert.ok(source.includes("    if (decorative(v)) return false;"), "eligible() asks decorative");
+    const body = `const CLIP_S = 15; ${source.slice(start, end)}; return decorative;`;
+    const reel = { muted: true, loop: true, controls: false, duration: 12, currentSrc: "blob:https://www.instagram.com/1" };
+    const decorativeOn = (href, video = {}, { post = "", videos = 1 } = {}) => {
+      const v = { ...reel, ...video, parentElement: null, parentNode: null, getAttribute: () => null };
+      if (post) {
+        const a = { localName: "a", getAttribute: (n) => (n === "href" ? post : null), querySelector: () => null };
+        v.parentElement = { localName: "article", parentElement: null, parentNode: null, getAttribute: () => null, querySelectorAll: (sel) => (sel === "video" ? [v] : sel === "a[href]" ? [a] : []) };
+      }
+      const document = { querySelectorAll: (sel) => (sel === "video" ? { length: videos } : []), querySelector: () => null };
+      return new Function("location", "document", body)({ href }, document)(v);
+    };
+    // The reel on its own page, muted and looping, short or not yet known (a MediaSource before
+    // its first part); the same on a post's page, a Short's, a Facebook reel's.
+    for (const page of ["https://www.instagram.com/reels/DSampleReel1/", "https://www.instagram.com/reel/DSampleReel1/", "https://www.instagram.com/sample.account/reel/DSampleReel1/", "https://www.instagram.com/p/DSampleCode1/", "https://www.youtube.com/shorts/abc", "https://www.facebook.com/reel/1234567"]) {
+      assert.equal(decorativeOn(page), false, `a short muted loop on its own page: ${page}`);
+      assert.equal(decorativeOn(page, { duration: NaN }), false, `before its length is known: ${page}`);
+    }
+    // In a feed: a post's clip the site names is the post's; one nothing names stays a picture.
+    assert.equal(decorativeOn("https://www.instagram.com/", {}, { post: "/p/DSampleCode1/" }), false, "a post's clip in Instagram's feed");
+    assert.equal(decorativeOn("https://www.instagram.com/"), true, "a loop Instagram's feed names nothing for");
+    assert.equal(decorativeOn("https://www.youtube.com/", {}, { videos: 3 }), true, "a muted loop on YouTube's home");
+    // Any other site's short muted loop without controls: a background, an animated picture.
+    for (const page of ["https://shop.example.test/", "https://news.example/article/1", "https://www.instagram.example/reels/DSampleReel1/"]) {
+      assert.equal(decorativeOn(page), true, `a decorative loop: ${page}`);
+      assert.equal(decorativeOn(page, { duration: NaN }), true, `a decorative loop, its length not known: ${page}`);
+    }
+    // Not such a clip at all: with sound, not looping, with controls, longer than 15 s.
+    for (const [what, video] of [["with sound", { muted: false }], ["not looping", { loop: false }], ["with controls", { controls: true }], ["40 s long", { duration: 40 }]]) {
+      assert.equal(decorativeOn("https://shop.example.test/", video), false, `a video ${what} is no moving picture`);
+    }
+    ok("video.js: a reel on its own page (muted, looping, short) gets the button; a decorative loop doesn't");
+  }
   ok("video.js: the qualities' menu follows a lookup one question at a time for a minute; rows as text, the user's own clicks and keys; its words, #703's early look-up, #741's moves");
 }
 
