@@ -569,6 +569,12 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 Everything below ships together, in version 0.6.0, the next release.
 
+- ✅ The browser add-on's Download video button checked on about 30 video sites and player types in
+  Chrome and Firefox, and shown where it was missing: YouTube embedded in other sites before it plays,
+  a player in a lightbox (a modal dialog or a popover), a player with a closed shadow root, one written
+  into a frame of the page's own, and a page that keeps the pointer's moves; a pre-roll ad's player no
+  longer gets the button
+
 - ✅ Website: live counters under the home page's contributors, the downloads from GitHub (every
   file of every release) and the browser add-on's users (the Chrome Web Store and Firefox Add-ons), on
   split-flap tiles that flip up from zero when the page opens; read at most every 15 minutes, the

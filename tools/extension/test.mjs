@@ -2092,6 +2092,97 @@ const videoPageOn = (() => {
   ok("#1879: Hide on this video follows the video in a reused player");
 }
 
+// The top layer (video.js layerOf): a video in full screen itself, in a player in full screen, in
+// a modal dialog or an open popover (across a shadow root) puts the button in the top layer, over
+// that element; a dialog that isn't modal, a closed popover or none leave it as it was.
+{
+  const source = readText("../../extension/video.js");
+  const start = source.indexOf("  // ---- the top layer: from here");
+  const end = source.indexOf("  // ---- the top layer: end.");
+  assert.ok(start > 0 && end > start, "video.js has layerOf and its end mark");
+  const upFrom = (n) => n.parentElement || (n.parentNode && n.parentNode.host) || null;
+  const layerOf = new Function("upFrom", `${source.slice(start, end)}; return layerOf;`)(upFrom);
+  // A fake element: its name, its parent (an element, or a shadow root's host), the pseudo-classes
+  // it matches.
+  const el = (localName, parent = null, states = [], shadowed = false) => {
+    const e = {
+      localName,
+      parentElement: shadowed ? null : parent,
+      parentNode: shadowed ? { host: parent } : parent,
+      matches: (sel) => states.includes(sel),
+      contains: (o) => {
+        for (let n = o; n; n = upFrom(n)) if (n === e) return true;
+        return false;
+      },
+    };
+    return e;
+  };
+  const body = el("body");
+  const plain = el("video", el("div", body));
+  assert.equal(layerOf(plain, null), null, "a plain video: not in the top layer");
+  const own = el("video", body);
+  assert.equal(layerOf(own, own), own, "the video itself in full screen");
+  const player = el("div", body);
+  const inPlayer = el("video", player);
+  assert.equal(layerOf(inPlayer, player), player, "its player in full screen");
+  assert.equal(layerOf(plain, player), null, "another element in full screen: not this video's layer");
+  const modal = el("dialog", body, [":modal"]);
+  const inModal = el("video", el("div", modal));
+  assert.equal(layerOf(inModal, null), modal, "a modal dialog around it");
+  assert.equal(layerOf(el("video", el("dialog", body)), null), null, "a dialog shown without showModal: in the page");
+  const pop = el("div", body, [":popover-open"]);
+  const host = el("x-player", pop);
+  const inShadow = el("video", host, [], true);
+  assert.equal(layerOf(inShadow, null), pop, "an open popover, the video in a shadow root inside it");
+  assert.equal(layerOf(el("video", el("div", body)), null), null, "a closed popover");
+  const old = el("video", el("dialog", body));
+  old.parentElement.matches = () => {
+    throw new Error("unknown pseudo-class");
+  };
+  assert.equal(layerOf(old, null), null, "a browser without :modal or :popover-open");
+  assert.equal(layerOf(null, null), null, "no video");
+  ok("video.js: a video in the top layer (full screen, a modal dialog, a popover) gets its button over it");
+}
+
+// Ads (video.js adVideo): a pre-roll ad's player, from Google's ad servers or in an ad frame, gets
+// no button; the page's own video does, whatever its address (YouTube's googlevideo.com included).
+{
+  const source = readText("../../extension/video.js");
+  const start = source.indexOf("  // ---- ads: from here");
+  const end = source.indexOf("  // ---- ads: end.");
+  assert.ok(start > 0 && end > start, "video.js has adVideo and its end mark");
+  const adVideo = new Function(`${source.slice(start, end)}; return adVideo;`)();
+  const v = (currentSrc) => ({ currentSrc, getAttribute: () => null });
+  const page = "https://news.example.test/story";
+  assert.ok(adVideo(v("https://redirector.gvt1.com/videoplayback/id/abc/itag/22/source/dclk_video_ads"), page), "IMA's ad file");
+  assert.ok(adVideo(v("https://s0.2mdn.net/videoplayback/abc.mp4"), page), "DoubleClick's video server");
+  assert.ok(adVideo(v("https://tpc.googlesyndication.com/simgad/123.mp4"), page), "an ad server's file");
+  assert.ok(adVideo(v("blob:https://imasdk.googleapis.com/1"), "https://imasdk.googleapis.com/js/core/bridge.html"), "in IMA's own frame");
+  assert.ok(!adVideo(v("https://news.example.test/media/story.mp4"), page), "the page's own file");
+  assert.ok(!adVideo(v("blob:https://news.example.test/2"), page), "the page's own stream");
+  assert.ok(!adVideo(v("https://rr1---sn-abc.googlevideo.com/videoplayback?id=1"), "https://www.youtube.com/watch?v=x"), "YouTube's own video");
+  assert.ok(!adVideo(v("https://redirector.gvt1.com/edgedl/chrome/update.crx"), page), "the redirector's other files");
+  assert.ok(!adVideo(v(""), page), "no address yet");
+  assert.ok(!adVideo({ currentSrc: "", getAttribute: () => "https://s0.2mdn.net/ad.mp4" }, "not an address"), "an address it can't read: not an ad");
+  ok("video.js: a pre-roll ad's player gets no button, the page's own video does");
+}
+
+// background.js senderPage: a frame its page wrote itself (about:srcdoc, about:blank) is its tab's
+// page; any other frame its own address; the top frame its tab's (which follows the page).
+{
+  const start = code.indexOf("function senderPage(sender) {");
+  const end = code.indexOf("\n}\n", start);
+  assert.ok(start > 0 && end > start, "background.js has senderPage");
+  const senderPage = new Function(`${code.slice(start, end + 2)}; return senderPage;`)();
+  const tab = { url: "https://site.test/watch/1" };
+  assert.equal(senderPage({ frameId: 0, tab, url: "https://site.test/old" }), "https://site.test/watch/1", "the top frame: its tab's address");
+  assert.equal(senderPage({ frameId: 3, tab, url: "about:srcdoc" }), "https://site.test/watch/1", "an about:srcdoc frame: its tab's page");
+  assert.equal(senderPage({ frameId: 4, tab, url: "about:blank" }), "https://site.test/watch/1", "an about:blank frame: its tab's page");
+  assert.equal(senderPage({ frameId: 5, tab, url: "https://player.test/embed/9" }), "https://player.test/embed/9", "another site's frame: its own");
+  assert.equal(senderPage({ frameId: 6, tab: { url: "chrome://newtab/" }, url: "about:blank" }), null, "not a web page: none");
+  ok("background.js: a frame its page wrote itself speaks for its tab's page");
+}
+
 // The address the button hands the app (video.js's videoPage): the video's own page, not the page
 // that plays it. YouTube's home, a search, a channel or a playlist is a list to yt-dlp, and a watch
 // page opened from a mix carries the list in its address: the button sent either, and the app

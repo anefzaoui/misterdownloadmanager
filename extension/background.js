@@ -3712,8 +3712,12 @@ async function panelOn(page, top) {
 // stays the address the document loaded at, in Firefox it lags a navigation behind, so the button
 // sent the video watched before this one.
 function senderPage(sender) {
-  const top = sender.frameId === 0 && sender.tab && sender.tab.url;
-  const u = top || sender.url || (sender.tab && sender.tab.url) || "";
+  const tab = (sender.tab && sender.tab.url) || "";
+  const top = sender.frameId === 0 && tab;
+  // A frame its page wrote itself (about:blank, about:srcdoc: a player put in such a frame) has
+  // no address of its own: it is its page's, the tab's.
+  const own = sender.url && !/^about:/i.test(sender.url) ? sender.url : "";
+  const u = top || own || tab;
   return /^https?:/i.test(u) ? u : null;
 }
 

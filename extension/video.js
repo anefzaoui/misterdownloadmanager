@@ -105,7 +105,17 @@
       return Promise.resolve({ ok: false, gone: true });
     }
   };
-  const host = location.hostname;
+  // The site: a frame its page wrote itself (about:blank, about:srcdoc) has no host name of its
+  // own, it is its page's (its origin's).
+  const host =
+    location.hostname ||
+    (() => {
+      try {
+        return new URL(globalThis.origin).hostname;
+      } catch {
+        return "";
+      }
+    })();
   // The address the app looks the video up by — the video's, not the page's. Most pages that play
   // a video are not the video's page: YouTube's home, a search, a channel or a playlist carries a
   // list in its address ("recommended", the results, the channel's videos), and yt-dlp reads such
@@ -1916,10 +1926,21 @@ button:focus-visible { outline: none; }
   const onLoadStart = (e) => {
     if (e.target instanceof HTMLMediaElement) began.set(e.target, Date.now());
   };
-  addEventListener("loadstart", onLoadStart, true);
 
-  // Videos inside open shadow roots (players built as web components), looked for again every
-  // few seconds at most.
+  // An element's shadow root, closed ones too: a player built as a web component may close its
+  // own (the page's scripts can't reach its <video>; the extension can: Chromium's
+  // dom.openOrClosedShadowRoot, Firefox's openOrClosedShadowRoot for content scripts).
+  const shadowOf = (n) => {
+    try {
+      if (ext.dom && typeof ext.dom.openOrClosedShadowRoot === "function") return ext.dom.openOrClosedShadowRoot(n) || null;
+      return n.openOrClosedShadowRoot || null;
+    } catch {
+      return null;
+    }
+  };
+
+  // Videos inside shadow roots (players built as web components), looked for again every few
+  // seconds at most.
   let shadowed = [];
   let shadowedAt = 0;
   function shadowVideos() {
@@ -1930,9 +1951,12 @@ button:focus-visible { outline: none; }
       if (depth > 4) return;
       const w = document.createTreeWalker(root, NodeFilter.SHOW_ELEMENT);
       for (let n = w.nextNode(), seen = 0; n && seen < 20000; n = w.nextNode(), seen++) {
-        if (n.shadowRoot) {
-          found.push(...n.shadowRoot.querySelectorAll("video"));
-          walk(n.shadowRoot, depth + 1);
+        // A closed one asked of custom elements only (a name with a dash), the players built
+        // that way: asking every element of a big page every few seconds would cost too much.
+        const sr = n.shadowRoot || (n.localName.includes("-") ? shadowOf(n) : null);
+        if (sr) {
+          found.push(...sr.querySelectorAll("video"));
+          walk(sr, depth + 1);
         }
       }
     };
@@ -1941,8 +1965,28 @@ button:focus-visible { outline: none; }
     return found;
   }
 
+  // ---- ads: from here to its end mark, run as is by tools/extension/test.mjs. A pre-roll ad's
+  // player (Google's IMA ads, the ad servers' own files, an ad frame): not the video the page is
+  // about. Its button handed MDM the ad (a news site's video, while its ad played); the page's own
+  // video, under the ad or once it ended, gets the button instead. `page`: this frame's address.
+  const AD_HOSTS = /(^|\.)(?:2mdn\.net|doubleclick\.net|googlesyndication\.com|imasdk\.googleapis\.com)$/i;
+  function adVideo(v, page) {
+    try {
+      if (AD_HOSTS.test(new URL(page).hostname)) return true;
+      const src = String((v && (v.currentSrc || v.getAttribute?.("src"))) || "");
+      if (!/^https?:/i.test(src)) return false;
+      const u = new URL(src, page);
+      // Google's ads play from its redirector's /videoplayback (YouTube's own videos don't).
+      return AD_HOSTS.test(u.hostname) || (u.hostname === "redirector.gvt1.com" && u.pathname.startsWith("/videoplayback"));
+    } catch {
+      return false;
+    }
+  }
+  // ---- ads: end.
+
   function eligible(v) {
     if (!v.isConnected || isDismissed(v)) return false;
+    if (adVideo(v, location.href)) return false;
     const r = v.getBoundingClientRect();
     const audio = v instanceof HTMLAudioElement;
     if (audio ? !v.controls || r.width < MIN_W || r.height < MIN_AUDIO_H : r.width < MIN_W || r.height < MIN_H) {
@@ -1961,6 +2005,21 @@ button:focus-visible { outline: none; }
           "iframe.drive-viewer-video-iframe, iframe.drive-viewer-iframe, iframe.h3t5Od, iframe[src*='/viewer/main'], iframe[src*='youtube.googleapis.com'], iframe[src*='driveid='], iframe[src*='docid=']",
         ) || []
       );
+    }
+    // A YouTube player embedded in another site, before it plays: its <video> waits out of sight
+    // (above the player) while the player shows the video's picture, so nothing was under the
+    // pointer. The player itself takes the button then; its page (…/embed/<id>) names the video.
+    if (
+      typeof location !== "undefined" &&
+      /^(?:www\.)?youtube(?:-nocookie)?\.com$/.test(location.hostname) &&
+      location.pathname.startsWith("/embed/")
+    ) {
+      const player = document.querySelector?.("#movie_player");
+      const v = player && player.querySelector("video");
+      const p = player && player.getBoundingClientRect();
+      const r = v && v.getBoundingClientRect();
+      const apart = !r || r.bottom <= p.top || r.top >= p.bottom || r.right <= p.left || r.left >= p.right;
+      if (player && apart) return [player];
     }
     return [];
   }
@@ -2251,13 +2310,74 @@ button:focus-visible { outline: none; }
   // ---- where it sits: end.
 
   // ---- showing and hiding ---------------------------------------------------------------------
+  // The page's top layer (full screen, a modal <dialog>, an open popover) is drawn over every
+  // z-index: a button under it was there, and covered (a lightbox player in a <dialog>). Over a
+  // video shown in it, the button goes into the top layer too, as a popover of its own (raised
+  // over the video's), inside the video's layer element (a modal dialog makes the rest of the
+  // page inert: unclickable).
   function attach() {
-    // Over the video in fullscreen: inside the fullscreen element (a fullscreen <video> itself
-    // can't hold it: then it hides).
     const fs = document.fullscreenElement;
-    const parent = fs && fs !== video && fs.contains(video) ? fs : document.documentElement;
-    if (root.parentNode !== parent) parent.appendChild(root);
-    return !(fs && (fs === video || !fs.contains(video)));
+    // Another element in full screen hides this video: so does the button. A <video> in full
+    // screen itself can't hold it, and Chrome and Firefox give it every click even under a
+    // popover drawn over it: no button there (its player's own full screen has one).
+    if (fs && (fs === video || !fs.contains(video))) {
+      lower();
+      return false;
+    }
+    const layer = layerOf(video, fs);
+    const parent = layer && layer !== video ? layer : document.documentElement;
+    if (root.parentNode !== parent) {
+      lower();
+      parent.appendChild(root);
+    }
+    if (layer) raise(layer);
+    else lower();
+    return true;
+  }
+
+  // ---- the top layer: from here to its end mark, run as is by tools/extension/test.mjs. The
+  // element of the top layer the video `v` is shown in: the full-screen element `fs` (the video
+  // itself, or the player holding it), else the nearest modal dialog or open popover around it
+  // (across shadow roots); null when it is in none.
+  function layerOf(v, fs) {
+    if (!v) return null;
+    if (fs && (fs === v || fs.contains(v))) return fs;
+    for (let n = v, i = 0; n && i < 64; n = upFrom(n), i += 1) {
+      try {
+        if ((n.localName === "dialog" && n.matches(":modal")) || n.matches(":popover-open")) return n;
+      } catch {
+        // A browser without these pseudo-classes has no such layer.
+      }
+    }
+    return null;
+  }
+  // ---- the top layer: end.
+
+  // In the top layer, over `layer` (shown after it: the last shown is drawn on top). Shown again
+  // when the layer changed (another dialog, full screen began), so it goes over the new one.
+  let raisedOver = null;
+  function raise(layer) {
+    if (typeof root.showPopover !== "function") return;
+    try {
+      const open = root.matches(":popover-open");
+      if (open && raisedOver === layer) return;
+      if (!root.hasAttribute("popover")) root.setAttribute("popover", "manual");
+      if (open) root.hidePopover();
+      root.showPopover();
+      raisedOver = layer;
+    } catch {
+      // Not in a document that can show it: it stays where it is.
+    }
+  }
+  function lower() {
+    raisedOver = null;
+    if (typeof root.hidePopover !== "function" || !root.hasAttribute("popover")) return;
+    try {
+      if (root.matches(":popover-open")) root.hidePopover();
+    } catch {
+      // Already closed.
+    }
+    root.removeAttribute("popover");
   }
 
   function show(v) {
@@ -3132,36 +3252,36 @@ button:focus-visible { outline: none; }
     resting.leave();
     cancelAnimationFrame(raf);
     cancelAnimationFrame(scan);
+    rewritten.disconnect();
     removeEventListener("pointermove", onMove, true);
     if (isDriveFrame) removeEventListener("pointermove", onFrameMove, true);
     if (isDriveViewer) ext.runtime?.onMessage?.removeListener(onDriveFramePointer);
     if (isSubframe) ext.runtime?.onMessage?.removeListener(onTopFullscreen);
     for (const ev of FULLSCREEN_EVENTS) document.removeEventListener(ev, onFullscreenChange);
+    removeEventListener("pointerdown", onPointerDown, true);
+    removeEventListener("focusin", onFocusIn, true);
     removeEventListener("keydown", onTab, true);
     removeEventListener("loadstart", onLoadStart, true);
+    removeEventListener("blur", onBlur);
     root.remove();
     never = true;
     allowed = false;
     video = null;
   }
   globalThis.__mdmVideoButton = { alive: () => Boolean(ext.runtime?.id), teardown };
-  if (isDriveFrame) {
-    addEventListener("pointermove", onFrameMove, { capture: true, passive: true });
-  }
   if (isDriveViewer) {
     ext.runtime?.onMessage?.addListener(onDriveFramePointer);
   }
   if (isSubframe) {
     ext.runtime?.onMessage?.addListener(onTopFullscreen);
   }
-  addEventListener("pointermove", onMove, { capture: true, passive: true });
-  addEventListener("pointerdown", (e) => {
+  function onPointerDown(e) {
     if (menuOpen && !e.composedPath().includes(root)) closeMenu();
-  }, { capture: true, passive: true });
+  }
   // A video with the keyboard's focus, or a player around one (its controls), gets the button
   // too, kept while the focus stays there; Tab goes from there to the button. Not the focus a
   // click gives (#741): a click that plays or pauses the video shows nothing.
-  addEventListener("focusin", (e) => {
+  function onFocusIn(e) {
     if (!(e.target instanceof Element) || e.composedPath().includes(root)) return;
     const t = e.target;
     if (!t.matches(":focus-visible")) return;
@@ -3174,7 +3294,7 @@ button:focus-visible { outline: none; }
       lastMove = Date.now();
       show(v);
     });
-  }, true);
+  }
   // Tab on the focused player moves into the button first; Tab from the button goes back to
   // the player and on from there (its own controls next), as if the button sat at its start.
   let tabOn = 0;
@@ -3190,13 +3310,39 @@ button:focus-visible { outline: none; }
       e.preventDefault();
     }
   }
-  addEventListener("keydown", onTab, true);
   go.addEventListener("keydown", (e) => {
     if (e.key === "Tab" && !e.shiftKey && focusedPlayer && focusedPlayer.isConnected) {
       tabOn = Date.now();
       focusedPlayer.focus();
     }
   });
-  for (const ev of FULLSCREEN_EVENTS) document.addEventListener(ev, onFullscreenChange);
-  addEventListener("blur", () => hide());
+  function onBlur() {
+    hide();
+  }
+
+  // The page's events, followed from the first moment (this script runs as the page starts): a
+  // player page's own listener that keeps the pointer's moves to itself (stopImmediatePropagation
+  // on the window, before any other script could listen) comes after ours, so the button still
+  // sees them. The same listener again is no new one: listen() may run again.
+  function listen() {
+    addEventListener("pointermove", onMove, { capture: true, passive: true });
+    if (isDriveFrame) addEventListener("pointermove", onFrameMove, { capture: true, passive: true });
+    addEventListener("pointerdown", onPointerDown, { capture: true, passive: true });
+    addEventListener("focusin", onFocusIn, true);
+    addEventListener("keydown", onTab, true);
+    addEventListener("loadstart", onLoadStart, true);
+    addEventListener("blur", onBlur);
+    for (const ev of FULLSCREEN_EVENTS) document.addEventListener(ev, onFullscreenChange);
+  }
+  listen();
+  // A page that writes a frame of its own anew (document.open, then write: an old embed's way)
+  // takes every listener off that frame's window and document, ours too: they are added again
+  // once its new page is in.
+  const rewritten =
+    typeof MutationObserver === "function"
+      ? new MutationObserver(() => {
+          if (!never) listen();
+        })
+      : { disconnect() {} };
+  rewritten.observe?.(document, { childList: true });
 })();
