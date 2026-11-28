@@ -1805,6 +1805,43 @@ fn check_halted(checks: &Checks, hash: &str, checked: u64) -> bool {
     now.duration_since(seen.1) >= CHECK_HALTED_AFTER
 }
 
+/// The bytes there and the size of the files chosen (#2080), what the list and Properties count:
+/// librqbit counts whole pieces, so an unticked file inside a piece it shares with a ticked one
+/// counts as chosen, and a torrent whose unticked files are small reads as its whole size. None
+/// when every file is chosen. Padding files left out; one pass over the files, whatever their
+/// number. While it is checked there are no per-file numbers yet (`file_done` empty): the check's
+/// count (`checked` of `checking`, every piece of the torrent) is given in the same proportion of
+/// the chosen size, so its progress still shows and the size stays the chosen one.
+fn chosen_counts(
+    h: &librqbit::ManagedTorrent,
+    file_done: &[u64],
+    checked: u64,
+    checking: u64,
+) -> Option<(u64, u64)> {
+    let chosen = h.only_files()?;
+    h.with_metadata(|m| {
+        let mut ticked = vec![false; m.file_infos.len()];
+        for i in &chosen {
+            if let Some(t) = ticked.get_mut(*i) {
+                *t = true;
+            }
+        }
+        let (mut done, mut total) = (0u64, 0u64);
+        for (i, f) in m.file_infos.iter().enumerate() {
+            if ticked[i] && !f.attrs.padding {
+                total += f.len;
+                done += file_done.get(i).copied().unwrap_or(0).min(f.len);
+            }
+        }
+        if file_done.is_empty() && checking > 0 {
+            let part = u128::from(checked.min(checking)) * u128::from(total) / u128::from(checking);
+            done = u64::try_from(part).unwrap_or(total);
+        }
+        (done, total)
+    })
+    .ok()
+}
+
 /// A torrent's numbers now: waits while librqbit holds its state (#693).
 fn stats_of(h: &librqbit::ManagedTorrent, hash: &str, checks: &Checks) -> Stats {
     let s = h.stats();
@@ -1827,11 +1864,13 @@ fn stats_of(h: &librqbit::ManagedTorrent, hash: &str, checks: &Checks) -> Stats 
     if !matches!(s.state, TorrentStatsState::Initializing { .. }) {
         checks.lock().unwrap().remove(hash);
     }
+    let (done, total) = chosen_counts(h, &s.file_progress, s.progress_bytes, s.total_bytes)
+        .unwrap_or((s.progress_bytes, s.total_bytes));
     Stats {
         phase,
-        checked: (phase == Phase::Checking).then_some(s.progress_bytes),
-        done: s.progress_bytes,
-        total: s.total_bytes,
+        checked: (phase == Phase::Checking).then_some(done),
+        done,
+        total,
         uploaded: s.uploaded_bytes,
         fetched: live.map_or(0, |l| l.snapshot.fetched_bytes),
         down_speed: live.map_or(0.0, |l| mib(l.download_speed.mbps)),
@@ -3961,9 +4000,14 @@ mod tests {
         let (out2, meta2) = (out.clone(), meta.clone());
         let given = Arc::new(AtomicUsize::new(0));
         let given2 = given.clone();
+        // Linux: the descriptors into the folder each time the app is asked for a file, before
+        // it opens it. Room is made in the budget first, so there is always one free for it.
+        let before_open = Arc::new(AtomicUsize::new(0));
+        let before_open2 = before_open.clone();
         let open_one: authorized_storage::OpenOne = Arc::new(move |index| {
             // Opened again where it is, never made.
             given2.fetch_add(1, Ordering::Relaxed);
+            before_open2.fetch_max(fds_under(&out2).unwrap_or(0), Ordering::Relaxed);
             let path = out2.join(&meta2.files[index].path);
             let file = std::fs::OpenOptions::new()
                 .read(true)
@@ -4021,6 +4065,11 @@ mod tests {
         }
         assert!(most > 0 && most <= MAX, "at most {MAX} open, saw {most}");
         assert!(most_fds <= MAX, "descriptors into the folder: {most_fds}");
+        let before_open = before_open.load(Ordering::Relaxed);
+        assert!(
+            before_open < MAX,
+            "a file was opened with no room made for it: {before_open} open before"
+        );
         assert!(
             given.load(Ordering::Relaxed) >= files.len() - 8,
             "every file handed over closed was given again"
@@ -4760,6 +4809,98 @@ mod tests {
             restored.stop().await;
         }
         seed.stop().await;
+    }
+
+    /// #2080: with some files unticked (`only_files`), `done` and `total` count only the chosen
+    /// files (so finishing a subset reports `chosen / chosen`, never the full torrent size).
+    #[tokio::test(flavor = "multi_thread", worker_threads = 4)]
+    async fn stats_exclude_unticked_files() {
+        let tmp = tempfile::tempdir().unwrap();
+        let src = tmp.path().join("seed");
+        std::fs::create_dir_all(&src).unwrap();
+        let a = vec![3u8; 100_000];
+        let b = vec![9u8; 50_000];
+        std::fs::write(src.join("a.bin"), &a).unwrap();
+        std::fs::write(src.join("b.bin"), &b).unwrap();
+        let torrent = make_torrent(&src).await;
+        let seed = Torrents::start(offline(&tmp.path().join("seed-state")))
+            .await
+            .unwrap();
+        let meta = seed
+            .metadata(
+                &Source::File(torrent.clone()),
+                Duration::from_secs(10),
+                None,
+            )
+            .await
+            .unwrap();
+        assert_eq!(meta.total(), (a.len() + b.len()) as u64);
+        seed.add(&torrent, &src, None, Vec::new(), false)
+            .await
+            .unwrap();
+        let ia = meta
+            .files
+            .iter()
+            .position(|f| f.path == Path::new("a.bin"))
+            .unwrap();
+        let ib = meta
+            .files
+            .iter()
+            .position(|f| f.path == Path::new("b.bin"))
+            .unwrap();
+
+        let out = meta.folder_in(&tmp.path().join("got"));
+        std::fs::create_dir_all(&out).unwrap();
+        let leecher = Torrents::start(offline(&tmp.path().join("dl-state")))
+            .await
+            .unwrap();
+        let hash = leecher
+            .add(
+                &torrent,
+                &out,
+                Some(vec![ib]),
+                vec![seed.listen_addr().unwrap()],
+                false,
+            )
+            .await
+            .unwrap();
+
+        let deadline = std::time::Instant::now() + Duration::from_secs(30);
+        let b_size = b.len() as u64;
+        loop {
+            let st = leecher.stats(&hash).unwrap();
+            assert_eq!(
+                st.total, b_size,
+                "only chosen file counts toward total: {st:?}"
+            );
+            assert!(
+                st.done <= b_size,
+                "unticked file bytes leaked into done: {st:?}"
+            );
+            if st.phase == Phase::Finished {
+                assert_eq!(st.done, b_size, "finished chosen file: {st:?}");
+                break;
+            }
+            assert!(std::time::Instant::now() < deadline, "transfer timed out");
+            tokio::time::sleep(Duration::from_millis(50)).await;
+        }
+        leecher.refresh(&hash);
+        let seen = leecher.seen(&hash).unwrap();
+        assert_eq!((seen.done, seen.total), (b_size, b_size));
+
+        // Stop the seeder before ticking `a.bin` so it cannot download; `total` rises to full
+        // size while `done` matches the checked file bytes (only `b.bin` plus any boundary piece).
+        seed.stop().await;
+        leecher
+            .choose(&hash, &HashSet::from([ia, ib]))
+            .await
+            .unwrap();
+        let both = leecher.stats(&hash).unwrap();
+        assert_eq!(both.total, (a.len() + b.len()) as u64);
+        assert!(both.done >= b_size && both.done < both.total);
+        assert_eq!(both.done, both.file_done.iter().sum::<u64>());
+
+        leecher.stop().await;
     }
 
     /// The app's Recheck of a finished torrent that left the session: added again paused, it

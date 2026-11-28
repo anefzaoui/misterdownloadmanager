@@ -572,6 +572,15 @@ Everything below ships together, in version 0.6.0, the next release.
 - ✅ Torrents: names a disk can't hold as they are (a `/` or `\` inside a name, control characters,
   Windows' reserved characters and device names) are downloaded under plain names instead of
   refusing the torrent ([#2077](https://github.com/anefzaoui/misterdownloadmanager/issues/2077))
+- ✅ Torrents: with files unticked, the list counts the ticked files only (downloaded and size),
+  as Properties does ([#2080](https://github.com/anefzaoui/misterdownloadmanager/issues/2080))
+- ✅ Torrents: a torrent of many files stays within its budget of open files when a file is
+  opened again and at a pause (a follow-up to #2060)
+- ✅ The browser add-on's Download video button checked on about 30 video sites and player types in
+  Chrome and Firefox, and shown where it was missing: YouTube embedded in other sites before it plays,
+  a player in a lightbox (a modal dialog or a popover), a player with a closed shadow root, one written
+  into a frame of the page's own, a page that keeps the pointer's moves, and an Instagram reel on its
+  own page (muted and looping at first); a pre-roll ad's player no longer gets the button
 - ✅ Downloads that redirect through other sites keep the cookies each site needs: the browser
   add-on hands over the cookies of every address the download went through (partitioned ones
   included), MDM keeps those a server sets along the way, and each site gets only its own
@@ -621,6 +630,8 @@ Everything below ships together, in version 0.6.0, the next release.
   adapter chosen in Options → Connection, and don't start while it isn't connected
   ([#2050](https://github.com/anefzaoui/misterdownloadmanager/issues/2050); thanks to
   [@abdul-karim-mia](https://github.com/abdul-karim-mia))
+- ✅ The video button follows the pointer smoothly while dragged and stays where it is dropped
+  (it snapped back to its corner or middle from up to 100 px away on a wide player)
 - ✅ Every pull request and every change to main is scanned for signs of a tampered commit: code
   hidden at the end of long lines, scripts that run on install or when a folder opens, files that
   aren't what their name says and known indicators; main's whole history once a week
