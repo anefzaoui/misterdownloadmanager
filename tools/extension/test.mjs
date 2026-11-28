@@ -3756,8 +3756,18 @@ function videoButton({ stored = {}, location, iframes, videos, subframe = false,
     const interior = plain(w.snap({ x: 0.94, y: 0.4 }, 1750, 1034)); // 105 px from right on 1080p (> 20 px)
     assert.deepEqual(interior, { x: 0.94, y: 0.4, free: true }, "105 px from edge on 1080p stays free");
     assert.deepEqual(plain(w.snap(interior)), { x: 0.94, y: 0.4, free: true }, "kept free spot survives reload");
-    assert.deepEqual(plain(w.snap({ x: 0.992, y: 0.4 }, 1750, 1034)), { x: 1, y: 0.4 }, "14 px from right edge snaps to edge");
-    assert.deepEqual(plain(w.snap({ x: 0.4, y: 0.015 }, 1750, 1034)), { x: 0.4, y: 0 }, "15.5 px from top edge snaps to top");
+    assert.deepEqual(plain(w.snap({ x: 0.992, y: 0.4 }, 1750, 1034)), { x: 1, y: 0.4, exact: true }, "14 px from right edge snaps to edge");
+    assert.deepEqual(plain(w.snap({ x: 0.4, y: 0.015 }, 1750, 1034)), { x: 0.4, y: 0, exact: true }, "15.5 px from top edge snaps to top");
+    // Along the edge, a drop goes into the corner or the middle only within 12 px of it.
+    assert.deepEqual(plain(w.snap({ x: 0.95, y: 0 }, 1750, 1034)), { x: 0.95, y: 0, exact: true }, "87 px from the corner: stays where dropped");
+    assert.deepEqual(plain(w.snap({ x: 0.995, y: 0 }, 1750, 1034)), { x: 1, y: 0, exact: true }, "9 px from the corner: into it");
+    assert.deepEqual(plain(w.snap({ x: 0.53, y: 1 }, 1750, 1034)), { x: 0.53, y: 1, exact: true }, "52 px from the middle: stays");
+    assert.deepEqual(plain(w.snap({ x: 0.504, y: 1 }, 1750, 1034)), { x: 0.5, y: 1, exact: true }, "7 px from the middle: into it");
+    assert.deepEqual(plain(w.snap({ x: 0, y: 0.9 }, 1750, 1034)), { x: 0, y: 0.9, exact: true }, "the left edge: measured along its height");
+    // Read back (this tab's own write, a reload), a dropped spot stays where it was dropped.
+    const dropped = plain(w.snap({ x: 0.95, y: 0 }, 1750, 1034));
+    assert.deepEqual(plain(w.snap(dropped)), { x: 0.95, y: 0, exact: true }, "kept drop survives reload");
+    assert.deepEqual(plain(w.snap({ x: 0.95, y: 0, out: true, side: "top", exact: true })), { x: 0.95, y: 0, out: true, side: "top", exact: true }, "kept drop outside survives reload");
     ok("video.js: the button moves to a corner or outside the player, snapped, kept per site (#1735)");
   }
   // #1923: Options scale (80% / 100% / 120% from `panel`), menu full-screen toggle, and iframe full-screen check.
