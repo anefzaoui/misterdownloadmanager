@@ -1894,6 +1894,21 @@ pub(crate) fn mark_hook(url: &url::Url, referrer: Option<&str>) -> mdm_engine::F
     })
 }
 
+/// Whether `s` names a .torrent file on this computer (a path, as a file association or a drop
+/// hands it over), not one on the web: by its form, without asking the disk on the window's
+/// thread (#1292). Add torrent reads it beside the window, and says so when it isn't there.
+fn torrent_file_path(s: &str) -> bool {
+    let s = s.trim().trim_matches('"');
+    if !s.to_ascii_lowercase().ends_with(".torrent") {
+        return false;
+    }
+    // `C:\x.torrent` reads as an address whose scheme is the drive letter.
+    match url::Url::parse(s) {
+        Ok(u) => u.scheme().len() == 1,
+        Err(_) => true,
+    }
+}
+
 /// The Google Drive file whose player the browser's video button was clicked over (#34, #758):
 /// the page itself when it is a Drive file's (`video_page`), or, when the button sent the player's
 /// own stream (on Google's hosts), the file identified by `driveid` / `docid` or the page it came from
@@ -4212,11 +4227,11 @@ impl App {
         }
         // A magnet link or a .torrent file (browser, command line, file association): Add
         // torrent shows what it holds.
-        if let Some(m) = cmd.url.as_deref().filter(|u| {
-            mdm_torrent::Source::magnet(u).is_some()
-                || (u.to_ascii_lowercase().ends_with(".torrent")
-                    && std::path::Path::new(u.trim_matches('"')).is_file())
-        }) {
+        if let Some(m) = cmd
+            .url
+            .as_deref()
+            .filter(|u| mdm_torrent::Source::magnet(u).is_some() || torrent_file_path(u))
+        {
             let m = m.trim().to_owned();
             self.show_for_dialog(ctx);
             self.open_torrent_dialog(Some(m), ctx);
@@ -9343,15 +9358,18 @@ impl App {
             }
             Cmd::Theme(id) => {
                 self.settings.theme = id.to_owned();
-                crate::theme::select(id, ctx);
-                // Live: egui's own visuals, the glyph rendering and the captions follow at once;
-                // every painter reads the new theme from its next frame.
-                crate::theme::apply_theme(ctx);
-                crate::theme::apply_mode(ctx);
-                self.caption_set = false;
-                self.theme_checked = None;
+                // A theme file is read beside the window's thread (#1292), and applied as it is
+                // in (`paint_frame`, `theme::poll_pick`); a built-in at once.
+                if crate::theme::pick(id, ctx) {
+                    // Live: egui's own visuals, the glyph rendering and the captions follow at
+                    // once; every painter reads the new theme from its next frame.
+                    crate::theme::apply_theme(ctx);
+                    crate::theme::apply_mode(ctx);
+                    self.caption_set = false;
+                    self.theme_checked = None;
+                    ctx.request_repaint();
+                }
                 self.dirty = true;
-                ctx.request_repaint();
             }
             Cmd::OpenThemesFolder => {
                 if let Some(dir) = crate::themefile::dir() {
@@ -9963,13 +9981,15 @@ impl App {
             self.tests_resumed = true;
             self.tests.resume(&mut self.items, &self.settings);
         }
+        // Whether an archive is complete is looked at beside the window's thread (#1292).
+        self.tests.look_beside(ctx);
         let (tests, items, settings) = (&mut self.tests, &mut self.items, &self.settings);
         let before = finished.len();
         finished.retain(|id| !tests.hold(*id, items, settings));
         if finished.len() != before {
             self.dirty = true;
         }
-        for done in self.tests.poll(&mut self.items, ctx) {
+        for done in self.tests.poll(&mut self.items, &self.settings, ctx) {
             self.dirty = true;
             match done {
                 crate::archtest::Done::Release(id) => finished.push(id),
@@ -13013,9 +13033,7 @@ impl App {
             }
         }
         for s in other {
-            let torrent = mdm_torrent::Source::magnet(&s).is_some()
-                || (s.to_ascii_lowercase().ends_with(".torrent")
-                    && std::path::Path::new(&s).is_file());
+            let torrent = mdm_torrent::Source::magnet(&s).is_some() || torrent_file_path(&s);
             if torrent {
                 self.handle_command(
                     ipc::Command {
@@ -15327,6 +15345,14 @@ impl App {
         // Mode support is off. Switches live (IDM asks to restart). On Linux the desktop's own
         // change wakes a frame, and the check runs in it rather than at its next 2 s (#156).
         crate::crash::step(crate::crash::Step::Theme);
+        // A theme file picked in View → Theme, read beside the window's thread (#1292).
+        if crate::theme::poll_pick() {
+            crate::theme::apply_theme(&ctx);
+            crate::theme::apply_mode(&ctx);
+            self.caption_set = false;
+            self.theme_checked = None;
+            ctx.request_repaint();
+        }
         let desktop_changed = crate::theme::system_changed();
         if desktop_changed
             || self
@@ -20354,5 +20380,29 @@ mod stop_and_keep_tests {
             .len();
         assert!(kept > 0);
         assert_eq!(row.size, Some(kept));
+    }
+}
+
+#[cfg(test)]
+mod torrent_path_tests {
+    /// #1292: a .torrent named by its path, told from one on the web by its form alone.
+    #[test]
+    fn a_torrent_file_is_told_by_its_form() {
+        for path in [
+            r"C:\Users\x\Downloads\ubuntu.torrent",
+            r#""D:\a b\linux.TORRENT""#,
+            "/home/x/Downloads/debian.torrent",
+            "debian.torrent",
+        ] {
+            assert!(super::torrent_file_path(path), "{path}");
+        }
+        for not in [
+            "https://example.org/ubuntu.torrent",
+            "ftp://example.org/a.torrent",
+            r"C:\x\ubuntu.iso",
+            "magnet:?xt=urn:btih:0123456789abcdef0123456789abcdef01234567",
+        ] {
+            assert!(!super::torrent_file_path(not), "{not}");
+        }
     }
 }
