@@ -2980,7 +2980,11 @@ mod tests {
             .await
             .unwrap();
         let meta = leecher
-            .metadata(&Source::File(torrent.clone()), Duration::from_secs(10), None)
+            .metadata(
+                &Source::File(torrent.clone()),
+                Duration::from_secs(10),
+                None,
+            )
             .await
             .unwrap();
         let got = tmp.path().join("got");
@@ -2989,7 +2993,10 @@ mod tests {
             .add(&torrent, &out, None, vec![addr], false)
             .await
             .unwrap();
-        wait_for(&leecher, &h2, "downloaded", 30, |s| s.phase == Phase::Finished).await;
+        wait_for(&leecher, &h2, "downloaded", 30, |s| {
+            s.phase == Phase::Finished
+        })
+        .await;
         for (path, bytes) in &files {
             assert_eq!(&std::fs::read(out.join(path)).unwrap(), bytes, "{path:?}");
         }
