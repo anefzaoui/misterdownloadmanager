@@ -16,7 +16,8 @@
 // The cases (per browser): folders (another extension's download in a folder of its own keeps
 // it, #578), link (a .zip link, throttled and not), ask (Firefox set to ask what to
 // do with each new type, as Waterfox is: caught before its dialog, #208), cookie (cookies and referrer
-// forwarded), startedfrom (the page a download was started from goes whole, where its Referer is
+// forwarded), chaincookie (a link that redirects to another host: the browser's cookie for that
+// host goes to MDM, which sends each host its own cookies only, #1540), startedfrom (the page a download was started from goes whole, where its Referer is
 // the site's address only; kept with the download for Refresh download address, #607), names
 // (Content-Disposition), torrents (a tracker's .torrent stays with the browser
 // while Torrent settings leave torrents alone, #1058), redirect, redirectNames (a link that only redirects to its file, named by
@@ -62,7 +63,12 @@
 // inplace), panelOptions (the button follows Options in an open tab: off, on, its size, the site
 // listed; #532, #1278), videoFocus (mouse idle/fullscreen and keyboard focus, #480), fullscreen (one
 // button over a video in full screen, the page's or the player's, and after the extension was
-// updated while it showed, #336), reconnect (a tab opened while
+// updated while it showed, #336), panels (the button over a player in a modal dialog, in a
+// popover, a closed shadow root, an about:srcdoc or about:blank frame, under a pre-roll ad, on a
+// page that keeps the pointer's moves: shown, uncovered, its click handing MDM the file), reels (a
+// reel on Instagram's own page for it, muted, looping, without controls, under the site's layer:
+// the button, muted and unmuted; a shop's decorative muted loop: none), survey (E2E_SURVEY: the button over
+// real sites' players, tools/extension/panel-survey.json; off by default), reconnect (a tab opened while
 // the host couldn't start gets the button once it can, no reload; then MDM started by a click, and
 // reached after it quits and starts again, #474), start (MDM not running: the host starts it),
 // exclude (the toolbar button's "Never take downloads from <site>" says it worked, and is switched
@@ -649,6 +655,8 @@ async function chromium(bin, profile, dl, page, ready, name = "Chromium") {
     return {
       // Why the browser can't answer any more (it didn't answer in time, or went away), or null.
       gone: () => cdp.failure,
+      // A DevTools command to the tab (the survey case: its frames and closed shadow roots).
+      cdp: (method, params = {}) => cdp.send(method, params, sessionId),
       extension: id,
       base: `chrome-extension://${id}/`,
       serve,
@@ -958,6 +966,9 @@ async function firefox(bin, profile, dl, page, ready, name = "Firefox") {
     return {
       // Why the browser can't answer any more (it didn't answer in time, or went away), or null.
       gone: () => bidi.failure,
+      // A BiDi command, and the tab's context (the survey case: its frames).
+      bidi: (method, params = {}) => bidi.send(method, params),
+      context,
       extension,
       serve,
       // Another add-on (the folder `dir`), temporary beside ours: its ID; and removed again.
@@ -2567,6 +2578,323 @@ async function galleryLookups(seed, sent, left) {
   return `; windows: ${open.join(", ")}`;
 }
 
+// ---- the survey: the video button over real sites' players (E2E_SURVEY) ----------------------
+
+// Run in each frame, its document as `this`: the largest video in it (open shadow roots too),
+// kept for the next steps as window.__mdmSurveyVideo; and its largest frames. Rectangles in the
+// frame's own viewport.
+const SURVEY_FIND = `function () {
+  const doc = this, win = doc.defaultView;
+  const all = [];
+  const walk = (root, depth) => {
+    for (const v of root.querySelectorAll("video")) all.push([v, depth > 0]);
+    if (depth > 6) return;
+    for (const e of root.querySelectorAll("*")) if (e.shadowRoot) walk(e.shadowRoot, depth + 1);
+  };
+  walk(doc, 0);
+  const box = (e) => { const r = e.getBoundingClientRect(); return { l: r.left, t: r.top, r: r.right, b: r.bottom, w: r.width, h: r.height }; };
+  let best = null;
+  for (const [v, shadowed] of all) {
+    const r = box(v);
+    if (r.w * r.h <= 0) continue;
+    if (!best || r.w * r.h > best.r.w * best.r.h) best = { v, r, shadowed };
+  }
+  const frames = [...doc.querySelectorAll("iframe")].map((f) => ({ src: f.src, r: box(f), cl: f.clientLeft, ct: f.clientTop })).filter((f) => f.r.w >= 200 && f.r.h >= 112);
+  frames.sort((a, b) => b.r.w * b.r.h - a.r.w * a.r.h);
+  win.__mdmSurveyVideo = best && best.v;
+  const v = best && best.v;
+  return JSON.stringify({
+    videos: all.length,
+    video: v && { ...best.r, shadowed: best.shadowed, muted: v.muted, loop: v.loop, controls: v.controls,
+      duration: Number.isFinite(v.duration) ? Math.round(v.duration) : null, paused: v.paused,
+      src: (v.currentSrc || "").replace(/^(blob:|https?:\\/\\/[^/]+).*/, "$1"),
+      style: (() => { const s = win.getComputedStyle(v); return [s.display, s.visibility, s.opacity].join(" "); })(),
+      fullscreen: Boolean(doc.fullscreenElement), modal: Boolean(v.closest("dialog[open]")) },
+    frames: frames.slice(0, 3),
+    title: doc.title.slice(0, 80),
+  });
+}`;
+// The kept video scrolled to the middle of its frame's window.
+const SURVEY_SCROLL = `function () {
+  const v = this.defaultView.__mdmSurveyVideo;
+  if (v && v.isConnected) v.scrollIntoView({ block: "center", inline: "center" });
+  return JSON.stringify(Boolean(v));
+}`;
+// The button shown in this frame (its host's rectangle), or null.
+const SURVEY_BUTTON = `function () {
+  const b = [...this.querySelectorAll("mdm-video-button")].find((e) => e.style.getPropertyValue("display") === "block");
+  if (!b) return JSON.stringify(null);
+  const r = b.getBoundingClientRect();
+  // What a click at its middle reaches: the button, or what covers it (a top layer's element).
+  const top = this.elementFromPoint(r.left + Math.min(14, r.width / 2), r.top + r.height / 2);
+  const covered = top && top !== b ? top.localName + (top.id ? "#" + top.id : "") : "";
+  return JSON.stringify({ l: r.left, t: r.top, r: r.right, b: r.bottom, parent: b.parentNode.localName, covered });
+}`;
+
+// The tab's frames, the top one first: each one's address, where its viewport's corner is on the
+// tab, `run(fn)` (fn with its document as this, a JSON answer) and `pill(fn)` (fn on its shown
+// button's closed shadow root, as PILL_STATE). Chromium: one frame tree in one process (the
+// survey runs it with site isolation off); Firefox: each frame's context, placed by its
+// <iframe> in its parent (by address, else the parent's only frame).
+async function surveyFrames(s) {
+  if (s.cdp) {
+    const { root: doc } = await s.cdp("DOM.getDocument", { depth: -1, pierce: true });
+    const frames = [];
+    const walk = async (n, f) => {
+      if (n.nodeName === "MDM-VIDEO-BUTTON") f.buttons.push(n);
+      for (const c of [...(n.children || []), ...(n.shadowRoots || [])]) await walk(c, f);
+      if (n.contentDocument) {
+        const model = await s.cdp("DOM.getBoxModel", { nodeId: n.nodeId }).then((r) => r.model, () => null);
+        if (!model) return;
+        const inner = { doc: n.contentDocument, at: { x: model.content[0], y: model.content[1] }, buttons: [], url: n.contentDocument.documentURL };
+        frames.push(inner);
+        await walk(n.contentDocument, inner);
+      }
+    };
+    const top = { doc, at: { x: 0, y: 0 }, buttons: [], url: doc.documentURL };
+    frames.push(top);
+    await walk(doc, top);
+    const call = async (nodeId, fn) => {
+      const { object } = await s.cdp("DOM.resolveNode", { nodeId });
+      const r = await s.cdp("Runtime.callFunctionOn", { objectId: object.objectId, functionDeclaration: fn, returnByValue: true, awaitPromise: true });
+      return r.result && typeof r.result.value === "string" ? JSON.parse(r.result.value) : null;
+    };
+    return frames.map((f) => ({
+      url: f.url,
+      at: f.at,
+      // The top frame's by its own evaluate: a busy page's DOM changes take node ids away.
+      run: (fn) => (f === top ? s.evaluate(`(${fn}).call(document)`).then((v) => (typeof v === "string" ? JSON.parse(v) : null)) : call(f.doc.nodeId, fn)),
+      pill: async (fn) => {
+        const style = (b) => { const a = b.attributes || []; const i = a.indexOf("style"); return i >= 0 ? a[i + 1] : ""; };
+        const shown = f.buttons.find((b) => /display:\s*block/.test(style(b)));
+        const root = shown && (shown.shadowRoots || [])[0];
+        return root ? call(root.nodeId, fn) : null;
+      },
+    }));
+  }
+  const { contexts } = await s.bidi("browsingContext.getTree", { root: s.context });
+  const frames = [];
+  const value = (r) => (r.type === "success" && r.result && typeof r.result.value === "string" ? JSON.parse(r.result.value) : null);
+  const run = async (context, fn) => value(await s.bidi("script.evaluate", { expression: `(${fn}).call(document)`, target: { context }, awaitPromise: true }));
+  const walk = async (c, at) => {
+    frames.push({ context: c.context, url: c.url, at });
+    if (!(c.children || []).length || !at) return;
+    const found = (await run(c.context, SURVEY_FIND).catch(() => null)) || { frames: [] };
+    for (const child of c.children) {
+      const strip = (u) => String(u || "").replace(/#.*$/, "");
+      const origin = (u) => {
+        try {
+          return new URL(u).origin;
+        } catch {
+          return "";
+        }
+      };
+      // By its address, else by its site (a frame that went on to another address), else the
+      // only frame big enough for a player.
+      const f =
+        found.frames.find((x) => strip(x.src) === strip(child.url)) ||
+        found.frames.find((x) => origin(x.src) && origin(x.src) === origin(child.url)) ||
+        (c.children.length === 1 || found.frames.length === 1 ? found.frames[0] : null);
+      await walk(child, f ? { x: at.x + f.r.l + f.cl, y: at.y + f.r.t + f.ct } : null);
+    }
+  };
+  await walk(contexts[0], { x: 0, y: 0 });
+  return frames.filter((f) => f.at).map((f) => ({
+    url: f.url,
+    at: f.at,
+    run: (fn) => run(f.context, fn),
+    pill: async (fn) => {
+      const r = await s.bidi("script.evaluate", {
+        expression: `[...document.querySelectorAll("mdm-video-button")].find((e) => e.style.getPropertyValue("display") === "block") || null`,
+        target: { context: f.context },
+        awaitPromise: false,
+        resultOwnership: "root",
+        serializationOptions: { includeShadowTree: "all", maxDomDepth: 1 },
+      });
+      const shadow = r.result && r.result.value && r.result.value.shadowRoot;
+      if (!shadow || !shadow.sharedId) return null;
+      const c = await s.bidi("script.callFunction", { functionDeclaration: fn, this: { sharedId: shadow.sharedId }, target: { context: f.context }, awaitPromise: false });
+      return c.result && typeof c.result.value === "string" ? JSON.parse(c.result.value) : null;
+    },
+  }));
+}
+
+// The button shown in any frame: its frame and its rectangle on the tab; null when none shows.
+async function surveyButton(s) {
+  for (const f of await surveyFrames(s)) {
+    const b = await f.run(SURVEY_BUTTON).catch(() => null);
+    if (b) return { f, b: { l: b.l + f.at.x, t: b.t + f.at.y, r: b.r + f.at.x, b: b.b + f.at.y, parent: b.parent, covered: b.covered } };
+  }
+  return null;
+}
+
+// Where the button is over the video `v` (both on the tab): "inside top right", "outside left"…
+function surveyWhere(b, v) {
+  const cx = (b.l + b.r) / 2;
+  const cy = (b.t + b.b) / 2;
+  const inside = cx >= v.l && cx <= v.r && cy >= v.t && cy <= v.b;
+  const y = cy < v.t + (v.b - v.t) / 3 ? "top" : cy > v.b - (v.b - v.t) / 3 ? "bottom" : "middle";
+  const x = cx < v.l + (v.r - v.l) / 3 ? "left" : cx > v.r - (v.r - v.l) / 3 ? "right" : "centre";
+  return `${inside ? "inside" : "outside"} ${y} ${x}`;
+}
+
+// The survey's pages: a real site's address, or `lab:<path>` on the lab server; `setup`, script
+// run on the page first (a lab page made into a player's structure); `click`, a selector clicked
+// first (a poster's play button); `clickFrame`, a click in the largest frame first; `wait`, ms
+// before looking; `scroll`, screens scrolled down for
+// a feed's first video; `handoff: false`, no menu.
+async function surveySite(t, site, shots, index) {
+  const s = t.session;
+  const rec = { name: site.name };
+  const url = site.url.startsWith("lab:") ? `${LAB}${site.url.slice(4)}` : site.url;
+  const pid = appPid();
+  appWindows(pid, VIDEO_WINDOW);
+  await s.evaluate(`(location.href = ${JSON.stringify(url)}, 1)`).catch(() => {});
+  await sleep(1500);
+  await until("the page", 40000, () => s.evaluate(`document.readyState === "complete" && location.href !== "about:blank"`).catch(() => false)).catch(() => (rec.load = "slow"));
+  await sleep(site.wait ?? 4000);
+  if (site.setup) await s.evaluate(site.setup).catch((e) => (rec.setup = e.message.slice(0, 120)));
+  if (site.click) {
+    const c = await s.evaluate(`(() => { const e = document.querySelector(${JSON.stringify(site.click)}); if (!e) return null; e.scrollIntoView({ block: "center" }); const r = e.getBoundingClientRect(); return { x: r.left + r.width / 2, y: r.top + r.height / 2 }; })()`).catch(() => null);
+    if (c) {
+      await s.mouse(c.x, c.y, "click");
+      await sleep(3000);
+    } else rec.click = "not found";
+  }
+  // `clickFrame`: a click in the middle of the page's largest frame (an embedded player's play).
+  if (site.clickFrame) {
+    const c = await s.evaluate(`(() => { const f = [...document.querySelectorAll("iframe")].sort((a, b) => b.offsetWidth * b.offsetHeight - a.offsetWidth * a.offsetHeight)[0]; if (!f) return null; const r = f.getBoundingClientRect(); return { x: r.left + r.width / 2, y: r.top + r.height / 2 }; })()`).catch(() => null);
+    if (c) {
+      await s.mouse(c.x, c.y, "click");
+      await sleep(4000);
+    } else rec.click = "no frame";
+  }
+  // The largest video in any frame (its frame's corner added), else the largest frame.
+  const find = async () => {
+    let best = null;
+    let frame = null;
+    for (const f of await surveyFrames(s)) {
+      const found = await f.run(SURVEY_FIND).catch(() => null);
+      if (!found) continue;
+      if (found.video && (!best || found.video.w * found.video.h > best.v.w * best.v.h)) best = { f, v: found.video, videos: found.videos };
+      if (f.at.x === 0 && f.at.y === 0 && found.frames[0]) frame = found.frames[0];
+    }
+    return best || (frame && { frame });
+  };
+  let target = await until("a video", site.find ?? 15000, async () => {
+    const x = await find();
+    return x && x.v ? x : null;
+  }).catch(find);
+  // A feed's players come as it scrolls (`scroll`: how many screens down at most).
+  for (let i = 0; i < (site.scroll || 0) && !(target && target.v); i++) {
+    await s.evaluate("(scrollBy(0, innerHeight * 0.8), 1)").catch(() => {});
+    await sleep(2000);
+    target = await find();
+  }
+  if (!target || !target.v) {
+    rec.video = target && target.frame ? `none (a frame ${Math.round(target.frame.r.w)}x${Math.round(target.frame.r.h)} not reached)` : "none";
+    if (shots) await s.screenshot(path.join(shots, `survey-${t.name}-${String(index).padStart(2, "0")}-${site.name.replace(/\W+/g, "-")}.png`)).catch(() => {});
+    return rec;
+  }
+  // Scrolled to only when not in the window yet (a page may move it when scrolled).
+  const inView = await s.evaluate("[innerWidth, innerHeight]").catch(() => [1280, 800]);
+  const t0 = { t: target.v.t + target.f.at.y, b: target.v.b + target.f.at.y };
+  if (t0.t < 0 || t0.b > inView[1]) {
+    await target.f.run(SURVEY_SCROLL).catch(() => {});
+    await sleep(800);
+    target = (await find()) || target;
+  }
+  const v = target.v;
+  const at = target.f.at;
+  let vr = { l: v.l + at.x, t: v.t + at.y, r: v.r + at.x, b: v.b + at.y };
+  // A video waiting out of its frame's sight (YouTube's embed before it plays): the frame is
+  // what a person points at.
+  if ((at.x || at.y) && (v.b <= 0 || v.r <= 0)) {
+    const top = await surveyFrames(s).then((f) => f[0].run(SURVEY_FIND)).catch(() => null);
+    const frame = top && top.frames.find((f) => Math.abs(f.r.l + f.cl - at.x) < 2 && Math.abs(f.r.t + f.ct - at.y) < 2);
+    if (frame) vr = { l: frame.r.l, t: frame.r.t, r: frame.r.r, b: frame.r.b };
+  }
+  rec.video = `${Math.round(v.w)}x${Math.round(v.h)}${v.shadowed ? " shadow" : ""}${at.x || at.y ? " frame" : ""}${v.muted ? " muted" : ""}${v.loop ? " loop" : ""}${v.controls ? " controls" : ""} ${v.src || "no src"}${v.duration !== null ? ` ${v.duration}s` : ""} [${v.style}] of ${target.videos}`;
+  // The pointer over the part of it in the window (a page may scroll it partly away again).
+  const view = (await s.evaluate("[innerWidth, innerHeight]").catch(() => null)) || [1280, 800];
+  const vis = { l: Math.max(vr.l, 1), t: Math.max(vr.t, 1), r: Math.min(vr.r, view[0] - 2), b: Math.min(vr.b, view[1] - 2) };
+  if (vis.r - vis.l < 20 || vis.b - vis.t < 20) {
+    rec.button = `video off the window (${JSON.stringify(vr)} in ${view})`;
+    return rec;
+  }
+  let shown = null;
+  for (let i = 0; i < 50 && !shown; i++) {
+    const x = (vis.l + vis.r) / 2 + (i % 3) * 7 - 7;
+    const y = (vis.t + vis.b) / 2 + (i % 2) * 5;
+    await s.mouse(x, y);
+    await sleep(250);
+    shown = await surveyButton(s);
+  }
+  if (shots) await s.screenshot(path.join(shots, `survey-${t.name}-${String(index).padStart(2, "0")}-${site.name.replace(/\W+/g, "-")}.png`)).catch(() => {});
+  // `after`: a function run in the video's frame now (what a page's own listeners saw).
+  if (site.after) {
+    const fr = (await surveyFrames(s)).find((f) => f.url === target.f.url) || target.f;
+    rec.after = await fr.run(site.after).catch((e) => e.message.slice(0, 120));
+  }
+  if (!shown) {
+    rec.button = "NO";
+    // Headless Firefox's remote protocol moves no pointer into another site's frame (the panels
+    // case found its page sees no move): such a miss there says nothing of the add-on.
+    if (s.bidi && (at.x || at.y)) {
+      const origin = (u) => {
+        try {
+          return new URL(u).origin;
+        } catch {
+          return "";
+        }
+      };
+      const top = await s.evaluate("location.origin").catch(() => "");
+      if (origin(target.f.url) !== top) rec.button = "not measurable (headless Firefox moves no pointer into another site's frame)";
+    }
+    // Chromium: what the extension's background says of the page (the app's answer to `panel`).
+    if (s.inExtension) {
+      const at = await s.evaluate("location.href").catch(() => "");
+      rec.panel = await s.inExtension(`panelOn(${JSON.stringify(at)}, ${JSON.stringify(at)}).then((r) => JSON.stringify(r), (e) => "error " + e)`).catch((e) => e.message.slice(0, 120));
+    }
+    return rec;
+  }
+  rec.button = surveyWhere(shown.b, vr) + (shown.b.parent !== "html" ? ` (in <${shown.b.parent}>)` : "");
+  if (shown.b.covered) {
+    rec.button = `COVERED by <${shown.b.covered}>: ${rec.button}`;
+    return rec;
+  }
+  if (site.handoff === false) return rec;
+  // Its menu, then "All qualities and subtitles…": the Download video window's address. The
+  // button's frame found again for each question (a busy page's DOM changes its nodes' ids).
+  const pill = async (fn) => {
+    for (let i = 0; i < 3; i++) {
+      const now = await surveyButton(s);
+      const r = now && (await now.f.pill(fn).catch(() => null));
+      if (r) return { ...r, off: now.f.at };
+    }
+    return null;
+  };
+  const more = await pill(MORE_AT);
+  if (!more) return { ...rec, handoff: "no arrow" };
+  await s.mouse(more.x + more.off.x, more.y + more.off.y);
+  await sleep(300);
+  const again = (await pill(MORE_AT)) || more;
+  await s.mouse(again.x + again.off.x, again.y + again.off.y, "click");
+  const m = await until("the menu, looked up", 60000, async () => {
+    const p = await pill(PICKS("open"));
+    return p && !p.busy ? p : null;
+  }).catch(() => pill(PICKS("open")));
+  if (!m) return { ...rec, handoff: "no menu" };
+  const off = m.off;
+  rec.menu = m.rows.length ? `${m.rows.length} lines, ${m.rows[0].name}${m.rows[1] ? ` / ${m.rows[1].name} ${m.rows[1].size}` : ""}` : `no lines${m.note ? `: ${m.note.slice(0, 80)}` : ""}`;
+  await s.mouse(m.open.x + off.x, m.open.y + off.y, "click");
+  const opened = await until("the Download video window", 8000, () => appWindows(pid).includes(VIDEO_WINDOW)).catch(() => false);
+  rec.handoff = opened ? (await until("its address", 10000, () => videoAddress(pid)).catch(() => "(no address)")) : "no window";
+  appWindows(pid, VIDEO_WINDOW);
+  await s.mouse(2, 2);
+  return rec;
+}
+
 const CASES = {
   // #578: a download another extension starts in a folder of its own, of a type MDM doesn't
   // take, lands in that folder. Chromium only (Firefox has no onDeterminingFilename): MDM's
@@ -2779,6 +3107,42 @@ const CASES = {
     }
     await keptNothing(t.dl);
     return `${mdm.length} request(s) with sid=1, the page as referrer, the browser's User-Agent`;
+  },
+
+  // #1540: a link whose redirect leads to another host (a file host's CDN) that wants its own
+  // cookie: the browser's cookie for that host goes to MDM with the download, and MDM sends each
+  // host its own only (the link's cookie to the link's host, the CDN's to the CDN). Before #1540
+  // the CDN was asked without any cookie and refused. The link is on `localhost` and the file on
+  // 127.0.0.1: IDM, when it runs, leaves 127.0.0.1 alone but would take a file from localhost.
+  async chaincookie(t) {
+    await localhostListed(t, false);
+    const link = LAB.replace("127.0.0.1", "localhost");
+    const tok = `cdn${t.name.replace(/\W/g, "")}`;
+    await t.session.navigate(`${link}/cookie?set=${encodeURIComponent(`lnk=${tok}`)}`);
+    await t.session.navigate(`${LAB}/cookie?set=${encodeURIComponent(`tok=${tok}`)}`);
+    const file = `e2e-chain-${t.name}.zip`;
+    const target = `${LAB}/gen/1M/${file}?require_cookie=${encodeURIComponent(`tok=${tok}`)}`;
+    await clickLink(t, `${link}/jump?to=${encodeURIComponent(target)}&f=${encodeURIComponent(file)}`);
+    await arrived(file, 1 << 20);
+    const mdm = await mdmRequests(`/gen/1M/${file}`);
+    const has = (e, name) => (e.cookie || "").split(/;\s*/).some((p) => p.split("=")[0] === name);
+    // What a request carried, by the cookies' names only (never their values).
+    const names = (e) => `${brief(e)} ${e.path}, cookies: ${(e.cookie || "").split(/;\s*/).map((p) => p.split("=")[0]).filter(Boolean).join(", ") || "none"}`;
+    for (const e of mdm) {
+      if (!has(e, "tok")) throw new Error(`MDM asked the CDN without its cookie: ${names(e)}`);
+      if (has(e, "lnk")) throw new Error(`the link's cookie reached the CDN: ${names(e)}`);
+      if (e.status >= 400) throw new Error(`MDM's request refused: ${names(e)}`);
+    }
+    // The link's own host: its cookie, never the CDN's (the browser's first ask, then MDM's).
+    const log = await (await fetch(`${LAB}/_log`)).json();
+    const jumps = log.filter((e) => e.path === "/jump" && (e.query || "").includes(encodeURIComponent(file)));
+    if (jumps.length < 2) throw new Error(`the link's host asked ${jumps.length} time(s), not by the browser and MDM`);
+    for (const e of jumps) {
+      if (has(e, "tok")) throw new Error(`the CDN's cookie reached the link's host: ${names(e)}`);
+      if (!has(e, "lnk")) throw new Error(`the link's host asked without its own cookie: ${names(e)}`);
+    }
+    await keptNothing(t.dl);
+    return `${mdm.length} request(s) to the CDN with its own cookie only; ${jumps.length} to the link's host with its own only`;
   },
 
   // #607: a page whose referrer policy is `origin` (as a link to another site's file gets by
@@ -5193,6 +5557,278 @@ thumb.addEventListener("mouseleave", () => { preview.classList.add("off"); docum
     } finally {
       await stopApp();
     }
+  },
+
+  // E2E_SURVEY=<a JSON file>: the video button over real sites' players (the network's, so never
+  // by default; tools/extension/panel-survey.json): for each page ([{name, url, setup, click,
+  // wait, handoff}], surveySite), its largest video in any frame, the pointer over it, the button
+  // looked for in every frame and where it shows, then its menu's "All qualities and
+  // subtitles..." and the address the Download video window got; nothing is downloaded.
+  // E2E_SURVEY_ONLY=<pattern of names>; with E2E_SHOTS, a picture of each page and
+  // survey-<browser>.json. Chromium: run with E2E_CHROMIUM_ARGS="--disable-site-isolation-trials
+  // --disable-features=IsolateOrigins,site-per-process" so its frames are one tree.
+  async survey(t) {
+    const list = process.env.E2E_SURVEY;
+    if (!list) throw new Skip("no E2E_SURVEY");
+    if (!WIN) throw new Skip(NO_UIA);
+    const wanted = process.env.E2E_SURVEY_ONLY ? new RegExp(process.env.E2E_SURVEY_ONLY, "i") : null;
+    const sites = JSON.parse(fs.readFileSync(list, "utf8")).filter((x) => !wanted || wanted.test(x.name));
+    const shots = process.env.E2E_SHOTS ? path.resolve(process.env.E2E_SHOTS) : "";
+    if (shots) fs.mkdirSync(shots, { recursive: true });
+    // A headless Chromium names itself so; some sites serve it nothing.
+    if (t.session.cdp) await t.session.cdp("Emulation.setUserAgentOverride", { userAgent: t.ua.replace("HeadlessChrome", "Chrome") });
+    const out = [];
+    for (const [i, site] of sites.entries()) {
+      let rec;
+      try {
+        rec = await surveySite(t, site, shots, i + 1);
+      } catch (e) {
+        rec = { name: site.name, error: e.message.slice(0, 200) };
+      }
+      out.push(rec);
+      console.error(`    ${t.name} ${JSON.stringify(rec)}`);
+      if (shots) fs.writeFileSync(path.join(shots, `survey-${t.name}.json`), JSON.stringify(out, null, 1));
+      if (t.session.gone()) break;
+    }
+    return `${out.filter((r) => r.button && r.button !== "NO").length} of ${out.length} with the button`;
+  },
+
+  // The video button where it didn't show, or showed covered (the survey's misses, lab pages with
+  // the same structure): a player in a modal <dialog> (a lightbox) and in a popover, both in the
+  // page's top layer, drawn over any z-index; a player that closed its shadow root; a player
+  // written into a frame of the page's own (about:srcdoc, and about:blank by document.write); a
+  // pre-roll ad laid over the player; a page whose script keeps the pointer's moves to itself.
+  // Each time the button shows over the video, nothing covers it, and its click hands MDM the
+  // video's file.
+  async panels(t) {
+    const s = t.session;
+    const clip = `${LAB}/gen/1M/clip.mp4`;
+    const firefox = Boolean(s.inBrowser);
+    // Headless Firefox grants full screen only to a page whose window has the focus (fullscreen).
+    const focus = () =>
+      firefox &&
+      s.inBrowser(`(() => { window.focus(); Services.focus.activeWindow = window; gBrowser.selectedBrowser.focus(); return Services.focus.activeWindow === window; })()`);
+    if (firefox) {
+      await focus();
+      await s.inBrowser(`(Services.prefs.setIntPref("full-screen-api.warning.timeout", 0), Services.prefs.setCharPref("full-screen-api.transition-duration.enter", "0 0"), Services.prefs.setCharPref("full-screen-api.transition-duration.leave", "0 0"), Services.prefs.setBoolPref("full-screen-api.allow-trusted-requests-only", false), "set")`);
+    }
+    const src = JSON.stringify(clip);
+    const layouts = [
+      ["a modal dialog", `(() => { const v = document.querySelector("#video"); const d = document.createElement("dialog"); d.style.cssText = "padding:0;border:0;transform:translateY(10px)"; document.body.append(d); d.append(v); d.showModal(); return d.matches(":modal"); })()`],
+      ["a popover", `(() => { const v = document.querySelector("#video"); const d = document.createElement("div"); d.popover = "manual"; d.style.cssText = "padding:0;border:0"; document.body.append(d); d.append(v); d.showPopover(); return d.matches(":popover-open"); })()`],
+      // (Found by its player's box: the page's own scripts can't reach the video.)
+      ["a closed shadow root", `(() => { const v = document.querySelector("#video"); const h = document.createElement("closed-player"); h.style.cssText = "display:block;width:640px;height:360px"; v.before(h); h.attachShadow({ mode: "closed" }).append(v); return !h.shadowRoot; })()`, "", "closed-player"],
+      ["an about:srcdoc frame", `(() => { const v = document.querySelector("#video"); const f = document.createElement("iframe"); f.width = 680; f.height = 400; f.srcdoc = '<video src="' + ${src} + '" controls width=640 height=360></video>'; v.replaceWith(f); return new Promise((r) => f.addEventListener("load", () => r(true))); })()`],
+      ["an about:blank frame written by script", `(() => { const v = document.querySelector("#video"); const f = document.createElement("iframe"); f.width = 680; f.height = 400; v.replaceWith(f); const d = f.contentDocument; d.open(); d.write('<video src="' + ${src} + '" controls width=640 height=360></video>'); d.close(); return true; })()`],
+      // A pre-roll ad laid over the player, from Google's ad server (answered here, never the
+      // network's): the button is the page's video's, and hands MDM its file, not the ad.
+      ["a pre-roll ad over the player", `(() => { const v = document.querySelector("#video"); const w = document.createElement("div"); w.style.cssText = "position:relative;width:640px;height:360px"; v.before(w); w.append(v); const ad = document.createElement("video"); ad.preload = "none"; ad.muted = true; ad.src = "https://redirector.gvt1.com/videoplayback/id/lab/itag/22/source/dclk_video_ads/ad.mp4"; ad.style.cssText = "position:absolute;left:1px;top:1px;width:638px;height:358px;z-index:2"; w.append(ad); return /gvt1/.test(ad.currentSrc || ad.src); })()`],
+      // A player page whose own script, run before anything else, keeps the pointer's moves to
+      // itself (YouTube's embedded player does): the button still follows them.
+      ["a player that stops the pointer's moves", "true", "http://player.example.test/embed"],
+      // YouTube's embedded player before it plays, as its page lays it out (answered here): its
+      // <video> waits above the player, out of sight. Not clicked: the look-up would be YouTube's.
+      ["YouTube's embedded player before it plays", "true", "https://www.youtube.com/embed/lab-video1", "#movie_player", "no click"],
+      // A player on another site, in a frame (an embed): its own copy of the add-on shows it.
+      // Headless Firefox's remote protocol moves no pointer into another site's frame (its page
+      // sees no move at all), nor keys past the first Tab: there, Tab to the player shows the
+      // button (the frame's copy of the add-on runs and may show it), and no click follows.
+      ["a player in another site's frame", `(() => { const v = document.querySelector("#video"); const f = document.createElement("iframe"); f.width = 680; f.height = 400; f.src = "http://frame.example.test/player"; v.replaceWith(f); return new Promise((r) => f.addEventListener("load", () => r(true))); })()`, "", "", "", "another site"],
+    ];
+    const player = `<!doctype html><meta charset=utf-8><title>player</title><script>for (const t of ["pointermove", "mousemove", "pointerover", "mouseover"]) addEventListener(t, (e) => e.stopImmediatePropagation(), true);</script><video id=video src="${clip}" controls width=640 height=360></video>`;
+    const embed = `<!doctype html><meta charset=utf-8><title>embed</title><style>body{margin:0}#movie_player{position:relative;width:640px;height:360px;overflow:hidden;background:#20242c}video{position:absolute;left:0;top:-360px;width:640px;height:360px}</style><div id=movie_player class=html5-video-player><div class=html5-video-container><video class="video-stream html5-main-video"></video></div></div>`;
+    const framed = `<!doctype html><meta charset=utf-8><title>framed</title><video id=video src="${clip}" controls width=640 height=360></video>`;
+    const pages = { "player.example.test": player, "www.youtube.com": embed, "frame.example.test": framed };
+    await s.serve(["redirector.gvt1.com", "player.example.test", "www.youtube.com", "frame.example.test"], (url) => {
+      const body = pages[new URL(url).hostname];
+      return body ? { status: 200, type: "text/html", body } : { status: 404, type: "text/plain", body: "" };
+    });
+    const done = [];
+    // Each layout on its own: one that fails doesn't hide what the others do.
+    const failed = [];
+    for (const [what, setup, page, box, noClick, otherSite] of layouts) {
+      try {
+        await s.navigate(page || `${LAB}/page?video=${encodeURIComponent("/gen/1M/clip.mp4")}`);
+        await focus();
+        const set = await s.evaluate(setup);
+        if (set !== true) throw new Error(`${what}: the page wasn't set up (${set})`);
+        // The video, in whichever frame it is.
+        const found = await until(`${what}: the video`, 10000, async () => {
+          if (box) {
+            const r = await s.evaluate(`(() => { const r = document.querySelector(${JSON.stringify(box)}).getBoundingClientRect(); return { l: r.left, t: r.top, r: r.right, b: r.bottom, w: r.width }; })()`);
+            return { f: { at: { x: 0, y: 0 } }, v: r };
+          }
+          for (const f of await surveyFrames(s)) {
+            const x = await f.run(SURVEY_FIND).catch(() => null);
+            if (x && x.video && x.video.w > 300) return { f, v: x.video };
+          }
+          return null;
+        }).catch((e) => {
+          // Chromium with site isolation (its default) runs another site's frame in a process of
+          // its own, out of this tab's DOM tree: that layout is checked only with it off
+          // (E2E_CHROMIUM_ARGS="--disable-site-isolation-trials --disable-features=IsolateOrigins,site-per-process").
+          if (otherSite && !firefox) return null;
+          throw e;
+        });
+        if (!found) {
+          done.push(`${what}: not checked (another process's frame: site isolation is on)`);
+          continue;
+        }
+        const v = { l: found.v.l + found.f.at.x, t: found.v.t + found.f.at.y, r: found.v.r + found.f.at.x, b: found.v.b + found.f.at.y };
+        const keys = Boolean(otherSite && firefox);
+        const hovered = Date.now();
+        let shown = null;
+        // Until 30 s: the button waits for the app's word that it may show (each question starts
+        // the host anew; on a busy computer one took 6.7 s, and the answer is kept 5 s only).
+        for (let i = 0; !shown && Date.now() - hovered < 30000; i++) {
+          if (keys && i < 4) await s.key("Tab");
+          else await s.mouse((v.l + v.r) / 2 + (i % 3) * 5, (v.t + v.b) / 2 + (i % 2) * 5);
+          await sleep(keys ? 600 : 200);
+          shown = await surveyButton(s);
+        }
+        // E2E_SHOTS (Chromium): the player as it is now, button or none, for a pull request:
+        // <lang>-<scheme>-panel-<layout>.png.
+        if (process.env.E2E_SHOTS && s.shot) {
+          await sleep(400);
+          const name = `${process.env.E2E_LANG || "en"}-${process.env.E2E_COLOR_SCHEME || "light"}-panel-${what.replace(/\W+/g, "-").replace(/^-|-$/g, "")}.png`;
+          await s.shot(path.join(path.resolve(process.env.E2E_SHOTS), name), { l: v.l - 16, t: v.t - 16, r: v.r + 16, b: v.b + 16 });
+        }
+        if (!shown) {
+          // What the frames are, and (Chromium) what the extension says of the video's page.
+          const frames = (await surveyFrames(s).catch(() => [])).map((f) => f.url).join(", ");
+          // How long the app takes to answer the button's question now (the host started anew).
+          const panel = s.inExtension
+            ? await s.inExtension(`(async () => { const t = Date.now(); const r = await native({ panel: true, url: ${JSON.stringify(await s.evaluate("location.href"))} }); const { status } = await chrome.storage.local.get("status"); return JSON.stringify({ ok: r.ok, ms: Date.now() - t, status }); })()`).catch((e) => e.message)
+            : "";
+          throw new Error(`${what}: no button over the video (frames: ${frames}${panel ? `; panel: ${panel}` : ""})`);
+        }
+        if (shown.b.covered) throw new Error(`${what}: the button is covered by <${shown.b.covered}>`);
+        const after = Date.now() - hovered;
+        const where = `${surveyWhere(shown.b, v)} after ${after} ms`;
+        if (!where.startsWith("inside top")) throw new Error(`${what}: the button is ${where}`);
+        if (noClick || keys) {
+          done.push(`${what}: ${where}${keys ? " (by the keyboard, not clicked)" : ""}`);
+          continue;
+        }
+        // Its click: the video's file, to MDM (the button reachable: not inert, not under the layer).
+        const earlier = (await mdmList()).filter((d) => d.url === clip).map((d) => d.id);
+        if (earlier.length) await ipc({ action: "delete", ids: earlier });
+        const before = new Set((await mdmList()).map((d) => d.id));
+        const go = await shown.f.pill(GO_AT).catch(() => null);
+        const x = go && go.w ? go.x + shown.f.at.x : shown.b.l + 14;
+        await s.mouse(x, (shown.b.t + shown.b.b) / 2, "click");
+        const added = await until(`${what}: the video's file in MDM's list`, 15000, async () => (await mdmList()).find((d) => !before.has(d.id))).catch(async (e) => {
+          throw new Error(`${e.message} (the button: ${JSON.stringify(await shown.f.pill(PILL_STATE).catch(() => null))})`);
+        });
+        if (added.url !== clip) throw new Error(`${what}: MDM downloads ${added.url}`);
+        await ipc({ action: "delete", ids: [added.id] });
+        if (await s.evaluate("Boolean(document.fullscreenElement)")) await s.evaluate("document.exitFullscreen().then(() => true)");
+        done.push(`${what}: ${where}${shown.b.parent !== "html" ? ` in <${shown.b.parent}>` : ""}`);
+      } catch (e) {
+        failed.push(e.message);
+        await s.evaluate("document.fullscreenElement ? document.exitFullscreen().then(() => true) : true").catch(() => {});
+      }
+    }
+    await s.mouse(2, 2);
+    if (failed.length) throw new Error(`${failed.join("; ")} (passed: ${done.join("; ") || "none"})`);
+    return done.join("; ");
+  },
+
+  // A reel on Instagram's own page for it (instagram.com/reels/<code>/): its <video> plays a
+  // MediaSource (blob:), muted at first, looping, without controls, under a layer that takes the
+  // pointer and the sound's button, as the site lays it out (our own sample: no real account or
+  // text; served here, never the network's). Short, muted and looping, it looked like a moving
+  // picture and got no button. It does now, muted and after its sound's button unmuted it. A
+  // shop's decorative loop (a background behind its heading, the same kind of <video>) still gets
+  // none, once the button showed over the same page's product video (the app's answer is in).
+  async reels(t) {
+    const s = t.session;
+    const reel = (id, next) => `<div class="reel" id="${id}"><div class="box"><div class="ratio"></div>
+<video class="x1lliihq x5yr21d xh8yej3" playsinline="" preload="none" style="display: block;"></video>
+<div class="layer" role="presentation"></div><div class="sound" role="button" aria-label="Toggle audio" tabindex="0"></div></div>
+<div class="side"><a href="/sample.account.${id}/">sample.account.${id}</a> <a href="/reels/audio/1234567890123456/">Original audio</a>${next ? ` <a href="/reels/${next}/">next</a>` : ""}</div></div>`;
+    // What the page's own script does: each reel's MediaSource, muted and looping (the site
+    // loops its reels), the pointer's moves kept by the layer, the sound's button.
+    const script = `<script>
+for (const v of document.querySelectorAll("video")) { v.muted = true; v.loop = true; v.src = URL.createObjectURL(new MediaSource()); }
+for (const l of document.querySelectorAll(".layer")) { l.addEventListener("pointermove", (e) => e.stopPropagation()); l.addEventListener("click", (e) => e.preventDefault()); }
+for (const b of document.querySelectorAll(".sound")) b.addEventListener("click", () => { const v = b.parentElement.querySelector("video"); v.muted = !v.muted; });
+</script>`;
+    const reelsPage = `<!doctype html><html><head><meta charset="utf-8"><title>Instagram</title><style>
+body{margin:0;background:#000;color:#fff;font:14px system-ui}
+.reel{height:100vh;display:flex;justify-content:center;align-items:center;gap:12px}
+.box{position:relative;width:340px}.ratio{padding-bottom:177.778%}
+.box video{position:absolute;left:0;top:0;width:100%;height:100%;object-fit:cover}
+.layer{position:absolute;inset:0}
+.sound{position:absolute;right:12px;bottom:12px;width:28px;height:28px;border-radius:50%;background:#333;cursor:pointer}
+.side a{color:#fff;display:block}
+</style></head><body><main role="main">${reel("a", "DSampleReel2")}${reel("b", "")}</main>${script}</body></html>`;
+    const clip = `${LAB}/gen/1M/clip.mp4`;
+    const shopPage = `<!doctype html><html><head><meta charset="utf-8"><title>A shop</title><style>
+body{margin:0;font:16px system-ui}
+.hero{position:relative;height:260px;overflow:hidden}
+.hero video{position:absolute;left:0;top:0;width:100%;height:100%;object-fit:cover;z-index:-1}
+.hero h1{margin:0;padding:100px 40px;color:#fff}
+.product{margin:40px}
+</style></head><body><div class="hero"><video id="loop" playsinline="" autoplay=""></video><h1>Spring collection</h1></div>
+<div class="product"><video id="product" src="${clip}" controls width="480" height="270"></video></div>
+<script>const v = document.querySelector("#loop"); v.muted = true; v.loop = true; v.src = URL.createObjectURL(new MediaSource());</script></body></html>`;
+    await s.serve(["www.instagram.com", "shop.example.test"], (url) => {
+      const u = new URL(url);
+      if (u.hostname === "www.instagram.com" && u.pathname.startsWith("/reels/DSampleReel")) return { status: 200, type: "text/html; charset=utf-8", body: reelsPage };
+      if (u.hostname === "shop.example.test" && u.pathname === "/") return { status: 200, type: "text/html; charset=utf-8", body: shopPage };
+      return { status: 404, type: "text/plain", body: "not a sample page" };
+    });
+    const box = (sel) => s.evaluate(`(() => { const r = document.querySelector(${JSON.stringify(sel)}).getBoundingClientRect(); return { l: r.left, t: r.top, r: r.right, b: r.bottom }; })()`);
+    // The pointer moved over `v` until the button shows (30 s at most: the app's first answer
+    // starts its host anew), or for `ms` when none is wanted; the button seen, or null.
+    const pointAt = async (v, ms = 30000) => {
+      const from = Date.now();
+      for (let i = 0; Date.now() - from < ms; i++) {
+        await s.mouse((v.l + v.r) / 2 + (i % 3) * 5, (v.t + v.b) / 2 + (i % 2) * 5);
+        await sleep(200);
+        const shown = await surveyButton(s);
+        if (shown) return { ...shown, after: Date.now() - from };
+      }
+      return null;
+    };
+    const done = [];
+    await s.navigate("https://www.instagram.com/reels/DSampleReel1/");
+    const state = await s.evaluate(`(() => { const v = document.querySelector("#a video"); return { muted: v.muted, loop: v.loop, controls: v.controls, blob: /^blob:/.test(v.currentSrc || v.src), videos: document.querySelectorAll("video").length }; })()`);
+    if (!state.muted || !state.loop || state.controls || !state.blob) throw new Error(`the reel isn't laid out as the site does: ${JSON.stringify(state)}`);
+    const v = await box("#a video");
+    for (const step of ["muted", "unmuted"]) {
+      if (step === "unmuted") {
+        await s.mouse(2, 2);
+        const sound = await box("#a .sound");
+        await s.mouse((sound.l + sound.r) / 2, (sound.t + sound.b) / 2, "click");
+        const muted = await s.evaluate(`document.querySelector("#a video").muted`);
+        if (muted !== false) throw new Error("the reel's sound button didn't unmute it");
+      }
+      const shown = await pointAt(v);
+      if (!shown) throw new Error(`a reel on its own page, ${step}: no button over it`);
+      if (shown.b.covered) throw new Error(`a reel on its own page, ${step}: the button is covered by <${shown.b.covered}>`);
+      const where = surveyWhere(shown.b, v);
+      if (!where.startsWith("inside")) throw new Error(`a reel on its own page, ${step}: the button is ${where}`);
+      done.push(`a reel on its own page, ${step}: ${where} after ${shown.after} ms`);
+    }
+    await s.mouse(2, 2);
+    await s.navigate("http://shop.example.test/");
+    const product = await box("#product");
+    const first = await pointAt(product);
+    if (!first) throw new Error("a shop's product video: no button over it");
+    const hero = await box("#loop");
+    const over = (b) => b && (b.l + b.r) / 2 >= hero.l && (b.l + b.r) / 2 <= hero.r && (b.t + b.b) / 2 >= hero.t && (b.t + b.b) / 2 <= hero.b;
+    const from = Date.now();
+    while (Date.now() - from < 4000) {
+      await s.mouse((hero.l + hero.r) / 2 + ((Date.now() / 200) % 3) * 5, (hero.t + hero.b) / 2);
+      await sleep(200);
+      const shown = await surveyButton(s);
+      if (shown && over(shown.b)) throw new Error("a shop's decorative loop (muted, looping, no controls) got the button");
+    }
+    done.push("a shop's decorative loop: none, 4 s after its product video's showed");
+    await s.mouse(2, 2);
+    return done.join("; ");
   },
 
   // Before `video`, which ends with "Never on this site" for the lab in the last browser.

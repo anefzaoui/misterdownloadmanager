@@ -1697,9 +1697,11 @@ impl FileInfo {
                 // another site neither are its cookies and page (never sent there).
                 if url.origin() != self.url.origin() {
                     self.context.cookies = None;
+                    self.context.cookie_jar.clear();
                     self.context.referer = None;
                     self.context.page_url = None;
                     self.request.headers.remove(reqwest::header::COOKIE);
+                    self.request.opts.cookie_jar = None;
                     self.request.headers.remove(reqwest::header::REFERER);
                 }
                 self.context.name = None;

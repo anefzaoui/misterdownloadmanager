@@ -776,9 +776,6 @@ struct Before {
     /// stays; its state, files and piece map went with the delete.
     handle: Handle,
     swarm: Option<Swarm>,
-    /// Added again: once librqbit has checked it, its numbers are its own again. Not before:
-    /// it reads Paused before it leaves the session.
-    back: bool,
 }
 
 impl Before {
@@ -796,13 +793,15 @@ impl Before {
     }
 }
 
-/// What the window reads of `hash` when librqbit says `now`: as before while it is re-added
-/// ([`Readding`]); librqbit's own once it is back and checked, which ends the re-add.
-fn held(readding: &Readding, hash: &str, now: Stats) -> Stats {
+/// What the window reads of `hash` when a reading of `h` says `now`: as before while it is
+/// re-added ([`Readding`]); librqbit's own once it is back and checked, which ends the re-add.
+/// It is back when `h` isn't the handle taken out. That one, listed before the delete and read
+/// after, says Error: not Checking either, and it ends nothing.
+fn held(readding: &Readding, h: &Handle, hash: &str, now: Stats) -> Stats {
     let mut r = readding.lock().unwrap();
     let key = hash.to_ascii_lowercase();
     match r.get(&key) {
-        Some(b) if b.back && now.phase != Phase::Checking => {
+        Some(b) if !Arc::ptr_eq(h, &b.handle) && now.phase != Phase::Checking => {
             r.remove(&key);
             now
         }
@@ -1607,7 +1606,6 @@ impl Torrents {
                 chosen: files.clone(),
                 handle: h.clone(),
                 swarm: self.watch.get(hash).and_then(|s| s.swarm.clone()),
-                back: false,
             };
             self.readding
                 .lock()
@@ -1627,14 +1625,7 @@ impl Torrents {
         } else if let Some(bits) = kept {
             put_piece_map(&map, &bits).await;
         }
-        if let Some(b) = self
-            .readding
-            .lock()
-            .unwrap()
-            .get_mut(&hash.to_ascii_lowercase())
-        {
-            b.back = true;
-        }
+        // The op lock for this torrent is held (`readd`): added without taking it again.
         self.add_unlocked(torrent, &folder, files, peers, paused)
             .await?;
         if let Some((down, up)) = limits {
@@ -2027,7 +2018,7 @@ fn pieces_of(api: &Api, i: TorrentIdOrHash) -> Vec<bool> {
 /// [`read_all`]). Waits as [`stats_of`] does.
 fn read_one(h: &Handle, hash: &str, checks: &Checks, readding: &Readding) -> watch::Seen {
     watch::Seen {
-        stats: held(readding, hash, stats_of(h, hash, checks)),
+        stats: held(readding, h, hash, stats_of(h, hash, checks)),
         chosen: h.only_files(),
         handle: Some(h.clone()),
         swarm: None,
@@ -4426,6 +4417,62 @@ mod tests {
 
         seeder.stop().await;
         leecher.stop().await;
+    }
+
+    /// #1648: only a reading of the handle that came back ends a re-add. The handle taken out of
+    /// the session says Error and 0 bytes once it is deleted, and the watch's thread reads it
+    /// when it listed the session's torrents before the delete: that read as back and checked,
+    /// so the row went, then came back at 0 %.
+    #[tokio::test(flavor = "multi_thread", worker_threads = 2)]
+    async fn only_a_reading_of_its_new_handle_ends_a_readd() {
+        async fn finished(t: &Torrents, hash: &str) -> Stats {
+            let deadline = std::time::Instant::now() + Duration::from_secs(20);
+            loop {
+                let s = t.stats(hash).unwrap();
+                if s.phase == Phase::Finished {
+                    return s;
+                }
+                assert!(std::time::Instant::now() < deadline, "never checked: {s:?}");
+                tokio::time::sleep(Duration::from_millis(20)).await;
+            }
+        }
+        let tmp = tempfile::tempdir().unwrap();
+        let src = tmp.path().join("seed");
+        std::fs::create_dir_all(&src).unwrap();
+        std::fs::write(src.join("a.bin"), vec![7u8; 96 * 1024]).unwrap();
+        let torrent = make_torrent(&src).await;
+        let session = Torrents::start(offline(&tmp.path().join("session")))
+            .await
+            .unwrap();
+        let hash = session
+            .add(&torrent, &src, None, Vec::new(), false)
+            .await
+            .unwrap();
+        let had = finished(&session, &hash).await;
+        let old = session.session.get(id(&hash).unwrap()).unwrap();
+        session.readd(&hash, &torrent, false).await.unwrap();
+        finished(&session, &hash).await;
+        let new = session.session.get(id(&hash).unwrap()).unwrap();
+
+        // A re-add of it, as `readd_now` remembers one.
+        let r = Readding::new(std::collections::HashMap::from([(
+            hash.clone(),
+            Before {
+                stats: had.clone(),
+                chosen: None,
+                handle: old.clone(),
+                swarm: None,
+            },
+        )]));
+        // The handle taken out: as before, and the re-add goes on.
+        let read = read_one(&old, &hash, &session.checks, &r).stats;
+        assert_eq!((read.phase, read.done), (Phase::Checking, had.done));
+        assert!(r.lock().unwrap().contains_key(&hash));
+        // The handle that came back, checked: librqbit's numbers, and the re-add is over.
+        let read = read_one(&new, &hash, &session.checks, &r).stats;
+        assert_eq!((read.phase, read.done), (Phase::Finished, had.done));
+        assert!(r.lock().unwrap().is_empty());
+        session.stop().await;
     }
 
     /// #1648: a piece map that can't be written back is given up after its tries, and said
