@@ -3254,12 +3254,14 @@ mod tests {
         let saved = doc["torrents"].as_object_mut().unwrap();
         let entry = saved.values().next().unwrap().clone();
         assert_eq!(entry["info_hash"], good.as_str(), "librqbit's format");
-        // Names librqbit itself would write (inside `out`), so the check is what refuses them.
-        let bad = torrent_naming(if cfg!(windows) {
-            "x.bin:hidden"
-        } else {
-            "tab\there.bin"
-        });
+        // Names librqbit itself would write (inside `out`), so the check is what refuses them: a
+        // file `a` and a folder `a` (for `a/b`), which no disk holds. (A name a disk can't hold
+        // as it is is made plain by the engine since #2077, not refused.)
+        let mut bad = b"d4:infod5:filesl".to_vec();
+        bad.extend(b"d6:lengthi5e4:pathl1:aeed6:lengthi5e4:pathl1:a1:beee");
+        bad.extend(b"4:name4:test12:piece lengthi16384e6:pieces20:");
+        bad.extend([0u8; 20]);
+        bad.extend(b"ee");
         let bad_hash = librqbit::torrent_from_bytes(&bad)
             .unwrap()
             .info_hash
