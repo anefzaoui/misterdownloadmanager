@@ -7070,6 +7070,10 @@
    "source": "What Update now does",
    "text": "Fonctionnement de « Mettre à jour maintenant »"
   },
+  "5f818384bb56aff6": {
+   "source": "<g1>Edge (or another browser) says \"Specified native messaging host not found\", though the registry entry looks right?</g1> On 64-bit Windows the browsers read the registry's 32-bit part (<x2/>) before the entry you find under <x3/>, and take the first one there, even one that leads to a copy that is gone. <g4>Test browser integration</g4> says <g5>An older registry entry is in the way</g5>, with that entry: click <g6>Set it up</g6> to give your account an entry of its own, which the browsers read before it. MDM also does that by itself at its start when that entry leads nowhere, and its setup for everyone removes it.",
+   "text": "<g1>Edge (ou un autre navigateur) affiche « Hôte de messagerie native spécifié introuvable », même si l’entrée de registre semble correcte ?</g1> Sous Windows 64 bits, les navigateurs lisent la partie 32 bits du registre (<x2/>) avant l’entrée que vous trouvez sous <x3/>, et prennent la première, même si elle mène à une copie qui n’existe plus. <g4>Tester l’intégration du navigateur</g4> indique <g5>Une ancienne entrée de registre fait obstacle</g5>, avec cette entrée : cliquez sur <g6>Configurer</g6> pour donner à votre compte sa propre entrée, que les navigateurs liront avant celle-ci. MDM le fait aussi automatiquement à son démarrage lorsque cette entrée ne mène nulle part, et sa configuration pour tous la supprime."
+  },
   "5f8f976d1dd62e61": {
    "source": "A group box's frame",
    "text": "Le cadre d'un groupe de contrôles"
@@ -9174,6 +9178,10 @@
    "source": "Apple Silicon",
    "text": "Apple Silicon"
   },
+  "7c5fbe4cad8057a6": {
+   "source": "Download a torrent, or only some of its files. If some of its files are already in the folder, it stops and names them; <x1/> uses them instead (what matches is kept, the rest downloaded). With Torrent settings' <g2>Add the trackers of this public list to public torrents</g2> on, a public torrent gets the list's trackers too, as in the app.",
+   "text": "Télécharger un torrent, ou seulement certains de ses fichiers. Si certains de ses fichiers sont déjà dans le dossier, il s’arrête et les nomme ; <x1/> les utilise à la place (ce qui correspond est conservé, le reste est téléchargé). Avec l’option <g2>Ajouter les traqueurs de cette liste publique aux torrents publics</g2> des Paramètres du torrent activée, un torrent public reçoit également les traqueurs de la liste, comme dans l’application."
+  },
   "7c949f90bb503dc8": {
    "source": "Vivaldi",
    "text": "Vivaldi"
@@ -10810,6 +10818,10 @@
    "source": "MDM's interface comes in 87 languages: every display language Windows 11 offers, from Afrikaans to Vietnamese, including both Chinese scripts, Spanish for Spain and Mexico, French for France and Canada, Portuguese for Portugal and Brazil, and Serbian in Cyrillic and Latin.",
    "text": "L'interface de MDM est disponible en 87 langues : toutes les langues d'affichage proposées par Windows 11, de l'afrikaans au vietnamien, y compris les deux écritures chinoises, l'espagnol pour l'Espagne et le Mexique, le français pour la France et le Canada, le portugais pour le Portugal et le Brésil, et le serbe en cyrillique et en latin."
   },
+  "91c08dd2d3fe7d4a": {
+   "source": "<g1>Add category</g1> — make your own, for example <g2>Books</g2> for <x3/> (they then go to Books, not Documents). Give it a name, the file types (separated by spaces, <x4/> allowed) and a folder.",
+   "text": "<g1>Ajouter une catégorie</g1> — créez la vôtre, par exemple <g2>Livres</g2> pour <x3/> (ils iront alors dans Livres, et non dans Documents). Donnez-lui un nom, les types de fichiers (séparés par des espaces, <x4/> autorisé) et un dossier."
+  },
   "91cefe80b7f00fac": {
    "source": "<g1><g2>Download a file</g2></g1> — copy a link, add it, open the file.",
    "text": "<g1><g2>Télécharger un fichier</g2></g1> — copier un lien, l'ajouter, ouvrir le fichier."
@@ -11289,6 +11301,10 @@
   "9776a28342c940e4": {
    "source": "Bigger when you need it, faster to open, and closer to your system.",
    "text": "Plus grande quand vous en avez besoin, plus rapide à ouvrir et plus proche de votre système."
+  },
+  "9790170578f8fb5f": {
+   "source": "Install or update the helpers videos need: yt-dlp (checked against its signing key), ffmpeg (x64 and ARM64 Windows, a build in MDM's signed list of checked builds; on macOS and Linux MDM uses the system's, and on 32-bit Windows one you choose in Helpers) and MDM's own JavaScript runtime, which yt-dlp needs for YouTube's qualities: Node.js's newest LTS build (its checksum list checked against Node.js's releasers' keys; Windows, Linux and macOS). A runtime already on your computer, or one chosen in Helpers, is still used first, and the command says so. <x1/>, its earlier name, does the same.",
+   "text": "Installer ou mettre à jour les assistants nécessaires aux vidéos : yt-dlp (vérifié avec sa clé de signature), ffmpeg (Windows x64 et ARM64, une version figurant dans la liste signée de MDM des versions vérifiées ; sur macOS et Linux, MDM utilise celui du système, et sur Windows 32 bits, celui que vous choisissez dans Assistants) et l’environnement d’exécution JavaScript de MDM, dont yt-dlp a besoin pour les qualités YouTube : la dernière version LTS de Node.js (sa liste de sommes de contrôle vérifiée avec les clés des éditeurs de Node.js ; Windows, Linux et macOS). Un environnement d’exécution déjà présent sur votre ordinateur, ou un choisi dans Assistants, est toujours utilisé en premier, et la commande l’indique. <x1/>, son ancien nom, fait la même chose."
   },
   "979e9bd41ea38bec": {
    "source": "With <g1>Options → General → Offer to download links copied to the clipboard</g1> ticked (it is, unless you turned it off), when you copy a link to a file type in <g2>Options → File types</g2> (ZIP, EXE, MP4, PDF and many more), <g3>Download File Info</g3> opens with it filled in, ready for <g4>Start Download</g4>. Links to other pages are left alone. With <g5>Options → Downloads → Show start download dialog</g5> off, the download starts at once instead. Only links copied while MDM runs are taken, never one that was already there.",
@@ -12317,10 +12333,6 @@
   "a4b01563b82565da": {
    "source": "<g1>Sharper text on Windows</g1> (<g2>#262</g2>): Segoe UI and Tahoma are grid-fitted across as well as up and down, and each letter starts on a whole pixel, as Windows draws its own grey text: upright strokes were two grey pixels wide at 100 % and 125 %, which read as blurred.",
    "text": "<g1>Texte plus net sur Windows</g1> (<g2>#262</g2>) : Segoe UI et Tahoma sont alignés sur la grille horizontalement et verticalement, et chaque lettre commence sur un pixel entier, comme Windows dessine son propre texte gris : les traits verticaux étaient larges de deux pixels gris à 100 % et 125 %, ce qui était flou."
-  },
-  "a4b04f29f56fdc42": {
-   "source": "<g1>Add category</g1> — make your own, for example <g2>Books</g2> for <x3/>. Give it a name, the file types (separated by spaces, <x4/> allowed) and a folder.",
-   "text": "<g1>Ajouter une catégorie</g1> — créer votre propre catégorie, par exemple <g2>Livres</g2> pour <x3/>. Donnez-lui un nom, indiquez les types de fichiers (séparés par des espaces, <x4/> autorisé) et choisissez un dossier."
   },
   "a4b1f9a84345ac5d": {
    "source": "<g1>yt-dlp</g1> (about 23 MB) looks the page up and finds where the video and its sound come from; MDM downloads them (<g2>How a video comes down</g2>). The first time, click <g3>Install yt-dlp</g3>. MDM checks the download against the signature yt-dlp's developers publish before it uses it.",
@@ -14126,10 +14138,6 @@
    "source": "The next tab of a focused tab strip; the next choice of a radio group",
    "text": "L'onglet suivant d'une bande d'onglets sélectionnée ; le choix suivant d'un groupe de boutons radio"
   },
-  "bc713e862e9b84d3": {
-   "source": "Each download falls into a category by its file type: <g1>General</g1>, <g2>Compressed</g2>, <g3>Documents</g3>, <g4>Music</g4>, <g5>Programs</g5> or <g6>Video</g6>. Torrents have their own <g7>Torrents</g7> category. Each category has its own folder, by default inside your Downloads folder (<x8/>, <x9/> and so on; General uses <x10/> itself).",
-   "text": "Chaque téléchargement est classé dans une catégorie selon son type de fichier : <g1>Général</g1>, <g2>Compressé</g2>, <g3>Documents</g3>, <g4>Musique</g4>, <g5>Programmes</g5> ou <g6>Vidéo</g6>. Les torrents ont leur propre catégorie <g7>Torrents</g7>. Chaque catégorie a son propre dossier, situé par défaut dans votre dossier Téléchargements (<x8/>, <x9/>, etc. ; le dossier Général est lui-même <x10/>)."
-  },
   "bc7153d0bcfdacbb": {
    "source": "Themes — Mister Download Manager",
    "text": "Thèmes — Mister Download Manager"
@@ -15337,6 +15345,10 @@
   "cd480bdd28328d28": {
    "source": "Files named photo001.jpg to photo150.jpg don't need 150 clicks. Write the address once with an asterisk where the number changes, and MDM queues every file. A list of links in a text file goes in just as easily.",
    "text": "Les fichiers nommés photo001.jpg à photo150.jpg ne nécessitent pas 150 clics. Écrivez l’adresse une seule fois avec un astérisque là où le numéro change, et MDM met tous les fichiers en file d’attente. Une liste de liens dans un fichier texte s’ajoute tout aussi facilement."
+  },
+  "cd505aa9d732174d": {
+   "source": "Download a video. Without <x1/> or <x2/>, the best quality, the one the Download video window starts on: with ffmpeg the best picture with the best sound joined to it (a site whose pictures and sounds come apart, such as Bilibili, needs ffmpeg for a video), else the best file with both. <x3/> (or <x4/>) takes that height, or the nearest below it the page offers (else the nearest above), and says so. <x5/> takes the most compatible quality, as the window's <g6>Most compatible (H.264 + AAC)</g6>: the best H.264 picture with AAC sound, in an MP4 that plays in every editor, TV and phone; a page without one says so (nothing is converted). <x7/> takes a quality's selector from <x8/> (<x9/> = the best single file; <x10/> = the sound alone as the site has it, not converted; <x11/>, <x12/>, <x13/> or <x14/> = the sound as an MP3 at that bitrate, <x15/> at its best variable one; <x16/> = as Opus; <x17/> = as FLAC, lossless but no better than the site's sound; conversions need ffmpeg). <x18/>: MDM's own downloader brings each stream yt-dlp finds over this many connections (8 by default, 1 to 128), a stream in pieces (HLS, DASH) this many pieces at once. <x19/> saves subtitles beside it: language codes from <x20/> (<x21/>), or <x22/> for every one the uploader gave; <x23/> takes the site's automatic captions instead; <x24/> puts them into the video (needs ffmpeg, MP4 or MKV). With ffmpeg, the video's chapters go into the file too, as Download video's <g25>Embed chapters</g25> does. <x26/> splits the video into numbered chapter files without re-encoding, beside the main video. <x27/> sends the downloads' connections, and yt-dlp's (and ffmpeg's), through one network adapter, as for <x28/>; when it isn't connected, nothing starts. When no format of the page matches, the error lists the ones it offers, as <x29/> does.",
+   "text": "Télécharger une vidéo. Sans <x1/> ni <x2/>, la meilleure qualité, celle avec laquelle la fenêtre Télécharger la vidéo s’ouvre : avec ffmpeg, la meilleure image avec le meilleur son combiné (un site dont les images et les sons sont séparés, comme Bilibili, nécessite ffmpeg pour une vidéo), sinon le meilleur fichier avec les deux. <x3/> (ou <x4/>) prend cette hauteur, ou la plus proche en dessous que la page propose (sinon la plus proche au-dessus), et l’indique. <x5/> prend la qualité la plus compatible, comme le <g6>Le plus compatible (H.264 + AAC)</g6> de la fenêtre : la meilleure image H.264 avec le son AAC, dans un MP4 qui se lit sur tous les éditeurs, téléviseurs et téléphones ; une page sans cette option l’indique (rien n’est converti). <x7/> prend le sélecteur de qualité de <x8/> (<x9/> = le meilleur fichier unique ; <x10/> = le son seul tel que le site le propose, non converti ; <x11/>, <x12/>, <x13/> ou <x14/> = le son en MP3 à ce débit, <x15/> à son meilleur débit variable ; <x16/> = en Opus ; <x17/> = en FLAC, sans perte mais pas meilleur que le son du site ; les conversions nécessitent ffmpeg). <x18/> : le téléchargeur de MDM récupère chaque flux trouvé par yt-dlp via ce nombre de connexions (8 par défaut, de 1 à 128), un flux en plusieurs parties (HLS, DASH) via ce nombre de parties simultanément. <x19/> enregistre les sous-titres à côté : codes de langue de <x20/> (<x21/>), ou <x22/> pour tous ceux fournis par l’uploadeur ; <x23/> prend les légendes automatiques du site à la place ; <x24/> les intègre à la vidéo (nécessite ffmpeg, MP4 ou MKV). Avec ffmpeg, les chapitres de la vidéo sont également intégrés au fichier, comme le fait <g25>Intégrer les chapitres</g25> de Télécharger la vidéo. <x26/> divise la vidéo en fichiers de chapitres numérotés sans réencodage, à côté de la vidéo principale. <x27/> envoie les connexions des téléchargements, et celles de yt-dlp (et de ffmpeg), via une seule carte réseau, comme pour <x28/> ; si elle n’est pas connectée, rien ne démarre. Si aucun format de la page ne correspond, l’erreur liste ceux qu’elle propose, comme le fait <x29/>."
   },
   "cd5d07eb9607e523": {
    "source": "The help names Windows' screen readers, Narrator and NVDA. If you use a screen reader on Linux or macOS, please <g1>tell us how it goes</g1>.",
@@ -17242,6 +17254,10 @@
    "source": "Can it download overnight or on a schedule?",
    "text": "Peut-il télécharger la nuit ou selon un calendrier ?"
   },
+  "e852a2ae2ea94c2d": {
+   "source": "<g1>Automatically put in \"…\" category the following file types</g1> — the file types that go to this category. A built-in category whose list you never changed gains the types a new version adds; one you edited stays as it is.",
+   "text": "<g1>Placer automatiquement dans la catégorie « … » les types de fichiers suivants</g1> — les types de fichiers qui vont dans cette catégorie. Une catégorie intégrée dont vous n’avez jamais modifié la liste reçoit les types ajoutés par une nouvelle version ; une catégorie que vous avez modifiée reste telle quelle."
+  },
   "e8592a334f7cb4df": {
    "source": "In <g1>Download File Info</g1>, click <g2>Download Later</g2> and pick the queue.",
    "text": "Dans <g1>Informations sur le fichier à télécharger</g1>, cliquez sur <g2>Télécharger plus tard</g2> et choisissez la file d’attente."
@@ -17837,6 +17853,10 @@
   "ef6e5d90b67f8e4e": {
    "source": "<g1>\"Hide tab\" was cut in longer languages</g1> (German \"Registerkarte au...\"): the button grows to fit its label where there is room, through a shared helper other buttons can use.",
    "text": "<g1>« Masquer l’onglet » était coupé dans les langues plus longues</g1> (allemand « Registerkarte au… ») : le bouton s’agrandit pour s’adapter à son libellé là où il y a de la place, grâce à un assistant partagé que d’autres boutons peuvent utiliser."
+  },
+  "ef7238dc374b9e0e": {
+   "source": "Each download falls into a category by its file type: <g1>General</g1>, <g2>Compressed</g2>, <g3>Documents</g3>, <g4>Music</g4>, <g5>Programs</g5> or <g6>Video</g6>. Torrents have their own <g7>Torrents</g7> category. <g8>Programs</g8> takes programs, installers and app packages (EXE, MSI, APK, IPA, DMG, PKG, DEB, RPM, AppImage, MSIX…), <g9>Compressed</g9> archives and disc images (ZIP, RAR, 7Z, TAR, XZ, ISO, IMG, VHD…), <g10>Documents</g10> text documents, spreadsheets and e-books (PDF, DOCX, XLSX, ODT, EPUB, MOBI…), <g11>Music</g11> audio (MP3, FLAC, OPUS, M4A…) and <g12>Video</g12> videos (MP4, MKV, WEBM…); every other file goes to General. Your own categories come before the built-in ones. Each category has its own folder, by default inside your Downloads folder (<x13/>, <x14/> and so on; General uses <x15/> itself).",
+   "text": "Chaque téléchargement est classé dans une catégorie selon son type de fichier : <g1>Général</g1>, <g2>Compressé</g2>, <g3>Documents</g3>, <g4>Musique</g4>, <g5>Programmes</g5> ou <g6>Vidéo</g6>. Les torrents ont leur propre catégorie <g7>Torrents</g7>. <g8>Programmes</g8> contient les programmes, les installateurs et les paquets d’applications (EXE, MSI, APK, IPA, DMG, PKG, DEB, RPM, AppImage, MSIX…), <g9>Compressé</g9> les archives et les images disque (ZIP, RAR, 7Z, TAR, XZ, ISO, IMG, VHD…), <g10>Documents</g10> les documents texte, les feuilles de calcul et les livres électroniques (PDF, DOCX, XLSX, ODT, EPUB, MOBI…), <g11>Musique</g11> les fichiers audio (MP3, FLAC, OPUS, M4A…) et <g12>Vidéo</g12> les vidéos (MP4, MKV, WEBM…) ; tout autre fichier va dans Général. Vos propres catégories apparaissent avant les catégories intégrées. Chaque catégorie a son propre dossier, par défaut dans votre dossier Téléchargements (<x13/>, <x14/> et ainsi de suite ; Général utilise <x15/> lui-même)."
   },
   "ef8cedcbdccdaf85": {
    "source": "The code is filled in when you scanned the QR code; otherwise type it. Give the phone a name, and tap <g1>Pair</g1>. The window on the computer says so, and closes with <g2>Done</g2>.",
@@ -18449,10 +18469,6 @@
   "f8c444517ab946e2": {
    "source": "From the plain zip",
    "text": "À partir du fichier zip simple"
-  },
-  "f8c71a9fb2bd8bde": {
-   "source": "<g1>Automatically put in \"…\" category the following file types</g1> — the file types that go to this category.",
-   "text": "<g1>Placer automatiquement dans la catégorie « … » les types de fichiers suivants</g1> — les types de fichiers qui vont dans cette catégorie."
   },
   "f8e0a9e7ee529ff0": {
    "source": "Select <g1>Main download queue</g1> on the left. The <g2>Schedule</g2> tab opens.",

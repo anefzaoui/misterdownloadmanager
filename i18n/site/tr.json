@@ -7074,6 +7074,10 @@
    "source": "What Update now does",
    "text": "Şimdi güncelle ne yapar"
   },
+  "5f818384bb56aff6": {
+   "source": "<g1>Edge (or another browser) says \"Specified native messaging host not found\", though the registry entry looks right?</g1> On 64-bit Windows the browsers read the registry's 32-bit part (<x2/>) before the entry you find under <x3/>, and take the first one there, even one that leads to a copy that is gone. <g4>Test browser integration</g4> says <g5>An older registry entry is in the way</g5>, with that entry: click <g6>Set it up</g6> to give your account an entry of its own, which the browsers read before it. MDM also does that by itself at its start when that entry leads nowhere, and its setup for everyone removes it.",
+   "text": "<g1>Edge (veya başka bir tarayıcı) “Belirtilen yerel mesajlaşma ana bilgisayarı bulunamadı” diyor, ancak kayıt defteri girdisi doğru görünüyor mu?</g1> 64 bit Windows'ta tarayıcılar, <x3/> altında bulduğunuz girdiden önce kayıt defterinin 32 bitlik kısmını (<x2/>) okur ve oradaki ilkini, hatta artık olmayan bir kopyaya yol açan birini bile alır. <g4>Tarayıcı entegrasyonunu test et</g4> seçeneği <g5>Eski bir kayıt defteri girdisi engel oluyor</g5> der ve o girdiyi gösterir: tarayıcıların ondan önce okuyacağı kendi girdinizi hesabınıza eklemek için <g6>Ayarlayın</g6> seçeneğine tıklayın. MDM, o girdi hiçbir yere çıkmadığında başlangıcında bunu kendi başına da yapar ve herkes için kurulumu onu kaldırır."
+  },
   "5f8f976d1dd62e61": {
    "source": "A group box's frame",
    "text": "Bir grup kutusunun çerçevesi"
@@ -10818,6 +10822,10 @@
    "source": "MDM's interface comes in 87 languages: every display language Windows 11 offers, from Afrikaans to Vietnamese, including both Chinese scripts, Spanish for Spain and Mexico, French for France and Canada, Portuguese for Portugal and Brazil, and Serbian in Cyrillic and Latin.",
    "text": "MDM arayüzü 87 dilde mevcuttur: Windows 11'in sunduğu Afrikaans'tan Vietnamca'ya kadar tüm görüntüleme dilleri, her iki Çince yazı tipi, İspanya ve Meksika için İspanyolca, Fransa ve Kanada için Fransızca, Portekiz ve Brezilya için Portekizce ve Kiril ve Latin harfleriyle Sırpça dahil."
   },
+  "91c08dd2d3fe7d4a": {
+   "source": "<g1>Add category</g1> — make your own, for example <g2>Books</g2> for <x3/> (they then go to Books, not Documents). Give it a name, the file types (separated by spaces, <x4/> allowed) and a folder.",
+   "text": "<g1>Kategori ekle</g1> — kendi kategorinizi oluşturun, örneğin <g2>Kitaplar</g2> için <x3/> (bu durumda belgeler Kitaplar kategorisine gider, Belgeler'e değil). Bir ad, dosya türleri (boşluklarla ayrılmış, <x4/> izin verilir) ve bir klasör belirtin."
+  },
   "91cefe80b7f00fac": {
    "source": "<g1><g2>Download a file</g2></g1> — copy a link, add it, open the file.",
    "text": "<g1><g2>Bir dosya indirin</g2></g1> — bir bağlantıyı kopyalayın, ekleyin, dosyayı açın."
@@ -12329,10 +12337,6 @@
   "a4b01563b82565da": {
    "source": "<g1>Sharper text on Windows</g1> (<g2>#262</g2>): Segoe UI and Tahoma are grid-fitted across as well as up and down, and each letter starts on a whole pixel, as Windows draws its own grey text: upright strokes were two grey pixels wide at 100 % and 125 %, which read as blurred.",
    "text": "<g1>Windows'ta daha keskin metin</g1> (<g2>#262</g2>): Segoe UI ve Tahoma, Windows'un kendi gri metnini çizdiği gibi, hem yatay hem de dikey olarak ızgaraya oturtulur ve her harf tam bir pikselde başlar: dik vuruşlar %100 ve %125'te iki gri piksel genişliğindeydi, bu da bulanık okunuyordu."
-  },
-  "a4b04f29f56fdc42": {
-   "source": "<g1>Add category</g1> — make your own, for example <g2>Books</g2> for <x3/>. Give it a name, the file types (separated by spaces, <x4/> allowed) and a folder.",
-   "text": "<g1>Kategori ekle</g1> — örneğin <x3/> dosyaları için <g2>Kitaplar</g2> gibi kendi kategorinizi oluşturun. Bir ad, dosya türleri (boşlukla ayırın; <x4/> kullanılabilir) ve bir klasör belirleyin."
   },
   "a4b1f9a84345ac5d": {
    "source": "<g1>yt-dlp</g1> (about 23 MB) looks the page up and finds where the video and its sound come from; MDM downloads them (<g2>How a video comes down</g2>). The first time, click <g3>Install yt-dlp</g3>. MDM checks the download against the signature yt-dlp's developers publish before it uses it.",
@@ -14141,10 +14145,6 @@
   "bc606bb991071128": {
    "source": "The next tab of a focused tab strip; the next choice of a radio group",
    "text": "Odaklanmış bir sekme şeridinin sonraki sekmesi; bir radyo grubunun sonraki seçeneği"
-  },
-  "bc713e862e9b84d3": {
-   "source": "Each download falls into a category by its file type: <g1>General</g1>, <g2>Compressed</g2>, <g3>Documents</g3>, <g4>Music</g4>, <g5>Programs</g5> or <g6>Video</g6>. Torrents have their own <g7>Torrents</g7> category. Each category has its own folder, by default inside your Downloads folder (<x8/>, <x9/> and so on; General uses <x10/> itself).",
-   "text": "Her indirme, dosya türüne göre bir kategoriye ayrılır: <g1>Genel</g1>, <g2>Sıkıştırılmış</g2>, <g3>Belgeler</g3>, <g4>Müzik</g4>, <g5>Programlar</g5> veya <g6>Video</g6>. Torrentlerin kendi <g7>Torrentler</g7> kategorisi vardır. Her kategorinin kendine ait bir klasörü bulunur; varsayılan olarak bu klasör İndirilenler klasörünüzün içindedir (<x8/>, <x9/> vb.). Genel kategorisi doğrudan <x10/> klasörünü kullanır."
   },
   "bc7153d0bcfdacbb": {
    "source": "Themes — Mister Download Manager",
@@ -17262,6 +17262,10 @@
    "source": "Can it download overnight or on a schedule?",
    "text": "Gece boyunca veya belirli bir programa göre indirebilir mi?"
   },
+  "e852a2ae2ea94c2d": {
+   "source": "<g1>Automatically put in \"…\" category the following file types</g1> — the file types that go to this category. A built-in category whose list you never changed gains the types a new version adds; one you edited stays as it is.",
+   "text": "<g1>Şu dosya türlerini otomatik olarak “…” kategorisine koy</g1> — bu kategoriye giden dosya türleri. Hiç değiştirmediğiniz yerleşik bir kategori, yeni bir sürümün eklediği türleri alır; düzenlediğiniz bir kategori olduğu gibi kalır."
+  },
   "e8592a334f7cb4df": {
    "source": "In <g1>Download File Info</g1>, click <g2>Download Later</g2> and pick the queue.",
    "text": "<g1>Dosya Bilgilerini İndir</g1> penceresinde, <g2>Daha Sonra İndir</g2>'e tıklayın ve sırayı seçin."
@@ -17857,6 +17861,10 @@
   "ef6e5d90b67f8e4e": {
    "source": "<g1>\"Hide tab\" was cut in longer languages</g1> (German \"Registerkarte au...\"): the button grows to fit its label where there is room, through a shared helper other buttons can use.",
    "text": "<g1>\"Sekmeyi gizle\" daha uzun dillerde kesiliyordu</g1> (Almanca \"Registerkarte au...\"): düğme, diğer düğmelerin kullanabileceği ortak bir yardımcı aracılığıyla, yer olduğunda etiketine sığacak şekilde büyür."
+  },
+  "ef7238dc374b9e0e": {
+   "source": "Each download falls into a category by its file type: <g1>General</g1>, <g2>Compressed</g2>, <g3>Documents</g3>, <g4>Music</g4>, <g5>Programs</g5> or <g6>Video</g6>. Torrents have their own <g7>Torrents</g7> category. <g8>Programs</g8> takes programs, installers and app packages (EXE, MSI, APK, IPA, DMG, PKG, DEB, RPM, AppImage, MSIX…), <g9>Compressed</g9> archives and disc images (ZIP, RAR, 7Z, TAR, XZ, ISO, IMG, VHD…), <g10>Documents</g10> text documents, spreadsheets and e-books (PDF, DOCX, XLSX, ODT, EPUB, MOBI…), <g11>Music</g11> audio (MP3, FLAC, OPUS, M4A…) and <g12>Video</g12> videos (MP4, MKV, WEBM…); every other file goes to General. Your own categories come before the built-in ones. Each category has its own folder, by default inside your Downloads folder (<x13/>, <x14/> and so on; General uses <x15/> itself).",
+   "text": "Her indirme, dosya türüne göre bir kategoriye ayrılır: <g1>Genel</g1>, <g2>Sıkıştırılmış</g2>, <g3>Belgeler</g3>, <g4>Müzik</g4>, <g5>Programlar</g5> veya <g6>Video</g6>. Torrentlerin kendi <g7>Torrentler</g7> kategorisi vardır. <g8>Programlar</g8> kategorisi programları, yükleyicileri ve uygulama paketlerini (EXE, MSI, APK, IPA, DMG, PKG, DEB, RPM, AppImage, MSIX…), <g9>Sıkıştırılmış</g9> kategorisi arşivleri ve disk kalıplarını (ZIP, RAR, 7Z, TAR, XZ, ISO, IMG, VHD…), <g10>Belgeler</g10> kategorisi metin belgelerini, elektronik tabloları ve e-kitapları (PDF, DOCX, XLSX, ODT, EPUB, MOBI…), <g11>Müzik</g11> kategorisi ses dosyalarını (MP3, FLAC, OPUS, M4A…) ve <g12>Video</g12> kategorisi videoları (MP4, MKV, WEBM…) içerir; diğer tüm dosyalar Genel kategorisine gider. Kendi kategorileriniz, yerleşik olanlardan önce gelir. Her kategorinin kendi klasörü vardır, varsayılan olarak İndirilenler klasörünüzün içindedir (<x13/>, <x14/> vb.; Genel kategorisi doğrudan <x15/> klasörünü kullanır)."
   },
   "ef8cedcbdccdaf85": {
    "source": "The code is filled in when you scanned the QR code; otherwise type it. Give the phone a name, and tap <g1>Pair</g1>. The window on the computer says so, and closes with <g2>Done</g2>.",
@@ -18469,10 +18477,6 @@
   "f8c444517ab946e2": {
    "source": "From the plain zip",
    "text": "Sıkıştırılmamış zip dosyasından"
-  },
-  "f8c71a9fb2bd8bde": {
-   "source": "<g1>Automatically put in \"…\" category the following file types</g1> — the file types that go to this category.",
-   "text": "<g1>Aşağıdaki dosya türlerini otomatik olarak \"…\" kategorisine koy</g1> — bu kategoriye giden dosya türleri."
   },
   "f8e0a9e7ee529ff0": {
    "source": "Select <g1>Main download queue</g1> on the left. The <g2>Schedule</g2> tab opens.",

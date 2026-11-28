@@ -52,7 +52,14 @@ pub struct Extension {
     read: fn() -> Status,
     /// The steps that add Safari's extension, while that window is open.
     steps: Option<SafariSteps>,
+    /// The browsers installed, looked for beside the window's thread (#1292: each is a program
+    /// on the disk), when they didn't come within [`FIRST_WAIT`]: one row for the system's
+    /// browser until then.
+    finding: Option<std::sync::mpsc::Receiver<Browsers>>,
 }
+
+/// The browsers installed: name and program (none for Safari, which comes with macOS).
+type Browsers = Vec<(String, Option<PathBuf>)>;
 
 /// How often the window reads where it stands again: the host marks the extension seen when a
 /// browser starts it.
@@ -114,11 +121,47 @@ fn is_gecko(row: &str) -> bool {
 
 impl Extension {
     pub fn new() -> Self {
+        let (tx, rx) = std::sync::mpsc::channel();
+        crate::launch::spawn("browsers", move || {
+            let _ = tx.send(Self::installed());
+        });
+        match rx.recv_timeout(FIRST_WAIT) {
+            Ok(browsers) => Self::with_reader(browsers, Status::read),
+            Err(_) => {
+                let mut window = Self::with_reader(vec![(String::new(), None)], Status::read);
+                window.finding = Some(rx);
+                window
+            }
+        }
+    }
+
+    /// The browsers looked for beside the window's thread, once they are in ([`Extension::new`]).
+    fn found(&mut self, repaint: Option<&egui::Context>) {
+        use std::sync::mpsc::TryRecvError;
+        match self.finding.as_ref().map(|rx| rx.try_recv()) {
+            Some(Ok(browsers)) => {
+                self.finding = None;
+                self.browsers = browsers;
+            }
+            Some(Err(TryRecvError::Disconnected)) => self.finding = None,
+            Some(Err(TryRecvError::Empty)) => {
+                if let Some(ctx) = repaint {
+                    ctx.request_repaint_after(Duration::from_millis(50));
+                }
+            }
+            None => {}
+        }
+    }
+
+    /// The browsers installed, name and program, in the table's order: each one's program is
+    /// looked for on the disk.
+    fn installed() -> Browsers {
         #[cfg(windows)]
         let found = crate::win32::browsers();
         #[cfg(unix)]
         let found = crate::unix::browsers();
         let mut browsers: Vec<_> = found.into_iter().map(|(n, p)| (n, Some(p))).collect();
+
         // The table's order (Chrome first, its button the accent one), others after.
         browsers.sort_by_key(|(n, _)| {
             mdm_ipc::browsers::BROWSERS
@@ -133,7 +176,7 @@ impl Extension {
         if browsers.is_empty() {
             browsers.push((String::new(), None));
         }
-        Self::with_reader(browsers, Status::read)
+        browsers
     }
 
     /// The window for `browsers`, where it stands read by `read`.
@@ -144,6 +187,7 @@ impl Extension {
             shown: None,
             read,
             steps: None,
+            finding: None,
         }
     }
 
@@ -151,6 +195,7 @@ impl Extension {
     /// [`FIRST_WAIT`]): the last read's answer while the next is under way, one at a time, and
     /// None before the first. `repaint` is woken when an answer that differs comes.
     fn follow(&mut self, repaint: Option<&egui::Context>) -> Option<&Status> {
+        self.found(repaint);
         let read = self.read;
         if let Some(status) =
             self.status
