@@ -569,6 +569,9 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 Everything below ships together, in version 0.6.0, the next release.
 
+- ✅ MDM's window toolkit (egui) on the same copy as the Craft suite's libraries (storytold's
+  `next`), MDM's own fixes rebased on it: every window, menus included, connected to screen
+  readers before it first shows, and accessibility stays on while any window is read
 - ✅ The shared Craft libraries for saving files and for translations brought up to date: the
   temporary files a save cut short by a crash leaves in the data folder are removed at the next
   start, and a file saved over keeps more of the original (its attributes, its group)
