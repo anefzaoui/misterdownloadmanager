@@ -597,6 +597,8 @@ Everything below ships together, in version 0.6.0, the next release.
   adapter chosen in Options → Connection, and don't start while it isn't connected
   ([#2050](https://github.com/anefzaoui/misterdownloadmanager/issues/2050); thanks to
   [@abdul-karim-mia](https://github.com/abdul-karim-mia))
+- ✅ macOS: a download from the browser brings up its Download File Info window alone, not the
+  main window with it
 - ✅ Every pull request and every change to main is scanned for signs of a tampered commit: code
   hidden at the end of long lines, scripts that run on install or when a folder opens, files that
   aren't what their name says and known indicators; main's whole history once a week

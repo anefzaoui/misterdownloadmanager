@@ -367,7 +367,8 @@ pub fn keep_theme(
                     if lifted {
                         tracing::info!("window {title:?} shown behind another program's: lifted");
                     }
-                    focus(ctx, vid);
+                    // Lifted, it is the key window of an active MDM already. No `focus` on top:
+                    // winit's activates the whole app again, which brought the main window up.
                     TRIES
                 }
                 None => {
