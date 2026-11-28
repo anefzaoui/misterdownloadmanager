@@ -1864,9 +1864,8 @@ fn stats_of(h: &librqbit::ManagedTorrent, hash: &str, checks: &Checks) -> Stats 
     if !matches!(s.state, TorrentStatsState::Initializing { .. }) {
         checks.lock().unwrap().remove(hash);
     }
-    let (done, total) =
-        chosen_counts(h, &s.file_progress, s.progress_bytes, s.total_bytes)
-            .unwrap_or((s.progress_bytes, s.total_bytes));
+    let (done, total) = chosen_counts(h, &s.file_progress, s.progress_bytes, s.total_bytes)
+        .unwrap_or((s.progress_bytes, s.total_bytes));
     Stats {
         phase,
         checked: (phase == Phase::Checking).then_some(done),
