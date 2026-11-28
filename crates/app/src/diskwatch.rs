@@ -10,11 +10,14 @@
 //!   the calls that led to it. Windows sees them through the program's own import table
 //!   (`win32::watch_disk`). Linux and macOS have no such table to watch (their programs call the
 //!   C library, whose calls can't be watched from inside without a debugger): there `strace -f`
-//!   on the test machine shows the window thread's calls (the verify skill).
+//!   on the test machine shows the window thread's calls (the verify skill says how).
 //! - Off-screen test copies, `MDM_TEST_SLOW_DISK=<ms>`: every file call, on any thread, waits
 //!   that long first, as such an antivirus makes it wait. The window must go on drawing.
 //! - Off-screen test copies, `MDM_TEST_FRAME_STATS=1`: every 10 s the log says how long the
 //!   window's frames took (each frame's logic and UI, timed as the freeze watchdog times them).
+
+// Linux and macOS: no watch hands calls in ([`call`] and what it uses are Windows' alone).
+#![cfg_attr(not(windows), allow(dead_code))]
 
 use std::cell::Cell;
 use std::sync::Mutex;
@@ -22,7 +25,7 @@ use std::sync::atomic::{AtomicBool, AtomicU64, Ordering};
 use std::time::{Duration, Instant};
 
 thread_local! {
-    /// This thread is the window's ([`window_thread`]).
+    /// This thread is the window's ([`start`]).
     static WINDOW: Cell<bool> = const { Cell::new(false) };
     /// A call is being looked at on this thread: the logging's own calls aren't looked at again.
     static INSIDE: Cell<bool> = const { Cell::new(false) };
