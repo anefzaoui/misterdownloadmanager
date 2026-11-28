@@ -6,7 +6,7 @@ when a folder opens, workflows that hand secrets to a pull request, and known in
     python tools/security/scan_suspicious.py --diff BASE..HEAD   # what HEAD changed since BASE
     python tools/security/scan_suspicious.py --diff BASE...HEAD  # ... since their merge base
     python tools/security/scan_suspicious.py --tree [REV]        # every file of REV (HEAD)
-    python tools/security/scan_suspicious.py --history           # every object, every ref
+    python tools/security/scan_suspicious.py --history           # every blob of every branch and tag
     python tools/security/scan_suspicious.py --show-indicators
 
 Everything is read from git's objects as data: nothing scanned is written out or run, so CI can
@@ -301,10 +301,11 @@ def line_findings(path, text, is_new):
     return out
 
 
-def indicator_findings(path, data, matchers, name=True):
-    """Indicators in a file, and in its path (`name`: `path` is a path, not an object's id)."""
+def indicator_findings(path, data, matchers, name=True, low=None):
+    """Indicators in a file, and in its path (`name`: `path` is only a path); `low`: the data
+    in lowercase, when the caller has it."""
     out = []
-    low = data.lower()
+    low = data.lower() if low is None else low
     where = path.lower().encode("utf-8", "surrogateescape") if name else b""
     for text, find in matchers:
         if find(where) >= 0:
@@ -416,30 +417,47 @@ def scan_commits(repo, base, head, matchers):
 
 
 def scan_history(repo, matchers):
-    """Every blob in the repository's objects: indicators and loader patterns only."""
-    listing = git(repo, "cat-file", "--batch-all-objects", "--unordered",
-                  "--batch-check=%(objectname) %(objecttype)")
-    oids = [l.split()[0].decode() for l in listing.splitlines() if l.endswith(b" blob")]
+    """Every blob any branch or tag ever held (each once): indicators and loader patterns only.
+    A finding's path is `<a path it had>@<blob id>`."""
+    listing = git(repo, "rev-list", "--objects", "--all")
+    checked = git(repo, "cat-file", "--batch-check=%(objectname) %(objecttype) %(rest)", data=listing)
+    blobs_seen = []
+    for entry in checked.decode("utf-8", "surrogateescape").splitlines():
+        oid, kind, path = (entry.split(" ", 2) + [""])[:3]
+        if kind == "blob":
+            blobs_seen.append((oid, path))
     blobs = Blobs(repo)
     hits = []
+    # Gigabytes of old catalogs: whole blobs at C speed (bytes.find), a regex only where its
+    # first letters are (the third loader pattern has honest uses, so it isn't searched).
+    prefilters = [b"_$_", b"global"]
     try:
-        for oid in oids:
+        for oid, path in blobs_seen:
             data = blobs.read(oid)
-            found = indicator_findings(oid, data, matchers, name=False)
-            if is_text(data):
-                for n, line in enumerate(data.decode("utf-8", "replace").splitlines(), 1):
-                    for pattern, what in LOADER_PATTERNS[:2]:  # the third has honest uses
-                        if pattern.search(line):
-                            found.append(Finding("loader-pattern", oid, n, what, line, excerpt_of(line)))
-            hits += found
+            low = data.lower()
+            where = "%s@%s" % (path.replace(" ", "?"), oid[:12])
+            hits += indicator_findings(where, data, matchers, name=False, low=low)
+            if not is_text(data):
+                continue
+            for (pattern, what), needle in zip(LOADER_PATTERNS[:2], prefilters):
+                if low.find(needle) < 0:
+                    continue
+                text = data.decode("utf-8", "replace")
+                for m in pattern.finditer(text):
+                    start = text.rfind("\n", 0, m.start()) + 1
+                    end = text.find("\n", m.start())
+                    line = text[start:end if end >= 0 else len(text)]
+                    hits.append(Finding("loader-pattern", where, text.count("\n", 0, m.start()) + 1,
+                                        what, line, excerpt_of(line)))
     finally:
         blobs.close()
-    for f in hits:  # name the commits and paths that hold each blob
-        where = git(repo, "log", "--all", "--format=%h", "--name-only", "--find-object=" + f.path)
-        lines = [l for l in where.decode("utf-8", "replace").splitlines() if l.strip()]
-        f.excerpt = (f.excerpt + "\n" if f.excerpt else "") + \
-            "in: " + (", ".join(lines[:12]) or "no commit of any ref (an unreachable object)")
-    return hits, len(oids)
+    for f in hits:  # name the commits that hold each blob
+        oid = next(o for o, _ in blobs_seen if f.path.endswith("@" + o[:12]))
+        found = git(repo, "log", "--all", "--format=%h %s", "--find-object=" + oid)
+        lines = [shown(l, 100) for l in found.decode("utf-8", "replace").splitlines() if l.strip()]
+        f.excerpt = (f.excerpt + "\n" if f.excerpt else "") + "in commit(s): " + \
+            ("; ".join(lines[:8]) + (" and %d more" % (len(lines) - 8) if len(lines) > 8 else ""))
+    return hits, len(blobs_seen)
 
 
 # ---- allowlist and report -------------------------------------------------------------------
@@ -545,7 +563,7 @@ def main(argv=None):
         if args.history:  # an old object's finding is allowed by its id for a path
             found, count = scan_history(repo, matchers)
             allowed = parse_allowlist(listed if listed is not None else allowlist_at(repo, "HEAD"))
-            return report("Supply-chain scan: %d blobs of every ref and object" % count, found,
+            return report("Supply-chain scan: %d blobs, every one any branch or tag held" % count, found,
                           allowed, {})
         if args.diff:
             m = re.fullmatch(r"(.+?)(\.\.\.?)(.+)", args.diff)

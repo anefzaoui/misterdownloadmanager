@@ -385,7 +385,21 @@ class History(Base):
         self.assertEqual(self.repo.scan("--tree")[0], 0)
         code, out = self.repo.scan("--history")
         self.assertEqual(code, 1, out)
-        self.assertIn("a.js", out)
+        self.assertIn("[indicator] a.js@", out)
+        self.assertIn("in commit(s): ", out)
+
+    def test_a_loader_on_another_branch(self):
+        git(self.repo.path, "checkout", "-q", "-b", "other")
+        self.repo.commit({"b.js": "ok();\nvar _$_" + "1f2e=(function(){})();\n"})
+        git(self.repo.path, "checkout", "-q", "-")
+        code, out = self.repo.scan("--history")
+        self.assertEqual(code, 1, out)
+        self.assertIn("[loader-pattern] b.js@", out)
+        self.assertIn(":2", out)
+
+    def test_a_clean_history(self):
+        self.repo.commit({"a.js": "global.fetch = f;\n"})
+        self.assertEqual(self.repo.scan("--history")[0], 0)
 
 
 class Output(Base):
