@@ -934,10 +934,11 @@ fn exported_name(name: String, doc: gdrive::DocKind) -> String {
 async fn ask_drive(url: &Url, headers: &HeaderMap, opts: &Options) -> Result<Answer, HubError> {
     let site = Site::GoogleDrive;
     let client = http_client(opts, url)?;
-    let mut resp = crate::download::build(&client, url.clone(), None, headers, opts.site_agent())
-        .send()
-        .await
-        .map_err(Error::from)?;
+    let mut resp =
+        crate::download::build(&client, url.clone(), None, headers, opts.site_agent(), None)
+            .send()
+            .await
+            .map_err(Error::from)?;
     if gdrive::is_sign_in(resp.url()) {
         return Err(HubError::SignIn(site));
     }

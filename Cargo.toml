@@ -117,7 +117,11 @@ wreq-util = { version = "=0.2.1", default-features = false, features = ["emulati
 rustls-native-certs = "0.8.5"
 webpki-root-certs = "1.0.11"
 webpki-roots = "1.0.12"
-reqwest = { version = "0.13.5", default-features = false, features = ["rustls", "stream", "system-proxy", "socks"] }
+# cookies: a download's own cookie jar (crates/engine/src/cookies.rs, #1540), asked on every redirect.
+reqwest = { version = "0.13.5", default-features = false, features = ["rustls", "stream", "system-proxy", "socks", "cookies"] }
+# Cookies kept by their Domain, Path, Secure and expiry rules (RFC 6265), as reqwest's own jar
+# does (already in the tree through reqwest's "cookies").
+cookie_store = { version = "0.22.1", default-features = false }
 # FTP and FTPS (crates/engine/src/ftp.rs), with TLS through the rustls and platform verifier
 # reqwest uses. "deprecated" is what enables implicit FTPS (ftps://, port 990).
 suppaftp = { version = "12.2.1", default-features = false, features = ["tokio-rustls-aws-lc-rs", "deprecated"] }

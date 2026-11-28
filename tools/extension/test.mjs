@@ -63,6 +63,11 @@ function fakeApi({
   activeTab,
   // runtime.connectNative (#1496): a port to the host, answered as sendNativeMessage answers.
   nativePort = false,
+  // The browser's cookies (#1540): cookies.getAll answers from them as a browser does (by
+  // domain, path and partition); none: one cookie of .tube.test for every address. `partitions`
+  // false: a browser that knows no partition key (Safari, Chromium before 119) refuses it.
+  cookieStore,
+  partitions = true,
 }) {
   const raw = [];
   // Objects made inside the sandbox have its prototypes: compare plain copies.
@@ -120,6 +125,7 @@ function fakeApi({
     cookies: {
       getAll: async (q) => {
         calls.push(["cookies", q]);
+        if (cookieStore) return storeCookies(cookieStore, q, partitions);
         // As Chrome gives one: its other fields aren't sent.
         return [{ name: "sid", value: "1", domain: ".tube.test", hostOnly: false, path: "/", secure: true, httpOnly: true, sameSite: "lax", session: false, expirationDate: 1893456000.5, storeId: "0" }];
       },
@@ -331,6 +337,26 @@ const complaints = [];
 const quietConsole = { ...console, error: (...a) => complaints.push(["error", ...a]), warn: (...a) => complaints.push(["warn", ...a]) };
 
 // `extra`: more of the script's globals (a `Date` whose clock the test moves).
+// cookies.getAll as browsers answer it (#1540): the cookies of `q.url` by domain (a host-only
+// one for its own host), path, Secure and store; without a partition key the unpartitioned ones
+// only, with `{}` those of every partition too, with a site that partition's. A browser without
+// partitions (`partitions` false) refuses any key.
+function storeCookies(list, q, partitions) {
+  if ("partitionKey" in q && !partitions) throw new Error("Unexpected property: 'partitionKey'");
+  const u = new URL(q.url);
+  const host = u.hostname;
+  return list.filter((c) => {
+    const d = c.domain.replace(/^\./, "");
+    const domainOk = c.hostOnly ? host === d : host === d || host.endsWith(`.${d}`);
+    const pathOk = u.pathname === c.path || u.pathname.startsWith(c.path.endsWith("/") ? c.path : `${c.path}/`);
+    const secureOk = !c.secure || u.protocol === "https:";
+    const storeOk = (c.storeId || "0") === (q.storeId || "0");
+    const key = c.partitionKey;
+    const partOk = !("partitionKey" in q) ? !key : !q.partitionKey.topLevelSite ? true : Boolean(key) && key.topLevelSite === q.partitionKey.topLevelSite;
+    return domainOk && pathOk && secureOk && storeOk && partOk;
+  });
+}
+
 function load(api, firefox, extra = {}) {
   const ctx = {
     fetch: fakeFetch,
@@ -393,7 +419,12 @@ const ok = (what) => {
     ["https://x/a.zip", "https://page/", "sid=1", "a.zip", 2048, "application/zip", "UA", "0.2.5"],
   );
   assert.deepEqual(m.brands, ["Chromium", "Brave"]);
-  assert.equal(m.cookieJar, undefined, "a file's download: the header the app sends");
+  // And each cookie with its domain (#1540): the app's jar sends it to its own hosts only.
+  assert.deepEqual(
+    m.cookieJar,
+    [{ name: "sid", value: "1", domain: ".tube.test", hostOnly: false, path: "/", secure: true, expirationDate: 1893456000.5 }],
+    "a file's download: its cookies with their domains too",
+  );
   assert.deepEqual(steps(calls), ["pause", "cancel", "erase"]);
   ok("Firefox: taken with its container's cookies, size and type");
 }
@@ -2092,6 +2123,97 @@ const videoPageOn = (() => {
   ok("#1879: Hide on this video follows the video in a reused player");
 }
 
+// The top layer (video.js layerOf): a video in full screen itself, in a player in full screen, in
+// a modal dialog or an open popover (across a shadow root) puts the button in the top layer, over
+// that element; a dialog that isn't modal, a closed popover or none leave it as it was.
+{
+  const source = readText("../../extension/video.js");
+  const start = source.indexOf("  // ---- the top layer: from here");
+  const end = source.indexOf("  // ---- the top layer: end.");
+  assert.ok(start > 0 && end > start, "video.js has layerOf and its end mark");
+  const upFrom = (n) => n.parentElement || (n.parentNode && n.parentNode.host) || null;
+  const layerOf = new Function("upFrom", `${source.slice(start, end)}; return layerOf;`)(upFrom);
+  // A fake element: its name, its parent (an element, or a shadow root's host), the pseudo-classes
+  // it matches.
+  const el = (localName, parent = null, states = [], shadowed = false) => {
+    const e = {
+      localName,
+      parentElement: shadowed ? null : parent,
+      parentNode: shadowed ? { host: parent } : parent,
+      matches: (sel) => states.includes(sel),
+      contains: (o) => {
+        for (let n = o; n; n = upFrom(n)) if (n === e) return true;
+        return false;
+      },
+    };
+    return e;
+  };
+  const body = el("body");
+  const plain = el("video", el("div", body));
+  assert.equal(layerOf(plain, null), null, "a plain video: not in the top layer");
+  const own = el("video", body);
+  assert.equal(layerOf(own, own), own, "the video itself in full screen");
+  const player = el("div", body);
+  const inPlayer = el("video", player);
+  assert.equal(layerOf(inPlayer, player), player, "its player in full screen");
+  assert.equal(layerOf(plain, player), null, "another element in full screen: not this video's layer");
+  const modal = el("dialog", body, [":modal"]);
+  const inModal = el("video", el("div", modal));
+  assert.equal(layerOf(inModal, null), modal, "a modal dialog around it");
+  assert.equal(layerOf(el("video", el("dialog", body)), null), null, "a dialog shown without showModal: in the page");
+  const pop = el("div", body, [":popover-open"]);
+  const host = el("x-player", pop);
+  const inShadow = el("video", host, [], true);
+  assert.equal(layerOf(inShadow, null), pop, "an open popover, the video in a shadow root inside it");
+  assert.equal(layerOf(el("video", el("div", body)), null), null, "a closed popover");
+  const old = el("video", el("dialog", body));
+  old.parentElement.matches = () => {
+    throw new Error("unknown pseudo-class");
+  };
+  assert.equal(layerOf(old, null), null, "a browser without :modal or :popover-open");
+  assert.equal(layerOf(null, null), null, "no video");
+  ok("video.js: a video in the top layer (full screen, a modal dialog, a popover) gets its button over it");
+}
+
+// Ads (video.js adVideo): a pre-roll ad's player, from Google's ad servers or in an ad frame, gets
+// no button; the page's own video does, whatever its address (YouTube's googlevideo.com included).
+{
+  const source = readText("../../extension/video.js");
+  const start = source.indexOf("  // ---- ads: from here");
+  const end = source.indexOf("  // ---- ads: end.");
+  assert.ok(start > 0 && end > start, "video.js has adVideo and its end mark");
+  const adVideo = new Function(`${source.slice(start, end)}; return adVideo;`)();
+  const v = (currentSrc) => ({ currentSrc, getAttribute: () => null });
+  const page = "https://news.example.test/story";
+  assert.ok(adVideo(v("https://redirector.gvt1.com/videoplayback/id/abc/itag/22/source/dclk_video_ads"), page), "IMA's ad file");
+  assert.ok(adVideo(v("https://s0.2mdn.net/videoplayback/abc.mp4"), page), "DoubleClick's video server");
+  assert.ok(adVideo(v("https://tpc.googlesyndication.com/simgad/123.mp4"), page), "an ad server's file");
+  assert.ok(adVideo(v("blob:https://imasdk.googleapis.com/1"), "https://imasdk.googleapis.com/js/core/bridge.html"), "in IMA's own frame");
+  assert.ok(!adVideo(v("https://news.example.test/media/story.mp4"), page), "the page's own file");
+  assert.ok(!adVideo(v("blob:https://news.example.test/2"), page), "the page's own stream");
+  assert.ok(!adVideo(v("https://rr1---sn-abc.googlevideo.com/videoplayback?id=1"), "https://www.youtube.com/watch?v=x"), "YouTube's own video");
+  assert.ok(!adVideo(v("https://redirector.gvt1.com/edgedl/chrome/update.crx"), page), "the redirector's other files");
+  assert.ok(!adVideo(v(""), page), "no address yet");
+  assert.ok(!adVideo({ currentSrc: "", getAttribute: () => "https://s0.2mdn.net/ad.mp4" }, "not an address"), "an address it can't read: not an ad");
+  ok("video.js: a pre-roll ad's player gets no button, the page's own video does");
+}
+
+// background.js senderPage: a frame its page wrote itself (about:srcdoc, about:blank) is its tab's
+// page; any other frame its own address; the top frame its tab's (which follows the page).
+{
+  const start = code.indexOf("function senderPage(sender) {");
+  const end = code.indexOf("\n}\n", start);
+  assert.ok(start > 0 && end > start, "background.js has senderPage");
+  const senderPage = new Function(`${code.slice(start, end + 2)}; return senderPage;`)();
+  const tab = { url: "https://site.test/watch/1" };
+  assert.equal(senderPage({ frameId: 0, tab, url: "https://site.test/old" }), "https://site.test/watch/1", "the top frame: its tab's address");
+  assert.equal(senderPage({ frameId: 3, tab, url: "about:srcdoc" }), "https://site.test/watch/1", "an about:srcdoc frame: its tab's page");
+  assert.equal(senderPage({ frameId: 4, tab, url: "about:blank" }), "https://site.test/watch/1", "an about:blank frame: its tab's page");
+  assert.equal(senderPage({ frameId: 5, tab, url: "https://player.test/embed/9" }), "https://player.test/embed/9", "another site's frame: its own");
+  assert.equal(senderPage({ frameId: 6, tab: { url: "chrome://newtab/" }, url: "about:blank" }), null, "not a web page: none");
+  ok("background.js: a frame its page wrote itself speaks for its tab's page");
+}
+
 // The address the button hands the app (video.js's videoPage): the video's own page, not the page
 // that plays it. YouTube's home, a search, a channel or a playlist is a list to yt-dlp, and a watch
 // page opened from a mix carries the list in its address: the button sent either, and the app
@@ -3725,8 +3847,18 @@ function videoButton({ stored = {}, location, iframes, videos, subframe = false,
     const interior = plain(w.snap({ x: 0.94, y: 0.4 }, 1750, 1034)); // 105 px from right on 1080p (> 20 px)
     assert.deepEqual(interior, { x: 0.94, y: 0.4, free: true }, "105 px from edge on 1080p stays free");
     assert.deepEqual(plain(w.snap(interior)), { x: 0.94, y: 0.4, free: true }, "kept free spot survives reload");
-    assert.deepEqual(plain(w.snap({ x: 0.992, y: 0.4 }, 1750, 1034)), { x: 1, y: 0.4 }, "14 px from right edge snaps to edge");
-    assert.deepEqual(plain(w.snap({ x: 0.4, y: 0.015 }, 1750, 1034)), { x: 0.4, y: 0 }, "15.5 px from top edge snaps to top");
+    assert.deepEqual(plain(w.snap({ x: 0.992, y: 0.4 }, 1750, 1034)), { x: 1, y: 0.4, exact: true }, "14 px from right edge snaps to edge");
+    assert.deepEqual(plain(w.snap({ x: 0.4, y: 0.015 }, 1750, 1034)), { x: 0.4, y: 0, exact: true }, "15.5 px from top edge snaps to top");
+    // Along the edge, a drop goes into the corner or the middle only within 12 px of it.
+    assert.deepEqual(plain(w.snap({ x: 0.95, y: 0 }, 1750, 1034)), { x: 0.95, y: 0, exact: true }, "87 px from the corner: stays where dropped");
+    assert.deepEqual(plain(w.snap({ x: 0.995, y: 0 }, 1750, 1034)), { x: 1, y: 0, exact: true }, "9 px from the corner: into it");
+    assert.deepEqual(plain(w.snap({ x: 0.53, y: 1 }, 1750, 1034)), { x: 0.53, y: 1, exact: true }, "52 px from the middle: stays");
+    assert.deepEqual(plain(w.snap({ x: 0.504, y: 1 }, 1750, 1034)), { x: 0.5, y: 1, exact: true }, "7 px from the middle: into it");
+    assert.deepEqual(plain(w.snap({ x: 0, y: 0.9 }, 1750, 1034)), { x: 0, y: 0.9, exact: true }, "the left edge: measured along its height");
+    // Read back (this tab's own write, a reload), a dropped spot stays where it was dropped.
+    const dropped = plain(w.snap({ x: 0.95, y: 0 }, 1750, 1034));
+    assert.deepEqual(plain(w.snap(dropped)), { x: 0.95, y: 0, exact: true }, "kept drop survives reload");
+    assert.deepEqual(plain(w.snap({ x: 0.95, y: 0, out: true, side: "top", exact: true })), { x: 0.95, y: 0, out: true, side: "top", exact: true }, "kept drop outside survives reload");
     ok("video.js: the button moves to a corner or outside the player, snapped, kept per site (#1735)");
   }
   // #1923: Options scale (80% / 100% / 120% from `panel`), menu full-screen toggle, and iframe full-screen check.
@@ -3834,6 +3966,47 @@ function videoButton({ stored = {}, location, iframes, videos, subframe = false,
     assert.equal(feedOf("https://news.example/", { videos: 1 }), false, "a home page's one video");
     assert.equal(feedOf("https://news.example/article/1", { videos: 3 }), false, "an article's players");
     ok("video.js: a feed's videos get the round button by default (feedback 2026-11-23)");
+  }
+  // A short muted loop without controls is a moving picture (no button), unless the page's site
+  // names it: a reel on its own page (Instagram's plays muted at first, looping, often under
+  // 15 s, from a MediaSource: its button was missing), a post's clip in a feed, a YouTube Short.
+  {
+    const source = readText("../../extension/video.js");
+    const start = source.indexOf("function videoPage(v) {");
+    const end = source.indexOf("// ---- the video's own address: end.");
+    assert.ok(source.slice(start, end).includes("function decorative(v) {"), "decorative is in the video's own address part");
+    assert.ok(source.includes("    if (decorative(v)) return false;"), "eligible() asks decorative");
+    const body = `const CLIP_S = 15; ${source.slice(start, end)}; return decorative;`;
+    const reel = { muted: true, loop: true, controls: false, duration: 12, currentSrc: "blob:https://www.instagram.com/1" };
+    const decorativeOn = (href, video = {}, { post = "", videos = 1 } = {}) => {
+      const v = { ...reel, ...video, parentElement: null, parentNode: null, getAttribute: () => null };
+      if (post) {
+        const a = { localName: "a", getAttribute: (n) => (n === "href" ? post : null), querySelector: () => null };
+        v.parentElement = { localName: "article", parentElement: null, parentNode: null, getAttribute: () => null, querySelectorAll: (sel) => (sel === "video" ? [v] : sel === "a[href]" ? [a] : []) };
+      }
+      const document = { querySelectorAll: (sel) => (sel === "video" ? { length: videos } : []), querySelector: () => null };
+      return new Function("location", "document", body)({ href }, document)(v);
+    };
+    // The reel on its own page, muted and looping, short or not yet known (a MediaSource before
+    // its first part); the same on a post's page, a Short's, a Facebook reel's.
+    for (const page of ["https://www.instagram.com/reels/DSampleReel1/", "https://www.instagram.com/reel/DSampleReel1/", "https://www.instagram.com/sample.account/reel/DSampleReel1/", "https://www.instagram.com/p/DSampleCode1/", "https://www.youtube.com/shorts/abc", "https://www.facebook.com/reel/1234567"]) {
+      assert.equal(decorativeOn(page), false, `a short muted loop on its own page: ${page}`);
+      assert.equal(decorativeOn(page, { duration: NaN }), false, `before its length is known: ${page}`);
+    }
+    // In a feed: a post's clip the site names is the post's; one nothing names stays a picture.
+    assert.equal(decorativeOn("https://www.instagram.com/", {}, { post: "/p/DSampleCode1/" }), false, "a post's clip in Instagram's feed");
+    assert.equal(decorativeOn("https://www.instagram.com/"), true, "a loop Instagram's feed names nothing for");
+    assert.equal(decorativeOn("https://www.youtube.com/", {}, { videos: 3 }), true, "a muted loop on YouTube's home");
+    // Any other site's short muted loop without controls: a background, an animated picture.
+    for (const page of ["https://shop.example.test/", "https://news.example/article/1", "https://www.instagram.example/reels/DSampleReel1/"]) {
+      assert.equal(decorativeOn(page), true, `a decorative loop: ${page}`);
+      assert.equal(decorativeOn(page, { duration: NaN }), true, `a decorative loop, its length not known: ${page}`);
+    }
+    // Not such a clip at all: with sound, not looping, with controls, longer than 15 s.
+    for (const [what, video] of [["with sound", { muted: false }], ["not looping", { loop: false }], ["with controls", { controls: true }], ["40 s long", { duration: 40 }]]) {
+      assert.equal(decorativeOn("https://shop.example.test/", video), false, `a video ${what} is no moving picture`);
+    }
+    ok("video.js: a reel on its own page (muted, looping, short) gets the button; a decorative loop doesn't");
   }
   ok("video.js: the qualities' menu follows a lookup one question at a time for a minute; rows as text, the user's own clicks and keys; its words, #703's early look-up, #741's moves");
 }
@@ -6338,6 +6511,119 @@ const until = async (what, ms, check) => {
   assert.equal(kept(["JPEG", "AVIF"], 0, 0), "ae");
   assert.equal(kept(["PNG", "JPEG", "AVIF", "GIF"], 0, 0), "");
   ok("#1781 Find images: the tab's frames together and typed; the kept ones to Link grabber with the page's context; Download all and selected links send the pictures too, marked");
+}
+// #1540: a file whose download went through other hosts in the browser (a sign-in host, a CDN)
+// goes to the app with the cookies of each host it went through, partitioned ones of its page
+// included, each with its domain (the app sends each to its own hosts), never another site's
+// partition, a host no redirect reached, nor another store's.
+{
+  const site = "https://site.test";
+  const cookieStore = [
+    { name: "sid", value: "a", domain: "site.test", hostOnly: true, path: "/", secure: true },
+    { name: "login", value: "b", domain: ".login.test", hostOnly: false, path: "/", secure: true },
+    { name: "tok", value: "c", domain: "files.cdn.test", hostOnly: true, path: "/", secure: true, expirationDate: 1893456000.5 },
+    { name: "deep", value: "d", domain: "files.cdn.test", hostOnly: true, path: "/f", secure: false },
+    { name: "chip", value: "e", domain: "files.cdn.test", hostOnly: true, path: "/", secure: true, partitionKey: { topLevelSite: site } },
+    { name: "theirs", value: "f", domain: "files.cdn.test", hostOnly: true, path: "/", secure: true, partitionKey: { topLevelSite: "https://elsewhere.test" } },
+    { name: "other", value: "g", domain: "other.test", hostOnly: true, path: "/", secure: true },
+    { name: "private", value: "h", domain: "files.cdn.test", hostOnly: true, path: "/", secure: true, storeId: "1" },
+  ];
+  const { api, calls, listeners } = fakeApi({ firefox: true, cookieStore });
+  load(api, true);
+  // The page's link redirected through the sign-in host to the CDN.
+  listeners.beforeRedirect({ url: `${site}/get?id=1`, redirectUrl: "https://auth.login.test/go?t=1", type: "main_frame" });
+  listeners.beforeRedirect({ url: "https://auth.login.test/go?t=1", redirectUrl: "https://files.cdn.test/f/a.zip", type: "main_frame" });
+  listeners.created({ id: 41, url: "https://files.cdn.test/f/a.zip", referrer: `${site}/files`, filename: "C:\\dl\\a.zip", mime: "application/zip" });
+  await settle();
+  const [m] = natives(calls);
+  assert.deepEqual([m.url, m.finalUrl], [`${site}/get?id=1`, "https://files.cdn.test/f/a.zip"]);
+  assert.equal(m.cookies, "sid=a", "the header is the link's own, as before");
+  assert.deepEqual(
+    m.cookieJar.map((c) => [c.name, c.domain, c.hostOnly, c.path, c.secure]),
+    [
+      ["sid", "site.test", true, "/", true],
+      ["login", ".login.test", false, "/", true],
+      ["tok", "files.cdn.test", true, "/", true],
+      ["deep", "files.cdn.test", true, "/f", false],
+      ["chip", "files.cdn.test", true, "/", true],
+    ],
+  );
+  assert.equal(m.cookieJar.find((c) => c.name === "tok").expirationDate, 1893456000.5);
+  const fields = ["name", "value", "domain", "hostOnly", "path", "secure", "expirationDate"];
+  assert.ok(m.cookieJar.every((c) => Object.keys(c).every((k) => fields.includes(k))), "only what the app reads (no partition, no store)");
+  // Each host asked once without a partition and once for all of them; none other.
+  const asked = calls.filter((c) => c[0] === "cookies").map((c) => [c[1].url, "partitionKey" in c[1]]);
+  for (const u of [`${site}/get?id=1`, "https://auth.login.test/go?t=1", "https://files.cdn.test/f/a.zip"]) {
+    assert.ok(asked.some(([a, p]) => a === u && !p) && asked.some(([a, p]) => a === u && p), `${u} asked both ways`);
+  }
+  assert.ok(!asked.some(([a]) => a.includes("other.test")), "a host the download never reached isn't asked");
+
+  // A private window: its own store's cookies only.
+  const priv = fakeApi({ firefox: false, cookieStore });
+  load(priv.api, false);
+  priv.listeners.determining({ id: 42, url: `${site}/get?id=2`, finalUrl: "https://files.cdn.test/f/b.zip", filename: "b.zip", incognito: true }, () => {});
+  await settle();
+  const [pm] = natives(priv.calls);
+  assert.deepEqual(pm.cookieJar.map((c) => c.name), ["private"]);
+  assert.equal(pm.cookies, "", "no private cookie for the link's host");
+
+  // A browser without partitioned cookies: the others still go, nothing written as an error.
+  const old = fakeApi({ firefox: false, cookieStore, partitions: false });
+  load(old.api, false);
+  old.listeners.determining({ id: 43, url: `${site}/get?id=3`, finalUrl: "https://files.cdn.test/f/c.zip", filename: "c.zip", referrer: `${site}/files` }, () => {});
+  await settle();
+  const [om] = natives(old.calls);
+  assert.deepEqual(om.cookieJar.map((c) => c.name), ["sid", "tok", "deep"]);
+
+  // No cookie anywhere: no jar at all (the message an older app knows).
+  const none = fakeApi({ firefox: false, cookieStore: [] });
+  load(none.api, false);
+  none.listeners.determining({ id: 44, url: "https://x.test/a.zip", filename: "a.zip" }, () => {});
+  await settle();
+  const [nm] = natives(none.calls);
+  assert.ok(!("cookieJar" in nm) && nm.cookies === "");
+  ok("#1540: a file goes with the cookies of each host its redirects went through, its page's partitioned ones included, each with its domain");
+}
+
+// #1540: a partitioned cookie goes when its partition is the download's page's site or the
+// file's own (the browser went there itself), on the same scheme; never a look-alike host's.
+{
+  const cookieStore = [
+    { name: "page", value: "1", domain: "cdn.test", hostOnly: true, path: "/", secure: true, partitionKey: { topLevelSite: "https://site.test" } },
+    { name: "own", value: "2", domain: "cdn.test", hostOnly: true, path: "/", secure: true, partitionKey: { topLevelSite: "https://cdn.test" } },
+    { name: "plain", value: "3", domain: "cdn.test", hostOnly: true, path: "/", secure: true, partitionKey: { topLevelSite: "http://site.test" } },
+    { name: "alike", value: "4", domain: "cdn.test", hostOnly: true, path: "/", secure: true, partitionKey: { topLevelSite: "https://ite.test" } },
+  ];
+  const { api, calls, listeners } = fakeApi({ firefox: false, cookieStore });
+  load(api, false);
+  listeners.determining({ id: 45, url: "https://cdn.test/a.zip", filename: "a.zip", referrer: "https://www.site.test/files" }, () => {});
+  await settle();
+  const [m] = natives(calls);
+  assert.deepEqual(m.cookieJar.map((c) => c.name), ["page", "own"]);
+  ok("#1540: partitioned cookies of the page's site and of the file's own, never another site's");
+}
+
+// #1540: what the browser sent the address the download ended at goes too (a cookie no store
+// lists), for that host only and under the names the stores don't have; an address it sent
+// nothing to adds nothing, and an old capture is forgotten.
+{
+  const cookieStore = [{ name: "tok", value: "c", domain: "files.cdn.test", hostOnly: true, path: "/", secure: true }];
+  const { api, calls, listeners } = fakeApi({ firefox: false, cookieStore });
+  load(api, false);
+  await settle();
+  listeners.sendHeaders({ requestId: "d1", tabId: 3, type: "main_frame", url: "https://files.cdn.test/f/a.zip", requestHeaders: [{ name: "Cookie", value: "tok=c; hidden=z" }] });
+  listeners.sendHeaders({ requestId: "d2", tabId: 3, type: "main_frame", url: "https://unrelated.test/", requestHeaders: [{ name: "Cookie", value: "u=1" }] });
+  listeners.determining({ id: 46, url: "https://site.test/get?id=4", finalUrl: "https://files.cdn.test/f/a.zip", filename: "a.zip" }, () => {});
+  await settle();
+  const [m] = natives(calls);
+  assert.deepEqual(
+    m.cookieJar.map((c) => [c.name, c.domain, c.hostOnly, c.path, c.secure]),
+    [
+      ["tok", "files.cdn.test", true, "/", true],
+      ["hidden", "files.cdn.test", true, "/", true],
+    ],
+  );
+  ok("#1540: the cookies the browser sent where the download ended go too, for that host only");
 }
 assert.deepEqual(complaints, [], "nothing written to the console as an error or warning");
 

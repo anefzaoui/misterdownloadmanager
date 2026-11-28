@@ -571,6 +571,21 @@ Everything below ships together, in version 0.6.0, the next release.
 
 - ✅ Torrents: a torrent of many files stays within its budget of open files when a file is
   opened again and at a pause (a follow-up to #2060)
+- ✅ The browser add-on's Download video button checked on about 30 video sites and player types in
+  Chrome and Firefox, and shown where it was missing: YouTube embedded in other sites before it plays,
+  a player in a lightbox (a modal dialog or a popover), a player with a closed shadow root, one written
+  into a frame of the page's own, a page that keeps the pointer's moves, and an Instagram reel on its
+  own page (muted and looping at first); a pre-roll ad's player no longer gets the button
+- ✅ Downloads that redirect through other sites keep the cookies each site needs: the browser
+  add-on hands over the cookies of every address the download went through (partitioned ones
+  included), MDM keeps those a server sets along the way, and each site gets only its own
+  ([#1540](https://github.com/anefzaoui/misterdownloadmanager/issues/1540); thanks to
+  [@solovyov-jenya2004](https://github.com/solovyov-jenya2004))
+- ✅ Large videos with chapters: after the streams are in, the MP4's index is moved to the front
+  of the file by the last of yt-dlp's passes only, not by each one (a full rewrite of the file
+  each time); the finished file is the same, byte for byte, and a 3 GB video with chapters writes
+  about a quarter less after its download (a third less with its subtitles in the file)
+  ([#2098](https://github.com/anefzaoui/misterdownloadmanager/issues/2098))
 - ✅ Download video: choose the language of a video's sound when it comes in several (YouTube's
   dubbed tracks), the original first and marked; every quality, Audio only and MP3, Opus and
   FLAC take that language's sound, and the button over a video says each line's language.
@@ -610,6 +625,8 @@ Everything below ships together, in version 0.6.0, the next release.
   adapter chosen in Options → Connection, and don't start while it isn't connected
   ([#2050](https://github.com/anefzaoui/misterdownloadmanager/issues/2050); thanks to
   [@abdul-karim-mia](https://github.com/abdul-karim-mia))
+- ✅ The video button follows the pointer smoothly while dragged and stays where it is dropped
+  (it snapped back to its corner or middle from up to 100 px away on a wide player)
 - ✅ Every pull request and every change to main is scanned for signs of a tampered commit: code
   hidden at the end of long lines, scripts that run on install or when a folder opens, files that
   aren't what their name says and known indicators; main's whole history once a week
@@ -780,6 +797,9 @@ Everything below ships together, in version 0.6.0, the next release.
   reached; each stage now waits for the session's own word (downloading, the peer given up, its
   retry refused) instead of the time that should have passed
 - ✅ Torrents: a paused torrent's finished pieces are saved before MDM quits
+- ✅ Torrents: a torrent added again with its pieces kept keeps its progress also when its numbers
+  were being read as it left the session
+  ([#1648](https://github.com/anefzaoui/misterdownloadmanager/issues/1648))
 - ✅ Torrents: the engine checks what it's sent more carefully
 - ✅ Extracting: 7z and RAR archives are checked more carefully
 - ✅ Archive test: archives are checked more carefully
